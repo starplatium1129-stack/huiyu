@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makima",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "makima",
     "profile": {
@@ -17,10 +17,10 @@
       "type": "popular",
       "icon": "🖤",
       "portrait": {
-        "image": "../assets/characters/popular-makima.png?v=5",
-        "alt": "玛奇玛 样张立绘",
-        "sourceShowcaseId": "pc_makima_makima_home_dinner",
-        "sourceShowcaseSha256": "f8f813629367b18aa90d990e811e2d4ee815d15bc91172a7b3751d1bc6c85dee"
+        "image": "../assets/characters/popular-makima.png?v=9df446ccc6af",
+        "alt": "玛奇玛样张立绘",
+        "sourceShowcaseId": "pc_makima_pc_makima_makima_office",
+        "sourceShowcaseSha256": "ad26110ff9e078a3cd6584e7310a07a5d715a7193471acfa7999608923c0a106"
       },
       "visual_dna": {
         "hair": "鲑粉色长发，编成松整的低麻花辫。",

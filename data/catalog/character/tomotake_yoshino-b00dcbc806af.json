@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tomotake_yoshino",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.891Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "tomotake_yoshino",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-tomotake_yoshino.png?v=5",
-        "alt": "朝武芳乃 样张立绘"
+        "image": "../assets/characters/popular-tomotake_yoshino.png?v=cbf6555c2abd",
+        "alt": "朝武芳乃样张立绘",
+        "sourceShowcaseId": "pc_tomotake_yoshino_pc_tomotake_yoshino_yoshino_spring_sakura_tree_prayer",
+        "sourceShowcaseSha256": "6bcde62ee7339e6e01bc93ffc0b3f6b7e4fc0674b02e80cd27e4aede1ffa8c1d"
       },
       "visual_dna": {
         "hair": "银白及腰长双马尾 · 中分前额刘海 · 樱花头饰",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rena_liechtenauer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 259,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "rena_liechtenauer",
     "profile": {
@@ -20,10 +20,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-rena_liechtenauer.png?v=41d1c936da68",
+        "image": "../assets/characters/popular-rena_liechtenauer.png?v=2cc85f171f28",
         "alt": "蕾娜·莉希特娜瓦样张立绘",
-        "sourceShowcaseId": "pc_rena_liechtenauer_rena_liechtenauer_town_map",
-        "sourceShowcaseSha256": "3fb6c948182bd62f1f52cf4e2d05d51e87fa211808c296b09533458c79914345"
+        "sourceShowcaseId": "pc_rena_liechtenauer_pc_rena_liechtenauer_rena_liechtenauer_town_map",
+        "sourceShowcaseSha256": "dc9a3af4b370dd99f7d90245d21f7ae65b98610115da8eb96134b55dabb7baac"
       },
       "visual_dna": {
         "hair": "金色长发",

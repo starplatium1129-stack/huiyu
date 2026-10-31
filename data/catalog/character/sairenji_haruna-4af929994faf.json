@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sairenji_haruna",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 167,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.924Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "sairenji_haruna",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-sairenji_haruna.png?v=1",
-        "alt": "西连寺春菜 样张立绘"
+        "image": "../assets/characters/popular-sairenji_haruna.png?v=11741bd0fa65",
+        "alt": "西连寺春菜样张立绘",
+        "sourceShowcaseId": "pc_sairenji_haruna_pc_sairenji_haruna_haruna_sainan_rooftop_bento",
+        "sourceShowcaseSha256": "6986c4d684358af27abe5a95d8cc698f30a50c64c0bba5f58284a1e3ecf00baa"
       },
       "visual_dna": {
         "hair": "蓝紫色柔顺短发 · 标志性右刘海双发夹",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yanami_anna",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.916Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yanami_anna",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-yanami_anna.png?v=9b01ab0ba67e",
-        "alt": "八奈见杏菜 · 食堂大份定食的满足感场景样张"
+        "image": "../assets/characters/popular-yanami_anna.png?v=b9d08d4f14af",
+        "alt": "八奈见杏菜样张立绘",
+        "sourceShowcaseId": "pc_yanami_anna_pc_yanami_anna_yanami_anna_sfw_b8_07",
+        "sourceShowcaseSha256": "75858e73a1dfd09aea79c6f754ff3533308de9e648dfa47a4379943dff94f39b"
       },
       "visual_dna": {
         "signature": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, a lively ahoge and expressive blue eyes. Her open reactions and enthusiasm for food coexist with quieter moments of reflection.",

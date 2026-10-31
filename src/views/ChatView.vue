@@ -19,8 +19,8 @@
             <section class="room-tool-panel room-panel-loading" aria-labelledby="roomPanelLoadingTitle">
               <header class="room-tool-heading"><div><span>CHAT TOOLS</span><h2 id="roomPanelLoadingTitle">{{ roomPanel ? roomPanelLabels[roomPanel] : '' }}</h2></div><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭聊天工具" @click="closeRoomPanel"><ArchiveIcon name="close" /></button></header>
               <div class="room-tool-body">
-                <p class="room-panel-loading-status" :role="failed ? 'alert' : 'status'"><ArchiveIcon name="chat" /><span>{{ failed ? (retried ? '聊天工具仍未加载，请检查连接后重新载入应用。' : '聊天工具暂未加载，请重新读取。') : '正在加载…' }}</span></p>
-                <button v-if="failed" class="btn btn-ghost btn-sm tw:justify-self-center" type="button" @click="retried ? reload() : retry()">{{ retried ? '重新载入应用' : '重新读取' }}</button>
+                <p class="room-panel-loading-status" :role="failed ? 'alert' : 'status'"><ArchiveIcon name="chat" /><span>{{ failed ? (retried ? '加载失败，请重试。' : '加载失败。') : '加载中…' }}</span></p>
+                <button v-if="failed" class="btn btn-ghost btn-sm tw:justify-self-center" type="button" @click="retried ? reload() : retry()">{{ retried ? '刷新页面' : '重试' }}</button>
               </div>
             </section>
           </template>
@@ -72,7 +72,7 @@
         <template #fallback>
           <aside class="character-card room-character-stage-loading" :data-character="activeChar" :aria-label="`正在准备${currentCharacter.name}的角色舞台`" aria-busy="true">
             <RuntimeImage class="room-character-stage-loading-art" :src="avatar" alt="" />
-            <p role="status"><ArchiveIcon name="character" /><span>正在准备{{ currentCharacter.name }}的角色舞台…</span></p>
+            <p role="status"><ArchiveIcon name="character" /><span>角色载入中…</span></p>
           </aside>
         </template>
       </Suspense>
@@ -105,9 +105,9 @@
             <h2 class="room-empty-title">和{{ currentCharacter.name }}聊一会儿</h2>
             <div class="chat-empty-greeting">{{ personalizedGreeting }}</div>
             <div class="chat-starters" aria-label="对话开场建议"><button v-for="(s, index) in currentCharacter.starters" :key="s" class="room-starter" type="button" @click="chooseStarter(s)"><span class="room-starter-index" aria-hidden="true">{{ String(index + 1).padStart(2, '0') }}</span><span class="room-starter-copy">{{ s }}</span><span class="room-starter-arrow" aria-hidden="true"><ArchiveIcon name="chevron-down" /><ArchiveIcon name="chevron-down" /></span></button></div>
-            <p class="room-starter-hint">选择开场建议后，可编辑再发送。</p>
+            <p class="room-starter-hint">点击发送或编辑。</p>
           </div>
-          <button v-if="hasEarlier" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadEarlier">查看更早消息</button>
+          <button v-if="hasEarlier" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadEarlier">更早消息</button>
           <ChatMessageRow v-for="msg in visibleMessages" tabindex="-1" :key="msg.replyId || msg.mid" :message="msg" :avatar="avatar"
             :chibi="Boolean(companionChatAvatars[activeChar])" :streaming="msg.mid === streamingMid" :playing="msg.mid === playingMid"
             :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
@@ -115,9 +115,9 @@
             @copy="copyMessage" @remember="rememberMessage" @play="voice.playMessage($event)"
             @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })" @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })"
             @select-variant="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
-          <button v-if="hasLater" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadLater">查看后续消息</button>
+          <button v-if="hasLater" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadLater">后续消息</button>
         </div>
-        <button v-if="!immersive && showLatest" class="room-latest btn btn-ghost" type="button" @click="latest">回到最新消息</button>
+        <button v-if="!immersive && showLatest" class="room-latest btn btn-ghost" type="button" @click="latest">最新消息</button>
         <div v-if="immersive" class="room-current-line" role="log" aria-live="off" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
         <div v-if="activityText" class="room-chat-activity" role="status"><span>{{ activityText }}</span><button v-if="speechSessionActive" class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button></div>
         <div class="chat-composer">

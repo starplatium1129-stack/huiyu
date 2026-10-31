@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aisha_greyrat",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.921Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "aisha_greyrat",
     "profile": {
@@ -22,8 +22,10 @@
       "type": "popular",
       "icon": "character",
       "portrait": {
-        "image": "../assets/characters/popular-aisha_greyrat.png?v=93950c9050e7",
-        "alt": "爱夏·格雷拉特 · 晨光中的账目核对场景样张"
+        "image": "../assets/characters/popular-aisha_greyrat.png?v=f7d941611228",
+        "alt": "爱夏·格雷拉特样张立绘",
+        "sourceShowcaseId": "pc_aisha_greyrat_pc_aisha_greyrat_aisha_greyrat_morning_ledgers",
+        "sourceShowcaseSha256": "14cc58ff5f99b5854ee496d9a5fcb9b24cbe39a5ddf46f062a67d4c3fb8b64f8"
       },
       "visual_dna": {
         "hair": "深栗红（红发）短发 · 高马尾",

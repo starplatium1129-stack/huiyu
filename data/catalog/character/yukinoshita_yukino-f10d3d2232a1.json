@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_yukino",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yukinoshita_yukino",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "📖",
       "portrait": {
-        "image": "../assets/characters/popular-yukinoshita_yukino.png?v=5",
-        "alt": "雪之下雪乃 样张立绘"
+        "image": "../assets/characters/popular-yukinoshita_yukino.png?v=fb748c437eca",
+        "alt": "雪之下雪乃样张立绘",
+        "sourceShowcaseId": "pc_yukinoshita_yukino_pc_yukinoshita_yukino_yukinoshita_yukino_clubroom",
+        "sourceShowcaseSha256": "3789430a978c2b0fc552d816829699cb0bee6d5eb882e177d9bcf4864a688389"
       },
       "visual_dna": {
         "hair": "黑色长直发（黑长直）",

@@ -1,8 +1,8 @@
 <template>
   <article class="page scenario-page creative-library-page">
-    <CreativeLibraryHeader title="剧本模式" description="从相遇到心动，把故事一幕幕留下。" />
+    <CreativeLibraryHeader title="剧本模式" description="分幕故事与连贯场景" />
     <header class="scenario-library-heading">
-      <div><h2>选一本故事手帖</h2><p>{{ SCENARIOS.length }} 本故事 · 封面为氛围参考</p></div>
+      <div><h2>故事手帖</h2><p>{{ SCENARIOS.length }} 部故事</p></div>
       <div v-if="!casting.castId.value" class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
         <AnimatedSelection />
         <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" /><span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span></button>
@@ -39,8 +39,8 @@
             <div class="act-format"><span>{{ casting.character.value?.displayName || (currentChar === 'nene' ? '宁宁' : '夏目') }}{{ casting.outfit.value ? ` · ${casting.outfit.value.name}` : '' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
             <div class="act-actions">
               <RouterLink v-if="casting.ready.value" :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, act: a.n, ...casting.query.value } }" class="btn btn-primary">绘制这一幕</RouterLink>
-              <button type="button" class="btn btn-ghost" @click="sendToVideoStudio(a.n)">这一幕加入分镜</button>
-              <StudioCopyButton class="btn btn-ghost" label="复制本幕 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" />
+              <button type="button" class="btn btn-ghost" @click="sendToVideoStudio(a.n)">加入分镜</button>
+              <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" />
             </div>
             <details class="act-details" :open="expandedActs.includes(a.n)" :data-scenario="activeScenario.id" :data-act="a.n" @toggle="syncAct">
               <StudioDisclosureSummary><span>提示词与参数</span></StudioDisclosureSummary>

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eyjafjalla_arknights",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 25,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "eyjafjalla_arknights",
     "profile": {
@@ -76,8 +76,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-eyjafjalla_arknights.png?v=5",
-        "alt": "艾雅法拉热门角色立绘"
+        "image": "../assets/characters/popular-eyjafjalla_arknights.png?v=d6790da0a996",
+        "alt": "艾雅法拉样张立绘",
+        "sourceShowcaseId": "pc_eyjafjalla_arknights_pc_eyjafjalla_arknights_eyjafjalla_arknights_library_study",
+        "sourceShowcaseSha256": "9b3fdca978a45371dfaf224837a3cb111bc69094a23e0dc3fcca49ce86576d6c"
       },
       "speech": "艾雅法拉向你致以问候。",
       "accent_color": "#38bdf8",

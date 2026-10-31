@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_miku",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 178,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T08:46:52.929Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "nakano_miku",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🎧",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_miku.png?v=1",
-        "alt": "中野三玖 样张立绘"
+        "image": "../assets/characters/popular-nakano_miku.png?v=af95bbb7e460",
+        "alt": "中野三玖样张立绘",
+        "sourceShowcaseId": "pc_nakano_miku_pc_nakano_miku_nakano_miku_library_headphone_share",
+        "sourceShowcaseSha256": "1a16fa0e4e256c940309a5b9143e19492cd350e110ab11bdca6a30cddf05e557"
       },
       "visual_dna": {
         "hair": "栗棕微卷中长发 · 遮眼斜刘海",

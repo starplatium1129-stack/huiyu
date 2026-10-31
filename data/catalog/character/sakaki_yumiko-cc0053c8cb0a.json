@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sakaki_yumiko",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 169,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T08:46:52.925Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "sakaki_yumiko",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/popular-sakaki_yumiko.png?v=1",
-        "alt": "榊由美子 样张立绘"
+        "image": "../assets/characters/popular-sakaki_yumiko.png?v=69334e5cf646",
+        "alt": "榊由美子样张立绘",
+        "sourceShowcaseId": "pc_sakaki_yumiko_pc_sakaki_yumiko_yumiko_hallway_sunset_box_cutter_encounter",
+        "sourceShowcaseSha256": "fb615d947eed1c31f66e534767dae4d3a11a5e0015188b56a4a6e32c9523364a"
       },
       "visual_dna": {
         "hair": "及膝如墨漆黑超长发 · 传统姬发式 · 齐刘海 · 优雅侧发束",

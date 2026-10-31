@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makinohara_shouko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.915Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "makinohara_shouko",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-makinohara_shouko.png?v=a43372d74164",
-        "alt": "牧之原翔子 · 七里滨的白色连衣裙场景样张"
+        "image": "../assets/characters/popular-makinohara_shouko.png?v=3c8671e64aab",
+        "alt": "牧之原翔子样张立绘",
+        "sourceShowcaseId": "pc_makinohara_shouko_pc_makinohara_shouko_makinohara_shouko_sfw_b8_06",
+        "sourceShowcaseSha256": "8c16b530bb3f16661e67c6ac0516e6771e034695bc3341509d614045329dbefc"
       },
       "visual_dna": {
         "signature": "Shouko Makinohara from Rascal Does Not Dream, with long dark hair, softly cut side locks and calm blue eyes. Her small smiles and considerate gestures carry the quiet warmth associated with the seaside.",

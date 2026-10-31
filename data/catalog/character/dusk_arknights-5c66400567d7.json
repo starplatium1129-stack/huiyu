@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "dusk_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 22,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "dusk_arknights",
     "profile": {
@@ -79,8 +79,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-dusk_arknights.png?v=5",
-        "alt": "夕热门角色立绘"
+        "image": "../assets/characters/popular-dusk_arknights.png?v=3012e513edbe",
+        "alt": "夕样张立绘",
+        "sourceShowcaseId": "pc_dusk_arknights_pc_dusk_arknights_dusk_arknights_ink_garden",
+        "sourceShowcaseSha256": "2d5aa2800bba2aa957154a5373da9daa3c8bb2ee45da1f2fe8e5d12b6760f95f"
       },
       "speech": "夕向你致以问候。",
       "accent_color": "#38bdf8",

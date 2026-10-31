@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "itsuwa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 241,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "itsuwa",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🍵",
       "portrait": {
-        "image": "../assets/characters/popular-itsuwa.png?v=4a338b729bc2",
+        "image": "../assets/characters/popular-itsuwa.png?v=78844d27271a",
         "alt": "五和样张立绘",
-        "sourceShowcaseId": "pc_itsuwa_itsuwa_winter_park_bench_thermos_tea_care",
-        "sourceShowcaseSha256": "ec0e0475a81d705413faf7a20ddfb20f010df8ce8a4523394514b11ae580e140"
+        "sourceShowcaseId": "pc_itsuwa_pc_itsuwa_itsuwa_snowy_park_bench_tea_thermos",
+        "sourceShowcaseSha256": "4bcd21a8e453ef35c847050f548d76dd28ea373ba10f66a1c511c246c72f1266"
       },
       "visual_dna": {
         "hair": "柔顺茶褐色齐颈波波短发 · 额前自然分发 · 极具大和抚子清纯韵味",

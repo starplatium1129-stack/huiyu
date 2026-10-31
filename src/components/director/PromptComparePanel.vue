@@ -2,7 +2,7 @@
   <div class="pb-compare-overlay" @click.self="$emit('close')">
     <div ref="dialog" class="pb-compare" role="dialog" aria-modal="true" aria-label="出图对比">
       <div class="pb-compare-head">
-        <div><div class="pb-compare-kicker">绘遇 · 画面对照</div><h3>与上一张对比</h3></div>
+        <div><div class="pb-compare-kicker">COMPARE</div><h3>画面对比</h3></div>
         <button ref="closeButton" class="btn btn-ghost btn-sm btn-compare-close" type="button" aria-label="关闭" @click="$emit('close')">
           <ArchiveIcon name="close" /> <span>关闭</span>
         </button>
@@ -11,7 +11,7 @@
         <figure v-for="(snap, index) in [previous, current]" :key="index" class="pb-compare-card">
           <div class="pb-compare-visual" :style="{ '--snapshot-ratio': snapshotRatio(snap.size) }" tabindex="-1" role="group" :aria-label="index === 0 ? '上一张画面' : '当前画面'" :aria-busy="!!previews[index]!.src.value && !previews[index]!.loaded.value && !previews[index]!.failed.value">
             <img v-if="previews[index]!.src.value && !previews[index]!.failed.value" v-bind="previews[index]!.image.value" :alt="index === 0 ? '上一张生成结果' : '当前生成结果'" decoding="async" :class="{ 'is-ready': previews[index]!.loaded.value }" />
-            <div v-if="!previews[index]!.loaded.value" class="pb-compare-feedback" role="status"><ArchiveIcon :name="previews[index]!.failed.value ? 'warning' : 'image'" /><span>{{ previews[index]!.failed.value ? '画面暂未能展开' : previews[index]!.src.value ? '正在展开画面…' : '没有可用画面' }}</span><button v-if="previews[index]!.failed.value" class="btn btn-ghost btn-sm" type="button" @click="retryImage(index, $event)">重新读取</button></div>
+            <div v-if="!previews[index]!.loaded.value" class="pb-compare-feedback" role="status"><ArchiveIcon :name="previews[index]!.failed.value ? 'warning' : 'image'" /><span>{{ previews[index]!.failed.value ? '加载失败' : previews[index]!.src.value ? '加载中…' : '无画面' }}</span><button v-if="previews[index]!.failed.value" class="btn btn-ghost btn-sm" type="button" @click="retryImage(index, $event)">重新读取</button></div>
             <span class="pb-compare-tag" :class="{ current: index === 1 }">{{ index === 0 ? '上一张' : '当前' }}</span>
           </div>
           <figcaption class="pb-compare-facts">

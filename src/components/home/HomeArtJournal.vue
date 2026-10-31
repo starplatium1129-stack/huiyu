@@ -1,18 +1,18 @@
 <template>
   <section ref="section" class="art-journal container" aria-labelledby="journal-title" data-reveal @focusin="activateImages">
     <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
-      <div><span class="eyebrow">CG JOURNAL / 画里的日常</span><h2 id="journal-title">在喜欢的世界，多停留一会。</h2></div>
+      <div><span class="eyebrow">CG JOURNAL</span><h2 id="journal-title">画中日常</h2></div>
       <div class="journal-actions">
-        <button v-if="canRefresh || loading || error" ref="refreshButton" type="button" class="journal-more journal-refresh" :aria-disabled="loading" :aria-busy="loading" aria-controls="journal-spread" @click="!loading && emit('refresh')"><ArchiveIcon name="refresh" />{{ loading ? (scenes.length ? '正在换画…' : '正在读取…') : error ? '重新读取' : '换一组' }}</button>
-        <RouterLink to="/showcase" class="journal-more">翻阅参考画册 <ArchiveIcon name="image" /></RouterLink>
+        <button v-if="canRefresh || loading || error" ref="refreshButton" type="button" class="journal-more journal-refresh" :aria-disabled="loading" :aria-busy="loading" aria-controls="journal-spread" @click="!loading && emit('refresh')"><ArchiveIcon name="refresh" />{{ loading ? (scenes.length ? '切换中…' : '读取中…') : error ? '重试' : '换一组' }}</button>
+        <RouterLink to="/showcase" class="journal-more">参考画册 <ArchiveIcon name="image" /></RouterLink>
       </div>
     </header>
     <p v-if="error" class="journal-error" role="status">{{ error }}</p>
     <div id="journal-spread" ref="listRoot" class="journal-spread tw:grid" :aria-busy="loading">
       <RuntimeImage v-for="(scene, index) in scenes.slice(0, 3)" :key="scene.id" :src="imagesReady ? scene.image || '/scene-showcase/images/' + scene.id + '.jpg' : undefined" v-slot="{ image, loaded, failed }">
       <RouterLink class="journal-entry" :class="{ lead: index === 0 }" :data-list-key="scene.id" :data-sensitive="scene.rating === 'R18' || scene.mature" :to="failed ? scene.fallbackTo : '/showcase?scene=' + encodeURIComponent(scene.id)">
-        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="loaded && (scene.rating === 'R18' || scene.mature)" :src="image.src" :crossorigin="image.crossorigin" /><span v-if="!loaded" class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ failed ? '样张暂未连接' : '正在载入样张' }}<span v-if="failed">先看看这一幕的故事与设定</span></span><CardEdgeLight /></div>
-        <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? scene.fallbackLabel : '走进这一幕' }} <span aria-hidden="true">↗</span></span></div>
+        <div class="journal-art tw:relative tw:overflow-hidden tw:rounded-xl"><img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="scene.title" width="1024" height="1344" loading="lazy" decoding="async" /><SensitivePreviewVeil v-if="loaded && (scene.rating === 'R18' || scene.mature)" :src="image.src" :crossorigin="image.crossorigin" /><span v-if="!loaded" class="journal-missing tw:flex tw:h-full tw:flex-col tw:items-center tw:justify-center tw:gap-s-2 tw:p-s-4 tw:text-secondary tw:text-body-sm tw:text-center">{{ failed ? '样张未找到' : '样张加载中…' }}</span><CardEdgeLight /></div>
+        <div class="journal-caption tw:min-w-0"><span class="journal-category tw:text-accent tw:text-label-xs">{{ scene.category || '角色片刻' }}</span><h3>{{ scene.title }}</h3><p>{{ excerpt(scene.story) }}</p><span class="journal-read tw:inline-flex tw:items-center tw:gap-s-3 tw:text-label-sm tw:text-secondary">{{ failed ? scene.fallbackLabel : '查看场景' }} <span aria-hidden="true">↗</span></span></div>
       </RouterLink>
       </RuntimeImage>
       <template v-if="!scenes.length">
@@ -27,7 +27,7 @@
         </div>
       </template>
     </div>
-    <p v-if="!scenes.length" class="journal-state" role="status">{{ loading ? '正在翻开今天的画页…' : error ? '可以重新读取，或先翻阅参考画册。' : '还没有可展示的画页，可以先翻阅参考画册。' }}</p>
+    <p v-if="!scenes.length" class="journal-state" role="status">{{ loading ? '加载中…' : error ? '加载失败，请重试。' : '暂无画页。' }}</p>
   </section>
 </template>
 <script setup lang="ts">

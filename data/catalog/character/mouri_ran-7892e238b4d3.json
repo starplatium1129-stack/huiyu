@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mouri_ran",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.910Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "mouri_ran",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-mouri_ran.png?v=9cd5568f5619",
-        "alt": "毛利兰 · 空手道社的晨训场景样张"
+        "image": "../assets/characters/popular-mouri_ran.png?v=63dc9a6ca8ef",
+        "alt": "毛利兰样张立绘",
+        "sourceShowcaseId": "pc_mouri_ran_pc_mouri_ran_mouri_ran_sfw_b6_02",
+        "sourceShowcaseSha256": "c6f43bc4fd1ad4462342e2a91ed97bf07ed28bd728dfb8501c43cc2635a17443"
       },
       "visual_dna": {
         "signature": "Ran Mouri from Detective Conan, a capable girl with long dark hair rising into its distinctive horn-like forelock and gentle blue-violet eyes. Her assured posture combines athletic confidence with everyday warmth.",

@@ -3,15 +3,15 @@
     <header class="room-tool-heading">
       <div>
         <span>USER PROFILE</span>
-        <h2 id="chatUserProfileTitle">她该怎样认识你</h2>
+        <h2 id="chatUserProfileTitle">用户称呼与背景</h2>
       </div>
       <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭用户档案" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p>这些资料只用于称呼和关系连续性，保存在本机，不会覆盖角色设定。</p>
+      <p>仅用于对话称呼与偏好，保存在本地。</p>
       <div class="profile-grid">
         <label>
-          <span>希望她怎样称呼你</span>
+          <span>你的称呼</span>
           <input v-model="draft.callName" class="input" maxlength="40" placeholder="留空时仍称呼“你”" />
         </label>
         <label>
@@ -23,7 +23,7 @@
           />
         </label>
         <label class="profile-note">
-          <span>希望她记住的背景</span>
+          <span>背景偏好</span>
           <textarea v-model="draft.note" class="textarea" maxlength="200" rows="3" placeholder="例如：我习惯夜间工作，聊到压力时希望先听我说完。" @focus="revealProfileField"></textarea>
           <small>{{ draft.note.length }} / 200</small>
         </label>
@@ -32,7 +32,7 @@
     <footer class="profile-actions">
       <p v-if="saveMessage" role="status">{{ saveMessage }}</p>
       <button type="button" class="btn btn-ghost" @click="reset">恢复默认</button>
-      <button type="button" class="btn btn-primary" :aria-disabled="saving || undefined" :aria-busy="saving" @click="save">{{ saving ? '保存中…' : '保存档案' }}</button>
+      <button type="button" class="btn btn-primary" :aria-disabled="saving || undefined" :aria-busy="saving" @click="save">{{ saving ? '保存中…' : '保存' }}</button>
     </footer>
   </section>
 </template>

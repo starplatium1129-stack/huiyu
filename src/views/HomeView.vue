@@ -7,7 +7,7 @@
           <h1 class="hero-title">把喜欢的角色，<br /><span class="hero-title-accent">画进你的故事。</span></h1>
           <div class="ctas tw:flex tw:flex-wrap tw:gap-s-3">
             <StudioActionLink id="continueCta" :to="continueLink.to" class="btn-primary" :icon="continueIconName" :label="continueLink.label" />
-            <StudioActionLink to="/prompt-builder" class="btn-ghost" icon="image" label="直接去绘制台" />
+            <StudioActionLink to="/prompt-builder" class="btn-ghost" icon="image" label="进入绘制台" />
           </div>
           <p class="continue-hint" v-if="continueHint">{{ continueHint }}</p>
           <div class="hero-muses studio-segments" data-fluid-glass role="group" aria-label="首页角色视觉">
@@ -18,9 +18,9 @@
           <div class="hero-links">
           <RouterLink class="hero-particle-link" :to="`/character?character=${homeMuse}`"
             :aria-label="`进入${homeMuse === 'nene' ? '绫地宁宁' : '四季夏目'}的动态立绘`">
-            <ArchiveIcon name="spark" /><span>互动动态立绘</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
+            <ArchiveIcon name="spark" /><span>动态立绘</span><ArchiveIcon name="chevron-down" class="particle-link-arrow" />
           </RouterLink>
-          <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />翻阅精选画册</RouterLink>
+          <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />参考画册</RouterLink>
           </div>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
@@ -44,7 +44,7 @@
     <section class="container home-section home-resume" v-if="recentWorks.length">
       <div class="home-section-head">
         <h2>最近创作</h2>
-        <RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink>
+        <RouterLink to="/gallery" class="link">查看全部 →</RouterLink>
       </div>
       <div ref="recentGrid" class="recent-grid stagger-container">
         <ArchiveStatePanel v-if="recentWorksLoading || recentWorksError" class="recent-empty-state" compact :kind="recentWorksLoading ? 'loading' : 'error'" :title="recentWorksLoading ? '正在更新最近创作…' : '最近创作暂未更新'" :message="recentWorksError">
@@ -75,7 +75,7 @@
     <section class="container home-section" v-if="recentScenes.length" data-reveal>
       <div class="home-section-head">
         <h2>最近用过的场景</h2>
-        <RouterLink to="/scene-explorer" class="link">继续找灵感 →</RouterLink>
+        <RouterLink to="/scene-explorer" class="link">查看全部 →</RouterLink>
       </div>
       <div class="recent-scenes-row">
         <!-- 同上：进场景，不自动开跑 -->
@@ -97,7 +97,7 @@
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
         <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
           <div class="strip-label" id="popStripLabel">
-            <span class="dot"></span> 在这里，遇见你的本命 · <span>{{ popularCharacters.length }} 位角色</span><RouterLink to="/popular-scenes" class="link">查看全部角色 →</RouterLink>
+            <span class="dot"></span> 角色场景 · <span>{{ popularCharacters.length }} 位角色</span><RouterLink to="/popular-scenes" class="link">查看全部 →</RouterLink>
           </div>
           <div class="pop-scroll">
             <RouterLink
@@ -129,7 +129,7 @@
         </div>
       </div>
       <div class="atelier-entries">
-        <StudioIllustratedCard v-for="entry in creationEntries" :key="entry.id" :to="entry.to" :title="entry.title" :label="entry.label" :action="entry.action" :description="entry.id === 'make' ? '选好角色与场景，把喜欢的故事绘成一张画。' : undefined" :lead="entry.id === 'make'">
+        <StudioIllustratedCard v-for="entry in creationEntries" :key="entry.id" :to="entry.to" :title="entry.title" :label="entry.label" :action="entry.action" :lead="entry.id === 'make'">
           <template #art><img v-if="artworkReady.entries" :srcset="entrySrcset(entry.art)" sizes="(max-width: 1000px) 46vw, min(33vw, 520px)" :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></template>
         </StudioIllustratedCard>
       </div>
@@ -143,10 +143,10 @@
         </div>
       </div>
       <div class="tools-grid">
-        <StudioIllustratedCard to="/character" title="角色档案" icon="character" description="查看设定与参考" compact><template #art><img v-if="artworkReady.tools" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
-        <StudioIllustratedCard to="/style" title="画风" icon="palette" description="找到喜欢的笔触" compact><template #art><img v-if="artworkReady.tools" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
-        <StudioIllustratedCard to="/lora" title="模型" icon="model" description="查阅模型资料" compact><template #art><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
-        <StudioIllustratedCard to="/gallery" title="我的作品" icon="gallery" description="查看与整理作品" compact><template #art><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+        <StudioIllustratedCard to="/character" title="角色档案" icon="character" compact><template #art><img v-if="artworkReady.tools" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+        <StudioIllustratedCard to="/style" title="画风" icon="palette" compact><template #art><img v-if="artworkReady.tools" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+        <StudioIllustratedCard to="/lora" title="模型" icon="model" compact><template #art><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+        <StudioIllustratedCard to="/gallery" title="我的作品" icon="gallery" compact><template #art><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
       </div>
       <div v-if="!recentWorks.length" class="home-first-work">
         <ArchiveStatePanel
@@ -161,7 +161,7 @@
         </ArchiveStatePanel>
         <div v-else class="recent-empty-state home-start-card">
           <span class="recent-empty-art"><img v-if="artworkReady.tools" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-          <div class="home-start-copy"><h3>把灵感变成第一幅作品</h3><p>选场景、定角色，下一幅作品从这里开始。</p></div>
+          <div class="home-start-copy"><h3>开启你的第一幅作品</h3><p>选场景、定角色，开始属于你的创作。</p></div>
           <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" />开始绘制</RouterLink>
         </div>
       </div>

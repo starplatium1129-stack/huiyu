@@ -1,0 +1,42 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_lake_intel_exchange",
+  "revision": 1,
+  "sortOrder": 2811,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "zeta_shadow_lake_intel_exchange",
+    "characterId": "zeta_shadow",
+    "outfitId": "golden_leopard_swimsuit",
+    "title": "泽塔 · 湖畔的情报藏筒",
+    "category": "谍报潜行",
+    "description": "盛夏的山间湖畔，泽塔穿着豹纹泳装蹲在浅水中。她趁四下无人，将装着情报的防水密筒藏进岸边石缝，水面泛起细小的涟漪。",
+    "recommendedSize": "832x1216",
+    "location": "mountain lake shore in midsummer with pine trees and a rocky bank",
+    "action": "alone in shallow lake water, crouching by the rocky bank to hide a waterproof capsule",
+    "timeOfDay": "day",
+    "lighting": "盛夏湖面的粼粼日光",
+    "camera": "medium_shot",
+    "mood": "summer cover, discreet concealment",
+    "promptProse": "Zeta crouches alone in the shallow water of a summer lake, hiding a small waterproof capsule between rocks at the pine-lined shore.",
+    "promptTokens": [
+      "lake",
+      "shallow water",
+      "crouching",
+      "rocks",
+      "holding capsule",
+      "pine trees",
+      "summer",
+      "sunlight",
+      "water ripples"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Zeta conceals the capsule among the shoreline rocks.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

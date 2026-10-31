@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "laevatain_arknights",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 28,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "laevatain_arknights",
     "profile": {
@@ -73,8 +73,10 @@
         "arknights_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-laevatain_arknights.png?v=6684ff1025c4",
-        "alt": "莱万汀热门角色立绘"
+        "image": "../assets/characters/popular-laevatain_arknights.png?v=10d38f98e840",
+        "alt": "莱万汀样张立绘",
+        "sourceShowcaseId": "pc_laevatain_arknights_pc_laevatain_arknights_laevatain_arknights_ship_corridor",
+        "sourceShowcaseSha256": "79561db1e51279b48aa39bfc8e795e46dc63df4ce40873a2391c4f415f4ac600"
       },
       "speech": "莱万汀向你致以问候。",
       "accent_color": "#38bdf8",

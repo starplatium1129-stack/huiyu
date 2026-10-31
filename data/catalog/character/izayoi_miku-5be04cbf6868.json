@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izayoi_miku",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 228,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "izayoi_miku",
     "profile": {
@@ -26,10 +26,10 @@
       "type": "popular",
       "icon": "🎤",
       "portrait": {
-        "image": "../assets/characters/popular-izayoi_miku.png?v=dc235c7a17f8",
+        "image": "../assets/characters/popular-izayoi_miku.png?v=0e38705b86e7",
         "alt": "诱宵美九样张立绘",
-        "sourceShowcaseId": "pc_izayoi_miku_miku_private_recording_studio_duet",
-        "sourceShowcaseSha256": "86ffd91e2d3ad7bb7231407c66e7f1af3061fbb91440bea8bf272fe02ae346f2"
+        "sourceShowcaseId": "pc_izayoi_miku_pc_izayoi_miku_izayoi_miku_astral_stage_crescendo",
+        "sourceShowcaseSha256": "984e6bffdb32e8ae01a61fea2454bc46ed7d3f349f8fae730f5f136b3eeb38ff"
       },
       "visual_dna": {
         "hair": "紫罗兰般华丽柔顺双马尾 · 及膝波浪长卷发",

@@ -1,74 +1,13 @@
 {
   "kind": "character",
   "id": "yarai_miu",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 256,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-30T03:52:57.719709400+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yarai_miu",
     "profile": {
-      "id": "yarai_miu",
-      "name": "矢来美羽",
-      "icon": "character",
-      "source": "DRACU-RIOT!",
-      "alias": [
-        "矢来 美羽",
-        "Miu Yarai",
-        "Yarai Miu"
-      ],
-      "type": "popular",
-      "portrait": {
-        "image": "../assets/characters/popular-yarai_miu.png?v=9cd7a9334e59",
-        "alt": "矢来美羽样张立绘",
-        "sourceShowcaseId": "pc_yarai_miu_yarai_miu_dispatch",
-        "sourceShowcaseSha256": "cf62a01d8f1dd392171556ad457a54a0d5322938e3fc2f825e89c278439e3dab"
-      },
-      "visual_dna": {
-        "hair": "红色长发",
-        "eyes": "金色眼睛",
-        "hairstyle": "长发一侧编细辫",
-        "uniform": "黑红风纪班工作服",
-        "signature": "红色长发、侧边细辫与金色眼睛"
-      },
-      "personality": [
-        "处理工作时保持警觉",
-        "喜欢试探和调侃熟悉的人",
-        "被反问时会显出不好意思",
-        "愿意照顾刚适应新环境的同伴"
-      ],
-      "likes": [
-        "夜间巡逻",
-        "整理自己的细辫",
-        "人工岛临海的街景"
-      ],
-      "classic_cg": {
-        "title": "港口的晚班",
-        "description": "临海街道的路灯刚亮起，美羽一手扶住帽檐，检查晚班的巡逻路线。"
-      },
-      "identity": {
-        "role": "Aqua Eden 风纪班成员",
-        "age": "17岁（高中二年级）",
-        "occupation": "治安巡逻"
-      },
-      "tags": [
-        "Aqua Eden 风纪班成员",
-        "处理工作时保持警觉",
-        "喜欢试探和调侃熟悉的人"
-      ],
-      "bg_story": "美羽生活在人工岛 Aqua Eden，是维护当地秩序的风纪班成员。她时常用从容的态度逗人，轮到自己被调侃时却不一定接得住。她作为吸血鬼参与岛上的日常工作，也关心那些刚来到岛上的人。",
-      "speech": "今晚的巡逻路线已经定好了。跟紧一点，我可不想回头找人。",
-      "voice": "今晚的巡逻路线已经定好了。跟紧一点，我可不想回头找人。",
-      "traits": [
-        "yarai_miu",
-        "red_hair",
-        "long_hair",
-        "single_braid",
-        "yellow_eyes"
-      ],
-      "accent_color": "#c25a66",
-      "voiceJa": "今夜の見回りルート、決まったから。はぐれないように、ちゃんとついてきなさいよね",
-      "bg_color": "#1c0d10",
       "relationshipGraph": {
         "version": 1,
         "work": "吸血鬼暴动！",
@@ -147,7 +86,68 @@
             }
           }
         ]
-      }
+      },
+      "accent_color": "#c25a66",
+      "visual_dna": {
+        "hair": "红色长发",
+        "eyes": "金色眼睛",
+        "hairstyle": "长发一侧编细辫",
+        "uniform": "黑红风纪班工作服",
+        "signature": "红色长发、侧边细辫与金色眼睛"
+      },
+      "voiceJa": "今夜の見回りルート、決まったから。はぐれないように、ちゃんとついてきなさいよね",
+      "alias": [
+        "矢来 美羽",
+        "Miu Yarai",
+        "Yarai Miu"
+      ],
+      "source": "DRACU-RIOT!",
+      "likes": [
+        "夜间巡逻",
+        "整理自己的细辫",
+        "人工岛临海的街景"
+      ],
+      "name": "矢来美羽",
+      "identity": {
+        "role": "Aqua Eden 风纪班成员",
+        "age": "17岁（高中二年级）",
+        "occupation": "治安巡逻"
+      },
+      "icon": "character",
+      "classic_cg": {
+        "title": "港口的晚班",
+        "description": "临海街道的路灯刚亮起，美羽一手扶住帽檐，检查晚班的巡逻路线。"
+      },
+      "tags": [
+        "Aqua Eden 风纪班成员",
+        "处理工作时保持警觉",
+        "喜欢试探和调侃熟悉的人"
+      ],
+      "traits": [
+        "yarai_miu",
+        "red_hair",
+        "long_hair",
+        "single_braid",
+        "yellow_eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-yarai_miu.png?v=231c177e4c16",
+        "alt": "矢来美羽样张立绘",
+        "sourceShowcaseId": "pc_yarai_miu_pc_yarai_miu_yarai_miu_radio",
+        "sourceShowcaseSha256": "50eb4909a665de81865346d47780be58efa5b0a53a412625f58dd307fc643b21"
+      },
+      "bg_story": "美羽生活在人工岛 Aqua Eden，是维护当地秩序的风纪班成员。她时常用从容的态度逗人，轮到自己被调侃时却不一定接得住。她作为吸血鬼参与岛上的日常工作，也关心那些刚来到岛上的人。",
+      "speech": "今晚的巡逻路线已经定好了。跟紧一点，我可不想回头找人。",
+      "personality": [
+        "处理工作时保持警觉",
+        "喜欢试探和调侃熟悉的人",
+        "被反问时会显出不好意思",
+        "愿意照顾刚适应新环境的同伴"
+      ],
+      "voice": "今晚的巡逻路线已经定好了。跟紧一点，我可不想回头找人。",
+      "id": "yarai_miu",
+      "bg_color": "#1c0d10",
+      "type": "popular"
     },
     "popular": {
       "id": "yarai_miu",

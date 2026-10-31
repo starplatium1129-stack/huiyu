@@ -26,7 +26,7 @@ export function orderedAnimaTags(plan: PromptPlan, tags: string[], stripQuality 
       const isQuality = quality.has(key) || QUALITY_OR_SCORE_RE.test(key.replace(/ /g, '_'))
       if (stripQuality && isQuality) continue
       const group = isQuality ? 0
-        : rating.has(key) || /^(?:safe|general|sensitive|questionable|explicit|nsfw)$/.test(key) ? 1
+        : rating.has(key) || /^(?:safe|general|sensitive|questionable|explicit|nsfw|r[\s_-]?(?:18|15))$/i.test(key) ? 1
         : /^(?:\d+\+?(?:girls?|boys?|others?|people)|solo|multiple girls|multiple boys|no humans)$/.test(key) ? 2
         : characters.has(key) ? 3
         : copyrights.has(key) ? 4

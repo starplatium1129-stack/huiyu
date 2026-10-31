@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elaina",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 10,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.840Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "elaina",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "🧹",
       "portrait": {
-        "image": "../assets/characters/popular-elaina.png?v=5",
-        "alt": "伊雷娜 样张立绘"
+        "image": "../assets/characters/popular-elaina.png?v=fe0c2f9e13f3",
+        "alt": "伊雷娜样张立绘",
+        "sourceShowcaseId": "pc_elaina_pc_elaina_elaina_market_town",
+        "sourceShowcaseSha256": "46e15e2fa9111ba2df3be39b7fb83b105a0aa160b46322b360e49239ae4a9e9b"
       },
       "visual_dna": {
         "hair": "灰银长发",

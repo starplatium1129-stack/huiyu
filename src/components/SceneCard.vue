@@ -23,7 +23,7 @@
         :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-ready': previewReady }" alt="" aria-hidden="true" decoding="async" draggable="false" />
       <SensitivePreviewVeil v-if="contentRating === 'R18' && thumbImage.src && !thumbFailed"
         :src="thumbImage.src" :crossorigin="thumbImage.crossorigin" />
-      <span v-if="thumbFailed || !thumbId || !thumbImage.src" class="sc-preview-unavailable">{{ !thumbImage.src && thumbId ? '图片服务暂未连接 · 场景可用' : '样张暂缺 · 场景可用' }}</span>
+      <span v-if="thumbFailed || !thumbId || !thumbImage.src" class="sc-preview-unavailable">{{ !thumbImage.src && thumbId ? '服务未连接' : '样张待补充' }}</span>
       </ShowcasePreviewSource>
       <span v-if="thumbId" class="sc-id">{{ archiveCode }}</span>
       <span v-if="contentRating === 'R18'" class="sc-badge sc-rating r18">R18</span>

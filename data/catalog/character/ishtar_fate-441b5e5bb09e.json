@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ishtar_fate",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ishtar_fate",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🌟",
       "portrait": {
-        "image": "../assets/characters/popular-ishtar_fate.png?v=1",
-        "alt": "伊什塔尔 样张立绘",
-        "sourceShowcaseId": "pc_ishtar_fate_ishtar_modern_street_date",
-        "sourceShowcaseSha256": "92e1734762b4d2e059c2060ca3c42a67f7510b4ea5e26c6fd97d3b7eb5f54242"
+        "image": "../assets/characters/popular-ishtar_fate.png?v=ca9af2a90cbf",
+        "alt": "伊什塔尔样张立绘",
+        "sourceShowcaseId": "pc_ishtar_fate_pc_ishtar_fate_ishtar_bridal_vow_gold_chapel",
+        "sourceShowcaseSha256": "a882b972decba9616ca360b0caaf2d875807837d97bcc79a3a4c50aa2a6d8beb"
       },
       "visual_dna": {
         "hair": "黑发 two-side_up 高双马尾",

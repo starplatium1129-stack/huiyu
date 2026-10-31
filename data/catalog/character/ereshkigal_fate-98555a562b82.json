@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ereshkigal_fate",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 63,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ereshkigal_fate",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🕯️",
       "portrait": {
-        "image": "../assets/characters/popular-ereshkigal_fate.png?v=1",
-        "alt": "埃列什基伽勒 样张立绘",
-        "sourceShowcaseId": "pc_ereshkigal_fate_ereshkigal_christmas_snowdate",
-        "sourceShowcaseSha256": "a0ea8d36b29602a284c38a2578113cffc3e82aff33b3dc9ce1fc32f5d5dfceeb"
+        "image": "../assets/characters/popular-ereshkigal_fate.png?v=92ddb02f5d4c",
+        "alt": "埃列什基伽勒样张立绘",
+        "sourceShowcaseId": "pc_ereshkigal_fate_pc_ereshkigal_fate_ereshkigal_bridal_vow_kur_cathedral",
+        "sourceShowcaseSha256": "32fdc85d56ab8e05238efe617bedb5938137b4142476c32cab63298ef2c327f4"
       },
       "visual_dna": {
         "hair": "金色超长发双马尾 · 三破散落",

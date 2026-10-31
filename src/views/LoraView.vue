@@ -1,6 +1,6 @@
 <template>
   <article class="page lora-page creative-library-page">
-    <CreativeLibraryHeader title="模型资料 (LoRA)" description="为熟悉的角色，找到合适的画笔。" />
+    <CreativeLibraryHeader title="模型资料" description="角色 LoRA 与画风模型库" />
     <div ref="catalogRoot" class="model-catalog" role="region" aria-label="模型目录" :aria-busy="loading" tabindex="-1">
     <ArchiveStatePanel
       v-if="loading"
@@ -23,12 +23,12 @@
     </ArchiveStatePanel>
     <template v-else>
     <div v-if="loadError" class="model-catalog-note">
-      <span role="status">目录更新失败，仍展示上次读取的资料。</span>
+      <span role="status">更新失败，展示缓存资料</span>
       <button class="btn btn-ghost btn-sm" type="button" @click="retryCatalog">重新读取</button>
     </div>
     <div class="model-search-row">
-      <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="按模型、角色或触发词查找…" />
-      <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }} 份资料</span>
+      <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="搜索模型、角色或触发词…" />
+      <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }}</span>
     </div>
     <div v-if="engineOptions.length > 1" class="model-engine-filters studio-segments" role="group" aria-label="按绘图引擎筛选模型">
       <AnimatedSelection />
@@ -55,7 +55,7 @@
           </div>
         </header>
         <div class="model-actions">
-          <RouterLink v-if="modelCharacter(l.id)" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { char: modelCharacter(l.id) } }"><ArchiveIcon name="spark" />用此角色绘制</RouterLink>
+          <RouterLink v-if="modelCharacter(l.id)" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { char: modelCharacter(l.id) } }"><ArchiveIcon name="spark" />以此角色绘制</RouterLink>
           <StudioCopyButton v-if="l.triggerWords.length" class="btn btn-ghost" label="复制触发词" :content-key="l.triggerWords.join(', ')" :action="() => copyText(l.triggerWords.join(', '))" />
         </div>
         <p v-if="!modelCharacter(l.id)" class="model-availability">旧版模型资料</p>
@@ -220,7 +220,7 @@ onMounted(() => { void loadCatalog() })
 .model-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .model-details { @apply tw:text-body-sm tw:text-secondary; border-top:1px solid var(--border-soft); }
 .model-details summary, .evaluation-panel summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:cursor-pointer tw:min-h-[44px] tw:rounded-sm; padding:var(--s-3) var(--s-2); margin-inline:calc(-1 * var(--s-2)); }
-.model-details summary:hover, .evaluation-panel summary:hover { background:var(--bg-hover); color:var(--text-primary); }
+.model-details summary:hover, .evaluation-panel summary:hover { color:var(--text-primary); }
 .model-details-body { @apply tw:pb-s-4; }
 .model-facts { @apply tw:grid tw:gap-s-3 tw:m-0 tw:mb-s-3; }
 .model-facts dt { @apply tw:mb-s-1 tw:text-muted tw:text-label-xs; }

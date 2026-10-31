@@ -80,7 +80,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
   <section class="panel step-panel anima-quick-panel" aria-label="引擎采样参数">
     <div class="anima-body">
        <RouterLink v-if="state.family === 'krea2' && !state.online" class="btn btn-ghost anima-setup-link" :to="{ path: '/control', query: { engine: 'krea2' } }">查看 Krea 环境与准备范围</RouterLink>
-       <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>Krea 2 实验</strong> · 纯自然语言、无角色 LoRA，身份还原需以实际出图为准。</p>
+       <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>Krea 2</strong> · 自然语言生成，无角色 LoRA</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
        <div v-if="capabilities.lora && !noLoraMode" class="anima-field anima-lora-fields">
@@ -133,7 +133,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <label :for="idOf('cache-threshold')">缓存阈值</label>
           <input type="range" min="0" max="0.25" step="0.01" :value="cacheThreshold" class="anima-slider" aria-label="TeaCache 缓存阈值滑块" :aria-describedby="idOf('cache-threshold-hint')" :disabled="busy" @input="updateCacheThreshold" />
           <input :id="idOf('cache-threshold')" type="number" min="0" max="0.25" step="0.01" :value="cacheThreshold" class="input input-sm anima-num" :disabled="busy" :aria-describedby="idOf('cache-threshold-hint')" @change="updateCacheThreshold" />
-          <span :id="idOf('cache-threshold-hint')" class="anima-field-hint">0–0.25 · 默认 0.10 · 0 为完整计算。缓存可能改变细节。</span>
+          <span :id="idOf('cache-threshold-hint')" class="anima-field-hint">0–0.25 · 默认 0.10</span>
         </div>
         <ToggleSwitch v-model="hiresFix" :disabled="busy || (!(native ? selectedModel?.capabilities?.hires === true : capabilities.hires) && !hiresFix)" label="高清放大修复" class="anima-hires-toggle">
           <ArchiveIcon name="spark" class="anima-hires-icon" />
@@ -159,14 +159,14 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
       </div>
       <p v-if="hiresFix" class="anima-output-note"><span>最终画幅</span><output>{{ outputSize }}</output></p>
       <p v-if="!native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
-        <template v-if="comfyHiresPath === 'unknown'">Auto 路径待确认，请刷新引擎状态。</template>
-        <template v-else-if="comfyHiresPath === 'pixel'">当前资源采用像素放大{{ hiresUpscaler === 'Auto' && state.autoHiresModel ? `（${state.autoHiresModel}）` : '' }}，不执行二次采样；重绘幅度不生效。改选 Latent 可启用二次重绘。</template>
-        <template v-else>当前采用 Latent 二次重绘，重绘幅度控制采样程度。</template>
+        <template v-if="comfyHiresPath === 'unknown'">路径待确认，请刷新状态。</template>
+        <template v-else-if="comfyHiresPath === 'pixel'">像素放大{{ hiresUpscaler === 'Auto' && state.autoHiresModel ? `（${state.autoHiresModel}）` : '' }}，重绘幅度不生效。</template>
+        <template v-else>Latent 二次重绘生效中。</template>
       </p>
-      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">Auto 优先使用本地 Remacri 放大，未就绪时回退至 Latent 重绘。</p>
+      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">Auto 优先使用 Remacri 模型，回退至 Latent 重绘。</p>
       <RouterLink v-if="native && hiresFix && !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri')" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'remacri-4x' }, hash: '#control-setup' }">准备 Remacri 高清放大</RouterLink>
 
-      <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>
+      <details class="anima-prompt-details"><StudioDisclosureSummary>查看底层提示词</StudioDisclosureSummary><div data-disclosure-content>
       <label :for="idOf('prompt')" class="anima-label">正向提示词</label>
       <textarea :id="idOf('prompt')" :value="state.prompt" rows="4" class="input anima-textarea" readonly spellcheck="false" autocorrect="off"></textarea>
 

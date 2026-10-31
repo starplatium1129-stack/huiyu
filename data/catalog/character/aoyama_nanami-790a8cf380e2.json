@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aoyama_nanami",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 240,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "aoyama_nanami",
     "profile": {
@@ -22,10 +22,10 @@
       "type": "popular",
       "icon": "🎙️",
       "portrait": {
-        "image": "../assets/characters/popular-aoyama_nanami.png?v=9106aaaea5a4",
+        "image": "../assets/characters/popular-aoyama_nanami.png?v=e1cb5ef3e1c4",
         "alt": "青山七海样张立绘",
-        "sourceShowcaseId": "pc_aoyama_nanami_nanami_bus_stop_winter_scarf_share",
-        "sourceShowcaseSha256": "04d2c9ee6ce030d120af8db5e2792373460eda012dde7235eb1399dda3d8a33e"
+        "sourceShowcaseId": "pc_aoyama_nanami_pc_aoyama_nanami_nanami_bus_stop_winter_scarf_share",
+        "sourceShowcaseSha256": "64a33df35def427c65be0f5e0b30b574bd439919d40dc4743cab2c350822ab70"
       },
       "visual_dna": {
         "hair": "温暖深茶柔顺及肩马尾 · 标志侧马尾/高马尾发束 · 干净利落刘海",

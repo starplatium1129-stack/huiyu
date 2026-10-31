@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mikasa_ackerman",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.869Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "mikasa_ackerman",
     "profile": {
@@ -18,8 +18,10 @@
       "type": "popular",
       "icon": "🧣",
       "portrait": {
-        "image": "../assets/characters/popular-mikasa_ackerman.png?v=5",
-        "alt": "三笠 样张立绘"
+        "image": "../assets/characters/popular-mikasa_ackerman.png?v=2b7428982329",
+        "alt": "三笠样张立绘",
+        "sourceShowcaseId": "pc_mikasa_ackerman_pc_mikasa_ackerman_mikasa_ackerman_forest_odm",
+        "sourceShowcaseSha256": "6ee850747d7bdc52f8f2834dece48094d3305241bd27492a1cf0843a375e160f"
       },
       "visual_dna": {
         "hair": "黑色齐颈短发（长刘海）",

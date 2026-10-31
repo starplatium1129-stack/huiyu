@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tobiichi_origami",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "tobiichi_origami",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-tobiichi_origami.png?v=a17f22bad3d8",
-        "alt": "鸢一折纸 · 教室窗边的完美侧脸场景样张"
+        "image": "../assets/characters/popular-tobiichi_origami.png?v=dd65f9f308ea",
+        "alt": "鸢一折纸样张立绘",
+        "sourceShowcaseId": "pc_tobiichi_origami_pc_tobiichi_origami_tobiichi_origami_sfw_b6_06",
+        "sourceShowcaseSha256": "f2bd27110ab6e2def810ba3f63fe48f3a3be220efd9894bb83d3919668795e27"
       },
       "visual_dna": {
         "signature": "Origami Tobiichi from Date A Live, a reserved girl with snow-white hair and pale blue eyes. Her composed face reveals feelings through small shifts of her gaze; hair length belongs to the selected timeline outfit.",

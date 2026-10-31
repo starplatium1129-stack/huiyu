@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ijichi_nijika",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 195,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ijichi_nijika",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-ijichi_nijika.png?v=972f0901f4c6",
+        "image": "../assets/characters/popular-ijichi_nijika.png?v=4ec429eceaea",
         "alt": "伊地知虹夏样张立绘",
-        "sourceShowcaseId": "pc_ijichi_nijika_ijichi_nijika_daily_ticket_counter",
-        "sourceShowcaseSha256": "470c9e2d0b44472efd733a03a0635e9e03dd90ee77af309bfbd16dafd6e72062"
+        "sourceShowcaseId": "pc_ijichi_nijika_pc_ijichi_nijika_ijichi_nijika_daily_record_browse",
+        "sourceShowcaseSha256": "b4c78b3042fa9d93c5b5dc364a32ce4fcb84476da24f49a3a48828deaebf4ac0"
       },
       "visual_dna": {
         "signature": "Blonde hair in a side ponytail, a triangular ahoge, and red eyes",

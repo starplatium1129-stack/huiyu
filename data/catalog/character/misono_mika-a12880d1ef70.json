@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misono_mika",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "misono_mika",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-misono_mika.png?v=5",
-        "alt": "圣园未花 样张立绘"
+        "image": "../assets/characters/popular-misono_mika.png?v=24b80dd72824",
+        "alt": "圣园未花样张立绘",
+        "sourceShowcaseId": "pc_misono_mika_pc_misono_mika_misono_mika_parlour_lily",
+        "sourceShowcaseSha256": "68035287690d023c690e35beeef321ae031710a097e37d526adc900073feca48"
       },
       "visual_dna": {
         "hair": "浅粉长发 · 内侧宇宙星空银河渐变",

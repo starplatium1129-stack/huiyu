@@ -61,7 +61,7 @@
 .scenario-card:focus-visible, .scenario-cover-retry:focus-visible, .char-btn:focus-visible, .act-details > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media(hover:hover) and (pointer:fine) {
   .scenario-card:hover:not(:focus-visible) .scenario-cover img { transform:scale(var(--scenario-art-zoom)); }
-  .act-details > summary:hover { background:var(--bg-hover); color:var(--text-primary); }
+  .act-details > summary:hover { color:var(--text-primary); }
 }
 .scenario-card:active:not(:focus-visible) .scenario-cover img { transform:scale(var(--scenario-art-press)); transition-duration:var(--motion-press); }
 .scenario-card:focus-visible .scenario-cover img { transform:none; transition:none; }

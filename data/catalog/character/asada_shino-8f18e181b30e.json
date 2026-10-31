@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asada_shino",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 130,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.908Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "asada_shino",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-asada_shino.png?v=ecd3cc2d0a80",
-        "alt": "朝田诗乃 · 图书馆的角落场景样张"
+        "image": "../assets/characters/popular-asada_shino.png?v=7fbe4f5a8346",
+        "alt": "朝田诗乃样张立绘",
+        "sourceShowcaseId": "pc_asada_shino_pc_asada_shino_asada_shino_sfw_b6_03",
+        "sourceShowcaseSha256": "41d156b611a29c2b2598a066b66fe0b176adad397a1ebb1c5deed4fc9d41d01a"
       },
       "visual_dna": {
         "signature": "Shino Asada from Sword Art Online in her real-world appearance, with medium-length ash-brown hair, brown eyes and optional non-prescription black-rimmed glasses. Her gestures are precise and her manner quietly thoughtful; no game-avatar ears or cyan hair are mixed into this form.",

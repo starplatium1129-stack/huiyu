@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "texas_arknights",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 74,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "texas_arknights",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/popular-texas_arknights.png?v=5",
-        "alt": "德克萨斯 样张立绘"
+        "image": "../assets/characters/popular-texas_arknights.png?v=0b97a7004430",
+        "alt": "德克萨斯样张立绘",
+        "sourceShowcaseId": "pc_texas_arknights_pc_texas_arknights_texas_omertosa_siracusa_mafia_banquet",
+        "sourceShowcaseSha256": "4564555861d614a0b4a225a62b72ac17a1aeb6877221ab9dfcb8f9d7528e5022"
       },
       "visual_dna": {
         "hair": "乌黑顺直长发 · 齐刘海",

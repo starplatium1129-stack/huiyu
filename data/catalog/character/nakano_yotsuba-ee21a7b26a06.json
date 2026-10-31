@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_yotsuba",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 187,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "nakano_yotsuba",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🍀",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_yotsuba.png?v=bf11d7952a0d",
+        "image": "../assets/characters/popular-nakano_yotsuba.png?v=fe3968dcb8c0",
         "alt": "中野四叶样张立绘",
-        "sourceShowcaseId": "pc_nakano_yotsuba_nakano_yotsuba_rooftop_lunch_smile",
-        "sourceShowcaseSha256": "3a13fc066d29261069602f83b7fcb37577f53a4753a27f3057eac2a21c20f5a2"
+        "sourceShowcaseId": "pc_nakano_yotsuba_pc_nakano_yotsuba_nakano_yotsuba_rooftop_lunch_smile",
+        "sourceShowcaseSha256": "4db172533c8ddda0b52d18575f40b010f8d9f17594f3413ff83243e571d5860c"
       },
       "visual_dna": {
         "hair": "亮橙色齐颈波波短发 · 标志性亮绿色四叶草兔耳发带",

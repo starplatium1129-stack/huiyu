@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "karuizawa_kei",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 232,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "karuizawa_kei",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🎀",
       "portrait": {
-        "image": "../assets/characters/popular-karuizawa_kei.png?v=da679975d297",
+        "image": "../assets/characters/popular-karuizawa_kei.png?v=60be70e2b446",
         "alt": "轻井泽惠样张立绘",
-        "sourceShowcaseId": "pc_karuizawa_kei_kei_stairwell_secret_whisper",
-        "sourceShowcaseSha256": "2be623172dbd5d961b9ca15c4bdc2ef9f439236d4977d5534ecf152d1dbb7272"
+        "sourceShowcaseId": "pc_karuizawa_kei_pc_karuizawa_kei_kei_stairwell_secret_whisper",
+        "sourceShowcaseSha256": "d6a8a93b6ddb8a643edd60262bf795033633d89c693174ea0b37a068879be1bc"
       },
       "visual_dna": {
         "hair": "亮金高扎柔顺侧马尾 · 标志蝴蝶结发饰 · 娇俏灵动刘海",

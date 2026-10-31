@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fubuki_one_punch",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.909Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "fubuki_one_punch",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-fubuki_one_punch.png?v=f24daad19118",
-        "alt": "吹雪 · 吹雪组的晨会场景样张"
+        "image": "../assets/characters/popular-fubuki_one_punch.png?v=d7fa1722e8e7",
+        "alt": "吹雪样张立绘",
+        "sourceShowcaseId": "pc_fubuki_one_punch_pc_fubuki_one_punch_fubuki_one_punch_sfw_b6_02",
+        "sourceShowcaseSha256": "125b8bb776cfc9e7254b7835008cf75eb9e278940b1250654270d635809602cc"
       },
       "visual_dna": {
         "signature": "Fubuki from One-Punch Man, an organized hero with a sleek black bob, straight bangs and cool green eyes. Her deliberate posture and composed expressions suggest the care she takes in leading her group.",

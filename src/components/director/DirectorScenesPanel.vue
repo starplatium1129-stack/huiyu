@@ -35,7 +35,7 @@
           :aria-pressed="sceneCollection === 'all'"
           @click="$emit('update:sceneCollection', 'all')">完整库</button>
       </div>
-      <StudioSearch v-model="pb.sceneSearch" class="scene-search-wrap" label="搜索场景" placeholder="试试：安静的夏目雨夜" />
+      <StudioSearch v-model="pb.sceneSearch" class="scene-search-wrap" label="搜索场景" placeholder="搜索场景名或关键词…" />
       <div class="scene-filter-summary">
         <span class="scene-result-count" role="status" aria-live="polite">
           {{ pb.dataLoading ? '正在读取…' : pb.dataError ? '读取失败' : pb.dataReady ? `${availableScenes.length} 个场景` : '尚未读取' }}
@@ -56,9 +56,9 @@
       </details>
       <div ref="results" v-content-motion:right="pb.dataReady ? `${sceneCollection}:${pb.sceneTheme}` : false" class="scene-list" role="region" aria-label="工作室场景" tabindex="-1" :aria-busy="pb.dataLoading">
         <ArchiveStatePanel v-if="pb.dataError" compact kind="error" title="创作资料读取失败" :message="pb.dataError">
-          <button class="btn btn-ghost btn-sm" type="button" :disabled="pb.dataLoading" :aria-busy="pb.dataLoading" @click="retryData">{{ pb.dataLoading ? '正在重新读取…' : '重新读取资料' }}</button>
+          <button class="btn btn-ghost btn-sm" type="button" :disabled="pb.dataLoading" :aria-busy="pb.dataLoading" @click="retryData">{{ pb.dataLoading ? '重试中…' : '重新读取' }}</button>
         </ArchiveStatePanel>
-        <div v-else-if="!pb.dataReady" class="scene-loading" role="status">{{ pb.dataLoading ? '正在加载场景库…' : '场景库尚未读取' }}</div>
+        <div v-else-if="!pb.dataReady" class="scene-loading" role="status">{{ pb.dataLoading ? '加载场景库…' : '场景库未就绪' }}</div>
         <div v-else-if="!availableScenes.length" class="scene-empty" role="status">未找到匹配场景</div>
         <button v-for="scene in visibleScenes" :key="scene.id"
           class="scene-card"
@@ -79,7 +79,7 @@
         </button>
         <button v-if="availableScenes.length > sceneLimit" class="btn btn-ghost scene-more"
           type="button" @click="$emit('update:sceneLimit', sceneLimit + 20)">
-          显示更多 ({{ availableScenes.length - sceneLimit }} 个)
+          加载更多 (+{{ availableScenes.length - sceneLimit }})
         </button>
       </div>
     </template>

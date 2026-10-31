@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yae_miko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.914Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yae_miko",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-yae_miko.png?v=f44911885f71",
-        "alt": "八重神子 · 鸣神大社的晨间洒扫场景样张"
+        "image": "../assets/characters/popular-yae_miko.png?v=66b19cda0b4e",
+        "alt": "八重神子样张立绘",
+        "sourceShowcaseId": "pc_yae_miko_pc_yae_miko_yae_miko_sfw_b7_01",
+        "sourceShowcaseSha256": "30e048724bf871293bf1fd4972755381673f85c48e5fe7cd1ce269c5c490e14b"
       },
       "visual_dna": {
         "signature": "Yae Miko from Genshin Impact, with long pink hair tied low, violet eyes and softly drooping fox ears. Her composed smile often carries a hint of editorial mischief.",

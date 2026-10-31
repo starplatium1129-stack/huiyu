@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tokisaki_kurumi",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "tokisaki_kurumi",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "⏰",
       "portrait": {
-        "image": "../assets/characters/popular-tokisaki_kurumi.png?v=5",
-        "alt": "时崎狂三 样张立绘"
+        "image": "../assets/characters/popular-tokisaki_kurumi.png?v=8663594c9cb0",
+        "alt": "时崎狂三样张立绘",
+        "sourceShowcaseId": "pc_tokisaki_kurumi_pc_tokisaki_kurumi_tokisaki_kurumi_moon_clocktower",
+        "sourceShowcaseSha256": "234c32ebd95a0c889f154639340ea35e49d4f26185ed21114bec57c02960dcaf"
       },
       "visual_dna": {
         "hair": "黑色长双马尾（一长一短）",

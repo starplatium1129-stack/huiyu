@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_r18_inspection_reward",
+  "revision": 1,
+  "sortOrder": 2844,
+  "createdAt": "2026-10-31T04:42:34.298429+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "eta_shadow_r18_inspection_reward",
+    "characterId": "eta_shadow",
+    "outfitId": "sleepy_pajama",
+    "title": "埃塔 · 深夜实验后的奖励",
+    "category": "私密休憩",
+    "description": "实验室只亮着一盏灯。埃塔趴在图纸上睡了一会儿，醒来时睡衣已滑落在桌边。她揉揉眼睛，睡眼朦胧地靠着实验台，让手指缓缓探向腿间，决定先给自己一点奖励。",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园地下实验室·深夜",
+    "action": "独自在实验台旁醒来，睡衣滑落，睡眼朦胧地靠着图纸，指尖探向腿间",
+    "timeOfDay": "深夜",
+    "lighting": "single lab lamp and sleeping monitors glow",
+    "camera": "cowboy shot, eye level",
+    "mood": "困倦索求",
+    "sceneTags": [
+      "laboratory",
+      "drafting_table",
+      "night",
+      "sleepy",
+      "solo"
+    ],
+    "promptProse": "Alone under the lab lamp, adult Eta wakes beside her blueprints with her pajamas slipped off, resting against the drafting table with sleepy eyes and one hand between her thighs.",
+    "promptTokens": [
+      "laboratory",
+      "drafting table",
+      "blueprints",
+      "night",
+      "lab lamp",
+      "sleepy",
+      "leaning on table"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "nude",
+      "masturbation",
+      "hand between legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "Eta wakes slowly beside the scattered blueprints.",
+    "compositionIntent": "single"
+  }
+}

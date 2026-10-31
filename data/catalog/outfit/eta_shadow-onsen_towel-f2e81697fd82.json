@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/onsen_towel",
+  "revision": 1,
+  "sortOrder": 1939,
+  "createdAt": "2026-10-31T04:39:58.773044+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "onsen_towel",
+      "name": "遗迹温泉浴巾",
+      "prose": "A simple bath towel for ruin-side hot springs, worn with wet hair and sleepy eyes.",
+      "tokens": [
+        "towel",
+        "bath_towel",
+        "wet_hair",
+        "onsen"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

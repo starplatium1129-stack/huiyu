@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rapi_nikke",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 172,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "rapi_nikke",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🎖️",
       "portrait": {
-        "image": "../assets/characters/popular-rapi_nikke.png?v=1",
-        "alt": "拉毗 样张立绘"
+        "image": "../assets/characters/popular-rapi_nikke.png?v=045822b03373",
+        "alt": "拉毗样张立绘",
+        "sourceShowcaseId": "pc_rapi_nikke_pc_rapi_nikke_rapi_surface_combat_rear_shooting_stance",
+        "sourceShowcaseSha256": "28d68939efee9f863bfad56c9438de6c91eee79775cdd1b5d7f8948120856ffc"
       },
       "visual_dna": {
         "hair": "及腰飘逸深红栗棕发 · 军官大檐帽 · 沉着坚毅",

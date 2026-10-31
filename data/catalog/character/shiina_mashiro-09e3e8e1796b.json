@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mashiro",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.904Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shiina_mashiro",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-shiina_mashiro.png?v=bc4cd2532b64",
-        "alt": "椎名真白 · 雨中撑伞的猫步场景样张"
+        "image": "../assets/characters/popular-shiina_mashiro.png?v=b862a77241fe",
+        "alt": "椎名真白样张立绘",
+        "sourceShowcaseId": "pc_shiina_mashiro_pc_shiina_mashiro_shiina_mashiro_sfw_b5_04",
+        "sourceShowcaseSha256": "cc28f2935eed909a960365d02f7ea93e33d3c15e8a30feb0b6a5c94c2fae2e2f"
       },
       "visual_dna": {
         "signature": "Mashiro Shiina from The Pet Girl of Sakurasou, a quiet young painter with very long straight cream-blonde hair, pale orange eyes and slightly upturned eyelids. Her expression changes through tiny shifts of her gaze rather than broad smiles.",

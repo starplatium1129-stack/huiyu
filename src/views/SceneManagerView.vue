@@ -54,12 +54,12 @@
         <details class="catalog-advanced"><StudioDisclosureSummary>直接填写修改数据</StudioDisclosureSummary><div data-disclosure-content><textarea v-model="bulkInput" class="input catalog-bulk-input" rows="10" aria-label="修改数据"></textarea><button class="btn btn-ghost" type="button" :disabled="busy" @click="loadBulk">读取这些修改</button></div></details>
         <p v-if="bulkError" role="alert" class="catalog-error">{{ bulkError }}</p>
         <button v-if="selected && dirtyEditor" class="btn btn-ghost" type="button" @click="section = 'records'">继续编辑草稿</button>
-        <div v-if="importSnapshot" class="catalog-actions"><span>已读取 {{ importSnapshot.records.length }} 份内容</span><button class="btn btn-ghost" type="button" :disabled="busy || dirty" @click="importContent(true)">看看导入的变化</button><button class="btn btn-primary" type="button" :disabled="busy || dirty || !importPreview" @click="importContent(false)">确认导入</button></div>
+        <div v-if="importSnapshot" class="catalog-actions"><span>已读取 {{ importSnapshot.records.length }} 项</span><button class="btn btn-ghost" type="button" :disabled="busy || dirty" @click="importContent(true)">预览导入</button><button class="btn btn-primary" type="button" :disabled="busy || dirty || !importPreview" @click="importContent(false)">确认导入</button></div>
       </section>
       <template v-else>
         <div v-content-motion="`${section}:${kind}`" class="catalog-workspace">
           <section class="catalog-library" aria-label="内容列表" :aria-busy="loading">
-            <header class="catalog-library-head"><div><h2>选一份内容</h2><span>{{ loading ? '正在读取…' : listMatchesKind ? (result?.total ?? 0) + ' 份' : '尚未读取' }}</span></div><span class="catalog-library-actions"><button v-if="kind === 'character'" class="catalog-add" type="button" :disabled="busy" @click="add(false, true)"><ArchiveIcon name="plus" />接入绘图角色</button><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />{{ kind === 'character' ? '新建档案' : '新建' }}</button></span></header>
+            <header class="catalog-library-head"><div><h2>内容列表</h2><span>{{ loading ? '正在读取…' : listMatchesKind ? (result?.total ?? 0) + ' 份' : '尚未读取' }}</span></div><span class="catalog-library-actions"><button v-if="kind === 'character'" class="catalog-add" type="button" :disabled="busy" @click="add(false, true)"><ArchiveIcon name="plus" />接入绘图角色</button><button class="catalog-add" type="button" :disabled="busy || kind === 'document'" @click="add()" :aria-label="'新建' + sectionTitle"><ArchiveIcon name="plus" />{{ kind === 'character' ? '新建档案' : '新建' }}</button></span></header>
             <StudioSearch ref="contentSearch" v-model="search" label="搜索内容" :placeholder="searchPlaceholder" />
             <div class="catalog-list-controls">
               <StudioSelect v-model="sort" label="排列方式" :options="sortOptions" />
@@ -73,31 +73,31 @@
                 </div>
               </StudioPopover>
             </div>
-            <ArchiveStatePanel v-if="error" compact kind="error" title="内容暂时没能读出来" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">再试一次</button></ArchiveStatePanel>
+            <ArchiveStatePanel v-if="error" compact kind="error" title="内容读取失败" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">重新读取</button></ArchiveStatePanel>
             <div ref="recordList" v-content-motion:right="loading ? false : listScope" class="catalog-record-list">
               <button v-for="item in result?.items ?? []" :key="item.kind + ':' + item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy || !listMatchesKind" @click="openContent(item, $event)">
                 <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
                 <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span>
                 <span class="catalog-row-state"><ArchiveIcon v-if="selected?.id === item.id && selected.kind === item.kind" name="success" /><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span></span>
               </button>
-              <ArchiveStatePanel v-if="!loading && !error && listMatchesKind && !result?.items.length" compact :kind="hasFilters || search ? 'filtered' : 'empty'" :title="hasFilters || search ? '没有匹配的内容' : '这里还没有内容'" :message="hasFilters || search ? '试试更短的关键词，或清除筛选重新找找。' : ''"><button v-if="hasFilters || search" class="btn btn-ghost btn-sm" type="button" @click="clearListFilters">清除搜索与筛选</button></ArchiveStatePanel>
+              <ArchiveStatePanel v-if="!loading && !error && listMatchesKind && !result?.items.length" compact :kind="hasFilters || search ? 'filtered' : 'empty'" :title="hasFilters || search ? '未找到匹配内容' : '暂无内容'" :message="hasFilters || search ? '试试更短的关键词，或清除筛选重新找找。' : ''"><button v-if="hasFilters || search" class="btn btn-ghost btn-sm" type="button" @click="clearListFilters">清除搜索与筛选</button></ArchiveStatePanel>
             </div>
             <StudioPagination v-model="page" :pages="totalPages" :disabled="loading || !listMatchesKind" label="内容分页" />
           </section>
           <section ref="editorPane" v-content-motion:fade="detailLoading ? false : `${selected?.kind}:${selected?.id}`" class="catalog-editor-pane" tabindex="-1" aria-label="内容编辑" :aria-busy="detailLoading">
-            <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开这份内容</h2></div>
+            <div v-if="detailLoading" class="catalog-editor-empty"><ArchiveIcon name="manager" /><h2>正在打开…</h2></div>
             <template v-else-if="selected">
               <p v-if="editorPendingNotice" class="catalog-feedback" role="status">{{ editorPendingNotice }}</p>
               <CatalogRecordEditor :key="editorSession" v-model:record="selected" :advanced="advanced" :advanced-error="advancedError" :field-error="fieldError" :editor-session="editorSession" @advanced="updateAdvanced" @apply-advanced="applyAdvanced" @discard-advanced="discardAdvanced" @field-input="clearFieldError" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
               <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
-                <StudioDisclosureSummary>之前写过的版本</StudioDisclosureSummary>
+                <StudioDisclosureSummary>历史版本</StudioDisclosureSummary>
                 <p v-if="historyLoading" role="status">正在读取版本…</p>
-                <div v-else-if="historyError" class="catalog-error" role="alert"><p>历史版本暂时无法读取：{{ historyError }}</p><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="retryHistory">重读版本</button></div>
+                <div v-else-if="historyError" class="catalog-error" role="alert"><p>历史版本读取失败：{{ historyError }}</p><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="retryHistory">重读版本</button></div>
                 <p v-else-if="!history.length" class="catalog-note">暂无历史版本</p>
-                <div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy || !!editorPendingNotice" @click="restore(entry.revision)">找回这一版</button></div>
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">看看最新保存的内容</button>
+                <div v-for="entry in history" :key="entry.revision" class="catalog-history-row"><span>{{ catalogDate(entry.at) }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="busy || !!editorPendingNotice" @click="restore(entry.revision)">恢复此版本</button></div>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="compareCurrent">查看最新保存</button>
               </details>
-              <section v-if="currentServer" class="catalog-conflict"><h3>这份内容有了新修改</h3><p>你的草稿还在上面。对照最新内容，合并好以后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy || !!editorPendingNotice" @click="adoptRevision">已核对，继续编辑</button></section>
+              <section v-if="currentServer" class="catalog-conflict"><h3>内容版本冲突</h3><p>外部已有新版本。请核对最新内容后再保存。</p><details><StudioDisclosureSummary>查看最新内容</StudioDisclosureSummary><pre>{{ JSON.stringify(currentServer.data, null, 2) }}</pre></details><button class="btn btn-ghost" type="button" :disabled="busy || !!editorPendingNotice" @click="adoptRevision">已核对，继续编辑</button></section>
             </template>
             <div v-else class="catalog-editor-empty"><img class="catalog-empty-illustration" :src="collectionArt" width="512" height="512" alt="" /><h2>翻开一份{{ sectionTitle }}</h2><p>从左侧选取，让角色与故事慢慢成册。</p><button v-if="kind === 'character'" class="btn btn-primary" type="button" :disabled="busy" @click="add(false, true)">接入绘图角色与首套服装</button><button v-else-if="kind !== 'document'" class="btn btn-ghost" type="button" :disabled="busy" @click="add()">新建内容</button></div>
           </section>

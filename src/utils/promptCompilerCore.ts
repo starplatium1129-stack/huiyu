@@ -55,9 +55,13 @@ function buildAnimaVisualDirection(plan: PromptPlan): string {
 }
 
 export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
-  const isRating = (tag: string) => /^(?:safe|general|sensitive|questionable|explicit|nsfw)$/.test(normalizeKey(tag))
-  const promptRating = input.profile?.rating_mode === 'prompt'
-  const authoredRating = promptRating && [...split(input.scenePrompt), ...(input.manual || []), ...(input.controls || [])].some(isRating)
+  const isRating = (tag: string) => /^(?:safe|general|sensitive|questionable|explicit|nsfw|r[\s_-]?(?:18|15))$/i.test(normalizeKey(tag).replace(/_/g, ''))
+  const promptTokensHaveRating = [...split(input.scenePrompt), ...(input.manual || []), ...(input.controls || [])].some(isRating)
+  const normalizedRatingKey = input.rating ? normalizeKey(input.rating).replace(/_/g, '') : ''
+  const explicitRating = input.rating && isRating(input.rating)
+    ? (normalizedRatingKey === 'r18' ? 'nsfw' : normalizedRatingKey === 'r15' ? 'sensitive' : input.rating)
+    : undefined
+  const hasExplicitRating = Boolean(promptTokensHaveRating || explicitRating)
   const quality = split(input.profile?.quality_prefix)
   const sceneIdentity = input.scene?.identityTokensOverride
   const defaultCamera = SHOT.find(option => option.id === sceneShot(input.scene ?? null))?.prompt
@@ -68,8 +72,8 @@ export function createPromptPlan(input: PromptCompilerInput): PromptPlan {
     inheritedCamera)
   const plan: PromptPlan = {
     freeSubject: input.freeSubject,
-    quality: authoredRating ? quality.filter(tag => !isRating(tag)) : quality,
-    rating: !promptRating && input.rating ? [input.rating] : [],
+    quality: hasExplicitRating ? quality.filter(tag => !isRating(tag)) : quality,
+    rating: promptTokensHaveRating ? [] : (explicitRating ? [explicitRating] : []),
     identity: Array.isArray(sceneIdentity) && sceneIdentity.length ? [...sceneIdentity] : split(input.identity),
     exactControls: [...new Set(input.controls || [])],
     characterTokens: [...new Set(input.characterTokens || [])], copyrightTokens: [...new Set(input.copyrightTokens || [])],

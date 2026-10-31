@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suzuran_arknights",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 35,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "suzuran_arknights",
     "profile": {
@@ -78,8 +78,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-suzuran_arknights.png?v=5",
-        "alt": "铃兰热门角色立绘"
+        "image": "../assets/characters/popular-suzuran_arknights.png?v=3b2610c6ea95",
+        "alt": "铃兰样张立绘",
+        "sourceShowcaseId": "pc_suzuran_arknights_pc_suzuran_arknights_suzuran_arknights_fox_garden",
+        "sourceShowcaseSha256": "5f4e9139e1a6a0cce5e5145e2b74187f336d9deb90a9866327748045bde1fb33"
       },
       "speech": "铃兰向你致以问候。",
       "accent_color": "#38bdf8",

@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_mist_form_experiment",
+  "revision": 1,
+  "sortOrder": 2819,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "eta_shadow_mist_form_experiment",
+    "characterId": "eta_shadow",
+    "outfitId": "researcher_lab_coat",
+    "title": "埃塔 · 雾化实验的成功瞬间",
+    "category": "疯狂研究",
+    "description": "实验室中央的容器中，薄雾沿着法阵旋转，又在晶体光芒里重新凝聚。埃塔难得睁大了眼睛，俯身观察，并飞快记下雾化实验的参数。",
+    "recommendedSize": "832x1216",
+    "location": "laboratory center with a glass vessel of swirling mist, a formation circle and monitoring crystals",
+    "action": "observing mist inside a glass vessel with wide eyes, writing parameters on a notepad",
+    "timeOfDay": "night",
+    "lighting": "雾化法阵的幽紫光芒",
+    "camera": "medium_shot",
+    "mood": "scientific breakthrough, rare excitement",
+    "promptProse": "Alone in the laboratory, Eta watches mist gather inside a glass vessel above a glowing circle, writing the readings in her notebook.",
+    "promptTokens": [
+      "laboratory",
+      "glass vessel",
+      "swirling mist",
+      "magic circle",
+      "monitoring crystals",
+      "notebook",
+      "writing",
+      "purple light"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Eta leans closer to record the mist changing inside the vessel.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

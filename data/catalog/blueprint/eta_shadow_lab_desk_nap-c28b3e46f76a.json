@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_lab_desk_nap",
+  "revision": 1,
+  "sortOrder": 2817,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "eta_shadow_lab_desk_nap",
+    "characterId": "eta_shadow",
+    "outfitId": "sleepy_pajama",
+    "title": "埃塔 · 实验台上的午睡",
+    "category": "疯狂研究",
+    "description": "实验做到一半，埃塔直接趴在实验台上睡着了。公式写到一半的笔记摊在脸旁，烧杯里的液体还在轻轻冒泡，实验室里只听得见仪器的细响。",
+    "recommendedSize": "832x1216",
+    "location": "laboratory bench with open formula notebooks, beakers and a sleeping researcher",
+    "action": "sleeping face-down on a lab bench in pajamas, arms folded under her head, notebooks scattered around",
+    "timeOfDay": "afternoon",
+    "lighting": "实验室午后斜射的柔和光线",
+    "camera": "medium_shot",
+    "mood": "comic lab peace, dangerous to disturb",
+    "promptProse": "Eta sleeps alone face-down on the laboratory bench in her loose pajamas, with open formula notebooks and beakers beside her.",
+    "promptTokens": [
+      "laboratory",
+      "sleeping",
+      "lying on table",
+      "pajamas",
+      "open notebook",
+      "beakers",
+      "afternoon light"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Eta rests her head on folded arms beside her unfinished notes.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

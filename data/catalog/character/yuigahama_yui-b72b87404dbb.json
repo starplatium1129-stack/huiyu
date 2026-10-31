@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuigahama_yui",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yuigahama_yui",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-yuigahama_yui.png?v=5",
-        "alt": "由比滨结衣 样张立绘"
+        "image": "../assets/characters/popular-yuigahama_yui.png?v=e448568c0131",
+        "alt": "由比滨结衣样张立绘",
+        "sourceShowcaseId": "pc_yuigahama_yui_pc_yuigahama_yui_yui_service_club_sunset",
+        "sourceShowcaseSha256": "5cf042529b53cffd4363401440a7edc44459a692cf8ba574ddb20f456f633d67"
       },
       "visual_dna": {
         "hair": "橙粉中长发 · 团子头",

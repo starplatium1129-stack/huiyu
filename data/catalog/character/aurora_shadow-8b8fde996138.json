@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aurora_shadow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 268,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "aurora_shadow",
     "popular": {
@@ -78,10 +78,10 @@
       "type": "popular",
       "icon": "🥀",
       "portrait": {
-        "image": "../assets/characters/popular-aurora_shadow.png?v=e7bbda3eb70e",
+        "image": "../assets/characters/popular-aurora_shadow.png?v=c21b265608e3",
         "alt": "奥萝拉样张立绘",
-        "sourceShowcaseId": "pc_aurora_shadow_aurora_night_market_cider_toast",
-        "sourceShowcaseSha256": "94ed3fc2fa9d6bec6c717ff92c6363a30953eac40f79f442d6abc9c0b4a3dd3a"
+        "sourceShowcaseId": "pc_aurora_shadow_pc_aurora_shadow_aurora_sanctuary_ruins_embrace",
+        "sourceShowcaseSha256": "176e083618023b9a5393178e2bbe59893ac4c854114aa452eabe542e66013e08"
       },
       "visual_dna": {
         "hair": "如黑夜深渊般柔滑光泽的及踝黑发",

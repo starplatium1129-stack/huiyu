@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tatsumaki",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.909Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "tatsumaki",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-tatsumaki.png?v=228405a552c1",
-        "alt": "战栗的龙卷 · 英雄协会的蔑视场景样张"
+        "image": "../assets/characters/popular-tatsumaki.png?v=08cae4b98c13",
+        "alt": "战栗的龙卷样张立绘",
+        "sourceShowcaseId": "pc_tatsumaki_pc_tatsumaki_tatsumaki_sfw_b6_04",
+        "sourceShowcaseSha256": "1d5f018f5ef5bda5196231039318201ac2ec990e9db5a6b4c690ce5c8c449466"
       },
       "visual_dna": {
         "signature": "Tatsumaki from One-Punch Man, a confident esper with a short curly green bob and sharp green eyes. Her controlled hovering and impatient expressions are identity cues, while clothing belongs to the selected everyday outfit.",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rias_gremory",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "rias_gremory",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🍷",
       "portrait": {
-        "image": "../assets/characters/popular-rias_gremory.png?v=1",
-        "alt": "莉雅丝·吉蒙里 样张立绘"
+        "image": "../assets/characters/popular-rias_gremory.png?v=77490f37495c",
+        "alt": "莉雅丝·吉蒙里样张立绘",
+        "sourceShowcaseId": "pc_rias_gremory_pc_rias_gremory_rias_street_date_shared_crepe",
+        "sourceShowcaseSha256": "147b9e70d91804acf0b1b34d6b3116f933629717387e20ca93ef1dc35bd0efec"
       },
       "visual_dna": {
         "hair": "深红鲜艳及膝长发 · 活泼呆毛",

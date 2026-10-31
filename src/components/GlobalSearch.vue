@@ -4,9 +4,9 @@
     <div v-show="open" class="global-search" :inert="!open" @pointerdown.self="close()">
       <ListboxRoot ref="listbox" as-child highlight-on-hover :model-value="''" @highlight="activeKey = typeof $event?.value === 'string' ? $event.value : undefined" @update:model-value="run">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索" @keydown.capture="recordSelectionKey">
-        <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>快速查找</strong><span>角色、场景与作品</span></div>
+        <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>全局搜索</strong></div>
         <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3">
-          <StudioSearch v-model="query" class="gs-search" label="搜索角色、服装、场景、蓝图、作品或页面" placeholder="搜索角色、服装、场景、蓝图…" :clear-on-escape="false">
+          <StudioSearch v-model="query" class="gs-search" label="搜索角色、服装、场景、蓝图、作品或页面" placeholder="搜索角色、场景、作品…" :clear-on-escape="false">
             <template #input="{ inputProps }">
               <ListboxFilter v-model="query" as-child>
                 <input ref="inputEl" v-bind="inputProps" role="combobox" aria-haspopup="listbox" :aria-expanded="open"
@@ -35,10 +35,10 @@
             <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
             <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
             <div v-if="!scenesLoading && !scenesError && !worksError && !worksLoading && !flat.length" class="gs-empty tw:text-center tw:py-s-3">
-              <p class="tw:text-muted tw:text-body-sm tw:mb-s-3">没有匹配的结果，试试角色、服装、场景标题或作品名。</p>
+              <p class="tw:text-muted tw:text-body-sm tw:mb-s-3">未找到匹配结果</p>
               <div class="tw:flex tw:justify-center tw:gap-s-2">
-                <button type="button" class="btn btn-ghost btn-sm" @click="query = ''">清空搜索词</button>
-                <RouterLink to="/scene-explorer" class="btn btn-primary btn-sm" @click="close">浏览全部场景</RouterLink>
+                <button type="button" class="btn btn-ghost btn-sm" @click="query = ''">清空</button>
+                <RouterLink to="/scene-explorer" class="btn btn-primary btn-sm" @click="close">浏览场景</RouterLink>
               </div>
             </div>
           </template>
@@ -47,7 +47,7 @@
         <div v-if="moreCatalogGroups.length" class="gs-more" aria-label="更多目录结果">
           <button v-for="group in moreCatalogGroups" :key="group.id" type="button" class="btn btn-quiet btn-sm"
             :aria-disabled="group.loadingMore" @click="showMore(group.id, $event)">
-            {{ group.loadingMore ? '正在读取…' : `查看更多${group.name}（剩余 ${group.total - group.items.length}）` }}
+            {{ group.loadingMore ? '正在读取…' : `更多${group.name} (+${group.total - group.items.length})` }}
           </button>
         </div>
         <p :id="searchAnnouncementId" class="gs-sr-status tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden tw:whitespace-nowrap" role="status" aria-live="polite" aria-atomic="true">{{ resultsAnnouncement }}</p>

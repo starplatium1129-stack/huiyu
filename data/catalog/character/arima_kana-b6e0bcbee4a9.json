@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arima_kana",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "arima_kana",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-arima_kana.png",
-        "alt": "有马加奈 全年龄日常立绘",
-        "sourceShowcaseId": "pc_arima_kana_arima_kana_sfw_b5_01",
-        "sourceShowcaseSha256": "4805e377ae540bfcd48046a23aba27b51a9291dd05c50528fdae472c1573e55a"
+        "image": "../assets/characters/popular-arima_kana.png?v=1664fc7eca07",
+        "alt": "有马加奈样张立绘",
+        "sourceShowcaseId": "pc_arima_kana_pc_arima_kana_arima_kana_sfw_b5_04",
+        "sourceShowcaseSha256": "a2d2351fccc294f70fcb08ff70ccfe1a859771f912014150d10cf3348b9cf3b5"
       },
       "visual_dna": {
         "signature": "Kana Arima from Oshi no Ko, a hardworking young actress with a chin-length wine-red bob, straight bangs and ruby-red eyes. A small snaggletooth appears in her unguarded smile, while her expressive gaze moves between professional focus and prickly pride.",

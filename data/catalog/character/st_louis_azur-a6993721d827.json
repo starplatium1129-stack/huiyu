@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "st_louis_azur",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 219,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "st_louis_azur",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🚗",
       "portrait": {
-        "image": "../assets/characters/popular-st_louis_azur.png?v=b31b67ef6b04",
+        "image": "../assets/characters/popular-st_louis_azur.png?v=5fde367afe28",
         "alt": "圣路易斯样张立绘",
-        "sourceShowcaseId": "pc_st_louis_azur_st_louis_cafe_patio_afternoon_sweet",
-        "sourceShowcaseSha256": "6b354e1fa2f9aefb76dbdbf76c9e5c36dff939fbfcc8226afdc510c24dda560a"
+        "sourceShowcaseId": "pc_st_louis_azur_pc_st_louis_azur_st_louis_cafe_patio_afternoon_sweet",
+        "sourceShowcaseSha256": "1303fac14c3f6f56bed7995fef45c5c8d6499fe0f435c75e975a53ef26c6f6d6"
       },
       "visual_dna": {
         "hair": "轻盈柔顺天水蓝长发 · 优雅侧梳单马尾",

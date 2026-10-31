@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chitanda_eru",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "chitanda_eru",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🍇",
       "portrait": {
-        "image": "../assets/characters/popular-chitanda_eru.png?v=1",
-        "alt": "千反田爱瑠 样张立绘",
-        "sourceShowcaseId": "pc_chitanda_eru_chitanda_curious_eyes_close_up",
-        "sourceShowcaseSha256": "db294dcc6acf3df512ebce090004a1e5938c02b566fd6e474a0c9b89d285da11"
+        "image": "../assets/characters/popular-chitanda_eru.png?v=769ba07fea41",
+        "alt": "千反田爱瑠样张立绘",
+        "sourceShowcaseId": "pc_chitanda_eru_pc_chitanda_eru_chitanda_curious_eyes_close_up",
+        "sourceShowcaseSha256": "d56a07bc0329ac49d538e5a3f78b6ccd7422ae1f3556ceaee4f92a55f3225382"
       },
       "visual_dna": {
         "hair": "如墨般光滑垂直的极长黑发 · 齐刘海",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ayanami_rei",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.870Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ayanami_rei",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🌕",
       "portrait": {
-        "image": "../assets/characters/popular-ayanami_rei.png?v=5",
-        "alt": "绫波丽 样张立绘"
+        "image": "../assets/characters/popular-ayanami_rei.png?v=463a81cd3b02",
+        "alt": "绫波丽样张立绘",
+        "sourceShowcaseId": "pc_ayanami_rei_pc_ayanami_rei_ayanami_rei_entry_plug",
+        "sourceShowcaseSha256": "06c24d151dfe078b96eb748b5dc166086f35c2bf7b7acbff0d3e9eb07f2782f3"
       },
       "visual_dna": {
         "hair": "淡蓝碎短发 · 齐刘海",

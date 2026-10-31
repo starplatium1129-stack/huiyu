@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zhuang_fangyi_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 162,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights",
     "profile": {
@@ -72,8 +72,10 @@
         "arknights:_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-zhuang_fangyi_arknights.png?v=14a8fbc1387b",
-        "alt": "庄方宜立绘"
+        "image": "../assets/characters/popular-zhuang_fangyi_arknights.png?v=9b7419d8275c",
+        "alt": "庄方宜样张立绘",
+        "sourceShowcaseId": "pc_zhuang_fangyi_arknights_pc_zhuang_fangyi_arknights_zhuang_fangyi_arknights_tactical_briefing",
+        "sourceShowcaseSha256": "6a99c62b69a38f320ff2a56df4dc79e25744a0320c6f7456be211902e8f66ad1"
       },
       "speech": "「我是庄方宜，武陵科学发展区管代。天时人事日相催，塔卫二的裂隙虽险，但在息壤与诸位的同心协作下，定叫大地重归安澜。」",
       "accent_color": "#4ecdc4",

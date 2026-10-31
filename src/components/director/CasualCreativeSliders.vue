@@ -8,7 +8,7 @@
       <span class="casual-sliders-badge">{{ fixedSampling ? '固定参数' : '即时调整' }}</span>
     </div>
 
-    <p v-if="fixedSampling" class="casual-slider-hint">当前模型使用固定采样参数：CFG {{ currentCfg }} · {{ currentSteps }} 步。通过画面描述与风格选择调整创作。</p>
+    <p v-if="fixedSampling" class="casual-slider-hint">固定采样参数：CFG {{ currentCfg }} · {{ currentSteps }} 步</p>
     <template v-else>
     <div class="casual-slider-group">
       <div class="casual-slider-label-row">
@@ -23,11 +23,9 @@
         step="0.5"
         :value="currentCfg"
         :disabled="disabled"
-        :aria-describedby="`${cfgSliderId}-hint`"
         class="casual-range-input"
         @input="onCfgInput"
       />
-      <p :id="`${cfgSliderId}-hint`" class="casual-slider-hint">调整对画面描述的遵循强度，先从模型默认值开始。</p>
     </div>
 
     <div class="casual-slider-group">
@@ -43,11 +41,9 @@
         step="1"
         :value="currentSteps"
         :disabled="disabled"
-        :aria-describedby="`${stepsSliderId}-hint`"
         class="casual-range-input"
         @input="onStepsInput"
       />
-      <p :id="`${stepsSliderId}-hint`" class="casual-slider-hint">增加步数通常需要更长等待，画风由模型与画面描述决定。</p>
     </div>
     </template>
   </div>

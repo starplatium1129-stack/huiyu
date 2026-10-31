@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshimi_miyabi",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "hoshimi_miyabi",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🦊",
       "portrait": {
-        "image": "../assets/characters/popular-hoshimi_miyabi.png?v=5",
-        "alt": "星见雅 样张立绘",
-        "sourceShowcaseId": "pc_hoshimi_miyabi_miyabi_bamboo_forest_snow_standing",
-        "sourceShowcaseSha256": "41cd246eb1839bf1174063f1fb07f87b636f954907fb93c3ca9757d93973a8d8"
+        "image": "../assets/characters/popular-hoshimi_miyabi.png?v=04d2e0710712",
+        "alt": "星见雅样张立绘",
+        "sourceShowcaseId": "pc_hoshimi_miyabi_pc_hoshimi_miyabi_miyabi_shrine_veranda_tea_break",
+        "sourceShowcaseSha256": "7cb51582fc71fa7a64c00c4a5e4055d28fa56c9e7d46dc9ef6bde909aa7936e5"
       },
       "visual_dna": {
         "hair": "黑色长发 · 齐刘海与侧编发 · 深色狐耳",

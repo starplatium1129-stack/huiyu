@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cinderella_nikke",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 174,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "cinderella_nikke",
     "profile": {
@@ -13,8 +13,10 @@
       "type": "popular",
       "icon": "👠",
       "portrait": {
-        "image": "../assets/characters/popular-cinderella_nikke.png?v=1",
-        "alt": "灰姑娘 样张立绘"
+        "image": "../assets/characters/popular-cinderella_nikke.png?v=a6d054ebcb3a",
+        "alt": "灰姑娘样张立绘",
+        "sourceShowcaseId": "pc_cinderella_nikke_pc_cinderella_nikke_cinderella_moonlit_ballroom_glass_waltz_curtsy",
+        "sourceShowcaseSha256": "4f9712e52fa2fa23e64e115c911d5b4d3f5887812e56f412220058b2369f018f"
       },
       "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
       "alias": [

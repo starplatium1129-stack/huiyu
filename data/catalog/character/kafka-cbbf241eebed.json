@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kafka",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 71,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.872Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kafka",
     "profile": {
@@ -18,8 +18,10 @@
       "type": "popular",
       "icon": "🕸️",
       "portrait": {
-        "image": "../assets/characters/popular-kafka.png?v=5",
-        "alt": "卡芙卡 样张立绘"
+        "image": "../assets/characters/popular-kafka.png?v=4ece87e674a1",
+        "alt": "卡芙卡样张立绘",
+        "sourceShowcaseId": "pc_kafka_pc_kafka_kafka_astral_express_violin_prelude",
+        "sourceShowcaseSha256": "809e58620dcb0afb8295ff26948635025abeddcbc997fcb6afb8b9711347dc2b"
       },
       "visual_dna": {
         "hair": "酒红微卷长发 · 低马尾",

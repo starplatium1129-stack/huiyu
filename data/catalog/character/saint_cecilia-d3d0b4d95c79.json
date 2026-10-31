@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saint_cecilia",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "saint_cecilia",
     "profile": {
@@ -18,8 +18,10 @@
       "type": "popular",
       "icon": "🕊️",
       "portrait": {
-        "image": "../assets/characters/popular-saint_cecilia.png?v=5",
-        "alt": "塞西莉亚 样张立绘"
+        "image": "../assets/characters/popular-saint_cecilia.png?v=0324fe0afa0e",
+        "alt": "塞西莉亚样张立绘",
+        "sourceShowcaseId": "pc_saint_cecilia_pc_saint_cecilia_cecilia_garden_watering_flowers",
+        "sourceShowcaseSha256": "1d346a9e9a525c44732bc466bc47255c11937e66cfb2c1d8b27be9f9b7ab6c47"
       },
       "visual_dna": {
         "hair": "浅绿长发 · 低盘发",

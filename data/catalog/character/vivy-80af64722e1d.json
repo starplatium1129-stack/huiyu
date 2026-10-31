@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vivy",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.918Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "vivy",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-vivy.png?v=50bfbc472ac9",
-        "alt": "Vivy · 无人小舞台的每日首唱场景样张"
+        "image": "../assets/characters/popular-vivy.png?v=6a7500db7994",
+        "alt": "Vivy样张立绘",
+        "sourceShowcaseId": "pc_vivy_pc_vivy_vivy_sfw_b9_04",
+        "sourceShowcaseSha256": "81d7dc8e23d707e3391d75a26d920cffdd9911f566525dcd2f2f1b879094861b"
       },
       "visual_dna": {
         "signature": "Vivy from Vivy: Fluorite Eye's Song, a singer with long blue hair, an ahoge, long sidelocks and luminous blue eyes. Her precise posture is softened by the care she brings to music and small promises.",

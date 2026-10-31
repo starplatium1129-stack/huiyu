@@ -1,95 +1,18 @@
 {
   "kind": "character",
   "id": "kanzaki_kaori",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 242,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kanzaki_kaori",
     "profile": {
-      "id": "kanzaki_kaori",
-      "name": "神裂火织",
-      "alias": [
-        "Kaori Kanzaki",
-        "神裂火织",
-        "神裂",
-        "女教皇",
-        "圣人",
-        "kanzaki kaori"
-      ],
-      "type": "popular",
-      "icon": "🗡️",
-      "portrait": {
-        "image": "../assets/characters/popular-kanzaki_kaori.png?v=d838eebab505",
-        "alt": "神裂火织样张立绘",
-        "sourceShowcaseId": "pc_kanzaki_kaori_kanzaki_shrine_dojo_bokken_stance_serenity",
-        "sourceShowcaseSha256": "2bc7285b462a093fd76f31210ea728772f1c83902201690fb3ee45a82973b164"
-      },
-      "visual_dna": {
-        "hair": "乌黑柔亮及膝瀑布长发 · 高高扎起单马尾 · 气场凌厉威严",
-        "hair_color": "纯黑 / 乌黑",
-        "eyes": "敏锐深邃紫罗兰双眸 · 散发高洁英气与动情时的极度羞涩",
-        "hairstyle": "利落及膝超长单马尾 · 额前自然碎发 · 展现圣人绝美英姿",
-        "uniform": "标志性单边牛仔裤配打结白衬衫 · 害羞堕天使女仆装 · 盛夏黑红系带比基尼",
-        "expression": "战场上的冷峻凛然圣人威仪 · 换上女仆装或被近身接触时满面通红手足无措的巅峰反差萌",
-        "style": "tall dignified warrior saint girlfriend with overwhelming combat majesty, hilarious innocent gap moe, and intensely passionate romantic surrender",
-        "signature": "及膝黑马尾、单边牛仔裤、结扎白衬衫、七天七刀、堕天使女仆反差萌"
-      },
-      "personality": [
-        "严谨庄重",
-        "富有责任感",
-        "生活常识欠缺",
-        "极易羞涩"
-      ],
-      "likes": [
-        "用七天七刀细致切菜做和风家常料理",
-        "穿上堕天使女仆装害羞地为你泡红茶",
-        "被恋人从身后抱住腰身时身体发软",
-        "在私密卧室中卸下圣人重担紧紧相拥"
-      ],
-      "classic_cg": {
-        "title": "红茶与堕天使女仆装的极致娇羞",
-        "description": "学园都市单身宿舍的阳光下，平日威震魔法界的圣人神裂火织换上了天草式特制的「堕天使女仆装」。乌黑长马尾轻晃，高挑曼妙的娇躯裹在短裙围裙下，双手端着茶盘满面烧透，战战兢兢地小声说道：“主、主人……请用茶……不准笑啊！”"
-      },
-      "identity": {
-        "role": "前天草式十字凄教教皇 / 英国清教「必要之恶教会」圣人魔法师 / 顶级剑士",
-        "age": "18岁（成年初熟圣人）",
-        "occupation": "圣人 / 魔法师 / 剑士",
-        "faction": "英国清教 / 天草式十字凄教"
-      },
-      "tags": [
-        "黑长直",
-        "单马尾",
-        "紫瞳",
-        "圣人",
-        "单边牛仔裤",
-        "女仆装反差萌",
-        "魔禁"
-      ],
-      "bg_story": "世界二十位圣人之一，天草式十字凄教的前任女教皇。精通神道与基督教融合的魔术，手持超过两米的令刀「七天七刀」。背负圣人的沉重宿命脱离教派加入英国清教，性格刚正严谨、极具责任感，但因自幼专注修行而缺乏日常经验。在上条当麻拯救茵蒂克丝后对其心怀深切感激，面对私下接触与同伴安排的致谢场合时，往往会手足无措、面红耳赤。",
-      "palette": [
-        "纯黑",
-        "紫罗兰",
-        "白金",
-        "牛仔蓝"
-      ],
       "weather": [
         "清晨庭院",
         "落日街头",
         "烛光暖阁"
       ],
-      "speech": "我乃神裂火织，对神之爱已断绝之人……等、等等！为什么要在这种时候拿那种奇怪的衣服出来啦……真的非穿不可吗？",
-      "source": "A Certain Magical Index",
-      "traits": [
-        "及膝黑发高单马尾紫瞳",
-        "世界顶级圣人女剑士",
-        "单边牛仔裤经典战装",
-        "堕天使女仆反差娇羞",
-        "无上深情忠贞伴侣"
-      ],
-      "voice": "在下是天草式十字凄教前任教皇，神裂火织。……那、那个，这件衣服纯粹是同伴们擅自准备的！请不要用那种眼神打量在下！",
-      "voiceJa": "我が名は神裂火織。……み、見ないでください！",
       "relationshipGraph": {
         "version": 1,
         "work": "魔法禁书目录",
@@ -191,7 +114,84 @@
             }
           }
         ]
-      }
+      },
+      "palette": [
+        "纯黑",
+        "紫罗兰",
+        "白金",
+        "牛仔蓝"
+      ],
+      "visual_dna": {
+        "hair": "乌黑柔亮及膝瀑布长发 · 高高扎起单马尾 · 气场凌厉威严",
+        "hair_color": "纯黑 / 乌黑",
+        "eyes": "敏锐深邃紫罗兰双眸 · 散发高洁英气与动情时的极度羞涩",
+        "hairstyle": "利落及膝超长单马尾 · 额前自然碎发 · 展现圣人绝美英姿",
+        "uniform": "标志性单边牛仔裤配打结白衬衫 · 害羞堕天使女仆装 · 盛夏黑红系带比基尼",
+        "expression": "战场上的冷峻凛然圣人威仪 · 换上女仆装或被近身接触时满面通红手足无措的巅峰反差萌",
+        "style": "tall dignified warrior saint girlfriend with overwhelming combat majesty, hilarious innocent gap moe, and intensely passionate romantic surrender",
+        "signature": "及膝黑马尾、单边牛仔裤、结扎白衬衫、七天七刀、堕天使女仆反差萌"
+      },
+      "voiceJa": "我が名は神裂火織。……み、見ないでください！",
+      "alias": [
+        "Kaori Kanzaki",
+        "神裂火织",
+        "神裂",
+        "女教皇",
+        "圣人",
+        "kanzaki kaori"
+      ],
+      "source": "A Certain Magical Index",
+      "likes": [
+        "用七天七刀细致切菜做和风家常料理",
+        "穿上堕天使女仆装害羞地为你泡红茶",
+        "被恋人从身后抱住腰身时身体发软",
+        "在私密卧室中卸下圣人重担紧紧相拥"
+      ],
+      "name": "神裂火织",
+      "identity": {
+        "role": "前天草式十字凄教教皇 / 英国清教「必要之恶教会」圣人魔法师 / 顶级剑士",
+        "age": "18岁（成年初熟圣人）",
+        "occupation": "圣人 / 魔法师 / 剑士",
+        "faction": "英国清教 / 天草式十字凄教"
+      },
+      "icon": "🗡️",
+      "classic_cg": {
+        "title": "红茶与堕天使女仆装的极致娇羞",
+        "description": "学园都市单身宿舍的阳光下，平日威震魔法界的圣人神裂火织换上了天草式特制的「堕天使女仆装」。乌黑长马尾轻晃，高挑曼妙的娇躯裹在短裙围裙下，双手端着茶盘满面烧透，战战兢兢地小声说道：“主、主人……请用茶……不准笑啊！”"
+      },
+      "tags": [
+        "黑长直",
+        "单马尾",
+        "紫瞳",
+        "圣人",
+        "单边牛仔裤",
+        "女仆装反差萌",
+        "魔禁"
+      ],
+      "traits": [
+        "及膝黑发高单马尾紫瞳",
+        "世界顶级圣人女剑士",
+        "单边牛仔裤经典战装",
+        "堕天使女仆反差娇羞",
+        "无上深情忠贞伴侣"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-kanzaki_kaori.png?v=03b3659f0fd4",
+        "alt": "神裂火织样张立绘",
+        "sourceShowcaseId": "pc_kanzaki_kaori_pc_kanzaki_kaori_kanzaki_shrine_dojo_bokken_stance_serenity",
+        "sourceShowcaseSha256": "bb3f66c474e38e8ed9b0baaff9d31cf80e564cb0c15766fab7021575e2b380d7"
+      },
+      "bg_story": "世界二十位圣人之一，天草式十字凄教的前任女教皇。精通神道与基督教融合的魔术，手持超过两米的令刀「七天七刀」。背负圣人的沉重宿命脱离教派加入英国清教，性格刚正严谨、极具责任感，但因自幼专注修行而缺乏日常经验。在上条当麻拯救茵蒂克丝后对其心怀深切感激，面对私下接触与同伴安排的致谢场合时，往往会手足无措、面红耳赤。",
+      "speech": "我乃神裂火织，对神之爱已断绝之人……等、等等！为什么要在这种时候拿那种奇怪的衣服出来啦……真的非穿不可吗？",
+      "personality": [
+        "严谨庄重",
+        "富有责任感",
+        "生活常识欠缺",
+        "极易羞涩"
+      ],
+      "voice": "在下是天草式十字凄教前任教皇，神裂火织。……那、那个，这件衣服纯粹是同伴们擅自准备的！请不要用那种眼神打量在下！",
+      "id": "kanzaki_kaori",
+      "type": "popular"
     },
     "popular": {
       "id": "kanzaki_kaori",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rem_rezero",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.842Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "rem_rezero",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "🪄",
       "portrait": {
-        "image": "../assets/characters/popular-rem_rezero.png?v=5",
-        "alt": "雷姆 样张立绘"
+        "image": "../assets/characters/popular-rem_rezero.png?v=a84439d4ee58",
+        "alt": "雷姆样张立绘",
+        "sourceShowcaseId": "pc_rem_rezero_pc_rem_rezero_rem_rezero_mansion",
+        "sourceShowcaseSha256": "47db2d6b349e8d02ea626b87a7db635deb8b6c1766b414f02344f47414327c10"
       },
       "visual_dna": {
         "hair": "蓝色短发（遮住右眼）",

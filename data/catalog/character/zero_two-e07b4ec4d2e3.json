@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zero_two",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.908Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "zero_two",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-zero_two.png?v=7f86138c68a3",
-        "alt": "02 · 蜂蜜浇一切场景样张"
+        "image": "../assets/characters/popular-zero_two.png?v=bb806a68d86b",
+        "alt": "02样张立绘",
+        "sourceShowcaseId": "pc_zero_two_pc_zero_two_zero_two_sfw_b6_06",
+        "sourceShowcaseSha256": "e126160da08a71e9d14b06fa65794824d2031e20873cf6ade4f9e57afc71c63d"
       },
       "visual_dna": {
         "signature": "Zero Two from DARLING in the FRANXX, a spirited girl with long pink hair, vivid green eyes, small red horns and a white headband. Her energy softens into thoughtful attention when she reads a familiar picture book.",

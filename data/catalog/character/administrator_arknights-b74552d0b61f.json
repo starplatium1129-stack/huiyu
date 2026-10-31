@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "administrator_arknights",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 163,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "administrator_arknights",
     "profile": {
@@ -63,8 +63,10 @@
         "arknights_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-administrator_arknights.png?v=f8f3262011d5",
-        "alt": "管理员立绘"
+        "image": "../assets/characters/popular-administrator_arknights.png?v=b43f4f195fd2",
+        "alt": "管理员样张立绘",
+        "sourceShowcaseId": "pc_administrator_arknights_pc_administrator_arknights_administrator_arknights_bridge_overlook",
+        "sourceShowcaseSha256": "6ebf770a399e825e01617bfa4af0ed111f350a3ea842200f8f1b23802b993e6b"
       },
       "speech": "「协议网络已全面接通。无论前路面对的是侵蚀浪潮还是未知的荒原，终末地绝不会停下开拓的脚步——全员，跟随我的指示前进。」",
       "accent_color": "#eab308",

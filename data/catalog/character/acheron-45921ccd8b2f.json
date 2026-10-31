@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "acheron",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 204,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-31T15:28:30.648119700+00:00",
   "data": {
     "id": "acheron",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "source": "HoYoverse《崩坏：星穹铁道 / Honkai: Star Rail》",
       "portrait": {
-        "image": "../assets/characters/popular-acheron.png",
-        "alt": "黄泉 角色立绘"
+        "image": "../assets/characters/popular-acheron.png?v=cc358e241231",
+        "alt": "黄泉样张立绘",
+        "sourceShowcaseId": "pc_acheron_pc_acheron_acheron_riverside_rest",
+        "sourceShowcaseSha256": "36fb5be1f0fec314e8d7ab07e9fde66f577b1f7920b47e30755fe53754c6efb6"
       },
       "accent_color": "#8c6fc1",
       "bg_color": "#171423",

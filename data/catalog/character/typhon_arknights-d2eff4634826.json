@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -71,8 +71,10 @@
         "horns"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-typhon_arknights.png?v=56a623ba81a3",
-        "alt": "提丰立绘"
+        "image": "../assets/characters/popular-typhon_arknights.png?v=180465226888",
+        "alt": "提丰样张立绘",
+        "sourceShowcaseId": "pc_typhon_arknights_pc_typhon_arknights_typhon_arknights_behemoth_hunt_bow",
+        "sourceShowcaseSha256": "0d81af3c20d9c9638c71581667d759ac1c91dada640c35c02d6d3a7e733aa936"
       },
       "speech": "「风向变了，空气里有腐败的味道……别乱动，躲在我身后。只要我的弓还在弦上，冰原上的怪物就休想靠近罗德岛一步。」",
       "accent_color": "#10b981",

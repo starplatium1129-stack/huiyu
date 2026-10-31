@@ -1,67 +1,13 @@
 {
   "kind": "character",
   "id": "saten_ruiko",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 199,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "saten_ruiko",
     "profile": {
-      "id": "saten_ruiko",
-      "name": "佐天泪子",
-      "alias": [
-        "佐天涙子",
-        "Saten Ruiko"
-      ],
-      "type": "popular",
-      "portrait": {
-        "image": "../assets/characters/popular-saten_ruiko.png?v=97ebf98293fb",
-        "alt": "佐天泪子样张立绘",
-        "sourceShowcaseId": "pc_saten_ruiko_saten_ruiko_daily_rumor_notice",
-        "sourceShowcaseSha256": "3e11cc94c37f2a93cb3884c376b7aa349859ae3c24cfe430d4814f742827ed41"
-      },
-      "visual_dna": {
-        "signature": "Long black hair, green eyes, and a small white flower hair ornament",
-        "hair": "black_hair, long_hair, hair_flower",
-        "eyes": "green_eyes",
-        "style": "anime"
-      },
-      "personality": [
-        "爽朗热情",
-        "好奇心旺盛",
-        "极重友情",
-        "善解人意"
-      ],
-      "likes": [
-        "都市传说",
-        "和初春一起逛街",
-        "尝试新鲜事物"
-      ],
-      "bg_story": "佐天泪子是《某科学的超电磁炮》中的角色，与初春饰利关系亲近，也和御坂美琴、白井黑子成为朋友。她没有高等级能力，却总愿意留意身边的人和新鲜消息。热闹的闲聊、放学后的绕路和偶然发现的小店，都是她熟悉的日常。",
-      "identity": {
-        "role": "栅川中学学生 / 都市传说爱好者",
-        "age": "13岁（栅川中学一年级）",
-        "classificationSource": "https://wwws.warnerbros.co.jp/anime/wba/result/wb_anime08.html"
-      },
-      "source": "A Certain Scientific Railgun",
-      "traits": [
-        "black_hair",
-        "long_hair",
-        "green_eyes",
-        "hair_flower"
-      ],
-      "tags": [
-        "佐天泪子",
-        "某科学的超电磁炮",
-        "日常"
-      ],
-      "accent_color": "#74B7A7",
-      "bg_color": "#202833",
-      "palette": [
-        "#74B7A7",
-        "#F4EEDF"
-      ],
       "relationshipGraph": {
         "version": 1,
         "work": "某科学的超电磁炮",
@@ -293,9 +239,63 @@
           }
         ]
       },
+      "palette": [
+        "#74B7A7",
+        "#F4EEDF"
+      ],
+      "accent_color": "#74B7A7",
+      "visual_dna": {
+        "signature": "Long black hair, green eyes, and a small white flower hair ornament",
+        "hair": "black_hair, long_hair, hair_flower",
+        "eyes": "green_eyes",
+        "style": "anime"
+      },
+      "voiceJa": "初春〜！放課後みんなでお茶しに行こ！いいお店見つけたんだよね！",
+      "alias": [
+        "佐天涙子",
+        "Saten Ruiko"
+      ],
+      "source": "A Certain Scientific Railgun",
+      "likes": [
+        "都市传说",
+        "和初春一起逛街",
+        "尝试新鲜事物"
+      ],
+      "name": "佐天泪子",
+      "identity": {
+        "role": "栅川中学学生 / 都市传说爱好者",
+        "age": "13岁（栅川中学一年级）",
+        "classificationSource": "https://wwws.warnerbros.co.jp/anime/wba/result/wb_anime08.html"
+      },
+      "tags": [
+        "佐天泪子",
+        "某科学的超电磁炮",
+        "日常"
+      ],
+      "traits": [
+        "black_hair",
+        "long_hair",
+        "green_eyes",
+        "hair_flower"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-saten_ruiko.png?v=14f8d8fd09e9",
+        "alt": "佐天泪子样张立绘",
+        "sourceShowcaseId": "pc_saten_ruiko_pc_saten_ruiko_saten_ruiko_summer_yukata_fireworks_terrace",
+        "sourceShowcaseSha256": "79a00924f0f1d8e0e7b71574bea773b5dbe0e5b969833c184de64dcb2c6899ac"
+      },
+      "bg_story": "佐天泪子是《某科学的超电磁炮》中的角色，与初春饰利关系亲近，也和御坂美琴、白井黑子成为朋友。她没有高等级能力，却总愿意留意身边的人和新鲜消息。热闹的闲聊、放学后的绕路和偶然发现的小店，都是她熟悉的日常。",
       "speech": "我听说附近新开了一家店，放学后一起去看看？初春应该也会感兴趣。",
+      "personality": [
+        "爽朗热情",
+        "好奇心旺盛",
+        "极重友情",
+        "善解人意"
+      ],
       "voice": "初春！还有大家，放学后一起去家庭餐厅吃薄煎饼吧！我听说那边新上了当季特饮哦！",
-      "voiceJa": "初春〜！放課後みんなでお茶しに行こ！いいお店見つけたんだよね！"
+      "id": "saten_ruiko",
+      "bg_color": "#202833",
+      "type": "popular"
     },
     "popular": {
       "id": "saten_ruiko",

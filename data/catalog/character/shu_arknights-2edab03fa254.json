@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shu_arknights",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 166,
   "createdAt": "2026-10-04T10:59:50+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shu_arknights",
     "profile": {
@@ -80,8 +80,10 @@
         "colored_extremities"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-shu_arknights.png?v=382df59ec833",
-        "alt": "黍立绘"
+        "image": "../assets/characters/popular-shu_arknights.png?v=6a5ca6e041ae",
+        "alt": "黍样张立绘",
+        "sourceShowcaseId": "pc_shu_arknights_pc_shu_arknights_shu_arknights_granary_seed_sorting",
+        "sourceShowcaseSha256": "89d6fd77b9ea8d488b2c06bfa0dbf947d0bc9883e76f19f132ca93b8c17c334a"
       },
       "speech": "「庄稼熟了，就该收了；人奔波累了，就该歇下吃口热饭。只要大地还在，只要良心不灭，咱们的日子就总有指望。」",
       "accent_color": "#A89D45",

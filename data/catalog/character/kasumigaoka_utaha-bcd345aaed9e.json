@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasumigaoka_utaha",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kasumigaoka_utaha",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🖋️",
       "portrait": {
-        "image": "../assets/characters/popular-kasumigaoka_utaha.png?v=1",
-        "alt": "霞之丘诗羽 样张立绘",
-        "sourceShowcaseId": "pc_kasumigaoka_utaha_utaha_signing_event_author_line",
-        "sourceShowcaseSha256": "f43e8107ddb504151cae325413d0f88a2f0e04592dcc3ab6d4a2213727bbef8a"
+        "image": "../assets/characters/popular-kasumigaoka_utaha.png?v=5e4d9df20331",
+        "alt": "霞之丘诗羽样张立绘",
+        "sourceShowcaseId": "pc_kasumigaoka_utaha_pc_kasumigaoka_utaha_utaha_signing_event_author_line",
+        "sourceShowcaseSha256": "b8c1a5513096c3ab7b53cf01a03c4442daec9338f91b4ac6e8cf53505cca65df"
       },
       "visual_dna": {
         "hair": "黑色长直发 · 白色发箍",

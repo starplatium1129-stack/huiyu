@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "viviana_arknights",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "viviana_arknights",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🕯️",
       "portrait": {
-        "image": "../assets/characters/popular-viviana_arknights.png?v=5",
-        "alt": "薇薇安娜 样张立绘"
+        "image": "../assets/characters/popular-viviana_arknights.png?v=c3779af9028f",
+        "alt": "薇薇安娜样张立绘",
+        "sourceShowcaseId": "pc_viviana_arknights_pc_viviana_arknights_viviana_autumn_golden_forest_promenade",
+        "sourceShowcaseSha256": "c159f53e50e677eec01b12fec7a40f043a47cf91b31ef44eec0923f142ac2538"
       },
       "visual_dna": {
         "hair": "波浪金发及腰 · 贵族卷发",

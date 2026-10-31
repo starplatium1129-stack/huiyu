@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_training_ground_fall",
+  "revision": 1,
+  "sortOrder": 2803,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_training_ground_fall",
+    "characterId": "gamma_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "伽玛 · 训练场上的平地摔",
+    "category": "头脑军师",
+    "description": "庭园训练场上，伽玛难得亲自下场练习剑术。理论她倒背如流，身体却完全不听话——这一跤摔得结结实实，她坐在地上，眼眶发红，却还是攥紧了剑。",
+    "recommendedSize": "832x1216",
+    "location": "shadow garden training ground with wooden dummies and weapon racks",
+    "action": "sitting on the ground after a clumsy fall, holding a practice sword, teary frustrated expression, refusing to give up",
+    "timeOfDay": "day",
+    "lighting": "训练场正午的明亮日光",
+    "camera": "full_shot",
+    "mood": "endearing clumsiness, stubborn perseverance",
+    "promptProse": "Gamma understands every sword form perfectly — her feet simply refuse. Fallen but unbowed, she grips her sword again.",
+    "promptTokens": [
+      "training ground",
+      "practice sword",
+      "fall",
+      "wooden dummy",
+      "determination"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "The weakest of the Seven Shadows falls again, and stands up again. That, too, is Gamma.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_matsuri_night_market",
+  "revision": 1,
+  "sortOrder": 2798,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_matsuri_night_market",
+    "characterId": "gamma_shadow",
+    "outfitId": "matsuri_yukata",
+    "title": "伽玛 · 祭典夜市的巡店",
+    "category": "盛典巡店",
+    "description": "夏日祭的夜市里，伽玛穿着牡丹浴衣慢慢巡视四越商会的连排摊位。灯笼的光映在她脸上，摊主们纷纷挺直腰板——会长来查账了。",
+    "recommendedSize": "832x1216",
+    "location": "summer festival night market street lined with lantern-lit stalls of a trading company",
+    "action": "walking slowly through the night market inspecting stalls, yukata, holding a small ledger, gentle smile",
+    "timeOfDay": "night",
+    "lighting": "夜市灯笼的暖橙光与远处烟火的闪光",
+    "camera": "full_shot",
+    "mood": "festive warmth, quiet authority among the stalls",
+    "promptProse": "In a peony yukata, Gamma strolls the festival night market, checking each Mitsugoshi stall with a smile and a ledger.",
+    "promptTokens": [
+      "night market",
+      "lanterns",
+      "festival",
+      "yukata",
+      "stalls",
+      "fireworks"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Even at a festival, Gamma counts the takings — but tonight, she lets herself enjoy the lanterns a little.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

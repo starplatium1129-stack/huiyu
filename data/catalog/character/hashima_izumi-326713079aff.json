@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hashima_izumi",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 244,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "hashima_izumi",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🎨",
       "portrait": {
-        "image": "../assets/characters/popular-hashima_izumi.png?v=e9b56c8283f2",
+        "image": "../assets/characters/popular-hashima_izumi.png?v=36dc432ef6ab",
         "alt": "波岛出海样张立绘",
-        "sourceShowcaseId": "pc_hashima_izumi_izumi_sunset_slope_bicycle_walk_blush",
-        "sourceShowcaseSha256": "85abe6387df2e474299c42e55da43092e09e0a6c21710c88bfaf6fb9189e0095"
+        "sourceShowcaseId": "pc_hashima_izumi_pc_hashima_izumi_izumi_school_gate_steps_playful_hop_headpat",
+        "sourceShowcaseSha256": "82f58051d5c13e685f8d978fc5846cefbb6030bdd89b589b8557e4be72c1baf6"
       },
       "visual_dna": {
         "hair": "柔顺茶褐色中长双马尾 · 俏皮微翘发梢 · 充满元气学妹活力",

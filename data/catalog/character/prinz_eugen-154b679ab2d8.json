@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "prinz_eugen",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 217,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "prinz_eugen",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🌹",
       "portrait": {
-        "image": "../assets/characters/popular-prinz_eugen.png?v=dc5311d55071",
+        "image": "../assets/characters/popular-prinz_eugen.png?v=d38a93c70832",
         "alt": "欧根亲王样张立绘",
-        "sourceShowcaseId": "pc_prinz_eugen_prinz_eugen_morning_knit_coffee",
-        "sourceShowcaseSha256": "e3725aaf5bf7ea15e412773e1de8796bb668c1d60f8ef9973b0428ec5088748c"
+        "sourceShowcaseId": "pc_prinz_eugen_pc_prinz_eugen_prinz_eugen_officer_uniform_deck_sunset_command",
+        "sourceShowcaseSha256": "87588d0d421c9848fd61c82b5ca48b7d763141cce8e99c2e5bbcba975e679192"
       },
       "visual_dna": {
         "hair": "优雅浅灰长发 · 标志性侧编双辫 · 额前一抹艳丽绯红挑染",

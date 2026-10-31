@@ -1,7 +1,7 @@
 <template>
   <section ref="setupRoot" class="local-setup" aria-labelledby="local-setup-title">
     <div class="setup-heading">
-      <div><h2 id="local-setup-title" ref="setupTitle" tabindex="-1">ComfyUI 绘图与本地聊天</h2></div>
+      <div><h2 id="local-setup-title" ref="setupTitle" tabindex="-1">模型与运行环境</h2></div>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="loading || setupBusy || workspaceSaving" @click="refresh"><ArchiveIcon name="refresh" />{{ loading ? '检查中…' : '重新检查' }}</button>
     </div>
     <p v-if="!isLocal" class="setup-note">请在运行绘遇的电脑上完成配置。</p>
@@ -9,23 +9,23 @@
       <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
       <p v-if="workspaceError && !workspaceOpen" class="setup-error" role="alert">{{ workspaceError }}</p>
       <div v-if="workspacePending" class="setup-restart" role="status">
-        <ArchiveIcon name="refresh" /><div><h3>新位置已保存，重启后继续</h3><code>{{ workspaceSavedRoot }}</code></div>
+        <ArchiveIcon name="refresh" /><div><h3>路径已保存，重启生效</h3><code>{{ workspaceSavedRoot }}</code></div>
         <button v-if="desktop?.restartForSetup" class="btn btn-primary" type="button" :disabled="blocked || setupBusy || manualBusy || workspaceSaving || restarting" @click="restartForSetup">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
-        <span v-else>退出并重新打开绘遇后继续。</span>
+        <span v-else>请重启绘遇。</span>
       </div>
       <div class="setup-location-card">
         <span class="setup-folder"><ArchiveIcon name="folder" /></span>
-        <div><strong>存放位置</strong><code>{{ snapshot?.workspace.path || (loading ? '正在读取位置…' : '位置尚未确认') }}</code></div>
+        <div><strong>存放位置</strong><code>{{ snapshot?.workspace.path || (loading ? '读取中…' : '未设置') }}</code></div>
         <button v-if="desktop" ref="workspaceButton" class="btn btn-ghost btn-sm" type="button" :disabled="blocked || loading || workspaceLoading || workspaceSaving || setupBusy || manualBusy" @click="chooseWorkspace">{{ workspaceLoading ? '选择中…' : '更换位置' }}</button>
       </div>
-      <p v-if="!desktop" class="setup-note">需要更换存放位置时，请在绘遇桌面版中选择文件夹。</p>
-      <p v-if="!snapshot && loading" role="status" class="setup-note">正在读取推荐模型和下载清单… <button class="btn btn-quiet btn-sm" type="button" @click="cancelCheck">取消检查</button></p>
+      <p v-if="!desktop" class="setup-note">请在桌面端设置中更换存储目录。</p>
+      <p v-if="!snapshot && loading" role="status" class="setup-note">读取模型清单中… <button class="btn btn-quiet btn-sm" type="button" @click="cancelCheck">取消检查</button></p>
       <template v-if="snapshot">
         <div v-show="!workspacePending" class="setup-download-step">
           <LocalSetupAutomation :snapshot="snapshot" :status-confirmed="currentCheck" :workspace-blocked="workspacePending || workspaceUnconfirmed" :blocked="blocked || manualBusy || workspaceLoading || workspaceSaving || restarting" :settings-revision="settingsRevision" :can-restart="!!desktop?.restartForSetup" :can-choose-workspace="!!desktop" :restarting="restarting" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" @phase="setupPhase = $event" @configured="emit('configured')" @restart="restartForSetup" @workspace="chooseWorkspace" />
         </div>
         <details v-if="!setupBusy" class="setup-details">
-          <StudioDisclosureSummary>已有 ComfyUI？手动连接与文件管理</StudioDisclosureSummary>
+          <StudioDisclosureSummary>手动配置与已有环境</StudioDisclosureSummary>
           <div data-disclosure-content>
             <p class="setup-note">{{ basicComplete ? '已确认环境、模型和服务连接。' : nextStep }}</p>
             <LocalSetupPreparation :snapshot="snapshot" :desktop="!!desktop" :blocked="blocked || workspaceLoading || workspaceSaving || restarting" :workspace-pending="workspacePending" :workspace-unconfirmed="workspaceUnconfirmed" @busy="manualBusy = $event" @workspace="openWorkspace" @refresh="refresh" @verification-result="recordVerification" @download-result="recordDownload" />

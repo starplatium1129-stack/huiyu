@@ -24,7 +24,7 @@
         <p v-if="!isLocalHost" id="guest-guide-description">生成任务在分享者的电脑上执行。</p>
       </div>
       <footer class="guest-guide-actions">
-        <RouterLink class="btn btn-quiet" to="/guide" @click="dismiss"><span class="studio-control-label">翻开使用指南</span></RouterLink>
+        <RouterLink class="btn btn-quiet" to="/guide" @click="dismiss"><span class="studio-control-label">使用指南</span></RouterLink>
         <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">开始配置</button>
         <button ref="dismissButton" class="btn" :class="isLocalHost ? 'btn-ghost' : 'btn-primary'" type="button" @click="dismiss">
           {{ isLocalHost ? '先浏览' : '开始浏览' }}

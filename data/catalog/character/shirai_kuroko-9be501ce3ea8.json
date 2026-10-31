@@ -1,66 +1,13 @@
 {
   "kind": "character",
   "id": "shirai_kuroko",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 198,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shirai_kuroko",
     "profile": {
-      "id": "shirai_kuroko",
-      "name": "白井黑子",
-      "alias": [
-        "白井黒子",
-        "Shirai Kuroko"
-      ],
-      "type": "popular",
-      "portrait": {
-        "image": "../assets/characters/popular-shirai_kuroko.png?v=5899303e19df",
-        "alt": "白井黑子样张立绘",
-        "sourceShowcaseId": "pc_shirai_kuroko_shirai_kuroko_daily_station_map",
-        "sourceShowcaseSha256": "b5ea72fd2b28533ea58eaadab778aef6988311ef186ad47d09d62be29dfb529e"
-      },
-      "visual_dna": {
-        "signature": "Brown twin tails tied with ribbons and brown eyes",
-        "hair": "brown_hair, twintails",
-        "eyes": "brown_eyes",
-        "style": "anime"
-      },
-      "personality": [
-        "大小姐腔调",
-        "正义感强烈",
-        "对美琴极度痴情",
-        "身手敏捷"
-      ],
-      "likes": [
-        "和美琴相处",
-        "维护街区秩序",
-        "精致的小点心"
-      ],
-      "bg_story": "白井黑子是《某科学的超电磁炮》中的风纪委员，拥有空间移动能力，也是御坂美琴的学妹与室友。她在美琴面前常常表现得格外热切，但处理风纪委员的工作时十分认真。与支部伙伴初春饰利配合，是她日常生活中重要的一部分。",
-      "identity": {
-        "role": "风纪委员第177支部成员 / 常盘台学生",
-        "age": "13岁（常盘台中学一年级）",
-        "classificationSource": "https://toaru-project.com/railgun_t/chara/kuroko.html"
-      },
-      "source": "A Certain Scientific Railgun",
-      "traits": [
-        "brown_hair",
-        "twintails",
-        "brown_eyes"
-      ],
-      "tags": [
-        "白井黑子",
-        "某科学的超电磁炮",
-        "日常"
-      ],
-      "accent_color": "#B97972",
-      "bg_color": "#202833",
-      "palette": [
-        "#B97972",
-        "#F4EEDF"
-      ],
       "relationshipGraph": {
         "version": 1,
         "work": "某科学的超电磁炮",
@@ -292,9 +239,62 @@
           }
         ]
       },
+      "palette": [
+        "#B97972",
+        "#F4EEDF"
+      ],
+      "accent_color": "#B97972",
+      "visual_dna": {
+        "signature": "Brown twin tails tied with ribbons and brown eyes",
+        "hair": "brown_hair, twintails",
+        "eyes": "brown_eyes",
+        "style": "anime"
+      },
+      "voiceJa": "お姉様〜！黒子の愛を受け止めてくださいまし！……っと、巡回に行かねば",
+      "alias": [
+        "白井黒子",
+        "Shirai Kuroko"
+      ],
+      "source": "A Certain Scientific Railgun",
+      "likes": [
+        "和美琴相处",
+        "维护街区秩序",
+        "精致的小点心"
+      ],
+      "name": "白井黑子",
+      "identity": {
+        "role": "风纪委员第177支部成员 / 常盘台学生",
+        "age": "13岁（常盘台中学一年级）",
+        "classificationSource": "https://toaru-project.com/railgun_t/chara/kuroko.html"
+      },
+      "tags": [
+        "白井黑子",
+        "某科学的超电磁炮",
+        "日常"
+      ],
+      "traits": [
+        "brown_hair",
+        "twintails",
+        "brown_eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-shirai_kuroko.png?v=1609b5b1b68b",
+        "alt": "白井黑子样张立绘",
+        "sourceShowcaseId": "pc_shirai_kuroko_pc_shirai_kuroko_shirai_kuroko_daily_station_map",
+        "sourceShowcaseSha256": "428e162c365ed6bf22efce13b6b64aed9f39651db3f6986298383b1b362a7aa8"
+      },
+      "bg_story": "白井黑子是《某科学的超电磁炮》中的风纪委员，拥有空间移动能力，也是御坂美琴的学妹与室友。她在美琴面前常常表现得格外热切，但处理风纪委员的工作时十分认真。与支部伙伴初春饰利配合，是她日常生活中重要的一部分。",
       "speech": "这里的情况由风纪委员处理。请先退到安全的地方，我会查清楚的。",
+      "personality": [
+        "大小姐腔调",
+        "正义感强烈",
+        "对美琴极度痴情",
+        "身手敏捷"
+      ],
       "voice": "姐姐大人～！黑子今天也全身心地渴望着为您效劳！……咳，风纪委员白井黑子，随时听候调度！",
-      "voiceJa": "お姉様〜！黒子の愛を受け止めてくださいまし！……っと、巡回に行かねば"
+      "id": "shirai_kuroko",
+      "bg_color": "#202833",
+      "type": "popular"
     },
     "popular": {
       "id": "shirai_kuroko",

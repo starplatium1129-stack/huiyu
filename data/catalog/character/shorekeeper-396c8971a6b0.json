@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shorekeeper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.914Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shorekeeper",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-shorekeeper.png?v=3a3601415204",
-        "alt": "守岸人 · 黑海岸的潮起场景样张"
+        "image": "../assets/characters/popular-shorekeeper.png?v=66401121b7d9",
+        "alt": "守岸人样张立绘",
+        "sourceShowcaseId": "pc_shorekeeper_pc_shorekeeper_shorekeeper_sfw_b7_04",
+        "sourceShowcaseSha256": "2ed03d927918ef8a354dfe67c8e6040f09e0dc83f800ddda0320d2d8b2019264"
       },
       "visual_dna": {
         "signature": "The Shorekeeper from Wuthering Waves, with long layered blue hair and quiet violet eyes. Her precise, gentle gestures suggest someone learning to appreciate small experiences; the veil is part of her selected coastal attire.",

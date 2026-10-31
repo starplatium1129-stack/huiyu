@@ -8,7 +8,7 @@
       <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭对话归档" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p>每条剧情超过 20 条对话时，早期消息自动转入本地归档。导出包含全部剧情；并入仅恢复当前剧情。</p>
+      <p>剧情超 20 条时早期消息自动归档。导出含全部剧情，并入仅恢复当前剧情。</p>
 
       <div class="archive-counts" role="list" aria-label="各角色归档条数">
         <span v-for="id in characterIds" :key="id" role="listitem">
@@ -16,13 +16,13 @@
         </span>
       </div>
 
-      <div v-if="!totalCount" class="archive-empty" role="status"><ArchiveIcon name="book" /><strong>当前没有可显示的归档消息。</strong></div>
+      <div v-if="!totalCount" class="archive-empty" role="status"><ArchiveIcon name="book" /><strong>暂无归档消息</strong></div>
       <div class="archive-actions" role="group" aria-label="归档备份与整理">
         <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportJson">导出 JSON</button>
         <button class="btn btn-ghost btn-sm" type="button" :aria-disabled="exporting || undefined" :aria-busy="exporting" @click="exportMarkdown">导出 Markdown</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="pickArchive">导入归档</button>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="!storage.archiveCount(activeChar)" :aria-disabled="restoring || undefined" :aria-busy="restoring" @click="restoreCurrent">
-          归档并入当前剧情
+          并入当前剧情
         </button>
         <button class="btn btn-danger btn-sm" type="button" :disabled="!totalCount" :aria-disabled="clearing || undefined" :aria-busy="clearing" @click="clearArchive">
           清空归档

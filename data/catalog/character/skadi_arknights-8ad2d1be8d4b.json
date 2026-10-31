@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "skadi_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 33,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "skadi_arknights",
     "profile": {
@@ -76,8 +76,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-skadi_arknights.png?v=5",
-        "alt": "斯卡蒂热门角色立绘"
+        "image": "../assets/characters/popular-skadi_arknights.png?v=137ff784fead",
+        "alt": "斯卡蒂样张立绘",
+        "sourceShowcaseId": "pc_skadi_arknights_pc_skadi_arknights_skadi_arknights_abyss_shore",
+        "sourceShowcaseSha256": "e44f7fd7b3ad9a2a0f969c8cd5644cb207985fa62fd0c9dec42e9a1e6bf69ec7"
       },
       "speech": "斯卡蒂向你致以问候。",
       "accent_color": "#38bdf8",

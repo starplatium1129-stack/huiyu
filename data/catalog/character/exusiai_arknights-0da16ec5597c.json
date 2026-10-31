@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "exusiai_arknights",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 24,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "exusiai_arknights",
     "profile": {
@@ -80,8 +80,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-exusiai_arknights.png?v=5",
-        "alt": "能天使热门角色立绘"
+        "image": "../assets/characters/popular-exusiai_arknights.png?v=1fbb52001a6c",
+        "alt": "能天使样张立绘",
+        "sourceShowcaseId": "pc_exusiai_arknights_pc_exusiai_arknights_exusiai_arknights_wing_rest",
+        "sourceShowcaseSha256": "01526d203887b1fb678f4c9075cbb72a0a89d3bdcde521aefbaa724689343364"
       },
       "speech": "能天使向你致以问候。",
       "accent_color": "#38bdf8",

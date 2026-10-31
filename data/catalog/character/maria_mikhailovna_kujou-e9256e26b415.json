@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maria_mikhailovna_kujou",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.918Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "maria_mikhailovna_kujou",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-maria_mikhailovna_kujou.png?v=9c3031c8deb5",
-        "alt": "玛夏 · 学生会书记的午后场景样张"
+        "image": "../assets/characters/popular-maria_mikhailovna_kujou.png?v=8502ade43ef4",
+        "alt": "玛夏样张立绘",
+        "sourceShowcaseId": "pc_maria_mikhailovna_kujou_pc_maria_mikhailovna_kujou_maria_mikhailovna_kujou_sfw_b9_04",
+        "sourceShowcaseSha256": "e12e9ea373121d382755f4e99d9e61fc8cfbd99807cb142a528a7b337c97da4d"
       },
       "visual_dna": {
         "signature": "Mariya Mikhailovna Kujou, Masha from Alya Sometimes Hides Her Feelings in Russian, with long softly wavy light-brown hair, an ahoge and warm brown eyes. Her gentle smile and attentive posture suggest a considerate senior student.",

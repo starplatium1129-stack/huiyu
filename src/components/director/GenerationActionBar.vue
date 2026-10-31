@@ -89,14 +89,14 @@ const status = computed(() => props.busy ? 'loading' : props.presentation.needsR
 const pressRipple = usePressRipple(() => !props.busy && !props.presentation.needsReview)
 const cancellationPending = computed(() => props.presentation.phase === 'cancelling' && !props.presentation.canRetryCancellation)
 const actionText = computed(() => props.busy && props.presentation.phase === 'cancelling' ? props.presentation.canRetryCancellation ? '重试停止' : '正在停止…'
-  : props.busy && props.presentation.phase === 'preparing' ? '取消准备' : ({ idle: '生成图片', loading: '停止绘制', success: '完成 · 再生成', error: '重试生成', review: '重新查询原请求' })[status.value])
-const actionLabel = computed(() => status.value === 'success' ? '生成完成，再生成图片' : actionText.value)
+  : props.busy && props.presentation.phase === 'preparing' ? '取消准备' : ({ idle: '生成图片', loading: '停止绘制', success: '继续生成', error: '重试生成', review: '重新查询' })[status.value])
+const actionLabel = computed(() => status.value === 'success' ? '继续生成图片' : actionText.value)
 const actionIcon = computed(() => ({ idle: 'spark', loading: 'close', success: 'success', error: 'refresh', review: 'info' } as const)[status.value])
 const missingCharacter = computed(() => props.blockedReason?.startsWith('缺少角色 LoRA'))
 const statusSummary = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : !props.online ? props.provider === 'native' ? '原生配置待检查' : '服务未连接'
   : props.error ? '绘制未完成' : props.stopped ? '已停止' : props.blockedReason ? '待补充设置' : props.connected === false ? '生成时启动服务' : '准备就绪')
 const announcement = computed(() => props.busy || props.presentation.needsReview ? props.presentation.message : props.stopped ? '绘制已停止。'
-  : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成，可以查看画布或再次生成。' : '')
+  : status.value === 'error' ? `生成失败：${props.error}` : status.value === 'success' ? '生成完成。' : '')
 const unavailableReason = computed(() => !props.online ? props.readinessText || '绘图配置待检查' : props.blockedReason || '')
 const progressValue = computed(() => props.presentation.progress === null ? null : Math.round(props.presentation.progress * 100))
 function activate() {

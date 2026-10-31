@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kochou_shinobu",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.901Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kochou_shinobu",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🦋",
       "portrait": {
-        "image": "../assets/characters/popular-kochou_shinobu.png?v=1",
-        "alt": "蝴蝶忍 样张立绘"
+        "image": "../assets/characters/popular-kochou_shinobu.png?v=43fa4275bc88",
+        "alt": "蝴蝶忍样张立绘",
+        "sourceShowcaseId": "pc_kochou_shinobu_pc_kochou_shinobu_shinobu_wisteria_garden_smile",
+        "sourceShowcaseSha256": "e3e30d7405e28691516de00336d202d61f1cea1ac546b1cd390ae18b9786ed07"
       },
       "visual_dna": {
         "hair": "黑发渐变紫发梢 · 发髻与蝴蝶饰",

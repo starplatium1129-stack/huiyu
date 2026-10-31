@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "eta_shadow/researcher_lab_coat",
+  "revision": 1,
+  "sortOrder": 1933,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "characterId": "eta_shadow",
+    "outfit": {
+      "id": "researcher_lab_coat",
+      "name": "褪色白大褂研究装",
+      "prose": "A faded white lab coat over slime clothes, pockets stuffed with notes, vials and half-finished prototypes.",
+      "tokens": [
+        "lab_coat",
+        "white_coat",
+        "pocket",
+        "vial",
+        "notebook"
+      ],
+      "characterId": "eta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

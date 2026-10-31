@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ikaros",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 91,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.893Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ikaros",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/popular-ikaros.png?v=5",
-        "alt": "伊卡洛斯 样张立绘"
+        "image": "../assets/characters/popular-ikaros.png?v=952b7b0319a5",
+        "alt": "伊卡洛斯样张立绘",
+        "sourceShowcaseId": "pc_ikaros_pc_ikaros_ikaros_maid_cafe_serving_deadpan",
+        "sourceShowcaseSha256": "741289cec64ebebccc97b9b6b0ce8a29f0acc0bd36544e6ddde0b43a3450a641"
       },
       "visual_dna": {
         "hair": "淡粉渐变超长双马尾 · 灵动呆毛 · 机械耳饰",

@@ -31,7 +31,7 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
     </header>
     <StudioCopyButton class="btn btn-ghost btn-sm" label="复制提示词" :action="copy" :content-key="drawing.recipe.value.prompt" :disabled="!drawing.recipe.value.prompt" />
     <p v-if="drawing.recipe.value.error" role="alert">{{ drawing.recipe.value.error }}</p>
-    <p v-if="!drawing.recipe.value.prompt" class="native-prompt-empty">选择场景或填写画面描述后，提示词会在这里更新。</p>
+    <p v-if="!drawing.recipe.value.prompt" class="native-prompt-empty">选择场景或输入描述后生成提示词。</p>
     <p v-else class="native-prompt-text" aria-label="画面提示词">{{ drawing.recipe.value.prompt }}</p>
     <details v-if="negative" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
 

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shizuka_hiratsuka",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 233,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shizuka_hiratsuka",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🍜",
       "portrait": {
-        "image": "../assets/characters/popular-shizuka_hiratsuka.png?v=4fe47e2e43e7",
+        "image": "../assets/characters/popular-shizuka_hiratsuka.png?v=d0d985b9471f",
         "alt": "平冢静样张立绘",
-        "sourceShowcaseId": "pc_shizuka_hiratsuka_shizuka_school_rooftop_confiscated_cigarette",
-        "sourceShowcaseSha256": "a33febb761db839b50fffa3818cad0d651bf50df6dc965ed63cddfa6c0333cf3"
+        "sourceShowcaseId": "pc_shizuka_hiratsuka_pc_shizuka_hiratsuka_shizuka_ramen_stall_warm_coffee",
+        "sourceShowcaseSha256": "273d633bd13883465c375f1b20cc4a0bf4a5e6dd620e30ea93952064903c502b"
       },
       "visual_dna": {
         "hair": "乌黑柔顺干练及腰长发 · 侧分成熟刘海 · 帅气英姿与女人味并存",

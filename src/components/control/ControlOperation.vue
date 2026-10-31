@@ -31,9 +31,9 @@
       <RouterLink class="btn btn-ghost btn-sm" :to="{ query: route.query, hash: transfer.kind === 'prepare-pixai' ? '#control-interrogate' : '#control-inference' }">查看任务与取消</RouterLink>
     </SetupTransferProgress>
     <div v-else-if="opDisconnected" class="operation-detail" role="status">
-      <p class="operation-msg">上次启动已完成，但 ComfyUI 当前未连接。请重新启动；若仍无法连接，可查看启动日志。</p>
+      <p class="operation-msg">ComfyUI 未连接，请重启或查看日志。</p>
       <div class="operation-controls">
-        <button class="btn btn-ghost btn-sm" type="button" :disabled="status.actionBusy.value || status.opBusy.value" @click="actions.serviceAction('comfy', 'start')">重新启动</button>
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="status.actionBusy.value || status.opBusy.value" @click="actions.serviceAction('comfy', 'start')">重启</button>
         <RouterLink class="btn btn-quiet btn-sm" :to="{ query: route.query, hash: '#control-logs' }">查看日志</RouterLink>
       </div>
     </div>

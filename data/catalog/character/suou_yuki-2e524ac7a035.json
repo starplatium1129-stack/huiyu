@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suou_yuki",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "suou_yuki",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-suou_yuki.png?v=0ae9e780d43c",
-        "alt": "周防有希 · 学生会宣传委员的海报场景样张"
+        "image": "../assets/characters/popular-suou_yuki.png?v=3d7f1e2d8f3c",
+        "alt": "周防有希样张立绘",
+        "sourceShowcaseId": "pc_suou_yuki_pc_suou_yuki_suou_yuki_sfw_b8_01",
+        "sourceShowcaseSha256": "84b67a2a8e7223860a7d5db13710f908428b00f50831dc88dac22ed2e4a2570b"
       },
       "visual_dna": {
         "signature": "Yuki Suou from Alya Sometimes Hides Her Feelings in Russian, with long black hair in a half-up style, a small ahoge and violet eyes. Her formal smile can shift quickly into lively, unguarded enthusiasm at home.",

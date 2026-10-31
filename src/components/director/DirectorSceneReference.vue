@@ -2,13 +2,13 @@
   <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" :style="{ '--reference-image-ratio': imageRatio && !failed ? String(imageRatio) : undefined }" aria-label="当前场景参考">
     <div class="scene-reference-picture tw:relative tw:overflow-hidden tw:grid tw:rounded-lg" :class="{ 'is-restricted': restricted }">
       <img v-if="image.src && !failed" v-bind="image" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" />
-      <div v-else class="scene-reference-empty tw:grid tw:gap-s-3 tw:p-s-4 tw:text-body tw:text-center"><ArchiveIcon name="image" /><span>{{ loading ? '正在核对参考样张…' : !entry || failed ? '这一幕暂未提供可核实的样张' : '分级参考已遮挡' }}</span></div>
+      <div v-else class="scene-reference-empty tw:grid tw:gap-s-3 tw:p-s-4 tw:text-body tw:text-center"><ArchiveIcon name="image" /><span>{{ loading ? '核对样张中…' : !entry || failed ? '暂无参考样张' : '已遮挡' }}</span></div>
       <span v-if="restricted && canLoad && !failed" class="scene-reference-mask tw:absolute tw:grid tw:text-primary tw:text-label">分级参考 · 已模糊</span>
     </div>
     <figcaption>
-      <span class="scene-reference-label tw:block tw:mb-s-2 tw:text-secondary tw:text-label-xs">场景参考 · 非本次生成</span>
+      <span class="scene-reference-label tw:block tw:mb-s-2 tw:text-secondary tw:text-label-xs">场景参考</span>
       <strong>{{ scene.title }}</strong>
-      <p>用于观察场景氛围。实际画面以当前角色、造型与生成设置为准。</p>
+      <p>观察场景氛围，出图以当前设置为准。</p>
       <dl class="scene-reference-settings tw:flex tw:flex-wrap tw:m-0 tw:text-label">
         <div><dt>镜头</dt><dd>{{ shot }}</dd></div>
         <div><dt>构图</dt><dd>{{ composition }}</dd></div>
@@ -21,9 +21,7 @@
 
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
-
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
-
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'

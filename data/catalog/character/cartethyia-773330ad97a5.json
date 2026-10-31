@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cartethyia",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.919Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "cartethyia",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-cartethyia.png?v=09e806ae5a04",
-        "alt": "卡提希娅 · 埃格拉小镇的归还场景样张"
+        "image": "../assets/characters/popular-cartethyia.png?v=fbeecb6e9e92",
+        "alt": "卡提希娅样张立绘",
+        "sourceShowcaseId": "pc_cartethyia_pc_cartethyia_cartethyia_sfw_b9_02",
+        "sourceShowcaseSha256": "ccfcf9408a7920e323dc304f14c5b87653f326a218580385b25d412d245e9d38"
       },
       "visual_dna": {
         "signature": "Cartethyia from Wuthering Waves, a wandering knight with long blonde braided hair, clear blue eyes, pointed ears and a delicate halo. Her attentive posture softens in familiar town surroundings.",

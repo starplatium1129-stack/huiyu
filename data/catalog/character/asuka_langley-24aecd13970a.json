@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuka_langley",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.871Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "asuka_langley",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🔥",
       "portrait": {
-        "image": "../assets/characters/popular-asuka_langley.png?v=5",
-        "alt": "明日香 样张立绘"
+        "image": "../assets/characters/popular-asuka_langley.png?v=f4294ac26700",
+        "alt": "惣流/式波·明日香·兰格雷样张立绘",
+        "sourceShowcaseId": "pc_asuka_langley_pc_asuka_langley_asuka_langley_unit02_standby",
+        "sourceShowcaseSha256": "15a3d33859405f140c0a55f15ce6e7098376da2f92adede0595ea2d00826adf6"
       },
       "visual_dna": {
         "hair": "亮橙红及腰长双马尾",

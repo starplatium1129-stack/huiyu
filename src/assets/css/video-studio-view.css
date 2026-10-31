@@ -125,7 +125,6 @@ html .video-studio .video-mode-card:focus-visible { box-shadow:var(--focus-shado
 .video-advanced summary { @apply tw:min-h-[36px] tw:text-secondary tw:font-semibold tw:cursor-pointer; }
 .video-disclosure-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); min-height:var(--control-height-sm); padding:var(--s-2); margin-inline:calc(-1 * var(--s-2)); border-radius:var(--r-sm); }
 .video-disclosure-heading > span { min-width:0; }
-.video-disclosure-heading:hover { background:var(--bg-hover); }
 .video-disclosure-heading:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .video-advanced-grid { @apply tw:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); @apply tw:gap-s-3 tw:mt-s-3; }
 .video-steps-toggle { @apply tw:flex tw:items-start tw:gap-s-3; padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-deep); @apply tw:cursor-pointer tw:text-left; }

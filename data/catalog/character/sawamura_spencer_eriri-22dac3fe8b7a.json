@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sawamura_spencer_eriri",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 197,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "sawamura_spencer_eriri",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-sawamura_spencer_eriri.png?v=c607ef9e2cbe",
+        "image": "../assets/characters/popular-sawamura_spencer_eriri.png?v=cb45f759b44f",
         "alt": "泽村·斯宾塞·英梨梨样张立绘",
-        "sourceShowcaseId": "pc_sawamura_spencer_eriri_sawamura_spencer_eriri_intimate_art_room_pencil_gaze",
-        "sourceShowcaseSha256": "b0d765eaa46a060a0237dec1f08aa3b611d4e4670724600995da0b19f0ca2768"
+        "sourceShowcaseId": "pc_sawamura_spencer_eriri_pc_sawamura_spencer_eriri_sawamura_spencer_eriri_daily_gallery_notebook",
+        "sourceShowcaseSha256": "7e3504d30cdbcecd31fc54c184578c4b094cabc0c26abda7fa0ed1df53a2b192"
       },
       "visual_dna": {
         "signature": "Long blonde twin tails, blue eyes, and ribbon hair ties",

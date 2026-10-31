@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asia_argento",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 231,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "asia_argento",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/popular-asia_argento.png?v=608174d7834c",
+        "image": "../assets/characters/popular-asia_argento.png?v=55685ac00579",
         "alt": "爱西亚·阿基多样张立绘",
-        "sourceShowcaseId": "pc_asia_argento_asia_living_room_gentle_bandage",
-        "sourceShowcaseSha256": "94a966a1bb7387338da3fa5b949108fc32c1d8364aa73f17a944e10e00796d5b"
+        "sourceShowcaseId": "pc_asia_argento_pc_asia_argento_asia_living_room_gentle_bandage",
+        "sourceShowcaseSha256": "b609648856ef78f680eed9b8d893f514c31f731d80ecef5853ad0e3c01e52ad8"
       },
       "visual_dna": {
         "hair": "柔顺纯金及腰长发 · 额前齐刘海 · 散发圣洁纯真光晕",

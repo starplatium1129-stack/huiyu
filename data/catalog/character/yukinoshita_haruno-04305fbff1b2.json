@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_haruno",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yukinoshita_haruno",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🍷",
       "portrait": {
-        "image": "../assets/characters/popular-yukinoshita_haruno.png?v=1",
-        "alt": "雪之下阳乃 样张立绘",
-        "sourceShowcaseId": "pc_yukinoshita_haruno_haruno_cafe_terrace_teasing_gaze",
-        "sourceShowcaseSha256": "075078e4274756f8937ae5a2af4cf5204f693e2d9d30649e425a7a6844221e89"
+        "image": "../assets/characters/popular-yukinoshita_haruno.png?v=fbe0b94baa09",
+        "alt": "雪之下阳乃样张立绘",
+        "sourceShowcaseId": "pc_yukinoshita_haruno_pc_yukinoshita_haruno_haruno_izakaya_cheers_smirk",
+        "sourceShowcaseSha256": "5c3329037f329895b8adb3647d5771eb63de7b563f1b2298b41da17eba994d1b"
       },
       "visual_dna": {
         "hair": "修剪至锁骨处的乌黑靓丽直发",

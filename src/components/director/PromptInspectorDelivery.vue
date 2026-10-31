@@ -17,13 +17,13 @@
 
           <!-- 批量出图入口（多场景 / 多角色） -->
           <div class="batch-entry-row">
-            <StudioTooltip anchor :content="generationBusy ? BUSY_HINT : (batchRunning ? '查看本批出图进度' : '批量选择场景或角色，生成后预览成片并自动入册')">
+            <StudioTooltip anchor :content="generationBusy ? BUSY_HINT : (batchRunning ? '查看批量进度' : '批量生成多场景或多角色')">
               <button
                 class="btn btn-ghost"
                 type="button"
                 :disabled="generationBusy"
                 @click="batchOpen = true"
-              >{{ batchRunning ? '查看批量进度' : '批量出图 · 场景 / 多角色' }}</button>
+              >{{ batchRunning ? '批量进度' : '批量出图' }}</button>
             </StudioTooltip>
           </div>
 
@@ -32,8 +32,8 @@
 
           <!-- 出图自动入册偏好（2026-08-31 用户偏好：默认关；开则直出成片自动进作品册，
                批量/队列不受此开关影响，它们按收集语义始终入册） -->
-          <ToggleSwitch v-model="autoSaveToGallery" class="auto-save-gallery-row" label="出图自动存入作品册">
-            <span class="auto-save-gallery-label">出图自动存入作品册</span>
+          <ToggleSwitch v-model="autoSaveToGallery" class="auto-save-gallery-row" label="出图自动入册">
+            <span class="auto-save-gallery-label">出图自动入册</span>
           </ToggleSwitch>
 
           <VoiceStudio

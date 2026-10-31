@@ -2,9 +2,8 @@
   <article class="gallery-shell gallery-page" ref="shellEl" :style="{ '--gallery-dock-height': `${selectionDockHeight}px` }">
     <header class="gallery-intro" data-route-arrive>
       <div class="gallery-heading-copy">
-        <p class="gallery-kicker"><ArchiveIcon name="image" />COLLECTION / 我的画集</p>
+        <p class="gallery-kicker"><ArchiveIcon name="image" />COLLECTION</p>
         <h1 class="gallery-title">我的作品</h1>
-        <p class="gallery-invitation">把心动留在画里，让故事慢慢成册。</p>
         <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
           <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
           <ArchiveIcon name="chevron-down" />
@@ -30,7 +29,7 @@
         <ArchiveIcon name="love" /> 收藏 {{ favoriteCount }}{{ galleryIndexLoading ? '+' : '' }}
       </button>
       </div>
-      <StudioSearch v-show="!albumsOpen && !trashMode" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜索场景、角色、风格或标签…" />
+      <StudioSearch v-show="!albumsOpen && !trashMode" v-model="searchQuery" class="gallery-search-field" label="搜索作品" placeholder="搜索场景、角色、标签…" />
       <GalleryRefinement v-if="!trashMode" v-show="!albumsOpen" ref="refinement"
         :filters="filterSnapshot" :projects="projectOptions" :characters="characterOptions" :tags="tagOptions"
         :generation-options="generationOptions" :smart-rule="currentSmartRule" :character-name="characterName"
@@ -51,14 +50,14 @@
 
     <div ref="selectionDock" class="gallery-selection-dock" :data-fluid-glass="selectMode ? '' : undefined">
     <div v-if="selectMode" class="gallery-bulkbar" role="region" aria-label="批量操作">
-      <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }} · Shift 连选</span></span>
+      <span class="gallery-bulk-count" aria-live="polite"><ArchiveIcon name="success" />已选 <strong>{{ selectedIds.size }}</strong><span>/ {{ visible.length }}</span></span>
       <span class="gallery-bulk-actions">
-        <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选（2–4 张）</button>
+        <button class="btn btn-primary btn-sm" type="button" :disabled="selectedIds.size < 2 || selectedIds.size > 4" @click="compareSelected">对比挑选 (2–4)</button>
         <StudioCheckbox :checked="allVisibleSelected" :indeterminate="!allVisibleSelected && visible.some(item => selectedIds.has(item.id))"
-          :disabled="!visible.length || galleryIndexLoading || !!galleryError" label="全选当前作品" @update:checked="selectAllVisible">{{ galleryIndexLoading ? '正在加载作品…' : '全选当前' }}</StudioCheckbox>
+          :disabled="!visible.length || galleryIndexLoading || !!galleryError" label="全选当前作品" @update:checked="selectAllVisible">{{ galleryIndexLoading ? '正在加载…' : '全选当前' }}</StudioCheckbox>
         <!-- Keep the confirmation opener focusable while busy; bulkDelete guards re-entry. -->
         <button class="btn btn-danger btn-sm" type="button" :disabled="!selectedIds.size" :aria-disabled="bulkDeleting || undefined"
-          @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站（${selectedIds.size}）` }}</button>
+          @click="bulkDelete">{{ bulkDeleting ? '处理中…' : `移入回收站 (${selectedIds.size})` }}</button>
         <button class="btn btn-ghost btn-sm" type="button" @click="finishSelection">完成</button>
       </span>
     </div>

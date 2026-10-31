@@ -11,7 +11,7 @@ struct Job {
     busy: bool, paused: bool, drained: bool, cancelled: bool, snapshot: Value,
 }
 #[derive(Default)]
-pub struct ResourceAssistant(Mutex<Job>);
+pub struct ResourceAssistant(Mutex<Job>, Mutex<()>);
 
 pub fn command(name: &str) -> bool {
     matches!(name, "resource_assistant_status" | "resource_assistant_pick" | "resource_assistant_install" | "resource_assistant_cancel" | "resource_assistant_finish")
@@ -24,6 +24,9 @@ pub fn trusted(window: &tauri::Webview<tauri::Wry>) -> bool {
         crate::ui_entry::native_origin(&url) && url.path() == "/resource-assistant.html")
 }
 pub fn open(app: &AppHandle) -> Result<(), String> {
+    // Opening can arrive from the UI and the single-instance launcher at once.
+    let host = app.state::<ResourceAssistant>();
+    let _opening = host.1.lock().map_err(|_| "无法打开资源安装助手，请重新启动绘遇。".to_string())?;
     if let Some(window) = app.get_webview_window("resource-assistant") {
         let _ = window.unminimize(); let _ = window.show(); let _ = window.set_focus(); return Ok(());
     }
@@ -46,8 +49,17 @@ pub fn open(app: &AppHandle) -> Result<(), String> {
     });
     Ok(())
 }
+
+pub fn open_in_background(app: &AppHandle) {
+    let app = app.clone();
+    // WebView2 window creation must not block the Windows event thread.
+    tauri::async_runtime::spawn_blocking(move || {
+        if let Err(error) = open(&app) { app.state::<AppState>().warn(&format!("open resource assistant: {error}")); }
+    });
+}
+
 #[tauri::command]
-pub fn open_resource_assistant(app: AppHandle) -> Result<(), String> { open(&app) }
+pub async fn open_resource_assistant(app: AppHandle) -> Result<(), String> { open(&app) }
 
 fn snapshot(job: &Job) -> Value {
     let mut value = json!({"stage":"idle","phase":"","done":0,"total":0,"preview":null,"result":null,"error":null});

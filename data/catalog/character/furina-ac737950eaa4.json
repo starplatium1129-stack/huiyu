@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "furina",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 69,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.871Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "furina",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🎭",
       "portrait": {
-        "image": "../assets/characters/popular-furina.png?v=5",
-        "alt": "芙宁娜 样张立绘"
+        "image": "../assets/characters/popular-furina.png?v=a89edc69994c",
+        "alt": "芙宁娜样张立绘",
+        "sourceShowcaseId": "pc_furina_pc_furina_furina_salon_solitaire_tea",
+        "sourceShowcaseSha256": "219cd503f2f8b29460adf11476aa7843dc83072235008732e111c70000631255"
       },
       "visual_dna": {
         "hair": "分层白发带深蓝挑染 · 卷曲大呆毛",

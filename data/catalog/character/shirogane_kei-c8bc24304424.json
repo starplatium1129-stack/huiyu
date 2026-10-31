@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirogane_kei",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shirogane_kei",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-shirogane_kei.png?v=6f93fc8b9ffe",
-        "alt": "白银圭 · 清晨的报纸配送路线场景样张"
+        "image": "../assets/characters/popular-shirogane_kei.png?v=f92b3064aba2",
+        "alt": "白银圭样张立绘",
+        "sourceShowcaseId": "pc_shirogane_kei_pc_shirogane_kei_shirogane_kei_sfw_b8_03",
+        "sourceShowcaseSha256": "47fe90a0427e5857d471412e9d25c40193e16c77be31151f70d80ebd7abeafc1"
       },
       "visual_dna": {
         "signature": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, clear blue eyes and a black headband. Her composed expression often hides the small satisfaction of handling practical matters well.",

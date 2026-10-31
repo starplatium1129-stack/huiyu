@@ -1,24 +1,24 @@
 <template>
   <article ref="archiveRoot" class="page character-page library-page character-editorial" tabindex="-1" :aria-busy="loading" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header" data-route-arrive><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
+    <header class="library-header" data-route-arrive><div><div class="page-kicker">ARCHIVE</div><h1>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
       kind="loading"
-      title="正在加载角色档案…"
+      title="加载中…"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
       kind="error"
       title="角色档案加载失败"
-      message="本地角色档案暂时无法加载，请检查后重试。"
+      message="请检查服务或重试。"
     >
       <button class="btn btn-primary" type="button" @click="retryProfiles">重新加载</button>
     </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="!characters.length"
       kind="empty"
-      title="暂未收录角色档案"
+      title="暂无角色"
     />
     <template v-else>
         <CharacterBookshelf v-if="showShelf || shelfVisited" v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @vue:mounted="shelfVisited = true" @select="selectCharacter" />
@@ -41,7 +41,7 @@
             :alt="frame.token === paintedPortrait?.token ? (portraitPending || portraitError ? current.name + '的原画（上次已读取）' : current.portrait?.alt || current.name) : ''" :aria-hidden="frame.token !== paintedPortrait?.token ? 'true' : undefined"
             loading="eager" decoding="async" @load="measurePortrait"
             @error="onPortraitError" />
-          <span v-if="!paintedPortrait && portraitPending" class="portrait-loading" role="status"><ArchiveIcon name="image" />正在加载人物立绘…</span>
+          <span v-if="!paintedPortrait && portraitPending" class="portrait-loading" role="status"><ArchiveIcon name="image" />立绘加载中…</span>
           <div v-if="!paintedPortrait && portraitView.state === 'missing'" class="portrait-missing" role="status">
             <ArchiveIcon name="image" class="portrait-missing-icon" />
             <strong class="portrait-missing-title">{{ portraitView.reason === 'empty' ? '立绘未登记' : '立绘缺失' }}</strong>
@@ -50,7 +50,7 @@
           <div class="portrait-footer" role="group" :aria-label="current.name + '的原画读取状态'" tabindex="-1">
             <div v-if="portraitFeedback || portraitError" class="portrait-feedback">
               <p v-if="portraitFeedback" role="status">{{ portraitFeedback }}</p>
-              <button v-if="portraitError" class="btn btn-ghost btn-sm" type="button" @click="retryPortrait"><ArchiveIcon name="refresh" />重新加载立绘</button>
+              <button v-if="portraitError" class="btn btn-ghost btn-sm" type="button" @click="retryPortrait"><ArchiveIcon name="refresh" />重试</button>
             </div>
             <RouterLink v-if="isLocalStudioHost()" class="btn btn-ghost btn-sm" :to="{ path: '/scene-manager', query: { tab: 'portraits', character: current.id } }"><ArchiveIcon name="image" />更换立绘</RouterLink>
             <span class="portrait-badge"><ArchiveIcon name="image" /> {{ paintedPortrait && (portraitPending || portraitError) ? '上次已读取原画' : characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
@@ -74,11 +74,11 @@
           <div class="character-actions" aria-label="角色快捷操作">
             <RouterLink class="btn btn-primary" :to="isPopular
               ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
-              : `/prompt-builder?char=${encodeURIComponent(current.id)}`"><ArchiveIcon name="spark" />以她开始绘制</RouterLink>
-            <RouterLink v-if="!isPopular" class="btn btn-ghost" :to="`/chat?character=${encodeURIComponent(current.id)}`">进入她的房间</RouterLink>
+              : `/prompt-builder?char=${encodeURIComponent(current.id)}`"><ArchiveIcon name="spark" />开始绘制</RouterLink>
+            <RouterLink v-if="!isPopular" class="btn btn-ghost" :to="`/chat?character=${encodeURIComponent(current.id)}`">角色房间</RouterLink>
             <RouterLink class="btn btn-ghost" :to="isPopular
               ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
-              : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '浏览相关场景' : '查看核心场景' }}</RouterLink>
+              : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '相关场景' : '核心场景' }}</RouterLink>
             <a v-if="animeResourceUrl" class="btn btn-ghost" :href="animeResourceUrl" target="_blank" rel="noopener noreferrer"
               :aria-label="`在 Anime Garden 搜索${animeResourceWork}的动画资源，新窗口打开`"
               title="在 Anime Garden 搜索该作品"><ArchiveIcon name="search" /><span class="anime-resource-title">{{ animeResourceWork }}</span></a>
@@ -92,7 +92,7 @@
           <section v-if="current.bg_story" class="character-story" aria-label="角色故事">
             <h3 class="lab">角色故事</h3>
             <p id="character-background" class="profile-story" :class="{ expanded: bgExpanded }">{{ current.bg_story }}</p>
-            <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起介绍' : '展开介绍' }}<StudioToggleIcon :active="bgExpanded" /></button>
+            <button class="profile-story-toggle" type="button" :aria-expanded="bgExpanded" aria-controls="character-background" @click="bgExpanded = !bgExpanded">{{ bgExpanded ? '收起' : '展开' }}<StudioToggleIcon :active="bgExpanded" /></button>
           </section>
           <div v-if="current.personality.length || current.likes.length" class="detail-grid">
             <section v-if="current.personality.length" class="detail-section profile-detail-card"><div class="lab"><ArchiveIcon name="star" />性格标签</div><div class="chips"><span v-for="p in current.personality" :key="p" class="chip trait">{{ p }}</span></div><CardEdgeLight /></section>
@@ -115,16 +115,16 @@
       <section v-if="current" ref="recommendationRoot" class="recommend-section" tabindex="-1" :aria-busy="recommendationsLoading" aria-label="人设核心场景" data-reveal data-reveal-delay="2">
         <div class="recommend-head">
           <div>
-            <div class="page-kicker">Persona core</div>
+            <div class="page-kicker">CORE SCENES</div>
             <h2 class="recommend-title">人设核心场景</h2>
           </div>
-          <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">查看官方人设依据 ↗</a>
+          <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">官方依据 ↗</a>
         </div>
-        <ArchiveStatePanel v-if="recommendationsLoading" kind="loading" title="正在读取核心场景" compact />
-        <ArchiveStatePanel v-else-if="recommendationsError" kind="error" title="核心场景读取失败" message="请重新读取该角色的场景。" compact>
-          <button class="btn btn-ghost btn-sm" type="button" @click="retryRecommendations">重新读取</button>
+        <ArchiveStatePanel v-if="recommendationsLoading" kind="loading" title="读取中…" compact />
+        <ArchiveStatePanel v-else-if="recommendationsError" kind="error" title="读取失败" message="请重试。" compact>
+          <button class="btn btn-ghost btn-sm" type="button" @click="retryRecommendations">重试</button>
         </ArchiveStatePanel>
-        <ArchiveStatePanel v-else-if="!recommendations.length" kind="empty" title="暂未收录核心场景" compact />
+        <ArchiveStatePanel v-else-if="!recommendations.length" kind="empty" title="暂无场景" compact />
         <div v-else class="recommend-grid">
           <article v-for="s in recommendations" :key="s.id" class="recommend-card card-info">
             <h3 class="cg-title">{{ s.title }}</h3>
@@ -147,7 +147,7 @@
       <dialog ref="recommendationDialog" class="recommendation-story-dialog" aria-labelledby="recommendation-story-title"
         @cancel.prevent.stop="recommendationStoryDialog.close()" @keydown.esc.stop @click="closeRecommendationBackdrop">
         <header class="recommendation-story-head">
-          <div><div class="page-kicker">PERSONA CORE / 场景故事</div><h2 id="recommendation-story-title">{{ activeStory?.title }}</h2></div>
+          <div><div class="page-kicker">STORY</div><h2 id="recommendation-story-title">{{ activeStory?.title }}</h2></div>
           <button class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="关闭故事" autofocus @click="recommendationStoryDialog.close()"><ArchiveIcon name="close" /></button>
         </header>
         <p ref="recommendationStoryBody" class="recommendation-story-body" tabindex="0">{{ activeStory?.story }}</p>

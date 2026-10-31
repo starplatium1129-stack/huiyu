@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuuki_mikan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 168,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-26T08:46:52.925Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yuuki_mikan",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🍊",
       "portrait": {
-        "image": "../assets/characters/popular-yuuki_mikan.png?v=1",
-        "alt": "结城美柑 样张立绘"
+        "image": "../assets/characters/popular-yuuki_mikan.png?v=07ed49295fbe",
+        "alt": "结城美柑样张立绘",
+        "sourceShowcaseId": "pc_yuuki_mikan_pc_yuuki_mikan_mikan_veranda_watermelon_summer_breeze",
+        "sourceShowcaseSha256": "1563cba86072ce2fa93e2d19e5c119ce3946e8be5bd94d85d303667282fc0340"
       },
       "visual_dna": {
         "hair": "栗色及肩柔顺短发 · 左侧标志性侧扎小发辫/团子",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cheshire_azur",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 79,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "cheshire_azur",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🐾",
       "portrait": {
-        "image": "../assets/characters/popular-cheshire_azur.png?v=5",
-        "alt": "柴郡 样张立绘"
+        "image": "../assets/characters/popular-cheshire_azur.png?v=a673020eba25",
+        "alt": "柴郡样张立绘",
+        "sourceShowcaseId": "pc_cheshire_azur_pc_cheshire_azur_cheshire_royal_tea_party_cat_pounce",
+        "sourceShowcaseSha256": "ca7ca6255309167cdfc7960623b30b66baf3863277a4f8c4b06d2cf3ba9bc567"
       },
       "visual_dna": {
         "hair": "蓝灰长发 · 湖青挑染 · 及腰双马尾",

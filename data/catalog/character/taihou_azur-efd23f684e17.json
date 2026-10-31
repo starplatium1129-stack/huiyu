@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "taihou_azur",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 80,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "taihou_azur",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🪭",
       "portrait": {
-        "image": "../assets/characters/popular-taihou_azur.png?v=5",
-        "alt": "大凤 样张立绘"
+        "image": "../assets/characters/popular-taihou_azur.png?v=ee8c382e481d",
+        "alt": "大凤样张立绘",
+        "sourceShowcaseId": "pc_taihou_azur_pc_taihou_azur_taihou_sakura_flame_kimono_devotion",
+        "sourceShowcaseSha256": "9e751d0245b8553bc3e1f869f139b0217e08de06446d86677ab3073c33906898"
       },
       "visual_dna": {
         "hair": "及膝乌黑超长双马尾 · 金凤发饰",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "waguri_kaoruko",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.904Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "waguri_kaoruko",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🍰",
       "portrait": {
-        "image": "../assets/characters/popular-waguri_kaoruko.png?v=95daffe55c0d",
-        "alt": "和栗薰子 · 蛋糕店里的第一小口场景样张"
+        "image": "../assets/characters/popular-waguri_kaoruko.png?v=fe673053bdea",
+        "alt": "和栗薰子样张立绘",
+        "sourceShowcaseId": "pc_waguri_kaoruko_pc_waguri_kaoruko_waguri_bakery_window_sweet_wave",
+        "sourceShowcaseSha256": "0d8c1d29541dbb6c1eef14e18109fb1b08b03ca69b1ac8771c7342bdd03e05d4"
       },
       "visual_dna": {
         "hair": "黑紫色长发，可随日常造型编发",

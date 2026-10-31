@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sorasaki_hina",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 47,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "sorasaki_hina",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "⚖️",
       "portrait": {
-        "image": "../assets/characters/popular-sorasaki_hina.png?v=5",
-        "alt": "空崎日奈 样张立绘"
+        "image": "../assets/characters/popular-sorasaki_hina.png?v=349dbdc26569",
+        "alt": "空崎日奈样张立绘",
+        "sourceShowcaseId": "pc_sorasaki_hina_pc_sorasaki_hina_sorasaki_hina_firing_range",
+        "sourceShowcaseSha256": "54e25467c33f331ec353313bfe6e9b68921cf03ef19c78f86d7ca8ad7f32e1b4"
       },
       "visual_dna": {
         "hair": "超长银白发 · 蓬松巨量散发",

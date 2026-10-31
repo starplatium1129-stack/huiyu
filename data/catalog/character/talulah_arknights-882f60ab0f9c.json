@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "talulah_arknights",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 183,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "talulah_arknights",
     "profile": {
@@ -73,8 +73,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-talulah_arknights.png?v=1",
-        "alt": "塔露拉热门角色立绘"
+        "image": "../assets/characters/popular-talulah_arknights.png?v=3f559db01a37",
+        "alt": "塔露拉样张立绘",
+        "sourceShowcaseId": "pc_talulah_arknights_pc_talulah_arknights_talulah_flower_market_camellia_glance",
+        "sourceShowcaseSha256": "e27947e451d50f2fe7518785f024a797c86ec9e2e7aeed74989e8dd9c25a8bd1"
       },
       "speech": "燃尽荆棘与冻土，大地终将见证黎明。那些被黑蛇夺走的一切、那些因我而流淌的鲜血……我必以这柄烈火之剑，在黎明到来前彻底偿清！",
       "accent_color": "#f97316",

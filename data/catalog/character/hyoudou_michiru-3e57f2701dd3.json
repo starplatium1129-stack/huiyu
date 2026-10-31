@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hyoudou_michiru",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 245,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "hyoudou_michiru",
     "profile": {
@@ -22,10 +22,10 @@
       "type": "popular",
       "icon": "🎸",
       "portrait": {
-        "image": "../assets/characters/popular-hyoudou_michiru.png?v=6826c42944c2",
+        "image": "../assets/characters/popular-hyoudou_michiru.png?v=a5078ede8907",
         "alt": "冰堂美智留样张立绘",
-        "sourceShowcaseId": "pc_hyoudou_michiru_michiru_livehouse_backstage_towel_tease",
-        "sourceShowcaseSha256": "c5fb04f1e0e98eb86275cfd472a80ee49e2b198f3914801ca35f8e1a25dee68a"
+        "sourceShowcaseId": "pc_hyoudou_michiru_pc_hyoudou_michiru_michiru_morning_genkan_guitar_bag_pounce",
+        "sourceShowcaseSha256": "9e68c8a5fab8034e5090a1fc88acdd409f3e00fcec0cc59571b283d703d83491"
       },
       "visual_dna": {
         "hair": "乌黑俏丽层次短发 · 发梢微翘碎发 · 帅气假小子与成熟女人味兼备",

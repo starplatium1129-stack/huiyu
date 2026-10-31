@@ -1,0 +1,39 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_rooftop_winter_watch",
+  "revision": 1,
+  "sortOrder": 2805,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "zeta_shadow_rooftop_winter_watch",
+    "characterId": "zeta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "泽塔 · 冬夜屋顶的监视",
+    "category": "谍报潜行",
+    "description": "冬夜，泽塔蹲在学园屋顶的阴影里俯瞰灯火。金色的长尾在寒风中轻轻摆动，她把教团今晚的动向一一记下，一言不发。",
+    "recommendedSize": "832x1216",
+    "location": "snowy academy rooftop at night overlooking warm window lights below",
+    "action": "crouching on a rooftop edge watching the academy below, cat ears twitching, long golden tail swaying in winter wind",
+    "timeOfDay": "night",
+    "lighting": "雪夜屋顶的清冷月光与楼下温暖的窗光",
+    "camera": "full_shot",
+    "mood": "silent vigilance, feline patience",
+    "promptProse": "On a winter rooftop, Zeta watches the academy lights in silence, memorizing the cult's movements one by one.",
+    "promptTokens": [
+      "rooftop",
+      "winter",
+      "night",
+      "academy",
+      "cat ears",
+      "tail",
+      "moonlight"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "The time has come — Zeta's whisper is lost to the winter wind, but her eyes miss nothing.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

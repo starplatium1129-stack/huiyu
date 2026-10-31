@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mahiru",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shiina_mahiru",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/popular-shiina_mahiru.png?v=1",
-        "alt": "椎名真昼 样张立绘",
-        "sourceShowcaseId": "pc_shiina_mahiru_mahiru_kitchen_apron_morning",
-        "sourceShowcaseSha256": "b21194146b9c7c5030bb607a1b47272c452c6b04913f403f1af9517991a546a1"
+        "image": "../assets/characters/popular-shiina_mahiru.png?v=40e41773ab2b",
+        "alt": "椎名真昼样张立绘",
+        "sourceShowcaseId": "pc_shiina_mahiru_pc_shiina_mahiru_mahiru_rain_umbrella_park",
+        "sourceShowcaseSha256": "a4e0cd1fc735e6bb0296fc41d276dd315fd09f7559369063208a2c0664943327"
       },
       "visual_dna": {
         "hair": "如亚麻般垂至腰际的丝滑浅金长发",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suou_amane",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 88,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.891Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "suou_amane",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🍒",
       "portrait": {
-        "image": "../assets/characters/popular-suou_amane.png?v=5",
-        "alt": "周防天音 样张立绘"
+        "image": "../assets/characters/popular-suou_amane.png?v=7f83abef1010",
+        "alt": "周防天音样张立绘",
+        "sourceShowcaseId": "pc_suou_amane_pc_suou_amane_amane_mihama_dorm_sofa_lap_pillow",
+        "sourceShowcaseSha256": "20054bfa03c8db09635f0b60f7021f373d4302d3c77ad8c4ac79825f8d2f3eb7"
       },
       "visual_dna": {
         "hair": "酒红超长发 · 双侧环形发圈发髻 · 飘逸长侧束",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "murasame",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 84,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.890Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "murasame",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/popular-murasame.png?v=5",
-        "alt": "丛雨 样张立绘"
+        "image": "../assets/characters/popular-murasame.png?v=9911f1f3f5f7",
+        "alt": "丛雨样张立绘",
+        "sourceShowcaseId": "pc_murasame_pc_murasame_murasame_shrine_veranda_daifuku_treat",
+        "sourceShowcaseSha256": "1d00c197a91363f4eb11a9bf386458eb62be470ceff6353b1edc178fff94ea71"
       },
       "visual_dna": {
         "hair": "浅黄绿及腰长发 · 侧发束 · 头顶翘起大呆毛",

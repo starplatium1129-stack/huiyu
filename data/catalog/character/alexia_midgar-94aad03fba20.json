@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alexia_midgar",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 263,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "alexia_midgar",
     "popular": {
@@ -78,10 +78,10 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/popular-alexia_midgar.png?v=66766d091750",
+        "image": "../assets/characters/popular-alexia_midgar.png?v=f9234f3ba413",
         "alt": "阿蕾克希亚·米德加样张立绘",
-        "sourceShowcaseId": "pc_alexia_midgar_alexia_dojo_afterschool_sparring",
-        "sourceShowcaseSha256": "859f8756326e92293c9efe21fafdb80afc01e8771b9966457cc6b4a7046be146"
+        "sourceShowcaseId": "pc_alexia_midgar_pc_alexia_midgar_alexia_snowy_alley_lone_resolve",
+        "sourceShowcaseSha256": "f87b21f36ba95ca46d0c771e971d943ebe700d5f8167a5d78afe8e3cc7609396"
       },
       "visual_dna": {
         "hair": "泛着冷冽光泽的纯银色长发 · 束成高马尾",

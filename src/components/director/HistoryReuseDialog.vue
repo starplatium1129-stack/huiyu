@@ -1,28 +1,28 @@
 <template>
   <Teleport to="body">
     <dialog ref="dialog" class="history-reuse-dialog" aria-labelledby="history-reuse-title" :aria-busy="busy || loading" @cancel.prevent="cancel" @click="backdropClose">
-      <header><div><h2 id="history-reuse-title">沿用作品配方</h2><p>{{ record.sceneTitle || record.id }}</p></div><button ref="closeButton" class="btn btn-ghost btn-icon" type="button" aria-label="取消沿用配方" :disabled="busy" @click="cancel"><ArchiveIcon name="close" /></button></header>
+      <header><div><h2 id="history-reuse-title">沿用配方</h2><p>{{ record.sceneTitle || record.id }}</p></div><button ref="closeButton" class="btn btn-ghost btn-icon" type="button" aria-label="取消沿用配方" :disabled="busy" @click="cancel"><ArchiveIcon name="close" /></button></header>
       <div class="reuse-body">
         <div v-if="loading || error" class="reuse-feedback" :role="error ? 'alert' : 'status'">
           <ArchiveIcon :name="error ? 'warning' : 'gallery'" />
-          <p>{{ error || '正在读取这张作品的配方…' }}</p>
-          <button v-if="error" class="btn btn-ghost" type="button" @click="retry">重新读取</button>
+          <p>{{ error || '读取配方中…' }}</p>
+          <button v-if="error" class="btn btn-ghost" type="button" @click="retry">重试</button>
         </div>
         <template v-else>
         <fieldset><legend>沿用范围</legend>
-          <label><input v-model="mode" type="radio" value="full" name="recipe-reuse-mode" :disabled="busy">完整配方 <small>恢复已记录的角色、服装、场景与参数</small></label>
-          <label><input v-model="mode" type="radio" value="parts" name="recipe-reuse-mode" :disabled="busy">选择沿用 <small>保留当前角色、服装、引擎与画册</small></label>
+          <label><input v-model="mode" type="radio" value="full" name="recipe-reuse-mode" :disabled="busy">完整配方 <small>恢复角色、服装、场景与参数</small></label>
+          <label><input v-model="mode" type="radio" value="parts" name="recipe-reuse-mode" :disabled="busy">选择沿用 <small>保留当前角色与引擎</small></label>
         </fieldset>
-        <fieldset v-show="mode === 'parts'" v-content-motion:down="mode === 'parts'"><legend>选择要替换的创作条件</legend>
-          <label><input v-model="parts.style" type="checkbox" :disabled="busy">画风与光色 <small>画师、光照、色调及适用的风格 LoRA</small></label>
+        <fieldset v-show="mode === 'parts'" v-content-motion:down="mode === 'parts'"><legend>替换内容</legend>
+          <label><input v-model="parts.style" type="checkbox" :disabled="busy">画风与光色 <small>画师、光照、色调及风格 LoRA</small></label>
           <label><input v-model="parts.camera" type="checkbox" :disabled="busy">镜头与构图</label>
-          <label><input v-model="parts.prompts" type="checkbox" :disabled="busy">提示词与场景 <small>仅同角色、同服装沿用；按当前规则重新编译</small></label>
-          <label><input v-model="parts.parameters" type="checkbox" :disabled="busy">生成参数 <small>仅同引擎沿用底模、Seed、尺寸与生成设置</small></label>
+          <label><input v-model="parts.prompts" type="checkbox" :disabled="busy">提示词与场景 <small>按当前规则重新编译</small></label>
+          <label><input v-model="parts.parameters" type="checkbox" :disabled="busy">生成参数 <small>底模、Seed、尺寸与采样</small></label>
         </fieldset>
-        <p id="history-reuse-help">旧作缺失字段保持留空；载入后进入专家模式并保留当前设定，不会自动生成。</p>
+        <p id="history-reuse-help">载入后进入专业模式，不会自动触发生成。</p>
         </template>
       </div>
-      <footer><button class="btn btn-ghost" type="button" :disabled="busy" @click="cancel">取消</button><button v-if="!loading && !error" class="btn btn-primary" type="button" :disabled="busy || mode === 'parts' && !Object.values(parts).some(Boolean)" aria-describedby="history-reuse-help" @click="apply">{{ busy ? '正在载入…' : '载入所选配方' }}</button></footer>
+      <footer><button class="btn btn-ghost" type="button" :disabled="busy" @click="cancel">取消</button><button v-if="!loading && !error" class="btn btn-primary" type="button" :disabled="busy || mode === 'parts' && !Object.values(parts).some(Boolean)" aria-describedby="history-reuse-help" @click="apply">{{ busy ? '载入中…' : '载入配方' }}</button></footer>
     </dialog>
   </Teleport>
 </template>

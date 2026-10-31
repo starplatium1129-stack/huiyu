@@ -1,81 +1,74 @@
 <template>
   <details class="preparation">
-    <StudioDisclosureSummary>手动管理已有环境与逐项下载<span>{{ models.length - matched }} 项文件待核对</span></StudioDisclosureSummary>
+    <StudioDisclosureSummary>手动管理已有环境与逐项下载<span>{{ models.length - matched }} 项待核对</span></StudioDisclosureSummary>
     <div data-disclosure-content class="preparation-body">
-      <p>先核对运行方式、真实目录与来源，再显式下载固定模型文件。绘遇不会在这里安装程序、执行脚本或代你接受许可。</p>
-      <label class="route-label" for="setup-comfy-route">ComfyUI 的运行方式</label>
-      <StudioSelect id="setup-comfy-route" v-model="route" class="route-select" label="ComfyUI 的运行方式" :options="[
-        { value: 'desktop', label: '已有官方 Desktop（由原入口启动）' },
-        { value: 'portable', label: 'Windows Portable（由便携包启动）' },
-        { value: 'manual', label: '已有源码 / Python 环境' },
+      <p>核对运行方式、模型目录与来源许可后下载。绘遇不代为安装程序或接受许可。</p>
+      <label class="route-label" for="setup-comfy-route">ComfyUI 运行方式</label>
+      <StudioSelect id="setup-comfy-route" v-model="route" class="route-select" label="ComfyUI 运行方式" :options="[
+        { value: 'desktop', label: '官方 Desktop' },
+        { value: 'portable', label: 'Windows Portable 便携包' },
+        { value: 'manual', label: '已有 Python / Conda 环境' },
       ]" />
       <ol v-content-motion:fade="route" class="preparation-steps">
         <li>
-          <h3>准备对应硬件的运行环境</h3>
+          <h3>准备运行环境</h3>
           <template v-if="route === 'desktop'">
-            <p>从官方 Desktop 安装页取得程序，按安装器建立一个 ComfyUI 实例。先在 Desktop 中启动它，确认可打开 ComfyUI；在该实例设置中查看实际安装目录与模型目录。</p>
-            <p>Desktop 的 Python 环境由其自身管理，布局因版本与实例类型而异。请继续由 Desktop 启动和更新；这里不接管它的解释器。</p>
-            <a href="https://docs.comfy.org/installation/desktop/windows" target="_blank" rel="noopener noreferrer">打开官方 Desktop 安装页</a>
+            <p>安装并启动官方 Desktop 实例，在设置中确认实际模型目录。Python 环境由 Desktop 维护，不在此接管。</p>
+            <a href="https://docs.comfy.org/installation/desktop/windows" target="_blank" rel="noopener noreferrer">官方 Desktop 文档</a>
           </template>
           <template v-else-if="route === 'portable'">
-            <p>从官方页面选择适合自己显卡的 Windows 便携包并解压。打开同时包含 ComfyUI、python_embeded 和启动批处理的目录，使用包内适合硬件的启动入口；CPU 入口通常较慢。</p>
-            <p>保留 python_embeded 原名。绘遇受管启动可以使用这份独立 Python。</p>
-            <a href="https://docs.comfy.org/installation/comfyui_portable_windows" target="_blank" rel="noopener noreferrer">打开官方 Portable 准备页</a>
+            <p>解压官方便携包，保留 python_embeded 原名，使用包内启动脚本。受管启动可复用此 Python。</p>
+            <a href="https://docs.comfy.org/installation/comfyui_portable_windows" target="_blank" rel="noopener noreferrer">官方 Portable 文档</a>
           </template>
           <template v-else>
-            <p>保留已有环境，按 ComfyUI 官方说明核对 Python、对应硬件的 PyTorch、驱动和 requirements.txt。官方手动教程包含 Conda 路线，并非任何手动安装都可交给绘遇启动。</p>
-            <p>Windows 受控启动只识别 ComfyUI/main.py 与 ComfyUI/venv/Scripts/python.exe。发现这两个文件仍不代表依赖可用；其他布局沿用原启动入口，不要重命名 .venv 或复制解释器来通过检查。</p>
-            <a href="https://docs.comfy.org/installation/manual_install" target="_blank" rel="noopener noreferrer">打开官方手动安装说明</a>
+            <p>根据官方要求配置 Python、PyTorch 与 requirements.txt。受管启动仅识别 ComfyUI/main.py 与 venv 目录。</p>
+            <a href="https://docs.comfy.org/installation/manual_install" target="_blank" rel="noopener noreferrer">官方手动安装说明</a>
           </template>
-          <p>硬件兼容性未确认；GPU / 内存上报不等于此模型可运行。每次下载会检查目标盘可用空间；驱动、Python 环境和真实出图仍需另行准备与验证。</p>
-          <a href="https://docs.comfy.org/installation/system_requirements" target="_blank" rel="noopener noreferrer">核对官方系统与硬件要求</a>
+          <p>硬件兼容性未确认；显存容量不等于可直接运行。下载前将检查磁盘空间。</p>
+          <a href="https://docs.comfy.org/installation/system_requirements" target="_blank" rel="noopener noreferrer">系统与硬件要求</a>
         </li>
         <li>
-          <h3>让绘遇和 ComfyUI 读取同一批文件</h3>
-          <p>当前绘遇检查的目录：</p><code>{{ snapshot.comfy.path }}</code>
-          <p>手动管理已有 ComfyUI 时，工作区选择其父目录；绘遇一键准备的环境无需修改目录。Desktop 要对照实际实例，不能只选择安装器所在目录。</p>
-          <p>下方精确路径只有在该 ComfyUI 实例实际读取同一 models 目录时才成立。若使用共享模型目录、extra_model_paths.yaml 或其他实例，请先统一对应关系；只修改服务地址不会改变绘遇的文件检查目录。</p>
+          <h3>核对工作区目录</h3>
+          <p>当前检查目录：</p><code>{{ snapshot.comfy.path }}</code>
+          <p>手动管理时选择 ComfyUI 根目录。修改工作区后需重启绘遇生效。服务地址：{{ snapshot.comfy.host }}。</p>
           <button v-if="desktop" class="btn btn-ghost btn-sm" type="button" :disabled="blocked || !!activeId || !!downloadId" @click="$emit('workspace')">选择 AI 工作区</button>
-          <p>更换工作区后完全退出并重启绘遇，再查看新目录清单。手动启动 ComfyUI 后，在控制室核对实际本机地址（当前 {{ snapshot.comfy.host }}），不要同时启动第二个实例。</p>
         </li>
         <li>
-          <h3>补齐这条基础工作流的依赖</h3>
-          <p>先使用所选环境的正常方式安装并启用 KJNodes，保留其 requirements 依赖。它提供本流程的 ImageSharpenKJ；不要把其他 Python 环境里的安装当作当前实例已经就绪。</p>
-          <a href="https://github.com/kijai/ComfyUI-KJNodes" target="_blank" rel="noopener noreferrer">查看 KJNodes 作者安装说明</a>
-          <p v-if="snapshot.nodes.state === 'checked'">{{ snapshot.nodes.missing.length ? '本次缺少：' + snapshot.nodes.missing.join(' · ') : '本次所需节点已注册；仍未执行工作流。' }}</p>
-          <p v-else>当前节点状态未知，启动正确实例后再检查。除 ImageSharpenKJ 外的基础节点缺失时，应检查 ComfyUI 版本和加载错误，不随意安装同名扩展。</p>
-          <p>准备完成后重启 ComfyUI，再回到这里重新检查；起步不需要 LoRA、TeaCache、SageAttention、高清修复或局部重绘扩展。</p>
+          <h3>工作流依赖节点</h3>
+          <p>需安装并启用 KJNodes（提供 ImageSharpenKJ 节点）。</p>
+          <a href="https://github.com/kijai/ComfyUI-KJNodes" target="_blank" rel="noopener noreferrer">KJNodes 仓库</a>
+          <p v-if="snapshot.nodes.state === 'checked'">{{ snapshot.nodes.missing.length ? '缺少节点：' + snapshot.nodes.missing.join(' · ') : '所需节点已就绪。' }}</p>
+          <p v-else>节点状态未知，启动 ComfyUI 后检查。</p>
         </li>
         <li>
-          <h3>核对模型来源与目标位置</h3>
-          <p>固定版本三件套共 {{ formatBytes(totalBytes) }}（{{ totalBytes.toLocaleString('zh-CN') }} 字节）；当前大小不符、缺失或未知的文件合计 {{ formatBytes(pendingBytes) }}。大小相符的文件也尚未校验 SHA-256。</p>
-          <p>文件由 CircleStone Labs 的 Anima 仓库提供。作者许可含用途限制，编码器与 VAE 还应核对模型卡中的上游说明；许可链接供你审阅，这个向导不代为接受。</p>
+          <h3>模型文件核对与下载</h3>
+          <p>基础模型共 {{ formatBytes(totalBytes) }}；待下载/校验 {{ formatBytes(pendingBytes) }}。</p>
           <div v-if="models[0]?.preparation" class="preparation-links">
-            <a :href="models[0].preparation.modelCardUrl" target="_blank" rel="noopener noreferrer">作者模型卡与上游说明</a>
-            <a :href="models[0].preparation.licenseUrl" target="_blank" rel="noopener noreferrer">此固定版本的许可</a>
+            <a :href="models[0].preparation.modelCardUrl" target="_blank" rel="noopener noreferrer">模型说明</a>
+            <a :href="models[0].preparation.licenseUrl" target="_blank" rel="noopener noreferrer">许可协议</a>
           </div>
           <ul class="preparation-models">
             <li v-for="model in models" :key="model.id">
               <div class="model-heading"><strong>{{ model.label }}</strong><span :data-state="state(model)">{{ stateLabel(model) }}</span></div>
               <code>{{ model.path }}</code>
               <a v-if="model.preparation?.upstreamLicenseUrl" :href="model.preparation.upstreamLicenseUrl" target="_blank" rel="noopener noreferrer">组件上游许可</a>
-              <p v-if="model.preparation">应为 {{ formatBytes(model.preparation.expectedBytes) }} · {{ model.preparation.expectedBytes.toLocaleString('zh-CN') }} 字节<span v-if="model.bytes !== null">；本次发现 {{ model.bytes.toLocaleString('zh-CN') }} 字节</span></p>
+              <p v-if="model.preparation">应为 {{ formatBytes(model.preparation.expectedBytes) }}<span v-if="model.bytes !== null">；发现 {{ formatBytes(model.bytes) }}</span></p>
               <div class="verification-actions">
-                <button class="btn btn-ghost btn-sm" type="button" :disabled="blocked || !!activeId || !!downloadId || state(model) !== 'bytes-match'" @click="verify(model)">校验 {{ model.label }} 的 SHA-256</button>
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="blocked || !!activeId || !!downloadId || state(model) !== 'bytes-match'" @click="verify(model)">校验 SHA-256</button>
                 <button v-if="activeId === model.id" class="btn btn-ghost btn-sm" type="button" @click="cancel">取消校验</button>
               </div>
-              <p v-if="activeId === model.id" role="status">正在只读校验 {{ formatBytes(bytesRead) }} / {{ formatBytes(expectedBytes) }}（{{ Math.floor(bytesRead / expectedBytes * 100) }}%）</p>
+              <p v-if="activeId === model.id" role="status">正在校验 {{ formatBytes(bytesRead) }} / {{ formatBytes(expectedBytes) }}（{{ Math.floor(bytesRead / expectedBytes * 100) }}%）</p>
               <p v-if="results[model.id]" :data-verification="results[model.id].state" role="status">{{ results[model.id].message }}</p>
               <p v-if="notices[model.id]" role="status">{{ notices[model.id] }}</p>
             </li>
           </ul>
-          <p>SHA-256 只在点击时逐块读取本机文件，不联网、不改写。一次校验一个文件，可随时取消；重新检查或离开本页会停止校验并清除本次结果。成功只证明本次读取与固定摘要一致，不代表出图或未来文件仍未改变。</p>
-          <label class="preparation-ack"><input v-model="reviewed" type="checkbox">我已核对运行方式、真实 models 目录、容量与来源许可说明</label>
-          <p v-if="workspacePending" role="status">已保存的工作区尚未生效。完全退出并重启绘遇后重新检查、核对目录，再下载。</p>
-          <p v-else-if="workspaceUnconfirmed" role="status">当前桌面工作区尚未确认。请重新检查或选择 AI 工作区核对目录，再下载。</p>
+          <p>校验为只读操作，一次校验一个文件，可随时取消。</p>
+          <label class="preparation-ack"><input v-model="reviewed" type="checkbox">我已核对运行方式、模型目录与来源许可</label>
+          <p v-if="workspacePending" role="status">工作区修改尚未生效，重启绘遇后继续。</p>
+          <p v-else-if="workspaceUnconfirmed" role="status">桌面工作区未确认，请先选择工作区。</p>
           <button class="btn btn-ghost btn-sm" type="button" :disabled="!reviewed || workspaceBlocked" @click="confirmed = true">查看准备清单</button>
           <div v-if="confirmed && reviewed && !workspaceBlocked" class="download-checklist" role="region" aria-label="模型下载与校验清单">
-            <p>点击下载后，文件写入当前确认工作区的临时文件，大小与 SHA-256 全部匹配后才发布。同名不同内容会报告冲突；取消或失败保留已有模型。一次仅下载或校验一个文件。</p>
+            <p>文件下载至临时目录，校验通过后自动就位。一次处理一个文件。</p>
             <ol>
               <li v-for="model in models" :key="model.id">
                 <template v-if="model.preparation">
@@ -96,17 +89,17 @@
                   </div>
                   <p v-if="downloadId === model.id" role="status">{{ downloadPhaseLabel }} {{ formatBytes(downloadBytes) }} / {{ formatBytes(downloadExpected) }}（{{ Math.floor(downloadBytes / downloadExpected * 100) }}%）</p>
                   <p v-if="downloadNotices[model.id]" role="status">{{ downloadNotices[model.id] }}</p>
-                  <a :href="model.preparation.url" target="_blank" rel="noopener noreferrer">取得固定版本文件（{{ formatBytes(model.preparation.expectedBytes) }}）</a>
+                  <a :href="model.preparation.url" target="_blank" rel="noopener noreferrer">手动下载（{{ formatBytes(model.preparation.expectedBytes) }}）</a>
                   <p>保存到：</p><code>{{ model.path }}</code>
                   <p>SHA-256：</p><code>{{ model.preparation.sha256 }}</code>
-                  <details><StudioDisclosureSummary>Windows 只读校验方法</StudioDisclosureSummary><p>文件放置完成后，在 PowerShell 执行下面的只读命令，逐字对比 Hash 与上面的 SHA-256。大文件读取可能需要等待；本页不会把手动核对自动标记为通过。</p><code>{{ hashCommand(model.path) }}</code></details>
+                  <details><StudioDisclosureSummary>PowerShell 校验命令</StudioDisclosureSummary><p>运行以下只读命令比对 SHA-256：</p><code>{{ hashCommand(model.path) }}</code></details>
                 </template>
               </li>
             </ol>
-            <button class="btn btn-ghost btn-sm" type="button" @click="copyPlan">复制这份准备清单</button>
+            <button class="btn btn-ghost btn-sm" type="button" @click="copyPlan">复制清单</button>
             <span v-if="copyNotice" role="status">{{ copyNotice }}</span>
-            <p>下载成功后自动重新检查；手动放置时用下方按钮重新检查。确认文件后启动正确的 ComfyUI 实例，再真实生成一张图片。下载成功不等于已能出图。</p>
-            <button class="btn btn-ghost btn-sm" type="button" @click="$emit('refresh')">放置后重新检查</button>
+            <p>下载完成后自动检查；手动放置文件后点击重新检查。</p>
+            <button class="btn btn-ghost btn-sm" type="button" @click="$emit('refresh')">重新检查</button>
           </div>
         </li>
       </ol>

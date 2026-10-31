@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yorha_a2",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 206,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yorha_a2",
     "profile": {
@@ -18,8 +18,10 @@
       "type": "popular",
       "source": "Square Enix / PlatinumGames《尼尔：机械纪元 / NieR:Automata》",
       "portrait": {
-        "image": "../assets/characters/popular-yorha_a2.png",
-        "alt": "A2 角色立绘"
+        "image": "../assets/characters/popular-yorha_a2.png?v=a480d8bd6abb",
+        "alt": "A2样张立绘",
+        "sourceShowcaseId": "pc_yorha_a2_pc_yorha_a2_yorha_a2_flower_ledge",
+        "sourceShowcaseSha256": "1042e92ef2de8132d0ed0359e167b1822b5ed46cb66585d064f5537f03ee9892"
       },
       "accent_color": "#9ba4ae",
       "bg_color": "#171b20",

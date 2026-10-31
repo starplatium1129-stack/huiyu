@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_r18_office_shadow_favor",
+  "revision": 1,
+  "sortOrder": 2838,
+  "createdAt": "2026-10-31T04:42:34.298429+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_r18_office_shadow_favor",
+    "characterId": "gamma_shadow",
+    "outfitId": "luna_president_dress",
+    "title": "伽玛 · 办公室里的余韵",
+    "category": "主君侍奉",
+    "description": "深夜的会长办公室里只剩伽玛一人。她伏在账本边，礼服滑到腰间；想起暗影大人先前的赞许，她红着脸停下笔，让指尖沿着腿间缓缓移动。散开的账页上，数字也跟着乱了顺序。",
+    "recommendedSize": "1152x1536",
+    "location": "四越商会会长办公室·深夜",
+    "action": "独自伏在办公桌沿，礼服褪至腰间，一手扶着账本，一手探向腿间",
+    "timeOfDay": "深夜",
+    "lighting": "single desk lamp in the dark office, gold coins glinting",
+    "camera": "cowboy shot, rear three-quarter view",
+    "mood": "侍奉沉沦",
+    "sceneTags": [
+      "office",
+      "desk",
+      "night",
+      "evening_gown",
+      "solo"
+    ],
+    "promptProse": "Alone in her office at night, adult Gamma bends over the desk with her gown pooled at her waist, one hand on the open ledger and the other between her thighs, blushing in the lamplight.",
+    "promptTokens": [
+      "office",
+      "desk",
+      "night",
+      "evening gown",
+      "dress around waist",
+      "bent over",
+      "open book",
+      "blush",
+      "lamplight"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "masturbation",
+      "hand between legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "Gamma grips the open ledger as warm lamplight falls across the desk.",
+    "compositionIntent": "single"
+  }
+}

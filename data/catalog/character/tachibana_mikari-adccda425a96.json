@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tachibana_mikari",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "tachibana_mikari",
     "profile": {
@@ -19,10 +19,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-tachibana_mikari.png?v=dfa4e29fc05a",
-        "alt": "橘美花莉 · 摄影棚收工的三秒场景样张",
-        "sourceShowcaseId": "pc_tachibana_mikari_tachibana_mikari_sfw_b8_02",
-        "sourceShowcaseSha256": "74c96c1698c854f82e9b8495a1fa563dac1c3ef67a6dfb17740e1a52debf085c"
+        "image": "../assets/characters/popular-tachibana_mikari.png?v=4a329152e1e1",
+        "alt": "橘美花莉样张立绘",
+        "sourceShowcaseId": "pc_tachibana_mikari_pc_tachibana_mikari_tachibana_mikari_sfw_b8_04",
+        "sourceShowcaseSha256": "2e9aa96333730d4602421577c3cd1069a8fd11c20dcd2d87a3ec1a2010f765b1"
       },
       "visual_dna": {
         "signature": "Mikari Tachibana from 2.5 Dimensional Seduction, a popular professional teen fashion model with long light chestnut brown hair parted off-center, strands falling between her eyes and long asymmetrical sidelocks, the upper strands gathered into two side-up bunches tied with pink ribbons, plus vivid pink eyes. Fashionable, composed, and fiercely devoted to her childhood sweetheart Okumura Masamune.",

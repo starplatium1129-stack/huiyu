@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiromi_iori",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 73,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shiromi_iori",
     "profile": {
@@ -18,8 +18,10 @@
       "type": "popular",
       "icon": "🎯",
       "portrait": {
-        "image": "../assets/characters/popular-shiromi_iori.png?v=5",
-        "alt": "银镜伊织 样张立绘"
+        "image": "../assets/characters/popular-shiromi_iori.png?v=04f296a38f87",
+        "alt": "银镜伊织样张立绘",
+        "sourceShowcaseId": "pc_shiromi_iori_pc_shiromi_iori_iori_sunset_rooftop_breeze_pause",
+        "sourceShowcaseSha256": "689e3a1b5f3d304b6a5afda4b438c2493e052a53d6adee782fd48f9fef35eb1c"
       },
       "visual_dna": {
         "hair": "银白色顺滑双马尾 · 斜刘海遮单眼",

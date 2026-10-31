@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nene",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-30T04:15:27.061010900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "nene",
     "profile": {
@@ -18,8 +18,10 @@
       "type": "heroine",
       "icon": "🔮",
       "portrait": {
-        "image": "../assets/characters/nene-official.webp",
-        "alt": "绫地宁宁魔女服立绘"
+        "image": "../assets/characters/popular-nene.png?v=d52781134a1b",
+        "alt": "绫地宁宁样张立绘",
+        "sourceShowcaseId": "sc262",
+        "sourceShowcaseSha256": "85fde314faa0de96c1a8582a5f7c3efbed9817b95f72bbe8c5228f4555f72eda"
       },
       "visual_dna": {
         "hair": "银白色长发 · 低双马尾",

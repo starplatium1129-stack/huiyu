@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ogiso_setsuna",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 254,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ogiso_setsuna",
     "profile": {
@@ -19,10 +19,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-ogiso_setsuna.png?v=0fda82cf70e1",
+        "image": "../assets/characters/popular-ogiso_setsuna.png?v=82635cbec29b",
         "alt": "小木曾雪菜样张立绘",
-        "sourceShowcaseId": "pc_ogiso_setsuna_ogiso_setsuna_stage",
-        "sourceShowcaseSha256": "ed68a99d8381b3466e2a5781e79e03c48b80453dd0e9287e5fd55083f5eb7573"
+        "sourceShowcaseId": "pc_ogiso_setsuna_pc_ogiso_setsuna_ogiso_setsuna_stage",
+        "sourceShowcaseSha256": "99bc8db550da0dea1ffa6f748dbe05634372a0258ffd8408d5085ab3bc09d573"
       },
       "visual_dna": {
         "hair": "棕色长发",

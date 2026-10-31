@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinano",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 216,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shinano",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🦊",
       "portrait": {
-        "image": "../assets/characters/popular-shinano.png?v=fcfabbcba7a9",
+        "image": "../assets/characters/popular-shinano.png?v=a97bfe9ab82d",
         "alt": "信浓样张立绘",
-        "sourceShowcaseId": "pc_shinano_shinano_summer_festival_handhold",
-        "sourceShowcaseSha256": "e9945af96243e5d133a048e1b7f0a263d856026558ba7b4b994f780d9f903c96"
+        "sourceShowcaseId": "pc_shinano_pc_shinano_shinano_summer_festival_handhold",
+        "sourceShowcaseSha256": "b5dba82dfcaf0335b6c38c8bf8243e6e45de7c5713c3aec1bf6e3ce9252e7e92"
       },
       "visual_dna": {
         "hair": "如银瀑般及膝超长发 · 宛如银月光华流转",

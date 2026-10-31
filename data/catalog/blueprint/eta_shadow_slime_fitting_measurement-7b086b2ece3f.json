@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_slime_fitting_measurement",
+  "revision": 1,
+  "sortOrder": 2820,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "eta_shadow_slime_fitting_measurement",
+    "characterId": "eta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "埃塔 · 战服数据测量日",
+    "category": "疯狂研究",
+    "description": "埃塔穿着自己的史莱姆战服站在测量台上，对着镜子将软尺绕在腰间，旁边的记录板上写着设计尺寸。百褶裙式的战服是她亲手改的，数据可不能记错。",
+    "recommendedSize": "832x1216",
+    "location": "laboratory fitting platform with measuring tapes, mirrors and data crystals",
+    "action": "standing alone on a fitting platform in her pleated slime outfit, measuring her waist with a tape before a mirror",
+    "timeOfDay": "day",
+    "lighting": "测量室均匀的白色灯光",
+    "camera": "full_shot",
+    "mood": "clinical fitting, drowsy vanity",
+    "promptProse": "Eta stands alone on the fitting platform in her pleated slime outfit, checking a measuring tape around her waist in the mirror.",
+    "promptTokens": [
+      "fitting room",
+      "standing",
+      "mirror",
+      "measuring tape",
+      "measuring waist",
+      "clipboard",
+      "sleepy expression"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Eta checks the tape against the notes on her clipboard.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

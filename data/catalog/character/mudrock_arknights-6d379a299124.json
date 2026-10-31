@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mudrock_arknights",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 30,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "mudrock_arknights",
     "profile": {
@@ -73,8 +73,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-mudrock_arknights.png?v=5",
-        "alt": "泥岩热门角色立绘"
+        "image": "../assets/characters/popular-mudrock_arknights.png?v=7d48e46a2fb8",
+        "alt": "泥岩样张立绘",
+        "sourceShowcaseId": "pc_mudrock_arknights_pc_mudrock_arknights_mudrock_arknights_ruins_shelter",
+        "sourceShowcaseSha256": "5cec836bf5225478c2a85d3f817fba9c32a7ac456cb6925ad96e9cfcb0601dcb"
       },
       "speech": "泥岩向你致以问候。",
       "accent_color": "#38bdf8",

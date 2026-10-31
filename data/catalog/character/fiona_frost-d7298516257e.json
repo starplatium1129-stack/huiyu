@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fiona_frost",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 161,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.921Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "fiona_frost",
     "profile": {
@@ -21,8 +21,10 @@
       "type": "popular",
       "icon": "🕶️",
       "portrait": {
-        "image": "../assets/characters/popular-fiona_frost.png?v=6e3cf3dbb616",
-        "alt": "菲奥娜·弗罗斯特 · 雨夜公用电话亭暗号接头场景样张"
+        "image": "../assets/characters/popular-fiona_frost.png?v=c68860c19fc4",
+        "alt": "菲奥娜·弗罗斯特样张立绘",
+        "sourceShowcaseId": "pc_fiona_frost_pc_fiona_frost_fiona_frost_apartment_secret_album",
+        "sourceShowcaseSha256": "c6758b9e96a4c61f779e6e96ec1196e7b0ca58947e772ccf28c4e804a8b22c52"
       },
       "visual_dna": {
         "hair": "白色齐尾短发（漫画为薰衣草紫）· 右侧长刘海遮住右半脸",

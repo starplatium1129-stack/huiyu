@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chloe_von_einzbern",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "chloe_von_einzbern",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-chloe_von_einzbern.png?v=6ea4fcf35fa1",
-        "alt": "克洛伊 · 爱因兹贝伦家的早餐战争场景样张"
+        "image": "../assets/characters/popular-chloe_von_einzbern.png?v=0d2719aad863",
+        "alt": "克洛伊样张立绘",
+        "sourceShowcaseId": "pc_chloe_von_einzbern_pc_chloe_von_einzbern_chloe_von_einzbern_sfw_b7_02",
+        "sourceShowcaseSha256": "33acbf8241cef27c68beb6d270a0ce87225a7054673ac5dd1c3fcef541d8a123"
       },
       "visual_dna": {
         "signature": "Chloe von Einzbern from Fate/kaleid liner Prisma Illya, a lively girl with warm brown skin, long pale pink hair, face-framing sidelocks and bright orange eyes. Her confident grin gives way to quieter feelings when she is alone.",

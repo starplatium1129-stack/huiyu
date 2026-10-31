@@ -1,97 +1,18 @@
 {
   "kind": "character",
   "id": "stella_vermillion",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 223,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "stella_vermillion",
     "profile": {
-      "id": "stella_vermillion",
-      "name": "史黛菈·法米利昂",
-      "alias": [
-        "Stella Vermillion",
-        "史黛菈·法米利昂",
-        "史黛菈",
-        "红莲皇女",
-        "ステラ・ヴァーミリオン",
-        "stella vermillion"
-      ],
-      "type": "popular",
-      "icon": "🔥",
-      "portrait": {
-        "image": "../assets/characters/popular-stella_vermillion.png?v=e07adf6f641b",
-        "alt": "史黛菈·法米利昂样张立绘",
-        "sourceShowcaseId": "pc_stella_vermillion_stella_rooftop_lunch_jealous_feed",
-        "sourceShowcaseSha256": "a307d29c8c9dfb8f56a8ff3ed1fcf40f9617980f553f9b9ddd997a7bfe2be251"
-      },
-      "visual_dna": {
-        "hair": "璀璨如烈焰般深红及腰双马尾 · 发梢自然内卷",
-        "hair_color": "深红 / 绯红",
-        "eyes": "高贵锐利深红眼眸 · 动情时满溢灼热依恋",
-        "hairstyle": "高扎丰满双马尾 · 前额微翘自然刘海 · 傲人高挑皇女身段",
-        "uniform": "破军学园开衩校服 · 绯红盘金露肩礼服 · 盛夏挂脖比基尼",
-        "expression": "傲娇挺起胸脯的逞强气势 · 被心上人拥抱时瞬间沦陷的蒸汽姬颜艺",
-        "style": "passionate royal tsundere girlfriend with aggressive bride ambitions and intense pure love",
-        "signature": "绯红双马尾、红眸、破军校服与满脑子想结婚的娇蛮纯爱"
-      },
-      "personality": [
-        "傲娇高贵",
-        "纯情羞怯",
-        "好胜坚韧",
-        "动情时极度专一"
-      ],
-      "likes": [
-        "在无人的天台上傲娇地用筷子给心上人投喂自己亲手做的汉堡排",
-        "在节假日大大方方地挽着心上人的手臂在商业街宣示主权",
-        "在宿舍房间里把门反锁，居高临下强势推倒心上人索吻",
-        "穿着心上人的衬衫在镜子前偷偷练习叫「老公」",
-        "在夜深人静时紧紧相拥，感受彼此发烫的心跳与体温"
-      ],
-      "classic_cg": {
-        "title": "天台长椅上的鼓颊吃醋与霸道投喂",
-        "description": "破军学园天台铁丝网旁，午后清风吹拂着绯红双马尾。史黛菈坐在长椅上，双手端着便当盒，腮帮子气鼓鼓地吹着热气。她用筷子夹着一大块焦香汉堡排霸道地递到你唇边，红眸中既有吃醋的小委屈，又满溢着无法掩饰的深情。"
-      },
-      "identity": {
-        "role": "法米利昂帝国第二皇女 / 破军学园特等伐刀者",
-        "age": "16岁（破军学园一年级）",
-        "occupation": "骑士王座继承人 / 终生独占纯爱正妻",
-        "faction": "破军学园 / 法米利昂皇室",
-        "school": "破军学园（三年级代表）",
-        "classificationSource": "角色背景明确归属于破军学园核心主力。"
-      },
-      "tags": [
-        "红发",
-        "双马尾",
-        "红瞳",
-        "傲娇",
-        "纯爱战神",
-        "皇女",
-        "落第骑士"
-      ],
-      "bg_story": "史黛菈是欧洲小国法米利昂的第二皇女，拥有十年难得一见的巨量魔力。为了摆脱「天才皇女」的花瓶评价，她远渡重洋来到日本破军学园磨砺武艺，却在开学第一天与被判定为F级的「落第骑士」黑铁一辉宿命般相遇。在经历同生共死的选拔战后，史黛菈彻底被一辉坚韧的灵魂所征服。她摒弃了皇女的矜持，全心全意地将身心托付给对方。成年设定下的史黛菈拥有艳压群芳的身材与尊贵气场，唯独在所爱之人面前，她是那个最毫无防备、恨不得时刻融化在对方怀抱中的热烈新娘。",
-      "palette": [
-        "绯红",
-        "纯黑",
-        "浅金"
-      ],
       "weather": [
         "晴空天台",
         "落日夕阳",
         "烛光套房"
       ],
-      "speech": "一、一辉！你今天为什么又和那个女孩子说话那么久？！本皇女可是你的未婚妻哦！罚你……罚你今晚哪里都不准去，老老实实抱紧我！",
-      "source": "SILVER LINK.《落第骑士英雄谭 / Chivalry of a Failed Knight》",
-      "traits": [
-        "stella_vermillion",
-        "crimson_hair",
-        "long_hair",
-        "twintails",
-        "red_eyes"
-      ],
-      "voice": "一、一辉！你今天为什么又和那个女孩子说话那么久？！本皇女可是你的未婚妻哦！罚你……罚你今晚老老实实抱紧我！",
-      "voiceJa": "い、一輝！よそ見しちゃダメなんだからね！私はアンタの婚約者なんだから！",
       "relationshipGraph": {
         "version": 1,
         "work": "落第骑士英雄谭",
@@ -170,7 +91,86 @@
             }
           }
         ]
-      }
+      },
+      "palette": [
+        "绯红",
+        "纯黑",
+        "浅金"
+      ],
+      "visual_dna": {
+        "hair": "璀璨如烈焰般深红及腰双马尾 · 发梢自然内卷",
+        "hair_color": "深红 / 绯红",
+        "eyes": "高贵锐利深红眼眸 · 动情时满溢灼热依恋",
+        "hairstyle": "高扎丰满双马尾 · 前额微翘自然刘海 · 傲人高挑皇女身段",
+        "uniform": "破军学园开衩校服 · 绯红盘金露肩礼服 · 盛夏挂脖比基尼",
+        "expression": "傲娇挺起胸脯的逞强气势 · 被心上人拥抱时瞬间沦陷的蒸汽姬颜艺",
+        "style": "passionate royal tsundere girlfriend with aggressive bride ambitions and intense pure love",
+        "signature": "绯红双马尾、红眸、破军校服与满脑子想结婚的娇蛮纯爱"
+      },
+      "voiceJa": "い、一輝！よそ見しちゃダメなんだからね！私はアンタの婚約者なんだから！",
+      "alias": [
+        "Stella Vermillion",
+        "史黛菈·法米利昂",
+        "史黛菈",
+        "红莲皇女",
+        "ステラ・ヴァーミリオン",
+        "stella vermillion"
+      ],
+      "source": "SILVER LINK.《落第骑士英雄谭 / Chivalry of a Failed Knight》",
+      "likes": [
+        "在无人的天台上傲娇地用筷子给心上人投喂自己亲手做的汉堡排",
+        "在节假日大大方方地挽着心上人的手臂在商业街宣示主权",
+        "在宿舍房间里把门反锁，居高临下强势推倒心上人索吻",
+        "穿着心上人的衬衫在镜子前偷偷练习叫「老公」",
+        "在夜深人静时紧紧相拥，感受彼此发烫的心跳与体温"
+      ],
+      "name": "史黛菈·法米利昂",
+      "identity": {
+        "role": "法米利昂帝国第二皇女 / 破军学园特等伐刀者",
+        "age": "16岁（破军学园一年级）",
+        "occupation": "骑士王座继承人 / 终生独占纯爱正妻",
+        "faction": "破军学园 / 法米利昂皇室",
+        "school": "破军学园（三年级代表）",
+        "classificationSource": "角色背景明确归属于破军学园核心主力。"
+      },
+      "icon": "🔥",
+      "classic_cg": {
+        "title": "天台长椅上的鼓颊吃醋与霸道投喂",
+        "description": "破军学园天台铁丝网旁，午后清风吹拂着绯红双马尾。史黛菈坐在长椅上，双手端着便当盒，腮帮子气鼓鼓地吹着热气。她用筷子夹着一大块焦香汉堡排霸道地递到你唇边，红眸中既有吃醋的小委屈，又满溢着无法掩饰的深情。"
+      },
+      "tags": [
+        "红发",
+        "双马尾",
+        "红瞳",
+        "傲娇",
+        "纯爱战神",
+        "皇女",
+        "落第骑士"
+      ],
+      "traits": [
+        "stella_vermillion",
+        "crimson_hair",
+        "long_hair",
+        "twintails",
+        "red_eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-stella_vermillion.png?v=43f187fbf98b",
+        "alt": "史黛菈·法米利昂样张立绘",
+        "sourceShowcaseId": "pc_stella_vermillion_pc_stella_vermillion_stella_rooftop_lunch_jealous_feed",
+        "sourceShowcaseSha256": "256a35d94df17237adbd8409056cbc90bbe08a5b67456df1866d7bfd4579746f"
+      },
+      "bg_story": "史黛菈是欧洲小国法米利昂的第二皇女，拥有十年难得一见的巨量魔力。为了摆脱「天才皇女」的花瓶评价，她远渡重洋来到日本破军学园磨砺武艺，却在开学第一天与被判定为F级的「落第骑士」黑铁一辉宿命般相遇。在经历同生共死的选拔战后，史黛菈彻底被一辉坚韧的灵魂所征服。她摒弃了皇女的矜持，全心全意地将身心托付给对方。成年设定下的史黛菈拥有艳压群芳的身材与尊贵气场，唯独在所爱之人面前，她是那个最毫无防备、恨不得时刻融化在对方怀抱中的热烈新娘。",
+      "speech": "一、一辉！你今天为什么又和那个女孩子说话那么久？！本皇女可是你的未婚妻哦！罚你……罚你今晚哪里都不准去，老老实实抱紧我！",
+      "personality": [
+        "傲娇高贵",
+        "纯情羞怯",
+        "好胜坚韧",
+        "动情时极度专一"
+      ],
+      "voice": "一、一辉！你今天为什么又和那个女孩子说话那么久？！本皇女可是你的未婚妻哦！罚你……罚你今晚老老实实抱紧我！",
+      "id": "stella_vermillion",
+      "type": "popular"
     },
     "popular": {
       "id": "stella_vermillion",

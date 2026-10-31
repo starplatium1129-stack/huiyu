@@ -3,16 +3,16 @@
     <header class="room-tool-heading">
       <div>
         <span>LONG-TERM MEMORY</span>
-        <h2 id="chatMemoryTitle">{{ characterName }}的长期记忆</h2>
+        <h2 id="chatMemoryTitle">长期记忆 · {{ characterName }}</h2>
       </div>
       <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭长期记忆" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p>只保存你主动固定的事实。可填写主题整理不同说法；同一主题只召回最近更新的一条，旧记录保留。每次最多召回 4 条。</p>
-      <label class="studio-field-label" for="memory-recall-query">查看一句话会唤起哪些记忆</label>
+      <p>保存对话固定的事实，同一主题召回最新一条（最多 4 条）。</p>
+      <label class="studio-field-label" for="memory-recall-query">检索测试</label>
       <input id="memory-recall-query" v-model="query" class="input" placeholder="输入你想说的话" maxlength="1200" />
-      <p v-if="query.trim()" role="status">{{ recalled.length ? `匹配 ${recalled.length} 条，已在下方标明` : '未找到相关记忆，可补充主题或修改措辞' }}</p>
-      <div v-if="!items.length" class="memory-empty">在自己的聊天气泡下点击“记住”，事实会出现在这里。</div>
+      <p v-if="query.trim()" role="status">{{ recalled.length ? `匹配 ${recalled.length} 条` : '未匹配到相关记忆' }}</p>
+      <div v-if="!items.length" class="memory-empty">暂无记忆。在消息气泡下点击“记住”添加。</div>
       <div v-else class="memory-list">
         <article v-for="{ item, row } in editableItems" :key="item.id" class="memory-item">
           <input v-model="row.topic" @input="markEdited(item.id, 'topicDirty')" class="input" maxlength="40" :aria-label="`记忆主题：${item.topic || '未分类'}`" placeholder="主题（可选，例如：饮食偏好）" />

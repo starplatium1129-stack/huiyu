@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elfaria_alvis_serfort",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 152,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.918Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "elfaria_alvis_serfort",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-elfaria_alvis_serfort.png?v=0c90874c76de",
-        "alt": "艾尔菲利亚 · 高塔之巅的俯瞰场景样张"
+        "image": "../assets/characters/popular-elfaria_alvis_serfort.png?v=f29f4399320e",
+        "alt": "艾尔菲利亚样张立绘",
+        "sourceShowcaseId": "pc_elfaria_alvis_serfort_pc_elfaria_alvis_serfort_elfaria_alvis_serfort_sfw_b9_04",
+        "sourceShowcaseSha256": "c101e2c99ab7e32c7ee63bc20ccdfbabca88cc6715f9391b8fe15a9599f687e9"
       },
       "visual_dna": {
         "signature": "Elfaria Alvis Serfort from Wistoria: Wand and Sword, an ice mage with very long blue hair, long sidelocks, blue eyes and pale colored lashes. Her formal stillness can soften quickly at an old memory.",

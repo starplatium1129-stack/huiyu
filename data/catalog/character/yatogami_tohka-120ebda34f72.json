@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yatogami_tohka",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yatogami_tohka",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-yatogami_tohka.png?v=f8970923b378",
-        "alt": "夜刀神十香 · 面包店的黄豆粉面包场景样张"
+        "image": "../assets/characters/popular-yatogami_tohka.png?v=eff90f02ec35",
+        "alt": "夜刀神十香样张立绘",
+        "sourceShowcaseId": "pc_yatogami_tohka_pc_yatogami_tohka_yatogami_tohka_sfw_b6_06",
+        "sourceShowcaseSha256": "fb32d78d0b4ac34230a0df9a92061589c0b94a5f1c629c3e42f6d8cad1e54967"
       },
       "visual_dna": {
         "signature": "Tohka Yatogami from Date A Live, a curious spirit with very long dark-purple hair gathered into a high half ponytail with a large ribbon and bright violet eyes. Her expressions show earnest wonder at ordinary human life.",

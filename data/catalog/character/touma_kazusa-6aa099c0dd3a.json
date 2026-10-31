@@ -1,73 +1,13 @@
 {
   "kind": "character",
   "id": "touma_kazusa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 255,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-30T03:35:43.106480900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "touma_kazusa",
     "profile": {
-      "id": "touma_kazusa",
-      "name": "冬马和纱",
-      "icon": "character",
-      "source": "White Album 2",
-      "alias": [
-        "冬馬かずさ",
-        "Touma Kazusa",
-        "Kazusa Touma"
-      ],
-      "type": "popular",
-      "portrait": {
-        "image": "../assets/characters/popular-touma_kazusa.png?v=bc055ad5d614",
-        "alt": "冬马和纱样张立绘",
-        "sourceShowcaseId": "pc_touma_kazusa_touma_kazusa_metronome",
-        "sourceShowcaseSha256": "4d7b299283946ff561c371f0a6be8ffd8880e8a0a990bca5993d61c9db13abff"
-      },
-      "visual_dna": {
-        "hair": "黑色长发",
-        "eyes": "蓝色眼睛",
-        "hairstyle": "自然垂落的黑长直发",
-        "uniform": "黑色演出礼服",
-        "signature": "黑色长直发、细长蓝眸与安静锐利的神情"
-      },
-      "personality": [
-        "对音乐要求严格",
-        "说话直接，不习惯解释太多",
-        "在熟悉的人面前会放松警惕",
-        "不愿把重要的约定轻易放下"
-      ],
-      "likes": [
-        "钢琴",
-        "独自练习",
-        "能安静听完一首曲子的人"
-      ],
-      "classic_cg": {
-        "title": "琴房里的最后一个和弦",
-        "description": "琴房里只开了一盏灯。和纱停在最后一个和弦上，低头听琴弦慢慢安静下来。"
-      },
-      "identity": {
-        "role": "钢琴家",
-        "age": "17岁（峰城大附属高中三年级）",
-        "occupation": "钢琴演奏与练习"
-      },
-      "tags": [
-        "钢琴家",
-        "对音乐要求严格",
-        "说话直接，不习惯解释太多"
-      ],
-      "bg_story": "和纱是钢琴家，习惯用演奏表达难以说出口的情绪。她外表冷淡，说话常常直接，真正熟悉的人能看见她对音乐和彼此关系的认真。这里采用后续篇章的成年时期，保留她独处时的节奏，不替她决定原作路线的结局。",
-      "speech": "先别说话。等这一段弹完，再告诉我哪里不对。",
-      "voice": "先别说话。等这一段弹完，再告诉我哪里不对。",
-      "traits": [
-        "touma_kazusa",
-        "black_hair",
-        "long_hair",
-        "blue_eyes"
-      ],
-      "accent_color": "#7c69a5",
-      "voiceJa": "ちょっと黙ってて。このフレーズが終わるまで、音を聴きたいから",
-      "bg_color": "#140f1f",
       "relationshipGraph": {
         "version": 1,
         "work": "白色相簿2",
@@ -173,7 +113,67 @@
             }
           }
         ]
-      }
+      },
+      "accent_color": "#7c69a5",
+      "visual_dna": {
+        "hair": "黑色长发",
+        "eyes": "蓝色眼睛",
+        "hairstyle": "自然垂落的黑长直发",
+        "uniform": "黑色演出礼服",
+        "signature": "黑色长直发、细长蓝眸与安静锐利的神情"
+      },
+      "voiceJa": "ちょっと黙ってて。このフレーズが終わるまで、音を聴きたいから",
+      "alias": [
+        "冬馬かずさ",
+        "Touma Kazusa",
+        "Kazusa Touma"
+      ],
+      "source": "White Album 2",
+      "likes": [
+        "钢琴",
+        "独自练习",
+        "能安静听完一首曲子的人"
+      ],
+      "name": "冬马和纱",
+      "identity": {
+        "role": "钢琴家",
+        "age": "17岁（峰城大附属高中三年级）",
+        "occupation": "钢琴演奏与练习"
+      },
+      "icon": "character",
+      "classic_cg": {
+        "title": "琴房里的最后一个和弦",
+        "description": "琴房里只开了一盏灯。和纱停在最后一个和弦上，低头听琴弦慢慢安静下来。"
+      },
+      "tags": [
+        "钢琴家",
+        "对音乐要求严格",
+        "说话直接，不习惯解释太多"
+      ],
+      "traits": [
+        "touma_kazusa",
+        "black_hair",
+        "long_hair",
+        "blue_eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-touma_kazusa.png?v=3b294c0e324a",
+        "alt": "冬马和纱样张立绘",
+        "sourceShowcaseId": "pc_touma_kazusa_pc_touma_kazusa_touma_kazusa_metronome",
+        "sourceShowcaseSha256": "e81745de7978d1d17d9df646ba202fae8514e2f713e7d1d158ce4bb87f0ca86b"
+      },
+      "bg_story": "和纱是钢琴家，习惯用演奏表达难以说出口的情绪。她外表冷淡，说话常常直接，真正熟悉的人能看见她对音乐和彼此关系的认真。这里采用后续篇章的成年时期，保留她独处时的节奏，不替她决定原作路线的结局。",
+      "speech": "先别说话。等这一段弹完，再告诉我哪里不对。",
+      "personality": [
+        "对音乐要求严格",
+        "说话直接，不习惯解释太多",
+        "在熟悉的人面前会放松警惕",
+        "不愿把重要的约定轻易放下"
+      ],
+      "voice": "先别说话。等这一段弹完，再告诉我哪里不对。",
+      "id": "touma_kazusa",
+      "bg_color": "#140f1f",
+      "type": "popular"
     },
     "popular": {
       "id": "touma_kazusa",

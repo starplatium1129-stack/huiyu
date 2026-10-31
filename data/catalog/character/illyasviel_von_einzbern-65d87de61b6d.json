@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "illyasviel_von_einzbern",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "illyasviel_von_einzbern",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "🏰",
       "portrait": {
-        "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=5",
-        "alt": "伊莉雅丝菲尔 样张立绘"
+        "image": "../assets/characters/popular-illyasviel_von_einzbern.png?v=57232214dba2",
+        "alt": "伊莉雅丝菲尔样张立绘",
+        "sourceShowcaseId": "pc_illyasviel_von_einzbern_pc_illyasviel_von_einzbern_illyasviel_von_einzbern_ice_cream",
+        "sourceShowcaseSha256": "e266f004a3e42c06b27bdc6f9f560781b5a28d7628c4e6a02f430f0c57c2a8a4"
       },
       "visual_dna": {
         "hair": "银白长直发",
@@ -935,18 +937,6 @@
       }
     },
     "popular": {
-      "id": "illyasviel_von_einzbern",
-      "displayName": "伊莉雅丝菲尔",
-      "originalName": "Illyasviel von Einzbern",
-      "franchise": "Fate",
-      "aliases": [
-        "illyasviel_von_einzbern",
-        "illya",
-        "ilys",
-        "snow field",
-        "fate/stay night"
-      ],
-      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a homunculus woman with long white hair and ruby-red eyes.",
       "identityTokens": [
         "illyasviel von einzbern",
         "1girl",
@@ -956,17 +946,6 @@
         "red_eyes",
         "fate/stay_night"
       ],
-      "exactTokens": [
-        "illyasviel_von_einzbern"
-      ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.6",
-      "supportedEngines": [
-        "anima-miaomiao-v1.6",
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
       "negativeTokens": [
         "bad anatomy",
         "bad hands",
@@ -976,25 +955,48 @@
         "signature",
         "watermark"
       ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "characterTokens": [
+        "illyasviel von einzbern",
+        "illyasviel_von_einzbern"
+      ],
+      "franchise": "Fate",
+      "aliases": [
+        "illyasviel_von_einzbern",
+        "illya",
+        "ilys",
+        "snow field",
+        "fate/stay night"
+      ],
+      "displayName": "伊莉雅丝菲尔",
+      "exactPrefixes": [],
       "canon": {
-        "world": "现代魔术（Fate）",
         "era": "当代",
-        "formNotes": "原作设定银发红眼；爱因兹贝伦古堡",
-        "research": "2026-08-14 调研"
+        "world": "现代魔术（Fate）",
+        "research": "2026-08-14 调研",
+        "formNotes": "原作设定银发红眼、外貌幼态；爱因兹贝伦古堡"
       },
+      "adultEligibility": "adult",
       "animeStudio": "silver link, ufotable, official anime screencap",
+      "originalName": "Illyasviel von Einzbern",
       "curatedArtistStyles": [
         "takeuchi_takashi",
         "anmi",
         "morikura_en"
       ],
-      "characterTokens": [
-        "illyasviel von einzbern",
-        "illyasviel_von_einzbern"
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
       ],
       "copyrightTokens": [
         "fate/stay_night"
-      ]
+      ],
+      "exactTokens": [
+        "illyasviel_von_einzbern"
+      ],
+      "identityProse": "Illyasviel von Einzbern from Fate/stay night, a homunculus woman with long white hair and ruby-red eyes.",
+      "id": "illyasviel_von_einzbern"
     }
   }
 }

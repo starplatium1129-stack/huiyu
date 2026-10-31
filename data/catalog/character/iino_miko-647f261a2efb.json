@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "iino_miko",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 202,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "iino_miko",
     "profile": {
@@ -22,10 +22,10 @@
       "type": "popular",
       "icon": "⚖️",
       "portrait": {
-        "image": "../assets/characters/popular-iino_miko.png?v=b3a43ee54306",
+        "image": "../assets/characters/popular-iino_miko.png?v=ac4279ad9103",
         "alt": "伊井野弥子样张立绘",
-        "sourceShowcaseId": "pc_iino_miko_iino_miko_courtroom_resolute_justice",
-        "sourceShowcaseSha256": "39b482d702712acea809abf515ddd6c97a8e150f5771d92354a78a0404dfbe46"
+        "sourceShowcaseId": "pc_iino_miko_pc_iino_miko_iino_miko_autumn_trench_sunset_bench",
+        "sourceShowcaseSha256": "937a2d4128750b4c9ea5dbf3f3ecb70ff8d1741eb8410c32182cb12ec2a19242"
       },
       "visual_dna": {
         "hair": "柔顺深褐齐肩双低马尾 · 发尾自然落在双肩",

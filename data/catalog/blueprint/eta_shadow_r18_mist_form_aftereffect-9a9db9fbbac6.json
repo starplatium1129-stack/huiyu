@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_r18_mist_form_aftereffect",
+  "revision": 1,
+  "sortOrder": 2834,
+  "createdAt": "2026-10-31T04:39:58.773044+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "eta_shadow_r18_mist_form_aftereffect",
+    "characterId": "eta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "埃塔 · 雾化实验的衣物错位",
+    "category": "研究秘辛",
+    "description": "雾化重组实验刚结束，埃塔的史莱姆战服在重组时出了点小差错——衣料错位地贴在身上，半透明的史莱姆还在缓缓流动。她面无表情地低头检查，在记录板上写下：“副作用：羞耻。建议忽略。”",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园地下实验室·实验场",
+    "action": "低头检查错位的半透明史莱姆衣，手持记录板，表情平淡",
+    "timeOfDay": "深夜",
+    "lighting": "purple glow of the mist formation circle",
+    "camera": "cowboy shot, eye level",
+    "mood": "平淡荒诞",
+    "sceneTags": [
+      "laboratory",
+      "mist",
+      "slime_suit",
+      "formation_circle",
+      "experiment"
+    ],
+    "promptProse": "After the atomization trial, adult Eta calmly inspects her misaligned, half-translucent slime clothes, clipboard in hand, noting the side effect in a flat, sleepy tone.",
+    "promptTokens": [
+      "laboratory",
+      "mist",
+      "slime suit",
+      "translucent fabric",
+      "formation circle",
+      "clipboard",
+      "deadpan"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "see_through",
+      "slime_clothes",
+      "wardrobe_malfunction"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "'Side effect: embarrassment. Recommendation: ignore.' Eta writes it down and reaches for her coffee."
+  }
+}

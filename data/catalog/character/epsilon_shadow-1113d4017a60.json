@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "epsilon_shadow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 265,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "epsilon_shadow",
     "popular": {
@@ -81,10 +81,10 @@
       "type": "popular",
       "icon": "🎹",
       "portrait": {
-        "image": "../assets/characters/popular-epsilon_shadow.png?v=23305e3cc012",
+        "image": "../assets/characters/popular-epsilon_shadow.png?v=07ebf04c2482",
         "alt": "厄普西隆样张立绘",
-        "sourceShowcaseId": "pc_epsilon_shadow_epsilon_rooftop_magic_threads",
-        "sourceShowcaseSha256": "98ec98ad27cf2a7064723247b2c64cdbc32580efc08f3ea7b7871fd9957fe3fe"
+        "sourceShowcaseId": "pc_epsilon_shadow_pc_epsilon_shadow_epsilon_slime_sculpt_mirror_check",
+        "sourceShowcaseSha256": "e859bbb252e11255b91c0396c00c812a795da8fb73f94f672008564f4ea0fb63"
       },
       "visual_dna": {
         "hair": "如清冽流水般的浅蓝色微卷长发",

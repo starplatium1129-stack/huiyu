@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kitagawa_marin",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-28T02:53:06.656035900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kitagawa_marin",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "🧵",
       "portrait": {
-        "image": "../assets/characters/popular-kitagawa_marin.png?v=5",
-        "alt": "喜多川海梦 样张立绘"
+        "image": "../assets/characters/popular-kitagawa_marin.png?v=002506f24803",
+        "alt": "喜多川海梦样张立绘",
+        "sourceShowcaseId": "pc_kitagawa_marin_pc_kitagawa_marin_kitagawa_marin_backstage_cosplay",
+        "sourceShowcaseSha256": "7b4512b748973193a3cfa4e406903d09d87dfa36a44976e37e9f2f4feea9ac24"
       },
       "visual_dna": {
         "hair": "金色长发（高马尾/双马尾）",

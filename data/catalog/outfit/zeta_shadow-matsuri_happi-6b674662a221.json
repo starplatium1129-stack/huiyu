@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "zeta_shadow/matsuri_happi",
+  "revision": 1,
+  "sortOrder": 1929,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "characterId": "zeta_shadow",
+    "outfit": {
+      "id": "matsuri_happi",
+      "name": "祭典金豹纹法披",
+      "prose": "Festival happi coat with golden leopard patterns over shorts, worn while running a rigged shooting stall as cover.",
+      "tokens": [
+        "happi",
+        "japanese_clothes",
+        "shorts",
+        "cat_ears"
+      ],
+      "characterId": "zeta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

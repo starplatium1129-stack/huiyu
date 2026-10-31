@@ -166,7 +166,7 @@ fn main() {
             tauri::plugin::Builder::new("isolated-instance").build()
         } else { tauri_plugin_single_instance::init(|app, argv, _cwd| {
             if maintenance::handle(app, &argv) || maintenance::active(app) { return; }
-            if argv.iter().any(|arg| arg == "--resource-assistant") { let _ = resource_assistant::open(app); return; }
+            if argv.iter().any(|arg| arg == "--resource-assistant") { resource_assistant::open_in_background(app); return; }
             let state = app.state::<AppState>();
             for arg in argv {
                 if arg.starts_with("aics://") {

@@ -75,7 +75,7 @@ function popularEntry(record: PopularRecord, audit: Record<string, unknown>, lor
   const subject = record.characterId;
   const blueprint = record.blueprintId;
   const id = `pc_${subject}_${blueprint}`;
-  const displayName = displayNameByChar[subject] || subject;
+  const displayName = displayNameByChar[subject] || (typeof record.displayName === 'string' ? record.displayName : subject);
   const seed = record.actualSeed ?? record.seed;
   const meta: Record<string, unknown> = { engine: record.engine || 'anima', model: record.modelId, checkpoint: record.checkpoint };
   if (record.loraId) { meta.loraId = record.loraId; meta.loraVersion = loraVersions[record.loraId] || ''; }
@@ -85,7 +85,7 @@ function popularEntry(record: PopularRecord, audit: Record<string, unknown>, lor
   return {
     id,
     title: `${displayName} / ${record.blueprintTitle}`,
-    story: '',
+    story: typeof record.story === 'string' ? record.story : '',
     category: record.adult ? '成人' : '热门角色',
     char: subject,
     displayName,
@@ -216,9 +216,25 @@ async function main() {
   }
   const audit = readJson(auditPath);
   if (!object(audit)) throw new Error('Invalid audit results');
-  const entries = passed.map(record => popularEntry(record, audit, loraVersions, displayNameByChar));
-
   const sourceManifest = readSourceManifest(readJson(path.join(sourceDir, 'manifest.json')));
+  const { canonicalShowcaseId }: typeof import('../../src/utils/showcaseManifest.ts') = require('../../src/utils/showcaseManifest.ts');
+  const entries = passed.map(record => {
+    const entry = popularEntry(record, audit, loraVersions, displayNameByChar);
+    const matches = sourceManifest.entries.filter(existing => existing.type === 'popular'
+      && existing.char === record.characterId
+      && canonicalShowcaseId({ id: existing.id, type: 'popular', char: record.characterId }) === entry.id);
+    if (matches.length > 1) throw new Error(`ambiguous existing showcase identity: ${entry.id}`);
+    const existing = matches[0];
+    if (!existing) return entry;
+    return {
+      ...existing, ...entry,
+      id: existing.id,
+      image: typeof existing.image === 'string' ? existing.image : `images/${existing.id}.jpg`,
+      thumb: typeof existing.thumb === 'string' ? existing.thumb : `thumbs/${existing.id}.jpg`,
+      title: typeof existing.title === 'string' ? existing.title : entry.title,
+      story: typeof existing.story === 'string' ? existing.story : entry.story,
+    };
+  });
   const manifest = buildManifest(sourceManifest, entries, {
     sourceName: path.basename(sourceDir),
     publishedAt: new Date().toISOString(),

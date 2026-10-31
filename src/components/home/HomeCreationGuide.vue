@@ -9,18 +9,11 @@
       <li><RouterLink to="/prompt-builder"><img class="step-art" :src="createArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">02</span><strong>灵感绘制</strong></RouterLink></li>
       <li><RouterLink to="/gallery"><img class="step-art" :src="collectionArt" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /><span class="step-number tw:grid tw:h-[40px] tw:rounded-md tw:text-accent">03</span><strong>作品珍藏</strong></RouterLink></li>
     </ol>
-    <details class="guide-help tw:mt-s-4 tw:text-secondary tw:text-label">
-      <StudioDisclosureSummary>生成与保存说明</StudioDisclosureSummary>
-      <div class="guide-help-body tw:pb-s-4 tw:leading-loose" data-disclosure-content>
-        <p>画面生成需连接绘图服务。如需清理应用或浏览器缓存，请先将重要作品导出至本地妥善保存。</p>
-      </div>
-    </details>
   </section>
 </template>
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import inspirationOriginal from '@/assets/illustrations/atelier-inspiration-spot.webp'
 import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
 import collectionOriginal from '@/assets/illustrations/atelier-collection-spot.webp'

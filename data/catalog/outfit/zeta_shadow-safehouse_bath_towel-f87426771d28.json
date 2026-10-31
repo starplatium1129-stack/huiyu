@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "zeta_shadow/safehouse_bath_towel",
+  "revision": 1,
+  "sortOrder": 1938,
+  "createdAt": "2026-10-31T04:39:58.773044+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "characterId": "zeta_shadow",
+    "outfit": {
+      "id": "safehouse_bath_towel",
+      "name": "据点休整白色浴巾",
+      "prose": "A plain white bath towel worn after missions at the hideout bath, hair pinned up, ears still alert.",
+      "tokens": [
+        "towel",
+        "bath_towel",
+        "wet_hair",
+        "cat_ears"
+      ],
+      "characterId": "zeta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

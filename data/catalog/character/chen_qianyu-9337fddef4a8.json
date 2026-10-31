@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chen_qianyu",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 194,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "chen_qianyu",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-chen_qianyu.png?v=e7a2df841898",
+        "image": "../assets/characters/popular-chen_qianyu.png?v=6478cb396ce1",
         "alt": "陈千语样张立绘",
-        "sourceShowcaseId": "pc_chen_qianyu_chen_qianyu_intimate_workshop_hand_hold",
-        "sourceShowcaseSha256": "c00f5cafabe04319ae2fe9d664253960ebc33d71bf9c3771530aee1f90f01453"
+        "sourceShowcaseId": "pc_chen_qianyu_pc_chen_qianyu_chen_qianyu_evening_tea_porch_sunset",
+        "sourceShowcaseSha256": "f72f15de27d7b5e161dbb59a6675049eb9b5e7d2a9e9088a9bee09b44f07862c"
       },
       "visual_dna": {
         "signature": "Long black hair, two small dragon horns, and a dark dragon tail",

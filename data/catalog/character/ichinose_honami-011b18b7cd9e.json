@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ichinose_honami",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 182,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ichinose_honami",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-ichinose_honami.png?v=1",
-        "alt": "一之濑帆波 样张立绘"
+        "image": "../assets/characters/popular-ichinose_honami.png?v=026394302524",
+        "alt": "一之濑帆波样张立绘",
+        "sourceShowcaseId": "pc_ichinose_honami_pc_ichinose_honami_honami_rainy_umbrella_walk",
+        "sourceShowcaseSha256": "a85118087aa964feed7247af62235ab470db2dce3e14586d7ec871caf2948b67"
       },
       "visual_dna": {
         "hair": "粉金色丰盈蓬松中长发",

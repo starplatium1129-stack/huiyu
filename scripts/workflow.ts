@@ -343,7 +343,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
     desc: '只读样张清单并生成缺口待审核候选（MiaoMiao v1.6，沿用蓝图画幅，默认并发3）',
     cmd: ['node', 'scripts/maintenance/render-showcase-gaps.js'],
     required: ['--output'],
-    opts: '--output <候选目录> [--manifest <源manifest>] [--only <角色id列表>] [--concurrency <n>] [--gateway <url>] [--root <数据根>] [--redo-mine] [--dry-run] [--retry-unknown]',
+    opts: '--output <候选目录> [--manifest <源manifest>] [--only <角色id列表>] [--keys popular:角色:蓝图,...] [--concurrency <n>] [--gateway <url>] [--root <数据根>] [--redo-mine] [--dry-run] [--retry-unknown]',
     run: { nature: ['external-model', 'writes-product'], machine: ['gateway', 'node'], switches: { '--dry-run': ['preview'], '--retry-unknown': ['external-model', 'writes-product'] }, resume: 'checkpoint', evidence: 'scripts/maintenance/render-showcase-gaps.js:1; scripts/lib/generation-candidates.js:1', unknown: ['真实模型及画面审核未执行'], notes: ['预览零写入，显式隔离候选目录；review 保持 pending，不回填活跃 manifest'] },
   },
   'showcase:audit': {

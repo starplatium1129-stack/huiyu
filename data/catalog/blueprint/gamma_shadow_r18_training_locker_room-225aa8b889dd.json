@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_r18_training_locker_room",
+  "revision": 1,
+  "sortOrder": 2828,
+  "createdAt": "2026-10-31T04:39:58.773044+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_r18_training_locker_room",
+    "characterId": "gamma_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "伽玛 · 更衣室的战服拉链",
+    "category": "头脑特化",
+    "description": "训练结束的更衣室里，伽玛背靠金属柜门拉开史莱姆战服的前襟散热，汗水顺着锁骨滑下。理论满分的她今天又摔了三跤——但拉链拉开的那一刻，精灵的身段可一点都不“最弱”。",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园训练场更衣室",
+    "action": "背靠更衣柜拉开战服拉链，大汗淋漓，仰头喘息",
+    "timeOfDay": "白天",
+    "lighting": "yellow work lamps and a shaft of daylight in the locker room",
+    "camera": "cowboy shot, eye level",
+    "mood": "野性反差",
+    "sceneTags": [
+      "locker_room",
+      "bodysuit",
+      "unzipped",
+      "sweat",
+      "training"
+    ],
+    "promptProse": "In the training ground locker room, adult Gamma leans against the lockers and unzips her slime bodysuit to cool down, sweat tracing her collarbone after another fall-filled practice.",
+    "promptTokens": [
+      "locker room",
+      "black bodysuit",
+      "unzipped",
+      "topless",
+      "sweat",
+      "leaning back",
+      "metal locker"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "topless",
+      "unzipped_bodysuit",
+      "sweaty_skin"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "She unzips against the cold metal, breathless — the weakest Shadow, everywhere except on paper."
+  }
+}

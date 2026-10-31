@@ -18,7 +18,6 @@
 .model-studio p, .model-studio li { @apply tw:text-secondary tw:leading-body tw:text-body; overflow-wrap: anywhere; }
 .model-studio details { padding: var(--s-3) 0; border-bottom: 1px solid var(--border-soft); }
 .model-studio summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); min-height:var(--control-height-sm); padding:var(--s-2); margin-inline:calc(-1 * var(--s-2)); border-radius:var(--r-sm); @apply tw:cursor-pointer tw:text-body tw:text-primary; }
-.model-studio summary:hover { background:var(--bg-hover); }
 .model-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 .model-actions .btn { @apply tw:whitespace-normal; overflow-wrap: anywhere; }
 .model-endpoints { @apply tw:grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); @apply tw:gap-s-3; }

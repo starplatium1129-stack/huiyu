@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_r18_bath_mirror_name",
+  "revision": 1,
+  "sortOrder": 2839,
+  "createdAt": "2026-10-31T04:42:34.298429+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_r18_bath_mirror_name",
+    "characterId": "gamma_shadow",
+    "outfitId": "private_nightwear",
+    "title": "伽玛 · 雾镜上写的名字",
+    "category": "水光湿身",
+    "description": "会长私汤的水汽漫过镜面。伽玛赤裸着站在镜前，湿漉漉的靛蓝长发贴在背上，一只手在雾面上慢慢写下“暗影”两个字，另一只手探进水汽弥漫的腿间。镜中精灵的耳尖红得滴血——这世上最赚钱的女人，最见不得人的账目，从不记在纸上。",
+    "recommendedSize": "1152x1536",
+    "location": "会长套房私人浴室·深夜",
+    "action": "赤裸站在雾气镜面前，一手在镜面写字，一手探入腿间",
+    "timeOfDay": "深夜",
+    "lighting": "steam-diffused warm bathroom light",
+    "camera": "medium shot, front view toward fogged mirror",
+    "mood": "雾气私密",
+    "sceneTags": [
+      "bathroom",
+      "mirror",
+      "steam",
+      "nude",
+      "night"
+    ],
+    "promptProse": "In her private bath, adult Gamma stands naked before the fogged mirror, one finger writing a name in the steam, the other between her legs, ears burning red in the warm mist.",
+    "promptTokens": [
+      "bathroom",
+      "fogged mirror",
+      "steam",
+      "nude",
+      "wet hair",
+      "masturbation",
+      "hand between legs",
+      "writing on mirror"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "nude",
+      "masturbation",
+      "hand between legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "The richest woman in the kingdom keeps one ledger off the books — written in steam, erased by morning."
+  }
+}

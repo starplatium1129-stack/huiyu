@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ellen_joe",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ellen_joe",
     "profile": {
@@ -19,10 +19,10 @@
       "type": "popular",
       "icon": "🦈",
       "portrait": {
-        "image": "../assets/characters/popular-ellen_joe.png?v=5",
-        "alt": "艾莲·乔 样张立绘",
-        "sourceShowcaseId": "pc_ellen_joe_ellen_maid_cafe_tea_service_deadpan",
-        "sourceShowcaseSha256": "565ffa1f535b8afe30c3d690aa47135e18a1484cd3bec71277b979243558c447"
+        "image": "../assets/characters/popular-ellen_joe.png?v=ee1d31f4482c",
+        "alt": "艾莲·乔样张立绘",
+        "sourceShowcaseId": "pc_ellen_joe_pc_ellen_joe_ellen_maid_cafe_tea_service_deadpan",
+        "sourceShowcaseSha256": "b64b9b0c9d5d8f109aaa1e9a684fa751a0115186d00a1164914002c7dfb053ac"
       },
       "visual_dna": {
         "hair": "黑红渐变短发 · 内层亮红挑染 · 刀片发卡",

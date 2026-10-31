@@ -6,7 +6,7 @@
         <div class="tunnel-toggle-row">
           <div class="tunnel-toggle-label">
             <span id="tunnel-switch-label" class="tunnel-toggle-text">允许创建公网分享链接</span>
-            <span class="tunnel-toggle-hint">{{ tunnelActive ? (tunnelEnabled ? '朋友可通过临时链接访问' : '分享仍在运行，点击下方停止后仅本机可访问') : tunnelEnabled ? '启动后生成临时链接，当前仅本机可访问' : '当前仅本机可访问' }}</span>
+            <span class="tunnel-toggle-hint">{{ tunnelActive ? '公网链接生效中' : tunnelEnabled ? '开启后生成公网链接' : '仅本机可访问' }}</span>
           </div>
           <ToggleSwitch
             class="tunnel-switch-control"
@@ -43,11 +43,11 @@
           </div>
         </div>
         <div class="uptime">{{ uptime }}</div>
-        <p class="security-note">分享链接可以使用你电脑上的创作服务，请只发给信任的人。</p>
+        <p class="security-note">请仅分享给信任的协作者。</p>
 
         <!-- 前端构建：分享伺服 dist/，源码改动后需重建 -->
         <details class="build-card" :data-stale="webBuildStale ? 'true' : 'false'">
-          <StudioDisclosureSummary>高级 · 更新分享页面</StudioDisclosureSummary>
+          <StudioDisclosureSummary>更新分享页面</StudioDisclosureSummary>
           <div data-disclosure-content>
           <div class="build-head">
             <span class="build-kicker">分享页面</span>

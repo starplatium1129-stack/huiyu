@@ -54,7 +54,7 @@
       </div>
 
       <div class="toolbar-primary">
-        <StudioSearch v-model="searchQuery" class="scene-search-wrap" id="sceneSearch" label="搜索场景" placeholder="寻找雨夜、夏日，或一个心动的镜头…" />
+        <StudioSearch v-model="searchQuery" class="scene-search-wrap" id="sceneSearch" label="搜索场景" placeholder="搜索场景名称、关键词…" />
         <button
           class="btn btn-ghost filter-toggle" type="button"
           :class="{ active: filtersOpen || activeFacetCount > 0 }"
@@ -95,7 +95,7 @@
           <label class="scene-filter-field">排序<StudioSelect v-model="sortBy" label="排序" :options="SCENE_FILTER_OPTIONS.sort" /></label>
         </div>
         <div class="scene-filter-meta">
-          <span class="mature-hint">成人 <em>{{ matureCount }}</em> · R18 图片默认模糊</span>
+          <span class="mature-hint">成人 <em>{{ matureCount }}</em> · R18 模糊遮罩</span>
           <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
           <button class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
         </div>
@@ -109,7 +109,7 @@
 
     <header class="scene-results-heading">
       <div><h2>{{ sortBy === 'favorite' && !showHidden ? '我的收藏' : tierLabel }}<span v-if="activeTheme !== 'all'"> · {{ activeThemeLabel }}</span></h2></div>
-      <div class="scene-results-meta"><span class="scene-count" role="status" aria-live="polite">{{ loading ? '正在读取…' : loadError ? '读取失败' : `已显示 ${Math.min(visible, filtered.length)} / ${filtered.length} 个场景` }}</span><button v-if="searchQuery || activeTheme !== 'all' || activeFacetCount" class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置筛选</button></div>
+      <div class="scene-results-meta"><span class="scene-count" role="status" aria-live="polite">{{ loading ? '正在读取…' : loadError ? '读取失败' : `${Math.min(visible, filtered.length)} / ${filtered.length}` }}</span><button v-if="searchQuery || activeTheme !== 'all' || activeFacetCount" class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置筛选</button></div>
     </header>
 
     <ArchiveStatePanel

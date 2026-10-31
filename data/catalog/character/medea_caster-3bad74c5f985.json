@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medea_caster",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "medea_caster",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-medea_caster.png?v=62354105c844",
-        "alt": "美狄亚 · 柳洞寺厨房的手作料理场景样张"
+        "image": "../assets/characters/popular-medea_caster.png?v=1c8b0de7edbf",
+        "alt": "美狄亚样张立绘",
+        "sourceShowcaseId": "pc_medea_caster_pc_medea_caster_medea_caster_sfw_b7_04",
+        "sourceShowcaseSha256": "15d63d0d0f66e68d9b361cfc5b7ed877e857b86be1ef473857cc864117bb5697"
       },
       "visual_dna": {
         "signature": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and clear blue eyes. Her precise hands and restrained expression reveal the same patience in craftwork as in magic.",

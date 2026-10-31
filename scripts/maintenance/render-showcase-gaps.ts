@@ -10,8 +10,9 @@
  *   - compilePromptRecipe 统一解析蓝图导演默认值、风格配方与完整正负提示词
  *   - matureTokens 池（tags.json Mature 分类）与 UI 同源
  *   - TeaCache 加速（thresh 0.10）、按蓝图 recommendedSize 出图（画幅轴向契约）
- *   - 明确失败自动换 seed 重试一轮；中断保留 job ID，重跑继续查询原任务
+ *   - 中断保留 job ID，重跑继续查询原任务；失败后先检查原因
  *   - --redo-mine: 只重出带旧版 gap-render 指纹的问题条目（provenance notes 指纹识别）
+ *   - --keys: 精确选择蓝图，允许为已有样张生成独立候选
  *
  * 用法:
  *   node scripts/maintenance/render-showcase-gaps.js [--only <charId,charId>] [--concurrency <n>]
@@ -25,7 +26,7 @@ const { object }: typeof import('../lib/content-history-reader') = require('../l
 import type { CandidateOptions, CandidateTask, GenerationOptions } from '../lib/generation-types';
 import type { PopularCharacter, SceneBlueprint } from '../../src/utils/popularContent';
 
-type Options = CandidateOptions & { only?: string; 'redo-mine'?: boolean; manifest?: string };
+type Options = CandidateOptions & { only?: string; keys?: string; 'redo-mine'?: boolean; manifest?: string };
 
 const MODEL_ID = 'anima-miaomiao-v1.6';
 const PROFILE_ID = 'anima_miaomiao_v16';
@@ -64,6 +65,10 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
   const popular: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
   const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require('../../src/utils/promptRecipe.ts');
   const { parsePresetCatalog }: typeof import('../../src/utils/modelProfileDefaults.ts') = require('../../src/utils/modelProfileDefaults.ts');
+  const { endfieldAnimaBinding } = require('../../src/utils/loraCatalog.ts') as {
+    endfieldAnimaBinding: (character: string, family: string, model: string) =>
+      { character: string; loraId: string; loraStrength: number } | null;
+  };
   const characters = popular.parsePopularCharacters(input.data['data/popular-characters.json']);
   const blueprints = popular.parseSceneBlueprints(input.data['data/scene-blueprints.json']);
   const catalog = parsePresetCatalog(input.data['data/presets.json']);
@@ -75,6 +80,8 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
   const matureTokenSet = new Set<string>(tagsData.filter(t => t.cat === 'Mature').map(t => String(t.en).trim().toLowerCase().replace(/\s+/g, '_')));
   const have = new Set(input.entries.filter(e => e.type === 'popular').map(e => e.id));
   const only = opts.only ? opts.only.split(',').map(s => s.trim()).filter(Boolean) : null;
+  const keys = opts.keys ? new Set(opts.keys.split(',').map(s => s.trim()).filter(Boolean)) : null;
+  if (opts.keys && !keys?.size) throw new Error('--keys 需要至少一个 popular:角色:蓝图');
   /** 与 UI 一致的装配参数（usePopularPromptAssembly 对齐）。 */
   function buildPlan(character: PopularCharacter, bp: SceneBlueprint) {
     return compilePromptRecipe({
@@ -93,6 +100,8 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
     if (only && !only.includes(character.id)) continue;
     const own = blueprints.filter(b => b.characterId === character.id);
     for (const bp of own) {
+      const key = `popular:${character.id}:${bp.id}`;
+      if (keys && !keys.has(key)) continue;
       const entryId = `pc_${character.id}_${bp.id}`;
       const existing = input.entries.find(e => e.id === entryId && e.type === 'popular');
       if (opts['redo-mine']) {
@@ -100,13 +109,14 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
         const provenance = object(existing?.provenance) ? existing.provenance : {};
         const review = object(provenance.review) ? provenance.review : {};
         if (!existing || !/(?:gap-render|fill-gaps 批量补齐)/.test(String(review.notes || provenance.notes || ''))) continue;
-      } else if (have.has(entryId)) continue;
+      } else if (have.has(entryId) && !keys) continue;
       const [w, h] = String(bp.recommendedSize || '832x1216').split('x').map(Number);
       const plan = buildPlan(character, bp);
       const prompt = plan.prompt;
       const baseSeed = seedFor(entryId, 1);
+      const binding = endfieldAnimaBinding(character.id, ENGINE, MODEL_ID);
       tasks.push({
-        key: `popular:${character.id}:${bp.id}`,
+        key,
         metadata: { batch: 'popular', engine: ENGINE, characterId: character.id,
           blueprintId: bp.id, blueprintTitle: bp.title,
           outfitId: (character.outfits.find(o => o.id === bp.outfitId) || character.outfits[0])?.id,
@@ -118,9 +128,14 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
           width: w || 832, height: h || 1216, steps: 30,
           cfg: 4.5, teaCache: true, teaCacheThresh: 0.10,
           seed: baseSeed + (attempt - 1) * 7919,
+          ...(binding || {}),
         }),
       });
     }
+  }
+  if (keys && tasks.length !== keys.size) {
+    const found = new Set(tasks.map(task => task.key));
+    throw new Error(`未找到指定蓝图：${[...keys].filter(key => !found.has(key)).join(', ')}`);
   }
   return tasks;
 }
@@ -131,11 +146,11 @@ function seedFor(entryId: string, attempt: number) {
 }
 
 async function main(args: string[] = process.argv.slice(2), deps: GenerationOptions = {}) {
-  const opts = safety.parseArgs(args, { only: 'value', 'redo-mine': 'flag', manifest: 'value' });
-  if (opts.help) return safety.help(__filename, '[--only a,b] [--redo-mine] [--manifest <source manifest>]');
+  const opts = safety.parseArgs(args, { only: 'value', keys: 'value', 'redo-mine': 'flag', manifest: 'value' });
+  if (opts.help) return safety.help(__filename, '[--only a,b] [--keys popular:角色:蓝图,...] [--redo-mine] [--manifest <source manifest>]');
   const input = loadInputs(opts);
   const tasks = collectTasks(opts, input);
-  return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources, maxAttempts: 2,
+  return safety.runCandidates({ opts, script: __filename, tasks, sources: input.sources, maxAttempts: 1,
     pollMs: 1500, timeoutMs: 300000, protectedPaths: [path.dirname(input.manifestFile)] }, deps);
 }
 

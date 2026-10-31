@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_moonlit_forest_scout",
+  "revision": 1,
+  "sortOrder": 2813,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "zeta_shadow_moonlit_forest_scout",
+    "characterId": "zeta_shadow",
+    "outfitId": "desert_traveler_cloak",
+    "title": "泽塔 · 月夜森林的侦察",
+    "category": "谍报潜行",
+    "description": "月夜的密林里，泽塔蹲在树枝上俯瞰林间空地。篝火已经熄灭，散落的物件和脚印仍留在地上；她默记下离开的方向，准备继续追踪。",
+    "recommendedSize": "832x1216",
+    "location": "dense moonlit forest with a deserted clearing, an extinguished campfire and scattered supplies",
+    "action": "crouching alone on a tree branch, watching an empty clearing and its extinguished campfire",
+    "timeOfDay": "night",
+    "lighting": "密林枝叶间漏下的冷白月光",
+    "camera": "full_shot",
+    "mood": "noiseless infiltration, hunter in the canopy",
+    "promptProse": "From a high branch, Zeta silently studies the deserted clearing below, where an extinguished campfire and scattered supplies remain in the moonlight.",
+    "promptTokens": [
+      "forest",
+      "moonlight",
+      "crouching on tree branch",
+      "looking down",
+      "empty clearing",
+      "extinguished campfire",
+      "scattered supplies"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Zeta watches the abandoned camp from the shelter of the leaves.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

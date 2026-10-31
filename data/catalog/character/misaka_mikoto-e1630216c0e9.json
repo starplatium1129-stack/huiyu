@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misaka_mikoto",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "misaka_mikoto",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "⚡",
       "portrait": {
-        "image": "../assets/characters/popular-misaka_mikoto.png?v=5",
-        "alt": "御坂美琴 样张立绘"
+        "image": "../assets/characters/popular-misaka_mikoto.png?v=cf010d2430c5",
+        "alt": "御坂美琴样张立绘",
+        "sourceShowcaseId": "pc_misaka_mikoto_pc_misaka_mikoto_misaka_mikoto_street",
+        "sourceShowcaseSha256": "afad000a40048841971f633ba0aa68c36d52e833ce642eee35bd6cc7a32fb4e4"
       },
       "visual_dna": {
         "hair": "茶色及肩短发",

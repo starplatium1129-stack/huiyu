@@ -1,9 +1,9 @@
 <template>
   <article class="page color-script-page creative-library-page">
-    <CreativeLibraryHeader title="色彩情绪" description="把光与色，写成故事里的情绪。" />
+    <CreativeLibraryHeader title="色彩情绪" description="光照与调色预设" />
 
     <section class="color-selection" data-route-arrive aria-labelledby="mood-palette-title">
-    <header class="color-section-heading"><div><h2 id="mood-palette-title">心境色板</h2><p>选一种心情，让色彩与光照跟着故事走。</p></div><span v-if="selected" class="color-current"><ArchiveIcon name="success" />已选{{ selected.name }}</span></header>
+    <header class="color-section-heading"><div><h2 id="mood-palette-title">心境色板</h2></div><span v-if="selected" class="color-current"><ArchiveIcon name="success" />已选 {{ selected.name }}</span></header>
     <div ref="moodGrid" class="mood-grid color-mood-grid">
       <button
         v-for="m in MOODS" :key="m.id"
@@ -28,8 +28,8 @@
 
       <section v-if="selected" v-content-motion:fade="selected.id" ref="resultPanel" class="result-panel" tabindex="-1" aria-labelledby="current-palette-title">
         <header class="palette-result-heading">
-          <div><p>当前色板</p><h2 id="current-palette-title"><ArchiveIcon :name="selected.iconName" />{{ selected.name }}的色彩与光照</h2></div>
-          <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-primary"><ArchiveIcon name="spark" />带入工作台使用</RouterLink>
+          <div><p>当前色板</p><h2 id="current-palette-title"><ArchiveIcon :name="selected.iconName" />{{ selected.name }}</h2></div>
+          <RouterLink :to="'/prompt-builder?mood=' + selected.id" class="btn btn-primary"><ArchiveIcon name="spark" />进入工作台</RouterLink>
         </header>
         <div class="palette-content">
           <div class="palette tw:flex tw:flex-wrap tw:gap-s-2">
@@ -53,7 +53,7 @@
         <div class="result-actions tw:flex tw:flex-wrap tw:gap-s-2">
           <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :content-key="selected.id" :action="copyPrompt" />
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
-          <button class="btn btn-ghost" type="button" @click="resetMood"><ArchiveIcon name="refresh" /> 换一个情绪</button>
+          <button class="btn btn-ghost" type="button" @click="resetMood"><ArchiveIcon name="refresh" /> 重新选择</button>
         </div>
       </section>
 

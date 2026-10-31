@@ -10,13 +10,13 @@
       </RuntimeImage>
     </div>
     <h1 class="title">页面走丢了</h1>
-    <p class="subtitle">这个地址暂时没有对应的页面。</p>
+    <p class="subtitle">页面不存在或已移动</p>
     <p class="notfound-address tw:text-label-sm tw:text-secondary">地址 <code class="notfound-path tw:break-all">{{ path }}</code></p>
 
     <div class="notfound-actions tw:mt-s-4 tw:flex tw:flex-wrap tw:justify-center tw:gap-s-3">
       <RouterLink class="btn btn-primary" to="/">回到首页</RouterLink>
-      <RouterLink class="btn btn-ghost" to="/scene-explorer">去场景库</RouterLink>
-      <RouterLink class="btn btn-ghost" to="/prompt-builder">去工作台</RouterLink>
+      <RouterLink class="btn btn-ghost" to="/scene-explorer">场景库</RouterLink>
+      <RouterLink class="btn btn-ghost" to="/prompt-builder">画室工作台</RouterLink>
     </div>
   </article>
 </template>

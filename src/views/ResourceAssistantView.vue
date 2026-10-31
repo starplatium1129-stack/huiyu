@@ -23,14 +23,14 @@ const rawError = computed(() => state.value?.error || '')
     <div class="installer-layout">
       <aside class="installer-story">
         <img :src="collectionArt" alt="" class="installer-art" />
-        <div class="installer-story-copy"><span class="installer-eyebrow">你的私人素材画册</span><h1>让故事的每一面<br />都有画面。</h1><p>角色的神情、相遇的场景，<br />一次装好，随时翻阅。</p></div>
+        <div class="installer-story-copy"><span class="installer-eyebrow">素材画册</span><h1>故事与画面</h1><p>角色与场景素材，随时翻阅。</p></div>
         <div class="installer-includes"><span><ArchiveIcon name="character" />角色图片</span><span><ArchiveIcon name="image" />场景卡片</span><span><ArchiveIcon name="book" />素材画册</span></div>
       </aside>
       <section class="installer-content" aria-labelledby="install-title">
         <ol class="installer-steps" aria-label="安装步骤"><li v-for="(label, index) in steps" :key="label" :data-active="step === index + 1" :data-done="step > index + 1" :aria-current="step === index + 1 ? 'step' : undefined"><span><ArchiveIcon v-if="step > index + 1" name="success" /><template v-else>{{ index + 1 }}</template></span>{{ label }}</li></ol>
-        <div class="installer-title"><span class="installer-eyebrow">{{ complete ? '准备好下一次相遇' : '离线素材 · 一次装好' }}</span><h2 id="install-title">{{ heading }}</h2><p>{{ detail }}</p></div>
+        <div class="installer-title"><span class="installer-eyebrow">{{ complete ? '准备完成' : '离线素材' }}</span><h2 id="install-title">{{ heading }}</h2><p>{{ detail }}</p></div>
         <p v-if="!available" class="installer-notice" role="status">请从绘遇桌面端的「资源与素材」打开此助手。</p>
-        <button v-if="!state?.preview && !state?.busy" class="installer-picker" type="button" :disabled="busy || !available" @click="pick"><span class="installer-picker-icon"><ArchiveIcon name="folder" /></span><strong>选择资源 ZIP</strong><span>无需解压，无需填写安装路径</span><span class="installer-picker-link">浏览本地文件 <ArchiveIcon name="send" /></span></button>
+        <button v-if="!state?.preview && !state?.busy" class="installer-picker" type="button" :disabled="busy || !available" @click="pick"><span class="installer-picker-icon"><ArchiveIcon name="folder" /></span><strong>选择素材 ZIP</strong><span>选择离线素材包</span><span class="installer-picker-link">浏览本地文件 <ArchiveIcon name="send" /></span></button>
         <button v-if="!state?.paused && !state?.busy && !complete" class="btn btn-ghost installer-directory" type="button" :disabled="busy || !available" @click="state?.preview?.sourceType === 'directory' ? pick() : pickDirectory()"><ArchiveIcon name="folder" />{{ state?.preview?.sourceType === 'directory' ? '改用 ZIP 自动解压' : '使用已解压的文件夹' }}<ArchiveIcon name="send" /></button>
         <Transition name="installer-reveal" mode="out-in">
           <div v-if="state?.preview" :key="state.preview.releaseId" class="installer-package" :data-complete="complete">
@@ -47,16 +47,16 @@ const rawError = computed(() => state.value?.error || '')
         </div>
         <div v-if="issue" class="installer-notice" role="alert"><ArchiveIcon name="warning" /><div><strong>{{ issue }}</strong><details v-if="rawError && rawError !== issue"><summary>详细信息</summary><p>{{ rawError }}</p></details><button v-if="!state" class="btn btn-ghost btn-sm" type="button" @click="refresh">重新检查</button></div></div>
         <p v-if="complete && state?.result?.catalog?.included" class="installer-success" role="status"><ArchiveIcon name="success" /><span v-if="state.result.catalog.preservedNewer">素材已可用，人物与场景内容较新，已保留当前版本。</span><span v-else>人物与场景内容已同步{{ state.result.catalog.changed === undefined ? '' : `，更新 ${state.result.catalog.changed} 条记录` }}。</span></p>
-        <p v-if="state?.preview?.directoryRoot || state?.result?.directoryRoot" class="installer-source">素材位置：{{ state.result?.directoryRoot || state.preview?.directoryRoot }}<br />图片直接从此文件夹读取，请保留原位置。</p>
+        <p v-if="state?.preview?.directoryRoot || state?.result?.directoryRoot" class="installer-source">素材位置：{{ state.result?.directoryRoot || state.preview?.directoryRoot }}（请保留原文件夹）</p>
         <details v-if="state?.preview" class="installer-location"><summary>安装位置与来源</summary><dl><dt>个人资源目录</dt><dd>{{ state.preview.runtimeRoot }}</dd><dt>发行来源</dt><dd>{{ state.preview.trustedSource }}</dd></dl></details>
         <footer class="installer-footer">
-          <p><ArchiveIcon name="lock" />保留你的作品和自定义内容</p>
+          <p><ArchiveIcon name="lock" />保留自定义作品与内容</p>
           <div class="installer-actions">
             <button v-if="state?.busy" class="btn btn-ghost" type="button" :disabled="state.cancelRequested || busy && !state.busy" @click="cancel">{{ state.cancelRequested ? '正在取消…' : '取消安装' }}</button>
             <template v-else><button v-if="state?.paused || complete" class="btn" :class="complete ? 'btn-primary' : 'btn-ghost'" type="button" :disabled="busy" @click="finish"><ArchiveIcon name="send" />返回画室</button><button v-if="state?.preview && !complete" class="btn btn-primary" type="button" :disabled="!canInstall" @click="install"><ArchiveIcon name="download" />{{ state.preview.sourceType === 'directory' ? '直接使用此文件夹' : state.canResume || state.paused ? '继续安装' : '一键安装' }}</button></template>
           </div>
-          <span v-if="state?.paused" class="installer-restart-note">返回画室时将重启绘遇，使资源生效。</span>
-          <span v-else class="installer-restart-note">安装时自动保存并暂停画室，无需手动退出。</span>
+          <span v-if="state?.paused" class="installer-restart-note">返回画室将重启以生效。</span>
+          <span v-else class="installer-restart-note">安装时自动保存，无需手动退出。</span>
         </footer>
       </section>
     </div>

@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_report_to_shadow",
+  "revision": 1,
+  "sortOrder": 2806,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "zeta_shadow_report_to_shadow",
+    "characterId": "zeta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "泽塔 · 只留给一人的报告",
+    "category": "谍报潜行",
+    "description": "庭园谒见厅里，泽塔单膝跪在空着的王座前，握着刚封好的谍报卷轴。月光照在她抬起的脸上；等暗影大人回来，这份报告会先交到他手里。",
+    "recommendedSize": "832x1216",
+    "location": "shadow garden audience chamber with an empty dark throne and high moonlit windows",
+    "action": "kneeling alone before an empty throne, holding a sealed intelligence report and looking up",
+    "timeOfDay": "night",
+    "lighting": "谒见厅高窗漏下的冷峻月光",
+    "camera": "medium_shot",
+    "mood": "absolute loyalty, restrained devotion",
+    "promptProse": "Zeta kneels alone before an empty throne, holding a sealed intelligence report as moonlight falls through the high windows.",
+    "promptTokens": [
+      "audience chamber",
+      "kneeling",
+      "empty throne",
+      "holding scroll",
+      "looking up",
+      "moonlight",
+      "window"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Zeta holds the sealed report before the unoccupied throne.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

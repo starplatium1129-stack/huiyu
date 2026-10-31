@@ -1,6 +1,6 @@
 <template>
   <article class="page style-page creative-library-page">
-    <CreativeLibraryHeader title="画风" description="从一幅画的心情，找到故事的第一笔。" />
+    <CreativeLibraryHeader title="画风" description="色彩情绪与氛围调子" />
 
     <header class="style-chapter" data-reveal>
       <h2>六种心情，六种色调</h2>
@@ -17,21 +17,21 @@
                 <span>{{ failed ? '参考图片加载失败' : image.src ? '正在载入画页…' : loading ? '正在翻开画册…' : '氛围参考暂未连接' }}</span><small v-if="failed || (!image.src && !loading)">仍可选用下方配色</small>
               </span>
             </RouterLink>
-            <button v-if="failed" class="btn btn-ghost btn-sm style-sample-retry" type="button" :aria-label="'重新读取' + m.name + '氛围参考图'" @click="retryCover(m.sceneId, $event)"><ArchiveIcon name="refresh" />重新读取图片</button>
+            <button v-if="failed" class="btn btn-ghost btn-sm style-sample-retry" type="button" :aria-label="'重新读取' + m.name + '氛围参考图'" @click="retryCover(m.sceneId, $event)"><ArchiveIcon name="refresh" />重新读取</button>
           </div>
         </RuntimeImage>
         <div class="style-card-body tw:p-s-4">
           <div class="style-card-heading tw:flex tw:items-center tw:justify-between tw:gap-s-2"><h3><ArchiveIcon :name="m.iconName" />{{ m.name }}</h3><span>{{ String(moodIndex + 1).padStart(2, '0') }} / {{ m.en }}</span></div>
           <p class="style-sample-caption">{{ m.caption }}</p>
           <div class="style-palette" aria-hidden="true"><span v-for="(color, index) in m.colors" :key="color + index" class="mood-swatch" :style="{ '--swatch': color, '--swatch-index': index }"></span></div>
-          <div class="style-card-foot tw:mt-s-3 tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2"><span>{{ m.desc }}</span><RouterLink :to="'/prompt-builder?mood=' + encodeURIComponent(m.id)" class="btn btn-ghost mood-go">用这个调子绘制<ArchiveIcon name="spark" /></RouterLink></div>
+          <div class="style-card-foot tw:mt-s-3 tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2"><span>{{ m.desc }}</span><RouterLink :to="'/prompt-builder?mood=' + encodeURIComponent(m.id)" class="btn btn-ghost mood-go">以此调绘制<ArchiveIcon name="spark" /></RouterLink></div>
         </div>
         <CardEdgeLight />
       </article>
     </div>
 
     <section class="style-notes" data-reveal>
-      <RouterLink to="/color-script" class="btn btn-ghost">翻开色彩情绪<ArchiveIcon name="palette" /></RouterLink>
+      <RouterLink to="/color-script" class="btn btn-ghost">色彩台本<ArchiveIcon name="palette" /></RouterLink>
     </section>
   </article>
 </template>

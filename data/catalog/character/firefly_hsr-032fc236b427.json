@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "firefly_hsr",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 180,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T08:46:52.930Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "firefly_hsr",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/popular-firefly_hsr.png?v=1",
-        "alt": "流萤 样张立绘"
+        "image": "../assets/characters/popular-firefly_hsr.png?v=f865f67121fb",
+        "alt": "流萤样张立绘",
+        "sourceShowcaseId": "pc_firefly_hsr_pc_firefly_hsr_firefly_rooftop_sunset_secret",
+        "sourceShowcaseSha256": "a9cb0c557ab401011b5e3664fd6bfe8efefb96fa3a9a3f2c43b75cb3a186b677"
       },
       "visual_dna": {
         "hair": "银灰长发渐变青绿 · 发箍",

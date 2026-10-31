@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kakudate_karin",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 209,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-29T08:55:26.446566200+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kakudate_karin",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🎯",
       "portrait": {
-        "image": "../assets/characters/popular-kakudate_karin.png?v=b060f78aecfe",
+        "image": "../assets/characters/popular-kakudate_karin.png?v=bccee93ad6b8",
         "alt": "角楯花凛样张立绘",
-        "sourceShowcaseId": "pc_kakudate_karin_kakudate_karin_skyscraper_sniper_overlook",
-        "sourceShowcaseSha256": "937212252ec52d195838d7e96ee6346803341b46e19e23492b788bdd545cc211"
+        "sourceShowcaseId": "pc_kakudate_karin_pc_kakudate_karin_kakudate_karin_urban_street_coffee",
+        "sourceShowcaseSha256": "69ebb918a378626e00fdb2552901c4b42f2f55eeb74fadacc1120f274394f12b"
       },
       "visual_dna": {
         "hair": "纯白无瑕的及踝直长发 · 两侧精巧细发辫自然垂散",

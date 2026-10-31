@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ayase_aragaki",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 235,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T08:52:42.196192700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ayase_aragaki",
     "profile": {
@@ -21,10 +21,10 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-ayase_aragaki.png?v=f060e451a6c3",
+        "image": "../assets/characters/popular-ayase_aragaki.png?v=30a77bddfb9a",
         "alt": "新垣绫濑样张立绘",
-        "sourceShowcaseId": "pc_ayase_aragaki_ayase_hallway_phone_pout_jealousy",
-        "sourceShowcaseSha256": "e221130e7018448923fb8ae36b6ba89c652ce2cd399504b70b5052977d08868f"
+        "sourceShowcaseId": "pc_ayase_aragaki_pc_ayase_aragaki_ayase_sunset_street_lingering_handhold",
+        "sourceShowcaseSha256": "05bcc5573784a29d9b65c915d00460635826751e5a557ec42ae7912f23a28571"
       },
       "visual_dna": {
         "hair": "乌黑柔亮齐腰直长发 · 优雅侧分齐整刘海 · 顶级杂志模特光泽",

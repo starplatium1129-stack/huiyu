@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medusa_rider",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "medusa_rider",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-medusa_rider.png?v=8bacdb352eda",
-        "alt": "美杜莎 Rider · 书店文库本的站立阅读场景样张"
+        "image": "../assets/characters/popular-medusa_rider.png?v=4596e219b4a6",
+        "alt": "美杜莎 Rider样张立绘",
+        "sourceShowcaseId": "pc_medusa_rider_pc_medusa_rider_medusa_rider_sfw_b7_04",
+        "sourceShowcaseSha256": "72e5d84410a955553031dcc7523d3a7270cc406720090de4c5696f5e6c2ba3e0"
       },
       "visual_dna": {
         "signature": "Medusa, Rider from Fate/stay night, a quiet reader with very long purple hair and violet eyes. Her measured gestures and reserved expression convey a steady, thoughtful presence.",

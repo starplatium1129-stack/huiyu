@@ -61,7 +61,7 @@ function focusFirstPage(event: Event) {
       </StudioTooltip>
     </section>
     <div class="nav-more-utilities">
-      <button class="nav-help" type="button" @click="emit('guide')">初次来访 · 使用指南</button>
+      <button class="nav-help" type="button" @click="emit('guide')">使用指南</button>
       <AppearancePreferences launcher-only @open="emit('appearance')" />
     </div>
   </StudioPopover>

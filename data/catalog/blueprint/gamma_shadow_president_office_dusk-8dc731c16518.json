@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_president_office_dusk",
+  "revision": 1,
+  "sortOrder": 2795,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_president_office_dusk",
+    "characterId": "gamma_shadow",
+    "outfitId": "luna_president_dress",
+    "title": "伽玛 · 黄昏会长办公室的签批",
+    "category": "商会帝国",
+    "description": "四越商会总部的会长办公室里，伽玛身着靛蓝晚礼服坐在堆满账本与契约的高背椅前。夕阳透过落地窗洒在她的长发上，她提笔签下新一季的扩张计划，唇角带着运筹帷幄的微笑。",
+    "recommendedSize": "832x1216",
+    "location": "president office of a grand trading company with tall windows, stacks of ledgers and contracts on a mahogany desk",
+    "action": "sitting at the desk signing a document, quill in hand, confident smile, long indigo hair over one shoulder",
+    "timeOfDay": "evening",
+    "lighting": "落地窗透入的黄昏金光与桌面烛台的暖光",
+    "camera": "medium_shot",
+    "mood": "composed business elegance, quiet ambition, golden hour glow",
+    "promptProse": "In the president's office at dusk, Gamma in an indigo gown signs the season's expansion plan, ledgers stacked neatly beside her.",
+    "promptTokens": [
+      "office",
+      "desk",
+      "ledger",
+      "contract",
+      "quill",
+      "window light",
+      "sunset",
+      "evening gown"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Golden dusk light falls across the ledgers as Gamma signs, every number already calculated in her head.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

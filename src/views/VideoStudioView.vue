@@ -57,7 +57,7 @@
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
               <span class="video-step">00 · 首帧</span>
-              <h2>故事从这里展开</h2>
+              <h2>选择首帧</h2>
             </div>
             <button v-if="hasFirstFrame" class="btn btn-ghost" type="button" @click="removeFrame($event, 'first')">移除</button>
           </div>
@@ -66,7 +66,7 @@
             <input ref="firstFrameInput" type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
             <span class="video-upload-icon" aria-hidden="true"><ArchiveIcon name="image" /></span>
             <strong>{{ uploadingImage ? '正在准备首帧…' : '上传首帧' }}</strong>
-            <span>选择故事的起点，让画面接着动起来</span>
+            <span>拖入或点击选择图片</span>
           </label>
         </section>
 
@@ -74,13 +74,13 @@
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
               <span class="video-step">00 · 首尾帧</span>
-              <h2>锁定开始与结束画面</h2>
+              <h2>首尾画面</h2>
             </div>
             <span class="video-count">首尾画面衔接</span>
           </div>
           <div class="video-dual-frame-grid">
             <div class="video-frame-slot tw:grid tw:gap-s-2 tw:content-start">
-              <span class="field-label">A · 故事开始 / 输入首帧</span>
+              <span class="field-label">首帧</span>
               <RuntimeImage v-if="videoImageUrl" :src="videoImageUrl" v-slot="{ image, loaded, failed }"><div class="video-frame-preview"><img v-if="image.src && !failed" v-bind="image" class="video-first-frame" :class="{ 'is-ready': loaded }" alt="视频首帧" /><span v-if="!loaded" role="status">{{ failed ? '首帧图片加载失败，请移除后重新选择' : '正在加载首帧图片…' }}</span></div></RuntimeImage>
               <label v-else class="video-upload-drop" tabindex="-1" :data-busy="uploadingImage || undefined">
                 <input ref="firstFrameInput" type="file" accept="image/*" aria-label="上传视频首帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'first')" />
@@ -90,7 +90,7 @@
               <button v-if="hasFirstFrame" class="btn btn-ghost btn-block" type="button" @click="removeFrame($event, 'first')">移除首帧</button>
             </div>
             <div class="video-frame-slot tw:grid tw:gap-s-2 tw:content-start">
-              <span class="field-label">B · 故事落点 / 输入尾帧</span>
+              <span class="field-label">尾帧</span>
               <RuntimeImage v-if="lastFrameUrl" :src="lastFrameUrl" v-slot="{ image, loaded, failed }"><div class="video-frame-preview"><img v-if="image.src && !failed" v-bind="image" class="video-first-frame" :class="{ 'is-ready': loaded }" alt="视频尾帧" /><span v-if="!loaded" role="status">{{ failed ? '尾帧暂时无法展开，请移除后重新选择' : '正在展开尾帧…' }}</span></div></RuntimeImage>
               <label v-else class="video-upload-drop" tabindex="-1" :data-busy="uploadingImage || undefined">
                 <input ref="lastFrameInput" type="file" accept="image/*" aria-label="上传视频尾帧" :disabled="uploadingImage" @change="handleFrameFile($event, 'last')" />
@@ -105,8 +105,8 @@
         <section id="video-brief" class="video-panel video-brief-panel">
           <div class="video-panel-heading">
             <div>
-              <span class="video-step">01 · 镜头意图</span>
-              <h2>{{ selectedMode === 'text' ? '把脑海中的一幕，写成镜头' : selectedMode === 'image' ? '这张画里，接下来会发生什么？' : '从开始到结束，故事怎样发生？' }}</h2>
+              <span class="video-step">01 · 镜头描述</span>
+              <h2>{{ selectedMode === 'text' ? '输入镜头描述' : selectedMode === 'image' ? '动态与运镜描述' : '过渡动态与运镜' }}</h2>
             </div>
             <span class="video-count" :data-warning="prompt.length > 900 || undefined">
               {{ prompt.length }} / 4000

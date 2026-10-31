@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "surtr_arknights",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 34,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "surtr_arknights",
     "profile": {
@@ -79,8 +79,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-surtr_arknights.png?v=5",
-        "alt": "史尔特尔热门角色立绘"
+        "image": "../assets/characters/popular-surtr_arknights.png?v=807a368c1d1b",
+        "alt": "史尔特尔样张立绘",
+        "sourceShowcaseId": "pc_surtr_arknights_pc_surtr_arknights_surtr_arknights_training_ground",
+        "sourceShowcaseSha256": "063a1372f340a8ad89703bee89660b7475e62b3ef8644b40d0ecfca564e646ec"
       },
       "speech": "史尔特尔向你致以问候。",
       "accent_color": "#38bdf8",

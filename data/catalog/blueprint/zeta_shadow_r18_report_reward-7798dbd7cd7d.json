@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_r18_report_reward",
+  "revision": 1,
+  "sortOrder": 2841,
+  "createdAt": "2026-10-31T04:42:34.298429+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "zeta_shadow_r18_report_reward",
+    "characterId": "zeta_shadow",
+    "outfitId": "spy_trench_coat",
+    "title": "泽塔 · 汇报后的余温",
+    "category": "主君侍奉",
+    "description": "泽塔独自留在谒见厅，风衣还带着夜里的寒气。她坐在椅上，任敞开的衣襟滑向两侧；想起暗影大人的赞许，耳尖悄悄泛红，手也从椅沿移向腿间。",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园地下谒见厅·深夜",
+    "action": "独自坐在椅上，风衣敞开，战服拉链拉开，一手扶着椅沿，一手探向腿间",
+    "timeOfDay": "深夜",
+    "lighting": "cold blue magic-stone light of the audience chamber",
+    "camera": "cowboy shot, eye level",
+    "mood": "冷面破防",
+    "sceneTags": [
+      "audience_chamber",
+      "trench_coat",
+      "night",
+      "solo",
+      "report"
+    ],
+    "promptProse": "Alone after her report, adult Zeta sits on a chair in the dim audience chamber, her trench coat open and bodysuit unzipped, one hand on the chair and the other between her thighs as she blushes.",
+    "promptTokens": [
+      "audience chamber",
+      "chair",
+      "sitting",
+      "open trench coat",
+      "unzipped bodysuit",
+      "blush",
+      "night",
+      "blue light"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "unzipped bodysuit",
+      "masturbation",
+      "hand between legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "Zeta sits alone with her finished report beside the chair.",
+    "compositionIntent": "single"
+  }
+}

@@ -14,7 +14,7 @@ async function open() {
 </script>
 <template>
   <div class="resource-install-entry">
-    <div class="resource-install-copy"><span>官方离线素材</span><h3>把素材画册装进绘遇</h3><p>选择 ZIP 自动解压，或直接使用已解压的文件夹。图片留在素材目录，按需加载，保留你的作品。</p><button class="btn btn-primary" type="button" :disabled="opening" @click="open"><ArchiveIcon name="download" />{{ opening ? '正在打开…' : '打开安装助手' }}</button><p v-if="error" role="alert" class="resource-install-error">{{ error }}</p><small>无需再次复制整包素材</small></div>
+    <div class="resource-install-copy"><span>离线素材</span><h3>导入离线素材</h3><p>支持 ZIP 压缩包或已解压目录，按需加载。</p><button class="btn btn-primary" type="button" :disabled="opening" @click="open"><ArchiveIcon name="download" />{{ opening ? '打开中…' : '资源安装助手' }}</button><p v-if="error" role="alert" class="resource-install-error">{{ error }}</p></div>
     <img :src="collectionArt" alt="" />
   </div>
 </template>

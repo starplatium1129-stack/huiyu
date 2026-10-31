@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "goldenglow_arknights",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "goldenglow_arknights",
     "profile": {
@@ -79,8 +79,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-goldenglow_arknights.png?v=5",
-        "alt": "澄闪热门角色立绘"
+        "image": "../assets/characters/popular-goldenglow_arknights.png?v=da5128de4689",
+        "alt": "澄闪样张立绘",
+        "sourceShowcaseId": "pc_goldenglow_arknights_pc_goldenglow_arknights_goldenglow_arknights_library_desk",
+        "sourceShowcaseSha256": "539df1d40c5b791ca55239acee65f73f631684beda63d294b376a29579ec8883"
       },
       "speech": "澄闪向你致以问候。",
       "accent_color": "#38bdf8",

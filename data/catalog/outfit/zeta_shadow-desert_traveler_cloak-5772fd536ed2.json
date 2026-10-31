@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "zeta_shadow/desert_traveler_cloak",
+  "revision": 1,
+  "sortOrder": 1931,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "characterId": "zeta_shadow",
+    "outfit": {
+      "id": "desert_traveler_cloak",
+      "name": "跨国谍行旅行斗篷",
+      "prose": "Sand-colored hooded traveling cloak with scarf and worn leather boots, for crossing borders unnoticed on long espionage routes.",
+      "tokens": [
+        "cloak",
+        "hood",
+        "scarf",
+        "boots",
+        "travel_clothes"
+      ],
+      "characterId": "zeta_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

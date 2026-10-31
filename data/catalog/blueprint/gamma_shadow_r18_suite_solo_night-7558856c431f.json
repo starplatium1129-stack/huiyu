@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_r18_suite_solo_night",
+  "revision": 1,
+  "sortOrder": 2837,
+  "createdAt": "2026-10-31T04:42:34.298429+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_r18_suite_solo_night",
+    "characterId": "gamma_shadow",
+    "outfitId": "private_nightwear",
+    "title": "伽玛 · 会长套房的独处夜",
+    "category": "私密自持",
+    "description": "只有回到会长套房，露娜会长才允许自己卸下所有计算。靛蓝长发散落在天鹅绒沙发上，睡裙早被褪到脚踝，她闭着眼分开双腿，指尖在花园深处缓慢碾磨。白天里暗影大人那句“做得不错，伽玛”在脑海里循环了一整天——「嗯……暗影大人……再夸我一次……就一次……」成熟的身段在沙发上轻轻弓起，账目做得再准的人，也有算不清自己心跳的夜晚。",
+    "recommendedSize": "1152x1536",
+    "location": "四越商会会长套房·深夜",
+    "action": "赤裸侧卧沙发，双腿分开，指尖在腿间碾磨，双眼紧闭",
+    "timeOfDay": "深夜",
+    "lighting": "velvet suite lamplight and city night glow through curtains",
+    "camera": "medium shot, side view",
+    "mood": "独处沉溺",
+    "sceneTags": [
+      "suite",
+      "sofa",
+      "night",
+      "nude",
+      "solo"
+    ],
+    "promptProse": "Alone in her president suite at night, adult Gamma lies naked on the velvet sofa, nightgown discarded, long indigo hair spilling everywhere, pleasuring herself while whispering for one more word of praise.",
+    "promptTokens": [
+      "sofa",
+      "night",
+      "nude",
+      "long hair",
+      "masturbation",
+      "spread legs",
+      "closed eyes",
+      "blush"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "nude",
+      "masturbation",
+      "spread legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "The president who never miscalculates counts her own heartbeat wrong tonight — on purpose, with his words in her ears."
+  }
+}

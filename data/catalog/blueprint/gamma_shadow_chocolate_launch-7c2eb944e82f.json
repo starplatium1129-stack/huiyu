@@ -1,0 +1,40 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_chocolate_launch",
+  "revision": 1,
+  "sortOrder": 2797,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_chocolate_launch",
+    "characterId": "gamma_shadow",
+    "outfitId": "bank_office_suit",
+    "title": "伽玛 · 巧克力新品发布会",
+    "category": "商会帝国",
+    "description": "发布会开始前，伽玛在四越商会的展台前揭开绸布，露出摆放整齐的巧克力礼盒。她俯身检查包装，脸上带着满意的微笑。",
+    "recommendedSize": "832x1216",
+    "location": "elegant product launch hall with a chandelier and a display table of chocolate gift boxes",
+    "action": "standing alone at a display table, lifting a cloth from a chocolate gift box, composed smile",
+    "timeOfDay": "day",
+    "lighting": "发布会大厅水晶吊灯的璀璨灯光",
+    "camera": "medium_shot",
+    "mood": "triumphant merchant showmanship, refined excitement",
+    "promptProse": "Before the presentation, Gamma stands alone beneath the chandelier and lifts the cloth from a display of Mitsugoshi chocolate gift boxes.",
+    "promptTokens": [
+      "display table",
+      "chocolate",
+      "gift box",
+      "lifting cloth",
+      "standing",
+      "chandelier",
+      "smile"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Gamma inspects the chocolate display before the doors open.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

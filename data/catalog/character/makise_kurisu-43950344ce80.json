@@ -1,157 +1,18 @@
 {
   "kind": "character",
   "id": "makise_kurisu",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 246,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-30T03:52:57.719709400+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "makise_kurisu",
-    "popular": {
-      "id": "makise_kurisu",
-      "displayName": "牧濑红莉栖",
-      "originalName": "Makise Kurisu",
-      "franchise": "Steins;Gate",
-      "aliases": [
-        "makise_kurisu",
-        "kurisu makise",
-        "assistant",
-        "christina",
-        "the zombie",
-        "steins;gate"
-      ],
-      "identityProse": "Kurisu Makise from Steins;Gate, with long auburn-red hair, violet eyes, a slender build, and an intelligent, tsundere demeanor.",
-      "identityTokens": [
-        "makise_kurisu",
-        "1girl",
-        "solo",
-        "red_hair",
-        "long_hair",
-        "purple_eyes",
-        "steins;gate"
-      ],
-      "exactTokens": [
-        "makise_kurisu"
-      ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.6",
-      "supportedEngines": [
-        "anima-miaomiao-v1.6",
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "canon": {
-        "world": "科学科幻（秋叶原·未来道具研究所）",
-        "era": "现代日本（2010年夏）",
-        "formNotes": "哥伦比亚大学脑科学研究所研究员；未来道具研究所 LabMem No.004",
-        "research": "2026-10 调研"
-      },
-      "animeStudio": "steins;gate, official anime art, white fox style",
-      "curatedArtistStyles": [
-        "huke",
-        "bunbun",
-        "tiv"
-      ],
-      "characterTokens": [
-        "makise_kurisu"
-      ],
-      "copyrightTokens": [
-        "steins;gate"
-      ]
-    },
     "profile": {
-      "id": "makise_kurisu",
-      "name": "牧濑红莉栖",
-      "alias": [
-        "助手",
-        "克里斯蒂娜",
-        "Christina",
-        "The Zombie",
-        "栗悟饭和龟波功"
-      ],
-      "type": "popular",
-      "icon": "🧠",
-      "portrait": {
-        "image": "../assets/characters/popular-makise_kurisu.png?v=1d02727e97b1",
-        "alt": "牧濑红莉栖样张立绘",
-        "sourceShowcaseId": "pc_makise_kurisu_kurisu_auditorium_blackboard_chalk_equations",
-        "sourceShowcaseSha256": "059d6b63e005f1a53fe87e368239f1e0e912ec2c5e9b9edf97c1887083ba800a"
-      },
-      "visual_dna": {
-        "hair": "红褐色微卷修长秀发 · 柔顺垂至腰际",
-        "hair_color": "红褐 / 栗红",
-        "eyes": "清澈犀利的深邃紫罗兰色双眸",
-        "hairstyle": "自然垂落红长发 · 两侧鬓角自然贴面",
-        "uniform": "标志性宽松白色实验服 · 浅白衬衫系松垮红领带 · 黑色修身短裤与半透黑丝",
-        "expression": "严谨沉着的理论派凝思 · 被戳中傲娇痛点时瞬间满脸通红的慌乱",
-        "style": "brilliant tsundere neuroscientist girlfriend, blending sharp academic composure with intense romantic vulnerability",
-        "signature": "红褐色长发、深紫双眸、白大褂、松领带与半透黑丝长腿"
-      },
-      "personality": [
-        "理性机敏",
-        "要强傲娇",
-        "极易害羞",
-        "深情执着"
-      ],
-      "likes": [
-        "脑科学论文",
-        "Dr Pepper汽水",
-        "研磨热咖啡",
-        "关东风味拉面",
-        "@ch匿名论坛"
-      ],
-      "classic_cg": {
-        "title": "深夜未来道具研究所的咖啡与理论探讨",
-        "description": "幽暗凌乱的实验室里，显示器闪烁着微光。红莉栖推过刚冲好的热咖啡，耳根泛红地轻哼着别过脸，白大褂下的领带随着心跳轻轻晃动。"
-      },
-      "identity": {
-        "role": "未来道具研究所 LabMem No.004 / 哥伦比亚大学脑科学家",
-        "age": "18岁（天才青年学者）",
-        "occupation": "脑科学研究员",
-        "faction": "维克多·孔多利亚大学 / 未来道具研究所"
-      },
-      "tags": [
-        "天才脑科学家",
-        "傲娇",
-        "白大褂",
-        "红发长腿",
-        "纯情",
-        "LabMem No.004"
-      ],
-      "bg_story": "年仅十八岁便在学术期刊发表脑科学论文的青年研究员。因研讨会造访秋叶原时结识冈部伦太郎等人，加入未来道具研究所。她理论功底扎实，言辞敏锐犀利，私下却有浏览匿名论坛的习惯，被识破时会慌乱反驳。在世界线变动与危机中，她以理智和同理心支撑着同伴，并在明知自身悖论命运的情况下，依然坚定支持跨越世界线的抉择。",
-      "palette": [
-        "实验白",
-        "深绯红",
-        "炭灰黑",
-        "紫罗兰"
-      ],
       "weather": [
         "秋叶原盛夏雷雨",
         "黄昏晚风",
         "深夜研究室荧光"
       ],
-      "speech": "别、别用那种眼神看我！我才没有特意为你煮咖啡呢，只是恰好水烧多了而已！笨蛋！",
-      "source": "Steins;Gate",
-      "traits": [
-        "天才脑科学研究员",
-        "红褐修长秀发紫眸",
-        "白大褂黑丝松领带",
-        "经典傲娇反差女友"
-      ],
-      "accent_color": "#c2410c",
-      "bg_color": "#0f172a",
-      "voice": "……别、别用那种眼神看我！我才没有特意为你煮咖啡呢，只是恰好水烧多了而已！笨蛋！",
-      "voiceJa": "ば、バカじゃないの！？別にアンタのために淹れたんじゃないんだから！",
       "relationshipGraph": {
         "version": 1,
         "work": "命运石之门",
@@ -280,7 +141,146 @@
             }
           }
         ]
-      }
+      },
+      "palette": [
+        "实验白",
+        "深绯红",
+        "炭灰黑",
+        "紫罗兰"
+      ],
+      "accent_color": "#c2410c",
+      "visual_dna": {
+        "hair": "红褐色微卷修长秀发 · 柔顺垂至腰际",
+        "hair_color": "红褐 / 栗红",
+        "eyes": "清澈犀利的深邃紫罗兰色双眸",
+        "hairstyle": "自然垂落红长发 · 两侧鬓角自然贴面",
+        "uniform": "标志性宽松白色实验服 · 浅白衬衫系松垮红领带 · 黑色修身短裤与半透黑丝",
+        "expression": "严谨沉着的理论派凝思 · 被戳中傲娇痛点时瞬间满脸通红的慌乱",
+        "style": "brilliant tsundere neuroscientist girlfriend, blending sharp academic composure with intense romantic vulnerability",
+        "signature": "红褐色长发、深紫双眸、白大褂、松领带与半透黑丝长腿"
+      },
+      "voiceJa": "ば、バカじゃないの！？別にアンタのために淹れたんじゃないんだから！",
+      "alias": [
+        "助手",
+        "克里斯蒂娜",
+        "Christina",
+        "The Zombie",
+        "栗悟饭和龟波功"
+      ],
+      "source": "Steins;Gate",
+      "likes": [
+        "脑科学论文",
+        "Dr Pepper汽水",
+        "研磨热咖啡",
+        "关东风味拉面",
+        "@ch匿名论坛"
+      ],
+      "name": "牧濑红莉栖",
+      "identity": {
+        "role": "未来道具研究所 LabMem No.004 / 哥伦比亚大学脑科学家",
+        "age": "18岁（天才青年学者）",
+        "occupation": "脑科学研究员",
+        "faction": "维克多·孔多利亚大学 / 未来道具研究所"
+      },
+      "icon": "🧠",
+      "classic_cg": {
+        "title": "深夜未来道具研究所的咖啡与理论探讨",
+        "description": "幽暗凌乱的实验室里，显示器闪烁着微光。红莉栖推过刚冲好的热咖啡，耳根泛红地轻哼着别过脸，白大褂下的领带随着心跳轻轻晃动。"
+      },
+      "tags": [
+        "天才脑科学家",
+        "傲娇",
+        "白大褂",
+        "红发长腿",
+        "纯情",
+        "LabMem No.004"
+      ],
+      "traits": [
+        "天才脑科学研究员",
+        "红褐修长秀发紫眸",
+        "白大褂黑丝松领带",
+        "经典傲娇反差女友"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-makise_kurisu.png?v=43c30012c224",
+        "alt": "牧濑红莉栖样张立绘",
+        "sourceShowcaseId": "pc_makise_kurisu_pc_makise_kurisu_kurisu_auditorium_blackboard_chalk_equations",
+        "sourceShowcaseSha256": "31594e1e1fe2127e20a25ba706fcfbf3eade04fe6c590516a0bf58050cdb4f4d"
+      },
+      "bg_story": "年仅十八岁便在学术期刊发表脑科学论文的青年研究员。因研讨会造访秋叶原时结识冈部伦太郎等人，加入未来道具研究所。她理论功底扎实，言辞敏锐犀利，私下却有浏览匿名论坛的习惯，被识破时会慌乱反驳。在世界线变动与危机中，她以理智和同理心支撑着同伴，并在明知自身悖论命运的情况下，依然坚定支持跨越世界线的抉择。",
+      "speech": "别、别用那种眼神看我！我才没有特意为你煮咖啡呢，只是恰好水烧多了而已！笨蛋！",
+      "personality": [
+        "理性机敏",
+        "要强傲娇",
+        "极易害羞",
+        "深情执着"
+      ],
+      "voice": "……别、别用那种眼神看我！我才没有特意为你煮咖啡呢，只是恰好水烧多了而已！笨蛋！",
+      "id": "makise_kurisu",
+      "bg_color": "#0f172a",
+      "type": "popular"
+    },
+    "popular": {
+      "id": "makise_kurisu",
+      "displayName": "牧濑红莉栖",
+      "originalName": "Makise Kurisu",
+      "franchise": "Steins;Gate",
+      "aliases": [
+        "makise_kurisu",
+        "kurisu makise",
+        "assistant",
+        "christina",
+        "the zombie",
+        "steins;gate"
+      ],
+      "identityProse": "Kurisu Makise from Steins;Gate, with long auburn-red hair, violet eyes, a slender build, and an intelligent, tsundere demeanor.",
+      "identityTokens": [
+        "makise_kurisu",
+        "1girl",
+        "solo",
+        "red_hair",
+        "long_hair",
+        "purple_eyes",
+        "steins;gate"
+      ],
+      "exactTokens": [
+        "makise_kurisu"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "科学科幻（秋叶原·未来道具研究所）",
+        "era": "现代日本（2010年夏）",
+        "formNotes": "哥伦比亚大学脑科学研究所研究员；未来道具研究所 LabMem No.004",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "steins;gate, official anime art, white fox style",
+      "curatedArtistStyles": [
+        "huke",
+        "bunbun",
+        "tiv"
+      ],
+      "characterTokens": [
+        "makise_kurisu"
+      ],
+      "copyrightTokens": [
+        "steins;gate"
+      ]
     }
   }
 }

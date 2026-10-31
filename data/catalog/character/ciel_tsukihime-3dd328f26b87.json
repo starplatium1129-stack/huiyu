@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ciel_tsukihime",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-10-28T07:55:27.620553+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ciel_tsukihime",
     "profile": {
@@ -20,10 +20,10 @@
       "type": "popular",
       "icon": "🍛",
       "portrait": {
-        "image": "../assets/characters/popular-ciel_tsukihime.png?v=1",
-        "alt": "希耶尔 样张立绘",
-        "sourceShowcaseId": "pc_ciel_tsukihime_ciel_seventh_scripture_cannon_strike",
-        "sourceShowcaseSha256": "46605ff7e44ec2c5c61ebc601347340f6e69f2fd7a47c4c13f2dfd990c919abe"
+        "image": "../assets/characters/popular-ciel_tsukihime.png?v=1075bc127616",
+        "alt": "希耶尔样张立绘",
+        "sourceShowcaseId": "pc_ciel_tsukihime_pc_ciel_tsukihime_ciel_morning_kitchen_curry_tasting",
+        "sourceShowcaseSha256": "0b395876d841bb08d18bfc814a4f3a24c794f102a8aa9cee62ef8c7441dc5f0f"
       },
       "visual_dna": {
         "hair": "齐下巴深蓝短发 · 层次分明",

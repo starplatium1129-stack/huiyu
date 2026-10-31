@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hitachi_mako",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.890Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "hitachi_mako",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🍃",
       "portrait": {
-        "image": "../assets/characters/popular-hitachi_mako.png?v=5",
-        "alt": "常陆茉子 样张立绘"
+        "image": "../assets/characters/popular-hitachi_mako.png?v=56ec85525e7b",
+        "alt": "常陆茉子样张立绘",
+        "sourceShowcaseId": "pc_hitachi_mako_pc_hitachi_mako_mako_school_corridor_cat_mouth_chat",
+        "sourceShowcaseSha256": "c192e0970c7017eeb5f036b7a70d64eae8655c719800889cd6fe29e38251743a"
       },
       "visual_dna": {
         "hair": "黑色齐耳短发 · 耳侧垂颊长发束 · 活泼呆毛",

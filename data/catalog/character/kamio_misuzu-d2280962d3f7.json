@@ -1,156 +1,18 @@
 {
   "kind": "character",
   "id": "kamio_misuzu",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 251,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-30T03:43:55.959144800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kamio_misuzu",
-    "popular": {
-      "id": "kamio_misuzu",
-      "displayName": "神尾观铃",
-      "originalName": "Kamio Misuzu",
-      "franchise": "AIR",
-      "aliases": [
-        "kamio_misuzu",
-        "misuzu kamio",
-        "air",
-        "key"
-      ],
-      "identityProse": "Misuzu Kamio from AIR, with long blonde hair tied in a high ponytail, clear sky-blue eyes, and an innocent, gentle, and deeply nostalgic presence.",
-      "identityTokens": [
-        "kamio_misuzu",
-        "1girl",
-        "solo",
-        "blonde_hair",
-        "long_hair",
-        "high_ponytail",
-        "blue_eyes",
-        "air"
-      ],
-      "exactTokens": [
-        "kamio_misuzu"
-      ],
-      "exactPrefixes": [],
-      "recommendedEngine": "anima-miaomiao-v1.6",
-      "supportedEngines": [
-        "anima-miaomiao-v1.6",
-        "anima-miaomiao-v1.2",
-        "krea2-turbo-fp8"
-      ],
-      "adultEligibility": "adult",
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
-      "canon": {
-        "world": "催泪传世神作（海滨小镇）",
-        "era": "现代日本（盛夏海边）",
-        "formNotes": "神尾家独生养女；千年前翼人传承与诅咒的承受者；口癖为“嘎欧（GAO）”",
-        "research": "2026-10 调研"
-      },
-      "animeStudio": "air, official anime art, kyoto animation style, visual arts key",
-      "curatedArtistStyles": [
-        "itaru_hinoue",
-        "na-ga",
-        "tiv"
-      ],
-      "characterTokens": [
-        "kamio_misuzu"
-      ],
-      "copyrightTokens": [
-        "air"
-      ]
-    },
     "profile": {
-      "id": "kamio_misuzu",
-      "name": "神尾观铃",
-      "alias": [
-        "观铃",
-        "观铃钦",
-        "嘎欧少女",
-        "恐龙狂热者"
-      ],
-      "type": "popular",
-      "icon": "🦖",
-      "portrait": {
-        "image": "../assets/characters/popular-kamio_misuzu.png?v=d7ca5109b10f",
-        "alt": "神尾观铃样张立绘",
-        "sourceShowcaseId": "pc_kamio_misuzu_misuzu_sunflower_slope_straw_hat_wave",
-        "sourceShowcaseSha256": "2881d82190df1dadb087aa9e6b45a5ba2eeae49c9761f90a8e927065719b5d21"
-      },
-      "visual_dna": {
-        "hair": "灿烂夺目的纯金金色长发 · 束成高挑利落的单马尾",
-        "hair_color": "纯金 / 阳光金",
-        "eyes": "澄澈如夏日长空的纯净天蓝眼瞳",
-        "hairstyle": "经典高马尾 · 红色发带扎束 · 发尾飘逸",
-        "uniform": "名作标志性橙色高腰水手校服裙 · 堤坝漫步鹅黄色荷叶边吊带裙 · 恐龙印花宽松棉T恤",
-        "expression": "天真无邪充满治愈的灿烂大笑 · 感到困扰时嘴巴微噘发出“嘎欧”的呆萌娇憨",
-        "style": "ethereal, heartbreakingly pure girlfriend, embodying nostalgic seaside summer days, innocent joy, and unconditional love",
-        "signature": "金发高马尾、天蓝双眸、高腰橙裙水手服、恐龙玩偶与“嘎欧”口癖"
-      },
-      "personality": [
-        "天真单纯",
-        "开朗呆萌",
-        "体贴忍耐",
-        "内心坚强"
-      ],
-      "likes": [
-        "恐龙玩偶",
-        "武田蜜桃果汁",
-        "海边长堤",
-        "夏日天空",
-        "折纸"
-      ],
-      "classic_cg": {
-        "title": "沿海公路单轨电车旁的恐龙与汽水",
-        "description": "耀眼的烈日下，海边单轨电车呼啸而过。观铃抱着心爱的恐龙玩偶站在铁道口旁，橙色校服裙在风中翻卷，金发高马尾闪耀着令人心颤的纯净光辉。"
-      },
-      "identity": {
-        "role": "神尾家养女 / 高中二年级学生",
-        "age": "16岁（海边高中少女）",
-        "occupation": "高中生",
-        "faction": "海滨小镇公立高中"
-      },
-      "tags": [
-        "高马尾",
-        "水手服",
-        "恐龙控",
-        "嘎欧口癖",
-        "白月光",
-        "翼人传承"
-      ],
-      "bg_story": "生活在海滨小镇的高中少女，与养母晴子相依为命。性格纯真可爱，喜欢恐龙玩偶与蜜桃汽水，感到困扰时会发出“嘎欧”的口癖。因体质特殊，每当试图与他人建立深厚羁绊时都会遭遇剧烈头痛，因此长期独自生活。在与流浪青年相遇后，在夏日长堤与海风的陪伴下度过了充满欢笑的时光，并坦然面对自己的命运。",
-      "palette": [
-        "金辉黄",
-        "落日橙",
-        "海天蔚蓝",
-        "纯白"
-      ],
       "weather": [
         "世纪末烈日海滨",
         "电车轰鸣午后",
         "海潮夕阳黄昏"
       ],
-      "speech": "嘎欧……！啊，又忍不住发出这种声音了，晴子会生气的。但是……如果是你的话，不讨厌嘎欧对不对？",
-      "source": "AIR",
-      "traits": [
-        "世纪末泣系初代白月光",
-        "金发高马尾天蓝双眸",
-        "高腰橙裙水手制服",
-        "嘎欧恐龙少女呆萌反差",
-        "Key社三大催泪巅峰神作"
-      ],
-      "accent_color": "#f59e0b",
-      "bg_color": "#0f172a",
-      "voice": "嘎欧……！啊，又忍不住发出这种声音了，晴子会生气的。但是……如果是你的话，不讨厌嘎欧对不对？",
-      "voiceJa": "がお……また言っちゃった。怒られちゃう",
       "relationshipGraph": {
         "version": 1,
         "work": "青空",
@@ -229,7 +91,145 @@
             }
           }
         ]
-      }
+      },
+      "palette": [
+        "金辉黄",
+        "落日橙",
+        "海天蔚蓝",
+        "纯白"
+      ],
+      "accent_color": "#f59e0b",
+      "visual_dna": {
+        "hair": "灿烂夺目的纯金金色长发 · 束成高挑利落的单马尾",
+        "hair_color": "纯金 / 阳光金",
+        "eyes": "澄澈如夏日长空的纯净天蓝眼瞳",
+        "hairstyle": "经典高马尾 · 红色发带扎束 · 发尾飘逸",
+        "uniform": "名作标志性橙色高腰水手校服裙 · 堤坝漫步鹅黄色荷叶边吊带裙 · 恐龙印花宽松棉T恤",
+        "expression": "天真无邪充满治愈的灿烂大笑 · 感到困扰时嘴巴微噘发出“嘎欧”的呆萌娇憨",
+        "style": "ethereal, heartbreakingly pure girlfriend, embodying nostalgic seaside summer days, innocent joy, and unconditional love",
+        "signature": "金发高马尾、天蓝双眸、高腰橙裙水手服、恐龙玩偶与“嘎欧”口癖"
+      },
+      "voiceJa": "がお……また言っちゃった。怒られちゃう",
+      "alias": [
+        "观铃",
+        "观铃钦",
+        "嘎欧少女",
+        "恐龙狂热者"
+      ],
+      "source": "AIR",
+      "likes": [
+        "恐龙玩偶",
+        "武田蜜桃果汁",
+        "海边长堤",
+        "夏日天空",
+        "折纸"
+      ],
+      "name": "神尾观铃",
+      "identity": {
+        "role": "神尾家养女 / 高中二年级学生",
+        "age": "16岁（海边高中少女）",
+        "occupation": "高中生",
+        "faction": "海滨小镇公立高中"
+      },
+      "icon": "🦖",
+      "classic_cg": {
+        "title": "沿海公路单轨电车旁的恐龙与汽水",
+        "description": "耀眼的烈日下，海边单轨电车呼啸而过。观铃抱着心爱的恐龙玩偶站在铁道口旁，橙色校服裙在风中翻卷，金发高马尾闪耀着令人心颤的纯净光辉。"
+      },
+      "tags": [
+        "高马尾",
+        "水手服",
+        "恐龙控",
+        "嘎欧口癖",
+        "白月光",
+        "翼人传承"
+      ],
+      "traits": [
+        "世纪末泣系初代白月光",
+        "金发高马尾天蓝双眸",
+        "高腰橙裙水手制服",
+        "嘎欧恐龙少女呆萌反差",
+        "Key社三大催泪巅峰神作"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-kamio_misuzu.png?v=0d6242982c5f",
+        "alt": "神尾观铃样张立绘",
+        "sourceShowcaseId": "pc_kamio_misuzu_pc_kamio_misuzu_misuzu_sunflower_slope_straw_hat_wave",
+        "sourceShowcaseSha256": "58a51a666f15eea5ed4b8122bcac48e0d1ee989792ded39cc36bf5fe0003be87"
+      },
+      "bg_story": "生活在海滨小镇的高中少女，与养母晴子相依为命。性格纯真可爱，喜欢恐龙玩偶与蜜桃汽水，感到困扰时会发出“嘎欧”的口癖。因体质特殊，每当试图与他人建立深厚羁绊时都会遭遇剧烈头痛，因此长期独自生活。在与流浪青年相遇后，在夏日长堤与海风的陪伴下度过了充满欢笑的时光，并坦然面对自己的命运。",
+      "speech": "嘎欧……！啊，又忍不住发出这种声音了，晴子会生气的。但是……如果是你的话，不讨厌嘎欧对不对？",
+      "personality": [
+        "天真单纯",
+        "开朗呆萌",
+        "体贴忍耐",
+        "内心坚强"
+      ],
+      "voice": "嘎欧……！啊，又忍不住发出这种声音了，晴子会生气的。但是……如果是你的话，不讨厌嘎欧对不对？",
+      "id": "kamio_misuzu",
+      "bg_color": "#0f172a",
+      "type": "popular"
+    },
+    "popular": {
+      "id": "kamio_misuzu",
+      "displayName": "神尾观铃",
+      "originalName": "Kamio Misuzu",
+      "franchise": "AIR",
+      "aliases": [
+        "kamio_misuzu",
+        "misuzu kamio",
+        "air",
+        "key"
+      ],
+      "identityProse": "Misuzu Kamio from AIR, with long blonde hair tied in a high ponytail, clear sky-blue eyes, and an innocent, gentle, and deeply nostalgic presence.",
+      "identityTokens": [
+        "kamio_misuzu",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "high_ponytail",
+        "blue_eyes",
+        "air"
+      ],
+      "exactTokens": [
+        "kamio_misuzu"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "negativeTokens": [
+        "bad anatomy",
+        "bad hands",
+        "extra limbs",
+        "blurry",
+        "lowres",
+        "signature",
+        "watermark"
+      ],
+      "canon": {
+        "world": "催泪传世神作（海滨小镇）",
+        "era": "现代日本（盛夏海边）",
+        "formNotes": "神尾家独生养女；千年前翼人传承与诅咒的承受者；口癖为“嘎欧（GAO）”",
+        "research": "2026-10 调研"
+      },
+      "animeStudio": "air, official anime art, kyoto animation style, visual arts key",
+      "curatedArtistStyles": [
+        "itaru_hinoue",
+        "na-ga",
+        "tiv"
+      ],
+      "characterTokens": [
+        "kamio_misuzu"
+      ],
+      "copyrightTokens": [
+        "air"
+      ]
     }
   }
 }

@@ -1,67 +1,13 @@
 {
   "kind": "character",
   "id": "inaba_meguru",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 189,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-30T04:15:27.061010900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "inaba_meguru",
     "profile": {
-      "id": "inaba_meguru",
-      "name": "因幡巡",
-      "alias": [
-        "因幡めぐる",
-        "Inaba Meguru"
-      ],
-      "type": "popular",
-      "portrait": {
-        "image": "../assets/characters/popular-inaba_meguru.png?v=b8a08bdb158a",
-        "alt": "因幡巡样张立绘",
-        "sourceShowcaseId": "pc_inaba_meguru_inaba_meguru_daily_used_guidebook",
-        "sourceShowcaseSha256": "51766f77ed3bf92dd719705ea65d579c788f13359d22b3410e2dc66e16d3f6db"
-      },
-      "visual_dna": {
-        "signature": "Coral-orange hair in a long side ponytail and pink eyes",
-        "hair": "orange_hair, long_hair, side_ponytail",
-        "eyes": "pink_eyes",
-        "style": "anime"
-      },
-      "personality": [
-        "开朗随和",
-        "喜欢游戏",
-        "外向健谈",
-        "害羞时会结巴"
-      ],
-      "likes": [
-        "角色扮演游戏",
-        "与社团伙伴相处",
-        "讨论游戏攻略"
-      ],
-      "bg_story": "因幡巡是《魔女的夜宴》中的角色。她打扮活泼，也喜欢独自钻研游戏；面对想要结交的人，有时反而不知道该怎样开口。加入超自然研究社后，她逐渐学会把自己的兴趣和烦恼告诉伙伴，也很憧憬前辈宁宁。",
-      "identity": {
-        "role": "超自然研究社成员 / 游戏爱好者",
-        "age": "17岁（高中二年级）",
-        "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
-      },
-      "source": "Sabbat of the Witch",
-      "traits": [
-        "orange_hair",
-        "long_hair",
-        "side_ponytail",
-        "pink_eyes"
-      ],
-      "tags": [
-        "因幡巡",
-        "魔女的夜宴",
-        "日常"
-      ],
-      "accent_color": "#E78285",
-      "bg_color": "#202833",
-      "palette": [
-        "#E78285",
-        "#F4EEDF"
-      ],
       "relationshipGraph": {
         "version": 1,
         "work": "魔女的夜宴",
@@ -392,9 +338,63 @@
           }
         ]
       },
+      "palette": [
+        "#E78285",
+        "#F4EEDF"
+      ],
+      "accent_color": "#E78285",
+      "visual_dna": {
+        "signature": "Coral-orange hair in a long side ponytail and pink eyes",
+        "hair": "orange_hair, long_hair, side_ponytail",
+        "eyes": "pink_eyes",
+        "style": "anime"
+      },
+      "voiceJa": "あ、あの……そのゲーム、君もやってるの？よかったら一緒にどうかな？",
+      "alias": [
+        "因幡めぐる",
+        "Inaba Meguru"
+      ],
+      "source": "Sabbat of the Witch",
+      "likes": [
+        "角色扮演游戏",
+        "与社团伙伴相处",
+        "讨论游戏攻略"
+      ],
+      "name": "因幡巡",
+      "identity": {
+        "role": "超自然研究社成员 / 游戏爱好者",
+        "age": "17岁（高中二年级）",
+        "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+      },
+      "tags": [
+        "因幡巡",
+        "魔女的夜宴",
+        "日常"
+      ],
+      "traits": [
+        "orange_hair",
+        "long_hair",
+        "side_ponytail",
+        "pink_eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-inaba_meguru.png?v=3740ab25fc41",
+        "alt": "因幡巡样张立绘",
+        "sourceShowcaseId": "pc_inaba_meguru_pc_inaba_meguru_inaba_meguru_daily_arcade_crane",
+        "sourceShowcaseSha256": "705b94006c7dfd3bddee2f7121ae1d6c5c064597094c0f6579a545492dcd0e0a"
+      },
+      "bg_story": "因幡巡是《魔女的夜宴》中的角色。她打扮活泼，也喜欢独自钻研游戏；面对想要结交的人，有时反而不知道该怎样开口。加入超自然研究社后，她逐渐学会把自己的兴趣和烦恼告诉伙伴，也很憧憬前辈宁宁。",
       "speech": "那个……你也玩这个游戏吗？要不要一起试一局？",
+      "personality": [
+        "开朗随和",
+        "喜欢游戏",
+        "外向健谈",
+        "害羞时会结巴"
+      ],
       "voice": "那个……你也喜欢玩这个游戏吗？如果方便的话，放学后要不要一起打几局？",
-      "voiceJa": "あ、あの……そのゲーム、君もやってるの？よかったら一緒にどうかな？"
+      "id": "inaba_meguru",
+      "bg_color": "#202833",
+      "type": "popular"
     },
     "popular": {
       "id": "inaba_meguru",

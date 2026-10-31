@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanroji_mitsuri",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.908Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kanroji_mitsuri",
     "profile": {
@@ -16,8 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-kanroji_mitsuri.png?v=d33d7374ebbb",
-        "alt": "甘露寺蜜璃 · 樱饼与发色的传说场景样张"
+        "image": "../assets/characters/popular-kanroji_mitsuri.png?v=af141d58db26",
+        "alt": "甘露寺蜜璃样张立绘",
+        "sourceShowcaseId": "pc_kanroji_mitsuri_pc_kanroji_mitsuri_kanroji_mitsuri_sfw_b6_01",
+        "sourceShowcaseSha256": "f63ae5e2165a263a5a71f4771e32b9cc58338d9a62bebf6bf50f72450575bb75"
       },
       "visual_dna": {
         "signature": "Mitsuri Kanroji from Demon Slayer, a cheerful swordswoman with long pink braids fading to green at their ends, bright green eyes and small moles beneath her eyes. Her open expressions reveal enthusiasm and kindness.",

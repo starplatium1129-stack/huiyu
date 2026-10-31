@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mayuri",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 247,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "shiina_mayuri",
     "popular": {
@@ -81,10 +81,10 @@
       "type": "popular",
       "icon": "🌻",
       "portrait": {
-        "image": "../assets/characters/popular-shiina_mayuri.png?v=4da40fdb2d56",
+        "image": "../assets/characters/popular-shiina_mayuri.png?v=3e38d7eb93a9",
         "alt": "椎名真由理样张立绘",
-        "sourceShowcaseId": "pc_shiina_mayuri_mayuri_maid_cafe_omelet_ketchup_heart",
-        "sourceShowcaseSha256": "51138f5cd37c831842d25b180bb564ba1427673a479c82fdccda9380e28d8bff"
+        "sourceShowcaseId": "pc_shiina_mayuri_pc_shiina_mayuri_mayuri_maid_cafe_omelet_ketchup_heart",
+        "sourceShowcaseSha256": "bb1c0949d29516b2d8a9217cb4dd0949c67ad3bc51cc1a9410d11e52f0026995"
       },
       "visual_dna": {
         "hair": "墨黑色蓬松柔软短发 · 标志性微扬呆毛",

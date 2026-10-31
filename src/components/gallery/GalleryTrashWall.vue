@@ -1,9 +1,9 @@
 <template>
   <div class="trash-wall" :style="{ '--wall-cols': columnCount }" :aria-busy="trashClearing || trashLoading">
     <div v-if="trashItems.length || trashClearing" class="trash-toolbar">
-      <span class="trash-hint">删除的作品保留 30 天，可恢复，也可提前清空</span>
+      <span class="trash-hint">删除内容保留 30 天</span>
       <div class="trash-actions">
-        <span class="trash-count" aria-live="polite">{{ trashLoading ? '读取中…' : trashError ? '数量待确认' : `${trashItems.length} 幅作品` }}</span>
+        <span class="trash-count" aria-live="polite">{{ trashLoading ? '读取中…' : trashError ? '数量待确认' : `${trashItems.length} 幅` }}</span>
         <button class="btn btn-ghost btn-danger btn-sm" type="button"
           :disabled="!trashItems.length || trashBusy !== null || trashClearing" @click="emit('clear')">
           <ArchiveIcon name="broom" />{{ trashClearing ? '清理中…' : '清空回收站' }}
@@ -37,7 +37,7 @@
           <span class="artwork-date">删除于 {{ formatTrashTime(entry.deletedAt) }}</span>
         </div>
         <div class="artwork-tools">
-          <StudioTooltip anchor content="恢复放回展墙">
+          <StudioTooltip anchor content="恢复作品">
             <button class="btn btn-ghost btn-sm trash-restore" type="button" :disabled="trashBusy !== null || trashClearing"
               :aria-label="`恢复作品：${trashPrompt(entry)}`"
               @click="emit('restore', entry.id)">
@@ -49,12 +49,11 @@
     </template>
     <nav v-if="pageCount > 1" class="trash-pagination" aria-label="回收站分页">
       <button class="btn btn-ghost btn-sm" type="button" :disabled="page === 1" @click="page--">上一页</button>
-      <span aria-live="polite">第 {{ page }} / {{ pageCount }} 页 · 每页 {{ PAGE_SIZE }} 幅</span>
+      <span aria-live="polite">{{ page }} / {{ pageCount }}</span>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="page === pageCount" @click="page++">下一页</button>
     </nav>
-    <ArchiveStatePanel v-if="!trashItems.length && !trashLoading && !trashError" kind="empty" title="回收站是空的"
-      message="删除的作品会在这里保留 30 天，随时可以恢复。">
-      <button class="btn btn-primary" type="button" @click="emit('back-to-gallery')">返回作品画廊</button>
+    <ArchiveStatePanel v-if="!trashItems.length && !trashLoading && !trashError" kind="empty" title="回收站为空">
+      <button class="btn btn-primary" type="button" @click="emit('back-to-gallery')">返回作品</button>
     </ArchiveStatePanel>
   </div>
 </template>

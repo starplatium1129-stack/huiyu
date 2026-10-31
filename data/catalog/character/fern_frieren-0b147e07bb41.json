@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fern_frieren",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.858Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "fern_frieren",
     "profile": {
@@ -18,8 +18,10 @@
       "type": "popular",
       "icon": "🪄",
       "portrait": {
-        "image": "../assets/characters/popular-fern_frieren.png?v=5",
-        "alt": "菲伦 样张立绘"
+        "image": "../assets/characters/popular-fern_frieren.png?v=510c17420552",
+        "alt": "菲伦样张立绘",
+        "sourceShowcaseId": "pc_fern_frieren_pc_fern_frieren_fern_sweet_shop_dessert",
+        "sourceShowcaseSha256": "ee9d6b49feab322b4f76cf1812cc6ecd14f2188983e47f786d03e961564cf4d3"
       },
       "visual_dna": {
         "hair": "紫色长发",

@@ -1,71 +1,13 @@
 {
   "kind": "character",
   "id": "mitsukasa_ayase",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 260,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-30T03:35:43.106480900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "mitsukasa_ayase",
     "profile": {
-      "id": "mitsukasa_ayase",
-      "name": "三司绫濑",
-      "icon": "character",
-      "source": "RIDDLE JOKER",
-      "alias": [
-        "三司あやせ",
-        "Mitsukasa Ayase",
-        "Ayase Mitsukasa"
-      ],
-      "type": "popular",
-      "portrait": {
-        "image": "../assets/characters/popular-mitsukasa_ayase.png?v=a0e6b42edb9f",
-        "alt": "三司绫濑样张立绘",
-        "sourceShowcaseId": "pc_mitsukasa_ayase_mitsukasa_ayase_interview",
-        "sourceShowcaseSha256": "8b13cca7d9eab72e3a71db8d6a35527624dad86b5e957bf33b48e1d00e9a62b9"
-      },
-      "visual_dna": {
-        "hair": "粉色长发",
-        "eyes": "粉色眼睛",
-        "hairstyle": "柔顺的粉色长发",
-        "uniform": "浅黄外套、红领带与灰色格裙",
-        "signature": "粉色长发与粉色眼睛"
-      },
-      "personality": [
-        "在人前习惯维持开朗得体的样子",
-        "独处时更喜欢随意放松",
-        "在意别人如何看待自己",
-        "对熟悉的人会露出不那么完美的一面"
-      ],
-      "likes": [
-        "安静的独处时间",
-        "在熟悉的人面前放松",
-        "让漂浮能力派上小用场"
-      ],
-      "classic_cg": {
-        "title": "访谈结束以后",
-        "description": "绫濑放下手中的访谈提纲，终于把一直维持的笑容松开了一点。"
-      },
-      "identity": {
-        "role": "拥有漂浮能力的能力者",
-        "age": "17岁（高中二年级）",
-        "occupation": "公众活动与日常生活"
-      },
-      "tags": [
-        "拥有漂浮能力的能力者",
-        "在人前习惯维持开朗得体的样子",
-        "独处时更喜欢随意放松"
-      ],
-      "bg_story": "绫濑在人前常被当作开朗可靠的焦点，私下却更喜欢一个人待着，也不总有精力维持完美形象。她拥有漂浮能力，平时谨慎地处理能力和旁人的期待。场景区分她在人前与独处时的状态。",
-      "speech": "今天不用应付镜头了吧？那我可以先坐一会儿。",
-      "voice": "今天不用应付镜头了吧？那我可以先坐一会儿。",
-      "traits": [
-        "mitsukasa_ayase",
-        "pink hair",
-        "long hair",
-        "pink eyes"
-      ],
-      "accent_color": "#bd5f7f",
       "relationshipGraph": {
         "version": 1,
         "work": "密命王牌",
@@ -167,7 +109,65 @@
             }
           }
         ]
-      }
+      },
+      "accent_color": "#bd5f7f",
+      "visual_dna": {
+        "hair": "粉色长发",
+        "eyes": "粉色眼睛",
+        "hairstyle": "柔顺的粉色长发",
+        "uniform": "浅黄外套、红领带与灰色格裙",
+        "signature": "粉色长发与粉色眼睛"
+      },
+      "alias": [
+        "三司あやせ",
+        "Mitsukasa Ayase",
+        "Ayase Mitsukasa"
+      ],
+      "source": "RIDDLE JOKER",
+      "likes": [
+        "安静的独处时间",
+        "在熟悉的人面前放松",
+        "让漂浮能力派上小用场"
+      ],
+      "name": "三司绫濑",
+      "identity": {
+        "role": "拥有漂浮能力的能力者",
+        "age": "17岁（高中二年级）",
+        "occupation": "公众活动与日常生活"
+      },
+      "icon": "character",
+      "classic_cg": {
+        "title": "访谈结束以后",
+        "description": "绫濑放下手中的访谈提纲，终于把一直维持的笑容松开了一点。"
+      },
+      "tags": [
+        "拥有漂浮能力的能力者",
+        "在人前习惯维持开朗得体的样子",
+        "独处时更喜欢随意放松"
+      ],
+      "traits": [
+        "mitsukasa_ayase",
+        "pink hair",
+        "long hair",
+        "pink eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-mitsukasa_ayase.png?v=8fa52794186c",
+        "alt": "三司绫濑样张立绘",
+        "sourceShowcaseId": "pc_mitsukasa_ayase_pc_mitsukasa_ayase_mitsukasa_ayase_interview",
+        "sourceShowcaseSha256": "52cb5f39c1c8de4da05c1ab39b738fbb03c443173924dd1b32ec984c11813f4a"
+      },
+      "bg_story": "绫濑在人前常被当作开朗可靠的焦点，私下却更喜欢一个人待着，也不总有精力维持完美形象。她拥有漂浮能力，平时谨慎地处理能力和旁人的期待。场景区分她在人前与独处时的状态。",
+      "speech": "今天不用应付镜头了吧？那我可以先坐一会儿。",
+      "personality": [
+        "在人前习惯维持开朗得体的样子",
+        "独处时更喜欢随意放松",
+        "在意别人如何看待自己",
+        "对熟悉的人会露出不那么完美的一面"
+      ],
+      "voice": "今天不用应付镜头了吧？那我可以先坐一会儿。",
+      "id": "mitsukasa_ayase",
+      "type": "popular"
     },
     "popular": {
       "id": "mitsukasa_ayase",

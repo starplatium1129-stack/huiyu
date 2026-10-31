@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alice_nikke",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 173,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-30T03:38:59.936649200+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "alice_nikke",
     "profile": {
@@ -22,8 +22,10 @@
       "type": "popular",
       "icon": "🐰",
       "portrait": {
-        "image": "../assets/characters/popular-alice_nikke.png?v=1",
-        "alt": "爱丽丝 样张立绘"
+        "image": "../assets/characters/popular-alice_nikke.png?v=73f5e109f7be",
+        "alt": "爱丽丝样张立绘",
+        "sourceShowcaseId": "pc_alice_nikke_pc_alice_nikke_alice_snowy_surface_wonderland_sniper_pose",
+        "sourceShowcaseSha256": "e9f7da278cf0f8a23ec2def4f531aa1ccf9b7dd46923d4f4a3959b1121f50533"
       },
       "visual_dna": {
         "hair": "及膝微卷波浪粉色长双马尾 · 机械兔耳耳机 · 灵动童话少女",

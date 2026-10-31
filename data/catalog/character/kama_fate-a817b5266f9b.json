@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kama_fate",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "kama_fate",
     "profile": {
@@ -18,8 +18,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-kama_fate.png?v=fd963146190a",
-        "alt": "迦摩 · 金莲宫殿的粉色花嫁场景样张"
+        "image": "../assets/characters/popular-kama_fate.png?v=702533cba225",
+        "alt": "迦摩样张立绘",
+        "sourceShowcaseId": "pc_kama_fate_pc_kama_fate_kama_fate_sfw_b7_06",
+        "sourceShowcaseSha256": "dec50728d4d00068ff02d8d6286984efe5cc7004832df4dc7841857455c8e464"
       },
       "visual_dna": {
         "signature": "Kama from Fate/Grand Order in her adult divine form, with long silver-white hair, vivid red eyes and a skeptical expression that softens into a reluctant smile.",

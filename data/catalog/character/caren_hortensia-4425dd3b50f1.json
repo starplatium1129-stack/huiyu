@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "caren_hortensia",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "caren_hortensia",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "✝️",
       "portrait": {
-        "image": "../assets/characters/popular-caren_hortensia.png?v=1",
-        "alt": "卡莲·C·奥尔黛西亚 样张立绘"
+        "image": "../assets/characters/popular-caren_hortensia.png?v=209826ea0890",
+        "alt": "卡莲·C·奥尔黛西亚样张立绘",
+        "sourceShowcaseId": "pc_caren_hortensia_pc_caren_hortensia_caren_morning_dining_soup_tsundere",
+        "sourceShowcaseSha256": "4bea1f163ef3dde2866991013a6799e77396fbf9e00b0c971c6e825e1d94f732"
       },
       "visual_dna": {
         "hair": "银白及颈短发 · 层次碎发",

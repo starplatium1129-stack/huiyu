@@ -5,21 +5,21 @@
         <section ref="dialogEl" class="shot-script-panel" role="dialog" aria-modal="true" aria-labelledby="shot-script-title">
           <header class="shot-script-head">
             <div>
-              <span class="shot-script-kicker"><ArchiveIcon name="wand" /> AI 生成脚本</span>
-              <h2 id="shot-script-title">故事梗概 → 完整分镜表</h2>
+              <span class="shot-script-kicker"><ArchiveIcon name="wand" /> 脚本生成</span>
+              <h2 id="shot-script-title">生成分镜表</h2>
             </div>
             <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭分镜脚本窗口" @click="emit('close')"><ArchiveIcon name="close" /></button>
           </header>
           <div class="shot-script-body">
             <label class="field">
-              <span class="field-label">故事梗概（中文即可）</span>
+              <span class="field-label">故事梗概</span>
               <textarea
                 ref="storyInputEl"
                 :value="story"
                 class="textarea"
                 rows="5"
                 maxlength="2000"
-                placeholder="例如：宁宁在咖啡店值夜班，打烊前收到一封旧信，读完决定去找写信的人……"
+                placeholder="输入故事梗概，如：角色在咖啡店值班，打烊前收到旧信并决定寻找来信者……"
                 spellcheck="false"
                 autocorrect="off"
                 autocapitalize="off"
@@ -36,12 +36,12 @@
                 <StudioSelect label="总时长（秒）" :model-value="total ?? ''" :options="totalOptions" @update:model-value="emit('update:total', nullableNumber($event))" />
               </label>
             </div>
-            <details class="shot-script-help"><StudioDisclosureSummary>分镜生成说明</StudioDisclosureSummary><p data-disclosure-content>AI 按叙事节奏切镜（景别/镜头/运动/台词/时长全自动），无首帧也可纯文字生成（T2VA）。</p></details>
+            <details class="shot-script-help"><StudioDisclosureSummary>分镜说明</StudioDisclosureSummary><p data-disclosure-content>自动规划景别、运镜、台词与时长，支持纯文本（T2VA）及图生视频。</p></details>
             <p v-if="referenceLabels.length" class="shot-script-hint">参考角色：{{ referenceLabels.join('、') }}</p>
           </div>
           <footer class="shot-script-foot">
             <p class="shot-script-feedback" role="status">{{ note }}</p>
-            <button class="btn btn-ghost" type="button" @click="emit('close')">{{ busy ? '关闭窗口' : '取消' }}</button>
+            <button class="btn btn-ghost" type="button" @click="emit('close')">{{ busy ? '关闭' : '取消' }}</button>
             <button class="btn btn-primary" type="button" :disabled="!story.trim()" :aria-disabled="busy || undefined" :aria-busy="busy" @click="!busy && emit('submit')">
               {{ busy ? '生成中…' : '生成分镜表' }}
             </button>

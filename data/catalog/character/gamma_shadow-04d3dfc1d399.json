@@ -1,0 +1,390 @@
+{
+  "kind": "character",
+  "id": "gamma_shadow",
+  "revision": 2,
+  "sortOrder": 269,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "data": {
+    "id": "gamma_shadow",
+    "popular": {
+      "id": "gamma_shadow",
+      "displayName": "伽玛",
+      "originalName": "Gamma",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "gamma_shadow",
+        "Gamma",
+        "ガンマ",
+        "伽玛",
+        "露娜",
+        "Luna",
+        "最弱",
+        "七阴第三席",
+        "Gamma (Shadow Garden)",
+        "gamma_(shadow_garden)",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Gamma from The Eminence in Shadow, the Third of the Seven Shadows, with long indigo hair reaching her thighs, sharp blue eyes, a small beauty mark below the left corner of her lips, pointed elf ears, and a mature, elegant bearing as the president of Mitsugoshi Company.",
+      "identityTokens": [
+        "gamma_(shadow_garden)",
+        "1girl",
+        "solo",
+        "blue_hair",
+        "long_hair",
+        "blue_eyes",
+        "pointy_ears",
+        "mole_under_mouth",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "gamma_(shadow_garden)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "gamma_(shadow_garden)"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "slime_bodysuit",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（米德加王国与阴影庭园地下城邦）",
+        "era": "阴影庭园扩张纪元",
+        "formNotes": "靛蓝长发蓝眸精灵族女性，左唇角下有颗小痣；阴影庭园「七阴」第三席兼四越商会会长“露娜”",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "gamma_shadow",
+      "name": "伽玛",
+      "alias": [
+        "Gamma",
+        "ガンマ",
+        "露娜",
+        "Luna",
+        "ルーナ",
+        "最弱",
+        "七阴第三席",
+        "四越商会会长"
+      ],
+      "type": "popular",
+      "icon": "💼",
+      "portrait": {
+        "image": "../assets/characters/popular-gamma_shadow.png?v=42a6ddf54671",
+        "alt": "伽玛样张立绘",
+        "sourceShowcaseId": "pc_gamma_shadow_gamma_shadow_command_sandtable",
+        "sourceShowcaseSha256": "bb5d879cc204057c040190064676f4218c68a233d0edde7e53c1144571bf4c45"
+      },
+      "visual_dna": {
+        "hair": "垂顺至大腿的靛蓝长发，平日里总是优雅地披散着",
+        "hair_color": "靛蓝 / 深蓝近黑",
+        "eyes": "锐利清澈的蓝眸，左唇角下有一颗小痣",
+        "hairstyle": "一丝不苟的披肩长直发 · 精灵尖耳",
+        "uniform": "金纹点缀的黑色史莱姆战服配立领短夹克 / 以露娜之名示人时的深色露背晚礼服",
+        "expression": "谈判桌上从容自信的微笑 · 一旦走路却随时可能平地摔的笨拙",
+        "style": "elf merchant president girlfriend, combining genius business intellect with endearing physical clumsiness and absolute devotion",
+        "signature": "靛蓝长发、唇角痣、四越商会的账本与算盘般精准的心算"
+      },
+      "personality": [
+        "头脑顶尖",
+        "经营天才",
+        "运动白痴",
+        "自尊心强",
+        "对暗影绝对忠诚"
+      ],
+      "likes": [
+        "算账与审阅商会报表",
+        "把暗影大人的只言片语变成商品",
+        "巧克力等异世界风味食品",
+        "被暗影大人夸奖"
+      ],
+      "classic_cg": {
+        "title": "四越商会会长的黄昏办公室",
+        "description": "黄昏的会长办公室里，伽玛身着靛蓝晚礼服坐在堆满账本与契约的高背椅前。夕阳透过落地窗洒在她的长发上，她提笔签下新一季的扩张计划，唇角带着运筹帷幄的微笑——只是起身时，又险些被自己的裙角绊倒。"
+      },
+      "identity": {
+        "role": "阴影庭园「七阴」第三席 / 四越商会会长",
+        "age": "18岁（暗影庭园第三席）",
+        "occupation": "商会会长 / 庭园军师与后勤总管",
+        "faction": "阴影庭园 (Shadow Garden)"
+      },
+      "tags": [
+        "靛蓝长发",
+        "蓝眸",
+        "精灵尖耳",
+        "七阴第三席",
+        "商会会长",
+        "头脑特化"
+      ],
+      "bg_story": "精灵族出身，曾遭恶魔附身被暗影治愈。她能记住并深刻理解暗影所说的每一句话，头脑在七阴中位列顶尖，是庭园的军师；可运动神经与战斗天赋却为零，连平地走路都会摔得鼻血直流，人称“最弱的伽玛”——唯独防御力、身体强度与魔力量属顶尖。她以化名“露娜”创立四越商会与四越银行，把暗影讲述的巧克力、百货、酒店与银行一一变成现实，撑起整个庭园的经济命脉；暗影与阿尔法不在时，由她担任指挥。",
+      "palette": [
+        "靛蓝",
+        "商会金",
+        "墨黑",
+        "象牙白"
+      ],
+      "weather": [
+        "黄昏金辉",
+        "晴日市集",
+        "深夜烛光"
+      ],
+      "speech": "暗影大人，四越商会本季度的利润，又翻了一番哦。",
+      "voice": "暗影大人，这是本月四越商会的汇总。您随口提过的那种叫“巧克力”的点心，已经卖遍整个王都了。……那个，请不要一直看着我，我、我会紧张得把账算错的。",
+      "voiceJa": "シャドウ様、ミツゴシ商会の今期の利益ですが、また倍増しました。……あの、あまり見つめられると、緊張して計算を間違えてしまいます。",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "gamma_(shadow_garden)",
+        "blue_hair",
+        "long_hair",
+        "blue_eyes",
+        "pointy_ears",
+        "mole_under_mouth"
+      ],
+      "accent_color": "#6366f1",
+      "bg_color": "#131022",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "想要成为影之实力者！",
+        "people": [
+          {
+            "id": "alpha_shadow",
+            "name": "阿尔法",
+            "aliases": [
+              "アルファ",
+              "Alpha"
+            ],
+            "characterId": "alpha_shadow"
+          },
+          {
+            "id": "beta_shadow",
+            "name": "贝塔",
+            "aliases": [
+              "ベータ",
+              "Beta"
+            ],
+            "characterId": "beta_shadow"
+          },
+          {
+            "id": "gamma_shadow",
+            "name": "伽玛",
+            "aliases": [
+              "ガンマ",
+              "Gamma"
+            ],
+            "characterId": "gamma_shadow"
+          },
+          {
+            "id": "delta_shadow",
+            "name": "德尔塔",
+            "aliases": [
+              "デルタ",
+              "Delta"
+            ],
+            "characterId": "delta_shadow"
+          },
+          {
+            "id": "epsilon_shadow",
+            "name": "厄普西隆",
+            "aliases": [
+              "イプシロン",
+              "Epsilon"
+            ],
+            "characterId": "epsilon_shadow"
+          },
+          {
+            "id": "zeta_shadow",
+            "name": "泽塔",
+            "aliases": [
+              "ゼータ",
+              "Zeta"
+            ],
+            "characterId": "zeta_shadow"
+          },
+          {
+            "id": "eta_shadow",
+            "name": "埃塔",
+            "aliases": [
+              "イータ",
+              "Eta"
+            ],
+            "characterId": "eta_shadow"
+          },
+          {
+            "id": "alexia_midgar",
+            "name": "阿蕾克希亚·米德加",
+            "aliases": [
+              "アレクシア・ミドガル",
+              "Alexia Midgar"
+            ],
+            "characterId": "alexia_midgar"
+          },
+          {
+            "id": "claire_kagenou",
+            "name": "克莱尔·卡盖诺",
+            "aliases": [
+              "クレア・カゲノー",
+              "Claire Kagenou"
+            ],
+            "characterId": "claire_kagenou"
+          },
+          {
+            "id": "rose_oriana",
+            "name": "萝丝·奥利安娜",
+            "aliases": [
+              "ローズ・オリアナ",
+              "Rose Oriana"
+            ],
+            "characterId": "rose_oriana"
+          },
+          {
+            "id": "aurora_shadow",
+            "name": "奥萝拉",
+            "aliases": [
+              "アウロラ",
+              "Aurora",
+              "灾厄魔女"
+            ],
+            "characterId": "aurora_shadow"
+          },
+          {
+            "id": "cid_kagenou",
+            "name": "席德·卡盖诺",
+            "aliases": [
+              "シド・カゲノー",
+              "Cid Kagenou",
+              "暗影",
+              "シャドウ"
+            ],
+            "role": "米德加魔剑士学园学生 / 阴影庭园盟主",
+            "summary": "在学园中过着不起眼的生活，同时以暗影的身份领导阴影庭园。"
+          },
+          {
+            "id": "iris_midgar",
+            "name": "爱丽丝·米德加",
+            "aliases": [
+              "アイリス・ミドガル",
+              "Iris Midgar"
+            ],
+            "role": "米德加王国第一王女",
+            "summary": "阿蕾克希亚的姐姐，王国骑士团的魔剑士。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "gamma-cid",
+            "source": "gamma_shadow",
+            "target": "cid_kagenou",
+            "label": "商会会长与盟主",
+            "description": "伽玛以化名露娜执掌四越商会，把暗影随口讲述的异世界商品与经营构想一一变成现实，是庭园经济命脉的掌舵者。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "gamma-alpha",
+            "source": "gamma_shadow",
+            "target": "alpha_shadow",
+            "label": "首席与军师",
+            "description": "阿尔法主外、伽玛主内；当暗影与阿尔法不在时，伽玛接过指挥权统筹庭园全局。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "gamma-eta",
+            "source": "gamma_shadow",
+            "target": "eta_shadow",
+            "label": "贩卖与发明",
+            "description": "埃塔负责把暗影的知识做成产品，伽玛负责把它们卖遍大陆——四越商会的商品线是两人默契的结晶。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "gamma-beta",
+            "source": "gamma_shadow",
+            "target": "beta_shadow",
+            "label": "账目与记录",
+            "description": "贝塔的情报与记录常为伽玛的商业布局提供先机，两人同为庭园的文职中枢。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "gamma-epsilon",
+            "source": "gamma_shadow",
+            "target": "epsilon_shadow",
+            "label": "赞助与舞台",
+            "description": "伽玛以商会之名资助席隆的音乐会，厄普西隆的演出则是四越商会招揽贵客的招牌。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "gamma-zeta",
+            "source": "gamma_shadow",
+            "target": "zeta_shadow",
+            "label": "资金与情报",
+            "description": "泽塔的谍报网由商会资金暗中供养，带回的各国动向则成为伽玛布局商路的底气。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "gamma-delta",
+            "source": "gamma_shadow",
+            "target": "delta_shadow",
+            "label": "后勤与特攻",
+            "description": "德尔塔的破坏力惊人，善后的物资与赔付总要经过伽玛的手——她对此早已见怪不怪。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

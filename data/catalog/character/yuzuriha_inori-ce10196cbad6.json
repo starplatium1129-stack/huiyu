@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuzuriha_inori",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.839Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "yuzuriha_inori",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "🎵",
       "portrait": {
-        "image": "../assets/characters/popular-yuzuriha_inori.png?v=5",
-        "alt": "楪祈 样张立绘"
+        "image": "../assets/characters/popular-yuzuriha_inori.png?v=607ac1a9fe6d",
+        "alt": "楪祈样张立绘",
+        "sourceShowcaseId": "pc_yuzuriha_inori_pc_yuzuriha_inori_yuzuriha_inori_stage",
+        "sourceShowcaseSha256": "08de087d20a5dd4624e19d6fdf78fb6e60860b3a9a9674a63a0e61e9f2f26d6b"
       },
       "visual_dna": {
         "hair": "粉橘渐变长发，脸侧细发束由红色发筒固定",

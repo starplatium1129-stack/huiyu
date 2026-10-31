@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "roxy_migurdia",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.843Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "roxy_migurdia",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "🎓",
       "portrait": {
-        "image": "../assets/characters/popular-roxy_migurdia.png?v=5",
-        "alt": "洛琪希 样张立绘"
+        "image": "../assets/characters/popular-roxy_migurdia.png?v=bc5eea832d10",
+        "alt": "洛琪希样张立绘",
+        "sourceShowcaseId": "pc_roxy_migurdia_pc_roxy_migurdia_roxy_migurdia_academy",
+        "sourceShowcaseSha256": "7b772cccbe6ee31aa170efa0d37cda9449f9e5049186cce3eaf8f2c232b32bb5"
       },
       "visual_dna": {
         "hair": "浅蓝长发双辫",

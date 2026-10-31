@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mimori_byakuya",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.858Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "mimori_byakuya",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "⭐",
       "portrait": {
-        "image": "../assets/characters/popular-mimori_byakuya.png?v=5",
-        "alt": "深森白夜 样张立绘"
+        "image": "../assets/characters/popular-mimori_byakuya.png?v=7cafb0df29ee",
+        "alt": "深森白夜样张立绘",
+        "sourceShowcaseId": "pc_mimori_byakuya_pc_mimori_byakuya_byakuya_sunset_rooftop_bento",
+        "sourceShowcaseSha256": "3cbcd4f2ab50528fad1f06649d5a4128e112f05c2c91407fd590843a9785c341"
       },
       "visual_dna": {
         "hair": "银白长发 · 双螺旋角发包",

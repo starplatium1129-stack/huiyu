@@ -14,7 +14,6 @@
           <ArchiveIcon :name="collapsed ? 'expand' : 'compress'" />
         </button>
       </StudioTooltip>
-      <p class="voice-sub">中文字幕可单独保留；日文配音稿用于角色声线合成。</p>
     </div>
     <div :id="bodyId" v-show="!collapsed" v-content-motion="!collapsed" class="voice-body">
       <DeferredPanel :active="!collapsed">
@@ -35,24 +34,24 @@
         <div>
           <div class="voice-copy-head">
             <label class="voice-copy-title" :for="captionId">中文字幕</label>
-            <span class="voice-copy-note">画面旁白 / 台词</span>
+            <span class="voice-copy-note">旁白 / 台词</span>
           </div>
-          <textarea :id="captionId" class="textarea voice-text" v-model="voiceCaption" aria-label="中文字幕" rows="3" placeholder="写下要配的中文台词或旁白…" @focus="revealVoiceField"></textarea>
+          <textarea :id="captionId" class="textarea voice-text" v-model="voiceCaption" aria-label="中文字幕" rows="3" placeholder="输入台词或旁白…" @focus="revealVoiceField"></textarea>
         </div>
         <details class="voice-script-details" :open="voiceLang === 'ja'">
-          <StudioDisclosureSummary>日文 / 实际配音稿</StudioDisclosureSummary>
+          <StudioDisclosureSummary>日文配音稿</StudioDisclosureSummary>
           <div data-disclosure-content class="voice-script-body">
-            <textarea class="textarea voice-text" v-model="voiceScript" aria-label="日文配音稿" rows="3" placeholder="日文配音稿；可从中文一键翻译" @focus="revealVoiceField"></textarea>
+            <textarea class="textarea voice-text" v-model="voiceScript" aria-label="日文配音稿" rows="3" placeholder="日文配音稿…" @focus="revealVoiceField"></textarea>
           </div>
         </details>
         <div class="voice-actions">
-          <button ref="translateButton" class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang !== 'ja'" @click="translateVoice">{{ operationKind === 'translate' ? '翻译中…' : '翻译成日文' }}</button>
+          <button ref="translateButton" class="btn btn-ghost" type="button" :disabled="voiceBusy || !voiceCaption.trim() || voiceLang !== 'ja'" @click="translateVoice">{{ operationKind === 'translate' ? '翻译中…' : '翻译日文' }}</button>
           <button class="btn btn-ghost" type="button" :disabled="voiceBusy || !voicePlayText" @click="previewVoice">系统试听</button>
           <button ref="generateButton" class="btn btn-primary" type="button" :disabled="voiceBusy || !voicePlayText" @click="generateVoice">
-            {{ operationKind === 'generate' ? '生成中…' : '生成 AI 声线' }}
+            {{ operationKind === 'generate' ? '生成中…' : '生成配音' }}
           </button>
-          <button v-if="voiceBusy" class="btn btn-ghost" type="button" @click="cancelVoice">取消请求</button>
-          <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">重新检测</button>
+          <button v-if="voiceBusy" class="btn btn-ghost" type="button" @click="cancelVoice">取消</button>
+          <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">刷新状态</button>
         </div>
         <div class="voice-status" role="status">{{ voiceStatus }}</div>
         <RouterLink v-if="!voiceOnline" class="btn btn-quiet btn-sm voice-recovery" to="/control"><ArchiveIcon name="gear" />启动语音服务</RouterLink>

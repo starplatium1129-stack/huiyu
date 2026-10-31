@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "gamma_shadow/matsuri_yukata",
+  "revision": 1,
+  "sortOrder": 1924,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "characterId": "gamma_shadow",
+    "outfit": {
+      "id": "matsuri_yukata",
+      "name": "四越盛典深蓝牡丹浴衣",
+      "prose": "Deep indigo yukata with peony patterns and a gold obi, worn at the Mitsugoshi summer festival night market.",
+      "tokens": [
+        "yukata",
+        "japanese_clothes",
+        "obi",
+        "sandals",
+        "hair_ornament"
+      ],
+      "characterId": "gamma_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

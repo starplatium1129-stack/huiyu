@@ -14,7 +14,7 @@
       <div class="pop-hero-copy">
         <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
         <h2>{{ selectedCharacter?.displayName || '选择一个角色' }}</h2>
-        <p v-if="selectedCharacter" class="pop-hero-note">翻开属于{{ selectedCharacter.displayName }}的故事，选一幕留在画里。</p>
+        <p v-if="selectedCharacter" class="pop-hero-note">{{ selectedCharacter.displayName }}专属场景与蓝图。</p>
       </div>
       <p class="pop-hero-stat" aria-label="场景统计"><strong v-if="!loading && !loadError">{{ totalScenes }}</strong><span>{{ loading ? '正在整理场景' : loadError ? '场景暂不可用' : '幕可选场景' }}</span></p>
     </section>
@@ -43,7 +43,7 @@
         </div>
       </div>
       <div class="pop-results-bar">
-        <span class="pop-count" role="status">已显示 <strong>{{ paged.length }}</strong> / {{ filtered.length }} 幕</span>
+        <span class="pop-count" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }} 幕</span>
         <button v-if="query.trim() || category !== 'all' || ratingFilter !== 'all'" class="btn btn-quiet btn-sm" type="button" @click="resetFilters">清除筛选</button>
         <StudioTooltip content="成人场景可浏览，R18 样张保留模糊遮罩">
           <span class="pop-count mature-hint" tabindex="0">成人 {{ adultCount }}</span>
@@ -79,7 +79,7 @@
             <SensitivePreviewVeil v-if="sampleRatingOf(blueprint) === 'R18' && image.src && !failed"
               :src="image.src" :crossorigin="image.crossorigin" />
             <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong></span>
-            <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18 · 悬停预览</span>
+            <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18</span>
           </button>
           </ShowcasePreviewSource>
           <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>{{ assetsLoading ? '正在读取样张' : assetsError ? '样张暂不可用' : '样张待补充' }}</strong></span></div>
@@ -108,7 +108,7 @@
         </article>
       </div>
       <div v-if="paged.length < filtered.length" ref="loadSentinel" class="tw:mt-s-5 tw:text-center">
-        <button class="btn btn-ghost" type="button" @click="loadMore">加载更多（剩余 {{ filtered.length - paged.length }} 幕）</button>
+        <button class="btn btn-ghost" type="button" @click="loadMore">加载更多</button>
       </div>
     </div>
       </div>

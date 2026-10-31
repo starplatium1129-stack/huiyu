@@ -2,7 +2,7 @@
 <div class="control-panel-stack">
       <section id="control-service-status" class="control-overview" aria-label="连接状态" tabindex="-1" :aria-busy="serviceChecking || (!statusLoaded && !statusError)">
         <div class="overview-heading"><div><h2>{{ overviewFeedback.title }}</h2><p>{{ overviewFeedback.note }}</p></div><button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" :aria-busy="serviceChecking" @click="recheckStatus"><ArchiveIcon name="refresh" />{{ serviceChecking ? '检测中…' : '重新检测' }}</button></div>
-        <p v-if="requestedService" class="service-context">{{ requestedEngineLabel }}需要 {{ requestedService === 'webui' ? 'SD WebUI' : 'ComfyUI' }}，先检查高亮的服务。</p>
+        <p v-if="requestedService" class="service-context">{{ requestedEngineLabel }}需要 {{ requestedService === 'webui' ? 'SD WebUI' : 'ComfyUI' }}。</p>
         <RouterLink v-if="route.query.engine === 'video'" class="btn btn-quiet btn-sm" :to="videoReturnLocation(route.query)">返回故事短片</RouterLink>
         <div class="status-wall service-rows">
           <article v-for="service in serviceCards" :key="service.key" :id="`control-service-${service.key}`" class="status-tile service-row"
@@ -47,10 +47,10 @@
         </div>
 
         <ToggleSwitch v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
-          <span>打开控制室时自动启动语音<span class="autostart-hint">显存紧张时建议关闭</span></span>
+          <span>进入控制面板时启动语音<span class="autostart-hint">显存不足建议关闭</span></span>
         </ToggleSwitch>
         <p v-if="(imageProvider !== 'native' && !scripts.comfy) || !scripts.voiceStart" class="script-hint">
-          未检测到部分快捷启停脚本（仅影响一键启动，若服务已手动运行仍可正常连接）：
+          未检测到快捷启停脚本（服务仍可手动运行后连接）：
           <span v-if="imageProvider !== 'native' && !scripts.comfy">ComfyUI 脚本 </span>
           <span v-if="!scripts.voiceStart">语音启动脚本 </span>
           <span v-if="!scripts.voiceStop">语音停止脚本 </span>
@@ -58,7 +58,7 @@
       </section>
 
       <details id="control-connection-settings" class="panel-card service-config-panel">
-        <StudioDisclosureSummary><span>服务地址与角色声线<small class="inference-disclosure-hint">连接已有服务时修改，默认地址通常无需调整。</small></span></StudioDisclosureSummary>
+        <StudioDisclosureSummary><span>服务地址与角色声线<small class="inference-disclosure-hint">默认地址通常无需调整</small></span></StudioDisclosureSummary>
         <div data-disclosure-content>
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
@@ -66,12 +66,12 @@
             <input id="comfy-host" v-model="comfyHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:8188" aria-describedby="comfy-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p id="comfy-host-help" class="field-help">供 ComfyUI 兼容绘图与视频使用；原生绘图无需连接此地址。</p>
+        <p id="comfy-host-help" class="field-help">ComfyUI 绘图与视频地址（原生模式无需连接）。</p>
 
         <label class="field-label" for="tts-engine">角色语音引擎</label>
         <StudioSelect id="tts-engine" v-model="ttsEngine" label="角色语音引擎" aria-describedby="tts-engine-help"
           :options="[{ value: 'voxcpm2', label: 'VoxCPM2' }, { value: 'gpt-sovits', label: 'GPT-SoVITS' }]" />
-        <p id="tts-engine-help" class="field-help">保存后重启应用生效；切换前先停止原语音服务。</p>
+        <p id="tts-engine-help" class="field-help">切换后重启应用生效。</p>
         <label class="field-label" for="tts-host">语音 API 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="ttsHost">
@@ -153,7 +153,7 @@ async function confirmServiceAction(service: ControlService, action: ControlServ
   const label = SERVICE_STOP_LABELS[service] || service
   const confirmed = await confirmAction({
     title: `停止${label}？`,
-    message: '停止服务后，正在进行的绘图或语音合成任务将会中断。',
+    message: '正在进行的任务将会中断。',
     confirmLabel: '停止服务',
     danger: true,
   })
@@ -168,7 +168,7 @@ const serviceCards = computed<Array<{ key: ControlService; name: string; icon: A
   ...(requestedService.value === 'webui' || sdOnline.value ? [{ key: 'webui' as const, name: 'SD WebUI', icon: 'model' as const, online: sdOnline.value, detail: '兼容已有 SD 绘图环境' }] : []),
   { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载' },
   { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `${imageProvider.value === 'native' ? '兼容引擎 · 视频' : 'Anima · Krea 2 · 视频'}${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
-  { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '正在自动恢复连接' : `${voiceConfiguredCount.value} / 2 角色声线已配置` },
-  { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载聊天模型' },
+  { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '自动恢复中…' : `${voiceConfiguredCount.value} / 2 声线已配置` },
+  { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载' },
 ])
 </script>

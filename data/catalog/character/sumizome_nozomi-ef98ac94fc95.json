@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sumizome_nozomi",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 191,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-29T08:39:50.177778700+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "sumizome_nozomi",
     "profile": {
@@ -16,10 +16,10 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-sumizome_nozomi.png?v=0a8e1ec6741d",
+        "image": "../assets/characters/popular-sumizome_nozomi.png?v=d972b168b72b",
         "alt": "墨染希样张立绘",
-        "sourceShowcaseId": "pc_sumizome_nozomi_sumizome_nozomi_daily_parfait_finish",
-        "sourceShowcaseSha256": "96345f9ac4d1bc781a13d2d8c273d76186c47c70dfe07b6b11c9ac6619597bce"
+        "sourceShowcaseId": "pc_sumizome_nozomi_pc_sumizome_nozomi_sumizome_nozomi_daily_bakery_bag",
+        "sourceShowcaseSha256": "2ec66bd92dae07542e5ae10ceb80c54cc4ce9968df2d98639ab253f85eaf47d5"
       },
       "visual_dna": {
         "signature": "A warm light-brown bob, small side hair ribbons, and blue eyes",

@@ -36,16 +36,16 @@
         <div class="pb-mode-actions">
           <button v-if="descriptionInHeader"
             class="btn btn-ghost btn-sm" type="button" @click="editDescription">
-            <ArchiveIcon name="spark" />编辑画面描述
+            <ArchiveIcon name="spark" />编辑描述
           </button>
           <DirectorModeSwitch :model-value="pb.directorMode" @update:model-value="setDirectorMode" />
           <DirectorLayoutControls v-if="!pb.focusMode" :collapsed="directorLayout.collapsed.value" @toggle="toggleLayout" />
           <button class="focus-mode-btn" type="button" data-control-motion
-            :aria-label="pb.focusMode ? '退出专注成片模式' : '进入专注成片模式'"
+            :aria-label="pb.focusMode ? '退出专注模式' : '进入专注模式'"
             :aria-pressed="pb.focusMode"
             @click="pb.focusMode = !pb.focusMode">
             <ArchiveIcon :name="pb.focusMode ? 'compress' : 'expand'" class="focus-mode-icon" aria-hidden="true" />
-            <span class="focus-mode-label studio-control-label">{{ pb.focusMode ? '退出专注' : '专注成片' }}</span>
+            <span class="focus-mode-label studio-control-label">{{ pb.focusMode ? '退出专注' : '专注模式' }}</span>
           </button>
         </div>
         <div class="pb-utility-actions">
@@ -62,7 +62,7 @@
     </div>
 
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
-      <RouterLink :to="{ query: route.query, hash: '#drawing-materials' }">创作素材</RouterLink><RouterLink :to="{ query: route.query, hash: '#drawing-canvas' }">画布预览</RouterLink><RouterLink :to="{ query: route.query, hash: '#stepResult' }" @click="inspector?.selectSection('render')">输出设置</RouterLink>
+      <RouterLink :to="{ query: route.query, hash: '#drawing-materials' }">素材</RouterLink><RouterLink :to="{ query: route.query, hash: '#drawing-canvas' }">画布</RouterLink><RouterLink :to="{ query: route.query, hash: '#stepResult' }" @click="inspector?.selectSection('render')">参数</RouterLink>
     </nav>
     <div ref="layoutRoot" class="director-workspace" :style="directorLayout.style.value">
       <!-- One action bar: inspector on wide screens, workspace-wide sticky row on narrow screens. -->

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "delta_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 264,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-29T13:31:11.716903300+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "delta_shadow",
     "popular": {
@@ -82,10 +82,10 @@
       "type": "popular",
       "icon": "🐾",
       "portrait": {
-        "image": "../assets/characters/popular-delta_shadow.png?v=97a90ea2e787",
+        "image": "../assets/characters/popular-delta_shadow.png?v=7784bb065366",
         "alt": "德尔塔样张立绘",
-        "sourceShowcaseId": "pc_delta_shadow_delta_garage_meat_jerky_snack",
-        "sourceShowcaseSha256": "f23ef0f45977b31a4d2e6d2ee9ad596b06ca3a5ec8cb6a93cd14ae1e0e7d880f"
+        "sourceShowcaseId": "pc_delta_shadow_pc_delta_shadow_delta_hunting_triumph_pounce",
+        "sourceShowcaseSha256": "318c2fb6c24673ccbc6546de3d13b0dcae184efcc2515fabe63a2da34757cf9c"
       },
       "visual_dna": {
         "hair": "如黑夜般深邃微乱的长发 · 活泼灵动的兽耳",

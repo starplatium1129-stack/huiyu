@@ -1,6 +1,6 @@
 <template>
   <div class="panel step-panel" id="stepChar">
-    <div class="panel-title">角色 · Character</div>
+    <div class="panel-title">角色</div>
     <div class="char-source studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="角色来源">
       <AnimatedSelection />
       <button type="button" class="char-source-btn"
@@ -11,7 +11,7 @@
       <button type="button" class="char-source-btn"
         :aria-pressed="pb.isPopular" @click="$emit('selectSource', 'popular')">
         <ArchiveIcon name="spark" class="char-source-icon" />
-        <span class="studio-control-label"><span class="char-source-label">热门角色</span><span class="char-source-note">按角色配置</span></span>
+        <span class="studio-control-label"><span class="char-source-label">热门角色</span></span>
       </button>
       <button type="button" class="char-source-btn"
         :aria-pressed="pb.isUnbound" @click="$emit('selectSource', 'none')">
@@ -21,7 +21,7 @@
     </div>
 
     <div v-if="pb.isUnbound" class="character-source-content">
-      <p class="tw:text-secondary tw:text-body-sm">自由创作，自动追加底模推荐词。</p>
+      <p class="tw:text-secondary tw:text-body-sm">自由创作，不绑定角色。</p>
     </div>
     <div v-else-if="!pb.isPopular" v-content-motion:right="!pb.isPopular" class="character-source-content">
       <div class="char-row studio-character-gallery" role="group" aria-label="工作室角色">

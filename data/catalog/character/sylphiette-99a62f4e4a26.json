@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sylphiette",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 37,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.855Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "sylphiette",
     "profile": {
@@ -19,8 +19,10 @@
       "type": "popular",
       "icon": "🧝‍♀️",
       "portrait": {
-        "image": "../assets/characters/popular-sylphiette.png?v=5",
-        "alt": "希露菲叶特 样张立绘"
+        "image": "../assets/characters/popular-sylphiette.png?v=b86ffc602b38",
+        "alt": "希露菲叶特样张立绘",
+        "sourceShowcaseId": "pc_sylphiette_pc_sylphiette_sylphiette_buena_village_tree",
+        "sourceShowcaseSha256": "ffad3a4a2d8ae985f07ea7ed8a7a80a2cbe706700e1b43b0d58885b6818b4fc1"
       },
       "visual_dna": {
         "hair": "幼年绿发 → 青年银白短发（长耳族血统）",

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "gamma_shadow/luna_president_dress",
+  "revision": 1,
+  "sortOrder": 1921,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "characterId": "gamma_shadow",
+    "outfit": {
+      "id": "luna_president_dress",
+      "name": "露娜会长靛蓝露背晚礼服",
+      "prose": "Indigo backless evening gown with a long flowing skirt, worn by Luna, president of Mitsugoshi Company, with elegant gloves and a gold necklace.",
+      "tokens": [
+        "evening_gown",
+        "backless_dress",
+        "blue_dress",
+        "gloves",
+        "necklace",
+        "high_heels"
+      ],
+      "characterId": "gamma_shadow",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

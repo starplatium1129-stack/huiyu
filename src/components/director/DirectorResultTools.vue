@@ -3,17 +3,17 @@
     <span v-if="hasResult && generationBusy" class="stage-result-status sr-only" role="status">下一张正在显影 · 当前成片保留</span>
     <span v-if="hasResult && resultArchived !== null" class="stage-archive-badge" :data-archived="resultArchived" :data-saving="savingResult || undefined" role="status" aria-live="polite" aria-atomic="true">
       <ArchiveIcon :name="resultArchived ? 'success' : 'gallery'" />
-      <span>{{ savingResult ? '正在入册…' : resultArchived ? '已入册' : resultTemporary ? '未入册 · 已暂存' : '未入册' }}</span>
+      <span>{{ savingResult ? '入册中…' : resultArchived ? '已入册' : resultTemporary ? '已暂存' : '未入册' }}</span>
     </span>
-    <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品册</span></span></RouterLink>
-    <button v-else class="btn result-archive-action" :class="hasResult ? 'btn-primary' : 'btn-quiet'" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '正在入册…' : '存入作品册' }}</span></span></button>
-    <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: canSaveScene === false ? '当前引擎暂不支持将配方存为场景，可先存入作品册' : '将当前成片保存为场景' }">
-      <button class="btn btn-quiet canvas-secondary-action" type="button" :aria-label="capturingScene ? '正在读取成片…' : '保存为场景'" :disabled="!hasResult || generationBusy || capturingScene || canSaveScene === false" @click="$emit('saveScene')"><ArchiveIcon name="scene" /><span>{{ capturingScene ? '正在读取成片…' : '保存为场景' }}</span></button>
+    <RouterLink v-if="hasResult && resultArchived" class="btn btn-quiet result-archive-action" to="/gallery"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon name="gallery" /><span>查看作品</span></span></RouterLink>
+    <button v-else class="btn result-archive-action" :class="hasResult ? 'btn-primary' : 'btn-quiet'" type="button" :disabled="savingResult || !hasResult" :aria-busy="savingResult" @click="requestSave"><span v-content-motion:up="archivePhase" class="archive-action-content"><ArchiveIcon :name="savingResult ? 'refresh' : 'gallery'" /><span>{{ savingResult ? '入册中…' : '存入作品' }}</span></span></button>
+    <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: canSaveScene === false ? '当前引擎暂不支持存为场景' : '保存为场景' }">
+      <button class="btn btn-quiet canvas-secondary-action" type="button" :aria-label="capturingScene ? '保存中…' : '存为场景'" :disabled="!hasResult || generationBusy || capturingScene || canSaveScene === false" @click="$emit('saveScene')"><ArchiveIcon name="scene" /><span>{{ capturingScene ? '保存中…' : '存为场景' }}</span></button>
     </component>
-    <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: hasPrevResult ? '与上一张对比' : '尚无上一张成片可供对比' }">
-      <button class="btn btn-quiet canvas-secondary-action" type="button" aria-label="与上一张对比" :disabled="!hasResult || !hasPrevResult" @click="$emit('openCompare')"><ArchiveIcon name="compare" /><span>与上一张对比</span></button>
+    <component :is="placeholder ? 'span' : StudioTooltip" :class="{ 'result-action-placeholder': placeholder }" v-bind="placeholder ? {} : { anchor: true, content: hasPrevResult ? '对比上一张' : '无历史成片' }">
+      <button class="btn btn-quiet canvas-secondary-action" type="button" aria-label="对比上张" :disabled="!hasResult || !hasPrevResult" @click="$emit('openCompare')"><ArchiveIcon name="compare" /><span>对比上张</span></button>
     </component>
-    <button class="btn btn-quiet canvas-clear-action" type="button" :disabled="!hasResult" @click="$emit('clearResult')"><ArchiveIcon name="close" />清除图片</button>
+    <button class="btn btn-quiet canvas-clear-action" type="button" :disabled="!hasResult" @click="$emit('clearResult')"><ArchiveIcon name="close" />清除</button>
   </div>
 </template>
 

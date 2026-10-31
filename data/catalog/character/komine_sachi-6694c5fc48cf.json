@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "komine_sachi",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-26T08:46:52.892Z",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "komine_sachi",
     "profile": {
@@ -20,8 +20,10 @@
       "type": "popular",
       "icon": "🧹",
       "portrait": {
-        "image": "../assets/characters/popular-komine_sachi.png?v=5",
-        "alt": "小岭幸 样张立绘"
+        "image": "../assets/characters/popular-komine_sachi.png?v=98a806e3a1e1",
+        "alt": "小岭幸样张立绘",
+        "sourceShowcaseId": "pc_komine_sachi_pc_komine_sachi_sachi_shrine_corridor_maid_curtsy",
+        "sourceShowcaseSha256": "b3f713ca6c7b7285ff38d008f146ce4320d6449a7a52ce662f03a39f059bfeb7"
       },
       "visual_dna": {
         "hair": "粉色短发 · 双侧小麻花辫 · 斜刘海",

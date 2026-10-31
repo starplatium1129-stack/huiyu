@@ -1,67 +1,13 @@
 {
   "kind": "character",
   "id": "togakushi_touko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 190,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-30T04:15:27.061010900+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "togakushi_touko",
     "profile": {
-      "id": "togakushi_touko",
-      "name": "户隐憧子",
-      "alias": [
-        "戸隠憧子",
-        "Togakushi Touko"
-      ],
-      "type": "popular",
-      "portrait": {
-        "image": "../assets/characters/popular-togakushi_touko.png?v=04c5a028f1e5",
-        "alt": "户隐憧子样张立绘",
-        "sourceShowcaseId": "pc_togakushi_touko_togakushi_touko_daily_flower_choice",
-        "sourceShowcaseSha256": "b52e13cd97d0449c6912b394f91ecde4fc4bf338b87bc9a834be5ed9030734dd"
-      },
-      "visual_dna": {
-        "signature": "Long dark hair tied into twin tails and amber-yellow eyes",
-        "hair": "black_hair, long_hair, twintails",
-        "eyes": "yellow_eyes",
-        "style": "anime"
-      },
-      "personality": [
-        "温柔知性",
-        "沉静从容",
-        "体贴照顾人",
-        "善解人意"
-      ],
-      "likes": [
-        "与后辈聊天",
-        "整理学生会事务",
-        "安静的午后"
-      ],
-      "bg_story": "户隐憧子是《魔女的夜宴》中的学姐，也是学生会长。她说话温和，处理事务时有自己的节奏，和后辈相处却并不拘谨。比起摆出前辈的架子，她更习惯先听对方把话说完，再带着一点笑意回应。",
-      "identity": {
-        "role": "学生会长 / 宁宁的学姐",
-        "age": "17岁（高中二年级）",
-        "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
-      },
-      "source": "Sabbat of the Witch",
-      "traits": [
-        "black_hair",
-        "long_hair",
-        "twintails",
-        "yellow_eyes"
-      ],
-      "tags": [
-        "户隐憧子",
-        "魔女的夜宴",
-        "日常"
-      ],
-      "accent_color": "#A48FC0",
-      "bg_color": "#202833",
-      "palette": [
-        "#A48FC0",
-        "#F4EEDF"
-      ],
       "relationshipGraph": {
         "version": 1,
         "work": "魔女的夜宴",
@@ -392,9 +338,63 @@
           }
         ]
       },
+      "palette": [
+        "#A48FC0",
+        "#F4EEDF"
+      ],
+      "accent_color": "#A48FC0",
+      "visual_dna": {
+        "signature": "Long dark hair tied into twin tails and amber-yellow eyes",
+        "hair": "black_hair, long_hair, twintails",
+        "eyes": "yellow_eyes",
+        "style": "anime"
+      },
+      "voiceJa": "お茶淹れたから、座って。何か悩みがあるなら、聞かせて？",
+      "alias": [
+        "戸隠憧子",
+        "Togakushi Touko"
+      ],
+      "source": "Sabbat of the Witch",
+      "likes": [
+        "与后辈聊天",
+        "整理学生会事务",
+        "安静的午后"
+      ],
+      "name": "户隐憧子",
+      "identity": {
+        "role": "学生会长 / 宁宁的学姐",
+        "age": "17岁（高中二年级）",
+        "classificationSource": "https://www.yuzu-soft.com/products/sothewitch/character.html"
+      },
+      "tags": [
+        "户隐憧子",
+        "魔女的夜宴",
+        "日常"
+      ],
+      "traits": [
+        "black_hair",
+        "long_hair",
+        "twintails",
+        "yellow_eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/popular-togakushi_touko.png?v=3598ed1f4c07",
+        "alt": "户隐憧子样张立绘",
+        "sourceShowcaseId": "pc_togakushi_touko_pc_togakushi_touko_togakushi_touko_daily_flower_choice",
+        "sourceShowcaseSha256": "cff7f4dd43f91666a71deddc8712c6c53665a8907624ad321e7eddc7643c7e79"
+      },
+      "bg_story": "户隐憧子是《魔女的夜宴》中的学姐，也是学生会长。她说话温和，处理事务时有自己的节奏，和后辈相处却并不拘谨。比起摆出前辈的架子，她更习惯先听对方把话说完，再带着一点笑意回应。",
       "speech": "先坐一会儿吧。要是有烦心事，我听你慢慢说。",
+      "personality": [
+        "温柔知性",
+        "沉静从容",
+        "体贴照顾人",
+        "善解人意"
+      ],
       "voice": "先坐一会儿吧，茶刚泡好。要是有什么烦心事，不用憋在心里，我听你慢慢说。",
-      "voiceJa": "お茶淹れたから、座って。何か悩みがあるなら、聞かせて？"
+      "id": "togakushi_touko",
+      "bg_color": "#202833",
+      "type": "popular"
     },
     "popular": {
       "id": "togakushi_touko",

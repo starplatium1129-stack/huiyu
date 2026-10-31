@@ -30,7 +30,7 @@
             <template #actions><RouterLink class="btn btn-ghost btn-sm" to="/guide"><ArchiveIcon name="book" />使用指南</RouterLink></template>
           </ControlIntro>
           <div v-if="statusError" class="control-alert" role="alert">
-            <ArchiveIcon name="warning" /><span>{{ statusError }}。设置与服务状态待确认。</span>
+            <ArchiveIcon name="warning" /><span>{{ statusError }}</span>
             <button class="btn btn-ghost btn-sm" type="button" :disabled="serviceChecking || opBusy" @click="pollStatus(true)">{{ serviceChecking ? '检测中…' : '重新连接' }}</button>
           </div>
           <ControlOperation :active-section="activeSection" />
@@ -43,7 +43,7 @@
               <AsyncPanel v-else-if="item.id === 'control-interrogate'" :loader="loadInterrogateSetup" label="图片反推" v-slot="{ component }"><component :is="component" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-library'" :loader="loadLibrary" label="资源与素材" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <div v-else-if="item.id === 'control-personalization'" class="control-panel-stack">
-                <section class="panel-card"><div class="panel-kicker">随时调整 · 自动保存</div><h2 class="panel-heading">让画室更合你心意</h2><p class="control-section-note">主题、字号和动态效果可在外观面板中调整。</p><AppearancePreferences launcher-only /></section>
+                <section class="panel-card"><h2 class="panel-heading">外观与交互</h2><AppearancePreferences launcher-only /></section>
                 <DesktopPreferences />
               </div>
               <AsyncPanel v-else-if="item.id === 'control-services'" :loader="loadServices" label="服务与连接" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>

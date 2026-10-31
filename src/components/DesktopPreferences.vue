@@ -2,13 +2,13 @@
   <section v-if="isDesktop" ref="preferences" id="control-personalization" class="desktop-preferences tw:grid tw:gap-s-3 tw:p-s-5 tw:rounded-xl" aria-labelledby="desktop-preferences-title">
     <div>
       <span class="desktop-preferences-kicker">桌面偏好</span>
-      <h2 id="desktop-preferences-title">我的桌面工作台</h2>
+      <h2 id="desktop-preferences-title">启动与工作区</h2>
     </div>
-    <label for="desktop-start-page">打开工作台时</label>
+    <label for="desktop-start-page">默认启动页</label>
     <StudioSelect
       id="desktop-start-page"
       :model-value="startPage"
-      label="打开工作台时"
+      label="默认启动页"
       :options="[...desktopPages, { value: 'last', label: '回到上次工作页' }]"
       @update:model-value="saveStartPageValue"
     />
@@ -46,18 +46,18 @@ async function saveStartPageValue(value: string | number) {
   const generation = ++saveGeneration
   startPage.value = parsed
   saveFailed.value = false
-  feedback.value = '正在保存启动页，请稍候…'
+  feedback.value = '保存中…'
   try {
     if (!await settingsRepository.set(DESKTOP_START_PAGE_SETTING, parsed)) throw new Error('启动页尚未保存')
     // Desktop reads are optimistic until the shared write queue confirms them.
     await flushProfileWrites()
     if (generation !== saveGeneration) return
     if (settingsRepository.get(DESKTOP_START_PAGE_SETTING) !== parsed) throw new Error('Start page was not saved')
-    feedback.value = '已保存，下次打开工作台时生效。'
+    feedback.value = '已保存，下次启动生效'
   } catch {
     if (generation !== saveGeneration) return
     saveFailed.value = true
-    feedback.value = '启动页保存尚未确认，当前选择已保留，请重试保存。'
+    feedback.value = '保存失败，请重试'
   }
 }
 </script>

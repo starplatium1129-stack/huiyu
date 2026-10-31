@@ -40,7 +40,7 @@ export function promptPreviewScopes(positive: string, context: PromptPreviewCont
     for (const token of tokenize(scope)) {
       const key = tagKey(token)
       if (quality.has(key) || QUALITY_OR_SCORE_RE.test(key.replace(/ /g,'_'))
-        || /^(?:safe|general|sensitive|questionable|explicit|nsfw)$/.test(key)) qualityTags.push(token)
+        || /^(?:safe|general|sensitive|questionable|explicit|nsfw|r[\s_-]?(?:18|15))$/i.test(key)) qualityTags.push(token)
       else if (/^(?:\d+\+?(?:girls?|boys?|others?|people)|solo|multiple girls|multiple boys|no humans)$/.test(key)
         || characters.has(key)) characterTags.push(token)
       else if (copyrights.has(key)) copyrightTags.push(token)

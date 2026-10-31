@@ -1,0 +1,41 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_cafe_tasting",
+  "revision": 1,
+  "sortOrder": 2800,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "data": {
+    "id": "gamma_shadow_cafe_tasting",
+    "characterId": "gamma_shadow",
+    "outfitId": "cafe_apron_serve",
+    "title": "伽玛 · 咖啡馆新品试吃",
+    "category": "盛典巡店",
+    "description": "四越咖啡馆午后暂歇，伽玛系着围裙在吧台试饮新调的饮品。她闭目抿了一口，手边摊着配方纸，准备根据味道调整分量。",
+    "recommendedSize": "832x1216",
+    "location": "cozy trading company cafe interior with a wooden counter, cups and pastry displays",
+    "action": "standing alone at the counter, eyes closed while tasting a drink, recipe notes beside the cup",
+    "timeOfDay": "afternoon",
+    "lighting": "咖啡馆午后透过格窗的柔和日光",
+    "camera": "medium_shot",
+    "mood": "gentle inspection, warm cafe calm",
+    "promptProse": "During a quiet afternoon break, Gamma tastes a new drink alone at the wooden cafe counter, eyes closed, with recipe notes and pastries beside her.",
+    "promptTokens": [
+      "cafe",
+      "wooden counter",
+      "holding cup",
+      "drinking",
+      "closed eyes",
+      "recipe notes",
+      "pastries",
+      "afternoon light"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Gamma pauses over the cup, considering the flavor before marking her notes.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false,
+    "compositionIntent": "single"
+  }
+}

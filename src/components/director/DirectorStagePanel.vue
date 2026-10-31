@@ -1,7 +1,7 @@
 <template>
   <!-- stage-slot：col-center 的画布槽位锚点（layout.css 以它固定中栏排序首位） -->
   <div class="stage-slot">
-    <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : sceneTitle || '画布' }}</strong><span v-if="sceneTitle && !displayResultUrl">场景参考 · 非本次生成</span></div><button v-if="sceneTitle || displayResultUrl" class="btn btn-quiet btn-sm" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" />更换场景</button></div>
+    <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : sceneTitle || '画布' }}</strong><span v-if="sceneTitle && !displayResultUrl">场景参考</span></div><button v-if="sceneTitle || displayResultUrl" class="btn btn-quiet btn-sm" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" />更换场景</button></div>
     <Transition name="stage-beam">
       <BorderBeam v-if="generationBusy || waitingForResult" class="canvas-generation-beam"
         :duration="8.8" :border-width="1.1" color-variant="dual" :glow="true" border-radius="var(--r-xl)" />
@@ -25,50 +25,50 @@
         <template v-if="!generationBusy && !waitingForResult">
         <DirectorSceneReference :size="canvasSize" />
         <div v-if="displayResultUrl && failedResultUrl === displayResultUrl" class="stage-idle" role="alert">
-          <div class="stage-placeholder-title">成片暂时无法显示</div>
-          <div class="stage-placeholder-copy">生成结果已保留，可以重新读取当前图片。</div>
-          <div class="stage-quick-actions"><button class="btn btn-primary" type="button" @click="retryResultImage">重新读取图片</button></div>
+          <div class="stage-placeholder-title">成片加载失败</div>
+          <div class="stage-placeholder-copy">生成结果已保留，可重新读取。</div>
+          <div class="stage-quick-actions"><button class="btn btn-primary" type="button" @click="retryResultImage">重新读取</button></div>
         </div>
         <div v-else-if="generation.needsReview" class="stage-idle" role="status">
           <div class="stage-placeholder-title">任务与结果待核对</div>
           <div class="stage-placeholder-copy">{{ generation.message }}</div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="generation.review">重新查询原请求</button>
-            <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">找回上一张未入册成片</button>
+            <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">找回上一张成片</button>
           </div>
         </div>
         <div v-else-if="generationError" class="stage-idle" role="alert">
-          <div class="stage-placeholder-title">这次画面未能生成</div>
+          <div class="stage-placeholder-title">生成中断</div>
           <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
-            查看错误原因，调整后再试一次。
+            请检查参数或连接后重试。
             <span v-if="generationError" class="stage-error-detail">（{{ generationError }}）</span>
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('generate')">重新生成</button>
             <!-- F2：本次失败不毁掉上一张未入册成片——它还在暂存里，一键找回 -->
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
-              找回上一张未入册成片
+              找回上一张成片
             </button>
           </div>
         </div>
         <div v-else-if="generationStopped" class="stage-idle">
-          <div class="stage-placeholder-title">这一幕已暂停</div>
+          <div class="stage-placeholder-title">生成已暂停</div>
           <div class="stage-placeholder-copy">
-            停歇片刻。随时准备好，随时继续。
+            随时可继续生成。
           </div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('generate')">重新开始生成</button>
+            <button class="btn btn-primary" type="button" @click="$emit('generate')">继续生成</button>
             <button v-if="hasStashedResult" class="btn btn-ghost" type="button" @click="$emit('restoreStashed')">
-              找回上一张未入册成片
+              找回上一张成片
             </button>
           </div>
         </div>
         <div v-else class="stage-idle stage-idle-guide">
           <AtelierEmptyArt class="atelier-canvas-illustration" />
-          <div class="stage-placeholder-title">想把哪一刻，留在画里？</div>
+          <div class="stage-placeholder-title">开启画境创作</div>
           <div class="stage-placeholder-copy">
-            选择场景，或写下你的画面构想。
+            选择场景或输入画面描述。
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>

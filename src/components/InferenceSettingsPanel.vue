@@ -11,13 +11,13 @@
       <p v-if="notice" role="status">{{ notice }}</p>
       <template v-if="snapshot">
         <section v-if="videoSetupRequested" class="inference-video-help" aria-labelledby="inference-video-title">
-          <h3 id="inference-video-title">准备所选视频模型</h3>
+          <h3 id="inference-video-title">准备视频模型</h3>
           <ol>
-            <li>在故事短片页确认所选模型和当前缺失项。</li>
-            <li>准备独立 adapters Python 环境及 ffmpeg；把视频模型的完整 Diffusers 目录放在模型根目录下，并使用模型 ID 命名。</li>
-            <li>在高级路径设置中填写模型根目录和「Krea / Qwen 独立 Python」，保存后按提示重启，再返回短片页重新检测。</li>
+            <li>在故事短片中确认模型与缺失项。</li>
+            <li>配置独立 Python 环境与 ffmpeg，模型放入模型根目录。</li>
+            <li>填写模型根目录与独立 Python 路径，保存后重启。</li>
           </ol>
-          <p>视频状态检查只确认运行库与模型文件；设备兼容性和速度仍需在本机确认。</p>
+          <p>视频状态检查只确认运行库与模型文件。</p>
           <div class="inference-actions">
             <button class="btn btn-ghost btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy" @click="openVideoPaths">查看视频路径设置</button>
             <RouterLink class="btn btn-quiet btn-sm" :to="videoReturnTarget">返回故事短片</RouterLink>
@@ -28,12 +28,12 @@
         <p v-if="blocked" role="status">上方的模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
         <AsyncPanel :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="blocked || loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @working="setupWorking = $event" @activated="activated" /></AsyncPanel>
         <details class="inference-advanced" :open="advancedOpen" @toggle="advancedOpen = ($event.target as HTMLDetailsElement).open">
-          <StudioDisclosureSummary><span>已有模型？复用资源与高级设置<small class="inference-disclosure-hint">手动路径、引擎切换与性能选项</small></span></StudioDisclosureSummary>
+          <StudioDisclosureSummary><span>复用已有资源与高级设置<small class="inference-disclosure-hint">路径配置与性能选项</small></span></StudioDisclosureSummary>
           <div data-disclosure-content>
           <button class="btn btn-quiet btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy" @click="refresh">重新检查已有资源</button>
         <div v-if="discovery" class="inference-reuse" aria-labelledby="inference-reuse-title">
           <h3 id="inference-reuse-title">复用本机资源</h3>
-          <p>{{ discovery.modelCount }} 个原生图像底模 · {{ discovery.loraCount }} 个角色或风格 LoRA</p>
+          <p>{{ discovery.modelCount }} 个图像底模 · {{ discovery.loraCount }} 个 LoRA</p>
           <p v-if="discovery.missing.length">尚缺：{{ discovery.missing.join('、') }}</p>
           <div class="inference-actions">
             <button class="btn btn-primary btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy || dirty || !discovery.canAdopt || !adoptionChanges" @click="adoptSettings">{{ saving ? '保存中…' : !discovery.canAdopt ? '资源待补齐' : adoptionChanges ? '采用并启用' : '已采用' }}</button>
@@ -60,17 +60,17 @@
           <div class="inference-field">
             <label for="inference-memory">Anima 显存策略</label>
             <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="Anima 显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('memoryPolicy')" aria-describedby="inference-memory-hint" />
-            <small id="inference-memory-hint">{{ draft.memoryPolicy === 'offload' ? '减少显存占用，生成时需要在内存与显卡间传输模型。' : '模型保留在显卡中，适合连续生成。' }}</small>
+            <small id="inference-memory-hint">{{ draft.memoryPolicy === 'offload' ? '减少显存占用，在内存与显卡间调度。' : '模型驻留显卡，连续生成优先。' }}</small>
           </div>
           <div class="inference-field">
-            <label for="inference-adapter-memory">其他原生模型显存策略</label>
+            <label for="inference-adapter-memory">其他模型显存策略</label>
             <StudioSelect id="inference-adapter-memory" v-model="draft.adapterMemoryPolicy" label="其他原生模型显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterMemoryPolicy')" aria-describedby="inference-adapter-memory-hint" />
-            <small id="inference-adapter-memory-hint">用于 Krea、Qwen、MOSS、漫画重绘及原生视频。大模型默认分阶段加载；与 Anima 分别保存。</small>
+            <small id="inference-adapter-memory-hint">用于 Krea、Qwen、MOSS 与视频模型。大模型默认分阶段加载。</small>
           </div>
           <details class="inference-paths" :open="advancedPathsOpen" @toggle="advancedPathsOpen = ($event.target as HTMLDetailsElement).open">
             <StudioDisclosureSummary id="inference-paths-summary">高级路径设置</StudioDisclosureSummary>
             <div data-disclosure-content>
-            <p>填写运行绘遇的电脑上的绝对路径。</p>
+            <p>填写本机绝对路径。</p>
             <div class="inference-path-grid">
               <div v-for="field in pathFields" :key="field.key" class="inference-field">
                 <label :for="`inference-${field.key}`">{{ field.label }}</label>
@@ -80,7 +80,7 @@
             <div class="inference-field inference-paths">
               <label for="inference-adapter-python">Krea / Qwen 独立 Python</label>
               <input id="inference-adapter-python" v-model="draft.adapterPython" class="input" type="text" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterPython')" spellcheck="false" autocomplete="off" aria-describedby="inference-adapter-python-hint" />
-              <small id="inference-adapter-python-hint">可选。填写已安装 adapters 依赖的独立 Python 路径，模型放在模型根目录的对应型号目录内。此环境也供原生视频使用；请保留 Anima 自己的运行库。</small>
+              <small id="inference-adapter-python-hint">可选。独立 Python 解释器路径（含 adapters 依赖与视频支持）。</small>
             </div>
             </div>
             </div>

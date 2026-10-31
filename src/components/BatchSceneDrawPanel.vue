@@ -5,8 +5,8 @@
       <section ref="panel" class="batch-panel" role="dialog" aria-modal="true" aria-label="批量出图">
         <header class="batch-head">
           <div>
-            <span class="batch-step">BATCH · {{ batchMode === 'scene' ? 'SCENES' : 'CHARACTERS' }}</span>
-            <h2>批量出图 · {{ batchMode === 'scene' ? '多场景蓝图' : '多角色漫游' }}</h2>
+            <span class="batch-step">{{ batchMode === 'scene' ? '多场景蓝图' : '多角色漫游' }}</span>
+            <h2>批量出图</h2>
           </div>
           <button ref="closeButton" class="btn btn-ghost btn-icon" type="button" aria-label="关闭批量出图" @click="emit('close')"><ArchiveIcon name="close" /></button>
         </header>
@@ -16,7 +16,7 @@
           <div v-content-motion="contentMotionKey" class="batch-body">
           <p class="batch-description">{{ batchDescription }}</p>
           <p v-if="startError" class="batch-card-error" role="alert">{{ startError }}</p>
-          <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">计划尚未保存或读取失败：{{ batchDraw.storageError.value }}。恢复资料连接后再继续。</p>
+          <p v-if="batchDraw.storageError.value" class="batch-card-error" role="alert">读取失败：{{ batchDraw.storageError.value }}</p>
           <div class="batch-config-row">
             <div class="batch-field">
               <span class="field-label">模式</span>
@@ -73,10 +73,10 @@
                 </small>
               </button>
               <p v-if="!filteredScenes.length" class="batch-empty">
-                没有匹配的场景{{ props.scenes.length ? '（换个关键词或分类试试）' : '（场景蓝图为空）' }}。
+                未找到匹配场景
               </p>
             </div>
-            <button v-if="filteredScenes.length > sceneLimit" class="btn btn-ghost" type="button" @click="sceneLimit += 30">再显示 30 个场景（共 {{ filteredScenes.length }} 个匹配）</button>
+            <button v-if="filteredScenes.length > sceneLimit" class="btn btn-ghost" type="button" @click="sceneLimit += 30">加载更多 (+30)</button>
           </template>
 
           <!-- 多角色漫游选择视图 -->
@@ -87,17 +87,17 @@
                 <span class="batch-prompt-preview-title">
                   <ArchiveIcon name="spark" /> 工作台当前画面参考
                 </span>
-                <span class="batch-prompt-preview-badge">跨角色前请核对画面描述</span>
+                <span class="batch-prompt-preview-badge">核对画面描述</span>
               </div>
               <p class="batch-prompt-preview-text" tabindex="0" role="region" aria-label="工作台当前画面参考">
-                {{ currentPromptPreview || '（尚未载入画面描述，可在下方填写通用画面描述）' }}
+                {{ currentPromptPreview || '（无当前画面描述）' }}
               </p>
             </div>
             <div class="batch-field">
               <label class="field-label" :for="descriptionId">通用画面描述（英文，可选）</label>
               <textarea :id="descriptionId" v-model="universalDescription" class="input" rows="4" lang="en"
                 :aria-describedby="`${descriptionId}-hint`" placeholder="Describe the shared action, composition and lighting…" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
-              <p :id="`${descriptionId}-hint`" class="batch-description">填写后将替换原场景正文，留空沿用原文。建议保留动作与光影，去除特定角色的专有特征。</p>
+              <p :id="`${descriptionId}-hint`" class="batch-description">留空沿用原文；填写将替换原场景正文。</p>
             </div>
 
             <div class="batch-scene-toolbar">
@@ -203,21 +203,21 @@
           </div>
           <footer class="batch-foot">
             <template v-if="isRunning">
-              <span class="batch-hint">关闭面板可继续；离页保存计划，原任务保留，剩余项等待你继续</span>
-              <button class="btn btn-danger" type="button" :disabled="batchDraw.cancelRequested.value" @click="batchDraw.cancel">停止（当前张完成后停）</button>
+              <span class="batch-hint">后台生成中，离页保留进度</span>
+              <button class="btn btn-danger" type="button" :disabled="batchDraw.cancelRequested.value" @click="batchDraw.cancel">停止</button>
             </template>
             <template v-else>
-              <span class="batch-hint">{{ progress.unresolved ? '原任务接收状态尚未确认；核对成功后再继续，避免重复生成。' : progress.remaining ? '继续时沿用本批原参数与种子；已完成项不会重新生成。' : '成功成片已入册，可在「我的作品」查看。' }}</span>
+              <span class="batch-hint">{{ progress.unresolved ? '任务状态待确认，核对后继续。' : progress.remaining ? '继续时沿用原参数与种子。' : '成片已入册。' }}</span>
               <div class="batch-foot-actions">
                 <button v-if="progress.remaining || progress.unresolved" class="btn btn-primary" type="button" :disabled="batchDraw.resetting.value" @click="batchDraw.resume">
-                  <ArchiveIcon name="spark" /> {{ batchDraw.engine.value === 'sd' ? '核对旧任务' : progress.unresolved ? '核对并继续剩余' : `继续剩余 ${progress.remaining} 张` }}
+                  <ArchiveIcon name="spark" /> {{ batchDraw.engine.value === 'sd' ? '核对任务' : progress.unresolved ? '核对并继续' : `继续剩余 ${progress.remaining} 张` }}
                 </button>
-                <RouterLink v-if="comparisonIds.length >= 2" class="btn btn-primary" :to="`/gallery?compare=${comparisonIds.join(',')}`" @click="emit('close')">{{ progress.succeeded > 4 ? '对比前 4 张' : '对比本批候选' }}</RouterLink>
+                <RouterLink v-if="comparisonIds.length >= 2" class="btn btn-primary" :to="`/gallery?compare=${comparisonIds.join(',')}`" @click="emit('close')">{{ progress.succeeded > 4 ? '对比前 4 张' : '对比候选' }}</RouterLink>
                 <button v-if="batchDraw.engine.value !== 'sd' && retryableCount && !progress.unresolved" class="btn btn-ghost" type="button" :disabled="batchDraw.resetting.value" @click="onRetryFailed">
-                  <ArchiveIcon name="spark" /> 重试失败 / 取消 {{ retryableCount }} 张
+                  <ArchiveIcon name="spark" /> 重试失败 {{ retryableCount }} 张
                 </button>
                 <StudioTooltip anchor :content="progress.unresolved ? '先核对原任务，再开启新计划' : undefined">
-                  <button class="btn btn-ghost" type="button" :disabled="Boolean(progress.unresolved) || batchDraw.resetting.value" @click="resetToConfig">{{ batchDraw.resetting.value ? '正在清除计划…' : '再来一批' }}</button>
+                  <button class="btn btn-ghost" type="button" :disabled="Boolean(progress.unresolved) || batchDraw.resetting.value" @click="resetToConfig">{{ batchDraw.resetting.value ? '清除中…' : '再来一批' }}</button>
                 </StudioTooltip>
                 <button class="btn btn-primary" type="button" @click="emit('close')">完成</button>
               </div>
@@ -277,8 +277,8 @@ const universalDescription = ref(''), descriptionId = useId()
 const phase = ref<'config' | 'results'>('config')
 const contentMotionKey = ref<string | false>(false)
 const batchDescription = computed(() => phase.value === 'config'
-  ? batchMode.value === 'scene' ? '按蓝图绑定的角色、服装、镜头与尺寸逐张出图；成功成片自动入册。' : '沿用当前构图与光影，为选中的角色逐张生成，成片自动归入各角色画廊。'
-  : '逐张串行生成；离页或重开后保留计划，点击继续核对原任务并执行剩余项。')
+  ? batchMode.value === 'scene' ? '按场景蓝图逐张出图，成片自动入册。' : '沿用当前构图，为选中角色逐张生成。'
+  : '逐张串行生成，离页保留进度。')
 const previewJob = shallowRef<DeepReadonly<BatchDrawJob> | null>(null)
 const previewSource = ref<HTMLImageElement | null>(null)
 useFocusTrap(panel, () => props.open && !previewJob.value, { onEscape: () => emit('close'), initialFocus: closeButton })

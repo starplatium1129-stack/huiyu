@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tohsaka_rin",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-30T03:49:10.687608800+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "tohsaka_rin",
     "profile": {
@@ -17,8 +17,10 @@
       "type": "popular",
       "icon": "💎",
       "portrait": {
-        "image": "../assets/characters/popular-tohsaka_rin.png?v=5",
-        "alt": "远坂凛 样张立绘"
+        "image": "../assets/characters/popular-tohsaka_rin.png?v=87a780fd48b1",
+        "alt": "远坂凛样张立绘",
+        "sourceShowcaseId": "pc_tohsaka_rin_pc_tohsaka_rin_tohsaka_rin_mansion",
+        "sourceShowcaseSha256": "d0ecd447e10cc28f1a8cfef66993c0b5831a7536bda1d3c5cf3f96e6134bebed"
       },
       "visual_dna": {
         "hair": "深棕色长发与双马尾",

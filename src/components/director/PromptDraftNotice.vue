@@ -12,15 +12,15 @@ const desktop = Boolean(getDesktopCapabilities())
 <template>
   <section v-if="linkError" class="draft-save-notice" data-state="failed" aria-label="链接场景载入状态">
     <p role="alert">{{ linkError }}</p>
-    <button class="btn btn-ghost btn-sm" type="button" :disabled="linkRetrying || generationBusy" :aria-busy="linkRetrying" @click="$emit('retryLink')">{{ linkRetrying ? '正在重新载入…' : '重新载入链接场景' }}</button>
-    <span>可继续编辑当前草稿；重试前会确认是否替换。</span>
+    <button class="btn btn-ghost btn-sm" type="button" :disabled="linkRetrying || generationBusy" :aria-busy="linkRetrying" @click="$emit('retryLink')">{{ linkRetrying ? '重新载入中…' : '重新载入场景' }}</button>
+    <span>重试前将确认是否替换。</span>
   </section>
   <section v-if="pb.draftSaveState === 'failed' || !desktop && pb.draftSaveState !== 'idle'" class="draft-save-notice" :data-state="pb.draftSaveState" aria-label="草稿保存状态">
-    <p role="status" aria-live="polite">{{ pb.draftSaveState === 'failed' ? pb.draftSaveError : pb.draftSaveState === 'pending' ? '正在保存草稿…' : '草稿已保存到此浏览器' }}</p>
+    <p role="status" aria-live="polite">{{ pb.draftSaveState === 'failed' ? pb.draftSaveError : pb.draftSaveState === 'pending' ? '保存草稿中…' : '草稿已保存' }}</p>
     <template v-if="pb.draftSaveState === 'failed'">
       <button class="btn btn-ghost btn-sm" type="button" @click="pb.retryDraftSave()">重试保存</button>
       <button class="btn btn-ghost btn-sm" type="button" @click="exportDirectorBlueprint(getBlueprint())">导出当前草稿</button>
-      <span>导出的文件可通过「数据工具 → 导入蓝图配置」恢复。</span>
+      <span>可在数据工具中重新导入。</span>
     </template>
   </section>
 </template>

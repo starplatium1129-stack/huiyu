@@ -1,0 +1,378 @@
+{
+  "kind": "character",
+  "id": "zeta_shadow",
+  "revision": 2,
+  "sortOrder": 270,
+  "createdAt": "2026-10-31T04:32:46.631595+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "data": {
+    "id": "zeta_shadow",
+    "popular": {
+      "id": "zeta_shadow",
+      "displayName": "泽塔",
+      "originalName": "Zeta",
+      "franchise": "The Eminence in Shadow",
+      "aliases": [
+        "zeta_shadow",
+        "Zeta",
+        "ゼータ",
+        "泽塔",
+        "洁塔",
+        "莉莉姆",
+        "Lilim",
+        "七阴第六席",
+        "Zeta (Shadow Garden)",
+        "zeta_(shadow_garden)",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "identityProse": "Zeta from The Eminence in Shadow, the Sixth of the Seven Shadows, a golden leopard therianthrope with long blonde hair, large golden cat ears, a long golden tail, and cool purple eyes, serving as Shadow Garden's head of exploration and espionage.",
+      "identityTokens": [
+        "zeta_(shadow_garden)",
+        "1girl",
+        "solo",
+        "blonde_hair",
+        "long_hair",
+        "purple_eyes",
+        "animal_ears",
+        "cat_ears",
+        "cat_tail",
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "exactTokens": [
+        "zeta_(shadow_garden)"
+      ],
+      "exactPrefixes": [],
+      "characterTokens": [
+        "zeta_(shadow_garden)"
+      ],
+      "copyrightTokens": [
+        "kage_no_jitsuryokusha_ni_naritakute!"
+      ],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "defaultOutfitId": "slime_bodysuit",
+      "negativeTokens": [],
+      "curatedArtistStyles": [
+        "re_drop",
+        "morikura_en",
+        "kakao"
+      ],
+      "animeStudio": "Nexus / official anime style, shadow garden aesthetic",
+      "canon": {
+        "world": "剑与魔法异世界（米德加王国与阴影庭园地下城邦）",
+        "era": "阴影庭园扩张纪元",
+        "formNotes": "浅金长发紫眸的金豹族兽人女性，金色猫耳与长尾；阴影庭园「七阴」第六席谍报担当，原名莉莉姆",
+        "research": "2026-10 调研"
+      }
+    },
+    "profile": {
+      "id": "zeta_shadow",
+      "name": "泽塔",
+      "alias": [
+        "Zeta",
+        "ゼータ",
+        "洁塔",
+        "莉莉姆",
+        "Lilim",
+        "リリム",
+        "天赋",
+        "七阴第六席"
+      ],
+      "type": "popular",
+      "icon": "🐆",
+      "portrait": {
+        "image": "../assets/characters/popular-zeta_shadow.png?v=9db46ed8ec2d",
+        "alt": "泽塔样张立绘",
+        "sourceShowcaseId": "pc_zeta_shadow_zeta_shadow_delta_bicker",
+        "sourceShowcaseSha256": "d4036c0e0e42e135bcdd574e7881f662127492db91ea4ee0f6a9d40177dbe5bd"
+      },
+      "visual_dna": {
+        "hair": "浅金色长发，随行动如豹尾般轻扬",
+        "hair_color": "浅金 / 铂金",
+        "eyes": "冷冽的紫眸，眼神锐利如潜伏的猎手",
+        "hairstyle": "金色猫耳 · 长尾 · 披肩长发",
+        "uniform": "黑色史莱姆战服配左肩大披风与毛领短夹克",
+        "expression": "寡言冷峻 · 只在暗影大人面前才肯多说两句",
+        "style": "therianthrope espionage agent girlfriend, combining feline grace, cool taciturn pride and hidden fierce loyalty",
+        "signature": "金色猫耳与长尾、紫眸、左肩披风"
+      },
+      "personality": [
+        "冷酷寡言",
+        "天赋异禀",
+        "独来独往",
+        "猫系别扭",
+        "对暗影忠诚至深"
+      ],
+      "likes": [
+        "独自潜行与搜集情报",
+        "高处俯瞰城市的夜风",
+        "晒太阳打盹（本人否认）",
+        "让暗影大人的愿望成真"
+      ],
+      "classic_cg": {
+        "title": "屋顶上的金豹",
+        "description": "冬夜的学园屋顶上，泽塔蹲在阴影里俯瞰楼下温暖的灯火。金色的长尾在寒风中轻轻摆动，她把教团今晚的动向一一记下——她的报告，只念给暗影大人一个人听。"
+      },
+      "identity": {
+        "role": "阴影庭园「七阴」第六席 / 谍报总负责人",
+        "age": "18岁（暗影庭园第六席）",
+        "occupation": "密探 / 谍报与暗杀专家",
+        "faction": "阴影庭园 (Shadow Garden)"
+      },
+      "tags": [
+        "浅金长发",
+        "紫眸",
+        "猫耳",
+        "金豹族",
+        "七阴第六席",
+        "谍报担当"
+      ],
+      "bg_story": "兽人金豹族族长之女、兽人英雄莉莉的后裔，原名莉莉姆。曾遭恶魔附身，被暗影治愈后由阿尔法授名“泽塔”。她是学什么都快的天赋型，被称作“天赋”，却容易厌倦难以精通——唯独谍报与暗杀是七阴最强。平时几乎不待在任何据点，独自辗转世界各地搜集教团情报，性情冷酷寡言，只有暗影开口时才会正常交谈；与犬系的德尔塔见面就吵。心底深处，她藏着一个只为实现暗影大人“愿望”的秘密计划。",
+      "palette": [
+        "铂金",
+        "豹纹金",
+        "深紫",
+        "夜幕黑"
+      ],
+      "weather": [
+        "冬夜寒风",
+        "月夜屋顶",
+        "黄昏巷弄"
+      ],
+      "speech": "……情报，确认完毕。剩下的，交给暗影大人判断。",
+      "voice": "暗影大人，这是这个月各国教团动向的汇总。……德尔塔那只笨狗又把据点弄得一团糟？哼，不用管她。我的报告，只念给您一个人听。",
+      "voiceJa": "シャドウ様、今月の教団の動向です。……デルタのことは放っておいてください。私の報告は、あなたにだけ。",
+      "source": "The Eminence in Shadow",
+      "traits": [
+        "zeta_(shadow_garden)",
+        "blonde_hair",
+        "long_hair",
+        "purple_eyes",
+        "cat_ears",
+        "cat_tail",
+        "animal_ears"
+      ],
+      "accent_color": "#a78bfa",
+      "bg_color": "#1a1425",
+      "relationshipGraph": {
+        "version": 1,
+        "work": "想要成为影之实力者！",
+        "people": [
+          {
+            "id": "alpha_shadow",
+            "name": "阿尔法",
+            "aliases": [
+              "アルファ",
+              "Alpha"
+            ],
+            "characterId": "alpha_shadow"
+          },
+          {
+            "id": "beta_shadow",
+            "name": "贝塔",
+            "aliases": [
+              "ベータ",
+              "Beta"
+            ],
+            "characterId": "beta_shadow"
+          },
+          {
+            "id": "gamma_shadow",
+            "name": "伽玛",
+            "aliases": [
+              "ガンマ",
+              "Gamma"
+            ],
+            "characterId": "gamma_shadow"
+          },
+          {
+            "id": "delta_shadow",
+            "name": "德尔塔",
+            "aliases": [
+              "デルタ",
+              "Delta"
+            ],
+            "characterId": "delta_shadow"
+          },
+          {
+            "id": "epsilon_shadow",
+            "name": "厄普西隆",
+            "aliases": [
+              "イプシロン",
+              "Epsilon"
+            ],
+            "characterId": "epsilon_shadow"
+          },
+          {
+            "id": "zeta_shadow",
+            "name": "泽塔",
+            "aliases": [
+              "ゼータ",
+              "Zeta"
+            ],
+            "characterId": "zeta_shadow"
+          },
+          {
+            "id": "eta_shadow",
+            "name": "埃塔",
+            "aliases": [
+              "イータ",
+              "Eta"
+            ],
+            "characterId": "eta_shadow"
+          },
+          {
+            "id": "alexia_midgar",
+            "name": "阿蕾克希亚·米德加",
+            "aliases": [
+              "アレクシア・ミドガル",
+              "Alexia Midgar"
+            ],
+            "characterId": "alexia_midgar"
+          },
+          {
+            "id": "claire_kagenou",
+            "name": "克莱尔·卡盖诺",
+            "aliases": [
+              "クレア・カゲノー",
+              "Claire Kagenou"
+            ],
+            "characterId": "claire_kagenou"
+          },
+          {
+            "id": "rose_oriana",
+            "name": "萝丝·奥利安娜",
+            "aliases": [
+              "ローズ・オリアナ",
+              "Rose Oriana"
+            ],
+            "characterId": "rose_oriana"
+          },
+          {
+            "id": "aurora_shadow",
+            "name": "奥萝拉",
+            "aliases": [
+              "アウロラ",
+              "Aurora",
+              "灾厄魔女"
+            ],
+            "characterId": "aurora_shadow"
+          },
+          {
+            "id": "cid_kagenou",
+            "name": "席德·卡盖诺",
+            "aliases": [
+              "シド・カゲノー",
+              "Cid Kagenou",
+              "暗影",
+              "シャドウ"
+            ],
+            "role": "米德加魔剑士学园学生 / 阴影庭园盟主",
+            "summary": "在学园中过着不起眼的生活，同时以暗影的身份领导阴影庭园。"
+          },
+          {
+            "id": "iris_midgar",
+            "name": "爱丽丝·米德加",
+            "aliases": [
+              "アイリス・ミドガル",
+              "Iris Midgar"
+            ],
+            "role": "米德加王国第一王女",
+            "summary": "阿蕾克希亚的姐姐，王国骑士团的魔剑士。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "zeta-cid",
+            "source": "zeta_shadow",
+            "target": "cid_kagenou",
+            "label": "谍报与忠诚",
+            "description": "泽塔被暗影治愈恶魔附身后宣誓绝对忠诚，常年独自在外搜集教团情报，只向暗影本人汇报。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "zeta-cid-secret",
+            "source": "zeta_shadow",
+            "target": "cid_kagenou",
+            "label": "秘而不宣的愿望",
+            "description": "泽塔暗中筹划着只属于她与暗影的未来，其真实目的连其余七影也未曾知晓。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "zeta-alpha",
+            "source": "zeta_shadow",
+            "target": "alpha_shadow",
+            "label": "授名之恩",
+            "description": "是阿尔法亲手为原名莉莉姆的她授名“泽塔”，将她迎入七阴第六席。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "zeta-delta",
+            "source": "zeta_shadow",
+            "target": "delta_shadow",
+            "label": "猫狗不和",
+            "description": "猫科的泽塔与犬系的德尔塔见面就吵，闹得不可收拾时只有阿尔法能同时压住双方。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "zeta-gamma",
+            "source": "zeta_shadow",
+            "target": "gamma_shadow",
+            "label": "情报与资金",
+            "description": "伽玛的商会网络为泽塔的潜行提供掩护与经费，泽塔的情报则先一步送达伽玛案头。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          },
+          {
+            "id": "zeta-eta",
+            "source": "zeta_shadow",
+            "target": "eta_shadow",
+            "label": "装备与潜行",
+            "description": "埃塔为泽塔特调的潜行装备是她屡屡全身而退的底气，尽管试用新装备总伴随一点风险。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "阴影庭园",
+            "evidence": {
+              "title": "《阴之实力者》官方游戏人物介绍",
+              "url": "https://www.shadow-garden-mog.jp/"
+            }
+          }
+        ]
+      }
+    }
+  }
+}

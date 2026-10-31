@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ling_arknights",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-26T12:45:23.311243+00:00",
+  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
   "data": {
     "id": "ling_arknights",
     "profile": {
@@ -77,8 +77,10 @@
         "arknights"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-ling_arknights.png?v=5",
-        "alt": "令热门角色立绘"
+        "image": "../assets/characters/popular-ling_arknights.png?v=1c43e79af44f",
+        "alt": "令样张立绘",
+        "sourceShowcaseId": "pc_ling_arknights_pc_ling_arknights_ling_arknights_wine_tavern",
+        "sourceShowcaseSha256": "dd515a4d79aec465e1747386fa0260355f16f014193c9cdd92bb2242d4f36d00"
       },
       "speech": "千载长路不过须臾，万般虚实无非一梦。博士，这杯中乾坤正好，且随我醉上一回！",
       "accent_color": "#d4a83c",
