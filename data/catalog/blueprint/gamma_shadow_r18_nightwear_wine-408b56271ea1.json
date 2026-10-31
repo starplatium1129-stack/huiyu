@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_r18_nightwear_wine",
+  "revision": 1,
+  "sortOrder": 2827,
+  "createdAt": "2026-10-31T04:39:58.773044000+00:00",
+  "updatedAt": "2026-10-31T04:39:58.773044000+00:00",
+  "data": {
+    "id": "gamma_shadow_r18_nightwear_wine",
+    "characterId": "gamma_shadow",
+    "outfitId": "private_nightwear",
+    "title": "伽玛 · 睡裙与庆功酒",
+    "category": "私密时刻",
+    "description": "商会季度利润翻番的夜里，伽玛破例给自己斟了一杯酒。靛蓝丝绸睡裙贴着她成熟的身段，吊带在举杯时滑下臂弯。她望着窗外的王都灯火，小声说了一句——「暗影大人，这份江山，又大了一圈。」",
+    "recommendedSize": "1152x1536",
+    "location": "会长寝居阳台·深夜",
+    "action": "倚着阳台栏杆举杯，睡裙吊带滑落，望着夜景微笑",
+    "timeOfDay": "深夜",
+    "lighting": "moonlight and warm balcony lantern light",
+    "camera": "medium shot, side view",
+    "mood": "微醺自得",
+    "sceneTags": [
+      "balcony",
+      "night",
+      "nightgown",
+      "wine_glass",
+      "moonlight",
+      "city_lights"
+    ],
+    "promptProse": "On her private balcony, adult Gamma raises a glass in a silk indigo nightgown, one strap fallen, smiling at the capital's lights her company now owns a piece of.",
+    "promptTokens": [
+      "balcony",
+      "nightgown",
+      "silk",
+      "wine glass",
+      "strap slip",
+      "moonlight",
+      "night view",
+      "long hair"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "strap_slip",
+      "cleavage",
+      "see_through_silk"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "One glass for a doubled quarter. Gamma toasts the night city — and the man who gave her every idea in it."
+  }
+}

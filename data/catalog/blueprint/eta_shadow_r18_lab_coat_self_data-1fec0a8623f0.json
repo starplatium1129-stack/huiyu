@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_r18_lab_coat_self_data",
+  "revision": 1,
+  "sortOrder": 2833,
+  "createdAt": "2026-10-31T04:39:58.773044000+00:00",
+  "updatedAt": "2026-10-31T04:39:58.773044000+00:00",
+  "data": {
+    "id": "eta_shadow_r18_lab_coat_self_data",
+    "characterId": "eta_shadow",
+    "outfitId": "researcher_lab_coat",
+    "title": "埃塔 · 白大褂下的自体数据",
+    "category": "研究秘辛",
+    "description": "深夜的实验室，埃塔敞开白大褂，对着镜子记录自己穿着史莱姆衣的身体数据。美其名曰“基准样本采集”——反正经费申请单上，她就是这么写的。她打着哈欠，把围度数字精确到小数点后一位。",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园地下实验室·深夜",
+    "action": "敞开白大褂站在镜前，用软尺量着腰围，睡眼惺忪地记录",
+    "timeOfDay": "深夜",
+    "lighting": "cold white lab lamps and monitor glow",
+    "camera": "medium shot, front view toward mirror",
+    "mood": "困倦坦然",
+    "sceneTags": [
+      "laboratory",
+      "lab_coat",
+      "mirror",
+      "measuring",
+      "slime_suit",
+      "night"
+    ],
+    "promptProse": "In the midnight lab, adult Eta stands before a mirror in an open lab coat over her slime clothes, measuring herself with a tape for 'baseline sample data', yawning over the numbers.",
+    "promptTokens": [
+      "laboratory",
+      "lab coat",
+      "open coat",
+      "mirror",
+      "measuring tape",
+      "slime suit",
+      "clipboard",
+      "sleepy"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "open_lab_coat",
+      "cleavage"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "Baseline sample: herself. Eta measures, yawns, and writes down numbers no one else will ever check."
+  }
+}

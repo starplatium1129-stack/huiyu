@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_r18_rooftop_cooldown",
+  "revision": 1,
+  "sortOrder": 2829,
+  "createdAt": "2026-10-31T04:39:58.773044000+00:00",
+  "updatedAt": "2026-10-31T04:39:58.773044000+00:00",
+  "data": {
+    "id": "zeta_shadow_r18_rooftop_cooldown",
+    "characterId": "zeta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "泽塔 · 屋顶任务后的乘凉",
+    "category": "谍报秘辛",
+    "description": "盛夏任务归来，泽塔蹲在据点屋顶的阴影里，把史莱姆战服褪到腰间乘凉。金色的猫耳懒洋洋地垂着，长尾绕住脚踝——只有确认四下无人时，金豹才肯露出这样毫无防备的样子。",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园据点屋顶·夏夜",
+    "action": "蹲在屋顶阴影里，战服半褪至腰间，猫耳垂落，尾巴绕住脚踝",
+    "timeOfDay": "夏夜",
+    "lighting": "summer night moonlight and distant town lights",
+    "camera": "medium shot, low angle",
+    "mood": "夏夜慵懒",
+    "sceneTags": [
+      "rooftop",
+      "summer_night",
+      "bodysuit",
+      "cat_ears",
+      "tail",
+      "moonlight"
+    ],
+    "promptProse": "Back from a summer mission, adult Zeta crouches in the rooftop shade with her slime bodysuit slipped down to her waist, golden cat ears drooping in the heat.",
+    "promptTokens": [
+      "rooftop",
+      "night",
+      "black bodysuit",
+      "pulled down bodysuit",
+      "topless",
+      "cat ears",
+      "cat tail",
+      "crouching",
+      "moonlight"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "topless",
+      "bodysuit_pull"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "Only the moon sees Zeta like this — guard down, ears down, cooling off above the sleeping town."
+  }
+}

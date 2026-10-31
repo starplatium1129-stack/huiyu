@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_r18_office_gown_slip",
+  "revision": 1,
+  "sortOrder": 2825,
+  "createdAt": "2026-10-31T04:39:58.773044000+00:00",
+  "updatedAt": "2026-10-31T04:39:58.773044000+00:00",
+  "data": {
+    "id": "gamma_shadow_r18_office_gown_slip",
+    "characterId": "gamma_shadow",
+    "outfitId": "luna_president_dress",
+    "title": "伽玛 · 会长办公室的深夜独奏",
+    "category": "商会秘辛",
+    "description": "深夜的四越商会总部只剩会长办公室还亮着灯。伽玛伏在账本上核对最后一笔数目，靛蓝晚礼服的肩带悄悄滑下肩头，露出精灵族光洁的脊背。她揉了揉发酸的脖颈，浑然不觉身后的门没有锁——这间办公室里，只有暗影大人能不敲门进来。",
+    "recommendedSize": "1152x1536",
+    "location": "四越商会会长办公室·深夜",
+    "action": "伏案核对账目，晚礼服肩带滑落，单手揉着脖颈",
+    "timeOfDay": "深夜",
+    "lighting": "desk lamp warm glow and moonlight through tall office windows",
+    "camera": "medium shot, rear three-quarter view",
+    "mood": "深夜慵懒",
+    "sceneTags": [
+      "office",
+      "night",
+      "desk",
+      "ledger",
+      "evening_gown",
+      "moonlight"
+    ],
+    "promptProse": "Late at night in the Mitsugoshi president's office, adult Gamma leans over her ledgers in an indigo evening gown, one strap slipped off her shoulder, rubbing her tired neck under lamplight.",
+    "promptTokens": [
+      "office",
+      "desk",
+      "ledger",
+      "evening gown",
+      "strap slip",
+      "bare back",
+      "long indigo hair",
+      "desk lamp",
+      "night"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "sideboob",
+      "bare_back",
+      "strap_slip"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "The strap slips as Gamma works through the night, the whole company asleep except its president."
+  }
+}

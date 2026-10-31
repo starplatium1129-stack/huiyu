@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_r18_lake_wet_swimsuit",
+  "revision": 1,
+  "sortOrder": 2830,
+  "createdAt": "2026-10-31T04:39:58.773044000+00:00",
+  "updatedAt": "2026-10-31T04:39:58.773044000+00:00",
+  "data": {
+    "id": "zeta_shadow_r18_lake_wet_swimsuit",
+    "characterId": "zeta_shadow",
+    "outfitId": "golden_leopard_swimsuit",
+    "title": "泽塔 · 湖畔交接后的湿身",
+    "category": "谍报秘辛",
+    "description": "情报交接完成的湖畔，泽塔从浅水区起身，豹纹泳装湿透贴在身上。她甩了甩金色长发的水珠，紫眸扫过湖岸确认没有尾巴跟踪——任务结束，猫要回家了。",
+    "recommendedSize": "1152x1536",
+    "location": "山间湖畔·盛夏午后",
+    "action": "从浅水区起身回眸，湿发甩动，泳装贴身",
+    "timeOfDay": "午后",
+    "lighting": "sparkling midsummer sunlight on lake water",
+    "camera": "medium shot, rear three-quarter view",
+    "mood": "湿润警觉",
+    "sceneTags": [
+      "lake",
+      "swimsuit",
+      "wet",
+      "leopard_print",
+      "cat_ears",
+      "summer"
+    ],
+    "promptProse": "Rising from the shallows after the handoff, adult Zeta shakes water from her golden hair, her wet leopard swimsuit clinging, purple eyes sweeping the shore one last time.",
+    "promptTokens": [
+      "lake",
+      "shallow water",
+      "leopard swimsuit",
+      "wet swimsuit",
+      "wet hair",
+      "cat ears",
+      "tail",
+      "looking back"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "wet_swimsuit",
+      "see_through_wet_fabric"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "The capsule is delivered, the shore is clean. Zeta shakes off the lake and vanishes into summer."
+  }
+}
