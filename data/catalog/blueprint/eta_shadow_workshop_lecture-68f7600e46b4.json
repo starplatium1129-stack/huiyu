@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_workshop_lecture",
+  "revision": 1,
+  "sortOrder": 2824,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "eta_shadow_workshop_lecture",
+    "characterId": "eta_shadow",
+    "outfitId": "researcher_lab_coat",
+    "title": "埃塔 · 给编号者的技术讲座",
+    "category": "建筑天才",
+    "description": "庭园讲堂里，埃塔站在写满公式的黑板前给编号者们讲史莱姆材料的特性。讲到第三页，她的声音越来越小——台下所有人都在祈祷她别睡着。",
+    "recommendedSize": "832x1216",
+    "location": "shadow garden lecture hall with a blackboard full of formulas and rows of trainees",
+    "action": "lecturing before a formula-covered blackboard, voice trailing off, eyelids drooping mid-sentence",
+    "timeOfDay": "day",
+    "lighting": "讲堂窗户透入的明亮日光",
+    "camera": "cowboy_shot",
+    "mood": "drowsy lecture, earnest trainees",
+    "promptProse": "Eta's lecture on slime materials is brilliant and increasingly quiet. The trainees take notes and pray she stays awake.",
+    "promptTokens": [
+      "lecture hall",
+      "blackboard",
+      "formulas",
+      "trainees",
+      "lab coat"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "The formulas are perfect. The lecturer is at 12% consciousness and falling.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

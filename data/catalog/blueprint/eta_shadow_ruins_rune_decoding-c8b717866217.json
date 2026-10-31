@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_ruins_rune_decoding",
+  "revision": 1,
+  "sortOrder": 2818,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "eta_shadow_ruins_rune_decoding",
+    "characterId": "eta_shadow",
+    "outfitId": "ruins_explorer",
+    "title": "埃塔 · 古代遗迹的密纹解读",
+    "category": "建筑天才",
+    "description": "古代遗迹深处，埃塔举着拓印纸贴在刻满密纹的石壁上。别人要研究三个月的古代文字，她看一眼就打着哈欠说出了大意。",
+    "recommendedSize": "832x1216",
+    "location": "ancient ruins chamber with rune-covered stone walls, fallen pillars and dust in light shafts",
+    "action": "holding a rubbing sheet against a rune-covered wall, examining the glyphs with sudden sharp focus",
+    "timeOfDay": "day",
+    "lighting": "遗迹裂缝漏下的光柱与尘埃",
+    "camera": "full_shot",
+    "mood": "ancient mystery, effortless decoding",
+    "promptProse": "Before a wall of ancient runes, Eta yawns — then reads them like a shopping list. Three months of work, done before lunch.",
+    "promptTokens": [
+      "ruins",
+      "runes",
+      "stone wall",
+      "rubbing",
+      "light shaft",
+      "dust"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Ancient scripts fear Eta. She fears only early mornings.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "gamma_shadow_bank_vault_check",
+  "revision": 1,
+  "sortOrder": 2799,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "gamma_shadow_bank_vault_check",
+    "characterId": "gamma_shadow",
+    "outfitId": "bank_office_suit",
+    "title": "伽玛 · 四越银行金库巡查",
+    "category": "商会帝国",
+    "description": "四越银行地下金库，成排的金币与魔石在柜门后闪光。伽玛逐项核对封存清单，数字在她脑中自动成账，分毫不差。",
+    "recommendedSize": "832x1216",
+    "location": "underground bank vault with rows of gold coins, gemstones and sealed deposit cabinets",
+    "action": "checking a sealed inventory list with a key in hand, standing before open vault cabinets, serious expression",
+    "timeOfDay": "day",
+    "lighting": "金库魔石灯的冷金色光辉",
+    "camera": "medium_shot",
+    "mood": "meticulous financial control, glittering order",
+    "promptProse": "Inside the Mitsugoshi Bank vault, Gamma verifies every seal and figure; not a single coin escapes her arithmetic.",
+    "promptTokens": [
+      "bank vault",
+      "gold coins",
+      "gemstones",
+      "key",
+      "inventory list",
+      "cabinets"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Gold beyond counting, and Gamma knows the count to the last coin.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

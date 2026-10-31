@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_department_store_blueprint",
+  "revision": 1,
+  "sortOrder": 2816,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "eta_shadow_department_store_blueprint",
+    "characterId": "eta_shadow",
+    "outfitId": "architect_drafting_vest",
+    "title": "埃塔 · 四越百货的建筑图",
+    "category": "建筑天才",
+    "description": "巨大的绘图桌上摊着四越百货的建筑蓝图，埃塔趴在图纸边缘解说结构。年度最佳建筑师的招牌之作，出自这个随时会睡着的精灵之手。",
+    "recommendedSize": "832x1216",
+    "location": "architect studio with a huge drafting table covered in building blueprints and scale models",
+    "action": "leaning over a giant blueprint pointing at a structural detail, drafting vest, explaining drowsily",
+    "timeOfDay": "day",
+    "lighting": "建筑工作室高窗的明亮日光",
+    "camera": "cowboy_shot",
+    "mood": "architectural genius, drowsy pride",
+    "promptProse": "Over the blueprint of Mitsugoshi's flagship store, Eta explains load-bearing arches in the tone of someone about to nap.",
+    "promptTokens": [
+      "blueprint",
+      "drafting table",
+      "architecture",
+      "scale model",
+      "studio"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Architect of the Year, they called her. Eta yawned through the ceremony, probably.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

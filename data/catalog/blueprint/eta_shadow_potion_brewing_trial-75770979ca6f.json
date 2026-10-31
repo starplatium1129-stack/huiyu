@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_potion_brewing_trial",
+  "revision": 1,
+  "sortOrder": 2821,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "eta_shadow_potion_brewing_trial",
+    "characterId": "eta_shadow",
+    "outfitId": "experiment_apron",
+    "title": "埃塔 · 新药调配与紫色烟雾",
+    "category": "疯狂研究",
+    "description": "埃塔系着皮围裙守在坩埚前，紫色的烟雾正咕嘟咕嘟地冒出来。她面无表情地往锅里又加了一味材料——至于喝的人是谁，那是下一个问题。",
+    "recommendedSize": "832x1216",
+    "location": "alchemy corner of a laboratory with a bubbling cauldron, herb bundles and rows of vials",
+    "action": "adding an ingredient to a bubbling cauldron with purple smoke, leather apron, completely deadpan expression",
+    "timeOfDay": "evening",
+    "lighting": "坩埚火焰与紫色烟雾的映光",
+    "camera": "medium_shot",
+    "mood": "deadpan alchemy, ominous calm",
+    "promptProse": "Purple smoke, deadpan face, one more ingredient. Eta's newest potion is ready — the taster is tomorrow's problem.",
+    "promptTokens": [
+      "cauldron",
+      "potion",
+      "purple smoke",
+      "apron",
+      "vials",
+      "herbs"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "The potion is finished. Finding a volunteer is, as always, the hardest step.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

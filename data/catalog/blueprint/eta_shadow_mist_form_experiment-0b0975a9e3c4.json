@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_mist_form_experiment",
+  "revision": 1,
+  "sortOrder": 2819,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "eta_shadow_mist_form_experiment",
+    "characterId": "eta_shadow",
+    "outfitId": "researcher_lab_coat",
+    "title": "埃塔 · 雾化实验的成功瞬间",
+    "category": "疯狂研究",
+    "description": "实验室中央，实验体的身影正化作薄雾又缓缓凝聚——恶魔附身者也能用出的雾化技能，在埃塔手里完成了。她难得睁大了眼睛，飞快地记下参数。",
+    "recommendedSize": "832x1216",
+    "location": "laboratory center with a swirling mist formation circle and monitoring crystals",
+    "action": "observing a swirling mist formation with wide awake eyes for once, scribbling parameters on a notepad",
+    "timeOfDay": "night",
+    "lighting": "雾化法阵的幽紫光芒",
+    "camera": "medium_shot",
+    "mood": "scientific breakthrough, rare excitement",
+    "promptProse": "The mist holds, then reforms. Eta's eyes are fully open — the atomization experiment just made history.",
+    "promptTokens": [
+      "laboratory",
+      "mist",
+      "formation circle",
+      "experiment",
+      "notepad",
+      "purple glow"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Sacrifice is necessary for progress, Eta says. Tonight, progress needed no sacrifice at all.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}
