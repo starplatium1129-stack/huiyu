@@ -128,7 +128,7 @@ import { useCatalogMaintenance } from '@/composables/scene/useCatalogMaintenance
 import { CATALOG_LABELS, catalogTitle, catalogRating, catalogCategory, catalogDate, recordTitle } from '@/composables/scene/catalogPresentation'
 import type { CatalogChange, CatalogKind, CatalogSummary } from '@/api/catalogApi'
 import { catalogApi } from '@/api/catalogApi'
-import { maintenanceApi, type BackupEntry } from '@/api/maintenanceApi'
+import type { BackupEntry } from '@/api/maintenanceApi'
 import { popularPortraitSrc } from '@/utils/popularPortraitSource'
 import { catalogShowcaseId } from '@/utils/showcaseManifest'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
@@ -235,7 +235,7 @@ async function addBlueprintFor(characterId: string) {
 function clearFieldError() { fieldError.value = null }
 async function reviewEdits() { if (dirtyEditor.value && !stage()) return; await submit(true) }
 async function checkContent() { checking.value = true; try { await catalogApi.check(); toolHint.value = '检查完成，资料关联完整' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
-async function listBackups() { checking.value = true; try { backups.value = (await maintenanceApi.listBackups()).entries; toolHint.value = '找到 ' + backups.value.length + ' 份图片备份' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
+async function listBackups() { checking.value = true; try { const { maintenanceApi } = await import('@/api/maintenanceApi'); backups.value = (await maintenanceApi.listBackups()).entries; toolHint.value = '找到 ' + backups.value.length + ' 份图片备份' } catch (e) { toolHint.value = (e as Error).message } finally { checking.value = false } }
 async function switchSection(value: string) {
   if (busy.value || switchingSection.value) return false
   if (value === section.value) return true

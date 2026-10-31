@@ -1,6 +1,7 @@
 import type { CharacterConfig } from '@/config/characters'
-import type { StageSurface } from '@/composables/chat/useStageFraming'
 import type { Live2DBackendKind } from '@/live2d/types'
+
+export type StageSurface = 'room' | 'immersive' | 'companion'
 
 export interface CharacterStageProps {
   activeId: string

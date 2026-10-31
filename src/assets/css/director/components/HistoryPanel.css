@@ -7,7 +7,7 @@
 .history-empty-icon { width:24px; height:24px; flex:none; color:var(--text-secondary); }
 .history-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(250px,100%),1fr)); gap:var(--s-3); min-width:0; }
 .history-item { display:flex; flex-direction:column; min-width:0; overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); transition:transform var(--motion-hover) var(--ease-out); }
-.history-item[data-selected='true'] { border-color:var(--accent); box-shadow:var(--selection-shadow); }
+.history-item[data-selected='true'] { border-color:var(--border-strong); box-shadow:var(--selection-shadow); }
 .history-thumb { position:relative; aspect-ratio:16/10; overflow:hidden; background:var(--bg-base); }
 .history-preview { display:block; width:100%; height:100%; padding:0; border:0; background:transparent; color:inherit; cursor:zoom-in; }
 .history-preview:focus-visible { outline:2px solid var(--accent); outline-offset:-3px; }
@@ -15,8 +15,12 @@
 .history-placeholder { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); width:100%; height:100%; color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .history-placeholder > .archive-icon { width:24px; height:24px; }
 .history-thumb-badge { position:absolute; left:var(--s-2); bottom:var(--s-2); padding:2px var(--s-2); border:1px solid var(--on-art-line); border-radius:var(--r-pill); background:var(--art-scrim); color:var(--on-art-primary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-mono); }
-/* StudioCheckbox retains its native input, focus ring, motion and 44px hit area. */
-.history-thumb > .history-pick { position:absolute; top:var(--s-2); left:var(--s-2); z-index:var(--z-raised); justify-content:center; border-radius:var(--r-md); background:var(--art-scrim); }
+/* Keep the full hit area transparent; only the checkbox covers the artwork. */
+.history-thumb > .history-pick { position:absolute; top:0; left:0; z-index:var(--z-raised); grid-template-columns:1fr; place-items:center; width:calc(var(--control-height) + var(--s-1)); height:calc(var(--control-height) + var(--s-1)); padding:0; }
+.history-thumb > .history-pick :deep(.studio-checkbox-box) { width:24px; height:24px; border-color:var(--on-art-primary); background:var(--art-scrim); color:var(--on-art-primary); box-shadow:0 0 0 1px var(--art-scrim); }
+.history-thumb > .history-pick :deep(.studio-checkbox-input:checked + .studio-checkbox-box) { border-color:var(--on-art-primary); background:var(--on-art-primary); color:var(--art-stage); }
+.history-thumb > .history-pick :deep(.studio-checkbox-input:focus-visible + .studio-checkbox-box) { box-shadow:0 0 0 2px var(--art-scrim), 0 0 0 4px var(--on-art-primary); }
+.history-thumb > .history-pick :deep(.studio-checkbox-box .archive-icon) { width:16px; height:16px; }
 .history-main { display:flex; flex-direction:column; flex:1; gap:var(--s-2); min-width:0; padding:var(--s-3); }
 .history-card-title { display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; overflow-wrap:anywhere; color:var(--text-primary); font:600 var(--fs-body)/var(--lh-label) var(--font-sans); }
 .history-meta { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1) var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-label); }
@@ -32,4 +36,9 @@
 }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) :is(.history-item,.history-thumb img) { transition:none; transform:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) :is(.history-item,.history-thumb img) { transition:none; transform:none; }
-@media (forced-colors:active) { .history-item[data-selected='true'] { border-color:Highlight; outline:2px solid Highlight; outline-offset:-3px; } }
+@media (forced-colors:active) {
+  .history-item[data-selected='true'] { border-color:Highlight; outline:2px solid Highlight; outline-offset:-3px; }
+  .history-thumb > .history-pick :deep(.studio-checkbox-box) { color:CanvasText; background:Canvas; border-color:CanvasText; box-shadow:none; }
+  .history-thumb > .history-pick :deep(.studio-checkbox-input:checked + .studio-checkbox-box) { color:HighlightText; background:Highlight; border-color:Highlight; }
+  .history-thumb > .history-pick :deep(.studio-checkbox-input:focus-visible + .studio-checkbox-box) { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; }
+}

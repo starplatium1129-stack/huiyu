@@ -8,8 +8,12 @@ const FILES: &[&str] = &[
     "adapter_media.py",
     "adapter_video.py",
     "adapter-models.json",
+    "managed-adapter-models.json",
     "worker_lifecycle.py",
     "native_memory.py",
+    "native_attention.py",
+    "mapped_weights.py",
+    "mapped_residency.py",
     "resident_adapters.py",
     "locked_identity.py",
     "krea_style.py",
@@ -45,13 +49,9 @@ pub(crate) fn settings(settings: &Settings) -> Result<Settings> {
         )
     })?;
     adapter.worker = settings.worker.with_file_name("adapter_worker.py");
-    if settings.acceleration != "native" {
-        return Err(ApiError::new(
-            501,
-            "NATIVE_FEATURE_UNSUPPORTED",
-            "新增模型尚未接入 Anima 的 Sage/编译加速，请选择 native 加速模式",
-        ));
-    }
+    // Anima's Cosmos backend and residency do not configure other model families.
+    adapter.acceleration = "native".into();
+    adapter.memory_policy = settings.adapter_memory_policy.clone();
     Ok(adapter)
 }
 pub(super) fn validate_runtime(settings: &Settings) -> Result<()> {

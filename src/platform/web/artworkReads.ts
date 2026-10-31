@@ -1,9 +1,9 @@
 import { kvInit } from '../../composables/useKVStore.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
 import { searchArtworkRecords } from '../../application/artwork/searchIndex.ts'
-import { artworkTimestamp, parseArtworkRecords } from '../../types/artwork.ts'
+import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'
 import type { ArtworkProjectRecord } from '../../application/artwork/artworkRepository.ts'
-import { type ArtworkKvAdapter, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, record } from './artworkStorage.ts'
+import { type ArtworkKvAdapter, ARTWORK_HISTORY_KEY, ARTWORK_PROJECTS_KEY, comparableId, record, recordId } from './artworkStorage.ts'
 
 function parseProjects(value: unknown): ArtworkProjectRecord[] {
   return Array.isArray(value) ? value.filter((item): item is ArtworkProjectRecord => {
@@ -29,10 +29,11 @@ export function createArtworkReads(kv: ArtworkKvAdapter,
 
   async function readArtwork(id: string | number, signal?: AbortSignal) {
     signal?.throwIfAborted()
-    if (!parseArtworkRecords([{ id }]).length) throw new Error('作品编号无效')
+    const key = comparableId(id)
+    if (key === null) throw new Error('作品编号无效')
     const raw = await kv.get(ARTWORK_HISTORY_KEY)
     signal?.throwIfAborted()
-    const found = parseArtworkRecords(raw).find(item => String(item.id).trim() === String(id).trim())
+    const found = Array.isArray(raw) ? raw.find((item): item is ArtworkRecord => recordId(item) === key) : undefined
     return found ? structuredClone(found) : null
   }
 
@@ -83,7 +84,23 @@ export function createArtworkReads(kv: ArtworkKvAdapter,
 
   async function readRecentHistory(signal?: AbortSignal, limit = 3) {
     if (!Number.isSafeInteger(limit) || limit < 1 || limit > 200) throw new Error('最近作品数量无效')
-    const recent = (raw: unknown) => structuredClone(parseArtworkRecords(raw).sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, limit))
+    const recent = (raw: unknown) => {
+      // Keep only the requested newest records; timestamps are parsed once.
+      const selected: Array<{ item: ArtworkRecord; time: number }> = []
+      for (const item of parseArtworkRecords(raw)) {
+        const time = artworkTimestamp(item)
+        if (selected.length === limit && time <= selected[selected.length - 1].time) continue
+        let low = 0, high = selected.length
+        while (low < high) {
+          const middle = (low + high) >>> 1
+          if (selected[middle].time >= time) low = middle + 1
+          else high = middle
+        }
+        selected.splice(low, 0, { item, time })
+        if (selected.length > limit) selected.pop()
+      }
+      return structuredClone(selected.map(({ item }) => item))
+    }
     signal?.throwIfAborted()
     return withMutation(async () => {
       signal?.throwIfAborted()

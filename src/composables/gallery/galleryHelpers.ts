@@ -126,7 +126,6 @@ export function artworkFacts(item: ArtworkRecord | null | undefined, loras: Lora
       ? item.provider === 'local' ? '漫画化 · 导入线稿' : '漫画化 · 原生任务线稿'
       : 'MangaScreen · 原生漫画流程' },
     { label: '尺寸', value: item.size || '' },
-    { label: '验证状态', value: '待主力机验证' },
   ];
   return [
     { label: '尺寸', value: item.size || '' },

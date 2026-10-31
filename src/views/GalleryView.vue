@@ -1,6 +1,6 @@
 <template>
   <article class="gallery-shell gallery-page" ref="shellEl" :style="{ '--gallery-dock-height': `${selectionDockHeight}px` }">
-    <header class="gallery-intro">
+    <header class="gallery-intro" data-route-arrive>
       <div class="gallery-heading-copy">
         <p class="gallery-kicker"><ArchiveIcon name="image" />COLLECTION / 我的画集</p>
         <h1 class="gallery-title">我的作品</h1>

@@ -16,6 +16,8 @@ pub(crate) struct Settings {
     pub acceleration: String,
     #[serde(default = "default_memory_policy")]
     pub memory_policy: String,
+    #[serde(default = "default_adapter_memory_policy")]
+    pub adapter_memory_policy: String,
     pub python: PathBuf,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub adapter_python: Option<PathBuf>,
@@ -30,6 +32,9 @@ fn default_acceleration() -> String {
 }
 fn default_memory_policy() -> String {
     "resident".into()
+}
+fn default_adapter_memory_policy() -> String {
+    "offload".into()
 }
 impl Settings {
     /// Installation receipts are hints only. Discover bounded local resources,
@@ -61,6 +66,7 @@ impl Settings {
                 video_engine: Some("comfy".into()),
                 acceleration: default_acceleration(),
                 memory_policy: default_memory_policy(),
+                adapter_memory_policy: default_adapter_memory_policy(),
                 python,
                 adapter_python: installed_adapter_runtime(&root, &worker)
                     .and_then(|(_, value)| value["python"].as_str().map(PathBuf::from)),
@@ -86,7 +92,9 @@ impl Settings {
         ) {
             return Err(ApiError::invalid("独立推理加速模式无效"));
         }
-        if !matches!(self.memory_policy.as_str(), "resident" | "offload") {
+        if !matches!(self.memory_policy.as_str(), "resident" | "offload")
+            || !matches!(self.adapter_memory_policy.as_str(), "resident" | "offload")
+        {
             return Err(ApiError::invalid("独立推理显存策略无效"));
         }
         for path in [
@@ -227,6 +235,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
         ("engine", "HUIYU_IMAGE_ENGINE"),
         ("acceleration", "HUIYU_INFERENCE_ACCELERATION"),
         ("memoryPolicy", "HUIYU_INFERENCE_MEMORY"),
+        ("adapterMemoryPolicy", "HUIYU_NATIVE_ADAPTER_MEMORY"),
         ("python", "HUIYU_INFERENCE_PYTHON"),
         ("adapterPython", "HUIYU_NATIVE_ADAPTER_PYTHON"),
         ("worker", "HUIYU_INFERENCE_WORKER"),

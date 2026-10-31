@@ -5,7 +5,6 @@ import { downloadBlob } from '@/utils/downloadBlob'
 import type { ArtworkRecord } from '@/types/artwork'
 /** Imported previews have no task; retain their upload identity on save retries. */
 export function mangaLineResult(blob: Blob, details: {id:string; width:number; height:number; metadata:Record<string, unknown>; name?:string}, checkInput: () => void, source?: ArtworkRecord) {
-  const repository = artworkRepository, authority = imageMediaSession()
   const record: ArtworkRecord = {
     id: `manga-lineart-${details.id}`, timestamp: Date.now(), engine: 'manga-screen', provider: 'local', artifactKind: 'lineart',
     sceneTitle: `${source?.sceneTitle || details.name || '图片'} · 线稿`, parent_id: source?.id ?? null,
@@ -13,8 +12,13 @@ export function mangaLineResult(blob: Blob, details: {id:string; width:number; h
     outfitId: source?.outfitId, blueprintId: source?.blueprintId, project: source?.project ?? '',
     width: details.width, height: details.height,
     size: `${details.width} × ${details.height}`, image_url: '', favorite: false, version: 1,
-    prompt: '', manual_tags: ['线稿'], postprocess: structuredClone(details.metadata), validation: '待主力机验证',
+    prompt: '', manual_tags: ['线稿'], postprocess: structuredClone(details.metadata),
   }
+  return blobArtworkResult(blob, record, checkInput)
+}
+/** The same repository staging and retry ownership serves imported and generated images. */
+export function blobArtworkResult(blob: Blob, record: ArtworkRecord, checkInput: () => void) {
+  const repository = artworkRepository, authority = imageMediaSession()
   let imageId = '', saving: Promise<ArtworkRecord> | null = null
   const check = () => {
     checkInput()
@@ -28,7 +32,9 @@ export function mangaLineResult(blob: Blob, details: {id:string; width:number; h
       const previous = await repository.readArtwork(record.id)
       check()
       if (previous) {
-        if (!imageId || previous.image_id !== imageId) throw new Error('作品编号已占用，请核对作品册')
+        const identity = (record.postprocess as Record<string, unknown> | undefined)?.directJobId
+        const previousIdentity = (previous.postprocess as Record<string, unknown> | undefined)?.directJobId
+        if ((!imageId || previous.image_id !== imageId) && !(identity && identity === previousIdentity)) throw new Error('作品编号已占用，请核对作品册')
         return structuredClone(previous)
       }
       if (!imageId) { imageId = await repository.putImage(blob); check() }

@@ -17,7 +17,7 @@
         <ArchiveIcon name="health" /> {{ backupReminder }}
       </div>
       <div class="utility-label tw:text-muted">本地数据</div>
-      <p class="backup-scope">{{ backup.desktopActive.value ? '完整备份包包含工作区记录和原始媒体，可保存到指定位置并在其他电脑恢复。本机快照另提供恢复凭证。' : '备份 JSON 包含此浏览器的作品记录、图片和设置；下载后可通过下方「从备份恢复」导入。' }}</p>
+      <p class="backup-scope">{{ backup.desktopActive.value ? '完整备份包含工作区记录与原始媒体，可迁移至其他设备恢复。' : '备份 JSON 包含作品记录、图片与配置，可通过「从备份恢复」导入。' }}</p>
       <div v-if="backup.desktopActive.value && backup.portable.available" class="utility-actions tw:grid tw:gap-s-1">
         <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('export')"><ArchiveIcon name="download" />保存完整备份包…</button>
         <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('import')"><ArchiveIcon name="upload" />从完整备份包恢复…</button>
@@ -35,7 +35,7 @@
           {{ backup.workspaceProgress.value || `正在备份图片：${backup.exportProgress.value.completed} / ${backup.exportProgress.value.total}` }}
         </div>
         <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消当前备份操作</button>
-        <StudioTooltip anchor :content="backup.desktopActive.value ? backup.nativeImageExport ? '选择目录，将作品原图保存到新的独立文件夹' : '将当前作品记录引用的本机原图逐张下载为独立图片文件' : '逐张下载此浏览器保存的全部原图，包含未入册、回收站及旧库图片，不只限于当前作品册'">
+        <StudioTooltip anchor :content="backup.desktopActive.value ? backup.nativeImageExport ? '选择目录，将作品原图保存到新的独立文件夹' : '将当前作品记录引用的本机原图逐张下载为独立图片文件' : '逐张下载已保存的全部原图（包含未入册与回收站图片）'">
           <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()">
             <ArchiveIcon name="image" /> 导出作品图片
           </button>
@@ -49,7 +49,7 @@
         </button>
       </div>
       <div class="utility-divider tw:h-[1px]"></div>
-      <p class="backup-scope">只需要原图可选「导出作品图片」。角色、服装和场景等内容资料请在<RouterLink to="/scene-manager">内容维护</RouterLink>中单独导出。</p>
+      <p class="backup-scope">仅导出原图请选「导出作品图片」；角色、服装与场景请在<RouterLink to="/scene-manager">内容维护</RouterLink>单独导出。</p>
       <div v-if="getBlueprint" class="utility-label tw:text-muted">创作蓝图</div>
       <div v-if="getBlueprint" class="utility-actions tw:grid tw:gap-s-1">
         <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
@@ -67,7 +67,7 @@
       <div class="utility-label tw:text-muted">存储维护</div>
       <div class="utility-actions tw:grid tw:gap-s-1">
         <template v-if="migration.recoveryPending.value">
-          <p class="utility-note wide" role="status">迁移激活结果尚未确认，原资料保持只读。核对只读取本机身份，不会重新迁移。若仍无匹配的激活记录，请保留独立备份并联系维护人员，不要删除资料或反复提交迁移。</p>
+          <p class="utility-note wide" role="status">迁移激活结果未确认，原资料保持只读。核对只读取本机身份；若无匹配记录，请保留备份并联系维护人员。</p>
           <button class="btn btn-ghost wide" type="button" data-migration-control :disabled="migration.busy.value" @click="migration.reconcile()">只读核对激活结果</button>
         </template>
         <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate()"><ArchiveIcon name="upload" /> 迁移至本机工作区</button>

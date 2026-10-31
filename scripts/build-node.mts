@@ -119,12 +119,18 @@ function inputsCurrent(queries: FilesystemQuery[]): boolean {
 
 function recordingHost(options: ts.CompilerOptions, queries: Map<string, FilesystemQuery>): ts.CompilerHost {
   const host = ts.createCompilerHost(options);
+  // Programs for classic browser scripts keep separate scopes, but read the
+  // same libraries. Reuse filesystem results only within this synchronous build.
+  const values = new Map<string, unknown>();
   for (const method of filesystemMethods) {
     const operation = host[method];
     if (!operation) continue;
     Object.assign(host, { [method]: (...args: unknown[]) => {
+      const key = JSON.stringify([method, args]);
+      if (values.has(key)) return values.get(key);
       const value: unknown = Reflect.apply(operation, host, args);
-      queries.set(JSON.stringify([method, args]), { method, args, value: filesystemValue(method, value) });
+      values.set(key, value);
+      queries.set(key, { method, args, value: filesystemValue(method, value) });
       return value;
     } });
   }
@@ -185,7 +191,8 @@ function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] 
     const compilerOptions = { ...parsed.options, noEmit: isolatedEmit,
       ...(isolatedEmit ? { isolatedModules: true, allowImportingTsExtensions: true } : {}),
       noEmitOnError: true, sourceMap: false, declarationMap: false, incremental: false };
-    const programs = groups.map(files => ts.createProgram(files, compilerOptions, recordingHost(compilerOptions, queries)));
+    const host = recordingHost(compilerOptions, queries);
+    const programs = groups.map(files => ts.createProgram(files, compilerOptions, host));
     const contents = new Map<string, string>();
     const ownedSources = new Set(parsed.fileNames.map(file => path.resolve(file)));
     for (const program of programs) {
@@ -194,18 +201,17 @@ function buildProjects(root: string, options: BuildOptions = {}): BuildResult[] 
       if (options.check) continue;
       if (isolatedEmit) {
         // Full strict checking above includes native TypeScript imports from maintenance helpers.
-        // Isolated modules can then be transformed without rewriting those working paths.
+        // Transform those checked sources without repeating per-file diagnostics
+        // or rewriting their working import paths.
         for (const sourceFile of parsed.fileNames.filter(file => !file.endsWith('.d.ts'))) {
           const source = program.getSourceFile(sourceFile);
           if (!source) throw new Error(`Missing checked source: ${sourceFile}`);
           const result = ts.transpileModule(source.text, {
             fileName: sourceFile,
-            reportDiagnostics: true,
             compilerOptions: { ...parsed.options, noEmit: false, noEmitOnError: false,
               isolatedModules: true, allowImportingTsExtensions: false, declaration: false,
               declarationMap: false, sourceMap: false, incremental: false },
           });
-          if (result.diagnostics?.length) throw new Error(formatDiagnostics(result.diagnostics, root));
           const relative = relativeInside(root, outputForSource(sourceFile));
           if (!ownedOutput(project, relative)) throw new Error(`Unexpected ${project} output: ${relative}`);
           contents.set(relative, result.outputText);

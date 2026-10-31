@@ -2,7 +2,7 @@ use super::*;
 use crate::generation::native::Settings;
 use serde::Deserialize;
 
-const SAVED_FIELDS: [&str; 7] = [
+const SAVED_FIELDS: [&str; 8] = [
     "python",
     "adapterPython",
     "worker",
@@ -10,6 +10,7 @@ const SAVED_FIELDS: [&str; 7] = [
     "lorasRoot",
     "acceleration",
     "memoryPolicy",
+    "adapterMemoryPolicy",
 ];
 
 impl ControlService {

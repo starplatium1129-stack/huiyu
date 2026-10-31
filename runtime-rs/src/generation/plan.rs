@@ -46,6 +46,7 @@ impl Execution {
             Self::Native(plan) => match plan.input["family"].as_str() {
                 Some("krea2") => "/api/creative",
                 Some("qwen-image") => "/api/qwen",
+                Some("moss-image") => "/api/moss",
                 Some("manga-screen") => "/api/manga",
                 Some("wan2.2") => "/api/video",
                 _ => "/api/anima",

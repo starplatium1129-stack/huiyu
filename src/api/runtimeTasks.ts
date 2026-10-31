@@ -69,14 +69,16 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
   }
 }
 /** A bounded history page is separate from the active-task subscription and its delta cursor. */
-export async function readRuntimeTaskPage(scope: TaskListScope, options: { before?: number; through?: number; limit?: number; signal?: AbortSignal } = {}): Promise<TaskPage> {
+export async function readRuntimeTaskPage(scope: TaskListScope, options: { after?: number; before?: number; through?: number; limit?: number; signal?: AbortSignal } = {}): Promise<TaskPage> {
   const params = new URLSearchParams({ scope, summary: 'true', limit: String(options.limit ?? 30) })
   if (options.before !== undefined) params.set('before', String(options.before))
+  if (options.after !== undefined) params.set('afterRevision', String(options.after))
   if (options.through !== undefined) params.set('throughRevision', String(options.through))
   const page = await request<TaskPage>('?' + params, 'GET', undefined, options.signal)
   if (!Array.isArray(page.items) || !Number.isSafeInteger(page.throughRevision) || page.throughRevision < 0
+    || (options.after !== undefined && page.throughRevision < options.after)
     || (options.through !== undefined && page.throughRevision !== options.through)
-    || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= 0 || (options.before !== undefined && page.nextCursor >= options.before)))) throw new Error('任务分页响应无效')
+    || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= (options.after ?? 0) || (options.before !== undefined && page.nextCursor >= options.before)))) throw new Error('任务分页响应无效')
   if (page.items.some(task => task.runtimeEpoch !== epoch())) throw new Error('运行时已更换，请重新读取任务')
   return { ...page, items: page.items.map(summarizeTask) }
 }

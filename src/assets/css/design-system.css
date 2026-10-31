@@ -1243,31 +1243,7 @@ tr:hover td { background: var(--bg-hover); }
 /* ── 全局质感：字体渲染 / 选区 / 滚动条 / 数字对齐 / 按压 / 图片入场 ── */
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
 ::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff8f4; }
-/* ── 滚动条 ──
-   标准属性打底（Chrome 121+ / Firefox / Safari 18.2+，含 overlay 滚动条模式）：
-   新版浏览器默认 overlay scrollbars，::-webkit-scrollbar 会被忽略，
-   必须靠 scrollbar-color 才能让滚动条脱离原生灰。
-   经典非 overlay 模式下由下面的 ::-webkit-scrollbar 渐变增强。 */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: color-mix(in srgb, var(--accent) 56%, var(--archive-blue)) transparent;
-}
-::-webkit-scrollbar { @apply tw:w-[8px] tw:h-[8px]; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 48%, transparent), color-mix(in srgb, var(--accent) 44%, transparent));
-    border: 2px solid transparent;
-    background-clip: padding-box;
-    @apply tw:rounded-pill;
-  }
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, color-mix(in srgb, var(--archive-blue) 75%, transparent), color-mix(in srgb, var(--accent) 70%, transparent));
-  background-clip: padding-box;
-}
-::-webkit-scrollbar-corner { background: transparent; }
-/* textarea 的原生灰色拖拽把手无法主题化，隐藏后拖拽区域仍在（光标会变 resize） */
-::-webkit-resizer { background: transparent; }
-textarea { scrollbar-width: thin; }
+/* App scrollbar styling lives in studio-scrollbars.css. */
 summary {
   @apply tw:cursor-pointer;
   list-style: none;

@@ -81,19 +81,7 @@ $STALE_ASSETS = @(
   'data\scenes\nene-after-story.json', 'data\scenes\nene-after-story.json.br', 'data\scenes\nene-after-story.json.gz',
   'data\scenes\natsume-core.json', 'data\scenes\natsume-core.json.br', 'data\scenes\natsume-core.json.gz'
 )
-function Invoke-DesktopNpm {
-  param([string[]]$Arguments)
-  # Windows PowerShell turns native stderr into ErrorRecord objects. Stream it
-  # as progress text and judge success only by the native process exit code.
-  $previousPreference = $ErrorActionPreference
-  $npmCommand = Get-Command npm.cmd -CommandType Application -ErrorAction Stop
-  try {
-    $ErrorActionPreference = 'Continue'
-    & $npmCommand.Source @Arguments 2>&1 | ForEach-Object { Write-Host $_.ToString() }
-    $buildExitCode = $LASTEXITCODE
-  } finally { $ErrorActionPreference = $previousPreference }
-  if ($buildExitCode -ne 0) { throw "桌面构建/封装失败（退出码 $buildExitCode）；未关闭应用。" }
-}
+. (Join-Path $root 'scripts\lib\desktop-deploy-output.ps1')
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isElevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 function Start-DesktopClientAndWait {
@@ -196,6 +184,7 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
     Write-Host '[desktop:auto] 选择：发行完整包安装/修复' -ForegroundColor Cyan
     Write-DeploymentLog '[desktop:auto] 选择：发行完整包安装/修复'
   } else {
+    Write-Host '[desktop:stage] 核对源码、构建和已安装文件 ...' -ForegroundColor Cyan
     $planJson = & node (Join-Path $root 'scripts\lib\desktop-build-binding.js') --deployment-plan $root $installDir 1 2>&1
     if ($LASTEXITCODE -ne 0) { throw "部署检测失败：$($planJson -join ' ')" }
     $plan = ($planJson | Out-String) | ConvertFrom-Json
@@ -264,8 +253,8 @@ function Assert-FixedInstaller {
   param([switch]$Installed)
   $bindingArgs = @((Join-Path $root 'scripts\lib\desktop-installer-binding.js'), 'verify', $InstallerPath, $InstallerManifestSha256)
   if ($Installed) { $bindingArgs += $installDir }
-  & node @bindingArgs
-  if ($LASTEXITCODE -ne 0) { throw 'DESKTOP_INSTALLER_BINDING: 固定安装包、校验清单或已安装文件不匹配。' }
+  $verification = & node @bindingArgs 2>&1
+  if ($LASTEXITCODE -ne 0) { throw "DESKTOP_INSTALLER_BINDING: 固定安装包、校验清单或已安装文件不匹配。$($verification -join ' ')" }
 }
 function Freeze-FixedInstaller {
   param([string]$Candidate)
@@ -344,7 +333,11 @@ if (-not $isElevated) {
         $logStream = [IO.File]::Open($logPath, [IO.FileMode]::Open, [IO.FileAccess]::Read, [IO.FileShare]::ReadWrite)
         $logReader = New-Object IO.StreamReader($logStream, [Text.Encoding]::UTF8, $true)
       }
-      if ($logReader) { $chunk = $logReader.ReadToEnd(); if ($chunk) { Write-Host -NoNewline $chunk } }
+      if ($logReader) {
+        while ($null -ne ($line = $logReader.ReadLine())) {
+          if ($line -match '^\[desktop:|^\[[1-6]/6\]|^DESKTOP_') { Write-Host $line }
+        }
+      }
     } while (-not $finished)
     $deploymentExitCode = $elevatedProcess.ExitCode
     if ($null -eq $deploymentExitCode) { throw 'DESKTOP_DEPLOY_EXITCODE: 无法读取提权部署进程的退出码。' }
@@ -515,10 +508,13 @@ if (-not $StartupRepair) {
   Write-DesktopDuration '内容快照导入与核对'
 }
 Write-Host '[5/6] Rust EXE、宿主和两份 native DLL 与候选哈希一致；不冒充模型验收' -ForegroundColor DarkGray
-$webviewBase = Join-Path $env:LOCALAPPDATA 'com.aics.studio\EBWebView\Default'
-foreach ($name in @('Cache','Code Cache','GPUCache')) {
-  $target = Resolve-DesktopChildPath -Root $webviewBase -Relative $name
-  if (Test-Path -LiteralPath $target) { Remove-Item -LiteralPath $target -Recurse -Force -ErrorAction SilentlyContinue }
+if ($StartupRepair) {
+  $webviewBase = Join-Path $env:LOCALAPPDATA 'com.aics.studio\EBWebView\Default'
+  foreach ($name in @('Cache','Code Cache','GPUCache')) {
+    $target = Resolve-DesktopChildPath -Root $webviewBase -Relative $name
+    if (Test-Path -LiteralPath $target) { Remove-Item -LiteralPath $target -Recurse -Force -ErrorAction SilentlyContinue }
+  }
+  Write-Host '[desktop:cache] 已执行启动修复缓存清理。' -ForegroundColor DarkGray
 }
 if ($NoRestart) {
   Write-Host '[6/6] 按 -NoRestart 保持退出' -ForegroundColor DarkGray
@@ -527,7 +523,7 @@ if ($NoRestart) {
 } else {
   $null = Start-DesktopClientAndWait
 }
-Write-DesktopDuration '缓存与启动确认'
+Write-DesktopDuration '启动确认'
 Write-Host ('[desktop:timing] 部署总耗时: {0:F2}s' -f $deployTimer.Elapsed.TotalSeconds)
 } catch {
   Write-Host "[desktop:failed] $($_.Exception.Message)" -ForegroundColor Red

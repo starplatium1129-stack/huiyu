@@ -84,7 +84,7 @@ pub(super) fn validate(raw: &Value) -> Result<Value> {
     };
     let mut result = json!({"operation":operation,"initImage":image,"penLines":pen,"family":"manga-screen",
         "processorId":"manga-screen","processorRevision":MANIFEST["revision"],"processorVersion":MANIFEST["schemaVersion"],
-        "inferenceEngine":"native","device":"cpu","validation":"待主力机验证"});
+        "inferenceEngine":"native","device":"cpu","validation":MANIFEST["validation"]});
     for (key, choices) in [
         ("penLinesPolarity", ["white-on-black", "black-on-white"]),
         ("penLinesFit", ["stretch", "exact"]),
@@ -203,6 +203,8 @@ fn settings(runtime: &Settings) -> Result<Settings> {
     settings.python = runtime.adapter_python.clone().ok_or_else(|| ApiError::new(503,
         "MANGA_RUNTIME_MISSING", "设置 HUIYU_NATIVE_ADAPTER_PYTHON，并在其独立环境准备 requirements-manga.txt；不修改 Anima 环境"))?;
     settings.worker = runtime.worker.with_file_name("manga_worker.py");
+    settings.acceleration = "native".into();
+    settings.memory_policy = runtime.adapter_memory_policy.clone();
     Ok(settings)
 }
 pub(super) async fn plan(
@@ -257,7 +259,7 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
     Ok(
         json!({"provider":"native","engine":"native","processor":*MANIFEST,"online":issue.is_none(),
         "available":issue.is_none(),"unavailableReason":issue,"readiness":"files-only",
-        "validation":"待主力机验证","generationVerified":false,"performanceVerified":false,
+        "validation":MANIFEST["validation"],"generationVerified":false,"performanceVerified":false,
         "pending":backend.pending(),"maxPending":4,"defaults":{"operation":"lite"},"capabilities":capabilities}),
     )
 }

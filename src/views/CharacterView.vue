@@ -1,6 +1,6 @@
 <template>
   <article ref="archiveRoot" class="page character-page library-page character-editorial" tabindex="-1" :aria-busy="loading" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
+    <header class="library-header" data-route-arrive><div><div class="page-kicker">HUIYU / CHARACTER ARCHIVE</div><h1>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -195,7 +195,6 @@ import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import {
   parseCharacterProfiles, popularPortraitSrc, isPopularPortraitPending,
   parseCharacterScenes,
-  type CharacterProfile,
   type CharacterScene,
 } from '@/utils/characterProfiles'
 

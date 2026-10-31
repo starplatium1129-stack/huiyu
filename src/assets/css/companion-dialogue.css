@@ -67,7 +67,7 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-window:not([data-desktop]) { max-height:100dvh; }
 .companion-dialogue-history { position:relative; display:flex; flex-direction:column; flex:1 1 auto; min-height:0; background:transparent; }
 /* One scroll area for all bubbles, images and streaming replies. */
-.companion-dialogue-history-list { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; gap:12px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:var(--border-strong) transparent; padding:4px 5px 8px 0; }
+.companion-dialogue-history-list { display:flex; flex-direction:column; flex:1 1 auto; min-height:0; gap:12px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scrollbar-color:var(--scrollbar-colors); padding:4px 5px 8px 0; }
 .companion-dialogue-message { display:flex; flex-shrink:0; align-items:flex-end; gap:8px; min-width:0; }
 .companion-dialogue-message[data-role='user'] { justify-content:flex-end; padding-left:40px; }
 .companion-dialogue-avatar { display:grid; place-items:center; flex:0 0 32px; width:32px; height:32px; overflow:hidden; border:1px solid var(--border-soft); border-radius:50%; background:var(--dialogue-control-surface); color:var(--text-primary); font-size:var(--fs-label-xs); }

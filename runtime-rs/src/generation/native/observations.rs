@@ -1,14 +1,17 @@
 use super::*;
 
 fn memory_observation(source: &Value) -> Option<Value> {
-    if source["strategy"] != "budgeted-offload-v1" {
+    if !matches!(
+        source["strategy"].as_str(),
+        Some("budgeted-offload-v1" | "mapped-retained-offload-v1")
+    ) {
         return None;
     }
     let components = source["components"].as_array()?;
     if components.len() > 16 {
         return None;
     }
-    let mut result = json!({"strategy":"budgeted-offload-v1","components":[]});
+    let mut result = json!({"strategy":source["strategy"],"components":[]});
     for key in ["freeBytes", "activationReserveBytes", "weightBudgetBytes"] {
         if let Some(value) = source.get(key) {
             result[key] = json!(value.as_u64().filter(|n| *n <= 1_u64 << 40)?);
@@ -42,6 +45,9 @@ fn memory_observation(source: &Value) -> Option<Value> {
             .as_u64()
             .filter(|n| *n <= 1_u64 << 40)?;
         let mut row = json!({"name":name,"mode":mode,"weightBytes":bytes});
+        if let Some(retained) = component.get("retainedWeightBytes") {
+            row["retainedWeightBytes"] = json!(retained.as_u64().filter(|n| *n <= bytes)?);
+        }
         if mode == "block_level" {
             row["blocksPerGroup"] = json!(
                 component["blocksPerGroup"]
@@ -98,13 +104,13 @@ pub(super) fn capture(value: &Value) -> Value {
         }
         let line = &value["lineart"];
         if line["model"] == "manga-line-extraction"
-            && line["device"] == "cpu"
+            && matches!(line["device"].as_str(), Some("cpu" | "cuda"))
             && line["sourceRevision"] == "6ec136d5332180b65476e62c2558f2873d5d936a"
             && line["modelSha256"]
                 .as_str()
                 .is_some_and(|s| s.len() == 64 && s.bytes().all(|b| b.is_ascii_hexdigit()))
         {
-            result["lineart"] = json!({"model":"manga-line-extraction","device":"cpu",
+            result["lineart"] = json!({"model":"manga-line-extraction","device":line["device"],
                 "sourceRevision":line["sourceRevision"],"modelSha256":line["modelSha256"],"validation":"待主力机验证"});
         }
         return result;
@@ -121,6 +127,21 @@ pub(super) fn capture(value: &Value) -> Value {
         {
             let mut result = json!({"adapter":id,"modelSha256":value["modelSha256"],"memoryPolicy":value["memoryPolicy"],
                 "weightReuse":value["weightReuse"],"validation":"待主力机验证","performanceVerified":false});
+            if matches!(
+                value["modelIdentityScope"].as_str(),
+                Some("prepared-download-record" | "full-byte-chunk-sha256")
+            ) {
+                result["modelIdentityScope"] = value["modelIdentityScope"].clone();
+            }
+            if matches!(value["prefixCacheDevice"].as_str(), Some("cpu" | "cuda")) {
+                result["prefixCacheDevice"] = value["prefixCacheDevice"].clone();
+            }
+            if matches!(
+                value["attentionBackend"].as_str(),
+                Some("sageattention-2.2" | "pytorch-sdpa" | "default")
+            ) {
+                result["attentionBackend"] = value["attentionBackend"].clone();
+            }
             if id.starts_with("krea2-")
                 && value["styleLoraSha256"]
                     .as_str()

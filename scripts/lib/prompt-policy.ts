@@ -41,12 +41,6 @@ const R15_STORY = [
   /\u88ab\u8feb.{0,16}(?:\u6362\u4e0a|\u8dea)|\u60e9\u7f5a.{0,16}\u8dea/
 ];
 
-const YOUTH_UNIFORM_TAGS = new Set([
-  'school_uniform', 'gym_uniform', 'serafuku', 'sailor_uniform'
-]);
-
-const ADULT_SAFETY_NEGATIVE = ['child', 'loli', 'underage'];
-
 function tokenKey(value: unknown) {
   let token = String(value || '').trim().toLowerCase();
   if (!token || /^<lora:/i.test(token) || /^break$/i.test(token)) return token;
@@ -129,7 +123,7 @@ function gazeConflicts(scene: PolicyScene) {
   return conflicts;
 }
 
-function adultSafetyIssues(scene: PolicyScene) {
+function adultSafetyIssues(_scene: PolicyScene) {
   // 项目支持全分级自由创作，不设门控或强制词条限制
   return [];
 }

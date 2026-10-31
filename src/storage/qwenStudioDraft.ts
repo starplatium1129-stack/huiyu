@@ -45,7 +45,7 @@ function read(selectedKey: string, models: readonly { value: string }[]): Stored
   const value: unknown = JSON.parse(raw)
   if (!object(value) || value.version !== 1 || !object(value.owner) || !sameTempResultOwner(value.owner as TempResultOwner)
     || !validForm(value.form, models)
-    || value.resultTaskId !== null && (typeof value.resultTaskId !== 'string' || !/^[0-9a-f]{8}-[0-9a-f-]{27}$/i.test(value.resultTaskId))
+    || value.resultTaskId !== null && (typeof value.resultTaskId !== 'string' || !/^(?:[0-9a-f]{32}|[0-9a-f]{8}-[0-9a-f-]{27})$/i.test(value.resultTaskId))
     || typeof value.randomSeed !== 'boolean' || typeof value.resize !== 'boolean' || value.parentId !== null && !qwenParentId(value.parentId)
     || value.source !== null && !imageRef(value.source) || !Array.isArray(value.references) || value.references.length > 3
     || !value.references.every(imageRef) || value.references.length > 0 && !value.source) throw new Error('Qwen 草稿来源或内容无法核对，原草稿已保留')

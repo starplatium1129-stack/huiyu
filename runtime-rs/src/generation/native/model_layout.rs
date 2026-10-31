@@ -140,7 +140,19 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
         }
         match name {
             "processor" => {
-                safe_config(&json(&folder.join("preprocessor_config.json"))?, name)?;
+                let combined = folder.join("processor_config.json");
+                let config = if combined.exists() {
+                    let value = json(&combined)?;
+                    safe_config(&value, name)?;
+                    match value.get("image_processor") {
+                        Some(image) if image.is_object() => image.clone(),
+                        Some(_) => return Err("无效的嵌套图像处理器配置".into()),
+                        None => json(&folder.join("preprocessor_config.json"))?,
+                    }
+                } else {
+                    json(&folder.join("preprocessor_config.json"))?
+                };
+                safe_config(&config, name)?;
                 safe_config(&json(&folder.join("tokenizer_config.json"))?, name)?;
                 if !file(&root, &folder.join("tokenizer.json"))
                     || !file(

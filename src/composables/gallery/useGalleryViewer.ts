@@ -9,7 +9,6 @@ import { artworkIndexById, safeImageUrl } from './galleryHelpers'
 export function useGalleryViewer(options: {
   history: Ref<ArtworkRecord[]>
   visible: Ref<ArtworkRecord[]>
-  previewSource?: (item: ArtworkRecord) => string
   hasMore?: Readonly<Ref<boolean>>
   loadMore?: () => Promise<boolean>
   resetControls: () => void
@@ -20,6 +19,7 @@ export function useGalleryViewer(options: {
   const viewerUrl = original.url
   const viewerLoadFailed = computed(() => Boolean(original.error.value))
   const neighborPreviews = shallowRef<Record<string, string>>(Object.create(null))
+  const previewMedia = new Map<string, Pick<ArtworkRecord, 'id' | 'image_id' | 'image_url' | 'image_data'>>()
   const details = shallowRef<ArtworkRecord | null>(null)
   const current = computed(() => {
     const index = artworkIndexById(options.history.value, viewerItemId.value)
@@ -35,10 +35,17 @@ export function useGalleryViewer(options: {
     const revision = ++previewRevision
     const repository = artworkRepository, session = original.session.value
     const center = artworkIndexById(options.visible.value, viewerItemId.value)
-    neighborPreviews.value = Object.create(null)
-    if (viewerIndex.value < 0 || center < 0) return
-    for (const source of options.visible.value.slice(Math.max(0, center - 2), center + 3)) {
-      if (options.previewSource?.(source)) continue
+    const neighbors = viewerIndex.value < 0 || center < 0 ? []
+      : options.visible.value.slice(Math.max(0, center - 2), center + 3)
+    const retained: Record<string, string> = Object.create(null)
+    for (const source of neighbors) {
+      const id = String(source.id)
+      if (sameArtworkMedia(previewMedia.get(id), source) && neighborPreviews.value[id]) retained[id] = neighborPreviews.value[id]
+    }
+    for (const id of previewMedia.keys()) if (!Object.hasOwn(retained, id)) previewMedia.delete(id)
+    neighborPreviews.value = retained
+    for (const source of neighbors) {
+      if (retained[source.id]) continue
       const item = { ...source }
       void (async () => {
         let url = ''
@@ -49,8 +56,10 @@ export function useGalleryViewer(options: {
         if (disposed || viewerIndex.value < 0 || revision !== previewRevision || repository !== artworkRepository
           || session !== original.session.value || !url) return
         const live = options.visible.value.find(candidate => String(candidate.id) === String(item.id))
-        if (sameArtworkMedia(live, item))
+        if (sameArtworkMedia(live, item)) {
+          previewMedia.set(String(item.id), { id: item.id, image_id: item.image_id, image_url: item.image_url, image_data: item.image_data })
           neighborPreviews.value = Object.assign(Object.create(null), neighborPreviews.value, { [item.id]: url })
+        }
       })()
     }
   }
@@ -116,6 +125,7 @@ export function useGalleryViewer(options: {
     if (viewerIndex.value >= 0) return
     viewerItemId.value = null
     neighborPreviews.value = Object.create(null)
+    previewMedia.clear()
     releaseImage()
     options.resetControls()
   }

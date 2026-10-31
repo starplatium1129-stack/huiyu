@@ -2,8 +2,8 @@
   <Teleport to="body">
     <dialog ref="dialog" class="manga-dialog" aria-labelledby="manga-title" aria-describedby="manga-description" @cancel.prevent="requestClose" @keydown.stop>
       <header class="manga-heading">
-        <div><h2 id="manga-title"><ArchiveIcon name="book" />漫画化 <span class="manga-validation">待主力机验证</span></h2>
-          <p id="manga-description">把已有图片处理成黑白网点漫画，或单独提取线稿，另存为新作品。</p></div>
+        <div><h2 id="manga-title"><ArchiveIcon name="book" />漫画化</h2>
+          <p id="manga-description">黑白漫画与线稿</p></div>
         <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭漫画化窗口" @click="requestClose"><ArchiveIcon name="close" /></button>
       </header>
       <div class="manga-body">
@@ -42,31 +42,29 @@
             </div>
           </div>
           <div class="manga-caption">
-            <span v-if="preview === 'lineart'">{{ lineCaption }} · 黑线白底 · 待主力机验证</span>
+            <span v-if="preview === 'lineart'">{{ lineCaption }} · 黑线白底</span>
             <span v-else-if="source">{{ source.name }} · {{ source.width }} × {{ source.height }}</span>
             <span v-else>单张静态图片 · 文件不超过 16 MB</span>
             <span v-if="preview === 'lineart' && lineSelected === 'output' && lineDirty">这是上一次线稿结果，新任务或漫画参数不会改写这张预览</span>
             <span v-else-if="preview !== 'lineart' && dirty">当前漫画为上一次结果；新参数需重新处理</span>
-            <span v-else-if="!result && preview !== 'lineart'">调好参数后点击「处理为漫画」查看实际结果</span>
           </div>
         </section>
         <aside class="manga-controls" aria-label="漫画处理设置">
           <section class="manga-readiness" :aria-busy="checking">
             <div><strong>{{ checking ? '正在读取服务状态…' : status?.available ? '原生漫画处理' : '漫画服务尚未就绪' }}</strong>
               <button class="btn btn-quiet btn-sm" type="button" :disabled="checking || submitting || pending" @click="refreshStatus">重新检查</button></div>
-            <p>{{ taskIssue || (status?.available ? '文件已就位，依赖与效果仍待主力机验证。' : '需要已配置的原生后端与独立漫画处理环境。') }}</p>
             <details v-if="statusError || status?.unavailableReason"><StudioDisclosureSummary>查看原因</StudioDisclosureSummary><p data-disclosure-content>{{ statusError || status?.unavailableReason }}</p></details>
           </section>
           <div v-if="inputSize?.resized" class="manga-resize">
             <StudioCheckbox :checked="resize" :disabled="locked" label="缩小处理副本" @update:checked="resize = $event">缩小处理副本</StudioCheckbox>
             <p>本次按 {{ inputSize.width }} × {{ inputSize.height }} 处理，以满足约 200 万像素上限。原图保留。</p>
           </div>
-          <MangaModels v-model:redraw="redraw" :external-lines="lineMode === 'external'" :rewrite="rewrite" :status="status" :issue="modelIssue" :disabled="locked" />
+          <MangaModels v-model:redraw="redraw" v-model:random-seed="randomSeed" :external-lines="lineMode === 'external'" :rewrite="rewrite" :status="status" :issue="modelIssue" :disabled="locked" />
           <MangaLineControls v-model:mode="lineMode" v-model:polarity="linePolarity" v-model:stretch="lineStretch" :redraw="redraw" :disabled="locked"
             :status="status" :imported="lineImported" :target-size="inputSize" :mismatch="lineMismatch" :input-ready="lineInputReady" :issue="lineIssue"
             :extraction-issue="extractionIssue" @extract="run('lineart')" @import="importLine" @remove="lines.remove" @preview="showImportedLine" @retry="retryImportedLine" />
           <MangaParameters v-model:operation="operation" :parameters="parameters" :disabled="locked" @reset="resetParameters" />
-          <details class="manga-scope"><StudioDisclosureSummary>当前支持范围</StudioDisclosureSummary><p data-disclosure-content>已接入 Qwen 单图漫画重绘、自动线稿、独立提取、外部线稿、预览、PNG 导出和作品库保存，以及色阶、网点、裁切与纸张，均待主力机验证。漫画附带的线稿保留裁框前尺寸。已接收任务和结果保存在任务中心；重启可找回已保存结果、继续尚未提交的排队任务。已开始的推理不支持断点续算，中断会明确提示。暂不支持多格排版、文字气泡与批处理。</p></details>
+          <details class="manga-scope"><StudioDisclosureSummary>支持功能与说明</StudioDisclosureSummary><p data-disclosure-content>支持单图漫画重绘、自动与外部线稿、色阶网点与导出保存。任务在后台运行，可在任务中心查看；不支持断点续算与多格排版。</p></details>
         </aside>
       </div>
       <footer class="manga-footer">
@@ -74,7 +72,8 @@
           <p v-if="exporting">正在保存图片…</p>
           <p v-else-if="lineLoading">正在读取线稿…</p>
           <p v-else-if="submitting || pending || observing">{{ notice || (submitting ? '正在准备并提交图片…' : job?.progressText || '正在读取任务…') }}<span v-if="progress !== null"> · {{ progress }}%</span></p>
-          <p v-else-if="lineNotice && preview === 'lineart'">{{ lineNotice }}</p><p v-else-if="notice">{{ notice }}</p><p v-else>已接收任务由后台继续处理，关闭窗口后可在任务中心查看</p>
+          <p v-else-if="lineNotice && preview === 'lineart'">{{ lineNotice }}</p><p v-else-if="notice">{{ notice }}</p>
+          <p v-else-if="startIssue && !locked && !statusError && !status?.unavailableReason" id="manga-start-issue">{{ startIssue }}</p>
           <p v-if="error" class="manga-error" role="alert">{{ error }}</p>
           <p v-if="lineError" class="manga-error" role="alert">{{ lineError }}</p>
           <span v-if="job && error" class="manga-job-id">任务 {{ job.id }}</span>
@@ -87,7 +86,7 @@
           <button v-if="pending || submitting || acceptanceUnknown" class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancel">{{ cancelling ? '请求取消…' : '取消处理' }}</button>
           <button v-if="result" class="btn btn-ghost" type="button" :disabled="locked || !resultBlob" @click="exportResult('download')"><ArchiveIcon name="download" />导出漫画 PNG</button>
           <button v-if="result" class="btn btn-ghost" type="button" :disabled="saveLocked || saved" @click="exportResult('save')"><ArchiveIcon name="gallery" />{{ saved ? '已存入我的作品' : '另存到我的作品' }}</button>
-          <button class="btn btn-primary" type="button" :disabled="locked || !source || !status?.available || !!taskIssue || !!modelIssue || !!lineIssue || !!inputSize?.resized && !resize" @click="run('manga')"><ArchiveIcon name="spark" />{{ submitting || pending ? '处理中…' : result ? '重新处理漫画' : '处理为漫画' }}</button>
+          <button class="btn btn-primary" type="button" :disabled="!!startIssue" @click="run('manga')"><ArchiveIcon name="spark" />{{ submitting || pending ? '处理中…' : result ? '重新处理漫画' : '处理为漫画' }}</button>
         </div>
       </footer>
     </dialog>
@@ -119,9 +118,9 @@ const dialog = ref<HTMLDialogElement | null>(null), picker = ref<HTMLInputElemen
 const importButton = ref<HTMLButtonElement | null>(null)
 const fluid = useFluidDialog(dialog)
 const taskCenter = useTaskCenter()
-const { parameters, operation, redraw, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
-  error, notice, loading, submitting, observing, cancelling, exporting, saved, acceptanceUnknown, job, preview, taskIssue,
-  pending, locked, saveLocked, dirty, progress, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
+const { parameters, operation, redraw, randomSeed, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl: sourcePreviewUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
+  error, notice, loading, submitting, observing, cancelling, exporting, saved, acceptanceUnknown, job, preview,
+  pending, locked, saveLocked, dirty, progress, startIssue, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult } = useMangaScreen(() => emit('saved'))
 const {mode:lineMode, polarity:linePolarity, stretch:lineStretch, imported:lineImported, inputReady:lineInputReady,
   selected:lineSelected, previewUrl:linePreviewUrl, previewAvailable:linePreviewAvailable, caption:lineCaption,
   choices:lineChoices, error:lineError, notice:lineNotice, saved:lineSaved, saveDisabled:lineSaveDisabled, expected:lineExpected} = lines

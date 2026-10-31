@@ -1,6 +1,6 @@
 <template>
   <article class="page scene-discovery" @click.capture="storyDialog?.capture($event)">
-    <section class="scene-atlas" :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
+    <section class="scene-atlas" data-route-arrive :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
         <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
       </div>
@@ -142,6 +142,7 @@
     </ArchiveStatePanel>
     <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
+          data-reveal :data-reveal-key="`scene:${s.id}`"
           :thumb-url="thumbUrl(s.id)" :image-url="imageUrl(s.id)" :preview-dimensions="thumbDimensions(s.id)"
           :class="{ 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id" :data-list-key="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
@@ -182,11 +183,9 @@
           </template>
       </SceneCard>
     </div>
-    <div v-show="!loading && !loadError && visible < filtered.length" class="scene-load">
-      <button class="btn btn-ghost" type="button" @click="visible += PAGE_SIZE">
-        加载更多（剩余 {{ filtered.length - visible }}）
-      </button>
-    </div>
+    <p v-if="!loading && !loadError && !samplesPending && paged.length" class="scene-load">
+      {{ visible < filtered.length ? '继续向下浏览，自动加载更多场景' : '已显示全部场景' }}
+    </p>
 
     <SceneStoryDialog ref="storyDialog" v-model="drawerScene" :scenes="filtered" @after-close="finishSceneClose" />
   </article>
@@ -215,21 +214,22 @@ import natsumeAvatar from '@/assets/illustrations/natsume-avatar-256.webp'
 import { SCENE_FILTER_OPTIONS } from '@/composables/scene/useSceneExplorerFilters'
 import { useSceneExplorerWorkspace } from '@/composables/scene/useSceneExplorerWorkspace'
 import { useListTransition } from '@/composables/useListTransition'
+import { useScrollReveal } from '@/composables/useScrollReveal'
 
 const {
   companionId, activeFilters, activeThemeLabel, scenes, manualCompanion, moodRails, applyMoodRail,
-  searchQuery, visible, filtered, tierLabel, filtersOpen, activeFacetCount, fTier, showHidden,
+  searchQuery, visible, filtered, listRoot, tierLabel, filtersOpen, activeFacetCount, fTier, showHidden,
   showPersonalScenes, showRecommendedScenes, usedCount, sortBy, showFavoriteScenes, favoriteCount,
   hiddenCount, showAllScenes, availableCount, THEME_DEFS, activeTheme, themeCount,
   searchIntent, fChar, fSeason, fTime, fSeries, fRating, matureCount, resetFilters,
   loading, loadError, init, paged, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
-  personalReason, drawerScene, finishSceneClose, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav, PAGE_SIZE,
+  personalReason, drawerScene, finishSceneClose, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
 } = useSceneExplorerWorkspace()
 const filtersRevealed = ref(false)
 watch(filtersOpen, open => { if (open) filtersRevealed.value = true }, { flush: 'sync' })
-const listRoot = ref<HTMLElement | null>(null)
 const { thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending } = useShowcaseAssets()
 useListTransition(listRoot, () => paged.value.map(scene => scene.id))
+useScrollReveal()
 const storyDialog = ref<InstanceType<typeof SceneStoryDialog> | null>(null)
 const openedDetails = reactive(new Set<string>())
 function rememberDetails(id: string, event: Event) {

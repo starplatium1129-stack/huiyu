@@ -1,3 +1,4 @@
+mod listener;
 mod model_paths;
 use super::*;
 use std::process::Stdio;
@@ -397,7 +398,13 @@ impl ControlService {
                 process.stop().await?;
             }
         }
-        if self.online(1, &self.runtime_settings()).await {
+        let settings = self.runtime_settings();
+        let host = settings["comfyHost"].as_str().unwrap_or("").to_owned();
+        let listening = tokio::task::spawn_blocking(move || listener::present(&host))
+            .await
+            .ok()
+            .flatten();
+        if listening != Some(false) && self.online(1, &settings).await {
             return Err(ApiError::new(
                 409,
                 "COMFY_RELEASE_UNCONFIRMED",

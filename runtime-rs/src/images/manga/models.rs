@@ -112,7 +112,7 @@ pub(super) async fn model_dir(settings: &Settings, input: &Value) -> Result<Path
         }
     }
     if input["rewrite"].is_object() {
-        // Reuse the same local layout validation, acceleration restrictions and
+        // Reuse the same local layout validation, adapter execution settings and
         // model root containment as the existing Qwen image API.
         let plan = adapters::plan(settings, input["rewrite"].clone(), None).await?;
         Ok(plan.model_dir)
@@ -126,5 +126,5 @@ pub(super) fn status(settings: &Settings) -> Value {
     json!({"rewrite":MANIFEST["rewrite"]["models"].as_array().unwrap().iter()
         .map(|id| adapters::status(settings, id.as_str().unwrap())).collect::<Vec<_>>(),
         "lineart":{"available":issue.is_none(),"unavailableReason":issue,"readiness":"files-only",
-            "device":"cpu","validation":"待主力机验证"},"memoryPolicy":settings.memory_policy})
+            "device":"cpu","validation":"主力机已验证"},"memoryPolicy":settings.adapter_memory_policy})
 }

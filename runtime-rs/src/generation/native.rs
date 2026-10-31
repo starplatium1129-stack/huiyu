@@ -265,9 +265,11 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
         unreachable!()
     };
     let control = inner.control.read().unwrap().upgrade();
-    if let Some(control) = control
-        .filter(|_| plan.input["family"] != "manga-screen" || plan.input["rewrite"].is_object())
-    {
+    if let Some(control) = control.filter(|_| {
+        plan.input["family"] != "manga-screen"
+            || plan.input["rewrite"].is_object()
+            || plan.input["autoLines"] == true
+    }) {
         control.ensure_native_drawing(token).await?;
     }
     if let Some(hooks) = &job.hooks {
@@ -454,6 +456,10 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                 let metadata = Arc::make_mut(&mut state.metadata);
                 metadata["nativeRuntime"] = runtime_observation;
                 if let Some(dimensions) = dimensions {
+                    let device = metadata["nativeRuntime"]["device"].clone();
+                    if matches!(device.as_str(), Some("cpu" | "cuda+cpu")) {
+                        metadata["device"] = device;
+                    }
                     let (width, height) = dimensions?;
                     metadata["width"] = json!(width);
                     metadata["height"] = json!(height);
@@ -468,7 +474,8 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
             .is_some_and(|error| error.code == "STORAGE_UNAVAILABLE");
         publication
     };
-    let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(if video {1800} else {600}),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
+    // MOSS's default 50 steps plus cold loading exceed ten minutes with disk offload.
+    let value = tokio::select! { biased; _=token.cancelled()=>Err(ApiError::new(499,"ABORT_ERR","独立推理已取消")), value=tokio::time::timeout(Duration::from_secs(if video || plan.input["family"] == "moss-image" {1800} else {600}),result)=>value.unwrap_or_else(|_| Err(ApiError::new(504,"NATIVE_TIMEOUT","独立推理超时"))) };
     let cancelling = value.as_ref().err().is_some_and(|error| {
         token.is_cancelled() && matches!(error.code.as_str(), "ABORT_ERR" | "CANCELLED")
     });

@@ -5,6 +5,12 @@ export function catalogShowcaseId(record: { kind: string; id: string; characterI
   return record.kind === 'blueprint' ? `pc_${record.characterId}_${record.id}` : record.id
 }
 
+/** Lookup identity only; published IDs and their actual file paths stay intact. */
+export function canonicalShowcaseId(entry: Pick<ShowcaseEntry, 'id' | 'char' | 'type'>): string {
+  const prefix = `pc_${entry.char}_`
+  return entry.type === 'popular' && entry.id.startsWith(prefix + prefix) ? entry.id.slice(prefix.length) : entry.id
+}
+
 /**
  * 生成版本元数据：字段全部可选，旧样张缺省即视为「未记录」。
  * engine/model/checkpoint 指生成引擎、模型名与 checkpoint 文件；
@@ -210,37 +216,29 @@ export function parseShowcaseManifest(value: unknown): ShowcaseManifest {
   if (!isRecord(value) || !Array.isArray(value.entries)) {
     throw new Error('样张 manifest 格式无效')
   }
-  const seen = new Set<string>()
-  const entries = value.entries
-    .map(parseEntry)
-    .filter((entry): entry is ShowcaseEntry => entry !== null)
-    .filter(entry => {
-      if (seen.has(entry.id)) return false
-      seen.add(entry.id)
-      return true
-    })
-    .sort((a, b) => entryOrder(a) - entryOrder(b) || a.id.localeCompare(b.id))
+  const entries: ShowcaseEntry[] = []
+  const order = new Map<string, number>()
+  const typeCounts: Record<ShowcaseEntryType, number> = { scene: 0, artist: 0, popular: 0, lora: 0 }
+  const counts: Record<ShowcaseRating, number> = { All: 0, R15: 0, R18: 0 }
+  for (const raw of value.entries) {
+    const entry = parseEntry(raw)
+    if (!entry || order.has(entry.id)) continue
+    entries.push(entry)
+    order.set(entry.id, entryOrder(entry))
+    typeCounts[entry.type]++
+    counts[entry.rating]++
+  }
+  entries.sort((a, b) => order.get(a.id)! - order.get(b.id)! || a.id.localeCompare(b.id))
   if (!entries.length && value.entries.length) throw new Error('样张 manifest 没有有效条目')
 
-  const sceneCount = entries.filter(entry => entry.type === 'scene').length
-  const typeCounts: Record<ShowcaseEntryType, number> = {
-    scene: sceneCount,
-    artist: entries.filter(entry => entry.type === 'artist').length,
-    popular: entries.filter(entry => entry.type === 'popular').length,
-    lora: entries.filter(entry => entry.type === 'lora').length,
-  }
   return {
     // 一律由条目推导：sceneCount 语义为「场景数」，旧 v14 manifest 全为 scene
     // 条目，推导结果与历史 sceneCount 一致；新增的 entryCount/typeCounts 同样
     // 以条目为准，避免 manifest 里的冗余数字与真实数据漂移。
-    sceneCount,
+    sceneCount: typeCounts.scene,
     entryCount: entries.length,
     typeCounts,
-    counts: {
-      All: entries.filter(entry => entry.rating === 'All').length,
-      R15: entries.filter(entry => entry.rating === 'R15').length,
-      R18: entries.filter(entry => entry.rating === 'R18').length,
-    },
+    counts,
     entries,
   }
 }

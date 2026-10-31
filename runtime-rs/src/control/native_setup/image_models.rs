@@ -63,9 +63,8 @@ pub(super) fn settings(service: &ControlService, runtime: &RuntimeBundle) -> Res
     settings.python = PathBuf::from(receipt["python"].as_str().unwrap());
     if is_adapter_runtime(runtime) {
         settings.worker = settings.worker.with_file_name("adapter_worker.py");
+        settings.memory_policy = settings.adapter_memory_policy.clone();
     }
-    settings.acceleration = "native".into();
-    settings.memory_policy = "offload".into();
     Ok(settings)
 }
 pub(super) fn model_issue(root: &Path, id: &str) -> Option<String> {

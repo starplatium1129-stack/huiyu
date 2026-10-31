@@ -1,8 +1,8 @@
 import { ApiClientError, type ApiClient } from './client'
-import { assertDirectImageRuntime, imageJob, jobPath } from './directImageJobs'
+import { assertDirectImageRuntime, imageJob, jobPath, type DirectImageFamily } from './directImageJobs'
 import { acceptDirectGenerationRequest, cancelDirectGenerationRequest, type DirectRequestOptions } from './directGenerationRequests'
 
-type Family = 'anima' | 'krea2'
+type Family = DirectImageFamily
 export const imageRequestPath = (family: Family, key: string) => jobPath(family).replace(/\/jobs$/, '/requests/') + encodeURIComponent(key)
 function imageRequest(family: Family, key: string, input: Record<string, unknown> = {}) {
   return { key, submitPath: jobPath(family), receiptPath: imageRequestPath(family, key), body: input, field: 'job' as const,
@@ -15,8 +15,9 @@ function imageRequest(family: Family, key: string, input: Record<string, unknown
 export function acceptDirectImageRequest(family: Family, input: Record<string, unknown>, key: string, options: DirectRequestOptions) {
   return acceptDirectGenerationRequest(imageRequest(family, key, input), options)
 }
-export async function cancelDirectImageRequest(family: Family, key: string, owner: string, client?: ApiClient): Promise<void> {
+export async function cancelDirectImageRequest(family: Family, key: string, owner: string, client?: ApiClient) {
   assertDirectImageRuntime(owner)
-  await cancelDirectGenerationRequest(imageRequest(family, key), { client })
+  const result = await cancelDirectGenerationRequest(imageRequest(family, key), { client })
   assertDirectImageRuntime(owner)
+  return result
 }

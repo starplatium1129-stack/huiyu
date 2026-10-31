@@ -19,7 +19,7 @@
           <label><input v-model="parts.prompts" type="checkbox" :disabled="busy">提示词与场景 <small>仅同角色、同服装沿用；按当前规则重新编译</small></label>
           <label><input v-model="parts.parameters" type="checkbox" :disabled="busy">生成参数 <small>仅同引擎沿用底模、Seed、尺寸与生成设置</small></label>
         </fieldset>
-        <p id="history-reuse-help">旧作缺失的字段保持未记录，原底模不可用或编译规则变化会列入配方检查。载入后进入专家模式，按沿用及保留的参数继续创作；不会自动生成图片。</p>
+        <p id="history-reuse-help">旧作缺失字段保持留空；载入后进入专家模式并保留当前设定，不会自动生成。</p>
         </template>
       </div>
       <footer><button class="btn btn-ghost" type="button" :disabled="busy" @click="cancel">取消</button><button v-if="!loading && !error" class="btn btn-primary" type="button" :disabled="busy || mode === 'parts' && !Object.values(parts).some(Boolean)" aria-describedby="history-reuse-help" @click="apply">{{ busy ? '正在载入…' : '载入所选配方' }}</button></footer>

@@ -3,6 +3,8 @@ import './assets/css/design-system.css'
 import './assets/css/tailwind.css'
 import './assets/css/light-theme.css'
 import './assets/css/native-controls.css'
+import './assets/css/studio-scrollbars.css'
+import './utils/scrollbarVisibility'
 import './assets/css/interaction-motion.css'
 
 // This entry deliberately owns no workspace, model service or editor state.

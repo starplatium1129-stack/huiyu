@@ -3,8 +3,9 @@ import { AcceptedTaskTerminalError } from './acceptedTaskOutcome'
 import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import type { AnimaPublicJob } from '@/types/anima'
 
-export function jobPath(family: 'anima' | 'krea2', id?: string): string {
-  const base = family === 'krea2' ? '/api/creative/jobs' : '/api/anima/jobs'
+export type DirectImageFamily = 'anima' | 'krea2' | 'qwen' | 'moss' | 'manga'
+export function jobPath(family: DirectImageFamily, id?: string): string {
+  const base = `/api/${family === 'krea2' ? 'creative' : family}/jobs`
   return id ? `${base}/${encodeURIComponent(id)}` : base
 }
 export function assertDirectImageRuntime(owner: string): void {
@@ -33,7 +34,7 @@ function pause(ms: number, signal: AbortSignal): Promise<void> {
 }
 
 /** Observe one accepted browser job. Submission, cancellation and result ownership stay with its caller. */
-export async function waitForDirectImageJob(family: 'anima' | 'krea2', id: string, signal: AbortSignal, options: {
+export async function waitForDirectImageJob(family: DirectImageFamily, id: string, signal: AbortSignal, options: {
   timeoutMs: number; client?: ApiClient; intervalMs?: number; immediate?: boolean
   update?: (job: AnimaPublicJob) => void; reconnecting?: () => void
 }): Promise<AnimaPublicJob & { resultUrl: string }> {

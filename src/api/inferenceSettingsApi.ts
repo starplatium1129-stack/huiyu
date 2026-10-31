@@ -5,6 +5,7 @@ export interface InferenceSettings {
   engine: 'comfy' | 'native'
   acceleration: 'native' | 'sage' | 'compiled-sage' | 'compiled-fused-sage'
   memoryPolicy: 'resident' | 'offload'
+  adapterMemoryPolicy: 'resident' | 'offload'
   modelsRoot: string
   lorasRoot: string
   python: string
@@ -50,12 +51,13 @@ export interface InferenceSettingsApi {
   getStatus(signal?: AbortSignal): Promise<InferenceStatusResponse>
   save(settings: InferenceSettings, signal?: AbortSignal): Promise<InferenceSettingsResponse>
 }
-export const inferenceSettingKeys = ['engine', 'acceleration', 'memoryPolicy', 'modelsRoot', 'lorasRoot', 'python', 'adapterPython', 'worker'] as const
+export const inferenceSettingKeys = ['engine', 'acceleration', 'memoryPolicy', 'adapterMemoryPolicy', 'modelsRoot', 'lorasRoot', 'python', 'adapterPython', 'worker'] as const
 const object = (value: unknown): value is ApiResponseObject => typeof value === 'object' && value !== null && !Array.isArray(value)
 function settings(value: unknown): boolean {
   return object(value) && (value.engine === 'comfy' || value.engine === 'native')
     && typeof value.acceleration === 'string' && ['native', 'sage', 'compiled-sage', 'compiled-fused-sage'].includes(value.acceleration)
     && (value.memoryPolicy === 'resident' || value.memoryPolicy === 'offload')
+    && (value.adapterMemoryPolicy === 'resident' || value.adapterMemoryPolicy === 'offload')
     && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof value[key] === 'string')
     && (value.adapterPython == null || typeof value.adapterPython === 'string')
 }

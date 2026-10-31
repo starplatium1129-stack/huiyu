@@ -22,13 +22,14 @@
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
 
-import { runtimeFetch, runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { COMPOSITION, LIGHTING, SHOT } from '@/config/promptConstants'
-import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
+import { catalogShowcaseId } from '@/utils/showcaseManifest'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 
 defineProps<{ size?: string }>()
 const pb = usePromptBuilderStore()
@@ -39,34 +40,18 @@ const scene = computed(() => {
   const subject = pb.subject
   if (subject.kind === 'popular') {
     const blueprint = pb.sceneBlueprints.find(item => item.id === subject.blueprintId && item.characterId === subject.characterId)
-    return blueprint ? { title: blueprint.title, id: `pc_${subject.characterId}_${blueprint.id}`, rating: blueprint.adult ? 'R18' : blueprint.sampleRating } : null
+    return blueprint ? { title: blueprint.title, id: catalogShowcaseId({ kind: 'blueprint', characterId: subject.characterId, id: blueprint.id }), rating: blueprint.adult ? 'R18' : blueprint.sampleRating } : null
   }
   return pb.activeScene ? { title: pb.activeScene.title, id: pb.activeScene.id, rating: pb.activeScene.mature ? 'R18' : pb.activeScene.rating } : null
 })
-const loading = ref(true)
-const entries = ref<ShowcaseEntry[]>([])
-watch([runtimeResourceIdentity, () => attached.value && !!scene.value], async ([, needed], _previous, cleanup) => {
-  entries.value = []; loading.value = needed
-  if (!needed) return
-  const controller = new AbortController()
-  cleanup(() => controller.abort())
-  try {
-    const response = await runtimeFetch('/scene-showcase/manifest.json', { signal: controller.signal, cache: 'no-cache' })
-    if (!response.ok) return
-    const raw = await response.json() as { entries?: Array<{ id?: unknown } | null> }
-    if (!Array.isArray(raw.entries)) return
-    const counts = new Map<unknown, number>()
-    for (const item of raw.entries) counts.set(item?.id, (counts.get(item?.id) ?? 0) + 1)
-    if (!controller.signal.aborted) entries.value = parseShowcaseManifest(raw).entries.filter(item => counts.get(item.id) === 1)
-  } catch { /* Unverified references stay closed; drafting remains available. */ }
-  finally { if (!controller.signal.aborted) loading.value = false }
-}, { immediate: true })
-const entry = computed(() => entries.value.find(item => item.id === scene.value?.id && (item.type === 'scene' || item.type === 'popular')))
+const { loading, entryFor, thumbUrl } = useShowcaseAssets()
+const entry = computed(() => {
+  const item = scene.value ? entryFor(scene.value.id) : undefined
+  return item?.type === 'scene' || item?.type === 'popular' ? item : undefined
+})
 const restricted = computed(() => entry.value?.rating === 'R18' || scene.value?.rating === 'R18')
 const imageUrl = computed(() => {
-  if (!entry.value) return ''
-  const path = entry.value.thumb || `thumbs/${entry.value.id}.jpg`
-  return /^(?:thumbs|images)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path) ? `/scene-showcase/${path}` : ''
+  return entry.value ? thumbUrl(entry.value.id) : ''
 })
 const canLoad = computed(() => !!imageUrl.value)
 const { image: runtimeImage, src, failed } = useRuntimeImage(() => attached.value && canLoad.value ? imageUrl.value : '')

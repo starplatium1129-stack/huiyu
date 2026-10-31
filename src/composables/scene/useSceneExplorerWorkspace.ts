@@ -23,6 +23,7 @@ import { orderExplorerScenes } from './sceneExplorerOrdering';
 import { computed,nextTick,onActivated,onDeactivated,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
+import { useDocumentVisibility, useInfiniteScroll, useResizeObserver } from '@vueuse/core';
 
 // Remember only the rendered range; route scroll restoration owns the position.
 const browseRanges = new Map<string, number>();
@@ -49,6 +50,8 @@ export function useSceneExplorerWorkspace() {
     const profile = ref<PreferenceProfile>(buildPreferenceProfile([]));
     const loading = ref(true);
     const loadError = ref('');
+    const viewActive = ref(true);
+    const listRoot = ref<HTMLElement | null>(null);
     const drawerScene = ref<ExplorerScene | null>(null);
     const requestedScene = computed(() => route.path === '/scene-explorer' && typeof route.query.scene === 'string' ? route.query.scene : '');
     let handledScene = '', linkedViewer = false, closingLinked = false;
@@ -252,6 +255,21 @@ export function useSceneExplorerWorkspace() {
             profile: profile.value, usage: localUsage.value, favorites: favs.value, relevance });
     });
     const paged = computed(() => filtered.value.slice(0, visible.value));
+    const documentVisibility = useDocumentVisibility();
+    const { reset: refreshInfiniteScroll } = useInfiniteScroll(
+        () => viewActive.value ? document : null,
+        () => { visible.value = Math.min(visible.value + PAGE_SIZE, filtered.value.length); },
+        {
+            distance: 600,
+            canLoadMore: () => viewActive.value && route.path === '/scene-explorer'
+                && documentVisibility.value === 'visible' && Boolean(listRoot.value?.isConnected)
+                && !loading.value && !loadError.value && !drawerScene.value && visible.value < filtered.value.length,
+        },
+    );
+    // Filtering can shorten the document without a scroll event. Measure after
+    // Vue updates the cards; the existing batch limit and return range stay intact.
+    watch(filtered, refreshInfiniteScroll, { flush: 'post' });
+    useResizeObserver(listRoot, refreshInfiniteScroll);
     const searchIntent = computed(() => {
         const q = debouncedQuery.value.trim();
         const analysis = queryAnalysis.value;
@@ -367,22 +385,24 @@ export function useSceneExplorerWorkspace() {
     onMounted(() => { init(); });
     let activatedOnce = false;
     onActivated(() => {
+        viewActive.value = true;
+        refreshInfiniteScroll();
         if (!activatedOnce) { activatedOnce = true; return; }
         favs.value = readFavorites(); hiddenIds.value = readHiddenScenes(); localUsage.value = readSceneUsage();
         void openWorkspace(true);
     });
     onDeactivated(() => {
+        viewActive.value = false;
         dataReady = false; loadRevision++; clearFilterAnchor();
         drawerScene.value = null; handledScene = ''; linkedViewer = false; closingLinked = false;
     });
     return {
         ...filters,
         companionId, scenes, manualCompanion, moodRails, applyMoodRail,
-        visible, filtered, tierLabel, usedCount, favoriteCount, hiddenCount, availableCount,
+        visible, filtered, listRoot, tierLabel, usedCount, favoriteCount, hiddenCount, availableCount,
         THEME_DEFS, themeCount, searchIntent, matureCount, loading,
         loadError, init, paged, usageFor, isCore,
         tier, charName, seasonLabel, timeLabel, personalReason, drawerScene, finishSceneClose,
         dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
-        PAGE_SIZE,
     };
 }

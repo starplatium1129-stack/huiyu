@@ -1,13 +1,10 @@
 <template>
   <section class="manga-line-controls" aria-label="线稿设置">
     <div class="manga-field"><span>线稿来源</span><StudioSelect v-model="mode" label="线稿来源" :disabled="disabled" :options="sources" /></div>
-    <p class="manga-hint">线稿可单独预览、导出和存入作品库，启用后叠入漫画。待主力机验证。</p>
     <template v-if="mode === 'auto'">
-      <p class="manga-hint">处理漫画时，{{ redraw ? '从 Qwen 重绘图' : '从当前处理图' }}提取结构线。使用官方 MangaLineExtraction，CPU 执行。</p>
-      <p class="manga-hint">{{ status?.lineart.available ? 'erika.pth 文件已就位，依赖与效果仍待主力机验证。' : status?.lineart.unavailableReason || '尚未读取线稿模型状态' }}</p>
+      <p v-if="!status?.lineart.available" class="manga-hint">{{ status?.lineart.unavailableReason || '线稿模型尚未就绪' }}</p>
       <RouterLink v-if="status && !status.lineart.available && !disabled" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'manga-line-extraction' }, hash: '#control-setup' }">准备漫画线稿模型</RouterLink>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="disabled || !!extractionIssue" @click="emit('extract')"><ArchiveIcon name="spark" />仅提取线稿</button>
-      <p class="manga-hint">独立提取只处理原图，按上方缩小设置执行，不运行 Qwen、色阶或网点。完成后自动打开线稿预览。</p>
       <p v-if="extractionIssue && status?.lineart.available" class="manga-hint" role="status">{{ extractionIssue }}</p>
     </template>
     <template v-else-if="mode === 'external'">
@@ -16,8 +13,8 @@
         <button v-if="imported" class="btn btn-quiet btn-sm" type="button" :disabled="disabled" @click="removeImported">移除</button>
       </div>
       <input ref="picker" type="file" class="manga-file" accept="image/png,image/jpeg,image/webp" @change="pick" />
-      <p v-if="!targetSize" class="manga-hint">请先导入漫画原图，再选择与其对应的线稿。</p>
-      <p class="manga-hint">PNG、JPEG、WebP · 最长边 4096 · 不超过约 200 万像素。外部线稿暂不与 Qwen 重绘同时使用。</p>
+      <p v-if="!targetSize" class="manga-hint">请先导入漫画原图，再选择对应线稿。</p>
+      <p class="manga-hint">支持 PNG/JPEG/WebP（最长边 4096）；暂不与重绘同用。</p>
       <p v-if="imported" class="manga-hint">{{ imported.name }} · {{ imported.width }} × {{ imported.height }}</p>
       <div class="manga-field"><span>原文件黑白极性</span><StudioSelect v-model="polarity" label="线稿黑白极性" :disabled="disabled" :options="polarities" /></div>
       <p class="manga-hint">预览和导出统一为黑线白底；透明区域按所选底色合成。</p>

@@ -48,12 +48,18 @@ export function useGalleryQuery(options: {
         }
         if (directory && (directory.revision !== page.revision || directory.projectsVersion !== page.projectsVersion))
           throw new Error('作品库在读取期间发生变更，请重新读取')
-        while (reset && page.items.length < retain && page.nextCursor) {
-          const next = await source.repository.readGalleryPage!(query, page.nextCursor, abort.signal)
-          if (!current()) return false
+        if (reset && page.items.length < retain) {
           const ids = new Set(page.items.map(item => String(item.id).trim()))
-          if (next.items.some(item => ids.has(String(item.id).trim()))) throw new Error('作品分页含重复记录，请重新读取')
-          page.items.push(...next.items); page.nextCursor = next.nextCursor
+          while (page.items.length < retain && page.nextCursor) {
+            const next = await source.repository.readGalleryPage!(query, page.nextCursor, abort.signal)
+            if (!current()) return false
+            for (const item of next.items) {
+              const id = String(item.id).trim()
+              if (ids.has(id)) throw new Error('作品分页含重复记录，请重新读取')
+              ids.add(id)
+            }
+            page.items.push(...next.items); page.nextCursor = next.nextCursor
+          }
         }
         const previous = reset ? [] : options.history.value
         const ids = new Set(previous.map(item => String(item.id).trim()))

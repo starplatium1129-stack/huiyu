@@ -9,11 +9,11 @@ export type ContentSpring = ReturnType<typeof createContentSpring>
  * once for the compositor; capture both position and velocity before DOM remaps. */
 export function createContentSpring(
   element: HTMLElement, initial: number[], frame: (values: number[]) => Keyframe,
-  options: { velocities?: number[]; opacity?: number } = {},
+  options: { velocities?: number[]; opacity?: number; frequency?: number; damping?: number } = {},
 ) {
   const springs = initial.map((value, index) => {
     const alpha = index === options.opacity
-    const spring = new FluidSpring(value, alpha ? 8 : SURFACE_FREQUENCY, alpha ? 1 : SURFACE_DAMPING)
+    const spring = new FluidSpring(value, options.frequency ?? (alpha ? 8 : SURFACE_FREQUENCY), options.damping ?? (alpha ? 1 : SURFACE_DAMPING))
     spring.velocity = options.velocities?.[index] ?? 0
     return spring
   })

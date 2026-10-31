@@ -130,19 +130,8 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
       const blob = item.image_id ? await repository.getImage(item.image_id, signal) : null
       if (!current()) return
       let url = fallback, bytes = fallback.length * 2, pixels = 0, resolvedWidth = Infinity
+      let thumbnailSource: Blob | undefined
       if (blob) {
-        // Persist only the standard small thumbnail; larger previews stay local.
-        if (!thumbnail && item.image_id) {
-          thumbnail = await blobThumbDataUrl(blob)
-          if (!current()) return
-          if (thumbnail) {
-            options.rememberThumbnail(item.id, thumbnail)
-            void repository.setThumbnail(item.image_id, thumbnail).catch(() => {})
-            const size = await dimensions(thumbnail, signal)
-            if (!current()) return
-            if (size.width >= width) { satisfied.set(item.id, size.width); return }
-          }
-        }
         const preview = await cardPreviewImage(blob, width, signal)
         if (!current()) return
         if (preview) {
@@ -153,11 +142,22 @@ export function useGalleryCardPreviews(options: CardPreviewOptions) {
           // Unsupported originals retain their existing display fallback.
           url = URL.createObjectURL(blob); bytes = blob.size; pixels = 32 * 1024 * 1024
         }
+        thumbnailSource = preview?.blob || blob
       }
       if (!url) { if (!thumbnail) options.markMissing(item.id); return }
       releaseCardImage(item.id)
       options.urls.value = Object.assign(Object.create(null), options.urls.value, { [item.id]: url }); satisfied.set(item.id, resolvedWidth)
       cache.set(item.id, { bytes, pixels }); trim()
+      // Show the card first, then persist its small thumbnail from the reduced
+      // preview. This avoids decoding the full original a second time.
+      if (!thumbnail && item.image_id && thumbnailSource) {
+        thumbnail = await blobThumbDataUrl(thumbnailSource)
+        if (!current()) return
+        if (thumbnail) {
+          options.rememberThumbnail(item.id, thumbnail)
+          void repository.setThumbnail(item.image_id, thumbnail).catch(() => {})
+        }
+      }
     } catch {
       if (!current()) return
       if (fallback) {

@@ -81,20 +81,29 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 | `krea2-raw` | krea/Krea-2-Raw | `/api/creative/jobs` | 文生图，可调节步数与 CFG |
 | `krea2-turbo` | krea/Krea-2-Turbo | `/api/creative/jobs` | 8 步快速蒸馏调度 |
 | `qwen-image-2.1` | Qwen/Qwen-Image-2.1 | `/api/qwen/jobs` | 文生图与最多四图参考指令编辑 |
+| `qwen-image-2.1-turbo` | Qwen/Qwen-Image-2.1-Turbo | `/api/qwen/jobs` | 8 步文生图与参考图编辑 |
+| `moss-miaomiao-base-v1.0` | MIAOKA / OpenMOSS | `/api/moss/jobs` | MiaoMiao MOSS 文生图 |
 | `wan2.2-ti2v-5b` | Wan-AI/Wan2.2-TI2V-5B | `/api/video/jobs` | 3/5 秒文生视频，24 fps |
 | `minimax-h3` | MiniMaxAI/MiniMax-H3 | `/api/video/jobs` | 联合音视频生成，支持 5/10 秒 |
 | `ltx-2.3` | diffusers/LTX-2.3 | `/api/video/jobs` | 单阶段联合音视频生成 |
+
+图像适配 Python 与 Anima Python 独立配置。除受管的 PyTorch 2.9 配方外，可复用已有的 PyTorch 2.13.0 / torchvision 0.28.0 / Transformers 5.14.1 / Pillow 12.2.0 / SageAttention 2.2.0 环境；补齐固定版本 Diffusers、Accelerate、PEFT、ftfy 与 huggingface-hub，版本见 `tools/inference/requirements-adapters.txt`。该共享环境的漫画处理使用 NumPy 2.4.4 与 OpenCV headless 5.0.0.93。原生 worker 只使用这些 Python 库，不启动或请求 ComfyUI 服务；切换解释器后重启绘遇，保留 Anima 原配置。
+
+受管模型沿用下载时的完整校验记录，启动只在取得文件保护锁后核对版本、大小与修改状态；不匹配、非受管目录或无法取得保护锁时仍完整读取校验。任务记录的 `modelIdentityScope` 区分准备记录与完整字节摘要，不把二者混称为本次整库校验。
 
 ---
 
 ## 5. MangaScreen 漫画后处理与线稿提取
 
 原生 `/api/manga` 接口提供纯 CPU 高性能漫画网点、色阶与分镜后处理：
+- 工作台默认采用上游 QWEN-Manga 流程：Qwen-Image 2.1 Turbo 重绘、自动线稿、250 线网点和原始画幅；按原图比例选择接近 200 万像素的重绘尺寸，使用随机种子。重绘参考图编码与输出按同一像素面积配置，模型未准备时可在面板前往控制室安装。
 - **操作类型**：
   - `lite`：色阶调整 + 网点平涂 + 原始画框合成
   - `comic`：线稿强化 + 网点平涂 + 画框裁切
   - `lineart`：仅提取黑线白底线稿（使用独立 MangaLineExtraction 网络）
 - **Qwen 指令重绘**：可选在进入后处理前先使用 `qwen-image-2.1-turbo` 将原图重绘为黑白漫画风格。
+- **自动线稿**：显存预算足够时使用 CUDA，否则保留 CPU 路径；实际设备写入任务记录。连续重绘复用该 worker 拥有的模型与条件缓存，取消、切换引擎及进程退出时释放。
+- 配方版本 5 绑定上述参考图编码规则；旧任务结果可继续查看，旧配方不可按新规则自动重试。新默认流程尚需当前版本的真实画质与设备验收。
 
 ---
 
@@ -122,8 +131,10 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 ## 7. 显存策略与进程生命周期
 
 - **显存模式**：
-  - `resident`（模型常驻）：权重常驻显存，吞吐速度最快（适合 12 GB+ 显卡）。
+  - Anima 使用 `inference.memoryPolicy`，默认 `resident`；Krea、Qwen、MOSS、漫画重绘及原生视频使用 `inference.adapterMemoryPolicy`，默认 `offload`。在控制室分别保存，启用模型保留已有选择；Anima 的 Sage/编译加速不传给其他模型。
+  - `resident`（模型常驻）：权重常驻显存，需要显卡能容纳完整模型及运行时激活。
   - `offload`（分阶段卸载）：文本编码器与去噪网络按需搬运，节省显存占用。
+  - Qwen/MOSS 的 `offload` 直接映射原权重文件，按当前画幅和空闲显存保留常用层，不生成磁盘权重副本。常驻权重先于临时激活分配；参考图前缀 K/V 可无损保存在 CPU，相同输入的条件编码在模型保护期内复用。
 - **显存释放机制**：
   - 最后一次任务完成后，连续空闲 10 分钟自动释放模型与显存。
   - 启动本地对话或语音时，自动交接显存资源；退出桌面端立即终止子进程。
@@ -136,7 +147,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 
 提示词支持中文、自然语言、标签和布局 JSON。普通描述补作者质量词；布局 JSON 原文提交，不在外面拼接标签，不改坐标。明确带文字的布局项使用原始默认负面时，去掉默认 `text`、`english text`；用户自定义负面保持原样。尺寸须与布局坐标一致。任务支持取消、恢复、结果导出和入册；当前只开放文生图。
 
-MOSS 官方管线代码固定到 `OpenMOSS-Team/MOSS-Image-Base@85975793d8b3d432f1b6e27f352abaa4c2a4c0d3`，随产品附 Apache-2.0 许可，不执行模型目录提供的 Python。独立图像适配运行库更新为 PyTorch 2.9.0 / torchvision 0.24.0；现有旧版适配运行库需在控制室重新准备。此版本尚未取得作者权重做加载、出图或设备验收，文件就绪不代表已验证画质、耗时或显存。
+MOSS 官方管线代码固定到 `OpenMOSS-Team/MOSS-Image-Base@85975793d8b3d432f1b6e27f352abaa4c2a4c0d3`，随产品附 Apache-2.0 许可，不执行模型目录提供的 Python。支持受管 PyTorch 2.9.0 / torchvision 0.24.0 及上面的共享图像运行库；作者 FP16 权重在上传 GPU 时转换为 BF16，不在主机内存复制完整权重。文件就绪和依赖可导入不代表本机画质、耗时或显存验收通过。
 
 MOSS 创作的高级参数可选择「Spectrum · 实验」缓存加速，默认关闭。实现基于 [Spectrum 原始 MIT 代码](https://github.com/hanjq17/Spectrum/tree/4e41f91c93ff66b045332530dd7bcb4c60eafbab)的 Chebyshev 与一阶 Taylor 混合预测，随包保留 `SPECTRUM-LICENSE`；不引入 ComfyUI 插件。当前只缓存图像隐藏状态，正负分支及跳层组合各自隔离，固定前 6 步、末 3 步与每次预测后的刷新步完整计算；短采样会减少或不进行预测。每个任务独立清理，保留取消及进度。显存余量不足、拟合失败或预测出现非有限值时使用完整计算，并在任务 `nativeRuntime.mossAcceleration` 记录实际计算/预测次数及原因。请求、草稿和作品保留 `mossAcceleration: off | spectrum`，不使用 Anima TeaCache 阈值。该 MIAOKA 微调尚未完成真实权重和画质/性能验收，不能据社区其他模型数据宣称本机提速倍数。
 

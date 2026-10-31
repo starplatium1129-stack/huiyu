@@ -63,8 +63,7 @@ class _RMSNorm(nn.Module):
         self.weight = nn.Parameter(torch.ones(dim))
 
     def forward(self, x):
-        y = x.float() * torch.rsqrt(x.float().square().mean(-1, keepdim=True) + 1e-6)
-        return y.to(x.dtype) * self.weight
+        return F.rms_norm(x, (x.shape[-1],), self.weight, 1e-6)
 
 
 def _situ(hidden, gate):

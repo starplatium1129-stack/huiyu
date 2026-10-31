@@ -159,12 +159,11 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
       </div>
       <p v-if="hiresFix" class="anima-output-note"><span>最终画幅</span><output>{{ outputSize }}</output></p>
       <p v-if="!native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
-        <template v-if="comfyHiresPath === 'unknown'">Auto 放大路径待确认，请刷新引擎状态；暂不调整二次重绘幅度。</template>
-        <template v-else-if="comfyHiresPath === 'pixel'">按当前资源，普通出图采用像素放大{{ hiresUpscaler === 'Auto' && state.autoHiresModel ? `（${state.autoHiresModel}）` : '' }}，不做二次采样，因此此处幅度不生效。选择 Latent 可进行二次重绘。</template>
-        <template v-else>按当前资源，普通出图采用 Latent 二次重绘，幅度控制这一次采样。最终文件在提交时重新核对。</template>
-        局部蒙版高清另有二次采样与合成，仍使用保存的幅度；切换放大方式不会清除该值。
+        <template v-if="comfyHiresPath === 'unknown'">Auto 路径待确认，请刷新引擎状态。</template>
+        <template v-else-if="comfyHiresPath === 'pixel'">当前资源采用像素放大{{ hiresUpscaler === 'Auto' && state.autoHiresModel ? `（${state.autoHiresModel}）` : '' }}，不执行二次采样；重绘幅度不生效。改选 Latent 可启用二次重绘。</template>
+        <template v-else>当前采用 Latent 二次重绘，重绘幅度控制采样程度。</template>
       </p>
-      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">高清采样沿用特征缓存设置，无需额外配置。Auto 优先使用本地 Remacri，否则使用 Latent；局部重绘保留遮罩合成。</p>
+      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">Auto 优先使用本地 Remacri 放大，未就绪时回退至 Latent 重绘。</p>
       <RouterLink v-if="native && hiresFix && !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri')" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'remacri-4x' }, hash: '#control-setup' }">准备 Remacri 高清放大</RouterLink>
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看引擎接收的提示词</StudioDisclosureSummary><div data-disclosure-content>

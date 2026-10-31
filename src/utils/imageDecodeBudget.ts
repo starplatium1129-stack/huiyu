@@ -7,7 +7,13 @@ export async function withinImageDecodeBudget(blob: Blob): Promise<boolean> {
 /** Encoded dimensions before EXIF orientation; the browser owns orientation. */
 export async function imageSizeWithinDecodeBudget(blob: Blob): Promise<{ width: number; height: number } | null> {
   if (!blob.size || blob.size > 20 * 1024 * 1024) return null
-  const bytes = new Uint8Array(await blob.arrayBuffer()), view = new DataView(bytes.buffer)
+  // WebP dimensions and its animation flag fit in the first 30 bytes. PNG
+  // still needs the chunk walk; JPEG may put its size after large metadata.
+  const header = new Uint8Array(await blob.slice(0, 32).arrayBuffer())
+  const needsBody = String.fromCharCode(...header.subarray(1, 4)) === 'PNG'
+    || header[0] === 255 && header[1] === 216
+  const bytes = needsBody ? new Uint8Array(await blob.arrayBuffer()) : header
+  const view = new DataView(bytes.buffer)
   const text = (at: number, n: number) => String.fromCharCode(...bytes.subarray(at, at + n))
   let width = 0, height = 0
   try {

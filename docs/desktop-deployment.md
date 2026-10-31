@@ -15,6 +15,7 @@
 | **仅同步静态资源** | `.\deploy-desktop.bat -ResourcesOnly` | 要求已安装 EXE/DLL 与构建字节一致；已有匹配构建时可加 `-SkipBuild` |
 | **复用已有升级包** | `.\deploy-desktop.bat -UseInstaller` | 跳过构建与封装，直接安装当前版本已绑定的升级包 |
 | **部署后不自动重启** | `.\deploy-desktop.bat -NoRestart` | 安装完成后保持客户端关闭状态 |
+| **修复启动资源和缓存** | `.\deploy-desktop.bat -StartupRepair` | 核对并修复启动资源、快捷方式，清理 WebView 缓存；日常部署保留缓存 |
 | **强制重新构建** | `.\deploy-desktop.bat -ForceBuild` | 排错时覆盖自动复用判断；日常无需添加 |
 | **采用项目内容库** | `.\deploy-desktop.bat -AdoptProjectCatalog` | 仅在用户明确要求放弃当前内容库时使用；先保留原数据库及历史，再切换到安装包中的项目快照 |
 
@@ -91,4 +92,4 @@ node scripts/maintenance/release-desktop-update.js --skip-build --publish
 - **Q: 部署后只有后台进程、没有窗口，日志提示 `WORKSPACE_LOCKED`？**
   A: 异常退出可能留下工作区占用记录。宿主启动时只恢复 Windows 已确认退出进程的记录，并持有该文件句柄防止替换；运行中、权限不足或身份不明的记录继续保留。部署预检允许已确认退出的记录留待新宿主恢复，不手动清锁或改写作品数据库。
 - **Q: 部署日志在哪里查看？**  
-  A: 部署过程的完整输出实时追加在 `runtime/desktop-deploy-last.log`。
+  A: 终端显示部署方式、阶段、耗时和结果；`runtime/desktop-deploy-last.log` 保留部署过程，`runtime/desktop-deploy-build.log` 保留完整构建输出和警告。构建失败时终端显示末尾 20 行及详细日志位置。日常部署保留 WebView 图片、代码和 GPU 缓存，仅 `-StartupRepair` 清理。

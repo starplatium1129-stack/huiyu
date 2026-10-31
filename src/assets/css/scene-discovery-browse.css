@@ -59,7 +59,7 @@
 .scene-grid :deep(.sc-title) { white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; font-size:var(--fs-body); line-height:1.35; }
 .scene-grid :deep(.sc-story),.scene-grid :deep(.sc-meta) { display:none; }
 .scene-grid :deep(.sc:is(.scene-selected,:focus-within)) { border-color:var(--border-strong); }
-.scene-grid :deep(.sc) { --card-focus-lift:-8px; --card-focus-scale:1.06; transition:transform var(--motion-route) var(--spring-soft); }
+.scene-grid :deep(.sc) { --card-focus-lift:-8px; --card-focus-scale:1.06; transition:opacity var(--motion-atmosphere) var(--ease-out),transform var(--motion-atmosphere) var(--ease-out); }
 .scene-grid :deep(.sc-thumb) { transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft); }
 .scene-grid :deep(.sc:not([data-rating='R18']) .sc-band::after) { display:block; inset:0; border-radius:0; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .scene-grid :deep(.sc:is(:focus-visible,:has(:focus-visible))) { transform:none; transition:none; border-color:var(--border-strong); box-shadow:var(--shadow-md); }
@@ -94,7 +94,7 @@
 .ex-decision strong { color:var(--text-secondary); font-weight:500; }
 .ex-secondary { display:flex; gap:var(--s-1); margin:var(--s-1) 0; }
 .ex-secondary .btn { flex:1; justify-content:center; }
-.scene-load { display:flex; justify-content:center; margin-top:var(--s-5); }
+.scene-load { margin:var(--s-5) 0 0; padding-block:var(--s-3); text-align:center; color:var(--text-secondary); font-size:var(--fs-label); }
 
 .ex-more > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 

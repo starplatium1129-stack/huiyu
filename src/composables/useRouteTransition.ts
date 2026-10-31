@@ -2,6 +2,7 @@ import { onActivated, onDeactivated, onMounted, onUnmounted } from 'vue'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 import { markUiFluidityForPath } from '@/utils/uiFluidityMeasurement'
 import { createContentSpring, type ContentSpring, type SpringPresentation } from '@/utils/contentSpring'
+import { ROUTE_SPRING } from '@/utils/controlSprings'
 
 type ReadingSurface = { motion: ContentSpring; base: string }
 type Presentation = { root: SpringPresentation; content: Map<HTMLElement, { state: SpringPresentation; base: string }> }
@@ -53,11 +54,11 @@ export function useRouteTransition(destinationPath: () => string) {
   function readingSurfaces(el: HTMLElement) {
     // Inspira UI grouped arrival, adapted without blur, wrappers or a stagger queue.
     // Source: 04c57ab62b9713872ebbf68988dff1836ed3d764; MIT: assets/licenses/inspira-ui.txt.
-    return [...el.querySelectorAll<HTMLElement>('[data-route-arrive]')].slice(0, 6).filter(surface => {
+    return [...el.querySelectorAll<HTMLElement>('[data-route-arrive]')].filter(surface => {
       if (surface.parentElement?.closest('[data-route-arrive]') || surface.hasAttribute('data-reveal')) return false
       const rect = surface.getBoundingClientRect()
       return rect.width && rect.height && rect.bottom > 0 && rect.top < innerHeight
-    }).map(surface => {
+    }).slice(0, 6).map(surface => {
       const transform = getComputedStyle(surface).transform
       return { surface, base: transform === 'none' ? '' : ` ${transform}` }
     })
@@ -74,7 +75,6 @@ export function useRouteTransition(destinationPath: () => string) {
       departure = undefined
     }
     interrupted.delete(el); settle(el)
-    const cached = el.dataset.routeEntered === 'true'
     if (entering) {
       el.inert = false; restoreFocus(el); el.dataset.routeEntered = 'true'
       if (path) markUiFluidityForPath(path, 'shell-ready')
@@ -86,13 +86,15 @@ export function useRouteTransition(destinationPath: () => string) {
     }
     const content = new Map<HTMLElement, ReadingSurface>()
     const surfaces = current ? [...current.content].map(([surface, value]) => ({ surface, ...value }))
-      : entering && !cached ? readingSurfaces(el).map(value => ({ ...value, state: { values: [10], velocities: [0] } })) : []
+      : entering ? readingSurfaces(el).map(value => ({ ...value, state: { values: [24], velocities: [0] } })) : []
     for (const { surface, base, state } of surfaces) {
       content.set(surface, { base, motion: createContentSpring(surface, state.values,
-        ([y]) => ({ transform: `translateY(${y}px)${base}` }), { velocities: state.velocities }) })
+        ([y]) => ({ transform: `translateY(${y}px)${base}` }), { ...ROUTE_SPRING, velocities: state.velocities }) })
     }
-    const state = current?.root ?? { values: [entering ? cached ? .65 : .25 : 1], velocities: [0] }
-    const root = createContentSpring(el, state.values, ([opacity]) => ({ opacity }), { velocities: state.velocities, opacity: 0 })
+    const state = current?.root ?? { values: [entering ? .15 : 1], velocities: [0] }
+    const root = createContentSpring(el, state.values, ([opacity]) => ({ opacity }), {
+      ...(entering ? ROUTE_SPRING : {}), velocities: state.velocities, opacity: 0,
+    })
     let finished = false, pending = content.size + 1
     const finish = () => {
       if (finished) return
@@ -117,11 +119,11 @@ export function useRouteTransition(destinationPath: () => string) {
   }
   function onEnter(element: Element, done: () => void) {
     const el = element as HTMLElement
-    if (el.dataset.routeEntered === 'true' || prefersReducedMotion() || document.hidden
+    if (prefersReducedMotion() || document.hidden
       || typeof ResizeObserver === 'undefined' || !el.querySelector('[data-route-arrive]')) {
       transition(el, true, done); return
     }
-    // First arrival measures large reading surfaces. Observe the browser's
+    // Both first and cached arrivals measure reading surfaces. Observe the browser's
     // natural layout before measuring, then start the animation before paint;
     // entering must not synchronously lay out a route inside Vue's patch.
     const observer = new ResizeObserver(() => {

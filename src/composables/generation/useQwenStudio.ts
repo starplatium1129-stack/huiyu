@@ -2,17 +2,14 @@ import { computed, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { qwenModels, qwenStatus, uploadQwenImage, readQwenTaskInput, type QwenModelStatus } from '@/api/qwenApi'
 import { MOSS_MODEL_ID, mossModels, mossStatus } from '@/api/mossApi'
 import { compileMossPrompt, MOSS_NEGATIVE } from '@/utils/mossPrompt'
-import { fetchRuntimeResult, getRuntimeTask, hasRuntimeTasks,
-  runtimeResultPath, taskMessage, type TaskRecord } from '@/api/runtimeTasks'
-import { useAcceptedTaskSession, taskSettled as terminal } from '@/composables/tasks/useAcceptedTaskSession'
+import { useImageTaskSession, imageTaskSettled as terminal, imageTaskMessage, fetchImageTaskResult, type ImageTask } from '@/composables/tasks/useImageTaskSession'
+import { createImageTaskArchiver, imageTaskArtworkId } from '@/composables/tasks/imageTaskArtwork'
 import { MOSS_REQUEST_DRAFT_KEY, QWEN_REQUEST_DRAFT_KEY, QWEN_EDITOR_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
-import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { inspectMangaImage, mangaInputSize, prepareMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
 import { downloadMangaPng } from '@/composables/manga/mangaResult'
 import { createQwenDraftStorage, qwenParentId, type QwenDraftState } from '@/storage/qwenStudioDraft'
-import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
 import { artworkRepository } from '@/storage/artworkRepository'
 
 const message = (cause: unknown) => cause instanceof Error ? cause.message : '操作未完成，请重试'
@@ -45,7 +42,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     }
   }
   const models = shallowRef<QwenModelStatus[]>([]), checking = ref(false), ready = ref(false), initializing = ref(false), statusError = ref('')
-  const result = shallowRef<TaskRecord | null>(null), resultBlob = shallowRef<Blob | null>(null), resultUrl = ref('')
+  const result = shallowRef<ImageTask | null>(null), resultBlob = shallowRef<Blob | null>(null), resultUrl = ref('')
   const busy = ref(false), importing = ref(false), observing = ref(false), cancelling = ref(false), saving = ref(false), saved = ref(false)
   const error = ref(''), notice = ref(''), sourceChanged = ref(false)
   const lifetime = new AbortController(), owner = imageMediaSession()
@@ -58,7 +55,8 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     lifetime.signal.throwIfAborted()
     if (sourceChanged.value || imageMediaSession() !== owner) throw new Error('工作区或运行时连接已变化，请重新打开页面；原任务仍保留在任务中心')
   }
-  const session = useAcceptedTaskSession({ slot, kinds: [mode], signal: lifetime.signal, check, validate: validateTask })
+  const session = useImageTaskSession({ slot, family: mode, kinds: [mode], signal: lifetime.signal, check, validate: validateTask })
+  const archiveImage = createImageTaskArchiver(check, lifetime.signal)
   const { task, request, unresolved, accept, release: releaseRequest } = session
   watch([form, randomSeed, resize, source, references, parentId, result], () => {
     if (!draftActive) return
@@ -70,18 +68,18 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
   const locked = computed(() => !ready.value || busy.value || importing.value || observing.value || saving.value || cancelling.value || unresolved.value)
   const inputSize = computed(() => source.value ? mangaInputSize(source.value) : null)
   const needsResize = computed(() => inputSize.value?.resized || references.value.some(value => mangaInputSize(value.image).resized))
-  const issue = computed(() => sourceChanged.value ? '请重新打开页面以连接当前工作区' : !hasRuntimeTasks() ? '请先启用本机私人工作区'
+  const issue = computed(() => sourceChanged.value ? '请重新打开页面以连接当前工作区'
     : !selected.value?.available ? selected.value?.unavailableReason || statusError.value || `请先准备所选 ${label} 模型`
       : restoredInputMissing.value ? '原任务输入未恢复，请重新读取输入，或移除输入改为文生图'
         : !form.prompt.trim() ? '填写画面描述或编辑指令' : needsResize.value && !resize.value ? '请勾选缩小输入图片副本' : '')
   const canRun = computed(() => !locked.value && !issue.value)
   const progress = computed(() => typeof task.value?.metadata.progress === 'number' ? Math.round(Math.max(0, Math.min(1, task.value.metadata.progress)) * 100) : null)
-  const taskText = computed(() => task.value ? taskMessage(task.value) : request.value ? '接收状态待确认，请查询原操作或请求取消' : '')
+  const taskText = computed(() => task.value ? imageTaskMessage(task.value) : request.value ? '接收状态待确认，请查询原操作或请求取消' : '')
   function setUrl(target: typeof sourceUrl, blob: Blob | null) {
     if (target.value) URL.revokeObjectURL(target.value)
     target.value = blob ? URL.createObjectURL(blob) : ''
   }
-  function validateTask(value: TaskRecord) {
+  function validateTask(value: ImageTask) {
     if (value.kind !== mode || value.provider !== 'native' || value.input.family !== family) throw new Error(`任务类型与 ${label} 创作不符`)
     const context = value.metadata.context
     if (context !== undefined && context !== null && (typeof context !== 'object' || Array.isArray(context))) throw new Error('图像任务来源信息无效')
@@ -121,18 +119,22 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     next.splice(destination, 0, value!); references.value = next
     notice.value = `参考图已移至图 ${destination + 2}`
   }
-  async function restoreTaskInputs(value: TaskRecord) {
+  async function restoreTaskInputs(value: ImageTask) {
     if (!value.input.initImage) {
       for (const item of references.value) URL.revokeObjectURL(item.url)
       references.value = []; source.value = null; setUrl(sourceUrl, null); restoredInputMissing.value = false
       return
     }
     restoredInputMissing.value = true
+    if (!value.runtimeTask) {
+      if (source.value && references.value.length === (Array.isArray(value.input.referenceImages) ? value.input.referenceImages.length : 0)) { restoredInputMissing.value = false; return }
+      throw new Error('请重新导入原图及参考图；原任务和结果保留')
+    }
     const images: MangaImage[] = []
     const count = 1 + (Array.isArray(value.input.referenceImages) ? value.input.referenceImages.length : 0)
     if (count > 4) throw new Error('原任务输入数量无效')
     for (let index = 0; index < count; index++) {
-      const blob = await readQwenTaskInput(value, index, lifetime.signal); check()
+      const blob = await readQwenTaskInput(value.runtimeTask, index, lifetime.signal); check()
       images.push(await inspectMangaImage(blob, index === 0 ? '原任务原图' : `原任务参考图 ${index}`)); check()
     }
     for (const item of references.value) URL.revokeObjectURL(item.url)
@@ -155,7 +157,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       await releaseRequest(); check()
       for (const value of references.value) URL.revokeObjectURL(value.url)
       references.value = []; source.value = image; setUrl(sourceUrl, image.blob); restoredInputMissing.value = false
-      draftActive = !draftRecoveryNeeded.value; parentId.value = taskArtworkId(output.taskId, 0); form.prompt = ''; task.value = null; resize.value = false
+      draftActive = !draftRecoveryNeeded.value; parentId.value = imageTaskArtworkId(output); form.prompt = ''; task.value = null; resize.value = false
       notice.value = '已将当前结果作为新原图，请填写下一步指令；上一轮结果仍可导出或入册'
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
     finally { importing.value = false }
@@ -179,12 +181,12 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     try {
       check()
       const completed = await session.observe()
-      if (!completed.resultRefs.some(output => output.index === 0 && output.mime === 'image/png')) throw new Error('任务尚无完整 PNG 结果')
+      if (!completed.outputs.includes(0)) throw new Error('任务尚无完整 PNG 结果')
       if (result.value?.taskId !== completed.taskId) { saved.value = false; setUrl(resultUrl, null); resultBlob.value = null }
       result.value = structuredClone(completed)
-      const blob = await fetchRuntimeResult(runtimeResultPath(completed), lifetime.signal, completed); check()
+      const blob = await fetchImageTaskResult(completed, lifetime.signal); check()
       if (!blob.size || blob.type.split(';')[0] !== 'image/png') throw new Error('结果不是有效的 PNG 图片')
-      resultBlob.value = blob; setUrl(resultUrl, blob); notice.value = '结果已保存在任务中心，可导出或存入我的作品'
+      resultBlob.value = blob; setUrl(resultUrl, blob); notice.value = '可导出或存入我的作品'
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
     finally { observing.value = false }
   }
@@ -250,7 +252,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     try {
       check()
       if (kind === 'save') {
-        await archiveTaskResult(output.taskId); check()
+        await archiveImage(output, blob); check()
         if (isCurrent()) { saved.value = true; notice.value = '已存入我的作品' }
       } else if (blob) {
         const downloaded = await downloadMangaPng(blob, `绘遇-${label}-${output.taskId}.png`); check()
@@ -282,7 +284,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       await releaseRequest(); task.value = null; result.value = null; resultBlob.value = null; setUrl(resultUrl, null)
       applyDraft(draft); draftRecoveryNeeded.value = false; draftRecoveryError.value = ''; draftActive = true
       if (draft.resultTaskId) {
-        try { const found = await getRuntimeTask(draft.resultTaskId, lifetime.signal); check(); accept(found); void observe() }
+        try { const found = await session.load(draft.resultTaskId); check(); accept(found); void observe() }
         catch (cause) { check(); notice.value = '草稿已恢复，上次结果可到任务中心核对：' + message(cause) }
       }
     } catch (cause) { if (!lifetime.signal.aborted) draftRecoveryError.value = message(cause) }
@@ -320,11 +322,11 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
         if (terminal(task.value)) await releaseRequest()
       }
       if (!taskId && !artworkId && !task.value && !request.value && draft?.resultTaskId) {
-        try { const found = await getRuntimeTask(draft.resultTaskId, lifetime.signal); check(); accept(found) }
+        try { const found = await session.load(draft.resultTaskId); check(); accept(found) }
         catch (cause) { check(); notice.value = '上次结果未能读取，可到任务中心核对：' + message(cause) }
       }
       if (taskId && !request.value) {
-        const found = await getRuntimeTask(taskId, lifetime.signal); check(); accept(found)
+        const found = await session.load(taskId); check(); accept(found)
       } else if (taskId && taskId !== task.value?.taskId) {
         notice.value = '上次操作尚未确认，已恢复原请求；其他结果可在任务中心查看'
       }

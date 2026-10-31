@@ -2,7 +2,7 @@
 Source: https://github.com/ashukae/ComfyUI-MangaScreen
 Revision: d0eb8dcc6c45274e3eee118ff0dabe05b56039b9; see MANGASCREEN_LICENSE.txt.
 Local changes: remove Comfy/Torch wrappers; add phase cancellation; fix zero border.
-No model execution or automatic resource downloads. 待主力机验证.
+No model execution or automatic resource downloads.
 """
 import cv2
 import numpy as np

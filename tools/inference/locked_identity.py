@@ -1,8 +1,9 @@
-"""Reuse exact SHA identities only while Windows denies file writes/deletes.
+"""Reuse model identities only while Windows denies file writes/deletes.
 
 The single-threaded resident worker owns and explicitly closes this lease. Direct
 fixed local NTFS paths are supported; unsupported paths/filesystems or failed locks use
-the supplied full-byte fingerprint unchanged. No mtime/size identity cache.
+the supplied full-byte fingerprint unchanged. Prepared download records may be
+accepted only inside a newly locked interval, never as unlocked mtime-only reuse.
 Base protection persists across adapter changes; only new or invalidated
 adapter identities need another full read while the original base lease holds.
 """
@@ -256,17 +257,17 @@ class AssetIdentityLease:
         """Opaque identity of the still-live interval; reacquisition creates another."""
         return self._protected.token if self.valid() else None
 
-    def acquire(self, path, compute_identity):
+    def acquire(self, path, compute_identity, *, prepared_identity=None):
         self._require_owner()
         if self._acquiring:
             raise RuntimeError("Identity lease acquisition cannot be reentered")
         self._acquiring = True
         try:
-            return self._acquire(_absolute(path), compute_identity)
+            return self._acquire(_absolute(path), compute_identity, prepared_identity)
         finally:
             self._acquiring = False
 
-    def _acquire(self, path, compute_identity):
+    def _acquire(self, path, compute_identity, prepared_identity):
         if self.cached and str(path) == self._path and self.valid():
             result = copy.deepcopy(self._identity)
             if self.valid():
@@ -289,7 +290,9 @@ class AssetIdentityLease:
                 return compute_identity(path)
             raise
         try:
-            result = compute_identity(path)
+            # Completed download records may be used only after all paths/files
+            # are locked. Unsupported filesystems retain full-byte validation.
+            result = (prepared_identity or compute_identity)(path)
             if inventory_for() != inventory or not protected.valid():
                 raise OSError("Auxiliary model changed while fingerprinting; retry after preparation completes")
             identity = copy.deepcopy(result)

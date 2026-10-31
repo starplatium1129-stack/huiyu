@@ -40,13 +40,14 @@ impl ControlService {
             value
         } else {
             let mut value = settings;
+            value.acceleration = configured.acceleration;
+            value.memory_policy = configured.memory_policy;
+            value.adapter_memory_policy = configured.adapter_memory_policy;
             value.adapter_python = configured.adapter_python.or(value.adapter_python);
             value
         };
         target_settings.engine = "native".into();
         target_settings.video_engine = Some(video_engine);
-        target_settings.acceleration = "native".into();
-        target_settings.memory_policy = "offload".into();
         let target = serde_json::to_value(&target_settings)?;
         let active = self.active_inference()?;
         let current = serde_json::to_value(&active)?;

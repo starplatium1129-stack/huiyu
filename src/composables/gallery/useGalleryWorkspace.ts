@@ -130,7 +130,7 @@ export function useGalleryWorkspace() {
     let selectingAll = false;
     async function selectAllVisible() { if (selectingAll) return; selectingAll = true; try { if (!galleryQuery.enabled.value || await galleryQuery.all()) selectLoaded(); } finally { selectingAll = false; } }
     const { viewerIndex, viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current, openViewer, closeViewer, onViewerClosed: finishViewerClose, step, getViewerRevision } = useGalleryViewer({
-        history, visible, hasMore: galleryQuery.hasMore, loadMore: galleryQuery.more, previewSource: item => cardUrls.value[item.id] || thumbUrls.value[item.id] || '', resetControls: () => { infoOpen.value = false; compareMode.value = false; },
+        history, visible, hasMore: galleryQuery.hasMore, loadMore: galleryQuery.more, resetControls: () => { infoOpen.value = false; compareMode.value = false; },
     });
     function onViewerClosed() { finishViewerClose(); restoreDeferredFiltersFromQuery(); }
 

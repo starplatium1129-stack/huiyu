@@ -97,7 +97,7 @@
               <label class="field-label" :for="descriptionId">通用画面描述（英文，可选）</label>
               <textarea :id="descriptionId" v-model="universalDescription" class="input" rows="4" lang="en"
                 :aria-describedby="`${descriptionId}-hint`" placeholder="Describe the shared action, composition and lighting…" spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
-              <p :id="`${descriptionId}-hint`" class="batch-description">填写后将替代原场景正文，留空则沿用原文。请保留需要的动作、构图与光影，把原角色的姓名和专属特征改成适用于各角色的通用描述。</p>
+              <p :id="`${descriptionId}-hint`" class="batch-description">填写后将替换原场景正文，留空沿用原文。建议保留动作与光影，去除特定角色的专有特征。</p>
             </div>
 
             <div class="batch-scene-toolbar">

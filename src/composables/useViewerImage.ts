@@ -23,14 +23,19 @@ export function useViewerImage(props: Readonly<{
       && image.dataset.imageAttempt === String(full ? fullAttempt.value : imageAttempt.value)
       && image.getAttribute('src') === requestSrc(full ? props.src : displayedSrc.value, full ? fullAttempt.value : imageAttempt.value)
   }
-  function onImageLoad(event: Event) {
-    if (!currentImage(event.target)) return
+  async function onImageLoad(event: Event) {
+    const image = event.target, revision = sourceRevision
+    if (!currentImage(image)) return
+    try { await image.decode() }
+    catch { if (revision === sourceRevision) failImage(image); return }
+    if (revision !== sourceRevision || !currentImage(image)) return
     imageReady.value = true; imageFailed.value = false
     if (displayedSrc.value === props.src) { fullImageFailed.value = false; retrying.value = false }
     callbacks.loaded()
   }
-  function onImageError(event: Event) {
-    if (!currentImage(event.target)) return
+  function onImageError(event: Event) { failImage(event.target) }
+  function failImage(image: EventTarget | null) {
+    if (!currentImage(image)) return
     if (displayedSrc.value !== props.src) { imageReady.value = false; displayedSrc.value = props.src; return }
     imageReady.value = false; imageFailed.value = true; retrying.value = false
     callbacks.error()
@@ -86,7 +91,7 @@ export function useViewerImage(props: Readonly<{
     fullImageFailed.value = false
     // Hydrating the same picture preserves its frame and geometry through decoding.
     const preserve = !changedOwner && (retainedPainted || retrying.value || !imageFailed.value && ((preview && preview === previousPreview && resolvedPreview === previousResolvedPreview)
-      || (!changedSource && imageReady.value)))
+      || (imageReady.value && (key !== undefined || !changedSource))))
     if (preserve && !imageFailed.value) return
     imageRevision.value++
     displayedSrc.value = props.previewSrc || props.src

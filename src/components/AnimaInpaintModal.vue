@@ -208,11 +208,10 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
       />
 
       <div class="inpaint-body">
-      <p v-if="native && !wholeImage" class="modal-intro">局部重绘（实验性）：手绘或本地自动识别区域参与采样，遮罩外按原图合成保留。TeaCache 沿用生成参数，无需单独校准；具体换装效果仍取决于选区与重绘幅度。</p>
-      <p v-if="wholeImage" class="modal-intro">整图重绘会重新生成整张图片，人物、面部和背景均可能变化，不保留遮罩外区域。</p>
+      <p v-if="native && !wholeImage" class="modal-intro">局部重绘：选区参与采样，遮罩外按原图合成保留。换装效果取决于选区与重绘幅度。</p>
+      <p v-if="wholeImage" class="modal-intro">整图重绘将重新生成全图，不保留遮罩外画面。</p>
       <p v-else-if="!native" class="modal-intro">
-        <b>手绘精确遮罩</b>可指定要修改的衣物。<b>自动识别</b>（如 uniform / dress）需要额外文字蒙版节点，提交前会检查所用服务。
-        热门角色换装已自动锁定角色身份，不会误绑桌宠 LoRA。
+        <b>手绘遮罩</b>指定修改范围；<b>自动识别</b>通过服装关键词生成蒙版。
       </p>
 
       <div class="inpaint-layout">
@@ -314,8 +313,8 @@ const { preparing: readingSource, start: handleStart } = useInpaintPreparation({
                 <span>重绘区域</span>
               </span>
             </label>
-            <p v-if="native && !wholeImage" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 文件已就绪；首次使用时加载并校验模型，不会联网下载。' : '自动识别缺少本地 CLIPSeg，可在控制室一键准备。手绘遮罩仍可使用。' }}</p>
-            <p v-else-if="!native && !wholeImage" class="field-hint" role="status">{{ maskUnavailable || (automaticMaskAvailable ? '文字自动蒙版节点已注册；不代表其模型文件、加载或识别效果已验证。' : '自动识别节点尚未确认。明确选择自动识别后，提交时会启动受管服务并检查节点；未通过不会提交生成。') }}</p>
+            <p v-if="native && !wholeImage" class="field-hint">{{ automaticMaskAllowed ? '本地 CLIPSeg 模型已就绪。' : '自动识别缺少本地 CLIPSeg，可在控制室准备；当前可使用手绘遮罩。' }}</p>
+            <p v-else-if="!native && !wholeImage" class="field-hint" role="status">{{ maskUnavailable || (automaticMaskAvailable ? '文字自动蒙版节点已就绪。' : '自动识别节点尚未确认；提交时会自动检查。') }}</p>
             <RouterLink v-if="!wholeImage && maskUnavailable" class="btn btn-ghost" :to="native ? { path: '/control', query: { resource: 'clipseg-rd64-refined' }, hash: '#control-setup' } : { path: '/control', query: { engine: 'anima' } }" @click="emit('close')">{{ native ? '准备 CLIPSeg 自动蒙版' : '查看控制面板与准备范围' }}</RouterLink>
             <button v-if="native || wholeImage" type="button" class="btn btn-ghost" :aria-pressed="wholeImage" @click="editMode = 'whole'">选择整图重绘（人物与背景均可能变化）</button>
             <button v-if="wholeImage" type="button" class="btn btn-ghost" @click="returnToMask">返回局部遮罩换装</button>

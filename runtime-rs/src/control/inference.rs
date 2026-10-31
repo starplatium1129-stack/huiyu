@@ -130,12 +130,17 @@ async fn save(
     Extension(s): Extension<Arc<ControlService>>,
     Json(mut body): Json<Value>,
 ) -> Result<Json<Value>> {
-    // Image settings do not change video selection or discard a separately
-    // configured adapter interpreter when older clients omit these fields.
+    // Older clients must preserve separately configured adapter settings.
     if let Some(object) = body.as_object_mut() {
         let configured = s.configured_inference()?;
         if !object.contains_key("videoEngine") {
             object.insert("videoEngine".into(), json!(configured.video_engine()));
+        }
+        if !object.contains_key("adapterMemoryPolicy") {
+            object.insert(
+                "adapterMemoryPolicy".into(),
+                json!(configured.adapter_memory_policy),
+            );
         }
         if !object.contains_key("adapterPython") {
             if let Some(python) = configured.adapter_python {

@@ -62,9 +62,13 @@ Explicit local profiles require current matching acceptance; everyday built-in c
 explicit Tea enablement rejects an unmatched profile. Previous GPU timings and
 image acceptance apply only to their recorded source, not these changes.
 
-Select `inference.memoryPolicy=offload` in local engine settings, or explicitly
-override with `HUIYU_INFERENCE_MEMORY=offload`. The default `resident` keeps warm
-throughput. The shared `native_memory.py` keeps ComponentsManager stage ownership
+Anima uses `inference.memoryPolicy` (default `resident`), overridden by
+`HUIYU_INFERENCE_MEMORY`. Other native models and manga rewrites use the separate
+`inference.adapterMemoryPolicy` (default `offload`), overridden by
+`HUIYU_NATIVE_ADAPTER_MEMORY`. Activation preserves both policies and Anima's
+acceleration selection. Adapter workers receive their own policy and `native`
+execution, without inheriting or disabling Anima's Cosmos Sage/compiled mode.
+The shared `native_memory.py` keeps ComponentsManager stage ownership
 and budgets weights from free CUDA memory minus max(1 GiB, total/4). Encoders and
 denoisers exceeding that budget use synchronous block/leaf group offload; those
 that fit keep whole-component placement. Each task re-evaluates the budget. VAE

@@ -1,5 +1,5 @@
 import { apiClient, ApiClientError } from './client'
-import type { TaskRecord } from '../../types/tasks'
+import type { ImageTask } from '@/composables/tasks/useImageTaskSession'
 import manifest from '../../tools/inference/manga-screen.json'
 
 export const mangaManifest = manifest
@@ -13,7 +13,7 @@ export interface MangaModelStatus { id: string; available: boolean; unavailableR
 export interface MangaStatus { available: boolean; unavailableReason: string | null; pending: number
   rewrite: MangaModelStatus[]; lineart: { available: boolean; unavailableReason: string | null }; memoryPolicy: string }
 export interface MangaJob {
-  task: TaskRecord
+  task: ImageTask
   id: string; operation: MangaRequest['operation']; status: string; progress: number | null; progressText: string | null
   resultAvailable: boolean; metadata: Record<string, unknown>; error: string | null
   lineart: { width: number; height: number } | null
@@ -21,11 +21,8 @@ export interface MangaJob {
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v)
 const invalid = () => new ApiClientError('漫画处理服务版本不匹配，请更新并重启原生后端', { kind: 'invalid-response' })
 export function defaultMangaParameters(): MangaParameters {
-  const groups = Object.fromEntries(Object.entries(manifest.parameters).map(([name, fields]) =>
+  return Object.fromEntries(Object.entries(manifest.parameters).map(([name, fields]) =>
     [name, Object.fromEntries(Object.entries(fields).map(([key, rule]) => [key, rule.default]))])) as MangaParameters
-  // The first pass keeps the entire composition. Cropping is an explicit choice.
-  groups.panel.frame = 'original'; groups.panel.border = 0; groups.panel.margin = 0
-  return groups
 }
 export async function mangaStatus(signal?: AbortSignal): Promise<MangaStatus> {
   const value = await apiClient.request<Record<string, unknown>>('/api/manga/status', { signal, timeoutMs: 15_000, cachePolicy: 'bypass' })

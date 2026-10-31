@@ -6,10 +6,11 @@
       <ZoomableImageViewer v-if="entry.index === index && (currentSrc || previewSrc || preview(entry.item) || loadFailed)"
         wheel-on-image-only
         :src="resolveRuntimeUrl(currentSrc || previewSrc || preview(entry.item))"
-        :preview-src="resolveRuntimeUrl(previewSrc || preview(entry.item))" :image-key="entry.item.id" :load-failed="loadFailed" :reload="reload" :alt="title(entry.item)" @load="emit('load')" @error="emit('error')">
+        :preview-src="resolveRuntimeUrl(previewSrc || preview(entry.item))" :image-key="entry.item.id" :load-failed="loadFailed" :reload="reload" :alt="title(entry.item)" @load="currentReady = true; emit('load')" @error="emit('error')">
         <template #fallback><div class="viewer-fallback"><ArchiveIcon name="image" /></div></template>
       </ZoomableImageViewer>
-      <button v-else-if="entry.index !== index" class="gallery-orbit-neighbor" type="button" tabindex="-1"
+      <button v-if="entry.index !== index || preview(entry.item)" v-show="entry.index !== index || !currentReady"
+        class="gallery-orbit-neighbor" type="button" tabindex="-1" :inert="entry.index === index" :aria-hidden="entry.index === index"
         :aria-label="`查看${title(entry.item)}`" @pointerdown.prevent @click="select(entry.index)">
         <span v-if="preview(entry.item) && !failed.has(preview(entry.item))" class="gallery-orbit-picture" :style="{ '--orbit-image-ratio': imageRatio(entry.item) }">
         <img :src="resolveRuntimeUrl(preview(entry.item))"
@@ -19,7 +20,7 @@
         </span>
         <ArchiveIcon v-else name="image" class="viewer-fallback" />
       </button>
-      <div v-else class="viewer-fallback"><ArchiveIcon name="image" /></div>
+      <div v-if="entry.index === index && !(currentSrc || previewSrc || preview(entry.item) || loadFailed)" class="viewer-fallback"><ArchiveIcon name="image" /></div>
     </div>
     </div>
     <div class="gallery-orbit-caption">
@@ -47,6 +48,8 @@ const props = defineProps<{
 }>()
 const emit = defineEmits<{ select: [index: number]; load: []; error: [] }>()
 const host = ref<HTMLElement | null>(null), failed = ref(new Set<string>())
+const currentReady = ref(false)
+watch(() => props.items[props.index]?.id, () => { currentReady.value = false }, { flush: 'sync' })
 const imageRatios = reactive(new Map<string, number>())
 let cardNodes: { card: HTMLElement; index: number; shade: HTMLElement | null }[] = []
 function refreshCards() {
@@ -148,5 +151,5 @@ watch(travel, async motion => {
 }, { flush:'sync' })
 onUpdated(() => { refreshCards(); paint(travel.value?.to ?? getPosition()) })
 onBeforeUnmount(() => { focusRevision++; cancelTravel(); cardNodes = [] })
-watch(() => props.items.map(item => item.id), (items, previous) => { if (items.length > previous.length && previous.every((id, index) => id === items[index])) return; failed.value.clear(); imageRatios.clear(); reset() })
+watch(() => props.items.map(item => item.id), (items, previous) => { if (items.length >= previous.length && previous.every((id, index) => id === items[index])) return; failed.value.clear(); imageRatios.clear(); reset() })
 </script>

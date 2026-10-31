@@ -1,6 +1,6 @@
 <template>
   <article class="page showcase-page">
-    <header class="showcase-heading">
+    <header class="showcase-heading" data-route-arrive>
       <div class="heading-copy tw:min-w-0">
         <p class="showcase-kicker"><ArchiveIcon name="book" />ARTBOOK / 邂逅灵感</p>
         <div class="heading-title"><h1>参考画册</h1><span class="collection-count"><strong>{{ manifestLoading && !entries.length ? '—' : entries.length }}</strong> 幅灵感</span></div>

@@ -74,12 +74,12 @@
       <!-- 上层：HD 原图，解码完成后淡入覆盖缩略图，消除「闪一下变高清」的硬切 -->
       <img :crossorigin="cors"
         ref="hdImage"
-        v-if="imageUrl && !imageFailed"
+        v-if="paintedImageUrl && !imageFailed"
         :key="`image:${imageAttempt}`"
         :data-image-attempt="imageAttempt"
         class="artwork-image artwork-image-hd"
         :class="{ 'is-loaded': imageLoaded, 'artwork-image-hd-crossfade': thumbLoaded }"
-        :src="imageUrl"
+        :src="paintedImageUrl"
         :alt="title"
         decoding="async"
         referrerpolicy="no-referrer"
@@ -107,6 +107,7 @@
 <script setup lang="ts">
 import type { ArtworkRecord } from '@/types/artwork'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
@@ -130,13 +131,36 @@ const hdImage = ref<HTMLImageElement | null>(null)
 const thumbFailed = ref(false), imageFailed = ref(false)
 const thumbLoaded = ref(false), imageLoaded = ref(false)
 const thumbAttempt = ref(0), imageAttempt = ref(0)
+const paintedImageUrl = ref(props.imageUrl)
+let pendingImage: HTMLImageElement | null = null
 let alive = true
-onBeforeUnmount(() => { alive = false })
+onBeforeUnmount(() => { alive = false; pendingImage?.removeAttribute('src'); pendingImage = null })
 watch([() => props.thumbUrl, () => props.cors], () => {
   thumbAttempt.value++; thumbFailed.value = false; thumbLoaded.value = false
 }, { flush: 'sync' })
-watch([() => props.imageUrl, () => props.cors], () => {
-  imageAttempt.value++; imageFailed.value = false; imageLoaded.value = false
+watch([() => props.imageUrl, () => props.cors, runtimeResourceIdentity], ([url, cors, identity], [, previousCors, previousIdentity]) => {
+  pendingImage?.removeAttribute('src'); pendingImage = null
+  const preserve = imageLoaded.value && !!url && cors === previousCors && identity === previousIdentity
+  function commit(ready: boolean) {
+    paintedImageUrl.value = url
+    imageAttempt.value++; imageFailed.value = false; imageLoaded.value = ready
+  }
+  if (!preserve) { commit(false); return }
+  // Resolution upgrades keep the painted HD frame instead of fading back to
+  // the thumbnail. A replaced/retired request can never publish its pixels.
+  const candidate = new Image()
+  pendingImage = candidate
+  if (cors) candidate.crossOrigin = cors
+  candidate.referrerPolicy = 'no-referrer'
+  candidate.src = url
+  void candidate.decode().then(() => {
+    if (alive && pendingImage === candidate) commit(true)
+  }, () => {
+    if (alive && pendingImage === candidate) commit(false)
+  }).finally(() => {
+    if (pendingImage === candidate) pendingImage = null
+    candidate.removeAttribute('src')
+  })
 }, { flush: 'sync' })
 const previewFailed = computed(() => Boolean((props.imageUrl || props.thumbUrl)
   && (!props.imageUrl || imageFailed.value) && (!props.thumbUrl || thumbFailed.value)))
@@ -148,7 +172,7 @@ function imageRequest(event: Event, kind: ImageKind) {
   if (!(image instanceof HTMLImageElement)) return
   const element = kind === 'thumb' ? thumbImage : hdImage
   const token = kind === 'thumb' ? thumbAttempt : imageAttempt
-  const source = () => kind === 'thumb' ? props.thumbUrl : props.imageUrl
+  const source = () => kind === 'thumb' ? props.thumbUrl : paintedImageUrl.value
   const attempt = token.value, url = source()
   const current = () => alive && !!url && element.value === image && source() === url && token.value === attempt
     && image.getAttribute('src') === url && image.getAttribute('data-image-attempt') === String(attempt)

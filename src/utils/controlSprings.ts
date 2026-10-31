@@ -12,3 +12,5 @@ export const SELECTION_SPRING = { frequency: 5.5, damping: .86 } as const
  * tail, with a continuous clock instead of CSS reverse-duration shortening. */
 export const TOGGLE_SPRING = { frequency: 3, damping: 1 } as const
 export const GALLERY_SPRING = { frequency: 3.6, damping: .82 } as const
+/** Page arrivals need a readable travel phase, without bouncing large text surfaces. */
+export const ROUTE_SPRING = { frequency: 3.2, damping: 1 } as const

@@ -4,7 +4,7 @@ import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 export function useInferenceSettings() {
   const isLocal = isLocalStudioHost()
-  const draft = reactive<InferenceSettings>({ engine: 'native', acceleration: 'native', memoryPolicy: 'resident', modelsRoot: '', lorasRoot: '', python: '', adapterPython: null, worker: '' })
+  const draft = reactive<InferenceSettings>({ engine: 'native', acceleration: 'native', memoryPolicy: 'resident', adapterMemoryPolicy: 'offload', modelsRoot: '', lorasRoot: '', python: '', adapterPython: null, worker: '' })
   const snapshot = ref<InferenceSettingsResponse | null>(null)
   const diagnostics = ref<InferenceDiagnostics | null>(null)
   const discovery = ref<InferenceDiscovery | null>(null)
@@ -26,6 +26,7 @@ export function useInferenceSettings() {
         if (key === 'engine') draft.engine = result.configured.engine
         else if (key === 'acceleration') draft.acceleration = result.configured.acceleration
         else if (key === 'memoryPolicy') draft.memoryPolicy = result.configured.memoryPolicy
+        else if (key === 'adapterMemoryPolicy') draft.adapterMemoryPolicy = result.configured.adapterMemoryPolicy
         else if (key === 'adapterPython') draft.adapterPython = result.configured.adapterPython
         else draft[key] = result.configured[key]
       }

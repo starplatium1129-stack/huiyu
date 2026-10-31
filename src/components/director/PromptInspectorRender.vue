@@ -62,7 +62,7 @@ const { pb, generationBusy, generationPresentation, animaState, drawEngine, gene
   reuseSuccessfulRecipe, BUSY_HINT, selectAnimaModel,
   animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings
 const animaModelOptions = computed<StudioSelectOption[]>(() => animaState.value.models.map(model => ({
-  value: model.id, label: (model.label || model.id) + (model.available === false ? ' · 模型未安装' : ''),
+  value: model.id, label: (model.label || model.id) + (model.available === false ? animaState.value.provider === 'native' ? ' · 原生未就绪' : ' · 暂不可用' : ''),
   disabled: model.available === false,
 })))
 function onAnimaModelSelected(value: string | number) { selectAnimaModel(String(value)) }

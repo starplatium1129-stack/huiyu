@@ -6,6 +6,8 @@ installs dependencies, downloads weights, executes repository-provided custom co
 from __future__ import annotations
 
 import argparse
+from collections import deque
+from concurrent.futures import ThreadPoolExecutor
 import contextlib
 import gc
 import hashlib
@@ -16,6 +18,7 @@ import json
 import os
 from pathlib import Path
 import sys
+from types import SimpleNamespace
 
 for _key in ("HF_HUB_OFFLINE", "TRANSFORMERS_OFFLINE", "HF_HUB_DISABLE_TELEMETRY", "DO_NOT_TRACK"):
     os.environ[_key] = "1"
@@ -55,8 +58,17 @@ def dependencies():
     sibling("native_memory")
     sibling("locked_identity")
     versions = {}
-    for name, expected in {"torch": "2.9.0", "torchvision": "0.24.0", "transformers": "5.17.0",
-                           "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0", "ftfy": "6.3.1"}.items():
+    expected_versions = {"torch": "2.9.0", "torchvision": "0.24.0", "transformers": "5.17.0",
+                         "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0", "ftfy": "6.3.1",
+                         "huggingface-hub": "1.32.0"}
+    try:
+        current_torch = importlib.metadata.version("torch").split("+")[0]
+    except importlib.metadata.PackageNotFoundError as exc:
+        raise Error("DEPENDENCY_MISSING", "Missing torch; prepare the image runtime") from exc
+    if current_torch == "2.13.0":
+        expected_versions.update(torch="2.13.0", torchvision="0.28.0", transformers="5.14.1",
+                                 Pillow="12.2.0", sageattention="2.2.0")
+    for name, expected in expected_versions.items():
         try:
             value = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError as exc:
@@ -95,8 +107,9 @@ def dependencies():
 
 
 def fingerprint(root, control):
-    # No warm-weight cache: read all bytes before/after loading to reject drift.
-    digest = hashlib.sha256()
+    # Still read every byte under the identity lease. Hash independent fixed-size
+    # chunks in parallel, then bind their ordered digests, paths and file lengths.
+    digest = hashlib.sha256(b"huiyu-model-chunk-sha256-v1\0")
     paths = []
     for parent, directories, files in os.walk(root, followlinks=False):
         for directory in directories:
@@ -109,18 +122,130 @@ def fingerprint(root, control):
                 paths.append(path)
                 if len(paths) > 10000:
                     raise Error("MODEL_INVALID", "Too many model assets")
-    for path in sorted(paths):
-        control.check()
-        contract.safe_file(root, path)
-        digest.update(str(path.relative_to(root)).encode("utf-8") + b"\0")
-        with path.open("rb") as source:
-            while chunk := source.read(8 * 1024 * 1024):
+    workers = min(4, os.cpu_count() or 1)
+    with ThreadPoolExecutor(max_workers=workers) as pool:
+        for path in sorted(paths):
+            control.check()
+            contract.safe_file(root, path)
+            digest.update(str(path.relative_to(root)).encode("utf-8") + b"\0")
+            digest.update(path.stat().st_size.to_bytes(8, "little"))
+            pending = deque()
+            with path.open("rb") as source:
+                while chunk := source.read(8 * 1024 * 1024):
+                    control.check()
+                    pending.append(pool.submit(lambda value: hashlib.sha256(value).digest(), chunk))
+                    if len(pending) >= workers:
+                        digest.update(pending.popleft().result())
+            for result in pending:
                 control.check()
-                digest.update(chunk)
+                digest.update(result.result())
     return digest.hexdigest()
 
 
-def generate(job, control, _prepared, *, result_callback=None, resident=None):
+def model_identity(root, model_id, control):
+    marker = root / "huiyu-model.json"
+    if marker.is_file():
+        receipt = contract.config(root, marker)
+        manifest = contract.document(Path(__file__).with_name("managed-adapter-models.json"))
+        spec = next((item for item in manifest["models"] if item["id"] == model_id), None)
+        if (spec is not None and receipt.get("schemaVersion") == 1
+                and receipt.get("modelId") == model_id and receipt.get("revision") == spec["revision"]
+                and receipt.get("scope") == "downloaded-files-sha256"):
+            # Setup already hashes every downloaded byte before writing this record.
+            # Follow that preparation contract instead of rescanning tens of GB at
+            # every worker start. Changed/unmanaged files keep full-byte validation.
+            prepared_at = marker.stat().st_mtime_ns
+            ready = True
+            for item in spec["files"]:
+                control.check()
+                path = contract.safe_file(root, root / item["path"])
+                info = path.stat()
+                if info.st_size != item["bytes"] or info.st_mtime_ns > prepared_at:
+                    ready = False
+                    break
+            if ready:
+                digest = hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(",", ":")).encode())
+                known = {item["path"] for item in spec["files"]}
+                for path in sorted(root.rglob("*.json")):
+                    control.check()
+                    # Include derived compatibility configs, which are not downloads.
+                    if path.relative_to(root).as_posix() not in known and path != marker:
+                        contract.config(root, path)
+                        digest.update(path.relative_to(root).as_posix().encode() + b"\0" + path.read_bytes())
+                return {"sha256": digest.hexdigest(), "scope": "prepared-download-record"}
+    return {"sha256": fingerprint(root, control), "scope": "full-byte-chunk-sha256"}
+
+
+@contextlib.contextmanager
+def windows_weight_reads():
+    if sys.platform != "win32":
+        yield
+        return
+    import safetensors
+    import safetensors.torch
+    from transformers import modeling_utils as encoder_loading
+    # Diffusers imports safe_open inside its loading functions; changing the
+    # public entry point covers those imports without inventing module aliases.
+    readers = (safetensors, safetensors.torch, encoder_loading)
+    originals = [(module, module.safe_open) for module in readers]
+    reader_class = sibling("mapped_weights").ReadOnlyWeights
+    async_loading = os.environ.get("HF_DEACTIVATE_ASYNC_LOAD")
+    os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = "1"
+
+    def safe_open(*args, **kwargs):
+        return reader_class(*args, **kwargs)
+
+    # The pinned loader's writable mmap reserves Windows commit for whole files.
+    # Use immutable file views only during Qwen/MOSS loading, then restore readers.
+    for module, _ in originals:
+        module.safe_open = safe_open
+    try:
+        yield
+    finally:
+        for module, reader in originals:
+            module.safe_open = reader
+        if async_loading is None:
+            os.environ.pop("HF_DEACTIVATE_ASYNC_LOAD", None)
+        else:
+            os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = async_loading
+
+
+@contextlib.contextmanager
+def qwen_host_prefix(enabled):
+    if not enabled:
+        yield
+        return
+    from diffusers.pipelines.qwenimage21 import pipeline_qwenimage21 as implementation
+    original = implementation.QwenImage21KVCache
+    caches = []
+
+    class Layer:
+        def store(self, key, value):
+            self.device = key.device
+            self.key = key.detach().to(device="cpu", copy=True)
+            self.value = value.detach().to(device="cpu", copy=True)
+
+        def get(self):
+            return self.key.to(self.device), self.value.to(self.device)
+
+    class HostCache(original):
+        def __init__(self, count):
+            self.layer_caches = [Layer() for _ in range(count)]
+            caches.append(self)
+
+    # The SDK exposes only a GPU cache. Scope this lossless CPU cache to the
+    # serial edit call, like Comfy's memory-aware prefix cache, and retire it on
+    # success, failure or cancellation; no state crosses sampling requests.
+    implementation.QwenImage21KVCache = HostCache
+    try:
+        yield
+    finally:
+        implementation.QwenImage21KVCache = original
+        for cache in caches:
+            cache.layer_caches.clear()
+
+
+def generate(job, control, _prepared, *, result_callback=None, resident=None, reference_resolution=None):
     data, spec = contract.validate(job)
     root = contract.layout(job["modelDir"], spec)
     style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
@@ -135,6 +260,12 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
         raise Error("INVALID_MEMORY_POLICY", "Use resident or offload")
     if os.environ.get("HUIYU_INFERENCE_ACCELERATION", "native") != "native":
         raise Error("UNSUPPORTED_ACCELERATION", "Anima acceleration modes are not supported by these adapters")
+    render_pixels = data["width"] * data["height"]
+    conditioned = bool(job.get("inputImagePath"))
+    # Manga can match its reference encoding to the requested output area. Account
+    # for 32-pixel alignment when reserving activation memory for that input.
+    reference_pixels = (reference_resolution + 64) ** 2 if reference_resolution is not None else 1024**2
+    memory_pixels = render_pixels + ((1 + len(job.get("referenceImagePaths", []))) * reference_pixels if conditioned else 0)
     if spec["media"] == "video":
         media.encoder(Error)  # Fail before allocating/loading weights if encoder is absent.
     owned = resident is None
@@ -143,17 +274,63 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
     images = []
     success = False
     try:
-        kwargs = {"local_files_only": True, "use_safetensors": True, "torch_dtype": torch.bfloat16}
-        pipeline, identity, reused = cache.acquire(root, spec, data, policy, control, fingerprint,
-            lambda: (sibling("moss_adapter").load(root, control, contract) if spec["family"] == "moss-image"
-                     else video.load(root, spec, data, control, contract) if spec["media"] == "video"
-                     else getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)), Error, style_path=style_path)
-        observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity,
+        kwargs = {"local_files_only": True, "use_safetensors": True, "torch_dtype": torch.bfloat16,
+                  "low_cpu_mem_usage": True}
+
+        def load_pipeline():
+            placement = None
+            try:
+                if spec["family"] == "moss-image":
+                    with windows_weight_reads():
+                        template = sibling("moss_adapter").load(root, control, contract)
+                    if policy == "resident":
+                        template.transformer.to(device="cuda:0", dtype=torch.bfloat16)
+                elif spec["media"] == "video":
+                    template = video.load(root, spec, data, control, contract)
+                else:
+                    with windows_weight_reads() if spec["family"] == "qwen-image" else contextlib.nullcontext():
+                        template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
+                    if spec["family"] == "qwen-image":
+                        encoder = template.text_encoder
+                        encoder.set_attn_implementation("sdpa")
+                        # This pipeline consumes only the final hidden state. Like
+                        # Comfy's conditioning encoder, skip vocabulary logits,
+                        # unused LM-head weights, KV cache and all intermediate states.
+                        # Its task-local final-norm hook still selects pre-norm output.
+                        encoder.lm_head = torch.nn.Identity()
+                        def hidden_only(*args, **values):
+                            values.update(output_hidden_states=False, use_cache=False)
+                            mask = values.get("attention_mask")
+                            if mask is not None and bool(mask.all()):
+                                values["attention_mask"] = None
+                            output = encoder.model(*args, **values)
+                            return SimpleNamespace(hidden_states=(output.last_hidden_state,))
+                        encoder.forward = hidden_only
+                if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
+                    placement = sibling("mapped_residency").Residency(template.components, policy, memory_pixels,
+                        image_conditioned=conditioned, decode_pixels=render_pixels)
+                control.check()
+                return template, placement
+            except BaseException:
+                if placement is not None:
+                    placement.close()
+                raise
+
+        pipeline, identity, reused = cache.acquire(root, spec, data, policy, control,
+            lambda path, task: {"sha256": fingerprint(path, task), "scope": "full-byte-chunk-sha256"},
+            load_pipeline, Error, style_path=style_path,
+            prepared_identity=lambda path, task: model_identity(path, data["modelId"], task))
+        if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
+            cache.memory.plan(memory_pixels, image_conditioned=conditioned, control=control, decode_pixels=render_pixels)
+        observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity["sha256"],
+                       "modelIdentityScope": identity["scope"],
                        "memoryPolicy": policy, "weightReuse": reused,
                        "memoryScheduling": cache.memory.observation()}
         if style_path is not None:
             observation["styleLoraSha256"] = cache.style_identity
         video.prepare(pipeline, spec, data)
+        if policy == "offload" and spec["family"] in ("qwen-image", "moss-image"):
+            pipeline.vae.enable_tiling()
         if spec["media"] == "video":
             with torch.inference_mode():
                 frames, soundtrack, sample_rate = video.generate(pipeline, spec, data, control)
@@ -168,6 +345,9 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
         def on_step(pipe, step, timestep, callback_kwargs):
             control.progress(step + 1, data["steps"])
             if step + 1 == data["steps"]:
+                if policy == "offload" and spec["family"] not in ("qwen-image", "moss-image"):
+                    cache.memory.offload_all()
+                    torch.cuda.empty_cache()
                 control.stage("decoding")
             return callback_kwargs
 
@@ -184,12 +364,19 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None):
                     control.check()
                     images.append(media.input_image(path, Error))
                 args["image"] = images
+                if reference_resolution is not None:
+                    args["output_resolution"] = reference_resolution
         else:
             args["guidance_scale"] = data["cfg"]
             if spec["negative"]:
                 args["negative_prompt"] = data["negativePrompt"]
         control.stage("encoding")
-        with torch.inference_mode():
+        host_prefix = policy == "offload" and spec["family"] == "qwen-image" and bool(images)
+        if host_prefix:
+            observation["prefixCacheDevice"] = "cpu"
+        attention = sibling("native_attention").inference_attention(spec["family"] in ("qwen-image", "moss-image"))
+        with torch.inference_mode(), qwen_host_prefix(host_prefix), attention as backend:
+            observation["attentionBackend"] = backend
             output = (sibling("moss_adapter").generate(pipeline, data, control, observation)
                       if spec["family"] == "moss-image" else pipeline(**args))
         control.stage("saving")

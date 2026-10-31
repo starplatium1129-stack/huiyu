@@ -79,7 +79,7 @@ pub(super) async fn validate(job: &Job, page: &Path, cancel: &CancellationToken)
         return Err(protocol_error());
     }
     Arc::make_mut(&mut job.state.lock().await.metadata)["lineartResult"] = json!({"width":width,"height":height,
-        "polarity":"black-on-white","stage":if job.input["operation"]=="lineart"{"extracted"}else{"before-panel"},"validation":"待主力机验证"});
+        "polarity":"black-on-white","stage":if job.input["operation"]=="lineart"{"extracted"}else{"before-panel"},"validation":"处理完成"});
     Ok(())
 }
 

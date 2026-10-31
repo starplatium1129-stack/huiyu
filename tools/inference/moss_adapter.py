@@ -4,6 +4,8 @@ Architecture: OpenMOSS-Team/MOSS-Image-Base@85975793d8b3d432f1b6e27f352abaa4c2a4
 Never load model-directory Python or apply Anima LoRA/TeaCache recipes.
 """
 from huiyu_worker_lifecycle import load_sibling
+import re
+import sys
 
 
 def pipeline_class():
@@ -17,9 +19,14 @@ def load(root, control, contract):
     from safetensors.torch import load_file
     from transformers import Qwen3_5Model, Qwen2TokenizerFast
     module = load_sibling("moss_pipeline")
+    control.stage("loading", component="text_encoder")
+    encoder = Qwen3_5Model.from_pretrained(str(root / "text_encoder"), local_files_only=True,
+        trust_remote_code=False, use_safetensors=True, dtype=torch.bfloat16).eval()
+    tokenizer = Qwen2TokenizerFast.from_pretrained(str(root / "tokenizer"), local_files_only=True, trust_remote_code=False)
+    control.check()
     control.stage("loading", component="transformer")
     checkpoint = contract.safe_file(root, root / "transformer/diffusion_pytorch_model.safetensors")
-    weights = load_file(str(checkpoint), device="cpu")
+    weights = load_file(str(checkpoint), device="cpu", backend="pread" if sys.platform == "win32" else "mmap")
     control.check()
     if not weights or any(value.dtype not in (torch.float16, torch.bfloat16, torch.float32) for value in weights.values()):
         raise contract.AdapterError("UNSUPPORTED_MODEL", "MOSS requires the author's FP16 checkpoint; INT8/ConvRot weights need a different loader")
@@ -30,16 +37,26 @@ def load(root, control, contract):
             weights = {key[len(prefix):]: value for key, value in weights.items()}
             break
     config = contract.config(root, root / "transformer/config.json")
+    # Author single-file checkpoints fuse only DiT attention Q/K/V row blocks.
+    # Match OpenMOSS/MOSS-Image#11; text_embedder's fused QKV stays untouched.
+    dim, depth = config.get("dim", 3072), config.get("num_layers", 42)
+    for key in list(weights):
+        match = re.fullmatch(r"layers\.(\d+)\.proj\.qkv\.weight", key)
+        if match is None:
+            continue
+        tensor = weights[key]
+        names = [f"layers.{match[1]}.proj.{part}.weight" for part in ("q", "k", "v")]
+        if int(match[1]) >= depth or tuple(tensor.shape) != (3 * dim, dim) or any(name in weights for name in names):
+            raise contract.AdapterError("UNSUPPORTED_MODEL", f"Invalid or ambiguous MOSS fused QKV tensor: {key}")
+        weights.update(zip(names, tensor.chunk(3, dim=0)))
+        del weights[key]
     with init_empty_weights():
         transformer = module.MOSSImageTransformer.from_config(config)
     transformer.load_state_dict(weights, strict=True, assign=True)
     del weights
-    transformer = transformer.to(dtype=torch.bfloat16).eval()
-    control.check()
-    control.stage("loading", component="text_encoder")
-    encoder = Qwen3_5Model.from_pretrained(str(root / "text_encoder"), local_files_only=True,
-        trust_remote_code=False, use_safetensors=True, dtype=torch.bfloat16).eval()
-    tokenizer = Qwen2TokenizerFast.from_pretrained(str(root / "tokenizer"), local_files_only=True, trust_remote_code=False)
+    # Preserve the original FP16 file views on CPU. Placement converts on GPU,
+    # instead of allocating a second full BF16 checkpoint in host RAM.
+    transformer.eval()
     control.check()
     control.stage("loading", component="vae")
     vae = AutoencoderKLFlux2.from_pretrained(str(root / "vae"), local_files_only=True,

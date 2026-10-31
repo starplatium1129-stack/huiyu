@@ -28,6 +28,6 @@ export function mangaTaskArtwork(task: TaskRecord, index: number): ArtworkRecord
     characterId:source?.characterId, subject:source?.subject, outfitId:source?.outfitId, blueprintId:source?.blueprintId,
     project:typeof source?.project === 'string' ? source.project : '', width, height, size:`${width} × ${height}`,
     favorite:false, version:1, prompt:'', manual_tags:[lineart ? '线稿' : '漫画'],
-    postprocess:structuredClone(metadata), validation:'待主力机验证',
+    postprocess:structuredClone(metadata), validation:'处理完成',
   }
 }

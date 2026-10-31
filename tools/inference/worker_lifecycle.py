@@ -6,11 +6,18 @@ reader sets a per-request event; CUDA operations finish at explicit safe points.
 import gc
 import importlib.util
 import json
+import os
 from pathlib import Path
 import queue
 import sys
 import threading
 import time
+
+if sys.platform == "win32" and os.environ.get("HUIYU_INFERENCE_MEMORY") == "offload":
+    # PyTorch's Windows mimalloc must return freed weight pages between stages,
+    # rather than retaining commit while the next component is being loaded.
+    os.environ.setdefault("MIMALLOC_PURGE_DELAY", "0")
+    os.environ.setdefault("MIMALLOC_ARENA_EAGER_COMMIT", "0")
 
 
 class WorkerError(Exception):
@@ -191,5 +198,6 @@ def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cle
             emit(stream, job_id, "ready")
     except Exception as exc:
         code = exc.code if isinstance(exc, (error, WorkerError)) else "GENERATION_FAILED"
-        emit(stream, job_id, "error", code=code, message=str(exc))
+        message = str(exc) if isinstance(exc, (error, WorkerError)) else f"{type(exc).__name__}: {exc}"
+        emit(stream, job_id, "error", code=code, message=message)
         return 1

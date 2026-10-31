@@ -90,7 +90,12 @@ def layout(value, spec):
             else:
                 safe_file(root, folder / "tokenizer.json")
             if name == "processor":
-                config(root, folder / "preprocessor_config.json")
+                combined = folder / "processor_config.json"
+                image_config = config(root, combined).get("image_processor") if combined.exists() else None
+                if image_config is None:
+                    config(root, folder / "preprocessor_config.json")
+                elif not isinstance(image_config, dict) or any(key in image_config for key in ("auto_map", "quantization_config", "custom_pipeline", "trust_remote_code")):
+                    raise AdapterError("UNSUPPORTED_MODEL", "Invalid/custom-code nested image processor configuration")
                 safe_file(root, folder / ("chat_template.json" if modular else "chat_template.jinja"))
         else:
             cfg = config(root, folder / "config.json")

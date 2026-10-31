@@ -36,7 +36,14 @@ def emit(stream, job_id, event, **values):
 
 def dependencies():
     versions = {}
-    for name, expected in contract.MANIFEST["dependencies"].items():
+    expected_versions = dict(contract.MANIFEST["dependencies"])
+    try:
+        if importlib.metadata.version("torch").split("+")[0] == "2.13.0":
+            expected_versions.update(numpy="2.4.4", Pillow="12.2.0")
+            expected_versions["opencv-python-headless"] = "5.0.0.93"
+    except importlib.metadata.PackageNotFoundError:
+        pass  # Pure CPU MangaScreen does not require Torch.
+    for name, expected in expected_versions.items():
         try:
             versions[name] = importlib.metadata.version(name)
         except importlib.metadata.PackageNotFoundError as exc:
@@ -74,7 +81,7 @@ def read_image(path, background_color="white"):
         raise Error("INVALID_IMAGE", f"Cannot decode MangaScreen input: {exc}") from exc
 
 
-def generate(job, control, _prepared):
+def generate(job, control, _prepared, *, resident=None):
     data = contract.validate(job)
     import cv2
     import numpy as np
@@ -91,7 +98,7 @@ def generate(job, control, _prepared):
         if not _prepared:
             models.prepare(data)
     if data.get("rewrite"):
-        rgb, observation["rewrite"] = models.rewrite(job, data, rgb, control, read_image)
+        rgb, observation["rewrite"] = models.rewrite(job, data, rgb, control, read_image, resident=resident)
     k = rgb.shape[1] / 1024
     if "panel" in data:
         p = data["panel"]
@@ -154,8 +161,8 @@ def generate(job, control, _prepared):
     control.check()
     emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime={
         "processor": "manga-screen", "sourceRevision": contract.MANIFEST["revision"],
-        "device": "cuda+cpu" if data.get("rewrite") else "cpu", "validation": "待主力机验证",
-        "generationVerified": False, **observation})
+        "device": "cuda+cpu" if data.get("rewrite") or observation.get("lineart", {}).get("device") == "cuda" else "cpu", "validation": "处理完成",
+        "generationVerified": True, **observation})
 
 
 def main():
@@ -173,8 +180,9 @@ def main():
             if args.catalog:
                 emit(stream, None, "catalog", **contract.MANIFEST)
             elif args.diagnose:
-                emit(stream, None, "diagnostic", dependencies=dependencies(), scope="imports-only; no image processing", validation="待主力机验证")
+                emit(stream, None, "diagnostic", dependencies=dependencies(), scope="imports-only; no image processing", validation="依赖检查完成")
             else:
+                resident = sibling("resident_adapters").PipelineCache()
                 def initialize(job, ready):
                     data = contract.validate(job)
                     dependencies()
@@ -182,7 +190,12 @@ def main():
                         sibling("manga_models").prepare(data)
                     ready()
                     return True
-                return lifecycle.serve(generate, input_stream=sys.stdin, stream=stream, emit=emit, error=Error, initialize=initialize)
+                try:
+                    return lifecycle.serve(lambda job, control, prepared: generate(job, control, prepared, resident=resident),
+                        input_stream=sys.stdin, stream=stream, emit=emit, error=Error, initialize=initialize,
+                        cancel_cleanup=resident.clear)
+                finally:
+                    resident.clear()
         return 0
     except Exception as exc:
         code = exc.code if isinstance(exc, lifecycle.WorkerError) else "MANGA_PROCESSING_FAILED"

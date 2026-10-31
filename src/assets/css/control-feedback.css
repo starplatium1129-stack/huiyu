@@ -62,7 +62,9 @@
 }
 .studio-control-label { display:inline-block; }
 /* Individual translate composes with existing press springs and local transforms.
+   Keep positioning low-specificity so controls can use their own layout.
    Authored generation/action-link controls and artwork keep their own motion. */
+:where(.task-center-button,button.chip) { position:relative; }
 :root body :is(
   .btn:not(.generation-action):not(.studio-action-link),[data-control-motion],
   .nav-links > a,.nav-more-trigger,.nav-back,.nav-search,.sound-toggle,.nav-menu-toggle,.task-center-button,
@@ -75,7 +77,6 @@
 ) {
   --control-hover-ink:var(--character-ink,var(--accent));
   --control-hover-lift:-3px;
-  position:relative;
   translate:0 0;
   transition:translate var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--motion-press) var(--spring-soft);
   &::before {

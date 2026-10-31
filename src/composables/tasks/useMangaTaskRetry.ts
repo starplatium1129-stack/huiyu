@@ -63,7 +63,7 @@ export function useMangaTaskRetry(options: {
       // Browsing away drops only presentation intent, never retry acceptance.
       const child = await retryRuntimeMangaTask(task, lifetime.signal)
       if (disposed || epoch() !== expected) return
-      if (visit.current()) feedback.value = '已找到这条记录对应的重试任务，沿用已保存的原图和参数。原记录及结果保留。待主力机验证。'
+      if (visit.current()) feedback.value = '已找到这条记录对应的重试任务，沿用已保存的原图和参数。原记录及结果保留。'
       await locate(summarizeTask(child), visit)
       // Do not delay the accepted task's controls while updating its source link.
       if (!disposed && epoch() === expected) void getRuntimeTaskSummary(task.taskId, lifetime.signal).catch(() => {})

@@ -1,7 +1,6 @@
 import { activeRandomVariation, variedStudioScene } from '@/utils/randomVariationContext'
 import { computed, type Ref } from 'vue'
 import {
-  NEGATIVE_DEFAULT,
   usePromptBuilderStore,
 } from '@/stores/promptBuilderStore'
 import {
@@ -19,7 +18,6 @@ import {
   qualityPrefix,
   resolveLoraSpecs,
   resolveModelProfile,
-  sceneRating,
   sanitizePrompt,
   sceneSupportsCharacter,
   sceneTemplateText,

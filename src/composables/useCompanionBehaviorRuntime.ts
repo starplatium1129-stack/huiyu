@@ -7,7 +7,7 @@ import { controlApi } from '@/api/controlApi'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
-import { readCompanionTasks } from './companionTaskSnapshot'
+import { createCompanionTaskReader } from './companionTaskSnapshot'
 import { pickCompanionLine } from '@/config/characters'
 import { pickEnvironmentGreeting } from '@/utils/environmentContext'
 import { createCompanionBehavior, normalizeCompanionConfig, type CompanionReminder } from '@/utils/companionBehavior'
@@ -54,6 +54,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   })
 
   const eventDetector = createCompanionEventDetector()
+  const taskReader = createCompanionTaskReader()
   // 工程审计 P1-9（2/2）：两只 30s 心跳迁到 usePolling 底座，语义不变。
   // immediate=false 保持「首 tick 在 +30s」原时序（onMounted 里另有显式首跑）；
   // pollCompanionEvents 自带 eventPolling 守卫，与 usePolling 的 in-flight 去重叠加无害；
@@ -172,7 +173,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     try {
       const [status, tasks] = await Promise.all([
         controlApi.getStatus({ signal }).catch(() => null),
-        readCompanionTasks(signal).catch(() => null),
+        taskReader.read(signal).catch(() => null),
       ])
       if (!alive || signal.aborted || revision !== eventRevision || source !== imageMediaSession() || character !== activeChar.value || !desktopWindowVisible()
         || !behaviorEnabled.value || dnd.value || behavior.inQuietHours()) return
@@ -215,6 +216,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     eventRevision++
     eventPollController?.abort()
     eventDetector.reset()
+    taskReader.reset()
   }
   watch(runtimeResourceIdentity, resetEventDetector, { flush: 'sync' })
   let source = imageMediaSession()

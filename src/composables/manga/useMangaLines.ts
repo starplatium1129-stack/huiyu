@@ -1,16 +1,17 @@
 import { computed, onScopeDispose, ref, shallowRef, watch, type Ref } from 'vue'
 import { mangaManifest, type MangaJob, type MangaLinePolarity } from '@/api/mangaApi'
 import { fetchMangaTaskResult, mangaLineIndex } from '@/api/mangaTasks'
-import { archiveTaskResult } from '@/composables/tasks/taskArtwork'
 import { inspectMangaImage, previewMangaLines, type MangaImage } from './mangaImage'
 import { downloadMangaPng, mangaLineResult } from './mangaResult'
 import type { ArtworkRecord } from '@/types/artwork'
+import { createImageTaskArchiver } from '@/composables/tasks/imageTaskArtwork'
 
 export type MangaLineMode = 'none' | 'auto' | 'external'
 const message = (e: unknown) => e instanceof Error ? e.message : '线稿操作失败'
 export function useMangaLines(options: { signal: AbortSignal; check: () => void; checkInput: () => void; locked: () => boolean; outputSaveLocked: () => boolean; loading: Ref<boolean>; exporting: Ref<boolean>;
   source: () => ArtworkRecord | undefined; onSaved: () => void }) {
-  const mode = ref<MangaLineMode>('none'), polarity = ref<MangaLinePolarity>('black-on-white'), stretch = ref(false)
+  const archiveImage = createImageTaskArchiver(options.check, options.signal)
+  const mode = ref<MangaLineMode>('auto'), polarity = ref<MangaLinePolarity>('black-on-white'), stretch = ref(false)
   const imported = shallowRef<MangaImage | null>(null), inputUrl = ref(''), inputBlob = shallowRef<Blob | null>(null)
   const outputUrl = ref(''), outputBlob = shallowRef<Blob | null>(null), expected = shallowRef<MangaJob | null>(null)
   const selected = ref<'input' | 'output'>('input'), error = ref(''), notice = ref(''), downloaded = ref(false)
@@ -24,7 +25,7 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
   const previewAvailable = computed(() => !!imported.value || !!expected.value)
   const saved = computed(() => selected.value === 'input' ? inputSaved.value : outputSaved.value)
   const saveReady = computed(() => selected.value === 'input' ? inputReady.value && !!inputResult.value
-    : !!expected.value?.resultAvailable && expected.value.task.resultRefs.some(output => output.index === mangaLineIndex(expected.value!) && output.mime === 'image/png'))
+    : !!expected.value?.resultAvailable && expected.value.task.outputs.includes(mangaLineIndex(expected.value!)))
   const saveDisabled = computed(() => !saveReady.value || saved.value || (selected.value === 'output' ? options.outputSaveLocked() : options.locked()))
   const unsaved = computed(() => inputSaveAttempted.value && !inputSaved.value)
   const caption = computed(() => selected.value === 'input' ? imported.value
@@ -54,7 +55,7 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
       imported.value = image; inputBlob.value = blob; preparedPolarity.value = selectedPolarity
       inputResult.value = mangaLineResult(blob, {id:`import-${crypto.randomUUID()}`, width:image.width, height:image.height, name:image.name,
         metadata:{operation:'lineart-import', sourceName:image.name, sourcePolarity:selectedPolarity,
-          polarity:'black-on-white', stage:'import-preview', processorVersion:mangaManifest.schemaVersion, validation:'待主力机验证'}}, options.checkInput, options.source())
+          polarity:'black-on-white', stage:'import-preview', processorVersion:mangaManifest.schemaVersion, validation:'导入预览'}}, options.checkInput, options.source())
       inputSaved.value = false; inputSaveAttempted.value = false
       setUrl(inputUrl, blob); selected.value = 'input'
       if (file) { revision.value++; stretch.value = false; mode.value = 'external' }
@@ -87,7 +88,7 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
     finally { options.loading.value = false }
   }
   function accept(job: MangaJob) {
-    if (!job.resultAvailable || !job.lineart || !job.task.resultRefs.some(output => output.index === mangaLineIndex(job) && output.mime === 'image/png')) return false
+    if (!job.resultAvailable || !job.lineart || !job.task.outputs.includes(mangaLineIndex(job))) return false
     if (expected.value?.id !== job.id) {
       outputBlob.value = null; outputSaved.value = false
       setUrl(outputUrl, null); downloaded.value = false
@@ -105,7 +106,7 @@ export function useMangaLines(options: { signal: AbortSignal; check: () => void;
     try {
       options.check()
       if (!output) inputSaveAttempted.value = true
-      if (output) await archiveTaskResult(current!.id, mangaLineIndex(current!))
+      if (output) await archiveImage(current!.task, outputBlob.value, mangaLineIndex(current!), options.source())
       else await input!.save()
       options.check()
       if (isCurrent()) { if (output) outputSaved.value = true; else inputSaved.value = true }

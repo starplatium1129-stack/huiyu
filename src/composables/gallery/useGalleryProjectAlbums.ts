@@ -47,16 +47,22 @@ export function useGalleryProjectAlbums(options: {
   const searching = computed(() => [...smartRules.value.values()].some(rule => Boolean(rule.search)))
   const searchIndex = computed(() => searching.value
     ? new Map(options.history.value.map(item => [item, searchHaystack(item)])) : null)
+  const catalogRecords = computed(() => new Map(options.catalog?.value?.covers.map(item => [artworkIdKey(item.id), item])))
+  const projectsById = computed(() => {
+    const index = new Map<string, GalleryProject>()
+    for (const project of options.projects.value) if (!index.has(project.id)) index.set(project.id, project)
+    return index
+  })
 
   function catalogItems(ids: Array<string | number>) {
-    const records = new Map(options.catalog?.value?.covers.map(item => [artworkIdKey(item.id), item]));
+    const records = catalogRecords.value
     return ids.flatMap(id => { const record = records.get(artworkIdKey(id)); return record ? [record] : [] })
   }
   // Membership only tracks library metadata; thumbnail arrival cannot rescan prompt bodies.
   const projectMembers = computed<AlbumMembership[]>(() => {
     const projects = options.projects.value
     if (options.catalog?.value) return options.catalog.value.albums.flatMap(album => {
-      const project = projects.find(project => project.id === album.id)
+      const project = projectsById.value.get(album.id)
       if (!project || !album.count && !project.smartRule) return []
       return [{ id: project.id, title: project.title, kind: project.smartRule ? 'smart' as const : 'manual' as const, count: album.count,
         ...(project.smartRule ? { ruleSummary: smartAlbumSummary(project.smartRule, options.characterName) } : {}), items: catalogItems(album.coverIds) }]

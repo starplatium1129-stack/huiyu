@@ -1,11 +1,24 @@
 import { computed, onActivated, onScopeDispose, readonly, ref, shallowRef, watch } from 'vue'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { apiClient } from '@/api/client'
-import { parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
+import { canonicalShowcaseId, parseShowcaseManifest, type ShowcaseEntry } from '@/utils/showcaseManifest'
 
 // Keep catalogue identity across page visits, without retaining images or page instances.
 // Revalidate on entry; only changed records or an explicit upload change image URLs.
 const catalogue = shallowRef<ReadonlyMap<string, ShowcaseEntry>>(new Map())
+// Older published blueprint samples repeated the character prefix. Resolve
+// their declared records rather than guessing image filenames or changing IDs.
+const blueprintAliases = computed(() => {
+  const aliases = new Map<string, string>()
+  for (const entry of catalogue.value.values()) {
+    const canonical = canonicalShowcaseId(entry)
+    if (canonical !== entry.id) aliases.set(canonical, entry.id)
+  }
+  return aliases
+})
+function catalogueEntry(id: string) {
+  return catalogue.value.get(id) ?? catalogue.value.get(blueprintAliases.value.get(id) ?? '')
+}
 const versions = shallowRef<ReadonlyMap<string, number>>(new Map())
 const sessionVersion = ref(Date.now())
 let identity: string | undefined, nextRequest = 0, publishedRequest = 0
@@ -49,7 +62,13 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
         let versionChanged = false
         for (const entry of accepted) {
           const previous = catalogue.value.get(entry.id)
-          const unchanged = previous && JSON.stringify(previous) === JSON.stringify(entry)
+          // Prompt/story text is already normalized at the boundary. Compare
+          // strings directly instead of allocating two escaped JSON copies.
+          const keys = Object.keys(entry) as Array<keyof ShowcaseEntry>
+          const unchanged = previous && Object.keys(previous).length === keys.length && keys.every(key => {
+            const value = entry[key], before = previous[key]
+            return before === value || typeof value === 'object' && JSON.stringify(before) === JSON.stringify(value)
+          })
           nextEntries.set(entry.id, unchanged ? previous : entry)
           if (refreshImages || (previous && !unchanged)) {
             nextVersions.set(entry.id, Math.max(Date.now(), (nextVersions.get(entry.id) ?? sessionVersion.value) + 1))
@@ -84,27 +103,31 @@ export function useShowcaseAssets(errorMessage = (error: unknown, fallback: stri
   })
 
   function assetUrl(id: string, kind: 'image' | 'thumb'): string {
-    const entry = catalogue.value.get(id)
+    const entry = catalogueEntry(id)
     if (!entry) return ''
-    const path = entry[kind] || `${kind === 'image' ? 'images' : 'thumbs'}/${id}.jpg`
+    const path = entry[kind] || `${kind === 'image' ? 'images' : 'thumbs'}/${entry.id}.jpg`
     return /^(?:images|thumbs)\/[a-zA-Z0-9_-]+\.(?:jpg|jpeg|png|webp)$/.test(path)
-      ? `/scene-showcase/${path}?v=${versions.value.get(id) ?? sessionVersion.value}` : ''
+      ? `/scene-showcase/${path}?v=${versions.value.get(entry.id) ?? sessionVersion.value}` : ''
   }
   return {
     loading, error, reload,
     refresh: () => reload(true, true),
     entries: computed(() => readonly([...catalogue.value.values()])),
+    entryFor: (id: string) => { const entry = catalogueEntry(id); return entry ? readonly(entry) : undefined },
     initialLoading: computed(() => loading.value && !catalogue.value.size),
     thumbUrl: (id: string) => assetUrl(id, 'thumb'),
     imageUrl: (id: string) => assetUrl(id, 'image'),
-    hasShowcase: (id: string) => catalogue.value.has(id),
-    hasPublicScene: (id: string) => { const entry = catalogue.value.get(id); return entry?.type === 'scene' && entry.rating === 'All' },
-    dimensions: (id: string) => { const entry = catalogue.value.get(id); return entry?.width && entry.height ? { width: entry.width, height: entry.height } : undefined },
+    hasShowcase: (id: string) => Boolean(catalogueEntry(id)),
+    hasPublicScene: (id: string) => { const entry = catalogueEntry(id); return entry?.type === 'scene' && entry.rating === 'All' },
+    dimensions: (id: string) => { const entry = catalogueEntry(id); return entry?.width && entry.height ? { width: entry.width, height: entry.height } : undefined },
     thumbDimensions: (id: string) => {
-      const entry = catalogue.value.get(id)
+      const entry = catalogueEntry(id)
       const width = entry?.thumbWidth || entry?.width, height = entry?.thumbHeight || entry?.height
       return width && height ? { width, height } : undefined
     },
-    invalidateAsset: (id: string) => { versions.value = new Map(versions.value).set(id, Math.max(Date.now(), (versions.value.get(id) ?? sessionVersion.value) + 1)) },
+    invalidateAsset: (id: string) => {
+      const key = catalogueEntry(id)?.id ?? id
+      versions.value = new Map(versions.value).set(key, Math.max(Date.now(), (versions.value.get(key) ?? sessionVersion.value) + 1))
+    },
   }
 }

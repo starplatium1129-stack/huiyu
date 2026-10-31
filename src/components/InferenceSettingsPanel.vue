@@ -53,14 +53,19 @@
             <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
           </div>
           <div class="inference-field">
-            <label for="inference-acceleration">独立引擎加速模式</label>
-            <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="独立引擎加速模式" :options="accelerationOptions" :disabled="blocked || saving || loading || setupBusy" />
+            <label for="inference-acceleration">Anima 加速模式</label>
+            <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="Anima 加速模式" :options="accelerationOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('acceleration')" />
             <small v-if="draft.acceleration !== 'native'">需要 SageAttention 运行库。</small>
           </div>
           <div class="inference-field">
-            <label for="inference-memory">独立引擎显存策略</label>
-            <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="独立引擎显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy" />
-            <small>{{ draft.memoryPolicy === 'offload' ? '减少显存占用，生成时需要在内存与显卡间传输模型。' : '模型保留在显卡中，适合连续生成。' }}</small>
+            <label for="inference-memory">Anima 显存策略</label>
+            <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="Anima 显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('memoryPolicy')" aria-describedby="inference-memory-hint" />
+            <small id="inference-memory-hint">{{ draft.memoryPolicy === 'offload' ? '减少显存占用，生成时需要在内存与显卡间传输模型。' : '模型保留在显卡中，适合连续生成。' }}</small>
+          </div>
+          <div class="inference-field">
+            <label for="inference-adapter-memory">其他原生模型显存策略</label>
+            <StudioSelect id="inference-adapter-memory" v-model="draft.adapterMemoryPolicy" label="其他原生模型显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterMemoryPolicy')" aria-describedby="inference-adapter-memory-hint" />
+            <small id="inference-adapter-memory-hint">用于 Krea、Qwen、MOSS、漫画重绘及原生视频。大模型默认分阶段加载；与 Anima 分别保存。</small>
           </div>
           <details class="inference-paths" :open="advancedPathsOpen" @toggle="advancedPathsOpen = ($event.target as HTMLDetailsElement).open">
             <StudioDisclosureSummary id="inference-paths-summary">高级路径设置</StudioDisclosureSummary>

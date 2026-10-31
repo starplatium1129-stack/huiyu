@@ -12,6 +12,17 @@ const runtimeRequire = createRequire(import.meta.url)
 const startupAssets = ['favicon.svg', 'logo.svg', 'logo-light.svg', 'theme-bootstrap.js']
 const startupAssetPaths = new Set(startupAssets.map(name => `/assets/${name}`))
 
+/** Shared scrollbar geometry also applies to compact component utilities. */
+function studioScrollbarStyles() {
+  return {
+    postcssPlugin: 'huiyu-scrollbar-styles',
+    Declaration(declaration: { prop: string; value: string }) {
+      if (declaration.prop === 'scrollbar-width' && declaration.value === 'thin')
+        declaration.value = 'var(--scrollbar-width, thin)'
+    },
+  }
+}
+
 /** All supported browsers implement color-mix (Chrome 111 / Safari 16.4 /
  * Firefox 128). Tailwind's Vite plugin currently cannot configure its polyfills:
  * https://github.com/tailwindlabs/tailwindcss/discussions/20037
@@ -162,6 +173,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
   return {
   base: mode === 'desktop' ? './' : '/',
   plugins,
+  css: { postcss: { plugins: [studioScrollbarStyles()] } },
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url))

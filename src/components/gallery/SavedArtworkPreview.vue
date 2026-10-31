@@ -39,7 +39,7 @@ const previews = computed(() => Object.fromEntries(items.value.map(item => [item
 const title = (item: ArtworkRecord) => item.sceneTitle || item.story || '未命名作品'
 const original = ref(false), closing = ref(false), dialog = ref<HTMLElement | null>(null), closeButton = ref<HTMLElement | null>(null)
 const { viewerUrl, viewerLoadFailed, retryViewerImage, neighborPreviews, current: viewerCurrent, openViewer, closeViewer, onViewerClosed } = useGalleryViewer({
-  history: items, visible: items, previewSource: props.thumbnail, resetControls: () => {},
+  history: items, visible: items, resetControls: () => {},
 })
 const current = computed(() => viewerCurrent.value || items.value[index.value] || props.item)
 const surface = useArtworkViewerSurface({
