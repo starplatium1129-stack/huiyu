@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_r18_den_restless_night",
+  "revision": 1,
+  "sortOrder": 2840,
+  "createdAt": "2026-10-31T04:42:34.298429000+00:00",
+  "updatedAt": "2026-10-31T04:42:34.298429000+00:00",
+  "data": {
+    "id": "zeta_shadow_r18_den_restless_night",
+    "characterId": "zeta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "泽塔 · 金豹的燥热夜",
+    "category": "私密自持",
+    "description": "金豹族的血脉到了某些夜里会自己烧起来。泽塔反锁了据点单间的门，战服褪得干干净净，赤裸着蜷在毯子上，尾巴不受控制地缠紧自己的大腿。她咬住手背不让声音漏出去，指尖在腿间又快又狠——脑子里全是白天他望过来的那一眼。「……只有一眼……就够我烧一整晚了……」",
+    "recommendedSize": "1152x1536",
+    "location": "阴影庭园据点单间·深夜",
+    "action": "赤裸蜷卧在毯子上，尾巴缠住大腿，咬着手背，指尖在腿间动作",
+    "timeOfDay": "深夜",
+    "lighting": "thin moonlight through a narrow window",
+    "camera": "medium shot, low angle",
+    "mood": "燥热压抑",
+    "sceneTags": [
+      "hideout_room",
+      "blanket",
+      "night",
+      "nude",
+      "cat_ears",
+      "tail",
+      "solo"
+    ],
+    "promptProse": "On the nights her leopard blood runs hot, adult Zeta locks her hideout door, strips off her slime suit and curls naked on the blanket, tail coiling around her thigh, biting her hand quiet as she touches herself.",
+    "promptTokens": [
+      "small room",
+      "blanket",
+      "night",
+      "nude",
+      "cat ears",
+      "cat tail",
+      "masturbation",
+      "spread legs",
+      "biting hand"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "nude",
+      "masturbation",
+      "spread legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "One glance from him at noon is enough to burn all night. Zeta bites down and gives in to the heat."
+  }
+}

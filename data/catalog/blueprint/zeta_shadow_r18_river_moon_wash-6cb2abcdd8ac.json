@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_r18_river_moon_wash",
+  "revision": 1,
+  "sortOrder": 2842,
+  "createdAt": "2026-10-31T04:42:34.298429000+00:00",
+  "updatedAt": "2026-10-31T04:42:34.298429000+00:00",
+  "data": {
+    "id": "zeta_shadow_r18_river_moon_wash",
+    "characterId": "zeta_shadow",
+    "outfitId": "golden_leopard_swimsuit",
+    "title": "泽塔 · 月夜河滩的清洗",
+    "category": "水光湿身",
+    "description": "任务地归途的河滩，月亮把水面铺成银色。泽塔褪下泳装站在浅滩中央清洗血迹与尘土，赤裸的身体在月光下泛着水光。她低头探手到水面之下，动作忽然顿住——金豹的听觉里，整条河的声响，都盖不住自己越来越快的心跳。",
+    "recommendedSize": "1152x1536",
+    "location": "山间河滩·月夜",
+    "action": "赤裸站在浅滩中央，一手探入水下，侧耳倾听，身上水光流动",
+    "timeOfDay": "月夜",
+    "lighting": "silver moonlight on shallow river water",
+    "camera": "medium shot, rear three-quarter view",
+    "mood": "月夜静谧",
+    "sceneTags": [
+      "river",
+      "moonlight",
+      "shallow_water",
+      "nude",
+      "cat_ears",
+      "tail"
+    ],
+    "promptProse": "Under a silver moon, adult Zeta stands naked in the shallow river washing off the mission, one hand slipping beneath the surface, ears turning at the sound of her own heartbeat over the water.",
+    "promptTokens": [
+      "river",
+      "shallow water",
+      "moonlight",
+      "nude",
+      "wet skin",
+      "cat ears",
+      "tail",
+      "masturbation",
+      "hand between legs"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@rella",
+    "nsfwTokens": [
+      "nude",
+      "masturbation",
+      "hand between legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "The river hides many things tonight — blood, dust, and a golden leopard who cannot wash him out of her head."
+  }
+}

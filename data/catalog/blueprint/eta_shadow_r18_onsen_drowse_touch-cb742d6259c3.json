@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "eta_shadow_r18_onsen_drowse_touch",
+  "revision": 1,
+  "sortOrder": 2845,
+  "createdAt": "2026-10-31T04:42:34.298429000+00:00",
+  "updatedAt": "2026-10-31T04:42:34.298429000+00:00",
+  "data": {
+    "id": "eta_shadow_r18_onsen_drowse_touch",
+    "characterId": "eta_shadow",
+    "outfitId": "onsen_towel",
+    "title": "埃塔 · 温泉里的半梦半醒",
+    "category": "水光湿身",
+    "description": "遗迹温泉泡到第七分钟，埃塔的意识开始融化。浴巾沉进水里，她靠在池边岩石上，双腿在热气腾腾的水下缓缓分开，指尖漫无目的地打着转。密纹也好、实验也好，都等睡醒再说——「唔……这个温度……刚好可以……做个好梦……」紫眸彻底阖上之前，她的手始终没有停。",
+    "recommendedSize": "1152x1536",
+    "location": "古代遗迹旁露天温泉·黄昏",
+    "action": "靠在温泉池边岩石上，浴巾沉入水中，双腿在水下分开，指尖动作",
+    "timeOfDay": "黄昏",
+    "lighting": "dusk light melting into onsen steam",
+    "camera": "medium shot, front view",
+    "mood": "温泉沉溺",
+    "sceneTags": [
+      "onsen",
+      "steam",
+      "dusk",
+      "nude",
+      "sleepy"
+    ],
+    "promptProse": "Seven minutes into the ruin-side onsen, adult Eta melts against the rocks, towel sunk, legs drifting open under the steaming water, fingers wandering as her purple eyes close — the runes can wait, the dream cannot.",
+    "promptTokens": [
+      "onsen",
+      "hot spring",
+      "steam",
+      "nude",
+      "wet hair",
+      "masturbation",
+      "hand between legs",
+      "sleepy",
+      "dusk"
+    ],
+    "negativeTokens": [],
+    "coverageTags": [],
+    "adult": true,
+    "sampleRating": "R18",
+    "kreaStyleHint": "",
+    "animaStyleHint": "r18_sensual_cg",
+    "adultArtistHint": "@yoneyama_mai",
+    "nsfwTokens": [
+      "nude",
+      "masturbation",
+      "hand between legs"
+    ],
+    "nsfwProse": "",
+    "animaCaption": "Temperature: perfect. Eta's hand keeps working long after her brilliant mind has gone off duty."
+  }
+}
