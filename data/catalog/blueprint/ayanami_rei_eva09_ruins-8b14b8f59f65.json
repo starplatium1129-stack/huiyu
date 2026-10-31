@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_eva09_ruins",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1013,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "立于钢铁残骸之上，神情清冷孤傲",
     "camera": "wide shot, dramatic low angle",
@@ -15,23 +15,24 @@
     ],
     "description": "近第三次冲击后的荒凉大地上，赤红色的结晶地貌向地平线无尽延伸。黑丽身着紧身哑光黑战斗服，站在锈蚀的钢铁骨架之上，红色眼眸茫然地环视着这片死寂的世界——「命令是什么？我必须驾驶九号机吗？除了命令之外……真正的我，又该去往何方？」",
     "id": "ayanami_rei_eva09_ruins",
-    "lighting": "血色残阳与昏暗废土反光",
+    "lighting": "近第三次冲击荒原壮烈血色残阳与赤红大地反光",
     "location": "近第三次冲击后废墟荒野",
     "mood": "末世苍凉",
     "negativeTokens": [],
     "outfitId": "black_plugsuit_q",
     "promptProse": "She stands on the rusted framework looking over the red crystalline terrain. Sunset glances along the metal and dark suit.",
     "promptTokens": [
-      "wasteland",
-      "steel framework",
-      "crystal",
-      "sunset",
-      "wide shot",
-      "from below",
-      "standing",
-      "looking away",
-      "red sky",
-      "gloomy"
+      "black plugsuit",
+      "standing on red wasteland",
+      "ruined horizon",
+      "giant cross in distance",
+      "sunset sky",
+      "radiant sunset glow",
+      "golden hour",
+      "warm sunlight",
+      "red earth",
+      "volumetric sunbeams",
+      "windblown hair"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -46,6 +47,6 @@
     ],
     "timeOfDay": "黄昏",
     "title": "绫波丽 · 漆黑作战服与赤红大地",
-    "animaCaption": "She stands on the rusted framework above the red crystalline terrain."
+    "animaCaption": "Radiant golden sunset rays pierce the desolate crimson wasteland, highlighting Rei's quiet gaze."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_r18_b6_01",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1603,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "fubuki_one_punch_r18_b6_01",
     "title": "吹雪 · 吹雪组总部沙发皮草大衣主控跨坐 ·「加入吹雪组的最高阶待遇……今晚只破例赋予你」",
@@ -14,7 +14,7 @@
     "location": "吹雪组高层秘密会议室·深夜",
     "action": "跨坐皮沙发披白皮草大衣露巨乳，珍珠项链挂深沟，墨黑短发成熟妖艳主动沉腰",
     "timeOfDay": "night",
-    "lighting": "warm_firelight",
+    "lighting": "暴风雪组顶层豪华会客室水晶吊灯暖光与窗外夜色",
     "camera": "intimate vertical medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
@@ -32,21 +32,16 @@
     ],
     "promptProse": "She straddles the viewer on the headquarters sofa, both hands on their shoulders and the dress lowered to her waist beneath the fur coat; firelight catches her pearls and dark bob.",
     "promptTokens": [
-      "1girl",
-      "white fur coat",
-      "dark green dress",
-      "open clothes",
-      "topless",
-      "pearl necklace",
-      "straddling",
-      "cowgirl position",
-      "couch",
-      "office",
-      "night",
-      "from below",
-      "hands on shoulders",
-      "firelight",
-      "medium shot"
+      "sitting on sofa",
+      "tight dress",
+      "fur coat draped",
+      "cleavage",
+      "crystal chandelier",
+      "warm lighting",
+      "penthouse suite",
+      "wine glass",
+      "arrogant yet flushed expression",
+      "volumetric glow"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -62,6 +57,6 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "Both hands rest on the viewer's shoulders while the lowered dress gathers beneath her coat."
+    "animaCaption": "Gleaming crystal chandeliers cast rich golden highlights across Fubuki's elegant curves upon the penthouse sofa."
   }
 }

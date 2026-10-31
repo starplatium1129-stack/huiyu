@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_moonlit_smile",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1010,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "立于月光之下回眸展现罕见的温柔微笑",
     "camera": "medium shot, low angle",
@@ -15,23 +15,23 @@
     ],
     "description": "大战初歇的第3新东京市残垣断壁之上，巨大的清冷圆月如银盘悬挂于浩瀚夜空。绫波丽身着染尘的白色战斗服，头戴神经接头发夹，伫立于月色之下。在少年的注视下，她那从未展露过情感的白皙面庞上，缓缓浮现出一抹惊艳天地的温柔微笑——「不知道该露出什么表情吗？我想，只要微笑就可以了。」",
     "id": "ayanami_rei_moonlit_smile",
-    "lighting": "皎洁银白月光与冷冽夜色轮廓光",
+    "lighting": "第3新东京市断崖清绝皎洁满月与静谧夜空",
     "location": "第3新东京市战后废墟断崖",
     "mood": "圣洁温柔",
     "negativeTokens": [],
     "outfitId": "plugsuit_white",
     "promptProse": "She smiles toward the watching boy among Tokyo-3's broken walls. Moonlight outlines her dusty suit above the rubble.",
     "promptTokens": [
-      "ruins",
-      "smile",
-      "boy",
-      "full moon",
-      "night",
-      "medium shot",
-      "gentle smile",
-      "moonlight",
-      "rim light",
-      "low angle"
+      "school uniform",
+      "cliff edge",
+      "giant full moon",
+      "bright moonlight",
+      "clear night sky",
+      "gentle rare smile",
+      "stars",
+      "silver rim light",
+      "volumetric lighting",
+      "ethereal beauty"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +48,6 @@
     "timeOfDay": "夜晚",
     "title": "绫波丽 · 月下神性微笑",
     "compositionIntent": "group",
-    "animaCaption": "She smiles toward the watching boy among Tokyo-3's broken walls."
+    "animaCaption": "The radiant white disc of the full moon casts a breathtaking silver halo around Rei's tender, fleeting smile."
   }
 }

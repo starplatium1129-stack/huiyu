@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_06",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1650,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_06",
     "title": "卡提希娅 · 铁匠铺的保养",
@@ -15,7 +15,7 @@
     "location": "铁匠铺安全柜台旁",
     "action": "铁匠铺，她把迅刀交给师傅保养，趴在柜台边看锻打的火花",
     "timeOfDay": "日间",
-    "lighting": "forge_light",
+    "lighting": "铁匠铺锻炉熊熊烈焰火光与工作台顶灯",
     "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
@@ -33,15 +33,16 @@
     ],
     "promptProse": "Leaning at the counter, she watches the smith working on her sword beyond it, her eyes bright with interest. Forge light catches the blade and tools through the brief sparks.",
     "promptTokens": [
-      "blacksmith shop",
-      "sword",
-      "counter",
+      "blacksmith workshop",
+      "forge fire",
+      "glowing furnace",
       "sparks",
-      "medium shot",
-      "leaning on counter",
-      "looking at another",
-      "forge",
-      "firelight"
+      "anvil",
+      "holding hammer",
+      "warm firelight",
+      "apron",
+      "focused expression",
+      "volumetric glow"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +54,6 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She watches the smith work on her sword beyond the counter."
+    "animaCaption": "The roaring blaze of the forge casts vibrant golden heat across the anvil as Cartethyia inspects her craft."
   }
 }

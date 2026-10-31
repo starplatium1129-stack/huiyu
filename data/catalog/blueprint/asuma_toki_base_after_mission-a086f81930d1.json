@@ -16,17 +16,17 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "任务后的据点里，成年时坐在散落装甲旁检查损坏的模块；战斗服破损，蓝色应急灯照着工作台。",
+    "description": "任务后的据点里，成年时坐在散落装甲旁检查损坏的模块；战斗服破损，工作台吊灯与蓝色应急灯照亮据点。",
     "id": "asuma_toki_base_after_mission",
     "kreaStyleHint": "",
-    "lighting": "昏暗据点灯",
+    "lighting": "工作台吊灯与微蓝应急光",
     "location": "任务后C&C据点",
     "mood": "战后松弛",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "She examines a damaged module beside discarded armor, her free hand at a bruised inner thigh. Blue emergency light falls from the side across the workbench in the dim room.",
+    "promptProse": "She examines a damaged module beside discarded armor on the brightly lit workbench, her free hand at a bruised inner thigh. Overhead industrial lamp and glowing monitors illuminate the base.",
     "promptTokens": [
       "base interior",
       "black and white combat suit",
@@ -35,11 +35,13 @@
       "topless",
       "sitting",
       "discarded armor beside her",
-      "blue light",
+      "overhead lamp",
+      "illuminated monitor",
       "workbench",
       "bruise",
       "looking down",
-      "side lighting",
+      "warm lighting",
+      "volumetric lighting",
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
@@ -53,6 +55,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "飞鸟马时 · 任务后据点装甲散落",
-    "animaCaption": "Her free hand rests on the bruised inner thigh beside the damaged module."
+    "animaCaption": "An overhead lamp and glowing monitor light up the workbench as her free hand rests on her inner thigh beside the module."
   }
 }

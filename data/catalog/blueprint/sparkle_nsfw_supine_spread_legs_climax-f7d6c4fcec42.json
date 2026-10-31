@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_nsfw_supine_spread_legs_climax",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1055,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "sparkle_nsfw_supine_spread_legs_climax",
     "title": "花火 · 丝绸卧榻的双腿大开高潮失神",
@@ -14,7 +14,7 @@
     "location": "匹诺康尼奢华客房深红大床",
     "action": "全裸仰卧被单上，双腿大开曲膝，双手抓紧床单，眼神涣散失神流口水娇喘",
     "timeOfDay": "深夜",
-    "lighting": "床头昏暗柔和的暖黄射灯",
+    "lighting": "匹诺康尼幻梦卧榻迷幻朱红纸灯与微醺柔光",
     "camera": "upper body to knees, vertical framing, high angle POV",
     "mood": "彻底失神",
     "sceneTags": [
@@ -34,16 +34,17 @@
     ],
     "promptProse": "Sparkle lies nude with her knees bent and spread, gripping the crimson bedding through orgasm. A dim warm-yellow bedside spotlight reaches the crimson sheets.",
     "promptTokens": [
-      "Sparkle",
-      "on back",
-      "knees up",
-      "silk sheets",
-      "gripping sheets",
-      "high angle",
-      "nude",
+      "lying on bed",
       "spread legs",
-      "warm lighting",
-      "pov"
+      "blush",
+      "fox mask beside",
+      "kimono parted",
+      "heavy breathing",
+      "traditional red lanterns",
+      "warm magical glow",
+      "dreamscape particles",
+      "volumetric lighting",
+      "soft silk sheets"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -64,6 +65,6 @@
       "spread legs",
       "orgasm"
     ],
-    "animaCaption": "She grips the crimson bedding with both knees bent beneath the dim bedside spotlight."
+    "animaCaption": "Dreamy amber lantern light and floating festival embers illuminate Sparkle's breathless, intoxicated surrender upon the bed."
   }
 }

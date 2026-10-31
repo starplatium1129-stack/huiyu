@@ -90,8 +90,8 @@ kreaStyleHint / animaStyleHint ► 可选的对应引擎配方 id 或风格短�
 recommendedSize► 视图层 closestSupportedSize(activeModel) 收敛
 ```
 
-分级由蓝图与角色资格、宿主授权共同门控，不以是否携带 `r18_*` 风格 hint 判定。
-显式成人配方仍须通过资格和授权检查，且不能挂到全年龄蓝图；省略 hint 不取消这些保护。
+项目完全支持自由选择各个分级创作，包括全年龄（SFW）、敏感（Sensitive）与露骨／成人向（NSFW／R18）等。
+分级由蓝图自身 `adult` / `rating` 等字段声明，不设人工门控拦截。显式 NSFW 词条与配方根据蓝图意图自由使用并按引擎规范编译。
 未指定 hint 时 Krea 使用其引擎默认风格，Anima 不强制追加画风。
 
 ---

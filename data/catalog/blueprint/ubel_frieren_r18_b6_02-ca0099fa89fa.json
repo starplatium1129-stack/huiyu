@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_02",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_02",
     "title": "尤贝尔 · 森林幽溪冰冷泉水中的水光湿身 ·「连水都能斩断的魔法……却斩不断这股燥热呢」",
@@ -14,7 +14,7 @@
     "location": "迷宫深处地下暗河·夜",
     "action": "坐暗河黑石全裸自抚，绿发湿透贴背，单手深探密穴，紫眸狂热娇喘",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "地下暗河清泉水潭幽光与晶石磷火微光",
     "camera": "cowboy shot",
     "mood": "湿身水光与私密自持",
     "sceneTags": [
@@ -32,18 +32,16 @@
     ],
     "promptProse": "Seated on a slick river boulder, Ubel touches herself as luminescent moss and torchlight reflect in the underground water.",
     "promptTokens": [
-      "boulder",
-      "cave river",
-      "wet hair",
-      "moss",
-      "torchlight",
-      "nude",
-      "masturbation",
-      "hand between legs",
-      "cowboy shot",
-      "sitting",
-      "river boulder",
-      "glowing moss"
+      "in water pool",
+      "cave spring",
+      "wet black dress",
+      "clinging wet clothes",
+      "cleavage",
+      "glowing cave crystals",
+      "water ripples",
+      "smug seductive smile",
+      "volumetric light",
+      "reflections"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +57,6 @@
       "wet",
       "special_nsfw"
     ],
-    "animaCaption": "She sits on the slick boulder above the underground water reflections."
+    "animaCaption": "Glowing subterranean crystals reflect off the underground pool as Ubel wades through the cool water with a sly smile."
   }
 }

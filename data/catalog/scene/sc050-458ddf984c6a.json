@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc050",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 48,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
-    "animaCaption": "Her fingers interlace with the viewer's on the shared armrest while her face stays turned toward the film.",
+    "animaCaption": "Her fingers interlace with the viewer's on the shared armrest while the bright cinema screen and warm wall lights illuminate her blushing profile.",
     "auditRevision": "skill-refine-sc050-2026-09-05",
     "camera": "影院座椅侧身七分身平视",
     "category": "恋爱",
@@ -16,12 +16,12 @@
     ],
     "emotion": "羞怯",
     "id": "sc050",
-    "lighting": "银幕幽蓝冷银反射光与过道暗红地灯微弱轮廓光",
+    "lighting": "银幕清亮蓝白微光与侧墙复古暖壁灯柔和映射",
     "location": "影院",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "daylight",
-    "prompt": "1girl, shiki_natsume, navy double breasted blazer, gold buttons, charcoal pleated midi skirt, burgundy blouse, sitting, holding hands, armrest, movie theater, profile, screen light, cowboy shot, interlocked fingers, blush, red lighting, cinematic_lighting, depth_of_field",
+    "negative": "daylight, direct sunlight, empty room, pitch black, darkness",
+    "prompt": "1girl, solo, shiki_natsume, @rella, mole_under_eye, navy double breasted blazer, gold buttons, charcoal pleated midi skirt, burgundy blouse, sitting, holding hands, interlocked fingers, shared armrest, profile, movie theater interior, glowing movie screen in front, projector light beam illuminating dust, warm wall sconces, illuminated aisle stairs, face illuminated by bright screen glow, soft rim lighting, flustered blush, cowboy shot, depth of field",
     "rating": "All",
     "season": "冬",
     "story": "黑暗影院里，夏目在惊吓镜头出现时轻轻碰到你的手，犹豫片刻后干脆把手指扣紧。你回握，她虽然身体一僵，却没有再抽开。银幕的微光照出她装作专注的侧脸——「只是这里太暗，免得拿错饮料。电影结束前都别说话……也不准提前松手。」",
@@ -36,6 +36,8 @@
       "movie_theater",
       "profile",
       "movie_screen_light",
+      "warm_wall_sconces",
+      "projector_light_beam",
       "heavy_blush",
       "flustered",
       "cinema_seats",
@@ -53,6 +55,6 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "Her fingers interlace with the viewer's on their shared armrest while she keeps her face turned toward the film; blue-silver screen light reveals her blush above the faint red aisle lights."
+    "promptProse": "Her fingers interlace with the viewer's on their shared armrest while the bright cinema screen and warm wall lights illuminate her blushing profile."
   }
 }

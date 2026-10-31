@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_frozen_ruins",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 76,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "tokisaki_kurumi_frozen_ruins",
     "title": "时崎狂三 · 时间停止的废墟",
@@ -14,7 +14,7 @@
     "location": "破碎的都市废墟",
     "action": "行走在静止时间中的废墟街道",
     "timeOfDay": "夜晚",
-    "lighting": "冷光与悬浮尘埃",
+    "lighting": "时间停滞空间中金色时钟法阵漫射光晕与幽蓝废墟月辉",
     "camera": "wide shot",
     "mood": "寂灭美学",
     "sceneTags": [
@@ -31,22 +31,22 @@
     ],
     "promptProse": "Kurumi walks through suspended debris under her parasol, a golden clock lighting the nearest stone fragment.",
     "promptTokens": [
-      "lace parasol",
-      "floating rubble",
-      "ruins",
-      "clock",
-      "night",
-      "wide shot",
-      "walking",
-      "parasol",
-      "suspended debris",
-      "golden clock light"
+      "astral dress",
+      "gothic lolita",
+      "holding flintlock pistol",
+      "floating giant clock face",
+      "golden clock gears",
+      "bright moonlight",
+      "ruined city",
+      "clock eye glowing",
+      "dramatic lighting",
+      "volumetric rays"
     ],
     "negativeTokens": [
       "readable lettering"
     ],
     "recommendedSize": "1536x1152",
     "outfitId": "gothic_dress",
-    "animaCaption": "Golden clock light catches the nearest fragment beneath her parasol."
+    "animaCaption": "A colossal golden clock face radiates luminous astral energy, illuminating Kurumi amidst the frozen temporal ruins."
   }
 }

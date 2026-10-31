@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc206",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 201,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T14:37:00.300202500+00:00",
   "data": {
-    "animaCaption": "Her skirt rests at her waist while one raised hand covers her face on the bench.",
+    "animaCaption": "Lying across the leather dressing room bench beneath the warm lamp, she peeks between her fingers with a flushed, tearful glare, her pencil skirt and torn stockings displaced.",
     "auditRevision": "careful-batch09-2026-08-27",
     "camera": "略微仰视近景特写",
     "category": "恋爱/同人",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
     "negative": "",
-    "prompt": "adult, 1girl, solo, shiki_natsume, burgundy waistband, natsume_r18, black pencil skirt, skirt lift, torn black stockings, lying on bench, covering face, blush, dressing room, warm lamp light, <lora:shiki_natsume_v18_wd14:0.85>, raised hand, leather bench, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
+    "prompt": "adult, 1girl, solo, shiki_natsume, burgundy waistband, natsume_r18, black pencil skirt, skirt lift, torn black stockings, lying on bench, covering face with one hand, peeking between fingers, blush, teary eyes, dressing room, leather bench, warm lamp light, soft shadows, cinematic_lighting, depth_of_field",
     "rating": "R18",
     "season": "不限",
     "story": "深夜，空无一人的公司高管更衣室只留着一盏暖灯。夏目躺在皮革长椅中央，平整的黑色包臀裙已经滑至腰侧，薄黑丝袜也在拉扯中留下大片裂纹，露出若隐若现的肌肤。她抬手遮住泛红的脸，眼角泪痣在指缝间轻轻颤动；明明已经乱了呼吸，语气却仍旧强硬——「把我的丝袜弄成这样……明天记得赔。至于今晚，就别想装作什么都没发生。」",
@@ -47,6 +47,6 @@
       "成人向"
     ],
     "weather": "室内微热",
-    "promptProse": "She lies back on the leather bench with her skirt at her waist, raising one hand over her flushed face beneath the lamp."
+    "promptProse": "Lying across the leather dressing room bench beneath the warm lamp, she peeks between her fingers with a flushed, tearful glare, her pencil skirt and torn stockings displaced."
   }
 }

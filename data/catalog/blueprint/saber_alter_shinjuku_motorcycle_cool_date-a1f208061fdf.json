@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_shinjuku_motorcycle_cool_date",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 222,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "saber_alter_shinjuku_motorcycle_cool_date",
     "title": "黑呆 · 新宿街头的机车酷感倚待",
@@ -14,7 +14,7 @@
     "location": "流光溢彩、机车轰鸣的新宿繁华街角红绿灯旁",
     "action": "一手扶停稳机车的车把，另一手托头盔在腰侧，一脚靠脚踏板等待同行者",
     "timeOfDay": "深夜",
-    "lighting": "新宿繁华街头五彩缤纷的霓虹灯影与机车站灯",
+    "lighting": "新宿繁华街头霓虹光晕与机车大灯",
     "camera": "full body, eye level",
     "mood": "帅气御姐",
     "sceneTags": [
@@ -31,14 +31,19 @@
     ],
     "promptProse": "She waits beside the parked motorcycle, one hand on its handlebar, the other holding her helmet at her hip and one foot resting on the footpeg beneath Shinjuku neon. The motorcycle's parking light shines near the curb.",
     "promptTokens": [
-      "helmet",
+      "leather jacket",
       "motorcycle",
-      "hair bun",
+      "sitting on motorcycle",
+      "shinjuku",
+      "night city",
       "neon lights",
-      "full body",
-      "hand on handlebar",
-      "holding helmet",
-      "boot on footpeg"
+      "streetlamp",
+      "asphalt",
+      "cool expression",
+      "windblown hair",
+      "rim light",
+      "city bokeh",
+      "headlight glow"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -48,6 +53,6 @@
       "cool",
       "motorcycle"
     ],
-    "animaCaption": "The motorcycle stays parked as she holds the helmet at her hip beside the handlebar."
+    "animaCaption": "Neon streetlights and headlamps illuminate her sleek leather jacket as she straddles her black motorcycle in Shinjuku."
   }
 }

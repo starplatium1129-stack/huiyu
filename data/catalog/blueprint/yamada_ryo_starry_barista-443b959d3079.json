@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_starry_barista",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1832,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "yamada_ryo_starry_barista",
     "characterId": "yamada_ryo",
@@ -16,20 +16,19 @@
     "location": "Livehouse STARRY 深夜酒吧台",
     "timeOfDay": "深夜",
     "mood": "慵懒沉醉",
-    "lighting": "酒柜后方幽蓝背景光与吧台局部聚光",
+    "lighting": "STARRY酒吧吧台柔暖吧台筒灯与彩色酒瓶琉璃流光",
     "camera": "medium shot, slightly low angle",
     "promptTokens": [
-      "bar",
-      "bartender",
-      "pouring drink",
-      "cocktail shaker",
-      "drinking glass",
-      "night",
-      "dim lighting",
-      "medium shot",
-      "blue lighting",
-      "spotlight",
-      "low angle"
+      "bar counter",
+      "mixing drink",
+      "shaker in hand",
+      "apron",
+      "livehouse starry",
+      "warm bar lighting",
+      "illuminated glass bottles",
+      "soft neon accents",
+      "cool deadpan expression",
+      "ambient glow"
     ],
     "sceneTags": [
       "bar",
@@ -46,6 +45,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She pours a clear drink from the stainless shaker into the tall glass."
+    "animaCaption": "Warm overhead bar lamps reflect off rows of colorful bottles as Ryo calmly crafts a late-night mocktail at STARRY."
   }
 }

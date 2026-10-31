@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_sfw_b5_01",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1523,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "izumi_sagiri_sfw_b5_01",
     "title": "和泉纱雾 · 被炉绘图舱",
@@ -15,7 +15,7 @@
     "location": "卧室被炉绘图桌",
     "action": "缩在被炉中，戴着耳机用数位笔绘制新插画。",
     "timeOfDay": "日间",
-    "lighting": "screen_light",
+    "lighting": "二楼卧室内和暖吸顶灯光与绘图板屏幕亮光",
     "camera": "horizontal medium shot, environmental portrait",
     "mood": "自然日常、细腻表情",
     "sceneTags": [
@@ -32,18 +32,14 @@
     ],
     "promptProse": "Sagiri sits tucked into the kotatsu with her stylus hand above the blanket, concentrating on the drawing tablet in the monitor glow.",
     "promptTokens": [
-      "kotatsu",
-      "stylus",
-      "drawing tablet",
-      "headset",
-      "computer",
-      "screen light",
-      "medium shot",
-      "sitting",
-      "drawing",
-      "blanket",
-      "dark room",
-      "focused"
+      "sitting on bedroom floor",
+      "holding tablet",
+      "drawing tablet glow",
+      "plush toys",
+      "warm room lighting",
+      "hoodie",
+      "pouting cute expression",
+      "soft room shadows"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -55,6 +51,6 @@
       "iconic",
       "daily"
     ],
-    "animaCaption": "Her stylus hand remains above the kotatsu blanket as she concentrates on the drawing tablet."
+    "animaCaption": "Warm bedroom lights and the luminous glow of her pen tablet illuminate Sagiri surrounded by her favorite plushies."
   }
 }

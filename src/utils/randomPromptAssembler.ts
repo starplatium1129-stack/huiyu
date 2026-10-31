@@ -20,9 +20,9 @@ import { appendRandomTag, compatibleRandomDetail, randomTokens, visibleInRandomS
  * 三条硬约束：
  * 1. 角色身份固定——identity token（CHAR_PROMPT / identityExclude）绝不进入采样池；
  * 2. 画师默认不注入（includeArtists=false，保留角色原生画风），keepArtists 恒保留；
- * 3. Mature 池无独立开关——本地直连本就放行，随机抽中即与显式门控词联动
- *    （评级提升由 isManualR18Tags：门控词正则 ∪ 词条池 Mature 分类命中，见
- *    usePromptAssembly.effectiveScene），此处只保证标签层面不与显式门控词冲突、不重复。
+ * 3. Mature 池无独立开关——本地直连本就放行，随机抽中即与显式触发词联动
+ *    （评级提升由 isManualR18Tags：触发词正则 ∪ 词条池 Mature 分类命中，见
+ *    usePromptAssembly.effectiveScene），此处只保证标签层面不与显式触发词冲突、不重复。
  */
 
 export interface RandomInspirationOptions {

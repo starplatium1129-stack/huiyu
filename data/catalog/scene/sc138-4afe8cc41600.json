@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc138",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
-    "animaCaption": "In the mirror, she turns toward the viewer's shoulder as their arms encircle her from behind.",
+    "animaCaption": "Standing before the vanity mirror in the steamy onsen dressing room with her white towel secured, she meets the viewer's gaze in the glass with flushed cheeks under the warm glow of paper lanterns.",
     "auditRevision": "careful-batch10-2026-08-27",
     "camera": "镜面反射特写",
     "category": "恋爱/同人",
@@ -16,27 +16,35 @@
     ],
     "emotion": "极度羞嗔占有",
     "id": "sc138",
-    "lighting": "日式纸灯笼朦胧弱光",
+    "lighting": "日式温泉更衣室和纸灯笼柔和橙光与梳妆台暖灯镜面反射",
     "location": "温泉旅馆梳妆镜前",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, wet white towel, bare shoulders, barefoot, back hug, mirror, dressing room, onsen, steam, blush, warm lighting, arms around waist, paper lantern, close up, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
+    "negative": "headless man in mirror, extra person, distorted reflection, malformed limbs, headless figure",
+    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, @rella, mole_under_eye, wet black hair, wrapped securely in white bath towel over chest, bare shoulders, barefoot, standing before wooden dressing table mirror, looking at viewer reflection in mirror, heavy blush, parted lips, traditional onsen dressing room, tatami floor, glowing paper lantern on low table, bamboo privacy screen, warm vanity lights above mirror, steam reflections, face illuminated by warm paper lantern glow and mirror lights, clean reflection, soft rim lighting, medium close up, depth of field",
     "rating": "R15",
     "season": "冬",
     "story": "古色古香的日式温泉旅馆，雾气氤氲。洗完澡后的夏目刚走到回廊，就被突然出现的你从身后拦腰抱住。她还带着泉水的水汽，眼角的泪痣挂着晶莹的水滴，面红耳赤地扭过头瞪着你——「哈？！你这家伙...绝对是算好了时间进来的吧？不准盯着镜子里看...变态笨蛋...」",
     "storyJa": "【夏目・温泉のバスタオルを脱ぐと究極のコントラストが生まれる】窓の外には冷たく明るい月が高く垂れ下がる、古風な和風温泉宿。シャワーを浴びた夏目は巨大な半身鏡の前に立ち、温泉で半分濡れた白いバスタオル一枚を着て、静かに滑り落ちていた。鏡には彼女の完全に露出した肩と、激しくうねる官能的な雪のように白い肌の魅惑的な姿がはっきりと映っていた。突然後ろから抱きしめられた君を見て、彼女の目尻には水晶の水滴が垂れ、顔を赤らめた顔で鏡の中の君を見つめた。――「はあ？　あなた、絶対に時間を計って入ってきたでしょ。鏡越しに見ないで……この変態。」",
     "tags": [
       "mole_under_eye",
+      "natsume_r18",
+      "wet_hair",
       "white_bath_towel",
-      "towel_slipping",
       "bare_shoulders",
-      "bare_back",
-      "mirror",
-      "onsen",
-      "embrace_from_behind",
+      "standing_before_mirror",
+      "looking_at_mirror_reflection",
+      "heavy_blush",
+      "parted_lips",
+      "traditional_onsen_dressing_room",
+      "tatami",
       "paper_lantern",
-      "close_up"
+      "bamboo_screen",
+      "steam",
+      "face_illuminated_by_lantern_glow",
+      "soft_rim_lighting",
+      "medium_close_up",
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -47,6 +55,6 @@
       "R15"
     ],
     "weather": "澄澈月夜",
-    "promptProse": "In the close mirror view, the viewer's arms circle her waist from behind as she turns her flushed face toward their shoulder; paper-lantern light softens the steam and the towel below her shoulders."
+    "promptProse": "Standing before the vanity mirror in the steamy onsen dressing room with her white towel secured, she meets the viewer's gaze in the glass with flushed cheeks under the warm glow of paper lanterns."
   }
 }

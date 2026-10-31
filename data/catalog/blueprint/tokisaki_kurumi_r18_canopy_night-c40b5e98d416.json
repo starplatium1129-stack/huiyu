@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_canopy_night",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_canopy_night",
     "title": "时崎狂三 · 钟表陈列室·满月银辉与黑丝绒项圈",
@@ -14,7 +14,7 @@
     "location": "哥特古董钟表陈列室，巨大摆钟与尖顶花窗前",
     "action": "赤裸斜倚古董机械钟柜，单腿曲起踩在石阶，单指轻抵下唇，异色双瞳在满月银光中魅惑微笑",
     "timeOfDay": "深夜",
-    "lighting": "chilly silver moonlight streaming through gothic arched windows, deep chiaroscuro, subtle amber clock glow, soft rim light",
+    "lighting": "哥特古董钟表陈列室巨大花窗银色月华与壁炉柔光",
     "camera": "full body, low angle, side view",
     "mood": "哥特魅惑、优雅病娇、宿命感性张力",
     "recommendedSize": "1152x1536",
@@ -45,22 +45,21 @@
     ],
     "promptProse": "Kurumi reclines nude against the clock casing with one foot on the step and a finger at her lips beneath silver window light. The clock's faint amber glow catches its gears against long cold shadows on the black-and-white marble floor.",
     "promptTokens": [
-      "adult",
+      "on bed",
+      "canopy bed",
+      "lingerie",
       "black choker",
-      "reclining",
-      "knee up",
-      "grandfather clock",
-      "moonlight",
-      "nude",
-      "full body",
-      "foot on step",
-      "finger on lips",
-      "window light",
-      "amber glow"
+      "stained glass window",
+      "bright moonlight",
+      "antique grandfather clocks",
+      "warm fireplace",
+      "heavy blush",
+      "seductive gaze",
+      "soft shadows"
     ],
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "One foot rests on the step beside the clock's faintly lit gears."
+    "animaCaption": "Silver full moonlight filtering through gothic arched windows sparkles against Kurumi's black lace and seductive smile."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_wuhwang_hill_spirits",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 21,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "hu_tao_wuhwang_hill_spirits",
     "title": "胡桃 · 无妄坡幽火幻舞",
@@ -14,7 +14,7 @@
     "location": "无妄坡幽静古树秘境",
     "action": "侧身轻点枝头，单手结印操控悬浮火灵小幽灵（Boo Tao），嘴角带着狡黠神秘微笑",
     "timeOfDay": "夜晚",
-    "lighting": "幽蓝鬼火冷光与赤红火灵暖光双色交织",
+    "lighting": "无妄坡幽径夜空漫天飞舞的幽灵暖金磷光与残月",
     "camera": "full-body shot, side view, branch and spirit in frame",
     "mood": "神秘灵动",
     "sceneTags": [
@@ -32,20 +32,16 @@
     ],
     "promptProse": "Balanced on the broad branch, she steadies one hand against the trunk and guides Boo Tao with the other; its red glow lights her raised hand while blue wisps drift below.",
     "promptTokens": [
-      "standing",
-      "branch",
-      "hand gesture",
-      "ghost",
-      "will-o'-the-wisp",
-      "mist",
-      "forest",
-      "full body",
-      "from side",
-      "hand on trunk",
-      "smirk",
-      "blue fire",
-      "red fire",
-      "night"
+      "wuwang hill",
+      "holding staff of homa",
+      "floating ghosts",
+      "spirit fire",
+      "glowing butterflies",
+      "bright full moon",
+      "twisted tree branches",
+      "playful wink",
+      "volumetric magical light",
+      "rim light"
     ],
     "negativeTokens": [
       "cropped feet"
@@ -57,6 +53,6 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "One hand steadies against the trunk while the other guides Boo Tao above the drifting blue wisps."
+    "animaCaption": "Cheerful golden wisp spirits illuminate the ancient twisted trees of Wuwang Hill as Hu Tao winks playfully."
   }
 }

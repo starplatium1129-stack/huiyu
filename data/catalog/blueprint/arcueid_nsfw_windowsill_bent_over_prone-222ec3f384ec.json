@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_windowsill_bent_over_prone",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1330,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "一手撑在玻璃窗上俯身弓腰翘臀，裙摆被撩起，单手探入内裤自抚花瓣，回头含泪咬唇喘息",
     "adult": true,
@@ -20,25 +20,24 @@
     "description": "高层公寓巨大落地窗前，爱尔奎特的白色高领毛衣被推至锁骨露出饱满雪乳，长紫裙彻底撩起堆在腰间。她一手轻撑在冰凉的玻璃窗上俯身弓腰，展现着丰满圆润的雪白臀部曲线。单手探入裙底拉开内裤边缘自抚晶莹的花瓣，呼吸在窗户上扑出一层薄雾。咬紧嘴唇回头，耳根红透，含泪的赤瞳泛着近乎失控的甜蜜愉悦——「啊……哈……身体好热……真祖的心跳……全部乱掉了……」",
     "id": "arcueid_nsfw_windowsill_bent_over_prone",
     "kreaStyleHint": "r18_explicit_h_cg",
-    "lighting": "落地窗外浩瀚银白月光洒在雪白肌肤上",
+    "lighting": "落地大窗倾泻入室的皎洁满月银辉与雪白大理石反光",
     "location": "落地玻璃大窗前的加宽大理石窗台边",
     "mood": "狂乱自抚、唯美心动",
     "negativeTokens": [],
     "outfitId": "official_white_sweater_purple_skirt",
     "promptProse": "With her sweater raised and skirt gathered at her waist, she braces one hand against the window while the other reaches beneath her skirt. Her breath clouds the glass above the moonlit city.",
     "promptTokens": [
-      "window",
-      "cityscape",
-      "white turtleneck",
-      "purple long skirt",
-      "skirt lift",
-      "bent over",
-      "masturbation",
-      "looking back",
-      "night",
-      "hand on glass",
-      "condensation",
-      "moonlight"
+      "leaning over windowsill",
+      "white sweater pulled up",
+      "bare back",
+      "blush",
+      "panties",
+      "marble sill",
+      "bright full moon",
+      "streaming moonlight",
+      "night city below",
+      "soft rim light",
+      "sensual vulnerability"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -59,6 +58,6 @@
     ],
     "timeOfDay": "深夜月色",
     "title": "爱尔奎特 · 落地月光窗前的毛衣半褪自抚·「身体变得好烫……像被吸血冲动烧焦了一样」",
-    "animaCaption": "One hand braces on the window; the other stays beneath the gathered skirt."
+    "animaCaption": "A flood of cool silver moonlight spills through the panoramic window, caressing Arcueid's arched back on the marble sill."
   }
 }

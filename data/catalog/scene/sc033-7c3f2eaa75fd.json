@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc033",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 31,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
-    "animaCaption": "She steps out from behind the door and offers the small birthday cake in both hands. Its candle lights her blushing face while the unlit apartment entrance stays dim behind her.",
+    "animaCaption": "Stepping out from behind the door into the warmly lit entrance hall, she presents the decorated birthday cake with both hands, its dancing candles and the overhead ceiling lamp lighting her blushing smile.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "门后半身中景",
     "category": "恋爱",
@@ -16,12 +16,12 @@
     ],
     "emotion": "期待",
     "id": "sc033",
-    "lighting": "玄关暗部与生日烛光",
+    "lighting": "玄关明亮暖黄吸顶灯与生日蛋糕多重跳动烛光",
     "location": "温馨公寓玄关",
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
-    "negative": "nsfw, nude, explicit",
-    "prompt": "safe, 1girl, shiki_natsume, white shirt, navy pleated skirt, black tights, holding cake, birthday cake, candle, doorway, apartment entrance, night, candlelight, medium shot, <lora:shiki_natsume_v21_anima:0.85>",
+    "negative": "nsfw, nude, explicit, pitch black, darkness, dark hallway",
+    "prompt": "safe, 1girl, solo, shiki_natsume, @rella, mole_under_eye, white collared shirt, navy pleated skirt, black tights, holding birthday cake with glowing candles, doorway, warmly lit apartment entrance hallway, illuminated shoe cabinet, decorative wall mirror, warm ceiling pendant lamp, face illuminated by bright candle glow and hallway light, sweet flustered blush, happy smile, soft rim lighting, medium shot, depth of field",
     "rating": "All",
     "season": "冬",
     "story": "冬夜公寓玄关没有开灯，夏目捧着小蛋糕躲在门后，本想等你进屋再点亮蜡烛，却被提前回家的脚步打乱。她僵在原地几秒，索性把蛋糕直接递来，脸颊比烛火更红——「只是大家都说生日应该有点仪式感。愿望快点许，奶油要化了……我没有等很久。」",
@@ -29,13 +29,18 @@
     "tags": [
       "mole_under_eye",
       "white_shirt",
-      "pleated_skirt",
-      "sheer_black_tights",
-      "apartment_genkan",
-      "birthday_cake",
-      "candle",
-      "full_body",
-      "mary_jane",
+      "navy_pleated_skirt",
+      "black_tights",
+      "holding_birthday_cake",
+      "glowing_candles",
+      "warmly_lit_apartment_hallway",
+      "ceiling_lamp",
+      "doorway",
+      "face_illuminated_by_candle_glow",
+      "blush",
+      "smile",
+      "soft_rim_lighting",
+      "medium_shot",
       "depth_of_field"
     ],
     "time": "夜晚",
@@ -44,6 +49,7 @@
     "usage": [
       "展示图"
     ],
-    "weather": "晴"
+    "weather": "晴",
+    "promptProse": "Stepping out from behind the door into the warmly lit entrance hall, she presents the decorated birthday cake with both hands, its dancing candles and the overhead ceiling lamp lighting her blushing smile."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_commander_room_night_report_affection",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1801,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "rapi_commander_room_night_report_affection",
     "title": "拉毗 · 指挥室深夜汇报的松弛与依恋",
@@ -16,7 +16,7 @@
     "location": "前哨基地静谧柔和的指挥官私人办公室",
     "action": "手持战报板站在书桌旁，神态放松温柔，眼眸含着深情与安心浅笑",
     "timeOfDay": "深夜",
-    "lighting": "百叶窗缝隙漏入的冷调方舟天际线光与桌上暖色台灯投射的温馨暖光",
+    "lighting": "指挥官私人居室暖调顶灯与办公桌台灯柔和漫射",
     "camera": "eye-level medium shot, shallow depth of field with warm interior lighting",
     "mood": "温存深情",
     "recommendedSize": "1152x1536",
@@ -40,32 +40,21 @@
       "barefoot"
     ],
     "promptTokens": [
-      "1girl",
-      "solo",
-      "commander_office",
-      "wooden_desk",
-      "window_blinds",
-      "night_city_view",
-      "warm_lamp_light",
-      "holding_clipboard",
-      "gentle_smile",
-      "tender_look",
-      "brown_hair",
-      "long_hair",
-      "red_eyes",
-      "bare_legs",
-      "barefoot",
-      "soft_lighting",
-      "peaceful_atmosphere",
-      "standing",
-      "smile",
-      "city lights",
-      "blinds shadows"
+      "commander room",
+      "sitting close",
+      "holding clipboard",
+      "blushing slightly",
+      "warm table lamp",
+      "office interior",
+      "sofa",
+      "soft ambient glow",
+      "earnest devoted expression",
+      "military uniform"
     ],
     "promptProse": "Standing beside the Commander's mahogany desk in the quiet command quarters late at night, Rapi holds a briefing clipboard wearing only an oversized white dress shirt. Ambient cool city lights filter through window blinds as her dark auburn hair falls gently over her shoulders, her scarlet eyes reflecting a rare tender, warm smile reserved solely for the Commander.",
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She holds the briefing clipboard beside the mahogany desk."
+    "animaCaption": "A soft desktop lamp warms the commander's office as Rapi delivers her evening report with quiet, devoted affection."
   }
 }

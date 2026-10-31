@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_rainy_telephone_booth",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 814,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "fiona_frost_rainy_telephone_booth",
     "characterId": "fiona_frost",
@@ -15,7 +15,7 @@
     "location": "雨夜柏林特街头电话亭",
     "action": "站在电话亭内，一手持听筒汇报密电，另一手将收拢的雨伞靠在玻璃门侧",
     "timeOfDay": "深夜",
-    "lighting": "电话亭昏黄暖光与湿漉雨夜反光",
+    "lighting": "雨夜电话亭暖黄顶灯与湿漉漉玻璃反光",
     "camera": "cowboy shot",
     "mood": "冷峻机警",
     "sceneTags": [
@@ -30,17 +30,15 @@
     ],
     "promptProse": "One hand holds the receiver to her ear; the other keeps the folded umbrella beside the glass door. The booth lamp warms her still profile through the rain-streaked glass.",
     "promptTokens": [
-      "telephone",
-      "umbrella",
-      "phone booth",
-      "rain",
-      "night",
-      "cowboy shot",
-      "standing",
-      "holding phone",
-      "holding umbrella",
-      "wet glass",
-      "warm lighting"
+      "inside telephone booth",
+      "rain on glass",
+      "warm yellow booth light",
+      "holding telephone receiver",
+      "trench coat",
+      "wet street outside",
+      "rim light",
+      "steamy glass",
+      "composed expression"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +47,6 @@
       "iconic",
       "daily"
     ],
-    "animaCaption": "One hand holds the receiver to her ear while the other keeps the folded umbrella beside the door."
+    "animaCaption": "A warm incandescent bulb inside the vintage phone booth illuminates Fiona's focused gaze through rain-streaked glass."
   }
 }

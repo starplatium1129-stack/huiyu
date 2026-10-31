@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
     "title": "胡桃 · 秘境温泉落月幽欢",
@@ -14,7 +14,7 @@
     "location": "无妄坡隐秘地热温泉池",
     "action": "独自斜倚秘泉岩台，湿符纹薄纱敞开，一手托鬼火莲灯、一手在水下自抚，一腿屈起抵住石沿",
     "timeOfDay": "夜晚",
-    "lighting": "冷月光落在泉水与深红裹布上，身旁幽蓝火莲补出低位蓝色微光",
+    "lighting": "无妄坡幽谷温泉水汽氤氲中的幽蝶荧光与暖红灯笼",
     "camera": "cowboy shot, vertical framing",
     "mood": "野性欢愉",
     "sceneTags": [
@@ -31,23 +31,17 @@
     ],
     "promptProse": "Resting against the warm rock shelf with one knee bent, she balances the ghost-flame lotus in one palm while her other hand moves underwater; its blue light reaches her eyes beneath the moonlit mist.",
     "promptTokens": [
-      "adult",
-      "wet dark red wrap",
-      "topless",
-      "reclining",
-      "knee up",
-      "female masturbation",
-      "lotus",
-      "butterfly",
       "hot spring",
-      "rocks",
-      "moonlight",
-      "wet skin",
-      "wet hair",
-      "hand between legs",
-      "blue glow",
-      "ghost lotus",
-      "cowboy shot"
+      "steamy water",
+      "blush",
+      "wet twintails",
+      "parted lips",
+      "water ripples",
+      "glowing ghost butterflies",
+      "natural rock pool",
+      "floating candles",
+      "warm steam glow",
+      "soft volumetric light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -62,6 +56,6 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "One palm balances the ghost-flame lotus while her other hand remains underwater beside the rock shelf."
+    "animaCaption": "Luminescent spirit butterflies and floating candles illuminate the warm rising mist around Hu Tao in the hot spring."
   }
 }

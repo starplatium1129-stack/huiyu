@@ -50,42 +50,42 @@
 
 ## 四、原创候选案例
 
-以下均为原创成年女性的全年龄说明，**未编译、未出图、未审核**。不包含角色 LoRA 或 profile 自动注入部分，不作为生产场景或模板批量套用。
+以下均为原创角色提示词示例，**未编译、未出图、未审核**。不包含角色 LoRA 或 profile 自动注入部分，不作为生产场景或模板批量套用。
 
 ### W1：全身立绘横幅——完整轮廓与安静留白
 
-设计：成年女性穿已有明确设计的长外套，完整站姿位于画面右侧；左侧保留安静背景。示例中的原创衣装仅用于说明，替换为既有角色时必须读取其真实衣装数据。
+设计：女性角色穿长外套，完整站姿位于画面右侧；左侧保留安静背景。示例中的原创衣装仅用于说明，替换为既有角色时必须读取其真实衣装数据。
 
 Anima 候选：
 
 ```text
-1girl, solo, adult woman, full body, standing, short silver hair, blue eyes, navy long coat, cream blouse, dark trousers, ankle boots, relaxed pose, anime illustration, simple background
-An adult woman stands on the right side of a wide composition, shown completely from the top of her hair to both boots. Her body turns slightly toward the left while she looks toward the viewer with a calm expression. Her arms rest naturally at her sides, keeping the coat silhouette clear. Soft light from the upper left defines her face and the folds of the navy coat, with a restrained contact shadow beneath her boots. The left side remains a quiet blue-gray background with broad, low-contrast tonal changes. Keep clear space above her hair and below her feet without stretching her proportions to fill the frame.
+1girl, solo, full body, standing, short silver hair, blue eyes, navy long coat, cream blouse, dark trousers, ankle boots, relaxed pose, anime illustration, simple background
+A woman stands on the right side of a wide composition, shown completely from the top of her hair to both boots. Her body turns slightly toward the left while she looks toward the viewer with a calm expression. Her arms rest naturally at her sides, keeping the coat silhouette clear. Soft light from the upper left defines her face and the folds of the navy coat, with a restrained contact shadow beneath her boots. The left side remains a quiet blue-gray background with broad, low-contrast tonal changes. Keep clear space above her hair and below her feet without stretching her proportions to fill the frame.
 ```
 
 Krea 2 候选：
 
 ```text
-A full-length anime character illustration composed as a wide desktop wallpaper. An adult woman with short silver hair and blue eyes stands on the right, wearing a navy long coat over a cream blouse, dark trousers and ankle boots. Her body turns slightly left and her calm gaze meets the viewer. Her arms rest naturally at her sides so the coat forms a readable silhouette. Show her entire figure, including the top of her hair and both boots, with comfortable space around the figure. Soft upper-left light shapes her face and fabric folds, and a restrained shadow grounds her feet. The left half is a quiet blue-gray field of broad, low-contrast tones, using the same restrained anime painting language as the character.
+A full-length anime character illustration composed as a wide desktop wallpaper. A woman with short silver hair and blue eyes stands on the right, wearing a navy long coat over a cream blouse, dark trousers and ankle boots. Her body turns slightly left and her calm gaze meets the viewer. Her arms rest naturally at her sides so the coat forms a readable silhouette. Show her entire figure, including the top of her hair and both boots, with comfortable space around the figure. Soft upper-left light shapes her face and fabric folds, and a restrained shadow grounds her feet. The left half is a quiet blue-gray field of broad, low-contrast tones, using the same restrained anime painting language as the character.
 ```
 
 验收：头脚不被意外截掉；衣装与身体比例一致；空白区域有意图；人物站得住。背景装饰少不扣分。若完整人物难以保留，先调整景别与裁切方案，不能只靠重复 full body 或盲目增加权重。
 
 ### W2：面部特写横幅——眼神与光色
 
-设计：成年女性的脸和肩部位于画面偏右，使用微弱微笑、眼神与发丝结构形成焦点；背景平静。构图允许肩部和头发延伸到画面外，重点保护五官及需要保留的发饰。
+设计：女性角色的脸和肩部位于画面偏右，使用微弱微笑、眼神与发丝结构形成焦点；背景平静。构图允许肩部和头发延伸到画面外，重点保护五官及需要保留的发饰。
 
 Anima 候选：
 
 ```text
-1girl, solo, adult woman, close-up, face, shoulders, long dark hair, amber eyes, subtle smile, cream blouse, anime portrait, soft side lighting, simple background
-A close-up anime portrait of an adult woman placed to the right of a wide image, with her face and upper shoulders visible. Her head turns slightly left while her eyes look toward the viewer. Dark hair forms clear overlapping shapes around her face without covering the eyes. Gentle light from the left creates a warm highlight on her cheek and a quieter shadow on the far side. The left side of the image is an uncluttered muted plum background, with softer detail than the face. Preserve the shape of both eyes, the small smile and the clean separation between hair and background; the shoulders may continue beyond the lower edge.
+1girl, solo, close-up, face, shoulders, long dark hair, amber eyes, subtle smile, cream blouse, anime portrait, soft side lighting, simple background
+A close-up anime portrait of a woman placed to the right of a wide image, with her face and upper shoulders visible. Her head turns slightly left while her eyes look toward the viewer. Dark hair forms clear overlapping shapes around her face without covering the eyes. Gentle light from the left creates a warm highlight on her cheek and a quieter shadow on the far side. The left side of the image is an uncluttered muted plum background, with softer detail than the face. Preserve the shape of both eyes, the small smile and the clean separation between hair and background; the shoulders may continue beyond the lower edge.
 ```
 
 Krea 2 候选：
 
 ```text
-A wide anime portrait wallpaper centered on the expression of an adult woman with long dark hair and amber eyes. Her face and upper shoulders occupy the right side, her head turned slightly left as she looks toward the viewer with a small, relaxed smile. Draw the hair as clear overlapping shapes around her face, leaving both eyes visible. Gentle light from the left warms her near cheek while the far side remains softly shaded. The muted plum background on the left is quiet and uncluttered, with broad color transitions and little fine detail. Use controlled anime linework and soft painted shading across the image, keeping the eyes and mouth precise and allowing the shoulders to extend naturally past the lower edge.
+A wide anime portrait wallpaper centered on the expression of a woman with long dark hair and amber eyes. Her face and upper shoulders occupy the right side, her head turned slightly left as she looks toward the viewer with a small, relaxed smile. Draw the hair as clear overlapping shapes around her face, leaving both eyes visible. Gentle light from the left warms her near cheek while the far side remains softly shaded. The muted plum background on the left is quiet and uncluttered, with broad color transitions and little fine detail. Use controlled anime linework and soft painted shading across the image, keeping the eyes and mouth precise and allowing the shoulders to extend naturally past the lower edge.
 ```
 
 验收：眼神、微表情和身份特征优先；裁切应自然，不按全身图要求判定缺脚；背景不与脸竞争。只有请求出现手部时才增加手势，避免为了丰富度引入新的解剖风险。

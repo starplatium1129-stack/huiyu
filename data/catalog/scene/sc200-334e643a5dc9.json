@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc200",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 195,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
     "id": "sc200",
     "title": "终结的誓言：纯白床单下的永恒契约（第200纪元）",
@@ -20,33 +20,44 @@
     "time": "拂晓",
     "timeOfDay": "dawn",
     "tags": [
-      "hair_ribbon",
+      "ayachi_nene",
+      "nene_r18",
+      "white_hair",
+      "pink_ribbons",
       "nude",
-      "bare_shoulders",
+      "translucent_white_silk_sheet",
       "lying_on_back",
-      "white_sheet",
       "arms_open",
       "happy_tears",
-      "bedroom",
-      "close_up"
+      "radiant_blush",
+      "smile",
+      "canopy_bed",
+      "flowing_drapes",
+      "carved_headboard",
+      "scattered_rose_petals",
+      "french_balcony_window",
+      "golden_morning_dawn_sunlight",
+      "face_illuminated_by_morning_sunlight",
+      "wide_angle_medium_shot",
+      "depth_of_field"
     ],
     "mature": true,
     "location": "终焉温柔乡床榻",
     "weather": "初晴拂晓",
     "camera": "近景特写",
-    "lighting": "破晓通透逆光与温润碎光",
+    "lighting": "法式露台落地窗破晓清晨初升暖金朝阳通透光束与曼妙碎光",
     "usage": [
       "壁纸级",
       "核心协议",
       "终章大结局",
       "成人向"
     ],
-    "prompt": "adult, 1girl, nene_r18, ayachi_nene, nude, white sheet, on back, arms open, happy tears, blush, white bed, dawn, backlighting, <lora:ayachi_nene_v18_wd14:0.8>, lying on back, smile, translucent sheet, bedroom, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
-    "negative": "clothes, stockings",
+    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, @rella, white hair, ahoge, pink ribbons, purple eyes, nude under translucent white silk sheet, lying on back on ornate canopy bed, sheer flowing white drapes, carved ivory headboard, scattered fresh white and pink rose petals on mattress, arms open welcoming viewer, happy tears glistening in eyes, radiant blush, gentle smile, french balcony doors with golden morning dawn sunlight streaming across bed, dust motes floating in sunbeam, face illuminated by warm morning sunlight, ethereal rim lighting, wide angle medium shot, depth of field",
+    "negative": "clothes, stockings, flat white background, overexposed white void, featureless room",
     "storyJa": "【寧々・大人のAfter Story・旅の終わりと新しい朝】幾つもの困難を越えた先、二人だけの寝室に朝の光が差し込んでいた。寧々は真っ白な毛布にくるまり、銀色の髪を枕へ広げている。紫の瞳には幸せそうな涙が浮かび、アホ毛は小さなハートを描くように揺れていた。彼女はあなたへ両腕を伸ばし、決して解けない誓いを静かに口にする――「柊史……魔女の長い旅は、これでおしまいです。これから先の寧々の心も、人生も……ずっと、あなただけのものですよ。」",
     "rating": "R18",
-    "animaCaption": "Her open arms reach toward the viewer from beneath the white sheet.",
+    "animaCaption": "Lying on the petal-strewn canopy bed beneath a sheer silk sheet, she reaches out with open arms and joyful tears as golden dawn sunlight pours through the balcony doors to embrace the room.",
     "auditRevision": "careful-batch11-2026-08-27",
-    "promptProse": "She lies beneath the translucent white sheet with her arms open toward the viewer, smiling through happy tears in the dawn light."
+    "promptProse": "Lying on the petal-strewn canopy bed beneath a sheer silk sheet, she reaches out with open arms and joyful tears as golden dawn sunlight pours through the balcony doors to embrace the room."
   }
 }

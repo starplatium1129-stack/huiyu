@@ -22,7 +22,7 @@
       <span>{{ error }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="$emit('retry')">{{ loading ? '正在读取…' : '重新读取' }}</button>
     </div>
     <div v-if="items.length" ref="historyList" class="history-list">
-      <article v-for="item in items" :key="item.id" class="history-item" :data-selected="selectedSet.has(item.id) || undefined">
+      <article v-for="item in items" :key="item.id" class="history-item" :data-artwork-id="item.id" :data-selected="selectedSet.has(item.id) || undefined">
         <div class="history-thumb">
           <button class="history-preview" type="button" :aria-label="'查看完整作品：' + (item.sceneTitle || item.story || '未命名作品')" @click="openPreview(item, $event)">
           <img :crossorigin="runtimeResourceCors()" v-if="thumbs[item.id]" :src="resolveRuntimeUrl(thumbs[item.id])" alt="历史作品缩略图" loading="lazy">
@@ -58,7 +58,7 @@
         </div>
       </article>
     </div>
-    <SavedArtworkPreview v-if="previewItem && active" :item="previewItem" :source="previewSource" :thumbnail="thumbs[previewItem.id] || ''" :request="previewRequest"
+    <SavedArtworkPreview v-if="previewItem && active" :item="previewItem" :items="items" :source="previewSource" :source-for="previewImageSource" :thumbnail="item => thumbs[item.id] || ''" :request="previewRequest"
       @close="previewItem = null" @resume="$emit('resume', $event)" />
   </section>
 </template>
@@ -97,6 +97,9 @@ watch(() => props.history, history => {
 const historyList = ref<HTMLElement | null>(null)
 const previewItem = shallowRef<ArtworkRecord | null>(null), previewSource = shallowRef<HTMLImageElement | null>(null)
 const previewRequest = ref(0)
+function previewImageSource(id: string | number) {
+  return historyList.value?.querySelector<HTMLImageElement>(`.history-item[data-artwork-id="${CSS.escape(String(id))}"] .history-preview img`) ?? null
+}
 function openPreview(item: ArtworkRecord, event: MouseEvent) {
   previewSource.value = (event.currentTarget as HTMLElement).querySelector('img')
   previewItem.value = item

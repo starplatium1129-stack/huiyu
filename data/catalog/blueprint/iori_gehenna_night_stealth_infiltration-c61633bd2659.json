@@ -15,24 +15,25 @@
     ],
     "description": "深夜重工业基地的高空钢梁结构上，红色的警戒探照灯在下方冰冷的管道间来回扫过。伊织身穿紧贴身形的黑色战术潜行衣，单膝蹲伏在阴影之中，指尖轻触夜视单目光镜，细长尾巴贴近钢梁隐入夜色——「潜入成功，已绕过外部传感器。突击准备完毕，倒数三秒发起压制。」",
     "id": "iori_gehenna_night_stealth_infiltration",
-    "lighting": "冷色月光与下方红色探照灯交错硬光",
+    "lighting": "高空探照灯与冷白月光交织，工业明亮光影",
     "location": "要塞工厂高空重型钢架走廊",
     "mood": "冷峻肃杀",
     "negativeTokens": [],
     "outfitId": "tactical_night_ops",
-    "promptProse": "Crouched on a high steel beam, she touches the monocle with one hand and steadies herself with the other; moonlight rims her shoulder and tail above red searchlights sweeping the pipes.",
+    "promptProse": "Crouched on an illuminated high steel beam above the industrial facility, she touches the night vision device as bright searchlights and moonlight cast vivid highlights across her suit and tail.",
     "promptTokens": [
       "night vision",
       "kneeling",
       "steel beam",
-      "searchlight",
-      "industrial area",
-      "midnight",
+      "searchlight beam",
+      "floodlight",
+      "industrial lighting",
       "cowboy shot",
       "from above",
       "hand on night vision device",
-      "moonlight",
-      "red lighting",
+      "bright moonlight",
+      "catwalk",
+      "high contrast",
       "rim light"
     ],
     "recommendedSize": "1152x1536",
@@ -51,6 +52,6 @@
     "title": "银镜伊织 · 暗夜要塞潜行突防",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "One hand touches the monocle while the other steadies her crouch on the high steel beam."
+    "animaCaption": "Bright floodlights and moonlight illuminate the steel catwalk as she crouches with one hand touching her monocle."
   }
 }

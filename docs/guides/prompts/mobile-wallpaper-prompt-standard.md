@@ -43,21 +43,21 @@ iPhone 17 Pro 的官方显示规格为 2622×1206 像素，因此本项目竖屏
 
 ## 四、原创候选
 
-以下为全年龄原创成年人物，未编译、未出图、未审核。结构写法可以借鉴，人物身份、服装及目标尺寸不能机械替换进生产数据。
+以下为原创角色示例，未编译、未出图、未审核。结构写法可以借鉴，人物身份、服装及目标尺寸不能机械替换进生产数据。
 
 ### P1：竖屏全身人物
 
 Anima 候选：
 
 ```text
-1girl, solo, adult woman, full body, standing, short brown hair, green eyes, long blue coat, dark trousers, boots, relaxed arms, anime illustration, simple background
-An adult woman stands in the central lower part of a tall composition, with her entire head and both boots visible. Her arms remain close to her body and her coat forms a narrow, readable silhouette. Soft light from the left gives shape to her face and clothing, with a small shadow beneath her boots. Leave an uninterrupted area of muted blue color above her head and quiet space beside her figure. Keep her hands, hair and clothing comfortably inside the side edges of the final narrow crop.
+1girl, solo, full body, standing, short brown hair, green eyes, long blue coat, dark trousers, boots, relaxed arms, anime illustration, simple background
+A woman stands in the central lower part of a tall composition, with her entire head and both boots visible. Her arms remain close to her body and her coat forms a narrow, readable silhouette. Soft light from the left gives shape to her face and clothing, with a small shadow beneath her boots. Leave an uninterrupted area of muted blue color above her head and quiet space beside her figure. Keep her hands, hair and clothing comfortably inside the side edges of the final narrow crop.
 ```
 
 Krea 2 候选：
 
 ```text
-A tall anime character illustration of an adult woman with short brown hair and green eyes, wearing a long blue coat, dark trousers and boots. She stands in the central lower area with a relaxed posture and her arms close to her body. Show the complete figure with clear space around her head, hands and feet. Gentle light from the left defines her face and clothing, and a restrained ground shadow supports her stance. The upper area is a quiet expanse of muted blue, while the side regions use broad low-contrast tones. Keep the figure narrow enough to remain intact when the picture is cropped to a taller phone display.
+A tall anime character illustration of a woman with short brown hair and green eyes, wearing a long blue coat, dark trousers and boots. She stands in the central lower area with a relaxed posture and her arms close to her body. Show the complete figure with clear space around her head, hands and feet. Gentle light from the left defines her face and clothing, and a restrained ground shadow supports her stance. The upper area is a quiet expanse of muted blue, while the side regions use broad low-contrast tones. Keep the figure narrow enough to remain intact when the picture is cropped to a taller phone display.
 ```
 
 检查：最终裁切后的头脚和双手、人物比例、锁屏覆盖区、站姿承托。提示词中的裁切描述只表达意图，不能代替实际几何检查。
@@ -67,14 +67,14 @@ A tall anime character illustration of an adult woman with short brown hair and 
 Anima 候选：
 
 ```text
-1girl, solo, adult woman, portrait, face, shoulders, long dark hair, amber eyes, gentle smile, cream blouse, soft side lighting, anime illustration
-An adult woman looks toward the viewer with a quiet smile in a tall portrait. Her face and upper shoulders sit below a calm area of muted warm-gray background. Dark hair frames her cheeks without covering either eye and continues naturally beyond the lower portrait edge. Soft light from the right shapes her face, while the background stays broad and low in detail. Preserve the eyes, mouth and important hair features within the narrow central region, allowing the outer shoulders to be cropped naturally.
+1girl, solo, portrait, face, shoulders, long dark hair, amber eyes, gentle smile, cream blouse, soft side lighting, anime illustration
+A woman looks toward the viewer with a quiet smile in a tall portrait. Her face and upper shoulders sit below a calm area of muted warm-gray background. Dark hair frames her cheeks without covering either eye and continues naturally beyond the lower portrait edge. Soft light from the right shapes her face, while the background stays broad and low in detail. Preserve the eyes, mouth and important hair features within the narrow central region, allowing the outer shoulders to be cropped naturally.
 ```
 
 Krea 2 候选：
 
 ```text
-A tall anime portrait of an adult woman with long dark hair and amber eyes, wearing a cream blouse. Her face and upper shoulders are placed below a quiet warm-gray background area, and she meets the viewer with a small relaxed smile. Soft light from the right defines her expression. Keep the hair clear of her eyes and draw its major shapes distinctly against the subdued background. The eyes, mouth and recognizable hair features remain inside the central narrow region, with the shoulders extending naturally toward the lower edges. Use restrained linework and painted shading without adding background objects or lettering.
+A tall anime portrait of a woman with long dark hair and amber eyes, wearing a cream blouse. Her face and upper shoulders are placed below a quiet warm-gray background area, and she meets the viewer with a small relaxed smile. Soft light from the right defines her expression. Keep the hair clear of her eyes and draw its major shapes distinctly against the subdued background. The eyes, mouth and recognizable hair features remain inside the central narrow region, with the shoulders extending naturally toward the lower edges. Use restrained linework and painted shading without adding background objects or lettering.
 ```
 
 检查：五官与身份、自然裁切、时钟／组件是否压脸，主屏标签是否被发丝和亮斑干扰。不按全身完整度评判此案例。

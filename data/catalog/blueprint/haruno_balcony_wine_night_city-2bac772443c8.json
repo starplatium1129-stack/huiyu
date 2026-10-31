@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_balcony_wine_night_city",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 370,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "haruno_balcony_wine_night_city",
     "title": "雪之下阳乃 · 深夜高层公寓阳台的红酒杯·「雪乃被你改变了呢……真让人不爽，又有点嫉妒」",
@@ -15,7 +15,7 @@
     "location": "豪华高层公寓观景阳台",
     "action": "单手持红酒杯轻晃，黑丝绒开衩长裙被夜风轻拂，凤眸倒映霓虹怅惘",
     "timeOfDay": "深夜",
-    "lighting": "万家灯火与港口冷蓝月光的城市夜景天光",
+    "lighting": "千叶高层公寓阳台繁华霓虹倒影与红酒杯流光",
     "camera": "medium shot, balcony railing, wine glass, evening gown, city skyline",
     "mood": "孤高落寞、醉意真心",
     "sceneTags": [
@@ -32,18 +32,16 @@
     ],
     "promptProse": "Haruno holds the wine glass just above the balcony rail, looking wistfully over Chiba's coastal lights. Cool moonlight outlines her hair while the city glows through the wine.",
     "promptTokens": [
-      "wine glass",
-      "leaning",
-      "balcony",
-      "cityscape",
-      "night",
-      "moonlight",
-      "medium shot",
-      "holding glass",
-      "melancholy",
-      "wind",
-      "windblown clothes",
-      "city lights"
+      "holding wine glass",
+      "wine glass reflection",
+      "balcony railing",
+      "night city view",
+      "city lights",
+      "evening dress",
+      "smirk",
+      "rim light",
+      "soft bokeh",
+      "windblown hair"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -57,6 +55,6 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She holds the wine glass just above the rail and looks across the coastal city lights."
+    "animaCaption": "The vibrant neon skyline of the bay sparkles through her crystal wine glass as Haruno wears her enigmatic midnight smile."
   }
 }

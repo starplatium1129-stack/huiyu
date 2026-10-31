@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_stage",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 328,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "yuzuriha_inori_stage",
     "title": "楪祈 · 歌姬舞台",
@@ -14,7 +14,7 @@
     "location": "废墟中的演唱会",
     "action": "穿红色层叠长袖舞台礼裙闭眼歌唱，金色灯光与光粒围绕",
     "timeOfDay": "夜晚",
-    "lighting": "舞台金色追光照亮歌姬与裙褶，较弱红色环境光烘托后场",
+    "lighting": "废墟演唱会冲天全息星芒聚光灯与虚空结晶七彩折射",
     "camera": "medium shot",
     "mood": "空灵决绝",
     "sceneTags": [
@@ -30,14 +30,15 @@
     ],
     "promptProse": "Inori sings with closed eyes and relaxed hands at the center of the large stage. Golden spotlights cross the red glow along her layered skirt as sparse luminous particles rise above her.",
     "promptTokens": [
-      "closed eyes",
-      "singing",
-      "stage",
-      "gold spotlights",
-      "red lighting",
-      "relaxed hands",
-      "spotlight",
-      "glowing particles"
+      "singing on stage",
+      "void crystal flowers",
+      "rainbow light refraction",
+      "stage spotlights",
+      "volumetric light beams",
+      "holding microphone",
+      "floating ribbon dress",
+      "ruins concert",
+      "angelic expression"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -47,6 +48,6 @@
     ],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She sings at the stage center with her hands relaxed."
+    "animaCaption": "Prismatic stage spotlights and glowing void crystals wrap Inori in an ethereal halo as her song echoes through the ruins."
   }
 }

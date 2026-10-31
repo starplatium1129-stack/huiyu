@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
     "title": "卡莲 · 抹大拉圣骸布缠绕与圣痕发热自持",
@@ -14,7 +14,7 @@
     "location": "寂静无人的大礼拜堂圣坛前红毯上",
     "action": "无裙祭服敞开露胸，圣骸布缠绕紧勒腰臀，单手探入腿心深处自抚，琥珀色眼眸水雾弥漫失神喘息",
     "timeOfDay": "深夜",
-    "lighting": "高穹彩绘玻璃透下的冷冽月光与圣坛长明灯柔和暖光交织",
+    "lighting": "大礼拜堂彩绘花窗清冷月华与圣坛烛火",
     "camera": "cowboy shot, diagonal intimate perspective, dramatic red ribbon flow",
     "mood": "圣痕禁断",
     "sceneTags": [
@@ -36,25 +36,19 @@
     ],
     "promptProse": "She kneels on one knee before the altar with the Shroud around her hips and thighs, holding it taut with one hand while the other reaches between her legs. Cold moonlight from the high stained-glass windows meets the warm altar lamp.",
     "promptTokens": [
-      "gold embroidery",
-      "church",
-      "altar",
-      "black and white clerical vestments",
-      "no skirt",
-      "open clothes",
-      "topless",
-      "black thighhighs",
-      "red shroud",
-      "kneeling",
-      "masturbation",
-      "candlelight",
-      "one knee",
-      "hand between legs",
-      "heavy blush",
-      "stained glass",
+      "shroud of magdalene",
+      "red ribbon",
+      "bound arms",
+      "white veil",
+      "stained glass window",
       "moonlight",
-      "altar lamp",
-      "cowboy shot"
+      "altar candles",
+      "cathedral",
+      "blush",
+      "pleasure",
+      "volumetric lighting",
+      "soft ambient light",
+      "marble pillars"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -72,6 +66,6 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
     "nsfwTokens": [],
-    "animaCaption": "One hand holds the Shroud taut around her hips and thighs while the other reaches between her legs."
+    "animaCaption": "Moonlight pouring through towering stained-glass windows mingles with altar candlelight as sacred ribbons bind her trembling form."
   }
 }

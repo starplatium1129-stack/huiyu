@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc095",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
     "id": "sc095",
     "title": "滑落前被接住的浴巾",
@@ -21,15 +21,18 @@
     "timeOfDay": "night",
     "tags": [
       "mole_under_eye",
-      "bath_towel",
-      "towel_slipping",
-      "bare_shoulders",
-      "bathtub",
-      "bathroom",
+      "wet_hair",
+      "white_bath_towel",
+      "reaching_hand",
+      "brightly_lit_bathroom",
+      "vanity_mirror_bulbs",
+      "tiled_wall",
       "steam",
-      "bathrobe",
-      "night",
-      "flushed",
+      "wooden_doorframe",
+      "face_illuminated_by_vanity_lights",
+      "heavy_blush",
+      "looking_away",
+      "soft_rim_lighting",
       "medium_shot",
       "depth_of_field"
     ],
@@ -37,17 +40,17 @@
     "location": "浴室",
     "weather": "晴",
     "camera": "肩后回避视角中景",
-    "lighting": "浴室柔光与蒸汽漫射",
-    "prompt": "1girl, shiki_natsume, bath towel, bathrobe, reaching, doorway, bathroom, steam, over shoulder, medium shot, holding towel, receiving clothes, looking away, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field, bathroom_doorway, soft_lighting",
-    "negative": "open towel, nudity, see-through bathrobe",
+    "lighting": "浴室化妆镜明亮环形暖光与透光磨砂玻璃柔和漫射",
+    "prompt": "1girl, solo, shiki_natsume, @rella, mole_under_eye, wet black hair, white fluffy bath towel wrapped around body, reaching hand out, doorway of bathroom, brightly lit bathroom interior, vanity mirror with glowing bulbs, tiled wall, steam wafting through open door, wooden doorframe, face illuminated by bright warm vanity lights, heavy blush, looking away shyly, soft rim lighting, medium shot, depth of field",
+    "negative": "open towel, full nudity, dark room, pitch black, murky steam",
     "usage": [
       "展示图",
       "R15"
     ],
     "storyJa": "【夏目・落ちる前にバスタオルを引っ掛けた】夏の夜のバスルームで、夏目が浴槽から出た瞬間、緩んだバスタオルが肩から滑り落ちた。あなたは時間内に引き返して、予備のバスローブを渡しました。彼女はあなたの後ろでしばらく沈黙していましたが、それでも温かい声で話しました。――「……少なくとも、反応は紳士的。浴衣を置いたら出ていって。準備ができたら呼ぶから。」",
     "rating": "R15",
-    "animaCaption": "She accepts the spare robe while keeping her towel securely wrapped, viewed over her averted shoulder.",
+    "animaCaption": "Reaching through the open bathroom door while holding her fluffy white towel secure, she accepts the spare clothes; bright vanity mirror bulbs and soft steam illuminate her flushed, averted face.",
     "auditRevision": "careful-batch07-2026-08-27",
-    "promptProse": "She keeps her towel securely wrapped while accepting the spare robe; the averted shoulder view focuses on the exchange."
+    "promptProse": "Reaching through the open bathroom door while holding her fluffy white towel secure, she accepts the spare clothes; bright vanity mirror bulbs and soft steam illuminate her flushed, averted face."
   }
 }

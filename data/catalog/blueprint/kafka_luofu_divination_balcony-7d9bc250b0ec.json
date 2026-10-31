@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_luofu_divination_balcony",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1033,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "kafka_luofu_divination_balcony",
     "title": "卡芙卡 · 仙舟月下凭栏远眺",
@@ -14,7 +14,7 @@
     "location": "仙舟罗浮太卜司高耸雕花露台",
     "action": "身穿露背晚礼服倚靠在白玉雕花栏杆前，一手轻托高脚红酒杯，回眸凝视星汉",
     "timeOfDay": "夜晚",
-    "lighting": "冷色星月光芒与全息星图的淡紫漫射光",
+    "lighting": "罗浮太卜司琼台悬浮星辰罗盘清辉与仙舟夜色",
     "camera": "cowboy shot, eye level",
     "mood": "高贵神秘",
     "sceneTags": [
@@ -32,18 +32,17 @@
     ],
     "promptProse": "Resting one forearm on the carved white railing, she holds the wine glass in her other hand and watches the passing skiffs; the holographic star chart overhead casts violet light across her profile.",
     "promptTokens": [
-      "wine glass",
-      "leaning",
-      "railing",
-      "terrace",
-      "moonlight",
-      "starry sky",
-      "hologram",
-      "cowboy shot",
-      "forearm on railing",
-      "holding glass",
-      "airship",
-      "purple light"
+      "standing on balcony",
+      "chinese railing",
+      "xianzhou luofu",
+      "floating star chart",
+      "glowing constellation",
+      "bright moonlight",
+      "cool night breeze",
+      "stylish coat",
+      "subtle smile",
+      "rim light",
+      "volumetric lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -51,6 +50,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "One forearm rests on the railing while her other hand holds the wine as skiffs pass below."
+    "animaCaption": "Luminescent star charts drift lazily across the open Luofu balcony, catching the violet sheen of Kafka's coat."
   }
 }

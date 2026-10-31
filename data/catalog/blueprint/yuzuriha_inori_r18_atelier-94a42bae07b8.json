@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_atelier",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 331,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_atelier",
     "title": "楪祈 · 虚空晶簇间的独奏",
@@ -14,7 +14,7 @@
     "location": "重建东京私人录音室休息区",
     "action": "斜倚丝绒躺椅屈起双腿，红裙滑至腰际，单手按压裸露胸口的虚空晶体，晶簇随心跳发光",
     "timeOfDay": "夜晚",
-    "lighting": "淡青虚空晶光、录音台琥珀指示灯与窗外月色",
+    "lighting": "录音室休息区暖调地灯与落地窗外东京星夜",
     "camera": "intimate cowboy shot, reclining diagonal, face and folded legs visible",
     "mood": "成年歌姬的空灵自主与脆弱坦诚",
     "sceneTags": [
@@ -26,21 +26,15 @@
     ],
     "promptProse": "Inori presses her fingertips around the small Void crystal glowing at her chest as the demo loops. Cyan light mingles with the recording console's amber indicators and moonlight.",
     "promptTokens": [
-      "chiffon",
-      "layered skirt",
-      "adult",
-      "open red dress",
-      "topless",
-      "folded legs",
-      "reclining",
-      "hand on own chest",
-      "glowing crystal",
-      "velvet couch",
-      "recording studio",
-      "fingertips on crystal",
-      "cyan glow",
-      "amber indicators",
-      "moonlight"
+      "on sofa",
+      "revealing pink dress",
+      "studio headphones",
+      "warm interior floor lamp",
+      "city night lights outside",
+      "blushing gaze",
+      "soft pillows",
+      "ambient glow",
+      "volumetric light"
     ],
     "negativeTokens": [
       "orange dress"
@@ -54,6 +48,6 @@
     "adultArtistHint": "@anmi",
     "outfitId": "red_dress",
     "sampleRating": "R18",
-    "animaCaption": "Her fingertips surround the small glowing Void crystal at her chest."
+    "animaCaption": "Soft floor lamps illuminate Inori resting on the recording lounge sofa, her pink dress catching the city lights outside."
   }
 }

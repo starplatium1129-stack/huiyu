@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_shadow_land_duel",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 242,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "scathach_shadow_land_duel",
     "title": "斯卡哈 · 影之国雾海的弑神双枪·「想从我这里学艺，先接下这一击」",
@@ -14,7 +14,7 @@
     "location": "影之国裂谷黑岩之巅",
     "action": "单膝微沉双枪同时振起，赤红枪光撕裂雾海，长发狂舞俯瞰来者",
     "timeOfDay": "永暮",
-    "lighting": "赤红枪光与紫黑雾海的明暗对撞，护肩冷光点睛",
+    "lighting": "影之国紫暮残光与弑神红枪破晓锐芒",
     "camera": "full-body low-angle horizontal shot, two spears and balanced stance visible",
     "mood": "威压无双、弑神凛然",
     "sceneTags": [
@@ -31,15 +31,18 @@
     ],
     "promptProse": "Scathach lowers her stance on the rift-side rock, a complete crimson spear in each hand; red spear-glow cuts through violet mist while a cold glint catches her silver shoulder guards.",
     "promptTokens": [
-      "dual wielding",
-      "spear",
-      "rock",
+      "holding two red spears",
+      "fighting stance",
+      "black rocks",
+      "purple twilight",
       "mist",
-      "low angle",
-      "full body",
-      "low stance",
-      "red glow",
-      "violet mist"
+      "glowing runes",
+      "flowing crimson cape",
+      "tight bodysuits",
+      "rim light",
+      "volumetric lighting",
+      "stormy sky",
+      "cliff"
     ],
     "negativeTokens": [
       "cropped spears"
@@ -55,6 +58,6 @@
       "iconic",
       "signature"
     ],
-    "animaCaption": "A complete crimson spear remains visible in each hand."
+    "animaCaption": "Her twin scarlet spears flash with piercing magical brilliance against the mist-shrouded crags of the Land of Shadows."
   }
 }

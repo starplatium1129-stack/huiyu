@@ -1,5 +1,5 @@
 export const EXACT_MEANINGS: Record<string, string> = {
-  nene_r18: '宁宁成人状态门控词', natsume_r18: '夏目成人状态门控词', nene_witch_canonical: '宁宁经典魔女服主控制词',
+  nene_r18: '宁宁成人状态触发词', natsume_r18: '夏目成人状态触发词', nene_witch_canonical: '宁宁经典魔女服主控制词',
   nene_school_uniform: '宁宁学院制服主控制词', nene_sailor_uniform: '宁宁水手制服主控制词', nene_blue_pajamas: '宁宁蓝色睡衣主控制词',
   nene_green_sleepwear: '宁宁绿色睡衣主控制词', nene_red_cardigan_uniform: '宁宁红色开衫制服主控制词', natsume_official_qipao: '夏目官方旗袍主控制词',
   natsume_cafe_uniform: '夏目咖啡馆制服主控制词', natsume_maid_uniform: '夏目女仆服主控制词', natsume_sleepwear: '夏目睡衣主控制词',

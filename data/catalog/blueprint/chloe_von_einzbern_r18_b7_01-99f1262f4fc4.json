@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_r18_b7_01",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 305,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "chloe_von_einzbern_r18_b7_01",
     "title": "克洛伊 · 小黑小恶魔战袍的主控补魔跨坐 ·「士郎……补魔要由内到外、彻底吸收才行哦♪」",
@@ -14,7 +14,7 @@
     "location": "爱因兹贝伦城堡卧房·深夜",
     "action": "跨坐腰间褐肤浅粉长发，开胸战袍露雪白软肉，俯身吻唇小腰主动飞转",
     "timeOfDay": "night",
-    "lighting": "warm_cinematic_lighting",
+    "lighting": "城堡壁炉暖红炭火与蕾丝床幔柔光",
     "camera": "intimate vertical medium shot",
     "mood": "主动亲密与失神",
     "sceneTags": [
@@ -31,21 +31,18 @@
     ],
     "promptProse": "Adult Chloe straddles the viewer's lap on the antique bed and leans in for a kiss. A crimson magic circle glows beneath the bed.",
     "promptTokens": [
-      "adult",
-      "castle bedroom",
-      "red and black mantle",
-      "open clothes",
-      "topless",
       "straddling",
-      "kiss",
-      "magic circle",
-      "from below",
-      "on lap",
-      "leaning forward",
-      "bed",
-      "dark skin",
-      "warm lighting",
-      "medium shot"
+      "succubus outfit",
+      "playful smirk",
+      "glowing command seal",
+      "bedroom",
+      "fireplace",
+      "warm glow",
+      "plush rug",
+      "silk bed",
+      "volumetric lighting",
+      "soft lighting",
+      "bokeh"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -61,6 +58,6 @@
       "cowgirl",
       "special_nsfw"
     ],
-    "animaCaption": "She leans toward the viewer for a kiss, the crimson circle glowing beneath the bed."
+    "animaCaption": "Warm hearthfire dances across her tanned skin and mischievous smile as she leans close on the castle rug."
   }
 }

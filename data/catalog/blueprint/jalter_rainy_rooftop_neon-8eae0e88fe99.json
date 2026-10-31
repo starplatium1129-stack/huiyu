@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_rainy_rooftop_neon",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 183,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "jalter_rainy_rooftop_neon",
     "title": "贞德[Alter] · 雨夜天台",
@@ -16,7 +16,7 @@
     "location": "新宿高楼天台",
     "action": "一手扶湿栏杆，另一手抹去眼角雨滴，无遮挡地望向夜色中的城市",
     "timeOfDay": "night",
-    "lighting": "neon_light",
+    "lighting": "雨夜天台霓虹倒影与远方楼宇灯火",
     "camera": "medium_shot",
     "mood": "cool",
     "sceneTags": [
@@ -33,17 +33,18 @@
     ],
     "promptProse": "Jeanne Alter wipes rain from the corner of her eye while holding the rooftop railing, looking down toward the neon city.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "railing",
-      "rooftop",
+      "standing on rooftop",
       "rain",
-      "neon lights",
-      "medium shot",
-      "hand on railing",
       "wet hair",
-      "looking down",
-      "night"
+      "black coat",
+      "neon reflections",
+      "puddle",
+      "city skyline",
+      "night sky",
+      "rim light",
+      "backlighting",
+      "distant skyscrapers",
+      "cloudy night"
     ],
     "negativeTokens": [
       "umbrella"
@@ -52,6 +53,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "One hand wipes rain from her eye while the other holds the rooftop railing."
+    "animaCaption": "Raindrops catch the colorful neon glare of the sprawling city skyline as she looks out from the wet rooftop."
   }
 }

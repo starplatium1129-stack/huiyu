@@ -76,7 +76,7 @@ export function usePromptAssembly(
     new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
   )
 
-  /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或门控词，自动提升为 R18 评级以解除负面拦截。 */
+  /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或触发词，自动提升为 R18 评级以解除负面拦截。 */
   const effectiveScene = computed(() => {
     const isManualR18 = isManualR18Tags(pb.manualTags, matureTokenSet.value)
     const original = pb.activeScene

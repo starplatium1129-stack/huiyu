@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_04",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 1662,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_04",
     "title": "守岸人 · 彼岸神殿石床上的终极回响自持 ·「千亿次计算中唯一的奇迹……就是爱上你」",
@@ -14,7 +14,7 @@
     "location": "彼岸神殿黑色石榻·深夜",
     "action": "仰卧黑晶石榻全裸自抚抽送，长发浮空蝴蝶环绕，眼角流出神性泪水绝顶痉挛",
     "timeOfDay": "night",
-    "lighting": "liquid_reflection_lighting",
+    "lighting": "彼岸神殿幽蓝终极回响荧光与黑曜石榻柔和漫射",
     "camera": "intimate vertical medium shot",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
@@ -32,17 +32,15 @@
     ],
     "promptProse": "She fingers herself on the obsidian altar, luminous butterflies rising above her in the dark dome. Her long blue hair floats above the black stone.",
     "promptTokens": [
-      "Shorekeeper",
-      "altar",
-      "crystals",
-      "butterflies",
-      "on back",
-      "arched back",
-      "nude",
-      "fingering",
-      "floating hair",
-      "glowing butterflies",
-      "medium shot"
+      "lying on black stone altar",
+      "glowing blue patterns",
+      "temple interior",
+      "ambient blue light",
+      "warm accent glow",
+      "flowing white hair",
+      "blush",
+      "intimate devotion",
+      "volumetric lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -62,6 +60,6 @@
       "self_control",
       "special_nsfw"
     ],
-    "animaCaption": "Her hair floats above the black stone as luminous butterflies rise toward the dark dome."
+    "animaCaption": "Soft azure celestial patterns pulse along the obsidian dais, illuminating the Shorekeeper's radiant silver silhouette."
   }
 }

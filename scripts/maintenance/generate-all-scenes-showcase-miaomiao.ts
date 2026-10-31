@@ -19,7 +19,7 @@ const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
 import type { CandidateOptions, CandidateTask, GenerationOptions } from '../lib/generation-types';
-type Options = CandidateOptions & { character?: string; limit: number };
+type Options = CandidateOptions & { character?: string; franchise?: string; limit: number; 'scenes-only'?: boolean; 'popular-only'?: boolean };
 type SceneTask = {
   id: string; characterId: string; title: string; prompt: string; negative: string;
   width: number; height: number; seed: number; type?: 'popular'; standardId?: string;
@@ -53,51 +53,54 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
   const profile = resolveProfile(input.data['data/presets.json']);
 
   // 1. 热门角色场景蓝图，沿共享入口解析绑定与导演默认值。
-  for (const character of characters) {
-    if (opts.character && character.id !== opts.character) continue;
-    const owned = blueprints.filter(bp => bp.characterId === character.id);
+  if (!opts['scenes-only']) {
+    for (const character of characters) {
+      if (opts.franchise && character.franchise !== opts.franchise) continue;
+      if (opts.character && character.id !== opts.character) continue;
+      const owned = blueprints.filter(bp => bp.characterId === character.id);
 
-    for (const bp of owned) {
-      const isHorizontal = bp.recommendedSize && (bp.recommendedSize.includes('1536x1152') || bp.recommendedSize.includes('1216x832') || bp.recommendedSize.includes('1344x768'));
-      const width = isHorizontal ? 1216 : 832;
-      const height = isHorizontal ? 832 : 1216;
+      for (const bp of owned) {
+        const isHorizontal = bp.recommendedSize && (bp.recommendedSize.includes('1536x1152') || bp.recommendedSize.includes('1216x832') || bp.recommendedSize.includes('1344x768'));
+        const width = isHorizontal ? 1216 : 832;
+        const height = isHorizontal ? 832 : 1216;
 
-      const outfit = (bp.outfitId && popularContent.findOutfit(character, bp.outfitId)) || popularContent.defaultOutfit(character);
-      const guards = showcaseSubjectGuards(bp);
+        const outfit = (bp.outfitId && popularContent.findOutfit(character, bp.outfitId)) || popularContent.defaultOutfit(character);
+        const guards = showcaseSubjectGuards(bp);
 
-      const plan = compilePromptRecipe({
-        kind: 'popular',
-        character,
-        outfit,
-        blueprint: bp,
-        engine: 'anima',
-        profile,
-        artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
-        manual: promptPolicy.tokenize(guards.prompt),
-      });
+        const plan = compilePromptRecipe({
+          kind: 'popular',
+          character,
+          outfit,
+          blueprint: bp,
+          engine: 'anima',
+          profile,
+          artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
+          manual: promptPolicy.tokenize(guards.prompt),
+        });
 
-      tasks.push({
-        id: bp.id,
-        standardId: `pc_${character.id}_${bp.id}`,
-        title: bp.title,
-        story: bp.description || '',
-        category: bp.category || '热门角色',
-        characterId: character.id,
-        rating: bp.adult ? 'R18' : 'All',
-        type: 'popular',
-        prompt: plan.prompt,
-        negative: plan.negative,
-        width,
-        height,
-        outfitId: outfit?.id,
-        adult: Boolean(bp.adult),
-        seed: Math.floor(Math.random() * 1000000000) + 100000000
-      });
+        tasks.push({
+          id: bp.id,
+          standardId: `pc_${character.id}_${bp.id}`,
+          title: bp.title,
+          story: bp.description || '',
+          category: bp.category || '热门角色',
+          characterId: character.id,
+          rating: bp.adult ? 'R18' : 'All',
+          type: 'popular',
+          prompt: plan.prompt,
+          negative: plan.negative,
+          width,
+          height,
+          outfitId: outfit?.id,
+          adult: Boolean(bp.adult),
+          seed: Math.floor(Math.random() * 1000000000) + 100000000
+        });
+      }
     }
   }
 
   // 2. 经典主线场景 (scenes.json - 宁宁/夏目主线)
-  if (input.data['data/scenes.json']) {
+  if (!opts['popular-only'] && input.data['data/scenes.json']) {
     const scenes = parsePromptScenes(input.data['data/scenes.json']);
     for (const sc of scenes) {
       if (opts.character && sc.char !== opts.character) continue;
@@ -189,8 +192,8 @@ function candidateTasks(tasks: SceneTask[]): CandidateTask[] {
 }
 
 async function main(args: string[] = process.argv.slice(2), deps: GenerationOptions = {}) {
-  const parsed = safety.parseArgs(args, { force: 'flag', character: 'value', limit: 'value' });
-  if (parsed.help) return safety.help(__filename, '[--force] [--character <id>] [--limit <n>]');
+  const parsed = safety.parseArgs(args, { force: 'flag', character: 'value', franchise: 'value', limit: 'value', 'scenes-only': 'flag', 'popular-only': 'flag' });
+  if (parsed.help) return safety.help(__filename, '[--force] [--scenes-only] [--popular-only] [--franchise <name>] [--character <id>] [--limit <n>]');
   const opts = { ...parsed, limit: Number(parsed.limit || 0) };
   if (!Number.isInteger(opts.limit) || opts.limit < 0) throw new Error('limit must be a non-negative integer');
   const input = loadInputs(opts);

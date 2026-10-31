@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_unit02_standby",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1020,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "单手叉腰昂首挺胸，傲气十足指向上方",
     "camera": "cowboy shot, dynamic low angle",
@@ -15,25 +15,24 @@
     ],
     "description": "高耸入云的巨大升降机呼啸上升，猩红色的二号机在身后巍然伫立。明日香身着鲜艳如火的红色战斗服，单手叉腰，高傲地昂起下巴，湛蓝的眼眸如鹰隼般锐利地扫视着前方的天空，火红双马尾在气流中狂舞——「看好了！我才是真正的王牌驾驶员！二号机，出击！让使徒见识一下我的厉害！」",
     "id": "asuka_langley_unit02_standby",
-    "lighting": "机库高压红色探照灯与强烈侧面轮廓光",
+    "lighting": "NERV红色二号机机库高压探照灯与工业升降台强侧光",
     "location": "NERV 红色二号机升降发射台",
     "mood": "骄傲霸气",
     "negativeTokens": [],
     "outfitId": "plugsuit_red",
     "promptProse": "She stands on the rising lift before Unit-02, one hand on her hip and the other pointing upward, her chin held high. Red searchlights cut across the lift structure and towering armor behind her, while strong side light outlines her silhouette.",
     "promptTokens": [
+      "plugsuit",
+      "eva unit 02 in background",
       "hangar",
-      "elevator",
-      "hand on hip",
-      "Unit-02",
-      "cowboy shot",
-      "from below",
-      "standing",
-      "pointing up",
-      "raised chin",
-      "red lighting",
-      "rim light",
-      "mecha hangar"
+      "launch platform",
+      "industrial scaffolding",
+      "floodlights",
+      "bright spotlights",
+      "dramatic side lighting",
+      "metal catwalk",
+      "confident smirk",
+      "volumetric light beams"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -50,6 +49,6 @@
     ],
     "timeOfDay": "白天",
     "title": "惣流·明日香 · 红色二号机出击",
-    "animaCaption": "She points upward from the rising lift with Unit-02 towering behind her."
+    "animaCaption": "Brilliant industrial floodlights beam across the NERV launch bay, sculpting Asuka's red plugsuit against Unit-02."
   }
 }

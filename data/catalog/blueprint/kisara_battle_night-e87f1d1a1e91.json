@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_battle_night",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 506,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "kisara_battle_night",
     "title": "木更 · 都市恶魔战斗",
@@ -14,7 +14,7 @@
     "location": "Baylong City 夜晚",
     "action": "恶魔化形态在都市上空战斗",
     "timeOfDay": "夜晚",
-    "lighting": "霓虹与火光",
+    "lighting": "贝隆市夜空恶魔之剑粉色炽烈雷火光芒与都市高楼灯海",
     "camera": "full-body shot, low angle",
     "mood": "炽烈危险",
     "sceneTags": [
@@ -31,18 +31,15 @@
     ],
     "promptProse": "With her cursed blade drawn back for a strike and black energy wings spread between the towers, she looks down toward Shu beyond the frame. Violet-black light trails along the blade; neon and fire outline her silhouette.",
     "promptTokens": [
-      "demon wings",
-      "sword",
-      "city",
-      "skyscraper",
-      "night",
-      "full body",
-      "from below",
-      "holding sword",
-      "spread wings",
-      "looking down",
-      "neon lights",
-      "firelight"
+      "demon form",
+      "holding demon sword",
+      "pink lightning",
+      "floating in air",
+      "school uniform",
+      "glowing pink eyes",
+      "city night lights",
+      "dramatic pink lighting",
+      "volumetric rays"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -50,6 +47,6 @@
     "coverageTags": [
       "iconic"
     ],
-    "animaCaption": "Her cursed blade draws back toward an unseen target, Shu beyond the frame below."
+    "animaCaption": "Crackling magenta demonic lightning flares around Kisara's greatsword as she swoops across the illuminated city skyline."
   }
 }

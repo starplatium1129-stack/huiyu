@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_throne_spread_legs",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "jalter_r18_throne_spread_legs",
     "characterId": "jeanne_alter",
@@ -22,19 +22,19 @@
     ],
     "promptProse": "Adult Jeanne Alter reclines on the throne with one booted leg over an armrest and a short flagpole held across her thighs. Black flames frame her silver hair.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "open black leather jacket",
-      "nude",
-      "black boots",
-      "reclining",
-      "throne",
-      "flagpole",
-      "black fire",
-      "from below",
-      "leg over armrest",
-      "haughty expression",
-      "full body"
+      "sitting on throne",
+      "spread legs",
+      "provocative smile",
+      "torn cape",
+      "black bodysuit",
+      "thighhighs",
+      "brazier",
+      "burning fire",
+      "flickering flames",
+      "torchlight",
+      "stone throne room",
+      "volumetric lighting",
+      "dramatic lighting"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -46,7 +46,7 @@
     "location": "暗黑大圣堂漆黑王座",
     "action": "靠卧王座，一条腿搭扶手，手持短旗杆横放腿上。",
     "timeOfDay": "深夜",
-    "lighting": "black magical flames around the throne, subdued reflected firelight on the face and silver hair",
+    "lighting": "王座厅摇曳火把烈焰与残月幽光",
     "camera": "full body, from below",
     "mood": "傲娇霸道与私密",
     "recommendedSize": "1152x1536",
@@ -56,6 +56,6 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "The short flagpole lies across her thighs as one booted leg rests over the armrest."
+    "animaCaption": "Flames from stone braziers cast flickering golden highlights across her daring pose atop the dark throne."
   }
 }

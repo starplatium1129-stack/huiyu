@@ -237,11 +237,11 @@ export function resolveModelProfile(
   return engine === 'sd' ? list[0] : null
 }
 
-/** 手动词条 R18 门控词（LoRA 控制词 + 显式裸体词），单一事实源。 */
+/** 手动词条 R18 触发词（LoRA 控制词 + 显式裸体词），单一事实源。 */
 const MANUAL_R18_RE = /^(?:nene_r18|natsume_r18|nude|completely_nude|naked|topless|nipples|bare_breasts|pussy|vaginal|penis|sex|uncensored|nsfw)$/i
 
 /**
- * manualTags 是否构成 R18 迹象：门控词正则命中，或命中词条池 Mature 分类
+ * manualTags 是否构成 R18 迹象：触发词正则命中，或命中词条池 Mature 分类
  * （matureTokens 由调用方从 tags.json cat==='Mature' 派生，见 usePromptAssembly /
  * usePopularPromptAssembly）。评级联动单一契约：studio（effectiveScene）与
  * popular（buildPopularPromptPlan）共用，2026-08-29 随机灵感 Mature 池提额引入——

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_penthouse_window_stiletto",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "yor_r18_penthouse_window_stiletto",
     "characterId": "yor_forger",
@@ -15,7 +15,7 @@
     "location": "高层安全屋全景落地窗边",
     "action": "赤裸侧倚大理石飘窗边缘，脚踩黑色尖头细高跟，单手撩发回眸，远景都市冷色霓虹与室内微光勾勒修长身姿",
     "timeOfDay": "深夜",
-    "lighting": "cool blue city skyline ambient light and dim warm indoor rim light",
+    "lighting": "顶层安全屋全景落地窗外繁华夜景灯火与室内暗光",
     "camera": "full body, low angle, side profile, focus on long leg curves and arched feet",
     "mood": "冷艳优雅、私密从容、卸下重担的微醺与释然",
     "recommendedSize": "1152x1536",
@@ -44,27 +44,22 @@
     ],
     "promptProse": "Yor rests nude on the marble window ledge in black heels, glancing back as cool blue city light meets dim warm interior light.",
     "promptTokens": [
-      "Yor Forger",
+      "thorn princess dress",
       "black stiletto heels",
-      "pointed shoes",
-      "earrings",
-      "sitting",
-      "knee up",
-      "window ledge",
-      "city lights",
-      "nude",
-      "looking back",
-      "hand in hair",
-      "blue light",
-      "warm rim light",
-      "full body",
-      "from below"
+      "penthouse window",
+      "city night lights",
+      "warm interior floor lamp",
+      "blush",
+      "thigh strap",
+      "sensual pose",
+      "bokeh",
+      "night skyline"
     ],
     "negativeTokens": [],
     "nsfwTokens": [
       "nude"
     ],
     "nsfwProse": "",
-    "animaCaption": "She turns back from the marble window ledge as cool city light meets the dim interior glow."
+    "animaCaption": "The glittering tapestry of city night lights sparkles behind the panoramic glass as Yor poses with deadly elegance in her stilettos."
   }
 }

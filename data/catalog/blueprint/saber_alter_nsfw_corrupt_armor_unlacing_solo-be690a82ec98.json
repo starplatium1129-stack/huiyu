@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 228,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "saber_alter_nsfw_corrupt_armor_unlacing_solo",
     "title": "黑呆 · 漆黑哥特战铠半褪与锁骨暗纹自持",
@@ -14,7 +14,7 @@
     "location": "黑曜石王座之间冰凉坚硬的大理石地砖上",
     "action": "单膝跪地，胸甲解开，一手拄剑支撑，另一手探入裙下自抚，暗红魔纹泛光",
     "timeOfDay": "深夜月影",
-    "lighting": "幽暗大厅顶穹破洞投下的冷银月光与黑圣剑暗红流光",
+    "lighting": "破碎胸甲缝隙暗红魔能与清冷月光",
     "camera": "cowboy shot, three-quarter view",
     "mood": "暴君动情",
     "sceneTags": [
@@ -35,20 +35,20 @@
     ],
     "promptProse": "Kneeling on one knee with the breastplate unlatched, she supports herself on the sword with one hand and keeps the other beneath her skirt; crimson magic circuits glow at her collarbone. Cool moonlight enters through the broken dome, meeting the sword's dark-red glow.",
     "promptTokens": [
-      "red trim",
-      "dark blue dress",
-      "black armor",
-      "open armor",
-      "topless",
+      "unlacing armor",
+      "damaged armor",
+      "breastplate removed",
+      "black camisole",
+      "heavy breathing",
+      "blush",
+      "sitting",
       "kneeling",
-      "sword",
-      "masturbation",
-      "hand under clothes",
-      "throne room",
-      "moonlight",
-      "one knee",
-      "glowing magic circuits",
-      "cowboy shot"
+      "gothic bedroom",
+      "warm chandelier",
+      "soft ambient light",
+      "rim light",
+      "velvet chair",
+      "bright moonlight"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -66,6 +66,6 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
     "nsfwTokens": [],
-    "animaCaption": "One hand supports her on the sword beneath the unlatched breastplate."
+    "animaCaption": "She unfastens her heavy blackened breastplate in the quiet gothic chamber under soft chandelier light."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1120,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "yorha_2b_r18_bunker_bed_mating_press_creampie",
     "title": "2B · 水没都市清泉浅滩半透湿白衬衫与解下眼罩波光深抚",
@@ -18,7 +18,7 @@
     "location": "水没都市清澈泉水浅滩石阶上",
     "action": "斜靠水边石阶湿白衬衫紧贴露大胸，解下眼罩蓝眸如钻，单手在水下深层自抚，泉水涟漪娇喘",
     "timeOfDay": "深夜",
-    "lighting": "废墟高处透入的皎洁月华与水面波光粼粼反射在湿透雪肌上的梦幻倒影",
+    "lighting": "水没都市清泉浅滩月色波光粼粼与废墟幽蓝苔藓微光",
     "camera": "intimate wide shot, reclining side perspective across shallow crystal water",
     "mood": "极乐沉沦",
     "sceneTags": [
@@ -38,21 +38,16 @@
     ],
     "promptProse": "2B reclines on the mossy stone with one hand beneath the water between her thighs, tears on her face. Moonlight reaches the shallow water through the ruined buildings and reflects across her wet shirt.",
     "promptTokens": [
-      "wet white shirt",
-      "see-through clothes",
+      "wet clothes",
+      "shallow water pool",
+      "ruins overgrown with moss",
+      "bright moonlight on water",
+      "water ripples",
+      "translucent wet shirt",
       "blindfold removed",
-      "blue eyes",
-      "reclining",
-      "spread legs",
-      "female masturbation",
-      "moss",
-      "shallow water",
-      "flooded ruins",
-      "night",
-      "hand underwater",
-      "tears",
-      "moonlight",
-      "wet shirt"
+      "blue glowing flowers",
+      "soft rim light",
+      "volumetric lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -73,6 +68,6 @@
       "nier:automata"
     ],
     "identityProseOverride": "YoRHa No.2 Type B from NieR:Automata, an adult android with a silver-white bob, uncovered sapphire-blue eyes and a beauty mark below the left corner of her lips.",
-    "animaCaption": "She rests on the mossy stone above the shallow water."
+    "animaCaption": "Silver moonlight ripples across the flooded shallow springs as 2B rests amidst glowing lunar tears and ancient ruins."
   }
 }

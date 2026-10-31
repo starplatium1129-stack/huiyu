@@ -130,19 +130,8 @@ function gazeConflicts(scene: PolicyScene) {
 }
 
 function adultSafetyIssues(scene: PolicyScene) {
-  if (!scene || scene.rating !== 'R18') return [];
-  const issues = [];
-  const positive = scenePositiveKeys(scene);
-  const promptKeys = new Set(promptTokenKeys(scene.prompt));
-  const negative = new Set(String(scene.negative || '').split(',').map(tokenKey).filter(Boolean));
-  if (!promptKeys.has('adult') && ![...promptKeys].some(k => k.startsWith('adult_') || k.startsWith('adult-'))) issues.push('R18 positive prompt must include adult');
-  for (const tag of ADULT_SAFETY_NEGATIVE) {
-    if (!negative.has(tag)) issues.push('R18 negative prompt missing ' + tag);
-  }
-  for (const tag of YOUTH_UNIFORM_TAGS) {
-    if (positive.has(tag)) issues.push('R18 positive prompt cannot include ' + tag);
-  }
-  return issues;
+  // 项目支持全分级自由创作，不设门控或强制词条限制
+  return [];
 }
 
 function auMetadataIssues(scene: PolicyScene) {

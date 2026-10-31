@@ -46,7 +46,7 @@
         <h2>最近创作</h2>
         <RouterLink to="/gallery" class="link">打开我的作品 →</RouterLink>
       </div>
-      <div class="recent-grid stagger-container">
+      <div ref="recentGrid" class="recent-grid stagger-container">
         <ArchiveStatePanel v-if="recentWorksLoading || recentWorksError" class="recent-empty-state" compact :kind="recentWorksLoading ? 'loading' : 'error'" :title="recentWorksLoading ? '正在更新最近创作…' : '最近创作暂未更新'" :message="recentWorksError">
           <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新加载</button>
         </ArchiveStatePanel>
@@ -56,7 +56,7 @@
           class="recent-card"
           type="button" :aria-label="'查看完整作品：' + (h.sceneTitle || h.scene || '未命名')" @click="openRecentPreview(h, $event)"
         >
-          <div class="recent-cover" :data-image-id="h.image_id">
+          <div class="recent-cover" :data-artwork-id="h.id" :data-image-id="h.image_id">
             <RuntimeImage :src="coverUrl(h)" v-slot="{ image, loaded, failed }">
               <img v-if="image.src && !failed" v-bind="image" alt="" class="recent-cover-img" :class="{ ready: loaded }" loading="lazy" decoding="async" />
               <ArchiveIcon v-if="!loaded" name="image" class="placeholder" />
@@ -68,7 +68,7 @@
           </div>
         </button>
       </div>
-      <SavedArtworkPreview v-if="recentPreview" :item="recentPreview" :source="recentPreviewSource" :thumbnail="coverUrl(recentPreview)" :request="recentPreviewRequest"
+      <SavedArtworkPreview v-if="recentPreview" :item="recentPreview" :items="recentWorks" :source="recentPreviewSource" :source-for="recentImageSource" :thumbnail="coverUrl" :request="recentPreviewRequest"
         @close="recentPreview = null" @resume="resumeRecent" />
     </section>
     <!-- 最近用过的场景 -->
@@ -187,7 +187,11 @@ import { artworkContinueTarget } from '@/utils/artworkNavigation'
 const SavedArtworkPreview = defineAsyncComponent(() => import('@/components/gallery/SavedArtworkPreview.vue'))
 const recentPreview = shallowRef<ArtworkRecord | null>(null), recentPreviewSource = shallowRef<HTMLImageElement | null>(null)
 const recentPreviewRequest = ref(0)
+const recentGrid = ref<HTMLElement | null>(null)
 const router = useRouter()
+function recentImageSource(id: string | number) {
+  return recentGrid.value?.querySelector<HTMLImageElement>(`.recent-cover[data-artwork-id="${CSS.escape(String(id))}"] img`) ?? null
+}
 function openRecentPreview(item: ArtworkRecord, event: MouseEvent) {
   recentPreviewSource.value = (event.currentTarget as HTMLElement).querySelector('img')
   recentPreview.value = item
@@ -269,7 +273,7 @@ const continueIconName = ref<ArchiveIconName>('spark')
 const continueLink = ref({ to: '/scene-explorer', label: '选场景，开始创作' })
 const continueHint = ref('')
 
-const { recentWorks, loading: recentWorksLoading, error: recentWorksError, sourceRevision: recentSourceRevision, coverUrl, load: loadRecentWorks } = useHomeRecentWorks()
+const { recentWorks, loading: recentWorksLoading, error: recentWorksError, sourceRevision: recentSourceRevision, coverUrl, load: loadRecentWorks } = useHomeRecentWorks(recentGrid)
 watch(recentSourceRevision, () => {
   // Also retire the click while the async preview component is still loading.
   recentPreview.value = null; recentPreviewSource.value = null; recentPreviewRequest.value++

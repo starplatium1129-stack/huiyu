@@ -54,7 +54,7 @@
 
 现行双引擎编译与交付统一查 [项目 skill](../../.agents/skills/studio-prompt-craft/SKILL.md)。
 
-- [成年角色分级与既有内容一致性](prompts/nsfw-cg-prompt-standard.md)：分级、衣装、模型编译和交付边界。
+- [NSFW 与全分级 CG 提示词规范](prompts/nsfw-cg-prompt-standard.md)：支持各分级自由创作、衣装、模型编译与交付边界。
 - [手机竖屏人物壁纸规范](prompts/mobile-wallpaper-prompt-standard.md)：iPhone 17 Pro 与通用长屏；裁切、锁屏／主屏遮挡及双引擎候选。
 - [单人物立绘与特写壁纸提示词规范](prompts/character-wallpaper-prompt-standard.md)：与叙事 CG 并列；人物表现、4K 横幅留白及裁切验收。
 - [人物与环境融合的叙事 CG 提示词规范](prompts/narrative-cg-prompt-standard.md)：双引擎写法、原创案例和主力机对照验收。

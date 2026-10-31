@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_dark_shadow_bedroom",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "sakura_r18_dark_shadow_bedroom",
     "characterId": "matou_sakura",
@@ -24,18 +24,16 @@
     ],
     "promptProse": "Adult Sakura controls two shadow ribbons supporting her thighs with her knees bent, one hand directing them and the other touching herself; her black dress remains at her waist. Red markings glow on her torso as her loose hair floats upward.",
     "promptTokens": [
-      "black dress",
-      "floating",
-      "body markings",
-      "shadow magic",
-      "red glow",
-      "medium shot",
-      "ragged hem",
-      "bent knees",
-      "shadow ribbons",
-      "hand gesture",
-      "masturbation",
-      "loose hair"
+      "black ribbons",
+      "red marks",
+      "sensual pose",
+      "bedroom",
+      "red magic aura",
+      "ambient glow",
+      "dramatic lighting",
+      "flowing dark ribbons",
+      "volumetric lighting",
+      "soft shadows"
     ],
     "negativeTokens": [],
     "adult": true,
@@ -51,7 +49,7 @@
     "location": "幽暗黑化结界",
     "action": "独自悬浮于自控暗影带上，破碎黑裙停在腰际，一手驾驭影带、一手按向腿间，令咒沿成熟身体发光",
     "timeOfDay": "night",
-    "lighting": "crimson_glow",
+    "lighting": "黑化红黑魔力流转辉光与卧室幽暗地灯",
     "camera": "medium_shot",
     "mood": "intense",
     "recommendedSize": "1152x1536",
@@ -70,6 +68,6 @@
       "fate/stay night"
     ],
     "identityProseOverride": "Sakura Matou from Fate/stay night in her dark form, with long purple hair, a red ribbon on her left side and red eyes.",
-    "animaCaption": "One hand directs the shadow ribbons supporting her thighs while the other rests between her legs."
+    "animaCaption": "Luminous crimson tendrils coil gently in the air, illuminating her captivating, corrupt beauty across the dark room."
   }
 }

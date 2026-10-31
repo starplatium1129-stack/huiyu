@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_night_talk_soul_lantern",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 269,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "ereshkigal_night_talk_soul_lantern",
     "title": "埃列什基伽勒 · 魂灯夜话·「谢谢你……愿意来冥界看我」",
@@ -14,7 +14,7 @@
     "location": "冥界河畔黑曜石岸",
     "action": "抱膝坐岸边看魂灯漂流，轻声道谢红瞳湿润",
     "timeOfDay": "深夜",
-    "lighting": "魂灯幽蓝与河面星光",
+    "lighting": "冥界魂灯暖金微光与幽冥深处微蓝荧光",
     "camera": "wide two-shot, two clothed companions seated on the riverbank",
     "mood": "千年孤独、一句感谢",
     "sceneTags": [
@@ -30,18 +30,18 @@
     ],
     "promptProse": "Seated beside a companion in a travel coat, she hugs her knees and quietly thanks them. Blue soul lanterns drift along the river below the two figures, reflected light catching her damp eyes.",
     "promptTokens": [
-      "2people",
       "sitting",
-      "knees up",
-      "talking",
-      "riverbank",
-      "floating lanterns",
-      "night",
-      "wide shot",
-      "hugging knees",
-      "teary eyes",
-      "blue light",
-      "water reflection"
+      "holding soul lantern",
+      "golden lantern",
+      "warm glow",
+      "floating souls",
+      "blue wisps",
+      "underworld crystals",
+      "gentle smile",
+      "blush",
+      "volumetric lighting",
+      "soft ambient light",
+      "magical particles"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -56,6 +56,6 @@
       "romance"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She sits beside her clothed companion as blue soul lanterns drift along the river below them."
+    "animaCaption": "Her golden cage lantern casts a tender warm glow over her blushing face amidst the floating souls of the underworld."
   }
 }

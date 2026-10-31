@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_black_thighhighs",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "tohsaka_rin_r18_black_thighhighs",
     "title": "远坂凛 · 月夜窗台的魔术师",
@@ -14,7 +14,7 @@
     "location": "远坂邸典雅卧室窗台",
     "action": "坐在窗台上，双手将一侧长袜整理至大腿，视线偏向旁边。",
     "timeOfDay": "月夜",
-    "lighting": "cold silver moonlight through window, soft red-cloth reflections, gentle night shadows",
+    "lighting": "远坂邸卧室窗棂洒入的清朗满月与暖黄床头壁灯",
     "camera": "medium shot",
     "mood": "傲娇月色",
     "sceneTags": [
@@ -28,17 +28,17 @@
     ],
     "promptProse": "Adult Rin rolls one stocking to mid-thigh with both hands on the moonlit window seat, sweater lifted and gaze aside.",
     "promptTokens": [
-      "adult Rin",
-      "red turtleneck",
+      "sitting on windowsill",
       "black thighhighs",
-      "sitting",
-      "windowsill",
-      "moonlight",
-      "white cross print",
-      "both hands on stocking",
-      "stocking at thigh",
-      "sweater lift",
-      "looking away"
+      "red skirt",
+      "twintails",
+      "looking at viewer",
+      "bright moonlight",
+      "warm sconce",
+      "curtains",
+      "bedroom interior",
+      "soft rim light",
+      "starry sky outside"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +55,6 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Both hands roll one stocking to mid-thigh while her gaze turns aside from the window seat."
+    "animaCaption": "Silver full moonlight washes over the open windowsill, tracing the curves of her black thighhighs with gentle clarity."
   }
 }

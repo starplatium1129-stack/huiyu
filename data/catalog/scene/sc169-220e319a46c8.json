@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc169",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
-    "animaCaption": "She draws the viewer into the kiss from their lap on the safehouse floor.",
+    "animaCaption": "She draws the viewer into a passionate embrace from their lap on the safehouse floor, the overhead caged industrial lamp casting a clear golden beam across her torn bodysuit and flushed skin.",
     "auditRevision": "careful-batch12-2026-08-27",
     "camera": "近景特写",
     "category": "亲密",
@@ -16,29 +16,34 @@
     ],
     "emotion": "诱惑",
     "id": "sc169",
-    "lighting": "动态强烈暗影",
+    "lighting": "安全屋悬吊工业笼灯明亮暖黄光束与战术控制台冷光",
     "location": "地下安全屋地板",
     "lora": "shiki_natsume_v21_anima",
     "mature": true,
-    "negative": "",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, charcoal side panels, burgundy seam piping, torn black bodysuit, cleavage, exposed abdomen, straddling, kissing, hands on neck, sweat, blush, concrete floor, safehouse, dim lighting, pulling, arms around neck, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
+    "negative": "daylight, dim lighting, pitch black, murky shadows",
+    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, @rella, mole_under_eye, torn black bodysuit, charcoal side panels, burgundy seam piping, cleavage, exposed midriff, straddling lap, hands on viewer neck, passionate kiss, sweating skin, flushed blush, underground safehouse, overhead caged work light casting golden beam, illuminated tactical monitors in background, metallic equipment crates, face illuminated by overhead warm lamp, soft rim lighting, close up, depth of field",
     "rating": "R18",
     "season": "不限",
     "story": "刚刚结束激烈遭遇战的地下安全屋，空气中弥漫着硝烟与荷尔蒙的微热。夏目那一身漆黑的特工连体衣从领口被一路拉开、撕裂到了腹部，露出了里面让人血脉偾张的饱满线条。她跨坐在地板上的你身上，大汗淋漓，黑色发丝凌乱地贴在潮红的脸颊上。眼角的泪痣因为极度亢奋和动情而闪烁着近乎疯狂的独占欲。她纤细的双手死死掐住你的脖子将你带入深吻，一边急促喘息一边在你耳边呢喃——「长官...任务成功了...现在...我要收回属于我的全部战利品...」",
     "storyJa": "【夏目・またがって座るエージェントスーツのバトルダメージ】熾烈な対決が終わったばかりの地下セーフハウスは、空気が煙とホルモンの熱で満たされていた。夏目の真っ黒なエージェントジャンプスーツは、襟から腹部まで引き裂かれ、内側の完全なラインが明らかになり、人々の血を騒がせました。彼女は床の上であなたにまたがり、汗が滴り落ち、黒髪が乱れて紅潮した頬に張り付いていました。彼女の目の隅にある泣きぼくろは、極度の興奮と感情のため、ほとんど狂ったような独占欲で輝いていました。彼女の細い手はあなたの首をしっかりと掴み、深いキスをし、耳元でささやきながら息を早くします。――「店長……任務は成功。ここからは、私が大切なものを全部取り戻す番。」",
     "tags": [
       "mole_under_eye",
-      "tactical_bodysuit",
-      "torn_bodysuit",
+      "natsume_r18",
+      "torn_black_bodysuit",
+      "cleavage",
+      "exposed_midriff",
       "straddling",
-      "hands_on_neck",
       "kissing",
+      "hands_on_neck",
       "sweat",
-      "cold_floor",
-      "safehouse",
+      "flushed_blush",
+      "underground_safehouse",
+      "overhead_caged_work_light",
+      "warm_lightbeam",
+      "tactical_monitors",
+      "soft_rim_lighting",
       "close_up",
-      "charcoal_side_panels",
-      "burgundy_seam_piping"
+      "depth_of_field"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
@@ -49,6 +54,6 @@
       "成人向"
     ],
     "weather": "炙热",
-    "promptProse": "She straddles the viewer on the safehouse floor and pulls them into a kiss, her bodysuit torn from collar to abdomen."
+    "promptProse": "She draws the viewer into a passionate embrace from their lap on the safehouse floor, the overhead caged industrial lamp casting a clear golden beam across her torn bodysuit and flushed skin."
   }
 }

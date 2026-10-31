@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_vulnerable_bed_solo",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 379,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "haruno_nsfw_vulnerable_bed_solo",
     "title": "雪之下阳乃 · 卸下伪装的床褥动情独奏 ·「哪怕是虚伪的温柔……今晚也给我吧」",
@@ -14,7 +14,7 @@
     "location": "公寓主卧·黎明",
     "action": "仰卧丝绸床褥双腿大开剧烈自抚，及肩黑发散乱失神高潮，泪水滑落胸口",
     "timeOfDay": "dawn",
-    "lighting": "清冷黎明从窗边照入，丝绸被褥形成柔和明暗层次",
+    "lighting": "卧室暗色调暖黄床头台灯与落地窗外冷冽夜色",
     "camera": "cowboy shot, from above",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
@@ -27,21 +27,16 @@
     "promptProse": "Haruno lies on the disheveled silk sheets, touching herself with a tearful expression in the blue dawn light.",
     "nsfwProse": "",
     "promptTokens": [
-      "nude",
-      "on back",
-      "spread legs",
-      "arched back",
-      "female masturbation",
-      "tears",
-      "blush",
-      "black sheets",
-      "dawn",
       "on bed",
-      "disheveled sheets",
-      "blue light",
-      "window light",
-      "cowboy shot",
-      "from above"
+      "messy hair",
+      "silk nightwear",
+      "heavy blush",
+      "vulnerable expression",
+      "bedside lamp",
+      "warm amber light",
+      "soft pillows",
+      "duvet",
+      "intimate atmosphere"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +50,6 @@
       "h_cg"
     ],
     "nsfwTokens": [],
-    "animaCaption": "Blue dawn light reaches her tearful face above the disheveled silk sheets."
+    "animaCaption": "Muted bedside lamplight softens the room, capturing Haruno stripped of her teasing facade in vulnerable surrender."
   }
 }

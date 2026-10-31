@@ -2,7 +2,7 @@
 
 ## 适用范围
 
-面向 Anima 与项目本地 Krea 2 的全年龄图像创作，重点是人物参与环境的单幅叙事 CG。它是写作与审核规范，不是采样参数预设，也不承诺每张输出达到同一审美水平。
+面向 Anima 与项目本地 Krea 2 的图像创作（支持全分级自由创作），重点是人物参与环境的单幅叙事 CG。它是写作与审核规范，不是采样参数预设，也不承诺每张输出达到同一审美水平。
 
 同等关注的单人物立绘／特写壁纸见 [壁纸规范](character-wallpaper-prompt-standard.md)。两种目标分别写作与评分，不强制壁纸增加故事事件或复杂环境。
 
@@ -95,68 +95,68 @@
 
 ## 四、三个原创候选案例
 
-下列英文为**写作示例，未编译、未出图、未审核**。人物为原创成年女性，均为全年龄内容；不使用生产场景 ID，不作为角色身份、LoRA 或参数配方。Anima 示例不含项目 profile 自动添加的质量／分级前缀；Krea 示例不代表复制到任一生产字段后会原样成为完整请求。
+下列英文为**写作示例，未编译、未出图、未审核**。人物为原创角色示例，用于展示双引擎叙事画面的构图与细节组织；不使用生产场景 ID，不作为角色身份、LoRA 或参数配方。Anima 示例不含项目 profile 自动添加的质量／分级前缀；Krea 示例不代表复制到任一生产字段后会原样成为完整请求。
 
 ### A：雨夜候车——道具让等待变得可见
 
-简报：一位成年女性在雨棚下为尚未到场的人留下一杯热饮。画面只有她一人，长凳空位需要可读；环境为她的动作提供原因。主要焦点是她的手、杯子与期待的目光。第一轮比较不改变人物、服装、物件数量、画幅和光源。
+简报：一位女性在雨棚下为尚未到场的人留下一杯热饮。画面只有她一人，长凳空位需要可读；环境为她的动作提供原因。主要焦点是她的手、杯子与期待的目光。第一轮比较不改变人物、服装、物件数量、画幅和光源。
 
 Anima 候选：
 
 ```text
-1girl, solo, adult woman, black bob hair, amber eyes, navy coat, cream scarf, bus stop, bench, paper cup, rain, wet pavement, evening, medium shot, three-quarter view, anime illustration
-An adult woman stands at the right end of a sheltered bench, placing a paper cup beside a second cup already on the seat. She looks toward the empty seat with a restrained, expectant smile. The bench extends into the left side of the picture. Rain falls beyond the shelter, and the wet road leads toward a quiet row of shops. A warm lamp under the shelter lights her face, hands and the cups; cool evening light remains outside. Keep the empty seat and cup placement readable, with the distant storefronts less detailed than the foreground action.
+1girl, solo, black bob hair, amber eyes, navy coat, cream scarf, bus stop, bench, paper cup, rain, wet pavement, evening, medium shot, three-quarter view, anime illustration
+A woman stands at the right end of a sheltered bench, placing a paper cup beside a second cup already on the seat. She looks toward the empty seat with a restrained, expectant smile. The bench extends into the left side of the picture. Rain falls beyond the shelter, and the wet road leads toward a quiet row of shops. A warm lamp under the shelter lights her face, hands and the cups; cool evening light remains outside. Keep the empty seat and cup placement readable, with the distant storefronts less detailed than the foreground action.
 ```
 
 Krea 2 候选：
 
 ```text
-A hand-drawn anime narrative illustration of an adult woman waiting at a rain-soaked bus stop in the evening. She has a black bob, amber eyes, a navy coat and a cream scarf. Standing at the right end of a sheltered bench, she places a paper cup beside another cup already on the seat, then looks toward the empty seat with a restrained, expectant smile. She is the only person visible. The bench extends to the left, leaving the empty place readable. Beyond the shelter, the wet road recedes toward quiet shops. A warm overhead lamp lights her face, hands and both cups, while cool evening light colors the road. Use clear character linework and restrained painted backgrounds, preserving the contact between the cup and the seat and the spatial connection between the shelter and street.
+A hand-drawn anime narrative illustration of a woman waiting at a rain-soaked bus stop in the evening. She has a black bob, amber eyes, a navy coat and a cream scarf. Standing at the right end of a sheltered bench, she places a paper cup beside another cup already on the seat, then looks toward the empty seat with a restrained, expectant smile. She is the only person visible. The bench extends to the left, leaving the empty place readable. Beyond the shelter, the wet road recedes toward quiet shops. A warm overhead lamp lights her face, hands and both cups, while cool evening light colors the road. Use clear character linework and restrained painted backgrounds, preserving the contact between the cup and the seat and the spatial connection between the shelter and street.
 ```
 
 审核重点：两个杯子是否各自落在合理位置；单人限制是否保持；空位是否被人物或杂物填满；暖光是否照到同一组相邻对象。若动作失败，优先简化杯子接触的表达，不同时加入雨伞、行李和车辆动作。
 
 ### B：修理风铃——人物动作与室内空间一致
 
-简报：成年工匠在窗边检查刚修好的风铃。风铃、手和工作台是主要信息，房间工具只作环境线索。希望看出空间深度，但不把所有工具画得一样锐利。
+简报：工匠在窗边检查刚修好的风铃。风铃、手和工作台是主要信息，房间工具只作环境线索。希望看出空间深度，但不把所有工具画得一样锐利。
 
 Anima 候选：
 
 ```text
-1girl, solo, adult woman, chestnut hair, tied hair, green apron, long sleeves, workshop, wooden workbench, wind chime, window light, medium shot, side view, anime illustration
-An adult craftswoman stands to the left of a wooden workbench and holds a repaired wind chime by its top loop above the table. Her free hand rests on the table as she watches the hanging pieces settle. The workbench runs diagonally from the lower right toward her hands. A small pair of pliers and a short coil of cord lie near the repair area; shelves farther back are simplified. Daylight from the window on the right lights the chime and the same side of her face, with a soft shadow on the workbench. Keep the hanging parts separated and the hand-to-loop contact visible.
+1girl, solo, chestnut hair, tied hair, green apron, long sleeves, workshop, wooden workbench, wind chime, window light, medium shot, side view, anime illustration
+A craftswoman stands to the left of a wooden workbench and holds a repaired wind chime by its top loop above the table. Her free hand rests on the table as she watches the hanging pieces settle. The workbench runs diagonally from the lower right toward her hands. A small pair of pliers and a short coil of cord lie near the repair area; shelves farther back are simplified. Daylight from the window on the right lights the chime and the same side of her face, with a soft shadow on the workbench. Keep the hanging parts separated and the hand-to-loop contact visible.
 ```
 
 Krea 2 候选：
 
 ```text
-A quiet anime illustration set in a small repair workshop. An adult craftswoman with tied chestnut hair wears a green apron over a long-sleeved shirt. She stands to the left of a wooden workbench, holding a repaired wind chime by its top loop above the surface while her other hand rests on the table. Her gaze follows the hanging pieces as they settle. The workbench forms a diagonal from the lower right toward her hands, where a pair of pliers and a short coil of cord explain the work just completed. Daylight enters from a window on the right and reaches both the chime and her face; the table carries their soft shadows. Draw the figure and room in compatible hand-painted anime colors, with the repair area clearly articulated and the distant shelves quieter.
+A quiet anime illustration set in a small repair workshop. A craftswoman with tied chestnut hair wears a green apron over a long-sleeved shirt. She stands to the left of a wooden workbench, holding a repaired wind chime by its top loop above the surface while her other hand rests on the table. Her gaze follows the hanging pieces as they settle. The workbench forms a diagonal from the lower right toward her hands, where a pair of pliers and a short coil of cord explain the work just completed. Daylight enters from a window on the right and reaches both the chime and her face; the table carries their soft shadows. Draw the figure and room in compatible hand-painted anime colors, with the repair area clearly articulated and the distant shelves quieter.
 ```
 
 审核重点：主光方向、手的任务分配、风铃悬挂关系、工作台透视。若背景压过动作，先降低远处工具的细节描述；不直接把背景全部虚化成无法辨认的色块。
 
 ### C：海边归航——人物较小也可以有重点
 
-简报：成年女性站在码头上看一艘归来的船。人物与船的关系就是事件，环境需要留出距离。焦点通过衣物颜色与码头方向建立，而不是要求人物占固定比例。
+简报：女性站在码头上看一艘归来的船。人物与船的关系就是事件，环境需要留出距离。焦点通过衣物颜色与码头方向建立，而不是要求人物占固定比例。
 
 Anima 候选：
 
 ```text
-1girl, solo, adult woman, short dark hair, red raincoat, boots, harbor, pier, fishing boat, overcast sky, sea, wide shot, back view, anime landscape illustration
-An adult woman in a red raincoat stands on the left side of a wooden pier, seen from behind, watching a small fishing boat approach the harbor entrance in the distance. Both boots rest on the boards and one hand touches the railing. The pier narrows toward the approaching boat, leaving a broad area of quiet gray-green water between them. Wind pushes the edge of her coat in the same direction as the ripples. Soft overcast light belongs to the whole scene, and the red coat provides a clear accent against the restrained sea and sky. Keep the boat recognizable without making the distant rigging compete with the figure.
+1girl, solo, short dark hair, red raincoat, boots, harbor, pier, fishing boat, overcast sky, sea, wide shot, back view, anime landscape illustration
+A woman in a red raincoat stands on the left side of a wooden pier, seen from behind, watching a small fishing boat approach the harbor entrance in the distance. Both boots rest on the boards and one hand touches the railing. The pier narrows toward the approaching boat, leaving a broad area of quiet gray-green water between them. Wind pushes the edge of her coat in the same direction as the ripples. Soft overcast light belongs to the whole scene, and the red coat provides a clear accent against the restrained sea and sky. Keep the boat recognizable without making the distant rigging compete with the figure.
 ```
 
 Krea 2 候选：
 
 ```text
-A wide hand-painted anime scene of a quiet harbor under an overcast sky. An adult woman with short dark hair stands on the left side of a wooden pier, seen from behind in a red raincoat and boots. Both feet are supported by the boards and one hand rests on the railing. She watches a small fishing boat returning through the distant harbor entrance. The pier narrows in the direction of the boat, connecting her position to it across an open stretch of gray-green water. Wind moves her coat edge in the direction suggested by the ripples. Use soft shared daylight and restrained background detail, with the red coat as a distinct color accent. The open water should preserve the distance and quiet anticipation between the figure and the arriving boat.
+A wide hand-painted anime scene of a quiet harbor under an overcast sky. A woman with short dark hair stands on the left side of a wooden pier, seen from behind in a red raincoat and boots. Both feet are supported by the boards and one hand rests on the railing. She watches a small fishing boat returning through the distant harbor entrance. The pier narrows in the direction of the boat, connecting her position to it across an open stretch of gray-green water. Wind moves her coat edge in the direction suggested by the ripples. Use soft shared daylight and restrained background detail, with the red coat as a distinct color accent. The open water should preserve the distance and quiet anticipation between the figure and the arriving boat.
 ```
 
 审核重点：人物能否迅速辨认、船是否可识别、码头是否连接到合理空间、风向是否一致。人物不必转身看镜头，不因“看不到脸”就判定构图失败。
 
 ### 补充边界案例
 
-双人互动可以选择两位成年人物隔着工坊桌共同检查同一件物品，分别指定画面左右和各自手的任务。先验证人数、属性归属和接触，再评价氛围。当前单人生成路径是否支持这种目标必须先核对，不能仅通过更换人数标签绕过能力或内容约束。
+双人互动可以选择两位人物隔着工坊桌共同检查同一件物品，分别指定画面左右和各自手的任务。先验证人数、属性归属和接触，再评价氛围。当前单人生成路径是否支持这种目标必须先核对，不能仅通过更换人数标签绕过能力或内容约束。
 
 情绪特写可以保留窗边冷光和手中的信封作为线索，不需要完整三层大环境。只要关键事件可读，安静背景就是合理选择，不能因为物件数量少而机械扣分。
 
@@ -174,7 +174,7 @@ A wide hand-painted anime scene of a quiet harbor under an overcast sky. An adul
 
 ### 第一步：小样筛查
 
-从 A／B／C 或对应的已授权全年龄候选中选一个场景，按现有规则使用同一组 3 个固定 seeds。只比较一个因素，例如基准描述与增加明确接触／位置关系后的版本。先运行一个实际 checkpoint，发现明显失败就停止扩批并修正假设。
+从 A／B／C 或对应的候选场景中选一个，按现有规则使用同一组 3 个固定 seeds。只比较一个因素，例如基准描述与增加明确接触／位置关系后的版本。先运行一个实际 checkpoint，发现明显失败就停止扩批并修正假设。
 
 ### 第二步：多场景验证
 

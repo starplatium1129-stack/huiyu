@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_astronomy_deck",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "仰头望着漫天星斗",
     "camera": "wide shot",
@@ -16,23 +16,23 @@
     ],
     "description": "深夜平静的罗德岛观景甲板上，艾雅法拉仰脸凝望星斗，微风轻拂肩头的羊毛披肩。她靠近身旁的同行者，握着对方的手，在安静的星光中感受掌心传来的温暖。",
     "id": "eyjafjalla_arknights_astronomy_deck",
-    "lighting": "starlight and dim deck lamps",
+    "lighting": "舰桥观星甲板仪器柔和辉光与璀璨银河星光",
     "location": "罗德岛甲板",
     "mood": "浪漫憧憬",
     "negativeTokens": [],
     "outfitId": "picnic",
     "promptProse": "She leans beside her companion at the dimly lit deck railing, their hands joined between them as both look up at the stars.",
     "promptTokens": [
-      "2people",
-      "holding hands",
-      "observation deck",
+      "observing telescope",
       "starry sky",
-      "wide shot",
-      "looking up",
-      "night",
-      "railing",
-      "starlight",
-      "dim lighting"
+      "milky way",
+      "astronomy deck",
+      "control screen glow",
+      "soft instrument light",
+      "warm jacket",
+      "gentle smile",
+      "rim light",
+      "celestial lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -44,6 +44,6 @@
     ],
     "timeOfDay": "夜晚",
     "title": "艾雅法拉 · 观星甲板",
-    "animaCaption": "Their joined hands rest between them as they look up from the deck railing."
+    "animaCaption": "The brilliant expanse of the Milky Way and soft console glows illuminate Eyjafjalla's warm smile on the observation deck."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_r18_b9_04",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1729,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "marcille_donato_r18_b9_04",
     "title": "玛露希尔 · 古代黑魔法反噬床单上的禁忌崩坏自持 ·「古代黑魔法的代价……不管是什么我都愿意承受」",
@@ -14,7 +14,7 @@
     "location": "迷宫最下层古遗迹床榻·深夜",
     "action": "仰卧符文石床全裸手指插穴自抚，黑魔法微光流转，尖耳颤抖哭泣绝顶",
     "timeOfDay": "night",
-    "lighting": "purple rune glow from the stone altar, with the surrounding ruins in shadow",
+    "lighting": "迷宫营地篝火暖橙炭火与深处古代发光苔藓",
     "camera": "intimate vertical medium shot",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
@@ -32,18 +32,16 @@
     ],
     "promptProse": "Marcille fingers herself on the rune-covered stone altar, her back arched under the dark-magic backlash. Purple light from the runes fades into the surrounding shadowed ruins.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "nude",
-      "on back",
-      "spread legs",
-      "arched back",
-      "fingering",
-      "tears",
-      "stone altar",
-      "glowing runes",
-      "purple lighting",
-      "medium shot"
+      "camping in dungeon",
+      "campfire glow",
+      "sleeping bag",
+      "elven ears",
+      "blush",
+      "disheveled blonde hair",
+      "bioluminescent moss on stone walls",
+      "warm firelight",
+      "pot on fire",
+      "cozy cavern"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +57,6 @@
       "self_control",
       "special_nsfw"
     ],
-    "animaCaption": "Purple rune light fades from the stone altar into the shadowed ruins."
+    "animaCaption": "The crackling dungeon campfire casts a comforting golden warmth across the rocky hollow as Marcille snuggles into her bedding."
   }
 }

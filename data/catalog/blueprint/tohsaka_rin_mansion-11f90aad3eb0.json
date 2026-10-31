@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_mansion",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "tohsaka_rin_mansion",
     "title": "远坂凛 · 远坂工坊·红宝石魔术充能",
@@ -14,7 +14,7 @@
     "location": "远坂邸地下神秘魔术工坊",
     "action": "双臂交叠站在工坊法阵前，红宝石独立悬浮于法阵上方，深棕双马尾微扬",
     "timeOfDay": "深夜",
-    "lighting": "宝石绽放的高能绯红强光映亮魔术刻印与古籍，深邃戏剧性光影",
+    "lighting": "远坂邸工坊红宝石魔力强光与复古油灯",
     "camera": "medium shot",
     "mood": "自信帅气与神秘",
     "sceneTags": [
@@ -32,16 +32,16 @@
     ],
     "promptProse": "Rin folds her arms before the magic circle, chin raised toward the viewer; an independently floating ruby casts crimson light on open books and her red sweater.",
     "promptTokens": [
-      "crossed arms",
-      "floating ruby",
-      "magic circle",
-      "workshop",
-      "medium shot",
-      "standing",
-      "raised chin",
-      "confident smile",
-      "ruby glow",
-      "open books"
+      "holding glowing ruby",
+      "magic workshop",
+      "alchemy desk",
+      "scrolls",
+      "glowing magic circles",
+      "warm desk lamp",
+      "bookshelves",
+      "volumetric lighting",
+      "gemstone sparkle",
+      "focused expression"
     ],
     "negativeTokens": [
       "ruby held in hand",
@@ -52,6 +52,6 @@
     "coverageTags": [
       "iconic"
     ],
-    "animaCaption": "She holds her chin high above folded arms while the ruby floats independently over the magic circle."
+    "animaCaption": "Radiant crimson light blazes from the polished jewel in her hand, illuminating the antique workshop manuscripts."
   }
 }

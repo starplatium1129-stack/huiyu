@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_starlit_express_window_gaze",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1036,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "kafka_starlit_express_window_gaze",
     "title": "卡芙卡 · 星海巡弋舷窗凝望",
@@ -14,7 +14,7 @@
     "location": "星际穿梭飞船全景舷窗前",
     "action": "坐在观景座舱高脚椅上，单手扶腮凝视舷窗外浩瀚绚烂的紫色星云，目光深邃神秘",
     "timeOfDay": "星际巡航",
-    "lighting": "深紫与幽蓝星云浩瀚反光与座舱暖色壁灯",
+    "lighting": "星穹列车观景车厢全景舷窗外璀璨星河与暖木室内光",
     "camera": "cowboy shot, eye level",
     "mood": "深邃唯美",
     "sceneTags": [
@@ -31,18 +31,16 @@
     ],
     "promptProse": "Seated on the observation stool, she props her cheek on one hand and watches the nebula through the panoramic window; blue-violet reflections meet the cabin lamp's warm light along her face.",
     "promptTokens": [
-      "sitting",
-      "hand on own cheek",
-      "spacecraft interior",
-      "window",
-      "nebula",
-      "night",
-      "cowboy shot",
-      "looking outside",
-      "pensive smile",
-      "wall lamp",
-      "blue light",
-      "purple light"
+      "sitting by train window",
+      "space vista",
+      "cosmic nebula",
+      "stars outside",
+      "warm passenger car light",
+      "tea cup on table",
+      "gentle expression",
+      "velvet seat",
+      "soft ambient lighting",
+      "rim light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -50,6 +48,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "Her cheek rests in one hand as she watches the nebula through the panoramic window."
+    "animaCaption": "The dazzling cosmic glow of distant nebulae pours through the Astral Express window onto her tranquil profile."
   }
 }

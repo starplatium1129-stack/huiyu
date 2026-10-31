@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc249",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 244,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
     "id": "sc249",
     "title": "暴雨车内的心跳加速",
@@ -22,37 +22,35 @@
     "tags": [
       "mole_under_eye",
       "white_shirt",
-      "unbuttoned_shirt",
-      "lingerie_visible",
-      "collarbone",
+      "open_collar",
+      "black_lace_bra",
       "messy_hair",
-      "leaning_on_viewer",
-      "car_backseat",
-      "car_interior",
-      "rain",
-      "rain_on_window",
-      "night",
-      "lightning",
-      "cowboy_shot",
       "heavy_blush",
-      "concealed_placket",
-      "burgundy_cuff_piping"
+      "car_interior",
+      "warm_car_ceiling_reading_light",
+      "glowing_instrument_cluster",
+      "rain_streaked_car_window",
+      "leather_seats",
+      "face_illuminated_by_reading_light",
+      "soft_rim_lighting",
+      "cowboy_shot",
+      "depth_of_field"
     ],
     "mature": false,
     "rating": "R15",
     "location": "特工车辆后座",
     "weather": "暴雨",
     "camera": "后座七分身主观中景",
-    "lighting": "车外暴雨雷电冷白闪光与车内仪表盘微弱琥珀暖光折射",
+    "lighting": "车内明亮暖色阅读灯与中控台琥珀光、车窗外雨滴折射霓虹街灯",
     "usage": [
       "壁纸级",
       "R15"
     ],
-    "prompt": "1girl, adult, shiki_natsume, concealed placket, burgundy cuff piping, natsume_r18, mole under eye, messy hair, white shirt, open collar, black lingerie, blush, looking away, car interior, rain, night, lightning, pov, cowboy shot, <lora:shiki_natsume_v18_wd14:0.85>, head on chest, car backseat, dashboard light, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "negative": "",
+    "prompt": "1girl, adult, solo, shiki_natsume, @rella, mole_under_eye, slightly unbuttoned white shirt, concealed placket, black lace bra visible, blushing cheeks, messy hair, looking up at viewer, car interior backseat, bright warm car ceiling reading lamp on, glowing amber instrument cluster, rain droplets running down car window reflecting golden streetlights, plush leather seats, head resting gently on headrest, face illuminated by warm reading light and golden streetlight reflections, soft rim lighting, cowboy shot, depth of field",
+    "negative": "day, pitch black, dark interior, dim lighting",
     "storyJa": "【夏目・豪雨の車内】深夜の豪雨で停車した任務車両。疲労の残る夏目は後部座席で息を整えていたが、車体の揺れであなたの腕の中へと滑り込んでしまう。狭い車内で密着し、あなたの鼓動が直に伝わる中、耳を赤くしながらも必死に平静を装う――「……勘違いしないで。ただの慣性よ。それに、くっついてた方が暖かいし。……でも、あなたの心臓の音、少しうるさすぎるわ」",
-    "animaCaption": "Her head rests on the viewer's chest beneath the rain-streaked rear window.",
+    "animaCaption": "Her head rests back against the leather headrest in the warmly lit car, her unbuttoned shirt and flushed expression illuminated by the overhead reading lamp and rain-streaked neon streetlights.",
     "auditRevision": "skill-refine-sc249-2026-09-05",
-    "promptProse": "Natsume rests her head against the viewer's chest in the back seat, black lace visible at her loosened collar. Faint amber dashboard light reaches her face between the cold lightning flashes through the rain-streaked windows."
+    "promptProse": "Her head rests back against the leather headrest in the warmly lit car, her unbuttoned shirt and flushed expression illuminated by the overhead reading lamp and rain-streaked neon streetlights."
   }
 }

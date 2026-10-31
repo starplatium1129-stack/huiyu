@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_late_night_library_shared_study",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1333,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "并肩坐于书桌旁，一手微触对方指尖，一手轻托下巴微红着脸温柔对视",
     "camera": "medium shot, eye level",
@@ -17,24 +17,23 @@
     ],
     "description": "静谧古老的私人图书室内，只有复古绿罩台灯散发着温暖的光芒。希耶尔与你并肩坐在厚重的木质书桌旁查阅典籍，微风翻动着泛黄的书页。当你们同时伸手去拿同一本词典时，冰凉与温暖的指尖在桌面上轻轻触碰。希耶尔推了推眼镜，侧脸泛着一层浅浅的红晕，嘴角扬起温柔又深情的弧度——「不用急……长夜漫漫，我们还有很多时间，慢慢看吧。」",
     "id": "ciel_late_night_library_shared_study",
-    "lighting": "经典复古绿色台灯散发的温润暖调光晕",
+    "lighting": "古朴图书馆实木书桌暖黄台灯与高耸书架阴影",
     "location": "四面被高耸书架包围的古朴私人图书室",
     "mood": "知性温存",
     "negativeTokens": [],
     "outfitId": "casual_knit_sweater_jeans",
     "promptProse": "Seated side by side, they reach for the same dictionary and their fingertips meet above its cover. She turns toward her companion with a faint blush as the green-shaded lamp lights their hands against the dark shelves.",
     "promptTokens": [
-      "couple",
       "library",
+      "desk lamp glow",
+      "open books",
+      "towering bookshelves",
+      "sitting side by side",
+      "blushing smile",
       "glasses",
-      "dictionary",
-      "touching fingers",
-      "desk lamp",
-      "medium shot",
-      "sitting at desk",
-      "gentle smile",
-      "subtle blush",
-      "warm lighting"
+      "warm ambient lighting",
+      "wooden table",
+      "soft room glow"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -51,6 +50,6 @@
     "timeOfDay": "深夜",
     "title": "希耶尔 · 深夜图书馆的指尖相触",
     "compositionIntent": "group",
-    "animaCaption": "Their fingertips meet above the dictionary while they sit side by side."
+    "animaCaption": "A vintage green banker's lamp casts an intimate warm glow across their shared manuscripts in the quiet library."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc278",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 273,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
     "id": "sc278",
     "recommendedSize": "1344×768",
@@ -21,25 +21,41 @@
     "time": "夜晚",
     "timeOfDay": "night",
     "tags": [
-      "official_cg",
-      "visual_audited",
-      "landscape",
-      "natsume",
-      "adult"
+      "mole_under_eye",
+      "natsume_r18",
+      "two_red_hairclips",
+      "very_long_hair",
+      "hair_spread_out",
+      "black_lace_bra",
+      "black_lace_panties",
+      "black_garter_belt",
+      "black_thighhighs",
+      "lying_on_back",
+      "knees_apart",
+      "clasped_hands",
+      "shy_blush",
+      "looking_at_viewer",
+      "bedside_nightstand_lamp",
+      "flower_vase",
+      "sheer_curtains_moonlight",
+      "face_illuminated_by_bedside_lamp",
+      "soft_rim_lighting",
+      "dutch_angle_from_above",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
-    "lighting": "夜色氛围光",
+    "lighting": "床头柜复古布艺台灯暖橙光晕与落地窗轻纱月色柔光",
     "usage": [
       "官方CG灵感",
       "实机审核通过",
       "展示图",
       "R15"
     ],
-    "prompt": "natsume_r18, adult, visual novel event CG, dutch angle, from above, 1girl, solo, hair spread out, two_red_hairclips, black lace bra, black lace panties, black garter belt, garter straps, black thighhighs, lying, on back, muted blue bedding, clasped hands, knees apart, shy, looking at viewer, slight blush, dim cool lighting, bedroom, <lora:shiki_natsume_v18_wd14:0.85>, very long hair",
-    "negative": "standing, sitting",
+    "prompt": "natsume_r18, adult, 1girl, solo, shiki_natsume, @rella, mole_under_eye, two red hairclips, very long hair spread across pillows, black lace bra, black lace panties, black garter belt, garter straps, black thighhighs, lying on back on comfortable bed with dark navy duvet and silk pillows, knees slightly apart, hands clasped gently above chest, shy blushing expression, looking at viewer, upscale bedroom, bedside nightstand with warm glowing fabric lampshade lamp, small flower vase, sheer window drapes with moonlight, face illuminated by warm bedside lamp beam, soft rim lighting, dutch angle from above, depth of field",
+    "negative": "standing, sitting, empty room, pitch black, dim cool lighting, flat blue bed",
     "storyJa": "【成人After Story・夏目】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「目を逸らさないで。あなたにだけ、見ていてほしいの。」",
     "rating": "R15",
     "officialCgCandidate": "ocs12",
@@ -51,7 +67,8 @@
       "image": "E:\\code\\2\\lora\\AI\\Reviews\\OfficialCGAudits\\2026-07-23_v14\\images\\ocs12-a1.png",
       "result": "pass"
     },
-    "animaCaption": "Viewed diagonally from above, she lies on the muted blue bedding with her hands clasped over her upper chest and looks toward the viewer. Cool dim room light reaches her face and the hair spread around her.",
-    "auditRevision": "careful-batch06-2026-08-27"
+    "animaCaption": "Viewed from a diagonal angle above, she lies back among the navy bedding and lace pillows with hands held near her chest, the warm nightstand lamp and filtered moonlight tracing her black lace lingerie.",
+    "auditRevision": "careful-batch06-2026-08-27",
+    "promptProse": "Viewed from a diagonal angle above, she lies back among the navy bedding and lace pillows with hands held near her chest, the warm nightstand lamp and filtered moonlight tracing her black lace lingerie."
   }
 }

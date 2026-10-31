@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_church_night",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 562,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "坐在轮椅上，衣衫半褪露出香肩，在烛光中沉静凝望",
     "adult": true,
@@ -16,7 +16,7 @@
     "description": "深夜寂静的私人祈祷室内烛光摇曳，蕾缪安坐在轮椅上，外套从肩头悄然滑落，裙摆收在腿边，露出白皙圆润的香肩与精致的锁骨。她眼中水波流转，神情虔诚又带着无尽的深情——「即便双腿无法给予你回应……我也渴望用我的双手与全部温度，将你紧紧拥入怀中。」",
     "id": "lemuen_arknights_r18_church_night",
     "kreaStyleHint": "",
-    "lighting": "rows of candlelight",
+    "lighting": "拉特兰修道院彩窗月华与柔和圣烛长明",
     "location": "拉特兰教堂侧厅",
     "mood": "圣洁下的私语",
     "negativeTokens": [],
@@ -25,21 +25,17 @@
     "outfitId": "chapel_jacket_skirt",
     "promptProse": "Lemuen sits in her wheelchair, jacket slipped from her shoulders and skirt gathered beside her legs. As she looks toward the viewer, candles light her face and the chair arms against the dark chapel recess.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "adult Lemuen",
-      "wheelchair",
-      "jacket",
-      "off shoulder",
-      "skirt",
-      "sitting",
+      "wheelchair beside bed",
+      "white dress",
       "halo",
-      "chapel",
-      "candlelight",
-      "looking at viewer",
-      "gathered skirt",
-      "dark background",
-      "medium shot"
+      "angel wings",
+      "church interior",
+      "candelabra",
+      "warm candlelight",
+      "stained glass moonlight",
+      "peaceful intimate smile",
+      "soft glow",
+      "volumetric lighting"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -52,6 +48,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "蕾缪安 · 教堂夜祷",
-    "animaCaption": "She looks toward the viewer from her wheelchair, the skirt gathered beside her legs."
+    "animaCaption": "Warm flickering candles and cool silver moonbeams surround Lemuen with gentle, ethereal grace inside the sanctuary."
   }
 }

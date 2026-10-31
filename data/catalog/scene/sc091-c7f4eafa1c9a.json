@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc091",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
     "id": "sc091",
     "title": "门外递来的换洗衣物",
@@ -21,32 +21,38 @@
     "timeOfDay": "night",
     "tags": [
       "mole_under_eye",
-      "bath_towel",
-      "bathroom_door",
-      "peeking",
-      "half_face",
+      "wet_hair",
+      "white_bath_towel",
+      "peeking_behind_door",
+      "holding_folded_clothes",
+      "heavy_blush",
+      "looking_away",
+      "apartment_hallway",
+      "wooden_doorframe",
+      "runner_rug",
+      "coat_rack",
+      "warm_ceiling_light",
       "steam",
-      "folded_clothes",
-      "door_gap",
-      "red_ears",
-      "night",
-      "close_up"
+      "face_illuminated_by_hallway_light",
+      "soft_rim_lighting",
+      "medium_shot",
+      "depth_of_field"
     ],
     "mature": false,
     "location": "公寓浴室门口",
     "weather": "晴",
     "camera": "门缝半身近景",
-    "lighting": "浴室暖灯与夜间暗部",
-    "prompt": "1girl, shiki_natsume, bath towel, peeking, folded clothes, doorway, bathroom, steam, night, close up, blush, receiving clothes, warm lighting, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "negative": "open towel",
+    "lighting": "公寓玄关走廊柔和暖色顶灯与浴室透出的朦胧水汽",
+    "prompt": "1girl, solo, shiki_natsume, @rella, mole_under_eye, wet black hair, wrapped securely in white bath towel, peeking from behind apartment bathroom door, holding stack of fresh folded clothes, looking away shyly, heavy blush, apartment hallway with warm wooden flooring, hallway runner rug, coat rack with jackets, warm ceiling light illuminating doorway, soft steam curling from bathroom, face illuminated by warm hallway lighting, soft rim lighting, medium shot, depth of field",
+    "negative": "open towel, nudity, explicit, empty background, flat door",
     "usage": [
       "展示图",
       "R15"
     ],
     "storyJa": "【夏目・ドアの外に着替えが届けられます】冬の夜、バスルームのドアがしっかりと閉まっていなかったため、バスタオルを巻いた夏目が赤い顔の半分だけを出し、寝室に残っている服を取り出すのを手伝ってほしいと頼みました。あなたは服をドアに渡し、振り返った。彼女は数秒間沈黙し、そっとそれらを受け取りました。――「処置は一応、合格。着替えたら……お礼に温かい飲み物くらいは淹れてあげる。」",
     "rating": "R15",
-    "animaCaption": "She accepts the folded clothes through the door gap; the towel remains wrapped behind the door.",
+    "animaCaption": "Holding the stack of fresh clothes while keeping her towel tucked tight, she peeks from the open bathroom door with an embarrassed blush as the warm hallway light gleams on her damp hair.",
     "auditRevision": "fix-no-burn-ears-2026-09-05",
-    "promptProse": "Her flushed half-face appears in the door gap as she accepts the clothes from the viewer's outstretched hands. Warm light catches the steam; her wrapped towel stays behind the door."
+    "promptProse": "Holding the stack of fresh clothes while keeping her towel tucked tight, she peeks from the open bathroom door with an embarrassed blush as the warm hallway light gleams on her damp hair."
   }
 }

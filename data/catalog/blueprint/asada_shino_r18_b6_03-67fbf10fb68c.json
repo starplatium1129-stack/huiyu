@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_03",
-  "revision": 11,
+  "revision": 13,
   "sortOrder": 1385,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "asada_shino_r18_b6_03",
     "title": "朝田诗乃 · 战术紧身衣背后散热阀卡壳事故 ·「散热阀锁死了……身体好热，快帮我拉开背后的拉链！」",
@@ -14,7 +14,7 @@
     "location": "GGO准备室·出击前夕",
     "action": "一手撑住弹药箱、另一手伸到背后拉住卡住的拉链，眉头压低回眸",
     "timeOfDay": "night",
-    "lighting": "green terminal light with soft overhead preparation-room light",
+    "lighting": "GGO战备更衣室全息控制台绿光与暖白筒灯",
     "camera": "cowboy shot, eye level",
     "mood": "意外失控与羞赧",
     "sceneTags": [
@@ -32,18 +32,15 @@
     ],
     "promptProse": "She leans forward with one hand braced on the ammunition crate and the other reaching behind for the rear vent zipper jammed against the lining. Green terminal light meets the soft overhead preparation-room light on her suit.",
     "promptTokens": [
-      "armory",
-      "ammunition box",
-      "green bodysuit",
-      "black reinforced panels",
-      "stuck zipper",
-      "bent over",
-      "looking back",
-      "leaning forward",
-      "hand on crate",
-      "zipper pull",
-      "green lighting",
-      "overhead light"
+      "combat suit unzipped",
+      "bare back",
+      "tactical gear",
+      "ggo locker room",
+      "holographic monitor glow",
+      "overhead warm lighting",
+      "bench",
+      "flushed face",
+      "rim light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -69,6 +66,6 @@
       "human ears"
     ],
     "identityProseOverride": "Shino Asada (Sinon) in her Gun Gale Online form from Sword Art Online, with short pale-blue hair and human ears.",
-    "animaCaption": "One hand braces on the crate as the other reaches for the rear zipper."
+    "animaCaption": "Soft locker room overhead lights and glowing green terminals reflect off Sinon's flushed shoulders as she struggles with the zipper."
   }
 }

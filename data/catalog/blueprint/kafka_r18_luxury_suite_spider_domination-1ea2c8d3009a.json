@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_luxury_suite_spider_domination",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 1042,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "kafka_r18_luxury_suite_spider_domination",
     "title": "卡芙卡 · 奢华套房的蛛网支配",
@@ -14,7 +14,7 @@
     "location": "匹诺康尼奢华套房的紫色丝绒躺椅",
     "action": "独自跨坐绒榻，一手抓靠背、一手指交自抚",
     "timeOfDay": "深夜",
-    "lighting": "房间幽暗紫调氛围灯与床头微弱烛光",
+    "lighting": "匹诺康尼奢华套房暗金壁灯与晶莹酒杯反光",
     "camera": "cowboy shot, low angle, vertical framing",
     "mood": "女王支配",
     "sceneTags": [
@@ -27,20 +27,17 @@
     ],
     "promptProse": "Adult Kafka straddles the velvet chaise, gripping its backrest with one hand and touching herself with the other. Spectral threads curve around her hips. Dim purple room light mixes with the faint bedside candlelight.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "nude",
-      "thigh straps",
-      "straddling",
-      "chaise longue",
-      "masturbation",
-      "hand between legs",
-      "purple light",
-      "hand on backrest",
-      "glowing threads",
-      "candlelight",
-      "cowboy shot",
-      "pov"
+      "leather armchair",
+      "holding wine glass",
+      "sensual dominance",
+      "silk blouse",
+      "unbuttoned",
+      "luxury hotel suite",
+      "warm ambient light",
+      "chandelier glow",
+      "spider web shadows",
+      "city skyline outside window",
+      "bokeh"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -55,6 +52,6 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "One hand grips the chaise backrest while spectral threads curve around her hips."
+    "animaCaption": "Rich golden ambient light from crystal chandeliers glints off her wine glass as Kafka reclines in utter command."
   }
 }

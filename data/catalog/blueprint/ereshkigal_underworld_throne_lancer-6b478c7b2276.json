@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_underworld_throne_lancer",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 264,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "ereshkigal_underworld_throne_lancer",
     "title": "埃列什基伽勒 · 冥界王座的孤独女王·「这里……就是我的全部国土」",
@@ -14,7 +14,7 @@
     "location": "冥界库萨尔王座厅",
     "action": "端坐王座，一手轻扶立在身侧的枪型宝具发热神殿，另一手放扶手上",
     "timeOfDay": "冥界永夜",
-    "lighting": "幽蓝灵魂之火与金色王冠的冷冽对比",
+    "lighting": "冥界赤红神殿熔岩辉光与黄金权杖极光",
     "camera": "wide shot",
     "mood": "孤独女王、幽美威严",
     "sceneTags": [
@@ -31,15 +31,17 @@
     ],
     "promptProse": "She sits upright amid floating blue soul-fire, one hand steadying Meslamtaea on the floor and the other resting on the throne arm.",
     "promptTokens": [
-      "sitting",
-      "throne",
-      "spear",
-      "blue fire",
-      "wide shot",
-      "sitting upright",
-      "holding spear",
-      "hand on armrest",
-      "soul fire"
+      "sitting on underworld throne",
+      "holding golden spear",
+      "red flowers",
+      "golden crown",
+      "glowing runes",
+      "magical spear",
+      "red cavern glow",
+      "volumetric lighting",
+      "majestic aura",
+      "golden highlights",
+      "stalactites"
     ],
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
@@ -53,6 +55,6 @@
       "iconic",
       "signature"
     ],
-    "animaCaption": "One hand steadies the spear on the floor while the other rests on the throne arm."
+    "animaCaption": "Luminescent underworld runes and radiant spear-light crown her sovereign figure upon the obsidian throne."
   }
 }

@@ -43,7 +43,7 @@
 
 - 提示词、蓝图、服装绑定/换装改动核对编译 Token 与真实渲染；场景切换同步 outfitId、镜头和参数。批量内容逐条真实重写并审查交付差异，不得模板拼接或虚报覆盖，UI 文案不代替真实渲染。
 - `data/prompt-pinned-scenes.json` 的 prompt/negative/animaCaption/recommendedSize/rating/mature 为字节级保护基线，批量任务跳过；单条改动先真实出图，再 `npm run scenes:pin-capture`，附证据。
-- 项目内角色统一按成年创作设定处理；成人内容不按本机、远程、内容开关或成年资格字段门控。场景与参考样张目录保留 R18 缩略图默认模糊遮罩；用户作品册不添加遮罩。大图预览直接展示并保留立体观画及原图缩放。设备、私人文件及工作区操作继续遵守各自权限。
+- 项目完全开放自由创作，支持自由选择各个分级创作（涵盖全年龄 SFW 及各类成人、NSFW、R18 等所有分级），不设任何露骨场景限制或门控限制；所有分级场景与蓝图均支持自由编排构图与角色互动。场景与参考样张目录保留 R18 缩略图默认模糊遮罩；用户作品册不添加遮罩。大图预览直接展示并保留立体观画及原图缩放。设备、私人文件及工作区操作继续遵守各自权限。
 - UI 保留双主题、WCAG AA、扫光不压字；禁用文字用 `--text-disabled`，不用 opacity 压字。全局令牌检查不代替动态样式/图片叠字的实际画面。高频动画只用 transform/opacity，例外写 `/* compositor-exempt: 理由 */` 并评审基线；图标沿用 `ArchiveIcon.vue` 手绘线条 SVG，不用 Emoji/实心图标。
 - `assets/character-references/` 不入 Git；参考权威源为 `data/references/` 分片，经 `/api/character-reference-profile/:id` 懒加载，旧聚合仅兼容，pending 不算交付资产。项目开发的人物/服装/场景/蓝图以 `runtime/content/catalog.sqlite` 为工作权威，维护时使用 `--runtime-root runtime`；已安装桌面端使用其个人运行目录下的工作库，通过项目快照同步。`data/catalog/` 仅为显式导出的项目快照，旧分片仅供升级导入，不手改或聚合回写。AI 新增或修改角色、蓝图与工作室场景时先用 `content:catalog authoring` 读取实际工作库的修订、关联和定稿状态，再按 `patch` 预览、写入及定向导出。不显著影响使用的美术细节只记录，不阻塞独立工作或反复出图。
 

@@ -48,6 +48,6 @@ export interface SceneBlueprint {
   outfitId?: string
   /** 可选：场景覆盖元数据：
    *  iconic=名场面 / daily=日常生活 / special_nsfw=特殊NSFW。
-   *  不作为可选场景、衣装绑定或成人门控的类别配额。 */
+   *  不作为可选场景、衣装绑定的类别配额。 */
   coverageTags?: string[]
 }

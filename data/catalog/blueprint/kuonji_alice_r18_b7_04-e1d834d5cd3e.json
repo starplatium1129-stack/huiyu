@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_04",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1636,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_04",
     "title": "久远寺有珠 · 纯白高柱四柱床的冰雪融化独奏 ·「哪怕是童话的终章……也想和你一直在一起」",
@@ -14,7 +14,7 @@
     "location": "久远寺主卧四柱大床·深夜",
     "action": "仰卧四柱床帷幔深处全裸自抚，黑发散落枕间，黑眸噙泪动情高潮",
     "timeOfDay": "night",
-    "lighting": "silver_moonlight",
+    "lighting": "深夜书斋复古煤油铜灯暖光与雨夜窗棂",
     "camera": "intimate vertical medium shot",
     "mood": "独处沉沦与情绪释放",
     "sceneTags": [
@@ -32,18 +32,16 @@
     ],
     "promptProse": "Adult Alice lies across the velvet bedding and fingers herself within the four-poster bed’s heavy curtains.",
     "promptTokens": [
-      "nude",
-      "masturbation",
-      "fingering",
-      "on back",
-      "spread legs",
-      "canopy bed",
-      "moonlight",
-      "curtains",
-      "velvet sheets",
-      "hair spread out",
-      "tears",
-      "medium shot"
+      "on armchair",
+      "legs spread",
+      "intimate touch",
+      "heavy blush",
+      "vintage brass lamp",
+      "study room",
+      "antique books",
+      "rain on window",
+      "soft amber lighting",
+      "volumetric lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -59,6 +57,6 @@
       "self_control",
       "special_nsfw"
     ],
-    "animaCaption": "She lies within the heavy bed curtains, her hair spread across the velvet bedding."
+    "animaCaption": "Soft amber light from the desktop brass lamp illuminates Alice's delicate shiver in the secluded rain-swept study."
   }
 }

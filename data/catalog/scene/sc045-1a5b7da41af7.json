@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc045",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 43,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
   "data": {
-    "animaCaption": "She accepts the clothes through the door gap, brushing the viewer's fingertips; her towel remains hidden behind the door.",
+    "animaCaption": "Peeking around the wooden bathroom door draped in a plush white towel, she reaches out to take the clothes into the brightly lit hallway, her fingertips brushing the viewer's as the chandelier and wall sconce illuminate her blushing face.",
     "auditRevision": "careful-batch03-2026-08-27",
     "camera": "门缝与伸手细节特写",
     "category": "恋爱/After_Story",
@@ -16,25 +16,33 @@
     ],
     "emotion": "诱惑",
     "id": "sc045",
-    "lighting": "浴室暖灯与蒸汽漫射",
+    "lighting": "温馨同居公寓走廊明亮壁灯与门缝透出浴室暖光白雾",
     "location": "同居公寓浴室",
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
-    "negative": "open towel, nudity",
-    "prompt": "1girl, ayachi_nene, bath towel, reaching, door, bathroom, steam, warm light, close up, peeking, blush, receiving clothes, touching fingers, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
+    "negative": "open towel, nudity, explicit, empty background, flat white wall, dark foreground, pitch black shadows",
+    "prompt": "1girl, solo, ayachi_nene, @rella, white hair, ahoge, pink hair ribbon, purple eyes, wrapped securely in fluffy white bath towel, peeking out from behind wooden door with frosted glass panels, reaching hand through door gap to receive folded clothes, brushing viewer fingertips, flustered blush, steamy warm mist billowing through doorway, brightly lit apartment hallway in foreground, warm ceiling chandelier, wall sconce, framed art on wall, laundry basket, face illuminated by warm hallway light and soft steam reflections, medium close up, eye level, depth of field",
     "rating": "R15",
     "season": "冬",
     "story": "冬夜浴室里水汽未散，成年的宁宁发现换洗衣物忘在外面，只好把门推开一道细缝。她刚出浴的身子还带着水汽，双腿光裸地并拢藏在门板之后，伸出的手却因为害羞一直发抖。你把衣服递过去，她又轻轻勾住你的指尖——「谢谢……还有，不准根据这一点缝隙胡乱想象。等我换好，再抱你一下当作谢礼。」",
     "storyJa": "【寧々・大人のアフターストーリー・トイレのドアの向こうで助けを求める】冬の夜でもバスルームの湿気はまだ残っていた。大人の寧々さんは、着替えを外に置き忘れたことに気づき、ドアを押して小さな隙間を開けなければなりませんでした。バスタオルをしっかりと巻いているが、伸ばした手は恥ずかしさのあまり震えていた。服を手渡すと、彼女はそっと指先を引っ掛けた――「ありがとうございます……それから、この隙間から勝手な想像をしないでください。着替え終わったら、お礼にもう一度だけ抱きしめますから。」",
     "tags": [
-      "hair_ribbon",
-      "bath_towel",
-      "bathroom",
-      "steam",
-      "door_gap",
-      "receiving_clothes",
-      "touching_fingers",
-      "close_up"
+      "ayachi_nene",
+      "white_hair",
+      "pink_ribbons",
+      "fluffy_white_bath_towel",
+      "peeking_from_door",
+      "reaching_hand",
+      "touching_fingertips",
+      "flustered_blush",
+      "wooden_door_frosted_glass",
+      "steamy_mist",
+      "warmly_lit_hallway",
+      "wall_sconce",
+      "laundry_basket",
+      "face_illuminated_by_hallway_light",
+      "medium_close_up",
+      "depth_of_field"
     ],
     "time": "夜晚",
     "timeOfDay": "night",
@@ -44,6 +52,6 @@
       "R15"
     ],
     "weather": "晴",
-    "promptProse": "Her flushed face peeks through the narrow door gap as she accepts the clothes, lightly catching the viewer's fingertips. Warm light and steam spill through; her towel stays hidden behind the door."
+    "promptProse": "Peeking around the wooden bathroom door draped in a plush white towel, she reaches out to take the clothes into the brightly lit hallway, her fingertips brushing the viewer's as the chandelier and wall sconce illuminate her blushing face."
   }
 }

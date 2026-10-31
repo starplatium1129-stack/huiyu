@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_bridal_futon_mating_press_creampie",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1153,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "侧卧大红织金锦被半裹半透绯红薄纱若隐若现，银白发铺散，双手托胸与下身自抚，含泪深情誓约",
     "adult": true,
@@ -18,7 +18,7 @@
     "description": "朝武寝殿内大红织金的婚褥被窝中，全裸的芳乃身上半裹着一袭薄如蝉翼的半透明绯红真丝薄纱睡袍（sheer translucent robe）。极度轻薄的红纱若隐若现地覆在她冰肌玉骨的丰腴胴体上，饱满沉甸甸的雪白酥胸与粉嫩乳晕在微透红纱下呼之欲出。及膝的银白色及膝长双马尾如丝缎般狂乱铺散在织金锦被上，修长白嫩的美腿温柔蜷曲。芳乃一手托抚着自己发烫的成熟乳肉，另一只小手在薄纱深处缓慢而深情地自我抚慰，深蓝色的美眸流下幸福感动的圣洁清泪，深情地将脸颊依偎在软枕间吐露誓约——「身负诅咒的我辈……只要在你的怀抱里……就感觉自己得到了永恒的救赎……哈啊……」",
     "id": "yoshino_r18_bridal_futon_mating_press_creampie",
     "kreaStyleHint": "r18_passionate_love",
-    "lighting": "寝殿红烛摇曳的温暖金光洒在织金红缎与半透红纱轻裹雪肌上的神圣奢华光芒",
+    "lighting": "朝武家寝殿和室古雅行灯暖红柔光与雕花屏风幽影",
     "location": "朝武寝殿和室大红锦缎被褥正中央",
     "mood": "极乐沉沦",
     "negativeTokens": [],
@@ -27,18 +27,16 @@
     "outfitId": "crimson_sheer_robe",
     "promptProse": "Yoshino cups her chest while touching herself beneath the sheer robe, reclining on red-and-gold bridal bedding with silver twintails across the pillows.",
     "promptTokens": [
-      "adult",
-      "red robe",
-      "see-through",
-      "on side",
-      "masturbation",
-      "tears",
-      "red sheets",
-      "futon",
-      "candlelight",
-      "wide shot",
+      "on futon",
+      "bridal red kimono parted",
+      "white silver hair spread",
+      "traditional andon lamp",
+      "warm golden light",
+      "japanese bedroom",
+      "tatami",
       "heavy blush",
-      "side view"
+      "tears of joy",
+      "soft shadows"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -59,6 +57,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "朝武芳乃 · 锦缎红被半裹朱红薄纱与银白长发铺散真情誓约深抚",
-    "animaCaption": "Her silver twintails spread across the pillows above the red-and-gold bridal bedding."
+    "animaCaption": "Flickering paper andon lanterns cast loving, warm amber warmth across the bridal futon as Yoshino's silver hair fans out."
   }
 }

@@ -13,13 +13,13 @@
     "category": "私密温存",
     "description": "社员们都已离去的深夜事务所，唯有一盏暖黄台灯安静亮着。阿露被老师轻柔地拉到身边，双手无处安放地下意识攥紧了老师的衣襟。酒红色的发丝贴在通红发烫的面颊旁，金眸轻颤，平日里要强的大恶党，在极近距离的呼吸中彻底融化成心跳失控的娇羞少女。",
     "recommendedSize": "832x1216",
-    "location": "dimly lit private office beside leather sofa",
+    "location": "warmly lit private office beside leather sofa",
     "action": "clutching shirt collar, heavy facial blush, breathless parted lips, intense gaze",
     "timeOfDay": "night",
-    "lighting": "warm amber single desk lamp casting deep romantic shadows",
+    "lighting": "warm amber desk lamp with soft ambient room glow and city window bokeh",
     "camera": "close-up",
     "mood": "intense vulnerable flutter, pounding heartbeat, and devotion",
-    "promptProse": "Cornered gently in the quiet midnight office, Rikuhachima Aru clutches the viewer with trembling fingers, her golden eyes wide and cheeks burning with breathless affection.",
+    "promptProse": "In the warmly lit midnight office with soft lamplight and city window glow, Rikuhachima Aru clutches the viewer with trembling fingers, her golden eyes wide and cheeks burning with breathless affection.",
     "promptTokens": [
       "blush",
       "heavy_blush",
@@ -29,10 +29,13 @@
       "night",
       "close-up",
       "desk_lamp",
-      "warm_lighting"
+      "warm_lighting",
+      "soft_ambient_light",
+      "cinematic_lighting",
+      "bokeh"
     ],
     "negativeTokens": [],
-    "animaCaption": "Aru blushing deeply while leaning close in the quiet lamplit office.",
+    "animaCaption": "Aru blushing deeply while leaning close in the warmly lamplit office with soft ambient glow.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

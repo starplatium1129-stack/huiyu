@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_apartment_leather_chair_cowgirl",
-  "revision": 11,
+  "revision": 13,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "独自跨坐皮椅，一手抓椅背、一手腿间自抚",
     "adult": true,
@@ -18,7 +18,7 @@
     "description": "成年露西独自跨坐深色皮椅，金属裙堆至腰际，一手抓椅背、一手在腿间自抚，断开的接口线只留在墙面。",
     "id": "lucy_r18_apartment_leather_chair_cowgirl",
     "kreaStyleHint": "r18_sensual_cg",
-    "lighting": "室内红蓝色温对比强烈的暗调赛博柔和氛围光",
+    "lighting": "夜之城顶层公寓全景窗外赛博霓虹绚彩与室内柔暗地灯",
     "location": "公寓复古真皮高背扶手单人椅",
     "mood": "极乐沉沦",
     "negativeTokens": [],
@@ -27,22 +27,15 @@
     "outfitId": "neon_evening_dress",
     "promptProse": "Lucy straddles the leather chair with her silver dress gathered at her waist, one hand gripping the back and the other touching herself. Red and blue room light crosses the leather chair; disconnected interface cables hang from the wall.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "adult Lucy",
-      "silver slip dress",
-      "open clothes",
-      "bare breasts",
-      "straddling",
-      "chair",
-      "fingering",
-      "neon lights",
-      "hand on backrest",
-      "disconnected cables",
-      "red lighting",
-      "blue lighting",
-      "medium shot",
-      "from below"
+      "sitting on lap",
+      "leather chair",
+      "cyberpunk apartment",
+      "night city neon outside window",
+      "cyan and magenta light",
+      "volumetric lighting",
+      "blush",
+      "intimate glance",
+      "futuristic interior"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R18",
@@ -56,6 +49,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "露西 · 公寓皮椅跨坐主动骑乘起伏",
-    "animaCaption": "One hand grips the chair back while the other rests beneath the dress gathered at her waist."
+    "animaCaption": "Vibrant magenta and cyan neon from Night City's mega-towers wash across the darkened penthouse as Lucy leans in close."
   }
 }

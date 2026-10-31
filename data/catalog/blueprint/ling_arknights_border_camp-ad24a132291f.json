@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_border_camp",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 651,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "披银甲玄袍立于帐前望月",
     "camera": "full-body shot, low angle",
@@ -12,7 +12,7 @@
     "characterId": "ling_arknights",
     "description": "万里边关的深夜军帐外，更夫的梆子声遥遥传来。令身披银甲玄袍立在帐门前，翠玉配饰在月光下泛着温润的光，兽纹白襟被夜风吹动。她望着远处苍茫的群山，轻声自语——「千载长路不过须臾，万般虚实无非一梦。」",
     "id": "ling_arknights_border_camp",
-    "lighting": "cool silver moonlight, distant campfire glow, cold rim light",
+    "lighting": "大荒边关营地篝火熊熊烈焰与漠北朗月",
     "location": "边关军帐前",
     "mood": "苍茫逍遥",
     "negativeTokens": [
@@ -21,14 +21,17 @@
     "outfitId": "fangqiu_juan",
     "promptProse": "She stands at the open tent flap and watches the midnight moon. Silver moonlight outlines her face and the tent edge, contrasting with the low warmth of the distant campfire.",
     "promptTokens": [
-      "tent",
-      "military camp",
-      "moonlight",
-      "full body",
-      "standing",
-      "open tent flap",
-      "looking at moon",
-      "campfire"
+      "sitting by campfire",
+      "holding wine cup",
+      "gourd",
+      "crackling fire",
+      "warm firelight",
+      "desert night",
+      "bright full moon",
+      "floating water dragons",
+      "relaxed smile",
+      "embers",
+      "rim light"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -42,6 +45,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "令 · 边关军帐",
-    "animaCaption": "Moonlight outlines the tent flap against the distant campfire."
+    "animaCaption": "Vibrant firelight from the campsite blaze mingles with clear desert moonlight as Ling takes a serene sip of wine."
   }
 }

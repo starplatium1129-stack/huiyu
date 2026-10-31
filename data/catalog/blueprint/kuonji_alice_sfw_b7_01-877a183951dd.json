@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_sfw_b7_01",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1623,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "kuonji_alice_sfw_b7_01",
     "title": "久远寺有珠 · 洋馆客厅的炉火",
@@ -15,7 +15,7 @@
     "location": "久远寺宅壁炉客厅",
     "action": "久远寺宅的客厅，她坐在高背扶手椅上读一本旧书，壁炉的火光在黑色洋装上跳动",
     "timeOfDay": "日间",
-    "lighting": "firelight",
+    "lighting": "洋馆阁楼高窗透入的晨曦光束与微尘浮动",
     "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
@@ -32,16 +32,15 @@
     ],
     "promptProse": "Alice reads an old book in the high-backed manor armchair. The fireplace lights the page edges and the steam rising from her tea, while the antique furniture recedes into the quieter room behind her.",
     "promptTokens": [
-      "kuonji_alice",
-      "reading",
-      "old book",
-      "armchair",
-      "fireplace",
-      "sitting",
-      "tea",
-      "steam",
-      "firelight",
-      "medium shot"
+      "standing by attic window",
+      "sunbeams",
+      "dust motes",
+      "morning light",
+      "antique birdcage",
+      "long black dress",
+      "serene expression",
+      "volumetric lighting",
+      "soft shadows"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +52,6 @@
       "iconic",
       "daily"
     ],
-    "animaCaption": "Firelight catches the page edges and the steam rising from her tea beside the high-backed chair."
+    "animaCaption": "Luminous morning sunbeams filter through the attic dormer, bathing Alice and her magical curiosities in golden peace."
   }
 }

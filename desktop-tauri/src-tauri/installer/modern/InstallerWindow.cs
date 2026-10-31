@@ -41,8 +41,12 @@ namespace Ayaki.Installer {
       space = Get<TextBlock>("SpaceText"); action = Get<TextBlock>("MainAction"); progressHost = Get<Grid>("ProgressHost");
       scale = Get<ScaleTransform>("ProgressScale"); sweep = Get<TranslateTransform>("ProgressTranslate");
       sweepBar = Get<System.Windows.Shapes.Rectangle>("ProgressSweep");
-      using (Stream art = Assembly.GetExecutingAssembly().GetManifestResourceStream("Mascot.png")) {
-        var image = new BitmapImage(); image.BeginInit(); image.CacheOption = BitmapCacheOption.OnLoad; image.StreamSource = art; image.EndInit(); image.Freeze(); Get<Image>("HeroImage").Source = image;
+      using (Stream art = Assembly.GetExecutingAssembly().GetManifestResourceStream("Keyart.jpg")) {
+        var image = new BitmapImage(); image.BeginInit(); image.CacheOption = BitmapCacheOption.OnLoad; image.StreamSource = art; image.EndInit(); image.Freeze();
+        var background = new ImageBrush(image) { Stretch = Stretch.UniformToFill, AlignmentX = AlignmentX.Center, AlignmentY = AlignmentY.Top };
+        background.Freeze(); Get<Border>("PortraitFrame").Background = background;
+        var avatar = new CroppedBitmap(image, new Int32Rect(image.PixelWidth / 4, image.PixelHeight / 8, image.PixelWidth / 2, image.PixelWidth / 2));
+        avatar.Freeze(); Get<Image>("HeroImage").Source = avatar;
       }
       directory.Text = String.IsNullOrEmpty(options.Directory) ? installed.Directory : options.Directory;
       shortcut.IsChecked = options.Shortcut;
@@ -61,7 +65,7 @@ namespace Ayaki.Installer {
         Get<TextBlock>("HeroSubtitle").Text = "沿用已有素材，让画室保持最新。";
         SetAction("升级绘遇");
       } else {
-        Get<TextBlock>("HeroSubtitle").Text = "一次安装，打开你的私人画室。生成模型在应用内按需准备。";
+        Get<TextBlock>("HeroSubtitle").Text = "把喜欢的角色，画进你的故事。生成模型可在应用内按需准备。";
       }
       if (options.Preview) Get<TextBlock>("Footnote").Text = "界面预览 · 不会安装或修改现有软件";
       ApplyTheme(options.Theme == "light");
@@ -83,14 +87,17 @@ namespace Ayaki.Installer {
       timer.Tick += delegate { Get<TextBlock>("ElapsedText").Text = "已用时 " + elapsed.Elapsed.ToString(@"mm\:ss"); };
       View.Closing += Closing;
       View.Closed += delegate { timer.Stop(); sweep.BeginAnimation(TranslateTransform.XProperty, null); };
+      View.SizeChanged += delegate { Get<Border>("StoryCaption").Visibility = View.ActualWidth >= 980 ? Visibility.Visible : Visibility.Collapsed; };
       View.Loaded += async delegate {
+        if (SystemParameters.ClientAreaAnimation) Get<Border>("ActionPanel").BeginAnimation(UIElement.OpacityProperty,
+          new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(240)) { EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut } });
         if (options.Passive && !options.Preview) await BeginInstall();
         else if (options.Preview) SetPreview(options.State);
       };
-      View.MinWidth = Math.Min(720, SystemParameters.WorkArea.Width - 24);
-      View.MinHeight = Math.Min(460, SystemParameters.WorkArea.Height - 24);
-      View.Width = Math.Min(900, SystemParameters.WorkArea.Width - 24);
-      View.Height = Math.Min(570, SystemParameters.WorkArea.Height - 24);
+      View.MinWidth = Math.Min(760, SystemParameters.WorkArea.Width - 24);
+      View.MinHeight = Math.Min(540, SystemParameters.WorkArea.Height - 24);
+      View.Width = Math.Min(1120, SystemParameters.WorkArea.Width - 24);
+      View.Height = Math.Min(700, SystemParameters.WorkArea.Height - 24);
     }
     private T Get<T>(string name) where T : class { return (T)View.FindName(name); }
     private static Brush Color(string hex) { var brush = (SolidColorBrush)new BrushConverter().ConvertFromString(hex); brush.Freeze(); return brush; }
@@ -101,6 +108,12 @@ namespace Ayaki.Installer {
         ? new [] { "#FFF8F4", "#FFFFFF", "#B7BEC7", "#211C30", "#536173", "#E5E7EA", "#526173", "#A32642", "#236A50" }
         : new [] { "#151C24", "#1E2935", "#334354", "#EDF3FA", "#BDCBD8", "#27374A", "#A6B3C0", "#FFBBC9", "#A8D8C6" };
       for (int i = 0; i < names.Length; i++) View.Resources[names[i]] = Color(colors[i]);
+      View.Resources["Frame"] = Color(value ? "#EBEEE7E0" : "#EB151C24");
+      View.Resources["Rail"] = Color(value ? "#FFFCF6" : "#151C24");
+      View.Resources["Panel"] = Color(value ? "#FFFCF6" : "#18212D");
+      View.Resources["Accent"] = Color(value ? "#9B3E61" : "#F2A8BE");
+      View.Resources["AccentHover"] = Color(value ? "#883451" : "#FFC4D8");
+      View.Resources["AccentText"] = Color(value ? "#FFF8F4" : "#111923");
       View.Resources["ProgressColor"] = Color(value ? "#92365F" : "#F2A8BE");
       View.Resources["ControlLine"] = Color(value ? "#7B899A" : "#657D96");
       Get<Button>("ThemeButton").Content = value ? "切换深色" : "切换浅色";

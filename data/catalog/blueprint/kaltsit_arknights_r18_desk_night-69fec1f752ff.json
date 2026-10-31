@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_desk_night",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "action": "坐在红木办公桌沿，单手挑起下颌眼神深邃",
     "adult": true,
@@ -19,7 +19,7 @@
     "description": "深夜书房昏黄的台灯旁，衣衫半解的凯尔希坐在红木办公桌边缘，修长纤细的黑丝美腿在视线下交叠。她用指尖轻轻挑起你的下颌，目光意味深长——「博士，你现在的心率和瞳孔扩张程度，已经远远超出了安全阈值……不打算做点什么来平复心率吗？」",
     "id": "kaltsit_arknights_r18_desk_night",
     "kreaStyleHint": "",
-    "lighting": "desk lamp and shadows",
+    "lighting": "医疗部门办公室暖黄工作台灯与分析仪器全息微光",
     "location": "罗德岛办公室",
     "mood": "理智掌控",
     "negativeTokens": [],
@@ -28,21 +28,16 @@
     "outfitId": "evening_gown",
     "promptProse": "Kal'tsit sits on the mahogany desk edge with crossed legs, lifting the offscreen viewer's chin with one hand. The lamp lights her near cheek against the dark office.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "black dress",
-      "velvet",
-      "open clothes",
-      "bare breasts",
-      "black stockings",
-      "sitting",
-      "crossed legs",
-      "chin touch",
-      "desk",
-      "documents",
-      "desk lamp",
-      "sitting on desk",
-      "dark office"
+      "sitting on office desk",
+      "unbuttoned coat",
+      "lingerie",
+      "medical office",
+      "desk lamp glow",
+      "holographic display",
+      "warm ambient light",
+      "bookshelf",
+      "serious yet flushed expression",
+      "volumetric lighting"
     ],
     "recommendedSize": "1536x1152",
     "sampleRating": "R18",
@@ -55,6 +50,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "凯尔希 · 灯下案前",
-    "animaCaption": "She lifts the off-frame viewer's chin from the edge of the desk."
+    "animaCaption": "A single focused desk lamp casts warm amber tones across Dr. Kal'tsit as she sits poised atop her paperwork."
   }
 }

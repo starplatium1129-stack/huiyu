@@ -28,7 +28,7 @@
         "sc034",
         "sc049"
       ],
-      "description": "绫地宁宁角色 LoRA v18。55 张唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；普通与 R18 身份统一，nene_r18 显式门控成人内容，脸部还原优先。",
+      "description": "绫地宁宁角色 LoRA v18。55 张唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；普通与 R18 身份统一，nene_r18 触发成人内容，脸部还原优先。",
       "dataset": {
         "images": 55,
         "composition": {
@@ -204,7 +204,7 @@
         "sc050",
         "sc073"
       ],
-      "description": "四季夏目角色 LoRA v18。40 张当前唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；脸部优先，natsume_r18 显式门控成人状态，natsume_official_qipao 控制官方旗袍。",
+      "description": "四季夏目角色 LoRA v18。40 张当前唯一图经 WD14 自动打标和逐图人工复核后从 WAI Illustrious v17 训练；脸部优先，natsume_r18 控制成人状态，natsume_official_qipao 控制官方旗袍。",
       "dataset": {
         "images": 40,
         "composition": {

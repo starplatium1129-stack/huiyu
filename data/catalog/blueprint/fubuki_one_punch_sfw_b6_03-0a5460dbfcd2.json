@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_sfw_b6_03",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1591,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "fubuki_one_punch_sfw_b6_03",
     "title": "吹雪 · 夜色车窗的霓虹",
@@ -15,7 +15,7 @@
     "location": "夜间轿车后座",
     "action": "她的轿车后座，毛领外套搭在膝上，她望着窗外流动的霓虹若有所思",
     "timeOfDay": "傍晚或夜间",
-    "lighting": "neon",
+    "lighting": "念动力超能翠绿辉光破晓与夜空狂风",
     "camera": "medium shot",
     "mood": "自然日常",
     "sceneTags": [
@@ -32,17 +32,16 @@
     ],
     "promptProse": "Her fur-collared coat lies across her lap beside the darkened phone as she looks through the rear-seat window; passing neon moves over her thoughtful face.",
     "promptTokens": [
-      "1girl",
-      "solo",
-      "fur-collared coat on lap",
-      "phone",
-      "backseat",
-      "car interior",
-      "neon lights",
-      "medium shot",
-      "looking out window",
-      "thoughtful",
-      "night"
+      "summoning telekinesis",
+      "glowing green aura",
+      "floating rocks",
+      "windblown dark dress",
+      "fur coat",
+      "night sky",
+      "dramatic green lighting",
+      "city ruins",
+      "powerful battle pose",
+      "volumetric rays"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,6 +52,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "The darkened phone rests beside the coat on her lap as passing neon moves across her face."
+    "animaCaption": "Swirling emerald psychic waves illuminate floating boulders and Fubuki's dark coat against the nighttime battlefield."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
   "data": {
     "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
     "title": "黑呆 · 冬木残垣的卑王铁槌",
@@ -14,7 +14,7 @@
     "location": "黑泥与赤雷交织的冬木市废墟决战核心",
     "action": "立于宽阔断柱顶端，双手高举黑红魔剑，在斩落前俯视战场",
     "timeOfDay": "血月深夜",
-    "lighting": "誓约胜利之剑极恶魔力奔涌的血红强光与黑泥阴影",
+    "lighting": "誓约胜利之剑深红魔光与冬木废墟残垣火光",
     "camera": "full body, low angle",
     "mood": "暴君神威",
     "sceneTags": [
@@ -31,13 +31,31 @@
     ],
     "promptProse": "Saber Alter raises Excalibur Morgan in both hands atop a broken pillar, its red light falling across her gauntlets above the dark, roiling mud in the ruins.",
     "promptTokens": [
-      "excalibur_morgan",
+      "black armor",
+      "plate armor",
+      "breastplate",
+      "gauntlets",
+      "dark dress",
+      "high slit",
+      "bare legs",
+      "thigh strap",
+      "leather strap",
+      "buckle",
+      "armored boots",
+      "excalibur morgan",
       "raised arms",
       "ruins",
       "full body",
       "low angle",
       "standing",
-      "red lighting"
+      "burning ruins",
+      "smoke",
+      "glowing embers",
+      "fire in background",
+      "crimson sky",
+      "dramatic shadows",
+      "rim light",
+      "volumetric lighting"
     ],
     "negativeTokens": [
       "cropped sword",
@@ -49,6 +67,6 @@
       "iconic",
       "combat"
     ],
-    "animaCaption": "Both hands raise Excalibur Morgan atop the broken pillar above the dark mud."
+    "animaCaption": "Excalibur Morgan blazes with brilliant crimson light atop the shattered pillar amidst the burning ruins of Fuyuki."
   }
 }
