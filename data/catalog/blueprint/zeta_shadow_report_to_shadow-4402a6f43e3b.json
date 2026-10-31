@@ -1,0 +1,37 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_report_to_shadow",
+  "revision": 1,
+  "sortOrder": 2806,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "zeta_shadow_report_to_shadow",
+    "characterId": "zeta_shadow",
+    "outfitId": "slime_bodysuit",
+    "title": "泽塔 · 只念给一人的报告",
+    "category": "谍报潜行",
+    "description": "庭园谒见厅里，泽塔单膝跪地，向暗影汇报这个月的谍报。她的声音依旧平淡，唯独抬头望向暗影时，紫眸里多了一点光。",
+    "recommendedSize": "832x1216",
+    "location": "shadow garden audience chamber with a dark throne and kneeling figure",
+    "action": "kneeling on one knee reporting, head slightly raised toward the throne, composed expression",
+    "timeOfDay": "night",
+    "lighting": "谒见厅高窗漏下的冷峻月光",
+    "camera": "medium_shot",
+    "mood": "absolute loyalty, restrained devotion",
+    "promptProse": "Zeta kneels and delivers her report to Shadow alone — the only voice in the world she answers fully.",
+    "promptTokens": [
+      "audience chamber",
+      "kneeling",
+      "throne",
+      "report",
+      "moonlight"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Her reports have one listener. They always have.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}

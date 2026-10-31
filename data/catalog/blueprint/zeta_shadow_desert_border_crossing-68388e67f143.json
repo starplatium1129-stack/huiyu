@@ -1,0 +1,38 @@
+{
+  "kind": "blueprint",
+  "id": "zeta_shadow_desert_border_crossing",
+  "revision": 1,
+  "sortOrder": 2810,
+  "createdAt": "2026-10-31T04:32:46.631595000+00:00",
+  "updatedAt": "2026-10-31T04:32:46.631595000+00:00",
+  "data": {
+    "id": "zeta_shadow_desert_border_crossing",
+    "characterId": "zeta_shadow",
+    "outfitId": "desert_traveler_cloak",
+    "title": "泽塔 · 边境沙漠的独行者",
+    "category": "谍报潜行",
+    "description": "跨国谍行的路上，泽塔披着沙色斗篷穿过边境驿站。风沙里她只露出一双紫眸，怀中的密信比性命还重。",
+    "recommendedSize": "832x1216",
+    "location": "desert border outpost with sand dunes, a well and weathered signposts",
+    "action": "walking through a desert outpost in a sand-colored cloak, holding a sealed letter, eyes scanning the horizon",
+    "timeOfDay": "day",
+    "lighting": "沙漠正午的强烈日光与风沙",
+    "camera": "full_shot",
+    "mood": "lone journey, desert endurance",
+    "promptProse": "Alone at a desert border post, Zeta carries a letter worth more than her life, eyes on the horizon.",
+    "promptTokens": [
+      "desert",
+      "cloak",
+      "outpost",
+      "sand",
+      "letter",
+      "journey"
+    ],
+    "negativeTokens": [],
+    "animaCaption": "Borders mean nothing to Zeta. Only the mission, and the road back to Shadow.",
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false,
+    "adult": false
+  }
+}
