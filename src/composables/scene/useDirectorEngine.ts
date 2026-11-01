@@ -154,6 +154,8 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
   const drawEngineLabel = computed(() => drawEngine.value === 'sd' ? 'SD' : drawEngine.value === 'anima' ? 'Anima' : 'Krea 2')
   const generationStatusText = computed(() => drawEngine.value === 'sd' ? sd.statusText.value
     : ['submitting', 'running'].includes(animaState.value.phase) ? animaState.value.progressText || animaState.value.statusText : animaState.value.statusText)
+  const generationRunningText = computed(() => drawEngine.value !== 'sd' && animaState.value.provider === 'native'
+    ? generationStatusText.value : '正在绘制…')
   const engineOnline = computed(() => {
     const ready = animaState.value.online || animaState.value.managedStartAvailable === true
     if (drawEngine.value === 'anima') {
@@ -242,6 +244,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
     displayResultSeed,
     drawEngineLabel,
     generationStatusText,
+    generationRunningText,
     engineOnline,
     generationBusy,
     generationProgress,

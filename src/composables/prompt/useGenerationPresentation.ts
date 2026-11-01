@@ -15,15 +15,15 @@ export interface GenerationPresentation {
 
 /** Presentation follows receipts and preparation; it never advances task state. */
 export function useGenerationPresentation(engine: Pick<ReturnType<typeof useDirectorEngine>,
-  'generationPhase' | 'generationStatusText' | 'generationProgress' | 'generationNeedsReview' | 'generationError'>,
+  'generationPhase' | 'generationStatusText' | 'generationRunningText' | 'generationProgress' | 'generationNeedsReview' | 'generationError'>,
   preparation: () => string, completed: () => boolean, review: () => void = openGenerationTasks,
 ) {
   return computed<GenerationPresentation>(() => {
     const preparing = preparation(), phase = preparing ? 'preparing' : engine.generationPhase.value
     const needsReview = !preparing && engine.generationNeedsReview.value
     const value = engine.generationProgress.value
-    // Provider node names remain diagnostic data, not workbench progress copy.
-    const runningMessage = phase === 'running' && !needsReview ? '正在绘制…' : ''
+    // Native stages and step counts are product copy; other provider node names stay diagnostic.
+    const runningMessage = phase === 'running' && !needsReview ? engine.generationRunningText.value || '正在绘制…' : ''
     return {
       phase, needsReview, review, completed: !preparing && phase === 'succeeded' && completed(),
       canRetryCancellation: phase === 'cancelling' && Boolean(engine.generationError.value),
