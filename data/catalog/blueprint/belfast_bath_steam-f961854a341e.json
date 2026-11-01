@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "belfast_bath_steam",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2074,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:58:20.655668500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "belfast_bath_steam",
     "title": "贝尔法斯特 · 浴室的热雾",
@@ -36,6 +36,7 @@
     "adult": true,
     "isNsfw": true,
     "rating": "R18",
-    "mature": true
+    "mature": true,
+    "sampleRating": "R15"
   }
 }

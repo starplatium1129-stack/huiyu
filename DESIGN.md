@@ -259,8 +259,10 @@ Light-mode elevation uses boundaries and shadow, not ever-brighter surfaces.
 角色强调色和图片叠字的实际画面验收；遵守 AGENTS.md 的验证范围与测试禁令。
 
 - Use `primary` for the main call to action or a small piece of emphasis.
-  Ordinary hover uses the active character's readable accent for ink and a short
-  underline. Selection keeps its own indicator; keyboard focus stays neutral.
+  Ordinary hover uses the active character's readable accent for ink. Text links
+  and navigation may use a short underline; framed or filled controls use surface
+  feedback without an extra underline. Selection keeps its own indicator;
+  keyboard focus stays neutral.
   Keep resting controls neutral rather than tinting the whole page.
 - Use Nene violet and Natsume amber to clarify character context. Within a
   character cover or director workspace, the primary action may inherit that
@@ -447,7 +449,10 @@ Depth makes grouping, focus and interactive layers visible:
   and press feedback through surfaces, icons and labels, with stable hit targets.
   Selection keeps its own indicator, and keyboard focus stays visible and immediate.
 - Ordinary buttons, navigation and filters lift 3px on mouse hover, with readable
-  character-accent ink and a short underline instead of a full paper wash.
+  character-accent ink. Framed or filled buttons, filter chips, segments and
+  disclosure rows use surface/border feedback without an extra underline,
+  including actions inside a shared frame. Short hover underlines belong to
+  text links and navigation only.
   Reuse the existing dark/light ink conversion; do not hardcode a pink hover.
   Navigation selection uses the existing AnimatedSelection underline in that
   same accent. Inner press feedback compresses to about 0.98 and springs back

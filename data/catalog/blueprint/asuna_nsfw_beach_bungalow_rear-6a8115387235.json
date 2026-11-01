@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_nsfw_beach_bungalow_rear",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1375,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "asuna_nsfw_beach_bungalow_rear",
     "title": "结城明日奈 · 海滨水屋细带比基尼解纽与沙滩椅斜倚·「在海风吹过的地方……身体就会变得格外敏感呢……」",
@@ -51,7 +51,7 @@
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "sensual_bikini_swimsuit",

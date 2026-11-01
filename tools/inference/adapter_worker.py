@@ -142,7 +142,8 @@ def fingerprint(root, control):
     return digest.hexdigest()
 
 
-def model_identity(root, model_id, control):
+def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
+    variant = sibling("moss_int8").selected(root, moss_weight_precision, contract) if model_id.startswith("moss-") else None
     marker = root / "huiyu-model.json"
     if marker.is_file():
         receipt = contract.config(root, marker)
@@ -165,6 +166,8 @@ def model_identity(root, model_id, control):
                     break
             if ready:
                 digest = hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(",", ":")).encode())
+                if model_id.startswith("moss-"):
+                    digest.update(json.dumps(variant or {"precision": "fp16"}, sort_keys=True).encode())
                 known = {item["path"] for item in spec["files"]}
                 for path in sorted(root.rglob("*.json")):
                     control.check()
@@ -282,9 +285,13 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
             try:
                 if spec["family"] == "moss-image":
                     with windows_weight_reads():
-                        template = sibling("moss_adapter").load(root, control, contract)
+                        template = sibling("moss_adapter").load(root, control, contract,
+                            text_precision=data["mossTextPrecision"], weight_precision=data["mossWeightPrecision"])
                     if policy == "resident":
-                        template.transformer.to(device="cuda:0", dtype=torch.bfloat16)
+                        if getattr(template.transformer, "_huiyu_int8_count", 0):
+                            sibling("moss_int8").place_resident(template.transformer)
+                        else:
+                            template.transformer.to(device="cuda:0", dtype=torch.bfloat16)
                 elif spec["media"] == "video":
                     template = video.load(root, spec, data, control, contract)
                 else:
@@ -308,7 +315,8 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
                         encoder.forward = hidden_only
                 if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
                     placement = sibling("mapped_residency").Residency(template.components, policy, memory_pixels,
-                        image_conditioned=conditioned, decode_pixels=render_pixels)
+                        image_conditioned=conditioned, decode_pixels=render_pixels,
+                        retain_components=spec["family"] == "moss-image")
                 control.check()
                 return template, placement
             except BaseException:
@@ -319,7 +327,8 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
         pipeline, identity, reused = cache.acquire(root, spec, data, policy, control,
             lambda path, task: {"sha256": fingerprint(path, task), "scope": "full-byte-chunk-sha256"},
             load_pipeline, Error, style_path=style_path,
-            prepared_identity=lambda path, task: model_identity(path, data["modelId"], task))
+            prepared_identity=lambda path, task: model_identity(path, data["modelId"], task,
+                moss_weight_precision=data.get("mossWeightPrecision", "auto")))
         if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
             cache.memory.plan(memory_pixels, image_conditioned=conditioned, control=control, decode_pixels=render_pixels)
         observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity["sha256"],
@@ -374,7 +383,9 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
         host_prefix = policy == "offload" and spec["family"] == "qwen-image" and bool(images)
         if host_prefix:
             observation["prefixCacheDevice"] = "cpu"
-        attention = sibling("native_attention").inference_attention(spec["family"] in ("qwen-image", "moss-image"))
+        attention = sibling("native_attention").inference_attention(spec["family"] in ("qwen-image", "moss-image"),
+            compile_safe=spec["family"] == "moss-image" and data["mossCompile"],
+            moss_int8=spec["family"] == "moss-image" and bool(getattr(pipeline.transformer, "_huiyu_int8_count", 0)))
         with torch.inference_mode(), qwen_host_prefix(host_prefix), attention as backend:
             observation["attentionBackend"] = backend
             output = (sibling("moss_adapter").generate(pipeline, data, control, observation)

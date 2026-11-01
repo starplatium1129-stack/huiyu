@@ -3,7 +3,7 @@
     <p v-if="!prompt" class="prompt-preview-empty">选择场景或添加词条后，提示词会在这里实时更新。</p>
     <template v-else>
       <section class="prompt-positive" aria-label="正向提示词">
-        <h4 class="prompt-content-label">正向提示词 <span>{{ positiveCount }}</span></h4>
+        <h4 class="prompt-content-label">正向提示词 <span v-if="positiveCount !== undefined">{{ positiveCount }}</span></h4>
         <div v-for="(layers, scopeIndex) in scopes" :key="scopeIndex" class="prompt-layer-list">
           <p v-if="scopes.length > 1" class="prompt-scope-label">分段 {{ scopeIndex + 1 }} · BREAK</p>
           <section v-for="layer in layers" :key="layer.id" class="prompt-layer" :data-layer="layer.id"
@@ -19,7 +19,7 @@
         </div>
       </section>
       <details v-if="negativeText" class="prompt-preview-details prompt-negative-section">
-        <StudioDisclosureSummary>负向提示词 <span class="prompt-detail-count">{{ negativeCount }}</span></StudioDisclosureSummary>
+        <StudioDisclosureSummary>负向提示词 <span v-if="negativeCount !== undefined" class="prompt-detail-count">{{ negativeCount }}</span></StudioDisclosureSummary>
         <p class="prompt-reading-text prompt-negative">{{ negativeText }}</p>
       </details>
     </template>
@@ -30,7 +30,7 @@
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { PromptPreviewLayer } from '@/utils/promptPreview'
 
-defineProps<{ prompt: string; positiveCount: number; negativeCount: number; scopes: PromptPreviewLayer[][]; negativeText: string }>()
+defineProps<{ prompt: string; positiveCount?: number; negativeCount?: number; scopes: PromptPreviewLayer[][]; negativeText: string }>()
 </script>
 
 <style scoped>

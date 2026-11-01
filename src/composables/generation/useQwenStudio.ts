@@ -20,7 +20,8 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
   const alignment = moss ? 16 : 32, maxSize = moss ? 1536 : 2816
   const form = reactive({ modelId: moss ? MOSS_MODEL_ID : 'qwen-image-2.1-turbo', prompt: '', negative: moss ? MOSS_NEGATIVE : '',
     width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0,
-    mossAcceleration: 'off' as 'off' | 'spectrum' })
+    mossAcceleration: 'off' as 'off' | 'spectrum', mossTextPrecision: 'bf16' as 'bf16' | 'fp8', mossCompile: true,
+    mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8' })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
   const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
@@ -216,11 +217,17 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       if (moss && (!Number.isFinite(form.cfg) || form.cfg < 0 || form.cfg > 20)) throw new Error('CFG 需为 0—20 内的数值')
       if (moss && (form.mossAcceleration !== 'off' && form.mossAcceleration !== 'spectrum'
         || form.mossAcceleration === 'spectrum' && !selected.value?.mossSpectrum)) throw new Error('当前后端尚未提供 MOSS Spectrum，请更新并重启或关闭缓存加速')
+      if (moss && (form.mossTextPrecision !== 'bf16' && form.mossTextPrecision !== 'fp8'
+        || form.mossTextPrecision === 'fp8' && !selected.value?.mossFp8)) throw new Error('当前后端尚未提供 MOSS FP8，请更新并重启或选择原始精度')
+      if (moss && (typeof form.mossCompile !== 'boolean' || form.mossCompile && !selected.value?.mossCompile)) throw new Error('当前后端尚未提供 MOSS 编译，请更新并重启或关闭内核编译')
+      if (moss && (!['auto', 'fp16', 'int8'].includes(form.mossWeightPrecision)
+        || form.mossWeightPrecision === 'int8' && !selected.value?.mossInt8Ready)) throw new Error('请先导入作者 INT8 权重，或选择自动 / FP16')
       const compiled = moss ? compileMossPrompt(form.prompt, negative) : { prompt: form.prompt.trim(), negative }
       if (compiled.prompt.length > 12000) throw new Error('加入模型质量词后的提示词超过 12000 字符，请精简描述')
       if (moss && (source.value || references.value.length)) throw new Error('MOSS 当前仅支持文生图，请移除编辑输入')
       const input: Record<string, unknown> = { modelId: form.modelId, ...compiled,
-        ...(moss ? { mossAcceleration: form.mossAcceleration } : {}),
+        ...(moss ? { mossAcceleration: form.mossAcceleration, mossTextPrecision: form.mossTextPrecision,
+          mossCompile: form.mossCompile, mossWeightPrecision: form.mossWeightPrecision } : {}),
         width: form.width, height: form.height, steps: turbo.value ? 8 : form.steps, cfg: moss || negative ? form.cfg : 1,
         ...(randomSeed.value ? {} : { seed: form.seed }) }
       await releaseRequest(); task.value = null
@@ -337,7 +344,12 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
           if (typeof value === typeof form[key]) Object.assign(form, { [key]: value })
         }
         randomSeed.value = typeof input.seed !== 'number'
-        if (moss) form.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
+        if (moss) {
+          form.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
+          form.mossTextPrecision = input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
+          form.mossCompile = input.mossCompile === true
+          form.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
+        }
         const context = request.value?.context || task.value?.metadata.context
         parentId.value = context && typeof context === 'object' && qwenParentId((context as Record<string, unknown>).parentId)
           ? (context as Record<string, unknown>).parentId as string | number : null

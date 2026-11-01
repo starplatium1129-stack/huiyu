@@ -84,11 +84,20 @@
       "source": "https://civitai.com/models/3015023?modelVersionId=3422319",
       "license": "OpenMOSS Apache-2.0; MIAOKA checkpoint terms also apply",
       "licenseUrl": "https://civitai.com/models/3015023?modelVersionId=3422319",
-      "layoutNote": "MIAOKA FP16 transformer with pinned official Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. Bundled reviewed MOSS code only; INT8/ConvRot is unsupported. Weight loading and image quality await the author's checkpoint.",
+      "layoutNote": "MIAOKA FP16 or explicitly imported author BASE v1.0 INT8 ConvRot with pinned Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. INT8 uses comfy-kitchen 0.2.37 and CUDA 13 runtime. Current image quality and performance require device acceptance.",
       "sizes": ["768x1280", "1280x768", "1280x1280", "960x1536", "1536x960", "1536x1536"],
       "steps": 50, "cfg": 3.5, "maxSize": 1536, "alignment": 16,
       "shift": 5, "uncondSkipLayers": [22],
       "mossAcceleration": ["off", "spectrum"],
+      "mossTextPrecision": ["bf16", "fp8"],
+      "mossCompile": true,
+      "mossInt8": {
+        "path": "transformer/miaomiaoHaremMOSS_baseV10_int8.safetensors",
+        "bytes": 5413700574,
+        "sha256": "8aa2d469b28ea72beb35730b3a00bf0bffbaca03f0419d6f05d390614fe689d9",
+        "sourceUrl": "https://civitai.com/api/download/models/3422319?fileId=3316568",
+        "format": "int8_tensorwise-convrot256"
+      },
       "edit": false, "negative": true, "distilled": false
     },
     "krea2-raw": {

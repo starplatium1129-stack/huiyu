@@ -3,9 +3,10 @@ import { createPromptPlan, renderPromptPlan, type PromptPlan } from './promptCom
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { escapeKnownLiteralTags } from './promptLiteralTags.ts'
 import { isManualR18Tags, mergeTokenText, normalizeKey, tokenize, type ModelProfile } from './promptPolicy.ts'
+import { renderMossDrawingPrompt } from './mossPrompt.ts'
 
 export interface FreePromptOptions {
-  engine: 'anima' | 'krea2'
+  engine: 'anima' | 'krea2' | 'moss'
   profile?: ModelProfile | null
   manual?: readonly string[]
   emotion?: readonly string[]
@@ -32,7 +33,7 @@ export interface FreePromptResult {
 
 /** Compile an unbound subject without assigning an identity, gender or default scene. */
 export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult {
-  const profile = input.profile ?? null
+  const profile = input.engine === 'moss' ? null : input.profile ?? null
   const manual = [...(input.manual || [])]
   const emotion = [...(input.emotion || [])]
   const palette = [...(input.palette || [])]
@@ -42,7 +43,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
   const lighting = LIGHTING.find(option => option.id === input.lighting)?.prompt || ''
   const composition = COMPOSITION.find(option => option.id === input.composition)?.prompt || ''
   const tags = [...manual, ...emotion, camera, lighting, composition, ...palette].filter(Boolean).join(', ')
-  const negative = resolveDrawCapabilities(input.engine, profile).negative
+  const negative = input.engine !== 'moss' && resolveDrawCapabilities(input.engine, profile).negative
     ? mergeTokenText(input.negativeCustom || '', profile?.negative_prefix || '') : ''
   const adult = isManualR18Tags(manual)
 
@@ -50,6 +51,15 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
   const artistContent = input.engine === 'krea2' ? input.artistProse?.trim() : artistTags.join(', ').trim()
   if (!tags.trim() && !description && !artistContent) {
     return { plan: createPromptPlan({ freeSubject: true }), prompt: '', negative, adult }
+  }
+
+  if (input.engine === 'moss') {
+    const plan = createPromptPlan({
+      freeSubject: true, scenePrompt: manual.join(', '), artists: artistTags,
+      emotion, camera: [camera], lighting: [lighting], composition: [composition], palette, manual,
+    })
+    const rendered = renderMossDrawingPrompt(plan, description, '')
+    return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }
   }
 
   if (input.engine === 'krea2') {

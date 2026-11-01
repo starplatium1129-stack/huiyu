@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_r18_b9_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1665,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "cartethyia_r18_b9_03",
     "title": "卡提希娅 · 骑士礼装锁扣卡死在佩剑绑带上的事故 ·「请不要误会……我绝不是故意在您面前衣冠不整」",
@@ -54,7 +54,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

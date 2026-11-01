@@ -9,6 +9,7 @@ import { sceneComposition, sceneLighting, sceneShot, sceneColorMood } from './sc
 import { createPromptPlan, renderPromptPlan } from './promptCompiler.ts'
 import { isManualDirectorValue } from './promptDirector.ts'
 import { studioDualSubject } from './studioDualSubject.ts'
+import { renderMossDrawingPrompt } from './mossPrompt.ts'
 
 export interface PromptLoraMetadata {
   id?: string
@@ -19,7 +20,7 @@ export interface PromptLoraMetadata {
 export interface StudioPromptOptions {
   character: string
   scene: Scene | null
-  engine: 'anima' | 'krea2'
+  engine: 'anima' | 'krea2' | 'moss'
   profile?: ModelProfile | null
   activeLoras?: Record<string, string>
   loraMeta?: readonly PromptLoraMetadata[]
@@ -76,7 +77,7 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
     ? { ...(supported || { id: 'custom_r18', title: '自定义 R18', prompt: '', tags: [], negative: '' }), rating: 'R18', mature: true }
     : supported
   const activeLoras = engine === 'anima' ? options.activeLoras || {} : {}
-  const profile = studioPromptProfile(options.profile ?? null, engine, activeLoras, options.loraMeta)
+  const profile = engine === 'moss' ? null : studioPromptProfile(options.profile ?? null, engine, activeLoras, options.loraMeta)
   const inherited = { shot: sceneShot(scene), lighting: sceneLighting(scene), composition: sceneComposition(scene) }
   const selections = {
     shot: options.shot === undefined ? inherited.shot : options.shot,
@@ -86,7 +87,7 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
   const cameraSource = isManualDirectorValue(options.directorSources, 'shot', selections.shot, inherited.shot) ? 'manual' : 'scene'
   const lightingSource = isManualDirectorValue(options.directorSources, 'lighting', selections.lighting, inherited.lighting) ? 'manual' : 'scene'
   const template = sceneTemplateText(scene, { char: character, manualTags: new Set(manual), shot: selections.shot, engine, profile })
-  const subject = character === 'triad' && engine === 'krea2'
+  const subject = character === 'triad' && (engine === 'krea2' || engine === 'moss')
     ? studioDualSubject(template) : { scenePrompt: template, subjectProse: studioSubjectProse(character) }
   const plan = createPromptPlan({
     profile, identity: options.identity ?? CHAR_PROMPT[character] ?? '',
@@ -102,6 +103,10 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
     negative: scene?.negative || '', rating: profileRatingTag(profile, scene) || sceneRating(scene).toLowerCase(),
     visualDescription: options.visualDescription, scene,
   })
+  if (engine === 'moss') {
+    const rendered = renderMossDrawingPrompt(plan, options.visualDescription || '', '')
+    return { plan, ...rendered, adult: sceneRating(scene) === 'R18', profile, selections }
+  }
   return {
     plan, ...renderPromptPlan(plan, engine, profile),
     negative: assembleNegative(profile, scene, engine, { character, shot: selections.shot, custom: options.negativeCustom }),

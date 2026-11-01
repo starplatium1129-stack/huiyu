@@ -112,9 +112,11 @@
 | 人工逐图联系表 | showcase:review-sheets --audit <候选审核目录>（Python + Pillow） |
 | 汇总人工决定 | showcase:manual-review --manifest <生成清单> --decisions <决定文件> |
 | 旧独立场景发布 | showcase:scene-publish --from <生成清单> --source <旧版本> --target <新版本>（默认预览） |
-| 仅刷新分级清单 | showcase:rating-refresh --source <旧版本> --target <新版本>（默认预览） |
+| 仅刷新分级清单 | showcase:rating-refresh --source <旧版本> --target <新版本> [--decisions <逐图分级JSON>]（默认预览） |
 
 人工决定按 `{"scene:sc001":{"verdict":"pass","recordId":"实际看过的生成记录ID","notes":"审核意见"}}` 填写，`verdict` 可为 pass/fail。缺少决定的图片保持 pending；旧图的决定不会自动转给重试生成的新图。`--latest-attempt` 会拒绝非最新成功记录的决定。旧独立场景发布器仍要求完整人工审核清单，`--apply` 才会写新版本；历史固定模型实验已归入被忽略的 `scripts/archive/`，不作为日常维护入口。
+
+对已发布样张按实际画面重新定级时，`showcase:rating-refresh --decisions` 接受 `{"sourceManifestSha256":"清单SHA-256","decisions":[{"id":"样张ID","rating":"All|R15|R18","imageSha256":"原图SHA-256","thumbSha256":"缩略图SHA-256"}]}`。先逐图核对并填入实际分级，未列条目保留原值；预览和写入均校验清单与图片字节，复制后的图片也会复核。样张分级不改变场景或蓝图的创作模式。
 
 候选生成必须传 `--output`，热门审核传 `--manifest` 和 `--out`，场景审核传 `--manifest`，发布传 `--from`、`--source` 和 `--target`，避免底层历史脚本选中旧批次。source 填实际现有版本，target 填新版本。
 
@@ -304,6 +306,8 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 源码已退出 SD 新生成与 WebUI 受管启动；旧任务查询、结果收集、取消、作品与原配方继续保留。没有原引擎的旧作品不推断为新模型的可复现配方。自动准备范围以当前源码与已选发行版本为准；源码改动需对应构建与安装，公开 LoRA 附件单独核对。
 
 ## 独立推理运行库
+
+已准备的 MiaoMiao MOSS BASE v1.0 可用 `models:import-moss-int8 --source <作者INT8文件> --model-dir <现有模型目录>` 预览额外 INT8 导入，`--apply` 才校验复制。关闭桌面/原生推理后使用；保留原下载、FP16 与配套组件，具体算子要求及权重选择见[独立推理指南](guides/independent-inference.md#8-miaomiao-harem-moss-base-v10)。
 
 `models:prepare-inference` 预览或用已有 wheelhouse 离线准备独立运行库；`models:import-anima-directory` 预览或导入完整模型目录；`models:convert-anima` 按已登记架构离线转换单文件 checkpoint。各入口默认预览，显式 `--apply` 才写入新目录，不覆盖已有模型或下载依赖。完整步骤见[独立推理指南](guides/independent-inference.md)。
 

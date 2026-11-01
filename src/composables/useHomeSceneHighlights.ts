@@ -107,7 +107,7 @@ export function useHomeSceneHighlights() {
         const text = (key: 'title' | 'story' | 'category') => typeof source[key] === 'string' ? source[key] : sample?.[key] || ''
         return {
           id, title: text('title'), story: text('story'), category: text('category'), image: sample?.image,
-          rating: typeof source.rating === 'string' ? source.rating : sample?.rating,
+          rating: sample?.rating ?? (typeof source.rating === 'string' ? source.rating : undefined),
           fallbackTo: popular ? '/popular-scenes?character=' + encodeURIComponent(sample.char) : '/scene-explorer?scene=' + encodeURIComponent(id),
           fallbackLabel: popular ? '查看角色场景' : '查看场景设定',
         }
@@ -131,10 +131,10 @@ export function useHomeSceneHighlights() {
         if (!current()) return
         const masked = selection.featured.filter(id => {
           const scene = records.get(id)
-          return scene?.rating === 'R18' || scene?.mature === true
+          return snapshot.samples?.get(id) ? false : scene?.rating === 'R18' || scene?.mature === true
         })
         if (masked.length) {
-          // Catalog flags can be newer than the manifest. Exclude them and refill the spread.
+          // Without a sample classification, fall back to the scene's content rating.
           for (const id of masked) snapshot.masked.add(id)
           continue
         }

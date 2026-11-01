@@ -3,7 +3,7 @@
     class="sc"
     :class="[`sc-${mode}`, { 'sc-static': !clickable, 'sc-complete-preview': completePreview }]"
     :style="previewStyle"
-    :data-rating="contentRating"
+    :data-rating="sampleRating"
     @click="onCardClick"
   >
     <div class="sc-band">
@@ -13,15 +13,15 @@
         v-if="thumbId && thumbImage.src"
         v-bind="thumbImage"
         class="sc-thumb"
-        :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
+        :class="{ 'sc-thumb-r18': sampleRating === 'R18', 'sc-thumb-missing': thumbFailed, 'sc-thumb-ready': thumbLoaded }"
         alt=""
         loading="lazy"
         decoding="async"
         fetchpriority="auto"
       />
       <img v-if="preview.src && !thumbFailed" v-bind="preview" class="sc-thumb sc-thumb-hd"
-        :class="{ 'sc-thumb-r18': contentRating === 'R18', 'sc-thumb-ready': previewReady }" alt="" aria-hidden="true" decoding="async" draggable="false" />
-      <SensitivePreviewVeil v-if="contentRating === 'R18' && thumbImage.src && !thumbFailed"
+        :class="{ 'sc-thumb-r18': sampleRating === 'R18', 'sc-thumb-ready': previewReady }" alt="" aria-hidden="true" decoding="async" draggable="false" />
+      <SensitivePreviewVeil v-if="sampleRating === 'R18' && thumbImage.src && !thumbFailed"
         :src="thumbImage.src" :crossorigin="thumbImage.crossorigin" />
       <span v-if="thumbFailed || !thumbId || !thumbImage.src" class="sc-preview-unavailable">{{ !thumbImage.src && thumbId ? '服务未连接' : '样张待补充' }}</span>
       </ShowcasePreviewSource>
@@ -83,6 +83,7 @@ const props = withDefaults(defineProps<{
   completePreview?: boolean
   meta?: string
   imgVersion?: string | number
+  sampleRating?: string
   thumbUrl?: string
   imageUrl?: string
   previewDimensions?: { width: number; height: number }
@@ -109,10 +110,11 @@ function onCardClick(event: MouseEvent) {
   emit('pick', props.scene)
 }
 const contentRating = computed(() => props.scene.rating || (props.scene.mature ? 'R18' : 'All'))
+const sampleRating = computed(() => props.sampleRating ?? contentRating.value)
 const thumbId = computed(() => String(props.scene.id || '').toLowerCase().replace(/[^a-z0-9_-]/g, ''))
 const archiveCode = computed(() => thumbId.value.replace(/^sc(?=\d)/, 'sc-').toUpperCase())
 const thumbSource = computed(() => {
-  if (props.thumbUrl) return props.thumbUrl
+  if (props.thumbUrl !== undefined) return props.thumbUrl
   const v = props.imgVersion ?? ''
   return `/scene-showcase/thumbs/${thumbId.value}.jpg${v ? '?v=' + encodeURIComponent(String(v)) : ''}`
 })

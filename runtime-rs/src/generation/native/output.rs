@@ -116,6 +116,9 @@ pub(super) fn adapter_request(
     let mut input = json!({"negativePrompt":plan.input["negative"]});
     if plan.input["family"] == "moss-image" {
         input["mossAcceleration"] = plan.input["mossAcceleration"].clone();
+        input["mossTextPrecision"] = json!(plan.input["mossTextPrecision"].as_str().unwrap_or("bf16"));
+        input["mossCompile"] = json!(plan.input["mossCompile"] == true);
+        input["mossWeightPrecision"] = json!(plan.input["mossWeightPrecision"].as_str().unwrap_or("auto"));
     }
     for key in [
         "modelId", "prompt", "width", "height", "steps", "cfg", "seed",
@@ -165,6 +168,7 @@ pub(super) fn stage_text(event: &Value) -> Result<String> {
         Some("fingerprint") => "确认模型与 LoRA",
         Some("preparing_image") => "处理输入图像",
         Some("loading") => "加载模型",
+        Some("compiling") => "编译 MOSS 推理内核（首次较慢）",
         Some("uploading") => "传输模型到显卡",
         Some("adapters") => "应用 LoRA",
         Some("encoding") => "编码提示词",

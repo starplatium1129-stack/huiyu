@@ -141,11 +141,15 @@ class _Block(nn.Module):
     def forward(self, x, rope, modulation):
         shift_a, scale_a, gate_a, shift_f, scale_f, gate_f = modulation.unbind(1)
         y = self.norm1(x) * (1 + scale_a[:, None]) + shift_a[:, None]
-        dtype = self.proj['q'].weight.dtype
+        fused = 'qkv' in self.proj
+        projection = self.proj['qkv' if fused else 'q']
+        dtype = getattr(projection, 'compute_dtype', projection.weight.dtype)
         y = y.to(dtype)
-        q = self.q_norm(self.proj['q'](y).unflatten(-1, (self.heads, -1))).flatten(2)
-        k = self.k_norm(self.proj['k'](y).unflatten(-1, (self.heads, -1))).flatten(2)
-        x = x + self.proj['o'](_attention(q, k, self.proj['v'](y), rope, self.heads)) * gate_a[:, None]
+        q, k, v = self.proj['qkv'](y).chunk(3, -1) if fused else (
+            self.proj['q'](y), self.proj['k'](y), self.proj['v'](y))
+        q = self.q_norm(q.unflatten(-1, (self.heads, -1))).flatten(2)
+        k = self.k_norm(k.unflatten(-1, (self.heads, -1))).flatten(2)
+        x = x + self.proj['o'](_attention(q, k, v, rope, self.heads)) * gate_a[:, None]
         y = self.norm2(x) * (1 + scale_f[:, None]) + shift_f[:, None]
         hidden, gate = self.proj['ffn_up_gate'](y.to(dtype)).chunk(2, -1)
         return x + self.proj['ffn_down'](_situ(hidden, gate)) * gate_f[:, None]
@@ -219,20 +223,8 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
             state_dict = {key[len(prefix):]: value for key, value in state_dict.items()}
         return self.load_state_dict(state_dict, strict=True)
 
-    def forward(self, hidden_states, timestep, encoder_hidden_states,
-                encoder_attention_mask=None, return_dict=True, skip_layers=None):
-        skip_layers = _validate_skip_layers(skip_layers, len(self.layers))
-        if hidden_states.ndim != 4 or hidden_states.shape[1] != self.config.latent_channels:
-            raise ValueError('hidden_states must be [B, latent_channels, H, W].')
-        batch, _, height, width = hidden_states.shape
-        if encoder_hidden_states.ndim != 3 or encoder_hidden_states.shape[0] != batch:
-            raise ValueError('encoder_hidden_states must be [B, S, text_dim].')
-        mask = encoder_attention_mask
-        if mask is None:
-            mask = torch.ones(encoder_hidden_states.shape[:2], dtype=torch.bool, device=hidden_states.device)
-        if mask.shape != encoder_hidden_states.shape[:2] or not torch.all((mask == 0) | (mask == 1)):
-            raise ValueError('encoder_attention_mask must be a binary [B, S] mask.')
-        times = torch.as_tensor(timestep, device=hidden_states.device, dtype=torch.float32).reshape(-1)
+    def _modulation(self, timestep, batch, device):
+        times = torch.as_tensor(timestep, device=device, dtype=torch.float32).reshape(-1)
         times = times.expand(batch)
         # Training computes the sinusoid in float64 and feeds float32 into its MLP.
         half = self.config.freq_dim // 2
@@ -242,24 +234,49 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
         time = self.time_embedding(embedding.to(self.time_embedding[0].weight.dtype)).float()
         mod = self.shared_block_modulation(time.to(self.shared_block_modulation.weight.dtype)).view(batch, 6, -1)
         head = self.video_head_modulation(time.to(self.video_head_modulation.weight.dtype)).view(batch, 2, -1)
+        return mod, head
+
+    def _context(self, embeds, mask, index, height, width, device, dtype):
+        if mask is None:
+            context = embeds[index:index + 1]
+        else:
+            if mask.shape != embeds.shape[:2] or not torch.all((mask == 0) | (mask == 1)):
+                raise ValueError('encoder_attention_mask must be a binary [B, S] mask.')
+            context = embeds[index:index + 1, mask[index].bool()]
+        if context.shape[1] == 0:
+            raise ValueError('Each sample needs at least one valid text token.')
+        rope = self.rope(height, width, context.shape[1], device).to(dtype)
+        return rope, self.text_embedder(context, rope[:, height * width:])
+
+    def forward(self, hidden_states, timestep, encoder_hidden_states,
+                encoder_attention_mask=None, return_dict=True, skip_layers=None):
+        skip_layers = _validate_skip_layers(skip_layers, len(self.layers))
+        if hidden_states.ndim != 4 or hidden_states.shape[1] != self.config.latent_channels:
+            raise ValueError('hidden_states must be [B, latent_channels, H, W].')
+        batch, _, height, width = hidden_states.shape
+        if encoder_hidden_states.ndim != 3 or encoder_hidden_states.shape[0] != batch:
+            raise ValueError('encoder_hidden_states must be [B, S, text_dim].')
+        mask = encoder_attention_mask
+        execution = getattr(self, '_huiyu_execution', None)
+        build_time = lambda: self._modulation(timestep, batch, hidden_states.device)
+        mod, head = execution.modulation(timestep, batch, build_time) if execution is not None else build_time()
         outputs = []
         for index in range(batch):
-            context = encoder_hidden_states[index:index + 1, mask[index].bool()]
-            if context.shape[1] == 0:
-                raise ValueError('Each sample needs at least one valid text token.')
             video = hidden_states[index:index + 1].flatten(2).transpose(1, 2)
             video = self.video_embedder(video.to(self.video_embedder.weight.dtype).contiguous())
-            # Match the reference activation dtype under fp32 weights + autocast.
-            rope = self.rope(height, width, context.shape[1], hidden_states.device).to(video.dtype)
-            text = self.text_embedder(context, rope[:, height * width:])
-            x = torch.cat((video, text), 1)
             cache = getattr(self, "_huiyu_spectrum", None)
             key = (index, tuple(sorted(skip_layers)))
             predicted = cache.predict(key, video) if cache is not None else None
             if predicted is None:
+                build_context = lambda: self._context(encoder_hidden_states, mask, index,
+                    height, width, hidden_states.device, video.dtype)
+                context_key = (id(encoder_hidden_states), id(mask), index, height, width, video.dtype)
+                rope, text = (execution.context(context_key, encoder_hidden_states, mask, build_context)
+                              if execution is not None else build_context())
+                x = torch.cat((video, text), 1)
                 for layer_index, layer in enumerate(self.layers):
-                    if cache is not None:
-                        cache.control.check()
+                    if execution is not None:
+                        execution.control.check()
                     if layer_index not in skip_layers:
                         x = layer(x, rope, mod[index:index + 1])
                 if cache is not None:
@@ -390,6 +407,9 @@ class MOSSImagePipeline(DiffusionPipeline):
         if (prompt is None) == (prompt_embeds is None):
             raise ValueError('Provide exactly one of prompt and prompt_embeds.')
         device = self._execution_device
+        execution = getattr(self.transformer, '_huiyu_execution', None)
+        if execution is not None:
+            execution.phase('encoding')
         if prompt_embeds is None:
             prompt_embeds, prompt_attention_mask = self.encode_prompt(prompt, max_sequence_length)
         batch = prompt_embeds.shape[0]
@@ -419,6 +439,8 @@ class MOSSImagePipeline(DiffusionPipeline):
             latents = latents.to(device=device, dtype=torch.float32)
         self.scheduler.set_timesteps(num_inference_steps, device=device)
         num_steps = len(self.scheduler.timesteps)
+        if execution is not None:
+            execution.phase('sampling')
         for step_index, timestep in enumerate(self.progress_bar(self.scheduler.timesteps)):
             skip_active = slg_start <= step_index / num_steps < slg_stop
             # CFG must combine fp32 predictions, even when the DiT runs in bf16.
@@ -439,6 +461,8 @@ class MOSSImagePipeline(DiffusionPipeline):
         if output_type == 'latent':
             images = latents
         else:
+            if execution is not None:
+                execution.phase('decoding')
             if self.vae is None:
                 raise ValueError('A FLUX.2 VAE is required for decoded output.')
             z = latents.to(dtype=self.vae.dtype)

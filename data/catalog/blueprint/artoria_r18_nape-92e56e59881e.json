@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_nape",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "artoria_r18_nape",
     "title": "阿尔托莉雅 · 解发时分",
@@ -54,7 +54,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@jazz jack",
     "outfitId": "unclothed",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

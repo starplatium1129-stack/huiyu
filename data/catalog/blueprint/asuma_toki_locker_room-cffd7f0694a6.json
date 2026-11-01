@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_locker_room",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "action": "一手拉开战斗紧身衣前襟拉链，另一手扶住长凳，转头看向视角",
     "adult": true,
@@ -40,7 +40,7 @@
       "front three-quarter view"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "millennium",
       "locker_room",

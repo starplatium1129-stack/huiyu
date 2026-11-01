@@ -143,7 +143,7 @@
     <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
       <SceneCard v-for="s in paged" :key="s.id" :scene="s" mode="grid" completePreview suppressTags
           data-reveal :data-reveal-key="`scene:${s.id}`"
-          :thumb-url="thumbUrl(s.id)" :image-url="imageUrl(s.id)" :preview-dimensions="thumbDimensions(s.id)"
+          :thumb-url="thumbUrl(s.id)" :image-url="imageUrl(s.id)" :preview-dimensions="thumbDimensions(s.id)" :sample-rating="entryFor(s.id)?.rating"
           :class="{ 'scene-selected': drawerScene?.id === s.id }" :data-scene-id="s.id" :data-list-key="s.id"
           :aria-label="'查看场景故事：' + s.title" :aria-expanded="drawerScene?.id === s.id" @pick="drawerScene = s">
           <template #body="{ scene: s2 }">
@@ -227,7 +227,7 @@ const {
 } = useSceneExplorerWorkspace()
 const filtersRevealed = ref(false)
 watch(filtersOpen, open => { if (open) filtersRevealed.value = true }, { flush: 'sync' })
-const { thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending } = useShowcaseAssets()
+const { entryFor, thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending } = useShowcaseAssets()
 useListTransition(listRoot, () => paged.value.map(scene => scene.id))
 useScrollReveal()
 const storyDialog = ref<InstanceType<typeof SceneStoryDialog> | null>(null)

@@ -85,7 +85,7 @@
           class="sc-link"
           :to="`/prompt-builder?scene=${encodeURIComponent(s.id)}&step=4`"
         >
-          <SceneCard :scene="s" mode="strip" :clickable="false" />
+          <SceneCard :scene="s" mode="strip" :clickable="false" :sample-rating="sampleEntryFor(s.id)?.rating" :thumb-url="sampleThumbUrl(s.id)" :image-url="sampleImageUrl(s.id)" />
         </RouterLink>
       </div>
     </section>
@@ -175,6 +175,7 @@ import { useRuntimeImage } from '@/composables/useRuntimeImage'
 import { useHomeHeroes } from '@/composables/useHomeHeroes'
 import { useHomeRecentWorks } from '@/composables/useHomeRecentWorks'
 import { useHomeSceneHighlights } from '@/composables/useHomeSceneHighlights'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioIllustratedCard from '@/components/ui/StudioIllustratedCard.vue'
 
@@ -288,6 +289,7 @@ async function retryRecentWorks(event: MouseEvent) {
   }
 }
 const { recentScenes, featuredScenes, loading: journalLoading, error: journalError, canRefresh: canRefreshJournal, refresh: refreshJournal } = useHomeSceneHighlights()
+const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl, imageUrl: sampleImageUrl } = useShowcaseAssets()
 const sceneStore = useSceneStore()
 const homeMuse = ref<'nene' | 'natsume'>('nene')
 const entryPreviews = new Map([[studioOriginal, studioPreview], [sceneOriginal, scenePreview],

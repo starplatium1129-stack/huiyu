@@ -14,6 +14,13 @@ export async function mossStatus(signal: AbortSignal): Promise<QwenModelStatus[]
   const acceleration = model.mossAcceleration
   if (acceleration !== undefined && acceleration !== null && (!Array.isArray(acceleration)
     || acceleration.length !== 2 || acceleration[0] !== 'off' || acceleration[1] !== 'spectrum')) throw new Error('MOSS 加速选项无效，请更新并重启后端')
+  const precision = model.mossTextPrecision
+  if (precision !== undefined && precision !== null && (!Array.isArray(precision)
+    || precision.length !== 2 || precision[0] !== 'bf16' || precision[1] !== 'fp8')) throw new Error('MOSS 精度选项无效，请更新并重启后端')
+  if (model.mossCompile !== undefined && model.mossCompile !== null && typeof model.mossCompile !== 'boolean') throw new Error('MOSS 编译选项无效，请更新并重启后端')
+  if (model.mossInt8Ready !== undefined && typeof model.mossInt8Ready !== 'boolean') throw new Error('MOSS 权重状态无效，请更新并重启后端')
   return [{ id: MOSS_MODEL_ID, available: model.available, unavailableReason: model.unavailableReason,
-    licenseUrl: model.licenseUrl, mossSpectrum: Array.isArray(acceleration) && acceleration.includes('spectrum') }]
+    licenseUrl: model.licenseUrl, mossSpectrum: Array.isArray(acceleration) && acceleration.includes('spectrum'),
+    mossFp8: Array.isArray(precision) && precision.includes('fp8'), mossCompile: model.mossCompile === true,
+    mossInt8Ready: model.mossInt8Ready === true }]
 }

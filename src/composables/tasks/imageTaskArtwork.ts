@@ -34,7 +34,12 @@ export function createImageTaskArchiver(check: () => void, signal: AbortSignal) 
       if (!manga) for (const key of ['character', 'characterId', 'outfitId', 'blueprintId', 'story', 'visualDescription']) {
         if (typeof context?.[key] === 'string') record[key] = context[key]
       }
-      if (task.kind === 'moss') record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
+      if (task.kind === 'moss') {
+        record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
+        record.mossTextPrecision = input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
+        record.mossCompile = input.mossCompile === true
+        record.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
+      }
       result = blobArtworkResult(image, record, check); results.set(id, result)
     }
     const saved = await result.save()

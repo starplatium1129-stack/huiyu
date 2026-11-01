@@ -1,12 +1,11 @@
-/* Shared feedback for media and secondary controls. Ordinary actions below
-   use a character-colored underline and a small hover lift. */
+/* Framed controls use surface feedback; text navigation keeps its underline. */
 :root {
   --control-hover-fill:color-mix(in srgb,var(--text-primary) 6%,transparent);
   --control-hover-edge:color-mix(in srgb,var(--text-secondary) 20%,transparent);
   --control-hover-surface:linear-gradient(135deg,var(--glass-highlight),transparent 65%),var(--control-hover-fill);
 }
 :where(
-  .btn,.u008,.u022,.studio-segments[role] :is(button,a),[role='tab'],[data-control-motion],
+  .btn,.u008,.u022,.task-center-button,button.chip,.studio-segments[role] :is(button,a),[role='tab'],[data-control-motion],
   button:is(.filter-pill,.gallery-filter,.scene-cat-btn,.trait-chip,.outfit-chip,.artist-cat-btn,.pop-cat,.pop-rating-pill),
   .studio-pagination .page-arrow,.studio-select-trigger,.studio-select-item,.chat-more-item,.studio-media-btn,.studio-search-clear,.zoom-control,.zoom-recovery button,summary,
   .scene-active-filters button,.scene-reset,.gallery-refine-toggle,.gallery-filter-chip,.inspiration-deck-controls button,
@@ -60,14 +59,6 @@
     &:focus-visible { outline:2px solid Highlight; outline-offset:2px; }
   }
 }
-/* Disclosure headers use an underline instead of a second inset frame. */
-:where(summary) {
-  --focus-shadow:inset 0 -2px 0 var(--focus-color);
-  &::before {
-    inset:auto auto 0 0; width:min(64px,40%); height:2px; border:0; border-radius:var(--r-pill);
-    background:var(--character-ink,var(--accent)); box-shadow:none; transform-origin:left center;
-  }
-}
 .studio-control-label { display:inline-block; }
 /* Individual translate composes with existing press springs and local transforms.
    Keep positioning low-specificity so controls can use their own layout.
@@ -87,19 +78,11 @@
   --control-hover-lift:-3px;
   translate:0 0;
   transition:translate var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--motion-press) var(--spring-soft);
-  &::before {
-    content:''; display:var(--control-hover-line-display,block); position:absolute; z-index:0;
-    inset:auto 18% 3px; height:2px; border:0; border-radius:var(--r-pill);
-    background:currentColor; box-shadow:none; pointer-events:none;
-    opacity:0; transform:scaleX(.45);
-    transition:opacity var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--control-feedback-duration,var(--motion-hover)) var(--ease-out);
-  }
   @media (hover:hover) and (pointer:fine) {
     &:hover:where(:not(:focus-visible):not(:has(:focus-visible,button:hover,a:hover)):not(:disabled):not([aria-disabled='true']):not([data-disabled]):not([aria-busy='true'])) {
       translate:0 var(--control-hover-lift);
       color:var(--control-hover-ink);
-      &:where(:not(.btn-primary):not(.btn-danger)) { background:transparent; }
-      &::before { opacity:1; transform:scaleX(1); }
+      &::before { opacity:1; transform:none; }
     }
   }
   &:where(:active,:focus-visible,:disabled,[aria-disabled='true'],[data-disabled],[aria-busy='true']) { translate:0 0; }
@@ -112,6 +95,17 @@
   }
   :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) & { --control-hover-lift:0px; --control-feedback-duration:0s; }
   @media (forced-colors:active) { --control-hover-ink:Highlight; }
+}
+/* Opt in only text navigation/actions. Buttons, chips, segments and disclosure
+   rows already have a control surface, including rows inside a shared frame. */
+:root body :is(.nav-links > a,.nav-back,.control-section-jump a,.scene-reset,.filter-reset,.pop-filter-reset,.catalog-text-button):where(:not(:disabled):not([aria-disabled='true']):not([data-disabled])) {
+  &::before {
+    content:''; display:var(--control-hover-line-display,block); position:absolute; z-index:0;
+    inset:auto 18% 3px; height:2px; border:0; border-radius:var(--r-pill);
+    background:currentColor; box-shadow:none; pointer-events:none;
+    opacity:0; transform:scaleX(.45);
+    transition:opacity var(--control-feedback-duration,var(--motion-hover)) var(--ease-out),transform var(--control-feedback-duration,var(--motion-hover)) var(--ease-out);
+  }
 }
 /* AnimatedSelection owns the current-page line. Use a variable so the shared
    :is() selector's specificity cannot re-enable a second line on repeated hover. */

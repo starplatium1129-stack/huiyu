@@ -9,6 +9,7 @@ pub(crate) use input::InputFile;
 use input::RunFiles;
 pub(crate) use model_layout::model_issue;
 mod observations;
+mod moss;
 pub(in crate::generation) mod recovery;
 pub(crate) mod resources;
 mod results;
@@ -368,7 +369,7 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                 }
                 state.status = "running".into();
                 state.upstream_id = job.id.clone();
-                state.progress_text = "独立推理加载模型".into();
+                state.progress_text = "独立推理准备生成".into();
             }
             if let Some(hooks) = &job.hooks {
                 hooks

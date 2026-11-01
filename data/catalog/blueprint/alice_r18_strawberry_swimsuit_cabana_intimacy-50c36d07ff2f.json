@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_r18_strawberry_swimsuit_cabana_intimacy",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 1898,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "alice_r18_strawberry_swimsuit_cabana_intimacy",
     "characterId": "alice_nikke",
@@ -51,7 +51,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],

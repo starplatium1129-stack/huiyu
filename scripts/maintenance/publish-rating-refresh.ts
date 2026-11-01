@@ -10,12 +10,8 @@ type Entry = Record<string, unknown> & { id: string };
  * Publish a RATING-ONLY refresh of the showcase manifest into a NEW version
  * dir. Images/thumbs are copied wholesale — nothing is re-generated.
  *
- * Rating source of truth (2026-08-15 用户决策：样张重新定级)：
- *   - scene entries  : data/scenes.json (aggregate; canonical shards in
- *                      data/scenes/*.json, built by build-scenes.js)
- *   - popular entries: data/scene-blueprints.json `sampleRating`
- *                      (fallback: adult → R18, else All)
- *   - artist/lora    : carried over unchanged
+ * With --decisions, apply only image-bound visual ratings. Otherwise use the
+ * built scene and blueprint aggregates; artist/lora entries stay unchanged.
  *
  * Usage:
  *   node scripts/maintenance/publish-rating-refresh.js \
@@ -27,6 +23,7 @@ type Entry = Record<string, unknown> & { id: string };
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const { createHash }: typeof import('crypto') = require('crypto');
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const DEFAULT_SHOWCASE_ROOT = path.resolve(ROOT, '..', 'AI', 'SceneShowcase');
@@ -42,8 +39,9 @@ function readJson(file: string): unknown {
 /** 从 `pc_<char>_<blueprint>` 提取 blueprintId（蓝图 id 均以角色 id 开头）。 */
 function blueprintIdOf(entry: Entry) {
   const prefix = `pc_${entry.char}_`;
-  if (!entry.id.startsWith(prefix)) return '';
-  return entry.id.slice(prefix.length);
+  const id = entry.id.startsWith(prefix + prefix) ? entry.id.slice(prefix.length) : entry.id;
+  if (!id.startsWith(prefix)) return '';
+  return id.slice(prefix.length);
 }
 
 function ratingForEntry(entry: Entry, scenesById: Map<string, Entry>, blueprintsById: Map<string, Entry>, warnings: string[]) {
@@ -63,6 +61,7 @@ function ratingForEntry(entry: Entry, scenesById: Map<string, Entry>, blueprints
       return entry.rating;
     }
     const sample = blueprint.sampleRating;
+    if (sample === 'SFW') return 'All';
     if (sample === 'R15' || sample === 'R18' || sample === 'All') return sample;
     return blueprint.adult ? 'R18' : 'All';
   }
@@ -97,6 +96,49 @@ function readEntries(value: unknown): Entry[] {
   });
 }
 
+type ReviewedRating = { id: string; rating: 'All' | 'R15' | 'R18'; imageSha256: string; thumbSha256: string };
+
+function sha256(file: string) {
+  return createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+}
+
+function reviewAssets(root: string, entries: Map<string, Entry>, decisions: ReviewedRating[]) {
+  const { isShowcaseAssetPath }: typeof import('../lib/content/showcase-assets.js') = require('../lib/content/showcase-assets.js');
+  for (const decision of decisions) {
+    const entry = entries.get(decision.id)!;
+    for (const [kind, expected] of [['image', decision.imageSha256], ['thumb', decision.thumbSha256]] as const) {
+      const relative = entry[kind] || `${kind === 'image' ? 'images' : 'thumbs'}/${entry.id}.jpg`;
+      if (typeof relative !== 'string' || !isShowcaseAssetPath(`/${relative}`) || sha256(path.join(root, relative)) !== expected)
+        throw new Error(`Reviewed ${kind} changed or is invalid: ${entry.id}`);
+    }
+  }
+}
+
+function reviewedRatings(file: string, sourceDir: string, entries: Entry[]) {
+  const input = readJson(file);
+  if (!object(input) || typeof input.sourceManifestSha256 !== 'string' || !Array.isArray(input.decisions)
+      || sha256(path.join(sourceDir, 'manifest.json')) !== input.sourceManifestSha256)
+    throw new Error('Reviewed manifest changed or decisions are invalid');
+  const byId = new Map(entries.map(entry => [entry.id, entry]));
+  if (byId.size !== entries.length) throw new Error('Duplicate source showcase IDs');
+  const seen = new Set<string>();
+  const decisions: ReviewedRating[] = input.decisions.map((item: unknown) => {
+    if (!object(item) || typeof item.id !== 'string' || seen.has(item.id)
+        || !['All', 'R15', 'R18'].includes(String(item.rating))
+        || typeof item.imageSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(item.imageSha256)
+        || typeof item.thumbSha256 !== 'string' || !/^[a-f0-9]{64}$/.test(item.thumbSha256))
+      throw new Error('Invalid or duplicate reviewed rating');
+    const entry = byId.get(item.id);
+    if (!entry || (entry.type !== 'scene' && entry.type !== 'popular'))
+      throw new Error(`Reviewed showcase entry not found: ${item.id}`);
+    seen.add(item.id);
+    return { id: item.id, rating: item.rating as ReviewedRating['rating'], imageSha256: item.imageSha256, thumbSha256: item.thumbSha256 };
+  });
+  if (!decisions.length) throw new Error('No reviewed ratings');
+  reviewAssets(sourceDir, byId, decisions);
+  return { decisions, byId };
+}
+
 function catalogById(value: unknown, key: string) {
   const rows = Array.isArray(value) ? value : object(value) ? value[key] || [] : value;
   return new Map(readEntries(rows).map(entry => [entry.id, entry]));
@@ -112,13 +154,18 @@ function main() {
   const sourceManifest = readJson(path.join(sourceDir, 'manifest.json'));
   if (!object(sourceManifest) || (sourceManifest.version != null && typeof sourceManifest.version !== 'number')) throw new Error('Invalid source showcase manifest');
   const sourceEntries = readEntries(sourceManifest.entries || []);
-  const scenesAggregate = readJson(path.join(ROOT, 'data', 'scenes.json'));
-  const scenesById = catalogById(scenesAggregate, 'scenes');
-  const blueprintsData = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
-  const blueprintsById = catalogById(blueprintsData, 'blueprints');
-
   const warnings: string[] = [];
-  const entries: Entry[] = sourceEntries.map(entry => ({ ...entry, rating: ratingForEntry(entry, scenesById, blueprintsById, warnings) }));
+  const reviewFile = argument('--decisions');
+  const review = reviewFile ? reviewedRatings(path.resolve(reviewFile), sourceDir, sourceEntries) : null;
+  let entries: Entry[];
+  if (review) {
+    const ratings = new Map(review.decisions.map(decision => [decision.id, decision.rating]));
+    entries = sourceEntries.map(entry => ({ ...entry, rating: ratings.get(entry.id) ?? entry.rating }));
+  } else {
+    const scenesById = catalogById(readJson(path.join(ROOT, 'data', 'scenes.json')), 'scenes');
+    const blueprintsById = catalogById(readJson(path.join(ROOT, 'data', 'scene-blueprints.json')), 'blueprints');
+    entries = sourceEntries.map(entry => ({ ...entry, rating: ratingForEntry(entry, scenesById, blueprintsById, warnings) }));
+  }
 
   const typeCounts: Record<string, number> = { scene: 0, artist: 0, popular: 0, lora: 0 };
   for (const entry of entries) if (typeof entry.type === 'string' && typeCounts[entry.type] !== undefined) typeCounts[entry.type] += 1;
@@ -162,6 +209,10 @@ function main() {
     for (const file of ['00-cover.jpg', 'home-hero.json', 'index.html', 'README.txt']) {
       const source = path.join(sourceDir, file);
       if (fs.existsSync(source)) fs.copyFileSync(source, path.join(tempDir, file));
+    }
+    if (review) {
+      reviewedRatings(path.resolve(reviewFile), sourceDir, sourceEntries);
+      reviewAssets(tempDir, review.byId, review.decisions);
     }
     writeJsonAtomic(path.join(tempDir, 'manifest.json'), manifest);
     verifyTarget(tempDir, manifest);

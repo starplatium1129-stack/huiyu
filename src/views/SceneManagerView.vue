@@ -76,7 +76,7 @@
             <ArchiveStatePanel v-if="error" compact kind="error" title="内容读取失败" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">重新读取</button></ArchiveStatePanel>
             <div ref="recordList" v-content-motion:right="loading ? false : listScope" class="catalog-record-list">
               <button v-for="item in result?.items ?? []" :key="item.kind + ':' + item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy || !listMatchesKind" @click="openContent(item, $event)">
-                <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': item.rating === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
+                <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': rowSampleRating(item) === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
                 <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span>
                 <span class="catalog-row-state"><ArchiveIcon v-if="selected?.id === item.id && selected.kind === item.kind" name="success" /><span v-if="isPending(item)" class="catalog-pending-dot" aria-label="有暂存修改"></span></span>
               </button>
@@ -141,7 +141,7 @@ const collectionArt = useThemeIllustration(collectionOriginal, 'collection')
 const recordList = ref<HTMLElement | null>(null)
 const contentSearch = ref<InstanceType<typeof StudioSearch> | null>(null)
 const pageTitle = ref<HTMLElement | null>(null), pendingArea = ref<HTMLElement | null>(null), pendingOpen = ref(false)
-const { thumbUrl, reload: reloadAssets } = useShowcaseAssets()
+const { entryFor, thumbUrl, reload: reloadAssets } = useShowcaseAssets()
 watch(section, value => { if (value === 'records') void reloadAssets().catch(() => {}) })
 const loadCharacterArt = () => import('@/components/maintenance/CharacterArtManager.vue')
 const artManager = ref<InstanceType<typeof import('@/components/maintenance/CharacterArtManager.vue')['default']> | null>(null)
@@ -172,6 +172,9 @@ function rowImage(item: CatalogSummary) {
   if (item.kind === 'outfit') return popularPortraitSrc(item.characterId)
   if (item.kind === 'scene' || item.kind === 'blueprint') return thumbUrl(catalogShowcaseId(item))
   return ''
+}
+function rowSampleRating(item: CatalogSummary) {
+  return item.kind === 'scene' || item.kind === 'blueprint' ? entryFor(catalogShowcaseId(item))?.rating ?? item.rating : item.rating
 }
 function rowSubtitle(item: CatalogSummary) {
   if (item.kind === 'document') return ({ tags: '常用关键词与显示名称', curation: '精选故事与展示顺序', 'tag-dictionary-policy': '让同义词指向正确的内容', 'prompt-pinned-scenes': '已确认的内容，在此查看', loras: '绘图资源，在此查看', 'retired-scenes': '保留已经归档的故事' } as Record<string, string>)[item.id] || '创作资料'

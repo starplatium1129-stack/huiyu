@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_shower_gold",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "action": "一脚放在石凳上，一手抬起湿发，另一手沿身前水流冲洗。",
     "adult": true,
@@ -40,7 +40,7 @@
       "full body"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bathroom",
       "shower",

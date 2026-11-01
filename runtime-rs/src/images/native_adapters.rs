@@ -3,6 +3,9 @@ use super::*;
 use generation::native::adapters;
 const KEYS: &[&str] = &[
     "mossAcceleration",
+    "mossTextPrecision",
+    "mossCompile",
+    "mossWeightPrecision",
     "modelId",
     "prompt",
     "negative",
@@ -79,6 +82,23 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
                 "MOSS 缓存加速仅支持 off 或 spectrum；其他模型不接受此参数",
             ));
         }
+    };
+    let moss_text_precision = match raw.get("mossTextPrecision") {
+        None => "bf16",
+        Some(Value::String(value))
+            if spec["family"] == "moss-image" && matches!(value.as_str(), "bf16" | "fp8") => value,
+        _ => return Err(error("INVALID_PARAMETER", "MOSS 文本编码精度仅支持 bf16 或 fp8；其他模型不接受此参数")),
+    };
+    let moss_compile = match raw.get("mossCompile") {
+        None => false,
+        Some(Value::Bool(value)) if spec["family"] == "moss-image" => *value,
+        _ => return Err(error("INVALID_PARAMETER", "mossCompile 仅接受 MOSS 的布尔参数")),
+    };
+    let moss_weight_precision = match raw.get("mossWeightPrecision") {
+        None => "auto",
+        Some(Value::String(value)) if spec["family"] == "moss-image"
+            && matches!(value.as_str(), "auto" | "fp16" | "int8") => value,
+        _ => return Err(error("INVALID_PARAMETER", "MOSS 主模型权重仅支持 auto、fp16 或 int8")),
     };
     let style = match raw.get("styleLoraId") {
         None | Some(Value::Null) => None,
@@ -217,6 +237,9 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         json!({"modelId":id,"family":spec["family"],"prompt":prompt.trim(),"negative":negative,
         "width":width,"height":height,"steps":steps,"cfg":cfg,"seed":seed,"initImage":image,
         "mossAcceleration":if spec["family"] == "moss-image" {Some(moss_acceleration)}else{None},
+        "mossTextPrecision":if spec["family"] == "moss-image" {Some(moss_text_precision)}else{None},
+        "mossCompile":if spec["family"] == "moss-image" {Some(moss_compile)}else{None},
+        "mossWeightPrecision":if spec["family"] == "moss-image" {Some(moss_weight_precision)}else{None},
         "referenceImages":if spec["family"] == "qwen-image" {Some(references)}else{None},
         "profileId":spec["profileId"],"styleLoraId":style,"styleLoraTrigger":style.map(|id| &catalog::styles()[id]["trigger"]),
         "inferenceEngine":"native","nativeAdapterVersion":1,"validation":"待主力机验证",

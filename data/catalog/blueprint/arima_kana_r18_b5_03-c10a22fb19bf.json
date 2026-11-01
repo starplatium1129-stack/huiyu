@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_03",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 980,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "action": "身体前倾靠着试衣台，双手伸到背后尝试拉开拉链并回眸，紧身包臀裙卡死勒肉，贝雷帽微歪娇恼",
     "adult": true,
@@ -48,7 +48,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "dressing_malfunction",
       "adult",

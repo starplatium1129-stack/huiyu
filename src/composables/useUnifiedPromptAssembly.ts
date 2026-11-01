@@ -33,6 +33,7 @@ export function useUnifiedPromptAssembly(
   const artViolations = computed(() => active.value.artViolations.value)
   const modelProfile = computed(() => pb.isPopular ? popular.profile.value : studio.modelProfile.value)
   const structuredPlan = computed(() => active.value.structuredPlan.value)
+  const mossPlan = computed(() => active.value.mossPlan.value)
   const previewContext = computed<PromptPreviewContext>(() => {
     const plan = structuredPlan.value
     const subjects = pb.char === 'none' ? [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters] : []
@@ -56,6 +57,7 @@ export function useUnifiedPromptAssembly(
     artViolations,
     modelProfile,
     structuredPlan,
+    mossPlan,
     // 兼容旧视图的三元分发，逐步迁移后可移除
     studio,
     popular,

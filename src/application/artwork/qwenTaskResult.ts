@@ -26,7 +26,12 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
     if (typeof value === 'string' && value.length <= 12000) record[key] = value
   }
   if (typeof context?.sceneTitle === 'string' && context.sceneTitle.trim() && context.sceneTitle.length <= 500) record.sceneTitle = context.sceneTitle
-  if (moss) record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
+  if (moss) {
+    record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
+    record.mossTextPrecision = input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
+    record.mossCompile = input.mossCompile === true
+    record.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
+  }
   if (record.width && record.height) record.size = `${record.width}x${record.height}`
   return record
 }

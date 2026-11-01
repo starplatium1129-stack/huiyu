@@ -4,9 +4,11 @@ import type { DirectorControlSources } from '../types/promptDirector'
 import { createPromptPlan, renderPromptPlan, type PromptCompilerInput, type PromptPlan } from './promptCompiler.ts'
 import {
   assembleNegative,
+  BAREFOOT_TOKENS,
   isManualR18Tags,
   mutualGroupWithCategory,
   profileRatingTag,
+  SHOE_TOKENS,
   type ModelProfile,
 } from './promptPolicy.ts'
 import { KREA_STYLE_RECIPES, resolveStyleRecipe, type ResolvedStyle } from '../config/kreaStyleRecipes.ts'
@@ -18,6 +20,7 @@ import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
 import { isManualDirectorValue } from './promptDirector.ts'
 import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
 import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
+import { renderMossDrawingPrompt } from './mossPrompt.ts'
 
 // ── Prompt 组装（唯一渲染层 = createPromptPlan + renderPromptPlan） ─────────
 
@@ -25,7 +28,7 @@ export interface PopularPromptOptions {
   character: PopularCharacter
   outfit: PopularOutfit
   blueprint: SceneBlueprint | null
-  engine: 'anima' | 'krea2'
+  engine: 'anima' | 'krea2' | 'moss'
   profile?: ModelProfile | null
   manual?: string[]
   emotion?: string[]
@@ -202,16 +205,37 @@ function proseWithoutOutfit(prose: string): string {
   return out.trim()
 }
 
+/** Replace explicit worn-garment phrases, leaving the authored action and setting intact. */
+function sceneProseWithChangedOutfit(prose: string, source: PopularOutfit): string {
+  const words = [...source.tokens, source.prose].flatMap(value =>
+    value.toLowerCase().replace(/[_-]/g, ' ').match(/[a-z]+/g) || [])
+  const garments = new Set(words.filter(isGarmentToken))
+  if (words.some(word => ['nightdress', 'nightgown', 'negligee', 'lingerie', 'babydoll'].includes(word))) {
+    for (const word of ['nightdress', 'nightgown', 'negligee', 'lingerie', 'babydoll']) garments.add(word)
+  }
+  if (!garments.size) return prose
+  const excluded = 'a|an|the|and|or|with|while|before|after|near|beside|under|on|at|in|of|to|for|by|she|he|they|her|his|their|hand|hands|arm|arms|is|are|was|were|sits|stands|sitting|standing|lying|holds|holding|leans|reclines|wears'
+  const modifier = `(?!(?:${excluded})\\b)[a-z]+(?:-[a-z]+)?`
+  const pattern = new RegExp(`\\b(wearing|dressed in|clad in|in)\\s+(?:(?:a|an|the|her|his|their)\\s+)?(?:${modifier}\\s+){0,4}(?:${[...garments].join('|')})\\b(?!\\s+(?:shop|store|rack|display)\\b)`, 'gi')
+  return prose.replace(pattern, (_match, verb: string) => `${verb} the selected outfit`)
+}
+
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult {
   const { character, outfit, blueprint, engine } = options
-  const profile = options.profile ?? null
-  const style = options.style === undefined && blueprint
+  const profile = engine === 'moss' ? null : options.profile ?? null
+  const style = engine === 'moss' ? null : options.style === undefined && blueprint
     ? resolveStyleRecipe(KREA_STYLE_RECIPES, engine, blueprint, null) : options.style
   const adult = Boolean(blueprint?.adult || style?.adult)
 
   const manual = sanitizePopularManual(options.manual || [])
   // 反推顶替的服装（非空即整体替换 outfit.tokens 与 outfit.prose）
   const overridden = options.outfitOverride?.length ? [...options.outfitOverride] : null
+  const sourceOutfit = blueprint?.outfitId
+    ? character.outfits.find(item => item.id === blueprint.outfitId)
+    : character.outfits.find(item => item.default) ?? character.outfits[0]
+  // Adult blueprints own their clothing unless the user explicitly changes it.
+  const adultOutfitOverride = engine === 'moss' && adult && Boolean(overridden
+    || (options.outfitExplicit && blueprint && sourceOutfit && sourceOutfit.id !== outfit.id))
   // 服装是否参与注入（2026-08-29 基础提示词瘦身，对标 studio 的「场景驱动」）：
   //   1) 反推顶替 → 一定注入（参考图服装必须出来）
   //   2) 有蓝图/场景 → 注入（用户已选中某个具体场面）
@@ -220,7 +244,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const outfitActive = Boolean(overridden) || Boolean(blueprint) || options.outfitExplicit === true
   // 手动 Mature 词条仅联动分级与负向，不参与访问控制。
   const manualR18 = isManualR18Tags(manual, options.matureTokens)
-  const outfitAppearance = outfitActive && !adult && !overridden ? outfit : null
+  const outfitAppearance = outfitActive && (!adult || adultOutfitOverride) && !overridden ? outfit : null
   const identitySource = blueprint?.identityTokensOverride?.length ? blueprint.identityTokensOverride
     : outfitAppearance?.identityTokensOverride?.length ? outfitAppearance.identityTokensOverride : character.identityTokens
   const identityProse = blueprint?.identityProseOverride || outfitAppearance?.identityProseOverride || character.identityProse
@@ -244,41 +268,52 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   // 用户描述是额外画面指令，服装由独立字段稳定保留。
   const userVisual = String(options.visualDescription || '').trim()
-  const nsfwTokens = adult ? (blueprint?.nsfwTokens || []) : []
   const nsfwProse = adult ? String(blueprint?.nsfwProse || '').trim() : ''
-  const sceneProse = [
+  const originalSceneProse = [
     // 成人场景：裸体叙述前置，避免被服装散文压过（Krea 2 自然语言模型对句首描述权重最高）。
     ...(nsfwProse ? [nsfwProse] : []),
-    blueprint?.promptProse,
+    engine === 'moss' ? blueprint?.promptProse || blueprint?.animaCaption : blueprint?.promptProse,
   ].filter(Boolean).join(' ')
 
   const emotionTokens = options.emotion || []
   const subjectProse = !blueprint
     ? standaloneIdentityProse({ ...character, identityTokens: identitySource, identityProse })
     : adult
-      ? adultIdentityProse(identityProse)
+      ? adultIdentityProse(engine === 'moss' ? proseWithoutOutfit(identityProse) : identityProse)
       : (outfitActive
-          ? (overridden ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
+          ? (overridden || engine === 'moss' ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
           : proseWithoutOutfit(identityProse))
-  // Both renderers share the resolved outfit. Adult blueprints retain their authored
-  // clothing state in scene tokens/prose; the bound outfit must not dress them again.
-  const outfitProse = (adult || !outfitActive)
+  // A scene's adult clothing remains authoritative until a MOSS user changes it.
+  const outfitProse = ((adult && !adultOutfitOverride) || !outfitActive)
     ? ''
     : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose))
 
   const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
   const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
-  const sourceOutfit = blueprint?.outfitId
-    ? character.outfits.find(item => item.id === blueprint.outfitId)
-    : character.outfits.find(item => item.default) ?? character.outfits[0]
   const stableIdentity = new Set([...character.exactTokens, ...identitySource.filter(token =>
     !isGarmentToken(normalizeProseKey(token)) && mutualGroupWithCategory(token)?.category !== 'outfit')].map(normalizeProseKey))
-  const replacedOutfit = !adult && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id)
+  const outfitChanged = Boolean((!adult || adultOutfitOverride) && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id))
+  const replacedOutfit = outfitChanged && sourceOutfit
     ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
     : new Set<string>()
+  const sceneProse = engine === 'moss' && outfitChanged && sourceOutfit
+    ? sceneProseWithChangedOutfit(originalSceneProse, sourceOutfit) : originalSceneProse
+  const selectedOutfit = (overridden ?? outfit.tokens).map(normalizeProseKey)
+  const selectedShoes = selectedOutfit.some(key => SHOE_TOKENS.has(key) || /(?:^|_)(?:boots|shoes|sneakers|heels|sandals|loafers|slippers)$/.test(key))
+  const selectedBarefoot = selectedOutfit.some(key => BAREFOOT_TOKENS.has(key))
+  const nakedState = new Set(['nude', 'naked', 'fully_nude', 'completely_nude', 'no_clothes', 'unclothed'])
+  const selectedClothing = selectedOutfit.some(isGarmentToken) && !selectedOutfit.some(key => nakedState.has(key))
+  const replacedSceneOutfit = (token: string) => {
+    const key = normalizeProseKey(token)
+    if (replacedOutfit.has(key)) return true
+    if (engine !== 'moss' || !replacedOutfit.size) return false
+    return selectedShoes && BAREFOOT_TOKENS.has(key) || selectedBarefoot && SHOE_TOKENS.has(key)
+      || adultOutfitOverride && selectedClothing && nakedState.has(key)
+  }
+  const nsfwTokens = adult ? (blueprint?.nsfwTokens || []).filter(token => !replacedSceneOutfit(token)) : []
   // 两种引擎共用蓝图的画面要素；手动姿态与换装优先于蓝图原词。
   const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(token => {
-    if (replacedOutfit.has(normalizeProseKey(token))) return false
+    if (replacedSceneOutfit(token)) return false
     const hit = mutualGroupWithCategory(token)
     if (manualPose && hit?.category === 'pose' && hit.group !== manualPose.group) return false
     if (manualViewpoint && hit?.category === 'viewpoint' && hit.group !== manualViewpoint.group) return false
@@ -288,7 +323,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 不选场景时，身份词里混入的服装一并去掉（数据遗留：不少角色把 pleated_skirt /
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，
   // 不过滤则瘦身对它们无效）。双保险：互斥族判定 + 普通衣物名单。
-  const referenceIdentity = Boolean(overridden) && !adult
+  const referenceIdentity = Boolean(overridden) && (!adult || adultOutfitOverride)
   const identityTokens = (!blueprint ? standaloneIdentityTokens(identitySource) : outfitActive && !referenceIdentity
     ? identitySource
     : identitySource.filter(token =>
@@ -300,7 +335,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const exactIdentity = (!blueprint ? standaloneIdentityTokens(character.exactTokens) : character.exactTokens).filter(token => !referenceIdentity
     || (mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
   const exactControls = [...new Set([
-    ...((adult || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
+    ...(((adult && !adultOutfitOverride) || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
     ...exactIdentity,
     ...(adult ? ['adult'] : []),
     ...nsfwTokens,
@@ -338,11 +373,16 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
         artists: options.artistTags?.length ? options.artistTags : undefined,
         exactTokens: compositionTokens(exactIdentity, blueprint),
         scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
-        negative: (blueprint?.negativeTokens || []).join(', '),
+        negative: engine === 'moss' ? compositionNegative((blueprint?.negativeTokens || []).join(', '), blueprint)
+          : (blueprint?.negativeTokens || []).join(', '),
         rating: profileRatingTag(profile, { rating: ratingLevel }) || (ratingLevel === 'R18' ? 'nsfw' : ''),
-        style: style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
+        style: engine === 'anima' && style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
       }
   const plan = createPromptPlan({ ...commonInput, ...modelInput })
+  if (engine === 'moss') {
+    const rendered = renderMossDrawingPrompt(plan, userVisual, '')
+    return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }
+  }
   const rendered = renderPromptPlan(plan, engine, profile)
   if (engine === 'krea2') return { plan, prompt: rendered.prompt, negative: '', adult }
   // renderPromptPlan 对 anima 恒返回空 negative，但无 LoRA 工作流含负向 encode 节点，

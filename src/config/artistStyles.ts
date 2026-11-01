@@ -3,10 +3,10 @@ import { resolveDrawCapabilities } from '../utils/drawCapabilities.ts'
 
 // Curated artist tags verified against the current Danbooru artist records and
 // the Illustrious/Anima model tag indexes. WAI consumes canonical Danbooru tags;
-// Anima's official prompt contract requires a leading @ and spaces.
+// Anima artist names use @ and spaces, while named styles remain ordinary tags.
 
 export type ArtistStyleEngine = 'sd' | 'anima' | 'krea2'
-export type ArtistStyleVerification = 'project' | 'curated' | 'tag'
+export type ArtistStyleVerification = 'project' | 'curated' | 'tag' | 'style'
 export type ArtistCategory = 'cinematic' | 'pure' | 'trend' | 'grand'
 
 export interface ArtistStyleOption {
@@ -38,7 +38,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume yabuki_kentarou'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume yabuki_kentarou blue_archive_style'.split(' '),
 )
 
 /** Lightweight sampling candidates derived from the same whitelist as normalization. */
@@ -150,7 +150,7 @@ export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleE
     const parsed = parseArtistStyleItem(item)
     if (!parsed) return ''
     if (capabilities.promptFormat === 'anima-tags') {
-      const tag = animaArtistTag(parsed.id)
+      const tag = parsed.id === 'blue_archive_style' ? 'blue archive style' : animaArtistTag(parsed.id)
       return parsed.weight !== 1 ? `(${tag}:${parsed.weight})` : tag
     }
     return parsed.weight !== 1 ? `(${parsed.id}:${parsed.weight})` : parsed.id
@@ -163,6 +163,7 @@ export function artistTagsForEngine(ids: readonly string[], engine: ArtistStyleE
  * 未收录的画师会退回 `in the style of {name}`。
  */
 const KREA_ARTIST_PROSE: Record<string, string> = {
+  blue_archive_style: 'anime illustration in the style of Blue Archive',
   yoneyama_mai: 'cinematic anime illustration with flowing dynamic lines, expressive mood lighting, and a film-like color palette',
   rella: 'ethereal anime illustration with dreamy night glow, luminous colors, and cinematic lighting',
   swav: 'high-impact fantasy poster art with magical lighting and strong spatial depth',

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 217,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "caren_nsfw_shroud_of_magdalene_binding_solo",
     "title": "卡莲 · 抹大拉圣骸布缠绕与圣痕发热自持",
@@ -53,7 +53,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "outfitId": "official_exorcist_habit",
     "coverageTags": [
       "nsfw",

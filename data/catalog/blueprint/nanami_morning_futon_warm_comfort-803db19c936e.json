@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nanami_morning_futon_warm_comfort",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 2291,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "nanami_morning_futon_warm_comfort",
     "characterId": "aoyama_nanami",
@@ -36,6 +36,7 @@
     "isNsfw": true,
     "rating": "R18",
     "mature": true,
-    "adult": true
+    "adult": true,
+    "sampleRating": "All"
   }
 }

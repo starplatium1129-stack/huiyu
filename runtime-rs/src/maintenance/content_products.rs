@@ -132,10 +132,12 @@ fn entry(options: &Options, id: &str) -> Result<Value> {
         if let Some(value) = display {
             entry["displayName"] = value.clone();
         }
-        entry["rating"] = json!(if prompt::truthy(&blueprint["adult"]) {
-            "R18"
-        } else {
-            "All"
+        entry["rating"] = json!(match blueprint["sampleRating"].as_str() {
+            Some("All" | "SFW") => "All",
+            Some("R15") => "R15",
+            Some("R18") => "R18",
+            _ if prompt::truthy(&blueprint["adult"]) => "R18",
+            _ => "All",
         });
         entry["attempt"] = json!(1);
         entry["type"] = json!("popular");

@@ -33,6 +33,7 @@ import { studioPromptProfile } from '@/utils/studioPromptBuilder'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { compositionTokens } from '@/utils/blueprintComposition'
+import { mossArtistTags } from '@/utils/mossPrompt'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
@@ -257,18 +258,23 @@ export function usePromptAssembly(
     return dedupeParts(applyFraming(parts, selections.shot))
   })
 
-  const structuredResult = computed(() => engine.value === 'sd' ? null : compilePromptRecipe({
-    kind: 'studio', character: pb.char, scene: effectiveScene.value,
-    engine: engine.value, profile: modelProfile.value, identity: pb.charPrompt,
-    activeLoras: controlLoraIds.value, loraMeta: pb.loraMeta,
-    artistTags: artistTags.value, artistProse: artistProse.value,
-    emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
-    shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
-    directorSources: pb.directorSources, palette: colorMoodTokens.value,
-    manual: [...pb.manualTags], visualDescription: pb.visualDescription,
-    negativeCustom: pb.sdParams.negativeCustom, matureTokens: matureTokenSet.value,
-  }))
+  function buildStructuredResult(target: 'anima' | 'krea2' | 'moss') {
+    return compilePromptRecipe({
+      kind: 'studio', character: pb.char, scene: effectiveScene.value,
+      engine: target, profile: target === 'moss' ? null : modelProfile.value, identity: pb.charPrompt,
+      activeLoras: target === 'moss' ? {} : controlLoraIds.value, loraMeta: pb.loraMeta,
+      artistTags: target === 'moss' ? mossArtistTags(activeArtistStyleIds.value) : artistTags.value,
+      artistProse: target === 'moss' ? '' : artistProse.value,
+      emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
+      shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
+      directorSources: pb.directorSources, palette: colorMoodTokens.value,
+      manual: [...pb.manualTags], visualDescription: pb.visualDescription,
+      negativeCustom: pb.sdParams.negativeCustom, matureTokens: matureTokenSet.value,
+    })
+  }
+  const structuredResult = computed(() => engine.value === 'sd' ? null : buildStructuredResult(engine.value))
   const structuredPlan = computed(() => structuredResult.value?.plan ?? null)
+  const mossPlan = computed(() => buildStructuredResult('moss').plan)
 
   /**
    * WAI（SD）：质量前缀官方空格原样保留一次，rating 一次，单一标签流。
@@ -330,5 +336,6 @@ export function usePromptAssembly(
     artViolations,
     previewPrompt,
     structuredPlan,
+    mossPlan,
   }
 }

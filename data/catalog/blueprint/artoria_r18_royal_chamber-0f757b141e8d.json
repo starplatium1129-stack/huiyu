@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_r18_royal_chamber",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "artoria_r18_royal_chamber",
     "title": "阿尔托莉雅 · 卡美洛沙龙·贵妃榻与誓约蓝宝石",
@@ -20,7 +20,7 @@
     "recommendedSize": "1536x1152",
     "adult": true,
     "adultEligibility": "adult",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw",
       "iconic",

@@ -18,6 +18,7 @@ import {
 import { plainEnglish } from '@/utils/promptCompiler.ts'
 import { COLOR_MOODS } from '@/config/promptConstants.ts'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
+import { mossArtistTags } from '@/utils/mossPrompt.ts'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PopularPromptAssemblyState = Pick<PromptBuilderStore, 'artistStyleIds' | 'colorMood' | 'directorMode' | 'emotionPrompt'
@@ -81,17 +82,16 @@ export function usePopularPromptAssembly(
     new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => tag.en.trim().toLowerCase().replace(/\s+/g, '_'))),
   )
 
-  const result = computed(() => {
+  function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subject = pb.subject
     if (subject.kind !== 'popular' || !character.value || !outfit.value) return null
-    if (engine.value !== 'anima' && engine.value !== 'krea2') return null
     return compilePromptRecipe({
       kind: 'popular',
       character: character.value,
       outfit: outfit.value,
       blueprint: blueprint.value,
-      engine: engine.value,
-      profile: profile.value,
+      engine: target,
+      profile: target === 'moss' ? null : profile.value,
       manual: [...pb.manualTags],
       emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot,
@@ -102,12 +102,14 @@ export function usePopularPromptAssembly(
       matureTokens: matureTokenSet.value,
       visualDescription: pb.visualDescription,
       negativeCustom: pb.sdParams.negativeCustom,
-      artistTags: artistTagsForEngine(activeArtistStyleIds.value, engine.value),
-      artistProse: artistStyleProse(activeArtistStyleIds.value, engine.value),
+      artistTags: target === 'moss' ? mossArtistTags(activeArtistStyleIds.value) : artistTagsForEngine(activeArtistStyleIds.value, target),
+      artistProse: target === 'moss' ? '' : artistStyleProse(activeArtistStyleIds.value, target),
       outfitOverride: pb.outfitOverride?.tokens ?? (randomVariation.value?.outfit.length ? randomVariation.value.outfit : null),
       outfitExplicit: outfitExplicit.value,
     })
-  })
+  }
+  const result = computed(() => engine.value === 'anima' || engine.value === 'krea2' ? buildResult(engine.value) : null)
+  const mossPlan = computed(() => buildResult('moss')?.plan ?? null)
 
   /**
    * An explicit choice includes the default outfit. Legacy drafts have no choice flag;
@@ -149,6 +151,7 @@ export function usePopularPromptAssembly(
     outfit,
     blueprint,
     structuredPlan,
+    mossPlan,
     positivePrompt,
     negativePrompt,
     previewPrompt,

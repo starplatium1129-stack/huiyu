@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_blizzard_shroud_magdalene_exorcism",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 209,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "caren_blizzard_shroud_magdalene_exorcism",
     "title": "卡莲 · 暴雪教会的抹大拉圣骸布",
@@ -60,7 +60,7 @@
       "combat"
     ],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "All",
     "animaCaption": "The Shroud crosses the foreground from her raised hand toward the creature below the steps."
   }
 }

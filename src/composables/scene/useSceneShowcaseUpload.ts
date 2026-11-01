@@ -76,7 +76,7 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
   const showcaseFeedback = ref('')
   const showcaseError = ref(false)
   const { loading: manifestLoading, error: manifestError, reload: loadShowcaseManifest,
-    thumbUrl, imageUrl, hasShowcase, invalidateAsset } = useShowcaseAssets(errorMessage)
+    entryFor, thumbUrl, imageUrl, hasShowcase, invalidateAsset } = useShowcaseAssets(errorMessage)
   const uploadBusy = ref(false)
   const showcaseFileEl = ref<HTMLInputElement | null>(null)
   const heroFileEl = ref<HTMLInputElement | null>(null)
@@ -300,7 +300,7 @@ export function useSceneShowcaseUpload({ errorMessage, mode }: UploadHooks) {
     showcaseFeedback, showcaseError, uploadBusy,
     showcaseFileEl, heroFileEl, selectedHeroId, selectedHeroTitle, homeHeroes,
     showcaseUrl, heroUrl, manifestLoading, manifestError,
-    thumbUrl, imageUrl, hasShowcase, loadShowcaseManifest,
+    entryFor, thumbUrl, imageUrl, hasShowcase, loadShowcaseManifest,
     previewImage, onShowcaseMissing, pickShowcase, previewHero, pickHero,
     resetHero, onShowcasePicked, onHeroPicked,
   }

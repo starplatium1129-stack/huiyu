@@ -13,7 +13,7 @@ export type PromptRecipe =
 export function compilePromptRecipe(recipe: PromptRecipe) {
   if (recipe.kind === 'studio') return buildStudioPromptPlan(recipe)
   if (recipe.kind === 'free') return {
-    ...buildFreePromptPlan(recipe), profile: recipe.profile ?? null,
+    ...buildFreePromptPlan(recipe), profile: recipe.engine === 'moss' ? null : recipe.profile ?? null,
     selections: { shot: recipe.shot ?? null, lighting: recipe.lighting ?? null, composition: recipe.composition ?? null },
   }
   const inherited = inferBlueprintDecisions(recipe.blueprint)
@@ -26,5 +26,6 @@ export function compilePromptRecipe(recipe: PromptRecipe) {
   for (const key of ['shot', 'lighting', 'composition'] as const) {
     directorSources[key] = isManualDirectorValue(recipe.directorSources, key, selections[key], inherited[key]) ? 'manual' : 'scene'
   }
-  return { ...buildPopularPromptPlan({ ...recipe, ...selections, directorSources }), selections, profile: recipe.profile ?? null }
+  return { ...buildPopularPromptPlan({ ...recipe, ...selections, directorSources }), selections,
+    profile: recipe.engine === 'moss' ? null : recipe.profile ?? null }
 }

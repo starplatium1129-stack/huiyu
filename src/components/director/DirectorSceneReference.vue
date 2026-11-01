@@ -38,16 +38,16 @@ const scene = computed(() => {
   const subject = pb.subject
   if (subject.kind === 'popular') {
     const blueprint = pb.sceneBlueprints.find(item => item.id === subject.blueprintId && item.characterId === subject.characterId)
-    return blueprint ? { title: blueprint.title, id: catalogShowcaseId({ kind: 'blueprint', characterId: subject.characterId, id: blueprint.id }), rating: blueprint.adult ? 'R18' : blueprint.sampleRating } : null
+    return blueprint ? { title: blueprint.title, id: catalogShowcaseId({ kind: 'blueprint', characterId: subject.characterId, id: blueprint.id }) } : null
   }
-  return pb.activeScene ? { title: pb.activeScene.title, id: pb.activeScene.id, rating: pb.activeScene.mature ? 'R18' : pb.activeScene.rating } : null
+  return pb.activeScene ? { title: pb.activeScene.title, id: pb.activeScene.id } : null
 })
 const { loading, entryFor, thumbUrl } = useShowcaseAssets()
 const entry = computed(() => {
   const item = scene.value ? entryFor(scene.value.id) : undefined
   return item?.type === 'scene' || item?.type === 'popular' ? item : undefined
 })
-const restricted = computed(() => entry.value?.rating === 'R18' || scene.value?.rating === 'R18')
+const restricted = computed(() => entry.value?.rating === 'R18')
 const imageUrl = computed(() => {
   return entry.value ? thumbUrl(entry.value.id) : ''
 })

@@ -176,7 +176,9 @@
             :anima-disabled="!pb.isPopular && pb.char === 'triad' && !renderBindings.supportsDualCharacter('anima')"
             :krea-disabled="!pb.isPopular && pb.char === 'triad' && !renderBindings.supportsDualCharacter('krea2')"
             :before-switch="native.mode.value ? native.saveBeforeSwitch : undefined" @select-native="renderBindings.setDrawEngine" />
-          <AsyncPanel v-if="native.mode.value" :loader="loadNativeControls" label="绘制参数" v-slot="{ component }"><component :is="component" :drawing="native" :busy="generationBusy" /></AsyncPanel>
+          <AsyncPanel v-if="native.mode.value" :loader="loadNativeControls" label="绘制参数" v-slot="{ component }"><component :is="component" :drawing="native" :busy="generationBusy">
+            <template #style><PromptInspectorStyle :bindings="styleBindings" engine="moss" /></template>
+          </component></AsyncPanel>
           <AsyncPanel v-else :loader="loadInspectorRender" label="绘制参数" v-slot="{ component }"><component :is="component" :bindings="renderBindings">
             <template #size><GenerationSizePicker :engine="drawEngine" :size="genBarSize" :anima-sizes="animaBarSizes" :busy="generationBusy" @update:size="genBarSize = $event" /></template>
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>

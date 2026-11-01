@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_r18_b6_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1383,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "asada_shino_r18_b6_01",
     "title": "朝田诗乃 · GGO沙漠废墟狙击掩体紧身皮衣主控跨坐 ·「桐人……我的黑卡蒂狙击枪准星，现在只锁定你」",
@@ -51,7 +51,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "green_tactical_bodysuit",

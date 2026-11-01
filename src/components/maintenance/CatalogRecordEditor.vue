@@ -14,7 +14,7 @@
             <input v-else class="input" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" :aria-invalid="fieldError?.field === field.path || undefined" @input="update(field, ($event.target as HTMLInputElement).value)" />
             <span v-if="field.type === 'list'" class="catalog-field-note">每行一项</span>
             <span v-if="field.path === 'rating'" class="catalog-field-note">成人内容标记随分级同步</span>
-            <span v-if="field.path === 'sampleRating'" class="catalog-field-note">只影响样张展示，不改变绘制内容</span>
+            <span v-if="field.path === 'sampleRating'" class="catalog-field-note">新上传样张使用此分级，已有样张保持原分级</span>
             <span v-if="field.path === 'outfitId' && outfitReadError" class="catalog-error" role="alert">服装列表暂时无法读取：{{ outfitReadError }}</span>
             <span v-if="fieldError?.field === field.path" class="catalog-error" role="alert">{{ fieldError.message }}</span>
           </label>

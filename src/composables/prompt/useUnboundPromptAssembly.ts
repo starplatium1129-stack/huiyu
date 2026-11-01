@@ -6,25 +6,28 @@ import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { analyzeParts, checkArtDirection, mergeTokenText, type PromptEngine, type ModelProfile } from '@/utils/promptPolicy'
 import { compilePromptRecipe } from '@/utils/promptRecipe'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
+import { mossArtistTags } from '@/utils/mossPrompt'
 
 /** The workspace supplies selections; the shared recipe owns native prompt rendering. */
 export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularPromptAssemblyState, 'popularCharacters'>, engine: Readonly<Ref<PromptEngine>>, profile: Readonly<Ref<ModelProfile | null>>) {
   const artists = computed(() => pb.directorMode === 'pro' ? pb.artistStyleIds : [])
-  const result = computed(() => {
-    if (engine.value === 'sd') return null
+  function buildResult(target: 'anima' | 'krea2' | 'moss') {
     const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
     return compilePromptRecipe({
-      kind: 'free', engine: engine.value, profile: profile.value,
+      kind: 'free', engine: target, profile: target === 'moss' ? null : profile.value,
       manual: [...pb.manualTags], emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
       palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],
-      artistTags: artistTagsForEngine(artists.value, engine.value), artistProse: artistStyleProse(artists.value, engine.value),
+      artistTags: target === 'moss' ? mossArtistTags(artists.value) : artistTagsForEngine(artists.value, target),
+      artistProse: target === 'moss' ? '' : artistStyleProse(artists.value, target),
       visualDescription: pb.visualDescription, negativeCustom: pb.sdParams.negativeCustom,
       characterTokens: [...subjects.flatMap(subject => subject.characterTokens || []), ...(pb.referenceInput?.characterTokens || [])],
       copyrightTokens: [...subjects.flatMap(subject => subject.copyrightTokens || []), ...(pb.referenceInput?.copyrightTokens || [])],
     })
-  })
+  }
+  const result = computed(() => engine.value === 'sd' ? null : buildResult(engine.value))
   const structuredPlan = computed(() => result.value?.plan ?? null)
+  const mossPlan = computed(() => buildResult('moss').plan)
   const positivePrompt = computed(() => {
     if (engine.value !== 'sd') return result.value?.prompt ?? ''
     const description = pb.visualDescription.trim()
@@ -45,5 +48,5 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
     { text: positivePrompt.value }, { cls: 'n', text: negativePrompt.value },
   ], engine.value, profile.value))
   const artViolations = computed(() => checkArtDirection(positivePrompt.value, profile.value))
-  return { structuredPlan, positivePrompt, negativePrompt, previewPrompt, promptReport, artViolations }
+  return { structuredPlan, mossPlan, positivePrompt, negativePrompt, previewPrompt, promptReport, artViolations }
 }

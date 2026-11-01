@@ -15,14 +15,22 @@ def activation_reserve(pixels, image_conditioned):
 
 
 class Residency(memory.Residency):
-    def __init__(self, components, policy, pixels, *, image_conditioned, decode_pixels):
+    def __init__(self, components, policy, pixels, *, image_conditioned, decode_pixels, retain_components=False):
         self.records, self.entry_hooks, self.active = [], [], None
         self.readers, self.staging, self.staging_views = {}, None, None
         self.copy_events, self.copy_active, self.copy_index = [], [False, False], 0
         self.control = None
+        self.retain_components = retain_components
+        self.retention_requested = retain_components
+        self.cast_reserve = 0
         self.block_reserves = {}
         self.decode_reserve = max(1024**3, decode_pixels * 1536)
         super().__init__(components, policy, activation_reserve=activation_reserve(pixels, image_conditioned))
+        if retain_components:
+            import torch
+            self.cast_reserve = max((sum(t.numel() * 2 for t in module.parameters(recurse=False)
+                if t.dtype == torch.float8_e4m3fn) for component in self.modules.values()
+                for module in component.modules()), default=0)
         self.report["strategy"] = "mapped-retained-offload-v1"
 
     def add(self, name, module):
@@ -156,7 +164,8 @@ class Residency(memory.Residency):
         if self.active == name:
             return
         for record in self.records:
-            if record["name"] != name and not (name == "vae" and record["name"] == "transformer"):
+            if (not self.retain_components and record["name"] != name
+                    and not (name == "vae" and record["name"] == "transformer")):
                 self.restore(record)
         self.active = name
         for other_name, module in self.modules.items():
@@ -172,17 +181,20 @@ class Residency(memory.Residency):
             if record["name"] == name and record["keep"]:
                 self.load_record(record)
         if name == "vae":
-            self.make_room(self.decode_reserve)
+            weights = memory.tensor_bytes(self.modules["vae"]) if self.retain_components else 0
+            self.make_room(self.decode_reserve + weights)
 
     def make_room(self, required):
         import torch
         free, _ = torch.cuda.mem_get_info()
         released, seen = 0, set()
-        for record in reversed(self.records):
+        # Reclaim text weights before retiring the denoiser, which will be used
+        # again for the next image. Legacy offload retains only the denoiser.
+        order = ("text_encoder", "transformer") if self.retain_components else ("transformer",)
+        candidates = [record for name in order for record in reversed(self.records) if record["name"] == name]
+        for record in candidates:
             if free + released >= required:
                 break
-            if record["name"] != "transformer":
-                continue
             for tensor in record["sources"]:
                 if tensor.device.type == "cuda" and id(tensor) not in seen:
                     seen.add(id(tensor))
@@ -195,7 +207,7 @@ class Residency(memory.Residency):
         # Retain denoiser weights across decode and the next request. They remain
         # owned by the existing native worker and are released on handoff/timeout.
         for record in self.records:
-            if record["name"] != "transformer":
+            if record["name"] != "transformer" and not (self.retain_components and record["keep"]):
                 self.restore(record)
 
     def plan(self, pixels, *, image_conditioned=False, control=None, decode_pixels):
@@ -206,22 +218,38 @@ class Residency(memory.Residency):
         free, _ = torch.cuda.mem_get_info()
         owned = {id(tensor): tensor for module in self.modules.values()
                  for tensor in (*module.parameters(), *module.buffers()) if tensor.device.type == "cuda"}
-        reserve = activation_reserve(pixels, image_conditioned)
+        # Cold loading has no denoiser to preserve: let the first text pass use
+        # its normal budget. Warm requests can stream text around live denoiser
+        # weights instead of uploading the same denoiser again after every edit.
+        self.retain_components = self.retention_requested and any(
+            tensor.device.type == "cuda" for tensor in self.modules["transformer"].parameters())
+        reserve = activation_reserve(pixels, image_conditioned) + self.cast_reserve
         budget = max(0, free + sum(t.numel() * t.element_size() for t in owned.values()) - reserve)
         self.report.update(freeBytes=free, activationReserveBytes=reserve, weightBudgetBytes=budget)
-        for row in self.report["components"]:
+        remaining = budget
+        text_stream = max((record["bytes"] for record in self.records
+                          if record["name"] == "text_encoder" and not record["vision_only"]), default=0)
+        # The full-precision denoiser gets first claim. Text groups share
+        # the remaining budget instead of evicting the denoiser at each prompt.
+        rows = self.report["components"]
+        if self.retain_components:
+            rows = sorted(rows, key=lambda row: row["name"] != "transformer")
+        for row in rows:
             records = [record for record in self.records if record["name"] == row["name"]]
             if not records:
                 continue
+            component_budget = remaining if self.retain_components else budget
+            if self.retain_components and row["name"] == "transformer":
+                component_budget = max(0, component_budget - text_stream)
             streamed = self.block_reserves[row["name"]]
             for _ in range(2):
-                available = max(0, budget - streamed)
+                available = max(0, component_budget - streamed)
                 for record in records:
                     # Text-only prompts never execute the vision tower. Image
                     # encoders stream their consumed layers to leave room for prefill.
                     unused = record["vision_only"] and not image_conditioned
                     retain = not unused and not (image_conditioned and row["name"] == "text_encoder")
-                    record["keep"] = retain and (row["weightBytes"] <= budget or record["bytes"] <= available)
+                    record["keep"] = retain and (row["weightBytes"] <= component_budget or record["bytes"] <= available)
                     if record["keep"]:
                         available -= record["bytes"]
                     else:
@@ -234,6 +262,8 @@ class Residency(memory.Residency):
             retained = {tensor: source for record in records if record["keep"]
                         for tensor, source in record["sources"].items()}
             row["retainedWeightBytes"] = sum(source.numel() * source.element_size() for source in retained.values())
+            if self.retain_components:
+                remaining = max(0, remaining - row["retainedWeightBytes"])
 
     def bind(self, pipeline):
         if self.manager is not None and not self.manager.model_hooks:

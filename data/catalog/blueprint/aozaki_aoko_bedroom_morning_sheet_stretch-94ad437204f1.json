@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_bedroom_morning_sheet_stretch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2682,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "aozaki_aoko_bedroom_morning_sheet_stretch",
     "characterId": "aozaki_aoko",
@@ -44,6 +44,7 @@
     "isNsfw": true,
     "rating": "R18",
     "mature": true,
-    "adult": true
+    "adult": true,
+    "sampleRating": "All"
   }
 }

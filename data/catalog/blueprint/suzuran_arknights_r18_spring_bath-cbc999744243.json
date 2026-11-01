@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_r18_spring_bath",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 644,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-01T06:32:54.035304+00:00",
   "data": {
     "action": "裹好浴巾坐在水下石阶，一手扶尾巴，另一手扶石阶。",
     "adult": false,
@@ -34,7 +34,7 @@
       "medium shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "hot_spring",
       "towel",

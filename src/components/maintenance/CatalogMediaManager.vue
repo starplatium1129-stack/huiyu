@@ -13,7 +13,7 @@
         <StudioSearch v-model="search" label="搜索样张" placeholder="搜索场景、蓝图或角色…" />
         <StudioSelect v-model="kind" label="内容类型" :options="[{ value: 'media', label: '全部场景与蓝图' }, { value: 'scene', label: '场景故事' }, { value: 'blueprint', label: '角色蓝图' }]" />
         <StudioSelect v-model="character" label="样张所属角色" :options="[{ value: '', label: '全部角色' }, ...(result?.facets.characters ?? []).map(id => ({ value: id, label: characterNames[id] || id }))]" />
-        <StudioSelect v-model="rating" label="样张适用范围" :options="[{ value: '', label: '全部内容' }, { value: 'All', label: '全年龄' }, { value: 'R15', label: '十五岁以上' }, { value: 'R18', label: '成人内容' }]" />
+        <StudioSelect v-model="rating" label="场景内容分级" :options="[{ value: '', label: '全部内容' }, { value: 'All', label: '全年龄' }, { value: 'R15', label: '十五岁以上' }, { value: 'R18', label: '成人内容' }]" />
       </div>
       <label class="catalog-media-sensitive-switch"><input v-model="showAdultImages" type="checkbox" />揭示 R18 缩略图遮罩</label>
       <div class="catalog-media-workspace">
@@ -24,7 +24,7 @@
           <div v-if="result?.items.length" ref="sampleGrid" class="catalog-media-grid">
             <button v-for="item in result.items" :key="item.kind + ':' + item.id" class="catalog-sample-card" type="button" :disabled="loading || !!error" :aria-pressed="selectedImageId === showcaseItem(item).id" :aria-label="'查看样张：' + item.title" @click="selectSample(item, $event)">
               <span class="catalog-sample-image">
-                <RuntimeImage v-if="thumbUrl(showcaseItem(item).id)" :src="thumbUrl(showcaseItem(item).id)" v-slot="{ image, loaded, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" class="catalog-media-image" :class="{ 'is-ready': loaded, 'is-mature': item.rating === 'R18' && !showAdultImages }" /><span v-if="!loaded" class="catalog-sample-empty"><ArchiveIcon name="image" />{{ failed ? '图片暂不可用' : '读取图片…' }}</span></RuntimeImage>
+                <RuntimeImage v-if="thumbUrl(showcaseItem(item).id)" :src="thumbUrl(showcaseItem(item).id)" v-slot="{ image, loaded, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" class="catalog-media-image" :class="{ 'is-ready': loaded, 'is-mature': (entryFor(showcaseItem(item).id)?.rating ?? item.rating) === 'R18' && !showAdultImages }" /><span v-if="!loaded" class="catalog-sample-empty"><ArchiveIcon name="image" />{{ failed ? '图片暂不可用' : '读取图片…' }}</span></RuntimeImage>
                 <span v-else class="catalog-sample-empty"><ArchiveIcon name="image" />{{ manifestLoading ? '读取图片…' : '待补样张' }}</span>
               </span>
               <span class="catalog-sample-copy"><strong>{{ item.title }}</strong><small>{{ characterNames[item.characterId] || '未命名角色' }} · {{ item.kind === 'blueprint' ? '蓝图' : '故事' }}</small></span>
@@ -82,7 +82,7 @@ function resetFilters() {
   search.value = ''; character.value = ''; rating.value = ''; kind.value = 'media'
 }
 watch(listScope, () => { if (sampleGrid.value) sampleGrid.value.scrollTop = 0 }, { flush: 'post' })
-const { showcaseUrl, onShowcaseMissing, uploadBusy, pickShowcase, showcaseFileEl, onShowcasePicked, homeHeroes, selectedHeroId, selectedHeroTitle, previewHero, heroUrl, pickHero, resetHero, heroFileEl, onHeroPicked, showcaseFeedback, showcaseError, previewImage, selectedImageId, selectedImageTitle, thumbUrl, hasShowcase, manifestLoading, manifestError, loadShowcaseManifest } = useSceneShowcaseUpload({ mode: () => mode.value, errorMessage: (e, fallback) => e instanceof Error ? e.message : fallback })
+const { showcaseUrl, onShowcaseMissing, uploadBusy, pickShowcase, showcaseFileEl, onShowcasePicked, homeHeroes, selectedHeroId, selectedHeroTitle, previewHero, heroUrl, pickHero, resetHero, heroFileEl, onHeroPicked, showcaseFeedback, showcaseError, previewImage, selectedImageId, selectedImageTitle, entryFor, thumbUrl, hasShowcase, manifestLoading, manifestError, loadShowcaseManifest } = useSceneShowcaseUpload({ mode: () => mode.value, errorMessage: (e, fallback) => e instanceof Error ? e.message : fallback })
 async function selectSample(item: CatalogSummary, event: MouseEvent) {
   const origin = event.currentTarget, keyboard = event.detail === 0 && document.activeElement === origin
   const selected = showcaseItem(item)

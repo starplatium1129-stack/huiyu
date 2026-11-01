@@ -5,15 +5,20 @@ import type { usePromptWorkspace } from './usePromptWorkspace'
 import type { GenerationPresentation } from './useGenerationPresentation'
 import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { nativeDrawingPrompt } from '@/utils/nativeDrawingPrompt'
+import { renderMossDrawingPrompt } from '@/utils/mossPrompt'
 
 export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace>) {
   const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter(), active = ref(true)
   const mode = navigation.mode, session = shallowRef<ReturnType<typeof useQwenStudio> | null>(null)
   let scope: EffectScope | undefined
   const recipe = computed(() => {
-    try { return { ...nativeDrawingPrompt(workspace.healthBindings.structuredPlan.value,
-      workspace.pb.visualDescription, session.value?.form.negative || '', mode.value || 'qwen'), error: '' } }
-    catch (cause) { return { raw: workspace.pb.visualDescription, prompt: '', negative: '', error: cause instanceof Error ? cause.message : '提示词尚未准备好' } }
+    try {
+      const description = workspace.pb.visualDescription, negative = session.value?.form.negative || ''
+      return { ...(mode.value === 'moss'
+        ? renderMossDrawingPrompt(workspace.mossPlan.value, description, negative)
+        : { ...nativeDrawingPrompt(workspace.healthBindings.structuredPlan.value, description, negative), tagLine: '' }), error: '' }
+    }
+    catch (cause) { return { raw: workspace.pb.visualDescription, prompt: '', negative: '', tagLine: '', error: cause instanceof Error ? cause.message : '提示词尚未准备好' } }
   })
   const busy = computed(() => !!session.value && (session.value.busy.value || session.value.unresolved.value || session.value.importing.value || session.value.cancelling.value))
   const locked = computed(() => !session.value || session.value.locked.value)
@@ -87,6 +92,6 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   onDeactivated(() => { active.value = false; dispose() })
   onActivated(() => { if (!active.value) { active.value = true; void initialize() } })
   onScopeDispose(dispose)
-  return { mode, session, recipe, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, initialize, saveBeforeSwitch }
+  return { mode, session, recipe, mossPlan: workspace.mossPlan, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, initialize, saveBeforeSwitch }
 }
 export type NativeDrawing = ReturnType<typeof useNativeDrawing>

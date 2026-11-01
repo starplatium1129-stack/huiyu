@@ -124,6 +124,7 @@
       <div v-if="modelTokens" class="artist-style-tokens">
         <span class="tokens-engine">{{ engineLabel }} 注入：</span>
         <code>{{ modelTokens }}</code>
+        <span v-if="engine === 'moss'">MOSS 按名称使用画师风格，不支持权重。</span>
       </div>
     </div>
     <footer v-if="revealed" class="artist-dialog-selected">
@@ -141,6 +142,7 @@
               <ArchiveIcon name="close" />
             </button>
             <button
+              v-if="engine !== 'moss'"
               type="button"
               class="artist-weight-pill"
               :class="weightClass(item.weight)"
@@ -184,10 +186,11 @@ import {
 import { ARTIST_COMBO_PRESETS } from '@/config/artistComboPresets'
 import { ARTIST_STYLE_OPTIONS } from '@/config/artistStyleCatalog'
 import { sortByStyleFunnel, useArtistStyleFunnel } from '@/composables/useArtistStyleFunnel'
+import { mossArtistTags } from '@/utils/mossPrompt'
 
 const props = withDefaults(defineProps<{
   selected: string[]
-  engine: ArtistStyleEngine
+  engine: ArtistStyleEngine | 'moss'
   curatedArtistStyles?: string[]
 }>(), {
   curatedArtistStyles: () => [],
@@ -284,20 +287,22 @@ const selectionSummary = computed(() => {
   if (!selectedItems.value.length) return '未启用'
   return selectedItems.value.map(item => {
     const name = item.option.cnName || item.option.name
-    return item.weight !== 1 ? `${name}(${item.weight})` : name
+    return props.engine !== 'moss' && item.weight !== 1 ? `${name}(${item.weight})` : name
   }).join(' + ')
 })
 
-const engineLabel = computed(() => props.engine === 'sd' ? 'WAI / Illustrious' : props.engine === 'anima' ? 'Anima' : 'Krea 2')
+const engineLabel = computed(() => props.engine === 'sd' ? 'WAI / Illustrious' : props.engine === 'anima' ? 'Anima' : props.engine === 'moss' ? 'MOSS' : 'Krea 2')
 const modelTokens = computed(() => {
   if (!selectedItems.value.length) return ''
   if (props.engine === 'krea2') {
     return artistStyleProse(props.selected, 'krea2')
   }
+  if (props.engine === 'moss') return mossArtistTags(props.selected).map(tag => tag.replace(/_/g, ' ')).join(', ')
   return artistTagsForEngine(props.selected, props.engine).join(', ')
 })
 
 function verificationLabel(verification: ArtistStyleVerification): string {
+  if (verification === 'style') return '画风词'
   if (verification === 'project') return '项目实测'
   if (verification === 'tag') return '热门推荐'
   return '官方收录'

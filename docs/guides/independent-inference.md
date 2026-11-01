@@ -134,14 +134,19 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
   - Anima 使用 `inference.memoryPolicy`，默认 `resident`；Krea、Qwen、MOSS、漫画重绘及原生视频使用 `inference.adapterMemoryPolicy`，默认 `offload`。在控制室分别保存，启用模型保留已有选择；Anima 的 Sage/编译加速不传给其他模型。
   - `resident`（模型常驻）：权重常驻显存，需要显卡能容纳完整模型及运行时激活。
   - `offload`（分阶段卸载）：文本编码器与去噪网络按需搬运，节省显存占用。
-  - Qwen/MOSS 的 `offload` 直接映射原权重文件，按当前画幅和空闲显存保留常用层，不生成磁盘权重副本。常驻权重先于临时激活分配；参考图前缀 K/V 可无损保存在 CPU，相同输入的条件编码在模型保护期内复用。
+  - Qwen/MOSS 的 `offload` 直接映射原权重文件，按当前画幅和空闲显存保留常用层，不生成磁盘权重副本。常驻权重先于临时激活分配；参考图前缀 K/V 可无损保存在 CPU，相同输入的条件编码在模型保护期内复用。条件缓存按最近使用保留最多 8 项、合计不超过 64 MiB，命中的常用负向编码会更新保留顺序。
+  - MOSS 首次编码使用原有阶段预算；已有扩散权重驻留时，后续任务优先保留扩散模型，让文本层共用剩余显存并按需流式搬运。这也适用于原始 BF16 文本编码器；为最大文本组、激活、精度转换及解码预留空间，不能保证任意画幅或外部显存占用下全部常驻。
 - **显存释放机制**：
   - 最后一次任务完成后，连续空闲 10 分钟自动释放模型与显存。
   - 启动本地对话或语音时，自动交接显存资源；退出桌面端立即终止子进程。
 
 ## 8. MiaoMiao Harem MOSS BASE v1.0
 
-模型 ID 为 `moss-miaomiao-base-v1.0`。从「我的作品 → MiaoMiao MOSS 创作」进入，或在控制室选择该模型准备。先登录[作者版本页](https://civitai.com/models/3015023?modelVersionId=3422319)，下载 `miaomiaoHaremMOSS_baseV10_fp16.safetensors`，在准备面板填写完整本机路径。准备先核对作者 SHA-256 并复制权重，再下载固定版本的 Qwen3.5-9B 编码器、tokenizer 与 FLUX.2 VAE；原文件保留。完整组件约 27.2 GB，另需运行库、缓存及暂存空间，按面板预算准备磁盘。当前不接入作者 INT8/ConvRot 文件。
+模型 ID 为 `moss-miaomiao-base-v1.0`。从「我的作品 → MiaoMiao MOSS 创作」进入，或在控制室选择该模型准备。先登录[作者版本页](https://civitai.com/models/3015023?modelVersionId=3422319)，下载 `miaomiaoHaremMOSS_baseV10_fp16.safetensors`，在准备面板填写完整本机路径。准备先核对作者 SHA-256 并复制权重，再下载固定版本的 Qwen3.5-9B 编码器、tokenizer 与 FLUX.2 VAE；原文件保留。完整组件约 27.2 GB，另需运行库、缓存及暂存空间，按面板预算准备磁盘。已有完整目录可额外导入同一作者版本的 INT8 文件，复用编码器、tokenizer 与 VAE。
+
+作者 BASE v1.0 INT8（Civitai file `3316568`，5,413,700,574 bytes，SHA-256 `8aa2d469b28ea72beb35730b3a00bf0bffbaca03f0419d6f05d390614fe689d9`）为 Comfy 的逐通道 INT8 ConvRot，分组 256。关闭桌面/原生推理后运行 `npm run wf -- models:import-moss-int8 --source <作者INT8文件> --model-dir <已准备的moss-miaomiao-base-v1.0目录>` 预览，追加 `--apply` 才边复制边核对完整 SHA-256，再发布 `huiyu-moss-int8.json` 导入记录；原下载与 FP16 不覆盖，不复制配套组件。工作文件位于该目录 `transformer/miaomiaoHaremMOSS_baseV10_int8.safetensors`，异常中断留下的未登记文件可在下次导入校验后接续登记。
+
+高级参数「主模型权重」保存 `mossWeightPrecision: auto | fp16 | int8`；默认自动优先使用有效导入的 INT8，未导入时使用 FP16，可显式切回 FP16。INT8 使用已有 `comfy-kitchen==0.2.37` / CUDA 13 Python 运行库的真实 INT8 线性算子，权重和 FP32 scale 以普通参数/缓冲区交给同一显存调度器，不还原整套 BF16 权重；注意力在可用时使用作者标记的 Kitchen INT8 内核，否则沿原有 Sage/PyTorch 路径。当前本机复用 ComfyUI Python；受管 PyTorch 2.9 环境不会被自动升级，缺少可用算子时请使用兼容独立 Python 或选择 FP16。导入、文件就绪与编译均不代表当前真实出图/画质/耗时已验收。
 
 按[作者 BASE v1.0 说明](https://civitai.com/models/3015023?modelVersionId=3422319)，默认使用 Euler、50 步、CFG 3.5、768×1280；其推荐范围为 30–50 步，宽高为 16 的倍数。[OpenMOSS 管线](https://github.com/OpenMOSS/MOSS-Image)的 Shift 固定为 5、负分支跳过第 22 层。模型与 Anima 分别登记，不使用 Anima 编码器、VAE、角色 LoRA 或 TeaCache。
 
@@ -149,7 +154,15 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 
 MOSS 官方管线代码固定到 `OpenMOSS-Team/MOSS-Image-Base@85975793d8b3d432f1b6e27f352abaa4c2a4c0d3`，随产品附 Apache-2.0 许可，不执行模型目录提供的 Python。支持受管 PyTorch 2.9.0 / torchvision 0.24.0 及上面的共享图像运行库；作者 FP16 权重在上传 GPU 时转换为 BF16，不在主机内存复制完整权重。文件就绪和依赖可导入不代表本机画质、耗时或显存验收通过。
 
-MOSS 创作的高级参数可选择「Spectrum · 实验」缓存加速，默认关闭。实现基于 [Spectrum 原始 MIT 代码](https://github.com/hanjq17/Spectrum/tree/4e41f91c93ff66b045332530dd7bcb4c60eafbab)的 Chebyshev 与一阶 Taylor 混合预测，随包保留 `SPECTRUM-LICENSE`；不引入 ComfyUI 插件。当前只缓存图像隐藏状态，正负分支及跳层组合各自隔离，固定前 6 步、末 3 步与每次预测后的刷新步完整计算；短采样会减少或不进行预测。每个任务独立清理，保留取消及进度。显存余量不足、拟合失败或预测出现非有限值时使用完整计算，并在任务 `nativeRuntime.mossAcceleration` 记录实际计算/预测次数及原因。请求、草稿和作品保留 `mossAcceleration: off | spectrum`，不使用 Anima TeaCache 阈值。该 MIAOKA 微调尚未完成真实权重和画质/性能验收，不能据社区其他模型数据宣称本机提速倍数。
+高级参数的「文本编码精度」可选 `mossTextPrecision: bf16 | fp8`，默认及旧任务均为 `bf16`。`fp8` 使用现有 Diffusers 的 [layerwise casting](https://huggingface.co/docs/diffusers/optimization/memory#layerwise-casting)，只将文本编码器的部分 Linear 权重存为 FP8、计算时恢复 BF16；保留词嵌入、归一化、DeltaNet 门控/卷积、最后一层及视觉模块的原精度。原始文件不修改，不下载量化文件、不引入新依赖；草稿、任务与作品保存所选精度，切换精度重新加载权重组。该选项可能改变画面细节，实际画质和提速仍需设备验收。
+
+MiaoMiao 单文件里的融合 QKV 直接作为一个投影加载，不拆成三个矩阵乘法；原始分离 Q/K/V 目录仍按其结构加载。每个任务单独复用文本细化、RoPE 与同一步正负分支的时间调制，文本/RoPE 缓存合计不超过 64 MiB，结束、取消或失败均释放。Spectrum 预测步跳过文本细化。以上不需要更换作者权重。
+
+「编译推理内核」对应 `mossCompile`：新创作默认开启并保存在草稿和作品中，旧任务未记录时按关闭恢复。使用现有 PyTorch 对 DiT 块及 Transformers 的参考 Gated DeltaNet 内核分开编译；已安装的 FLA 快速内核保持原调用。分层调度钩子在编译边界外，只有图像/文本序列轴标记动态，不启用 CUDA Graph；注意力分发在任务间复用。首次可能明显变慢，后续请求复用编译对象；叶级卸载不编译 DiT，已知编译器失败按模块回到普通执行，显存不足与设备错误仍正常报错并清理。做法参考 [ComfyUI 的 MOSS 分块编译入口](https://github.com/sorryhyun/ComfyUI-Spectrum-KSampler#ksampler-spectrum-for-moss)，不引入或复制该插件。实际可用性、画质与耗时仍需设备验收。
+
+MOSS 创作的高级参数可选择「Spectrum · 实验」缓存加速，默认关闭。实现基于 [Spectrum 原始 MIT 代码](https://github.com/hanjq17/Spectrum/tree/4e41f91c93ff66b045332530dd7bcb4c60eafbab)的 Chebyshev 与一阶 Taylor 混合预测，随包保留 `SPECTRUM-LICENSE`；不引入 ComfyUI 插件。v2 只缓存图像隐藏状态，正负分支及跳层组合各自隔离，前 6 步与末 3 步完整计算；前 12 步至多连续预测 1 步，之后随真实观测积累逐渐扩至最多连续 3 步，定期完整刷新。相同时间点的 CPU 拟合系数在任务内复用，短采样减少或不进行预测。每个任务独立清理，保留取消及进度。显存余量不足、拟合失败或预测出现非有限值时使用完整计算，并在任务 `nativeRuntime.mossAcceleration` 记录实际计算/预测次数及原因。请求、草稿和作品保留 `mossAcceleration: off | spectrum`，不使用 Anima TeaCache 阈值。该 MIAOKA 微调尚未完成当前实现的画质/性能验收，不能据社区其他模型数据宣称本机提速倍数。
+
+任务 `nativeRuntime.mossExecution` 保留编译入口调用数/退回原因、任务内缓存命中及编码、采样、解码的 CPU 墙钟分段，不额外同步 CUDA；入口调用数不代表整段均已融合或已证明提速。这些分段不是可相加的 GPU 计时，首次编译计入对应分段，`performanceVerified` 始终保持未验证。
 
 ## 9. MiaoMiao RealSkin Anima 2.9B 1.0
 

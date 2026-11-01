@@ -72,5 +72,5 @@ Anima 模型基于混合输入训练，普通标签段承担核心视觉事实�
 
 - **身份与衣装**：角色特征与标志性服饰准确，换装时旧衣装特征彻底替换。
 - **画面瞬间明确**：画面是凝固的单一片刻，而非连续动作的叠加。
-- **编译对齐**：通过对应引擎的工作台预览或编译结果核对词序、负面与参数；MOSS 使用 `nativeDrawingPrompt` / `compileMossPrompt`。
+- **编译对齐**：通过对应引擎的工作台预览或编译结果核对词序、负面与参数；MOSS 使用 `compilePromptRecipe` 的独立计划与 `renderMossDrawingPrompt` / `compileMossPrompt`。
 - **真实出图验证**：文档与提示词的修改以实际渲染效果为最终检验标准。

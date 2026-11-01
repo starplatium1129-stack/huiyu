@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_canopy_bed_blush",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 768,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_canopy_bed_blush",
     "characterId": "zhuang_fangyi_arknights",
@@ -50,7 +50,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@rella",

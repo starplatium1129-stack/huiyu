@@ -5,6 +5,7 @@ Cancellation/failure discards the set; no partially executed state is reused.
 Immutable file views and their protected identity stay resident between requests.
 """
 import copy
+from collections import OrderedDict
 import hashlib
 import inspect
 import json
@@ -20,7 +21,7 @@ class PipelineCache:
         self.configs = {}
         self.memory = None
         self.protection = None
-        self.conditioning = {}
+        self.conditioning = OrderedDict()
 
     def release_components(self):
         if self.memory is not None:
@@ -44,7 +45,8 @@ class PipelineCache:
             settle_resources(False)
 
     def acquire(self, root, spec, data, policy, control, fingerprint, load, error, *, style_path=None, prepared_identity=None):
-        scope = (str(root), data["modelId"], policy, str(style_path) if style_path else None)
+        scope = (str(root), data["modelId"], policy, data.get("mossTextPrecision", "bf16"), data.get("mossWeightPrecision", "auto"),
+                 str(style_path) if style_path else None)
         # Retire weights before attempting a new protection interval.
         if self.scope != scope or not self.lease.valid() or (style_path is not None and not self.style_lease.valid()):
             self.clear()
@@ -149,11 +151,22 @@ class PipelineCache:
                 digest.update(image.tobytes())
             key = digest.digest()
             if key in self.conditioning:
-                return copy_tensors(self.conditioning[key], device)
+                self.conditioning.move_to_end(key)
+                return copy_tensors(self.conditioning[key][0], device)
             output = original(*args, **kwargs)
-            if len(self.conditioning) >= 2:
-                self.conditioning.pop(next(iter(self.conditioning)))
-            self.conditioning[key] = copy_tensors(output, "cpu")
+            size = tensor_bytes(output)
+            # Keep recent prompt revisions and frequently reused negatives. The
+            # byte limit also bounds long Qwen/image conditioning on host RAM.
+            if size <= 64 * 1024**2:
+                while self.conditioning and (len(self.conditioning) >= 8
+                        or sum(entry[1] for entry in self.conditioning.values()) + size > 64 * 1024**2):
+                    self.conditioning.popitem(last=False)
+                self.conditioning[key] = (copy_tensors(output, "cpu"), size)
             return output
+
+        def tensor_bytes(value):
+            if isinstance(value, torch.Tensor):
+                return value.numel() * value.element_size()
+            return sum(tensor_bytes(item) for item in value) if isinstance(value, tuple) else 0
 
         pipeline.encode_prompt = encode

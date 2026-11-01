@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_bunny_change",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 878,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "action": "脚跟撑在凳上，双手伸到背后解开卡住的拉链。",
     "adult": true,
@@ -45,7 +45,7 @@
       "rear three-quarter view"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "locker_room",
       "bunny_suit",

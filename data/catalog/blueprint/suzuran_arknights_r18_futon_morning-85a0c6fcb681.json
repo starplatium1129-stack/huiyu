@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_r18_futon_morning",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 645,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-01T06:25:25.924661200+00:00",
   "data": {
     "action": "坐在被褥中，一手揉眼，另一手拢住被角。",
     "adult": false,
@@ -35,7 +35,7 @@
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "All",
     "sceneTags": [
       "morning",
       "futon",

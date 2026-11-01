@@ -5,6 +5,8 @@
 # This file is the managed 2.9 recipe. The existing local Comfy Python can also
 # serve native workers with torch 2.13.0 / torchvision 0.28.0 / transformers 5.14.1 /
 # Pillow 12.2.0 / SageAttention 2.2.0; no Comfy server is used by native inference.
+# Optional author MOSS INT8: reused CUDA 13 environment with comfy-kitchen==0.2.37.
+# The managed 2.9 recipe stays FP16; selecting INT8 never upgrades this environment.
 torch==2.9.0
 torchvision==0.24.0
 diffusers @ git+https://github.com/huggingface/diffusers.git@b800f828f3951c4d206e154411bcbfa693cd322e

@@ -438,7 +438,7 @@ export function sceneSupportsCharacter(scene: PromptScene | null | undefined, ch
  */
 export function sceneTemplateText(
   scene: PromptScene | null | undefined,
-  opts: { char?: string; manualTags?: Set<string>; shot?: string | null; engine?: PromptEngine; profile?: ModelProfile | null } = {},
+  opts: { char?: string; manualTags?: Set<string>; shot?: string | null; engine?: PromptEngine | 'moss'; profile?: ModelProfile | null } = {},
 ): string {
   if (!scene?.prompt) return ''
   let template = String(scene.prompt)
@@ -460,7 +460,7 @@ export function sceneTemplateText(
   }
   // Explicit group scenes retain companions even when only the main character is selected.
   const isDualScene = opts.char === 'triad' || scene?.char === 'triad' || scene?.char === 'both'
-  if (compositionIntent(scene) === 'single' && (!isDualScene || !resolveDrawCapabilities(opts.engine || 'sd', opts.profile).dualCharacter)) {
+  if (compositionIntent(scene) === 'single' && (!isDualScene || (opts.engine !== 'moss' && !resolveDrawCapabilities(opts.engine || 'sd', opts.profile).dualCharacter))) {
     template = sanitizeSoloTemplate(template)
   }
   // 姿势消解：当 manualTags（如反推采纳）中已有明确姿势时，场景模板中异组旧姿势自动让位
@@ -477,7 +477,7 @@ export function sceneTemplateText(
         .join(', ')
     }
   }
-  return filterFraming(formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), framingShot(opts.shot, scene.camera))
+  return filterFraming(opts.engine === 'moss' ? template : formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), framingShot(opts.shot, scene.camera))
 }
 
 // ── LoRA 权重策略 ─────────────────────────────────────────────────────────

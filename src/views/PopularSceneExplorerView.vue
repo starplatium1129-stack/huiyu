@@ -65,26 +65,26 @@
           :style="{ '--scene-preview-ratio': previewRatio(blueprint) }">
           <!-- 样张缩略图：与灵感场景一致的真实样张预览；仅角色专属蓝图有样张 -->
           <ShowcasePreviewSource v-if="thumbSrc(blueprint)" :src="thumbSrc(blueprint)" :full-src="imageUrl(showcaseId(blueprint))" v-slot="{ image, loaded, failed, preview, previewReady }" @load="measurePreview(blueprint, $event)">
-          <button class="pop-thumb" :class="{ 'is-missing': failed, 'is-r18': sampleRatingOf(blueprint) === 'R18' }" type="button"
+          <button class="pop-thumb" :class="{ 'is-missing': failed, 'is-r18': visibleSampleRating(blueprint) === 'R18' }" type="button"
             :aria-label="`欣赏场景：${blueprint.title}`" @click="openPreview(blueprint, $event)">
             <span class="pop-thumb-skeleton" :class="{ visible: !loaded && !failed }" aria-hidden="true"></span>
             <img v-if="image.src" v-bind="image" alt="" loading="lazy" decoding="async"
               :class="{
-                'pop-thumb-r18': sampleRatingOf(blueprint) === 'R18',
+                'pop-thumb-r18': visibleSampleRating(blueprint) === 'R18',
                 'pop-thumb-missing': failed,
                 'pop-thumb-ready': loaded,
               }" />
             <img v-if="preview.src && !failed" v-bind="preview" alt="" aria-hidden="true" decoding="async" draggable="false"
-              :class="{ 'pop-thumb-r18': sampleRatingOf(blueprint) === 'R18', 'pop-thumb-ready': previewReady }" />
-            <SensitivePreviewVeil v-if="sampleRatingOf(blueprint) === 'R18' && image.src && !failed"
+              :class="{ 'pop-thumb-r18': visibleSampleRating(blueprint) === 'R18', 'pop-thumb-ready': previewReady }" />
+            <SensitivePreviewVeil v-if="visibleSampleRating(blueprint) === 'R18' && image.src && !failed"
               :src="image.src" :crossorigin="image.crossorigin" />
             <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong></span>
-            <span v-else-if="sampleRatingOf(blueprint) === 'R18'" class="pop-thumb-hint">R18</span>
+            <span v-else-if="visibleSampleRating(blueprint) === 'R18'" class="pop-thumb-hint">R18</span>
           </button>
           </ShowcasePreviewSource>
           <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>{{ assetsLoading ? '正在读取样张' : assetsError ? '样张暂不可用' : '样张待补充' }}</strong></span></div>
           <div class="pop-card-body">
-            <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="sampleRatingOf(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + sampleRatingOf(blueprint)">{{ sampleRatingOf(blueprint) }}</span></div>
+            <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="visibleSampleRating(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + visibleSampleRating(blueprint)">{{ visibleSampleRating(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
             <div class="pop-meta"><span>{{ blueprintContext(blueprint).text }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
             <footer class="pop-card-actions">
@@ -173,7 +173,7 @@ import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 const route = useRoute()
 const router = useRouter()
 const sceneStore = useSceneStore()
-const { thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending, loading: assetsLoading, error: assetsError, reload: reloadAssets } = useShowcaseAssets()
+const { entryFor, thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending, loading: assetsLoading, error: assetsError, reload: reloadAssets } = useShowcaseAssets()
 
 const loadError = ref('')
 const sceneContent = ref<HTMLElement | null>(null)
@@ -254,7 +254,7 @@ const filtered = computed(() => {
   const q = settledQuery.value.trim().toLowerCase()
   return pool.value.filter(bp => {
     if (ratingFilter.value !== 'all') {
-      const r = sampleRatingOf(bp)
+      const r = visibleSampleRating(bp)
       if (r !== ratingFilter.value) return false
     }
     if (category.value !== 'all' && (bp.adult ? '成人' : bp.category) !== category.value) return false
@@ -335,6 +335,10 @@ function resetFilters() {
 /** The manifest retains real paths for both current and older saved blueprints. */
 function showcaseId(blueprint: SceneBlueprint): string {
   return blueprint.characterId ? catalogShowcaseId({ kind: 'blueprint', id: blueprint.id, characterId: blueprint.characterId }) : ''
+}
+function visibleSampleRating(blueprint: SceneBlueprint): string {
+  const entry = entryFor(showcaseId(blueprint))
+  return entry?.type === 'popular' ? entry.rating : sampleRatingOf(blueprint)
 }
 const thumbSrc = (blueprint: SceneBlueprint) => thumbUrl(showcaseId(blueprint))
 

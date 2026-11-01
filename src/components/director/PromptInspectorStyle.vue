@@ -3,7 +3,7 @@
     <AsyncPanel v-if="pb.directorMode === 'pro'" :loader="loadArtistStyles" label="画师风格" v-slot="{ component }">
         <component :is="component"
           :selected="pb.artistStyleIds"
-          :engine="drawEngine"
+          :engine="engine || drawEngine"
           :curated-artist-styles="pb.currentCuratedArtistStyles"
           @update:selected="selectArtists"
           @limit-reached="onArtistLimitReached"
@@ -20,7 +20,7 @@ import type { PromptStyleBindings } from '@/composables/prompt/promptPanelBindin
 const loadArtistStyles = () => import('@/components/ArtistStylePicker.vue')
 const host = ref<HTMLElement | null>(null)
 
-const props = defineProps<{ bindings: PromptStyleBindings }>()
+const props = defineProps<{ bindings: PromptStyleBindings; engine?: 'moss' }>()
 const { pb, drawEngine, onArtistLimitReached } = props.bindings
 function enterExpert(event: MouseEvent) {
   if (document.activeElement === event.currentTarget) host.value?.focus({ preventScroll: true })

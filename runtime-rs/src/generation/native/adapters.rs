@@ -20,6 +20,8 @@ const FILES: &[&str] = &[
     "moss_adapter.py",
     "moss_pipeline.py",
     "moss_spectrum.py",
+    "moss_execution.py",
+    "moss_int8.py",
 ];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -85,6 +87,11 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
         "repository":model["repository"],"sourceRevision":model["revision"],"license":model["license"],"licenseUrl":model["licenseUrl"],
         "defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"].as_str().unwrap_or("euler"),"scheduler":"model-config","teaCache":false},
         "mossAcceleration":model["mossAcceleration"],
+        "mossTextPrecision":model["mossTextPrecision"],
+        "mossCompile":model["mossCompile"],
+        "mossInt8Ready":model["mossInt8"]["path"].as_str().is_some_and(|file|
+            path.join("huiyu-moss-int8.json").is_file() && std::fs::metadata(path.join(file)).ok()
+                .is_some_and(|info| info.is_file() && Some(info.len()) == model["mossInt8"]["bytes"].as_u64())),
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
         "capabilities":{"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
             "lora":false,"noLora":true,"characterIdentity":false,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"fixedSampling":model["distilled"]==true,"experimental":true,

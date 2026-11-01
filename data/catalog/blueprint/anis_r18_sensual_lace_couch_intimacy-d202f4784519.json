@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_r18_sensual_lace_couch_intimacy",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 1901,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "anis_r18_sensual_lace_couch_intimacy",
     "characterId": "anis_nikke",
@@ -53,7 +53,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@yoneyama_mai",
     "nsfwTokens": [],

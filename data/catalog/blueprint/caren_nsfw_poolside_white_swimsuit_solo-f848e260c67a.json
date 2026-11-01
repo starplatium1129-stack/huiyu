@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_poolside_white_swimsuit_solo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 275,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
   "data": {
     "id": "caren_nsfw_poolside_white_swimsuit_solo",
     "title": "卡莲 · 黄昏泳池白泳装的圣女卸防低吟",
@@ -55,7 +55,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "coverageTags": [
