@@ -76,10 +76,10 @@ class Compiler:
                     raise device_error
                 # The stance callback raises plain RuntimeError (unlike
                 # Dynamo's error_on_recompile option), including in resumed
-                # attention graphs. Match only that signal; other runtime
-                # failures must still propagate.
+                # attention graphs. PyTorch 2.8 omits 2.9's trailing period.
+                # Match only that signal; other runtime failures still propagate.
                 if isinstance(error, RecompileError) or str(error).startswith(
-                    "Detected recompile when torch.compile stance is 'fail_on_recompile'."
+                    "Detected recompile when torch.compile stance is 'fail_on_recompile'"
                 ):
                     self.recompile_skipped = True
                     eager_task = self.task

@@ -62,8 +62,9 @@ class Execution:
                 device_error = self._device_failure(error, torch)
                 if device_error is not None:
                     raise device_error
+                # PyTorch 2.8 omits the period present in 2.9's stance error.
                 if isinstance(error, RecompileError) or str(error).startswith(
-                    "Detected recompile when torch.compile stance is 'fail_on_recompile'."
+                    "Detected recompile when torch.compile stance is 'fail_on_recompile'"
                 ):
                     eager_task = self.task
                     self.recompile_skips += 1
