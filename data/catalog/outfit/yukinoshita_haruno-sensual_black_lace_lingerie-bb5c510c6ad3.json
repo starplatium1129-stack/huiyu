@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/sensual_black_lace_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 215,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "sensual_black_lace_lingerie",
-      "name": "法式浮雕黑蕾丝阳台文胸与双排皮扣吊袜带",
-      "prose": "A black floral lace balconette bra and strappy knickers under a loose black silk dressing gown. Dual leather garter straps with square palladium buckles bite deeply into the voluptuous upper thigh over sheer 15D stockings, barefoot.",
+      "name": "法式黑蕾丝套装与吊袜带",
+      "prose": "A black floral lace set under a loose silk dressing gown, with sheer stockings held by garter straps; her feet are bare.",
       "tokens": [
         "black_lingerie",
         "lace_bra",
@@ -20,10 +20,7 @@
         "silk_robe",
         "black_thighhighs",
         "sheer_stockings",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "double_thigh_strap",
+        "garter_belt",
         "sensual"
       ],
       "characterId": "yukinoshita_haruno",

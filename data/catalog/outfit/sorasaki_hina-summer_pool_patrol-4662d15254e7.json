@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/summer_pool_patrol",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 492,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "summer_pool_patrol",
       "isDefault": false,
-      "name": "泳池巡查透光针织开衫与挂颈泳装短裤腿带",
-      "prose": "A sheer white summer knit cardigan draped loosely over a frilled navy swim top and tiny shorts, revealing bare thighs clasped by a buckled leather garter with a soft squish.",
+      "name": "泳池巡查透光开衫与挂颈泳装短裤",
+      "prose": "A sheer white summer knit cardigan draped loosely over a frilled navy swim top and tiny shorts.",
       "tokens": [
         "open_cardigan",
         "white_cardigan",
@@ -20,9 +20,6 @@
         "halterneck",
         "shorts",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "sandals"
       ],
       "characterId": "sorasaki_hina"

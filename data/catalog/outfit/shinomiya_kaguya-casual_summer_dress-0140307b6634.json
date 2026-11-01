@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/casual_summer_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 767,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "id": "casual_summer_dress",
-      "name": "极简方领素白棉麻露背高衩裙与白皮腿环",
-      "prose": "A minimalist white cotton sundress with a square neckline, fitted bodice, and airy side slit, showing bare legs clasped by a white leather thigh strap that gently indents her tender thigh skin.",
+      "name": "极简方领素白棉麻露背高衩裙",
+      "prose": "A minimalist white cotton sundress with a square neckline, fitted bodice, and airy side slit.",
       "tokens": [
         "white_dress",
         "sundress",
@@ -18,9 +18,6 @@
         "backless_dress",
         "high_slit",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "sandals"
       ],
       "characterId": "shinomiya_kaguya",

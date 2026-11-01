@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/apartment_cozy_sweatshirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1594,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
@@ -17,12 +17,9 @@
         "shorts",
         "lounge_shorts",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "slippers"
       ],
-      "prose": "An oversized heather-grey off-shoulder pullover draped casually over black lounge shorts, revealing bare legs cinched by a slender buckled leather thigh strap pressing into soft skin.",
+      "prose": "An oversized heather-grey off-shoulder pullover draped casually over black lounge shorts.",
       "isDefault": false,
       "default": false,
       "characterId": "mizuhara_chizuru",

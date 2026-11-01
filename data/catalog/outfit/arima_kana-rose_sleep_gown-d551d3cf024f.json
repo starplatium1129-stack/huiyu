@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "arima_kana/rose_sleep_gown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1274,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "id": "rose_sleep_gown",
-      "name": "玫瑰粉双面真丝细带睡袍与丝绒腿饰",
-      "prose": "A dusty rose mulberry silk nightgown bordered with burgundy satin, tailored with a fluid side slit that parts to show bare legs cinched by a velvet thigh band with miniature silver hardware.",
+      "name": "玫瑰粉双面真丝细带睡袍",
+      "prose": "A dusty-rose silk nightgown bordered with burgundy satin, with a fluid side slit and bare feet.",
       "tokens": [
         "pink_nightgown",
         "silk_slip",
@@ -18,9 +18,6 @@
         "cowl_neck",
         "high_slit",
         "bare_legs",
-        "thigh_strap",
-        "velvet_strap",
-        "buckle",
         "barefoot"
       ],
       "characterId": "arima_kana",

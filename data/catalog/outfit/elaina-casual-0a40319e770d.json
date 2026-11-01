@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "elaina/casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 223,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "elaina",
     "outfit": {
       "id": "casual",
-      "name": "灰紫方领泡泡袖收腰洋装与银扣腿饰",
-      "prose": "A charming lavender linen-blend sundress with an open square neckline and fitted corset waist, cut with a fluid walking slit showing bare legs styled with a fine silver-buckled leather thigh strap.",
+      "name": "灰紫方领泡泡袖收腰洋装",
+      "prose": "A lavender linen-blend sundress with a square neckline, fitted waist and fluid walking slit.",
       "tokens": [
         "lavender_dress",
         "square_neckline",
@@ -18,10 +18,6 @@
         "corset_waist",
         "high_slit",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "silver_buckle",
         "sandals"
       ],
       "isDefault": false,

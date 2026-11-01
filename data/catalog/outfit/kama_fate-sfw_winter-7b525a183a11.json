@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "kama_fate/sfw_winter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "kama_fate",
     "outfit": {
       "id": "sfw_winter",
       "name": "奶油羊绒廓形大衣与梅紫开衩皮裙",
-      "prose": "A voluminous cream cashmere overcoat loosely draped over a plum turtleneck and split leather skirt, revealing a buckled leather thigh strap softly squishing dark stockings.",
+      "prose": "A cream cashmere overcoat draped over a plum turtleneck and split leather skirt, with dark stockings.",
       "tokens": [
         "cream_overcoat",
         "wool_coat",
@@ -19,9 +19,6 @@
         "plum_turtleneck",
         "leather_skirt",
         "slit_skirt",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "black_thighhighs"
       ],
       "characterId": "kama_fate",

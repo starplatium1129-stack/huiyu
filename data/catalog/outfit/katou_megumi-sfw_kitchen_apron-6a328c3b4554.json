@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/sfw_kitchen_apron",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 799,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "sfw_kitchen_apron",
       "name": "鹅黄法式格纹围裙与薄透泡泡袖雪纺衫",
-      "prose": "A semi-translucent white silk-chiffon puff-sleeve blouse paired with high-rise denim shorts under a pastel yellow gingham apron. A thin tan leather strap wraps the upper thigh with subtle indentation.",
+      "prose": "A semi-translucent white silk-chiffon puff-sleeve blouse paired with high-rise denim shorts under a pastel yellow gingham apron.",
       "tokens": [
         "sheer_blouse",
         "puff_sleeves",
@@ -18,9 +18,6 @@
         "yellow_apron",
         "gingham_apron",
         "denim_shorts",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "bare_legs"
       ],
       "characterId": "katou_megumi",

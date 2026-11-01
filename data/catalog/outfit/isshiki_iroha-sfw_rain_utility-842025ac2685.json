@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/sfw_rain_utility",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 211,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "sfw_rain_utility",
       "name": "奶白拼色防雨轻短夹克与高腰工装短裙",
-      "prose": "A modern cream-and-scarlet technical cropped windbreaker worn over a ribbed crimson tube top, styled with a high-waisted utility cargo mini skirt and a black leather leg harness.",
+      "prose": "A cream-and-scarlet cropped windbreaker over a red top and high-waisted cargo skirt.",
       "tokens": [
         "rain_jacket",
         "cropped_jacket",
@@ -19,9 +19,6 @@
         "cargo_skirt",
         "miniskirt",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "sneakers"
       ],
       "isDefault": false,

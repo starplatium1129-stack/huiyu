@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/home_pink_apron",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 569,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
       "id": "home_pink_apron",
       "name": "极简白色罗纹修身T恤与粉红系带围裙",
-      "prose": "A form-fitting white cotton baby tee under a retro rose-pink utility apron, worn over cut-off denim shorts. A black calfskin thigh strap with silver studs lightly indents the athletic bare thigh.",
+      "prose": "A form-fitting white cotton baby tee under a retro rose-pink utility apron, worn over cut-off denim shorts.",
       "tokens": [
         "fitted_tshirt",
         "white_tshirt",
         "pink_apron",
         "cross_back_apron",
         "short_shorts",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "asuka_langley",
       "default": false,

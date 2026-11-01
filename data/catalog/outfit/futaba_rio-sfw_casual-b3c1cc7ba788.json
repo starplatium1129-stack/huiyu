@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/sfw_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 37,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "sfw_casual",
       "name": "落肩冷灰羊绒开衫与真丝微喇便服",
-      "prose": "A slouchy charcoal-grey cashmere cardigan sliding off one shoulder over an ivory silk scoop-neck camisole and side-slit trousers. A concealed black leather thigh strap with a silver square buckle cinches her thigh beneath the fluid slit.",
+      "prose": "A slouchy charcoal-grey cashmere cardigan sliding off one shoulder over an ivory silk scoop-neck camisole and side-slit trousers.",
       "tokens": [
         "cashmere_cardigan",
         "slouchy_cardigan",
@@ -19,9 +19,6 @@
         "scoop_neck",
         "dress_pants",
         "slit_pants",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers",
         "quiet_luxury"
       ],

@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "sylphiette/oversized_nightshirt",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 256,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "default": false,
       "id": "oversized_nightshirt",
       "isDefault": false,
-      "name": "落肩宽松真丝睡衬衫与纯白皮腿带",
-      "prose": "A breezy ivory silk sleep shirt with sage piping slipping off her shoulder, leaving bare legs accented by an elegant leather thigh strap that sinks into the soft thigh flesh.",
+      "name": "落肩宽松真丝睡衬衫",
+      "prose": "A breezy ivory silk sleep shirt with sage piping slipping off her shoulder.",
       "styleHint": "soft cozy morning atmosphere",
       "tokens": [
         "oversized_shirt",
         "silk_shirt",
         "off_shoulder",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "barefoot"
       ],
       "characterId": "sylphiette"

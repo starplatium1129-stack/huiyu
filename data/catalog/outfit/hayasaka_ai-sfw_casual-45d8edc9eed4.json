@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "hayasaka_ai/sfw_casual",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 774,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "hayasaka_ai",
     "outfit": {
       "id": "sfw_casual",
       "name": "机能藏蓝短夹克与毛边牛仔短裤",
-      "prose": "A cropped midnight-blue bomber jacket with silver zippers over a white ribbed top, styled with frayed denim shorts, bare legs, and a tactical leather thigh strap.",
+      "prose": "A cropped midnight-blue bomber jacket with silver zippers over a white ribbed top and frayed denim shorts.",
       "tokens": [
         "blue_jacket",
         "cropped_jacket",
@@ -19,9 +19,6 @@
         "white_crop_top",
         "denim_shorts",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "combat_boots"
       ],
       "characterId": "hayasaka_ai",

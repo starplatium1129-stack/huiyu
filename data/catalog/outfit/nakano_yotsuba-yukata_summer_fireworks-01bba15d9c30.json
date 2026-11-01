@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "nakano_yotsuba/yukata_summer_fireworks",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1602,
   "createdAt": "2026-10-27T13:30:47.381Z",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "nakano_yotsuba",
     "outfit": {
       "characterId": "nakano_yotsuba",
       "id": "yukata_summer_fireworks",
-      "name": "祭典草绿雏菊短款浴衣与橙扣皮腿环",
-      "prose": "A vivid grass-green short cotton yukata with cheerful daisy prints and an orange obi sash, leaving athletic bare legs where a buckled leather thigh strap causes a soft indentation on firm sun-kissed skin.",
+      "name": "祭典草绿雏菊短款浴衣",
+      "prose": "A vivid grass-green short cotton yukata with cheerful daisy prints and an orange obi sash.",
       "tokens": [
         "yukata",
         "japanese_clothes",
@@ -21,10 +21,7 @@
         "orange_obi",
         "mini_skirt",
         "geta",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "isDefault": false,
       "default": false

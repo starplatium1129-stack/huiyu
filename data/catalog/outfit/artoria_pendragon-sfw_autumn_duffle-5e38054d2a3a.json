@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/sfw_autumn_duffle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1114,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "sfw_autumn_duffle",
       "name": "英伦短款牛角扣外套与格纹短裙",
-      "prose": "A cropped navy duffle coat with horn toggle closures layered over a fine sweater and pleated tartan mini skirt. A buckled leather thigh strap cinches her dark thighhighs, displaying an appealing soft squish.",
+      "prose": "A cropped navy duffle coat with horn toggles over a fine sweater, pleated tartan skirt and dark thigh-high stockings.",
       "tokens": [
         "duffle_coat",
         "toggle_coat",
@@ -19,9 +19,6 @@
         "mini_skirt",
         "navy_skirt",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "ankle_boots"
       ],
       "default": false,

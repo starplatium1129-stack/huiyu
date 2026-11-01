@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/sfw_refined_daily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 944,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "海蓝落肩镂空短毛衣与白缎褶裙皮腿环",
-      "prose": "A slouchy sea-blue open-knit sweater draped off one shoulder over a crisp ivory silk mini slip, highlighting bare legs cinched by a minimalist buckled leather thigh strap softly indenting the soft skin.",
+      "name": "海蓝落肩镂空短毛衣与白缎短裙",
+      "prose": "A slouchy sea-blue open-knit sweater draped off one shoulder over a crisp ivory silk mini slip.",
       "tokens": [
         "blue_sweater",
         "off-shoulder_sweater",
@@ -19,10 +19,7 @@
         "white_skirt",
         "silk_skirt",
         "short_skirt",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "isDefault": false,
       "isNsfw": false,

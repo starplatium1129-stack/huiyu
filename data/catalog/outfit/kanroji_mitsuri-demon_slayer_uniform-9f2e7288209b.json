@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/demon_slayer_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1393,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
@@ -21,12 +21,9 @@
         "miniskirt",
         "green_thighhighs",
         "striped_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "belt"
       ],
-      "prose": "A tailored Demon Slayer jacket worn open at the chest with a white haori and pleated miniskirt, featuring buckle leather thigh straps squishing into striped thighhighs.",
+      "prose": "A Demon Slayer jacket with a white haori and pleated skirt, paired with green striped thigh-high stockings.",
       "default": false,
       "isDefault": false,
       "characterId": "kanroji_mitsuri"

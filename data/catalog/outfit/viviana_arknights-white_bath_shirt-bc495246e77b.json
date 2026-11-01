@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/white_bath_shirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1451,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
@@ -15,12 +15,9 @@
         "sheer_shirt",
         "silk_shirt",
         "pearl_buttons",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
-      "prose": "A translucent lightweight white silk shirt adorned with luminous pearl buttons, draping loosely over matching lingerie. A fine leather thigh strap with a polished buckle creates a teasing soft indentation on her bare thigh.",
+      "prose": "A lightweight white silk shirt with pearl buttons drapes loosely over matching lingerie.",
       "default": false,
       "isDefault": false,
       "characterId": "viviana_arknights"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/starry_staff_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1561,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
@@ -20,12 +20,9 @@
         "miniskirt",
         "black_thighhighs",
         "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
-      "prose": "A fitted dark collared shirt under a tied black cafe apron and pleated miniskirt, paired with black thighhighs gripped by a buckled leather thigh strap creating a visible soft thigh squish.",
+      "prose": "A dark collared shirt under a tied black café apron and pleated skirt, paired with black thigh-highs.",
       "isDefault": false,
       "default": false,
       "characterId": "kita_ikuyo"

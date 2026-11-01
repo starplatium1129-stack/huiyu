@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/cultural_festival_maid",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 552,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "cultural_festival_maid",
-      "name": "文化祭轻奢荷叶边女仆短裙与黑丝腿环",
+      "name": "文化祭荷叶边女仆裙与黑色长袜",
       "tokens": [
         "maid",
         "maid_dress",
@@ -19,12 +19,9 @@
         "frills",
         "black_thighhighs",
         "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "mary_janes"
       ],
-      "prose": "A ruffled black maid minidress with a crisp white apron and lace trim, paired with black thighhighs under a buckled leather thigh strap that creates an enticing soft thigh squish.",
+      "prose": "A ruffled black maid dress with a white apron and lace trim, paired with black thigh-high stockings.",
       "styleHint": "",
       "isDefault": false,
       "default": false,

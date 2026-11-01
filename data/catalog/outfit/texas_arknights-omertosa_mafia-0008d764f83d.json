@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/omertosa_mafia",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 383,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:04:59.270755900+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "omertosa_mafia",
       "isDefault": false,
       "name": "叙拉古缄默精裁条纹马甲与包臀短裙",
-      "prose": "A tailored charcoal pinstripe vest worn over a crisp white dress shirt with crimson silk lining and ascot, paired with a mini skirt. A buckled leather thigh strap creates a subtle soft indentation on her bare thigh skin.",
+      "prose": "A tailored charcoal pinstripe vest over a crisp white shirt with crimson lining and an ascot, paired with a fitted dark skirt and leather shoes.",
       "tokens": [
         "pinstripe_vest",
         "black_vest",
@@ -22,9 +22,6 @@
         "pencil_skirt",
         "crimson_lining",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "leather_shoes"
       ],
       "characterId": "texas_arknights"

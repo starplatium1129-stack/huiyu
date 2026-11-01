@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/shuka_sailor_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1559,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
@@ -22,12 +22,9 @@
         "black_skirt",
         "miniskirt",
         "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
-      "prose": "A crisp short-sleeved white sailor shirt with a navy collar and red necktie, paired with a pleated miniskirt and dark thighhighs pressed by a buckled leather strap with a gentle thigh squish.",
+      "prose": "A white short-sleeved sailor shirt with a navy collar and red necktie, paired with a pleated skirt and dark thigh-highs.",
       "isDefault": true,
       "default": true,
       "characterId": "kita_ikuyo"

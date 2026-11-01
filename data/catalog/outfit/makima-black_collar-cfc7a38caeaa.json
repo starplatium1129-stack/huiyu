@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "makima/black_collar",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1405,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
@@ -16,13 +16,10 @@
         "off_shoulder",
         "black_bodysuit",
         "sleeveless",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "bare_legs",
         "high_heels"
       ],
-      "prose": "A sleek black leather collar choker paired with an off-shoulder knit bodysuit, accented by a buckle leather thigh strap creating a subtle soft indentation on bare skin.",
+      "prose": "A sleek black leather collar choker paired with an off-shoulder knit bodysuit.",
       "default": false,
       "isDefault": false,
       "characterId": "makima"

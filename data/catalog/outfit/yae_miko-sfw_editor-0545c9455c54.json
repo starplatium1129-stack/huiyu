@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "yae_miko/sfw_editor",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "sfw_editor",
       "name": "八重堂总编樱粉短和风夹克与开衩铅笔裙",
-      "prose": "A cropped cherry-blossom kimono jacket layered over an unbuttoned stand-collar shirt and slit charcoal pencil skirt, revealing a buckled leather thigh strap causing a distinct soft squish.",
+      "prose": "A cropped cherry-blossom kimono jacket layered over an unbuttoned stand-collar shirt and slit charcoal pencil skirt.",
       "tokens": [
         "cropped_jacket",
         "pink_jacket",
@@ -18,9 +18,6 @@
         "pencil_skirt",
         "side_slit",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "high_heels"
       ],
       "default": false,

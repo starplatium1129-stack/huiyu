@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/green_striped_stockings",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1394,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
@@ -18,12 +18,9 @@
         "denim_shorts",
         "green_thighhighs",
         "striped_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "bare_shoulders"
       ],
-      "prose": "A cropped pink halter knit top with white denim shorts, paired with green striped stockings held by buckled leather thigh straps creating a luscious soft indentation.",
+      "prose": "A cropped pink halter knit top and white denim shorts, paired with green striped stockings.",
       "default": false,
       "isDefault": false,
       "characterId": "kanroji_mitsuri"

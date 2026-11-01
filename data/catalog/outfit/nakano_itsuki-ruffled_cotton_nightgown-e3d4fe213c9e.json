@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "nakano_itsuki/ruffled_cotton_nightgown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1526,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "nakano_itsuki",
     "outfit": {
       "id": "ruffled_cotton_nightgown",
-      "name": "典雅荷叶边纯白真丝晨袍短睡裙与暗扣皮腿环",
-      "prose": "A luxurious ivory silk morning robe draped over a ruffled slip mini dress, showcasing bare legs where an elegant buckled leather thigh strap creates a soft indentation on her tender inner thigh skin.",
+      "name": "典雅荷叶边纯白真丝晨袍短睡裙",
+      "prose": "A luxurious ivory silk morning robe draped over a ruffled slip mini dress.",
       "tokens": [
         "robe",
         "silk_robe",
@@ -22,9 +22,6 @@
         "bare_shoulders",
         "collarbone",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "barefoot"
       ],
       "isNsfw": false,

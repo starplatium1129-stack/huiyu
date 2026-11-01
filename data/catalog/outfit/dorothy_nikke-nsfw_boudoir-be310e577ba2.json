@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/nsfw_boudoir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "伊甸圣咏珍珠束腰真丝礼裙与银扣腿带",
-      "prose": "A sculpted ivory silk and blush corset mini dress adorned with hand-stitched pearl drops and lace trim, featuring a dramatic side slit revealing bare legs with a buckled leather thigh strap softly indenting the soft skin.",
+      "name": "伊甸圣咏珍珠束腰真丝礼裙",
+      "prose": "An ivory silk and blush corset dress with hand-stitched pearl drops, lace trim and a dramatic side slit.",
       "tokens": [
         "corset_dress",
         "white_dress",
@@ -20,10 +20,7 @@
         "silk",
         "pearls",
         "side_slit",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "default": false,
       "isDefault": false,

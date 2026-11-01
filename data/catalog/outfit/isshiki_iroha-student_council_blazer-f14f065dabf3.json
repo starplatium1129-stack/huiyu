@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/student_council_blazer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 205,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "student_council_blazer",
       "name": "海军蓝立裁双排扣金纹执勤西装与开衩裙",
-      "prose": "A sharply tailored navy student council blazer with crested gold buttons, over a formal shirt and slit pleated skirt, with black stockings secured by a buckled leather thigh band.",
+      "prose": "A navy student council blazer with crested gold buttons, formal shirt and slit pleated skirt, worn with black stockings.",
       "tokens": [
         "navy_blazer",
         "tailored_blazer",
@@ -19,9 +19,6 @@
         "pleated_skirt",
         "high_slit",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
       "characterId": "isshiki_iroha",

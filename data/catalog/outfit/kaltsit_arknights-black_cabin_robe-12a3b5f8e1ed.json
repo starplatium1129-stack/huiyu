@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/black_cabin_robe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1390,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "black_cabin_robe",
-      "name": "舱室深黑真丝系带长晨袍与金属腿环",
-      "prose": "A lustrous black silk dressing gown worn loosely belted at the waist, parting as she moves to reveal bare legs clasped with an intricate silver-buckled black leather thigh strap with subtle indentation.",
+      "name": "舱室深黑真丝系带长晨袍",
+      "prose": "A lustrous black silk dressing gown worn loosely belted at the waist.",
       "tokens": [
         "black_robe",
         "silk_robe",
@@ -19,9 +19,6 @@
         "black_camisole",
         "high_slit",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "barefoot"
       ],
       "characterId": "kaltsit_arknights",

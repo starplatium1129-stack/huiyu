@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/standard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 362,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "standard",
-      "name": "企鹅物流经典战术制服与双排扣腿环",
-      "prose": "Her iconic Penguin Logistics two-tone hooded jacket worn with a loosened tie, white collared shirt, and micro shorts, with black thighhighs clasped by dual buckled leather straps.",
+      "name": "企鹅物流双色制服与黑色长袜",
+      "prose": "A two-tone hooded Penguin Logistics jacket over a white collared shirt and loose red tie, with dark shorts, black thigh-high stockings and sneakers.",
       "tokens": [
         "jacket",
         "two-tone_jacket",
@@ -18,9 +18,6 @@
         "white_shirt",
         "hotpants",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "sneakers"
       ],
       "characterId": "exusiai_arknights",

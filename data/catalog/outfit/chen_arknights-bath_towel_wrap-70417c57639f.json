@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/bath_towel_wrap",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 308,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "bath_towel_wrap",
       "isDefault": false,
       "name": "水汽氤氲深蓝滚边白棉浴巾裹身装",
-      "prose": "A plush white cotton bath towel with navy satin piping wrapped snugly across her chest and ending high on her hips. A waterproof leather thigh strap with a chrome buckle creates an alluring soft indentation on her bare thigh.",
+      "prose": "A plush white cotton bath towel with navy satin piping wrapped snugly across her chest and ending high on her hips.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
         "towel",
@@ -20,10 +20,7 @@
         "white_towel",
         "sarong",
         "bare_shoulders",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "chen_arknights"
     }

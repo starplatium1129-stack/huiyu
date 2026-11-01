@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "nakano_itsuki/asahi_high_school_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1523,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "nakano_itsuki",
     "outfit": {
       "id": "asahi_high_school_uniform",
-      "name": "旭高校端庄绯红开衫百褶短裙与过膝袜皮腿环",
-      "prose": "Asahi High School uniform with a crimson buttoned cardigan over a crisp collared shirt and black pleated mini skirt, featuring black thighhighs and a buckled leather thigh strap causing a soft indentation.",
+      "name": "旭高校绯红开衫、百褶裙与过膝袜",
+      "prose": "The Asahi school uniform pairs a crimson cardigan and collared shirt with a black pleated skirt and black thigh-highs.",
       "tokens": [
         "school_uniform",
         "cardigan",
@@ -23,9 +23,6 @@
         "mini_skirt",
         "thighhighs",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
       "isNsfw": false,

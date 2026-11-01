@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_winter",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 912,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_winter",
       "name": "藏蓝双排扣切斯特羊毛大衣与开衩短裙",
-      "prose": "A structured double-breasted navy wool coat paired with a chunky cable scarf and a slit miniskirt, showing off sheer stockings with a buckled leather thigh strap.",
+      "prose": "A double-breasted navy wool coat with a chunky scarf and slit skirt, paired with sheer stockings.",
       "tokens": [
         "coat",
         "navy_coat",
@@ -22,10 +22,6 @@
         "miniskirt",
         "black_thighhighs",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "silver_buckle",
         "leather_boots"
       ],
       "characterId": "mouri_ran",

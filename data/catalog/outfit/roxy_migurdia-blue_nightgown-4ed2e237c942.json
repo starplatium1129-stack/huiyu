@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/blue_nightgown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1428,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "blue_nightgown",
-      "name": "水蓝绉绸深V系带晨裙与丝绒腿带",
-      "prose": "A watery-blue crinkled silk nightgown featuring a delicate plunging neckline and thigh-high side split, leaving bare legs accented by a pale blue velvet thigh ribbon pressing into soft skin.",
+      "name": "水蓝绉绸深V系带晨裙",
+      "prose": "A water-blue crinkled silk nightgown with a V neckline and high side slit, worn barefoot.",
       "tokens": [
         "nightgown",
         "blue_dress",
@@ -19,8 +19,6 @@
         "high_slit",
         "spaghetti_straps",
         "bare_legs",
-        "thigh_strap",
-        "velvet_ribbon",
         "barefoot"
       ],
       "characterId": "roxy_migurdia",

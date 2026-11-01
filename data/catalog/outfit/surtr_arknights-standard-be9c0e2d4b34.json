@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/standard",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 286,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
       "default": true,
       "id": "standard",
       "isDefault": true,
-      "name": "罗德岛萨卡兹高街机能战术短装与双环腿带",
-      "prose": "A sleeveless high-collar crop top under a cropped black-and-white jacket with scarlet silk lining, paired with high-waisted utility shorts and asymmetrical thigh-highs cinched by a buckled leather thigh strap that softly indents the skin.",
+      "name": "罗德岛高街机能战术短装与皮质装备带",
+      "prose": "A sleeveless high-collar crop top beneath a black-and-white jacket with scarlet lining, paired with utility shorts, asymmetrical thigh-highs and a black leather utility band.",
       "tokens": [
         "black_turtleneck",
         "crop_top",

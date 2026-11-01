@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/sfw_refined_daily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 958,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "缎面拼色棒球夹克与百褶网球裙",
-      "prose": "A cropped royal-blue and ivory satin varsity jacket over a yellow baby tee, paired with a pleated mini skirt, bare legs, and a sporty buckled leather thigh strap.",
+      "prose": "A cropped royal-blue and ivory satin varsity jacket over a yellow T-shirt, paired with a pleated skirt and bare legs.",
       "tokens": [
         "varsity_jacket",
         "cropped_jacket",
@@ -19,9 +19,6 @@
         "mini_skirt",
         "white_skirt",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "sneakers"
       ],
       "characterId": "yanami_anna",

@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "shinomiya_kaguya/official_shuchiin_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 765,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
+  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
   "data": {
     "characterId": "shinomiya_kaguya",
     "outfit": {
       "default": true,
       "id": "official_shuchiin_uniform",
       "isDefault": true,
-      "name": "秀知院学园精裁西装马甲制服与黑丝双腿环",
-      "prose": "A tailored Shuchiin school uniform with a fitted black vest over an open-collar white blouse and pleated miniskirt, showing sheer black stockings bound by buckled leather thigh garters indenting the flesh.",
+      "name": "秀知院西装马甲制服与黑色长袜",
+      "prose": "A Shuchiin school uniform with a black vest over an open-collar white blouse and pleated skirt, paired with sheer black stockings.",
       "tokens": [
         "school_uniform",
         "white_shirt",
@@ -21,9 +21,6 @@
         "miniskirt",
         "black_thighhighs",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
       "characterId": "shinomiya_kaguya",

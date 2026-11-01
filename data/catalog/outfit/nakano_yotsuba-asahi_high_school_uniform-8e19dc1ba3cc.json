@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "nakano_yotsuba/asahi_high_school_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1519,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "nakano_yotsuba",
     "outfit": {
       "id": "asahi_high_school_uniform",
-      "name": "旭高校浅绿针织背心百褶短裙与运动皮腿环",
-      "prose": "Asahi High School uniform with a light-green sweater vest over a collared white shirt and pleated dark mini skirt, with bare legs cinched by a buckled leather thigh strap that presses into soft skin with a subtle squish.",
+      "name": "旭高校浅绿针织背心百褶短裙",
+      "prose": "Asahi High School uniform with a light-green sweater vest over a collared white shirt and pleated dark mini skirt.",
       "tokens": [
         "school_uniform",
         "sweater_vest",
@@ -22,9 +22,6 @@
         "black_skirt",
         "mini_skirt",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
       "isNsfw": false,

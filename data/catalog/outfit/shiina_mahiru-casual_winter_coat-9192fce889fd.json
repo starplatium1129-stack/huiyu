@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/casual_winter_coat",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "casual_winter_coat",
-      "name": "象牙白双面羊绒牛角扣大衣与焦糖皮扣腿环",
-      "prose": "An ivory double-faced wool duffle coat with horn toggles over a knit dress and plaid scarf. Sheer black tights are accented by a slim caramel leather thigh strap with a brass buckle that subtly pinches the soft thigh above ankle boots.",
+      "name": "象牙白牛角扣大衣与黑色连裤袜",
+      "prose": "An ivory wool duffle coat with horn toggles over a knit dress and plaid scarf, paired with sheer black tights and ankle boots.",
       "tokens": [
         "duffle_coat",
         "ivory_coat",
@@ -19,9 +19,6 @@
         "plaid_scarf",
         "knit_dress",
         "black_tights",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "ankle_boots",
         "winter_fashion"
       ],

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "ijichi_nijika/home_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1636,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfit": {
       "id": "home_apron",
       "name": "居家落肩软糯奶白毛衣与抽绳短裤围裙",
-      "prose": "A slouchy off-shoulder cream knit sweater over a pastel blue kitchen apron and lounge shorts, with a slender buckled leather thigh strap creating a delicate soft indentation on bare thigh skin.",
+      "prose": "A slouchy off-shoulder cream knit sweater over a pastel blue kitchen apron and lounge shorts.",
       "tokens": [
         "off-shoulder_sweater",
         "cream_sweater",
@@ -22,9 +22,6 @@
         "apron",
         "shorts",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "slippers"
       ],
       "default": false,

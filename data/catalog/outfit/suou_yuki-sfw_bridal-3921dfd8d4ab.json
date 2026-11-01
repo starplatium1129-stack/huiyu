@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_bridal",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 449,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "紫缎束腰抹胸花嫁与开衩皮腿环",
-      "prose": "A structured ivory silk bridal gown accented by a wide violet satin sash, featuring a high side slit revealing sheer hosiery and a buckled leather thigh strap.",
+      "name": "紫缎束腰抹胸花嫁",
+      "prose": "An ivory silk bridal gown with a wide violet satin sash and high side slit, paired with sheer hosiery.",
       "tokens": [
         "wedding_dress",
         "white_dress",
@@ -19,9 +19,6 @@
         "side_slit",
         "veil",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "high_heels"
       ],
       "characterId": "suou_yuki",

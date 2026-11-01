@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/sensual_swimsuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 695,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "sensual_swimsuit",
       "name": "赤红深V高叉露背交叉绑带连体泳装",
-      "prose": "A seductive scarlet one-piece swimsuit with an ultra-deep plunging neckline and daring high French hip cuts, complemented by a black leather thigh strap indenting her sun-warmed skin.",
+      "prose": "A seductive scarlet one-piece swimsuit with an ultra-deep plunging neckline and daring high French hip cuts.",
       "tokens": [
         "one-piece_swimsuit",
         "red_swimsuit",
@@ -18,9 +18,6 @@
         "high-leg_cut",
         "backless",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "barefoot"
       ],
       "characterId": "rias_gremory",

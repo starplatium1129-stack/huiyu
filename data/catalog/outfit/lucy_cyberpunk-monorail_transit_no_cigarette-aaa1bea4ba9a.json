@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/monorail_transit_no_cigarette",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 608,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "default": false,
       "id": "monorail_transit_no_cigarette",
       "isDefault": false,
-      "name": "解构工装背带连体裤与空轨机能腿环套服",
-      "prose": "Deconstructed black utility dungarees worn with one suspender undone over a cropped bandeau top and sneakers. A buckled leather thigh strap cinches her bare leg above crew socks, creating an eye-catching soft squish.",
+      "name": "解构工装背带连体裤与短款上衣",
+      "prose": "Black utility dungarees with one suspender undone over a cropped bandeau top, paired with crew socks and sneakers.",
       "tokens": [
         "overalls",
         "dungarees",
@@ -23,10 +23,7 @@
         "crew_socks",
         "socks",
         "sneakers",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "lucy_cyberpunk"
     }

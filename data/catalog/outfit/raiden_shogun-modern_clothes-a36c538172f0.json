@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/modern_clothes",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:03:46.999171500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "modern_clothes",
       "name": "深紫露背高衩丝绸晚礼裙",
-      "prose": "An architectural deep purple silk evening gown featuring a dramatic open back, plunging neckline, and soaring high slit. An ebony leather thigh strap with a gold buckle softly indents her bare thigh skin.",
+      "prose": "An architectural deep purple silk evening gown featuring a dramatic open back, plunging neckline and high slit, paired with high heels.",
       "tokens": [
         "deep_purple_dress",
         "silk_dress",
@@ -19,9 +19,6 @@
         "high_slit",
         "bare_shoulders",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "high_heels"
       ],
       "isDefault": false,

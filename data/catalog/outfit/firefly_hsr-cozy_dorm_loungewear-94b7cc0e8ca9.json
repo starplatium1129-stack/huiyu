@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/cozy_dorm_loungewear",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1588,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T05:50:36.064750400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
@@ -16,12 +16,9 @@
         "off_shoulder",
         "lounge_shorts",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "slippers"
       ],
-      "prose": "An oversized mint-green zip hoodie slipping off one shoulder over comfy lounge shorts, leaving bare legs wrapped in a buckled leather thigh strap that leaves a gentle soft squish on skin.",
+      "prose": "An oversized mint-green zip hoodie slipping off one shoulder over comfy lounge shorts.",
       "isDefault": false,
       "default": false,
       "characterId": "firefly_hsr",

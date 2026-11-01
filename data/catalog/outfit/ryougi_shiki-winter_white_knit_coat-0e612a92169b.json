@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/winter_white_knit_coat",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 731,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "id": "winter_white_knit_coat",
       "name": "炭灰双排扣短呢外套与高腰格纹短裙",
-      "prose": "A tailored charcoal cropped wool jacket over a cream ribbed turtleneck and a high-waisted red tartan wrap skirt. Sheer black tights feature an exposed leather thigh strap with a buckle causing a gentle squish.",
+      "prose": "A charcoal cropped wool jacket over a cream ribbed turtleneck and red tartan wrap skirt, paired with sheer black tights.",
       "tokens": [
         "cropped_jacket",
         "wool_jacket",
@@ -21,9 +21,6 @@
         "mini_skirt",
         "sheer_thighhighs",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "boots"
       ],
       "characterId": "ryougi_shiki",

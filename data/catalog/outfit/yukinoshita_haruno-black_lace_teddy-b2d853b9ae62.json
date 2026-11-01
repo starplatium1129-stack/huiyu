@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/black_lace_teddy",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1260,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "black_lace_teddy",
-      "name": "深V几何镂空黑蕾丝连体衣与皮革战术腿环",
-      "prose": "A provocative black lace teddy bodysuit featuring a plunge underwire bust and sheer mesh side panels. Integrated leather leg harness straps with gunmetal square buckles cinch her thighs with an unmistakable soft squish, barefoot.",
+      "name": "黑蕾丝连体衣与装饰链带",
+      "prose": "A black lace bodysuit with sheer mesh side panels and a slim gunmetal chain draped around one thigh, worn barefoot.",
       "tokens": [
         "teddy",
         "bodysuit",
@@ -20,9 +20,7 @@
         "cutouts",
         "sheer_mesh",
         "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "leg_harness",
+        "chain",
         "barefoot",
         "sensual"
       ],

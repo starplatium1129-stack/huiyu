@@ -1,24 +1,23 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/standard",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 327,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "standard",
       "name": "重型外骨骼装甲解构修身战术服",
-      "prose": "The imposing dark industrial powered armor partially open to reveal a fitted compression undersuit, with reinforced leather thigh harnesses cinching her thighs securely beneath the armored plating.",
+      "prose": "Dark industrial powered armor partly open over a fitted undersuit, with reinforced textile supports integrated into the leg armor.",
       "tokens": [
         "black_armor",
         "power_armor",
         "modular_armor",
         "bodysuit",
         "thigh_strap",
-        "leather_strap",
-        "buckle",
+        "leg_harness",
         "armored_boots"
       ],
       "characterId": "mudrock_arknights",

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/gothic_punk_jacket_q",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 567,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
       "id": "gothic_punk_jacket_q",
-      "name": "高街机车廓形红黑皮夹克与机能皮腿环",
-      "prose": "A distressed crimson-and-black oversized flight jacket over a tight ribbed black crop top, paired with frayed denim micro shorts and sheer black stockings secured by heavy-duty dual-buckle leather thigh straps.",
+      "name": "红黑机车夹克与双扣朋克腿带",
+      "prose": "A distressed red-and-black oversized flight jacket over a black ribbed crop top and frayed denim shorts, with sheer black stockings and a double-buckle leather thigh band.",
       "tokens": [
         "cropped_jacket",
         "red_bomber_jacket",

@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "raiden_shogun/shogun_virgin_killer",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:03:46.999171500+00:00",
   "data": {
     "characterId": "raiden_shogun",
     "outfit": {
       "id": "shogun_virgin_killer",
       "name": "纯黑高领大露背针织开衩裙",
-      "prose": "A formfitting black turtleneck sweater dress with an open back cut down to the waist and high thigh vent. An ebony leather thigh strap with an engraved metal buckle leaves a soft indentation on bare thigh skin.",
+      "prose": "A formfitting black turtleneck sweater dress with an open back cut down to the waist and a high side slit.",
       "tokens": [
         "turtleneck_dress",
         "backless_dress",
         "sleeveless_dress",
         "black_sweater",
         "side_slit",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "default": false,
       "isDefault": false,

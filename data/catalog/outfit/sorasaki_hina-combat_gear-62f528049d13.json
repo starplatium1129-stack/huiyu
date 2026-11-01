@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/combat_gear",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 488,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "default": false,
       "id": "combat_gear",
       "isDefault": false,
-      "name": "风纪战术短机车夹克与开衩短裤枪套腿环",
-      "prose": "A fitted black tactical bolero and harness over a cropped top and combat shorts, showing bare legs clasped by heavy-buckled leather thigh straps with a noticeable soft squish.",
+      "name": "风纪战术短机车夹克与腿部枪套",
+      "prose": "A black tactical bolero and harness over a cropped top and combat shorts, with a secured thigh holster.",
       "tokens": [
         "tactical_jacket",
         "cropped_jacket",
@@ -21,8 +21,8 @@
         "harness",
         "bare_legs",
         "thigh_strap",
-        "leather_strap",
-        "buckle",
+        "thigh_holster",
+        "holster",
         "combat_boots"
       ],
       "characterId": "sorasaki_hina"

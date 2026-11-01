@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/starry_barista_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1567,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
@@ -21,12 +21,9 @@
         "miniskirt",
         "black_skirt",
         "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
-      "prose": "A fitted charcoal dress shirt with rolled sleeves and a skinny necktie over a black miniskirt and apron, paired with dark thighhighs indented by a buckled leather thigh strap with a subtle squish.",
+      "prose": "A charcoal dress shirt with rolled sleeves and a skinny tie over a black skirt and café apron, paired with dark thigh-highs.",
       "isDefault": false,
       "default": false,
       "characterId": "yamada_ryo"

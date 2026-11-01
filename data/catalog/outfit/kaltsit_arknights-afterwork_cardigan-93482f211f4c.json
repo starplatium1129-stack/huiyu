@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/afterwork_cardigan",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1110,
   "createdAt": "2026-10-06T07:44:52.584659500+00:00",
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "afterwork_cardigan",
       "name": "燕麦罗纹开衫与墨绿高开衩丝裙",
-      "prose": "A relaxed oatmeal ribbed cardigan sliding off one shoulder, layered over a forest-green silk slip skirt featuring a deep side split. Dark stockings are accented by a buckled leather thigh strap indenting her pale skin.",
+      "prose": "An oatmeal ribbed cardigan slips off one shoulder over a forest-green silk skirt with a deep side split, paired with dark stockings.",
       "tokens": [
         "chunky_knit",
         "beige_cardigan",
@@ -20,9 +20,6 @@
         "slit_skirt",
         "green_skirt",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "slippers"
       ],
       "characterId": "kaltsit_arknights",

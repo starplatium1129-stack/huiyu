@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/cozy_winter_knit_coat",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 331,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "cozy_winter_knit_coat",
       "name": "象牙粗麻花绞花高领与驼色羊毛大衣",
-      "prose": "A voluminous camel double-faced wool overcoat over an oversized ivory cable-knit turtleneck and pleated micro skirt. Sheer dark stockings are secured by a buckled leather thigh band with soft indentation.",
+      "prose": "A camel wool overcoat over an ivory cable-knit turtleneck and pleated skirt, with sheer dark stockings.",
       "tokens": [
         "wool_coat",
         "camel_coat",
@@ -19,9 +19,6 @@
         "turtleneck",
         "miniskirt",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "boots"
       ],
       "characterId": "mudrock_arknights",

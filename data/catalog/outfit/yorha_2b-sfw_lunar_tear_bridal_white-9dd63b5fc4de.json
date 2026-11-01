@@ -1,20 +1,20 @@
 {
   "kind": "outfit",
   "id": "yorha_2b/sfw_lunar_tear_bridal_white",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1142,
   "createdAt": "2026-10-06T14:13:16.548313600+00:00",
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
   "data": {
     "characterId": "yorha_2b",
     "outfit": {
       "id": "sfw_lunar_tear_bridal_white",
-      "name": "月之泪纯白蕾丝露肩婚纱与白银腿环",
+      "name": "月之泪纯白蕾丝露肩婚纱",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "category": "日常衣装（创作）",
-      "prose": "An off-shoulder ivory lace bridal gown with a translucent tulle train and side slit. A polished white leather thigh strap with a silver buckle bites gently into her soft bare thigh, creating a graceful soft squish.",
+      "prose": "An off-shoulder ivory lace bridal gown with a translucent tulle train and side slit.",
       "tokens": [
         "wedding_dress",
         "white_dress",
@@ -24,9 +24,6 @@
         "bridal_veil",
         "white_gloves",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "high_heels"
       ],
       "characterId": "yorha_2b"

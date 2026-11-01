@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "makise_kurisu/lab_coat_classic",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1821,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "makise_kurisu",
     "outfit": {
       "id": "lab_coat_classic",
       "name": "短款精裁白大褂短夹克与高腰工装短裤",
-      "prose": "A tailored short lab coat draped over an unbuttoned collared shirt and loose red tie, tucked into dark shorts with sheer stockings bound by a buckled leather thigh strap gently indenting the flesh.",
+      "prose": "A short tailored lab coat over an open-collared shirt and loose red tie, with dark shorts and sheer stockings.",
       "tokens": [
         "lab_coat",
         "short_coat",
@@ -21,9 +21,6 @@
         "high_waist_shorts",
         "belt",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "ankle_boots"
       ],
       "default": true,

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 921,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "sfw_bridal",
-      "name": "雪白宫廷刺绣复古婚纱与珍珠腿饰",
-      "prose": "A regal snow-white silk satin bridal gown with heirloom corded lace cuffs and a long veil, featuring an open side skirt slit showing white stockings clasped by a pearl-embellished leather thigh garter.",
+      "name": "雪白宫廷刺绣复古婚纱与珍珠饰带",
+      "prose": "A white silk satin bridal gown with corded lace cuffs and a long veil, with a pearl-trimmed fabric garter above white stockings.",
       "tokens": [
         "wedding_dress",
         "vintage_wedding_dress",
@@ -20,7 +20,7 @@
         "high_slit",
         "white_thighhighs",
         "thigh_strap",
-        "leather_strap",
+        "ribbon",
         "pearls",
         "white_heels"
       ],

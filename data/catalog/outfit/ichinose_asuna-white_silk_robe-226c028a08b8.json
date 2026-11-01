@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "ichinose_asuna/white_silk_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1185,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "ichinose_asuna",
     "outfit": {
       "id": "white_silk_robe",
-      "name": "象牙白半透真丝落肩晨袍与蕾丝内衣腿环",
+      "name": "象牙白半透真丝落肩晨袍与蕾丝内衣",
       "tokens": [
         "white_robe",
         "silk_robe",
@@ -17,12 +17,9 @@
         "lace_camisole",
         "bare_shoulders",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "slippers"
       ],
-      "prose": "A billowing semi-translucent white silk morning gown slipping off one shoulder over a lace bra, revealing bare thighs embraced by a white leather strap with a gold buckle softly squeezing her skin.",
+      "prose": "A semi-translucent white silk morning gown slips off one shoulder over a lace bra.",
       "default": false,
       "isDefault": false,
       "characterId": "ichinose_asuna"

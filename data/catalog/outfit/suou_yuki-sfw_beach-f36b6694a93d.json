@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/sfw_beach",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 450,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "sfw_beach",
-      "name": "紫白和风短羽织与高衩泳装皮腿带",
-      "prose": "A violet cutout monokini layered under a cropped white yukata jacket with purple trim, styled with bare legs and a buckled leather thigh strap.",
+      "name": "紫白和风短羽织与高衩泳装",
+      "prose": "A violet cutout monokini layered under a cropped white yukata jacket with purple trim.",
       "tokens": [
         "swimsuit",
         "one-piece_swimsuit",
@@ -19,10 +19,7 @@
         "short_kimono",
         "haori",
         "white_robe",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "suou_yuki",
       "default": false,

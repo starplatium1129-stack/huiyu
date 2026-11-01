@@ -1,24 +1,21 @@
 {
   "kind": "outfit",
   "id": "futaba_rio/no_visible_apparel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1181,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
   "data": {
     "characterId": "futaba_rio",
     "outfit": {
       "id": "no_visible_apparel",
-      "name": "晨光散漫亚麻被单与极细银扣皮腿带",
-      "prose": "A draped pure white linen bed sheet wrapped loosely across the torso, slipping low to expose bare collarbones and thighs. A delicate black calfskin thigh strap with a micro silver buckle gently pinches her soft skin, barefoot.",
+      "name": "晨光散漫亚麻被单",
+      "prose": "A pure white linen sheet wraps loosely across the torso, slipping low to reveal bare collarbones and thighs; her feet are bare.",
       "tokens": [
         "bed_sheet",
         "draped_sheet",
         "bare_shoulders",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "barefoot",
         "boudoir"
       ],

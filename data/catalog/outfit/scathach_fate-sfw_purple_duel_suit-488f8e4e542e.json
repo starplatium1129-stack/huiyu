@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/sfw_purple_duel_suit",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1132,
   "createdAt": "2026-10-06T10:46:28.602196100+00:00",
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "sfw_purple_duel_suit",
-      "name": "影之国修身竞速练武装与战术皮腿带",
-      "prose": "A sleek matte-purple compression athletic crop top paired with high-cut tactical training shorts and silver bracers. Dual leather weapon thigh straps with heavy buckles compress her muscular thigh softly.",
+      "name": "影之国紫色练武装与织带武器固定带",
+      "prose": "A matte-purple athletic top with training shorts and silver bracers, with fabric thigh straps for securing weapons.",
       "tokens": [
         "crop_top",
         "sleeveless_top",
@@ -20,8 +20,7 @@
         "bracers",
         "bare_legs",
         "thigh_strap",
-        "leather_strap",
-        "buckle",
+        "leg_harness",
         "combat_boots"
       ],
       "default": false,

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/plugsuit_red",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 563,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
       "id": "plugsuit_red",
-      "name": "赤红高定战斗服与加压机能腿部束带",
-      "prose": "The skin-tight glossy scarlet EVA-02 plugsuit with emerald chest accents and molded spinal plates, reinforced by integrated mechanical thigh compression harnesses that hug the athletic contours.",
+      "name": "赤红EVA驾驶战斗服",
+      "prose": "A glossy scarlet EVA-02 plugsuit with emerald chest accents, a high collar and molded spinal plates.",
       "tokens": [
         "plugsuit",
         "red_plugsuit",
@@ -18,10 +18,7 @@
         "latex_suit",
         "green_accents",
         "high_collar",
-        "gloves",
-        "thigh_strap",
-        "leg_harness",
-        "mechanical_buckle"
+        "gloves"
       ],
       "characterId": "asuka_langley",
       "default": true,

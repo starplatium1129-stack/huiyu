@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/sfw_refined_daily",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 875,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "拼色截短拉链运动夹克与皮扣腿环",
-      "prose": "A modern cropped lavender track jacket layered over a fitted white crop top and micro shorts, highlighting bare legs accented with a buckled leather thigh strap.",
+      "name": "拼色截短拉链运动夹克",
+      "prose": "A modern cropped lavender track jacket layered over a fitted white crop top and micro shorts.",
       "tokens": [
         "jacket",
         "track_jacket",
@@ -20,9 +20,6 @@
         "white_shirt",
         "short_shorts",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "sneakers"
       ],
       "characterId": "shinjou_akane",

@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "ellen_joe/school_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 582,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:06:34.618707800+00:00",
   "data": {
     "characterId": "ellen_joe",
     "outfit": {
       "default": false,
       "id": "school_uniform",
       "isDefault": false,
-      "name": "新艾利都水手制服与百褶短裙皮腿环",
-      "prose": "A crisp white sailor uniform shirt with navy sailor collar and red neckerchief, paired with a pleated mini skirt. A buckled leather thigh strap indents the soft skin of her bare legs above slouched loose socks and loafers.",
+      "name": "新艾利都水手制服与百褶短裙",
+      "prose": "A white sailor shirt with a navy collar and red neckerchief, paired with a pleated navy skirt, loose socks and loafers.",
       "tokens": [
         "sailor_uniform",
         "sailor_collar",
@@ -24,10 +24,7 @@
         "loose_socks",
         "socks",
         "loafers",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "ellen_joe"
     }

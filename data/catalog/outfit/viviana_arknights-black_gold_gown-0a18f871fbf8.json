@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/black_gold_gown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1449,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
@@ -18,12 +18,9 @@
         "high_slit",
         "bare_shoulders",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "high_heels"
       ],
-      "prose": "A strapless midnight-black velvet evening gown embellished with opulent golden baroque embroidery and a soaring side slit. A buckled leather thigh strap bites into her bare thigh, forming an enchanting soft squish.",
+      "prose": "A strapless midnight-black velvet evening gown embellished with opulent golden baroque embroidery and a soaring side slit.",
       "default": false,
       "isDefault": false,
       "characterId": "viviana_arknights"

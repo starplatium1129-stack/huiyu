@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_haruno/black_chemise_stockings",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1258,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
   "data": {
     "characterId": "yukinoshita_haruno",
     "outfit": {
       "id": "black_chemise_stockings",
-      "name": "真丝深V开衩吊带睡裙与双排皮扣吊袜黑丝",
-      "prose": "A midnight-black silk chemise with a plunging cowl neck and thigh slits. Sheer 20D black stockings are secured by double-buckled glossy black leather thigh straps that press tautly into the soft thigh flesh, with stiletto mules.",
+      "name": "黑色真丝开衩睡裙与吊袜黑丝",
+      "prose": "A black silk chemise with a cowl neck and thigh slits, paired with sheer black stockings held by garter straps and stiletto mules.",
       "tokens": [
         "chemise",
         "slip_dress",
@@ -19,10 +19,8 @@
         "backless_dress",
         "high_slit",
         "black_stockings",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "double_thigh_strap",
+        "garter_belt",
+        "garter_straps",
         "high_heels",
         "femme_fatale"
       ],

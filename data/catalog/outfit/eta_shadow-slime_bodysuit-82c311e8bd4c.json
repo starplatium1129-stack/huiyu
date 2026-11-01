@@ -1,22 +1,24 @@
 {
   "kind": "outfit",
   "id": "eta_shadow/slime_bodysuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1932,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
   "data": {
     "characterId": "eta_shadow",
     "outfit": {
       "id": "slime_bodysuit",
       "name": "史莱姆百褶研究战服",
-      "prose": "Black slime clothes stylized into a pleated dress pattern with a wispy dark cloak, Eta's standard Shadow Garden attire.",
+      "prose": "A black slime bodysuit with a pleated skirt and dark cloak, paired with black thigh-high stockings held by slim garter straps with gold clasps.",
       "tokens": [
         "black_bodysuit",
         "slime_suit",
         "pleated_skirt",
         "cloak",
-        "garter_straps"
+        "garter_straps",
+        "black_thighhighs",
+        "gold_trim"
       ],
       "characterId": "eta_shadow",
       "default": true,

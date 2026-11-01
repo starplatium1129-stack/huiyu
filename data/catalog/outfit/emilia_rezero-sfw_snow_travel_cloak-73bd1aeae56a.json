@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/sfw_snow_travel_cloak",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1120,
   "createdAt": "2026-10-06T09:02:53.502621300+00:00",
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "sfw_snow_travel_cloak",
-      "name": "浅紫精裁短斗篷与高领毛衣裙黑丝腿环",
-      "prose": "A tailored cropped lilac hooded capelet over a form-fitting ivory knit sweater dress, displaying sheer dark thighhighs indented firmly by an engraved buckled leather strap with a visible thigh squish.",
+      "name": "浅紫短斗篷、高领毛衣裙与黑色长袜",
+      "prose": "A cropped lilac hooded capelet over an ivory knit sweater dress and sheer dark thigh-high stockings.",
       "tokens": [
         "capelet",
         "hooded_cloak",
@@ -19,9 +19,6 @@
         "turtleneck",
         "black_thighhighs",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "fur_boots"
       ],
       "default": false,

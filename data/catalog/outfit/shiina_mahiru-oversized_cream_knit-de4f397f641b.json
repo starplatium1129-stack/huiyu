@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/oversized_cream_knit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1235,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "oversized_cream_knit",
-      "name": "重磅燕麦落肩麻花毛衣与皮革束扣绝对领域",
-      "prose": "An oversized heavy cable-knit sweater in creamy oatmeal falling off one shoulder over micro shorts. Knit thigh-high socks are caught by an adjustable cream leather thigh strap with a silver buckle noticeably compressing the soft thigh.",
+      "name": "重磅燕麦落肩麻花毛衣与针织长袜",
+      "prose": "An oversized oatmeal cable-knit sweater falls off one shoulder over shorts and knit thigh-high socks.",
       "tokens": [
         "oversized_sweater",
         "cable_knit",
@@ -20,9 +20,6 @@
         "bare_shoulder",
         "shorts",
         "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "barefoot",
         "sweet_allure"
       ],

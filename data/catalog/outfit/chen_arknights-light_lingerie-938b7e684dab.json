@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "chen_arknights/light_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 309,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "chen_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "light_lingerie",
       "isDefault": false,
       "name": "冷香浮动炭黑青边真丝绸缎内衣套装",
-      "prose": "A sensual charcoal silk satin bralette trimmed with dark-teal ribbon, matching high-cut briefs, and delicate hardware. An adjustable leather thigh strap with a silver buckle presses into her bare thigh with a teasing soft squish.",
+      "prose": "A charcoal silk satin bralette with dark-teal ribbon, matching briefs and delicate hardware.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
         "black_bralette",
@@ -20,11 +20,7 @@
         "teal_trim",
         "panties",
         "high-leg_panties",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "silver_buckle",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "chen_arknights"
     }

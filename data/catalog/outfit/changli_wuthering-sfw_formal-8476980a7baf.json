@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_formal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 931,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_formal",
-      "name": "今州朱雀叠襟议事锦袍与龙纹皮环",
-      "prose": "An imposing layered white and crimson state robe with sweeping sleeves and gold crest embroidery, slit high to show sheer dark stockings with a buckled leather strap.",
+      "name": "今州朱雀叠襟议事锦袍与深色长袜",
+      "prose": "Layered white-and-crimson state robes with wide sleeves and gold crest embroidery, with a high slit over sheer dark stockings.",
       "tokens": [
         "robe",
         "white_robe",
@@ -23,10 +23,6 @@
         "high_slit",
         "black_thighhighs",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "gold_buckle",
         "heels"
       ],
       "characterId": "changli_wuthering",

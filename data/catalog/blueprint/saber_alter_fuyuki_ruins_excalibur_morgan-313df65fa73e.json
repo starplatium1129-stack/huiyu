@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 220,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-01T04:25:15.449332200+00:00",
   "data": {
     "id": "saber_alter_fuyuki_ruins_excalibur_morgan",
     "title": "黑呆 · 冬木残垣的卑王铁槌",
@@ -38,9 +38,6 @@
       "dark dress",
       "high slit",
       "bare legs",
-      "thigh strap",
-      "leather strap",
-      "buckle",
       "armored boots",
       "excalibur morgan",
       "raised arms",

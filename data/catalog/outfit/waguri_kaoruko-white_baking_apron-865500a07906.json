@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/white_baking_apron",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1452,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "white_baking_apron",
       "name": "云白细麻系带工装围裙与针织衬裙",
-      "prose": "A crisp white cross-back linen apron over a body-contouring ivory knit mini dress, paired with bare legs accentuated by a sleek buckled leather thigh strap.",
+      "prose": "A crisp white cross-back linen apron over a body-contouring ivory knit mini dress.",
       "tokens": [
         "apron",
         "white_apron",
@@ -19,9 +19,6 @@
         "knit_dress",
         "short_dress",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
       "characterId": "waguri_kaoruko",

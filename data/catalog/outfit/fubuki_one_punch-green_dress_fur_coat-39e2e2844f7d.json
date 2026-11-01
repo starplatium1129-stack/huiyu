@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/green_dress_fur_coat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1176,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
+  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
       "id": "green_dress_fur_coat",
       "name": "翡翠立裁风衣裙与白皮草披肩",
-      "prose": "A body-skimming dark forest green midi dress with tailored seamlines, high split collar, and a wide-lapel winter white coat draped dramatically over her shoulders. Layered tiered pearl choker necklaces contrast against the dark fabric, with sheer black stockings and a structured leather leg strap peeking beneath the slit hem.",
+      "prose": "A dark forest-green midi dress with tailored seams, a high split collar and slit hem, beneath a white wide-lapel coat, with layered pearl chokers and sheer black stockings.",
       "tokens": [
         "midi_dress",
         "green_dress",
@@ -19,7 +19,6 @@
         "white_coat",
         "pearl_choker",
         "sheer_tights",
-        "thigh_strap",
         "high_heels",
         "mob_boss_chic"
       ],

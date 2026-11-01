@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "sylphiette/casual_day_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 258,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "default": false,
       "id": "casual_day_dress",
       "isDefault": false,
-      "name": "奶油短开衫叠搭鼠尾草高衩吊带裙腿扣",
-      "prose": "A soft cropped cream cardigan over a sage-green tiered sundress with a breezy side slit, framed by a buckled leather thigh strap producing a delicate soft indentation on bare skin.",
+      "name": "奶油短开衫与鼠尾草色吊带裙",
+      "prose": "A cropped cream cardigan over a sage-green tiered sundress with a side slit.",
       "styleHint": "soft cinematic lighting",
       "tokens": [
         "cardigan",
@@ -20,9 +20,6 @@
         "strap_dress",
         "side_slit",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "mary_janes"
       ],
       "characterId": "sylphiette"

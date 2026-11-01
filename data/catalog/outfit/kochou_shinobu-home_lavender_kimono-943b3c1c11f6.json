@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kochou_shinobu/home_lavender_kimono",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 806,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "kochou_shinobu",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "home_lavender_kimono",
       "isDefault": false,
       "name": "淡紫落肩真丝和服晨袍与月白吊带",
-      "prose": "A fluid lavender silk kimono worn casually open over an ivory lace camisole, accented by a slender leather thigh strap pressing a soft indentation into bare skin.",
+      "prose": "A fluid lavender silk kimono worn casually open over an ivory lace camisole.",
       "tokens": [
         "lavender_kimono",
         "silk_kimono",
@@ -21,9 +21,6 @@
         "silk_shorts",
         "ivory_obi",
         "bare_shoulders",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "bare_legs"
       ],
       "characterId": "kochou_shinobu"

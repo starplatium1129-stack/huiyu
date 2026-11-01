@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/sfw_evening_dining_cardigan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1124,
   "createdAt": "2026-10-06T09:25:32.092622500+00:00",
-  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
+  "updatedAt": "2026-11-01T04:27:31.991642600+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "sfw_evening_dining_cardigan",
       "name": "冷灰小香风粗花呢套装与露肌过膝袜",
-      "prose": "A cropped silver-grey bouclé tweed jacket with faux-pearl buttons and piped pockets, layered over a black silk camisole and a matching A-line tweed mini skirt. Worn with opaque black over-knee stockings that gently indent the bare upper thigh, anchored by double-buckle leather garters and black leather penny loafers.",
+      "prose": "A silver-grey bouclé tweed jacket with pearl buttons over a black silk camisole and matching A-line skirt, paired with black over-knee stockings and leather loafers.",
       "tokens": [
         "tweed_jacket",
         "cropped_jacket",
@@ -19,8 +19,6 @@
         "tweed_skirt",
         "miniskirt",
         "black_thighhighs",
-        "thigh_garter",
-        "leather_strap",
         "loafers",
         "french_chic"
       ],

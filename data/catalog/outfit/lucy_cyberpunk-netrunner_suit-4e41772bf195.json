@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/netrunner_suit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 602,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "default": true,
       "id": "netrunner_suit",
       "isDefault": true,
-      "name": "深潜高衩黑白连体战衣与霓虹皮腿环",
-      "prose": "A high-cut white netrunner bodysuit with deep hip cutouts and a cropped high-collar jacket, paired with sheer dark thighhighs cinched by an engraved buckled leather thigh strap causing a visible, tender squish on soft skin.",
+      "name": "深潜黑白连体战衣与霓虹织带",
+      "prose": "A high-cut white netrunner bodysuit with a cropped high-collar jacket, dark thigh-highs and a narrow illuminated synthetic thigh band.",
       "tokens": [
         "bodysuit",
         "white_bodysuit",
@@ -24,8 +24,7 @@
         "sheer_thighhighs",
         "thighhighs",
         "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "neon_trim"
       ],
       "characterId": "lucy_cyberpunk"
     }

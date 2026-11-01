@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "lappland_arknights/black_lace_coat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1323,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "lappland_arknights",
     "outfit": {
@@ -17,12 +17,9 @@
         "corset",
         "velvet_shorts",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "boots"
       ],
-      "prose": "A sheer black floral lace bustier layered beneath a distressed raw-hem black duster jacket and velvet tap shorts. Translucent black thighhighs compress softly under a double-buckled leather thigh strap with gentle indentation.",
+      "prose": "A black floral lace bustier under a distressed dark duster and velvet shorts, paired with translucent black thigh-highs.",
       "default": false,
       "isDefault": false,
       "characterId": "lappland_arknights"

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/shuka_school_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1565,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
@@ -22,12 +22,9 @@
         "miniskirt",
         "black_thighhighs",
         "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
-      "prose": "A tailored navy blazer over a crisp collared white blouse and pleated miniskirt, worn with black thighhighs clasped by a buckled leather thigh strap that causes an enticing soft thigh squish.",
+      "prose": "A navy blazer over a collared white blouse and pleated skirt, paired with black thigh-highs.",
       "isDefault": false,
       "default": false,
       "characterId": "yamada_ryo"

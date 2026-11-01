@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/cozy_afternoon_knit_casual",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 343,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
       "default": false,
       "id": "cozy_afternoon_knit_casual",
       "isDefault": false,
-      "name": "暖绒绞花落肩开衫与格纹褶裙皮革腿带",
-      "prose": "A chunky pale rose cable-knit cardigan falling softly off the shoulder over a ruffled camisole, styled with a high-waisted pleated plaid skirt and sheer thigh-highs gripped by a slender buckled leather strap creating a delicate soft squish.",
+      "name": "暖绒落肩开衫与格纹褶裙",
+      "prose": "A pale rose cable-knit cardigan over a ruffled camisole and pleated plaid skirt, with sheer thigh-highs.",
       "tokens": [
         "pink_cardigan",
         "cable_knit",
@@ -22,10 +22,7 @@
         "plaid_skirt",
         "pleated_skirt",
         "beret",
-        "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "thighhighs"
       ],
       "characterId": "goldenglow_arknights"
     }

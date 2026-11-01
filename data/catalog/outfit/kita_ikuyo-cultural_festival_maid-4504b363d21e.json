@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/cultural_festival_maid",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1570,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
@@ -19,12 +19,9 @@
         "frills",
         "black_thighhighs",
         "thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "mary_janes"
       ],
-      "prose": "A frilly black maid minidress with a crisp white apron and ruffled trim, matched with black thighhighs indented by a buckled leather thigh strap that causes an enticing soft thigh squish.",
+      "prose": "A frilled black maid dress with a white apron and ruffled trim, paired with black thigh-high stockings.",
       "isDefault": false,
       "default": false,
       "characterId": "kita_ikuyo"

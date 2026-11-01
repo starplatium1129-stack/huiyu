@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_school",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 534,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "id": "sfw_school",
       "name": "阳东高校改良优雅制服与绝对领域",
-      "prose": "The Yoto high school blazer tailored to a nipped waist over a pristine white shirt, pleated micro skirt, sheer smoky stockings, and a buckled calfskin thigh strap providing soft indentation.",
+      "prose": "A tailored Yoto school blazer over a white shirt, pleated skirt and sheer smoky stockings.",
       "tokens": [
         "school_uniform",
         "dark_blazer",
@@ -20,9 +20,6 @@
         "pleated_skirt",
         "miniskirt",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
       "characterId": "arima_kana",

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/sfw_casual",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 911,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "sfw_casual",
       "name": "米白短款粗花呢外套与冰蓝一字领开衩裙",
-      "prose": "A cropped cream tweed jacket over an off-shoulder ice-blue top and a high-slit navy miniskirt, worn with sheer black stockings and a buckled leather thigh strap.",
+      "prose": "A cropped cream tweed jacket over an ice-blue off-shoulder top and slit navy skirt, with sheer black stockings.",
       "tokens": [
         "jacket",
         "cropped_jacket",
@@ -23,10 +23,6 @@
         "navy_skirt",
         "black_thighhighs",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "silver_buckle",
         "ankle_boots"
       ],
       "characterId": "mouri_ran",

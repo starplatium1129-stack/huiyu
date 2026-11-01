@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_penthouse_window_stiletto",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-01T04:25:15.449332200+00:00",
   "data": {
     "id": "yor_r18_penthouse_window_stiletto",
     "characterId": "yor_forger",
@@ -44,13 +44,11 @@
     ],
     "promptProse": "Yor rests nude on the marble window ledge in black heels, glancing back as cool blue city light meets dim warm interior light.",
     "promptTokens": [
-      "thorn princess dress",
       "black stiletto heels",
       "penthouse window",
       "city night lights",
       "warm interior floor lamp",
       "blush",
-      "thigh strap",
       "sensual pose",
       "bokeh",
       "night skyline"

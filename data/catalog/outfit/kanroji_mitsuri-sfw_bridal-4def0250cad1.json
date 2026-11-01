@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/sfw_bridal",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "sfw_bridal",
       "isDefault": false,
       "name": "樱粉抹胸刺绣鱼尾花嫁礼服",
-      "prose": "A couture bridal gown with sweetheart neckline and green silk sash, featuring a high slit displaying a buckled white leather thigh strap indenting her soft thigh.",
+      "prose": "An embroidered bridal gown with a sweetheart neckline, green silk sash and high side slit.",
       "tokens": [
         "wedding_dress",
         "bridal_gown",
@@ -23,9 +23,6 @@
         "green_sash",
         "high_slit",
         "veil",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "bare_legs"
       ],
       "characterId": "kanroji_mitsuri"

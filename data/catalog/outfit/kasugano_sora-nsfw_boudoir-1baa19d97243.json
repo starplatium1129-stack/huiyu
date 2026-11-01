@@ -1,25 +1,24 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/nsfw_boudoir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 920,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "纯黑真丝吊带与软皮束腿带",
-      "prose": "A delicate black silk chiffon camisole with scalloped French lace, paired with sheer over-knee stockings and an adjustable leather thigh ring that softly bites into her pale porcelain thigh.",
+      "name": "纯黑真丝吊带与黑色吊袜带",
+      "prose": "A black silk chiffon camisole with scalloped lace, sheer over-knee stockings and a matching garter belt.",
       "tokens": [
         "black_camisole",
         "silk_camisole",
         "lace_trim",
         "thighhighs",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
+        "garter_belt",
+        "garter_straps",
         "boudoir"
       ],
       "characterId": "kasugano_sora",

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "changli_wuthering/sfw_refined_daily",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 937,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "changli_wuthering",
     "outfit": {
       "id": "sfw_refined_daily",
       "name": "孔雀青金线绣边长外褂与高衩云锦旗袍",
-      "prose": "A peacock-teal silk overcoat embellished with gold filigree over a high-slit cheongsam, featuring sheer stockings lightly cinched by a buckled leather thigh strap.",
+      "prose": "A peacock-teal silk overcoat with gold filigree over a high-slit cheongsam and sheer stockings.",
       "tokens": [
         "robe",
         "teal_robe",
@@ -21,10 +21,6 @@
         "embroidery",
         "black_thighhighs",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
-        "brass_buckle",
         "high_heels"
       ],
       "characterId": "changli_wuthering",

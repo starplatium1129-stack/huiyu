@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "rias_gremory/crimson_silk_bath_robe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1425,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "rias_gremory",
     "outfit": {
       "id": "crimson_silk_bath_robe",
-      "name": "深绯透光真丝系带长晨袍与蕾丝腿环",
+      "name": "深绯真丝系带长晨袍与蕾丝内衣",
       "tokens": [
         "crimson_robe",
         "silk_robe",
@@ -18,12 +18,9 @@
         "black_lace_lingerie",
         "high_slit",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "barefoot"
       ],
-      "prose": "A sweeping crimson silk chiffon morning robe tied loosely with a sash, drifting open to reveal sheer black lace lingerie and bare legs adorned with a dual-buckle leather thigh strap.",
+      "prose": "A crimson silk chiffon robe tied with a sash and worn open over sheer black lace lingerie.",
       "default": false,
       "isDefault": false,
       "characterId": "rias_gremory"

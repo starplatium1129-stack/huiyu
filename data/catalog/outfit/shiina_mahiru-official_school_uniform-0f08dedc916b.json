@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/official_school_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 815,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "official_school_uniform",
-      "name": "秀越高校金扣西装制服与双扣皮革腿带",
-      "prose": "A navy blazer with gold crest buttons over a crisp white shirt and striped tie, paired with a grey pleated mini skirt. Sheer brown tights are hugged by a brown leather thigh strap with a brass buckle causing a delicate soft squish.",
+      "name": "秀越高校金扣西装制服与棕色连裤袜",
+      "prose": "A navy blazer with gold crest buttons over a white shirt and striped tie, paired with a grey pleated skirt and sheer brown tights.",
       "tokens": [
         "school_uniform",
         "navy_blazer",
@@ -20,9 +20,6 @@
         "pleated_skirt",
         "miniskirt",
         "brown_pantyhose",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "zettai_ryouiki",
         "loafers"
       ],

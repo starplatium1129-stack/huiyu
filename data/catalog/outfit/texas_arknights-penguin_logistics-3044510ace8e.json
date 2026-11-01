@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/penguin_logistics",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 382,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:04:59.270755900+00:00",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "default": true,
       "id": "penguin_logistics",
       "isDefault": true,
-      "name": "企鹅物流经典战术短夹克与百褶裙",
-      "prose": "A sharp black-and-white cropped techwear jacket with vibrant yellow trims over a fitted white collared shirt and black pleated miniskirt. A buckled leather thigh strap creates a soft indentation on her bare thigh skin.",
+      "name": "企鹅物流黑白战术夹克与腿部装备套",
+      "prose": "A cropped black-and-white courier jacket with yellow trim over a white collared shirt and black pleated skirt, finished with fingerless gloves, combat boots and a practical thigh holster.",
       "tokens": [
         "black_jacket",
         "cropped_jacket",
@@ -23,9 +23,8 @@
         "pleated_skirt",
         "mini_skirt",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
+        "thigh_holster",
+        "holster",
         "combat_boots",
         "fingerless_gloves"
       ],

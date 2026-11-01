@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "hoshimi_miyabi/traditional_miko",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 588,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:32:22.820222500+00:00",
+  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
   "data": {
     "characterId": "hoshimi_miyabi",
     "outfit": {
       "default": false,
       "id": "traditional_miko",
       "isDefault": false,
-      "name": "重樱绯袴仪典巫女服与赤金搭扣皮腿带",
-      "prose": "A ceremonial white miko top with scarlet piping and high-slit crimson hakama exposing bare legs. A polished dark red leather thigh strap with a gilded brass buckle presses into soft skin with a gentle thigh squish.",
+      "name": "重樱绯袴仪典巫女服",
+      "prose": "A ceremonial white miko top with scarlet piping and high-slit crimson hakama exposing bare legs.",
       "tokens": [
         "miko",
         "white_kimono",
@@ -21,9 +21,6 @@
         "pleated_skirt",
         "shimenawa",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "tabi",
         "geta"
       ],

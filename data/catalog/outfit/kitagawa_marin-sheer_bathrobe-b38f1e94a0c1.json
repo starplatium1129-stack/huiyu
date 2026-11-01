@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/sheer_bathrobe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 276,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
+  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "id": "sheer_bathrobe",
       "name": "薄荷清透雪纺系带晨袍与脚链",
-      "prose": "A gossamer-light semi-sheer pastel mint green chiffon robe tied loosely at the waist with a satin cord, revealing the silhouette of pale pink lace lingerie beneath. A delicate braided silver thigh chain with a tiny bell charm clings to her right thigh, paired with a thin silver ankle bracelet, barefoot.",
+      "prose": "A semi-sheer mint chiffon robe tied with a satin cord over pale pink lace lingerie, paired with a thin silver ankle bracelet and bare feet.",
       "tokens": [
         "sheer_robe",
         "chiffon_robe",
@@ -19,7 +19,6 @@
         "sash",
         "pink_lingerie",
         "lace_bra",
-        "thigh_chain",
         "anklet",
         "barefoot",
         "boudoir"

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/white_bath_wrap",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1371,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "white_bath_wrap",
-      "name": "纯白蓬松裹胸浴巾与暗银扣皮环",
-      "prose": "A plush white waffle towel wrap clinging securely across the bust, leaving bare damp legs adorned with a slender dark leather thigh strap and miniature silver buckle.",
+      "name": "纯白蓬松裹胸浴巾",
+      "prose": "A plush white waffle towel wrap clinging securely across the bust.",
       "tokens": [
         "white_towel",
         "towel_wrap",
@@ -18,10 +18,7 @@
         "bare_shoulders",
         "bare_legs",
         "wet_skin",
-        "steam",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "steam"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,

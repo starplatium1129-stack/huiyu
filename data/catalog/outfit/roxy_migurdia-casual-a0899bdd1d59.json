@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/casual",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "casual",
       "name": "天蓝法式立领排扣棉裙与开衩绝对领域",
-      "prose": "A pastel blue tailored cotton dress with vintage gathered sleeves and a crisp white mandarin collar, styled with an asymmetrical slit hem showing white thighhighs clasped with a leather garter strap.",
+      "prose": "A pastel blue cotton dress with gathered sleeves, a white mandarin collar and an asymmetrical slit hem, paired with white thigh-highs.",
       "tokens": [
         "blue_dress",
         "cotton_dress",
@@ -19,9 +19,6 @@
         "pleated_skirt",
         "high_slit",
         "white_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "mary_janes"
       ],
       "characterId": "roxy_migurdia",

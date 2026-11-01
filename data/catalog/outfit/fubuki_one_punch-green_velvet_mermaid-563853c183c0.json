@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/green_velvet_mermaid",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1178,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
+  "updatedAt": "2026-11-01T04:27:31.991642600+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
       "id": "green_velvet_mermaid",
       "name": "吹雪组总帅翡翠丝绒高定鱼尾礼服",
-      "prose": "An architectural emerald green velvet strapless mermaid gown with structured internal boning carving out an exaggerated hourglass waist. A high front-side split reveals sheer black stockings and a dual-strap leather thigh garter with polished chrome hardware, draped with an opulent white arctic fox fur stole.",
+      "prose": "An emerald green velvet mermaid gown with structured boning and a high front-side slit, worn with sheer black stockings, a white fur stole, pearl choker and heels.",
       "tokens": [
         "velvet_dress",
         "emerald_dress",
@@ -19,8 +19,6 @@
         "corset_waist",
         "high_slit",
         "black_stockings",
-        "thigh_garter",
-        "leather_strap",
         "fur_stole",
         "pearl_necklace",
         "high_heels"

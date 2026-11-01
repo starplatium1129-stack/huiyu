@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/sfw_lakeside_knit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 750,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
       "id": "sfw_lakeside_knit",
       "name": "湖畔红线双面羊绒套头衫与侧开衩半裙",
-      "prose": "A luxurious cream double-faced cashmere sweater with fine crimson contrast cuffs, paired with a tailored navy wool pencil skirt featuring a daring high slit, revealing sheer black stockings held by a delicate leather thigh strap.",
+      "prose": "A cream cashmere sweater with crimson cuffs, worn with a navy wool pencil skirt with a high slit and sheer black stockings.",
       "tokens": [
         "cashmere_sweater",
         "cream_sweater",
@@ -20,9 +20,6 @@
         "midi_skirt",
         "high_slit",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "ankle_boots"
       ],
       "characterId": "asuna_yuuki",

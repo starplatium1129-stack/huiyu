@@ -1,26 +1,23 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/oversized_white_shirt",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1316,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "oversized_white_shirt",
-      "name": "晨光微敞宽松男友衬衫与蕾丝皮腿环",
-      "prose": "An oversized crisp white cotton dress shirt worn loosely with top buttons undone, hem skimming mid-thigh. Bare legs feature a black lace-lined leather thigh band softly compressing the upper thigh.",
+      "name": "晨光微敞宽松白衬衫",
+      "prose": "An oversized white cotton dress shirt worn loosely with the top buttons undone, its hem falling to mid-thigh.",
       "tokens": [
         "oversized_shirt",
         "white_shirt",
         "unbuttoned",
         "collarbone",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "lace_trim",
-        "buckle"
+        "lace_trim"
       ],
       "characterId": "katou_megumi",
       "default": false,

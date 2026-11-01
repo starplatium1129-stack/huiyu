@@ -252,11 +252,12 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
     watch(() => pb.directorMode, mode => {
         localStorage.setItem(DIRECTOR_MODE_KEY, mode);
     });
-    // 热门角色恢复草稿/历史后保证引擎不是 SD（SD 已对热门角色禁用）。
-    watch(() => pb.subject, subject => {
+    // 热门角色不能使用 SD；同角色同蓝图的换装保留用户手选的引擎。
+    watch(() => pb.subject, (subject, previous) => {
         if (subject.kind === 'popular' && drawEngine.value === 'sd') {
             setDrawEngine('anima');
-        }
+        } else if (subject.kind === 'popular' && previous?.kind === 'popular'
+            && subject.characterId === previous.characterId && subject.blueprintId === previous.blueprintId) return;
         syncManagedRoute();
     });
     // 角色变化后，若当前 category 已无合格蓝图（如"成人"），

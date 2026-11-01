@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "scathach_fate/official_lancer_bodysuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
   "data": {
     "characterId": "scathach_fate",
     "outfit": {
       "id": "official_lancer_bodysuit",
-      "name": "影之国符文紧身战衣与机能皮腿环",
-      "prose": "Her legendary skin-tight violet bodysuit accented by etched silver pauldrons and sheer mesh hip cutouts. A dual-ring tactical leather thigh strap bites into her shapely thigh with a visible soft squish.",
+      "name": "影之国符文紧身战衣",
+      "prose": "A violet bodysuit with etched silver pauldrons and sheer mesh hip cutouts.",
       "tokens": [
         "bodysuit",
         "tight_suit",
@@ -19,9 +19,6 @@
         "silver_pauldrons",
         "gauntlets",
         "sheer_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "heeled_boots"
       ],
       "default": true,

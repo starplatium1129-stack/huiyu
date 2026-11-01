@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/sleeveless_white_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 238,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
       "id": "sleeveless_white_shirt",
-      "name": "经典无袖白衬衫黑领带与高腰短裤皮腿扣",
+      "name": "经典无袖白衬衫、黑领带与高腰短裤",
       "tokens": [
         "sleeveless_shirt",
         "white_shirt",
@@ -17,12 +17,9 @@
         "shorts",
         "high_waist_shorts",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "loafers"
       ],
-      "prose": "Her signature white sleeveless collared shirt with a loose black tie tucked into dark shorts, showing toned bare thighs cinched by a buckled leather garter softly indenting her skin.",
+      "prose": "Her signature white sleeveless collared shirt with a loose black tie tucked into dark shorts.",
       "styleHint": "gritty cinematic urban anime",
       "isDefault": true,
       "default": true,

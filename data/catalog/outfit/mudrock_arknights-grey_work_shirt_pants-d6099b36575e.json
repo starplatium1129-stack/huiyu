@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/grey_work_shirt_pants",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1417,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "grey_work_shirt_pants",
       "name": "深灰廓形工装衬衫与开衩收腿裤",
-      "prose": "A relaxed charcoal utility work shirt worn unbuttoned over a ribbed white crop top, paired with utility cargo pants with side vents revealing a tactical black leather thigh strap indenting her bare skin.",
+      "prose": "A relaxed charcoal utility shirt worn open over a white ribbed crop top and cargo trousers with side vents.",
       "tokens": [
         "work_shirt",
         "grey_shirt",
@@ -19,9 +19,6 @@
         "crop_top",
         "slit_pants",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "work_boots"
       ],
       "characterId": "mudrock_arknights",

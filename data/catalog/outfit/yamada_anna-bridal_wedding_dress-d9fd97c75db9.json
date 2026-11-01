@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "yamada_anna/bridal_wedding_dress",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 838,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
   "data": {
     "characterId": "yamada_anna",
     "outfit": {
       "id": "bridal_wedding_dress",
-      "name": "重工鱼尾真丝花嫁礼服与珍珠腿环",
-      "prose": "A couture strapless mermaid wedding gown sculpted in silk duchesse with a sweeping lace train, paired with sheer white thighhighs and a tailored leather thigh strap.",
+      "name": "重工鱼尾真丝花嫁礼服与白色长袜",
+      "prose": "A strapless silk mermaid wedding gown with a sweeping lace train, paired with sheer white thigh-highs.",
       "tokens": [
         "wedding_dress",
         "white_dress",
@@ -22,9 +22,6 @@
         "bridal_veil",
         "pearl_necklace",
         "white_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "high_heels"
       ],
       "characterId": "yamada_anna",

@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "arima_kana/sfw_casual",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 533,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "id": "sfw_casual",
       "name": "法式极简奶油罗纹针织开衫与开衩及膝裙",
-      "prose": "A cropped ivory bouclé cardigan with wine-red piped borders worn over a silk shell top, paired with a high-slit navy wool pencil skirt revealing sheer black thighhighs clasped by a leather thigh strap.",
+      "prose": "An ivory bouclé cardigan with wine-red piping over a silk top, paired with a slit navy wool pencil skirt and sheer black thigh-highs.",
       "tokens": [
         "cropped_cardigan",
         "cream_cardigan",
@@ -20,9 +20,6 @@
         "pencil_skirt",
         "high_slit",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "heels"
       ],
       "characterId": "arima_kana",

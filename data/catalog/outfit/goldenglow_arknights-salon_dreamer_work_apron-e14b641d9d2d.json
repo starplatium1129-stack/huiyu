@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/salon_dreamer_work_apron",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 345,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
       "default": false,
       "id": "salon_dreamer_work_apron",
       "isDefault": false,
-      "name": "鼠尾草工装背带短裙与皮质匠人腿带",
-      "prose": "A vintage sage-green tailored suspender pinafore dress layered over a crisp puff-sleeved ivory blouse, revealing bare legs cinched by an artisan buckled leather thigh strap with a subtle thigh squish.",
+      "name": "鼠尾草工装背带短裙",
+      "prose": "A vintage sage-green tailored suspender pinafore dress layered over a crisp puff-sleeved ivory blouse.",
       "tokens": [
         "pinafore_dress",
         "sage_green_dress",
@@ -20,10 +20,7 @@
         "puff_sleeves",
         "square_neckline",
         "tool_belt",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "goldenglow_arknights"
     }

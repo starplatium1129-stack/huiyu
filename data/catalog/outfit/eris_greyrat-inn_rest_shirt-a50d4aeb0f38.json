@@ -1,27 +1,24 @@
 {
   "kind": "outfit",
   "id": "eris_greyrat/inn_rest_shirt",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1158,
   "createdAt": "2026-10-15T13:15:59.100078900+00:00",
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
   "data": {
     "characterId": "eris_greyrat",
     "outfit": {
       "id": "inn_rest_shirt",
-      "name": "旅舍落肩棉麻宽松白衬衫与复古皮腿扣",
+      "name": "旅舍落肩棉麻宽松白衬衫",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
-      "prose": "An oversized ivory linen shirt slipping off one shoulder over bare legs, adorned with a buckled leather thigh strap that gently presses into her soft thigh skin.",
+      "prose": "An oversized ivory linen shirt slipping off one shoulder over bare legs.",
       "tokens": [
         "white_shirt",
         "oversized_shirt",
         "unbuttoned_shirt",
         "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "slippers"
       ],
       "characterId": "eris_greyrat"

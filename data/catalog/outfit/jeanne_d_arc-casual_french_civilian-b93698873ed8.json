@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "jeanne_d_arc/casual_french_civilian",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:08:55.835274400+00:00",
+  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
   "data": {
     "characterId": "jeanne_d_arc",
     "outfit": {
       "id": "casual_french_civilian",
       "name": "法式蕾丝衬衫与宝蓝高开衩裹身裙",
-      "prose": "A tailored ivory blouse with antique lace collar paired with a royal-blue slit pencil skirt, accented by dual buckled leather thigh straps subtly indenting the dark stockings.",
+      "prose": "An ivory blouse with an antique lace collar and a royal-blue slit pencil skirt, paired with dark stockings.",
       "tokens": [
         "white_blouse",
         "lace_collar",
@@ -18,9 +18,6 @@
         "royal_blue_skirt",
         "high-waist_skirt",
         "side_slit",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "black_thighhighs",
         "leather_shoes"
       ],

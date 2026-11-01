@@ -1,24 +1,21 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/fitting_bikini_top",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1400,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
+  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "id": "fitting_bikini_top",
       "name": "新菜专属试衣交叉黑绑带泳装",
-      "prose": "A minimalist matte black criss-cross wrap bikini top that accentuates her bust with silver ring hardware, paired with ultra-low strappy bottoms. Delicate leather garter straps descend from the waist to dual thigh bands, pinching gently into her sun-kissed soft thighs, barefoot.",
+      "prose": "A matte black criss-cross wrap bikini with silver ring hardware and strappy bottoms, worn barefoot.",
       "tokens": [
         "black_bikini",
         "criss-cross_bikini",
         "strappy_bikini",
         "ring_hardware",
-        "garter_straps",
-        "thigh_strap",
-        "waist_straps",
         "barefoot",
         "alluring"
       ],

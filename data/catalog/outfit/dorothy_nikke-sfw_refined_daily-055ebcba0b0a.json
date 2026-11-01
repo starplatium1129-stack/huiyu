@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "dorothy_nikke/sfw_refined_daily",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:23:33.968591+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "dorothy_nikke",
     "outfit": {
       "id": "sfw_refined_daily",
-      "name": "烟粉真丝方领小衫与炭灰百褶短裙皮腿带",
-      "prose": "A tailored dusty-pink silk blouse with pearlescent buttons tucked into a high-waisted charcoal pleated mini skirt, paired with sheer black stockings clasped in a buckled leather thigh strap softly indenting the skin.",
+      "name": "烟粉真丝方领小衫与炭灰百褶短裙",
+      "prose": "A dusty-pink silk blouse with pearlescent buttons tucked into a charcoal pleated skirt, paired with sheer black stockings.",
       "tokens": [
         "pink_shirt",
         "collared_shirt",
@@ -19,10 +19,7 @@
         "pleated_skirt",
         "high-waisted_skirt",
         "black_thighhighs",
-        "sheer_legwear",
-        "thigh_strap",
-        "leather_strap",
-        "buckle"
+        "sheer_legwear"
       ],
       "isDefault": false,
       "isNsfw": false,

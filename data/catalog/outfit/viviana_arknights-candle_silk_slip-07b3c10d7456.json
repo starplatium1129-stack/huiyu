@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/candle_silk_slip",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 395,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:08:07.907496200+00:00",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "candle_silk_slip",
       "isDefault": false,
       "name": "香槟金垂坠真丝细带睡裙与象牙蕾丝",
-      "prose": "A lustrous champagne-gold silk slip dress trimmed with delicate ivory floral lace along the low neckline and slit hem. A slender suede leather thigh strap with a gold buckle softly indents the velvety skin of her bare thigh.",
+      "prose": "A lustrous champagne-gold silk slip dress trimmed with delicate ivory floral lace along the low neckline and slit hem.",
       "tokens": [
         "slip_dress",
         "nightgown",
@@ -21,11 +21,7 @@
         "lace_trim",
         "spaghetti_straps",
         "bare_shoulders",
-        "bare_legs",
-        "thigh_strap",
-        "leather_strap",
-        "gold_buckle",
-        "buckle"
+        "bare_legs"
       ],
       "characterId": "viviana_arknights"
     }

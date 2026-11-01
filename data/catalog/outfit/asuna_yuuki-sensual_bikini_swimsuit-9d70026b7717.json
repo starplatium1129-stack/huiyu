@@ -1,25 +1,22 @@
 {
   "kind": "outfit",
   "id": "asuna_yuuki/sensual_bikini_swimsuit",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 747,
   "createdAt": null,
-  "updatedAt": "2026-10-28T04:51:22.412856600+00:00",
+  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
   "data": {
     "characterId": "asuna_yuuki",
     "outfit": {
       "id": "sensual_bikini_swimsuit",
-      "name": "绯红交叉绑带泳装与机能腿环",
-      "prose": "A scarlet halterneck bikini featuring crossover straps beneath the chest and high-cut bottoms, styled with a contrasting black leather thigh strap on one leg that gently presses into the bare sunlit skin.",
+      "name": "绯红交叉绑带挂颈泳装",
+      "prose": "A scarlet halterneck bikini with crossover straps beneath the chest and high-cut bottoms.",
       "tokens": [
         "red_bikini",
         "halterneck",
         "strappy_bikini",
         "cross_strap",
         "cutout",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "bare_legs",
         "wet_skin"
       ],

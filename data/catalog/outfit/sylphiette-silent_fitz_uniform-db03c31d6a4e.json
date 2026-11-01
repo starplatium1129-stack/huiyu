@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "sylphiette/silent_fitz_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 255,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "default": false,
       "id": "silent_fitz_uniform",
       "isDefault": false,
-      "name": "菲兹学长白色修身马甲礼服与黑丝腿环",
-      "prose": "A tailored Ranoa white gentleman suit with a slim vest and short cape, revealing dark stockings clasped by a polished leather thigh strap that indents her soft skin.",
+      "name": "菲兹白色修身马甲礼服与黑色长袜",
+      "prose": "A white Ranoa gentleman's suit with a slim vest and short cape, paired with dark stockings.",
       "styleHint": "sharp noble academy aesthetic",
       "tokens": [
         "white_suit",
@@ -21,9 +21,6 @@
         "necktie",
         "shorts",
         "black_thighhighs",
-        "thigh_strap",
-        "leather_strap",
-        "buckle",
         "oxfords"
       ],
       "characterId": "sylphiette"

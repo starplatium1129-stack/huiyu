@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/black_lace_nightgown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1177,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-28T04:28:25.405642+00:00",
+  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
       "id": "black_lace_nightgown",
-      "name": "尚蒂伊深黑蕾丝深V长裙与哥特腿环",
-      "prose": "A breathtaking black Chantilly lace lingerie gown with a plunging scalloped neckline, sheer underbust corsetry, and a hip-high side slit. A double-tiered black leather thigh ring with miniature silver studs tightly hugs her curvy upper thigh, accompanied by an open velvet draped night robe.",
+      "name": "尚蒂伊黑蕾丝长裙与蕾丝腿饰",
+      "prose": "A black Chantilly lace gown with a plunging scalloped neckline, sheer corsetry and a high side slit, worn with a velvet robe and a black lace thigh garter edged with small silver studs.",
       "tokens": [
         "lace_gown",
         "black_nightgown",
@@ -19,8 +19,8 @@
         "high_slit",
         "sheer_lace",
         "thigh_strap",
-        "double_thigh_strap",
-        "leather_harness",
+        "lace_trim",
+        "ribbon",
         "velvet_robe",
         "gothic_elegance"
       ],
