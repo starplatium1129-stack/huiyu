@@ -146,6 +146,8 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
     for key in [
         "loraId",
         "hiresSteps",
+        "hiresCfg",
+        "hiresDenoise",
         "requestedHiresUpscaler",
         "superResModel",
     ] {
@@ -154,7 +156,9 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
         }
     }
     metadata["hiresUpscaler"] = input["hiresUpscaler"].clone();
-    metadata["hiresSampler"] = if family != "krea2"
+    metadata["hiresSampler"] = if input["hiresUpscaler"] == "4x-UltraSharp" {
+        json!("euler")
+    } else if family != "krea2"
         && input["hiresFix"] == true
         && ((generation::truthy(&input["initImage"])
             && (generation::truthy(&input["maskImage"])
@@ -168,7 +172,9 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
     } else {
         Value::Null
     };
-    metadata["hiresScheduler"] = if !metadata["hiresSampler"].is_null() {
+    metadata["hiresScheduler"] = if input["hiresUpscaler"] == "4x-UltraSharp" {
+        json!("normal")
+    } else if !metadata["hiresSampler"].is_null() {
         catalog::model(input["modelId"].as_str().unwrap())?
             .get("hiresScheduler")
             .unwrap_or(&catalog::contract()["HIRES_SCHEDULER"])

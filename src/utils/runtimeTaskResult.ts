@@ -5,12 +5,12 @@ import type { AnimaJobMetadata, AnimaResultContext } from '@/types/anima'
 const metadataKeys = [
   'prompt', 'negative', 'profileId', 'modelId', 'loraId', 'loraStrength', 'loras', 'styleLoraId',
   'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'character', 'preview',
-  'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'hiresSteps', 'faceDetailer',
+  'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'faceDetailer',
   'teaCache', 'teaCacheThresh', 'initImage', 'maskImage', 'maskPrompt', 'denoisingStrength', 'growMaskBy',
   'sketchControl', 'sketchControlModel', 'regions',
 ] as const
 const recipeKeys = ['engine', 'provider', 'profile', 'model', 'checkpoint', 'prompt', 'negative', 'seed', 'cfg', 'steps', 'sampler', 'scheduler', 'size',
-  'lora', 'loraId', 'loraStrength', 'loras', 'styleLoraId', 'preview', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresDenoise', 'faceDetailer',
+  'lora', 'loraId', 'loraStrength', 'loras', 'styleLoraId', 'preview', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'hiresDenoise', 'faceDetailer',
   'sketchControl', 'sketchControlModel', 'regions']
 
 /** Runtime effective input and provider observations are facts; form values are not. */
@@ -32,7 +32,7 @@ export function runtimeTaskRecipe(task: TaskRecord): Partial<HistoryEntry> {
   for (const [from, to] of Object.entries(text)) if (typeof source[from] === 'string') recipe[to] = source[from]
   if (recipe.profile === '') delete recipe.profile
   if (recipe.model !== undefined) recipe.checkpoint = recipe.model
-  for (const key of ['cfg', 'steps', 'hiresScale', 'hiresSteps']) {
+  for (const key of ['cfg', 'steps', 'hiresScale', 'hiresSteps', 'hiresCfg']) {
     if (typeof source[key] === 'number' && Number.isFinite(source[key])) recipe[key] = source[key]
   }
   if (typeof source.seed === 'number' && Number.isSafeInteger(source.seed) && source.seed >= 0) recipe.seed = source.seed

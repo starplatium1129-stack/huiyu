@@ -89,7 +89,8 @@
       "steps": 50, "cfg": 3.5, "maxSize": 1536, "alignment": 16,
       "shift": 5, "uncondSkipLayers": [22],
       "mossAcceleration": ["off", "spectrum"],
-      "mossTextPrecision": ["bf16", "fp8"],
+      "mossSpectrumFlexWindow": true,
+      "mossTextPrecision": ["bf16", "fp8", "int8"],
       "mossCompile": true,
       "mossInt8": {
         "path": "transformer/miaomiaoHaremMOSS_baseV10_int8.safetensors",
@@ -97,6 +98,16 @@
         "sha256": "8aa2d469b28ea72beb35730b3a00bf0bffbaca03f0419d6f05d390614fe689d9",
         "sourceUrl": "https://civitai.com/api/download/models/3422319?fileId=3316568",
         "format": "int8_tensorwise-convrot256"
+      },
+      "mossTextInt8": {
+        "path": "text_encoder/qwen35_9b_int8_convrot.safetensors",
+        "bytes": 9873285104,
+        "sha256": "96064ede0b4caa9b6dd60a9fa868707e7b8ff3ae5347c0bab6bc868b5932f317",
+        "repository": "sorryhyun/MOSS-Image-Qwen3.5-9B-int8",
+        "revision": "2e65ae37feace6d47d8fda7c8969da84a9199386",
+        "sourceUrl": "https://huggingface.co/sorryhyun/MOSS-Image-Qwen3.5-9B-int8/resolve/2e65ae37feace6d47d8fda7c8969da84a9199386/qwen35_9b_int8_convrot.safetensors",
+        "format": "int8_tensorwise-convrot256",
+        "license": "Apache-2.0"
       },
       "edit": false, "negative": true, "distilled": false
     },

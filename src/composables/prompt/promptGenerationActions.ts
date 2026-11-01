@@ -4,6 +4,7 @@ import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { useDirectorEngine } from '@/composables/scene/useDirectorEngine'
 import type { useDirectorPopular } from '@/composables/scene/useDirectorPopular'
 import type { useAnimaSession } from '@/composables/generation/useAnimaSession'
+import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
 export interface PromptGenerationContext extends
   Pick<ReturnType<typeof useDirectorEngine>, 'currentCapabilities' | 'generationBusy'>,
   Pick<ReturnType<typeof useDirectorPopular>, 'applyManagedRoute'> {
@@ -39,8 +40,8 @@ export async function upscaleCurrentResultAction(ctx: Context, source: HiresSour
             pb.flash('这幅成片含编辑或构图控制输入，暂不能按完整原配方高清重绘');
             return;
         }
-        pb.flash('正在按原成片的配方和 Seed 执行 2x 高清重绘…');
-        await generateAnima({ hiresFix: true, hiresScale: 2.0, hiresDenoise: 0.35 }, submission);
+        pb.flash('正在按原成片的 Seed 执行 1.5× UltraSharp 高清重绘…');
+        await generateAnima(ANIMA_HIRES_PRESET, submission);
         return;
     }
 }

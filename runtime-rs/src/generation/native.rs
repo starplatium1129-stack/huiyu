@@ -9,6 +9,7 @@ pub(crate) use input::InputFile;
 use input::RunFiles;
 pub(crate) use model_layout::model_issue;
 mod observations;
+mod execution;
 mod moss;
 pub(in crate::generation) mod recovery;
 pub(crate) mod resources;
@@ -398,7 +399,9 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                             .ok_or_else(protocol_error)?;
                         let mut state = job.state.lock().await;
                         state.progress = Some(step as f64 / total as f64);
-                        state.progress_text = format!("独立推理 {step}/{total}");
+                        state.progress_text = if plan.input["mossUpscaleScale"].is_number() {
+                            format!("Remacri 放大 {step}/{total}")
+                        } else { format!("独立推理 {step}/{total}") };
                     }
                     Some("result") if !produced => {
                         if event["outputPath"].as_str() != output.to_str() {

@@ -28,6 +28,8 @@ const FILES: &[&str] = &[
     "MANGASCREEN_LICENSE.txt",
     "worker_lifecycle.py",
     "manga_models.py",
+    "manga_cache.py",
+    "locked_identity.py",
     "manga_line_model.py",
     "MANGALINE_LICENSE.txt",
 ];

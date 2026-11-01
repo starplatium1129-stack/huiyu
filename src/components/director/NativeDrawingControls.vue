@@ -23,6 +23,15 @@ function editOriginal() {
       <section class="native-readiness" aria-label="模型准备状态"><p>{{ state.statusError.value || state.selected.value?.unavailableReason || '基于角色、场景及画面描述生成。' }}</p><div class="native-buttons"><button class="btn btn-quiet btn-sm" type="button" :disabled="state.checking.value || busy" @click="state.refresh()">重新检查</button><RouterLink v-if="!state.selected.value?.available" class="btn btn-ghost btn-sm" :to="{ path: '/control', query: { engine: 'native', model: state.form.modelId } }">准备模型</RouterLink></div></section>
       <GenerationSizePicker :engine="drawing.mode.value || ''" :size="drawing.size.value" :anima-sizes="drawing.sizes.value" :busy="drawing.locked.value" @update:size="drawing.setSize" />
       <slot v-if="drawing.mode.value === 'moss'" name="style" />
+      <section v-if="drawing.mode.value === 'moss' && state.result.value" class="native-readiness" aria-label="Remacri 结果放大">
+        <p>Remacri · 结果放大</p>
+        <div class="native-buttons">
+          <button class="btn btn-quiet btn-sm" type="button" :disabled="!state.canUpscale.value" @click="state.upscaleResult(1.5)">1.5× 放大</button>
+          <button class="btn btn-quiet btn-sm" type="button" :disabled="!state.canUpscale.value" @click="state.upscaleResult(2)">2× 放大</button>
+          <button v-if="typeof state.result.value.input.mossUpscaleSourceTaskId === 'string'" class="btn btn-ghost btn-sm" type="button" :disabled="drawing.locked.value" @click="router.push({ path: '/prompt-builder', query: { ...route.query, job: state.result.value.input.mossUpscaleSourceTaskId } })">查看原图</button>
+        </div>
+        <p>{{ state.result.value.input.mossUpscaleScale ? '当前为放大副本；可查看原图选择另一倍率。' : !state.selected.value?.mossRemacri ? '请先在模型目录准备 Remacri 超分权重。' : '生成更清晰的大图副本，保留原图，不重新绘制。' }}</p>
+      </section>
       <div v-if="state.source.value || state.restoredInputMissing.value" class="native-buttons"><button class="btn btn-ghost btn-sm" type="button" :disabled="busy" @click="editOriginal">继续编辑原图</button><button class="btn btn-quiet btn-sm" type="button" :disabled="drawing.locked.value" @click="state.removeSource()">转为文生图</button></div>
       <details class="inspector-route"><StudioDisclosureSummary>高级调整 · {{ state.turbo.value ? '8' : state.form.steps }} 步 · {{ state.randomSeed.value ? '随机种子' : '固定种子' }}</StudioDisclosureSummary><div class="native-advanced">
         <div class="native-pair"><div class="native-field"><label for="native-width">宽度（px）</label><input id="native-width" v-model.number="state.form.width" class="input" type="number" min="512" :max="state.maxSize" :step="state.alignment" :disabled="drawing.locked.value" aria-describedby="native-size-help" /></div><div class="native-field"><label for="native-height">高度（px）</label><input id="native-height" v-model.number="state.form.height" class="input" type="number" min="512" :max="state.maxSize" :step="state.alignment" :disabled="drawing.locked.value" aria-describedby="native-size-help" /></div></div>
@@ -31,14 +40,18 @@ function editOriginal() {
           <div class="native-field"><label for="native-negative">模型负向描述</label><textarea id="native-negative" v-model="state.form.negative" class="textarea" rows="3" maxlength="8000" :disabled="drawing.locked.value" spellcheck="false" autocorrect="off" autocapitalize="off" /></div>
           <div class="native-pair"><div class="native-field"><label for="native-steps">步数</label><input id="native-steps" v-model.number="state.form.steps" class="input" type="number" min="1" max="100" :disabled="drawing.locked.value" /></div><div class="native-field"><label for="native-cfg">CFG</label><input id="native-cfg" v-model.number="state.form.cfg" class="input" type="number" :min="drawing.mode.value === 'moss' ? 0 : 1.1" max="20" step="0.1" :disabled="drawing.locked.value" /></div></div>
           <div v-if="drawing.mode.value === 'moss'" class="native-field"><label for="native-cache">缓存加速</label><StudioSelect id="native-cache" v-model="state.form.mossAcceleration" label="缓存加速" :disabled="drawing.locked.value" :options="[{value:'off',label:'关闭 · 完整计算'},{value:'spectrum',label:'Spectrum · 实验',disabled:!state.selected.value?.mossSpectrum}]" /></div>
-          <p v-if="drawing.mode.value === 'moss'">Spectrum 为实验加速特性，占用额外显存。</p>
+          <p v-if="drawing.mode.value === 'moss'">新创作默认开启 Spectrum，可关闭使用完整计算。预测会占用额外显存，并可能改变局部细节。</p>
+          <template v-if="drawing.mode.value === 'moss' && state.form.mossAcceleration === 'spectrum'">
+            <div class="native-field"><label for="native-spectrum-flex">Spectrum 加速强度</label><input id="native-spectrum-flex" v-model.number="state.form.mossSpectrumFlexWindow" class="input" type="number" min="0" max="2" step="0.05" :disabled="drawing.locked.value || !state.selected.value?.mossFlexWindow" aria-describedby="native-spectrum-flex-help" /></div>
+            <p id="native-spectrum-flex-help">默认 0.5；0.25 更保守，1 更激进。越大预测越多，细节变化也可能更明显。0 仍会预测；关闭请选完整计算。</p>
+          </template>
           <template v-if="drawing.mode.value === 'moss'">
             <div class="native-field"><label for="native-weight-precision">主模型权重</label><StudioSelect id="native-weight-precision" v-model="state.form.mossWeightPrecision" label="主模型权重" :disabled="drawing.locked.value" aria-describedby="native-weight-help" :options="[{value:'auto',label:state.selected.value?.mossInt8Ready?'自动 · 作者 INT8':'自动 · 作者 FP16'},{value:'fp16',label:'作者 FP16'},{value:'int8',label:'作者 INT8 · 省显存',disabled:!state.selected.value?.mossInt8Ready}]" /></div>
-            <p id="native-weight-help">{{ state.selected.value?.mossInt8Ready ? '作者 INT8 已导入，自动模式优先使用。切换主模型权重会重新准备。' : '尚未导入作者 INT8，自动模式使用 FP16。' }}</p>
-            <div class="native-field"><label for="native-text-precision">文本编码精度</label><StudioSelect id="native-text-precision" v-model="state.form.mossTextPrecision" label="文本编码精度" :disabled="drawing.locked.value" aria-describedby="native-precision-help" :options="[{value:'bf16',label:'原始精度'},{value:'fp8',label:'FP8 · 省显存（实验）',disabled:!state.selected.value?.mossFp8}]" /></div>
-            <p id="native-precision-help">FP8 减少连续出图时的显存搬运，画面细节可能变化。切换精度后会重新准备模型。</p>
+            <p id="native-weight-help">{{ state.selected.value?.mossInt8Ready ? '作者 INT8 已导入，自动模式优先使用。文本编码精度单独选择；切换主模型权重会重新准备。' : '尚未导入作者 INT8，自动模式使用 FP16。' }}</p>
+            <div class="native-field"><label for="native-text-precision">文本编码精度</label><StudioSelect id="native-text-precision" v-model="state.form.mossTextPrecision" label="文本编码精度" :disabled="drawing.locked.value" aria-describedby="native-precision-help" :options="[{value:'bf16',label:'原始精度'},{value:'fp8',label:'FP8 · 省显存（实验）',disabled:!state.selected.value?.mossFp8},{value:'int8',label:'INT8 · 加速与省显存',disabled:!state.selected.value?.mossTextInt8Ready}]" /></div>
+            <p id="native-precision-help">INT8 使用独立量化的文本编码器；FP8 减少权重显存。两者都可能改变画面细节，切换后会重新准备模型。</p>
             <StudioCheckbox v-model:checked="state.form.mossCompile" label="编译推理内核" :disabled="drawing.locked.value || !state.selected.value?.mossCompile && !state.form.mossCompile" aria-describedby="native-compile-help">编译推理内核</StudioCheckbox>
-            <p id="native-compile-help">首次编译较慢，后续连续生成复用。编译不可用时自动使用普通执行。</p>
+            <p id="native-compile-help">默认关闭，可直接开始生成。开启后首次编译主模型较慢；后续复用，遇到需要重编译的输入使用普通执行。</p>
           </template>
         </template>
         <p v-else>Turbo 固定 8 步、CFG 1，不使用负向描述。</p>

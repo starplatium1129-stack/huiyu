@@ -13,13 +13,17 @@ from huiyu_worker_lifecycle import load_sibling as sibling
 
 contract = sibling("manga_contract")
 Error = contract.MangaError
+_adapter_ready = _line_ready = False
 
 
 def prepare(data):
+    global _adapter_ready, _line_ready
     # Called per job: a warm CPU worker may receive its first model task later.
     if data.get("rewrite"):
-        sibling("adapter_worker").dependencies()
-    elif data.get("autoLines"):
+        if not _adapter_ready:
+            sibling("adapter_worker").dependencies()
+            _adapter_ready = _line_ready = True
+    elif data.get("autoLines") and not _line_ready:
         try:
             version = importlib.metadata.version("torch").split("+")[0]
         except importlib.metadata.PackageNotFoundError as exc:
@@ -29,6 +33,7 @@ def prepare(data):
         if version not in (contract.MANIFEST["lineart"]["torch"], "2.9.0", "2.13.0"):
             raise Error("MANGA_DEPENDENCY_VERSION", "自动线稿需要已支持的图像运行库；请勿修改 Anima 环境")
         import torch  # Import only, never initializes a model or CUDA here.
+        _line_ready = True
 
 
 def rewrite(job, data, rgb, control, read_image, *, resident=None):
@@ -37,6 +42,14 @@ def rewrite(job, data, rgb, control, read_image, *, resident=None):
     request = dict(data["rewrite"])
     spec = adapter.contract.model(request["modelId"])
     request.update(steps=spec["steps"], cfg=spec["cfg"], negativePrompt="")
+    # Validate the same local layout before considering a protected pixel result.
+    root = adapter.contract.layout(job["modelDir"], spec)
+    key = resident.key(root, request, rgb) if resident is not None else None
+    if resident is not None:
+        cached = resident.get(key)
+        if cached is not None:
+            control.stage("manga_rewrite")
+            return cached
     output = Path(job["outputPath"]).with_name("manga-rewrite.png")
     source = output.with_name("manga-rewrite-input.png")
     if output.exists() or source.exists():
@@ -49,10 +62,14 @@ def rewrite(job, data, rgb, control, read_image, *, resident=None):
         control.stage("manga_rewrite")
         adapter.generate(dict(id=job["id"], op="generate", input=request, modelDir=job["modelDir"],
                               inputImagePath=str(source), outputPath=str(output)), control, None,
-                         result_callback=observation.update, resident=resident,
+                         result_callback=observation.update, resident=resident.adapters() if resident is not None else None,
                          reference_resolution=round((request["width"] * request["height"]) ** 0.5))
         control.check()
-        return read_image(output), observation
+        pixels = read_image(output)
+        observation["resultReused"] = False
+        if resident is not None:
+            resident.put(key, pixels, observation)
+        return pixels, observation
     finally:
         output.unlink(missing_ok=True)
         source.unlink(missing_ok=True)
@@ -64,13 +81,19 @@ def rewrite(job, data, rgb, control, read_image, *, resident=None):
             torch.cuda.empty_cache()
 
 
-def extract(rgb, weight, control):
+def extract(rgb, weight, control, *, resident=None):
     import cv2
     import numpy as np
     import torch
     source = Path(weight)
     if source.is_symlink() or getattr(source, "is_junction", lambda: False)() or not source.is_file():
         raise Error("MANGA_LINE_MODEL_MISSING", "需要本地 manga-line-extraction/erika.pth，不会自动下载")
+    key = token = None
+    if resident is not None:
+        key, token, cached = resident.line_input(source, rgb)
+        if cached is not None:
+            control.stage("manga_line_extract")
+            return cached
     model = None
     hooks = []
     try:
@@ -120,8 +143,12 @@ def extract(rgb, weight, control):
         # Author's output is black on white. MangaFinish pen_lines expects the
         # inverse (same polarity documented by comfyui_controlnet_aux Manga Lineart).
         pen = 1 - line.clip(0, 255).astype(np.uint8).astype(np.float32) / 255
-        return pen, {"model": contract.MANIFEST["lineart"]["id"], "modelSha256": digest.hexdigest(),
-                     "sourceRevision": contract.MANIFEST["lineart"]["revision"], "device": "cuda" if device != "cpu" else "cpu"}
+        observation = {"model": contract.MANIFEST["lineart"]["id"], "modelSha256": digest.hexdigest(),
+                       "sourceRevision": contract.MANIFEST["lineart"]["revision"],
+                       "device": "cuda" if device != "cpu" else "cpu", "resultReused": False}
+        if resident is not None:
+            resident.put_line(key, token, pen, observation)
+        return pen, observation
     except (RuntimeError, ValueError, KeyError, pickle.UnpicklingError) as exc:
         raise Error("MANGA_LINE_MODEL_INVALID", f"无法加载或执行官方 erika.pth：{exc}；不会替换算法或使用不安全加载") from exc
     finally:

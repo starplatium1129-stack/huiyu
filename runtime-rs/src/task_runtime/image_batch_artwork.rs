@@ -69,6 +69,7 @@ pub(super) async fn save(
         "hiresScale",
         "hiresUpscaler",
         "hiresSteps",
+        "hiresCfg",
         "hiresDenoise",
         "faceDetailer",
     ] {
@@ -91,6 +92,7 @@ pub(super) async fn save(
         "hiresScale",
         "hiresUpscaler",
         "hiresSteps",
+        "hiresCfg",
         "hiresDenoise",
         "faceDetailer",
         "sketchControl",

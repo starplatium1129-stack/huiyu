@@ -164,8 +164,13 @@ class Residency(memory.Residency):
         if self.active == name:
             return
         for record in self.records:
-            if (not self.retain_components and record["name"] != name
-                    and not (name == "vae" and record["name"] == "transformer")):
+            # A warm prompt may encode around the live denoiser, but its text
+            # weights must retire before sampling allocates joint-attention/FFN
+            # activations. Keeping both almost fills 16 GB and Windows pages GPU
+            # memory instead of failing promptly, stalling the first new step.
+            if ((name == "transformer" and record["name"] == "text_encoder")
+                    or (not self.retain_components and record["name"] != name
+                        and not (name == "vae" and record["name"] == "transformer"))):
                 self.restore(record)
         self.active = name
         for other_name, module in self.modules.items():
@@ -207,7 +212,7 @@ class Residency(memory.Residency):
         # Retain denoiser weights across decode and the next request. They remain
         # owned by the existing native worker and are released on handoff/timeout.
         for record in self.records:
-            if record["name"] != "transformer" and not (self.retain_components and record["keep"]):
+            if record["name"] != "transformer":
                 self.restore(record)
 
     def plan(self, pixels, *, image_conditioned=False, control=None, decode_pixels):

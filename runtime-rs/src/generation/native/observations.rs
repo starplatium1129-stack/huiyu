@@ -90,12 +90,16 @@ fn upload_observation(source: &Value) -> Option<Value> {
 // Optional evidence must neither break legacy workers nor forward arbitrary worker data.
 // Missing/malformed evidence stays visibly unverified; image/protocol checks are unchanged.
 pub(super) fn capture(value: &Value) -> Value {
+    if value["operation"] == "moss-upscale" {
+        return super::moss::upscale(value).unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-moss-upscale"}));
+    }
     if value["processor"] == "manga-screen"
         && matches!(value["device"].as_str(), Some("cpu" | "cuda+cpu"))
         && value["sourceRevision"] == "d0eb8dcc6c45274e3eee118ff0dabe05b56039b9"
     {
         let mut result = json!({"processor":"manga-screen","sourceRevision":value["sourceRevision"],"device":value["device"],
             "validation":"待主力机验证","generationVerified":false,"performanceVerified":false});
+        if let Some(timings) = super::execution::manga(&value["timings"]) { result["timings"] = timings; }
         if matches!(
             value["rewrite"]["adapter"].as_str(),
             Some("qwen-image-2.1" | "qwen-image-2.1-turbo")
@@ -112,6 +116,7 @@ pub(super) fn capture(value: &Value) -> Value {
         {
             result["lineart"] = json!({"model":"manga-line-extraction","device":line["device"],
                 "sourceRevision":line["sourceRevision"],"modelSha256":line["modelSha256"],"validation":"待主力机验证"});
+            if line["resultReused"].is_boolean() { result["lineart"]["resultReused"] = line["resultReused"].clone(); }
         }
         return result;
     }
@@ -133,8 +138,12 @@ pub(super) fn capture(value: &Value) -> Value {
             ) {
                 result["modelIdentityScope"] = value["modelIdentityScope"].clone();
             }
-            if matches!(value["prefixCacheDevice"].as_str(), Some("cpu" | "cuda")) {
+            if matches!(value["prefixCacheDevice"].as_str(), Some("cpu" | "cuda" | "mixed" | "none")) {
                 result["prefixCacheDevice"] = value["prefixCacheDevice"].clone();
+            }
+            if id.starts_with("qwen-") && value["resultReused"].is_boolean() { result["resultReused"] = value["resultReused"].clone(); }
+            if id.starts_with("qwen-") && let Some(prefix) = value.get("qwenPrefixCache") {
+                result["qwenPrefixCache"] = super::execution::qwen_prefix(prefix).unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-qwen-prefix"}));
             }
             if matches!(
                 value["attentionBackend"].as_str(),
@@ -181,6 +190,9 @@ pub(super) fn capture(value: &Value) -> Value {
             "timingsAreAdditive":false,"baseReused":value["baseReused"].as_bool()?,
             "existingReportSynchronization":value["existingReportSynchronization"].as_bool()?,
             "completedSteps":value["completedSteps"].as_u64()?,"timings":{}});
+        if let Some(execution) = value.get("execution") {
+            result["execution"] = super::execution::anima(execution).unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-anima-execution"}));
+        }
         if let Some(policy) = value.get("memoryPolicy") {
             let policy = policy.as_str()?;
             if !matches!(policy, "resident" | "offload") {

@@ -21,7 +21,7 @@ RUNTIME = {"diffusers": "0.41.0", "torch": "2.8.0", "huiyuInference": "anima-wor
            "memoryPolicy": os.environ.get("HUIYU_INFERENCE_MEMORY", "resident"),
            "execution": EXECUTION,
            "executionRevision": "cosmos-v3-native-no-kv-repeat-v1" if EXECUTION == "native" else
-               "cosmos-v2-sage220-cu128torch280-post3-triton340post21" +
+               "cosmos-v3-sage220-cu128torch280-post3-triton340post21-norm-rope-v1" +
                ("-fusion-cpu-base-v1" if EXECUTION == "compiled-fused-sage" else "")}
 COMPONENTS = ("text_encoder", "text_conditioner", "transformer", "vae", "tokenizer", "t5_tokenizer", "scheduler")
 PROFILE_SET_KIND = "huiyu-teacache-profile-set"
@@ -147,7 +147,7 @@ def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir
             **({"rcasStrength": data["rcasStrength"], "rcasExecutionRevision": _postprocess_module().EXECUTION_REVISION}
                 if data.get("rcasStrength", 0) else {}),
             **({"promptWeighting": weighting} if weighting else {}),
-            **({"hires": {key: data.get(key) for key in ("hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel")},
+            **({"hires": {key: data.get(key) for key in ("hiresScale", "hiresDenoise", "hiresSteps", "hiresCfg", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel")},
                 "refinementRevision": "fp32-vae-full-oom-feather-remacri512-kjrcas-v3"} if data.get("hiresFix") else {}),
             **({"upscaleExecutionRevision": _upscale_module().EXECUTION_REVISION} if upscale else {}),
             "maskSource": ("clipseg" if data.get("maskPrompt") else "manual") if mode == "masked" else None,

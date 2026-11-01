@@ -24,8 +24,11 @@ def load(root, control, contract, *, text_precision="bf16", weight_precision="au
     if variant is not None:
         quant.require_backend(contract)
     control.stage("loading", component="text_encoder")
-    encoder = Qwen3_5Model.from_pretrained(str(root / "text_encoder"), local_files_only=True,
-        trust_remote_code=False, use_safetensors=True, dtype=torch.bfloat16).eval()
+    text = load_sibling("moss_text")
+    encoder = (text.load_int8(root, control, contract) if text_precision == "int8" else
+        Qwen3_5Model.from_pretrained(str(root / "text_encoder"), local_files_only=True,
+            trust_remote_code=False, use_safetensors=True, dtype=torch.bfloat16).eval())
+    text.bind_fast_convolution(encoder)
     if text_precision == "fp8":
         from diffusers.hooks import apply_layerwise_casting
         # Text-only MOSS never runs the vision tower. Preserve embeddings,
@@ -106,7 +109,8 @@ def generate(pipeline, data, control, observation):
             tokenize=False, add_generation_prompt=True, enable_thinking=True)
         if len(pipeline.tokenizer(formatted, truncation=False)["input_ids"]) > 4096:
             raise load_sibling("adapter_contract").AdapterError("PROMPT_TOO_LONG", f"MOSS {name}提示词超过 4096 tokens，请精简内容；未截断提交")
-    cache = (load_sibling("moss_spectrum").SpectrumCache(control, pipeline.scheduler, 2 if data["cfg"] != 1 else 1)
+    cache = (load_sibling("moss_spectrum").SpectrumCache(control, pipeline.scheduler,
+                2 if data["cfg"] != 1 else 1, data["mossSpectrumFlexWindow"])
              if data["mossAcceleration"] == "spectrum" else None)
     pipeline.transformer._huiyu_spectrum = cache
     execution = load_sibling("moss_execution").Execution(control)

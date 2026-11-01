@@ -7,6 +7,9 @@
 # Pillow 12.2.0 / SageAttention 2.2.0; no Comfy server is used by native inference.
 # Optional author MOSS INT8: reused CUDA 13 environment with comfy-kitchen==0.2.37.
 # The managed 2.9 recipe stays FP16; selecting INT8 never upgrades this environment.
+# Optional MOSS/Qwen3.5 text kernels: fla-core==0.6.0, flash-linear-attention==0.6.0,
+# einops==0.8.2, using the already installed torch and Triton (triton-windows on Windows).
+# MOSS reuses FLA's Triton causal convolution without a causal-conv1d CUDA extension.
 torch==2.9.0
 torchvision==0.24.0
 diffusers @ git+https://github.com/huggingface/diffusers.git@b800f828f3951c4d206e154411bcbfa693cd322e

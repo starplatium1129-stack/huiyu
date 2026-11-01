@@ -5,9 +5,12 @@ src/utils/basis_utils.py (Copyright 2026 Jiaqi Han, MIT; SPECTRUM-LICENSE).
 Changes: bounded image-feature history, step-count normalization, CPU ridge
 weights, streaming FP32 accumulation, separate CFG/skip-layer lanes, guarded
 growing forecast windows, cancellation and explicit memory/finite fallback.
+Window scheduling follows the MOSS sampler's window_size/flex_window rule:
+https://github.com/sorryhyun/ComfyUI-Spectrum-KSampler/blob/main/moss.py
 No ComfyUI plugin or Anima TeaCache coefficients are used.
 """
 from collections import deque
+import math
 
 
 class SpectrumCache:
@@ -17,16 +20,18 @@ class SpectrumCache:
     DEGREE = 4
     RIDGE = 0.1
 
-    def __init__(self, control, scheduler, branches):
+    def __init__(self, control, scheduler, branches, flex_window):
         self.control, self.scheduler, self.branches = control, scheduler, branches
+        self.flex_window = flex_window
         self.lanes = {}
         self.coefficients = {}
         self.budget_checked = False
         self.disabled = False
-        self.stats = dict(algorithm="moss-spectrum-v2", requested=True,
+        self.stats = dict(algorithm="moss-spectrum-v3", requested=True,
             actualForwards=0, forecastForwards=0, nonfiniteFallbacks=0,
             historySize=self.HISTORY, warmupSteps=self.WARMUP, tailSteps=self.TAIL,
-            maxConsecutiveForecasts=3, performanceVerified=False, qualityVerified=False,
+            windowSize=2, flexWindow=flex_window, maxConsecutiveForecasts=0,
+            performanceVerified=False, qualityVerified=False,
             fallbackReason=None)
 
     def clear(self):
@@ -35,7 +40,7 @@ class SpectrumCache:
 
     def _lane(self, key):
         return self.lanes.setdefault(key, dict(step=-1, history=deque(maxlen=self.HISTORY),
-            streak=0, actual=0, shape=None))
+            streak=0, window=2.0, shape=None))
 
     def predict(self, key, current):
         import torch
@@ -45,7 +50,7 @@ class SpectrumCache:
         shape = (tuple(current.shape), current.dtype, current.device)
         if lane["shape"] != shape:
             lane["history"].clear()
-            lane["shape"], lane["streak"], lane["actual"] = shape, 0, 0
+            lane["shape"], lane["streak"], lane["window"] = shape, 0, 2.0
         if not self.budget_checked:
             # History keeps only image features, never the much longer text stream.
             # Leave room for the next block's activations and FP32 accumulation.
@@ -56,9 +61,10 @@ class SpectrumCache:
                 self.disabled = True
                 self.stats["fallbackReason"] = "insufficient-vram-headroom"
         step, total = lane["step"], len(self.scheduler.timesteps)
-        # Warm/detail guard refreshes after each forecast. Only after sufficient
-        # actual observations does the window grow to two, then three forecasts.
-        cap = 1 if step < 2 * self.WARMUP else min(3, 1 + max(0, lane["actual"] - self.WARMUP) // 3)
+        # Community MOSS window scheduling: an actual forward every floor(N)
+        # steps, with N growing only after non-warmup actual observations.
+        # Keep the bounded native forecaster and independent CFG/skip lanes.
+        cap = max(1, math.floor(lane["window"])) - 1
         if (self.disabled or step < self.WARMUP or step >= total - self.TAIL
                 or lane["streak"] >= cap or len(lane["history"]) < self.HISTORY):
             lane["streak"] = 0
@@ -77,13 +83,15 @@ class SpectrumCache:
         self.control.check()
         lane["streak"] += 1
         self.stats["forecastForwards"] += 1
+        self.stats["maxConsecutiveForecasts"] = max(self.stats["maxConsecutiveForecasts"], lane["streak"])
         return prediction
 
     def update(self, key, features):
         import torch
         self.control.check()
         lane = self._lane(key)
-        lane["actual"] += 1
+        if lane["step"] >= self.WARMUP:
+            lane["window"] = round(lane["window"] + self.flex_window, 3)
         lane["streak"] = 0
         self.stats["actualForwards"] += 1
         if self.disabled:

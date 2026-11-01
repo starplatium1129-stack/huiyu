@@ -20,6 +20,8 @@ const message = (error: unknown) => error instanceof Error ? error.message : '�
 export function useMangaScreen(onSaved: () => void) {
   const parameters = reactive(defaultMangaParameters()), operation = ref<MangaOperation>('comic')
   const redraw = ref(true), randomSeed = ref(true)
+  const lastRedraw = shallowRef<{ signature: string; seed: number } | null>(null)
+  let submittedRedraw: { signature: string; seed: number } | null = null
   const rewrite = reactive<MangaRewrite>({modelId:mangaManifest.rewrite.defaultModel, prompt:mangaManifest.rewrite.defaultPrompt, width:1440, height:1440, seed:1})
   const source = shallowRef<MangaImage | null>(null), sourceUrl = ref(''), resize = ref(false)
   const result = shallowRef<MangaJob | null>(null), resultBlob = shallowRef<Blob | null>(null), resultUrl = ref('')
@@ -90,6 +92,9 @@ export function useMangaScreen(onSaved: () => void) {
     ...(lines.mode.value === 'external' ? [['penLinesPolarity', lines.polarity.value], ['penLinesFit', lines.stretch.value ? 'stretch' : 'exact']] : []),
   ]) as Omit<MangaRequest, 'initImage'>)
   const recipeSignature = computed(() => JSON.stringify([recipe.value, lines.signature.value, redraw.value && randomSeed.value]))
+  const redrawSignature = computed(() => JSON.stringify([rewrite.modelId, rewrite.prompt, rewrite.width, rewrite.height,
+    resize.value, randomSeed.value, randomSeed.value ? null : rewrite.seed]))
+  const reuseRedraw = computed(() => redraw.value && !!lastRedraw.value && lastRedraw.value.signature === redrawSignature.value)
   const modelIssue = computed(() => {
     const model = status.value?.rewrite.find(m => m.id === rewrite.modelId)
     if (redraw.value && !model?.available) return model?.unavailableReason || '所选 Qwen 重绘模型尚未就绪'
@@ -142,6 +147,7 @@ export function useMangaScreen(onSaved: () => void) {
       signal.throwIfAborted(); checkInput()
       await session.release(); checkInput()
       source.value = image; parent = artwork ? structuredClone(artwork) : undefined; resize.value = false
+      lastRedraw.value = null; submittedRedraw = null
       const { alignment, minSize, maxSize } = mangaManifest.rewrite
       const scale = Math.sqrt(mangaManifest.maxInputPixels / (image.width * image.height))
       let width = Math.max(minSize, Math.min(maxSize, Math.round(image.width * scale / alignment) * alignment))
@@ -208,6 +214,7 @@ export function useMangaScreen(onSaved: () => void) {
         }
         // Archive admission comes from the durable task, independently of preview reads.
         result.value = current; resultRecipe = submittedRecipe
+        if (current.status === 'succeeded' && submittedRedraw) lastRedraw.value = { ...submittedRedraw }
       }
       const lineReceived = lines.accept(current)
       if (lineReceived) lineRecipe = submittedRecipe
@@ -251,7 +258,7 @@ export function useMangaScreen(onSaved: () => void) {
     catch (e) { if (current() && !requestSettled.value) error.value = `取消尚未确认：${message(e)}` }
     finally { cancelling.value = false }
   }
-  async function run(kind: 'manga' | 'lineart' = 'manga') {
+  async function run(kind: 'manga' | 'lineart' = 'manga', newRedraw = false) {
     if (locked.value || !source.value || !status.value?.available) return
     if (kind === 'manga' && startIssue.value) { error.value = startIssue.value; return }
     error.value = ''; notice.value = ''; lines.notice.value = ''; submitting.value = true; cancelRequested = false
@@ -267,7 +274,11 @@ export function useMangaScreen(onSaved: () => void) {
       const recipeSnapshot: Omit<MangaRequest, 'initImage'> = kind === 'lineart'
         ? {operation:'lineart', autoLines:true} : JSON.parse(JSON.stringify(recipe.value))
       const signature = recipeSignature.value
-      if (recipeSnapshot.rewrite && randomSeed.value) recipeSnapshot.rewrite.seed = crypto.getRandomValues(new Uint32Array(1))[0]! & 0x7fffffff
+      if (recipeSnapshot.rewrite && randomSeed.value) {
+        let seed = !newRedraw && reuseRedraw.value ? lastRedraw.value!.seed : crypto.getRandomValues(new Uint32Array(1))[0]! & 0x7fffffff
+        if (newRedraw && seed === lastRedraw.value?.seed) seed ^= 1
+        recipeSnapshot.rewrite.seed = seed
+      }
       const blob = await prepareMangaImage(source.value, resize.value); checkInput()
       if (cancelRequested) { notice.value = '已取消，尚未提交任务'; return }
       const name = await uploadMangaImage(blob, lifetime.signal); checkInput()
@@ -278,6 +289,7 @@ export function useMangaScreen(onSaved: () => void) {
         if (cancelRequested) { notice.value = '已取消，尚未提交任务'; return }
       }
       submittedRecipe = signature; task.value = null
+      submittedRedraw = recipeSnapshot.rewrite ? { signature: redrawSignature.value, seed: recipeSnapshot.rewrite.seed } : null
       const input = {...payload}
       if (!sameTempResultOwner(sourceOwner)) throw new Error('漫画输入所属工作区已改变，尚未提交')
       await session.submit(kind, input, mangaTaskContext(parent), { recipe: signature }, () => cancelRequested)
@@ -336,11 +348,12 @@ export function useMangaScreen(onSaved: () => void) {
     try {
       await session.release(); check()
       request.value = null; task.value = null; acceptanceUnknown.value = false
+      lastRedraw.value = null; submittedRedraw = null
       result.value = null; resultBlob.value = null; setUrl(resultUrl, null); lines.reset(); preview.value = 'original'
       notice.value = '原任务和结果仍保留在任务中心，可导入图片开始新的处理'
     } catch (e) { error.value = message(e) }
   }
-  return { parameters, operation, redraw, randomSeed, rewrite, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
+  return { parameters, operation, redraw, randomSeed, rewrite, reuseRedraw, modelIssue, lines, lineLoading, lineMismatch, lineIssue, lineDirty, extractionIssue, importLine, source, sourceUrl, resize, inputSize, result, resultBlob, resultUrl, status, statusError, checking,
     error, notice, loading, submitting, observing, cancelling, exporting, saved, downloaded, acceptanceUnknown, job, preview,
     pending, locked, saveLocked, dirty, progress, startIssue, refreshStatus, loadSource, restoreRequest, canStartNew, startNew, observe, cancel, run, exportResult }
 }

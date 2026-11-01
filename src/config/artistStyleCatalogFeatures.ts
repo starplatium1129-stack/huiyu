@@ -230,4 +230,14 @@ export const FEATURE_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze
     verification: 'tag',
     keywords: ['同人', 'pixiv', 'twitter'],
   },
+  {
+    id: 'betanonbeet',
+    name: 'anon',
+    waiTag: 'betanonbeet',
+    animaTag: '@betanonbeet',
+    description: 'anon 的游戏角色插画与同人风格',
+    category: 'pure',
+    verification: 'tag',
+    keywords: ['anon', 'betanonbeet', 'betabeet', '蔚蓝档案', '碧蓝幻想', '终末地', '游戏同人'],
+  },
 ])

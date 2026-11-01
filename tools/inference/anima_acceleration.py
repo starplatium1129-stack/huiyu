@@ -23,13 +23,22 @@ def validate():
     return MODE
 
 
-def configure(transformer):
+def configure(transformer, execution, tools):
     mode = validate()
     from diffusers.models.transformers.transformer_cosmos import CosmosAttnProcessor2_0
+    # Sage modes already require this exact Triton wheel and the SM89 runtime.
+    # Native mode keeps its dependency-free PyTorch path.
+    fused = tools("worker_lifecycle").load_sibling("anima_fused") if mode != "native" else None
+    execution.kernel_backend = "triton-cosmos-v1" if fused is not None else "pytorch"
     for block in transformer.transformer_blocks:
         for attn in (block.attn1, block.attn2):
             if type(attn.processor) is CosmosAttnProcessor2_0:
-                attn.set_processor(_CosmosProcessor())
+                attn.set_processor(_CosmosProcessor(fused))
+        if fused is not None:
+            for norm in (block.norm1, block.norm2, block.norm3):
+                fused.bind_adaln(norm)
+    if fused is not None:
+        fused.bind_adaln(transformer.norm_out)
     if mode == "native":
         return
     import torch
@@ -56,7 +65,7 @@ def configure(transformer):
             # TeaCache later wraps this callable, not a compiled Tea decision.
             # The PEFT modules remain in place; Dynamo guards the fused branch
             # or the original active adapters/scales before reusing its graph.
-            block.forward = torch.compile(block.forward, fullgraph=False, mode="default")
+            block.forward = execution.compile_block(block.forward)
 
 
 class _CosmosProcessor:
@@ -67,6 +76,9 @@ class _CosmosProcessor:
     License: ANIMA_CONVERSION_LICENSE.txt (Apache-2.0); distributed AS IS.
     https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/models/transformers/transformer_cosmos.py
     """
+    def __init__(self, fused):
+        self.fused = fused
+
     def __call__(self, attn, hidden_states, encoder_hidden_states=None,
                  attention_mask=None, image_rotary_emb=None):
         from diffusers.models.attention_dispatch import dispatch_attention_fn
@@ -75,10 +87,15 @@ class _CosmosProcessor:
         query = attn.to_q(hidden_states).unflatten(2, (attn.heads, -1)).transpose(1, 2)
         key = attn.to_k(encoder).unflatten(2, (attn.heads, -1)).transpose(1, 2)
         value = attn.to_v(encoder).unflatten(2, (attn.heads, -1)).transpose(1, 2)
-        query, key = attn.norm_q(query), attn.norm_k(key)
-        if image_rotary_emb is not None:
-            query = apply_rotary_emb(query, image_rotary_emb, use_real=True, use_real_unbind_dim=-2)
-            key = apply_rotary_emb(key, image_rotary_emb, use_real=True, use_real_unbind_dim=-2)
+        fused = (self.fused.rms_rope(query, key, attn.norm_q, attn.norm_k, image_rotary_emb)
+                 if self.fused is not None and image_rotary_emb is not None else None)
+        if fused is not None:
+            query, key = fused
+        else:
+            query, key = attn.norm_q(query), attn.norm_k(key)
+            if image_rotary_emb is not None:
+                query = apply_rotary_emb(query, image_rotary_emb, use_real=True, use_real_unbind_dim=-2)
+                key = apply_rotary_emb(key, image_rotary_emb, use_real=True, use_real_unbind_dim=-2)
         key_repeats, value_repeats = query.size(3) // key.size(3), query.size(3) // value.size(3)
         if key_repeats != 1:
             key = key.repeat_interleave(key_repeats, dim=3)

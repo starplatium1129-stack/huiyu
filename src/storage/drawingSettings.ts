@@ -5,7 +5,7 @@ import { profileLocalStorage } from '@/platform/web/profileStorage'
 // Registered model-draft prefix: shared by every desktop window and stored by the profile runtime.
 const KEY = 'aics-model-draft-image-settings-v1'
 const fields = ['modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler',
-  'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
+  'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresCfg', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
 export type DrawingSettings = Pick<AnimaGenerationState, typeof fields[number]>
 
 function readAll(): Partial<Record<'anima' | 'krea2', DrawingSettings>> {
@@ -28,8 +28,10 @@ export function readDrawingSettings(family: 'anima' | 'krea2'): DrawingSettings 
     || !(value.seed === null || Number.isSafeInteger(value.seed) && value.seed >= 0)
     || (value.hiresFix !== undefined && typeof value.hiresFix !== 'boolean')
     || (value.teaCache !== undefined && typeof value.teaCache !== 'boolean')
-    || [value.hiresScale, value.hiresDenoise, value.teaCacheThresh].some(item => item !== undefined && !Number.isFinite(item))
-    || (value.hiresUpscaler !== undefined && !['Auto', 'Latent', 'Remacri'].includes(value.hiresUpscaler))) return null
+    || [value.hiresScale, value.hiresDenoise, value.hiresCfg, value.teaCacheThresh].some(item => item !== undefined && !Number.isFinite(item))
+    || (value.hiresSteps !== undefined && (!Number.isInteger(value.hiresSteps) || value.hiresSteps < 1 || value.hiresSteps > 60))
+    || (value.hiresCfg !== undefined && (value.hiresCfg < 0.5 || value.hiresCfg > 10))
+    || (value.hiresUpscaler !== undefined && !['Auto', 'Latent', 'Remacri', '4x-UltraSharp'].includes(value.hiresUpscaler))) return null
   return Object.fromEntries(fields.filter(key => value[key] !== undefined).map(key => [key, value[key]])) as DrawingSettings
 }
 

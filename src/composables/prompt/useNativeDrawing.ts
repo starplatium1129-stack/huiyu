@@ -86,8 +86,10 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   async function saveBeforeSwitch() {
     const state = session.value
     if (!state?.ready.value) return true
-    if (state.draftRecoveryNeeded.value) { state.error.value = '请先恢复草稿，或保留旧草稿并保存当前参数，再切换引擎'; return false }
-    return state.persistDraft()
+    if (state.draftRecoveryNeeded.value) throw new Error('请先恢复草稿，或保留旧草稿并保存当前参数，再切换引擎')
+    if (state.restoredInputMissing.value) throw new Error('原图尚未恢复，请在「继续编辑原图」中恢复输入，或转为文生图后再切换引擎')
+    if (!await state.persistDraft()) throw new Error(state.draftFailed.value ? state.draftStatus.value : '当前参数尚未保存，请稍后重试切换引擎')
+    return true
   }
   onDeactivated(() => { active.value = false; dispose() })
   onActivated(() => { if (!active.value) { active.value = true; void initialize() } })

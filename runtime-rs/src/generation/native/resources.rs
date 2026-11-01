@@ -3,6 +3,7 @@
 use std::path::{Path, PathBuf};
 
 pub(crate) const REMACRI_FILE: &str = "4x_foolhardy_Remacri.safetensors";
+pub(crate) const ULTRASHARP_FILE: &str = "4x-UltraSharp.pth";
 // worker.py dependencies()/--serve, plus the supported RES sampler's sibling.
 // Conversion, calibration and benchmark tools are separate maintenance entries.
 pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
@@ -16,6 +17,8 @@ pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
     "resident_anima.py",
     "anima_text_cache.py",
     "inference_metrics.py",
+    "anima_execution.py",
+    "anima_dependencies.py",
     "anima_lora.py",
     "anima_lora_fusion.py",
     "anima_sampling.py",
@@ -32,6 +35,7 @@ pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
     "anima_memory.py",
     "locked_identity.py",
     "anima_acceleration.py",
+    "anima_fused.py",
     "native_memory.py",
     "anima_composition.py",
     "anima_lllite.py",
@@ -63,6 +67,10 @@ pub(crate) fn file(root: &Path, name: &str, nonempty: bool) -> Option<PathBuf> {
 
 pub(crate) fn remacri(root: &Path) -> Option<PathBuf> {
     file(root, &format!("upscale_models/{REMACRI_FILE}"), true)
+}
+
+pub(crate) fn ultrasharp(root: &Path) -> Option<PathBuf> {
+    file(root, &format!("upscale_models/{ULTRASHARP_FILE}"), true)
 }
 
 pub(crate) fn clipseg(root: &Path) -> Option<PathBuf> {

@@ -10,30 +10,35 @@ from pathlib import Path
 
 MODEL_ID = "moss-miaomiao-base-v1.0"
 RECEIPT = "huiyu-moss-int8.json"
-SPEC = json.loads(Path(__file__).with_name("adapter-models.json").read_text(encoding="utf-8"))["models"][MODEL_ID]["mossInt8"]
+_MODEL = json.loads(Path(__file__).with_name("adapter-models.json").read_text(encoding="utf-8"))["models"][MODEL_ID]
+SPEC = _MODEL["mossInt8"]
+TEXT_SPEC = _MODEL["mossTextInt8"]
+TEXT_RECEIPT = "huiyu-moss-text-int8.json"
 
 
-def receipt_document():
+def receipt_document(component="transformer"):
+    spec = TEXT_SPEC if component == "text_encoder" else SPEC
     return dict(schemaVersion=1, modelId=MODEL_ID, scope="imported-files-sha256",
-        path=SPEC["path"], bytes=SPEC["bytes"], sha256=SPEC["sha256"])
+        path=spec["path"], bytes=spec["bytes"], sha256=spec["sha256"])
 
 
-def selected(root, choice, contract):
+def selected(root, choice, contract, *, component="transformer"):
     if choice == "fp16":
         return None
-    marker = root / RECEIPT
+    spec = TEXT_SPEC if component == "text_encoder" else SPEC
+    marker = root / (TEXT_RECEIPT if component == "text_encoder" else RECEIPT)
     if not marker.exists():
         if choice == "int8":
-            raise contract.AdapterError("MODEL_INCOMPLETE", "请先导入作者 BASE v1.0 INT8 文件，或选择 FP16")
+            raise contract.AdapterError("MODEL_INCOMPLETE", f"请先导入 MOSS {component} INT8 文件，或选择原始精度")
         return None
     value = contract.config(root, marker)
-    if value != receipt_document():
+    if value != receipt_document(component):
         raise contract.AdapterError("MODEL_CHANGED", "MOSS INT8 导入记录不匹配，请重新导入作者文件")
-    path = contract.safe_file(root, root / SPEC["path"])
+    path = contract.safe_file(root, root / spec["path"])
     info = path.stat()
-    if info.st_size != SPEC["bytes"] or info.st_mtime_ns > marker.stat().st_mtime_ns:
+    if info.st_size != spec["bytes"] or info.st_mtime_ns > marker.stat().st_mtime_ns:
         raise contract.AdapterError("MODEL_CHANGED", "MOSS INT8 文件已变化，请重新导入")
-    return dict(path=SPEC["path"], bytes=SPEC["bytes"], sha256=SPEC["sha256"], precision="int8-convrot")
+    return dict(path=spec["path"], bytes=spec["bytes"], sha256=spec["sha256"], precision="int8-convrot")
 
 
 def require_backend(contract):
@@ -50,7 +55,7 @@ def require_backend(contract):
         raise contract.AdapterError("DEPENDENCY_MISSING", "INT8 算子库无法加载，请检查独立 Python 的 comfy-kitchen / CUDA 13 运行库，或选择 FP16") from error
 
 
-def configure(transformer, weights, contract):
+def linear_class():
     import torch
     from torch import nn
 
@@ -68,6 +73,13 @@ def configure(transformer, weights, contract):
         def forward(self, value):
             return torch.ops.comfy_kitchen.int8_linear(value.contiguous(), self.weight,
                 self.weight_scale, None, 2, True, 256)
+
+    return Int8Linear
+
+
+def configure(transformer, weights, contract):
+    import torch
+    Int8Linear = linear_class()
 
     def metadata(name):
         value = weights.pop(name, None)

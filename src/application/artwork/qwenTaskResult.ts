@@ -1,6 +1,7 @@
 import type { TaskRecord } from '../../../types/tasks'
 import type { ArtworkRecord } from '@/types/artwork'
 import { taskArtworkId } from './taskResultIdentity'
+import { validMossSpectrumFlexWindow } from '@/api/mossApi'
 
 export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord {
   const output = task.resultRefs.find(value => value.index === index)
@@ -26,9 +27,15 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
     if (typeof value === 'string' && value.length <= 12000) record[key] = value
   }
   if (typeof context?.sceneTitle === 'string' && context.sceneTitle.trim() && context.sceneTitle.length <= 500) record.sceneTitle = context.sceneTitle
-  if (moss) {
+  if (moss && (input.mossUpscaleScale === 1.5 || input.mossUpscaleScale === 2)) {
+    record.mossUpscaleScale = input.mossUpscaleScale
+    if (typeof input.mossUpscaleSourceTaskId === 'string') record.mossUpscaleSourceTaskId = input.mossUpscaleSourceTaskId
+    record.upscaler = 'Remacri'
+    record.sceneTitle += ` · Remacri ${input.mossUpscaleScale}×`
+  } else if (moss) {
     record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
-    record.mossTextPrecision = input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
+    if (validMossSpectrumFlexWindow(input.mossSpectrumFlexWindow)) record.mossSpectrumFlexWindow = input.mossSpectrumFlexWindow
+    record.mossTextPrecision = input.mossTextPrecision === 'int8' ? 'int8' : input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
     record.mossCompile = input.mossCompile === true
     record.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
   }

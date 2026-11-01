@@ -4,7 +4,7 @@ from __future__ import annotations
 import json
 import math
 from pathlib import Path
-from huiyu_worker_lifecycle import WorkerError
+from huiyu_worker_lifecycle import WorkerError, load_sibling
 
 
 class AdapterError(WorkerError):
@@ -125,13 +125,17 @@ def number(data, key, default, low, high, integer=False):
 
 
 def validate(job):
-    allowed = {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "referenceImagePaths", "loras"}
+    allowed = {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "referenceImagePaths", "loras", "upscaleModelPath"}
     if not isinstance(job, dict) or set(job) - allowed or job.get("op") != "generate" or not isinstance(job.get("id"), str) or not job["id"]:
         raise AdapterError("INVALID_REQUEST", "Expected a native adapter generation request")
     data = job.get("input")
-    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "mossAcceleration", "mossTextPrecision", "mossCompile", "mossWeightPrecision"}:
+    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
         raise AdapterError("UNSUPPORTED_OPTION", "Unsupported adapter input; no silent option fallback")
     spec = model(data.get("modelId"))
+    if "mossUpscaleScale" in data:
+        return load_sibling("moss_upscale").validate(job, spec, load_sibling("adapter_contract"))
+    if job.get("upscaleModelPath") is not None:
+        raise AdapterError("UNSUPPORTED_OPTION", "Upscaler weights require a pixel-upscale operation")
     loras = job.get("loras", [])
     if not isinstance(loras, list) or len(loras) > 1 or (loras and spec["family"] != "krea2"):
         raise AdapterError("UNSUPPORTED_OPTION", "Only one Krea style LoRA is supported")
@@ -154,9 +158,10 @@ def validate(job):
         if type(acceleration) is not str or acceleration not in ("off", "spectrum"):
             raise AdapterError("INVALID_PARAMETER", "MOSS acceleration must be off or spectrum")
         result["mossAcceleration"] = acceleration
+        result["mossSpectrumFlexWindow"] = number(data, "mossSpectrumFlexWindow", 0.5, 0, 2)
         precision = data.get("mossTextPrecision", "bf16")
-        if type(precision) is not str or precision not in ("bf16", "fp8"):
-            raise AdapterError("INVALID_PARAMETER", "MOSS text precision must be bf16 or fp8")
+        if type(precision) is not str or precision not in ("bf16", "fp8", "int8"):
+            raise AdapterError("INVALID_PARAMETER", "MOSS text precision must be bf16, fp8 or int8")
         result["mossTextPrecision"] = precision
         if type(data.get("mossCompile", False)) is not bool:
             raise AdapterError("INVALID_PARAMETER", "MOSS compilation must be a boolean")
@@ -165,7 +170,7 @@ def validate(job):
         if type(weight_precision) is not str or weight_precision not in ("auto", "fp16", "int8"):
             raise AdapterError("INVALID_PARAMETER", "MOSS weight precision must be auto, fp16 or int8")
         result["mossWeightPrecision"] = weight_precision
-    elif any(key in data for key in ("mossAcceleration", "mossTextPrecision", "mossCompile", "mossWeightPrecision")):
+    elif any(key in data for key in ("mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision")):
         raise AdapterError("UNSUPPORTED_OPTION", "Only MOSS supports MOSS acceleration settings")
     for key in ("width", "height"):
         result[key] = number(data, key, 1024, spec.get("minSize", 512), spec["maxSize"], True)

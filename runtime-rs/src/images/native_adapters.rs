@@ -3,6 +3,9 @@ use super::*;
 use generation::native::adapters;
 const KEYS: &[&str] = &[
     "mossAcceleration",
+    "mossUpscaleScale",
+    "mossUpscaleSourceTaskId",
+    "mossSpectrumFlexWindow",
     "mossTextPrecision",
     "mossCompile",
     "mossWeightPrecision",
@@ -69,6 +72,12 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
     if !family.is_empty() && spec["family"] != family {
         return Err(error("WRONG_ROUTE_FAMILY", "请求路径与模型 family 不匹配"));
     }
+    if raw.get("mossUpscaleScale").is_some() {
+        return super::native_upscale::validate(raw, spec);
+    }
+    if raw.get("mossUpscaleSourceTaskId").is_some() {
+        return Err(error("INVALID_PARAMETER", "原任务身份仅用于 Remacri 放大"));
+    }
     let moss_acceleration = match raw.get("mossAcceleration") {
         None => "off",
         Some(Value::String(value))
@@ -83,22 +92,53 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
             ));
         }
     };
+    let moss_flex_window = match raw.get("mossSpectrumFlexWindow") {
+        None => 0.5,
+        Some(value) if spec["family"] == "moss-image" => value
+            .as_f64()
+            .filter(|value| value.is_finite() && (0.0..=2.0).contains(value))
+            .ok_or_else(|| error("INVALID_PARAMETER", "Spectrum 加速强度需为 0–2 的数值"))?,
+        _ => return Err(error("INVALID_PARAMETER", "仅 MOSS 支持 Spectrum 加速强度")),
+    };
     let moss_text_precision = match raw.get("mossTextPrecision") {
         None => "bf16",
         Some(Value::String(value))
-            if spec["family"] == "moss-image" && matches!(value.as_str(), "bf16" | "fp8") => value,
-        _ => return Err(error("INVALID_PARAMETER", "MOSS 文本编码精度仅支持 bf16 或 fp8；其他模型不接受此参数")),
+            if spec["family"] == "moss-image"
+                && matches!(value.as_str(), "bf16" | "fp8" | "int8") =>
+        {
+            value
+        }
+        _ => {
+            return Err(error(
+                "INVALID_PARAMETER",
+                "MOSS 文本编码精度仅支持 bf16、fp8 或 int8；其他模型不接受此参数",
+            ));
+        }
     };
     let moss_compile = match raw.get("mossCompile") {
         None => false,
         Some(Value::Bool(value)) if spec["family"] == "moss-image" => *value,
-        _ => return Err(error("INVALID_PARAMETER", "mossCompile 仅接受 MOSS 的布尔参数")),
+        _ => {
+            return Err(error(
+                "INVALID_PARAMETER",
+                "mossCompile 仅接受 MOSS 的布尔参数",
+            ));
+        }
     };
     let moss_weight_precision = match raw.get("mossWeightPrecision") {
         None => "auto",
-        Some(Value::String(value)) if spec["family"] == "moss-image"
-            && matches!(value.as_str(), "auto" | "fp16" | "int8") => value,
-        _ => return Err(error("INVALID_PARAMETER", "MOSS 主模型权重仅支持 auto、fp16 或 int8")),
+        Some(Value::String(value))
+            if spec["family"] == "moss-image"
+                && matches!(value.as_str(), "auto" | "fp16" | "int8") =>
+        {
+            value
+        }
+        _ => {
+            return Err(error(
+                "INVALID_PARAMETER",
+                "MOSS 主模型权重仅支持 auto、fp16 或 int8",
+            ));
+        }
     };
     let style = match raw.get("styleLoraId") {
         None | Some(Value::Null) => None,
@@ -237,6 +277,7 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         json!({"modelId":id,"family":spec["family"],"prompt":prompt.trim(),"negative":negative,
         "width":width,"height":height,"steps":steps,"cfg":cfg,"seed":seed,"initImage":image,
         "mossAcceleration":if spec["family"] == "moss-image" {Some(moss_acceleration)}else{None},
+        "mossSpectrumFlexWindow":if spec["family"] == "moss-image" {Some(moss_flex_window)}else{None},
         "mossTextPrecision":if spec["family"] == "moss-image" {Some(moss_text_precision)}else{None},
         "mossCompile":if spec["family"] == "moss-image" {Some(moss_compile)}else{None},
         "mossWeightPrecision":if spec["family"] == "moss-image" {Some(moss_weight_precision)}else{None},

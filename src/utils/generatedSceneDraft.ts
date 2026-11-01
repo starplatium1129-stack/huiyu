@@ -22,7 +22,7 @@ export interface GeneratedSceneDetails {
 const textKeys = ['character', 'characterId', 'outfitId', 'blueprintId', 'subject', 'scene', 'sceneTitle',
   'story', 'visualDescription', 'shot', 'lighting', 'composition', 'colorMood', 'lora', 'loraId',
   'checkpoint', 'model', 'profile', 'provider', 'sampler', 'scheduler', 'size', 'styleLoraId', 'hiresUpscaler'] as const
-const numberKeys = ['seed', 'steps', 'cfg', 'loraStrength', 'width', 'height', 'hiresScale', 'hiresSteps', 'hiresDenoise'] as const
+const numberKeys = ['seed', 'steps', 'cfg', 'loraStrength', 'width', 'height', 'hiresScale', 'hiresSteps', 'hiresCfg', 'hiresDenoise'] as const
 const booleanKeys = ['noLora', 'hiresFix', 'faceDetailer', 'outfitExplicit'] as const
 const listKeys = ['emotion', 'manual_tags', 'artistStyleIds'] as const
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)

@@ -219,6 +219,10 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     if (typeof anima.hiresFix === 'boolean') patch.hiresFix = anima.hiresFix
     if (hiresScale !== undefined) patch.hiresScale = hiresScale
     if (hiresDenoise !== undefined) patch.hiresDenoise = hiresDenoise
+    const hiresSteps = finite(anima.hiresSteps, 1, 60), hiresCfg = finite(anima.hiresCfg, 0.5, 10)
+    if (hiresSteps !== undefined) patch.hiresSteps = Math.round(hiresSteps)
+    if (hiresCfg !== undefined) patch.hiresCfg = hiresCfg
+    if (['Auto', 'Latent', 'Remacri', '4x-UltraSharp'].includes(String(anima.hiresUpscaler))) patch.hiresUpscaler = anima.hiresUpscaler as typeof ctx.animaState.value.hiresUpscaler
     if (typeof anima.teaCache === 'boolean') patch.teaCache = anima.teaCache
     else if (ctx.animaState.value.provider === 'native' && anima.teaCache === undefined) patch.teaCache = undefined
     if (teaCacheThresh !== undefined) patch.teaCacheThresh = teaCacheThresh

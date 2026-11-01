@@ -1,6 +1,6 @@
 """Two-pass Anima refinement and final pixel processing for the desktop worker.
 
-Only the Latent/Remacri product routes are supported. Intermediate pixels stay
+The Latent, Remacri and UltraSharp product routes share the same VAE. Intermediate pixels stay
 display RGB float tensors [1,3,H,W]; normalized diffusion latents stay
 [1,C,1,H/8,W/8]. PNG and Lanczos boundaries use RGB uint8 truncation.
 No Comfy implementation is imported or copied. Single-frame VAE operations
@@ -14,20 +14,20 @@ import time
 def plan(data, *, has_input=False, masked=False):
     enabled = bool(data.get("hiresFix")) and data.get("hiresScale", 1) > 1
     kind = data.get("hiresUpscaler", "Latent")
-    if enabled and kind not in ("Latent", "Remacri"):
-        raise ValueError("Resolve the Anima hires upscaler to Latent or Remacri before refinement")
+    if enabled and kind not in ("Latent", "Remacri", "4x-UltraSharp"):
+        raise ValueError("Resolve the Anima hires upscaler before refinement")
     width, height = data["width"], data["height"]
     if enabled:
         scale = data["hiresScale"]
         rounding = round if kind == "Latent" else lambda value: math.floor(value + .5)
         width, height = (int(rounding(value * scale / 8)) * 8 for value in (width, height))
-    second = enabled and (kind == "Latent" or masked)
+    second = enabled and (kind in ("Latent", "4x-UltraSharp") or masked)
     sampler, scheduler = data.get("hiresSampler"), data.get("hiresScheduler")
     if second and (sampler is None or scheduler is None):
         raise ValueError("HiRes sampling needs the host-resolved hiresSampler and hiresScheduler")
     sharpen = (enabled and kind == "Latent") or (not enabled and not has_input)
     return dict(enabled=enabled, kind=kind, width=width, height=height, masked=masked,
-                second=second, secondSteps=max(12, math.floor(data["steps"] * .6 + .5)) if second else 0,
+                second=second, secondSteps=(data.get("hiresSteps") or max(12, math.floor(data["steps"] * .6 + .5))) if second else 0,
                 secondSeed=data["seed"] + 1, sampler=sampler, scheduler=scheduler,
                 firstLatents=enabled and kind == "Latent" and not masked,
                 rcasStrength=data.get("rcasStrength", .75) if sharpen else 0)
@@ -49,7 +49,7 @@ def _pil_tensor(image, device):
     return torch.from_numpy(values).permute(2, 0, 1).unsqueeze(0).to(device)
 
 
-def _pil(images):
+def to_pil(images):
     import numpy as np
     from PIL import Image
     values = _rgb(images)[0].detach().cpu().permute(1, 2, 0).numpy()
@@ -91,7 +91,7 @@ def _lanczos(images, size, *, cpu_output=False, final_pil=False):
     from PIL import Image
     images = _rgb(images)
     device = images.device
-    source = _pil(images)
+    source = to_pil(images)
     # The PIL pixels own their uint8 allocation; a temporary 4x float tensor
     # need not overlap the resize or the final normalization/quantization.
     del images
@@ -233,15 +233,16 @@ def _patch_grid(transformer):
 
 
 
-def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks=None, check=None):
+def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks=None, check=None, reuse_conditioning=True):
     from diffusers import AnimaModularPipeline, ClassifierFreeGuidance
     from diffusers.modular_pipelines.anima.modular_blocks_anima import AnimaAutoBlocks
     blocks = mask_tools.masked_blocks() if spec["masked"] else AnimaAutoBlocks()
-    # Same prompt, exact base/LoRAs and CFG branches: reuse the already computed
-    # conditioning, without rerunning Qwen or changing its floating-point values.
-    blocks.sub_blocks.pop("text_encoder")
-    for name in ("text2image", "img2img"):
-        blocks.sub_blocks["denoise"].sub_blocks[name].sub_blocks.pop("text_conditioning")
+    # Reuse existing branches. If only pass two enables CFG, its fresh encoder
+    # must also compute the negative branch omitted by the first-pass guider.
+    if reuse_conditioning:
+        blocks.sub_blocks.pop("text_encoder")
+        for name in ("text2image", "img2img"):
+            blocks.sub_blocks["denoise"].sub_blocks[name].sub_blocks.pop("text_conditioning")
     blocks = vae_tools.apply_blocks(blocks, tiling, check=check)
     if prepare_second_blocks is not None:
         # The owner validates a whole-hires profile, clears per-pass Tea lanes,
@@ -251,7 +252,7 @@ def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tili
     names = {component.name for component in blocks.expected_components}
     components = {name: value for name, value in pipeline.components.items() if name in names}
     components.update(scheduler=sampling.new_scheduler(spec["sampler"], dict(pipeline.scheduler.config)),
-                      guider=ClassifierFreeGuidance(guidance_scale=data["cfg"]))
+                      guider=ClassifierFreeGuidance(guidance_scale=data.get("hiresCfg") or data["cfg"]))
     second.update_components(**components)
     second.set_progress_bar_config(disable=True)
     return second
@@ -284,8 +285,8 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         raise ValueError("Masked refinement needs the prepared reference and mask tools")
     if spec["rcasStrength"] and postprocess is None:
         raise ValueError("RCAS processing helper is required")
-    if spec["enabled"] and spec["kind"] == "Remacri" and upscale is None:
-        raise ValueError("HiRes Remacri requires its preloaded local upscaler callback")
+    if spec["enabled"] and spec["kind"] in ("Remacri", "4x-UltraSharp") and upscale is None:
+        raise ValueError("Pixel HiRes requires its preloaded local upscaler callback")
     if spec["second"] and sampling is None:
         raise ValueError("HiRes needs the configured sampling helper")
     report = dict(pipelineWallSeconds=0., postprocessWallSeconds=0., compositeWallSeconds=0.,
@@ -348,6 +349,8 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
     pixels = None if spec["firstLatents"] else _rgb(first["images"] if spec["enabled"] else first)
     conditioning = ({name: first[name] for name in ("prompt_embeds", "negative_prompt_embeds")}
                     if spec["second"] else {})
+    if spec["second"] and (data.get("hiresCfg") or data["cfg"]) > 1 and conditioning["negative_prompt_embeds"] is None:
+        conditioning = dict(prompt=data["prompt"], negative_prompt=data.get("negativePrompt", ""))
     first_latents = first["latents"] if spec["firstLatents"] else None
     del first
     if mask is not None:
@@ -355,7 +358,7 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
     size = (spec["width"], spec["height"])
     final_pil = (spec["enabled"] and spec["kind"] == "Remacri" and mask is None
                  and not spec["second"] and not spec["rcasStrength"])
-    if spec["enabled"] and spec["kind"] == "Remacri":
+    if spec["enabled"] and spec["kind"] in ("Remacri", "4x-UltraSharp"):
         pixels = timed("postprocessWallSeconds", lambda: _lanczos(upscale(pixels), size,
             cpu_output=not spec["second"] and not spec["rcasStrength"], final_pil=final_pil))
     if spec["second"]:
@@ -365,7 +368,8 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         pixels = None
         if spec["kind"] == "Latent":
             latents = timed("postprocessWallSeconds", lambda: _upscale_latents(pipeline, latents, size, vae_tools))
-        second = _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks, check=check)
+        second = _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tiling, prepare_second_blocks,
+                                  check=check, reuse_conditioning="prompt_embeds" in conditioning)
         options = sampling.refinement_options(spec["scheduler"], spec["secondSteps"], data["hiresDenoise"],
                                               second.scheduler, sampler=spec["sampler"])
         kwargs = dict(image_latents=latents, width=size[0], height=size[1], output_type="pt", output="images",
@@ -384,6 +388,6 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         report["rcasExecutionRevision"] = postprocess.EXECUTION_REVISION
     if mask is not None and spec["enabled"]:
         pixels = timed("compositeWallSeconds", lambda: _composite(pixels, image, mask))
-    result = pixels if final_pil else timed("postprocessWallSeconds", lambda: _pil(pixels))
+    result = pixels if final_pil else timed("postprocessWallSeconds", lambda: to_pil(pixels))
     report["wallSeconds"] = time.perf_counter() - started
     return result, report["firstPassSteps"] + report["secondPassSteps"], report

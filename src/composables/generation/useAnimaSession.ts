@@ -7,6 +7,7 @@ import { usePolling } from '@/composables/usePolling'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import { readDrawingSettings, saveDrawingSettings } from '@/storage/drawingSettings'
 import { backendReadiness } from './animaBackendReadiness'
+import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
 import {
   ANIMA_LORA_BY_CHARACTER,
   closestSupportedSize,
@@ -39,7 +40,7 @@ const INITIAL_STATE: AnimaGenerationState = {
 }
 
 export function initialAnimaState(family: 'anima' | 'krea2'): AnimaGenerationState {
-  return { ...INITIAL_STATE, ...readDrawingSettings(family), family, models: [], loras: [], styleLoras: [] }
+  return { ...INITIAL_STATE, ...(family === 'anima' ? ANIMA_HIRES_PRESET : {}), ...readDrawingSettings(family), family, models: [], loras: [], styleLoras: [] }
 }
 
 export function useAnimaSession(options: AnimaSessionOptions) {
@@ -52,7 +53,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     catch { options.flash('绘图参数尚未保存，桌宠暂时无法同步这次设置，请检查本机资料连接') }
   }
   const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
-    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
+    'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresCfg', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
   // synchronous backend reconciliation, never the time spent awaiting status.
   const stopSettingsWatch = watch(editableKeys.map(key => () => state.value[key]), () => {
@@ -133,6 +134,8 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       cfg: typeof defaults?.cfg === 'number' && Number.isFinite(defaults.cfg) ? defaults.cfg : state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
+      ...(model?.family === 'anima' ? { steps: ANIMA_HIRES_PRESET.steps, cfg: ANIMA_HIRES_PRESET.cfg,
+        sampler: ANIMA_HIRES_PRESET.sampler, scheduler: ANIMA_HIRES_PRESET.scheduler } : {}),
       ...(!state.value.provider && !loraStrengthTouched && provider === 'native' && !options.isPopular() && ['nene', 'natsume'].includes(options.getCharacter()) && typeof defaults?.loraStrength === 'number'
         ? { loraStrength: defaults.loraStrength } : {}),
       teaCache: teaCacheSettingsTouched ? state.value.teaCache : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.teaCache,

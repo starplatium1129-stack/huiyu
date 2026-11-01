@@ -389,8 +389,8 @@ private converted reference and new result with separate multiply/subtract/add
 operations; PIL-to-FP32 normalization divides its private NumPy array in place.
 No caller input is overwritten, and Lanczos/uint8 boundaries are unchanged.
 Current output, latency and peak-memory evidence still needs device acceptance.
-`anima_upscale.py` accepts only the fixed local
-`4x_foolhardy_Remacri.safetensors` with the checked 23-block RRDB architecture,
+`anima_upscale.py` accepts the fixed local
+`4x_foolhardy_Remacri.safetensors` and author's `4x-UltraSharp.pth` with the checked 23-block RRDB architecture,
 using Apache-2.0 BasicSR components and separately licensed supplied weights.
 The current Remacri execution is `remacri-no-single-cat-packed-v1`: each dense
 block sends its input directly to conv1 instead of concatenating one tensor.
@@ -413,6 +413,13 @@ The trusted host resolves Auto to Latent or an available fixed Remacri file at
 Remacri selection fails. Latent always refines; unmasked Remacri is pixel-only,
 while masked Remacri also refines. RCAS follows the existing workflow conditions
 and runs before the final mask composite, without a new public strength control.
+The UltraSharp preset uses 1.5×, 10 refinement steps, denoise 0.8 and CFG 5.5,
+with Euler/Normal and Shift 3. It decodes, upscales, resizes, encodes and refines;
+the original Remacri route stays pixel-only outside masked edits. UltraSharp
+uses the pinned author SHA256 and `torch.load(weights_only=True)`, followed by
+complete FP32 key/shape/finite checks. Prepare `ultrasharp-4x` in Control Room;
+missing weights fail explicitly. Existing saved settings can adopt the preset
+in the Anima panel. Current images and device performance remain unverified.
 The refinement pass uses a fresh scheduler and seed+1 independent noise. Shared
 `refinement_options` takes the requested-step tail of the full grid and supplies
 `strength=1.0`, avoiding a second strength slice. Latent 2x, manual-mask Latent 2x,

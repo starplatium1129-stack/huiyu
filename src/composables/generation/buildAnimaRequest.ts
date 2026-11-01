@@ -22,9 +22,11 @@ export function buildAnimaRequest(input: BuildAnimaRequestInput): AnimaRequest {
   const settings = {
     prompt: input.prompt, negative: input.negative, profileId: profile.id || '', modelId: state.modelId,
     width: state.width, height: state.height, steps: state.steps, cfg: state.cfg,
+    ...(state.family === 'anima' ? { sampler: state.sampler, scheduler: state.scheduler } : {}),
     ...(state.seed == null ? {} : { seed: state.seed }),
     ...(state.family === 'krea2' && state.styleLoraId ? { styleLoraId: state.styleLoraId } : {}),
     hiresFix: Boolean(state.hiresFix), hiresScale: state.hiresScale, hiresDenoise: state.hiresDenoise, hiresUpscaler: state.hiresUpscaler,
+    hiresSteps: state.hiresSteps, hiresCfg: state.hiresCfg,
     ...(capabilities.teaCache ? {
       teaCache: state.provider === 'native' ? state.teaCache : state.teaCache !== false, teaCacheThresh: state.teaCacheThresh,
     } : {}),

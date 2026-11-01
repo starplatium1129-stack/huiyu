@@ -50,6 +50,7 @@ export type HistoryEntry = {
   hiresScale?: number
   hiresUpscaler?: string
   hiresSteps?: number
+  hiresCfg?: number
   hiresDenoise?: number
   faceDetailer?: boolean
   sketchControl?: AnimaSketchControl

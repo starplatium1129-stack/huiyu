@@ -15,6 +15,7 @@ const FILES: &[&str] = &[
     "mapped_weights.py",
     "mapped_residency.py",
     "resident_adapters.py",
+    "qwen_prefix_cache.py",
     "locked_identity.py",
     "krea_style.py",
     "moss_adapter.py",
@@ -22,6 +23,13 @@ const FILES: &[&str] = &[
     "moss_spectrum.py",
     "moss_execution.py",
     "moss_int8.py",
+    "moss_text.py",
+    "moss_upscale.py",
+    "anima_upscale.py",
+    "anima_refinement.py",
+    "anima_tiling.py",
+    "native_upload.py",
+    "native_hash.py",
 ];
 static MANIFEST: LazyLock<Value> = LazyLock::new(|| {
     serde_json::from_str(include_str!(
@@ -80,6 +88,9 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
     } else {
         model_issue(&path, id)
     };
+    let capabilities = json!({"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
+        "lora":false,"noLora":true,"characterIdentity":false,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"fixedSampling":model["distilled"]==true,"experimental":true,
+        "maxReferenceImages":if model["family"]=="qwen-image"{4}else{0}});
     json!({"id":id,"label":model["label"],"family":model["family"],"available":issue.is_none(),
         "profileId":model["profileId"],"sizes":model["sizes"],
         "readiness":if issue.is_none(){"files-ready"}else{"unavailable"},"unavailableReason":issue,
@@ -87,15 +98,18 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
         "repository":model["repository"],"sourceRevision":model["revision"],"license":model["license"],"licenseUrl":model["licenseUrl"],
         "defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"].as_str().unwrap_or("euler"),"scheduler":"model-config","teaCache":false},
         "mossAcceleration":model["mossAcceleration"],
+        "mossSpectrumFlexWindow":model["mossSpectrumFlexWindow"],
+        "mossRemacri":model["family"] == "moss-image" && resources::remacri(&settings.models_root).is_some(),
         "mossTextPrecision":model["mossTextPrecision"],
         "mossCompile":model["mossCompile"],
         "mossInt8Ready":model["mossInt8"]["path"].as_str().is_some_and(|file|
             path.join("huiyu-moss-int8.json").is_file() && std::fs::metadata(path.join(file)).ok()
                 .is_some_and(|info| info.is_file() && Some(info.len()) == model["mossInt8"]["bytes"].as_u64())),
+        "mossTextInt8Ready":model["mossTextInt8"]["path"].as_str().is_some_and(|file|
+            path.join("huiyu-moss-text-int8.json").is_file() && std::fs::metadata(path.join(file)).ok()
+                .is_some_and(|info| info.is_file() && Some(info.len()) == model["mossTextInt8"]["bytes"].as_u64())),
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
-        "capabilities":{"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
-            "lora":false,"noLora":true,"characterIdentity":false,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"fixedSampling":model["distilled"]==true,"experimental":true,
-            "maxReferenceImages":if model["family"]=="qwen-image"{4}else{0}},
+        "capabilities":capabilities,
         "modes":if model["media"]=="video" {json!(["text"])}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
 }
 pub(crate) async fn plan(
@@ -110,8 +124,19 @@ pub(crate) async fn plan(
     let inspected = adapter.clone();
     let root = adapter.models_root.clone();
     let model_id = id.to_owned();
-    let path = tokio::task::spawn_blocking(move || {
+    let upscale = input["mossUpscaleScale"].is_number();
+    let (path, upscale_model_path) = tokio::task::spawn_blocking(move || {
         validate_runtime(&inspected)?;
+        if upscale {
+            let remacri = resources::remacri(&root).ok_or_else(|| {
+                ApiError::new(
+                    503,
+                    "NATIVE_UPSCALER_UNAVAILABLE",
+                    "模型根目录 upscale_models 内缺少 Remacri safetensors 文件",
+                )
+            })?;
+            return Ok((root, Some(remacri)));
+        }
         let path = within(&root, &root.join(&model_id)).ok_or_else(|| {
             ApiError::new(
                 503,
@@ -122,7 +147,7 @@ pub(crate) async fn plan(
         if let Some(issue) = model_issue(&path, &model_id) {
             return Err(ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", issue));
         }
-        Ok(path)
+        Ok((path, None))
     })
     .await
     .map_err(|_| ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", "模型目录核验未完成"))??;
@@ -131,7 +156,7 @@ pub(crate) async fn plan(
         settings: adapter,
         model_dir: path,
         mask_model_dir: None,
-        upscale_model_path: None,
+        upscale_model_path,
         init_image: std::sync::Mutex::new(image),
         reference_images: std::sync::Mutex::new(vec![]),
         mask_image: std::sync::Mutex::new(None),

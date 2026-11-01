@@ -57,6 +57,7 @@ def dependencies():
     sibling("resident_adapters")
     sibling("native_memory")
     sibling("locked_identity")
+    sibling("qwen_prefix_cache")
     versions = {}
     expected_versions = {"torch": "2.9.0", "torchvision": "0.24.0", "transformers": "5.17.0",
                          "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0", "ftfy": "6.3.1",
@@ -213,43 +214,12 @@ def windows_weight_reads():
             os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = async_loading
 
 
-@contextlib.contextmanager
-def qwen_host_prefix(enabled):
-    if not enabled:
-        yield
-        return
-    from diffusers.pipelines.qwenimage21 import pipeline_qwenimage21 as implementation
-    original = implementation.QwenImage21KVCache
-    caches = []
-
-    class Layer:
-        def store(self, key, value):
-            self.device = key.device
-            self.key = key.detach().to(device="cpu", copy=True)
-            self.value = value.detach().to(device="cpu", copy=True)
-
-        def get(self):
-            return self.key.to(self.device), self.value.to(self.device)
-
-    class HostCache(original):
-        def __init__(self, count):
-            self.layer_caches = [Layer() for _ in range(count)]
-            caches.append(self)
-
-    # The SDK exposes only a GPU cache. Scope this lossless CPU cache to the
-    # serial edit call, like Comfy's memory-aware prefix cache, and retire it on
-    # success, failure or cancellation; no state crosses sampling requests.
-    implementation.QwenImage21KVCache = HostCache
-    try:
-        yield
-    finally:
-        implementation.QwenImage21KVCache = original
-        for cache in caches:
-            cache.layer_caches.clear()
-
-
 def generate(job, control, _prepared, *, result_callback=None, resident=None, reference_resolution=None):
     data, spec = contract.validate(job)
+    if "mossUpscaleScale" in data:
+        observation = sibling("moss_upscale").run(job, data, control, Error, resident)
+        emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
+        return
     root = contract.layout(job["modelDir"], spec)
     style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
     if style_path is not None:
@@ -351,9 +321,13 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
             success = True
             return
 
+        prefix = None
         def on_step(pipe, step, timestep, callback_kwargs):
-            control.progress(step + 1, data["steps"])
-            if step + 1 == data["steps"]:
+            total = pipe.num_timesteps if spec["family"] == "qwen-image" else data["steps"]
+            control.progress(step + 1, total)
+            if step + 1 == total:
+                if prefix is not None:
+                    prefix.retire()
                 if policy == "offload" and spec["family"] not in ("qwen-image", "moss-image"):
                     cache.memory.offload_all()
                     torch.cuda.empty_cache()
@@ -380,13 +354,13 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
             if spec["negative"]:
                 args["negative_prompt"] = data["negativePrompt"]
         control.stage("encoding")
-        host_prefix = policy == "offload" and spec["family"] == "qwen-image" and bool(images)
-        if host_prefix:
-            observation["prefixCacheDevice"] = "cpu"
+        use_prefix = policy == "offload" and spec["family"] == "qwen-image"
+        branches = 2 if data["cfg"] > 1 and data["negativePrompt"] else 1
         attention = sibling("native_attention").inference_attention(spec["family"] in ("qwen-image", "moss-image"),
             compile_safe=spec["family"] == "moss-image" and data["mossCompile"],
             moss_int8=spec["family"] == "moss-image" and bool(getattr(pipeline.transformer, "_huiyu_int8_count", 0)))
-        with torch.inference_mode(), qwen_host_prefix(host_prefix), attention as backend:
+        with torch.inference_mode(), sibling("qwen_prefix_cache").context(
+                use_prefix, pipeline, branches, control, observation) as prefix, attention as backend:
             observation["attentionBackend"] = backend
             output = (sibling("moss_adapter").generate(pipeline, data, control, observation)
                       if spec["family"] == "moss-image" else pipeline(**args))

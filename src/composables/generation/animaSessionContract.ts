@@ -2,6 +2,7 @@ import type { ApiClient } from '@/api/client'
 import type { AnimaGenerationState, AnimaOption, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import type { AnimaSketchControl, AnimaPromptRegion } from '@/types/animaComposition'
+import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
 
 export interface AnimaStatusResponse {
   capabilities?: { automaticMask?: boolean; automaticMaskStatus?: ComfyNodeReadiness }
@@ -27,13 +28,17 @@ export interface AnimaRequest {
   height: number
   steps: number
   cfg: number
+  sampler?: string
+  scheduler?: string
   seed?: number
   character: string | null
   styleLoraId?: string
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
-  hiresUpscaler?: 'Auto' | 'Latent' | 'Remacri'
+  hiresSteps?: number
+  hiresCfg?: number
+  hiresUpscaler?: AnimaGenerationState['hiresUpscaler']
   /** Native: omitted is automatic, false disables, true requires a matching accepted profile. */
   teaCache?: boolean
   teaCacheThresh?: number
@@ -136,12 +141,16 @@ export function animaRequestPayload(
     height: request.height,
     steps: request.steps,
     cfg: request.cfg,
+    ...(request.sampler ? { sampler: request.sampler } : {}),
+    ...(request.scheduler ? { scheduler: request.scheduler } : {}),
     ...(request.seed === undefined ? {} : { seed: request.seed }),
     character: request.character,
     ...(request.hiresFix ? {
       hiresFix: true,
-      hiresScale: request.hiresScale || 2.0,
-      hiresDenoise: request.hiresDenoise || 0.35,
+      hiresScale: request.hiresScale ?? ANIMA_HIRES_PRESET.hiresScale,
+      hiresDenoise: request.hiresDenoise ?? ANIMA_HIRES_PRESET.hiresDenoise,
+      hiresSteps: request.hiresSteps ?? ANIMA_HIRES_PRESET.hiresSteps,
+      hiresCfg: request.hiresCfg ?? ANIMA_HIRES_PRESET.hiresCfg,
       ...(request.hiresUpscaler ? { hiresUpscaler: request.hiresUpscaler } : {}),
     } : {}),
     ...(request.teaCache !== undefined ? { teaCache: request.teaCache } : {}),

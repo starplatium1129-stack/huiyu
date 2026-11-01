@@ -16,7 +16,7 @@ def finite_rows(values):
     return finite
 
 
-def stitch(samples, operation, *, tile, overlap, scale, channels, report):
+def stitch(samples, operation, *, tile, overlap, scale, channels, report, progress=None):
     import torch
     height, width = samples.shape[-2:]
     target = (round(height * scale), round(width * scale))
@@ -25,6 +25,7 @@ def stitch(samples, operation, *, tile, overlap, scale, channels, report):
     positions = [range(0, length - overlap, tile - overlap) if length > tile else (0,)
                  for length in (height, width)]
     whole = height <= tile and width <= tile
+    total = samples.shape[0] * len(positions[0]) * len(positions[1])
     calls = 0
     for batch in range(samples.shape[0]):
         divisor = None if whole else torch.zeros((1, 1, *target), dtype=torch.float32, device="cpu")
@@ -62,6 +63,8 @@ def stitch(samples, operation, *, tile, overlap, scale, channels, report):
                         divisor[:, :, y + row:y + end, x:right].add_(weight)
                         del weight
                 del pixels, destination
+                if progress is not None:
+                    progress(calls, total)
         if divisor is not None:
             result[batch:batch + 1].div_(divisor)
     if not bool(finite) or not bool(finite_rows(result)):

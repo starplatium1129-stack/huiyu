@@ -7,6 +7,7 @@ mod manga;
 pub(crate) mod media_import;
 mod native;
 mod native_adapters;
+mod native_upscale;
 mod requests;
 mod resources;
 mod resume;

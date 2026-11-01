@@ -56,7 +56,7 @@ export function parseHistoryRecipe(record: ArtworkRecord) {
     sampler: text('sampler'), scheduler: text('scheduler'), negative: text('negative'),
     negativeCustom: text('negativeCustom'),
     hiresFix: boolean('hiresFix'), hiresScale: number('hiresScale'), hiresDenoise: number('hiresDenoise'),
-    hiresUpscaler: text('hiresUpscaler'), hiresSteps: number('hiresSteps'), faceDetailer: boolean('faceDetailer'),
+    hiresUpscaler: text('hiresUpscaler'), hiresSteps: number('hiresSteps'), hiresCfg: number('hiresCfg'), faceDetailer: boolean('faceDetailer'),
     scene: nullableText('scene'), sceneTitle: text('sceneTitle'), story: text('story'), visualDescription: text('visualDescription'),
     emotion: strings('emotion'), manual_tags: strings('manual_tags'), artistStyleIds: strings('artistStyleIds'),
     shot: nullableText('shot'), lighting: nullableText('lighting'), composition: nullableText('composition'), colorMood: nullableText('colorMood'), project: text('project'),

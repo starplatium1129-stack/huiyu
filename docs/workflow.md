@@ -307,7 +307,7 @@ worker 仅离线加载，使用 BF16 模型与 FP32 sigmoid；默认一般标签
 
 ## 独立推理运行库
 
-已准备的 MiaoMiao MOSS BASE v1.0 可用 `models:import-moss-int8 --source <作者INT8文件> --model-dir <现有模型目录>` 预览额外 INT8 导入，`--apply` 才校验复制。关闭桌面/原生推理后使用；保留原下载、FP16 与配套组件，具体算子要求及权重选择见[独立推理指南](guides/independent-inference.md#8-miaomiao-harem-moss-base-v10)。
+已准备的 MiaoMiao MOSS BASE v1.0 可用 `models:import-moss-int8 --source <INT8文件> --model-dir <现有模型目录>` 预览主模型 INT8 导入；追加 `--component text_encoder` 导入固定的 Qwen3.5-9B W8A8 文本编码器。`--apply` 才校验复制。关闭桌面/原生推理后使用；保留原下载、FP16/BF16 与配套组件，具体来源、算子要求及权重选择见[独立推理指南](guides/independent-inference.md#8-miaomiao-harem-moss-base-v10)。
 
 `models:prepare-inference` 预览或用已有 wheelhouse 离线准备独立运行库；`models:import-anima-directory` 预览或导入完整模型目录；`models:convert-anima` 按已登记架构离线转换单文件 checkpoint。各入口默认预览，显式 `--apply` 才写入新目录，不覆盖已有模型或下载依赖。完整步骤见[独立推理指南](guides/independent-inference.md)。
 

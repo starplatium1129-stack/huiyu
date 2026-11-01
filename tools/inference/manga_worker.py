@@ -6,6 +6,7 @@ import importlib.util
 import json
 from pathlib import Path
 import sys
+import time
 
 
 # Direct -I entry and nested adapter imports must share this fixed owner.
@@ -82,6 +83,7 @@ def read_image(path, background_color="white"):
 
 
 def generate(job, control, _prepared, *, resident=None):
+    started = control.started
     data = contract.validate(job)
     import cv2
     import numpy as np
@@ -98,7 +100,10 @@ def generate(job, control, _prepared, *, resident=None):
         if not _prepared:
             models.prepare(data)
     if data.get("rewrite"):
+        redraw_started = time.perf_counter()
         rgb, observation["rewrite"] = models.rewrite(job, data, rgb, control, read_image, resident=resident)
+        observation["timings"] = {"rewriteWallSeconds": time.perf_counter() - redraw_started}
+    finish_started = time.perf_counter()
     k = rgb.shape[1] / 1024
     if "panel" in data:
         p = data["panel"]
@@ -130,7 +135,7 @@ def generate(job, control, _prepared, *, resident=None):
         if "finish" in data:
             rgb = (rgb * 255).clip(0, 255).astype(np.uint8)
     if data["autoLines"]:
-        pen, observation["lineart"] = models.extract(rgb, job["lineartPath"], control)
+        pen, observation["lineart"] = models.extract(rgb, job["lineartPath"], control, resident=resident)
     if pen is not None:
         control.stage("manga_line_saving")
         if not np.isfinite(pen).all():
@@ -159,6 +164,8 @@ def generate(job, control, _prepared, *, resident=None):
         with Image.fromarray((rgb.clip(0, 1) * 255).round().astype(np.uint8)) as output:
             output.save(job["outputPath"], format="PNG")
     control.check()
+    observation.setdefault("timings", {}).update(postprocessWallSeconds=time.perf_counter() - finish_started,
+                                                workerWallSeconds=time.perf_counter() - started)
     emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime={
         "processor": "manga-screen", "sourceRevision": contract.MANIFEST["revision"],
         "device": "cuda+cpu" if data.get("rewrite") or observation.get("lineart", {}).get("device") == "cuda" else "cpu", "validation": "处理完成",
@@ -182,7 +189,7 @@ def main():
             elif args.diagnose:
                 emit(stream, None, "diagnostic", dependencies=dependencies(), scope="imports-only; no image processing", validation="依赖检查完成")
             else:
-                resident = sibling("resident_adapters").PipelineCache()
+                resident = sibling("manga_cache").Cache()
                 def initialize(job, ready):
                     data = contract.validate(job)
                     dependencies()

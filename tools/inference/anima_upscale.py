@@ -1,14 +1,17 @@
-"""Fixed local Remacri RRDB 4x, adapted from Apache-2.0 BasicSR.
+"""Fixed local Remacri/UltraSharp RRDB 4x, adapted from Apache-2.0 BasicSR.
 
 Copyright 2018-2022 BasicSR Authors. See REMACRI_LICENSE.txt for the full
 license, pinned source and modifications. No ComfyUI/KJ code is included.
-Only the checked 23-block, nf64/gc32 RGB model is accepted; no pickle, model
-discovery, download, guessed configuration or package installation occurs.
+Only the checked 23-block, nf64/gc32 RGB models are accepted. UltraSharp uses
+the author's pinned checkpoint with weights_only=True; Remacri uses safetensors.
+No model discovery, download or guessed configuration occurs.
 """
 from pathlib import Path
 import time
 
 WEIGHT_NAME = "4x_foolhardy_Remacri.safetensors"
+ULTRASHARP_NAME = "4x-UltraSharp.pth"
+ULTRASHARP_SHA256 = "a5812231fc936b42af08a5edba784195495d303d5b3248c24489ef0c4021fe01"
 EXECUTION_REVISION = "remacri-no-single-cat-packed-v1"
 MAX_CPU_CACHE_BYTES = 128 * 1024 * 1024
 
@@ -103,15 +106,34 @@ def _key_mapping():
     return {f"{source}.{part}": f"{target}.{part}" for source, target in modules.items() for part in ("weight", "bias")}
 
 
+def _ultrasharp_state(path, expected, mapping, check):
+    import torch
+    # Author checkpoint only, bounded before deserialization; no custom globals.
+    if path.stat().st_size != 66961958:
+        raise ValueError("UltraSharp requires the fixed author checkpoint")
+    source = torch.load(str(path), map_location="cpu", weights_only=True)
+    if not isinstance(source, dict) or set(source) != set(mapping):
+        raise ValueError("Unsupported UltraSharp RRDB tensor keys")
+    state = {}
+    for original, target in mapping.items():
+        if check is not None:
+            check()
+        value = source[original]
+        if (not isinstance(value, torch.Tensor) or value.dtype != torch.float32
+                or tuple(value.shape) != tuple(expected[target].shape) or not bool(torch.isfinite(value).all())):
+            raise ValueError(f"Unsupported UltraSharp FP32 tensor: {original}")
+        state[target] = value
+    return state
+
+
 def load_remacri(path, device="cpu", *, upload, report, cache=None, identity=None, check=None):
     """Load only the host-selected fixed local filename, strictly as FP32."""
     import torch
-    from safetensors import safe_open
 
     started = time.perf_counter()
     path = Path(path)
-    if not path.is_absolute() or path.name != WEIGHT_NAME or not path.is_file():
-        raise ValueError(f"Remacri requires an existing absolute local {WEIGHT_NAME}")
+    if not path.is_absolute() or path.name not in (WEIGHT_NAME, ULTRASHARP_NAME) or not path.is_file():
+        raise ValueError("RRDB upscaling requires the fixed local Remacri or UltraSharp checkpoint")
     device = torch.device(device)
     if device.type not in ("cpu", "cuda"):
         raise ValueError("Remacri supports only CPU or CUDA")
@@ -128,25 +150,10 @@ def load_remacri(path, device="cpu", *, upload, report, cache=None, identity=Non
         weight_bytes = sum(value.numel() for value in expected.values()) * 4
         if cache is not None and weight_bytes > MAX_CPU_CACHE_BYTES:
             raise ValueError("Remacri CPU weights exceed the 128 MiB cache limit")
-        with safe_open(str(path), framework="pt", device="cpu") as source:
-            keys = set(source.keys())
-            if keys != set(mapping):
-                missing, extra = sorted(set(mapping) - keys), sorted(keys - set(mapping))
-                raise ValueError(f"Unsupported Remacri keys; missing={missing[:3]}, unexpected={extra[:3]}")
-            # Validate the complete header before reading any tensor payload.
-            for original, target in mapping.items():
-                value = source.get_slice(original)
-                if value.get_dtype() != "F32" or tuple(value.get_shape()) != tuple(expected[target].shape):
-                    raise ValueError(f"Remacri requires the exact FP32 tensor shape: {original}")
-            state = {}
-            for original, target in mapping.items():
-                if check is not None:
-                    check()
-                value = source.get_tensor(original)
-                if not bool(torch.isfinite(value).all()):
-                    raise ValueError(f"Nonfinite Remacri weights: {original}")
-                # Cache owns bounded CPU allocations, never an open checkpoint mapping.
-                state[target] = value.clone() if cache is not None else value
+        if path.name == ULTRASHARP_NAME:
+            state = _ultrasharp_state(path, expected, mapping, check)
+        else:
+            state = _remacri_state(path, expected, mapping, check, cache)
         if cache is not None and identity is not None:
             cache.identity, cache.weights = identity, state
     model.load_state_dict(state, strict=True, assign=True)
@@ -163,7 +170,32 @@ def load_remacri(path, device="cpu", *, upload, report, cache=None, identity=Non
     return model
 
 
-def run(images, path, device, *, tools, expected, error, cache=None, check=None):
+def _remacri_state(path, expected, mapping, check, cache):
+    import torch
+    from safetensors import safe_open
+    with safe_open(str(path), framework="pt", device="cpu") as source:
+        keys = set(source.keys())
+        if keys != set(mapping):
+            missing, extra = sorted(set(mapping) - keys), sorted(keys - set(mapping))
+            raise ValueError(f"Unsupported Remacri keys; missing={missing[:3]}, unexpected={extra[:3]}")
+        # Validate the complete header before reading any tensor payload.
+        for original, target in mapping.items():
+            value = source.get_slice(original)
+            if value.get_dtype() != "F32" or tuple(value.get_shape()) != tuple(expected[target].shape):
+                raise ValueError(f"Remacri requires the exact FP32 tensor shape: {original}")
+        state = {}
+        for original, target in mapping.items():
+            if check is not None:
+                check()
+            value = source.get_tensor(original)
+            if not bool(torch.isfinite(value).all()):
+                raise ValueError(f"Nonfinite Remacri weights: {original}")
+            # Cache owns bounded CPU allocations, never an open checkpoint mapping.
+            state[target] = value.clone() if cache is not None else value
+    return state
+
+
+def run(images, path, device, *, tools, expected, error, cache=None, check=None, progress=None):
     """Own one checked upscaler only for this pass; keep profile byte fences."""
     model = None
     try:
@@ -172,9 +204,11 @@ def run(images, path, device, *, tools, expected, error, cache=None, check=None)
         path = Path(path)
         started = time.perf_counter()
         before = _file_identity(path)
-        fingerprint = tools("native_hash").file_sha256 if cache is not None or expected is not None else None
+        fingerprint = tools("native_hash").file_sha256 if cache is not None or expected is not None or path.name == ULTRASHARP_NAME else None
         lease = cache.lease if cache is not None else None
         digest = lease.acquire(path, fingerprint) if lease is not None else (fingerprint(path) if fingerprint is not None else None)
+        if path.name == ULTRASHARP_NAME and digest != ULTRASHARP_SHA256:
+            raise error("MODEL_CHANGED", "UltraSharp requires the pinned author checkpoint SHA256")
         protected = lease is not None and lease.cached
         if before != _file_identity(path) or (expected is not None and digest != expected):
             raise error("MODEL_CHANGED", "Upscaler bytes changed after profile validation")
@@ -189,7 +223,7 @@ def run(images, path, device, *, tools, expected, error, cache=None, check=None)
         report["loading"]["fingerprintWallSeconds"] += time.perf_counter() - started
         if check is not None:
             check()
-        result = upscale_4x(model, images, tiling=tools("anima_tiling"), report=report, check=check)
+        result = upscale_4x(model, images, tiling=tools("anima_tiling"), report=report, check=check, progress=progress)
         if check is not None:
             check()
         if protected and not lease.valid():
@@ -204,7 +238,7 @@ def run(images, path, device, *, tools, expected, error, cache=None, check=None)
         model = None
 
 
-def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=None, check=None):
+def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=None, check=None, progress=None):
     """FP32 RRDB tiles with CPU feather assembly; CUDA OOM retries 256/128."""
     import torch
     if (not isinstance(images, torch.Tensor) or images.ndim != 4 or images.shape[1] != 3
@@ -226,7 +260,7 @@ def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=
         while True:
             try:
                 output = tiling.stitch(images, predict,
-                    tile=tile_size, overlap=overlap, scale=4, channels=3, report=report)
+                    tile=tile_size, overlap=overlap, scale=4, channels=3, report=report, progress=progress)
                 return output.clamp_(0, 1)
             except torch.cuda.OutOfMemoryError:
                 if parameter.device.type != "cuda" or tile_size <= 128:

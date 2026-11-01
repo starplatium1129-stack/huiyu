@@ -88,7 +88,7 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
     else if (engine === 'sd') {
       const savedModel = entry.model || entry.checkpoint
       if (savedModel && savedModel !== pb.sdModelName) notes.push(`原底模 ${savedModel} 与当前底模 ${pb.sdModelName || '未确认'} 不同；需先切换后端底模`)
-      for (const key of ['cfg', 'steps', 'sampler', 'scheduler', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresDenoise', 'faceDetailer'] as const) {
+      for (const key of ['cfg', 'steps', 'sampler', 'scheduler', 'hiresFix', 'hiresScale', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'hiresDenoise', 'faceDetailer'] as const) {
         apply(entry[key], value => { Object.assign(pb.sdParams, { [key]: value }); pb.markParamTouched(key) })
       }
       apply(entry.seed, value => { pb.sdParams.seed = value; pb.sdParams.seedLock = value >= 0; pb.markParamTouched('seed') })
@@ -98,9 +98,10 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
       }
     } else {
       const patch: Partial<typeof animaState.value> = {}
-      for (const key of ['steps', 'cfg', 'sampler', 'scheduler', 'hiresFix', 'hiresScale', 'hiresDenoise'] as const) {
+      for (const key of ['steps', 'cfg', 'sampler', 'scheduler', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresCfg'] as const) {
         apply(entry[key], value => { Object.assign(patch, { [key]: value }) })
       }
+      if (['Auto', 'Latent', 'Remacri', '4x-UltraSharp'].includes(entry.hiresUpscaler || '')) apply(entry.hiresUpscaler, value => { patch.hiresUpscaler = value as NonNullable<typeof patch.hiresUpscaler> })
       apply(entry.seed, value => { patch.seed = value >= 0 ? value : null })
       apply(entry.model, value => { patch.modelId = value })
       if (entry.size) {

@@ -24,6 +24,7 @@ export async function loadGeneratedSceneCapture(facts: CapturedSceneFacts, url: 
       lora: meta.loraId, loraId: meta.loraId, loraStrength: meta.loraStrength,
       loras: meta.loras, styleLoraId: meta.styleLoraId,
       hiresFix: meta.hiresFix, hiresScale: meta.hiresScale, hiresDenoise: meta.hiresDenoise,
+      hiresUpscaler: meta.hiresUpscaler ?? undefined, hiresSteps: meta.hiresSteps, hiresCfg: meta.hiresCfg,
     } : { engine: 'sd', prompt }),
   }
   if (!image) {

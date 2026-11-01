@@ -1,6 +1,7 @@
 import { readStoryOrigin } from '@/types/storyOrigin'
 import { parseHistoryRecipe } from '@/utils/historyRecipe'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
+import type { AnimaGenerationState } from '@/types/anima'
 import type { ArtworkRecord } from '@/types/artwork'
 import type { Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
@@ -124,6 +125,10 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         hiresFix: typeof entry.hiresFix === 'boolean' ? entry.hiresFix : animaState.value.hiresFix,
         hiresScale: typeof entry.hiresScale === 'number' ? entry.hiresScale : animaState.value.hiresScale,
         hiresDenoise: typeof entry.hiresDenoise === 'number' ? entry.hiresDenoise : animaState.value.hiresDenoise,
+        hiresSteps: entry.hiresSteps ?? animaState.value.hiresSteps,
+        hiresCfg: entry.hiresCfg ?? animaState.value.hiresCfg,
+        ...(['Auto', 'Latent', 'Remacri', '4x-UltraSharp'].includes(entry.hiresUpscaler || '')
+          ? { hiresUpscaler: entry.hiresUpscaler as AnimaGenerationState['hiresUpscaler'] } : {}),
       }
     }
     /** 底模回放：乐观采用历史值（refreshBackend 会收敛到白名单）；同家族且列表已加载时缺失才提示。 */

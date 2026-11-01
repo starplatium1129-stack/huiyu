@@ -88,6 +88,25 @@
       ]
     },
     {
+      "id": "ultrasharp-4x",
+      "label": "4x-UltraSharp · 高清放大",
+      "family": "anima",
+      "directory": "models",
+      "path": "upscale_models",
+      "description": "Anima 高清预设：UltraSharp 1.5× 放大后，以 10 步、重绘 0.8、CFG 5.5 细化。权重为 CC BY-NC-SA 4.0。",
+      "licenseUrl": "https://creativecommons.org/licenses/by-nc-sa/4.0/",
+      "sourceUrl": "https://huggingface.co/Kim2091/UltraSharp/tree/920fe218c211f831b43cb30327f203e2b59f5dab",
+      "revision": "920fe218c211f831b43cb30327f203e2b59f5dab",
+      "files": [
+        {
+          "path": "upscale_models/4x-UltraSharp.pth",
+          "url": "https://huggingface.co/Kim2091/UltraSharp/resolve/920fe218c211f831b43cb30327f203e2b59f5dab/4x-UltraSharp.pth",
+          "bytes": 66961958,
+          "sha256": "a5812231fc936b42af08a5edba784195495d303d5b3248c24489ef0c4021fe01"
+        }
+      ]
+    },
+    {
       "id": "anima-sketch",
       "label": "Anima Sketch · 草图控制",
       "family": "anima",

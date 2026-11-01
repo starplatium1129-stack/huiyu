@@ -28,6 +28,7 @@ async function select(value: AcceptableValue | AcceptableValue[]) {
   if (props.disabled || switching.value || navigation.importing.value || value === props.modelValue) return
   if (!isActiveDrawEngine(value) && value !== 'moss' && value !== 'qwen') return
   const ownedFocus = field.value?.contains(document.activeElement)
+  navigation.error.value = ''
   switching.value = true
   try {
     if (props.beforeSwitch && !await props.beforeSwitch()) return
@@ -35,6 +36,8 @@ async function select(value: AcceptableValue | AcceptableValue[]) {
       emit('selectNative', value)
       if (navigation.mode.value) await navigation.selectEngine(value)
     } else await navigation.selectEngine(value)
+  } catch (cause) {
+    navigation.error.value = cause instanceof Error ? cause.message : '引擎尚未切换，请重试'
   } finally {
     switching.value = false
     await nextTick()

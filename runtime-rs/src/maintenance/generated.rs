@@ -64,7 +64,7 @@ fn parameters(value: &Value) -> bool {
     values.iter().all(|(key, v)| match key.as_str() {
         "seed" => number(v, -1.0, 9007199254740991.0, true),
         "steps" | "hiresSteps" => numeric(v, 0.0, 200.0, true),
-        "cfg" => numeric(v, 0.0, 50.0, false),
+        "cfg" | "hiresCfg" => numeric(v, 0.0, 50.0, false),
         "width" | "height" => {
             number(v, 512.0, 4096.0, true) && v.as_u64().is_some_and(|n| n % 8 == 0)
         }

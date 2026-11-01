@@ -3,7 +3,7 @@ import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/ut
 import { artworkRepository } from './artworkRepository'
 import { inspectMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
 import { qwenModels } from '@/api/qwenApi'
-import { mossModels } from '@/api/mossApi'
+import { mossModels, validMossSpectrumFlexWindow } from '@/api/mossApi'
 
 // Registered model-draft namespace: profile media_refs recursively retains imageId.
 // All mounted instances hand off through one queue. A fullPath remount must
@@ -17,7 +17,8 @@ function activeKey(key: string, selectionKey: string, recoveryKey: string) {
 }
 export interface QwenForm {
   modelId: string; prompt: string; negative: string; width: number; height: number; steps: number; cfg: number; seed: number
-  mossAcceleration?: 'off' | 'spectrum'; mossTextPrecision?: 'bf16' | 'fp8'; mossCompile?: boolean
+  mossAcceleration?: 'off' | 'spectrum'; mossTextPrecision?: 'bf16' | 'fp8' | 'int8'; mossCompile?: boolean
+  mossSpectrumFlexWindow?: number
   mossWeightPrecision?: 'auto' | 'fp16' | 'int8'
 }
 export interface QwenDraftState {
@@ -39,15 +40,17 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
   && typeof form.prompt === 'string' && form.prompt.length <= 12000 && typeof form.negative === 'string' && form.negative.length <= 8000
   && (form.mossAcceleration === undefined || form.mossAcceleration === 'off'
     || form.mossAcceleration === 'spectrum' && mossModels.some(model => model.value === form.modelId))
+  && (form.mossSpectrumFlexWindow === undefined || mossModels.some(model => model.value === form.modelId) && validMossSpectrumFlexWindow(form.mossSpectrumFlexWindow))
   && (form.mossTextPrecision === undefined || mossModels.some(model => model.value === form.modelId)
-    && (form.mossTextPrecision === 'bf16' || form.mossTextPrecision === 'fp8'))
+    && (form.mossTextPrecision === 'bf16' || form.mossTextPrecision === 'fp8' || form.mossTextPrecision === 'int8'))
   && (form.mossCompile === undefined || mossModels.some(model => model.value === form.modelId) && typeof form.mossCompile === 'boolean')
   && (form.mossWeightPrecision === undefined || mossModels.some(model => model.value === form.modelId)
     && (form.mossWeightPrecision === 'auto' || form.mossWeightPrecision === 'fp16' || form.mossWeightPrecision === 'int8'))
   && ['width', 'height', 'steps', 'cfg', 'seed'].every(key => typeof form[key] === 'number' && Number.isFinite(form[key]))
 const copyForm = (form: QwenForm): QwenForm => ({ modelId: form.modelId, prompt: form.prompt, negative: form.negative,
   width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed,
-  ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? 'off', mossTextPrecision: form.mossTextPrecision ?? 'bf16', mossCompile: form.mossCompile ?? true, mossWeightPrecision: form.mossWeightPrecision ?? 'auto' } : {}) })
+  ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? 'spectrum', mossSpectrumFlexWindow: form.mossSpectrumFlexWindow ?? 0.5,
+    mossTextPrecision: form.mossTextPrecision ?? 'bf16', mossCompile: form.mossCompile ?? false, mossWeightPrecision: form.mossWeightPrecision ?? 'auto' } : {}) })
 function read(selectedKey: string, models: readonly { value: string }[]): StoredDraft | null {
   const raw = profileLocalStorage.getItem(selectedKey)
   if (!raw) return null
@@ -93,7 +96,7 @@ export function createQwenDraftStorage(mode: 'qwen' | 'moss' = 'qwen', editor = 
   }
   function save(state: QwenDraftState, preservePrevious = false): Promise<void> {
     // Snapshot before entering the queue. File blobs are immutable; form is detached.
-    const snapshot = { ...state, form: { ...state.form }, references: state.references.map(ref => ({ ...ref })) }
+    const snapshot = { ...state, form: copyForm(state.form), references: state.references.map(ref => ({ ...ref })) }
     const work = pendingWrites.catch(() => {}).then(async () => {
       check()
       const destination = preservePrevious ? selectedKey === key ? recoveryKey : key : selectedKey

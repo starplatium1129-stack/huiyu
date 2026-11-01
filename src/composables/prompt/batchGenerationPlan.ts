@@ -31,7 +31,7 @@ export function batchHistoryFromMetadata(plan: Exclude<PreparedBatchImage, { eng
     hiresScale: metadata.hiresScale ?? plan.request.hiresScale,
     hiresDenoise: metadata.hiresDenoise ?? plan.request.hiresDenoise,
     hiresUpscaler: metadata.hiresUpscaler !== undefined ? metadata.hiresUpscaler ?? '' : plan.request.hiresUpscaler,
-    hiresSteps: metadata.hiresSteps, faceDetailer: metadata.faceDetailer ?? false,
+    hiresSteps: metadata.hiresSteps, hiresCfg: metadata.hiresCfg, faceDetailer: metadata.faceDetailer ?? false,
   }
 }
 

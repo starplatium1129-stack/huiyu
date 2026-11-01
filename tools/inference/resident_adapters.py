@@ -22,6 +22,7 @@ class PipelineCache:
         self.memory = None
         self.protection = None
         self.conditioning = OrderedDict()
+        self.upscale_cache = None
 
     def release_components(self):
         if self.memory is not None:
@@ -32,6 +33,9 @@ class PipelineCache:
         self.conditioning.clear()
 
     def clear(self):
+        if self.upscale_cache is not None:
+            self.upscale_cache.clear()
+            self.upscale_cache = None
         had_resources = self.components is not None or self.memory is not None
         self.release_components()
         self.lease.close()

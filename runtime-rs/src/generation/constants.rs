@@ -4,15 +4,17 @@ pub const MAX_JSON: usize = 8 * 1024 * 1024;
 pub const MAX_IMAGE: usize = 16 * 1024 * 1024;
 pub const UPSCALERS: &[&str] = &[
     "Auto",
+    "4x-UltraSharp",
     "Remacri",
     "Latent",
     "Latent (nearest-exact)",
     "R-ESRGAN 4x+ Anime6B",
     "R-ESRGAN 4x+",
 ];
-pub const SUPER_RES: &[&str] = &["Remacri", "R-ESRGAN 4x+ Anime6B", "R-ESRGAN 4x+"];
+pub const SUPER_RES: &[&str] = &["Remacri", "4x-UltraSharp", "R-ESRGAN 4x+ Anime6B", "R-ESRGAN 4x+"];
 pub const SUPER_RES_FILES: &[(&str, &str)] = &[
     ("4x_foolhardy_Remacri.safetensors", "Remacri"),
+    ("4x-UltraSharp.pth", "4x-UltraSharp"),
     ("RealESRGAN_x4plus_anime_6B.pth", "R-ESRGAN 4x+ Anime6B"),
     ("R-ESRGAN 4x+ Anime6B.pth", "R-ESRGAN 4x+ Anime6B"),
     ("RealESRGAN_x4plus.pth", "R-ESRGAN 4x+"),

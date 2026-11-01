@@ -24,6 +24,8 @@ pub(super) fn anima_request(
         "hiresFix",
         "hiresScale",
         "hiresDenoise",
+        "hiresSteps",
+        "hiresCfg",
         "hiresUpscaler",
         "superResModel",
         "hiresSampler",
@@ -114,11 +116,17 @@ pub(super) fn adapter_request(
     image: Option<PathBuf>,
 ) -> Value {
     let mut input = json!({"negativePrompt":plan.input["negative"]});
-    if plan.input["family"] == "moss-image" {
+    if plan.input["mossUpscaleScale"].is_number() {
+        input["mossUpscaleScale"] = plan.input["mossUpscaleScale"].clone();
+    } else if plan.input["family"] == "moss-image" {
         input["mossAcceleration"] = plan.input["mossAcceleration"].clone();
-        input["mossTextPrecision"] = json!(plan.input["mossTextPrecision"].as_str().unwrap_or("bf16"));
+        input["mossSpectrumFlexWindow"] =
+            json!(plan.input["mossSpectrumFlexWindow"].as_f64().unwrap_or(0.5));
+        input["mossTextPrecision"] =
+            json!(plan.input["mossTextPrecision"].as_str().unwrap_or("bf16"));
         input["mossCompile"] = json!(plan.input["mossCompile"] == true);
-        input["mossWeightPrecision"] = json!(plan.input["mossWeightPrecision"].as_str().unwrap_or("auto"));
+        input["mossWeightPrecision"] =
+            json!(plan.input["mossWeightPrecision"].as_str().unwrap_or("auto"));
     }
     for key in [
         "modelId", "prompt", "width", "height", "steps", "cfg", "seed",
@@ -137,6 +145,9 @@ pub(super) fn adapter_request(
         ));
     }
     let mut request = json!({"id":job.id,"op":"generate","modelDir":plan.model_dir,"outputPath":output,"input":null,"inputImagePath":image});
+    if let Some(path) = &plan.upscale_model_path {
+        request["upscaleModelPath"] = json!(path);
+    }
     if !plan.loras.is_empty() {
         request["loras"] = json!(plan.loras);
     }

@@ -1,4 +1,4 @@
-"""Import the pinned author MOSS INT8 checkpoint into an existing model.
+"""Import a pinned MOSS INT8 transformer or paired text encoder into an existing model.
 
 Standard library only; --apply is required. Source files and the existing FP16
 checkpoint are preserved. Run while the desktop/native workers are closed.
@@ -38,7 +38,7 @@ def transfer(source, destination, expected, *, copy):
             if copy:
                 destination.write(chunk)
     if total != expected["bytes"] or digest.hexdigest() != expected["sha256"]:
-        raise ValueError("Checkpoint does not match the author's BASE v1.0 INT8 SHA-256")
+        raise ValueError("Checkpoint does not match the pinned INT8 SHA-256")
 
 
 def main():
@@ -46,24 +46,26 @@ def main():
     parser.add_argument("--source", required=True)
     parser.add_argument("--model-dir", required=True)
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--component", choices=("transformer", "text_encoder"), default="transformer")
     args = parser.parse_args()
     helper_path = Path(__file__).resolve().parents[2] / "tools/inference/moss_int8.py"
     module_spec = importlib.util.spec_from_file_location("huiyu_moss_int8_import", helper_path)
     helper = importlib.util.module_from_spec(module_spec)
     module_spec.loader.exec_module(helper)
+    expected = helper.TEXT_SPEC if args.component == "text_encoder" else helper.SPEC
     source, root = ordinary_path(args.source), ordinary_path(args.model_dir)
-    if not source.is_file() or source.stat().st_size != helper.SPEC["bytes"]:
-        raise ValueError("Select the complete author BASE v1.0 INT8 safetensors file")
+    if not source.is_file() or source.stat().st_size != expected["bytes"]:
+        raise ValueError("Select the complete pinned INT8 safetensors file for this component")
     identity = json.loads((ordinary_path(str(root / "huiyu-model.json"))).read_text(encoding="utf-8"))
     index = json.loads((ordinary_path(str(root / "model_index.json"))).read_text(encoding="utf-8"))
     if (not isinstance(identity, dict) or not isinstance(index, dict)
             or identity.get("modelId") != helper.MODEL_ID or index.get("_class_name") != "MOSSImagePipeline"):
         raise ValueError("Target must be the existing prepared MiaoMiao MOSS BASE v1.0 model")
-    target = ordinary_path(str(root / helper.SPEC["path"]))
-    marker = ordinary_path(str(root / helper.RECEIPT))
+    target = ordinary_path(str(root / expected["path"]))
+    marker = ordinary_path(str(root / (helper.TEXT_RECEIPT if args.component == "text_encoder" else helper.RECEIPT)))
     if not target.parent.is_dir() or not target.resolve().is_relative_to(root.resolve()):
-        raise ValueError("Target transformer directory is unavailable")
-    print(f"Author INT8: {source}\nModel target: {target}")
+        raise ValueError("Target component directory is unavailable")
+    print(f"INT8 component: {args.component}\nSource: {source}\nModel target: {target}")
     if not args.apply:
         print("Preview only; --apply verifies SHA-256 while copying and publishes the selection receipt")
         return
@@ -76,13 +78,13 @@ def main():
                 raise ValueError("Existing target is not a regular file")
             # Recover a previously published file whose receipt was interrupted;
             # unknown or changed bytes are never overwritten.
-            transfer(target, None, helper.SPEC, copy=False)
+            transfer(target, None, expected, copy=False)
         else:
-            if shutil.disk_usage(root).free < helper.SPEC["bytes"] + 64 * 1024**2:
+            if shutil.disk_usage(root).free < expected["bytes"] + 64 * 1024**2:
                 raise ValueError("Not enough free space for the INT8 checkpoint")
             with tempfile.NamedTemporaryFile(dir=target.parent, prefix=".moss-int8-", delete=False) as output:
                 temporary = Path(output.name)
-                transfer(source, output, helper.SPEC, copy=True)
+                transfer(source, output, expected, copy=True)
                 output.flush()
                 os.fsync(output.fileno())
             ordinary_path(str(target))
@@ -92,7 +94,7 @@ def main():
             temporary = None
         with tempfile.NamedTemporaryFile(dir=root, prefix=".moss-int8-receipt-", delete=False) as output:
             receipt_temp = Path(output.name)
-            output.write((json.dumps(helper.receipt_document(), ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+            output.write((json.dumps(helper.receipt_document(args.component), ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
             output.flush()
             os.fsync(output.fileno())
         ordinary_path(str(marker))

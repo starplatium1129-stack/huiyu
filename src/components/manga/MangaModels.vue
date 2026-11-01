@@ -4,6 +4,8 @@
     <p v-if="externalLines" class="manga-hint">线稿来源改为「不使用」或「自动提取」后，可启用 Qwen 重绘。</p>
     <p v-if="redraw" class="manga-hint">重绘可能改变细节，请预览后保存。</p>
     <div v-if="redraw" class="manga-fields">
+      <p v-if="reuseRedraw" class="manga-hint">调整明暗、网点和纸张会保留这次重绘的画面。</p>
+      <button v-if="reuseRedraw && randomSeed" class="btn btn-ghost btn-sm" type="button" :disabled="disabled || !canRedraw" @click="emit('redraw')">换一版重绘</button>
       <div class="manga-field"><span>重绘模型</span><StudioSelect v-model="rewrite.modelId" label="漫画重绘模型" :disabled="disabled" :options="models" /></div>
       <p v-if="selected && !selected.available && !issue" class="manga-error" role="status">{{ selected.unavailableReason }}</p>
       <RouterLink v-if="selected && !selected.available && !disabled" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { engine: 'native', model: rewrite.modelId }, hash: '#control-setup' }">准备 Qwen 重绘模型</RouterLink>
@@ -15,7 +17,7 @@
           </div>
           <p class="manga-hint">默认按原图比例接近 200 万像素，尺寸为 32 的倍数；极端长图可能改变比例。</p>
           <label class="manga-field"><span>重绘指令</span><textarea class="input" v-model="rewrite.prompt" rows="6" maxlength="12000" :disabled="disabled" spellcheck="false" autocorrect="off" autocapitalize="off" /></label>
-          <StudioCheckbox v-model:checked="randomSeed" :disabled="disabled" label="每次随机种子">每次随机种子</StudioCheckbox>
+          <StudioCheckbox v-model:checked="randomSeed" :disabled="disabled" label="重绘时使用随机种子">重绘时使用随机种子</StudioCheckbox>
           <label v-if="!randomSeed" class="manga-field"><span>种子</span><input class="input" v-model.number="rewrite.seed" type="number" min="0" max="2147483647" step="1" :disabled="disabled" spellcheck="false" autocorrect="off" autocapitalize="off" /></label>
         </div>
       </details>
@@ -31,7 +33,8 @@ import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { MangaRewrite, MangaStatus } from '@/api/mangaApi'
-const props = defineProps<{ disabled: boolean; externalLines: boolean; status: MangaStatus | null; issue: string }>()
+const props = defineProps<{ disabled: boolean; externalLines: boolean; reuseRedraw: boolean; canRedraw: boolean; status: MangaStatus | null; issue: string }>()
+const emit = defineEmits<{ redraw: [] }>()
 const redraw = defineModel<boolean>('redraw', {required:true})
 const randomSeed = defineModel<boolean>('randomSeed', {required:true})
 const rewrite = defineModel<MangaRewrite>('rewrite', {required:true})

@@ -44,7 +44,11 @@ def load(root, cfg, blocks, reusable, tools, error, stage=None):
             components[name] = cls.from_pretrained(str(root / name), **kwargs)
     components["guider"] = ClassifierFreeGuidance(guidance_scale=cfg)
     pipeline.update_components(**components)
-    tools("anima_acceleration").configure(pipeline.transformer)
+    # Prompt encoding never consumes KV state; avoid constructing/discarding it.
+    pipeline.text_encoder.config.use_cache = False
+    execution = tools("anima_execution").Execution(pipeline.transformer)
+    pipeline.transformer._huiyu_execution = execution
+    tools("anima_acceleration").configure(pipeline.transformer, execution, tools)
     pipeline._huiyu_component_reuse = tuple(reused)
     pipeline._huiyu_loading = dict(strategy="component-sequential-v1", components=loading)
     pipeline.set_progress_bar_config(disable=True)

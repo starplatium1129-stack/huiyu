@@ -17,6 +17,9 @@ export function nativeAnimaRequestBlocker(models: AnimaOption[], request: Partia
   if (request.hiresFix && request.hiresUpscaler === 'Remacri' && !model?.capabilities?.hiresUpscalers?.includes('Remacri')) {
     return 'Remacri 文件未就绪，请先准备独立模型文件，或明确选择 Auto / Latent。'
   }
+  if (request.hiresFix && request.hiresUpscaler === '4x-UltraSharp' && !model?.capabilities?.hiresUpscalers?.includes('4x-UltraSharp')) {
+    return '4x-UltraSharp 文件未就绪，请先在控制室准备高清放大模型。'
+  }
   if (request.teaCache && !nativeTeaCacheReady(model)) {
     return '当前原生运行时尚未提供内置 TeaCache，请更新运行时，或暂时关闭特征缓存加速。'
   }

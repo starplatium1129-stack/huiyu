@@ -125,7 +125,9 @@ export interface AnimaGenerationState {
   hiresFix?: boolean
   hiresScale?: number
   hiresDenoise?: number
-  hiresUpscaler?: 'Auto' | 'Latent' | 'Remacri'
+  hiresSteps?: number
+  hiresCfg?: number
+  hiresUpscaler?: 'Auto' | 'Latent' | 'Remacri' | '4x-UltraSharp'
   /** Native: omitted selects an accepted matching profile automatically; false disables; true requires one. */
   teaCache?: boolean
   teaCacheThresh?: number

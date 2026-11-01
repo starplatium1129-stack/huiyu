@@ -1,5 +1,5 @@
 use super::*;
-use generation::native::resources::{self, REMACRI_FILE};
+use generation::native::resources::{self, REMACRI_FILE, ULTRASHARP_FILE};
 use generation::native::{Plan, Settings};
 
 fn supported_sampling(input: &Value) -> bool {
@@ -77,8 +77,7 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
         }
         validation::number(&input["growMaskBy"], "growMaskBy", 0., 32., true)?;
     }
-    // Public requests cannot supply these fields. Preserve the catalog recipe
-    // already normalized by validation, and the frozen recipe on task resume.
+    // Preserve validated public sampling choices and frozen task recipes.
     if input["sampler"].is_null() {
         input["sampler"] = json!("res_multistep");
     }
@@ -103,17 +102,17 @@ pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {
     input["teaCacheAuto"] = json!(raw.get("teaCache").is_none());
     if input["hiresFix"] == true {
         validation::number(&input["hiresScale"], "hiresScale", 1.1, 3., false)?;
-        validation::number(&input["hiresDenoise"], "hiresDenoise", 0.1, 0.7, false)?;
+        validation::number(&input["hiresDenoise"], "hiresDenoise", 0.1, 1., false)?;
         if !matches!(
             raw.get("hiresUpscaler")
                 .unwrap_or(&input["hiresUpscaler"])
                 .as_str(),
-            Some("Auto" | "Latent" | "Remacri")
+            Some("Auto" | "Latent" | "Remacri" | "4x-UltraSharp")
         ) {
             return Err(ApiError::new(
                 501,
                 "NATIVE_FEATURE_UNSUPPORTED",
-                "原生高清放大仅支持 Auto、Latent 或 Remacri",
+                "原生高清放大仅支持 Auto、Latent、Remacri 或 4x-UltraSharp",
             ));
         }
     }
@@ -222,13 +221,14 @@ fn anima_plan(
             .get("requestedHiresUpscaler")
             .cloned()
             .unwrap_or_else(|| input["hiresUpscaler"].clone());
-        let resource = resources::remacri(&settings.models_root);
         let requested = input["hiresUpscaler"].as_str().unwrap_or("Auto");
-        if requested == "Remacri" && resource.is_none() {
+        let ultra = requested == "4x-UltraSharp";
+        let resource = if ultra { resources::ultrasharp(&settings.models_root) } else { resources::remacri(&settings.models_root) };
+        if matches!(requested, "Remacri" | "4x-UltraSharp") && resource.is_none() {
             return Err(ApiError::new(
                 503,
                 "NATIVE_UPSCALER_UNAVAILABLE",
-                "Remacri 需要独立模型根目录 upscale_models 内的固定 safetensors 文件",
+                format!("{requested} 需要独立模型根目录 upscale_models 内的对应权重文件"),
             ));
         }
         let selected = if requested == "Latent" {
@@ -236,14 +236,16 @@ fn anima_plan(
         } else {
             resource
         };
-        input["hiresUpscaler"] = json!(if selected.is_some() {
+        input["hiresUpscaler"] = json!(if ultra {
+            "4x-UltraSharp"
+        } else if selected.is_some() {
             "Remacri"
         } else {
             "Latent"
         });
         input["superResModel"] = selected
             .as_ref()
-            .map(|_| json!(REMACRI_FILE))
+            .map(|_| json!(if ultra { ULTRASHARP_FILE } else { REMACRI_FILE }))
             .unwrap_or(Value::Null);
         let model = catalog::model(&id)?;
         input["hiresSampler"] = input
@@ -266,6 +268,10 @@ fn anima_plan(
                     .unwrap_or(&catalog::contract()["HIRES_SCHEDULER"])
                     .clone()
             });
+        if ultra {
+            input["hiresSampler"] = json!("euler");
+            input["hiresScheduler"] = json!("normal");
+        }
         selected
     } else {
         input["superResModel"] = Value::Null;
@@ -282,7 +288,7 @@ fn anima_plan(
     // Masked latent hires sharpens the generated source before final composite.
     // Pixel Remacri (including masked refinement) has no extra RCAS pass.
     input["rcasStrength"] = json!(if sharpen { 0.75 } else { 0. });
-    if input["hiresFix"] == true && !masked && upscale_model_path.is_some() {
+    if input["hiresFix"] == true && !masked && input["hiresUpscaler"] == "Remacri" {
         input["hiresSampler"] = Value::Null;
         input["hiresScheduler"] = Value::Null;
     }
@@ -416,11 +422,13 @@ fn local_status(
         runtime_error.is_none() && resources::clipseg(&runtime.models_root).is_some();
     status_check(cancel)?;
     let remacri = runtime_error.is_none() && resources::remacri(&runtime.models_root).is_some();
-    let hires_upscalers = if remacri {
+    let ultrasharp = runtime_error.is_none() && resources::ultrasharp(&runtime.models_root).is_some();
+    let mut hires_upscalers = if remacri {
         vec!["Auto", "Latent", "Remacri"]
     } else {
         vec!["Auto", "Latent"]
     };
+    if ultrasharp { hires_upscalers.push("4x-UltraSharp"); }
     let mut models = Vec::new();
     for (id, model) in catalog::CATALOG["MODELS"].as_object().unwrap() {
         status_check(cancel)?;

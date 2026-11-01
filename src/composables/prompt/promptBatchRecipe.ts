@@ -304,6 +304,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         hiresScale: state.hiresScale,
         hiresDenoise: state.hiresDenoise,
         hiresUpscaler: request.hiresUpscaler,
+        hiresSteps: request.hiresSteps, hiresCfg: request.hiresCfg,
     }
     return { engine: state.family === 'krea2' ? 'krea2' : 'anima', request, history,
       adult: plans.get(target.id)?.adult === true,

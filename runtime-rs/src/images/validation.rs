@@ -204,7 +204,24 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
             .filter(|s| !s.is_empty())
             .map(str::to_string)
     };
-    let mut normalized = json!({"prompt":prompt,"negative":if krea{""}else{negative.trim()},"family":model["family"],"profileId":catalog::CATALOG["PROFILE_BY_MODEL"][model_id],"modelId":model_id,"loraStrength":strength,"width":width,"height":height,"steps":steps,"cfg":cfg,"sampler":model["sampler"],"scheduler":model["scheduler"],"seed":seed,"styleLoraId":style,"hiresFix":hires,"hiresScale":if hires{number(&or_default("hiresScale",2.),"hiresScale",1.1,3.,false)?}else{json!(1)},"hiresDenoise":if hires{number(&or_default("hiresDenoise",0.35),"hiresDenoise",0.1,0.7,false)?}else{json!(0.35)},"hiresUpscaler":match body["hiresUpscaler"].as_str(){Some(name @ ("Remacri" | "Latent" | "R-ESRGAN 4x+ Anime6B" | "R-ESRGAN 4x+"))=>Some(name),_=>hires.then_some("Auto")},"teaCache":object.get("teaCache").map(truthy).unwrap_or(true),"teaCacheThresh":object.get("teaCacheThresh").map(|v|validate_limit("teaCacheThresh",v)).transpose()?.unwrap_or_else(||model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))),"initImage":trimmed("initImage"),"maskImage":trimmed("maskImage"),"maskPrompt":trimmed("maskPrompt"),"denoisingStrength":object.get("denoisingStrength").map(|v|validate_limit("denoisingStrength",v)).transpose()?.unwrap_or(json!(0.8)),"growMaskBy":object.get("growMaskBy").map(|v|validate_limit("growMaskBy",v)).transpose()?.unwrap_or(json!(6)),"maskThreshold":object.get("maskThreshold").map(|v|validate_limit("maskThreshold",v)).transpose()?.unwrap_or(json!(0.45))});
+    let mut normalized = json!({"prompt":prompt,"negative":if krea{""}else{negative.trim()},"family":model["family"],"profileId":catalog::CATALOG["PROFILE_BY_MODEL"][model_id],"modelId":model_id,"loraStrength":strength,"width":width,"height":height,"steps":steps,"cfg":cfg,"sampler":model["sampler"],"scheduler":model["scheduler"],"seed":seed,"styleLoraId":style,"hiresFix":hires,"hiresScale":if hires{number(&or_default("hiresScale",1.5),"hiresScale",1.1,3.,false)?}else{json!(1)},"hiresDenoise":if hires{number(&or_default("hiresDenoise",0.8),"hiresDenoise",0.1,1.,false)?}else{json!(0.35)},"hiresUpscaler":match body["hiresUpscaler"].as_str(){Some(name @ ("4x-UltraSharp" | "Remacri" | "Latent" | "R-ESRGAN 4x+ Anime6B" | "R-ESRGAN 4x+"))=>Some(name),_=>hires.then_some("Auto")},"teaCache":object.get("teaCache").map(truthy).unwrap_or(true),"teaCacheThresh":object.get("teaCacheThresh").map(|v|validate_limit("teaCacheThresh",v)).transpose()?.unwrap_or_else(||model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))),"initImage":trimmed("initImage"),"maskImage":trimmed("maskImage"),"maskPrompt":trimmed("maskPrompt"),"denoisingStrength":object.get("denoisingStrength").map(|v|validate_limit("denoisingStrength",v)).transpose()?.unwrap_or(json!(0.8)),"growMaskBy":object.get("growMaskBy").map(|v|validate_limit("growMaskBy",v)).transpose()?.unwrap_or(json!(6)),"maskThreshold":object.get("maskThreshold").map(|v|validate_limit("maskThreshold",v)).transpose()?.unwrap_or(json!(0.45))});
+    if !krea {
+        for (key, allowed) in [
+            ("sampler", &["euler", "res_multistep"][..]),
+            ("scheduler", &["normal", "simple", "sgm_uniform"][..]),
+        ] {
+            if let Some(value) = object.get(key) {
+                if !value.as_str().is_some_and(|name| allowed.contains(&name)) {
+                    return Err(error("INVALID_PARAMETER", format!("不支持的 {key}")));
+                }
+                normalized[key] = value.clone();
+            }
+        }
+        if hires {
+            normalized["hiresSteps"] = number(object.get("hiresSteps").unwrap_or(&json!(10)), "hiresSteps", 1., 60., true)?;
+            normalized["hiresCfg"] = number(object.get("hiresCfg").unwrap_or(&json!(5.5)), "hiresCfg", 0.5, 10., false)?;
+        }
+    }
     for key in ["loraId", "character"] {
         if let Some(value) = object.get(key) {
             normalized[key] = value.clone();

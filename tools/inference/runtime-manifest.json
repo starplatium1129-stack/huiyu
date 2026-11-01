@@ -61,13 +61,14 @@
       "compiled-fused-sage"
     ],
     "validatedPlatform": "Windows CPython 3.11, Torch 2.8.0+cu128, NVIDIA Ada SM89",
-    "revision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21",
+    "revision": "cosmos-v3-sage220-cu128torch280-post3-triton340post21-norm-rope-v1",
     "nativeRevision": "cosmos-v3-native-no-kv-repeat-v1",
     "nativeAttention": "Exact stock Cosmos processor types use the existing bundled processor to skip K/V repeat_interleave copies only when repeats=1; native dispatch, projections, normalization, rotary and non-unit repeats remain. K/V layout changes; source/API and compilation reviewed, no current CUDA timing or image acceptance. Only native Tea scopes require fresh calibration for this change",
     "scope": "Cosmos attention only; conditioner and VAE attention retain their original paths. compiled-sage keeps PEFT projections; compiled-fused-sage explicitly merges supported Linear LoRAs into resident weights",
     "fusion": "Opt-in compiled-fused-sage: protected base-preserving adapters restore exact safetensors bytes within <=32 MiB active read/conversion buffers. Same-dtype CUDA groups larger than 16 MiB with rows <=16 MiB use two slots <=16 MiB each, overlapping reads with current-stream copies; Events gate reuse and success/failure drains before releasing buffers/host cache. Exact-device grouping; CPU/cast/small/large-row groups remain serial. Independent CPU snapshot fallback remains without a source lease. Safe merge retains packed CUDA storage; restore precedes PEFT mutation, never rounded delta subtraction. Current device performance/restoration evidence unverified",
-    "fusionRevision": "cosmos-v2-sage220-cu128torch280-post3-triton340post21-fusion-cpu-base-v1",
-    "compile": "original block.forward, fullgraph=false, mode=default; no CUDA graphs, no VAE compile; first-use/shape/LoRA changes may compile and have extra latency",
+    "fusionRevision": "cosmos-v3-sage220-cu128torch280-post3-triton340post21-norm-rope-v1-fusion-cpu-base-v1",
+    "kernels": "Sage modes use existing pinned Triton for Diffusers RMSNorm + split-half RoPE and LayerNorm + scale/shift, preserving low-precision intermediate rounding. Versioned torch.library.triton_op registrations remain visible to compilation; unsupported input layouts retain the original math. Native mode needs no Triton. Configured backend is recorded; current kernel device/quality/performance acceptance remains unverified",
+    "compile": "block.forward, fullgraph=false, mode=default; no CUDA graphs or VAE compile; after first success a guard miss uses eager for that block for the task, retaining cached graphs; leaf-level offload skips block compilation; first use and Triton JIT still have extra latency",
     "calibration": "execution mode and revision bind the Tea profile; earlier profiles require fresh calibration",
     "dependencies": [
       {
@@ -127,7 +128,7 @@
     "rcas": "independent FP32 workflow cross filter: reflect, five-point extrema, RGB minimum lobe, epsilon 1e-6, strength before lobe limiting and reciprocal normalization; 128-row scratch with real interior halo and reflected image borders, full input/output retained; functional specification matches fixed KJ d3cfe216 rcas; current device output/latency/peak memory unverified",
     "rcasExecutionRevision": "rcas-fp32-rows128-v1",
     "rgbCompositing": "PIL-to-FP32 normalization borrows already-RGB input and divides its private NumPy array in place; masked composite overwrites only the private reference and new result, preserving separate multiply/subtract/multiply/add and existing Lanczos/uint8 boundaries",
-    "hiresFix": "Latent bicubic plus a fresh tail-schedule pass, or fixed FP32 Remacri 4x then target resize; masked paths preserve the resized reference outside the effective mask",
+    "hiresFix": "Latent bicubic plus a fresh tail-schedule pass, fixed FP32 Remacri 4x then target resize, or author UltraSharp 4x then target resize and Euler/Normal refinement (preset 1.5x, 10 steps, denoise 0.8, CFG 5.5, Shift 3); masked paths preserve the resized reference outside the effective mask",
     "vae": "single-frame exact Qwen modules with no temporal feature cache; eligible CausalConv uses last time slice and implicit spatial padding; RMS normalizes in original dtype; FP32 latent statistics, raw-latent bicubic and display boundaries; whole frame first, CUDA OOM only encode256/64 or budgeted decode tile with quarter overlap, CPU FP32 feather; no precision/device fallback",
     "remacriTiling": "512 input pixels/32 overlap, CPU FP32 symmetric-ramp numerator/divisor, clamp after normalization; shared VAE/Remacri assembly keeps full-tile ramps and separate multiply/add with 128 output rows of weight/product scratch. Final CPU image finiteness checks use 128-row scratch, including the outer VAE boundary. Real CUDA OOM retries entire 256 then128; only each source tile transfers to model execution device",
     "remacriExecutionRevision": "remacri-no-single-cat-packed-v1",
@@ -135,7 +136,7 @@
     "imageQuantization": "Lanczos and final PNG convert display RGB with FP32 multiply, clip and uint8 truncation using 128-row scratch instead of full-size float temporaries; release private CPU FP32 transfer storage before Pillow output allocation and the temporary 4x float canvas after its independent RGB8 conversion. Final unmasked Remacri without second sampling or RCAS retains RGB8-to-FP32 /255 then *255/clip/truncation in 128-row bands instead of a full float canvas; soft masks never quantized",
     "hiresTeaCache": "Built-in Anima policy on both denoising passes; clear residuals between passes and before VAE; no per-resolution calibration. Explicit maintenance profiles retain exact scope validation.",
     "weightSyntax": "Anima round-bracket and explicit nested weights; Qwen fragments unweighted, T5 conditioner output weighted once. Square brackets and BREAK remain literal. Both tokenizer streams are bounded to 512 tokens with explicit rejection before truncation",
-    "upscaler": "models_root/upscale_models/4x_foolhardy_Remacri.safetensors, strict 23-block RRDB only",
+    "upscaler": "models_root/upscale_models/4x_foolhardy_Remacri.safetensors or pinned-author 4x-UltraSharp.pth (weights_only=True), strict FP32 23-block RRDB only",
     "outputs": [
       "png"
     ],

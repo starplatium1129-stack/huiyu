@@ -67,6 +67,7 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
       sampler: animaState.value.sampler, scheduler: animaState.value.scheduler,
       seed: animaState.value.seed, hiresFix: animaState.value.hiresFix,
       hiresScale: animaState.value.hiresScale, hiresDenoise: animaState.value.hiresDenoise,
+      hiresUpscaler: animaState.value.hiresUpscaler, hiresSteps: animaState.value.hiresSteps, hiresCfg: animaState.value.hiresCfg,
       teaCache: animaState.value.teaCache, teaCacheThresh: animaState.value.teaCacheThresh,
     },
   }))

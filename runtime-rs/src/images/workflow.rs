@@ -24,15 +24,16 @@ fn sample(
 ) -> Value {
     let contract = catalog::contract();
     let model_defaults = &catalog::CATALOG["MODELS"][input["modelId"].as_str().unwrap()];
-    let sampler = model_defaults
+    let ultra = input["hiresUpscaler"] == "4x-UltraSharp";
+    let sampler = if ultra { &json!("euler") } else { model_defaults
         .get("hiresSampler")
-        .unwrap_or(&contract["HIRES_SAMPLER"]);
-    let scheduler = model_defaults
+        .unwrap_or(&contract["HIRES_SAMPLER"]) };
+    let scheduler = if ultra { &json!("normal") } else { model_defaults
         .get("hiresScheduler")
-        .unwrap_or(&contract["HIRES_SCHEDULER"]);
+        .unwrap_or(&contract["HIRES_SCHEDULER"]) };
     node(
         "KSampler",
-        json!({"model":model,"positive":link(positive,0),"negative":link(negative,0),"latent_image":latent,"seed":if hires{validation::num(input["seed"].as_f64().unwrap()+1.)}else{input["seed"].clone()},"steps":if hires{validation::num((input["steps"].as_f64().unwrap()*0.6).round().max(12.))}else{input["steps"].clone()},"cfg":input["cfg"],"sampler_name":if hires{sampler}else{&input["sampler"]},"scheduler":if hires{scheduler}else{&input["scheduler"]},"denoise":if hires{number(input,"hiresDenoise",0.35)}else{1.}}),
+        json!({"model":model,"positive":link(positive,0),"negative":link(negative,0),"latent_image":latent,"seed":if hires{validation::num(input["seed"].as_f64().unwrap()+1.)}else{input["seed"].clone()},"steps":if hires{input.get("hiresSteps").cloned().unwrap_or_else(||validation::num((input["steps"].as_f64().unwrap()*0.6).round().max(12.)))}else{input["steps"].clone()},"cfg":if hires{input.get("hiresCfg").unwrap_or(&input["cfg"])}else{&input["cfg"]},"sampler_name":if hires{sampler}else{&input["sampler"]},"scheduler":if hires{scheduler}else{&input["scheduler"]},"denoise":if hires{number(input,"hiresDenoise",0.8)}else{1.}}),
     )
 }
 pub fn build(input: &Value) -> Result<Value> {
@@ -113,6 +114,12 @@ pub fn build(input: &Value) -> Result<Value> {
             inpaint_hires(&mut graph, input, model_link.clone(), positive, negative);
         } else if truthy(&input["superResModel"]) {
             append_super_res(&mut graph, input, first);
+            if input["hiresUpscaler"] == "4x-UltraSharp" {
+                graph["ultrasharp_latent"] = node("VAEEncode", json!({"pixels":["23",0],"vae":["3",0]}));
+                graph["ultrasharp_sample"] = sample(input, model_link, positive, negative, link("ultrasharp_latent", 0), true);
+                graph["ultrasharp_decode"] = node("VAEDecode", json!({"samples":["ultrasharp_sample",0],"vae":["3",0]}));
+                graph["10"]["inputs"]["images"] = link("ultrasharp_decode", 0);
+            }
         } else {
             graph["11"] = node(
                 "LatentUpscaleBy",

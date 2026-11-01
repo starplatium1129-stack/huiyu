@@ -118,4 +118,5 @@ class RuntimeMetrics:
             **({"maskExecutionRevision": self.mask_execution_revision} if self.mask_execution_revision is not None else {}),
             **({"loraLoading": self.lora_loading} if self.lora_loading is not None else {}),
             **({"fusionRestore": self.fusion_restore} if self.fusion_restore is not None else {}),
-            refinement=self.refinement, loading=self.loading, memoryScheduling=self.memory_scheduling)
+            refinement=self.refinement, loading=self.loading, memoryScheduling=self.memory_scheduling,
+            execution=self.execution)

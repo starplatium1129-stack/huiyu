@@ -7,7 +7,6 @@ from __future__ import annotations
 
 import argparse
 import contextlib
-import importlib.metadata
 from functools import lru_cache
 import json
 import os
@@ -22,10 +21,6 @@ os.environ["DO_NOT_TRACK"] = "1"
 
 WEIGHTS = ("text_encoder", "text_conditioner", "transformer", "vae")
 COMPONENTS = WEIGHTS + ("tokenizer", "t5_tokenizer", "scheduler")
-PINS = {"torch": "2.8.0", "torchvision": "0.23.0", "diffusers": "0.41.0", "transformers": "5.10.1",
-        "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0",
-        "peft": "0.19.0", "sentencepiece": "0.2.1", "protobuf": "6.33.5",
-        "huggingface-hub": "1.32.0"}
 
 
 class WorkerError(Exception):
@@ -89,7 +84,7 @@ def validate_model(value):
     return root
 
 
-@lru_cache(maxsize=32)
+@lru_cache(maxsize=48)
 def load_mask_tools(name="masked_anima"):
     # -I excludes the script directory: load only this bundled sibling, never PYTHONPATH.
     import importlib.util
@@ -102,55 +97,11 @@ def load_mask_tools(name="masked_anima"):
         raise WorkerError("RUNTIME_INCOMPLETE", f"Cannot load bundled {name}.py: {exc}") from exc
 
 
-def dependencies():
+def dependencies(*, full=True):
     # A diagnostic/first-job check reads the bundled code afresh. A resident
     # worker freezes those modules after successful initialization.
     load_mask_tools.cache_clear()
-    load_mask_tools()
-    load_mask_tools("clipseg_mask")
-    load_mask_tools("teacache_anima")
-    load_mask_tools("anima_cache")
-    load_mask_tools("worker_lifecycle")
-    load_mask_tools("anima_local_cache")
-    load_mask_tools("teacache_profile")
-    load_mask_tools("resident_anima")
-    load_mask_tools("anima_text_cache")
-    load_mask_tools("inference_metrics")
-    load_mask_tools("anima_lora")
-    load_mask_tools("anima_lora_fusion")
-    load_mask_tools("anima_sampling")
-    load_mask_tools("anima_refinement")
-    load_mask_tools("anima_vae")
-    load_mask_tools("anima_tiling")
-    load_mask_tools("anima_postprocess")
-    load_mask_tools("anima_prompt_weights")
-    load_mask_tools("anima_upscale")
-    load_mask_tools("native_hash")
-    load_mask_tools("native_upload")
-    load_mask_tools("anima_loader")
-    load_mask_tools("anima_memory").validate()
-    load_mask_tools("locked_identity")
-    load_mask_tools("anima_acceleration").validate()
-    versions = {}
-    for name, expected in PINS.items():
-        try:
-            version = importlib.metadata.version(name)
-        except importlib.metadata.PackageNotFoundError as exc:
-            raise WorkerError("DEPENDENCY_MISSING", f"Missing {name}; prepare the dedicated environment with requirements.txt") from exc
-        if version.split("+")[0] != expected:
-            raise WorkerError("DEPENDENCY_VERSION", f"{name}=={expected} required; found {version}")
-        versions[name] = version
-    try:
-        import torch
-        from torchvision.transforms.functional import resize
-        from diffusers import AnimaModularPipeline, AnimaTextConditioner, AutoencoderKLQwenImage, CosmosTransformer3DModel, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
-        from transformers import Qwen3Model, Qwen2Tokenizer, T5Tokenizer, T5TokenizerFast, CLIPSegForImageSegmentation, CLIPTokenizer, ViTImageProcessorPil
-        from PIL import Image, ImageOps
-        from peft import LoraConfig, get_peft_model_state_dict
-        from safetensors import safe_open
-    except Exception as exc:
-        raise WorkerError("DEPENDENCY_IMPORT", f"Inference dependency import failed: {exc}") from exc
-    return versions
+    return load_mask_tools("anima_dependencies").check(load_mask_tools, WorkerError, full=full)
 
 
 def number(data, key, default, low, high, integer=False):
@@ -168,7 +119,7 @@ def validate_job(job):
     if not isinstance(data, dict):
         raise WorkerError("INVALID_INPUT", "input must be an object")
     # Accept modelId from older hosts; modelDir alone selects the loaded model.
-    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength", "sketchControl", "regions"}
+    supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresSteps", "hiresCfg", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength", "sketchControl", "regions"}
     # Empty/disabled UI options are harmless; active options never silently degrade.
     disabled = {"teacache", "mask", "maskPath", "loras", "lora", "hires", "rcas", "upscaler", "inputImage", "inputImagePath", "image", "initImage"}
     for key, value in data.items():
@@ -194,21 +145,26 @@ def validate_job(job):
         raise WorkerError("INVALID_INPUT", "hiresFix must be a boolean")
     result["rcasStrength"] = number(data, "rcasStrength", 0, 0, 1)
     if data.get("hiresFix", False):
-        result["hiresScale"] = number(data, "hiresScale", 2, 1.1, 3)
-        result["hiresDenoise"] = number(data, "hiresDenoise", 0.35, 0.1, 0.7)
-        if data.get("hiresUpscaler", "Latent") not in ("Latent", "Remacri", "Auto"):
-            raise WorkerError("UNSUPPORTED_OPTION", "Native hires supports Latent or Remacri")
+        result["hiresScale"] = number(data, "hiresScale", 1.5, 1.1, 3)
+        result["hiresDenoise"] = number(data, "hiresDenoise", 0.8, 0.1, 1)
+        if data.get("hiresSteps") is not None:
+            result["hiresSteps"] = number(data, "hiresSteps", 10, 1, 60, True)
+        if data.get("hiresCfg") is not None:
+            result["hiresCfg"] = number(data, "hiresCfg", 5.5, 0.5, 10)
+        if data.get("hiresUpscaler", "Latent") not in ("Latent", "Remacri", "Auto", "4x-UltraSharp"):
+            raise WorkerError("UNSUPPORTED_OPTION", "Native hires supports Latent, Remacri or 4x-UltraSharp")
         if (data.get("hiresSampler") or data.get("sampler", "euler")) not in ("euler", "res_multistep") or (data.get("hiresScheduler") or data.get("scheduler", "simple")) not in ("simple", "normal", "sgm_uniform"):
             raise WorkerError("UNSUPPORTED_SAMPLER", "Unsupported hires sampler/scheduler")
     needs_upscale = bool(data.get("hiresFix") and data.get("superResModel"))
-    if data.get("hiresFix") and data.get("hiresUpscaler") == "Remacri" and not needs_upscale:
-        raise WorkerError("INVALID_INPUT", "Remacri requires its host-resolved checkpoint")
+    if data.get("hiresFix") and data.get("hiresUpscaler") in ("Remacri", "4x-UltraSharp") and not needs_upscale:
+        raise WorkerError("INVALID_INPUT", "Pixel upscaling requires its host-resolved checkpoint")
     if needs_upscale:
-        path = local_file(job.get("upscaleModelPath"), "upscaleModelPath", {".safetensors"})
-        if path.name != "4x_foolhardy_Remacri.safetensors" or data["superResModel"] != path.name:
-            raise WorkerError("UNSUPPORTED_OPTION", "Only the fixed Remacri checkpoint is supported")
+        path = local_file(job.get("upscaleModelPath"), "upscaleModelPath", {".safetensors", ".pth"})
+        expected = {"Remacri": "4x_foolhardy_Remacri.safetensors", "4x-UltraSharp": "4x-UltraSharp.pth"}.get(data.get("hiresUpscaler"))
+        if path.name != expected or data["superResModel"] != path.name:
+            raise WorkerError("UNSUPPORTED_OPTION", "Upscaler must match its fixed checkpoint")
     elif job.get("upscaleModelPath") is not None:
-        raise WorkerError("INVALID_INPUT", "upscaleModelPath requires a Remacri hires operation")
+        raise WorkerError("INVALID_INPUT", "upscaleModelPath requires a pixel hires operation")
     if "teaCacheThresh" in data:
         result["teaCacheThresh"] = number(data, "teaCacheThresh", None, 0, 1)
         if not result["teaCache"]:
@@ -321,7 +277,10 @@ def load_pipeline(root, cfg, blocks=None, reusable=None, stage=None):
 
 def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True, collect_cache_strategy="phase-envelope", control=None, prepared=None):
     job_started = control.started if control is not None else time.perf_counter()
+    execution = None
     def stage(name, component=None):
+        if execution is not None:
+            execution.phase(name)
         if control is not None:
             control.stage(name, component=component)
     stage("dependencies")
@@ -329,11 +288,11 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     root = validate_model(job.get("modelDir"))
     identity, resident_fingerprint, dependency_seconds = None, 0.0, 0.0
     if resident is None:
-        dependencies()
+        dependencies(full=False)
     else:
         stage("fingerprint")
         identity, resident_fingerprint, dependency_seconds = prepared if prepared is not None else resident.prepare_and_fingerprint(
-            dependencies, root, job.get("loras", []), load_mask_tools)
+            lambda: dependencies(full=False), root, job.get("loras", []), load_mask_tools)
     import torch
     if not torch.cuda.is_available():
         raise WorkerError("DEVICE_UNAVAILABLE", "A CUDA-capable PyTorch installation and NVIDIA GPU are required")
@@ -419,8 +378,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     metrics.model_acquired(started, tea_report, reused, resident_fingerprint, post_load_fingerprint, pipeline)
     pipeline.vae._huiyu_vae_events = []
     sampling = load_mask_tools("anima_sampling")
-    if data.get("sampler", "euler") != "euler":
-        pipeline.update_components(scheduler=sampling.new_scheduler(data["sampler"], dict(pipeline.scheduler.config)))
+    pipeline.update_components(scheduler=sampling.new_scheduler(data.get("sampler", "euler"), dict(pipeline.scheduler.config)))
     if resident is not None and resident.text_cache is not None:
         resident.text_cache.begin_job()
     def upscale(images):
@@ -436,6 +394,9 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         return result
     def prepare_second(blocks):
         stage("encoding")
+        if "text_encoder" in blocks.sub_blocks:
+            blocks = load_mask_tools("anima_prompt_weights").apply_prompt_weights(blocks,
+                cache=resident.text_cache if resident is not None and cache_text else None)
         if tea is not None:
             if tea.stats["nonfinite"]:
                 raise WorkerError("NONFINITE_INFERENCE", "The first pass left the finite calibration scope; no result is published")
@@ -449,18 +410,20 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 raise WorkerError("NONFINITE_INFERENCE", "Denoising left the finite calibration scope; no result is published")
             tea.clear()  # Retain observations, release GPU residuals before VAE.
     capture = tea_report is not None and (collect_teacache or measure_teacache or teacache_profile is not None)
+    execution = pipeline.transformer._huiyu_execution
     started = time.perf_counter()
     try:
-        stage("encoding")
-        result, step, refinement = composition.run(pipeline, data,
-            image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
-            sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
-            upscale=upscale if job.get("upscaleModelPath") else None,
-            prepare_second_blocks=prepare_second,
-            before_decode=before_decode, check=control.check if control is not None else None,
-            vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
-            observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
-            progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
+        with execution.track(pipeline, stage, control.check if control is not None else lambda: None):
+            stage("encoding")
+            result, step, refinement = composition.run(pipeline, data,
+                image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
+                sampling=sampling, postprocess=load_mask_tools("anima_postprocess"),
+                upscale=upscale if job.get("upscaleModelPath") else None,
+                prepare_second_blocks=prepare_second,
+                before_decode=before_decode, check=control.check if control is not None else None,
+                vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
+                observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
+                progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
     finally:
         if tea is not None:
             tea.clear()
@@ -469,6 +432,7 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     if tea is not None and tea.stats["nonfinite"]:
         raise WorkerError("NONFINITE_INFERENCE", "Inference left the finite calibration scope; no result is published")
     metrics.pipeline_finished(started, tea_report, tea, resident is not None and cache_text)
+    metrics.execution = execution.result
     if capture:
         tea_report["schedule"] = ({"schemaVersion": 2, "passes": refinement["schedules"]} if data.get("hiresFix") else
             load_mask_tools("resident_benchmark").capture_schedule(pipeline.scheduler, step))
@@ -520,7 +484,7 @@ def main(argv=None):
                             lambda job, control, prepared: generate(job, stream, resident=resident, control=control, prepared=prepared),
                             input_stream=sys.stdin, stream=stream, emit=emit, error=WorkerError,
                             cancel_cleanup=resident.cancel_cleanup,
-                            initialize=lambda job, ready: resident.prepare_job(job, validate_job, validate_model, dependencies, load_mask_tools, ready))
+                            initialize=lambda job, ready: resident.prepare_job(job, validate_job, validate_model, lambda: dependencies(full=False), load_mask_tools, ready))
                     line = sys.stdin.readline(2 * 1024 * 1024 + 1)
                     if len(line) > 2 * 1024 * 1024:
                         raise WorkerError("INVALID_REQUEST", "JSONL request exceeds 2 MiB")

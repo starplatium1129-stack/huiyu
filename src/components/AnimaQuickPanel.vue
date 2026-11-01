@@ -8,6 +8,7 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
 
 const props = defineProps<{
   state: AnimaGenerationState
@@ -47,22 +48,26 @@ function updateCacheThreshold(event: Event) {
   else input.value = String(cacheThreshold.value)
 }
 const hiresFix = computed({ get: () => Boolean(props.state.hiresFix), set: value => patch({ hiresFix: value }) })
-const hiresScale = computed({ get: () => props.state.hiresScale || 2.0, set: value => patch({ hiresScale: value }) })
-const hiresDenoise = computed({ get: () => props.state.hiresDenoise || 0.35, set: value => patch({ hiresDenoise: value }) })
-const hiresUpscaler = computed({ get: () => props.state.hiresUpscaler || 'Auto', set: (value: 'Auto' | 'Latent' | 'Remacri') => patch({ hiresUpscaler: value }) })
+const hiresScale = computed({ get: () => props.state.hiresScale ?? 1.5, set: value => patch({ hiresScale: value }) })
+const hiresDenoise = computed({ get: () => props.state.hiresDenoise ?? 0.8, set: value => patch({ hiresDenoise: value }) })
+const hiresSteps = computed({ get: () => props.state.hiresSteps ?? 10, set: value => patch({ hiresSteps: value }) })
+const hiresCfg = computed({ get: () => props.state.hiresCfg ?? 5.5, set: value => patch({ hiresCfg: value }) })
+const hiresUpscaler = computed({ get: () => props.state.hiresUpscaler || '4x-UltraSharp', set: (value: NonNullable<AnimaGenerationState['hiresUpscaler']>) => patch({ hiresUpscaler: value }) })
 const comfyHiresPath = computed(() => {
+  if (hiresUpscaler.value === '4x-UltraSharp') return 'refine'
   if (hiresUpscaler.value === 'Latent') return 'latent'
   if (hiresUpscaler.value === 'Remacri') return 'pixel'
   if (props.state.autoHiresModel === undefined) return 'unknown'
   return props.state.autoHiresModel ? 'pixel' : 'latent'
 })
 const comfyUpscalers = computed(() => [
+  { value: '4x-UltraSharp', label: '4x-UltraSharp · 放大后重绘' },
   { value: 'Auto', label: 'Auto · 按已识别资源' }, { value: 'Latent', label: 'Latent · 二次重绘' },
   ...(hiresUpscaler.value === 'Remacri' ? [{ value: 'Remacri', label: 'Remacri · 已保存选择' }] : []),
 ])
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
 const outputSize = computed(() => {
-  const scale = props.state.hiresFix ? (props.state.hiresScale ?? 2) : 1
+  const scale = props.state.hiresFix ? (props.state.hiresScale ?? 1.5) : 1
   return `${Math.round(props.state.width * scale / 8) * 8} × ${Math.round(props.state.height * scale / 8) * 8}`
 })
 const selectedModel = computed(() => props.state.models.find(model => model.id === props.state.modelId) ?? null)
@@ -125,6 +130,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 
       <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
       <div v-if="nativeAnima || capabilities.hires || capabilities.teaCache || hiresFix || teaCache" class="anima-hires-options">
+        <button v-if="state.family === 'anima'" type="button" class="btn btn-quiet btn-sm" :disabled="busy" @click="patch({ ...ANIMA_HIRES_PRESET })">采用 UltraSharp 高清预设</button>
         <ToggleSwitch v-model="teaCache" :disabled="busy || (!capabilities.teaCache && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>特征缓存 <small>TeaCache</small></span>
@@ -143,7 +149,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <div class="anima-field anima-form-field">
             <label :for="idOf('upscaler')">放大方式</label>
             <StudioSelect v-if="native" :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy"
-              :options="[{ value: 'Auto', label: 'Auto · 优先 Remacri' }, { value: 'Latent', label: 'Latent · 二次采样' }, { value: 'Remacri', label: 'Remacri', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri') }]" />
+              :options="[{ value: '4x-UltraSharp', label: '4x-UltraSharp · 放大后重绘', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('4x-UltraSharp') }, { value: 'Auto', label: 'Auto · 优先 Remacri' }, { value: 'Latent', label: 'Latent · 二次采样' }, { value: 'Remacri', label: 'Remacri', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri') }]" />
             <StudioSelect v-else :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy" :options="comfyUpscalers" />
           </div>
           <div class="anima-field anima-form-field">
@@ -153,18 +159,28 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           </div>
           <div class="anima-field anima-form-field">
             <label :for="idOf('denoise')">二次重绘幅度</label>
-            <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.15" max="0.6" step="0.05" class="input input-sm anima-num" :disabled="busy || (!native && comfyHiresPath !== 'latent')" />
+            <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.1" max="1" step="0.05" class="input input-sm anima-num" :disabled="busy || (!native && comfyHiresPath === 'pixel')" />
+          </div>
+          <div class="anima-field anima-form-field">
+            <label :for="idOf('hires-steps')">高清采样步数</label>
+            <input :id="idOf('hires-steps')" v-model.number="hiresSteps" type="number" min="1" max="60" step="1" class="input input-sm anima-num" :disabled="busy || hiresUpscaler === 'Remacri' || hiresUpscaler === 'Auto'" />
+          </div>
+          <div class="anima-field anima-form-field">
+            <label :for="idOf('hires-cfg')">高清引导强度 CFG</label>
+            <input :id="idOf('hires-cfg')" v-model.number="hiresCfg" type="number" min="0.5" max="10" step="0.5" class="input input-sm anima-num" :disabled="busy || hiresUpscaler === 'Remacri' || hiresUpscaler === 'Auto'" />
           </div>
         </div>
       </div>
       <p v-if="hiresFix" class="anima-output-note"><span>最终画幅</span><output>{{ outputSize }}</output></p>
       <p v-if="!native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">
-        <template v-if="comfyHiresPath === 'unknown'">路径待确认，请刷新状态。</template>
+        <template v-if="comfyHiresPath === 'refine'">UltraSharp 放大后重绘 · Euler / Normal · Shift 3</template>
+        <template v-else-if="comfyHiresPath === 'unknown'">路径待确认，请刷新状态。</template>
         <template v-else-if="comfyHiresPath === 'pixel'">像素放大{{ hiresUpscaler === 'Auto' && state.autoHiresModel ? `（${state.autoHiresModel}）` : '' }}，重绘幅度不生效。</template>
         <template v-else>Latent 二次重绘生效中。</template>
       </p>
-      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">Auto 优先使用 Remacri 模型，回退至 Latent 重绘。</p>
-      <RouterLink v-if="native && hiresFix && !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri')" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'remacri-4x' }, hash: '#control-setup' }">准备 Remacri 高清放大</RouterLink>
+      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">{{ hiresUpscaler === '4x-UltraSharp' ? 'UltraSharp 放大后重绘 · Euler / Normal · Shift 3' : 'Auto 优先使用 Remacri 模型，回退至 Latent 重绘。' }}</p>
+      <RouterLink v-if="hiresFix && hiresUpscaler === '4x-UltraSharp' && (!native || !selectedModel?.capabilities?.hiresUpscalers?.includes('4x-UltraSharp'))" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'ultrasharp-4x' }, hash: '#control-setup' }">准备 UltraSharp 高清放大</RouterLink>
+      <RouterLink v-if="native && hiresFix && hiresUpscaler !== '4x-UltraSharp' && !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri')" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'remacri-4x' }, hash: '#control-setup' }">准备 Remacri 高清放大</RouterLink>
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看底层提示词</StudioDisclosureSummary><div data-disclosure-content>
       <label :for="idOf('prompt')" class="anima-label">正向提示词</label>
