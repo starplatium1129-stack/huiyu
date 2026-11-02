@@ -25,6 +25,10 @@
 > - 若安装中途取消或异常中断，请重新打开助手并选择同一 ZIP 恢复安装。
 > - 直接接入的素材文件夹必须保留在原位置。移动或删除后，请在助手中重新选择；原有用户作品和人物库独立保存。
 
+### 本机固定样张工作目录
+
+需要经常维护样张的主力机，可在个人网关的 `config.json` 中设置 `localShowcaseDir` 为样张目录的绝对路径并重启。它只替换画册样张的来源，其他离线素材继续使用已接入的素材包。路径可以直接指向含 `manifest.json` 的样张版本，也可以指向版本的父目录；使用父目录时，启动时按名称选择包含清单的最新非隐藏版本，新增版本后重启即可切换。配置的目录不可用时不会回退到旧样张。远程访问仍遵循独立的发布审核索引。
+
 ### 命令行导入（维护者）
 ```powershell
 powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\tools\install-offline-resources.ps1 -Archive .\huiyu-resources-20261006-r1.zip -ExpectedReleaseSha256 <审批指纹> -Apply

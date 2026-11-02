@@ -148,6 +148,19 @@ fn edition(root: &Path) -> Option<PathBuf> {
 /// Maintenance and remote projection select exactly the same edition at startup.
 /// A broken managed pointer never falls back to an unrelated source directory.
 pub(crate) fn showcase_root(config: &Config) -> Option<PathBuf> {
+    let saved = fs::json(&config.runtime_root.join("config.json"), true, false)
+        .ok()
+        .flatten()
+        .unwrap_or(Value::Null);
+    // An explicit workstation library overrides only showcase media; the
+    // installed offline package continues to own its other resources.
+    if let Some(path) = saved["localShowcaseDir"]
+        .as_str()
+        .filter(|path| !path.trim().is_empty())
+    {
+        let path = Path::new(path);
+        return path.is_absolute().then(|| edition(path)).flatten();
+    }
     let resource_config = fs::json(
         &config.runtime_root.join("offline-resource-config.json"),
         true,
@@ -162,10 +175,6 @@ pub(crate) fn showcase_root(config: &Config) -> Option<PathBuf> {
         let root = directory["packageRoot"].as_str().map(PathBuf::from)?;
         return edition(&root.join("showcase"));
     }
-    let saved = fs::json(&config.runtime_root.join("config.json"), true, false)
-        .ok()
-        .flatten()
-        .unwrap_or(Value::Null);
     let explicit = std::env::var_os("SCENE_SHOWCASE_DIR")
         .filter(|value| !value.is_empty())
         .map(PathBuf::from)
