@@ -13,7 +13,9 @@
     <Teleport to="body">
     <dialog ref="panel" class="artist-style-panel" :aria-labelledby="titleId" @close="dialogOpen = Boolean(panel?.open)" @cancel.prevent="closePicker" @click="onBackdrop" @keydown="onPickerKeydown">
     <header class="artist-dialog-heading"><h2 :id="titleId">画师风格</h2><button class="btn btn-ghost btn-icon" type="button" aria-label="关闭画师选择" @click="closePicker"><ArchiveIcon name="close" /></button></header>
-    <div v-if="revealed" class="artist-style-body">
+    <div v-if="revealed" class="artist-dialog-content">
+    <ArtistReferencePreview :artists="selectedItems.map(item => item.option)" :active="dialogOpen" @view="closePicker" />
+    <div class="artist-style-body">
       <!--
         达上限提示（2026-08-30 UX 审计）：超上限时点选原本是静默丢弃，用户会
         以为按钮坏了。role=status 让读屏也能听到原因。
@@ -89,29 +91,12 @@
           @click="toggle(option.id)"
         >
           <span class="artist-style-name">
-            <strong>
-              <span v-if="option.cnName" class="artist-cn-name">{{ option.cnName }}</span>
-              <span class="artist-en-name">{{ option.name }}</span>
-            </strong>
-            <StudioTooltip v-if="frequentTop3Ids.includes(option.id)" content="常用画师：使用频次 Top 3 自动置顶">
-              <small class="artist-frequent">
-                <ArchiveIcon name="flame" class="badge-icon" />
-                <span>常用</span>
-              </small>
-            </StudioTooltip>
-            <StudioTooltip v-else-if="props.curatedArtistStyles?.includes(option.id)" content="角色专属：官方原画师或精选推荐画风">
-              <small class="artist-curated">
-                <ArchiveIcon name="spark" class="badge-icon" />
-                <span>推荐</span>
-              </small>
-            </StudioTooltip>
-            <small v-else class="artist-style-status" :class="option.verification">{{ verificationLabel(option.verification) }}</small>
+            <strong>{{ option.cnName || option.name }}</strong>
+            <small v-if="option.cnName && option.cnName !== option.name">{{ option.name }}</small>
           </span>
           <ArchiveIcon v-if="isOptionSelected(option.id)" class="artist-selected-check" name="success" />
-          <small class="artist-desc">{{ option.description }}</small>
           <StudioTooltip v-if="option.masterpiece" :content="option.masterpiece">
             <small class="artist-masterpiece">
-              <span class="masterpiece-badge">代表作</span>
               <span class="masterpiece-text">{{ option.masterpiece }}</span>
             </small>
           </StudioTooltip>
@@ -126,6 +111,7 @@
         <code>{{ modelTokens }}</code>
         <span v-if="engine === 'moss'">MOSS 按名称使用画师风格，不支持权重。</span>
       </div>
+    </div>
     </div>
     <footer v-if="revealed" class="artist-dialog-selected">
       <div>
@@ -167,13 +153,13 @@
 import { computed, nextTick, ref, useId } from 'vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import ArtistReferencePreview from '@/components/ArtistReferencePreview.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import {
   type ArtistStyleEngine,
-  type ArtistStyleVerification,
   type ArtistStyleOption,
   ARTIST_CATEGORIES,
   DEFAULT_ARTIST_STYLE_LIMIT,
@@ -300,13 +286,6 @@ const modelTokens = computed(() => {
   if (props.engine === 'moss') return mossArtistTags(props.selected).map(tag => tag.replace(/_/g, ' ')).join(', ')
   return artistTagsForEngine(props.selected, props.engine).join(', ')
 })
-
-function verificationLabel(verification: ArtistStyleVerification): string {
-  if (verification === 'style') return '画风词'
-  if (verification === 'project') return '项目实测'
-  if (verification === 'tag') return '热门推荐'
-  return '官方收录'
-}
 
 function removeSelected(id: string, event: MouseEvent) {
   if (document.activeElement === event.currentTarget) doneButton.value?.focus({ preventScroll: true })

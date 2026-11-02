@@ -108,7 +108,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 .previous-icon { transform:rotate(90deg); }
 .next-icon { transform:rotate(-90deg); }
 .inspiration-deck-stage { --inspiration-height:clamp(216px,22dvh,256px); display:grid; grid-template-columns:minmax(0,1.8fr) repeat(var(--inspiration-side-count),minmax(0,1fr)); align-items:stretch; gap:var(--s-4); position:relative; min-width:0; touch-action:pan-y; border-radius:var(--r-lg); }
-.inspiration-deck-stage.dragging { cursor:grabbing; user-select:none; }
+.inspiration-deck-stage.dragging { cursor:var(--cursor-grabbing, grabbing); user-select:none; }
 .inspiration-deck-card { --card-focus-lift:0px; --card-focus-scale:1; display:grid; grid-template-rows:minmax(0,1fr) auto; height:var(--inspiration-height); min-width:0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); transform:translateY(var(--card-focus-lift)); transition:transform var(--motion-surface) var(--ease-out); }
 .inspiration-deck-card.only-card { grid-column:1/-1; }
 .inspiration-deck-card.front { transform:translate3d(0,var(--card-focus-lift),0); }
@@ -122,7 +122,7 @@ const cards = computed(() => Array.from({ length: Math.min(3, entries.value.leng
 }
 .inspiration-deck-stage.dragging .front, .inspiration-deck-stage.still .front { transition:none; }
 .inspiration-deck-stage.still .inspiration-deck-card { transition:none; --card-focus-lift:0px; --card-focus-scale:1; }
-.inspiration-deck-image { --inspiration-art-height:100%; display:flex; align-items:center; justify-content:center; width:100%; min-width:0; min-height:0; padding:0; border:0; background:transparent; cursor:zoom-in; }
+.inspiration-deck-image { --inspiration-art-height:100%; display:flex; align-items:center; justify-content:center; width:100%; min-width:0; min-height:0; padding:0; border:0; background:transparent; cursor:var(--cursor-zoom-in, zoom-in); }
 .inspiration-deck-image :deep(.inspiration-artwork) { width:100%; height:100%; border:0; background:transparent; }
 .inspiration-header-image { cursor:pointer; }
 .inspiration-deck-copy { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; justify-items:start; gap:var(--s-1) var(--s-2); padding-top:var(--s-2); min-width:0; }

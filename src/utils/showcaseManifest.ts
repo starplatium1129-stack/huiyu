@@ -23,6 +23,8 @@ export interface ShowcaseGenMeta {
   loraId?: string
   loraVersion?: string
   seed?: number
+  steps?: number
+  cfg?: number
 }
 
 /** 审核依据：发布脚本把人工复核的 verdict/recordId/notes 写回条目顶部。 */
@@ -53,6 +55,8 @@ export interface ShowcaseEntry {
   attempt: number
   /** 条目类型：scene（场景样张，默认）/ artist（画师风格）/ popular（热门角色）/ lora（LoRA 样张） */
   type: ShowcaseEntryType
+  /** Artist option identity for style-reference samples. */
+  artistId?: string
   /** 展示名：热门角色样张用于角色标签（如「雷电将军 (Genshin Impact)」） */
   displayName?: string
   /** 相对 showcase 根目录的大图/缩略图路径；缺省时按 id 约定（{id}.jpg）推导 */
@@ -118,6 +122,10 @@ function parseMeta(value: unknown): ShowcaseGenMeta | undefined {
   if (loraVersion) meta.loraVersion = loraVersion
   const seed = nonNegativeNumber(value.seed)
   if (seed !== undefined) meta.seed = Math.trunc(seed)
+  const steps = nonNegativeNumber(value.steps)
+  if (steps !== undefined) meta.steps = Math.trunc(steps)
+  const cfg = nonNegativeNumber(value.cfg)
+  if (cfg !== undefined) meta.cfg = cfg
   return Object.keys(meta).length ? meta : undefined
 }
 
@@ -184,6 +192,8 @@ function parseEntry(value: unknown): ShowcaseEntry | null {
   }
   const displayName = optionalString(value.displayName)
   if (displayName) entry.displayName = displayName
+  const artistId = optionalString(value.artistId)
+  if (type === 'artist' && artistId) entry.artistId = artistId
   const image = optionalString(value.image)
   if (image) entry.image = image
   const thumb = optionalString(value.thumb)

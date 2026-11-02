@@ -2,8 +2,8 @@
   <div class="prompt-preview-content">
     <p v-if="!prompt" class="prompt-preview-empty">选择场景或添加词条后，提示词会在这里实时更新。</p>
     <template v-else>
-      <section class="prompt-positive" aria-label="正向提示词">
-        <h4 class="prompt-content-label">正向提示词 <span v-if="positiveCount !== undefined">{{ positiveCount }}</span></h4>
+      <section class="prompt-positive" :aria-label="label">
+        <h4 class="prompt-content-label">{{ label }} <span v-if="positiveCount !== undefined">{{ positiveCount }}</span></h4>
         <div v-for="(layers, scopeIndex) in scopes" :key="scopeIndex" class="prompt-layer-list">
           <p v-if="scopes.length > 1" class="prompt-scope-label">分段 {{ scopeIndex + 1 }} · BREAK</p>
           <section v-for="layer in layers" :key="layer.id" class="prompt-layer" :data-layer="layer.id"
@@ -11,7 +11,7 @@
             <header class="prompt-layer-heading"><span class="prompt-layer-number">{{ layer.number }}</span><h5>{{ layer.label }}</h5></header>
             <div v-for="(group, groupIndex) in layer.groups" v-show="group.tokens.length" :key="groupIndex" class="prompt-layer-group">
               <span v-if="group.label" class="prompt-sub-label">{{ group.label }}</span>
-              <div class="prompt-token-flow"><span v-for="(token, index) in group.tokens" :key="index" class="prompt-reading-token">{{ token }}</span></div>
+              <div class="prompt-token-flow"><slot v-for="(token, index) in group.tokens" :key="index" name="token" :token="token" token-class="prompt-reading-token"><span class="prompt-reading-token">{{ token }}</span></slot></div>
             </div>
             <p v-if="layer.prose" class="prompt-prose">{{ layer.prose }}</p>
             <span v-else-if="!layer.groups.some(group => group.tokens.length)" class="prompt-layer-empty">{{ layer.empty }}</span>
@@ -30,7 +30,7 @@
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import type { PromptPreviewLayer } from '@/utils/promptPreview'
 
-defineProps<{ prompt: string; positiveCount?: number; negativeCount?: number; scopes: PromptPreviewLayer[][]; negativeText: string }>()
+withDefaults(defineProps<{ prompt: string; positiveCount?: number; negativeCount?: number; scopes: PromptPreviewLayer[][]; negativeText: string; label?: string }>(), { label: '正向提示词' })
 </script>
 
 <style scoped>
@@ -54,7 +54,7 @@ defineProps<{ prompt: string; positiveCount?: number; negativeCount?: number; sc
 .prompt-layer-group + .prompt-layer-group { margin-top:var(--s-2); }
 .prompt-sub-label { display:block; margin-bottom:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .prompt-token-flow { display:flex; flex-wrap:wrap; align-items:start; gap:var(--s-1); min-width:0; }
-.prompt-reading-token { display:inline-block; min-width:0; max-width:100%; padding:3px var(--s-2); border:1px solid color-mix(in srgb,var(--prompt-layer-color) 22%,var(--border-soft)); border-radius:var(--r-sm); color:var(--prompt-layer-color); background:color-mix(in srgb,var(--prompt-layer-color) 5%,var(--bg-surface)); box-shadow:inset 0 1px 0 var(--glass-highlight); font:400 var(--fs-label)/1.55 var(--font-mono); overflow-wrap:anywhere; white-space:normal; }
+.prompt-token-flow :deep(.prompt-reading-token) { display:inline-block; min-width:0; max-width:100%; padding:3px var(--s-2); border:1px solid color-mix(in srgb,var(--prompt-layer-color) 22%,var(--border-soft)); border-radius:var(--r-sm); color:var(--prompt-layer-color); background:color-mix(in srgb,var(--prompt-layer-color) 5%,var(--bg-surface)); box-shadow:inset 0 1px 0 var(--glass-highlight); font:400 var(--fs-label)/1.55 var(--font-mono); overflow-wrap:anywhere; white-space:normal; }
 .prompt-prose { margin:0; padding:var(--s-3); border-radius:var(--r-md); color:var(--text-primary); background:color-mix(in srgb,var(--prompt-layer-color) 5%,var(--bg-surface)); font:400 var(--fs-label)/1.85 var(--font-sans); white-space:pre-wrap; overflow-wrap:anywhere; }
 .prompt-layer.is-empty { display:flex; flex-wrap:wrap; align-items:center; column-gap:var(--s-2); row-gap:var(--s-1); }
 .prompt-layer.is-empty .prompt-layer-heading { margin-bottom:0; }
@@ -66,7 +66,7 @@ defineProps<{ prompt: string; positiveCount?: number; negativeCount?: number; sc
 .prompt-negative { padding-block:var(--s-2); }
 .prompt-preview-empty { margin:0; padding-block:var(--s-4); color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
 @media (forced-colors:active) {
-  .prompt-reading-token { background:Canvas; color:CanvasText; border-color:CanvasText; }
+  .prompt-token-flow :deep(.prompt-reading-token) { background:Canvas; color:CanvasText; border-color:CanvasText; }
   .prompt-layer { --prompt-layer-color:CanvasText; border-color:CanvasText; }
 }
 </style>

@@ -75,7 +75,7 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample:not(.sample-r18):has(:focus-visible) .sample-image { transform:none; transition:none; }
 .sample:has(:focus-visible) .sample-title { color:var(--text-primary); }
 /* 自然尺寸校正缺失或过时的目录尺寸；按原始比例分配行宽，完整展示原画。 */
-.sample-visual { aspect-ratio:var(--sample-ratio, 3 / 4); border:0; background:var(--art-mat); color:var(--on-art-primary); cursor:zoom-in; }
+.sample-visual { aspect-ratio:var(--sample-ratio, 3 / 4); border:0; background:var(--art-mat); color:var(--on-art-primary); cursor:var(--cursor-zoom-in, zoom-in); }
 .sample-visual:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .sample:has(.sample-visual:focus-visible) .sample-caption { box-shadow:var(--focus-shadow); }
 /* The frame and caption arrive first; only decoded media fades onto the mat. */

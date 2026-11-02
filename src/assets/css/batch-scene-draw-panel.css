@@ -169,7 +169,7 @@
 .batch-thumb-btn {
   position:relative;
   @apply tw:p-0; border: 1px solid var(--border-soft); @apply tw:rounded-md;
-  background: var(--bg-deep); cursor: zoom-in; @apply tw:overflow-hidden;
+  background: var(--bg-deep); cursor:var(--cursor-zoom-in, zoom-in); @apply tw:overflow-hidden;
   transition: border-color var(--motion-hover);
 }
 .batch-thumb-btn:hover { @apply tw:border-strong; }

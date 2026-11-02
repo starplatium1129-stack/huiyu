@@ -193,7 +193,7 @@
         aria-labelledby="viewer-info-title"
       >
         <header class="viewer-info-header">
-          <div class="viewer-kicker">Artwork {{ (viewerIndex >= 0 ? viewerIndex : displayedIndex) + 1 }}</div>
+          <div class="viewer-kicker">作品 {{ (viewerIndex >= 0 ? viewerIndex : displayedIndex) + 1 }}</div>
           <button ref="infoCloseBtn" class="viewer-info-close" type="button" @click="closeInfoDrawer">
             <ArchiveIcon name="close" /><span>关闭信息</span>
           </button>
@@ -211,20 +211,18 @@
             <span>{{ displayedCurrent.favorite ? '取消收藏' : '收藏这幅' }}</span>
           </StudioFavoriteButton>
           <button class="btn btn-ghost" type="button" :disabled="downloading" :aria-busy="downloading" @click="downloadCurrent"><ArchiveIcon name="download" />{{ downloading ? '正在准备下载…' : '下载原图' }}</button>
-          <MangaScreenLauncher :source-url="viewerUrl" :artwork="displayedCurrent" :disabled="!viewerUrl || viewerLoadFailed" @saved="loadGalleryStorage" />
           <RouterLink v-if="displayedCurrent.engine !== 'manga-screen' && displayedCurrent.engine !== 'qwen-image'" class="btn btn-primary viewer-remix" :to="`/prompt-builder?remix=${encodeURIComponent(displayedCurrent.id || '')}`"><ArchiveIcon name="spark" /> 沿用配方</RouterLink>
           <RouterLink v-if="displayedCurrent.image_id" class="btn btn-ghost" :to="{ path: '/prompt-builder', query: { editor: 'qwen', artwork: displayedCurrent.id } }"><ArchiveIcon name="image" />用 Qwen 编辑</RouterLink>
+          <MangaScreenLauncher :source-url="viewerUrl" :artwork="displayedCurrent" :disabled="!viewerUrl || viewerLoadFailed" @saved="loadGalleryStorage" />
         </div>
         <section class="viewer-section" aria-label="作品信息">
           <h3>作品信息</h3>
           <p v-if="displayedCurrent.story" class="viewer-story">{{ displayedCurrent.story }}</p>
-          <div v-if="artworkTags(displayedCurrent).length" class="viewer-tags" aria-label="作品标签">
-            <button v-for="tag in artworkTags(displayedCurrent)" :key="tag" type="button" @click="filterByTag(tag)">{{ tag }}</button>
-          </div>
           <dl class="viewer-record">
             <div><dt>尺寸</dt><dd>{{ displayedCurrent.size || (displayedCurrent.width && displayedCurrent.height ? `${displayedCurrent.width} × ${displayedCurrent.height}` : '未记录') }}</dd></div>
             <div><dt>版本</dt><dd>v{{ displayedCurrent.version || 1 }}</dd></div>
           </dl>
+          <GalleryArtworkTags :artwork="displayedCurrent" @filter="filterByTag" />
         </section>
         <details class="viewer-details" :key="displayedCurrent.id">
           <StudioDisclosureSummary><span class="viewer-disclosure-copy">创作参数与 Prompt<small>查看配方</small></span></StudioDisclosureSummary>
@@ -285,7 +283,7 @@ import GalleryVirtualRows from '@/components/gallery/GalleryVirtualRows.vue'
 const ArtworkViewerStage = defineAsyncComponent(() => import('@/components/gallery/ArtworkViewerStage.vue'))
 import { computed, defineAsyncComponent, nextTick, onActivated, onDeactivated, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
-import { artworkTags } from '@/composables/gallery/artworkTags'
+import GalleryArtworkTags from '@/components/gallery/GalleryArtworkTags.vue'
 const PhotoSwipeStage = shallowRef<typeof import('@/components/gallery/PhotoSwipeStage.vue')['default'] | null>(null)
 const GalleryBackupTools = defineAsyncComponent(() => import('@/components/gallery/GalleryBackupTools.vue'))
 const gestureViewer = ref(false)

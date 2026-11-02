@@ -1,6 +1,6 @@
 <template>
   <div
-    class="zoomable-image-viewer tw:relative tw:w-full tw:h-full tw:min-h-[280px] tw:flex tw:items-center tw:justify-center tw:overflow-hidden tw:select-none tw:cursor-zoom-in tw:touch-none"
+    class="zoomable-image-viewer tw:relative tw:w-full tw:h-full tw:min-h-[280px] tw:flex tw:items-center tw:justify-center tw:overflow-hidden tw:select-none tw:[cursor:var(--cursor-zoom-in,_zoom-in)] tw:touch-none"
     :class="{ 'is-zoomed': scale > 1.01, 'is-panning': isPanning }"
     role="group"
     tabindex="0"
@@ -129,11 +129,11 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
 }
 
 .zoomable-image-viewer.is-zoomed {
-  cursor: grab;
+  cursor:var(--cursor-grab, grab);
 }
 
 .zoomable-image-viewer.is-panning {
-  cursor: grabbing;
+  cursor:var(--cursor-grabbing, grabbing);
 }
 
 .zoom-transform-layer {

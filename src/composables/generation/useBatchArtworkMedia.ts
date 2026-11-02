@@ -1,7 +1,7 @@
 import { computed, onActivated, onDeactivated, onUnmounted, reactive, ref, watch, type Ref } from 'vue'
 import { artworkRepository, type ArtworkRepository } from '@/storage/artworkRepository'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
-import { blobThumbDataUrl } from '@/utils/imageThumb'
+import { cardPreviewImage } from '@/utils/cardPreviewImage'
 import { useGalleryThumbnails } from '../gallery/useGalleryThumbnails'
 import { useOriginalImage } from '../useOriginalImage'
 import type { BatchDrawJob } from './useBatchDraw'
@@ -10,6 +10,20 @@ export type BatchArtworkJob = Pick<BatchDrawJob, 'id' | 'requestKey' | 'historyI
 type PendingImage = (requestKey: string) => Blob | null
 export const hasBatchArtwork = (job: BatchArtworkJob) => Boolean(job.imageId || job.historyId != null || job.pendingImage)
 const mediaKey = (job: BatchArtworkJob) => JSON.stringify([job.requestKey, job.imageId, job.historyId, job.pendingImage])
+
+function previewDataUrl(blob: Blob, signal: AbortSignal): Promise<string> {
+  signal.throwIfAborted()
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    const cleanup = () => { signal.removeEventListener('abort', cancel); reader.onload = reader.onerror = reader.onabort = null }
+    const cancel = () => { reader.abort(); cleanup(); reject(signal.reason) }
+    reader.onload = () => { const result = typeof reader.result === 'string' ? reader.result : ''; cleanup(); resolve(result) }
+    reader.onerror = () => { const error = reader.error; cleanup(); reject(error) }
+    reader.onabort = () => { cleanup(); reject(signal.reason) }
+    signal.addEventListener('abort', cancel, { once: true })
+    try { reader.readAsDataURL(blob) } catch (error) { cleanup(); reject(error) }
+  })
+}
 
 async function imageId(job: BatchArtworkJob, repository: ArtworkRepository, signal: AbortSignal): Promise<string | null> {
   signal.throwIfAborted()
@@ -96,7 +110,17 @@ export function useBatchArtworkThumbnails(options: {
         try {
           const retained = job.pendingImage ? options.pendingImage(job.requestKey) : null
           const alias = retained ? null : await imageId(job, repository, read.controller.signal)
-          const thumbnail = retained ? await blobThumbDataUrl(retained) : alias ? await repository.getThumbnail(alias) : null
+          let thumbnail = alias ? await repository.getThumbnail(alias).catch(() => null) : null
+          read.controller.signal.throwIfAborted()
+          if (!thumbnail?.startsWith('data:image/') && alias && repository.getPreview) {
+            thumbnail = await repository.getPreview(alias, 560, read.controller.signal).catch(() => null)
+          }
+          read.controller.signal.throwIfAborted()
+          if (!thumbnail?.startsWith('data:image/')) {
+            const original = retained || (alias ? await repository.getImage(alias, read.controller.signal) : null)
+            const preview = original ? await cardPreviewImage(original, 560, read.controller.signal) : null
+            thumbnail = preview ? await previewDataUrl(preview.blob, read.controller.signal) : null
+          }
           read.controller.signal.throwIfAborted()
           const current = jobs.value.get(id)
           if (active.value && !disposed && version === revision && runtime === runtimeResourceIdentity()
@@ -135,7 +159,8 @@ export function useBatchArtworkThumbnails(options: {
   onActivated(() => { pageActive.value = true })
   onDeactivated(() => { pageActive.value = false; stop() })
   onUnmounted(() => { disposed = true; stop(); cards.clear() })
-  return { get urls() { return cache.urls.value }, bindCard }
+  function retry(id: string) { attempted.delete(id); pump() }
+  return { get urls() { return cache.urls.value }, bindCard, retry }
 }
 
 /** One owned original. Switching cancels the old read before admitting the next. */

@@ -112,7 +112,7 @@ onBeforeUnmount(() => { activeView = false; observer?.disconnect(); visible = fa
 <style scoped>
 .companion-chat-images { display:flex; flex-wrap:wrap; gap:var(--s-3); margin-top:var(--s-3); }
 .companion-chat-images figure { flex:1; min-width:min(140px,100%); max-width:300px; margin:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-elevated); }
-.companion-chat-image-open { position:relative; display:block; width:100%; aspect-ratio:4/3; padding:0; overflow:hidden; border:0; border-radius:var(--r-sm); background:var(--bg-deep); cursor:zoom-in; }
+.companion-chat-image-open { position:relative; display:block; width:100%; aspect-ratio:4/3; padding:0; overflow:hidden; border:0; border-radius:var(--r-sm); background:var(--bg-deep); cursor:var(--cursor-zoom-in, zoom-in); }
 .companion-chat-image-open img { position:absolute; inset:0; display:block; width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-hover) var(--ease-out); }
 .companion-chat-image-open img.is-ready { opacity:1; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .companion-chat-image-open img { transition:none; } }

@@ -153,11 +153,11 @@
 }
 
 .relations-canvas :deep(.vue-flow__pane) {
-  cursor: grab;
+  cursor:var(--cursor-grab, grab);
 }
 
 .relations-canvas :deep(.vue-flow__pane:active) {
-  cursor: grabbing;
+  cursor:var(--cursor-grabbing, grabbing);
 }
 
 .relations-map-controls {

@@ -544,9 +544,10 @@ source review alone does not establish frame rate or device feel.
 
 ## Shapes
 
-Desktop cursors follow the user's current system scheme. Keep native text,
-grab, resize, zoom, busy and unavailable semantics; painting canvases retain
-their brush cursor. Do not replace the system scheme with bundled cursor art.
+Desktop arrow, link, text, resize, busy and unavailable cursors follow the user's
+current system scheme; painting canvases retain their brush cursor. Zoom-in, grab
+and grabbing use the shared smooth SVG cursors in `native-controls.css`, retaining
+native semantic fallbacks and system cursors in forced-colors mode.
 `studio-scrollbars.css` owns theme colors, rounded scrollbar thumbs and a 12px
 drag target on Chromium/WebView2; Firefox keeps its standard thin scrollbar.
 Existing wheel, touchpad and image gestures keep their input ownership and

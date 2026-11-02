@@ -113,6 +113,8 @@
               <span v-if="currentEntry.meta.model">模型 {{ currentEntry.meta.model }}</span>
               <span v-if="currentEntry.meta.loraId">LoRA {{ currentEntry.meta.loraId }}<template v-if="currentEntry.meta.loraVersion"> · v{{ currentEntry.meta.loraVersion }}</template></span>
               <span v-if="currentEntry.meta.seed !== undefined">Seed {{ currentEntry.meta.seed }}</span>
+              <span v-if="currentEntry.meta.steps !== undefined">步数 {{ currentEntry.meta.steps }}</span>
+              <span v-if="currentEntry.meta.cfg !== undefined">CFG {{ currentEntry.meta.cfg }}</span>
             </div>
             </details>
             </div>

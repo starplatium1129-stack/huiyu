@@ -3,6 +3,10 @@ import type { TrashEntry } from '@/storage/artworkRepository'
 import type { Scene, LoraMeta } from '@/stores/sceneStore'
 import type { PopularCharacter } from '@/utils/popularContent'
 import { artworkSearchText } from '@/application/artwork/searchIndex'
+import { artworkTags } from './artworkTags'
+import { tagKey } from '@/utils/animaPromptOrder'
+import { splitBreaks, tokenize } from '@/utils/promptPrimitives'
+import { STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 
 /** Legacy numeric IDs and their serialized references identify the same artwork. */
 export const artworkIdKey = (id: string | number): string => String(id).trim()
@@ -15,12 +19,32 @@ export function artworkIndexById(items: readonly ArtworkRecord[], id: string | n
 }
 
 export function characterName(value: string | undefined, item: ArtworkRecord | undefined, characters: PopularCharacter[]): string {
-  if (value === 'nene') return '绫地宁宁'
-  if (value === 'natsume') return '四季夏目'
-  if (value === 'triad' || value === 'both') return '宁宁与夏目'
-  const id = item?.characterId || value
-  const character = id ? characters.find(candidate => candidate.id === id) : undefined
-  return character?.displayName ?? (value || '—')
+  const studioNames: Record<string, string> = { nene: '绫地宁宁', natsume: '四季夏目', triad: '宁宁与夏目', both: '宁宁与夏目' }
+  const identities = [item?.characterId, item?.storyOrigin?.characterId, value, item?.character]
+    .map(id => id?.trim()).filter((id): id is string => !!id && id.toLowerCase() !== 'none')
+  for (const id of identities) {
+    if (studioNames[id]) return studioNames[id]
+    const character = characters.find(candidate => candidate.id === id
+      || [candidate.displayName, candidate.originalName, ...candidate.aliases].some(name => tagKey(name) === tagKey(id)))
+    if (character) return character.displayName
+  }
+  if (item) {
+    // Match whole name tokens only. Appearance, clothing and franchise tags do not identify a person.
+    const tokens = new Set([
+      ...artworkTags(item),
+      ...splitBreaks((item.prompt || '').split('\n')[0]).flatMap(tokenize),
+    ].map(tagKey))
+    const names: string[] = []
+    for (const id of ['nene', 'natsume']) {
+      if ([studioNames[id], ...STUDIO_PROMPT_SUBJECTS[id].characterTokens].some(name => tokens.has(tagKey(name)))) names.push(studioNames[id])
+    }
+    for (const character of characters) {
+      const nameTokens = [character.displayName, character.originalName, ...(character.characterTokens || [])]
+      if (nameTokens.some(name => name.trim() && tokens.has(tagKey(name)))) names.push(character.displayName)
+    }
+    if (names.length) return [...new Set(names)].join('、')
+  }
+  return identities[0] || '自由创作'
 }
 
 /**

@@ -277,7 +277,7 @@ function onToastLeave(el: Element, done: () => void) {
   border: 1px solid var(--border-soft);
   background: var(--bg-surface);
   box-shadow: var(--shadow-md);
-  @apply tw:text-body-sm tw:font-semibold tw:text-primary tw:pointer-events-auto tw:cursor-grab tw:select-none;
+  @apply tw:text-body-sm tw:font-semibold tw:text-primary tw:pointer-events-auto tw:[cursor:var(--cursor-grab,_grab)] tw:select-none;
   touch-action: pan-y;
   transform-origin: bottom right;
   max-width: min(460px, 90vw);
@@ -286,7 +286,7 @@ function onToastLeave(el: Element, done: () => void) {
 }
 .toast-stack-on-left { left:var(--s-4); right:auto; }
 .toast-stack-on-left .toast-item { transform-origin:bottom left; }
-.toast-item:active { @apply tw:cursor-grabbing; }
+.toast-item:active { @apply tw:[cursor:var(--cursor-grabbing,_grabbing)]; }
 
 .toast-icon { @apply tw:grid tw:w-[28px] tw:h-[28px] tw:rounded-md tw:shrink-0; place-items:center; font-size: 1em; background:var(--accent-soft); }
 .toast-msg  { flex: 1; @apply tw:min-w-0 tw:leading-body; }

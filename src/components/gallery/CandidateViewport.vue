@@ -163,9 +163,9 @@ onBeforeUnmount(() => { viewActive = false; deactivate() })
 </script>
 <style scoped>
 @reference "../../assets/css/tailwind.css";
-.candidate-viewport { @apply tw:relative tw:flex tw:items-center tw:justify-center tw:rounded-md tw:overflow-hidden tw:text-secondary tw:text-label tw:select-none; height:min(48dvh,480px); background:var(--bg-base); touch-action:none; cursor:zoom-in; }
-.candidate-viewport[data-zoomed="true"] { cursor:grab; }
-.candidate-viewport[data-zoomed="true"]:active { cursor:grabbing; }
+.candidate-viewport { @apply tw:relative tw:flex tw:items-center tw:justify-center tw:rounded-md tw:overflow-hidden tw:text-secondary tw:text-label tw:select-none; height:min(48dvh,480px); background:var(--bg-base); touch-action:none; cursor:var(--cursor-zoom-in, zoom-in); }
+.candidate-viewport[data-zoomed="true"] { cursor:var(--cursor-grab, grab); }
+.candidate-viewport[data-zoomed="true"]:active { cursor:var(--cursor-grabbing, grabbing); }
 .candidate-viewport img { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
 .candidate-viewport:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .candidate-image-feedback { position:absolute; inset:auto var(--s-3) var(--s-3); display:grid; justify-items:start; gap:var(--s-2); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); color:var(--text-primary); cursor:default; }

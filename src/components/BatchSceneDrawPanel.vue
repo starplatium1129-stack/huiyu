@@ -195,7 +195,8 @@
                   <span class="batch-card-title">{{ job.sceneTitle }}<em v-if="job.variant > 0"> · {{ job.variant + 1 }}</em></span>
                 </div>
                 <span class="batch-card-seed">{{ job.subtitle ? job.subtitle + ' · ' : '' }}{{ job.seed >= 0 ? 'seed ' + job.seed : '随机' }}</span>
-              <p v-if="job.error" class="batch-card-error">{{ job.error }}</p>
+                <button v-if="hasBatchArtwork(job) && !batchMedia.urls[job.id]" class="btn btn-quiet btn-sm" type="button" @click="batchMedia.retry(job.id)">重新读取预览</button>
+                <p v-if="job.error" class="batch-card-error">{{ job.error }}</p>
               </figcaption>
             </figure>
           </div>

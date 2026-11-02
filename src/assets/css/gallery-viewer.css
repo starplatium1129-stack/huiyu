@@ -17,9 +17,6 @@
 .art-viewer .viewer-section h3 { margin:0 0 var(--s-2); @apply tw:text-secondary tw:text-label-sm tw:font-semibold; }
 .art-viewer .viewer-story { overflow-wrap:anywhere; }
 .art-viewer .viewer-actions + .viewer-story { margin-block:var(--s-4); }
-.art-viewer .viewer-tags { @apply tw:flex tw:flex-wrap tw:gap-s-2; margin-block:var(--s-3); }
-.art-viewer .viewer-tags button { @apply tw:max-w-full; overflow-wrap:anywhere; border:0; @apply tw:rounded-pill; background:var(--accent-soft); @apply tw:text-accent; padding:var(--s-2) var(--s-3); font:inherit; @apply tw:text-label-xs tw:cursor-pointer; }
-.art-viewer .viewer-tags button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .art-viewer .viewer-record { @apply tw:grid tw:gap-s-2; margin:var(--s-3) 0; padding-block:var(--s-3); border-block:1px solid var(--border-soft); @apply tw:text-label-sm; }
 .art-viewer .viewer-record div { @apply tw:grid; grid-template-columns:4em minmax(0,1fr); @apply tw:gap-s-3; }
 .art-viewer .viewer-record dt { @apply tw:text-secondary; }
@@ -28,7 +25,8 @@
 .art-viewer .viewer-disclosure-copy > small { color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 .art-viewer .viewer-details summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .art-viewer .viewer-info .viewer-primary-actions { @apply tw:grid; grid-template-columns:repeat(2,minmax(0,1fr)); @apply tw:gap-s-2 tw:mt-s-4; }
-.art-viewer .viewer-primary-actions .btn { @apply tw:min-h-[40px]; padding-inline:var(--s-2); }
+.art-viewer .viewer-primary-actions .btn { @apply tw:min-h-[40px]; min-width:0; padding-inline:var(--s-2); font-size:var(--fs-label-sm); }
+.art-viewer .viewer-primary-actions .manga-launcher > .btn { width:100%; }
 .art-viewer .viewer-primary-actions .viewer-remix { grid-column:1 / -1; }
 .art-viewer .viewer-prev .archive-icon { transform:rotate(90deg); }
 .art-viewer .viewer-next .archive-icon { transform:rotate(-90deg); }
@@ -77,8 +75,8 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
 .art-viewer .viewer-info-close { @apply tw:hidden tw:items-center tw:gap-[6px] tw:min-h-[40px]; padding:0 12px; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; }
 .art-viewer .viewer-info-close:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .art-viewer .viewer-info-close .archive-icon { @apply tw:w-[16px] tw:h-[16px]; }
-.art-viewer .viewer-title { margin:var(--s-3) 0 var(--s-2); @apply tw:text-primary tw:text-title tw:leading-tight; letter-spacing:-.02em; overflow-wrap:anywhere; }
-.art-viewer .viewer-kicker { @apply tw:text-secondary; }
+.art-viewer .viewer-title { margin:var(--s-3) 0 var(--s-2); @apply tw:text-primary tw:leading-tight; font-size:var(--fs-title-sm); letter-spacing:0; overflow-wrap:anywhere; }
+.art-viewer .viewer-kicker { @apply tw:text-secondary; letter-spacing:.04em; }
 .art-viewer .viewer-meta { @apply tw:text-secondary tw:text-label-xs tw:leading-body; overflow-wrap:anywhere; }
 .art-viewer .viewer-facts { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-2 tw:mb-s-3; }
 .art-viewer .viewer-fact { @apply tw:min-w-0; padding-block:var(--s-2); border-bottom:1px solid var(--border-soft); }
