@@ -11,6 +11,7 @@ import { desktopBuildProfile, desktopHostExecutable } from './desktop-build-prof
 type Asset = { path: string; bytes: number; sha256: string };
 // Character pictures and particle grids change with content updates and ship in the upgrade.
 const RETAIN = /^gateway\/assets\/(?:live2d|chibi|dual-poses)\//;
+const LOCAL_RETAIN = /^gateway\/(?:(?:assets|data|dist|docs|tools|scripts|native-licenses|native)\/|huiyu-runtime\.exe$)/;
 function once(source: string, from: string, to: string) {
   if (source.split(from).length !== 2) throw Error(`Upgrade template anchor drift: ${from.slice(0, 70)}`);
   return source.replace(from, to);
@@ -132,15 +133,24 @@ export async function buildUpgradeInstaller(root: string, options: { installDir?
     const renderedPath = 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi';
     if (!options.local && !receipt.build.entries.some((entry: { path: string; status: string }) => entry.path === renderedPath && entry.status === 'file'))
       throw Error('Rendered NSIS inputs are not bound; perform a fresh desktop build');
-    const assets: Asset[] = receipt.build.entries.filter((entry: { path: string; status: string }) => entry.status === 'file' &&
-      RETAIN.test(entry.path.replace(/^desktop-tauri\/src-tauri\/resources\//, '')))
-      .map((entry: Asset) => ({ path: entry.path.replace(/^desktop-tauri\/src-tauri\/resources\//, ''), bytes: entry.bytes, sha256: entry.sha256 }));
+    const resources: Asset[] = receipt.build.entries.filter((entry: { path: string; status: string }) => entry.status === 'file'
+      && entry.path.startsWith('desktop-tauri/src-tauri/resources/'))
+      .map((entry: Asset) => ({ path: entry.path.slice('desktop-tauri/src-tauri/resources/'.length), bytes: entry.bytes, sha256: entry.sha256 }));
+    const assets = await timeDesktopBuild('upgrade retained file selection', () => resources.filter(entry => {
+      if (RETAIN.test(entry.path)) return true;
+      if (!options.local || !LOCAL_RETAIN.test(entry.path)) return false;
+      // Missing, changed or unsafe files are never authorized for reuse. The
+      // embedded verifier rechecks every retained byte immediately before writes.
+      const installed = safe.fileEntry(options.installDir!, entry.path);
+      return installed.status === 'file' && installed.bytes === entry.bytes && installed.sha256 === entry.sha256;
+    }));
     if (!assets.length) throw Error('Upgrade requires a nonempty retained asset inventory');
     const version = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8')).version;
     const directory = safe.resolveSafe(root, `runtime/desktop-updates/payloads/${version}${options.local ? '/local' : ''}`, true);
     fs.mkdirSync(directory, { recursive: true });
     const manifest = path.join(directory, 'UpgradeRequirements.json');
-    fs.writeFileSync(manifest, JSON.stringify({ schemaVersion: 1, version, assets }));
+    fs.writeFileSync(manifest, JSON.stringify({ schemaVersion: options.local ? 2 : 1, version, assets }));
+    console.log(`[desktop:upgrade] ${options.local ? '本机增量' : '发行'}升级：复用 ${assets.length} 个文件，携带 ${resources.length - assets.length} 个资源文件及桌面宿主；保留完整卸载清单`);
     const verifier = path.join(directory, 'HuiyuUpgradeCheck.exe');
     const framework = path.join(process.env.WINDIR || 'C:/Windows', 'Microsoft.NET/Framework64/v4.0.30319');
     command(path.join(framework, 'csc.exe'), ['/nologo', '/utf8output', '/codepage:65001', '/target:exe', '/platform:x64', '/optimize+',

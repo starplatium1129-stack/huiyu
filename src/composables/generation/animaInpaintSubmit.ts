@@ -25,6 +25,7 @@ export type InpaintSubmissionSnapshot = {
     width: number
     height: number
     loraStrength: number | null
+    characterLoraEnabled?: boolean
   }
 }
 
@@ -81,7 +82,7 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   // 避免 nene/夏目 LoRA 污染热门角色脸型；身份靠 Danbooru 标签锁定。
   const charLocked = snapshot.isPopular ? 'none' : snapshot.effectiveChar
   const isCharacterLora = charLocked === 'nene' || charLocked === 'natsume'
-  const inpaintMode = isCharacterLora || charLocked === 'none' ? charLocked : null
+  const inpaintMode = isCharacterLora && snapshot.model.characterLoraEnabled === false ? 'none' : isCharacterLora || charLocked === 'none' ? charLocked : null
   const desiredSize = snapshot.payload.targetWidth && snapshot.payload.targetHeight
     ? `${snapshot.payload.targetWidth}x${snapshot.payload.targetHeight}`
     : `${snapshot.model.width}x${snapshot.model.height}`
@@ -106,6 +107,8 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
     const identity = escapeKnownLiteralTags(snapshot.identityTokens.join(', '), snapshot.identityTokens)
     promptText = `${identity}, ${promptText}`
   }
+  if (!binding?.loraId && charLocked === 'nene' && !promptText.includes('sanoba_witch')) promptText = `sanoba_witch, ${promptText}`
+  if (!binding?.loraId && charLocked === 'natsume' && !promptText.includes('cafe_stella_to_shinigami_no_chou')) promptText = `cafe_stella_to_shinigami_no_chou, ${promptText}`
 
   const negativePrompt = charLocked === 'none' && !wholeImage
     ? `${snapshot.payload.negativePrompt}, face, head, hair, duplicate person, extra person`
@@ -122,7 +125,7 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
   if (!context.current()) return
   // Archive the resolved studio identity, not the panel captured before an override.
   // Popular characters retain their own identity even when the binding uses a LoRA.
-  if (!snapshot.isPopular) context.submission.context = { ...context.submission.context, char: binding.character ?? 'none' }
+  if (!snapshot.isPopular) context.submission.context = { ...context.submission.context, char: charLocked ?? 'none' }
   context.begin(URL.createObjectURL(snapshot.payload.imageBlob))
   flash(wholeImage ? '正在执行整图重绘，人物与背景均可能变化…' : snapshot.provider === 'native' ? (maskImage ? '正在执行手绘局部重绘（实验性）…' : '正在执行本地自动识别与局部重绘（实验性）…') : maskImage ? '正在执行手绘局部换装…' : '正在执行自动识别与局部换装，节点的模型加载仍需验证…')
   let pending: Promise<void>
@@ -137,7 +140,7 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
     seed: snapshot.payload.seed ?? undefined,
     character: binding.character,
     loraId: binding.loraId,
-    loraStrength: isCharacterLora || endfield ? snapshot.model.loraStrength : null,
+    loraStrength: binding.loraId ? snapshot.model.loraStrength : null,
     width: binding.width,
     height: binding.height,
     teaCache: snapshot.provider === 'native' ? context.submission.request.teaCache : true,

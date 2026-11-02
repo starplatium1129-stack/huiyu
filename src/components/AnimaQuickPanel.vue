@@ -14,6 +14,7 @@ const props = defineProps<{
   state: AnimaGenerationState
   /** 热门角色无 LoRA 模式（由父级按 subject + capability 判定，面板不做模型 id 猜测）。 */
   noLora?: boolean
+  studioLoraDisabled?: boolean
 }>()
 const state = computed(() => props.state)
 const native = computed(() => props.state.provider === 'native')
@@ -88,7 +89,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
        <p v-if="capabilities.promptFormat === 'natural-language'" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>Krea 2</strong> · 自然语言生成，无角色 LoRA</p>
         <p v-else-if="selectedLora?.preview" class="anima-preview-note tw:m-0 tw:text-warning-text tw:text-label-xs tw:leading-label"><strong>实验预览</strong> · 此 LoRA 为实验版</p>
 
-       <div v-if="capabilities.lora && !noLoraMode" class="anima-field anima-lora-fields">
+       <div v-if="capabilities.lora && !noLoraMode && !studioLoraDisabled" class="anima-field anima-lora-fields">
         <div class="anima-form-field">
           <label :for="idOf('lora')">LoRA</label>
           <StudioSelect :id="idOf('lora')" v-model="loraId" label="LoRA" :disabled="busy"

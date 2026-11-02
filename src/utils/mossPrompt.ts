@@ -5,6 +5,7 @@ import { authoredSceneCaption } from './promptCaption.ts'
 import { resolveCameraTags } from './promptCamera.ts'
 import { normalizeKey, tokenize } from './promptPrimitives.ts'
 import { proseToken } from './promptPhraseTables.ts'
+import { orderPromptTags } from './animaPromptOrder.ts'
 
 // MIAOKA's shared BASE v1.0/v1.1 positive and negative recipe.
 export const MOSS_QUALITY = 'masterpiece, best quality, very aesthetic, ultra-detailed, high contrast'
@@ -57,7 +58,10 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
   const prose = plan ? [plan.subjectProse, plan.outfitProse ? `Clothing: ${plan.outfitProse}` : '',
     ...outfits, sceneProse ? authoredSceneCaption(plan, sceneProse, false) : '']
     .map(value => value.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/g, ', ').trim()) : []
-  const tagLine = tags.join(', ')
+  // Free-subject identities are classification metadata, not tokens to inject.
+  const ordered = plan?.freeSubject && (plan.characterTokens.length || plan.copyrightTokens.length)
+    ? orderPromptTags({ ...plan, quality: MOSS_QUALITY.split(', ') }, tags) : tags
+  const tagLine = ordered.join(', ')
   const raw = [...new Set([tagLine, ...prose, authored].filter(Boolean))].join('\n')
   const compiled = compileMossPrompt(raw, negative)
   return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative), tagLine }

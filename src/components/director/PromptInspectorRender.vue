@@ -20,6 +20,14 @@
         :disabled="generationBusy" :hint="generationBusy ? BUSY_HINT : undefined"
         :options="animaModelOptions" @update:model-value="onAnimaModelSelected" />
     </div>
+    <div v-if="drawEngine === 'anima' && !pb.isPopular && (pb.char === 'nene' || pb.char === 'natsume')" class="character-lora-setting">
+      <ToggleSwitch :model-value="animaState.characterLoraEnabled !== false"
+        :disabled="generationBusy || (!supportsNoLora && animaState.characterLoraEnabled !== false)"
+        label="使用角色 LoRA" @update:model-value="setCharacterLoraEnabled">
+        <span>使用角色 LoRA</span>
+      </ToggleSwitch>
+      <small v-if="!supportsNoLora">当前底模尚未确认支持无角色 LoRA</small>
+    </div>
     </div>
     <section class="inspector-size-section"><slot name="size" /></section>
     <section class="inspector-style-section"><slot name="style" /></section>
@@ -32,7 +40,7 @@
               v-model:sd-params="pb.sdParams" :anima-state="animaState" @touch-sd="pb.markParamTouched" @patch-anima="patchAnimaState" />
           </AsyncPanel>
           <AsyncPanel v-else :loader="loadAnimaQuickPanel" label="引擎采样参数" v-slot="{ component }">
-            <component :is="component" :state="animaState" :no-lora="animaNoLoraMode" @update:state="patchAnimaState" />
+            <component :is="component" :state="animaState" :no-lora="animaNoLoraMode" :studio-lora-disabled="!pb.isPopular && animaState.characterLoraEnabled === false" @update:state="patchAnimaState" />
           </AsyncPanel>
         </template>
       </div>
@@ -48,6 +56,8 @@ import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import { ANIMA_LORA_BY_CHARACTER } from '@/composables/generation/animaSessionContract'
 const loadCreativeSliders = () => import('@/components/director/CasualCreativeSliders.vue')
 const loadAnimaQuickPanel = () => import('@/components/AnimaQuickPanel.vue')
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
@@ -60,11 +70,19 @@ function onAdvancedToggle(event: Event) {
 }
 const { pb, generationBusy, generationPresentation, animaState, drawEngine, generationPresetSummary, managedRoute, applyManagedRoute,
   reuseSuccessfulRecipe, BUSY_HINT, selectAnimaModel,
-  animaNoLoraMode, patchAnimaState, retryAnima } = props.bindings
+  animaNoLoraMode, currentCapabilities, patchAnimaState, refreshAnimaBackend, retryAnima } = props.bindings
 const animaModelOptions = computed<StudioSelectOption[]>(() => animaState.value.models.map(model => ({
   value: model.id, label: (model.label || model.id) + (model.available === false ? animaState.value.provider === 'native' ? ' · 原生未就绪' : ' · 暂不可用' : ''),
   disabled: model.available === false,
 })))
+const supportsNoLora = computed(() => currentCapabilities.value.noLora)
+function setCharacterLoraEnabled(enabled: boolean) {
+  const character = pb.char
+  if (character !== 'nene' && character !== 'natsume') return
+  const id = ANIMA_LORA_BY_CHARACTER[character]
+  patchAnimaState({ characterLoraEnabled: enabled, loraId: enabled && animaState.value.loras.some(item => item.id === id && item.available !== false) ? id : '' })
+  if (enabled) void refreshAnimaBackend()
+}
 function onAnimaModelSelected(value: string | number) { selectAnimaModel(String(value)) }
 </script>
 

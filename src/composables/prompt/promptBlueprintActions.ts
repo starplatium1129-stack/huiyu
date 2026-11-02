@@ -199,7 +199,12 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
     if (pb.isUnbound) patch.loraId = ''
     else if (subject === 'popular') patch.loraId = endfieldAnimaBinding(ctx.pb.subject.kind === 'popular' ? ctx.pb.subject.characterId : null,
       engine, ctx.animaState.value.modelId)?.loraId ?? ''
-    else if (loraId && ctx.animaState.value.loras.some(item => item.id === loraId)) patch.loraId = loraId
+    else if (engine === 'anima' && typeof anima.characterLoraEnabled === 'boolean') {
+      patch.characterLoraEnabled = anima.characterLoraEnabled
+      patch.loraId = anima.characterLoraEnabled && loraId && ctx.animaState.value.loras.some(item => item.id === loraId && item.available !== false) ? loraId : ''
+      if (anima.characterLoraEnabled && loraId && !patch.loraId) warnings.push(`原 LoRA ${loraId} 当前不可用，未恢复`)
+    }
+    else if (loraId && ctx.animaState.value.loras.some(item => item.id === loraId)) { patch.loraId = loraId; if (engine === 'anima') patch.characterLoraEnabled = true }
     else if (loraId) warnings.push(`原 LoRA ${loraId} 当前不可用，未恢复`)
     if (styleLoraId && ctx.animaState.value.styleLoras.some(item => item.id === styleLoraId)) patch.styleLoraId = styleLoraId
     else if (styleLoraId) warnings.push(`原风格 LoRA ${styleLoraId} 当前不可用，未恢复`)

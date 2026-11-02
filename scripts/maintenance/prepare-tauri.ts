@@ -3,6 +3,7 @@ import fs = require('node:fs');
 import path = require('node:path');
 import { execFileSync } from 'node:child_process';
 import { timeDesktopBuild } from '../lib/desktop-build-timing';
+import { purgeWoffFonts } from './precompress';
 import { errorStack } from '../lib/runtime-errors';
 import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
 const { withWorkspaceLock }: typeof import('../lib/workspace-lock') = require('../lib/workspace-lock');
@@ -17,6 +18,7 @@ async function prepareTauri(options: { root?: string; buildProfile?: DesktopBuil
     [path.join(path.dirname(require.resolve('vite/package.json')), 'bin/vite.js'), 'build', '--mode', 'desktop', '--outDir', webDir],
     { cwd: root, stdio: 'inherit', windowsHide: true })));
   if (!fs.existsSync(path.join(webDir, 'index.html'))) throw Error('Desktop bundled UI was not built');
+  purgeWoffFonts(root, 'desktop-tauri/web');
   const staged = await timeDesktopBuild('resource staging', () => stageResources({ root, buildProfile }));
   console.log(`[tauri] Rust candidate prepared; releaseReady=${staged.releaseReady}`);
   return { webDir, ...staged };

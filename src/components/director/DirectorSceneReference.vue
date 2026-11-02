@@ -42,14 +42,15 @@ const scene = computed(() => {
   }
   return pb.activeScene ? { title: pb.activeScene.title, id: pb.activeScene.id } : null
 })
-const { loading, entryFor, thumbUrl } = useShowcaseAssets()
+const { loading, entryFor, thumbUrl, imageUrl: originalUrl } = useShowcaseAssets()
 const entry = computed(() => {
   const item = scene.value ? entryFor(scene.value.id) : undefined
   return item?.type === 'scene' || item?.type === 'popular' ? item : undefined
 })
 const restricted = computed(() => entry.value?.rating === 'R18')
 const imageUrl = computed(() => {
-  return entry.value ? thumbUrl(entry.value.id) : ''
+  if (!entry.value) return ''
+  return restricted.value ? thumbUrl(entry.value.id) : originalUrl(entry.value.id)
 })
 const canLoad = computed(() => !!imageUrl.value)
 const { image: runtimeImage, src, failed } = useRuntimeImage(() => attached.value && canLoad.value ? imageUrl.value : '')

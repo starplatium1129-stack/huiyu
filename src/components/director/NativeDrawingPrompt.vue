@@ -31,8 +31,8 @@ const mossScopes = computed<PromptPreviewLayer[][]>(() => {
   const tags = [prefix, recipe.tagLine].filter(Boolean).join(', ')
   return promptPreviewScopes(`${tags}\n${caption}`, {
     format: 'anima-tags', qualityTokens: MOSS_QUALITY.split(', '),
-    characterTokens: plan?.freeSubject ? [] : plan?.characterTokens || [],
-    copyrightTokens: plan?.freeSubject ? [] : plan?.copyrightTokens || [], artists: plan?.artists || [],
+    characterTokens: plan?.characterTokens || [],
+    copyrightTokens: plan?.copyrightTokens || [], artists: plan?.artists || [],
   })
 })
 const readerDialog = ref<HTMLDialogElement | null>(null), readerLoaded = ref(false)

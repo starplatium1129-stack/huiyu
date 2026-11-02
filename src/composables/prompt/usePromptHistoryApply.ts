@@ -84,7 +84,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       pb.flash(note,9000,'warning')
       return false
     }
-    const popularEntry = entry.subject === 'popular' || (entry.noLora && entry.characterId)
+    const popularEntry = entry.subject === 'popular' || (entry.subject !== 'studio' && entry.noLora && entry.characterId)
     if (popularEntry) {
       const character = findPopularCharacter(pb.popularCharacters, entry.characterId || '')
       if (!character || !findPopularOutfit(character, entry.outfitId || '')) {
@@ -188,7 +188,8 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         patchAnimaState({
           phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, statusText: '', errorMsg: '',
           modelId: animaModelPatch(animaState.value.modelId),
-           loraId: entryEngine === 'krea2' || character === 'none' ? '' : entry.loraId === ANIMA_LORA_BY_CHARACTER[character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[character],
+           ...(entryEngine === 'anima' && character !== 'none' ? { characterLoraEnabled: entry.noLora !== true } : {}),
+           loraId: entryEngine === 'krea2' || character === 'none' || entry.noLora === true ? '' : entry.loraId === ANIMA_LORA_BY_CHARACTER[character] ? entry.loraId : ANIMA_LORA_BY_CHARACTER[character],
            loraStrength: entry.loraStrength ?? animaState.value.loraStrength,
            ...animaHistoryPatch(),
            width: Number.isInteger(width) && width > 0 ? width : animaState.value.width,

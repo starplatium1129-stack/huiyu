@@ -21,6 +21,14 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   let output = replaceOnce(source, '; Installer pages, must be ordered as they appear',
     `!define GAME_BACKGROUND "${escapePath(background)}"\n!define GAME_ASSET_DIR "${escapePath(path.dirname(background))}"\n!include "${escapePath(uiFile)}"\n\n; Installer pages, must be ordered as they appear`);
   output = replaceOnce(output, 'Section EarlyChecks', `!include "${escapePath(path.join(path.dirname(uiFile), 'game-install-policy.nsh'))}"\n\nSection EarlyChecks\n  Call GameCheckStopped`);
+  // A full package must repair a missing WebView2 on updates as well as fresh installs.
+  // Upgrade-only packages set the mode to skip and verify their existing runtime separately.
+  output = replaceOnce(output, '    ; Skip if updating\n    ${If} $UpdateMode <> 1\n', '');
+  output = replaceOnce(output, '      webview2_done:\n    ${EndIf}\n  ${Else}', '      webview2_done:\n  ${Else}');
+  const webviewAbort = '          Abort "$(webview2AbortError)"';
+  if (output.split(webviewAbort).length !== 3) throw new Error('Installer WebView2 error anchors drifted');
+  // 17001 is consumed by the modern wrapper; keep the native status page for direct runs.
+  output = output.replaceAll(webviewAbort, '          ${If} ${Silent}\n            SetErrorLevel 17001\n            Quit\n          ${Else}\n            Abort "$(webview2AbortError)"\n          ${EndIf}');
   const runningCheck = '!insertmacro CheckIfAppIsRunning "$INSTDIR\\${MAINBINARYNAME}.exe" "${PRODUCTNAME}"';
   if (output.split(runningCheck).length !== 3) throw new Error('Installer running-check anchor drift');
   output = output.replace(runningCheck, 'Call GameCheckStopped').replace(runningCheck, 'Call un.GameCheckStopped');

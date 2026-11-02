@@ -4,7 +4,7 @@ import { profileLocalStorage } from '@/platform/web/profileStorage'
 
 // Registered model-draft prefix: shared by every desktop window and stored by the profile runtime.
 const KEY = 'aics-model-draft-image-settings-v1'
-const fields = ['modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler',
+const fields = ['modelId', 'loraId', 'characterLoraEnabled', 'loraStrength', 'styleLoraId', 'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler',
   'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresCfg', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
 export type DrawingSettings = Pick<AnimaGenerationState, typeof fields[number]>
 
@@ -24,6 +24,7 @@ export function readDrawingSettings(family: 'anima' | 'krea2'): DrawingSettings 
     || !Number.isFinite(value.cfg) || value.cfg < (family === 'krea2' ? 0 : 0.5)
     || !Number.isFinite(value.loraStrength) || value.loraStrength < 0
     || (value.loraId !== undefined && typeof value.loraId !== 'string')
+    || (value.characterLoraEnabled !== undefined && typeof value.characterLoraEnabled !== 'boolean')
     || ![value.width, value.height, value.steps].every(Number.isInteger)
     || !(value.seed === null || Number.isSafeInteger(value.seed) && value.seed >= 0)
     || (value.hiresFix !== undefined && typeof value.hiresFix !== 'boolean')

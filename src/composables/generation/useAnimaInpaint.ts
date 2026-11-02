@@ -97,7 +97,7 @@ export function useAnimaInpaint(deps: AnimaInpaintDeps) {
       effectiveChar: payload.characterOverride !== undefined ? payload.characterOverride : inpaintCharacter.value,
       isPopular: isPopular.value, identityTokens: [...deps.popularIdentityTokens.value],
       model: { models: JSON.parse(JSON.stringify(deps.animaState.value.models)), modelId: deps.animaState.value.modelId,
-        width: deps.animaState.value.width, height: deps.animaState.value.height, loraStrength: deps.animaState.value.loraStrength },
+        width: deps.animaState.value.width, height: deps.animaState.value.height, loraStrength: deps.animaState.value.loraStrength, characterLoraEnabled: deps.animaState.value.characterLoraEnabled },
     }
     const active = new AbortController(), mediaSession = imageMediaSession()
     controller = active; preparedMediaSession = mediaSession; preparing.value = true

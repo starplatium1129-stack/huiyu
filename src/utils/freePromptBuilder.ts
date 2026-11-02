@@ -4,6 +4,7 @@ import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { escapeKnownLiteralTags } from './promptLiteralTags.ts'
 import { isManualR18Tags, mergeTokenText, normalizeKey, tokenize, type ModelProfile } from './promptPolicy.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
+import { tagKey } from './animaPromptOrder.ts'
 
 export interface FreePromptOptions {
   engine: 'anima' | 'krea2' | 'moss'
@@ -54,9 +55,12 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
   }
 
   if (input.engine === 'moss') {
+    const tagKeys = new Set(tokenize(tags).map(tagKey))
     const plan = createPromptPlan({
       freeSubject: true, scenePrompt: manual.join(', '), artists: artistTags,
       emotion, camera: [camera], lighting: [lighting], composition: [composition], palette, manual,
+      characterTokens: (input.characterTokens || []).filter(tag => tagKeys.has(tagKey(tag))),
+      copyrightTokens: (input.copyrightTokens || []).filter(tag => tagKeys.has(tagKey(tag))),
     })
     const rendered = renderMossDrawingPrompt(plan, description, '')
     return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }

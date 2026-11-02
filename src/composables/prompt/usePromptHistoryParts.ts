@@ -13,7 +13,7 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
   const { recipe: entry, notes } = parsed
   const engine = deps.drawEngine.value
   const sameEngine = entry.engine === engine
-  const popular = entry.subject === 'popular' || Boolean(entry.noLora && entry.characterId)
+  const popular = entry.subject === 'popular' || Boolean(entry.subject !== 'studio' && entry.noLora && entry.characterId)
   const sameSubject = popular
     ? pb.subject.kind === 'popular' && pb.subject.characterId === entry.characterId && pb.subject.outfitId === entry.outfitId
     : pb.subject.kind === 'studio' && Boolean(entry.character) && pb.char === entry.character

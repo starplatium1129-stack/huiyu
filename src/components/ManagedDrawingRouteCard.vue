@@ -120,7 +120,7 @@ const recipes = computed(() => [...props.history]
       : props.route.generationCharacter === 'natsume' ? 'natsume' : 'nene'
     if (entry.subject === 'popular' || entry.character !== character) return false
     if (props.route.engine === 'sd') return entry.engine == null || entry.engine === 'sd'
-    return entry.engine === 'anima' && entry.loraId === props.route.loraId
+    return entry.engine === 'anima' && (props.route.loraId ? entry.loraId === props.route.loraId : entry.noLora === true || entry.loraId === null || entry.loraId === '')
   })
   .slice(0, 3)
   .map(entry => {

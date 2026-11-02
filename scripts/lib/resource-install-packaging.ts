@@ -6,6 +6,13 @@ const path: typeof import('node:path') = require('node:path');
 const sharp: typeof import('sharp') = require('sharp');
 const { noLinks, child, within, readBytes, digest, writeAtomic }: typeof import('./resource-install-fs') = require('./resource-install-fs');
 
+/** Brand masters produce the shipped SVG/ICO/tray assets; they are not runtime URLs. */
+function includeAsset(relative: string): boolean {
+  return relative !== 'app-icon.png' && relative !== 'brand-mark.svg'
+    && !/\.(?:[cm]?ts|map)$/i.test(relative)
+    && !/^(?:character-references|live2d-candidates)(?:\/|$)/i.test(relative);
+}
+
 // Profile generation runs only inside a fresh desktop staging directory. Every original URL
 // remains available offline; base changes only popular portraits, never thumbnails/brand/Live2D.
 async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { root: string; gatewayRoot: string; profile?: string }) {
@@ -22,10 +29,7 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { r
       const rel = prefix + name;
       const file = child(directory, name);
       const stat = noLinks(fs, file);
-      // TypeScript sources and source maps are build inputs, not distributable assets;
-      // the desktop stage deliberately excludes them from the gateway payload.
-      if (/\.(?:[cm]?ts|map)$/i.test(rel)) continue;
-      if (/^(?:character-references|live2d-candidates)(?:\/|$)/i.test(rel)) continue;
+      if (!includeAsset(rel)) continue;
       if (stat!.isDirectory()) walk(file, rel + '/');
       else entries.push({ rel, sourceBytes: stat!.size });
     }
@@ -98,4 +102,4 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { r
   writeAtomic(fs, path.join(gatewayRoot, 'resource-layers.json'), Buffer.from(JSON.stringify(report, null, 2) + '\n'));
   return report;
 }
-export = { applyResourceProfile };
+export = { applyResourceProfile, includeAsset };

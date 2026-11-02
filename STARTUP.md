@@ -1,12 +1,12 @@
 # 绘遇 HUIYU 启动与排错
 
-本页介绍换机、源码启动和常见故障。桌面安装与素材导入见[离线素材指南](docs/guides/offline-resources.md)，模型和硬件见[模型配置指南](docs/guides/setup-and-models.md)。已登记的发行版本为 [2.0.0](docs/releases/v2.0.0.md)；源码、发行与本机安装身份分别见[项目状态](docs/project-status.md)。
+本页介绍换机、源码启动和常见故障。桌面安装与素材导入见[离线素材指南](docs/guides/offline-resources.md)，模型和硬件见[模型配置指南](docs/guides/setup-and-models.md)。版本说明见 [2.1.0](docs/releases/v2.1.0.md)；源码、发行与本机安装身份分别见[项目状态](docs/project-status.md)。
 
 ## 新机器的桌面离线安装
 
-准备 [2.0.0 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0)和[现有完整素材包](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)，保留发布页的校验文件与配套安装助手。程序与素材分开安装；2.0.0 尚未附带的新素材范围见[发行说明](docs/releases/v2.0.0.md)。维护者使用 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信说明中的 `release.json` 审批指纹，不能用 ZIP SHA-256 代替。
+准备 [2.1.0 完整桌面安装包](https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.1.0)和[现有完整素材包](https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261006-r1)，保留发布页的校验文件与配套安装助手。程序与素材分开安装；较新的素材与安装助手见 [2.0.0 发行说明](docs/releases/v2.0.0.md)。维护者使用 `Install-OfflineResources.ps1` 时，`-ExpectedReleaseSha256` 必须取自独立受信说明中的 `release.json` 审批指纹，不能用 ZIP SHA-256 代替。
 
-完全断网的新机须在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器，带到新机核对并安装。完整安装包包含 WebView2 离线安装器。安装后退出绘遇及其运行时，以普通用户身份打开开始菜单中的资源安装助手，或双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择素材包并确认导入。素材导入使用已安装的 Rust 原生入口，不需要 Node、npm、Python 或项目源码。
+完全断网的新机须在联网准备机从[微软官方入口](https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist)取得 **VC++ v14 x64** 离线安装器，带到新机核对并安装。当前源码的完整安装包不内置 WebView2 离线运行库；若新机尚未安装 WebView2，需提前从[微软下载页](https://developer.microsoft.com/microsoft-edge/webview2/)取得 Evergreen Standalone Installer 的 x64 版本并安装。有网络时，完整安装包会在缺少 WebView2 时自动安装。已发行的 2.0.0 完整包仍包含 WebView2 离线安装器。安装绘遇后退出绘遇及其运行时，以普通用户身份打开开始菜单中的资源安装助手，或双击安装目录 `gateway\tools\Install-OfflineResources.cmd`，选择素材包并确认导入。素材导入使用已安装的 Rust 原生入口，不需要 Node、npm、Python 或项目源码。
 
 微软材料可在联网准备机用 `scripts/maintenance/prepare-offline-prerequisites.ps1 -Out <新目录>` 查看只读计划，加 `-Apply` 才下载、验微软签名并记录实际版本/字节/SHA-256；脚本不会执行安装器。下载与新机安装步骤见 [原生前置说明](docs/guides/setup-and-models.md#windows-原生前置vc-x64-离线安装材料)。图片浏览、运行库安装与 PixAI 真实推理分别验收；源码已退出 ORT 依赖和新包载荷，不因此改变既有公开包或已安装文件。
 

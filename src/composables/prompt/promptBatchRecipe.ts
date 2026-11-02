@@ -214,7 +214,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       const manualColor = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood)
       const colorMood = manualColor ? pb.colorMood : sceneColorMood(scene)
       directorSources.colorMood = manualColor ? 'manual' : 'scene'
-      const activeLora = charInfo.charKey === 'triad' ? null
+      const activeLora = charInfo.charKey === 'triad' || state.characterLoraEnabled === false ? null
         : pb.subject.kind === 'studio' && pb.char === charInfo.charKey ? state.loraId : ANIMA_LORA_BY_CHARACTER[charInfo.charKey]
       const controls = detectOutfitOverrideFromContext()
       const result = compilePromptRecipe({
@@ -263,7 +263,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       seed: input.seed >= 0 ? input.seed : null,
       // Cross-character roaming selects the target's installed binding; the source
       // character keeps its captured selection for the shared admission check.
-      loraId: charInfo?.kind === 'studio' && (pb.subject.kind !== 'studio' || targetChar !== pb.char)
+      loraId: charInfo?.kind === 'studio' && state.characterLoraEnabled === false ? '' : charInfo?.kind === 'studio' && (pb.subject.kind !== 'studio' || targetChar !== pb.char)
         ? charInfo.charKey === 'triad' ? '' : ANIMA_LORA_BY_CHARACTER[charInfo.charKey] : state.loraId,
       // Batch Endfield recipes retain the collection's default strength.
       loraStrength: endfield?.loraStrength ?? state.loraStrength,

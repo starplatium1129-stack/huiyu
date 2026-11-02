@@ -66,6 +66,7 @@ export function useAnimaTask(options: AnimaSessionOptions, client: ApiClient, st
     if (recoverOnly && draft && !draft.submitted) { await cancel(); return }
     const submission = draft?.submission ?? (frozen ? JSON.parse(JSON.stringify({ ...frozen, request: { ...frozen.request, ...overrides } })) as AnimaSubmission : view.capture(overrides))
     if (!submission) return
+    if (!draft && submission.context) submission.context.noLora = !submission.request.loraId
     const { request, family } = submission, runtime = hasRuntimeTasks()
     const provider = state.value.provider === 'native' ? 'native' : 'comfy'
     if (!draft) {

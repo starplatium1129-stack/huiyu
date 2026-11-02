@@ -60,7 +60,7 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
     drawEngine: drawEngine.value,
     size: drawEngine.value === 'sd' ? sdSize.value : `${animaState.value.width}x${animaState.value.height}`,
     anima: {
-      modelId: animaState.value.modelId, loraId: animaState.value.loraId,
+      modelId: animaState.value.modelId, loraId: animaState.value.loraId, characterLoraEnabled: animaState.value.characterLoraEnabled,
       loraStrength: animaState.value.loraStrength, styleLoraId: animaState.value.styleLoraId,
       width: animaState.value.width, height: animaState.value.height,
       steps: animaState.value.steps, cfg: animaState.value.cfg,

@@ -43,6 +43,10 @@ export function buildAnimaRequest(input: BuildAnimaRequestInput): AnimaRequest {
     return { ...settings, loraId: binding?.loraId ?? null, loraStrength: binding ? state.loraStrength : null, character: binding?.character ?? null }
   }
   const charKey = char === 'nene' || char === 'natsume' ? char : null
+  if (charKey && state.characterLoraEnabled === false) {
+    if (!capabilities.noLora) throw new Error('当前底模不支持无角色 LoRA，请更换底模或启用角色 LoRA')
+    return { ...settings, loraId: null, loraStrength: null, character: null }
+  }
   const expected = charKey ? ANIMA_LORA_BY_CHARACTER[charKey] : ''
   if (capabilities.lora && capabilities.characterIdentity && charKey
     && (state.loraId !== expected || !state.loras.some(lora => lora.id === expected && lora.available !== false))) throw new Error('角色 LoRA 尚未从服务端白名单发现，请先准备模型文件')

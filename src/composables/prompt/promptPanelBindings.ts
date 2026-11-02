@@ -35,7 +35,7 @@ export interface PromptMaterialBindings extends
 }
 
 export interface PromptRenderBindings extends
-  Pick<Engine, 'displayResultUrl' | 'generationBusy' | 'generationPresetSummary' | 'setDrawEngine' | 'supportsDualCharacter' | 'selectAnimaModel' | 'displayResultSeed' | 'animaNoLoraMode'>,
+  Pick<Engine, 'displayResultUrl' | 'generationBusy' | 'generationPresetSummary' | 'setDrawEngine' | 'supportsDualCharacter' | 'selectAnimaModel' | 'displayResultSeed' | 'animaNoLoraMode' | 'currentCapabilities'>,
   Pick<Popular, 'managedRoute' | 'applyManagedRoute'>,
   Pick<Derived, 'vramHint' | 'vramLevel' | 'baseResolutionRisk' | 'baseResolutionHint' | 'canUseFaceDetailer'> {
   pb: Pick<Store, 'directorMode' | 'history' | 'subject' | 'isPopular' | 'char' | 'visualDescription' | 'sdModelName' | 'sdParams' | 'markParamTouched'>
@@ -43,6 +43,7 @@ export interface PromptRenderBindings extends
   animaState: Anima['state']
   generationPresentation: Readonly<Ref<GenerationPresentation>>
   patchAnimaState: Anima['patchState']
+  refreshAnimaBackend: Anima['refreshBackend']
   engineTitle: (engine: DrawEngine) => string | undefined
   BUSY_HINT: string
   reuseSuccessfulRecipe: (id: string | number) => Promise<void>

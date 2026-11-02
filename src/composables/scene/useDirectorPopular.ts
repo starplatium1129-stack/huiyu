@@ -76,12 +76,14 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     const route = recommendDrawingRoute({
       subjectKind: pb.isPopular ? 'popular' : 'studio',
       character: pb.char,
+      characterLoraEnabled: animaState.value.characterLoraEnabled,
       popularCharacterId: pb.subject.kind === 'popular' ? pb.subject.characterId : null,
       recommendedModelId: popularCharacter.value?.recommendedEngine,
     })
     managedRoute.value = route
     return route
   }
+  watch(() => animaState.value.characterLoraEnabled, () => { void refreshManagedRoute() })
   const popularBlueprintPool = computed(() =>
     eligibleBlueprints(pb.sceneBlueprints, popularCharacter.value),
   )
@@ -130,7 +132,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
       // 立即恢复 nene/natsume 的 model/lora 白名单，不等 15s 状态轮询。
       void refreshAnimaBackend()
       syncManagedRoute()
-      flash('已切回工作室角色（宁宁 / 夏目 LoRA 路径）')
+      flash(animaState.value.characterLoraEnabled === false ? '已切回工作室角色（无角色 LoRA）' : '已切回工作室角色（宁宁 / 夏目 LoRA 路径）')
       return
     }
     if (source === 'popular' && !pb.isPopular) {
@@ -274,10 +276,10 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
     flash('已选用刚准备的 Anima 底模，可以开始创作')
   }
   async function applyManagedRoute(options: { silent?: boolean } = {}): Promise<void> {
-    const selection = JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode])
+    const selection = JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode, animaState.value.characterLoraEnabled])
     const route = await refreshManagedRoute()
     if (!options.silent) preparedSelection = ''
-    if (generationBusy.value || selection !== JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode])
+    if (generationBusy.value || selection !== JSON.stringify([pb.subject, pb.char, pb.sceneId, pb.directorMode, animaState.value.characterLoraEnabled])
       // An unloaded selected blueprint may own a generated recipe. Do not
       // replace its saved settings while its catalog is loading or failed.
       || (options.silent && (currentGeneratedRecipe()

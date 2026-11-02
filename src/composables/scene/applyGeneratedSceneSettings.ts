@@ -71,7 +71,11 @@ export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPo
     if (typeof parameters.hiresFix === 'boolean') patch.hiresFix = parameters.hiresFix
     const seed = number(parameters.seed); if (seed !== undefined) patch.seed = seed >= 0 ? seed : null
     const binding = endfieldAnimaBinding(pb.isPopular && pb.subject.kind === 'popular' ? pb.subject.characterId : null, recipe.engine, patch.modelId ?? animaState.value.modelId)
-    const loraId = pb.isPopular ? binding?.loraId : parameters.loraId
+    const loraId = pb.isPopular ? binding?.loraId : parameters.noLora === true ? undefined : parameters.loraId
+    if (!pb.isPopular && (pb.char === 'nene' || pb.char === 'natsume') && recipe.engine === 'anima') {
+      if (parameters.noLora === true) patch.characterLoraEnabled = false
+      else if (loraId || parameters.noLora === false) patch.characterLoraEnabled = true
+    }
     if (recipe.engine === 'anima' && loraId) {
       patch.loraId = loraId
       if (binding && parameters.loraStrength === undefined) patch.loraStrength = binding.loraStrength

@@ -30,7 +30,7 @@ export type { AnimaRequest } from './animaSessionContract'
 const BUSY_PHASES = ['submitting', 'running', 'cancelling']
 const INITIAL_STATE: AnimaGenerationState = {
   phase: 'idle', progress: null, elapsedSeconds: 0, progressText: '', currentNode: null, online: false, checkMsg: 'Anima 状态检查中…', models: [], loras: [], styleLoras: [], styleLoraId: '',
-  prompt: '', negative: '', modelId: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA',
+  prompt: '', negative: '', modelId: 'anima-miaomiao-v1.6', loraId: 'L_NENE_V21_ANIMA', characterLoraEnabled: true,
   loraStrength: 0.85, width: 832, height: 1216, steps: 30, cfg: 4.5,
   family: 'anima',
   sampler: 'euler', scheduler: 'normal', seed: null,
@@ -52,7 +52,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
     try { await saveDrawingSettings(state.value) }
     catch { options.flash('绘图参数尚未保存，桌宠暂时无法同步这次设置，请检查本机资料连接') }
   }
-  const editableKeys = ['family', 'modelId', 'loraId', 'loraStrength', 'styleLoraId', 'width', 'height',
+  const editableKeys = ['family', 'modelId', 'loraId', 'characterLoraEnabled', 'loraStrength', 'styleLoraId', 'width', 'height',
     'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresSteps', 'hiresCfg', 'hiresUpscaler', 'teaCache', 'teaCacheThresh'] as const
   // Observe direct v-model writes as well as patchState, excluding only our
   // synchronous backend reconciliation, never the time spent awaiting status.
@@ -104,7 +104,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         ...(available && state.value.loraId !== binding.loraId ? { loraStrength: binding.loraStrength } : {}) })
       return
     }
-    if (character === 'triad' || character === 'none') {
+    if (character === 'triad' || character === 'none' || state.value.characterLoraEnabled === false) {
       patchState({ loraId: '' })
       return
     }
@@ -170,7 +170,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const stored = readDrawingSettings(family)
       reconcilingSettings = true
       try {
-        patchState({ ...stored, family })
+        patchState({ ...stored, family, characterLoraEnabled: stored?.characterLoraEnabled ?? true })
         defaultsAppliedFor = stored?.modelId ?? null
         teaCacheSettingsTouched = Boolean(stored); loraStrengthTouched = Boolean(stored)
       } finally { reconcilingSettings = false }
@@ -212,7 +212,7 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       const endfield = endfieldAnimaBinding(options.getPopularCharacterId?.(), family, modelIdCurrent)
       const familyLoras = family === 'krea2' ? [] : options.isPopular()
         ? loras.filter(lora => lora.id === endfield?.loraId) : loras
-      const loraId = familyLoras.some(lora => lora.id === state.value.loraId)
+      const loraId = !options.isPopular() && state.value.characterLoraEnabled === false ? '' : familyLoras.some(lora => lora.id === state.value.loraId)
         ? state.value.loraId
         : (familyLoras[0]?.id || '')
       const selectedModel = visibleModels.find(model => model.id === modelIdCurrent)

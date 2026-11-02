@@ -97,7 +97,7 @@ export function usePromptWorkspace() {
         await tempResultTools.handleAnimaResult(result);
     }
     // ── Prompt 组装（统一出口，消除视图三元分发）──────────────────────
-    const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => animaState.value.loraId));
+    const unified = useUnifiedPromptAssembly(pb, sd.checkpoint, drawEngine, animaModelId, computed(() => !pb.isPopular && animaState.value.characterLoraEnabled === false ? '' : animaState.value.loraId));
     const { currentTraits, modelProfile, loraSpecs, negativePrompt } = unified.studio;
     const livePrompt = unified.positivePrompt;
     const effectiveNegative = unified.negativePrompt;
@@ -314,7 +314,7 @@ export function usePromptWorkspace() {
             return engineStatusText.value;
         if (drawEngine.value === 'anima' && !pb.isPopular && !pb.isUnbound) {
             if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) return '当前模型不支持双角色，请选择单个角色';
-            if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && !animaState.value.loraId) return '缺少角色 LoRA，请准备角色包，或选择自由画面';
+            if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && (animaState.value.characterLoraEnabled === false ? !currentCapabilities.value.noLora : !animaState.value.loraId)) return animaState.value.characterLoraEnabled === false ? '当前底模不支持无角色 LoRA，请更换底模或启用角色 LoRA' : '缺少角色 LoRA，请准备角色包，或关闭角色 LoRA';
         }
         return '';
     });
@@ -499,8 +499,8 @@ export function usePromptWorkspace() {
         }),
         displayResultUrl, generationBusy, generationPresentation, animaState, drawEngine, upscaleCurrentResult,
         generationPresetSummary, managedRoute, applyManagedRoute, reuseSuccessfulRecipe,
-        engineTitle, setDrawEngine, supportsDualCharacter, BUSY_HINT, selectAnimaModel,
-        displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState,
+        engineTitle, setDrawEngine, supportsDualCharacter, currentCapabilities, BUSY_HINT, selectAnimaModel,
+        displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, refreshAnimaBackend,
         retryAnima, vramHint, vramLevel, baseResolutionRisk, baseResolutionHint,
         canUseFaceDetailer,
     };

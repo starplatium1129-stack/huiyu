@@ -6,6 +6,8 @@ import crypto = require('node:crypto');
 import { execFileSync } from 'node:child_process';
 const { withWorkspaceLock }: typeof import('../lib/workspace-lock') = require('../lib/workspace-lock');
 const { copyRustPayload, runtimeBuild }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
+const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalog-snapshot');
+const { includeAsset }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
 import safe = require('../lib/delivery-paths');
 import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
 type Logger = (message: string) => void;
@@ -14,6 +16,9 @@ const ROOT = path.resolve(__dirname, '../..');
 const ENTRIES = ['docs', 'data', 'dist', 'assets', 'tools'];
 const DATA_ROOTS=new Set(['character-reference-standards.json','character-reference-view.json','characters.json','curation.json','loras.json','popular-characters.json','popular-onboarding.json','presets.json','prompt-pinned-scenes.json','retired-scenes.json','scene-blueprints.json','scenes-core.json','scenes-index.json','scenes-natsume.json','scenes-nene.json','scenes-shared.json','scenes.json','tags-dictionary.json','tags.json']);
 const DATA_SHARDS=new Set(['catalog','blueprints','popular','references','scenes','tags']);
+// These HTTP responses come from Catalog::projection, before static files.
+// Keep raw products for native maintenance and remote publication readers.
+const CATALOG_PROJECTED_DATA=new Set(['characters.json','popular-characters.json','scene-blueprints.json','curation.json','tags.json','tags-dictionary.json','loras.json','scenes.json','scenes-nene.json','scenes-natsume.json','scenes-shared.json','scenes-core.json','scenes-index.json']);
 const OFFLINE_TOOLS = ['Install-OfflineResources.cmd', 'offline-resource-assistant.ps1', 'install-offline-resources.ps1', 'offline-resource-job.ps1'];
 const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','voxcpm-server.py','install-translation-model.ps1', ...OFFLINE_TOOLS]);
 const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
@@ -27,10 +32,16 @@ function includeTools(parts:string[],file:string):boolean {
   if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);
   return parts.length===1&&TOOLS.has(parts[0].replace(/\.(?:br|gz)$/i,''));
 }
-function includeData(parts:string[],file:string):boolean {
+function includeData(parts:string[],file:string,catalogSnapshot=false):boolean {
   if(parts.some(part=>part.startsWith('.')))return false;
+  if(catalogSnapshot&&parts.length===1&&/\.(?:br|gz)$/i.test(parts[0])&&CATALOG_PROJECTED_DATA.has(parts[0].replace(/\.(?:br|gz)$/i,'')))return false;
+  // Current installs seed SQLite from the validated snapshot. Legacy shards
+  // remain available to old source workspaces, never as a second bundled seed.
+  if(catalogSnapshot&&['blueprints','popular','scenes'].includes(parts[0]))return false;
   if(parts.length===1&&DATA_SHARDS.has(parts[0]))return fs.statSync(file).isDirectory();
-  if(DATA_SHARDS.has(parts[0]))return fs.statSync(file).isDirectory()||/\.json(?:\.(?:br|gz))?$/i.test(parts.at(-1)!);
+  // Nested shards are read locally; HTTP only exposes the named root products.
+  // Their precompressed copies have no desktop consumer.
+  if(DATA_SHARDS.has(parts[0]))return fs.statSync(file).isDirectory()||/\.json$/i.test(parts.at(-1)!);
   return parts.length===1&&DATA_ROOTS.has(parts[0].replace(/\.(?:br|gz)$/i,''));
 }
 function copyDir(src: string, dest: string, include: (file: string) => boolean = () => true) {
@@ -68,6 +79,7 @@ function stageResources(options: StageOptions = {}) {
   if (!['full', 'base'].includes(profile)) throw Error('Resource profile must be full or base');
   const buildProfile = options.buildProfile || 'release';
   runtimeBuild(root, buildProfile); // Fail before replacing or copying anything if source/executable binding is stale.
+  const catalogSnapshot = catalog.read(root) !== null;
   for (const name of OFFLINE_TOOLS) {
     const file = safe.resolveSafe(root, `tools/${name}`);
     if (!fs.statSync(file).isFile() || fs.statSync(file).size === 0) throw Error(`Missing offline resource assistant: ${name}`);
@@ -81,9 +93,11 @@ function stageResources(options: StageOptions = {}) {
       const from = safe.resolveSafe(root, source);
       copyDir(from, path.join(gateway, source), file => {
         const rel = path.relative(from, file).split(path.sep);
-        if(source==='data'&&!includeData(rel,file))return false;
+        if(source==='data'&&!includeData(rel,file,catalogSnapshot))return false;
         if(source==='tools'&&!includeTools(rel,file))return false;
-        if (source === 'assets' && ['character-references', 'live2d-candidates'].includes(rel[0])) return false;
+        if (source === 'assets' && !includeAsset(rel.join('/'))) return false;
+        // Promotional screenshots are referenced only by repository READMEs.
+        if (source === 'docs' && rel[0] === 'images' && rel[1] === 'software-preview') return false;
         return !/\.(?:[cm]?ts|map)$/i.test(file) && !['node_modules', '.git', '__pycache__'].includes(path.basename(file));
       });
       logger(`[stage] ${source} -> gateway/${source}`);

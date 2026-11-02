@@ -7,6 +7,7 @@ export type StudioCharacter = 'nene' | 'natsume' | 'triad' | 'none'
 export interface DrawingRouteInput {
   subjectKind: 'studio' | 'popular'
   character: StudioCharacter
+  characterLoraEnabled?: boolean
   popularCharacterId?: string | null
   recommendedModelId?: string | null
 }
@@ -109,18 +110,19 @@ export function recommendDrawingRoute(input: DrawingRouteInput): DrawingRouteRec
   }
 
   const studio = STUDIO_LORA[input.character]
+  const useLora = input.characterLoraEnabled !== false
   return {
     id: 'studio-single',
     engine: 'anima',
     modelId: 'anima-miaomiao-v1.6',
-    loraId: studio.loraId,
+    loraId: useLora ? studio.loraId : '',
     generationCharacter: studio.generationCharacter,
     promptFormat: 'anima-tags',
     title: '角色高质量路线',
-    summary: `MiaoMiao Harem v1.6 · ${studio.label} · 模型原生标签`,
+    summary: `MiaoMiao Harem v1.6 · ${useLora ? studio.label : '无角色 LoRA'} · 模型原生标签`,
     reasons: [
-      '优先使用当前角色已验证的高质量 LoRA',
-      '采用 MiaoMiao v1.6 对应的模型 profile 与角色绑定',
+      useLora ? '优先使用当前角色已验证的高质量 LoRA' : '通过角色与作品标签描述人物身份',
+      '采用 MiaoMiao v1.6 对应的模型 profile 与角色设定',
       '底模、Prompt 结构和稳定参数自动保持一致',
     ],
     experimental: false,

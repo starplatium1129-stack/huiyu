@@ -85,6 +85,7 @@ export interface AnimaResultContext {
   blueprintId?: string | null
   sceneId?: string | null
   story?: string
+  noLora?: boolean
   /** 工作室角色（nene/natsume/triad）；恢复临时成片时据此还原引擎守卫前置。 */
   char?: string
 }
@@ -113,6 +114,8 @@ export interface AnimaGenerationState {
   negative: string
   modelId: string
   loraId: string
+  /** User preference for studio characters; omitted in older saved settings. */
+  characterLoraEnabled?: boolean
   loraStrength: number
   family: 'anima' | 'krea2'
   width: number

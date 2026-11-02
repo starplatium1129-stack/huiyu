@@ -157,7 +157,7 @@ function publishRelease(version: any, head: any, files: any) {
   const tag = releaseTag(version);
   const baseNotes = path.join(ROOT, 'docs/releases', `${tag}.md`);
   if (!fs.existsSync(baseNotes)) throw new Error(`缺少版本说明：${baseNotes}`);
-  const packageHelp = `> ${FULL_ONLY ? '本版只提供一个 **full 完整安装包**，用于首次安装、升级与修复。' : '新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。'}样张素材独立提供。\n> 使用部署脚本修复时，请保留安装包旁的同名 \`.deployment.json\`；它记录安装包及安装后文件身份。\n\n`;
+  const packageHelp = `> ${FULL_ONLY ? '本版只提供一个 **full 完整安装包**，用于首次安装、升级与修复。' : '新用户或资源修复请选择 **full 完整包**；已有完整安装请选择 **upgrade 轻量升级包**。'}样张素材独立提供。\n> 如果电脑尚未安装 WebView2，完整包需要联网安装该运行库。使用部署脚本修复时，请保留安装包旁的同名 \`.deployment.json\`；它记录安装包及安装后文件身份。\n\n`;
   const notes = (manual ? `${MANUAL_MARKER}\n> 本次为手动安装版：自动更新通道继续保留上一份已签名版本，待原签名主机补签后启用。安装包未签名，SHA-256 用于文件完整性校验。\n\n` : '') + packageHelp + fs.readFileSync(baseNotes, 'utf8');
   const outputDir = OUT_DIR;
   fs.mkdirSync(outputDir, { recursive: true });
@@ -261,8 +261,8 @@ async function main() {
   const artifact = artifacts[artifacts.length - 1];
   binding.verifyBuild(ROOT, path.join(BUNDLE_DIR, artifact.exe), 'release');
   const installerScript = fs.readFileSync(path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), 'utf8');
-  if (!installerScript.includes('SetCompressor /SOLID "lzma"') || !installerScript.includes('!define INSTALLWEBVIEW2MODE "offlineInstaller"') || installerScript.includes('Function GameCheckUpgradeResources')) {
-    fail('发行需要带 WebView2 的 LZMA 完整包；本机升级包或旧无压缩包不可复用，请重新运行 release:desktop');
+  if (!installerScript.includes('SetCompressor /SOLID "lzma"') || !installerScript.includes('!define INSTALLWEBVIEW2MODE "embedBootstrapper"') || installerScript.includes('Function GameCheckUpgradeResources')) {
+    fail('发行需要带 WebView2 联网安装引导的 LZMA 完整包；本机升级包或旧安装包不可复用，请重新运行 release:desktop');
   }
   if (PUBLISH) assertNativeReleaseIntegrity(path.join(ROOT, 'desktop-tauri/src-tauri/resources/gateway'));
 
@@ -301,7 +301,7 @@ async function main() {
       if (variant.kind === 'upgrade' || FULL_ONLY) { upgradeSignature = signature; upgradeName = exeName; }
     }
   }
-  console.log(upgrade ? `[release-desktop-update] 升级包复用 ${upgrade.retainedFiles} 个基础素材文件（${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB），完整包保留素材与 WebView2` : '[release-desktop-update] 仅生成完整安装包，保留素材、WebView2 与签名更新能力');
+  console.log(upgrade ? `[release-desktop-update] 升级包复用 ${upgrade.retainedFiles} 个基础素材文件（${(upgrade.retainedBytes / 1024 / 1024).toFixed(1)} MiB），完整包保留素材与 WebView2 联网安装引导` : '[release-desktop-update] 仅生成完整安装包，保留素材、WebView2 联网安装引导与签名更新能力');
   if (MANUAL) {
     if (PUBLISH) publishRelease(version, assertPublishReady(version), files);
     console.log(`[release-desktop-update] ${version} 手动安装包已生成，自动更新清单未修改`);

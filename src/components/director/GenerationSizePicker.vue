@@ -27,11 +27,20 @@ const sizeGroups: StudioSelectGroup[] = [
     { value: '1344x768', label: '1344×768' },
   ] },
 ]
-const sizeOptions = computed(() => props.animaSizes.map(value => ({ value, label: value.replace('x', ' × ') })))
+const mossSizeLabels: Record<string, string> = {
+  '768x1280': '标准竖幅',
+  '1280x1280': '标准方形',
+  '960x1536': '大尺寸竖幅',
+  '1536x1536': '大尺寸方形',
+}
 const cards = computed(() => props.animaSizes.map(value => {
   const [width, height] = value.split('x').map(Number)
-  return { value, label: width === height ? '方形' : width < height ? '竖幅' : '横幅', ratio: width / height }
+  const shape = width === height ? '方形' : width < height ? '竖幅' : '横幅'
+  return { value, label: props.engine === 'moss' ? mossSizeLabels[value] || shape : shape, ratio: width / height }
 }))
+const sizeOptions = computed(() => cards.value.map(({ value, label }) => ({ value,
+  label: props.engine === 'moss' ? `${label} · ${value.replace('x', ' × ')}` : value.replace('x', ' × '),
+})))
 function change(value: string | number) { if (value !== '') emit('update:size', String(value)) }
 </script>
 <template>
@@ -45,7 +54,7 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
         <ArchiveIcon v-if="size === card.value" class="size-picker-check" name="success" />
       </button>
     </div>
-    <p v-if="!compact">画幅影响下一次输出，参考图保持原始比例。</p>
+    <p v-if="!compact">{{ engine === 'moss' ? '提供标准与大尺寸的竖幅、方形预设，影响下一次输出。' : '画幅影响下一次输出，参考图保持原始比例。' }}</p>
   </div>
 </template>
 <style scoped>

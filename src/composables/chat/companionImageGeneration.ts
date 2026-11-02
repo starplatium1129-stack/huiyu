@@ -65,7 +65,7 @@ async function prepare(args: CompanionImageArgs, options: { referenceImage?: str
   if (!studio) await pb.loadPopularCharacter(args.character)
   signal.throwIfAborted()
   const binding = endfieldAnimaBinding(studio ? null : args.character, family, model.id)
-  state.loraId = family === 'krea2' ? '' : studio ? ANIMA_LORA_BY_CHARACTER[args.character as 'nene' | 'natsume'] : binding?.loraId ?? ''
+  state.loraId = family === 'krea2' ? '' : studio ? state.characterLoraEnabled === false ? '' : ANIMA_LORA_BY_CHARACTER[args.character as 'nene' | 'natsume'] : binding?.loraId ?? ''
   if (binding && saved?.loraId !== binding.loraId) state.loraStrength = binding.loraStrength
   if (state.loraId) {
     await useSceneStore().loadLoraCatalog()

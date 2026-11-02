@@ -25,9 +25,9 @@ namespace Huiyu.Upgrade {
     const string FullPackage = "请下载本版本的完整安装包进行安装或修复。";
 
     public static Requirements Read(Stream stream) {
-      var value = (Requirements)new DataContractJsonSerializer(typeof(Requirements)).ReadObject(stream);
+      var value = (Requirements)new DataContractJsonSerializer(typeof(Requirements), new DataContractJsonSerializerSettings { MaxItemsInObjectGraph = 500000 }).ReadObject(stream);
       Version parsed;
-      if (value.schemaVersion != 1 || !Version.TryParse(value.version, out parsed) || value.assets == null || value.assets.Length == 0 || value.assets.Length > 10000)
+      if ((value.schemaVersion != 1 && value.schemaVersion != 2) || !Version.TryParse(value.version, out parsed) || value.assets == null || value.assets.Length == 0 || value.assets.Length > (value.schemaVersion == 2 ? 50000 : 10000))
         throw new IOException("升级包资源清单无效。");
       return value;
     }
@@ -62,7 +62,10 @@ namespace Huiyu.Upgrade {
         if (asset == null || String.IsNullOrEmpty(asset.path) || !seen.Add(asset.path) || asset.bytes < 0 || asset.sha256 == null || !System.Text.RegularExpressions.Regex.IsMatch(asset.sha256, "^[a-f0-9]{64}$"))
           throw new IOException("升级包资源条目无效。");
         var parts = asset.path.Split('/');
-        if (parts.Length < 4 || parts[0] != "gateway" || parts[1] != "assets" || !new [] { "characters", "live2d", "chibi", "dual-poses", "particles" }.Contains(parts[2]) ||
+        bool approvedPath = parts.Length >= 4 && parts[0] == "gateway" && parts[1] == "assets" && new [] { "characters", "live2d", "chibi", "dual-poses", "particles" }.Contains(parts[2]);
+        if (requirements.schemaVersion == 2)
+          approvedPath = asset.path == "gateway/huiyu-runtime.exe" || parts.Length >= 3 && parts[0] == "gateway" && new [] { "assets", "data", "dist", "docs", "tools", "scripts", "native-licenses", "native" }.Contains(parts[1]);
+        if (!approvedPath ||
             parts.Any(p => String.IsNullOrEmpty(p) || p == "." || p == ".." || p.IndexOfAny(new [] { ':', '\\', '\0', '\r', '\n' }) >= 0 || p.EndsWith(".") || p.EndsWith(" ")))
           throw new IOException("升级包资源路径无效。");
         string file = Path.GetFullPath(Path.Combine(root, asset.path.Replace('/', Path.DirectorySeparatorChar)));

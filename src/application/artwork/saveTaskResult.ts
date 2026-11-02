@@ -46,6 +46,7 @@ export async function saveTaskResult(task: TaskRecord, index: number, deps: {
       blueprintId: typeof context.blueprintId === 'string' ? context.blueprintId : undefined,
       scene: context.characterId ? typeof context.blueprintId === 'string' ? context.blueprintId : null : typeof context.sceneId === 'string' ? context.sceneId : null,
       story: String(context.story ?? history.story ?? ''), subject: context.characterId ? 'popular' : 'studio',
+      noLora: typeof context.noLora === 'boolean' ? context.noLora : typeof history.noLora === 'boolean' ? history.noLora : undefined,
       favorite: false, rating: {}, version: 1, taskId: task.taskId, outputIndex: index,
     }
     // Persist the recorded subset. Required history-view defaults must not turn

@@ -191,6 +191,7 @@ namespace Ayaki.Installer {
       try {
         int code = await InstallEngine.Run(options, new System.Progress<InstallProgress>(Progress), cancellation.Token);
         if (code == 1618 || code == 1603) throw new IOException("绘遇或资源任务仍在运行，或无法确认程序已退出。请保存工作，从托盘菜单完全退出绘遇，等待资源任务结束，再点击重新尝试。");
+        if (code == 17001) throw new IOException("WebView2 运行库安装未完成。请连接网络后重试，或先手动安装 WebView2，再重新运行安装包。");
         if (code != 0) throw new IOException("安装未完成（代码 " + code + "）。请确认已从托盘完全退出绘遇，再重试或检查安装位置。");
         SetComplete();
         if (options.Passive || closeRequested) View.Close();
