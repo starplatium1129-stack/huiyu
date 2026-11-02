@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kama_fate",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "kama_fate",
     "profile": {
@@ -975,8 +975,7 @@
         "1boy"
       ],
       "characterTokens": [
-        "kama_(fate)",
-        "adult Kama"
+        "kama_(fate)"
       ],
       "copyrightTokens": [
         "fate/grand_order"

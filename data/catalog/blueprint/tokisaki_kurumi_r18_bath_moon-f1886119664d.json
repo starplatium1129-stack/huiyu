@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_bath_moon",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_bath_moon",
     "title": "时崎狂三 · 血月浴池",
@@ -25,7 +25,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Kurumi reclines on the stone step in the rose-petal bath, turning toward the viewer through mist; blood-moon light meets floating candlelight.",
+    "promptProse": "Kurumi reclines on the stone step in the rose-petal bath, turning toward the viewer through mist; blood-moon light meets floating candlelight.",
     "promptTokens": [
       "black lace",
       "wet clothes",

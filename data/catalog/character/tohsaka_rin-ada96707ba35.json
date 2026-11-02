@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tohsaka_rin",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "tohsaka_rin",
     "profile": {
@@ -994,8 +994,7 @@
       "characterTokens": [
         "tohsaka rin",
         "tohsaka_rin",
-        "Rin",
-        "adult Rin"
+        "Rin"
       ],
       "copyrightTokens": [
         "fate/stay_night"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makima",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "makima",
     "profile": {
@@ -317,8 +317,7 @@
       ],
       "characterTokens": [
         "makima (chainsaw man)",
-        "Makima",
-        "adult Makima"
+        "Makima"
       ],
       "copyrightTokens": [
         "chainsaw man"

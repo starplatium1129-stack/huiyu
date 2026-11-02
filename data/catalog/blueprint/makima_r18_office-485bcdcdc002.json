@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_office",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 415,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "makima_r18_office",
     "title": "玛奇玛 · 反锁会议室·百叶窗夕照与正装黑领带",
@@ -45,7 +45,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Makima",
       "nude",
       "black necktie",
       "crossed legs",

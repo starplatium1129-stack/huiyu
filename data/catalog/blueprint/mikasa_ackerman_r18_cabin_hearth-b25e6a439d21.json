@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_r18_cabin_hearth",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 988,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "木屋阳光窗台边解衣倚坐回眸凝视",
     "adult": true,
@@ -30,7 +30,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Mikasa",
       "nude",
       "red scarf",
       "black boots",

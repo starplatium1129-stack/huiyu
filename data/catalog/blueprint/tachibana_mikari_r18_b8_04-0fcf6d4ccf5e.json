@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_r18_b8_04",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1688,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "tachibana_mikari_r18_b8_04",
     "title": "橘美花莉 · 自家卧房的青梅竹马自持 ·「从小到大……心里装的人从来就只有你啊」",
@@ -29,7 +29,7 @@
       "brown hair",
       "lamplight"
     ],
-    "promptProse": "Adult Mikari rests beneath the cotton sheets with her chestnut hair across the pillow, looking toward the framed childhood photo on her nightstand in the amber lamplight.",
+    "promptProse": "Mikari rests beneath the cotton sheets with her chestnut hair across the pillow, looking toward the framed childhood photo on her nightstand in the amber lamplight.",
     "promptTokens": [
       "adult",
       "1girl",

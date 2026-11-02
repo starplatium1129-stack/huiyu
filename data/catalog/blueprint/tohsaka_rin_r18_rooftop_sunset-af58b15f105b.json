@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_rooftop_sunset",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "tohsaka_rin_r18_rooftop_sunset",
     "title": "远坂凛 · 天台夕照",
@@ -25,9 +25,8 @@
       "evening",
       "intimate"
     ],
-    "promptProse": "Adult Rin holds the wire mesh with one hand and reaches behind with the other to free her blouse, one breast exposed and a knee on the service box.",
+    "promptProse": "Rin holds the wire mesh with one hand and reaches behind with the other to free her blouse, one breast exposed and a knee on the service box.",
     "promptTokens": [
-      "adult Rin",
       "red fitted blouse",
       "knee up",
       "fence",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_r18_mansion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "tohsaka_rin_r18_mansion",
     "title": "远坂凛 · 魔术工房·暖炉夕照与红毛衣松垮过膝袜",
@@ -44,7 +44,6 @@
       "facing viewer",
       "looking directly at viewer",
       "eye contact",
-      "adult Rin",
       "red virgin killer sweater",
       "open-side sweater",
       "sideboob",

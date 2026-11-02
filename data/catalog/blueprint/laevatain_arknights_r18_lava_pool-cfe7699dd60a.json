@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_lava_pool",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "赤身伫立在沸腾熔池边，红光勾勒身姿",
     "adult": true,
@@ -27,7 +27,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Laevatain",
       "nude",
       "standing",
       "open arms",

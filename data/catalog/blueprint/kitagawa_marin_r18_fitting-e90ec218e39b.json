@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_fitting",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 498,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "cos 装半褪站在镜前",
     "adult": true,
@@ -27,7 +27,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Marin",
       "cosplay",
       "white sailor blouse",
       "lavender pleated skirt",

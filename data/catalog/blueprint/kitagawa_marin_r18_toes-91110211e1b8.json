@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_toes",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 504,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "坐在粉白柔软床垫上，双膝自然弯曲，手中拿着指甲油刷，晶莹粉嫩的十趾整齐舒展，微笑着向你展示",
     "adult": true,
@@ -26,11 +26,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "nsfw_nude",
-    "promptProse": "Adult Marin steadies her raised foot with one hand and paints her toenails pink with the other on the hotel bed. Her toes remain sharply focused against the softened bedding; warm bedside light and the small neon nightlight catch the glitter in the pink polish.",
+    "promptProse": "Marin steadies her raised foot with one hand and paints her toenails pink with the other on the hotel bed. Her toes remain sharply focused against the softened bedding; warm bedside light and the small neon nightlight catch the glitter in the pink polish.",
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Marin",
       "nude",
       "anklet",
       "toe separators",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_lace_bedroom",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 902,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "跪坐蕾丝床品中央，白色睡裙半褪，向画面外同伴张开双臂。",
     "adult": true,
@@ -30,7 +30,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Mika",
       "white nightgown",
       "lace trim",
       "open clothes",

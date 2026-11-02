@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mako_r18_engawa_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1143,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "独自跨坐缘侧坐垫，一手撑木边，另一手留在身下",
     "adult": true,
@@ -25,7 +25,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "ninja_suit",
-    "promptProse": "Adult Mako straddles the veranda cushion with her shinobi wrap loosened, gripping the wooden edge while fingering herself. Garden moonlight and warm golden paper-lantern light beneath the eaves fall across her and the wooden veranda.",
+    "promptProse": "Mako straddles the veranda cushion with her shinobi wrap loosened, gripping the wooden edge while fingering herself. Garden moonlight and warm golden paper-lantern light beneath the eaves fall across her and the wooden veranda.",
     "promptTokens": [
       "pleated wrap skirt",
       "black bike shorts",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_bathrobe_morning",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "makima_r18_bathrobe_morning",
     "title": "玛奇玛 · 晨袍沙发",
@@ -29,7 +29,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Makima",
       "white silk robe",
       "off shoulder",
       "sitting",

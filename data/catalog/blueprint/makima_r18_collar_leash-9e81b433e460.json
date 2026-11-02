@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_collar_leash",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 421,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "makima_r18_collar_leash",
     "title": "玛奇玛 · 支配者的游戏·项圈与温柔低语",
@@ -33,7 +33,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Makima",
       "nude",
       "black leather collar",
       "metal studs",

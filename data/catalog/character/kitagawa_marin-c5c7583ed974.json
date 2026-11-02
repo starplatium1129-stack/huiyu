@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kitagawa_marin",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "kitagawa_marin",
     "profile": {
@@ -365,8 +365,7 @@
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
         "kitagawa_marin",
-        "Marin",
-        "adult Marin"
+        "Marin"
       ],
       "copyrightTokens": [
         "sono_bisque_doll_wa_koi_wo_suru"

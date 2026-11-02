@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_field_cabin",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1000,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "晴空木窗前解开衬衫微风吹拂",
     "adult": true,
@@ -27,7 +27,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Historia",
       "open white shirt",
       "bare breasts",
       "white trousers",

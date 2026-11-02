@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_bamboo_grove",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 658,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "侧卧竹林石台锦垫，一手轻勾画面外同伴衣角，散落酒盏在身旁。",
     "adult": true,
@@ -30,7 +30,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Ling",
       "nude",
       "on side",
       "wine cups",

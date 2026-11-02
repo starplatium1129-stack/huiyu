@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makinohara_shouko",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "makinohara_shouko",
     "profile": {
@@ -394,8 +394,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "makinohara_shouko",
-        "adult Shouko"
+        "makinohara_shouko"
       ],
       "copyrightTokens": [
         "seishun_buta_yarou"

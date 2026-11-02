@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_rooftop_moon",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 399,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "正面微侧站立，一手捏住胸前卡死的拉链、一手绷紧裙摆，领口与侧缝在相反受力下敞开",
     "adult": true,
@@ -23,11 +23,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "navy_front_zip_gown",
-    "promptProse": "Adult Mikoto pulls the stuck zipper and dress hem in opposite directions, opening the neckline and side seam over black lace. Moonlight through the floor-length window meets city neon and small electric arcs along the gown edge.",
+    "promptProse": "Mikoto pulls the stuck zipper and dress hem in opposite directions, opening the neckline and side seam over black lace. Moonlight through the floor-length window meets city neon and small electric arcs along the gown edge.",
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Mikoto",
       "navy evening dress",
       "stuck front zipper",
       "black lace lingerie",

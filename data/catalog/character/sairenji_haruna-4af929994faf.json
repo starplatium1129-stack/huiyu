@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sairenji_haruna",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 167,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "sairenji_haruna",
     "profile": {
@@ -604,7 +604,6 @@
       ],
       "characterTokens": [
         "sairenji_haruna",
-        "adult Haruna",
         "Haruna Sairenji"
       ],
       "copyrightTokens": [

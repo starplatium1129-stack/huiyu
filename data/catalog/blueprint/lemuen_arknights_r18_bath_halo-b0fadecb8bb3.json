@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_bath_halo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 563,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "action": "倚着浴缸边沿，湿发贴在肩头",
     "adult": true,
@@ -27,7 +27,6 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "adult Lemuen",
       "nude",
       "reclining",
       "reaching out",

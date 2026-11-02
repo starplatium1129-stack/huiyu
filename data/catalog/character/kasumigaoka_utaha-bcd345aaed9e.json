@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasumigaoka_utaha",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
   "data": {
     "id": "kasumigaoka_utaha",
     "profile": {
@@ -371,8 +371,7 @@
       ],
       "characterTokens": [
         "kasumigaoka_utaha",
-        "Utaha Kasumigaoka",
-        "adult Utaha Kasumigaoka"
+        "Utaha Kasumigaoka"
       ],
       "copyrightTokens": [
         "saenai_heroine_no_sodatekata"
