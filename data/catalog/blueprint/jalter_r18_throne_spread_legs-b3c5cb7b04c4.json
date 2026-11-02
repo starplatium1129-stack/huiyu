@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_throne_spread_legs",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "jalter_r18_throne_spread_legs",
     "characterId": "jeanne_alter",
@@ -72,7 +72,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "iconic"
     ],

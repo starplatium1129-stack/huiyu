@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_lab_night",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 552,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "坐在实验台边，外套大衣半褪",
     "adult": true,
@@ -41,7 +41,7 @@
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "laboratory",
       "night",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_private_onsen_passionate_soak",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2230,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "rossweisse_private_onsen_passionate_soak",
     "characterId": "rossweisse",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Rossweisse soaking in a steamy hot spring with wet silver hair, blushing shyly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

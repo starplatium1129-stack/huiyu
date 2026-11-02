@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_dorm_bed_tearful_love_confession",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2241,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:21:34.570070100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kei_dorm_bed_tearful_love_confession",
     "characterId": "karuizawa_kei",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "Kei sitting on her dorm bed in an open blazer uniform with glistening tearful eyes, blushing sweetly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

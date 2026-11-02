@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_night_balcony_breeze_relax",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2627,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "amiya_night_balcony_breeze_relax",
     "characterId": "amiya",
@@ -47,6 +47,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

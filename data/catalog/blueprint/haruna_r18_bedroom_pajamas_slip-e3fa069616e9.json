@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_r18_bedroom_pajamas_slip",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1767,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "haruna_r18_bedroom_pajamas_slip",
     "title": "西连寺春菜 · 暖光卧室的拘谨凝视",
@@ -59,6 +59,7 @@
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "Both palms rest on her lap beneath the loose collar."
+    "animaCaption": "Both palms rest on her lap beneath the loose collar.",
+    "sampleRating": "R15"
   }
 }

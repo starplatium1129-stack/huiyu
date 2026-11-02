@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_canopy_bed_royal_devotion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2201,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "la_folia_canopy_bed_royal_devotion",
     "characterId": "la_folia_rihavein",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "La Folia reclining on an ornate canopy bed in a royal palace chamber, smiling with quiet devotion.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

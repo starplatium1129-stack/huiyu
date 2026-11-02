@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_tatami_drunken_straddle_lap",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2205,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kuroka_tatami_drunken_straddle_lap",
     "characterId": "kuroka",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Kuroka lounging on tatami in a loose black kimono with twitching cat ears and twin tails.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

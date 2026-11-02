@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_bath_white_lace_solo",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 241,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "jeanne_nsfw_bath_white_lace_solo",
     "title": "圣女贞德 · 圣泉湿身的白蕾丝独奏",
@@ -64,7 +64,7 @@
     ],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "sensual_white_lace_lingerie",

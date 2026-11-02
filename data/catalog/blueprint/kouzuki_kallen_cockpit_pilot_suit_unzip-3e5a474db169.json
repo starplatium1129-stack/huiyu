@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_cockpit_pilot_suit_unzip",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2684,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kouzuki_kallen_cockpit_pilot_suit_unzip",
     "characterId": "kouzuki_kallen",
@@ -38,6 +38,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

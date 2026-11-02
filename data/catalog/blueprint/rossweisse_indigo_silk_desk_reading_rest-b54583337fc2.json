@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_indigo_silk_desk_reading_rest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2766,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "rossweisse_indigo_silk_desk_reading_rest",
     "characterId": "rossweisse",
@@ -44,8 +44,9 @@
     "negativeTokens": [],
     "animaCaption": "1girl, solo, rossweisse, silver hair, off-shoulder indigo silk nightgown at wooden study desk in warm lamp glow.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

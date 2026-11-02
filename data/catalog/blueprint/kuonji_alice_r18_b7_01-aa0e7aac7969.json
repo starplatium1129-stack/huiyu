@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1633,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_01",
     "title": "久远寺有珠 · 维多利亚洋馆安乐椅的主控跨坐 ·「童话里的魔女……今夜为你打破纯洁之誓」",
@@ -49,7 +49,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

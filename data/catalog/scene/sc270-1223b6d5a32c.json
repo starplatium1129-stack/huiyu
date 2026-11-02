@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc270",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T07:50:17.611614700+00:00",
   "data": {
     "id": "sc270",
     "recommendedSize": "1344×768",
@@ -28,7 +28,7 @@
       "adult",
       "nene_r18"
     ],
-    "mature": true,
+    "mature": false,
     "location": "卧室",
     "weather": "晴",
     "camera": "官方CG横幅构图",
@@ -42,7 +42,7 @@
     "prompt": "nene_r18, adult, visual novel event CG, pov, foreshortening, 1girl, solo, nene_red_cardigan_uniform, lying, on back, navy pillow, open burgundy cardigan, open white shirt, pink lace panties, white frilled socks, bare legs, legs up, holding pink vibrator, embarrassed, looking at viewer, heavy blush, white bedding, <lora:ayachi_nene_v18_wd14:0.95>",
     "negative": "fused legs, closed legs, standing, sitting, full body distant shot, blue clothing",
     "storyJa": "【成人After Story・寧々】柔らかな光の中で、彼女は大切な人だけに本当の気持ちを見せる。「そんなに見つめないで……でも、今はそばにいて。」",
-    "rating": "R18",
+    "rating": "R15",
     "officialCgCandidate": "ocn15",
     "audit": {
       "reviewer": "direct-vision",

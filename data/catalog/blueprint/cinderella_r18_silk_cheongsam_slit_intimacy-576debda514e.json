@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cinderella_r18_silk_cheongsam_slit_intimacy",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1906,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "cinderella_r18_silk_cheongsam_slit_intimacy",
     "characterId": "cinderella_nikke",
@@ -52,7 +52,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],

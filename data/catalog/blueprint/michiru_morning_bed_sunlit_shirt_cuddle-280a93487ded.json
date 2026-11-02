@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_morning_bed_sunlit_shirt_cuddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2321,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "michiru_morning_bed_sunlit_shirt_cuddle",
     "characterId": "hyoudou_michiru",
@@ -35,8 +35,9 @@
     "negativeTokens": [],
     "animaCaption": "Michiru Hyoudou stroking partner hair in morning sheets with open shirt.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

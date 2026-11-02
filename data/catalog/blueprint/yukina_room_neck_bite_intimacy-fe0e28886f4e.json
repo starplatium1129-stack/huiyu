@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukina_room_neck_bite_intimacy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2193,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "yukina_room_neck_bite_intimacy",
     "characterId": "himeragi_yukina",
@@ -36,8 +36,9 @@
     "negativeTokens": [],
     "animaCaption": "Loosening her uniform collar on the futon in cool moonlight, she looks up with breathless sweet devotion.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

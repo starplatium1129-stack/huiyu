@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_lavender_onsen",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2005,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfitId": "evening_robe",
@@ -42,9 +42,9 @@
     "negativeTokens": [],
     "animaCaption": "Touko looking back gracefully through warm mist in a lavender onsen.",
     "isNsfw": false,
-    "rating": "R18",
-    "mature": true,
+    "rating": "R15",
+    "mature": false,
     "adult": true,
-    "sampleRating": "R18"
+    "sampleRating": "R15"
   }
 }

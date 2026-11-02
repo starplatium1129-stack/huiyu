@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_fireplace_night",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "frieren_r18_fireplace_night",
     "title": "芙莉莲 · 炉火暖夜的轻语",
@@ -65,7 +65,7 @@
     "nsfwProse": "",
     "adultArtistHint": null,
     "outfitId": "ivory_sleep_gown",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Sitting before the fireplace facing the viewer, her ivory sleep gown reveals her collarbone and shoulders in the warm hearth glow.",
     "coverageTags": [
       "iconic"

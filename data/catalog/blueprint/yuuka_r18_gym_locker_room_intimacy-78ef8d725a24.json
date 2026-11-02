@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_gym_locker_room_intimacy",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 924,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "坐在更衣室长凳上，运动背心与脖套白毛巾，双手递上运动水壶，双颊微红元气含羞直视观众",
     "adult": true,
@@ -59,7 +59,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "locker_room",
       "wooden_bench",

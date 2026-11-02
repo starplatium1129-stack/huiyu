@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_morning_bed_intertwined_blessing",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2237,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "asia_morning_bed_intertwined_blessing",
     "characterId": "asia_argento",
@@ -43,8 +43,9 @@
     "negativeTokens": [],
     "animaCaption": "Asia waking up on a sunlit white bed, smiling with heavenly innocence and golden hair.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

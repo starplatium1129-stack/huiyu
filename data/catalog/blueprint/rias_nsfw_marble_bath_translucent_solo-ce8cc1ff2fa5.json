@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_nsfw_marble_bath_translucent_solo",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1288,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "rias_nsfw_marble_bath_translucent_solo",
     "title": "莉雅丝 · 玫瑰浴池的水光湿身私语",
@@ -58,7 +58,7 @@
       "special_nsfw"
     ],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],

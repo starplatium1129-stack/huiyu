@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_cabin_quiet",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 582,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "坐在生活舱木椅前，双手端着温茶，银发与黑角在灯下生辉，面带羞怯浅笑直视观众",
     "adult": true,
@@ -56,7 +56,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cabin",
       "desk",

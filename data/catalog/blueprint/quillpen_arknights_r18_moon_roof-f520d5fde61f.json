@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_moon_roof",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 625,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "坐在屋顶瓦檐边，双腿轻荡，白衬衫被风轻卷，手握柠檬气泡水，月光羽翼展露纯真笑颜",
     "adult": true,
@@ -55,7 +55,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "rooftop",
       "night_sky",

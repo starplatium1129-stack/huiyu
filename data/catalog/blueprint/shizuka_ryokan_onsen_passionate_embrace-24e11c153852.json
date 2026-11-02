@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_ryokan_onsen_passionate_embrace",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2248,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "shizuka_ryokan_onsen_passionate_embrace",
     "characterId": "shizuka_hiratsuka",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "Shizuka relaxing in an outdoor hot spring with a cup of sake, smiling with mature warmth.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_nikke_camisole_night_moonlight_stretch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2703,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "scarlet_nikke_camisole_night_moonlight_stretch",
     "characterId": "scarlet_nikke",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "Scarlet sitting on tatami in a crimson camisole with her katana under moonlight.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

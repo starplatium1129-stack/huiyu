@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_bath_towels",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 543,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "裹着浴巾擦拭墨绿湿发",
     "adult": true,
@@ -38,7 +38,7 @@
       "warm lighting"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bathroom",
       "towel",

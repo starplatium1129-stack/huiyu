@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_nsfw_bath_steam_solo",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1481,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "mahiru_nsfw_bath_steam_solo",
     "title": "椎名真昼 · 温泉白汽下的剔透水光独奏 ·「身体……在想念你的温度」",
@@ -44,7 +44,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "white_bath_wrap",

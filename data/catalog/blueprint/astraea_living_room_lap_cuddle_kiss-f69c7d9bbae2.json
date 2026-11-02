@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_living_room_lap_cuddle_kiss",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2211,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "astraea_living_room_lap_cuddle_kiss",
     "characterId": "astraea",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "Astraea hugging a pillow on the sunlit carpet in an off-shoulder sweater with folded wings.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

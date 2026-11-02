@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_morning_kitchen_shirt_breakfast",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2249,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:21:34.570070100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "shizuka_morning_kitchen_shirt_breakfast",
     "characterId": "shizuka_hiratsuka",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Shizuka standing in a morning kitchen in an off-shoulder sweatshirt holding coffee, smiling warmly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_gourmet_qipao_terrace_moonlight",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2672,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:22:35.549786+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kurodate_haruna_gourmet_qipao_terrace_moonlight",
     "characterId": "kurodate_haruna",
@@ -54,6 +54,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

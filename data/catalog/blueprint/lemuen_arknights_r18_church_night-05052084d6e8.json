@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_church_night",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 562,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "坐在轮椅上，衣衫半褪露出香肩，在烛光中沉静凝望",
     "adult": true,
@@ -38,7 +38,7 @@
       "volumetric lighting"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "church",
       "candle",

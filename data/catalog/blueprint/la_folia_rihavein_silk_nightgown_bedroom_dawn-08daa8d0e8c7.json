@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_rihavein_silk_nightgown_bedroom_dawn",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2746,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "la_folia_rihavein_silk_nightgown_bedroom_dawn",
     "characterId": "la_folia_rihavein",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "La Folia waking up on a palace bed in a sheer silk slip nightgown, smiling softly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

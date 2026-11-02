@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_intimate_bed_docile_surrender",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2123,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-29T16:15:37.047540800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kurodate_haruna_intimate_bed_docile_surrender",
     "characterId": "kurodate_haruna",
@@ -38,9 +38,9 @@
     "negativeTokens": [],
     "animaCaption": "Haruna reclining on a plush bed in a silk robe with breathtaking flushed devotion.",
     "isNsfw": false,
-    "rating": "R18",
-    "sampleRating": "R18",
-    "mature": true,
+    "rating": "R15",
+    "sampleRating": "R15",
+    "mature": false,
     "adult": true
   }
 }

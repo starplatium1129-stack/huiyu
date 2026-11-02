@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kafka_r18_bathroom_marble_intercourse",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1045,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kafka_r18_bathroom_marble_intercourse",
     "title": "卡芙卡 · 大理石浴池的水下独处",
@@ -62,7 +62,7 @@
     ],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],

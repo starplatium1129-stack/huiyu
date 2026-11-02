@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayase_bedroom_tearful_passionate_surrender",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2259,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "ayase_bedroom_tearful_passionate_surrender",
     "characterId": "ayase_aragaki",
@@ -44,8 +44,9 @@
     "negativeTokens": [],
     "animaCaption": "Ayase sitting on her bed in a lilac camisole, tears of affection shining in her eyes.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukina_morning_sheets_sweet_confession",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2195,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "yukina_morning_sheets_sweet_confession",
     "characterId": "himeragi_yukina",
@@ -37,8 +37,9 @@
     "negativeTokens": [],
     "animaCaption": "Interlocking fingers in the tangled morning sheets, she smiles with happy tears in the gentle sunlight.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

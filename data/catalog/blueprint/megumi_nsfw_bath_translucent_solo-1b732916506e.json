@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_bath_translucent_solo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "megumi_nsfw_bath_translucent_solo",
     "title": "加藤惠 · 浴后薄纱毛巾的水光独奏 ·「在浴室里……脑子里却全是你的事」",
@@ -46,7 +46,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "white_bath_towel",

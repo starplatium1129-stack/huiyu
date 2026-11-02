@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_morning_bed_oversized_hoodie_yawn",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2698,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "iino_miko_morning_bed_oversized_hoodie_yawn",
     "characterId": "iino_miko",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "Miko yawning cutely on her bed in an oversized hoodie as morning sunlight pours in.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

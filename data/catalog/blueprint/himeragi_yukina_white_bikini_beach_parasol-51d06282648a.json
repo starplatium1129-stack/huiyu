@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "himeragi_yukina_white_bikini_beach_parasol",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2739,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-30T10:54:40.615496400+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "himeragi_yukina_white_bikini_beach_parasol",
     "characterId": "himeragi_yukina",
@@ -40,8 +40,9 @@
     "negativeTokens": [],
     "animaCaption": "Sitting under a beach umbrella in a white frilled bikini, she blushes shyly with hands held gently over her chest.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

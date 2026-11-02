@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_bath_steam",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 335,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_bath_steam",
     "title": "楪祈 · 虚空花瓣的蒸汽浴",
@@ -66,7 +66,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "red_gauze_wrap",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Facing the viewer against the tub, her wet translucent red gauze wrap reveals her delicate collarbone, cleavage, and water-kissed skin.",
     "coverageTags": [
       "iconic"

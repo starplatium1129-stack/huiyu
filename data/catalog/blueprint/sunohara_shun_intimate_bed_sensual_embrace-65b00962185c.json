@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_intimate_bed_sensual_embrace",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2117,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-29T16:15:37.047540800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "sunohara_shun_intimate_bed_sensual_embrace",
     "characterId": "sunohara_shun",
@@ -40,9 +40,9 @@
     "negativeTokens": [],
     "animaCaption": "Shun reclining on a silk bed in sheer burgundy lingerie with devoted affection.",
     "isNsfw": false,
-    "rating": "R18",
-    "sampleRating": "R18",
-    "mature": true,
+    "rating": "R15",
+    "sampleRating": "R15",
+    "mature": false,
     "adult": true
   }
 }

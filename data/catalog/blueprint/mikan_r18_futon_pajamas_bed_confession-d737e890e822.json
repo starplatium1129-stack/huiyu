@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_futon_pajamas_bed_confession",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1780,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "mikan_r18_futon_pajamas_bed_confession",
     "title": "结城美柑 · 深夜被窝里的睡衣轻解与私密心事",
@@ -63,6 +63,7 @@
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "The pillow rests against her bent knees beneath the slipped pajama collar."
+    "animaCaption": "The pillow rests against her bent knees beneath the slipped pajama collar.",
+    "sampleRating": "R15"
   }
 }

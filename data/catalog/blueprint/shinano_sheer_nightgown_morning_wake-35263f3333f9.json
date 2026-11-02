@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_sheer_nightgown_morning_wake",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2710,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "shinano_sheer_nightgown_morning_wake",
     "characterId": "shinano",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Shinano waking up in a sheer blue nightgown on a canopy bed, her nine tails resting around her.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_confessional_pew_bent",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 238,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "jeanne_nsfw_confessional_pew_bent",
     "title": "圣女贞德 · 告解室长椅的静默祷告",
@@ -60,7 +60,7 @@
     ],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "sfw_unarmored_prayer",

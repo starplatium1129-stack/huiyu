@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_hallway_bath_steam_towel_trip",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1779,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "mikan_r18_hallway_bath_steam_towel_trip",
     "title": "结城美柑 · 浴后走廊的意外跌坐心跳",
@@ -68,6 +68,7 @@
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "Her left hand braces on the floor; her right keeps the towel wrapped closed at her chest."
+    "animaCaption": "Her left hand braces on the floor; her right keeps the towel wrapped closed at her chest.",
+    "sampleRating": "R15"
   }
 }

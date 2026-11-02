@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_r18_b8_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1424,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "穿白色棉质吊带睡衣躺在薄被褥上，抱紧枕头，侧耳听地板声",
     "adult": true,
@@ -43,7 +43,7 @@
       "paper screens"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "adult",
       "solo",

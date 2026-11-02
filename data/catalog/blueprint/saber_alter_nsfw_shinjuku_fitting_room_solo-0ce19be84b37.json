@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 230,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "saber_alter_nsfw_shinjuku_fitting_room_solo",
     "title": "黑呆 · 新宿更衣室的冷傲回眸",
@@ -60,7 +60,7 @@
     ],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "casual_shinjuku_jacket_shorts",

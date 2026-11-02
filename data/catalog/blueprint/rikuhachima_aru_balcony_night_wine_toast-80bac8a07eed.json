@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_balcony_night_wine_toast",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2666,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "rikuhachima_aru_balcony_night_wine_toast",
     "characterId": "rikuhachima_aru",
@@ -48,8 +48,9 @@
     "negativeTokens": [],
     "animaCaption": "Aru raising a wine glass on a rooftop terrace in a black lace camisole, smiling proudly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_bathrobe_morning",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 420,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "makima_r18_bathrobe_morning",
     "title": "玛奇玛 · 晨袍沙发",
@@ -50,7 +50,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
     "outfitId": "white_silk_robe",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Her silk robe rests off one shoulder against the leather cushions."
   }
 }

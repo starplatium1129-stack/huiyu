@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_desk_night",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 461,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "深夜伏在书桌前，单薄睡衣滑落肩头",
     "adult": true,
@@ -39,7 +39,7 @@
       "from side"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "wooden_study",
       "desk",

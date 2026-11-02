@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_public_bath_steam",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 837,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "打烊后淋浴，疲惫地靠着瓷砖墙",
     "adult": true,
@@ -40,7 +40,7 @@
       "fluorescent lighting"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bathroom",
       "shower",

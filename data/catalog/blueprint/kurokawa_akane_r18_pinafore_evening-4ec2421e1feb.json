@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_pinafore_evening",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 971,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "丝绒更衣帘前侧身回眸整理挂脖礼服优雅微笑",
     "adult": true,
@@ -42,7 +42,7 @@
       "rear three-quarter view"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "fitting_room",
       "halterneck",

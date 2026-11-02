@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hiuchidani_mei_bedroom_plush_oversized_knit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2636,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "hiuchidani_mei_bedroom_plush_oversized_knit",
     "characterId": "hiuchidani_mei",
@@ -43,8 +43,9 @@
     "negativeTokens": [],
     "animaCaption": "Mei hugging her knees in an off-shoulder knit sweater in her bedroom, blushing warmly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

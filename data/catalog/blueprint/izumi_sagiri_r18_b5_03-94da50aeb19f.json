@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_r18_b5_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1535,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "izumi_sagiri_r18_b5_03",
     "title": "和泉纱雾 · 埃罗芒阿面具卡壳的更衣受力事故 ·「面具系带打死结了！……哥哥不要从后面偷看啊！」",
@@ -54,7 +54,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "frilled_nightgown",

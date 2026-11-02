@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_lavender_balcony_midnight_aria",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2758,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "izayoi_miku_lavender_balcony_midnight_aria",
     "characterId": "izayoi_miku",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "1girl, solo, izayoi miku, purple twintails, sheer lavender silk nightgown, leaning on luxury penthouse balcony at night.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

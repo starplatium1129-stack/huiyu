@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikan_r18_living_room_sofa_sensual_embrace",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1927,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "mikan_r18_living_room_sofa_sensual_embrace",
     "characterId": "yuuki_mikan",
@@ -51,7 +51,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@yoneyama_mai",
     "nsfwTokens": [],

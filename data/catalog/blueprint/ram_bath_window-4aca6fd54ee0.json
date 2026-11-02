@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_bath_window",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2056,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "ram_bath_window",
     "title": "拉姆 · 雨夜温泉",
@@ -35,7 +35,8 @@
     "negativeTokens": [],
     "adult": true,
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true
+    "rating": "R15",
+    "mature": false,
+    "sampleRating": "R15"
   }
 }

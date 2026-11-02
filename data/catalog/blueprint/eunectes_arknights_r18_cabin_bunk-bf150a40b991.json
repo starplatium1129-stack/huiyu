@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_cabin_bunk",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 594,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "盘腿坐在床上裹着干毛巾擦头发，尾巴轻拍",
     "adult": true,
@@ -37,7 +37,7 @@
       "warm lamp"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bedroom",
       "bunk",

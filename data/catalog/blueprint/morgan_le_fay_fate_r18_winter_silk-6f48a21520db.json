@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_r18_winter_silk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 198,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "id": "morgan_le_fay_fate_r18_winter_silk",
     "title": "摩根 · 冬之王座阳光殿堂露背私享",
     "category": "成人",

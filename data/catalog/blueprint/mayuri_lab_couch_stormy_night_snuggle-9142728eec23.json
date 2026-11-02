@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_lab_couch_stormy_night_snuggle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2331,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "mayuri_lab_couch_stormy_night_snuggle",
     "characterId": "shiina_mayuri",
@@ -38,8 +38,9 @@
     "negativeTokens": [],
     "animaCaption": "Mayuri snuggling close on the couch in parted pajamas, eyes filled with tender love.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

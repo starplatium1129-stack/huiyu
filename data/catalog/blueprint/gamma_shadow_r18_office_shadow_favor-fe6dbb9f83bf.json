@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_r18_office_shadow_favor",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2838,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "gamma_shadow_r18_office_shadow_favor",
     "characterId": "gamma_shadow",
@@ -41,7 +41,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",

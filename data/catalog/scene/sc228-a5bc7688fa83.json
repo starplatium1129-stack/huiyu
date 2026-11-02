@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc228",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 223,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T07:50:17.611614700+00:00",
   "data": {
     "id": "sc228",
     "title": "整备间拉链卡死的过载轰鸣",
@@ -34,7 +34,7 @@
       "full_body",
       "depth_of_field"
     ],
-    "mature": true,
+    "mature": false,
     "location": "地下赛车整备间轮胎堆上",
     "weather": "微热密闭",
     "camera": "背向坐姿回眸的主观半身近景",
@@ -47,7 +47,7 @@
     "prompt": "1girl, solo, ayachi_nene, heart-shaped ahoge, race queen, patent leather catsuit, highleg, backless outfit, unzipped clothes, stuck zipper, cleavage, no underwear, reverse straddling, looking back, holding arm, heavy blush, teary eyes, open mouth, underground garage, tires, spotlight, depth of field, medium shot, night, very_long_hair, <lora:ayachi_nene_v18_wd14:0.8>",
     "negative": "lying, stockings, thighhighs, helmet",
     "storyJa": "【寧々・整備室のファスナー詰まりと過負荷の轟鳴】深夜、完全に営業が終了し閉鎖されたサーキットの地下整備室。超自然研究部のスポンサー衣装をテストするため、寧々は極めてタイトでハイレグなバックレスのパテントレザー製レースクイーンスーツに着替えたが、その中身は完全に何も身に着けていない真空状態だった。衣装の裁断がキツすぎるせいで、胸元の長い金属ファスナーが途中で完全にロックされてしまい、豊満でセクシーな白い胸元と見え隠れする致命的なラインが完全に露出してしまっている。彼女は慌てて後退した際に工具箱をパニックで踏みつけてしまい、バランスを崩してあなたの太ももの上に逆向きに跨る形で転がり込んできた。強い衝撃でロックされていたファスナーがさらに数センチずり下がり、彼女の頭のアホ毛は猛烈に震えてハート型に丸まり、顔を真っ赤にして涙目で自爆した――「うあぁ！大、大色狼！ファスナーが裂けてるところばかり見ないでよ！私、私はただファスナーが壊れて動けないだけで……決してわざとこんな恥ずかしいポーズであなたを誘惑したわけじゃ……うう、早く引き上げてよ、バカ！」",
-    "rating": "R18",
+    "rating": "R15",
     "animaCaption": "Reverse-straddling the viewer's thighs, she grips their arm and looks back, the chest zipper caught half-open under the garage's overhead work light.",
     "auditRevision": "careful-batch12-2026-08-27"
   }

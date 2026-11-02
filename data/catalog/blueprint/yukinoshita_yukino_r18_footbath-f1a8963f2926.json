@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_footbath",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 347,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_footbath",
     "title": "雪之下雪乃 · 足浴时分",
@@ -50,7 +50,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@hiten (hitenkei)",
     "outfitId": "indigo_yukata_stockings",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_r18_bath_steam_towel_wrap",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1768,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "haruna_r18_bath_steam_towel_wrap",
     "title": "西连寺春菜 · 雾气浴室的毛巾轻挽",
@@ -57,6 +57,7 @@
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "One hand secures the large towel while the small towel dries her bangs."
+    "animaCaption": "One hand secures the large towel while the small towel dries her bangs.",
+    "sampleRating": "R15"
   }
 }

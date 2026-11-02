@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_intimate_spring_dew",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1968,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "nakano_yotsuba_intimate_spring_dew",
     "title": "中野四叶 · 清晨露天风吕的澄澈池畔",
@@ -37,9 +37,10 @@
     "negativeTokens": [],
     "animaCaption": "Stepping into the clear morning hot spring with crossed arms, steam rises around her blushing face in the sunlight.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
+    "rating": "R15",
+    "mature": false,
     "characterId": "nakano_yotsuba",
-    "adult": true
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

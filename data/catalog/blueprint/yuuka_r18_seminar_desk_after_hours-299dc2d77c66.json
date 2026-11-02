@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_seminar_desk_after_hours",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 923,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "双手托腮支在办公桌前，千禧制服整洁得体，荧光计算器在案，蓝瞳含笑无奈温柔直视观众",
     "adult": true,
@@ -61,7 +61,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "office",
       "seminar_desk",

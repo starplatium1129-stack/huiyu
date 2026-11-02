@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_morning_sunlight_arm_nuzzle",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2273,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "nymph_morning_sunlight_arm_nuzzle",
     "characterId": "nymph",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Nymph lounging on a sunlit rug in an oversized pastel shirt, smiling happily with glowing wings.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

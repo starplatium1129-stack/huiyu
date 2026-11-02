@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_mage_tower",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "frieren_r18_mage_tower",
     "title": "芙莉莲 · 魔导塔星夜下的研读",
@@ -65,7 +65,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@atdan",
     "outfitId": "wizard_robe",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Leaning over the star desk facing the viewer, her open wizard robe reveals her shoulder and collarbone in glowing crystal light.",
     "coverageTags": [
       "iconic"

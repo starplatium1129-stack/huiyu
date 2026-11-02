@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_mansion_bath",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 439,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "rem_rezero_r18_mansion_bath",
     "title": "雷姆 · 宅邸浴汤的温润水波",
@@ -68,7 +68,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "bath_towel",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Facing the viewer on the bath rim, her white towel wrap reveals her delicate collarbone, cleavage, and shoulders glistening with water droplets.",
     "coverageTags": [
       "iconic"

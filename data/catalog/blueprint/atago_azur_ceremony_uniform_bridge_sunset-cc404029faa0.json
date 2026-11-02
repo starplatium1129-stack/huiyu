@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_azur_ceremony_uniform_bridge_sunset",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2715,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "atago_azur_ceremony_uniform_bridge_sunset",
     "characterId": "atago_azur",
@@ -44,6 +44,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

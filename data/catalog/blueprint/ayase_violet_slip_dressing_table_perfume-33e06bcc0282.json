@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayase_violet_slip_dressing_table_perfume",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2786,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "ayase_violet_slip_dressing_table_perfume",
     "characterId": "ayase_aragaki",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "1girl, solo, ayase aragaki, black hair, sheer lilac silk slip dress spraying perfume at vanity mirror at night.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

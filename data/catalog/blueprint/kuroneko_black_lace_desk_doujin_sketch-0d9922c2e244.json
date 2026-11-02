@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_black_lace_desk_doujin_sketch",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2790,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kuroneko_black_lace_desk_doujin_sketch",
     "characterId": "kuroneko",
@@ -35,8 +35,9 @@
     "negativeTokens": [],
     "animaCaption": "A warm desk lamp casts a cozy golden glow across Kuroneko's sketches and black lace nightgown as she draws intently.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

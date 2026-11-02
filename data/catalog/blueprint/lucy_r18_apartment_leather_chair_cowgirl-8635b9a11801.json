@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_r18_apartment_leather_chair_cowgirl",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 1110,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "独自跨坐皮椅，一手抓椅背、一手腿间自抚",
     "adult": true,
@@ -38,7 +38,7 @@
       "futuristic interior"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cowgirl_position",
       "straddling",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_library_stacks",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 867,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "靠在橡木书架旁，裙摆提起，双手抓住画面外同行者的衣角，紧抿下唇。",
     "adult": true,
@@ -43,7 +43,7 @@
       "dim light"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "library",
       "bookshelf",

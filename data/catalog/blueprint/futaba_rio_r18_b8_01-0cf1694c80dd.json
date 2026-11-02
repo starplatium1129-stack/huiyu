@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "futaba_rio_r18_b8_01",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 68,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "futaba_rio_r18_b8_01",
     "title": "双叶理央 · 物理实验室长桌的白大褂秘密探究 ·「梓川……这是量子力学无法解释的生理冲动」",
@@ -50,7 +50,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "labcoat_private",

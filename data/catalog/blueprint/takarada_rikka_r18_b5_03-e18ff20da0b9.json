@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_03",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1555,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_03",
     "title": "宝多六花 · 电器店柜台百褶裙被抽屉夹住的受力事故 ·「痛！……裙子被卡在抽屉里了，裕太快来拉我一下」",
@@ -56,7 +56,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "uniform_drawer",

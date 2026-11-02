@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_r18_knight_armor_desk_ravish",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 689,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "轻铠解扣衬衫半敞露大胸，白丝长手套托胸另一手在长裙下深层自抚，金鹿角流光娇喘",
     "adult": true,
@@ -46,7 +46,7 @@
       "warm wall light"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "lounge",
       "bench",

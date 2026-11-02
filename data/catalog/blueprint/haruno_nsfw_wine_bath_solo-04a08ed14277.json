@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_wine_bath_solo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 377,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "haruno_nsfw_wine_bath_solo",
     "title": "雪之下阳乃 · 豪华大理石浴缸的红酒水光独奏 ·「把醉意都发泄在水里……就不算失态了吧」",
@@ -45,7 +45,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "black_lace_teddy",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_pool_mismatched_bikini",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 256,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "ishtar_pool_mismatched_bikini",
     "title": "伊什塔尔 · 泳池女王的不对称裁定·「两边不对称……才显女神品味」",
@@ -46,7 +46,7 @@
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "anime_slice_of_life",
     "animaStyleHint": "anime_slice_of_life",
     "outfitId": "summer_swimsuit",

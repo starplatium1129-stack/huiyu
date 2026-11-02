@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_luxury_suite_morning_cuddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2165,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-29T16:21:34.570070100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "st_louis_luxury_suite_morning_cuddle",
     "characterId": "st_louis_azur",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "St. Louis stretching on a hotel bed in her off-shoulder naval uniform in warm morning light.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

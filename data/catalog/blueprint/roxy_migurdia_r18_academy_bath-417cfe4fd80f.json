@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_academy_bath",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 460,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "泡在石砌浴池中",
     "adult": true,
@@ -39,7 +39,7 @@
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "academy_bath",
       "stone_pool",

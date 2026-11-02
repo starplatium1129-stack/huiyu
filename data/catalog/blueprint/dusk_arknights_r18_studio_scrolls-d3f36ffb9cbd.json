@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_studio_scrolls",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 572,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "侧卧于墨玉榻，黑袍半敞露锁骨香肩，指尖流转墨痕，金眸含笑凝望前方观众",
     "adult": true,
@@ -54,7 +54,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "ink_dimension",
       "floating_scrolls",

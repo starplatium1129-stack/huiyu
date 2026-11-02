@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_morning_bed_sheets_messy_pout",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2690,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "power_morning_bed_sheets_messy_pout",
     "characterId": "power",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Power pouting from a messy bed in morning sunlight with her tank top slipping off her shoulder.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_r18_b7_04",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "yae_miko_r18_b7_04",
     "title": "八重神子 · 宫司寝室榻榻米上的千岁狐影",
@@ -62,7 +62,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

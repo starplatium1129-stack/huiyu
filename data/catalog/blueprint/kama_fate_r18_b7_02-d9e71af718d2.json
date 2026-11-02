@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_r18_b7_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 314,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kama_fate_r18_b7_02",
     "title": "迦摩 · 爱欲灵泉金砂水光湿身独奏 ·「神也会觉得空虚……所以才需要这双手来排解」",
@@ -54,7 +54,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "crimson_spring_veil",

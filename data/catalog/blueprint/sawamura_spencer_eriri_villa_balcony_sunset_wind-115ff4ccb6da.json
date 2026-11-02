@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_villa_balcony_sunset_wind",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2644,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_villa_balcony_sunset_wind",
     "characterId": "sawamura_spencer_eriri",
@@ -46,6 +46,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

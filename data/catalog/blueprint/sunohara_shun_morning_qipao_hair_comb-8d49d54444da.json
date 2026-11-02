@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_morning_qipao_hair_comb",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2668,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:15:37.047540800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "sunohara_shun_morning_qipao_hair_comb",
     "characterId": "sunohara_shun",
@@ -51,6 +51,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

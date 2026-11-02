@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_apartment_couch",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 632,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "陷坐在舒适布艺沙发上，手托热气腾腾的苹果派，光环光翼泛柔金辉，元气爽朗含笑直视观众",
     "adult": true,
@@ -52,7 +52,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "apartment",
       "living_room",

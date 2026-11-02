@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_r18_locker_room_accidental_unbutton",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1766,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "haruna_r18_locker_room_accidental_unbutton",
     "title": "西连寺春菜 · 夕阳更衣室的慌乱心跳",
@@ -56,6 +56,7 @@
     "negativeTokens": [],
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She looks toward the doorway with both arms across her opened shirt."
+    "animaCaption": "She looks toward the doorway with both arms across her opened shirt.",
+    "sampleRating": "R15"
   }
 }

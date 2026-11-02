@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_camisole_balcony_night_breeze",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2683,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kouzuki_kallen_camisole_balcony_night_breeze",
     "characterId": "kouzuki_kallen",
@@ -44,8 +44,9 @@
     "negativeTokens": [],
     "animaCaption": "Kallen sitting on her bed in a crimson silk camisole, looking forward with a tender blush.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

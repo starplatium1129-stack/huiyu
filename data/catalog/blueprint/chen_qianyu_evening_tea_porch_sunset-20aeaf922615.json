@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_evening_tea_porch_sunset",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2629,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "chen_qianyu_evening_tea_porch_sunset",
     "characterId": "chen_qianyu",
@@ -48,6 +48,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

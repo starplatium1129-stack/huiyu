@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_intimate_morning_sunlight",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2129,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "sunaookami_shiroko_intimate_morning_sunlight",
     "characterId": "sunaookami_shiroko",
@@ -35,9 +35,9 @@
     "negativeTokens": [],
     "animaCaption": "Shiroko resting defenselessly on the sunlit bed in a soft camisole with sweet devotion.",
     "isNsfw": false,
-    "rating": "R18",
-    "sampleRating": "R18",
-    "mature": true,
+    "rating": "R15",
+    "sampleRating": "R15",
+    "mature": false,
     "adult": true
   }
 }

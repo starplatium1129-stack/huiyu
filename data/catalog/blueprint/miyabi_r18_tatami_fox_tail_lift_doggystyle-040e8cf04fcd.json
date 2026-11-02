@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miyabi_r18_tatami_fox_tail_lift_doggystyle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1075,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "站在木凳旁，一腿踏凳，一手扶松开的衣襟，另一手留在袴内",
     "adult": true,
@@ -45,7 +45,7 @@
       "full body"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "dojo",
       "dressing_room",

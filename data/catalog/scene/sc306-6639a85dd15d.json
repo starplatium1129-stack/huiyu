@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc306",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T07:45:22.665292+00:00",
   "data": {
     "id": "sc306",
     "title": "落雪窗边的温存回眸",
@@ -31,8 +31,8 @@
       "nene_r18",
       "adult"
     ],
-    "mature": true,
-    "rating": "R18",
+    "mature": false,
+    "rating": "R15",
     "location": "落雪冬夜的卧室床榻",
     "weather": "落雪",
     "camera": "回眸半身特写",

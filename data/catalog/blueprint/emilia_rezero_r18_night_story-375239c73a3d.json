@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_night_story",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 452,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "emilia_rezero_r18_night_story",
     "title": "爱蜜莉雅 · 睡前童话",
@@ -51,7 +51,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "sheer_nightgown",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "One hand holds the book while the other tugs the blanket toward the viewer."
   }
 }

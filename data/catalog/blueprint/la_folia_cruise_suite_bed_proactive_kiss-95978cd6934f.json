@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_cruise_suite_bed_proactive_kiss",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2199,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:21:34.570070100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "la_folia_cruise_suite_bed_proactive_kiss",
     "characterId": "la_folia_rihavein",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "Princess La Folia in an open white royal uniform holding champagne in a cruise suite, smiling charmingly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

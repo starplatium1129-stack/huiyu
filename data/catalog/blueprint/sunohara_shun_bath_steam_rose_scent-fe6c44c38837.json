@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_bath_steam_rose_scent",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2670,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:15:37.047540800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "sunohara_shun_bath_steam_rose_scent",
     "characterId": "sunohara_shun",
@@ -48,8 +48,9 @@
     "negativeTokens": [],
     "animaCaption": "Shun soaking in a hot spring under moonlight with floating plum petals, looking back lovingly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_bridal_suite_ecstatic_surrender",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2189,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "stella_bridal_suite_ecstatic_surrender",
     "characterId": "stella_vermillion",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Stella sitting on a candlelit bed in a sheer nightgown, tears of happiness gleaming in her eyes.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

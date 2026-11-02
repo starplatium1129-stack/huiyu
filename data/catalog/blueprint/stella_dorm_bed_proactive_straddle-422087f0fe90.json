@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_dorm_bed_proactive_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2187,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:21:34.570070100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "stella_dorm_bed_proactive_straddle",
     "characterId": "stella_vermillion",
@@ -48,8 +48,9 @@
     "negativeTokens": [],
     "animaCaption": "Stella sitting on her dorm bed in an open uniform jacket and loosened tie under sunset light, blushing warmly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_training_hall_bent",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 249,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "scathach_nsfw_training_hall_bent",
     "title": "斯卡哈 · 静谧道场的战后休憩",
@@ -60,7 +60,7 @@
     ],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "official_lancer_bodysuit",

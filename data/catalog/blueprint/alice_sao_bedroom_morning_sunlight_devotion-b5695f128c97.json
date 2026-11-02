@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_bedroom_morning_sunlight_devotion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2694,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "alice_sao_bedroom_morning_sunlight_devotion",
     "characterId": "alice_sao",
@@ -46,8 +46,9 @@
     "negativeTokens": [],
     "animaCaption": "Alice reaching out from a sunlit bed in a white silk nightgown with golden hair splayed.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

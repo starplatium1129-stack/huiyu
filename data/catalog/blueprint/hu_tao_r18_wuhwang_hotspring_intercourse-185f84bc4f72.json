@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "hu_tao_r18_wuhwang_hotspring_intercourse",
     "title": "胡桃 · 秘境温泉落月幽光",
@@ -60,7 +60,7 @@
     ],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [],

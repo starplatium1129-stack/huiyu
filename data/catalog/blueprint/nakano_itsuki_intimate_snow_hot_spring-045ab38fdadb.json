@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_intimate_snow_hot_spring",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1978,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "nakano_itsuki_intimate_snow_hot_spring",
     "title": "中野五月 · 雪见温泉中的红晕容颜",
@@ -38,9 +38,10 @@
     "negativeTokens": [],
     "animaCaption": "Resting against the snow-dusted rocks in the steamy outdoor bath, lantern light reflects across her flushed cheeks.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
+    "rating": "R15",
+    "mature": false,
     "characterId": "nakano_itsuki",
-    "adult": true
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

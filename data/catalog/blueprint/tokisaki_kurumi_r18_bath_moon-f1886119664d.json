@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_bath_moon",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 82,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_bath_moon",
     "title": "时崎狂三 · 血月浴池",
@@ -49,7 +49,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@xinzoruo",
     "outfitId": "black_lace",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "She turns toward the viewer from the stone bath step."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_night_bed_insatiable_purr",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2207,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kuroka_night_bed_insatiable_purr",
     "characterId": "kuroka",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "Kuroka curled up on a bed in a black lace negligee with her twin cat tails curled around a pillow.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

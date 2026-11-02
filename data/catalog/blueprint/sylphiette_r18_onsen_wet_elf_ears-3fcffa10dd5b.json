@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_onsen_wet_elf_ears",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 469,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "泡在汤浴中，绯红的尖耳在水汽里若隐若现",
     "adult": true,
@@ -38,7 +38,7 @@
       "lantern reflections"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bathroom",
       "wooden_tub",

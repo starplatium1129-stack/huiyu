@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_sofa_night",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 336,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_sofa_night",
     "title": "楪祈 · 深夜沙发的音律温存",
@@ -64,7 +64,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "red_robe_black_lace",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Reclining on the sofa facing the viewer, her open crimson silk robe reveals her black lace lingerie, collarbone, and cleavage under the floor lamp.",
     "coverageTags": [
       "iconic"

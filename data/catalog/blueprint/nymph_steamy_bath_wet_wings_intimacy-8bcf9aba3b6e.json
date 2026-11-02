@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_steamy_bath_wet_wings_intimacy",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2272,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "nymph_steamy_bath_wet_wings_intimacy",
     "characterId": "nymph",
@@ -48,8 +48,9 @@
     "negativeTokens": [],
     "animaCaption": "Nymph hugging her knees beside a steamy bathtub in a pink towel with glowing wings.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

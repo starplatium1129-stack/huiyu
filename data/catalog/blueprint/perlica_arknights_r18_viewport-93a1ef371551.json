@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_viewport",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 725,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "倚在舷窗旁侧身回眸，一手向画面外同伴伸出，拉链裙随站姿自然垂落。",
     "adult": true,
@@ -38,7 +38,7 @@
       "nebula"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "viewport",
       "stars",

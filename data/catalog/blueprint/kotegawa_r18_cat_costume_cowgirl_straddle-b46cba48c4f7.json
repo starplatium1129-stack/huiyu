@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_r18_cat_costume_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1265,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "跪坐软垫猫娘皮革连体服抹胸拉链半崩溢乳，双手戴猫爪护胸，猫尾扫过腿间自抚娇喘",
     "adult": true,
@@ -44,7 +44,7 @@
       "low angle"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "dressing_room",
       "gym_mat",

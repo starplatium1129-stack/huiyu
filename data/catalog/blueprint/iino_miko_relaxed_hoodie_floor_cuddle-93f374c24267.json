@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_relaxed_hoodie_floor_cuddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2695,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "iino_miko_relaxed_hoodie_floor_cuddle",
     "characterId": "iino_miko",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "Miko sitting on a rug hugging a teddy bear in an oversized hoodie, blushing cutely.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_r18_desk_gothic_doggystyle_thrust",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1230,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "侧卧微蜷双手抱胸，金色发丝化作触手轻缠床柱，战裙半解露肩，红眸湿润咬唇轻颤",
     "adult": true,
@@ -48,7 +48,7 @@
       "medium shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "side_view",
       "lying_on_side",

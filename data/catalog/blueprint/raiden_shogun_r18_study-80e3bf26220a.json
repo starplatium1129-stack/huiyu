@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_study",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "raiden_shogun_r18_study",
     "title": "雷电将军 · 书斋墨夜",
@@ -64,7 +64,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "purple_inner_robe",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Sitting at the study desk facing the viewer, her loose purple silk robe reveals her bare shoulders, collarbone, and cleavage in soft moonlight.",
     "coverageTags": [
       "iconic"

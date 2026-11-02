@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_dunois_french_apron_crepe_kitchen",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2732,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "charlotte_dunois_french_apron_crepe_kitchen",
     "characterId": "charlotte_dunois",
@@ -47,6 +47,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

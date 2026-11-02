@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_greenhouse_mist_barefoot_stretch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2628,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "amiya_greenhouse_mist_barefoot_stretch",
     "characterId": "amiya",
@@ -48,6 +48,7 @@
     "isNsfw": true,
     "rating": "R15",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_school_pool_edge_spread",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 425,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "reze_r18_school_pool_edge_spread",
     "characterId": "reze_chainsaw",
@@ -71,7 +71,7 @@
     "recommendedSize": "1536x1152",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Sitting by the pool edge facing the viewer, her wet green bikini showcases her cleavage, delicate collarbone, navel, and bare legs in the moonlight.",
     "coverageTags": [
       "iconic"

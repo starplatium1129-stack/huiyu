@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_bedroom_sheets_morning_delight",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2674,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:22:35.549786+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kurodate_haruna_bedroom_sheets_morning_delight",
     "characterId": "kurodate_haruna",
@@ -50,8 +50,9 @@
     "negativeTokens": [],
     "animaCaption": "Haruna lounging on sunlit bedsheets with open white silk robe and a single black wing.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

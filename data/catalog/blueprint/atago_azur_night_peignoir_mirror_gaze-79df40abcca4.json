@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_azur_night_peignoir_mirror_gaze",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2718,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "atago_azur_night_peignoir_mirror_gaze",
     "characterId": "atago_azur",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "Atago sitting at a vanity mirror in a sheer black silk peignoir, gazing fondly with golden eyes.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

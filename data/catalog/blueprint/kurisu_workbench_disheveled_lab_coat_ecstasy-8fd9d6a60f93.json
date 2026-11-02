@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_workbench_disheveled_lab_coat_ecstasy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2327,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kurisu_workbench_disheveled_lab_coat_ecstasy",
     "characterId": "makise_kurisu",
@@ -39,8 +39,9 @@
     "negativeTokens": [],
     "animaCaption": "Kurisu sitting on the lab table with parted shirt, swept up in overwhelming pleasure.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

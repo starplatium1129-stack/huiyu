@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_r18_dorm",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 394,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "蜷坐于深色宽大沙发，一手轻搭靠垫，指尖跳动温和淡蓝电火花，笑意娇俏直视观众",
     "adult": true,
@@ -55,7 +55,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "apartment",
       "living_room",

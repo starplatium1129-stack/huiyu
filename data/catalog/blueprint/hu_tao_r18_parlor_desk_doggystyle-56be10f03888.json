@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hu_tao_r18_parlor_desk_doggystyle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 30,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "hu_tao_r18_parlor_desk_doggystyle",
     "title": "胡桃 · 红木书案的墨香与绯红微醺",
@@ -62,7 +62,7 @@
     ],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "nsfwTokens": [],

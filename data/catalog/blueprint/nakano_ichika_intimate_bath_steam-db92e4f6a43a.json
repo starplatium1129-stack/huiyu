@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_intimate_bath_steam",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1958,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "nakano_ichika_intimate_bath_steam",
     "title": "中野一花 · 温泉雾气中的温软回眸",
@@ -36,9 +36,10 @@
     "negativeTokens": [],
     "animaCaption": "Turning back in the steamy outdoor onsen pool, water droplets glisten on her flushed skin under lantern glow.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
+    "rating": "R15",
+    "mature": false,
     "characterId": "nakano_ichika",
-    "adult": true
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

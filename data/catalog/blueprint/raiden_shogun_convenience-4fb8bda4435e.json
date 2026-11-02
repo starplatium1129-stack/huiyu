@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_convenience",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 5,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "raiden_shogun_convenience",
     "title": "雷电将军 · 团子甜点与紫电私语",
@@ -63,7 +63,7 @@
       "iconic"
     ],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "nsfwTokens": [],

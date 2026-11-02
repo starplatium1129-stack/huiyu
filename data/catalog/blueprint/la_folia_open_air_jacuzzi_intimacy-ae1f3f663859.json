@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_open_air_jacuzzi_intimacy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2200,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "la_folia_open_air_jacuzzi_intimacy",
     "characterId": "la_folia_rihavein",
@@ -47,8 +47,9 @@
     "negativeTokens": [],
     "animaCaption": "La Folia relaxing in a steamy rooftop jacuzzi in a gold bikini under the stars.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

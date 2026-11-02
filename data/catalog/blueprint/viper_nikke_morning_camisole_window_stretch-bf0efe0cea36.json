@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_morning_camisole_window_stretch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2726,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "viper_nikke_morning_camisole_window_stretch",
     "characterId": "viper_nikke",
@@ -48,8 +48,9 @@
     "negativeTokens": [],
     "animaCaption": "Viper stretching barefoot by a morning window in a pink lace camisole, smiling sweetly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

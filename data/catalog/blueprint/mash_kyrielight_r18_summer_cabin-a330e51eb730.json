@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_r18_summer_cabin",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 206,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "negativeTokens": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "id": "mash_kyrielight_r18_summer_cabin",
     "title": "玛修 · 露天温泉单薄浴巾微遮",
     "category": "成人",

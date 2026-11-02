@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_morning_sunlight_boyfriend_hoodie_passion",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2243,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kei_morning_sunlight_boyfriend_hoodie_passion",
     "characterId": "karuizawa_kei",
@@ -44,8 +44,9 @@
     "negativeTokens": [],
     "animaCaption": "Kei sitting on a sunlit bed in an oversized hoodie with bare shoulders, giggling cutely.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

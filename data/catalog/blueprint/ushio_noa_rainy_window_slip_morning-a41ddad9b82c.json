@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_rainy_window_slip_morning",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2652,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "ushio_noa_rainy_window_slip_morning",
     "characterId": "ushio_noa",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "Noa standing barefoot beside a rainy window in a sleek silk slip dress, looking back warmly.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

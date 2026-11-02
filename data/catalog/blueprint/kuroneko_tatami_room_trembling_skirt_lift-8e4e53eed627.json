@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_tatami_room_trembling_skirt_lift",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2265,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:21:34.570070100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kuroneko_tatami_room_trembling_skirt_lift",
     "characterId": "kuroneko",
@@ -45,8 +45,9 @@
     "negativeTokens": [],
     "animaCaption": "Kuroneko kneeling on tatami in a gothic lolita black dress, biting her lip with a deep blush.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

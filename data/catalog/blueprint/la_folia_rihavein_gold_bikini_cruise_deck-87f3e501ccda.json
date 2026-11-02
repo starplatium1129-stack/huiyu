@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_rihavein_gold_bikini_cruise_deck",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2743,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-10-29T16:00:13.629967600+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "la_folia_rihavein_gold_bikini_cruise_deck",
     "characterId": "la_folia_rihavein",
@@ -44,8 +44,9 @@
     "negativeTokens": [],
     "animaCaption": "La Folia standing on a cruise ship deck in a gold bikini, smiling with silver hair in the wind.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

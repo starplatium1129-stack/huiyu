@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_r18_dorm_blanket",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 553,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "裹着薄毯蜷在床角",
     "adult": true,
@@ -43,7 +43,7 @@
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "dorm",
       "blanket",

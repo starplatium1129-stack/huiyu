@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_morning_futon_tea_fragrance_cuddle",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2297,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "itsuwa_morning_futon_tea_fragrance_cuddle",
     "characterId": "itsuwa",
@@ -34,8 +34,9 @@
     "negativeTokens": [],
     "animaCaption": "Itsuwa cuddling lovingly in morning futon sheets with sweet smile.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_r18_mech_seat",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 595,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "坐在机甲驾驶座边缘，工装背心贴身，手持金属扳手，巨蟒尾巴盘旋，爽朗含笑直视观众",
     "adult": true,
@@ -55,7 +55,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "mech_cockpit",
       "workshop",

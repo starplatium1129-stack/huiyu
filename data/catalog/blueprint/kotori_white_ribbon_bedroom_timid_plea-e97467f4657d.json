@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_white_ribbon_bedroom_timid_plea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2253,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-29T16:21:34.570070100+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "kotori_white_ribbon_bedroom_timid_plea",
     "characterId": "kotori_itsuka",
@@ -44,8 +44,9 @@
     "negativeTokens": [],
     "animaCaption": "Kotori sitting on her bed in white ribbons and an oversized hoodie loungewear, blushing with pure devotion.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

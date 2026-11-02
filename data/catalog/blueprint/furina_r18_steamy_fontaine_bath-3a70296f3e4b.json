@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_r18_steamy_fontaine_bath",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "id": "furina_r18_steamy_fontaine_bath",
     "title": "芙宁娜 · 大理石玫瑰温汤与水波流光",
@@ -62,7 +62,7 @@
     ],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],

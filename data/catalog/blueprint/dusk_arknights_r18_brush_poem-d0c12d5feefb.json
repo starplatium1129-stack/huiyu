@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_brush_poem",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 575,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "半倚红木画案，手持悬空狼毫笔，黑墨素袍自然垂落，龙角与尾尖微扬，冷艳金眸凝视观众",
     "adult": true,
@@ -53,7 +53,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "studio",
       "calligraphy_desk",

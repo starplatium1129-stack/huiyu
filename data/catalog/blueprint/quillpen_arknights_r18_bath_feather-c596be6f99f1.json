@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_r18_bath_feather",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 623,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
   "data": {
     "action": "浸泡于温泉水中，双手拢于胸前，白泡汤小衣微透水光，湿羽微拢，害羞怯生生凝视观众",
     "adult": true,
@@ -60,7 +60,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "onsen",
       "hot_spring",
