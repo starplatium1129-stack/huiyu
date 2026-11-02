@@ -76,6 +76,67 @@
     }
   },
   "models": {
+    "moss-miaomiao-base-v1.1": {
+      "label": "MiaoMiao Harem MOSS · BASE v1.1",
+      "family": "moss-image",
+      "media": "image",
+      "pipeline": "MOSSImagePipeline",
+      "repository": "OpenMOSS-Team/MOSS-Image-Base",
+      "revision": "85975793d8b3d432f1b6e27f352abaa4c2a4c0d3",
+      "source": "https://civitai.com/models/3015023?modelVersionId=3434952",
+      "license": "OpenMOSS Apache-2.0; MIAOKA checkpoint terms also apply",
+      "licenseUrl": "https://civitai.com/models/3015023?modelVersionId=3434952",
+      "layoutNote": "MIAOKA BASE v1.1 INT8 ConvRot with the same pinned Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. INT8 uses comfy-kitchen 0.2.37 and CUDA 13 runtime. Current image quality and performance require device acceptance.",
+      "sizes": [
+        "768x1280",
+        "1280x768",
+        "1280x1280",
+        "960x1536",
+        "1536x960",
+        "1536x1536"
+      ],
+      "steps": 50,
+      "cfg": 3.5,
+      "maxSize": 1536,
+      "alignment": 16,
+      "shift": 5,
+      "uncondSkipLayers": [
+        22
+      ],
+      "mossAcceleration": [
+        "off",
+        "spectrum"
+      ],
+      "mossSpectrumFlexWindow": true,
+      "mossTextPrecision": [
+        "bf16",
+        "fp8",
+        "int8"
+      ],
+      "mossCompile": true,
+      "mossInt8": {
+        "path": "transformer/miaomiaoHaremMOSS_baseV11_int8.safetensors",
+        "quantMetadata": {"format": "int8_tensorwise", "convrot": true, "convrot_groupsize": 256, "per_row": true},
+        "attentionMetadata": false,
+        "bytes": 5413697704,
+        "sha256": "234e8fa8106bf2ac7f83586feb97054cf6e11a23e7cb2c5adfc808031d27b50b",
+        "sourceUrl": "https://civitai.com/api/download/models/3434952?fileId=3332286",
+        "format": "int8_tensorwise-convrot256"
+      },
+      "mossTextInt8": {
+        "path": "text_encoder/qwen35_9b_int8_convrot.safetensors",
+        "bytes": 9873285104,
+        "sha256": "96064ede0b4caa9b6dd60a9fa868707e7b8ff3ae5347c0bab6bc868b5932f317",
+        "repository": "sorryhyun/MOSS-Image-Qwen3.5-9B-int8",
+        "revision": "2e65ae37feace6d47d8fda7c8969da84a9199386",
+        "sourceUrl": "https://huggingface.co/sorryhyun/MOSS-Image-Qwen3.5-9B-int8/resolve/2e65ae37feace6d47d8fda7c8969da84a9199386/qwen35_9b_int8_convrot.safetensors",
+        "format": "int8_tensorwise-convrot256",
+        "license": "Apache-2.0"
+      },
+      "edit": false,
+      "negative": true,
+      "distilled": false
+    },
     "moss-miaomiao-base-v1.0": {
       "label": "MiaoMiao Harem MOSS · BASE v1.0",
       "family": "moss-image", "media": "image", "pipeline": "MOSSImagePipeline",
@@ -94,6 +155,8 @@
       "mossCompile": true,
       "mossInt8": {
         "path": "transformer/miaomiaoHaremMOSS_baseV10_int8.safetensors",
+        "quantMetadata": {"format": "int8_tensorwise", "convrot": true, "convrot_groupsize": 256},
+        "attentionMetadata": true,
         "bytes": 5413700574,
         "sha256": "8aa2d469b28ea72beb35730b3a00bf0bffbaca03f0419d6f05d390614fe689d9",
         "sourceUrl": "https://civitai.com/api/download/models/3422319?fileId=3316568",

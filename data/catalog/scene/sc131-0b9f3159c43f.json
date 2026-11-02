@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc131",
-  "revision": 9,
+  "revision": 12,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
   "data": {
-    "animaCaption": "One strap has slipped down her arm as she turns toward the viewer from the white sheet.",
+    "animaCaption": "Reclining on the bed as rain hits the glass, her slipped silk strap reveals her bare shoulder, collarbone, and cleavage.",
     "auditRevision": "careful-batch14-2026-08-27",
     "camera": "床边平视近景",
     "category": "恋爱/After_Story",
@@ -19,33 +19,33 @@
     "lighting": "柔和微弱床头灯暖光",
     "location": "温馨卧室大床上",
     "lora": "ayachi_nene_v21_anima",
-    "mature": true,
-    "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, ivory scalloped neckline, small ribbon trim, pink silk nightgown, see-through, strap slip, bare shoulder, on side, shy smile, blush, bed, thunderstorm, night, lamp light, <lora:ayachi_nene_v18_wd14:0.8>, lying on side, looking at viewer, white sheet, warm lighting, bedroom, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "rating": "R18",
+    "mature": false,
+    "negative": "cold light, from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, ayachi_nene, ahoge, hair ribbon, pink silk nightgown, silk sheen, ivory lace trim, thin shoulder straps, scoop neckline, one strap slipped down arm, bare shoulder, delicate collarbone, cleavage, soft curves, bare legs, lying on side on bed, propped on pillow, looking at viewer, gentle blush, tender smile, cozy bedroom, white sheets, warm bedside lamp lighting, thunderstorm outside window, soft shadows, intimate atmosphere, depth of field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
     "season": "不限",
-    "story": "暖黄灯光的温馨卧室大床边。宁宁今晚在你的柔情欺负下彻底向你敞开了心扉。她身上是一件极薄的浅粉色吊带式薄衫，单肩的细带在一侧完全无力地滑落到了手臂以下，露出了大片圆润的香肩。她有些脱力地斜倚在床边，红着脸任由你的视线停留——她头顶的呆毛因为极致的舒适与安心顺从地垂成完美的心形螺旋——「大色狼...一直盯着人家的身体看什么呢...被窝里好热...快点抱紧人家啦...」",
-    "storyJa": "【寧々・大人のアフターストーリー · ·シルクのネグリジェが肩からずり落ちます】深夜の雷雨の中、居心地の良い寝室の大きなベッド。今夜、あなたの優しいいじめを受けて、寧々はあなたに完全に心を開きました。彼女は非常に薄い半透明のピンクのシルクのナイトガウンを着ているだけで、それは全裸でした。彼女は白いベッドシーツの上に横向きに横たわり、ナイトガウンの細いサスペンダーが片方の腕に完全に力なく滑り落ち、丸い肩とふっくらとしたセクシーな白い胸の半分が露出した。彼女の頭のアホ毛は、究極の快適さと安心感により、完璧なハート型の螺旋を描くように素直に垂れ下がりました。――「もう、どこを見てるんですか……布団の中、暑いですね。そんなところにいないで、早く抱きしめてください。」",
+    "story": "窗外雷雨淅沥，卧室内只亮着一盏柔和的床头灯。宁宁侧卧在洁白的床单上，淡粉色的真丝睡裙领口轻垂，一侧的细肩带悄悄滑落至手臂，露出一小片温润的香肩。她微微撑起头，紫眸在暖光里满是信任与依恋，头顶的呆毛柔柔地弯下。「……外面的雷声好响。你坐近一点嘛……只要有你在身边，我就一点都不害怕了。」",
+    "storyJa": "【寧々・雨夜のシルクナイトガウン】窓の外の雷鳴の中、暖かいランプの光に包まれた寝室。淡いピンクのシルクネグリジェの肩紐を片方落とし、横たわってこちらを見つめる寧々。「……雷、すごい音ですね。もっと近くに来てください……あなたがそばにいれば、怖くありませんから。」",
     "tags": [
-      "hair_ribbon",
+      "ayachi_nene",
+      "ahoge",
       "pink_silk_nightgown",
-      "translucent_clothing",
-      "one_shoulder_strap_slipped",
+      "strap_slip",
+      "bare_shoulder",
       "lying_on_side",
+      "bed",
+      "warm_lamp",
       "bedroom",
-      "night",
-      "close_up",
-      "ivory_scalloped_neckline",
-      "small_ribbon_trim"
+      "intimate"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "午夜私语的真丝熔断",
+    "title": "雨夜卧榻上的滑落吊带",
     "usage": [
       "壁纸级",
-      "成人向"
+      "R15"
     ],
     "weather": "窗外雷雨交加",
-    "promptProse": "She lies on her side on the white sheet, one nightgown strap slipped down her arm, looking toward the viewer beneath the warm lamp."
+    "promptProse": "Lying on her side on the warm bed pillows, her pink silk nightgown slips off one shoulder to reveal her delicate collarbone, cleavage, and slender bare legs in the cozy bedside lamp glow."
   }
 }

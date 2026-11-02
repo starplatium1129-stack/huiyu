@@ -21,6 +21,7 @@ import { isManualDirectorValue } from './promptDirector.ts'
 import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
 import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
+import { withoutReplacedPose } from './promptCaption.ts'
 
 // ── Prompt 组装（唯一渲染层 = createPromptPlan + renderPromptPlan） ─────────
 
@@ -217,7 +218,9 @@ function sceneProseWithChangedOutfit(prose: string, source: PopularOutfit): stri
   const excluded = 'a|an|the|and|or|with|while|before|after|near|beside|under|on|at|in|of|to|for|by|she|he|they|her|his|their|hand|hands|arm|arms|is|are|was|were|sits|stands|sitting|standing|lying|holds|holding|leans|reclines|wears'
   const modifier = `(?!(?:${excluded})\\b)[a-z]+(?:-[a-z]+)?`
   const pattern = new RegExp(`\\b(wearing|dressed in|clad in|in)\\s+(?:(?:a|an|the|her|his|their)\\s+)?(?:${modifier}\\s+){0,4}(?:${[...garments].join('|')})\\b(?!\\s+(?:shop|store|rack|display)\\b)`, 'gi')
+  const possessive = new RegExp(`\\b(her|his|their)\\s+(?:${modifier}\\s+){0,4}(?:${[...garments].join('|')})\\b`, 'gi')
   return prose.replace(pattern, (_match, verb: string) => `${verb} the selected outfit`)
+    .replace(possessive, (_match, owner: string) => `${owner} selected outfit`)
 }
 
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult {
@@ -296,8 +299,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const replacedOutfit = outfitChanged && sourceOutfit
     ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
     : new Set<string>()
-  const sceneProse = engine === 'moss' && outfitChanged && sourceOutfit
+  const outfitSceneProse = engine === 'moss' && outfitChanged && sourceOutfit
     ? sceneProseWithChangedOutfit(originalSceneProse, sourceOutfit) : originalSceneProse
+  const sceneProse = engine === 'moss' ? withoutReplacedPose(manual, outfitSceneProse, blueprint) : outfitSceneProse
   const selectedOutfit = (overridden ?? outfit.tokens).map(normalizeProseKey)
   const selectedShoes = selectedOutfit.some(key => SHOE_TOKENS.has(key) || /(?:^|_)(?:boots|shoes|sneakers|heels|sandals|loafers|slippers)$/.test(key))
   const selectedBarefoot = selectedOutfit.some(key => BAREFOOT_TOKENS.has(key))
@@ -310,15 +314,16 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     return selectedShoes && BAREFOOT_TOKENS.has(key) || selectedBarefoot && SHOE_TOKENS.has(key)
       || adultOutfitOverride && selectedClothing && nakedState.has(key)
   }
-  const nsfwTokens = adult ? (blueprint?.nsfwTokens || []).filter(token => !replacedSceneOutfit(token)) : []
   // 两种引擎共用蓝图的画面要素；手动姿态与换装优先于蓝图原词。
-  const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(token => {
+  const keepSceneToken = (token: string) => {
     if (replacedSceneOutfit(token)) return false
     const hit = mutualGroupWithCategory(token)
     if (manualPose && hit?.category === 'pose' && hit.group !== manualPose.group) return false
     if (manualViewpoint && hit?.category === 'viewpoint' && hit.group !== manualViewpoint.group) return false
     return true
-  })
+  }
+  const nsfwTokens = adult ? (blueprint?.nsfwTokens || []).filter(keepSceneToken) : []
+  const sceneTokensFiltered = (blueprint?.promptTokens || []).filter(keepSceneToken)
 
   // 不选场景时，身份词里混入的服装一并去掉（数据遗留：不少角色把 pleated_skirt /
   // qipao / green_clothes / coat 等写进了 identityTokens，而它是无条件注入的，

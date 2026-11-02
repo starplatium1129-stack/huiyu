@@ -229,7 +229,8 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
         || form.mossTextPrecision === 'int8' && !selected.value?.mossTextInt8Ready)) throw new Error('所选 MOSS 文本编码精度未准备好，请更新后端、导入对应权重或选择原始精度')
       if (moss && (typeof form.mossCompile !== 'boolean' || form.mossCompile && !selected.value?.mossCompile)) throw new Error('当前后端尚未提供 MOSS 编译，请更新并重启或关闭内核编译')
       if (moss && (!['auto', 'fp16', 'int8'].includes(form.mossWeightPrecision)
-        || form.mossWeightPrecision === 'int8' && !selected.value?.mossInt8Ready)) throw new Error('请先导入作者 INT8 权重，或选择自动 / FP16')
+        || form.mossWeightPrecision === 'fp16' && !selected.value?.mossFp16Ready
+        || form.mossWeightPrecision === 'int8' && !selected.value?.mossInt8Ready)) throw new Error('所选主模型权重未准备，请选择自动或已导入的精度')
       const compiled = moss ? compileMossPrompt(form.prompt, negative) : { prompt: form.prompt.trim(), negative }
       if (compiled.prompt.length > 12000) throw new Error('加入模型质量词后的提示词超过 12000 字符，请精简描述')
       if (moss && (source.value || references.value.length)) throw new Error('MOSS 当前仅支持文生图，请移除编辑输入')
@@ -290,7 +291,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       if (cancelled) { notice.value = '已取消，原图保留'; return }
       await releaseRequest(); task.value = null
       const context = original.metadata.context
-      await session.submit('moss', { modelId: MOSS_MODEL_ID, prompt: String(original.input.prompt || ''), negative: '',
+      await session.submit('moss', { modelId: original.input.modelId, prompt: String(original.input.prompt || ''), negative: '',
         width: width * scale, height: height * scale, steps: 0, cfg: 0, seed: typeof original.input.seed === 'number' ? original.input.seed : 0,
         initImage: uploaded, mossUpscaleScale: scale, mossUpscaleSourceTaskId: original.taskId },
         { ...(context && typeof context === 'object' ? structuredClone(context as Record<string, unknown>) : {}), parentId: imageTaskArtworkId(original) }, undefined, () => cancelled)

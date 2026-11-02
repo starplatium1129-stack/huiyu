@@ -8,37 +8,48 @@ import importlib.metadata
 import json
 from pathlib import Path
 
-MODEL_ID = "moss-miaomiao-base-v1.0"
 RECEIPT = "huiyu-moss-int8.json"
-_MODEL = json.loads(Path(__file__).with_name("adapter-models.json").read_text(encoding="utf-8"))["models"][MODEL_ID]
-SPEC = _MODEL["mossInt8"]
-TEXT_SPEC = _MODEL["mossTextInt8"]
+MODELS = {key: value for key, value in json.loads(Path(__file__).with_name("adapter-models.json").read_text(encoding="utf-8"))["models"].items()
+          if value["family"] == "moss-image"}
 TEXT_RECEIPT = "huiyu-moss-text-int8.json"
 
 
-def receipt_document(component="transformer"):
-    spec = TEXT_SPEC if component == "text_encoder" else SPEC
-    return dict(schemaVersion=1, modelId=MODEL_ID, scope="imported-files-sha256",
+def component_spec(model_id, component="transformer"):
+    if model_id not in MODELS:
+        raise ValueError("Select a registered MiaoMiao MOSS model version")
+    return MODELS[model_id]["mossTextInt8" if component == "text_encoder" else "mossInt8"]
+
+
+def receipt_document(model_id, component="transformer"):
+    spec = component_spec(model_id, component)
+    return dict(schemaVersion=1, modelId=model_id, scope="imported-files-sha256",
         path=spec["path"], bytes=spec["bytes"], sha256=spec["sha256"])
 
 
 def selected(root, choice, contract, *, component="transformer"):
     if choice == "fp16":
         return None
-    spec = TEXT_SPEC if component == "text_encoder" else SPEC
+    model_id = contract.config(root, root / "huiyu-model.json").get("modelId")
+    try:
+        spec = component_spec(model_id, component)
+    except ValueError as error:
+        raise contract.AdapterError("MODEL_CHANGED", str(error)) from error
     marker = root / (TEXT_RECEIPT if component == "text_encoder" else RECEIPT)
     if not marker.exists():
         if choice == "int8":
             raise contract.AdapterError("MODEL_INCOMPLETE", f"请先导入 MOSS {component} INT8 文件，或选择原始精度")
         return None
     value = contract.config(root, marker)
-    if value != receipt_document(component):
+    if value != receipt_document(model_id, component):
         raise contract.AdapterError("MODEL_CHANGED", "MOSS INT8 导入记录不匹配，请重新导入作者文件")
     path = contract.safe_file(root, root / spec["path"])
     info = path.stat()
     if info.st_size != spec["bytes"] or info.st_mtime_ns > marker.stat().st_mtime_ns:
         raise contract.AdapterError("MODEL_CHANGED", "MOSS INT8 文件已变化，请重新导入")
-    return dict(path=spec["path"], bytes=spec["bytes"], sha256=spec["sha256"], precision="int8-convrot")
+    variant = dict(path=spec["path"], bytes=spec["bytes"], sha256=spec["sha256"], precision="int8-convrot")
+    if component == "transformer":
+        variant.update(quantMetadata=spec["quantMetadata"], attentionMetadata=spec["attentionMetadata"])
+    return variant
 
 
 def require_backend(contract):
@@ -77,7 +88,7 @@ def linear_class():
     return Int8Linear
 
 
-def configure(transformer, weights, contract):
+def configure(transformer, weights, contract, variant):
     import torch
     Int8Linear = linear_class()
 
@@ -91,11 +102,12 @@ def configure(transformer, weights, contract):
             raise contract.AdapterError("UNSUPPORTED_MODEL", f"Invalid MOSS INT8 JSON: {name}") from error
 
     count = 0
-    expected = {"format": "int8_tensorwise", "convrot": True, "convrot_groupsize": 256}
+    expected = variant["quantMetadata"]
     for index, layer in enumerate(transformer.layers):
-        config = metadata(f"layers.{index}.comfy_attention.config")
-        if config != {"attention": "comfy_kitchen_int8"}:
-            raise contract.AdapterError("UNSUPPORTED_MODEL", "Unsupported MOSS INT8 attention configuration")
+        if variant["attentionMetadata"]:
+            config = metadata(f"layers.{index}.comfy_attention.config")
+            if config != {"attention": "comfy_kitchen_int8"}:
+                raise contract.AdapterError("UNSUPPORTED_MODEL", "Unsupported MOSS INT8 attention configuration")
         # Attention is selected by the task's installed Sage/Kitchen dispatcher;
         # this annotation contains no weight data or learned transformation.
         for name in ("qkv", "o", "ffn_up_gate", "ffn_down"):
@@ -110,6 +122,7 @@ def configure(transformer, weights, contract):
             layer.proj[name] = Int8Linear(source)
             count += 1
     transformer._huiyu_int8_count = count
+    transformer._huiyu_int8_attention = variant["attentionMetadata"]
 
 
 def place_resident(transformer):

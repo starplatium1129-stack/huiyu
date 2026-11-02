@@ -144,7 +144,11 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
   - 最后一次任务完成后，连续空闲 10 分钟自动释放模型与显存。
   - 启动本地对话或语音时，自动交接显存资源；退出桌面端立即终止子进程。
 
-## 8. MiaoMiao Harem MOSS BASE v1.0
+## 8. MiaoMiao Harem MOSS BASE v1.0 / v1.1
+
+新创作默认选择 `moss-miaomiao-base-v1.1`；1.0 继续保留在模型选择、草稿、任务与作品中，不自动改写历史配方。1.1 INT8 对应作者版本 `3434952`、文件 `3332286`，文件大小 5,413,697,704 字节，SHA-256 `234e8fa8106bf2ac7f83586feb97054cf6e11a23e7cb2c5adfc808031d27b50b`。与 1.0 复用同一固定上游架构、Qwen3.5-9B 编码器、tokenizer、FLUX.2 VAE 与 INT8 算子；1.1 的 168 个投影明确带 `per_row: true`，不含 1.0 的逐层 Kitchen INT8 attention 配置，按版本分别校验元数据并选择既有 Sage/PyTorch 注意力路径。不将 1.1 权重覆盖到 1.0 目录。
+
+已有完整 1.0 时，可运行 `npm run wf -- models:import-moss-int8 --source <作者1.1INT8文件> --model-dir <models根/moss-miaomiao-base-v1.1> --model-id moss-miaomiao-base-v1.1 --reuse-from <models根/moss-miaomiao-base-v1.0>` 预览，追加 `--apply` 写入。路径均用绝对路径，目标模型须未在推理。共享组件核对固定 SHA-256 后优先硬链接，无法链接时复制；主模型校验复制并原子发布导入记录。已有配套 INT8 文本编码器也复用并生成属于 1.1 的记录。保留下载原件与 1.0；文件就绪不代表真实出图与性能验收。
 
 模型 ID 为 `moss-miaomiao-base-v1.0`。从「我的作品 → MiaoMiao MOSS 创作」进入，或在控制室选择该模型准备。先登录[作者版本页](https://civitai.com/models/3015023?modelVersionId=3422319)，下载 `miaomiaoHaremMOSS_baseV10_fp16.safetensors`，在准备面板填写完整本机路径。准备先核对作者 SHA-256 并复制权重，再下载固定版本的 Qwen3.5-9B 编码器、tokenizer 与 FLUX.2 VAE；原文件保留。完整组件约 27.2 GB，另需运行库、缓存及暂存空间，按面板预算准备磁盘。已有完整目录可额外导入同一作者版本的 INT8 文件，复用编码器、tokenizer 与 VAE。
 

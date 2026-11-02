@@ -3,9 +3,10 @@
     <section class="tag-browser" aria-label="搜索与选择词条">
       <div class="tag-dictionary-heading">
         <strong>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
-        <a v-if="isAnima" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
+        <a v-if="usesTagSyntax" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
       </div>
       <p v-if="isAnima" class="tag-dictionary-note">普通词条优先 Gelbooru；画师名沿用 Danbooru。</p>
+      <p v-else-if="isMoss" class="tag-dictionary-note">MOSS 使用词条＋自然语言：词条控制画面元素，描述补充动作与空间关系。括号权重不生效。</p>
       <p v-else-if="promptFormat === 'natural-language'" class="tag-dictionary-note">词条用于组织画面，最终以自然语言发送。</p>
       <div class="tag-search-row">
         <StudioSearch v-model="tagSearch" class="tag-search" label="搜索词条" placeholder="搜索中文含义、英文词条或别名…" />
@@ -55,7 +56,7 @@
     </div>
     <div v-if="pb.manualTags.size" class="manual-tags">
       <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
-        <span class="manual-tag" :data-weight-tier="tagWeightTier(tag)">
+        <span class="manual-tag" :data-weight-tier="isMoss ? 'normal' : tagWeightTier(tag)">
           <span class="manual-tag-text">
             <span class="manual-tag-en">{{ displayTag(tag) }}</span>
             <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
@@ -118,7 +119,7 @@
           <small>{{ bundle.tags.slice(0, 4).map(displayTag).join(', ') }}{{ bundle.tags.length > 4 ? ' …' : '' }}</small>
         </button>
       </div>
-      <div class="r18-controls" aria-label="成人场景词条">
+      <div v-if="visibleR18Controls.length" class="r18-controls" aria-label="成人场景词条">
         <div class="r18-controls-head">
           <strong>成人场景词条</strong>
           <span>角色专属，按需添加</span>
@@ -168,11 +169,14 @@ import '@/assets/css/director/components/DirectorTagWorkbench.css'
 type TagEntry = PromptTagSource
 
 const pb = usePromptBuilderStore()
-const props = defineProps<{ promptFormat: DrawCapabilities['promptFormat']; modelProfile: ModelProfile | null }>()
+const props = defineProps<{ promptFormat: DrawCapabilities['promptFormat'] | 'moss-hybrid'; modelProfile: ModelProfile | null }>()
 const isAnima = computed(() => props.promptFormat === 'anima-tags')
+const isMoss = computed(() => props.promptFormat === 'moss-hybrid')
+const usesTagSyntax = computed(() => isAnima.value || isMoss.value)
 // Format only the visible label. Selection keeps the catalogue key; site-specific
 // synonym changes require evidence and never rewrite exact LoRA control tokens.
 function displayTag(tag: string): string {
+  if (isMoss.value) return tag.replace(/^\((.*):\s*-?\d+(?:\.\d+)?\)$/, '$1').replace(/_/g, ' ')
   return isAnima.value ? formatPromptForEngine(tag, 'anima', props.modelProfile?.exact_tokens || [], props.modelProfile?.exact_prefixes || []) : tag
 }
 const { tagMeaning, tagLabel, tagWeightTier, toggleOutfitBundle, addTag } = usePromptTagTools(pb)
@@ -213,6 +217,7 @@ const inputSuggestions = computed(() => {
   if (!query || /[,，、\r\n]/.test(tagInputText.value)) return suggestions
   const matches = createPromptTagMatcher(query)
   for (const tag of pb.tagDictionary.entries) {
+    if (isMoss.value && tag.source === 'huiyu/lora') continue
     if (matches({ en: tag.canonicalTag, cn: tag.zhLabel, cat: tag.category, aliases: tag.aliases })) suggestions.push(tag)
     if (suggestions.length === 12) break
   }
@@ -250,7 +255,8 @@ async function clearTags() {
 // The catalog is the only vocabulary authority, including registered LoRA
 // controls. Preset contents and scene prose cannot silently expand the dictionary.
 const tagCatalog = computed<TagEntry[]>(() => [...new Map(pb.tags
-  .filter(tag => tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en)))
+  .filter(tag => tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en))
+    && (!isMoss.value || tag.source !== 'huiyu/lora'))
   .map(tag => [tag.en, tag])).values()])
 
 const tagCategories = computed(() => {
@@ -326,6 +332,6 @@ function toggleUniversalPreset(tags: string[], label: string) {
 }
 
 const visibleR18Controls = computed(() =>
-  R18_CONTROLS.filter(control => pb.char === 'triad' || control.character === pb.char),
+  isMoss.value ? [] : R18_CONTROLS.filter(control => pb.char === 'triad' || control.character === pb.char),
 )
 </script>

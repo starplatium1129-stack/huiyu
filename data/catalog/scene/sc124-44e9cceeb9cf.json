@@ -1,15 +1,15 @@
 {
   "kind": "scene",
   "id": "sc124",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
   "data": {
     "id": "sc124",
-    "title": "晚宴归途的酒店更衣",
+    "title": "晚宴散场后的酒店更衣",
     "category": "恋爱/After_Story",
-    "story": "高档晚宴散场后的酒店套房。夏目踩脱高跟鞋陷在软椅里，微仰着头长舒了一口气。黑色露背晚礼服的背部拉链有些卡滞，她侧过脸望向你，眼角泛着微醺的红晕：「长官……先帮我把后面的搭扣解开，勒了一整晚，骨头都要散架了。」",
+    "story": "高档晚宴散场后的酒店套房。夏目踩脱高跟鞋陷在床沿，黑色丝绸礼服的领口搭扣与拉链悄然松开，裙摆滑落露出柔和的双肩与锁骨。她微微仰躺在松软的枕上，眼角的泪痣在床头暖灯与窗外霓虹中浮现一层醉人的薄晕。「……长官，后背的搭扣终于松开了。累了一整晚……今晚就陪我在这里安静待一会儿吧。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -21,40 +21,32 @@
     "timeOfDay": "late_night",
     "tags": [
       "mole_under_eye",
-      "evening_gown",
-      "backless",
-      "high_slit",
-      "zipper_open",
-      "sliding_off_shoulders",
-      "bare_back",
-      "black_stockings",
-      "pinned_down",
-      "arms_around_neck",
-      "flushed",
+      "black_evening_gown",
+      "unzipped_dress",
+      "bare_shoulders",
+      "collarbone",
+      "sheer_thighhighs",
+      "lying_on_bed",
+      "looking_up",
       "hotel_suite",
-      "large_bed",
-      "night",
       "neon_light",
-      "bedside_lamp",
-      "close_up",
-      "burgundy_satin_lining",
-      "gold_clasp_at_neckline"
+      "bedside_lamp"
     ],
-    "mature": true,
+    "mature": false,
     "location": "酒店套房大床",
     "weather": "霓虹闪烁",
     "camera": "主观平视近景",
     "lighting": "落地窗透进的霓虹弱光与床头灯",
     "usage": [
       "壁纸级",
-      "成人向"
+      "R15"
     ],
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, burgundy satin lining, gold clasp at neckline, black silk evening gown, backless dress, unzipped, sideboob, sheer black thighhighs, on back, arms around neck, blush, hotel bed, neon lights, night, <lora:shiki_natsume_v18_wd14:0.85>, lying on back, bedside lamp, bedroom, neon_glow, cinematic_lighting, depth_of_field",
-    "negative": "",
-    "storyJa": "【夏目・イブニングドレスは究極の秋のロックを解除します】豪華な晩餐会を終えた五つ星ホテルのプレジデンシャルスイート。窓の外には都会の喧騒のネオンがいつまでも輝き、部屋はほんのり暖かい。普段は上品で飄々としていた夏目が、この時は力が抜けたあなたに大きなダブルベッドに押し倒されました。彼女の黒い背中の開いたハイスリットのシルクイブニングドレスの後ろにある細いジッパーがあなたによって完全に開かれ、ガウン全体が両側に弱々しくスライドし、官能的なラインの広い領域、感情的な紅潮を伴う美しい裸の背中と横の胸を明らかにします。脚に巻きついたセクシーな極薄の黒ストッキングが、暗い光の下で非常に眩しい光沢を放ちます。目尻の泣きぼくろが真っ赤に染まっている。彼女はあえぎ、うめき声​​を上げながらあなたの首を強く締め付けます。――「店長……今夜のこの服、あなたが好きだと言うなら……もう少しだけ着ていてあげてもいい。」",
-    "rating": "R18",
-    "animaCaption": "Her arms circle the viewer's neck as she lies beneath the mixed bedside and city light.",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, black silk evening gown, silk sheen, plunging neckline, unzipped dress, slipping off shoulders, bare shoulders, delicate collarbone, cleavage, bare arms, sheer black thighhighs, bare thighs, lying on back, head on pillow, looking up at viewer, eye contact, soft blush, luxury hotel suite, large bed, warm bedside lamp, floor-to-ceiling window, city neon bokeh, cinematic lighting, depth of field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "from behind, looking away",
+    "storyJa": "【夏目・ホテルスイートのドレスオフ】パーティーを終えたホテルの部屋で、ベッドに横たわる夏目。黒いシルクドレスの留め具を外し、肩を露わにして見上げる。ネオンの街明かりが窓越しに揺れる中、静かに呟いた。「……やっと解放されました。今夜はこのまま、静かにそばにいてくれますか。」",
+    "rating": "R15",
+    "animaCaption": "Lying on the hotel suite bed looking up at the viewer, her slipping evening gown reveals her bare shoulders, collarbone, and cleavage.",
     "auditRevision": "careful-batch04-2026-08-27",
-    "promptProse": "She lies on the bed with her gown unzipped and slipping at the sides, arms around the viewer's neck beneath mixed bedside and city light."
+    "promptProse": "Reclining across the hotel bed facing the viewer, her unzipped black silk gown slips off her shoulders to display her delicate collarbone, deep cleavage, and stockinged thighs against city neon reflections."
   }
 }

@@ -1,15 +1,15 @@
 {
   "kind": "scene",
   "id": "sc134",
-  "revision": 10,
+  "revision": 14,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
   "data": {
     "id": "sc134",
-    "title": "黎明拂晓的真空支配",
+    "title": "晨光里的黑色男士衬衫",
     "category": "恋爱/After_Story",
-    "story": "一个无限慵懒的假日清晨，金色的拂晓碎光透过巨大的落地窗。昨晚宿醉过后的夏目从白色大床中央醒来，身上仅仅松垮垮地套着你那一身纯黑色的长袖衬衫，里面完全是真空状态。衬衫纽扣大开，前襟挂在圆润的香肩两侧，大片白皙笔直的长腿毫无防备地交叠袒露。眼角的泪痣被初升的朝阳照亮，性感得不可救药。她半撑着身体斜睨着你，用极具占有欲的傲娇微笑低语——「早安，大变态。盯着人家的腿看够了没有？看够了的话...就过来抱我。」",
+    "story": "假日清晨的金色阳光透过窗纱洒在松软的床褥上。夏目侧撑着手肘斜倚在枕边，身上随意披着一件属于你的宽大黑衬衫，领口敞开露出纤细的锁骨与半边香肩，修长的双腿在白床单间优雅交叠。泪痣在晨光中分外动人，她唇角掠过一丝慵懒而玩味的浅笑。「……起得还挺早的嘛。借了你的衣服穿，长官该不会还要收借用费吧？既然醒了，就过来坐我身边。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -22,21 +22,16 @@
     "tags": [
       "mole_under_eye",
       "oversized_black_shirt",
-      "unbuttoned_shirt",
-      "no_bra",
+      "off_shoulder",
+      "bare_shoulder",
       "bare_legs",
       "crossed_legs",
       "propped_on_elbow",
-      "tsundere_smile",
-      "teasing",
-      "dawn",
-      "morning_light",
-      "white_bed",
-      "medium_shot",
-      "matte_black_buttons",
-      "notched_cuffs"
+      "teasing_smile",
+      "bed",
+      "morning_light"
     ],
-    "mature": true,
+    "mature": false,
     "location": "双人床榻被窝",
     "weather": "温暖初晴",
     "camera": "床边平视半身中景",
@@ -44,14 +39,14 @@
     "usage": [
       "壁纸级",
       "绝对独占",
-      "成人向"
+      "R15"
     ],
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, matte black buttons, notched cuffs, oversized black shirt, open shirt, off shoulder, no underwear, bare legs, crossed legs, on elbow, teasing smile, bed, morning light, medium shot, lying, looking at viewer, bedroom, morning_sunlight, soft_lighting, cinematic_lighting, depth_of_field",
-    "negative": "pants, underwear, thighhighs",
-    "storyJa": "【夏目・モーニングバキュームビッグシャツ絶対独占】限りなく怠惰な休日の朝、床から天井まで届く大きな窓から金色の夜明けの光が差し込みます。昨夜二日酔いの後、夏目は大きな白いベッドの真ん中で目を覚ましました。彼女はあなたの真っ黒な長袖シャツをラフに着ているだけで、中は完全に真空でした。シャツのボタンは大きく開き、前立ては丸い肩の両側に垂れ下がっています。長くて色白でまっすぐな脚が無造作に露出します。目尻の泣きぼくろが朝日に照らされて、どうしようもなくセクシーです。彼女は体を半分伸ばして横目であなたを見つめ、非常に独占的で傲慢な笑顔でささやきました。――「おはよう、この大変態。いつまで脚を見てるつもり？　もう満足したなら……こっちへ来て、抱きしめて。」",
-    "rating": "R18",
-    "animaCaption": "She glances toward the viewer while propped on one elbow, the borrowed shirt hanging from her shoulders.",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, from front, facing viewer, oversized black shirt, unbuttoned shirt, off shoulder, bare shoulder, delicate collarbone, cleavage, bare legs, bottomless silhouette, bare thighs, crossed legs, propped on elbow, reclining on white bed, teasing smile, playful gaze, looking at viewer, bedroom, morning sunlight streaming through window, golden hour, soft bedroom shadows, depth of field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "dark night, pants, from behind, looking away",
+    "storyJa": "【夏目・朝のオーバーサイズシャツ】白いベッドに朝の光が差し込む中、借りた黒の大きなシャツを羽织り肘をついて微笑む夏目。肩を落として長い脚を組み、戯れるような視線を向ける。「……おはようございます。シャツを借りたくらいで文句は言わせませんよ。起きたなら、隣に来てください。」",
+    "rating": "R15",
+    "animaCaption": "Loungeing on the bed in an unbuttoned black shirt, her off-shoulder look reveals her collarbone, cleavage, and bare legs.",
     "auditRevision": "careful-batch12-2026-08-27",
-    "promptProse": "She props herself on one elbow with her legs crossed, the viewer's unbuttoned black shirt hanging from her shoulders as she glances toward them."
+    "promptProse": "Reclining across the morning bed in an unbuttoned oversized black shirt that falls off her shoulder, she shows off her delicate collarbone, cleavage, and bare legs in the warm streaming golden sunlight."
   }
 }

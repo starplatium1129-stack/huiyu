@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc116",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
   "data": {
-    "animaCaption": "Her hands support her at the counter's edge beneath the cafe's dim amber light.",
+    "animaCaption": "Perched on the counter with a teasing smirk, her loose cardigan reveals her lace camisole, bare shoulders, and cleavage.",
     "auditRevision": "careful-batch02-2026-08-27",
     "camera": "吧台前略仰视半身中景",
     "category": "日常/同人",
@@ -19,30 +19,33 @@
     "lighting": "吧台上方微弱局部光",
     "location": "打烊后的咖啡吧台",
     "lora": "shiki_natsume_v21_anima",
-    "mature": true,
-    "negative": "cafe uniform",
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, black lace lingerie, sheer black tights, garter straps, heels, sitting on counter, crossed legs, blush, cafe, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>, hands on counter, warm lighting, table, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "rating": "R18",
+    "mature": false,
+    "negative": "cafe uniform, apron, from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, black lace camisole, lace trim, plunging neckline, cleavage, bare shoulders, delicate collarbone, open cardigan sliding off shoulder, sheer black tights, high heels, sitting on counter, crossed legs, hands on counter edge, looking at viewer, teasing smirk, blush, closed cafe, empty cafe interior, dim warm lighting, amber spotlight, bar stools, counter reflections, soft shadows, depth of field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
     "season": "不限",
-    "story": "深夜闭店后的星光咖啡馆。在一片寂静的昏暗中，夏目在你的霸道惩罚下，褪去了所有的校服外套，仅仅穿着一套充满了危险禁忌感的黑色蕾丝内衣和超薄黑丝袜坐在吧台上。平时高冷克制的她此时面红赤，双手撑在吧台边缘，眼角的泪痣被脸颊的红晕彻底浸透。她大汗淋漓地斜睨着居高临下的你，咬着银牙发出最后的傲娇宣言——「喂，大色狼。今晚不准让我回家...你最好做足了被我彻底吃掉的觉悟。」",
-    "storyJa": "【夏目・レース下着の究極の誘惑】深夜閉店後のスターライトカフェ。静かな暗闇の中、夏目はあなたの高圧的なお仕置きに学生服の上着を全て脱ぎ、危険なタブーが詰まった黒いレースの下着と極薄の黒ストッキングだけを身に着けてバーに座りました。彼女はいつも冷たく控えめで、今では顔は赤く、手はバーの端にあり、目の端の泣きぼくろは頬の赤面で完全に濡れていました。彼女は汗だくになり、見下すようなあなたを横目に、銀歯を食いしばって傲慢な最後の宣言をした。――「ねえ、このすけべ。今夜は私を一人で帰さないで……最後まで付き合う覚悟くらい、しておいて。」",
+    "story": "闭店后的咖啡馆归于寂静，只余吧台上方一盏暗调暖光。夏目脱下制服外套搭在一旁，轻巧的黑色蕾丝吊带勾勒出身段。她坐上木质吧台，修长的双腿自然交叠，双手按在台沿。微醺的酒意混着咖啡香，她迎着你的视线微微抬起下巴，泪痣在昏黄灯光里泛着诱惑的光泽。「把门反锁了还不放我走……长官，你该不会以为我今晚还会继续当随叫随到的店员吧？」",
+    "storyJa": "【夏目・閉店後のカウンター】誰もいない深夜のカフェで、カウンターの上に座り脚を組む夏目。制服を脱ぎ、黒のレースキャミソール姿で手を縁に置く。琥珀色の照明に照らされた彼女は、少しからかうような笑みを浮かべた。「鍵をかけて帰さないなんて……店長、今夜も言いなりになると思ったら大間違いですよ。」",
     "tags": [
       "mole_under_eye",
-      "lace_lingerie",
+      "black_lace_camisole",
+      "open_cardigan",
       "sheer_black_tights",
       "cafe_counter",
+      "crossed_legs",
       "heels",
-      "medium_shot",
-      "low_angle"
+      "dim_lighting",
+      "amber_light",
+      "teasing"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "星光打烊后的蕾丝过载",
+    "title": "打烊吧台上的黑色蕾丝",
     "usage": [
       "核心协议",
-      "成人向"
+      "R15"
     ],
     "weather": "微热",
-    "promptProse": "She sits cross-legged on the closed cafe's counter, supporting herself with her hands at the edge beneath dim amber light."
+    "promptProse": "Sitting on the closed cafe counter with crossed legs, her cardigan slips off her shoulders to showcase her black lace camisole, cleavage, and delicate collarbone in the warm amber spotlight."
   }
 }

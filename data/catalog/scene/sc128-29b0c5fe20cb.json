@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc128",
-  "revision": 8,
+  "revision": 11,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
+  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
   "data": {
-    "animaCaption": "Sitting cross-legged on the carved redwood daybed amidst silk cushions, she lifts her cup with a tipsy blush as glowing red lanterns and the lattice screen frame her in warm golden light.",
+    "animaCaption": "Cross-legged on the carved daybed, her high-slit silk qipao reveals her bare thighs and collarbone under the warm tea lantern.",
     "camera": "主观略微仰视",
     "category": "日常/同人",
     "char": "natsume",
@@ -18,16 +18,15 @@
     "lighting": "茶楼雕花红木宫灯明亮暖红光芒与落地花窗外的庭院景观",
     "location": "复古私人包厢",
     "lora": "shiki_natsume_v21_anima",
-    "mature": true,
-    "negative": "day, pitch black, darkness, dark room",
-    "prompt": "adult, 1girl, solo, natsume_r18, shiki_natsume, natsume_official_qipao, @rella, mole_under_eye, dark red silk embroidered qipao, high slit, black thighhighs, sitting cross-legged on carved redwood daybed with gold silk cushions, holding porcelain teacup, tipsy blush, gentle smile, traditional chinese teahouse private room, glowing red carved wooden lantern overhead, tea table with tea set and incense burner, wooden lattice screen partition, courtyard view outside window, face illuminated by warm red lantern glow, soft rim lighting, cowboy shot, depth of field",
-    "rating": "R18",
+    "mature": false,
+    "negative": "daylight, darkness, dark room, modern office, from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, natsume_official_qipao, mole_under_eye, dark red silk embroidered qipao, silk sheen, high slit, delicate collarbone, cleavage, black thighhighs, bare thighs, absolute territory, cross-legged, sitting on carved redwood daybed, holding porcelain tea cup, tipsy blush, subtle confident smile, traditional chinese teahouse private room, glowing red carved wooden lantern overhead, tea table with incense burner, wooden lattice screen, warm lantern glow, soft rim lighting, cowboy shot, depth of field, @rella",
+    "rating": "R15",
     "season": "不限",
     "story": "中式茶楼的静谧包间里飘着清淡茶香。夏目换上一身暗红丝绸改良旗袍，侧坐在罗汉榻的茶台前，修长的手指捏着白瓷盖碗，眼角的泪痣在古朴灯影下格外分明。见你进门，她微微挑眉，唇角扬起一抹胸有成竹的弧度：「坐。外头的眼线都清理干净了，接下来该听听你的报告了。」",
-    "storyJa": "【夏目・シルクチャイナドレスハイスリット】秘密の潜入任務を完了した後の中国風のプライベートクラブ。普段は笑顔のない夏目さんは、高いスリットが入った高級なダークレッドのシルクチャイナドレスを着て、まっすぐでふっくらとした美しいスレンダー脚を完璧に強調しました。彼女の脚はセクシーな薄い黒い絹で包まれていました。傲慢さはあるものの、顔は紅潮し、ほのかに酔っぱらった彼女は、冷たいマホガニーの羅漢ベッドの真ん中にあぐらをかいて座り、細い指で金色の酒の入ったグラスを振っていた。アンティークランプの強い横光の下では、目尻の泣きぼくろが非常に明るく魅惑的に見えます。――「ふん、店長。今夜はこのラウンジを貸し切りにした。入ってきた以上……私の尋問に最後まで付き合う覚悟をして。」",
+    "storyJa": "【夏目・茶室の羅漢ベッド】落ち着いた茶室の個室で、スリットの入った深紅のチャイナドレスを纏い羅漢ベッドに腰掛ける夏目。白磁の茶杯を傾けながら、自信に満ちた笑みを向ける。「座りなさい。邪魔な視線は片付けたわ。さあ、あなたの報告を聞かせてもらいましょうか。」",
     "tags": [
       "mole_under_eye",
-      "natsume_r18",
       "natsume_official_qipao",
       "dark_red_silk_qipao",
       "high_slit",
@@ -41,19 +40,17 @@
       "glowing_red_wooden_lantern",
       "tea_set",
       "wooden_lattice_screen",
-      "face_illuminated_by_lantern_glow",
       "soft_rim_lighting",
-      "cowboy_shot",
-      "depth_of_field"
+      "cowboy_shot"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
     "title": "中式茶楼的暗红罗汉榻",
     "usage": [
       "核心协议",
-      "成人向"
+      "R15"
     ],
     "weather": "微醺微热",
-    "promptProse": "Sitting cross-legged on the carved redwood daybed amidst silk cushions, she lifts her cup with a tipsy blush as glowing red lanterns and the lattice screen frame her in warm golden light."
+    "promptProse": "Relaxing cross-legged on the redwood daybed in her dark red silk qipao, the high slit displays her bare thighs and black thighhighs while the fitted bodice accents her collarbone and cleavage in the lantern glow."
   }
 }

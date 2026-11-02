@@ -1,15 +1,15 @@
 {
   "kind": "scene",
   "id": "sc140",
-  "revision": 11,
+  "revision": 14,
   "sortOrder": 138,
   "createdAt": null,
-  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
+  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
   "data": {
     "id": "sc140",
     "title": "打烊办公室的秘密审讯",
     "category": "恋爱/After_Story",
-    "story": "深夜空无一人的特工指挥中心办公室，百叶窗外透进零星的城市霓虹。高冷的职场OL夏目正面红耳赤地坐在冰凉的办公桌边缘，身上的白衬衫纽扣已被你解开了大半，露出了极其诱人的饱满曲线。腿上性感的黑色丝袜已经被你大面积暴力撕裂，露出了光洁细腻的大腿绝对领域。她双手死死撑在身后，眼角的泪痣在台灯强阴影下散发着极致动情的危险红晕，大口喘息着呻吟——「哈啊...长官...今晚这场『秘密越界审讯』...你已经彻底赢了...随你把我坏掉吧...」",
+    "story": "深夜熄灯后的高级办公室，唯有大班台上的复古绿罩银行家台灯投下一束暖金光芒。夏目坐在深红木办公桌边缘，衬衫领口的纽扣解开几颗，若隐若现露出黑色蕾丝内衣与优雅的锁骨。黑色铅笔裙侧边微启，丝袜包裹的腿部线条在灯影与窗外霓虹中分外吸睛。她双手后撑着桌面，咬了咬下唇，眼角泪痣因心跳加速而泛起动情红晕。「……今晚的额外报告就到此为止。长官要是再不收手……明天可没人替你整理防卫档案了。」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -21,41 +21,32 @@
     "timeOfDay": "late_night",
     "tags": [
       "mole_under_eye",
-      "natsume_r18",
-      "white_blouse",
-      "unbuttoned",
-      "black_pencil_skirt",
+      "unbuttoned_blouse",
       "black_lace_bra",
-      "garter_straps",
-      "black_thighhighs",
+      "black_pencil_skirt",
+      "sheer_thighhighs",
       "sitting_on_desk",
       "hands_on_desk",
-      "blush",
-      "executive_office",
-      "green_banker_desk_lamp",
-      "warm_lightbeam",
-      "panoramic_window",
+      "banker_lamp",
       "city_skyline",
-      "face_illuminated_by_desk_lamp",
-      "soft_rim_lighting",
       "cowboy_shot",
-      "depth_of_field"
+      "dramatic_lighting"
     ],
-    "mature": true,
+    "mature": false,
     "location": "指挥官办公室桌上",
     "weather": "微热",
     "camera": "办公桌前略仰视半身中景",
     "lighting": "大班台上复古绿罩银行家台灯强力暖光束与落地窗外繁华都市夜景",
     "usage": [
       "新手推荐",
-      "成人向"
+      "R15"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, natsume_r18, @rella, mole_under_eye, unbuttoned white office blouse, black pencil skirt unzipped at side, black lace bra, garter straps, black thighhighs, sitting on edge of executive mahogany desk, hands bracing on desk surface, flushed blush, biting lower lip, executive office interior, bright green banker desk lamp casting warm golden lightbeam, papers and pen stand on desk, large panoramic window overlooking illuminated city skyline, face illuminated by desk lamp lightbeam, sharp rim lighting, cowboy shot, depth of field",
-    "negative": "daylight, pitch black, darkness, dark room",
-    "storyJa": "【夏目・職場OLの狭いスカートが絶対波打つ】シークレットサービス指令センターのオフィスは深夜、人影もなく、散発的に都会のネオンがブラインドから差し込んでいた。寒い職場で、OL夏目は顔を真っ赤にして冷たい机の端に座っています。あなたは体の白いシャツのほとんどのボタンを外し、非常に魅力的な豊満な曲線を明らかにしています。あなたの脚のセクシーな黒ストッキングはあなたによって激しく引き裂かれ、滑らかで繊細な太ももの絶対領域が露出します。彼女は両手を背中の後ろでしっかりと握り、電気スタンドの強い影の下で目の端の泣きぼくろが非常に感情的で危険な赤面をにじみ出し、彼女は息を呑んでうめき声を上げました。――「店長……今夜の『秘密の越境尋問』は、あなたの勝ち。だからもう少しだけ……私のそばにいて。」",
-    "rating": "R18",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, unbuttoned white office blouse, unbuttoned shirt, visible black lace bra underneath, sheer fabric, delicate collarbone, cleavage, black pencil skirt, sheer black thighhighs, bare thighs, sitting on edge of executive mahogany desk, hands bracing on desk, leaning back slightly, flushed blush, biting lower lip, side glance, executive office interior, bright green banker desk lamp, warm golden spotlight beam, documents and fountain pen on desk, panoramic night window, glittering city skyline bokeh, dramatic side lighting, sharp rim light, cowboy shot, depth of field, @rella",
+    "negative": "torn stockings, torn clothes, daylight, from behind, looking away",
+    "storyJa": "【夏目・緑のランプ下の尋問】夜の重役室、バンカーズランプの緑と金色の光がデスクを照らす。シャツのボタンを少し開け、マホガニーの机に腰掛けて唇を噛む夏目。「……報告はここまでです、店長。これ以上からかうなら……明日の重要書類、全部まとめてお預けにしますよ。」",
+    "rating": "R15",
     "auditRevision": "careful-batch11-2026-08-27",
-    "animaCaption": "Perched on the edge of the mahogany desk after hours, she leans back against her braced hands while the green banker's lamp casts a bright warm beam over her unbuttoned blouse against the sparkling city backdrop.",
-    "promptProse": "Perched on the edge of the mahogany desk after hours, she leans back against her braced hands while the green banker's lamp casts a bright warm beam over her unbuttoned blouse against the sparkling city backdrop."
+    "animaCaption": "Perched on the mahogany desk with unbuttoned blouse, her visible black lace bra, collarbone, and cleavage stand out in the green desk lamp.",
+    "promptProse": "Sitting on the executive desk edge with unbuttoned blouse revealing her black lace bra, delicate collarbone, and cleavage, her sheer thighhighs accent her bare thighs in the banker lamp's emerald glow."
   }
 }

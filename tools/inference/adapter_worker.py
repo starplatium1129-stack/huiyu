@@ -358,7 +358,7 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
         branches = 2 if data["cfg"] > 1 and data["negativePrompt"] else 1
         attention = sibling("native_attention").inference_attention(spec["family"] in ("qwen-image", "moss-image"),
             compile_safe=spec["family"] == "moss-image" and data["mossCompile"],
-            moss_int8=spec["family"] == "moss-image" and bool(getattr(pipeline.transformer, "_huiyu_int8_count", 0)))
+            moss_int8=spec["family"] == "moss-image" and bool(getattr(pipeline.transformer, "_huiyu_int8_attention", False)))
         with torch.inference_mode(), sibling("qwen_prefix_cache").context(
                 use_prefix, pipeline, branches, control, observation) as prefix, attention as backend:
             observation["attentionBackend"] = backend

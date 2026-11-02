@@ -102,6 +102,7 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
         "mossRemacri":model["family"] == "moss-image" && resources::remacri(&settings.models_root).is_some(),
         "mossTextPrecision":model["mossTextPrecision"],
         "mossCompile":model["mossCompile"],
+        "mossFp16Ready":model["family"] == "moss-image" && path.join("transformer/diffusion_pytorch_model.safetensors").is_file(),
         "mossInt8Ready":model["mossInt8"]["path"].as_str().is_some_and(|file|
             path.join("huiyu-moss-int8.json").is_file() && std::fs::metadata(path.join(file)).ok()
                 .is_some_and(|info| info.is_file() && Some(info.len()) == model["mossInt8"]["bytes"].as_u64())),

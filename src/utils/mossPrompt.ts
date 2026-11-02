@@ -1,12 +1,12 @@
-import type { PromptPlan } from '@/types/prompt'
-import { normalizeArtistStyleIds, parseArtistStyleItem } from '@/config/artistStyles'
-import { CANONICAL_OUTFITS } from './canonicalOutfits'
-import { authoredSceneCaption } from './promptCaption'
-import { resolveCameraTags } from './promptCamera'
-import { normalizeKey, tokenize } from './promptPrimitives'
-import { proseToken } from './promptPhraseTables'
+import type { PromptPlan } from '../types/prompt'
+import { normalizeArtistStyleIds, parseArtistStyleItem } from '../config/artistStyles.ts'
+import { CANONICAL_OUTFITS } from './canonicalOutfits.ts'
+import { authoredSceneCaption } from './promptCaption.ts'
+import { resolveCameraTags } from './promptCamera.ts'
+import { normalizeKey, tokenize } from './promptPrimitives.ts'
+import { proseToken } from './promptPhraseTables.ts'
 
-// MIAOKA's BASE v1.0 recipe, Civitai version 3422319 (2026-10-22).
+// MIAOKA's shared BASE v1.0/v1.1 positive and negative recipe.
 export const MOSS_QUALITY = 'masterpiece, best quality, very aesthetic, ultra-detailed, high contrast'
 export const MOSS_NEGATIVE = 'extra toes, lowres, (bad), text, error, fewer, extra, missing, worst quality, jpeg artifacts, low quality, watermark, unfinished, displeasing, oldest, early, signature, artistic error, username, bad feet, scan, [abstract], english text, shiny hair'
 
@@ -53,13 +53,30 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
     seen.add(key)
     return [token.replace(/_/g, ' ')]
   })
-  const sceneProse = plan?.scene?.promptProse || plan?.sceneProse || plan?.scene?.animaCaption || ''
+  const sceneProse = plan?.sceneProse || plan?.scene?.promptProse || plan?.scene?.animaCaption || ''
   const prose = plan ? [plan.subjectProse, plan.outfitProse ? `Clothing: ${plan.outfitProse}` : '',
     ...outfits, sceneProse ? authoredSceneCaption(plan, sceneProse, false) : '']
     .map(value => value.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/g, ', ').trim()) : []
   const tagLine = tags.join(', ')
   const raw = [...new Set([tagLine, ...prose, authored].filter(Boolean))].join('\n')
-  return { raw, ...compileMossPrompt(raw, mergeNegative(negative)), tagLine }
+  const compiled = compileMossPrompt(raw, negative)
+  return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative), tagLine }
+}
+
+/** Only explicit lettering cues relax the author defaults; custom exclusions remain intact. */
+function mossTextIntent(text: string): boolean {
+  const tags = text.split(/[,\n]/).map(normalizeKey)
+  const positive = text.split(/[.!?\n]/).filter(sentence =>
+    !/\b(?:no|not|without|avoid|exclude|omit|don't)\b|不要|不含|没有|无文字/i.test(sentence)).join('\n')
+  return tags.some(tag => ['text', 'english_text', 'chinese_text', 'japanese_text', 'korean_text', 'lettering', 'speech_bubble'].includes(tag))
+    || /\b(?:text|lettering|caption|title|sign|poster|speech bubble)\s*(?:(?:reads?|says?|reading|saying|:|=)\s*)?["'“‘「『]/i.test(positive)
+    || /(?:写上|写着|文字内容|标题内容|标语内容)\s*[:：]?\s*["'“‘「『]/.test(positive)
+}
+
+function mossTextNegative(negative: string, hasText: boolean): string {
+  return hasText && negative.trim() === MOSS_NEGATIVE
+    ? tokenize(negative).filter(token => !['text', 'english_text'].includes(normalizeKey(token))).join(', ')
+    : negative.trim()
 }
 
 export function compileMossPrompt(prompt: string, negative: string) {
@@ -72,12 +89,9 @@ export function compileMossPrompt(prompt: string, negative: string) {
     // Author-default text exclusions yield to an explicitly authored text item.
     const items = 'items' in layout ? layout.items : undefined
     const hasText = Array.isArray(items) && items.some(item => item && typeof item.text === 'string' && item.text.trim())
-    const exclude = hasText && negative === MOSS_NEGATIVE
-      ? negative.split(',').map(token => token.trim()).filter(token => token !== 'text' && token !== 'english text').join(', ')
-      : negative
-    return { prompt: text, negative: exclude.trim() }
+    return { prompt: text, negative: mossTextNegative(negative, hasText) }
   }
   const authored = new Set(text.split(/[,\n]/).map(token => token.trim().toLowerCase()))
   const quality = MOSS_QUALITY.split(', ').filter(token => !authored.has(token))
-  return { prompt: [...quality, text].filter(Boolean).join(', '), negative: negative.trim() }
+  return { prompt: [...quality, text].filter(Boolean).join(', '), negative: mossTextNegative(negative, mossTextIntent(text)) }
 }

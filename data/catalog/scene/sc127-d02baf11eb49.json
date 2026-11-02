@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc127",
-  "revision": 9,
+  "revision": 13,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
   "data": {
-    "animaCaption": "Seated beside the viewer at the pool edge, she keeps her arms across her chest and leans toward them.",
+    "animaCaption": "Sitting poolside with glistening wet skin, her black bikini highlights her cleavage, navel, and bare legs in the moonlight.",
     "auditRevision": "careful-batch09-2026-08-27",
     "camera": "主观水平视线特写",
     "category": "日常/同人/After_Story",
@@ -19,34 +19,33 @@
     "lighting": "皎洁月光与水面折射弱光",
     "location": "别墅露天泳池边",
     "lora": "ayachi_nene_v21_anima",
-    "mature": true,
-    "negative": "stockings, thighhighs",
-    "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, pink piping, small ribbon bows, black bikini, wet skin, sitting, poolside, leaning forward, shy smile, blush, rooftop, night, water reflections, pov, <lora:ayachi_nene_v18_wd14:0.8>, crossed arms, moonlight, wet hair, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "rating": "R18",
+    "mature": false,
+    "negative": "from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, ayachi_nene, ahoge, hair ribbon, from front, facing viewer, black bikini, pink piping, ribbon bows, wet skin, water droplets, bare shoulders, delicate collarbone, cleavage, navel, bare midriff, bare legs, bare thighs, sitting by poolside, leaning forward, hands between knees, looking at viewer, flustered blush, shy gaze, moonlit outdoor pool, stone deck, blue water ripples, night breeze, soft rim lighting, depth of field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
     "season": "夏",
-    "story": "【成年 After Story · 宁宁 · 微型比基尼极致肉感】夏夜寂静无人的私人别墅露天泳池。蔚蓝的水波荡漾倒映着满天星斗。宁宁今晚在你的激将法下，破天荒换出了一套极小款的黑色系带微型比基尼。布料少得近乎可怜，根本无法包裹住她饱满的傲人线条。她浑身挂满晶莹剔透的水珠，大片雪白的细腻肌肤完全暴露在清冷月光下。她双手羞耻地护在胸前，被你拉着一同坐在池边，头顶的呆毛早已因为情绪过载疯狂卷曲成工口的心形螺旋——「呜...带子好像快要散掉了啦...大色狼不准看！今晚的魔女...随你怎么样支配都行了啦...」",
-    "storyJa": "【寧々・大人のアフターストーリー・・極エロマイクロビキニ】夏の夜、プライベートヴィラの屋外プールは静かです。波打つ青い水が空の星を映していました。今夜の寧々はあなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。生地は非常にまばらで、彼女のふくよかで誇らしいラインを隠すことができませんでした。彼女の全身は透き通った水滴で覆われ、雪のように白く繊細な肌の広い範囲が冷たい月光にさらされていました。彼女は恥知らずにも手で胸を守り、プールサイドであなたの膝にまたがって座ります。彼女の頭の上のアホ毛は、感情的な過負荷のためにすでに狂ったようにカールしてハート型の螺旋を描いています。――「帯がほどけそうです……見ちゃだめですよ！　今夜の魔女は……あなたにだけ、少しわがままを聞いてほしいんです。」",
+    "story": "夏夜清风吹拂着顶楼的露天泳池，池水倒映着满天繁星。宁宁穿着缀有粉色滚边与细巧蝴蝶结的黑色分体泳衣，坐在池畔把小腿浸在微凉的水中。水珠顺着她湿润的发丝滑落锁骨，她有些羞赧地抬臂掩在身前，身子微微前倾，紫色的眼眸在水光掩映下闪烁着羞涩又期待的光芒。「……水温刚刚好呢。虽然这身衣服稍微有点大胆，但只要你喜欢……就一直坐在这里陪我吧。」",
+    "storyJa": "【寧々・ナイトプールの月光】屋上プールの縁に腰掛け、足を水に浸す寧々。黒のビキニに身を包み、水滴を輝かせながら身を乗り出して見つめてくる。「……冷たくて気持ちいいですね。ちょっと恥ずかしい水着ですけど……あなたが喜んでくれるなら、嬉しいです。」",
     "tags": [
-      "hair_ribbon",
+      "ayachi_nene",
+      "ahoge",
       "black_bikini",
-      "string_bikini",
-      "sitting_on_edge",
-      "pool_edge",
-      "barefoot",
+      "wet_skin",
+      "water_droplets",
+      "poolside",
       "night",
       "moonlight",
-      "close_up",
-      "pink_piping",
-      "small_ribbon_bows"
+      "water_ripples",
+      "facing_viewer"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "露天泳池的意外熔断",
+    "title": "月光泳池畔的黑色系带",
     "usage": [
       "核心协议",
-      "成人向"
+      "R15"
     ],
     "weather": "夏夜澄澈",
-    "promptProse": "Seated beside the viewer at the pool edge, she holds her arms across her chest and leans slightly toward them; moonlight and moving water reflections trace her damp hair."
+    "promptProse": "Leaning forward beside the moonlit pool, her black string bikini accentuates her delicate collarbone, cleavage, navel, and bare legs dripping with glistening water droplets under the night sky."
   }
 }

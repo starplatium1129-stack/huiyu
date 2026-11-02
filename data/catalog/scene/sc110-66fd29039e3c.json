@@ -1,15 +1,15 @@
 {
   "kind": "scene",
   "id": "sc110",
-  "revision": 9,
+  "revision": 12,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
   "data": {
     "id": "sc110",
-    "title": "特工长官的越界特权",
+    "title": "百叶窗月光下的越界审讯",
     "category": "同人/After_Story",
-    "story": "深夜反锁的指挥官独立办公室。高冷的职场OL夏目正面红耳赤地被你强行抱上了宽大的办公桌边缘。她身上的职业包臀裙已经被你完全掀到了腰际，腿上那条性感的薄黑丝袜已经被你霸道地完全撕裂开来，露出了大片白皙细腻的绝对领域。她双手死死撑在身后，眼角的泪痣因为承受着极大的感官冲击而剧烈颤动，一边急促地娇喘，一边扭过头发出羞耻至极的呻吟——「哈啊...你这变态大笨蛋...把丝袜扯成这样...准备怎么补偿我啊...」",
+    "story": "深夜的独立办公室，百叶窗缝隙漏进一线清冷月光。夏目坐在办公桌沿，双手反撑在身后，窄版炭灰包臀裙稍稍上移，勾勒出包裹在薄黑丝袜下的紧致双腿。平日里冷静从容的她偏过头避开视线，耳垂染上一抹薄红，眼角泪痣在月光下格外惹眼。「……这么近看我干什么。擅自把桌子占成审讯席，长官是在等我先认输吗？」",
     "char": "natsume",
     "character": [
       "natsume"
@@ -21,20 +21,17 @@
     "timeOfDay": "late_night",
     "tags": [
       "mole_under_eye",
-      "skirt_lifted_up",
-      "torn_black_stockings",
+      "white_shirt",
+      "unbuttoned_collar",
+      "charcoal_pencil_skirt",
+      "sheer_stockings",
       "office_desk",
-      "executive_office",
       "hands_propped_behind",
       "moonlight",
-      "night",
-      "medium_shot",
-      "white_shirt",
-      "concealed_placket",
-      "charcoal_pencil_skirt",
-      "burgundy_waist_belt"
+      "blinds",
+      "side_glance"
     ],
-    "mature": true,
+    "mature": false,
     "location": "独立长官办公室",
     "weather": "微热",
     "camera": "平视半身中景",
@@ -42,14 +39,14 @@
     "usage": [
       "核心协议",
       "壁纸级",
-      "成人向"
+      "R15"
     ],
-    "prompt": "adult, 1girl, solo, shiki_natsume, white shirt, concealed placket, charcoal pencil skirt, burgundy waist belt, natsume_r18, skirt lift, torn black stockings, sitting on desk, hands behind body, blush, office, blinds, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, looking away, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "negative": "",
-    "storyJa": "【夏目・職場の狭いスカートは絶対ダメだよ】司令官の独立した執務室は深夜に施錠された。飄々とした職場で、OL夏目は顔を赤らめながら、あなたに大きな机の端に強引に抱きしめられました。彼女の体のプロ仕様のお尻を覆うスカートはあなたによって腰まで完全に持ち上げられ、彼女の脚のセクシーな薄い黒のストッキングはあなたによって完全に引き裂かれ、白く繊細な絶対領域の広い範囲が露出しています。彼女は両手を後ろでしっかりと握り、大きな感覚の衝撃に目頭の泣きぼくろが激しく震えた。彼女はすぐに息を呑み、顔を向けて恥ずかしさのあまりうめき声を上げました。――「もう、この変態……ストッキングをこんなにして。どうやって埋め合わせてくれるつもり？」",
-    "rating": "R18",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, white shirt, unbuttoned collar, delicate collarbone, cleavage, charcoal pencil skirt, burgundy waist belt, sheer black stockings, sitting on desk, hands propped behind, leaning back, side glance, blush, office, window blinds, moonlight through blinds, nighttime, soft ambient light, cinematic lighting, depth of field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "negative": "torn clothes, torn stockings, from behind, looking away",
+    "storyJa": "【夏目・ブラインド越しの月光】夜の指揮室、ブラインドの隙間から差し込む月光が机の端に座る夏目を照らす。ペンシルスカートと薄いストッキングを纏い、両手を後ろについて視線をそらす彼女の頬は微かに紅潮していた。「……そんなに近くで見て、何ですか。ここを尋問席にするつもりなら、私が先に折れるとは思わないでください。」",
+    "rating": "R15",
     "auditRevision": "careful-batch12-2026-08-27",
-    "animaCaption": "Both hands brace behind her on the desk while her face turns away from the viewer.",
-    "promptProse": "She braces both hands on the desk behind her with her skirt lifted to the waist and stockings torn, turning her face away under moonlight through the blinds."
+    "animaCaption": "Leaning back on the desk under moonlight from the blinds, her open collar accentuates her collarbone and cleavage.",
+    "promptProse": "Sitting on the desk with hands braced behind her under moonlight through the blinds, her unbuttoned collar reveals her delicate collarbone and subtle cleavage above sheer stockings."
   }
 }

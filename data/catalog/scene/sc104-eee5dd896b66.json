@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc104",
-  "revision": 9,
+  "revision": 12,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
   "data": {
-    "animaCaption": "Seated on the office desk after the rain, she adjusts her slipping glasses with one hand.",
+    "animaCaption": "Seated on the office desk after the rain, she adjusts her glasses while looking directly at the viewer with crossed legs, her translucent wet shirt revealing her collarbone and lace bra.",
     "auditRevision": "careful-batch01-2026-08-27",
     "camera": "近景特写",
     "category": "日常",
@@ -19,13 +19,13 @@
     "lighting": "单一台灯强烈侧光",
     "location": "反锁指挥办公室",
     "lora": "shiki_natsume_v21_anima",
-    "mature": true,
-    "negative": "dry clothes, jacket",
-    "prompt": "adult, 1girl, solo, shiki_natsume, wet white pinstripe shirt, black high waist pencil skirt, burgundy waistband, natsume_r18, see-through, black lace bra, sitting on desk, blush, office, rainy night, city lights, <lora:shiki_natsume_v18_wd14:0.85>, adjusting glasses, glasses, desk lamp, side lighting, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "rating": "R18",
+    "mature": false,
+    "negative": "jacket, coat, dry clothes, from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, glasses, adjusting glasses, from front, facing viewer, looking directly at viewer, eye contact, wet clothes, wet white pinstripe shirt, unbuttoned collar, delicate collarbone, cleavage, translucent shirt, see-through, sheer fabric, black lace bra visible, water droplets, black high waist pencil skirt, burgundy waistband, sitting on desk, crossed legs, slight blush, office, rainy night, rain on window, city lights, desk lamp, strong side lighting, soft rim light, depth of field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
     "season": "夏",
-    "story": "夏日深夜突降暴雨，刚跑回公司指挥中心的夏目全身被雨水彻底淋透。她面红耳赤地坐在你宽大的办公桌边缘，身上那件轻薄的白衬衫被雨水打得半透明，死死贴紧在她饱满高耸的优美身躯上，里面黑色的性感内衣轮廓和光洁的小腹肌肤被透光勾勒得一清二楚。她细长的双腿交叠，推了推滑落的镜框，眼角的泪痣在桌上台灯的强阴影下显得欲气满满——「哈？变态长官，把我反锁在办公室，盯着淋湿的我...这就是你的特殊命令吗？」",
-    "storyJa": "【夏目・職場で濡れても完全に透明】夏の深夜、突然雨が降り、会社の指令センターに走って戻ったばかりの夏目さんは雨でずぶ濡れになった。彼女は顔を真っ赤にして大きな机の端に座っています。雨に濡れた薄手の白いシャツが透けて、豊満で長身で優美な体にぴったりと張り付いている。黒のセクシーな下着の輪郭と滑らかな下腹部の肌が光によってくっきりと浮かび上がります。彼女は細い足を交差させ、スライドフレームを押しました。テーブルランプの強い影の下で、彼女の目の隅にある泣きぼくろは欲望に満ちているように見えました。――「は？　この変態店長。私を事務所に閉じ込めて、濡れたまま見ているなんて……これが特別命令のつもり？」",
+    "story": "暴雨敲打着指挥室的落地窗，跑回室内的夏目浑身被雨水淋透。单薄的白条纹衬衫受潮半透，贴在锁骨与微显的黑色蕾丝内衣轮廓上。她坐在办公桌沿，交叠着长腿，微红着脸扶正滑落的镜框，眼角的泪痣在台灯侧光下若隐若现。「……盯着我看够了没？把淋湿的下属关在办公室里，这也是长官的临时指令吗？」",
+    "storyJa": "【夏目・雨上がりの透け感シャツ】オフィスを叩く豪雨の中、戻ったばかりの夏目は雨で濡れていた。薄手のストライプシャツが肌に寄り添い、デスクライトの横光が濡れた服の輪郭を照らす。彼女は机の端に腰掛け、脚を組んで滑り落ちた眼鏡をそっと直した。「……いつまで見ているつもりですか。濡れた部下を部屋に残すのも、特別命令の一つですか？」",
     "tags": [
       "mole_under_eye",
       "wet_shirt",
@@ -33,23 +33,23 @@
       "black_bra",
       "office",
       "desk",
-      "close_up",
-      "rain",
-      "night",
+      "rainy_night",
       "glasses",
       "desk_lamp",
-      "black_high_waist_pencil_skirt",
-      "burgundy_waistband",
-      "wet_white_pinstripe_shirt"
+      "pencil_skirt",
+      "crossed_legs",
+      "side_lighting",
+      "facing_viewer",
+      "eye_contact"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "湿透白衬衫的职场潜规则",
+    "title": "暴雨停歇时的湿透白衬衫",
     "usage": [
       "展示图",
-      "成人向"
+      "R15"
     ],
     "weather": "大雨瓢泼",
-    "promptProse": "Seated on the office desk after the rain, she adjusts her slipping glasses with one hand; a single desk lamp from the side defines her flushed face and the wet white shirt over her black bra."
+    "promptProse": "Facing the viewer from the edge of the office desk after the rain, she pushes up her glasses with crossed legs; the warm desk lamp catches her unbuttoned wet translucent shirt, cleavage, and delicate collarbone over her black lace bra."
   }
 }

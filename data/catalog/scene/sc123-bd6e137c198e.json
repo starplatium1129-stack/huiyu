@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc123",
-  "revision": 10,
+  "revision": 14,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
   "data": {
-    "animaCaption": "Her flour-dusted hands rest against the viewer's chest while her bare legs dangle from the counter.",
+    "animaCaption": "Dangling her bare legs from the kitchen counter, her off-shoulder knit sweater reveals her collarbone and soft smile.",
     "auditRevision": "careful-batch04-2026-08-27",
     "camera": "工作台前平视全身景",
     "category": "恋爱/After_Story",
@@ -19,37 +19,34 @@
     "lighting": "午后慵懒侧窗光",
     "location": "新婚公寓厨房吧台",
     "lora": "ayachi_nene_v21_anima",
-    "mature": true,
-    "negative": "thighhighs",
-    "prompt": "adult, 1girl, nene_r18, ayachi_nene, cream oversized cable knit sweater, pink ribbed cuffs, off shoulder, no underwear, bare legs, sitting on counter, flour, blush, kitchen, afternoon, full body, <lora:ayachi_nene_v18_wd14:0.8>, hands on chest, dangling legs, counter, window_light, soft_lighting, cinematic_lighting, depth_of_field, detailed_background",
-    "rating": "R18",
+    "mature": false,
+    "negative": "thighhighs, stockings, socks, pants, from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, ayachi_nene, ahoge, hair ribbon, from front, facing viewer, cream oversized cable knit sweater, pink ribbed cuffs, off shoulder, bare shoulder, delicate collarbone, cleavage, bare legs, bare thighs, absolute territory, sitting on marble kitchen counter, dangling legs, flour on hands, flour smudges on cheek, looking at viewer, shy blush, soft smile, sunny kitchen, kitchen window, warm afternoon light, baking utensils background, cozy atmosphere, depth of field, <lora:ayachi_nene_v18_wd14:0.8>",
+    "rating": "R15",
     "season": "春",
-    "story": "午后阳光慵懒的公寓厨房里，空气中弥漫着烘焙的微热甜香。宁宁在你的惩罚要求下，身上仅仅套着一件你送的大号粗线针织毛衣，里面完全真空未着寸缕。她面红耳赤地被你抱上了大理石工作台，松垮的衣领随性地向一侧完全滑落，展现出大片柔嫩圆润的香肩与若隐若现的侧乳轮廓。她有些羞怯地用沾着面粉的双手抵住你的胸口，头顶的呆毛早已因为情绪过载软瘫成完美的爱心螺旋——「呜...柊史...大白天就在厨房做这种事...面粉都要蹭到身上了啦...快点抱紧人家...」",
-    "storyJa": "【寧々・大人のアフターストーリー・・ホームセーターバキュームハイエナジー】午後の気だるい日差しが降り注ぐアパートのキッチンでは、温かく甘いパンの香りが空気に満ちています。あなたの処罰要求に基づいて、寧々はあなたが彼女に与えた大きな太い糸のニットセーターを着ただけで、それは完全に空で結ばれていませんでした。彼女は顔を赤らめながら、あなたによって大理石の作業台に運ばれ、緩んだ襟が完全に片側にずれて、柔らかく丸い肩の広い範囲と横乳のかすかな輪郭が現れました。彼女は恥ずかしそうに小麦粉がついた手をあなたの胸に押し付けました。彼女の頭上のアホ毛は、感情的な過負荷により、すでに完全な愛のスパイラルに崩壊していました。――「柊史……昼間から台所で急に抱きつかないでください。小麦粉が服についちゃいます……でも、もう少しだけ。」",
+    "story": "午后的厨房弥漫着烤箱与香草的甜气。宁宁套着一件略显宽大的米白色粗花毛衣，松垮的领口滑下一侧，露出圆润白皙的香肩与锁骨。她坐在大理石料理台沿，光洁的双腿轻轻晃悠，两手沾着烘焙的面粉，有些慌乱地抵在你身前。温暖的阳光斜斜洒在她泛红的脸颊上。「……明明是在认真做甜点，你突然靠过来干嘛呀。面粉蹭到衣服上很难洗的……不过，先尝一小口也不是不行哦。」",
+    "storyJa": "【寧々・キッチンのオーバーサイズセーター】甘い香りが漂う午後の台所。肩が落ちた大きな白セーターを羽織り、大理石のカウンターに腰掛ける寧々。小麦粉のついた手でこちらを制しながら、照れくさそうに笑った。「……真面目にお菓子作りしてたのに、急にくっついてこないでください。服に粉がついちゃいますよ。」",
     "tags": [
-      "hair_ribbon",
-      "no_underwear",
-      "off_shoulder",
-      "sideboob",
-      "flour_hands",
-      "marble_counter",
-      "kitchen",
-      "bare_legs",
-      "full_body",
-      "heavy_blush",
+      "ayachi_nene",
       "ahoge",
-      "afternoon",
-      "cream_oversized_cable_knit_sweater",
-      "pink_ribbed_cuffs"
+      "cable_knit_sweater",
+      "oversized_sweater",
+      "off_shoulder",
+      "bare_legs",
+      "flour_on_hands",
+      "kitchen_counter",
+      "baking",
+      "sunny_afternoon",
+      "facing_viewer"
     ],
     "time": "午后",
     "timeOfDay": "afternoon",
-    "title": "甜点协议的额外惩罚",
+    "title": "烘焙午后的落肩毛衣",
     "usage": [
       "壁纸级",
-      "成人向"
+      "R15"
     ],
     "weather": "温暖",
-    "promptProse": "She sits on the counter with the sweater slipping off one shoulder, flour-dusted hands against the viewer's chest and bare legs dangling."
+    "promptProse": "Sitting on the sunlit kitchen counter with dangling bare legs, her oversized cable-knit sweater slips off one shoulder to reveal her delicate collarbone, subtle cleavage, and bare thighs with smudges of flour."
   }
 }

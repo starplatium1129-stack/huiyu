@@ -1,7 +1,7 @@
 import type { TaskRecord } from '../../../types/tasks'
 import type { ArtworkRecord } from '@/types/artwork'
 import { taskArtworkId } from './taskResultIdentity'
-import { validMossSpectrumFlexWindow } from '@/api/mossApi'
+import { mossModels, validMossSpectrumFlexWindow } from '@/api/mossApi'
 
 export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord {
   const output = task.resultRefs.find(value => value.index === index)
@@ -9,7 +9,7 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
   const moss = task.kind === 'moss'
   if ((!moss && task.kind !== 'qwen') || task.provider !== 'native' || task.resultState !== 'available' || output?.mime !== 'image/png'
     || input.family !== (moss ? 'moss-image' : 'qwen-image')
-    || !(moss ? ['moss-miaomiao-base-v1.0'] : ['qwen-image-2.1', 'qwen-image-2.1-turbo']).includes(String(input.modelId))) throw new Error('图像结果信息不完整，请在任务中心核对')
+    || !(moss ? mossModels.some(model => model.value === input.modelId) : ['qwen-image-2.1', 'qwen-image-2.1-turbo'].includes(String(input.modelId)))) throw new Error('图像结果信息不完整，请在任务中心核对')
   const context = task.metadata.context as Record<string, unknown> | undefined
   const parent = context?.parentId
   if (parent !== undefined && parent !== null && !(typeof parent === 'string' && parent.length > 0 && parent.length <= 240

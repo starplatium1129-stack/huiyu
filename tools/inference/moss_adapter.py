@@ -52,7 +52,7 @@ def load(root, control, contract, *, text_precision="bf16", weight_precision="au
     types = (torch.float16, torch.bfloat16, torch.float32, torch.int8, torch.uint8) if variant else (
         torch.float16, torch.bfloat16, torch.float32)
     if not weights or any(value.dtype not in types for value in weights.values()):
-        raise contract.AdapterError("UNSUPPORTED_MODEL", "MOSS requires the author FP16 file or registered BASE v1.0 INT8 ConvRot file")
+        raise contract.AdapterError("UNSUPPORTED_MODEL", "MOSS requires the selected author's FP16 file or registered INT8 ConvRot file")
     # Only whole-file namespaces are accepted. Strict assignment rejects missing,
     # unexpected and wrong-shape tensors; no guessed remaps or silently dropped keys.
     for prefix in ("model.diffusion_model.", "diffusion_model.", "net."):
@@ -81,7 +81,7 @@ def load(root, control, contract, *, text_precision="bf16", weight_precision="au
             for part in ("q", "k", "v"):
                 del projections[part]
         if variant is not None:
-            quant.configure(transformer, weights, contract)
+            quant.configure(transformer, weights, contract, variant)
     transformer.load_state_dict(weights, strict=True, assign=True)
     del weights
     # Preserve the original FP16 file views on CPU. Placement converts on GPU,

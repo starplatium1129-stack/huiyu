@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc165",
-  "revision": 10,
+  "revision": 14,
   "sortOrder": 162,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
   "data": {
-    "animaCaption": "She swirls the half-filled glass while looking down toward the viewer from the counter.",
+    "animaCaption": "Sitting cross-legged on the cafe counter with wine in hand, her off-shoulder black shirt highlights her collarbone, cleavage, and bare legs.",
     "auditRevision": "careful-batch14-2026-08-27",
     "camera": "近景特写",
     "category": "亲密",
@@ -19,34 +19,35 @@
     "lighting": "聚光灯打在面部",
     "location": "打烊后的吧台",
     "lora": "shiki_natsume_v21_anima",
-    "mature": true,
-    "negative": "cafe uniform",
-    "prompt": "adult, 1girl, solo, shiki_natsume, matte black buttons, notched cuffs, natsume_r18, oversized black shirt, open shirt, no underwear, bare legs, cross-legged, wine glass, blush, cafe counter, night, dim lighting, <lora:shiki_natsume_v18_wd14:0.85>, sitting, holding wine glass, looking down, overhead light, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "rating": "R18",
+    "mature": false,
+    "negative": "cafe uniform, bright daylight, from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, from front, facing viewer, oversized black shirt, unbuttoned shirt, rolled up sleeves, off shoulder, bare shoulder, delicate collarbone, cleavage, bare legs, bottomless silhouette, bare thighs, sitting cross-legged on cafe counter, holding wine glass, red wine, looking down at viewer, tipsy blush, subtle confident smirk, closed cafe, dark cafe interior, warm overhead spotlight on face, wine reflections, moonlight through window, atmospheric shadows, cinematic lighting, depth of field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
     "season": "不限",
-    "story": "深夜打烊后的漆黑咖啡馆。夏目在你的霸道要求下，脱掉了全部衣服，仅仅套着你那一身宽大的纯黑衬衫。她面红耳赤地盘腿坐在微凉的吧台桌面上，衬衫下摆刚好遮住绝对领域，大片白皙笔直的长腿毫无防备地交叠袒露。她手里摇晃着半杯红酒，眼神微醺却带着极度撩人、强势的占有欲，居高临下地斜睨着你，眼角的泪痣被红晕浸透，性感得不可救药——「喂，大变态。今晚这间店反锁了，既然不让我回家...你最好做足了被我彻底吃掉的觉悟。」",
-    "storyJa": "【夏目・バーでは絶対に独占的】深夜の閉店後の薄暗いカフェ。あなたの強引な要求に、夏目は服をすべて脱いで、あなたのゆったりとした黒いシャツだけを着ました。彼女は顔を赤らめて、少しひんやりとしたバーテーブルにあぐらをかいて座っていた。シャツの裾は絶対領域を覆うばかりで、色白でまっすぐな長い脚が無防備に重なり露出している。彼女はグラス半分の赤ワインを手に振っており、その目は少し酔っていますが、非常に色っぽくて強い独占欲を持っています。彼女はあなたを軽蔑するように目を細めています。目尻の泣きぼくろが赤面してて、どうしようもなくセクシーです。――「ねえ、この大変態。今夜は店に鍵をかけた。帰さないと言った以上……最後まで私に付き合う覚悟をして。」",
+    "story": "闭店后的咖啡馆空无一人，只留吧台上方的暗调射灯静静照亮一隅。夏目盘腿坐在木质吧台桌面上，随意披着那件属于你的宽大黑衬衫，袖口卷起，光洁的长腿自然舒展。她纤细的手指轻摇着半杯红酒，眼角的泪痣在微醺酒意与灯影下若隐若现。她居高临下地迎着你的目光，唇角浮起一丝狡黠而专注的浅笑。「既然已经把门反锁了……今晚长官哪儿也别想去。乖乖留下来，陪我把这杯酒喝完吧。」",
+    "storyJa": "【夏目・カウンターの赤ワイン】閉店後の静かな店内で、黒シャツを羽织りカウンターにあぐらをかいて座る夏目。グラスの赤ワインを揺らしながら、見下ろすように微笑んだ。「鍵を閉めた以上、どこにも行かせませんよ。観念して、最後まで付き合ってください。」",
     "tags": [
       "mole_under_eye",
-      "oversized_shirt",
-      "black_shirt",
-      "closed_cafe",
-      "counter",
+      "oversized_black_shirt",
+      "open_collar",
+      "bare_legs",
+      "cross_legged",
+      "cafe_counter",
       "holding_wine_glass",
       "red_wine",
       "tipsy",
-      "close_up",
-      "matte_black_buttons",
-      "notched_cuffs"
+      "spotlight",
+      "teasing",
+      "facing_viewer"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "深夜特权：吧台上的衬衫单线支配",
+    "title": "打烊吧台上的微醺黑衬衫",
     "usage": [
       "壁纸级",
-      "成人向"
+      "R15"
     ],
     "weather": "微热",
-    "promptProse": "Wearing the viewer's oversized shirt, she sits cross-legged on the counter, swirls the half-filled wine glass and looks down toward them; the overhead light falls across her face and the red wine."
+    "promptProse": "Cross-legged on the dark cafe counter with a glass of red wine, her oversized unbuttoned shirt slips off her shoulder to display her delicate collarbone, cleavage, and bare thighs under a warm overhead spotlight."
   }
 }

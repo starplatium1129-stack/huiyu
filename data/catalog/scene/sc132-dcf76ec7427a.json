@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc132",
-  "revision": 9,
+  "revision": 13,
   "sortOrder": 130,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
   "data": {
-    "animaCaption": "The loosened bikini rests at her waist as she covers her chest and turns away.",
+    "animaCaption": "Facing the viewer with water-kissed skin, her black string bikini highlights her cleavage, navel, and thighs by the pool.",
     "auditRevision": "careful-batch08-2026-08-27",
     "camera": "主观水平视线特写",
     "category": "日常/同人",
@@ -19,32 +19,32 @@
     "lighting": "清冷月光与水面折射弱光",
     "location": "别墅室内泳池边",
     "lora": "shiki_natsume_v21_anima",
-    "mature": true,
-    "negative": "one-piece swimsuit",
-    "prompt": "adult, 1girl, solo, shiki_natsume, burgundy edging, natsume_r18, black string bikini, untied bikini, covering chest, sitting, poolside, wet skin, blush, looking away, indoor pool, moonlight, <lora:shiki_natsume_v18_wd14:0.85>, water reflections, window, soft_ambient_light, cinematic_lighting, depth_of_field",
-    "rating": "R18",
+    "mature": false,
+    "negative": "daytime, from behind, looking away",
+    "prompt": "sensitive, 1girl, solo, shiki_natsume, mole_under_eye, black string bikini, burgundy trim, wet skin, water droplets, wet hair strands, bare shoulders, delicate collarbone, cleavage, navel, bare midriff, bare legs, bare thighs, sitting by poolside, dangling legs, from front, facing viewer, looking directly at viewer, eye contact, flushed blush, indoor pool, large french windows, moonlight, water reflections on skin, soft blue ambient light, depth of field, <lora:shiki_natsume_v18_wd14:0.85>",
+    "rating": "R15",
     "season": "夏",
-    "story": "夏夜寂静无人的私人别墅室内泳池。水波荡漾倒映着落地窗外的满天星斗。夏目今晚在你的激将法下，破天荒换出了一套极小款的黑色系带微型比基尼。因为在水里的激烈打闹，泳衣的系带彻底滑落断开，整件比基尼松垮垮地悬挂在腰际，胸前饱满性感的双峰和光洁的小腹完全暴露在空气之中。她浑身挂满晶莹剔透的水珠，双手羞耻地护在胸前，眼角的泪痣挂着池水，偏过头发出羞耻至极的呻吟——「哈？！你这家伙...绝对是算好了的吧？不准看...再看把你淹死哦，笨蛋...」",
-    "storyJa": "【夏目・ストラップ付きビキニをずり下げて究極のコントラストを演出】夏の夜、静かなプライベートヴィラの屋内プール。床から天井まで届く窓の外には、水の波紋が空の星を映しています。今夜の夏目は、あなたの挑発のおかげで、極小の黒紐マイクロビキニに初めて着替えました。激しい水遊びのせいで、水着の紐が完全にずれて外れ、ビキニ全体が腰にぶら下がってしまった。豊満でセクシーな胸元と滑らかなお腹が完全に露出していた。全身が透き通った水滴で覆われ、両手で胸を恥ずかしそうに守り、プールの水が目尻に垂れ、顔を向けて恥ずかしいうめき声を上げた。――「はあ？　あなた、絶対に時間を計ってたでしょ。見ちゃだめ……これ以上見たら、水に沈めるからね。ばか。」",
+    "story": "室内泳池寂静无声，只有水波在落地窗外的月光下漾出银色波纹。刚出水的夏目坐在池边，黑色系带比基尼勾勒着紧致匀称的身线，水珠从发梢滑过眼角的泪痣，滴落在光洁的锁骨上。她抱起手臂偏过头，试图掩饰耳尖烧起来的红晕。「……突然把灯关掉只留月光，长官是想看我出丑吗？再那样直勾勾地盯着看，我就直接把你拽下水哦。」",
+    "storyJa": "【夏目・プールサイドの月明かり】静まり返った屋内プール、月光に照らされて水面に揺れる銀の波。黒のビキニ姿で縁に座り、濡れた肌に水滴を光らせながら顔を背ける夏目。「……明かりを消して月光だけにするなんて、悪趣味ですよ。そんなに見つめるなら、水に引きずり込みますよ。」",
     "tags": [
       "mole_under_eye",
       "black_bikini",
-      "untied_bikini",
-      "hands_covering_chest",
-      "bare_breasts",
+      "wet_skin",
+      "water_droplets",
+      "sitting_poolside",
+      "facing_viewer",
       "indoor_pool",
       "moonlight",
-      "close_up",
-      "burgundy_edging"
+      "water_reflections"
     ],
     "time": "深夜",
     "timeOfDay": "late_night",
-    "title": "月光泳池的脱落契约",
+    "title": "室内泳池边的月下涟漪",
     "usage": [
       "新手推荐",
-      "成人向"
+      "R15"
     ],
     "weather": "水汽氤氲",
-    "promptProse": "Seated on the indoor pool edge, she covers her chest and turns her face away, the loosened bikini at her waist; moonlight through the tall windows joins the reflected water light across her wet shoulders."
+    "promptProse": "Facing the viewer from the edge of the indoor pool with dangling legs, her black string bikini showcases her delicate collarbone, cleavage, navel, and bare thighs glistening with water droplets under the moonlight."
   }
 }

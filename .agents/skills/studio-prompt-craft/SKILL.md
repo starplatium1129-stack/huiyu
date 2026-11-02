@@ -46,12 +46,12 @@ Anima 模型基于混合输入训练，普通标签段承担核心视觉事实�
 - 结构清晰：`画面媒介与主体 → 身份与衣着状态 → 动作姿势与互动关系 → 环境与光影氛围 → 镜头与景别`。
 - 本地工作流默认 `negative = ''`，依靠清晰的正向描述定义画面。
 
-### 3. MiaoMiao Harem MOSS BASE v1.0
+### 3. MiaoMiao Harem MOSS BASE v1.0 / v1.1
 
-- **画面描述**：优先用英文自然语言，中文也支持；写清人物、衣装、动作互动、空间关系、环境、光影与景别，细节随创作需求增减。参考 OpenMOSS 的[自然语言样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/007/parameters.json)和[标签样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/009/parameters.json)。
-- **标签**：可与自然语言结合；按质量 → 评分、元信息、年份（按需）→ 角色 → 作品 → 画师 → 画面标签排列，不臆造缺省类别。不要默认照搬 Anima 专属评分词或角色 LoRA。
+- **默认混合写法**：按 MIAOKA 推荐，用标签精确控制人物、衣装、道具、动作与风格，用自然语言补充互动、空间关系、环境光影与镜头；两层保持一致，避免重复堆叠。自然语言优先英文，中文也支持。参考 OpenMOSS 的[自然语言样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/007/parameters.json)和[标签样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/009/parameters.json)。
+- **标签顺序**：质量 → 评分、元信息、年份（按需）→ 角色 → 作品 → 画师 → 画面标签，不臆造缺省类别。不要默认照搬 Anima 专属评分词或角色 LoRA。
 - **项目编译**：普通提示词自动补入作者的质量词；布局 JSON 不加前缀。本地管线不解析 `(tag:1.2)` 权重，结构化标签中的此类权重会被剥除。正、负向各含模板不超过 4096 tokens，超限会报错。
-- **文字与负面**：准确写出画面文字并保留原文和换行；需要文字时，检查最终负面并移除 `text`、`english text`。仅当布局 JSON 含非空 `items[].text` 且负面恰为作者默认值时，项目才自动移除这两项；避免负面与创作分级或画面内容冲突。
+- **文字与负面**：准确写出画面文字并保留原文和换行；需要文字时，检查最终负面的 `text`、`english text`。布局 JSON 的非空 `items[].text`、明确文字标签或带引号的文字内容指令会自动移除作者默认负面中的这两项，再合并场景排除项；自定义负面不自动改写。自由描述未被识别时仍需作者核对，避免负面与创作分级或画面内容冲突。
 - **布局 JSON**：用于文字定位、多格或复杂元素关系；以 `summary.caption` 描述整体，`items` 描述各元素。`bbox` 为以画布中心为原点的像素坐标，顺序 `[y_min, x_min, y_max, x_max]`；布局尺寸须与生成尺寸一致。格式及限制见[官方指南](https://github.com/OpenMOSS/MOSS-Image/blob/main/USERGUIDE.md#layout-prompts-experimental)。
 - **参数参考**：MIAOKA 推荐 Euler、30–50 步、CFG 3.5 起步及 768×1280 等尺寸；以[作者版本说明](https://www.tensor.art/models/1060118844061793689/MiaoMiao-Harem-MOSS-Image-MIAOKA-BASE-v1.0_fp16)和实际画面为准。原模型示例不等于该微调版的实测效果。
 

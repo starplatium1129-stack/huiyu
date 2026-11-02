@@ -1,7 +1,8 @@
-"""Import a pinned MOSS INT8 transformer or paired text encoder into an existing model.
+"""Import a pinned MOSS INT8 transformer or paired text encoder.
 
 Standard library only; --apply is required. Source files and the existing FP16
 checkpoint are preserved. Run while the desktop/native workers are closed.
+--reuse-from prepares a new registered version from verified shared components.
 """
 import argparse
 import hashlib
@@ -41,10 +42,61 @@ def transfer(source, destination, expected, *, copy):
         raise ValueError("Checkpoint does not match the pinned INT8 SHA-256")
 
 
+def publish_document(path, value):
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=path.parent, prefix=".moss-receipt-", delete=False) as output:
+            temporary = Path(output.name)
+            output.write((json.dumps(value, ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+            output.flush()
+            os.fsync(output.fileno())
+        ordinary_path(str(path))
+        os.replace(temporary, path)
+    finally:
+        if temporary is not None:
+            temporary.unlink(missing_ok=True)
+
+
+def reuse_components(source, root, model_id, helper):
+    manifest = json.loads((Path(__file__).resolve().parents[2] / "tools/inference/managed-adapter-models.json").read_text(encoding="utf-8"))
+    prepared = next(item for item in manifest["models"] if item["id"] == model_id)
+    source_identity = json.loads(ordinary_path(str(source / "huiyu-model.json")).read_text(encoding="utf-8"))
+    if source_identity.get("modelId") not in helper.MODELS or source == root or root.is_relative_to(source) or source.is_relative_to(root):
+        raise ValueError("Reuse source must be a separate prepared MOSS model directory")
+    checkpoint = helper.component_spec(model_id)
+    root.mkdir(parents=True, exist_ok=True)
+    for item in prepared["files"]:
+        if item["path"] == checkpoint["path"]:
+            continue
+        origin, target = ordinary_path(str(source / item["path"])), ordinary_path(str(root / item["path"]))
+        target.parent.mkdir(parents=True, exist_ok=True)
+        transfer(target if target.exists() else origin, None, item, copy=False)
+        if not target.exists():
+            try:
+                os.link(origin, target)
+            except OSError:
+                shutil.copy2(origin, target)
+    # The paired text encoder is shared, but its receipt belongs to the new version.
+    text_spec = helper.component_spec(model_id, "text_encoder")
+    text_source = ordinary_path(str(source / text_spec["path"]))
+    if text_source.is_file():
+        target = ordinary_path(str(root / text_spec["path"]))
+        transfer(target if target.exists() else text_source, None, text_spec, copy=False)
+        if not target.exists():
+            try:
+                os.link(text_source, target)
+            except OSError:
+                shutil.copy2(text_source, target)
+        publish_document(root / helper.TEXT_RECEIPT, helper.receipt_document(model_id, "text_encoder"))
+    return prepared
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", required=True)
     parser.add_argument("--model-dir", required=True)
+    parser.add_argument("--model-id", help="Registered target version; inferred from an existing model when omitted")
+    parser.add_argument("--reuse-from", help="Reuse and hash-verify shared components from a prepared MOSS directory")
     parser.add_argument("--apply", action="store_true")
     parser.add_argument("--component", choices=("transformer", "text_encoder"), default="transformer")
     args = parser.parse_args()
@@ -52,27 +104,40 @@ def main():
     module_spec = importlib.util.spec_from_file_location("huiyu_moss_int8_import", helper_path)
     helper = importlib.util.module_from_spec(module_spec)
     module_spec.loader.exec_module(helper)
-    expected = helper.TEXT_SPEC if args.component == "text_encoder" else helper.SPEC
     source, root = ordinary_path(args.source), ordinary_path(args.model_dir)
+    identity_path = ordinary_path(str(root / "huiyu-model.json"))
+    identity = json.loads(identity_path.read_text(encoding="utf-8")) if identity_path.is_file() else {}
+    if not isinstance(identity, dict):
+        raise ValueError("Invalid MOSS model identity record")
+    model_id = args.model_id or identity.get("modelId")
+    expected = helper.component_spec(model_id, args.component)
+    if identity and identity.get("modelId") != model_id:
+        raise ValueError("Existing model identity differs from the selected version")
     if not source.is_file() or source.stat().st_size != expected["bytes"]:
         raise ValueError("Select the complete pinned INT8 safetensors file for this component")
-    identity = json.loads((ordinary_path(str(root / "huiyu-model.json"))).read_text(encoding="utf-8"))
-    index = json.loads((ordinary_path(str(root / "model_index.json"))).read_text(encoding="utf-8"))
-    if (not isinstance(identity, dict) or not isinstance(index, dict)
-            or identity.get("modelId") != helper.MODEL_ID or index.get("_class_name") != "MOSSImagePipeline"):
-        raise ValueError("Target must be the existing prepared MiaoMiao MOSS BASE v1.0 model")
+    reuse = ordinary_path(args.reuse_from) if args.reuse_from else None
+    if reuse and args.component != "transformer":
+        raise ValueError("Prepare a new version by importing its transformer first")
+    if not identity and not reuse:
+        raise ValueError("Target must be a prepared MOSS model, or specify --model-id and --reuse-from")
     target = ordinary_path(str(root / expected["path"]))
     marker = ordinary_path(str(root / (helper.TEXT_RECEIPT if args.component == "text_encoder" else helper.RECEIPT)))
-    if not target.parent.is_dir() or not target.resolve().is_relative_to(root.resolve()):
+    if not target.resolve().is_relative_to(root.resolve()) or not reuse and not target.parent.is_dir():
         raise ValueError("Target component directory is unavailable")
     print(f"INT8 component: {args.component}\nSource: {source}\nModel target: {target}")
     if not args.apply:
         print("Preview only; --apply verifies SHA-256 while copying and publishes the selection receipt")
         return
+    if reuse:
+        root.mkdir(parents=True, exist_ok=True)
     lock_path = root / ".moss-int8-import.lock"
     lock = os.open(lock_path, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o600)
     temporary = receipt_temp = None
     try:
+        prepared = reuse_components(reuse, root, model_id, helper) if reuse else None
+        index = json.loads(ordinary_path(str(root / "model_index.json")).read_text(encoding="utf-8"))
+        if not isinstance(index, dict) or index.get("_class_name") != "MOSSImagePipeline":
+            raise ValueError("Target must use the registered MOSSImagePipeline")
         if target.exists():
             if not target.is_file():
                 raise ValueError("Existing target is not a regular file")
@@ -94,12 +159,15 @@ def main():
             temporary = None
         with tempfile.NamedTemporaryFile(dir=root, prefix=".moss-int8-receipt-", delete=False) as output:
             receipt_temp = Path(output.name)
-            output.write((json.dumps(helper.receipt_document(args.component), ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
+            output.write((json.dumps(helper.receipt_document(model_id, args.component), ensure_ascii=False, indent=2) + "\n").encode("utf-8"))
             output.flush()
             os.fsync(output.fileno())
         ordinary_path(str(marker))
         os.replace(receipt_temp, marker)
         receipt_temp = None
+        if prepared:
+            publish_document(identity_path, dict(schemaVersion=1, modelId=model_id,
+                revision=prepared["revision"], scope="downloaded-files-sha256", readyForGeneration=False))
         print(f"Imported and SHA-256 verified: {target}")
     finally:
         os.close(lock)

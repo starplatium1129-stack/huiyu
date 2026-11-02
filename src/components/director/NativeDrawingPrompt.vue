@@ -5,6 +5,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import PromptPreviewContent from '@/components/director/PromptPreviewContent.vue'
+import PromptTagWorkbench from './PromptTagWorkbench.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import type { NativeDrawing } from '@/composables/prompt/useNativeDrawing'
 import { MOSS_QUALITY } from '@/utils/mossPrompt'
@@ -48,6 +49,7 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
 
 <template>
   <section class="native-prompt" aria-label="当前引擎提示词">
+    <PromptTagWorkbench v-if="isMoss" prompt-format="moss-hybrid" :model-profile="null" />
     <header class="native-prompt-heading">
       <h4>{{ title }}</h4>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="!prompt" aria-label="展开阅读完整提示词" @click="openReader"><ArchiveIcon name="expand" />阅读</button>
