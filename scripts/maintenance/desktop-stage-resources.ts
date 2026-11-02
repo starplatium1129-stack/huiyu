@@ -70,6 +70,26 @@ function publishStage(tempStage: string, stage: string, logger: Logger) {
   catch (error) { if (moved && !fs.existsSync(stage)) fs.renameSync(backup, stage); throw error; }
   if (moved) { try { fs.rmSync(backup, { recursive: true, force: true }); } catch { logger('[stage] Previous stage retained for cleanup'); } }
 }
+// This inventory describes the actual packaged bytes, not the source tree.
+// It lets a later installer distinguish retired application files from extras.
+function writeResourceInventory(stage: string) {
+  const files: { path: string; bytes: number; sha256: string }[] = [];
+  function visit(directory: string) {
+    for (const entry of fs.readdirSync(directory, { withFileTypes: true })) {
+      const file = path.join(directory, entry.name);
+      if (entry.isDirectory()) visit(file);
+      else if (entry.isFile()) {
+        const relative = path.relative(stage, file).replaceAll('\\', '/');
+        const identity = safe.fileEntry(stage, relative);
+        if (identity.status !== 'file') throw Error(`Cannot inventory bundled resource: ${relative}`);
+        files.push({ path: relative, bytes: identity.bytes, sha256: identity.sha256 });
+      } else throw Error(`Bundled resource is not a regular file: ${file}`);
+    }
+  }
+  visit(path.join(stage, 'gateway'));
+  files.sort((a, b) => a.path.localeCompare(b.path, 'en'));
+  fs.writeFileSync(path.join(stage, 'gateway/bundled-resource-inventory.json'), JSON.stringify({ schemaVersion: 1, kind: 'huiyu-bundled-resources', files }));
+}
 function stageResources(options: StageOptions = {}) {
   const root = fs.realpathSync(options.root || ROOT), stage = path.resolve(options.stage || path.join(root, 'desktop-tauri/src-tauri/resources'));
   const rel = path.relative(root, stage).replaceAll('\\', '/');
@@ -89,6 +109,7 @@ function stageResources(options: StageOptions = {}) {
   fs.mkdirSync(gateway);
   try {
     const report = copyRustPayload(root, gateway, buildProfile);
+    fs.copyFileSync(safe.resolveSafe(root, 'desktop-tauri/src-tauri/installer/generated/HuiyuResourceCleanup.exe'), path.join(gateway, 'installer-resource-cleanup.exe'));
     for (const source of ENTRIES) {
       const from = safe.resolveSafe(root, source);
       copyDir(from, path.join(gateway, source), file => {
@@ -107,6 +128,7 @@ function stageResources(options: StageOptions = {}) {
     const inferencePrep = path.join(gateway, 'scripts/maintenance'); fs.mkdirSync(inferencePrep, { recursive: true });
     for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) fs.copyFileSync(safe.resolveSafe(root, `scripts/maintenance/${name}`), path.join(inferencePrep, name));
     execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
+    writeResourceInventory(temporary);
     const after = runtimeBuild(root, buildProfile);
     if (after.receipt.source.sha256 !== report.source || after.receipt.binary.sha256 !== report.runtime.sha256) throw Error('Rust build changed during staging');
     publishStage(temporary, stage, logger);

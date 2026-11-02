@@ -267,6 +267,7 @@ function Assert-DesktopRuntimeMatches {
   $pairs = @(
     @{ Source = $HostExecutable; Target = (Resolve-DesktopChildPath $InstallDir 'ai-cg-studio-desktop.exe'); NsisHost = $true },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'huiyu-runtime.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\huiyu-runtime.exe') },
+    @{ Source = (Resolve-DesktopChildPath $StageGateway 'installer-resource-cleanup.exe'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\installer-resource-cleanup.exe') },
     @{ Source = (Resolve-DesktopChildPath $StageGateway 'native\libvips-42.dll'); Target = (Resolve-DesktopChildPath $InstallDir 'gateway\native\libvips-42.dll') }
   )
   foreach ($pair in $pairs) {
@@ -275,4 +276,49 @@ function Assert-DesktopRuntimeMatches {
     $expected = if ($pair.NsisHost) { Get-DesktopNsisHostSha256 -Path $pair.Source } else { Get-DesktopFileSha256 -Path $pair.Source }
     if ($expected -ne (Get-DesktopFileSha256 -Path $pair.Target)) { throw 'DESKTOP_FULL_INSTALL_REQUIRED: executable or DLL differs; use -UseInstaller.' }
   }
+}
+
+function Invoke-DesktopResourceCleanup {
+  param([string]$Root, [string]$InstallDir, [string]$StageGateway, [switch]$InstalledFromPackage, [string]$InstallerPath)
+  $gateway = Join-Path $InstallDir 'gateway'
+  if ($InstalledFromPackage) {
+    $bound = Get-Content -LiteralPath "$InstallerPath.deployment.json" -Raw -Encoding UTF8 | ConvertFrom-Json
+    $inventoryBound = @($bound.files | Where-Object { $_.path -eq 'gateway/bundled-resource-inventory.json' }).Count -eq 1 -and
+      @($bound.files | Where-Object { $_.path -eq 'gateway/installer-resource-cleanup.exe' }).Count -eq 1
+    if (-not $inventoryBound) {
+      Write-Host '[desktop:cleanup] 所选旧安装包没有资源清单，保留无法核验的旧文件。' -ForegroundColor Yellow
+      return
+    }
+  } else {
+    $staged = Resolve-DesktopChildPath -Root $StageGateway -Relative 'bundled-resource-inventory.json'
+    $installed = Resolve-DesktopChildPath -Root $gateway -Relative 'bundled-resource-inventory.json'
+    if ((Get-DesktopFileSha256 $staged) -ne (Get-DesktopFileSha256 $installed)) { throw 'DESKTOP_RESOURCE_INVENTORY: 已安装的资源清单与构建不一致，未清理旧文件。' }
+  }
+  # A verified portable manifest can bootstrap installations predating the ledger.
+  $legacy = @()
+  $directory = Join-Path $Root 'runtime\desktop-updates'
+  if (Test-Path -LiteralPath $directory -PathType Container) {
+    foreach ($manifest in @(Get-ChildItem -LiteralPath $directory -Filter '*.deployment.json' -File)) {
+      $candidate = $manifest.FullName -replace '\.deployment\.json$', ''
+      if (-not (Test-Path -LiteralPath $candidate -PathType Leaf)) { continue }
+      $previousPreference = $ErrorActionPreference
+      try {
+        $ErrorActionPreference = 'Continue'
+        $verification = & node (Join-Path $Root 'scripts\lib\desktop-installer-binding.js') verify $candidate 2>&1
+        $verifyExitCode = $LASTEXITCODE
+      } finally { $ErrorActionPreference = $previousPreference }
+      if ($verifyExitCode -ne 0) { continue }
+      $verified = ($verification | Out-String) | ConvertFrom-Json
+      $legacy += @($manifest.FullName, [string]$verified.manifestSha256)
+    }
+  }
+  $cleaner = Resolve-DesktopChildPath -Root $gateway -Relative 'installer-resource-cleanup.exe'
+  $previousPreference = $ErrorActionPreference
+  try {
+    $ErrorActionPreference = 'Continue'
+    $output = & $cleaner $InstallDir @legacy 2>&1
+    $cleanExitCode = $LASTEXITCODE
+  } finally { $ErrorActionPreference = $previousPreference }
+  foreach ($line in $output) { Write-Host "[desktop:cleanup] $line" }
+  if ($cleanExitCode -ne 0) { throw "旧资源清理未完成，退出码 $cleanExitCode" }
 }

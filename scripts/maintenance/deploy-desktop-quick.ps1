@@ -2,7 +2,7 @@
 #
 # 默认启动后先检测安装状态、已安装文件和源码/构建/升级包绑定，再自动选择：
 # 无需部署、仅同步资源、复用升级包、重新封装或重新构建；首次安装/修复使用当前版本完整包。
-# 自动模式默认静默安装并清理已登记的废弃资源，只需用户确认 UAC。
+# 自动模式默认静默安装，并按随包清单清理旧资源，只需用户确认 UAC。
 # -ResourcesOnly 仅同步已绑定静态资源，要求安装 EXE/DLL 与候选一致。
 # -UseInstaller 复用已绑定安装包；显式指定 -InstallerPath 可覆盖自动选择。
 #
@@ -14,7 +14,7 @@
 #
 # 参数说明：
 #   -SkipBuild     复用匹配当前源码的桌面构建绑定
-#   -Cleanup       删除「源端已删除」的历史残留目录（见下 $STALE_ASSETS）
+#   -Cleanup       兼容旧调用；清理由资源清单自动控制
 #   -UseInstaller  跑已有安装包，不重新构建或封装
 #   -ResourcesOnly 只同步静态资源
 #   -NoRestart     结束后不启动桌面端
@@ -74,13 +74,6 @@ $installDir = Resolve-DesktopInstallDirectory $InstallDir
 $gatewayDir = Join-Path $installDir 'gateway'
 $configRoot = Join-Path $env:APPDATA 'com.aics.studio'
 . (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
-# Only known retired application resources are removed; personal content is outside this list.
-$STALE_ASSETS = @(
-  'assets\character-references',
-  'data\scenes\nene-core.json', 'data\scenes\nene-core.json.br', 'data\scenes\nene-core.json.gz',
-  'data\scenes\nene-after-story.json', 'data\scenes\nene-after-story.json.br', 'data\scenes\nene-after-story.json.gz',
-  'data\scenes\natsume-core.json', 'data\scenes\natsume-core.json.br', 'data\scenes\natsume-core.json.gz'
-)
 . (Join-Path $root 'scripts\lib\desktop-deploy-output.ps1')
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isElevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
@@ -201,8 +194,9 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
     Write-DeploymentLog "[desktop:auto] 选择：$modeText；原因：$($plan.reason)"
     switch ($plan.mode) {
       'current' {
-        $retiredResources = @($STALE_ASSETS | Where-Object { Test-Path -LiteralPath (Resolve-DesktopChildPath -Root $gatewayDir -Relative $_) })
-        if (($Cleanup -and $retiredResources.Count -gt 0) -or $SyncLocalModels -or $AdoptProjectCatalog) {
+        $missingLedger = (Test-Path -LiteralPath (Join-Path $gatewayDir 'bundled-resource-inventory.json')) -and
+          -not (Test-Path -LiteralPath (Join-Path $installDir '.huiyu-installed-resources.json'))
+        if ($missingLedger -or $SyncLocalModels -or $AdoptProjectCatalog) {
           Write-Host '[desktop:auto] 程序已是最新；改为资源同步，执行指定的维护操作。' -ForegroundColor Cyan
           $ResourcesOnly = $true
           $SkipBuild = $true
@@ -436,12 +430,6 @@ Write-Host '[2/6] 宿主与自有 Rust 网关已退出，工作区锁已释放' 
 Assert-CurrentBuildBinding
 if (-not $installWithPackage) { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
 Write-DesktopDuration '写入前校验'
-if ($Cleanup) {
-  foreach ($relative in $STALE_ASSETS) {
-    $target = Resolve-DesktopChildPath -Root $gatewayDir -Relative $relative
-    if (Test-Path -LiteralPath $target) { Remove-Item -LiteralPath $target -Recurse -Force }
-  }
-}
 Write-Host '[3/6] 安装边界核验完成' -ForegroundColor DarkGray
 if ($installWithPackage) {
   Write-Host '[4/6] 运行本次已绑定的安装包 ...' -ForegroundColor Cyan
@@ -467,7 +455,7 @@ if ($installWithPackage) {
     Get-ChildItem -LiteralPath $source -Force | ForEach-Object { Copy-Item -LiteralPath $_.FullName -Destination $target -Recurse -Force }
   }
   if (-not $StartupRepair) {
-    foreach ($name in @('resource-layers.json','rust-runtime-build.json','native-dependencies.windows-x64.json')) {
+    foreach ($name in @('resource-layers.json','rust-runtime-build.json','native-dependencies.windows-x64.json','bundled-resource-inventory.json')) {
       Copy-Item -LiteralPath (Resolve-DesktopChildPath $stageGateway $name) -Destination (Resolve-DesktopChildPath $gatewayDir $name) -Force
     }
   }
@@ -494,6 +482,9 @@ Write-DesktopDuration '安装与资源同步'
 Assert-CurrentBuildBinding
 if ($installWithPackage) { Assert-FixedInstaller -Installed }
 else { Assert-DesktopRuntimeMatches -StageGateway $stageGateway -InstallDir $installDir -HostExecutable $hostExecutable }
+if (-not $StartupRepair) {
+  Invoke-DesktopResourceCleanup -Root $root -InstallDir $installDir -StageGateway $stageGateway -InstalledFromPackage:$installWithPackage -InstallerPath $InstallerPath
+}
 Write-DesktopDuration '安装后校验'
 if (-not $StartupRepair) {
   $catalogArguments = @((Join-Path $root 'scripts\lib\desktop-catalog-update.js'), $gatewayDir, (Join-Path $configRoot 'gateway'))

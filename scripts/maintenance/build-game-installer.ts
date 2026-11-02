@@ -20,7 +20,20 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   const escapePath = (value: any) => value.replace(/\$/g, '$$$$');
   let output = replaceOnce(source, '; Installer pages, must be ordered as they appear',
     `!define GAME_BACKGROUND "${escapePath(background)}"\n!define GAME_ASSET_DIR "${escapePath(path.dirname(background))}"\n!include "${escapePath(uiFile)}"\n\n; Installer pages, must be ordered as they appear`);
-  output = replaceOnce(output, 'Section EarlyChecks', `!include "${escapePath(path.join(path.dirname(uiFile), 'game-install-policy.nsh'))}"\n\nSection EarlyChecks\n  Call GameCheckStopped`);
+  output = replaceOnce(output, 'Section EarlyChecks', `!include "${escapePath(path.join(path.dirname(uiFile), 'game-install-policy.nsh'))}"\n\nFunction GameReconcileResources
+  nsExec::ExecToStack /TIMEOUT=120000 '"$INSTDIR\\gateway\\installer-resource-cleanup.exe" "$INSTDIR"'
+  Pop $0
+  Pop $1
+  DetailPrint "$1"
+  \${If} $0 != 0
+    \${IfNot} \${Silent}
+      MessageBox MB_OK|MB_ICONEXCLAMATION "旧资源清理未完成，请检查安装目录后重试。"
+    \${EndIf}
+    SetErrorLevel 1604
+    Quit
+  \${EndIf}
+FunctionEnd
+\nSection EarlyChecks\n  Call GameCheckStopped`);
   // A full package must repair a missing WebView2 on updates as well as fresh installs.
   // Upgrade-only packages set the mode to skip and verify their existing runtime separately.
   output = replaceOnce(output, '    ; Skip if updating\n    ${If} $UpdateMode <> 1\n', '');
@@ -33,8 +46,9 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   if (output.split(runningCheck).length !== 3) throw new Error('Installer running-check anchor drift');
   output = output.replace(runningCheck, 'Call GameCheckStopped').replace(runningCheck, 'Call un.GameCheckStopped');
   output = replaceOnce(output, '  reinst_uninstall:\n    HideWindow', '  reinst_uninstall:\n    Call GameCheckPreviousStopped\n    HideWindow');
-  output = replaceOnce(output, '  !ifmacrodef NSIS_HOOK_POSTINSTALL', '  Call GameCreateResourceShortcut\n\n  !ifmacrodef NSIS_HOOK_POSTINSTALL');
+  output = replaceOnce(output, '  !ifmacrodef NSIS_HOOK_POSTINSTALL', '  Call GameReconcileResources\n  Call GameCreateResourceShortcut\n\n  !ifmacrodef NSIS_HOOK_POSTINSTALL');
   output = replaceOnce(output, '  ; Remove shortcuts if not updating\n  ${If} $UpdateMode <> 1', '  ; Remove shortcuts if not updating\n  ${If} $UpdateMode <> 1\n    Call un.GameRemoveResourceShortcut');
+  output = replaceOnce(output, '  ; Delete uninstaller\n  Delete "$INSTDIR\\uninstall.exe"', '  ; Delete uninstaller and the installer-owned resource ledger\n  Delete "$INSTDIR\\uninstall.exe"\n  Delete "$INSTDIR\\.huiyu-installed-resources.json"');
   output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绘遇 HUIYU · 安装"');
   // Display branding is separate from PRODUCTNAME: that name is the legacy
   // uninstall registry key and installation directory used by update discovery.
@@ -113,6 +127,26 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
   if (crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
   const generated = path.join(INSTALLER, 'generated');
   fs.mkdirSync(generated, { recursive: true });
+  const framework = path.join(process.env.WINDIR || 'C:/Windows', 'Microsoft.NET/Framework64/v4.0.30319');
+  const cleanupExe = path.join(generated, 'HuiyuResourceCleanup.exe');
+  const cleanupReceipt = path.join(generated, 'resource-cleanup-build.json');
+  const inputs = [path.join(INSTALLER, 'ResourceInventory.cs'), path.join(INSTALLER, 'modern/app.manifest'),
+    path.join(framework, 'csc.exe'), path.join(framework, 'System.Runtime.Serialization.dll'), path.join(framework, 'mscorlib.dll')];
+  const flags = ['/nologo', '/utf8output', '/codepage:65001', '/target:exe', '/platform:x64', '/optimize+'];
+  const hashFile = (file: string) => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+  const inputHash = crypto.createHash('sha256').update(JSON.stringify({ files: inputs.map(hashFile), flags })).digest('hex');
+  let cached = false;
+  try {
+    const receipt = JSON.parse(fs.readFileSync(cleanupReceipt, 'utf8'));
+    cached = receipt.inputHash === inputHash && !fs.lstatSync(cleanupExe).isSymbolicLink() && receipt.outputHash === hashFile(cleanupExe);
+  } catch { /* Missing or invalid generated output requires compilation. */ }
+  if (!cached) {
+    const compiler = spawnSync(path.join(framework, 'csc.exe'), [...flags,
+      `/out:${cleanupExe}`, `/reference:${path.join(framework, 'System.Runtime.Serialization.dll')}`,
+      `/win32manifest:${path.join(INSTALLER, 'modern/app.manifest')}`, path.join(INSTALLER, 'ResourceInventory.cs')], { cwd: ROOT, stdio: 'inherit', windowsHide: true });
+    if (compiler.error || compiler.status !== 0) throw new Error(`Resource cleanup compiler failed: ${compiler.error?.message || compiler.status}`);
+    fs.writeFileSync(cleanupReceipt, JSON.stringify({ inputHash, outputHash: hashFile(cleanupExe) }));
+  }
   const background = path.join(generated, 'atelier-background.bmp');
   await bitmap(path.join(INSTALLER, 'atelier-keyart.png'), background);
   const leftArt = await sharp(path.join(INSTALLER, 'atelier-keyart.png')).resize(1920, 1200).extract({ left: 0, top: 0, width: 998, height: 1200 }).png().toBuffer();
