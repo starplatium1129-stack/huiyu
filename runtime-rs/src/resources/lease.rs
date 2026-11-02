@@ -20,7 +20,7 @@ impl Drop for Lock {
         let _ = self.release();
     }
 }
-fn alive(owner: &Value) -> Result<bool> {
+fn alive(owner: &Value, target: &Path) -> Result<bool> {
     let pid = super::number(&owner["pid"])
         .filter(|pid| *pid > 0)
         .ok_or_else(|| Error::new("LOCK_UNCERTAIN", "Owner PID unknown"))?;
@@ -36,7 +36,8 @@ fn alive(owner: &Value) -> Result<bool> {
             "Lock owner cannot be established",
         ));
     }
-    Ok(crate::processes::liveness(pid) != "dead")
+    let written = std::fs::metadata(target)?.modified()?;
+    Ok(crate::processes::liveness_before(pid, Some(written)) != "dead")
 }
 pub(super) fn acquire(ctx: &Context, name: &str, depth: u8) -> Result<Lock> {
     acquire_at(&ctx.store, name, depth)
@@ -70,7 +71,7 @@ pub(super) fn acquire_at(store: &Path, name: &str, depth: u8) -> Result<Lock> {
             let Some(old) = fs::json(&target, true, true)? else {
                 continue;
             };
-            if alive(&old)? {
+            if alive(&old, &target)? {
                 return Err(Error::new("BUSY", "Another resource operation active"));
             }
             let _reaper = acquire_at(
@@ -80,7 +81,7 @@ pub(super) fn acquire_at(store: &Path, name: &str, depth: u8) -> Result<Lock> {
             )?;
             if let Some(now) = fs::json(&target, true, true)?
                 && now["token"] == old["token"]
-                && !alive(&now)?
+                && !alive(&now, &target)?
             {
                 std::fs::remove_file(&target)?;
             }

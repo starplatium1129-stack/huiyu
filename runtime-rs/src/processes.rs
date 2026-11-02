@@ -293,6 +293,11 @@ async fn terminate_child(child: &mut Child) -> Result<()> {
 }
 
 pub(crate) fn liveness(pid: u64) -> &'static str {
+    liveness_before(pid, None)
+}
+
+/// A PID created after a lease was written cannot be that lease's owner.
+pub(crate) fn liveness_before(pid: u64, written: Option<std::time::SystemTime>) -> &'static str {
     if pid == 0 || pid > u32::MAX as u64 {
         return "unknown";
     }
@@ -302,6 +307,13 @@ pub(crate) fn liveness(pid: u64) -> &'static str {
         unsafe extern "system" {
             fn OpenProcess(access: u32, inherit: i32, pid: u32) -> *mut std::ffi::c_void;
             fn GetExitCodeProcess(process: *mut std::ffi::c_void, exit: *mut u32) -> i32;
+            fn GetProcessTimes(
+                process: *mut std::ffi::c_void,
+                start: *mut u64,
+                end: *mut u64,
+                kernel: *mut u64,
+                user: *mut u64,
+            ) -> i32;
             fn CloseHandle(handle: *mut std::ffi::c_void) -> i32;
         }
         let handle = unsafe { OpenProcess(0x1000, 0, pid as u32) };
@@ -314,10 +326,23 @@ pub(crate) fn liveness(pid: u64) -> &'static str {
         }
         let mut code = 0;
         let ok = unsafe { GetExitCodeProcess(handle, &mut code) };
+        let mut start = 0;
+        let mut end = 0;
+        let mut kernel = 0;
+        let mut user = 0;
+        let times_ok = unsafe { GetProcessTimes(handle, &mut start, &mut end, &mut kernel, &mut user) };
         unsafe {
             CloseHandle(handle);
         }
-        if ok == 0 {
+        let replaced = written
+            .and_then(|time| time.duration_since(std::time::UNIX_EPOCH).ok())
+            .is_some_and(|age| {
+                times_ok != 0
+                    && u128::from(start) > age.as_nanos() / 100 + 116_444_736_000_000_000
+            });
+        if replaced {
+            "dead"
+        } else if ok == 0 {
             "unknown"
         } else if code == 259 {
             "alive"
@@ -327,6 +352,7 @@ pub(crate) fn liveness(pid: u64) -> &'static str {
     }
     #[cfg(unix)]
     {
+        let _ = written;
         unsafe extern "C" {
             fn kill(pid: i32, signal: i32) -> i32;
         }
@@ -343,6 +369,7 @@ pub(crate) fn liveness(pid: u64) -> &'static str {
     }
     #[cfg(not(any(windows, unix)))]
     {
+        let _ = written;
         "unknown"
     }
 }
