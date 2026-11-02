@@ -183,7 +183,7 @@
           </template>
       </SceneCard>
     </div>
-    <p v-if="!loading && !loadError && !samplesPending && paged.length" class="scene-load">
+    <p v-if="!loading && !loadError && !samplesPending && paged.length" ref="loadSentinel" class="scene-load">
       {{ visible < filtered.length ? '继续向下浏览，自动加载更多场景' : '已显示全部场景' }}
     </p>
 
@@ -218,7 +218,7 @@ import { useScrollReveal } from '@/composables/useScrollReveal'
 
 const {
   companionId, activeFilters, activeThemeLabel, scenes, manualCompanion, moodRails, applyMoodRail,
-  searchQuery, visible, filtered, listRoot, tierLabel, filtersOpen, activeFacetCount, fTier, showHidden,
+  searchQuery, visible, filtered, listRoot, loadSentinel, tierLabel, filtersOpen, activeFacetCount, fTier, showHidden,
   showPersonalScenes, showRecommendedScenes, usedCount, sortBy, showFavoriteScenes, favoriteCount,
   hiddenCount, showAllScenes, availableCount, THEME_DEFS, activeTheme, themeCount,
   searchIntent, fChar, fSeason, fTime, fSeries, fRating, matureCount, resetFilters,

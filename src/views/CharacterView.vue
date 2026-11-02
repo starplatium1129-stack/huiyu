@@ -237,6 +237,7 @@ useScrollReveal()
 const directoryItems = computed(() => characters.value.map(character => ({
   id: character.id, name: character.name, source: character.source, aliases: character.alias,
   image: character.type === 'popular' ? popularPortraitSrc(character.id) : character.portrait?.image,
+  fullImage: character.type === 'popular' ? popularPortraitFullSrc(character.id) : characterArtEntry(character.id)?.portraitUrl || character.portrait?.image,
 })))
 
 const portraitSources = computed(() => {

@@ -42,9 +42,7 @@
   min-height: clamp(280px, calc(var(--drawing-viewport-height) - 390px), 580px);
   max-height: none;
   @apply tw:border-soft tw:rounded-xl;
-  background:
-    radial-gradient(ellipse at 50% 45%, color-mix(in srgb, var(--character-accent, var(--accent)) 4%, transparent), transparent 60%),
-    var(--bg-surface);
+  background: var(--bg-surface);
   box-shadow:
     inset 0 1px 0 var(--glass-highlight),
     0 16px 40px -16px color-mix(in srgb, var(--character-accent, var(--accent)) 14%, rgba(5, 11, 18, 0.45)),
@@ -56,7 +54,6 @@
 .pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide { padding-block:var(--s-3); }
 .pb.journal-workspace .stage-placeholder:has(.scene-reference) .stage-idle-guide :is(.atelier-canvas-illustration, .stage-placeholder-title, .stage-placeholder-copy) { @apply tw:hidden; }
 .pb.journal-workspace .stage-idle-guide .atelier-canvas-illustration {
-  filter: drop-shadow(0 14px 28px color-mix(in srgb, var(--character-accent, var(--accent)) 12%, rgba(5, 11, 18, 0.35)));
   opacity: 0.94;
   margin-bottom: var(--s-2);
 }

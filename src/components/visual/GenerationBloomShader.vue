@@ -51,9 +51,6 @@ void main(){
     float spark=exp(-dot(ellipse-head,ellipse-head)/.00011)*.72;
     light+=mix(pigment,vec3(1.),.3)*spark; weight+=spark;
   }
-  float core=exp(-dot(p,p)/(.007-finish*.003))*(.16+finish*.32);
-  float mist=exp(-dot(p,p)/.032)*(.035+formed*.025)*(1.-finish*.4);
-  light+=mix(pigmentA,pigmentC,.5)*(core+mist); weight+=core+mist;
   float alpha=min(.78,weight)*(1.-smoothstep(.37,.46,length(p)));
   outputColor=vec4(light/max(weight,.0001),alpha);
 }`

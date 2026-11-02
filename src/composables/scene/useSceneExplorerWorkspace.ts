@@ -23,7 +23,7 @@ import { orderExplorerScenes } from './sceneExplorerOrdering';
 import { computed,nextTick,onActivated,onDeactivated,onMounted,onUnmounted,ref,shallowRef,watch } from 'vue';
 import { useRoute } from 'vue-router';
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
-import { useDocumentVisibility, useInfiniteScroll, useResizeObserver } from '@vueuse/core';
+import { useDocumentVisibility, useIntersectionObserver, useResizeObserver } from '@vueuse/core';
 
 // Remember only the rendered range; route scroll restoration owns the position.
 const browseRanges = new Map<string, number>();
@@ -52,6 +52,7 @@ export function useSceneExplorerWorkspace() {
     const loadError = ref('');
     const viewActive = ref(true);
     const listRoot = ref<HTMLElement | null>(null);
+    const loadSentinel = ref<HTMLElement | null>(null);
     const drawerScene = ref<ExplorerScene | null>(null);
     const requestedScene = computed(() => route.path === '/scene-explorer' && typeof route.query.scene === 'string' ? route.query.scene : '');
     let handledScene = '', linkedViewer = false, closingLinked = false;
@@ -256,19 +257,21 @@ export function useSceneExplorerWorkspace() {
     });
     const paged = computed(() => filtered.value.slice(0, visible.value));
     const documentVisibility = useDocumentVisibility();
-    const { reset: refreshInfiniteScroll } = useInfiniteScroll(
-        () => viewActive.value ? document : null,
-        () => { visible.value = Math.min(visible.value + PAGE_SIZE, filtered.value.length); },
-        {
-            distance: 600,
-            canLoadMore: () => viewActive.value && route.path === '/scene-explorer'
-                && documentVisibility.value === 'visible' && Boolean(listRoot.value?.isConnected)
-                && !loading.value && !loadError.value && !drawerScene.value && visible.value < filtered.value.length,
-        },
-    );
-    // Filtering can shorten the document without a scroll event. Measure after
-    // Vue updates the cards; the existing batch limit and return range stay intact.
-    watch(filtered, refreshInfiniteScroll, { flush: 'post' });
+    function refreshInfiniteScroll() {
+        void nextTick(() => {
+            if (!viewActive.value || route.path !== '/scene-explorer' || documentVisibility.value !== 'visible'
+                || loading.value || loadError.value || drawerScene.value || visible.value >= filtered.value.length) return;
+            const marker = loadSentinel.value;
+            if (!marker?.isConnected || !marker.getClientRects().length || marker.getBoundingClientRect().top > window.innerHeight + 600) return;
+            visible.value = Math.min(visible.value + PAGE_SIZE, filtered.value.length);
+        });
+    }
+    // Observe the list's end, not html: the desktop shell keeps html viewport-high
+    // even when its overflowing document continues below that element's box.
+    useIntersectionObserver(loadSentinel, entries => {
+        if (entries.some(entry => entry.isIntersecting)) refreshInfiniteScroll();
+    }, { rootMargin: '600px 0px' });
+    watch([filtered, loading, drawerScene, documentVisibility, viewActive, () => route.path], refreshInfiniteScroll, { flush: 'post' });
     useResizeObserver(listRoot, refreshInfiniteScroll);
     const searchIntent = computed(() => {
         const q = debouncedQuery.value.trim();
@@ -399,7 +402,7 @@ export function useSceneExplorerWorkspace() {
     return {
         ...filters,
         companionId, scenes, manualCompanion, moodRails, applyMoodRail,
-        visible, filtered, listRoot, tierLabel, usedCount, favoriteCount, hiddenCount, availableCount,
+        visible, filtered, listRoot, loadSentinel, tierLabel, usedCount, favoriteCount, hiddenCount, availableCount,
         THEME_DEFS, themeCount, searchIntent, matureCount, loading,
         loadError, init, paged, usageFor, isCore,
         tier, charName, seasonLabel, timeLabel, personalReason, drawerScene, finishSceneClose,

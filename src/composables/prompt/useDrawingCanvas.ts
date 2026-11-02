@@ -1,12 +1,42 @@
-import { computed } from 'vue'
+import { computed, watch } from 'vue'
 import type { usePromptWorkspace } from './usePromptWorkspace'
 import { useNativeDrawing } from './useNativeDrawing'
+import { useCompareSnapshots } from '@/composables/useCompareSnapshots'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
+import type { ResultSnapshot } from './promptResultSnapshot'
 
 /** One canvas and action bar; each generation session keeps its own parameters and results. */
 export function useDrawingCanvas(workspace: ReturnType<typeof usePromptWorkspace>) {
   const native = useNativeDrawing(workspace), enabled = computed(() => !!native.mode.value)
   const state = native.session
+  const mossCompare = useCompareSnapshots<ResultSnapshot>({ build: url => {
+    const task = state.value?.result.value
+    if (!task || task.kind !== 'moss') throw new Error('MOSS 结果尚未就绪')
+    const input = { ...task.input, ...task.metadata }
+    return { url, seed: typeof input.seed === 'number' && input.seed >= 0 ? input.seed : null,
+      styleLoraId: null, size: `${input.width}x${input.height}`,
+      sampler: typeof input.sampler === 'string' ? input.sampler : '—',
+      cfg: Number(input.cfg), steps: Number(input.steps),
+      hires: input.mossUpscaleScale === 1.5 || input.mossUpscaleScale === 2 ? `Remacri ×${input.mossUpscaleScale}` : '关',
+      at: new Date(task.createdAt).toLocaleTimeString() }
+  } })
+  let comparedTask = ''
+  watch(() => state.value?.resultUrl.value, url => {
+    const task = state.value?.result.value
+    if (native.mode.value !== 'moss' || !url || !task || task.taskId === comparedTask) return
+    comparedTask = task.taskId
+    mossCompare.rotate(url)
+  }, { flush: 'sync' })
+  watch(runtimeResourceIdentity, () => { comparedTask = ''; mossCompare.clear() }, { flush: 'sync' })
+  watch(native.mode, () => mossCompare.close(), { flush: 'sync' })
+  const prevResult = computed(() => enabled.value ? native.mode.value === 'moss' ? mossCompare.prevResult.value : null : workspace.prevResult.value)
+  const lastResult = computed(() => enabled.value ? native.mode.value === 'moss' ? mossCompare.lastResult.value : null : workspace.dialogBindings.lastResult.value)
+  const compareOpen = computed({ get: () => enabled.value ? native.mode.value === 'moss' && mossCompare.compareOpen.value : workspace.compareOpen.value,
+    set: value => { if (native.mode.value === 'moss') mossCompare.compareOpen.value = value; else if (!enabled.value) workspace.compareOpen.value = value } })
+  const closeCompare = () => { mossCompare.close(); workspace.dialogBindings.closeCompare() }
   return { ...workspace, native,
+    prevResult, lastResult, compareOpen, closeCompare,
+    dialogBindings: { ...workspace.dialogBindings, prevResult, lastResult, compareOpen, closeCompare },
     displayResultUrl: computed(() => enabled.value ? state.value?.resultUrl.value || '' : workspace.displayResultUrl.value),
     resultRevealUrl: computed(() => enabled.value ? state.value?.resultUrl.value || '' : workspace.resultRevealUrl.value),
     drawEngine: computed(() => native.mode.value || workspace.drawEngine.value),
@@ -25,7 +55,6 @@ export function useDrawingCanvas(workspace: ReturnType<typeof usePromptWorkspace
     resultArchived: computed(() => enabled.value ? state.value?.result.value ? state.value.saved.value : null : workspace.resultArchived.value),
     savingResult: computed(() => enabled.value ? !!state.value?.saving.value : workspace.savingResult.value),
     resultTemporary: computed(() => enabled.value ? !!state.value?.result.value && !state.value.saved.value : workspace.resultTemporary.value),
-    prevResult: computed(() => enabled.value ? null : workspace.prevResult.value),
     hasStashedResult: computed(() => !enabled.value && workspace.hasStashedResult.value),
     inpaintOriginalUrl: computed(() => enabled.value ? null : workspace.inpaintOriginalUrl.value),
     inpaintCompareActive: computed({ get: () => !enabled.value && workspace.inpaintCompareActive.value,

@@ -110,15 +110,17 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
 
   onDeactivated(close)
 
-  onBeforeUnmount(() => {
-    disposed = true
+  function clear() {
+    close()
     rotateToken += 1
     cloneUrls.forEach(url => URL.revokeObjectURL(url))
     cloneUrls.clear()
     pendingRelease.clear()
     prevResult.value = null
     lastResult.value = null
-  })
+  }
+
+  onBeforeUnmount(() => { disposed = true; clear() })
 
   return {
     prevResult: prevResult as Ref<T | null>,
@@ -127,5 +129,6 @@ export function useCompareSnapshots<T extends { url: string }>(options: {
     rotate,
     release,
     close,
+    clear,
   }
 }

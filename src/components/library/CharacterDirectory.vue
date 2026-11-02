@@ -49,7 +49,7 @@ import { franchiseKey, franchiseLabel } from '@/utils/franchiseLabel'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; aliases?: string[] }
+export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; fullImage?: string; aliases?: string[] }
 const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
 const emit = defineEmits<{ select: [id: string]; dismiss: [] }>()
 const inputId = useId()

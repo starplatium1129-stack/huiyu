@@ -44,7 +44,7 @@
       </div>
       <div ref="characterGrid" class="bookshelf-characters tw:grid" role="group" aria-label="角色列表">
         <button v-for="item in visibleResults" :key="item.id" type="button" class="bookshelf-character tw:relative tw:flex tw:flex-col tw:items-stretch tw:min-w-0 tw:p-s-2 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" :data-character="item.id" :data-list-key="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
-          <CharacterPortrait :src="item.image" :name="item.name" />
+          <CharacterPortrait :src="item.fullImage || item.image" :name="item.name" />
           <span class="bookshelf-character-copy tw:grid tw:gap-s-1"><strong>{{ item.name }}</strong><small>{{ franchiseLabel(franchiseKey(item.source)) || '未标注作品' }}</small></span>
           <span v-if="selectedId === item.id" class="bookshelf-selected tw:absolute tw:right-s-3 tw:top-s-3 tw:grid tw:w-[28px] tw:h-[28px] tw:rounded-pill tw:text-accent"><ArchiveIcon name="success" /><span class="sr-only">当前角色</span></span>
           <CardEdgeLight />
