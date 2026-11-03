@@ -4,7 +4,6 @@ import type { ArtworkRepository } from '@/storage/artworkRepository'
 import type { CompanionChatImage } from '@/types/companionDrawing'
 import type { MediaSource } from '@/platform/desktop/workspaceMediaSource'
 import { readWorkspaceMediaSource } from '@/platform/desktop/workspaceMediaRead'
-import type { ChatSearchConnection } from '@/config/chatSearch'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { chatResetRevision } from '@/utils/chatReset'
 import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
@@ -64,7 +63,6 @@ export interface CompanionToolContext {
   report: (message: string) => void
   readImage?: NonNullable<ReturnType<typeof captureCompanionImageSource>>['read']
   imageUrl?: string
-  search?: Pick<ChatSearchConnection, 'hostConfig' | 'chatApi'>
   screenDestination?: string
 }
 
@@ -81,7 +79,7 @@ export async function executeCompanionChatTool(name: string, args: Record<string
   context.signal.throwIfAborted()
   if (name !== 'search_web' && !companionToolAllowed(name, await loadCompanionToolPermissions(context.signal))) throw new Error('房间工具权限已关闭。')
   if (!['generate_character_image', 'generate_image_from_reference'].includes(name)) {
-    return executeCompanionTool(name, args, context.signal, name === 'search_web' ? context.search : undefined, context.screenDestination)
+    return executeCompanionTool(name, args, context.signal, context.screenDestination)
   }
   const reference = name === 'generate_image_from_reference'
   const input = {

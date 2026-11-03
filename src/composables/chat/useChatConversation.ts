@@ -235,8 +235,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       sendOptions.image || [...turn.messages].reverse().flatMap(message => message.images || [])[0], sendOptions.imageAuthority, controller)
     let originalImages: ReturnType<typeof import('./chatRegenerationImages')['captureRegenerationImages']> | undefined
     let imageUrls = imageUrl ? [imageUrl] : []
-    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl,
-      search: connection.hostConfig ? { hostConfig: true } : { chatApi: { baseUrl: connection.baseUrl, apiKey: connection.apiKey } } }
+    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl }
     let toolOrigin: string | undefined
     try { toolOrigin = toolContext.screenDestination = new URL(connection.hostConfig ? connection.hostBaseUrl : connection.baseUrl).origin } catch { /* Unknown recipients cannot receive screenshots. */ }
     const usedTools = new Set<string>()

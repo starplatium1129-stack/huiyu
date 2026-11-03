@@ -60,6 +60,7 @@ pub struct ChatService {
     transport: transport::Transport,
     ollama: ollama::Ollama,
     settings: OnceCell<settings::Settings>,
+    search: search::WebSearch,
 }
 impl Default for ChatService {
     fn default() -> Self {
@@ -72,6 +73,7 @@ impl ChatService {
             transport: transport::Transport::new(),
             ollama: ollama::Ollama::new(),
             settings: OnceCell::new(),
+            search: search::WebSearch::default(),
         }
     }
     pub fn queue_status(&self) -> Value {
@@ -213,20 +215,8 @@ async fn search_web(
         let body = body.map_err(body_error)?;
         let body: Value =
             serde_json::from_slice(&body).map_err(|_| Error::invalid("请求 JSON 格式错误"))?;
-        let host = if body["search"]["hostConfig"] == true
-            && body["search"]["provider"] != "duckduckgo"
-            && body["search"]["apiKey"]
-                .as_str()
-                .unwrap_or("")
-                .trim()
-                .is_empty()
-        {
-            chat.settings(&app).await.read_host().await
-        } else {
-            None
-        };
         Ok::<Response, Error>(
-            Json(search::run(&chat.transport, &body, host.as_ref(), &scope).await?).into_response(),
+            Json(chat.search.run(&body, &scope).await?).into_response(),
         )
     };
     tokio::select! {

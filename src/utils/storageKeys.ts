@@ -36,8 +36,8 @@ export const INTERFACE_SOUND_KEY = 'aics_interface_sound_v1'
 const MATURE_SETTING_KEY = 'aics_show_mature'
 export const TUNNEL_OFF_KEY = 'aics_tunnel_off'
 export const CHAT_THINKING_KEY = 'aics_chat_thinking_v1'
-/** Search selection and credential revision only; secrets stay in the credential store. */
-export const CHAT_SEARCH_KEY = 'aics_chat_search_v1'
+/** Retain historical search preferences in existing backups. */
+const CHAT_SEARCH_KEY = 'aics_chat_search_v1'
 export const CHAT_USER_PROFILE_KEY = 'aics_user_profile_v1'
 export const CHAT_MEMORY_KEY = 'aics_chat_memories_v1'
 /** 高频偏好单独保存，避免每次输入或调音量重写聊天历史。 */

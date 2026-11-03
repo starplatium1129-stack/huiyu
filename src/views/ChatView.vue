@@ -46,8 +46,7 @@
               <ToggleSwitch v-if="currentCharacter.voice" :model-value="autoVoice" label="自动播放语音" @update:model-value="autoVoice = $event; onAutoVoiceChange()">自动播放语音</ToggleSwitch>
               <label v-if="currentCharacter.voice" class="room-volume"><span>音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label>
             </div>
-            <AsyncPanel v-if="chatProvider === 'api' && isLocalHost" :loader="loadChatSearchSettings" label="搜索设置" v-slot="{ component }"><component :is="component"
-              :api-base-url="apiBaseUrl" :api-key="apiKey" :use-host-config="useHostConfig" :host-api-base-url="hostApiBaseUrl" :busy="busy" /></AsyncPanel>
+            <p v-if="chatProvider === 'api' && isLocalHost">联网检索由 RustXNG 提供，搜索词会发送给第三方搜索源。<a href="https://github.com/starplatium1129-stack/huiyu" target="_blank" rel="noopener noreferrer" aria-label="查看绘遇源码与许可，在新窗口打开">源码与许可</a></p>
             <div class="room-settings-voice">
               <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control#control-services" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
               <AsyncPanel class="room-speech-popover-loader" :loader="loadSpeechPopover" label="语音输入设置" v-slot="{ component: popoverComponent }">
@@ -176,7 +175,6 @@ const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel
 // The local boundary mounts portal controls in the visible dialog and owns import recovery.
 const loadChatModelControls = () => import('@/components/ChatModelControls.vue')
 const loadChatApiSettings = () => import('@/components/ChatApiSettings.vue')
-const loadChatSearchSettings = () => import('@/components/ChatSearchSettings.vue')
 const loadSpeechInputSettings = () => import('@/components/SpeechInputSettings.vue')
 const loadSpeechPopover = () => import('@/components/ui/StudioPopover.vue')
 // These panels mount only after a menu action; load their component CSS then too.

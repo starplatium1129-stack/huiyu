@@ -114,6 +114,6 @@ AI-CG-Studio/
 
 ## 项目与许可
 
-绘遇是个人使用、偶尔与朋友分享的非商业爱好项目。代码采用 [MIT 许可](LICENSE)；模型、人物、Live2D、图片与其他资源遵循各自许可。项目与动漫、游戏原作及其权利方没有隶属关系。
+绘遇是个人使用、偶尔与朋友分享的非商业爱好项目。绘遇原创代码继续采用 [MIT 许可](LICENSE)。Rust 运行时链接了 [RustXNG](https://github.com/sahenjp/RustXNG/tree/08338038491d57adcfa4990ddf3d8925af292f4e)，组合后的运行时适用 [AGPL-3.0-or-later](assets/licenses/rustxng-AGPL-3.0.txt)；发行时须提供对应源码并保留其[许可声明](assets/licenses/rustxng-NOTICE.txt)。模型、人物、Live2D、图片与其他资源遵循各自许可。项目与动漫、游戏原作及其权利方没有隶属关系。
 
 [项目状态](docs/project-status.md) · [未来规划](docs/roadmap.md) · [文档索引](docs/INDEX.md) · [问题反馈](https://github.com/starplatium1129-stack/huiyu/issues)

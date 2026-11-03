@@ -114,6 +114,6 @@ Local `runtime/` holds build caches and raw acceptance artifacts; it is not comm
 
 ## Project and licensing
 
-HUIYU is a personal, non-commercial hobby project, occasionally shared with friends. Code is covered by the [MIT license](LICENSE). Models, characters, Live2D assets, images and other resources retain their own licenses. This project is not affiliated with the original anime or game rights holders.
+HUIYU is a personal, non-commercial hobby project, occasionally shared with friends. HUIYU's original code remains under the [MIT license](LICENSE). The Rust runtime links [RustXNG](https://github.com/sahenjp/RustXNG/tree/08338038491d57adcfa4990ddf3d8925af292f4e), so the combined runtime is subject to [AGPL-3.0-or-later](assets/licenses/rustxng-AGPL-3.0.txt); releases must provide the corresponding source and retain its [notice](assets/licenses/rustxng-NOTICE.txt). Models, characters, Live2D assets, images and other resources retain their own licenses. This project is not affiliated with the original anime or game rights holders.
 
 [Project status](docs/project-status.md) · [Roadmap](docs/roadmap.md) · [Documentation](docs/INDEX.md) · [Report an issue](https://github.com/starplatium1129-stack/huiyu/issues)

@@ -1,6 +1,5 @@
 import { runtimeFetch } from '@/platform/runtimeUrl'
 import type { CompanionChatImage } from '@/types/companionDrawing'
-import type { ChatSearchConnection } from '@/config/chatSearch'
 import { loadCompanionToolPermissions, companionToolAllowed } from '@/composables/chat/useCompanionToolPermissions'
 import { confirmAction } from '@/composables/useConfirm'
 
@@ -11,7 +10,7 @@ export interface CompanionToolResult {
   image?: CompanionChatImage
 }
 
-export async function executeCompanionTool(name: string, args: Record<string, unknown>, signal?: AbortSignal, search?: Pick<ChatSearchConnection, 'hostConfig' | 'chatApi'>, screenDestination?: string): Promise<CompanionToolResult> {
+export async function executeCompanionTool(name: string, args: Record<string, unknown>, signal?: AbortSignal, screenDestination?: string): Promise<CompanionToolResult> {
   if (name !== 'search_web' && !companionToolAllowed(name, await loadCompanionToolPermissions(signal))) throw new Error('此项房间工具权限已关闭。')
   let screenAuthorized = false
   if (name === 'capture_screen') {
@@ -21,11 +20,10 @@ export async function executeCompanionTool(name: string, args: Record<string, un
     if (!screenAuthorized) return { ok: false, output: '用户拒绝本次截图与外发；不要重复请求。' }
     if (!companionToolAllowed(name, await loadCompanionToolPermissions(signal))) throw new Error('屏幕截图权限已关闭。')
   }
-  const selected = name === 'search_web' ? await (await import('@/utils/chatSearchStorage')).loadChatSearchSettings('search') : undefined
   signal?.throwIfAborted()
   const response = await runtimeFetch(name === 'search_web' ? '/api/chat/search' : '/api/desktop-tools', {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, signal,
-    body: JSON.stringify({ name, args, ...(screenAuthorized ? { screenAuthorized: true } : {}), ...(selected ? { search: { provider: selected.provider, apiKey: selected.apiKey, ...search } } : {}) }),
+    body: JSON.stringify({ name, args, ...(screenAuthorized ? { screenAuthorized: true } : {}) }),
   })
   const raw: unknown = await response.json()
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) throw new Error('本机工具返回了无效响应。')

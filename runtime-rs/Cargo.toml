@@ -4,6 +4,7 @@ version = "0.1.0"
 edition = "2024"
 rust-version = "1.88"
 publish = false
+license = "AGPL-3.0-or-later"
 
 [dependencies]
 axum = { version = "0.8", features = ["multipart"] }
@@ -33,7 +34,7 @@ reqwest = { version = "0.13", default-features = false, features = ["stream", "j
 tokio-tungstenite = "0.29"
 unicode-normalization = "0.1"
 regex = "1"
-scraper = { version = "0.27", default-features = false }
+rustxng = { git = "https://github.com/sahenjp/RustXNG.git", rev = "08338038491d57adcfa4990ddf3d8925af292f4e", default-features = false }
 icu_collator = "2"
 icu_locale = "2"
 sys-locale = "0.3"
