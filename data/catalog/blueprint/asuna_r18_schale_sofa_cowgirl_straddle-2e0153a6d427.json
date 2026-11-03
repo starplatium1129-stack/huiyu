@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_r18_schale_sofa_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 947,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "独自跨坐沙发扶手，一手抓靠背、一手腿间自抚",
     "adult": true,
@@ -45,7 +45,7 @@
       "from below"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cowgirl_position",
       "straddling",

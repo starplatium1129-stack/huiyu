@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_r18_gothic_bedchamber_domination",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 678,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "独自跨坐木椅咬住腿带，一手抓椅背、一手腿间自抚，黑蕾丝褪至胸下",
     "adult": true,
@@ -43,7 +43,7 @@
       "candlelight"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bedroom",
       "carved_chair",

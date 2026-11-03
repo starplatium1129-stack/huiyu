@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_office_unbutton",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 887,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "坐办公桌半解制服",
     "adult": true,
@@ -45,7 +45,7 @@
       "low angle"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "millennium",
       "seminar",

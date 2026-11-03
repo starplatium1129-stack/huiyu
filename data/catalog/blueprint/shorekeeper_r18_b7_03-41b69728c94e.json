@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_03",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1661,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_03",
     "title": "守岸人 · 概念投影礼服流光锁链卡壳事故 ·「逻辑指令错误……流光纠缠无法解除，请协助我」",
@@ -50,7 +50,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [
       "breast slip",
       "bottomless"

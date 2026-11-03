@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_shrine_altar_doggystyle_thrust",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1152,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "倚在神乐案旁，白衣敞开，一手抚胸，另一手探入撩起的红袴下摆，含泪望向前方",
     "adult": true,
@@ -43,7 +43,7 @@
       "teary eyes"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "shrine",
       "altar",

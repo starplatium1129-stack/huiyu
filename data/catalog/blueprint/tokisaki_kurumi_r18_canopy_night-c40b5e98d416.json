@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_canopy_night",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 81,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_canopy_night",
     "title": "时崎狂三 · 钟表陈列室·满月银辉与黑丝绒项圈",
@@ -20,7 +20,7 @@
     "recommendedSize": "1152x1536",
     "adult": true,
     "adultEligibility": "adult",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw",
       "iconic",

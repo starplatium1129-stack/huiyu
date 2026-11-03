@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_03",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_03",
     "title": "尤贝尔 · 斩击魔法割裂黑色斗篷的走光事故 ·「手滑把衣服切开了呢……怎么，想趁机偷袭我吗？」",
@@ -50,7 +50,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

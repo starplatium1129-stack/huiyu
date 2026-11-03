@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_silk_morning",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "金黄草垛旁抱膝褪去白裙娇羞微笑",
     "adult": true,
@@ -40,7 +40,7 @@
       "light through boards"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "barn",
       "hay",

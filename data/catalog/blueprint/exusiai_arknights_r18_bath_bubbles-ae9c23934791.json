@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_bath_bubbles",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 633,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "趴在浴缸边，指尖戳着泡泡",
     "adult": true,
@@ -42,7 +42,7 @@
       "from side"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bathroom",
       "bathtub",

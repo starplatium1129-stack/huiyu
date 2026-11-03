@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_barefoot_sofa",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 327,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "hatsune_miku_r18_barefoot_sofa",
     "title": "初音未来 · 赤足沙发",
@@ -53,7 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "teal_jacket_only",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

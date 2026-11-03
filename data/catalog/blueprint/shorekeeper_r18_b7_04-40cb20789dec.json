@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_04",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1662,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_04",
     "title": "守岸人 · 彼岸神殿石床上的终极回响自持 ·「千亿次计算中唯一的奇迹……就是爱上你」",
@@ -47,7 +47,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [
       "nude",
       "masturbation",

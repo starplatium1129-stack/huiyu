@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yvonne_arknights_r18_fashion_fitting",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 744,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "试衣间镜前半褪上衣回眸坏笑",
     "adult": true,
@@ -43,7 +43,7 @@
       "opaque mirror"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "fitting_room",
       "mirror",

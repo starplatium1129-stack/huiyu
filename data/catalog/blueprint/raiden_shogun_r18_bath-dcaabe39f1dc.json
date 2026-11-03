@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_bath",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "raiden_shogun_r18_bath",
     "title": "雷电将军 · 天守阁汤殿",
@@ -48,7 +48,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "bath_unclothed",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Her face tilts upward above the waterline as violet lantern reflections ripple below her jaw."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_ashiyu",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "raiden_shogun_r18_ashiyu",
     "title": "雷电将军 · 天守阁足汤",
@@ -52,7 +52,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "shogun_robes",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

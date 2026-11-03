@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_r18_nude_cleansing_chamber",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 772,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "administrator_arknights_r18_nude_cleansing_chamber",
     "characterId": "administrator_arknights",
@@ -42,7 +42,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@tsunako",

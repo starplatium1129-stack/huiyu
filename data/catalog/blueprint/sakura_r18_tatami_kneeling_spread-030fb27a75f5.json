@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_tatami_kneeling_spread",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "sakura_r18_tatami_kneeling_spread",
     "characterId": "matou_sakura",
@@ -52,7 +52,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "She sits on her heels and looks tearfully toward the offscreen viewer beneath the paper lantern."
   }
 }

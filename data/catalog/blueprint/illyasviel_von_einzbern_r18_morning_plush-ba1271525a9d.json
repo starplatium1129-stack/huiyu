@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_morning_plush",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 168,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_morning_plush",
     "title": "伊莉雅丝菲尔 · 晨光与玩偶",
@@ -50,7 +50,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "red_cotton_nightshirt",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "She rubs one eye while her other hand stays beneath the nightshirt hem."
   }
 }

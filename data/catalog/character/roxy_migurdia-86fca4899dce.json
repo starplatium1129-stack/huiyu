@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "roxy_migurdia",
-  "revision": 11,
+  "revision": 13,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-03T07:14:30.119407+00:00",
   "data": {
     "id": "roxy_migurdia",
     "profile": {
@@ -85,8 +85,6 @@
         "long_blue_hair",
         "twin_braids",
         "blue_eyes",
-        "normal_ears",
-        "round_ears",
         "mole_on_collarbone",
         "petite_female",
         "mushoku_tensei"
@@ -528,7 +526,7 @@
       ],
       "franchise": "Mushoku Tensei",
       "id": "roxy_migurdia",
-      "identityProse": "Roxy Migurdia from Mushoku Tensei, with pale-blue twin braids, blue eyes and a mole on her left collarbone.",
+      "identityProse": "Roxy Migurdia from Mushoku Tensei, with pale-blue twin braids, blue eyes, a petite build and a mole on her left collarbone.",
       "identityTokens": [
         "roxy_migurdia",
         "1girl",
@@ -538,7 +536,8 @@
         "twin braids",
         "blue eyes",
         "mole on left collarbone",
-        "mushoku tensei"
+        "mushoku tensei",
+        "petite female"
       ],
       "negativeTokens": [
         "bad anatomy",

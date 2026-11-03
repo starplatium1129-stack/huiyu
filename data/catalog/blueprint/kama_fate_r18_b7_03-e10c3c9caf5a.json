@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_r18_b7_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 315,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "kama_fate_r18_b7_03",
     "title": "迦摩 · 大奥金饰薄纱缠绕腰肢的受力事故 ·「这破金饰！……Master快帮我解开，不准趁机摸那里！」",
@@ -53,7 +53,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

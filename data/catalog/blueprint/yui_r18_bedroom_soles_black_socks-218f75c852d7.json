@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_r18_bedroom_soles_black_socks",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 352,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "yui_r18_bedroom_soles_black_socks",
     "characterId": "yuigahama_yui",
@@ -54,7 +54,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

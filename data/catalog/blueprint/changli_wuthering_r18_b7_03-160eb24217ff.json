@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1657,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_03",
     "title": "长离 · 弈棋书阁羽衣系带被棋笥勾住的更衣事故 ·「哎呀……羽衣被棋笥勾住了呢，还不快来帮本座整理」",
@@ -52,7 +52,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "red_white_feather_robe",

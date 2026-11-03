@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_01",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 301,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_01",
     "title": "美杜莎 Rider · 鲜血神殿王座黑色乳胶紧身衣主控跨坐 ·「Master……被魔物吞噬的觉悟，准备好了吗」",
@@ -50,7 +50,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "black_latex_bodysuit",

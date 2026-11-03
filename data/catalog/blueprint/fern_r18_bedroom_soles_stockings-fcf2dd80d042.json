@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_bedroom_soles_stockings",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "fern_r18_bedroom_soles_stockings",
     "characterId": "fern_frieren",
@@ -57,7 +57,7 @@
     "recommendedSize": "1536x1152",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

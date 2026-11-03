@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bath_foam_solo",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "kaoruko_nsfw_bath_foam_solo",
     "title": "和栗薰子 · 甜香泡泡浴池的水光湿身独奏 ·「把奶油洗掉了……可是身上的甜味还在」",
@@ -41,7 +41,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "nsfw_nude",

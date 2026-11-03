@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_r18_b7_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 302,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "medusa_rider_r18_b7_02",
     "title": "美杜莎 Rider · 希腊古神殿温水池",
@@ -50,7 +50,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

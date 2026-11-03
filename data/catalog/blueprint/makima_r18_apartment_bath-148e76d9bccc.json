@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_r18_apartment_bath",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 419,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "makima_r18_apartment_bath",
     "title": "玛奇玛 · 公寓浴缸",
@@ -45,7 +45,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "bath_unclothed",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "She beckons toward the off-frame viewer from the bath rim."
   }
 }

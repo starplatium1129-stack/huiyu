@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_lingerie_chamber",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 765,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_lingerie_chamber",
     "characterId": "zhuang_fangyi_arknights",
@@ -47,7 +47,7 @@
       "special_nsfw"
     ],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_elegant_boudoir",
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@rella",

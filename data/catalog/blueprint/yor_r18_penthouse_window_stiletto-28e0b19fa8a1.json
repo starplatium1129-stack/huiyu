@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_penthouse_window_stiletto",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:25:15.449332200+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "yor_r18_penthouse_window_stiletto",
     "characterId": "yor_forger",
@@ -22,7 +22,7 @@
     "recommendedEngine": "anima-miaomiao-v1.2",
     "adult": true,
     "adultEligibility": "adult",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw",
       "iconic",

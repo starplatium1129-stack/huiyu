@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_r18_b7_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "yae_miko_r18_b7_03",
     "title": "八重神子 · 神社更衣室朱红礼袍系带被狐尾缠死的事故 ·「这笨尾巴……小家伙，还不快来帮本宫司解开」",
@@ -51,7 +51,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [
       "breast slip"
     ],

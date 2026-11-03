@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "asada_shino/sfw_cafe_knit",
+  "revision": 3,
+  "sortOrder": 1940,
+  "createdAt": "2026-11-03T07:48:46.767541500+00:00",
+  "updatedAt": "2026-11-03T07:54:16.449523200+00:00",
+  "data": {
+    "characterId": "asada_shino",
+    "outfit": {
+      "id": "sfw_cafe_knit",
+      "name": "奶油白方领针织与雾玫瑰短开衫",
+      "tokens": [
+        "cream square-neck knit top",
+        "short sleeves",
+        "ribbed knit",
+        "dusty rose cropped cardigan",
+        "open cardigan",
+        "pearl buttons",
+        "charcoal high-waisted a-line skirt",
+        "knee-length skirt",
+        "narrow brown belt"
+      ],
+      "prose": "an opaque cream square-neck short-sleeved rib-knit top, an open dusty-rose cropped cardigan with small pearl buttons, and a charcoal high-waisted knee-length A-line skirt with a narrow brown belt",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

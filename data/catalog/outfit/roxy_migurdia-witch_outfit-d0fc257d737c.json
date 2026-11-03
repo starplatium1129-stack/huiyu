@@ -1,25 +1,22 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/witch_outfit",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 249,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-03T05:57:19.887748300+00:00",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "witch_outfit",
-      "name": "大魔法师星蓝双面羊绒斗篷与开衩礼裙",
-      "prose": "A navy sorceress robe and wide-brimmed pointed hat, with a layered tunic, waist corset and black thigh-high stockings.",
+      "name": "蓝白魔女标志装",
+      "prose": "A broad blue witch hat, white frilled blouse, blue skirt and thigh-high stockings.",
       "tokens": [
-        "witch_outfit",
-        "witch_hat",
-        "navy_robe",
-        "layered_dress",
-        "high_slit",
-        "corset",
-        "black_thighhighs",
-        "leather_boots"
+        "broad-brimmed blue witch hat",
+        "white blouse",
+        "frills",
+        "blue skirt",
+        "thighhighs"
       ],
       "characterId": "roxy_migurdia",
       "default": true,

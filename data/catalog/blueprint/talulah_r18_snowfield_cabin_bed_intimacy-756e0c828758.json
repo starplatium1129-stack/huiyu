@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "talulah_r18_snowfield_cabin_bed_intimacy",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 1937,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "talulah_r18_snowfield_cabin_bed_intimacy",
     "characterId": "talulah_arknights",
@@ -55,7 +55,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],

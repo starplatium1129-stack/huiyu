@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_study_midnight_nude",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 767,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:18:49.310596700+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_study_midnight_nude",
     "characterId": "zhuang_fangyi_arknights",
@@ -54,7 +54,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@tsunako",

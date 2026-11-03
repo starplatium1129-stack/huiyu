@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_r18_sofa_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1276,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "跨坐沙发靠垫，一手扶住靠垫，尾巴与腿分开。",
     "adult": true,
@@ -42,7 +42,7 @@
       "from below"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cowgirl",
       "straddling",

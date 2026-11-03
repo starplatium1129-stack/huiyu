@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_r18_chamber",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 435,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "rem_rezero_r18_chamber",
     "title": "雷姆 · 女仆的侍奉",
@@ -50,7 +50,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "maid_uniform",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "She looks toward the off-frame viewer with both hands over her heart."
   }
 }

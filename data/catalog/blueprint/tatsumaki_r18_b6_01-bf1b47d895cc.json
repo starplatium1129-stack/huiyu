@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_01",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1599,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_01",
     "title": "战栗的龙卷 · 英雄协会高层公寓念动力浮空主控跨坐 ·「秃头……不对，你！今晚要是敢说我像小孩子，就把你撕成碎片！」",
@@ -50,7 +50,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [
       "cowgirl position",
       "topless"

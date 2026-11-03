@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_r18_thigh_bandage",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 515,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "kisara_engage_kiss_r18_thigh_bandage",
     "title": "木更 · 绷带与月色",
@@ -48,7 +48,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
     "outfitId": "nsfw_nude",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

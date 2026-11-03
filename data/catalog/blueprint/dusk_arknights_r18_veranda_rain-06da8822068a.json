@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_r18_veranda_rain",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 574,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "独坐雨夜回廊，一手持墨碟、一手沿湿袍探向腿间，水墨游鱼环绕",
     "adult": true,
@@ -41,7 +41,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "veranda",
       "rain",

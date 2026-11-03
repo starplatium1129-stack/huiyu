@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_r18_bedroom_nightfall_fantasy",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 826,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "fiona_frost_r18_bedroom_nightfall_fantasy",
     "characterId": "fiona_frost",
@@ -52,7 +52,7 @@
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_tatami_room_unbuttoned_spread",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 831,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "旧水手服解扣，纤细身体发颤",
     "adult": true,
@@ -39,7 +39,7 @@
       "biting lip"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "tatami",
       "small_room",

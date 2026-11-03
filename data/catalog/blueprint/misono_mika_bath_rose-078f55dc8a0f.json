@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_bath_rose",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "靠池壁浸泡于花瓣浴",
     "adult": true,
@@ -43,7 +43,7 @@
       "wings on rim"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bath",
       "rose",

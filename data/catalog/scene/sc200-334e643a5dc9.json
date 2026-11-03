@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc200",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 195,
   "createdAt": null,
-  "updatedAt": "2026-10-30T16:14:33.891615500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "sc200",
     "title": "终结的誓言：纯白床单下的永恒契约（第200纪元）",
@@ -41,7 +41,7 @@
       "wide_angle_medium_shot",
       "depth_of_field"
     ],
-    "mature": true,
+    "mature": false,
     "location": "终焉温柔乡床榻",
     "weather": "初晴拂晓",
     "camera": "近景特写",
@@ -55,7 +55,7 @@
     "prompt": "adult, 1girl, solo, nene_r18, ayachi_nene, @rella, white hair, ahoge, pink ribbons, purple eyes, nude under translucent white silk sheet, lying on back on ornate canopy bed, sheer flowing white drapes, carved ivory headboard, scattered fresh white and pink rose petals on mattress, arms open welcoming viewer, happy tears glistening in eyes, radiant blush, gentle smile, french balcony doors with golden morning dawn sunlight streaming across bed, dust motes floating in sunbeam, face illuminated by warm morning sunlight, ethereal rim lighting, wide angle medium shot, depth of field",
     "negative": "clothes, stockings, flat white background, overexposed white void, featureless room",
     "storyJa": "【寧々・大人のAfter Story・旅の終わりと新しい朝】幾つもの困難を越えた先、二人だけの寝室に朝の光が差し込んでいた。寧々は真っ白な毛布にくるまり、銀色の髪を枕へ広げている。紫の瞳には幸せそうな涙が浮かび、アホ毛は小さなハートを描くように揺れていた。彼女はあなたへ両腕を伸ばし、決して解けない誓いを静かに口にする――「柊史……魔女の長い旅は、これでおしまいです。これから先の寧々の心も、人生も……ずっと、あなただけのものですよ。」",
-    "rating": "R18",
+    "rating": "R15",
     "animaCaption": "Lying on the petal-strewn canopy bed beneath a sheer silk sheet, she reaches out with open arms and joyful tears as golden dawn sunlight pours through the balcony doors to embrace the room.",
     "auditRevision": "careful-batch11-2026-08-27",
     "promptProse": "Lying on the petal-strewn canopy bed beneath a sheer silk sheet, she reaches out with open arms and joyful tears as golden dawn sunlight pours through the balcony doors to embrace the room."

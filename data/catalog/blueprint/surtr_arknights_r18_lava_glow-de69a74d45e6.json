@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_r18_lava_glow",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 525,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "赤身倚靠光滑黑石壁，熔岩火光勾勒曼妙身段",
     "adult": true,
@@ -38,7 +38,7 @@
       "rim light"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "ruins",
       "lava",

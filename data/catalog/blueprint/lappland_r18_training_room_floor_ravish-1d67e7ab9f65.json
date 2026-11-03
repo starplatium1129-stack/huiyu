@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_r18_training_room_floor_ravish",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 677,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "踩在长凳上风衣背心大敞露伤痕紧致胸腹，战术皮带勒大腿，一手抓胸另一手深层自抚娇喘狂笑",
     "adult": true,
@@ -43,7 +43,7 @@
       "metal wall"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "training_room",
       "bench",

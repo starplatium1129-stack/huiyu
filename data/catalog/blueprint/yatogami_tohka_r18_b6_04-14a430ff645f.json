@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_04",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T08:00:03.318398+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_04",
     "title": "夜刀神十香 · 精灵灵力逆流的床褥真情自持 ·「十香的世界……只要有士道一个人就足够了」",
@@ -51,7 +51,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

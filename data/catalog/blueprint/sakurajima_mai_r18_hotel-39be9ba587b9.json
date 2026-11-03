@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_hotel",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 45,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "sakurajima_mai_r18_hotel",
     "title": "樱岛麻衣 · 酒店私密·兔女郎的半解时刻",
@@ -47,7 +47,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "bunny_girl",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

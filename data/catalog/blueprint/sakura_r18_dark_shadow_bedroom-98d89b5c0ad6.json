@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_dark_shadow_bedroom",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 180,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "sakura_r18_dark_shadow_bedroom",
     "characterId": "matou_sakura",
@@ -55,7 +55,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "identityTokensOverride": [
       "matou_sakura",
       "1girl",

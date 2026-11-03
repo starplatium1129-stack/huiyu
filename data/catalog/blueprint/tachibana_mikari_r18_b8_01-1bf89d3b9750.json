@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_r18_b8_01",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1685,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "tachibana_mikari_r18_b8_01",
     "title": "橘美花莉 · 漫展后酒店更衣室Cos服主控跨坐 ·「奥村君……美花莉只当属于你的米莉艾拉哦♪」",
@@ -61,7 +61,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

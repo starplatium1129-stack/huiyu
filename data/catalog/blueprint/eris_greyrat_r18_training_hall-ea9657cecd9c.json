@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_training_hall",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 482,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "晨练后倚木柱解领立姿微嗔擦汗",
     "adult": true,
@@ -47,7 +47,7 @@
       "full body"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "dojo",
       "wooden_pillar",

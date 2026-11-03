@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_r18_b6_04",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "ubel_frieren_r18_b6_04",
     "title": "尤贝尔 · 迷宫毛毯上的狂气共鸣宣泄 ·「只要彻底理解了你……就能得到你的全部」",
@@ -49,7 +49,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nude_state",

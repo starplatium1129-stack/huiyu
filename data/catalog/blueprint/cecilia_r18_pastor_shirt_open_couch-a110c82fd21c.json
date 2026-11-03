@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_pastor_shirt_open_couch",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 844,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "牧师黑衬衫敞开，双腿并拢微颤",
     "adult": true,
@@ -44,7 +44,7 @@
       "medium shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "couch",
       "open_black_shirt",

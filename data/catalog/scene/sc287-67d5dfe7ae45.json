@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc287",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 282,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "sc287",
     "title": "深蓝夜晚的约定",
@@ -36,8 +36,8 @@
       "medium_shot",
       "burgundy_edging"
     ],
-    "mature": true,
-    "rating": "R18",
+    "mature": false,
+    "rating": "R15",
     "location": "高层酒店屋顶恒温无边泳池",
     "weather": "晴朗夏夜",
     "camera": "水中平视近景",

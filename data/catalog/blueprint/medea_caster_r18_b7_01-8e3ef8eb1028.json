@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_01",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 309,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "medea_caster_r18_b7_01",
     "title": "美狄亚 · 柳洞寺魔术工房紫袍主控跨坐 ·「宗一郎大人……背叛之魔女今晚只献身给您」",
@@ -52,7 +52,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

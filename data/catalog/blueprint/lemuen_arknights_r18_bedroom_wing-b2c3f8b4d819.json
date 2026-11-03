@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_bedroom_wing",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 564,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:31:33.001242800+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "端坐于窗前软椅，怀抱热牛奶杯，纯白光翼轻展于星夜，银发流泻，温柔浅笑注视观众",
     "adult": true,
@@ -59,7 +59,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bedroom",
       "window",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_r18_bed_sword_side",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 614,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "侧卧在大床上，手垂向床边的巨剑剑柄",
     "adult": true,
@@ -39,7 +39,7 @@
       "reaching"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cabin",
       "bed",

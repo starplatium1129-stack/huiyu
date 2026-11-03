@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_r18_hotel_after_live",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 958,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "明亮化妆镜前转椅上解开偶像礼服回眸微笑",
     "adult": true,
@@ -47,7 +47,7 @@
       "ring light"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "dressing_room",
       "vanity_mirror",

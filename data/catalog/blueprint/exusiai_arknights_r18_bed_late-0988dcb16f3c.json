@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_bed_late",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 634,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "斜靠在床头软枕间，双手抱枕，淡金光环如小夜灯微亮，红发微乱，柔情凝望观众",
     "adult": true,
@@ -57,7 +57,7 @@
       "medium shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bedroom",
       "cozy_bed",

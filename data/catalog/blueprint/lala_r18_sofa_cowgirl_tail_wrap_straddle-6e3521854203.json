@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lala_r18_sofa_cowgirl_tail_wrap_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1243,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "跨坐沙发靠垫，一手握尾巴，另一手留在身下",
     "adult": true,
@@ -47,7 +47,7 @@
       "warm_lighting"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cowgirl_position",
       "straddling",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_r18_b9_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1739,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "dorothy_nikke_r18_b9_03",
     "title": "桃乐丝 · 晚礼服背后羽翼铰链锁死的更衣事故 ·「指挥官！……羽翼支架卡在束腰上了，快帮我弄开！」",
@@ -53,7 +53,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

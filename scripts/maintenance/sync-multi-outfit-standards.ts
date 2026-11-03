@@ -127,8 +127,8 @@ const HEROINE_CHARACTERS = [
     displayName: "四季夏目",
     originalName: "Shiki Natsume",
     source: "YUZUSOFT《喫茶ステラと死神の蝶》",
-    identityProse: "Shiki Natsume, a cool and refined young woman with silky long straight black hair, amber golden eyes, a subtle distinct mole under her left eye, side hairclip",
-    identityTokens: ["shiki_natsume", "1girl", "solo", "black_hair", "long_hair", "amber_eyes", "mole_under_eye", "mole_under_left_eye", "hairclip", "side_hairclip"],
+    identityProse: "Shiki Natsume, a cool and refined young woman with silky long straight black hair, amber golden eyes, a single small mole beneath her right eye, side hairclip",
+    identityTokens: ["shiki_natsume", "1girl", "solo", "black_hair", "long_hair", "amber_eyes", "mole_under_eye", "hairclip", "side_hairclip"],
     outfits: [
       {
         id: "cafe_uniform",

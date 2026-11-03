@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_nsfw_headset_bond_riding",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "独自跨坐床褥，身体前倾，双手撑在自己的膝头",
     "adult": true,
@@ -43,7 +43,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "nsfw",
       "solo",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_r18_cabin_robe",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 532,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:25:15.449332200+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "坐在床边，持诊断平板检查手腕。",
     "adult": true,
@@ -42,7 +42,7 @@
       "closed door"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "private_cabin",
       "bed",

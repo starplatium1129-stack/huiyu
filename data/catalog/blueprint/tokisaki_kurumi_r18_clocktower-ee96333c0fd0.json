@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_r18_clocktower",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 77,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "tokisaki_kurumi_r18_clocktower",
     "title": "时崎狂三 · 刻刻帝的月夜",
@@ -50,7 +50,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
     "outfitId": "clock_corset",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Her fingertip rests at her lips before the golden gears."
   }
 }

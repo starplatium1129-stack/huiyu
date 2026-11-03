@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yoshino_r18_tatami_cowgirl_dog_ears_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1154,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "跨坐在近处同伴身上，双手按在对方胸前借力，犬耳轻颤",
     "adult": true,
@@ -43,7 +43,7 @@
       "warm lighting"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cowgirl_position",
       "straddling",

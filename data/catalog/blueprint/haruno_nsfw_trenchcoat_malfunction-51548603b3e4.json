@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_trenchcoat_malfunction",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 378,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "haruno_nsfw_trenchcoat_malfunction",
     "title": "雪之下阳乃 · 玄关风衣内真空的黑丝撕裂事故 ·「姐姐今晚……可是什么都没穿就来找你了哦」",
@@ -45,7 +45,7 @@
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "trenchcoat_stockings",

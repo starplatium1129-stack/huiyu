@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_r18_bunk_late",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 724,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "盘腿坐在床上，一手揉眼，身体靠向画面外同伴的肩侧，报告暂放腿边。",
     "adult": true,
@@ -41,7 +41,7 @@
       "reading lamp"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "quarters",
       "bed",

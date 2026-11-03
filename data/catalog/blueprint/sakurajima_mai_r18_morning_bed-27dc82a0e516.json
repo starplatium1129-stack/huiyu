@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_morning_bed",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-11-02T04:14:03.893976200+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "sakurajima_mai_r18_morning_bed",
     "title": "樱岛麻衣 · 清晨被窝的慵懒晨曦",
@@ -64,7 +64,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "white_sleep_shirt",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Reclining on the bed facing the viewer, her unbuttoned oversized white shirt highlights her delicate collarbone, cleavage, and bare legs in morning sun.",
     "coverageTags": [
       "iconic"

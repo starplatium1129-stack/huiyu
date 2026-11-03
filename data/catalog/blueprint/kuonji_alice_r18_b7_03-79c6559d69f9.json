@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_r18_b7_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1635,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "kuonji_alice_r18_b7_03",
     "title": "久远寺有珠 · 束胸衣系带被使魔绞紧的更衣事故 ·「罗宾！……叫你拿剪刀不是让你乱咬！」",
@@ -51,7 +51,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "black_laced_corset_dress",

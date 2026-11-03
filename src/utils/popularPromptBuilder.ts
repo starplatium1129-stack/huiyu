@@ -149,22 +149,6 @@ function identityWithoutOutfit(prose: string): string {
     .trim()
 }
 
-/** Keep one adult identity anchor without repeating the existing adult wording. */
-function adultIdentityProse(prose: string): string {
-  const identity = identityWithoutOutfit(prose)
-  // The authored prefix names the character and work; "Bunny Girl" is a title, not an age.
-  const separator = identity.indexOf(',')
-  const heading = separator < 0 ? identity : identity.slice(0, separator + 1)
-  const description = (separator < 0 ? '' : identity.slice(separator + 1))
-    .replace(/\b(?:young\s+)?girl\b/gi, 'adult woman')
-    .replace(/\bschoolgirl\b/gi, 'adult woman')
-    .replace(/\b(?:middle|junior high|high)[- ]school student\b/gi, 'adult alumna')
-    .replace(/\bstudent\b/gi, 'adult alumna')
-    .replace(/\bteen(?:age|aged)?\b/gi, 'adult')
-  const resolved = heading + description
-  return /\badult\b/i.test(resolved) ? resolved : `Adult ${resolved}`
-}
-
 const ADULT_IDENTITY_EXCLUDE_RE =
   /^(?:child|children|loli|underage|minor|young_girl|schoolgirl|student|teenager|middle_school_student|junior_high_student|high_school_student)$/
 
@@ -282,7 +266,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const subjectProse = !blueprint
     ? standaloneIdentityProse({ ...character, identityTokens: identitySource, identityProse })
     : adult
-      ? adultIdentityProse(engine === 'moss' ? proseWithoutOutfit(identityProse) : identityProse)
+      ? identityWithoutOutfit(engine === 'moss' ? proseWithoutOutfit(identityProse) : identityProse)
       : (outfitActive
           ? (overridden || engine === 'moss' ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
           : proseWithoutOutfit(identityProse))
@@ -342,7 +326,6 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const exactControls = [...new Set([
     ...(((adult && !adultOutfitOverride) || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
     ...exactIdentity,
-    ...(adult ? ['adult'] : []),
     ...nsfwTokens,
   ])]
   // Resolve shared content once. Model projections below choose tags or prose;

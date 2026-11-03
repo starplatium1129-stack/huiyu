@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_tatami_moonlight_wings_surrender",
-  "revision": 1,
+  "revision": 5,
   "sortOrder": 2356,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-11-03T08:00:03.318398+00:00",
   "data": {
     "id": "misuzu_tatami_moonlight_wings_surrender",
     "characterId": "kamio_misuzu",
@@ -34,8 +34,9 @@
     "negativeTokens": [],
     "animaCaption": "Misuzu bathed in silver moonlight on tatami, surrendered to radiant love.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

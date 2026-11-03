@@ -103,7 +103,7 @@
   --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
   --font-display:   -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
   /* 首页、章节、角色主名与短台词；长文和控件仍用 sans。 */
-  --font-serif:     "Songti SC", "STSong", "SimSun", "Noto Serif CJK SC", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
+  --font-serif:     "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "SimSun", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
   --font-serif-jp:  "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif CJK JP", var(--font-serif);
 
   /* ---- Font size scale (DESIGN.md §Typography 的运行时实现) ----
@@ -170,6 +170,7 @@
   --shadow-sm: 0 3px 10px rgba(5, 11, 18, 0.20);
   --shadow-md: 0 8px 22px rgba(5, 11, 18, 0.30);
   --shadow-lg: 0 16px 38px rgba(5, 11, 18, 0.42);
+  --shadow-card: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
   /* 玻璃面高光内衬 — 水晶亚克力双层高光折射 (顶部 1px 晶莹雪白，底部环境微阴影与紫夜漫射) */
   --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), 0 2px 8px -1px rgba(9, 14, 23, 0.24), 0 1px 3px 0 rgba(183, 132, 246, 0.04);
   --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), 0 8px 22px -3px rgba(7, 12, 20, 0.32), 0 2px 8px -1px rgba(183, 132, 246, 0.07);
@@ -593,7 +594,7 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
   border: 1px solid var(--border-soft);
   @apply tw:rounded-lg tw:p-s-5;
   backdrop-filter: none;
-  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  box-shadow: var(--shadow-card);
   transition: transform var(--motion-hover);
 }
 .card:hover { @apply tw:border-strong; }
@@ -610,12 +611,12 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
    direct  L3 主操作 (单点入口/角色/项目)   — 高密度,accent 渐变边 + 强阴影
    阶梯: shadow-sm → md → lg
 */
-.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-5; backdrop-filter: none; box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm); }
+.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-5; backdrop-filter: none; box-shadow: var(--shadow-card); }
 .card-create {
   @apply tw:relative tw:overflow-hidden;
   background:linear-gradient(145deg,var(--glass-highlight),transparent 34%),var(--bg-surface);
   border:1px solid var(--border-strong); @apply tw:rounded-lg tw:p-s-3;
-  backdrop-filter:none; box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  backdrop-filter:none; box-shadow: var(--shadow-card);
   transition:transform var(--motion-hover) var(--ease-out);
 }
 .card-create::before {
@@ -629,7 +630,7 @@ pre code { background: none; @apply tw:p-0 tw:text-primary; }
   background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
   border: 1px solid var(--accent);
   @apply tw:rounded-xl tw:p-s-5;
-  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  box-shadow: var(--shadow-card);
   transition: transform var(--motion-hover);
 }
 /* 战术切角：右上角 45° 斜切，档案终端质感（设计规范 §1.2） */

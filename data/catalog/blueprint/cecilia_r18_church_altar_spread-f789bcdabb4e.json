@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_church_altar_spread",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 842,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "修女长袍褪尽，虔诚又迷乱",
     "adult": true,
@@ -39,7 +39,7 @@
       "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cathedral_altar",
       "marble",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_bath_flowers",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 603,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "靠在浴缸里，指尖拨弄花瓣",
     "adult": true,
@@ -40,7 +40,7 @@
       "from above"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "bathroom",
       "bathtub",

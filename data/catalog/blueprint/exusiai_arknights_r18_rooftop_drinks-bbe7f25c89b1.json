@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_r18_rooftop_drinks",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 635,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "坐天台躺椅，一脚搭栏杆，一手开汽水罐，另一手留在衣料下。",
     "adult": true,
@@ -45,7 +45,7 @@
       "full body"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "rooftop",
       "lounge_chair",

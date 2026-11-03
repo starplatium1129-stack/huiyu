@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_fitz_unbuttoned_desk",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 468,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "半解白色执事衬衫坐在书桌沿，墨镜滑落鼻梁",
     "adult": true,
@@ -41,7 +41,7 @@
       "lamplight"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "study_room",
       "desk",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_r18_magical_girl_torn_dress",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 833,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "破碎战服半挂，无防备地跌坐",
     "adult": true,
@@ -42,7 +42,7 @@
       "smoke"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "ruins",
       "torn_clothes",

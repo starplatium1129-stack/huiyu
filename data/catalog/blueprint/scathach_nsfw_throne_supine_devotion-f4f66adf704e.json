@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_nsfw_throne_supine_devotion",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 250,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "scathach_nsfw_throne_supine_devotion",
     "title": "斯卡哈 · 影之国石殿·幽蓝魔火与足踝系带红宝石",
@@ -20,7 +20,7 @@
     "recommendedSize": "1536x1152",
     "adult": true,
     "adultEligibility": "adult",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw",
       "iconic",

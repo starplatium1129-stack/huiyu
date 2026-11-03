@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_r18_morning_inn",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "frieren_r18_morning_inn",
     "title": "芙莉莲 · 旅店晨光",
@@ -54,7 +54,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@hiten (hitenkei)",
     "outfitId": "ivory_sleep_gown",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Her free hand gathers the blanket at her waist as she sits up."
   }
 }

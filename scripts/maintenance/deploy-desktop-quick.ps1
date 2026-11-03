@@ -17,6 +17,7 @@
 #   -Cleanup       兼容旧调用；清理由资源清单自动控制
 #   -UseInstaller  跑已有安装包，不重新构建或封装
 #   -ResourcesOnly 只同步静态资源
+#   -ReferenceIds 同步指定角色的个人参考分片（逗号分隔）
 #   -NoRestart     结束后不启动桌面端
 param(
   [switch]$SyncLocalModels,
@@ -29,6 +30,7 @@ param(
   [switch]$NoRestart,
   [switch]$StartupRepair,
   [switch]$AdoptProjectCatalog,
+  [string]$ReferenceIds,
   # 内部使用：提权子进程完成安装后交由非提权父进程启动，避免跨桌面维护握手。
   [switch]$DeferRestart,
   # 内部使用：父进程已在 UAC 前完成检测并选定模式，子进程不再重复检测。
@@ -75,6 +77,32 @@ $gatewayDir = Join-Path $installDir 'gateway'
 $configRoot = Join-Path $env:APPDATA 'com.aics.studio'
 . (Join-Path $root 'scripts\lib\desktop-deploy-guard.ps1')
 . (Join-Path $root 'scripts\lib\desktop-deploy-output.ps1')
+$referenceIdList = @()
+if ($ReferenceIds) {
+  if ($ReferenceIds -cnotmatch '^[a-z0-9][a-z0-9_]*(,[a-z0-9][a-z0-9_]*)*$') { throw 'ReferenceIds 必须是逗号分隔的小写角色 ID。' }
+  if ($StartupRepair) { throw '-ReferenceIds 不能与 -StartupRepair 同时使用。' }
+  $referenceIdList = @($ReferenceIds.Split(',') | Select-Object -Unique)
+}
+function Assert-ReferenceSyncAvailable {
+  $workspaceFile = Join-Path $configRoot 'ai-workspace.json'
+  $workspaceRoot = if (Test-Path -LiteralPath $workspaceFile -PathType Leaf) {
+    (Get-Content -LiteralPath $workspaceFile -Raw -Encoding UTF8 | ConvertFrom-Json).root
+  } else { $null }
+  if (-not $workspaceRoot) { $workspaceRoot = Join-Path $configRoot 'AI' }
+  $referenceRoots = if ($env:AICS_CHARACTER_REF_ROOT) {
+    $explicit = $env:AICS_CHARACTER_REF_ROOT
+    if (-not [IO.Path]::IsPathRooted($explicit)) { $explicit = Join-Path $gatewayDir $explicit }
+    if (-not (Test-Path -LiteralPath $explicit -PathType Container)) { throw 'REFERENCE_ROOT_INVALID: 指定的参考素材目录不存在。' }
+    @($explicit)
+  } else {
+    @((Join-Path $workspaceRoot 'CharacterReferences'), (Join-Path $installDir 'AI\CharacterReferences'), (Join-Path $gatewayDir 'assets\character-references'))
+  }
+  $activeReferenceRoot = $referenceRoots | Where-Object { Test-Path -LiteralPath $_ -PathType Container } | Select-Object -First 1
+  if ($activeReferenceRoot -and (Test-Path -LiteralPath (Join-Path $activeReferenceRoot 'reference-release.json') -PathType Leaf)) {
+    throw 'REFERENCE_RELEASE_MANAGED: 当前参考素材使用受保护的发布版本，请通过参考库发布流程同步，未改写个人分片。'
+  }
+}
+if ($referenceIdList.Count) { Assert-ReferenceSyncAvailable }
 $principal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 $isElevated = $principal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 function Start-DesktopClientAndWait {
@@ -196,7 +224,7 @@ if (-not ($UseInstaller -or $ResourcesOnly -or $StartupRepair -or $SkipBuild -or
       'current' {
         $missingLedger = (Test-Path -LiteralPath (Join-Path $gatewayDir 'bundled-resource-inventory.json')) -and
           -not (Test-Path -LiteralPath (Join-Path $installDir '.huiyu-installed-resources.json'))
-        if ($missingLedger -or $SyncLocalModels -or $AdoptProjectCatalog) {
+        if ($missingLedger -or $SyncLocalModels -or $AdoptProjectCatalog -or $referenceIdList.Count) {
           Write-Host '[desktop:auto] 程序已是最新；改为资源同步，执行指定的维护操作。' -ForegroundColor Cyan
           $ResourcesOnly = $true
           $SkipBuild = $true
@@ -294,6 +322,7 @@ if (-not $isElevated) {
   if ($StartupRepair) { $argList += '-StartupRepair' }
   if ($AdoptProjectCatalog) { $argList += '-AdoptProjectCatalog' }
   if ($SyncLocalModels) { $argList += '-SyncLocalModels' }
+  if ($ReferenceIds) { $argList += @('-ReferenceIds', $ReferenceIds) }
   if ($DeploymentPlanApplied) { $argList += '-DeploymentPlanApplied' }
   # The elevated process must not launch the desktop client: its window station
   # may differ from the interactive one, making the maintenance handshake fail.
@@ -497,6 +526,23 @@ if (-not $StartupRepair) {
   } finally { $ErrorActionPreference = $previousPreference }
   if ($catalogExitCode -ne 0) { throw '内容库更新未完成；请检查上述原始错误及备份，不能仅凭素材安装成功判断人物已更新。' }
   Write-DesktopDuration '内容快照导入与核对'
+  if ($referenceIdList.Count) {
+    Assert-ReferenceSyncAvailable
+    $referenceSource = Resolve-DesktopChildPath -Root $root -Relative ('runtime\desktop-reference-sync\' + [Guid]::NewGuid().ToString('N'))
+    $referenceShards = Join-Path $referenceSource 'references'
+    New-Item -ItemType Directory -Path $referenceShards -Force | Out-Null
+    $manifestPath = Resolve-DesktopChildPath -Root $gatewayDir -Relative 'data\references\manifest.json'
+    $referenceManifest = Get-Content -LiteralPath $manifestPath -Raw -Encoding UTF8 | ConvertFrom-Json
+    foreach ($id in $referenceIdList) {
+      if ($id -cnotin $referenceManifest.characterIds) { throw "REFERENCE_ID_UNKNOWN: 安装资料中没有角色 $id。" }
+      $source = Resolve-DesktopChildPath -Root $gatewayDir -Relative "data\references\$id.json"
+      Copy-Item -LiteralPath $source -Destination (Join-Path $referenceShards "$id.json")
+    }
+    $contentData = Join-Path $configRoot 'gateway\content\data'
+    & node (Join-Path $root 'scripts\maintenance\sync-desktop-content.js') "--source=$referenceSource" "--content-root=$contentData" --apply
+    if ($LASTEXITCODE -ne 0) { throw '个人参考分片同步未完成；请检查上述错误及备份。' }
+    Write-DesktopDuration '个人参考分片同步'
+  }
 }
 Write-Host '[5/6] Rust EXE、宿主和两份 native DLL 与候选哈希一致；不冒充模型验收' -ForegroundColor DarkGray
 if ($StartupRepair) {

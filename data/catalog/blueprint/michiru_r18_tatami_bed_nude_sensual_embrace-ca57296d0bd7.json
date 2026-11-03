@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_r18_tatami_bed_nude_sensual_embrace",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 1914,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "michiru_r18_tatami_bed_nude_sensual_embrace",
     "characterId": "matsushima_michiru",
@@ -52,7 +52,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],

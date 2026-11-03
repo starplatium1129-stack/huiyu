@@ -6,7 +6,8 @@ import {
   sceneRating, sceneSupportsCharacter, sceneTemplateText, tokenize, type ModelProfile,
 } from './promptPolicy.ts'
 import { sceneComposition, sceneLighting, sceneShot, sceneColorMood } from './sceneInference.ts'
-import { createPromptPlan, renderPromptPlan } from './promptCompiler.ts'
+import { createPromptPlan, plainEnglish, renderPromptPlan } from './promptCompiler.ts'
+import { tagKey } from './animaPromptOrder.ts'
 import { isManualDirectorValue } from './promptDirector.ts'
 import { studioDualSubject } from './studioDualSubject.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
@@ -62,8 +63,8 @@ export function studioPromptProfile(
 }
 
 export function studioSubjectProse(character: string): string {
-  if (character === 'nene') return 'Ayachi Nene is the only prominent character, a young adult woman with white hair, purple eyes, an ahoge, and pink hair ribbons'
-  if (character === 'natsume') return 'Shiki Natsume is the only prominent character, a young adult woman with black hair, golden-yellow eyes, two red hairclips, and a small mole beneath one eye'
+  if (character === 'nene') return 'Ayachi Nene is the only prominent character, a woman with white hair, purple eyes, an ahoge, and pink hair ribbons'
+  if (character === 'natsume') return 'Shiki Natsume is the only prominent character, a woman with black hair, golden-yellow eyes, two red hairclips, and a small mole beneath one eye'
   return ''
 }
 
@@ -89,8 +90,21 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
   const template = sceneTemplateText(scene, { char: character, manualTags: new Set(manual), shot: selections.shot, engine, profile })
   const subject = character === 'triad' && (engine === 'krea2' || engine === 'moss')
     ? studioDualSubject(template) : { scenePrompt: template, subjectProse: studioSubjectProse(character) }
+  const identity = options.identity ?? CHAR_PROMPT[character] ?? ''
+  const identityTokens = scene?.identityTokensOverride?.length ? scene.identityTokensOverride : tokenize(identity)
+  let visualDescription = options.visualDescription
+  if (engine === 'anima' && character === 'natsume' && identityTokens.some(token => tagKey(token) === 'mole under eye')) {
+    const moleDirection = 'She has exactly one small mole beneath her right eye.'
+    const authoredVisual = plainEnglish(visualDescription)
+    const hasDirection = [authoredVisual, scene?.animaCaption || ''].some(text =>
+      text.toLowerCase().includes(moleDirection.slice(0, -1).toLowerCase()))
+    if (!hasDirection) {
+      const visualSentence = authoredVisual ? `${authoredVisual.replace(/[.!?,;:\s]+$/, '')}.` : ''
+      visualDescription = [visualSentence, moleDirection].filter(Boolean).join(' ')
+    }
+  }
   const plan = createPromptPlan({
-    profile, identity: options.identity ?? CHAR_PROMPT[character] ?? '',
+    profile, identity,
     ...STUDIO_PROMPT_SUBJECTS[character], ...subject,
     controls: options.controls ?? characterControlTokens(scene, character, activeLoras),
     artists: [...(options.artistTags || [])], artistProse: options.artistProse,
@@ -101,7 +115,7 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
     manual, emotion: [...(options.emotion || [])],
     palette: options.palette ? [...options.palette] : tokenize(COLOR_MOODS.find(mood => mood.id === sceneColorMood(scene))?.prompt || ''),
     negative: scene?.negative || '', rating: profileRatingTag(profile, scene) || sceneRating(scene).toLowerCase(),
-    visualDescription: options.visualDescription, scene,
+    visualDescription, scene,
   })
   if (engine === 'moss') {
     const rendered = renderMossDrawingPrompt(plan, options.visualDescription || '', '')

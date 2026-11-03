@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_04",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1708,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "vivy_r18_b9_04",
     "title": "Vivy · 百年使命终结后床单上的灵魂觉醒独奏 ·「这就是人类所说的……用歌声爱上一个人的心跳吗」",
@@ -46,7 +46,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [
       "nude",
       "masturbation",

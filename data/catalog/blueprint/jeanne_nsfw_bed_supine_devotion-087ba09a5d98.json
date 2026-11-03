@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_nsfw_bed_supine_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 239,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "jeanne_nsfw_bed_supine_devotion",
     "title": "圣女贞德 · 纯白花嫁床褥与开档战袍柔情仰卧·「今夜起，我的身体与灵魂都归属于你」",
@@ -54,7 +54,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "sfw_white_bridal",

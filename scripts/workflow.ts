@@ -399,10 +399,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'deploy:desktop': {
     desc: '自动判断无需更新、资源同步或升级，默认静默安装并重启',
     cmd: ['deploy-desktop.bat'],
-    docs: 'docs/desktop-deployment.md',
+    docs: 'docs/desktop-deployment.md', opts: '[-ReferenceIds 角色ID,角色ID]；其他参数见桌面部署指南',
     run: {
       nature: ['writes-source', 'writes-product', 'writes-release', 'delete', 'service'], machine: ['windows'],
-      switches: { '-ForceBuild': ['writes-product', 'writes-release'], '-SkipBuild': ['writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-ResourcesOnly': ['writes-product', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'] }, resume: 'idempotent',
+      switches: { '-ForceBuild': ['writes-product', 'writes-release'], '-SkipBuild': ['writes-release', 'delete', 'service'], '-Cleanup': ['delete'], '-UseInstaller': ['writes-release', 'delete', 'service'], '-ResourcesOnly': ['writes-product', 'delete', 'service'], '-QuietInstall': ['writes-release'], '-NoRestart': ['writes-release'], '-StartupRepair': ['writes-release', 'service'], '-ReferenceIds': ['writes-product'] }, resume: 'idempotent',
       evidence: 'deploy-desktop.bat; scripts/maintenance/deploy-desktop-quick.ps1; scripts/lib/workflow-runner.ts',
       unknown: [],
       notes: [
@@ -410,6 +410,7 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
         '首次安装/宿主缺失时自动查找当前版本发行完整包及同名部署清单；缺失则提示，不自动下载或将快速构建作发行包。带值路径参数只通过 bat 传入。',
         '自动模式默认静默安装并清理登记的废弃资源，UAC 由用户操作；-ForceBuild、-SkipBuild、-UseInstaller 和 -ResourcesOnly 仅供覆盖自动判断。',
         '资源同步要求 EXE/DLL 与安装版一致。保留构建绑定、受控退出、安装后校验、内容快照合并及启动确认；不覆盖个人 SQLite；-NoRestart 保持退出，-StartupRepair 仅修复文档、图标和快捷方式。',
+        '-ReferenceIds 仅同步指定角色的参考分片，覆盖前备份；受保护的参考发布版本须按发布流程维护。',
       ],
     },
   },

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazuki_r18_futon_cowgirl_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1177,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "kazuki_r18_futon_cowgirl_straddle",
     "title": "风见一姬 · 纯白棉被跨坐骑乘与娇羞起伏",
@@ -53,7 +53,7 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "kreaStyleHint": "r18_sensual_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwTokens": [],

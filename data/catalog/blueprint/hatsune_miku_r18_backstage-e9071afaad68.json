@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_backstage",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 321,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "hatsune_miku_r18_backstage",
     "title": "初音未来 · 演唱会后台",
@@ -53,7 +53,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "backstage_zip_top",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "One hand holds her unzipped stage top; the other catches the viewer's collar."
   }
 }

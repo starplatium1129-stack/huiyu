@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_r18_b8_01",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "makinohara_shouko_r18_b8_01",
     "title": "牧之原翔子 · 七里滨海景房白裙海风柔情 ·「咲太君……大人的翔子小姐，今天只属于你」",
@@ -50,7 +50,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "white_strap_dress",

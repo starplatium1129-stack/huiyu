@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_canopy_bed_crimson_curtains_straddle_domination",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 2361,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-03T08:00:03.318398+00:00",
   "data": {
     "id": "renge_canopy_bed_crimson_curtains_straddle_domination",
     "characterId": "renge_mangekyou",
@@ -36,8 +36,9 @@
     "negativeTokens": [],
     "animaCaption": "Renge straddling her lover amidst crimson canopy drapes, consumed by fierce passion.",
     "isNsfw": true,
-    "rating": "R18",
-    "mature": true,
-    "adult": true
+    "rating": "R15",
+    "mature": false,
+    "adult": true,
+    "sampleRating": "R15"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_hotel_window",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 502,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "靠在酒店窗座，一条腿沿着玻璃伸展，一手撑稳坐垫。",
     "adult": true,
@@ -40,7 +40,7 @@
       "medium shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "hotel_room",
       "floor_to_ceiling_window",

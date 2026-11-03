@@ -17,6 +17,7 @@
 | **日常程序更新** | `.\deploy-desktop.bat` | 检查源码、构建及安装身份，选择复用升级包、重新封装或快速重编；默认静默安装 |
 | **首次安装 / 完整修复** | `.\deploy-desktop.bat -UseInstaller -InstallerPath "<发行完整包路径>"` | 显式选择 full 完整包，保留同名 `.deployment.json` |
 | **仅同步静态资源** | `.\deploy-desktop.bat -ResourcesOnly` | 要求已安装 EXE/DLL 与构建字节一致；已有匹配构建时可加 `-SkipBuild` |
+| **同时同步个人参考分片** | `.\deploy-desktop.bat -ResourcesOnly -ReferenceIds natsume,nene` | 仅同步指定角色的参考分片，覆盖前保留备份；受保护的参考发布版本需走发布流程 |
 | **复用已有升级包** | `.\deploy-desktop.bat -UseInstaller` | 跳过构建与封装，直接安装当前版本已绑定的升级包 |
 | **部署后不自动重启** | `.\deploy-desktop.bat -NoRestart` | 安装完成后保持客户端关闭状态 |
 | **修复启动资源和缓存** | `.\deploy-desktop.bat -StartupRepair` | 核对并修复启动资源、快捷方式，清理 WebView 缓存；日常部署保留缓存 |
@@ -46,7 +47,7 @@
 - **`data/catalog/`** 是 Git 跟踪的项目快照，用于生成发行基线与升级同步源。
 - **自动合并机制**：运行 `deploy-desktop.bat` 时，会在安装后、客户端启动前，读取安装目录中的快照，调用原生接口以 `--preserve-local` 模式增量合并到用户的 `catalog.sqlite` 中，并在 `gateway/content-update-backups/` 保留安全备份。**既有数据库不会被覆盖，用户自定义数据与修改完整保留**。
 - 用户明确要求以项目快照替换当前内容库时，`-AdoptProjectCatalog` 会先生成并核对新库，将原 SQLite、历史和定稿保护文件保留在 `content-update-backups/`，再切换内容库及其保护基线；作品册、设置和内容目录中的其他文件不参与替换。普通部署仍使用保留本地修改的合并策略。
-- 参考索引、标签等仍是文件维护域，不属于 SQLite 记录。它们的来源和目标与工作库不同，部署后应按实际目录核对；旧的 `desktop:content-sync` 工具不会更新 `catalog.sqlite`，也不是本项目的桌面部署入口。
+- 参考索引、标签等仍是文件维护域，不属于 SQLite 记录。指定 `-ReferenceIds` 时，部署从已核验的安装资源中复制所选参考分片到个人目录，并先备份原文件；不覆盖其他个人分片。参考素材存在受保护发布版本时拒绝此操作，需使用参考库发布流程。旧的 `desktop:content-sync` 工具不会更新 `catalog.sqlite`，也不是本项目的桌面部署入口。
 
 ---
 

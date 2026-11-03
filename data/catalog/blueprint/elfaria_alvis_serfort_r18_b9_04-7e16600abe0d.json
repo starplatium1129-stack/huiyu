@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_r18_b9_04",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1698,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_r18_b9_04",
     "title": "艾尔菲利亚 · 塔顶羽绒大床上的纯白融化独奏 ·「快点来到我的身边吧……把这千年的孤独全部打破」",
@@ -52,7 +52,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",

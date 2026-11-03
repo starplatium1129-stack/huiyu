@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_r18_apartment_bed_surrender",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1881,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "chizuru_r18_apartment_bed_surrender",
     "characterId": "mizuhara_chizuru",
@@ -12,7 +12,7 @@
     "category": "私密情欲",
     "outfitId": "apartment_cozy_sweatshirt",
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@hisasi",
     "description": "深夜合租公寓私密卧室内，宽松的卫衣被推至胸上，露出雪白饱满的柔软双峰与粉嫩乳尖。千鹤侧躺在柔软的床垫上，修长笔直的黑丝长腿微曲分开，眼眶泛红噙着动情泪水——「别用租借女友的眼神看着我……现在的我……只是属于你的千鹤……」",

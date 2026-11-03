@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_r18_sword_king_dawn",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 480,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "旅店木桌边解衣立姿回眸娇喘",
     "adult": true,
@@ -46,7 +46,7 @@
       "full body"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "inn",
       "wooden_table",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_inn_bed_spread_pout",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 120,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "fern_r18_inn_bed_spread_pout",
     "characterId": "fern_frieren",
@@ -58,7 +58,7 @@
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "bed, nightgown, cleavage, voluptuous, pouting, blushing, soft lighting",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "She turns aside with her arms folded beneath her chest."
   }
 }

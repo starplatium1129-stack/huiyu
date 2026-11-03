@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_r18_pantyhose",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 51,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "sakurajima_mai_r18_pantyhose",
     "title": "樱岛麻衣 · 黑丝微褪·足尖的大透视",
@@ -52,7 +52,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@kousaki rui",
     "outfitId": "white_blouse_black_tights",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

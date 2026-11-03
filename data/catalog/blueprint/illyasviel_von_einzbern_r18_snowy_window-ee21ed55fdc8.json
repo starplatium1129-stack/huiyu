@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_snowy_window",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_snowy_window",
     "title": "伊莉雅丝菲尔 · 雪夜窗边",
@@ -48,7 +48,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "cozy_wool_blanket",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "One hand rests on the glass while the other gathers the blanket."
   }
 }

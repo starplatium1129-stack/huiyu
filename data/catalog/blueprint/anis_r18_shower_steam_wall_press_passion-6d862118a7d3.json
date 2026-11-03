@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_r18_shower_steam_wall_press_passion",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1902,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "anis_r18_shower_steam_wall_press_passion",
     "characterId": "anis_nikke",
@@ -54,7 +54,7 @@
     "negativeTokens": [],
     "coverageTags": [],
     "adult": true,
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
     "nsfwTokens": [],

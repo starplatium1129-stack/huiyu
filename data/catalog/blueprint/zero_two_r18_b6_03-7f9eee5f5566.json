@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_03",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1585,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "zero_two_r18_b6_03",
     "title": "02 · 种植园军装制服后拉链卡死事故 ·「达令快点来帮忙！……不然这件烦人的制服就要被我撕碎了！」",
@@ -55,7 +55,7 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "nsfwTokens": [],
     "nsfwProse": "",
     "outfitId": "sfw_uniform",

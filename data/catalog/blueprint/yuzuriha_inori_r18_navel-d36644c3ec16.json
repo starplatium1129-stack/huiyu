@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_r18_navel",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 337,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "yuzuriha_inori_r18_navel",
     "title": "楪祈 · 晨光中的虚空脐环",
@@ -51,7 +51,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@anmi",
     "outfitId": "cropped_sleep_top",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "coverageTags": [
       "special_nsfw"
     ],

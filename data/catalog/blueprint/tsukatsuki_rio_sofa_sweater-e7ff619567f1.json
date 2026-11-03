@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_sofa_sweater",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 891,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "半倚沙发高领毛衣半褪",
     "adult": true,
@@ -42,7 +42,7 @@
       "medium shot"
     ],
     "recommendedSize": "1536x1152",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "lounge",
       "sofa",

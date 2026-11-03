@@ -3,6 +3,18 @@ import type { ArtistStyleOption } from './artistStyles.ts'
 export const FEATURE_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze([
   // ── Anima 画师标签 ─────────────────────────────────────────────
   {
+    id: 'oouso',
+    name: 'Oouso',
+    cnName: '大嘘',
+    waiTag: 'oouso',
+    animaTag: '@oouso',
+    description: '人物插画与漫画，擅长腿部、袜子与表情细节',
+    masterpiece: '原创《不想去上班的 OL 酱》系列、《东方Project》同人插画',
+    category: 'pure',
+    verification: 'tag',
+    keywords: ['@oouso', '大嘘', '嘘つき屋', 'usotsukiya', 'u_s_o', 'ol酱', '腿部', '丝袜', '东方'],
+  },
+  {
     id: 'dairi',
     name: 'Dairi',
     waiTag: 'dairi',

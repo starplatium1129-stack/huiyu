@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_bathroom_mirror_steam",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 431,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "reze_r18_bathroom_mirror_steam",
     "title": "蕾塞 · 浴室镜前",
@@ -52,7 +52,7 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "One hand draws the heart on the misted mirror while the other gathers her wet hair."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_r18_tatami_cowgirl_wings_flutter",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1221,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "独自跨坐软垫，一手扶翼根，另一手留在腿间。",
     "adult": true,
@@ -46,7 +46,7 @@
       "from below"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "cowgirl",
       "straddling",

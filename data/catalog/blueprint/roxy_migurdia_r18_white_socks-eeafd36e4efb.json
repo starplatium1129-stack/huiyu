@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_white_socks",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 462,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
-    "action": "反坐高木椅，一只脚跟抬到椅面，手指卷住袜口，身体轻靠椅背",
+    "action": "坐在椅子上，一只脚朝观者伸出，另一只脚自然落在椅前",
     "adult": true,
     "adultArtistHint": "@tiv",
     "animaStyleHint": "r18_elegant_boudoir",
-    "camera": "intimate medium shot, foot focus",
+    "camera": "pov, foot focus, foreshortening",
     "category": "成人",
     "characterId": "roxy_migurdia",
     "coverageTags": [
       "special_nsfw"
     ],
-    "description": "昏暗书房里，成年洛琪希仅穿纯白过膝袜反坐在高木椅上，一只脚跟抬到椅面，手指卷住袜口，身体轻靠椅背。油灯照着她低头羞赧的神情——「为什么特意让我换上这双白色长袜呢？……要是你真的喜欢看的话，随你怎么看都可以哦。」",
+    "description": "昏暗书房里，成年洛琪希仅穿纯白过膝袜坐在木椅上，将一只脚朝你伸过来，另一只脚自然落在椅前。油灯照着她略带羞意的神情——「为什么特意让我换上这双白色长袜呢？……要是你真的喜欢看的话，随你怎么看都可以哦。」",
     "id": "roxy_migurdia_r18_white_socks",
     "kreaStyleHint": "",
     "lighting": "warm oil lamp",
@@ -26,23 +26,23 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "white_thighhighs_only",
-    "promptProse": "Adult Roxy sits backward on the chair with one heel raised onto the seat, rolling down the stocking welt while resting against the backrest. Her raised foot and the stocking welt remain the focus of the frame.",
+    "promptProse": "Seen from the viewer's perspective, adult Roxy sits in a chair and extends one white-stockinged foot toward the camera. Her other foot rests on the floor beside the chair, while warm oil-lamp light fills the study.",
     "promptTokens": [
       "topless",
       "bottomless",
       "white thighhighs",
-      "sitting backwards",
-      "stocking pull",
       "chair",
       "study",
       "oil lamp",
-      "heel on seat",
-      "leaning on backrest",
       "foot focus",
-      "medium shot"
+      "sitting",
+      "extended leg",
+      "foreshortening",
+      "pov",
+      "looking at viewer"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "wooden_study",
       "desk",
@@ -54,6 +54,6 @@
     ],
     "timeOfDay": "夜晚",
     "title": "洛琪希 · 白丝与油灯",
-    "animaCaption": "One heel rests on the chair seat as her fingers roll down the stocking welt against the backrest."
+    "animaCaption": "Seated in the chair, she extends one white-stockinged foot toward the viewer, close to the camera. Her other foot rests on the floor beside the chair."
   }
 }

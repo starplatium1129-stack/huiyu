@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_r18_apartment_blue",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 969,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "坐在窗边弯起一腿，一手伸向背后拉链，另一手留在裙内",
     "adult": true,
@@ -39,7 +39,7 @@
       "full body"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "window",
       "sheer_curtains",

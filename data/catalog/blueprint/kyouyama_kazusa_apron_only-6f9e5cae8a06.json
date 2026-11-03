@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_apron_only",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 865,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "action": "只穿围裙慌乱遮掩",
     "adult": true,
@@ -41,7 +41,7 @@
       "warm lamp"
     ],
     "recommendedSize": "1152x1536",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "sceneTags": [
       "trinity",
       "locker_room",

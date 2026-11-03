@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_room",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 341,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_room",
     "title": "雪之下雪乃 · 冰山融化的和室",
@@ -55,7 +55,7 @@
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "relax_yukata",
-    "sampleRating": "R18",
+    "sampleRating": "R15",
     "animaCaption": "Both hands gather the loosened lapels above the tatami."
   }
 }
