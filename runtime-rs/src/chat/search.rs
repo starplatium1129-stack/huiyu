@@ -1,6 +1,7 @@
 use super::{Error, Result, persona};
 use serde_json::{Value, json};
 use std::{
+    collections::HashSet,
     sync::{Arc, OnceLock},
     time::Duration,
 };
@@ -42,18 +43,7 @@ impl WebSearch {
         let shared = self.searcher.clone();
         let init = tokio::task::spawn_blocking(move || {
             shared
-                .get_or_init(|| {
-                    let mut settings = rustxng::Settings::defaults();
-                    // A chat turn uses a small set of keyless sources instead of fanning out to every engine.
-                    settings.engines.retain(|engine| {
-                        matches!(
-                            engine.name.as_str(),
-                            "duckduckgo" | "bing" | "brave" | "mwmbl" | "wikipedia" | "sogou"
-                        )
-                    });
-                    settings.outgoing.retries = 0;
-                    rustxng::Searcher::new(settings).map(Arc::new)
-                })
+                .get_or_init(|| rustxng::Searcher::new(rustxng::Settings::defaults()).map(Arc::new))
                 .clone()
         });
         let searcher = tokio::select! {
@@ -63,10 +53,7 @@ impl WebSearch {
         .map_err(|_| unavailable("联网检索初始化失败，请重启后重试。"))?;
 
         let parsed = rustxng::Query::parse(query, &searcher.registry, &[]);
-        let mut request = rustxng::SearchRequest::new(parsed);
-        request.max_results = Some(6);
-        request.timeout_limit = Some(15.0);
-        request.include_raw_content = false;
+        let request = rustxng::SearchRequest::new(parsed);
         let response = tokio::select! {
             _ = cancel.cancelled() => return Err(aborted()),
             value = tokio::time::timeout(Duration::from_secs(25), searcher.search(request)) =>
@@ -81,20 +68,18 @@ impl WebSearch {
             ));
         }
         let had_results = !response.results.is_empty();
-        let mut seen = Vec::new();
+        let mut seen = HashSet::new();
         let results: Vec<_> = response
             .results
             .into_iter()
             .filter_map(|item| {
                 let url = result_url(&item.url)?;
-                let title = text(&item.title, 200);
-                if title.is_empty() || seen.contains(&url) {
+                let title = text(&item.title);
+                if title.is_empty() || !seen.insert(url.clone()) {
                     return None;
                 }
-                seen.push(url.clone());
-                Some(json!({"title":title,"url":url,"snippet":text(&item.content,600)}))
+                Some(json!({"title":title,"url":url,"snippet":text(&item.content)}))
             })
-            .take(6)
             .collect();
         if had_results && results.is_empty() {
             return Err(unavailable("搜索未返回可用的网页链接。"));
@@ -118,7 +103,7 @@ fn result_url(raw: &str) -> Option<String> {
     Some(url.into())
 }
 
-fn text(raw: &str, limit: usize) -> String {
+fn text(raw: &str) -> String {
     let mut words = raw.split_whitespace();
     let Some(first) = words.next() else {
         return String::new();
@@ -126,7 +111,6 @@ fn text(raw: &str, limit: usize) -> String {
     first
         .chars()
         .chain(words.flat_map(|word| std::iter::once(' ').chain(word.chars())))
-        .take(limit)
         .collect()
 }
 
