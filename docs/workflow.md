@@ -41,6 +41,7 @@
 | 只读严格检查 TypeScript | `npm run wf -- check:typescript`（服务、网关、工具与独立浏览器脚本） |
 | 检查本机桌面打包能力 | `npm run wf -- desktop:doctor --json`（只检测，不安装） |
 | 桌面部署 | `deploy-desktop.bat`；纯资源及首次安装／修复的参数见[部署指南](desktop-deployment.md) |
+| 安装／卸载界面预览 | `npm run wf -- installer:modern --preview --capture`；加 `--uninstall` 查看卸载，状态与主题见[安装器指南](guides/desktop/game-installer.md)；不会安装或卸载 |
 
 所有执行固定在项目根目录。Node/npm 参数保留空格，npm 自动补转发分隔符。复合步骤失败即停止；reference:full 由专用候选入口处理公共参数和人工审核待验状态。只读审计覆盖注册文件、npm 入口、文档存在性、复合依赖循环和 run 元数据合法性，不代表模型、账户、外部服务或桌面安装已经验收。
 

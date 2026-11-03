@@ -11,6 +11,8 @@ using Microsoft.Win32;
 namespace Ayaki.Installer {
   internal sealed class InstallOptions {
     public bool Preview, Silent, Passive, Launch, Update, NoNativeShortcuts, Shortcut = true;
+    public bool Uninstall;
+    public string CorePath = "";
     public string Theme = "dark", State = "ready", Capture = "", Directory = "";
     public int Dpi = 96;
     public static InstallOptions Parse(string[] args) {
@@ -23,6 +25,7 @@ namespace Ayaki.Installer {
         else if (a.Equals("/R", StringComparison.OrdinalIgnoreCase)) o.Launch = true;
         else if (a.Equals("/NS", StringComparison.OrdinalIgnoreCase)) { o.Shortcut = false; o.NoNativeShortcuts = true; }
         else if (a == "--preview") o.Preview = true;
+        else if (a.StartsWith("--core=")) o.CorePath = a.Substring(7);
         else if (a.StartsWith("--theme=")) o.Theme = a.Substring(8);
         else if (a.StartsWith("--state=")) o.State = a.Substring(8);
         else if (a.StartsWith("--capture=")) { o.Capture = a.Substring(10); o.Preview = true; }
@@ -32,6 +35,7 @@ namespace Ayaki.Installer {
         }
       }
       if (PayloadInfo.PreviewBuild) o.Preview = true;
+      o.Uninstall = PayloadInfo.UninstallBuild;
       return o;
     }
   }

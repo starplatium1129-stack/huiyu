@@ -208,10 +208,10 @@ const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   'check:typescript': { desc: '只读严格检查服务、网关、工具和独立浏览器脚本', cmd: ['node', 'scripts/build-node.mts', '--check'], docs: 'docs/workflow.md',
     run: { nature: ['read-only', 'guard'], machine: ['node'], switches: {}, resume: 'na', evidence: 'scripts/build-node.mts', unknown: [] } },
   'installer:modern': {
-    desc: '构建现代原生安装器（--preview --capture 可安全预览，不安装）',
+    desc: '构建现代原生安装/卸载界面（--uninstall 选择卸载；--preview --capture 安全预览）',
     cmd: ['node', 'scripts/maintenance/build-modern-installer.js'],
     docs: 'docs/guides/desktop/game-installer.md',
-    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'], '--capture': ['writes-product'], '--upgrade': ['writes-release'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-modern-installer.js:10-13,44-70', unknown: ['--capture 截图落盘位置未逐行核实'] },
+    run: { nature: ['writes-release'], machine: ['windows', 'windows-toolchain'], switches: { '--preview': ['writes-product'], '--capture': ['writes-product'], '--upgrade': ['writes-release'], '--uninstall': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/build-modern-installer.ts', unknown: [] },
   },
   'installer:bundle': {
     desc: '用已绑定桌面构建生成完整包与升级包并分别签名（只改安装界面时使用）',

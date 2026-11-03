@@ -17,22 +17,23 @@ function run(command: string, args: readonly string[], options: any = {}) {
   if (result.error || result.status !== 0) throw new Error(`Modern installer command failed: ${result.error?.message || result.status}`);
 }
 
-function buildModernInstaller({ payload, output, upgradeVerifier, nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), upgrade = Boolean(upgradeVerifier), preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96 }: any = {}) {
-  if (!preview && (!payload || !fs.existsSync(payload))) throw new Error('A verified NSIS payload is required');
+function buildModernInstaller({ payload, output, upgradeVerifier, nsisFile = path.join(ROOT, 'desktop-tauri/src-tauri/target/release/nsis/x64/installer.nsi'), upgrade = Boolean(upgradeVerifier), uninstall = false, preview = false, capture = false, theme = 'dark', state = 'ready', dpi = 96 }: any = {}) {
+  if (uninstall && (payload || upgrade || upgradeVerifier)) throw new Error('Uninstaller UI cannot embed an installation payload');
+  if (!preview && !uninstall && (!payload || !fs.existsSync(payload))) throw new Error('A verified NSIS payload is required');
   if (!preview && upgrade && !upgradeVerifier) throw Error('An upgrade requires its bound resource verifier');
-  if (!preview) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding'))
+  if (!preview && !uninstall) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding'))
     .verifyBuild(ROOT, upgrade ? [payload, upgradeVerifier] : payload);
-  if (!['dark', 'light'].includes(theme) || !['ready', 'installing', 'done', 'error'].includes(state)) throw new Error('Unknown preview theme or state');
+  if (!['dark', 'light'].includes(theme) || !(uninstall ? ['ready', 'confirm', 'installing', 'done', 'error'] : ['ready', 'installing', 'done', 'error']).includes(state)) throw new Error('Unknown preview theme or state');
   fs.mkdirSync(GENERATED, { recursive: true });
   const version = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')).version;
   if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('Installer version must be a stable semantic version');
-  const payloadHash = preview ? '' : hashInstallerFile(payload, 'sha256').toString('hex');
-  const payloadLength = preview ? 0 : fs.statSync(payload).size;
+  const payloadHash = preview || uninstall ? '' : hashInstallerFile(payload, 'sha256').toString('hex');
+  const payloadLength = preview || uninstall ? 0 : fs.statSync(payload).size;
   const verifierHash = !preview && upgrade ? hashInstallerFile(upgradeVerifier, 'sha256').toString('hex') : '';
   const estimated = fs.existsSync(nsisFile) ? /!define ESTIMATEDSIZE "(\d+)"/.exec(fs.readFileSync(nsisFile, 'utf8')) : null;
   const required = Number(estimated?.[1] || 520000) * 1024;
   const metadata = `using System.Reflection;
-[assembly: AssemblyTitle("绘遇安装器")]
+[assembly: AssemblyTitle("绘遇${uninstall ? '卸载器' : '安装器'}")]
 [assembly: AssemblyProduct("绘遇 · HUIYU")]
 [assembly: AssemblyVersion("${version}.0")]
 [assembly: AssemblyFileVersion("${version}.0")]
@@ -44,6 +45,7 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
   public static readonly bool UpgradeOnly = ${upgrade ? 'true' : 'false'};
   public const string UpgradeVerifierSha256 = "${verifierHash}";
   public static readonly bool PreviewBuild = ${preview ? 'true' : 'false'};
+  public static readonly bool UninstallBuild = ${uninstall ? 'true' : 'false'};
 } }
 `;
   const metaFile = path.join(GENERATED, 'PayloadInfo.cs');
@@ -59,22 +61,22 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
   const framework = path.join(process.env.WINDIR || 'C:/Windows', 'Microsoft.NET/Framework64/v4.0.30319');
   const compiler = path.join(framework, 'csc.exe');
   if (!fs.existsSync(compiler)) throw new Error('Windows .NET Framework compiler is unavailable');
-  const executable = path.join(GENERATED, preview ? 'AyakiInstaller-Preview.exe' : 'AyakiInstaller.exe');
+  const executable = path.join(GENERATED, `${uninstall ? 'HuiyuUninstaller' : 'AyakiInstaller'}${preview ? '-Preview' : ''}.exe`);
   const references = ['System.dll', 'System.Core.dll', 'System.Xaml.dll', 'System.Windows.Forms.dll'].map((file: any) => path.join(framework, file));
   references.push(...['WindowsBase.dll', 'PresentationCore.dll', 'PresentationFramework.dll', 'UIAutomationTypes.dll'].map((file: any) => path.join(framework, 'WPF', file)));
   const args = ['/nologo', '/utf8output', '/codepage:65001', '/target:winexe', '/platform:x64', '/optimize+', `/out:${executable}`, `/win32manifest:${path.join(SOURCE, 'app.manifest')}`, `/win32icon:${path.join(BASE, '../icons/icon.ico')}`,
     ...references.map((file: any) => `/reference:${file}`), `/resource:${xamlFile},Installer.xaml`, `/resource:${path.join(ROOT, 'assets/characters/nene-home-cg.jpg')},Keyart.jpg`, metaFile,
-    ...['Program.cs', 'InstallEngine.cs', 'FolderPicker.cs', 'InstallerWindow.cs'].map((file: any) => path.join(SOURCE, file))];
-  if (!preview) args.push(`/resource:${path.resolve(payload)},Payload.exe`);
+    ...['Program.cs', 'InstallEngine.cs', 'FolderPicker.cs', 'InstallerWindow.cs', 'UninstallWindow.cs'].map((file: any) => path.join(SOURCE, file))];
+  if (!preview && !uninstall) args.push(`/resource:${path.resolve(payload)},Payload.exe`);
   if (!preview && upgrade) args.push(`/resource:${path.resolve(upgradeVerifier)},UpgradeVerifier.exe`);
   run(compiler, args);
   if (capture) {
-    const captureFile = path.join(ROOT, 'runtime', `installer-modern-${upgrade ? 'upgrade' : 'full'}-${theme}-${state}-${dpi}.png`);
+    const captureFile = path.join(ROOT, 'runtime', `installer-modern-${uninstall ? 'uninstall' : upgrade ? 'upgrade' : 'full'}-${theme}-${state}-${dpi}.png`);
     run(executable, ['--preview', `--theme=${theme}`, `--state=${state}`, `--dpi=${dpi}`, `--capture=${captureFile}`]);
     console.log(`Native preview: ${captureFile}`);
   }
   if (output) { fs.mkdirSync(path.dirname(output), { recursive: true }); fs.copyFileSync(executable, output); }
-  if (!preview) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).bindDistribution(ROOT, payload, output || executable);
+  if (!preview && !uninstall) (require('../lib/desktop-build-binding') as typeof import('../lib/desktop-build-binding')).bindDistribution(ROOT, payload, output || executable);
   console.log(`Modern installer: ${output || executable}`);
   return { executable: output || executable, payloadHash, payloadLength, version };
 }
@@ -83,8 +85,8 @@ namespace Ayaki.Installer { internal static class PayloadInfo {
 if (require.main === module) {
   const args = process.argv.slice(2);
   const value = (key: string|any[], fallback: string|undefined) => args.find((arg: any) => arg.startsWith(`--${key}=`))?.slice(key.length + 3) || fallback;
-  if (args.includes('--help')) console.log('Build modern installer: --preview [--upgrade --capture --theme=dark|light --state=ready|installing|done|error --dpi=96|120|144] or --payload=<NSIS exe> --output=<wrapper exe> [--upgrade-verifier=<bound verifier>]');
-  else try { buildModernInstaller({ preview: args.includes('--preview'), upgrade: args.includes('--upgrade') || Boolean(value('upgrade-verifier', undefined)), upgradeVerifier: value('upgrade-verifier', undefined), capture: args.includes('--capture'), theme: value('theme', 'dark'), state: value('state', 'ready'), dpi: Number(value('dpi', '96')), payload: value('payload', undefined), output: value('output', undefined) }); }
+  if (args.includes('--help')) console.log('Build modern installer: --preview [--upgrade|--uninstall --capture --theme=dark|light --state=ready|confirm|installing|done|error --dpi=96|120|144] or --payload=<NSIS exe> --output=<wrapper exe> [--upgrade-verifier=<bound verifier>]. --uninstall builds the embedded NSIS presentation helper.');
+  else try { buildModernInstaller({ uninstall: args.includes('--uninstall'), preview: args.includes('--preview'), upgrade: args.includes('--upgrade') || Boolean(value('upgrade-verifier', undefined)), upgradeVerifier: value('upgrade-verifier', undefined), capture: args.includes('--capture'), theme: value('theme', 'dark'), state: value('state', 'ready'), dpi: Number(value('dpi', '96')), payload: value('payload', undefined), output: value('output', undefined) }); }
   catch (error) { console.error(runtimeErrorMessage(error)); process.exitCode = 1; }
 }
 export = { buildModernInstaller };

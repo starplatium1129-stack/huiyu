@@ -72,6 +72,8 @@ assets/live2d-candidates/
 # 预压产物（npm run precompress 生成，随构建重新产生）
 *.br
 *.gz
+# Installer migration identities are source inputs, never a regenerated HTTP cache.
+!desktop-tauri/src-tauri/installer/legacy-resources.gz
 
 # 场景审计一次性导出（scripts/maintenance 审计脚本产物，不入库）
 /_audit_scenes.jsonl

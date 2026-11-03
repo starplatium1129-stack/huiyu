@@ -10,7 +10,7 @@ namespace Ayaki.Installer {
       try { Console.OutputEncoding = new System.Text.UTF8Encoding(false); } catch { }
       InstallOptions options = InstallOptions.Parse(args);
       try {
-        if (options.Silent && !options.Preview) return InstallEngine.Run(options, null, CancellationToken.None).GetAwaiter().GetResult();
+        if (options.Silent && !options.Preview && !options.Uninstall) return InstallEngine.Run(options, null, CancellationToken.None).GetAwaiter().GetResult();
         var app = new Application();
         var window = new InstallerWindow(options);
         if (!String.IsNullOrEmpty(options.Capture)) { window.Capture(options.Capture, options.Dpi); return 0; }

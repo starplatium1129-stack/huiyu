@@ -91,7 +91,7 @@
             <Border CornerRadius="14" BorderBrush="{DynamicResource Accent}" BorderThickness="1" Background="{DynamicResource Card}" Padding="3">
               <Image x:Name="HeroImage" Height="44" Stretch="UniformToFill" AutomationProperties.Name="绫地宁宁"/>
             </Border>
-            <TextBlock Text="安装" TextAlignment="Center" Foreground="{DynamicResource Text}" FontSize="11" Margin="0,10,0,0"/>
+            <TextBlock x:Name="RailMode" Text="安装" TextAlignment="Center" Foreground="{DynamicResource Text}" FontSize="11" Margin="0,10,0,0"/>
           </StackPanel>
           <TextBlock Text="HUIYU" Foreground="{DynamicResource Muted}" FontSize="9" TextAlignment="Center" VerticalAlignment="Bottom"/>
         </Grid>
@@ -140,6 +140,23 @@
                       </Grid>
                     </Border>
                     <CheckBox x:Name="ShortcutCheck" IsChecked="True" Content="创建桌面与开始菜单快捷方式" FontSize="12" Margin="0,16,0,4"/>
+                  </StackPanel>
+                  <StackPanel x:Name="UninstallDataPanel" Visibility="Collapsed" Margin="0,16,0,0">
+                    <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource Line}" BorderThickness="1" CornerRadius="12" Padding="14">
+                      <StackPanel>
+                        <TextBlock x:Name="DataTitle" Text="你的创作，默认保留" Foreground="{DynamicResource Text}" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="DataDescription" Text="作品、个人设置与已导入资源不会删除。重新安装后可继续使用。" Foreground="{DynamicResource Muted}" FontSize="12" TextWrapping="Wrap" LineHeight="20" Margin="0,8,0,0"/>
+                      </StackPanel>
+                    </Border>
+                    <CheckBox x:Name="DeleteDataCheck" Content="同时清理此账户的个人数据" FontSize="12" Margin="0,14,0,0" IsChecked="False"/>
+                  </StackPanel>
+                  <StackPanel x:Name="UninstallConfirmPanel" Visibility="Collapsed" Margin="0,12,0,0">
+                    <TextBlock Text="将清理以下目录及其中的作品、设置和资源。此操作无法撤销，请先备份。" Foreground="{DynamicResource Error}" TextWrapping="Wrap" FontSize="12" LineHeight="20"/>
+                    <Border Background="{DynamicResource Card}" BorderBrush="{DynamicResource ControlLine}" BorderThickness="1" CornerRadius="10" Padding="10" Margin="0,12,0,10">
+                      <TextBox x:Name="DataPaths" IsReadOnly="True" TextWrapping="Wrap" Background="Transparent" Foreground="{DynamicResource Text}" BorderThickness="0" FontSize="11" AutomationProperties.Name="将清理的数据目录"/>
+                    </Border>
+                    <TextBlock Text="这些路径属于运行卸载器的 Windows 账户；若使用其他管理员授权，则属于该管理员。" Foreground="{DynamicResource Muted}" TextWrapping="Wrap" FontSize="11" LineHeight="19"/>
+                    <Button x:Name="KeepDataButton" Content="返回，不清理个人数据" Margin="0,14,0,0"/>
                   </StackPanel>
                   <TextBlock x:Name="ExistingText" Foreground="{DynamicResource Success}" FontSize="12" Margin="0,10,0,0"/>
                   <StackPanel x:Name="StagePanel" Visibility="Collapsed" Margin="0,14,0,8" AutomationProperties.Name="安装阶段">

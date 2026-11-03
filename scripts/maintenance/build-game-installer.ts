@@ -50,6 +50,8 @@ FunctionEnd
   output = replaceOnce(output, '  ; Remove shortcuts if not updating\n  ${If} $UpdateMode <> 1', '  ; Remove shortcuts if not updating\n  ${If} $UpdateMode <> 1\n    Call un.GameRemoveResourceShortcut');
   output = replaceOnce(output, '  ; Delete uninstaller\n  Delete "$INSTDIR\\uninstall.exe"', '  ; Delete uninstaller and the installer-owned resource ledger\n  Delete "$INSTDIR\\uninstall.exe"\n  Delete "$INSTDIR\\.huiyu-installed-resources.json"');
   output = replaceOnce(output, 'Name "${PRODUCTNAME}"', 'Name "${PRODUCTNAME}"\nCaption "绘遇 HUIYU · 安装"');
+  output = replaceOnce(output, 'Function un.onInit', `!include "${escapePath(path.join(path.dirname(uiFile), 'game-modern-uninstall.nsh'))}"\n\nFunction un.onInit`);
+  output = replaceOnce(output, 'FunctionEnd\n\nSection Uninstall', '  Call un.GameModernUninstall\nFunctionEnd\n\nSection Uninstall');
   // Display branding is separate from PRODUCTNAME: that name is the legacy
   // uninstall registry key and installation directory used by update discovery.
   output = replaceOnce(output, 'WriteRegStr SHCTX "${UNINSTKEY}" "DisplayName" "${PRODUCTNAME}"', 'WriteRegStr SHCTX "${UNINSTKEY}" "DisplayName" "绘遇 · HUIYU"');
@@ -127,10 +129,13 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
   if (crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
   const generated = path.join(INSTALLER, 'generated');
   fs.mkdirSync(generated, { recursive: true });
+  // Embedded in the uninstaller itself, not in the directory it will delete.
+  (require('./build-modern-installer') as typeof import('./build-modern-installer')).buildModernInstaller({ uninstall: true });
   const framework = path.join(process.env.WINDIR || 'C:/Windows', 'Microsoft.NET/Framework64/v4.0.30319');
   const cleanupExe = path.join(generated, 'HuiyuResourceCleanup.exe');
   const cleanupReceipt = path.join(generated, 'resource-cleanup-build.json');
-  const inputs = [path.join(INSTALLER, 'ResourceInventory.cs'), path.join(INSTALLER, 'modern/app.manifest'),
+  const legacyResources = path.join(INSTALLER, 'legacy-resources.gz');
+  const inputs = [legacyResources, path.join(INSTALLER, 'ResourceInventory.cs'), path.join(INSTALLER, 'modern/app.manifest'),
     path.join(framework, 'csc.exe'), path.join(framework, 'System.Runtime.Serialization.dll'), path.join(framework, 'mscorlib.dll')];
   const flags = ['/nologo', '/utf8output', '/codepage:65001', '/target:exe', '/platform:x64', '/optimize+'];
   const hashFile = (file: string) => crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
@@ -143,6 +148,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
   if (!cached) {
     const compiler = spawnSync(path.join(framework, 'csc.exe'), [...flags,
       `/out:${cleanupExe}`, `/reference:${path.join(framework, 'System.Runtime.Serialization.dll')}`,
+      `/resource:${legacyResources},LegacyResources.gz`,
       `/win32manifest:${path.join(INSTALLER, 'modern/app.manifest')}`, path.join(INSTALLER, 'ResourceInventory.cs')], { cwd: ROOT, stdio: 'inherit', windowsHide: true });
     if (compiler.error || compiler.status !== 0) throw new Error(`Resource cleanup compiler failed: ${compiler.error?.message || compiler.status}`);
     fs.writeFileSync(cleanupReceipt, JSON.stringify({ inputHash, outputHash: hashFile(cleanupExe) }));

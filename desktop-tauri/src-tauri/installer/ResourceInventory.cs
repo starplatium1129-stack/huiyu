@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Security.Cryptography;
@@ -19,8 +21,8 @@ namespace Huiyu.Installer {
     [DataMember] public ResourceFile[] files;
   }
 
-  // The ledger contains only previously packaged identities. An unknown or
-  // locally modified file never becomes eligible for deletion by scanning.
+  // Both the ledger and embedded migration baseline contain packaged identities.
+  // Unknown or locally modified files never become eligible by scanning.
   public static class ResourceCleanup {
     const string Ledger = ".huiyu-installed-resources.json";
     const string Current = "gateway/bundled-resource-inventory.json";
@@ -56,6 +58,10 @@ namespace Huiyu.Installer {
         }
         value = (ResourceInventory)Serializer().ReadObject(stream);
       }
+      Validate(value, deployment, file);
+      return value;
+    }
+    static void Validate(ResourceInventory value, bool deployment, string file) {
       if (value == null || value.schemaVersion != 1 || value.files == null || value.files.Length > 100000
         || value.kind != (deployment ? "desktop-installer-deployment" : "huiyu-bundled-resources"))
         throw new IOException("资源清单格式无效：" + file);
@@ -63,7 +69,19 @@ namespace Huiyu.Installer {
         if (item == null || String.IsNullOrEmpty(item.path) || item.bytes < 0 || item.sha256 == null || !Hash.IsMatch(item.sha256))
           throw new IOException("资源清单包含无效条目：" + file);
       }
-      return value;
+    }
+    static ResourceInventory Legacy() {
+      // Embedded at build time: standalone installers can migrate versions that
+      // predate the on-disk ledger, without trusting a downloaded/local manifest.
+      using (var source = Assembly.GetExecutingAssembly().GetManifestResourceStream("LegacyResources.gz")) {
+        if (source == null) throw new IOException("旧版资源迁移清单缺失。");
+        using (var stream = new GZipStream(source, CompressionMode.Decompress)) {
+          var value = (ResourceInventory)Serializer().ReadObject(stream);
+          Validate(value, false, "LegacyResources.gz");
+          if (value.files.Any(item => !Managed(item.path))) throw new IOException("旧版资源迁移清单包含非应用路径。");
+          return value;
+        }
+      }
     }
     static string Target(string root, string relative) {
       if (!Managed(relative)) throw new IOException("资源路径无效：" + relative);
@@ -115,7 +133,7 @@ namespace Huiyu.Installer {
           if (!Managed(item.path) && !item.path.StartsWith("gateway/", StringComparison.OrdinalIgnoreCase)) throw new IOException("当前资源路径无效。");
           if (!present.Add(item.path)) throw new IOException("当前资源清单包含重复路径。");
         }
-        var previous = new List<ResourceFile>();
+        var previous = new List<ResourceFile>(Legacy().files);
         string ledger = Path.Combine(root, Ledger);
         if (File.Exists(ledger)) previous.AddRange(Read(ledger, false).files);
         for (int i = 1; i < args.Length; i += 2) previous.AddRange(Read(Path.GetFullPath(args[i]), true, args[i + 1]).files);

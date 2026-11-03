@@ -15,6 +15,11 @@ RequestExecutionLevel user
 !define GAME_PREVIEW_UNINSTALL
 !endif
 !include "${GAME_UI}"
+; Compile the production bridge as part of the native preview, but never call
+; it: this executable has no uninstaller section and cannot remove the app.
+Var PassiveMode
+Var UpdateMode
+!include "${__FILEDIR__}\game-modern-uninstall.nsh"
 !insertmacro GameUninstallPages ""
 Name "绘遇 · 安装界面预览（不安装）"
 !ifdef GAME_PREVIEW_UNINSTALL

@@ -2,8 +2,9 @@
 
 正式发行采用 WPF 展示层：1120 × 700 逻辑像素，随桌面工作区域收敛。窄品牌栏、圆角画面与右下悬浮操作面板组成安装界面；背景直接使用首页的宁宁 CG `assets/characters/nene-home-cg.jpg`，保留原始文件，展示时顶部对齐并向右侧底色淡出，侧栏头像取自同图。品牌与标语使用独立深色衬底，面板、控件和窗口边框支持深浅主题；浅色主按钮使用深玫瑰色。右侧集中安装位置、磁盘信息与单一主操作。安装时收起配置，展示资源准备、应用安装、结果确认三个阶段及实际耗时；资源准备可以取消。较矮窗口内容可滚动，主操作固定在面板底部，较窄窗口收起左下标语。保留 NSIS 安装核心及 WebView2 处理。
 
-原生 NSIS 安装与卸载页共用 `game-frame.nsh`，跟随 Windows 应用主题；保留系统按钮、焦点反馈和真实操作明细。卸载确认、进度和结果使用 `game-uninstall.nsh`，默认保留作品、个人设置和已导入资源。既有应用数据清理选项默认不选，勾选后列出运行卸载器账户的两个实际应用数据路径并再次确认，默认按钮为“否”。使用其他管理员账户通过 UAC 时，这些路径属于该管理员；不代表所有用户的资料。实际清理仍由原 Tauri 卸载段执行，没有扩展删除范围。
+交互式卸载复用现代安装器的同一份 `Installer.xaml`，包含圆角窗口、品牌栏、插画区、悬浮操作面板、主题和按钮。`UninstallWindow.cs` 负责确认、清理数据二次确认、不定进度与实际耗时、完成和失败重试；默认保留作品、设置与已导入资源。清理选项会列出运行卸载器账户的两个实际应用数据目录，焦点默认放在返回按钮。使用其他管理员账户授权时，这些路径属于该管理员，不代表所有用户资料。
 
+`game-modern-uninstall.nsh` 从卸载器自身解出 WPF 展示层并复制当前卸载核心到私有临时目录。确认后由展示层等待该核心静默完成，实际删除文件清单、数据目录与进程占用保护仍由原 Tauri 卸载段执行；外层不会再次删除。运行期间禁止关闭，可最小化；失败保留提示并允许重试，完成不启动应用。静默、被动与更新调用继续使用原 NSIS 路径；`game-frame.nsh` 与 `game-uninstall.nsh` 保留底层原生页面。预览构建和截图模式不会调用卸载核心。
 
 ## 构建与预览
 
@@ -21,6 +22,7 @@
 - `installer:build` 和 `installer:preview --capture --page=welcome` 维护底层 NSIS 模板及诊断预览；`package:tauri` 单独运行只产生该核心，发行使用上面的 release 入口。
 
 NSIS 安全预览还支持 `--page=uninstall|uninstall-progress|uninstall-finish`、`--theme=system|dark|light`。页面复用正式展示函数，预览操作段仅打印说明，不安装、卸载、写快捷方式或启动应用。
+现代卸载预览使用 `npm run workflow -- installer:modern --uninstall --preview --capture --theme=dark --state=ready --dpi=144`，支持 ready/confirm/installing/done/error。截图为 `runtime/installer-modern-uninstall-<主题>-<状态>-<DPI>.png`；这是 WPF 渲染预览，不代替真实设备验收。
 
 Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行服务。编译器和资源输出均在被忽略的 installer/generated/ 中。预览入口仅编译展示层并渲染实际 WPF 控件；路径、静默参数、预览隔离及嵌入资源哈希保留在对应产品逻辑，画面与对比度仍需目视检查各状态和缩放。
 

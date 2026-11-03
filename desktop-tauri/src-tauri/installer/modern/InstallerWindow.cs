@@ -15,7 +15,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 
 namespace Ayaki.Installer {
-  internal sealed class InstallerWindow {
+  internal sealed partial class InstallerWindow {
     public readonly Window View;
     public int ExitCode = 1602;
     private readonly InstallOptions options;
@@ -70,7 +70,7 @@ namespace Ayaki.Installer {
       if (options.Preview) Get<TextBlock>("Footnote").Text = "界面预览 · 不会安装或修改现有软件";
       ApplyTheme(options.Theme == "light");
       RefreshSpace();
-      main.Click += async delegate { if (complete) Launch(); else await BeginInstall(); };
+      main.Click += async delegate { if (options.Uninstall) await BeginUninstall(); else if (complete) Launch(); else await BeginInstall(); };
       browse.Click += delegate {
         try { string selected = FolderPicker.Pick(new WindowInteropHelper(View).Handle); if (selected != null) directory.Text = String.Equals(Path.GetFileName(selected.TrimEnd('\\')), "AI-CG-Studio", StringComparison.OrdinalIgnoreCase) ? selected : Path.Combine(selected, "AI-CG-Studio"); }
         catch { ShowMessage("文件夹选择器暂不可用，也可以直接输入安装位置。", false); }
@@ -91,13 +91,14 @@ namespace Ayaki.Installer {
       View.Loaded += async delegate {
         if (SystemParameters.ClientAreaAnimation) Get<Border>("ActionPanel").BeginAnimation(UIElement.OpacityProperty,
           new DoubleAnimation(0, 1, TimeSpan.FromMilliseconds(240)) { EasingFunction = new QuadraticEase { EasingMode = EasingMode.EaseOut } });
-        if (options.Passive && !options.Preview) await BeginInstall();
+        if (options.Passive && !options.Preview && !options.Uninstall) await BeginInstall();
         else if (options.Preview) SetPreview(options.State);
       };
       View.MinWidth = Math.Min(760, SystemParameters.WorkArea.Width - 24);
       View.MinHeight = Math.Min(540, SystemParameters.WorkArea.Height - 24);
       View.Width = Math.Min(1120, SystemParameters.WorkArea.Width - 24);
       View.Height = Math.Min(700, SystemParameters.WorkArea.Height - 24);
+      if (options.Uninstall) ConfigureUninstall();
     }
     private T Get<T>(string name) where T : class { return (T)View.FindName(name); }
     private static Brush Color(string hex) { var brush = (SolidColorBrush)new BrushConverter().ConvertFromString(hex); brush.Freeze(); return brush; }
@@ -119,6 +120,7 @@ namespace Ayaki.Installer {
       Get<Button>("ThemeButton").Content = value ? "切换深色" : "切换浅色";
     }
     private void RefreshSpace() {
+      if (options.Uninstall) return;
       if (busy || complete) return;
       try {
         string path = InstallEngine.NormalizeDirectory(directory.Text);
@@ -245,10 +247,11 @@ namespace Ayaki.Installer {
       if (!busy) return;
       e.Cancel = true;
       if (!installing && cancellation != null) { closeRequested = true; cancellation.Cancel(); status.Text = "正在取消准备…"; }
-      else ShowMessage("安装正在进行。可以最小化窗口，完成后再关闭。", false);
+      else ShowMessage(options.Uninstall ? "卸载正在进行。可以最小化窗口，完成后再关闭。" : "安装正在进行。可以最小化窗口，完成后再关闭。", false);
     }
     public void SetPreview(string state) {
       if (!options.Preview) throw new InvalidOperationException("Preview state is not allowed for a live installation");
+      if (options.Uninstall) { PreviewUninstall(state); return; }
       if (state == "installing") {
         Progress(new InstallProgress("install", 0)); sweep.BeginAnimation(TranslateTransform.XProperty, null); sweep.X = 220;
         main.IsEnabled = false; browse.IsEnabled = false; directory.IsReadOnly = true; shortcut.IsEnabled = false; SetAction("正在安装…");
