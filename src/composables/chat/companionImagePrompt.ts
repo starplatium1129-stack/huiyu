@@ -5,10 +5,10 @@ import type { InterrogateResult } from '@/api/interrogateResult'
 import type { ResultContextInput } from '@/utils/resultContext'
 import type { AnimaGenerationState } from '@/types/anima'
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent'
-import { characterControlTokens, isManualR18Tags, mutualGroupWithCategory, normalizeKey } from '@/utils/promptPolicy'
+import { characterControlTokens, isManualR18Tags, normalizeKey } from '@/utils/promptPolicy'
 import { plainEnglish } from '@/utils/promptCompiler'
 import { collectInterrogateContext, mergeInterrogatedTags } from '@/utils/interrogateMerge'
-import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
+import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { splitReferenceTags } from '@/utils/interrogateReference'
 import { animaArtistTag } from '@/config/artistStyles'
 import { sceneDirectorSources } from '@/utils/promptDirector'
@@ -80,7 +80,7 @@ export function companionPromptDraft(pb: ReturnType<typeof usePromptBuilderStore
   const rejected = new Set([...merged.conflicts.map(item => item.tag), ...merged.filtered])
   const referenceOutfit = character && requestedOutfit === 'default' ? reference.tags.filter(tag => {
     const key = normalizeKey(tag)
-    return !rejected.has(key) && (isGarmentToken(key) || mutualGroupWithCategory(key)?.category === 'outfit')
+    return !rejected.has(key) && isOutfitToken(key)
   }).map(normalizeKey) : []
   for (const tag of merged.accepted) if (!referenceOutfit.includes(tag)) draft.manualTags.add(tag)
   if (state.family === 'anima' && !pb.artistStyleIds.length) {

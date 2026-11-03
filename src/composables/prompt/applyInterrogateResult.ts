@@ -1,10 +1,10 @@
-import { mutualGroupWithCategory, normalizeKey, tokenize } from '@/utils/promptPolicy'
+import { normalizeKey, tokenize } from '@/utils/promptPolicy'
 import { LIGHTING, SHOT, STUDIO_PROMPT_SUBJECTS } from '@/config/promptConstants'
 import { animaArtistTag } from '@/config/artistStyles'
 import { cloneReferenceInput } from '@/utils/promptBuilderPersistence'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { defaultOutfit, findBlueprint, findCharacter, findOutfit } from '@/utils/popularContent'
-import { isGarmentToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
+import { isOutfitToken, standaloneIdentityTokens } from '@/utils/popularIdentity'
 import { resolveFreeInterrogateTags } from '@/utils/interrogateFree'
 
 export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuilderStore>, result: unknown, current: () => boolean = () => true) {
@@ -104,7 +104,7 @@ export async function applyInterrogateResult(pb: ReturnType<typeof usePromptBuil
   // to a different role would lose same-family clothes, shirts or coats.
   const referenceOutfit = subject.kind === 'popular' ? reference.tags.filter(tag => {
     const key = normalizeKey(tag)
-    return !rejected.has(key) && (isGarmentToken(key) || mutualGroupWithCategory(key)?.category === 'outfit')
+    return !rejected.has(key) && isOutfitToken(key)
   }).map(normalizeKey) : []
   for (const tag of accepted) if (!referenceOutfit.includes(tag)) next.add(tag)
   for (const tag of referenceArtists) next.add(tag)

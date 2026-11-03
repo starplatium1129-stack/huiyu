@@ -11,6 +11,14 @@ export function isGarmentToken(token: string): boolean {
   return ['playboy_bunny', 'kneehighs', 'casual', 'bikini_top'].includes(key) || key.endsWith('_bikini_top') || GARMENT_TOKEN_RE.test(key)
 }
 
+/** Explicit undress states replace inherited outfits just as garments do.
+ * Body parts, bare shoulders and held towels alone do not establish an outfit. */
+export function isOutfitToken(token: string): boolean {
+  const key = normalizeProseKey(token).replace(/-/g, '_')
+  return isGarmentToken(key) || mutualGroupWithCategory(key)?.category === 'outfit'
+    || /^(?:nude|naked|fully_nude|completely_nude|no_clothes|unclothed|topless|bottomless|shirtless)$/.test(key)
+}
+
 const EXPRESSION_RE = /(?:^|_)(?:smile|smiling|blush|blushing|expressionless|expression|crying|tears|teary|sad|happy|angry|shy|pout|pouting)(?:_|$)/
 const DIRECTION_RE = /^(?:looking|standing|sitting|lying|kneeling|squatting|holding|carrying|walking|running|leaning|peace_sign|v_sign|closed_eyes|open_mouth|closed_mouth|close_up|medium_shot|wide_shot|full_body|upper_body|cowboy_shot|pov|depth_of_field|bokeh)(?:_|$)/
 const SETTING_RE = /(?:^|_)(?:background|backdrop|lighting|sunlight|moonlight|sunset|sunrise|beach|library|classroom|bedroom|forest|sky|scenery)(?:_|$)/

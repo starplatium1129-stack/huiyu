@@ -229,8 +229,8 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   //   3) 用户显式挑了某套服装 → 注入（尊重明确选择）
   //   4) 否则（无场景 + 仍是默认服装）→ 不注入，只留人物基本特征
   const outfitActive = Boolean(overridden) || Boolean(blueprint) || options.outfitExplicit === true
-  // 手动 Mature 词条仅联动分级与负向，不参与访问控制。
-  const manualR18 = isManualR18Tags(manual, options.matureTokens)
+  // 手动和参考服装的 Mature 词条共同联动分级与负向，不参与访问控制。
+  const manualR18 = isManualR18Tags([...manual, ...(overridden ?? [])], options.matureTokens)
   const outfitAppearance = outfitActive && (!adult || adultOutfitOverride) && !overridden ? outfit : null
   const identitySource = blueprint?.identityTokensOverride?.length ? blueprint.identityTokensOverride
     : outfitAppearance?.identityTokensOverride?.length ? outfitAppearance.identityTokensOverride : character.identityTokens

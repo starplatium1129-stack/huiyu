@@ -3,6 +3,28 @@ import type { ArtistStyleOption } from './artistStyles.ts'
 export const FEATURE_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze([
   // ── Anima 画师标签 ─────────────────────────────────────────────
   {
+    id: 'uof',
+    name: 'Uof',
+    waiTag: 'uof',
+    animaTag: '@uof',
+    description: '明日方舟角色同人插画，侧重人物互动与配对场景',
+    masterpiece: '《明日方舟》同人插画',
+    category: 'pure',
+    verification: 'tag',
+    keywords: ['uof', 'uof1052237', '明日方舟', 'arknights', '人物互动', '配对'],
+  },
+  {
+    id: 'okkimon',
+    name: 'Okkimon',
+    waiTag: 'okkimon',
+    animaTag: '@okkimon',
+    description: '蔚蓝档案角色同人插画，侧重人物表情与日常场景',
+    masterpiece: '《蔚蓝档案》同人插画（陆八魔亚瑠、便利屋68等）',
+    category: 'pure',
+    verification: 'tag',
+    keywords: ['okkimon', 'okkizzz', '_okkizzz', '蔚蓝档案', '碧蓝档案', 'blue archive', '陆八魔亚瑠', '便利屋68'],
+  },
+  {
     id: 'oouso',
     name: 'Oouso',
     cnName: '大嘘',
