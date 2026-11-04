@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_river_postcards",
+  "revision": 1,
+  "sortOrder": 2901,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_river_postcards",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "standard",
+    "title": "霍尔海雅 · 河畔的明信片",
+    "category": "泰拉日常",
+    "description": "她从一排明信片里挑出一张古桥照片，指给你看桥头磨损的石雕，说这比正面构图更有意思。",
+    "location": "河畔书报亭",
+    "action": "挑选印有古桥的明信片",
+    "timeOfDay": "白日",
+    "lighting": "水面反射日光",
+    "camera": "中景，明信片架与河面同框",
+    "mood": "轻快",
+    "sceneTags": [
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "riverside",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Ho’olheyak selects a postcard at a riverside kiosk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "riverside",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

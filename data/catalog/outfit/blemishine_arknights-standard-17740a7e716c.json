@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1974,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 白色裙装",
+      "characterId": "blemishine_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white skirt set with a black ribbon and fitted light armor.",
+      "tokens": [
+        "white skirt",
+        "black ribbon",
+        "light armor"
+      ]
+    }
+  }
+}

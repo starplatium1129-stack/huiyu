@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_vinyl_record",
+  "revision": 1,
+  "sortOrder": 2870,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "data": {
+    "id": "ines_arknights_vinyl_record",
+    "characterId": "ines_arknights",
+    "outfitId": "melodic_flutter",
+    "title": "伊内丝 · 唱片的另一面",
+    "category": "泰拉日常",
+    "description": "唱片播到末尾，针尖发出轻微的沙声。她看了眼封套，把唱片翻到另一面，让旋律重新响起来。",
+    "location": "音乐室",
+    "action": "俯身查看唱片封套",
+    "timeOfDay": "傍晚",
+    "lighting": "唱片机旁的暖灯",
+    "camera": "中景，唱片机与封套同框",
+    "mood": "专注",
+    "sceneTags": [
+      "leaning forward",
+      "holding record sleeve",
+      "record player",
+      "music room",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "promptProse": "Ines looks at a record sleeve beside a turntable in a music room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning forward",
+      "holding record sleeve",
+      "record player",
+      "music room",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

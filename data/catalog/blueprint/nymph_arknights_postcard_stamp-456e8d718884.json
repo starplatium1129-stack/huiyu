@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_postcard_stamp",
+  "revision": 1,
+  "sortOrder": 2889,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_postcard_stamp",
+    "characterId": "nymph_arknights",
+    "outfitId": "sweetness_to_the_heart",
+    "title": "妮芙 · 贴歪的邮票",
+    "category": "泰拉日常",
+    "description": "邮票贴得有一点歪，她盯着看了看，决定保留它。妮芙又在明信片空白处画了一朵小花。",
+    "location": "书桌旁",
+    "action": "给明信片贴邮票",
+    "timeOfDay": "午后",
+    "lighting": "书桌侧窗日光",
+    "camera": "近景，明信片与邮票清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "postcard",
+      "postage stamp",
+      "desk",
+      "window light",
+      "close-up"
+    ],
+    "promptProse": "Nymph places a stamp on a postcard at a desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "postcard",
+      "postage stamp",
+      "desk",
+      "window light",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

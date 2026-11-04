@@ -1,0 +1,44 @@
+{
+  "kind": "outfit",
+  "id": "surtr_arknights/colorful_wonderland_cw03",
+  "revision": 1,
+  "sortOrder": 1941,
+  "createdAt": "2026-11-04T02:54:37.687451200+00:00",
+  "updatedAt": "2026-11-04T02:54:37.687451200+00:00",
+  "data": {
+    "characterId": "surtr_arknights",
+    "outfit": {
+      "id": "colorful_wonderland_cw03",
+      "name": "缤纷奇境 CW03 · 黑色比基尼与白色轻纱罩衫",
+      "default": false,
+      "isDefault": false,
+      "tokens": [
+        "swimsuit",
+        "bikini",
+        "black_bikini",
+        "criss-cross_halter",
+        "swimsuit_cover-up",
+        "detached_sleeves",
+        "white_sleeves",
+        "frills",
+        "thigh_strap",
+        "star_hair_ornament",
+        "sandals"
+      ],
+      "prose": "A black criss-cross halterneck bikini with a loose white ruffled swimsuit cover-up and detached sleeves, a thigh strap, star-shaped hair ornament and sandals.",
+      "identityTokensOverride": [
+        "surtr (arknights)",
+        "surtr (colorful wonderland) (arknights)",
+        "1girl",
+        "solo",
+        "red_hair",
+        "very_long_hair",
+        "purple_eyes",
+        "horns",
+        "demon_horns"
+      ],
+      "identityProseOverride": "Surtr from Arknights, with very long red hair, violet eyes and curved dark Sarkaz horns.",
+      "characterId": "surtr_arknights"
+    }
+  }
+}

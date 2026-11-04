@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_bookshop_rain",
+  "revision": 1,
+  "sortOrder": 2866,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "data": {
+    "id": "ines_arknights_bookshop_rain",
+    "characterId": "ines_arknights",
+    "outfitId": "standard",
+    "title": "伊内丝 · 雨中的旧书店",
+    "category": "泰拉日常",
+    "description": "书页夹着一张褪色的车票。伊内丝没有取走它，只把票仔细夹回原处，再翻过下一页。",
+    "location": "旧书店",
+    "action": "翻看一本书的扉页",
+    "timeOfDay": "下午",
+    "lighting": "雨天窗光",
+    "camera": "中景，书架与书页同框",
+    "mood": "安静",
+    "sceneTags": [
+      "standing",
+      "open book",
+      "bookshop",
+      "bookshelves",
+      "rainy window",
+      "soft daylight",
+      "medium shot"
+    ],
+    "promptProse": "Ines examines an old book beside a rain-streaked bookshop window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "open book",
+      "bookshop",
+      "bookshelves",
+      "rainy window",
+      "soft daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

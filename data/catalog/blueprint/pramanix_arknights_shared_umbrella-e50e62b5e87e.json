@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "pramanix_arknights_shared_umbrella",
+  "revision": 2,
+  "sortOrder": 2854,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "pramanix_arknights_shared_umbrella",
+    "characterId": "pramanix_arknights",
+    "outfitId": "casters_frost",
+    "title": "初雪 · 伞下半步",
+    "category": "亲密时刻",
+    "description": "雪落得密了，她把伞向你倾斜，肩膀轻轻碰到你的。初雪没有退开，只低声提醒前面的路有些滑。",
+    "location": "雪镇街道",
+    "action": "撑伞靠近，抬眼望向镜头",
+    "timeOfDay": "傍晚",
+    "lighting": "街灯映亮飘雪",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding umbrella",
+      "close to viewer",
+      "looking up",
+      "soft smile",
+      "snowing",
+      "streetlights",
+      "evening",
+      "medium close-up"
+    ],
+    "promptProse": "Pramanix holds an umbrella close and looks up at the viewer in falling snow.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding umbrella",
+      "close to viewer",
+      "looking up",
+      "soft smile",
+      "snowing",
+      "streetlights",
+      "evening",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

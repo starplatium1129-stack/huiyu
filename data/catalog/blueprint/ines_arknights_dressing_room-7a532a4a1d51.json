@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_dressing_room",
+  "revision": 2,
+  "sortOrder": 2873,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "ines_arknights_dressing_room",
+    "characterId": "ines_arknights",
+    "outfitId": "melodic_flutter",
+    "title": "伊内丝 · 演出前的停顿",
+    "category": "亲密时刻",
+    "description": "她在镜前整理领口，透过镜面看向你。听完你的评价，伊内丝稍稍偏过头，嘴角终于有了一点笑意。",
+    "location": "剧院化妆间",
+    "action": "扶镜回眸，指尖整理领口",
+    "timeOfDay": "夜晚",
+    "lighting": "化妆镜的柔和灯光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "adjusting collar",
+      "looking at viewer through mirror",
+      "slight smile",
+      "dressing room",
+      "vanity lights",
+      "medium close-up"
+    ],
+    "promptProse": "Ines adjusts her collar and meets the viewer’s gaze through a vanity mirror.",
+    "animaCaption": "",
+    "promptTokens": [
+      "adjusting collar",
+      "looking at viewer through mirror",
+      "slight smile",
+      "dressing room",
+      "vanity lights",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

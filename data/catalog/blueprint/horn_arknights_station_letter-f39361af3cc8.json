@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_station_letter",
+  "revision": 1,
+  "sortOrder": 2999,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights_station_letter",
+    "characterId": "horn_arknights",
+    "outfitId": "first_gleam",
+    "title": "号角 · 车站的信",
+    "category": "泰拉日常",
+    "description": "列车还要等一会儿。她在候车长椅上写完最后一行，把信收好，准备到站后寄出。",
+    "location": "车站候车厅",
+    "action": "将信收进信封",
+    "timeOfDay": "白日",
+    "lighting": "高窗自然光",
+    "camera": "中近景，信封与长椅可见",
+    "mood": "温和",
+    "sceneTags": [
+      "sitting",
+      "folding letter",
+      "envelope",
+      "station bench",
+      "daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Horn folds a letter on a station waiting bench.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "folding letter",
+      "envelope",
+      "station bench",
+      "daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

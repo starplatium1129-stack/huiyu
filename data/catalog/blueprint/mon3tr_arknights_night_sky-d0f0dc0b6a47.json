@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_night_sky",
+  "revision": 1,
+  "sortOrder": 3074,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_night_sky",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "sharpened_claws",
+    "title": "Mon3tr · 记录星座",
+    "category": "泰拉日常",
+    "description": "她将星图转了半圈，终于找到对应的星座，在纸边记下今晚的日期。",
+    "location": "屋顶花园",
+    "action": "拿着星图看夜空",
+    "timeOfDay": "夜晚",
+    "lighting": "星光与远处灯光",
+    "camera": "远景，星图与夜空同框",
+    "mood": "平静",
+    "sceneTags": [
+      "standing",
+      "holding star chart",
+      "starry sky",
+      "rooftop garden",
+      "night",
+      "wide shot"
+    ],
+    "promptProse": "Mon3tr consults a star chart in a rooftop garden.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding star chart",
+      "starry sky",
+      "rooftop garden",
+      "night",
+      "wide shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

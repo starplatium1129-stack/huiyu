@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1970,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 黑色机能装",
+      "characterId": "hoshiguma_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A black sleeveless shirt and black trousers with lace-up boots.",
+      "tokens": [
+        "black sleeveless shirt",
+        "black pants",
+        "lace-up boots"
+      ]
+    }
+  }
+}

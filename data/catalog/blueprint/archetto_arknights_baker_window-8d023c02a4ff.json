@@ -1,0 +1,46 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_baker_window",
+  "revision": 1,
+  "sortOrder": 2917,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "id": "archetto_arknights_baker_window",
+    "characterId": "archetto_arknights",
+    "outfitId": "standard",
+    "title": "空弦 · 面包店的新品",
+    "category": "泰拉日常",
+    "description": "她发现橱窗里多了一种新面包，凑近看了看配料牌，决定买两份，一份留给修道院的朋友尝尝。",
+    "location": "街边面包店",
+    "action": "站在橱窗前挑选面包",
+    "timeOfDay": "清晨",
+    "lighting": "店窗暖光",
+    "camera": "中景，面包和人物同框",
+    "mood": "期待",
+    "sceneTags": [
+      "standing",
+      "bakery window",
+      "bread display",
+      "warm morning light",
+      "medium shot"
+    ],
+    "promptProse": "Archetto chooses bread at a bakery window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "bakery window",
+      "bread display",
+      "warm morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/fugue",
+  "revision": 1,
+  "sortOrder": 1960,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "fugue",
+      "name": "恍惚 · 黑色短袖与灰色长裤",
+      "default": true,
+      "isDefault": true,
+      "prose": "A black short-sleeved shirt, grey trousers and knee-high boots.",
+      "tokens": [
+        "black shirt",
+        "short sleeves",
+        "grey pants",
+        "knee boots"
+      ],
+      "identityTokensOverride": [
+        "w (arknights)",
+        "w (fugue) (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "short hair",
+        "red streak",
+        "red eyes",
+        "red horns",
+        "demon tail"
+      ],
+      "identityProseOverride": "W from Arknights has short grey-white hair with red streaks, red eyes, red horns and a demon tail.",
+      "characterId": "w_arknights"
+    }
+  }
+}

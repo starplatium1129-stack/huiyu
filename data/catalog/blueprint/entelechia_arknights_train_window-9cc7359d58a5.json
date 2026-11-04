@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "entelechia_arknights_train_window",
+  "revision": 1,
+  "sortOrder": 3022,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "entelechia_arknights_train_window",
+    "characterId": "entelechia_arknights",
+    "outfitId": "dazzling_blue",
+    "title": "隐德来希 · 列车窗景",
+    "category": "泰拉日常",
+    "description": "列车驶过一片低矮屋顶。她放下手里的杂志，指给你看远处的钟楼。",
+    "location": "列车车厢",
+    "action": "坐在窗边看风景",
+    "timeOfDay": "上午",
+    "lighting": "窗外日光",
+    "camera": "中景，窗框与座椅同框",
+    "mood": "宁静",
+    "sceneTags": [
+      "sitting",
+      "train window",
+      "magazine",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Entelechia watches the scenery from a train window seat.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "train window",
+      "magazine",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

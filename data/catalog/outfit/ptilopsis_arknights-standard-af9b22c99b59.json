@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1982,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 白裙与浅色外套",
+      "characterId": "ptilopsis_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white dress with a light coat and boots.",
+      "tokens": [
+        "white dress",
+        "light coat",
+        "boots"
+      ]
+    }
+  }
+}

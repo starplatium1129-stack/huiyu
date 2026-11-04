@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_soup_wait",
+  "revision": 1,
+  "sortOrder": 3064,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_soup_wait",
+    "characterId": "ceobe_arknights",
+    "outfitId": "standard",
+    "title": "刻俄柏 · 等汤放凉",
+    "category": "泰拉日常",
+    "description": "汤还在冒热气，她把碗放回桌上，学着朋友的样子耐心等一会儿。",
+    "location": "食堂",
+    "action": "双手捧着汤碗",
+    "timeOfDay": "傍晚",
+    "lighting": "食堂暖光",
+    "camera": "中景，汤碗与餐桌同框",
+    "mood": "期待",
+    "sceneTags": [
+      "sitting",
+      "bowl of soup",
+      "dining table",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Ceobe waits for a bowl of soup to cool at a dining table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "bowl of soup",
+      "dining table",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

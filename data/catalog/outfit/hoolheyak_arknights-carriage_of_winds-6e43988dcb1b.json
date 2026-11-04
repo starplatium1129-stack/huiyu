@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/carriage_of_winds",
+  "revision": 1,
+  "sortOrder": 1953,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "carriage_of_winds",
+      "name": "历世流风 · 黑色礼裙与青色披肩",
+      "default": false,
+      "isDefault": false,
+      "prose": "A strapless black formal dress with an aqua shawl and gold jewelry.",
+      "tokens": [
+        "black dress",
+        "strapless dress",
+        "aqua shawl",
+        "gold jewelry"
+      ],
+      "identityTokensOverride": [
+        "ho'olheyak (arknights)",
+        "ho'olheyak (carriage of the winds of time) (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "medium hair",
+        "aqua eyes",
+        "head wings",
+        "snake tail"
+      ],
+      "identityProseOverride": "Ho'olheyak from Arknights has grey hair, aqua eyes, small feathered wings at her head and a snake tail.",
+      "characterId": "hoolheyak_arknights"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "kind": "character",
+  "id": "rosmontis_arknights",
+  "revision": 1,
+  "sortOrder": 283,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights",
+    "profile": {
+      "id": "rosmontis_arknights",
+      "name": "迷迭香",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Rosmontis"
+      ],
+      "speech": "我记下来了。这样就不会忘记了，对吧？",
+      "visual_dna": {
+        "signature": "灰白长发、菲林耳朵和尾巴，绿色眼睛，常穿宽大的外套。"
+      },
+      "traits": [
+        "灰白长发",
+        "猫耳",
+        "猫尾",
+        "绿色眼睛"
+      ],
+      "personality": [
+        "安静",
+        "珍惜熟悉的人",
+        "努力记住重要的事"
+      ],
+      "likes": [
+        "小猫",
+        "写下值得记住的事情",
+        "和朋友待在一起"
+      ],
+      "bg_story": "迷迭香是来自哥伦比亚的菲林，在罗德岛生活。她时常受到记忆问题困扰，会努力把重要的人和事情记下来。",
+      "identity": {
+        "role": "罗德岛干员",
+        "occupation": "干员",
+        "faction": "罗德岛",
+        "region": "哥伦比亚",
+        "race": "菲林",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "tags": [
+        "灰发",
+        "菲林",
+        "猫耳"
+      ],
+      "voice": "这件事，我想好好记住。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "迷迭香立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "rosmontis_arknights",
+      "displayName": "迷迭香",
+      "originalName": "Rosmontis",
+      "franchise": "Arknights",
+      "aliases": [
+        "Rosmontis"
+      ],
+      "identityProse": "Rosmontis from Arknights has long grey-white hair, green eyes, cat ears and a cat tail.",
+      "identityTokens": [
+        "rosmontis (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "long hair",
+        "cat ears",
+        "cat tail",
+        "green eyes"
+      ],
+      "characterTokens": [
+        "rosmontis (arknights)",
+        "rosmontis (become anew) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "rosmontis (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "curatedArtistStyles": [
+        "wei_at_w",
+        "anmi",
+        "namie-kun"
+      ]
+    }
+  }
+}

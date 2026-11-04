@@ -1,0 +1,46 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_coffee_counter",
+  "revision": 1,
+  "sortOrder": 2869,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "data": {
+    "id": "ines_arknights_coffee_counter",
+    "characterId": "ines_arknights",
+    "outfitId": "standard",
+    "title": "伊内丝 · 不加糖的咖啡",
+    "category": "泰拉日常",
+    "description": "店员问要不要加糖，她摇了摇头。接过纸杯后，她站到门边，让开后面排队的位置，等你一起出门。",
+    "location": "街边咖啡馆",
+    "action": "在柜台接过一杯咖啡",
+    "timeOfDay": "清晨",
+    "lighting": "店门斜射晨光",
+    "camera": "中近景，纸杯与人物同框",
+    "mood": "平静",
+    "sceneTags": [
+      "standing",
+      "holding coffee cup",
+      "cafe counter",
+      "morning sunlight",
+      "medium close-up"
+    ],
+    "promptProse": "Ines accepts a takeaway coffee at a café counter in morning light.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding coffee cup",
+      "cafe counter",
+      "morning sunlight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

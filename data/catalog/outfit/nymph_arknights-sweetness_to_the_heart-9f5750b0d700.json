@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/sweetness_to_the_heart",
+  "revision": 1,
+  "sortOrder": 1950,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "sweetness_to_the_heart",
+      "name": "甜美配方 · 白色糕点派对裙",
+      "default": true,
+      "isDefault": true,
+      "prose": "A comfortable white long-sleeved dress with pink tights and dark ankle boots.",
+      "tokens": [
+        "white dress",
+        "long sleeves",
+        "pink pantyhose",
+        "black ankle boots"
+      ],
+      "identityTokensOverride": [
+        "nymph (arknights)",
+        "nymph (sweetness to the heart) (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "long hair",
+        "pink eyes",
+        "horns",
+        "pointy ears",
+        "demon tail"
+      ],
+      "identityProseOverride": "Nymph from Arknights has long pink hair, pink eyes, horns, pointed ears and a tail.",
+      "characterId": "nymph_arknights"
+    }
+  }
+}

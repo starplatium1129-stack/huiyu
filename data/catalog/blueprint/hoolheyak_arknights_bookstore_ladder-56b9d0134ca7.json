@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_bookstore_ladder",
+  "revision": 1,
+  "sortOrder": 2900,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_bookstore_ladder",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "standard",
+    "title": "霍尔海雅 · 书架高处",
+    "category": "泰拉日常",
+    "description": "她看中书架最上层的一本书，却先问了店员能否借用梯子。书取下来后，她翻开目录，很快找到了想看的章节。",
+    "location": "旧书店",
+    "action": "站在书架前查看高处的书",
+    "timeOfDay": "午后",
+    "lighting": "书店窗光",
+    "camera": "中景，书架纵向延伸",
+    "mood": "探索",
+    "sceneTags": [
+      "standing",
+      "looking up",
+      "bookshelf",
+      "old bookshop",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Ho’olheyak looks up at a high bookshelf in a secondhand bookshop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "looking up",
+      "bookshelf",
+      "old bookshop",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

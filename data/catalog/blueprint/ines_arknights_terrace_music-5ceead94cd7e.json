@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_terrace_music",
+  "revision": 2,
+  "sortOrder": 2875,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "ines_arknights_terrace_music",
+    "characterId": "ines_arknights",
+    "outfitId": "melodic_flutter",
+    "title": "伊内丝 · 露台上的余音",
+    "category": "亲密时刻",
+    "description": "音乐隔着玻璃变得很轻。她靠近一些听你说话，片刻后才侧过脸，低声把自己的回答告诉你。",
+    "location": "音乐厅露台",
+    "action": "倚栏靠近，侧头聆听",
+    "timeOfDay": "夜晚",
+    "lighting": "露台灯光与城市夜色",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning on railing",
+      "leaning toward viewer",
+      "looking at viewer",
+      "terrace",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Ines leans close against a terrace railing and turns toward the viewer.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning on railing",
+      "leaning toward viewer",
+      "looking at viewer",
+      "terrace",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/out_of_focus",
+  "revision": 1,
+  "sortOrder": 1944,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:09:13.633613700+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "out_of_focus",
+      "name": "失焦 · 花纹振袖外套与白色礼服",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white satin dress with a purple sash and floral corsage, beneath an open dark floral furisode coat and platform sandals.",
+      "tokens": [
+        "white dress",
+        "satin dress",
+        "purple sash",
+        "flower corsage",
+        "dark coat",
+        "floral print",
+        "wide sleeves",
+        "platform sandals"
+      ],
+      "identityTokensOverride": [
+        "vulpisfoglia (arknights)",
+        "vulpisfoglia (out of focus) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "very long hair",
+        "braided sidelock",
+        "yellow eyes",
+        "fox ears",
+        "fox tail"
+      ],
+      "identityProseOverride": "Vulpisfoglia from Arknights has very long pale blonde hair with a side braid, golden eyes, fox ears and a fluffy fox tail.",
+      "characterId": "vulpisfoglia_arknights"
+    }
+  }
+}

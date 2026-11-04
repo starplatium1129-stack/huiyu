@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_bakery_queue",
+  "revision": 1,
+  "sortOrder": 2977,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights_bakery_queue",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "standard",
+    "title": "菲亚梅塔 · 面包店的队伍",
+    "category": "泰拉日常",
+    "description": "排队的人比想象中多。轮到她时，菲亚梅塔多买了一份，走出店门后递给等在外面的人。",
+    "location": "面包店",
+    "action": "接过装着面包的纸袋",
+    "timeOfDay": "上午",
+    "lighting": "暖色店灯",
+    "camera": "中景，柜台与纸袋清晰",
+    "mood": "轻快",
+    "sceneTags": [
+      "standing",
+      "holding paper bag",
+      "bakery counter",
+      "bread",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Fiammetta receives a paper bag of bread at a bakery counter.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding paper bag",
+      "bakery counter",
+      "bread",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

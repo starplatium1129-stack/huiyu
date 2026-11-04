@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "pozyomka_arknights_tea_and_draft",
+  "revision": 2,
+  "sortOrder": 2935,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "pozyomka_arknights_tea_and_draft",
+    "characterId": "pozyomka_arknights",
+    "outfitId": "beside_dreams",
+    "title": "鸿雪 · 改稿间歇",
+    "category": "亲密时刻",
+    "description": "她将笔搁在稿纸上，托腮看你，笑说下一页可以晚点再写，今晚先听你说。",
+    "location": "书房茶桌",
+    "action": "放下笔托腮，望向镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "一盏台灯",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "chin on hand",
+      "looking at viewer",
+      "soft smile",
+      "manuscript",
+      "writing desk",
+      "lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Pozyomka rests her chin on her hand and smiles at the viewer beside her manuscript.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "chin on hand",
+      "looking at viewer",
+      "soft smile",
+      "manuscript",
+      "writing desk",
+      "lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_tea_tasting",
+  "revision": 1,
+  "sortOrder": 3112,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights_tea_tasting",
+    "characterId": "swire_arknights",
+    "outfitId": "standard",
+    "title": "诗怀雅 · 新茶试饮",
+    "category": "泰拉日常",
+    "description": "她尝了一口新茶，先说香气不错，又把另一杯推给你，等着听你的评价。",
+    "location": "茶馆",
+    "action": "端杯品茶",
+    "timeOfDay": "下午",
+    "lighting": "窗边散射光",
+    "camera": "中近景，茶杯和桌面清晰",
+    "mood": "放松",
+    "sceneTags": [
+      "sitting",
+      "holding tea cup",
+      "tea house",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Swire tastes tea at a tea house table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding tea cup",
+      "tea house",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_gift_wrap",
+  "revision": 1,
+  "sortOrder": 3111,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights_gift_wrap",
+    "characterId": "swire_arknights",
+    "outfitId": "honor_and_splendor",
+    "title": "诗怀雅 · 包装纸的选择",
+    "category": "泰拉日常",
+    "description": "店员拿来两张包装纸，她比较一会儿，选了更适合收礼人的颜色。",
+    "location": "礼品店",
+    "action": "挑选礼物包装纸",
+    "timeOfDay": "下午",
+    "lighting": "店内柔光",
+    "camera": "中景，包装纸与柜台同框",
+    "mood": "细心",
+    "sceneTags": [
+      "standing",
+      "holding wrapping paper",
+      "gift shop counter",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Swire chooses wrapping paper at a gift shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding wrapping paper",
+      "gift shop counter",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

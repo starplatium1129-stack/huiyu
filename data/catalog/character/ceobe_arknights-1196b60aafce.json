@@ -1,0 +1,104 @@
+{
+  "kind": "character",
+  "id": "ceobe_arknights",
+  "revision": 1,
+  "sortOrder": 293,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights",
+    "profile": {
+      "id": "ceobe_arknights",
+      "name": "刻俄柏",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Ceobe",
+        "小刻"
+      ],
+      "speech": "今天有什么好吃的吗？",
+      "visual_dna": {
+        "signature": "棕色长发、红眼和佩洛耳朵、尾巴，笑容直率。"
+      },
+      "traits": [
+        "棕色长发",
+        "红眼",
+        "佩洛耳朵",
+        "佩洛尾"
+      ],
+      "personality": [
+        "直率",
+        "活泼",
+        "对吃的很有热情"
+      ],
+      "likes": [
+        "好吃的食物",
+        "和朋友一起玩",
+        "认识新东西"
+      ],
+      "bg_story": "刻俄柏来自玻利瓦尔，曾独自在各地流浪，后来受到罗德岛救助并成为干员。她对食物和新鲜事物总有许多好奇。",
+      "identity": {
+        "role": "罗德岛干员",
+        "occupation": "干员",
+        "faction": "罗德岛",
+        "region": "玻利瓦尔",
+        "race": "佩洛",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "棕发",
+        "佩洛",
+        "美食"
+      ],
+      "voice": "这个好吃！你也尝尝。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "刻俄柏立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "ceobe_arknights",
+      "displayName": "刻俄柏",
+      "originalName": "Ceobe",
+      "franchise": "Arknights",
+      "aliases": [
+        "Ceobe",
+        "小刻"
+      ],
+      "identityProse": "Ceobe from Arknights has long brown hair, red eyes, dog ears and a dog tail.",
+      "identityTokens": [
+        "ceobe (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "long hair",
+        "red eyes",
+        "dog ears",
+        "dog tail"
+      ],
+      "characterTokens": [
+        "ceobe (arknights)",
+        "ceobe (unfettered) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "ceobe (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "curatedArtistStyles": [
+        "lm7_(op-center)",
+        "namie-kun",
+        "anmi"
+      ]
+    }
+  }
+}

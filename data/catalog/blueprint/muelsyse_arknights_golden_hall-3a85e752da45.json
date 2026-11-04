@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_golden_hall",
+  "revision": 2,
+  "sortOrder": 2885,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "muelsyse_arknights_golden_hall",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "golden_reverie",
+    "title": "缪尔赛思 · 舞会间隙",
+    "category": "亲密时刻",
+    "description": "她提起裙摆离开舞会人群，在门廊回身向你伸手。她笑着说，最后一支舞可以留给只有两个人的地方。",
+    "location": "金色大厅",
+    "action": "提裙回身，向镜头伸手邀舞",
+    "timeOfDay": "夜晚",
+    "lighting": "大厅金色灯光",
+    "camera": "中景，人物与环境同框",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding skirt",
+      "reaching toward viewer",
+      "looking back",
+      "playful smile",
+      "ballroom doorway",
+      "golden lighting",
+      "night",
+      "medium shot"
+    ],
+    "promptProse": "Muelsyse holds her skirt and offers a hand to the viewer at a golden ballroom doorway.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding skirt",
+      "reaching toward viewer",
+      "looking back",
+      "playful smile",
+      "ballroom doorway",
+      "golden lighting",
+      "night",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_lantern_glow",
+  "revision": 1,
+  "sortOrder": 3042,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_lantern_glow",
+    "characterId": "nightingale_arknights",
+    "outfitId": "elegy",
+    "title": "夜莺 · 灯笼亮起时",
+    "category": "泰拉日常",
+    "description": "灯笼亮起来后，她一盏一盏地看过去，找到那盏画着小鸟的灯，悄悄笑了。",
+    "location": "街区广场",
+    "action": "仰头看灯笼",
+    "timeOfDay": "傍晚",
+    "lighting": "灯笼暖光",
+    "camera": "中景，灯串与人物同框",
+    "mood": "欣喜",
+    "sceneTags": [
+      "standing",
+      "looking up",
+      "paper lanterns",
+      "town square",
+      "dusk",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Nightingale looks up at paper lanterns in a square.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking up",
+      "paper lanterns",
+      "town square",
+      "dusk",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

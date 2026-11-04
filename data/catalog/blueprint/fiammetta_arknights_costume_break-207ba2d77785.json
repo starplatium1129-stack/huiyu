@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_costume_break",
+  "revision": 1,
+  "sortOrder": 2979,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights_costume_break",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "divine_oath",
+    "title": "菲亚梅塔 · 演出间隙",
+    "category": "泰拉日常",
+    "description": "演出间隙，她对着镜子把披风搭好。有人又提起角色的夸张称号，她抬眼瞪了一下，自己也忍不住笑了。",
+    "location": "小剧场后台",
+    "action": "整理红色披风",
+    "timeOfDay": "傍晚",
+    "lighting": "后台镜灯",
+    "camera": "中景，披风与镜子同框",
+    "mood": "无奈",
+    "sceneTags": [
+      "standing",
+      "adjusting cape",
+      "backstage mirror",
+      "vanity lights",
+      "medium shot"
+    ],
+    "promptProse": "Fiammetta adjusts a red cape by a backstage mirror.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "adjusting cape",
+      "backstage mirror",
+      "vanity lights",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

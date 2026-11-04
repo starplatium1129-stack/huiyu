@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_river_walk",
+  "revision": 2,
+  "sortOrder": 2993,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_river_walk",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "summer",
+    "title": "星熊 · 河边慢走",
+    "category": "亲密时刻",
+    "description": "她停下来向你伸手，等你追上便笑着与你并肩。河风吹来时，她仍留着刚好能碰到肩膀的距离。",
+    "location": "河滨步道",
+    "action": "回头伸手，邀请并肩同行",
+    "timeOfDay": "夜晚",
+    "lighting": "沿岸灯光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "looking back",
+      "reaching toward viewer",
+      "warm smile",
+      "riverside path",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Hoshiguma looks back and offers her hand to the viewer on a riverside path.",
+    "animaCaption": "",
+    "promptTokens": [
+      "looking back",
+      "reaching toward viewer",
+      "warm smile",
+      "riverside path",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

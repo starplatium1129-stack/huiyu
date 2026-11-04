@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_owl_book",
+  "revision": 1,
+  "sortOrder": 3048,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_owl_book",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "serenity",
+    "title": "白面鸮 · 鸮类图鉴",
+    "category": "泰拉日常",
+    "description": "图鉴里的一只鸮正望向镜头。她停在这一页，认真比较图注里的两种叫声。",
+    "location": "图书馆",
+    "action": "翻看鸟类图鉴",
+    "timeOfDay": "下午",
+    "lighting": "书架柔光",
+    "camera": "中近景，鸟类图鉴清晰",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "open bird book",
+      "owl illustration",
+      "library",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Ptilopsis reads an owl encyclopedia in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open bird book",
+      "owl illustration",
+      "library",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

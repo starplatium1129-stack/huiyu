@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/dazzling_blue",
+  "revision": 1,
+  "sortOrder": 1977,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "dazzling_blue",
+      "name": "耀目之蓝 · 蓝色外套与白帽",
+      "characterId": "entelechia_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A blue jacket over a white outfit, with a white wide-brimmed hat and black boots.",
+      "tokens": [
+        "blue jacket",
+        "white outfit",
+        "white wide-brimmed hat",
+        "black boots"
+      ],
+      "identityTokensOverride": [
+        "entelechia (arknights)",
+        "entelechia (dazzling blue) (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "short hair",
+        "red eyes",
+        "pointy ears",
+        "horns"
+      ],
+      "identityProseOverride": "Entelechia from Arknights has short black hair, red eyes, pointed ears and dark horns."
+    }
+  }
+}

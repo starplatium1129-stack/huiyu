@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_picture_book",
+  "revision": 1,
+  "sortOrder": 2960,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_picture_book",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "standard",
+    "title": "迷迭香 · 借来的图画书",
+    "category": "泰拉日常",
+    "description": "她翻到画着小动物的一页，停下来仔细看。书里没有写名字，她便试着自己辨认。",
+    "location": "图书馆",
+    "action": "翻看一本图画书",
+    "timeOfDay": "上午",
+    "lighting": "书架旁柔光",
+    "camera": "中景，翻开的图画书可见",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "open picture book",
+      "animal illustrations",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Rosmontis reads an illustrated animal book in the library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open picture book",
+      "animal illustrations",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

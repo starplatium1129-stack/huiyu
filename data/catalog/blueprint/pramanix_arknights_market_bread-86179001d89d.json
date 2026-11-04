@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "pramanix_arknights_market_bread",
+  "revision": 1,
+  "sortOrder": 2847,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "data": {
+    "id": "pramanix_arknights_market_bread",
+    "characterId": "pramanix_arknights",
+    "outfitId": "casters_frost",
+    "title": "初雪 · 山路面包店",
+    "category": "泰拉日常",
+    "description": "她隔着玻璃指向一块刚出炉的面包，又认真问店主能否把另一块也包上，留给稍后见面的人。",
+    "location": "雪镇面包店",
+    "action": "在柜台前挑选刚出炉的面包",
+    "timeOfDay": "上午",
+    "lighting": "店窗暖光与门外冷光",
+    "camera": "中景，面包柜与人物同框",
+    "mood": "轻松",
+    "sceneTags": [
+      "standing",
+      "pointing",
+      "bakery",
+      "bread display",
+      "shop window",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "At a bakery counter, Pramanix points to a loaf behind the glass.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "pointing",
+      "bakery",
+      "bread display",
+      "shop window",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

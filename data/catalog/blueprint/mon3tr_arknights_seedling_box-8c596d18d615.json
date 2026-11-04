@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_seedling_box",
+  "revision": 1,
+  "sortOrder": 3067,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_seedling_box",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "standard",
+    "title": "Mon3tr · 新发的芽",
+    "category": "泰拉日常",
+    "description": "幼苗长出第二片叶子，她记录下高度，又把培养盒推回适合照光的位置。",
+    "location": "温室",
+    "action": "观察培育盒里的幼苗",
+    "timeOfDay": "上午",
+    "lighting": "温室日光",
+    "camera": "中景，幼苗与玻璃窗同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "standing",
+      "looking at seedlings",
+      "seedling tray",
+      "greenhouse",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Mon3tr observes seedlings in a greenhouse tray.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking at seedlings",
+      "seedling tray",
+      "greenhouse",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

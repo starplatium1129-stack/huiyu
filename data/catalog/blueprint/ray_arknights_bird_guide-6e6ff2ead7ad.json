@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "ray_arknights_bird_guide",
+  "revision": 1,
+  "sortOrder": 2907,
+  "createdAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "data": {
+    "id": "ray_arknights_bird_guide",
+    "characterId": "ray_arknights",
+    "outfitId": "standard",
+    "title": "莱伊 · 图鉴里的羽兽",
+    "category": "泰拉日常",
+    "description": "她把图鉴翻到做了标记的那页，指着翅膀的花纹，告诉你这种羽兽和另一种最容易认错的地方。",
+    "location": "图书室",
+    "action": "翻开羽兽图鉴指向插图",
+    "timeOfDay": "下午",
+    "lighting": "窗边日光",
+    "camera": "中近景，图鉴插图清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "open field guide",
+      "pointing",
+      "bird illustration",
+      "library",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Ray points to a bird illustration in a field guide at a library table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "open field guide",
+      "pointing",
+      "bird illustration",
+      "library",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

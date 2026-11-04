@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_market_flyer",
+  "revision": 1,
+  "sortOrder": 2921,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "id": "archetto_arknights_market_flyer",
+    "characterId": "archetto_arknights",
+    "outfitId": "standard",
+    "title": "空弦 · 集市上的宣传",
+    "category": "泰拉日常",
+    "description": "集市热闹，她趁人群停下时递出宣传单。对方多问了一句修道院的近况，她立刻认真介绍起来。",
+    "location": "街区集市",
+    "action": "把宣传单递向镜头",
+    "timeOfDay": "午后",
+    "lighting": "晴朗天光",
+    "camera": "中景，宣传单位于前景",
+    "mood": "热情",
+    "sceneTags": [
+      "standing",
+      "holding pamphlet",
+      "offering",
+      "market stalls",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Archetto offers a pamphlet at a lively neighborhood market.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding pamphlet",
+      "offering",
+      "market stalls",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

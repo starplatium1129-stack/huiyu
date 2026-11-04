@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_blue_ribbon",
+  "revision": 1,
+  "sortOrder": 3038,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_blue_ribbon",
+    "characterId": "nightingale_arknights",
+    "outfitId": "standard",
+    "title": "夜莺 · 蓝色丝带",
+    "category": "泰拉日常",
+    "description": "书上的蓝丝带松开了，她重新系好，把蝴蝶结留在书脊旁边。",
+    "location": "书桌",
+    "action": "整理一本书上的丝带",
+    "timeOfDay": "下午",
+    "lighting": "书桌侧光",
+    "camera": "中近景，书与丝带清晰",
+    "mood": "细心",
+    "sceneTags": [
+      "sitting",
+      "tying blue ribbon",
+      "book",
+      "desk",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Nightingale ties a blue ribbon around a book at a desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "tying blue ribbon",
+      "book",
+      "desk",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

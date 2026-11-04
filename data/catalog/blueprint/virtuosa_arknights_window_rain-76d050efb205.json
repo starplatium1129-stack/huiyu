@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_window_rain",
+  "revision": 1,
+  "sortOrder": 3102,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "virtuosa_arknights_window_rain",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "diversity_oneness",
+    "title": "塑心 · 雨中的节拍",
+    "category": "泰拉日常",
+    "description": "雨点敲打窗沿，节奏时快时慢。她听了一阵，抬手在窗边轻轻跟着打拍子。",
+    "location": "窗边",
+    "action": "听雨滴落在窗沿",
+    "timeOfDay": "雨天",
+    "lighting": "阴天柔光",
+    "camera": "中景，雨窗与人物侧影同框",
+    "mood": "安静",
+    "sceneTags": [
+      "standing",
+      "rain on window",
+      "looking through window",
+      "overcast light",
+      "medium shot"
+    ],
+    "promptProse": "Virtuosa listens to rain by a window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "rain on window",
+      "looking through window",
+      "overcast light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

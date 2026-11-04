@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_music_box",
+  "revision": 1,
+  "sortOrder": 2965,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_music_box",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "become_anew",
+    "title": "迷迭香 · 短短的旋律",
+    "category": "泰拉日常",
+    "description": "音乐盒只会重复一小段旋律。她跟着哼了两遍，等曲子停下，才把盖子轻轻合上。",
+    "location": "起居室",
+    "action": "听打开的音乐盒",
+    "timeOfDay": "夜晚",
+    "lighting": "台灯暖光",
+    "camera": "中景，音乐盒放在桌面",
+    "mood": "安静",
+    "sceneTags": [
+      "sitting",
+      "music box",
+      "table",
+      "warm lamp light",
+      "evening",
+      "medium shot"
+    ],
+    "promptProse": "Rosmontis listens to an open music box at a living room table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "music box",
+      "table",
+      "warm lamp light",
+      "evening",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

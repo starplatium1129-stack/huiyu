@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_flower_arrangement",
+  "revision": 1,
+  "sortOrder": 2955,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_flower_arrangement",
+    "characterId": "rosa_arknights",
+    "outfitId": "masterpiece",
+    "title": "早露 · 桌上的白花",
+    "category": "泰拉日常",
+    "description": "白花刚插进瓶里，枝条便朝一边散开。早露旋转花瓶，找到一个大家都能看见的位置。",
+    "location": "餐厅",
+    "action": "把白花放进花瓶",
+    "timeOfDay": "上午",
+    "lighting": "餐桌侧光",
+    "camera": "中景，花瓶和桌面同框",
+    "mood": "舒心",
+    "sceneTags": [
+      "arranging flowers",
+      "white flowers",
+      "vase",
+      "dining table",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Rosa arranges white flowers in a vase on a dining table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "arranging flowers",
+      "white flowers",
+      "vase",
+      "dining table",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

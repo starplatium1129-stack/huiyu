@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_concert_seat",
+  "revision": 1,
+  "sortOrder": 3002,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights_concert_seat",
+    "characterId": "horn_arknights",
+    "outfitId": "standard",
+    "title": "号角 · 演出开始前",
+    "category": "泰拉日常",
+    "description": "大厅灯光渐暗，她合上节目单，确认手机已经静音。音乐响起前，她朝你点了点头。",
+    "location": "音乐厅",
+    "action": "坐在座位上看节目单",
+    "timeOfDay": "夜晚",
+    "lighting": "柔和厅灯",
+    "camera": "中景，节目单和座椅同框",
+    "mood": "期待",
+    "sceneTags": [
+      "sitting",
+      "holding program",
+      "concert hall",
+      "soft lighting",
+      "medium shot"
+    ],
+    "promptProse": "Horn reads a program in a concert hall seat.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding program",
+      "concert hall",
+      "soft lighting",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

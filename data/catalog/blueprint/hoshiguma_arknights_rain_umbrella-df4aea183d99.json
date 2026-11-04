@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_rain_umbrella",
+  "revision": 2,
+  "sortOrder": 2995,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_rain_umbrella",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "standard",
+    "title": "星熊 · 同一把伞",
+    "category": "亲密时刻",
+    "description": "伞不算大，她干脆把你拉到身边，笑着说这样谁也不会淋湿。雨声很响，你们的肩膀挨得很近。",
+    "location": "街边",
+    "action": "撑伞靠近，将伞偏向镜头",
+    "timeOfDay": "雨夜",
+    "lighting": "雨中霓虹",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding umbrella",
+      "close to viewer",
+      "looking at viewer",
+      "warm smile",
+      "rain",
+      "city street",
+      "neon reflections",
+      "medium close-up"
+    ],
+    "promptProse": "Hoshiguma holds an umbrella close and smiles toward the viewer in the rain.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding umbrella",
+      "close to viewer",
+      "looking at viewer",
+      "warm smile",
+      "rain",
+      "city street",
+      "neon reflections",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

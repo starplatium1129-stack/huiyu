@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_museum_close",
+  "revision": 2,
+  "sortOrder": 3094,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "reed_arknights_museum_close",
+    "characterId": "reed_arknights",
+    "outfitId": "curator",
+    "title": "焰影苇草 · 展厅里的一句话",
+    "category": "亲密时刻",
+    "description": "展厅即将关门，她靠近一些，悄声问下次能不能再陪她来看这幅画，语尾带着一点期待。",
+    "location": "博物馆",
+    "action": "侧身靠近，低声说出邀请",
+    "timeOfDay": "傍晚",
+    "lighting": "展柜暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning toward viewer",
+      "looking at viewer",
+      "hopeful smile",
+      "museum",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Reed leans toward the viewer with a hopeful smile in a softly lit museum.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning toward viewer",
+      "looking at viewer",
+      "hopeful smile",
+      "museum",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

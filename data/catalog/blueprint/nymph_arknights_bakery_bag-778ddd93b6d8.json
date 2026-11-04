@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_bakery_bag",
+  "revision": 1,
+  "sortOrder": 2893,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_bakery_bag",
+    "characterId": "nymph_arknights",
+    "outfitId": "sweetness_to_the_heart",
+    "title": "妮芙 · 面包店的小纸袋",
+    "category": "泰拉日常",
+    "description": "店员把刚烤好的面包装进纸袋。她双手接过来，小心避开还烫手的袋底，准备带回去和大家分享。",
+    "location": "街边面包店",
+    "action": "接过装着面包的纸袋",
+    "timeOfDay": "清晨",
+    "lighting": "店窗暖光",
+    "camera": "中景，纸袋与面包柜可见",
+    "mood": "期待",
+    "sceneTags": [
+      "standing",
+      "holding paper bag",
+      "bread",
+      "bakery counter",
+      "warm window light",
+      "medium shot"
+    ],
+    "promptProse": "Nymph receives a paper bag of bread at a bakery counter.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding paper bag",
+      "bread",
+      "bakery counter",
+      "warm window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_terrace_pause",
+  "revision": 2,
+  "sortOrder": 2984,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "fiammetta_arknights_terrace_pause",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "standard",
+    "title": "菲亚梅塔 · 露台的晚风",
+    "category": "亲密时刻",
+    "description": "风凉起来，她伸手拉住你，带你站到挡风的一侧。等你靠近，她才松开手，低声问要不要多待一会儿。",
+    "location": "露台",
+    "action": "倚栏回眸，轻轻握住镜头前的手",
+    "timeOfDay": "夜晚",
+    "lighting": "城市灯光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning on railing",
+      "reaching toward viewer",
+      "looking back",
+      "soft smile",
+      "terrace",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Fiammetta reaches for the viewer’s hand and looks back beside a terrace railing.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning on railing",
+      "reaching toward viewer",
+      "looking back",
+      "soft smile",
+      "terrace",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

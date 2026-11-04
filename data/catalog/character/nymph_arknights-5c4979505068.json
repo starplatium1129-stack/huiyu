@@ -1,0 +1,107 @@
+{
+  "kind": "character",
+  "id": "nymph_arknights",
+  "revision": 2,
+  "sortOrder": 276,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "nymph_arknights",
+    "profile": {
+      "id": "nymph_arknights",
+      "name": "妮芙",
+      "alias": [
+        "Nymph",
+        "妮芙"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "你好！今天有什么需要帮忙的吗？",
+      "visual_dna": {
+        "signature": "粉色长发与粉色眼睛，萨卡兹角、尖耳和尾巴；笑容明朗。"
+      },
+      "traits": [
+        "粉色长发",
+        "粉色眼睛",
+        "萨卡兹角",
+        "尖耳",
+        "尾巴"
+      ],
+      "personality": [
+        "热心助人",
+        "乐观",
+        "对新事物充满好奇"
+      ],
+      "likes": [
+        "甜点",
+        "帮助邻居",
+        "结识新朋友"
+      ],
+      "bg_story": "妮芙是来自卡兹戴尔的萨卡兹，拥有感知心灵的能力。她曾留在故乡帮助周围的人，后来通过罗德岛驻卡兹戴尔办事处认识了罗德岛，并成为外勤预备干员。",
+      "identity": {
+        "role": "罗德岛外勤预备干员",
+        "occupation": "罗德岛干员",
+        "faction": "罗德岛",
+        "region": "卡兹戴尔",
+        "race": "萨卡兹",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "妮芙立绘待制作"
+      },
+      "tags": [
+        "粉发",
+        "萨卡兹",
+        "甜点"
+      ],
+      "voice": "这个甜点要不要一起尝尝？"
+    },
+    "popular": {
+      "id": "nymph_arknights",
+      "displayName": "妮芙",
+      "originalName": "Nymph",
+      "franchise": "Arknights",
+      "aliases": [
+        "Nymph",
+        "妮芙"
+      ],
+      "identityProse": "Nymph from Arknights has long pink hair, pink eyes, horns, pointed ears and a tail.",
+      "identityTokens": [
+        "nymph (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "long hair",
+        "pink eyes",
+        "horns",
+        "pointy ears",
+        "demon tail"
+      ],
+      "characterTokens": [
+        "nymph (arknights)",
+        "nymph (sweetness to the heart) (arknights)",
+        "nymph (blooming reverie) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "nymph (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "curatedArtistStyles": [
+        "yuji_(fantasia)",
+        "namie-kun",
+        "anmi"
+      ]
+    }
+  }
+}

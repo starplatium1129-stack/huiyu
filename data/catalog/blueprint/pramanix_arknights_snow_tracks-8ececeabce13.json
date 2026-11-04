@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pramanix_arknights_snow_tracks",
+  "revision": 1,
+  "sortOrder": 2852,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "data": {
+    "id": "pramanix_arknights_snow_tracks",
+    "characterId": "pramanix_arknights",
+    "outfitId": "casters_frost",
+    "title": "初雪 · 新雪上的脚印",
+    "category": "泰拉日常",
+    "description": "小径上先有一串小小的脚印，随后才是她的。初雪低头辨认了片刻，绕开它们继续走，免得把痕迹踩乱。",
+    "location": "山镇小径",
+    "action": "停下观察新雪上的脚印",
+    "timeOfDay": "午后",
+    "lighting": "雪后透亮天光",
+    "camera": "全身，蜿蜒脚印延伸至远处",
+    "mood": "好奇",
+    "sceneTags": [
+      "standing",
+      "looking down",
+      "footprints in snow",
+      "village path",
+      "winter daylight",
+      "full body"
+    ],
+    "promptProse": "Pramanix pauses beside small tracks on a snow-covered village path.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "looking down",
+      "footprints in snow",
+      "village path",
+      "winter daylight",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

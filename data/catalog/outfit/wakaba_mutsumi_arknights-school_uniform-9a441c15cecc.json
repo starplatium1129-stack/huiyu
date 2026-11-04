@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/school_uniform",
+  "revision": 1,
+  "sortOrder": 1966,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "school_uniform",
+      "name": "月之森校服 · 蓝色百褶裙",
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A blue school uniform shirt and pleated skirt with a grey neckerchief, black socks and brown loafers.",
+      "tokens": [
+        "blue shirt",
+        "blue pleated skirt",
+        "grey neckerchief",
+        "black socks",
+        "brown loafers"
+      ]
+    }
+  }
+}

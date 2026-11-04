@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_rabbits_book",
+  "revision": 1,
+  "sortOrder": 2969,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_rabbits_book",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "marionettes_id",
+    "title": "若叶睦 · 兔子图画书",
+    "category": "泰拉日常",
+    "description": "她翻到一页垂耳兔的照片，停留了一会儿，又看了看书页上的饲养说明。",
+    "location": "图书馆",
+    "action": "翻看介绍兔子的书",
+    "timeOfDay": "白日",
+    "lighting": "书架间柔光",
+    "camera": "中近景，图画书位于前景",
+    "mood": "安静",
+    "sceneTags": [
+      "sitting",
+      "reading picture book",
+      "rabbit illustration",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Mutsumi reads an illustrated book about rabbits in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "reading picture book",
+      "rabbit illustration",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

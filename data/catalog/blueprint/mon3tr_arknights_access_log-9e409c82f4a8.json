@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_access_log",
+  "revision": 1,
+  "sortOrder": 3066,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_access_log",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "standard",
+    "title": "Mon3tr · 权限记录",
+    "category": "泰拉日常",
+    "description": "她对着屏幕核对记录表，发现日期填错一格，便请同事确认正确的修改步骤。",
+    "location": "办公室",
+    "action": "查看桌上的记录表",
+    "timeOfDay": "上午",
+    "lighting": "明亮室内光",
+    "camera": "中景，记录表与终端同框",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "reading document",
+      "computer terminal",
+      "office desk",
+      "bright light",
+      "medium shot"
+    ],
+    "promptProse": "Mon3tr checks an access log at an office desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "reading document",
+      "computer terminal",
+      "office desk",
+      "bright light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

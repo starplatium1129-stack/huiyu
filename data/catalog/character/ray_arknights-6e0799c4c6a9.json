@@ -1,0 +1,104 @@
+{
+  "kind": "character",
+  "id": "ray_arknights",
+  "revision": 2,
+  "sortOrder": 278,
+  "createdAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "ray_arknights",
+    "profile": {
+      "id": "ray_arknights",
+      "name": "莱伊",
+      "alias": [
+        "Ray",
+        "莱叶菈"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "你看到那只沙地兽了吗？它大概又躲起来了。",
+      "visual_dna": {
+        "signature": "粉红色长发、紫色眼睛与卡特斯长耳；常带着用于呼唤沙地兽的哨子。"
+      },
+      "traits": [
+        "粉色长发",
+        "紫色眼睛",
+        "兔耳",
+        "卡特斯"
+      ],
+      "personality": [
+        "安静务实",
+        "对自然有强烈好奇心",
+        "说话坦率"
+      ],
+      "likes": [
+        "沙地兽",
+        "羽兽图鉴",
+        "观察野生动物"
+      ],
+      "bg_story": "莱伊来自雷姆必拓，曾长期从事探井人的工作。与博士和阿米娅相遇后，她加入罗德岛；她熟悉各地的羽兽，也细心照料一只与她一起生活的沙地兽。",
+      "identity": {
+        "role": "罗德岛干员",
+        "occupation": "前探井人",
+        "faction": "罗德岛",
+        "region": "雷姆必拓",
+        "race": "卡特斯",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "莱伊立绘待制作"
+      },
+      "tags": [
+        "兔耳",
+        "自然",
+        "沙地兽"
+      ],
+      "voice": "这本图鉴里也有它的亲戚。"
+    },
+    "popular": {
+      "id": "ray_arknights",
+      "displayName": "莱伊",
+      "originalName": "Ray",
+      "franchise": "Arknights",
+      "aliases": [
+        "Ray",
+        "莱叶菈",
+        "莱伊"
+      ],
+      "identityProse": "Ray from Arknights has very long pink hair, violet eyes and rabbit ears.",
+      "identityTokens": [
+        "ray (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "very long hair",
+        "violet eyes",
+        "rabbit ears"
+      ],
+      "characterTokens": [
+        "ray (arknights)",
+        "ray (dreaming high) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "ray (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "cenm0",
+        "namie-kun",
+        "morikura_en"
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pozyomka_arknights_pencil_box",
+  "revision": 1,
+  "sortOrder": 2927,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "data": {
+    "id": "pozyomka_arknights_pencil_box",
+    "characterId": "pozyomka_arknights",
+    "outfitId": "snowy_plains_in_words",
+    "title": "鸿雪 · 一盒削好的铅笔",
+    "category": "泰拉日常",
+    "description": "她翻看铅笔盒上的标记，选了一盒更适合画草图的，又请店员另外包好，打算送给朋友。",
+    "location": "文具店",
+    "action": "比较两盒不同硬度的铅笔",
+    "timeOfDay": "上午",
+    "lighting": "店窗日光",
+    "camera": "中近景，铅笔盒清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "holding pencil box",
+      "stationery shop",
+      "shelves",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Pozyomka compares boxes of pencils in a stationery shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding pencil box",
+      "stationery shop",
+      "shelves",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

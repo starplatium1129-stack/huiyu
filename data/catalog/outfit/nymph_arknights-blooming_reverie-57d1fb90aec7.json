@@ -1,0 +1,39 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/blooming_reverie",
+  "revision": 1,
+  "sortOrder": 1951,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "blooming_reverie",
+      "name": "繁花梦幻谈 · 白色花饰礼裙",
+      "default": false,
+      "isDefault": false,
+      "prose": "A white frilled dress with a light capelet, gloves and a flower hair ornament.",
+      "tokens": [
+        "white dress",
+        "frilled dress",
+        "white capelet",
+        "white gloves",
+        "flower hair ornament"
+      ],
+      "identityTokensOverride": [
+        "nymph (arknights)",
+        "nymph (blooming reverie) (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "long hair",
+        "pink eyes",
+        "horns",
+        "pointy ears",
+        "demon tail"
+      ],
+      "identityProseOverride": "Nymph from Arknights has long pink hair, pink eyes, horns, pointed ears and a tail.",
+      "characterId": "nymph_arknights"
+    }
+  }
+}

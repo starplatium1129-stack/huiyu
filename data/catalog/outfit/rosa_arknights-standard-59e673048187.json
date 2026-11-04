@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1962,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 白色外套与百褶裙",
+      "characterId": "rosa_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white jacket over a white pleated skirt, with dark tights and dark shoes.",
+      "tokens": [
+        "white jacket",
+        "white pleated skirt",
+        "black pantyhose",
+        "black shoes"
+      ]
+    }
+  }
+}

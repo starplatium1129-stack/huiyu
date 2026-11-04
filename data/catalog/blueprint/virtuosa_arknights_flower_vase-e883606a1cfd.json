@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_flower_vase",
+  "revision": 1,
+  "sortOrder": 3101,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "virtuosa_arknights_flower_vase",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "diversity_oneness",
+    "title": "塑心 · 琴旁的花",
+    "category": "泰拉日常",
+    "description": "她把花枝剪短一点，插进琴旁的花瓶。调整好位置后，她坐下来继续练习。",
+    "location": "音乐室",
+    "action": "把花放入花瓶",
+    "timeOfDay": "上午",
+    "lighting": "柔和日光",
+    "camera": "中景，花瓶与乐器同框",
+    "mood": "平和",
+    "sceneTags": [
+      "standing",
+      "arranging flowers",
+      "vase",
+      "music room",
+      "soft daylight",
+      "medium shot"
+    ],
+    "promptProse": "Virtuosa arranges flowers beside a musical instrument.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "arranging flowers",
+      "vase",
+      "music room",
+      "soft daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

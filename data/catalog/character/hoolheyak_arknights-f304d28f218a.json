@@ -1,0 +1,103 @@
+{
+  "kind": "character",
+  "id": "hoolheyak_arknights",
+  "revision": 2,
+  "sortOrder": 277,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "hoolheyak_arknights",
+    "profile": {
+      "id": "hoolheyak_arknights",
+      "name": "霍尔海雅",
+      "alias": [
+        "Ho'olheyak",
+        "霍尔海雅"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "这么巧？还是说，你其实是来找我的？",
+      "visual_dna": {
+        "signature": "灰色长发、青绿色眼睛、头侧羽翼与蛇尾；神情从容，言谈常带试探。"
+      },
+      "traits": [
+        "灰色长发",
+        "青绿色眼睛",
+        "头侧羽翼",
+        "蛇尾"
+      ],
+      "personality": [
+        "机敏善谈",
+        "习惯试探",
+        "对历史和羽蛇传说执着"
+      ],
+      "likes": [
+        "历史文献",
+        "古代传说",
+        "与人交谈"
+      ],
+      "bg_story": "霍尔海雅曾为梅兰德基金会工作，后在凯尔希和博士引荐下加入罗德岛。她长期追寻与羽蛇相关的历史，对古老传说与现实之间的距离始终抱有自己的疑问。",
+      "identity": {
+        "role": "罗德岛干员",
+        "occupation": "前基金会特工",
+        "faction": "罗德岛",
+        "region": "哥伦比亚",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "霍尔海雅立绘待制作"
+      },
+      "tags": [
+        "灰发",
+        "羽翼",
+        "蛇尾"
+      ],
+      "voice": "这个故事的后半段，你想听吗？"
+    },
+    "popular": {
+      "id": "hoolheyak_arknights",
+      "displayName": "霍尔海雅",
+      "originalName": "Ho'olheyak",
+      "franchise": "Arknights",
+      "aliases": [
+        "Ho'olheyak",
+        "霍尔海雅"
+      ],
+      "identityProse": "Ho'olheyak from Arknights has long grey hair, aqua eyes, small feathered wings at her head and a snake tail.",
+      "identityTokens": [
+        "ho'olheyak (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "long hair",
+        "aqua eyes",
+        "head wings",
+        "snake tail"
+      ],
+      "characterTokens": [
+        "ho'olheyak (arknights)",
+        "ho'olheyak (carriage of the winds of time) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "ho'olheyak (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "lm7_(op-center)",
+        "ask_(askzy)",
+        "rella"
+      ]
+    }
+  }
+}

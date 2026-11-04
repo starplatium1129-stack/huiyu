@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "fiammetta_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1968,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "fiammetta_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 黑外套与红领带",
+      "characterId": "fiammetta_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A black jacket over a white shirt, a red necktie and a black skirt.",
+      "tokens": [
+        "black jacket",
+        "white shirt",
+        "red necktie",
+        "black skirt"
+      ]
+    }
+  }
+}

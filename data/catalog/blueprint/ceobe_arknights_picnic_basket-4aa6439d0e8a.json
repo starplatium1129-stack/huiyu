@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_picnic_basket",
+  "revision": 1,
+  "sortOrder": 3058,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_picnic_basket",
+    "characterId": "ceobe_arknights",
+    "outfitId": "unfettered",
+    "title": "刻俄柏 · 野餐篮",
+    "category": "泰拉日常",
+    "description": "篮子里的三明治被她分成几份，最大的一块留到最后，大家都拿到以后她才开始吃。",
+    "location": "草地",
+    "action": "从篮子里拿出三明治",
+    "timeOfDay": "白日",
+    "lighting": "树荫散射光",
+    "camera": "中景，野餐垫和篮子同框",
+    "mood": "期待",
+    "sceneTags": [
+      "sitting",
+      "holding sandwich",
+      "picnic basket",
+      "picnic blanket",
+      "grass",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Ceobe takes a sandwich from a picnic basket.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding sandwich",
+      "picnic basket",
+      "picnic blanket",
+      "grass",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

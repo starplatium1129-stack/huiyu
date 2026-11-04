@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1976,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 黑红礼服",
+      "characterId": "entelechia_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A black dress and a black-and-red tailcoat with red gloves.",
+      "tokens": [
+        "black dress",
+        "black tailcoat",
+        "red lining",
+        "red gloves"
+      ]
+    }
+  }
+}

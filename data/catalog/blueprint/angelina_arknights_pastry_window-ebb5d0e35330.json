@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "angelina_arknights_pastry_window",
+  "revision": 1,
+  "sortOrder": 3078,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights_pastry_window",
+    "characterId": "angelina_arknights",
+    "outfitId": "standard",
+    "title": "安洁莉娜 · 橱窗里的点心",
+    "category": "泰拉日常",
+    "description": "她在橱窗前停下，指着一块草莓蛋糕，决定等送完最后一件包裹再回来。",
+    "location": "甜品店外",
+    "action": "看橱窗里的蛋糕",
+    "timeOfDay": "下午",
+    "lighting": "店窗暖光",
+    "camera": "中景，蛋糕橱窗与人物同框",
+    "mood": "期待",
+    "sceneTags": [
+      "standing",
+      "looking through window",
+      "strawberry cake",
+      "bakery display",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Angelina looks at strawberry cake through a bakery window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking through window",
+      "strawberry cake",
+      "bakery display",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

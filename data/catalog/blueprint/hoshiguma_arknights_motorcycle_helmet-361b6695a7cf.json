@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_motorcycle_helmet",
+  "revision": 1,
+  "sortOrder": 2987,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_motorcycle_helmet",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "standard",
+    "title": "星熊 · 头盔上的贴纸",
+    "category": "泰拉日常",
+    "description": "她擦掉头盔上的灰，发现旧贴纸边角卷了起来。星熊把它压平，说这张还能再用一阵。",
+    "location": "车库门口",
+    "action": "擦拭摩托车头盔",
+    "timeOfDay": "上午",
+    "lighting": "车库侧光",
+    "camera": "中景，头盔和车辆局部同框",
+    "mood": "闲适",
+    "sceneTags": [
+      "standing",
+      "holding motorcycle helmet",
+      "garage",
+      "motorcycle",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Hoshiguma wipes a motorcycle helmet outside a garage.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding motorcycle helmet",
+      "garage",
+      "motorcycle",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

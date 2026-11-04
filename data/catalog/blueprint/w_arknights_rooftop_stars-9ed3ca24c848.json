@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_rooftop_stars",
+  "revision": 1,
+  "sortOrder": 2942,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "id": "w_arknights_rooftop_stars",
+    "characterId": "w_arknights",
+    "outfitId": "fugue",
+    "title": "W / 维什戴尔 · 楼顶数星星",
+    "category": "泰拉日常",
+    "description": "屋顶上比室内安静。她数了几颗星就嫌太慢，索性躺靠在椅背上，听你继续认星座。",
+    "location": "屋顶",
+    "action": "坐在长椅上看夜空",
+    "timeOfDay": "夜晚",
+    "lighting": "城市远光与星光",
+    "camera": "远景，屋顶和夜空同框",
+    "mood": "放松",
+    "sceneTags": [
+      "sitting",
+      "rooftop bench",
+      "starry sky",
+      "city lights",
+      "night",
+      "wide shot"
+    ],
+    "promptProse": "W sits on a rooftop bench beneath the night sky.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "rooftop bench",
+      "starry sky",
+      "city lights",
+      "night",
+      "wide shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

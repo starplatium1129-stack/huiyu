@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_paper_crane",
+  "revision": 1,
+  "sortOrder": 3040,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_paper_crane",
+    "characterId": "nightingale_arknights",
+    "outfitId": "standard",
+    "title": "夜莺 · 纸鹤",
+    "category": "泰拉日常",
+    "description": "翅膀折得一高一低，她小心地把纸展开，重新沿折痕压平。",
+    "location": "活动室",
+    "action": "折一只纸鹤",
+    "timeOfDay": "白日",
+    "lighting": "桌面日光",
+    "camera": "中近景，纸鹤与双手清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "folding paper crane",
+      "origami paper",
+      "table",
+      "daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Nightingale folds a paper crane at a table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "folding paper crane",
+      "origami paper",
+      "table",
+      "daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

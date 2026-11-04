@@ -1,0 +1,46 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_record_player",
+  "revision": 1,
+  "sortOrder": 2899,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_record_player",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "carriage_of_winds",
+    "title": "霍尔海雅 · 旧唱片的旋律",
+    "category": "泰拉日常",
+    "description": "唱片有一点轻微的杂音，她却没有换掉。旋律走到熟悉的一段时，霍尔海雅用指尖轻轻跟着拍了两下。",
+    "location": "音乐室",
+    "action": "在唱片机旁侧耳听音乐",
+    "timeOfDay": "傍晚",
+    "lighting": "桌灯暖光",
+    "camera": "中景，唱片机在画面一侧",
+    "mood": "闲适",
+    "sceneTags": [
+      "sitting",
+      "record player",
+      "music room",
+      "lamplight",
+      "medium shot"
+    ],
+    "promptProse": "Ho’olheyak listens beside a record player in a softly lit music room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "record player",
+      "music room",
+      "lamplight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

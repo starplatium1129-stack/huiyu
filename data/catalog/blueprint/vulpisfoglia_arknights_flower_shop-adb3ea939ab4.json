@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "vulpisfoglia_arknights_flower_shop",
+  "revision": 1,
+  "sortOrder": 2860,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:09:13.633613700+00:00",
+  "data": {
+    "id": "vulpisfoglia_arknights_flower_shop",
+    "characterId": "vulpisfoglia_arknights",
+    "outfitId": "synesthesia_black_dress",
+    "title": "忍冬 · 花店里的选择",
+    "category": "泰拉日常",
+    "description": "她先问花店是否有铃兰，又挑了几支颜色更淡的花搭配。包装纸不必太华丽，她说，收花的人会更喜欢简单些。",
+    "location": "街角花店",
+    "action": "挑选一束适合送人的花",
+    "timeOfDay": "白日",
+    "lighting": "花店橱窗自然光",
+    "camera": "中景，鲜花构成前景",
+    "mood": "温和",
+    "sceneTags": [
+      "standing",
+      "holding bouquet",
+      "flower shop",
+      "window light",
+      "day",
+      "medium shot"
+    ],
+    "promptProse": "Vulpisfoglia chooses flowers at a neighborhood flower shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding bouquet",
+      "flower shop",
+      "window light",
+      "day",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

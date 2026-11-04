@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_repair_manual",
+  "revision": 1,
+  "sortOrder": 3068,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_repair_manual",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "sharpened_claws",
+    "title": "Mon3tr · 说明书的折角",
+    "category": "泰拉日常",
+    "description": "说明书的折角标着需要检查的一页。她按顺序核对零件，最后把工具放回原处。",
+    "location": "工程室",
+    "action": "翻看设备说明书",
+    "timeOfDay": "下午",
+    "lighting": "工作台灯光",
+    "camera": "中近景，说明书与工具同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "open manual",
+      "small tools",
+      "workbench",
+      "task lighting",
+      "medium close-up"
+    ],
+    "promptProse": "Mon3tr reads a device manual at an engineering workbench.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open manual",
+      "small tools",
+      "workbench",
+      "task lighting",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

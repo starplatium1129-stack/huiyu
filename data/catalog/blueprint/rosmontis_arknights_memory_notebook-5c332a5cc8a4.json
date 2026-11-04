@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_memory_notebook",
+  "revision": 1,
+  "sortOrder": 2956,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_memory_notebook",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "standard",
+    "title": "迷迭香 · 要记住的事",
+    "category": "泰拉日常",
+    "description": "她把今天约好的时间写进本子，又在旁边画了一个小小的记号。写完以后，她把本子推过来请你看看。",
+    "location": "舰内书桌",
+    "action": "在小本子上写字",
+    "timeOfDay": "上午",
+    "lighting": "窗边日光",
+    "camera": "中近景，笔记本与铅笔清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "writing",
+      "notebook",
+      "pencil",
+      "desk",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Rosmontis writes a reminder in a small notebook at her desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "writing",
+      "notebook",
+      "pencil",
+      "desk",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

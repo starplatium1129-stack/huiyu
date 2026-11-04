@@ -1,0 +1,40 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/casters_frost",
+  "revision": 1,
+  "sortOrder": 1942,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "casters_frost",
+      "name": "开斯特之霜 · 蓝色短外套与黑色披肩",
+      "default": true,
+      "isDefault": true,
+      "prose": "A tailored blue jacket with a black capelet, black skirt, gloves, dark hat and boots.",
+      "tokens": [
+        "blue jacket",
+        "black capelet",
+        "black skirt",
+        "black gloves",
+        "black headwear",
+        "boots"
+      ],
+      "identityTokensOverride": [
+        "pramanix (arknights)",
+        "pramanix (caster's frost) (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "twin braids",
+        "grey eyes",
+        "snow leopard ears",
+        "snow leopard tail"
+      ],
+      "identityProseOverride": "Pramanix from Arknights, with very long white hair in twin braids, grey eyes, snow leopard ears and a long snow leopard tail.",
+      "characterId": "pramanix_arknights"
+    }
+  }
+}

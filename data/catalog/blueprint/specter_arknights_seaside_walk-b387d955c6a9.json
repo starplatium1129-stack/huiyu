@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_seaside_walk",
+  "revision": 1,
+  "sortOrder": 3028,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "specter_arknights_seaside_walk",
+    "characterId": "specter_arknights",
+    "outfitId": "undercurrent",
+    "title": "幽灵鲨 · 海边散步",
+    "category": "泰拉日常",
+    "description": "她在栈道上停下，安静听了一阵海浪。风吹起围巾时，她轻轻将它按住。",
+    "location": "海边栈道",
+    "action": "扶着栏杆看海",
+    "timeOfDay": "白日",
+    "lighting": "阴天海岸柔光",
+    "camera": "远景，海面与栈道同框",
+    "mood": "平静",
+    "sceneTags": [
+      "standing",
+      "coastal boardwalk",
+      "ocean",
+      "overcast daylight",
+      "wide shot"
+    ],
+    "promptProse": "Specter watches the sea from a coastal boardwalk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "coastal boardwalk",
+      "ocean",
+      "overcast daylight",
+      "wide shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

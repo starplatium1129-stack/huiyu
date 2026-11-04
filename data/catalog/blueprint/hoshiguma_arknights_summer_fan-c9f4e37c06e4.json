@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_summer_fan",
+  "revision": 1,
+  "sortOrder": 2990,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_summer_fan",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "summer",
+    "title": "星熊 · 借来的扇子",
+    "category": "泰拉日常",
+    "description": "天气热得连路边的猫都躲进树荫。她坐下摇了几下纸扇，转手递给你，自己拿起冰饮。",
+    "location": "街边长椅",
+    "action": "用纸扇给自己扇风",
+    "timeOfDay": "午后",
+    "lighting": "树荫下日光",
+    "camera": "中景，长椅与树影同框",
+    "mood": "惬意",
+    "sceneTags": [
+      "sitting",
+      "holding folding fan",
+      "bench",
+      "tree shade",
+      "summer daylight",
+      "medium shot"
+    ],
+    "promptProse": "Hoshiguma rests on a shaded bench with a folding fan.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding folding fan",
+      "bench",
+      "tree shade",
+      "summer daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

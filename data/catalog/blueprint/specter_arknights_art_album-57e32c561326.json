@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_art_album",
+  "revision": 1,
+  "sortOrder": 3030,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "specter_arknights_art_album",
+    "characterId": "specter_arknights",
+    "outfitId": "standard",
+    "title": "幽灵鲨 · 画册里的蓝色",
+    "category": "泰拉日常",
+    "description": "她翻到一幅海洋画，指尖停在颜色交界的地方。那片蓝让她想起一件还没讲完的事。",
+    "location": "图书馆",
+    "action": "翻看海洋画册",
+    "timeOfDay": "上午",
+    "lighting": "书架柔光",
+    "camera": "中近景，打开的画册清晰",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "open art book",
+      "ocean painting",
+      "library",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Specter reads an ocean art book in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open art book",
+      "ocean painting",
+      "library",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "entelechia_arknights_postcard_stall",
+  "revision": 1,
+  "sortOrder": 3018,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "entelechia_arknights_postcard_stall",
+    "characterId": "entelechia_arknights",
+    "outfitId": "dazzling_blue",
+    "title": "隐德来希 · 旧街景",
+    "category": "泰拉日常",
+    "description": "她翻到一张旧街景，认出画中的建筑，便问摊主是否还有同一系列。",
+    "location": "明信片摊",
+    "action": "翻看旧街景明信片",
+    "timeOfDay": "下午",
+    "lighting": "街道日光",
+    "camera": "中景，卡片架入画",
+    "mood": "好奇",
+    "sceneTags": [
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "street stall",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Entelechia browses city postcards at an outdoor stall.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "street stall",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

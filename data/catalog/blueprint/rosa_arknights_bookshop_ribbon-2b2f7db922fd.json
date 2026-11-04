@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_bookshop_ribbon",
+  "revision": 1,
+  "sortOrder": 2950,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_bookshop_ribbon",
+    "characterId": "rosa_arknights",
+    "outfitId": "standard",
+    "title": "早露 · 书店的包装纸",
+    "category": "泰拉日常",
+    "description": "店员借给她一卷丝带。早露将准备送人的书包好，觉得蝴蝶结有些歪，又解开重新系了一次。",
+    "location": "街角书店",
+    "action": "替书系上包装丝带",
+    "timeOfDay": "下午",
+    "lighting": "暖色店灯",
+    "camera": "中景，礼物和柜台同框",
+    "mood": "温柔",
+    "sceneTags": [
+      "tying ribbon",
+      "wrapped book",
+      "bookstore counter",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Rosa ties a ribbon around a wrapped book at a bookstore counter.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "tying ribbon",
+      "wrapped book",
+      "bookstore counter",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

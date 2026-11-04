@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_bread_bag",
+  "revision": 1,
+  "sortOrder": 3047,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_bread_bag",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "serenity",
+    "title": "白面鸮 · 面包店采购",
+    "category": "泰拉日常",
+    "description": "她对照清单确认了面包数量，提起纸袋离开柜台，还记得多带一份给同事。",
+    "location": "面包店",
+    "action": "提着装面包的纸袋",
+    "timeOfDay": "清晨",
+    "lighting": "店窗暖光",
+    "camera": "中景，面包和纸袋清晰",
+    "mood": "轻松",
+    "sceneTags": [
+      "standing",
+      "holding paper bag",
+      "bread",
+      "bakery",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Ptilopsis carries a paper bag of bread at a bakery.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding paper bag",
+      "bread",
+      "bakery",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

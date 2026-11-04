@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_train_window",
+  "revision": 1,
+  "sortOrder": 2868,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "data": {
+    "id": "ines_arknights_train_window",
+    "characterId": "ines_arknights",
+    "outfitId": "standard",
+    "title": "伊内丝 · 窗外的慢车",
+    "category": "泰拉日常",
+    "description": "列车开得很慢，她把随身包放到脚边。窗外的田地一块接着一块退去，伊内丝难得没有催促时间。",
+    "location": "列车车厢",
+    "action": "坐在窗边望向田野",
+    "timeOfDay": "白日",
+    "lighting": "列车侧窗日光",
+    "camera": "中景，窗外景色掠过",
+    "mood": "放松",
+    "sceneTags": [
+      "sitting",
+      "train interior",
+      "looking out window",
+      "fields",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Ines sits by a train window watching fields pass outside.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "train interior",
+      "looking out window",
+      "fields",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

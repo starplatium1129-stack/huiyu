@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1956,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "干员常装 · 灰色短裙与红色披肩",
+      "default": true,
+      "isDefault": true,
+      "prose": "A grey short dress with epaulettes, a red cape and boots.",
+      "tokens": [
+        "grey dress",
+        "short dress",
+        "epaulettes",
+        "red cape",
+        "boots"
+      ],
+      "characterId": "archetto_arknights"
+    }
+  }
+}

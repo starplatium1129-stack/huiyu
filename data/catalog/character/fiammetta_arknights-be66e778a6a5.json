@@ -1,0 +1,102 @@
+{
+  "kind": "character",
+  "id": "fiammetta_arknights",
+  "revision": 1,
+  "sortOrder": 285,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights",
+    "profile": {
+      "id": "fiammetta_arknights",
+      "name": "菲亚梅塔",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Fiammetta"
+      ],
+      "speech": "别绕弯子，有事就直说。",
+      "visual_dna": {
+        "signature": "红色短发、红眼和黎博利羽饰，常穿黑色外套与红领带。"
+      },
+      "traits": [
+        "红色短发",
+        "红眼",
+        "羽饰",
+        "红领带"
+      ],
+      "personality": [
+        "直率",
+        "有责任心",
+        "容易对熟人无奈"
+      ],
+      "likes": [
+        "清静的休息时间",
+        "可靠的约定",
+        "整洁的行程"
+      ],
+      "bg_story": "菲亚梅塔是拉特兰公证所的资深特派员，与莫斯提马等人有着很深的交情。她说话直接，一旦认定目标就会坚持到底。",
+      "identity": {
+        "role": "公证所资深特派员",
+        "occupation": "特派员",
+        "faction": "拉特兰公证所",
+        "region": "拉特兰",
+        "race": "黎博利",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "红发",
+        "黎博利",
+        "拉特兰"
+      ],
+      "voice": "事情办完了，走吧。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "菲亚梅塔立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "fiammetta_arknights",
+      "displayName": "菲亚梅塔",
+      "originalName": "Fiammetta",
+      "franchise": "Arknights",
+      "aliases": [
+        "Fiammetta"
+      ],
+      "identityProse": "Fiammetta from Arknights has short red hair, red eyes, avian ears and a bird tail.",
+      "identityTokens": [
+        "fiammetta (arknights)",
+        "1girl",
+        "solo",
+        "red hair",
+        "short hair",
+        "red eyes",
+        "bird ears",
+        "bird tail"
+      ],
+      "characterTokens": [
+        "fiammetta (arknights)",
+        "fiammetta (divine oath) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "fiammetta (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "huanxiang_heitu",
+        "anmi",
+        "swav"
+      ]
+    }
+  }
+}

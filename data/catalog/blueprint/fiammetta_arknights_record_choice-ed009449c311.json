@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_record_choice",
+  "revision": 1,
+  "sortOrder": 2978,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights_record_choice",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "standard",
+    "title": "菲亚梅塔 · 唱片封面",
+    "category": "泰拉日常",
+    "description": "她本来只打算陪你进店，看到一张熟悉的唱片却停下了脚步。她把封面翻到背面，认真看起曲目。",
+    "location": "唱片店",
+    "action": "从唱片架抽出一张唱片",
+    "timeOfDay": "下午",
+    "lighting": "店内柔光",
+    "camera": "中景，唱片架入画",
+    "mood": "好奇",
+    "sceneTags": [
+      "standing",
+      "holding record sleeve",
+      "record store",
+      "shelves",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Fiammetta examines a record sleeve in a music shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding record sleeve",
+      "record store",
+      "shelves",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

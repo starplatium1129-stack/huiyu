@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_balcony_breeze",
+  "revision": 2,
+  "sortOrder": 2904,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_balcony_breeze",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "carriage_of_winds",
+    "title": "霍尔海雅 · 露台上的晚风",
+    "category": "亲密时刻",
+    "description": "夜风掀起披肩，她回头按住衣角，故意让出栏杆旁的空位。“靠近一点，”她说，“这里听得清楚。”",
+    "location": "音乐厅露台",
+    "action": "回头按住披肩，朝镜头勾唇微笑",
+    "timeOfDay": "夜晚",
+    "lighting": "室内漏出的暖光与夜色",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding shawl",
+      "looking over shoulder",
+      "knowing smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Ho’olheyak holds her shawl and looks over her shoulder with a knowing smile on a balcony.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding shawl",
+      "looking over shoulder",
+      "knowing smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

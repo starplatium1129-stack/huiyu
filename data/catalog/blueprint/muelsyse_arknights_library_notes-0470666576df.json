@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_library_notes",
+  "revision": 1,
+  "sortOrder": 2880,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "id": "muelsyse_arknights_library_notes",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "golden_reverie",
+    "title": "缪尔赛思 · 植物志的空白页",
+    "category": "泰拉日常",
+    "description": "旧植物志的图版旁留着一小片空白。她没有直接写在书上，而是另取便笺，记下今天观察到的差异。",
+    "location": "图书室",
+    "action": "在植物志旁写观察笔记",
+    "timeOfDay": "白日",
+    "lighting": "书桌侧光",
+    "camera": "中景，书本和笔记本同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "writing notes",
+      "botanical book",
+      "library desk",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Muelsyse writes notes beside an illustrated botanical book in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "writing notes",
+      "botanical book",
+      "library desk",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

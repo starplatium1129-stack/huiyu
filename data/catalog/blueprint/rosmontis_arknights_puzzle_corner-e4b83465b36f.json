@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_puzzle_corner",
+  "revision": 1,
+  "sortOrder": 2963,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_puzzle_corner",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "standard",
+    "title": "迷迭香 · 拼图缺的一角",
+    "category": "泰拉日常",
+    "description": "桌上的拼图只缺一个角。她找遍盒底，最后发现那块拼图藏在自己的袖口旁。",
+    "location": "休息室",
+    "action": "寻找最后一块拼图",
+    "timeOfDay": "傍晚",
+    "lighting": "桌灯暖光",
+    "camera": "俯角中景，拼图与双手同框",
+    "mood": "投入",
+    "sceneTags": [
+      "sitting",
+      "jigsaw puzzle",
+      "holding puzzle piece",
+      "table",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "promptProse": "Rosmontis searches for the last piece of a puzzle at a table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "jigsaw puzzle",
+      "holding puzzle piece",
+      "table",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

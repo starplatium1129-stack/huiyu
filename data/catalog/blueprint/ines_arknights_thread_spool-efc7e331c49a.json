@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_thread_spool",
+  "revision": 1,
+  "sortOrder": 2867,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "data": {
+    "id": "ines_arknights_thread_spool",
+    "characterId": "ines_arknights",
+    "outfitId": "standard",
+    "title": "伊内丝 · 线轴与针盒",
+    "category": "泰拉日常",
+    "description": "她在几卷近似的深色线之间比较了很久，最后选了最不显眼的一卷。结账时才发现，你已经等在门边。",
+    "location": "手工材料店",
+    "action": "挑选一卷深色缝线",
+    "timeOfDay": "上午",
+    "lighting": "店内自然光",
+    "camera": "中近景，线轴在手边",
+    "mood": "专注",
+    "sceneTags": [
+      "standing",
+      "holding spool of thread",
+      "sewing supplies",
+      "shop shelves",
+      "daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Ines selects a dark spool of thread in a small sewing shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding spool of thread",
+      "sewing supplies",
+      "shop shelves",
+      "daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_tea_timer",
+  "revision": 1,
+  "sortOrder": 3051,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_tea_timer",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "serenity",
+    "title": "白面鸮 · 三分钟茶",
+    "category": "泰拉日常",
+    "description": "沙漏里的最后一点细沙落下，她才取出茶包，平静地宣布泡茶完成。",
+    "location": "茶水间",
+    "action": "看沙漏等待泡茶",
+    "timeOfDay": "下午",
+    "lighting": "台面柔光",
+    "camera": "中景，沙漏和茶杯清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "hourglass",
+      "tea cup",
+      "table",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Ptilopsis watches an hourglass beside a cup of tea.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "hourglass",
+      "tea cup",
+      "table",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

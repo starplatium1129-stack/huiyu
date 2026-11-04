@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_market_basket",
+  "revision": 1,
+  "sortOrder": 2988,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_market_basket",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "summer",
+    "title": "星熊 · 夜市带回的点心",
+    "category": "泰拉日常",
+    "description": "她绕了半圈，买到你说想尝的点心。纸袋还有些烫，她一边换手一边招呼你找个座位。",
+    "location": "龙门夜市",
+    "action": "提着装点心的纸袋",
+    "timeOfDay": "夜晚",
+    "lighting": "摊位暖灯",
+    "camera": "中景，夜市招牌虚化",
+    "mood": "愉快",
+    "sceneTags": [
+      "standing",
+      "holding paper bag",
+      "street food",
+      "night market",
+      "warm lantern light",
+      "medium shot"
+    ],
+    "promptProse": "Hoshiguma carries a bag of snacks through a night market.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding paper bag",
+      "street food",
+      "night market",
+      "warm lantern light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

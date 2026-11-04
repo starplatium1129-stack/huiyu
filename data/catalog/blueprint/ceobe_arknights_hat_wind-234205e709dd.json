@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_hat_wind",
+  "revision": 1,
+  "sortOrder": 3059,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_hat_wind",
+    "characterId": "ceobe_arknights",
+    "outfitId": "unfettered",
+    "title": "刻俄柏 · 帽子差点飞走",
+    "category": "泰拉日常",
+    "description": "一阵风吹来，她赶紧按住帽子，发现朋友差点笑出声，自己也跟着笑了。",
+    "location": "公园小路",
+    "action": "按住被风吹起的帽子",
+    "timeOfDay": "下午",
+    "lighting": "晴朗日光",
+    "camera": "全身，树木和小路同框",
+    "mood": "活泼",
+    "sceneTags": [
+      "standing",
+      "holding hat",
+      "park path",
+      "wind",
+      "daylight",
+      "full body"
+    ],
+    "promptProse": "Ceobe holds her white hat on a breezy park path.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding hat",
+      "park path",
+      "wind",
+      "daylight",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

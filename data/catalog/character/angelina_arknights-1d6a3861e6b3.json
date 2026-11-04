@@ -1,0 +1,105 @@
+{
+  "kind": "character",
+  "id": "angelina_arknights",
+  "revision": 1,
+  "sortOrder": 295,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights",
+    "profile": {
+      "id": "angelina_arknights",
+      "name": "安洁莉娜",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Angelina",
+        "安心院安洁莉娜"
+      ],
+      "speech": "包裹送到了！接下来去哪里呢？",
+      "visual_dna": {
+        "signature": "棕色双马尾、红色眼睛和沃尔珀耳朵、尾巴，常穿红色外套。"
+      },
+      "traits": [
+        "棕色双马尾",
+        "红眼",
+        "狐耳",
+        "狐尾"
+      ],
+      "personality": [
+        "开朗",
+        "热心",
+        "做事认真"
+      ],
+      "likes": [
+        "送达包裹",
+        "和朋友聊天",
+        "街边的甜点"
+      ],
+      "bg_story": "安洁莉娜本名安心院安洁莉娜，来自叙拉古，曾从事信使工作。她作为实习干员在罗德岛提供后勤支持。",
+      "identity": {
+        "role": "罗德岛实习干员",
+        "occupation": "信使、实习干员",
+        "faction": "罗德岛",
+        "region": "叙拉古",
+        "race": "沃尔珀",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "棕发",
+        "沃尔珀",
+        "信使"
+      ],
+      "voice": "路上看到一家新店，等会儿一起去吧！",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "安洁莉娜立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "angelina_arknights",
+      "displayName": "安洁莉娜",
+      "originalName": "Angelina",
+      "franchise": "Arknights",
+      "aliases": [
+        "Angelina",
+        "安心院安洁莉娜"
+      ],
+      "identityProse": "Angelina from Arknights has long brown twintails, red eyes, fox ears and a fox tail.",
+      "identityTokens": [
+        "angelina (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "long hair",
+        "twintails",
+        "red eyes",
+        "fox ears",
+        "fox tail"
+      ],
+      "characterTokens": [
+        "angelina (arknights)",
+        "angelina (distinguished visitor) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "angelina (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "curatedArtistStyles": [
+        "lm7_(op-center)",
+        "namie-kun",
+        "anmi"
+      ]
+    }
+  }
+}

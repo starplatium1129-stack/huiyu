@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_schedule_book",
+  "revision": 1,
+  "sortOrder": 3108,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights_schedule_book",
+    "characterId": "swire_arknights",
+    "outfitId": "standard",
+    "title": "诗怀雅 · 日程本",
+    "category": "泰拉日常",
+    "description": "她把临时改动记进日程本，合上之前又确认了一遍晚餐的时间。",
+    "location": "办公桌",
+    "action": "整理今日行程",
+    "timeOfDay": "上午",
+    "lighting": "窗边日光",
+    "camera": "中近景，日程本与笔清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "appointment book",
+      "pen",
+      "office desk",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Swire checks an appointment book at her desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "appointment book",
+      "pen",
+      "office desk",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

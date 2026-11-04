@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_paper_plane",
+  "revision": 1,
+  "sortOrder": 3065,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_paper_plane",
+    "characterId": "ceobe_arknights",
+    "outfitId": "unfettered",
+    "title": "刻俄柏 · 纸飞机比赛",
+    "category": "泰拉日常",
+    "description": "她把纸飞机举到肩旁，等大家准备好才一起放飞，随后跑去看谁的落得最远。",
+    "location": "草坪",
+    "action": "举起折好的纸飞机",
+    "timeOfDay": "白日",
+    "lighting": "明亮日光",
+    "camera": "全身，草坪与天空同框",
+    "mood": "兴奋",
+    "sceneTags": [
+      "standing",
+      "holding paper airplane",
+      "lawn",
+      "blue sky",
+      "daylight",
+      "full body"
+    ],
+    "promptProse": "Ceobe holds a paper airplane on a sunny lawn.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding paper airplane",
+      "lawn",
+      "blue sky",
+      "daylight",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

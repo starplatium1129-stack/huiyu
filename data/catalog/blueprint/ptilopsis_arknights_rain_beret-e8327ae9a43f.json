@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_rain_beret",
+  "revision": 2,
+  "sortOrder": 3054,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_rain_beret",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "serenity",
+    "title": "白面鸮 · 雨停后的街道",
+    "category": "亲密时刻",
+    "description": "雨刚停，她扶住帽子回过身，向你伸出手，说湿滑路面上保持同行距离更安全。",
+    "location": "街边",
+    "action": "扶帽回眸，伸手示意同行",
+    "timeOfDay": "雨后",
+    "lighting": "湿润街道反光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding beret",
+      "looking back",
+      "reaching toward viewer",
+      "wet street",
+      "streetlight reflections",
+      "medium close-up"
+    ],
+    "promptProse": "Ptilopsis holds her beret and offers her hand to the viewer on a wet street.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding beret",
+      "looking back",
+      "reaching toward viewer",
+      "wet street",
+      "streetlight reflections",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

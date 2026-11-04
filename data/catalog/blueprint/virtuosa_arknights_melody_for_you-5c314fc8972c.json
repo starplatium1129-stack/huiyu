@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_melody_for_you",
+  "revision": 2,
+  "sortOrder": 3103,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "virtuosa_arknights_melody_for_you",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "standard",
+    "title": "塑心 · 留给你的旋律",
+    "category": "亲密时刻",
+    "description": "她停下演奏，倾身问你最喜欢哪一段。听完回答，她笑着说，下一遍只演奏给你听。",
+    "location": "音乐室",
+    "action": "轻扶琴弓，倾身注视镜头",
+    "timeOfDay": "傍晚",
+    "lighting": "暖色侧光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding violin bow",
+      "leaning toward viewer",
+      "looking at viewer",
+      "inviting smile",
+      "music room",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Virtuosa holds a violin bow and leans toward the viewer with an inviting smile.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding violin bow",
+      "leaning toward viewer",
+      "looking at viewer",
+      "inviting smile",
+      "music room",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

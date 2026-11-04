@@ -1,0 +1,104 @@
+{
+  "kind": "character",
+  "id": "virtuosa_arknights",
+  "revision": 1,
+  "sortOrder": 297,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "virtuosa_arknights",
+    "profile": {
+      "id": "virtuosa_arknights",
+      "name": "塑心",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Virtuosa",
+        "阿尔图罗·吉亚洛"
+      ],
+      "speech": "听，旋律里还有一段你没有发现。",
+      "visual_dna": {
+        "signature": "黑色长发、灰色眼睛、破碎的暗色光环与黑色羽翼。"
+      },
+      "traits": [
+        "黑色长发",
+        "灰眼",
+        "破碎光环",
+        "黑色羽翼"
+      ],
+      "personality": [
+        "从容",
+        "善于观察",
+        "对情感与音乐着迷"
+      ],
+      "likes": [
+        "音乐",
+        "演奏乐器",
+        "倾听他人的故事"
+      ],
+      "bg_story": "阿尔图罗·吉亚洛是出身拉特兰的音乐家，以“塑心”之名暂留罗德岛。她游历多地，精通多种乐器，也对人的情感有独特的兴趣。",
+      "identity": {
+        "role": "音乐家、罗德岛干员",
+        "occupation": "音乐家",
+        "faction": "罗德岛",
+        "region": "拉特兰",
+        "race": "萨科塔",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "黑发",
+        "萨科塔",
+        "音乐"
+      ],
+      "voice": "这段旋律，愿意再听一次吗？",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "塑心立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "virtuosa_arknights",
+      "displayName": "塑心",
+      "originalName": "Virtuosa",
+      "franchise": "Arknights",
+      "aliases": [
+        "Virtuosa",
+        "阿尔图罗·吉亚洛"
+      ],
+      "identityProse": "Virtuosa from Arknights has very long black hair, grey eyes, a broken dark halo and dark wings.",
+      "identityTokens": [
+        "virtuosa (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "very long hair",
+        "grey eyes",
+        "broken halo",
+        "black wings"
+      ],
+      "characterTokens": [
+        "virtuosa (arknights)",
+        "virtuosa (diversity oneness) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "virtuosa (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "ryuuzaki_ichi",
+        "ask_(askzy)",
+        "swav"
+      ]
+    }
+  }
+}

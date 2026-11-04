@@ -1,0 +1,102 @@
+{
+  "kind": "character",
+  "id": "entelechia_arknights",
+  "revision": 1,
+  "sortOrder": 289,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "entelechia_arknights",
+    "profile": {
+      "id": "entelechia_arknights",
+      "name": "隐德来希",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Entelechia"
+      ],
+      "speech": "你想知道的，我未必都会告诉你。",
+      "visual_dna": {
+        "signature": "黑色短发、红色眼睛、尖耳与萨卡兹角，衣着讲究。"
+      },
+      "traits": [
+        "黑色短发",
+        "红眼",
+        "尖耳",
+        "萨卡兹角"
+      ],
+      "personality": [
+        "机敏",
+        "善于观察",
+        "谈吐从容"
+      ],
+      "likes": [
+        "精致的衣饰",
+        "有趣的对话",
+        "观察他人"
+      ],
+      "bg_story": "隐德来希是卡兹戴尔情报组织“玫瑰河畔”的成员，曾与巴别塔合作。她以访客身份留在罗德岛，合作多以私人委托的形式进行。",
+      "identity": {
+        "role": "玫瑰河畔成员",
+        "occupation": "情报人员",
+        "faction": "玫瑰河畔",
+        "region": "卡兹戴尔",
+        "race": "萨卡兹",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "黑发",
+        "萨卡兹",
+        "玫瑰"
+      ],
+      "voice": "这个问题，留到下次再回答吧。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "隐德来希立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "entelechia_arknights",
+      "displayName": "隐德来希",
+      "originalName": "Entelechia",
+      "franchise": "Arknights",
+      "aliases": [
+        "Entelechia"
+      ],
+      "identityProse": "Entelechia from Arknights has short black hair, red eyes, pointed ears and dark horns.",
+      "identityTokens": [
+        "entelechia (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "short hair",
+        "red eyes",
+        "pointy ears",
+        "horns"
+      ],
+      "characterTokens": [
+        "entelechia (arknights)",
+        "entelechia (dazzling blue) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "entelechia (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "ask_(askzy)",
+        "anmi",
+        "swav"
+      ]
+    }
+  }
+}

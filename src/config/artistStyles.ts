@@ -38,7 +38,7 @@ export const ARTIST_CATEGORIES: ReadonlyArray<{ id: 'all' | ArtistCategory; labe
 ] as const
 
 const ARTIST_STYLE_IDS = new Set(
-  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume yabuki_kentarou betanonbeet blue_archive_style oouso okkimon uof dairi ebifurya hammer_(sunset_beach) haruyama_kazunori ruu_(tksymkw) itomugi-kun yaegashi_nan mizuki_hitoshi kouji_(campus_life) kanon_(kurogane_knights)'.split(' '),
+  'kantoku shirabi bunbun morikura_en anmi rella mika_pikazo nardack fuzichoco hxxg swav so-bin muririn kobuichi yoneyama_mai hiten_(hitenkei) lam_(ramdayo) tiv lack ask_(askzy) azuuru paryi hisasi suimya tsunako atdan jazz_jack rucarachi kousaki_rui xinzoruo nekotomi_chao momoco_haru ponkan8 shirotaka abe_tsukasa fujiwara_cocoa kazutake_hazano fujimoto_tatsuki takeuchi_takashi gweda eufoniuz solar_(happymonk) alllisso mesilmen xiayehongming huanxiang_heitu liduke alchemaniac namie-kun ryuuzaki_ichi sho_(sho_lwlw) banban_(vvvviiiiiia) norizc yuji_(fantasia) lm7_(op-center) cenm0 chuzenji skade wenquangua infukun m9nokuro starshadowmagician five-fall asano_kyoji isayama_hajime yokoyari_mengo wei_at_w hidulume yabuki_kentarou betanonbeet blue_archive_style oouso okkimon uof dairi ebifurya hammer_(sunset_beach) haruyama_kazunori ruu_(tksymkw) itomugi-kun yaegashi_nan mizuki_hitoshi kouji_(campus_life) kanon_(kurogane_knights)'.split(' '),
 )
 
 /** Lightweight sampling candidates derived from the same whitelist as normalization. */
@@ -78,6 +78,22 @@ const ARTIST_STYLE_ALIASES: Record<string, string> = {
   '麻痹的小日子': 'liduke',
   'gilangak92': 'alchemaniac',
   'alchemaniaC': 'alchemaniac',
+  namie: 'namie-kun',
+  nambarimasu: 'namie-kun',
+  namgoreng: 'namie-kun',
+  ryuzakiichi: 'ryuuzaki_ichi',
+  '竜崎いち': 'ryuuzaki_ichi',
+  sho_lwlw: 'sho_(sho_lwlw)',
+  masarustrongest: 'sho_(sho_lwlw)',
+  '轟将': 'sho_(sho_lwlw)',
+  vvvviiiiiia: 'banban_(vvvviiiiiia)',
+  '板板': 'banban_(vvvviiiiiia)',
+  yuji: 'yuji_(fantasia)',
+  lm7: 'lm7_(op-center)',
+  '温泉瓜': 'wenquangua',
+  'STAR影法师': 'starshadowmagician',
+  '伍秋秋秋秋': 'five-fall',
+  fivefallall: 'five-fall',
   // 巨人、我推、终末地原画师别名
   asano: 'asano_kyoji',
   'asano kyoji': 'asano_kyoji',
@@ -222,6 +238,21 @@ const KREA_ARTIST_PROSE: Record<string, string> = {
   huanxiang_heitu: 'ornate Chinese fantasy illustration with divine-demonic motifs, intricate decorative details, and luminous elegant figures',
   liduke: 'soft delicate thick-paint illustration with gentle light diffusion, warm skin tones, and serene feminine charm',
   alchemaniac: 'cool melancholic illustration with deep sea atmosphere, subdued palette, and refined elegant lines',
+  'namie-kun': 'delicate character illustration with soft colors and expressive eyes',
+  ryuuzaki_ichi: 'detailed fantasy character illustration with refined costumes and cool, restrained colors',
+  'sho_(sho_lwlw)': 'finely detailed character illustration with soft light, rich fabrics and atmospheric settings',
+  'banban_(vvvviiiiiia)': 'dramatic character illustration with refined fashion, expressive silhouettes and rich contrast',
+  norizc: 'luminous fantasy character illustration with delicate fabrics and atmospheric natural light',
+  'yuji_(fantasia)': 'colorful fantasy character illustration with delicate details and playful soft lighting',
+  'lm7_(op-center)': 'polished game character illustration with crisp silhouettes and atmospheric details',
+  cenm0: 'expressive game character illustration with lively color and detailed costume design',
+  chuzenji: 'refined game character illustration with delicate lines and evocative lighting',
+  skade: 'atmospheric game character illustration with elegant silhouettes and cool, delicate colors',
+  wenquangua: 'delicate game character illustration with expressive details and soft colors',
+  infukun: 'confident character illustration with strong silhouettes and clear costume structure',
+  m9nokuro: 'elegant game character illustration with restrained colors and detailed clothing',
+  starshadowmagician: 'delicate game character illustration with luminous colors and detailed clothing',
+  'five-fall': 'expressive game character illustration with bold silhouettes and detailed design',
   asano_kyoji: 'dramatic WIT Studio anime style with bold dark line art, sharp expressive eyes, dynamic motion tension, and gritty cinematic atmosphere',
   isayama_hajime: 'intense gritty manga illustration with raw emotional tension, deep shadowed eyes, and powerful resolute expression',
   yokoyari_mengo: 'expressive anime manga style with luminous starry eyes, delicate emotional linework, and radiant idol highlights',

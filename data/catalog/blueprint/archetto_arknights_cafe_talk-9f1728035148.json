@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_cafe_talk",
+  "revision": 2,
+  "sortOrder": 2923,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "archetto_arknights_cafe_talk",
+    "characterId": "archetto_arknights",
+    "outfitId": "standard",
+    "title": "空弦 · 咖啡馆的座位",
+    "category": "亲密时刻",
+    "description": "她收好宣传单，双手捧着杯子向你倾身，说这次不谈合作，只想多听听你的事。",
+    "location": "街角咖啡馆",
+    "action": "双手捧杯，略微倾身看向镜头",
+    "timeOfDay": "傍晚",
+    "lighting": "咖啡馆暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "holding cup",
+      "leaning forward",
+      "looking at viewer",
+      "warm smile",
+      "cafe table",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Archetto leans forward over her cup with a warm smile toward the viewer.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding cup",
+      "leaning forward",
+      "looking at viewer",
+      "warm smile",
+      "cafe table",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

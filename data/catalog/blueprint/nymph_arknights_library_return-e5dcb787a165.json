@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_library_return",
+  "revision": 1,
+  "sortOrder": 2887,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_library_return",
+    "characterId": "nymph_arknights",
+    "outfitId": "sweetness_to_the_heart",
+    "title": "妮芙 · 图书馆还书日",
+    "category": "泰拉日常",
+    "description": "她把借来的书按大小叠好，抱到归还台前。看到旁边的新书展示，妮芙忍不住又停下来读封面。",
+    "location": "舰内图书馆",
+    "action": "抱着书站在归还台前",
+    "timeOfDay": "上午",
+    "lighting": "图书馆柔光",
+    "camera": "中景，书架和归还台可见",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "holding books",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Nymph carries a stack of books to a library return desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding books",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

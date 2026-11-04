@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_movie_tickets",
+  "revision": 1,
+  "sortOrder": 2936,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "id": "w_arknights_movie_tickets",
+    "characterId": "w_arknights",
+    "outfitId": "fugue",
+    "title": "W / 维什戴尔 · 电影票根",
+    "category": "泰拉日常",
+    "description": "她晃了晃手里的两张票，故意不先说片名。直到检票口快到了，W才把其中一张塞给你，示意赶紧跟上。",
+    "location": "电影院门口",
+    "action": "拿着两张电影票回头",
+    "timeOfDay": "傍晚",
+    "lighting": "影院招牌暖光",
+    "camera": "中景，票根与入口同框",
+    "mood": "狡黠",
+    "sceneTags": [
+      "standing",
+      "holding tickets",
+      "cinema entrance",
+      "evening",
+      "warm sign light",
+      "medium shot"
+    ],
+    "promptProse": "W holds two movie tickets outside a cinema and looks back.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding tickets",
+      "cinema entrance",
+      "evening",
+      "warm sign light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

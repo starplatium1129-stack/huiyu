@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_tea_leaves",
+  "revision": 1,
+  "sortOrder": 3090,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights_tea_leaves",
+    "characterId": "reed_arknights",
+    "outfitId": "flame_shadow",
+    "title": "焰影苇草 · 茶叶的香气",
+    "category": "泰拉日常",
+    "description": "她先温好茶壶，再放入茶叶。热水倒进去时，淡淡的香气慢慢散开。",
+    "location": "茶室",
+    "action": "把茶叶放进茶壶",
+    "timeOfDay": "下午",
+    "lighting": "柔和窗光",
+    "camera": "中景，茶具与手部清晰",
+    "mood": "放松",
+    "sceneTags": [
+      "sitting",
+      "preparing tea",
+      "tea leaves",
+      "teapot",
+      "tea room",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Reed prepares loose-leaf tea at a table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "preparing tea",
+      "tea leaves",
+      "teapot",
+      "tea room",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

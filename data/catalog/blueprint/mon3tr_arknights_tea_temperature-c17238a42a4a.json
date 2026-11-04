@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_tea_temperature",
+  "revision": 1,
+  "sortOrder": 3070,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_tea_temperature",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "standard",
+    "title": "Mon3tr · 适合喝的温度",
+    "category": "泰拉日常",
+    "description": "她看了看温度计，等茶稍微凉一些，才将杯子推给坐在对面的朋友。",
+    "location": "茶水间",
+    "action": "查看茶杯旁的温度计",
+    "timeOfDay": "下午",
+    "lighting": "暖色室内光",
+    "camera": "中景，茶杯与温度计清晰",
+    "mood": "平静",
+    "sceneTags": [
+      "sitting",
+      "tea cup",
+      "thermometer",
+      "table",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Mon3tr checks the temperature of tea at a table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "tea cup",
+      "thermometer",
+      "table",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

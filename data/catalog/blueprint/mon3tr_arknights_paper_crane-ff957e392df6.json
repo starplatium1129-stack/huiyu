@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_paper_crane",
+  "revision": 1,
+  "sortOrder": 3073,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_paper_crane",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "standard",
+    "title": "Mon3tr · 折纸练习",
+    "category": "泰拉日常",
+    "description": "她照着图示折出纸鹤，翅膀有些不对称，便又拿出一张纸练习。",
+    "location": "休息室",
+    "action": "对照图示折纸鹤",
+    "timeOfDay": "下午",
+    "lighting": "桌面日光",
+    "camera": "中近景，折纸步骤清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "folding paper crane",
+      "instruction sheet",
+      "table",
+      "daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Mon3tr folds a paper crane by following an illustrated guide.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "folding paper crane",
+      "instruction sheet",
+      "table",
+      "daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "angelina_arknights_parcel_ribbon",
+  "revision": 1,
+  "sortOrder": 3076,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights_parcel_ribbon",
+    "characterId": "angelina_arknights",
+    "outfitId": "standard",
+    "title": "安洁莉娜 · 系好的包裹",
+    "category": "泰拉日常",
+    "description": "她检查收件人的名字，把松开的纸绳重新系紧，才将包裹放到待送架上。",
+    "location": "收发室",
+    "action": "给包裹系绳",
+    "timeOfDay": "上午",
+    "lighting": "明亮室内光",
+    "camera": "中景，包裹和纸绳清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "tying parcel",
+      "paper package",
+      "mail room",
+      "bright light",
+      "medium shot"
+    ],
+    "promptProse": "Angelina ties string around a parcel in a mail room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "tying parcel",
+      "paper package",
+      "mail room",
+      "bright light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

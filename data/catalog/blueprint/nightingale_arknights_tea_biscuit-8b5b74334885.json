@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_tea_biscuit",
+  "revision": 1,
+  "sortOrder": 3044,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_tea_biscuit",
+    "characterId": "nightingale_arknights",
+    "outfitId": "elegy",
+    "title": "夜莺 · 点心盘",
+    "category": "泰拉日常",
+    "description": "她把饼干整齐地排在盘里，给你留了最喜欢的那一块。",
+    "location": "茶室",
+    "action": "把点心盘推到桌子中央",
+    "timeOfDay": "下午",
+    "lighting": "暖色窗光",
+    "camera": "中景，茶杯与饼干同框",
+    "mood": "平和",
+    "sceneTags": [
+      "sitting",
+      "plate of biscuits",
+      "tea cups",
+      "tea room",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Nightingale shares a plate of biscuits at a tea table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "plate of biscuits",
+      "tea cups",
+      "tea room",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

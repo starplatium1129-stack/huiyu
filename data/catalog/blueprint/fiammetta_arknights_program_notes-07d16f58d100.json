@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_program_notes",
+  "revision": 1,
+  "sortOrder": 2982,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights_program_notes",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "divine_oath",
+    "title": "菲亚梅塔 · 节目单背面",
+    "category": "泰拉日常",
+    "description": "节目单背面被熟人画了个小人。菲亚梅塔盯着它看了一会儿，把纸折好放进包里。",
+    "location": "剧场门厅",
+    "action": "查看手里的节目单",
+    "timeOfDay": "夜晚",
+    "lighting": "门厅暖光",
+    "camera": "中景，节目单与台阶同框",
+    "mood": "轻松",
+    "sceneTags": [
+      "standing",
+      "holding program",
+      "theater foyer",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Fiammetta reads a theater program in the foyer.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding program",
+      "theater foyer",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

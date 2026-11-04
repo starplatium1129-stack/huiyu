@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_museum_frame",
+  "revision": 1,
+  "sortOrder": 2949,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_museum_frame",
+    "characterId": "rosa_arknights",
+    "outfitId": "masterpiece",
+    "title": "早露 · 画框前的停留",
+    "category": "泰拉日常",
+    "description": "画前的说明牌写得很短，她却看了很久。走到下一幅之前，早露回头又看了一眼画面里的雪。",
+    "location": "小型画廊",
+    "action": "站在画作前端详",
+    "timeOfDay": "白日",
+    "lighting": "画廊柔和顶光",
+    "camera": "中景，画框和人物侧影同框",
+    "mood": "安静",
+    "sceneTags": [
+      "standing",
+      "looking at painting",
+      "art gallery",
+      "framed picture",
+      "soft indoor light",
+      "medium shot"
+    ],
+    "promptProse": "Rosa studies a framed painting in a quiet gallery.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking at painting",
+      "art gallery",
+      "framed picture",
+      "soft indoor light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_flower_press",
+  "revision": 1,
+  "sortOrder": 2962,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_flower_press",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "become_anew",
+    "title": "迷迭香 · 夹在书页里的花",
+    "category": "泰拉日常",
+    "description": "她从桌上捡起一朵自然落下的花，小心夹进书页。等它变干，她想把它送给一直照顾花园的人。",
+    "location": "花园桌边",
+    "action": "把落下的花夹进书里",
+    "timeOfDay": "白日",
+    "lighting": "花园散射光",
+    "camera": "中近景，花与书页清晰",
+    "mood": "珍惜",
+    "sceneTags": [
+      "sitting",
+      "fallen flower",
+      "open book",
+      "garden table",
+      "soft daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Rosmontis places a fallen flower between the pages of a book.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "fallen flower",
+      "open book",
+      "garden table",
+      "soft daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

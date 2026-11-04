@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "pozyomka_arknights_magnolia_ink",
+  "revision": 1,
+  "sortOrder": 2930,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "data": {
+    "id": "pozyomka_arknights_magnolia_ink",
+    "characterId": "pozyomka_arknights",
+    "outfitId": "beside_dreams",
+    "title": "鸿雪 · 窗前的玉兰",
+    "category": "泰拉日常",
+    "description": "玉兰枝影落在纸窗上。她试着用毛笔记下眼前的景色，写到一半停笔，重新斟酌一个词。",
+    "location": "书室",
+    "action": "以毛笔记录窗外的玉兰",
+    "timeOfDay": "上午",
+    "lighting": "纸窗柔光",
+    "camera": "中景，笔墨与窗外花枝同框",
+    "mood": "闲适",
+    "sceneTags": [
+      "sitting",
+      "holding calligraphy brush",
+      "ink",
+      "paper",
+      "magnolia branch",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Pozyomka writes with a brush near a window and magnolia branches.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding calligraphy brush",
+      "ink",
+      "paper",
+      "magnolia branch",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

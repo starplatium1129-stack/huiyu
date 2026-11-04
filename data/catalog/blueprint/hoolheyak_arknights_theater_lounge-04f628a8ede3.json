@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_theater_lounge",
+  "revision": 2,
+  "sortOrder": 2903,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_theater_lounge",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "carriage_of_winds",
+    "title": "霍尔海雅 · 近处的玩笑",
+    "category": "亲密时刻",
+    "description": "她端杯挪近半步，问你刚才是在听演出，还是一直在看她。话说完，她饶有兴致地等着你的回答。",
+    "location": "剧院休息厅",
+    "action": "端杯侧身靠近，挑眉看向镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "壁灯暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "holding teacup",
+      "leaning toward viewer",
+      "raised eyebrow",
+      "teasing smile",
+      "theater lounge",
+      "warm wall lights",
+      "medium close-up"
+    ],
+    "promptProse": "Ho’olheyak leans toward the viewer with a teacup and a teasing raised eyebrow.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding teacup",
+      "leaning toward viewer",
+      "raised eyebrow",
+      "teasing smile",
+      "theater lounge",
+      "warm wall lights",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

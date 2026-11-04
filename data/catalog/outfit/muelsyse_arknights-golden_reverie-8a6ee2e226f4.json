@@ -1,0 +1,40 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/golden_reverie",
+  "revision": 1,
+  "sortOrder": 1949,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "golden_reverie",
+      "name": "漫步于黄金之梦 · 白衬衫与黑色长裙",
+      "default": false,
+      "isDefault": false,
+      "prose": "A white long-sleeved blouse and long black skirt with jewelry and a laurel hair ornament.",
+      "tokens": [
+        "white shirt",
+        "long sleeves",
+        "black skirt",
+        "long skirt",
+        "jewelry",
+        "laurel crown",
+        "high heels"
+      ],
+      "identityTokensOverride": [
+        "muelsyse (arknights)",
+        "muelsyse (golden reverie) (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "very long hair",
+        "yellow eyes",
+        "pointy ears",
+        "elf"
+      ],
+      "identityProseOverride": "Muelsyse from Arknights has very long brown hair, golden eyes and pointed elf ears.",
+      "characterId": "muelsyse_arknights"
+    }
+  }
+}

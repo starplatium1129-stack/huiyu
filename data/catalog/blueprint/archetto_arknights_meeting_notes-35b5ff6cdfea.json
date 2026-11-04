@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_meeting_notes",
+  "revision": 1,
+  "sortOrder": 2919,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "id": "archetto_arknights_meeting_notes",
+    "characterId": "archetto_arknights",
+    "outfitId": "standard",
+    "title": "空弦 · 合作提案的空白处",
+    "category": "泰拉日常",
+    "description": "她在提案边缘写下两条修改意见，又给修道院的联络方式加了下划线，免得对方找不到。",
+    "location": "会议室",
+    "action": "在提案上写下修改意见",
+    "timeOfDay": "下午",
+    "lighting": "会议室自然光",
+    "camera": "中近景，提案和笔可见",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "writing notes",
+      "papers",
+      "meeting table",
+      "daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Archetto writes notes on a proposal in a meeting room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "writing notes",
+      "papers",
+      "meeting table",
+      "daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pozyomka_arknights_letters_sorted",
+  "revision": 1,
+  "sortOrder": 2932,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "data": {
+    "id": "pozyomka_arknights_letters_sorted",
+    "characterId": "pozyomka_arknights",
+    "outfitId": "beside_dreams",
+    "title": "鸿雪 · 寄往远方的信",
+    "category": "泰拉日常",
+    "description": "桌上有几封写给旧友的信。她逐一核对收件人，把不同颜色的书签夹进去，最后才封好信口。",
+    "location": "书桌旁",
+    "action": "把信件装入不同信封",
+    "timeOfDay": "傍晚",
+    "lighting": "桌灯暖光",
+    "camera": "中近景，信纸和信封同框",
+    "mood": "温暖",
+    "sceneTags": [
+      "sitting",
+      "letters",
+      "envelopes",
+      "desk",
+      "lamplight",
+      "medium close-up"
+    ],
+    "promptProse": "Pozyomka sorts letters and envelopes at a lamplit desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "letters",
+      "envelopes",
+      "desk",
+      "lamplight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

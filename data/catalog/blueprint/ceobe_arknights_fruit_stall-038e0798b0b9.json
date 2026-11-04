@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_fruit_stall",
+  "revision": 1,
+  "sortOrder": 3060,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_fruit_stall",
+    "characterId": "ceobe_arknights",
+    "outfitId": "standard",
+    "title": "刻俄柏 · 水果摊前",
+    "category": "泰拉日常",
+    "description": "摊主让她挑几个橘子，她先看颜色，又学着轻轻闻了闻，选出最香的放进篮子。",
+    "location": "街区集市",
+    "action": "挑选橘子",
+    "timeOfDay": "上午",
+    "lighting": "晴朗日光",
+    "camera": "中景，水果摊和篮子同框",
+    "mood": "兴奋",
+    "sceneTags": [
+      "standing",
+      "holding orange",
+      "fruit stall",
+      "basket",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Ceobe chooses oranges at a market fruit stall.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding orange",
+      "fruit stall",
+      "basket",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "vulpisfoglia_arknights_puzzle_piece",
+  "revision": 1,
+  "sortOrder": 2858,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:09:13.633613700+00:00",
+  "data": {
+    "id": "vulpisfoglia_arknights_puzzle_piece",
+    "characterId": "vulpisfoglia_arknights",
+    "outfitId": "out_of_focus",
+    "title": "忍冬 · 最后一块拼图",
+    "category": "泰拉日常",
+    "description": "桌上的图案只剩一个空位。她把最后一块转了两次才放进去，抬头笑着说，刚才那几分钟只是为了确认方向。",
+    "location": "起居室",
+    "action": "在桌前放下拼图的最后一块",
+    "timeOfDay": "午后",
+    "lighting": "侧窗日光",
+    "camera": "俯视中景，拼图与手部清晰",
+    "mood": "得意",
+    "sceneTags": [
+      "sitting",
+      "jigsaw puzzle",
+      "placing puzzle piece",
+      "table",
+      "window light",
+      "overhead view"
+    ],
+    "promptProse": "Vulpisfoglia places the final piece of a jigsaw puzzle on a table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "jigsaw puzzle",
+      "placing puzzle piece",
+      "table",
+      "window light",
+      "overhead view"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

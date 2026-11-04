@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_plant_gift",
+  "revision": 1,
+  "sortOrder": 3075,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_plant_gift",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "standard",
+    "title": "Mon3tr · 花盆的去处",
+    "category": "泰拉日常",
+    "description": "她端着小花盆找到合适的窗台，确认不会挡路后，才放心地放下。",
+    "location": "舰内走廊",
+    "action": "捧着一盆小植物",
+    "timeOfDay": "上午",
+    "lighting": "走廊自然光",
+    "camera": "中景，花盆与人物同框",
+    "mood": "温和",
+    "sceneTags": [
+      "standing",
+      "holding potted plant",
+      "corridor",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Mon3tr carries a small potted plant through a corridor.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding potted plant",
+      "corridor",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/young_branch",
+  "revision": 1,
+  "sortOrder": 1948,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "young_branch",
+      "name": "新枝 · 轻盈白色长裙",
+      "default": true,
+      "isDefault": true,
+      "prose": "A light white dress with delicate jewelry and a hair ornament.",
+      "tokens": [
+        "white dress",
+        "long dress",
+        "jewelry",
+        "hair ornament",
+        "barefoot"
+      ],
+      "identityTokensOverride": [
+        "muelsyse (arknights)",
+        "muelsyse (young branch) (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "very long hair",
+        "yellow eyes",
+        "pointy ears",
+        "elf"
+      ],
+      "identityProseOverride": "Muelsyse from Arknights has very long brown hair, golden eyes and pointed elf ears.",
+      "characterId": "muelsyse_arknights"
+    }
+  }
+}

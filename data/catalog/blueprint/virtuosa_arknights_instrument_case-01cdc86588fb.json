@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_instrument_case",
+  "revision": 1,
+  "sortOrder": 3099,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "virtuosa_arknights_instrument_case",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "standard",
+    "title": "塑心 · 收好的琴弓",
+    "category": "泰拉日常",
+    "description": "练习结束，她擦拭琴弓，将它扣回琴盒。确认乐谱也收好后，她才合上盖子。",
+    "location": "排练室",
+    "action": "将琴弓放进琴盒",
+    "timeOfDay": "下午",
+    "lighting": "窗边侧光",
+    "camera": "中景，琴盒和琴弓清晰",
+    "mood": "平静",
+    "sceneTags": [
+      "standing",
+      "instrument case",
+      "violin bow",
+      "rehearsal room",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Virtuosa puts a bow into an instrument case in a rehearsal room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "instrument case",
+      "violin bow",
+      "rehearsal room",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

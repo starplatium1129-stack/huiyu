@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1952,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "干员常装 · 白色外套与连衣裙",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white long coat over a white dress, with fingerless gloves, dark tights and heeled shoes.",
+      "tokens": [
+        "white coat",
+        "long coat",
+        "white dress",
+        "fingerless gloves",
+        "black pantyhose",
+        "high heels"
+      ],
+      "characterId": "hoolheyak_arknights"
+    }
+  }
+}

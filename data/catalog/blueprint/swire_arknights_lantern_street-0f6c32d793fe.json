@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_lantern_street",
+  "revision": 1,
+  "sortOrder": 3109,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights_lantern_street",
+    "characterId": "swire_arknights",
+    "outfitId": "honor_and_splendor",
+    "title": "诗怀雅 · 街上的灯笼",
+    "category": "泰拉日常",
+    "description": "灯笼挂满街道，她一边走一边挑最漂亮的，最后停在一家老店门口。",
+    "location": "龙门街道",
+    "action": "抬头看节日灯笼",
+    "timeOfDay": "夜晚",
+    "lighting": "灯笼与街灯",
+    "camera": "中景，灯笼和街景同框",
+    "mood": "兴致高",
+    "sceneTags": [
+      "standing",
+      "looking up",
+      "paper lanterns",
+      "city street",
+      "night",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Swire looks at festival lanterns on a city street.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking up",
+      "paper lanterns",
+      "city street",
+      "night",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_choir_sheet",
+  "revision": 1,
+  "sortOrder": 2922,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "id": "archetto_arknights_choir_sheet",
+    "characterId": "archetto_arknights",
+    "outfitId": "glory_of_the_devout",
+    "title": "空弦 · 谱架上的新曲",
+    "category": "泰拉日常",
+    "description": "合唱排练前，她把新曲的谱子放上谱架，翻到需要先练习的段落，等其他人到齐。",
+    "location": "排练室",
+    "action": "把乐谱放到谱架上",
+    "timeOfDay": "傍晚",
+    "lighting": "排练室暖灯",
+    "camera": "中景，谱架和乐谱清晰",
+    "mood": "期待",
+    "sceneTags": [
+      "standing",
+      "sheet music",
+      "music stand",
+      "rehearsal room",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Archetto sets sheet music on a music stand in a rehearsal room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "sheet music",
+      "music stand",
+      "rehearsal room",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

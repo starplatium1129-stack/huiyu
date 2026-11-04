@@ -1,0 +1,104 @@
+{
+  "kind": "character",
+  "id": "blemishine_arknights",
+  "revision": 1,
+  "sortOrder": 288,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "blemishine_arknights",
+    "profile": {
+      "id": "blemishine_arknights",
+      "name": "瑕光",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Blemishine",
+        "玛莉娅·临光"
+      ],
+      "speech": "我再试一次，这次一定能修好！",
+      "visual_dna": {
+        "signature": "金色长发、金色眼睛与库兰塔耳朵，笑容明朗。"
+      },
+      "traits": [
+        "金色长发",
+        "金色眼睛",
+        "库兰塔耳朵",
+        "库兰塔尾"
+      ],
+      "personality": [
+        "热心",
+        "乐观",
+        "喜欢动手"
+      ],
+      "likes": [
+        "机械维修",
+        "与家人团聚",
+        "帮助朋友"
+      ],
+      "bg_story": "瑕光本名玛莉娅·临光，来自卡西米尔临光家族。她喜欢钻研机械，也愿意主动帮助遇到困难的人。",
+      "identity": {
+        "role": "临光家族成员",
+        "occupation": "机械爱好者、干员",
+        "faction": "罗德岛",
+        "region": "卡西米尔",
+        "race": "库兰塔",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "金发",
+        "库兰塔",
+        "机械"
+      ],
+      "voice": "别担心，我们一起想办法。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "瑕光立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "blemishine_arknights",
+      "displayName": "瑕光",
+      "originalName": "Blemishine",
+      "franchise": "Arknights",
+      "aliases": [
+        "Blemishine",
+        "玛莉娅·临光"
+      ],
+      "identityProse": "Blemishine from Arknights has long blonde hair, yellow eyes, horse ears and a horse tail.",
+      "identityTokens": [
+        "blemishine (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "horse ears",
+        "horse tail",
+        "yellow eyes"
+      ],
+      "characterTokens": [
+        "blemishine (arknights)",
+        "blemishine (moon catastrborn) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "blemishine (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "curatedArtistStyles": [
+        "ryuuzaki_ichi",
+        "anmi",
+        "namie-kun"
+      ]
+    }
+  }
+}

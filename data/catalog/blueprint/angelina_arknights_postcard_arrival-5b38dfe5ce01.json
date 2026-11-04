@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "angelina_arknights_postcard_arrival",
+  "revision": 1,
+  "sortOrder": 3079,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights_postcard_arrival",
+    "characterId": "angelina_arknights",
+    "outfitId": "distinguished_visitor",
+    "title": "安洁莉娜 · 旅途明信片",
+    "category": "泰拉日常",
+    "description": "她选出一张画着街景的明信片，准备写给老朋友，告诉对方自己最近过得很好。",
+    "location": "文具店",
+    "action": "挑选城市明信片",
+    "timeOfDay": "白日",
+    "lighting": "店内柔光",
+    "camera": "中景，明信片架同框",
+    "mood": "愉快",
+    "sceneTags": [
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "stationery shop",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Angelina chooses a city postcard at a stationery shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "stationery shop",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

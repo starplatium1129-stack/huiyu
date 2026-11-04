@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "horn_arknights/first_gleam",
+  "revision": 1,
+  "sortOrder": 1973,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "horn_arknights",
+    "outfit": {
+      "id": "first_gleam",
+      "name": "锋光初现 · 蓝色长外套",
+      "characterId": "horn_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A blue double-breasted coat, black skirt, peaked cap and boots.",
+      "tokens": [
+        "blue coat",
+        "double-breasted",
+        "black skirt",
+        "peaked cap",
+        "boots"
+      ],
+      "identityTokensOverride": [
+        "horn (arknights)",
+        "horn (the first gleam) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "wolf ears",
+        "blue eyes"
+      ],
+      "identityProseOverride": "Horn from Arknights has long blonde hair, blue eyes and wolf ears."
+    }
+  }
+}

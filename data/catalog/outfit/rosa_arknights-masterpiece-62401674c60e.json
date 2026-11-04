@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/masterpiece",
+  "revision": 1,
+  "sortOrder": 1963,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "masterpiece",
+      "name": "杰作 · 白色长礼裙",
+      "characterId": "rosa_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A white long dress with white gloves and a red beret.",
+      "tokens": [
+        "white long dress",
+        "white gloves",
+        "red beret"
+      ],
+      "identityTokensOverride": [
+        "rosa (arknights)",
+        "rosa (masterpiece) (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "bear ears",
+        "heterochromia"
+      ],
+      "identityProseOverride": "Rosa from Arknights has very long white hair, bear ears and heterochromatic eyes."
+    }
+  }
+}

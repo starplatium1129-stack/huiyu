@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_rain_shelter",
+  "revision": 2,
+  "sortOrder": 3093,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "reed_arknights_rain_shelter",
+    "characterId": "reed_arknights",
+    "outfitId": "flame_shadow",
+    "title": "焰影苇草 · 檐下的距离",
+    "category": "亲密时刻",
+    "description": "雨丝被风吹进屋檐，她挪近替你挡住一点，抬眼问有没有淋湿，说话时脸颊微微泛红。",
+    "location": "街边屋檐",
+    "action": "檐下靠近，抬眼关切地看向镜头",
+    "timeOfDay": "雨天",
+    "lighting": "雨天柔光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "standing",
+      "close to viewer",
+      "looking up",
+      "light blush",
+      "awning",
+      "rain",
+      "soft overcast light",
+      "medium close-up"
+    ],
+    "promptProse": "Reed stands close under an awning and looks up at the viewer with a light blush.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "close to viewer",
+      "looking up",
+      "light blush",
+      "awning",
+      "rain",
+      "soft overcast light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

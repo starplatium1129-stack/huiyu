@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_ribbon_braid",
+  "revision": 1,
+  "sortOrder": 3091,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights_ribbon_braid",
+    "characterId": "reed_arknights",
+    "outfitId": "curator",
+    "title": "焰影苇草 · 整理发辫",
+    "category": "泰拉日常",
+    "description": "一边的发辫松了，她对着镜子重新编好，最后将丝带系在发尾。",
+    "location": "镜前",
+    "action": "给发辫系上丝带",
+    "timeOfDay": "上午",
+    "lighting": "镜前自然光",
+    "camera": "中景，镜子与发辫同框",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "tying ribbon",
+      "twin braids",
+      "mirror",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Reed ties a ribbon around a braid in front of a mirror.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "tying ribbon",
+      "twin braids",
+      "mirror",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

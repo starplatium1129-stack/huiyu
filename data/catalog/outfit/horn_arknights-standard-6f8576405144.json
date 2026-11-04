@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "horn_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1972,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "horn_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 深色斗篷裙装",
+      "characterId": "horn_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A dark dress under a cape, a black hairband and dark boots.",
+      "tokens": [
+        "dark dress",
+        "cape",
+        "black hairband",
+        "black boots"
+      ]
+    }
+  }
+}

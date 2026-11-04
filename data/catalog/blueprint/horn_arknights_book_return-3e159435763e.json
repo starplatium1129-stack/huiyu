@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_book_return",
+  "revision": 1,
+  "sortOrder": 2998,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights_book_return",
+    "characterId": "horn_arknights",
+    "outfitId": "standard",
+    "title": "号角 · 归还的书",
+    "category": "泰拉日常",
+    "description": "她按书脊上的编号找到空位，将借来的书放回去。临走前，她又替旁边歪倒的两本书扶正。",
+    "location": "图书馆",
+    "action": "把书放回书架",
+    "timeOfDay": "上午",
+    "lighting": "书架间柔光",
+    "camera": "中景，书架与书脊同框",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "placing book on shelf",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Horn returns a book to a library shelf.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "placing book on shelf",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

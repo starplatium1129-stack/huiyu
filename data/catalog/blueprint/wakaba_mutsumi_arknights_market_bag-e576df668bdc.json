@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_market_bag",
+  "revision": 1,
+  "sortOrder": 2971,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_market_bag",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "school_uniform",
+    "title": "若叶睦 · 集市上的种苗",
+    "category": "泰拉日常",
+    "description": "她买到两株小苗，提着纸袋走得很慢，免得叶子碰到袋沿。回去的路上还顺便看了看天气。",
+    "location": "街边集市",
+    "action": "提着装有种苗的纸袋",
+    "timeOfDay": "上午",
+    "lighting": "晴朗日光",
+    "camera": "中景，纸袋与摊位同框",
+    "mood": "期待",
+    "sceneTags": [
+      "standing",
+      "holding paper bag",
+      "seedlings",
+      "market stall",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Mutsumi carries a paper bag containing vegetable seedlings at a market.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding paper bag",
+      "seedlings",
+      "market stall",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

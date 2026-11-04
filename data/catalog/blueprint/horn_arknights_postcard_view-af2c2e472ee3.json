@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_postcard_view",
+  "revision": 1,
+  "sortOrder": 3001,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights_postcard_view",
+    "characterId": "horn_arknights",
+    "outfitId": "first_gleam",
+    "title": "号角 · 街景明信片",
+    "category": "泰拉日常",
+    "description": "她从架上抽出一张旧街景，辨认画里的钟楼。发现它还在，号角便把明信片放进购物篮。",
+    "location": "街角文具店",
+    "action": "挑选明信片",
+    "timeOfDay": "下午",
+    "lighting": "店内暖光",
+    "camera": "中景，明信片架同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "stationery shop",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Horn selects a city postcard at a stationery shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding postcard",
+      "postcard rack",
+      "stationery shop",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

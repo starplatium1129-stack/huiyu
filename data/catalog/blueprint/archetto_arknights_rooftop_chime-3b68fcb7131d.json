@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_rooftop_chime",
+  "revision": 2,
+  "sortOrder": 2925,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "archetto_arknights_rooftop_chime",
+    "characterId": "archetto_arknights",
+    "outfitId": "standard",
+    "title": "空弦 · 钟声之后",
+    "category": "亲密时刻",
+    "description": "钟声停后，她侧过头问你要不要再待一会儿。风吹得她靠近了些，她却只是笑着继续看你。",
+    "location": "屋顶露台",
+    "action": "倚栏侧头，靠近镜头轻声交谈",
+    "timeOfDay": "夜晚",
+    "lighting": "远处灯火与柔和侧光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning on railing",
+      "leaning toward viewer",
+      "looking at viewer",
+      "gentle smile",
+      "rooftop",
+      "night sky",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Archetto leans close at a rooftop railing and smiles toward the viewer under the night sky.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning on railing",
+      "leaning toward viewer",
+      "looking at viewer",
+      "gentle smile",
+      "rooftop",
+      "night sky",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

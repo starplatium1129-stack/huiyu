@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_garden_sign",
+  "revision": 1,
+  "sortOrder": 2975,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_garden_sign",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "marionettes_id",
+    "title": "若叶睦 · 菜畦的小木牌",
+    "category": "泰拉日常",
+    "description": "她把写好名字的小木牌插进土里，调整到不会挡住叶子的位置。做完后，她退开一步看了看。",
+    "location": "温室",
+    "action": "把手写木牌插进花盆",
+    "timeOfDay": "上午",
+    "lighting": "温室透射日光",
+    "camera": "中景，花盆和木牌同框",
+    "mood": "满足",
+    "sceneTags": [
+      "standing",
+      "plant label",
+      "potted seedling",
+      "greenhouse",
+      "sunlight",
+      "medium shot"
+    ],
+    "promptProse": "Mutsumi places a handwritten plant label in a greenhouse pot.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "plant label",
+      "potted seedling",
+      "greenhouse",
+      "sunlight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

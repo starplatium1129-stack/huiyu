@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_concert_program",
+  "revision": 1,
+  "sortOrder": 2951,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_concert_program",
+    "characterId": "rosa_arknights",
+    "outfitId": "masterpiece",
+    "title": "早露 · 音乐会节目单",
+    "category": "泰拉日常",
+    "description": "演出还没开始，早露先把节目单从头读到尾。看到熟悉的曲目时，她轻声念了一遍名字。",
+    "location": "音乐厅门厅",
+    "action": "翻看节目单",
+    "timeOfDay": "傍晚",
+    "lighting": "大厅灯光",
+    "camera": "中景，节目单和门厅背景可见",
+    "mood": "期待",
+    "sceneTags": [
+      "standing",
+      "holding program",
+      "music hall foyer",
+      "warm lighting",
+      "medium shot"
+    ],
+    "promptProse": "Rosa reads a concert program in a music hall foyer.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding program",
+      "music hall foyer",
+      "warm lighting",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

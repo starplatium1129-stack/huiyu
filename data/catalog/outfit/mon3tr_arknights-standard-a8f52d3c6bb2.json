@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1986,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 黑绿外套",
+      "characterId": "mon3tr_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A black and green coat over a green dress, with black boots.",
+      "tokens": [
+        "black and green coat",
+        "green dress",
+        "black boots"
+      ]
+    }
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_plant_label",
+  "revision": 1,
+  "sortOrder": 3049,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_plant_label",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "standard",
+    "title": "白面鸮 · 植物标签",
+    "category": "泰拉日常",
+    "description": "旧标签被水浸得模糊。她写好新的名称和日期，插回原来的花盆。",
+    "location": "温室",
+    "action": "给花盆更换标签",
+    "timeOfDay": "上午",
+    "lighting": "温室日光",
+    "camera": "中景，花盆与标签同框",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "plant label",
+      "flowerpot",
+      "greenhouse",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Ptilopsis replaces a label in a greenhouse flowerpot.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "plant label",
+      "flowerpot",
+      "greenhouse",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

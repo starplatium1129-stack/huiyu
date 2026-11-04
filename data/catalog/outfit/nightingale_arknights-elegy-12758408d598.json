@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/elegy",
+  "revision": 1,
+  "sortOrder": 1981,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "elegy",
+      "name": "挽歌 · 黑白裙与帽饰",
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black-and-white long dress with a bonnet and ribbon.",
+      "tokens": [
+        "black and white dress",
+        "bonnet",
+        "ribbon"
+      ],
+      "identityTokensOverride": [
+        "nightingale (arknights)",
+        "nightingale (an elegy) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "very long hair",
+        "blue eyes",
+        "horns"
+      ],
+      "identityProseOverride": "Nightingale from Arknights has very long blonde hair, blue eyes and Sarkaz horns."
+    }
+  }
+}

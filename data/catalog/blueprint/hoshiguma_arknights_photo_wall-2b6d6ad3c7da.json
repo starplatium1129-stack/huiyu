@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_photo_wall",
+  "revision": 1,
+  "sortOrder": 2991,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_photo_wall",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "standard",
+    "title": "星熊 · 合影墙",
+    "category": "泰拉日常",
+    "description": "墙上贴满了街坊的照片。她挑出一张新的合影，用图钉固定，退后确认没有贴歪。",
+    "location": "社区活动室",
+    "action": "把合照贴到墙上",
+    "timeOfDay": "白日",
+    "lighting": "明亮室内光",
+    "camera": "中景，相片墙和人物同框",
+    "mood": "怀念",
+    "sceneTags": [
+      "standing",
+      "pinning photograph",
+      "photo wall",
+      "community room",
+      "bright light",
+      "medium shot"
+    ],
+    "promptProse": "Hoshiguma pins a group photo to a community photo wall.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "pinning photograph",
+      "photo wall",
+      "community room",
+      "bright light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

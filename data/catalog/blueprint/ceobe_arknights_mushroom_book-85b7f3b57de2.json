@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_mushroom_book",
+  "revision": 1,
+  "sortOrder": 3057,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_mushroom_book",
+    "characterId": "ceobe_arknights",
+    "outfitId": "standard",
+    "title": "刻俄柏 · 蘑菇图鉴",
+    "category": "泰拉日常",
+    "description": "她指着图鉴里颜色鲜亮的蘑菇问能不能吃，听完说明后认真记住了不能随便采。",
+    "location": "图书馆",
+    "action": "翻看蘑菇图鉴",
+    "timeOfDay": "上午",
+    "lighting": "书架柔光",
+    "camera": "中景，图鉴和桌面同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "open mushroom book",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Ceobe reads an illustrated mushroom book in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open mushroom book",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

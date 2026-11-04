@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_warm_bread",
+  "revision": 1,
+  "sortOrder": 3088,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights_warm_bread",
+    "characterId": "reed_arknights",
+    "outfitId": "flame_shadow",
+    "title": "焰影苇草 · 带回来的面包",
+    "category": "泰拉日常",
+    "description": "她把刚买的面包放到桌上，切好后用布盖住，等大家到齐再一起吃。",
+    "location": "厨房",
+    "action": "把面包放到餐桌上",
+    "timeOfDay": "清晨",
+    "lighting": "窗边暖光",
+    "camera": "中景，面包和木桌同框",
+    "mood": "温暖",
+    "sceneTags": [
+      "standing",
+      "bread",
+      "kitchen table",
+      "window light",
+      "morning",
+      "medium shot"
+    ],
+    "promptProse": "Reed places fresh bread on a kitchen table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "bread",
+      "kitchen table",
+      "window light",
+      "morning",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

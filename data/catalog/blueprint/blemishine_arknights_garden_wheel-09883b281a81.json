@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "blemishine_arknights_garden_wheel",
+  "revision": 1,
+  "sortOrder": 3013,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "blemishine_arknights_garden_wheel",
+    "characterId": "blemishine_arknights",
+    "outfitId": "standard",
+    "title": "瑕光 · 花园里的小推车",
+    "category": "泰拉日常",
+    "description": "推车的轮子终于不再晃动。她推着走了一小圈确认，才把工具收回盒里。",
+    "location": "花园",
+    "action": "修好小推车的轮子",
+    "timeOfDay": "上午",
+    "lighting": "花园柔光",
+    "camera": "中景，推车和工具同框",
+    "mood": "满足",
+    "sceneTags": [
+      "crouching",
+      "garden cart",
+      "toolbox",
+      "flower garden",
+      "soft daylight",
+      "medium shot"
+    ],
+    "promptProse": "Blemishine checks the wheel of a garden cart.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "crouching",
+      "garden cart",
+      "toolbox",
+      "flower garden",
+      "soft daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

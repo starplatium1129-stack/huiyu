@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_umbrella_share",
+  "revision": 2,
+  "sortOrder": 3114,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "swire_arknights_umbrella_share",
+    "characterId": "swire_arknights",
+    "outfitId": "standard",
+    "title": "诗怀雅 · 伞下慢一点",
+    "category": "亲密时刻",
+    "description": "她把伞往你这边偏，又伸手将你拉近，嘴上仍催你跟上，唇角却忍不住扬起来。",
+    "location": "龙门街头",
+    "action": "撑伞回眸，伸手拉近对方",
+    "timeOfDay": "雨夜",
+    "lighting": "霓虹与雨光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding umbrella",
+      "reaching toward viewer",
+      "looking back",
+      "playful smile",
+      "rain",
+      "city street",
+      "neon reflections",
+      "medium close-up"
+    ],
+    "promptProse": "Swire holds an umbrella and reaches back toward the viewer with a playful smile.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding umbrella",
+      "reaching toward viewer",
+      "looking back",
+      "playful smile",
+      "rain",
+      "city street",
+      "neon reflections",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

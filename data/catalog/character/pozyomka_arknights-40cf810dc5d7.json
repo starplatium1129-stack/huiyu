@@ -1,0 +1,108 @@
+{
+  "kind": "character",
+  "id": "pozyomka_arknights",
+  "revision": 2,
+  "sortOrder": 280,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "pozyomka_arknights",
+    "profile": {
+      "id": "pozyomka_arknights",
+      "name": "鸿雪",
+      "alias": [
+        "Pozyomka",
+        "Позёмка",
+        "阿芙朵嘉·锐笔"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "请坐。等我写完这一段，就可以聊了。",
+      "visual_dna": {
+        "signature": "粉色长发、粉色眼睛、鲁珀耳与尾；常伴随书页、笔与打字机。"
+      },
+      "traits": [
+        "粉色长发",
+        "粉色眼睛",
+        "狼耳",
+        "狼尾"
+      ],
+      "personality": [
+        "礼貌而审慎",
+        "珍惜际崖城的朋友",
+        "对文字有自己的坚持"
+      ],
+      "likes": [
+        "文学创作",
+        "际崖城的生活",
+        "阅读与记录"
+      ],
+      "bg_story": "阿芙朵嘉以“鸿雪”为代号来到罗德岛。她来自乌萨斯，后来在杜林城邦际崖城生活多年，以笔名锐笔从事文学工作；离开城市后，她继续记录自己珍惜的人与生活。",
+      "identity": {
+        "role": "际崖城文学代表",
+        "occupation": "作家、罗德岛干员",
+        "faction": "罗德岛",
+        "region": "乌萨斯",
+        "race": "鲁珀",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "鸿雪立绘待制作"
+      },
+      "tags": [
+        "鲁珀",
+        "作家",
+        "际崖城"
+      ],
+      "voice": "纸上留下的东西，至少不会那么容易被忘记。"
+    },
+    "popular": {
+      "id": "pozyomka_arknights",
+      "displayName": "鸿雪",
+      "originalName": "Pozyomka",
+      "franchise": "Arknights",
+      "aliases": [
+        "Pozëmka",
+        "Pozyomka",
+        "阿芙朵嘉",
+        "鸿雪"
+      ],
+      "identityProse": "Pozyomka from Arknights has very long pink hair, pink eyes, wolf ears and a wolf tail.",
+      "identityTokens": [
+        "pozyomka (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "very long hair",
+        "pink eyes",
+        "wolf ears",
+        "wolf tail"
+      ],
+      "characterTokens": [
+        "pozyomka (arknights)",
+        "pozyomka (snowy plains in words) (arknights)",
+        "pozyomka (beside dreams) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "pozyomka (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "chuzenji",
+        "alchemaniac",
+        "rella"
+      ]
+    }
+  }
+}

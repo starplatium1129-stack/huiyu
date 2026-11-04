@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_flower_market",
+  "revision": 1,
+  "sortOrder": 3107,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights_flower_market",
+    "characterId": "swire_arknights",
+    "outfitId": "honor_and_splendor",
+    "title": "诗怀雅 · 花市挑选",
+    "category": "泰拉日常",
+    "description": "她挑中一枝颜色鲜亮的花，请店主包好。临走前，她又回头替朋友选了一束。",
+    "location": "龙门花市",
+    "action": "挑选节庆花枝",
+    "timeOfDay": "白日",
+    "lighting": "节日暖光",
+    "camera": "中景，花摊与花枝同框",
+    "mood": "开心",
+    "sceneTags": [
+      "standing",
+      "holding flowering branch",
+      "flower market",
+      "warm festive light",
+      "medium shot"
+    ],
+    "promptProse": "Swire chooses festive flowers at a market stall.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding flowering branch",
+      "flower market",
+      "warm festive light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

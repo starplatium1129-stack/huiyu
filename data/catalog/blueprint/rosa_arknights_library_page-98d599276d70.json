@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_library_page",
+  "revision": 1,
+  "sortOrder": 2947,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_library_page",
+    "characterId": "rosa_arknights",
+    "outfitId": "standard",
+    "title": "早露 · 夹在书里的书签",
+    "category": "泰拉日常",
+    "description": "她翻到上次停下的那一页，书签却夹在了前一章。早露低头确认了一会儿，才重新开始读。",
+    "location": "图书馆",
+    "action": "从书中取出书签",
+    "timeOfDay": "上午",
+    "lighting": "书架间柔光",
+    "camera": "中近景，打开的书位于前景",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "open book",
+      "bookmark",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Rosa opens a book and checks a bookmark in the library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open book",
+      "bookmark",
+      "library",
+      "bookshelves",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

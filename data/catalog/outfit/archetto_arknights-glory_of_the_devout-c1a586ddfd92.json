@@ -1,0 +1,39 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/glory_of_the_devout",
+  "revision": 1,
+  "sortOrder": 1957,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "glory_of_the_devout",
+      "name": "至虔者荣光 · 经典修士服",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black dress with a dark and red shawl, traditional nun headwear and brown loafers.",
+      "tokens": [
+        "black dress",
+        "black shawl",
+        "red shawl",
+        "nun headdress",
+        "brown loafers"
+      ],
+      "identityTokensOverride": [
+        "archetto (arknights)",
+        "archetto (glory of the devout) (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "long hair",
+        "heterochromia",
+        "red eye",
+        "blue eye",
+        "tail"
+      ],
+      "identityProseOverride": "Archetto from Arknights has long brown hair, red and blue eyes and a tail.",
+      "characterId": "archetto_arknights"
+    }
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "kind": "character",
+  "id": "hoshiguma_arknights",
+  "revision": 1,
+  "sortOrder": 286,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights",
+    "profile": {
+      "id": "hoshiguma_arknights",
+      "name": "星熊",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Hoshiguma"
+      ],
+      "speech": "忙完了？走，找地方坐一会儿。",
+      "visual_dna": {
+        "signature": "绿色长发、金色眼睛、单角和脸颊伤痕，身形高挑结实。"
+      },
+      "traits": [
+        "绿色长发",
+        "单角",
+        "脸颊伤痕",
+        "高挑"
+      ],
+      "personality": [
+        "爽朗",
+        "沉稳",
+        "照顾同伴"
+      ],
+      "likes": [
+        "与朋友聚餐",
+        "摩托车",
+        "热闹的街市"
+      ],
+      "bg_story": "星熊来自东国，曾在龙门近卫局工作。她待人爽朗，处事可靠，在熟人面前也会露出轻松的一面。",
+      "identity": {
+        "role": "龙门近卫局成员",
+        "occupation": "警员",
+        "faction": "龙门近卫局",
+        "region": "东国",
+        "race": "鬼",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "绿发",
+        "鬼族",
+        "龙门"
+      ],
+      "voice": "这顿我请，下次换你。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "星熊立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "hoshiguma_arknights",
+      "displayName": "星熊",
+      "originalName": "Hoshiguma",
+      "franchise": "Arknights",
+      "aliases": [
+        "Hoshiguma"
+      ],
+      "identityProse": "Hoshiguma from Arknights has long green hair, yellow eyes, a single oni horn and a cheek scar.",
+      "identityTokens": [
+        "hoshiguma (arknights)",
+        "1girl",
+        "solo",
+        "green hair",
+        "long hair",
+        "yellow eyes",
+        "single horn",
+        "scar on cheek"
+      ],
+      "characterTokens": [
+        "hoshiguma (arknights)",
+        "hoshiguma (summer) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "hoshiguma (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "infukun",
+        "xiayehongming",
+        "swav"
+      ]
+    }
+  }
+}

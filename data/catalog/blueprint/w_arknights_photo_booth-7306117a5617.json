@@ -1,0 +1,46 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_photo_booth",
+  "revision": 1,
+  "sortOrder": 2938,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "id": "w_arknights_photo_booth",
+    "characterId": "w_arknights",
+    "outfitId": "wisadel_supernova",
+    "title": "W / 维什戴尔 · 照片亭里的表情",
+    "category": "泰拉日常",
+    "description": "照片条刚从出口滑出来，她就抢先拿起端详。看到其中一格的表情，维什戴尔笑了半天，最后还是把照片分给了你。",
+    "location": "商场照片亭",
+    "action": "举着刚打印的照片条",
+    "timeOfDay": "白日",
+    "lighting": "照片亭明亮灯光",
+    "camera": "中近景，照片条位于前景",
+    "mood": "活泼",
+    "sceneTags": [
+      "standing",
+      "holding photo strip",
+      "photo booth",
+      "bright indoor light",
+      "medium close-up"
+    ],
+    "promptProse": "Wis’adel holds a photo strip beside a photo booth.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding photo strip",
+      "photo booth",
+      "bright indoor light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

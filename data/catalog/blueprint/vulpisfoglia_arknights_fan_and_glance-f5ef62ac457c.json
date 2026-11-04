@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "vulpisfoglia_arknights_fan_and_glance",
+  "revision": 2,
+  "sortOrder": 2864,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "vulpisfoglia_arknights_fan_and_glance",
+    "characterId": "vulpisfoglia_arknights",
+    "outfitId": "synesthesia_black_dress",
+    "title": "忍冬 · 扇后的笑意",
+    "category": "亲密时刻",
+    "description": "折扇遮住半张脸，只露出带笑的眼睛。她缓缓收拢扇骨，问你方才那句夸奖是不是只说了一半。",
+    "location": "剧院休息厅",
+    "action": "半掩折扇，挑眉望向镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "壁灯暖光",
+    "camera": "近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding folding fan",
+      "fan near face",
+      "looking at viewer",
+      "raised eyebrow",
+      "playful smile",
+      "theater lounge",
+      "warm light",
+      "close-up"
+    ],
+    "promptProse": "Vulpisfoglia lowers a folding fan and meets the viewer with a playful gaze.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding folding fan",
+      "fan near face",
+      "looking at viewer",
+      "raised eyebrow",
+      "playful smile",
+      "theater lounge",
+      "warm light",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

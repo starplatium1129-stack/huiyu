@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/serenity",
+  "revision": 1,
+  "sortOrder": 1983,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "serenity",
+      "name": "幽静 · 紫色外套与贝雷帽",
+      "characterId": "ptilopsis_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A purple cardigan over a yellow sweater, a black skirt and a black beret.",
+      "tokens": [
+        "purple cardigan",
+        "yellow sweater",
+        "black skirt",
+        "black beret"
+      ],
+      "identityTokensOverride": [
+        "ptilopsis (arknights)",
+        "ptilopsis (serenity) (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "long hair",
+        "owl ears",
+        "orange eyes"
+      ],
+      "identityProseOverride": "Ptilopsis from Arknights has grey hair, owl-like ears and orange eyes."
+    }
+  }
+}

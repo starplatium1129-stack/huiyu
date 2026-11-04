@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_puzzle_clock",
+  "revision": 1,
+  "sortOrder": 3069,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_puzzle_clock",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "standard",
+    "title": "Mon3tr · 拼图时间",
+    "category": "泰拉日常",
+    "description": "她试过两个方向，终于把最后一块拼图放进去。看着完整的画面，她很认真地说：“完成。”",
+    "location": "休息室",
+    "action": "放下最后一块拼图",
+    "timeOfDay": "下午",
+    "lighting": "窗边柔光",
+    "camera": "俯角中景，拼图与双手清晰",
+    "mood": "满足",
+    "sceneTags": [
+      "sitting",
+      "placing puzzle piece",
+      "jigsaw puzzle",
+      "table",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Mon3tr places the last piece of a jigsaw puzzle.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "placing puzzle piece",
+      "jigsaw puzzle",
+      "table",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

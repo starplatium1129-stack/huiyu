@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_postcard_rabbit",
+  "revision": 1,
+  "sortOrder": 2972,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_postcard_rabbit",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "marionettes_id",
+    "title": "若叶睦 · 兔子明信片",
+    "category": "泰拉日常",
+    "description": "明信片上画着一只兔子。她想了很久要写什么，最后只写下一句问候，再认真签上名字。",
+    "location": "咖啡馆",
+    "action": "给朋友写明信片",
+    "timeOfDay": "白日",
+    "lighting": "咖啡馆窗光",
+    "camera": "俯角中景，明信片与桌面同框",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "writing postcard",
+      "rabbit illustration",
+      "cafe table",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Mutsumi writes a rabbit postcard at a café table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "writing postcard",
+      "rabbit illustration",
+      "cafe table",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

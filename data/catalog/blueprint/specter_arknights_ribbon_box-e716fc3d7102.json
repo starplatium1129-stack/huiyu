@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_ribbon_box",
+  "revision": 1,
+  "sortOrder": 3031,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "specter_arknights_ribbon_box",
+    "characterId": "specter_arknights",
+    "outfitId": "undercurrent",
+    "title": "幽灵鲨 · 旧丝带",
+    "category": "泰拉日常",
+    "description": "她从盒子里找出一条旧丝带，理平褶皱后又卷了回去，动作比说话时慢得多。",
+    "location": "书桌",
+    "action": "把丝带卷回盒中",
+    "timeOfDay": "傍晚",
+    "lighting": "台灯暖光",
+    "camera": "中景，小盒与丝带同框",
+    "mood": "怀念",
+    "sceneTags": [
+      "sitting",
+      "holding ribbon",
+      "small box",
+      "desk",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "promptProse": "Specter coils a ribbon into a small box at a desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding ribbon",
+      "small box",
+      "desk",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

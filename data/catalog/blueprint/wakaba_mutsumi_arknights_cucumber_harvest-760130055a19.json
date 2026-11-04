@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_cucumber_harvest",
+  "revision": 1,
+  "sortOrder": 2966,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_cucumber_harvest",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "school_uniform",
+    "title": "若叶睦 · 菜园里的黄瓜",
+    "category": "泰拉日常",
+    "description": "藤蔓上结出的黄瓜已经够长了。睦轻轻拨开叶子，将它摘下放进篮子，又给旁边的小苗浇了水。",
+    "location": "小菜园",
+    "action": "摘下一根成熟的黄瓜",
+    "timeOfDay": "清晨",
+    "lighting": "晨间自然光",
+    "camera": "中景，菜架与篮子同框",
+    "mood": "平静",
+    "sceneTags": [
+      "standing",
+      "holding cucumber",
+      "vegetable garden",
+      "trellis",
+      "basket",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Mutsumi picks a ripe cucumber from a garden trellis.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding cucumber",
+      "vegetable garden",
+      "trellis",
+      "basket",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

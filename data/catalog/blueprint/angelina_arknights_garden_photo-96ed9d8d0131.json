@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "angelina_arknights_garden_photo",
+  "revision": 1,
+  "sortOrder": 3085,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights_garden_photo",
+    "characterId": "angelina_arknights",
+    "outfitId": "distinguished_visitor",
+    "title": "安洁莉娜 · 花园合影",
+    "category": "泰拉日常",
+    "description": "她调整好相机，招呼朋友站到花丛旁。按下快门前，她还记得提醒大家看镜头。",
+    "location": "花园",
+    "action": "举起相机准备拍照",
+    "timeOfDay": "上午",
+    "lighting": "花园日光",
+    "camera": "中景，花丛与相机同框",
+    "mood": "活泼",
+    "sceneTags": [
+      "standing",
+      "holding camera",
+      "flower garden",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Angelina holds a camera in a flower garden.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding camera",
+      "flower garden",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

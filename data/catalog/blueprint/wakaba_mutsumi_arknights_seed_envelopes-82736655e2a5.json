@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_seed_envelopes",
+  "revision": 1,
+  "sortOrder": 2968,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_seed_envelopes",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "school_uniform",
+    "title": "若叶睦 · 种子信封",
+    "category": "泰拉日常",
+    "description": "她把种子分进几个小纸袋，逐一写上名称。最后一个袋子写错了一笔，睦就把那一面折到背后。",
+    "location": "书桌旁",
+    "action": "在纸袋上写种子名称",
+    "timeOfDay": "午后",
+    "lighting": "桌边日光",
+    "camera": "俯角中景，种子袋与笔同框",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "writing",
+      "seed envelopes",
+      "desk",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Mutsumi labels small seed envelopes at a desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "writing",
+      "seed envelopes",
+      "desk",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

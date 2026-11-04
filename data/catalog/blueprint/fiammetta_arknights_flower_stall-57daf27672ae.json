@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_flower_stall",
+  "revision": 1,
+  "sortOrder": 2981,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights_flower_stall",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "standard",
+    "title": "菲亚梅塔 · 花摊前",
+    "category": "泰拉日常",
+    "description": "她在花摊前选了很久，最后挑了颜色明亮的一束。店主问要写什么卡片，她想了想，只留下自己的名字。",
+    "location": "街头花摊",
+    "action": "挑选一束花",
+    "timeOfDay": "白日",
+    "lighting": "晴朗日光",
+    "camera": "中景，花摊与纸包装同框",
+    "mood": "温和",
+    "sceneTags": [
+      "standing",
+      "holding bouquet",
+      "flower stall",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Fiammetta chooses a bouquet at a street flower stall.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding bouquet",
+      "flower stall",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

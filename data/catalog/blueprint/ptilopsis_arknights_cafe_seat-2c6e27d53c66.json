@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_cafe_seat",
+  "revision": 2,
+  "sortOrder": 3053,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_cafe_seat",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "serenity",
+    "title": "白面鸮 · 同桌的休息时间",
+    "category": "亲密时刻",
+    "description": "她把计时器收好，托腮看着你，认真宣布：“接下来的休息时间，分配给你。”",
+    "location": "咖啡馆",
+    "action": "托腮看向镜头，露出浅笑",
+    "timeOfDay": "傍晚",
+    "lighting": "咖啡馆暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "chin on hand",
+      "looking at viewer",
+      "slight smile",
+      "coffee cup",
+      "cafe",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Ptilopsis rests her chin on her hand and gives the viewer a small smile across a café table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "chin on hand",
+      "looking at viewer",
+      "slight smile",
+      "coffee cup",
+      "cafe",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

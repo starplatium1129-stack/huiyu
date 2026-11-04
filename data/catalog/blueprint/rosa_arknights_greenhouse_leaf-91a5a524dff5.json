@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_greenhouse_leaf",
+  "revision": 1,
+  "sortOrder": 2952,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_greenhouse_leaf",
+    "characterId": "rosa_arknights",
+    "outfitId": "standard",
+    "title": "早露 · 温室里的新叶",
+    "category": "泰拉日常",
+    "description": "花盆里长出一片浅色的新叶。早露没有碰它，只把写着日期的标签往旁边挪了挪。",
+    "location": "温室",
+    "action": "观察花盆里的新叶",
+    "timeOfDay": "上午",
+    "lighting": "温室透射日光",
+    "camera": "中景，植株与玻璃窗同框",
+    "mood": "欣喜",
+    "sceneTags": [
+      "standing",
+      "looking at plant",
+      "new leaf",
+      "greenhouse",
+      "sunlight",
+      "medium shot"
+    ],
+    "promptProse": "Rosa looks at a new leaf in a greenhouse planter.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking at plant",
+      "new leaf",
+      "greenhouse",
+      "sunlight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_bench_reading",
+  "revision": 1,
+  "sortOrder": 3050,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_bench_reading",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "serenity",
+    "title": "白面鸮 · 长椅上的一页",
+    "category": "泰拉日常",
+    "description": "风把书页吹回前一章。她按住纸角，重新找到读到的位置，继续看下去。",
+    "location": "公园长椅",
+    "action": "坐着阅读",
+    "timeOfDay": "下午",
+    "lighting": "树荫散射光",
+    "camera": "中景，长椅与落叶同框",
+    "mood": "安静",
+    "sceneTags": [
+      "sitting",
+      "reading book",
+      "park bench",
+      "fallen leaves",
+      "dappled light",
+      "medium shot"
+    ],
+    "promptProse": "Ptilopsis reads a book on a park bench.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "reading book",
+      "park bench",
+      "fallen leaves",
+      "dappled light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

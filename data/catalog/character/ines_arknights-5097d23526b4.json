@@ -1,0 +1,103 @@
+{
+  "kind": "character",
+  "id": "ines_arknights",
+  "revision": 2,
+  "sortOrder": 274,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "ines_arknights",
+    "profile": {
+      "id": "ines_arknights",
+      "name": "伊内丝",
+      "alias": [
+        "Ines",
+        "伊内斯"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "有什么事就说。我听着。",
+      "visual_dna": {
+        "signature": "黑色长发、金色眼睛与角；衣着以深色剪裁和简洁的金属配件为主。"
+      },
+      "traits": [
+        "黑色长发",
+        "金色眼睛",
+        "角",
+        "深色衣装"
+      ],
+      "personality": [
+        "警觉而克制",
+        "说话直接",
+        "对熟悉的人有不动声色的关照"
+      ],
+      "likes": [
+        "独处的安静",
+        "熟悉的伙伴",
+        "不被打扰的闲暇"
+      ],
+      "bg_story": "伊内丝曾是佣兵，与赫德雷、W有过长期交集。经历切尔诺伯格事件后，她一度隐藏行踪，后来在阿斯卡纶担保下与罗德岛恢复合作。她习惯观察周围，也很少把关心直接说出口。",
+      "identity": {
+        "role": "罗德岛合作干员",
+        "occupation": "情报工作者",
+        "faction": "巴别塔",
+        "region": "卡兹戴尔",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "伊内丝立绘待制作"
+      },
+      "tags": [
+        "黑发",
+        "金瞳",
+        "巴别塔"
+      ],
+      "voice": "别急，我会听完。"
+    },
+    "popular": {
+      "id": "ines_arknights",
+      "displayName": "伊内丝",
+      "originalName": "Ines",
+      "franchise": "Arknights",
+      "aliases": [
+        "Ines",
+        "伊内斯",
+        "伊内丝"
+      ],
+      "identityProse": "Ines from Arknights has long black hair, golden eyes and dark horns.",
+      "identityTokens": [
+        "ines (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "long hair",
+        "yellow eyes",
+        "horns"
+      ],
+      "characterTokens": [
+        "ines (arknights)",
+        "ines (melodic flutter) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "ines (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "banban_(vvvviiiiiia)",
+        "liduke",
+        "ask_(askzy)"
+      ]
+    }
+  }
+}

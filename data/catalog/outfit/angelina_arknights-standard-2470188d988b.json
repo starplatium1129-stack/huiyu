@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1988,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 红白外套",
+      "characterId": "angelina_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A red and white jacket, shirt, black shorts and sneakers.",
+      "tokens": [
+        "red and white jacket",
+        "shirt",
+        "black shorts",
+        "sneakers"
+      ]
+    }
+  }
+}

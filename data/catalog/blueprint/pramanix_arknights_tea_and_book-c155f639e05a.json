@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pramanix_arknights_tea_and_book",
+  "revision": 1,
+  "sortOrder": 2850,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "data": {
+    "id": "pramanix_arknights_tea_and_book",
+    "characterId": "pramanix_arknights",
+    "outfitId": "prerita",
+    "title": "初雪 · 书页间的茶香",
+    "category": "泰拉日常",
+    "description": "茶室里只有翻页声。初雪看完一段，把手指留在页间，抬起茶盏尝了一口，等茶稍凉再继续读。",
+    "location": "山间茶室",
+    "action": "翻开一本书并端起茶杯",
+    "timeOfDay": "下午",
+    "lighting": "纸窗透入的柔和日光",
+    "camera": "中近景，桌上书页与茶盏",
+    "mood": "闲适",
+    "sceneTags": [
+      "sitting",
+      "holding teacup",
+      "open book",
+      "tea room",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Pramanix pauses over a book with a cup of tea in a quiet tea room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding teacup",
+      "open book",
+      "tea room",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

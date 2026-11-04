@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "vulpisfoglia_arknights_balcony_champagne",
+  "revision": 2,
+  "sortOrder": 2865,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "vulpisfoglia_arknights_balcony_champagne",
+    "characterId": "vulpisfoglia_arknights",
+    "outfitId": "out_of_focus",
+    "title": "忍冬 · 露台上的一杯",
+    "category": "亲密时刻",
+    "description": "她举杯碰过你的杯沿，却没有立刻离开，而是侧身靠近，笑着问今晚能否先把日程忘掉。",
+    "location": "夜间露台",
+    "action": "倚栏举杯，侧身向镜头微笑",
+    "timeOfDay": "夜晚",
+    "lighting": "灯串与远处城市夜景",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning on railing",
+      "holding wine glass",
+      "leaning toward viewer",
+      "teasing smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Vulpisfoglia raises a glass and leans toward the viewer with a teasing smile on a balcony.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning on railing",
+      "holding wine glass",
+      "leaning toward viewer",
+      "teasing smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

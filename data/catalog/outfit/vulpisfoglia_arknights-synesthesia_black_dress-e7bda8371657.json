@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/synesthesia_black_dress",
+  "revision": 1,
+  "sortOrder": 1945,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:09:13.633613700+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "synesthesia_black_dress",
+      "name": "音律联觉 · 不对称黑色礼裙",
+      "default": false,
+      "isDefault": false,
+      "prose": "An asymmetrical black dress with one wide sleeve, black gloves and high-heeled boots.",
+      "tokens": [
+        "black dress",
+        "asymmetrical clothes",
+        "single wide sleeve",
+        "black gloves",
+        "high heel boots"
+      ],
+      "characterId": "vulpisfoglia_arknights"
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/flame_shadow",
+  "revision": 1,
+  "sortOrder": 1990,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "flame_shadow",
+      "name": "焰影苇草 · 白裙与棕色斗篷",
+      "characterId": "reed_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white dress beneath a brown hooded coat, with dark tights.",
+      "tokens": [
+        "white dress",
+        "brown hooded coat",
+        "black pantyhose"
+      ]
+    }
+  }
+}

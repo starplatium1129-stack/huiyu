@@ -1,0 +1,108 @@
+{
+  "kind": "character",
+  "id": "vulpisfoglia_arknights",
+  "revision": 2,
+  "sortOrder": 273,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "vulpisfoglia_arknights",
+    "profile": {
+      "id": "vulpisfoglia_arknights",
+      "name": "忍冬",
+      "alias": [
+        "Vulpisfoglia",
+        "英格丽",
+        "Ingrid"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "你好。既然今天没有别的安排，不如陪我慢慢逛逛？",
+      "visual_dna": {
+        "signature": "浅金色长发、蓬松狐耳与狐尾，金色眼睛；举止从容，常穿剪裁利落的服装。"
+      },
+      "traits": [
+        "浅金色长发",
+        "狐耳",
+        "狐尾",
+        "金色眼睛"
+      ],
+      "personality": [
+        "待人从容",
+        "重视家人",
+        "休闲时不拘时间，工作时注重细节"
+      ],
+      "likes": [
+        "品酒",
+        "拼图",
+        "照料尾巴",
+        "与家人相处"
+      ],
+      "bg_story": "英格丽来自叙拉古，曾是威尼斯家族的核心成员，后来离开家族，以忍冬为代号留驻罗德岛。她是铃兰的母亲；工作中的严谨与休假时的松弛，在她身上并不矛盾。",
+      "identity": {
+        "role": "罗德岛干员",
+        "occupation": "驻舰干员",
+        "faction": "罗德岛",
+        "region": "叙拉古",
+        "race": "沃尔珀",
+        "classificationSource": "游戏内干员基础档案"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "忍冬立绘待制作"
+      },
+      "tags": [
+        "狐耳",
+        "金发",
+        "叙拉古"
+      ],
+      "voice": "休假时，稍微迟到一点也没关系吧？"
+    },
+    "popular": {
+      "id": "vulpisfoglia_arknights",
+      "displayName": "忍冬",
+      "originalName": "Vulpisfoglia",
+      "franchise": "Arknights",
+      "aliases": [
+        "Ingrid",
+        "英格丽",
+        "忍冬"
+      ],
+      "identityProse": "Vulpisfoglia from Arknights has very long pale blonde hair with a small side braid, golden eyes, large fox ears and a fluffy fox tail.",
+      "identityTokens": [
+        "vulpisfoglia (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "very long hair",
+        "braided sidelock",
+        "yellow eyes",
+        "fox ears",
+        "fox tail"
+      ],
+      "characterTokens": [
+        "vulpisfoglia (arknights)",
+        "vulpisfoglia (out of focus) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "vulpisfoglia (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "sho_(sho_lwlw)",
+        "ask_(askzy)",
+        "rella"
+      ]
+    }
+  }
+}

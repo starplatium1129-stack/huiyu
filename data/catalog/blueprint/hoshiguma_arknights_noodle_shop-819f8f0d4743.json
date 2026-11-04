@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_noodle_shop",
+  "revision": 1,
+  "sortOrder": 2986,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_noodle_shop",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "standard",
+    "title": "星熊 · 街角面馆",
+    "category": "泰拉日常",
+    "description": "面刚端上来，她便把调料推到桌子中央。看你犹豫要不要加辣，星熊笑着说可以先尝一口。",
+    "location": "龙门面馆",
+    "action": "拿筷子搅拌面条",
+    "timeOfDay": "中午",
+    "lighting": "店内暖光",
+    "camera": "中景，面碗与桌面同框",
+    "mood": "爽朗",
+    "sceneTags": [
+      "sitting",
+      "holding chopsticks",
+      "bowl of noodles",
+      "restaurant table",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Hoshiguma stirs a bowl of noodles at a neighborhood restaurant.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding chopsticks",
+      "bowl of noodles",
+      "restaurant table",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

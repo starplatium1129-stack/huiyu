@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_museum_postcard",
+  "revision": 1,
+  "sortOrder": 2878,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "id": "muelsyse_arknights_museum_postcard",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "golden_reverie",
+    "title": "缪尔赛思 · 展厅的明信片",
+    "category": "泰拉日常",
+    "description": "她从架上抽出两张植物画，认真比较背面的说明，最后把其中一张递给你：“这张的叶形画得更准。”",
+    "location": "自然博物馆商店",
+    "action": "比较两张植物明信片",
+    "timeOfDay": "上午",
+    "lighting": "展厅柔光",
+    "camera": "中近景，明信片在画面前方",
+    "mood": "轻快",
+    "sceneTags": [
+      "standing",
+      "holding postcards",
+      "museum shop",
+      "botanical illustrations",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Muelsyse compares botanical postcards in a museum shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding postcards",
+      "museum shop",
+      "botanical illustrations",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

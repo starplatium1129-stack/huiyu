@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "blemishine_arknights_costume_pumpkin",
+  "revision": 1,
+  "sortOrder": 3008,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "blemishine_arknights_costume_pumpkin",
+    "characterId": "blemishine_arknights",
+    "outfitId": "moon_catastrborn",
+    "title": "瑕光 · 小南瓜灯",
+    "category": "泰拉日常",
+    "description": "她给南瓜灯贴上最后一颗纸星星，发现贴到了背面，便把灯转过来展示。",
+    "location": "活动室",
+    "action": "在南瓜灯上贴纸星星",
+    "timeOfDay": "傍晚",
+    "lighting": "灯笼暖光",
+    "camera": "中景，南瓜灯位于前景",
+    "mood": "开心",
+    "sceneTags": [
+      "sitting",
+      "pumpkin lantern",
+      "paper stars",
+      "activity room",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Blemishine decorates a pumpkin lantern with paper stars.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "pumpkin lantern",
+      "paper stars",
+      "activity room",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

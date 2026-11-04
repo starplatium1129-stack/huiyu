@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_cloud_shapes",
+  "revision": 1,
+  "sortOrder": 2964,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_cloud_shapes",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "become_anew",
+    "title": "迷迭香 · 像猫的云",
+    "category": "泰拉日常",
+    "description": "她指着一朵云，说它有点像睡着的猫。风把云吹散之前，她又找到一朵像耳朵的。",
+    "location": "屋顶花园",
+    "action": "抬头观察云朵",
+    "timeOfDay": "白日",
+    "lighting": "晴天自然光",
+    "camera": "远景，天空与花园同框",
+    "mood": "轻松",
+    "sceneTags": [
+      "standing",
+      "pointing at sky",
+      "clouds",
+      "rooftop garden",
+      "daylight",
+      "wide shot"
+    ],
+    "promptProse": "Rosmontis points at a cloud above a rooftop garden.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "pointing at sky",
+      "clouds",
+      "rooftop garden",
+      "daylight",
+      "wide shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

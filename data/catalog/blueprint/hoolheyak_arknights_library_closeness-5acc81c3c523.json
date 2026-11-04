@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_library_closeness",
+  "revision": 2,
+  "sortOrder": 2905,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_library_closeness",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "carriage_of_winds",
+    "title": "霍尔海雅 · 借来的那页",
+    "category": "亲密时刻",
+    "description": "她将书举到你们之间，等你读完也没有移开，只从书页上方看着你，慢悠悠追问答案。",
+    "location": "私人书室",
+    "action": "举书靠近，从书页上方注视镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "台灯下的暖光",
+    "camera": "近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding open book",
+      "looking over book",
+      "looking at viewer",
+      "knowing smile",
+      "private library",
+      "lamplight",
+      "close-up"
+    ],
+    "promptProse": "Ho’olheyak holds an open book close and watches the viewer over its edge.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding open book",
+      "looking over book",
+      "looking at viewer",
+      "knowing smile",
+      "private library",
+      "lamplight",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

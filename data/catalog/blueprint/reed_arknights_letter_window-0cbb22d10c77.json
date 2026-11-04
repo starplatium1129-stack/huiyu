@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_letter_window",
+  "revision": 1,
+  "sortOrder": 3092,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights_letter_window",
+    "characterId": "reed_arknights",
+    "outfitId": "flame_shadow",
+    "title": "焰影苇草 · 写好的信",
+    "category": "泰拉日常",
+    "description": "信里写了花园和最近的天气。她读过一遍，折好装进信封，准备明天寄出。",
+    "location": "窗边书桌",
+    "action": "将信纸折进信封",
+    "timeOfDay": "傍晚",
+    "lighting": "落日侧光",
+    "camera": "中近景，信纸与双手清晰",
+    "mood": "温柔",
+    "sceneTags": [
+      "sitting",
+      "folding letter",
+      "envelope",
+      "desk",
+      "sunset light",
+      "medium close-up"
+    ],
+    "promptProse": "Reed folds a letter at a desk by a window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "folding letter",
+      "envelope",
+      "desk",
+      "sunset light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_record_listen",
+  "revision": 1,
+  "sortOrder": 3097,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "virtuosa_arknights_record_listen",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "standard",
+    "title": "塑心 · 唱片的前奏",
+    "category": "泰拉日常",
+    "description": "前奏刚响起，她便闭上眼听了一会儿。曲子结束后，她把唱片封套翻过来寻找演奏者的名字。",
+    "location": "唱片店",
+    "action": "试听一张唱片",
+    "timeOfDay": "下午",
+    "lighting": "店内暖光",
+    "camera": "中景，唱片架与耳机同框",
+    "mood": "欣赏",
+    "sceneTags": [
+      "standing",
+      "headphones",
+      "record sleeve",
+      "record store",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Virtuosa listens to a record in a music shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "headphones",
+      "record sleeve",
+      "record store",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

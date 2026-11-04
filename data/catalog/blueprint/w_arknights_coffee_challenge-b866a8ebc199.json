@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_coffee_challenge",
+  "revision": 2,
+  "sortOrder": 2943,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "w_arknights_coffee_challenge",
+    "characterId": "w_arknights",
+    "outfitId": "fugue",
+    "title": "W / 维什戴尔 · 咖啡里的谜底",
+    "category": "亲密时刻",
+    "description": "她隔着杯沿看你，挑眉问刚才那句话是不是认真的。你一迟疑，她便倾身凑近，等你重新回答。",
+    "location": "咖啡馆",
+    "action": "隔着杯沿挑眉，身体微微前倾",
+    "timeOfDay": "傍晚",
+    "lighting": "桌灯暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "holding coffee cup",
+      "leaning forward",
+      "looking at viewer",
+      "raised eyebrow",
+      "teasing smile",
+      "cafe",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "W leans forward over a coffee cup and raises an eyebrow at the viewer.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding coffee cup",
+      "leaning forward",
+      "looking at viewer",
+      "raised eyebrow",
+      "teasing smile",
+      "cafe",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

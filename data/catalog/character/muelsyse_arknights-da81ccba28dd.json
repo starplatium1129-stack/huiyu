@@ -1,0 +1,106 @@
+{
+  "kind": "character",
+  "id": "muelsyse_arknights",
+  "revision": 2,
+  "sortOrder": 275,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "muelsyse_arknights",
+    "profile": {
+      "id": "muelsyse_arknights",
+      "name": "缪尔赛思",
+      "alias": [
+        "Muelsyse",
+        "缪缪"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "你来得正好，我发现了一个很有意思的地方。",
+      "visual_dna": {
+        "signature": "棕色长发、金色眼睛与精灵尖耳；服装和饰品常带自然与水的意象。"
+      },
+      "traits": [
+        "棕色长发",
+        "金色眼睛",
+        "精灵尖耳",
+        "精灵"
+      ],
+      "personality": [
+        "善于交谈",
+        "好奇心旺盛",
+        "在轻快外表下珍惜人与自然的联系"
+      ],
+      "likes": [
+        "观察生态",
+        "植物",
+        "新奇的发现",
+        "与人分享见闻"
+      ],
+      "bg_story": "缪尔赛思是莱茵生命生态科主任，研究生命科学与环境科学。特里蒙事件后，她与罗德岛建立长期合作；作为精灵，她对自然与同族的处境有着格外深切的关注。",
+      "identity": {
+        "role": "莱茵生命生态科主任",
+        "occupation": "生态学研究者",
+        "faction": "莱茵生命",
+        "race": "精灵",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "缪尔赛思立绘待制作"
+      },
+      "tags": [
+        "精灵",
+        "生态",
+        "莱茵生命"
+      ],
+      "voice": "瞧，这片叶子的颜色和昨天不一样了。"
+    },
+    "popular": {
+      "id": "muelsyse_arknights",
+      "displayName": "缪尔赛思",
+      "originalName": "Muelsyse",
+      "franchise": "Arknights",
+      "aliases": [
+        "Muelsyse",
+        "缪缪",
+        "缪尔赛思"
+      ],
+      "identityProse": "Muelsyse from Arknights has very long brown hair, golden eyes and pointed elf ears.",
+      "identityTokens": [
+        "muelsyse (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "very long hair",
+        "yellow eyes",
+        "pointy ears",
+        "elf"
+      ],
+      "characterTokens": [
+        "muelsyse (arknights)",
+        "muelsyse (young branch) (arknights)",
+        "muelsyse (golden reverie) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "muelsyse (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "norizc",
+        "rella",
+        "shirotaka"
+      ]
+    }
+  }
+}

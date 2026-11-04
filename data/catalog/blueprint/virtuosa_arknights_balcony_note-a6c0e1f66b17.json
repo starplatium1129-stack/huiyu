@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_balcony_note",
+  "revision": 2,
+  "sortOrder": 3104,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "virtuosa_arknights_balcony_note",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "diversity_oneness",
+    "title": "塑心 · 露台上的低语",
+    "category": "亲密时刻",
+    "description": "她在露台回眸招手，等你走近才说起刚才那段旋律，声音像刻意留给你一个人。",
+    "location": "音乐厅露台",
+    "action": "倚栏回眸，招手邀请靠近",
+    "timeOfDay": "夜晚",
+    "lighting": "城市灯光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning on railing",
+      "looking over shoulder",
+      "beckoning",
+      "knowing smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Virtuosa looks over her shoulder and beckons the viewer closer on a balcony.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning on railing",
+      "looking over shoulder",
+      "beckoning",
+      "knowing smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

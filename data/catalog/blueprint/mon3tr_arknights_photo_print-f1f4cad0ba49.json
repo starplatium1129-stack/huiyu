@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_photo_print",
+  "revision": 1,
+  "sortOrder": 3072,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_photo_print",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "standard",
+    "title": "Mon3tr · 第一张合照",
+    "category": "泰拉日常",
+    "description": "照片刚打印出来，她捏着边缘看了很久，问你应该放进相册还是贴在墙上。",
+    "location": "活动室",
+    "action": "拿着新打印的合照",
+    "timeOfDay": "白日",
+    "lighting": "明亮室内光",
+    "camera": "中近景，照片位于前景",
+    "mood": "欣喜",
+    "sceneTags": [
+      "standing",
+      "holding photograph",
+      "activity room",
+      "bright light",
+      "medium close-up"
+    ],
+    "promptProse": "Mon3tr holds a freshly printed group photo in an activity room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding photograph",
+      "activity room",
+      "bright light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

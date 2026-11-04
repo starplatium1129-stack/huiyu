@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_paper_stars",
+  "revision": 1,
+  "sortOrder": 2958,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_paper_stars",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "standard",
+    "title": "迷迭香 · 纸星星",
+    "category": "泰拉日常",
+    "description": "纸条从手指间滑出去两次，她终于折出一颗不太圆的星星。她把它放进玻璃罐，决定再折一颗陪它。",
+    "location": "活动室",
+    "action": "折一颗纸星星",
+    "timeOfDay": "白日",
+    "lighting": "明亮室内光",
+    "camera": "中近景，纸条与手部清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "folding paper star",
+      "paper strips",
+      "glass jar",
+      "table",
+      "bright indoor light",
+      "medium close-up"
+    ],
+    "promptProse": "Rosmontis folds a paper star at an activity room table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "folding paper star",
+      "paper strips",
+      "glass jar",
+      "table",
+      "bright indoor light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

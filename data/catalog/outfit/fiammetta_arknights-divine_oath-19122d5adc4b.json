@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "fiammetta_arknights/divine_oath",
+  "revision": 1,
+  "sortOrder": 1969,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "fiammetta_arknights",
+    "outfit": {
+      "id": "divine_oath",
+      "name": "至圣誓言 · 红披风舞台装",
+      "characterId": "fiammetta_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A red cape over a white bodice and a dark skirt, with a feather ornament.",
+      "tokens": [
+        "red cape",
+        "white bodice",
+        "dark skirt",
+        "feather hair ornament"
+      ],
+      "identityTokensOverride": [
+        "fiammetta (arknights)",
+        "fiammetta (divine oath) (arknights)",
+        "1girl",
+        "solo",
+        "red hair",
+        "short hair",
+        "red eyes",
+        "bird ears",
+        "bird tail"
+      ],
+      "identityProseOverride": "Fiammetta from Arknights has short red hair, red eyes, avian ears and a bird tail."
+    }
+  }
+}

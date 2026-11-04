@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_record_store",
+  "revision": 1,
+  "sortOrder": 2940,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "id": "w_arknights_record_store",
+    "characterId": "w_arknights",
+    "outfitId": "fugue",
+    "title": "W / 维什戴尔 · 唱片封面的选择",
+    "category": "泰拉日常",
+    "description": "她在唱片架前停下，抽出一张封面格外夸张的唱片，翻过来看曲目，问你敢不敢盲买。",
+    "location": "唱片店",
+    "action": "从唱片架中抽出一张唱片",
+    "timeOfDay": "白日",
+    "lighting": "店内柔光",
+    "camera": "中景，唱片架延伸至背景",
+    "mood": "好奇",
+    "sceneTags": [
+      "standing",
+      "holding record sleeve",
+      "record store",
+      "shelves",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "W examines a record sleeve in a music shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding record sleeve",
+      "record store",
+      "shelves",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

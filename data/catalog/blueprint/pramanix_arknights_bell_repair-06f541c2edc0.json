@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pramanix_arknights_bell_repair",
+  "revision": 1,
+  "sortOrder": 2848,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "data": {
+    "id": "pramanix_arknights_bell_repair",
+    "characterId": "pramanix_arknights",
+    "outfitId": "prerita",
+    "title": "初雪 · 铃铛的新绳",
+    "category": "泰拉日常",
+    "description": "铃铛的旧绳磨出了毛边。初雪把新绳缓缓穿过小孔，确认结扣不会松开，才把它轻轻放回桌面。",
+    "location": "山中工坊",
+    "action": "为小铃铛穿上一条新绳",
+    "timeOfDay": "午后",
+    "lighting": "工坊侧窗柔光",
+    "camera": "近景，双手与铃铛清晰可见",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "threading cord",
+      "bell",
+      "workbench",
+      "window light",
+      "close-up"
+    ],
+    "promptProse": "Pramanix threads a new cord through a small bell at a workshop table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "threading cord",
+      "bell",
+      "workbench",
+      "window light",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

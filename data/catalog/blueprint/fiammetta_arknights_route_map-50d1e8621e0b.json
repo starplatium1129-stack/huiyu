@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_route_map",
+  "revision": 1,
+  "sortOrder": 2980,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights_route_map",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "standard",
+    "title": "菲亚梅塔 · 标好的路线",
+    "category": "泰拉日常",
+    "description": "她把目的地圈出来，又补上一条绕开施工路段的路线。地图折好后，她确认你也记住了集合时间。",
+    "location": "桌边",
+    "action": "在地图上标记路线",
+    "timeOfDay": "上午",
+    "lighting": "窗边日光",
+    "camera": "俯角中景，地图和手部清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "marking map",
+      "pencil",
+      "table",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Fiammetta marks a route on a paper map at a table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "marking map",
+      "pencil",
+      "table",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

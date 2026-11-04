@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pramanix_arknights_snow_letter",
+  "revision": 1,
+  "sortOrder": 2846,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "data": {
+    "id": "pramanix_arknights_snow_letter",
+    "characterId": "pramanix_arknights",
+    "outfitId": "casters_frost",
+    "title": "初雪 · 窗前的来信",
+    "category": "泰拉日常",
+    "description": "客舍窗棂覆着薄霜。初雪用指尖压平家书的一角，读到熟悉的字迹时停了片刻，桌上的热茶还在冒气。",
+    "location": "山中客舍",
+    "action": "坐在窗边拆开家书",
+    "timeOfDay": "清晨",
+    "lighting": "雪地反射的冷白晨光",
+    "camera": "中景，侧面看见书信与窗外",
+    "mood": "安静",
+    "sceneTags": [
+      "sitting",
+      "reading letter",
+      "frosted window",
+      "tea cup",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Pramanix reads a letter at a frosted guesthouse window, a cup of tea steaming beside her.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "reading letter",
+      "frosted window",
+      "tea cup",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/undercurrent",
+  "revision": 1,
+  "sortOrder": 1979,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "undercurrent",
+      "name": "暗流 · 冬日黑色裙装",
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black frilled dress, dark hat, scarf and boots.",
+      "tokens": [
+        "black frilled dress",
+        "black hat",
+        "scarf",
+        "boots"
+      ],
+      "identityTokensOverride": [
+        "specter (arknights)",
+        "specter (undercurrent) (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "red eyes"
+      ],
+      "identityProseOverride": "Specter from Arknights has very long white-grey hair and red eyes."
+    }
+  }
+}

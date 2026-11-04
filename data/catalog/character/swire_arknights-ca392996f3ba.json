@@ -1,0 +1,104 @@
+{
+  "kind": "character",
+  "id": "swire_arknights",
+  "revision": 1,
+  "sortOrder": 298,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights",
+    "profile": {
+      "id": "swire_arknights",
+      "name": "诗怀雅",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Swire",
+        "碧翠克丝·施怀雅"
+      ],
+      "speech": "时间宝贵，想去哪里就快说吧。",
+      "visual_dna": {
+        "signature": "金色长发、绿色眼睛、虎耳与条纹尾巴，衣着精致。"
+      },
+      "traits": [
+        "金色长发",
+        "绿眼",
+        "虎耳",
+        "虎纹尾"
+      ],
+      "personality": [
+        "自信",
+        "直率",
+        "重视朋友"
+      ],
+      "likes": [
+        "精致的餐点",
+        "龙门街市",
+        "和朋友聚会"
+      ],
+      "bg_story": "诗怀雅是龙门近卫局高级警司，也以特别合作人员身份协助罗德岛。她出身施怀雅家族，对工作和朋友都有自己的坚持。",
+      "identity": {
+        "role": "龙门近卫局高级警司",
+        "occupation": "警司",
+        "faction": "龙门近卫局",
+        "region": "龙门",
+        "race": "菲林",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "金发",
+        "虎耳",
+        "龙门"
+      ],
+      "voice": "看在你这么有诚意的份上，我就答应了。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "诗怀雅立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "swire_arknights",
+      "displayName": "诗怀雅",
+      "originalName": "Swire",
+      "franchise": "Arknights",
+      "aliases": [
+        "Swire",
+        "碧翠克丝·施怀雅"
+      ],
+      "identityProse": "Swire from Arknights has long blonde hair, green eyes, tiger ears and a striped tiger tail.",
+      "identityTokens": [
+        "swire (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "green eyes",
+        "tiger ears",
+        "tiger tail"
+      ],
+      "characterTokens": [
+        "swire (arknights)",
+        "swire (honor and splendor) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "swire (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "xiayehongming",
+        "infukun",
+        "anmi"
+      ]
+    }
+  }
+}

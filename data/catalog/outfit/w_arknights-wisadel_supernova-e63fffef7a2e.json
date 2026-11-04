@@ -1,0 +1,40 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/wisadel_supernova",
+  "revision": 1,
+  "sortOrder": 1961,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "wisadel_supernova",
+      "name": "维什戴尔 · 超新星黑白裙装",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black shirt and shorts beneath a long white overskirt, with a red ribbon and black boots.",
+      "tokens": [
+        "black shirt",
+        "black shorts",
+        "white overskirt",
+        "red ribbon",
+        "black boots"
+      ],
+      "identityTokensOverride": [
+        "w (arknights)",
+        "wis'adel (arknights)",
+        "wis'adel (supernova) (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "medium hair",
+        "red streak",
+        "red eyes",
+        "red horns",
+        "demon tail"
+      ],
+      "identityProseOverride": "Wis’adel from Arknights has grey-white hair with red streaks, red eyes, red horns and a demon tail.",
+      "characterId": "w_arknights"
+    }
+  }
+}

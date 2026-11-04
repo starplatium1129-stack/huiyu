@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_cafe_pencil",
+  "revision": 1,
+  "sortOrder": 3100,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "virtuosa_arknights_cafe_pencil",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "standard",
+    "title": "塑心 · 咖啡馆里的旋律",
+    "category": "泰拉日常",
+    "description": "听见街头传来的短促旋律，她拿起笔把它记在纸巾背面，又轻轻敲了两下桌面。",
+    "location": "咖啡馆",
+    "action": "在纸上写下旋律",
+    "timeOfDay": "午后",
+    "lighting": "咖啡馆窗光",
+    "camera": "俯角中景，纸笔与咖啡同框",
+    "mood": "若有所思",
+    "sceneTags": [
+      "sitting",
+      "writing music notes",
+      "paper",
+      "coffee cup",
+      "cafe",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Virtuosa writes a melody on paper at a café table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "writing music notes",
+      "paper",
+      "coffee cup",
+      "cafe",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

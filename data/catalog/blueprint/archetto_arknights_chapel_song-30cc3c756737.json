@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_chapel_song",
+  "revision": 1,
+  "sortOrder": 2918,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "id": "archetto_arknights_chapel_song",
+    "characterId": "archetto_arknights",
+    "outfitId": "glory_of_the_devout",
+    "title": "空弦 · 礼拜堂的赞歌",
+    "category": "泰拉日常",
+    "description": "礼拜堂还没有人。她站在长椅旁翻开歌本，把不熟悉的一句又唱了一遍，直到音调与记忆吻合。",
+    "location": "修道院礼拜堂",
+    "action": "拿着歌本轻声练习",
+    "timeOfDay": "上午",
+    "lighting": "高窗透下的光",
+    "camera": "中景，歌本与长椅可见",
+    "mood": "宁静",
+    "sceneTags": [
+      "standing",
+      "holding book",
+      "songbook",
+      "chapel",
+      "sunbeams",
+      "medium shot"
+    ],
+    "promptProse": "Archetto holds a songbook in a quiet chapel.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding book",
+      "songbook",
+      "chapel",
+      "sunbeams",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

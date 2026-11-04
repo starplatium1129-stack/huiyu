@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "ray_arknights_whistle_repair",
+  "revision": 1,
+  "sortOrder": 2908,
+  "createdAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "data": {
+    "id": "ray_arknights_whistle_repair",
+    "characterId": "ray_arknights",
+    "outfitId": "standard",
+    "title": "莱伊 · 哨子上的系绳",
+    "category": "泰拉日常",
+    "description": "哨子的旧绳快磨断了。她把新绳穿过去，打好结后轻吹了一声，听见熟悉的回应才收起来。",
+    "location": "手作桌旁",
+    "action": "为小哨子换一根系绳",
+    "timeOfDay": "午后",
+    "lighting": "室内柔光",
+    "camera": "近景，哨子与系绳同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "small whistle",
+      "cord",
+      "worktable",
+      "soft light",
+      "close-up"
+    ],
+    "promptProse": "Ray threads a new cord through a small whistle at a worktable.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "small whistle",
+      "cord",
+      "worktable",
+      "soft light",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

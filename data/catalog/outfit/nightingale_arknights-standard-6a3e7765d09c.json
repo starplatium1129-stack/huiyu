@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1980,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 白色长裙与外套",
+      "characterId": "nightingale_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white long skirt, white jacket and a white hat.",
+      "tokens": [
+        "white long skirt",
+        "white jacket",
+        "white hat"
+      ]
+    }
+  }
+}

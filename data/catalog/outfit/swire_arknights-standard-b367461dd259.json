@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1994,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 黑外套与贝雷帽",
+      "characterId": "swire_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A black coat over a white shirt and black skirt, with a black beret.",
+      "tokens": [
+        "black coat",
+        "white shirt",
+        "black skirt",
+        "black beret"
+      ]
+    }
+  }
+}

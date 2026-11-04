@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "pozyomka_arknights/beside_dreams",
+  "revision": 1,
+  "sortOrder": 1959,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "data": {
+    "characterId": "pozyomka_arknights",
+    "outfit": {
+      "id": "beside_dreams",
+      "name": "行梦侧畔 · 蓝色罗衣与白色外衫",
+      "default": false,
+      "isDefault": false,
+      "prose": "A blue dress with a light white outer robe and a magnolia hair ornament.",
+      "tokens": [
+        "blue dress",
+        "white haori",
+        "long sleeves",
+        "flower hair ornament",
+        "jewelry"
+      ],
+      "identityTokensOverride": [
+        "pozyomka (arknights)",
+        "pozyomka (beside dreams) (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "very long hair",
+        "pink eyes",
+        "wolf ears",
+        "wolf tail"
+      ],
+      "identityProseOverride": "Pozyomka from Arknights has very long pink hair, pink eyes, wolf ears and a wolf tail.",
+      "characterId": "pozyomka_arknights"
+    }
+  }
+}

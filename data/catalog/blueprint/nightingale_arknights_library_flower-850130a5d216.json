@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_library_flower",
+  "revision": 1,
+  "sortOrder": 3041,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_library_flower",
+    "characterId": "nightingale_arknights",
+    "outfitId": "standard",
+    "title": "夜莺 · 花的图鉴",
+    "category": "泰拉日常",
+    "description": "图鉴上有她在花园见过的花。她把书页翻回来，将花名认真记在纸上。",
+    "location": "图书馆",
+    "action": "翻看花卉图鉴",
+    "timeOfDay": "上午",
+    "lighting": "书架柔光",
+    "camera": "中景，图鉴和桌面同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "open book",
+      "flower illustration",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Nightingale reads a flower encyclopedia in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open book",
+      "flower illustration",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

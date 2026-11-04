@@ -1,0 +1,103 @@
+{
+  "kind": "character",
+  "id": "horn_arknights",
+  "revision": 1,
+  "sortOrder": 287,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights",
+    "profile": {
+      "id": "horn_arknights",
+      "name": "号角",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Horn",
+        "丽塔·斯卡曼德罗斯"
+      ],
+      "speech": "今天没有紧急事务，可以慢慢来。",
+      "visual_dna": {
+        "signature": "金色长发、蓝眼和鲁珀耳朵，神情坚定。"
+      },
+      "traits": [
+        "金色长发",
+        "蓝眼",
+        "狼耳",
+        "沉稳"
+      ],
+      "personality": [
+        "坚定",
+        "克制",
+        "重视承诺"
+      ],
+      "likes": [
+        "整齐的花园",
+        "安静的茶点时间",
+        "认真写下的信"
+      ],
+      "bg_story": "号角是维多利亚出身的鲁珀，曾长期在军中任职。她重视同伴与责任，也珍惜难得的安宁时刻。",
+      "identity": {
+        "role": "维多利亚军人",
+        "occupation": "干员",
+        "faction": "罗德岛",
+        "region": "维多利亚",
+        "race": "鲁珀",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "金发",
+        "鲁珀",
+        "维多利亚"
+      ],
+      "voice": "这段时间，值得好好珍惜。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "号角立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "horn_arknights",
+      "displayName": "号角",
+      "originalName": "Horn",
+      "franchise": "Arknights",
+      "aliases": [
+        "Horn",
+        "丽塔·斯卡曼德罗斯"
+      ],
+      "identityProse": "Horn from Arknights has long blonde hair, blue eyes and wolf ears.",
+      "identityTokens": [
+        "horn (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "wolf ears",
+        "blue eyes"
+      ],
+      "characterTokens": [
+        "horn (arknights)",
+        "horn (the first gleam) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "horn (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "m9nokuro",
+        "swav",
+        "ryuuzaki_ichi"
+      ]
+    }
+  }
+}

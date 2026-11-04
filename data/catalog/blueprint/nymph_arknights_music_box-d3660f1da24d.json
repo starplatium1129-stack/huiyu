@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_music_box",
+  "revision": 1,
+  "sortOrder": 2892,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_music_box",
+    "characterId": "nymph_arknights",
+    "outfitId": "blooming_reverie",
+    "title": "妮芙 · 音乐盒的旋律",
+    "category": "泰拉日常",
+    "description": "音乐盒的发条转了几圈，她便安静地等着曲子开始。熟悉的旋律响起时，妮芙跟着轻轻哼了一小段。",
+    "location": "起居室",
+    "action": "坐在桌前打开音乐盒",
+    "timeOfDay": "下午",
+    "lighting": "柔和室内光",
+    "camera": "中近景，音乐盒位于前景",
+    "mood": "宁静",
+    "sceneTags": [
+      "sitting",
+      "music box",
+      "table",
+      "living room",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Nymph opens a music box at a small table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "music box",
+      "table",
+      "living room",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

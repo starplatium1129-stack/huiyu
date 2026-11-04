@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_herb_tea",
+  "revision": 1,
+  "sortOrder": 2879,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "id": "muelsyse_arknights_herb_tea",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "young_branch",
+    "title": "缪尔赛思 · 香草茶配方",
+    "category": "泰拉日常",
+    "description": "她把刚洗净的香草放进杯中，先闻了闻，再倒入热水。等茶色慢慢变深，她才把另一只杯子推向你。",
+    "location": "厨房",
+    "action": "向杯中放入新鲜香草",
+    "timeOfDay": "下午",
+    "lighting": "厨房窗光",
+    "camera": "近景，茶杯与香草清晰",
+    "mood": "惬意",
+    "sceneTags": [
+      "standing",
+      "herbal tea",
+      "fresh herbs",
+      "teacup",
+      "kitchen",
+      "window light",
+      "close-up"
+    ],
+    "promptProse": "Muelsyse adds fresh herbs to a cup of tea in a sunlit kitchen.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "herbal tea",
+      "fresh herbs",
+      "teacup",
+      "kitchen",
+      "window light",
+      "close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

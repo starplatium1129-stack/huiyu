@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "angelina_arknights_cafe_menu",
+  "revision": 1,
+  "sortOrder": 3082,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights_cafe_menu",
+    "characterId": "angelina_arknights",
+    "outfitId": "standard",
+    "title": "安洁莉娜 · 饮品单",
+    "category": "泰拉日常",
+    "description": "菜单上有两种没见过的饮品，她犹豫了一会儿，决定先问问店员哪一种更清爽。",
+    "location": "咖啡馆",
+    "action": "查看饮品单",
+    "timeOfDay": "下午",
+    "lighting": "窗边日光",
+    "camera": "中景，菜单与桌面同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "holding menu",
+      "cafe table",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Angelina reads a drink menu at a café table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding menu",
+      "cafe table",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

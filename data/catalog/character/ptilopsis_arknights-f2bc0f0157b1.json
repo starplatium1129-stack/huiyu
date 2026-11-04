@@ -1,0 +1,100 @@
+{
+  "kind": "character",
+  "id": "ptilopsis_arknights",
+  "revision": 1,
+  "sortOrder": 292,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights",
+    "profile": {
+      "id": "ptilopsis_arknights",
+      "name": "白面鸮",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Ptilopsis"
+      ],
+      "speech": "正在检索。请稍候。",
+      "visual_dna": {
+        "signature": "灰色头发、鸮类耳羽和橙黄色眼睛，表情平静。"
+      },
+      "traits": [
+        "灰发",
+        "鸮耳",
+        "橙黄色眼睛"
+      ],
+      "personality": [
+        "冷静",
+        "说话简洁",
+        "认真照顾同伴"
+      ],
+      "likes": [
+        "整理数据",
+        "阅读",
+        "规律的休息时间"
+      ],
+      "bg_story": "白面鸮曾是莱茵生命的数据维护专员，后来在罗德岛医疗部门工作。她说话常带有系统提示般的语气，也会关心身边人的状态。",
+      "identity": {
+        "role": "罗德岛医疗干员",
+        "occupation": "医疗数据维护",
+        "faction": "罗德岛",
+        "region": "哥伦比亚",
+        "race": "黎博利",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "灰发",
+        "黎博利",
+        "医疗"
+      ],
+      "voice": "记录完成。休息时间开始。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "白面鸮立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "ptilopsis_arknights",
+      "displayName": "白面鸮",
+      "originalName": "Ptilopsis",
+      "franchise": "Arknights",
+      "aliases": [
+        "Ptilopsis"
+      ],
+      "identityProse": "Ptilopsis from Arknights has grey hair, owl-like ears and orange eyes.",
+      "identityTokens": [
+        "ptilopsis (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "medium hair",
+        "owl ears",
+        "orange eyes"
+      ],
+      "characterTokens": [
+        "ptilopsis (arknights)",
+        "ptilopsis (serenity) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "ptilopsis (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "ryuuzaki_ichi",
+        "anmi",
+        "namie-kun"
+      ]
+    }
+  }
+}

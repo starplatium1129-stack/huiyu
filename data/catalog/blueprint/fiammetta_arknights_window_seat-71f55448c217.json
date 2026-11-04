@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_window_seat",
+  "revision": 2,
+  "sortOrder": 2983,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "fiammetta_arknights_window_seat",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "standard",
+    "title": "菲亚梅塔 · 靠窗的位置",
+    "category": "亲密时刻",
+    "description": "你提议下次再来，她低头喝了口咖啡，抬眼时脸上有点热，却还是认真说了声好。",
+    "location": "咖啡馆",
+    "action": "捧杯侧身，带一点羞意看向镜头",
+    "timeOfDay": "傍晚",
+    "lighting": "落日暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "holding coffee cup",
+      "looking at viewer",
+      "slight blush",
+      "soft smile",
+      "cafe",
+      "sunset light",
+      "medium close-up"
+    ],
+    "promptProse": "Fiammetta holds a coffee cup and looks toward the viewer with a small blush.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding coffee cup",
+      "looking at viewer",
+      "slight blush",
+      "soft smile",
+      "cafe",
+      "sunset light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

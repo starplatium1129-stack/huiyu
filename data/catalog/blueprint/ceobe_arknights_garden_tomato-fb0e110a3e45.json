@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_garden_tomato",
+  "revision": 1,
+  "sortOrder": 3062,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_garden_tomato",
+    "characterId": "ceobe_arknights",
+    "outfitId": "standard",
+    "title": "刻俄柏 · 番茄熟了",
+    "category": "泰拉日常",
+    "description": "她发现一颗番茄变红，连忙叫来照料菜园的朋友，确认可以采摘后才把它放进篮子。",
+    "location": "花园",
+    "action": "观察成熟的番茄",
+    "timeOfDay": "上午",
+    "lighting": "花园日光",
+    "camera": "中景，番茄架和篮子同框",
+    "mood": "惊喜",
+    "sceneTags": [
+      "standing",
+      "looking at tomato",
+      "tomato plant",
+      "basket",
+      "garden",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Ceobe looks at ripe tomatoes in a garden.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking at tomato",
+      "tomato plant",
+      "basket",
+      "garden",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

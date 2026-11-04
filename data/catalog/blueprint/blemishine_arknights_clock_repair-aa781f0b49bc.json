@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "blemishine_arknights_clock_repair",
+  "revision": 1,
+  "sortOrder": 3006,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "blemishine_arknights_clock_repair",
+    "characterId": "blemishine_arknights",
+    "outfitId": "standard",
+    "title": "瑕光 · 停下的闹钟",
+    "category": "泰拉日常",
+    "description": "闹钟的指针停在八点。她打开后盖检查齿轮，找到卡住的小螺丝后，松了口气。",
+    "location": "维修台",
+    "action": "用小螺丝刀修理闹钟",
+    "timeOfDay": "上午",
+    "lighting": "工作台日光",
+    "camera": "中近景，闹钟与工具清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "holding screwdriver",
+      "alarm clock",
+      "workbench",
+      "daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Blemishine repairs an alarm clock with a small screwdriver.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding screwdriver",
+      "alarm clock",
+      "workbench",
+      "daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

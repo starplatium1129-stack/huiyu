@@ -1,0 +1,41 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/curator",
+  "revision": 1,
+  "sortOrder": 1991,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "curator",
+      "name": "博物 · 黑外套与宽檐帽",
+      "characterId": "reed_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black jacket over a white shirt, a wide-brimmed hat and dark tights, with twin braids.",
+      "tokens": [
+        "black jacket",
+        "white shirt",
+        "wide-brimmed hat",
+        "black pantyhose",
+        "twin braids"
+      ],
+      "identityTokensOverride": [
+        "reed the flame shadow (arknights)",
+        "reed the flame shadow (curator) (arknights)",
+        "reed (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "twin braids",
+        "green eyes",
+        "dragon horns",
+        "dragon tail",
+        "flame-tipped tail"
+      ],
+      "identityProseOverride": "Reed the Flame Shadow from Arknights has long blonde hair, green eyes, dragon horns and a flame-tipped dragon tail."
+    }
+  }
+}

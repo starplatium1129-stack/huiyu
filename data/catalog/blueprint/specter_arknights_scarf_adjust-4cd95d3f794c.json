@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_scarf_adjust",
+  "revision": 2,
+  "sortOrder": 3035,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "specter_arknights_scarf_adjust",
+    "characterId": "specter_arknights",
+    "outfitId": "undercurrent",
+    "title": "幽灵鲨 · 围巾一角",
+    "category": "亲密时刻",
+    "description": "她按住被风吹起的围巾，侧身靠近，让另一端也替你挡一点风。她望着你，笑得很轻。",
+    "location": "街边",
+    "action": "扶住围巾，侧头对镜头微笑",
+    "timeOfDay": "傍晚",
+    "lighting": "街灯暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding scarf",
+      "leaning toward viewer",
+      "looking at viewer",
+      "soft smile",
+      "streetlight",
+      "evening",
+      "medium close-up"
+    ],
+    "promptProse": "Specter holds her scarf and leans toward the viewer beneath a streetlight.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding scarf",
+      "leaning toward viewer",
+      "looking at viewer",
+      "soft smile",
+      "streetlight",
+      "evening",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

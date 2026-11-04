@@ -1,0 +1,103 @@
+{
+  "kind": "character",
+  "id": "rosa_arknights",
+  "revision": 1,
+  "sortOrder": 282,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights",
+    "profile": {
+      "id": "rosa_arknights",
+      "name": "早露",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Rosa",
+        "娜塔莉娅·罗斯托娃"
+      ],
+      "speech": "今天的安排，我已经记在这里了。",
+      "visual_dna": {
+        "signature": "白色长发、熊耳和异色双眼，举止端庄。"
+      },
+      "traits": [
+        "白色长发",
+        "熊耳",
+        "异色双眼",
+        "端庄"
+      ],
+      "personality": [
+        "克制",
+        "细心",
+        "愿意照顾身边的人"
+      ],
+      "likes": [
+        "安静的阅读时间",
+        "整洁的房间",
+        "朋友之间的约定"
+      ],
+      "bg_story": "早露来自乌萨斯的罗斯托夫家族，曾在切尔诺伯格的学校求学。经历变故后，她来到罗德岛，与曾经的同学们继续寻找各自的生活。",
+      "identity": {
+        "role": "罗德岛干员",
+        "occupation": "干员",
+        "faction": "罗德岛",
+        "region": "乌萨斯",
+        "race": "乌萨斯",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "tags": [
+        "白发",
+        "乌萨斯",
+        "异色瞳"
+      ],
+      "voice": "谢谢你，我会好好收下的。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "早露立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "rosa_arknights",
+      "displayName": "早露",
+      "originalName": "Rosa",
+      "franchise": "Arknights",
+      "aliases": [
+        "Rosa",
+        "娜塔莉娅·罗斯托娃"
+      ],
+      "identityProse": "Rosa from Arknights has very long white hair, bear ears and heterochromatic eyes.",
+      "identityTokens": [
+        "rosa (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "bear ears",
+        "heterochromia"
+      ],
+      "characterTokens": [
+        "rosa (arknights)",
+        "rosa (masterpiece) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "rosa (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "curatedArtistStyles": [
+        "skade",
+        "anmi",
+        "namie-kun"
+      ]
+    }
+  }
+}

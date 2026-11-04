@@ -1,0 +1,102 @@
+{
+  "kind": "character",
+  "id": "nightingale_arknights",
+  "revision": 1,
+  "sortOrder": 291,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights",
+    "profile": {
+      "id": "nightingale_arknights",
+      "name": "夜莺",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Nightingale",
+        "丽兹"
+      ],
+      "speech": "今天的阳光……很温暖。",
+      "visual_dna": {
+        "signature": "浅金色长发、蓝色眼睛与萨卡兹角，神情安静。"
+      },
+      "traits": [
+        "浅金长发",
+        "蓝眼",
+        "萨卡兹角"
+      ],
+      "personality": [
+        "温柔",
+        "安静",
+        "关心他人"
+      ],
+      "likes": [
+        "鸟鸣",
+        "温暖的阳光",
+        "和朋友安静相处"
+      ],
+      "bg_story": "夜莺是萨卡兹医疗干员，曾是感染者援助团体“使徒”的一员。她在罗德岛接受治疗，也为需要帮助的人提供医疗支持。",
+      "identity": {
+        "role": "罗德岛医疗干员",
+        "occupation": "医疗干员",
+        "faction": "罗德岛",
+        "region": "卡兹戴尔",
+        "race": "萨卡兹",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "金发",
+        "萨卡兹",
+        "医疗"
+      ],
+      "voice": "你也来听一听吗？",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "夜莺立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "nightingale_arknights",
+      "displayName": "夜莺",
+      "originalName": "Nightingale",
+      "franchise": "Arknights",
+      "aliases": [
+        "Nightingale",
+        "丽兹"
+      ],
+      "identityProse": "Nightingale from Arknights has very long blonde hair, blue eyes and Sarkaz horns.",
+      "identityTokens": [
+        "nightingale (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "very long hair",
+        "blue eyes",
+        "horns"
+      ],
+      "characterTokens": [
+        "nightingale (arknights)",
+        "nightingale (an elegy) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "nightingale (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "curatedArtistStyles": [
+        "skade",
+        "anmi",
+        "ryuuzaki_ichi"
+      ]
+    }
+  }
+}

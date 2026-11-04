@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_afternoon_tea",
+  "revision": 1,
+  "sortOrder": 2997,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights_afternoon_tea",
+    "characterId": "horn_arknights",
+    "outfitId": "standard",
+    "title": "号角 · 下午茶",
+    "category": "泰拉日常",
+    "description": "她把茶注到杯中七分满，再把点心盘移到两人都够得到的位置。窗外的风声很轻，谈话也慢了下来。",
+    "location": "茶室",
+    "action": "给茶杯斟茶",
+    "timeOfDay": "下午",
+    "lighting": "窗边暖光",
+    "camera": "中景，茶壶与点心清晰",
+    "mood": "放松",
+    "sceneTags": [
+      "pouring tea",
+      "teapot",
+      "tea cups",
+      "pastries",
+      "tea room",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Horn pours tea at a quiet tea room table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "pouring tea",
+      "teapot",
+      "tea cups",
+      "pastries",
+      "tea room",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

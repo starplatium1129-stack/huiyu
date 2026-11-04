@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_riverside_picnic",
+  "revision": 1,
+  "sortOrder": 2881,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "id": "muelsyse_arknights_riverside_picnic",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "young_branch",
+    "title": "缪尔赛思 · 河岸上的午餐",
+    "category": "泰拉日常",
+    "description": "她把水果从篮子里拿出来，挑了一颗熟透的递给你。河风吹动餐布的一角，她伸手用篮子把它压住。",
+    "location": "河岸草地",
+    "action": "坐在野餐布上整理水果",
+    "timeOfDay": "中午",
+    "lighting": "晴朗日光",
+    "camera": "远景，河岸和野餐篮入画",
+    "mood": "轻松",
+    "sceneTags": [
+      "sitting",
+      "picnic blanket",
+      "fruit basket",
+      "riverside",
+      "daylight",
+      "wide shot"
+    ],
+    "promptProse": "Muelsyse arranges fruit on a picnic blanket beside a river.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "picnic blanket",
+      "fruit basket",
+      "riverside",
+      "daylight",
+      "wide shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

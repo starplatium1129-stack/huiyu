@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_winter_letters",
+  "revision": 1,
+  "sortOrder": 2948,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_winter_letters",
+    "characterId": "rosa_arknights",
+    "outfitId": "standard",
+    "title": "早露 · 写给朋友的信",
+    "category": "泰拉日常",
+    "description": "信已经写完，早露又检查了一遍收件人的名字。她将纸张对折放进信封，留出明天去寄信的时间。",
+    "location": "窗边书桌",
+    "action": "给信封写收件人",
+    "timeOfDay": "傍晚",
+    "lighting": "落日照亮纸张",
+    "camera": "俯角中景，信笺与笔清晰",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "writing on envelope",
+      "letter paper",
+      "desk",
+      "sunset light",
+      "medium shot"
+    ],
+    "promptProse": "Rosa addresses an envelope at a desk beside a window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "writing on envelope",
+      "letter paper",
+      "desk",
+      "sunset light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

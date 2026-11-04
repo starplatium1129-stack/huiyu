@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_watering_can",
+  "revision": 1,
+  "sortOrder": 2891,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_watering_can",
+    "characterId": "nymph_arknights",
+    "outfitId": "sweetness_to_the_heart",
+    "title": "妮芙 · 窗台浇水",
+    "category": "泰拉日常",
+    "description": "窗台的土有些干了。她提着小水壶一盆盆浇过去，最后把歪倒的植物标签扶正。",
+    "location": "舰内休息室",
+    "action": "用小水壶给窗台植物浇水",
+    "timeOfDay": "清晨",
+    "lighting": "晨光照亮窗台",
+    "camera": "中景，花盆与水壶清晰",
+    "mood": "愉快",
+    "sceneTags": [
+      "standing",
+      "watering plants",
+      "small watering can",
+      "potted plants",
+      "windowsill",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Nymph waters potted plants on a lounge windowsill.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "watering plants",
+      "small watering can",
+      "potted plants",
+      "windowsill",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

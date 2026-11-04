@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/unfettered",
+  "revision": 1,
+  "sortOrder": 1985,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "unfettered",
+      "name": "无拘无束 · 黑色外套与白帽",
+      "characterId": "ceobe_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black jacket and black skirt with red gloves and a white hat.",
+      "tokens": [
+        "black jacket",
+        "black skirt",
+        "red gloves",
+        "white hat"
+      ],
+      "identityTokensOverride": [
+        "ceobe (arknights)",
+        "ceobe (unfettered) (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "long hair",
+        "red eyes",
+        "dog ears",
+        "dog tail"
+      ],
+      "identityProseOverride": "Ceobe from Arknights has long brown hair, red eyes, dog ears and a dog tail."
+    }
+  }
+}

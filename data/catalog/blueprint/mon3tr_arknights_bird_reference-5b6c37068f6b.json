@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "mon3tr_arknights_bird_reference",
+  "revision": 1,
+  "sortOrder": 3071,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights_bird_reference",
+    "characterId": "mon3tr_arknights",
+    "outfitId": "sharpened_claws",
+    "title": "Mon3tr · 鸟类参考书",
+    "category": "泰拉日常",
+    "description": "她在图鉴里找到窗外那只鸟，比较羽毛上的花纹后，把书轻轻转向你。",
+    "location": "图书馆",
+    "action": "翻看鸟类图鉴",
+    "timeOfDay": "上午",
+    "lighting": "书架柔光",
+    "camera": "中景，书页与书架同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "open bird book",
+      "bird illustration",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Mon3tr reads a bird encyclopedia in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open bird book",
+      "bird illustration",
+      "library",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

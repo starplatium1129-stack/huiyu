@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_rain_shelter",
+  "revision": 2,
+  "sortOrder": 3004,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "horn_arknights_rain_shelter",
+    "characterId": "horn_arknights",
+    "outfitId": "first_gleam",
+    "title": "号角 · 檐下等雨",
+    "category": "亲密时刻",
+    "description": "风把雨丝吹进屋檐，她靠近你半步挡住风，发现距离有些近时，仍平静地笑了笑。",
+    "location": "街边屋檐",
+    "action": "檐下侧身，微笑着靠近",
+    "timeOfDay": "雨天",
+    "lighting": "雨天柔光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "standing",
+      "close to viewer",
+      "looking at viewer",
+      "gentle smile",
+      "awning",
+      "rain",
+      "soft overcast light",
+      "medium close-up"
+    ],
+    "promptProse": "Horn stands close under an awning and smiles toward the viewer as rain falls.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "close to viewer",
+      "looking at viewer",
+      "gentle smile",
+      "awning",
+      "rain",
+      "soft overcast light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

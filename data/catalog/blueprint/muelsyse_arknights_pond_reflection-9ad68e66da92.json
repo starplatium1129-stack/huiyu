@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_pond_reflection",
+  "revision": 1,
+  "sortOrder": 2877,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "id": "muelsyse_arknights_pond_reflection",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "young_branch",
+    "title": "缪尔赛思 · 水面上的叶子",
+    "category": "泰拉日常",
+    "description": "一片叶子顺水漂过来，她把手伸到水面上方，等叶子自己靠近。看清叶脉后，她又轻轻把它放回去。",
+    "location": "池塘边",
+    "action": "伸手接住漂来的落叶",
+    "timeOfDay": "午后",
+    "lighting": "树荫下的斑驳日光",
+    "camera": "中景，手与水面同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "kneeling",
+      "reaching toward water",
+      "floating leaf",
+      "pond",
+      "dappled sunlight",
+      "medium shot"
+    ],
+    "promptProse": "Muelsyse reaches for a leaf drifting on a shaded pond.",
+    "animaCaption": "",
+    "promptTokens": [
+      "kneeling",
+      "reaching toward water",
+      "floating leaf",
+      "pond",
+      "dappled sunlight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

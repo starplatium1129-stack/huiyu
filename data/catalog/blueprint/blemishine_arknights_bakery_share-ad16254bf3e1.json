@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "blemishine_arknights_bakery_share",
+  "revision": 1,
+  "sortOrder": 3011,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "blemishine_arknights_bakery_share",
+    "characterId": "blemishine_arknights",
+    "outfitId": "standard",
+    "title": "瑕光 · 刚烤好的面包",
+    "category": "泰拉日常",
+    "description": "她从店里出来，纸袋里装着刚烤好的面包。热气透过袋口冒出来，她提议先分一块尝尝。",
+    "location": "面包店外",
+    "action": "双手捧着纸袋",
+    "timeOfDay": "清晨",
+    "lighting": "店窗暖光",
+    "camera": "中景，面包和纸袋可见",
+    "mood": "期待",
+    "sceneTags": [
+      "standing",
+      "holding paper bag",
+      "bread",
+      "bakery",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Blemishine holds a bag of fresh bread outside a bakery.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding paper bag",
+      "bread",
+      "bakery",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

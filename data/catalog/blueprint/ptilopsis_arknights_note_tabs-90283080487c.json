@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_note_tabs",
+  "revision": 1,
+  "sortOrder": 3052,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_note_tabs",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "standard",
+    "title": "白面鸮 · 彩色索引",
+    "category": "泰拉日常",
+    "description": "她将不同颜色的标签贴到对应文件上，检查顺序后，把整摞资料移回书架。",
+    "location": "资料室",
+    "action": "给文件贴索引标签",
+    "timeOfDay": "白日",
+    "lighting": "明亮室内光",
+    "camera": "中近景，文件与标签清晰",
+    "mood": "有条理",
+    "sceneTags": [
+      "sitting",
+      "index tabs",
+      "folders",
+      "desk",
+      "bright indoor light",
+      "medium close-up"
+    ],
+    "promptProse": "Ptilopsis adds colored index tabs to folders.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "index tabs",
+      "folders",
+      "desk",
+      "bright indoor light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

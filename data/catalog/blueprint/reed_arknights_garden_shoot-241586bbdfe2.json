@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_garden_shoot",
+  "revision": 1,
+  "sortOrder": 3086,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights_garden_shoot",
+    "characterId": "reed_arknights",
+    "outfitId": "flame_shadow",
+    "title": "焰影苇草 · 新长出的叶子",
+    "category": "泰拉日常",
+    "description": "她蹲在花盆旁，发现一片新叶正舒展开来，便把遮住它的落叶轻轻移开。",
+    "location": "花园",
+    "action": "观察新叶",
+    "timeOfDay": "清晨",
+    "lighting": "晨间柔光",
+    "camera": "中景，花盆与叶片同框",
+    "mood": "平和",
+    "sceneTags": [
+      "crouching",
+      "looking at plant",
+      "new leaf",
+      "flowerpot",
+      "garden",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Reed observes a new leaf in a garden pot.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "crouching",
+      "looking at plant",
+      "new leaf",
+      "flowerpot",
+      "garden",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

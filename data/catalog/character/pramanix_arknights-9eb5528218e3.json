@@ -1,0 +1,109 @@
+{
+  "kind": "character",
+  "id": "pramanix_arknights",
+  "revision": 2,
+  "sortOrder": 272,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "pramanix_arknights",
+    "profile": {
+      "id": "pramanix_arknights",
+      "name": "初雪",
+      "alias": [
+        "Pramanix",
+        "恩雅·希瓦艾什",
+        "Enya Silverash"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "你来了。今天的事先放一放，陪我走一段路吧。",
+      "visual_dna": {
+        "signature": "银白长发与双辫、雪豹耳和长尾；神情沉静，衣装常以铃饰与雪境色调呼应谢拉格。"
+      },
+      "traits": [
+        "白色长发",
+        "双辫",
+        "雪豹耳",
+        "雪豹尾",
+        "灰色眼睛"
+      ],
+      "personality": [
+        "沉静有分寸",
+        "珍惜谢拉格与家人",
+        "对繁琐事务偶尔流露倦意"
+      ],
+      "likes": [
+        "谢拉格的雪景",
+        "安静的独处",
+        "与家人相处的时间"
+      ],
+      "bg_story": "恩雅·希瓦艾什是谢拉格的圣女，以“初雪”为代号来到罗德岛。她熟悉雪山的传统，也必须面对故乡逐渐变化的生活；在庄重的身份之外，她同样希望拥有平静而寻常的时光。",
+      "identity": {
+        "role": "谢拉格圣女",
+        "occupation": "罗德岛干员",
+        "faction": "谢拉格",
+        "region": "谢拉格",
+        "race": "菲林",
+        "classificationSource": "游戏内干员基础档案"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "初雪立绘待制作"
+      },
+      "tags": [
+        "白发",
+        "雪豹",
+        "谢拉格"
+      ],
+      "voice": "今天的雪很安静。"
+    },
+    "popular": {
+      "id": "pramanix_arknights",
+      "displayName": "初雪",
+      "originalName": "Pramanix",
+      "franchise": "Arknights",
+      "aliases": [
+        "Enya Silverash",
+        "初雪",
+        "恩雅"
+      ],
+      "identityProse": "Pramanix from Arknights has very long white hair in twin braids, grey eyes, snow leopard ears and a long snow leopard tail.",
+      "identityTokens": [
+        "pramanix (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "twin braids",
+        "grey eyes",
+        "snow leopard ears",
+        "snow leopard tail"
+      ],
+      "characterTokens": [
+        "pramanix (arknights)",
+        "pramanix (caster's frost) (arknights)",
+        "pramanix the prerita (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "pramanix (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "curatedArtistStyles": [
+        "ryuuzaki_ichi",
+        "rella",
+        "shirotaka"
+      ]
+    }
+  }
+}

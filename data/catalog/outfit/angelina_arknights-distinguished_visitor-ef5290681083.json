@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/distinguished_visitor",
+  "revision": 1,
+  "sortOrder": 1989,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "distinguished_visitor",
+      "name": "质素访客 · 红色长外套",
+      "characterId": "angelina_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A red long coat over a dark outfit, with black gloves and boots.",
+      "tokens": [
+        "red long coat",
+        "dark outfit",
+        "black gloves",
+        "boots"
+      ],
+      "identityTokensOverride": [
+        "angelina (arknights)",
+        "angelina (distinguished visitor) (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "long hair",
+        "twintails",
+        "red eyes",
+        "fox ears",
+        "fox tail"
+      ],
+      "identityProseOverride": "Angelina from Arknights has long brown twintails, red eyes, fox ears and a fox tail."
+    }
+  }
+}

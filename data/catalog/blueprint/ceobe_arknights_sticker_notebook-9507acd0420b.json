@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_sticker_notebook",
+  "revision": 1,
+  "sortOrder": 3063,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_sticker_notebook",
+    "characterId": "ceobe_arknights",
+    "outfitId": "unfettered",
+    "title": "刻俄柏 · 食物贴纸",
+    "category": "泰拉日常",
+    "description": "她把面包、苹果和小蛋糕贴纸排成一行，说这是下次想尝的东西。",
+    "location": "书桌",
+    "action": "在本子上贴贴纸",
+    "timeOfDay": "下午",
+    "lighting": "桌边日光",
+    "camera": "中近景，贴纸和本子清晰",
+    "mood": "愉快",
+    "sceneTags": [
+      "sitting",
+      "food stickers",
+      "notebook",
+      "desk",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Ceobe places food stickers in a notebook.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "food stickers",
+      "notebook",
+      "desk",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

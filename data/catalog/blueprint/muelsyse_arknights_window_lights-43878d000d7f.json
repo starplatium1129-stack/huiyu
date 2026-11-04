@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_window_lights",
+  "revision": 2,
+  "sortOrder": 2883,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "muelsyse_arknights_window_lights",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "golden_reverie",
+    "title": "缪尔赛思 · 灯火映在玻璃上",
+    "category": "亲密时刻",
+    "description": "她数着窗外的灯火，忽然转身靠近，问你有没有发现玻璃里也映着两个人的影子。",
+    "location": "高处窗边",
+    "action": "靠窗转身，双手搭在窗沿看向镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "城市灯火与柔和室内光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning toward viewer",
+      "looking at viewer",
+      "playful smile",
+      "window",
+      "city lights",
+      "night",
+      "soft lamplight",
+      "medium close-up"
+    ],
+    "promptProse": "Muelsyse turns from a city window and leans toward the viewer with a playful smile.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning toward viewer",
+      "looking at viewer",
+      "playful smile",
+      "window",
+      "city lights",
+      "night",
+      "soft lamplight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

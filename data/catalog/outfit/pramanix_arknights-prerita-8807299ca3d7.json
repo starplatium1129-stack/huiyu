@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/prerita",
+  "revision": 1,
+  "sortOrder": 1943,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "prerita",
+      "name": "初雪异格 · 深色长裙与蓝色披风",
+      "default": false,
+      "isDefault": false,
+      "prose": "A long black dress worn beneath a blue cloak, finished with a bell necklace.",
+      "tokens": [
+        "black dress",
+        "long dress",
+        "blue cloak",
+        "bell necklace"
+      ],
+      "identityTokensOverride": [
+        "pramanix (arknights)",
+        "pramanix the prerita (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "twin braids",
+        "snow leopard ears",
+        "snow leopard tail"
+      ],
+      "identityProseOverride": "Pramanix the Prerita from Arknights, with very long white hair in twin braids and snow leopard ears and tail.",
+      "characterId": "pramanix_arknights"
+    }
+  }
+}

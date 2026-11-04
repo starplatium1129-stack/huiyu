@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_balcony_drink",
+  "revision": 2,
+  "sortOrder": 2994,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_balcony_drink",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "summer",
+    "title": "星熊 · 露台上的冰饮",
+    "category": "亲密时刻",
+    "description": "碰杯后她没有坐回去，而是手肘撑在桌边看你，笑说今晚没安排，足够把想听的话听完。",
+    "location": "露台",
+    "action": "举杯倾身，带笑直视镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "露台暖灯",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "holding glass",
+      "leaning forward",
+      "looking at viewer",
+      "confident smile",
+      "balcony",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Hoshiguma leans forward with a cold drink and smiles at the viewer on a balcony.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding glass",
+      "leaning forward",
+      "looking at viewer",
+      "confident smile",
+      "balcony",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

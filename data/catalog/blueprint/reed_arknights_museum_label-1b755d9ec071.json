@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_museum_label",
+  "revision": 1,
+  "sortOrder": 3087,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights_museum_label",
+    "characterId": "reed_arknights",
+    "outfitId": "curator",
+    "title": "焰影苇草 · 展柜说明牌",
+    "category": "泰拉日常",
+    "description": "她在展柜前读完说明，又回头确认标本的名字，认真记在随身的小本子里。",
+    "location": "博物馆",
+    "action": "阅读展柜的说明牌",
+    "timeOfDay": "上午",
+    "lighting": "展厅柔光",
+    "camera": "中景，展柜和说明牌同框",
+    "mood": "专注",
+    "sceneTags": [
+      "standing",
+      "reading exhibit label",
+      "museum display case",
+      "notebook",
+      "soft lighting",
+      "medium shot"
+    ],
+    "promptProse": "Reed reads an exhibit label in a museum.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "reading exhibit label",
+      "museum display case",
+      "notebook",
+      "soft lighting",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

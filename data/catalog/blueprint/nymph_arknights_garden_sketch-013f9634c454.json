@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_garden_sketch",
+  "revision": 1,
+  "sortOrder": 2894,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_garden_sketch",
+    "characterId": "nymph_arknights",
+    "outfitId": "blooming_reverie",
+    "title": "妮芙 · 花园速写",
+    "category": "泰拉日常",
+    "description": "她在画本上描出花瓣的轮廓，发现少画了一片，又把铅笔停在纸上慢慢补好。",
+    "location": "花园长椅",
+    "action": "坐在长椅上画花",
+    "timeOfDay": "午后",
+    "lighting": "树荫下散射光",
+    "camera": "中景，画本与花丛同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "drawing",
+      "sketchbook",
+      "garden bench",
+      "flowers",
+      "dappled light",
+      "medium shot"
+    ],
+    "promptProse": "Nymph sketches a flower while seated on a garden bench.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "drawing",
+      "sketchbook",
+      "garden bench",
+      "flowers",
+      "dappled light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

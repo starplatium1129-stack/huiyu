@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_birdsong",
+  "revision": 1,
+  "sortOrder": 3036,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_birdsong",
+    "characterId": "nightingale_arknights",
+    "outfitId": "standard",
+    "title": "夜莺 · 窗外的鸟鸣",
+    "category": "泰拉日常",
+    "description": "窗外传来两声鸟鸣。她停下手里的书，侧耳听了一会儿，指给你看停在枝头的小鸟。",
+    "location": "休息室窗边",
+    "action": "聆听窗外鸟鸣",
+    "timeOfDay": "清晨",
+    "lighting": "柔和晨光",
+    "camera": "中景，窗框与树枝同框",
+    "mood": "宁静",
+    "sceneTags": [
+      "sitting",
+      "looking at bird",
+      "window",
+      "tree branch",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Nightingale listens to a bird beside a lounge window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "looking at bird",
+      "window",
+      "tree branch",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

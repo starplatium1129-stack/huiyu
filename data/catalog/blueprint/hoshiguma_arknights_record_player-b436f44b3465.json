@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_record_player",
+  "revision": 1,
+  "sortOrder": 2992,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_record_player",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "summer",
+    "title": "星熊 · 旧唱片",
+    "category": "泰拉日常",
+    "description": "唱片封套有些旧了，她抽出唱片仔细放好。第一段旋律响起来时，星熊靠回椅背，跟着打起节拍。",
+    "location": "起居室",
+    "action": "把唱片放上唱机",
+    "timeOfDay": "傍晚",
+    "lighting": "落日余光",
+    "camera": "中景，唱机和唱片清晰",
+    "mood": "放松",
+    "sceneTags": [
+      "standing",
+      "vinyl record",
+      "record player",
+      "living room",
+      "sunset light",
+      "medium shot"
+    ],
+    "promptProse": "Hoshiguma places a vinyl record on a record player.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "vinyl record",
+      "record player",
+      "living room",
+      "sunset light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

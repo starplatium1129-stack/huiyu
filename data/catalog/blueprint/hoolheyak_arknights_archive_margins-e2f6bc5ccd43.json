@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_archive_margins",
+  "revision": 1,
+  "sortOrder": 2896,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_archive_margins",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "standard",
+    "title": "霍尔海雅 · 页边的注记",
+    "category": "泰拉日常",
+    "description": "她把旧地图摊开，在旁边另放一张便笺。几处地名被她轻轻圈出来，旁边写着尚待核对的日期。",
+    "location": "档案室",
+    "action": "在旧地图旁写下便笺",
+    "timeOfDay": "下午",
+    "lighting": "高窗侧光",
+    "camera": "中景，地图与便笺同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "old map",
+      "writing notes",
+      "archive room",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Ho’olheyak studies an old map and writes a note in an archive.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "old map",
+      "writing notes",
+      "archive room",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

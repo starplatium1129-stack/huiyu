@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_pastry_choice",
+  "revision": 1,
+  "sortOrder": 2939,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "id": "w_arknights_pastry_choice",
+    "characterId": "w_arknights",
+    "outfitId": "fugue",
+    "title": "W / 维什戴尔 · 最后一块点心",
+    "category": "泰拉日常",
+    "description": "盘子里还剩最后一块点心。她用叉子轻轻指了指，问你要不要；你刚伸手，她已经把盘子推到了你面前。",
+    "location": "甜品店",
+    "action": "用叉子指向盘里的点心",
+    "timeOfDay": "下午",
+    "lighting": "甜品店窗光",
+    "camera": "中景，点心盘与人物同框",
+    "mood": "顽皮",
+    "sceneTags": [
+      "sitting",
+      "holding fork",
+      "pastry",
+      "dessert plate",
+      "cafe",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "W points a fork toward the last pastry on a café plate.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding fork",
+      "pastry",
+      "dessert plate",
+      "cafe",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

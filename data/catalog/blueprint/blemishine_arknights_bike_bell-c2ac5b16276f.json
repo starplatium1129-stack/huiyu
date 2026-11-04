@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "blemishine_arknights_bike_bell",
+  "revision": 1,
+  "sortOrder": 3007,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "blemishine_arknights_bike_bell",
+    "characterId": "blemishine_arknights",
+    "outfitId": "standard",
+    "title": "瑕光 · 自行车铃",
+    "category": "泰拉日常",
+    "description": "新铃铛终于固定好了。她按了一下，清脆的声音响起来，便兴奋地招呼你过来听。",
+    "location": "院子",
+    "action": "给自行车装铃铛",
+    "timeOfDay": "白日",
+    "lighting": "晴朗日光",
+    "camera": "中景，自行车和工具盒同框",
+    "mood": "高兴",
+    "sceneTags": [
+      "standing",
+      "bicycle bell",
+      "bicycle",
+      "toolbox",
+      "courtyard",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Blemishine installs a bell on a bicycle in a courtyard.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "bicycle bell",
+      "bicycle",
+      "toolbox",
+      "courtyard",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

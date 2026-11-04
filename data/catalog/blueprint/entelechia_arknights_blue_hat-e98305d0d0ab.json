@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "entelechia_arknights_blue_hat",
+  "revision": 2,
+  "sortOrder": 3024,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "entelechia_arknights_blue_hat",
+    "characterId": "entelechia_arknights",
+    "outfitId": "dazzling_blue",
+    "title": "隐德来希 · 帽檐下的笑",
+    "category": "亲密时刻",
+    "description": "她按住被风吹动的帽檐，倾身凑到你耳边，说接下来的秘密只告诉离得足够近的人。",
+    "location": "露台",
+    "action": "扶帽倾身，从帽檐下微笑",
+    "timeOfDay": "傍晚",
+    "lighting": "落日暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding hat",
+      "leaning toward viewer",
+      "looking at viewer",
+      "teasing smile",
+      "terrace",
+      "sunset light",
+      "medium close-up"
+    ],
+    "promptProse": "Entelechia holds her hat and leans close with a teasing smile on a terrace.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding hat",
+      "leaning toward viewer",
+      "looking at viewer",
+      "teasing smile",
+      "terrace",
+      "sunset light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

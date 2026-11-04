@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_curtain_call",
+  "revision": 2,
+  "sortOrder": 2874,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "ines_arknights_curtain_call",
+    "characterId": "ines_arknights",
+    "outfitId": "melodic_flutter",
+    "title": "伊内丝 · 幕布之后",
+    "category": "亲密时刻",
+    "description": "幕布遮住了外面的喧闹。她回身向你伸手，等你跟上才低声说，另一条路只有你们知道。",
+    "location": "剧院侧幕",
+    "action": "掀开侧幕，回望并向镜头伸手",
+    "timeOfDay": "夜晚",
+    "lighting": "舞台余光与暗处形成层次",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding curtain",
+      "reaching toward viewer",
+      "looking back",
+      "theater backstage",
+      "stage light",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Ines parts a curtain and reaches back toward the viewer in warm backstage light.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding curtain",
+      "reaching toward viewer",
+      "looking back",
+      "theater backstage",
+      "stage light",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

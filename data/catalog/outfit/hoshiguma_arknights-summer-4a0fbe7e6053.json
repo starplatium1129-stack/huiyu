@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/summer",
+  "revision": 1,
+  "sortOrder": 1971,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "summer",
+      "name": "多索雷斯假日 · 夏日黑色便装",
+      "characterId": "hoshiguma_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black camisole, black trousers and black sandals.",
+      "tokens": [
+        "black camisole",
+        "black pants",
+        "black sandals"
+      ],
+      "identityTokensOverride": [
+        "hoshiguma (arknights)",
+        "hoshiguma (summer) (arknights)",
+        "1girl",
+        "solo",
+        "green hair",
+        "long hair",
+        "yellow eyes",
+        "single horn",
+        "scar on cheek"
+      ],
+      "identityProseOverride": "Hoshiguma from Arknights has long green hair, yellow eyes, a single oni horn and a cheek scar."
+    }
+  }
+}

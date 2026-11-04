@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_music_sheet",
+  "revision": 1,
+  "sortOrder": 3039,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_music_sheet",
+    "characterId": "nightingale_arknights",
+    "outfitId": "elegy",
+    "title": "夜莺 · 练习的曲子",
+    "category": "泰拉日常",
+    "description": "她翻过一页乐谱，用铅笔在一处旋律旁做了记号。下一次练习时，她想把这一段唱得更清楚。",
+    "location": "音乐室",
+    "action": "翻看乐谱",
+    "timeOfDay": "下午",
+    "lighting": "柔和室内光",
+    "camera": "中景，乐谱与琴架同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "sheet music",
+      "music stand",
+      "pencil",
+      "music room",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Nightingale reads sheet music in a music room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "sheet music",
+      "music stand",
+      "pencil",
+      "music room",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

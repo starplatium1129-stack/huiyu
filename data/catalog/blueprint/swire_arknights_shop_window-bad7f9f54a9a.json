@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_shop_window",
+  "revision": 1,
+  "sortOrder": 3110,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights_shop_window",
+    "characterId": "swire_arknights",
+    "outfitId": "standard",
+    "title": "诗怀雅 · 橱窗里的手袋",
+    "category": "泰拉日常",
+    "description": "她看了看橱窗里的手袋，先评价配色，再注意到旁边的设计说明，凑近读了起来。",
+    "location": "商店橱窗",
+    "action": "观察橱窗陈列",
+    "timeOfDay": "下午",
+    "lighting": "店窗暖光",
+    "camera": "中景，橱窗与人物同框",
+    "mood": "挑剔",
+    "sceneTags": [
+      "standing",
+      "shop window",
+      "handbag display",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Swire examines a handbag display in a shop window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "shop window",
+      "handbag display",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "entelechia_arknights_rose_shop",
+  "revision": 1,
+  "sortOrder": 3016,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "entelechia_arknights_rose_shop",
+    "characterId": "entelechia_arknights",
+    "outfitId": "standard",
+    "title": "隐德来希 · 玫瑰花店",
+    "category": "泰拉日常",
+    "description": "她比较了几枝玫瑰，最后选了一朵还未完全盛开的，请店主单独包好。",
+    "location": "花店",
+    "action": "挑选一枝玫瑰",
+    "timeOfDay": "上午",
+    "lighting": "店窗柔光",
+    "camera": "中近景，玫瑰与手部清晰",
+    "mood": "从容",
+    "sceneTags": [
+      "standing",
+      "holding rose",
+      "flower shop",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Entelechia selects a rose at a flower shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding rose",
+      "flower shop",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

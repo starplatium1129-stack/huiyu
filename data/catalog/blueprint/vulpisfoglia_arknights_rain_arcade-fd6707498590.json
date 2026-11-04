@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "vulpisfoglia_arknights_rain_arcade",
+  "revision": 1,
+  "sortOrder": 2862,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:09:13.633613700+00:00",
+  "data": {
+    "id": "vulpisfoglia_arknights_rain_arcade",
+    "characterId": "vulpisfoglia_arknights",
+    "outfitId": "synesthesia_black_dress",
+    "title": "忍冬 · 雨停之前",
+    "category": "泰拉日常",
+    "description": "雨落在拱廊外，她没有急着走。咖啡已经喝到一半，忍冬看着街对面逐渐积起的水，决定再坐一会儿。",
+    "location": "拱廊咖啡座",
+    "action": "坐在露天桌边等待雨停",
+    "timeOfDay": "下午",
+    "lighting": "雨幕透入的散射光",
+    "camera": "中景，雨幕和桌上咖啡同框",
+    "mood": "悠闲",
+    "sceneTags": [
+      "sitting",
+      "coffee cup",
+      "covered arcade",
+      "rain",
+      "soft daylight",
+      "medium shot"
+    ],
+    "promptProse": "Vulpisfoglia sits with coffee under an arcade while rain falls beyond it.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "coffee cup",
+      "covered arcade",
+      "rain",
+      "soft daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

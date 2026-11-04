@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "virtuosa_arknights_music_annotation",
+  "revision": 1,
+  "sortOrder": 3096,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "virtuosa_arknights_music_annotation",
+    "characterId": "virtuosa_arknights",
+    "outfitId": "standard",
+    "title": "塑心 · 谱上的批注",
+    "category": "泰拉日常",
+    "description": "她把一处旋律圈出来，在旁边补了几个记号，随后轻轻哼出另一种演奏方式。",
+    "location": "音乐室",
+    "action": "在乐谱上写批注",
+    "timeOfDay": "上午",
+    "lighting": "高窗自然光",
+    "camera": "中近景，乐谱与铅笔清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "writing on sheet music",
+      "pencil",
+      "music stand",
+      "daylight",
+      "medium close-up"
+    ],
+    "promptProse": "Virtuosa annotates sheet music in a music room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "writing on sheet music",
+      "pencil",
+      "music stand",
+      "daylight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "blemishine_arknights_moon_book",
+  "revision": 1,
+  "sortOrder": 3015,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "blemishine_arknights_moon_book",
+    "characterId": "blemishine_arknights",
+    "outfitId": "moon_catastrborn",
+    "title": "瑕光 · 月亮图鉴",
+    "category": "泰拉日常",
+    "description": "图鉴里画着不同形状的月亮。她把书翻到窗边，对照着今晚的月相看了半天。",
+    "location": "图书馆",
+    "action": "翻开天文图鉴",
+    "timeOfDay": "夜晚",
+    "lighting": "阅读灯暖光",
+    "camera": "中景，书页和窗外夜色同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "sitting",
+      "astronomy book",
+      "moon illustrations",
+      "window",
+      "reading lamp",
+      "night",
+      "medium shot"
+    ],
+    "promptProse": "Blemishine reads an astronomy book beside a night window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "astronomy book",
+      "moon illustrations",
+      "window",
+      "reading lamp",
+      "night",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

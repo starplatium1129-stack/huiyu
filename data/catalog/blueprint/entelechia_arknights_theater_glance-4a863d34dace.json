@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "entelechia_arknights_theater_glance",
+  "revision": 2,
+  "sortOrder": 3023,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "entelechia_arknights_theater_glance",
+    "characterId": "entelechia_arknights",
+    "outfitId": "standard",
+    "title": "隐德来希 · 散场的眼神",
+    "category": "亲密时刻",
+    "description": "人群散去，她回头轻触领口，笑问那句台词是否也让你想起了两人之间的约定。",
+    "location": "剧场门厅",
+    "action": "回身倾首，指尖轻搭领口",
+    "timeOfDay": "夜晚",
+    "lighting": "门厅金色灯光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "touching collar",
+      "looking over shoulder",
+      "knowing smile",
+      "theater foyer",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Entelechia touches her collar and looks over her shoulder with a knowing smile.",
+    "animaCaption": "",
+    "promptTokens": [
+      "touching collar",
+      "looking over shoulder",
+      "knowing smile",
+      "theater foyer",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

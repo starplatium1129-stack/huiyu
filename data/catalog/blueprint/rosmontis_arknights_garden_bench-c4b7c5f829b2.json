@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_garden_bench",
+  "revision": 1,
+  "sortOrder": 2959,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_garden_bench",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "become_anew",
+    "title": "迷迭香 · 花园里的座位",
+    "category": "泰拉日常",
+    "description": "长椅旁的树叶一直在响。她安静听了一会儿，把空出来的一边拍了拍，示意你也坐下。",
+    "location": "舰内花园",
+    "action": "在长椅上听风",
+    "timeOfDay": "午后",
+    "lighting": "树荫散射光",
+    "camera": "中景，长椅与树影同框",
+    "mood": "放松",
+    "sceneTags": [
+      "sitting",
+      "garden bench",
+      "leafy tree",
+      "dappled light",
+      "medium shot"
+    ],
+    "promptProse": "Rosmontis sits on a garden bench beneath a leafy tree.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "garden bench",
+      "leafy tree",
+      "dappled light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "nightingale_arknights_garden_watering",
+  "revision": 1,
+  "sortOrder": 3037,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "nightingale_arknights_garden_watering",
+    "characterId": "nightingale_arknights",
+    "outfitId": "standard",
+    "title": "夜莺 · 花园浇水",
+    "category": "泰拉日常",
+    "description": "她把水壶倾斜一点，让水慢慢落进土里。浇完后，她将花盆挪回阳光能照到的地方。",
+    "location": "花园",
+    "action": "给花盆浇水",
+    "timeOfDay": "上午",
+    "lighting": "花园日光",
+    "camera": "中景，水壶与花盆同框",
+    "mood": "温和",
+    "sceneTags": [
+      "standing",
+      "watering plant",
+      "watering can",
+      "flowerpot",
+      "garden",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Nightingale waters a potted flower in a garden.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "watering plant",
+      "watering can",
+      "flowerpot",
+      "garden",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "ceobe_arknights_puzzle_dog",
+  "revision": 1,
+  "sortOrder": 3061,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "ceobe_arknights_puzzle_dog",
+    "characterId": "ceobe_arknights",
+    "outfitId": "standard",
+    "title": "刻俄柏 · 小狗拼图",
+    "category": "泰拉日常",
+    "description": "拼图里的小狗还缺一只耳朵。她在盒子里翻了半天，终于找到那块边角。",
+    "location": "活动室",
+    "action": "寻找拼图边角",
+    "timeOfDay": "下午",
+    "lighting": "明亮室内光",
+    "camera": "俯角中景，拼图清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "jigsaw puzzle",
+      "holding puzzle piece",
+      "table",
+      "bright light",
+      "medium shot"
+    ],
+    "promptProse": "Ceobe searches for a piece of a dog puzzle.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "jigsaw puzzle",
+      "holding puzzle piece",
+      "table",
+      "bright light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

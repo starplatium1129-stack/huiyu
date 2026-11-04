@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_window_glance",
+  "revision": 2,
+  "sortOrder": 3003,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "horn_arknights_window_glance",
+    "characterId": "horn_arknights",
+    "outfitId": "standard",
+    "title": "号角 · 窗边的问候",
+    "category": "亲密时刻",
+    "description": "她把热茶递到你手边，手指停了片刻才松开。听你问起她的安排，她说今晚可以留给你。",
+    "location": "休息室",
+    "action": "端茶靠近，温柔注视镜头",
+    "timeOfDay": "傍晚",
+    "lighting": "落日侧光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding tea cup",
+      "offering",
+      "leaning toward viewer",
+      "looking at viewer",
+      "gentle smile",
+      "window",
+      "sunset light",
+      "medium close-up"
+    ],
+    "promptProse": "Horn offers a cup of tea and looks warmly toward the viewer by a window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding tea cup",
+      "offering",
+      "leaning toward viewer",
+      "looking at viewer",
+      "gentle smile",
+      "window",
+      "sunset light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

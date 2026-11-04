@@ -392,8 +392,9 @@ Align labels, fields and actions to shared column edges. Use the existing spacin
 scale to separate groups: a label stays closer to its field and help text than
 to the next field, and a heading stays closer to its content than to the preceding
 section. Add a divider or card boundary only when proximity is insufficient.
-优先用分组、留白、对齐与视觉层级传达内容关系和操作顺序，避免不必要的二级标签、副标题和说明文字。
-布局已能表达的信息不再重复解释；保留必要的控件名称、约束与恢复提示。
+新增文字前，判断其是否提供必要信息，避免不必要的辅助标签、二级标签、副标题、描述性文字和重复解释。
+优先通过视觉层级、内容分组、间距、对齐、排版与清晰的控件名称传达结构、内容关系和操作顺序；界面不清晰时先改善布局，保持简洁、目的明确与视觉平衡。
+保留必要的标签、无障碍支持、输入限制说明、错误与恢复提示，以及重要操作的确认信息；不得以简洁为由牺牲易用性。
 
 Keep dense settings compact without reducing hit areas. Field widths reflect
 their expected values; short numeric controls and content-sized badges need not

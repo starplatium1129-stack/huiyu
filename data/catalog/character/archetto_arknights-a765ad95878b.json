@@ -1,0 +1,107 @@
+{
+  "kind": "character",
+  "id": "archetto_arknights",
+  "revision": 2,
+  "sortOrder": 279,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "data": {
+    "id": "archetto_arknights",
+    "profile": {
+      "id": "archetto_arknights",
+      "name": "空弦",
+      "alias": [
+        "Archetto",
+        "席德佳"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "欢迎！有时间的话，也听听兰登修道院的故事吧。",
+      "visual_dna": {
+        "signature": "棕色长发，红蓝异色双眼，带有耳与尾；着装常见披肩和修道院元素。"
+      },
+      "traits": [
+        "棕色长发",
+        "红蓝异色瞳",
+        "兽耳",
+        "尾巴"
+      ],
+      "personality": [
+        "开朗",
+        "认真负责",
+        "善于寻找合作机会"
+      ],
+      "likes": [
+        "兰登修道院",
+        "与人商谈合作",
+        "分享修道院的故事"
+      ],
+      "bg_story": "席德佳是来自拉特兰兰登修道院的修士，以空弦为代号来到罗德岛。她希望为修道院寻找长久的出路，常随身带着宣传资料，热心地向遇见的人介绍兰登。",
+      "identity": {
+        "role": "兰登修道院修士",
+        "occupation": "罗德岛干员",
+        "faction": "兰登修道院",
+        "region": "拉特兰",
+        "race": "黎博利",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "空弦立绘待制作"
+      },
+      "tags": [
+        "异色瞳",
+        "修道院",
+        "拉特兰"
+      ],
+      "voice": "这份宣传单上有修道院的地址。"
+    },
+    "popular": {
+      "id": "archetto_arknights",
+      "displayName": "空弦",
+      "originalName": "Archetto",
+      "franchise": "Arknights",
+      "aliases": [
+        "Archetto",
+        "席德佳",
+        "空弦"
+      ],
+      "identityProse": "Archetto from Arknights has long brown hair, red and blue eyes, animal ears and a tail.",
+      "identityTokens": [
+        "archetto (arknights)",
+        "1girl",
+        "solo",
+        "brown hair",
+        "long hair",
+        "heterochromia",
+        "red eye",
+        "blue eye",
+        "animal ears",
+        "tail"
+      ],
+      "characterTokens": [
+        "archetto (arknights)",
+        "archetto (glory of the devout) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "archetto (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "alchemaniac",
+        "ryuuzaki_ichi",
+        "shirotaka"
+      ]
+    }
+  }
+}

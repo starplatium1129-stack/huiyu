@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/sharpened_claws",
+  "revision": 1,
+  "sortOrder": 1987,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "sharpened_claws",
+      "name": "锋锐 · 黑色连帽外套",
+      "characterId": "mon3tr_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black hooded coat over a dark pleated dress and boots.",
+      "tokens": [
+        "black hooded coat",
+        "dark pleated dress",
+        "boots"
+      ],
+      "identityTokensOverride": [
+        "mon3tr (arknights)",
+        "mon3tr (sharpened claws) (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "green hair",
+        "long hair",
+        "green eyes",
+        "cat ears",
+        "crystal tail"
+      ],
+      "identityProseOverride": "Mon3tr from Arknights has black and green hair, green eyes, cat-like ears and a crystalline tail."
+    }
+  }
+}

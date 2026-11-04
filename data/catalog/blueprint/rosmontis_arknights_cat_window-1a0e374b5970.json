@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_cat_window",
+  "revision": 1,
+  "sortOrder": 2957,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_cat_window",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "standard",
+    "title": "迷迭香 · 窗边的来客",
+    "category": "泰拉日常",
+    "description": "小猫停在窗边不肯走。迷迭香蹲下来，等它自己靠近，再把准备好的水碟往前推了一点。",
+    "location": "休息室窗边",
+    "action": "蹲下看窗边的小猫",
+    "timeOfDay": "下午",
+    "lighting": "柔和日光",
+    "camera": "中景，人物和小猫同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "crouching",
+      "looking at cat",
+      "small cat",
+      "water dish",
+      "window",
+      "soft daylight",
+      "medium shot"
+    ],
+    "promptProse": "Rosmontis watches a small cat beside a lounge window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "crouching",
+      "looking at cat",
+      "small cat",
+      "water dish",
+      "window",
+      "soft daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

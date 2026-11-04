@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "hoshiguma_arknights_tea_house",
+  "revision": 1,
+  "sortOrder": 2989,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "hoshiguma_arknights_tea_house",
+    "characterId": "hoshiguma_arknights",
+    "outfitId": "standard",
+    "title": "星熊 · 茶馆的一局",
+    "category": "泰拉日常",
+    "description": "棋局拖得比预想久，她端起茶杯，又把棋子放回原处。想好下一步后，星熊抬眼催你别走神。",
+    "location": "茶馆",
+    "action": "坐在棋盘前思考",
+    "timeOfDay": "下午",
+    "lighting": "窗边柔光",
+    "camera": "中景，棋盘和茶杯同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "board game",
+      "tea cup",
+      "tea house",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Hoshiguma considers a board game at a tea house table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "board game",
+      "tea cup",
+      "tea house",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

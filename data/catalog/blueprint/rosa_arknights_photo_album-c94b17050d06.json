@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_photo_album",
+  "revision": 1,
+  "sortOrder": 2954,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_photo_album",
+    "characterId": "rosa_arknights",
+    "outfitId": "masterpiece",
+    "title": "早露 · 相册里的旧合照",
+    "category": "泰拉日常",
+    "description": "她在一张合照前停下来，指认照片里熟悉的面孔。说到某件趣事时，早露自己也笑了。",
+    "location": "起居室",
+    "action": "坐着翻看相册",
+    "timeOfDay": "下午",
+    "lighting": "暖色室内光",
+    "camera": "中近景，相册与双手清晰",
+    "mood": "怀念",
+    "sceneTags": [
+      "sitting",
+      "photo album",
+      "looking down",
+      "living room",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Rosa looks through a photo album in a living room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "photo album",
+      "looking down",
+      "living room",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

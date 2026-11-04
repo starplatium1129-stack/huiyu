@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_flower_bridge",
+  "revision": 1,
+  "sortOrder": 2888,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_flower_bridge",
+    "characterId": "nymph_arknights",
+    "outfitId": "blooming_reverie",
+    "title": "妮芙 · 小桥边的花",
+    "category": "泰拉日常",
+    "description": "小桥边开出一朵她没见过的花。妮芙弯下腰看了半天，没有摘走，只记下它长在哪一块石头旁。",
+    "location": "花园小桥",
+    "action": "弯腰观察桥边的花",
+    "timeOfDay": "白日",
+    "lighting": "柔和日光",
+    "camera": "中景，小桥和花丛同框",
+    "mood": "好奇",
+    "sceneTags": [
+      "bending forward",
+      "looking at flower",
+      "garden bridge",
+      "flower bed",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Nymph bends to look at a flower beside a small garden bridge.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "bending forward",
+      "looking at flower",
+      "garden bridge",
+      "flower bed",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

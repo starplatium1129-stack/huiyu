@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_museum_audio",
+  "revision": 1,
+  "sortOrder": 2897,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_museum_audio",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "standard",
+    "title": "霍尔海雅 · 展柜前的耳机",
+    "category": "泰拉日常",
+    "description": "讲解音频讲到一种早已失传的仪式时，她摘下一边耳机，低声指出说明牌上的年代或许还值得商榷。",
+    "location": "历史博物馆",
+    "action": "听展览讲解并注视展品",
+    "timeOfDay": "白日",
+    "lighting": "展柜柔光",
+    "camera": "中景，展柜与人物同框",
+    "mood": "玩味",
+    "sceneTags": [
+      "standing",
+      "headphones",
+      "museum display",
+      "soft display lighting",
+      "day",
+      "medium shot"
+    ],
+    "promptProse": "Ho’olheyak listens to an audio guide beside a museum display.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "headphones",
+      "museum display",
+      "soft display lighting",
+      "day",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

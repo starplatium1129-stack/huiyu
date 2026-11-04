@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_flower_book",
+  "revision": 1,
+  "sortOrder": 3089,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights_flower_book",
+    "characterId": "reed_arknights",
+    "outfitId": "curator",
+    "title": "焰影苇草 · 花卉图鉴",
+    "category": "泰拉日常",
+    "description": "她在图鉴里找到花园里的植物，读完习性，又翻到下一页看相似的品种。",
+    "location": "图书馆",
+    "action": "翻看花卉图鉴",
+    "timeOfDay": "下午",
+    "lighting": "书架柔光",
+    "camera": "中近景，书页与花卉插画清晰",
+    "mood": "安静",
+    "sceneTags": [
+      "sitting",
+      "open botanical book",
+      "flower illustration",
+      "library",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Reed reads a botanical book in a library.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "open botanical book",
+      "flower illustration",
+      "library",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

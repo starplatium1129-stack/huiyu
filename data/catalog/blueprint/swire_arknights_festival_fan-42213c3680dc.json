@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_festival_fan",
+  "revision": 2,
+  "sortOrder": 3115,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "swire_arknights_festival_fan",
+    "characterId": "swire_arknights",
+    "outfitId": "honor_and_splendor",
+    "title": "诗怀雅 · 扇子后的一笑",
+    "category": "亲密时刻",
+    "description": "她用折扇半掩笑意，倾身问你有没有听清邀请，等你的视线落到她脸上才缓缓合扇。",
+    "location": "节庆宴会厅",
+    "action": "折扇半掩，俯身挑眉看向镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "宴会厅暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding folding fan",
+      "fan near face",
+      "leaning forward",
+      "looking at viewer",
+      "raised eyebrow",
+      "playful smile",
+      "banquet hall",
+      "warm light",
+      "medium close-up"
+    ],
+    "promptProse": "Swire leans forward behind a folding fan and raises an eyebrow at the viewer.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding folding fan",
+      "fan near face",
+      "leaning forward",
+      "looking at viewer",
+      "raised eyebrow",
+      "playful smile",
+      "banquet hall",
+      "warm light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

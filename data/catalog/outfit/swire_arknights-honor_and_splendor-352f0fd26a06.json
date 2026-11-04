@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/honor_and_splendor",
+  "revision": 1,
+  "sortOrder": 1995,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "honor_and_splendor",
+      "name": "富贵荣华 · 红色节庆礼服",
+      "characterId": "swire_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A red Chinese-inspired dress with a dark jacket, gloves and a beret.",
+      "tokens": [
+        "red dress",
+        "chinese clothes",
+        "dark jacket",
+        "black gloves",
+        "beret"
+      ],
+      "identityTokensOverride": [
+        "swire (arknights)",
+        "swire (honor and splendor) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "green eyes",
+        "tiger ears",
+        "tiger tail"
+      ],
+      "identityProseOverride": "Swire from Arknights has long blonde hair, green eyes, tiger ears and a striped tiger tail."
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_tea_tin",
+  "revision": 1,
+  "sortOrder": 2898,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_tea_tin",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "standard",
+    "title": "霍尔海雅 · 茶罐里的标签",
+    "category": "泰拉日常",
+    "description": "她从架子上取下一只茶罐，把标签从头读到尾，笑着问店主这款茶的名字是谁取的。",
+    "location": "茶叶店",
+    "action": "拿起一只茶罐阅读标签",
+    "timeOfDay": "上午",
+    "lighting": "店窗日光",
+    "camera": "中近景，茶罐和标签可见",
+    "mood": "好奇",
+    "sceneTags": [
+      "standing",
+      "holding tea tin",
+      "tea shop",
+      "shelves",
+      "window light",
+      "medium close-up"
+    ],
+    "promptProse": "Ho’olheyak reads the label on a tea tin in a tea shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding tea tin",
+      "tea shop",
+      "shelves",
+      "window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

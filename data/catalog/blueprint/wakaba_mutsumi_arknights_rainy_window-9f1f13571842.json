@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_rainy_window",
+  "revision": 1,
+  "sortOrder": 2973,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_rainy_window",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "school_uniform",
+    "title": "若叶睦 · 雨停之前",
+    "category": "泰拉日常",
+    "description": "雨点落在走廊外的窗台上。她把伞靠在墙边，等雨小一点再去查看菜园。",
+    "location": "校舍走廊",
+    "action": "站在窗边看雨",
+    "timeOfDay": "放学后",
+    "lighting": "雨天柔光",
+    "camera": "中景，雨滴与窗框同框",
+    "mood": "安静",
+    "sceneTags": [
+      "standing",
+      "looking through window",
+      "rain",
+      "school corridor",
+      "umbrella",
+      "soft overcast light",
+      "medium shot"
+    ],
+    "promptProse": "Mutsumi watches the rain from a school corridor window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "looking through window",
+      "rain",
+      "school corridor",
+      "umbrella",
+      "soft overcast light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

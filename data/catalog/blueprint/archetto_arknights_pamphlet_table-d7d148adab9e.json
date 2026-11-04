@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "archetto_arknights_pamphlet_table",
+  "revision": 1,
+  "sortOrder": 2916,
+  "createdAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "data": {
+    "id": "archetto_arknights_pamphlet_table",
+    "characterId": "archetto_arknights",
+    "outfitId": "standard",
+    "title": "空弦 · 宣传单的折页",
+    "category": "泰拉日常",
+    "description": "空弦把宣传单按折痕一张张理齐，又检查地址有没有印错。你走过来时，她顺手递来一份，请你帮忙看看。",
+    "location": "舰内休息室",
+    "action": "整理一叠修道院宣传单",
+    "timeOfDay": "上午",
+    "lighting": "窗边日光",
+    "camera": "中景，折页和桌面同框",
+    "mood": "认真",
+    "sceneTags": [
+      "sitting",
+      "folding pamphlets",
+      "paper stack",
+      "lounge table",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Archetto organizes folded monastery pamphlets at a lounge table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "folding pamphlets",
+      "paper stack",
+      "lounge table",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

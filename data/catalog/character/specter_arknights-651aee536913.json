@@ -1,0 +1,101 @@
+{
+  "kind": "character",
+  "id": "specter_arknights",
+  "revision": 1,
+  "sortOrder": 290,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "specter_arknights",
+    "profile": {
+      "id": "specter_arknights",
+      "name": "幽灵鲨",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Specter",
+        "劳伦缇娜"
+      ],
+      "speech": "海的声音，你听见了吗？",
+      "visual_dna": {
+        "signature": "灰白色长发、红色眼睛，常穿带灰色短披肩的深色衣裙。"
+      },
+      "traits": [
+        "灰白长发",
+        "红眼",
+        "灰色披肩"
+      ],
+      "personality": [
+        "言语富有诗意",
+        "情绪难以捉摸",
+        "珍惜熟悉的伙伴"
+      ],
+      "likes": [
+        "雕刻",
+        "海边的声音",
+        "熟悉的同伴"
+      ],
+      "bg_story": "幽灵鲨来自阿戈尔，在罗德岛接受治疗。她与深海猎人的过去密切相关，也曾以劳伦缇娜的名字生活。",
+      "identity": {
+        "role": "罗德岛干员",
+        "occupation": "干员",
+        "faction": "罗德岛",
+        "region": "阿戈尔",
+        "race": "未公开",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "白发",
+        "阿戈尔",
+        "深海"
+      ],
+      "voice": "别急，潮水还会再来的。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "幽灵鲨立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "specter_arknights",
+      "displayName": "幽灵鲨",
+      "originalName": "Specter",
+      "franchise": "Arknights",
+      "aliases": [
+        "Specter",
+        "劳伦缇娜"
+      ],
+      "identityProse": "Specter from Arknights has very long white-grey hair and red eyes.",
+      "identityTokens": [
+        "specter (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "red eyes"
+      ],
+      "characterTokens": [
+        "specter (arknights)",
+        "specter (undercurrent) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "specter (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "skade",
+        "alchemaniac",
+        "anmi"
+      ]
+    }
+  }
+}

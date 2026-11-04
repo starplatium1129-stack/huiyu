@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_shell_shelf",
+  "revision": 1,
+  "sortOrder": 3026,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "specter_arknights_shell_shelf",
+    "characterId": "specter_arknights",
+    "outfitId": "standard",
+    "title": "幽灵鲨 · 贝壳架",
+    "category": "泰拉日常",
+    "description": "她把一枚小贝壳放回架上，转了个方向，让里面浅色的纹路朝向窗户。",
+    "location": "起居室",
+    "action": "整理架上的贝壳",
+    "timeOfDay": "上午",
+    "lighting": "窗边自然光",
+    "camera": "中景，贝壳与架子同框",
+    "mood": "安静",
+    "sceneTags": [
+      "standing",
+      "holding seashell",
+      "shelf",
+      "living room",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Specter arranges seashells on a shelf.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding seashell",
+      "shelf",
+      "living room",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

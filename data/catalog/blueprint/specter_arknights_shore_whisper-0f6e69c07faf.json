@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_shore_whisper",
+  "revision": 2,
+  "sortOrder": 3033,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "specter_arknights_shore_whisper",
+    "characterId": "specter_arknights",
+    "outfitId": "undercurrent",
+    "title": "幽灵鲨 · 潮声里的话",
+    "category": "亲密时刻",
+    "description": "浪声盖住了后半句话，她靠近你的耳边重新说了一遍。退开时，她笑着问这次可听清了。",
+    "location": "海边栈道",
+    "action": "面向镜头靠近，低声说话",
+    "timeOfDay": "傍晚",
+    "lighting": "暮色与海面反光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning toward viewer",
+      "looking at viewer",
+      "quiet smile",
+      "ocean",
+      "dusk",
+      "medium close-up"
+    ],
+    "promptProse": "Specter leans close toward the viewer with a quiet smile beside the sea.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning toward viewer",
+      "looking at viewer",
+      "quiet smile",
+      "ocean",
+      "dusk",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ray_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1954,
+  "createdAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "data": {
+    "characterId": "ray_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "干员常装 · 机能短外套与短裤",
+      "default": true,
+      "isDefault": true,
+      "prose": "A practical cropped jacket and shirt with dark shorts, tights and gloves.",
+      "tokens": [
+        "cropped jacket",
+        "shirt",
+        "black shorts",
+        "pantyhose",
+        "yellow gloves"
+      ],
+      "characterId": "ray_arknights"
+    }
+  }
+}

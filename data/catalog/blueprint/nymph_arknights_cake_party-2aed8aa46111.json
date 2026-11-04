@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "nymph_arknights_cake_party",
+  "revision": 1,
+  "sortOrder": 2886,
+  "createdAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "data": {
+    "id": "nymph_arknights_cake_party",
+    "characterId": "nymph_arknights",
+    "outfitId": "sweetness_to_the_heart",
+    "title": "妮芙 · 蛋糕派对的准备",
+    "category": "泰拉日常",
+    "description": "妮芙把最后一颗草莓放到蛋糕上，退后一步检查摆放。盘子边缘沾了点奶油，她又赶紧拿纸擦干净。",
+    "location": "厨房",
+    "action": "把草莓摆到蛋糕上",
+    "timeOfDay": "上午",
+    "lighting": "窗边明亮日光",
+    "camera": "中景，蛋糕和餐桌同框",
+    "mood": "开心",
+    "sceneTags": [
+      "standing",
+      "decorating cake",
+      "strawberry",
+      "kitchen table",
+      "daylight",
+      "medium shot"
+    ],
+    "promptProse": "Nymph places a strawberry on a cake at a kitchen table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "decorating cake",
+      "strawberry",
+      "kitchen table",
+      "daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

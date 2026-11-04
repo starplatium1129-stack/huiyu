@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "rosmontis_arknights/become_anew",
+  "revision": 1,
+  "sortOrder": 1965,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "characterId": "rosmontis_arknights",
+    "outfit": {
+      "id": "become_anew",
+      "name": "拥抱新生 · 白色长裙",
+      "characterId": "rosmontis_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A simple white long dress with a small hair ornament.",
+      "tokens": [
+        "white long dress",
+        "hair ornament"
+      ],
+      "identityTokensOverride": [
+        "rosmontis (arknights)",
+        "rosmontis (become anew) (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "long hair",
+        "cat ears",
+        "cat tail",
+        "green eyes"
+      ],
+      "identityProseOverride": "Rosmontis from Arknights has long grey-white hair, green eyes, cat ears and a cat tail."
+    }
+  }
+}

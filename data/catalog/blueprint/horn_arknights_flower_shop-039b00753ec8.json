@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_flower_shop",
+  "revision": 1,
+  "sortOrder": 3000,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights_flower_shop",
+    "characterId": "horn_arknights",
+    "outfitId": "standard",
+    "title": "号角 · 一束白花",
+    "category": "泰拉日常",
+    "description": "店主替白花系好纸绳，她接过来，仔细护住花瓣。回程路上，她打算先去探望一位老朋友。",
+    "location": "花店",
+    "action": "接过包装好的花",
+    "timeOfDay": "上午",
+    "lighting": "店窗日光",
+    "camera": "中景，花束与柜台同框",
+    "mood": "温柔",
+    "sceneTags": [
+      "standing",
+      "holding bouquet",
+      "flower shop",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Horn receives a wrapped bouquet at a flower shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding bouquet",
+      "flower shop",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

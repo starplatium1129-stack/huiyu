@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/marionettes_id",
+  "revision": 1,
+  "sortOrder": 1967,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "marionettes_id",
+      "name": "提线的本我 · 蓝色兔耳裙装",
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A blue pinafore dress with a blue ribbon, rabbit ears and brown shoes.",
+      "tokens": [
+        "blue pinafore dress",
+        "blue ribbon",
+        "rabbit ears",
+        "brown shoes"
+      ],
+      "identityTokensOverride": [
+        "wakaba mutsumi",
+        "wakaba mutsumi (marionette's id)",
+        "1girl",
+        "solo",
+        "green hair",
+        "long hair",
+        "yellow eyes",
+        "hairclip",
+        "rabbit ears"
+      ],
+      "identityProseOverride": "Mutsumi Wakaba from BanG Dream has long green hair, yellow eyes and a hairclip."
+    }
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "entelechia_arknights_museum_audio",
+  "revision": 1,
+  "sortOrder": 3020,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "entelechia_arknights_museum_audio",
+    "characterId": "entelechia_arknights",
+    "outfitId": "dazzling_blue",
+    "title": "隐德来希 · 展厅里的讲解",
+    "category": "泰拉日常",
+    "description": "导览器讲到一半，她停在展柜前，将没听清的那一段重新播放。",
+    "location": "博物馆",
+    "action": "拿着语音导览器",
+    "timeOfDay": "白日",
+    "lighting": "展厅柔光",
+    "camera": "中景，展柜与导览器可见",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "holding audio guide",
+      "museum display case",
+      "soft lighting",
+      "medium shot"
+    ],
+    "promptProse": "Entelechia listens to an audio guide in a museum.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding audio guide",
+      "museum display case",
+      "soft lighting",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

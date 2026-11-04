@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_costume_mirror",
+  "revision": 1,
+  "sortOrder": 2941,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "id": "w_arknights_costume_mirror",
+    "characterId": "w_arknights",
+    "outfitId": "wisadel_supernova",
+    "title": "W / 维什戴尔 · 镜子前的红丝带",
+    "category": "泰拉日常",
+    "description": "她对着镜子把红丝带重新系好，发现两边长度不一样，又不耐烦地拆开重来。",
+    "location": "后台更衣间",
+    "action": "对着镜子整理红色丝带",
+    "timeOfDay": "下午",
+    "lighting": "镜前灯光",
+    "camera": "中景，镜子与丝带同框",
+    "mood": "认真",
+    "sceneTags": [
+      "standing",
+      "adjusting ribbon",
+      "mirror",
+      "dressing room",
+      "vanity lights",
+      "medium shot"
+    ],
+    "promptProse": "Wis’adel adjusts a red ribbon in front of a backstage mirror.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "adjusting ribbon",
+      "mirror",
+      "dressing room",
+      "vanity lights",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

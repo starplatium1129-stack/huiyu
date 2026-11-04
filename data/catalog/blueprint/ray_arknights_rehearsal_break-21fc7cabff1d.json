@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "ray_arknights_rehearsal_break",
+  "revision": 2,
+  "sortOrder": 2913,
+  "createdAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "ray_arknights_rehearsal_break",
+    "characterId": "ray_arknights",
+    "outfitId": "dreaming_high",
+    "title": "莱伊 · 排练间隙",
+    "category": "亲密时刻",
+    "description": "听见你夸她弹得好，她抱紧吉他回过头，耳朵微微发热，仍期待地问你想不想再听一次。",
+    "location": "排练室",
+    "action": "抱着吉他回头，脸颊微红",
+    "timeOfDay": "傍晚",
+    "lighting": "侧窗暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "sitting",
+      "hugging electric guitar",
+      "looking at viewer",
+      "blush",
+      "shy smile",
+      "rehearsal room",
+      "warm window light",
+      "medium close-up"
+    ],
+    "promptProse": "Ray hugs her guitar and looks toward the viewer with a shy blush.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "hugging electric guitar",
+      "looking at viewer",
+      "blush",
+      "shy smile",
+      "rehearsal room",
+      "warm window light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

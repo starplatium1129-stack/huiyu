@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pozyomka_arknights_typewriter_draft",
+  "revision": 1,
+  "sortOrder": 2926,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "data": {
+    "id": "pozyomka_arknights_typewriter_draft",
+    "characterId": "pozyomka_arknights",
+    "outfitId": "snowy_plains_in_words",
+    "title": "鸿雪 · 稿纸上的停顿",
+    "category": "泰拉日常",
+    "description": "打字机上卷着半页稿纸。鸿雪读完刚写的句子，抽出一张便笺改了几个字，再重新把手放回键盘。",
+    "location": "书房",
+    "action": "坐在打字机前修改稿纸",
+    "timeOfDay": "清晨",
+    "lighting": "书房窗边晨光",
+    "camera": "中景，打字机与纸页同框",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "typewriter",
+      "draft paper",
+      "writing desk",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Pozyomka revises a draft at a typewriter beside a study window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "typewriter",
+      "draft paper",
+      "writing desk",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

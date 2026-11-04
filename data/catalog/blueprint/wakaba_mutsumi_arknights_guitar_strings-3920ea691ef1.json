@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "wakaba_mutsumi_arknights_guitar_strings",
+  "revision": 1,
+  "sortOrder": 2967,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights_guitar_strings",
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfitId": "school_uniform",
+    "title": "若叶睦 · 换好的一根弦",
+    "category": "泰拉日常",
+    "description": "换好琴弦后，她轻拨了几下，低头听音准。确认没有问题，睦才把调音器收回琴盒。",
+    "location": "排练室",
+    "action": "坐着检查吉他的琴弦",
+    "timeOfDay": "下午",
+    "lighting": "排练室柔光",
+    "camera": "中景，吉他和手部清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "holding guitar",
+      "checking guitar strings",
+      "rehearsal room",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Mutsumi checks the strings of her guitar in a rehearsal room.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding guitar",
+      "checking guitar strings",
+      "rehearsal room",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

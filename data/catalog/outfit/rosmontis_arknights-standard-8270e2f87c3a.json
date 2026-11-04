@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rosmontis_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1964,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "characterId": "rosmontis_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 蓝色宽外套",
+      "characterId": "rosmontis_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "An oversized blue hooded jacket over a white shirt, with dark legwear and boots.",
+      "tokens": [
+        "blue hooded jacket",
+        "oversized jacket",
+        "white shirt",
+        "black legwear",
+        "boots"
+      ]
+    }
+  }
+}

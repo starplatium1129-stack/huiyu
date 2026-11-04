@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "entelechia_arknights_hat_mirror",
+  "revision": 1,
+  "sortOrder": 3017,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "entelechia_arknights_hat_mirror",
+    "characterId": "entelechia_arknights",
+    "outfitId": "dazzling_blue",
+    "title": "隐德来希 · 帽檐的角度",
+    "category": "泰拉日常",
+    "description": "她把帽檐压低一点，对着镜子看了看，又重新抬高到合适的角度。",
+    "location": "更衣镜前",
+    "action": "调整白色帽檐",
+    "timeOfDay": "白日",
+    "lighting": "镜前灯光",
+    "camera": "中景，镜子与帽子同框",
+    "mood": "专注",
+    "sceneTags": [
+      "standing",
+      "adjusting hat",
+      "mirror",
+      "vanity lights",
+      "medium shot"
+    ],
+    "promptProse": "Entelechia adjusts a white hat in front of a mirror.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "adjusting hat",
+      "mirror",
+      "vanity lights",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

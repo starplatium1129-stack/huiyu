@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_curtain_call",
+  "revision": 2,
+  "sortOrder": 2985,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "fiammetta_arknights_curtain_call",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "divine_oath",
+    "title": "菲亚梅塔 · 散场之后",
+    "category": "亲密时刻",
+    "description": "她从幕布后探身，把你叫到近处，问刚才的表演怎么样。听见夸奖，菲亚梅塔移开视线，耳尖却红了。",
+    "location": "小剧场后台",
+    "action": "掀幕靠近，回头等候回答",
+    "timeOfDay": "夜晚",
+    "lighting": "舞台余光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding curtain",
+      "leaning forward",
+      "looking at viewer",
+      "blush",
+      "theater backstage",
+      "stage light",
+      "medium close-up"
+    ],
+    "promptProse": "Fiammetta parts a curtain and looks toward the viewer with a shy blush backstage.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding curtain",
+      "leaning forward",
+      "looking at viewer",
+      "blush",
+      "theater backstage",
+      "stage light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

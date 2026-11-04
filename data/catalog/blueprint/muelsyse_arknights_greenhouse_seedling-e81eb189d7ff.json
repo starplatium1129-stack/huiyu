@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "muelsyse_arknights_greenhouse_seedling",
+  "revision": 1,
+  "sortOrder": 2876,
+  "createdAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "data": {
+    "id": "muelsyse_arknights_greenhouse_seedling",
+    "characterId": "muelsyse_arknights",
+    "outfitId": "young_branch",
+    "title": "缪尔赛思 · 温室的新芽",
+    "category": "泰拉日常",
+    "description": "玻璃罩下冒出一点新绿。缪尔赛思蹲在花盆旁，拿铅笔在标签上记下日期，又招呼你过来看。",
+    "location": "玻璃温室",
+    "action": "蹲下观察刚发芽的植物",
+    "timeOfDay": "清晨",
+    "lighting": "玻璃顶透入的晨光",
+    "camera": "中景，新芽位于前景",
+    "mood": "欣喜",
+    "sceneTags": [
+      "crouching",
+      "seedling",
+      "plant pot",
+      "greenhouse",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Muelsyse crouches beside a new seedling in a glass greenhouse.",
+    "animaCaption": "",
+    "promptTokens": [
+      "crouching",
+      "seedling",
+      "plant pot",
+      "greenhouse",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

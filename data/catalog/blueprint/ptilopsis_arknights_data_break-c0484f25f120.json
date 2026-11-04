@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "ptilopsis_arknights_data_break",
+  "revision": 1,
+  "sortOrder": 3046,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "ptilopsis_arknights_data_break",
+    "characterId": "ptilopsis_arknights",
+    "outfitId": "standard",
+    "title": "白面鸮 · 数据整理完毕",
+    "category": "泰拉日常",
+    "description": "最后一份记录归档后，她合上文件夹，宣布本次整理完成，准备去喝水。",
+    "location": "办公桌",
+    "action": "合上文件夹",
+    "timeOfDay": "上午",
+    "lighting": "窗边日光",
+    "camera": "中景，文件夹与桌面同框",
+    "mood": "平静",
+    "sceneTags": [
+      "sitting",
+      "closing folder",
+      "desk",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Ptilopsis closes a folder at her desk.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "closing folder",
+      "desk",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

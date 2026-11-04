@@ -1,0 +1,109 @@
+{
+  "kind": "character",
+  "id": "reed_arknights",
+  "revision": 1,
+  "sortOrder": 296,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "reed_arknights",
+    "profile": {
+      "id": "reed_arknights",
+      "name": "焰影苇草",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Reed",
+        "Reed the Flame Shadow",
+        "苇草"
+      ],
+      "speech": "今天能这样安静地坐着，真好。",
+      "visual_dna": {
+        "signature": "金色长发、绿眼、德拉克角与尾尖的火焰，常披棕色斗篷。"
+      },
+      "traits": [
+        "金色长发",
+        "绿眼",
+        "龙角",
+        "火焰尾"
+      ],
+      "personality": [
+        "温柔",
+        "坚韧",
+        "关心他人"
+      ],
+      "likes": [
+        "照料植物",
+        "安静的阅读",
+        "与朋友相处"
+      ],
+      "bg_story": "苇草是来自维多利亚的德拉克。她与罗德岛保持联系，并以自己的方式帮助身处困境的塔拉人。",
+      "identity": {
+        "role": "罗德岛合作干员",
+        "occupation": "干员",
+        "faction": "深池",
+        "region": "维多利亚",
+        "race": "德拉克",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "金发",
+        "德拉克",
+        "焰影"
+      ],
+      "voice": "这朵花，明天应该就会开了。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "焰影苇草立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "reed_arknights",
+      "displayName": "焰影苇草",
+      "originalName": "Reed the Flame Shadow",
+      "franchise": "Arknights",
+      "aliases": [
+        "Reed",
+        "Reed the Flame Shadow",
+        "苇草"
+      ],
+      "identityProse": "Reed the Flame Shadow from Arknights has long blonde hair, green eyes, dragon horns and a flame-tipped dragon tail.",
+      "identityTokens": [
+        "reed the flame shadow (arknights)",
+        "reed (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "green eyes",
+        "dragon horns",
+        "dragon tail",
+        "flame-tipped tail"
+      ],
+      "characterTokens": [
+        "reed (arknights)",
+        "reed the flame shadow (arknights)",
+        "reed the flame shadow (curator) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "reed (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "starshadowmagician",
+        "anmi",
+        "swav"
+      ]
+    }
+  }
+}

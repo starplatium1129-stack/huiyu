@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "angelina_arknights_flower_delivery",
+  "revision": 1,
+  "sortOrder": 3081,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights_flower_delivery",
+    "characterId": "angelina_arknights",
+    "outfitId": "distinguished_visitor",
+    "title": "安洁莉娜 · 一束送到的花",
+    "category": "泰拉日常",
+    "description": "花店请她帮忙送一束花。她双手接好，问清楚收花人的地址，出门前又看了看天气。",
+    "location": "花店门口",
+    "action": "接过包装好的花束",
+    "timeOfDay": "下午",
+    "lighting": "街道柔光",
+    "camera": "中景，花束和纸包装同框",
+    "mood": "温暖",
+    "sceneTags": [
+      "standing",
+      "holding bouquet",
+      "flower shop",
+      "soft daylight",
+      "medium shot"
+    ],
+    "promptProse": "Angelina receives a wrapped bouquet at a flower shop.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding bouquet",
+      "flower shop",
+      "soft daylight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

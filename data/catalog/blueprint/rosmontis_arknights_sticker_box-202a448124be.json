@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "rosmontis_arknights_sticker_box",
+  "revision": 1,
+  "sortOrder": 2961,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosmontis_arknights_sticker_box",
+    "characterId": "rosmontis_arknights",
+    "outfitId": "standard",
+    "title": "迷迭香 · 贴纸盒",
+    "category": "泰拉日常",
+    "description": "盒子里的贴纸快用完了，她挑出一枚猫咪，贴在笔记本封面。剩下的一张被她留给了朋友。",
+    "location": "活动室",
+    "action": "挑选一枚猫咪贴纸",
+    "timeOfDay": "下午",
+    "lighting": "桌面柔光",
+    "camera": "俯角中近景，贴纸盒清晰",
+    "mood": "开心",
+    "sceneTags": [
+      "sitting",
+      "holding sticker",
+      "cat sticker",
+      "notebook",
+      "table",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Rosmontis chooses a cat sticker beside her notebook.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "holding sticker",
+      "cat sticker",
+      "notebook",
+      "table",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

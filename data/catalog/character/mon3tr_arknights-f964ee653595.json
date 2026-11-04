@@ -1,0 +1,103 @@
+{
+  "kind": "character",
+  "id": "mon3tr_arknights",
+  "revision": 1,
+  "sortOrder": 294,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "mon3tr_arknights",
+    "profile": {
+      "id": "mon3tr_arknights",
+      "name": "Mon3tr",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Mon3tr"
+      ],
+      "speech": "这个流程，我已经看过很多遍了。",
+      "visual_dna": {
+        "signature": "黑绿双色头发、绿色眼睛、猫形耳朵与晶体尾。"
+      },
+      "traits": [
+        "黑绿双色发",
+        "绿眼",
+        "猫形耳朵",
+        "晶体尾"
+      ],
+      "personality": [
+        "认真",
+        "表达直接",
+        "正在熟悉新的日常"
+      ],
+      "likes": [
+        "整理资料",
+        "观察周围的人",
+        "完成约定"
+      ],
+      "bg_story": "Mon3tr是罗德岛的特别顾问，在生命科学、医疗及工程等领域拥有丰富知识。作为罗德岛的一员，她也在重新熟悉与大家共同生活的日常。",
+      "identity": {
+        "role": "罗德岛特别顾问",
+        "occupation": "医疗与工程特别顾问",
+        "faction": "罗德岛",
+        "region": "罗德岛",
+        "race": "未公开",
+        "classificationSource": "游戏内干员档案"
+      },
+      "tags": [
+        "黑绿发",
+        "晶体尾",
+        "罗德岛"
+      ],
+      "voice": "我会记住这个步骤。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "Mon3tr立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "mon3tr_arknights",
+      "displayName": "Mon3tr",
+      "originalName": "Mon3tr",
+      "franchise": "Arknights",
+      "aliases": [
+        "Mon3tr"
+      ],
+      "identityProse": "Mon3tr from Arknights has black and green hair, green eyes, cat-like ears and a crystalline tail.",
+      "identityTokens": [
+        "mon3tr (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "green hair",
+        "medium hair",
+        "green eyes",
+        "cat ears",
+        "crystal tail"
+      ],
+      "characterTokens": [
+        "mon3tr (arknights)",
+        "mon3tr (sharpened claws) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "mon3tr (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown",
+      "curatedArtistStyles": [
+        "five-fall",
+        "wei_at_w",
+        "namie-kun"
+      ]
+    }
+  }
+}

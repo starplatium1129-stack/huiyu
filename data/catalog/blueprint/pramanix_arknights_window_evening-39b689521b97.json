@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "pramanix_arknights_window_evening",
+  "revision": 2,
+  "sortOrder": 2853,
+  "createdAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "pramanix_arknights_window_evening",
+    "characterId": "pramanix_arknights",
+    "outfitId": "prerita",
+    "title": "初雪 · 灯下的低声交谈",
+    "category": "亲密时刻",
+    "description": "灯下的雪光落在她发梢。她回身伸出手，邀请你到窗边，声音轻得像怕惊动这场雪。",
+    "location": "山间客舍",
+    "action": "倚窗回望，伸手邀请对方靠近",
+    "timeOfDay": "夜晚",
+    "lighting": "一盏暖灯照亮侧脸",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning against window",
+      "reaching toward viewer",
+      "looking at viewer",
+      "soft smile",
+      "lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Pramanix reaches toward the viewer with a soft smile by a lamplit window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning against window",
+      "reaching toward viewer",
+      "looking at viewer",
+      "soft smile",
+      "lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

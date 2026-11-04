@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_morning_coffee",
+  "revision": 1,
+  "sortOrder": 2976,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "fiammetta_arknights_morning_coffee",
+    "characterId": "fiammetta_arknights",
+    "outfitId": "standard",
+    "title": "菲亚梅塔 · 咖啡先放一边",
+    "category": "泰拉日常",
+    "description": "她刚坐下就发现咖啡太烫，只好先翻开报纸。看到熟悉的名字，菲亚梅塔皱了下眉，又继续往下读。",
+    "location": "街边咖啡馆",
+    "action": "把咖啡放到桌上",
+    "timeOfDay": "早晨",
+    "lighting": "店窗晨光",
+    "camera": "中景，咖啡与报纸同框",
+    "mood": "放松",
+    "sceneTags": [
+      "sitting",
+      "newspaper",
+      "coffee cup",
+      "cafe",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Fiammetta reads a newspaper beside a coffee cup in a café.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "newspaper",
+      "coffee cup",
+      "cafe",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

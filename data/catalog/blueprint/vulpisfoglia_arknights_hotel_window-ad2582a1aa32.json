@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "vulpisfoglia_arknights_hotel_window",
+  "revision": 2,
+  "sortOrder": 2863,
+  "createdAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "vulpisfoglia_arknights_hotel_window",
+    "characterId": "vulpisfoglia_arknights",
+    "outfitId": "out_of_focus",
+    "title": "忍冬 · 窗边的夜景",
+    "category": "亲密时刻",
+    "description": "她回过头，指尖拢住被夜风吹开的披肩。窗上的灯影落进眼睛里，她笑着邀请你走近看夜景。",
+    "location": "酒店窗边",
+    "action": "扶窗回望，指尖轻拢披肩",
+    "timeOfDay": "夜晚",
+    "lighting": "城市灯火与室内暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding shawl",
+      "looking over shoulder",
+      "smile",
+      "hotel window",
+      "city lights",
+      "warm lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Vulpisfoglia gathers her shawl and looks over her shoulder at the viewer by a city window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding shawl",
+      "looking over shoulder",
+      "smile",
+      "hotel window",
+      "city lights",
+      "warm lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

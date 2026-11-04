@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_dim_sum",
+  "revision": 1,
+  "sortOrder": 3106,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "id": "swire_arknights_dim_sum",
+    "characterId": "swire_arknights",
+    "outfitId": "standard",
+    "title": "诗怀雅 · 点心推车",
+    "category": "泰拉日常",
+    "description": "她掀开蒸笼看了一眼，熟练地点了几样，又记得给你留出挑选的机会。",
+    "location": "茶楼",
+    "action": "查看点心蒸笼",
+    "timeOfDay": "上午",
+    "lighting": "茶楼暖光",
+    "camera": "中景，蒸笼和茶杯同框",
+    "mood": "愉快",
+    "sceneTags": [
+      "sitting",
+      "bamboo steamer",
+      "dim sum",
+      "tea cups",
+      "tea house",
+      "warm light",
+      "medium shot"
+    ],
+    "promptProse": "Swire chooses dim sum at a tea house table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "bamboo steamer",
+      "dim sum",
+      "tea cups",
+      "tea house",
+      "warm light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

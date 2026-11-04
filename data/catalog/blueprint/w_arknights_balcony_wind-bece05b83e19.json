@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_balcony_wind",
+  "revision": 2,
+  "sortOrder": 2945,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "w_arknights_balcony_wind",
+    "characterId": "w_arknights",
+    "outfitId": "wisadel_supernova",
+    "title": "W / 维什戴尔 · 露台上的悄悄话",
+    "category": "亲密时刻",
+    "description": "她搭着栏杆凑近，像要说什么秘密，却先笑了：“放心，这次你可以猜得再大胆一点。”",
+    "location": "露台",
+    "action": "俯身靠栏，侧头注视镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "露台灯与远处城市灯火",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning on railing",
+      "leaning toward viewer",
+      "looking at viewer",
+      "mischievous smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Wis’adel leans toward the viewer at a balcony railing with a mischievous smile.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning on railing",
+      "leaning toward viewer",
+      "looking at viewer",
+      "mischievous smile",
+      "balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

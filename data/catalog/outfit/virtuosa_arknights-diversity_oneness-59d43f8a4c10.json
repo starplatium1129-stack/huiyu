@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/diversity_oneness",
+  "revision": 1,
+  "sortOrder": 1993,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "diversity_oneness",
+      "name": "无我唯识 · 黑色礼裙",
+      "characterId": "virtuosa_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black dress with black gloves, a necklace and a hair ornament.",
+      "tokens": [
+        "black dress",
+        "black gloves",
+        "necklace",
+        "hair ornament"
+      ],
+      "identityTokensOverride": [
+        "virtuosa (arknights)",
+        "virtuosa (diversity oneness) (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "very long hair",
+        "grey eyes",
+        "broken halo",
+        "black wings"
+      ],
+      "identityProseOverride": "Virtuosa from Arknights has very long black hair, grey eyes, a broken dark halo and dark wings."
+    }
+  }
+}

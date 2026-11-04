@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_wood_carving",
+  "revision": 1,
+  "sortOrder": 3027,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "data": {
+    "id": "specter_arknights_wood_carving",
+    "characterId": "specter_arknights",
+    "outfitId": "standard",
+    "title": "幽灵鲨 · 木块上的纹路",
+    "category": "泰拉日常",
+    "description": "木块渐渐有了鸟的形状。她停下来吹去木屑，把还未完成的作品给你看。",
+    "location": "手工桌",
+    "action": "用雕刻刀修整木雕",
+    "timeOfDay": "下午",
+    "lighting": "桌边柔光",
+    "camera": "中近景，木雕与手部清晰",
+    "mood": "专注",
+    "sceneTags": [
+      "sitting",
+      "wood carving",
+      "wooden bird",
+      "craft table",
+      "soft light",
+      "medium close-up"
+    ],
+    "promptProse": "Specter carves a small wooden bird at a craft table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "sitting",
+      "wood carving",
+      "wooden bird",
+      "craft table",
+      "soft light",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

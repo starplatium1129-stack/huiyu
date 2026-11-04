@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "ines_arknights/melodic_flutter",
+  "revision": 1,
+  "sortOrder": 1947,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "data": {
+    "characterId": "ines_arknights",
+    "outfit": {
+      "id": "melodic_flutter",
+      "name": "蝶舞华章 · 黑色音乐写真礼服",
+      "default": false,
+      "isDefault": false,
+      "prose": "An elegant black formal dress with butterfly-inspired detailing.",
+      "tokens": [
+        "black dress",
+        "formal dress",
+        "butterfly ornament"
+      ],
+      "identityTokensOverride": [
+        "ines (arknights)",
+        "ines (melodic flutter) (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "long hair",
+        "yellow eyes",
+        "horns"
+      ],
+      "identityProseOverride": "Ines from Arknights has long black hair, golden eyes and dark horns.",
+      "characterId": "ines_arknights"
+    }
+  }
+}

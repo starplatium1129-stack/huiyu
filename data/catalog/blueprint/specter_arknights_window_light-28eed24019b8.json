@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "specter_arknights_window_light",
+  "revision": 2,
+  "sortOrder": 3034,
+  "createdAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "specter_arknights_window_light",
+    "characterId": "specter_arknights",
+    "outfitId": "standard",
+    "title": "幽灵鲨 · 窗边的邀请",
+    "category": "亲密时刻",
+    "description": "她在窗边伸出手，等你走近才说，今晚没有潮声，也可以一起听雨。",
+    "location": "休息室窗边",
+    "action": "伸手邀请，倚窗注视镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "窗边暖灯",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "leaning against window",
+      "reaching toward viewer",
+      "looking at viewer",
+      "gentle smile",
+      "warm light",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Specter reaches toward the viewer with a gentle smile beside a lamplit window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "leaning against window",
+      "reaching toward viewer",
+      "looking at viewer",
+      "gentle smile",
+      "warm light",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

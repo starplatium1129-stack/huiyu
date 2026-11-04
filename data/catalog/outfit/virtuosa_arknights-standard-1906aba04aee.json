@@ -1,0 +1,24 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/standard",
+  "revision": 1,
+  "sortOrder": 1992,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "standard",
+      "name": "基础服装 · 白衬衫与黑裙",
+      "characterId": "virtuosa_arknights",
+      "default": true,
+      "isDefault": true,
+      "prose": "A white shirt with a black skirt and black gloves.",
+      "tokens": [
+        "white shirt",
+        "black skirt",
+        "black gloves"
+      ]
+    }
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "kind": "outfit",
+  "id": "pozyomka_arknights/snowy_plains_in_words",
+  "revision": 1,
+  "sortOrder": 1958,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "data": {
+    "characterId": "pozyomka_arknights",
+    "outfit": {
+      "id": "snowy_plains_in_words",
+      "name": "字句中的雪原 · 白披肩与深色长裙",
+      "default": true,
+      "isDefault": true,
+      "prose": "A dark dress beneath a white hooded capelet, with white tights and boots.",
+      "tokens": [
+        "black dress",
+        "white capelet",
+        "hooded capelet",
+        "white pantyhose",
+        "boots"
+      ],
+      "identityTokensOverride": [
+        "pozyomka (arknights)",
+        "pozyomka (snowy plains in words) (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "very long hair",
+        "pink eyes",
+        "wolf ears",
+        "wolf tail",
+        "hairband"
+      ],
+      "identityProseOverride": "Pozyomka from Arknights has very long pink hair, pink eyes, wolf ears and a wolf tail.",
+      "characterId": "pozyomka_arknights"
+    }
+  }
+}

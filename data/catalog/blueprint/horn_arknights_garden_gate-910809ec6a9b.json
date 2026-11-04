@@ -1,0 +1,47 @@
+{
+  "kind": "blueprint",
+  "id": "horn_arknights_garden_gate",
+  "revision": 1,
+  "sortOrder": 2996,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "id": "horn_arknights_garden_gate",
+    "characterId": "horn_arknights",
+    "outfitId": "first_gleam",
+    "title": "号角 · 花园门前",
+    "category": "泰拉日常",
+    "description": "门边的花盆被风吹得偏了方向。她蹲下扶正，顺手摘去已经枯萎的叶子。",
+    "location": "花园入口",
+    "action": "整理门边的花盆",
+    "timeOfDay": "清晨",
+    "lighting": "晨间日光",
+    "camera": "中景，花盆和门廊同框",
+    "mood": "沉静",
+    "sceneTags": [
+      "crouching",
+      "flowerpot",
+      "garden gate",
+      "morning light",
+      "medium shot"
+    ],
+    "promptProse": "Horn adjusts a flowerpot beside a garden gate.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "crouching",
+      "flowerpot",
+      "garden gate",
+      "morning light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

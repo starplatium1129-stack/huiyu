@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "pozyomka_arknights_winter_guesthouse",
+  "revision": 1,
+  "sortOrder": 2928,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "data": {
+    "id": "pozyomka_arknights_winter_guesthouse",
+    "characterId": "pozyomka_arknights",
+    "outfitId": "snowy_plains_in_words",
+    "title": "鸿雪 · 客舍里的热茶",
+    "category": "泰拉日常",
+    "description": "窗外雪下得很密。她把杯子捧在手里，看着窗玻璃上慢慢凝起的雾，等茶凉到适合入口。",
+    "location": "雪镇客舍",
+    "action": "在桌边捧着热茶看窗外",
+    "timeOfDay": "下午",
+    "lighting": "窗外雪光与室内暖灯",
+    "camera": "中景，茶杯和雪窗同框",
+    "mood": "安静",
+    "sceneTags": [
+      "sitting",
+      "holding teacup",
+      "snowy window",
+      "guesthouse",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "promptProse": "Pozyomka holds a cup of tea beside a snowy guesthouse window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "sitting",
+      "holding teacup",
+      "snowy window",
+      "guesthouse",
+      "warm lamplight",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

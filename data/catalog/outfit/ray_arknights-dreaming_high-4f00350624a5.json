@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "ray_arknights/dreaming_high",
+  "revision": 1,
+  "sortOrder": 1955,
+  "createdAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "data": {
+    "characterId": "ray_arknights",
+    "outfit": {
+      "id": "dreaming_high",
+      "name": "梦幻高空 · 摇滚舞台装",
+      "default": false,
+      "isDefault": false,
+      "prose": "An off-shoulder cropped shirt with a black tie and skirt, blue leggings and fingerless gloves.",
+      "tokens": [
+        "off-shoulder shirt",
+        "cropped shirt",
+        "black necktie",
+        "black skirt",
+        "blue leggings",
+        "fingerless gloves"
+      ],
+      "identityTokensOverride": [
+        "ray (arknights)",
+        "ray (dreaming high) (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "very long hair",
+        "violet eyes",
+        "blue hairband"
+      ],
+      "identityProseOverride": "Ray from Arknights has very long pink hair, violet eyes and a blue hairband.",
+      "characterId": "ray_arknights"
+    }
+  }
+}

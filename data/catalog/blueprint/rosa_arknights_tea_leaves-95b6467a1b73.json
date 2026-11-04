@@ -1,0 +1,49 @@
+{
+  "kind": "blueprint",
+  "id": "rosa_arknights_tea_leaves",
+  "revision": 1,
+  "sortOrder": 2946,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "rosa_arknights_tea_leaves",
+    "characterId": "rosa_arknights",
+    "outfitId": "standard",
+    "title": "早露 · 红茶的时间",
+    "category": "泰拉日常",
+    "description": "早露把茶叶仔细量好，再把热水注进壶里。等待的几分钟里，她替对面的空杯也摆好了茶托。",
+    "location": "休息室",
+    "action": "把茶叶舀进茶壶",
+    "timeOfDay": "午后",
+    "lighting": "窗边日光",
+    "camera": "中景，茶具与手部清晰",
+    "mood": "平静",
+    "sceneTags": [
+      "preparing tea",
+      "teapot",
+      "tea leaves",
+      "table",
+      "window light",
+      "medium shot"
+    ],
+    "promptProse": "Rosa prepares loose-leaf tea at a lounge table.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "preparing tea",
+      "teapot",
+      "tea leaves",
+      "table",
+      "window light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

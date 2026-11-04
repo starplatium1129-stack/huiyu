@@ -1,0 +1,111 @@
+{
+  "kind": "character",
+  "id": "w_arknights",
+  "revision": 1,
+  "sortOrder": 281,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "data": {
+    "id": "w_arknights",
+    "profile": {
+      "id": "w_arknights",
+      "name": "W / 维什戴尔",
+      "alias": [
+        "W",
+        "Wiš'adel",
+        "Wis'adel",
+        "维什戴尔"
+      ],
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "speech": "盯着我做什么？今天又没安排什么大事。",
+      "visual_dna": {
+        "signature": "灰白短发带红色挑染，红色眼睛、萨卡兹角和尾巴；笑容常带一点狡黠。"
+      },
+      "traits": [
+        "灰白短发",
+        "红色挑染",
+        "红色眼睛",
+        "萨卡兹角",
+        "萨卡兹尾"
+      ],
+      "personality": [
+        "嘴上不饶人",
+        "机敏",
+        "对在意的人有自己的照顾方式"
+      ],
+      "likes": [
+        "有趣的消遣",
+        "熟悉的伙伴",
+        "出人意料的点子"
+      ],
+      "bg_story": "W曾以佣兵身份活动，与伊内丝和赫德雷有很深的交集，也与巴别塔、罗德岛的历史相连。后来她选择使用“维什戴尔”这个名字，继续以自己的方式面对过去和未来。",
+      "identity": {
+        "role": "罗德岛合作干员",
+        "occupation": "干员",
+        "faction": "罗德岛",
+        "region": "卡兹戴尔",
+        "race": "萨卡兹",
+        "classificationSource": "游戏内干员基础档案与客观履历"
+      },
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "W与维什戴尔立绘待制作"
+      },
+      "tags": [
+        "短发",
+        "萨卡兹",
+        "维什戴尔"
+      ],
+      "voice": "这次先听你的，别得意。"
+    },
+    "popular": {
+      "id": "w_arknights",
+      "displayName": "W / 维什戴尔",
+      "originalName": "W / Wis'adel",
+      "franchise": "Arknights",
+      "aliases": [
+        "W",
+        "Wis'adel",
+        "维什戴尔"
+      ],
+      "identityProse": "W from Arknights has short grey-white hair with red streaks, red eyes, red horns and a demon tail.",
+      "identityTokens": [
+        "w (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "short hair",
+        "red streak",
+        "red eyes",
+        "red horns",
+        "demon tail"
+      ],
+      "characterTokens": [
+        "w (arknights)",
+        "w (fugue) (arknights)",
+        "wis'adel (arknights)",
+        "wis'adel (supernova) (arknights)"
+      ],
+      "copyrightTokens": [
+        "arknights"
+      ],
+      "exactTokens": [
+        "w (arknights)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "adult",
+      "curatedArtistStyles": [
+        "liduke",
+        "banban_(vvvviiiiiia)",
+        "swav"
+      ]
+    }
+  }
+}

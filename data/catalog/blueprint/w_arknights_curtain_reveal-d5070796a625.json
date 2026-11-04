@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "w_arknights_curtain_reveal",
+  "revision": 2,
+  "sortOrder": 2944,
+  "createdAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "w_arknights_curtain_reveal",
+    "characterId": "w_arknights",
+    "outfitId": "wisadel_supernova",
+    "title": "W / 维什戴尔 · 幕布后的一眼",
+    "category": "亲密时刻",
+    "description": "她掀开幕布，回头朝你勾了勾手指。等你靠近，她才压低声音说，这次的秘密出口只带你走。",
+    "location": "小剧场后台",
+    "action": "掀幕回眸，勾手示意跟上",
+    "timeOfDay": "夜晚",
+    "lighting": "舞台余光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding curtain",
+      "looking back",
+      "beckoning",
+      "mischievous smile",
+      "theater backstage",
+      "stage light",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Wis’adel parts a curtain and beckons the viewer closer with a mischievous smile.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding curtain",
+      "looking back",
+      "beckoning",
+      "mischievous smile",
+      "theater backstage",
+      "stage light",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

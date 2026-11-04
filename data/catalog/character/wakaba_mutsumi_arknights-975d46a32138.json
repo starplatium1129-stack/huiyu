@@ -1,0 +1,104 @@
+{
+  "kind": "character",
+  "id": "wakaba_mutsumi_arknights",
+  "revision": 1,
+  "sortOrder": 284,
+  "createdAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "data": {
+    "id": "wakaba_mutsumi_arknights",
+    "profile": {
+      "id": "wakaba_mutsumi_arknights",
+      "name": "若叶睦",
+      "type": "popular",
+      "source": "Hypergryph《明日方舟 / Arknights》",
+      "alias": [
+        "Wakaba Mutsumi",
+        "Mortis"
+      ],
+      "speech": "嗯……我带了一些自己种的黄瓜。",
+      "visual_dna": {
+        "signature": "浅绿色长发、黄色眼睛和发夹；月之森校服以蓝色为主。"
+      },
+      "traits": [
+        "浅绿长发",
+        "黄色眼睛",
+        "发夹",
+        "月之森校服"
+      ],
+      "personality": [
+        "沉默寡言",
+        "细心",
+        "以自己的方式关心朋友"
+      ],
+      "likes": [
+        "黄瓜",
+        "种植蔬菜",
+        "弹吉他"
+      ],
+      "bg_story": "若叶睦是《BanG Dream!》乐队 Ave Mujica 的吉他手，也在《明日方舟》联动中来到泰拉。她话不多，喜欢照料自己种的蔬菜。",
+      "identity": {
+        "role": "Ave Mujica 吉他手",
+        "occupation": "学生、吉他手",
+        "faction": "Ave Mujica",
+        "region": "未知",
+        "race": "未知",
+        "classificationSource": "原作角色设定及联动干员档案"
+      },
+      "tags": [
+        "绿发",
+        "吉他",
+        "联动角色"
+      ],
+      "voice": "这个……是刚摘下来的。",
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "若叶睦立绘待制作"
+      }
+    },
+    "popular": {
+      "id": "wakaba_mutsumi_arknights",
+      "displayName": "若叶睦",
+      "originalName": "Mutsumi Wakaba",
+      "franchise": "Arknights",
+      "aliases": [
+        "Wakaba Mutsumi",
+        "Mortis"
+      ],
+      "identityProse": "Mutsumi Wakaba from BanG Dream has long green hair, yellow eyes and a hairclip.",
+      "identityTokens": [
+        "wakaba mutsumi",
+        "1girl",
+        "solo",
+        "green hair",
+        "long hair",
+        "yellow eyes",
+        "hairclip"
+      ],
+      "characterTokens": [
+        "wakaba mutsumi",
+        "wakaba mutsumi (marionette's id)"
+      ],
+      "copyrightTokens": [
+        "bang dream!",
+        "arknights"
+      ],
+      "exactTokens": [
+        "wakaba mutsumi"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "underage",
+      "curatedArtistStyles": [
+        "wenquangua",
+        "anmi",
+        "namie-kun"
+      ]
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "kind": "blueprint",
+  "id": "hoolheyak_arknights_observatory_sky",
+  "revision": 1,
+  "sortOrder": 2902,
+  "createdAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "data": {
+    "id": "hoolheyak_arknights_observatory_sky",
+    "characterId": "hoolheyak_arknights",
+    "outfitId": "standard",
+    "title": "霍尔海雅 · 观星台的天图",
+    "category": "泰拉日常",
+    "description": "观星台上风很轻，她把星图压在栏杆上，沿着纸上的线辨认天上的亮点，偶尔与你交换一个猜测。",
+    "location": "观星台",
+    "action": "展开星图辨认夜空",
+    "timeOfDay": "夜晚",
+    "lighting": "星光与小台灯",
+    "camera": "远景，人物和夜空同框",
+    "mood": "沉思",
+    "sceneTags": [
+      "standing",
+      "holding star chart",
+      "observatory",
+      "starry sky",
+      "night",
+      "wide shot"
+    ],
+    "promptProse": "Ho’olheyak reads a star chart at an observatory beneath the night sky.",
+    "animaCaption": "",
+    "promptTokens": [
+      "standing",
+      "holding star chart",
+      "observatory",
+      "starry sky",
+      "night",
+      "wide shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

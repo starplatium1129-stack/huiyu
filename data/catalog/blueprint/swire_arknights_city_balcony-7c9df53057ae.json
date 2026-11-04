@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "swire_arknights_city_balcony",
+  "revision": 2,
+  "sortOrder": 3113,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "swire_arknights_city_balcony",
+    "characterId": "swire_arknights",
+    "outfitId": "honor_and_splendor",
+    "title": "诗怀雅 · 露台上的邀请",
+    "category": "亲密时刻",
+    "description": "她举杯与你相碰，随后倾身笑问：“位置、夜景，还有陪你的人，哪一样最让你满意？”",
+    "location": "餐厅露台",
+    "action": "举杯倾身，带笑看向镜头",
+    "timeOfDay": "夜晚",
+    "lighting": "城市夜景与暖灯",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding glass",
+      "leaning forward",
+      "looking at viewer",
+      "confident smile",
+      "restaurant balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Swire leans forward with a glass and gives the viewer a confident smile on a balcony.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding glass",
+      "leaning forward",
+      "looking at viewer",
+      "confident smile",
+      "restaurant balcony",
+      "city lights",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

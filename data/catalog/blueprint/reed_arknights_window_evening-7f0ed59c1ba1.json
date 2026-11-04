@@ -1,0 +1,52 @@
+{
+  "kind": "blueprint",
+  "id": "reed_arknights_window_evening",
+  "revision": 2,
+  "sortOrder": 3095,
+  "createdAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "reed_arknights_window_evening",
+    "characterId": "reed_arknights",
+    "outfitId": "flame_shadow",
+    "title": "焰影苇草 · 窗边的晚安",
+    "category": "亲密时刻",
+    "description": "她把热饮交到你手中，指尖相碰时稍稍停了一瞬，随后轻声说，希望明晚也能这样见面。",
+    "location": "休息室窗边",
+    "action": "递出热饮，轻轻触碰镜头前的手",
+    "timeOfDay": "夜晚",
+    "lighting": "台灯暖光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding warm drink",
+      "offering",
+      "looking at viewer",
+      "shy smile",
+      "window",
+      "warm lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "promptProse": "Reed offers a warm drink to the viewer and smiles shyly by a window.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding warm drink",
+      "offering",
+      "looking at viewer",
+      "shy smile",
+      "window",
+      "warm lamplight",
+      "night",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

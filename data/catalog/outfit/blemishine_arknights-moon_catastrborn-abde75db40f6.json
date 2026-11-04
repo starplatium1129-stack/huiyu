@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/moon_catastrborn",
+  "revision": 1,
+  "sortOrder": 1975,
+  "createdAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "moon_catastrborn",
+      "name": "异月灾裔 · 黑色舞会裙",
+      "characterId": "blemishine_arknights",
+      "default": false,
+      "isDefault": false,
+      "prose": "A black dress with dark gloves and a moon-themed ornament.",
+      "tokens": [
+        "black dress",
+        "black gloves",
+        "moon ornament"
+      ],
+      "identityTokensOverride": [
+        "blemishine (arknights)",
+        "blemishine (moon catastrborn) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "horse ears",
+        "horse tail",
+        "yellow eyes"
+      ],
+      "identityProseOverride": "Blemishine from Arknights has long blonde hair, yellow eyes, horse ears and a horse tail."
+    }
+  }
+}

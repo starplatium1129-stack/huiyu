@@ -1,0 +1,46 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_night_walk",
+  "revision": 1,
+  "sortOrder": 2872,
+  "createdAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "data": {
+    "id": "ines_arknights_night_walk",
+    "characterId": "ines_arknights",
+    "outfitId": "standard",
+    "title": "伊内丝 · 回程的路灯",
+    "category": "泰拉日常",
+    "description": "夜里街上人很少。她走在靠外的一侧，听完你说的事后只答了一句“我知道了”，脚步却放慢了些。",
+    "location": "安静街道",
+    "action": "沿着路灯下的人行道慢行",
+    "timeOfDay": "夜晚",
+    "lighting": "街灯与路面反光",
+    "camera": "全身，街道延伸至背景",
+    "mood": "沉静",
+    "sceneTags": [
+      "walking",
+      "quiet street",
+      "streetlights",
+      "night",
+      "full body"
+    ],
+    "promptProse": "Ines walks along a quiet street beneath streetlights.",
+    "animaCaption": "",
+    "promptTokens": [
+      "walking",
+      "quiet street",
+      "streetlights",
+      "night",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

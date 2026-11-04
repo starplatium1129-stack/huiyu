@@ -1,0 +1,50 @@
+{
+  "kind": "blueprint",
+  "id": "pozyomka_arknights_manuscript_reading",
+  "revision": 2,
+  "sortOrder": 2933,
+  "createdAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "data": {
+    "id": "pozyomka_arknights_manuscript_reading",
+    "characterId": "pozyomka_arknights",
+    "outfitId": "beside_dreams",
+    "title": "鸿雪 · 请你读一页",
+    "category": "亲密时刻",
+    "description": "她把手稿递给你，靠近观察你读到最后一行时的表情，随后问：“这句心意，有传达到吗？”",
+    "location": "安静书室",
+    "action": "递出手稿，靠近观察对方反应",
+    "timeOfDay": "夜晚",
+    "lighting": "桌灯柔光",
+    "camera": "中近景，人物神态与互动清晰",
+    "mood": "亲密",
+    "sceneTags": [
+      "holding manuscript",
+      "offering",
+      "leaning toward viewer",
+      "looking at viewer",
+      "study",
+      "lamplight",
+      "medium close-up"
+    ],
+    "promptProse": "Pozyomka offers a manuscript and leans close to watch the viewer read it.",
+    "animaCaption": "",
+    "promptTokens": [
+      "holding manuscript",
+      "offering",
+      "leaning toward viewer",
+      "looking at viewer",
+      "study",
+      "lamplight",
+      "medium close-up"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "R15",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

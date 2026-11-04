@@ -1,0 +1,51 @@
+{
+  "kind": "blueprint",
+  "id": "angelina_arknights_rain_shelter",
+  "revision": 1,
+  "sortOrder": 3083,
+  "createdAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "data": {
+    "id": "angelina_arknights_rain_shelter",
+    "characterId": "angelina_arknights",
+    "outfitId": "standard",
+    "title": "安洁莉娜 · 雨中的小憩",
+    "category": "泰拉日常",
+    "description": "她躲到屋檐下，从包里找出折叠伞。雨小了一些后，她才继续沿街走。",
+    "location": "街边屋檐",
+    "action": "整理包里的雨伞",
+    "timeOfDay": "雨天",
+    "lighting": "阴天柔光",
+    "camera": "中景，雨幕与背包同框",
+    "mood": "轻松",
+    "sceneTags": [
+      "standing",
+      "holding umbrella",
+      "bag",
+      "awning",
+      "rain",
+      "soft light",
+      "medium shot"
+    ],
+    "promptProse": "Angelina takes an umbrella from her bag under an awning.",
+    "animaCaption": "",
+    "promptTokens": [
+      "general",
+      "standing",
+      "holding umbrella",
+      "bag",
+      "awning",
+      "rain",
+      "soft light",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}
