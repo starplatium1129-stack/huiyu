@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "asuna_yuuki_lingerie_whisper",
+  "revision": 2,
+  "sortOrder": 3308,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "asuna_yuuki_lingerie_whisper",
+    "characterId": "asuna_yuuki",
+    "title": "结城明日奈 · 幽微月华下的幔帐缠绵之约",
+    "category": "私密内衣",
+    "action": "跪坐在铺着素色丝绸的床榻中央，薄纱睡衣半解滑落至腰际，微启朱唇、眼波如水地向你探出身来",
+    "location": "挂着层层幽微纱幔的私密寝所雕花大床深处",
+    "timeOfDay": "午夜",
+    "lighting": "冷冽皎洁的银白色满月月光透过雕花木格窗倾泻，将如玉雪肌映照得晶莹剔透、光彩照人",
+    "camera": "medium shot, three quarter view, cinematic contrast",
+    "mood": "梦幻清幽、宿命感性张力与全然交付的深情",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "",
+    "description": "幽微午夜，皎洁清冷的满月月光透过雕花木格窗倾泻而入，穿透层层曼妙的轻薄纱幔。结城明日奈跪坐在素色丝绸大床中央，一袭精致的银白蕾丝内衣勾勒出曼妙起伏的雪肌轮廓，她微启朱唇，带着全然托付的深情向前探出身姿——「满月的光芒清幽而圣洁。今夜无需任何掩饰，将你的全部，都交托给我吧。」",
+    "outfitId": "silver_lace_lingerie",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "sceneTags": [
+      "canopy_bed",
+      "sheer_drapes",
+      "moonlight",
+      "cool_lighting",
+      "lingerie",
+      "bare_shoulders",
+      "intimate"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "lingerie",
+      "looking at viewer",
+      "bedroom eyes",
+      "parted lips",
+      "blush",
+      "canopy bed",
+      "sheer drapes",
+      "moonlight",
+      "cool lighting",
+      "bare shoulders",
+      "bare thighs",
+      "cinematic lighting",
+      "depth of field"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Kneeling at the center of the canopy bed in her sheer silver lace lingerie, Asuna leans forward alluringly beneath the ethereal glow of moonlight.",
+    "animaCaption": "Cool moonlight cuts through the sheer canopy curtains, gleaming against her skin as she leans close.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

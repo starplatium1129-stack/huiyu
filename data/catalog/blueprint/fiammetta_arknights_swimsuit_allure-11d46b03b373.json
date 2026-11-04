@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "fiammetta_arknights_swimsuit_allure",
+  "revision": 2,
+  "sortOrder": 3141,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "fiammetta_arknights_swimsuit_allure",
+    "characterId": "fiammetta_arknights",
+    "title": "菲亚梅塔 · 碧浪逐沙的夏日海湾之约",
+    "category": "夏日海滩",
+    "action": "一手轻扶遮阳草帽一手轻提薄纱防晒罩衫下摆，赤足涉水回眸展颜浅笑",
+    "location": "热带私人海岛白沙浅滩与碧蓝海浪交汇处",
+    "timeOfDay": "午后",
+    "lighting": "盛夏明媚阳光透过椰影洒落在波光粼粼的水面，伴随耀眼的金黄折射高光与通透边缘轮廓光",
+    "camera": "cowboy shot, slightly low angle, ocean horizon",
+    "mood": "清凉明媚、夏日心动与轻快依恋",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "soft_light_portrait",
+    "adultArtistHint": "",
+    "description": "明媚灿烂的夏日碧波间，海风温柔吹拂起柔顺的发丝。菲亚梅塔换上了合身优雅的墨黑泳装，白皙肌肤在盛夏骄阳下泛着健康诱人的柔光。她踏入清澈温热的浪花之中，微红着脸颊朝你回眸展颜——「今天的天气真好呢！能像这样和你一起在海边吹风，感觉整个人都轻松下来了～」",
+    "outfitId": "black_summer_bikini",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "beach",
+      "summer",
+      "sunlight",
+      "bikini",
+      "bare_shoulders",
+      "bare_legs",
+      "looking_at_viewer",
+      "ocean_waves"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "bikini",
+      "looking at viewer",
+      "gentle smile",
+      "blush",
+      "standing in water",
+      "tropical beach",
+      "ocean waves",
+      "sunlight",
+      "clear sky",
+      "lens flare",
+      "depth of field",
+      "cinematic lighting"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Fiammetta steps gracefully through the clear shallow waves in her black bikini, adjusting her sunhat with a sweet, radiant smile under bright coastal sunlight.",
+    "animaCaption": "Light glistens across the clear water as she turns back to meet the viewer's eyes.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

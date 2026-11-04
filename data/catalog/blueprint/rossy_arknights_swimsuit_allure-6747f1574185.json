@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "rossy_arknights_swimsuit_allure",
+  "revision": 2,
+  "sortOrder": 3367,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "rossy_arknights_swimsuit_allure",
+    "characterId": "rossy_arknights",
+    "title": "洛茜 · 晨光熹微的隐秘海湾之约",
+    "category": "夏日海滩",
+    "action": "坐在被海浪抚平的平坦岩石上，任由温热海水没过纤细脚踝，双手撑在身后仰首迎着晨风",
+    "location": "僻静隐秘的海蚀岩洞白沙湾与澄澈天然海浪池",
+    "timeOfDay": "清晨",
+    "lighting": "朝阳晨曦穿透岩洞缝隙洒下束束丁达尔光柱，在清澈海水与细腻雪肤上泛起钻石般光芒",
+    "camera": "cowboy shot, three quarter view, dynamic lighting",
+    "mood": "纯净圣洁、自然惬意与不染纤尘的亲昵",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "soft_light_portrait",
+    "adultArtistHint": "",
+    "description": "清晨微明，束束丁达尔光柱穿透海蚀岩洞缝隙，在澄澈天然海浪池上泛起碎钻般的粼粼波光。洛茜身着银白泳装坐在平坦光滑的礁石上，温热的海水漫过纤细脚踝，双手撑在身后迎着晨风轻声呼唤——「早晨的空气好清新呀！快看，浪花涌进岩洞里了，感觉像在童话里一样呢～」",
+    "outfitId": "silver_summer_bikini",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "coastal_cove",
+      "morning",
+      "sunbeams",
+      "bikini",
+      "rock",
+      "shallow_water",
+      "bare_shoulders",
+      "looking_at_viewer"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "bikini",
+      "looking at viewer",
+      "gentle smile",
+      "blush",
+      "coastal cove",
+      "shallow water",
+      "morning light",
+      "sunbeams",
+      "sea breeze",
+      "parted lips",
+      "depth of field",
+      "cinematic lighting"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Rossi sits serenely on a coastal rock in her silver bikini, leaning back with her hands braced as morning sunbeams filter through the cove.",
+    "animaCaption": "Morning sunbeams pierce through the rocky cove, highlighting her delicate silhouette against the sea.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

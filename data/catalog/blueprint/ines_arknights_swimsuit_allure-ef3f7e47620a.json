@@ -1,0 +1,63 @@
+{
+  "kind": "blueprint",
+  "id": "ines_arknights_swimsuit_allure",
+  "revision": 2,
+  "sortOrder": 3120,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "ines_arknights_swimsuit_allure",
+    "characterId": "ines_arknights",
+    "title": "伊内丝 · 熔金落日的无边泳池之约",
+    "category": "夏日海滩",
+    "action": "手持冰镇热带果饮侧靠在无边泳池大理石池壁旁，湿润发丝贴在香肩，眼波含情浅笑凝望",
+    "location": "海滨悬崖奢华度假酒店无边际泳池畔",
+    "timeOfDay": "黄昏",
+    "lighting": "熔金落日余晖将水面与天际染成橘粉晚霞，暖色夕照勾勒出曼妙起伏的柔美侧影",
+    "camera": "medium shot, eye level, sunset ocean background",
+    "mood": "浪漫沉醉、微醺依恋与私密情愫",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "soft_light_portrait",
+    "adultArtistHint": "",
+    "description": "黄昏落日的熔金余晖将无边泳池与海平线染成绚烂的橘粉晚霞。伊内丝身着优雅合身的墨黑泳装，微湿的发丝轻贴在纤柔香肩上。她单手托着冰镇果饮侧倚在泳池大理石池壁旁，水光潋滟间含情浅笑——「夕阳落得很快……但在余晖散尽之前，这一刻可以慢慢体会。」",
+    "outfitId": "black_summer_bikini",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "infinity_pool",
+      "sunset",
+      "dusk",
+      "bikini",
+      "resort",
+      "warm_lighting",
+      "bare_shoulders",
+      "wet_skin",
+      "looking_at_viewer"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "bikini",
+      "looking at viewer",
+      "gentle smile",
+      "blush",
+      "infinity pool",
+      "sunset",
+      "ocean view",
+      "wet skin",
+      "water drops",
+      "warm lighting",
+      "dusk sky",
+      "depth of field",
+      "cinematic lighting"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Ines leans gracefully against the marble edge of the infinity pool in her black bikini, holding a chilled tropical drink under the warm glow of the sunset sky.",
+    "animaCaption": "Sunset hues illuminate water droplets on her bare skin as she looks over with a tender gaze.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

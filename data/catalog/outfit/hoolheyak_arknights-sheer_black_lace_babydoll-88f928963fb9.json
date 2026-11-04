@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/sheer_black_lace_babydoll",
+  "revision": 1,
+  "sortOrder": 2181,
+  "createdAt": "2026-11-04T15:22:22.723187200+00:00",
+  "updatedAt": "2026-11-04T15:22:22.723187200+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "sheer_black_lace_babydoll",
+      "name": "暮夜流光 · 黑蕾丝透视吊带睡裙",
+      "category": "情趣诱惑 / 蕾丝睡裙",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "hoolheyak_arknights",
+      "prose": "A sheer black lace babydoll negligee with plunge neckline, translucent lace cups revealing cleavage, backless cut, bare shoulders and garter straps with sheer black thighhighs.",
+      "tokens": [
+        "black lace negligee",
+        "sheer babydoll",
+        "translucent lace",
+        "plunge neckline",
+        "deep cleavage",
+        "sideboob",
+        "backless",
+        "collarbone",
+        "bare shoulders",
+        "bare thighs",
+        "garter straps",
+        "sheer black thighhighs"
+      ]
+    }
+  }
+}

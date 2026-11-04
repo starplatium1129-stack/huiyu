@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "nakano_miku_swimsuit_allure",
+  "revision": 2,
+  "sortOrder": 3383,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "nakano_miku_swimsuit_allure",
+    "characterId": "nakano_miku",
+    "title": "中野三玖 · 凉亭遮阳伞下的慵懒泳装之约",
+    "category": "夏日海滩",
+    "action": "侧卧在铺着丝绒浴巾的躺椅上，微曲修长双腿，指尖轻勾比基尼系带，面带红晕娇嗔凝视",
+    "location": "私人海滩遮阳躺椅与热带木质凉亭凉棚下",
+    "timeOfDay": "午后",
+    "lighting": "浓烈海滩艳阳在编织木伞下投下斑驳光影，柔和的反光照亮光洁平坦的腹部与锁骨线条",
+    "camera": "medium shot, slightly high angle, relaxed framing",
+    "mood": "慵懒惬意、甜蜜独占与隐秘诱惑",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "soft_light_portrait",
+    "adultArtistHint": "",
+    "description": "盛夏艳阳在热带木质凉亭的编织遮阳伞下投落斑驳光影。中野三玖一袭合身的墨黑比基尼，侧卧在铺着丝绒毛巾的躺椅上，修长双腿微曲，指尖轻挑着比基尼系带，在光影斑驳间带着一抹娇嗔浅笑望向你——「午后的微风很是惬意。过来歇歇脚吧，偶尔偷得浮生半日闲也是应当的。」",
+    "outfitId": "black_summer_bikini",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "daily"
+    ],
+    "sceneTags": [
+      "beach_chair",
+      "cabana",
+      "dappled_sunlight",
+      "bikini",
+      "bare_shoulders",
+      "bare_legs",
+      "looking_at_viewer"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "bikini",
+      "looking at viewer",
+      "gentle smile",
+      "blush",
+      "beach chair",
+      "cabana",
+      "dappled sunlight",
+      "bare shoulders",
+      "depth of field",
+      "cinematic lighting"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Nakano Miku reclines lazily on a cushioned beach chair in her black bikini, playfully adjusting her bikini tie under the dappled shade of the wooden cabana.",
+    "animaCaption": "Dappled sunlight filters through the umbrella weave, dancing across her skin as she offers an alluring smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

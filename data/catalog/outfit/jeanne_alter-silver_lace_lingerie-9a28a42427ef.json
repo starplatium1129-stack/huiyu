@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "jeanne_alter/silver_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 2343,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "data": {
+    "characterId": "jeanne_alter",
+    "outfit": {
+      "id": "silver_lace_lingerie",
+      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "jeanne_alter",
+      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "tokens": [
+        "lingerie",
+        "silver lace bra",
+        "lace trim",
+        "sheer panties",
+        "translucent babydoll",
+        "thin straps",
+        "cleavage",
+        "bare midriff",
+        "bare shoulders",
+        "bare thighs"
+      ]
+    }
+  }
+}

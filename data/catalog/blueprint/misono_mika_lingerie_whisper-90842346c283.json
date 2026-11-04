@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "misono_mika_lingerie_whisper",
+  "revision": 2,
+  "sortOrder": 3185,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "misono_mika_lingerie_whisper",
+    "characterId": "misono_mika",
+    "title": "圣园未花 · 晨光透纱的被褥温存私语",
+    "category": "私密内衣",
+    "action": "跪坐在蓬松柔软的羽绒被褥上，双手拉住滑落胸前的薄被边沿，带着初醒的微红脸颊羞怯仰望",
+    "location": "晨光初现的温馨主卧被褥与纯白天鹅绒地毯间",
+    "timeOfDay": "清晨",
+    "lighting": "初升晨曦透过纯白半透薄纱窗帘散漫进室内，清透柔白的光晕笼罩着熟睡方醒的慵懒身躯",
+    "camera": "cowboy shot, eye level, soft morning lighting",
+    "mood": "晨间温存、纯真娇羞与毫无防备的温柔信赖",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@atdan",
+    "description": "清晨纯净的初阳晨曦穿透纯白薄纱窗帘，轻柔地洒落进温馨舒适的主卧。圣园未花初醒方觉，跪坐在蓬松凌乱的羽绒被褥上，薄透轻盈的银白蕾丝吊带微滑，双手拉住胸前的被沿，双颊染着初醒的娇怯红晕软语轻唤——「唔……困死了……！都怪你昨晚……大清早的别看啦，快把被子给我拉好！」",
+    "outfitId": "silver_lace_lingerie",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "sceneTags": [
+      "master_bedroom",
+      "morning_light",
+      "sheer_curtains",
+      "lingerie",
+      "bed",
+      "blush",
+      "intimate"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "lingerie",
+      "looking at viewer",
+      "parted lips",
+      "blush",
+      "master bedroom",
+      "morning sun",
+      "sheer curtains",
+      "soft lighting",
+      "tousled hair",
+      "sweet smile",
+      "bed",
+      "cinematic lighting",
+      "depth of field"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Kneeling shyly on the soft morning duvet in her delicate silver lace lingerie, Mika holds the edge of the sheet to her chest under the gentle dawn sunlight.",
+    "animaCaption": "Gentle dawn light filters through the sheer curtains, illuminating her tousled hair and sweet sleepy smile.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

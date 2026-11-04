@@ -1,0 +1,62 @@
+{
+  "kind": "blueprint",
+  "id": "chen_qianyu_lingerie_whisper",
+  "revision": 2,
+  "sortOrder": 3404,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "chen_qianyu_lingerie_whisper",
+    "characterId": "chen_qianyu",
+    "title": "陈千语 · 云端天际线的华灯私语",
+    "category": "私密内衣",
+    "action": "斜倚在柔软的天鹅绒枕垫间，单手轻托香腮，薄纱蕾丝微敞露出雪白肩颈，含羞脉脉微笑凝望",
+    "location": "奢华顶层套房落地窗前的高级双人蚕丝大床",
+    "timeOfDay": "深夜",
+    "lighting": "床头暖琥珀色台灯柔光与落地窗外繁华都市天际线的冷色夜景光斑交织，勾勒出曼妙的边缘剪影",
+    "camera": "cowboy shot, eye level, soft bokeh background",
+    "mood": "极致私密、深情依恋与摄人心魄的曼妙诱惑",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "@rella",
+    "description": "夜深人静的高层套房落地窗前，暖琥珀台灯与远方城市璀璨的天际线光斑交相辉映。陈千语斜倚在蚕丝枕垫间，薄如蝉翼的墨黑透视蕾丝内衣若隐若现地勾勒出曼妙诱人的身姿曲线，她单手托腮，眼波流转轻声呢喃——「窗外的霓虹再繁华，也不过是过眼云烟。坐到我身边来，把杂念都放下。」",
+    "outfitId": "black_lace_lingerie",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "sceneTags": [
+      "luxury_bedroom",
+      "city_bokeh",
+      "night",
+      "lingerie",
+      "warm_lighting",
+      "blush",
+      "intimate",
+      "bare_shoulders"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "lingerie",
+      "looking at viewer",
+      "bedroom eyes",
+      "parted lips",
+      "blush",
+      "luxury bedroom",
+      "bed",
+      "white sheets",
+      "night city bokeh",
+      "warm lamp light",
+      "dimly lit",
+      "cinematic lighting",
+      "depth of field"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Reclining comfortably amidst silk pillows in her exquisite black sheer lace babydoll, Chen Qianyu looks toward the viewer with flushed cheeks against the glittering night city skyline.",
+    "animaCaption": "Warm amber lamplight outlines her shoulders as she leans against the velvet pillows.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

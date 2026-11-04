@@ -1,0 +1,61 @@
+{
+  "kind": "blueprint",
+  "id": "zero_two_lingerie_whisper",
+  "revision": 2,
+  "sortOrder": 3336,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:33:07.165723800+00:00",
+  "data": {
+    "id": "zero_two_lingerie_whisper",
+    "characterId": "zero_two",
+    "title": "02 · 壁炉烛火畔的复古蕾丝私语",
+    "category": "私密内衣",
+    "action": "优雅斜躺在金边贵妃榻上，单腿微屈交叠，指尖漫不经心地抚弄颈间蕾丝缎带，红唇微启吐气如兰",
+    "location": "典雅欧式复古起居室的暗红金丝绒贵妃榻",
+    "timeOfDay": "夜间",
+    "lighting": "古董壁炉中跳动的橘红炭火微光与雕花烛台明灭火苗，在凝脂肌肤与暗色蕾丝上投下摇曳柔和的暖影",
+    "camera": "medium shot, slightly low angle, intimate framing",
+    "mood": "复古雍容、缠绵悱恻与难以抗拒的成熟张力",
+    "adult": true,
+    "sampleRating": "R15",
+    "animaStyleHint": "r18_explicit_h_cg",
+    "adultArtistHint": "",
+    "description": "典雅欧式复古起居室内，古董壁炉中跳动着橘红炭火微光，明灭烛火在暗红金丝绒贵妃榻上映出摇曳暖影。02优雅侧卧于榻上，身着剪裁极致诱人的银白蕾丝内衣，指尖漫不经心挑弄着颈间丝带，红唇微启吐气如兰——「炉火跳动得这么热烈，你那里的温度……是不是也变得有点高了呢，呵呵～」",
+    "outfitId": "silver_lace_lingerie",
+    "recommendedSize": "832x1216",
+    "coverageTags": [
+      "special_nsfw"
+    ],
+    "sceneTags": [
+      "chaise_lounge",
+      "fireplace",
+      "candlelight",
+      "lingerie",
+      "cleavage",
+      "bare_shoulders",
+      "intimate"
+    ],
+    "promptTokens": [
+      "1girl",
+      "solo",
+      "lingerie",
+      "looking at viewer",
+      "parted lips",
+      "blush",
+      "chaise lounge",
+      "fireplace",
+      "candlelight",
+      "velvet cushions",
+      "cleavage",
+      "bedroom eyes",
+      "seductive smile",
+      "cinematic lighting",
+      "depth of field"
+    ],
+    "negativeTokens": [],
+    "promptProse": "Lounging alluringly on a velvet chaise lounge in her exquisite silver lace lingerie, Zero Two idly toys with her ribbon choker by the flickering warmth of the fireplace.",
+    "animaCaption": "Flickering firelight casts warm dancing shadows across her collarbone and shoulders as she gazes softly.",
+    "nsfwTokens": [],
+    "nsfwProse": ""
+  }
+}

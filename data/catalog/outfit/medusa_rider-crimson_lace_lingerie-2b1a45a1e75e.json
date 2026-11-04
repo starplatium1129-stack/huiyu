@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "medusa_rider/crimson_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 2415,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "data": {
+    "characterId": "medusa_rider",
+    "outfit": {
+      "id": "crimson_lace_lingerie",
+      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "medusa_rider",
+      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "tokens": [
+        "lingerie",
+        "crimson lace bra",
+        "lace trim",
+        "sheer panties",
+        "translucent babydoll",
+        "thin straps",
+        "cleavage",
+        "bare midriff",
+        "bare shoulders",
+        "bare thighs"
+      ]
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "kind": "outfit",
+  "id": "chloe_von_einzbern/pink_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 2416,
+  "createdAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "data": {
+    "characterId": "chloe_von_einzbern",
+    "outfit": {
+      "id": "pink_lace_lingerie",
+      "name": "暮夜心弦 · 粉樱透视蕾丝吊带内衣",
+      "category": "情趣 / 蕾丝内衣",
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true,
+      "characterId": "chloe_von_einzbern",
+      "prose": "A luxurious pink sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "tokens": [
+        "lingerie",
+        "pink lace bra",
+        "lace trim",
+        "sheer panties",
+        "translucent babydoll",
+        "thin straps",
+        "cleavage",
+        "bare midriff",
+        "bare shoulders",
+        "bare thighs"
+      ]
+    }
+  }
+}
