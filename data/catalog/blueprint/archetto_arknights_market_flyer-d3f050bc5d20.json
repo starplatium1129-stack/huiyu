@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_market_flyer",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2921,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "archetto_arknights_market_flyer",
     "characterId": "archetto_arknights",
-    "outfitId": "standard",
+    "outfitId": "market_bluecape",
     "title": "空弦 · 集市上的宣传",
     "category": "泰拉日常",
     "description": "集市热闹，她趁人群停下时递出宣传单。对方多问了一句修道院的近况，她立刻认真介绍起来。",

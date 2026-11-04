@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_tea_tin",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2898,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "hoolheyak_arknights_tea_tin",
     "characterId": "hoolheyak_arknights",
-    "outfitId": "standard",
+    "outfitId": "teahouse_jade",
     "title": "霍尔海雅 · 茶罐里的标签",
     "category": "泰拉日常",
     "description": "她从架子上取下一只茶罐，把标签从头读到尾，笑着问店主这款茶的名字是谁取的。",

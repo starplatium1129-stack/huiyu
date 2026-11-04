@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_window_rain",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3102,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "virtuosa_arknights_window_rain",
     "characterId": "virtuosa_arknights",
-    "outfitId": "diversity_oneness",
+    "outfitId": "rain_organza",
     "title": "塑心 · 雨中的节拍",
     "category": "泰拉日常",
     "description": "雨点敲打窗沿，节奏时快时慢。她听了一阵，抬手在窗边轻轻跟着打拍子。",

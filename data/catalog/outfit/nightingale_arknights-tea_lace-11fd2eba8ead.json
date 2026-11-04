@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/tea_lace",
+  "revision": 1,
+  "sortOrder": 2162,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "tea_lace",
+      "name": "珍珠扣蕾丝领与淡蓝长裙",
+      "prose": "A pale-blue long-sleeved dress with a fine white lace collar and pearl buttons, with a soft ivory shoulder wrap.",
+      "tokens": [
+        "pale blue long-sleeved dress",
+        "white lace collar",
+        "pearl buttons",
+        "ivory shoulder wrap"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

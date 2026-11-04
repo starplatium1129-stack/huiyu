@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_garden_sign",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2975,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_garden_sign",
     "characterId": "wakaba_mutsumi_arknights",
-    "outfitId": "marionettes_id",
+    "outfitId": "greenhouse_apron",
     "title": "若叶睦 · 菜畦的小木牌",
     "category": "泰拉日常",
     "description": "她把写好名字的小木牌插进土里，调整到不会挡住叶子的位置。做完后，她退开一步看了看。",

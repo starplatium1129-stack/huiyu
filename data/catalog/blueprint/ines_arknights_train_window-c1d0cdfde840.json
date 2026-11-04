@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_train_window",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2868,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_train_window",
     "characterId": "ines_arknights",
-    "outfitId": "standard",
+    "outfitId": "train_trench",
     "title": "伊内丝 · 窗外的慢车",
     "category": "泰拉日常",
     "description": "列车开得很慢，她把随身包放到脚边。窗外的田地一块接着一块退去，伊内丝难得没有催促时间。",

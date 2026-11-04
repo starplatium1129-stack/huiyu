@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_tea_spoon",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3029,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "specter_arknights_tea_spoon",
     "characterId": "specter_arknights",
-    "outfitId": "undercurrent",
+    "outfitId": "abyss_tea",
     "title": "幽灵鲨 · 茶匙碰杯",
     "category": "泰拉日常",
     "description": "茶匙轻轻碰到杯壁，她便停了手。她抬头问你，刚才是不是也听见了很远的潮声。",

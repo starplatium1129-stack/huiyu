@@ -7,6 +7,7 @@
 ## 任务与协作
 
 - 开工明确目标、受影响文件、完成标准与必要验证；仅缺少关键决策或授权时询问。复杂任务按需维护并复用计划与交接，不强制创建 `PLAN.md`；补充消息或上下文压缩后继续原目标，保留约束与有效证据。
+- 探索项目代码时优先使用 CodeGraph 的 `codegraph_explore` 查看实现和调用关系；工具不可用、项目未索引或索引未同步时，按需直接读取源码并使用 `rg`。文档、配置及索引未覆盖的内容直接查阅。
 - 图像提示词创作/编译才读 [studio-prompt-craft](.agents/skills/studio-prompt-craft/SKILL.md)；普通 UI/代码不加载，不为可选 skill 安装工具或扩展任务。
 - 角色档案、角色场景故事的中文创作、润色或审阅先读 [humanizer-zh 写作指南](.agents/skills/humanizer-zh/SKILL.md)，保留设定与人物声音，按语境消除套话；不用于图像提示词、标签或普通 UI 文案。
 - UI 布局、控件、交互、动效开发或审查先读 [DESIGN.md](DESIGN.md) 与 [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)，按需加载参考，遵循其中融合的 Emil Kowalski 原则，保留绘遇品牌与 Vue 实现；后端、文档和 CG 美术不加载 UI skill。

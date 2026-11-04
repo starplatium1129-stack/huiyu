@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_observatory_sky",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2902,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "hoolheyak_arknights_observatory_sky",
     "characterId": "hoolheyak_arknights",
-    "outfitId": "standard",
+    "outfitId": "observatory_ink",
     "title": "霍尔海雅 · 观星台的天图",
     "category": "泰拉日常",
     "description": "观星台上风很轻，她把星图压在栏杆上，沿着纸上的线辨认天上的亮点，偶尔与你交换一个猜测。",

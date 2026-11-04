@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/cloud_caress",
+  "revision": 1,
+  "sortOrder": 2165,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "cloud_caress",
+      "name": "抚云间·白色飘带长裙与羽饰",
+      "prose": "A white flowing dress with a pale grey translucent shawl, feather hair ornaments and long tassels.",
+      "tokens": [
+        "white flowing dress",
+        "pale grey shawl",
+        "feather hair ornament",
+        "long tassels"
+      ],
+      "characterId": "ptilopsis_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "ptilopsis (arknights)",
+        "ptilopsis (amongst the clouds) (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "long hair",
+        "owl ears",
+        "orange eyes"
+      ],
+      "identityProseOverride": "Ptilopsis from Arknights has long grey hair, owl ears and orange eyes in her Amongst the Clouds outfit."
+    }
+  }
+}

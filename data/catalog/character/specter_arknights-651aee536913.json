@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "specter_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 290,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "specter_arknights",
     "profile": {
@@ -51,8 +51,10 @@
       ],
       "voice": "别急，潮水还会再来的。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "幽灵鲨立绘待制作"
+        "image": "../assets/characters/popular-specter_arknights.png?v=30e8ac0ef431",
+        "alt": "幽灵鲨场景样张立绘",
+        "sourceShowcaseId": "pc_specter_arknights_specter_arknights_art_album",
+        "sourceShowcaseSha256": "a2a283ec7bcab6788e59e9c9f456e7b00eb7fcbb08183437c49ffea6f2b05f22"
       }
     },
     "popular": {
@@ -75,7 +77,9 @@
       ],
       "characterTokens": [
         "specter (arknights)",
-        "specter (undercurrent) (arknights)"
+        "specter (undercurrent) (arknights)",
+        "specter the unchained (arknights)",
+        "specter the unchained (born as one) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

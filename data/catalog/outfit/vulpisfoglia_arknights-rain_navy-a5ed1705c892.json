@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/rain_navy",
+  "revision": 2,
+  "sortOrder": 2010,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "rain_navy",
+      "name": "藏青斗篷大衣与珍珠灰长裙",
+      "prose": "A midnight-navy cape coat lined in muted bronze over a pearl-grey dress, with a slim leather belt and polished dark loafers.",
+      "tokens": [
+        "midnight navy cape coat",
+        "bronze lining",
+        "pearl grey dress",
+        "slim leather belt",
+        "dark loafers"
+      ],
+      "characterId": "vulpisfoglia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

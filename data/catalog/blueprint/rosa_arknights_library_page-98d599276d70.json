@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_library_page",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2947,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "rosa_arknights_library_page",
     "characterId": "rosa_arknights",
-    "outfitId": "standard",
+    "outfitId": "library_plum",
     "title": "早露 · 夹在书里的书签",
     "category": "泰拉日常",
     "description": "她翻到上次停下的那一页，书签却夹在了前一章。早露低头确认了一会儿，才重新开始读。",

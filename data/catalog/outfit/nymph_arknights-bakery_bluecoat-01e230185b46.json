@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/bakery_bluecoat",
+  "revision": 2,
+  "sortOrder": 2033,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "bakery_bluecoat",
+      "name": "晴空蓝木扣短外套与条纹围巾",
+      "prose": "A sky-blue duffle coat with wooden toggles over a cream skirt, a soft striped scarf and brown ankle boots.",
+      "tokens": [
+        "sky blue duffle coat",
+        "wooden toggles",
+        "cream skirt",
+        "striped scarf",
+        "brown ankle boots"
+      ],
+      "characterId": "nymph_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

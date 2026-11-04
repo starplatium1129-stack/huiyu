@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_vinyl_record",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2870,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_vinyl_record",
     "characterId": "ines_arknights",
-    "outfitId": "melodic_flutter",
+    "outfitId": "vinyl_burgundy",
     "title": "伊内丝 · 唱片的另一面",
     "category": "泰拉日常",
     "description": "唱片播到末尾，针尖发出轻微的沙声。她看了眼封套，把唱片翻到另一面，让旋律重新响起来。",

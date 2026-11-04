@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/garnet_drape",
+  "revision": 1,
+  "sortOrder": 2131,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "garnet_drape",
+      "name": "石榴红垂领丝衫与黑色高腰裙",
+      "prose": "A garnet silk blouse with a softly draped neckline tucked into a high-waisted black skirt, accented by a small angular gold ear cuff.",
+      "tokens": [
+        "garnet silk blouse",
+        "draped neckline",
+        "high-waisted black skirt",
+        "gold ear cuff"
+      ],
+      "characterId": "entelechia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/pond_linen",
+  "revision": 2,
+  "sortOrder": 2020,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "pond_linen",
+      "name": "水青褶袖亚麻裙与叶形银扣",
+      "prose": "A pale aqua linen dress with fluid gathered sleeves, a softly pleated hem and a silver leaf-shaped brooch, paired with woven sandals.",
+      "tokens": [
+        "pale aqua linen dress",
+        "gathered sleeves",
+        "pleated hem",
+        "silver leaf brooch",
+        "woven sandals"
+      ],
+      "characterId": "muelsyse_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

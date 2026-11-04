@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/theater_emerald",
+  "revision": 2,
+  "sortOrder": 2042,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "theater_emerald",
+      "name": "翡翠丝绒不对称领礼裙",
+      "prose": "A deep emerald velvet dress with a sculpted asymmetric neckline and softly draped side, paired with fine antique-gold drop earrings.",
+      "tokens": [
+        "deep emerald velvet dress",
+        "asymmetric neckline",
+        "draped side",
+        "antique gold drop earrings"
+      ],
+      "characterId": "hoolheyak_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

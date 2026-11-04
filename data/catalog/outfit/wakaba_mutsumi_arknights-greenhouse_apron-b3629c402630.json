@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/greenhouse_apron",
+  "revision": 1,
+  "sortOrder": 2203,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "greenhouse_apron",
+      "name": "叶脉刺绣围裙与浅青衬裙",
+      "prose": "A cream canvas apron embroidered with fine leaf veins over a pale teal long-sleeved dress, with a thin grey waist tie and flat shoes.",
+      "tokens": [
+        "cream canvas apron",
+        "leaf vein embroidery",
+        "pale teal long-sleeved dress",
+        "grey waist tie",
+        "flat shoes"
+      ],
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

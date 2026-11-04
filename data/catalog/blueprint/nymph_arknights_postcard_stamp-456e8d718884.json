@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_postcard_stamp",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2889,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_postcard_stamp",
     "characterId": "nymph_arknights",
-    "outfitId": "sweetness_to_the_heart",
+    "outfitId": "postcard_knit",
     "title": "妮芙 · 贴歪的邮票",
     "category": "泰拉日常",
     "description": "邮票贴得有一点歪，她盯着看了看，决定保留它。妮芙又在明信片空白处画了一朵小花。",

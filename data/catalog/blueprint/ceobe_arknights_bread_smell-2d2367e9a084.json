@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_bread_smell",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3056,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "ceobe_arknights_bread_smell",
     "characterId": "ceobe_arknights",
-    "outfitId": "standard",
+    "outfitId": "bakery_patch",
     "title": "刻俄柏 · 面包香味",
     "category": "泰拉日常",
     "description": "面包刚出炉，她隔着纸袋闻了闻，忍住先咬一口的念头，跑去找朋友一起分享。",

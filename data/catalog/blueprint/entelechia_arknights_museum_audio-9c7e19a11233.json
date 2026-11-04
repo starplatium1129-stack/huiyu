@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_museum_audio",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3020,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "entelechia_arknights_museum_audio",
     "characterId": "entelechia_arknights",
-    "outfitId": "dazzling_blue",
+    "outfitId": "gallery_monochrome",
     "title": "隐德来希 · 展厅里的讲解",
     "category": "泰拉日常",
     "description": "导览器讲到一半，她停在展柜前，将没听清的那一段重新播放。",

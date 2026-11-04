@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/route_windbreaker",
+  "revision": 1,
+  "sortOrder": 2180,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "route_windbreaker",
+      "name": "橘红拼色短风衣与米白工装裤",
+      "prose": "A lightweight orange-red cropped windbreaker with cream panels over a striped shirt and practical ivory cargo trousers, with reflective piping at the cuffs.",
+      "tokens": [
+        "orange red cropped windbreaker",
+        "cream color panels",
+        "striped shirt",
+        "ivory cargo trousers",
+        "reflective piping"
+      ],
+      "characterId": "angelina_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

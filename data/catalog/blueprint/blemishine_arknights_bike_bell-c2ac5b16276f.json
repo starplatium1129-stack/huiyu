@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_bike_bell",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3007,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_bike_bell",
     "characterId": "blemishine_arknights",
-    "outfitId": "standard",
+    "outfitId": "brass_workshop",
     "title": "瑕光 · 自行车铃",
     "category": "泰拉日常",
     "description": "新铃铛终于固定好了。她按了一下，清脆的声音响起来，便兴奋地招呼你过来听。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_curtain_call",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2874,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_curtain_call",
     "characterId": "ines_arknights",
-    "outfitId": "melodic_flutter",
+    "outfitId": "curtain_black_suit",
     "title": "伊内丝 · 幕布之后",
     "category": "亲密时刻",
     "description": "幕布遮住了外面的喧闹。她回身向你伸手，等你跟上才低声说，另一条路只有你们知道。",

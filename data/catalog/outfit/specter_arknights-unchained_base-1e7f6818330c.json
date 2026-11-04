@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/unchained_base",
+  "revision": 2,
+  "sortOrder": 2134,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "unchained_base",
+      "name": "黑色双层长裙与灰色领巾",
+      "prose": "A long black dress and coat with a grey ascot, black hat and gloves, the layered silhouette edged with dark blue.",
+      "tokens": [
+        "black long dress",
+        "black coat",
+        "grey ascot",
+        "black hat",
+        "black gloves",
+        "dark blue trim"
+      ],
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "specter (arknights)",
+        "specter the unchained (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "red eyes"
+      ],
+      "identityProseOverride": "Specter from Arknights has very long white-grey hair and red eyes."
+    }
+  }
+}

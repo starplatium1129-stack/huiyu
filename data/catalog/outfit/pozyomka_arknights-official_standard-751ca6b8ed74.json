@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "pozyomka_arknights/official_standard",
+  "revision": 3,
+  "sortOrder": 2061,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "data": {
+    "characterId": "pozyomka_arknights",
+    "outfit": {
+      "id": "official_standard",
+      "name": "白色披肩与红色高腰裙",
+      "prose": "A white cape with a white ascot over a dark top and a red high-waisted skirt, with black gloves.",
+      "tokens": [
+        "white cape",
+        "white ascot",
+        "black top",
+        "red high-waisted skirt",
+        "black gloves"
+      ],
+      "characterId": "pozyomka_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

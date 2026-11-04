@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_puzzle_clock",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3069,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "mon3tr_arknights_puzzle_clock",
     "characterId": "mon3tr_arknights",
-    "outfitId": "standard",
+    "outfitId": "puzzle_geom",
     "title": "Mon3tr · 拼图时间",
     "category": "泰拉日常",
     "description": "她试过两个方向，终于把最后一块拼图放进去。看着完整的画面，她很认真地说：“完成。”",

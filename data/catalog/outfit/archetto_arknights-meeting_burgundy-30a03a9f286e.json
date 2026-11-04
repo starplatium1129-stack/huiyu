@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/meeting_burgundy",
+  "revision": 2,
+  "sortOrder": 2054,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "meeting_burgundy",
+      "name": "酒红修身西装与金色麦穗领针",
+      "prose": "A burgundy fitted blazer over a white blouse and charcoal A-line skirt, with a restrained gold wheat lapel pin and a slim belt.",
+      "tokens": [
+        "burgundy fitted blazer",
+        "white blouse",
+        "charcoal a-line skirt",
+        "gold wheat lapel pin",
+        "slim belt"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

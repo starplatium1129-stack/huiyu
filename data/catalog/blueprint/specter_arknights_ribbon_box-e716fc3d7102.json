@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_ribbon_box",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3031,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "specter_arknights_ribbon_box",
     "characterId": "specter_arknights",
-    "outfitId": "undercurrent",
+    "outfitId": "ribbon_pearls",
     "title": "幽灵鲨 · 旧丝带",
     "category": "泰拉日常",
     "description": "她从盒子里找出一条旧丝带，理平褶皱后又卷了回去，动作比说话时慢得多。",

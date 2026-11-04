@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/market_duffle",
+  "revision": 1,
+  "sortOrder": 2200,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "market_duffle",
+      "name": "雾青木扣短外套与灰色长裙",
+      "prose": "A mist-teal duffle jacket with wooden toggles over a cream turtleneck and a grey A-line midi skirt, with practical lace-up shoes.",
+      "tokens": [
+        "mist teal duffle jacket",
+        "wooden toggles",
+        "cream turtleneck",
+        "grey a-line midi skirt",
+        "lace-up shoes"
+      ],
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

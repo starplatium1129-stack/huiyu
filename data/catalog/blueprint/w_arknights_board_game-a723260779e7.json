@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_board_game",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2937,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_board_game",
     "characterId": "w_arknights",
-    "outfitId": "fugue",
+    "outfitId": "boardgame_red",
     "title": "W / 维什戴尔 · 差一步就赢",
     "category": "泰拉日常",
     "description": "棋盘上只剩最后几步。她慢悠悠移动棋子，看你盯着局面思考，才笑着提醒还有一条路没注意到。",

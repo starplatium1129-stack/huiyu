@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/rain_glaze",
+  "revision": 1,
+  "sortOrder": 2136,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "rain_glaze",
+      "name": "雨釉蓝针织衫与灰白层叠裙",
+      "prose": "A rain-blue ribbed knit with a high folded collar, a layered grey-and-white midi skirt and a translucent pale-grey rain cape.",
+      "tokens": [
+        "rain blue ribbed sweater",
+        "folded high collar",
+        "grey and white layered midi skirt",
+        "pale grey rain cape"
+      ],
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

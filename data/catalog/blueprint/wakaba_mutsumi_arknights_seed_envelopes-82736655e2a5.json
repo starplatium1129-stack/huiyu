@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_seed_envelopes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2968,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_seed_envelopes",
     "characterId": "wakaba_mutsumi_arknights",
-    "outfitId": "school_uniform",
+    "outfitId": "seed_pinafore",
     "title": "若叶睦 · 种子信封",
     "category": "泰拉日常",
     "description": "她把种子分进几个小纸袋，逐一写上名称。最后一个袋子写错了一笔，睦就把那一面折到背后。",

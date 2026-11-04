@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ray_arknights/market_sandcoat",
+  "revision": 2,
+  "sortOrder": 2046,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "ray_arknights",
+    "outfit": {
+      "id": "market_sandcoat",
+      "name": "沙色兜帽短外套与橄榄绿短裤",
+      "prose": "A sand-colored hooded field jacket with reinforced pockets over a white shirt and olive shorts, with a narrow rust-colored utility strap.",
+      "tokens": [
+        "sand colored hooded field jacket",
+        "reinforced pockets",
+        "white shirt",
+        "olive shorts",
+        "rust utility strap"
+      ],
+      "characterId": "ray_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

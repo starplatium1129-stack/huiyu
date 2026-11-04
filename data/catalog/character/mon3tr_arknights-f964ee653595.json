@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mon3tr_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 294,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "mon3tr_arknights",
     "profile": {
@@ -51,8 +51,10 @@
       ],
       "voice": "我会记住这个步骤。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "Mon3tr立绘待制作"
+        "image": "../assets/characters/popular-mon3tr_arknights.png?v=f0dbd1cc4c49",
+        "alt": "Mon3tr场景样张立绘",
+        "sourceShowcaseId": "pc_mon3tr_arknights_mon3tr_arknights_photo_print",
+        "sourceShowcaseSha256": "bc7bc8b9bbe478bea2e23ff2874ae669ff6382dc3016aefc159e5daf4a29448d"
       }
     },
     "popular": {

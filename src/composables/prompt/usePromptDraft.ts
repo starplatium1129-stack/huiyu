@@ -5,7 +5,7 @@ import type { SceneBlueprint } from '@/types/sceneBlueprint'
 import { profileLocalStorage as localStorage, writeProfileLocal } from '../../platform/web/profileStorage.ts'
 import type { ProfileWriteReceipt } from '@/platform/web/profileWriteReceipt'
 import { onScopeDispose, ref, watch, type Ref, type ComputedRef } from 'vue'
-import { cloneReferenceInput, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
+import { cloneReferenceInput, parseOutfitOverride, type DraftOutfitOverride, type DraftReferenceInput, type DraftRandomVariation, type PromptBuilderDraft, type SDParams } from '@/utils/promptBuilderPersistence'
 import { tempResultOwner, sameTempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { storageWriteMessage } from '@/utils/storageWriteError'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
@@ -133,9 +133,7 @@ export function usePromptDraft(state: PromptDraftState) {
       selections: { emotion: [...selections.emotion], shot: selections.shot, lighting: selections.lighting, composition: selections.composition },
       colorMood: colorMood.value,
       manualTags: [...manualTags.value],
-      outfitOverride: subject.value.kind === 'popular' && outfitOverride.value
-        ? { tokens: [...outfitOverride.value.tokens], replaced: outfitOverride.value.replaced }
-        : null,
+      outfitOverride: parseOutfitOverride(outfitOverride.value),
       referenceInput: cloneReferenceInput(referenceInput.value),
       artistStyleIds: [...artistStyleIds.value],
       sceneBaseStory: sceneBaseStory.value,

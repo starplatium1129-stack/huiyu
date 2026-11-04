@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_balcony_note",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3104,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "virtuosa_arknights_balcony_note",
     "characterId": "virtuosa_arknights",
-    "outfitId": "diversity_oneness",
+    "outfitId": "night_tailcoat",
     "title": "塑心 · 露台上的低语",
     "category": "亲密时刻",
     "description": "她在露台回眸招手，等你走近才说起刚才那段旋律，声音像刻意留给你一个人。",

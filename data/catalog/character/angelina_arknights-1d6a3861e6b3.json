@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "angelina_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 295,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "angelina_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "路上看到一家新店，等会儿一起去吧！",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "安洁莉娜立绘待制作"
+        "image": "../assets/characters/popular-angelina_arknights.png?v=a7a0c61dc89a",
+        "alt": "安洁莉娜场景样张立绘",
+        "sourceShowcaseId": "pc_angelina_arknights_angelina_arknights_train_ticket",
+        "sourceShowcaseSha256": "d426b30d10cdb934042cc6db1610dac7b7959b7a9c83ac091d9680da4c832818"
       }
     },
     "popular": {
@@ -79,7 +81,8 @@
       ],
       "characterTokens": [
         "angelina (arknights)",
-        "angelina (distinguished visitor) (arknights)"
+        "angelina (distinguished visitor) (arknights)",
+        "angelina the mellow wish (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

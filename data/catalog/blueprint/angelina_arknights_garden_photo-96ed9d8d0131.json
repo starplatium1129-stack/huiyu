@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_garden_photo",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3085,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "angelina_arknights_garden_photo",
     "characterId": "angelina_arknights",
-    "outfitId": "distinguished_visitor",
+    "outfitId": "garden_linen",
     "title": "安洁莉娜 · 花园合影",
     "category": "泰拉日常",
     "description": "她调整好相机，招呼朋友站到花丛旁。按下快门前，她还记得提醒大家看镜头。",

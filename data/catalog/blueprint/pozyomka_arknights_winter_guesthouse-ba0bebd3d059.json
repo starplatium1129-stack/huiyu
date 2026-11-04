@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_winter_guesthouse",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2928,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "pozyomka_arknights_winter_guesthouse",
     "characterId": "pozyomka_arknights",
-    "outfitId": "snowy_plains_in_words",
+    "outfitId": "guesthouse_fairisle",
     "title": "鸿雪 · 客舍里的热茶",
     "category": "泰拉日常",
     "description": "窗外雪下得很密。她把杯子捧在手里，看着窗玻璃上慢慢凝起的雾，等茶凉到适合入口。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_record_store",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2940,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_record_store",
     "characterId": "w_arknights",
-    "outfitId": "fugue",
+    "outfitId": "record_leather",
     "title": "W / 维什戴尔 · 唱片封面的选择",
     "category": "泰拉日常",
     "description": "她在唱片架前停下，抽出一张封面格外夸张的唱片，翻过来看曲目，问你敢不敢盲买。",

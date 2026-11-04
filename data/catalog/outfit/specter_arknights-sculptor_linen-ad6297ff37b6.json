@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/sculptor_linen",
+  "revision": 1,
+  "sortOrder": 2132,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "sculptor_linen",
+      "name": "石灰麻布罩衫与海盐蓝长裙",
+      "prose": "A chalk-white linen work smock with folded cuffs over a sea-salt blue skirt, a slate apron and a carved shell pin at the collar.",
+      "tokens": [
+        "chalk white linen smock",
+        "folded cuffs",
+        "sea blue long skirt",
+        "slate apron",
+        "shell pin"
+      ],
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/born_as_one",
+  "revision": 1,
+  "sortOrder": 2137,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "born_as_one",
+      "name": "生而为一·白纱长裙与深蓝缎带",
+      "prose": "A flowing white dress with long white gloves, a white veil, a sculptural headpiece and deep-blue trailing ribbons.",
+      "tokens": [
+        "flowing white dress",
+        "long white gloves",
+        "white veil",
+        "sculptural headpiece",
+        "deep blue ribbons"
+      ],
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "specter (arknights)",
+        "specter the unchained (arknights)",
+        "specter the unchained (born as one) (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "red eyes"
+      ],
+      "identityProseOverride": "Specter from Arknights has very long white-grey hair and red eyes."
+    }
+  }
+}

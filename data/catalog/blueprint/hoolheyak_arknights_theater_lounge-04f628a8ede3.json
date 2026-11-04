@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_theater_lounge",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2903,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "hoolheyak_arknights_theater_lounge",
     "characterId": "hoolheyak_arknights",
-    "outfitId": "carriage_of_winds",
+    "outfitId": "theater_emerald",
     "title": "霍尔海雅 · 近处的玩笑",
     "category": "亲密时刻",
     "description": "她端杯挪近半步，问你刚才是在听演出，还是一直在看她。话说完，她饶有兴致地等着你的回答。",

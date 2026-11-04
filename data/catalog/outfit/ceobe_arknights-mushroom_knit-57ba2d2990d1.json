@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/mushroom_knit",
+  "revision": 1,
+  "sortOrder": 2141,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "mushroom_knit",
+      "name": "蘑菇纽扣苔绿针织开衫",
+      "prose": "A moss-green cardigan with tiny mushroom buttons over an ivory shirt and a rust-colored A-line skirt, with striped socks.",
+      "tokens": [
+        "moss green cardigan",
+        "mushroom buttons",
+        "ivory shirt",
+        "rust a-line skirt",
+        "striped socks"
+      ],
+      "characterId": "ceobe_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_flower_press",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2882,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "muelsyse_arknights_flower_press",
     "characterId": "muelsyse_arknights",
-    "outfitId": "golden_reverie",
+    "outfitId": "flowerpress_lilac",
     "title": "缪尔赛思 · 夹在纸里的花",
     "category": "泰拉日常",
     "description": "她小心抚平花瓣，将它夹进两页吸水纸之间。册子合上前，缪尔赛思想起还没写地点，又重新翻开。",

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/tea_rust",
+  "revision": 1,
+  "sortOrder": 2175,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "tea_rust",
+      "name": "赭红羊毛披肩与米白细褶裙",
+      "prose": "A soft rust-red wool shawl pinned with a brass leaf over a cream high-collared blouse and a finely pleated ivory skirt.",
+      "tokens": [
+        "rust red wool shawl",
+        "brass leaf pin",
+        "cream high-collared blouse",
+        "ivory pleated skirt"
+      ],
+      "characterId": "reed_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

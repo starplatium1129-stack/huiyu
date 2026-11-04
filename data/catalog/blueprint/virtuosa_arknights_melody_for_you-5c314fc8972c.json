@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_melody_for_you",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3103,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "virtuosa_arknights_melody_for_you",
     "characterId": "virtuosa_arknights",
-    "outfitId": "standard",
+    "outfitId": "bow_velvet",
     "title": "塑心 · 留给你的旋律",
     "category": "亲密时刻",
     "description": "她停下演奏，倾身问你最喜欢哪一段。听完回答，她笑着说，下一遍只演奏给你听。",

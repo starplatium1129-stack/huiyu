@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/bread_linen",
+  "revision": 1,
+  "sortOrder": 2173,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "bread_linen",
+      "name": "暖麦亚麻衬裙与陶红围裙",
+      "prose": "A warm wheat linen dress with softly gathered sleeves under a muted terracotta half-apron, tied with a cream cotton sash.",
+      "tokens": [
+        "wheat linen dress",
+        "gathered sleeves",
+        "terracotta half-apron",
+        "cream cotton sash"
+      ],
+      "characterId": "reed_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_museum_postcard",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2878,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "muelsyse_arknights_museum_postcard",
     "characterId": "muelsyse_arknights",
-    "outfitId": "golden_reverie",
+    "outfitId": "museum_scientist",
     "title": "缪尔赛思 · 展厅的明信片",
     "category": "泰拉日常",
     "description": "她从架上抽出两张植物画，认真比较背面的说明，最后把其中一张递给你：“这张的叶形画得更准。”",

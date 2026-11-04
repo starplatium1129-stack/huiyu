@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/photo_cardigan",
+  "revision": 1,
+  "sortOrder": 2152,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "photo_cardigan",
+      "name": "银灰开衫与晶面菱格裙",
+      "prose": "A silver-grey cardigan with translucent buttons over a black blouse and a pale green diamond-check skirt, with a narrow geometric hair clip.",
+      "tokens": [
+        "silver grey cardigan",
+        "translucent buttons",
+        "black blouse",
+        "pale green diamond-check skirt",
+        "geometric hair clip"
+      ],
+      "characterId": "mon3tr_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

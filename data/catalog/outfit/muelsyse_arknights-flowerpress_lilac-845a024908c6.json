@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/flowerpress_lilac",
+  "revision": 2,
+  "sortOrder": 2025,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "flowerpress_lilac",
+      "name": "丁香波浪领衬衫与压花胸针",
+      "prose": "A lilac blouse with a scalloped collar and soft cuffs tucked into a cream A-line skirt, accented by a tiny pressed-flower brooch.",
+      "tokens": [
+        "lilac blouse",
+        "scalloped collar",
+        "soft cuffs",
+        "cream a-line skirt",
+        "pressed flower brooch"
+      ],
+      "characterId": "muelsyse_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

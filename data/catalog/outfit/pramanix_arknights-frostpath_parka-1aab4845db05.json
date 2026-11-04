@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/frostpath_parka",
+  "revision": 2,
+  "sortOrder": 2001,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "frostpath_parka",
+      "name": "霜蓝毛边短大衣与雪地长靴",
+      "prose": "A frost-blue insulated short coat with a pale fur-trimmed hood and silver fastenings, paired with a charcoal skirt, warm tights and snow boots.",
+      "tokens": [
+        "frost blue insulated short coat",
+        "fur-trimmed hood",
+        "silver fastenings",
+        "charcoal skirt",
+        "warm tights",
+        "snow boots"
+      ],
+      "characterId": "pramanix_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

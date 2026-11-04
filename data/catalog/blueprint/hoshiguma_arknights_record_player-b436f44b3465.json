@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_record_player",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2992,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "hoshiguma_arknights_record_player",
     "characterId": "hoshiguma_arknights",
-    "outfitId": "summer",
+    "outfitId": "record_home",
     "title": "星熊 · 旧唱片",
     "category": "泰拉日常",
     "description": "唱片封套有些旧了，她抽出唱片仔细放好。第一段旋律响起来时，星熊靠回椅背，跟着打起节拍。",

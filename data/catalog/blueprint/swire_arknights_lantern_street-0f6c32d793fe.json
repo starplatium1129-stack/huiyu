@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_lantern_street",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3109,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "swire_arknights_lantern_street",
     "characterId": "swire_arknights",
-    "outfitId": "honor_and_splendor",
+    "outfitId": "lantern_brocade",
     "title": "诗怀雅 · 街上的灯笼",
     "category": "泰拉日常",
     "description": "灯笼挂满街道，她一边走一边挑最漂亮的，最后停在一家老店门口。",

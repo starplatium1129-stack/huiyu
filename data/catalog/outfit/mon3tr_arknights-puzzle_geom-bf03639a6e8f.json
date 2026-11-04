@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/puzzle_geom",
+  "revision": 1,
+  "sortOrder": 2149,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "puzzle_geom",
+      "name": "几何拼色针织背心与百褶裙",
+      "prose": "A charcoal knit vest with a restrained mint geometric pattern over an ivory shirt, paired with a black pleated skirt and flat shoes.",
+      "tokens": [
+        "charcoal knit vest",
+        "mint geometric pattern",
+        "ivory shirt",
+        "black pleated skirt",
+        "flat shoes"
+      ],
+      "characterId": "mon3tr_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

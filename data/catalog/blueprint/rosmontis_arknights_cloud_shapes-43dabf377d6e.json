@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_cloud_shapes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2964,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "rosmontis_arknights_cloud_shapes",
     "characterId": "rosmontis_arknights",
-    "outfitId": "become_anew",
+    "outfitId": "cloud_windbreaker",
     "title": "迷迭香 · 像猫的云",
     "category": "泰拉日常",
     "description": "她指着一朵云，说它有点像睡着的猫。风把云吹散之前，她又找到一朵像耳朵的。",

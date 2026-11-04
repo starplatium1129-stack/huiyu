@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/library_plum",
+  "revision": 2,
+  "sortOrder": 2077,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "library_plum",
+      "name": "李紫针织马甲与雪灰百褶裙",
+      "prose": "A plum fine-knit vest with small silver buttons over a white high-collared blouse, paired with a snow-grey pleated skirt and dark loafers.",
+      "tokens": [
+        "plum fine-knit vest",
+        "silver buttons",
+        "white high-collared blouse",
+        "snow grey pleated skirt",
+        "dark loafers"
+      ],
+      "characterId": "rosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

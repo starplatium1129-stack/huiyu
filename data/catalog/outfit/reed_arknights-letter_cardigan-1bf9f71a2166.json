@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/letter_cardigan",
+  "revision": 1,
+  "sortOrder": 2176,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "letter_cardigan",
+      "name": "枫叶金扣针织开衫与栗棕长裙",
+      "prose": "A muted amber cardigan with tiny gold maple buttons over a white blouse and a chestnut long skirt, finished with a narrow green ribbon.",
+      "tokens": [
+        "muted amber cardigan",
+        "gold maple buttons",
+        "white blouse",
+        "chestnut long skirt",
+        "green ribbon"
+      ],
+      "characterId": "reed_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

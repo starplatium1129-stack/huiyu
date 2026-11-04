@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/official_tailored_suit",
+  "revision": 3,
+  "sortOrder": 2004,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "official_tailored_suit",
+      "name": "深色修身西装与喇叭长裤",
+      "prose": "A tailored dark coat over a vest and collared shirt, with a necktie and flared trousers.",
+      "tokens": [
+        "dark tailored coat",
+        "tailored vest",
+        "collared shirt",
+        "necktie",
+        "flared trousers"
+      ],
+      "characterId": "vulpisfoglia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

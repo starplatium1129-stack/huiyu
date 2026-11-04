@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_pony_sticker",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3012,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_pony_sticker",
     "characterId": "blemishine_arknights",
-    "outfitId": "moon_catastrborn",
+    "outfitId": "kindness_strength",
     "title": "瑕光 · 贴纸和明信片",
     "category": "泰拉日常",
     "description": "她挑了一枚小马贴纸放到明信片角落，左右挪了几次才贴下。写完问候，她准备把它寄给家人。",

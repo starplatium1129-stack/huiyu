@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "archetto_arknights",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 279,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "archetto_arknights",
     "profile": {
@@ -46,8 +46,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "空弦立绘待制作"
+        "image": "../assets/characters/popular-archetto_arknights.png?v=f5faa12217a7",
+        "alt": "空弦场景样张立绘",
+        "sourceShowcaseId": "pc_archetto_arknights_archetto_arknights_chapel_song",
+        "sourceShowcaseSha256": "38a1b0bf947588939559cf8aa5886d49a7ffb39009e38b4481a666683f9aa82c"
       },
       "tags": [
         "异色瞳",
@@ -81,7 +83,8 @@
       ],
       "characterTokens": [
         "archetto (arknights)",
-        "archetto (glory of the devout) (arknights)"
+        "archetto (glory of the devout) (arknights)",
+        "archetto (publicity strategy) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

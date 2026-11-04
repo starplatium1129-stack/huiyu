@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "pozyomka_arknights/bookbinder_apron",
+  "revision": 2,
+  "sortOrder": 2063,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "pozyomka_arknights",
+    "outfit": {
+      "id": "bookbinder_apron",
+      "name": "藏蓝装帧围裙与白色卷袖衬衣",
+      "prose": "A navy work apron with divided pockets over a white rolled-sleeve shirt and dark long skirt, tied with a narrow leather cord.",
+      "tokens": [
+        "navy work apron",
+        "divided pockets",
+        "white rolled-sleeve shirt",
+        "dark long skirt",
+        "leather cord"
+      ],
+      "characterId": "pozyomka_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

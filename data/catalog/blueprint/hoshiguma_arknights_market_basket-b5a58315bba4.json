@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_market_basket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2988,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "hoshiguma_arknights_market_basket",
     "characterId": "hoshiguma_arknights",
-    "outfitId": "summer",
+    "outfitId": "ronin_huntress",
     "title": "星熊 · 夜市带回的点心",
     "category": "泰拉日常",
     "description": "她绕了半圈，买到你说想尝的点心。纸袋还有些烫，她一边换手一边招呼你找个座位。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_manuscript_reading",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2933,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "pozyomka_arknights_manuscript_reading",
     "characterId": "pozyomka_arknights",
-    "outfitId": "beside_dreams",
+    "outfitId": "manuscript_cream",
     "title": "鸿雪 · 请你读一页",
     "category": "亲密时刻",
     "description": "她把手稿递给你，靠近观察你读到最后一行时的表情，随后问：“这句心意，有传达到吗？”",

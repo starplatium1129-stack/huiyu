@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_sandbeast_treat",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2912,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "ray_arknights_sandbeast_treat",
     "characterId": "ray_arknights",
-    "outfitId": "standard",
+    "outfitId": "treat_lounge",
     "title": "莱伊 · 下午的小奖励",
     "category": "泰拉日常",
     "description": "沙地兽从沙箱边钻出来，她把一小份兽粮倒进碗里。等它开始吃，莱伊才坐到旁边打开自己的书。",

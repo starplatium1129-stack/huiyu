@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "horn_arknights/rain_midnight",
+  "revision": 2,
+  "sortOrder": 2114,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "horn_arknights",
+    "outfit": {
+      "id": "rain_midnight",
+      "name": "午夜蓝双排扣风衣与银色领针",
+      "prose": "A midnight-blue double-breasted raincoat over a pale blouse and dark skirt, fastened with a narrow belt and an understated silver lapel pin.",
+      "tokens": [
+        "midnight blue double-breasted raincoat",
+        "pale blouse",
+        "dark skirt",
+        "narrow belt",
+        "silver lapel pin"
+      ],
+      "characterId": "horn_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/courtyard_apron",
+  "revision": 2,
+  "sortOrder": 2055,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "courtyard_apron",
+      "name": "橄榄色帆布围裙与奶白长袖裙",
+      "prose": "An olive canvas apron with a double waist pocket over a cream long-sleeved dress, secured by a braided cord and paired with flat boots.",
+      "tokens": [
+        "olive canvas apron",
+        "double waist pocket",
+        "cream long-sleeved dress",
+        "braided cord",
+        "flat boots"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

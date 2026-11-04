@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_snow_window",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2953,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "rosa_arknights_snow_window",
     "characterId": "rosa_arknights",
-    "outfitId": "standard",
+    "outfitId": "snow_window_knit",
     "title": "早露 · 窗外第一场雪",
     "category": "泰拉日常",
     "description": "雪落在窗沿上，很快积起薄薄一层。她把热饮放到一旁，拿布擦去窗上的水汽，给你留出看雪的位置。",

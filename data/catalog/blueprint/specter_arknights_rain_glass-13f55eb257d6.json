@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_rain_glass",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3032,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "specter_arknights_rain_glass",
     "characterId": "specter_arknights",
-    "outfitId": "standard",
+    "outfitId": "rain_glaze",
     "title": "幽灵鲨 · 窗上的雨线",
     "category": "泰拉日常",
     "description": "雨沿着玻璃汇成细线。她用指尖隔着窗追了一小段，直到水滴消失在窗框下。",

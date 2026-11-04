@@ -106841,8 +106841,10 @@
       "classificationSource": "游戏内干员基础档案"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "初雪立绘待制作"
+      "image": "../assets/characters/popular-pramanix_arknights.png?v=435f2ae3da2c",
+      "alt": "初雪场景样张立绘",
+      "sourceShowcaseId": "pc_pramanix_arknights_pramanix_arknights_bell_repair",
+      "sourceShowcaseSha256": "b78a598eb8034464cc11d1e930251a117d24af758f01b185cc967e5ded35affb"
     },
     "tags": [
       "白发",
@@ -106892,8 +106894,10 @@
       "classificationSource": "游戏内干员基础档案"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "忍冬立绘待制作"
+      "image": "../assets/characters/popular-vulpisfoglia_arknights.png?v=5bd06d15b1c1",
+      "alt": "忍冬场景样张立绘",
+      "sourceShowcaseId": "pc_vulpisfoglia_arknights_vulpisfoglia_arknights_hotel_window",
+      "sourceShowcaseSha256": "33ed2c4bb17c7f0bda34fe471d8249d5d668bd2494429060f32d8e952ac06244"
     },
     "tags": [
       "狐耳",
@@ -106940,8 +106944,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "伊内丝立绘待制作"
+      "image": "../assets/characters/popular-ines_arknights.png?v=78739a6f9741",
+      "alt": "伊内丝场景样张立绘",
+      "sourceShowcaseId": "pc_ines_arknights_ines_arknights_dressing_room",
+      "sourceShowcaseSha256": "16bea6ef2b826a14943a66944bf7ee9e5e1c50fe00744309e120236c41015120"
     },
     "tags": [
       "黑发",
@@ -106989,8 +106995,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "缪尔赛思立绘待制作"
+      "image": "../assets/characters/popular-muelsyse_arknights.png?v=a41082fd7a3f",
+      "alt": "缪尔赛思场景样张立绘",
+      "sourceShowcaseId": "pc_muelsyse_arknights_muelsyse_arknights_herb_tea",
+      "sourceShowcaseSha256": "05e722217a3d3242719a8fa57dd5850f9330fb0034c7936b9e85b4f473309ce2"
     },
     "tags": [
       "精灵",
@@ -107039,8 +107047,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "妮芙立绘待制作"
+      "image": "../assets/characters/popular-nymph_arknights.png?v=39fefd598330",
+      "alt": "妮芙场景样张立绘",
+      "sourceShowcaseId": "pc_nymph_arknights_nymph_arknights_watering_can",
+      "sourceShowcaseSha256": "aee2b9c7f11e8fabd6e68bbe71a276f253581e7919db1220078de9d6a0c6ae6a"
     },
     "tags": [
       "粉发",
@@ -107087,8 +107097,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "霍尔海雅立绘待制作"
+      "image": "../assets/characters/popular-hoolheyak_arknights.png?v=ed6b1c8c95e3",
+      "alt": "霍尔海雅场景样张立绘",
+      "sourceShowcaseId": "pc_hoolheyak_arknights_hoolheyak_arknights_tea_tin",
+      "sourceShowcaseSha256": "01242e55b01f9ecfcfcfa55cbae5d68784b916ccfe222a18293c206a5eafcd2a"
     },
     "tags": [
       "灰发",
@@ -107136,8 +107148,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "莱伊立绘待制作"
+      "image": "../assets/characters/popular-ray_arknights.png?v=2e73a3f38551",
+      "alt": "莱伊场景样张立绘",
+      "sourceShowcaseId": "pc_ray_arknights_ray_arknights_sandbeast_treat",
+      "sourceShowcaseSha256": "69c234b1b8532049c4235a32d5c511037ee2344d226d9efc6c7b28e0201983cb"
     },
     "tags": [
       "兔耳",
@@ -107185,8 +107199,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "空弦立绘待制作"
+      "image": "../assets/characters/popular-archetto_arknights.png?v=f5faa12217a7",
+      "alt": "空弦场景样张立绘",
+      "sourceShowcaseId": "pc_archetto_arknights_archetto_arknights_chapel_song",
+      "sourceShowcaseSha256": "38a1b0bf947588939559cf8aa5886d49a7ffb39009e38b4481a666683f9aa82c"
     },
     "tags": [
       "异色瞳",
@@ -107235,8 +107251,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "鸿雪立绘待制作"
+      "image": "../assets/characters/popular-pozyomka_arknights.png?v=8175ea24621d",
+      "alt": "鸿雪场景样张立绘",
+      "sourceShowcaseId": "pc_pozyomka_arknights_pozyomka_arknights_pencil_box",
+      "sourceShowcaseSha256": "eab7657b81c05110ef0e0e813ac01303b0266a14be593364df68ad7ecdcb5565"
     },
     "tags": [
       "鲁珀",
@@ -107287,8 +107305,10 @@
       "classificationSource": "游戏内干员基础档案与客观履历"
     },
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "W与维什戴尔立绘待制作"
+      "image": "../assets/characters/popular-w_arknights.png?v=346b7e799ea3",
+      "alt": "W / 维什戴尔场景样张立绘",
+      "sourceShowcaseId": "pc_w_arknights_w_arknights_costume_mirror",
+      "sourceShowcaseSha256": "75eee3d09e23d4c7609c734ad6da6eeb53e24067fba0184274a20d4236be2a24"
     },
     "tags": [
       "短发",
@@ -107342,8 +107362,10 @@
     ],
     "voice": "谢谢你，我会好好收下的。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "早露立绘待制作"
+      "image": "../assets/characters/popular-rosa_arknights.png?v=8651b0c76ed8",
+      "alt": "早露场景样张立绘",
+      "sourceShowcaseId": "pc_rosa_arknights_rosa_arknights_snow_window",
+      "sourceShowcaseSha256": "ea035b9fc11a71404514082068dd95e1391f3dd3783c90b2db391e2ea5591f4e"
     }
   },
   {
@@ -107390,8 +107412,10 @@
     ],
     "voice": "这件事，我想好好记住。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "迷迭香立绘待制作"
+      "image": "../assets/characters/popular-rosmontis_arknights.png?v=b319c76eb27d",
+      "alt": "迷迭香场景样张立绘",
+      "sourceShowcaseId": "pc_rosmontis_arknights_rosmontis_arknights_picture_book",
+      "sourceShowcaseSha256": "64bb985fa739b31fc773ff56a1120bc65524418f5cf07deed921a45a5f052dbf"
     }
   },
   {
@@ -107439,8 +107463,10 @@
     ],
     "voice": "这个……是刚摘下来的。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "若叶睦立绘待制作"
+      "image": "../assets/characters/popular-wakaba_mutsumi_arknights.png?v=69d685b9984b",
+      "alt": "若叶睦场景样张立绘",
+      "sourceShowcaseId": "pc_wakaba_mutsumi_arknights_wakaba_mutsumi_arknights_guitar_strings",
+      "sourceShowcaseSha256": "1086c04215e4fda16e2b64c45fd904f1afd01e10d15f6390509bdebdc47a4beb"
     }
   },
   {
@@ -107487,8 +107513,10 @@
     ],
     "voice": "事情办完了，走吧。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "菲亚梅塔立绘待制作"
+      "image": "../assets/characters/popular-fiammetta_arknights.png?v=11880fe6b848",
+      "alt": "菲亚梅塔场景样张立绘",
+      "sourceShowcaseId": "pc_fiammetta_arknights_fiammetta_arknights_morning_coffee",
+      "sourceShowcaseSha256": "39cfd575eab14c2467fbc56df86c54668ec9c8fbdc8afe07bf70eaa42153c217"
     }
   },
   {
@@ -107535,8 +107563,10 @@
     ],
     "voice": "这顿我请，下次换你。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "星熊立绘待制作"
+      "image": "../assets/characters/popular-hoshiguma_arknights.png?v=6bc5eacd6657",
+      "alt": "星熊场景样张立绘",
+      "sourceShowcaseId": "pc_hoshiguma_arknights_hoshiguma_arknights_rain_umbrella",
+      "sourceShowcaseSha256": "a9040c0dc2a3375b9942d3d52f18767c56c8118fc039c4a982e1872401131622"
     }
   },
   {
@@ -107584,8 +107614,10 @@
     ],
     "voice": "这段时间，值得好好珍惜。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "号角立绘待制作"
+      "image": "../assets/characters/popular-horn_arknights.png?v=0e502e8706b9",
+      "alt": "号角场景样张立绘",
+      "sourceShowcaseId": "pc_horn_arknights_horn_arknights_rain_shelter",
+      "sourceShowcaseSha256": "643fe98e091b29de6d9fa2099e2499102134652492ddc87e8cf7788c82b6bcea"
     }
   },
   {
@@ -107633,8 +107665,10 @@
     ],
     "voice": "别担心，我们一起想办法。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "瑕光立绘待制作"
+      "image": "../assets/characters/popular-blemishine_arknights.png?v=2a75c401ae7a",
+      "alt": "瑕光场景样张立绘",
+      "sourceShowcaseId": "pc_blemishine_arknights_blemishine_arknights_bakery_share",
+      "sourceShowcaseSha256": "e9b3107e71bcf70bbc15bef20a93120ecaf9137e4f329806fc43f56c5fdf0875"
     }
   },
   {
@@ -107681,8 +107715,10 @@
     ],
     "voice": "这个问题，留到下次再回答吧。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "隐德来希立绘待制作"
+      "image": "../assets/characters/popular-entelechia_arknights.png?v=41b4bc56f90a",
+      "alt": "隐德来希场景样张立绘",
+      "sourceShowcaseId": "pc_entelechia_arknights_entelechia_arknights_rose_shop",
+      "sourceShowcaseSha256": "749ed2266b8a897bf8cf56238c117bcb2496e2e1fc005c5e0ddbf491bcf15c12"
     }
   },
   {
@@ -107729,8 +107765,10 @@
     ],
     "voice": "别急，潮水还会再来的。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "幽灵鲨立绘待制作"
+      "image": "../assets/characters/popular-specter_arknights.png?v=30e8ac0ef431",
+      "alt": "幽灵鲨场景样张立绘",
+      "sourceShowcaseId": "pc_specter_arknights_specter_arknights_art_album",
+      "sourceShowcaseSha256": "a2a283ec7bcab6788e59e9c9f456e7b00eb7fcbb08183437c49ffea6f2b05f22"
     }
   },
   {
@@ -107777,8 +107815,10 @@
     ],
     "voice": "你也来听一听吗？",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "夜莺立绘待制作"
+      "image": "../assets/characters/popular-nightingale_arknights.png?v=e088a612203a",
+      "alt": "夜莺场景样张立绘",
+      "sourceShowcaseId": "pc_nightingale_arknights_nightingale_arknights_tea_biscuit",
+      "sourceShowcaseSha256": "8e880e6619e074764e7d69240f281cd917c367c32138f13f54dea1471628fe4c"
     }
   },
   {
@@ -107824,8 +107864,10 @@
     ],
     "voice": "记录完成。休息时间开始。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "白面鸮立绘待制作"
+      "image": "../assets/characters/popular-ptilopsis_arknights.png?v=852a8c3e2f67",
+      "alt": "白面鸮场景样张立绘",
+      "sourceShowcaseId": "pc_ptilopsis_arknights_ptilopsis_arknights_note_tabs",
+      "sourceShowcaseSha256": "66cbc8a35b5db8e3339d25964820f097f2c75f0150248ddce13aca5188cd5e02"
     }
   },
   {
@@ -107873,8 +107915,10 @@
     ],
     "voice": "这个好吃！你也尝尝。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "刻俄柏立绘待制作"
+      "image": "../assets/characters/popular-ceobe_arknights.png?v=5520852dda01",
+      "alt": "刻俄柏场景样张立绘",
+      "sourceShowcaseId": "pc_ceobe_arknights_ceobe_arknights_fruit_stall",
+      "sourceShowcaseSha256": "d57933d13b4d7b38527aa10217ba04448fc742a3ef00f42b0f424e04cfcb014b"
     }
   },
   {
@@ -107921,8 +107965,10 @@
     ],
     "voice": "我会记住这个步骤。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "Mon3tr立绘待制作"
+      "image": "../assets/characters/popular-mon3tr_arknights.png?v=f0dbd1cc4c49",
+      "alt": "Mon3tr场景样张立绘",
+      "sourceShowcaseId": "pc_mon3tr_arknights_mon3tr_arknights_photo_print",
+      "sourceShowcaseSha256": "bc7bc8b9bbe478bea2e23ff2874ae669ff6382dc3016aefc159e5daf4a29448d"
     }
   },
   {
@@ -107970,8 +108016,10 @@
     ],
     "voice": "路上看到一家新店，等会儿一起去吧！",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "安洁莉娜立绘待制作"
+      "image": "../assets/characters/popular-angelina_arknights.png?v=a7a0c61dc89a",
+      "alt": "安洁莉娜场景样张立绘",
+      "sourceShowcaseId": "pc_angelina_arknights_angelina_arknights_train_ticket",
+      "sourceShowcaseSha256": "d426b30d10cdb934042cc6db1610dac7b7959b7a9c83ac091d9680da4c832818"
     }
   },
   {
@@ -108020,8 +108068,10 @@
     ],
     "voice": "这朵花，明天应该就会开了。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "焰影苇草立绘待制作"
+      "image": "../assets/characters/popular-reed_arknights.png?v=5beffa1e472b",
+      "alt": "焰影苇草场景样张立绘",
+      "sourceShowcaseId": "pc_reed_arknights_reed_arknights_museum_label",
+      "sourceShowcaseSha256": "02422a9b26a758af5faae0e75ac1554828f07e23e586ff674dc72549b3d266cf"
     }
   },
   {
@@ -108069,8 +108119,10 @@
     ],
     "voice": "这段旋律，愿意再听一次吗？",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "塑心立绘待制作"
+      "image": "../assets/characters/popular-virtuosa_arknights.png?v=dab76f176e53",
+      "alt": "塑心场景样张立绘",
+      "sourceShowcaseId": "pc_virtuosa_arknights_virtuosa_arknights_concert_program",
+      "sourceShowcaseSha256": "784dad68c5f058a25d14ccfc7d9278d54f8e8a41d5af56ab30f4ad715f7850c7"
     }
   },
   {
@@ -108118,8 +108170,10 @@
     ],
     "voice": "看在你这么有诚意的份上，我就答应了。",
     "portrait": {
-      "image": "../assets/characters/portrait-pending.svg",
-      "alt": "诗怀雅立绘待制作"
+      "image": "../assets/characters/popular-swire_arknights.png?v=f98318b54c37",
+      "alt": "诗怀雅场景样张立绘",
+      "sourceShowcaseId": "pc_swire_arknights_swire_arknights_flower_market",
+      "sourceShowcaseSha256": "e56d262fd4ea67ed54d70c9aa6a63c5b9f06d5a1e13ce07b63cc9c8391dc95e5"
     }
   }
 ]

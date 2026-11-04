@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rosmontis_arknights/cloud_windbreaker",
+  "revision": 2,
+  "sortOrder": 2090,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosmontis_arknights",
+    "outfit": {
+      "id": "cloud_windbreaker",
+      "name": "薄荷拼色风衣与浅灰牛仔裙",
+      "prose": "A mint windbreaker with cloud-white shoulder panels over a white shirt and knee-length light-grey denim skirt, with comfortable sneakers.",
+      "tokens": [
+        "mint windbreaker",
+        "white shoulder panels",
+        "white shirt",
+        "knee-length light grey denim skirt",
+        "sneakers"
+      ],
+      "characterId": "rosmontis_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

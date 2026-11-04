@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/travel_dusk",
+  "revision": 1,
+  "sortOrder": 2129,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "travel_dusk",
+      "name": "暮色蓝羊毛风衣与象牙围巾",
+      "prose": "A midnight-blue belted wool trench with a softly structured shoulder, an ivory scarf and tapered black trousers, fastened by a dark metal buckle.",
+      "tokens": [
+        "midnight blue wool trench coat",
+        "belted coat",
+        "ivory scarf",
+        "tapered black trousers",
+        "dark metal buckle"
+      ],
+      "characterId": "entelechia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

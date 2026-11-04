@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/pressed_flower",
+  "revision": 1,
+  "sortOrder": 2161,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "pressed_flower",
+      "name": "花瓣刺绣米白罩衫与蓝灰裙",
+      "prose": "A cream cotton smock embroidered with small white petals over a blue-grey skirt, tied with a thin dusty-blue sash.",
+      "tokens": [
+        "cream cotton smock",
+        "white petal embroidery",
+        "blue grey skirt",
+        "dusty blue sash"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

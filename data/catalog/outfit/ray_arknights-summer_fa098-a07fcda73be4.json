@@ -1,0 +1,36 @@
+{
+  "kind": "outfit",
+  "id": "ray_arknights/summer_fa098",
+  "revision": 2,
+  "sortOrder": 2050,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "ray_arknights",
+    "outfit": {
+      "id": "summer_fa098",
+      "name": "夏卉 FA098·白色泳装与黑色短裤",
+      "prose": "A white summer bikini top with black shorts, a light white jacket and a flower hair ornament.",
+      "tokens": [
+        "white bikini top",
+        "black shorts",
+        "light white jacket",
+        "flower hair ornament"
+      ],
+      "characterId": "ray_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "ray (arknights)",
+        "ray (summer flowers) (arknights)",
+        "1girl",
+        "solo",
+        "pink hair",
+        "very long hair",
+        "violet eyes",
+        "rabbit ears"
+      ],
+      "identityProseOverride": "Ray from Arknights has very long pink hair, violet eyes and rabbit ears."
+    }
+  }
+}

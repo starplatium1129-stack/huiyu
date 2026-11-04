@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "pozyomka_arknights/draft_cardigan",
+  "revision": 2,
+  "sortOrder": 2067,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "pozyomka_arknights",
+    "outfit": {
+      "id": "draft_cardigan",
+      "name": "松绿针织开衫与李紫压褶裙",
+      "prose": "A pine-green fine-knit cardigan with a pearl clasp over a pale blouse and a plum pressed-pleat skirt, with a narrow black ribbon at the collar.",
+      "tokens": [
+        "pine green fine-knit cardigan",
+        "pearl clasp",
+        "pale blouse",
+        "plum pressed-pleat skirt",
+        "black collar ribbon"
+      ],
+      "characterId": "pozyomka_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/picnic_blue",
+  "revision": 2,
+  "sortOrder": 2024,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "picnic_blue",
+      "name": "浅水蓝格纹裙与白色短开衫",
+      "prose": "A light-blue gingham dress with a gently gathered skirt and white cropped cardigan, paired with flat canvas shoes and a small leaf hair clip.",
+      "tokens": [
+        "light blue gingham dress",
+        "gathered skirt",
+        "white cropped cardigan",
+        "canvas shoes",
+        "leaf hair clip"
+      ],
+      "characterId": "muelsyse_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

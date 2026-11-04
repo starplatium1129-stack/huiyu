@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "wakaba_mutsumi_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 284,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "这个……是刚摘下来的。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "若叶睦立绘待制作"
+        "image": "../assets/characters/popular-wakaba_mutsumi_arknights.png?v=69d685b9984b",
+        "alt": "若叶睦场景样张立绘",
+        "sourceShowcaseId": "pc_wakaba_mutsumi_arknights_wakaba_mutsumi_arknights_guitar_strings",
+        "sourceShowcaseSha256": "1086c04215e4fda16e2b64c45fd904f1afd01e10d15f6390509bdebdc47a4beb"
       }
     },
     "popular": {

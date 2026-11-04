@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/ink_waistcoat",
+  "revision": 1,
+  "sortOrder": 2190,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "ink_waistcoat",
+      "name": "墨色提花马甲与银灰衬衫",
+      "prose": "An ink-black jacquard waistcoat with a subtle staff-line pattern over a silver-grey shirt and charcoal straight trousers, finished with a narrow velvet tie.",
+      "tokens": [
+        "black jacquard waistcoat",
+        "staff line pattern",
+        "silver grey shirt",
+        "charcoal straight trousers",
+        "black velvet tie"
+      ],
+      "characterId": "virtuosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

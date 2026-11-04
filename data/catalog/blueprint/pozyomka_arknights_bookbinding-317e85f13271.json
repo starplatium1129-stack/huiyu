@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_bookbinding",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2929,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "pozyomka_arknights_bookbinding",
     "characterId": "pozyomka_arknights",
-    "outfitId": "snowy_plains_in_words",
+    "outfitId": "bookbinder_apron",
     "title": "鸿雪 · 修补书脊",
     "category": "泰拉日常",
     "description": "书脊的布面裂开了一小段。她按着修复师的指点薄薄涂胶，等胶水收干后才合上书页。",

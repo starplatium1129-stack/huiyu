@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_balcony_wind",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2945,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_balcony_wind",
     "characterId": "w_arknights",
-    "outfitId": "wisadel_supernova",
+    "outfitId": "balcony_silver",
     "title": "W / 维什戴尔 · 露台上的悄悄话",
     "category": "亲密时刻",
     "description": "她搭着栏杆凑近，像要说什么秘密，却先笑了：“放心，这次你可以猜得再大胆一点。”",

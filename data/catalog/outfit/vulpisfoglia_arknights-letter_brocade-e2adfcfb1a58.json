@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/letter_brocade",
+  "revision": 2,
+  "sortOrder": 2009,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "letter_brocade",
+      "name": "藕粉织锦立领衫与深李色长裙",
+      "prose": "A dusty-rose brocade blouse with a stand collar and gathered cuffs, tucked into a deep plum skirt with a small antique-gold ribbon clasp.",
+      "tokens": [
+        "dusty rose brocade blouse",
+        "stand collar",
+        "gathered cuffs",
+        "deep plum skirt",
+        "antique gold ribbon clasp"
+      ],
+      "characterId": "vulpisfoglia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

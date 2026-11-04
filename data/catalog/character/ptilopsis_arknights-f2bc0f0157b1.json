@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ptilopsis_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 292,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "ptilopsis_arknights",
     "profile": {
@@ -50,8 +50,10 @@
       ],
       "voice": "记录完成。休息时间开始。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "白面鸮立绘待制作"
+        "image": "../assets/characters/popular-ptilopsis_arknights.png?v=852a8c3e2f67",
+        "alt": "白面鸮场景样张立绘",
+        "sourceShowcaseId": "pc_ptilopsis_arknights_ptilopsis_arknights_note_tabs",
+        "sourceShowcaseSha256": "66cbc8a35b5db8e3339d25964820f097f2c75f0150248ddce13aca5188cd5e02"
       }
     },
     "popular": {
@@ -74,7 +76,8 @@
       ],
       "characterTokens": [
         "ptilopsis (arknights)",
-        "ptilopsis (serenity) (arknights)"
+        "ptilopsis (serenity) (arknights)",
+        "ptilopsis (amongst the clouds) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

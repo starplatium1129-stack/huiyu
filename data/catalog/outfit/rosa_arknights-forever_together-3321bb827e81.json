@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/forever_together",
+  "revision": 2,
+  "sortOrder": 2076,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "forever_together",
+      "name": "常伴我身·白色水手裙与蓝格蝴蝶结",
+      "prose": "A white sailor-style dress with blue plaid bows, a small white hat with a bear ornament and white lace-up boots.",
+      "tokens": [
+        "white sailor dress",
+        "blue plaid bows",
+        "white hat",
+        "bear ornament",
+        "white lace-up boots"
+      ],
+      "characterId": "rosa_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "rosa (arknights)",
+        "rosa (forever together) (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "bear ears",
+        "heterochromia"
+      ],
+      "identityProseOverride": "Rosa from Arknights has very long white hair, bear ears and heterochromatic eyes."
+    }
+  }
+}

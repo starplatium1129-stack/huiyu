@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/blue_ribbon_knit",
+  "revision": 1,
+  "sortOrder": 2157,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "blue_ribbon_knit",
+      "name": "粉蓝细缎领结与象牙针织裙",
+      "prose": "An ivory fine-knit dress with a rounded collar, a powder-blue satin neck ribbon and small pearl buttons, worn with soft grey shoes.",
+      "tokens": [
+        "ivory fine-knit dress",
+        "round collar",
+        "powder blue satin ribbon",
+        "pearl buttons",
+        "grey shoes"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

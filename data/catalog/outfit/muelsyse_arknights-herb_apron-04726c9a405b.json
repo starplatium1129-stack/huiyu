@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/herb_apron",
+  "revision": 2,
+  "sortOrder": 2022,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "herb_apron",
+      "name": "鼠尾草围裙与象牙泡袖衬衣",
+      "prose": "A sage-green apron dress with a tiny embroidered herb pocket over an ivory puff-sleeved blouse, tied with a narrow blue-grey ribbon.",
+      "tokens": [
+        "sage green apron dress",
+        "herb embroidered pocket",
+        "ivory puff-sleeved blouse",
+        "blue grey ribbon"
+      ],
+      "characterId": "muelsyse_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

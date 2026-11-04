@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/rain_mac",
+  "revision": 1,
+  "sortOrder": 2185,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "rain_mac",
+      "name": "樱桃红防雨斗篷与条纹围巾",
+      "prose": "A cherry-red hooded rain cape over a cream sweater and charcoal straight trousers, with a narrow striped scarf and waterproof ankle boots.",
+      "tokens": [
+        "cherry red hooded rain cape",
+        "cream sweater",
+        "charcoal straight trousers",
+        "striped scarf",
+        "waterproof ankle boots"
+      ],
+      "characterId": "angelina_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

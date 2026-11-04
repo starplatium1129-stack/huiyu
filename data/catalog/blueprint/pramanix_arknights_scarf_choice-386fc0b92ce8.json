@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_scarf_choice",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2851,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_scarf_choice",
     "characterId": "pramanix_arknights",
-    "outfitId": "casters_frost",
+    "outfitId": "weaver_fairisle",
     "title": "初雪 · 给家人的围巾",
     "category": "泰拉日常",
     "description": "她把两条围巾并排放在手臂上，先看颜色，又捏了捏布料。挑好后，她请店员多留一点包装纸，打算自己写一张卡片。",

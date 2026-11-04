@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/tomato_smock",
+  "revision": 1,
+  "sortOrder": 2145,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "tomato_smock",
+      "name": "番茄红围裙与鼠尾草泡泡袖衫",
+      "prose": "A tomato-red cotton apron with roomy pockets over a sage-green puff-sleeved blouse and cream trousers, finished with practical flat shoes.",
+      "tokens": [
+        "tomato red apron",
+        "large pockets",
+        "sage green puff-sleeved blouse",
+        "cream trousers",
+        "flat shoes"
+      ],
+      "characterId": "ceobe_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

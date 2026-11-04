@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/w_standard",
+  "revision": 3,
+  "sortOrder": 2068,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "w_standard",
+      "name": "黑色夹克与灰色上衣",
+      "prose": "A black jacket over a grey shirt, a black skirt, a dark scarf and sneakers.",
+      "tokens": [
+        "black jacket",
+        "grey shirt",
+        "black skirt",
+        "black scarf",
+        "sneakers"
+      ],
+      "characterId": "w_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

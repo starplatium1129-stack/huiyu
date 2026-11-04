@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_candle_conversation",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3105,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "virtuosa_arknights_candle_conversation",
     "characterId": "virtuosa_arknights",
-    "outfitId": "diversity_oneness",
+    "outfitId": "candle_satin",
     "title": "塑心 · 烛光下的对话",
     "category": "亲密时刻",
     "description": "她托腮靠近，等你讲完，才用指尖轻敲杯沿：“接下来的故事，我能不能也有一席之地？”",

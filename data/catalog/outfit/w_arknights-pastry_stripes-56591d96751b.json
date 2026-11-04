@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/pastry_stripes",
+  "revision": 2,
+  "sortOrder": 2071,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "pastry_stripes",
+      "name": "黑白条纹针织衫与酒红背心裙",
+      "prose": "A black-and-white striped knit top under a burgundy pinafore dress with offset metal buttons, finished with a narrow red hair clip.",
+      "tokens": [
+        "black and white striped knit top",
+        "burgundy pinafore dress",
+        "offset metal buttons",
+        "red hair clip"
+      ],
+      "characterId": "w_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ines_arknights/curtain_black_suit",
+  "revision": 2,
+  "sortOrder": 2018,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "ines_arknights",
+    "outfit": {
+      "id": "curtain_black_suit",
+      "name": "墨黑燕尾西装与哑银链扣",
+      "prose": "A sharply cut black tailcoat with a narrow satin lapel over a deep-grey blouse and tapered trousers, fastened by a matte silver chain clasp.",
+      "tokens": [
+        "black tailored tailcoat",
+        "narrow satin lapel",
+        "deep grey blouse",
+        "tapered trousers",
+        "matte silver chain clasp"
+      ],
+      "characterId": "ines_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

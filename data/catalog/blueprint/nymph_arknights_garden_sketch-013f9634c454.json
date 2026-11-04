@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_garden_sketch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2894,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_garden_sketch",
     "characterId": "nymph_arknights",
-    "outfitId": "blooming_reverie",
+    "outfitId": "sketch_coral",
     "title": "妮芙 · 花园速写",
     "category": "泰拉日常",
     "description": "她在画本上描出花瓣的轮廓，发现少画了一片，又把铅笔停在纸上慢慢补好。",

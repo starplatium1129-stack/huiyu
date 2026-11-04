@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_puzzle_dog",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3061,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "ceobe_arknights_puzzle_dog",
     "characterId": "ceobe_arknights",
-    "outfitId": "standard",
+    "outfitId": "puzzle_sweater",
     "title": "刻俄柏 · 小狗拼图",
     "category": "泰拉日常",
     "description": "拼图里的小狗还缺一只耳朵。她在盒子里翻了半天，终于找到那块边角。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_bookshop_ribbon",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2950,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "rosa_arknights_bookshop_ribbon",
     "characterId": "rosa_arknights",
-    "outfitId": "standard",
+    "outfitId": "bookshop_checked",
     "title": "早露 · 书店的包装纸",
     "category": "泰拉日常",
     "description": "店员借给她一卷丝带。早露将准备送人的书包好，觉得蝴蝶结有些歪，又解开重新系了一次。",

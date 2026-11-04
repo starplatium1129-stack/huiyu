@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/cafe_honey",
+  "revision": 2,
+  "sortOrder": 2058,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "cafe_honey",
+      "name": "蜂蜜金开衫与藏蓝细褶裙",
+      "prose": "A honey-gold cardigan with pearl buttons over an ivory ruffled blouse and a navy finely pleated skirt, with a tiny bell necklace.",
+      "tokens": [
+        "honey gold cardigan",
+        "pearl buttons",
+        "ivory ruffled blouse",
+        "navy pleated skirt",
+        "bell necklace"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

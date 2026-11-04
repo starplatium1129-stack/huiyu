@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_pond_reflection",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2877,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "muelsyse_arknights_pond_reflection",
     "characterId": "muelsyse_arknights",
-    "outfitId": "young_branch",
+    "outfitId": "pond_linen",
     "title": "缪尔赛思 · 水面上的叶子",
     "category": "泰拉日常",
     "description": "一片叶子顺水漂过来，她把手伸到水面上方，等叶子自己靠近。看清叶脉后，她又轻轻把它放回去。",

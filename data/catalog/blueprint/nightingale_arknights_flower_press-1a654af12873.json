@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_flower_press",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3043,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "nightingale_arknights_flower_press",
     "characterId": "nightingale_arknights",
-    "outfitId": "standard",
+    "outfitId": "pressed_flower",
     "title": "夜莺 · 花瓣书签",
     "category": "泰拉日常",
     "description": "她把干花放到纸片中央，用透明纸轻轻盖住，准备把做好的书签送给朋友。",

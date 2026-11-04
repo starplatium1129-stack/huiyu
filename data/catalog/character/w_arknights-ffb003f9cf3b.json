@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "w_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 281,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "w_arknights",
     "profile": {
@@ -49,8 +49,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "W与维什戴尔立绘待制作"
+        "image": "../assets/characters/popular-w_arknights.png?v=346b7e799ea3",
+        "alt": "W / 维什戴尔场景样张立绘",
+        "sourceShowcaseId": "pc_w_arknights_w_arknights_costume_mirror",
+        "sourceShowcaseSha256": "75eee3d09e23d4c7609c734ad6da6eeb53e24067fba0184274a20d4236be2a24"
       },
       "tags": [
         "短发",

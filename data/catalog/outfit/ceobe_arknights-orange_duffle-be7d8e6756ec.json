@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/orange_duffle",
+  "revision": 1,
+  "sortOrder": 2143,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "orange_duffle",
+      "name": "橘子色木扣短外套与卡其长裤",
+      "prose": "A mandarin-orange duffle jacket with wooden toggles over a cream knit top and khaki cotton trousers, with a small leaf patch on the pocket.",
+      "tokens": [
+        "orange duffle jacket",
+        "wooden toggles",
+        "cream knit top",
+        "khaki trousers",
+        "leaf patch"
+      ],
+      "characterId": "ceobe_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

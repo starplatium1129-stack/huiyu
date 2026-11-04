@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/puzzle_lounge",
+  "revision": 2,
+  "sortOrder": 2006,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "puzzle_lounge",
+      "name": "焦糖绒感开衫与烟杏阔腿裤",
+      "prose": "A caramel brushed-knit cardigan with mismatched pearl and horn buttons over a cream silk shell, with fluid smoke-apricot wide-leg trousers.",
+      "tokens": [
+        "caramel brushed-knit cardigan",
+        "pearl buttons",
+        "horn buttons",
+        "cream silk top",
+        "smoke apricot wide-leg trousers"
+      ],
+      "characterId": "vulpisfoglia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

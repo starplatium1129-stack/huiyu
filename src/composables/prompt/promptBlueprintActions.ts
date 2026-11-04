@@ -157,12 +157,9 @@ export async function loadBlueprint(raw: Record<string, unknown>, ctx: Blueprint
   pb.setArtistStyleIds(draft.artistStyleIds || [])
   if (draft.projectId !== undefined) pb.projectId = draft.projectId
 
-  const outfitOverride = isRecord(raw.outfitOverride) ? stringList(raw.outfitOverride.tokens, 64) : []
-  if (subject === 'popular' && outfitOverride.length) {
-    pb.setOutfitOverride(outfitOverride, text((raw.outfitOverride as Record<string, unknown>).replaced) || null)
-  } else {
-    pb.clearOutfitOverride()
-  }
+  const outfitOverride = parseOutfitOverride(raw.outfitOverride)
+  if (outfitOverride) pb.setOutfitOverride(outfitOverride.tokens, outfitOverride.replaced, outfitOverride)
+  else pb.clearOutfitOverride()
 
   if(!retiredSD){
     const sdParams = safeSDParams(draft.sdParams)
@@ -341,7 +338,7 @@ export function parsePromptBuilderDraft(value: unknown): PromptBuilderDraft | nu
     selections,
     colorMood: draftNullableText(value.colorMood),
     manualTags: draftStrings(value.manualTags),
-    outfitOverride: value.subject === 'popular' ? parseOutfitOverride(value.outfitOverride) : null,
+    outfitOverride: parseOutfitOverride(value.outfitOverride),
     referenceInput: parseReferenceInput(value.referenceInput),
     artistStyleIds: normalizeArtistStyleIds(value.artistStyleIds),
     sceneBaseStory: draftText(value.sceneBaseStory),
@@ -425,9 +422,7 @@ export function restorePromptDraft(state: PromptDraftState, raw: string): boolea
     } else {
       subject.value = { kind: 'studio' }
     }
-    outfitOverride.value = subject.value.kind === 'popular' && d.outfitOverride
-      ? { tokens: [...d.outfitOverride.tokens], replaced: d.outfitOverride.replaced }
-      : null
+    outfitOverride.value = parseOutfitOverride(d.outfitOverride)
     randomVariation.value = d.randomVariation ? JSON.parse(JSON.stringify(d.randomVariation)) : null
   }
 

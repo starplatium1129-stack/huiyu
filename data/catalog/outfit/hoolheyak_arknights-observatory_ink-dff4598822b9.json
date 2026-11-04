@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/observatory_ink",
+  "revision": 2,
+  "sortOrder": 2041,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "observatory_ink",
+      "name": "星图暗纹午夜披风与黑色立领裙",
+      "prose": "A midnight-blue long cape with a fine star-chart lining over a black high-neck dress, finished with dark gloves and a thin silver chain.",
+      "tokens": [
+        "midnight blue long cape",
+        "star chart lining",
+        "black high-neck dress",
+        "dark gloves",
+        "silver chain"
+      ],
+      "characterId": "hoolheyak_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

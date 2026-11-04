@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/night_tailcoat",
+  "revision": 1,
+  "sortOrder": 2194,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "night_tailcoat",
+      "name": "夜羽燕尾外套与月白垂褶长裙",
+      "prose": "A black feather-textured tailcoat draped over a moon-white column dress, with a narrow charcoal sash and long silver drop earrings.",
+      "tokens": [
+        "black feather-textured tailcoat",
+        "moon white column dress",
+        "charcoal sash",
+        "silver drop earrings"
+      ],
+      "characterId": "virtuosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

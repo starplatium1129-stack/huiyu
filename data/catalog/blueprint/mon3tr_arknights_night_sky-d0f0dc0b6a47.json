@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_night_sky",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3074,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "mon3tr_arknights_night_sky",
     "characterId": "mon3tr_arknights",
-    "outfitId": "sharpened_claws",
+    "outfitId": "night_reflective",
     "title": "Mon3tr · 记录星座",
     "category": "泰拉日常",
     "description": "她将星图转了半圈，终于找到对应的星座，在纸边记下今晚的日期。",

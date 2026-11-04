@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_guitar_practice",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2910,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "ray_arknights_guitar_practice",
     "characterId": "ray_arknights",
-    "outfitId": "dreaming_high",
+    "outfitId": "rehearsal_plaid",
     "title": "莱伊 · 第一段和弦",
     "category": "泰拉日常",
     "description": "指尖按弦的角度还不够熟练，她停下来重新看了一遍谱子。下一次弹响时，莱伊抬起头，确认自己没有按错。",

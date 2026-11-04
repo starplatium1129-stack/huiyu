@@ -19,6 +19,7 @@ import { plainEnglish } from '@/utils/promptCompiler.ts'
 import { COLOR_MOODS } from '@/config/promptConstants.ts'
 import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles.ts'
 import { mossArtistTags } from '@/utils/mossPrompt.ts'
+import { withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PopularPromptAssemblyState = Pick<PromptBuilderStore, 'artistStyleIds' | 'colorMood' | 'directorMode' | 'emotionPrompt'
@@ -92,7 +93,7 @@ export function usePopularPromptAssembly(
       blueprint: blueprint.value,
       engine: target,
       profile: target === 'moss' ? null : profile.value,
-      manual: [...pb.manualTags],
+      manual: withoutSuppressedOutfitTags(pb.manualTags, pb.outfitOverride),
       emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot,
       directorSources: pb.directorSources,
@@ -105,6 +106,7 @@ export function usePopularPromptAssembly(
       artistTags: target === 'moss' ? mossArtistTags(activeArtistStyleIds.value) : artistTagsForEngine(activeArtistStyleIds.value, target),
       artistProse: target === 'moss' ? '' : artistStyleProse(activeArtistStyleIds.value, target),
       outfitOverride: pb.outfitOverride?.tokens ?? (randomVariation.value?.outfit.length ? randomVariation.value.outfit : null),
+      outfitOverrideProse: pb.outfitOverride?.prose,
       outfitExplicit: outfitExplicit.value,
     })
   }

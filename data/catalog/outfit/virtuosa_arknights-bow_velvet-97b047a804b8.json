@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/bow_velvet",
+  "revision": 2,
+  "sortOrder": 2193,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:48:37.661746300+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "bow_velvet",
+      "name": "弓弦银扣丝绒短礼服",
+      "prose": "A short deep-black velvet dress with a sculpted square neckline, long fitted sleeves and a slender silver clasp shaped like a violin bow.",
+      "tokens": [
+        "short black velvet dress",
+        "square neckline",
+        "long fitted sleeves",
+        "silver violin bow clasp"
+      ],
+      "characterId": "virtuosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

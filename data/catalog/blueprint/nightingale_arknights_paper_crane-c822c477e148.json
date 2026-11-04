@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_paper_crane",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3040,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "nightingale_arknights_paper_crane",
     "characterId": "nightingale_arknights",
-    "outfitId": "standard",
+    "outfitId": "origami_sky",
     "title": "夜莺 · 纸鹤",
     "category": "泰拉日常",
     "description": "翅膀折得一高一低，她小心地把纸展开，重新沿折痕压平。",

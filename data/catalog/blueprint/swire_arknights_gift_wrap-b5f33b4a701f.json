@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_gift_wrap",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3111,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "swire_arknights_gift_wrap",
     "characterId": "swire_arknights",
-    "outfitId": "honor_and_splendor",
+    "outfitId": "pearl_jacket",
     "title": "诗怀雅 · 包装纸的选择",
     "category": "泰拉日常",
     "description": "店员拿来两张包装纸，她比较一会儿，选了更适合收礼人的颜色。",

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/rehearsal_cardigan",
+  "revision": 1,
+  "sortOrder": 2197,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "rehearsal_cardigan",
+      "name": "灰蓝短开衫与藏青直筒裙",
+      "prose": "A soft grey-blue cardigan with dark buttons over a white shirt and a navy straight skirt, finished with a small muted green ribbon.",
+      "tokens": [
+        "grey blue cardigan",
+        "dark buttons",
+        "white shirt",
+        "navy straight skirt",
+        "muted green ribbon"
+      ],
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

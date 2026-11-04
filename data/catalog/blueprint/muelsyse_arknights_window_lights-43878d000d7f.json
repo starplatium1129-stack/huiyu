@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_window_lights",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2883,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "muelsyse_arknights_window_lights",
     "characterId": "muelsyse_arknights",
-    "outfitId": "golden_reverie",
+    "outfitId": "citywater_silver",
     "title": "缪尔赛思 · 灯火映在玻璃上",
     "category": "亲密时刻",
     "description": "她数着窗外的灯火，忽然转身靠近，问你有没有发现玻璃里也映着两个人的影子。",

@@ -33,6 +33,10 @@ export interface DraftSelections {
 export interface DraftOutfitOverride {
   tokens: string[]
   replaced: string | null
+  presetId?: string
+  label?: string
+  prose?: string
+  suppressedTags?: string[]
 }
 
 export function parseOutfitOverride(value: unknown): DraftOutfitOverride | null {
@@ -41,7 +45,15 @@ export function parseOutfitOverride(value: unknown): DraftOutfitOverride | null 
   const tokens = Array.isArray(input.tokens)
     ? [...new Set(input.tokens.filter((token): token is string => typeof token === 'string').map(token => token.trim()).filter(Boolean))]
     : []
-  return tokens.length ? { tokens, replaced: typeof input.replaced === 'string' ? input.replaced : null } : null
+  if (!tokens.length) return null
+  const optionalText = (value: unknown, max: number) => typeof value === 'string' && value.trim() && value.length <= max ? value.trim() : undefined
+  const presetId = optionalText(input.presetId, 512), label = optionalText(input.label, 512), prose = optionalText(input.prose, 4000)
+  const suppressedTags = Array.isArray(input.suppressedTags)
+    ? [...new Set(input.suppressedTags.filter((tag): tag is string => typeof tag === 'string' && !!tag.trim()).map(tag => tag.trim()))].slice(0, 256)
+    : []
+  return { tokens, replaced: typeof input.replaced === 'string' ? input.replaced : null,
+    ...(presetId ? { presetId } : {}), ...(label ? { label } : {}), ...(prose ? { prose } : {}),
+    ...(suppressedTags.length ? { suppressedTags } : {}) }
 }
 
 /** Only tags actually introduced by reverse inference; user-owned duplicates are excluded. */

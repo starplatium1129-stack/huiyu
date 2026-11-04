@@ -58,7 +58,7 @@
         v-model:search="popularSearch"
         :characters="pb.popularCharacters"
         :selected-character-id="pb.subject.kind === 'popular' ? pb.subject.characterId : ''"
-        :selected-outfit-id="pb.subject.kind === 'popular' ? pb.subject.outfitId : ''"
+        :selected-outfit-id="pb.subject.kind === 'popular' && !pb.outfitOverride ? pb.subject.outfitId : ''"
         @select="$emit('selectCharacter', $event)"
         @select-outfit="$emit('selectOutfit', $event)"
       />

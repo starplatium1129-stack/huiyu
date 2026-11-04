@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_rose_shop",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3016,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "entelechia_arknights_rose_shop",
     "characterId": "entelechia_arknights",
-    "outfitId": "standard",
+    "outfitId": "rose_ink",
     "title": "隐德来希 · 玫瑰花店",
     "category": "泰拉日常",
     "description": "她比较了几枝玫瑰，最后选了一朵还未完全盛开的，请店主单独包好。",

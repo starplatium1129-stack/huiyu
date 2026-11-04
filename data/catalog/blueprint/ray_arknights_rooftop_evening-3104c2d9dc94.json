@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_rooftop_evening",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2914,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "ray_arknights_rooftop_evening",
     "characterId": "ray_arknights",
-    "outfitId": "dreaming_high",
+    "outfitId": "summer_fa098",
     "title": "莱伊 · 屋顶的风",
     "category": "亲密时刻",
     "description": "屋顶的风吹乱她的头发。她回头按住发丝，小声问你愿不愿意再陪她待一会儿。",

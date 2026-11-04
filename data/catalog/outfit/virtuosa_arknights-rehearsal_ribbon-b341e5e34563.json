@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/rehearsal_ribbon",
+  "revision": 1,
+  "sortOrder": 2189,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "rehearsal_ribbon",
+      "name": "黑色系带衬衣与灰紫高腰长裙",
+      "prose": "A black fluid blouse with long ties at the neck and cuffs, tucked into a high-waisted grey-violet skirt with narrow knife pleats.",
+      "tokens": [
+        "black fluid blouse",
+        "long neck ties",
+        "tied cuffs",
+        "grey violet high-waisted pleated skirt"
+      ],
+      "characterId": "virtuosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

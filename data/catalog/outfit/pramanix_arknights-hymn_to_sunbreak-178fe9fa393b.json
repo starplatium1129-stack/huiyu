@@ -1,0 +1,39 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/hymn_to_sunbreak",
+  "revision": 2,
+  "sortOrder": 1998,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "hymn_to_sunbreak",
+      "name": "曙光祝颂·白色礼裙与铃饰",
+      "prose": "A white ceremonial dress with detached sleeves, a jeweled headpiece and bell ornaments.",
+      "tokens": [
+        "white ceremonial dress",
+        "detached sleeves",
+        "jeweled headpiece",
+        "bell ornaments"
+      ],
+      "characterId": "pramanix_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "pramanix (arknights)",
+        "pramanix the prerita (arknights)",
+        "pramanix the prerita (hymn to sunbreak) (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "twin braids",
+        "grey eyes",
+        "snow leopard ears",
+        "snow leopard tail"
+      ],
+      "identityProseOverride": "Pramanix from Arknights has very long white hair in twin braids, grey eyes, snow leopard ears and a long snow leopard tail."
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/sage_lab",
+  "revision": 1,
+  "sortOrder": 2166,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "sage_lab",
+      "name": "鼠尾草围裙与浅灰立领衬衣",
+      "prose": "A sage cotton apron with neat labelled pockets over a pale grey stand-collar blouse and dark straight trousers.",
+      "tokens": [
+        "sage cotton apron",
+        "labelled pockets",
+        "pale grey stand-collar blouse",
+        "dark straight trousers"
+      ],
+      "characterId": "ptilopsis_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/sky_windbreaker",
+  "revision": 1,
+  "sortOrder": 2147,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "sky_windbreaker",
+      "name": "天空蓝拼色风衣与奶油棉长裤",
+      "prose": "A loose sky-blue windbreaker with ivory panels and a small paper-plane patch, worn over a cream shirt and relaxed cotton trousers.",
+      "tokens": [
+        "sky blue windbreaker",
+        "ivory panels",
+        "paper airplane patch",
+        "cream shirt",
+        "cotton trousers"
+      ],
+      "characterId": "ceobe_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

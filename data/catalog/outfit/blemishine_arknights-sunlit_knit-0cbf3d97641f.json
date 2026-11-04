@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/sunlit_knit",
+  "revision": 1,
+  "sortOrder": 2122,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "sunlit_knit",
+      "name": "日光菱纹开衫与细褶长裙",
+      "prose": "A soft butter-yellow cardigan with an openwork diamond pattern over an ivory blouse and a slate-blue finely pleated midi skirt.",
+      "tokens": [
+        "butter yellow cardigan",
+        "diamond openwork knit",
+        "ivory blouse",
+        "slate blue pleated midi skirt"
+      ],
+      "characterId": "blemishine_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

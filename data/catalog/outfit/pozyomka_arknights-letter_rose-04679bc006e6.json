@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "pozyomka_arknights/letter_rose",
+  "revision": 2,
+  "sortOrder": 2065,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "pozyomka_arknights",
+    "outfit": {
+      "id": "letter_rose",
+      "name": "灰玫瑰褶袖长裙与浮雕胸针",
+      "prose": "A dusty-rose high-neck dress with gathered cuffs and a burgundy ribbon belt, finished with an ivory cameo brooch.",
+      "tokens": [
+        "dusty rose high-neck dress",
+        "gathered cuffs",
+        "burgundy ribbon belt",
+        "ivory cameo brooch"
+      ],
+      "characterId": "pozyomka_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

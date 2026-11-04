@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/origami_sky",
+  "revision": 1,
+  "sortOrder": 2158,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "origami_sky",
+      "name": "云白翻领短开衫与浅灰细褶裙",
+      "prose": "A cloud-white cropped cardigan with a rounded collar over a pale blue blouse and a dove-grey finely pleated skirt.",
+      "tokens": [
+        "cloud white cropped cardigan",
+        "round collar",
+        "pale blue blouse",
+        "dove grey pleated skirt"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

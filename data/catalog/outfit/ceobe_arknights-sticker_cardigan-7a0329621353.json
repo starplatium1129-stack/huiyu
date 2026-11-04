@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/sticker_cardigan",
+  "revision": 1,
+  "sortOrder": 2146,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "sticker_cardigan",
+      "name": "彩色贴布开衫与藏蓝背心裙",
+      "prose": "A soft ivory cardigan with small colorful food patches over a navy corduroy pinafore and a pale yellow shirt.",
+      "tokens": [
+        "ivory cardigan",
+        "colorful food patches",
+        "navy corduroy pinafore",
+        "pale yellow shirt"
+      ],
+      "characterId": "ceobe_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

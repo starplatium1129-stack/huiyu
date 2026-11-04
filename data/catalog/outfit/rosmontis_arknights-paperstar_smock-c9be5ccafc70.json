@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rosmontis_arknights/paperstar_smock",
+  "revision": 2,
+  "sortOrder": 2085,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosmontis_arknights",
+    "outfit": {
+      "id": "paperstar_smock",
+      "name": "纸星绣袋奶油罩裙与浅蓝衬衫",
+      "prose": "A cream cotton smock dress with a navy star-embroidered pocket over a pale blue long-sleeved shirt, paired with canvas shoes.",
+      "tokens": [
+        "cream cotton smock dress",
+        "navy star-embroidered pocket",
+        "pale blue long-sleeved shirt",
+        "canvas shoes"
+      ],
+      "characterId": "rosmontis_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

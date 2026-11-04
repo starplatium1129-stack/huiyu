@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_library_return",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2887,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_library_return",
     "characterId": "nymph_arknights",
-    "outfitId": "sweetness_to_the_heart",
+    "outfitId": "official_standard",
     "title": "妮芙 · 图书馆还书日",
     "category": "泰拉日常",
     "description": "她把借来的书按大小叠好，抱到归还台前。看到旁边的新书展示，妮芙忍不住又停下来读封面。",

@@ -30,6 +30,10 @@
 .pb .outfit-presets[open] .wardrobe-collapse { display:inline; }
 .pb .outfit-presets > [data-disclosure-content] { padding:var(--s-3); border-top:1px solid var(--border-soft); }
 .pb .wardrobe-description { margin:0 0 var(--s-3); color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
+.pb .character-wardrobe .outfit-preset > small { font-family:var(--font-sans); }
+.pb .character-wardrobe .outfit-preset:disabled { color:var(--text-disabled); cursor:not-allowed; }
+.pb .character-wardrobe .outfit-preset:disabled > small { color:var(--text-disabled); }
+.pb .wardrobe-more { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-top:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .pb .outfit-preset-list { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:var(--s-2); }
 .pb :is(.outfit-preset,.tag-results button) { display:grid; grid-template-columns:minmax(0,1fr) 16px; gap:var(--s-1) var(--s-2); min-width:0; min-height:var(--control-height); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); text-align:left; cursor:pointer; }
 .pb :is(.outfit-preset,.tag-results button) > :is(strong,small) { grid-column:1; min-width:0; white-space:normal; overflow-wrap:anywhere; }
@@ -71,6 +75,7 @@
   .pb .tag-editor { min-height:0; overflow:auto; overscroll-behavior:contain; scrollbar-gutter:stable; scroll-padding-block:var(--s-2); padding-inline-start:var(--s-4); border-inline-start:1px solid var(--border-soft); }
   .pb .tag-browser { min-height:0; overflow:auto; overscroll-behavior:contain; }
   .pb .tag-results { flex:1; min-height:72px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scroll-padding-block:var(--s-2); }
+  .pb .tag-browser > .character-wardrobe { flex:1; min-height:72px; overflow:auto; overscroll-behavior:contain; scrollbar-width:thin; scroll-padding-block:var(--s-2); }
 }
 @media (min-width:800px) and (max-height:680px) {
   .pb .prompt-workbench-body { padding:var(--s-4); }

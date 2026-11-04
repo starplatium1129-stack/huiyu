@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/gallery_blue",
+  "revision": 2,
+  "sortOrder": 2078,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "gallery_blue",
+      "name": "雾蓝圆领长袖裙与银色浮雕胸针",
+      "prose": "A mist-blue long-sleeved dress with an ivory Peter Pan collar and a small silver cameo brooch, finished with a narrow velvet waist ribbon.",
+      "tokens": [
+        "mist blue long-sleeved dress",
+        "ivory peter pan collar",
+        "silver cameo brooch",
+        "velvet waist ribbon"
+      ],
+      "characterId": "rosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

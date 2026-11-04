@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/balcony_silver",
+  "revision": 2,
+  "sortOrder": 2075,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "balcony_silver",
+      "name": "银灰缎裙与赤红不对称肩披",
+      "prose": "A silver-grey satin column dress with a slim black belt and an asymmetrical red shoulder cape, fastened by a small dark metal clasp.",
+      "tokens": [
+        "silver grey satin column dress",
+        "slim black belt",
+        "asymmetrical red shoulder cape",
+        "dark metal clasp"
+      ],
+      "characterId": "w_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "w (arknights)",
+        "wis'adel (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "medium hair",
+        "red streak",
+        "red eyes",
+        "red horns",
+        "demon tail"
+      ],
+      "identityProseOverride": "Wis’adel from Arknights has grey-white hair with red streaks, red eyes, red horns and a demon tail."
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_window_evening",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2853,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_window_evening",
     "characterId": "pramanix_arknights",
-    "outfitId": "prerita",
+    "outfitId": "lamplight_shawl",
     "title": "初雪 · 灯下的低声交谈",
     "category": "亲密时刻",
     "description": "灯下的雪光落在她发梢。她回身伸出手，邀请你到窗边，声音轻得像怕惊动这场雪。",

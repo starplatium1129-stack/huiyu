@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/lantern_yukata",
+  "revision": 2,
+  "sortOrder": 2035,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "lantern_yukata",
+      "name": "樱粉灯笼纹浴衣与深玫瑰色腰带",
+      "prose": "A pale pink yukata patterned with tiny lanterns, tied with a dark rose obi and worn with white socks and simple sandals.",
+      "tokens": [
+        "pale pink yukata",
+        "lantern pattern",
+        "dark rose obi",
+        "white socks",
+        "sandals"
+      ],
+      "characterId": "nymph_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "swire_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 298,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "swire_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "看在你这么有诚意的份上，我就答应了。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "诗怀雅立绘待制作"
+        "image": "../assets/characters/popular-swire_arknights.png?v=f98318b54c37",
+        "alt": "诗怀雅场景样张立绘",
+        "sourceShowcaseId": "pc_swire_arknights_swire_arknights_flower_market",
+        "sourceShowcaseSha256": "e56d262fd4ea67ed54d70c9aa6a63c5b9f06d5a1e13ce07b63cc9c8391dc95e5"
       }
     },
     "popular": {
@@ -78,7 +80,10 @@
       ],
       "characterTokens": [
         "swire (arknights)",
-        "swire (honor and splendor) (arknights)"
+        "swire (honor and splendor) (arknights)",
+        "swire the elegant wit (arknights)",
+        "swire the elegant wit (rhythmic blocks) (arknights)",
+        "swire the elegant wit (a prosperous visage) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

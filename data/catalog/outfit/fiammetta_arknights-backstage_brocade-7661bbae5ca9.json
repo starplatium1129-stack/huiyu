@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "fiammetta_arknights/backstage_brocade",
+  "revision": 2,
+  "sortOrder": 2099,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "fiammetta_arknights",
+    "outfit": {
+      "id": "backstage_brocade",
+      "name": "黑金羽纹提花衬衣与暗红长裙",
+      "prose": "A black brocade blouse woven with fine gold feather motifs, tucked into a dark-red long skirt and paired with low-heeled black boots.",
+      "tokens": [
+        "black brocade blouse",
+        "gold feather motifs",
+        "dark red long skirt",
+        "low-heeled black boots"
+      ],
+      "characterId": "fiammetta_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

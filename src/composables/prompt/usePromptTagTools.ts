@@ -42,7 +42,7 @@ export function usePromptTagTools(pb: PromptBuilderStore) {
   // replaced 可能是被替换的旧服装族；提示始终描述当前 tokens，展示不回写生成词条。
   const outfitOverrideLabel = computed(() => {
     const labels = (pb.outfitOverride?.tokens ?? []).map(tagLabel).filter(label => label && !/[a-z_]/i.test(label))
-    return [...new Set(labels)].slice(0, 3).join('、') || '新服装'
+    return pb.outfitOverride?.label || [...new Set(labels)].slice(0, 3).join('、') || '新服装'
   })
 
   /** 词条权重色彩热力等级（NovelAI 视觉分级：强增强、增强、弱化、标准） */

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/lamplight_shawl",
+  "revision": 2,
+  "sortOrder": 2002,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "lamplight_shawl",
+      "name": "冰绡蓝披肩与象牙立领长裙",
+      "prose": "An ivory high-neck long dress with delicate pin-tucked sleeves beneath an ice-blue fine-knit shawl, fastened by a silver bell brooch.",
+      "tokens": [
+        "ivory high-neck long dress",
+        "pin-tucked sleeves",
+        "ice blue fine-knit shawl",
+        "silver bell brooch"
+      ],
+      "characterId": "pramanix_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

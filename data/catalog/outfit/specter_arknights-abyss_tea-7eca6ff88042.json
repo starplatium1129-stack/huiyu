@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/abyss_tea",
+  "revision": 1,
+  "sortOrder": 2133,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "abyss_tea",
+      "name": "潮汐灰褶领衬衫与墨蓝马甲",
+      "prose": "A dove-grey blouse with a fine pleated collar under a deep navy waistcoat, with a black flowing skirt and a silver droplet clasp.",
+      "tokens": [
+        "dove grey blouse",
+        "pleated collar",
+        "deep navy waistcoat",
+        "black flowing skirt",
+        "silver droplet clasp"
+      ],
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

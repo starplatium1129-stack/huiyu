@@ -34,11 +34,12 @@ import { artistStyleProse, artistTagsForEngine } from '@/config/artistStyles'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { compositionTokens } from '@/utils/blueprintComposition'
 import { mossArtistTags } from '@/utils/mossPrompt'
+import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
   | 'colorMood' | 'concise' | 'directorMode' | 'emotionPrompt' | 'loraMeta' | 'manualTags' | 'modelProfiles' | 'randomVariation'
-  | 'sdModelName' | 'sdParams' | 'directorSources' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject' | 'referenceInput'>
+  | 'sdModelName' | 'sdParams' | 'directorSources' | 'selections' | 'tags' | 'visualDescription' | 'sceneId' | 'subject' | 'referenceInput' | 'outfitOverride'>
 
 /**
  * Director prompt composition has no UI or SD lifecycle ownership. Keeping it
@@ -77,7 +78,7 @@ export function usePromptAssembly(
 
   /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或触发词，自动提升为 R18 评级以解除负面拦截。 */
   const effectiveScene = computed(() => {
-    const isManualR18 = isManualR18Tags(pb.manualTags, matureTokenSet.value)
+    const isManualR18 = isManualR18Tags([...withoutSuppressedOutfitTags(pb.manualTags, pb.outfitOverride), ...(pb.outfitOverride?.tokens || [])], matureTokenSet.value)
     const original = pb.activeScene
     const variation = activeRandomVariation(pb.randomVariation, pb, original)
     const scene = original && variation ? variedStudioScene(original, variation, pb) : original
@@ -162,11 +163,14 @@ export function usePromptAssembly(
   const promptParts = computed<PromptPart[]>(() => {
     const parts: PromptPart[] = []
     const selections = pb.selections
-    const scene = effectiveScene.value
+    const originalScene = effectiveScene.value
+    const originalControls = characterControlTokens(originalScene, pb.char, controlLoraIds.value)
+    const scene = pb.outfitOverride ? studioSceneWithOutfit(originalScene, originalControls, pb.outfitOverride.tokens) : originalScene
+    const manualTags = new Set(withoutSuppressedOutfitTags(pb.manualTags, pb.outfitOverride))
     const profile = modelProfile.value
     const sceneTemplate = sceneTemplateText(scene, {
       char: pb.char,
-      manualTags: pb.manualTags,
+      manualTags,
       shot: selections.shot,
       engine: engine.value,
       profile,
@@ -177,9 +181,10 @@ export function usePromptAssembly(
 
     // 2) 角色行 + 已勾选特征
     const traitTags = currentTraits.value
-      .filter(trait => pb.manualTags.has(trait.tag))
+      .filter(trait => manualTags.has(trait.tag))
       .map(trait => trait.tag)
-    const controlTags = characterControlTokens(scene, pb.char, controlLoraIds.value)
+    const controlTags = pb.outfitOverride
+      ? [...originalControls.filter(tag => /^(?:nene|natsume)_r18$/i.test(tag)), ...pb.outfitOverride.tokens] : originalControls
     const charLine = compositionTokens(tokenize(pb.charPrompt), { ...scene, promptTokens: tokenize(sceneTemplate) }).join(', ')
     if (charLine) {
       const identityTags = [...controlTags, ...traitTags]
@@ -204,8 +209,8 @@ export function usePromptAssembly(
 
     // 精简模式：quality + character + top5 tags + shot + LoRA
     if (pb.concise) {
-      if (pb.manualTags.size) {
-        parts.push({ cls: 't', text: format([...pb.manualTags].slice(0, 5).join(', ')) })
+      if (manualTags.size) {
+        parts.push({ cls: 't', text: format([...manualTags].slice(0, 5).join(', ')) })
       }
       if (selections.shot) {
         const shot = SHOT.find(option => option.id === selections.shot)
@@ -236,11 +241,11 @@ export function usePromptAssembly(
     }
 
     // 10) 手动标签（剔除与场景模板重复的）
-    if (pb.manualTags.size) {
+    if (manualTags.size) {
       const templateKeys = new Set(
         splitBreaks(sceneTemplate).flatMap(segment => tokenize(segment)).map(normalizeKey),
       )
-      const manual = [...pb.manualTags].filter(tag => !templateKeys.has(normalizeKey(tag)))
+      const manual = [...manualTags].filter(tag => !templateKeys.has(normalizeKey(tag)))
       if (manual.length) parts.push({ cls: 't', text: format(manual.join(', ')) })
     }
 
@@ -269,6 +274,7 @@ export function usePromptAssembly(
       shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
       directorSources: pb.directorSources, palette: colorMoodTokens.value,
       manual: [...pb.manualTags], visualDescription: pb.visualDescription,
+      outfitOverride: pb.outfitOverride,
       negativeCustom: pb.sdParams.negativeCustom, matureTokens: matureTokenSet.value,
     })
   }

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/boardgame_red",
+  "revision": 2,
+  "sortOrder": 2069,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "boardgame_red",
+      "name": "短款赤红飞行夹克与黑色百褶裙",
+      "prose": "A cropped red bomber jacket with black ribbed trim over a black T-shirt and pleated black skirt, with chunky sneakers and a silver safety-pin detail.",
+      "tokens": [
+        "cropped red bomber jacket",
+        "black ribbed trim",
+        "black t-shirt",
+        "black pleated skirt",
+        "chunky sneakers",
+        "silver safety pin"
+      ],
+      "characterId": "w_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

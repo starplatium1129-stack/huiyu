@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_library_closeness",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2905,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "hoolheyak_arknights_library_closeness",
     "characterId": "hoolheyak_arknights",
-    "outfitId": "carriage_of_winds",
+    "outfitId": "library_inklace",
     "title": "霍尔海雅 · 借来的那页",
     "category": "亲密时刻",
     "description": "她将书举到你们之间，等你读完也没有移开，只从书页上方看着你，慢悠悠追问答案。",

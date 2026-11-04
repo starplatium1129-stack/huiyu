@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/record_home",
+  "revision": 2,
+  "sortOrder": 2104,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "record_home",
+      "name": "象牙罗纹毛衣与深松绿长裙",
+      "prose": "An ivory ribbed sweater with broad cuffs paired with a dark pine-green relaxed skirt, a small brass clasp and soft indoor shoes.",
+      "tokens": [
+        "ivory ribbed sweater",
+        "broad cuffs",
+        "dark pine green relaxed skirt",
+        "brass clasp",
+        "indoor shoes"
+      ],
+      "characterId": "hoshiguma_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

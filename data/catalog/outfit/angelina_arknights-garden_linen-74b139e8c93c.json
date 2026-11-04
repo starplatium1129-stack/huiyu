@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/garden_linen",
+  "revision": 1,
+  "sortOrder": 2187,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "garden_linen",
+      "name": "向日葵黄短外套与浅蓝背带裙",
+      "prose": "A sunflower-yellow cropped cotton jacket over a white shirt and pale-blue pinafore dress, with a small orange flower hair clip and canvas shoes.",
+      "tokens": [
+        "sunflower yellow cropped jacket",
+        "white shirt",
+        "pale blue pinafore dress",
+        "orange flower hair clip",
+        "canvas shoes"
+      ],
+      "characterId": "angelina_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

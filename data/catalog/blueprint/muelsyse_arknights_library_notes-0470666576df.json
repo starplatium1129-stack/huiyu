@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_library_notes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2880,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "muelsyse_arknights_library_notes",
     "characterId": "muelsyse_arknights",
-    "outfitId": "golden_reverie",
+    "outfitId": "botanical_vest",
     "title": "缪尔赛思 · 植物志的空白页",
     "category": "泰拉日常",
     "description": "旧植物志的图版旁留着一小片空白。她没有直接写在书上，而是另取便笺，记下今天观察到的差异。",

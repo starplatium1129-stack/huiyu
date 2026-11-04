@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_museum_audio",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2897,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "hoolheyak_arknights_museum_audio",
     "characterId": "hoolheyak_arknights",
-    "outfitId": "standard",
+    "outfitId": "ritual_immortality",
     "title": "霍尔海雅 · 展柜前的耳机",
     "category": "泰拉日常",
     "description": "讲解音频讲到一种早已失传的仪式时，她摘下一边耳机，低声指出说明牌上的年代或许还值得商榷。",

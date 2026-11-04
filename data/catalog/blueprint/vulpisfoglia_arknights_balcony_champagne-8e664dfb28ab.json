@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_balcony_champagne",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2865,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_balcony_champagne",
     "characterId": "vulpisfoglia_arknights",
-    "outfitId": "out_of_focus",
+    "outfitId": "champagne_dress",
     "title": "忍冬 · 露台上的一杯",
     "category": "亲密时刻",
     "description": "她举杯碰过你的杯沿，却没有立刻离开，而是侧身靠近，笑着问今晚能否先把日程忘掉。",

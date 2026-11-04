@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_snow_tracks",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2852,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_snow_tracks",
     "characterId": "pramanix_arknights",
-    "outfitId": "casters_frost",
+    "outfitId": "frostpath_parka",
     "title": "初雪 · 新雪上的脚印",
     "category": "泰拉日常",
     "description": "小径上先有一串小小的脚印，随后才是她的。初雪低头辨认了片刻，绕开它们继续走，免得把痕迹踩乱。",

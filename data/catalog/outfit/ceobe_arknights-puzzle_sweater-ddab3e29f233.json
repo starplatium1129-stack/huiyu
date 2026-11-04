@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ceobe_arknights/puzzle_sweater",
+  "revision": 1,
+  "sortOrder": 2144,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "ceobe_arknights",
+    "outfit": {
+      "id": "puzzle_sweater",
+      "name": "拼色拼图圆领毛衣与软呢裙",
+      "prose": "An oversized oatmeal sweater with navy and rust puzzle-piece appliqués, paired with a soft brown wool skirt and ankle socks.",
+      "tokens": [
+        "oversized oatmeal sweater",
+        "puzzle piece applique",
+        "brown wool skirt",
+        "ankle socks"
+      ],
+      "characterId": "ceobe_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

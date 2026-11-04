@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/hearth_burgundy",
+  "revision": 2,
+  "sortOrder": 2003,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "hearth_burgundy",
+      "name": "酒红细褶羊毛裙与雪花胸针",
+      "prose": "A burgundy finely pleated wool dress under a soft dove-grey cardigan, with a carved snowflake brooch and a narrow velvet waist ribbon.",
+      "tokens": [
+        "burgundy pleated wool dress",
+        "dove grey cardigan",
+        "snowflake brooch",
+        "velvet waist ribbon"
+      ],
+      "characterId": "pramanix_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

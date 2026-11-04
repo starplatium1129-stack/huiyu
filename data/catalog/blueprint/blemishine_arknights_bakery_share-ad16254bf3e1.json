@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_bakery_share",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3011,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_bakery_share",
     "characterId": "blemishine_arknights",
-    "outfitId": "standard",
+    "outfitId": "wheat_check",
     "title": "瑕光 · 刚烤好的面包",
     "category": "泰拉日常",
     "description": "她从店里出来，纸袋里装着刚烤好的面包。热气透过袋口冒出来，她提议先分一块尝尝。",

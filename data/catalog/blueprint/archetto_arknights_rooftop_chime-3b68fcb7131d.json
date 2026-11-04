@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_rooftop_chime",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2925,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "archetto_arknights_rooftop_chime",
     "characterId": "archetto_arknights",
-    "outfitId": "standard",
+    "outfitId": "rooftop_bell",
     "title": "空弦 · 钟声之后",
     "category": "亲密时刻",
     "description": "钟声停后，她侧过头问你要不要再待一会儿。风吹得她靠近了些，她却只是笑着继续看你。",

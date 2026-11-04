@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "fiammetta_arknights/terrace_plum",
+  "revision": 2,
+  "sortOrder": 2098,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "fiammetta_arknights",
+    "outfit": {
+      "id": "terrace_plum",
+      "name": "深梅红长裙与利落黑色短外套",
+      "prose": "A deep-plum column dress beneath a fitted black cropped jacket with satin lapels, finished with a thin silver feather pendant.",
+      "tokens": [
+        "deep plum column dress",
+        "fitted black cropped jacket",
+        "satin lapels",
+        "silver feather pendant"
+      ],
+      "characterId": "fiammetta_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_choir_sheet",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2922,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "archetto_arknights_choir_sheet",
     "characterId": "archetto_arknights",
-    "outfitId": "glory_of_the_devout",
+    "outfitId": "publicity_strategy",
     "title": "空弦 · 谱架上的新曲",
     "category": "泰拉日常",
     "description": "合唱排练前，她把新曲的谱子放上谱架，翻到需要先练习的段落，等其他人到齐。",

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/night_reflective",
+  "revision": 1,
+  "sortOrder": 2154,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "night_reflective",
+      "name": "星轨反光线黑色连帽风衣",
+      "prose": "A matte black hooded windbreaker with fine silver reflective seams over a forest-green knit and dark tapered trousers.",
+      "tokens": [
+        "matte black hooded windbreaker",
+        "silver reflective seams",
+        "forest green knit top",
+        "dark tapered trousers"
+      ],
+      "characterId": "mon3tr_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

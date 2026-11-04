@@ -1,24 +1,28 @@
 <template>
   <div class="panel step-panel advanced-decision expert-tag-panel" id="stepTags">
-    <section class="tag-browser" aria-label="搜索与选择词条">
+    <section class="tag-browser" :aria-label="isOutfitLibrary ? '搜索与选择角色服装' : '搜索与选择词条'">
       <div class="tag-dictionary-heading">
-        <strong>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
-        <a v-if="usesTagSyntax" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
+        <strong v-if="isOutfitLibrary">角色服装库</strong>
+        <strong v-else>{{ gelbooruDictionary ? 'Gelbooru 词库' : '本地词条' }}<small v-if="gelbooruDictionary" class="expert-tag-count">已核验 {{ verifiedTagCount }} 条</small></strong>
+        <a v-if="!isOutfitLibrary && usesTagSyntax" class="tag-dictionary-link" href="https://gelbooru.com/index.php?page=tags&amp;s=list" target="_blank" rel="noopener noreferrer" aria-label="打开 Gelbooru 词典，在新窗口打开"><ArchiveIcon name="search" />Gelbooru 查词</a>
       </div>
-      <p v-if="isAnima" class="tag-dictionary-note">普通词条优先 Gelbooru；画师名沿用 Danbooru。</p>
-      <p v-else-if="isMoss" class="tag-dictionary-note">MOSS 使用词条＋自然语言：词条控制画面元素，描述补充动作与空间关系。括号权重不生效。</p>
-      <p v-else-if="promptFormat === 'natural-language'" class="tag-dictionary-note">词条用于组织画面，最终以自然语言发送。</p>
+      <p v-if="!isOutfitLibrary && isAnima" class="tag-dictionary-note">普通词条优先 Gelbooru；画师名沿用 Danbooru。</p>
+      <p v-else-if="!isOutfitLibrary && isMoss" class="tag-dictionary-note">MOSS 使用词条＋自然语言：词条控制画面元素，描述补充动作与空间关系。括号权重不生效。</p>
+      <p v-else-if="!isOutfitLibrary && promptFormat === 'natural-language'" class="tag-dictionary-note">词条用于组织画面，最终以自然语言发送。</p>
       <div class="tag-search-row">
-        <StudioSearch v-model="tagSearch" class="tag-search" label="搜索词条" placeholder="搜索中文含义、英文词条或别名…" />
+        <StudioSearch v-if="isOutfitLibrary" v-model="outfitSearch" class="tag-search" label="搜索角色服装" placeholder="搜索服装或角色…" />
+        <StudioSearch v-else v-model="tagSearch" class="tag-search" label="搜索词条" placeholder="搜索中文含义、英文词条或别名…" />
         <button class="btn btn-quiet btn-sm" type="button" aria-controls="manual-tag-entry" @click="focusTagInput">自选词条</button>
       </div>
-      <div class="tag-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="词条分类">
+      <div class="tag-categories studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="词条与服装分类">
         <AnimatedSelection />
-        <button v-for="cat in tagCategories" :key="cat.id" type="button"
-          :aria-pressed="tagCategory === cat.id"
-          @click="tagCategory = cat.id">{{ cat.label }}</button>
+        <template v-for="cat in tagCategories" :key="cat.id">
+          <button type="button" :aria-pressed="tagCategory === cat.id" @click="tagCategory = cat.id">{{ cat.label }}</button>
+          <button v-if="cat.id === 'all'" type="button" :aria-pressed="isOutfitLibrary" @click="tagCategory = OUTFIT_LIBRARY_CATEGORY">角色服装库</button>
+        </template>
       </div>
-      <div v-content-motion:right="tagCategory" class="tag-results">
+      <DirectorOutfitLibrary v-if="isOutfitLibrary" v-content-motion:right :search="outfitSearch" />
+      <div v-else v-content-motion:right="tagCategory" class="tag-results">
         <StudioTooltip v-for="tag in visibleTags" :key="tag.en" :content="tagDescription(tag)">
           <button
             type="button"
@@ -34,7 +38,7 @@
           <button v-if="tagSearch || tagCategory !== 'all'" class="btn btn-ghost btn-sm tw:mt-s-2" type="button" @click="tagSearch = ''; tagCategory = 'all'">重置词条筛选</button>
         </div>
       </div>
-      <p v-if="hiddenTagCount" class="tag-more-hint">
+      <p v-if="!isOutfitLibrary && hiddenTagCount" class="tag-more-hint">
         另有 {{ hiddenTagCount }} 个匹配词条未展示；可细化搜索，或在「自选词条」中粘贴添加。
       </p>
     </section>
@@ -60,6 +64,7 @@
           <span class="manual-tag-text">
             <span class="manual-tag-en">{{ displayTag(tag) }}</span>
             <span v-if="tagLabel(tag)" class="manual-tag-cn">{{ tagLabel(tag) }}</span>
+            <span v-if="isSuppressed(tag)" class="manual-tag-cn">暂不生效</span>
           </span>
           <button type="button" class="btn btn-quiet btn-sm btn-icon" :aria-label="'移除词条 ' + tag" @click="removeTag(tag, $event)"><ArchiveIcon name="close" /></button>
         </span>
@@ -113,7 +118,7 @@
           type="button" class="outfit-preset"
           :class="{ selected: isPresetActive(bundle.tags) }"
           :aria-pressed="isPresetActive(bundle.tags)"
-          @click="toggleOutfitBundle(bundle.tags)">
+          @click="toggleUniversalPreset(bundle.tags, bundle.label)">
           <ArchiveIcon name="success" class="tag-option-check" />
           <strong>{{ bundle.label }}</strong>
           <small>{{ bundle.tags.slice(0, 4).map(displayTag).join(', ') }}{{ bundle.tags.length > 4 ? ' …' : '' }}</small>
@@ -155,6 +160,8 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import DirectorOutfitLibrary from '@/components/director/DirectorOutfitLibrary.vue'
+import { suppressedOutfitTags } from '@/utils/outfitReplacement'
 import { confirmAction } from '@/composables/useConfirm'
 import {
   OUTFIT_BUNDLES,
@@ -191,6 +198,7 @@ function tagDescription(tag: TagEntry): string {
 }
 
 const tagSearch = ref('')
+const outfitSearch = ref('')
 // Keep native disclosure shells and their live selection summaries from the start.
 const universalRevealed = ref(false), outfitsRevealed = ref(false)
 const tagInputText = ref('')
@@ -224,6 +232,8 @@ const inputSuggestions = computed(() => {
   return suggestions
 })
 const tagCategory = ref('all')
+const OUTFIT_LIBRARY_CATEGORY = 'outfit-library'
+const isOutfitLibrary = computed(() => tagCategory.value === OUTFIT_LIBRARY_CATEGORY)
 
 function onTagEnter(event: KeyboardEvent) {
   if (event.isComposing || event.keyCode === 229) return
@@ -301,11 +311,13 @@ const universalWardrobePresets = computed(() => UNIVERSAL_WARDROBE_PRESETS)
 const outfitCharacters = computed(() => [...new Set(visibleOutfitBundles.value.map(bundle => bundle.label.split(' · ')[0]))].join(' / '))
 const selectedOutfitLabels = computed(() => visibleOutfitBundles.value.filter(bundle => isPresetActive(bundle.tags)).map(bundle => bundle.label))
 const selectedUniversalLabels = computed(() => universalWardrobePresets.value.filter(preset => isPresetActive(preset.tags)).map(preset => preset.label))
+const suppressedKeys = computed(() => new Set((pb.outfitOverride?.suppressedTags || []).map(pb.tagDictionary.canonicalize)))
+const isSuppressed = (tag: string) => suppressedKeys.value.has(pb.tagDictionary.canonicalize(tag))
 
 function isPresetActive(tags: string[]): boolean {
   if (!tags.length) return false
   const canonical = tags.map(pb.tagDictionary.canonicalize)
-  if (pb.isPopular && pb.outfitOverride) {
+  if (pb.outfitOverride) {
     const set = new Set(pb.outfitOverride.tokens.map(pb.tagDictionary.canonicalize))
     return canonical.every(t => set.has(t))
   }
@@ -313,8 +325,13 @@ function isPresetActive(tags: string[]): boolean {
 }
 
 function toggleUniversalPreset(tags: string[], label: string) {
+  if (!pb.isPopular && (pb.isUnbound || pb.char === 'triad')) {
+    toggleOutfitBundle(tags)
+    pb.flash(`已装配「${label}」`)
+    return
+  }
   if (isPresetActive(tags)) {
-    if (pb.isPopular) {
+    if (pb.outfitOverride) {
       pb.clearOutfitOverride()
     } else {
       toggleOutfitBundle(tags)
@@ -322,13 +339,8 @@ function toggleUniversalPreset(tags: string[], label: string) {
     pb.flash(`已卸下「${label}」`)
     return
   }
-  if (pb.isPopular) {
-    pb.setOutfitOverride(tags, label)
-    pb.flash(`已为当前热门角色换装「${label}」`)
-  } else {
-    toggleOutfitBundle(tags)
-    pb.flash(`已装配「${label}」`)
-  }
+  pb.setOutfitOverride(tags, null, { label, suppressedTags: suppressedOutfitTags(pb.manualTags) })
+  pb.flash(`已换装「${label}」`)
 }
 
 const visibleR18Controls = computed(() =>

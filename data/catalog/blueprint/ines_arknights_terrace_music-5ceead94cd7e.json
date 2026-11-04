@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_terrace_music",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2875,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_terrace_music",
     "characterId": "ines_arknights",
-    "outfitId": "melodic_flutter",
+    "outfitId": "terrace_silk",
     "title": "伊内丝 · 露台上的余音",
     "category": "亲密时刻",
     "description": "音乐隔着玻璃变得很轻。她靠近一些听你说话，片刻后才侧过脸，低声把自己的回答告诉你。",

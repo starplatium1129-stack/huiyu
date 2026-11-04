@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/lilac_lounge",
+  "revision": 1,
+  "sortOrder": 2171,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "lilac_lounge",
+      "name": "暮紫棉质家居衬衫与珍珠灰长裙",
+      "prose": "A loose dusty-lilac cotton shirt with rolled cuffs and pearl buttons, paired with a soft pearl-grey long skirt.",
+      "tokens": [
+        "dusty lilac cotton shirt",
+        "rolled cuffs",
+        "pearl buttons",
+        "pearl grey long skirt"
+      ],
+      "characterId": "ptilopsis_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

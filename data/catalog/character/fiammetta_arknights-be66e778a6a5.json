@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fiammetta_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 285,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "fiammetta_arknights",
     "profile": {
@@ -51,8 +51,10 @@
       ],
       "voice": "事情办完了，走吧。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "菲亚梅塔立绘待制作"
+        "image": "../assets/characters/popular-fiammetta_arknights.png?v=11880fe6b848",
+        "alt": "菲亚梅塔场景样张立绘",
+        "sourceShowcaseId": "pc_fiammetta_arknights_fiammetta_arknights_morning_coffee",
+        "sourceShowcaseSha256": "39cfd575eab14c2467fbc56df86c54668ec9c8fbdc8afe07bf70eaa42153c217"
       }
     },
     "popular": {
@@ -76,7 +78,8 @@
       ],
       "characterTokens": [
         "fiammetta (arknights)",
-        "fiammetta (divine oath) (arknights)"
+        "fiammetta (divine oath) (arknights)",
+        "fiammetta (judgment day) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

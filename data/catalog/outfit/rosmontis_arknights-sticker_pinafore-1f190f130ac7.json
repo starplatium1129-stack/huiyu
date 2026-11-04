@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rosmontis_arknights/sticker_pinafore",
+  "revision": 2,
+  "sortOrder": 2087,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosmontis_arknights",
+    "outfit": {
+      "id": "sticker_pinafore",
+      "name": "蓝灰细格背心裙与白色圆领衫",
+      "prose": "A blue-grey checked pinafore over a white rounded-collar blouse, with a tiny cat-shaped button and comfortable flat shoes.",
+      "tokens": [
+        "blue grey checked pinafore",
+        "white round-collar blouse",
+        "cat-shaped button",
+        "flat shoes"
+      ],
+      "characterId": "rosmontis_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

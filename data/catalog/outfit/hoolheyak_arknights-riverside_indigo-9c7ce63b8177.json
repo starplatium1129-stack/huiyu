@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/riverside_indigo",
+  "revision": 2,
+  "sortOrder": 2040,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "riverside_indigo",
+      "name": "靛蓝长风衣与羽片银色胸针",
+      "prose": "An indigo belted long trench with a pale grey scarf and tapered trousers, fastened with a brushed-silver feather brooch.",
+      "tokens": [
+        "indigo belted long trench coat",
+        "pale grey scarf",
+        "tapered trousers",
+        "silver feather brooch"
+      ],
+      "characterId": "hoolheyak_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

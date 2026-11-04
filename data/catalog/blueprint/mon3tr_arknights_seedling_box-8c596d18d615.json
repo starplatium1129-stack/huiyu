@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_seedling_box",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3067,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "mon3tr_arknights_seedling_box",
     "characterId": "mon3tr_arknights",
-    "outfitId": "standard",
+    "outfitId": "greenhouse_coat",
     "title": "Mon3tr · 新发的芽",
     "category": "泰拉日常",
     "description": "幼苗长出第二片叶子，她记录下高度，又把培养盒推回适合照光的位置。",

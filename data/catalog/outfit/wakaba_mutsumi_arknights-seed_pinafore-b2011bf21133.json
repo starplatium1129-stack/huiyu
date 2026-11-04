@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/seed_pinafore",
+  "revision": 1,
+  "sortOrder": 2198,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "seed_pinafore",
+      "name": "细格背带裙与白色泡泡袖衬衣",
+      "prose": "A muted sage-and-cream checked pinafore over a white puff-sleeved blouse, with a small stitched pocket and flat brown shoes.",
+      "tokens": [
+        "sage and cream checked pinafore",
+        "white puff-sleeved blouse",
+        "stitched pocket",
+        "brown flat shoes"
+      ],
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

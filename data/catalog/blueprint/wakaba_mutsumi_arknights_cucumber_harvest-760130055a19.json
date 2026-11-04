@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_cucumber_harvest",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2966,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_cucumber_harvest",
     "characterId": "wakaba_mutsumi_arknights",
-    "outfitId": "school_uniform",
+    "outfitId": "garden_smock",
     "title": "若叶睦 · 菜园里的黄瓜",
     "category": "泰拉日常",
     "description": "藤蔓上结出的黄瓜已经够长了。睦轻轻拨开叶子，将它摘下放进篮子，又给旁边的小苗浇了水。",

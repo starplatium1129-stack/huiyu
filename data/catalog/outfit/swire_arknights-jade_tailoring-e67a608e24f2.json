@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/jade_tailoring",
+  "revision": 1,
+  "sortOrder": 2204,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "jade_tailoring",
+      "name": "翡翠滚边奶白西装与墨绿阔腿裤",
+      "prose": "An ivory tailored blazer with jade-green piping over a black silk top and deep-green wide-leg trousers, finished with a small gold tiger-head clasp.",
+      "tokens": [
+        "ivory tailored blazer",
+        "jade green piping",
+        "black silk top",
+        "deep green wide-leg trousers",
+        "gold tiger clasp"
+      ],
+      "characterId": "swire_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

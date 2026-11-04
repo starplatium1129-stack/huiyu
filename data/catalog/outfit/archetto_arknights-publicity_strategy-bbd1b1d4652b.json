@@ -1,0 +1,39 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/publicity_strategy",
+  "revision": 2,
+  "sortOrder": 2057,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "publicity_strategy",
+      "name": "宣传策略·白色舞台装与红色领结",
+      "prose": "A white stage outfit with a cropped jacket, a white skirt, a red bow and white boots.",
+      "tokens": [
+        "white cropped stage jacket",
+        "white skirt",
+        "red bow",
+        "white boots"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "archetto (arknights)",
+        "archetto (publicity strategy) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "heterochromia",
+        "red eye",
+        "blue eye",
+        "animal ears",
+        "tail"
+      ],
+      "identityProseOverride": "Archetto from Arknights has long blonde hair in her Publicity Strategy outfit, heterochromatic red and blue eyes, animal ears and a tail."
+    }
+  }
+}

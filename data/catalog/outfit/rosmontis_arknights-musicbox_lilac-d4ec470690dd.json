@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rosmontis_arknights/musicbox_lilac",
+  "revision": 2,
+  "sortOrder": 2091,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosmontis_arknights",
+    "outfit": {
+      "id": "musicbox_lilac",
+      "name": "丁香色圆领长袖裙与细缎腰带",
+      "prose": "A modest lilac long-sleeved lounge dress with a white rounded collar, pearl buttons and a soft satin ribbon at the waist.",
+      "tokens": [
+        "lilac long-sleeved lounge dress",
+        "white round collar",
+        "pearl buttons",
+        "satin waist ribbon"
+      ],
+      "characterId": "rosmontis_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

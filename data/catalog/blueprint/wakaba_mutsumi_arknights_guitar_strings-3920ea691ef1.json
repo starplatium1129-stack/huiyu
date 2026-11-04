@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_guitar_strings",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2967,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_guitar_strings",
     "characterId": "wakaba_mutsumi_arknights",
-    "outfitId": "school_uniform",
+    "outfitId": "rehearsal_cardigan",
     "title": "若叶睦 · 换好的一根弦",
     "category": "泰拉日常",
     "description": "换好琴弦后，她轻拨了几下，低头听音准。确认没有问题，睦才把调音器收回琴盒。",

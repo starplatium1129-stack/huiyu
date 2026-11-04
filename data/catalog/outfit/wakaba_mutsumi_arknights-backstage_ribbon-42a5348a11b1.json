@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/backstage_ribbon",
+  "revision": 1,
+  "sortOrder": 2202,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "backstage_ribbon",
+      "name": "深蓝丝绒领结与灰白细褶裙",
+      "prose": "A grey-white long-sleeved blouse with a deep-blue velvet bow at the collar, paired with a slate pleated skirt and a simple silver hair clip.",
+      "tokens": [
+        "grey white long-sleeved blouse",
+        "deep blue velvet collar bow",
+        "slate pleated skirt",
+        "silver hair clip"
+      ],
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

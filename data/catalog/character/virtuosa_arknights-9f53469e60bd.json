@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "virtuosa_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 297,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "virtuosa_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "这段旋律，愿意再听一次吗？",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "塑心立绘待制作"
+        "image": "../assets/characters/popular-virtuosa_arknights.png?v=dab76f176e53",
+        "alt": "塑心场景样张立绘",
+        "sourceShowcaseId": "pc_virtuosa_arknights_virtuosa_arknights_concert_program",
+        "sourceShowcaseSha256": "784dad68c5f058a25d14ccfc7d9278d54f8e8a41d5af56ab30f4ad715f7850c7"
       }
     },
     "popular": {

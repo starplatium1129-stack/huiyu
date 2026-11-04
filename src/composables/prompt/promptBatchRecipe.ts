@@ -26,6 +26,7 @@ import { ANIMA_LORA_BY_CHARACTER, closestSupportedSize } from '../generation/ani
 import { buildAnimaRequest } from '../generation/buildAnimaRequest'
 import type { BatchDrawRunnerInput, BatchTargetItem } from '../generation/useBatchDraw'
 import type { PreparedBatchImage } from './batchGenerationPlan'
+import { withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
 
 interface PromptBatchSource {
   subject: DrawSubject
@@ -142,7 +143,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       if (!outfit) throw new Error('目标角色没有可用服装')
       const outfitExplicit = Boolean(selected && pb.subject.kind === 'popular'
         && (pb.subject.outfitExplicit ?? selected.id !== defaultOutfit(pop)?.id))
-      const outfitOverride = detectOutfitOverrideFromContext()
+      const outfitOverride = detectOutfitOverrideFromContext()?.filter(tag => !/^(?:nene|natsume)_/i.test(tag)) || null
       const source = pb.subject.kind === 'popular' ? findPopularCharacter(getPopularList(), pb.subject.characterId) : null
       const sourceKeys = new Set([...(source?.identityTokens || []), ...(source?.outfits.flatMap(item => item.identityTokensOverride || []) || []), ...(source?.exactTokens || []), ...(source?.copyrightTokens || []), ...(source?.characterTokens || []), ...(source?.aliases || []), ...(CHAR_PROMPT[pb.char] || '').split(','), ...(STUDIO_PROMPT_SUBJECTS[pb.char]?.copyrightTokens || [])].map(normalizeKey))
       const engine = state.family === 'krea2' ? 'krea2' : 'anima'
@@ -164,7 +165,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       directorSources.colorMood = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood) ? 'manual' : 'scene'
       const mood = COLOR_MOODS.find(option => option.id === (colorMood ?? decisions?.colorMood))
       const inheritedTags = target.kind === 'character' ? roamingContent.tags : []
-      const manual = (target.kind === 'character' ? inheritedTags : pb.manualTags)
+      const manual = withoutSuppressedOutfitTags(target.kind === 'character' ? inheritedTags : pb.manualTags, pb.outfitOverride)
         .filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag)))
       const visualDescription = target.kind === 'character' ? roamingContent.caption : pb.visualDescription
       const planResult = compilePromptRecipe({
@@ -176,11 +177,12 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         visualDescription,
         negativeCustom: pb.negativeCustom,
         outfitOverride, outfitExplicit,
+        outfitOverrideProse: pb.outfitOverride?.prose,
         matureTokens: new Set(pb.tags.filter(tag => tag.cat === 'Mature').map(tag => normalizeKey(tag.en))),
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
       plans.set(target.id, { negative: planResult.negative, profile: planResult.profile, adult: planResult.adult, outfitId: outfit.id, outfitExplicit, manual, visualDescription,
-        outfitOverride: outfitOverride ? { tokens: [...outfitOverride], replaced: pb.outfitOverride?.replaced ?? null } : null, size: blueprint?.recommendedSize,
+        outfitOverride: outfitOverride ? { ...pb.outfitOverride, tokens: [...outfitOverride], replaced: pb.outfitOverride?.replaced ?? null } : null, size: blueprint?.recommendedSize,
         style: { emotion: pb.emotionPrompt ? [...pb.selections.emotion] : [], shot,
           lighting, composition, colorMood: mood?.id ?? null, directorSources } })
       return planResult.prompt
@@ -217,6 +219,8 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
       const activeLora = charInfo.charKey === 'triad' || state.characterLoraEnabled === false ? null
         : pb.subject.kind === 'studio' && pb.char === charInfo.charKey ? state.loraId : ANIMA_LORA_BY_CHARACTER[charInfo.charKey]
       const controls = detectOutfitOverrideFromContext()
+      const targetOverride = pb.outfitOverride ? { ...pb.outfitOverride,
+        tokens: pb.outfitOverride.tokens.filter(tag => !/^(?:nene|natsume)_/i.test(tag) || tag.toLowerCase().startsWith(`${charInfo.charKey}_`)) } : null
       const result = compilePromptRecipe({
         kind: 'studio', character: charInfo.charKey, scene, engine, profile,
         activeLoras: activeLora ? { [charInfo.charKey]: activeLora } : {}, loraMeta: pb.loraMeta,
@@ -224,11 +228,13 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         palette: tokenize(COLOR_MOODS.find(mood => mood.id === colorMood)?.prompt || ''),
         negativeCustom: pb.negativeCustom,
         controls: controls || (target.kind === 'character' ? [] : undefined),
+        outfitOverride: targetOverride?.tokens.length ? targetOverride : null,
         manual: target.kind === 'character' ? roamingContent.tags : [...pb.manualTags], emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
         visualDescription: target.kind === 'scene' ? pb.visualDescription : '',
         artistTags: artistTagsForEngine(pb.artistStyleIds, engine), artistProse: artistStyleProse(pb.artistStyleIds, engine),
       })
       plans.set(target.id, { negative: result.negative, profile: result.profile, adult: result.adult,
+        outfitOverride: targetOverride?.tokens.length ? targetOverride : null,
         manual: target.kind === 'character' ? [...roamingContent.tags] : [...pb.manualTags],
         visualDescription: target.kind === 'character' ? roamingContent.caption : pb.visualDescription,
         size: target.kind === 'scene' ? sceneRecommendedSize(scene) : undefined,
@@ -296,6 +302,7 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
           character: charInfo.charKey,
           subject: 'studio' as const,
           characterId: undefined,
+          outfitOverride: plans.get(target.id)?.outfitOverride,
         } : {}),
         story: target.prose || '',
         scene: target.kind === 'scene' ? target.id : null,

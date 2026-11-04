@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_photo_frame",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3014,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_photo_frame",
     "characterId": "blemishine_arknights",
-    "outfitId": "standard",
+    "outfitId": "sunlit_knit",
     "title": "瑕光 · 合照的相框",
     "category": "泰拉日常",
     "description": "相框的背板不太好扣，她试了两次才合上。照片摆到桌面后，她满意地笑了。",

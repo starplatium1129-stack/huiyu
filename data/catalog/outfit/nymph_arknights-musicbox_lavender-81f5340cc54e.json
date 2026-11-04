@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/musicbox_lavender",
+  "revision": 2,
+  "sortOrder": 2032,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "musicbox_lavender",
+      "name": "薰衣草圆领长袖裙与细缎腰带",
+      "prose": "A lavender long-sleeved dress with a rounded white collar, tiny pearl buttons and a pale satin waist ribbon, with dark flat shoes.",
+      "tokens": [
+        "lavender long-sleeved dress",
+        "white round collar",
+        "pearl buttons",
+        "pale satin waist ribbon",
+        "dark flat shoes"
+      ],
+      "characterId": "nymph_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

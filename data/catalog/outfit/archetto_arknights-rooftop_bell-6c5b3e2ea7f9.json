@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/rooftop_bell",
+  "revision": 2,
+  "sortOrder": 2059,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "rooftop_bell",
+      "name": "夜蓝短斗篷裙与银色小铃",
+      "prose": "A midnight-blue midi dress beneath a pale short capelet with a scalloped edge, finished with a silver bell necklace and low heels.",
+      "tokens": [
+        "midnight blue midi dress",
+        "pale capelet",
+        "scalloped edge",
+        "silver bell necklace",
+        "low heels"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

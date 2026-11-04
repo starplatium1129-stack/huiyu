@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_festival_lights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3010,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_festival_lights",
     "characterId": "blemishine_arknights",
-    "outfitId": "moon_catastrborn",
+    "outfitId": "golden_procession",
     "title": "瑕光 · 广场的彩灯",
     "category": "泰拉日常",
     "description": "灯串一盏接一盏亮起来，她抬头跟着数。数到一半有人叫她，她笑着回头，差点忘了刚才数到哪里。",

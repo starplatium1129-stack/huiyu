@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/botanical_vest",
+  "revision": 2,
+  "sortOrder": 2023,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "botanical_vest",
+      "name": "薄荷色剪裁马甲与植物纹褶裙",
+      "prose": "A mint tailored vest over a white blouse and a brown pleated skirt with subtle leaf embroidery, finished with a slim ribbon tie.",
+      "tokens": [
+        "mint tailored vest",
+        "white blouse",
+        "brown pleated skirt",
+        "leaf embroidery",
+        "slim ribbon tie"
+      ],
+      "characterId": "muelsyse_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_library_catalog",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2931,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "pozyomka_arknights_library_catalog",
     "characterId": "pozyomka_arknights",
-    "outfitId": "snowy_plains_in_words",
+    "outfitId": "library_tweed",
     "title": "鸿雪 · 书架上的目录",
     "category": "泰拉日常",
     "description": "她沿目录找到地方志一栏，却在书架前又多看了一会儿。一本关于城市日常的薄册子最终被她抽了出来。",

@@ -3,7 +3,7 @@
     <ArchiveIcon name="wardrobe" class="outfit-override-icon" />
     <span class="outfit-override-text">已换装为「{{ outfitOverrideLabel }}」</span>
     <button type="button" class="outfit-override-restore" @click="pb.clearOutfitOverride()">
-      恢复默认服装
+      恢复原服装
     </button>
   </div>
 </template>

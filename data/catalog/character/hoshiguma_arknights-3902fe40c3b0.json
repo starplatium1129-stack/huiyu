@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshiguma_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 286,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "hoshiguma_arknights",
     "profile": {
@@ -51,8 +51,10 @@
       ],
       "voice": "这顿我请，下次换你。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "星熊立绘待制作"
+        "image": "../assets/characters/popular-hoshiguma_arknights.png?v=6bc5eacd6657",
+        "alt": "星熊场景样张立绘",
+        "sourceShowcaseId": "pc_hoshiguma_arknights_hoshiguma_arknights_rain_umbrella",
+        "sourceShowcaseSha256": "a9040c0dc2a3375b9942d3d52f18767c56c8118fc039c4a982e1872401131622"
       }
     },
     "popular": {
@@ -76,7 +78,9 @@
       ],
       "characterTokens": [
         "hoshiguma (arknights)",
-        "hoshiguma (summer) (arknights)"
+        "hoshiguma (summer) (arknights)",
+        "hoshiguma (ronin huntress) (arknights)",
+        "hoshiguma the breacher (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

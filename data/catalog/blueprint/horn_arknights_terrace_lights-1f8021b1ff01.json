@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_terrace_lights",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3005,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "horn_arknights_terrace_lights",
     "characterId": "horn_arknights",
-    "outfitId": "first_gleam",
+    "outfitId": "terrace_pearl",
     "title": "号角 · 露台的灯",
     "category": "亲密时刻",
     "description": "她认真听完你的话，侧过身轻声回答。远处灯火模糊，号角的视线却一直停在你脸上。",

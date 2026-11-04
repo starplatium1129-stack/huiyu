@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_market_bread",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2847,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_market_bread",
     "characterId": "pramanix_arknights",
-    "outfitId": "casters_frost",
+    "outfitId": "snowtown_woolcoat",
     "title": "初雪 · 山路面包店",
     "category": "泰拉日常",
     "description": "她隔着玻璃指向一块刚出炉的面包，又认真问店主能否把另一块也包上，留给稍后见面的人。",

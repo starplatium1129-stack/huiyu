@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/white_current",
+  "revision": 1,
+  "sortOrder": 2138,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "white_current",
+      "name": "白浪褶襟衬衣与深海蓝丝裙",
+      "prose": "A white blouse with wave-like pleats at the cuffs and neckline, tucked into a deep-sea-blue silk skirt with a narrow silver belt.",
+      "tokens": [
+        "white pleated blouse",
+        "wave pleated cuffs",
+        "deep sea blue silk skirt",
+        "narrow silver belt"
+      ],
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

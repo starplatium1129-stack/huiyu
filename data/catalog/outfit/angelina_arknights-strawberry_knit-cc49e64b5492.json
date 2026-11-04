@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/strawberry_knit",
+  "revision": 1,
+  "sortOrder": 2181,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "strawberry_knit",
+      "name": "草莓红短开衫与奶油格纹裙",
+      "prose": "A strawberry-red cropped cardigan with round ivory buttons over a cream blouse and a small red-and-cream checked skirt, with flat loafers.",
+      "tokens": [
+        "strawberry red cropped cardigan",
+        "ivory buttons",
+        "cream blouse",
+        "red and cream checked skirt",
+        "flat loafers"
+      ],
+      "characterId": "angelina_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

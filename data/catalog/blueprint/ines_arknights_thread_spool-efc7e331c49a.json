@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_thread_spool",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2867,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_thread_spool",
     "characterId": "ines_arknights",
-    "outfitId": "standard",
+    "outfitId": "thread_workshirt",
     "title": "伊内丝 · 线轴与针盒",
     "category": "泰拉日常",
     "description": "她在几卷近似的深色线之间比较了很久，最后选了最不显眼的一卷。结账时才发现，你已经等在门边。",

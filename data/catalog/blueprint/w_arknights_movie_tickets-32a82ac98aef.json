@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_movie_tickets",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2936,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_movie_tickets",
     "characterId": "w_arknights",
-    "outfitId": "fugue",
+    "outfitId": "w_standard",
     "title": "W / 维什戴尔 · 电影票根",
     "category": "泰拉日常",
     "description": "她晃了晃手里的两张票，故意不先说片名。直到检票口快到了，W才把其中一张塞给你，示意赶紧跟上。",

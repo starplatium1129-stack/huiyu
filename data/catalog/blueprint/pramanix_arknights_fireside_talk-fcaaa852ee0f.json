@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_fireside_talk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2855,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_fireside_talk",
     "characterId": "pramanix_arknights",
-    "outfitId": "prerita",
+    "outfitId": "hearth_burgundy",
     "title": "初雪 · 炉火旁的约定",
     "category": "亲密时刻",
     "description": "炉火映在杯沿。她向你靠近一点，轻声问明天能否只陪她走一段路，得到回答后才露出笑意。",

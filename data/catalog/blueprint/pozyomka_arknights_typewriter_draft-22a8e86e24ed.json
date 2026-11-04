@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_typewriter_draft",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2926,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "pozyomka_arknights_typewriter_draft",
     "characterId": "pozyomka_arknights",
-    "outfitId": "snowy_plains_in_words",
+    "outfitId": "writer_inkvest",
     "title": "鸿雪 · 稿纸上的停顿",
     "category": "泰拉日常",
     "description": "打字机上卷着半页稿纸。鸿雪读完刚写的句子，抽出一张便笺改了几个字，再重新把手放回键盘。",

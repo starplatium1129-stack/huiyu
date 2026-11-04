@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/candle_satin",
+  "revision": 1,
+  "sortOrder": 2195,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "candle_satin",
+      "name": "石墨缎面垂领与黑蕾丝长裙",
+      "prose": "A graphite satin blouse with a softly draped neckline and fitted cuffs, paired with a black lace-panelled long skirt and a dark gemstone pendant.",
+      "tokens": [
+        "graphite satin blouse",
+        "draped neckline",
+        "fitted cuffs",
+        "black lace-panelled long skirt",
+        "dark gemstone pendant"
+      ],
+      "characterId": "virtuosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

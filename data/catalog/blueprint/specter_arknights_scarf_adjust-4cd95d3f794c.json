@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_scarf_adjust",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3035,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "specter_arknights_scarf_adjust",
     "characterId": "specter_arknights",
-    "outfitId": "undercurrent",
+    "outfitId": "tide_scarf",
     "title": "幽灵鲨 · 围巾一角",
     "category": "亲密时刻",
     "description": "她按住被风吹起的围巾，侧身靠近，让另一端也替你挡一点风。她望着你，笑得很轻。",

@@ -19,9 +19,10 @@ import { inferBlueprintLighting } from './blueprintLighting.ts'
 import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
 import { isManualDirectorValue } from './promptDirector.ts'
 import { SHOT, LIGHTING, COMPOSITION } from '../config/promptConstants.ts'
-import { isGarmentToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
+import { isGarmentToken, isOutfitToken, standaloneIdentityTokens, standaloneIdentityProse } from './popularIdentity.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
 import { withoutReplacedPose } from './promptCaption.ts'
+import { sceneProseWithChangedOutfit } from './outfitReplacement.ts'
 
 // ── Prompt 组装（唯一渲染层 = createPromptPlan + renderPromptPlan） ─────────
 
@@ -51,6 +52,7 @@ export interface PopularPromptOptions {
    * 参考图的泳装压不过（实测主因）。可一键清空恢复角色默认服装。
    */
   outfitOverride?: ReadonlyArray<string> | null
+  outfitOverrideProse?: string
   /**
    * Whether the user selected this outfit, including an explicit default outfit.
    *
@@ -190,23 +192,6 @@ function proseWithoutOutfit(prose: string): string {
   return out.trim()
 }
 
-/** Replace explicit worn-garment phrases, leaving the authored action and setting intact. */
-function sceneProseWithChangedOutfit(prose: string, source: PopularOutfit): string {
-  const words = [...source.tokens, source.prose].flatMap(value =>
-    value.toLowerCase().replace(/[_-]/g, ' ').match(/[a-z]+/g) || [])
-  const garments = new Set(words.filter(isGarmentToken))
-  if (words.some(word => ['nightdress', 'nightgown', 'negligee', 'lingerie', 'babydoll'].includes(word))) {
-    for (const word of ['nightdress', 'nightgown', 'negligee', 'lingerie', 'babydoll']) garments.add(word)
-  }
-  if (!garments.size) return prose
-  const excluded = 'a|an|the|and|or|with|while|before|after|near|beside|under|on|at|in|of|to|for|by|she|he|they|her|his|their|hand|hands|arm|arms|is|are|was|were|sits|stands|sitting|standing|lying|holds|holding|leans|reclines|wears'
-  const modifier = `(?!(?:${excluded})\\b)[a-z]+(?:-[a-z]+)?`
-  const pattern = new RegExp(`\\b(wearing|dressed in|clad in|in)\\s+(?:(?:a|an|the|her|his|their)\\s+)?(?:${modifier}\\s+){0,4}(?:${[...garments].join('|')})\\b(?!\\s+(?:shop|store|rack|display)\\b)`, 'gi')
-  const possessive = new RegExp(`\\b(her|his|their)\\s+(?:${modifier}\\s+){0,4}(?:${[...garments].join('|')})\\b`, 'gi')
-  return prose.replace(pattern, (_match, verb: string) => `${verb} the selected outfit`)
-    .replace(possessive, (_match, owner: string) => `${owner} selected outfit`)
-}
-
 export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPromptResult {
   const { character, outfit, blueprint, engine } = options
   const profile = engine === 'moss' ? null : options.profile ?? null
@@ -221,7 +206,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     ? character.outfits.find(item => item.id === blueprint.outfitId)
     : character.outfits.find(item => item.default) ?? character.outfits[0]
   // Adult blueprints own their clothing unless the user explicitly changes it.
-  const adultOutfitOverride = engine === 'moss' && adult && Boolean(overridden
+  const adultOutfitOverride = adult && Boolean(overridden
     || (options.outfitExplicit && blueprint && sourceOutfit && sourceOutfit.id !== outfit.id))
   // 服装是否参与注入（2026-08-29 基础提示词瘦身，对标 studio 的「场景驱动」）：
   //   1) 反推顶替 → 一定注入（参考图服装必须出来）
@@ -266,14 +251,14 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const subjectProse = !blueprint
     ? standaloneIdentityProse({ ...character, identityTokens: identitySource, identityProse })
     : adult
-      ? identityWithoutOutfit(engine === 'moss' ? proseWithoutOutfit(identityProse) : identityProse)
+      ? identityWithoutOutfit(engine === 'moss' || overridden ? proseWithoutOutfit(identityProse) : identityProse)
       : (outfitActive
           ? (overridden || engine === 'moss' ? proseWithoutOutfit(identityProse) : identityWithoutOutfit(identityProse))
           : proseWithoutOutfit(identityProse))
-  // A scene's adult clothing remains authoritative until a MOSS user changes it.
+  // An explicit wardrobe choice takes precedence over the scene's clothing.
   const outfitProse = ((adult && !adultOutfitOverride) || !outfitActive)
     ? ''
-    : (overridden ? outfitOverrideProse(overridden) : outfitProseForRender(outfit.prose))
+    : (overridden ? outfitProseForRender(options.outfitOverrideProse || outfitOverrideProse(overridden)) : outfitProseForRender(outfit.prose))
 
   const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
   const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
@@ -283,18 +268,19 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const replacedOutfit = outfitChanged && sourceOutfit
     ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
     : new Set<string>()
-  const outfitSceneProse = engine === 'moss' && outfitChanged && sourceOutfit
-    ? sceneProseWithChangedOutfit(originalSceneProse, sourceOutfit) : originalSceneProse
-  const sceneProse = engine === 'moss' ? withoutReplacedPose(manual, outfitSceneProse, blueprint) : outfitSceneProse
   const selectedOutfit = (overridden ?? outfit.tokens).map(normalizeProseKey)
   const selectedShoes = selectedOutfit.some(key => SHOE_TOKENS.has(key) || /(?:^|_)(?:boots|shoes|sneakers|heels|sandals|loafers|slippers)$/.test(key))
   const selectedBarefoot = selectedOutfit.some(key => BAREFOOT_TOKENS.has(key))
   const nakedState = new Set(['nude', 'naked', 'fully_nude', 'completely_nude', 'no_clothes', 'unclothed'])
   const selectedClothing = selectedOutfit.some(isGarmentToken) && !selectedOutfit.some(key => nakedState.has(key))
+  const outfitSceneProse = outfitChanged && sourceOutfit
+    ? sceneProseWithChangedOutfit(originalSceneProse, sourceOutfit, selectedClothing) : originalSceneProse
+  const sceneProse = engine === 'moss' ? withoutReplacedPose(manual, outfitSceneProse, blueprint) : outfitSceneProse
   const replacedSceneOutfit = (token: string) => {
     const key = normalizeProseKey(token)
     if (replacedOutfit.has(key)) return true
-    if (engine !== 'moss' || !replacedOutfit.size) return false
+    if (outfitChanged && isOutfitToken(token)) return true
+    if (!replacedOutfit.size) return false
     return selectedShoes && BAREFOOT_TOKENS.has(key) || selectedBarefoot && SHOE_TOKENS.has(key)
       || adultOutfitOverride && selectedClothing && nakedState.has(key)
   }
@@ -332,7 +318,9 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // Krea must not acquire every Anima identity/outfit token as a second description.
   const commonInput: PromptCompilerInput = {
     subjectProse, outfitProse,
-    sceneProse: engine === 'anima' ? blueprint?.animaCaption ?? sceneProse : sceneProse,
+    sceneProse: engine === 'anima' && blueprint?.animaCaption
+      ? (outfitChanged && sourceOutfit ? sceneProseWithChangedOutfit(blueprint.animaCaption, sourceOutfit, selectedClothing) : blueprint.animaCaption)
+      : sceneProse,
     characterTokens: [...(character.characterTokens || []), ...(blueprint?.characterTokens || [])],
     copyrightTokens: character.copyrightTokens,
     emotion: emotionTokens,

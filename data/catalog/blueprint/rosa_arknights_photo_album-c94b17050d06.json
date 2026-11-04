@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_photo_album",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2954,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "rosa_arknights_photo_album",
     "characterId": "rosa_arknights",
-    "outfitId": "masterpiece",
+    "outfitId": "album_caramel",
     "title": "早露 · 相册里的旧合照",
     "category": "泰拉日常",
     "description": "她在一张合照前停下来，指认照片里熟悉的面孔。说到某件趣事时，早露自己也笑了。",

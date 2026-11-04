@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_shore_whisper",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3033,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "specter_arknights_shore_whisper",
     "characterId": "specter_arknights",
-    "outfitId": "undercurrent",
+    "outfitId": "born_as_one",
     "title": "幽灵鲨 · 潮声里的话",
     "category": "亲密时刻",
     "description": "浪声盖住了后半句话，她靠近你的耳边重新说了一遍。退开时，她笑着问这次可听清了。",

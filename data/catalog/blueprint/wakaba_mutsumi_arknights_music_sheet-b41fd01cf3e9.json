@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_music_sheet",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2970,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_music_sheet",
     "characterId": "wakaba_mutsumi_arknights",
-    "outfitId": "school_uniform",
+    "outfitId": "music_vest",
     "title": "若叶睦 · 谱面上的记号",
     "category": "泰拉日常",
     "description": "练习暂时停下，她在乐谱旁画了几个小记号。等其他人回来时，她指着其中一处，轻声提出自己的想法。",

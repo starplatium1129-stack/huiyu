@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_record_listen",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3097,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "virtuosa_arknights_record_listen",
     "characterId": "virtuosa_arknights",
-    "outfitId": "standard",
+    "outfitId": "vinyl_tailoring",
     "title": "塑心 · 唱片的前奏",
     "category": "泰拉日常",
     "description": "前奏刚响起，她便闭上眼听了一会儿。曲子结束后，她把唱片封套翻过来寻找演奏者的名字。",

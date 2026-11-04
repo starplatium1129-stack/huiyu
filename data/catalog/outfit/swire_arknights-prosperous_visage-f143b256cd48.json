@@ -1,0 +1,40 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/prosperous_visage",
+  "revision": 1,
+  "sortOrder": 2211,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "prosperous_visage",
+      "name": "盛世之象·青蓝马面裙与白纱",
+      "prose": "A white wide-sleeved blouse over a blue-to-gold pleated mamian skirt, with a delicate white veil, flower hair ornament and bead jewelry.",
+      "tokens": [
+        "white wide-sleeved blouse",
+        "blue and gold mamian skirt",
+        "white veil",
+        "flower hair ornament",
+        "bead jewelry"
+      ],
+      "characterId": "swire_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "swire (arknights)",
+        "swire the elegant wit (arknights)",
+        "swire the elegant wit (a prosperous visage) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "drill sidelocks",
+        "green eyes",
+        "tiger ears",
+        "tiger tail"
+      ],
+      "identityProseOverride": "Swire from Arknights has long blonde hair with curled sidelocks, green eyes, tiger ears and a tiger tail in A Prosperous Visage."
+    }
+  }
+}

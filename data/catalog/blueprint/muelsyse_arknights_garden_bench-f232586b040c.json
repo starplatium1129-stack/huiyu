@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_garden_bench",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2884,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "muelsyse_arknights_garden_bench",
     "characterId": "muelsyse_arknights",
-    "outfitId": "young_branch",
+    "outfitId": "garden_twilight",
     "title": "缪尔赛思 · 花园长椅",
     "category": "亲密时刻",
     "description": "花园快关门了，她却拍拍紧挨着自己的座位，让你再陪她听一会儿水声。你坐下后，她侧头笑着看你。",

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/canvas_apron",
+  "revision": 1,
+  "sortOrder": 2117,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "canvas_apron",
+      "name": "乳白帆布短围裙与蜂蜜色背心",
+      "prose": "A honey-colored knit waistcoat over a white shirt, a cream canvas half-apron with divided tool pockets and a soft charcoal skirt.",
+      "tokens": [
+        "honey knit waistcoat",
+        "white shirt",
+        "cream canvas half-apron",
+        "tool pockets",
+        "charcoal skirt"
+      ],
+      "characterId": "blemishine_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

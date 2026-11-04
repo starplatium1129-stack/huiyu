@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/weaver_fairisle",
+  "revision": 2,
+  "sortOrder": 2000,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "weaver_fairisle",
+      "name": "雪花提花背心与靛蓝羊毛裙",
+      "prose": "A cream Fair Isle knit vest with blue snowflake bands over a crisp white blouse, an indigo wool A-line skirt and dark ankle boots.",
+      "tokens": [
+        "cream fair isle knit vest",
+        "blue snowflake pattern",
+        "white blouse",
+        "indigo wool a-line skirt",
+        "dark ankle boots"
+      ],
+      "characterId": "pramanix_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

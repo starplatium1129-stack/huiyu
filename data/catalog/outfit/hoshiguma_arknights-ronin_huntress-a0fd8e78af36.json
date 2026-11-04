@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/ronin_huntress",
+  "revision": 2,
+  "sortOrder": 2101,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "ronin_huntress",
+      "name": "狩标浪人·黑色衬衣与灰色宽裤",
+      "prose": "A black long-sleeved shirt, loose grey trousers, an orange arm ribbon and black lace-up boots.",
+      "tokens": [
+        "black long-sleeved shirt",
+        "loose grey trousers",
+        "orange arm ribbon",
+        "black lace-up boots"
+      ],
+      "characterId": "hoshiguma_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "hoshiguma (arknights)",
+        "hoshiguma (ronin huntress) (arknights)",
+        "1girl",
+        "solo",
+        "green hair",
+        "long hair",
+        "yellow eyes",
+        "single horn",
+        "scar on cheek"
+      ],
+      "identityProseOverride": "Hoshiguma from Arknights has long green hair, yellow eyes, a single oni horn and a cheek scar."
+    }
+  }
+}

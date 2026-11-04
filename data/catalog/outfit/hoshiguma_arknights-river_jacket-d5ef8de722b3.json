@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/river_jacket",
+  "revision": 2,
+  "sortOrder": 2105,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "river_jacket",
+      "name": "黑绿拼色运动夹克与直筒长裤",
+      "prose": "A black-and-forest-green athletic jacket with a bold diagonal seam over a grey shirt and dark straight trousers, paired with walking sneakers.",
+      "tokens": [
+        "black and forest green athletic jacket",
+        "diagonal seam",
+        "grey shirt",
+        "dark straight trousers",
+        "walking sneakers"
+      ],
+      "characterId": "hoshiguma_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

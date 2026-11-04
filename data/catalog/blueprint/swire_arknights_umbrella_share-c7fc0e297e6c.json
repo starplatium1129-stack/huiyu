@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_umbrella_share",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3114,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "swire_arknights_umbrella_share",
     "characterId": "swire_arknights",
-    "outfitId": "standard",
+    "outfitId": "rain_cape",
     "title": "诗怀雅 · 伞下慢一点",
     "category": "亲密时刻",
     "description": "她把伞往你这边偏，又伸手将你拉近，嘴上仍催你跟上，唇角却忍不住扬起来。",

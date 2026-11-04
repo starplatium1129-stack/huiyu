@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_cafe_talk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2923,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "archetto_arknights_cafe_talk",
     "characterId": "archetto_arknights",
-    "outfitId": "standard",
+    "outfitId": "cafe_honey",
     "title": "空弦 · 咖啡馆的座位",
     "category": "亲密时刻",
     "description": "她收好宣传单，双手捧着杯子向你倾身，说这次不谈合作，只想多听听你的事。",

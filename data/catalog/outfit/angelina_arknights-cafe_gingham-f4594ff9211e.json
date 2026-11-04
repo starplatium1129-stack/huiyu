@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "angelina_arknights/cafe_gingham",
+  "revision": 1,
+  "sortOrder": 2184,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "angelina_arknights",
+    "outfit": {
+      "id": "cafe_gingham",
+      "name": "奶茶色针织背心与樱红格纹裙",
+      "prose": "A milk-tea beige knit vest over an ivory rounded-collar blouse, paired with a cherry-red checked skirt and a narrow ribbon tie.",
+      "tokens": [
+        "beige knit vest",
+        "ivory rounded-collar blouse",
+        "cherry red checked skirt",
+        "ribbon tie"
+      ],
+      "characterId": "angelina_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

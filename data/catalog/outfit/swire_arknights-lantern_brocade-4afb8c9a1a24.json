@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/lantern_brocade",
+  "revision": 2,
+  "sortOrder": 2205,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:48:37.661746300+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "lantern_brocade",
+      "name": "朱砂云纹短褂与黑色百褶裙",
+      "prose": "A cinnabar-red cropped brocade jacket with restrained gold cloud embroidery over a black pleated skirt and short leather boots.",
+      "tokens": [
+        "cinnabar red brocade jacket",
+        "gold cloud embroidery",
+        "black pleated skirt",
+        "short leather boots"
+      ],
+      "characterId": "swire_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

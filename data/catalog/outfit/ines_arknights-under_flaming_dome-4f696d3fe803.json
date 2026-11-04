@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "ines_arknights/under_flaming_dome",
+  "revision": 2,
+  "sortOrder": 2017,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "ines_arknights",
+    "outfit": {
+      "id": "under_flaming_dome",
+      "name": "燃烧天穹下·黑白立领装束",
+      "prose": "A black and white fitted outfit with a high collar and white shoulder armor.",
+      "tokens": [
+        "black and white fitted outfit",
+        "high collar",
+        "white shoulder armor"
+      ],
+      "characterId": "ines_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "ines (arknights)",
+        "ines (under the flaming dome) (arknights)",
+        "1girl",
+        "solo",
+        "black hair",
+        "long hair",
+        "yellow eyes",
+        "horns"
+      ],
+      "identityProseOverride": "Ines from Arknights has long black hair, golden eyes and dark horns."
+    }
+  }
+}

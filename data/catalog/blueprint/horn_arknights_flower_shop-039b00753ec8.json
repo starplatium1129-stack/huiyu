@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_flower_shop",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3000,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "horn_arknights_flower_shop",
     "characterId": "horn_arknights",
-    "outfitId": "standard",
+    "outfitId": "flower_olive",
     "title": "号角 · 一束白花",
     "category": "泰拉日常",
     "description": "店主替白花系好纸绳，她接过来，仔细护住花瓣。回程路上，她打算先去探望一位老朋友。",

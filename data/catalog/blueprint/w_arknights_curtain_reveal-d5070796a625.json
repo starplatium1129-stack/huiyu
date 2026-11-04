@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_curtain_reveal",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2944,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_curtain_reveal",
     "characterId": "w_arknights",
-    "outfitId": "wisadel_supernova",
+    "outfitId": "stage_crimson",
     "title": "W / 维什戴尔 · 幕布后的一眼",
     "category": "亲密时刻",
     "description": "她掀开幕布，回头朝你勾了勾手指。等你靠近，她才压低声音说，这次的秘密出口只带你走。",

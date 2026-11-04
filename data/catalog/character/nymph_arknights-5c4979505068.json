@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nymph_arknights",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 276,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "nymph_arknights",
     "profile": {
@@ -47,8 +47,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "妮芙立绘待制作"
+        "image": "../assets/characters/popular-nymph_arknights.png?v=39fefd598330",
+        "alt": "妮芙场景样张立绘",
+        "sourceShowcaseId": "pc_nymph_arknights_nymph_arknights_watering_can",
+        "sourceShowcaseSha256": "aee2b9c7f11e8fabd6e68bbe71a276f253581e7919db1220078de9d6a0c6ae6a"
       },
       "tags": [
         "粉发",

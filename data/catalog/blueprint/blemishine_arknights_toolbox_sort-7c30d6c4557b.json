@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_toolbox_sort",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3009,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_toolbox_sort",
     "characterId": "blemishine_arknights",
-    "outfitId": "standard",
+    "outfitId": "canvas_apron",
     "title": "瑕光 · 工具盒大整理",
     "category": "泰拉日常",
     "description": "工具盒里零件混成一团。她先把扳手按大小排好，又找来小盒子装那些容易丢的螺丝。",

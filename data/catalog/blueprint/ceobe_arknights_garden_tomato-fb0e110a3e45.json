@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_garden_tomato",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3062,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "ceobe_arknights_garden_tomato",
     "characterId": "ceobe_arknights",
-    "outfitId": "standard",
+    "outfitId": "tomato_smock",
     "title": "刻俄柏 · 番茄熟了",
     "category": "泰拉日常",
     "description": "她发现一颗番茄变红，连忙叫来照料菜园的朋友，确认可以采摘后才把它放进篮子。",

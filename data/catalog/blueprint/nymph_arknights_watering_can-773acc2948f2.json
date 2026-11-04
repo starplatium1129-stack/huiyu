@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_watering_can",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2891,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_watering_can",
     "characterId": "nymph_arknights",
-    "outfitId": "sweetness_to_the_heart",
+    "outfitId": "watering_overalls",
     "title": "妮芙 · 窗台浇水",
     "category": "泰拉日常",
     "description": "窗台的土有些干了。她提着小水壶一盆盆浇过去，最后把歪倒的植物标签扶正。",

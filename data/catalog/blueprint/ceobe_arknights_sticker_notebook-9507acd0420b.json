@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_sticker_notebook",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3063,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "ceobe_arknights_sticker_notebook",
     "characterId": "ceobe_arknights",
-    "outfitId": "unfettered",
+    "outfitId": "sticker_cardigan",
     "title": "刻俄柏 · 食物贴纸",
     "category": "泰拉日常",
     "description": "她把面包、苹果和小蛋糕贴纸排成一行，说这是下次想尝的东西。",

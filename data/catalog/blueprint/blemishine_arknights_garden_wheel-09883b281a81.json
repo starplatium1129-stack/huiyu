@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_garden_wheel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3013,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_garden_wheel",
     "characterId": "blemishine_arknights",
-    "outfitId": "standard",
+    "outfitId": "garden_utility",
     "title": "瑕光 · 花园里的小推车",
     "category": "泰拉日常",
     "description": "推车的轮子终于不再晃动。她推着走了一小圈确认，才把工具收回盒里。",

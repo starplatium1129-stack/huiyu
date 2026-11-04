@@ -1,0 +1,40 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/glowing_flame",
+  "revision": 1,
+  "sortOrder": 2179,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "glowing_flame",
+      "name": "闪焰之夜·白色毛衣裙与红披风",
+      "prose": "A white sweater dress beneath a red festive cloak, with a red hat, ribbon details and thick boots.",
+      "tokens": [
+        "white sweater dress",
+        "red cloak",
+        "red hat",
+        "ribbon",
+        "thick boots"
+      ],
+      "characterId": "reed_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "reed the flame shadow (arknights)",
+        "reed the flame shadow (glowing flame in the night) (arknights)",
+        "reed (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "green eyes",
+        "dragon horns",
+        "dragon tail",
+        "flame-tipped tail"
+      ],
+      "identityProseOverride": "Reed the Flame Shadow from Arknights has long blonde hair, green eyes, dragon horns and a flame-tipped dragon tail."
+    }
+  }
+}

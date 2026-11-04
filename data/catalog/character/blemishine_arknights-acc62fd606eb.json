@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "blemishine_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 288,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "blemishine_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "别担心，我们一起想办法。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "瑕光立绘待制作"
+        "image": "../assets/characters/popular-blemishine_arknights.png?v=2a75c401ae7a",
+        "alt": "瑕光场景样张立绘",
+        "sourceShowcaseId": "pc_blemishine_arknights_blemishine_arknights_bakery_share",
+        "sourceShowcaseSha256": "e9b3107e71bcf70bbc15bef20a93120ecaf9137e4f329806fc43f56c5fdf0875"
       }
     },
     "popular": {
@@ -78,7 +80,8 @@
       ],
       "characterTokens": [
         "blemishine (arknights)",
-        "blemishine (moon catastrborn) (arknights)"
+        "blemishine (moon catastrborn) (arknights)",
+        "blemishine (kindness and strength) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

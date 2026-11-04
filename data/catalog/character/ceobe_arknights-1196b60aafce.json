@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ceobe_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 293,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "ceobe_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "这个好吃！你也尝尝。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "刻俄柏立绘待制作"
+        "image": "../assets/characters/popular-ceobe_arknights.png?v=5520852dda01",
+        "alt": "刻俄柏场景样张立绘",
+        "sourceShowcaseId": "pc_ceobe_arknights_ceobe_arknights_fruit_stall",
+        "sourceShowcaseSha256": "d57933d13b4d7b38527aa10217ba04448fc742a3ef00f42b0f424e04cfcb014b"
       }
     },
     "popular": {

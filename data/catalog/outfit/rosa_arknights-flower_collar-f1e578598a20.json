@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/flower_collar",
+  "revision": 2,
+  "sortOrder": 2083,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "flower_collar",
+      "name": "白花刺绣领与鸽灰围裙长裙",
+      "prose": "A dove-grey long dress with a white floral-embroidered collar, a pale half-apron and a thin blue velvet waist ribbon.",
+      "tokens": [
+        "dove grey long dress",
+        "white floral embroidered collar",
+        "pale half-apron",
+        "blue velvet waist ribbon"
+      ],
+      "characterId": "rosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

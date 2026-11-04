@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_ribbon_box",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2974,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_ribbon_box",
     "characterId": "wakaba_mutsumi_arknights",
-    "outfitId": "marionettes_id",
+    "outfitId": "backstage_ribbon",
     "title": "若叶睦 · 收好的蓝丝带",
     "category": "泰拉日常",
     "description": "她把散开的蓝丝带卷好，放回小盒子。盒盖合上之前，睦确认了发夹也在里面。",

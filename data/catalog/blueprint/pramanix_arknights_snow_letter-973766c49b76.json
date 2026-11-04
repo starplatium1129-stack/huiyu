@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_snow_letter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2846,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_snow_letter",
     "characterId": "pramanix_arknights",
-    "outfitId": "casters_frost",
+    "outfitId": "letterday_cardigan",
     "title": "初雪 · 窗前的来信",
     "category": "泰拉日常",
     "description": "客舍窗棂覆着薄霜。初雪用指尖压平家书的一角，读到熟悉的字迹时停了片刻，桌上的热茶还在冒气。",

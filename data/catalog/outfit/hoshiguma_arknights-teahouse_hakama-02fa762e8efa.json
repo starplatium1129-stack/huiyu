@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/teahouse_hakama",
+  "revision": 2,
+  "sortOrder": 2102,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "teahouse_hakama",
+      "name": "墨绿羽织与炭灰袴式宽裤",
+      "prose": "A dark-green haori with a subtle woven wave border over a light-grey kimono-style top and charcoal hakama-inspired wide-leg trousers.",
+      "tokens": [
+        "dark green haori",
+        "woven wave border",
+        "light grey kimono-style top",
+        "charcoal hakama trousers"
+      ],
+      "characterId": "hoshiguma_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

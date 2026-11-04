@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "ray_arknights/field_sage",
+  "revision": 2,
+  "sortOrder": 2048,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "ray_arknights",
+    "outfit": {
+      "id": "field_sage",
+      "name": "鼠尾草绿野行夹克与多袋背心",
+      "prose": "A sage-green field jacket over a cream utility vest with carefully placed pockets, brown straight trousers and sturdy ankle boots.",
+      "tokens": [
+        "sage green field jacket",
+        "cream utility vest",
+        "utility pockets",
+        "brown straight trousers",
+        "sturdy ankle boots"
+      ],
+      "characterId": "ray_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/garden_cotton",
+  "revision": 1,
+  "sortOrder": 2156,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "garden_cotton",
+      "name": "雾蓝刺绣围裙与白色长袖裙",
+      "prose": "A white long-sleeved cotton dress beneath a mist-blue apron embroidered with tiny leaves, with a pale ribbon at the waist and flat shoes.",
+      "tokens": [
+        "white long-sleeved cotton dress",
+        "mist blue embroidered apron",
+        "leaf embroidery",
+        "pale waist ribbon",
+        "flat shoes"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

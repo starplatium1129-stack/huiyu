@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/music_vest",
+  "revision": 1,
+  "sortOrder": 2199,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "music_vest",
+      "name": "深松绿针织背心与象牙衬衫",
+      "prose": "A deep pine-green knit vest over an ivory shirt with a narrow black ribbon tie, paired with a charcoal pleated skirt.",
+      "tokens": [
+        "deep pine green knit vest",
+        "ivory shirt",
+        "black ribbon tie",
+        "charcoal pleated skirt"
+      ],
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

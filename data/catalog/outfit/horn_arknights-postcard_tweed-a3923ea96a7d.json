@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "horn_arknights/postcard_tweed",
+  "revision": 2,
+  "sortOrder": 2111,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "horn_arknights",
+    "outfit": {
+      "id": "postcard_tweed",
+      "name": "灰蓝粗花呢短外套与黄铜纽扣",
+      "prose": "A grey-blue tweed jacket with brass buttons and a clean shoulder over a cream blouse and charcoal skirt, finished with a slim brown belt.",
+      "tokens": [
+        "grey blue tweed jacket",
+        "brass buttons",
+        "structured shoulder",
+        "cream blouse",
+        "charcoal skirt",
+        "slim brown belt"
+      ],
+      "characterId": "horn_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

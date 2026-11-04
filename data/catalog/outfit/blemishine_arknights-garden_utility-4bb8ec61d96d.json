@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/garden_utility",
+  "revision": 1,
+  "sortOrder": 2121,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "garden_utility",
+      "name": "鼠尾草工装背带裤与卷袖衬衣",
+      "prose": "Sage-green cotton overalls with reinforced knees over a cream rolled-sleeve shirt, a striped neckerchief and worn leather ankle boots.",
+      "tokens": [
+        "sage green overalls",
+        "reinforced knees",
+        "cream rolled-sleeve shirt",
+        "striped neckerchief",
+        "leather ankle boots"
+      ],
+      "characterId": "blemishine_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

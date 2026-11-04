@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_tea_tasting",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3112,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "swire_arknights_tea_tasting",
     "characterId": "swire_arknights",
-    "outfitId": "standard",
+    "outfitId": "tea_jade",
     "title": "诗怀雅 · 新茶试饮",
     "category": "泰拉日常",
     "description": "她尝了一口新茶，先说香气不错，又把另一杯推给你，等着听你的评价。",

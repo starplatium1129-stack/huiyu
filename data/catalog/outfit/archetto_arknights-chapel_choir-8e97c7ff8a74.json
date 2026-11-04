@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/chapel_choir",
+  "revision": 2,
+  "sortOrder": 2053,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "chapel_choir",
+      "name": "奶白肩斗篷与藏青合唱长裙",
+      "prose": "A cream long-sleeved blouse with a narrow burgundy ribbon, a navy long skirt and a white shoulder cape fastened with a small gold bell.",
+      "tokens": [
+        "cream long-sleeved blouse",
+        "burgundy ribbon",
+        "navy long skirt",
+        "white shoulder cape",
+        "gold bell clasp"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

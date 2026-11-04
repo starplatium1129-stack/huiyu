@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_flower_stall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2981,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "fiammetta_arknights_flower_stall",
     "characterId": "fiammetta_arknights",
-    "outfitId": "standard",
+    "outfitId": "flower_sand",
     "title": "菲亚梅塔 · 花摊前",
     "category": "泰拉日常",
     "description": "她在花摊前选了很久，最后挑了颜色明亮的一束。店主问要写什么卡片，她想了想，只留下自己的名字。",

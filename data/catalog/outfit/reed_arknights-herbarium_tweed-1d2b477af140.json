@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "reed_arknights/herbarium_tweed",
+  "revision": 1,
+  "sortOrder": 2174,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "reed_arknights",
+    "outfit": {
+      "id": "herbarium_tweed",
+      "name": "草木压纹深棕马甲与雾绿裙",
+      "prose": "A dark brown tweed vest with a subtle pressed-leaf pattern over a cream blouse and a mist-green pleated long skirt.",
+      "tokens": [
+        "dark brown tweed vest",
+        "pressed leaf pattern",
+        "cream blouse",
+        "mist green pleated long skirt"
+      ],
+      "characterId": "reed_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

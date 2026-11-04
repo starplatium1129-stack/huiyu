@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_night_walk",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2872,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_night_walk",
     "characterId": "ines_arknights",
-    "outfitId": "standard",
+    "outfitId": "under_flaming_dome",
     "title": "伊内丝 · 回程的路灯",
     "category": "泰拉日常",
     "description": "夜里街上人很少。她走在靠外的一侧，听完你说的事后只答了一句“我知道了”，脚步却放慢了些。",

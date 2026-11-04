@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/library_graphite",
+  "revision": 2,
+  "sortOrder": 2151,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:48:37.661746300+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "library_graphite",
+      "name": "石墨色短斗篷与薄荷色内衬",
+      "prose": "A graphite capelet with a mint lining over a pale grey collared dress, finished with a discreet black ribbon and ankle boots.",
+      "tokens": [
+        "graphite capelet",
+        "mint lining",
+        "pale grey collared dress",
+        "black ribbon",
+        "ankle boots"
+      ],
+      "characterId": "mon3tr_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

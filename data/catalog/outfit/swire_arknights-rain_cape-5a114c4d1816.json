@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/rain_cape",
+  "revision": 1,
+  "sortOrder": 2210,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "rain_cape",
+      "name": "墨绿短披风与奶油色双排扣风衣",
+      "prose": "An ivory double-breasted trench coat under a dark-green shoulder cape, with a gold buckle, fitted dark trousers and black ankle boots.",
+      "tokens": [
+        "ivory double-breasted trench coat",
+        "dark green shoulder cape",
+        "gold buckle",
+        "dark fitted trousers",
+        "black ankle boots"
+      ],
+      "characterId": "swire_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

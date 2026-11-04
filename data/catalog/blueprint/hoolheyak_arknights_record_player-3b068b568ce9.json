@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_record_player",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2899,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "hoolheyak_arknights_record_player",
     "characterId": "hoolheyak_arknights",
-    "outfitId": "carriage_of_winds",
+    "outfitId": "record_copper",
     "title": "霍尔海雅 · 旧唱片的旋律",
     "category": "泰拉日常",
     "description": "唱片有一点轻微的杂音，她却没有换掉。旋律走到熟悉的一段时，霍尔海雅用指尖轻轻跟着拍了两下。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_art_album",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3030,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "specter_arknights_art_album",
     "characterId": "specter_arknights",
-    "outfitId": "standard",
+    "outfitId": "unchained_base",
     "title": "幽灵鲨 · 画册里的蓝色",
     "category": "泰拉日常",
     "description": "她翻到一幅海洋画，指尖停在颜色交界的地方。那片蓝让她想起一件还没讲完的事。",

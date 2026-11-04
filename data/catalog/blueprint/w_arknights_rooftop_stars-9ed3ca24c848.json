@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_rooftop_stars",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2942,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_rooftop_stars",
     "characterId": "w_arknights",
-    "outfitId": "fugue",
+    "outfitId": "stargaze_hoodie",
     "title": "W / 维什戴尔 · 楼顶数星星",
     "category": "泰拉日常",
     "description": "屋顶上比室内安静。她数了几颗星就嫌太慢，索性躺靠在椅背上，听你继续认星座。",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ray_arknights",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 278,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "ray_arknights",
     "profile": {
@@ -46,8 +46,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "莱伊立绘待制作"
+        "image": "../assets/characters/popular-ray_arknights.png?v=2e73a3f38551",
+        "alt": "莱伊场景样张立绘",
+        "sourceShowcaseId": "pc_ray_arknights_ray_arknights_sandbeast_treat",
+        "sourceShowcaseSha256": "69c234b1b8532049c4235a32d5c511037ee2344d226d9efc6c7b28e0201983cb"
       },
       "tags": [
         "兔耳",
@@ -78,7 +80,8 @@
       ],
       "characterTokens": [
         "ray (arknights)",
-        "ray (dreaming high) (arknights)"
+        "ray (dreaming high) (arknights)",
+        "ray (summer flowers) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

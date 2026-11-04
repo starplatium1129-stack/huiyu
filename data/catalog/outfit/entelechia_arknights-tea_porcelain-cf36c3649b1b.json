@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/tea_porcelain",
+  "revision": 1,
+  "sortOrder": 2126,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "tea_porcelain",
+      "name": "瓷白立领衬衫与深李色百褶裙",
+      "prose": "A porcelain-white stand-collar silk blouse with covered buttons, paired with a deep plum knife-pleated skirt and a fine black waist ribbon.",
+      "tokens": [
+        "porcelain white silk blouse",
+        "stand collar",
+        "covered buttons",
+        "deep plum pleated skirt",
+        "black waist ribbon"
+      ],
+      "characterId": "entelechia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "specter_arknights/tide_scarf",
+  "revision": 1,
+  "sortOrder": 2139,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "specter_arknights",
+    "outfit": {
+      "id": "tide_scarf",
+      "name": "雾蓝长围巾与炭灰茧形大衣",
+      "prose": "A long mist-blue scarf wrapped over a charcoal cocoon coat, a soft grey knit dress and dark lace-up boots.",
+      "tokens": [
+        "mist blue long scarf",
+        "charcoal cocoon coat",
+        "grey knit dress",
+        "dark lace-up boots"
+      ],
+      "characterId": "specter_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

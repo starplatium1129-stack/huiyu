@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_market_feed",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2909,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T04:21:58.632181200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "ray_arknights_market_feed",
     "characterId": "ray_arknights",
-    "outfitId": "standard",
+    "outfitId": "market_sandcoat",
     "title": "莱伊 · 兽粮的选择",
     "category": "泰拉日常",
     "description": "她把两袋兽粮并排放在架边，逐项看配料。选定之后，莱伊又核对了一次包装上的适用说明。",

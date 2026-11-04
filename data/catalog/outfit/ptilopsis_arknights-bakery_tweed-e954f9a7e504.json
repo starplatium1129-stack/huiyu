@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ptilopsis_arknights/bakery_tweed",
+  "revision": 1,
+  "sortOrder": 2164,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "ptilopsis_arknights",
+    "outfit": {
+      "id": "bakery_tweed",
+      "name": "燕麦色短呢外套与琥珀格裙",
+      "prose": "An oatmeal cropped tweed jacket over a cream turtleneck and an amber-and-charcoal checked skirt, with a silver feather pin.",
+      "tokens": [
+        "oatmeal cropped tweed jacket",
+        "cream turtleneck",
+        "amber and charcoal checked skirt",
+        "silver feather pin"
+      ],
+      "characterId": "ptilopsis_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

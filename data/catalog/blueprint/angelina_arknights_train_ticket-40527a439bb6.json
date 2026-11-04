@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_train_ticket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3080,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "angelina_arknights_train_ticket",
     "characterId": "angelina_arknights",
-    "outfitId": "standard",
+    "outfitId": "ticket_denim",
     "title": "安洁莉娜 · 车票夹页",
     "category": "泰拉日常",
     "description": "她确认好站台，把车票夹进笔记本，随后又摸了摸口袋，确保钱包也带着。",

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/wine_velvet",
+  "revision": 2,
+  "sortOrder": 2005,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "wine_velvet",
+      "name": "乌梅丝绒斜领礼裙与金属细腰链",
+      "prose": "A plum velvet midi dress with a sculptural asymmetric lapel and a slender antique-gold waist chain, paired with pointed dark heels.",
+      "tokens": [
+        "plum velvet midi dress",
+        "asymmetric lapel",
+        "antique gold waist chain",
+        "pointed heels"
+      ],
+      "characterId": "vulpisfoglia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -3,6 +3,7 @@ import type { HistoryRecipeParts } from '@/types/historyReuse'
 import { parseHistoryRecipe } from '@/utils/historyRecipe'
 import { snapshotHistoricalRecipe } from '@/utils/recipeComparison'
 import { findBlueprint } from '@/utils/popularContent'
+import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
 import type { PromptHistoryApplyDeps } from './usePromptHistoryApply'
 
 /** Selective reuse keeps the current subject, engine and album. Never injects the compiled historical prompt. */
@@ -68,8 +69,8 @@ export async function applyHistoryParts(deps: PromptHistoryApplyDeps, record: Ar
       if (pb.subject.kind === 'popular') {
         const current = pb.subject
         apply(entry.outfitExplicit, value => { pb.subject = { ...current, outfitExplicit: value } })
-        apply(entry.outfitOverride, value => { pb.outfitOverride = value ? { tokens: [...value.tokens], replaced: value.replaced } : null })
       }
+      apply(entry.outfitOverride, value => { pb.outfitOverride = parseOutfitOverride(value) })
       apply(entry.story, value => pb.setStory(value))
       apply(entry.visualDescription, value => { pb.visualDescription = value })
       apply(entry.emotion, value => { pb.selections.emotion = [...value] })

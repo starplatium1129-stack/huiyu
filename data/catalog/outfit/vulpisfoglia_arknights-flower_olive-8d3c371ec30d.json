@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "vulpisfoglia_arknights/flower_olive",
+  "revision": 2,
+  "sortOrder": 2008,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "vulpisfoglia_arknights",
+    "outfit": {
+      "id": "flower_olive",
+      "name": "橄榄绿收腰风衣与铃兰丝巾",
+      "prose": "A structured olive trench with a softly flared hem, a cream skirt and leather ankle boots, finished with a silk scarf printed with tiny lilies of the valley.",
+      "tokens": [
+        "structured olive trench coat",
+        "flared coat hem",
+        "cream skirt",
+        "leather ankle boots",
+        "lily of the valley silk scarf"
+      ],
+      "characterId": "vulpisfoglia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

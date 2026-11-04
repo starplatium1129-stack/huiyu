@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_bird_reference",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3071,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "mon3tr_arknights_bird_reference",
     "characterId": "mon3tr_arknights",
-    "outfitId": "sharpened_claws",
+    "outfitId": "library_graphite",
     "title": "Mon3tr · 鸟类参考书",
     "category": "泰拉日常",
     "description": "她在图鉴里找到窗外那只鸟，比较羽毛上的花纹后，把书轻轻转向你。",

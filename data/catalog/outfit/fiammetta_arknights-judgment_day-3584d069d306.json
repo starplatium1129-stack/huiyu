@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "fiammetta_arknights/judgment_day",
+  "revision": 2,
+  "sortOrder": 2094,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "fiammetta_arknights",
+    "outfit": {
+      "id": "judgment_day",
+      "name": "审判日·黑白拼色短外套",
+      "prose": "A two-tone black and white jacket with fitted shoulder pieces and black boots.",
+      "tokens": [
+        "black and white jacket",
+        "shoulder armor",
+        "black boots"
+      ],
+      "characterId": "fiammetta_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "fiammetta (arknights)",
+        "fiammetta (judgment day) (arknights)",
+        "1girl",
+        "solo",
+        "red hair",
+        "very long hair",
+        "single braid",
+        "red eyes",
+        "bird ears",
+        "bird tail"
+      ],
+      "identityProseOverride": "Fiammetta from Arknights has very long braided red hair, red eyes, avian ears and a bird tail in her Judgment Day outfit."
+    }
+  }
+}

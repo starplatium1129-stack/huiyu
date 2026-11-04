@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_bakery_bag",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2893,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_bakery_bag",
     "characterId": "nymph_arknights",
-    "outfitId": "sweetness_to_the_heart",
+    "outfitId": "bakery_bluecoat",
     "title": "妮芙 · 面包店的小纸袋",
     "category": "泰拉日常",
     "description": "店员把刚烤好的面包装进纸袋。她双手接过来，小心避开还烫手的袋底，准备带回去和大家分享。",

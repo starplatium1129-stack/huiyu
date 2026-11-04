@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "rosa_arknights/snow_window_knit",
+  "revision": 2,
+  "sortOrder": 2081,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "rosa_arknights",
+    "outfit": {
+      "id": "snow_window_knit",
+      "name": "象牙绞花毛衣与雪花发夹",
+      "prose": "An ivory cable-knit sweater with a high folded collar and pearl buttons, paired with a blue-grey long skirt and a silver snowflake hair clip.",
+      "tokens": [
+        "ivory cable-knit sweater",
+        "folded high collar",
+        "pearl buttons",
+        "blue grey long skirt",
+        "silver snowflake hair clip"
+      ],
+      "characterId": "rosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

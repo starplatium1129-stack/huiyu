@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/raincoat_graphite",
+  "revision": 2,
+  "sortOrder": 2107,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "raincoat_graphite",
+      "name": "石墨灰防雨风衣与墨绿内衬",
+      "prose": "A graphite waterproof trench with a deep-green lining and strong shoulder line over a black shirt and straight trousers, with dark leather boots.",
+      "tokens": [
+        "graphite waterproof trench coat",
+        "deep green lining",
+        "structured shoulders",
+        "black shirt",
+        "straight trousers",
+        "dark leather boots"
+      ],
+      "characterId": "hoshiguma_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "virtuosa_arknights/vinyl_tailoring",
+  "revision": 1,
+  "sortOrder": 2188,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "virtuosa_arknights",
+    "outfit": {
+      "id": "vinyl_tailoring",
+      "name": "墨黑短西装与暗紫丝缎阔腿裤",
+      "prose": "A sharply cut black cropped blazer over a dove-grey silk blouse and dark plum wide-leg satin trousers, with an oxidized-silver chain at the lapel.",
+      "tokens": [
+        "black cropped blazer",
+        "dove grey silk blouse",
+        "dark plum satin wide-leg trousers",
+        "silver lapel chain"
+      ],
+      "characterId": "virtuosa_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

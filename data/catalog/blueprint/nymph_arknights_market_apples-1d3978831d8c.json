@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_market_apples",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2890,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_market_apples",
     "characterId": "nymph_arknights",
-    "outfitId": "sweetness_to_the_heart",
+    "outfitId": "apple_pinafore",
     "title": "妮芙 · 集市里的苹果",
     "category": "泰拉日常",
     "description": "果摊上的苹果有红有青。妮芙挑了两种颜色放进篮子，想带回去比较哪一种更适合做点心。",

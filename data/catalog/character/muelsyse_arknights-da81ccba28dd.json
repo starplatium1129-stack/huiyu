@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "muelsyse_arknights",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 275,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "muelsyse_arknights",
     "profile": {
@@ -46,8 +46,10 @@
         "classificationSource": "游戏内干员基础档案与客观履历"
       },
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "缪尔赛思立绘待制作"
+        "image": "../assets/characters/popular-muelsyse_arknights.png?v=a41082fd7a3f",
+        "alt": "缪尔赛思场景样张立绘",
+        "sourceShowcaseId": "pc_muelsyse_arknights_muelsyse_arknights_herb_tea",
+        "sourceShowcaseSha256": "05e722217a3d3242719a8fa57dd5850f9330fb0034c7936b9e85b4f473309ce2"
       },
       "tags": [
         "精灵",

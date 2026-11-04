@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_coffee_counter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2869,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_coffee_counter",
     "characterId": "ines_arknights",
-    "outfitId": "standard",
+    "outfitId": "coffee_jacket",
     "title": "伊内丝 · 不加糖的咖啡",
     "category": "泰拉日常",
     "description": "店员问要不要加糖，她摇了摇头。接过纸杯后，她站到门边，让开后面排队的位置，等你一起出门。",

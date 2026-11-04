@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "wakaba_mutsumi_arknights/garden_smock",
+  "revision": 1,
+  "sortOrder": 2196,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "wakaba_mutsumi_arknights",
+    "outfit": {
+      "id": "garden_smock",
+      "name": "浅苔绿罩衫与奶油工装长裤",
+      "prose": "A pale moss cotton garden smock with roomy square pockets over a white shirt and cream work trousers, with a small leaf-shaped hair clip.",
+      "tokens": [
+        "pale moss cotton smock",
+        "square pockets",
+        "white shirt",
+        "cream work trousers",
+        "leaf hair clip"
+      ],
+      "characterId": "wakaba_mutsumi_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

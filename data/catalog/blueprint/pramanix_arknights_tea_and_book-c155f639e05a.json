@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_tea_and_book",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2850,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_tea_and_book",
     "characterId": "pramanix_arknights",
-    "outfitId": "prerita",
+    "outfitId": "original_saintess",
     "title": "初雪 · 书页间的茶香",
     "category": "泰拉日常",
     "description": "茶室里只有翻页声。初雪看完一段，把手指留在页间，抬起茶盏尝了一口，等茶稍凉再继续读。",

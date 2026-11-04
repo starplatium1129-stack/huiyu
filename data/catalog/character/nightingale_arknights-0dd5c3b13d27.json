@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nightingale_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 291,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "nightingale_arknights",
     "profile": {
@@ -51,8 +51,10 @@
       ],
       "voice": "你也来听一听吗？",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "夜莺立绘待制作"
+        "image": "../assets/characters/popular-nightingale_arknights.png?v=e088a612203a",
+        "alt": "夜莺场景样张立绘",
+        "sourceShowcaseId": "pc_nightingale_arknights_nightingale_arknights_tea_biscuit",
+        "sourceShowcaseSha256": "8e880e6619e074764e7d69240f281cd917c367c32138f13f54dea1471628fe4c"
       }
     },
     "popular": {
@@ -76,7 +78,8 @@
       ],
       "characterTokens": [
         "nightingale (arknights)",
-        "nightingale (an elegy) (arknights)"
+        "nightingale (an elegy) (arknights)",
+        "nightingale (iakhu of flows) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

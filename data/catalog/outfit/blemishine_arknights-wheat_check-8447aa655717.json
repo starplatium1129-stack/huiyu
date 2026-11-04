@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/wheat_check",
+  "revision": 1,
+  "sortOrder": 2119,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "wheat_check",
+      "name": "麦穗胸针与焦糖格纹外套",
+      "prose": "A cropped caramel checked jacket with a wheat-ear brooch over a lace-collared ivory blouse and a warm brown pleated skirt.",
+      "tokens": [
+        "caramel checked cropped jacket",
+        "wheat brooch",
+        "ivory lace collar blouse",
+        "warm brown pleated skirt"
+      ],
+      "characterId": "blemishine_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

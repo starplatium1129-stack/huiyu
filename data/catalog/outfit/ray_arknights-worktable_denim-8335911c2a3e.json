@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "ray_arknights/worktable_denim",
+  "revision": 2,
+  "sortOrder": 2045,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "ray_arknights",
+    "outfit": {
+      "id": "worktable_denim",
+      "name": "靛蓝背带工装裤与条纹棉衫",
+      "prose": "Soft indigo denim overalls with a small stitched tool pocket over a striped long-sleeved cotton shirt, paired with worn canvas shoes.",
+      "tokens": [
+        "indigo denim overalls",
+        "stitched tool pocket",
+        "striped long-sleeved cotton shirt",
+        "canvas shoes"
+      ],
+      "characterId": "ray_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

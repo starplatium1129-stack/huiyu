@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_rooftop_plants",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2871,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "ines_arknights_rooftop_plants",
     "characterId": "ines_arknights",
-    "outfitId": "standard",
+    "outfitId": "rooftop_workwear",
     "title": "伊内丝 · 屋顶的薄荷",
     "category": "泰拉日常",
     "description": "一盆薄荷被人忘在屋顶角落。伊内丝把它移到能晒到太阳的地方，浇过水后，又把空水壶放回门旁。",

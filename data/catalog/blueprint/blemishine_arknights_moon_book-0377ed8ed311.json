@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_moon_book",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3015,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "blemishine_arknights_moon_book",
     "characterId": "blemishine_arknights",
-    "outfitId": "moon_catastrborn",
+    "outfitId": "moon_atlas",
     "title": "瑕光 · 月亮图鉴",
     "category": "泰拉日常",
     "description": "图鉴里画着不同形状的月亮。她把书翻到窗边，对照着今晚的月相看了半天。",

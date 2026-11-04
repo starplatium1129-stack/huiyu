@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/market_bluecape",
+  "revision": 2,
+  "sortOrder": 2056,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "market_bluecape",
+      "name": "雾蓝短披肩与红灰格纹褶裙",
+      "prose": "A blue wool shoulder cape edged in cream piping over a white blouse and red-and-grey checked pleated skirt, with dark ankle shoes.",
+      "tokens": [
+        "blue wool shoulder cape",
+        "cream piping",
+        "white blouse",
+        "red and grey checked pleated skirt",
+        "dark ankle shoes"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

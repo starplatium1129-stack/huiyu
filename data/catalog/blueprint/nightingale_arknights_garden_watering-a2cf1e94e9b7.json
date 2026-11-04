@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_garden_watering",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3037,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "nightingale_arknights_garden_watering",
     "characterId": "nightingale_arknights",
-    "outfitId": "standard",
+    "outfitId": "garden_cotton",
     "title": "夜莺 · 花园浇水",
     "category": "泰拉日常",
     "description": "她把水壶倾斜一点，让水慢慢落进土里。浇完后，她将花盆挪回阳光能照到的地方。",

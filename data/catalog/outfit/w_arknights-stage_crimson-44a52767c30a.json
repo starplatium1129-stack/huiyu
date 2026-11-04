@@ -1,0 +1,39 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/stage_crimson",
+  "revision": 2,
+  "sortOrder": 2074,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "stage_crimson",
+      "name": "深红短燕尾与黑缎翻领",
+      "prose": "A deep-crimson cropped tailcoat with black satin lapels over a black blouse and fitted trousers, with a narrow red ribbon tied at the collar.",
+      "tokens": [
+        "deep crimson cropped tailcoat",
+        "black satin lapels",
+        "black blouse",
+        "fitted black trousers",
+        "red collar ribbon"
+      ],
+      "characterId": "w_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "w (arknights)",
+        "wis'adel (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "medium hair",
+        "red streak",
+        "red eyes",
+        "red horns",
+        "demon tail"
+      ],
+      "identityProseOverride": "Wis’adel from Arknights has grey-white hair with red streaks, red eyes, red horns and a demon tail."
+    }
+  }
+}

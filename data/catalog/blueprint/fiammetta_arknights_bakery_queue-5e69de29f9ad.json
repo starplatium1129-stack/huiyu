@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_bakery_queue",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2977,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "fiammetta_arknights_bakery_queue",
     "characterId": "fiammetta_arknights",
-    "outfitId": "standard",
+    "outfitId": "bakery_rust",
     "title": "菲亚梅塔 · 面包店的队伍",
     "category": "泰拉日常",
     "description": "排队的人比想象中多。轮到她时，菲亚梅塔多买了一份，走出店门后递给等在外面的人。",

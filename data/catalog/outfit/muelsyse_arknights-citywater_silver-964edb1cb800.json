@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "muelsyse_arknights/citywater_silver",
+  "revision": 2,
+  "sortOrder": 2026,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "muelsyse_arknights",
+    "outfit": {
+      "id": "citywater_silver",
+      "name": "银灰水波长裙与渐蓝薄纱",
+      "prose": "A silver-grey column dress beneath a translucent blue overskirt, with ripple-like pleats and a slim water-drop pendant.",
+      "tokens": [
+        "silver grey column dress",
+        "translucent blue overskirt",
+        "ripple pleats",
+        "water drop pendant"
+      ],
+      "characterId": "muelsyse_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

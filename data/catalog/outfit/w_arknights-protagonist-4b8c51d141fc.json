@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/protagonist",
+  "revision": 2,
+  "sortOrder": 2070,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "protagonist",
+      "name": "绝对主角·红色短外套与黑短裤",
+      "prose": "A red jacket with black shorts and dark boots, matching Wis’adel’s role-playing outfit.",
+      "tokens": [
+        "red jacket",
+        "black shorts",
+        "dark boots"
+      ],
+      "characterId": "w_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "w (arknights)",
+        "wis'adel (arknights)",
+        "1girl",
+        "solo",
+        "grey hair",
+        "short hair",
+        "red streak",
+        "red eyes",
+        "red horns",
+        "demon tail"
+      ],
+      "identityProseOverride": "Wis’adel from Arknights has short grey hair with red streaks, red eyes, red horns and a demon tail."
+    }
+  }
+}

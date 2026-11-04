@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/iakhu_flows",
+  "revision": 1,
+  "sortOrder": 2160,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "iakhu_flows",
+      "name": "流辉·白色兜帽长裙与金饰",
+      "prose": "A flowing white dress with a white hood and veil, delicate gold head chains, a gold choker and gold sandals.",
+      "tokens": [
+        "white long dress",
+        "white hood",
+        "white veil",
+        "gold head chain",
+        "gold choker",
+        "gold sandals"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "nightingale (arknights)",
+        "nightingale (iakhu of flows) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "very long hair",
+        "blue eyes",
+        "horns"
+      ],
+      "identityProseOverride": "Nightingale from Arknights has very long blonde hair, blue eyes and Sarkaz horns."
+    }
+  }
+}

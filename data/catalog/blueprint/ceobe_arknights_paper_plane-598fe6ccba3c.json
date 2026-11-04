@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_paper_plane",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3065,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "ceobe_arknights_paper_plane",
     "characterId": "ceobe_arknights",
-    "outfitId": "unfettered",
+    "outfitId": "sky_windbreaker",
     "title": "刻俄柏 · 纸飞机比赛",
     "category": "泰拉日常",
     "description": "她把纸飞机举到肩旁，等大家准备好才一起放飞，随后跑去看谁的落得最远。",

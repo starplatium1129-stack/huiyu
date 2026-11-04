@@ -1,0 +1,38 @@
+{
+  "kind": "outfit",
+  "id": "hoshiguma_arknights/breacher_standard",
+  "revision": 3,
+  "sortOrder": 2103,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "data": {
+    "characterId": "hoshiguma_arknights",
+    "outfit": {
+      "id": "breacher_standard",
+      "name": "黑色长外套与白色袴裤",
+      "prose": "A black long coat with white hakama trousers, a dark top and red boots.",
+      "tokens": [
+        "black long coat",
+        "white hakama trousers",
+        "dark top",
+        "red boots"
+      ],
+      "characterId": "hoshiguma_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "hoshiguma (arknights)",
+        "hoshiguma the breacher (arknights)",
+        "1girl",
+        "solo",
+        "green hair",
+        "long hair",
+        "high ponytail",
+        "yellow eyes",
+        "single horn",
+        "scar on cheek"
+      ],
+      "identityProseOverride": "Hoshiguma the Breacher from Arknights has long green hair in a high ponytail, yellow eyes, one oni horn and a cheek scar."
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_tea_and_draft",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2935,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "pozyomka_arknights_tea_and_draft",
     "characterId": "pozyomka_arknights",
-    "outfitId": "beside_dreams",
+    "outfitId": "draft_cardigan",
     "title": "鸿雪 · 改稿间歇",
     "category": "亲密时刻",
     "description": "她将笔搁在稿纸上，托腮看你，笑说下一页可以晚点再写，今晚先听你说。",

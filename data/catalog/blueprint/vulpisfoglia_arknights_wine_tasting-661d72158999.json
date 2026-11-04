@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_wine_tasting",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2857,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-04T04:09:13.633613700+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_wine_tasting",
     "characterId": "vulpisfoglia_arknights",
-    "outfitId": "synesthesia_black_dress",
+    "outfitId": "wine_velvet",
     "title": "忍冬 · 迟到的品酒会",
     "category": "泰拉日常",
     "description": "品酒会已经快结束，她才从容赶到。忍冬向主人道过歉，举起杯子看了一眼颜色，认真问还能不能留下最后一轮。",

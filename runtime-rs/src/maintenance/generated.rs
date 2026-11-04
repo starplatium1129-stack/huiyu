@@ -44,7 +44,7 @@ fn director_sources(value: &Value) -> bool {
 fn outfit_override(value: &Value) -> bool {
     value.is_null()
         || value.as_object().is_some_and(|outfit| {
-            outfit.len() == 2
+            outfit.keys().all(|key| matches!(key.as_str(), "tokens" | "replaced" | "presetId" | "label" | "prose" | "suppressedTags"))
                 && outfit.get("tokens").is_some_and(|tokens| {
                     tokens.as_array().is_some_and(|tokens| {
                         !tokens.is_empty()
@@ -55,6 +55,10 @@ fn outfit_override(value: &Value) -> bool {
                 && outfit.get("replaced").is_some_and(|replaced| {
                     replaced.is_null() || string(replaced, 512, true)
                 })
+                && ["presetId", "label"].iter().all(|key| outfit.get(*key).is_none_or(|v| string(v, 512, false)))
+                && outfit.get("prose").is_none_or(|v| string(v, 4000, false))
+                && outfit.get("suppressedTags").is_none_or(|v| v.as_array().is_some_and(|tags|
+                    tags.len() <= 256 && tags.iter().all(|tag| string(tag, 512, false))))
         })
 }
 fn parameters(value: &Value) -> bool {

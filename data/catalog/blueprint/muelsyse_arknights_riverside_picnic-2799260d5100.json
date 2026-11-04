@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_riverside_picnic",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2881,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "muelsyse_arknights_riverside_picnic",
     "characterId": "muelsyse_arknights",
-    "outfitId": "young_branch",
+    "outfitId": "picnic_blue",
     "title": "缪尔赛思 · 河岸上的午餐",
     "category": "泰拉日常",
     "description": "她把水果从篮子里拿出来，挑了一颗熟透的递给你。河风吹动餐布的一角，她伸手用篮子把它压住。",

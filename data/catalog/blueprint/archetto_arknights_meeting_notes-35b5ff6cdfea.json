@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_meeting_notes",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2919,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "archetto_arknights_meeting_notes",
     "characterId": "archetto_arknights",
-    "outfitId": "standard",
+    "outfitId": "meeting_burgundy",
     "title": "空弦 · 合作提案的空白处",
     "category": "泰拉日常",
     "description": "她在提案边缘写下两条修改意见，又给修道院的联络方式加了下划线，免得对方找不到。",

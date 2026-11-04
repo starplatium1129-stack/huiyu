@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_vinyl_cover",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3021,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "entelechia_arknights_vinyl_cover",
     "characterId": "entelechia_arknights",
-    "outfitId": "standard",
+    "outfitId": "vinyl_lacquer",
     "title": "隐德来希 · 唱片封面",
     "category": "泰拉日常",
     "description": "她抽出一张封面特别的唱片，先看画，再看背面的曲目，最后把它带到柜台。",

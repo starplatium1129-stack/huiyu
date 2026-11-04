@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/pearl_jacket",
+  "revision": 1,
+  "sortOrder": 2207,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "pearl_jacket",
+      "name": "珍珠扣短外套与孔雀绿丝裙",
+      "prose": "A cream cropped jacket with oversized pearl buttons over a peacock-green silk skirt, with a small gold chain at the collar.",
+      "tokens": [
+        "cream cropped jacket",
+        "pearl buttons",
+        "peacock green silk skirt",
+        "gold collar chain"
+      ],
+      "characterId": "swire_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

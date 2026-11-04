@@ -59,11 +59,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const sceneBaseStory = ref('')
   const selections = reactive<Selections>({ emotion: [], shot: null, lighting: null, composition: null })
   const directorSources = ref<DirectorControlSources>(sceneDirectorSources())
-  /**
-   * 反推顶替的服装（2026-08-29）。非空时，热门角色用参考图服装**整体替换**
-   * 角色默认服装（outfit.tokens + outfit.prose 一起换；只换 tag 不换散文无效）。
-   * 清空即恢复角色默认服装。studio 路径（宁宁/夏目）不使用——它们无默认服装注入。
-   */
+  /** 参考图或衣橱选择的服装；清空后恢复场景原有衣装。 */
   const outfitOverride = ref<DraftOutfitOverride | null>(null)
   const referenceInput = ref<DraftReferenceInput | null>(null)
   const randomVariation = ref<DraftRandomVariation | null>(null)
@@ -87,11 +83,18 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     referenceInput.value = cloneReferenceInput(referenceInput.value, tags)
   }
   function addManualTag(input: string) {
+    releaseSuppressedTag(input)
     const outcome = addTag(input)
     if (outcome !== 'duplicate') releaseReferenceTag(input)
     return outcome
   }
-  function toggleManualTag(input: string) { releaseReferenceTag(input); toggleTag(input) }
+  function releaseSuppressedTag(input: string) {
+    if (!outfitOverride.value?.suppressedTags?.length) return
+    const key = normalizeKey(tagDictionary.value.canonicalize(input))
+    if (!outfitOverride.value.suppressedTags.some(tag => normalizeKey(tag) === key)) return
+    outfitOverride.value = { ...outfitOverride.value, suppressedTags: outfitOverride.value.suppressedTags.filter(tag => normalizeKey(tag) !== key) }
+  }
+  function toggleManualTag(input: string) { releaseSuppressedTag(input); releaseReferenceTag(input); toggleTag(input) }
   watch([manualTags, tagDictionary], () => {
     if (!referenceInput.value) return
     const canonicalize = tagDictionary.value.canonicalize
@@ -238,6 +241,7 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     if (story.value === inherited) story.value = ''
   }
   function setChar(c: CharKey) {
+    if (!isPopular.value && char.value !== c) outfitOverride.value = null
     if (storyOrigin.value && !isPopular.value) storyOrigin.value = ['nene','natsume'].includes(c) ? { ...storyOrigin.value, characterId: c, outfitId: undefined } : undefined
     const scene = activeScene.value
     if (!isPopular.value && scene && !sceneSupportsCharacter(scene, c)) {
@@ -259,6 +263,8 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     storyOrigin.value = undefined
     clearInheritedStory()
     clearRandomVariation()
+    const suppressed = new Set((outfitOverride.value?.suppressedTags || []).map(normalizeKey))
+    manualTags.value = new Set([...manualTags.value].filter(tag => !suppressed.has(normalizeKey(tag))))
     for (const token of outfitOverride.value?.tokens ?? []) manualTags.value.add(token)
     subject.value = { kind: 'studio' }
     char.value = 'none'
@@ -305,8 +311,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   function setArtistStyleIds(ids: string[]) { artistStyleIds.value = normalizeArtistStyleIds(ids) }
 
   /** 反推出跨族服装：顶替角色默认服装（replaced 为被顶替的服装族名，用于提示）。 */
-  function setOutfitOverride(tokens: string[], replaced: string | null) {
-    outfitOverride.value = tokens.length ? { tokens: [...new Set(tokens.map(tagDictionary.value.canonicalize))], replaced } : null
+  function setOutfitOverride(tokens: string[], replaced: string | null, preset?: Pick<DraftOutfitOverride, 'presetId' | 'label' | 'prose' | 'suppressedTags'>) {
+    outfitOverride.value = tokens.length ? { tokens: [...new Set(tokens.map(tagDictionary.value.canonicalize))], replaced,
+      ...(preset?.presetId ? { presetId: preset.presetId } : {}), ...(preset?.label ? { label: preset.label } : {}),
+      ...(preset?.prose ? { prose: preset.prose } : {}), ...(preset?.suppressedTags?.length ? { suppressedTags: [...preset.suppressedTags] } : {}) } : null
   }
   /** 一键恢复角色默认服装。 */
   function clearOutfitOverride() { outfitOverride.value = null }

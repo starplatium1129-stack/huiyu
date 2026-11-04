@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "entelechia_arknights",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 289,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "entelechia_arknights",
     "profile": {
@@ -51,8 +51,10 @@
       ],
       "voice": "这个问题，留到下次再回答吧。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "隐德来希立绘待制作"
+        "image": "../assets/characters/popular-entelechia_arknights.png?v=41b4bc56f90a",
+        "alt": "隐德来希场景样张立绘",
+        "sourceShowcaseId": "pc_entelechia_arknights_entelechia_arknights_rose_shop",
+        "sourceShowcaseSha256": "749ed2266b8a897bf8cf56238c117bcb2496e2e1fc005c5e0ddbf491bcf15c12"
       }
     },
     "popular": {

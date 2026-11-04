@@ -1,0 +1,39 @@
+{
+  "kind": "outfit",
+  "id": "swire_arknights/rhythmic_blocks",
+  "revision": 1,
+  "sortOrder": 2206,
+  "createdAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "data": {
+    "characterId": "swire_arknights",
+    "outfit": {
+      "id": "rhythmic_blocks",
+      "name": "律动方格·绿帽与紫色舞台裤装",
+      "prose": "A dark cropped camisole with purple trousers, a green cap with sunglasses and long fingerless gloves.",
+      "tokens": [
+        "dark cropped camisole",
+        "purple trousers",
+        "green cap",
+        "sunglasses on headwear",
+        "fingerless gloves"
+      ],
+      "characterId": "swire_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "swire (arknights)",
+        "swire the elegant wit (arknights)",
+        "swire the elegant wit (rhythmic blocks) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "green eyes",
+        "tiger ears",
+        "tiger tail"
+      ],
+      "identityProseOverride": "Swire from Arknights has long blonde hair, green eyes, tiger ears and a striped tiger tail."
+    }
+  }
+}

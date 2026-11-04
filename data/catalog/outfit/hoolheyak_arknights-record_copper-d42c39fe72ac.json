@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "hoolheyak_arknights/record_copper",
+  "revision": 2,
+  "sortOrder": 2038,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "hoolheyak_arknights",
+    "outfit": {
+      "id": "record_copper",
+      "name": "铜扣石墨长裙与墨绿短披肩",
+      "prose": "A graphite long dress with a row of antiqued copper buttons, a narrow belt and a dark-green short cape lined in muted gold.",
+      "tokens": [
+        "graphite long dress",
+        "antiqued copper buttons",
+        "narrow belt",
+        "dark green short cape",
+        "muted gold lining"
+      ],
+      "characterId": "hoolheyak_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rosa_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 282,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "rosa_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "谢谢你，我会好好收下的。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "早露立绘待制作"
+        "image": "../assets/characters/popular-rosa_arknights.png?v=8651b0c76ed8",
+        "alt": "早露场景样张立绘",
+        "sourceShowcaseId": "pc_rosa_arknights_rosa_arknights_snow_window",
+        "sourceShowcaseSha256": "ea035b9fc11a71404514082068dd95e1391f3dd3783c90b2db391e2ea5591f4e"
       }
     },
     "popular": {
@@ -77,7 +79,8 @@
       ],
       "characterTokens": [
         "rosa (arknights)",
-        "rosa (masterpiece) (arknights)"
+        "rosa (masterpiece) (arknights)",
+        "rosa (forever together) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

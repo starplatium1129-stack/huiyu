@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_window_light",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3034,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "specter_arknights_window_light",
     "characterId": "specter_arknights",
-    "outfitId": "standard",
+    "outfitId": "white_current",
     "title": "幽灵鲨 · 窗边的邀请",
     "category": "亲密时刻",
     "description": "她在窗边伸出手，等你走近才说，今晚没有潮声，也可以一起听雨。",

@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "archetto_arknights/bakery_browncoat",
+  "revision": 2,
+  "sortOrder": 2052,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "archetto_arknights",
+    "outfit": {
+      "id": "bakery_browncoat",
+      "name": "麦穗胸针焦糖短大衣与象牙衬衫",
+      "prose": "A caramel wool short coat with a tiny brass wheat brooch over an ivory blouse and dark pleated skirt, with polished brown shoes.",
+      "tokens": [
+        "caramel wool short coat",
+        "brass wheat brooch",
+        "ivory blouse",
+        "dark pleated skirt",
+        "brown shoes"
+      ],
+      "characterId": "archetto_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

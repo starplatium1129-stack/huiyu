@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "horn_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 287,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "horn_arknights",
     "profile": {
@@ -52,8 +52,10 @@
       ],
       "voice": "这段时间，值得好好珍惜。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "号角立绘待制作"
+        "image": "../assets/characters/popular-horn_arknights.png?v=0e502e8706b9",
+        "alt": "号角场景样张立绘",
+        "sourceShowcaseId": "pc_horn_arknights_horn_arknights_rain_shelter",
+        "sourceShowcaseSha256": "643fe98e091b29de6d9fa2099e2499102134652492ddc87e8cf7788c82b6bcea"
       }
     },
     "popular": {
@@ -77,7 +79,8 @@
       ],
       "characterTokens": [
         "horn (arknights)",
-        "horn (the first gleam) (arknights)"
+        "horn (the first gleam) (arknights)",
+        "horn (to effloresce whitely) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

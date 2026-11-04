@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_paper_crane",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3073,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "mon3tr_arknights_paper_crane",
     "characterId": "mon3tr_arknights",
-    "outfitId": "standard",
+    "outfitId": "origami_fold",
     "title": "Mon3tr · 折纸练习",
     "category": "泰拉日常",
     "description": "她照着图示折出纸鹤，翅膀有些不对称，便又拿出一张纸练习。",

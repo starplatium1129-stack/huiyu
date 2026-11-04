@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/cloud_shawl",
+  "revision": 1,
+  "sortOrder": 2163,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "cloud_shawl",
+      "name": "羽纹羊毛披肩与奶白长裙",
+      "prose": "A light grey wool shawl woven with a subtle feather pattern over a cream long dress, held by a small silver bird clasp.",
+      "tokens": [
+        "light grey wool shawl",
+        "feather woven pattern",
+        "cream long dress",
+        "silver bird clasp"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

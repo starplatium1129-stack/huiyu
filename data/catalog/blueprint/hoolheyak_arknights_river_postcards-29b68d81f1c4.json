@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_river_postcards",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2901,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T04:19:24.444282600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "hoolheyak_arknights_river_postcards",
     "characterId": "hoolheyak_arknights",
-    "outfitId": "standard",
+    "outfitId": "riverside_indigo",
     "title": "霍尔海雅 · 河畔的明信片",
     "category": "泰拉日常",
     "description": "她从一排明信片里挑出一张古桥照片，指给你看桥头磨损的石雕，说这比正面构图更有意思。",

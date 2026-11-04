@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_cafe_pencil",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3100,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "virtuosa_arknights_cafe_pencil",
     "characterId": "virtuosa_arknights",
-    "outfitId": "standard",
+    "outfitId": "ink_waistcoat",
     "title": "塑心 · 咖啡馆里的旋律",
     "category": "泰拉日常",
     "description": "听见街头传来的短促旋律，她拿起笔把它记在纸巾背面，又轻轻敲了两下桌面。",

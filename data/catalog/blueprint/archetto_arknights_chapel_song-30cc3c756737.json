@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_chapel_song",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2918,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "archetto_arknights_chapel_song",
     "characterId": "archetto_arknights",
-    "outfitId": "glory_of_the_devout",
+    "outfitId": "chapel_choir",
     "title": "空弦 · 礼拜堂的赞歌",
     "category": "泰拉日常",
     "description": "礼拜堂还没有人。她站在长椅旁翻开歌本，把不熟悉的一句又唱了一遍，直到音调与记忆吻合。",

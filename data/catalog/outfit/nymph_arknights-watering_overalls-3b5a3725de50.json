@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/watering_overalls",
+  "revision": 2,
+  "sortOrder": 2031,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "watering_overalls",
+      "name": "嫩绿背带裤与花朵纽扣衬衫",
+      "prose": "Light leaf-green cotton overalls over a pale yellow shirt, with flower-shaped buttons, turned-up hems and canvas shoes.",
+      "tokens": [
+        "light green cotton overalls",
+        "pale yellow shirt",
+        "flower buttons",
+        "turned-up hems",
+        "canvas shoes"
+      ],
+      "characterId": "nymph_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

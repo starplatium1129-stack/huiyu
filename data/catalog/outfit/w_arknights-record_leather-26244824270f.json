@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "w_arknights/record_leather",
+  "revision": 2,
+  "sortOrder": 2072,
+  "createdAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "data": {
+    "characterId": "w_arknights",
+    "outfit": {
+      "id": "record_leather",
+      "name": "红线水洗皮夹克与炭黑牛仔裤",
+      "prose": "A washed black leather biker jacket with irregular red topstitching over a grey top and charcoal jeans, with lace-up boots.",
+      "tokens": [
+        "washed black leather biker jacket",
+        "red topstitching",
+        "grey top",
+        "charcoal jeans",
+        "lace-up boots"
+      ],
+      "characterId": "w_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

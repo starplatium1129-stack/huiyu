@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_festival_fan",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3115,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "swire_arknights_festival_fan",
     "characterId": "swire_arknights",
-    "outfitId": "honor_and_splendor",
+    "outfitId": "prosperous_visage",
     "title": "诗怀雅 · 扇子后的一笑",
     "category": "亲密时刻",
     "description": "她用折扇半掩笑意，倾身问你有没有听清邀请，等你的视线落到她脸上才缓缓合扇。",

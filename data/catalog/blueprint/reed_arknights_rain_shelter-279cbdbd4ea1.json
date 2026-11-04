@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_rain_shelter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3093,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "reed_arknights_rain_shelter",
     "characterId": "reed_arknights",
-    "outfitId": "flame_shadow",
+    "outfitId": "rain_cloak",
     "title": "焰影苇草 · 檐下的距离",
     "category": "亲密时刻",
     "description": "雨丝被风吹进屋檐，她挪近替你挡住一点，抬眼问有没有淋湿，说话时脸颊微微泛红。",

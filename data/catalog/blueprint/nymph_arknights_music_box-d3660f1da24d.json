@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_music_box",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2892,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_music_box",
     "characterId": "nymph_arknights",
-    "outfitId": "blooming_reverie",
+    "outfitId": "musicbox_lavender",
     "title": "妮芙 · 音乐盒的旋律",
     "category": "泰拉日常",
     "description": "音乐盒的发条转了几圈，她便安静地等着曲子开始。熟悉的旋律响起时，妮芙跟着轻轻哼了一小段。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_rain_umbrella",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2995,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "hoshiguma_arknights_rain_umbrella",
     "characterId": "hoshiguma_arknights",
-    "outfitId": "standard",
+    "outfitId": "raincoat_graphite",
     "title": "星熊 · 同一把伞",
     "category": "亲密时刻",
     "description": "伞不算大，她干脆把你拉到身边，笑着说这样谁也不会淋湿。雨声很响，你们的肩膀挨得很近。",

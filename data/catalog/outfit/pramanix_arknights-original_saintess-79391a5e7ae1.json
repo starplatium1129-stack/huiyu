@@ -1,0 +1,37 @@
+{
+  "kind": "outfit",
+  "id": "pramanix_arknights/original_saintess",
+  "revision": 3,
+  "sortOrder": 1999,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:49:34.726885700+00:00",
+  "data": {
+    "characterId": "pramanix_arknights",
+    "outfit": {
+      "id": "original_saintess",
+      "name": "灰色毛边披肩与铃铛项链",
+      "prose": "A grey hooded fur-trimmed cape with a bell necklace and dark knee-high boots.",
+      "tokens": [
+        "grey hooded cape",
+        "fur-trimmed cape",
+        "bell necklace",
+        "black knee boots"
+      ],
+      "characterId": "pramanix_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "pramanix (arknights)",
+        "1girl",
+        "solo",
+        "white hair",
+        "very long hair",
+        "wavy hair",
+        "grey eyes",
+        "snow leopard ears",
+        "snow leopard tail"
+      ],
+      "identityProseOverride": "Pramanix from Arknights has long wavy white hair, grey eyes, snow leopard ears and a snow leopard tail."
+    }
+  }
+}

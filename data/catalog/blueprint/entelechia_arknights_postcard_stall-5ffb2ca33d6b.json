@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_postcard_stall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3018,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "entelechia_arknights_postcard_stall",
     "characterId": "entelechia_arknights",
-    "outfitId": "dazzling_blue",
+    "outfitId": "city_cape",
     "title": "隐德来希 · 旧街景",
     "category": "泰拉日常",
     "description": "她翻到一张旧街景，认出画中的建筑，便问摊主是否还有同一系列。",

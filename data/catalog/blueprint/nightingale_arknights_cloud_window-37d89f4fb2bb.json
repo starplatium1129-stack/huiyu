@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_cloud_window",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3045,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "nightingale_arknights_cloud_window",
     "characterId": "nightingale_arknights",
-    "outfitId": "elegy",
+    "outfitId": "cloud_shawl",
     "title": "夜莺 · 窗上的云",
     "category": "泰拉日常",
     "description": "窗外的云缓缓散开。她靠着椅背看了一会儿，说那一朵像展开翅膀的鸟。",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_picnic_basket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3058,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
   "data": {
     "id": "ceobe_arknights_picnic_basket",
     "characterId": "ceobe_arknights",
-    "outfitId": "unfettered",
+    "outfitId": "picnic_overalls",
     "title": "刻俄柏 · 野餐篮",
     "category": "泰拉日常",
     "description": "篮子里的三明治被她分成几份，最大的一块留到最后，大家都拿到以后她才开始吃。",

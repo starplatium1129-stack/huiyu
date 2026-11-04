@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "mon3tr_arknights/origami_fold",
+  "revision": 1,
+  "sortOrder": 2153,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "data": {
+    "characterId": "mon3tr_arknights",
+    "outfit": {
+      "id": "origami_fold",
+      "name": "折纸褶襟白衬衫与炭黑背带裙",
+      "prose": "A white cotton blouse with crisp origami-like pleats at the collar beneath a charcoal pinafore dress, accented by a mint ribbon at the waist.",
+      "tokens": [
+        "white cotton blouse",
+        "folded pleated collar",
+        "charcoal pinafore dress",
+        "mint waist ribbon"
+      ],
+      "characterId": "mon3tr_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

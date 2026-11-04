@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_museum_close",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3094,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "reed_arknights_museum_close",
     "characterId": "reed_arknights",
-    "outfitId": "curator",
+    "outfitId": "velvet_fern",
     "title": "焰影苇草 · 展厅里的一句话",
     "category": "亲密时刻",
     "description": "展厅即将关门，她靠近一些，悄声问下次能不能再陪她来看这幅画，语尾带着一点期待。",

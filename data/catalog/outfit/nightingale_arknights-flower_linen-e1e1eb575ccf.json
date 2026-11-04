@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nightingale_arknights/flower_linen",
+  "revision": 2,
+  "sortOrder": 2159,
+  "createdAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-04T05:48:37.661746300+00:00",
+  "data": {
+    "characterId": "nightingale_arknights",
+    "outfit": {
+      "id": "flower_linen",
+      "name": "刺绣白领与淡紫亚麻长裙",
+      "prose": "A lavender linen long dress with a white embroidered collar, gathered sleeves and a slim grey-blue ribbon at the waist.",
+      "tokens": [
+        "lavender linen long dress",
+        "white embroidered collar",
+        "gathered sleeves",
+        "grey blue waist ribbon"
+      ],
+      "characterId": "nightingale_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

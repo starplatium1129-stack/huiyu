@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_library_flower",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3041,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "nightingale_arknights_library_flower",
     "characterId": "nightingale_arknights",
-    "outfitId": "standard",
+    "outfitId": "flower_linen",
     "title": "夜莺 · 花的图鉴",
     "category": "泰拉日常",
     "description": "图鉴上有她在花园见过的花。她把书页翻回来，将花名认真记在纸上。",

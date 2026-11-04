@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_pastry_choice",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2939,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_pastry_choice",
     "characterId": "w_arknights",
-    "outfitId": "fugue",
+    "outfitId": "pastry_stripes",
     "title": "W / 维什戴尔 · 最后一块点心",
     "category": "泰拉日常",
     "description": "盘子里还剩最后一块点心。她用叉子轻轻指了指，问你要不要；你刚伸手，她已经把盘子推到了你面前。",

@@ -56,7 +56,6 @@ export function usePromptMaterials(input: PromptMaterialsInput) {
   }
   const currentBlueprintData = computed(() => ({
     ...pb.snapshotDraft(),
-    outfitOverride: pb.outfitOverride ? { tokens: [...pb.outfitOverride.tokens], replaced: pb.outfitOverride.replaced } : null,
     drawEngine: drawEngine.value,
     size: drawEngine.value === 'sd' ? sdSize.value : `${animaState.value.width}x${animaState.value.height}`,
     anima: {

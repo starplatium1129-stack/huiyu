@@ -1,0 +1,25 @@
+{
+  "kind": "outfit",
+  "id": "nymph_arknights/apple_pinafore",
+  "revision": 2,
+  "sortOrder": 2030,
+  "createdAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-04T05:44:21.855359400+00:00",
+  "data": {
+    "characterId": "nymph_arknights",
+    "outfit": {
+      "id": "apple_pinafore",
+      "name": "苹果红细格背带裙与奶油衬衣",
+      "prose": "A red gingham pinafore over a cream long-sleeved shirt, with a small apple-shaped hair clip and brown ankle boots.",
+      "tokens": [
+        "red gingham pinafore",
+        "cream long-sleeved shirt",
+        "apple hair clip",
+        "brown ankle boots"
+      ],
+      "characterId": "nymph_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

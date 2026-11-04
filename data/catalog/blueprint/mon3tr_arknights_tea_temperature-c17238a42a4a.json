@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_tea_temperature",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3070,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "mon3tr_arknights_tea_temperature",
     "characterId": "mon3tr_arknights",
-    "outfitId": "standard",
+    "outfitId": "porcelain_knit",
     "title": "Mon3tr · 适合喝的温度",
     "category": "泰拉日常",
     "description": "她看了看温度计，等茶稍微凉一些，才将杯子推给坐在对面的朋友。",

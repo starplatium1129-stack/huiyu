@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_cafe_seat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3053,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "ptilopsis_arknights_cafe_seat",
     "characterId": "ptilopsis_arknights",
-    "outfitId": "serenity",
+    "outfitId": "amber_cardigan",
     "title": "白面鸮 · 同桌的休息时间",
     "category": "亲密时刻",
     "description": "她把计时器收好，托腮看着你，认真宣布：“接下来的休息时间，分配给你。”",

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_photo_wall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2991,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "hoshiguma_arknights_photo_wall",
     "characterId": "hoshiguma_arknights",
-    "outfitId": "standard",
+    "outfitId": "breacher_standard",
     "title": "星熊 · 合影墙",
     "category": "泰拉日常",
     "description": "墙上贴满了街坊的照片。她挑出一张新的合影，用图钉固定，退后确认没有贴歪。",

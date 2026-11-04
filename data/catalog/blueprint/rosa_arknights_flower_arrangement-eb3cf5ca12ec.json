@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_flower_arrangement",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2955,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "rosa_arknights_flower_arrangement",
     "characterId": "rosa_arknights",
-    "outfitId": "masterpiece",
+    "outfitId": "flower_collar",
     "title": "早露 · 桌上的白花",
     "category": "泰拉日常",
     "description": "白花刚插进瓶里，枝条便朝一边散开。早露旋转花瓶，找到一个大家都能看见的位置。",

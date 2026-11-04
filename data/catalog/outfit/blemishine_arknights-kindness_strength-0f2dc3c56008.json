@@ -1,0 +1,40 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/kindness_strength",
+  "revision": 1,
+  "sortOrder": 2120,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "kindness_strength",
+      "name": "善良坚强之心·粉蝶结白色洋裙",
+      "prose": "A white dress and white shirt accented with pink ribbons, white gloves and a high ponytail tied with a pink bow.",
+      "tokens": [
+        "white dress",
+        "white shirt",
+        "pink ribbon",
+        "white gloves",
+        "ponytail",
+        "pink bow"
+      ],
+      "characterId": "blemishine_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "blemishine (arknights)",
+        "blemishine (kindness and strength) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "ponytail",
+        "horse ears",
+        "horse tail",
+        "yellow eyes"
+      ],
+      "identityProseOverride": "Blemishine from Arknights has long blonde hair tied in a ponytail, yellow eyes, horse ears and a horse tail in Kindness and Strength."
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_warm_bread",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3088,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
   "data": {
     "id": "reed_arknights_warm_bread",
     "characterId": "reed_arknights",
-    "outfitId": "flame_shadow",
+    "outfitId": "bread_linen",
     "title": "焰影苇草 · 带回来的面包",
     "category": "泰拉日常",
     "description": "她把刚买的面包放到桌上，切好后用布盖住，等大家到齐再一起吃。",

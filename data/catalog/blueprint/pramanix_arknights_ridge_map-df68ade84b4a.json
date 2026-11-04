@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_ridge_map",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2849,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "pramanix_arknights_ridge_map",
     "characterId": "pramanix_arknights",
-    "outfitId": "casters_frost",
+    "outfitId": "hymn_to_sunbreak",
     "title": "初雪 · 山脊上的地图",
     "category": "泰拉日常",
     "description": "风把地图的一角掀了起来。她按住纸面，沿着山脊指出一条绕开积雪的旧路，等同行的人看清后才收起地图。",

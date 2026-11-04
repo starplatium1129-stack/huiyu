@@ -149,7 +149,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
         const blueprint = found?.characterId === character.id ? found : null
         if (entry.blueprintId && !blueprint) restoreNotes.push('原蓝图不可用或角色绑定已变化，未恢复蓝图')
         pb.setPopularSubject(character.id, outfit.id, blueprint?.id ?? null, { outfitExplicit: entry.outfitExplicit })
-        if (entry.outfitOverride) pb.setOutfitOverride(entry.outfitOverride.tokens, entry.outfitOverride.replaced)
+        if (entry.outfitOverride) pb.setOutfitOverride(entry.outfitOverride.tokens, entry.outfitOverride.replaced, entry.outfitOverride)
         resetBlueprintRotation()
         const [width, height] = String(entry.size || '832x1216').replace('×', 'x').split('x').map(Number)
         clearAnimaResult()
@@ -216,6 +216,7 @@ export function usePromptHistoryApply(deps: PromptHistoryApplyDeps) {
       pb.setStory(restoredContext.story)
       pb.selections.emotion.splice(0, pb.selections.emotion.length, ...(entry.emotion || []))
       pb.manualTags = new Set(entry.manual_tags || [])
+      if (entry.outfitOverride) pb.setOutfitOverride(entry.outfitOverride.tokens, entry.outfitOverride.replaced, entry.outfitOverride)
     } else {
       pb.setStory(entry.story || '')
       pb.manualTags = new Set((entry.manual_tags || []).filter(tag => !/(?:ayachi_nene|shiki_natsume|nene_|natsume_)/i.test(tag)))

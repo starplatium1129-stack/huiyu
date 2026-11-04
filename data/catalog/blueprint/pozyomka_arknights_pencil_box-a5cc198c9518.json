@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_pencil_box",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2927,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:26:05.975831300+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "pozyomka_arknights_pencil_box",
     "characterId": "pozyomka_arknights",
-    "outfitId": "snowy_plains_in_words",
+    "outfitId": "official_standard",
     "title": "鸿雪 · 一盒削好的铅笔",
     "category": "泰拉日常",
     "description": "她翻看铅笔盒上的标记，选了一盒更适合画草图的，又请店员另外包好，打算送给朋友。",

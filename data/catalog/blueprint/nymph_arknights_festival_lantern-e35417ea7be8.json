@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_festival_lantern",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2895,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
   "data": {
     "id": "nymph_arknights_festival_lantern",
     "characterId": "nymph_arknights",
-    "outfitId": "blooming_reverie",
+    "outfitId": "lantern_yukata",
     "title": "妮芙 · 节日灯笼",
     "category": "泰拉日常",
     "description": "广场上的灯笼一盏接一盏亮起来。妮芙仰头找自己帮忙挂的那一盏，认出来后高兴地指给你看。",

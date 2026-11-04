@@ -1,6 +1,6 @@
 import type { CharKey, HistoryEntry } from '@/types/promptHistory'
 import type { AnimaResultContext } from '@/types/anima'
-import { parseOutfitOverride } from './promptBuilderPersistence'
+import { parseOutfitOverride, type DraftOutfitOverride } from './promptBuilderPersistence'
 import type { DirectorControlSources } from '../types/promptDirector'
 import { normalizeDirectorSources } from './promptDirector'
 import { readStoryOrigin, type StoryOrigin } from '@/types/storyOrigin'
@@ -15,7 +15,7 @@ export interface ResultContextInput {
   readonly storyOrigin?: StoryOrigin
   readonly char: CharKey
   readonly visualDescription: string
-  readonly outfitOverride?: { readonly tokens: readonly string[]; readonly replaced: string | null } | null
+  readonly outfitOverride?: (Readonly<Omit<DraftOutfitOverride, 'tokens'>> & { readonly tokens: readonly string[] }) | null
   readonly selections: Readonly<{
     emotion: readonly string[]; shot: string | null
     lighting: string | null; composition: string | null
@@ -35,6 +35,10 @@ export interface ResultContextInput {
 /** 提交时取值；只保存可序列化的创作信息，不保存响应式对象或图片。 */
 export function captureResultContext(pb: ResultContextInput): AnimaResultContext {
   const subject = pb.subject
+  const override = parseOutfitOverride(pb.outfitOverride)
+  const origin = readStoryOrigin(pb.storyOrigin)
+  const storyOrigin = origin && override ? { ...origin, outfitId: undefined,
+    outfitProse: (override.prose || override.tokens.map(token => token.replace(/_/g, ' ')).join(', ')).slice(0, 2000) } : origin
   const popularName = subject.kind === 'popular'
     ? pb.popularCharacters?.find(character => character.id === subject.characterId)?.displayName : null
   const sceneTitle = subject.kind === 'popular'
@@ -49,7 +53,7 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
     story: String(pb.story || '').trim(),
     char: pb.char,
     history: {
-      storyOrigin: readStoryOrigin(pb.storyOrigin),
+      storyOrigin,
       sceneTitle,
       visualDescription: pb.visualDescription,
       emotion: [...pb.selections.emotion], shot: pb.selections.shot,
@@ -60,7 +64,7 @@ export function captureResultContext(pb: ResultContextInput): AnimaResultContext
       project: pb.projectId,
       negativeCustom: pb.sdParams.negativeCustom,
       outfitExplicit: subject.kind === 'popular' ? subject.outfitExplicit : undefined,
-      outfitOverride: subject.kind === 'popular' ? parseOutfitOverride(pb.outfitOverride) : undefined,
+      outfitOverride: override,
     },
   }
 }

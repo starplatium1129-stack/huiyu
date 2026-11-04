@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_postcard_rabbit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2972,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_postcard_rabbit",
     "characterId": "wakaba_mutsumi_arknights",
-    "outfitId": "marionettes_id",
+    "outfitId": "rabbit_knit",
     "title": "若叶睦 · 兔子明信片",
     "category": "泰拉日常",
     "description": "明信片上画着一只兔子。她想了很久要写什么，最后只写下一句问候，再认真签上名字。",

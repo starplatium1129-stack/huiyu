@@ -1,0 +1,35 @@
+{
+  "kind": "outfit",
+  "id": "horn_arknights/effloresce_whitely",
+  "revision": 2,
+  "sortOrder": 2108,
+  "createdAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-04T05:47:31.220604500+00:00",
+  "data": {
+    "characterId": "horn_arknights",
+    "outfit": {
+      "id": "effloresce_whitely",
+      "name": "化花·白色长裙与花饰发箍",
+      "prose": "A white long dress with a black hairband and delicate white-flower details.",
+      "tokens": [
+        "white long dress",
+        "black hairband",
+        "white flower ornament"
+      ],
+      "characterId": "horn_arknights",
+      "default": false,
+      "isDefault": false,
+      "identityTokensOverride": [
+        "horn (arknights)",
+        "horn (to effloresce whitely) (arknights)",
+        "1girl",
+        "solo",
+        "blonde hair",
+        "long hair",
+        "wolf ears",
+        "blue eyes"
+      ],
+      "identityProseOverride": "Horn from Arknights has long blonde hair, blue eyes and wolf ears."
+    }
+  }
+}

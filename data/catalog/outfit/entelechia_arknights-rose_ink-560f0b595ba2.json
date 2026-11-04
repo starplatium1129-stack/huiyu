@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "entelechia_arknights/rose_ink",
+  "revision": 1,
+  "sortOrder": 2124,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "entelechia_arknights",
+    "outfit": {
+      "id": "rose_ink",
+      "name": "黑曜玫瑰丝绒领与酒红套裙",
+      "prose": "A black velvet jacket with a sculpted rose-shaped lapel over a wine-red column dress, finished with slim gloves and a dark garnet brooch.",
+      "tokens": [
+        "black velvet jacket",
+        "rose lapel",
+        "wine red column dress",
+        "slim gloves",
+        "garnet brooch"
+      ],
+      "characterId": "entelechia_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

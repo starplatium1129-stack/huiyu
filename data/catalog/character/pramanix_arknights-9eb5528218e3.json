@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "pramanix_arknights",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 272,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:29:31.799728900+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "pramanix_arknights",
     "profile": {
@@ -48,8 +48,10 @@
         "classificationSource": "游戏内干员基础档案"
       },
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "初雪立绘待制作"
+        "image": "../assets/characters/popular-pramanix_arknights.png?v=435f2ae3da2c",
+        "alt": "初雪场景样张立绘",
+        "sourceShowcaseId": "pc_pramanix_arknights_pramanix_arknights_bell_repair",
+        "sourceShowcaseSha256": "b78a598eb8034464cc11d1e930251a117d24af758f01b185cc967e5ded35affb"
       },
       "tags": [
         "白发",
@@ -83,7 +85,8 @@
       "characterTokens": [
         "pramanix (arknights)",
         "pramanix (caster's frost) (arknights)",
-        "pramanix the prerita (arknights)"
+        "pramanix the prerita (arknights)",
+        "pramanix the prerita (hymn to sunbreak) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"

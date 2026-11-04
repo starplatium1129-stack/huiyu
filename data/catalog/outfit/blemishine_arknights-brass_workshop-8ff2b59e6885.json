@@ -1,0 +1,26 @@
+{
+  "kind": "outfit",
+  "id": "blemishine_arknights/brass_workshop",
+  "revision": 1,
+  "sortOrder": 2116,
+  "createdAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "data": {
+    "characterId": "blemishine_arknights",
+    "outfit": {
+      "id": "brass_workshop",
+      "name": "黄铜铆钉靛蓝工装裙",
+      "prose": "An indigo cotton twill work dress with rolled sleeves, brass rivets, a narrow leather tool belt and sturdy brown lace-up shoes.",
+      "tokens": [
+        "indigo twill work dress",
+        "rolled sleeves",
+        "brass rivets",
+        "leather tool belt",
+        "brown lace-up shoes"
+      ],
+      "characterId": "blemishine_arknights",
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_flower_press",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2962,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
   "data": {
     "id": "rosmontis_arknights_flower_press",
     "characterId": "rosmontis_arknights",
-    "outfitId": "become_anew",
+    "outfitId": "airy_dream",
     "title": "迷迭香 · 夹在书页里的花",
     "category": "泰拉日常",
     "description": "她从桌上捡起一朵自然落下的花，小心夹进书页。等它变干，她想把它送给一直照顾花园的人。",

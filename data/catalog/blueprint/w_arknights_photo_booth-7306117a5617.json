@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_photo_booth",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2938,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T04:28:09.832851600+00:00",
+  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
   "data": {
     "id": "w_arknights_photo_booth",
     "characterId": "w_arknights",
-    "outfitId": "wisadel_supernova",
+    "outfitId": "protagonist",
     "title": "W / 维什戴尔 · 照片亭里的表情",
     "category": "泰拉日常",
     "description": "照片条刚从出口滑出来，她就抢先拿起端详。看到其中一格的表情，维什戴尔笑了半天，最后还是把照片分给了你。",

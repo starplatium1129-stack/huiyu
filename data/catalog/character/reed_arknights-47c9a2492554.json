@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "reed_arknights",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 296,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
   "data": {
     "id": "reed_arknights",
     "profile": {
@@ -53,8 +53,10 @@
       ],
       "voice": "这朵花，明天应该就会开了。",
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "焰影苇草立绘待制作"
+        "image": "../assets/characters/popular-reed_arknights.png?v=5beffa1e472b",
+        "alt": "焰影苇草场景样张立绘",
+        "sourceShowcaseId": "pc_reed_arknights_reed_arknights_museum_label",
+        "sourceShowcaseSha256": "02422a9b26a758af5faae0e75ac1554828f07e23e586ff674dc72549b3d266cf"
       }
     },
     "popular": {
@@ -83,7 +85,8 @@
       "characterTokens": [
         "reed (arknights)",
         "reed the flame shadow (arknights)",
-        "reed the flame shadow (curator) (arknights)"
+        "reed the flame shadow (curator) (arknights)",
+        "reed the flame shadow (glowing flame in the night) (arknights)"
       ],
       "copyrightTokens": [
         "arknights"
