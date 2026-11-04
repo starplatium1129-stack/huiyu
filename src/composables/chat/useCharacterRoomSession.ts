@@ -171,10 +171,10 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
       voiceCapabilityState.value = 'text-only'
       showVoiceRecovery.value = false
     } else if (voice.readyFor(voiceId)) {
-      voiceCapabilityText.value = 'AI 声线就绪'
-      voiceCapabilityState.value = 'ready'
+      voiceCapabilityText.value = voice.availability.value.online ? 'AI 声线就绪' : 'AI 声线按需加载'
+      voiceCapabilityState.value = voice.availability.value.online ? 'ready' : 'warning'
       showVoiceRecovery.value = false
-    } else if (voice.availability.value.online) {
+    } else if (voice.availability.value.online || voice.availability.value.available) {
       voiceCapabilityText.value = '声线未配置'
       voiceCapabilityState.value = 'warning'
       showVoiceRecovery.value = true

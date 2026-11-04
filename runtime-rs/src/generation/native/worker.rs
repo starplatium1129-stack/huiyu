@@ -254,55 +254,60 @@ impl Service {
         if !self.native_enabled() && self.inner.native_settings.video_engine() != "native" {
             return Ok(None);
         }
-        if self.inner.closed.load(Ordering::Relaxed) || self.inner.cancel.is_cancelled() {
-            return Err(closed());
-        }
-        // Admission covers prepared, queued and running jobs. Keep every permit
-        // until chat startup completes so a new generation cannot enter the GPU.
-        let admission = self
-            .inner
-            .native
-            .admission
-            .clone()
-            .try_acquire_many_owned(4)
-            .map_err(|_| {
-                if self.inner.native.admission.is_closed() {
-                    release_error()
-                } else {
-                    ApiError::new(
-                        409,
-                        "DRAWING_BUSY",
-                        "绘图任务尚未结束，请稍后开启本地聊天或改用 API",
-                    )
+        let owner = self.inner.clone();
+        // Retain admission and the GPU slot until the child exits, even if the
+        // request that initiated the handoff is cancelled or disconnected.
+        self.inner
+            .tasks
+            .spawn(async move {
+                if owner.closed.load(Ordering::Relaxed) || owner.cancel.is_cancelled() {
+                    return Err(closed());
                 }
-            })?;
-        // Publication can release admission just before settlement drops the GPU
-        // slot. Idle retirement also owns the slot through process termination.
-        let slot = self.inner.native.slot.try_acquire().map_err(|_| {
-            if self.inner.native.slot.is_closed() {
-                release_error()
-            } else {
-                ApiError::new(
-                    409,
-                    "DRAWING_BUSY",
-                    "独立绘图仍在结束或释放显存，请稍后重试",
-                )
-            }
-        })?;
-        let resident = self.inner.native.worker.lock().await.take();
-        if let Some(mut worker) = resident {
-            if let Err(error) = worker.stop().await {
-                // A child that was not reaped must never share the GPU with a
-                // new worker or local chat; restarting the runtime is required.
-                slot.forget();
-                self.inner.native.slot.close();
-                self.inner.native.admission.close();
-                self.inner.admission.close();
-                return Err(error);
-            }
-        }
-        self.inner.native.gpu_owned.store(false, Ordering::SeqCst);
-        Ok(Some(admission))
+                // Admission includes prepared, queued and running jobs.
+                let admission = owner
+                    .native
+                    .admission
+                    .clone()
+                    .try_acquire_many_owned(4)
+                    .map_err(|_| {
+                        if owner.native.admission.is_closed() {
+                            release_error()
+                        } else {
+                            ApiError::new(
+                                409,
+                                "DRAWING_BUSY",
+                                "绘图任务尚未结束，请稍后开启本地聊天或改用 API",
+                            )
+                        }
+                    })?;
+                // Settlement and idle retirement may still hold the GPU slot.
+                let slot = owner.native.slot.clone().try_acquire_owned().map_err(|_| {
+                    if owner.native.slot.is_closed() {
+                        release_error()
+                    } else {
+                        ApiError::new(
+                            409,
+                            "DRAWING_BUSY",
+                            "独立绘图仍在结束或释放显存，请稍后重试",
+                        )
+                    }
+                })?;
+                let resident = owner.native.worker.lock().await.take();
+                if let Some(mut worker) = resident {
+                    if let Err(error) = worker.stop().await {
+                        // Do not admit another model if process exit is unconfirmed.
+                        slot.forget();
+                        owner.native.slot.close();
+                        owner.native.admission.close();
+                        owner.admission.close();
+                        return Err(error);
+                    }
+                }
+                owner.native.gpu_owned.store(false, Ordering::SeqCst);
+                Ok(Some(admission))
+            })
+            .await
+            .map_err(|_| release_error())?
     }
 }
 

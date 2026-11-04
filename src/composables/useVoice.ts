@@ -10,7 +10,7 @@ import { VoiceReplayCache } from './voiceReplayCache.ts'
 import { playVoiceAudio, removeAudioSource, type AudioWithSource, type AudioEndReason } from './voiceAudioPlayback.ts'
 
 export interface VoiceAvailability {
-  online: boolean
+  online: boolean; available?: boolean
   voices?: Record<string, boolean>
   translation?: { ready: boolean }
   activeVoice?: string
@@ -45,6 +45,7 @@ interface SynthesizedClip extends ReplayClip {
 interface QueuedClip extends SynthesizedClip {
   mid: string
   session: number
+  audio?: AudioWithSource
   /** 整句播放失败时的剩余重试次数；已经开播的句子不重复生成。 */
   retryLeft?: number
   recorded?: ReplayClip
@@ -67,9 +68,7 @@ function errorMessage(error: unknown): string {
   return detail && !error.message.includes(detail) ? `${error.message}：${detail}` : error.message
 }
 
-function isRecord(value: unknown): value is Record<string, unknown> {
-  return typeof value === 'object' && value !== null
-}
+function isRecord(value: unknown): value is Record<string, unknown> { return typeof value === 'object' && value !== null }
 
 function readVoiceAvailability(value: unknown): VoiceAvailability {
   if (!isRecord(value)) throw new Error('语音状态响应格式无效')
@@ -80,7 +79,7 @@ function readVoiceAvailability(value: unknown): VoiceAvailability {
     ? { ready: Boolean(value.translation.ready) }
     : undefined
   return {
-    online: Boolean(value.online),
+    online: Boolean(value.online), available: value.available === true,
     voices,
     translation,
     activeVoice: typeof value.activeVoice === 'string' ? value.activeVoice : undefined,
@@ -150,7 +149,7 @@ export function useVoice(options: {
   }
 
   function readyFor(voice: string) {
-    return Boolean(availability.value.online && availability.value.voices?.[voice])
+    return Boolean((availability.value.online || availability.value.available) && availability.value.voices?.[voice])
   }
 
   function prepare(voice: string, needsTranslation = true): Promise<boolean> {
@@ -171,7 +170,10 @@ export function useVoice(options: {
       if (needsTranslation) availability.value.translation = { ...(availability.value.translation ?? {}), ready: true }
       onStatus(''); return true
     }).catch((e) => {
-      if (revision === prepareRevision && !destroyed && !isAbortError(e)) onStatus('声线会在首次播放时加载')
+      if (revision === prepareRevision && !destroyed && !isAbortError(e)) {
+        if (e instanceof ApiClientError && ['COMFY_RELEASE_UNCONFIRMED', 'DRAWING_BUSY', 'VOICE_BUSY', 'TTS_UNAVAILABLE', 'TTS_FAILED', 'TERMINATION_UNCONFIRMED'].includes(e.code || '')) onError(e.message)
+        else onStatus('声线会在首次播放时加载')
+      }
       return false
     }).finally(() => { if (revision === prepareRevision) { preparing = null; prepareController = null } })
     return preparing
@@ -209,14 +211,14 @@ export function useVoice(options: {
 
   function startTurn(meta: { mid: string; voice: string; character: string }) {
     if (destroyed) return
-    stop({ preserveMessageAudio: true, silent: true })
+    stop({ preserveMessageAudio: true, silent: true, preservePreparation: enabled() && prepareKey === meta.voice + ':true' })
     if (enabled()) ensureAudioContext(); session++
     controller = new AbortController()
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve()
     pending = 0; turn = { ...meta, session, referenceEmotion: '' }
     _lastEmotion = 'neutral'; _neutralStreak = 0
     prepare(meta.voice, true)
-    if (enabled() && !readyFor(meta.voice)) onStatus(availability.value.online ? '当前角色声线未配置' : '语音服务未启动')
+    if (enabled() && !readyFor(meta.voice)) onStatus(availability.value.online || availability.value.available ? '当前角色声线未配置' : '语音服务未启动')
   }
 
   function append(text: string) {
@@ -265,7 +267,7 @@ export function useVoice(options: {
     const directionText = dialogue.directions.join(' ')
     const rawEmotion = inferEmotion(directionText ? `${directionText} ${cleaned}` : cleaned, meta.character)
     let emotion: string
-    if (rawEmotion === 'neutral') { _neutralStreak++; emotion = _neutralStreak >= 3 ? 'neutral' : _lastEmotion }
+    if (rawEmotion === 'neutral') { _neutralStreak++; emotion = _lastEmotion === 'shy' || _neutralStreak >= 3 ? 'neutral' : _lastEmotion }
     else { _neutralStreak = 0; emotion = rawEmotion }
     _lastEmotion = emotion
     const firstReference = meta.referenceEmotion
@@ -329,7 +331,20 @@ export function useVoice(options: {
       replayCache.remember(item.mid, item.recorded, blob, item.url)
     }).catch(() => {}) // Playback reports a prefetched failure once it owns this clip.
   }
-  function prefetch() { if (playing && queue[0]?.stream) observeStream(queue[0]) }
+  function prefetch() {
+    const next = playing ? queue[0] : undefined
+    if (!next) return
+    if (next.stream) { observeStream(next); return }
+    if (!next.audio) { next.audio = createAudio(next.url); next.audio.load() }
+  }
+
+  function createAudio(url: string): AudioWithSource {
+    const audio = new Audio() as AudioWithSource
+    audio.preload = 'auto'
+    audio.crossOrigin = runtimeResourceCors() ?? null
+    audio.src = resolveRuntimeUrl(url)
+    return audio
+  }
 
   function attachAnalyser(audio: AudioWithSource) {
     audio.volume = volume
@@ -416,9 +431,7 @@ export function useVoice(options: {
       item.stream.cancel()
       if (item.recorded) item.recorded.url = item.url
     }
-    const audio = new Audio() as AudioWithSource
-    audio.crossOrigin = runtimeResourceCors() ?? null
-    audio.src = resolveRuntimeUrl(item.url)
+    const audio = item.audio || createAudio(item.url)
     currentAudio = audio; attachAnalyser(audio)
     onStatus('语音合成中…'); notifyActivity()
     const playback = playVoiceAudio(audio, {
@@ -434,7 +447,7 @@ export function useVoice(options: {
       // that already started must never be synthesized and spoken from the top.
       if (reason === 'load-error' && item.retryLeft !== 0) {
         onStatus('语音加载失败，重试…')
-        queue.unshift({ ...item, retryLeft: (item.retryLeft ?? 1) - 1 })
+        queue.unshift({ ...item, audio: undefined, retryLeft: (item.retryLeft ?? 1) - 1 })
       } else {
         const message = playbackError(reason)
         if (message) onError(message)
@@ -480,14 +493,16 @@ export function useVoice(options: {
     mids.forEach(mid => { const c = messageAudio.get(mid) || []; c.forEach(cl => replayCache.remove(cl)); messageAudio.delete(mid) })
   }
 
-  function stop(opts: { preserveMessageAudio?: boolean; silent?: boolean } = {}) {
+  function stop(opts: { preserveMessageAudio?: boolean; silent?: boolean; preservePreparation?: boolean } = {}) {
     session++; controller?.abort(); controller = null; turn = null
-    prepareRevision++; prepareKey = ''; preparing = null
-    prepareController?.abort(); prepareController = null
+    if (!opts.preservePreparation) { prepareRevision++; prepareKey = ''; preparing = null; prepareController?.abort(); prepareController = null }
     cancelPlayback?.(); cancelPlayback = null
     cancelReplay?.(); cancelReplay = null
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve(); pending = 0
-    queue.forEach(it => it.stream?.cancel()); queue = []
+    queue.forEach(it => {
+      it.stream?.cancel()
+      if (it.audio) { it.audio.pause(); it.audio.removeAttribute('src'); it.audio.load() }
+    }); queue = []
     if (currentAudio) { currentAudio.pause(); removeAudioSource(currentAudio); currentAudio.removeAttribute('src') }
     if (replayAudio) { replayAudio.pause(); removeAudioSource(replayAudio); replayAudio.removeAttribute('src') }
     currentPcm = null; currentAudio = null; replayAudio = null; playing = false; stopLipSync()

@@ -29,6 +29,9 @@ impl ControlService {
         if index == 3 {
             return self.voice.translation_status(fresh).await["ready"] == true;
         }
+        if index == 2 && self.voice.native_selected() {
+            return self.voice.native_ready();
+        }
         let probes = self.voice.health_probes();
         let host = settings[if index == 1 { "comfyHost" } else { "ttsHost" }]
             .as_str()

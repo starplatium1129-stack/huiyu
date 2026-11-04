@@ -31,6 +31,7 @@ export interface ControlApi {
   getShareLink(options?: ControlCallOptions): Promise<ControlShareLinkResult>
   getLogs(since: number, options?: ControlCallOptions): Promise<ControlLogs>
   saveConfig(payload: ControlConfigPayload, options?: ControlCallOptions): Promise<ControlConfigResult>
+  existingVoiceProfiles(options?: ControlCallOptions): Promise<{ voices: ControlStatus['voices'] }>
   savePreference(autoStartVoice: boolean, options?: ControlCallOptions): Promise<ControlPreferenceResult>
   serviceAction(service: ControlService, action: ControlServiceAction, options?: ControlCallOptions): Promise<ControlActionResult>
   switchMode(mode: 'draw' | 'chat', options?: ControlCallOptions): Promise<ControlActionResult>
@@ -41,6 +42,15 @@ export interface ControlApi {
 
 function isObject(value: unknown): value is ApiResponseObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
+}
+
+function isVoiceProfiles(value: ApiResponseObject): boolean {
+  if (value.ok !== true || !isObject(value.voices)) return false
+  return Object.entries(value.voices).every(([id, profile]) => {
+    if (!['nene', 'natsume'].includes(id) || !isObject(profile)) return false
+    return ['refAudioPath', 'promptText', 'gptWeightsPath', 'sovitsWeightsPath'].every(key =>
+      profile[key] === undefined || typeof profile[key] === 'string')
+  })
 }
 
 function isControlOperation(value: unknown): boolean {
@@ -174,6 +184,13 @@ export const controlApi: ControlApi = {
 
   saveConfig(payload, options = {}) {
     return post('/api/config', payload, options)
+  },
+
+  existingVoiceProfiles(options = {}) {
+    return apiClient.request('/api/voice/existing-profiles', {
+      cache: 'no-store', signal: options.signal, timeoutMs: CONTROL_API_TIMEOUTS.quick,
+      validate: isVoiceProfiles,
+    })
   },
 
   savePreference(autoStartVoice: boolean, options: ControlCallOptions = {}) {

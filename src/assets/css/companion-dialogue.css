@@ -86,8 +86,9 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
   .companion-dialogue-heading,.companion-dialogue-speaker button { transition:none; }
 }
 .companion-dialogue-bubble > small { display:block; margin-top:5px; color:var(--text-secondary); font-size:var(--fs-label-xs); }
+.companion-dialogue-copy { display:grid; gap:var(--s-2); min-width:0; }
 .companion-dialogue-line { margin:0; color:var(--text-primary); font:400 var(--fs-body)/var(--lh-body) var(--font-sans); white-space:pre-wrap; overflow-wrap:anywhere; }
-.companion-dialogue-line.is-streaming::after { content:''; display:inline-block; width:3px; height:14px; margin-left:4px; border-radius:var(--r-pill); vertical-align:baseline; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
+.companion-dialogue-copy.is-streaming .companion-dialogue-line:last-child::after { content:''; display:inline-block; width:3px; height:14px; margin-left:4px; border-radius:var(--r-pill); vertical-align:baseline; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
 .companion-dialogue-waiting { display:flex; align-items:center; gap:10px; min-height:28px; color:var(--text-secondary); font-size:var(--fs-label); }
 .companion-dialogue-dots { display:flex; gap:4px; }
 .companion-dialogue-dots i { width:4px; height:4px; border-radius:50%; background:var(--character-accent); animation:companion-dialogue-pulse 1.2s ease-in-out infinite; }
@@ -154,9 +155,9 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
   .companion-dialogue-bubble { padding-inline:10px; }
 }
 @media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) .companion-dialogue-dots i, :root:not([data-motion='full']) .companion-dialogue-line.is-streaming::after { animation:none; }
+  :root:not([data-motion='full']) .companion-dialogue-dots i, :root:not([data-motion='full']) .companion-dialogue-copy.is-streaming .companion-dialogue-line:last-child::after { animation:none; }
   :root:not([data-motion='full']) .companion-dialogue-speaker button, :root:not([data-motion='full']) .companion-dialogue-heading { transition:none; }
 }
 
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.companion-dialogue-dots i,.companion-dialogue-line.is-streaming::after) { animation:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.companion-dialogue-dots i,.companion-dialogue-copy.is-streaming .companion-dialogue-line:last-child::after) { animation:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.companion-dialogue-speaker button,.companion-dialogue-heading) { transition:none; }

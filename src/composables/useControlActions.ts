@@ -17,6 +17,8 @@ import {
 import { maintenanceApi } from '../api/maintenanceApi.ts'
 import type { useControlStatus } from './useControlStatus.ts'
 import { settingsRepository, TUNNEL_ENABLED_SETTING } from '../storage/settingsRepository.ts'
+import type { ControlStatus } from '@/types/api'
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
 type StatusApi = ReturnType<typeof useControlStatus>
 
@@ -29,6 +31,9 @@ export function useControlActions(
   { showToast }: ActionHooks,
 ) {
   const tunnelEnabled = ref(settingsRepository.get(TUNNEL_ENABLED_SETTING) ?? true)
+  const importedVoices = ref<ControlStatus['voices']>({})
+  let importedVoiceIdentity: string | null = null
+  const readingVoices = ref(false)
   const cancellingOperation = ref('')
   const cancellationRequested = ref('')
   const canCancelOperation = computed(() => {
@@ -64,20 +69,66 @@ export function useControlActions(
   }
 
   function buildConfigPayload() {
+    if (importedVoiceIdentity !== null && importedVoiceIdentity !== runtimeResourceIdentity()) throw new Error('工作区已切换，请重新读取声线配置')
     const last = status.lastStatus()
     const voices = last?.restartRequired ? last.savedConfig?.voices : last?.voices
-    const neneBase = voices?.nene || {}
-    const natBase = voices?.natsume || {}
+    const combine = (id: 'nene' | 'natsume') => {
+      const imported = status.ttsEngine.value === 'gpt-sovits-native' ? importedVoices.value[id] : undefined, saved = voices?.[id] || {}
+      if (!imported) return saved
+      const fields = id === 'nene' ? [status.voiceNeneRef, status.voiceNenePrompt, status.voiceNeneGpt, status.voiceNeneSovits]
+        : [status.voiceNatsumeRef, status.voiceNatsumePrompt, status.voiceNatsumeGpt, status.voiceNatsumeSovits]
+      const values = [imported.refAudioPath, imported.promptText, imported.gptWeightsPath, imported.sovitsWeightsPath]
+      if (fields.some((field, index) => field.value.trim() !== values[index]?.trim())) return saved
+      const refs = (value: unknown) => value && typeof value === 'object' && !Array.isArray(value) ? value : {}
+      return { ...imported, ...saved, references: { ...refs(imported.references), ...refs(saved.references) } }
+    }
+    const neneBase = combine('nene')
+    const natBase = combine('natsume')
     return {
       sdHost: status.sdHost.value.trim(),
       comfyHost: status.comfyHost.value.trim(),
       ttsHost: status.ttsHost.value.trim(),
-      ttsEngine: status.ttsEngine.value === 'voxcpm2' ? 'voxcpm2' as const : 'gpt-sovits' as const,
+      ttsEngine: status.ttsEngine.value === 'voxcpm2' ? 'voxcpm2' as const : status.ttsEngine.value === 'gpt-sovits-native' ? 'gpt-sovits-native' as const : 'gpt-sovits' as const,
       voices: {
-        nene: { ...neneBase, loraWeightsPath: status.voiceNeneLora.value.trim(), refAudioPath: status.voiceNeneRef.value.trim(), promptText: status.voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
-        natsume: { ...natBase, loraWeightsPath: status.voiceNatsumeLora.value.trim(), refAudioPath: status.voiceNatsumeRef.value.trim(), promptText: status.voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
+        nene: { ...neneBase, loraWeightsPath: status.voiceNeneLora.value.trim(), ...(status.ttsEngine.value === 'gpt-sovits-native' ? { gptWeightsPath: status.voiceNeneGpt.value.trim(), sovitsWeightsPath: status.voiceNeneSovits.value.trim() } : {}), refAudioPath: status.voiceNeneRef.value.trim(), promptText: status.voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
+        natsume: { ...natBase, loraWeightsPath: status.voiceNatsumeLora.value.trim(), ...(status.ttsEngine.value === 'gpt-sovits-native' ? { gptWeightsPath: status.voiceNatsumeGpt.value.trim(), sovitsWeightsPath: status.voiceNatsumeSovits.value.trim() } : {}), refAudioPath: status.voiceNatsumeRef.value.trim(), promptText: status.voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
       },
     }
+  }
+
+  async function readExistingVoices() {
+    if (readingVoices.value || status.opBusy.value) return
+    readingVoices.value = true
+    try {
+      const identity = runtimeResourceIdentity()
+      if (importedVoiceIdentity !== null && importedVoiceIdentity !== identity) throw new Error('工作区已切换，请刷新后重新读取声线配置')
+      const { voices } = await controlApi.existingVoiceProfiles()
+      if (identity !== runtimeResourceIdentity()) throw new Error('工作区已切换，请重新读取声线配置')
+      const fill = (field: { value: string }, value: unknown) => {
+        if (!field.value.trim() && typeof value === 'string') field.value = value
+      }
+      let adopted = 0
+      for (const id of ['nene', 'natsume'] as const) {
+        const profile = voices[id]
+        if (!profile) continue
+        const nene = id === 'nene'
+        const fields = [nene ? status.voiceNeneRef : status.voiceNatsumeRef, nene ? status.voiceNenePrompt : status.voiceNatsumePrompt,
+          nene ? status.voiceNeneGpt : status.voiceNatsumeGpt, nene ? status.voiceNeneSovits : status.voiceNatsumeSovits]
+        const values = [profile.refAudioPath, profile.promptText, profile.gptWeightsPath, profile.sovitsWeightsPath]
+        if (values.some(value => typeof value !== 'string' || !value.trim())) continue
+        if (fields.some((field, index) => field.value.trim() && field.value.trim() !== values[index])) continue
+        importedVoices.value[id] = structuredClone(profile)
+        fill(nene ? status.voiceNeneRef : status.voiceNatsumeRef, profile.refAudioPath)
+        fill(nene ? status.voiceNenePrompt : status.voiceNatsumePrompt, profile.promptText)
+        fill(nene ? status.voiceNeneGpt : status.voiceNatsumeGpt, profile.gptWeightsPath)
+        fill(nene ? status.voiceNeneSovits : status.voiceNatsumeSovits, profile.sovitsWeightsPath)
+        adopted++
+      }
+      if (adopted) importedVoiceIdentity = identity
+      showToast(adopted ? `已读取 ${adopted} 套声线，请确认后保存` : '没有可填入的完整声线，现有内容已保留', !adopted)
+    } catch (error) {
+      showToast(errorMessage(error, '未能读取已有声线'), true)
+    } finally { readingVoices.value = false }
   }
 
   async function saveConfigDraft() {
@@ -92,7 +143,7 @@ export function useControlActions(
 
   const savingConfig = ref(false)
   const configSaved = ref(false)
-  watch([status.sdHost, status.comfyHost, status.ttsHost, status.ttsEngine, status.voiceNeneLora, status.voiceNatsumeLora,
+  watch([status.sdHost, status.comfyHost, status.ttsHost, status.ttsEngine, status.voiceNeneLora, status.voiceNatsumeLora, status.voiceNeneGpt, status.voiceNeneSovits, status.voiceNatsumeGpt, status.voiceNatsumeSovits,
     status.voiceNeneRef, status.voiceNenePrompt, status.voiceNatsumeRef, status.voiceNatsumePrompt], () => { configSaved.value = false })
   async function saveConfig(event?: Event) {
     if (event instanceof KeyboardEvent && (event.isComposing || event.keyCode === 229)) return
@@ -238,7 +289,7 @@ export function useControlActions(
   }
 
   return {
-    tunnelEnabled, errorMessage, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice,
+    tunnelEnabled, errorMessage, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice, readExistingVoices, readingVoices,
     serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag,
     buildWeb, buildingWeb, canCancelOperation, operationCancelling, cancelOperation,
   }

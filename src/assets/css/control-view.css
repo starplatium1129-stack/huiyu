@@ -88,6 +88,7 @@
 .control-page .field-label { display:block; margin:var(--s-4) 0 var(--s-2); color:var(--text-primary); font-size:var(--fs-label); }
 .control-page .field-help { margin:var(--s-2) 0 0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); }
 .control-page .voice-config { margin-top:var(--s-5); border-top:1px solid var(--border-soft); }
+.control-page .voice-import { margin-bottom:var(--s-3); }
 .control-page .voice-count { margin-left:auto; margin-right:var(--s-2); color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 .control-page .voice-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-5); }
 .control-page .voice-card-title { font-weight:600; font-size:var(--fs-label); }

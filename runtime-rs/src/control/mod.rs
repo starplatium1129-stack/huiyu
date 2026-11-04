@@ -16,6 +16,7 @@ mod setup_download;
 mod setup_environment;
 mod setup_http;
 mod setup_verify;
+mod voice_profiles;
 
 mod tunnel;
 
@@ -60,7 +61,7 @@ pub struct ControlService {
     llama_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
     llama_secret: String,
     comfy_cancel: Mutex<Option<CancellationToken>>,
-    comfy_action: tokio::sync::Mutex<()>,
+    comfy_action: Arc<tokio::sync::Mutex<()>>,
     comfy_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
     started: Instant,
     tunnel: tokio::sync::Mutex<Option<tunnel::TunnelRun>>,
@@ -113,7 +114,7 @@ impl ControlService {
                 .filter(|s| crate::upstream::local_url(s).is_ok())
                 .unwrap_or(default.into())
         };
-        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":if saved["ttsEngine"]=="voxcpm2"{"voxcpm2"}else{"gpt-sovits"},"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"llamaHost":host("LLAMA_HOST","llamaHost","http://127.0.0.1:8000"),"llamaModel":saved["llamaModel"],"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
+        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":match saved["ttsEngine"].as_str() {Some("voxcpm2")=>"voxcpm2",Some("gpt-sovits-native")=>"gpt-sovits-native",_=>"gpt-sovits"},"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"llamaHost":host("LLAMA_HOST","llamaHost","http://127.0.0.1:8000"),"llamaModel":saved["llamaModel"],"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
         let inference = crate::generation::native::load(&crate::generation::Config {
             sd_host: config.sd_host.clone(),
             sd_auth: config.sd_auth.clone(),
@@ -156,7 +157,7 @@ impl ControlService {
             llama_process: tokio::sync::Mutex::new(None),
             llama_secret: uuid::Uuid::new_v4().to_string(),
             comfy_cancel: Mutex::new(None),
-            comfy_action: tokio::sync::Mutex::new(()),
+            comfy_action: Arc::new(tokio::sync::Mutex::new(())),
             comfy_process: tokio::sync::Mutex::new(None),
             started: Instant::now(),
             tunnel: tokio::sync::Mutex::new(None),

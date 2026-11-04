@@ -69,9 +69,6 @@
 .room-surface .chat-composer { flex-shrink:0; padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); background:linear-gradient(180deg,var(--bg-surface),color-mix(in srgb,var(--accent) 3%,var(--bg-surface))); }
 .room-surface .composer-row { position:relative; isolation:isolate; align-items:flex-end; flex-wrap:nowrap; gap:var(--s-2); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .room-surface .composer-row:focus-within { border-color:var(--border-strong); box-shadow:var(--focus-shadow); }
-.room-surface .composer-row::after { content:''; position:absolute; inset:auto 14px -1px; height:2px; border-radius:var(--r-pill); background:var(--accent); pointer-events:none; opacity:0; transform:scaleX(.92); transition:opacity var(--motion-control) var(--ease-out),transform var(--motion-route) var(--spring-soft); }
-.room-surface .composer-row:focus-within::after { opacity:1; transform:none; }
-.room-surface .composer-row:has(:focus-visible)::after { transition:none; }
 .room-composer-meta { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); flex-wrap:wrap; padding:0 var(--s-1) var(--s-2); color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
 .room-composer-meta > span { display:inline-flex; align-items:center; gap:var(--s-2); }
 .room-composer-meta .archive-icon { width:14px; height:14px; color:var(--accent); }
@@ -217,10 +214,10 @@
 }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .room-surface :is(.portrait-stage,.character-info) { animation:none; }
-  :root:not([data-motion='full']) .room-surface :is(.message-actions-trigger,.room-starter-copy,.room-starter-arrow .archive-icon,.room-chat-actions .btn .archive-icon),:root:not([data-motion='full']) .room-starter::before,:root:not([data-motion='full']) .room-surface .composer-row::after { transition:none; }
+  :root:not([data-motion='full']) .room-surface :is(.message-actions-trigger,.room-starter-copy,.room-starter-arrow .archive-icon,.room-chat-actions .btn .archive-icon),:root:not([data-motion='full']) .room-starter::before { transition:none; }
   :root:not([data-motion='full']) .room-surface :is(.room-starter-copy,.chat-settings-trigger .archive-icon) { transform:none; }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .room-surface :is(.portrait-stage,.character-info) { animation:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .room-surface :is(.message-actions-trigger,.room-starter-copy,.room-starter-arrow .archive-icon,.room-chat-actions .btn .archive-icon),:root:is([data-motion='reduce'],[data-motion='reduced']) .room-starter::before,:root:is([data-motion='reduce'],[data-motion='reduced']) .room-surface .composer-row::after { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .room-surface :is(.message-actions-trigger,.room-starter-copy,.room-starter-arrow .archive-icon,.room-chat-actions .btn .archive-icon),:root:is([data-motion='reduce'],[data-motion='reduced']) .room-starter::before { transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .room-surface :is(.room-starter-copy,.chat-settings-trigger .archive-icon) { transform:none; }
-@media (forced-colors:active) { .room-welcome-art::before,.room-welcome-art::after,.room-starter::before,.room-surface .composer-row::after { display:none; } .room-starter-index { border-color:ButtonText; } }
+@media (forced-colors:active) { .room-welcome-art::before,.room-welcome-art::after,.room-starter::before { display:none; } .room-starter-index { border-color:ButtonText; } }

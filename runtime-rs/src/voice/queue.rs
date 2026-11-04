@@ -67,6 +67,12 @@ impl Queue {
         let active = 1 - self.serial.available_permits();
         json!({"name": self.name, "active": active, "pending": (16 - self.slots.available_permits()).saturating_sub(active), "maxPending": 16})
     }
+    pub fn try_idle(&self) -> Result<OwnedSemaphorePermit> {
+        self.serial
+            .clone()
+            .try_acquire_owned()
+            .map_err(|_| ApiError::new(409, "VOICE_BUSY", "语音正在生成或释放资源，请稍后重试"))
+    }
 }
 pub(super) fn cancelled() -> ApiError {
     ApiError::new(503, "ABORTED", "语音服务已关闭")

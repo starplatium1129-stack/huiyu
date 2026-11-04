@@ -30,6 +30,7 @@ const INFERENCE_TOOLS=new Set(['anima_composition.py','anima_lllite.py','anima_r
 function includeTools(parts:string[],file:string):boolean {
   if(parts[0]==='inference') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&(INFERENCE_TOOLS.has(parts[1])||ADAPTER_TOOLS.includes(parts[1]));
   if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);
+  if(parts[0]==='voice') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&parts[1]==='native_gpt_sovits.py';
   return parts.length===1&&TOOLS.has(parts[0].replace(/\.(?:br|gz)$/i,''));
 }
 function includeData(parts:string[],file:string,catalogSnapshot=false):boolean {

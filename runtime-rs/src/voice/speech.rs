@@ -1,3 +1,5 @@
+mod collect;
+mod local;
 mod streaming;
 mod wave;
 
@@ -78,6 +80,7 @@ pub(super) struct Speech {
     active: Mutex<Active>,
     cache: Arc<Mutex<AudioCache>>,
     probes: Arc<HealthProbes>,
+    pub(super) native: Arc<super::native::Native>,
 }
 impl Speech {
     pub fn new(
@@ -87,6 +90,7 @@ impl Speech {
         probes: Arc<HealthProbes>,
     ) -> Arc<Self> {
         let queue = Queue::new(settings.engine.id());
+        let native = super::native::Native::new(&settings, cancel.child_token());
         Arc::new(Self {
             settings,
             transport,
@@ -95,12 +99,16 @@ impl Speech {
             active: Mutex::new(Active::default()),
             cache: Arc::new(Mutex::new(AudioCache::default())),
             probes,
+            native,
         })
     }
     pub async fn status(&self) -> Value {
         self.status_observed(true).await
     }
     pub async fn status_observed(&self, fresh: bool) -> Value {
+        if self.settings.engine == Engine::GptSoVitsNative {
+            return self.native_status();
+        }
         let vox = self.settings.engine == Engine::VoxCpm2;
         let mut online = self
             .probes
@@ -238,7 +246,7 @@ impl Speech {
     }
     pub async fn prepare(&self, value: &Validated, deadline: Deadline) -> Result<()> {
         let work = async {
-            let _permit = self
+            let permit = self
                 .queue
                 .enter(
                     self.queue.reserve()?,
@@ -247,6 +255,11 @@ impl Speech {
                     speech_timeout,
                 )
                 .await?;
+            if self.settings.engine == Engine::GptSoVitsNative {
+                self.native.execute(value, &permit, deadline, false).await?;
+                self.active.lock().unwrap().voice = value.voice.clone();
+                return Ok(());
+            }
             // A profile without weight paths still needs a real reachability check.
             if self.status().await["online"] != true {
                 return Err(ApiError::new(
@@ -450,68 +463,6 @@ impl Speech {
             .iter()
             .find(|(id, _)| id == key)
             .map(|(_, audio)| audio.clone())
-    }
-    async fn collect(
-        &self,
-        value: Validated,
-        reservation: Reservation,
-        key: &str,
-        deadline: Deadline,
-    ) -> Result<Bytes> {
-        let permit = self
-            .queue
-            .enter(reservation, &self.cancel, deadline, speech_timeout)
-            .await?;
-        if let Some(audio) = self.cached_audio(key) {
-            return Ok(audio.bytes);
-        }
-        let (response, _permit, deadline) = self.upstream(&value, permit, deadline).await?;
-        let mut stream = response.bytes_stream();
-        let mut bytes = Vec::new();
-        loop {
-            let chunk = tokio::select! {
-                biased;
-                _ = self.cancel.cancelled() => return Err(cancelled()),
-                _ = tokio::time::sleep_until(deadline) => return Err(speech_timeout()),
-                chunk = stream.next() => chunk,
-            };
-            let Some(chunk) = chunk else {
-                break;
-            };
-            let chunk = chunk.map_err(|_| ApiError::new(502, "TTS_FAILED", "语音音频传输失败"))?;
-            if bytes.len().saturating_add(chunk.len()) > AUDIO_LIMIT {
-                return Err(ApiError::new(
-                    502,
-                    "TTS_AUDIO_TOO_LARGE",
-                    "生成的单句音频超过缓存播放上限",
-                ));
-            }
-            bytes.extend_from_slice(&chunk);
-        }
-        if bytes.len() < 64 {
-            return Err(ApiError::new(502, "TTS_EMPTY_AUDIO", "语音服务返回空音频"));
-        }
-        // Only repair complete WAVs; an oversized declared data chunk must not
-        // turn a truncated provider response into a reusable full sentence.
-        let finished = wave::finish(&mut bytes);
-        // Match the PCM path: retained allocation must fit the cache's byte budget.
-        let bytes = Bytes::from(bytes.into_boxed_slice());
-        remaining(deadline, Duration::MAX, speech_timeout)?;
-        if let Some((data, pcm)) = finished {
-            // Commit before releasing the permit so queued POST callers can replay.
-            Self::remember_into(
-                &self.cache,
-                key.to_owned(),
-                CachedAudio {
-                    bytes: bytes.clone(),
-                    pcm: pcm.then_some(data),
-                },
-                &self.cancel,
-                deadline,
-            );
-        }
-        remaining(deadline, Duration::MAX, speech_timeout)?;
-        Ok(bytes)
     }
     pub fn close(&self) {
         let mut cache = self.cache.lock().unwrap();

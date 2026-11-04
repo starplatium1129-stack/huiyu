@@ -147,6 +147,21 @@ impl ControlService {
             return Ok(());
         }
         let settings = self.runtime_settings();
+        if index == 2 && self.voice.native_selected() {
+            if start {
+                self.voice.start_native().await?;
+            } else {
+                self.voice.retire_native().await?;
+            }
+            self.state.lock().unwrap().health_at = None;
+            if !op["kind"]
+                .as_str()
+                .is_some_and(|kind| kind.starts_with("mode-"))
+            {
+                self.stage(op, 1);
+            }
+            return Ok(());
+        }
         if !start {
             {
                 let mut state = self.state.lock().unwrap();
@@ -340,10 +355,16 @@ impl ControlService {
                         Ok(())
                     }
                     "mode-chat" => {
-                        let _handoff = service.native_chat_handoff().await?;
-                        service.release_comfy_models().await?;
-                        service.stage(&op, 1);
-                        service.service_action(2, true, &op).await?;
+                        if service.voice.native_selected() {
+                            service.stop_comfy_for_native().await?;
+                            service.stage(&op, 1);
+                            service.service_action(2, true, &op).await?;
+                        } else {
+                            let _handoff = service.native_chat_handoff().await?;
+                            service.release_comfy_models().await?;
+                            service.stage(&op, 1);
+                            service.service_action(2, true, &op).await?;
+                        }
                         service.stage(&op, 2);
                         Ok(())
                     }

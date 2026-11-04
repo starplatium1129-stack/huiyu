@@ -58,6 +58,7 @@ function isObject(value: unknown): value is ApiResponseObject {
 
 function isTtsStatus(value: ApiResponseObject): boolean {
   return typeof value.online === 'boolean' && isObject(value.voices)
+    && (value.available === undefined || typeof value.available === 'boolean')
     && Object.values(value.voices).every(item => typeof item === 'boolean')
 }
 

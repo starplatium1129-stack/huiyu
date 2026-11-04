@@ -18,7 +18,7 @@ impl ControlService {
     pub(crate) fn bind_images(&self, images: &Arc<crate::images::ImageService>) {
         *self.images.write().unwrap() = Arc::downgrade(images);
     }
-    pub(super) async fn native_chat_handoff(
+    pub(crate) async fn native_chat_handoff(
         &self,
     ) -> Result<Option<tokio::sync::OwnedSemaphorePermit>> {
         self.check_llama_release()?;
@@ -36,6 +36,17 @@ impl ControlService {
         }
         Ok(None)
     }
+    pub(crate) async fn native_voice_handoff(
+        self: &Arc<Self>,
+    ) -> Result<(
+        Option<tokio::sync::OwnedSemaphorePermit>,
+        tokio::sync::OwnedMutexGuard<()>,
+    )> {
+        let drawing = self.native_chat_handoff().await?;
+        let comfy = self.comfy_action.clone().lock_owned().await;
+        self.confirm_comfy_stopped_for_voice().await?;
+        Ok((drawing, comfy))
+    }
     pub(crate) async fn ensure_native_drawing(
         &self,
         cancel: &tokio_util::sync::CancellationToken,
@@ -43,6 +54,7 @@ impl ControlService {
         if cancel.is_cancelled() || self.shutdown.is_cancelled() {
             return Err(ApiError::new(499, "ABORT_ERR", "独立推理已取消"));
         }
+        self.voice.retire_native().await?;
         self.stop_llama().await?;
         self.stop_comfy_for_native().await?;
         if cancel.is_cancelled() || self.shutdown.is_cancelled() {

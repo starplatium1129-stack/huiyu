@@ -46,22 +46,31 @@ pub(super) struct Settings {
     pub python: PathBuf,
     pub script: PathBuf,
     pub log: PathBuf,
+    pub native_python: PathBuf,
+    pub native_source: PathBuf,
+    pub native_config: PathBuf,
+    pub native_script: PathBuf,
+    pub native_temp: PathBuf,
+    pub native_log: PathBuf,
 }
 #[derive(Clone, Copy, PartialEq, Eq)]
 pub(super) enum Engine {
     GptSoVits,
+    GptSoVitsNative,
     VoxCpm2,
 }
 impl Engine {
     pub fn id(self) -> &'static str {
         match self {
             Self::GptSoVits => "gpt-sovits",
+            Self::GptSoVitsNative => "gpt-sovits-native",
             Self::VoxCpm2 => "voxcpm2",
         }
     }
     pub fn label(self) -> &'static str {
         match self {
             Self::GptSoVits => "GPT-SoVITS",
+            Self::GptSoVitsNative => "GPT-SoVITS（本机）",
             Self::VoxCpm2 => "VoxCPM2",
         }
     }
@@ -106,10 +115,10 @@ impl Settings {
             .map(PathBuf::from)
             .unwrap_or_else(|| root.join("tools"));
         Self {
-            engine: if saved["ttsEngine"] == "voxcpm2" {
-                Engine::VoxCpm2
-            } else {
-                Engine::GptSoVits
+            engine: match saved["ttsEngine"].as_str() {
+                Some("voxcpm2") => Engine::VoxCpm2,
+                Some("gpt-sovits-native") => Engine::GptSoVitsNative,
+                _ => Engine::GptSoVits,
             },
             tts_host,
             profiles,
@@ -120,6 +129,12 @@ impl Settings {
                 .unwrap_or_else(|| ai_root.join("GPT-SoVITS-env/python.exe")),
             script: tools.join("translate-zh-ja.py"),
             log: runtime.join("logs/translate.log"),
+            native_python: ai_root.join("GPT-SoVITS-env/python.exe"),
+            native_source: ai_root.join("GPT-SoVITS"),
+            native_config: ai_root.join("Voice/config/tts_infer.yaml"),
+            native_script: tools.join("voice/native_gpt_sovits.py"),
+            native_temp: runtime.join("temp/voice"),
+            native_log: runtime.join("logs/voice-native.log"),
         }
     }
 }

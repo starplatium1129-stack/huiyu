@@ -108,6 +108,9 @@ impl AppState {
 
 pub(crate) fn router(state: AppState) -> Router {
     if let Some(control) = &state.control {
+        if let Some(service) = &state.voice {
+            service.bind_control(control);
+        }
         if let Some(service) = &state.generation {
             service.bind_control(control);
         }

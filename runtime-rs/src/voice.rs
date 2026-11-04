@@ -1,4 +1,5 @@
 mod config;
+mod native;
 mod payload;
 mod queue;
 mod speech;
@@ -81,8 +82,46 @@ impl VoiceService {
     pub async fn close(&self) {
         self.shutdown.cancel();
         self.speech.close();
+        self.speech.native.close().await;
         self.translation.close().await;
         self.probes.close().await;
+    }
+    pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
+        self.speech.native.bind_control(control);
+    }
+    pub(crate) fn native_selected(&self) -> bool {
+        self.speech.settings.engine == config::Engine::GptSoVitsNative
+    }
+    pub(crate) fn native_ready(&self) -> bool {
+        self.speech.native.ready()
+    }
+    pub(crate) async fn retire_native(&self) -> Result<()> {
+        if self.native_selected() {
+            let idle = Arc::new(self.speech.queue.try_idle()?);
+            self.speech.native.retire(idle).await?;
+        }
+        Ok(())
+    }
+    pub(crate) async fn start_native(&self) -> Result<()> {
+        let voice = ["nene", "natsume"]
+            .into_iter()
+            .find(|id| {
+                self.speech
+                    .settings
+                    .profiles
+                    .get(*id)
+                    .is_some_and(|profile| {
+                        profile.configured()
+                            && !profile.gpt_weights_path.is_empty()
+                            && !profile.sovits_weights_path.is_empty()
+                    })
+            })
+            .ok_or_else(|| ApiError::new(409, "VOICE_UNCONFIGURED", "请先配置角色声线"))?;
+        let value =
+            payload::validate(&json!({"voice":voice,"text":"準備"}), &self.speech.settings)?;
+        self.speech
+            .prepare(&value, Deadline::now() + Duration::from_secs(200))
+            .await
     }
     fn running(&self, state: &AppState) -> Result<()> {
         state.host.check_running()?;
@@ -176,7 +215,14 @@ async fn prepare(
         }
         Ok::<_, ApiError>(())
     };
-    tokio::try_join!(service.speech.prepare(&value, deadline), translation)?;
+    if service.native_selected() {
+        let (voice, translated) =
+            tokio::join!(service.speech.prepare(&value, deadline), translation);
+        voice?;
+        translated?;
+    } else {
+        tokio::try_join!(service.speech.prepare(&value, deadline), translation)?;
+    }
     Ok(Json(
         json!({"ok": true, "voice": voice, "translation": needs_translation, "prepareMs": started.elapsed().as_millis()}),
     ))
@@ -193,7 +239,7 @@ async fn post_audio(
     let value = payload::validate(&input, &service.speech.settings)?;
     let mut response = service
         .speech
-        .stream(value, deadline)
+        .audio(value, deadline)
         .await
         .map_err(|error| tts_error(error, &headers, peer))?;
     response

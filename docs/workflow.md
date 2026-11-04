@@ -208,6 +208,10 @@
 
 ### 角色语音引擎
 
+控制室选择「GPT-SoVITS 本机推理」后，可在角色声线配置中读取当前 AI 目录的已有声线，核对后保存并重启。已有填写与导入内容不一致时保留现有填写；读取仅填补空字段。该模式由应用按需启动和回收推理进程，不需要单独启动语音 API。当前仍需 AI 目录内已有 `GPT-SoVITS` 源码、`GPT-SoVITS-env`、`Voice/config/tts_infer.yaml`、基础模型和角色权重；尚未提供全新机器的语音环境下载准备器。工作进程使用配置副本，不改写原配置。
+
+本机语音与独立绘图交接显存，语音忙时不抢占；空闲 10 分钟后回收。ComfyUI 仍在监听时，本机语音会提示先停止；控制室「聊天与语音优先」仅停止本应用持有且没有排队任务的 ComfyUI。角色发音、首句延迟、聊天模型并行占用和设备表现需要实际验收。
+
 npm run wf -- voice:service -AIWorkspaceRoot <AI目录> -RuntimeRoot <运行目录> -TtsHost http://127.0.0.1:9880 -Engine voxcpm2 默认只探测状态。显式 -Action Start 加载已有基座和角色 LoRA；-Action Stop 只停止本应用启动的服务。GPT-SoVITS 使用 -Engine gpt-sovits。入口不下载模型；真实调用按用户授权。
 
 控制室保存 ttsEngine、loraWeightsPath、参考音频和原文，重启后生效；切换引擎前先停止原服务。models:check 只报告已配置声线文件，不启动模型。

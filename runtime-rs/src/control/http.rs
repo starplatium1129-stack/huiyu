@@ -57,6 +57,7 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
         .merge(inference::routes())
         .merge(inference_setup::routes())
         .merge(native_setup::routes())
+        .merge(voice_profiles::routes())
         .merge(setup_http::routes())
         .route("/api/share-link", get(share))
         .route("/api/logs", get(logs))
@@ -279,7 +280,14 @@ pub(super) fn validated_patch(body: Value) -> Result<Value> {
                 Value::String(url.origin().ascii_serialization())
             }
             "voices" if value.is_object() => value,
-            "ttsEngine" if matches!(value.as_str(), Some("voxcpm2" | "gpt-sovits")) => value,
+            "ttsEngine"
+                if matches!(
+                    value.as_str(),
+                    Some("voxcpm2" | "gpt-sovits" | "gpt-sovits-native")
+                ) =>
+            {
+                value
+            }
             "autoStartVoice" if value.is_boolean() => value,
             _ => return Err(ApiError::invalid(format!("不支持的配置字段或类型：{key}"))),
         };

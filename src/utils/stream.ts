@@ -35,12 +35,13 @@ function parseChatStreamEvent(value: unknown): ChatStreamEvent | null {
 }
 
 export function inferEmotion(text: string, character = ''): string {
-  if (/害羞|脸红|不好意思|才不是|笨蛋|慌乱|紧张|犹豫|小声|吞吞吐吐/.test(text)) return 'shy'
+  // Everyday hesitation or address is not enough to select the shy voice.
+  const shyText = text.replace(/(?:不|没|别|没有|并不|不会|不用|不必|无需|从不|毫不)(?:太|再|那么|这么|有点|有些|觉得|感到|是|算){0,2}(?:害羞|羞涩|羞怯|羞赧|脸红|红着脸|红了脸|羞红|面红耳赤)/g, '')
+  if (/害羞|羞涩|羞怯|羞赧|脸红|红着脸|红了脸|羞红|面红耳赤/.test(shyText)) return 'shy'
   if (/开心|高兴|太好了|哈哈|笑|期待|终于|挥手|雀跃/.test(text)) return 'happy'
   if (/难过|寂寞|想念|对不起|抱歉|失落|叹气/.test(text)) return 'sad'
   if (/认真|必须|小心|危险|不许|别逞强|注意|皱眉|警惕/.test(text)) return 'serious'
   if (/温柔|谢谢|陪着|安心|辛苦|休息|没关系|微笑|轻轻|安抚/.test(text)) return 'gentle'
-  if (character === 'nene' && /那个|其实|愿意|可以吗/.test(text)) return 'shy'
   if (character === 'natsume' && /真是的|算了|我在|放心/.test(text)) return 'gentle'
   return 'neutral'
 }

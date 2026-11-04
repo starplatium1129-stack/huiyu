@@ -5,6 +5,29 @@ use std::process::Stdio;
 use tokio::process::Command;
 
 impl ControlService {
+    pub(super) async fn confirm_comfy_stopped_for_voice(&self) -> Result<()> {
+        let host = self.runtime_settings()["comfyHost"]
+            .as_str()
+            .unwrap_or("")
+            .to_owned();
+        let listening = tokio::task::spawn_blocking(move || listener::present(&host))
+            .await
+            .ok()
+            .flatten();
+        match listening {
+            Some(false) => Ok(()),
+            Some(true) => Err(ApiError::new(
+                409,
+                "COMFY_RELEASE_UNCONFIRMED",
+                "ComfyUI 正在运行，请先停止它再使用本机语音",
+            )),
+            None => Err(ApiError::new(
+                503,
+                "COMFY_RELEASE_UNCONFIRMED",
+                "无法确认 ComfyUI 是否已退出，请检查后重试",
+            )),
+        }
+    }
     pub(super) fn comfy_root(&self) -> std::path::PathBuf {
         let managed = self
             .config
@@ -74,6 +97,7 @@ impl ControlService {
         if self.online(1, &self.runtime_settings()).await {
             // Drawing already releases our local chat from the UI. Keep the
             // same owned-only memory handoff for direct and durable API callers.
+            self.voice.retire_native().await?;
             self.stop_llama().await?;
             return Ok(());
         }
@@ -167,6 +191,7 @@ impl ControlService {
             return Ok(json!({"managed":false}));
         }
         let _action = self.comfy_action.lock().await;
+        self.voice.retire_native().await?;
         let images = self.images.read().unwrap().upgrade();
         let _gpu = if self.native_gpu_owned() {
             Some(

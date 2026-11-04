@@ -56,7 +56,9 @@
                   @copy="copyMessage(msg.content)" @regenerate="handleStoryAction({ kind: 'regenerate', messageId: msg.mid })"
                   @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })" />
               </div>
-              <p v-if="msg.content" class="companion-dialogue-line" :class="{ 'is-streaming': liveState.busy && msg.mid === latestReply?.mid }"><ChatMessageText :text="msg.content" /></p>
+              <div v-if="msg.content" class="companion-dialogue-copy" :class="{ 'is-streaming': liveState.busy && msg.mid === latestReply?.mid }">
+                <p v-for="(paragraph, index) in dialogueParagraphs(msg.content)" :key="index" class="companion-dialogue-line"><ChatMessageText :text="paragraph" /></p>
+              </div>
               <CompanionChatImages v-if="msg.images?.length" :images="msg.images" />
               <CompanionDrawingDraftCard v-for="drawing in msg.drawingDrafts || []" :key="drawing.path" :draft="drawing" />
               <div v-if="!msg.content && msg.mid === latestReply?.mid && replyPending" class="companion-dialogue-waiting" role="status">
@@ -168,6 +170,9 @@ const speechSettingsTrigger = ref<HTMLElement | null>(null), speechSettingsPanel
 useInlinePanelFocus(speechSettingsOpen, () => speechSettingsPanel.value, speechSettingsTrigger)
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))
 const displayedMessages = computed(() => historyOpen.value ? visibleMessages.value : visibleMessages.value.slice(-12))
+function dialogueParagraphs(text: string): string[] {
+  return text.split(/\r?\n(?:[ \t]*\r?\n)+/).filter(paragraph => paragraph.trim())
+}
 const avatar = computed(() => chibiAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
 const latestReply = computed(() => {
   const last = visibleMessages.value.at(-1)

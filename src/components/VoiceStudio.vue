@@ -109,6 +109,7 @@ const voiceBusy = computed(() => operationKind.value !== null)
 const translateButton = ref<HTMLButtonElement | null>(null)
 const generateButton = ref<HTMLButtonElement | null>(null)
 const voiceOnline = ref(false)
+const voiceLoaded = ref(false)
 const voiceConfigured = ref(false)
 const voiceAudioUrl = ref('')
 const voiceAudioTranscript = ref('')
@@ -161,10 +162,10 @@ const VOICE_EMOTIONS = [
 ]
 
 const voicePlayText = computed(() => (voiceLang.value === 'ja' ? voiceScript.value : voiceCaption.value).trim())
-const voiceStateKind = computed(() => voiceBusy.value ? 'warn' : (voiceOnline.value && voiceConfigured.value ? 'ready' : 'warn'))
+const voiceStateKind = computed(() => voiceBusy.value ? 'warn' : (voiceOnline.value && voiceConfigured.value && voiceLoaded.value ? 'ready' : 'warn'))
 const voiceStateLabel = computed(() => {
   if (voiceBusy.value) return operationKind.value === 'translate' ? '翻译中' : '生成中'
-  if (voiceOnline.value && voiceConfigured.value) return 'AI 声线就绪'
+  if (voiceOnline.value && voiceConfigured.value) return voiceLoaded.value ? 'AI 声线就绪' : 'AI 声线待加载'
   if (voiceOnline.value) return '声线未配置'
   return '语音未启动'
 })
@@ -183,21 +184,25 @@ async function refreshVoiceStatus() {
   try {
     const data = await voiceApi.getStatus(callOptions)
     if (!viewActive || controller.signal.aborted || request !== statusRequest) return
-    voiceOnline.value = data.online
+    voiceOnline.value = data.online || data.available === true
+    voiceLoaded.value = data.online
     voiceConfigured.value = Boolean(data.voices[voice])
     if (voiceBusy.value || ownedSpeech || operation !== operationRevision) return
     if (voiceOnline.value && voiceConfigured.value) {
-      voiceStatus.value = `${data.engine || '语音服务'} 已连接；可翻译或生成角色声线。`
+      voiceStatus.value = data.online ? `${data.engine || '语音服务'} 已连接；可翻译或生成角色声线。` : '角色声线将在使用时加载。'
       // 预热是 best-effort：失败只让首次合成稍慢，真实错误会在生成时展示。
-      void voiceApi.prepare({ voice, translation: voiceLang.value === 'ja' }, callOptions).catch(() => {})
+      void voiceApi.prepare({ voice, translation: voiceLang.value === 'ja' }, callOptions).then(() => {
+        if (viewActive && !controller.signal.aborted && request === statusRequest && voiceChar.value === voice) voiceLoaded.value = true
+      }).catch(() => {})
     } else if (voiceOnline.value) {
-      voiceStatus.value = '语音服务在线，但当前角色参考音频尚未配置。'
+      voiceStatus.value = '当前角色声线尚未配置。'
     } else {
       voiceStatus.value = '语音服务未启动。可到控制面板启动所选语音引擎。'
     }
   } catch {
     if (!viewActive || controller.signal.aborted || request !== statusRequest || voiceBusy.value || ownedSpeech || operation !== operationRevision) return
     voiceOnline.value = false
+    voiceLoaded.value = false
     voiceConfigured.value = false
     voiceStatus.value = '无法读取语音状态。'
   }
@@ -263,7 +268,8 @@ async function generateVoice() {
   try {
     const status = await voiceApi.getStatus(callOptions)
     if (!current()) return
-    voiceOnline.value = status.online
+    voiceOnline.value = status.online || status.available === true
+    voiceLoaded.value = status.online
     voiceConfigured.value = Boolean(status.voices[payload.voice])
     if (!status.voices[payload.voice]) throw new Error('当前角色还没配置参考音频，请到控制面板的「角色声线配置」填写。')
     // 预热失败不阻断合成；合成接口会返回可读的真实失败原因。

@@ -46,14 +46,14 @@
           </button>
         </div>
 
-        <ToggleSwitch v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
+        <ToggleSwitch v-if="ttsEngine !== 'gpt-sovits-native'" v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
           <span>进入控制面板时启动语音<span class="autostart-hint">显存不足建议关闭</span></span>
         </ToggleSwitch>
-        <p v-if="(imageProvider !== 'native' && !scripts.comfy) || !scripts.voiceStart" class="script-hint">
+        <p v-if="(imageProvider !== 'native' && !scripts.comfy) || (ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart)" class="script-hint">
           未检测到快捷启停脚本（服务仍可手动运行后连接）：
           <span v-if="imageProvider !== 'native' && !scripts.comfy">ComfyUI 脚本 </span>
-          <span v-if="!scripts.voiceStart">语音启动脚本 </span>
-          <span v-if="!scripts.voiceStop">语音停止脚本 </span>
+          <span v-if="ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart">语音启动脚本 </span>
+          <span v-if="ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStop">语音停止脚本 </span>
         </p>
       </section>
 
@@ -70,24 +70,32 @@
 
         <label class="field-label" for="tts-engine">角色语音引擎</label>
         <StudioSelect id="tts-engine" v-model="ttsEngine" label="角色语音引擎" aria-describedby="tts-engine-help"
-          :options="[{ value: 'voxcpm2', label: 'VoxCPM2' }, { value: 'gpt-sovits', label: 'GPT-SoVITS' }]" />
-        <p id="tts-engine-help" class="field-help">切换后重启应用生效。</p>
-        <label class="field-label" for="tts-host">语音 API 地址</label>
-        <div class="field-row tw:flex tw:gap-s-2">
+          :options="[{ value: 'gpt-sovits-native', label: 'GPT-SoVITS 本机推理' }, { value: 'gpt-sovits', label: 'GPT-SoVITS 兼容服务' }, { value: 'voxcpm2', label: 'VoxCPM2 兼容服务' }]" />
+        <p id="tts-engine-help" class="field-help">切换后重启应用生效；本机推理按需加载。</p>
+        <label v-if="ttsEngine !== 'gpt-sovits-native'" class="field-label" for="tts-host">语音 API 地址</label>
+        <div v-if="ttsEngine !== 'gpt-sovits-native'" class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="ttsHost">
             <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" aria-describedby="tts-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p id="tts-host-help" class="field-help">语音服务默认按需启动。</p>
+        <p v-if="ttsEngine !== 'gpt-sovits-native'" id="tts-host-help" class="field-help">语音服务默认按需启动。</p>
 
         <details class="voice-config">
           <StudioDisclosureSummary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></StudioDisclosureSummary>
-          <div data-disclosure-content class="voice-grid">
+          <div data-disclosure-content>
+          <button v-if="ttsEngine === 'gpt-sovits-native'" class="btn btn-quiet btn-sm voice-import" type="button" :disabled="readingVoices || opBusy" @click="readExistingVoices">{{ readingVoices ? '读取中…' : '读取已有声线' }}</button>
+          <div class="voice-grid">
             <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
               <div class="voice-card-title">宁宁</div>
               <template v-if="ttsEngine === 'voxcpm2'">
                 <label for="v-nene-lora">宁宁 LoRA 权重路径</label>
                 <input id="v-nene-lora" v-model="voiceNeneLora" class="input" placeholder="lora_weights.safetensors 路径" />
+              </template>
+              <template v-if="ttsEngine === 'gpt-sovits-native'">
+                <label for="v-nene-gpt">宁宁 GPT 权重路径</label>
+                <input id="v-nene-gpt" v-model="voiceNeneGpt" class="input" placeholder=".ckpt 路径" />
+                <label for="v-nene-sovits">宁宁 SoVITS 权重路径</label>
+                <input id="v-nene-sovits" v-model="voiceNeneSovits" class="input" placeholder=".pth 路径" />
               </template>
               <label for="v-nene-ref">宁宁参考音频路径</label>
             <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
@@ -100,11 +108,18 @@
                 <label for="v-nat-lora">夏目 LoRA 权重路径</label>
                 <input id="v-nat-lora" v-model="voiceNatsumeLora" class="input" placeholder="lora_weights.safetensors 路径" />
               </template>
+              <template v-if="ttsEngine === 'gpt-sovits-native'">
+                <label for="v-nat-gpt">夏目 GPT 权重路径</label>
+                <input id="v-nat-gpt" v-model="voiceNatsumeGpt" class="input" placeholder=".ckpt 路径" />
+                <label for="v-nat-sovits">夏目 SoVITS 权重路径</label>
+                <input id="v-nat-sovits" v-model="voiceNatsumeSovits" class="input" placeholder=".pth 路径" />
+              </template>
               <label for="v-nat-ref">夏目参考音频路径</label>
             <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
               <label for="v-nat-prompt">夏目提示文本（日文）</label>
             <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
             </div>
+          </div>
           </div>
         </details>
         <div class="config-save-row" :aria-busy="savingConfig"><StudioLiquidButton label="保存连接与声线" :busy="savingConfig" :complete="configSaved" :disabled="opBusy || !statusLoaded" @click="saveConfig" /></div>
@@ -132,10 +147,10 @@ import { confirmAction } from '@/composables/useConfirm'
 import type { ControlService, ControlServiceAction } from '@/api/controlApi'
 const { comfyOnline, sdOnline, ttsOnline, ollamaOnline, comfyManaged, ollamaModels, modeBusy,
   selfHealing, serviceChecking, statusLoaded, statusError, scripts, comfyHost, ttsHost, ttsEngine, activeVoiceEngine,
-  llamaOnline, llamaManaged, llamaLabel, voiceNeneLora, voiceNatsumeLora, voiceNeneRef, voiceNenePrompt,
+  llamaOnline, llamaManaged, llamaLabel, voiceNeneLora, voiceNatsumeLora, voiceNeneGpt, voiceNeneSovits, voiceNatsumeGpt, voiceNatsumeSovits, voiceNeneRef, voiceNenePrompt,
   voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice, overviewFeedback, imageProvider,
   opBusy, operation, ollamaMeta, voiceConfiguredCount, pollStatus } = status
-const { serviceAction, switchMode, saveAutoStartVoice, saveConfig, savingConfig, configSaved, canCancelOperation, operationCancelling, cancelOperation } = actions
+const { serviceAction, switchMode, saveAutoStartVoice, saveConfig, savingConfig, configSaved, canCancelOperation, operationCancelling, cancelOperation, readExistingVoices, readingVoices } = actions
 const startingService = computed(() => operation.value?.status === 'running' && operation.value.kind.endsWith('-start') ? operation.value.kind.slice(0, -6) : '')
 function recheckStatus() { if (!serviceChecking.value && !opBusy.value) void pollStatus(true) }
 const ttsSelfHealing = computed(() => {

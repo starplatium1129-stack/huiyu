@@ -53,6 +53,9 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
         .filter(|profile| {
             profile.configured()
                 && (settings.engine != Engine::VoxCpm2 || !profile.lora_weights_path.is_empty())
+                && (settings.engine != Engine::GptSoVitsNative
+                    || (!profile.gpt_weights_path.is_empty()
+                        && !profile.sovits_weights_path.is_empty()))
         })
         .ok_or_else(|| {
             ApiError::new(
