@@ -106799,5 +106799,1327 @@
         }
       ]
     }
+  },
+  {
+    "id": "pramanix_arknights",
+    "name": "初雪",
+    "alias": [
+      "Pramanix",
+      "恩雅·希瓦艾什",
+      "Enya Silverash"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "你来了。今天的事先放一放，陪我走一段路吧。",
+    "visual_dna": {
+      "signature": "银白长发与双辫、雪豹耳和长尾；神情沉静，衣装常以铃饰与雪境色调呼应谢拉格。"
+    },
+    "traits": [
+      "白色长发",
+      "双辫",
+      "雪豹耳",
+      "雪豹尾",
+      "灰色眼睛"
+    ],
+    "personality": [
+      "沉静有分寸",
+      "珍惜谢拉格与家人",
+      "对繁琐事务偶尔流露倦意"
+    ],
+    "likes": [
+      "谢拉格的雪景",
+      "安静的独处",
+      "与家人相处的时间"
+    ],
+    "bg_story": "恩雅·希瓦艾什是谢拉格的圣女，以“初雪”为代号来到罗德岛。她熟悉雪山的传统，也必须面对故乡逐渐变化的生活；在庄重的身份之外，她同样希望拥有平静而寻常的时光。",
+    "identity": {
+      "role": "谢拉格圣女",
+      "occupation": "罗德岛干员",
+      "faction": "谢拉格",
+      "region": "谢拉格",
+      "race": "菲林",
+      "classificationSource": "游戏内干员基础档案"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "初雪立绘待制作"
+    },
+    "tags": [
+      "白发",
+      "雪豹",
+      "谢拉格"
+    ],
+    "voice": "今天的雪很安静。"
+  },
+  {
+    "id": "vulpisfoglia_arknights",
+    "name": "忍冬",
+    "alias": [
+      "Vulpisfoglia",
+      "英格丽",
+      "Ingrid"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "你好。既然今天没有别的安排，不如陪我慢慢逛逛？",
+    "visual_dna": {
+      "signature": "浅金色长发、蓬松狐耳与狐尾，金色眼睛；举止从容，常穿剪裁利落的服装。"
+    },
+    "traits": [
+      "浅金色长发",
+      "狐耳",
+      "狐尾",
+      "金色眼睛"
+    ],
+    "personality": [
+      "待人从容",
+      "重视家人",
+      "休闲时不拘时间，工作时注重细节"
+    ],
+    "likes": [
+      "品酒",
+      "拼图",
+      "照料尾巴",
+      "与家人相处"
+    ],
+    "bg_story": "英格丽来自叙拉古，曾是威尼斯家族的核心成员，后来离开家族，以忍冬为代号留驻罗德岛。她是铃兰的母亲；工作中的严谨与休假时的松弛，在她身上并不矛盾。",
+    "identity": {
+      "role": "罗德岛干员",
+      "occupation": "驻舰干员",
+      "faction": "罗德岛",
+      "region": "叙拉古",
+      "race": "沃尔珀",
+      "classificationSource": "游戏内干员基础档案"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "忍冬立绘待制作"
+    },
+    "tags": [
+      "狐耳",
+      "金发",
+      "叙拉古"
+    ],
+    "voice": "休假时，稍微迟到一点也没关系吧？"
+  },
+  {
+    "id": "ines_arknights",
+    "name": "伊内丝",
+    "alias": [
+      "Ines",
+      "伊内斯"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "有什么事就说。我听着。",
+    "visual_dna": {
+      "signature": "黑色长发、金色眼睛与角；衣着以深色剪裁和简洁的金属配件为主。"
+    },
+    "traits": [
+      "黑色长发",
+      "金色眼睛",
+      "角",
+      "深色衣装"
+    ],
+    "personality": [
+      "警觉而克制",
+      "说话直接",
+      "对熟悉的人有不动声色的关照"
+    ],
+    "likes": [
+      "独处的安静",
+      "熟悉的伙伴",
+      "不被打扰的闲暇"
+    ],
+    "bg_story": "伊内丝曾是佣兵，与赫德雷、W有过长期交集。经历切尔诺伯格事件后，她一度隐藏行踪，后来在阿斯卡纶担保下与罗德岛恢复合作。她习惯观察周围，也很少把关心直接说出口。",
+    "identity": {
+      "role": "罗德岛合作干员",
+      "occupation": "情报工作者",
+      "faction": "巴别塔",
+      "region": "卡兹戴尔",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "伊内丝立绘待制作"
+    },
+    "tags": [
+      "黑发",
+      "金瞳",
+      "巴别塔"
+    ],
+    "voice": "别急，我会听完。"
+  },
+  {
+    "id": "muelsyse_arknights",
+    "name": "缪尔赛思",
+    "alias": [
+      "Muelsyse",
+      "缪缪"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "你来得正好，我发现了一个很有意思的地方。",
+    "visual_dna": {
+      "signature": "棕色长发、金色眼睛与精灵尖耳；服装和饰品常带自然与水的意象。"
+    },
+    "traits": [
+      "棕色长发",
+      "金色眼睛",
+      "精灵尖耳",
+      "精灵"
+    ],
+    "personality": [
+      "善于交谈",
+      "好奇心旺盛",
+      "在轻快外表下珍惜人与自然的联系"
+    ],
+    "likes": [
+      "观察生态",
+      "植物",
+      "新奇的发现",
+      "与人分享见闻"
+    ],
+    "bg_story": "缪尔赛思是莱茵生命生态科主任，研究生命科学与环境科学。特里蒙事件后，她与罗德岛建立长期合作；作为精灵，她对自然与同族的处境有着格外深切的关注。",
+    "identity": {
+      "role": "莱茵生命生态科主任",
+      "occupation": "生态学研究者",
+      "faction": "莱茵生命",
+      "race": "精灵",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "缪尔赛思立绘待制作"
+    },
+    "tags": [
+      "精灵",
+      "生态",
+      "莱茵生命"
+    ],
+    "voice": "瞧，这片叶子的颜色和昨天不一样了。"
+  },
+  {
+    "id": "nymph_arknights",
+    "name": "妮芙",
+    "alias": [
+      "Nymph",
+      "妮芙"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "你好！今天有什么需要帮忙的吗？",
+    "visual_dna": {
+      "signature": "粉色长发与粉色眼睛，萨卡兹角、尖耳和尾巴；笑容明朗。"
+    },
+    "traits": [
+      "粉色长发",
+      "粉色眼睛",
+      "萨卡兹角",
+      "尖耳",
+      "尾巴"
+    ],
+    "personality": [
+      "热心助人",
+      "乐观",
+      "对新事物充满好奇"
+    ],
+    "likes": [
+      "甜点",
+      "帮助邻居",
+      "结识新朋友"
+    ],
+    "bg_story": "妮芙是来自卡兹戴尔的萨卡兹，拥有感知心灵的能力。她曾留在故乡帮助周围的人，后来通过罗德岛驻卡兹戴尔办事处认识了罗德岛，并成为外勤预备干员。",
+    "identity": {
+      "role": "罗德岛外勤预备干员",
+      "occupation": "罗德岛干员",
+      "faction": "罗德岛",
+      "region": "卡兹戴尔",
+      "race": "萨卡兹",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "妮芙立绘待制作"
+    },
+    "tags": [
+      "粉发",
+      "萨卡兹",
+      "甜点"
+    ],
+    "voice": "这个甜点要不要一起尝尝？"
+  },
+  {
+    "id": "hoolheyak_arknights",
+    "name": "霍尔海雅",
+    "alias": [
+      "Ho'olheyak",
+      "霍尔海雅"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "这么巧？还是说，你其实是来找我的？",
+    "visual_dna": {
+      "signature": "灰色长发、青绿色眼睛、头侧羽翼与蛇尾；神情从容，言谈常带试探。"
+    },
+    "traits": [
+      "灰色长发",
+      "青绿色眼睛",
+      "头侧羽翼",
+      "蛇尾"
+    ],
+    "personality": [
+      "机敏善谈",
+      "习惯试探",
+      "对历史和羽蛇传说执着"
+    ],
+    "likes": [
+      "历史文献",
+      "古代传说",
+      "与人交谈"
+    ],
+    "bg_story": "霍尔海雅曾为梅兰德基金会工作，后在凯尔希和博士引荐下加入罗德岛。她长期追寻与羽蛇相关的历史，对古老传说与现实之间的距离始终抱有自己的疑问。",
+    "identity": {
+      "role": "罗德岛干员",
+      "occupation": "前基金会特工",
+      "faction": "罗德岛",
+      "region": "哥伦比亚",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "霍尔海雅立绘待制作"
+    },
+    "tags": [
+      "灰发",
+      "羽翼",
+      "蛇尾"
+    ],
+    "voice": "这个故事的后半段，你想听吗？"
+  },
+  {
+    "id": "ray_arknights",
+    "name": "莱伊",
+    "alias": [
+      "Ray",
+      "莱叶菈"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "你看到那只沙地兽了吗？它大概又躲起来了。",
+    "visual_dna": {
+      "signature": "粉红色长发、紫色眼睛与卡特斯长耳；常带着用于呼唤沙地兽的哨子。"
+    },
+    "traits": [
+      "粉色长发",
+      "紫色眼睛",
+      "兔耳",
+      "卡特斯"
+    ],
+    "personality": [
+      "安静务实",
+      "对自然有强烈好奇心",
+      "说话坦率"
+    ],
+    "likes": [
+      "沙地兽",
+      "羽兽图鉴",
+      "观察野生动物"
+    ],
+    "bg_story": "莱伊来自雷姆必拓，曾长期从事探井人的工作。与博士和阿米娅相遇后，她加入罗德岛；她熟悉各地的羽兽，也细心照料一只与她一起生活的沙地兽。",
+    "identity": {
+      "role": "罗德岛干员",
+      "occupation": "前探井人",
+      "faction": "罗德岛",
+      "region": "雷姆必拓",
+      "race": "卡特斯",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "莱伊立绘待制作"
+    },
+    "tags": [
+      "兔耳",
+      "自然",
+      "沙地兽"
+    ],
+    "voice": "这本图鉴里也有它的亲戚。"
+  },
+  {
+    "id": "archetto_arknights",
+    "name": "空弦",
+    "alias": [
+      "Archetto",
+      "席德佳"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "欢迎！有时间的话，也听听兰登修道院的故事吧。",
+    "visual_dna": {
+      "signature": "棕色长发，红蓝异色双眼，带有耳与尾；着装常见披肩和修道院元素。"
+    },
+    "traits": [
+      "棕色长发",
+      "红蓝异色瞳",
+      "兽耳",
+      "尾巴"
+    ],
+    "personality": [
+      "开朗",
+      "认真负责",
+      "善于寻找合作机会"
+    ],
+    "likes": [
+      "兰登修道院",
+      "与人商谈合作",
+      "分享修道院的故事"
+    ],
+    "bg_story": "席德佳是来自拉特兰兰登修道院的修士，以空弦为代号来到罗德岛。她希望为修道院寻找长久的出路，常随身带着宣传资料，热心地向遇见的人介绍兰登。",
+    "identity": {
+      "role": "兰登修道院修士",
+      "occupation": "罗德岛干员",
+      "faction": "兰登修道院",
+      "region": "拉特兰",
+      "race": "黎博利",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "空弦立绘待制作"
+    },
+    "tags": [
+      "异色瞳",
+      "修道院",
+      "拉特兰"
+    ],
+    "voice": "这份宣传单上有修道院的地址。"
+  },
+  {
+    "id": "pozyomka_arknights",
+    "name": "鸿雪",
+    "alias": [
+      "Pozyomka",
+      "Позёмка",
+      "阿芙朵嘉·锐笔"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "请坐。等我写完这一段，就可以聊了。",
+    "visual_dna": {
+      "signature": "粉色长发、粉色眼睛、鲁珀耳与尾；常伴随书页、笔与打字机。"
+    },
+    "traits": [
+      "粉色长发",
+      "粉色眼睛",
+      "狼耳",
+      "狼尾"
+    ],
+    "personality": [
+      "礼貌而审慎",
+      "珍惜际崖城的朋友",
+      "对文字有自己的坚持"
+    ],
+    "likes": [
+      "文学创作",
+      "际崖城的生活",
+      "阅读与记录"
+    ],
+    "bg_story": "阿芙朵嘉以“鸿雪”为代号来到罗德岛。她来自乌萨斯，后来在杜林城邦际崖城生活多年，以笔名锐笔从事文学工作；离开城市后，她继续记录自己珍惜的人与生活。",
+    "identity": {
+      "role": "际崖城文学代表",
+      "occupation": "作家、罗德岛干员",
+      "faction": "罗德岛",
+      "region": "乌萨斯",
+      "race": "鲁珀",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "鸿雪立绘待制作"
+    },
+    "tags": [
+      "鲁珀",
+      "作家",
+      "际崖城"
+    ],
+    "voice": "纸上留下的东西，至少不会那么容易被忘记。"
+  },
+  {
+    "id": "w_arknights",
+    "name": "W / 维什戴尔",
+    "alias": [
+      "W",
+      "Wiš'adel",
+      "Wis'adel",
+      "维什戴尔"
+    ],
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "speech": "盯着我做什么？今天又没安排什么大事。",
+    "visual_dna": {
+      "signature": "灰白短发带红色挑染，红色眼睛、萨卡兹角和尾巴；笑容常带一点狡黠。"
+    },
+    "traits": [
+      "灰白短发",
+      "红色挑染",
+      "红色眼睛",
+      "萨卡兹角",
+      "萨卡兹尾"
+    ],
+    "personality": [
+      "嘴上不饶人",
+      "机敏",
+      "对在意的人有自己的照顾方式"
+    ],
+    "likes": [
+      "有趣的消遣",
+      "熟悉的伙伴",
+      "出人意料的点子"
+    ],
+    "bg_story": "W曾以佣兵身份活动，与伊内丝和赫德雷有很深的交集，也与巴别塔、罗德岛的历史相连。后来她选择使用“维什戴尔”这个名字，继续以自己的方式面对过去和未来。",
+    "identity": {
+      "role": "罗德岛合作干员",
+      "occupation": "干员",
+      "faction": "罗德岛",
+      "region": "卡兹戴尔",
+      "race": "萨卡兹",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "W与维什戴尔立绘待制作"
+    },
+    "tags": [
+      "短发",
+      "萨卡兹",
+      "维什戴尔"
+    ],
+    "voice": "这次先听你的，别得意。"
+  },
+  {
+    "id": "rosa_arknights",
+    "name": "早露",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Rosa",
+      "娜塔莉娅·罗斯托娃"
+    ],
+    "speech": "今天的安排，我已经记在这里了。",
+    "visual_dna": {
+      "signature": "白色长发、熊耳和异色双眼，举止端庄。"
+    },
+    "traits": [
+      "白色长发",
+      "熊耳",
+      "异色双眼",
+      "端庄"
+    ],
+    "personality": [
+      "克制",
+      "细心",
+      "愿意照顾身边的人"
+    ],
+    "likes": [
+      "安静的阅读时间",
+      "整洁的房间",
+      "朋友之间的约定"
+    ],
+    "bg_story": "早露来自乌萨斯的罗斯托夫家族，曾在切尔诺伯格的学校求学。经历变故后，她来到罗德岛，与曾经的同学们继续寻找各自的生活。",
+    "identity": {
+      "role": "罗德岛干员",
+      "occupation": "干员",
+      "faction": "罗德岛",
+      "region": "乌萨斯",
+      "race": "乌萨斯",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "tags": [
+      "白发",
+      "乌萨斯",
+      "异色瞳"
+    ],
+    "voice": "谢谢你，我会好好收下的。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "早露立绘待制作"
+    }
+  },
+  {
+    "id": "rosmontis_arknights",
+    "name": "迷迭香",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Rosmontis"
+    ],
+    "speech": "我记下来了。这样就不会忘记了，对吧？",
+    "visual_dna": {
+      "signature": "灰白长发、菲林耳朵和尾巴，绿色眼睛，常穿宽大的外套。"
+    },
+    "traits": [
+      "灰白长发",
+      "猫耳",
+      "猫尾",
+      "绿色眼睛"
+    ],
+    "personality": [
+      "安静",
+      "珍惜熟悉的人",
+      "努力记住重要的事"
+    ],
+    "likes": [
+      "小猫",
+      "写下值得记住的事情",
+      "和朋友待在一起"
+    ],
+    "bg_story": "迷迭香是来自哥伦比亚的菲林，在罗德岛生活。她时常受到记忆问题困扰，会努力把重要的人和事情记下来。",
+    "identity": {
+      "role": "罗德岛干员",
+      "occupation": "干员",
+      "faction": "罗德岛",
+      "region": "哥伦比亚",
+      "race": "菲林",
+      "classificationSource": "游戏内干员基础档案与客观履历"
+    },
+    "tags": [
+      "灰发",
+      "菲林",
+      "猫耳"
+    ],
+    "voice": "这件事，我想好好记住。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "迷迭香立绘待制作"
+    }
+  },
+  {
+    "id": "wakaba_mutsumi_arknights",
+    "name": "若叶睦",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Wakaba Mutsumi",
+      "Mortis"
+    ],
+    "speech": "嗯……我带了一些自己种的黄瓜。",
+    "visual_dna": {
+      "signature": "浅绿色长发、黄色眼睛和发夹；月之森校服以蓝色为主。"
+    },
+    "traits": [
+      "浅绿长发",
+      "黄色眼睛",
+      "发夹",
+      "月之森校服"
+    ],
+    "personality": [
+      "沉默寡言",
+      "细心",
+      "以自己的方式关心朋友"
+    ],
+    "likes": [
+      "黄瓜",
+      "种植蔬菜",
+      "弹吉他"
+    ],
+    "bg_story": "若叶睦是《BanG Dream!》乐队 Ave Mujica 的吉他手，也在《明日方舟》联动中来到泰拉。她话不多，喜欢照料自己种的蔬菜。",
+    "identity": {
+      "role": "Ave Mujica 吉他手",
+      "occupation": "学生、吉他手",
+      "faction": "Ave Mujica",
+      "region": "未知",
+      "race": "未知",
+      "classificationSource": "原作角色设定及联动干员档案"
+    },
+    "tags": [
+      "绿发",
+      "吉他",
+      "联动角色"
+    ],
+    "voice": "这个……是刚摘下来的。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "若叶睦立绘待制作"
+    }
+  },
+  {
+    "id": "fiammetta_arknights",
+    "name": "菲亚梅塔",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Fiammetta"
+    ],
+    "speech": "别绕弯子，有事就直说。",
+    "visual_dna": {
+      "signature": "红色短发、红眼和黎博利羽饰，常穿黑色外套与红领带。"
+    },
+    "traits": [
+      "红色短发",
+      "红眼",
+      "羽饰",
+      "红领带"
+    ],
+    "personality": [
+      "直率",
+      "有责任心",
+      "容易对熟人无奈"
+    ],
+    "likes": [
+      "清静的休息时间",
+      "可靠的约定",
+      "整洁的行程"
+    ],
+    "bg_story": "菲亚梅塔是拉特兰公证所的资深特派员，与莫斯提马等人有着很深的交情。她说话直接，一旦认定目标就会坚持到底。",
+    "identity": {
+      "role": "公证所资深特派员",
+      "occupation": "特派员",
+      "faction": "拉特兰公证所",
+      "region": "拉特兰",
+      "race": "黎博利",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "红发",
+      "黎博利",
+      "拉特兰"
+    ],
+    "voice": "事情办完了，走吧。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "菲亚梅塔立绘待制作"
+    }
+  },
+  {
+    "id": "hoshiguma_arknights",
+    "name": "星熊",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Hoshiguma"
+    ],
+    "speech": "忙完了？走，找地方坐一会儿。",
+    "visual_dna": {
+      "signature": "绿色长发、金色眼睛、单角和脸颊伤痕，身形高挑结实。"
+    },
+    "traits": [
+      "绿色长发",
+      "单角",
+      "脸颊伤痕",
+      "高挑"
+    ],
+    "personality": [
+      "爽朗",
+      "沉稳",
+      "照顾同伴"
+    ],
+    "likes": [
+      "与朋友聚餐",
+      "摩托车",
+      "热闹的街市"
+    ],
+    "bg_story": "星熊来自东国，曾在龙门近卫局工作。她待人爽朗，处事可靠，在熟人面前也会露出轻松的一面。",
+    "identity": {
+      "role": "龙门近卫局成员",
+      "occupation": "警员",
+      "faction": "龙门近卫局",
+      "region": "东国",
+      "race": "鬼",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "绿发",
+      "鬼族",
+      "龙门"
+    ],
+    "voice": "这顿我请，下次换你。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "星熊立绘待制作"
+    }
+  },
+  {
+    "id": "horn_arknights",
+    "name": "号角",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Horn",
+      "丽塔·斯卡曼德罗斯"
+    ],
+    "speech": "今天没有紧急事务，可以慢慢来。",
+    "visual_dna": {
+      "signature": "金色长发、蓝眼和鲁珀耳朵，神情坚定。"
+    },
+    "traits": [
+      "金色长发",
+      "蓝眼",
+      "狼耳",
+      "沉稳"
+    ],
+    "personality": [
+      "坚定",
+      "克制",
+      "重视承诺"
+    ],
+    "likes": [
+      "整齐的花园",
+      "安静的茶点时间",
+      "认真写下的信"
+    ],
+    "bg_story": "号角是维多利亚出身的鲁珀，曾长期在军中任职。她重视同伴与责任，也珍惜难得的安宁时刻。",
+    "identity": {
+      "role": "维多利亚军人",
+      "occupation": "干员",
+      "faction": "罗德岛",
+      "region": "维多利亚",
+      "race": "鲁珀",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "金发",
+      "鲁珀",
+      "维多利亚"
+    ],
+    "voice": "这段时间，值得好好珍惜。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "号角立绘待制作"
+    }
+  },
+  {
+    "id": "blemishine_arknights",
+    "name": "瑕光",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Blemishine",
+      "玛莉娅·临光"
+    ],
+    "speech": "我再试一次，这次一定能修好！",
+    "visual_dna": {
+      "signature": "金色长发、金色眼睛与库兰塔耳朵，笑容明朗。"
+    },
+    "traits": [
+      "金色长发",
+      "金色眼睛",
+      "库兰塔耳朵",
+      "库兰塔尾"
+    ],
+    "personality": [
+      "热心",
+      "乐观",
+      "喜欢动手"
+    ],
+    "likes": [
+      "机械维修",
+      "与家人团聚",
+      "帮助朋友"
+    ],
+    "bg_story": "瑕光本名玛莉娅·临光，来自卡西米尔临光家族。她喜欢钻研机械，也愿意主动帮助遇到困难的人。",
+    "identity": {
+      "role": "临光家族成员",
+      "occupation": "机械爱好者、干员",
+      "faction": "罗德岛",
+      "region": "卡西米尔",
+      "race": "库兰塔",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "金发",
+      "库兰塔",
+      "机械"
+    ],
+    "voice": "别担心，我们一起想办法。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "瑕光立绘待制作"
+    }
+  },
+  {
+    "id": "entelechia_arknights",
+    "name": "隐德来希",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Entelechia"
+    ],
+    "speech": "你想知道的，我未必都会告诉你。",
+    "visual_dna": {
+      "signature": "黑色短发、红色眼睛、尖耳与萨卡兹角，衣着讲究。"
+    },
+    "traits": [
+      "黑色短发",
+      "红眼",
+      "尖耳",
+      "萨卡兹角"
+    ],
+    "personality": [
+      "机敏",
+      "善于观察",
+      "谈吐从容"
+    ],
+    "likes": [
+      "精致的衣饰",
+      "有趣的对话",
+      "观察他人"
+    ],
+    "bg_story": "隐德来希是卡兹戴尔情报组织“玫瑰河畔”的成员，曾与巴别塔合作。她以访客身份留在罗德岛，合作多以私人委托的形式进行。",
+    "identity": {
+      "role": "玫瑰河畔成员",
+      "occupation": "情报人员",
+      "faction": "玫瑰河畔",
+      "region": "卡兹戴尔",
+      "race": "萨卡兹",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "黑发",
+      "萨卡兹",
+      "玫瑰"
+    ],
+    "voice": "这个问题，留到下次再回答吧。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "隐德来希立绘待制作"
+    }
+  },
+  {
+    "id": "specter_arknights",
+    "name": "幽灵鲨",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Specter",
+      "劳伦缇娜"
+    ],
+    "speech": "海的声音，你听见了吗？",
+    "visual_dna": {
+      "signature": "灰白色长发、红色眼睛，常穿带灰色短披肩的深色衣裙。"
+    },
+    "traits": [
+      "灰白长发",
+      "红眼",
+      "灰色披肩"
+    ],
+    "personality": [
+      "言语富有诗意",
+      "情绪难以捉摸",
+      "珍惜熟悉的伙伴"
+    ],
+    "likes": [
+      "雕刻",
+      "海边的声音",
+      "熟悉的同伴"
+    ],
+    "bg_story": "幽灵鲨来自阿戈尔，在罗德岛接受治疗。她与深海猎人的过去密切相关，也曾以劳伦缇娜的名字生活。",
+    "identity": {
+      "role": "罗德岛干员",
+      "occupation": "干员",
+      "faction": "罗德岛",
+      "region": "阿戈尔",
+      "race": "未公开",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "白发",
+      "阿戈尔",
+      "深海"
+    ],
+    "voice": "别急，潮水还会再来的。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "幽灵鲨立绘待制作"
+    }
+  },
+  {
+    "id": "nightingale_arknights",
+    "name": "夜莺",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Nightingale",
+      "丽兹"
+    ],
+    "speech": "今天的阳光……很温暖。",
+    "visual_dna": {
+      "signature": "浅金色长发、蓝色眼睛与萨卡兹角，神情安静。"
+    },
+    "traits": [
+      "浅金长发",
+      "蓝眼",
+      "萨卡兹角"
+    ],
+    "personality": [
+      "温柔",
+      "安静",
+      "关心他人"
+    ],
+    "likes": [
+      "鸟鸣",
+      "温暖的阳光",
+      "和朋友安静相处"
+    ],
+    "bg_story": "夜莺是萨卡兹医疗干员，曾是感染者援助团体“使徒”的一员。她在罗德岛接受治疗，也为需要帮助的人提供医疗支持。",
+    "identity": {
+      "role": "罗德岛医疗干员",
+      "occupation": "医疗干员",
+      "faction": "罗德岛",
+      "region": "卡兹戴尔",
+      "race": "萨卡兹",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "金发",
+      "萨卡兹",
+      "医疗"
+    ],
+    "voice": "你也来听一听吗？",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "夜莺立绘待制作"
+    }
+  },
+  {
+    "id": "ptilopsis_arknights",
+    "name": "白面鸮",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Ptilopsis"
+    ],
+    "speech": "正在检索。请稍候。",
+    "visual_dna": {
+      "signature": "灰色头发、鸮类耳羽和橙黄色眼睛，表情平静。"
+    },
+    "traits": [
+      "灰发",
+      "鸮耳",
+      "橙黄色眼睛"
+    ],
+    "personality": [
+      "冷静",
+      "说话简洁",
+      "认真照顾同伴"
+    ],
+    "likes": [
+      "整理数据",
+      "阅读",
+      "规律的休息时间"
+    ],
+    "bg_story": "白面鸮曾是莱茵生命的数据维护专员，后来在罗德岛医疗部门工作。她说话常带有系统提示般的语气，也会关心身边人的状态。",
+    "identity": {
+      "role": "罗德岛医疗干员",
+      "occupation": "医疗数据维护",
+      "faction": "罗德岛",
+      "region": "哥伦比亚",
+      "race": "黎博利",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "灰发",
+      "黎博利",
+      "医疗"
+    ],
+    "voice": "记录完成。休息时间开始。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "白面鸮立绘待制作"
+    }
+  },
+  {
+    "id": "ceobe_arknights",
+    "name": "刻俄柏",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Ceobe",
+      "小刻"
+    ],
+    "speech": "今天有什么好吃的吗？",
+    "visual_dna": {
+      "signature": "棕色长发、红眼和佩洛耳朵、尾巴，笑容直率。"
+    },
+    "traits": [
+      "棕色长发",
+      "红眼",
+      "佩洛耳朵",
+      "佩洛尾"
+    ],
+    "personality": [
+      "直率",
+      "活泼",
+      "对吃的很有热情"
+    ],
+    "likes": [
+      "好吃的食物",
+      "和朋友一起玩",
+      "认识新东西"
+    ],
+    "bg_story": "刻俄柏来自玻利瓦尔，曾独自在各地流浪，后来受到罗德岛救助并成为干员。她对食物和新鲜事物总有许多好奇。",
+    "identity": {
+      "role": "罗德岛干员",
+      "occupation": "干员",
+      "faction": "罗德岛",
+      "region": "玻利瓦尔",
+      "race": "佩洛",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "棕发",
+      "佩洛",
+      "美食"
+    ],
+    "voice": "这个好吃！你也尝尝。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "刻俄柏立绘待制作"
+    }
+  },
+  {
+    "id": "mon3tr_arknights",
+    "name": "Mon3tr",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Mon3tr"
+    ],
+    "speech": "这个流程，我已经看过很多遍了。",
+    "visual_dna": {
+      "signature": "黑绿双色头发、绿色眼睛、猫形耳朵与晶体尾。"
+    },
+    "traits": [
+      "黑绿双色发",
+      "绿眼",
+      "猫形耳朵",
+      "晶体尾"
+    ],
+    "personality": [
+      "认真",
+      "表达直接",
+      "正在熟悉新的日常"
+    ],
+    "likes": [
+      "整理资料",
+      "观察周围的人",
+      "完成约定"
+    ],
+    "bg_story": "Mon3tr是罗德岛的特别顾问，在生命科学、医疗及工程等领域拥有丰富知识。作为罗德岛的一员，她也在重新熟悉与大家共同生活的日常。",
+    "identity": {
+      "role": "罗德岛特别顾问",
+      "occupation": "医疗与工程特别顾问",
+      "faction": "罗德岛",
+      "region": "罗德岛",
+      "race": "未公开",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "黑绿发",
+      "晶体尾",
+      "罗德岛"
+    ],
+    "voice": "我会记住这个步骤。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "Mon3tr立绘待制作"
+    }
+  },
+  {
+    "id": "angelina_arknights",
+    "name": "安洁莉娜",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Angelina",
+      "安心院安洁莉娜"
+    ],
+    "speech": "包裹送到了！接下来去哪里呢？",
+    "visual_dna": {
+      "signature": "棕色双马尾、红色眼睛和沃尔珀耳朵、尾巴，常穿红色外套。"
+    },
+    "traits": [
+      "棕色双马尾",
+      "红眼",
+      "狐耳",
+      "狐尾"
+    ],
+    "personality": [
+      "开朗",
+      "热心",
+      "做事认真"
+    ],
+    "likes": [
+      "送达包裹",
+      "和朋友聊天",
+      "街边的甜点"
+    ],
+    "bg_story": "安洁莉娜本名安心院安洁莉娜，来自叙拉古，曾从事信使工作。她作为实习干员在罗德岛提供后勤支持。",
+    "identity": {
+      "role": "罗德岛实习干员",
+      "occupation": "信使、实习干员",
+      "faction": "罗德岛",
+      "region": "叙拉古",
+      "race": "沃尔珀",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "棕发",
+      "沃尔珀",
+      "信使"
+    ],
+    "voice": "路上看到一家新店，等会儿一起去吧！",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "安洁莉娜立绘待制作"
+    }
+  },
+  {
+    "id": "reed_arknights",
+    "name": "焰影苇草",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Reed",
+      "Reed the Flame Shadow",
+      "苇草"
+    ],
+    "speech": "今天能这样安静地坐着，真好。",
+    "visual_dna": {
+      "signature": "金色长发、绿眼、德拉克角与尾尖的火焰，常披棕色斗篷。"
+    },
+    "traits": [
+      "金色长发",
+      "绿眼",
+      "龙角",
+      "火焰尾"
+    ],
+    "personality": [
+      "温柔",
+      "坚韧",
+      "关心他人"
+    ],
+    "likes": [
+      "照料植物",
+      "安静的阅读",
+      "与朋友相处"
+    ],
+    "bg_story": "苇草是来自维多利亚的德拉克。她与罗德岛保持联系，并以自己的方式帮助身处困境的塔拉人。",
+    "identity": {
+      "role": "罗德岛合作干员",
+      "occupation": "干员",
+      "faction": "深池",
+      "region": "维多利亚",
+      "race": "德拉克",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "金发",
+      "德拉克",
+      "焰影"
+    ],
+    "voice": "这朵花，明天应该就会开了。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "焰影苇草立绘待制作"
+    }
+  },
+  {
+    "id": "virtuosa_arknights",
+    "name": "塑心",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Virtuosa",
+      "阿尔图罗·吉亚洛"
+    ],
+    "speech": "听，旋律里还有一段你没有发现。",
+    "visual_dna": {
+      "signature": "黑色长发、灰色眼睛、破碎的暗色光环与黑色羽翼。"
+    },
+    "traits": [
+      "黑色长发",
+      "灰眼",
+      "破碎光环",
+      "黑色羽翼"
+    ],
+    "personality": [
+      "从容",
+      "善于观察",
+      "对情感与音乐着迷"
+    ],
+    "likes": [
+      "音乐",
+      "演奏乐器",
+      "倾听他人的故事"
+    ],
+    "bg_story": "阿尔图罗·吉亚洛是出身拉特兰的音乐家，以“塑心”之名暂留罗德岛。她游历多地，精通多种乐器，也对人的情感有独特的兴趣。",
+    "identity": {
+      "role": "音乐家、罗德岛干员",
+      "occupation": "音乐家",
+      "faction": "罗德岛",
+      "region": "拉特兰",
+      "race": "萨科塔",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "黑发",
+      "萨科塔",
+      "音乐"
+    ],
+    "voice": "这段旋律，愿意再听一次吗？",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "塑心立绘待制作"
+    }
+  },
+  {
+    "id": "swire_arknights",
+    "name": "诗怀雅",
+    "type": "popular",
+    "source": "Hypergryph《明日方舟 / Arknights》",
+    "alias": [
+      "Swire",
+      "碧翠克丝·施怀雅"
+    ],
+    "speech": "时间宝贵，想去哪里就快说吧。",
+    "visual_dna": {
+      "signature": "金色长发、绿色眼睛、虎耳与条纹尾巴，衣着精致。"
+    },
+    "traits": [
+      "金色长发",
+      "绿眼",
+      "虎耳",
+      "虎纹尾"
+    ],
+    "personality": [
+      "自信",
+      "直率",
+      "重视朋友"
+    ],
+    "likes": [
+      "精致的餐点",
+      "龙门街市",
+      "和朋友聚会"
+    ],
+    "bg_story": "诗怀雅是龙门近卫局高级警司，也以特别合作人员身份协助罗德岛。她出身施怀雅家族，对工作和朋友都有自己的坚持。",
+    "identity": {
+      "role": "龙门近卫局高级警司",
+      "occupation": "警司",
+      "faction": "龙门近卫局",
+      "region": "龙门",
+      "race": "菲林",
+      "classificationSource": "游戏内干员档案"
+    },
+    "tags": [
+      "金发",
+      "虎耳",
+      "龙门"
+    ],
+    "voice": "看在你这么有诚意的份上，我就答应了。",
+    "portrait": {
+      "image": "../assets/characters/portrait-pending.svg",
+      "alt": "诗怀雅立绘待制作"
+    }
   }
 ]
