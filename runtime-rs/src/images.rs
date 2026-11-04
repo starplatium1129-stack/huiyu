@@ -8,6 +8,7 @@ pub(crate) mod media_import;
 mod native;
 mod native_adapters;
 mod native_upscale;
+pub(crate) mod remote;
 mod requests;
 mod resources;
 mod resume;
@@ -37,20 +38,36 @@ pub use workflow::build as build_workflow;
 // Each image service owns its upload admission budget.
 
 pub struct Prepared {
-    backend: generation::Prepared,
+    backend: PreparedBackend,
     originals: Vec<inputs::Original>,
+}
+enum PreparedBackend {
+    Local(generation::Prepared),
+    Remote {
+        input: Value,
+        raw: Value,
+        family: String,
+        _permit: tokio::sync::OwnedSemaphorePermit,
+    },
 }
 impl Prepared {
     pub(crate) fn input(&self) -> &Value {
-        &self.backend.input
+        match &self.backend {
+            PreparedBackend::Local(value) => &value.input,
+            PreparedBackend::Remote { input, .. } => input,
+        }
     }
     pub(crate) fn provider(&self) -> &str {
-        &self.backend.provider
+        match &self.backend {
+            PreparedBackend::Local(value) => &value.provider,
+            PreparedBackend::Remote { .. } => "native",
+        }
     }
 }
 pub struct Service {
     backend: Arc<generation::Service>,
     native: bool,
+    remote: Option<remote::Client>,
     config: Config,
     shutdown: CancellationToken,
     uploads: TaskTracker,
@@ -82,6 +99,9 @@ impl Service {
         self.backend.native_chat_handoff().await
     }
     pub(crate) fn provider_identity(&self, unbound_epoch: &str) -> Value {
+        if let Some(remote) = &self.remote {
+            return remote.identity();
+        }
         self.backend.provider_identity(unbound_epoch)
     }
     pub fn new(
@@ -96,7 +116,13 @@ impl Service {
             transport,
             shutdown.clone(),
         )?);
-        let native = backend.native_enabled();
+        let settings = backend.native_settings()?;
+        let native = backend.native_enabled() || settings.engine == "remote";
+        let remote = if settings.engine == "remote" {
+            Some(remote::Client::new(&settings)?)
+        } else {
+            None
+        };
         let requests = requests::Requests::new(
             config.runtime_root.join("jobs/image-requests"),
             "IMAGE",
@@ -105,6 +131,7 @@ impl Service {
         Ok(Self {
             backend,
             native,
+            remote,
             config,
             shutdown,
             uploads: TaskTracker::new(),
@@ -169,7 +196,21 @@ impl Service {
         }
         let (prepared, originals) = if self.native {
             let input = native::normalize(&raw, input)?;
-            drop(raw);
+            if let Some(remote) = &self.remote {
+                remote::Client::check_family(family)?;
+                let permit = remote.reserve(&cancel)?;
+                let originals =
+                    inputs::capture(&self.config, &input, direct_local, owner, &cancel).await?;
+                return Ok(Prepared {
+                    backend: PreparedBackend::Remote {
+                        input,
+                        raw,
+                        family: family.into(),
+                        _permit: permit,
+                    },
+                    originals,
+                });
+            }
             // Admission covers original-image buffers and model preparation,
             // not only jobs already queued for the resident worker.
             let permit = self.backend.reserve_native(&cancel)?;
@@ -188,7 +229,7 @@ impl Service {
             (prepared, originals)
         };
         Ok(Prepared {
-            backend: prepared,
+            backend: PreparedBackend::Local(prepared),
             originals,
         })
     }
@@ -208,12 +249,43 @@ impl Service {
             &self.shutdown,
         )
         .await?;
-        self.backend
-            .clone()
-            .submit(prepared.backend, owner, hooks)
-            .await
+        self.submit_protected(prepared, owner, hooks).await
+    }
+    async fn submit_protected(
+        self: Arc<Self>,
+        prepared: Prepared,
+        owner: String,
+        hooks: Option<Arc<dyn ExecutionHooks>>,
+    ) -> Result<Value> {
+        match prepared.backend {
+            PreparedBackend::Local(backend) => {
+                self.backend.clone().submit(backend, owner, hooks).await
+            }
+            PreparedBackend::Remote {
+                input,
+                raw,
+                family,
+                _permit,
+            } => {
+                let remote = self.remote.as_ref().ok_or_else(closed)?;
+                remote
+                    .submit(
+                        raw,
+                        &input,
+                        &family,
+                        &prepared.originals,
+                        &owner,
+                        hooks.as_deref(),
+                        &self.shutdown,
+                    )
+                    .await
+            }
+        }
     }
     pub async fn get_status(&self, family: &str) -> Result<Value> {
+        if let Some(remote) = &self.remote {
+            return remote.status(family, &self.shutdown).await;
+        }
         if matches!(family, "qwen-image" | "moss-image" | "manga-screen") && !self.native {
             return Err(ApiError::new(
                 409,
@@ -240,14 +312,23 @@ impl Service {
         }
     }
     pub async fn get_job(&self, id: &str, owner: &str, family: &str) -> Result<Value> {
+        if let Some(remote) = &self.remote {
+            return remote.job(id, owner, family, &self.shutdown).await;
+        }
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.get_job(id, owner).await
     }
     pub async fn query(&self, id: &str, owner: &str, family: &str) -> Result<Observation> {
+        if let Some(remote) = &self.remote {
+            return remote.observe(id, owner, family, &self.shutdown).await;
+        }
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.query(id, owner).await
     }
     pub async fn result(&self, id: &str, owner: &str, family: &str) -> Result<Output> {
+        if let Some(remote) = &self.remote {
+            return remote.result(id, owner, family, &self.shutdown).await;
+        }
         self.backend.family_allowed(id, owner, family).await?;
         let job = self.backend.get_job(id, owner).await?;
         if job["status"] != "succeeded" {
@@ -260,6 +341,9 @@ impl Service {
         self.backend.result(id, owner).await
     }
     pub async fn cancel(&self, id: &str, owner: &str, family: &str) -> Result<Value> {
+        if let Some(remote) = &self.remote {
+            return remote.cancel(id, owner, family, &self.shutdown).await;
+        }
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.cancel(id, owner).await
     }

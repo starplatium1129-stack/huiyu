@@ -5,7 +5,7 @@ use axum::{
 use hmac::{Hmac, Mac};
 use sha2::Sha256;
 
-fn matches(expected: &str, supplied: &str) -> bool {
+pub(crate) fn matches(expected: &str, supplied: &str) -> bool {
     if expected.is_empty() || expected.len() != supplied.len() {
         return false;
     }

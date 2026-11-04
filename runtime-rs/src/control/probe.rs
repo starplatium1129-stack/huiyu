@@ -158,9 +158,17 @@ impl ControlService {
         result["llama"] = llama;
         let inference = self.active_inference().ok();
         result["imageProvider"] = json!(inference.as_ref().map(|settings| &settings.engine));
+        let images = { self.images.read().unwrap().upgrade() };
         result["nativeRuntimeFilesReady"] = json!(match inference {
             Some(settings) if settings.engine == "native" =>
                 settings.validate_image_files().await.is_ok(),
+            Some(settings) if settings.engine == "remote" => match images {
+                Some(images) => images
+                    .get_status("krea2")
+                    .await
+                    .is_ok_and(|status| status["online"] == true),
+                None => false,
+            },
             _ => false,
         });
         let comfy_owned = self.comfy_owned().await;

@@ -53,8 +53,12 @@ impl Service {
         family: &str,
     ) -> Result<Value> {
         match self.requests.status(key, owner, family).await? {
-            Some(receipt) => self.receipt_value(receipt).await,
-            None => Ok(json!({"requestKey":key,"job":null})),
+            Some(receipt) => {
+                let mut value = self.receipt_value(receipt).await?;
+                value["found"] = json!(true);
+                Ok(value)
+            }
+            None => Ok(json!({"requestKey":key,"job":null,"found":false})),
         }
     }
     pub(super) async fn accept_request(
@@ -128,9 +132,8 @@ impl Service {
                             cancel,
                         });
                         service
-                            .backend
                             .clone()
-                            .submit(prepared.backend, owner, Some(hooks))
+                            .submit_protected(prepared, owner, Some(hooks))
                             .await
                     }
                     .await;

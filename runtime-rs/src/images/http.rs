@@ -217,9 +217,8 @@ async fn create(
         let mut value = json!({"job":null});
         value["job"] = http
             .service
-            .backend
             .clone()
-            .submit(prepared.backend, owner, Some(observation))
+            .submit_protected(prepared, owner, Some(observation))
             .await?;
         Ok(value)
     }

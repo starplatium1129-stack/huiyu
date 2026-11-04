@@ -26,6 +26,33 @@
         <p v-if="snapshot.restartRequired" role="status">新设置将在重启后生效。</p>
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
         <p v-if="blocked" role="status">上方的模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
+        <details class="inference-remote">
+          <StudioDisclosureSummary><span>绘图引擎与远程连接<small class="inference-disclosure-hint">使用另一台绘遇的显卡，或开放本机绘图</small></span></StudioDisclosureSummary>
+          <form class="inference-form" data-disclosure-content @submit.prevent="saveSettings">
+            <div class="inference-field">
+              <label for="inference-engine">绘图引擎</label>
+              <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
+            </div>
+            <div v-if="draft.engine === 'remote'" class="inference-field">
+              <label for="inference-remote-url">远程绘遇地址</label>
+              <input id="inference-remote-url" v-model.trim="draft.remoteUrl" class="input input-mono" type="url" placeholder="http://100.x.x.x:3211" autocomplete="off" spellcheck="false" :disabled="blocked || saving || loading || setupBusy" />
+            </div>
+            <label v-if="draft.engine === 'native'" class="inference-remote-toggle"><input v-model="draft.remoteServe" type="checkbox" :disabled="blocked || saving || loading || setupBusy" />允许其他绘遇连接本机绘图</label>
+            <div v-if="draft.engine === 'native' && draft.remoteServe" class="inference-field">
+              <label for="inference-remote-port">本机监听端口</label>
+              <input id="inference-remote-port" v-model.number="draft.remotePort" class="input input-mono" type="number" min="1" max="65535" :disabled="blocked || saving || loading || setupBusy" />
+            </div>
+            <div v-if="draft.engine === 'remote' || draft.remoteServe" class="inference-field inference-paths">
+              <label for="inference-remote-key">连接密钥</label>
+              <input id="inference-remote-key" v-model.trim="draft.remoteKey" class="input input-mono" :type="showRemoteKey ? 'text' : 'password'" autocomplete="off" spellcheck="false" aria-describedby="inference-remote-key-hint" :disabled="blocked || saving || loading || setupBusy" />
+              <small id="inference-remote-key-hint">两端使用相同的 64 位密钥。密钥保存在本机设置；请通过 Tailscale 等加密私网连接。</small>
+              <div class="inference-actions"><button class="btn btn-quiet btn-sm" type="button" @click="showRemoteKey = !showRemoteKey">{{ showRemoteKey ? '隐藏密钥' : '显示密钥' }}</button><button v-if="draft.remoteServe" class="btn btn-quiet btn-sm" type="button" :disabled="blocked || saving || loading || setupBusy" @click="generateRemoteKey">生成密钥</button></div>
+            </div>
+            <p v-if="snapshot.active.remoteServe" class="inference-paths" role="status">{{ snapshot.remoteListening ? `本机远程绘图端口 ${snapshot.active.remotePort} 已就绪，可通过 Tailscale 私网转发。` : '远程绘图未能监听，请检查端口是否被占用。' }}</p>
+            <p v-if="draft.engine === 'remote'" class="inference-paths">模型和 LoRA 使用远端的资源；图片结果保存到本机。漫画处理需切回本机原生引擎，视频使用单独的引擎设置。</p>
+            <div class="inference-actions"><button class="btn btn-primary btn-sm" type="submit" :disabled="blocked || saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button><span v-if="dirty">保存后重启绘遇生效</span></div>
+          </form>
+        </details>
         <AsyncPanel :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="blocked || loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @working="setupWorking = $event" @activated="activated" /></AsyncPanel>
         <details class="inference-advanced" :open="advancedOpen" @toggle="advancedOpen = ($event.target as HTMLDetailsElement).open">
           <StudioDisclosureSummary><span>复用已有资源与高级设置<small class="inference-disclosure-hint">路径配置与性能选项</small></span></StudioDisclosureSummary>
@@ -48,10 +75,6 @@
           </details>
         </div>
         <form class="inference-form" @submit.prevent="saveSettings">
-          <div class="inference-field">
-            <label for="inference-engine">绘图引擎</label>
-            <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
-          </div>
           <div class="inference-field">
             <label for="inference-acceleration">Anima 加速模式</label>
             <StudioSelect id="inference-acceleration" v-model="draft.acceleration" label="Anima 加速模式" :options="accelerationOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('acceleration')" />
@@ -164,8 +187,9 @@ async function openVideoPaths() {
   field?.scrollIntoView({ block: 'center', behavior: 'instant' })
   field?.focus({ preventScroll: true })
 }
+const localSettingsDirty = computed(() => !!snapshot.value && (['acceleration', 'memoryPolicy', 'adapterMemoryPolicy', 'modelsRoot', 'lorasRoot', 'python', 'adapterPython', 'worker'] as const).some(key => draft[key] !== snapshot.value!.configured[key]))
 // Request state may reveal an issue, but must not close a surface the user opened.
-watch([dirty, advancedPathsOpen], ([changed, pathsOpen]) => { if (changed || pathsOpen) advancedOpen.value = true })
+watch([localSettingsDirty, advancedPathsOpen], ([changed, pathsOpen]) => { if (changed || pathsOpen) advancedOpen.value = true })
 watch([() => diagnostics.value?.configuration === 'invalid', probeError], ([invalid, failure]) => {
   if (invalid || failure) diagnosticsOpen.value = true
 })
@@ -180,10 +204,17 @@ function fillPreparedPaths(paths: PreparedInferencePaths) {
   advancedOpen.value = true
   notice.value = '已填入路径草稿。请确认引擎选择后保存，再重启运行时；当前运行与已保存配置未改变。'
 }
-const engineOptions = [{ value: 'native', label: '绘遇原生引擎' }, { value: 'comfy', label: 'ComfyUI（兼容已有环境）' }]
+const showRemoteKey = ref(false)
+function generateRemoteKey() {
+  const bytes = crypto.getRandomValues(new Uint8Array(32))
+  draft.remoteKey = Array.from(bytes, byte => byte.toString(16).padStart(2, '0')).join('')
+  showRemoteKey.value = true
+}
+watch(() => draft.engine, engine => { if (engine !== 'native') draft.remoteServe = false })
+const engineOptions = [{ value: 'native', label: '本机原生引擎' }, { value: 'remote', label: '远程绘遇原生引擎' }, { value: 'comfy', label: 'ComfyUI（兼容已有环境）' }]
 const accelerationOptions = [{ value: 'native', label: '原生计算' }, { value: 'sage', label: 'SageAttention' }, { value: 'compiled-sage', label: '编译 + SageAttention' }, { value: 'compiled-fused-sage', label: '编译 + SageAttention + LoRA 融合' }]
 const memoryOptions = [{ value: 'resident', label: '模型常驻显卡（连续生成优先）' }, { value: 'offload', label: '分阶段加载（减少显存占用）' }]
-const engineLabel = (engine: string) => engine === 'native' ? '原生' : 'ComfyUI'
+const engineLabel = (engine: string) => engine === 'native' ? '本机原生' : engine === 'remote' ? '远程原生' : 'ComfyUI'
 const pathFields = [
   { key: 'modelsRoot', label: '模型根目录', hint: '可以沿用已有模型根目录，不搬移文件。目录格式：模型根目录 / 模型 ID / 完整 Diffusers 组件；不是原始单文件权重目录。' },
   { key: 'lorasRoot', label: 'LoRA 目录', hint: '可以直接使用现有 LoRA 目录（包括 ComfyUI），不复制或搬移；兼容性由实际加载校验。' },
@@ -202,6 +233,8 @@ onMounted(async () => { await refresh(); emit('ready') })
 .inference-video-help { margin-top:var(--s-4); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); }
 .inference-video-help h3 { margin:0; }
 .inference-advanced { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-2); }
+.inference-remote { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-2); }
+.inference-remote-toggle { display:flex; align-items:center; gap:var(--s-2); color:var(--text-primary); }
 .inference-actions { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--s-3); }
 .inference-settings p, .inference-settings li { color: var(--text-secondary); line-height: var(--lh-loose); overflow-wrap: anywhere; }
 .inference-form, .inference-path-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }

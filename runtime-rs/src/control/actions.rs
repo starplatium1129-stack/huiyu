@@ -294,11 +294,24 @@ impl ControlService {
         Ok(())
     }
     pub(super) fn launch(self: &Arc<Self>, kind: String) -> Result<Value> {
-        let native_drawing = kind == "mode-draw" && self.active_inference()?.engine == "native";
+        let remote_drawing = kind == "mode-draw" && self.active_inference()?.engine == "remote";
+        let native_drawing = kind == "mode-draw"
+            && matches!(
+                self.active_inference()?.engine.as_str(),
+                "native" | "remote"
+            );
         let stages = if kind == "mode-draw" {
             vec![
-                "正在停止语音服务",
-                "正在卸载聊天模型",
+                if remote_drawing {
+                    "正在连接远程绘图"
+                } else {
+                    "正在停止语音服务"
+                },
+                if remote_drawing {
+                    "正在读取远程模型"
+                } else {
+                    "正在卸载聊天模型"
+                },
                 if native_drawing {
                     "正在准备独立绘图"
                 } else {
@@ -333,6 +346,16 @@ impl ControlService {
                     "llama-stop" => service.stop_llama().await,
                     "ollama-unload" => service.unload().await,
                     "mode-draw" => {
+                        if remote_drawing {
+                            let images = service.images.read().unwrap().upgrade().ok_or_else(|| ApiError::new(503, "REMOTE_UNAVAILABLE", "远程绘图服务未接入"))?;
+                            let status = images.get_status("krea2").await?;
+                            if status["online"] != true {
+                                return Err(ApiError::new(503, "REMOTE_MODEL_UNAVAILABLE", "远程绘图已连接，但没有可用的原生图像模型"));
+                            }
+                            service.stage(&op, 3);
+                            service.log("远程原生绘图已连接");
+                            return Ok(());
+                        }
                         if native_drawing {
                             service.active_inference()?.validate_image_files().await?;
                         }

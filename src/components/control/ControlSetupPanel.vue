@@ -26,7 +26,7 @@ const route = useRoute()
 const { status } = useControlContext()
 const loadLocalSetup = () => import('@/components/LocalSetupPanel.vue')
 const nativePanel = ref<HTMLElement | null>(null)
-const mode = ref<'native' | 'comfy'>(status.imageProvider.value === 'native' ? 'native' : 'comfy')
+const mode = ref<'native' | 'comfy'>(status.imageProvider.value === 'native' || status.imageProvider.value === 'remote' ? 'native' : 'comfy')
 const nativeVisited = ref(false), localVisited = ref(false), chosen = ref(false)
 const nativeBusy = ref(false), localBusy = ref(false)
 const nativeRevision = ref(0), localRevision = ref(0)
@@ -34,14 +34,14 @@ const nativeReady = ref(false)
 const localLink = computed(() => route.hash === '#setup-chat-options' || route.hash === '#control-comfy')
 const nativeLink = computed(() => ['#control-inference', '#control-image-resources'].includes(route.hash)
   || ['', '#control-setup'].includes(route.hash) && (route.query.resource || route.query.engine === 'native'
-    || ['anima', 'krea2'].includes(String(route.query.engine)) && status.imageProvider.value === 'native'
+    || ['anima', 'krea2'].includes(String(route.query.engine)) && (status.imageProvider.value === 'native' || status.imageProvider.value === 'remote')
     || /^(anima-miaomiao-v1\.6|anima-miaomiao-realskin-2\.9b-v1\.0|anima-base-v1\.0|krea2|qwen-image|moss-miaomiao)/.test(String(route.query.model ?? ''))))
 function choose(value: 'native' | 'comfy') { chosen.value = true; mode.value = value }
 watch(mode, value => { if (value === 'native') nativeVisited.value = true; else localVisited.value = true }, { immediate: true })
 watch([() => route.fullPath, status.imageProvider, status.statusLoaded], () => {
   if (nativeLink.value) mode.value = 'native'
   else if (localLink.value) mode.value = 'comfy'
-  else if (!chosen.value && status.statusLoaded.value) mode.value = status.imageProvider.value === 'native' ? 'native' : 'comfy'
+  else if (!chosen.value && status.statusLoaded.value) mode.value = status.imageProvider.value === 'native' || status.imageProvider.value === 'remote' ? 'native' : 'comfy'
 }, { immediate: true })
 watch([() => route.fullPath, nativeLink, nativeReady], async () => {
   if (route.path !== '/control' || !nativeLink.value || !nativeReady.value) return

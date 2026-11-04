@@ -2,7 +2,7 @@ import { apiClient, type ApiResponseObject } from './client.ts'
 import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 
 export interface InferenceSettings {
-  engine: 'comfy' | 'native'
+  engine: 'comfy' | 'native' | 'remote'
   acceleration: 'native' | 'sage' | 'compiled-sage' | 'compiled-fused-sage'
   memoryPolicy: 'resident' | 'offload'
   adapterMemoryPolicy: 'resident' | 'offload'
@@ -11,6 +11,10 @@ export interface InferenceSettings {
   python: string
   adapterPython?: string | null
   worker: string
+  remoteUrl: string
+  remoteKey: string
+  remoteServe: boolean
+  remotePort: number
 }
 export interface InferenceSettingsResponse {
   ok: true
@@ -18,6 +22,7 @@ export interface InferenceSettingsResponse {
   configured: InferenceSettings
   restartRequired: boolean
   environmentOverrides: string[]
+  remoteListening: boolean
 }
 export interface InferenceDiagnostics {
   basis: 'configured'
@@ -51,19 +56,21 @@ export interface InferenceSettingsApi {
   getStatus(signal?: AbortSignal): Promise<InferenceStatusResponse>
   save(settings: InferenceSettings, signal?: AbortSignal): Promise<InferenceSettingsResponse>
 }
-export const inferenceSettingKeys = ['engine', 'acceleration', 'memoryPolicy', 'adapterMemoryPolicy', 'modelsRoot', 'lorasRoot', 'python', 'adapterPython', 'worker'] as const
+export const inferenceSettingKeys = ['engine', 'acceleration', 'memoryPolicy', 'adapterMemoryPolicy', 'modelsRoot', 'lorasRoot', 'python', 'adapterPython', 'worker', 'remoteUrl', 'remoteKey', 'remoteServe', 'remotePort'] as const
 const object = (value: unknown): value is ApiResponseObject => typeof value === 'object' && value !== null && !Array.isArray(value)
 function settings(value: unknown): boolean {
-  return object(value) && (value.engine === 'comfy' || value.engine === 'native')
+  return object(value) && (value.engine === 'comfy' || value.engine === 'native' || value.engine === 'remote')
     && typeof value.acceleration === 'string' && ['native', 'sage', 'compiled-sage', 'compiled-fused-sage'].includes(value.acceleration)
     && (value.memoryPolicy === 'resident' || value.memoryPolicy === 'offload')
     && (value.adapterMemoryPolicy === 'resident' || value.adapterMemoryPolicy === 'offload')
     && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof value[key] === 'string')
     && (value.adapterPython == null || typeof value.adapterPython === 'string')
+    && typeof value.remoteUrl === 'string' && typeof value.remoteKey === 'string'
+    && typeof value.remoteServe === 'boolean' && Number.isInteger(value.remotePort)
 }
 function response(value: ApiResponseObject): boolean {
   return value.ok === true && settings(value.active) && settings(value.configured)
-    && typeof value.restartRequired === 'boolean' && Array.isArray(value.environmentOverrides)
+    && typeof value.restartRequired === 'boolean' && typeof value.remoteListening === 'boolean' && Array.isArray(value.environmentOverrides)
     && value.environmentOverrides.every(key => typeof key === 'string')
 }
 function status(value: ApiResponseObject): boolean {

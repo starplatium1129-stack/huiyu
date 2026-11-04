@@ -41,6 +41,11 @@ impl ControlService {
             let mut target = serde_json::to_value(&suggested)?;
             target["videoEngine"] = json!(configured.video_engine());
             let saved = serde_json::to_value(&configured)?;
+            for key in ["remoteUrl", "remoteKey", "remoteServe", "remotePort"] {
+                target[key] = saved[key].clone();
+            }
+            // Reusing local files also switches away from a remote client; a
+            // server flag is valid only when the selected engine is local.
             // Existing settings and environment overrides have precedence. A
             // discovery refresh must not replace paths deliberately selected by a user.
             for key in SAVED_FIELDS {

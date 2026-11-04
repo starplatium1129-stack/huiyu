@@ -21,7 +21,7 @@ const aliases: Record<string, string> = {
   'control-service-comfy': 'control-services', 'control-service-llama': 'control-services',
   'control-service-voice': 'control-services', 'control-service-ollama': 'control-services',
 }
-export function useControlNavigation(imageProvider: Ref<'native' | 'comfy' | null | undefined>) {
+export function useControlNavigation(imageProvider: Ref<'native' | 'remote' | 'comfy' | null | undefined>) {
   const route = useRoute()
   const activeSection = computed(() => {
     const id = route.hash.slice(1) || (typeof route.query.section === 'string' ? route.query.section : '')

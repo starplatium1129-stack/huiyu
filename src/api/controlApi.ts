@@ -85,7 +85,7 @@ function isControlStatus(value: ApiResponseObject): boolean {
     && typeof value.running === 'boolean'
     && typeof value.sdOnline === 'boolean'
     && typeof value.comfyOnline === 'boolean'
-    && (value.imageProvider === undefined || value.imageProvider === null || value.imageProvider === 'comfy' || value.imageProvider === 'native')
+    && (value.imageProvider === undefined || value.imageProvider === null || value.imageProvider === 'comfy' || value.imageProvider === 'native' || value.imageProvider === 'remote')
     && (value.nativeRuntimeFilesReady === undefined || typeof value.nativeRuntimeFilesReady === 'boolean')
     && typeof value.ttsOnline === 'boolean'
     && typeof value.ollamaOnline === 'boolean'

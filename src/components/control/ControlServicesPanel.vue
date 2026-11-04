@@ -38,7 +38,7 @@
         <div class="mode-grid">
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('draw')">
             <span class="mode-title"><ArchiveIcon name="spark" /> 绘图优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
-            <span class="mode-desc">{{ imageProvider === 'native' ? '释放聊天与语音显存' : '释放显存，启动 ComfyUI' }}</span>
+            <span class="mode-desc">{{ imageProvider === 'remote' ? '连接远程原生绘图' : imageProvider === 'native' ? '释放聊天与语音显存' : '释放显存，启动 ComfyUI' }}</span>
           </button>
           <button class="mode-card" type="button" :disabled="!statusUsable || opBusy || modeBusy" @click="switchMode('chat')">
             <span class="mode-title"><ArchiveIcon name="coffee" /> 聊天与语音优先<ArchiveIcon class="mode-arrow" name="chevron-down" /></span>
@@ -49,9 +49,9 @@
         <ToggleSwitch v-if="ttsEngine !== 'gpt-sovits-native'" v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
           <span>进入控制面板时启动语音<span class="autostart-hint">显存不足建议关闭</span></span>
         </ToggleSwitch>
-        <p v-if="(imageProvider !== 'native' && !scripts.comfy) || (ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart)" class="script-hint">
+        <p v-if="(imageProvider === 'comfy' && !scripts.comfy) || (ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart)" class="script-hint">
           未检测到快捷启停脚本（服务仍可手动运行后连接）：
-          <span v-if="imageProvider !== 'native' && !scripts.comfy">ComfyUI 脚本 </span>
+          <span v-if="imageProvider === 'comfy' && !scripts.comfy">ComfyUI 脚本 </span>
           <span v-if="ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart">语音启动脚本 </span>
           <span v-if="ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStop">语音停止脚本 </span>
         </p>
@@ -182,7 +182,7 @@ const requestedEngineLabel = computed(() => ({ sd: 'SD 绘图', anima: 'Anima �
 const serviceCards = computed<Array<{ key: ControlService; name: string; icon: ArchiveIconName; online: boolean; detail: string }>>(() => [
   ...(requestedService.value === 'webui' || sdOnline.value ? [{ key: 'webui' as const, name: 'SD WebUI', icon: 'model' as const, online: sdOnline.value, detail: '兼容已有 SD 绘图环境' }] : []),
   { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载' },
-  { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `${imageProvider.value === 'native' ? '兼容引擎 · 视频' : 'Anima · Krea 2 · 视频'}${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
+  { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `${imageProvider.value !== 'comfy' ? '兼容引擎 · 视频' : 'Anima · Krea 2 · 视频'}${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
   { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '自动恢复中…' : `${voiceConfiguredCount.value} / 2 声线已配置` },
   { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载' },
 ])

@@ -79,12 +79,16 @@ impl ControlService {
         {
             // Saved paths belong to the previous workspace. Keep those user files
             // and saved data, but do not advertise them as resources of this one.
-            let engine = value["engine"].as_str().unwrap_or("native").to_owned();
-            let video_engine = value["videoEngine"].as_str().unwrap_or(&engine).to_owned();
+            let selected = Settings::deserialize(value)
+                .map_err(|_| ApiError::invalid("已保存的推理配置无效"))?;
             drop(saved);
             let mut current = Settings::discovered(&self.config.ai_workspace_root).0;
-            current.engine = engine;
-            current.video_engine = Some(video_engine);
+            current.video_engine = Some(selected.video_engine().to_owned());
+            current.engine = selected.engine;
+            current.remote_url = selected.remote_url;
+            current.remote_key = selected.remote_key;
+            current.remote_serve = selected.remote_serve;
+            current.remote_port = selected.remote_port;
             current.environment_overrides = active.environment_overrides.clone();
             return Ok(current);
         }
@@ -111,7 +115,8 @@ impl ControlService {
         let current = serde_json::to_value(active)?;
         let target = serde_json::to_value(&configured)?;
         let value = json!({"ok":true,"restartRequired":current != target,"active":current,
-            "configured":target,"environmentOverrides":active.environment_overrides});
+            "configured":target,"environmentOverrides":active.environment_overrides,
+            "remoteListening":crate::images::remote::listening()});
         Ok((value, configured))
     }
     async fn save_inference(&self, configured: Settings) -> Result<Value> {
@@ -155,8 +160,14 @@ async fn save(
             );
         }
         if !object.contains_key("adapterPython") {
-            if let Some(python) = configured.adapter_python {
+            if let Some(python) = &configured.adapter_python {
                 object.insert("adapterPython".into(), json!(python));
+            }
+        }
+        let previous = serde_json::to_value(&configured)?;
+        for key in ["remoteUrl", "remoteKey", "remoteServe", "remotePort"] {
+            if !object.contains_key(key) {
+                object.insert(key.into(), previous[key].clone());
             }
         }
     }

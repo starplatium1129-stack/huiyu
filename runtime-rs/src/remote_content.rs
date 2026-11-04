@@ -1,5 +1,6 @@
 mod access;
 mod auth;
+pub(crate) use auth::matches as token_matches;
 pub use access::RemoteAccess;
 mod paths;
 mod precompressed;

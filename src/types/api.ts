@@ -72,7 +72,7 @@ export interface ControlStatus {
   error?: string
   sdOnline: boolean
   comfyOnline: boolean
-  imageProvider?: 'comfy' | 'native' | null
+  imageProvider?: 'comfy' | 'native' | 'remote' | null
   /** 仅核对独立 Python/worker 文件，不代表依赖、模型或 CUDA 已验证。 */
   nativeRuntimeFilesReady?: boolean
   ttsOnline: boolean

@@ -202,6 +202,7 @@ fn redact_config(s: &ControlService, value: &Value) -> Value {
                             "password",
                             "credential",
                             "apikey",
+                            "remotekey",
                             "api_key",
                             "authorization",
                             "auth",

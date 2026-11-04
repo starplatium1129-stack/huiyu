@@ -24,11 +24,22 @@ pub(crate) struct Settings {
     pub worker: PathBuf,
     pub models_root: PathBuf,
     pub loras_root: PathBuf,
+    #[serde(default)]
+    pub remote_url: String,
+    #[serde(default)]
+    pub remote_key: String,
+    #[serde(default)]
+    pub remote_serve: bool,
+    #[serde(default = "default_remote_port")]
+    pub remote_port: u16,
     #[serde(skip)]
     pub environment_overrides: Vec<String>,
 }
 fn default_acceleration() -> String {
     "native".into()
+}
+fn default_remote_port() -> u16 {
+    3211
 }
 fn default_memory_policy() -> String {
     "resident".into()
@@ -73,6 +84,10 @@ impl Settings {
                 worker,
                 models_root,
                 loras_root,
+                remote_url: String::new(),
+                remote_key: String::new(),
+                remote_serve: false,
+                remote_port: default_remote_port(),
                 environment_overrides: Vec::new(),
             },
             receipt_path,
@@ -80,8 +95,36 @@ impl Settings {
     }
 
     pub(crate) fn validate(&self) -> Result<()> {
-        if !matches!(self.engine.as_str(), "comfy" | "native") {
-            return Err(ApiError::invalid("推理引擎仅支持 comfy 或 native"));
+        if !matches!(self.engine.as_str(), "comfy" | "native" | "remote") {
+            return Err(ApiError::invalid("推理引擎无效"));
+        }
+        if self.remote_serve && self.engine != "native" {
+            return Err(ApiError::invalid("开放远程绘图时须选择本机原生引擎"));
+        }
+        if (self.remote_serve || self.engine == "remote")
+            && (self.remote_key.len() != 64
+                || !self.remote_key.bytes().all(|b| b.is_ascii_hexdigit()))
+        {
+            return Err(ApiError::invalid("远程连接密钥须为 64 位十六进制字符"));
+        }
+        if self.remote_serve && self.remote_port == 0 {
+            return Err(ApiError::invalid("远程绘图端口无效"));
+        }
+        if self.engine == "remote" {
+            let url = url::Url::parse(&self.remote_url)
+                .map_err(|_| ApiError::invalid("远程绘图地址无效"))?;
+            if !matches!(url.scheme(), "http" | "https")
+                || url.host_str().is_none()
+                || !url.username().is_empty()
+                || url.password().is_some()
+                || url.path() != "/"
+                || url.query().is_some()
+                || url.fragment().is_some()
+            {
+                return Err(ApiError::invalid(
+                    "远程绘图地址须为不含路径或凭据的 HTTP(S) 地址",
+                ));
+            }
         }
         if !matches!(self.video_engine(), "comfy" | "native") {
             return Err(ApiError::invalid("视频推理引擎仅支持 comfy 或 native"));
@@ -117,7 +160,13 @@ impl Settings {
         Ok(())
     }
     pub(crate) fn video_engine(&self) -> &str {
-        self.video_engine.as_deref().unwrap_or(&self.engine)
+        self.video_engine
+            .as_deref()
+            .unwrap_or(if self.engine == "remote" {
+                "comfy"
+            } else {
+                &self.engine
+            })
     }
     pub(crate) async fn validate_files(&self) -> Result<()> {
         let settings = self.clone();
@@ -223,6 +272,10 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
                 serde_json::to_value(Settings::discovered(&config.ai_workspace_root).0)?;
             value["videoEngine"] = json!(settings.video_engine());
             value["engine"] = json!(settings.engine);
+            value["remoteUrl"] = json!(settings.remote_url);
+            value["remoteKey"] = json!(settings.remote_key);
+            value["remoteServe"] = json!(settings.remote_serve);
+            value["remotePort"] = json!(settings.remote_port);
             value
         } else {
             serde_json::to_value(settings)?

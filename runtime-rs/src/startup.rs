@@ -156,6 +156,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         voice.clone(),
     ));
     let app = crate::router(state.clone());
+    let remote_server = crate::images::remote::start(state.clone()).await;
     println!(
         "{}",
         serde_json::json!({"event":"ready","origin":state.config.gateway_origin,"runtime":"rust","candidate":true})
@@ -178,6 +179,16 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         host.drain().await;
     })
     .await;
+    shutdown.cancel();
+    if let Some(mut server) = remote_server {
+        if tokio::time::timeout(std::time::Duration::from_secs(5), &mut server)
+            .await
+            .is_err()
+        {
+            server.abort();
+            let _ = server.await;
+        }
+    }
     voice.close().await;
     if let Some(service) = &state.live2d {
         service.close().await;

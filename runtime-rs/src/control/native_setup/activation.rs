@@ -31,6 +31,7 @@ impl ControlService {
         self.native_stage(operation, 1);
         let configured = self.configured_inference()?;
         let video_engine = configured.video_engine().to_owned();
+        let remote = (configured.remote_url.clone(), configured.remote_key.clone(), configured.remote_serve, configured.remote_port);
         let mut target_settings = if image_models::is_adapter_runtime(&runtime) {
             // Keep Anima's interpreter; adapters must resolve beside the bundled worker.
             let mut value = configured;
@@ -48,6 +49,7 @@ impl ControlService {
         };
         target_settings.engine = "native".into();
         target_settings.video_engine = Some(video_engine);
+        (target_settings.remote_url, target_settings.remote_key, target_settings.remote_serve, target_settings.remote_port) = remote;
         let target = serde_json::to_value(&target_settings)?;
         let active = self.active_inference()?;
         let current = serde_json::to_value(&active)?;

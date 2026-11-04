@@ -235,7 +235,10 @@ export function useControlStatus({ showToast }: StatusHooks) {
 
     const imageOnline = data.sdOnline || data.comfyOnline
     imageProvider.value = data.imageProvider === undefined ? 'comfy' : data.imageProvider
-    if (imageProvider.value === 'native') {
+    if (imageProvider.value === 'remote') {
+      feedbackText.value = data.nativeRuntimeFilesReady ? '远程原生绘图已连接' : '远程原生绘图待连接'
+      actionNote.value = data.nativeRuntimeFilesReady ? '模型与 LoRA 使用远程资源' : '请检查远程地址、密钥和远端模型'
+    } else if (imageProvider.value === 'native') {
       feedbackText.value = data.nativeRuntimeFilesReady ? '原生运行库已就绪' : '原生运行库待准备'
       actionNote.value = data.nativeRuntimeFilesReady
         ? '生成时按需加载模型'

@@ -1,7 +1,7 @@
 //! Native image parameters are distinct from Anima and Comfy sampling recipes.
 use super::*;
 use generation::native::adapters;
-const KEYS: &[&str] = &[
+pub(super) const KEYS: &[&str] = &[
     "mossAcceleration",
     "mossUpscaleScale",
     "mossUpscaleSourceTaskId",
