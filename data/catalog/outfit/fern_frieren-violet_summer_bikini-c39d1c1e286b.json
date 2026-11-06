@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "fern_frieren/violet_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2349,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "fern_frieren",
     "outfit": {
       "id": "violet_summer_bikini",
-      "name": "紫雾幽澜 · 幽紫系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "静水幽兰 · 雾紫与纯白保守挂脖高腰连体泳装配透光白纱防晒长衫",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "fern_frieren",
-      "prose": "A stunning violet halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A modest yet feminine muted-violet and pure white halter one-piece swimsuit featuring a high neckline, ruffled skirt hemline, and an ankle-length translucent white chiffon robe worn loosely.",
       "tokens": [
-        "violet bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "muted violet swimsuit",
+        "white trim",
+        "modest one-piece",
+        "ruffled hem",
+        "sheer white robe",
+        "long purple hair",
+        "pouting cheeks",
+        "curvy build",
+        "demure posture"
       ]
     }
   }

@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "hitachi_mako/school_uniform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 622,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-06T01:02:18.780Z",
   "data": {
     "characterId": "hitachi_mako",
     "outfit": {
       "default": false,
       "id": "school_uniform",
       "isDefault": false,
-      "name": "穗织学园水手制服",
-      "prose": "a short-sleeved white sailor shirt with a navy collar and green ribbon tie, a navy pleated miniskirt, white loose socks and brown loafers",
+      "name": "穗织学园水手制服（茉子日常款）",
+      "prose": "The standard Hoori Academy sailor uniform worn casually by Mako.",
       "tokens": [
         "school uniform",
         "short-sleeved white sailor shirt",

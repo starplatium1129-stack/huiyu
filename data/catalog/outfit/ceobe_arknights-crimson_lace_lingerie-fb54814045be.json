@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "ceobe_arknights/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2253,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ceobe_arknights",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "小猎犬明黄爪印纯棉分体睡衣短裤套",
+      "category": "睡衣 / 运动背心套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ceobe_arknights",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A playful and durable sunny-yellow ribbed cotton tank top screen-printed with puppy paw motifs, paired with soft charcoal-grey drawstring athletic sleep shorts.",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "yellow paw tank top",
+        "ribbed cotton",
+        "grey athletic shorts",
+        "drawstring sleepwear",
+        "perro friendly",
+        "cheerful loungewear"
       ]
     }
   }

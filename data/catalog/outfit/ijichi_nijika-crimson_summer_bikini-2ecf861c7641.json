@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "ijichi_nijika/crimson_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2475,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "ijichi_nijika",
     "outfit": {
       "id": "crimson_summer_bikini",
-      "name": "曼珠朱华 · 绯红系带比基尼配薄纱罩衫",
+      "name": "夏日鼓手 · 明亮鲜橙与柠檬黄撞色系带运动比基尼配防晒草帽",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "ijichi_nijika",
-      "prose": "A stunning crimson halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An energetic sunny-orange and bright lemon-yellow colorblock halter bikini with cross-back sports ties, contrast piping, a cute dorito-shaped hair ahoge, and a wide-brim woven sun hat tied with a yellow gingham ribbon.",
       "tokens": [
-        "crimson bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "orange bikini",
+        "yellow colorblock",
+        "athletic halter",
+        "side-tie bottom",
+        "straw sun hat",
+        "blonde hair",
+        "side ponytail",
+        "dorito ahoge",
+        "red eyes",
+        "dazzling sunshine smile"
       ]
     }
   }

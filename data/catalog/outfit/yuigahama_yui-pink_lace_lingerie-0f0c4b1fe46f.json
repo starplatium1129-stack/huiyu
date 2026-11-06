@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/pink_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2342,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "pink_lace_lingerie",
-      "name": "暮夜心弦 · 粉樱透视蕾丝吊带内衣",
+      "name": "蜜桃心愿 · 樱粉荷叶滚边双层纯棉吊带套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yuigahama_yui",
-      "prose": "A luxurious pink sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套充满少女娇憨温存的蜜桃樱粉双层纯棉吊带睡衣，领口与短裤下摆点缀小木耳荷叶边，版型柔软亲肤，将高中女生的丰盈体态与天然可爱展现得让人心疼又心动。",
       "tokens": [
-        "lingerie",
-        "pink lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "peach pink ruffled double-cotton camisole set",
+        "lettuce edge frills",
+        "elastic paperbag sleep shorts",
+        "cozy soft cotton",
+        "sweet heartwarming high school gal loungewear"
       ]
     }
   }

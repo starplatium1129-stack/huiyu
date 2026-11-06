@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "entelechia_arknights/black_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2244,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "entelechia_arknights",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "幽夜哲思 · 漆黑哑光战术镂空比基尼配暗金环扣与墨色罩衫",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "entelechia_arknights",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An enigmatic matte-black cutout bikini accented with burnished dark-gold circular hardware, asymmetric criss-crossing torso straps, and an open sheer obsidian linen kimono duster.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "black cutout bikini",
+        "matte fabric",
+        "gold ring hardware",
+        "strappy waist",
+        "black linen duster",
+        "silver hair",
+        "pointed ears",
+        "sharp gaze",
+        "tall slender build"
       ]
     }
   }

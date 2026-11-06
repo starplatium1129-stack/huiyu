@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "krista_lenz/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2283,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "krista_lenz",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "金芒初祷 · 象牙金丝镂空亚麻睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "krista_lenz",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭质感温润的象牙白粗支亚麻睡裙，领口与下摆以淡金细丝绣出野花纹样，松紧抽绳微收腰身，透着纯净神圣的田园诗意。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ivory white linen corset-slip",
+        "gold thread floral embroidery",
+        "scalloped raw edges",
+        "delicate cotton ties",
+        "rustic angelic nightdress",
+        "understated vintage elegance"
       ]
     }
   }

@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "horn_arknights/azure_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2240,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "horn_arknights",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "碧海澄澈 · 水蓝系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "风暴集结 · 皇家风暴白金与金纹高领拉链竞技连体泳装",
+      "category": "泳装 / 竞速泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "horn_arknights",
-      "prose": "A stunning azure halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A commanding White-Wolf inspired platinum-white and royal-gold accented racing swimsuit featuring a high-collar front gold zipper, reinforced side-rib panels, wolf ears, and a pristine white military capelet.",
       "tokens": [
-        "azure bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white competition swimsuit",
+        "gold trim",
+        "front zipper",
+        "wolf ears",
+        "wolf tail",
+        "blonde hair",
+        "blue eyes",
+        "athletic muscular physique",
+        "unyielding gaze",
+        "regal presence"
       ]
     }
   }

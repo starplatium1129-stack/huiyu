@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "yuzuriha_inori/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2305,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "yuzuriha_inori",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "金鱼幻梦渐变珊瑚橘透光浮游泳衣",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "yuzuriha_inori",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An ethereal fantasy swimdress in petal-pink graduating into vivid coral-orange gradient chiffon, featuring trailing gossamer goldfish-fin ribbons, crossover bustier, and red spider-lily hair clip.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "gradient monokini",
+        "coral orange and pink",
+        "goldfish fin ribbons",
+        "chiffon streamers",
+        "fantasy swimwear",
+        "ethereal style"
       ]
     }
   }

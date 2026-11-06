@@ -1,31 +1,33 @@
 {
   "kind": "outfit",
   "id": "nightingale_arknights/azure_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2248,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "nightingale_arknights",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "碧海澄澈 · 水蓝系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "笼外清晨 · 纯白浮雕蕾丝抹胸连体长泳裙配淡青薄绡披肩",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "nightingale_arknights",
-      "prose": "A stunning azure halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A delicate, angelic swimdress made of pure white embossed floral lace over soft ivory lining, featuring a modest empire waist, floating sheer mint-green chiffon shoulder wrap, and silver feather charms.",
       "tokens": [
-        "azure bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white swimdress",
+        "floral lace",
+        "mint green wrap",
+        "sheer shawl",
+        "empire waist",
+        "silver hair",
+        "long hair",
+        "blue eyes",
+        "pointed ears",
+        "gentle fragility",
+        "soft light"
       ]
     }
   }

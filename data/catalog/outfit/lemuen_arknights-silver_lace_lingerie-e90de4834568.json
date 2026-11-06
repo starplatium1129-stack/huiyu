@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "lemuen_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2276,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "lemuen_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "白翼圣裁 · 纯白羽纹刺绣半透吊带丝裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "lemuen_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭如拉特兰白羽般纯洁的极细双肩带雪纺睡裙，前胸与下摆以银线刺绣出精致的羽翼花纹，轻盈微透如云雾，神圣端庄中透着极度女性魅力。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pure white sheer chiffon slip dress",
+        "angel wing embroidery",
+        "silver metallic threads",
+        "gossamer layered fabric",
+        "delicate double straps",
+        "celestial angelic nightwear"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2578,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "荒野孤弦 · 炭灰真丝微透极简吊带套裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "texas_arknights",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套剪裁利落如刀锋的深炭灰真丝吊带睡衣，极细肩带与利落平角短裤，摒弃一切繁冗装饰，以极致简约的质感突显出干员紧致修长的身段与从容气度。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "charcoal grey minimalist silk camisole set",
+        "ultra-thin straps",
+        "relaxed boyleg tap shorts",
+        "clean modern cuts",
+        "subdued cool-headed courier loungewear"
       ]
     }
   }

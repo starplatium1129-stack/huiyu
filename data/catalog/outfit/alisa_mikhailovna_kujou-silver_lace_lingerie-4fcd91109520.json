@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "alisa_mikhailovna_kujou/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2338,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "alisa_mikhailovna_kujou",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "银白雪原淡天蓝蕾丝拼接真丝睡裙",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "alisa_mikhailovna_kujou",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A Slavic-inspired pale ice-blue silk slip dress framed by frosted white scalloped lace trims, a subtle sweetheart neckline, and delicate silver bow accents at the shoulders.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ice blue silk slip",
+        "frosted lace trim",
+        "sweetheart neckline",
+        "silver ribbon bows",
+        "scalloped hem",
+        "russian elegance"
       ]
     }
   }

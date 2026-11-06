@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "cartethyia/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2431,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "cartethyia",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "潮汐共鸣水蓝半透蕾丝真丝吊带裙",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "cartethyia",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "An ethereal ocean-blue mulberry silk slip nightdress decorated with translucent scalloped tidal lace along the low-cut bustier and floating wave-cut hems.",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "azure silk slip",
+        "tidal lace trim",
+        "scalloped hem",
+        "fluid mulberry silk",
+        "spaghetti straps",
+        "ethereal nightdress"
       ]
     }
   }

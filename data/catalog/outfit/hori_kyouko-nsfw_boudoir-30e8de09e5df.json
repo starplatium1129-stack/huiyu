@@ -1,28 +1,29 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/nsfw_boudoir",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "深绯丝绒交叉绑带套装与吊袜带",
-      "prose": "A crimson velvet bra with crossed straps, matching lace briefs and a garter belt.",
+      "name": "居家大姐姐洗旧墨绿棉质宽松长T恤",
+      "prose": "A relaxed and cozy boyfriend-fit oversized loungewear t-shirt in washed vintage olive-green combed cotton, paired with a classic tortoiseshell claw hair clip.",
       "tokens": [
-        "velvet_lingerie",
-        "red_bra",
-        "strappy_bra",
-        "lace_panties",
-        "garter_belt",
-        "sheer_thighhighs"
+        "oversized olive tshirt",
+        "washed combed cotton",
+        "boyfriend t-shirt dress",
+        "claw hair clip",
+        "slouchy homewear",
+        "domestic casual"
       ],
       "characterId": "hori_kyouko",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "睡衣 / 宽松睡裙"
     }
   }
 }

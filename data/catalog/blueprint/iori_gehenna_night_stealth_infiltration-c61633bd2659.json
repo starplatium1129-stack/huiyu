@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_gehenna_night_stealth_infiltration",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 928,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T03:24:55.000000000+00:00",
   "data": {
     "action": "在钢架阴影中单膝蹲伏潜伏，单手扶夜视镜，细长尾巴贴近钢梁",
     "camera": "cowboy shot, high angle, stealth atmosphere",

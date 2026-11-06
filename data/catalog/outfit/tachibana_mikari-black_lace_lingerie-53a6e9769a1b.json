@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "tachibana_mikari/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2425,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "tachibana_mikari",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "十年守候 · 樱粉透视蕾丝荷叶边吊带内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tachibana_mikari",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套精心挑选的樱粉色双层透视蕾丝吊带内衣，领口与短裤下摆覆以层叠的小荷叶边，可爱浪漫而又充满挑逗，承载着青梅竹马渴望被当作真正女人注视的炽烈心愿。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "cherry blossom pink sheer lace bralette set",
+        "layered flutter ruffles",
+        "low-rise matching ruffled tap shorts",
+        "sweet pastel aesthetic",
+        "emotional childhood friend boudoir"
       ]
     }
   }

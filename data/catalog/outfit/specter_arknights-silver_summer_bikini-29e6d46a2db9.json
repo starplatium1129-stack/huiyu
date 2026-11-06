@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "specter_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2246,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "specter_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "深渊雕塑家复古修女风束腰泳裙",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "specter_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A dramatic gothic nun-inspired corset swimdress featuring structured boning in jet-black and pristine alabaster lace, tiered ruffled hemline, and an antique cross-motif choker.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "corset swimdress",
+        "gothic swimwear",
+        "black and white lace",
+        "ruffled hem",
+        "boned bodice",
+        "choker necklace"
       ]
     }
   }

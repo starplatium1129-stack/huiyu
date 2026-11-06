@@ -1,30 +1,29 @@
 {
   "kind": "outfit",
   "id": "epsilon_shadow/azure_monokini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1893,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "epsilon_shadow",
     "outfit": {
       "id": "azure_monokini",
-      "name": "精密塑形苍蓝镂空连体泳装",
-      "prose": "A high-precision cerulean blue monokini featuring aerodynamic side torso cutouts, silver metallic piping, and high-cut leg openings, paired with a sheer silk shawl.",
+      "name": "苍蓝镂空金属银边连体泳装",
+      "prose": "A precision-tailored cerulean-blue monokini featuring alluring side cutouts, reflective metallic silver borders, and a matching sheer silk shawl.",
       "tokens": [
-        "monokini",
-        "cutout_swimsuit",
-        "blue_swimwear",
-        "silver_trim",
-        "highleg",
-        "sheer_shawl",
-        "bare_midriff",
-        "sandals"
+        "cerulean monokini",
+        "silver trim",
+        "cutout swimsuit",
+        "sheer shawl",
+        "metallic border",
+        "luxury swimwear"
       ],
       "characterId": "epsilon_shadow",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "泳装 / 比基尼"
     }
   }
 }

@@ -1,31 +1,33 @@
 {
   "kind": "outfit",
   "id": "mitsukasa_ayase/crimson_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2556,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "mitsukasa_ayase",
     "outfit": {
       "id": "crimson_summer_bikini",
-      "name": "曼珠朱华 · 绯红系带比基尼配薄纱罩衫",
+      "name": "假面夏日 · 珊瑚粉褶皱抹胸分体比基尼配蓬松网纱多层防透短裙",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "mitsukasa_ayase",
-      "prose": "A stunning crimson halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A carefully tailored coral-pink gathered bandeau bikini featuring clever padded sweetheart lining, delicate pearl center accents, and a flared, ruffled mesh swim skirt.",
       "tokens": [
-        "crimson bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "coral pink bikini",
+        "bandeau bikini",
+        "ruffled swim skirt",
+        "pearl brooch",
+        "padded top",
+        "twintails",
+        "brown hair",
+        "hazel eyes",
+        "cute",
+        "slender",
+        "shy blush"
       ]
     }
   }

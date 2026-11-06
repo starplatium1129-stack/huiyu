@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "archetto_arknights/azure_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2224,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "archetto_arknights",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "碧海澄澈 · 水蓝系带比基尼配薄纱罩衫",
+      "name": "修道夏祷 · 圣殿米白与群青嵌金系带修身分体泳装",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "archetto_arknights",
-      "prose": "A stunning azure halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An immaculate church-white and ultramarine-accented halter bikini featuring subtle gold monastic cross charms, high-waisted side-cutout bottoms, and a sheer navy chiffon cover-up shirt.",
       "tokens": [
-        "azure bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
+        "white bikini",
+        "navy trim",
+        "gold cross charm",
+        "halterneck",
+        "high-waisted bikini",
+        "sheer navy shirt",
+        "gryphon ears",
         "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "gentle expression"
       ]
     }
   }

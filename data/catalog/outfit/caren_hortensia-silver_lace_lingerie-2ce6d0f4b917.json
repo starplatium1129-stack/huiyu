@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "caren_hortensia/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2364,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "caren_hortensia",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "圣职修女黑白无袖开叉系带极简纯棉睡袍",
+      "category": "睡衣 / 无袖长睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "caren_hortensia",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A severe yet provocative monastic sleep robe in stark obsidian and bleached cotton linen, featuring a sleeveless high-neck cowl, daring hip-high side slits, and a white rope cinch belt.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "monochrome linen robe",
+        "sleeveless high slit",
+        "white cowl neck",
+        "rope cinch belt",
+        "church undergarment",
+        "austere provocative"
       ]
     }
   }

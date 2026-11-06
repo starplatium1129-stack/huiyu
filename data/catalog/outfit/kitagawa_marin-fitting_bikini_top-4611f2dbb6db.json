@@ -1,28 +1,29 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/fitting_bikini_top",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1400,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "id": "fitting_bikini_top",
-      "name": "新菜专属试衣交叉黑绑带泳装",
-      "prose": "A matte black criss-cross wrap bikini with silver ring hardware and strappy bottoms, worn barefoot.",
+      "name": "热辣黑金交叉绑带分体比基尼",
+      "prose": "A daring gyaru-style black two-piece bikini featuring crisscrossing elastic under-bust straps, gold metallic O-rings, and cheeky tie-side briefs.",
       "tokens": [
-        "black_bikini",
-        "criss-cross_bikini",
-        "strappy_bikini",
-        "ring_hardware",
-        "barefoot",
-        "alluring"
+        "black criss-cross bikini",
+        "strappy bikini",
+        "o-ring hardware",
+        "tie-side bikini",
+        "gyaru swimwear",
+        "cheeky bottoms"
       ],
       "characterId": "kitagawa_marin",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "泳装 / 比基尼"
     }
   }
 }

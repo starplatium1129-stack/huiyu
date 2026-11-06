@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "viviana_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2375,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "viviana_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "微芒烛光 · 浅金雪纺双层刺绣吊带长裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "viviana_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭如烛光般温润的浅金色双层雪纺吊带长睡裙，胸前手工刺绣着骑士百合纹样，裙摆轻盈飘逸如晨曦之风，完美展现烛骑士端庄高贵而又温柔体贴的倾世风采。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pale golden chiffon double-layer slip gown",
+        "embroidered fleur-de-lis knightly crest",
+        "delicate golden cord straps",
+        "floor-length flowing hem",
+        "poetic candle knight boudoir"
       ]
     }
   }

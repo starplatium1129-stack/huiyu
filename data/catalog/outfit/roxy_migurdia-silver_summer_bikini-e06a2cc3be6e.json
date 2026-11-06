@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2266,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "水圣初夏 · 纯深海蓝与天青条纹挂脖分体水着配迷你魔法学士尖帽发夹",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "roxy_migurdia",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A neat and charming two-piece swimwear in deep ocean sapphire and sky-blue stripes, featuring modest coverage, a dainty silver water-rune locket, and a miniature felt mage hat clip pinned to her twin braids.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "sapphire blue bikini",
+        "striped trim",
+        "modest bikini",
+        "mage hat hair clip",
+        "water rune locket",
+        "blue hair",
+        "twin braids",
+        "blue eyes",
+        "petite",
+        "serious yet cute expression"
       ]
     }
   }

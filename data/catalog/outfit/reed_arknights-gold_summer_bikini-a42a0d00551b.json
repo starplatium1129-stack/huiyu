@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/gold_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2258,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
       "id": "gold_summer_bikini",
-      "name": "流金澄晖 · 灿金系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "死生火华 · 幽火暗红与赤金渐变镂空连体泳装配龙尾防烫金环",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "reed_arknights",
-      "prose": "A stunning gold halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A deeply elegant high-neck monokini in gradient smoldering crimson and gold silk, featuring flame-shaped waist cutouts, delicate dragon scale back draping, and ornate gold tail rings clasping her Draconic tail.",
       "tokens": [
-        "gold bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "crimson monokini",
+        "flame gradient",
+        "gold trim",
+        "cutout swimsuit",
+        "dragon horns",
+        "dragon tail",
+        "gold tail rings",
+        "long red hair",
+        "orange eyes",
+        "gentle melancholy"
       ]
     }
   }

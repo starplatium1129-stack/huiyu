@@ -1,31 +1,33 @@
 {
   "kind": "outfit",
   "id": "rosmontis_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2232,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "rosmontis_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "白猫清夏 · 纯白细棉布透气抹胸连体长水着配浅蓝猫抓印防晒披风",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "rosmontis_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A gentle, lightweight cotton-feel swimdress in pure snow-white with subtle baby-blue piping, featuring soft gathered ruffles, a floating transparent sun-cape with faint paw-print motifs, and small silver bell ties.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white swimdress",
+        "baby blue trim",
+        "cat paw print cape",
+        "sheer fabric",
+        "silver bells",
+        "short silver hair",
+        "cat ears",
+        "feline tail",
+        "blue eyes",
+        "delicate slender",
+        "innocent expression"
       ]
     }
   }

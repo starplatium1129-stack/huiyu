@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "ryougi_shiki/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2386,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "ryougi_shiki",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "空之境界 · 绯绯绯红与纯白拼色振袖浴衣风交叉连体水着配短刀鞘挂绳",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "ryougi_shiki",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A strikingly minimalist Japanese crossover one-piece swimsuit in pure snowy white and vermilion crimson, mirroring her iconic kimono wrap neckline, paired with a leather cord at the hip and a red leather choker.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "kimono style swimsuit",
+        "white and red",
+        "cross-wrap neckline",
+        "red leather choker",
+        "short black hair",
+        "layered hair",
+        "blue eyes",
+        "mystic eyes",
+        "cool stoic gaze",
+        "slender athletic"
       ]
     }
   }

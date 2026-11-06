@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "asuma_toki/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2356,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "asuma_toki",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "C&C特工极简石墨黑弹性吸汗工装睡衣",
+      "category": "睡衣 / 连体居家服",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "asuma_toki",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A form-fitting graphite-black seamless compression loungewear bodysuit made from high-tech breathable stretch fabric, featuring ergonomic support seams and a concealed front zipper.",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "graphite bodysuit",
+        "seamless compression wear",
+        "short sleeve loungewear",
+        "minimalist black",
+        "ergonomic seams",
+        "c&c maid undergarment"
       ]
     }
   }

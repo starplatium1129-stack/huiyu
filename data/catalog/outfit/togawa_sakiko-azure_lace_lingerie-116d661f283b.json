@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "togawa_sakiko/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2434,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "togawa_sakiko",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "残破华章 · 墨黑剪裁雪纺微透长吊带",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "togawa_sakiko",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件曾经华丽但如今略显单薄的墨黑双层雪纺吊带长睡裙，胸前保留着旧日名门家徽暗纹刺绣，微透的裙身包裹着消瘦清丽的少女身躯，带着令人怜惜的落难贵族凄美感。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "inky black tailored sheer chiffon nightgown",
+        "faded heraldic crest embroidery",
+        "delicate frail silhouette",
+        "melancholy fallen heiress boudoir dress"
       ]
     }
   }

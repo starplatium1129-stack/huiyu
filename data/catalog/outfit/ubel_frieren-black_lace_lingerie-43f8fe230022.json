@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "ubel_frieren/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2408,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ubel_frieren",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "裁断之瞳 · 墨黑深V镂空不规则吊带裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ubel_frieren",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭线条充满攻击性的墨黑高弹微透短吊带裙，胸前深V大开至胸骨，双侧腰腹不规则几何剪裁，将少女轻盈致命的身姿与毫无防备的性感彻底展露。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "inky black deep plunging halter mini slip",
+        "asymmetrical side cutouts",
+        "raw jagged edge hemline",
+        "body-hugging sheer stretch fabric",
+        "dangerous seductive battle-mage lingerie"
       ]
     }
   }

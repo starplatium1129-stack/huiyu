@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2383,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "假面愚者绯红戏偶层叠比基尼",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "sparkle_hsr",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A theatrical crimson and onyx-black layered ruffled bikini embellished with golden bell charms, mismatched thigh garters, a kitsune mask accessory, and dramatic silk back ribbons.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "theatrical bikini",
+        "crimson and black ruffled bikini",
+        "kitsune mask",
+        "golden bells",
+        "thigh garters",
+        "clown aesthetic"
       ]
     }
   }

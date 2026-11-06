@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "maomao/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2430,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "翡翠百草 · 翠绿暗纹薄纱抹胸襦裙式寝衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "maomao",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭具有东方古典韵味的翠绿真丝暗纹肚兜，外罩一层几近透明的鹅黄蝉翼薄纱对襟襦衫，清雅脱俗，隐现小巧玲珑的身段与少女骨相。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "jade green silk dudou bodice",
+        "sheer gossamer yellow open robe",
+        "traditional oriental innerwear",
+        "floral jacquard weave",
+        "herbal apothecary loungewear"
       ]
     }
   }

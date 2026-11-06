@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yarai_miu/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2549,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yarai_miu",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "绯月渴求 · 墨黑深V蕾丝镂空真丝内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yarai_miu",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套具有哥特魅惑风采的墨黑真丝钢圈内衣，胸前点缀暗红蔷薇花蕊蕾丝，利落的镂空系带缠绕腰际，将吸血鬼少女傲人妖娆的身材线条衬托得惊心动魄。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "inky black underwire corset bralette",
+        "crimson rose lace applique",
+        "strappy harness hip details",
+        "sheer side panels",
+        "seductive pureblood vampire boudoir"
       ]
     }
   }

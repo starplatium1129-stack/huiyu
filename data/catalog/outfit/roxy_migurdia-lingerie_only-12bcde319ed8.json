@@ -1,28 +1,28 @@
 {
   "kind": "outfit",
   "id": "roxy_migurdia/lingerie_only",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 252,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:19:08.979252800+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "roxy_migurdia",
     "outfit": {
       "id": "lingerie_only",
-      "name": "象牙白纯棉细褶蕾丝套装与吊袜带",
-      "prose": "An ivory pin-tucked cotton set with scalloped lace borders and a coordinating fabric garter belt.",
+      "name": "苍蓝咏叹 · 海蓝双层细褶雪纺吊带裙",
+      "prose": "一袭如清泉般澄澈的海蓝色双层雪纺吊带睡裙，裙摆带有细密的风琴褶与荷叶边，娇小合身，衬托出洛琪希独有的神圣与楚楚可怜。",
       "tokens": [
-        "cotton_lingerie",
-        "white_bra",
-        "lace_trim",
-        "white_panties",
-        "garter_belt",
-        "bare_legs"
+        "ocean blue double-layered chiffon camisole slip",
+        "fine accordion pleats",
+        "tiny white ribbon bows",
+        "scalloped lettuce hem",
+        "sweet petite sorceress nightwear"
       ],
       "characterId": "roxy_migurdia",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

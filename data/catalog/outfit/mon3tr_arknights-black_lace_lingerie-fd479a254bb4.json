@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "mon3tr_arknights/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2255,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "mon3tr_arknights",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "深渊曜影 · 暗曜石镂空束身内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "mon3tr_arknights",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套由黑曜石质感皮革与墨绿透光微孔织物拼接的束身胸衣，背部大胆裸露以避开脊椎晶簇，凌厉剪裁中充满野性与致命诱惑。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "obsidian crystalline cut-out structured bralette",
+        "emerald green translucent micro-mesh panels",
+        "open back design for spine crystals",
+        "edgy bio-mechanical lingerie"
       ]
     }
   }

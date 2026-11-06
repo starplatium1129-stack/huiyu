@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "hatsune_miku/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2304,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "hatsune_miku",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "电子歌姬青绿与漆黑数码光效丝绸分体吊带",
+      "category": "睡衣 / 吊带分体套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "hatsune_miku",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A futuristic boudoir set crafted in jet-black mulberry silk, framed by responsive luminescent cyan fiber-optic seam piping, and paired with low-rise tap shorts.",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "black silk camisole",
+        "luminescent cyan seams",
+        "fiber optic piping",
+        "black tap shorts",
+        "vocaloid twintails friendly",
+        "cyber loungewear"
       ]
     }
   }

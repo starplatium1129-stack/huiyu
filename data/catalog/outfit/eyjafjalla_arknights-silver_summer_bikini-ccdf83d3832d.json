@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2324,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "夏卉静谧 · 暖桃珊瑚粉系带荷叶边分体泳衣配针织透光防晒斗篷",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "eyjafjalla_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A tender coral-peach and cream-white ruffled two-piece bikini featuring soft sweetheart bust ruching, tie-side ribbons, sheep horn hair clasps, and a loose knit pastel-cream crochet beach capelet.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "coral peach bikini",
+        "cream ruffles",
+        "sweetheart neckline",
+        "side-tie ribbon",
+        "crochet capelet",
+        "sheep horns",
+        "short brown hair",
+        "gentle blush",
+        "warm smile"
       ]
     }
   }

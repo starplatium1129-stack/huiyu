@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "hu_tao/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2370,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "hu_tao",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "幽蝶戏水 · 墨黑与彼岸朱红梅花系带比基尼配透光玄纱短披肩",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "hu_tao",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A delightfully eccentric ink-black and crimson-red halter bikini detailed with embroidered plum blossom petals, gold coin tassel pendants, a sheer black mesh bolero jacket, and her iconic plum-branch talisman ribbon.",
       "tokens": [
         "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
+        "crimson plum blossoms",
+        "coin tassel",
+        "sheer mesh bolero",
+        "brown twintails",
+        "flower-shaped pupils",
+        "playful ghost companion",
         "bare midriff",
-        "bare thighs"
+        "cunning grin"
       ]
     }
   }

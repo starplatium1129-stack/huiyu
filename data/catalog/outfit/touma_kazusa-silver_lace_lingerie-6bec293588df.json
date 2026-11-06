@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "touma_kazusa/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2547,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "touma_kazusa",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "冬之挽歌 · 墨黑垂坠真丝细带高开叉长睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "touma_kazusa",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭极简而极度修身的重磅墨黑真丝吊带长裙，极致流畅的垂坠感贴合高挑孤傲的身段，高开叉在琴凳边自然滑落，优雅冷冽如同古典交响乐中的独奏独白。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "inky black heavy liquid-silk slip gown",
+        "minimalist thin straps",
+        "thigh-high slit",
+        "fluid bias-cut drape",
+        "tall slender melancholic pianist loungewear"
       ]
     }
   }

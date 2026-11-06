@@ -1,25 +1,27 @@
 {
   "kind": "outfit",
   "id": "sorasaki_hina/locker_stockings",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1350,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sorasaki_hina",
     "outfit": {
       "id": "locker_stockings",
-      "name": "黑色内衣与透肤长袜",
+      "name": "沉夜羽衣 · 幽紫透气轻纱系带娃娃裙",
       "tokens": [
-        "underwear",
-        "black_camisole",
-        "black_thighhighs",
-        "sheer_thighhighs"
+        "deep violet sheer double-layer chiffon babydoll slip",
+        "large open back for demon wings",
+        "tiny black satin bow",
+        "delicate ruffled hemline",
+        "protective gentle nightwear"
       ],
-      "prose": "A black lingerie set paired with sheer dark stockings.",
+      "prose": "一袭为娇小身形特别剪裁的幽紫双层轻纱娃娃睡裙，后背预留巨大恶魔双翼的流畅开弧，胸前点缀小巧黑蝴蝶结，让疲惫的委员会长在入眠时拥有最柔软的呵护。",
       "default": false,
       "isDefault": false,
-      "characterId": "sorasaki_hina"
+      "characterId": "sorasaki_hina",
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

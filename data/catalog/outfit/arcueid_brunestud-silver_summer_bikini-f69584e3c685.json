@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "arcueid_brunestud/silver_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2387,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "arcueid_brunestud",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "真祖白月 · 极简无肩带纯白抹胸泳装配雪缎飘带",
+      "category": "泳装 / 抹胸泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "arcueid_brunestud",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A pure snow-white strapless bandeau bikini made from subtle ribbed matte fabric, fastened by fluttering silk bow ties at the hip and back, paired with a floor-length sheer organza beach duster.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
+        "white bandeau bikini",
+        "strapless bikini",
+        "ribbed fabric",
+        "side-tie ribbon",
+        "white organza robe",
+        "red eyes",
+        "short blonde hair",
         "bare shoulders",
-        "navel",
         "bare midriff",
-        "bare thighs"
+        "luminous skin"
       ]
     }
   }

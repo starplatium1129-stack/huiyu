@@ -1,28 +1,29 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/sensual_lace_lingerie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 826,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:15:16.518864900+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "和风象牙白真丝文胸与系带短衬",
-      "prose": "An ivory silk set with delicate corded lace beneath a sheer white haori, paired with white stockings.",
+      "name": "豪农千金雪青纯棉双层刺绣长睡裙",
+      "prose": "A graceful traditional heiress nightdress made of double-layered pale wisteria organic cotton, trimmed with handcrafted broderie anglaise lace along the high gathered neckline.",
       "tokens": [
-        "silk_lingerie",
-        "ivory_bra",
-        "lace_trim",
-        "high_waist_panties",
-        "sheer_haori",
-        "white_thighhighs"
+        "wisteria cotton nightgown",
+        "double-layer cotton",
+        "broderie anglaise",
+        "gathered collar",
+        "heiress sleepwear",
+        "modest traditional"
       ],
       "characterId": "chitanda_eru",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "睡衣 / 纯棉长睡裙"
     }
   }
 }

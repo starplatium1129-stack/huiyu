@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "kyouyama_kazusa/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2355,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kyouyama_kazusa",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "烟粉微醺 · 灰紫滚边猫耳蕾丝吊带短裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kyouyama_kazusa",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套烟熏粉灰双色拼接蕾丝睡裙，领口裁成精致的微猫耳几何弧度，搭配垂坠缎带系绳，在慵懒随性中透露出一抹俏皮性感。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "smoky mauve and grey lace trim camisole set",
+        "cat-ear notched neckline",
+        "satin ribbon bows",
+        "ruffled hem tap pants",
+        "soft pastel streetwear loungewear"
       ]
     }
   }

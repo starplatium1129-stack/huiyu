@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2345,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "紫樱幽香 · 浅樱粉双层真丝透视系带和风吊带",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "matou_sakura",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭融合和服右衽交领元素的浅樱粉双层真丝吊带裙，胸襟半敞，微透的雪纺水袖搭在臂弯，素雅温顺的樱花暗纹中流露着令人心颤的柔弱与诱惑。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "cherry blossom pink sheer silk yukata-inspired camisole",
+        "cross-over front bodice",
+        "flowing sheer kimono sleeves",
+        "side-tie ribbon",
+        "delicate cherry blossom jacquard",
+        "traditional Japanese boudoir"
       ]
     }
   }

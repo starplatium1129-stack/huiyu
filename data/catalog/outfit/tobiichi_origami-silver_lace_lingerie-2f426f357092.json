@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "tobiichi_origami/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2407,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "tobiichi_origami",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "纯白战约 · 纯白蕾丝系带新娘风胸衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tobiichi_origami",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套融合新娘花嫁与战术束缚带元素的纯白半透蕾丝内衣，配有精致的蕾丝腿环与半透明薄纱手套，神圣、纯白而又带着惊世骇俗的直球诱惑。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pure white bridal lace bralette set",
+        "sheer lace garters",
+        "sheer tulle fingerless gloves",
+        "delicate scalloped edges",
+        "deadpan assault bride nightwear"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "sparkle_hsr/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2579,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sparkle_hsr",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
+      "name": "愚者幻戏 · 绯红漆金几何镂空抹胸睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sparkle_hsr",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭融汇日式祭典与现代解构风的绯红高开叉抹胸睡裙，胸侧以金漆绳带交错系结，不规则裙摆在足踝边飞扬，将欢愉星神的狡黠与极度火辣的视觉张力展现到极致。",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "scarlet red and lacquer gold geometric cutout tube dress",
+        "gold cord laced sides",
+        "asymmetrical high-slit sheer hem",
+        "festive theatrical accents",
+        "trickster boudoir fashion"
       ]
     }
   }

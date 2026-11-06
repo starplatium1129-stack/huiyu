@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/pink_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2341,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "pink_summer_bikini",
-      "name": "落樱甜粉 · 粉樱系带比基尼配薄纱罩衫",
+      "name": "元气蜜桃珊瑚粉层叠荷叶边挂脖比基尼",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "yuigahama_yui",
-      "prose": "A stunning pink halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A bright and cheerful coral-pink two-piece halter bikini detailed with tiered ruffled frills, a delicate silver heart pendant at the center bust, matching floral wrist scrunchie, and frilled hip ties.",
       "tokens": [
-        "pink bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "coral pink bikini",
+        "tiered frill bikini",
+        "heart charm",
+        "halter neck",
+        "ruffled swim bottom",
+        "cheerful gal aesthetic"
       ]
     }
   }

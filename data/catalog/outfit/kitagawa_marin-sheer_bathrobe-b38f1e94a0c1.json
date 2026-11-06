@@ -1,32 +1,29 @@
 {
   "kind": "outfit",
   "id": "kitagawa_marin/sheer_bathrobe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 276,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:28:58.690707100+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kitagawa_marin",
     "outfit": {
       "id": "sheer_bathrobe",
-      "name": "薄荷清透雪纺系带晨袍与脚链",
-      "prose": "A semi-sheer mint chiffon robe tied with a satin cord over pale pink lace lingerie, paired with a thin silver ankle bracelet and bare feet.",
+      "name": "狂野心弦 · 豹纹微透系带抹胸内衣套装",
+      "prose": "一套张扬辣妹魅力的暗纹豹纹拼接黑蕾丝内衣，抹胸式交叉系带胸衣搭配低腰系绳三角裤，锁骨处系着细黑缎带颈圈，兼具狂野与精致。",
       "tokens": [
-        "sheer_robe",
-        "chiffon_robe",
-        "mint_robe",
-        "see-through",
-        "sash",
-        "pink_lingerie",
-        "lace_bra",
-        "anklet",
-        "barefoot",
-        "boudoir"
+        "leopard print sheer lace bralette set",
+        "strappy underwire crop bustier",
+        "black ribbon choker",
+        "cheeky low-rise briefs",
+        "semi-sheer mesh side panels",
+        "trendy modern lingerie"
       ],
       "characterId": "kitagawa_marin",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

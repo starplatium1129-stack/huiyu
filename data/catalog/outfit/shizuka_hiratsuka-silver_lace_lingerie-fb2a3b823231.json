@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "shizuka_hiratsuka/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2526,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shizuka_hiratsuka",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "成熟晚钟 · 酒红真丝开衫系带吊带睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shizuka_hiratsuka",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭深酒红重磅真丝吊带睡裙，外搭同色半透明真丝系带晨袍，胸口深V大开，丰满成熟的身段在真丝包裹下曲线毕露，散发着无可抵挡的年上知性魅力。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "wine red heavyweight silk slip gown",
+        "sheer matching silk belted robe",
+        "deep plunging neckline",
+        "opulent drape",
+        "mature professional woman sensual sleepwear"
       ]
     }
   }

@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2459,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "理想女优 · 焦糖色斜肩高级度假连体剪裁水着配玳瑁环腰扣与长纱披肩",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "mizuhara_chizuru",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A high-fashion asymmetrical one-shoulder swimsuit in warm terracotta caramel, accented by a tortoiseshell resin hip ring, deep diagonal side cut, and a breezy cream linen beach scarf.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "terracotta swimsuit",
+        "one-shoulder swimsuit",
+        "asymmetrical cut",
+        "tortoiseshell ring",
+        "highleg",
+        "cream scarf",
+        "long brown hair",
+        "side braid",
+        "brown eyes",
+        "stylish elegance"
       ]
     }
   }

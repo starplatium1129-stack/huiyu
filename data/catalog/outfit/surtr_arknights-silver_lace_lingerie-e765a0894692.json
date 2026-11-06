@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "surtr_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2334,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "surtr_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "烈焰余温 · 墨黑皮革拼接透视火红内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "surtr_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套选用柔软黑皮革与暗红透光薄纱拼接的吊带内衣，金属拉链与交叉绑带勾勒出惊心动魄的火辣身材，散发着岩浆般炽热纯粹的致命魅力。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "obsidian soft faux-leather and crimson sheer mesh bralette set",
+        "industrial front zipper",
+        "criss-cross waist strapping",
+        "high-cut provocative briefs",
+        "fierce fiery sarkaz lingerie"
       ]
     }
   }

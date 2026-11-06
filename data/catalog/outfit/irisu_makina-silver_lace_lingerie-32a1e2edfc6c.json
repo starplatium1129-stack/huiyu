@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "irisu_makina/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2447,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "irisu_makina",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "狙击天才宽松男士衬衫当睡衣赤足晃荡",
+      "category": "睡衣 / 宽松睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "irisu_makina",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "An authentic oversized men's heavy white oxford cotton button-down shirt worn as a relaxed nightshirt, featuring drooping cuffs, dropped shoulders, and ultimate barefoot lounging freedom.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "oversized mens shirt",
+        "boyfriend button-up",
+        "white oxford cotton",
+        "drooping sleeves",
+        "barefoot loungewear",
+        "makina comfort"
       ]
     }
   }

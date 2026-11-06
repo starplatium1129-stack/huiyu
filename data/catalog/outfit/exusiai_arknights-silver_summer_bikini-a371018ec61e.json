@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2322,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "圣火盛夏 · 亮丽鲜红与枪灰速干运动比基尼配防晒超短网纱罩衫",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "exusiai_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A high-octane crimson-red and gunmetal-gray athletic halter bikini with bold cross-back straps, paired with a white mesh cropped short-sleeve rashguard and a glowing angel halo hovering overhead.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
+        "red bikini",
+        "gunmetal gray trim",
+        "athletic halter",
+        "white mesh crop top",
+        "angel halo",
+        "angel wings",
+        "short orange hair",
         "bare midriff",
-        "bare thighs"
+        "energetic grin"
       ]
     }
   }

@@ -1,29 +1,29 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/sensual_lace_lingerie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 796,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "象牙白透纱刺绣文胸与系带真丝晨袍",
-      "prose": "Ivory floral lace lingerie under a blush-pink silk chiffon robe, with fine matching garter straps.",
+      "name": "不起眼女主角淡白罗纹针织舒适修身背心短裤套",
+      "prose": "A deceptively simple and cozy loungewear set crafted from ultra-soft ivory ribbed modal cotton, featuring minimalist spaghetti straps and stretchy matching lounge shorts.",
       "tokens": [
-        "sheer_lingerie",
-        "white_lace_bra",
-        "lace_panties",
-        "sheer_robe",
-        "pink_robe",
-        "garter_straps",
-        "thighhighs"
+        "ivory ribbed camisole",
+        "modal cotton",
+        "stretchy sleep shorts",
+        "minimalist white",
+        "unobtrusive heroine",
+        "pure everyday comfort"
       ],
       "characterId": "katou_megumi",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "睡衣 / 运动背心套"
     }
   }
 }

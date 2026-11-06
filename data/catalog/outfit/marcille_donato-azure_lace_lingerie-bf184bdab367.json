@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "marcille_donato/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2583,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "marcille_donato",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "森灵秘织 · 墨绿半透藤蔓刺绣精灵睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "marcille_donato",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件富有精灵族古老编织风格的墨绿色雪纺睡裙，裙身以金绿丝线绣出精细的缠绕常春藤纹样，微透的裙幅露出修长纤巧的腰肢，仙气与羞涩并存。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "forest green sheer chiffon slip",
+        "gold and ivy vine embroidery",
+        "elven leaf clasps",
+        "delicate semi-transparent fabric",
+        "ancient fantasy boudoir dress"
       ]
     }
   }

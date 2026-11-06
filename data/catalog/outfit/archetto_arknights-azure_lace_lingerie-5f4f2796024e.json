@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "archetto_arknights/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2225,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "archetto_arknights",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "兰赛尔修道院天青圣洁亚麻长款睡袍",
+      "category": "睡衣 / 长款睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "archetto_arknights",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A monastic-inspired sky-blue and bleached-white organic linen night robe featuring wide flowing sleeves, a subtle hood, and a gold-stitched rope belt with monastic cross hardware.",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "azure linen robe",
+        "monastic nightgown",
+        "flowing sleeves",
+        "gold cross pendant",
+        "rope tie belt",
+        "holy sleepwear"
       ]
     }
   }

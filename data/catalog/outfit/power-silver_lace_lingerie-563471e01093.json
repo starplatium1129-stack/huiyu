@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "power/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2491,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "power",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "鲜血华丽 · 猩红棉质运动抹胸平角套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "power",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套随性不羁的猩红纯棉抹胸与小恶魔平角裤，弹性棉料紧贴饱满曲线，侧边印有夸张恶魔爪痕涂鸦，将血之恶魔的狂放不羁与天生丽质展露无遗。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson red athletic cotton tube top",
+        "relaxed boy-shorts with demon scratch print",
+        "comfortable stretchy loungewear",
+        "bold vibrant red",
+        "wild untamed fiend sleep set"
       ]
     }
   }

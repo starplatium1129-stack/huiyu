@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "vulpisfoglia_arknights/gold_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2215,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "vulpisfoglia_arknights",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "暮夜心弦 · 灿金透视蕾丝吊带内衣",
+      "name": "残夜锋芒 · 橄榄灰工装透气绑带内衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "vulpisfoglia_arknights",
-      "prose": "A luxurious gold sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套干练凌厉的橄榄灰高弹网布战术内衣，利落的平角短裤搭配肋侧交叉皮带扣，没有一丝多余花巧，完美衬托出叙拉古狼族战士肌肉紧致的健美身材与野性。",
       "tokens": [
-        "lingerie",
-        "gold lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "olive grey tactical athletic mesh bralette set",
+        "functional leather harness straps",
+        "sporty boyleg shorts",
+        "firm athletic midriff",
+        "lethal Siracusan wolf assassin loungewear"
       ]
     }
   }

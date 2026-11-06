@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "ling_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2279,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ling_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "青瓷醉玉 · 碧色半解真丝抹胸睡袍",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ling_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭天青色重磅真丝半敞对襟阔袖袍，内搭墨青色暗纹绣花抹胸，胸前微敞露出修长锁骨与温润玉肌，风姿卓绝，兼具仙风道骨与慵懒肉香。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "celadon green silk lounging open robe",
+        "jade teal embroidered bandeau bra",
+        "billowing wide sleeves",
+        "raw silk texture",
+        "traditional oriental boudoir attire"
       ]
     }
   }

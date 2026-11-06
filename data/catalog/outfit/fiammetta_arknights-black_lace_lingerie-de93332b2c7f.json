@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "fiammetta_arknights/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2237,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "fiammetta_arknights",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "苦难陈述者烈焰绯红工装吊带与黑色运动平角裤",
+      "category": "睡衣 / 运动背心套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "fiammetta_arknights",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A high-performance athletic loungewear set featuring a fiery-crimson moisture-wicking strappy camisole with military D-ring accents and compression-cut black athletic sleep shorts.",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson tactical camisole",
+        "d-ring hardware",
+        "black boy shorts",
+        "compression cut",
+        "sweat-wicking",
+        "phoenix fighter style"
       ]
     }
   }

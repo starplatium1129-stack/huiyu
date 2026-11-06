@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "rossy_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2440,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "rossy_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "流金脉冲 · 铜金真丝微透系带胸衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "rossy_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套泛着古铜金光泽的真丝系带胸衣与低腰短裤，边缘点缀透光黑纱与微型金属扣具，在工业机能感中流露出一丝冷艳妩媚。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "bronze gold silk strappy bralette set",
+        "sheer black mesh side panels",
+        "industrial miniature buckles",
+        "low-rise boyleg briefs",
+        "techwear-infused boudoir lingerie"
       ]
     }
   }

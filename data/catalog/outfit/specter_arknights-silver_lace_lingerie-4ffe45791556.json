@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "specter_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2247,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "specter_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "深海狂想 · 墨黑哥特镂空蕾丝吊带内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "specter_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套剪裁利落的墨黑哥特风格蕾丝内衣，采用繁复的深海珊瑚枝蔓暗纹蕾丝，钢圈胸衣与侧边镂空系绳，将阿戈尔战士惊人的力量线条与女艺术家的狂放优雅完美熔铸。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "gothic black sheer coral-lace bralette set",
+        "underwire contour",
+        "strappy cutout hips",
+        "delicate mesh trims",
+        "sculpted athletic physique",
+        "abyssal artist provocative lingerie"
       ]
     }
   }

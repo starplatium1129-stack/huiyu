@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "iino_miko/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2494,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "iino_miko",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "风纪纯白 · 纯白棉质荷叶边高腰分体平角泳装配粉橘防晒遮阳开衫",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "iino_miko",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A strictly moral yet adorably sweet pure-white ruffled tankini featuring double-layered flutter bust ruffles, high-waist modest boy-short bottoms, twin low pigtails tied with orange ribbons, and a loose pastel-peach sun cardigan.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white tankini",
+        "ruffled bust",
+        "high-waisted boy shorts",
+        "orange ribbons",
+        "pastel cardigan",
+        "brown pigtails",
+        "brown eyes",
+        "strict yet blushing expression",
+        "petite build"
       ]
     }
   }

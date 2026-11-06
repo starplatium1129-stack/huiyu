@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "cc_code_geass/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2385,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "cc_code_geass",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "不老魔女纯白病服风极简系带睡裙",
+      "category": "睡衣 / 系带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "cc_code_geass",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A pure white relaxed cotton-linen wrap dress echoing the iconic restraint aesthetic with long draping side ribbons, loose open sleeves, and effortless uninhibited comfort.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "white wrap nightgown",
+        "restraint ribbons",
+        "draping cotton",
+        "loose sleeves",
+        "cheese-kun accessory",
+        "ageless witch style"
       ]
     }
   }

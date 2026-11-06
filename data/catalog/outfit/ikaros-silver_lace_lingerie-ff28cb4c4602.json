@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "ikaros/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2382,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ikaros",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "战略空皇纯白羽翼轻纱无缝抹胸衬裙",
+      "category": "睡衣 / 抹胸短裙套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ikaros",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A celestial strapless tube dress in liquid-soft white silk georgette, fitted with soft boned chest support, feathered micro-trim, and an open back designed for angel wings.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "white strapless tube dress",
+        "feathered micro trim",
+        "angel wings cutout",
+        "silk georgette",
+        "choker accessory",
+        "uranus queen loungewear"
       ]
     }
   }

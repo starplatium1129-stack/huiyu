@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "nightingale_arknights/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2249,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "nightingale_arknights",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "雪羽晨曦 · 象牙白双层羽纹真丝长袍",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "nightingale_arknights",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭如梦如烟的象牙白双层真丝睡袍，衣身暗织有白鸽轻羽纹理，质地轻盈如无物，随微风在床头浮动，令人油然而生呵护珍视之情。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ivory white feather-jacquard double silk slip robe",
+        "delicate silver ribbon closures",
+        "gossamer flowing fabric",
+        "angelic fragile beauty",
+        "sanctuary hospital loungewear"
       ]
     }
   }

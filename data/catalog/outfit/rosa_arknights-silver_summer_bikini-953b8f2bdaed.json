@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "rosa_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2230,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "rosa_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "冬宫暖夏 · 乌萨斯帝国蓝与白貂绒纹饰复古分体抹胸水着配珍珠流苏挂坠",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "rosa_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An opulent imperial-themed bandeau bikini in deep Russian imperial navy and frosted ivory, decorated with gold frogging braids, soft faux-ermine edging, and dangling baroque pearl strands.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "imperial navy bikini",
+        "white ermine trim",
+        "gold braid",
+        "pearl tassel",
+        "bandeau",
+        "long white hair",
+        "bear ears",
+        "amber eyes",
+        "noble bearing",
+        "tall elegant figure"
       ]
     }
   }

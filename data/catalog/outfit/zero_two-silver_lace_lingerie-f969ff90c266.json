@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "zero_two/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2410,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "zero_two",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "绯色契约 · 猩红高叉系带战术透视胸衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "zero_two",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套将驾驶服元素与极致性感内衣融合的猩红与黑皮革拼接内衣，高开叉细黑绑带束缚在腰腹与大腿根部，将02完美的叫龙神性身段展现得霸道狂放、摄人心魄。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson red and black patent leather strappy bralette set",
+        "high-cut hip harness cords",
+        "white accent piping",
+        "fierce klaxosaur princess luxury lingerie"
       ]
     }
   }

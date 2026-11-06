@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "tokisaki_kurumi/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2267,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "tokisaki_kurumi",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "时间梦魇绯黑蕾丝束腰哥特泳装",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "tokisaki_kurumi",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A dangerous gothic corset swimdress tailored in deep wine-crimson and pitch lace, featuring boned bodice construction, gear-motif sheer garters, ruffled micro-skirt, and antique lace choker.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "gothic corset swimdress",
+        "crimson and black lace",
+        "boned bodice",
+        "clockwork garters",
+        "ruffled hem",
+        "vampiric elegance"
       ]
     }
   }

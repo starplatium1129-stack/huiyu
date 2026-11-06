@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "shirogane_kei/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2423,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shirogane_kei",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "银羽初澜 · 冰灰纯棉细肩带小背心套装",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shirogane_kei",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套极具少年感与少女纯真交织的冰灰细罗纹纯棉小吊带，搭配同色松紧花苞短裤，贴身柔软，勾勒出初具少女形态的单薄白皙肩线与优美体态。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ice grey ribbed cotton camisole set",
+        "delicate spaghetti straps",
+        "gathered paperbag sleep shorts",
+        "minimalistic clean cut",
+        "innocent tsundere sister homewear"
       ]
     }
   }

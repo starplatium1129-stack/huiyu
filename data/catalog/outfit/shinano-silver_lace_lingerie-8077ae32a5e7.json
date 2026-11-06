@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "shinano/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2513,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shinano",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "幽夜幻狐 · 墨紫水云刺绣双层透视长袍",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shinano",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭华贵幽邃的深紫渐变半透薄纱长袍，内搭月白丝绸裹胸，衣摆绣满银线勾勒的翻涌波涛与星宿图景，九尾穿插其中，神威凛然又魅惑众生。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "midnight purple translucent wisteria-embroidered open robe",
+        "white silk tube bra",
+        "silver constellation threadwork",
+        "gossamer floating train",
+        "majestic divine kitsune boudoir gown"
       ]
     }
   }

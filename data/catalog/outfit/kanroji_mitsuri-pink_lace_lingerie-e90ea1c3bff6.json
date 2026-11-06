@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "kanroji_mitsuri/pink_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2409,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kanroji_mitsuri",
     "outfit": {
       "id": "pink_lace_lingerie",
-      "name": "暮夜心弦 · 粉樱透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "恋柱蜜桃粉纯棉樱花刺绣超弹舒适睡衣套",
+      "category": "睡衣 / 吊带分体套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kanroji_mitsuri",
-      "prose": "A luxurious pink sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "An ultra-soft and high-elasticity loungewear set in pastel peach-pink combed cotton, featuring cherry blossom needlework, generous sweetheart bustier, and non-restrictive sleep shorts.",
       "tokens": [
-        "lingerie",
-        "pink lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "peach pink lounge set",
+        "cherry blossom embroidery",
+        "sweetheart bustier",
+        "elastic combed cotton",
+        "voluptuous friendly",
+        "love hashira comfort"
       ]
     }
   }

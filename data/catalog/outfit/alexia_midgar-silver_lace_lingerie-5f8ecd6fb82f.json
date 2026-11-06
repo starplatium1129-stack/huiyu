@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "alexia_midgar/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2562,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "alexia_midgar",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "王女格调绯红滚边极简象牙白真丝吊带",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "alexia_midgar",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A royal-tailored ivory mulberry silk slip chemise featuring crimson velvet piping, delicate gold-threaded crest motifs, and sleek side slits designed for effortless movement.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ivory silk slip",
+        "crimson velvet piping",
+        "royal chemise",
+        "gold crest embroidery",
+        "side slits",
+        "luxury nightdress"
       ]
     }
   }

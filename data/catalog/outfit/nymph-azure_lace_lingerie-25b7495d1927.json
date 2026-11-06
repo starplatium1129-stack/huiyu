@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "nymph/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2528,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "nymph",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "电波轻语 · 晴空蓝微透雪纺荷叶边连体睡衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "nymph",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭天蓝色的半透明轻雪纺荷叶边连体短睡衣，颈间系着金色小铃铛缎带颈圈，后背预留羽翼展开的半圆镂空，纯真、娇小又带着微性感的科技梦幻。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "sky blue translucent chiffon frill playsuit",
+        "golden bell choker collar",
+        "open back for wings",
+        "ruffled boyleg cut",
+        "holographic sheer textile",
+        "electronic angel loungewear"
       ]
     }
   }

@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "chen_qianyu/black_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2473,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "chen_qianyu",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "终末巡航 · 战术深灰与电光橙拼接机能分体泳衣",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "chen_qianyu",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A futuristic tactical charcoal-gray and hazard-orange accent two-piece swimsuit featuring quick-release buckles, criss-cross chest compression straps, high-cut athletic bottoms, and a lightweight waterproof thigh pouch.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "charcoal bikini",
+        "orange accents",
+        "tactical straps",
+        "chest buckles",
+        "high-cut bottom",
+        "thigh pouch",
+        "black hair",
+        "dragon horns",
+        "athletic build",
+        "focused gaze"
       ]
     }
   }

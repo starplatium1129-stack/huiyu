@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "tsukatsuki_rio/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2357,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "tsukatsuki_rio",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "全知演算 · 墨黑哑光皮质剪裁吊带胸衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tsukatsuki_rio",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套选用高科技哑光黑皮与半透明几何微孔网布拼接的干练胸衣套装，利落的工业线条完美托起傲人胸线，知性、冷峻而透着难以抗拒的高官气场。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "matte black faux-leather and sheer tech-mesh bustier set",
+        "structured underwire support",
+        "low-rise matching boy-shorts",
+        "sleek high-collar strap",
+        "Seminar president luxury lingerie"
       ]
     }
   }

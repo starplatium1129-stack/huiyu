@@ -1,28 +1,28 @@
 {
   "kind": "outfit",
   "id": "kuroneko/summer_night_black_cat_swimsuit",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1783,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "kuroneko",
     "outfit": {
       "characterId": "kuroneko",
       "id": "summer_night_black_cat_swimsuit",
-      "name": "盛夏黑猫·暗黑荷叶边系带连体泳衣",
-      "prose": "A chic black one-piece swimsuit featuring delicate fluttery frills, halter ties, and a daring teardrop front cutout accentuating her fair pale skin.",
+      "name": "夜猫暗黑荷叶边紫带哥特连体泳衣",
+      "prose": "A gothic lolita-inspired black one-piece swimsuit featuring layered chest ruffles, a deep-purple satin bow at the collar, and subtle cat-ear hair clips.",
       "tokens": [
-        "swimsuit",
-        "black_swimsuit",
-        "one-piece_swimsuit",
-        "frilled_swimsuit",
-        "halterneck",
-        "cutout",
-        "bare_shoulders"
+        "black one-piece swimsuit",
+        "frilled swimsuit",
+        "purple ribbon bow",
+        "gothic lolita swimwear",
+        "ruffled chest",
+        "cat ear clip"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "泳装 / 比基尼"
     }
   }
 }

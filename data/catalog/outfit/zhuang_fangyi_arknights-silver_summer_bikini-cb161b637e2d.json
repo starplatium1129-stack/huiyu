@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "zhuang_fangyi_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2437,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "zhuang_fangyi_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "武藏巡卫翠竹墨玉分体战术泳衣",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "zhuang_fangyi_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A high-durability martial tactical two-piece bikini in deep bamboo-green and charcoal-grey, reinforced with polished jade-ring connectors, cross-chest utility harness, and high-leg athletic briefs.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "bamboo green bikini",
+        "tactical swimwear",
+        "jade ring clasps",
+        "cross harness",
+        "athletic high-cut",
+        "wuchang guard style"
       ]
     }
   }

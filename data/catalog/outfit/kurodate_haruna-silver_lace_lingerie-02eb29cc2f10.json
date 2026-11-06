@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "kurodate_haruna/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2507,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kurodate_haruna",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "醇红饕餮 · 酒红天鹅绒镂空束胸内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kurodate_haruna",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套深酒红天鹅绒搭配黑蕾丝的华贵束胸内衣，立体钢圈托高优美胸型，双侧腰线辅以暗金丝系带收腰，散发着奢贵典雅的品位。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "wine red velvet underwire corset bra",
+        "black scalloped lace overlay",
+        "gold eyelet lace-up waist",
+        "matching silk briefs",
+        "gourmet luxury lingerie"
       ]
     }
   }

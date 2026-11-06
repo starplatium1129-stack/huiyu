@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "shorekeeper/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2422,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shorekeeper",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "星海遗珠 · 晶蓝水母渐变悬浮薄纱睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shorekeeper",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭宛如深海发光水母般空灵的半透明淡蓝渐变睡裙，裙摆撕裂出流动的水波触须轻纱，点缀着微小的数据冷光粒子，神圣、飘渺而纯粹至极。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crystalline azure gradient jellyfish gossamer slip gown",
+        "translucent tendril floating hemline",
+        "glowing biometric stardust particles",
+        "weightless ethereal boudoir attire"
       ]
     }
   }

@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "maria_mikhailovna_kujou/white_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2427,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "maria_mikhailovna_kujou",
     "outfit": {
       "id": "white_lace_lingerie",
-      "name": "暮夜心弦 · 纯白透视蕾丝吊带内衣",
+      "name": "雪境暖意 · 雾霾蓝雪纺荷叶边深V吊带裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "maria_mikhailovna_kujou",
-      "prose": "A luxurious white sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭柔软包容的雾霾蓝双层雪纺吊带长睡裙，胸前深V剪裁缀以丰盈的层叠荷叶边，衬托出丰满柔美的身段，带着如白雪般的纯真与如暖炉般的温存。",
       "tokens": [
-        "lingerie",
-        "white lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "mist blue double-layered chiffon nightgown",
+        "deep V ruffle neckline",
+        "empire waistline",
+        "flowing floor-length hem",
+        "luxurious soft drape",
+        "cozy winter boudoir dress"
       ]
     }
   }

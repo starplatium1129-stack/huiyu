@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "kasugano_sora/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2418,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kasugano_sora",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "玄关之门纯黑黑白经典哥特荷叶边吊带睡裙",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kasugano_sora",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "Her signature gothic-lolita monochrome boudoir slip dress crafted from breathable black cotton with tiered crisp white lace frills, black satin bow ties, and a flared doll silhouette.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "gothic monochrome slip",
+        "black and white lace",
+        "tiered frills",
+        "satin bows",
+        "doll silhouette",
+        "kasugano sora style"
       ]
     }
   }

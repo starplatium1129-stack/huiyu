@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "rem_rezero/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2310,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "rem_rezero",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "晨雾女仆 · 天青与纯白花边女仆风连体长水着配缎带系结",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "rem_rezero",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An intensely sweet and devoted maid-inspired swimdress in sky blue and pure white, featuring delicate ruffled apron-like front trim, crossed lace back straps, and her beloved pink and white ribbon hairpin.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "sky blue swimdress",
+        "white ruffled trim",
+        "maid style swimsuit",
+        "hair ribbon",
+        "short blue hair",
+        "hair over one eye",
+        "blue eyes",
+        "sweet smile",
+        "blush",
+        "curvaceous"
       ]
     }
   }

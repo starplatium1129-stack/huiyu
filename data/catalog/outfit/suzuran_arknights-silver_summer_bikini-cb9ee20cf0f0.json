@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "suzuran_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2335,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "suzuran_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "暖阳奶油色雏菊褶边甜美分体泳裙",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "suzuran_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A gentle cream-white and pastel daffodil-yellow two-piece swimdress with micro daisy needlework, modest double-tiered ruffled hem, and UV-blocking soft touch linen fabric.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "modest swimdress",
+        "cream and yellow swimwear",
+        "daisy embroidery",
+        "ruffled straps",
+        "flared skirt",
+        "gentle aesthetic"
       ]
     }
   }

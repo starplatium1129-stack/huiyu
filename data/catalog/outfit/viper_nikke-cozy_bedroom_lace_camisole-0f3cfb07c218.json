@@ -1,27 +1,27 @@
 {
   "kind": "outfit",
   "id": "viper_nikke/cozy_bedroom_lace_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1720,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "viper_nikke",
     "outfit": {
       "characterId": "viper_nikke",
       "id": "cozy_bedroom_lace_camisole",
-      "name": "居家私密·粉白真丝细吊带睡裙",
-      "prose": "A delicate blush pink silk camisole slip dress edged with white eyelash lace, hugging her curves with slender spaghetti straps.",
+      "name": "毒吻心弦 · 荧粉透视黑蕾丝绑带胸衣套装",
+      "prose": "一套火辣到极致的荧光粉红与黑蕾丝拼接绑带内衣，深V聚拢钢圈胸衣搭配多重交叉腰腹绑带，极尽挑逗之能事，是危险坏女人俘获猎物的致命武器。",
       "tokens": [
-        "camisole",
-        "slip_dress",
-        "spaghetti_strap",
-        "lace_trim",
-        "bare_shoulders",
-        "bare_legs"
+        "hot pink and sheer black lace strappy lingerie set",
+        "extreme plunge underwire cups",
+        "multi-strap criss-cross waist harness",
+        "cheeky thong briefs",
+        "dangerous siren boudoir"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "firefly_hsr/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2458,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "firefly_hsr",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "格拉默铁骑薄荷青白羽翼蕾丝分体睡衣",
+      "category": "睡衣 / 吊带分体套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "firefly_hsr",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A delicate dreamscape boudoir set crafted in featherweight mint-cyan and white layered chiffon, featuring fluttering wing-shaped lace trims and comfortable matching ruffled tap shorts.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "mint and white camisole",
+        "layered chiffon",
+        "wing lace trim",
+        "ruffled tap shorts",
+        "black hair ribbon",
+        "dreamscape sleepwear"
       ]
     }
   }

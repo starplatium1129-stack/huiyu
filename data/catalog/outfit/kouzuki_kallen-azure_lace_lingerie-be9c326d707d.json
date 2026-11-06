@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "kouzuki_kallen/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2485,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kouzuki_kallen",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "猩红炽意 · 交叉绑带运动风真丝内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kouzuki_kallen",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套深酒红真丝与弹性透气微透纱结合的运动风内衣，宽幅交叉绑带紧贴腹部线条，勾勒出紧致有力的小腹与利落身段，英气勃发。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "scarlet red criss-cross sheer athletic bralette",
+        "wide elasticized waist strap",
+        "boyleg briefs",
+        "silky mesh cutouts",
+        "sporty chic lingerie",
+        "fierce sensual styling"
       ]
     }
   }

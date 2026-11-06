@@ -1,26 +1,28 @@
 {
   "kind": "outfit",
   "id": "charlotte_dunois/silk_peach_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1728,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "charlotte_dunois",
     "outfit": {
       "characterId": "charlotte_dunois",
       "id": "silk_peach_camisole",
-      "name": "私密闺房·粉桃真丝细吊带睡裙",
-      "prose": "A delicate peach silk camisole slip dress trimmed with fine white scalloped lace, hugging her soft curves.",
+      "name": "法式甜心蜜桃粉蕾丝束腰真丝吊带",
+      "prose": "A Parisian-inspired peach silk two-piece boudoir set featuring delicate Valenciennes lace trims, an empire ribbon cincher, and sweet ruffled tap shorts.",
       "tokens": [
-        "peach_camisole",
-        "silk_nightgown",
-        "lace_trim",
-        "bare_shoulders",
-        "barefoot"
+        "peach silk camisole",
+        "valenciennes lace",
+        "ruffled tap shorts",
+        "empire ribbon",
+        "french sweetheart",
+        "modest boudoir set"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "睡衣 / 吊带分体套"
     }
   }
 }

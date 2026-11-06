@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "rose_oriana/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2564,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "rose_oriana",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "月华誓刃 · 纯白金线刺绣单肩透视睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "rose_oriana",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭带有古希腊神殿风格的纯白单肩雪纺睡裙，右肩以一枚精巧的暗金羽翼搭扣固定，轻纱在腰间自然垂坠出古典褶皱，英姿勃发而圣洁不可侵犯。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pure white gold-threaded one-shoulder sheer slip",
+        "antique gold wing clasp",
+        "Grecian draped silhouette",
+        "semi-sheer flowing chiffon",
+        "chivalric knightess boudoir"
       ]
     }
   }

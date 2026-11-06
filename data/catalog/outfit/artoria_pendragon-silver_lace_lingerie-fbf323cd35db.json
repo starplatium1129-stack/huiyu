@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2302,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "不列颠骑士王圣洁蓝白真丝系带睡袍",
+      "category": "睡衣 / 和风睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "artoria_pendragon",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A noble wrap robe in royal cobalt silk and pristine alabaster satin, featuring embroidered silver lion rampant motifs along the hem, a tailored sash, and graceful fluid draping.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "royal blue silk robe",
+        "white satin trim",
+        "silver lion embroidery",
+        "wrap nightgown",
+        "satin sash",
+        "king of knights style"
       ]
     }
   }

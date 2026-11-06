@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "tomotake_yoshino/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2380,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "tomotake_yoshino",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "藤花幽梦 · 浅紫水云刺绣双层和风睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tomotake_yoshino",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭淡紫色的改良和式交领真丝短睡裙，衣襟绣着细密的紫藤花枝与流水暗纹，透明的轻纱水袖自臂弯滑落，素雅端庄中展现出无尽的柔弱与诱人春光。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pale lavender silk yukata-style camisole dress",
+        "embroidered wisteria blossoms",
+        "flowing sheer kimono sleeves",
+        "side ribbon bow",
+        "elegant Japanese maiden boudoir"
       ]
     }
   }

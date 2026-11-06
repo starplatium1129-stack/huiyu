@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/crimson_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2450,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "crimson_summer_bikini",
-      "name": "曼珠朱华 · 绯红系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "喜多辉光 · 阳光番茄红与纯白荷叶边系带比基尼配太阳花编织草包",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "kita_ikuyo",
-      "prose": "A stunning crimson halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A dazzling crimson-red and pure white ruffled halter bikini featuring cheerful frills along the sweetheart bustline, side-tie bow ribbons, red hair tied in twin tails, and a bright sunflower woven straw tote bag.",
       "tokens": [
-        "crimson bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "crimson red bikini",
+        "white ruffles",
+        "sweetheart neckline",
+        "side-tie ribbon",
+        "sunflower straw bag",
+        "red hair",
+        "yellow-green eyes",
+        "blinding radiant smile",
+        "energetic jump",
+        "social butterfly aura"
       ]
     }
   }

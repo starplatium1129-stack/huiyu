@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "rena_liechtenauer/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2555,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "rena_liechtenauer",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "苍穹飞羽 · 晴空蓝透气网眼吊带短裤套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "rena_liechtenauer",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套如晴空般清爽的湛蓝与亮白拼接网眼运动睡衣，工字吊带背心凸显常年在空中翱翔的纤细背脊，搭配宽松透气的小短裤，清爽干练活力四射。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "azure sky blue breathable sports-mesh camisole",
+        "racerback cut",
+        "boy-shorts with sporty side stripes",
+        "lightweight airy fabric",
+        "energetic flying circus athlete loungewear"
       ]
     }
   }

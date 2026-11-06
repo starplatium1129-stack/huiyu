@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "nymph_arknights/pink_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2221,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "nymph_arknights",
     "outfit": {
       "id": "pink_lace_lingerie",
-      "name": "暮夜心弦 · 粉樱透视蕾丝吊带内衣",
+      "name": "赤魅织心 · 浆果红丝绒搭扣细吊带内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "nymph_arknights",
-      "prose": "A luxurious pink sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套深邃酒红天鹅绒材质的细带内衣，胸前点缀玫瑰金金属小搭扣与细网眼薄纱，兼备古灵精怪的俏皮感与直击人心的魅惑张力。",
       "tokens": [
-        "lingerie",
-        "pink lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "wine red velvet strappy bralette set",
+        "rose gold miniature buckles",
+        "black fishnet insets",
+        "high-apex cups",
+        "impish provocative lingerie",
+        "psychological interrogator boudoir"
       ]
     }
   }

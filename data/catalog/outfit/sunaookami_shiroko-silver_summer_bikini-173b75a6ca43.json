@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "sunaookami_shiroko/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2508,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "sunaookami_shiroko",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "阿拜多斯骑行风连体防晒拉链泳衣",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "sunaookami_shiroko",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A high-performance aerodynamic rashguard monokini in slate-grey and Abydos cyan, featuring a functional front thermal zipper, UPF50+ stretch fabric, and cycling utility straps.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "rashguard swimsuit",
+        "zippered monokini",
+        "sporty swimwear",
+        "slate grey and cyan",
+        "cycling inspired",
+        "athletic one-piece"
       ]
     }
   }

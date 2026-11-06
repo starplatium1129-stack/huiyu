@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "sakurajima_mai/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2297,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "sakurajima_mai",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "月光兔影 · 曜黑深丝绒修身高叉挂脖比基尼配哑光黑兔耳遮阳草帽",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "sakurajima_mai",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A deeply alluring haute-couture halter bikini in midnight black stretch velvet, featuring gold hardware clasps, daring high-leg hip ties, and an ultra-chic wide-brimmed straw hat embellished with playful subtle bunny-ear peaks.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "black velvet bikini",
+        "highleg ties",
+        "gold accents",
+        "bunny straw hat",
+        "long black hair",
+        "purple eyes",
+        "bunny hairpin",
+        "celebrity elegance",
+        "mature tsundere smile",
+        "slender model curves"
       ]
     }
   }

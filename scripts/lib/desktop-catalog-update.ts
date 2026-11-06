@@ -120,15 +120,40 @@ function updateCatalog(app: string, runtime: string, adopt = false) {
   // interactive/manual imports keep their existing strict conflict policy.
   run('export', ['--out', path.join(evidence, 'before')]);
   if (adopt) return adoptProjectCatalog(app, runtime, evidence, incoming, records.length);
-  const args = ['--file', incoming, '--preserve-local'];
-  const preview = run('import', args);
-  fs.writeFileSync(path.join(evidence, 'preview.json'), JSON.stringify(preview));
-  const applied = run('import', [...args, '--apply']);
-  fs.writeFileSync(path.join(evidence, 'applied.json'), JSON.stringify(applied));
-  const remaining = run('import', args);
-  fs.writeFileSync(path.join(evidence, 'verified.json'), JSON.stringify(remaining));
-  if (remaining.items.length) throw Error('CATALOG_UPDATE_INCOMPLETE: 导入后仍有内容差异，部署未完成。');
-  return { changed: applied.items.length, preservedLocal: applied.preservedLocal, evidence };
+  const content = path.join(runtime, 'content');
+  const backedUpPins: string[] = [];
+  for (const name of PIN_FILES) {
+    const file = path.join(app, name);
+    const dest = path.join(content, name);
+    if (fs.existsSync(file)) {
+      if (fs.existsSync(dest)) {
+        const backup = path.join(evidence, 'previous-pins', name);
+        fs.mkdirSync(path.dirname(backup), { recursive: true });
+        fs.copyFileSync(dest, backup);
+        backedUpPins.push(name);
+      }
+      fs.mkdirSync(path.dirname(dest), { recursive: true });
+      fs.copyFileSync(file, dest);
+    }
+  }
+  try {
+    const args = ['--file', incoming, '--preserve-local'];
+    const preview = run('import', args);
+    fs.writeFileSync(path.join(evidence, 'preview.json'), JSON.stringify(preview));
+    const applied = run('import', [...args, '--apply']);
+    fs.writeFileSync(path.join(evidence, 'applied.json'), JSON.stringify(applied));
+    const remaining = run('import', args);
+    fs.writeFileSync(path.join(evidence, 'verified.json'), JSON.stringify(remaining));
+    if (remaining.items.length) throw Error('CATALOG_UPDATE_INCOMPLETE: 导入后仍有内容差异，部署未完成。');
+    return { changed: applied.items.length, preservedLocal: applied.preservedLocal, evidence };
+  } catch (error) {
+    for (const name of backedUpPins) {
+      try {
+        fs.copyFileSync(path.join(evidence, 'previous-pins', name), path.join(content, name));
+      } catch {}
+    }
+    throw error;
+  }
 }
 
 if (require.main === module) {

@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "horn_arknights/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2241,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "horn_arknights",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "风暴突击队军规白棉吊带与迷彩短裤",
+      "category": "睡衣 / 运动背心套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "horn_arknights",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A heavy-duty Victorian military regulation loungewear set featuring a thick ribbed white cotton tank top with reinforced straps and desert camouflage stretch sleep shorts.",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "white military tank",
+        "ribbed heavy cotton",
+        "camo sleep shorts",
+        "lupo tail friendly",
+        "barracks issue",
+        "storm assault style"
       ]
     }
   }

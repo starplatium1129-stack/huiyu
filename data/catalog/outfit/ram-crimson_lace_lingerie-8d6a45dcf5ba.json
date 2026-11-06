@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "ram/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2292,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ram",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
+      "name": "绯色傲骨 · 浆果红方领透视束腰睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ram",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭轮廓分明的深浆果红短款吊带睡裙，典雅的方领剪裁衬托出锁骨线条，胸下搭配微弹力黑色细绑带，干练利落中透着如玫瑰般的刺与美。",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson berry square-neck sheer corset nightdress",
+        "black underbust lace-up cords",
+        "scalloped hemline",
+        "structured maid off-duty loungewear"
       ]
     }
   }

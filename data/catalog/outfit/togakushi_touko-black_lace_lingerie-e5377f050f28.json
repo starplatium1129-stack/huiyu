@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "togakushi_touko/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2466,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "togakushi_touko",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "会长私语 · 酒红天鹅绒深V露背吊带裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "togakushi_touko",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭散发着浓郁成熟女人味的深酒红天鹅绒吊带长裙，背部大面积镂空直抵腰窝，胸前深V以黑色细蕾丝包裹，优雅矜贵，将千金学姐的非凡身段勾勒得摄人心魄。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "wine red velvet plunging slip dress",
+        "open back to lower spine",
+        "black eyelash lace trims",
+        "sleek mermaid drape",
+        "mature high-society student council president loungewear"
       ]
     }
   }

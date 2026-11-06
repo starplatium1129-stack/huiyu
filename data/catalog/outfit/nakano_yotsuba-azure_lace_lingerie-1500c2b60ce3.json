@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "nakano_yotsuba/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2462,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "nakano_yotsuba",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "青翠晨光 · 苍绿运动透气吊带短裤套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "nakano_yotsuba",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套充满跃动活力的三叶草嫩绿与纯白滚边运动内衣套装，工字背心设计展现优美肩胛骨，搭配侧开衩田径小短裤，健康、明媚而充满生机。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "bright clover green breathable athletic cami",
+        "white binding trim",
+        "racerback cut",
+        "side-slit runner shorts",
+        "energetic athletic sleep set",
+        "cheerful sunny homewear"
       ]
     }
   }

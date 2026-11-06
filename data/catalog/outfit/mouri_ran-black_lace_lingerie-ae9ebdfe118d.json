@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "mouri_ran/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2414,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "mouri_ran",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "樱风小憩 · 樱粉条纹纯棉吊带睡衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "mouri_ran",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套散发着洗发水清香的浅樱粉与白相间条纹纯棉吊带睡衣，搭配同色松紧运动短裤，清爽自然，完美展现长期练习空手道的紧致健康身形。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "cherry blossom pink striped soft cotton cami",
+        "matching relaxed sleep shorts",
+        "fresh post-bath towel around neck",
+        "athletic toned physique",
+        "clean wholesome girl-next-door nightwear"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "sawamura_spencer_eriri/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2479,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "金芒傲娇 · 墨绿双拼金边蕾丝吊带内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sawamura_spencer_eriri",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套带有英伦贵族学院风采的墨绿真丝与细金边黑蕾丝拼接内衣，深V聚拢设计本想展现身为青梅竹马的女性魅力，却因害羞而彻底破功。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "forest green silk bralette set",
+        "delicate gold lace trim",
+        "black underwire cups",
+        "tiny velvet ribbon bows",
+        "British-styled tsundere luxury boudoir"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "mikasa_ackerman/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2281,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "mikasa_ackerman",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "赤巾沉心 · 炭灰修身针织细吊带短内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "mikasa_ackerman",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套实用而突显身材的深炭灰细罗纹棉针织吊带短背心与贴身短裤，弹性极佳，完美勾勒出常年战斗锻炼出的紧致马甲线与挺拔线条，朴素而充满力量之美。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "charcoal grey ribbed knit crop camisole",
+        "matching athletic cheeky shorts",
+        "firm athletic midriff definition",
+        "minimalist functional sleepwear",
+        "understated sensual knitwear"
       ]
     }
   }

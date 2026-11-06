@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "gamma_shadow/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2568,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "gamma_shadow",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "七影第三席知性藏青真丝开叉睡裙与金丝眼镜",
+      "category": "睡衣 / 和风睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "gamma_shadow",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A sophisticated executive wrap gown tailored from heavyweight navy-blue silk satin, featuring an empire waist sash, sweeping side slit, and styled with gold-rimmed reading glasses.",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "navy silk wrap gown",
+        "gold-rimmed glasses",
+        "high side slit",
+        "executive nightwear",
+        "satin sash",
+        "mitsugoshi luxury"
       ]
     }
   }

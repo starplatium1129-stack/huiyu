@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yae_miko/pink_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2421,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yae_miko",
     "outfit": {
       "id": "pink_lace_lingerie",
-      "name": "暮夜心弦 · 粉樱透视蕾丝吊带内衣",
+      "name": "神樱幻魅 · 绯白真丝高开叉和风吊带袍",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yae_miko",
-      "prose": "A luxurious pink sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭改良自鸣神大社巫女服的绯红与纯白真丝吊带开衫睡袍，高开叉至腰际，胸前以朱红御守绳结微拢，轻纱如雾随樱风微扬，神圣庄严中透着狐仙的万种风情。",
       "tokens": [
-        "lingerie",
-        "pink lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "scarlet and pure white silk kimono-cut slip robe",
+        "waist-high open slit",
+        "red sacred cord knot at cleavage",
+        "flowing sheer peignoir sleeves",
+        "divine kitsune priestess boudoir"
       ]
     }
   }

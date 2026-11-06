@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "kanzaki_kaori/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2531,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kanzaki_kaori",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "唯闪剑圣单侧长裤改装极简无痕莫代尔单肩背心",
+      "category": "睡衣 / 运动背心套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kanzaki_kaori",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A martial loungewear set inspired by her asymmetric battle gear, featuring a seamless pure white one-shoulder modal tank and an asymmetric single-legged stretch lounge pant.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "white one-shoulder tank",
+        "asymmetric lounge pant",
+        "seamless modal",
+        "saint swordmaster",
+        "nodachi friendly",
+        "disciplined loungewear"
       ]
     }
   }

@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "alice_sao/silver_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2492,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "alice_sao",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "金木樨华 · 白金镂空挂脖比基尼配金纹透光薄纱裙",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "alice_sao",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A radiant pure white and golden-bordered halterneck bikini featuring metallic floral clasps, cross-ribbon waist cords, and a translucent white silk wrap skirt embroidered with osmanthus blossom vines.",
       "tokens": [
-        "silver bikini",
+        "white bikini",
+        "gold trim",
         "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
+        "cross-wrap straps",
+        "floral buckle",
+        "translucent wrap skirt",
+        "gold embroidery",
         "collarbone",
         "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "bare midriff"
       ]
     }
   }

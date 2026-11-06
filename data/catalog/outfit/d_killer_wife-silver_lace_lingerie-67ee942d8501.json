@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "d_killer_wife/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2518,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "d_killer_wife",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "贤妻伪装纯白细褶雪纺深V围裙吊带",
+      "category": "睡衣 / 围裙吊带裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "d_killer_wife",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A provocative apron-inspired pure white pleated chiffon chemise with a plunging deep-V neckline, ruffled back cross-straps, and concealed utility loops for undercover contracts.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "white chiffon apron chemise",
+        "deep-v plunge",
+        "pleated chiffon",
+        "ruffled cross-straps",
+        "hidden loops",
+        "deadly housewife"
       ]
     }
   }

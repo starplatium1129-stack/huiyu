@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "virtuosa_arknights/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2261,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "virtuosa_arknights",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "深渊赋格 · 墨紫水波真丝高开叉长袍裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "virtuosa_arknights",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭如夜曲般深邃的深墨紫水波真丝吊带长裙，侧面极高开叉以方便夹奏大提琴，裙摆如墨汁流淌在石板上，高贵典雅中散发着让人甘愿沉沦的深渊吸引力。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "deep midnight purple watered-silk slip gown",
+        "thigh-high cello slit",
+        "delicate black lace trims",
+        "open back",
+        "flowing liquid train",
+        "hypnotic maestro boudoir attire"
       ]
     }
   }

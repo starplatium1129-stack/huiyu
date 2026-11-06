@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_r18_snow_spring",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 449,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-05T17:31:59.370Z",
   "data": {
     "id": "emilia_rezero_r18_snow_spring",
     "title": "爱蜜莉雅 · 雪中温泉",
@@ -12,7 +12,7 @@
     "characterId": "emilia_rezero",
     "description": "飘着鹅毛大雪的山间露天温泉里，爱蜜莉雅整个人泡在滚烫的乳白色泉水中，银白的长发挽在头顶，雪白的肌肤在水汽中泛着醉人的绯红——「雪花落在脸上凉凉的，身体却热得发烫……昴，不要一直站在雪地里，快进来暖和一下吧。」",
     "location": "雪山温泉",
-    "action": "泡在露天温泉中",
+    "action": "浸泡在落雪飘散的露天雪温泉中，微捧温水抚过冰肌玉骨",
     "timeOfDay": "白天",
     "lighting": "soft steam and pale winter light",
     "camera": "cowboy shot, waterline view",

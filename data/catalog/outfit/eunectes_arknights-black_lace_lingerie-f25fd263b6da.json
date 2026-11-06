@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "eunectes_arknights/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2321,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "eunectes_arknights",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "雨林机械师墨绿蛇纹系带无痕抹胸与短裙",
+      "category": "睡衣 / 抹胸短裙套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "eunectes_arknights",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A rugged tropical-mechanic sleep set featuring a supportive deep-green python-scaled stretch bandeau and an asymmetric side-tie wrap skirt made from breathable ripstop jersey.",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "python print bandeau",
+        "wrap micro skirt",
+        "snake tail cutout",
+        "deep green scales",
+        "mechanic loungewear",
+        "rainforest warrior"
       ]
     }
   }

@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "blemishine_arknights/gold_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2243,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "blemishine_arknights",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "暮夜心弦 · 灿金透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "年轻工匠暖金格纹宽松连体棉麻睡衣",
+      "category": "睡衣 / 连体睡衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "blemishine_arknights",
-      "prose": "A luxurious gold sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A relaxed, roomy one-piece lounge jumpsuit in warm golden daffodil gingham cotton-linen, featuring functional button-down front, roll-up ankle cuffs, and deep utility pockets.",
       "tokens": [
-        "lingerie",
-        "gold lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "golden gingham jumpsuit",
+        "relaxed cotton pajamas",
+        "button-down lounger",
+        "kuranta friendly",
+        "roll-up cuffs",
+        "artificer comfort"
       ]
     }
   }

@@ -1,31 +1,30 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2273,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "熔核炽浪 · 曜石黑与熔岩赤金机能镂空分体泳装配战术冷却臂套",
+      "category": "泳装 / 竞速泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "laevatain_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A high-intensity lava-black and molten-gold tactical bikini featuring fire-retardant compression fabrics, metallic quick-release clasps, high-leg cutouts, and detached cooling arm sleeves equipped with digital temperature monitors.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "black tactical bikini",
+        "molten gold trim",
+        "alloy buckles",
+        "cooling arm sleeves",
+        "long white hair",
+        "crimson eyes",
+        "toned athletic frame",
+        "impassive fierce gaze"
       ]
     }
   }

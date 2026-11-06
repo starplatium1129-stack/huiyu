@@ -1,22 +1,27 @@
 {
   "kind": "outfit",
   "id": "izumi_sagiri/nsfw_boudoir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 861,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "izumi_sagiri",
     "outfit": {
       "id": "nsfw_boudoir",
-      "name": "和泉纱雾·成人私密造型",
-      "prose": "A sheer-lace lingerie set.",
+      "name": "埃罗芒阿老师粉白条纹宽松短连体睡衣",
+      "prose": "A comfy, loose-fitting pastel-pink and marshmallow-white striped jersey cotton sleep romper with a relaxed drop-crotch, short sleeves, and front button placket.",
       "tokens": [
-        "lingerie",
-        "sheer_lace"
+        "pink striped romper",
+        "jersey cotton sleep suit",
+        "short sleeves",
+        "button placket",
+        "shut-in loungewear",
+        "eromanga comfort"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "睡衣 / 连体短裤套"
     }
   }
 }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "murasame/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2378,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "murasame",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
+      "name": "神刀灵羽 · 绯红金纹短式羽织抹胸寝衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "murasame",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件红白两色的改良短款羽织睡衣，内搭紧致纯白裹胸布风格抹胸，衣袖与裙摆绣以精致的金线神道花纹，轻盈如雀羽，娇小玲珑。",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson gold-crested spirit short haori",
+        "pure white linen sarashi wrap bodice",
+        "red string tassel accents",
+        "floating gossamer sleeves",
+        "traditional shinto fantasy sleepwear"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2272,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "赤色魔道 · 绯红真丝拼接黑蕾丝吊带内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tohsaka_rin",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套展现远坂家当家魅力的深红重磅真丝内衣，罩杯边缘饰以黑色睫毛蕾丝，搭配同色系带低腰三角裤与过膝黑色蕾丝顶边长袜，将傲娇大小姐的诱惑力推向顶峰。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson silk bralette set",
+        "black eyelash lace trims",
+        "low-rise matching briefs",
+        "black over-knee thigh-high stockings with lace tops",
+        "classic tsundere magus lingerie"
       ]
     }
   }

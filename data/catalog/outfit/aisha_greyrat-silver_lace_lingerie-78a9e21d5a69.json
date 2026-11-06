@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "aisha_greyrat/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2584,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "aisha_greyrat",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "诺斯托利亚琥珀蜜桃系带围裙风真丝吊带",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "aisha_greyrat",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A playful boudoir ensemble combining an amber-peach silk slip dress with delicate apron-styled frilled bust overlays, scalloped lace hems, and adjustable satin back ties.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "peach silk slip",
+        "apron-style nightdress",
+        "frilled bustier",
+        "scalloped lace",
+        "satin ties",
+        "cozy home sleepwear"
       ]
     }
   }

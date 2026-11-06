@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "arima_kana/crimson_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2403,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "arima_kana",
     "outfit": {
       "id": "crimson_summer_bikini",
-      "name": "曼珠朱华 · 绯红系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "十秒落泪 · 樱桃绯红荷叶边抹胸分体泳装配复古圆顶草帽",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "arima_kana",
-      "prose": "A stunning crimson halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A charming cherry-red and crisp white polka-dot ruffled bandeau bikini featuring sweetheart neckline ruching, a retro high-waist bottom with white button details, and an oversized retro fedora straw hat.",
       "tokens": [
-        "crimson bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "cherry red bikini",
+        "white polka dots",
+        "ruffled bandeau",
+        "high-waisted bottom",
+        "retro buttons",
+        "straw fedora",
+        "short red hair",
+        "magenta eyes",
+        "tsundere blush"
       ]
     }
   }

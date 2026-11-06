@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "mudrock_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2327,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "mudrock_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "黑曜柔光 · 玄黑工装透气绑带内衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "mudrock_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套利落贴合的深黑透气网布内衣，双侧肋骨处装饰有工装系带，既方便剧烈战斗后散热排汗，又将萨卡兹少女令人惊叹的丰满与白皙展露无余。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "basalt black strapping industrial-mesh bralette set",
+        "cross-back straps",
+        "breathable technical fabric",
+        "low-rise boy-shorts",
+        "contrast between soft white skin and dark utilitarian straps"
       ]
     }
   }

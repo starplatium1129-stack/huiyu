@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "muelsyse_arknights/gold_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2219,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "muelsyse_arknights",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "暮夜心弦 · 灿金透视蕾丝吊带内衣",
+      "name": "碧波涟漪 · 浅水青渐变系颈透水睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "muelsyse_arknights",
-      "prose": "A luxurious gold sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭如清泉般通透的浅水青渐变天青雪纺系颈睡裙，沾水后几近透明紧贴优美肌理，裙摆如荷叶舒展浮在水面上，清澈纯美得令人窒息。",
       "tokens": [
-        "lingerie",
-        "gold lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crystal aqua gradient halter sheer slip dress",
+        "translucent wet-look chiffon",
+        "open back",
+        "floating ruffled hemline",
+        "water lily hair accessory",
+        "ethereal aquatic boudoir attire"
       ]
     }
   }

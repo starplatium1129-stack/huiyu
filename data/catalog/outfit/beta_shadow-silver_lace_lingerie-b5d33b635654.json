@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "beta_shadow/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2561,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "beta_shadow",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "七影第二席银灰缎面深V荷叶边吊带睡裙",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "beta_shadow",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A glamorous silver-grey stretch satin chemise with a plunging neckline framed in pleated micro-ruffles, high side gather ties, and luxurious fluid texture tailored for a voluptuous silhouette.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "silver grey satin slip",
+        "plunging ruffled neckline",
+        "voluptuous fit",
+        "gather ties",
+        "stretch satin",
+        "author loungewear"
       ]
     }
   }

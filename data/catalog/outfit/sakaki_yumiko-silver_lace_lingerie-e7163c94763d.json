@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "sakaki_yumiko/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2446,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sakaki_yumiko",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "暗刺紫罗兰 · 深紫天鹅绒透视蕾丝吊带",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sakaki_yumiko",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭高贵冷艳的深紫天鹅绒细吊带胸衣，胸口拼接锋芒毕露的黑色蛛网透光薄纱，线条修长凌厉，尽显大小姐不可侵犯的尊贵与冷峻之美。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "deep royal purple velvet camisole slip",
+        "sheer black spiderweb lace panel",
+        "sharp structured cups",
+        "gold ring clasps",
+        "aristocratic tsundere boudoir dress"
       ]
     }
   }

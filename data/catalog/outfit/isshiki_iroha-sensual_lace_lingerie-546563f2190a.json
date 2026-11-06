@@ -1,28 +1,28 @@
 {
   "kind": "outfit",
   "id": "isshiki_iroha/sensual_lace_lingerie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 207,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "isshiki_iroha",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "鹅黄法式雏菊刺绣蕾丝文胸与系带短裤",
-      "prose": "A pastel yellow daisy-lace set with black velvet ribbons and a coordinating garter belt.",
+      "name": "小恶魔学妹软萌奶黄荷叶边莫代尔吊带裙",
+      "prose": "A delightfully manipulative boudoir slip dress crafted from pastel buttercream-yellow modal fabric, framed with micro-tiered ruffles, dainty tie ribbons, and flattering sweetheart contours.",
       "tokens": [
-        "yellow_lingerie",
-        "lace_bra",
-        "black_ribbon",
-        "lace_panties",
-        "garter_belt",
-        "bare_legs",
-        "garter_straps"
+        "buttercream yellow slip",
+        "micro-tiered ruffles",
+        "modal nightdress",
+        "ribbon straps",
+        "little devil kouhai",
+        "calculated cuteness"
       ],
       "characterId": "isshiki_iroha",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "睡衣 / 吊带睡裙"
     }
   }
 }

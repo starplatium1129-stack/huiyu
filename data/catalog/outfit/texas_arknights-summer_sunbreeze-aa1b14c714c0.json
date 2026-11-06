@@ -1,30 +1,28 @@
 {
   "kind": "outfit",
   "id": "texas_arknights/summer_sunbreeze",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 385,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:04:59.270755900+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "texas_arknights",
     "outfit": {
       "default": false,
       "id": "summer_sunbreeze",
       "isDefault": false,
-      "name": "微风夏日高衩解构连体泳衣与白亚麻衫",
-      "prose": "An asymmetric black one-piece swimsuit with cutouts, worn under an open, sheer white linen shirt and paired with sandals.",
+      "name": "企鹅物流极简黑皮带扣哑光分体泳衣",
+      "prose": "A tactical minimalist two-piece swimsuit engineered from matte black water-resistant synthetic fabrics, fitted with subtle leather buckle harnesses, low-waist utility swim shorts, and a chocolate pocket sheath.",
       "tokens": [
-        "black_swimsuit",
-        "one-piece_swimsuit",
-        "cutouts",
-        "asymmetrical_swimsuit",
-        "white_shirt",
-        "open_shirt",
-        "linen_shirt",
-        "bare_legs",
-        "sandals"
+        "tactical bikini",
+        "matte black swimsuit",
+        "leather buckle straps",
+        "swim shorts",
+        "lupo style",
+        "minimalist cool"
       ],
-      "characterId": "texas_arknights"
+      "characterId": "texas_arknights",
+      "category": "泳装 / 比基尼"
     }
   }
 }

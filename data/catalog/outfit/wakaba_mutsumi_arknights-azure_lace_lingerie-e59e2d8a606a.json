@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "wakaba_mutsumi_arknights/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2235,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "wakaba_mutsumi_arknights",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "青瓜素简 · 苍绿亚麻极简细吊带睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "wakaba_mutsumi_arknights",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭纯粹质朴的苍绿色纯亚麻细吊带短睡裙，无任何繁复修饰，直线条剪裁贴合少女纤瘦内敛的身形，散发着如林木初芽般清淡而让人难以忘怀的自然香气。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "sage green minimalist raw linen slip dress",
+        "ultra-thin straps",
+        "clean square neckline",
+        "straight relaxed cut",
+        "melancholic botanical musician homewear"
       ]
     }
   }

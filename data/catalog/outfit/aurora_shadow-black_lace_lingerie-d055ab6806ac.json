@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "aurora_shadow/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2566,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "aurora_shadow",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "灾厄魔女深紫半透天鹅绒深V连体吊带衣",
+      "category": "睡衣 / 连体吊带衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "aurora_shadow",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A seductive deep-purple crushed velvet and sheer mesh plunge bodysuit adorned with antique obsidian filigree clasps, high-cut hip arches, and delicate thigh garters.",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "purple velvet bodysuit",
+        "deep plunge neckline",
+        "sheer mesh panels",
+        "obsidian clasps",
+        "thigh garters",
+        "calamity witch lingerie"
       ]
     }
   }

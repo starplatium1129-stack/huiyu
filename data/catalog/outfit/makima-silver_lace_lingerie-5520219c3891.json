@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "makima/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2270,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "支配幽锁 · 纯黑透视蕾丝吊带束身裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "makima",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭剪裁极度苛求的墨黑透视蕾丝吊带束身衣，细致入微的黑色花卉暗纹紧贴身躯，颈间一抹细黑天鹅绒颈带，优雅、严苛而透着不可逾越的诱惑。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pure black sheer floral lace corset babydoll",
+        "underwire contour cups",
+        "black velvet choker necklace",
+        "semi-transparent sheer paneling",
+        "seductive minimalist control lingerie"
       ]
     }
   }

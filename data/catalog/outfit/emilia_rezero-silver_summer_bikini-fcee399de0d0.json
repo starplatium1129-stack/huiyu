@@ -1,31 +1,33 @@
 {
   "kind": "outfit",
   "id": "emilia_rezero/silver_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2312,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "emilia_rezero",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "冰雪琉璃 · 冰白与紫菀双色露背连体高衩泳装配霜花轻纱披帛",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "emilia_rezero",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A breathtaking crystalline-white and aster-purple halter monokini featuring frosted lily floral clasps, an open back, high-leg cutouts, and an ethereal sheer chiffon shawl that shimmers like fresh snow.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white monokini",
+        "purple trim",
+        "frosted flower buckle",
+        "halterneck",
+        "open back",
+        "highleg",
+        "sheer shawl",
+        "silver hair",
+        "purple eyes",
+        "elf ears",
+        "pure expression"
       ]
     }
   }

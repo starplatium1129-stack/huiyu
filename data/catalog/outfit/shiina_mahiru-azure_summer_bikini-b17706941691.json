@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/azure_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2395,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "碧海澄澈 · 水蓝系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "天使初夏 · 纯白与淡杏粉碎花微褶系带连体长泳裙配透明蕾丝遮阳手套",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "shiina_mahiru",
-      "prose": "A stunning azure halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An impeccably elegant and modest angel-inspired swimdress in pure milky white with faint apricot-blossom print overlays, featuring a layered flutter hem, soft ruffled sweetheart bust, and elbow-length sheer sun sleeves.",
       "tokens": [
-        "azure bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white and apricot swimdress",
+        "floral ruffles",
+        "sheer sun sleeves",
+        "sweetheart neckline",
+        "flaxen hair",
+        "caramel blonde hair",
+        "amber eyes",
+        "angelic grace",
+        "gentle loving gaze",
+        "modest"
       ]
     }
   }

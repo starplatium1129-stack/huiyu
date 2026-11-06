@@ -1,30 +1,28 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/silver_silk_robe",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1402,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "id": "silver_silk_robe",
-      "name": "半透银白真丝薄纱晨袍",
+      "name": "全息深空 · 极光渐变剪裁连体内衣",
       "tokens": [
-        "robe",
-        "silk_robe",
-        "white_robe",
-        "sheer_clothing",
-        "bralette",
-        "lace_bra",
-        "panties",
-        "bare_legs",
-        "barefoot"
+        "holographic aurora sheer monokini",
+        "geometric side cutouts",
+        "high-cut leg line",
+        "iridescent luminescent fabric",
+        "cyber chic strappy bodysuit",
+        "futuristic loungewear"
       ],
-      "prose": "A gossamer silver-white sheer silk robe left open in the front, revealing a minimalist lace bralette.",
+      "prose": "一套运用高科技极光渐变光泽织物的半透高衩连体内衣，腰间与背部大胆几何镂空，在夜城灯火下折射出青紫与炫金交织的梦幻光芒。",
       "default": false,
       "isDefault": false,
-      "characterId": "lucy_cyberpunk"
+      "characterId": "lucy_cyberpunk",
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

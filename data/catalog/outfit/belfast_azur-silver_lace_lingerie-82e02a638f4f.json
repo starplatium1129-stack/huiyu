@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "belfast_azur/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2296,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "belfast_azur",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "完美女仆皇家深蓝蕾丝高开叉真丝衬裙",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "belfast_azur",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A bespoke Royal Navy deep-blue silk slip gown accented with French white Chantilly lace along the neckline, an alluring high-leg side slit, and an optional sheer silk dressing shrug.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "royal blue silk slip",
+        "chantilly lace trim",
+        "high side slit",
+        "maid headband",
+        "mulberry silk",
+        "victorian elegance"
       ]
     }
   }

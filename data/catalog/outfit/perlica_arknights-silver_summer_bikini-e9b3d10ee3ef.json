@@ -1,31 +1,33 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2328,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "监督协议 · 烟霭灰与警戒橙机能拉链防晒连体泳装配战术潜水腕表",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "perlica_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A high-tech industrial functional aquatic suit in slate gray and signal orange, featuring a waterproof front-zip closure, reinforced thermal-neoprene panels, high-leg contouring, and an Endfield-spec dive telemetry wrist unit.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "slate gray swimsuit",
+        "orange accents",
+        "front zipper",
+        "functional aquatic suit",
+        "highleg",
+        "feline ears",
+        "cat tail",
+        "pale blue hair",
+        "amber eyes",
+        "composed demeanor",
+        "dive watch"
       ]
     }
   }

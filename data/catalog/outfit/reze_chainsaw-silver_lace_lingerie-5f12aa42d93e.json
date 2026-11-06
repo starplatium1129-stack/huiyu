@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2348,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "夏夜引信 · 烟紫半透蕾丝细吊带胸衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "reze_chainsaw",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套透着危险魅力的烟熏灰紫半透蕾丝胸衣套装，标志性的黑天鹅绒锁骨颈圈与细碎花卉蕾丝相衬，将少女的致命危险与惊心动魄的美感凝结一体。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "smoky violet sheer lace cropped bralette set",
+        "iconic black velvet choker with pin ring",
+        "scalloped floral edges",
+        "low-rise cheeky briefs",
+        "seductive Soviet spy nightwear"
       ]
     }
   }

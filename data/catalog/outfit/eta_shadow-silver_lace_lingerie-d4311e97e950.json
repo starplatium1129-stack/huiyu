@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "eta_shadow/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2571,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "eta_shadow",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "科学狂人极度宽松带猫耳连体摇粒绒睡衣",
+      "category": "睡衣 / 连体睡衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "eta_shadow",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "An ultra-oversized slouchy lavender polar fleece kigurumi jumpsuit featuring cat-ear hood trims, extra-long drooping sleeves, front kangaroo pockets, and drop-crotch comfort.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "lavender fleece onesie",
+        "cat ear hood",
+        "oversized kigurumi",
+        "extra long sleeves",
+        "elf ears friendly",
+        "mad scientist sleepwear"
       ]
     }
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_owl_book",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3048,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-05T17:31:59.375Z",
   "data": {
     "id": "ptilopsis_arknights_owl_book",
     "characterId": "ptilopsis_arknights",
@@ -13,7 +13,7 @@
     "category": "泰拉日常",
     "description": "图鉴里的一只鸮正望向镜头。她停在这一页，认真比较图注里的两种叫声。",
     "location": "图书馆",
-    "action": "翻看鸟类图鉴",
+    "action": "在数据机柜旁一丝不苟地翻看记载猛禽生态习性的鸟类图鉴",
     "timeOfDay": "下午",
     "lighting": "书架柔光",
     "camera": "中近景，鸟类图鉴清晰",

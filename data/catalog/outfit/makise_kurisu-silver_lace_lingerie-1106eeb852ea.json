@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "makise_kurisu/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2535,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "makise_kurisu",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "绯色实验 · 绯红真丝剪裁透视吊带内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "makise_kurisu",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套选用深绯红真丝搭配透黑细蕾丝的吊带内衣，兼具理性与感性，精致的几何罩杯轮廓与小巧黑蝴蝶结，让一向理智的助手流露出惊人的妩媚。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson satin trimmed sheer camisole set",
+        "black eyelash lace edges",
+        "geometric soft cup bralette",
+        "tiny black ribbon bows",
+        "stylish tsundere lingerie"
       ]
     }
   }

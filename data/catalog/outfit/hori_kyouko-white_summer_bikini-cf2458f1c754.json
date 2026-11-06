@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/white_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2404,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "white_summer_bikini",
-      "name": "雪白 · 纯白系带比基尼配薄纱罩衫",
+      "name": "微甜盛夏 · 纯白棉质系带挂脖比基尼配高腰复古牛仔短裤",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "hori_kyouko",
-      "prose": "A stunning white halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A fresh and unpretentious pure white ribbed cotton halterneck bikini paired with vintage high-waisted frayed denim cut-off shorts, a braided leather friendship bracelet, and a tied white linen overshirt.",
       "tokens": [
         "white bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "ribbed cotton",
+        "denim cut-off shorts",
+        "frayed hem",
+        "braided bracelet",
+        "long brown hair",
+        "brown eyes",
+        "flustered blush",
+        "toned flat stomach"
       ]
     }
   }

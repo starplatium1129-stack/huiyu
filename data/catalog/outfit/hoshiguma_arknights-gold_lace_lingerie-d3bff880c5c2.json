@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "hoshiguma_arknights/gold_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2239,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "hoshiguma_arknights",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "暮夜心弦 · 灿金透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "龙门近卫局豪杰墨黑开襟丝麻睡袍",
+      "category": "睡衣 / 和风睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "hoshiguma_arknights",
-      "prose": "A luxurious gold sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A bold and roomy samurai-inspired lounging robe crafted from black textured silk-linen blend, with wide-cut raglan sleeves, breathable open collar, and a thick rope tie.",
       "tokens": [
-        "lingerie",
-        "gold lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "black silk-linen robe",
+        "open collar lounger",
+        "oni horn friendly",
+        "tall fit",
+        "wide raglan sleeves",
+        "heroic loungewear"
       ]
     }
   }

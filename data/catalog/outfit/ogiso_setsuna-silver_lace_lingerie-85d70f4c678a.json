@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "ogiso_setsuna/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2545,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ogiso_setsuna",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "冬日初雪 · 纯白细针织滚边吊带长裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ogiso_setsuna",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭触感极其细腻温软的羊绒混纺纯白吊带长睡裙，胸口以白色绒球缎带系结，如初雪般无瑕温存，完美衬托出高岭之花内在的脆弱与炽热深情。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pure snow white fine-knit slip dress",
+        "soft pom-pom ribbon bow",
+        "delicate ribbed texture",
+        "ankle-length flowing drape",
+        "gentle melancholic romance nightgown"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "zeta_shadow/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2569,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "zeta_shadow",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "影猫匿踪 · 墨黑剪裁高弹微透系绳内衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "zeta_shadow",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套专为潜行暗杀设计的深黑高弹透光连体胸衣，多重交叉系绳贴紧身躯而不阻碍任何关节活动，柔韧轻巧，完美凸显猫系干员矫健灵敏的肉体线条。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "inky black tactical elastic sheer monokini set",
+        "flexible criss-cross harness cords",
+        "open back for cat tail",
+        "sleek feline silhouette",
+        "shadow garden elite boudoir attire"
       ]
     }
   }

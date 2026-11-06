@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "alice_nikke/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2449,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "alice_nikke",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "仙境兔兔粉白绒球连帽保暖睡衣套组",
+      "category": "睡衣 / 连帽居家服",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "alice_nikke",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A whimsical pastel-pink and marshmallow-white thermal fleece loungewear set with an oversized bunny-eared hood, pom-pom drawstrings, and ultra-soft plush sleep shorts.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "bunny fleece hoodie",
+        "pastel pink loungewear",
+        "pom pom ties",
+        "marshmallow fleece",
+        "sleep shorts",
+        "cute homewear"
       ]
     }
   }

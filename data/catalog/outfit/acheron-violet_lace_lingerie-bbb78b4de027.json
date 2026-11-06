@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "acheron/violet_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2294,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "acheron",
     "outfit": {
       "id": "violet_lace_lingerie",
-      "name": "暮夜心弦 · 幽紫透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "幽紫暗纹真丝系带晨袍与薄纱内衬",
+      "category": "睡衣 / 晨袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "acheron",
-      "prose": "A luxurious violet sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A flowing deep-violet silk kimono-style lounging robe woven with faint spider lily jacquard patterns, secured by a wide charcoal sash, over a matching sheer black lace camisole.",
       "tokens": [
-        "lingerie",
-        "violet lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "violet silk robe",
+        "kimono lounger",
+        "spider lily jacquard",
+        "sheer lace camisole",
+        "untied sash",
+        "luxury sleepwear"
       ]
     }
   }

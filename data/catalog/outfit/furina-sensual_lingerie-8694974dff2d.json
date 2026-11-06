@@ -1,26 +1,27 @@
 {
   "kind": "outfit",
   "id": "furina/sensual_lingerie",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "furina",
     "outfit": {
       "id": "sensual_lingerie",
-      "name": "天蓝白蕾丝真丝睡裙",
-      "prose": "A sky-blue silk babydoll edged in fine white lace, with matching briefs and sheer pale-blue thighhighs.",
+      "name": "水之歌姬深海群青荷叶边丝缎吊带礼服睡裙",
+      "prose": "An operatic boudoir slip dress crafted from liquid-finish ultramarine silk satin, detailed with tiered narcissus floral lace ruffles along the sweetheart bustier and a high-low flowing hem.",
       "tokens": [
-        "light blue babydoll",
-        "white lace trim",
-        "silk",
-        "sheer fabric",
-        "matching panties",
-        "sheer pale blue thighhighs"
+        "ultramarine satin slip",
+        "narcissus lace",
+        "sweetheart bustier",
+        "tiered ruffles",
+        "high-low hem",
+        "fontaine starlet style"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "睡衣 / 吊带睡裙"
     }
   }
 }

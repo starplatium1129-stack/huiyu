@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "lucy_cyberpunk/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2287,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "lucy_cyberpunk",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "霓虹暗潜 · 幻彩虹光赛博反光连体泳装配高叉战术腰环",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "lucy_cyberpunk",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A sleek futuristic cyber-swimsuit made of iridescent holographic white-and-charcoal vinyl, featuring high-leg cuts, a neon cyan luminescent spine strip, and chrome waist clips.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "holographic swimsuit",
+        "highleg monokini",
+        "luminescent strip",
+        "cybernetic accents",
+        "chrome clips",
+        "multicolored hair",
+        "bob cut",
+        "pale skin",
+        "toned abs",
+        "bare hips"
       ]
     }
   }

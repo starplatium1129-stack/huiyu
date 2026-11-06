@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "medea_caster/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2417,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "medea_caster",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "神代紫魅 · 深紫丝绒刺绣半透抹胸睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "medea_caster",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭高贵神秘的深紫天鹅绒抹胸短睡裙，前胸拼接黑色蛛网纹细纱，裙幅边缘以金线勾勒出古典神殿符文，成熟华丽，散发着远古神代魔女的致命吸引力。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "deep royal purple velvet slip dress",
+        "sheer spiderweb mesh chest panel",
+        "gold filigree runic embroidery",
+        "sweetheart neckline",
+        "mature sorceress boudoir attire"
       ]
     }
   }

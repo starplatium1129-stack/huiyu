@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "misaka_mikoto/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2573,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "misaka_mikoto",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "电磁呱步 · 珊瑚橘棉质滚边呱太印花吊带背心",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "misaka_mikoto",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套元气可爱的珊瑚粉橘纯棉吊带背心与短裤，胸前口袋绣着她最宝贝的绿色呱太头像，边缘以白棉细线滚边，既舒适居家又带着她特有的男孩子气可爱。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "coral pink soft cotton camisole set",
+        "green frog mascot embroidered pocket",
+        "white taped edges",
+        "casual track-style sleep shorts",
+        "sporty tsundere homewear"
       ]
     }
   }

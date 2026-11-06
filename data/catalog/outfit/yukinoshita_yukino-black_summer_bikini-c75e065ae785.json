@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2306,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "侍奉部雪境深海纯白镶边高领连身泳装",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "yukinoshita_yukino",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A dignified high-neck hydrodynamic one-piece swimsuit in midnight navy, bordered with crisp white athletic piping, keyhole back cutout, and modest, razor-sharp minimalist tailoring.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "high-neck swimsuit",
+        "navy and white one-piece",
+        "white piping",
+        "keyhole back",
+        "minimalist monokini",
+        "ice queen style"
       ]
     }
   }

@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "faln_touden/gold_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2489,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "faln_touden",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "暮夜心弦 · 灿金透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "迷宫魔法使暖麦黄色纯棉宽松蕾丝睡裙",
+      "category": "睡衣 / 纯棉长睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "faln_touden",
-      "prose": "A luxurious gold sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A rustic and roomy campfire nightdress tailored from unbleached wheat-yellow natural cotton, featuring gathered elastic wrists, scalloped lace neck, and non-binding silhouette.",
       "tokens": [
-        "lingerie",
-        "gold lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "wheat yellow cotton nightdress",
+        "scalloped lace collar",
+        "roomy nightgown",
+        "elastic gathered cuffs",
+        "unbleached cotton",
+        "dungeon camp comfort"
       ]
     }
   }

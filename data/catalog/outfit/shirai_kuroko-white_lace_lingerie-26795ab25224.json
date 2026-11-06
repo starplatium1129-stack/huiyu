@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "shirai_kuroko/white_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2483,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shirai_kuroko",
     "outfit": {
       "id": "white_lace_lingerie",
-      "name": "暮夜心弦 · 纯白透视蕾丝吊带内衣",
+      "name": "风纪破防 · 绯红蕾丝透视吊袜内衣套装",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shirai_kuroko",
-      "prose": "A luxurious white sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套极尽夸张性感的深红透视蕾丝钢圈内衣，搭配繁复交错的细黑吊袜带与蕾丝边长筒袜，本打算用于夜袭攻略，此刻却成了彻底出糗的绝妙风景。",
       "tokens": [
-        "lingerie",
-        "white lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson sheer lace underwire bra set",
+        "intricate black garter belt straps",
+        "lace-topped stockings",
+        "flustered teleporter boudoir lingerie"
       ]
     }
   }

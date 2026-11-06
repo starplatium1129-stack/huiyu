@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "kurokawa_akane/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2362,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kurokawa_akane",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "水纹独幕 · 薰衣草紫微透水波真丝吊带裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kurokawa_akane",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭泛着水波般微光的薰衣草浅紫真丝睡裙，极细双肩带搭配后背深V镂空，胸口隐约透出如梦似幻的珍珠光泽，温婉动人至极。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "lavender purple watered-silk camisole slip",
+        "open back deep V cut",
+        "pearlized sheen texture",
+        "delicate double shoulder straps",
+        "romantic flowing loungewear"
       ]
     }
   }

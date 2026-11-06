@@ -1,16 +1,16 @@
 {
   "kind": "outfit",
   "id": "suou_amane/mihama_uniform",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 643,
   "createdAt": null,
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-06T01:02:18.784Z",
   "data": {
     "characterId": "suou_amane",
     "outfit": {
       "id": "mihama_uniform",
-      "name": "美浜紫衫白褶裙制服",
-      "prose": "a lavender sailor-collar shirt with relaxed upper buttons and a loose plaid tie, a high-waist white pleated skirt, sheer black thigh-high stockings and black loafers",
+      "name": "美滨紫衫白褶裙制服（天音款）",
+      "prose": "The Mihama Academy purple blazer and white pleated skirt uniform fitted loosely for Amane.",
       "tokens": [
         "school uniform",
         "lavender shirt",

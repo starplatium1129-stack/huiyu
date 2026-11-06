@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2574,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "罗德岛元老极简冷绿真丝高领收腰睡袍",
+      "category": "睡衣 / 和风睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kaltsit_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "An austere and intellectual loungewear robe tailored in cool sage-green mulberry silk, featuring a structured mandarin stand-collar, belted sash, and concealed medical utility pockets.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "sage green silk robe",
+        "mandarin stand collar",
+        "belted waist sash",
+        "lynx ears friendly",
+        "austere elegance",
+        "kaltsit personal wear"
       ]
     }
   }

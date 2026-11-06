@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "ogiso_setsuna/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2544,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "ogiso_setsuna",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "届不到的夏 · 纯白与海军蓝水手领复古分体水着配细条纹绑带",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "ogiso_setsuna",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A timeless, nostalgic sailor-collared two-piece swimsuit in crisp snow-white and deep marine-navy, featuring striped tie-side accents, a delicate navy neckerchief bow, and a breezy pleated mini skirt.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "sailor collar bikini",
+        "white and navy",
+        "striped tie",
+        "pleated swim skirt",
+        "long dark hair",
+        "brown eyes",
+        "melancholy smile",
+        "gentle elegance",
+        "modest"
       ]
     }
   }

@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2399,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "甜品师蜂蜜淡黄与草莓格纹系带泳装",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "waguri_kaoruko",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A delightfully sweet two-piece halter bikini featuring warm honey-yellow fabric bordered in strawberry-pink gingham frills, candy-shaped bow clasps, and a sheer apron-style beach wrap.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "gingham bikini",
+        "honey yellow and pink",
+        "strawberry gingham",
+        "frilled edges",
+        "candy bow ties",
+        "sweet aesthetic"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/gold_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2251,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "暮夜心弦 · 灿金透视蕾丝吊带内衣",
+      "name": "矩阵协议 · 冰灰透气几何网纱吊带连体衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ptilopsis_arknights",
-      "prose": "A luxurious gold sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套剪裁严谨的冷灰白色透气弹力连体内衣，结合蜂窝状微透网眼与流线型结构线，如同精密科技外壳般贴合躯体，冰冷中透着令人惊艳的柔和体温。",
       "tokens": [
-        "lingerie",
-        "gold lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ice grey technical sheer mesh teddy bodysuit",
+        "geometric honeycomb cutouts",
+        "minimalist streamline piping",
+        "supportive wireless cups",
+        "cybernetic owl lingerie"
       ]
     }
   }

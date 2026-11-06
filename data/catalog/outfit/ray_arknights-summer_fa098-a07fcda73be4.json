@@ -1,21 +1,28 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/summer_fa098",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2050,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-04T05:45:59.862185800+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
       "id": "summer_fa098",
-      "name": "夏卉 FA098·白色泳装与黑色短裤",
-      "prose": "A white summer bikini top with black shorts, a light white jacket and a flower hair ornament.",
+      "name": "荒漠猎影 · 荒原卡其与沙漠迷彩速干分体冲浪水着配战术狙击测距腕带",
+      "prose": "A tactical field-ready two-piece swimsuit in desert khaki and muted brush-camo neoprene, featuring reinforced elastic straps, a quick-dry sports top, and an integrated electronic rangefinder wrist strap.",
       "tokens": [
-        "white bikini top",
-        "black shorts",
-        "light white jacket",
-        "flower hair ornament"
+        "khaki bikini",
+        "camo neoprene",
+        "tactical straps",
+        "sporty top",
+        "rangefinder watch",
+        "short blonde hair",
+        "cautus ears",
+        "rabbit ears",
+        "green eyes",
+        "athletic",
+        "focused expression"
       ],
       "characterId": "ray_arknights",
       "default": false,
@@ -30,7 +37,8 @@
         "violet eyes",
         "rabbit ears"
       ],
-      "identityProseOverride": "Ray from Arknights has very long pink hair, violet eyes and rabbit ears."
+      "identityProseOverride": "Ray from Arknights has very long pink hair, violet eyes and rabbit ears.",
+      "category": "泳装 / 比基尼"
     }
   }
 }

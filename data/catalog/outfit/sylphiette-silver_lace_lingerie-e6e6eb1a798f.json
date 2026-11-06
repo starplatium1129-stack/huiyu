@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "sylphiette/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2340,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sylphiette",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "森之新约 · 薄荷浅绿镂空雪纺吊带短裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sylphiette",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭清新温婉的浅薄荷绿双层雪纺吊带短裙，胸前装饰精巧的白蕾丝三叶草纹样，轻盈飘逸如林间晨风，完美展现精灵少女小巧纤细而又玲珑有致的温软体态。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pale mint green sheer chiffon camisole slip",
+        "white clover lace applique",
+        "scalloped mini hem",
+        "delicate double straps",
+        "gentle forest elf bridal sleepwear"
       ]
     }
   }

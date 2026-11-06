@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_concert_program",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3098,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-05T17:31:59.384Z",
   "data": {
     "id": "virtuosa_arknights_concert_program",
     "characterId": "virtuosa_arknights",
@@ -13,7 +13,7 @@
     "category": "泰拉日常",
     "description": "她翻到今晚的曲目，指给你看其中一首，说想听听这次的演奏会有什么不同。",
     "location": "音乐厅门厅",
-    "action": "翻看节目单",
+    "action": "优雅倚靠着漆黑大提琴箱，修长手指翻阅着今晚的独奏音乐会节目单",
     "timeOfDay": "夜晚",
     "lighting": "门厅金色灯光",
     "camera": "中景，节目单与大厅同框",

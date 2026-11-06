@@ -1,29 +1,29 @@
 {
   "kind": "outfit",
   "id": "eyjafjalla_arknights/soft_nightdress",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1370,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "eyjafjalla_arknights",
     "outfit": {
       "id": "soft_nightdress",
-      "name": "奶油薄棉蕾丝睡裙",
-      "prose": "A cream semi-sheer cotton nightdress with a scalloped lace V-neck and a high hem slit, worn barefoot.",
+      "name": "火山学者淡粉暖羊毛针织开衫内搭纯棉衬裙",
+      "prose": "A heart-soothing boudoir set combining an oversized marshmallow-pink angora knit wrap cardigan with a breathable pure-white cotton slip dress and anti-chill foot warmers.",
       "tokens": [
-        "nightgown",
-        "cotton_nightdress",
-        "v-neck",
-        "lace_trim",
-        "high_slit",
-        "bare_legs",
-        "barefoot"
+        "pink knit cardigan",
+        "angora wool wrap",
+        "white cotton slip",
+        "caprinae horn cutout",
+        "soft foot warmers",
+        "gentle scholar style"
       ],
       "characterId": "eyjafjalla_arknights",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "睡衣 / 针织开衫套"
     }
   }
 }

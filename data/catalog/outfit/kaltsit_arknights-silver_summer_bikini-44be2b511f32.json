@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "kaltsit_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2325,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "kaltsit_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "万国医典 · 临床冷灰与墨黑极简立领拉链修身连体泳衣配雪纺防晒长袍",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "kaltsit_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A clinical and impeccably tailored cool-gray and obsidian-black competition-style one-piece swimsuit featuring a high stand-up collar with silver medical zipper, feline ears, and an ankle-length white linen lab duster.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "cool gray swimsuit",
+        "black trim",
+        "stand collar",
+        "front zipper",
+        "white linen duster",
+        "cat ears",
+        "green hair",
+        "green eyes",
+        "stoic analytical expression",
+        "slender elegant frame"
       ]
     }
   }

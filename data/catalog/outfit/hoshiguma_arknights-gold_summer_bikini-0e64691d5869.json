@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "hoshiguma_arknights/gold_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2238,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "hoshiguma_arknights",
     "outfit": {
       "id": "gold_summer_bikini",
-      "name": "流金澄晖 · 灿金系带比基尼配薄纱罩衫",
+      "name": "般若镇浪 · 墨绿与玄黑鬼角战术分体运动泳衣配般若图腾沙滩巾",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "hoshiguma_arknights",
-      "prose": "A stunning gold halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A bold forest-green and charcoal athletic bikini with reinforced elastic underbust bands, a single oni horn rising proudly from her forehead, muscular tall physique, and a giant red Hannya-mask beach towel.",
       "tokens": [
-        "gold bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "forest green bikini",
+        "charcoal trim",
+        "athletic straps",
+        "single oni horn",
+        "green hair",
+        "tall muscular build",
+        "toned abs",
+        "broad open laugh",
+        "carrying surfboard"
       ]
     }
   }

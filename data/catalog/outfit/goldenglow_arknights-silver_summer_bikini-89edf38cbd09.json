@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "goldenglow_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2264,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "goldenglow_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "澄海静电 · 暖橘绒黄荷叶边挂脖分体泳装配毛绒小猫发卡",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "goldenglow_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A fluffy pastel-apricot and cream-yellow ruffled halter bikini adorned with soft feline paw prints, delicate side-tie bows, cat ears, and an open lightweight white cotton beach cardigan.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "apricot bikini",
+        "yellow ruffles",
+        "sweetheart neckline",
+        "side-tie ribbon",
+        "white cotton cardigan",
+        "cat ears",
+        "pink hair",
+        "green eyes",
+        "shy blush",
+        "soft electric sparks"
       ]
     }
   }

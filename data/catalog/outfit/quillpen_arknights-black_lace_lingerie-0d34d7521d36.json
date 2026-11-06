@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "quillpen_arknights/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2331,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "quillpen_arknights",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "微醺薄暮 · 灰紫绉纱滚边抹胸短睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "quillpen_arknights",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件如熟透紫梅般温存的灰紫绉纱抹胸睡裙，胸口覆有一层轻软如羽毛的白色蕾丝飞边，宽松舒适，随性自然地流露出小巧娇柔的少女体态。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "dusty lilac crinkled chiffon tube slip",
+        "soft feathery white lace trim",
+        "elasticized shirred bustier",
+        "relaxed sleep dress",
+        "cozy drowsy loungewear"
       ]
     }
   }

@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "mizuhara_chizuru/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2460,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "mizuhara_chizuru",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "素颜心弦 · 赤陶色真丝细褶吊带裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "mizuhara_chizuru",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭低调典雅的赤陶橙真丝吊带睡裙，胸前缀有精巧风琴细褶与米白蕾丝花边，质感高级内敛，衬托出女演员私底下无可挑剔的优美体态。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "terracotta orange-brown silk slip dress",
+        "fine pleats at bust",
+        "delicate beige lace trim",
+        "thin spaghetti straps",
+        "natural luxurious sheen",
+        "mature girl-next-door homewear"
       ]
     }
   }

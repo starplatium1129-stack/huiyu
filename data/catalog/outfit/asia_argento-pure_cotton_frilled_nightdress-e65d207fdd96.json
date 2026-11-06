@@ -1,28 +1,28 @@
 {
   "kind": "outfit",
   "id": "asia_argento/pure_cotton_frilled_nightdress",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1764,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "asia_argento",
     "outfit": {
       "characterId": "asia_argento",
       "id": "pure_cotton_frilled_nightdress",
-      "name": "圣洁闺房·纯白棉质荷叶边吊带睡裙",
-      "prose": "An angelic white fine-cotton slip nightgown with scalloped lace trim, soft ruffled hemline, and gentle spaghetti straps.",
+      "name": "纯洁圣女薄荷浅绿小碎花棉质长睡裙",
+      "prose": "A modest Victorian-inspired pale mint-green long cotton nightdress patterned with microscopic spring calico blossoms, scalloped eyelet lace ruffles, and gentle high-neck gathers.",
       "tokens": [
-        "nightgown",
-        "white_nightgown",
-        "cotton_dress",
-        "spaghetti_straps",
-        "frilled_dress",
-        "bare_shoulders",
-        "bare_legs"
+        "mint calico nightgown",
+        "long cotton nightdress",
+        "scalloped lace ruffles",
+        "modest high neck",
+        "victorian gathered hem",
+        "wholesome sleepwear"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "睡衣 / 纯棉长睡裙"
     }
   }
 }

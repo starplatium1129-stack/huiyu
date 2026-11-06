@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "kurokawa_akane/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2361,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "kurokawa_akane",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "深海共鸣 · 渐变群青与夜空黑系带抹胸分体泳装配透光防晒纱巾",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "kurokawa_akane",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A deeply artistic gradient ultramarine-blue and midnight-black bandeau bikini featuring delicate criss-cross wrap ties, sparkling star charms, and an airy indigo-tinted chiffon scarf trailing in the breeze.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "gradient blue bikini",
+        "black straps",
+        "cross-wrap ties",
+        "star charms",
+        "indigo chiffon scarf",
+        "medium blue hair",
+        "purple eyes",
+        "star eyes",
+        "method actress gaze",
+        "slender build"
       ]
     }
   }

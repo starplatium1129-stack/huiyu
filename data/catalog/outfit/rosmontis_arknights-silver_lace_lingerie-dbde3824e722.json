@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "rosmontis_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2233,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "rosmontis_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "云朵浅梦 · 浅薄荷绿双层软棉吊带娃娃裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "rosmontis_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件蓬松软糯如云朵般的浅薄荷绿纯棉娃娃吊带裙，胸前装饰着小猫爪刺绣与淡白滚边，如初雪初霁般纯净温存，给予少女最温柔安心的包覆。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pale mint green ultra-soft cloud cotton babydoll slip",
+        "tiny kitten paw embroidery",
+        "white scallop trim",
+        "loose empire silhouette",
+        "innocent fragile comforting sleepwear"
       ]
     }
   }

@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "shiiba_tsumugi/azure_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2552,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "shiiba_tsumugi",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "碧海澄澈 · 水蓝系带比基尼配薄纱罩衫",
+      "name": "素色假面 · 墨绿与深黑假两件运动防磨背心分体水着配短款透气平角泳裤",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "shiiba_tsumugi",
-      "prose": "A stunning azure halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A tomboyish yet undeniably cute two-piece athletic tankini in dark olive-green and charcoal, featuring a racerback cropped tank with supportive inner lining, paired with comfortable low-rise board shorts.",
       "tokens": [
-        "azure bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "olive green tankini",
+        "sporty crop top",
+        "board shorts",
+        "black trim",
+        "short black hair",
+        "blue eyes",
+        "flat chest",
+        "tomboy charm",
+        "bashful smile",
+        "athletic build"
       ]
     }
   }

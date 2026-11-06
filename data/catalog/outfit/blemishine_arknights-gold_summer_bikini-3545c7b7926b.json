@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "blemishine_arknights/gold_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2242,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "blemishine_arknights",
     "outfit": {
       "id": "gold_summer_bikini",
-      "name": "流金澄晖 · 灿金系带比基尼配薄纱罩衫",
+      "name": "荣光暖阳 · 耀金与象牙白系带镂空泳装配透光工装防晒衣",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "blemishine_arknights",
-      "prose": "A stunning gold halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A warm golden-yellow and ivory-white halter bikini featuring metallic horse-bit buckles, double hip-strap cords, and a sheer oversized buttercup-yellow linen camp shirt worn completely unbuttoned.",
       "tokens": [
         "gold bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
+        "ivory white trim",
+        "metallic buckle",
+        "strappy hip cords",
+        "open linen shirt",
+        "horse ears",
+        "horse tail",
+        "blonde hair",
         "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "sunlit smile"
       ]
     }
   }

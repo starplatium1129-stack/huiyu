@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "kotori_itsuka/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2527,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kotori_itsuka",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "草莓初熟 · 绯红印花棉麻系带娃娃裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "kotori_itsuka",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件娇俏可人的绯红草莓碎花棉麻娃娃吊带裙，胸口以白色缎带交错系成蝴蝶结，蓬松裙摆短至大腿，透着稚气与初熟交织的甜蜜吸引力。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crimson strawberry print babydoll nightdress",
+        "white satin criss-cross ribbons",
+        "empire waist ruffled hem",
+        "soft linen fabric",
+        "cute sweet boudoir slip"
       ]
     }
   }

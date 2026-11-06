@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "ceobe_arknights/crimson_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2252,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "ceobe_arknights",
     "outfit": {
       "id": "crimson_summer_bikini",
-      "name": "曼珠朱华 · 绯红系带比基尼配薄纱罩衫",
+      "name": "烈夏狂奔 · 艳阳赤红与兽纹部落系带比基尼配贝壳项链",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "ceobe_arknights",
-      "prose": "A stunning crimson halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A wild and vibrant scarlet-red and warm-khaki bikini with rustic cord ties, wooden bead fasteners, a natural seashell choker necklace, and durable waterproof leather arm guards.",
       "tokens": [
-        "crimson bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
+        "red bikini",
+        "rustic ties",
+        "wooden beads",
+        "seashell necklace",
+        "dog ears",
+        "dog tail",
+        "honey skin",
         "bare midriff",
-        "bare thighs"
+        "feral energy",
+        "broad smile"
       ]
     }
   }

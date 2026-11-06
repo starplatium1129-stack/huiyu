@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "karuizawa_kei/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2525,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "karuizawa_kei",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "辣妹心扉香槟米色丝缎蕾丝细带吊带短裙",
+      "category": "睡衣 / 吊带睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "karuizawa_kei",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A romantic champagne-beige mulberry silk slip chemise embellished with fine French eyelash lace along the sweetheart neckline, matching tap shorts, and soft adjustable straps.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "champagne silk slip",
+        "eyelash lace trim",
+        "sweetheart neckline",
+        "ruffled tap shorts",
+        "honey blonde contrast",
+        "romantic boudoir"
       ]
     }
   }

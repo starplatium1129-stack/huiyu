@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "delta_shadow/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2563,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "delta_shadow",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "野性兽姬豹纹拼接弹性抹胸与毛绒热裤",
+      "category": "睡衣 / 运动背心套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "delta_shadow",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A primal loungewear combo featuring an elastic cheetah-print stretch bandeau with moisture-wicking lining and ultra-soft black faux-fur trimmed sleep shorts.",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "cheetah print bandeau",
+        "stretch crop top",
+        "faux-fur sleep shorts",
+        "beastgirl friendly",
+        "primal loungewear",
+        "tail cutout"
       ]
     }
   }

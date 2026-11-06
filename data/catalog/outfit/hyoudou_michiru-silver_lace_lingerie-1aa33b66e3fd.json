@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "hyoudou_michiru/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2533,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "hyoudou_michiru",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "摇滚贝斯手破洞黑色无袖工字背心与牛仔短裤",
+      "category": "睡衣 / 运动背心套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "hyoudou_michiru",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A rebellious rock-and-roll loungewear set featuring a distressed black washed-cotton racerback tank top with raw-edge armholes, paired with ultra-comfortable stretch denim cutoffs.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "distressed black tank",
+        "raw-edge racerback",
+        "frayed denim sleep shorts",
+        "sun-kissed athletic",
+        "guitarist loungewear",
+        "rocker casual"
       ]
     }
   }

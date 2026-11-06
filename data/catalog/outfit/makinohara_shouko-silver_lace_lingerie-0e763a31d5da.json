@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "makinohara_shouko/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2290,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "makinohara_shouko",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "朝霞白浪 · 珍珠白荷叶滚边真丝细吊带",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "makinohara_shouko",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件飘逸温存的珍珠白双层真丝细吊带睡裙，胸前与下摆装饰着如微浪般的层叠小荷叶边，素净中蕴含着无与伦比的成熟包容与温柔情意。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pearl white ruffled silk slip dress",
+        "delicate flutter sleeves",
+        "double layered sheer hemline",
+        "natural mother-of-pearl sheen",
+        "gentle mature nightwear"
       ]
     }
   }

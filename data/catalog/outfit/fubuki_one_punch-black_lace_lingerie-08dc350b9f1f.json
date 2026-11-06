@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "fubuki_one_punch/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2413,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "fubuki_one_punch",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "地狱吹雪墨绿天鹅绒深V高贵吊带睡袍",
+      "category": "睡衣 / 晚礼睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "fubuki_one_punch",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A breathtaking emerald-green crushed velvet plunge boudoir gown crafted with high-leg side slits, a daring décolletage, and interior corsetry tailored for an hourglass silhouette.",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "emerald velvet gown",
+        "plunging neckline",
+        "high side slit",
+        "crushed velvet",
+        "hourglass tailoring",
+        "blizzard queen style"
       ]
     }
   }

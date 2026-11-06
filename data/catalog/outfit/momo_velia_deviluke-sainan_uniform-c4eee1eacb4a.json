@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "momo_velia_deviluke/sainan_uniform",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 675,
   "createdAt": null,
-  "updatedAt": "2026-10-15T13:15:59.100078900+00:00",
+  "updatedAt": "2026-11-06T01:02:18.787Z",
   "data": {
     "characterId": "momo_velia_deviluke",
     "outfit": {
       "default": true,
       "id": "sainan_uniform",
       "isDefault": true,
-      "name": "彩南高校标准水手制服",
-      "prose": "a white sailor blouse with teal collar and chest bow, teal pleated miniskirt, black thighhighs with garter straps and dark loafers",
+      "name": "彩南高校标准水手制服（梦梦淑女款）",
+      "prose": "The Sainan High School sailor uniform neatly arranged with ribbon by Momo.",
       "tokens": [
         "sainan high school uniform",
         "white sailor blouse",

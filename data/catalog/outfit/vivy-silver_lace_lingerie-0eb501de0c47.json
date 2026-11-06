@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "vivy/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2429,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "vivy",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "心之音阶 · 晶蓝光感剪裁透视连体内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "vivy",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套充满未来流线型美感的晶透水蓝连体内衣，结合高科技微光纤维与半透蕾丝，腰侧微露音符频率波形光导纤维，将歌姬完美的仿生曲线展现得神圣而动人。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "crystalline cyan fiber-optic sheer teddy bodysuit",
+        "streamlined soundwave luminescent piping",
+        "delicate underwire cups",
+        "semi-translucent futuristic mesh",
+        "songstress diva boudoir"
       ]
     }
   }

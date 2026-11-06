@@ -1,33 +1,28 @@
 {
   "kind": "outfit",
   "id": "nakano_itsuki/ruffled_cotton_nightgown",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1526,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "nakano_itsuki",
     "outfit": {
       "id": "ruffled_cotton_nightgown",
-      "name": "典雅荷叶边纯白真丝晨袍短睡裙",
-      "prose": "A luxurious ivory silk morning robe draped over a ruffled slip mini dress.",
+      "name": "星芒微暖 · 绯红星纹纯棉排扣吊带裙",
+      "prose": "一件洋溢着居家暖意的正红纯棉排扣吊带睡裙，领口绣有金色小星星，裙摆舒适宽松，质地厚实亲肤，透出五月独有的端庄持重与可爱烟火气。",
       "tokens": [
-        "robe",
-        "silk_robe",
-        "white_robe",
-        "negligee",
-        "white_dress",
-        "frills",
-        "ruffles",
-        "bare_shoulders",
-        "collarbone",
-        "bare_legs",
-        "barefoot"
+        "scarlet red cotton button-front camisole slip",
+        "tiny golden star embroidery",
+        "comfortable relaxed fit",
+        "mother-of-pearl buttons",
+        "wholesome cozy loungewear"
       ],
       "isNsfw": false,
       "characterId": "nakano_itsuki",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

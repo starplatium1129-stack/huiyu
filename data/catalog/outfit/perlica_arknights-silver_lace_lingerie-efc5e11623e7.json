@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "perlica_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2329,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "perlica_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "终末引力 · 烟蓝纳米剪裁深V透气胸衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "perlica_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套融合未来纳米纤维面料的烟蓝色透气胸衣短裤套，极简利落的冷感几何线条贴合身躯，兼备高级行政人员的理智克制与女性体态的优美起伏。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "slate blue nano-mesh breathable crop bustier set",
+        "high-tech carbon fiber strap accents",
+        "deep V cut",
+        "boyleg shorts",
+        "sleek futuristic minimalist sleepwear"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "suou_yuki/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2426,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "suou_yuki",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "幽夜假面 · 烟墨微透蕾丝吊带小洋装睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "suou_yuki",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件兼具名媛优雅与小恶魔挑衅的烟墨色透视蕾丝吊带睡裙，胸前缀以小巧黑丝绒蝴蝶结，轻薄的裙身贴合娇小曼妙的少女躯体，散发着让人难以捉摸的危险吸引力。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "smoky charcoal sheer lace slip dress",
+        "black velvet ribbon bows",
+        "delicate empire waist",
+        "semi-sheer layered hem",
+        "mischievous little-sister luxury nightwear"
       ]
     }
   }

@@ -1,29 +1,27 @@
 {
   "kind": "outfit",
   "id": "rossweisse/sheer_indigo_silk_nightgown",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1760,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "rossweisse",
     "outfit": {
       "characterId": "rossweisse",
       "id": "sheer_indigo_silk_nightgown",
-      "name": "闺房微醺·深蓝半透明真丝吊带睡裙",
-      "prose": "A seductive deep indigo silk slip nightgown edged with intricate black floral lace, hanging gently from gossamer spaghetti straps.",
+      "name": "极北冰华 · 冰晶海蓝透视蕾丝吊带内衣",
+      "prose": "一套具有北欧冰晶神圣美感的水蓝色透视蕾丝内衣，罩杯边缘以精致银丝勾勒出雪花图案，虽然是为了省钱在特卖场买下的，却将女武神完美的熟女身段勾勒得淋漓尽致。",
       "tokens": [
-        "nightgown",
-        "camisole",
-        "silk_slip",
-        "indigo_dress",
-        "lace_trim",
-        "thin_straps",
-        "cleavage",
-        "bare_legs"
+        "nordic ice-blue sheer floral lace bralette set",
+        "silver snowflake filigree",
+        "plunge neckline",
+        "matching sheer bikini briefs",
+        "mature valkyrie economic boudoir"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

@@ -1,23 +1,27 @@
 {
   "kind": "outfit",
   "id": "komine_sachi/white_silk_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1317,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "komine_sachi",
     "outfit": {
       "id": "white_silk_camisole",
-      "name": "白色细荷叶边吊带睡裙",
+      "name": "纯白侍约 · 女仆风荷叶蕾丝透视胸衣",
       "tokens": [
-        "white camisole",
-        "sheer silk",
-        "fine frills"
+        "pure white maid-inspired sheer ruffler bra",
+        "white lace apronette trim",
+        "delicate frilled choker",
+        "sheer high-cut panties",
+        "crisp pleated lace",
+        "innocent yet provocative lingerie"
       ],
-      "prose": "A white silk camisole with a fine ruffle along the neckline.",
+      "prose": "一袭融入女仆围裙元素的纯白半透蕾丝胸衣，精致荷叶边沿着细吊带延展至腰侧，脖颈佩戴一圈薄纱荷叶颈环，既端正神圣又若隐若现。",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "reed_arknights/gold_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2259,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "reed_arknights",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "暮夜心弦 · 灿金透视蕾丝吊带内衣",
+      "name": "生息苇火 · 绯红渐变薄纱透视吊带长裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "reed_arknights",
-      "prose": "A luxurious gold sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭从深酒红渐变至金橙色的半透双层雪纺吊带长睡裙，高开叉侧摆让火红龙尾自由伸展，轻纱如火焰般在足边翻卷，圣洁高贵如浴火重生的神女。",
       "tokens": [
-        "lingerie",
-        "gold lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "flame crimson ombre sheer chiffon slip gown",
+        "thigh-high slit for dragon tail",
+        "translucent floating fabric",
+        "golden amber highlights",
+        "sacred draconic loungewear"
       ]
     }
   }

@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "hashima_izumi/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2532,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "hashima_izumi",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "同人画师海蓝双马尾大版涂鸦T恤当睡衣",
+      "category": "睡衣 / 宽松睡裙",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "hashima_izumi",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "An oversized boyfriend-fit cobalt-blue jersey graphic t-shirt dress printed with retro anime sketches, wide boatneck slipping off the shoulder, and soft worn cotton comfort.",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "oversized graphic tshirt",
+        "boyfriend t-shirt dress",
+        "off-shoulder boatneck",
+        "soft worn cotton",
+        "artist casual",
+        "deadline loungewear"
       ]
     }
   }

@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "misono_mika/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2277,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "misono_mika",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "星华祈愿 · 珠光粉紫透视星纱羽翼吊带裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "misono_mika",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭如梦如幻的珠光浅粉紫双层薄纱睡裙，轻纱上洒满微小反光银点如银河星尘，肩带以细白羽绒装饰，轻盈如云雀之翼，贵气而惹人怜爱。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pearly pink and lilac sheer star-dusted chiffon babydoll",
+        "tiny glitter star specks",
+        "feather-trimmed shoulder straps",
+        "flowing high-low hem",
+        "ethereal princess nightwear"
       ]
     }
   }

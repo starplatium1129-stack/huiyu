@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "violet_evergarden/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2580,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "violet_evergarden",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "紫罗兰信笺 · 象牙白蕾丝维多利亚风胸衣裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "violet_evergarden",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭承袭19世纪维多利亚风韵的象牙白细蕾丝吊带长睡裙，胸前点缀小巧墨绿丝绒蝴蝶结，质朴高雅的古典剪裁包裹着少女端庄圣洁的躯体，纯美如圣母画像。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ivory Victorian lace-trimmed slip gown",
+        "tiny forest-green velvet ribbon at bust",
+        "structured soft bodice",
+        "floor-length flowing hem",
+        "nostalgic classical boudoir dress"
       ]
     }
   }

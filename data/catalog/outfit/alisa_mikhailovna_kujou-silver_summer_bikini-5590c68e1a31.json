@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "alisa_mikhailovna_kujou/silver_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2337,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "alisa_mikhailovna_kujou",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "北境初融 · 冰蓝系带荷叶边分体泳装配透光防晒雪纺衫",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "alisa_mikhailovna_kujou",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A delicate icy-blue and snow-white ruffled two-piece swimsuit with scalloped halter neckline, side-tie ruched bottoms, and an oversized semi-sheer white linen sun shirt casually worn off the shoulders.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
+        "light blue bikini",
+        "white frills",
+        "ruffled bikini",
+        "scalloped hem",
         "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
+        "off-shoulder shirt",
+        "sheer linen",
         "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "silver hair",
+        "blue eyes"
       ]
     }
   }

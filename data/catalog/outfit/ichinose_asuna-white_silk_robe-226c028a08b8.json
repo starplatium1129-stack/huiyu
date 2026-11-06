@@ -1,28 +1,28 @@
 {
   "kind": "outfit",
   "id": "ichinose_asuna/white_silk_robe",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1185,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:16:35.104114200+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ichinose_asuna",
     "outfit": {
       "id": "white_silk_robe",
-      "name": "象牙白半透真丝落肩晨袍与蕾丝内衣",
+      "name": "黄金猎犬纯白半透蕾丝挂脖露背长吊带",
       "tokens": [
-        "white_robe",
-        "silk_robe",
-        "open_robe",
-        "lace_camisole",
-        "bare_shoulders",
-        "bare_legs",
-        "slippers"
+        "pure white gossamer chemise",
+        "backless halter nightgown",
+        "eyelash lace bust",
+        "floor-length draping",
+        "golden retriever style",
+        "angelic seduction"
       ],
-      "prose": "A semi-translucent white silk morning gown slips off one shoulder over a lace bra.",
+      "prose": "A breezy and alluring pure white gossamer chiffon halter chemise featuring a completely open back, scalloped eyelash lace bustier, and floor-brushing flowing side drapes.",
       "default": false,
       "isDefault": false,
-      "characterId": "ichinose_asuna"
+      "characterId": "ichinose_asuna",
+      "category": "睡衣 / 吊带睡裙"
     }
   }
 }

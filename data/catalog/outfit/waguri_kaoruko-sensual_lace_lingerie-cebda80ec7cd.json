@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "waguri_kaoruko/sensual_lace_lingerie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 845,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:20:36.187598600+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "waguri_kaoruko",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "莓粉透纱法式蕾丝内衣与薄雪长睡袍",
-      "prose": "A strawberry-pink lace set layered beneath a sheer flowing chiffon robe.",
+      "name": "草莓初晴 · 奶白碎花双层棉麻吊带裙",
+      "prose": "一袭如草莓奶油蛋糕般甜软的奶白色双层棉麻睡裙，领口与下摆点缀小巧草莓碎花与棉线蕾丝，亲肤柔软，将高中女生的天真烂漫与初恋的心动表现得淋漓尽致。",
       "tokens": [
-        "pink_lingerie",
-        "lace_bra",
-        "bralette",
-        "lace_panties",
-        "robe",
-        "pink_robe",
-        "chiffon",
-        "see-through",
-        "bare_legs"
+        "cream white double-cotton slip dress",
+        "tiny strawberry floral print",
+        "cotton eyelet lace trim",
+        "sweet empire waist",
+        "gentle innocent high school romance nightwear"
       ],
       "characterId": "waguri_kaoruko",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

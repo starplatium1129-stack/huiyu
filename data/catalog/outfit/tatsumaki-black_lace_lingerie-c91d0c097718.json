@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "tatsumaki/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2412,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "tatsumaki",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "极念流光 · 墨黑开衩透视无痕吊带裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "tatsumaki",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭延续其标志性黑长裙风采的极简墨黑高开叉透视睡裙，侧摆开叉直达腰际，随着念动力无风自动，若隐若现地展现出惊人完美的纤细身姿与绝对领域。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "inky black sheer side-slit slip dress",
+        "waist-high floating slit",
+        "minimalist thin straps",
+        "emerald psychic particle accents",
+        "defiant petite superheroine boudoir"
       ]
     }
   }

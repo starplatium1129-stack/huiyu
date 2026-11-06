@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "sunaookami_shiroko/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2509,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sunaookami_shiroko",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "晨风行径 · 浅灰与水蓝拼接运动吊带套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sunaookami_shiroko",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套选用高弹速干透气面料的水蓝与浅灰拼接运动吊带套装，工字背部剪裁利落贴身，完美展现出常年骑行锻炼出的健康匀称曲线与挺拔姿态。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "soft grey and cyan-blue athletic sports cami set",
+        "moisture-wicking stretch fabric",
+        "racerback straps",
+        "snug boyleg workout shorts",
+        "cool functional wolf girl loungewear"
       ]
     }
   }

@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "skadi_arknights/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2332,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "skadi_arknights",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "深海回音哑光系带镂空连身泳装",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "skadi_arknights",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An abyssal hunter tactical matte black monokini with asymmetric side cutouts, gunmetal alloy rings, shark-tooth cord accents, and durable waterproof stretch fabrics.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "cut-out monokini",
+        "matte black swimsuit",
+        "gunmetal buckles",
+        "tactical swimwear",
+        "shark tooth cord",
+        "abyssal style"
       ]
     }
   }

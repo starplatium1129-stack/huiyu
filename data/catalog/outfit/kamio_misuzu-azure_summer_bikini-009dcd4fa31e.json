@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "kamio_misuzu/azure_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2541,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "kamio_misuzu",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "碧海澄澈 · 水蓝系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "千年之夏 · 澄澈天蓝与云白荷叶边系带分体泳装配恐龙印花沙滩巾",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "kamio_misuzu",
-      "prose": "A stunning azure halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A nostalgic sky-blue and cloud-white ruffled halter bikini with delicate eyelet lace trims, side-tie bottoms, golden twintails, and a vibrant green beach towel printed with a cute cartoon dinosaur (Gao-Gao).",
       "tokens": [
-        "azure bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "sky blue bikini",
+        "white eyelet frills",
+        "sweetheart halter",
+        "side-tie ribbon",
+        "dinosaur beach towel",
+        "blonde twintails",
+        "blue eyes",
+        "gentle radiant smile",
+        "nostalgic atmosphere"
       ]
     }
   }

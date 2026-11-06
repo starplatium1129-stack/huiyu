@@ -1,31 +1,29 @@
 {
   "kind": "outfit",
   "id": "kasumigaoka_utaha/sensual_lace_lingerie",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 789,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kasumigaoka_utaha",
     "outfit": {
       "id": "sensual_lace_lingerie",
-      "name": "黑曜真丝外袍与尚蒂伊蕾丝内衣",
-      "prose": "An open black silk kimono robe over a black lace set, with sheer black thigh-highs and matching garter straps.",
+      "name": "毒舌学姐酒红高叉真丝吊带裙配黑丝连裤袜",
+      "prose": "A provocative boudoir gown in rich wine-red stretch silk satin featuring a hip-high side slit, plunging cowl neck, and styled with signature ultra-sheer 20-denier black pantyhose.",
       "tokens": [
-        "black_bra",
-        "lace_bra",
-        "black_panties",
-        "silk_robe",
-        "open_robe",
-        "kimono_sleeves",
-        "black_thighhighs",
-        "garter_belt",
-        "garter_straps"
+        "wine red silk slip",
+        "high hip slit",
+        "cowl neckline",
+        "sheer black pantyhose",
+        "20 denier tights",
+        "author femme fatale"
       ],
       "characterId": "kasumigaoka_utaha",
       "default": false,
       "isDefault": false,
-      "isNsfw": false
+      "isNsfw": false,
+      "category": "睡衣 / 吊带睡裙"
     }
   }
 }

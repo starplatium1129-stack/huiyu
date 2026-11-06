@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2453,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "荒野低音 · 墨青微透工装剪裁吊带背心",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yamada_ryo",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套随性不羁的深墨青色工装风无痕吊带背心与宽幅平角短裤，极简利落，透着摇滚乐手的帅气与少女骨子里的清冷慵懒，自成一派独特格调。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "dark indigo-teal minimalist athletic tank bralette",
+        "relaxed boy-shorts",
+        "raw hem details",
+        "androgynous chic yet feminine silhouette",
+        "eccentric indie bassist loungewear"
       ]
     }
   }

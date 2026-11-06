@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "fern_frieren/violet_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2350,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "fern_frieren",
     "outfit": {
       "id": "violet_lace_lingerie",
-      "name": "暮夜心弦 · 幽紫透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "勤勉魔法使深紫纯棉高领保暖系带睡袍",
+      "category": "睡衣 / 长款睡袍",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "fern_frieren",
-      "prose": "A luxurious violet sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A modest Victorian-style deep-violet cotton robe designed with a high stand collar, front button row, wide comfortable sleeves, and an adjustable matching fabric belt.",
       "tokens": [
-        "lingerie",
-        "violet lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "deep violet cotton robe",
+        "high stand collar",
+        "front button row",
+        "fabric belt",
+        "modest long nightdress",
+        "apprentice mage style"
       ]
     }
   }

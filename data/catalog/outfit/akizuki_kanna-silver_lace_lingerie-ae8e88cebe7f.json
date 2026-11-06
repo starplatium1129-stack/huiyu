@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "akizuki_kanna/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2420,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "akizuki_kanna",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "冥府死神黑白蝶翼蕾丝裹胸吊带裙",
+      "category": "睡衣 / 吊带分体套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "akizuki_kanna",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A gothic lolita-inspired two-piece boudoir set featuring a butterfly-wing motif black and alabaster lace camisole, crisscrossing ribbon back, and matching ruffled tap shorts.",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "monochrome lace camisole",
+        "butterfly lace",
+        "black and white nightwear",
+        "tap shorts",
+        "ribbon back",
+        "gothic loungewear"
       ]
     }
   }

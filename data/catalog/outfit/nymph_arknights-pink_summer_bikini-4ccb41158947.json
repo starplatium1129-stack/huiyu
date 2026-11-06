@@ -1,31 +1,33 @@
 {
   "kind": "outfit",
   "id": "nymph_arknights/pink_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2220,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "nymph_arknights",
     "outfit": {
       "id": "pink_summer_bikini",
-      "name": "落樱甜粉 · 粉樱系带比基尼配薄纱罩衫",
+      "name": "恐惧心跳 · 荧光莓粉与幽黑撞色不对称机能分体水着配心电图纹防晒袖套",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "nymph_arknights",
-      "prose": "A stunning pink halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A mischievous and edgy cyber-swimwear set in neon berry-pink and onyx black, featuring asymmetrical shoulder straps, heartbeat pulse-wave graphic prints, and detached sheer fingerless sun sleeves.",
       "tokens": [
-        "pink bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "neon pink bikini",
+        "black straps",
+        "asymmetrical bikini",
+        "heartbeat graphic",
+        "detached sun sleeves",
+        "black hair",
+        "short hair",
+        "pink eyes",
+        "sarkaz horns",
+        "pointed ears",
+        "wicked smile"
       ]
     }
   }

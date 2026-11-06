@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "hoolheyak_arknights/azure_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2222,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "hoolheyak_arknights",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "碧海澄澈 · 水蓝系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "羽蛇圣典 · 孔雀幽蓝与流金镂空高衩连体泳装配孔雀羽披帛",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "hoolheyak_arknights",
-      "prose": "A stunning azure halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A seductive peacock-blue and molten-gold metallic cutout monokini featuring serpent-scale embossing, slithering gold snake clasps, feather earrings, and a translucent turquoise silk shawl resembling iridescent plumage.",
       "tokens": [
-        "azure bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "peacock blue monokini",
+        "gold snake buckle",
+        "cutout swimsuit",
+        "highleg",
+        "feathered wings",
+        "serpent tail",
+        "green hair",
+        "amber eyes",
+        "seductive smirk",
+        "slender hourglass build"
       ]
     }
   }

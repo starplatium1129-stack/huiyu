@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "laevatain_arknights/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2274,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "laevatain_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "熔火余温 · 炽橙几何镂空透视胸衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "laevatain_arknights",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套极具工业未来感的炽橙色与半透黑纱拼接胸衣，利落的几何线条与耐热硅胶饰边贴合躯体，兼具战术机能感与火热的肉体张力。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ember fiery orange-red geometric sheer bralette",
+        "high-tech cutout details",
+        "semi-translucent dark mesh panels",
+        "industrial strap accents",
+        "sci-fi futuristic lingerie"
       ]
     }
   }

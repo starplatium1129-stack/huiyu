@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "shiina_mayuri/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2537,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shiina_mayuri",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "星屑初晴 · 天蓝棉质荷叶边吊带娃娃裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shiina_mayuri",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件如晴空般清爽的天蓝色纯棉吊带娃娃裙，胸前缀有手工缝制的小白雏菊与松紧木耳边，蓬松可人，让人想要全力守护这份无暇纯真。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "sky blue cotton babydoll camisole",
+        "white daisy flower applique",
+        "ruffled smocked bodice",
+        "airy flared hem",
+        "cheerful comforting wholesome loungewear"
       ]
     }
   }

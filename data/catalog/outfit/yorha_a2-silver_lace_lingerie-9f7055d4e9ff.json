@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yorha_a2/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2497,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yorha_a2",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "破晓残骸 · 炭黑仿皮拼接战损透气抹胸内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yorha_a2",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套由耐磨合成皮革与透气纤维拼接的战损风抹胸内衣，边缘带着细微战损磨痕，利落包裹着人造人紧致有力的腹肌与修长肢体，展现出绝境独行者的冰冷与力量之美。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "charcoal distressed faux-leather tube top set",
+        "battle-worn edge accents",
+        "boy-shorts with utility ring clips",
+        "athletic android physique",
+        "post-apocalyptic rogue warrior loungewear"
       ]
     }
   }

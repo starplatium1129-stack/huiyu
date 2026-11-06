@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "angelina_arknights/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2257,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "angelina_arknights",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "信使星夜珊瑚粉波点分体丝绸睡衣",
+      "category": "睡衣 / 吊带分体套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "angelina_arknights",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "A breezy two-piece coral-pink silk camisole set with miniature white starlight polka dots, elastic frilled tap shorts, and ultra-lightweight fabric that billows weightlessly.",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "coral pink silk camisole",
+        "polka dot tap shorts",
+        "weightless silk",
+        "frilled hem",
+        "breezy sleepwear",
+        "playful vulpo style"
       ]
     }
   }

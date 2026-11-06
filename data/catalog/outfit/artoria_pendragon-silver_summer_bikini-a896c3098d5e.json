@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "artoria_pendragon/silver_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2301,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "artoria_pendragon",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "石中圣泉 · 湖光皇家蓝与纯白金边挂脖比基尼配雪纺轻纱",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "artoria_pendragon",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An elegant royal-blue and pure white halter bikini inspired by regal knightly heraldry, featuring fine gold-threaded edging, a delicate fleur-de-lis silver brooch, and a translucent white silk pareo.",
       "tokens": [
-        "silver bikini",
+        "royal blue bikini",
+        "white trim",
+        "gold embroidery",
         "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "brooch",
+        "sheer white pareo",
+        "blonde hair",
+        "hair bun",
+        "green eyes",
+        "noble posture"
       ]
     }
   }

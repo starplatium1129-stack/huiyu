@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yakishio_lemon/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2529,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yakishio_lemon",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
+      "name": "柠檬疾风 · 明黄透气运动工字吊带背心套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yakishio_lemon",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套充满阳光元气的亮柠檬黄与深炭灰拼接运动吊带套装，工字背部剪裁与高弹速干布料，完美契合田径少女常年奔跑铸就的健美腹肌与青春活力。",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "bright lemon yellow and charcoal athletic racerback camisole set",
+        "high-performance stretch fabric",
+        "runner tap shorts",
+        "dark skin tone contrast",
+        "energetic track athlete sleepwear"
       ]
     }
   }

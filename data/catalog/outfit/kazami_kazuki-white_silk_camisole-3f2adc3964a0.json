@@ -1,22 +1,28 @@
 {
   "kind": "outfit",
   "id": "kazami_kazuki/white_silk_camisole",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1188,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-10-26T13:49:51.632905200+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "kazami_kazuki",
     "outfit": {
       "id": "white_silk_camisole",
-      "name": "白色真丝吊带睡裙",
+      "name": "玄墨清韵 · 灰黑几何透视真丝吊带睡裙",
       "tokens": [
-        "white silk camisole nightdress",
-        "sheer fabric"
+        "charcoal grey silk camisole slip",
+        "geometric sheer mesh cutouts",
+        "minimalist lingerie",
+        "ultra-thin spaghetti straps",
+        "silver clasp",
+        "semi-transparent silk chest panel",
+        "elegant loungewear"
       ],
-      "prose": "a light, sheer white silk camisole nightdress",
+      "prose": "一袭低调奢华的深墨灰真丝睡裙，极简几何镂空剪裁，胸口覆以若隐若现的无痕单层透纱，银扣细肩带勾勒出清瘦优雅的锁骨与背脊线条。",
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "情趣 / 蕾丝内衣"
     }
   }
 }

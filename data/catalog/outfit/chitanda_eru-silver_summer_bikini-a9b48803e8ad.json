@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "chitanda_eru/silver_summer_bikini",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2396,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "chitanda_eru",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "豪农千金 · 纯白绣花与淡藤紫高腰荷叶边连体泳裙",
+      "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "chitanda_eru",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A modest and elegant pure-white and soft wisteria-purple swimdress featuring delicate eyelet lace embroidery along the scoop neckline, a flared pleated skirt overlay, and a classic wide-brim straw hat tied with lavender ribbon.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white swimdress",
+        "purple trim",
+        "eyelet embroidery",
+        "pleated skirt",
+        "straw hat",
+        "lavender ribbon",
+        "long black hair",
+        "purple eyes",
+        "wide sparkling eyes",
+        "modest swimwear"
       ]
     }
   }

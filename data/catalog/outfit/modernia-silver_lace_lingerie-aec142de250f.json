@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "modernia/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2510,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "modernia",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "无瑕誓约 · 纯白绷带解构透视吊带睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "modernia",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭融入医疗绷带意象的纯白雪纺吊带短裙，胸前与腰间以柔软纯白缎带错落缠绕，半透裙摆轻若鸿毛，将再生的神圣与少女的纯真完美融合。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pure white sheer bandage-inspired slip dress",
+        "soft white satin ribbon wraps",
+        "gossamer layered ruffled hem",
+        "angelic innocence",
+        "futuristic reborn heroine sleepwear"
       ]
     }
   }

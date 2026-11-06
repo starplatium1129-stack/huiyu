@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "sorakado_ao/silver_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2539,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sorakado_ao",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "暮夜心弦 · 银白透视蕾丝吊带内衣",
+      "name": "夜猫浮梦 · 浅紫波点棉麻吊带花苞短裤",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sorakado_ao",
-      "prose": "A luxurious silver sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套随性透气的浅紫白波点纯棉吊带睡衣，搭配蓬松柔软的花苞收口小短裤，透出无拘无束的海岛夏夜气息，天然可爱中透着少女未经修饰的体温。",
       "tokens": [
-        "lingerie",
-        "silver lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pale lavender polka dot cotton camisole set",
+        "gathered bubble tap shorts",
+        "soft breathable sleepwear",
+        "island girl casual summer loungewear"
       ]
     }
   }

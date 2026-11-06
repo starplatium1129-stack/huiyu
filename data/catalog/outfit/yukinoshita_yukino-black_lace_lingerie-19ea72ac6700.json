@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2307,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "寒梅孤华 · 冰蓝极简水波真丝吊带长裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yukinoshita_yukino",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭如雪山冰棱般澄澈高洁的冰蓝真丝极细吊带睡裙，极简无痕剪裁垂顺而下，没有一丝繁冗浮饰，将雪之下纤细高挑、冰清玉洁的傲骨身段衬托得如梦似幻。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "ice blue minimalist liquid-silk slip gown",
+        "ultra-thin straps",
+        "pure clean silhouette",
+        "high-end bias cut drape",
+        "pristine noble cat-lover boudoir dress"
       ]
     }
   }

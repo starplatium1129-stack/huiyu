@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "yanami_anna/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2424,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "yanami_anna",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "水獭蜜糖 · 浅粉荷叶边双层棉质吊带套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "yanami_anna",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套蓬松软萌的浅粉色纯棉荷叶边吊带睡衣，搭配同色松紧花苞小短裤，舒适透气，包容着失恋吃货少女的一切任性与可爱，让人忍不住想要狠狠揉乱她的头发。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "powder pink ruffled double-cotton camisole set",
+        "bubble bloomers tap shorts",
+        "sweet pastel ribbon bow",
+        "comfortable food-lover fit",
+        "adorable losing heroine loungewear"
       ]
     }
   }

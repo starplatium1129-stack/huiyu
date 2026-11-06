@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "shinjou_akane/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2582,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-04T16:06:57.351500400+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shinjou_akane",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
+      "name": "混沌创世 · 烟粉微透弹力针织露肩吊带",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shinjou_akane",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一件随性套在身上的烟粉色弹力针织露肩细吊带睡裙，侧腰微破洞设计，透出如白瓷般的肌肤，松垮慵懒中散发着危险而颓废的致死诱惑。",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "smoky pink ribbed knit off-shoulder camisole slip",
+        "intentional distressed side cuts",
+        "relaxed casual fit",
+        "porcelain skin contrast",
+        "moody antisocial deity loungewear"
       ]
     }
   }

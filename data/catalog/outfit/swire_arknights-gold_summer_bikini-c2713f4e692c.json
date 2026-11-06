@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "swire_arknights/gold_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2262,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "swire_arknights",
     "outfit": {
       "id": "gold_summer_bikini",
-      "name": "流金澄晖 · 灿金系带比基尼配薄纱罩衫",
+      "name": "维多利亚名媛奢金祖母绿分体泳衣",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "swire_arknights",
-      "prose": "A stunning gold halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A high-fashion Victorian resort two-piece bikini crafted in rich jewel emerald velvet and adorned with metallic spun-gold trims, designer gold-chain clasps, and a diaphanous silk sarong.",
       "tokens": [
-        "gold bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "emerald green bikini",
+        "gold trim",
+        "luxury resort swimwear",
+        "high-waisted bikini",
+        "gold chain clasp",
+        "designer swimwear"
       ]
     }
   }

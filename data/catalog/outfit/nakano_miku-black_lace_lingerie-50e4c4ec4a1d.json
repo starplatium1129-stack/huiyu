@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/black_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2455,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "暮夜心弦 · 墨黑透视蕾丝吊带内衣",
+      "name": "雾蓝心声 · 浅蓝温软麻花针织挂脖睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "nakano_miku",
-      "prose": "A luxurious black sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭触感极度亲肤的雾霾蓝细软麻花针织睡裙，挂脖露肩剪裁搭配略显宽松的版型，勾勒出三玖纤弱动人的直角肩，散发着让人想要拥入怀中的温软气息。",
       "tokens": [
-        "lingerie",
-        "black lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "mist blue soft cable-knit halter camisole slip",
+        "open shoulder cut",
+        "chunky cozy knit texture",
+        "delicate ribbed hemline",
+        "shy sweet home attire"
       ]
     }
   }

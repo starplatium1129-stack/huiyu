@@ -1,32 +1,28 @@
 {
   "kind": "outfit",
   "id": "ijichi_nijika/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2476,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "ijichi_nijika",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
-      "category": "情趣 / 蕾丝内衣",
+      "name": "下北泽天使亮黄无袖连帽运动棉质家居服",
+      "category": "睡衣 / 连帽运动套",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "ijichi_nijika",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "An energetic and breezy loungewear set featuring a sunny-yellow sleeveless French terry cotton lounge hoodie with kangaroo pockets, paired with stretchy heather-grey athletic shorts.",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "yellow sleeveless hoodie",
+        "french terry cotton",
+        "kangaroo pocket",
+        "grey sleep shorts",
+        "ahoge friendly",
+        "bassist angel style"
       ]
     }
   }

@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "kisara_engage_kiss/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2316,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "kisara_engage_kiss",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "恶魔契约 · 魅黑与紫罗兰深V挂脖高衩比基尼配暗夜轻纱长裙",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "kisara_engage_kiss",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "An intensely devoted midnight-black and neon-violet halterneck bikini featuring metallic heart-lock hardware, criss-crossing hip straps, a sheer obsidian lace sarong wrap, and her floating demon ribbons.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "black bikini",
+        "violet accents",
+        "heart lock hardware",
+        "criss-cross straps",
+        "lace sarong",
+        "long pink hair",
+        "pink eyes",
+        "sweet possessive smile",
+        "slender hourglass build"
       ]
     }
   }

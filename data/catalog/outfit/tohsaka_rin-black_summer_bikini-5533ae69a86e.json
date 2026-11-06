@@ -1,31 +1,28 @@
 {
   "kind": "outfit",
   "id": "tohsaka_rin/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2271,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "tohsaka_rin",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "魔术名门猩红黑缎高腰系带比基尼",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "tohsaka_rin",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A stunning jewel-toned crimson two-piece bikini bordered with pitch-black satin trims, crisscrossing waist cords, high-waist retro cut, and signature black satin hair ribbons.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "crimson and black bikini",
+        "high-waist straps",
+        "satin trim",
+        "cross-wrap waist",
+        "twin ribbons",
+        "tsundere style"
       ]
     }
   }

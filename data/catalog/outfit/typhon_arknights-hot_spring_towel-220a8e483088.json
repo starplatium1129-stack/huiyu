@@ -1,18 +1,18 @@
 {
   "kind": "outfit",
   "id": "typhon_arknights/hot_spring_towel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 400,
   "createdAt": null,
-  "updatedAt": "2026-10-15T14:37:47.276866400+00:00",
+  "updatedAt": "2026-11-06T01:02:18.776Z",
   "data": {
     "characterId": "typhon_arknights",
     "outfit": {
       "default": false,
       "id": "hot_spring_towel",
       "isDefault": false,
-      "name": "白色亚麻浴巾",
-      "prose": "A plain white linen bath towel.",
+      "name": "极原萨米粗织亚麻温泉巾",
+      "prose": "A rustic coarse-weave linen hot spring towel from the frozen north.",
       "tokens": [
         "white towel",
         "linen"

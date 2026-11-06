@@ -1,31 +1,32 @@
 {
   "kind": "outfit",
   "id": "katou_megumi/silver_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2394,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "katou_megumi",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "霜白映雪 · 银白系带比基尼配薄纱罩衫",
+      "name": "路人女主 · 柔白与樱粉素雅挂脖比基尼配透光白亚麻衬衫",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "katou_megumi",
-      "prose": "A stunning silver halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A masterfully understated pure-white and soft sakura-pink minimalist halter bikini with subtle ribbon bows, paired with a boyfriend-style sheer white linen button-up shirt worn loosely off one shoulder.",
       "tokens": [
-        "silver bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "white bikini",
+        "sakura pink accents",
+        "minimalist halter",
+        "loose linen shirt",
+        "off-shoulder shirt",
+        "short brown hair",
+        "brown eyes",
+        "calm neutral smile",
+        "natural beauty",
+        "slender frame"
       ]
     }
   }

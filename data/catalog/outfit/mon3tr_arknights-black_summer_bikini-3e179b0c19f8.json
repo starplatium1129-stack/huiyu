@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "mon3tr_arknights/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2254,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "mon3tr_arknights",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
-      "category": "泳装 / 比基尼",
+      "name": "源石结晶 · 哑光晶岩黑与荧绿脊线战术高叉紧身水着",
+      "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "mon3tr_arknights",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A form-fitting avant-garde black textured aquatic suit featuring luminescent emerald-green spine channels, crystalline geometric facet cutouts, and reinforced aquatic polymer straps.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "black textured swimsuit",
+        "emerald luminescent lines",
+        "geometric cutouts",
+        "highleg",
+        "crystalline patterns",
+        "pale white hair",
+        "green eyes",
+        "sharp gaze",
+        "biomechanical accents"
       ]
     }
   }

@@ -1,31 +1,33 @@
 {
   "kind": "outfit",
   "id": "nakano_miku/black_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2454,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "nakano_miku",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "暮夜流光 · 墨黑系带比基尼配薄纱罩衫",
+      "name": "抹茶初夏 · 雾霾青绿高腰复古分体挂脖水着配防水颈挂耳机",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "nakano_miku",
-      "prose": "A stunning black halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A modest yet deeply charming retro high-waist bikini in soft matcha blue-green, featuring a halterneck top with delicate white piping, high-waisted pleated bottoms, and teal waterproof over-ear headphones rested around her neck.",
       "tokens": [
-        "black bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "matcha blue bikini",
+        "high-waist bikini",
+        "halterneck",
+        "white piping",
+        "waterproof headphones",
+        "neck headphones",
+        "brown hair",
+        "long hair over one eye",
+        "blue eyes",
+        "shy blush",
+        "soft curves"
       ]
     }
   }

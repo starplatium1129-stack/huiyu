@@ -1,32 +1,26 @@
 {
   "kind": "outfit",
   "id": "shiranui_mai/crimson_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2433,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "shiranui_mai",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "暮夜心弦 · 绯红透视蕾丝吊带内衣",
+      "name": "火魅忍樱 · 绯红真丝系绳透视肚兜寝衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "shiranui_mai",
-      "prose": "A luxurious crimson sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一袭改良自女忍战斗服的绯红真丝露背肚兜式睡衣，双侧腰腹仅以金色细绳相连，大开叉下摆飘逸如蝶翼，完美烘托出格斗界无可匹敌的丰腴神韵。",
       "tokens": [
-        "lingerie",
-        "crimson lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "scarlet red silk halter dudou bodice",
+        "open back with gold string criss-cross ties",
+        "high-slit gossamer side panels",
+        "seductive kunoichi sleepwear"
       ]
     }
   }

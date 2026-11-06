@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_buena_village_tree",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 464,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-10-31T03:24:55.000000000+00:00",
   "data": {
     "action": "双手捧着晶莹水球，绿发在阳光与微风中扬起",
     "adult": false,

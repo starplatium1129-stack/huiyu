@@ -1,31 +1,31 @@
 {
   "kind": "outfit",
   "id": "shiina_mashiro/gold_summer_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2400,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T16:44:36.366Z",
   "data": {
     "characterId": "shiina_mashiro",
     "outfit": {
       "id": "gold_summer_bikini",
-      "name": "流金澄晖 · 灿金系带比基尼配薄纱罩衫",
+      "name": "纯白调色盘 · 极简雪白棉感分体挂脖比基尼配彩铅水彩泼溅半透防晒衬衣",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,
       "isNsfw": false,
       "characterId": "shiina_mashiro",
-      "prose": "A stunning gold halterneck bikini with delicate scalloped edges, side-tie bottoms, and a translucent matching chiffon pareo.",
+      "prose": "A minimalist pristine-white triangle bikini paired with an artistic oversized sheer silk shirt decorated with faint pastel watercolor paint splashes, soft frayed cuffs, and simple tie-side strings.",
       "tokens": [
-        "gold bikini",
-        "halterneck bikini",
-        "side-tie bikini bottom",
-        "chiffon pareo",
-        "collarbone",
-        "bare shoulders",
-        "navel",
-        "bare midriff",
-        "bare thighs"
+        "pure white bikini",
+        "watercolor splash shirt",
+        "oversized sheer shirt",
+        "side-tie bikini",
+        "long pale blonde hair",
+        "red eyes",
+        "petite slender",
+        "blank innocent expression",
+        "artistic genius"
       ]
     }
   }

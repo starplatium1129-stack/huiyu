@@ -1,32 +1,27 @@
 {
   "kind": "outfit",
   "id": "sumizome_nozomi/azure_lace_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2468,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-04T16:05:38.663285700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "暮夜心弦 · 水蓝透视蕾丝吊带内衣",
+      "name": "夏风白菊 · 浅米细棉抽绳吊带连体短睡衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,
       "isNsfw": true,
       "characterId": "sumizome_nozomi",
-      "prose": "A luxurious azure sheer lace babydoll and matching underwire lingerie set with delicate floral embroidery, thin straps, and scalloped trim.",
+      "prose": "一套质朴清新的米白色纯棉短连体睡衣，腰间带有细绳抽褶，下摆装饰小雏菊镂空花边，清爽透气，完美展现出神社少女天然纯真的质朴之美。",
       "tokens": [
-        "lingerie",
-        "azure lace bra",
-        "lace trim",
-        "sheer panties",
-        "translucent babydoll",
-        "thin straps",
-        "cleavage",
-        "bare midriff",
-        "bare shoulders",
-        "bare thighs"
+        "pale cream cotton romper sleepsuit",
+        "drawstring gathered waist",
+        "daisy eyelet lace trim",
+        "relaxed breathable muslin",
+        "sweet girl-next-door summer sleepwear"
       ]
     }
   }

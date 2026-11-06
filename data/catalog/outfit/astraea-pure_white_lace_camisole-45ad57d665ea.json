@@ -1,26 +1,28 @@
 {
   "kind": "outfit",
   "id": "astraea/pure_white_lace_camisole",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1748,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-05T17:31:22.438Z",
   "data": {
     "characterId": "astraea",
     "outfit": {
       "characterId": "astraea",
       "id": "pure_white_lace_camisole",
-      "name": "天使寝室·雪白真丝蕾丝吊带睡裙",
-      "prose": "A gossamer pure white silk camisole trimmed with delicate lace around the deep neckline, with wings resting gently behind her.",
+      "name": "笨蛋人造天使纯白羽毛滚边蕾丝吊带",
+      "prose": "An ethereal and airy pure-white gossamer slip chemise trimmed with plush downy swan feathers along the sweetheart neckline and airy flared micro-hem.",
       "tokens": [
-        "white_camisole",
-        "silk_nightgown",
-        "lace_trim",
-        "spaghetti_strap",
-        "barefoot"
+        "pure white gossamer slip",
+        "swan feather trim",
+        "sweetheart neckline",
+        "angelic chemise",
+        "airy micro hem",
+        "delta angel style"
       ],
       "default": false,
-      "isDefault": false
+      "isDefault": false,
+      "category": "睡衣 / 吊带睡裙"
     }
   }
 }
