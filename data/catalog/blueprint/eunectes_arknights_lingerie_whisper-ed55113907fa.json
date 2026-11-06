@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eunectes_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3231,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
   "data": {
     "id": "eunectes_arknights_lingerie_whisper",
     "characterId": "eunectes_arknights",
@@ -37,23 +37,18 @@
       "wild_mechanic"
     ],
     "promptTokens": [
-      "eunectes (arknights)",
-      "1girl",
-      "thick scaled python tail resting on floor",
-      "dark green python-skin textured stretch bandeau top",
-      "asymmetric wrap micro skirt",
-      "grease smudge on porcelain cheek",
-      "sitting leaning back against massive steel tread of giant robot foot",
-      "holding heavy metallic socket wrench in hand",
-      "vivid emerald green eyes filled with mechanical passion",
-      "long wild dark hair",
-      "industrial crane beams and warehouse spotlights",
-      "masterpiece",
-      "high quality"
+      "snake tail",
+      "python bandeau top",
+      "sitting",
+      "leaning against robot foot",
+      "holding wrench",
+      "grease smudge",
+      "giant mech foot",
+      "industrial lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Eunectes resting proudly beneath the towering steel foot of her colossal mech 'Big Ugly' in the Rhodes Island industrial bay. She is clothed in a tactical dark green python-textured bandeau top and wrap skirt that showcase her toned tribal physique. Holding a wrench with an oil smudge across her cheek, her vibrant green eyes gleam with pure mechanical adoration as she leans against the warm chassis.",
-    "animaCaption": "eunectes (arknights), 1girl, snake tail, python bandeau top, wrench in hand, grease smudge, giant mech foot, industrial lighting, highres",
+    "animaCaption": "Eunectes sits against the steel foot of her giant mech, holding a wrench in the industrial bay.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

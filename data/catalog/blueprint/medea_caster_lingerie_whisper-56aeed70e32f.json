@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3343,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "medea_caster_lingerie_whisper",
     "characterId": "medea_caster",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "medea fate",
-      "caster",
-      "solo",
-      "lounging gracefully on low couch",
-      "conjuring glowing purple magical butterfly on slender fingertip",
-      "golden hair in high updo showing slender neck",
-      "seductive mature purple eyes",
-      "gothic workshop with hobby model kits on shelf"
+      "chaise lounge",
+      "butterfly",
+      "glowing",
+      "blonde hair",
+      "purple eyes",
+      "gold filigree runic embroidery",
+      "sweetheart neckline",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, medea fate, caster, solo, lounging gracefully on low couch, conjuring glowing purple magical butterfly on slender fingertip, golden hair in high updo showing slender neck, seductive mature purple eyes, gothic workshop with hobby model kits on shelf",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, medea fate, caster, solo, lounging gracefully on low couch, conjuring glowing purple magical butterfly on slender fingertip, golden hair in high updo showing slender neck, seductive mature purple eyes, gothic workshop with hobby model kits on shelf",
+    "promptProse": "Caster lounges gracefully on low couch, wearing a deep royal purple velvet slip dress. Conjuring glowing purple magical butterfly on slender fingertip, golden hair in high updo showing slender neck, seductive mature purple eyes amidst gothic workshop with hobby model kits on shelf.",
+    "animaCaption": "Caster lounges gracefully on low couch, wearing a deep royal purple velvet slip dress. Conjuring glowing purple magical butterfly on slender fingertip, golden hair in high updo showing slender neck, seductive mature purple eyes amidst gothic workshop with hobby model kits on shelf.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

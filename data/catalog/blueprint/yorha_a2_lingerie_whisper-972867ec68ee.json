@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_a2_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3427,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
   "data": {
     "id": "yorha_a2_lingerie_whisper",
     "characterId": "yorha_a2",
@@ -34,23 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yorha a2",
-      "solo",
-      "rogue android",
-      "sitting on rusty industrial I-beam edge overlooking ruined city",
-      "holding massive battered broadsword hilt",
-      "long wild platinum hair whipping in wind",
-      "weathered synthetic skin textures",
-      "melancholy fierce heterochromatic gaze",
-      "apocalyptic crimson sunset"
+      "charcoal tube top",
+      "sitting",
+      "steel beam",
+      "holding sword",
+      "ruined city",
+      "silver hair",
+      "wind",
+      "sunset",
+      "battle-worn edge accents",
+      "athletic android physique"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yorha a2, solo, rogue android, sitting on rusty industrial I-beam edge overlooking ruined city, holding massive battered broadsword hilt, long wild platinum hair whipping in wind, weathered synthetic skin textures, melancholy fierce heterochromatic gaze, apocalyptic crimson sunset",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yorha a2, solo, rogue android, sitting on rusty industrial I-beam edge overlooking ruined city, holding massive battered broadsword hilt, long wild platinum hair whipping in wind, weathered synthetic skin textures, melancholy fierce heterochromatic gaze, apocalyptic crimson sunset",
+    "promptProse": "YoRHa Type A No. 2 sits on rusty industrial I-beam edge overlooking ruined city, wearing a charcoal distressed faux-leather tube top set. Rogue android, holding massive battered broadsword hilt, long wild platinum hair whipping in wind amidst weathered synthetic skin textures, melancholy fierce heterochromatic gaze, apocalyptic crimson sunset.",
+    "animaCaption": "A2 sits on a rusted steel beam above a ruined city, gripping her sword as the wind lifts her long hair.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

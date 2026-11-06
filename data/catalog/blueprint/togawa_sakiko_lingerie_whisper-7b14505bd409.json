@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3361,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "togawa_sakiko_lingerie_whisper",
     "characterId": "togawa_sakiko",
@@ -34,22 +34,15 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "togawa sakiko",
-      "solo",
-      "sitting on edge of cheap metal frame cot in cramped rundown apartment",
-      "one hand covering half face crying silently",
-      "long black hair disheveled",
-      "tears glinting",
-      "proud desperate expression",
-      "flashing train lights through window"
+      "sitting",
+      "black hair",
+      "teacup",
+      "delicate frail silhouette",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, togawa sakiko, solo, sitting on edge of cheap metal frame cot in cramped rundown apartment, one hand covering half face crying silently, long black hair disheveled, tears glinting, proud desperate expression, flashing train lights through window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, togawa sakiko, solo, sitting on edge of cheap metal frame cot in cramped rundown apartment, one hand covering half face crying silently, long black hair disheveled, tears glinting, proud desperate expression, flashing train lights through window",
+    "promptProse": "Sakiko Togawa sits on edge of cheap metal frame cot in cramped rundown apartment, wearing a inky black tailored sheer chiffon nightgown. One hand covering half face crying silently, long black hair disheveled, tears glinting amidst proud desperate expression, flashing train lights through window.",
+    "animaCaption": "Sakiko Togawa sits on edge of cheap metal frame cot in cramped rundown apartment, wearing a inky black tailored sheer chiffon nightgown. One hand covering half face crying silently, long black hair disheveled, tears glinting amidst proud desperate expression, flashing train lights through window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

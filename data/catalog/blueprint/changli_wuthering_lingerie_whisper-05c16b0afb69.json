@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3348,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "changli_wuthering_lingerie_whisper",
     "characterId": "changli_wuthering",
@@ -37,24 +37,18 @@
       "oriental_mastermind"
     ],
     "promptTokens": [
-      "changli (wuthering waves)",
-      "1girl",
-      "vermilion red embroidered silk wrap robe",
-      "golden flame phoenix brocade",
-      "daring high side slit",
-      "gracefully kneeling by antique wooden weiqi go table",
-      "holding glossy black go stone between two slender fingers",
-      "poised above board",
-      "flowing flame-gradient orange-red hair",
-      "mesmerizing warm red eyes",
-      "incense smoke curling from bronze burner",
-      "traditional oriental moon gate room",
-      "masterpiece",
-      "high quality"
+      "vermilion silk robe",
+      "phoenix embroidery",
+      "kneeling",
+      "holding weiqi stone",
+      "chessboard",
+      "incense",
+      "red hair",
+      "elegant smile"
     ],
     "negativeTokens": [],
     "promptProse": "Changli conducting a midnight review over a weiqi chessboard in her refined oriental pavilion. Draped in an opulent vermilion silk wrap robe richly embroidered with golden phoenix plumage and featuring an alluring side slit, she balances an obsidian stone between her fingers. Her luminous vermilion eyes meet the viewer with profound intellect and enchanting, strategic warmth.",
-    "animaCaption": "changli, 1girl, vermilion silk robe, phoenix embroidery, holding weiqi stone, chessboard, incense, red hair, elegant smile, highres",
+    "animaCaption": "Changli kneels by a weiqi table, balancing a glossy black stone between her fingers as incense curls through the room.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

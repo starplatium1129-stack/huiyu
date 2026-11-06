@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_hsr_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3301,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.127Z",
   "data": {
     "id": "sparkle_hsr_swimsuit_allure",
     "characterId": "sparkle_hsr",
@@ -37,25 +37,17 @@
       "floating"
     ],
     "promptTokens": [
-      "sparkle (honkai: star rail)",
-      "1girl",
-      "crimson and black layered frill bikini",
-      "asymmetric leg garters",
-      "golden bells",
-      "sitting cross-legged on giant pink flamingo floatie",
-      "holding painted kitsune mask",
-      "sticking out tongue playfully",
-      "twintails with red ribbon",
-      "glowing neon poolside lights",
-      "transparent holographic pool",
-      "tilted dynamic angle",
-      "vibrant colors",
-      "masterpiece",
-      "high quality"
+      "ruffled crimson bikini",
+      "inflatable flamingo",
+      "kitsune mask",
+      "tongue out",
+      "neon pool",
+      "twintails",
+      "mischief"
     ],
     "negativeTokens": [],
     "promptProse": "Sparkle sitting cross-legged playfully atop an oversized pink inflatable flamingo in a luminescent rooftop pool. She wears an eccentric theatrical crimson and black ruffled bikini decorated with miniature golden bells and cheeky garters. Peeking from behind her stylized kitsune mask, she winks and playfully sticks out her tongue amidst neon reflections dancing across the pool water.",
-    "animaCaption": "sparkle (hsr), 1girl, ruffled crimson bikini, inflatable flamingo, kitsune mask, tongue out, neon pool, twintails, mischief, highres",
+    "animaCaption": "Sparkle sitting cross-legged playfully atop an oversized pink inflatable flamingo in a luminescent rooftop pool. She wears an eccentric theatrical crimson and black ruffled bikini decorated with miniature golden bells and cheeky garters.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3162,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.187Z",
   "data": {
     "id": "angelina_arknights_lingerie_whisper",
     "characterId": "angelina_arknights",
@@ -37,24 +37,17 @@
       "cheerful"
     ],
     "promptTokens": [
-      "angelina (arknights)",
-      "1girl",
-      "vulpo fox ears",
-      "fluffy rust-red fox tail swishing",
-      "coral pink silk camisole and matching tap shorts",
-      "tiny white polka dots",
-      "magically floating suspended a few inches above cozy bed",
-      "hugging glowing planet-pattern plushie",
-      "waving cheerfully at viewer",
-      "bright lively orange-amber eyes",
-      "starfield projector ceiling light casting cosmic colors",
-      "playful floating pose",
-      "masterpiece",
-      "high quality"
+      "fox ears",
+      "tail",
+      "coral pink silk camisole",
+      "floating in air",
+      "hugging pillow",
+      "starry room",
+      "happy smile"
     ],
     "negativeTokens": [],
     "promptProse": "Angelina enjoying zero-gravity relaxation in her personal dorm room at night. Clothed in a breezy coral-pink polka-dot silk camisole and sleep shorts set, she floats playfully a few inches above her mattress thanks to gentle anti-gravity Arts. Hugging a plush celestial pillow with her fluffy fox tail drifting happily, she greets the viewer with sparkling amber eyes beneath cosmic starlight projections.",
-    "animaCaption": "angelina (arknights), 1girl, fox ears, tail, coral pink silk camisole, floating in air, hugging pillow, starry room, happy smile, highres",
+    "animaCaption": "Angelina enjoying zero-gravity relaxation in her personal dorm room at night. Clothed in a breezy coral-pink polka-dot silk camisole and sleep shorts set, she floats playfully a few inches above her mattress thanks to gentle anti-gravity Arts.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -305,6 +305,18 @@ export const CURATED_STYLE_OPTIONS: readonly ArtistStyleOption[] = Object.freeze
     keywords: ['氛围', '湿润', '私密', '慵懒'],
   },
   {
+    id: 'mignon',
+    name: 'Mignon',
+    cnName: 'ミニョン',
+    waiTag: 'mignon',
+    animaTag: '@mignon',
+    description: '细腻肤色渐层、柔润光泽与清晰线条',
+    masterpiece: '画集《YUMMY TUMMY》、《肌塗りの秘訣》',
+    category: 'pure',
+    verification: 'tag',
+    keywords: ['@mignon', 'みにょん', 'minyon', 'mignon works', 'おなか絵師', '腹部画师', '肤色', '柔润'],
+  },
+  {
     id: 'rucarachi',
     name: 'Rucarachi',
     cnName: 'Rucarachi',

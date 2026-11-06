@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mizuhara_chizuru_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3389,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "mizuhara_chizuru_lingerie_whisper",
     "characterId": "mizuhara_chizuru",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "mizuhara chizuru",
-      "ichinose chizuru",
-      "solo",
-      "standing on apartment balcony at dusk",
-      "gathering long wet black hair with hair clip",
-      "blushing deeply",
-      "natural shy expression without rental persona",
-      "laundry fluttering on clothesline",
-      "golden hour Tokyo sunset skyline"
+      "balcony",
+      "standing",
+      "hair clip",
+      "black hair",
+      "blush",
+      "sunset",
+      "fine pleats at bust",
+      "delicate beige lace trim"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, mizuhara chizuru, ichinose chizuru, solo, standing on apartment balcony at dusk, gathering long wet black hair with hair clip, blushing deeply, natural shy expression without rental persona, laundry fluttering on clothesline, golden hour Tokyo sunset skyline",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, mizuhara chizuru, ichinose chizuru, solo, standing on apartment balcony at dusk, gathering long wet black hair with hair clip, blushing deeply, natural shy expression without rental persona, laundry fluttering on clothesline, golden hour Tokyo sunset skyline",
+    "promptProse": "Mizuhara Chizuru stands on apartment balcony at dusk, wearing a terracotta orange-brown silk slip dress. Ichinose chizuru, gathering long wet black hair with hair clip, blushing deeply amidst natural shy expression without rental persona, laundry fluttering on clothesline, golden hour Tokyo sunset skyline.",
+    "animaCaption": "Mizuhara Chizuru stands on apartment balcony at dusk, wearing a terracotta orange-brown silk slip dress. Ichinose chizuru, gathering long wet black hair with hair clip, blushing deeply amidst natural shy expression without rental persona, laundry fluttering on clothesline, golden hour Tokyo sunset skyline.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

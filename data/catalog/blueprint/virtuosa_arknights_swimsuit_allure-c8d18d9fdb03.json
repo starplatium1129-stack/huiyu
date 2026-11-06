@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3165,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.310Z",
   "data": {
     "id": "virtuosa_arknights_swimsuit_allure",
     "characterId": "virtuosa_arknights",
@@ -37,25 +37,17 @@
       "temptress"
     ],
     "promptTokens": [
-      "virtuosa (arknights)",
-      "1girl",
       "halo",
-      "abyss black velvet asymmetric monokini",
-      "single sheer mesh sleeve",
-      "golden cello string waist cords",
-      "leaning against wet black basalt columns of sea cave entrance",
-      "touching moist rock face",
-      "long dark flowing hair",
-      "eyes half-closed with intoxicating intellectual smirk",
-      "turbulent crashing waves",
-      "dramatic dark twilight sky",
-      "chiaroscuro lighting",
-      "masterpiece",
-      "high quality"
+      "black velvet monokini",
+      "asymmetric sleeve",
+      "basalt sea cave",
+      "crashing waves",
+      "twilight",
+      "enigmatic smile"
     ],
     "negativeTokens": [],
     "promptProse": "Virtuosa poised provocatively against glistening columnar basalt at the threshold of a cavernous sea grotto. She is attired in an avant-garde abyss-black velvet monokini with an asymmetric sheer sleeve and braided gold cords reminiscent of cello strings. Listening rapturously to the booming acoustic resonance of tidal breakers, she smiles with deep philosophical seduction.",
-    "animaCaption": "virtuosa (arknights), 1girl, halo, black velvet monokini, asymmetric sleeve, basalt sea cave, crashing waves, twilight, enigmatic smile, highres",
+    "animaCaption": "Virtuosa poised provocatively against glistening columnar basalt at the threshold of a cavernous sea grotto. She is attired in an avant-garde abyss-black velvet monokini with an asymmetric sheer sleeve and braided gold cords reminiscent of cello strings.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

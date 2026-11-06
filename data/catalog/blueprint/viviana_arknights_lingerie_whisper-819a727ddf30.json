@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3290,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
   "data": {
     "id": "viviana_arknights_lingerie_whisper",
     "characterId": "viviana_arknights",
@@ -34,22 +34,21 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "viviana arknights",
-      "solo",
-      "caprinae",
-      "glowing crystalline golden deer antlers",
-      "sitting bare-footed on plush white sheepskin rug reading leather-bound poetry book by fireplace",
-      "radiant golden-blonde hair",
-      "gentle amber eyes",
-      "elegant Kazimierz parlor"
+      "golden chiffon gown",
+      "delicate golden cord straps",
+      "glowing golden antlers",
+      "sitting",
+      "barefoot",
+      "reading book",
+      "sheepskin rug",
+      "fireplace",
+      "blonde hair",
+      "amber eyes",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, viviana arknights, solo, caprinae, glowing crystalline golden deer antlers, sitting bare-footed on plush white sheepskin rug reading leather-bound poetry book by fireplace, radiant golden-blonde hair, gentle amber eyes, elegant Kazimierz parlor",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, viviana arknights, solo, caprinae, glowing crystalline golden deer antlers, sitting bare-footed on plush white sheepskin rug reading leather-bound poetry book by fireplace, radiant golden-blonde hair, gentle amber eyes, elegant Kazimierz parlor",
+    "promptProse": "Viviana Droste sits bare-footed on plush white sheepskin rug reading leather-bound poetry book by fireplace, wearing a pale golden chiffon double-layer slip gown. Caprinae, glowing crystalline golden deer antlers, radiant golden-blonde hair amidst gentle amber eyes, elegant Kazimierz parlor.",
+    "animaCaption": "Viviana sits barefoot on a sheepskin rug, reading a leather-bound poetry book beside the fireplace.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

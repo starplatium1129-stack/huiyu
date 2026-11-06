@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3136,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "rosa_arknights_lingerie_whisper",
     "characterId": "rosa_arknights",
@@ -34,24 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rosa arknights",
-      "nataliya rostova",
-      "solo",
-      "ursus bear girl",
-      "small white fluffy bear ears",
-      "lounging gracefully on crimson velvet chaise",
-      "stirring bone china teacup with silver spoon",
-      "elegant wavy blonde hair",
-      "serene melancholic blue eyes",
-      "aristocratic parlor with fireplace"
+      "teacup",
+      "blonde hair",
+      "blue eyes",
+      "fireplace",
+      "empire waist silhouette",
+      "flowing ankle hem",
+      "noble aristocratic sleepwear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rosa arknights, nataliya rostova, solo, ursus bear girl, small white fluffy bear ears, lounging gracefully on crimson velvet chaise, stirring bone china teacup with silver spoon, elegant wavy blonde hair, serene melancholic blue eyes, aristocratic parlor with fireplace",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rosa arknights, nataliya rostova, solo, ursus bear girl, small white fluffy bear ears, lounging gracefully on crimson velvet chaise, stirring bone china teacup with silver spoon, elegant wavy blonde hair, serene melancholic blue eyes, aristocratic parlor with fireplace",
+    "promptProse": "Rosa lounges gracefully on crimson velvet chaise, wearing a champagne gold embroidered sheer double-layered slip. Nataliya rostova, ursus bear girl, small white fluffy bear ears amidst stirring bone china teacup with silver spoon, elegant wavy blonde hair, serene melancholic blue eyes, aristocratic parlor with fireplace.",
+    "animaCaption": "Rosa lounges gracefully on crimson velvet chaise, wearing a champagne gold embroidered sheer double-layered slip. Nataliya rostova, ursus bear girl, small white fluffy bear ears amidst stirring bone china teacup with silver spoon, elegant wavy blonde hair, serene melancholic blue eyes, aristocratic parlor with fireplace.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

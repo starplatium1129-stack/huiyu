@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3247,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.182Z",
   "data": {
     "id": "suzuran_arknights_swimsuit_allure",
     "characterId": "suzuran_arknights",
@@ -37,25 +37,18 @@
       "pure_innocence"
     ],
     "promptTokens": [
-      "suzuran (arknights)",
-      "1girl",
-      "fox girl",
       "fox ears",
-      "nine fluffy golden vulpo tails neatly tucked",
-      "cream-white and soft yellow modest frilled two-piece swimdress",
-      "daisy embroidery",
-      "squatting beside clear shallow tide pool",
-      "holding delicate iridescent seashell in both hands",
-      "looking up with sparkling golden eyes",
-      "warm morning sunlight",
-      "reflective water surface",
-      "adorable gentle smile",
-      "masterpiece",
-      "high quality"
+      "nine tails",
+      "modest yellow swimdress",
+      "ruffled",
+      "holding seashell",
+      "tide pool",
+      "morning sun",
+      "cute"
     ],
     "negativeTokens": [],
     "promptProse": "Suzuran squatting happily beside a shallow, crystal-clear tide pool on a sunlit golden beach. She is clad in a modest cream-white and pale yellow swimdress embellished with tiny daisy embroidery and double-ruffled shoulders. Her nine fluffy golden fox tails are carefully curled behind her above the water as she beams upward, presenting an iridescent seashell with innocent pride.",
-    "animaCaption": "suzuran (arknights), 1girl, fox ears, nine tails, modest yellow swimdress, ruffled, holding seashell, tide pool, morning sun, cute, highres",
+    "animaCaption": "Suzuran squatting happily beside a shallow, crystal-clear tide pool on a sunlit golden beach. She is clad in a modest cream-white and pale yellow swimdress embellished with tiny daisy embroidery and double-ruffled shoulders.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

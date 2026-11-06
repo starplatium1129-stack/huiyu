@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "isshiki_iroha_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3318,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.886Z",
   "data": {
     "id": "isshiki_iroha_lingerie_whisper",
     "characterId": "isshiki_iroha",
@@ -37,23 +37,16 @@
       "little_devil_kouhai"
     ],
     "promptTokens": [
-      "isshiki iroha",
-      "1girl",
-      "oregairu",
-      "pastel buttercream-yellow frilled modal slip dress",
-      "dainty lace shoulder ribbons",
-      "sitting with knees together on cozy floor rug",
-      "holding carton of strawberry milk with straw",
-      "head tilted with iconic teasing 'are you hitting on me' smirk",
-      "bright warm hazel eyes sparkling with calculated mischief",
-      "soft light brown bob hair",
-      "cozy student council office night",
-      "masterpiece",
-      "high quality"
+      "buttercream yellow slip dress",
+      "strawberry milk",
+      "tilted head",
+      "teasing smirk",
+      "hazel eyes",
+      "light brown hair"
     ],
     "negativeTokens": [],
     "promptProse": "Iroha Isshiki displaying her masterclass little-devil tactics during an overnight student council duty. Clothed in a sweet buttercream-yellow ruffled modal slip dress, she sits with ankles tucked neatly beneath her on the carpet holding a strawberry milk. Tilting her head with her trademark mock-rejection smirk, her hazel eyes gleam with irresistible, teasing charm.",
-    "animaCaption": "isshiki iroha, 1girl, buttercream yellow slip dress, strawberry milk, tilted head, teasing smirk, hazel eyes, light brown hair, highres",
+    "animaCaption": "Iroha Isshiki displaying her masterclass little-devil tactics during an overnight student council duty. Clothed in a sweet buttercream-yellow ruffled modal slip dress, she sits with ankles tucked neatly beneath her on the carpet holding a strawberry milk.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

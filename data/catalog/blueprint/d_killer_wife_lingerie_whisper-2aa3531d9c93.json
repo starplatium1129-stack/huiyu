@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_killer_wife_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3452,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.520Z",
   "data": {
     "id": "d_killer_wife_lingerie_whisper",
     "characterId": "d_killer_wife",
@@ -37,23 +37,16 @@
       "deadly_wife"
     ],
     "promptTokens": [
-      "d (nikke)",
-      "1girl",
-      "killer wife",
-      "pure white pleated chiffon apron-style slip chemise",
-      "deep-v halter neckline",
-      "leaning against kitchen marble island counter",
-      "holding freshly sliced bunny apple wedge towards viewer",
-      "impeccably sweet doting housewife smile",
-      "sharp dangerous amber eyes behind gentle expression",
-      "blonde hair pinned up gracefully with loose strands",
-      "warm modern kitchen lighting",
-      "masterpiece",
-      "high quality"
+      "white chiffon apron chemise",
+      "holding apple",
+      "kitchen counter",
+      "blonde hair updo",
+      "sweet smile",
+      "deadly wife"
     ],
     "negativeTokens": [],
     "promptProse": "D in her 'loving wife' undercover persona, waiting by the kitchen island late in the evening. Dressed in a sheer, pleated white chiffon apron chemise featuring a deep-V neckline, she tenderly offers an apple slice. Her perfectly warm matrimonial smile is subtly sharpened by cold, calculating agent eyes as her hand brushes near a concealed ceramic blade.",
-    "animaCaption": "d (nikke), 1girl, white chiffon apron chemise, holding apple, kitchen counter, blonde hair updo, sweet smile, deadly wife, highres",
+    "animaCaption": "D in her 'loving wife' undercover persona, waiting by the kitchen island late in the evening. Dressed in a sheer, pleated white chiffon apron chemise featuring a deep-V neckline, she tenderly offers an apple slice.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matsushima_michiru_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3530,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "matsushima_michiru_lingerie_whisper",
     "characterId": "matsushima_michiru",
@@ -34,21 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "matsushima michiru",
-      "solo",
-      "standing with hands on hips puffing out chest then blushing",
-      "bright blonde twin tails flying",
-      "fake haughty expression breaking into blush",
-      "lemon soda cans and vitamin jars on desk",
-      "bright dorm room lighting"
+      "blush",
+      "standing",
+      "twintails",
+      "reclining",
+      "ruffled lettuce edge hem",
+      "high-waisted bloomers shorts",
+      "bright energetic cotton",
+      "playful tsundere loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, matsushima michiru, solo, standing with hands on hips puffing out chest then blushing, bright blonde twin tails flying, fake haughty expression breaking into blush, lemon soda cans and vitamin jars on desk, bright dorm room lighting",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, matsushima michiru, solo, standing with hands on hips puffing out chest then blushing, bright blonde twin tails flying, fake haughty expression breaking into blush, lemon soda cans and vitamin jars on desk, bright dorm room lighting",
+    "promptProse": "Matsushima Michiru stands with hands on hips puffing out chest then blushing, wearing a lemon yellow polka dot camisole set. Bright blonde twin tails flying, fake haughty expression breaking into blush, lemon soda cans and vitamin jars on desk amidst bright dorm room lighting.",
+    "animaCaption": "Matsushima Michiru stands with hands on hips puffing out chest then blushing, wearing a lemon yellow polka dot camisole set. Bright blonde twin tails flying, fake haughty expression breaking into blush, lemon soda cans and vitamin jars on desk amidst bright dorm room lighting.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

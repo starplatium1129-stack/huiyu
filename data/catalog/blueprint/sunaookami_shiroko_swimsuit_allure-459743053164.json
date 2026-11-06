@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3439,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.154Z",
   "data": {
     "id": "sunaookami_shiroko_swimsuit_allure",
     "characterId": "sunaookami_shiroko",
@@ -37,26 +37,18 @@
       "morning_sun"
     ],
     "promptTokens": [
-      "sunaookami shiroko",
-      "1girl",
-      "wolf girl",
       "wolf ears",
       "halo",
-      "heterochromia blue and amber eyes",
-      "slate grey and cyan sporty rashguard swimsuit",
-      "front zipper pulled slightly down",
-      "cycling goggles on forehead",
-      "standing by road barrier with road bicycle",
-      "holding out sports water bottle",
-      "clear coastal highway and blue sea",
-      "crisp morning lighting",
-      "straight eye contact",
-      "masterpiece",
-      "high quality"
+      "rashguard swimsuit",
+      "zipper down",
+      "bicycle",
+      "coastal road",
+      "morning light",
+      "calm expression"
     ],
     "negativeTokens": [],
     "promptProse": "Shiroko Sunaookami taking a breather along a seaside highway embankment after a long bike ride. She is dressed in a sleek slate-grey and cyan aerodynamic rashguard one-piece with its front zipper lowered slightly to cool down. With cycling goggles perched on her hair and wolf ears twitching in the coastal draft, she calmly offers a hydration flask with focused heterochromatic eyes.",
-    "animaCaption": "sunaookami shiroko, 1girl, wolf ears, halo, rashguard swimsuit, zipper down, bicycle, coastal road, morning light, calm expression, highres",
+    "animaCaption": "Shiroko Sunaookami taking a breather along a seaside highway embankment after a long bike ride. She is dressed in a sleek slate-grey and cyan aerodynamic rashguard one-piece with its front zipper lowered slightly to cool down.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

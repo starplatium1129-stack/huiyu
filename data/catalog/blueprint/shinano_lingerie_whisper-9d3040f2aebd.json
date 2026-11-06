@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3445,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shinano_lingerie_whisper",
     "characterId": "shinano",
@@ -34,23 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shinano azur lane",
-      "solo",
-      "kitsune fox girl",
-      "nine massive majestic silver fox tails spread around like ocean waves",
-      "fox ears twitching",
-      "lounging sideways on dark purple brocade water couch",
-      "sleepy purple eyes",
-      "floating wisteria and glowing lotus flowers",
-      "dreamlike sanctuary"
+      "fox ears",
+      "chaise lounge",
+      "water",
+      "sleepy",
+      "purple eyes",
+      "floating",
+      "glowing",
+      "flowers",
+      "white silk tube bra",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shinano azur lane, solo, kitsune fox girl, nine massive majestic silver fox tails spread around like ocean waves, fox ears twitching, lounging sideways on dark purple brocade water couch, sleepy purple eyes, floating wisteria and glowing lotus flowers, dreamlike sanctuary",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shinano azur lane, solo, kitsune fox girl, nine massive majestic silver fox tails spread around like ocean waves, fox ears twitching, lounging sideways on dark purple brocade water couch, sleepy purple eyes, floating wisteria and glowing lotus flowers, dreamlike sanctuary",
+    "promptProse": "Shinano lounges sideways on dark purple brocade water couch, wearing a midnight purple translucent wisteria-embroidered open robe. Kitsune fox girl, nine massive majestic silver fox tails spread around like ocean waves, fox ears twitching amidst sleepy purple eyes, floating wisteria and glowing lotus flowers, dreamlike sanctuary.",
+    "animaCaption": "Shinano lounges sideways on dark purple brocade water couch, wearing a midnight purple translucent wisteria-embroidered open robe. Kitsune fox girl, nine massive majestic silver fox tails spread around like ocean waves, fox ears twitching amidst sleepy purple eyes, floating wisteria and glowing lotus flowers, dreamlike sanctuary.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

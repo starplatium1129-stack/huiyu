@@ -49,11 +49,14 @@ pub(crate) use validation::truthy;
 /// JSON is a detached ledger copy; changing it cannot change an admitted request.
 pub struct Prepared {
     pub input: Value,
-    pub provider: String,
     execution: Execution,
-    selected: &'static str,
     permit: OwnedSemaphorePermit,
     gpu: Option<native::ComfyLease>,
+}
+impl Prepared {
+    pub(crate) fn provider(&self) -> &'static str {
+        self.execution.provider()
+    }
 }
 
 #[derive(Clone)]

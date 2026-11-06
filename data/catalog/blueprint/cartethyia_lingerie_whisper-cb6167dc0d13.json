@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3358,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.406Z",
   "data": {
     "id": "cartethyia_lingerie_whisper",
     "characterId": "cartethyia",
@@ -36,23 +36,17 @@
       "ethereal_calm"
     ],
     "promptTokens": [
-      "cartethyia (wuthering waves)",
-      "1girl",
-      "azure blue sheer lace silk slip dress",
-      "wave-pattern embroidery",
-      "thin spaghetti straps",
-      "reclining on side on wooden lounger with cashmere blanket",
-      "one hand lightly touching ear listening",
-      "eyes half-closed serenely",
-      "long flowing hair swaying in ocean breeze",
-      "glowing nocturnal ocean and starfield",
-      "ethereal cinematic lighting",
-      "masterpiece",
-      "high quality"
+      "azure silk slip",
+      "lying on lounger",
+      "listening to ocean",
+      "flowing hair",
+      "starry sky",
+      "glowing sea",
+      "serene"
     ],
     "negativeTokens": [],
     "promptProse": "Cartethyia resting upon a rustic wooden lounge chair on an open coastal terrace at midnight. Dressed in a fluid azure-blue silk slip dress framed with wave-like lace trims, she reclines on her side listening intently to the acoustic pulse of the tides under a sky laden with shimmering constellations.",
-    "animaCaption": "cartethyia, 1girl, azure silk slip, lying on lounger, listening to ocean, flowing hair, starry sky, glowing sea, serene, highres",
+    "animaCaption": "Cartethyia resting upon a rustic wooden lounge chair on an open coastal terrace at midnight. Dressed in a fluid azure-blue silk slip dress framed with wave-like lace trims, she reclines on her side listening intently to the acoustic pulse of the tides under a sky laden with shimmering constellations.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

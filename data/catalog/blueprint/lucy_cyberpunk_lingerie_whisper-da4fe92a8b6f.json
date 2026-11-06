@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_cyberpunk_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3196,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
   "data": {
     "id": "lucy_cyberpunk_lingerie_whisper",
     "characterId": "lucy_cyberpunk",
@@ -34,22 +34,22 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "lucy cyberpunk",
-      "solo",
-      "sitting hugging knees on high-rise panoramic window ledge",
-      "colorful iridescent bob hair",
-      "holding slim cigarette between fingers",
-      "looking out at giant digital moon over Night City skyscrapers",
-      "glowing neon reflections",
-      "melancholic romantic aura"
+      "sitting",
+      "hugging knees",
+      "window ledge",
+      "holding cigarette",
+      "night city",
+      "glowing neon",
+      "geometric side cutouts",
+      "high-cut leg line",
+      "iridescent luminescent fabric",
+      "cyber chic strappy bodysuit",
+      "futuristic loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, lucy cyberpunk, solo, sitting hugging knees on high-rise panoramic window ledge, colorful iridescent bob hair, holding slim cigarette between fingers, looking out at giant digital moon over Night City skyscrapers, glowing neon reflections, melancholic romantic aura",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, lucy cyberpunk, solo, sitting hugging knees on high-rise panoramic window ledge, colorful iridescent bob hair, holding slim cigarette between fingers, looking out at giant digital moon over Night City skyscrapers, glowing neon reflections, melancholic romantic aura",
+    "promptProse": "Lucy sits hugging knees on high-rise panoramic window ledge, wearing a holographic aurora sheer monokini. Colorful iridescent bob hair, holding slim cigarette between fingers, looking out at giant digital moon over Night City skyscrapers amidst glowing neon reflections, melancholic romantic aura.",
+    "animaCaption": "Lucy sits on a high-rise window ledge, hugging her knees and holding a cigarette as neon lights glow across Night City.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

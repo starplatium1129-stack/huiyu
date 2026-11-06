@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_hortensia_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3277,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.395Z",
   "data": {
     "id": "caren_hortensia_lingerie_whisper",
     "characterId": "caren_hortensia",
@@ -37,23 +37,18 @@
       "sadistic_smirk"
     ],
     "promptTokens": [
-      "caren hortensia",
-      "1girl",
-      "priestess",
-      "monochrome black and white sleeveless high-slit linen robe",
-      "pure white cowl collar",
-      "standing barefoot on cool marble steps of seaside chapel",
-      "arms crossed casually beneath chest",
-      "long flowing silver hair blowing in dawn draft",
-      "sharp mocking smirk on porcelain lips",
-      "golden eyes piercing through viewer's soul",
-      "violet dawn light through gothic stained glass",
-      "masterpiece",
-      "high quality"
+      "monochrome linen robe",
+      "high slit",
+      "arms crossed",
+      "barefoot on marble",
+      "silver hair",
+      "golden eyes",
+      "mocking smirk",
+      "dawn chapel"
     ],
     "negativeTokens": [],
     "promptProse": "Caren Hortensia greeting first light outside the confessional booth of an ancient seaside chapel. Clothed in a stark monochrome black-and-white sleeveless linen night robe with an audacious thigh-high slit, she leans barefoot against the stone portal with arms crossed. Her piercing golden gaze and faintly sadistic smile pierce through the viewer's defenses in the rose-violet dawn light.",
-    "animaCaption": "caren hortensia, 1girl, monochrome linen robe, high slit, arms crossed, barefoot on marble, silver hair, golden eyes, mocking smirk, dawn chapel, highres",
+    "animaCaption": "Caren Hortensia greeting first light outside the confessional booth of an ancient seaside chapel. Clothed in a stark monochrome black-and-white sleeveless linen night robe with an audacious thigh-high slit, she leans barefoot against the stone portal with arms crossed.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

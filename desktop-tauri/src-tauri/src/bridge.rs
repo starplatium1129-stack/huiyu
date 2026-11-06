@@ -144,9 +144,7 @@ pub async fn set_workspace(
         .map_err(|e| format!("AI 工作区不可写，请选择有写入权限的文件夹：{e}"))?;
     drop(writable);
     std::fs::remove_file(&probe).map_err(|e| format!("AI 工作区无法清理临时文件，请检查权限：{e}"))?;
-    let text = resolved.to_string_lossy();
-    let resolved = text.strip_prefix(r"\\?\UNC\").map(|unc| format!(r"\\{unc}"))
-        .unwrap_or_else(|| text.strip_prefix(r"\\?\").unwrap_or(&text).to_owned());
+    let resolved = crate::paths::simplify_path(resolved).to_string_lossy().into_owned();
     if !crate::window_state::save_ai_workspace(&state.paths.ai_workspace_file, &resolved) {
         return Err("工作区配置未能保存，请检查配置目录的写入权限".into());
     }

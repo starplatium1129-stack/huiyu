@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_haruno_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3319,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.417Z",
   "data": {
     "id": "yukinoshita_haruno_swimsuit_allure",
     "characterId": "yukinoshita_haruno",
@@ -37,24 +37,17 @@
       "dangerous_seduction"
     ],
     "promptTokens": [
-      "yukinoshita haruno",
-      "1girl",
-      "deep burgundy wine crisscross plunge monokini",
-      "high-cut hips",
-      "resting arms along edge of rooftop infinity pool glass railing",
-      "wet long black hair cascading over shoulders",
-      "chin rested playfully upon forearm",
-      "glancing back at viewer with sly piercing teasing smile",
-      "dark calculating amused eyes",
-      "pool water glowing with neon blue illumination",
-      "blurred luxury hotel skyline background",
-      "seductive cinematic angle",
-      "masterpiece",
-      "high quality"
+      "burgundy plunge monokini",
+      "infinity pool",
+      "chin on arm",
+      "looking back",
+      "wet black hair",
+      "teasing smile",
+      "night city"
     ],
     "negativeTokens": [],
     "promptProse": "Haruno Yukinoshita resting her folded arms along the transparent acrylic rim of a penthouse infinity pool over a nocturnal cityscape. She wears an alluring burgundy wine deep-V monokini accented with intricate crisscrossing waist cords. Her damp black tresses cling gracefully to her pale shoulders as she rests her chin on her arm, offering a tantalizingly playful yet unnervingly shrewd elder-sister smirk.",
-    "animaCaption": "yukinoshita haruno, 1girl, burgundy plunge monokini, infinity pool, chin on arm, looking back, wet black hair, teasing smile, night city, highres",
+    "animaCaption": "Haruno Yukinoshita resting her folded arms along the transparent acrylic rim of a penthouse infinity pool over a nocturnal cityscape. She wears an alluring burgundy wine deep-V monokini accented with intricate crisscrossing waist cords.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

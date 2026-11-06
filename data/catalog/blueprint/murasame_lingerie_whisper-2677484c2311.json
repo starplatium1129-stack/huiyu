@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3294,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "murasame_lingerie_whisper",
     "characterId": "murasame",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "murasame senren banka",
-      "solo",
-      "floating cross-legged in mid-air inside traditional shinto shrine",
-      "arms crossed with pouty proud face",
-      "glowing golden eyes",
-      "light blonde twin buns with green ribbons",
-      "ancient katana resting on lacquered stand below",
-      "magical moonlight"
+      "floating",
+      "glowing",
+      "ribbon",
+      "moonlight",
+      "red string tassel accents",
+      "floating gossamer sleeves",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, murasame senren banka, solo, floating cross-legged in mid-air inside traditional shinto shrine, arms crossed with pouty proud face, glowing golden eyes, light blonde twin buns with green ribbons, ancient katana resting on lacquered stand below, magical moonlight",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, murasame senren banka, solo, floating cross-legged in mid-air inside traditional shinto shrine, arms crossed with pouty proud face, glowing golden eyes, light blonde twin buns with green ribbons, ancient katana resting on lacquered stand below, magical moonlight",
+    "promptProse": "Murasame relaxes in floating cross-legged in mid-air inside traditional shinto shrine, wearing a crimson gold-crested spirit short haori. Floating cross-legged in mid-air inside traditional shinto shrine, arms crossed with pouty proud face, glowing golden eyes amidst light blonde twin buns with green ribbons, ancient katana resting on lacquered stand below, magical moonlight.",
+    "animaCaption": "Murasame relaxes in floating cross-legged in mid-air inside traditional shinto shrine, wearing a crimson gold-crested spirit short haori. Floating cross-legged in mid-air inside traditional shinto shrine, arms crossed with pouty proud face, glowing golden eyes amidst light blonde twin buns with green ribbons, ancient katana resting on lacquered stand below, magical moonlight.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

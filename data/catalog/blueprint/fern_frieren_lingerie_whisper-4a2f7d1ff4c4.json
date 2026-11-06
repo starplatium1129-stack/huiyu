@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_frieren_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3262,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.616Z",
   "data": {
     "id": "fern_frieren_lingerie_whisper",
     "characterId": "fern_frieren",
@@ -37,23 +37,17 @@
       "pouting_fern"
     ],
     "promptTokens": [
-      "fern (frieren)",
-      "1girl",
-      "modest deep violet high-neck long cotton night robe",
-      "tied cloth belt",
-      "sitting poised on wooden stool before vanity mirror",
-      "drying long thick dark purple hair with white towel",
-      "adorable puffed-out pouty cheeks",
-      "half-lidded deadpan exasperated purple eyes",
-      "full healthy feminine figure",
-      "warm flickering oil lamp on dressing table",
-      "cozy wooden fantasy inn",
-      "masterpiece",
-      "high quality"
+      "violet high-neck robe",
+      "towel drying hair",
+      "puffed cheeks",
+      "pouting",
+      "purple eyes",
+      "wooden inn",
+      "cozy night"
     ],
     "negativeTokens": [],
     "promptProse": "Fern dealing with nightly chores inside a cozy timber inn room. Clothed in a modest, sensible deep-violet high-neck belted cotton robe, she sits at the vanity towel-drying her magnificent dark purple hair. Her cheeks are comically puffed out like an adorable hamster as she glares with deadpan exasperation at Frieren lounging lazily on the bed.",
-    "animaCaption": "fern (frieren), 1girl, violet high-neck robe, towel drying hair, puffed cheeks, pouting, purple eyes, wooden inn, cozy night, highres",
+    "animaCaption": "Fern dealing with nightly chores inside a cozy timber inn room. Clothed in a modest, sensible deep-violet high-neck belted cotton robe, she sits at the vanity towel-drying her magnificent dark purple hair.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

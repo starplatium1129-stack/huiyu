@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3421,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "power_lingerie_whisper",
     "characterId": "power",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "power chainsaw man",
-      "solo",
-      "lying sprawled on futon mattress",
-      "hugging orange cat meowy to chest",
-      "red fiend horns pointing up from messy strawberry-blonde hair",
-      "sharp shark teeth in cocky laugh",
-      "messy room with manga and empty cans around",
-      "bright morning light"
+      "reclining",
+      "futon",
+      "horns",
+      "blonde hair",
+      "bold vibrant red",
+      "wild untamed fiend sleep set",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, power chainsaw man, solo, lying sprawled on futon mattress, hugging orange cat meowy to chest, red fiend horns pointing up from messy strawberry-blonde hair, sharp shark teeth in cocky laugh, messy room with manga and empty cans around, bright morning light",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, power chainsaw man, solo, lying sprawled on futon mattress, hugging orange cat meowy to chest, red fiend horns pointing up from messy strawberry-blonde hair, sharp shark teeth in cocky laugh, messy room with manga and empty cans around, bright morning light",
+    "promptProse": "Power lies sprawled on futon mattress, wearing a crimson red athletic cotton tube top. Hugging orange cat meowy to chest, red fiend horns pointing up from messy strawberry-blonde hair, sharp shark teeth in cocky laugh amidst messy room with manga and empty cans around, bright morning light.",
+    "animaCaption": "Power lies sprawled on futon mattress, wearing a crimson red athletic cotton tube top. Hugging orange cat meowy to chest, red fiend horns pointing up from messy strawberry-blonde hair, sharp shark teeth in cocky laugh amidst messy room with manga and empty cans around, bright morning light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

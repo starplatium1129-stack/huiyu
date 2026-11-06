@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3397,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.146Z",
   "data": {
     "id": "sumizome_nozomi_swimsuit_allure",
     "characterId": "sumizome_nozomi",
@@ -36,24 +36,17 @@
       "morning_sun"
     ],
     "promptTokens": [
-      "sumizome nozomi",
-      "1girl",
-      "azure blue yukata-style wrap swimdress",
-      "morning glory floral print",
-      "hair ribbon",
-      "splashing clear crystal water with both hands towards viewer",
-      "barefoot in shallow mountain stream",
-      "water droplets frozen in mid-air",
-      "bright cheerful laughing smile",
-      "lush forest waterfall background",
-      "sunbeams through foliage",
-      "dynamic action shot",
-      "masterpiece",
-      "high quality"
+      "yukata swimdress",
+      "floral print",
+      "splashing water",
+      "mountain stream",
+      "sunny morning",
+      "energetic",
+      "smile"
     ],
     "negativeTokens": [],
     "promptProse": "Nozomi Sumizome splashing pure mountain spring water enthusiastically toward the viewer with cupped hands. She wears a charming azure-blue yukata-wrap swimdress patterned with blooming morning glories and cheerful ruffled skirts. Droplets sparkle in midair like diamonds against the dappled woodland sunbeams as her eyes crinkle with genuine laughter.",
-    "animaCaption": "sumizome nozomi, 1girl, yukata swimdress, floral print, splashing water, mountain stream, sunny morning, energetic, smile, highres",
+    "animaCaption": "Nozomi Sumizome splashing pure mountain spring water enthusiastically toward the viewer with cupped hands. She wears a charming azure-blue yukata-wrap swimdress patterned with blooming morning glories and cheerful ruffled skirts.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

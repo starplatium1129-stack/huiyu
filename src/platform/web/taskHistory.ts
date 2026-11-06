@@ -1,4 +1,4 @@
-import { kvGet, kvUpdate } from '@/composables/useKVStore'
+import { kvGet, kvUpdate } from './kvStore'
 import { TASK_CENTER_KV_KEY } from '@/utils/storageKeys'
 
 /** Active Web history port: the fixed task key shares the proven atomic KV transaction. */

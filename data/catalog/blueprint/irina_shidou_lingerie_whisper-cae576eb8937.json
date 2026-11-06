@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "irina_shidou_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3462,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.870Z",
   "data": {
     "id": "irina_shidou_lingerie_whisper",
     "characterId": "irina_shidou",
@@ -37,21 +37,17 @@
       "holy_sword_maiden"
     ],
     "promptTokens": [
-      "irina shidou",
-      "1girl",
-      "pure white silk camisole with gold holy crest embroidery",
-      "matching white silk sleep briefs",
-      "kneeling in prayer beside bed on soft rug",
-      "clutching glowing silver crucifix pendant tightly against chest",
-      "long bouncy golden-brown twintails resting over shoulders",
-      "bright amber eyes blushing deeply with sweet fluster",
-      "warm bedside lamp and gentle divine glow",
-      "masterpiece",
-      "high quality"
+      "white holy camisole",
+      "holding glowing crucifix",
+      "kneeling",
+      "twintails",
+      "blushing",
+      "amber eyes",
+      "sweet"
     ],
     "negativeTokens": [],
     "promptProse": "Irina Shidou finishing her nightly devotions in her room at the Hyoudou residence. Adorned in a pure white silk camisole embroidered with golden angelic crests and matching briefs, she kneels upon a bedroom rug. Clasping a luminous crucifix pendant over her beating heart as her twin tails sway, she turns with an adorable, blushing expression of devout and romantic innocence.",
-    "animaCaption": "irina shidou, 1girl, white holy camisole, holding glowing crucifix, kneeling, twintails, blushing, amber eyes, sweet, highres",
+    "animaCaption": "Irina Shidou finishing her nightly devotions in her room at the Hyoudou residence. Adorned in a pure white silk camisole embroidered with golden angelic crests and matching briefs, she kneels upon a bedroom rug.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

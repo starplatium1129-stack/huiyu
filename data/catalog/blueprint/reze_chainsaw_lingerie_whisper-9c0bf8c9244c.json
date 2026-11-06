@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_chainsaw_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3260,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "reze_chainsaw_lingerie_whisper",
     "characterId": "reze_chainsaw",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "reze chainsaw man",
-      "solo",
-      "sitting on high windowsill",
-      "pulling slim black choker ring at neck with one finger",
-      "dark purple bob hair",
-      "biting lower lip with seductive playful smirk",
-      "emerald green eyes",
-      "distant summer fireworks blooming in night sky"
+      "sitting",
+      "choker",
+      "green eyes",
+      "night",
+      "scalloped floral edges",
+      "low-rise cheeky briefs",
+      "seductive soviet spy nightwear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, reze chainsaw man, solo, sitting on high windowsill, pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk, emerald green eyes, distant summer fireworks blooming in night sky",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, reze chainsaw man, solo, sitting on high windowsill, pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk, emerald green eyes, distant summer fireworks blooming in night sky",
+    "promptProse": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky.",
+    "animaCaption": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

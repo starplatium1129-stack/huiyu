@@ -144,7 +144,8 @@ try {
   if (new Set(args).size !== args.length || args.some((a: any) => !['--check', '--write', '--json', '--explain'].includes(a))) throw new Error('Unknown or duplicate argument');
   const write = args.includes('--write');
   if (write && (json || args.includes('--check'))) throw new Error('Read-only diagnostics cannot be combined with --write');
-  const root = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '../..'));
+  const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+  const root = resolveContentRoot();
   const pinnedScenes = JSON.parse(fs.readFileSync(path.join(root, 'data/prompt-pinned-scenes.json'), 'utf8')).scenes;
   if (!pinnedScenes || typeof pinnedScenes !== 'object' || Array.isArray(pinnedScenes)) throw new Error('Invalid pinned scenes');
   const MANUAL_RATINGS = parseManualRatings(fs.readFileSync(path.join(root, 'scripts/lib/manual-scene-ratings.js'), 'utf8'));

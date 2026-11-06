@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_kaori_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3475,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.961Z",
   "data": {
     "id": "kanzaki_kaori_lingerie_whisper",
     "characterId": "kanzaki_kaori",
@@ -37,23 +37,16 @@
       "saint_reflection"
     ],
     "promptTokens": [
-      "kanzaki kaori",
-      "1girl",
-      "saint swordmaster",
-      "pure white seamless modal one-shoulder athletic tank top",
-      "asymmetrical single-leg fitted lounge pant",
-      "sitting in immaculate disciplined seiza on tatami mat",
-      "two-meter-long nodachi sword resting across knees",
-      "hands resting formally on black scabbard",
-      "immense high ponytail flowing down back",
-      "somber noble dark eyes",
-      "rain lashing against windowpanes outside",
-      "masterpiece",
-      "high quality"
+      "white one-shoulder tank",
+      "nodachi sword on lap",
+      "sitting seiza",
+      "long ponytail",
+      "rainy window",
+      "noble gaze"
     ],
     "negativeTokens": [],
     "promptProse": "Kaori Kanzaki engaged in solemn post-combat reflection inside a quiet London dormitory while rain pounds the glass. She wears a minimalist pure white modal one-shoulder tank top and asymmetrical lounge pants echoing her iconic combat silhouette. Sitting in flawless seiza with her two-meter nodachi resting across her knees, her noble features radiate saintly, self-sacrificing dedication.",
-    "animaCaption": "kanzaki kaori, 1girl, white one-shoulder tank, nodachi sword on lap, sitting seiza, long ponytail, rainy window, noble gaze, highres",
+    "animaCaption": "Kaori Kanzaki engaged in solemn post-combat reflection inside a quiet London dormitory while rain pounds the glass. She wears a minimalist pure white modal one-shoulder tank top and asymmetrical lounge pants echoing her iconic combat silhouette.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_azur_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3448,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "st_louis_azur_lingerie_whisper",
     "characterId": "st_louis_azur",
@@ -34,22 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "st louis azur lane",
-      "solo",
-      "turning in leather sports car seat",
-      "resting elbow on door frame",
-      "running hand through voluminous wavy light-blue hair",
-      "sultry violet eyes",
-      "curvaceous mature figure",
-      "coastal scenic overlook with distant harbor lights"
+      "blue hair",
+      "purple eyes",
+      "ultra-deep v neckline",
+      "sheer gossamer side panels",
+      "liquid drape silk",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, st louis azur lane, solo, turning in leather sports car seat, resting elbow on door frame, running hand through voluminous wavy light-blue hair, sultry violet eyes, curvaceous mature figure, coastal scenic overlook with distant harbor lights",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, st louis azur lane, solo, turning in leather sports car seat, resting elbow on door frame, running hand through voluminous wavy light-blue hair, sultry violet eyes, curvaceous mature figure, coastal scenic overlook with distant harbor lights",
+    "promptProse": "St. Louis rests elbow on door frame, wearing a ice blue watered-silk plunging slip gown. Turning in leather sports car seat, running hand through voluminous wavy light-blue hair, sultry violet eyes amidst curvaceous mature figure, coastal scenic overlook with distant harbor lights.",
+    "animaCaption": "St. Louis rests elbow on door frame, wearing a ice blue watered-silk plunging slip gown. Turning in leather sports car seat, running hand through voluminous wavy light-blue hair, sultry violet eyes amidst curvaceous mature figure, coastal scenic overlook with distant harbor lights.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

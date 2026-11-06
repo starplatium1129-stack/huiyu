@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kushima_kamome_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3484,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kushima_kamome_lingerie_whisper",
     "characterId": "kushima_kamome",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kushima kamome",
-      "solo",
-      "sitting atop an antique leather trunk suitcase",
-      "bare feet on wooden floorboards",
-      "short light-blonde hair fluttering in ocean wind",
-      "bright turquoise eyes",
-      "sea gull outside arched window",
-      "dazzling morning ocean horizon"
+      "sitting",
+      "bare feet",
+      "blonde hair",
+      "nautical rope knot details",
+      "tiny brass anchor charm",
+      "wireless soft cups",
+      "breathable cotton briefs",
+      "breezy coastal homewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kushima kamome, solo, sitting atop an antique leather trunk suitcase, bare feet on wooden floorboards, short light-blonde hair fluttering in ocean wind, bright turquoise eyes, sea gull outside arched window, dazzling morning ocean horizon",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kushima kamome, solo, sitting atop an antique leather trunk suitcase, bare feet on wooden floorboards, short light-blonde hair fluttering in ocean wind, bright turquoise eyes, sea gull outside arched window, dazzling morning ocean horizon",
+    "promptProse": "Kushima Kamome sits atop an antique leather trunk suitcase, wearing a navy and white pinstriped linen bralette set. Bare feet on wooden floorboards, short light-blonde hair fluttering in ocean wind, bright turquoise eyes amidst sea gull outside arched window, dazzling morning ocean horizon.",
+    "animaCaption": "Kushima Kamome sits atop an antique leather trunk suitcase, wearing a navy and white pinstriped linen bralette set. Bare feet on wooden floorboards, short light-blonde hair fluttering in ocean wind, bright turquoise eyes amidst sea gull outside arched window, dazzling morning ocean horizon.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

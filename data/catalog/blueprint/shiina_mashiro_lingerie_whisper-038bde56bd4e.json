@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3324,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shiina_mashiro_lingerie_whisper",
     "characterId": "shiina_mashiro",
@@ -34,22 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shiina mashiro",
-      "solo",
-      "standing bare-footed by tall wooden art easel",
-      "holding paintbrush in air",
-      "long messy golden-white hair falling over translucent nightdress",
-      "otherworldly pure red eyes",
-      "art studio floor covered in oil paintings",
-      "bright morning glow"
+      "standing",
+      "night",
+      "red eyes",
+      "ultra-thin straps",
+      "artistic muse pure loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shiina mashiro, solo, standing bare-footed by tall wooden art easel, holding paintbrush in air, long messy golden-white hair falling over translucent nightdress, otherworldly pure red eyes, art studio floor covered in oil paintings, bright morning glow",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shiina mashiro, solo, standing bare-footed by tall wooden art easel, holding paintbrush in air, long messy golden-white hair falling over translucent nightdress, otherworldly pure red eyes, art studio floor covered in oil paintings, bright morning glow",
+    "promptProse": "Mashiro Shiina stands bare-footed by tall wooden art easel, wearing a pure white semi-translucent gossamer slip dress. Holding paintbrush in air, long messy golden-white hair falling over translucent nightdress, otherworldly pure red eyes amidst art studio floor covered in oil paintings, bright morning glow.",
+    "animaCaption": "Mashiro Shiina stands bare-footed by tall wooden art easel, wearing a pure white semi-translucent gossamer slip dress. Holding paintbrush in air, long messy golden-white hair falling over translucent nightdress, otherworldly pure red eyes amidst art studio floor covered in oil paintings, bright morning glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

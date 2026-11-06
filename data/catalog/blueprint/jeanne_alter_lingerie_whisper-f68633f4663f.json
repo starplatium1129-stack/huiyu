@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_alter_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3255,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.917Z",
   "data": {
     "id": "jeanne_alter_lingerie_whisper",
     "characterId": "jeanne_alter",
@@ -37,22 +37,17 @@
       "avenger_gap_moe"
     ],
     "promptTokens": [
-      "jeanne d'arc (alter)",
-      "1girl",
-      "avenger",
-      "charred dragon-flame black and crimson athletic camisole",
-      "matching snug black sleep shorts",
-      "sitting cross-legged in rumpled bedsheets clutching shojo romance manga to chest",
-      "burst of dark crimson hellfire igniting in clenched fist",
-      "face blazing furiously red with mortified rage",
-      "sharp yellow-golden eyes wide with panic",
-      "short messy bleached-silver hair",
-      "masterpiece",
-      "high quality"
+      "black camisole",
+      "reading shojo manga",
+      "black flames in hand",
+      "furious red blush",
+      "golden eyes",
+      "silver hair",
+      "bed"
     ],
     "negativeTokens": [],
     "promptProse": "Jeanne d'Arc (Alter) experiencing absolute, apocalyptic embarrassment inside her Chaldea quarters. Clad in a scorched-black and crimson form-fitting camisole and shorts, she is caught dead to rights in bed reading a sweet teenage shojo manga. Clenching the volume against her chest while dark flames burst from her fist, her golden eyes blaze with mortified, tsundere fury.",
-    "animaCaption": "jalter, 1girl, black camisole, reading shojo manga, black flames in hand, furious red blush, golden eyes, silver hair, bed, highres",
+    "animaCaption": "Jeanne d'Arc (Alter) experiencing absolute, apocalyptic embarrassment inside her Chaldea quarters. Clad in a scorched-black and crimson form-fitting camisole and shorts, she is caught dead to rights in bed reading a sweet teenage shojo manga.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

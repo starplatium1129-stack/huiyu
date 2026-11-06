@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3446,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "prinz_eugen_lingerie_whisper",
     "characterId": "prinz_eugen",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "prinz eugen azur lane",
-      "solo",
-      "reclining lazily on scarlet velvet chaise lounge",
-      "twisting strand of silver hair with finger",
-      "iconic beauty mark under bottom lip",
-      "teasing seductive violet eyes",
-      "crystal decanter of liqueur nearby",
-      "opulent vintage naval suite"
+      "chaise lounge",
+      "reclining",
+      "silver hair",
+      "teacup",
+      "purple eyes",
+      "silver iron cross pendant",
+      "sheer mesh waist cutouts",
+      "high-leg brazilian cut",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, prinz eugen azur lane, solo, reclining lazily on scarlet velvet chaise lounge, twisting strand of silver hair with finger, iconic beauty mark under bottom lip, teasing seductive violet eyes, crystal decanter of liqueur nearby, opulent vintage naval suite",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, prinz eugen azur lane, solo, reclining lazily on scarlet velvet chaise lounge, twisting strand of silver hair with finger, iconic beauty mark under bottom lip, teasing seductive violet eyes, crystal decanter of liqueur nearby, opulent vintage naval suite",
+    "promptProse": "Prinz Eugen reclines lazily on scarlet velvet chaise lounge, wearing a inky black deep-plunge strappy lace chemise. Twisting strand of silver hair with finger, iconic beauty mark under bottom lip, teasing seductive violet eyes amidst crystal decanter of liqueur nearby, opulent vintage naval suite.",
+    "animaCaption": "Prinz Eugen reclines lazily on scarlet velvet chaise lounge, wearing a inky black deep-plunge strappy lace chemise. Twisting strand of silver hair with finger, iconic beauty mark under bottom lip, teasing seductive violet eyes amidst crystal decanter of liqueur nearby, opulent vintage naval suite.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

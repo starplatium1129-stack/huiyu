@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayase_aragaki_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3468,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.345Z",
   "data": {
     "id": "ayase_aragaki_lingerie_whisper",
     "characterId": "ayase_aragaki",
@@ -37,23 +37,17 @@
       "tsundere_warning"
     ],
     "promptTokens": [
-      "ayase aragaki",
-      "1girl",
-      "dusty rose modal camisole with scalloped white lace edges",
-      "matching snug sleep capris",
-      "kneeling defensively on bed",
-      "clutching large plush pink heart pillow tightly over chest",
-      "cheeks blushing furiously red",
-      "dark brown wavy hair tied loosely",
-      "glaring with cute embarrassed anger",
-      "girly anime poster bedroom background",
-      "warm bedroom lighting",
-      "masterpiece",
-      "high quality"
+      "pink camisole",
+      "heart pillow",
+      "kneeling on bed",
+      "dark hair",
+      "furious blush",
+      "cute tsundere",
+      "bedroom"
     ],
     "negativeTokens": [],
     "promptProse": "Ayase Aragaki caught completely off guard in a pastel-themed bedroom during a sleepover. Dressed in a dusty-rose modal camisole edged with white lace and matching sleep capris, she scrambles onto the mattress clutching an oversized pink heart cushion defensively against her chest. Her face flushes bright red as she glares with adorable, panicked indignation at the intruder.",
-    "animaCaption": "ayase aragaki, 1girl, pink camisole, heart pillow, kneeling on bed, dark hair, furious blush, cute tsundere, bedroom, highres",
+    "animaCaption": "Ayase Aragaki caught completely off guard in a pastel-themed bedroom during a sleepover. Dressed in a dusty-rose modal camisole edged with white lace and matching sleep capris, she scrambles onto the mattress clutching an oversized pink heart cushion defensively against her chest.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3125,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "nymph_arknights_lingerie_whisper",
     "characterId": "nymph_arknights",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "nymph arknights",
-      "solo",
-      "sitting backwards on office swivel chair",
-      "chin rested on chair back",
-      "tiny curved sarkaz horns in fiery red hair",
-      "mischievous cat-like grin",
-      "crimson eyes",
-      "dark interrogation observation room with two-way mirror"
+      "sitting",
+      "horns",
+      "red hair",
+      "smile",
+      "red eyes",
+      "mirror",
+      "rose gold miniature buckles",
+      "black fishnet insets",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, nymph arknights, solo, sitting backwards on office swivel chair, chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin, crimson eyes, dark interrogation observation room with two-way mirror",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, nymph arknights, solo, sitting backwards on office swivel chair, chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin, crimson eyes, dark interrogation observation room with two-way mirror",
+    "promptProse": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror.",
+    "animaCaption": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

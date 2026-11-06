@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3373,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.100Z",
   "data": {
     "id": "si_arknights_swimsuit_allure",
     "characterId": "si_arknights",
@@ -37,24 +37,17 @@
       "intellectual"
     ],
     "promptTokens": [
-      "si (arknights: endfield)",
-      "1girl",
-      "ink-wash white and charcoal halter bikini",
-      "clean structural chest wrap",
-      "obsidian bead cord",
-      "sitting cross-legged on grey stone stairs",
-      "holding futuristic data tablet",
-      "touching chin in contemplation",
-      "long white hair blowing in dawn wind",
-      "stone pavilion by open ocean",
-      "cool dawn sky with golden horizon line",
-      "sharp focus",
-      "masterpiece",
-      "high quality"
+      "ink wash bikini",
+      "white hair",
+      "stone pavilion",
+      "ocean dawn",
+      "data tablet",
+      "intellectual",
+      "serene"
     ],
     "negativeTokens": [],
     "promptProse": "Si seated cross-legged on the cool stone steps of a secluded coastal pavilion at first light. She is clothed in an ink-wash gradient white and charcoal-grey structural halter two-piece with clean geometric drapes. Resting an advanced portable data slate on her knees, she muses pensively with a finger to her lip while the brisk sea breeze carries the quiet hush of dawn.",
-    "animaCaption": "si (endfield), 1girl, ink wash bikini, white hair, stone pavilion, ocean dawn, data tablet, intellectual, serene, masterpiece",
+    "animaCaption": "Si seated cross-legged on the cool stone steps of a secluded coastal pavilion at first light. She is clothed in an ink-wash gradient white and charcoal-grey structural halter two-piece with clean geometric drapes.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

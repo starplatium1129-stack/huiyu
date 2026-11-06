@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3415,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kouzuki_kallen_lingerie_whisper",
     "characterId": "kouzuki_kallen",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kouzuki kallen",
-      "solo",
-      "sitting against panoramic glass window on floor",
-      "one knee raised",
-      "resting elbow on knee holding light jacket",
-      "spiky crimson-red hair",
-      "brilliant blue eyes",
-      "defiant yet blushing expression",
-      "sunset city skyline glowing outside",
-      "dynamic reflection"
+      "sitting",
+      "red hair",
+      "blue eyes",
+      "blush",
+      "sunset",
+      "city skyline",
+      "glowing",
+      "wide elasticized waist strap",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kouzuki kallen, solo, sitting against panoramic glass window on floor, one knee raised, resting elbow on knee holding light jacket, spiky crimson-red hair, brilliant blue eyes, defiant yet blushing expression, sunset city skyline glowing outside, dynamic reflection",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kouzuki kallen, solo, sitting against panoramic glass window on floor, one knee raised, resting elbow on knee holding light jacket, spiky crimson-red hair, brilliant blue eyes, defiant yet blushing expression, sunset city skyline glowing outside, dynamic reflection",
+    "promptProse": "Kallen Kouzuki sits against panoramic glass window on floor, wearing a scarlet red criss-cross sheer athletic bralette. One knee raised, resting elbow on knee holding light jacket, spiky crimson-red hair amidst brilliant blue eyes, defiant yet blushing expression, sunset city skyline glowing outside.",
+    "animaCaption": "Kallen Kouzuki sits against panoramic glass window on floor, wearing a scarlet red criss-cross sheer athletic bralette. One knee raised, resting elbow on knee holding light jacket, spiky crimson-red hair amidst brilliant blue eyes, defiant yet blushing expression, sunset city skyline glowing outside.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

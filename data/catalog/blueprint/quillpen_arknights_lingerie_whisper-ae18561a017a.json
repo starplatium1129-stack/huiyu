@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3242,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "quillpen_arknights_lingerie_whisper",
     "characterId": "quillpen_arknights",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "quillpen arknights",
-      "solo",
-      "liberi",
-      "small feathered ear tufts",
-      "curled up on plush leather sofa in dimly lit tavern after hours",
-      "hugging sofa cushion",
-      "rubbing sleepy eyes",
-      "messy blonde hair",
-      "peaceful drowsy expression",
-      "warm single spotlight overhead"
+      "chaise lounge",
+      "teddy bear",
+      "cushion",
+      "sleepy",
+      "blonde hair",
+      "soft feathery white lace trim",
+      "elasticized shirred bustier",
+      "relaxed sleep dress",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, quillpen arknights, solo, liberi, small feathered ear tufts, curled up on plush leather sofa in dimly lit tavern after hours, hugging sofa cushion, rubbing sleepy eyes, messy blonde hair, peaceful drowsy expression, warm single spotlight overhead",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, quillpen arknights, solo, liberi, small feathered ear tufts, curled up on plush leather sofa in dimly lit tavern after hours, hugging sofa cushion, rubbing sleepy eyes, messy blonde hair, peaceful drowsy expression, warm single spotlight overhead",
+    "promptProse": "La Pluma curls up on plush leather sofa in dimly lit tavern after hours, wearing a dusty lilac crinkled chiffon tube slip. Liberi, small feathered ear tufts, hugging sofa cushion amidst rubbing sleepy eyes, messy blonde hair, peaceful drowsy expression, warm single spotlight overhead.",
+    "animaCaption": "La Pluma curls up on plush leather sofa in dimly lit tavern after hours, wearing a dusty lilac crinkled chiffon tube slip. Liberi, small feathered ear tufts, hugging sofa cushion amidst rubbing sleepy eyes, messy blonde hair, peaceful drowsy expression, warm single spotlight overhead.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

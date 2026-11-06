@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3341,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
   "data": {
     "id": "medusa_rider_lingerie_whisper",
     "characterId": "medusa_rider",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "medusa rider fate",
-      "solo",
-      "sitting on polished wooden floor leaning against full-length dressing mirror",
-      "incredibly long lilac hair pooled on floor",
-      "wearing reading glasses",
-      "striking tall slender physique",
-      "calm enigmatic gaze",
-      "warm indirect floor strip lighting"
+      "full-length mirror",
+      "sitting",
+      "wooden floor",
+      "leaning against mirror",
+      "purple hair",
+      "glasses",
+      "triangle soft cups",
+      "high-leg brazilian cut",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, medusa rider fate, solo, sitting on polished wooden floor leaning against full-length dressing mirror, incredibly long lilac hair pooled on floor, wearing reading glasses, striking tall slender physique, calm enigmatic gaze, warm indirect floor strip lighting",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, medusa rider fate, solo, sitting on polished wooden floor leaning against full-length dressing mirror, incredibly long lilac hair pooled on floor, wearing reading glasses, striking tall slender physique, calm enigmatic gaze, warm indirect floor strip lighting",
+    "promptProse": "Rider sits on polished wooden floor leaning against full-length dressing mirror, wearing a inky black strappy sheer lingerie set. Incredibly long lilac hair pooled on floor, wearing reading glasses, striking tall slender physique amidst calm enigmatic gaze, warm indirect floor strip lighting.",
+    "animaCaption": "Rider sits on the wooden floor against a full-length mirror, her long hair pooling beside her in warm indirect light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

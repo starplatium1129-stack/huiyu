@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ray_arknights/summer_fa098",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2050,
   "createdAt": "2026-11-04T05:30:31.608169600+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T09:51:25.170456500+00:00",
   "data": {
     "characterId": "ray_arknights",
     "outfit": {
@@ -17,10 +17,8 @@
         "tactical straps",
         "sporty top",
         "rangefinder watch",
-        "short blonde hair",
         "cautus ears",
         "rabbit ears",
-        "green eyes",
         "athletic",
         "focused expression"
       ],

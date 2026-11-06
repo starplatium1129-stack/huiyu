@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3134,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "w_arknights_lingerie_whisper",
     "characterId": "w_arknights",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "w arknights",
-      "solo",
-      "sarkaz",
-      "sharp curved horns",
-      "sitting casually backwards on olive ammunition crate",
-      "twirling dynamite detonator pin in fingers",
-      "wild crazed grin showing sharp teeth",
-      "crimson eyes",
-      "derelict bunker with explosive hazard barrels"
+      "horns",
+      "sitting",
+      "smile",
+      "red eyes",
+      "hazard stripe accents",
+      "metallic stud rivets",
+      "cheeky boyleg briefs",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, w arknights, solo, sarkaz, sharp curved horns, sitting casually backwards on olive ammunition crate, twirling dynamite detonator pin in fingers, wild crazed grin showing sharp teeth, crimson eyes, derelict bunker with explosive hazard barrels",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, w arknights, solo, sarkaz, sharp curved horns, sitting casually backwards on olive ammunition crate, twirling dynamite detonator pin in fingers, wild crazed grin showing sharp teeth, crimson eyes, derelict bunker with explosive hazard barrels",
+    "promptProse": "W / Wis'adel sits casually backwards on olive ammunition crate, wearing a crimson and black industrial cutout bralette set. Sarkaz, sharp curved horns, twirling dynamite detonator pin in fingers amidst wild crazed grin showing sharp teeth, crimson eyes, derelict bunker with explosive hazard barrels.",
+    "animaCaption": "W / Wis'adel sits casually backwards on olive ammunition crate, wearing a crimson and black industrial cutout bralette set. Sarkaz, sharp curved horns, twirling dynamite detonator pin in fingers amidst wild crazed grin showing sharp teeth, crimson eyes, derelict bunker with explosive hazard barrels.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

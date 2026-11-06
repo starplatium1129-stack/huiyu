@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3433,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.927Z",
   "data": {
     "id": "kakudate_karin_lingerie_whisper",
     "characterId": "kakudate_karin",
@@ -37,25 +37,18 @@
       "c&c_karin"
     ],
     "promptTokens": [
-      "kakudate karin",
-      "1girl",
       "dark skin",
       "halo",
-      "dark chocolate brown satin seamless slip chemise",
-      "high side slits",
-      "lying prone on plush charcoal bedding",
-      "elbows propping torso up",
-      "long toned dark-skinned legs crossed in air behind",
-      "studying heavy anti-material sniper rifle schematic",
-      "long blue-black hair tied in low ponytail",
-      "golden eyes gazing with calm focus",
-      "warm bedside spotlighting",
-      "masterpiece",
-      "high quality"
+      "chocolate satin slip",
+      "lying on bed",
+      "legs in air",
+      "sniper manual",
+      "golden eyes",
+      "ponytail"
     ],
     "negativeTokens": [],
     "promptProse": "Karin Kakudate studying precision ballistics late at night within her Millennium dorm room. Draped in an alluring dark-chocolate satin slip dress with high side slits that complement her rich dark skin, she lies prone across the charcoal mattress with legs crossed in the air. Glancing up from her sniper manual with golden eyes, her formidable presence melts into quiet, focused companionship.",
-    "animaCaption": "kakudate karin, 1girl, dark skin, halo, chocolate satin slip, lying on bed, legs in air, sniper manual, golden eyes, ponytail, highres",
+    "animaCaption": "Karin Kakudate studying precision ballistics late at night within her Millennium dorm room. Draped in an alluring dark-chocolate satin slip dress with high side slits that complement her rich dark skin, she lies prone across the charcoal mattress with legs crossed in the air.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

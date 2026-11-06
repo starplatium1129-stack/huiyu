@@ -1,5 +1,5 @@
 /** AICGImageStore 的 TypeScript 替代：IndexedDB 图片 Blob 存储 */
-import { withMigrationWrite, assertWebArtworkWritable } from '../platform/web/migrationBarrier.ts'
+import { withMigrationWrite, assertWebArtworkWritable } from './migrationBarrier.ts'
 
 const DB_NAME = 'aics_image_store'
 const DB_VERSION = 1

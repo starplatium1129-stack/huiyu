@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3246,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "surtr_arknights_lingerie_whisper",
     "characterId": "surtr_arknights",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "surtr arknights",
-      "solo",
-      "sarkaz",
-      "curved black horns",
-      "long fiery red hair",
-      "crimson eyes with haughty gaze",
-      "sitting on tall bar stool eating vanilla ice cream from glass bowl with spoon",
-      "sunset golden hour clouds outside warship window"
+      "horns",
+      "red hair",
+      "red eyes",
+      "sitting",
+      "sunset",
+      "industrial front zipper",
+      "criss-cross waist strapping",
+      "high-cut provocative briefs",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, surtr arknights, solo, sarkaz, curved black horns, long fiery red hair, crimson eyes with haughty gaze, sitting on tall bar stool eating vanilla ice cream from glass bowl with spoon, sunset golden hour clouds outside warship window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, surtr arknights, solo, sarkaz, curved black horns, long fiery red hair, crimson eyes with haughty gaze, sitting on tall bar stool eating vanilla ice cream from glass bowl with spoon, sunset golden hour clouds outside warship window",
+    "promptProse": "Surtr sits on tall bar stool eating vanilla ice cream from glass bowl with spoon, wearing a obsidian soft faux-leather and crimson sheer mesh bralette set. Sarkaz, curved black horns, long fiery red hair amidst crimson eyes with haughty gaze, sunset golden hour clouds outside warship window.",
+    "animaCaption": "Surtr sits on tall bar stool eating vanilla ice cream from glass bowl with spoon, wearing a obsidian soft faux-leather and crimson sheer mesh bralette set. Sarkaz, curved black horns, long fiery red hair amidst crimson eyes with haughty gaze, sunset golden hour clouds outside warship window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

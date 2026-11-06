@@ -1,7 +1,8 @@
 import type { TaskRecord } from '../../../types/tasks'
 import type { ArtworkRecord } from '@/types/artwork'
 import { taskArtworkId } from './taskResultIdentity'
-import { mossModels, validMossSpectrumFlexWindow } from '@/api/mossApi'
+import { mossArtworkMetadata } from './mossArtworkMetadata'
+import { mossModels, qwenModels } from '@/config/directImageModels'
 
 export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord {
   const output = task.resultRefs.find(value => value.index === index)
@@ -9,7 +10,7 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
   const moss = task.kind === 'moss'
   if ((!moss && task.kind !== 'qwen') || task.provider !== 'native' || task.resultState !== 'available' || output?.mime !== 'image/png'
     || input.family !== (moss ? 'moss-image' : 'qwen-image')
-    || !(moss ? mossModels.some(model => model.value === input.modelId) : ['qwen-image-2.1', 'qwen-image-2.1-turbo'].includes(String(input.modelId)))) throw new Error('图像结果信息不完整，请在任务中心核对')
+    || !(moss ? mossModels.some(model => model.value === input.modelId) : qwenModels.some(model => model.value === String(input.modelId)))) throw new Error('图像结果信息不完整，请在任务中心核对')
   const context = task.metadata.context as Record<string, unknown> | undefined
   const parent = context?.parentId
   if (parent !== undefined && parent !== null && !(typeof parent === 'string' && parent.length > 0 && parent.length <= 240
@@ -27,18 +28,7 @@ export function qwenTaskArtwork(task: TaskRecord, index: number): ArtworkRecord 
     if (typeof value === 'string' && value.length <= 12000) record[key] = value
   }
   if (typeof context?.sceneTitle === 'string' && context.sceneTitle.trim() && context.sceneTitle.length <= 500) record.sceneTitle = context.sceneTitle
-  if (moss && (input.mossUpscaleScale === 1.5 || input.mossUpscaleScale === 2)) {
-    record.mossUpscaleScale = input.mossUpscaleScale
-    if (typeof input.mossUpscaleSourceTaskId === 'string') record.mossUpscaleSourceTaskId = input.mossUpscaleSourceTaskId
-    record.upscaler = 'Remacri'
-    record.sceneTitle += ` · Remacri ${input.mossUpscaleScale}×`
-  } else if (moss) {
-    record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
-    if (validMossSpectrumFlexWindow(input.mossSpectrumFlexWindow)) record.mossSpectrumFlexWindow = input.mossSpectrumFlexWindow
-    record.mossTextPrecision = input.mossTextPrecision === 'int8' ? 'int8' : input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
-    record.mossCompile = input.mossCompile === true
-    record.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
-  }
+  if (moss) Object.assign(record, mossArtworkMetadata(input, record.sceneTitle!))
   if (record.width && record.height) record.size = `${record.width}x${record.height}`
   return record
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_brunestud_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3306,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.229Z",
   "data": {
     "id": "arcueid_brunestud_lingerie_whisper",
     "characterId": "arcueid_brunestud",
@@ -37,24 +37,17 @@
       "pure_vampire"
     ],
     "promptTokens": [
-      "arcueid brunestud",
-      "1girl",
-      "true ancestor vampire",
-      "pristine white silk high-neck slip chemise",
-      "sheer delicate fabric",
-      "lying prone on soft white bed beneath large glass skylight",
-      "propping cheeks with both palms",
-      "legs kicked up playfully",
-      "short bright blonde hair",
-      "glowing innocent ruby red eyes",
-      "brilliant cool moonlight waterfall from skylight",
-      "surreal ethereal atmosphere",
-      "masterpiece",
-      "high quality"
+      "white silk slip",
+      "lying on bed",
+      "cheeks in hands",
+      "feet up",
+      "blonde hair",
+      "ruby red eyes",
+      "moonlight skylight"
     ],
     "negativeTokens": [],
     "promptProse": "Arcueid Brunestud lounging playfully across a white linen bed beneath an expansive rooftop skylight washed in luminous lunar light. Wearing a sleek, pristine white high-neck silk slip chemise, she props her cheeks within both hands while kicking her bare feet up lazily. Her mesmerizing ruby-red eyes lock onto the viewer with untamed, cat-like innocence and irresistible charm.",
-    "animaCaption": "arcueid brunestud, 1girl, white silk slip, lying on bed, cheeks in hands, feet up, blonde hair, ruby red eyes, moonlight skylight, highres",
+    "animaCaption": "Arcueid Brunestud lounging playfully across a white linen bed beneath an expansive rooftop skylight washed in luminous lunar light. Wearing a sleek, pristine white high-neck silk slip chemise, she props her cheeks within both hands while kicking her bare feet up lazily.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

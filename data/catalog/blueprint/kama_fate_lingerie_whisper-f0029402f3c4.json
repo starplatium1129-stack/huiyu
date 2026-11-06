@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3199,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.944Z",
   "data": {
     "id": "kama_fate_lingerie_whisper",
     "characterId": "kama_fate",
@@ -37,23 +37,17 @@
       "corrupted_love_god"
     ],
     "promptTokens": [
-      "kama (fate)",
-      "1girl",
-      "beast III",
-      "corrupted dark violet gossamer draped chiffon bodysuit",
-      "translucent floating silk veils",
-      "floating weightlessly cross-legged above glowing dark red lotus throne",
-      "propping chin with one hand in mocking amusement",
-      "twirling golden arrow of love with fingertips",
-      "messy pale violet hair floating in void",
-      "cynical intoxicating ruby-red eyes",
-      "abyssal space with glowing cosmic nebula",
-      "masterpiece",
-      "high quality"
+      "violet gossamer veils",
+      "floating above lotus",
+      "golden arrow",
+      "chin on hand",
+      "ruby eyes",
+      "seductive smirk",
+      "abyss"
     ],
     "negativeTokens": [],
     "promptProse": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm. Twirling a golden arrow between her fingers with a cynical, intoxicating smirk, she beckons the Master into sweet, ruinous damnation.",
-    "animaCaption": "kama (fate), 1girl, violet gossamer veils, floating above lotus, golden arrow, chin on hand, ruby eyes, seductive smirk, abyss, highres",
+    "animaCaption": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3180,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kitagawa_marin_lingerie_whisper",
     "characterId": "kitagawa_marin",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kitagawa marin",
-      "solo",
-      "sitting backwards on vanity chair",
-      "chin resting on hands on chair back",
-      "winking playfully",
-      "blonde hair with pink gradient ends",
-      "red-orange gradient eyes",
-      "bedroom vanity with cosmetics and ring light in background",
-      "confident playful gyaru expression"
+      "vanity",
+      "sitting",
+      "blonde hair",
+      "ring light",
+      "bed",
+      "strappy underwire crop bustier",
+      "black ribbon choker",
+      "cheeky low-rise briefs",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kitagawa marin, solo, sitting backwards on vanity chair, chin resting on hands on chair back, winking playfully, blonde hair with pink gradient ends, red-orange gradient eyes, bedroom vanity with cosmetics and ring light in background, confident playful gyaru expression",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kitagawa marin, solo, sitting backwards on vanity chair, chin resting on hands on chair back, winking playfully, blonde hair with pink gradient ends, red-orange gradient eyes, bedroom vanity with cosmetics and ring light in background, confident playful gyaru expression",
+    "promptProse": "Kitagawa Marin sits backwards on vanity chair, wearing a leopard print sheer lace bralette set. Chin resting on hands on chair back, winking playfully, blonde hair with pink gradient ends amidst red-orange gradient eyes, bedroom vanity with cosmetics and ring light in background, confident playful gyaru expression.",
+    "animaCaption": "Kitagawa Marin sits backwards on vanity chair, wearing a leopard print sheer lace bralette set. Chin resting on hands on chair back, winking playfully, blonde hair with pink gradient ends amidst red-orange gradient eyes, bedroom vanity with cosmetics and ring light in background, confident playful gyaru expression.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

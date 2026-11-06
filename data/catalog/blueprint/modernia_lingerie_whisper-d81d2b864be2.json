@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3441,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "modernia_lingerie_whisper",
     "characterId": "modernia",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "modernia nikke",
-      "marian",
-      "solo",
-      "kneeling on plush bed",
-      "clutching commander's black trenchcoat tightly to chest",
-      "disheveled short grey-blue hair",
-      "wide glowing red eyes",
-      "sweet pure childlike smile",
-      "sun-drenched bedroom with plush toys"
+      "teddy bear",
+      "bed",
+      "kneeling",
+      "blue hair",
+      "glowing",
+      "red eyes",
+      "smile",
+      "soft white satin ribbon wraps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, modernia nikke, marian, solo, kneeling on plush bed, clutching commander's black trenchcoat tightly to chest, disheveled short grey-blue hair, wide glowing red eyes, sweet pure childlike smile, sun-drenched bedroom with plush toys",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, modernia nikke, marian, solo, kneeling on plush bed, clutching commander's black trenchcoat tightly to chest, disheveled short grey-blue hair, wide glowing red eyes, sweet pure childlike smile, sun-drenched bedroom with plush toys",
+    "promptProse": "Modernia kneels on plush bed, wearing a pure white sheer bandage-inspired slip dress. Marian, clutching commander's black trenchcoat tightly to chest, disheveled short grey-blue hair amidst wide glowing red eyes, sweet pure childlike smile, sun-drenched bedroom with plush toys.",
+    "animaCaption": "Modernia kneels on plush bed, wearing a pure white sheer bandage-inspired slip dress. Marian, clutching commander's black trenchcoat tightly to chest, disheveled short grey-blue hair amidst wide glowing red eyes, sweet pure childlike smile, sun-drenched bedroom with plush toys.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

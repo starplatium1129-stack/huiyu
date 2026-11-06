@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3216,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.425Z",
   "data": {
     "id": "yukinoshita_yukino_swimsuit_allure",
     "characterId": "yukinoshita_yukino",
@@ -37,25 +37,18 @@
       "aloof_beauty"
     ],
     "promptTokens": [
-      "yukinoshita yukino",
-      "1girl",
-      "ice queen",
-      "deep navy blue high-neck one-piece swimsuit",
-      "crisp white athletic piping",
-      "keyhole back cutout",
-      "sitting with perfect posture on canvas beach lounger",
-      "open paperback book on lap",
-      "hand pressing raven hair against ocean breeze",
-      "pure crystalline blue eyes gazing over book edge",
-      "faintest subtle blush on earlobes",
-      "white fabric shade canopy overhead",
-      "clean minimalist composition",
-      "masterpiece",
-      "high quality"
+      "navy high neck swimsuit",
+      "white piping",
+      "sitting on lounger",
+      "reading book",
+      "black hair",
+      "blue eyes",
+      "cool beauty",
+      "morning"
     ],
     "negativeTokens": [],
     "promptProse": "Yukino Yukinoshita sitting with impeccable aristocratic posture beneath a pristine white canvas canopy at a quiet corner of the coastline. She wears a minimalist, dignified deep navy-blue high-neck one-piece swimsuit defined by sharp white piping and hydrodynamic contours. Lightly holding a paperback book across her knees while taming a windblown black lock, she gazes coolly over the page with subtle, guarded tenderness.",
-    "animaCaption": "yukinoshita yukino, 1girl, navy high neck swimsuit, white piping, sitting on lounger, reading book, black hair, blue eyes, cool beauty, morning, highres",
+    "animaCaption": "Yukino Yukinoshita sitting with impeccable aristocratic posture beneath a pristine white canvas canopy at a quiet corner of the coastline. She wears a minimalist, dignified deep navy-blue high-neck one-piece swimsuit defined by sharp white piping and hydrodynamic contours.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

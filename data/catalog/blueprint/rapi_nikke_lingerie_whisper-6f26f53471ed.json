@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_nikke_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3376,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "rapi_nikke_lingerie_whisper",
     "characterId": "rapi_nikke",
@@ -34,21 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rapi nikke",
-      "solo",
-      "sitting disciplined on field cot edge",
-      "partially open dark robe revealing structured lingerie",
-      "calm intense red eyes with subtle vulnerability",
-      "tactical beret set aside on crate",
-      "rugged field command bunker at night"
+      "sitting",
+      "red eyes",
+      "night",
+      "military harness accents",
+      "molded underwire contour",
+      "high-waist boyleg briefs",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rapi nikke, solo, sitting disciplined on field cot edge, partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate, rugged field command bunker at night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rapi nikke, solo, sitting disciplined on field cot edge, partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate, rugged field command bunker at night",
+    "promptProse": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night.",
+    "animaCaption": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

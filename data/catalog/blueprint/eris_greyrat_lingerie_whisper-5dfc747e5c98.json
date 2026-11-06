@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3272,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.565Z",
   "data": {
     "id": "eris_greyrat_lingerie_whisper",
     "characterId": "eris_greyrat",
@@ -37,24 +37,17 @@
       "tsundere_wild"
     ],
     "promptTokens": [
-      "eris boreas greyrat",
-      "1girl",
-      "mad dog of boreas",
-      "crimson red athletic cotton crop tank top",
-      "grey boxer sleep shorts",
-      "glistening sweat on toned midriff and collarbone",
-      "sprawled flat on back exhausted on wooden floor rug",
-      "arms and legs spread wide",
-      "flustered bright red blush",
-      "magnificent untamed crimson red hair fanning out wildly",
-      "glaring sideways with sharp fiery blue eyes",
-      "moonlit training dojo",
-      "masterpiece",
-      "high quality"
+      "crimson crop tank",
+      "boxer shorts",
+      "sprawled on floor",
+      "sweat on abs",
+      "wild red hair",
+      "furious blush",
+      "tsundere"
     ],
     "negativeTokens": [],
     "promptProse": "Eris Boreas Greyrat collapsed in complete physical exhaustion after midnight sword training. Sporting a drenched crimson ribbed crop tank and boy-boxer shorts that highlight her toned warrior physique, she sprawls star-shaped across the floor rug. With her wild scarlet mane spread across the floorboards, she glares sideways with a furiously flushed, tsundere scowl as her chest heaves.",
-    "animaCaption": "eris greyrat, 1girl, crimson crop tank, boxer shorts, sprawled on floor, sweat on abs, wild red hair, furious blush, tsundere, highres",
+    "animaCaption": "Eris Boreas Greyrat collapsed in complete physical exhaustion after midnight sword training. Sporting a drenched crimson ribbed crop tank and boy-boxer shorts that highlight her toned warrior physique, she sprawls star-shaped across the floor rug.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

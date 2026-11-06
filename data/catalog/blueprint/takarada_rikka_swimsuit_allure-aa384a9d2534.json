@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3327,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.210Z",
   "data": {
     "id": "takarada_rikka_swimsuit_allure",
     "characterId": "takarada_rikka",
@@ -37,26 +37,17 @@
       "relatable_romance"
     ],
     "promptTokens": [
-      "takarada rikka",
-      "1girl",
-      "minimalist black sporty bikini",
-      "slouchy oversized cream summer knit cardigan slipping off one shoulder",
-      "silver scrunchie around wrist",
-      "sitting relaxed on seaside concrete barrier stairs",
-      "one knee drawn up",
-      "shapely thighs",
-      "holding cold can of soda with condensation",
-      "dark hair in ponytail",
-      "blue eyes",
-      "curious gentle expression",
-      "twilight purple sky and distant ocean",
-      "cinematic everyday life",
-      "masterpiece",
-      "high quality"
+      "oversized cardigan off shoulder",
+      "black bikini",
+      "sitting on stairs",
+      "seawall",
+      "soda can",
+      "dusk",
+      "realistic youth"
     ],
     "negativeTokens": [],
     "promptProse": "Rikka Takarada sitting casually on the steps of a concrete seawall overlooking an evening ocean. Over a minimalist sporty black bikini, she wears a loose, slouchy cream-colored knit cardigan slipping off one shoulder. Resting her cheek toward the breeze while holding a chilled aluminum soda can, her expressive blue eyes meet the viewer's with an effortless blend of relaxed warmth and modern teenage realism.",
-    "animaCaption": "takarada rikka, 1girl, oversized cardigan off shoulder, black bikini, sitting on stairs, seawall, soda can, dusk, realistic youth, highres",
+    "animaCaption": "Rikka Takarada sitting casually on the steps of a concrete seawall overlooking an evening ocean. Over a minimalist sporty black bikini, she wears a loose, slouchy cream-colored knit cardigan slipping off one shoulder.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

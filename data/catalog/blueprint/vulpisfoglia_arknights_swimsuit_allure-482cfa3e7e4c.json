@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3118,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.335Z",
   "data": {
     "id": "vulpisfoglia_arknights_swimsuit_allure",
     "characterId": "vulpisfoglia_arknights",
@@ -37,27 +37,18 @@
       "mafia_chic"
     ],
     "promptTokens": [
-      "vulpisfoglia (arknights)",
-      "1girl",
-      "lupo wolf ears",
+      "wolf ears",
       "lupo tail",
-      "tailored olive green high-cut monokini",
-      "brass buckle hardware",
-      "sheer dark grey sarong wrap",
-      "leaning against rough limestone cliff wall",
-      "sipping iced espresso from glass tumbler",
-      "free hand on hip",
-      "sharp golden brown eyes",
-      "confident composed mafia boss smirk",
-      "rugged coastal pine tree overhead",
-      "sparkling mediterranean sea below",
-      "cinematic film lighting",
-      "masterpiece",
-      "high quality"
+      "olive green monokini",
+      "iced coffee",
+      "cliff wall",
+      "pine tree",
+      "confident",
+      "mediterranean"
     ],
     "negativeTokens": [],
     "promptProse": "Vulpisfoglia leaning commanding yet relaxed against a sun-warmed limestone parapet beneath gnarled coastal pine branches. She wears a tailored Italian olive-green high-cut monokini accented with antique brass buckles and a sheer graphite sarong. Sipping a glass of iced espresso with lupo ears perked, her sharp amber eyes appraise the viewer with cool authority and magnetic charm.",
-    "animaCaption": "vulpisfoglia (arknights), 1girl, wolf ears, lupo tail, olive green monokini, iced coffee, cliff wall, pine tree, confident, mediterranean, highres",
+    "animaCaption": "Vulpisfoglia leaning commanding yet relaxed against a sun-warmed limestone parapet beneath gnarled coastal pine branches. She wears a tailored Italian olive-green high-cut monokini accented with antique brass buckles and a sheer graphite sarong.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

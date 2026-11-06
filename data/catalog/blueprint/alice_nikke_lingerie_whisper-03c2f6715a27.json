@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_nikke_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3377,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.136Z",
   "data": {
     "id": "alice_nikke_lingerie_whisper",
     "characterId": "alice_nikke",
@@ -37,24 +37,17 @@
       "childlike_innocence"
     ],
     "promptTokens": [
-      "alice (nikke)",
-      "1girl",
-      "pink and white fluffy fleece loungewear set",
-      "oversized bunny ears hood pulled up",
-      "holding giant plush orange carrot tightly",
-      "kneeling happily on pastel pink sheepskin rug",
-      "rocking side to side",
-      "long pink twintails spilling out of hood",
-      "bright joyful blue eyes",
-      "warm strawberry night light",
-      "glowing star decals on ceiling",
-      "adorable pure expression",
-      "masterpiece",
-      "high quality"
+      "bunny fleece loungewear",
+      "carrot plushie",
+      "kneeling on rug",
+      "pink hair",
+      "twintails",
+      "sweet smile",
+      "glowing stars"
     ],
     "negativeTokens": [],
     "promptProse": "Alice happily nestled on a soft pastel rug in her secret fairy-tale room before sleep. She wears an ultra-cozy pink-and-white fleece loungewear set featuring an oversized bunny-eared hood. Squeezing an enormous plush carrot in her arms while swaying gently from side to side, her sparkling blue eyes beam with innocent, unreserved joy under the warm glow of a strawberry nightlamp.",
-    "animaCaption": "alice (nikke), 1girl, bunny fleece loungewear, carrot plushie, kneeling on rug, pink hair, twintails, sweet smile, glowing stars, highres",
+    "animaCaption": "Alice happily nestled on a soft pastel rug in her secret fairy-tale room before sleep. She wears an ultra-cozy pink-and-white fleece loungewear set featuring an oversized bunny-eared hood.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

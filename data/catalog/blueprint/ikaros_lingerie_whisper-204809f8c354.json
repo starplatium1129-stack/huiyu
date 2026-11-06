@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ikaros_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3300,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.836Z",
   "data": {
     "id": "ikaros_lingerie_whisper",
     "characterId": "ikaros",
@@ -37,22 +37,16 @@
       "watermelon_love"
     ],
     "promptTokens": [
-      "ikaros (sora no otoshimono)",
-      "1girl",
-      "angeloid alpha",
-      "pure white feathered strapless silk tube dress",
-      "glowing pink mechanical angel wings neatly folded behind back",
-      "sitting on wooden floorboards clutching giant whole striped watermelon tightly to chest",
-      "choker with broken silver chain around neck",
-      "long pink hair in low twintails with ahoge",
-      "serene innocent emerald-pink gradient eyes",
-      "peaceful moonlit garden background",
-      "masterpiece",
-      "high quality"
+      "pink angel wings",
+      "white strapless tube dress",
+      "hugging giant watermelon",
+      "twintails",
+      "choker chain",
+      "moonlight veranda"
     ],
     "negativeTokens": [],
     "promptProse": "Ikaros sitting quietly along the traditional veranda with her most prized possession. Dressed in a seamless pure-white strapless silk tube dress accented with delicate feather trims, her pink mechanical angel wings rest folded behind her. Clutching an enormous striped green watermelon tightly against her heart with deadpan affection, she gazes toward her Master with unswerving, saintly devotion.",
-    "animaCaption": "ikaros, 1girl, pink angel wings, white strapless tube dress, hugging giant watermelon, twintails, choker chain, moonlight veranda, highres",
+    "animaCaption": "Ikaros sitting quietly along the traditional veranda with her most prized possession. Dressed in a seamless pure-white strapless silk tube dress accented with delicate feather trims, her pink mechanical angel wings rest folded behind her.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

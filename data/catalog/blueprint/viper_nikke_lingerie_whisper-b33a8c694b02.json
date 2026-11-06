@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3450,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "viper_nikke_lingerie_whisper",
     "characterId": "viper_nikke",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "viper nikke",
-      "solo",
-      "lounging on circular bed surrounded by pink plush pillows",
-      "holding smartphone snapping a selfie",
-      "tugging thin strap down shoulder playfully",
-      "long wavy pink hair",
-      "dazzling ruby eyes with seductive wink",
-      "pink neon lighting"
+      "teddy bear",
+      "bed",
+      "pink hair",
+      "red eyes",
+      "extreme plunge underwire cups",
+      "cheeky thong briefs",
+      "dangerous siren boudoir",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, viper nikke, solo, lounging on circular bed surrounded by pink plush pillows, holding smartphone snapping a selfie, tugging thin strap down shoulder playfully, long wavy pink hair, dazzling ruby eyes with seductive wink, pink neon lighting",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, viper nikke, solo, lounging on circular bed surrounded by pink plush pillows, holding smartphone snapping a selfie, tugging thin strap down shoulder playfully, long wavy pink hair, dazzling ruby eyes with seductive wink, pink neon lighting",
+    "promptProse": "Viper lounges on circular bed surrounded by pink plush pillows, wearing a hot pink and sheer black lace strappy lingerie set. Holding smartphone snapping a selfie, tugging thin strap down shoulder playfully, long wavy pink hair amidst dazzling ruby eyes with seductive wink, pink neon lighting.",
+    "animaCaption": "Viper lounges on circular bed surrounded by pink plush pillows, wearing a hot pink and sheer black lace strappy lingerie set. Holding smartphone snapping a selfie, tugging thin strap down shoulder playfully, long wavy pink hair amidst dazzling ruby eyes with seductive wink, pink neon lighting.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

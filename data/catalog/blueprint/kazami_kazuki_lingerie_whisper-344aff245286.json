@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazami_kazuki_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3297,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kazami_kazuki_lingerie_whisper",
     "characterId": "kazami_kazuki",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kazami kazuki",
-      "solo",
-      "reclining on dark velvet chaise lounge",
-      "holding an obsidian chess piece between slender fingers",
-      "silver hair cascading over shoulder",
-      "sharp intelligent eyes",
-      "moonlight through venetian blinds",
-      "chess table nearby",
-      "intricate shadow play",
-      "elegant composition"
+      "chaise lounge",
+      "reclining",
+      "chess piece",
+      "silver hair",
+      "window blinds",
+      "moonlight",
+      "chessboard",
+      "geometric sheer mesh cutouts",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kazami kazuki, solo, reclining on dark velvet chaise lounge, holding an obsidian chess piece between slender fingers, silver hair cascading over shoulder, sharp intelligent eyes, moonlight through venetian blinds, chess table nearby, intricate shadow play, elegant composition",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kazami kazuki, solo, reclining on dark velvet chaise lounge, holding an obsidian chess piece between slender fingers, silver hair cascading over shoulder, sharp intelligent eyes, moonlight through venetian blinds, chess table nearby, intricate shadow play, elegant composition",
+    "promptProse": "Kazami Kazuki reclines on dark velvet chaise lounge, wearing a charcoal grey silk camisole slip. Holding an obsidian chess piece between slender fingers, silver hair cascading over shoulder, sharp intelligent eyes amidst moonlight through venetian blinds, chess table nearby, intricate shadow play.",
+    "animaCaption": "Kazami Kazuki reclines on dark velvet chaise lounge, wearing a charcoal grey silk camisole slip. Holding an obsidian chess piece between slender fingers, silver hair cascading over shoulder, sharp intelligent eyes amidst moonlight through venetian blinds, chess table nearby, intricate shadow play.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -29,6 +29,13 @@ pub(super) enum Execution {
     Native(Box<native::Plan>),
 }
 impl Execution {
+    pub fn provider(&self) -> &'static str {
+        match self {
+            Self::Webui(_) => "webui",
+            Self::Comfy(_) => "comfy",
+            Self::Native(_) => "native",
+        }
+    }
     pub fn input(&self) -> Arc<Value> {
         match self {
             Self::Webui(input) => serde_json::to_value(input)
@@ -142,9 +149,7 @@ impl Service {
             }
             Ok(Prepared {
                 input: plan.input.as_ref().clone(),
-                provider: "comfy".into(),
                 execution: Execution::Comfy(Box::new(plan)),
-                selected: "comfy",
                 permit,
                 gpu: Some(gpu),
             })

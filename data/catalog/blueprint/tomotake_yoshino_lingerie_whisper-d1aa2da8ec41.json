@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tomotake_yoshino_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3296,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "tomotake_yoshino_lingerie_whisper",
     "characterId": "tomotake_yoshino",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "tomotake yoshino",
-      "solo",
-      "kneeling in polite seiza on wooden shrine pavilion deck",
-      "hands resting gently on lap",
-      "wisteria floral hairpin in glossy black hair",
-      "gentle shy purple eyes",
-      "cascading purple wisteria blooms overhead",
-      "steam rising from onsen pool"
+      "kneeling",
+      "black hair",
+      "purple eyes",
+      "teacup",
+      "water",
+      "embroidered wisteria blossoms",
+      "flowing sheer kimono sleeves",
+      "side ribbon bow",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, tomotake yoshino, solo, kneeling in polite seiza on wooden shrine pavilion deck, hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes, cascading purple wisteria blooms overhead, steam rising from onsen pool",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, tomotake yoshino, solo, kneeling in polite seiza on wooden shrine pavilion deck, hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes, cascading purple wisteria blooms overhead, steam rising from onsen pool",
+    "promptProse": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool.",
+    "animaCaption": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

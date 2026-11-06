@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3459,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.282Z",
   "data": {
     "id": "astraea_lingerie_whisper",
     "characterId": "astraea",
@@ -37,24 +37,17 @@
       "clumsy_angel"
     ],
     "promptTokens": [
-      "astraea (sora no otoshimono)",
-      "1girl",
-      "angeloid delta",
-      "pure white sheer slip chemise with white feather trim",
-      "golden mechanical angel wings glowing softly",
-      "caught hiding under quilted futon blanket",
-      "biting half-eaten dorayaki pancake",
-      "clutching snack bag",
-      "long blonde hair disheveled",
-      "teary amber eyes with comic panic",
-      "flashlight illumination in dark room",
-      "comedic cute expression",
-      "masterpiece",
-      "high quality"
+      "angel wings",
+      "white feather slip",
+      "caught eating snacks",
+      "futon blanket",
+      "teary eyes",
+      "blonde hair",
+      "funny cute"
     ],
     "negativeTokens": [],
     "promptProse": "Astraea caught red-handed hoarding midnight snacks beneath her fluffy futon covers. Wearing a pure white sheer slip chemise accented with soft feather trim, her golden photon wings flutter frantically as she is caught with half a dorayaki in her mouth and a bag of crisps in her arms, tears of panic welling in her large golden eyes.",
-    "animaCaption": "astraea, 1girl, angel wings, white feather slip, caught eating snacks, futon blanket, teary eyes, blonde hair, funny cute, highres",
+    "animaCaption": "Astraea caught red-handed hoarding midnight snacks beneath her fluffy futon covers. Wearing a pure white sheer slip chemise accented with soft feather trim, her golden photon wings flutter frantically as she is caught with half a dorayaki in her mouth and a bag of crisps in her arms, tears of panic welling in her large golden eyes.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

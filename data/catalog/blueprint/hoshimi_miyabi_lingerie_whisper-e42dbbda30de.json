@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshimi_miyabi_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3194,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
   "data": {
     "id": "hoshimi_miyabi_lingerie_whisper",
     "characterId": "hoshimi_miyabi",
@@ -37,22 +37,18 @@
       "void_hunter"
     ],
     "promptTokens": [
-      "hoshimi miyabi (zenless zone zero)",
-      "1girl",
-      "fox ears standing alert",
-      "jet-black shinto-inspired asymmetrical one-shoulder wrap chemise",
-      "sitting in perfect cross-legged meditation upon woven dojo mat",
-      "long sheathed katana sword resting across bare knees",
-      "eyes serenely closed in deep breathing focus",
-      "long flowing silver-white hair with black tips",
-      "subtle purple ether glow reflecting on blade",
-      "minimalist zen wooden hall",
-      "masterpiece",
-      "high quality"
+      "fox ears",
+      "black one-shoulder wrap",
+      "sitting cross-legged",
+      "katana on lap",
+      "meditating",
+      "silver hair",
+      "closed eyes",
+      "zen dojo"
     ],
     "negativeTokens": [],
     "promptProse": "Miyabi Hoshimi deep in midnight sword meditation upon the polished cedar floorboards of Section 6's training hall. She wears a striking jet-black asymmetrical one-shoulder wrap chemise echoing traditional shinto garments. With her legendary katana resting horizontally across her crossed legs and fox ears perked in tranquil focus, she radiates untouchable, ethereal swordmaster grace.",
-    "animaCaption": "hoshimi miyabi, 1girl, fox ears, black one-shoulder wrap, katana on lap, meditating, silver hair, closed eyes, zen dojo, highres",
+    "animaCaption": "Miyabi sits cross-legged in the quiet dojo, meditating with her katana resting across her lap.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

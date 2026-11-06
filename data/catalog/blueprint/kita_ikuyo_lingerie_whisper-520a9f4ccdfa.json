@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3380,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kita_ikuyo_lingerie_whisper",
     "characterId": "kita_ikuyo",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kita ikuyo",
-      "solo",
-      "sitting on fluffy white carpet",
-      "hugging a cute teddy bear plushie to chest",
-      "blushing cheeks",
-      "bright yellow eyes",
-      "vibrant red side ponytail",
-      "acoustic guitar leaning against wall in background",
-      "warm morning sunlight",
-      "dust motes dancing in sunbeams"
+      "sitting",
+      "teddy bear",
+      "blush",
+      "amber eyes",
+      "ponytail",
+      "acoustic guitar",
+      "morning sunlight",
+      "peach pink knit camisole set",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kita ikuyo, solo, sitting on fluffy white carpet, hugging a cute teddy bear plushie to chest, blushing cheeks, bright yellow eyes, vibrant red side ponytail, acoustic guitar leaning against wall in background, warm morning sunlight, dust motes dancing in sunbeams",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kita ikuyo, solo, sitting on fluffy white carpet, hugging a cute teddy bear plushie to chest, blushing cheeks, bright yellow eyes, vibrant red side ponytail, acoustic guitar leaning against wall in background, warm morning sunlight, dust motes dancing in sunbeams",
+    "promptProse": "Kita Ikuyo sits on fluffy white carpet, wearing a peach pink knit camisole set. Hugging a cute teddy bear plushie to chest, blushing cheeks, bright yellow eyes amidst vibrant red side ponytail, acoustic guitar leaning against wall in background, warm morning sunlight, dust motes dancing in sunbeams.",
+    "animaCaption": "Kita Ikuyo sits on fluffy white carpet, wearing a peach pink knit camisole set. Hugging a cute teddy bear plushie to chest, blushing cheeks, bright yellow eyes amidst vibrant red side ponytail, acoustic guitar leaning against wall in background, warm morning sunlight, dust motes dancing in sunbeams.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

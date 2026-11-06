@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "administrator_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3366,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
   "data": {
     "id": "administrator_arknights_lingerie_whisper",
     "characterId": "administrator_arknights",
@@ -37,24 +37,17 @@
       "intellectual"
     ],
     "promptTokens": [
-      "administrator (arknights: endfield)",
-      "1girl",
-      "charcoal grey seamless slip dress",
-      "minimalist thin shoulder straps",
-      "high-tech soft modal fabric",
-      "sitting on industrial field cot",
-      "fingers rubbing temple gently",
-      "long silver hair falling forward",
-      "subtle tired gentle smile",
-      "holographic computer monitor glow in background",
-      "clean technical interior",
-      "cool ambient lighting",
-      "masterpiece",
-      "high quality"
+      "charcoal slip dress",
+      "silver hair",
+      "sitting",
+      "rubbing temple",
+      "cot bed",
+      "terminal glow",
+      "quiet night"
     ],
     "negativeTokens": [],
     "promptProse": "The Administrator resting during the quiet hours of an underground base. She wears a minimalist charcoal-grey seamless slip dress crafted from technical soft modal fabric. Sitting casually along the side of a compact field bunk, she brushes back silver hair and rubs her temple with weary relief, her amber eyes offering quiet trust in the dim terminal glow.",
-    "animaCaption": "administrator (endfield), 1girl, charcoal slip dress, silver hair, rubbing temple, cot bed, terminal glow, quiet night, highres",
+    "animaCaption": "The Administrator sits on a field cot, rubbing her temple as a terminal glows in the quiet base.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

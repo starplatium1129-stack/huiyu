@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3360,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shiranui_mai_lingerie_whisper",
     "characterId": "shiranui_mai",
@@ -34,22 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shiranui mai",
-      "solo",
-      "leaning gracefully against Japanese tatami railing",
-      "half-covering red lips with white folding fan",
-      "high brown ponytail tied with red tassel ribbons",
-      "captivating amber eyes",
-      "cherry blossoms floating",
-      "stone lantern glowing in tranquil garden"
+      "tatami",
+      "folding fan",
+      "ponytail",
+      "ribbon",
+      "amber eyes",
+      "cherry blossoms",
+      "floating",
+      "lantern",
+      "glowing",
+      "high-slit gossamer side panels"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shiranui mai, solo, leaning gracefully against Japanese tatami railing, half-covering red lips with white folding fan, high brown ponytail tied with red tassel ribbons, captivating amber eyes, cherry blossoms floating, stone lantern glowing in tranquil garden",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shiranui mai, solo, leaning gracefully against Japanese tatami railing, half-covering red lips with white folding fan, high brown ponytail tied with red tassel ribbons, captivating amber eyes, cherry blossoms floating, stone lantern glowing in tranquil garden",
+    "promptProse": "Mai Shiranui leans gracefully against Japanese tatami railing, wearing a scarlet red silk halter dudou bodice. Half-covering red lips with white folding fan, high brown ponytail tied with red tassel ribbons, captivating amber eyes amidst cherry blossoms floating, stone lantern glowing in tranquil garden.",
+    "animaCaption": "Mai Shiranui leans gracefully against Japanese tatami railing, wearing a scarlet red silk halter dudou bodice. Half-covering red lips with white folding fan, high brown ponytail tied with red tassel ribbons, captivating amber eyes amidst cherry blossoms floating, stone lantern glowing in tranquil garden.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3404,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.454Z",
   "data": {
     "id": "chen_qianyu_lingerie_whisper",
     "characterId": "chen_qianyu",
@@ -37,24 +37,17 @@
       "martial_artist"
     ],
     "promptTokens": [
-      "chen qianyu (arknights: endfield)",
-      "1girl",
-      "wuling guard",
-      "obsidian black athletic modal tank top",
-      "tapered black martial lounge joggers",
-      "athletic toned shoulders and core",
-      "one knee down on woven training mat",
-      "cleaning curved sheath with polishing cloth",
-      "sword rack holding blade behind",
-      "long raven-black hair tied in low sleek ponytail",
-      "sharp determined dark eyes",
-      "crisp morning dawn beam through bunker vent",
-      "masterpiece",
-      "high quality"
+      "black modal tank top",
+      "joggers",
+      "cleaning sword",
+      "training mat",
+      "low ponytail",
+      "sharp eyes",
+      "morning light"
     ],
     "negativeTokens": [],
     "promptProse": "Chen Qianyu performing her dawn sword maintenance routine within her minimalist base quarters. Dressed in a sleek obsidian-black athletic modal tank top and tapered lounge joggers, she rests on one knee over a woven mat, carefully polishing her scabbard. Her disciplined dark eyes lift toward the entrance with calm, martial focus as morning light cuts through the steel vents.",
-    "animaCaption": "chen qianyu, 1girl, black modal tank top, joggers, cleaning sword, training mat, low ponytail, sharp eyes, morning light, highres",
+    "animaCaption": "Chen Qianyu performing her dawn sword maintenance routine within her minimalist base quarters. Dressed in a sleek obsidian-black athletic modal tank top and tapered lounge joggers, she rests on one knee over a woven mat, carefully polishing her scabbard.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

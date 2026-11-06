@@ -1,4 +1,4 @@
-import type { ImageRecordInput, StoredImageRecord } from '../../composables/useImageStore.ts'
+import type { ImageRecordInput, StoredImageRecord } from './imageStore.ts'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY } from '../../utils/storageKeys.ts'
 export const ARTWORK_HISTORY_KEY = ARTWORK_HISTORY_KV_KEY
 export const ARTWORK_PROJECTS_KEY = ARTWORK_PROJECTS_KV_KEY

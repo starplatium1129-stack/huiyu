@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3356,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "vivy_lingerie_whisper",
     "characterId": "vivy",
@@ -34,21 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "vivy fluorite eye's song",
-      "solo",
-      "android diva",
-      "sitting on dressing room vanity stool with hand pressed over left chest audio-core",
-      "voluminous cyan-blue hair cascading down",
-      "striking turquoise digital eyes",
-      "floating holographic soundwaves in background"
+      "vanity",
+      "sitting",
+      "blue hair",
+      "floating",
+      "delicate underwire cups",
+      "songstress diva boudoir",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, vivy fluorite eye's song, solo, android diva, sitting on dressing room vanity stool with hand pressed over left chest audio-core, voluminous cyan-blue hair cascading down, striking turquoise digital eyes, floating holographic soundwaves in background",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, vivy fluorite eye's song, solo, android diva, sitting on dressing room vanity stool with hand pressed over left chest audio-core, voluminous cyan-blue hair cascading down, striking turquoise digital eyes, floating holographic soundwaves in background",
+    "promptProse": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background.",
+    "animaCaption": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

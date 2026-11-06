@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hashima_izumi_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3476,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.700Z",
   "data": {
     "id": "hashima_izumi_lingerie_whisper",
     "characterId": "hashima_izumi",
@@ -37,22 +37,16 @@
       "doujin_artist"
     ],
     "promptTokens": [
-      "hashima izumi",
-      "1girl",
-      "oversized cobalt blue graphic boy-tshirt dress",
-      "collar sliding off one shoulder exposing collarbone",
-      "bare legs tucked under wooden stool",
-      "frantically sketching with digital stylus on glowing display tablet",
-      "messy disheveled auburn twintails",
-      "tired bloodshot amber eyes blazing with passion",
-      "scattered energy drink cans on cluttered desk",
-      "chaotic doujinshi studio night",
-      "masterpiece",
-      "high quality"
+      "oversized graphic tshirt off shoulder",
+      "drawing on tablet",
+      "energy drinks",
+      "messy twintails",
+      "deadline panic",
+      "late night"
     ],
     "negativeTokens": [],
     "promptProse": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus. Her twintails fly wild as empty energy drink cans litter the desk, her eyes blazing with pure doujin creator fervor beneath the glare of her tablet.",
-    "animaCaption": "hashima izumi, 1girl, oversized graphic tshirt off shoulder, drawing on tablet, energy drinks, messy twintails, deadline panic, late night, highres",
+    "animaCaption": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

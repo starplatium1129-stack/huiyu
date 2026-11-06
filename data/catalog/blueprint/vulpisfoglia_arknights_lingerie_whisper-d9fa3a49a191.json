@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3119,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "vulpisfoglia_arknights_lingerie_whisper",
     "characterId": "vulpisfoglia_arknights",
@@ -34,22 +34,15 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "vulpisfoglia arknights",
-      "solo",
-      "lupo",
-      "fluffy dark wolf ears perked up",
-      "leaning against weathered brick courtyard wall flipping tactical dagger",
-      "athletic tall frame",
-      "intense brooding dark eyes",
-      "rain puddle reflections under lone streetlamp"
+      "wolf ears",
+      "desk lamp",
+      "sporty boyleg shorts",
+      "firm athletic midriff",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, vulpisfoglia arknights, solo, lupo, fluffy dark wolf ears perked up, leaning against weathered brick courtyard wall flipping tactical dagger, athletic tall frame, intense brooding dark eyes, rain puddle reflections under lone streetlamp",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, vulpisfoglia arknights, solo, lupo, fluffy dark wolf ears perked up, leaning against weathered brick courtyard wall flipping tactical dagger, athletic tall frame, intense brooding dark eyes, rain puddle reflections under lone streetlamp",
+    "promptProse": "Vulpisfoglia leans against weathered brick courtyard wall flipping tactical dagger, wearing a olive grey tactical athletic mesh bralette set. Lupo, fluffy dark wolf ears perked up, athletic tall frame amidst intense brooding dark eyes, rain puddle reflections under lone streetlamp.",
+    "animaCaption": "Vulpisfoglia leans against weathered brick courtyard wall flipping tactical dagger, wearing a olive grey tactical athletic mesh bralette set. Lupo, fluffy dark wolf ears perked up, athletic tall frame amidst intense brooding dark eyes, rain puddle reflections under lone streetlamp.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3363,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "fiona_frost_lingerie_whisper",
     "characterId": "fiona_frost",
@@ -37,23 +37,17 @@
       "stoic_spy"
     ],
     "promptTokens": [
-      "fiona frost",
-      "1girl",
-      "nightfall agent",
-      "charcoal grey sleek modal slip chemise",
-      "thin spaghetti straps",
-      "sitting with rigid perfect military posture in leather armchair",
-      "holding porcelain teacup without trembling",
-      "short pale silvery-blue bob hair with side-swept bangs",
-      "completely frozen emotionless poker face",
-      "intense dark violet eyes hiding burning inner passion",
-      "shadowy urban safehouse interior",
-      "masterpiece",
-      "high quality"
+      "charcoal slip dress",
+      "sitting rigid in armchair",
+      "holding teacup",
+      "silver bob hair",
+      "poker face",
+      "hidden passion",
+      "safehouse"
     ],
     "negativeTokens": [],
     "promptProse": "Fiona Frost maintaining an impenetrable poker face inside a quiet spy safehouse late at night. Clothed in a streamlined charcoal-grey modal slip chemise with ultra-thin straps, she sits with rigid, flawless posture in a leather chair holding a teacup. Behind her frozen, deadpan exterior, her intense violet eyes burn with unhinged, suppressed infatuation for Twilight.",
-    "animaCaption": "fiona frost, 1girl, charcoal slip dress, sitting rigid in armchair, teacup, silver bob hair, poker face, hidden passion, safehouse, highres",
+    "animaCaption": "Fiona sits rigidly in a leather armchair, holding a teacup steady in the quiet safehouse.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

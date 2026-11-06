@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3425,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.819Z",
   "data": {
     "id": "iino_miko_lingerie_whisper",
     "characterId": "iino_miko",
@@ -37,22 +37,17 @@
       "vulnerable_innocence"
     ],
     "promptTokens": [
-      "iino miko",
-      "1girl",
-      "immaculate pure white double-layer pintuck cotton nightdress",
-      "buttoned high collar",
-      "oversized over-ear studio headphones resting on ears",
-      "curled up small in cozy corner of bed against headboard",
-      "clutching vintage worn brown teddy bear tightly to chest",
-      "short brown pigtails with clips",
-      "dark brown eyes glistening with soft vulnerability",
-      "gentle warm nightlight on bedside table",
-      "masterpiece",
-      "high quality"
+      "white buttoned nightdress",
+      "big headphones",
+      "teddy bear",
+      "curled on bed",
+      "short pigtails",
+      "vulnerable gaze",
+      "warm nightlight"
     ],
     "negativeTokens": [],
     "promptProse": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears. Squeezing a cherished teddy bear against her chest, her soft eyes peek out with endearing, unguarded vulnerability.",
-    "animaCaption": "iino miko, 1girl, white buttoned nightdress, big headphones, teddy bear, curled on bed, short pigtails, vulnerable gaze, warm nightlight, highres",
+    "animaCaption": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,5 +1,5 @@
 import { workspaceRequest } from '@/api/workspace'
-import { imgPage, imgCount } from './useImageStore'
+import { imgPage, imgCount } from '@/platform/web/imageStore'
 
 export interface ExportImage { id: string; name: string; created_at: string | number; blob?: Blob | null }
 interface ExportPage { items: Array<{ imageId: string; title: string; timestamp: string | number | null }>; nextCursor: string | null; revision: number; total: number | null }

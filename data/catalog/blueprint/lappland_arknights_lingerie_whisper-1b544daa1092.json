@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3192,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "lappland_arknights_lingerie_whisper",
     "characterId": "lappland_arknights",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "lappland arknights",
-      "solo",
-      "wolf girl",
-      "fluffy white lupo ears and tail",
-      "leaning lazily against rooftop concrete ledge",
-      "running fingers through disheveled silver hair",
-      "wild ecstatic grin",
-      "rain-soaked rooftop puddle reflections",
-      "misty city neon night"
+      "silver hair",
+      "smile",
+      "night",
+      "asymmetrical single strap",
+      "dark leather buckle accent",
+      "sheer side slits",
+      "wolf girl punk loungewear",
+      "untamed edgy boudoir",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, lappland arknights, solo, wolf girl, fluffy white lupo ears and tail, leaning lazily against rooftop concrete ledge, running fingers through disheveled silver hair, wild ecstatic grin, rain-soaked rooftop puddle reflections, misty city neon night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, lappland arknights, solo, wolf girl, fluffy white lupo ears and tail, leaning lazily against rooftop concrete ledge, running fingers through disheveled silver hair, wild ecstatic grin, rain-soaked rooftop puddle reflections, misty city neon night",
+    "promptProse": "Lappland leans lazily against rooftop concrete ledge, wearing a charcoal distressed raw-edge silk slip dress. Wolf girl, fluffy white lupo ears and tail, running fingers through disheveled silver hair amidst wild ecstatic grin, rain-soaked rooftop puddle reflections, misty city neon night.",
+    "animaCaption": "Lappland leans lazily against rooftop concrete ledge, wearing a charcoal distressed raw-edge silk slip dress. Wolf girl, fluffy white lupo ears and tail, running fingers through disheveled silver hair amidst wild ecstatic grin, rain-soaked rooftop puddle reflections, misty city neon night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

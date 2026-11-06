@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3516,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.574Z",
   "data": {
     "id": "eta_shadow_lingerie_whisper",
     "characterId": "eta_shadow",
@@ -37,22 +37,17 @@
       "heavy_sleeper"
     ],
     "promptTokens": [
-      "eta (the eminence in shadow)",
-      "1girl",
       "elf ears",
-      "slouchy oversized lavender fleece kigurumi jumpsuit",
-      "cat ear hood pulled low over forehead",
-      "fast asleep slumped deeply into giant memory foam beanbag",
-      "clutching thick roll of technical blueprints against chest",
-      "tiny cute drool bubble near corner of lip",
-      "short messy purple hair peeking out",
-      "soft green and amber terminal screens glowing around",
-      "masterpiece",
-      "high quality"
+      "oversized purple fleece onesie",
+      "cat hood",
+      "fast asleep on beanbag",
+      "blueprints",
+      "lab glow",
+      "cute drool"
     ],
     "negativeTokens": [],
     "promptProse": "Eta succumbing instantly to profound exhaustion inside her subterranean research lab. Swallowed entirely by a baggy lavender fleece cat-eared onesie, she sleeps soundly slumped into an oversized beanbag chair. Still clutching a bundle of glowing magical schematics against her chest while breathing soft snores, her pointed elf ears twitch peacefully beneath the computer glow.",
-    "animaCaption": "eta (shadow), 1girl, elf ears, oversized purple fleece onesie, cat hood, fast asleep on beanbag, blueprints, lab glow, cute drool, highres",
+    "animaCaption": "Eta succumbing instantly to profound exhaustion inside her subterranean research lab. Swallowed entirely by a baggy lavender fleece cat-eared onesie, she sleeps soundly slumped into an oversized beanbag chair.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

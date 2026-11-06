@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakaki_yumiko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3374,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "sakaki_yumiko_lingerie_whisper",
     "characterId": "sakaki_yumiko",
@@ -34,22 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "sakaki yumiko",
-      "solo",
-      "sitting in high-back leather executive chair",
-      "spinning metallic utility cutter in slender fingers",
-      "long lustrous black hair",
-      "sharp amethyst eyes",
-      "defiant aloof expression with blushing earlobes",
-      "elegant dorm library suite"
+      "sitting",
+      "black hair",
+      "blush",
+      "sharp structured cups",
+      "gold ring clasps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, sakaki yumiko, solo, sitting in high-back leather executive chair, spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes, defiant aloof expression with blushing earlobes, elegant dorm library suite",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, sakaki yumiko, solo, sitting in high-back leather executive chair, spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes, defiant aloof expression with blushing earlobes, elegant dorm library suite",
+    "promptProse": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite.",
+    "animaCaption": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

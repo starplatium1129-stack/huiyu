@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3514,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "zeta_shadow_lingerie_whisper",
     "characterId": "zeta_shadow",
@@ -34,23 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "zeta shadow eminence in shadow",
-      "solo",
-      "beastkin cat girl",
-      "black cat ears twitching",
-      "long flexible tail swaying",
-      "hanging effortlessly upside-down from ceiling beam",
-      "silver-grey hair spilling downward",
-      "glowing golden cat eyes",
-      "moonlight piercing ancient dark cathedral"
+      "cat ears",
+      "glowing",
+      "moonlight",
+      "open back for cat tail",
+      "sleek feline silhouette",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, zeta shadow eminence in shadow, solo, beastkin cat girl, black cat ears twitching, long flexible tail swaying, hanging effortlessly upside-down from ceiling beam, silver-grey hair spilling downward, glowing golden cat eyes, moonlight piercing ancient dark cathedral",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, zeta shadow eminence in shadow, solo, beastkin cat girl, black cat ears twitching, long flexible tail swaying, hanging effortlessly upside-down from ceiling beam, silver-grey hair spilling downward, glowing golden cat eyes, moonlight piercing ancient dark cathedral",
+    "promptProse": "Zeta relaxes in zeta shadow eminence in shadow, wearing a inky black tactical elastic sheer monokini set. Zeta shadow eminence in shadow, beastkin cat girl, black cat ears twitching amidst long flexible tail swaying, hanging effortlessly upside-down from ceiling beam, silver-grey hair spilling downward, glowing golden cat eyes, moonlight piercing ancient dark cathedral.",
+    "animaCaption": "Zeta relaxes in zeta shadow eminence in shadow, wearing a inky black tactical elastic sheer monokini set. Zeta shadow eminence in shadow, beastkin cat girl, black cat ears twitching amidst long flexible tail swaying, hanging effortlessly upside-down from ceiling beam, silver-grey hair spilling downward, glowing golden cat eyes, moonlight piercing ancient dark cathedral.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

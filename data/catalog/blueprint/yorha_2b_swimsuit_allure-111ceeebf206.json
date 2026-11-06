@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3292,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
   "data": {
     "id": "yorha_2b_swimsuit_allure",
     "characterId": "yorha_2b",
@@ -37,25 +37,19 @@
       "stoic_android"
     ],
     "promptTokens": [
-      "yorha 2b",
-      "1girl",
-      "android",
-      "signature black blindfold visor",
-      "black tactical high-cut leotard swimsuit",
-      "white feathered embroidery accents",
-      "back cutout",
-      "standing on flooded rooftop of half-submerged skyscraper",
-      "hand resting on hilt of Virtuous Contract greatsword planted in water",
-      "short silver hair blowing in sea air",
-      "calm stoic mouth",
-      "ruined overgrown city submerged under vast blue ocean",
-      "epic cinematic morning golden hour",
-      "masterpiece",
-      "high quality"
+      "blindfold",
+      "tactical black leotard swimsuit",
+      "standing",
+      "flooded rooftop",
+      "sunken city",
+      "sword in water",
+      "short silver hair",
+      "post-apocalyptic ocean",
+      "morning"
     ],
     "negativeTokens": [],
     "promptProse": "2B standing vigilant on the flooded terrace of a sunken skyscraper engulfed by the calm ocean at dawn. She wears an aerodynamic YoRHa combat-grade tactical black high-cut leotard swimsuit detailed with subtle white feather embroidery. Resting one gloved hand upon the pommel of her greatsword embedded in the shallow tide, her iconic black blindfold conceals emotions of profound, quiet devotion beneath a solitary morning sky.",
-    "animaCaption": "yorha 2b, 1girl, blindfold, tactical black leotard swimsuit, sunken city, sword in water, short silver hair, post-apocalyptic ocean, morning, highres",
+    "animaCaption": "2B stands on the flooded terrace of a sunken skyscraper, one hand resting on the sword planted in the shallow water.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3154,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "nightingale_arknights_lingerie_whisper",
     "characterId": "nightingale_arknights",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "nightingale arknights",
-      "solo",
-      "reclining gently against pale cushions",
-      "slender finger holding imaginary light bird",
-      "cascading pure white hair",
-      "gentle melancholic green eyes",
-      "ornate antique birdcage in soft focus foreground",
-      "luminous white clinic sanctuary"
+      "cushion",
+      "reclining",
+      "green eyes",
+      "gossamer flowing fabric",
+      "angelic fragile beauty",
+      "sanctuary hospital loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, nightingale arknights, solo, reclining gently against pale cushions, slender finger holding imaginary light bird, cascading pure white hair, gentle melancholic green eyes, ornate antique birdcage in soft focus foreground, luminous white clinic sanctuary",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, nightingale arknights, solo, reclining gently against pale cushions, slender finger holding imaginary light bird, cascading pure white hair, gentle melancholic green eyes, ornate antique birdcage in soft focus foreground, luminous white clinic sanctuary",
+    "promptProse": "Nightingale reclines gently against pale cushions, wearing a ivory white feather-jacquard double silk slip robe. Slender finger holding imaginary light bird, cascading pure white hair, gentle melancholic green eyes amidst ornate antique birdcage in soft focus foreground, luminous white clinic sanctuary.",
+    "animaCaption": "Nightingale reclines gently against pale cushions, wearing a ivory white feather-jacquard double silk slip robe. Slender finger holding imaginary light bird, cascading pure white hair, gentle melancholic green eyes amidst ornate antique birdcage in soft focus foreground, luminous white clinic sanctuary.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

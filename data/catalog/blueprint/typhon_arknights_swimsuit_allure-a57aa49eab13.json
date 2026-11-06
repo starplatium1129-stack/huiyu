@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3369,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.271Z",
   "data": {
     "id": "typhon_arknights_swimsuit_allure",
     "characterId": "typhon_arknights",
@@ -37,25 +37,18 @@
       "pure_wilderness"
     ],
     "promptTokens": [
-      "typhon (arknights)",
-      "1girl",
       "beast ears",
-      "bushy tail swishing",
-      "earth brown and snow white fur-trimmed bikini",
-      "carved bone toggles",
-      "hunting recurve bow in hands",
-      "squatting alertly on floating ice sheet",
-      "crystal clear icy ocean water",
-      "barefoot on melting blue ice",
-      "intense focused amber eyes softening into smile",
-      "pure polar dawn sunlight",
-      "dynamic low angle",
-      "masterpiece",
-      "high quality"
+      "tail",
+      "fur-trimmed bikini",
+      "ice floe",
+      "hunting bow",
+      "crouching",
+      "arctic sea",
+      "morning light"
     ],
     "negativeTokens": [],
     "promptProse": "Typhon crouching alertly upon a large translucent sea ice floe drifting in a frigid northern cove at dawn. She wears an agile earth-toned and pelt-white bikini accented with soft white fur trims and carved bone clasps. Clasping a composite hunting bow while her animal ears perk against the icy air, her fierce golden gaze softens with genuine camaraderie as the morning sun casts crystalline azure reflections.",
-    "animaCaption": "typhon (arknights), 1girl, beast ears, tail, fur-trimmed bikini, ice floe, hunting bow, crouching, arctic sea, morning light, highres",
+    "animaCaption": "Typhon crouching alertly upon a large translucent sea ice floe drifting in a frigid northern cove at dawn. She wears an agile earth-toned and pelt-white bikini accented with soft white fur trims and carved bone clasps.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

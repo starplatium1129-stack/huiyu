@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3371,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "shu_arknights_swimsuit_allure",
     "characterId": "shu_arknights",
@@ -37,26 +37,18 @@
       "gentle"
     ],
     "promptTokens": [
-      "shu (arknights)",
-      "1girl",
       "dragon horns",
-      "green and gold wrap monokini",
-      "foliage leaf patterns",
-      "sitting on wooden bridge edge",
-      "feet dangling in flowing clear water",
-      "holding wild fruit",
-      "sprout hairpin",
-      "long pale green braided hair",
-      "warm maternal smile",
-      "golden sunset reflections",
-      "paddy fields and estuary in background",
-      "atmospheric medium shot",
-      "masterpiece",
-      "high quality"
+      "jade monokini",
+      "sitting",
+      "wooden dock",
+      "dipping feet in water",
+      "holding fruit",
+      "sunset",
+      "smile"
     ],
     "negativeTokens": [],
     "promptProse": "Shu sitting peacefully along the edge of a weathered wooden boardwalk where tidal waters meet lush green marshlands. She wears a tasteful agrarian-inspired jade green and harvest-gold crossover monokini with subtle vine lace. Her feet dip playfully into the running cool water as she holds a fresh orchard fruit, turning back with an immensely comforting, benevolent elder-sister smile in the warm amber sunset.",
-    "animaCaption": "shu (arknights), 1girl, dragon horns, jade monokini, wooden dock, dipping feet in water, holding fruit, sunset, smile, highres",
+    "animaCaption": "Shu sits at the edge of a wooden boardwalk, holding a handful of washed fruit while her feet trail in the water.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

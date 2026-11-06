@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3150,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.557Z",
   "data": {
     "id": "entelechia_arknights_lingerie_whisper",
     "characterId": "entelechia_arknights",
@@ -37,23 +37,17 @@
       "melodic_elegance"
     ],
     "promptTokens": [
-      "entelechia (arknights)",
-      "1girl",
-      "abyssal hunter",
-      "charcoal grey and jet black asymmetric silk slip chemise",
-      "subtle tidal jacquard pattern",
-      "leaning gracefully against antique brass horn gramophone",
-      "holding black vinyl record carefully with fingertips",
-      "long wavy dark grey hair",
-      "deep contemplative amethyst eyes",
-      "dim nostalgic lamplight gleaming on brass",
-      "intimate vintage music salon",
-      "masterpiece",
-      "high quality"
+      "charcoal silk chemise",
+      "gramophone",
+      "vinyl record",
+      "wavy dark hair",
+      "antique brass",
+      "deep purple eyes",
+      "melodic"
     ],
     "negativeTokens": [],
     "promptProse": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards. Leaning beside a vintage brass-horned phonograph while gently handling a vinyl disc, her dark wavy curls and deep amethyst gaze evoke the sublime mysteries of the oceanic deep.",
-    "animaCaption": "entelechia, 1girl, charcoal silk chemise, gramophone, vinyl record, wavy dark hair, antique brass, deep purple eyes, melodic, highres",
+    "animaCaption": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

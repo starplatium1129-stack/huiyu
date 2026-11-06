@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3167,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.191Z",
   "data": {
     "id": "swire_arknights_swimsuit_allure",
     "characterId": "swire_arknights",
@@ -37,26 +37,19 @@
       "confident"
     ],
     "promptTokens": [
-      "swire (arknights)",
-      "1girl",
       "tiger ears",
-      "tiger tail swishing happily",
-      "deep emerald green and metallic gold luxury bikini",
-      "oversized designer sunglasses on head",
-      "lounging on leather sunbed aboard luxury yacht deck",
-      "holding sparkling champagne flute",
-      "crossed legs",
-      "golden amber eyes",
-      "smug proud smile",
-      "blazing sunset over coral sea",
-      "teak wood deck",
-      "glamorous low angle",
-      "masterpiece",
-      "high quality"
+      "tiger tail",
+      "emerald bikini",
+      "gold trim",
+      "sunglasses",
+      "luxury yacht",
+      "champagne",
+      "sunset",
+      "proud smile"
     ],
     "negativeTokens": [],
     "promptProse": "Swire lounging flamboyantly on a cream-leather daybed across the teak foredeck of her private yacht anchored in turquoise waters. She rocks a glamorous deep emerald-green bikini with metallic gold embroidery and high-waisted briefs. Pushing designer cat-eye sunglasses onto her head, her striped feline tail wags cheerfully as she toasts with a glass of vintage champagne at golden sunset.",
-    "animaCaption": "swire (arknights), 1girl, tiger ears, tiger tail, emerald bikini, gold trim, sunglasses, luxury yacht, champagne, sunset, proud smile, highres",
+    "animaCaption": "Swire lounging flamboyantly on a cream-leather daybed across the teak foredeck of her private yacht anchored in turquoise waters. She rocks a glamorous deep emerald-green bikini with metallic gold embroidery and high-waisted briefs.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

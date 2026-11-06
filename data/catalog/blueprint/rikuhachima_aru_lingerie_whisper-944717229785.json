@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3435,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "rikuhachima_aru_lingerie_whisper",
     "characterId": "rikuhachima_aru",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rikuhachima aru",
-      "solo",
-      "reclining on crimson velvet office sofa trying to look hardboiled mafia boss",
-      "then blushing frantically covering chest",
-      "long wavy magenta-red hair",
-      "horned hairpins",
-      "comical flustered red eyes",
-      "retro office with scattered bills"
+      "chaise lounge",
+      "reclining",
+      "blush",
+      "red hair",
+      "red eyes",
+      "black velvet trims",
+      "playful villainess aesthetic",
+      "flustered outlaw boudoir",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rikuhachima aru, solo, reclining on crimson velvet office sofa trying to look hardboiled mafia boss, then blushing frantically covering chest, long wavy magenta-red hair, horned hairpins, comical flustered red eyes, retro office with scattered bills",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rikuhachima aru, solo, reclining on crimson velvet office sofa trying to look hardboiled mafia boss, then blushing frantically covering chest, long wavy magenta-red hair, horned hairpins, comical flustered red eyes, retro office with scattered bills",
+    "promptProse": "Rikuhachima Aru reclines on crimson velvet office sofa trying to look hardboiled mafia boss, wearing a magenta and black lace ruffle-trimmed bustier set. Then blushing frantically covering chest, long wavy magenta-red hair, horned hairpins amidst comical flustered red eyes, retro office with scattered bills.",
+    "animaCaption": "Rikuhachima Aru reclines on crimson velvet office sofa trying to look hardboiled mafia boss, wearing a magenta and black lace ruffle-trimmed bustier set. Then blushing frantically covering chest, long wavy magenta-red hair, horned hairpins amidst comical flustered red eyes, retro office with scattered bills.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

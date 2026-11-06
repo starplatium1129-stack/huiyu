@@ -94,7 +94,7 @@ async function generate<T extends GatewayRecord>(record: T, save: (record: T) =>
   const signalForRequest = () => AbortSignal.any([...(signal ? [signal] : []), AbortSignal.timeout(Math.min(timeoutMs, 30000))]);
   async function request(url: string, init?: RequestInit) {
     const response = await fetch(url, { ...init, redirect: 'error', signal: signalForRequest() });
-    if (!response.ok) throw new Error(`gateway HTTP ${response.status}`);
+    if (!response.ok) throw Object.assign(new Error(`gateway HTTP ${response.status}`), { gatewayHttpStatus: response.status });
     return response;
   }
   async function json(url: string, init?: { method: string; headers: { 'Content-Type': string; }; body: string; }|undefined) {

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "karuizawa_kei_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3465,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.969Z",
   "data": {
     "id": "karuizawa_kei_lingerie_whisper",
     "characterId": "karuizawa_kei",
@@ -37,22 +37,17 @@
       "trusting_parasite"
     ],
     "promptTokens": [
-      "karuizawa kei",
-      "1girl",
-      "champagne-beige silk satin slip chemise",
-      "delicate eyelash lace trim",
-      "matching ruffled tap shorts",
-      "perched on corner of bed carefully painting toenails with pink polish",
-      "long wavy honey-blonde hair falling over bare shoulders",
-      "looking up shyly through thick eyelashes with sweet flush",
-      "radiant sky-blue eyes filled with affection",
-      "cozy feminine high school dorm bedroom",
-      "masterpiece",
-      "high quality"
+      "champagne silk slip dress",
+      "painting toenails",
+      "blonde wavy hair",
+      "blue eyes",
+      "sweet blush",
+      "bed corner",
+      "cozy"
     ],
     "negativeTokens": [],
     "promptProse": "Kei Karuizawa indulging in quiet romance inside her private dorm room late at night. She wears an exquisite champagne-beige silk slip dress detailed with fine eyelash lace. Sitting along the mattress edge carefully applying pink lacquer to her toenails, she peeks upward with honey-blonde curls framing flushed cheeks and eyes brimming with tender, devoted trust.",
-    "animaCaption": "karuizawa kei, 1girl, champagne silk slip dress, painting toenails, blonde wavy hair, blue eyes, sweet blush, bed corner, cozy, highres",
+    "animaCaption": "Kei Karuizawa indulging in quiet romance inside her private dorm room late at night. She wears an exquisite champagne-beige silk slip dress detailed with fine eyelash lace.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

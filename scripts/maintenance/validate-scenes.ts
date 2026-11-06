@@ -24,12 +24,13 @@ const {
 }: typeof import('../lib/prompt-policy') = require('../lib/prompt-policy');
 // 2026-08-15 样张视觉定级的人工评级覆盖：非 mature 场景也信任人工评级，不做 tag 反推交叉检查。
 const MANUAL_SCENE_RATINGS: typeof import('../lib/manual-scene-ratings.js') = require('../lib/manual-scene-ratings.js');
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 
 // 数据根与 scene-store 等维护脚本同链解析：夹具经 AICS_DATA_ROOT 运行时，
 // 本脚本全部数据输入（分片与 characters/presets/curation/retired/pinned）取自同一根；
 // 未设置环境变量时保持仓库 data/ 的既有行为。
 const dataDir = path.join(
-  path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..')),
+  resolveContentRoot(),
   'data'
 );
 const characterSource = path.join(dataDir, 'characters.json');

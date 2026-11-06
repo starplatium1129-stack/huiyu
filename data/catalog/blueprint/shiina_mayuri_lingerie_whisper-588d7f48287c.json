@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mayuri_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3481,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shiina_mayuri_lingerie_whisper",
     "characterId": "shiina_mayuri",
@@ -34,21 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shiina mayuri",
-      "solo",
-      "sitting on sofa armrest clasping antique pocket watch to chest",
-      "dark short bob hair",
-      "iconic baby blue sundress-inspired nightdress",
-      "radiant angelic closed-eye smile",
-      "warm summer sunset light through lab window"
+      "chaise lounge",
+      "sitting",
+      "night",
+      "smile",
+      "sunset",
+      "white daisy flower applique",
+      "ruffled smocked bodice",
+      "airy flared hem",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shiina mayuri, solo, sitting on sofa armrest clasping antique pocket watch to chest, dark short bob hair, iconic baby blue sundress-inspired nightdress, radiant angelic closed-eye smile, warm summer sunset light through lab window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shiina mayuri, solo, sitting on sofa armrest clasping antique pocket watch to chest, dark short bob hair, iconic baby blue sundress-inspired nightdress, radiant angelic closed-eye smile, warm summer sunset light through lab window",
+    "promptProse": "Shiina Mayuri sits on sofa armrest clasping antique pocket watch to chest, wearing a sky blue cotton babydoll camisole. Dark short bob hair, iconic baby blue sundress-inspired nightdress, radiant angelic closed-eye smile amidst warm summer sunset light through lab window.",
+    "animaCaption": "Shiina Mayuri sits on sofa armrest clasping antique pocket watch to chest, wearing a sky blue cotton babydoll camisole. Dark short bob hair, iconic baby blue sundress-inspired nightdress, radiant angelic closed-eye smile amidst warm summer sunset light through lab window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

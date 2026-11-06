@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3505,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.374Z",
   "data": {
     "id": "beta_shadow_lingerie_whisper",
     "characterId": "beta_shadow",
@@ -37,23 +37,17 @@
       "cozy_velvet"
     ],
     "promptTokens": [
-      "beta (the eminence in shadow)",
-      "1girl",
-      "silver grey silk satin slip chemise",
-      "deep-v plunge with delicate ruffled lace",
-      "voluptuous bust resting against plush duvet",
-      "lying on stomach on luxury canopy bed",
-      "writing excitedly in leather journal with peacock feather quill",
-      "flustered ecstatic blushing expression",
-      "silver hair styled in soft bob with side braid",
-      "sparkling aqua-blue eyes",
-      "warm antique brass lantern glow",
-      "masterpiece",
-      "high quality"
+      "silver satin slip",
+      "lying on bed",
+      "writing with quill",
+      "voluptuous bust",
+      "blushing fan",
+      "silver hair",
+      "lantern"
     ],
     "negativeTokens": [],
     "promptProse": "Beta furiously scribbling down the heroic exploits of Lord Shadow in her private chamber at midnight. Clothed in a lavish silver-grey silk slip dress with a plunging ruffled neckline that accentuates her voluptuous figure, she lies prone on an enormous velvet mattress. Dipping a peacock quill into ink with flushed, infatuated cheeks, she looks up with starstruck, flustered adoration.",
-    "animaCaption": "beta (shadow), 1girl, silver satin slip, lying on bed, writing with quill, voluptuous bust, blushing fan, silver hair, lantern, highres",
+    "animaCaption": "Beta furiously scribbling down the heroic exploits of Lord Shadow in her private chamber at midnight. Clothed in a lavish silver-grey silk slip dress with a plunging ruffled neckline that accentuates her voluptuous figure, she lies prone on an enormous velvet mattress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

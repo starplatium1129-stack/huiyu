@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3243,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "skadi_arknights_swimsuit_allure",
     "characterId": "skadi_arknights",
@@ -37,26 +37,19 @@
       "dusk_twilight"
     ],
     "promptTokens": [
-      "skadi (arknights)",
-      "1girl",
-      "abyssal hunter",
-      "matte black cut-out monokini",
-      "silver buckles",
-      "holding heavy crimson surfboard upright",
-      "standing knee-deep in crashing ocean waves",
-      "long silver hair flowing in wind",
-      "crimson eyes",
-      "calm expression",
-      "rocky cliff sea coast",
-      "dark purple dusk sky",
-      "dramatic low angle",
-      "cinematic lighting",
-      "masterpiece",
-      "high quality"
+      "cut-out black monokini",
+      "standing in water",
+      "knee-deep water",
+      "holding surfboard",
+      "crashing waves",
+      "silver hair",
+      "red eyes",
+      "dramatic dusk",
+      "cinematic"
     ],
     "negativeTokens": [],
     "promptProse": "Skadi standing calmly knee-deep within heavy crashing coastal surf beneath towering sea cliffs. She wears an abyssal matte-black cutout monokini with gunmetal silver clasps and straps. Holding an imposing heavy red surfboard planted firmly into wet sand, her crimson eyes hold the tranquil vastness of the sea while twilight casts cool purple and crimson shades across her silver hair.",
-    "animaCaption": "skadi (arknights), 1girl, cut-out black monokini, surfboard, crashing waves, silver hair, red eyes, dramatic dusk, cinematic, masterpiece",
+    "animaCaption": "Skadi stands knee-deep in crashing waves, holding her surfboard upright beneath the sea cliffs.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

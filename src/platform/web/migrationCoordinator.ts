@@ -1,6 +1,7 @@
 import type { MigrationCandidateSelection, MigrationEnvelope, MigrationStatus } from '../../../types/migration'
 import { createMigrationDirectoryBackup, readMigrationDirectoryBackup } from './migrationBackup'
-import { exportMigrationSource, migrationFingerprint } from './migrationExport'
+import { exportMigrationSource } from './migrationExport'
+import { migrationFingerprint } from './migrationFingerprint'
 import { importMigrationBackup, type MigrationCandidatePort } from './migrationImport'
 import { assertMigrationArtworkSourcesReady, freezeMigrationSource, migrationRecoveryPending, WRITE_LOCK, WINDOW_LOCK,
   type MigrationSourceSnapshot, type MigrationSourceAck, type MigrationSourcePreparedAck } from './migrationBarrier'

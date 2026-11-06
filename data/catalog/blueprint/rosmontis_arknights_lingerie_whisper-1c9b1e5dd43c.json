@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3138,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "rosmontis_arknights_lingerie_whisper",
     "characterId": "rosmontis_arknights",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rosmontis arknights",
-      "solo",
-      "feline",
-      "silver-white cat ears drooped down sweetly",
-      "hugging leather notebook to chest on pile of fluffy pillows",
-      "huge innocent cyan eyes",
-      "heavy telekinetic steel plates floating peacefully in background",
-      "warm nightlight glow"
+      "cat ears",
+      "blue eyes",
+      "floating",
+      "night",
+      "tiny kitten paw embroidery",
+      "white scallop trim",
+      "loose empire silhouette",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rosmontis arknights, solo, feline, silver-white cat ears drooped down sweetly, hugging leather notebook to chest on pile of fluffy pillows, huge innocent cyan eyes, heavy telekinetic steel plates floating peacefully in background, warm nightlight glow",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rosmontis arknights, solo, feline, silver-white cat ears drooped down sweetly, hugging leather notebook to chest on pile of fluffy pillows, huge innocent cyan eyes, heavy telekinetic steel plates floating peacefully in background, warm nightlight glow",
+    "promptProse": "Rosmontis relaxes in feline, wearing a pale mint green ultra-soft cloud cotton babydoll slip. Feline, silver-white cat ears drooped down sweetly, hugging leather notebook to chest on pile of fluffy pillows amidst huge innocent cyan eyes, heavy telekinetic steel plates floating peacefully in background, warm nightlight glow.",
+    "animaCaption": "Rosmontis relaxes in feline, wearing a pale mint green ultra-soft cloud cotton babydoll slip. Feline, silver-white cat ears drooped down sweetly, hugging leather notebook to chest on pile of fluffy pillows amidst huge innocent cyan eyes, heavy telekinetic steel plates floating peacefully in background, warm nightlight glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

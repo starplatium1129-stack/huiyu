@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3164,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "reed_arknights_lingerie_whisper",
     "characterId": "reed_arknights",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "reed arknights",
-      "solo",
-      "draco",
-      "magnificent red scaled dragon tail coiled on stone floor",
-      "delicate curved horns",
-      "holding tiny gentle golden flame in palm",
-      "deep emotional purple eyes",
-      "ancient stone castle chamber with glowing reeds in water basin"
+      "horns",
+      "purple eyes",
+      "water",
+      "glowing",
+      "translucent floating fabric",
+      "golden amber highlights",
+      "sacred draconic loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, reed arknights, solo, draco, magnificent red scaled dragon tail coiled on stone floor, delicate curved horns, holding tiny gentle golden flame in palm, deep emotional purple eyes, ancient stone castle chamber with glowing reeds in water basin",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, reed arknights, solo, draco, magnificent red scaled dragon tail coiled on stone floor, delicate curved horns, holding tiny gentle golden flame in palm, deep emotional purple eyes, ancient stone castle chamber with glowing reeds in water basin",
+    "promptProse": "Reed the Flame Shadow relaxes in draco, wearing a flame crimson ombre sheer chiffon slip gown. Draco, magnificent red scaled dragon tail coiled on stone floor, delicate curved horns amidst holding tiny gentle golden flame in palm, deep emotional purple eyes, ancient stone castle chamber with glowing reeds in water basin.",
+    "animaCaption": "Reed the Flame Shadow relaxes in draco, wearing a flame crimson ombre sheer chiffon slip gown. Draco, magnificent red scaled dragon tail coiled on stone floor, delicate curved horns amidst holding tiny gentle golden flame in palm, deep emotional purple eyes, ancient stone castle chamber with glowing reeds in water basin.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

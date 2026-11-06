@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3334,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "ubel_frieren_lingerie_whisper",
     "characterId": "ubel_frieren",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "ubel frieren",
-      "solo",
-      "sitting perched on ruined stone bridge ledge over misty abyss",
-      "dangling bare legs",
-      "playing with slender magic staff edge",
-      "dark green side ponytail",
-      "smug piercing green eyes with dangerously playful smile",
-      "mystical glowing ruins"
+      "sitting",
+      "ponytail",
+      "mug",
+      "smile",
+      "green eyes",
+      "glowing",
+      "asymmetrical side cutouts",
+      "raw jagged edge hemline",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, ubel frieren, solo, sitting perched on ruined stone bridge ledge over misty abyss, dangling bare legs, playing with slender magic staff edge, dark green side ponytail, smug piercing green eyes with dangerously playful smile, mystical glowing ruins",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, ubel frieren, solo, sitting perched on ruined stone bridge ledge over misty abyss, dangling bare legs, playing with slender magic staff edge, dark green side ponytail, smug piercing green eyes with dangerously playful smile, mystical glowing ruins",
+    "promptProse": "Übel sits perched on ruined stone bridge ledge over misty abyss, wearing a inky black deep plunging halter mini slip. Dangling bare legs, playing with slender magic staff edge, dark green side ponytail amidst smug piercing green eyes with dangerously playful smile, mystical glowing ruins.",
+    "animaCaption": "Übel sits perched on ruined stone bridge ledge over misty abyss, wearing a inky black deep plunging halter mini slip. Dangling bare legs, playing with slender magic staff edge, dark green side ponytail amidst smug piercing green eyes with dangerously playful smile, mystical glowing ruins.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

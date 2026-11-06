@@ -59,7 +59,7 @@ impl Prepared {
     }
     pub(crate) fn provider(&self) -> &str {
         match &self.backend {
-            PreparedBackend::Local(value) => &value.provider,
+            PreparedBackend::Local(value) => value.provider(),
             PreparedBackend::Remote { .. } => "native",
         }
     }
@@ -103,6 +103,9 @@ impl Service {
             return remote.identity();
         }
         self.backend.provider_identity(unbound_epoch)
+    }
+    pub(crate) fn is_remote(&self) -> bool {
+        self.remote.is_some()
     }
     pub fn new(
         config: Config,

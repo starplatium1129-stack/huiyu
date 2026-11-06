@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3132,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "pozyomka_arknights_lingerie_whisper",
     "characterId": "pozyomka_arknights",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "pozyomka arknights",
-      "solo",
-      "lupo",
-      "fluffy wolf ears and magnificent tail",
-      "sitting sideways at mahogany writing desk",
-      "pressing fountain pen to lip thoughtfully",
-      "long pinkish-silver hair",
-      "deep soulful pink eyes",
-      "antique library with vintage typewriter"
+      "wolf ears",
+      "sitting",
+      "silver hair",
+      "vintage ecru lace trim",
+      "side slit showing long legs",
+      "structured bodice",
+      "aristocratic poet loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, pozyomka arknights, solo, lupo, fluffy wolf ears and magnificent tail, sitting sideways at mahogany writing desk, pressing fountain pen to lip thoughtfully, long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, pozyomka arknights, solo, lupo, fluffy wolf ears and magnificent tail, sitting sideways at mahogany writing desk, pressing fountain pen to lip thoughtfully, long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter",
+    "promptProse": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter.",
+    "animaCaption": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

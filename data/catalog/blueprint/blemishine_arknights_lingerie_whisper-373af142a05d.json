@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3148,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.386Z",
   "data": {
     "id": "blemishine_arknights_lingerie_whisper",
     "characterId": "blemishine_arknights",
@@ -37,23 +37,16 @@
       "enthusiastic_engineer"
     ],
     "promptTokens": [
-      "blemishine (arknights)",
-      "1girl",
-      "kuranta horse ears perked up happily",
-      "blonde hair held up casually with drafting pencil",
-      "warm golden-yellow gingham loose cotton jumpsuit pajamas",
-      "sitting cross-legged on workshop rug",
-      "holding precision tweezers assembling miniature clock gears",
-      "turning around with beaming sunny smile",
-      "amber eyes sparkling with enthusiasm",
-      "circular magnifying desk lamp lighting up parts",
-      "cluttered cheerful workshop corner",
-      "masterpiece",
-      "high quality"
+      "horse ears",
+      "golden gingham pajamas",
+      "pencil in hair",
+      "tinkering with gears",
+      "crosslegged",
+      "bright smile"
     ],
     "negativeTokens": [],
     "promptProse": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil. Her equine ears perk up joyfully as she turns around holding tiny clockwork gears, smiling like the brightest morning sun.",
-    "animaCaption": "blemishine (arknights), 1girl, horse ears, golden gingham pajamas, pencil in hair, tinkering with gears, crosslegged, bright smile, highres",
+    "animaCaption": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

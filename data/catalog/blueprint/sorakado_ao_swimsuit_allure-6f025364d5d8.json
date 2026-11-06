@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorakado_ao_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3482,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.119Z",
   "data": {
     "id": "sorakado_ao_swimsuit_allure",
     "characterId": "sorakado_ao",
@@ -37,25 +37,17 @@
       "nostalgic"
     ],
     "promptTokens": [
-      "sorakado ao",
-      "1girl",
-      "sky blue sporty tankini",
-      "white trim boy shorts",
-      "leaning against concrete seawall embankment",
-      "shady banyan tree leaves overhead",
-      "yawning with half-closed indigo eyes",
-      "hand shielding brow from sunbeam",
-      "straw boater hat discarded beside",
-      "nostalgic coastal island town",
-      "hot summer afternoon",
-      "dappled light and shadows",
-      "candid shot",
-      "masterpiece",
-      "high quality"
+      "sky blue tankini",
+      "boy shorts",
+      "leaning on seawall",
+      "tree shadow",
+      "yawning",
+      "summer afternoon",
+      "island"
     ],
     "negativeTokens": [],
     "promptProse": "Ao Sorakado lounging comfortably against the warm concrete incline of a coastal sea wall shaded by a leafy summer tree. She wears a casual sky-blue boy-short tankini with clean white athletic trim. One hand shields her sleepy indigo eyes as she lazily yawns, an empty ice-pop stick twirling between her fingers in the nostalgic warmth of an island afternoon.",
-    "animaCaption": "sorakado ao, 1girl, sky blue tankini, boy shorts, leaning on seawall, tree shadow, yawning, summer afternoon, island, highres",
+    "animaCaption": "Ao Sorakado lounging comfortably against the warm concrete incline of a coastal sea wall shaded by a leafy summer tree. She wears a casual sky-blue boy-short tankini with clean white athletic trim.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

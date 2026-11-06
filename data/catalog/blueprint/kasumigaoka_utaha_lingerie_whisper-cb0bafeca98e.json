@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasumigaoka_utaha_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3198,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.985Z",
   "data": {
     "id": "kasumigaoka_utaha_lingerie_whisper",
     "characterId": "kasumigaoka_utaha",
@@ -37,23 +37,17 @@
       "femme_fatale_author"
     ],
     "promptTokens": [
-      "kasumigaoka utaha",
-      "1girl",
-      "wine-red deep silk slip dress",
-      "daring high side slit",
-      "signature sheer black pantyhose stockings",
-      "sitting tilted in leather executive swivel chair",
-      "long shapely legs elegantly crossed with slipper dangling from toe",
-      "dark red hair flowing over pale shoulders",
-      "alluring deep crimson eyes behind slim glasses",
-      "teasing cruel smirk",
-      "glowing laptop screen on messy hotel desk",
-      "masterpiece",
-      "high quality"
+      "wine red silk slip",
+      "sheer black pantyhose",
+      "crossed legs",
+      "dangling slipper",
+      "glasses",
+      "laptop",
+      "seductive smirk"
     ],
     "negativeTokens": [],
     "promptProse": "Utaha Kasumigaoka commanding the room from her swivel chair in a luxury hotel suite while writing her novel. Dressed in a provocative wine-red silk slip with a sky-high slit revealing her flawless sheer black pantyhose-clad legs, she lounges with crossed thighs, a hotel slipper dangling from her pointed toe. Peering over her glasses with a venomous, intoxicating smirk, she challenges the viewer.",
-    "animaCaption": "kasumigaoka utaha, 1girl, wine red silk slip, sheer black pantyhose, crossed legs, dangling slipper, glasses, laptop, seductive smirk, highres",
+    "animaCaption": "Utaha Kasumigaoka commanding the room from her swivel chair in a luxury hotel suite while writing her novel. Dressed in a provocative wine-red silk slip with a sky-high slit revealing her flawless sheer black pantyhose-clad legs, she lounges with crossed thighs, a hotel slipper dangling from her pointed toe.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

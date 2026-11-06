@@ -1,9 +1,9 @@
 import { archiveTaskResult } from './taskArtwork'
-import { fetchImageTaskResult, type ImageTask } from './useImageTaskSession'
+import { fetchImageTaskResult, type ImageTask } from '@/api/imageTask'
 import { blobArtworkResult } from '@/composables/manga/mangaResult'
 import type { ArtworkRecord } from '@/types/artwork'
 import { taskArtworkId } from '@/application/artwork/taskResultIdentity'
-import { validMossSpectrumFlexWindow } from '@/api/mossApi'
+import { mossArtworkMetadata } from '@/application/artwork/mossArtworkMetadata'
 
 export const imageTaskArtworkId = (task: ImageTask, index = 0) => task.runtimeTask ? taskArtworkId(task.taskId, index) : `image-job-${task.taskId}-${index}`
 export function createImageTaskArchiver(check: () => void, signal: AbortSignal) {
@@ -35,18 +35,7 @@ export function createImageTaskArchiver(check: () => void, signal: AbortSignal) 
       if (!manga) for (const key of ['character', 'characterId', 'outfitId', 'blueprintId', 'story', 'visualDescription']) {
         if (typeof context?.[key] === 'string') record[key] = context[key]
       }
-      if (task.kind === 'moss' && (input.mossUpscaleScale === 1.5 || input.mossUpscaleScale === 2)) {
-        record.mossUpscaleScale = input.mossUpscaleScale
-        if (typeof input.mossUpscaleSourceTaskId === 'string') record.mossUpscaleSourceTaskId = input.mossUpscaleSourceTaskId
-        record.upscaler = 'Remacri'
-        record.sceneTitle += ` · Remacri ${input.mossUpscaleScale}×`
-      } else if (task.kind === 'moss') {
-        record.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
-        if (validMossSpectrumFlexWindow(input.mossSpectrumFlexWindow)) record.mossSpectrumFlexWindow = input.mossSpectrumFlexWindow
-        record.mossTextPrecision = input.mossTextPrecision === 'int8' ? 'int8' : input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
-        record.mossCompile = input.mossCompile === true
-        record.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
-      }
+      if (task.kind === 'moss') Object.assign(record, mossArtworkMetadata(input, record.sceneTitle!))
       result = blobArtworkResult(image, record, check); results.set(id, result)
     }
     const saved = await result.save()

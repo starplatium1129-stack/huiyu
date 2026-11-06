@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "himeragi_yukina_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3456,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.733Z",
   "data": {
     "id": "himeragi_yukina_lingerie_whisper",
     "characterId": "himeragi_yukina",
@@ -37,23 +37,18 @@
       "sword_shaman"
     ],
     "promptTokens": [
-      "himeragi yukina",
-      "1girl",
-      "lion king sword shaman",
-      "pristine white organic linen high-neck nightgown",
-      "embroidered sacred shinto talismans along collar",
-      "sitting with perfect seiza posture on futon",
-      "hands resting formally on knees",
-      "metallic guitar case holding holy spear propped against wall",
-      "glossy black hair flowing down back",
-      "large earnest brown eyes blushing slightly",
-      "cozy tatami apartment bedroom",
-      "masterpiece",
-      "high quality"
+      "white linen nightgown",
+      "high neck",
+      "sitting seiza",
+      "futon",
+      "spear case",
+      "black hair",
+      "brown eyes",
+      "serious blush"
     ],
     "negativeTokens": [],
     "promptProse": "Yukina Himeragi maintaining her solemn sword-shaman vigil inside her tatami apartment at bedtime. Dressed in a modest, pristine white linen nightgown with a high gathered neck and subtle talismanic embroidery, she sits in disciplined seiza on her futon with hands folded neatly. With her holy spear case resting close at hand, she looks up with earnest, blushing dedication.",
-    "animaCaption": "himeragi yukina, 1girl, white linen nightgown, high neck, sitting seiza, futon, spear case, black hair, brown eyes, serious blush, highres",
+    "animaCaption": "Yukina Himeragi maintaining her solemn sword-shaman vigil inside her tatami apartment at bedtime. Dressed in a modest, pristine white linen nightgown with a high gathered neck and subtle talismanic embroidery, she sits in disciplined seiza on her futon with hands folded neatly.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

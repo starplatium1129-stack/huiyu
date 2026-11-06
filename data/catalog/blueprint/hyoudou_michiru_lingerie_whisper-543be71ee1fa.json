@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hyoudou_michiru_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3477,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.796Z",
   "data": {
     "id": "hyoudou_michiru_lingerie_whisper",
     "characterId": "hyoudou_michiru",
@@ -37,24 +37,16 @@
       "rocker_cousin"
     ],
     "promptTokens": [
-      "hyoudou michiru",
-      "1girl",
-      "rock bassist",
-      "distressed black ribbed racerback tank top with raw armholes",
-      "ultra-short frayed denim sleep shorts",
-      "barefoot one leg perched high on wooden bedboard",
-      "aggressively strumming electric guitar plugged into mini amp",
-      "tanned athletic long legs",
-      "messy layered black-brown shaggy hair",
-      "wild infectious laughing grin",
-      "sharp amber eyes",
-      "late night bedroom jam session",
-      "masterpiece",
-      "high quality"
+      "distressed black tank top",
+      "denim shorts",
+      "playing electric guitar on bed",
+      "barefoot",
+      "wild laugh",
+      "energetic"
     ],
     "negativeTokens": [],
     "promptProse": "Michiru Hyoudou turning her cousin's guest bedroom into an impromptu midnight rock stage. Dressed in a raw-edged distressed black racerback tank and frayed denim sleep shorts that showcase her sun-kissed legs, she perches one bare foot boldly atop the bedboard. Blasting heavy riffs from an electric guitar, she laughs with untamed, electrifying childhood-friend insolence.",
-    "animaCaption": "hyoudou michiru, 1girl, distressed black tank top, denim shorts, playing electric guitar on bed, barefoot, wild laugh, energetic, highres",
+    "animaCaption": "Michiru Hyoudou turning her cousin's guest bedroom into an impromptu midnight rock stage. Dressed in a raw-edged distressed black racerback tank and frayed denim sleep shorts that showcase her sun-kissed legs, she perches one bare foot boldly atop the bedboard.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

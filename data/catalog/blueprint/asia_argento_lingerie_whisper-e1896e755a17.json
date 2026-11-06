@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_argento_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3464,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.272Z",
   "data": {
     "id": "asia_argento_lingerie_whisper",
     "characterId": "asia_argento",
@@ -37,23 +37,17 @@
       "angelic_healing"
     ],
     "promptTokens": [
-      "asia argento",
-      "1girl",
-      "pale mint green calico floral cotton nightgown",
-      "scalloped ruffled hems",
-      "long sleeves",
-      "kneeling demurely in prayer on soft bedroom floor cushion",
-      "hands clasped reverently at chest",
-      "turning head to smile warmly at viewer",
-      "long wavy golden blonde hair glowing in morning rays",
-      "sparkling innocent emerald green eyes",
-      "bright sunny lace curtains",
-      "masterpiece",
-      "high quality"
+      "mint floral nightgown",
+      "praying hands",
+      "kneeling",
+      "blonde hair",
+      "emerald eyes",
+      "morning sunlight",
+      "angelic smile"
     ],
     "negativeTokens": [],
     "promptProse": "Asia Argento concluding her early morning prayers beside her bed bathed in warm sunlight. Clad in a modest pale mint-green calico cotton nightgown trimmed with scalloped ruffles, she kneels with clasped hands upon a floor cushion. Turning around as the morning breeze flutters the lace curtains, she beams with angelic, heartwarming purity.",
-    "animaCaption": "asia argento, 1girl, mint floral nightgown, praying hands, kneeling, blonde hair, emerald eyes, morning sunlight, angelic smile, highres",
+    "animaCaption": "Asia Argento concluding her early morning prayers beside her bed bathed in warm sunlight. Clad in a modest pale mint-green calico cotton nightgown trimmed with scalloped ruffles, she kneels with clasped hands upon a floor cushion.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

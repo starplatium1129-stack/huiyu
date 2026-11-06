@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3339,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.658Z",
   "data": {
     "id": "fubuki_one_punch_lingerie_whisper",
     "characterId": "fubuki_one_punch",
@@ -37,24 +37,17 @@
       "fubuki_queen"
     ],
     "promptTokens": [
-      "fubuki (one-punch man)",
-      "1girl",
-      "blizzard of hell",
-      "deep emerald green crushed velvet plunge slip gown",
-      "daring high side slit",
-      "voluptuous hourglass figure",
-      "lounging gracefully on velvet chaise lounge",
-      "swirling glass of red wine in hand",
-      "short wavy dark green-black hair",
-      "intense charismatic green eyes",
-      "confident queenly smirk",
-      "city skyline night view beyond glass",
-      "masterpiece",
-      "high quality"
+      "emerald velvet gown",
+      "wine glass",
+      "chaise lounge",
+      "dark green hair",
+      "hourglass figure",
+      "queenly smirk",
+      "night skyline"
     ],
     "negativeTokens": [],
     "promptProse": "Fubuki holding court within her high-rise penthouse suite late at night. She reclines with regal elegance upon an emerald velvet chaise lounge, dressed in a plunging deep-green crushed velvet slip gown with a high slit accentuating her iconic hourglass curves. Swirling a vintage wine glass while fixing her piercing green gaze on the viewer, she exudes absolute commanding magnetism.",
-    "animaCaption": "fubuki (opm), 1girl, emerald velvet gown, wine glass, chaise lounge, dark green hair, hourglass figure, queenly smirk, night skyline, highres",
+    "animaCaption": "Fubuki holding court within her high-rise penthouse suite late at night. She reclines with regal elegance upon an emerald velvet chaise lounge, dressed in a plunging deep-green crushed velvet slip gown with a high slit accentuating her iconic hourglass curves.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

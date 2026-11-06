@@ -1,5 +1,5 @@
 import { apiClient, ApiClientError } from './client'
-import type { ImageTask } from '@/composables/tasks/useImageTaskSession'
+import type { ImageTask } from './imageTask'
 import manifest from '../../tools/inference/manga-screen.json'
 
 export const mangaManifest = manifest

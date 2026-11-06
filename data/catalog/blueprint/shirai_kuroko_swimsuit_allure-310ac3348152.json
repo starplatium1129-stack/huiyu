@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3412,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.080Z",
   "data": {
     "id": "shirai_kuroko_swimsuit_allure",
     "characterId": "shirai_kuroko",
@@ -36,26 +36,17 @@
       "midday_sun"
     ],
     "promptTokens": [
-      "shirai kuroko",
-      "1girl",
-      "crimson and white strappy bandeau bikini",
-      "criss-cross waist straps",
+      "strappy bandeau bikini",
+      "twin tails",
       "judgement armband",
-      "auburn twin tails",
-      "kneeling on poolside white tiles",
-      "one hand on ground",
-      "dynamic forward lean",
+      "poolside",
       "winking",
-      "playful smirk",
-      "pool water ripples",
-      "summer midday sunlight",
-      "dynamic low angle",
-      "masterpiece",
-      "high quality"
+      "dynamic pose",
+      "water ripples"
     ],
     "negativeTokens": [],
     "promptProse": "Kuroko Shirai dynamically positioned on the edge of a sunlit school swimming pool. She wears a bold crimson-and-white strappy bandeau bikini with playful crisscross ties and her iconic Judgement armband. Kneeling gracefully with one hand supporting herself on warm pool tiles, her twin curls bounce as she winks with audacious confidence.",
-    "animaCaption": "shirai kuroko, 1girl, strappy bandeau bikini, twin tails, judgement armband, poolside, winking, dynamic pose, water ripples, highres",
+    "animaCaption": "Kuroko Shirai dynamically positioned on the edge of a sunlit school swimming pool. She wears a bold crimson-and-white strappy bandeau bikini with playful crisscross ties and her iconic Judgement armband.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

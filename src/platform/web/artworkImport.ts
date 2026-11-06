@@ -2,8 +2,8 @@ import type { ArtworkImportAccess, ArtworkImportCommand, ArtworkImportInput, Art
 import { imageBlobDigest } from '../../utils/imageBlobDigest.ts'
 import { LOCAL_IMAGE_IMPORT_RECEIPT_PREFIX } from '../../utils/storageKeys.ts'
 import { assertWebArtworkWritable } from './migrationBarrier.ts'
-import { kvGet, kvSetMany } from '../../composables/useKVStore.ts'
-import { imgGetRecord, imgPutRecord } from '../../composables/useImageStore.ts'
+import { kvGet, kvSetMany } from './kvStore.ts'
+import { imgGetRecord, imgPutRecord } from './imageStore.ts'
 import { ARTWORK_HISTORY_KEY, ARTWORK_TRASH_KEY, arrayValue, record, recordId, imageId } from './artworkStorage.ts'
 
 /** Runs inside the existing library lock; history and receipt commit together. */

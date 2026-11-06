@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3128,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "ray_arknights_lingerie_whisper",
     "characterId": "ray_arknights",
@@ -34,22 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "ray arknights",
-      "solo",
-      "cautus",
-      "long floppy bunny ears twitching playfully",
-      "fluffy white cotton tail raised",
-      "lying prone on camper van mattress propping chin on hands",
-      "mischievous golden eyes",
-      "circular porthole showing orange desert sunset"
+      "reclining",
+      "sunset",
+      "white pom-pom string ties",
+      "cute flutter hem shorts",
+      "wild frontier rabbit nightwear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, ray arknights, solo, cautus, long floppy bunny ears twitching playfully, fluffy white cotton tail raised, lying prone on camper van mattress propping chin on hands, mischievous golden eyes, circular porthole showing orange desert sunset",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, ray arknights, solo, cautus, long floppy bunny ears twitching playfully, fluffy white cotton tail raised, lying prone on camper van mattress propping chin on hands, mischievous golden eyes, circular porthole showing orange desert sunset",
+    "promptProse": "Ray lies prone on camper van mattress propping chin on hands, wearing a apricot peach linen open-back ruffled camisole set. Cautus, long floppy bunny ears twitching playfully, fluffy white cotton tail raised amidst mischievous golden eyes, circular porthole showing orange desert sunset.",
+    "animaCaption": "Ray lies prone on camper van mattress propping chin on hands, wearing a apricot peach linen open-back ruffled camisole set. Cautus, long floppy bunny ears twitching playfully, fluffy white cotton tail raised amidst mischievous golden eyes, circular porthole showing orange desert sunset.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,7 +1,7 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import { hasRuntimeTasks } from '../../api/runtimeTaskAuthority'
 import { createBatchDrawPlanStorage } from '../generation/batchDrawPlan'
-import { readPreparedBatch, recoverBatchTask, batchFailure, batchHistoryFromMetadata } from './batchGenerationPlan'
+import { readPreparedBatch, recoverBatchTask, batchFailure, batchHistoryFromMetadata, runtimeBatchInput } from './batchGenerationPlan'
 import { pendingBatchSaves, pendingBatchImage, persistBatchArtwork, batchSaveAuthority, ownsPendingSave, updateArtworkSource, type BatchArtworkSource } from './batchArtworkSave'
 import { createPromptBatchRecipe } from './promptBatchRecipe'
 import { useTrackedTask } from '../useTaskCenter.ts'
@@ -80,6 +80,7 @@ export function usePromptBatchRunners(deps: PromptBatchRunnersDeps) {
   }
   const batchStorage = createBatchDrawPlanStorage()
   const batchDraw = useBatchDraw({
+    runtimePlan: runtimeBatchInput,
     storage: { async write(plan) { checkPlanOwner(); await batchStorage.write(plan) },
       async clear() { checkPlanOwner(); await batchStorage.clear() }, read() {
       if (planOwner.repository !== artworkRepository || planOwner.authority !== batchSaveAuthority()) throw new Error('批次资料来源已更换，请回到原工作区读取计划')

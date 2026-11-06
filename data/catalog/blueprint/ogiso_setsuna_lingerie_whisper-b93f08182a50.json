@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3489,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "ogiso_setsuna_lingerie_whisper",
     "characterId": "ogiso_setsuna",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "ogiso setsuna",
-      "solo",
-      "sitting on piano bench cradling acoustic guitar in lap",
-      "gentle fingers on strings",
-      "long glossy dark hair spilling over shoulder",
-      "melancholic tender brown eyes",
-      "grand piano in background",
-      "snow drifting against tall windows"
+      "acoustic guitar",
+      "sitting",
+      "bench",
+      "soft pom-pom ribbon bow",
+      "delicate ribbed texture",
+      "ankle-length flowing drape",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, ogiso setsuna, solo, sitting on piano bench cradling acoustic guitar in lap, gentle fingers on strings, long glossy dark hair spilling over shoulder, melancholic tender brown eyes, grand piano in background, snow drifting against tall windows",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, ogiso setsuna, solo, sitting on piano bench cradling acoustic guitar in lap, gentle fingers on strings, long glossy dark hair spilling over shoulder, melancholic tender brown eyes, grand piano in background, snow drifting against tall windows",
+    "promptProse": "Ogiso Setsuna sits on piano bench cradling acoustic guitar in lap, wearing a pure snow white fine-knit slip dress. Gentle fingers on strings, long glossy dark hair spilling over shoulder, melancholic tender brown eyes amidst grand piano in background, snow drifting against tall windows.",
+    "animaCaption": "Ogiso Setsuna sits on piano bench cradling acoustic guitar in lap, wearing a pure snow white fine-knit slip dress. Gentle fingers on strings, long glossy dark hair spilling over shoulder, melancholic tender brown eyes amidst grand piano in background, snow drifting against tall windows.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

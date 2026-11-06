@@ -7,7 +7,7 @@ export interface AnimeModel {
   enabled: boolean
 }
 
-// PSD Blobs cannot use useKVStore, whose JSON snapshot strips binary data.
+// PSD Blobs cannot use the KV store, whose JSON snapshot strips binary data.
 let database: Promise<IDBDatabase> | undefined
 function openDatabase() {
   return database ??= new Promise<IDBDatabase>((resolve, reject) => {

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3117,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "pramanix_arknights_lingerie_whisper",
     "characterId": "pramanix_arknights",
@@ -34,24 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "pramanix arknights",
-      "solo",
-      "feline",
-      "snowy leopard girl",
-      "massive fluffy spotted snow leopard tail hugged tightly in lap",
-      "white leopard ears folded",
-      "long silver hair with dark spots",
-      "gentle silver bell tied to ribbon",
-      "warm private temple alcove",
-      "snowy blizzard outside"
+      "silver hair",
+      "ribbon",
+      "silver bell ribbon anklet",
+      "gossamer semi-translucent silk",
+      "holy maiden boudoir attire",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, pramanix arknights, solo, feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap, white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, pramanix arknights, solo, feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap, white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside",
+    "promptProse": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside.",
+    "animaCaption": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

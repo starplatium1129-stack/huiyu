@@ -1,4 +1,4 @@
-import { imgPut, imgGet, imgCount } from '../../composables/useImageStore.ts'
+import { imgPut, imgGet, imgCount } from './imageStore.ts'
 import { blobThumbDataUrl, thumbKey } from '../../utils/imageThumb.ts'
 import type { ArtworkKvAdapter, ArtworkImageAdapter } from './artworkStorage.ts'
 

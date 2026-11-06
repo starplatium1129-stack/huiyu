@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_code_geass_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3303,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.416Z",
   "data": {
     "id": "cc_code_geass_lingerie_whisper",
     "characterId": "cc_code_geass",
@@ -37,23 +37,17 @@
       "lazy_witch"
     ],
     "promptTokens": [
-      "c.c. (code geass)",
-      "1girl",
-      "immortal witch",
-      "pure white minimalist wrap nightdress",
-      "loose sleeves with fabric ribbons",
-      "lying prone on soft cream shag rug",
-      "hugging oversized yellow Cheese-kun plushie",
-      "eating slice of hot pizza with stretching cheese",
-      "long flowing lime green hair spread across carpet",
-      "alluring golden-amber eyes with amused gaze",
-      "cozy late-night living room lamp",
-      "masterpiece",
-      "high quality"
+      "white wrap nightdress",
+      "cheese-kun plushie",
+      "eating pizza",
+      "lying on carpet",
+      "green hair",
+      "amber eyes",
+      "lazy"
     ],
     "negativeTokens": [],
     "promptProse": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza. Her magnificent lime-green tresses frame an ageless, wryly affectionate golden gaze.",
-    "animaCaption": "c.c. (code geass), 1girl, white wrap nightdress, cheese-kun plushie, eating pizza, lying on carpet, green hair, amber eyes, lazy, highres",
+    "animaCaption": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -26,7 +26,7 @@ function boundaryViolation(filename: string, specifier: string, typeOnly = false
   }
   if (typeOnly) return null
   if (source === 'src/stores/promptBuilderStore.ts' && (/^src\/(?:storage|api|application)\//.test(target)
-    || /^src\/composables\/(?:useImageStore|useKVStore)(?:\.|$)/.test(target))) {
+    || /^src\/platform\/web\/(?:imageStore|kvStore)(?:\.|$)/.test(target))) {
     return 'The workbench store delegates persistence to its artwork/draft adapters.'
   }
   if (/^src\/composables\/prompt\/usePrompt(?:Draft|SceneFilters)\.ts$/.test(source)

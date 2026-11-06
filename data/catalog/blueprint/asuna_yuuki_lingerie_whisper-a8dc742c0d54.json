@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuna_yuuki_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3308,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.308Z",
   "data": {
     "id": "asuna_yuuki_lingerie_whisper",
     "characterId": "asuna_yuuki",
@@ -37,22 +37,17 @@
       "healing_romance"
     ],
     "promptTokens": [
-      "asuna (sao)",
-      "1girl",
-      "pristine white and scarlet red silk camisole slip dress",
-      "soft beige knit shawl wrapped around bare shoulders",
-      "sitting on wooden veranda rocking chair",
-      "holding steaming ceramic mug in both hands",
-      "long wavy chestnut hair falling gracefully",
-      "tender hazel-amber eyes filled with unconditional love",
-      "warm fireplace glow from cabin window",
-      "peaceful twilight lake in background",
-      "masterpiece",
-      "high quality"
+      "white and red silk slip",
+      "knit shawl",
+      "holding mug",
+      "chestnut hair",
+      "gentle smile",
+      "cabin balcony",
+      "twilight lake"
     ],
     "negativeTokens": [],
     "promptProse": "Asuna Yuuki savoring a blissful evening on the porch of the secluded 22nd-floor lakeside cabin. She is adorned in an elegant white silk slip dress accented with scarlet trim, draped with a cozy beige knit blanket over her shoulders. Holding a steaming mug with both hands, her hazel eyes radiate deep, devoted tenderness as she welcomes her beloved into the warmth.",
-    "animaCaption": "asuna (sao), 1girl, white and red silk slip, knit shawl, holding mug, chestnut hair, gentle smile, cabin balcony, twilight lake, highres",
+    "animaCaption": "Asuna Yuuki savoring a blissful evening on the porch of the secluded 22nd-floor lakeside cabin. She is adorned in an elegant white silk slip dress accented with scarlet trim, draped with a cozy beige knit blanket over her shoulders.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

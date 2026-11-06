@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3281,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.289Z",
   "data": {
     "id": "asuka_langley_lingerie_whisper",
     "characterId": "asuka_langley",
@@ -37,25 +37,17 @@
       "tsundere_energy"
     ],
     "promptTokens": [
-      "asuka langley soryu",
-      "1girl",
-      "second child",
-      "fiery crimson racerback modal tank top",
-      "black athletic sleep shorts",
-      "barefoot on plush bedroom rug",
-      "hands planted firmly on hips",
-      "long reddish-auburn hair blowing wildly from hairdryer breeze",
-      "proud smirk with blushing cheeks",
-      "intense azure-blue eyes",
-      "hairclips in hair",
-      "brightly lit apartment bedroom",
-      "dynamic posture",
-      "masterpiece",
-      "high quality"
+      "crimson tank top",
+      "sleep shorts",
+      "hands on hips",
+      "auburn hair blowing",
+      "confident glare",
+      "post-shower",
+      "bedroom"
     ],
     "negativeTokens": [],
     "promptProse": "Asuka Langley Soryu dominating her bedroom after a hot shower in Misato's apartment. Sporting a fiery crimson racerback modal tank top and sleek black sleep shorts, she stands barefoot on the rug with hands planted defiantly on her hips. Her long auburn hair whips through the warm air of a hairdryer as she glares with proud, untouchable tsundere ferocity.",
-    "animaCaption": "asuka langley, 1girl, crimson tank top, sleep shorts, hands on hips, auburn hair blowing, confident glare, post-shower, bedroom, highres",
+    "animaCaption": "Asuka Langley Soryu dominating her bedroom after a hot shower in Misato's apartment. Sporting a fiery crimson racerback modal tank top and sleek black sleep shorts, she stands barefoot on the rug with hands planted defiantly on her hips.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

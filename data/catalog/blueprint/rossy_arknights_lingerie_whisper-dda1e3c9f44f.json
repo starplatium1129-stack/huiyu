@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3368,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
   "data": {
     "id": "rossy_arknights_lingerie_whisper",
     "characterId": "rossy_arknights",
@@ -34,22 +34,21 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rossy arknights",
-      "solo",
-      "sitting atop metallic equipment crate",
-      "holding tactical sensor antenna",
-      "golden-bronze wavy hair",
-      "calm intelligent eyes with slight smile",
-      "sci-fi frontier outpost",
-      "glowing crystal veins outside window"
+      "sitting",
+      "equipment crate",
+      "holding sensor antenna",
+      "frontier outpost",
+      "crystal veins",
+      "smile",
+      "glowing",
+      "sheer black mesh side panels",
+      "industrial miniature buckles",
+      "low-rise boyleg briefs",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rossy arknights, solo, sitting atop metallic equipment crate, holding tactical sensor antenna, golden-bronze wavy hair, calm intelligent eyes with slight smile, sci-fi frontier outpost, glowing crystal veins outside window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rossy arknights, solo, sitting atop metallic equipment crate, holding tactical sensor antenna, golden-bronze wavy hair, calm intelligent eyes with slight smile, sci-fi frontier outpost, glowing crystal veins outside window",
+    "promptProse": "Rossi sits atop metallic equipment crate, wearing a bronze gold silk strappy bralette set. Holding tactical sensor antenna, golden-bronze wavy hair, calm intelligent eyes with slight smile amidst sci-fi frontier outpost, glowing crystal veins outside window.",
+    "animaCaption": "Rossi sits on an equipment crate, holding a sensor antenna while crystal veins glow beyond the outpost window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

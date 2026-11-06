@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3184,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "lemuen_arknights_lingerie_whisper",
     "characterId": "lemuen_arknights",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "lemuen arknights",
-      "sankta",
-      "glowing golden halo",
-      "leaning gracefully back in white wicker wheelchair",
-      "light blanket over lap showing bare ankles",
-      "chin resting on hand",
-      "smiling gently with curved eyes",
-      "lush white lilies and ferns in sunlit greenhouse"
+      "halo",
+      "glowing",
+      "wheelchair",
+      "smile",
+      "angel wing embroidery",
+      "silver metallic threads",
+      "gossamer layered fabric",
+      "delicate double straps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, lemuen arknights, sankta, glowing golden halo, leaning gracefully back in white wicker wheelchair, light blanket over lap showing bare ankles, chin resting on hand, smiling gently with curved eyes, lush white lilies and ferns in sunlit greenhouse",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, lemuen arknights, sankta, glowing golden halo, leaning gracefully back in white wicker wheelchair, light blanket over lap showing bare ankles, chin resting on hand, smiling gently with curved eyes, lush white lilies and ferns in sunlit greenhouse",
+    "promptProse": "Lemuen leans gracefully back in white wicker wheelchair, wearing a pure white sheer chiffon slip dress. Sankta, glowing golden halo, light blanket over lap showing bare ankles amidst chin resting on hand, smiling gently with curved eyes, lush white lilies and ferns in sunlit greenhouse.",
+    "animaCaption": "Lemuen leans gracefully back in white wicker wheelchair, wearing a pure white sheer chiffon slip dress. Sankta, glowing golden halo, light blanket over lap showing bare ankles amidst chin resting on hand, smiling gently with curved eyes, lush white lilies and ferns in sunlit greenhouse.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

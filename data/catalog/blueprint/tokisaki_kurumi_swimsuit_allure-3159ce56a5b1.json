@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3173,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.245Z",
   "data": {
     "id": "tokisaki_kurumi_swimsuit_allure",
     "characterId": "tokisaki_kurumi",
@@ -37,25 +37,16 @@
       "dangerous_seduction"
     ],
     "promptTokens": [
-      "tokisaki kurumi",
-      "1girl",
-      "gothic lolita crimson and black lace corset swimsuit",
-      "clockwork motif garters",
-      "asymmetric black twintails",
-      "gold clock left eye glowing softly",
-      "red right eye",
-      "leaning against stone archway of ruined coastal clocktower",
-      "one hand covering lips in seductive chuckle",
-      "other hand teasingly lifting lace shoulder strap",
-      "blood-red sunset sky over crashing ocean",
-      "cinematic tilted angle",
-      "chiaroscuro lighting",
-      "masterpiece",
-      "high quality"
+      "gothic corset swimsuit",
+      "crimson lace",
+      "clock eye",
+      "clocktower ruins",
+      "ocean sunset",
+      "seductive smile"
     ],
     "negativeTokens": [],
     "promptProse": "Kurumi Tokisaki lounging against the crumbling stone arch of a gothic cliffside clocktower at blood-orange sunset. She wears an intoxicating crimson and onyx lace corset swimdress adorned with delicate clockwork-patterned garters. With her left golden clock-eye glowing mysteriously beneath black parted bangs, she giggles seductively behind gloved fingertips while teasing her shoulder lace strap.",
-    "animaCaption": "tokisaki kurumi, 1girl, gothic corset swimsuit, crimson lace, clock eye, clocktower ruins, ocean sunset, seductive smile, highres",
+    "animaCaption": "Kurumi Tokisaki lounging against the crumbling stone arch of a gothic cliffside clocktower at blood-orange sunset. She wears an intoxicating crimson and onyx lace corset swimdress adorned with delicate clockwork-patterned garters.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

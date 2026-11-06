@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3413,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shirai_kuroko_lingerie_whisper",
     "characterId": "shirai_kuroko",
@@ -34,22 +34,15 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shirai kuroko",
-      "solo",
-      "caught red-handed adjusting lace garter belt",
-      "holding suspicious small pink spray bottle",
-      "twintails sticking up",
-      "steam pouring from blushing face",
-      "wide panicked eyes",
-      "Tokiwadai dormitory with Mikoto poster on wall"
+      "twintails",
+      "teacup",
+      "blush",
+      "lace-topped stockings",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shirai kuroko, solo, caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up, steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shirai kuroko, solo, caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up, steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall",
+    "promptProse": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall.",
+    "animaCaption": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

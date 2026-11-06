@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-import { gatewayJson, readGatewayJob } from '../lib/gateway-json';
+import { indexShowcaseCandidates, prepareShowcaseCandidate, generateShowcaseCandidate, matchesShowcaseImage, saveShowcaseImage,
+  showcaseAttempt, showcaseImagePath, showcaseManifestError, showcaseSlot } from '../lib/legacy-showcase-generation';
+const { assertOutput, lockDirectory, noLinks, runCli }: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
 const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 import { writeJsonAtomic } from '../lib/atomic-files';
 'use strict';
@@ -37,7 +39,6 @@ const animaConstants = (require('../lib/generation/anima-model-catalog.js') as t
 type Scene = import('../../src/types/scene.ts').Scene;
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
-const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
 const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'SceneShowcaseRefresh', '2026-10-01_miaomiao16-rella');
 const scenes: Scene[] = readSceneData(path.join(ROOT, 'data', 'scenes.json'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
@@ -55,13 +56,14 @@ interface CandidateOverrides {
   hiresDenoise?: number;
 }
 type Candidate = ReturnType<typeof buildAnimaCandidate>;
-type StoredCandidate = Record<string, unknown> & Pick<Candidate, 'recordId' | 'sceneId' | 'attempt'>;
+type StoredCandidate = Record<string, unknown> & Pick<Candidate, 'key' | 'recordId' | 'sceneId' | 'attempt'>;
 
 function readRecords(value: unknown): StoredCandidate[] {
   if (!Array.isArray(value)) throw new Error('generation manifest must be an array');
   return value.map((record: unknown) => {
-    if (!object(record) || typeof record.recordId !== 'string' || typeof record.sceneId !== 'string'
-      || typeof record.attempt !== 'number' || !Number.isFinite(record.attempt) || record.attempt < 1) {
+    if (!object(record) || typeof record.key !== 'string' || typeof record.recordId !== 'string' || typeof record.sceneId !== 'string'
+      || record.key !== `scene:${record.sceneId}`
+      || typeof record.attempt !== 'number' || !Number.isSafeInteger(record.attempt) || record.attempt < 1) {
       throw new Error('invalid scene generation record');
     }
     return record as StoredCandidate;
@@ -97,13 +99,6 @@ function readSceneData(file: string): Scene[] {
 function stableSeed(sceneId: string, attempt: number) {
   const digest = crypto.createHash('sha256').update(`scene-anima11-rella-v16:${sceneId}:${attempt}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;
-}
-function assertIsolated(output: string) {
-  const resolved = path.resolve(output);
-  if (resolved === SHOWCASE_ROOT || resolved.startsWith(SHOWCASE_ROOT + path.sep)) {
-    throw new Error(`refusing to write candidates into public showcase: ${resolved}`);
-  }
-  return resolved;
 }
 function profileById(id: string) {
   const profile = profiles.find(item => item.id === id);
@@ -216,46 +211,11 @@ function buildSubmissionBody(candidate: Candidate) {
   }
   return body;
 }
-async function submitCandidate(base: string, candidate: Candidate) {
-  const route = '/api/anima/jobs';
-  const submitted = await gatewayJson(base, route, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildSubmissionBody(candidate)),
-  });
-  let job = readGatewayJob(submitted.data);
-  if (!submitted.response || submitted.response.status !== 202 || !job) {
-    const status = submitted.response ? submitted.response.status : 'network';
-    return { ok: false as const, error: `submission failed (${status}): ${submitted.error || JSON.stringify(submitted.data)}` };
-  }
-  const deadline = Date.now() + 15 * 60 * 1000;
-  while (Date.now() < deadline) {
-    const state = await gatewayJson(base, `${route}/${encodeURIComponent(job.id)}`, undefined);
-    const updated = readGatewayJob(state.data);
-    if (state.response?.ok && updated) job = updated;
-    if (job.status === 'failed' || job.status === 'cancelled') {
-      return { ok: false as const, error: `job failed: ${job.error || job.status} (${job.code || ''})`, jobId: job.id };
-    }
-    if (job.status === 'succeeded' && job.resultUrl) break;
-    await new Promise<void>(resolve => setTimeout(resolve, 2000));
-  }
-  if (job.status !== 'succeeded' || !job.resultUrl) return { ok: false as const, error: `job timed out: ${job.status}`, jobId: job.id };
-  const result = await fetch(base.replace(/\/$/, '') + job.resultUrl, { cache: 'no-store' });
-  if (!result.ok) return { ok: false as const, error: `result fetch failed (HTTP ${result.status})`, jobId: job.id };
-  return {
-    ok: true as const,
-    buffer: Buffer.from(await result.arrayBuffer()),
-    jobId: job.id,
-    provider: job.provider || '',
-    actualSeed: job.metadata?.seed ?? job.seed ?? candidate.seed,
-    metadata: job.metadata || {},
-    mime: result.headers.get('content-type') || 'image/png',
-  };
-}
-
-async function main() {
+async function main(signal?: AbortSignal) {
   const ids = splitList(argument('--ids'));
-  const attempt = Math.max(1, Number(argument('--attempt', '1')) || 1);
-  const seedAttempt = Math.max(1, Number(argument('--seed-attempt', String(attempt))) || attempt);
-  const output = assertIsolated(path.resolve(argument('--output', DEFAULT_OUTPUT)));
+  const attempt = showcaseAttempt(argument('--attempt', '1'), '--attempt');
+  const seedAttempt = showcaseAttempt(argument('--seed-attempt', String(attempt)), '--seed-attempt');
+  const output = assertOutput({ output: argument('--output', DEFAULT_OUTPUT), root: ROOT, env: process.env });
   const gateway = argument('--gateway', 'http://127.0.0.1:3000');
   const limit = Math.max(1, Number(argument('--limit', '9999')) || 9999);
   const concurrency = Math.max(1, Math.min(4, Number(argument('--concurrency', '3')) || 3));
@@ -280,8 +240,6 @@ async function main() {
   const missing = ids.filter((_id, index) => !selectedScenes[index]);
   if (missing.length) throw new Error(`unknown scene ids: ${missing.join(', ')}`);
   const manifestPath = path.join(output, MANIFEST_NAME);
-  const existing = fs.existsSync(manifestPath) ? readRecords(readJson(manifestPath)) : [];
-  const records = new Map(existing.map(record => [record.recordId, record]));
   const planned = planScenes(selectedScenes.filter((scene): scene is Scene => scene !== undefined), attempt, seedAttempt, overrides);
   if (dryRun) {
     console.log(JSON.stringify({ output, gateway, count: planned.length, candidates: planned }, null, 2));
@@ -289,63 +247,81 @@ async function main() {
   }
 
   fs.mkdirSync(output, { recursive: true });
-  const pending = planned.filter(candidate => {
-    const previous = records.get(candidate.recordId);
-    const imageRel = `images/${candidate.sceneId}/attempt-${attempt}.png`;
-    const imageFile = path.join(output, imageRel.split('/').join(path.sep));
-    const fields = ['modelId', 'checkpoint', 'profileId', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'loraId', 'loraStrength', 'sampler', 'scheduler', 'teaCache', 'teaCacheThresh'] as const;
-    const matching = previous && fields.every(key => previous[key] === candidate[key]);
-    if (!force && matching && previous?.status === 'succeeded' && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {
-      console.log(`[reuse] ${candidate.recordId}`);
-      return false;
-    }
-    return true;
-  });
-  if (limit < pending.length) pending.length = limit;
-  console.log(`[plan] ${planned.length} candidates, ${pending.length} to generate (concurrency ${concurrency})`);
-
-  let generated = 0;
-  let failed = 0;
-  let cursor = 0;
-  async function worker() {
-    while (cursor < pending.length) {
-      const candidate = pending[cursor];
-      cursor += 1;
+  const unlock = lockDirectory(output);
+  try {
+    if (fs.existsSync(path.join(output, 'candidate-run.json'))) throw new Error('候选目录属于另一生成流程，请选择独立目录');
+    noLinks(manifestPath);
+    const existing = fs.existsSync(manifestPath) ? readRecords(readJson(manifestPath)) : [];
+    const records = indexShowcaseCandidates(existing);
+    const pending = planned.filter(candidate => {
+      const previous = records.get(showcaseSlot(candidate));
       const imageRel = `images/${candidate.sceneId}/attempt-${attempt}.png`;
-      const imageFile = path.join(output, imageRel.split('/').join(path.sep));
-      console.log(`[generate] ${candidate.recordId} ${candidate.modelId} ${candidate.width}x${candidate.height} seed ${candidate.seed}`);
-      const result = await submitCandidate(gateway, candidate);
-      if (!result.ok) {
-        records.set(candidate.recordId, Object.assign({}, candidate, {
-          status: 'failed', error: result.error, jobId: result.jobId || '', image: '', generatedAt: new Date().toISOString(),
-        }));
-        writeJsonAtomic(manifestPath, [...records.values()]);
-        console.log(`[failed] ${candidate.recordId}: ${result.error}`);
-        failed += 1;
-        continue;
+      const imageFile = showcaseImagePath(output, candidate.sceneId, `attempt-${attempt}.png`);
+      const fields = ['modelId', 'checkpoint', 'profileId', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'loraId', 'loraStrength', 'sampler', 'scheduler', 'teaCache', 'teaCacheThresh', 'hiresFix', 'hiresScale', 'hiresDenoise'] as const;
+      const matching = previous && fields.every(key => previous[key] === candidate[key]);
+      if (!force && matching && previous?.status === 'succeeded' && previous.image === imageRel && matchesShowcaseImage(previous, imageFile)) {
+        console.log(`[reuse] ${previous.recordId}`);
+        return false;
       }
-      fs.mkdirSync(path.dirname(imageFile), { recursive: true });
-      fs.writeFileSync(imageFile, result.buffer);
-      records.set(candidate.recordId, Object.assign({}, candidate, {
-        status: 'succeeded', error: '', image: imageRel, generatedAt: new Date().toISOString(),
-        bytes: result.buffer.length, mime: result.mime, sha256: crypto.createHash('sha256').update(result.buffer).digest('hex'),
-        jobId: result.jobId, provider: result.provider, actualSeed: result.actualSeed, metadata: result.metadata,
-      }));
-      writeJsonAtomic(manifestPath, [...records.values()]);
-      console.log(`[ok] ${candidate.recordId} -> ${imageRel} (${result.buffer.length} bytes)`);
-      generated += 1;
+      return true;
+    });
+    if (limit < pending.length) pending.length = limit;
+    console.log(`[plan] ${planned.length} candidates, ${pending.length} to generate (concurrency ${concurrency})`);
+
+    let generated = 0;
+    let failed = 0;
+    let cursor = 0;
+    let manifestFailed = false;
+    const manifestFailures = new Set<string>();
+    const batchAbort = new AbortController();
+    const active = signal ? AbortSignal.any([signal, batchAbort.signal]) : batchAbort.signal;
+    async function worker() {
+      while (!active.aborted && cursor < pending.length) {
+        const candidate = pending[cursor];
+        cursor += 1;
+        const imageRel = `images/${candidate.sceneId}/attempt-${attempt}.png`;
+        const imageFile = showcaseImagePath(output, candidate.sceneId, `attempt-${attempt}.png`);
+        try {
+          const record = prepareShowcaseCandidate(candidate, records.get(showcaseSlot(candidate)), gateway, buildSubmissionBody(candidate), force);
+          console.log(`[generate] ${record.recordId} ${candidate.modelId} ${candidate.width}x${candidate.height} seed ${candidate.seed}`);
+          const expectedHash = typeof record.sha256 === 'string' ? record.sha256 : undefined;
+          const save = (value: typeof record) => {
+            records.set(showcaseSlot(candidate), value);
+            try { writeJsonAtomic(manifestPath, [...records.values()]); }
+            catch (error) {
+              const failure = showcaseManifestError(value, error);
+              manifestFailures.add(failure.message);
+              if (!manifestFailed) { manifestFailed = true; batchAbort.abort(failure); }
+              throw error;
+            }
+          };
+          const result = await generateShowcaseCandidate(record, save, 0, active);
+          const sha256 = saveShowcaseImage(imageFile, result.buffer, expectedHash);
+          save(Object.assign(record, {
+            status: 'succeeded', error: '', image: imageRel, generatedAt: new Date().toISOString(),
+            bytes: result.buffer.length, mime: result.mime, sha256,
+            jobId: result.jobId, provider: result.provider, actualSeed: result.actualSeed, metadata: result.metadata,
+          }));
+          console.log(`[ok] ${record.recordId} -> ${imageRel} (${result.buffer.length} bytes)`);
+          generated += 1;
+        } catch (error) {
+          if (manifestFailed) throw error;
+          if (signal?.aborted) return;
+          console.log(`[failed] ${candidate.recordId}: ${error instanceof Error ? error.message : String(error)}`);
+          failed += 1;
+        }
+      }
     }
-  }
-  await Promise.all(Array.from({ length: Math.min(concurrency, pending.length) }, () => worker()));
+    const workers = await Promise.allSettled(Array.from({ length: Math.min(concurrency, pending.length) }, () => worker()));
+    if (manifestFailed) throw new Error([...manifestFailures].join('\n'));
+    const failure = workers.find(result => result.status === 'rejected');
+    if (failure) throw failure.reason;
 
-  const normalized = [...records.values()].sort((left, right) => left.sceneId.localeCompare(right.sceneId) || left.attempt - right.attempt);
-  writeJsonAtomic(manifestPath, normalized);
-  console.log(JSON.stringify({ output, planned: planned.length, generated, failed }, null, 2));
+    const normalized = [...records.values()].sort((left, right) => left.sceneId.localeCompare(right.sceneId) || left.attempt - right.attempt);
+    writeJsonAtomic(manifestPath, normalized);
+    console.log(JSON.stringify({ output, planned: planned.length, generated, failed }, null, 2));
+    return { exitCode: signal?.aborted ? 130 : failed ? 1 : 0 };
+  } finally { unlock(); }
 }
 
-if (require.main === module) {
-  main().catch((error: unknown) => {
-    console.error(error instanceof Error ? error.stack || error.message : error);
-    process.exitCode = 1;
-  });
-}
+if (require.main === module) runCli(async (_args, options) => main(options.signal));

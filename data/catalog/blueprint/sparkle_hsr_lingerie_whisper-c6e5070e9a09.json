@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_hsr_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3524,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "sparkle_hsr_lingerie_whisper",
     "characterId": "sparkle_hsr",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "sparkle honkai star rail",
-      "solo",
-      "sitting backwards on ornate crimson railing",
-      "spinning kitsune mask on fingertip",
-      "bare feet swinging over glowing dreamscape",
-      "vibrant pinkish-black twintails",
-      "mischievous red eyes",
-      "golden confetti falling outside theater balcony"
+      "sitting",
+      "mask",
+      "bare feet",
+      "glowing",
+      "twintails",
+      "red eyes",
+      "balcony",
+      "gold cord laced sides"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, sparkle honkai star rail, solo, sitting backwards on ornate crimson railing, spinning kitsune mask on fingertip, bare feet swinging over glowing dreamscape, vibrant pinkish-black twintails, mischievous red eyes, golden confetti falling outside theater balcony",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, sparkle honkai star rail, solo, sitting backwards on ornate crimson railing, spinning kitsune mask on fingertip, bare feet swinging over glowing dreamscape, vibrant pinkish-black twintails, mischievous red eyes, golden confetti falling outside theater balcony",
+    "promptProse": "Sparkle sits backwards on ornate crimson railing, wearing a scarlet red and lacquer gold geometric cutout tube dress. Spinning kitsune mask on fingertip, bare feet swinging over glowing dreamscape, vibrant pinkish-black twintails amidst mischievous red eyes, golden confetti falling outside theater balcony.",
+    "animaCaption": "Sparkle sits backwards on ornate crimson railing, wearing a scarlet red and lacquer gold geometric cutout tube dress. Spinning kitsune mask on fingertip, bare feet swinging over glowing dreamscape, vibrant pinkish-black twintails amidst mischievous red eyes, golden confetti falling outside theater balcony.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

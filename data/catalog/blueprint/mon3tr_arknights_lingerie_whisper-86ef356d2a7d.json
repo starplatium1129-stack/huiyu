@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3160,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "mon3tr_arknights_lingerie_whisper",
     "characterId": "mon3tr_arknights",
@@ -34,24 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "mon3tr arknights",
-      "humanoid form",
-      "solo",
-      "crouching gracefully on sleek metallic bench",
-      "glowing green crystalline spikes along slender back",
-      "sharp crimson eyes",
-      "pale skin",
-      "cold predatory smirk",
-      "dark high-tech medical laboratory",
-      "glowing bio-monitors"
+      "crouching",
+      "bench",
+      "crystals",
+      "glowing",
+      "red eyes",
+      "edgy bio-mechanical lingerie",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, mon3tr arknights, humanoid form, solo, crouching gracefully on sleek metallic bench, glowing green crystalline spikes along slender back, sharp crimson eyes, pale skin, cold predatory smirk, dark high-tech medical laboratory, glowing bio-monitors",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, mon3tr arknights, humanoid form, solo, crouching gracefully on sleek metallic bench, glowing green crystalline spikes along slender back, sharp crimson eyes, pale skin, cold predatory smirk, dark high-tech medical laboratory, glowing bio-monitors",
+    "promptProse": "Mon3tr crouches gracefully on sleek metallic bench, wearing a obsidian crystalline cut-out structured bralette. Humanoid form, glowing green crystalline spikes along slender back, sharp crimson eyes amidst pale skin, cold predatory smirk, dark high-tech medical laboratory, glowing bio-monitors.",
+    "animaCaption": "Mon3tr crouches gracefully on sleek metallic bench, wearing a obsidian crystalline cut-out structured bralette. Humanoid form, glowing green crystalline spikes along slender back, sharp crimson eyes amidst pale skin, cold predatory smirk, dark high-tech medical laboratory, glowing bio-monitors.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3244,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "skadi_arknights_lingerie_whisper",
     "characterId": "skadi_arknights",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "skadi arknights",
-      "solo",
-      "abyssal hunter",
-      "sitting on wooden pier dock dangling bare legs over crashing ocean foam",
-      "massive greatsword buried in wooden deck beside her",
-      "long silver hair whipped by sea gale",
-      "ruby red eyes",
-      "misty dark ocean at night"
+      "sitting",
+      "silver hair",
+      "red eyes",
+      "night",
+      "silver fishbone clasp",
+      "athletic toned physique",
+      "melancholic sea hunter boudoir",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, skadi arknights, solo, abyssal hunter, sitting on wooden pier dock dangling bare legs over crashing ocean foam, massive greatsword buried in wooden deck beside her, long silver hair whipped by sea gale, ruby red eyes, misty dark ocean at night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, skadi arknights, solo, abyssal hunter, sitting on wooden pier dock dangling bare legs over crashing ocean foam, massive greatsword buried in wooden deck beside her, long silver hair whipped by sea gale, ruby red eyes, misty dark ocean at night",
+    "promptProse": "Skadi sits on wooden pier dock dangling bare legs over crashing ocean foam, wearing a deep ocean navy and sheer black strappy bralette set. Abyssal hunter, massive greatsword buried in wooden deck beside her, long silver hair whipped by sea gale amidst ruby red eyes, misty dark ocean at night.",
+    "animaCaption": "Skadi sits on wooden pier dock dangling bare legs over crashing ocean foam, wearing a deep ocean navy and sheer black strappy bralette set. Abyssal hunter, massive greatsword buried in wooden deck beside her, long silver hair whipped by sea gale amidst ruby red eyes, misty dark ocean at night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

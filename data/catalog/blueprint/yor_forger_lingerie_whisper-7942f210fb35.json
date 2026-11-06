@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_forger_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3259,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yor_forger_lingerie_whisper",
     "characterId": "yor_forger",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yor forger",
-      "solo",
-      "thorn princess",
-      "sitting at vanity table smoothing knit collar",
-      "glossy raven hair down over bare shoulders",
-      "deep blushing cheeks with sweet hesitant smile",
-      "ruby red eyes",
-      "cozy family bedroom with sewing box"
+      "vanity",
+      "sitting",
+      "black hair",
+      "blush",
+      "smile",
+      "red eyes",
+      "bed",
+      "criss-cross back strapping",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yor forger, solo, thorn princess, sitting at vanity table smoothing knit collar, glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes, cozy family bedroom with sewing box",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yor forger, solo, thorn princess, sitting at vanity table smoothing knit collar, glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes, cozy family bedroom with sewing box",
+    "promptProse": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box.",
+    "animaCaption": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

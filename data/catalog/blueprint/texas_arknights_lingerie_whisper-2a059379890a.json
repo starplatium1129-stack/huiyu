@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3523,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "texas_arknights_lingerie_whisper",
     "characterId": "texas_arknights",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "texas arknights",
-      "solo",
-      "lupo",
-      "dark wolf ears twitching",
-      "biting thin chocolate pocky stick in lips",
-      "dark hair falling over shoulders",
-      "calm amber eyes",
-      "sitting on leather courier case",
-      "rustic roadside motel room at night"
+      "wolf ears",
+      "amber eyes",
+      "sitting",
+      "night",
+      "ultra-thin straps",
+      "relaxed boyleg tap shorts",
+      "clean modern cuts",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, texas arknights, solo, lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips, dark hair falling over shoulders, calm amber eyes, sitting on leather courier case, rustic roadside motel room at night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, texas arknights, solo, lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips, dark hair falling over shoulders, calm amber eyes, sitting on leather courier case, rustic roadside motel room at night",
+    "promptProse": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night.",
+    "animaCaption": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

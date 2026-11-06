@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "irisu_makina_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3375,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.877Z",
   "data": {
     "id": "irisu_makina_lingerie_whisper",
     "characterId": "irisu_makina",
@@ -37,22 +37,16 @@
       "innocent_sniper"
     ],
     "promptTokens": [
-      "irisu makina",
-      "1girl",
-      "grisaia",
-      "oversized mens white button-down oxford shirt worn as nightshirt",
-      "sleeves hanging well past fingertips",
-      "bare legs and feet perched playfully atop couch backrest",
-      "arms spread wide preparing to jump into hug",
-      "light brown twintails with red ribbon bows",
-      "sparkling innocent amber-brown eyes laughing with joy",
-      "warm cozy dorm room night",
-      "masterpiece",
-      "high quality"
+      "oversized white shirt",
+      "sleeves past hands",
+      "barefoot on sofa",
+      "twintails",
+      "jumping to hug",
+      "happy smile"
     ],
     "negativeTokens": [],
     "promptProse": "Makina Irisu greeting her beloved 'Papa' Yuji with unbridled joy inside her Mihama Academy room. Swallowed up in an oversized men's white oxford button-down shirt that reaches past her fingertips and down to her thighs, she balances barefoot on the back of the sofa. Spreading her baggy sleeves wide to leap into a tackle hug, her face lights up with pure, childlike adoration.",
-    "animaCaption": "irisu makina, 1girl, oversized white shirt, sleeves past hands, barefoot on sofa, twintails, jumping to hug, happy smile, highres",
+    "animaCaption": "Makina Irisu greeting her beloved 'Papa' Yuji with unbridled joy inside her Mihama Academy room. Swallowed up in an oversized men's white oxford button-down shirt that reaches past her fingertips and down to her thighs, she balances barefoot on the back of the sofa.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

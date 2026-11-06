@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3156,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "ptilopsis_arknights_lingerie_whisper",
     "characterId": "ptilopsis_arknights",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "ptilopsis arknights",
-      "solo",
-      "liberi",
-      "owl girl",
-      "small owl feathers on head twitching",
-      "sitting upright on server chassis",
-      "hands folded neatly on knees",
-      "deadpan expression with glowing red blush on cheeks",
-      "blue server rack pulsing lights background"
+      "sitting",
+      "blush",
+      "glowing",
+      "geometric honeycomb cutouts",
+      "minimalist streamline piping",
+      "supportive wireless cups",
+      "cybernetic owl lingerie",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, ptilopsis arknights, solo, liberi, owl girl, small owl feathers on head twitching, sitting upright on server chassis, hands folded neatly on knees, deadpan expression with glowing red blush on cheeks, blue server rack pulsing lights background",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, ptilopsis arknights, solo, liberi, owl girl, small owl feathers on head twitching, sitting upright on server chassis, hands folded neatly on knees, deadpan expression with glowing red blush on cheeks, blue server rack pulsing lights background",
+    "promptProse": "Ptilopsis sits upright on server chassis, wearing a ice grey technical sheer mesh teddy bodysuit. Liberi, owl girl, small owl feathers on head twitching amidst hands folded neatly on knees, deadpan expression with glowing red blush on cheeks, blue server rack pulsing lights background.",
+    "animaCaption": "Ptilopsis sits upright on server chassis, wearing a ice grey technical sheer mesh teddy bodysuit. Liberi, owl girl, small owl feathers on head twitching amidst hands folded neatly on knees, deadpan expression with glowing red blush on cheeks, blue server rack pulsing lights background.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_touden_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3419,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "faln_touden_lingerie_whisper",
     "characterId": "faln_touden",
@@ -37,22 +37,18 @@
       "wholesome_feast"
     ],
     "promptTokens": [
-      "falin touden",
-      "1girl",
-      "tall well-fed maiden",
-      "warm wheat-yellow loose cotton nightdress with ruffled collar",
-      "sitting cozily cross-legged inside thick wool sleeping bag",
-      "holding rustic clay soup bowl with both hands",
-      "contented rosy blush across smiling cheeks",
-      "eyes closed happily in crescent shapes",
-      "fluffy thick golden blonde hair slightly messy",
-      "crackling golden campfire flames illuminate stone cave",
-      "masterpiece",
-      "high quality"
+      "yellow cotton nightdress",
+      "sitting cross-legged",
+      "holding soup bowl",
+      "sleeping bag",
+      "rosy cheeks",
+      "closed eyes smile",
+      "campfire",
+      "cozy"
     ],
     "negativeTokens": [],
     "promptProse": "Falin Touden basking in pure contentment after a hearty meal in a safe dungeon camp. Dressed in a cozy wheat-yellow cotton nightdress with ruffled gathers, she sits nestled inside her fleece sleeping bag. Holding a warm earthenware bowl with both hands, her plump cheeks glow with culinary satisfaction as her eyes crinkle in pure, blissed-out delight.",
-    "animaCaption": "falin touden, 1girl, yellow cotton nightdress, holding soup bowl, sleeping bag, rosy cheeks, closed eyes smile, campfire, cozy, highres",
+    "animaCaption": "Falin sits cross-legged in her sleeping bag at a dungeon camp, holding a warm bowl of soup beside the fire.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

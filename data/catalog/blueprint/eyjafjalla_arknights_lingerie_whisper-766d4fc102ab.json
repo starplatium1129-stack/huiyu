@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3235,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.598Z",
   "data": {
     "id": "eyjafjalla_arknights_lingerie_whisper",
     "characterId": "eyjafjalla_arknights",
@@ -37,23 +37,17 @@
       "heartwarming_gentle"
     ],
     "promptTokens": [
-      "eyjafjalla (arknights)",
-      "1girl",
-      "caprinae curved sheep horns",
-      "pale pink fluffy angora knit cardigan",
-      "pure white cotton nightdress beneath",
-      "sitting on edge of bed leaning torso forward attentively",
-      "one delicate hand cupping ear to listen closely",
-      "soft lilac-pink hair loosely tied",
-      "gentle pink eyes watching viewer's lips earnestly",
-      "warm creamy bedside lamplight",
-      "tender intimate mood",
-      "masterpiece",
-      "high quality"
+      "sheep horns",
+      "pink knit cardigan",
+      "white slip",
+      "cupping ear",
+      "leaning forward",
+      "gentle smile",
+      "warm light"
     ],
     "negativeTokens": [],
     "promptProse": "Eyjafjalla sitting gently on her bedside in the Rhodes Island medical wing. She wears a cozy pale-pink fluffy wool cardigan layered over a modest white cotton slip dress, with her spiraled sheep horns resting against her soft curls. Leaning forward with one hand cupping her ear to listen with heartwarming dedication, her pink eyes convey fragile, unwavering affection.",
-    "animaCaption": "eyjafjalla (arknights), 1girl, sheep horns, pink knit cardigan, white slip, cupping ear, leaning forward, gentle smile, warm light, highres",
+    "animaCaption": "Eyjafjalla sitting gently on her bedside in the Rhodes Island medical wing. She wears a cozy pale-pink fluffy wool cardigan layered over a modest white cotton slip dress, with her spiraled sheep horns resting against her soft curls.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

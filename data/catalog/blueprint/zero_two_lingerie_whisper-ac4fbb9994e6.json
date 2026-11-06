@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3336,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "zero_two_lingerie_whisper",
     "characterId": "zero_two",
@@ -34,22 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "zero two darling in the franxx",
-      "solo",
-      "klaxosaur princess",
-      "small red horns glowing softly in pink hair",
-      "sitting astride bed frame holding colorful lollipop",
-      "striking turquoise eyes with red eyeliner",
-      "playful predatory grin",
-      "futuristic living quarters with colorful picture book drawings on wall"
+      "horns",
+      "pink hair",
+      "glowing",
+      "lollipop",
+      "bed",
+      "sitting",
+      "smile",
+      "angel wings",
+      "high-cut hip harness cords",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, zero two darling in the franxx, solo, klaxosaur princess, small red horns glowing softly in pink hair, sitting astride bed frame holding colorful lollipop, striking turquoise eyes with red eyeliner, playful predatory grin, futuristic living quarters with colorful picture book drawings on wall",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, zero two darling in the franxx, solo, klaxosaur princess, small red horns glowing softly in pink hair, sitting astride bed frame holding colorful lollipop, striking turquoise eyes with red eyeliner, playful predatory grin, futuristic living quarters with colorful picture book drawings on wall",
+    "promptProse": "Zero Two sits astride bed frame holding colorful lollipop, wearing a crimson red and black patent leather strappy bralette set. Klaxosaur princess, small red horns glowing softly in pink hair, striking turquoise eyes with red eyeliner amidst playful predatory grin, futuristic living quarters with colorful picture book drawings on wall.",
+    "animaCaption": "Zero Two sits astride bed frame holding colorful lollipop, wearing a crimson red and black patent leather strappy bralette set. Klaxosaur princess, small red horns glowing softly in pink hair, striking turquoise eyes with red eyeliner amidst playful predatory grin, futuristic living quarters with colorful picture book drawings on wall.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

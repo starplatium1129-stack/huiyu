@@ -3,7 +3,7 @@ import { TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import type { BatchDrawPlan, BatchDrawPlanStorage, BatchDrawReference } from './batchDrawPlan'
 import { ArtworkSaveSupersededError, type ArtworkCommitIdentity } from '@/application/artwork/artworkSaveInput'
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
-import { imageBatchRequest, type RuntimeImageBatch } from '@/api/imageBatches'
+import { imageBatchRequest, type RuntimeImageBatch, type RuntimeImageBatchInput } from '@/api/imageBatches'
 
 export interface BatchTargetItem {
   id: string
@@ -64,12 +64,13 @@ export interface BatchDrawRunnerResult {
 export interface BatchDrawRunOptions {
   run: (input: BatchDrawRunnerInput) => Promise<BatchDrawRunnerResult>
   prepare?: (input: BatchDrawRunnerInput) => Record<string, unknown>
+  runtimePlan: (plan: BatchDrawPlan) => RuntimeImageBatchInput
   storage?: BatchDrawPlanStorage
   onFlash?: (message: string) => void
 }
 
 /** Serial plan controller. Page disposal stops observation, never cancels accepted runtime tasks. */
-export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: BatchDrawRunOptions) {
+export function useBatchDraw({ run, prepare, runtimePlan, storage, onFlash = () => {} }: BatchDrawRunOptions) {
   const jobs = ref<BatchDrawJob[]>([]), running = ref(false), cancelRequested = ref(false)
   const restored = ref(false), storageError = ref(''), engine = ref<BatchEngine>('anima')
   const resetting = ref(false)
@@ -110,7 +111,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       const existing = await imageBatchRequest(backendId)
       if (!existing && backendAccepted) throw new Error('后台已确认的批次暂不可读取，请恢复原工作区或备份后重试')
       if (!existing && action === 'pause') { storageError.value = '批次尚未接收，请先核对原计划'; return }
-      const plan = await imageBatchRequest(backendId, existing ? action : 'create', existing ? undefined : snapshot())
+      const plan = await imageBatchRequest(backendId, existing ? action : 'create', existing ? undefined : runtimePlan(snapshot()))
       if (plan) applyRemote(plan)
     } catch (error) { storageError.value = error instanceof Error ? error.message : '批次操作尚未确认，请重新读取原批次' }
   }
@@ -259,7 +260,7 @@ export function useBatchDraw({ run, prepare, storage, onFlash = () => {} }: Batc
       remoteRevision = 0; running.value = true
       if (!await persist()) { running.value = false; return }
       try {
-        const plan = await imageBatchRequest(backendId, 'create', snapshot())
+        const plan = await imageBatchRequest(backendId, 'create', runtimePlan(snapshot()))
         if (plan) applyRemote(plan)
       } catch (error) { storageError.value = error instanceof Error ? error.message : '批次接收尚未确认，请核对原批次' }
       if (remoteTimer) clearTimeout(remoteTimer)

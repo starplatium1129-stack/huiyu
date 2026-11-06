@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3144,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.772Z",
   "data": {
     "id": "hoshiguma_arknights_lingerie_whisper",
     "characterId": "hoshiguma_arknights",
@@ -37,24 +37,17 @@
       "hearty_laugh"
     ],
     "promptTokens": [
-      "hoshiguma (arknights)",
-      "1girl",
-      "oni single forehead horn",
-      "tall muscular imposing woman",
-      "bold onyx-black silk-linen open loungewear robe",
-      "tied loosely at waist",
-      "one bare foot propped up boldly on wooden stool",
-      "drinking from wide ceramic sake bowl",
-      "laughing heartily with open confident grin",
-      "short styled dark green hair",
-      "warm red paper lantern glow in background",
-      "iconic triangular Hannya shield resting against wall",
-      "masterpiece",
-      "high quality"
+      "oni horn",
+      "tall muscular",
+      "black linen robe",
+      "foot on stool",
+      "drinking sake bowl",
+      "laughing",
+      "hannya shield"
     ],
     "negativeTokens": [],
     "promptProse": "Hoshiguma unwinding with exuberant camaraderie late at night inside her personal quarters. Draped in a breezy, open-front black silk-linen lounging robe that shows off her statuesque, powerful build, she props one foot up on a stool while draining a wide ceramic bowl of sake. Her oni horn catches the crimson lantern glow as she laughs with infectious, big-hearted vigor.",
-    "animaCaption": "hoshiguma, 1girl, oni horn, tall muscular, black linen robe, foot on stool, drinking sake bowl, laughing, hannya shield, highres",
+    "animaCaption": "Hoshiguma unwinding with exuberant camaraderie late at night inside her personal quarters. Draped in a breezy, open-front black silk-linen lounging robe that shows off her statuesque, powerful build, she props one foot up on a stool while draining a wide ceramic bowl of sake.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

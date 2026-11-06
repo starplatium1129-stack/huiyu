@@ -1,6 +1,6 @@
 /** AICKVStore 的 TypeScript 替代：IndexedDB KV 存储（history / projects 等） */
-import { withMigrationWrite, assertWebArtworkWritable } from '../platform/web/migrationBarrier.ts'
-import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY, ARTWORK_HISTORY_QUARANTINE_KEY } from '../utils/storageKeys.ts'
+import { withMigrationWrite, assertWebArtworkWritable } from './migrationBarrier.ts'
+import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY, ARTWORK_HISTORY_QUARANTINE_KEY } from '../../utils/storageKeys.ts'
 const artworkKeys = new Set<string>([ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY, ARTWORK_HISTORY_QUARANTINE_KEY])
 
 const DB_NAME = 'aics_kv_store'

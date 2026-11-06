@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3461,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.901Z",
   "data": {
     "id": "izayoi_miku_lingerie_whisper",
     "characterId": "izayoi_miku",
@@ -37,22 +37,16 @@
       "diva_starlet"
     ],
     "promptTokens": [
-      "izayoi miku",
-      "1girl",
-      "sixth spirit diva",
-      "deep violet damask silk lounging gown with dramatic thigh-high slit",
-      "diamond-studded over-ear studio headphones",
-      "reclining gracefully on plush gold-brocade chaise",
-      "eyes closed in euphoric self-admiration humming melody",
-      "long wavy violet-silver hair flowing across cushions",
-      "glowing purple eyes peeking open",
-      "neon equalizer bars glowing in mixing console",
-      "masterpiece",
-      "high quality"
+      "violet damask gown",
+      "high slit",
+      "diamond headphones",
+      "humming on chaise lounge",
+      "purple hair",
+      "recording studio"
     ],
     "negativeTokens": [],
     "promptProse": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones. Humming with blissful self-absorption, her luminous purple eyes flutter open with theatrical diva charm.",
-    "animaCaption": "izayoi miku, 1girl, violet damask gown, high slit, diamond headphones, humming on chaise lounge, purple hair, recording studio, highres",
+    "animaCaption": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3168,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "swire_arknights_lingerie_whisper",
     "characterId": "swire_arknights",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "swire arknights",
-      "solo",
-      "feline",
-      "tiger ears and striped tail flicking lazily",
-      "reclining on luxury velvet lounge chair by rooftop infinity pool",
-      "holding crystal goblet with pomegranate juice",
-      "glamorous voluminous blonde curls",
-      "haughty smirking green eyes",
-      "glittering Lungmen skyscraper skyline"
+      "reclining",
+      "water",
+      "wine glass",
+      "green eyes",
+      "metallic gold tiger embroidery",
+      "thigh-high slit",
+      "delicate gold chain straps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, swire arknights, solo, feline, tiger ears and striped tail flicking lazily, reclining on luxury velvet lounge chair by rooftop infinity pool, holding crystal goblet with pomegranate juice, glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, swire arknights, solo, feline, tiger ears and striped tail flicking lazily, reclining on luxury velvet lounge chair by rooftop infinity pool, holding crystal goblet with pomegranate juice, glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline",
+    "promptProse": "Swire reclines on luxury velvet lounge chair by rooftop infinity pool, wearing a inky black heavy silk slip gown. Feline, tiger ears and striped tail flicking lazily, holding crystal goblet with pomegranate juice amidst glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline.",
+    "animaCaption": "Swire reclines on luxury velvet lounge chair by rooftop infinity pool, wearing a inky black heavy silk slip gown. Feline, tiger ears and striped tail flicking lazily, holding crystal goblet with pomegranate juice amidst glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

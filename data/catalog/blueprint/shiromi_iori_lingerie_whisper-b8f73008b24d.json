@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiromi_iori_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3287,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shiromi_iori_lingerie_whisper",
     "characterId": "shiromi_iori",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shiromi iori",
-      "solo",
-      "dark skin",
-      "silver twintails",
-      "sitting on metal folding chair clutching camisole collar desperately",
-      "bare slender feet on linoleum floor",
-      "teary blushing red eyes glaring",
-      "black combat boots sitting neatly in corner",
-      "Gehenna office"
+      "twintails",
+      "sitting",
+      "teacup",
+      "blush",
+      "red eyes",
+      "three silver front snaps",
+      "sporty boyleg shorts",
+      "dark skin tone contrast",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shiromi iori, solo, dark skin, silver twintails, sitting on metal folding chair clutching camisole collar desperately, bare slender feet on linoleum floor, teary blushing red eyes glaring, black combat boots sitting neatly in corner, Gehenna office",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shiromi iori, solo, dark skin, silver twintails, sitting on metal folding chair clutching camisole collar desperately, bare slender feet on linoleum floor, teary blushing red eyes glaring, black combat boots sitting neatly in corner, Gehenna office",
+    "promptProse": "Shiromi Iori sits on metal folding chair clutching camisole collar desperately, wearing a inky black tactical ribbed bralette set. Dark skin, silver twintails, bare slender feet on linoleum floor amidst teary blushing red eyes glaring, black combat boots sitting neatly in corner, Gehenna office.",
+    "animaCaption": "Shiromi Iori sits on metal folding chair clutching camisole collar desperately, wearing a inky black tactical ribbed bralette set. Dark skin, silver twintails, bare slender feet on linoleum floor amidst teary blushing red eyes glaring, black combat boots sitting neatly in corner, Gehenna office.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

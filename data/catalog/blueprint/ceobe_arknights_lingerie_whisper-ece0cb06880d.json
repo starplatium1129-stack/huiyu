@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3158,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.426Z",
   "data": {
     "id": "ceobe_arknights_lingerie_whisper",
     "characterId": "ceobe_arknights",
@@ -37,25 +37,19 @@
       "guilty_sweet"
     ],
     "promptTokens": [
-      "ceobe (arknights)",
-      "1girl",
-      "perro dog ears perked high",
-      "wagging dark canine tail",
-      "sunny yellow ribbed cotton tank top with black paw print",
-      "grey gym sleep shorts",
-      "squatting secretly in kitchen corner beside open pantry",
-      "holding honey biscuit half-eaten behind back",
-      "mouth full of food with cheeks puffed",
-      "crumbs near lip",
-      "golden-brown messy hair",
-      "guilty innocent laughing eyes",
-      "refrigerator light casting dramatic shadows",
-      "masterpiece",
-      "high quality"
+      "dog ears",
+      "tail",
+      "yellow tank top",
+      "gym shorts",
+      "eating biscuit",
+      "crumbs",
+      "pantry",
+      "caught",
+      "funny cute"
     ],
     "negativeTokens": [],
     "promptProse": "Ceobe caught in the middle of a midnight raid on the Rhodes Island bakery stores. She wears a vibrant sunny-yellow ribbed tank top stamped with a canine paw print and casual gym shorts. Squatting behind a flour barrel with cheeks stuffed with honey biscuits while her furry ears stand on end, she flashes a guilty, irresistibly adorable grin at the Doctor.",
-    "animaCaption": "ceobe (arknights), 1girl, dog ears, tail, yellow tank top, gym shorts, eating biscuit, crumbs, pantry, caught, funny cute, highres",
+    "animaCaption": "Ceobe caught in the middle of a midnight raid on the Rhodes Island bakery stores. She wears a vibrant sunny-yellow ribbed tank top stamped with a canine paw print and casual gym shorts.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

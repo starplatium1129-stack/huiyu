@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3346,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.118Z",
   "data": {
     "id": "akizuki_kanna_lingerie_whisper",
     "characterId": "akizuki_kanna",
@@ -37,25 +37,17 @@
       "tsundere_comfort"
     ],
     "promptTokens": [
-      "akizuki kanna",
-      "1girl",
-      "reaper girl",
-      "black and white butterfly lace camisole",
-      "matching ruffled tap shorts",
-      "silver hair worn loose over shoulders",
-      "curled up comfortably in antique wooden rocking chair",
-      "hugging black cat plushie against chest",
-      "steaming teacup on side table",
-      "blushing ears",
-      "cool purple eyes looking sideways shyly",
-      "warm fireplace embers and twilight window",
-      "cozy vintage attic",
-      "masterpiece",
-      "high quality"
+      "monochrome lace camisole",
+      "cat plushie",
+      "rocking chair",
+      "curled up",
+      "silver hair",
+      "blushing",
+      "fireplace"
     ],
     "negativeTokens": [],
     "promptProse": "Kanna Akizuki nestled comfortably within an antique wooden rocking chair in her cozy cafe attic room at twilight. She wears a gothic butterfly-inspired monochrome lace camisole paired with ruffled silk sleep shorts. Clutching a plush black cat cushion tightly to her chest while steam rises from a porcelain teacup nearby, she averts her amethyst gaze with endearing, flustered tsundere charm.",
-    "animaCaption": "akizuki kanna, 1girl, monochrome lace camisole, cat plushie, rocking chair, curled up, silver hair, blushing, fireplace, highres",
+    "animaCaption": "Kanna Akizuki nestled comfortably within an antique wooden rocking chair in her cozy cafe attic room at twilight. She wears a gothic butterfly-inspired monochrome lace camisole paired with ruffled silk sleep shorts.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

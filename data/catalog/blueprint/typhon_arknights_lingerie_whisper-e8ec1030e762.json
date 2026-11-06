@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3370,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "typhon_arknights_lingerie_whisper",
     "characterId": "typhon_arknights",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "typhon arknights",
-      "solo",
-      "liberator",
-      "sitting cross-legged on thick reindeer furs",
-      "sipping hot berry tea from wooden bowl",
-      "messy short blonde hair",
-      "inquisitive bright ruby eyes",
-      "rustic Sami log cabin with roaring stone hearth",
-      "massive hunting bow leaning against wall"
+      "sitting",
+      "teacup",
+      "blonde hair",
+      "red eyes",
+      "soft white faux-fur trim",
+      "criss-cross back cords",
+      "relaxed tap shorts",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, typhon arknights, solo, liberator, sitting cross-legged on thick reindeer furs, sipping hot berry tea from wooden bowl, messy short blonde hair, inquisitive bright ruby eyes, rustic Sami log cabin with roaring stone hearth, massive hunting bow leaning against wall",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, typhon arknights, solo, liberator, sitting cross-legged on thick reindeer furs, sipping hot berry tea from wooden bowl, messy short blonde hair, inquisitive bright ruby eyes, rustic Sami log cabin with roaring stone hearth, massive hunting bow leaning against wall",
+    "promptProse": "Typhon sits cross-legged on thick reindeer furs, wearing a hunter green linen camisole set. Liberator, sipping hot berry tea from wooden bowl, messy short blonde hair amidst inquisitive bright ruby eyes, rustic Sami log cabin with roaring stone hearth, massive hunting bow leaning against wall.",
+    "animaCaption": "Typhon sits cross-legged on thick reindeer furs, wearing a hunter green linen camisole set. Liberator, sipping hot berry tea from wooden bowl, messy short blonde hair amidst inquisitive bright ruby eyes, rustic Sami log cabin with roaring stone hearth, massive hunting bow leaning against wall.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

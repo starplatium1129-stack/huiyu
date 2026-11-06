@@ -1,5 +1,5 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-import { kvGet, kvSet } from '@/composables/useKVStore'
+import { kvGet, kvSet } from '@/platform/web/kvStore'
 import { CHAT_ARCHIVE_KEY, normalizeChatArchive, type ChatArchive } from '@/utils/chatArchive'
 import { listCompanionCharacterIds } from '@/utils/companionRegistry'
 import { profileRuntimeActive, readProfileChatArchive, writeProfileChatArchive } from '../platform/web/profileStorage.ts'

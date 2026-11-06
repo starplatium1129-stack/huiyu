@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3221,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "rem_rezero_lingerie_whisper",
     "characterId": "rem_rezero",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rem rezero",
-      "solo",
-      "kneeling on guest bed",
-      "hands clasped together in gentle prayer gesture at chest",
-      "short sky-blue hair with pink ribbon clip",
-      "sparkling blue eyes with happy tears",
-      "pure angelic smile",
-      "single flickering candle lighting the room"
+      "bed",
+      "kneeling",
+      "blue hair",
+      "ribbon",
+      "teacup",
+      "blue eyes",
+      "smile",
+      "white satin ribbon bows",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rem rezero, solo, kneeling on guest bed, hands clasped together in gentle prayer gesture at chest, short sky-blue hair with pink ribbon clip, sparkling blue eyes with happy tears, pure angelic smile, single flickering candle lighting the room",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rem rezero, solo, kneeling on guest bed, hands clasped together in gentle prayer gesture at chest, short sky-blue hair with pink ribbon clip, sparkling blue eyes with happy tears, pure angelic smile, single flickering candle lighting the room",
+    "promptProse": "Rem kneels on guest bed, wearing a sky blue sheer floral lace babydoll dress. Hands clasped together in gentle prayer gesture at chest, short sky-blue hair with pink ribbon clip, sparkling blue eyes with happy tears amidst pure angelic smile, single flickering candle lighting the room.",
+    "animaCaption": "Rem kneels on guest bed, wearing a sky blue sheer floral lace babydoll dress. Hands clasped together in gentle prayer gesture at chest, short sky-blue hair with pink ribbon clip, sparkling blue eyes with happy tears amidst pure angelic smile, single flickering candle lighting the room.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

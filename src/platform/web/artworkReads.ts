@@ -1,4 +1,4 @@
-import { kvInit } from '../../composables/useKVStore.ts'
+import { kvInit } from './kvStore.ts'
 import { preferenceHistoryRows } from '../../application/artwork/preferenceHistory.ts'
 import { searchArtworkRecords } from '../../application/artwork/searchIndex.ts'
 import { artworkTimestamp, parseArtworkRecords, type ArtworkRecord } from '../../types/artwork.ts'

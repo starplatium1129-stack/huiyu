@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3423,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:18:02.597658100+00:00",
   "data": {
     "id": "alice_sao_lingerie_whisper",
     "characterId": "alice_sao",
@@ -37,23 +37,19 @@
       "knightly_serenity"
     ],
     "promptTokens": [
-      "alice synthesis thirty",
-      "1girl",
-      "pure white linen chemise slip",
-      "delicate golden osmanthus floral embroidery",
-      "side slits",
-      "sitting gracefully before rustic wooden vanity mirror",
-      "combing long golden hair with wooden comb",
-      "looking back over shoulder towards viewer",
-      "dignified gentle sapphire blue eyes",
-      "warm morning sunbeams through wooden window",
-      "cozy rustic timber bedroom",
-      "masterpiece",
-      "high quality"
+      "white linen slip",
+      "gold embroidery",
+      "sitting",
+      "combing long blonde hair",
+      "wooden comb",
+      "wooden vanity",
+      "looking over shoulder",
+      "morning sunbeams",
+      "peaceful"
     ],
     "negativeTokens": [],
     "promptProse": "Alice Synthesis Thirty greeting the dawn inside a peaceful lakeside log cabin. Clad in a pristine white linen slip dress embroidered with golden osmanthus blossoms along the hems, she sits poised before a rustic vanity, gently running a wooden comb through her flowing sunlit-golden tresses. Her clear sapphire eyes turn toward the entrance with dignified, heartwarming serenity.",
-    "animaCaption": "alice (sao), 1girl, white linen slip, gold embroidery, combing long blonde hair, wooden vanity, morning sunbeams, peaceful, highres",
+    "animaCaption": "Alice sits at a wooden vanity, combing her long hair as morning light comes through the window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

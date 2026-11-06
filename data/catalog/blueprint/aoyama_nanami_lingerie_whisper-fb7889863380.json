@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aoyama_nanami_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3473,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.204Z",
   "data": {
     "id": "aoyama_nanami_lingerie_whisper",
     "characterId": "aoyama_nanami",
@@ -37,22 +37,17 @@
       "hardworking_girl"
     ],
     "promptTokens": [
-      "aoyama nanami",
-      "1girl",
-      "soft pastel peach and white striped cotton loungedress",
-      "long brown hair worn down naturally without ponytail",
-      "sitting seiza on floor cushion by low wooden chabudai table",
-      "holding voice acting script filled with highlighter marks",
-      "focused studious expression with slight blush",
-      "soft hazel eyes",
-      "small warm desk lamp illuminating papers",
-      "quaint nostalgic japanese tatami dorm room",
-      "masterpiece",
-      "high quality"
+      "striped cotton nightdress",
+      "brown hair down",
+      "reading script",
+      "tatami desk",
+      "studying",
+      "gentle blush",
+      "night"
     ],
     "negativeTokens": [],
     "promptProse": "Nanami Aoyama practicing voice acting scripts late into the night within her cozy tatami room at Sakurasou. Clad in a breathable peach-striped cotton loungedress with her iconic ponytail undone, she sits with disciplined posture at a low wooden table. Highlighting dialogue lines under a focused lamp, she looks up with an earnest, slightly flustered blush as someone enters.",
-    "animaCaption": "aoyama nanami, 1girl, striped cotton nightdress, brown hair down, reading script, tatami desk, studying, gentle blush, night, highres",
+    "animaCaption": "Nanami Aoyama practicing voice acting scripts late into the night within her cozy tatami room at Sakurasou. Clad in a breathable peach-striped cotton loungedress with her iconic ponytail undone, she sits with disciplined posture at a low wooden table.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

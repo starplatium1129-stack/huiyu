@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hitachi_mako_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3197,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.740Z",
   "data": {
     "id": "hitachi_mako_lingerie_whisper",
     "characterId": "hitachi_mako",
@@ -37,23 +37,17 @@
       "kunoichi_blush"
     ],
     "promptTokens": [
-      "hitachi mako",
-      "1girl",
-      "kunoichi bodyguard",
-      "black cotton sarashi chest wrap bandeau",
-      "snug high-slit black cotton ninja shorts",
-      "toned athletic abdomen and defined obliques",
-      "dropping noiselessly from ceiling beam kneeling on one knee on tatami",
-      "hands folded respectfully across heart",
-      "short dark hair with green hair ribbon",
-      "sharp loyal amber eyes blushing awkwardly",
-      "moonlight cutting through wooden lattice",
-      "masterpiece",
-      "high quality"
+      "black sarashi wrap",
+      "ninja shorts",
+      "kneeling on one knee",
+      "toned abs",
+      "amber eyes",
+      "short hair",
+      "loyal bodyguard"
     ],
     "negativeTokens": [],
     "promptProse": "Mako Hitachi dropping soundlessly from the timber rafters into a defensive guard stance inside the master's bedchamber. Dressed for combat readiness in a snug black cotton sarashi chest-wrap and athletic high-slit sleep shorts that reveal her chiseled ninja core, she drops to one knee. Her amber eyes stay vigilant even as a charming flush betrays her modesty under the moonlit lattice.",
-    "animaCaption": "hitachi mako, 1girl, black sarashi wrap, ninja shorts, kneeling on one knee, toned abs, amber eyes, short hair, loyal bodyguard, highres",
+    "animaCaption": "Mako Hitachi dropping soundlessly from the timber rafters into a defensive guard stance inside the master's bedchamber. Dressed for combat readiness in a snug black cotton sarashi chest-wrap and athletic high-slit sleep shorts that reveal her chiseled ninja core, she drops to one knee.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

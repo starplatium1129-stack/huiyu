@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3402,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.178Z",
   "data": {
     "id": "amiya_lingerie_whisper",
     "characterId": "amiya",
@@ -37,24 +37,17 @@
       "healing_peace"
     ],
     "promptTokens": [
-      "amiya (arknights)",
-      "1girl",
-      "cautus bunny ears resting comfortably",
-      "rings on fingers",
-      "modest pastel blue soft cotton nightdress",
-      "delicate white lace collar",
-      "closing vintage black violin case on desk",
-      "turning towards viewer with pure radiant smile",
-      "soft brown eyes filled with kindness",
-      "brown hair tied loosely",
-      "warm cozy cabin interior",
-      "soft ambient lighting",
-      "masterpiece",
-      "high quality"
+      "bunny ears",
+      "pastel blue nightdress",
+      "violin case",
+      "warm smile",
+      "brown hair",
+      "cozy cabin",
+      "tender"
     ],
     "negativeTokens": [],
     "promptProse": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents. Latching her dark violin case shut on the wooden desk, she turns with her rabbit ears gently resting, offering the Doctor an unreserved smile overflowing with warmth and familial trust.",
-    "animaCaption": "amiya (arknights), 1girl, bunny ears, pastel blue nightdress, violin case, warm smile, brown hair, cozy cabin, tender, highres",
+    "animaCaption": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

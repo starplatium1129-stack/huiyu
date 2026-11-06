@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3204,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "acheron_lingerie_whisper",
     "characterId": "acheron",
@@ -37,25 +37,19 @@
       "quiet_solace"
     ],
     "promptTokens": [
-      "acheron (honkai: star rail)",
-      "1girl",
-      "deep violet silk kimono robe",
-      "untied satin sash",
-      "sheer black lace chemise lining",
-      "long wavy dark purple hair flowing over shoulders",
-      "sitting beside paper shoji window on tatami",
-      "pale moonlight across porcelain collarbone",
-      "barefoot",
-      "holding rim of tea cup",
-      "contemplative calm eyes",
-      "traditional ryokan bedroom",
-      "cinematic lighting",
-      "masterpiece",
-      "high quality"
+      "silk kimono robe",
+      "untied sash",
+      "sheer lace slip",
+      "sitting",
+      "holding teacup",
+      "tatami room",
+      "moonlit window",
+      "quiet gaze",
+      "midnight"
     ],
     "negativeTokens": [],
     "promptProse": "Acheron relaxing late at night within a secluded traditional inn room. She wears a luxurious deep violet silk kimono-inspired wrap robe loosely tied, revealing a delicate black sheer lace chemise beneath. Perched along the edge of a tatami window frame washed in silver lunar light, she turns her crimson-hued gaze with quiet serenity, welcoming companionship in the stillness.",
-    "animaCaption": "acheron, 1girl, silk kimono robe, untied sash, sheer lace slip, tatami room, moonlit window, quiet gaze, midnight, highres",
+    "animaCaption": "Acheron sits beside a paper shoji window in a secluded inn, holding a cup of tea as pale moonlight falls across the tatami.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

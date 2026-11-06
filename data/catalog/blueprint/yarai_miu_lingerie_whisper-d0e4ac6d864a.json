@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3493,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yarai_miu_lingerie_whisper",
     "characterId": "yarai_miu",
@@ -34,23 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yarai miu",
-      "solo",
-      "vampire girl",
-      "sharp little fangs biting lower lip",
-      "clutching bedsheets tightly on luxury bed",
-      "eyes shifting between gold and crimson",
-      "silver and reddish-pink hair",
-      "breathless flustered gaze",
-      "massive full moon over ocean outside window"
+      "bed",
+      "pink hair",
+      "crimson rose lace applique",
+      "strappy harness hip details",
+      "sheer side panels",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yarai miu, solo, vampire girl, sharp little fangs biting lower lip, clutching bedsheets tightly on luxury bed, eyes shifting between gold and crimson, silver and reddish-pink hair, breathless flustered gaze, massive full moon over ocean outside window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yarai miu, solo, vampire girl, sharp little fangs biting lower lip, clutching bedsheets tightly on luxury bed, eyes shifting between gold and crimson, silver and reddish-pink hair, breathless flustered gaze, massive full moon over ocean outside window",
+    "promptProse": "Miu Yarai relaxes in vampire girl, wearing a inky black underwire corset bralette. Vampire girl, sharp little fangs biting lower lip, clutching bedsheets tightly on luxury bed amidst eyes shifting between gold and crimson, silver and reddish-pink hair, breathless flustered gaze, massive full moon over ocean outside window.",
+    "animaCaption": "Miu Yarai relaxes in vampire girl, wearing a inky black underwire corset bralette. Vampire girl, sharp little fangs biting lower lip, clutching bedsheets tightly on luxury bed amidst eyes shifting between gold and crimson, silver and reddish-pink hair, breathless flustered gaze, massive full moon over ocean outside window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

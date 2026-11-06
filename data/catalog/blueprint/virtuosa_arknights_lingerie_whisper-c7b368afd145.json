@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3166,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "virtuosa_arknights_lingerie_whisper",
     "characterId": "virtuosa_arknights",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "virtuosa arknights",
-      "arturia giallo",
-      "solo",
-      "sankta",
-      "holding black cello between knees with bow poised over strings",
-      "tilted head with serene hypnotic smile",
-      "glowing dual-toned halo",
-      "gothic hall with moonlight through stained-glass"
+      "smile",
+      "halo",
+      "glowing",
+      "moonlight",
+      "thigh-high cello slit",
+      "delicate black lace trims",
+      "open back",
+      "flowing liquid train",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, virtuosa arknights, arturia giallo, solo, sankta, holding black cello between knees with bow poised over strings, tilted head with serene hypnotic smile, glowing dual-toned halo, gothic hall with moonlight through stained-glass",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, virtuosa arknights, arturia giallo, solo, sankta, holding black cello between knees with bow poised over strings, tilted head with serene hypnotic smile, glowing dual-toned halo, gothic hall with moonlight through stained-glass",
+    "promptProse": "Virtuosa relaxes in arturia giallo, wearing a deep midnight purple watered-silk slip gown. Arturia giallo, sankta, holding black cello between knees with bow poised over strings amidst tilted head with serene hypnotic smile, glowing dual-toned halo, gothic hall with moonlight through stained-glass.",
+    "animaCaption": "Virtuosa relaxes in arturia giallo, wearing a deep midnight purple watered-silk slip gown. Arturia giallo, sankta, holding black cello between knees with bow poised over strings amidst tilted head with serene hypnotic smile, glowing dual-toned halo, gothic hall with moonlight through stained-glass.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

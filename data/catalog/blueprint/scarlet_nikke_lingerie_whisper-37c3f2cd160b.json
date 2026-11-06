@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_nikke_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3443,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "scarlet_nikke_lingerie_whisper",
     "characterId": "scarlet_nikke",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "scarlet nikke",
-      "solo",
-      "sitting cross-legged on wooden veranda beneath cherry blossom tree",
-      "sipping sake from lacquered cup",
-      "long silver-white hair fluttering with falling petals",
-      "flushed tipsy cheeks",
-      "serene wandering swordsman smile",
-      "glowing moonlit night"
+      "sitting",
+      "smile",
+      "glowing",
+      "night",
+      "single bare shoulder",
+      "red cord tassel knot",
+      "silk floral trim",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, scarlet nikke, solo, sitting cross-legged on wooden veranda beneath cherry blossom tree, sipping sake from lacquered cup, long silver-white hair fluttering with falling petals, flushed tipsy cheeks, serene wandering swordsman smile, glowing moonlit night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, scarlet nikke, solo, sitting cross-legged on wooden veranda beneath cherry blossom tree, sipping sake from lacquered cup, long silver-white hair fluttering with falling petals, flushed tipsy cheeks, serene wandering swordsman smile, glowing moonlit night",
+    "promptProse": "Scarlet sits cross-legged on wooden veranda beneath cherry blossom tree, wearing a scarlet and white asymmetrical kimono-style tube robe. Sipping sake from lacquered cup, long silver-white hair fluttering with falling petals, flushed tipsy cheeks amidst serene wandering swordsman smile, glowing moonlit night.",
+    "animaCaption": "Scarlet sits cross-legged on wooden veranda beneath cherry blossom tree, wearing a scarlet and white asymmetrical kimono-style tube robe. Sipping sake from lacquered cup, long silver-white hair fluttering with falling petals, flushed tipsy cheeks amidst serene wandering swordsman smile, glowing moonlit night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

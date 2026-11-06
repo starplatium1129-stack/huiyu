@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_shadow_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3507,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.490Z",
   "data": {
     "id": "delta_shadow_lingerie_whisper",
     "characterId": "delta_shadow",
@@ -37,25 +37,18 @@
       "loyal_beastgirl"
     ],
     "promptTokens": [
-      "delta (the eminence in shadow)",
-      "1girl",
-      "beast girl",
-      "wild wolf ears",
-      "thick black wolf tail wagging furiously",
-      "cheetah-print athletic stretch bandeau top",
-      "fuzzy black fur-lined sleep shorts",
-      "pouncing playfully forward on soft animal hide rugs",
-      "mouth open in happy fanged panting grin",
-      "wild uncombed black-brown hair",
-      "feral golden eyes sparkling with pure affection",
-      "crackling open hearth fire glow",
-      "dynamic perspective",
-      "masterpiece",
-      "high quality"
+      "wolf ears",
+      "tail wagging",
+      "cheetah bandeau",
+      "fur shorts",
+      "pouncing",
+      "cute fangs",
+      "golden eyes",
+      "hearth fire"
     ],
     "negativeTokens": [],
     "promptProse": "Delta bounding with unbridled joy across her fur-carpeted bedroom upon scenting Lord Shadow. She sports a primal cheetah-print stretch bandeau and fuzzy sleep shorts displaying her lean, muscular physique. With wolf ears perked and tail wagging in a blur, she lunges forward in an enthusiastic tackle, baring cute fangs in a desperate bid for headpats.",
-    "animaCaption": "delta (shadow), 1girl, wolf ears, tail wagging, cheetah bandeau, fur shorts, pouncing, cute fangs, golden eyes, hearth fire, highres",
+    "animaCaption": "Delta bounding with unbridled joy across her fur-carpeted bedroom upon scenting Lord Shadow. She sports a primal cheetah-print stretch bandeau and fuzzy sleep shorts displaying her lean, muscular physique.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

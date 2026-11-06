@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dusk_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3229,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "dusk_arknights_lingerie_whisper",
     "characterId": "dusk_arknights",
@@ -37,24 +37,18 @@
       "aloof_painter"
     ],
     "promptTokens": [
-      "dusk (arknights)",
-      "1girl",
-      "sui dragon sibling",
-      "dragon horns and tail",
-      "ink-wash gradient black and white silk wrap robe",
-      "loosely draped slanted placket",
-      "sitting cross-legged in middle of sprawling paper scroll on floor",
-      "holding long traditional ink brush upside down",
-      "barefoot with ink stains on toes",
-      "long dark blue-green hair",
-      "half-lidded cynical aloof eyes",
-      "ambient paper lantern light",
-      "masterpiece",
-      "high quality"
+      "dragon horns",
+      "ink wash silk robe",
+      "sitting cross-legged",
+      "giant painting on floor",
+      "barefoot with ink",
+      "holding brush",
+      "calligraphy brush",
+      "aloof gaze"
     ],
     "negativeTokens": [],
     "promptProse": "Dusk lounging amid her unfinished landscape painting spread vast across her studio floorboards. Clad in an ink-wash gradient silk robe draped casually with an open slanted placket, she sits barefoot among scattered brushes and pools of wet sumi ink. Twirling a calligraphy brush with dragon horns gleaming in lantern glow, she glances up with trademark reclusive disdain and subtle curiosity.",
-    "animaCaption": "dusk (arknights), 1girl, dragon horns, ink wash silk robe, giant painting on floor, barefoot with ink, calligraphy brush, aloof gaze, highres",
+    "animaCaption": "Dusk sits cross-legged on a painting spread across the floor, holding a long ink brush as wet ink gathers around her feet.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuigahama_yui_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3253,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.409Z",
   "data": {
     "id": "yuigahama_yui_swimsuit_allure",
     "characterId": "yuigahama_yui",
@@ -37,24 +37,17 @@
       "cheerful_energy"
     ],
     "promptTokens": [
-      "yuigahama yui",
-      "1girl",
-      "vibrant coral pink tiered frill halter bikini",
-      "heart charm accent",
-      "signature peach-pink hair bun",
-      "carrying cute yellow duck inflatable swim ring under arm",
-      "waving other hand enthusiastically overhead towards viewer",
-      "standing knee-deep in sparkling sea surf",
-      "bright radiant laughing smile",
-      "warm amber eyes",
-      "fluffy summer clouds and sunny blue sky",
-      "vibrant cheerful mid shot",
-      "masterpiece",
-      "high quality"
+      "coral pink frill bikini",
+      "duck swim ring",
+      "waving hand",
+      "hair bun",
+      "knee deep in water",
+      "cheerful smile",
+      "bright summer"
     ],
     "negativeTokens": [],
     "promptProse": "Yui Yuigahama standing knee-deep in glistening coastal surf at a vibrant beach resort. She is dressed in an energetic coral-pink tiered frill halter bikini embellished with a tiny silver heart charm. Clutching a whimsical yellow duck inner tube while enthusiastically waving her other hand high above her bouncy pink hair bun, she radiates pure, affectionate summer cheer.",
-    "animaCaption": "yuigahama yui, 1girl, coral pink frill bikini, duck swim ring, waving hand, hair bun, knee deep in water, cheerful smile, bright summer, highres",
+    "animaCaption": "Yui Yuigahama standing knee-deep in glistening coastal surf at a vibrant beach resort. She is dressed in an energetic coral-pink tiered frill halter bikini embellished with a tiny silver heart charm.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

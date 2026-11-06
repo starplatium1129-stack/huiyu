@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3335,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
   "data": {
     "id": "kanroji_mitsuri_lingerie_whisper",
     "characterId": "kanroji_mitsuri",
@@ -37,24 +37,19 @@
       "love_hashira"
     ],
     "promptTokens": [
-      "kanroji mitsuri",
-      "1girl",
-      "love hashira",
-      "sweet peach-pink ultra-soft cotton lounge set",
-      "generous sweetheart neckline",
-      "sitting cross-legged on heart-shaped tatami cushion",
-      "cheeks adorable and puffed full of giant sakura mochi",
-      "holding large green mochi leaf in sticky fingers",
-      "voluptuous curvaceous figure",
-      "iconic pink-to-lime-green braided pigtails",
-      "gleaming chartreuse-green eyes sparkling with romance",
-      "warm sakura paper lantern glow",
-      "masterpiece",
-      "high quality"
+      "peach pink lounge set",
+      "sitting cross-legged",
+      "heart cushion",
+      "eating giant sakura mochi",
+      "holding mochi leaf",
+      "puffed cheeks",
+      "pink green braids",
+      "voluptuous",
+      "heavy blush"
     ],
     "negativeTokens": [],
     "promptProse": "Mitsuri Kanroji indulging in her absolute favorite late-night feast inside her blossom-filled estate. Wearing a remarkably soft peach-pink cotton lounge set with a forgiving sweetheart neckline, she sits cross-legged on a heart cushion. Cheeks blissfully stuffed with giant sakura mochi as her pink-and-lime braids bounce, she blushes with radiant, overflowing romantic joy.",
-    "animaCaption": "mitsuri kanroji, 1girl, peach pink lounge set, eating giant sakura mochi, puffed cheeks, pink green braids, voluptuous, heavy blush, highres",
+    "animaCaption": "Mitsuri sits cross-legged on a heart-shaped cushion, holding a mochi leaf as she enjoys a large sakura mochi.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

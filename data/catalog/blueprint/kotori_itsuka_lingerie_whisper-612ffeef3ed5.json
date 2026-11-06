@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_itsuka_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3467,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kotori_itsuka_lingerie_whisper",
     "characterId": "kotori_itsuka",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "itsuka kotori",
-      "solo",
-      "lying sideways on velvet chaise lounge",
-      "holding chupa chups lollipop in mouth",
-      "red twintails tied with white ribbons",
-      "bare feet dangling",
-      "cute strawberry cushions",
-      "warm afternoon sunlight beams",
-      "sweet innocent pout"
+      "chaise lounge",
+      "reclining",
+      "lollipop",
+      "twintails",
+      "ribbon",
+      "bare feet",
+      "cushion",
+      "empire waist ruffled hem",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, itsuka kotori, solo, lying sideways on velvet chaise lounge, holding chupa chups lollipop in mouth, red twintails tied with white ribbons, bare feet dangling, cute strawberry cushions, warm afternoon sunlight beams, sweet innocent pout",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, itsuka kotori, solo, lying sideways on velvet chaise lounge, holding chupa chups lollipop in mouth, red twintails tied with white ribbons, bare feet dangling, cute strawberry cushions, warm afternoon sunlight beams, sweet innocent pout",
+    "promptProse": "Kotori Itsuka lies sideways on velvet chaise lounge, wearing a crimson strawberry print babydoll nightdress. Itsuka kotori, holding chupa chups lollipop in mouth, red twintails tied with white ribbons amidst bare feet dangling, cute strawberry cushions, warm afternoon sunlight beams, sweet innocent pout.",
+    "animaCaption": "Kotori Itsuka lies sideways on velvet chaise lounge, wearing a crimson strawberry print babydoll nightdress. Itsuka kotori, holding chupa chups lollipop in mouth, red twintails tied with white ribbons amidst bare feet dangling, cute strawberry cushions, warm afternoon sunlight beams, sweet innocent pout.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3152,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "specter_arknights_lingerie_whisper",
     "characterId": "specter_arknights",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "specter arknights",
-      "laurentina",
-      "solo",
-      "sitting elegantly with crossed legs on velvet bench in sculpture studio",
-      "holding chisel against unfinished marble bust",
-      "long wavy platinum blonde hair dusted with marble powder",
-      "teasing blood-red eyes",
-      "dramatic theatrical spotlighting"
+      "sitting",
+      "bench",
+      "blonde hair",
+      "teacup",
+      "red eyes",
+      "underwire contour",
+      "strappy cutout hips",
+      "delicate mesh trims",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, specter arknights, laurentina, solo, sitting elegantly with crossed legs on velvet bench in sculpture studio, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder, teasing blood-red eyes, dramatic theatrical spotlighting",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, specter arknights, laurentina, solo, sitting elegantly with crossed legs on velvet bench in sculpture studio, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder, teasing blood-red eyes, dramatic theatrical spotlighting",
+    "promptProse": "Specter sits elegantly with crossed legs on velvet bench in sculpture studio, wearing a gothic black sheer coral-lace bralette set. Laurentina, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder amidst teasing blood-red eyes, dramatic theatrical spotlighting.",
+    "animaCaption": "Specter sits elegantly with crossed legs on velvet bench in sculpture studio, wearing a gothic black sheer coral-lace bralette set. Laurentina, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder amidst teasing blood-red eyes, dramatic theatrical spotlighting.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

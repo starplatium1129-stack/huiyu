@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3429,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "ushio_noa_lingerie_whisper",
     "characterId": "ushio_noa",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "ushio noa",
-      "solo",
-      "sitting gracefully on sofa armrest leaning forward",
-      "holding sleek electronic tablet",
-      "cascading silver-white hair flowing to floor",
-      "gentle captivating pale violet eyes",
-      "sweet soft smile",
-      "modern high-tech lounge at night"
+      "chaise lounge",
+      "sitting",
+      "purple eyes",
+      "smile",
+      "night",
+      "delicate micro-pleated bodice",
+      "double gossamer layer",
+      "thin spaghetti straps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, ushio noa, solo, sitting gracefully on sofa armrest leaning forward, holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes, sweet soft smile, modern high-tech lounge at night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, ushio noa, solo, sitting gracefully on sofa armrest leaning forward, holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes, sweet soft smile, modern high-tech lounge at night",
+    "promptProse": "Ushio Noa sits gracefully on sofa armrest leaning forward, wearing a pure white translucent pleated chiffon slip dress. Holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes amidst sweet soft smile, modern high-tech lounge at night.",
+    "animaCaption": "Ushio Noa sits gracefully on sofa armrest leaning forward, wearing a pure white translucent pleated chiffon slip dress. Holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes amidst sweet soft smile, modern high-tech lounge at night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -117,13 +117,19 @@
 
 人工决定按 `{"scene:sc001":{"verdict":"pass","recordId":"实际看过的生成记录ID","notes":"审核意见"}}` 填写，`verdict` 可为 pass/fail。缺少决定的图片保持 pending；旧图的决定不会自动转给重试生成的新图。`--latest-attempt` 会拒绝非最新成功记录的决定。旧独立场景发布器仍要求完整人工审核清单，`--apply` 才会写新版本；历史固定模型实验已归入被忽略的 `scripts/archive/`，不作为日常维护入口。
 
+旧样张审核和发布目前仅关联记录编号，未绑定审核时的图片字节；图片变化后旧结论可能被误用。在审核证据与发布输入按实际图片字节绑定并核验前，暂缓使用这条旧链发布。
+
 对已发布样张按实际画面重新定级时，`showcase:rating-refresh --decisions` 接受 `{"sourceManifestSha256":"清单SHA-256","decisions":[{"id":"样张ID","rating":"All|R15|R18","imageSha256":"原图SHA-256","thumbSha256":"缩略图SHA-256"}]}`。先逐图核对并填入实际分级，未列条目保留原值；预览和写入均校验清单与图片字节，复制后的图片也会复核。样张分级不改变场景或蓝图的创作模式。
 
 候选生成必须传 `--output`，热门审核传 `--manifest` 和 `--out`，场景审核传 `--manifest`，发布传 `--from`、`--source` 和 `--target`，避免底层历史脚本选中旧批次。source 填实际现有版本，target 填新版本。
 
+热门及指定场景候选提交前保存请求和网关，取得任务编号后续跑沿原编号查询；提交结果未知时停止，先核对网关后用新的 `--attempt` 或候选目录重试。旧清单若缺少可核对的网关及请求身份，也先核对，不能按失败标签自动重发。重画或更改配方使用新的 `--attempt` 或候选目录，`--force` 不覆盖已有候选身份。
+
+候选目录的 `.generation.lock` 在正常退出时释放；异常退出后先确认原进程已结束，再手动移除残留锁。不同进程不能同时写同一候选目录。
+
 `showcase:fill-gaps --keys popular:<角色id>:<蓝图id>,...` 精确生成指定条目的独立候选，已有样张也可重新生成；终末地角色按工作台的模型与 LoRA 绑定生成。失败后先检查回执，未知提交不自动重发。
 
-热门候选生成默认采用 MiaoMiao v1.6：Euler/normal、30 步、CFG 4.5，TeaCache 阈值 0.10（起止比例 0–1、CUDA 缓存）。此缓存档位来自本机 RTX 4070 Ti SUPER 与 SageAttention 的同输入对照，按用户接受同种子重画、保留人物结构与画面丰富度的要求选择；不承诺像素一致或所有输入同等收益。主采样与需要扩散采样的高清／局部重绘阶段保持该采样组合；纯像素超分不增加采样。`--no-tea-cache` 可关闭缓存，`--model` 可显式选择其他已登记 Anima 模型，其参数按对应模型目录取得。Euler/normal 来自 [1.6 作者版本说明](https://www.seaart.ai/pt/models/detail/d88ps7de878c738fimi0)，[Anima TeaCache 节点作者](https://github.com/CocyNoric/ComfyUI-Anima-TeaCache#recommended-settings)的 Euler 保守起点仍为 0.05；本机调档不属于 MiaoMiao 作者配方。`--keys` 格式为 `popular:<角色id>:<蓝图id>`。续跑仅复用模型、提示词、画幅、采样和缓存参数全部一致的成功记录，配置变化会重新生成；不同配方建议使用独立候选目录。
+热门候选生成默认采用 MiaoMiao v1.6：Euler/normal、30 步、CFG 4.5，TeaCache 阈值 0.10（起止比例 0–1、CUDA 缓存）。此缓存档位来自本机 RTX 4070 Ti SUPER 与 SageAttention 的同输入对照，按用户接受同种子重画、保留人物结构与画面丰富度的要求选择；不承诺像素一致或所有输入同等收益。主采样与需要扩散采样的高清／局部重绘阶段保持该采样组合；纯像素超分不增加采样。`--no-tea-cache` 可关闭缓存，`--model` 可显式选择其他已登记 Anima 模型，其参数按对应模型目录取得。Euler/normal 来自 [1.6 作者版本说明](https://www.seaart.ai/pt/models/detail/d88ps7de878c738fimi0)，[Anima TeaCache 节点作者](https://github.com/CocyNoric/ComfyUI-Anima-TeaCache#recommended-settings)的 Euler 保守起点仍为 0.05；本机调档不属于 MiaoMiao 作者配方。`--keys` 格式为 `popular:<角色id>:<蓝图id>`。续跑仅复用模型、提示词、画幅、采样和缓存参数一致且图片字节匹配的成功记录；不同配方使用新 attempt 或独立候选目录。
 
 `npm run wf -- showcase:full --output "E:/候选目录/本轮" --source <现有版本> --target <新版本> --plan` 可先检查链路；去掉 --plan 后会生成并审核，最后只预览发布。三步共用同一份 generation-manifest.json 和 audit-results.json。审核后用 `showcase:publish --from <该manifest> --source <现有版本> --target <新版本> --apply` 实际写入发布目录。该旧发布器并不自动切换网关配置，发布后还需按样张工艺检查活跃目录。当前 checkpoint 和采样参数以脚本/网关配置为准；生成后检查编译请求与实际画面，失败与未审记录保留。
 

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3431,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.169Z",
   "data": {
     "id": "amau_ako_lingerie_whisper",
     "characterId": "amau_ako",
@@ -37,26 +37,19 @@
       "exhausted_tsundere"
     ],
     "promptTokens": [
-      "amau ako",
-      "1girl",
-      "demon horns",
+      "horns",
       "halo",
-      "midnight blue velvet cutout slip dress",
-      "signature black leather choker with silver ring",
-      "sitting tiredly on office leather sofa",
-      "rubbing bare ankle with one hand",
-      "barefoot on carpet",
-      "flustered pouting expression",
-      "crimson blush",
-      "long wavy cyan hair tied in side ponytail",
-      "soft warm desk lamp light",
-      "gehenna office interior",
-      "masterpiece",
-      "high quality"
+      "choker",
+      "blue velvet slip dress",
+      "rubbing ankle",
+      "couch",
+      "pouting blush",
+      "cyan hair",
+      "midnight"
     ],
     "negativeTokens": [],
     "promptProse": "Ako Amau unwinding late at night inside the Prefect Team office after hours of paperwork. She wears a midnight-blue velvet cutout slip dress paired with her signature leather choker collar. Perched on a leather couch rubbing a sore ankle with bare feet on the rug, her demonic horns catch the desk lamp light as she pouts with flustered, tsundere exhaustion at the viewer.",
-    "animaCaption": "amau ako, 1girl, horns, halo, choker, blue velvet slip dress, rubbing ankle, couch, pouting blush, cyan hair, midnight, highres",
+    "animaCaption": "Ako Amau unwinding late at night inside the Prefect Team office after hours of paperwork. She wears a midnight-blue velvet cutout slip dress paired with her signature leather choker collar.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

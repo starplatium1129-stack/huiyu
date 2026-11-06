@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_eru_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3316,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.463Z",
   "data": {
     "id": "chitanda_eru_lingerie_whisper",
     "characterId": "chitanda_eru",
@@ -37,22 +37,16 @@
       "heiress_innocence"
     ],
     "promptTokens": [
-      "chitanda eru",
-      "1girl",
-      "pale wisteria lavender double-layer cotton nightgown",
-      "modest high neck with delicate lace edge",
-      "kneeling gracefully in doorway of traditional Japanese shoji room",
-      "hands gripping sliding paper door frame gently",
-      "leaning forward eagerly",
-      "large luminous purple eyes sparkling with curiosity",
-      "long glossy black hair falling around shoulders",
-      "soft paper lantern illumination",
-      "masterpiece",
-      "high quality"
+      "lavender cotton nightgown",
+      "shoji door",
+      "leaning forward",
+      "purple eyes sparkling",
+      "curious",
+      "black hair"
     ],
     "negativeTokens": [],
     "promptProse": "Eru Chitanda peering eagerly into the corridor from behind a traditional shoji sliding screen late in the evening. She wears an elegant, modest pale-wisteria cotton nightgown with a ruffled collar. Clasping the paper doorframe while leaning forward, her iconic amethyst eyes sparkle with overwhelming, earnest curiosity as she demands answers to the night's mysteries.",
-    "animaCaption": "chitanda eru, 1girl, lavender cotton nightgown, shoji door, leaning forward, purple eyes sparkling, curious, black hair, highres",
+    "animaCaption": "Eru Chitanda peering eagerly into the corridor from behind a traditional shoji sliding screen late in the evening. She wears an elegant, modest pale-wisteria cotton nightgown with a ruffled collar.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evergarden_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3525,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "violet_evergarden_lingerie_whisper",
     "characterId": "violet_evergarden",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "violet evergarden",
-      "solo",
-      "sitting at antique typewriter on mahogany desk",
-      "slender silver prosthetic mechanical hands touching letter parchment",
-      "loose blonde hair in braids",
-      "large brilliant blue eyes",
-      "green emerald brooch resting on desk",
-      "soft vintage lamp glow"
+      "sitting",
+      "blonde hair",
+      "braid",
+      "blue eyes",
+      "desk lamp",
+      "structured soft bodice",
+      "floor-length flowing hem",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, violet evergarden, solo, sitting at antique typewriter on mahogany desk, slender silver prosthetic mechanical hands touching letter parchment, loose blonde hair in braids, large brilliant blue eyes, green emerald brooch resting on desk, soft vintage lamp glow",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, violet evergarden, solo, sitting at antique typewriter on mahogany desk, slender silver prosthetic mechanical hands touching letter parchment, loose blonde hair in braids, large brilliant blue eyes, green emerald brooch resting on desk, soft vintage lamp glow",
+    "promptProse": "Violet Evergarden sits at antique typewriter on mahogany desk, wearing a ivory Victorian lace-trimmed slip gown. Slender silver prosthetic mechanical hands touching letter parchment, loose blonde hair in braids, large brilliant blue eyes amidst green emerald brooch resting on desk, soft vintage lamp glow.",
+    "animaCaption": "Violet Evergarden sits at antique typewriter on mahogany desk, wearing a ivory Victorian lace-trimmed slip gown. Slender silver prosthetic mechanical hands touching letter parchment, loose blonde hair in braids, large brilliant blue eyes amidst green emerald brooch resting on desk, soft vintage lamp glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

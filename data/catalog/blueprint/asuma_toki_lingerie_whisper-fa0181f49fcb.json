@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3269,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.298Z",
   "data": {
     "id": "asuma_toki_lingerie_whisper",
     "characterId": "asuma_toki",
@@ -37,23 +37,16 @@
       "deadpan_cute"
     ],
     "promptTokens": [
-      "asuma toki",
-      "1girl",
-      "c&c agent",
-      "graphite black seamless athletic loungewear bodysuit",
-      "short sleeves",
-      "sitting straight upright on metal bed edge with knees touching",
-      "making double peace signs beside cheeks",
-      "completely deadpan emotionless expression",
-      "pale blonde hair in low short twintails with black headband",
-      "blue eyes",
-      "clean industrial dormitory background",
-      "masterpiece",
-      "high quality"
+      "black lounge bodysuit",
+      "double peace signs",
+      "stoic face",
+      "blonde twintails",
+      "industrial bed",
+      "deadpan cute"
     ],
     "negativeTokens": [],
     "promptProse": "Toki Asuma executing her bedtime routine with mechanical precision inside a Millennium workshop bunker. Clad in a form-fitting graphite-black seamless lounge bodysuit, she sits ramrod straight on her metal cot. Holding up her signature double peace signs beside her stoic cheeks without cracking a smile, her bright blue eyes await the Sensei's goodnight pats.",
-    "animaCaption": "asuma toki, 1girl, black lounge bodysuit, double peace signs, stoic face, blonde twintails, industrial bed, deadpan cute, highres",
+    "animaCaption": "Toki Asuma executing her bedtime routine with mechanical precision inside a Millennium workshop bunker. Clad in a form-fitting graphite-black seamless lounge bodysuit, she sits ramrod straight on her metal cot.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

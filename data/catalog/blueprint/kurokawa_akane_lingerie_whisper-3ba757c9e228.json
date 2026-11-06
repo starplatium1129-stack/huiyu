@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurokawa_akane_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3275,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kurokawa_akane_lingerie_whisper",
     "characterId": "kurokawa_akane",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kurokawa akane",
-      "solo",
-      "lying prone on plush mattress",
-      "chin resting on pillow",
-      "legs kicked up behind playfully",
-      "flipping acting script with highlighter marks",
-      "deep blue-purple hair",
-      "intense captivating eyes",
-      "warm bedside lamp glow",
-      "tender devoted smile"
+      "teddy bear",
+      "reclining",
+      "purple hair",
+      "desk lamp",
+      "bed",
+      "smile",
+      "open back deep v cut",
+      "pearlized sheen texture",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kurokawa akane, solo, lying prone on plush mattress, chin resting on pillow, legs kicked up behind playfully, flipping acting script with highlighter marks, deep blue-purple hair, intense captivating eyes, warm bedside lamp glow, tender devoted smile",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kurokawa akane, solo, lying prone on plush mattress, chin resting on pillow, legs kicked up behind playfully, flipping acting script with highlighter marks, deep blue-purple hair, intense captivating eyes, warm bedside lamp glow, tender devoted smile",
+    "promptProse": "Kurokawa Akane lies prone on plush mattress, wearing a lavender purple watered-silk camisole slip. Chin resting on pillow, legs kicked up behind playfully, flipping acting script with highlighter marks amidst deep blue-purple hair, intense captivating eyes, warm bedside lamp glow, tender devoted smile.",
+    "animaCaption": "Kurokawa Akane lies prone on plush mattress, wearing a lavender purple watered-silk camisole slip. Chin resting on pillow, legs kicked up behind playfully, flipping acting script with highlighter marks amidst deep blue-purple hair, intense captivating eyes, warm bedside lamp glow, tender devoted smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

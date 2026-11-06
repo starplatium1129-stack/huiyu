@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ichinose_honami_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3390,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.811Z",
   "data": {
     "id": "ichinose_honami_lingerie_whisper",
     "characterId": "ichinose_honami",
@@ -37,22 +37,16 @@
       "healing_leader"
     ],
     "promptTokens": [
-      "ichinose honami",
-      "1girl",
-      "dusty rose pink ribbed modal camisole",
-      "matching comfortable sleep shorts",
-      "curling legs gently onto cushioned single armchair",
-      "holding warm porcelain mug of herbal tea",
-      "strawberry blonde hair falling softly around lovely face",
-      "warm loving sapphire-blue eyes gazing with boundless empathy",
-      "tender comforting smile",
-      "scented candle flickers gently on table",
-      "masterpiece",
-      "high quality"
+      "pink ribbed camisole",
+      "shorts",
+      "curled on armchair",
+      "holding tea mug",
+      "strawberry blonde hair",
+      "sweet kind smile"
     ],
     "negativeTokens": [],
     "promptProse": "Honami Ichinose providing an oasis of unconditional warmth in her high-school dorm room late in the evening. She wears an ultra-soft dusty-rose ribbed modal camisole and matching sleep shorts. Tucking her legs comfortably into an armchair while cradling a steaming mug of tea, her luminous sapphire eyes gaze with boundless, gentle empathy that melts all anxiety away.",
-    "animaCaption": "ichinose honami, 1girl, pink ribbed camisole, shorts, curled on armchair, holding tea mug, strawberry blonde hair, sweet kind smile, highres",
+    "animaCaption": "Honami Ichinose providing an oasis of unconditional warmth in her high-school dorm room late in the evening. She wears an ultra-soft dusty-rose ribbed modal camisole and matching sleep shorts.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

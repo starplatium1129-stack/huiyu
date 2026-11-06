@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3245,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.173Z",
   "data": {
     "id": "surtr_arknights_swimsuit_allure",
     "characterId": "surtr_arknights",
@@ -37,27 +37,16 @@
       "intense_lighting"
     ],
     "promptTokens": [
-      "surtr (arknights)",
-      "1girl",
-      "demon girl",
       "demon horns",
-      "matte black and molten magma orange halter bikini",
-      "crisscross waist straps",
-      "one foot up on red coastal rock",
-      "holding double-scoop raspberry ice cream cone",
-      "licking melting ice cream",
-      "free hand on hip",
-      "crimson hair flowing",
-      "sharp red eyes glaring tsundere",
-      "heat shimmer",
-      "harsh midday sun",
-      "low angle dynamic view",
-      "masterpiece",
-      "high quality"
+      "black and orange bikini",
+      "eating ice cream cone",
+      "rock reef",
+      "blazing midday sun",
+      "tsundere"
     ],
     "negativeTokens": [],
     "promptProse": "Surtr standing proudly under the scorching midday sun on a rugged red-stone reef. She wears a striking athletic halter bikini in matte carbon-black trimmed with molten magma-orange piping. Perching one foot on a warm sea rock while balancing a double-scoop raspberry ice cream cone, she licks an escaping drop with cool irritation, glaring sideways with blazing ruby eyes.",
-    "animaCaption": "surtr (arknights), 1girl, demon horns, black and orange bikini, eating ice cream cone, rock reef, blazing midday sun, tsundere, highres",
+    "animaCaption": "Surtr standing proudly under the scorching midday sun on a rugged red-stone reef. She wears a striking athletic halter bikini in matte carbon-black trimmed with molten magma-orange piping.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

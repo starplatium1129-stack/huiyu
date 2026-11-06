@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3353,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "suou_yuki_lingerie_whisper",
     "characterId": "suou_yuki",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "suou yuki",
-      "solo",
-      "lying prone on tatami mat with legs kicked up",
-      "reading light novel with mischievous devilish grin",
-      "short dark hair",
-      "sharp playful crimson eyes",
-      "hidden stash of anime goods behind Japanese screen",
-      "cool night ambiance"
+      "tatami",
+      "reclining",
+      "smile",
+      "red eyes",
+      "night",
+      "black velvet ribbon bows",
+      "delicate empire waist",
+      "semi-sheer layered hem",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, suou yuki, solo, lying prone on tatami mat with legs kicked up, reading light novel with mischievous devilish grin, short dark hair, sharp playful crimson eyes, hidden stash of anime goods behind Japanese screen, cool night ambiance",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, suou yuki, solo, lying prone on tatami mat with legs kicked up, reading light novel with mischievous devilish grin, short dark hair, sharp playful crimson eyes, hidden stash of anime goods behind Japanese screen, cool night ambiance",
+    "promptProse": "Yuki Suou lies prone on tatami mat with legs kicked up, wearing a smoky charcoal sheer lace slip dress. Reading light novel with mischievous devilish grin, short dark hair, sharp playful crimson eyes amidst hidden stash of anime goods behind Japanese screen, cool night ambiance.",
+    "animaCaption": "Yuki Suou lies prone on tatami mat with legs kicked up, wearing a smoky charcoal sheer lace slip dress. Reading light novel with mischievous devilish grin, short dark hair, sharp playful crimson eyes amidst hidden stash of anime goods behind Japanese screen, cool night ambiance.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

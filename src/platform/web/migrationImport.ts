@@ -1,5 +1,5 @@
 import type { MigrationEnvelope, MigrationRecord, MigrationStatus } from '../../../types/migration'
-import { migrationFingerprint } from './migrationExport'
+import { migrationFingerprint } from './migrationFingerprint'
 
 export interface MigrationCandidatePort { request<T>(command: Record<string, unknown>, signal?: AbortSignal): Promise<T> }
 export interface MigrationBackupReader {

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3210,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.651Z",
   "data": {
     "id": "frieren_lingerie_whisper",
     "characterId": "frieren",
@@ -37,23 +37,17 @@
       "frieren_lazy"
     ],
     "promptTokens": [
-      "frieren",
-      "1girl",
-      "millennium elf",
-      "long pointed elf ears poking out of covers",
-      "oversized stark white seamless linen sleeping robe",
-      "rolled up tightly like a cocoon inside thick fluffy down blanket",
-      "only sleepy half-opened face visible",
-      "messy long white hair splayed across pillow",
-      "drowsy green-tinted eyes half-closed",
-      "sunbeams cutting through wooden shutters onto bed",
-      "comedic lazy morning scene",
-      "masterpiece",
-      "high quality"
+      "elf ears",
+      "wrapped in blanket cocoon",
+      "sleepy eyes",
+      "messy white hair",
+      "linen nightgown",
+      "lazy morning",
+      "funny cute"
     ],
     "negativeTokens": [],
     "promptProse": "Frieren waging her eternal, losing battle against waking up inside an inn bedroom. Rolled completely into a fluffy down blanket cocoon wearing an oversized stark white linen night robe, only half her sleepy face and her long pointed elf ears poke out. With messy white tresses splayed across the mattress, her half-closed eyes beg for another hour of sleep in the warm morning sunbeams.",
-    "animaCaption": "frieren, 1girl, elf ears, wrapped in blanket cocoon, sleepy eyes, messy white hair, linen nightgown, lazy morning, funny cute, highres",
+    "animaCaption": "Frieren waging her eternal, losing battle against waking up inside an inn bedroom. Rolled completely into a fluffy down blanket cocoon wearing an oversized stark white linen night robe, only half her sleepy face and her long pointed elf ears poke out.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

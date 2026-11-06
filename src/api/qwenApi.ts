@@ -3,17 +3,13 @@ import { desktopRuntimeFetch } from '@/platform/desktop/runtime'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { assertRuntimeTaskSession } from './runtimeTaskAuthority'
 import { hasRuntimeTasks, type TaskRecord } from './runtimeTasks'
+import { qwenModels, type DirectImageModelStatus } from '@/config/directImageModels'
 
-export const qwenModels = [
-  { value: 'qwen-image-2.1-turbo', label: 'Qwen-Image 2.1 Turbo · 8 步' },
-  { value: 'qwen-image-2.1', label: 'Qwen-Image 2.1 · 40 步' },
-] as const
-export interface QwenModelStatus { id: string; available: boolean; unavailableReason: string | null; licenseUrl: string; mossSpectrum?: boolean; mossFlexWindow?: boolean; mossRemacri?: boolean; mossFp8?: boolean; mossCompile?: boolean; mossFp16Ready?: boolean; mossInt8Ready?: boolean; mossTextInt8Ready?: boolean }
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v)
-export async function qwenStatus(signal: AbortSignal): Promise<QwenModelStatus[]> {
+export async function qwenStatus(signal: AbortSignal): Promise<DirectImageModelStatus[]> {
   const value = await apiClient.request<Record<string, unknown>>('/api/qwen/status', { signal, timeoutMs: 15_000, cachePolicy: 'bypass' })
   if (value.ok !== true || value.provider !== 'native' || !Array.isArray(value.models)) throw new Error('请在控制室启用原生后端并重启，再读取 Qwen 状态')
-  const models = value.models.map((model): QwenModelStatus => {
+  const models = value.models.map((model): DirectImageModelStatus => {
     if (!object(model) || !qwenModels.some(item => item.value === model.id) || model.family !== 'qwen-image'
       || typeof model.available !== 'boolean' || !(model.unavailableReason === null || typeof model.unavailableReason === 'string')
       || typeof model.licenseUrl !== 'string' || !model.licenseUrl.startsWith('https://huggingface.co/Qwen/')) throw new Error('Qwen 模型信息无效，请更新并重启后端')

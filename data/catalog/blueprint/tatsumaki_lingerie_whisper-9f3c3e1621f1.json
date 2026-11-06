@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3338,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "tatsumaki_lingerie_whisper",
     "characterId": "tatsumaki",
@@ -34,22 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "tatsumaki one-punch man",
-      "solo",
-      "floating weightlessly in mid-air cross-legged",
-      "arms crossed under bust",
-      "emerald green curly bob hair fanning out",
-      "piercing green eyes with haughty blush",
-      "furniture floating peacefully around room",
-      "vibrant green telekinetic aura"
+      "floating",
+      "blush",
+      "green eyes",
+      "waist-high floating slit",
+      "minimalist thin straps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, tatsumaki one-punch man, solo, floating weightlessly in mid-air cross-legged, arms crossed under bust, emerald green curly bob hair fanning out, piercing green eyes with haughty blush, furniture floating peacefully around room, vibrant green telekinetic aura",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, tatsumaki one-punch man, solo, floating weightlessly in mid-air cross-legged, arms crossed under bust, emerald green curly bob hair fanning out, piercing green eyes with haughty blush, furniture floating peacefully around room, vibrant green telekinetic aura",
+    "promptProse": "Tatsumaki relaxes in tatsumaki one-punch man, wearing a inky black sheer side-slit slip dress. Tatsumaki one-punch man, floating weightlessly in mid-air cross-legged, arms crossed under bust amidst emerald green curly bob hair fanning out, piercing green eyes with haughty blush, furniture floating peacefully around room, vibrant green telekinetic aura.",
+    "animaCaption": "Tatsumaki relaxes in tatsumaki one-punch man, wearing a inky black sheer side-slit slip dress. Tatsumaki one-punch man, floating weightlessly in mid-air cross-legged, arms crossed under bust amidst emerald green curly bob hair fanning out, piercing green eyes with haughty blush, furniture floating peacefully around room, vibrant green telekinetic aura.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

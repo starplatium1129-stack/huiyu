@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3270,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "tsukatsuki_rio_lingerie_whisper",
     "characterId": "tsukatsuki_rio",
@@ -34,21 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "tsukatsuki rio",
-      "solo",
-      "sitting in high-tech swivel command chair",
-      "hands folded under chin",
-      "long raven hair",
-      "sharp crimson eyes behind thin-framed glasses",
-      "hundreds of glowing holographic security screens surrounding her in dark cyber room"
+      "sitting",
+      "black hair",
+      "glasses",
+      "red eyes",
+      "glowing",
+      "structured underwire support",
+      "low-rise matching boy-shorts",
+      "sleek high-collar strap",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, tsukatsuki rio, solo, sitting in high-tech swivel command chair, hands folded under chin, long raven hair, sharp crimson eyes behind thin-framed glasses, hundreds of glowing holographic security screens surrounding her in dark cyber room",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, tsukatsuki rio, solo, sitting in high-tech swivel command chair, hands folded under chin, long raven hair, sharp crimson eyes behind thin-framed glasses, hundreds of glowing holographic security screens surrounding her in dark cyber room",
+    "promptProse": "Tsukatsuki Rio sits in high-tech swivel command chair, wearing a matte black faux-leather and sheer tech-mesh bustier set. Hands folded under chin, long raven hair, sharp crimson eyes behind thin-framed glasses amidst hundreds of glowing holographic security screens surrounding her in dark cyber room.",
+    "animaCaption": "Tsukatsuki Rio sits in high-tech swivel command chair, wearing a matte black faux-leather and sheer tech-mesh bustier set. Hands folded under chin, long raven hair, sharp crimson eyes behind thin-framed glasses amidst hundreds of glowing holographic security screens surrounding her in dark cyber room.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

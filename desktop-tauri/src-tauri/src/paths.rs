@@ -35,7 +35,7 @@ fn first_existing(candidates: &[PathBuf]) -> PathBuf {
 
 /// 去掉 Windows `\\?\` UNC 前缀（std::fs::canonicalize 会引入；一些
 /// 外部程序解析 `\\?\C:` 会失败）。
-fn simplify_path(path: PathBuf) -> PathBuf {
+pub(crate) fn simplify_path(path: PathBuf) -> PathBuf {
     let text = path.to_string_lossy();
     if let Some(stripped) = text.strip_prefix(r"\\?\UNC\") {
         PathBuf::from(format!(r"\\{stripped}"))

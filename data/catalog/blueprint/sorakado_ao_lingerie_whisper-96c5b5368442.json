@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorakado_ao_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3483,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "sorakado_ao_lingerie_whisper",
     "characterId": "sorakado_ao",
@@ -34,21 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "sorakado ao",
-      "solo",
-      "curled up on blanket on shrine library floor hugging heavy antique folklore tome",
-      "loose lavender pigtails trailing",
-      "sleepy turquoise eyes rubbing face",
-      "kitsune mask on shelf",
-      "serene Japanese summer night"
+      "books",
+      "pigtails",
+      "sleepy",
+      "mask",
+      "night",
+      "gathered bubble tap shorts",
+      "soft breathable sleepwear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, sorakado ao, solo, curled up on blanket on shrine library floor hugging heavy antique folklore tome, loose lavender pigtails trailing, sleepy turquoise eyes rubbing face, kitsune mask on shelf, serene Japanese summer night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, sorakado ao, solo, curled up on blanket on shrine library floor hugging heavy antique folklore tome, loose lavender pigtails trailing, sleepy turquoise eyes rubbing face, kitsune mask on shelf, serene Japanese summer night",
+    "promptProse": "Sorakado Ao curls up on blanket on shrine library floor hugging heavy antique folklore tome, wearing a pale lavender polka dot cotton camisole set. Loose lavender pigtails trailing, sleepy turquoise eyes rubbing face, kitsune mask on shelf amidst serene Japanese summer night.",
+    "animaCaption": "Sorakado Ao curls up on blanket on shrine library floor hugging heavy antique folklore tome, wearing a pale lavender polka dot cotton camisole set. Loose lavender pigtails trailing, sleepy turquoise eyes rubbing face, kitsune mask on shelf amidst serene Japanese summer night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

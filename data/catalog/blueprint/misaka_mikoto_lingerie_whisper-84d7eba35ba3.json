@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3518,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "misaka_mikoto_lingerie_whisper",
     "characterId": "misaka_mikoto",
@@ -34,22 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "misaka mikoto",
-      "solo",
-      "leaning against high dormitory balcony railing",
-      "holding arcade coin",
-      "tiny harmless blue electric sparks flickering between fingertips",
-      "short brown hair blowing in night breeze",
-      "deeply blushing cheeks",
-      "Academy City futuristic windmills and skyline behind"
+      "balcony",
+      "brown hair",
+      "night",
+      "blush",
+      "white taped edges",
+      "sporty tsundere homewear"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, misaka mikoto, solo, leaning against high dormitory balcony railing, holding arcade coin, tiny harmless blue electric sparks flickering between fingertips, short brown hair blowing in night breeze, deeply blushing cheeks, Academy City futuristic windmills and skyline behind",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, misaka mikoto, solo, leaning against high dormitory balcony railing, holding arcade coin, tiny harmless blue electric sparks flickering between fingertips, short brown hair blowing in night breeze, deeply blushing cheeks, Academy City futuristic windmills and skyline behind",
+    "promptProse": "Misaka Mikoto leans against high dormitory balcony railing, wearing a coral pink soft cotton camisole set. Holding arcade coin, tiny harmless blue electric sparks flickering between fingertips, short brown hair blowing in night breeze amidst deeply blushing cheeks, Academy City futuristic windmills and skyline behind.",
+    "animaCaption": "Misaka Mikoto leans against high dormitory balcony railing, wearing a coral pink soft cotton camisole set. Holding arcade coin, tiny harmless blue electric sparks flickering between fingertips, short brown hair blowing in night breeze amidst deeply blushing cheeks, Academy City futuristic windmills and skyline behind.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

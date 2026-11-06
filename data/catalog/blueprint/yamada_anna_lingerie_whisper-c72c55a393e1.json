@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_anna_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3320,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yamada_anna_lingerie_whisper",
     "characterId": "yamada_anna",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yamada anna",
-      "solo",
-      "tall junior high model",
-      "sitting on bed edge clutching large bag of chocolate snacks",
-      "adorable biscuit in mouth",
-      "tall slender legs",
-      "long glossy black hair",
-      "blushing cheeks looking up with big doe-like eyes",
-      "cozy modern bedroom"
+      "bed",
+      "sitting",
+      "black hair",
+      "blush",
+      "relaxed draped silhouette",
+      "thin straps",
+      "soft ruffled hem",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yamada anna, solo, tall junior high model, sitting on bed edge clutching large bag of chocolate snacks, adorable biscuit in mouth, tall slender legs, long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yamada anna, solo, tall junior high model, sitting on bed edge clutching large bag of chocolate snacks, adorable biscuit in mouth, tall slender legs, long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom",
+    "promptProse": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom.",
+    "animaCaption": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

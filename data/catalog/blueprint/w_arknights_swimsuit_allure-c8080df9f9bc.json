@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3133,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.361Z",
   "data": {
     "id": "w_arknights_swimsuit_allure",
     "characterId": "w_arknights",
@@ -37,26 +37,17 @@
       "chaotic_mercenary"
     ],
     "promptTokens": [
-      "w (arknights)",
-      "1girl",
       "sarkaz horns",
-      "white hair with crimson tips",
-      "cropped black and red graffiti zip-up rashguard",
-      "zipper pulled low",
-      "red string micro bottoms",
-      "sitting rebelliously on rusty decommissioned naval buoy",
-      "shouldering heavy custom water cannon like rocket launcher",
-      "manic grinning smirk",
-      "sharp red eyes sparkling with madness",
-      "water splashing around buoy",
-      "intense scorching midday sun",
-      "dynamic wide angle",
-      "masterpiece",
-      "high quality"
+      "graffiti rashguard",
+      "water cannon",
+      "sitting on rusty buoy",
+      "crazy smile",
+      "red eyes",
+      "splash"
     ],
     "negativeTokens": [],
     "promptProse": "W perched boldly atop a massive, rusted naval sea buoy in shallow sun-drenched waters. She rocks a rebellious cropped red-and-black zip-up rashguard covered in anarchic street tags, partially unzipped over micro string bottoms. Hefting an oversized pressurized water bazooka over one shoulder, she bares a wicked, razor-sharp mercenary grin while her demonic horns gleam in the blazing sun.",
-    "animaCaption": "w (arknights), 1girl, sarkaz horns, graffiti rashguard, water cannon, sitting on rusty buoy, crazy smile, red eyes, splash, highres",
+    "animaCaption": "W perched boldly atop a massive, rusted naval sea buoy in shallow sun-drenched waters. She rocks a rebellious cropped red-and-black zip-up rashguard covered in anarchic street tags, partially unzipped over micro string bottoms.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

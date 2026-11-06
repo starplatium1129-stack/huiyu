@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3172,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "roxy_migurdia_lingerie_whisper",
     "characterId": "roxy_migurdia",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "roxy migurdia",
-      "solo",
-      "sitting on rustic wooden bed hugging oversized water-god magic staff",
-      "witch hat set on pillow",
-      "blue twin braids resting on shoulders",
-      "deeply blushing face",
-      "bare toes curling on rug",
-      "floating aquatic magic light sphere",
-      "cozy study room"
+      "bed",
+      "sitting",
+      "water",
+      "braid",
+      "blush",
+      "floating",
+      "fine accordion pleats",
+      "tiny white ribbon bows",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, roxy migurdia, solo, sitting on rustic wooden bed hugging oversized water-god magic staff, witch hat set on pillow, blue twin braids resting on shoulders, deeply blushing face, bare toes curling on rug, floating aquatic magic light sphere, cozy study room",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, roxy migurdia, solo, sitting on rustic wooden bed hugging oversized water-god magic staff, witch hat set on pillow, blue twin braids resting on shoulders, deeply blushing face, bare toes curling on rug, floating aquatic magic light sphere, cozy study room",
+    "promptProse": "Roxy Migurdia sits on rustic wooden bed hugging oversized water-god magic staff, wearing a ocean blue double-layered chiffon camisole slip. Witch hat set on pillow, blue twin braids resting on shoulders, deeply blushing face amidst bare toes curling on rug, floating aquatic magic light sphere, cozy study room.",
+    "animaCaption": "Roxy Migurdia sits on rustic wooden bed hugging oversized water-god magic staff, wearing a ocean blue double-layered chiffon camisole slip. Witch hat set on pillow, blue twin braids resting on shoulders, deeply blushing face amidst bare toes curling on rug, floating aquatic magic light sphere, cozy study room.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

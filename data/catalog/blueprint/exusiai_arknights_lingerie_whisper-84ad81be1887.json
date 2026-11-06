@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3233,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
   "data": {
     "id": "exusiai_arknights_lingerie_whisper",
     "characterId": "exusiai_arknights",
@@ -37,23 +37,19 @@
       "cheerful_energy"
     ],
     "promptTokens": [
-      "exusiai (arknights)",
-      "1girl",
-      "sankta glowing white halo and small angel wings",
-      "bright white and vibrant orange zip-up short lounge hoodie",
-      "matching casual sleep shorts",
-      "sitting cross-legged atop wooden bar swivel stool",
-      "biting warm golden apple pie slice in mouth",
-      "flashing rock-and-roll finger horn sign with hand",
-      "bright golden-amber eyes winking joyfully",
-      "short energetic auburn hair",
-      "neon city skyline beyond loft window",
-      "masterpiece",
-      "high quality"
+      "halo",
+      "angel wings",
+      "white orange hoodie",
+      "sitting cross-legged",
+      "eating apple pie",
+      "barstool",
+      "rock sign",
+      "auburn hair",
+      "winking"
     ],
     "negativeTokens": [],
     "promptProse": "Exusiai bringing infectious high energy into the Penguin Logistics loft late at night. Wearing a sporty cropped white-and-orange zip-up lounge hoodie over comfortable shorts, her luminous Sankta halo and angel wings glow cheerfully. Perched cross-legged on a barstool with a slice of apple pie between her teeth, she throws up a rock-on hand sign with an irresistible wink.",
-    "animaCaption": "exusiai (arknights), 1girl, halo, angel wings, white orange hoodie, eating apple pie, barstool, rock sign, auburn hair, winking, highres",
+    "animaCaption": "Exusiai sits cross-legged on a barstool, biting into a slice of apple pie as she flashes a rock-on sign.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -16,12 +16,13 @@ const { referenceImpact }: typeof import('./content-impact-references') = requir
 const { WORKFLOWS }: typeof import('../workflow') = require('../workflow');
 const { formatImpactReport }: typeof import('../lib/content-impact-format') = require('../lib/content-impact-format');
 const { extractThemeSelectors, DEFAULT_THEME_ALLOWED }: typeof import('./report-content-coverage') = require('./report-content-coverage');
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 
 const HELP = 'audit:impact [--character <canonical-id> [--outfit <id>]] [--scene <scNNN>] [--path <repo-relative-path>]... [--root <fixture-root>] [--json]\n只读报告；--path 接收明确 Git 变更路径（不自动读取 Git、不比较历史字段）。场景路径支持 data/scenes/<逻辑组.json 或实际批次.N.json>，按当前 manifest 展开。\n--plan 与 --help 仅展示用法，不读取数据。退出码 0=报告（可能有未知范围），1=结构问题，2=参数错误。';
 
 type ImpactOptions = Omit<Parameters<typeof historyImpact>[0], 'base'> & { base?: string; paths: string[]; showcaseManifests: string[]; json?: boolean; gitDiff?: boolean };
 function parse(argv: string[]) {
-  const opts: ImpactOptions = { paths: [], showcaseManifests: [], root: path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '../..')) };
+  const opts: ImpactOptions = { paths: [], showcaseManifests: [], root: resolveContentRoot() };
   for (let i = 0; i < argv.length; i++) {
     const arg = argv[i];
     if (arg === '--json') { opts.json = true; continue; }

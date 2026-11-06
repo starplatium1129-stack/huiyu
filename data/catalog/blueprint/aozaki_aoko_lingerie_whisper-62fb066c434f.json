@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3411,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.211Z",
   "data": {
     "id": "aozaki_aoko_lingerie_whisper",
     "characterId": "aozaki_aoko",
@@ -37,24 +37,18 @@
       "cool_heroine"
     ],
     "promptTokens": [
-      "aozaki aoko",
-      "1girl",
-      "fifth magician",
-      "deep navy blue athletic racerback cotton tank top",
-      "grey boxer sleep shorts",
-      "toned midriff and defined abs visible",
-      "sitting cross-legged on sunlit hardwood floor",
-      "stretching arms high overhead with interlocked fingers",
-      "long auburn-brown hair falling back",
-      "confident sparkling reddish-brown eyes",
-      "slanted golden morning blinds light",
-      "vintage western mansion bedroom",
-      "masterpiece",
-      "high quality"
+      "navy tank top",
+      "boxer shorts",
+      "stretching overhead",
+      "toned abs",
+      "auburn hair",
+      "wooden floor",
+      "morning sunlight",
+      "energetic"
     ],
     "negativeTokens": [],
     "promptProse": "Aoko Aozaki greeting the dawn with unbridled vigor inside the Kuonji mansion. Dressed in a minimalist navy-blue racerback tank top and comfortable cotton sleep boxers, she sits cross-legged on the polished parquet floor, stretching both arms high above her head with interlocked fingers. The slanting morning sunlight highlights her toned core as she turns with a confident, carefree smirk.",
-    "animaCaption": "aozaki aoko, 1girl, navy tank top, boxer shorts, stretching overhead, toned abs, auburn hair, wooden floor, morning sunlight, energetic, highres",
+    "animaCaption": "Aoko Aozaki greeting the dawn with unbridled vigor inside the Kuonji mansion. Dressed in a minimalist navy-blue racerback tank top and comfortable cotton sleep boxers, she sits cross-legged on the polished parquet floor, stretching both arms high above her head with interlocked fingers.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

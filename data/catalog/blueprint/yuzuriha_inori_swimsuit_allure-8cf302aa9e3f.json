@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3215,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.435Z",
   "data": {
     "id": "yuzuriha_inori_swimsuit_allure",
     "characterId": "yuzuriha_inori",
@@ -37,24 +37,16 @@
       "ethereal_sunset"
     ],
     "promptTokens": [
-      "yuzuriha inori",
-      "1girl",
-      "translucent coral-orange and petal-pink gradient monokini",
-      "long fluttery goldfish-fin chiffon ribbons",
-      "red spider lily hair ornament",
-      "dancing barefoot upon mirror-like shallow ocean reflecting twilight sky",
-      "arms gently raised guiding ribbons",
-      "flowing pink-to-magenta gradient twintails",
-      "radiant ruby red eyes",
-      "ethereal innocent expression",
-      "sunset blending sky and sea in violet and golden orange",
-      "magical dreamlike realism",
-      "masterpiece",
-      "high quality"
+      "gradient goldfish monokini",
+      "floating ribbons",
+      "dancing on mirror water",
+      "pink hair",
+      "red eyes",
+      "dreamlike sunset"
     ],
     "negativeTokens": [],
     "promptProse": "Inori Yuzuriha dancing barefoot across a glass-smooth tidal sandbar where ocean and sunset sky merge into an ethereal dream of lilac and liquid amber. She is clothed in a diaphanous coral-orange and petal-pink gradient monokini with floating chiffon streamers that flutter like the delicate fins of a goldfish. With her pink gradient pigtails floating in the breeze, her gemstone eyes gaze with breathtaking, melancholic innocence.",
-    "animaCaption": "yuzuriha inori, 1girl, gradient goldfish monokini, floating ribbons, dancing on mirror water, pink hair, red eyes, dreamlike sunset, highres",
+    "animaCaption": "Inori Yuzuriha dancing barefoot across a glass-smooth tidal sandbar where ocean and sunset sky merge into an ethereal dream of lilac and liquid amber. She is clothed in a diaphanous coral-orange and petal-pink gradient monokini with floating chiffon streamers that flutter like the delicate fins of a goldfish.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

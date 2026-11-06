@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3248,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "suzuran_arknights_lingerie_whisper",
     "characterId": "suzuran_arknights",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "suzuran arknights",
-      "lisa",
-      "solo",
-      "vulpo",
-      "nine small fluffy golden fox tails fanning out like halo",
-      "adorable fox ears",
-      "sitting politely on wool-cushioned armchair",
-      "wide innocent sapphire eyes",
-      "yellow sunflowers on windowsill",
-      "pure golden morning sunshine"
+      "halo",
+      "fox ears",
+      "cushion",
+      "sitting",
+      "flowers",
+      "morning sunlight",
+      "white crocheted daisy trim",
+      "wide ruffled hemline",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, suzuran arknights, lisa, solo, vulpo, nine small fluffy golden fox tails fanning out like halo, adorable fox ears, sitting politely on wool-cushioned armchair, wide innocent sapphire eyes, yellow sunflowers on windowsill, pure golden morning sunshine",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, suzuran arknights, lisa, solo, vulpo, nine small fluffy golden fox tails fanning out like halo, adorable fox ears, sitting politely on wool-cushioned armchair, wide innocent sapphire eyes, yellow sunflowers on windowsill, pure golden morning sunshine",
+    "promptProse": "Suzuran sits politely on wool-cushioned armchair, wearing a pale pastel yellow double-cotton nightgown. Lisa, vulpo, nine small fluffy golden fox tails fanning out like halo amidst adorable fox ears, wide innocent sapphire eyes, yellow sunflowers on windowsill, pure golden morning sunshine.",
+    "animaCaption": "Suzuran sits politely on wool-cushioned armchair, wearing a pale pastel yellow double-cotton nightgown. Lisa, vulpo, nine small fluffy golden fox tails fanning out like halo amidst adorable fox ears, wide innocent sapphire eyes, yellow sunflowers on windowsill, pure golden morning sunshine.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3381,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.370Z",
   "data": {
     "id": "yamada_ryo_swimsuit_allure",
     "characterId": "yamada_ryo",
@@ -37,24 +37,17 @@
       "hot_afternoon"
     ],
     "promptTokens": [
-      "yamada ryo",
-      "1girl",
-      "bassist",
-      "dark navy minimalist bandeau bikini",
-      "unbuttoned vintage cream and coral hawaiian bowling shirt slipping loose",
-      "sunglasses pulled down on nose bridge",
-      "perched cross-legged on large shady seaside rock",
-      "chewing on strand of wild seaweed",
-      "deadpan blank bored eyes",
-      "short blue hair with side clip",
-      "scorching white sand visible beyond rock shadow",
-      "candid deadpan comedy angle",
-      "masterpiece",
-      "high quality"
+      "short blue hair",
+      "unbuttoned hawaiian shirt",
+      "navy bikini",
+      "sunglasses down",
+      "eating seaweed",
+      "deadpan face",
+      "shady rock"
     ],
     "negativeTokens": [],
     "promptProse": "Ryo Yamada crouching cross-legged in the deep shadow of an enormous coastal boulder during the hottest hour of the day. Over a simple dark navy bandeau bikini, she sports an unbuttoned vintage cream and coral bowling shirt sliding off her shoulders. Peering over the rim of lowered dark sunglasses with deadpan indifferent eyes while casually chewing on a piece of wild sea kelp, she wordlessly plots to mooch the viewer's lunch.",
-    "animaCaption": "yamada ryo, 1girl, short blue hair, unbuttoned hawaiian shirt, navy bikini, sunglasses down, eating seaweed, deadpan face, shady rock, highres",
+    "animaCaption": "Ryo Yamada crouching cross-legged in the deep shadow of an enormous coastal boulder during the hottest hour of the day. Over a simple dark navy bandeau bikini, she sports an unbuttoned vintage cream and coral bowling shirt sliding off her shoulders.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

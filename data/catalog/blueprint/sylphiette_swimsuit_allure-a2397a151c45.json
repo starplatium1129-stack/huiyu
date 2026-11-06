@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3251,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.200Z",
   "data": {
     "id": "sylphiette_swimsuit_allure",
     "characterId": "sylphiette",
@@ -37,26 +37,18 @@
       "shy_tenderness"
     ],
     "promptTokens": [
-      "sylphiette",
-      "1girl",
-      "elf ears blushing pink",
+      "elf ears",
       "short white hair",
-      "green eyes",
-      "mint green leaf-motif halter swimdress",
-      "delicate lace trim",
-      "standing ankle-deep in clear mountain lake",
-      "smooth river pebbles underfoot",
-      "hands clenching skirt hem shyly",
-      "timid blush",
-      "looking up at viewer lovingly",
-      "sunlight filtering through birch canopy",
-      "peaceful forest reflection",
-      "masterpiece",
-      "high quality"
+      "mint green swimdress",
+      "holding skirt",
+      "lake",
+      "forest reflections",
+      "shy blush",
+      "soft sunlight"
     ],
     "negativeTokens": [],
     "promptProse": "Sylphiette standing ankle-deep within the pristine waters of a secluded alpine forest lake. She wears a sweet mint-green halterneck swimdress accented with botanical leaf-vein lace and soft pale yellow ribbons. Her pointed elf ears flush pink with timid affection as her small hands gently clutch the hem of her skirt, gazing up with vulnerable, devoted warmth beneath dappled foliage light.",
-    "animaCaption": "sylphiette, 1girl, elf ears, short white hair, mint green swimdress, holding skirt, lake, forest reflections, shy blush, soft sunlight, highres",
+    "animaCaption": "Sylphiette standing ankle-deep within the pristine waters of a secluded alpine forest lake. She wears a sweet mint-green halterneck swimdress accented with botanical leaf-vein lace and soft pale yellow ribbons.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

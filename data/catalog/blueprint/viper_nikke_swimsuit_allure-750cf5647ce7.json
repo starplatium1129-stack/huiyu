@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3449,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
   "data": {
     "id": "viper_nikke_swimsuit_allure",
     "characterId": "viper_nikke",
@@ -37,26 +37,18 @@
       "alluring_trap"
     ],
     "promptTokens": [
-      "viper (nikke)",
-      "1girl",
-      "holographic neon pink snakeskin micro halter bikini",
-      "ultra-thin gold strings",
-      "rhinestone belly chain",
-      "heart sunglasses pushed up in wavy blonde hair",
-      "sitting on underwater swivel stool at luxury swim-up pool bar",
-      "holding pink cocktail with cherry",
-      "chin resting on hand",
-      "gazing with seductive pink eyes",
-      "teasing sweet smile",
-      "pool water glowing with neon purple underlights",
-      "sultry night atmosphere",
-      "close-up angle",
-      "masterpiece",
-      "high quality"
+      "neon pink snakeskin bikini",
+      "sitting",
+      "pool bar",
+      "holding cocktail",
+      "blonde wavy hair",
+      "pool lights",
+      "seductive smile",
+      "sultry night"
     ],
     "negativeTokens": [],
     "promptProse": "Viper lounging temptingly at a luxury swim-up pool bar illuminated by sultry violet and neon lighting. She wears a show-stopping holographic neon-pink snakeskin string bikini held by glistening golden ties, with a sparkling rhinestone waist chain. Resting her chin upon her palm while sipping a maraschino-garnished cocktail, she locks eyes with an irresistibly intoxicating, playfully dangerous smile.",
-    "animaCaption": "viper (nikke), 1girl, neon pink snakeskin bikini, swim up bar, cocktail, blonde wavy hair, pool lights, seductive smile, sultry night, highres",
+    "animaCaption": "Viper sits on a submerged barstool, holding a pink cocktail beneath violet pool lights.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

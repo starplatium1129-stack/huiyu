@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3223,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.548Z",
   "data": {
     "id": "emilia_rezero_lingerie_whisper",
     "characterId": "emilia_rezero",
@@ -37,24 +37,17 @@
       "pure_angel"
     ],
     "promptTokens": [
-      "emilia (re:zero)",
-      "1girl",
-      "half-elf",
-      "pointed elf ears",
-      "pure alabaster white and pale lilac layered chiffon nightgown",
-      "soft ribbon at empire waist",
-      "sitting demurely on edge of plush velvet bed",
-      "hands gently folded over heart",
-      "long shimmering silver hair falling around shoulders",
-      "large expressive amethyst-violet eyes",
-      "tender sweet angelic smile",
-      "warm bedside lamp glow in mansion room",
-      "masterpiece",
-      "high quality"
+      "elf ears",
+      "white and lilac chiffon nightgown",
+      "silver hair",
+      "violet eyes",
+      "sitting on bed",
+      "angelic smile",
+      "warm room"
     ],
     "negativeTokens": [],
     "promptProse": "Emilia wishing a heartwarming goodnight from her bedroom inside Roswaal Manor. She wears an enchanting double-layered white and lilac chiffon nightgown cinched softly beneath the bust. Sitting demurely upon the bedpost with pointed elf ears peeking through silver tresses, her violet eyes gaze with innocent, heart-melting tenderness.",
-    "animaCaption": "emilia (re:zero), 1girl, elf ears, white and lilac chiffon nightgown, silver hair, violet eyes, sitting on bed, angelic smile, warm room, highres",
+    "animaCaption": "Emilia wishing a heartwarming goodnight from her bedroom inside Roswaal Manor. She wears an enchanting double-layered white and lilac chiffon nightgown cinched softly beneath the bust.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

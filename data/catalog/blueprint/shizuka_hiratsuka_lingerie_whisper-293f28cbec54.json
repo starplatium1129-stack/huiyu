@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_hiratsuka_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3466,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
   "data": {
     "id": "shizuka_hiratsuka_lingerie_whisper",
     "characterId": "shizuka_hiratsuka",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shizuka hiratsuka",
-      "solo",
-      "mature female teacher",
-      "sitting cross-legged on carpet leaning on coffee table",
-      "holding can of beer in one hand",
-      "slim cigarette smoke curling",
-      "long glossy raven hair",
-      "flushed tipsy cheeks",
-      "soulful dark eyes",
-      "cozy single apartment"
+      "wine red silk gown",
+      "sitting cross-legged",
+      "holding beer can",
+      "coffee table",
+      "cigarette smoke",
+      "black hair",
+      "deep plunging neckline",
+      "opulent drape",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shizuka hiratsuka, solo, mature female teacher, sitting cross-legged on carpet leaning on coffee table, holding can of beer in one hand, slim cigarette smoke curling, long glossy raven hair, flushed tipsy cheeks, soulful dark eyes, cozy single apartment",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shizuka hiratsuka, solo, mature female teacher, sitting cross-legged on carpet leaning on coffee table, holding can of beer in one hand, slim cigarette smoke curling, long glossy raven hair, flushed tipsy cheeks, soulful dark eyes, cozy single apartment",
+    "promptProse": "Shizuka Hiratsuka sits cross-legged on carpet leaning on coffee table, wearing a wine red heavyweight silk slip gown. Mature female teacher, holding can of beer in one hand, slim cigarette smoke curling amidst long glossy raven hair, flushed tipsy cheeks, soulful dark eyes, cozy single apartment.",
+    "animaCaption": "Shizuka sits cross-legged beside a coffee table, holding a can of beer as cigarette smoke curls through her apartment.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

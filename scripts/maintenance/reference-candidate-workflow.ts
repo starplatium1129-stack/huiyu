@@ -2,7 +2,8 @@
 'use strict';
 
 const path: typeof import('node:path') = require('node:path');
-const { CODE_ROOT, hash, runCli }: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
+const { hash, runCli }: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 const R: typeof import('../lib/reference-candidate-review') = require('../lib/reference-candidate-review');
 const { publishReferenceCandidates }: typeof import('../lib/reference-candidate-publish') = require('../lib/reference-candidate-publish');
 import type { GenerationOptions } from '../lib/generation-types';
@@ -39,7 +40,7 @@ function parse(args: string[], env: NodeJS.ProcessEnv) {
   };
   if (options.review && options.decisions) throw new Error('Choose an existing review or a new decisions file');
   if (action === 'full' && options.out && !options.decisions) throw new Error('--out requires --decisions');
-  const common = { help: false as const, root: path.resolve(value('root') || env.AICS_DATA_ROOT || env.AICS_APP_ROOT || CODE_ROOT) };
+  const common = { help: false as const, root: path.resolve(value('root') || resolveContentRoot(env)) };
   if (action === 'full') return { ...common, action: 'full' as const, output: required('output'), source: required('source'), target: required('target'),
     gateway: value('gateway'), ids: value('ids'), keys: value('keys'), concurrency: value('concurrency'),
     review: value('review'), decisions: value('decisions'), out: value('out'),

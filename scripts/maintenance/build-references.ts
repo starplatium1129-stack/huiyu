@@ -2,7 +2,8 @@ import path = require('node:path');
 import fs = require('node:fs');
 import { aggregateIsCurrent, loadReferenceShards, writeReferenceAggregate } from '../lib/reference-store';
 
-const root = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '../..'));
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+const root = resolveContentRoot();
 try {
   const check = process.argv.includes('--check');
   const count = loadReferenceShards(root).standards.characters.length;

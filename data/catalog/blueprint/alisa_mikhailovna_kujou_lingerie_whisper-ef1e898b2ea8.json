@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alisa_mikhailovna_kujou_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3250,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.152Z",
   "data": {
     "id": "alisa_mikhailovna_kujou_lingerie_whisper",
     "characterId": "alisa_mikhailovna_kujou",
@@ -37,24 +37,17 @@
       "tsundere_pure"
     ],
     "promptTokens": [
-      "alisa mikhailovna kujou",
-      "1girl",
-      "pale sky blue and white lace silk chemise",
-      "thin adjustable straps",
-      "hugging knees to chest on plush sheepskin floor rug",
-      "chin resting on knees",
-      "immense long silver hair cascading to floor",
-      "bright blue eyes looking shyly away",
-      "cheeks blushing bright crimson",
-      "distant sparkling city skyline beyond glass window",
-      "cool night ambiance",
-      "soft cinematic lighting",
-      "masterpiece",
-      "high quality"
+      "sky blue silk chemise",
+      "hugging knees",
+      "city skyline window",
+      "silver hair",
+      "heavy blush",
+      "blue eyes",
+      "midnight"
     ],
     "negativeTokens": [],
     "promptProse": "Alisa Mikhailovna Kujou sitting curled up upon a white sheepskin floor mat beside a panoramic city-view window late at night. She wears a delicate sky-blue and frosty lace silk chemise. Resting her chin bashfully upon drawn-up knees as her silver locks spill around her, she murmurs affectionate secrets in Russian with glowing ruby-red cheeks in the shimmering nocturnal panorama.",
-    "animaCaption": "alisa kujou, 1girl, sky blue silk chemise, hugging knees, city skyline window, silver hair, heavy blush, blue eyes, midnight, highres",
+    "animaCaption": "Alisa Mikhailovna Kujou sitting curled up upon a white sheepskin floor mat beside a panoramic city-view window late at night. She wears a delicate sky-blue and frosty lace silk chemise.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

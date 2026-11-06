@@ -26,7 +26,8 @@ import type { ReferenceStandards, ReferenceView, ReferenceViewOutfit, ViewRefere
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
-const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+const ROOT = resolveContentRoot();
 const VIEW_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const STANDARDS_FILE = path.join(ROOT, 'data', 'character-reference-standards.json');
 // 2026-08-29：删除两个从未被引用的常量 ASSETS / PERSPECTIVE_COUNT ——

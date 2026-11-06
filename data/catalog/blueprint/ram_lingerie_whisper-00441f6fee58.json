@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3202,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "ram_lingerie_whisper",
     "characterId": "ram",
@@ -34,21 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "ram rezero",
-      "solo",
-      "standing with arms crossed leaning against open wardrobe door",
-      "sharp short pink hair covering one eye",
-      "scornful proud glare with slight blush",
-      "maid uniform hanging on door",
-      "warm vintage candle illumination"
+      "standing",
+      "pink hair",
+      "blush",
+      "black underbust lace-up cords",
+      "scalloped hemline",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, ram rezero, solo, standing with arms crossed leaning against open wardrobe door, sharp short pink hair covering one eye, scornful proud glare with slight blush, maid uniform hanging on door, warm vintage candle illumination",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, ram rezero, solo, standing with arms crossed leaning against open wardrobe door, sharp short pink hair covering one eye, scornful proud glare with slight blush, maid uniform hanging on door, warm vintage candle illumination",
+    "promptProse": "Ram stands with arms crossed leaning against open wardrobe door, wearing a crimson berry square-neck sheer corset nightdress. Ram rezero, sharp short pink hair covering one eye, scornful proud glare with slight blush amidst maid uniform hanging on door, warm vintage candle illumination.",
+    "animaCaption": "Ram stands with arms crossed leaning against open wardrobe door, wearing a crimson berry square-neck sheer corset nightdress. Ram rezero, sharp short pink hair covering one eye, scornful proud glare with slight blush amidst maid uniform hanging on door, warm vintage candle illumination.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3219,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.529Z",
   "data": {
     "id": "elaina_lingerie_whisper",
     "characterId": "elaina",
@@ -37,24 +37,18 @@
       "witch_traveler"
     ],
     "promptTokens": [
-      "elaina (majo no tabitabi)",
-      "1girl",
-      "ashen witch",
-      "lavender purple silk slip chemise",
-      "delicate white lace trim with miniature witch-hat ribbon",
-      "leaning over rustic wooden desk in attic inn",
-      "propping cheek with one hand",
-      "twirling feather quill in other",
-      "long wavy ash-blonde hair tumbling down",
-      "sparkling violet-purple eyes",
-      "smug narcissistic delighted giggle",
-      "warm brass oil lamp glow",
-      "masterpiece",
-      "high quality"
+      "lavender silk slip",
+      "wooden desk",
+      "travel diary",
+      "quill pen",
+      "ash hair",
+      "purple eyes",
+      "smug giggle",
+      "oil lamp"
     ],
     "negativeTokens": [],
     "promptProse": "Elaina admiring her own travel diary by the light of a brass oil lamp in a quaint traveler's inn. Clothed in a charming lavender-purple silk slip dress adorned with whimsical lace and a witch-hat ribbon accent, she rests her cheek upon her hand while spinning a feather quill. Giggling with unabashed self-admiration at her adventures, her amethyst eyes shine with brilliant wanderlust.",
-    "animaCaption": "elaina, 1girl, lavender silk slip, wooden desk, travel diary, quill pen, ash hair, purple eyes, smug giggle, oil lamp, highres",
+    "animaCaption": "Elaina admiring her own travel diary by the light of a brass oil lamp in a quaint traveler's inn. Clothed in a charming lavender-purple silk slip dress adorned with whimsical lace and a witch-hat ribbon accent, she rests her cheek upon her hand while spinning a feather quill.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

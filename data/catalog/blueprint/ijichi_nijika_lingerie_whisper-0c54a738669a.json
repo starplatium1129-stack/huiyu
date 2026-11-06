@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3406,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.827Z",
   "data": {
     "id": "ijichi_nijika_lingerie_whisper",
     "characterId": "ijichi_nijika",
@@ -37,24 +37,17 @@
       "shimokitazawa_angel"
     ],
     "promptTokens": [
-      "ijichi nijika",
-      "1girl",
-      "bocchi the rock",
-      "sunny yellow sleeveless cotton hoodie lounger",
-      "matching grey athletic shorts",
-      "distinctive triangle-shaped ahoge bobbing perkily",
-      "sitting backwards on drum stool behind metallic drum kit",
-      "holding large cup of iced boba milk tea with wide straw",
-      "radiant warm golden smile lighting up the room",
-      "amber-red eyes full of pure optimism",
-      "short blonde side ponytail",
-      "rehearsal studio lighting",
-      "masterpiece",
-      "high quality"
+      "yellow sleeveless hoodie",
+      "drum stool",
+      "boba tea",
+      "triangle ahoge",
+      "blonde side ponytail",
+      "bright smile",
+      "rehearsal room"
     ],
     "negativeTokens": [],
     "promptProse": "Nijika Ijichi radiating pure warmth behind her drum kit in the STARRY rehearsal studio late at night. She sports a sporty sunny-yellow sleeveless cotton lounge hoodie over grey shorts, with her iconic Dorito-shaped ahoge bouncing atop her blonde side ponytail. Sipping boba milk tea with an infectious, sunny grin, she embodies the tireless, uplifting heart of the band.",
-    "animaCaption": "ijichi nijika, 1girl, yellow sleeveless hoodie, drum stool, boba tea, triangle ahoge, blonde side ponytail, bright smile, rehearsal room, highres",
+    "animaCaption": "Nijika Ijichi radiating pure warmth behind her drum kit in the STARRY rehearsal studio late at night. She sports a sporty sunny-yellow sleeveless cotton lounge hoodie over grey shorts, with her iconic Dorito-shaped ahoge bouncing atop her blonde side ponytail.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

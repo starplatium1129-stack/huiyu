@@ -1,6 +1,6 @@
 import { runtimeFetch } from '@/platform/runtimeUrl'
 import type { CompanionChatImage } from '@/types/companionDrawing'
-import { loadCompanionToolPermissions, companionToolAllowed } from '@/composables/chat/useCompanionToolPermissions'
+import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
 import { confirmAction } from '@/composables/useConfirm'
 
 export interface CompanionToolResult {

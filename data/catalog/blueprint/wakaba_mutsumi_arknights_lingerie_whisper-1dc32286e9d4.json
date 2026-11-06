@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3140,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "wakaba_mutsumi_arknights_lingerie_whisper",
     "characterId": "wakaba_mutsumi_arknights",
@@ -34,21 +34,15 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "wakaba mutsumi",
-      "solo",
-      "curled up on small folding balcony chair hugging a fresh green cucumber to chest",
-      "short dark-green bob hair",
-      "pale expression with quiet golden eyes",
-      "potted cucumber vines in background",
-      "quiet city night lights"
+      "balcony",
+      "night",
+      "ultra-thin straps",
+      "clean square neckline",
+      "straight relaxed cut"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, wakaba mutsumi, solo, curled up on small folding balcony chair hugging a fresh green cucumber to chest, short dark-green bob hair, pale expression with quiet golden eyes, potted cucumber vines in background, quiet city night lights",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, wakaba mutsumi, solo, curled up on small folding balcony chair hugging a fresh green cucumber to chest, short dark-green bob hair, pale expression with quiet golden eyes, potted cucumber vines in background, quiet city night lights",
+    "promptProse": "Mutsumi Wakaba curls up on small folding balcony chair hugging a fresh green cucumber to chest, wearing a sage green minimalist raw linen slip dress. Short dark-green bob hair, pale expression with quiet golden eyes, potted cucumber vines in background amidst quiet city night lights.",
+    "animaCaption": "Mutsumi Wakaba curls up on small folding balcony chair hugging a fresh green cucumber to chest, wearing a sage green minimalist raw linen slip dress. Short dark-green bob hair, pale expression with quiet golden eyes, potted cucumber vines in background amidst quiet city night lights.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

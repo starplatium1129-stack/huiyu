@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_dunois_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3454,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.443Z",
   "data": {
     "id": "charlotte_dunois_lingerie_whisper",
     "characterId": "charlotte_dunois",
@@ -37,23 +37,17 @@
       "innocent_panic"
     ],
     "promptTokens": [
-      "charlotte dunois",
-      "1girl",
-      "french sweetheart peach silk camisole",
-      "white scalloped lace trim",
-      "matching ruffled tap shorts",
-      "standing in center of dorm bedroom",
-      "hands bashfully covering chest in charming modesty",
-      "cheeks and ears glowing crimson with innocent blush",
-      "soft blonde bob hair with loosened hair ribbon",
-      "sparkling violet-blue eyes",
-      "warm bedside lamp glow",
-      "masterpiece",
-      "high quality"
+      "peach silk camisole",
+      "tap shorts",
+      "hands covering chest",
+      "blonde hair",
+      "heavy blush",
+      "dorm room",
+      "sweet"
     ],
     "negativeTokens": [],
     "promptProse": "Charlotte Dunois startled while dressing for bed inside her shared IS academy dorm room. Wearing an endearing peach silk camisole trimmed with delicate white French lace and matching ruffled shorts, she brings her hands up to cover her chest in modest panic. Her porcelain cheeks blush a vivid crimson as her expressive eyes widen with sweet, flustered innocence.",
-    "animaCaption": "charlotte dunois, 1girl, peach silk camisole, tap shorts, hands covering chest, blonde hair, heavy blush, dorm room, sweet, highres",
+    "animaCaption": "Charlotte Dunois startled while dressing for bed inside her shared IS academy dorm room. Wearing an endearing peach silk camisole trimmed with delicate white French lace and matching ruffled shorts, she brings her hands up to cover her chest in modest panic.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

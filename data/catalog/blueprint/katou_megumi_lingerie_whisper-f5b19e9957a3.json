@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "katou_megumi_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3313,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.994Z",
   "data": {
     "id": "katou_megumi_lingerie_whisper",
     "characterId": "katou_megumi",
@@ -37,22 +37,16 @@
       "main_heroine_presence"
     ],
     "promptTokens": [
-      "katou megumi",
-      "1girl",
-      "soft ivory-white ribbed cotton camisole tank",
-      "matching stretchy white sleep shorts",
-      "sitting casually on edge of neat bed swinging bare legs gently",
-      "holding smartphone in both hands typing leisurely",
-      "turning head to look at viewer with neutral yet incredibly comforting expression",
-      "neat dark brown bob hair with side fringe",
-      "clear expressive brown eyes",
-      "ordinary comfortable Japanese bedroom",
-      "masterpiece",
-      "high quality"
+      "white ribbed camisole",
+      "shorts",
+      "swinging legs on bed",
+      "phone in hand",
+      "brown bob hair",
+      "neutral gentle expression"
     ],
     "negativeTokens": [],
     "promptProse": "Megumi Kato exuding her quietly unbeatable main-heroine aura from the edge of the bed late in the evening. Wearing an understated ivory-white ribbed cotton camisole and matching sleep shorts, she lazily swings her bare feet while texting on her phone. Turning her head with her trademark tranquil, unruffled gaze, her soft brown eyes welcome the viewer with effortless domestic peace.",
-    "animaCaption": "katou megumi, 1girl, white ribbed camisole, shorts, swinging legs on bed, phone in hand, brown bob hair, neutral gentle expression, highres",
+    "animaCaption": "Megumi Kato exuding her quietly unbeatable main-heroine aura from the edge of the bed late in the evening. Wearing an understated ivory-white ribbed cotton camisole and matching sleep shorts, she lazily swings her bare feet while texting on her phone.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

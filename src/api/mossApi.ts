@@ -1,14 +1,7 @@
 import { apiClient } from './client'
-import type { QwenModelStatus } from './qwenApi'
+import { mossModels, type DirectImageModelStatus } from '@/config/directImageModels'
 
-export const MOSS_MODEL_ID = 'moss-miaomiao-base-v1.1'
-export const mossModels = [
-  { value: MOSS_MODEL_ID, label: 'MiaoMiao Harem MOSS · BASE v1.1', versionId: '3434952' },
-  { value: 'moss-miaomiao-base-v1.0', label: 'MiaoMiao Harem MOSS · BASE v1.0', versionId: '3422319' },
-] as const
-export const validMossSpectrumFlexWindow = (value: unknown): value is number => typeof value === 'number' && Number.isFinite(value) && value >= 0 && value <= 2
-
-export async function mossStatus(signal: AbortSignal): Promise<QwenModelStatus[]> {
+export async function mossStatus(signal: AbortSignal): Promise<DirectImageModelStatus[]> {
   const value = await apiClient.request<Record<string, unknown>>('/api/moss/status', { signal, timeoutMs: 15_000, cachePolicy: 'bypass' })
   if (value.ok !== true || value.provider !== 'native' || !Array.isArray(value.models)) throw new Error('请在控制室准备 MOSS 原生模型并重启')
   const models = value.models

@@ -3,6 +3,7 @@ import catalogSnapshot = require('../lib/catalog-snapshot');
 /** Validate legacy shards first; explicitly apply metadata repairs and derived builds. */
 const fs: typeof import('node:fs') = require('node:fs');
 const path: typeof import('node:path') = require('node:path');
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 
 function main() {
   const args = process.argv.slice(2);
@@ -12,7 +13,7 @@ function main() {
   }
   for (const arg of args) if (!['--apply', '--dry-run'].includes(arg) && !arg.startsWith('--root=')) throw new Error(`Unknown option: ${arg}`);
   if (args.includes('--apply') && args.includes('--dry-run')) throw new Error('--apply and --dry-run cannot be combined');
-  const root = path.resolve(args.find(a => a.startsWith('--root='))?.slice(7) || process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '../..'));
+  const root = path.resolve(args.find(a => a.startsWith('--root='))?.slice(7) || resolveContentRoot());
   catalogSnapshot.assertLegacyWrite(root);
   process.env.AICS_DATA_ROOT = root;
   const data = path.join(root, 'data');

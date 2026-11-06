@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tomotake_yoshino_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3295,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.252Z",
   "data": {
     "id": "tomotake_yoshino_swimsuit_allure",
     "characterId": "tomotake_yoshino",
@@ -37,26 +37,16 @@
       "tranquil"
     ],
     "promptTokens": [
-      "tomotake yoshino",
-      "1girl",
-      "shinto shrine maiden",
-      "pale wisteria lavender and white wrap bikini",
-      "falling cherry blossom and wisteria prints",
-      "white silk side ribbons",
-      "shinto hairpin in black hair",
-      "standing barefoot in ankle-deep sea reflecting sky",
-      "sacred red torii gate rising from ocean behind",
-      "hands folded respectfully in front of chest",
-      "tender bashful blush",
-      "ethereal pink dawn clouds",
-      "mirror-like water reflection",
-      "serene masterwork",
-      "masterpiece",
-      "high quality"
+      "wisteria purple bikini",
+      "torii gate in sea",
+      "mirror water reflection",
+      "dawn clouds",
+      "blushing",
+      "pure"
     ],
     "negativeTokens": [],
     "promptProse": "Yoshino Tomotake wading barefoot within the mirror-calm shallows under a majestic vermilion torii gate standing in the sea at dawn. She wears an exquisite pale wisteria-purple wrap bikini adorned with floating floral motifs and tied with clean white silk sashes. With her glossy black hair held by a priestess ornament, she clasps her hands demurely over her chest with a saintly yet tenderly blushing expression.",
-    "animaCaption": "tomotake yoshino, 1girl, wisteria purple bikini, torii gate in sea, mirror water reflection, dawn clouds, blushing, pure, highres",
+    "animaCaption": "Yoshino Tomotake wading barefoot within the mirror-calm shallows under a majestic vermilion torii gate standing in the sea at dawn. She wears an exquisite pale wisteria-purple wrap bikini adorned with floating floral motifs and tied with clean white silk sashes.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

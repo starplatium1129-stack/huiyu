@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_a2_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3426,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
   "data": {
     "id": "yorha_a2_swimsuit_allure",
     "characterId": "yorha_a2",
@@ -37,25 +37,17 @@
       "lone_wolf"
     ],
     "promptTokens": [
-      "yorha a2",
-      "1girl",
-      "android",
-      "distressed charcoal and silver carbon-fiber bikini",
-      "tattered battle-worn wraps",
-      "sitting cross-legged atop jagged cliff precipice",
-      "chin resting on palm",
-      "long untamed silver hair whipping wildly in gale",
-      "glowing cybernetic eyes with fierce rebellious scowl",
-      "stormy turbulent waves smashing rocks below",
-      "dark crimson and violet thunderstorm sunset",
-      "dramatic low angle",
-      "raw power",
-      "masterpiece",
-      "high quality"
+      "distressed carbon bikini",
+      "sitting cross-legged",
+      "cliff edge",
+      "stormy ocean",
+      "long untamed silver hair",
+      "rebellious scowl",
+      "sunset storm"
     ],
     "negativeTokens": [],
     "promptProse": "A2 perched insolently atop a jagged, windswept sea precipice high above thrashing ocean waves before an incoming storm. She wears a battle-scarred carbon-fiber textured bikini in charcoal and weathered silver with asymmetric ragged fabric wraps. Resting her chin on her hand while the tempestuous gale whips her unkempt silver mane wildly, she scowls down at the storm with untamed, indomitable defiance.",
-    "animaCaption": "yorha a2, 1girl, distressed carbon bikini, cliff edge, stormy ocean, long untamed silver hair, rebellious scowl, sunset storm, highres",
+    "animaCaption": "A2 sits cross-legged at the edge of a jagged sea cliff while storm clouds gather above the waves.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

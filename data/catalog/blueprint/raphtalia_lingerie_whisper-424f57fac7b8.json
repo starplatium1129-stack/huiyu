@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3331,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "raphtalia_lingerie_whisper",
     "characterId": "raphtalia",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "raphtalia",
-      "solo",
-      "demi-human",
-      "fluffy raccoon ears flattened shyly",
-      "thick striped raccoon tail swishing behind",
-      "kneeling on rustic straw mattress under attic skylight",
-      "clutching duvet hem",
-      "warm amber eyes filled with devotion",
-      "starry night through glass"
+      "kneeling",
+      "amber eyes",
+      "night",
+      "ivory cotton underlay",
+      "soft leather lace-up ties",
+      "rustic autumnal embroidery",
+      "faithful demi-human loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, raphtalia, solo, demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind, kneeling on rustic straw mattress under attic skylight, clutching duvet hem, warm amber eyes filled with devotion, starry night through glass",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, raphtalia, solo, demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind, kneeling on rustic straw mattress under attic skylight, clutching duvet hem, warm amber eyes filled with devotion, starry night through glass",
+    "promptProse": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass.",
+    "animaCaption": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

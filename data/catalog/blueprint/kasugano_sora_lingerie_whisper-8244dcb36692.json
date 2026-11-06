@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3344,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.977Z",
   "data": {
     "id": "kasugano_sora_lingerie_whisper",
     "characterId": "kasugano_sora",
@@ -37,22 +37,16 @@
       "pure_attachment"
     ],
     "promptTokens": [
-      "kasugano sora",
-      "1girl",
-      "classic gothic black and white ruffled cotton slip dress",
-      "tiered lace trims",
-      "sitting quietly on wooden genkan entrance step",
-      "clutching tattered black plush bunny doll tightly against chest",
-      "long flowing silver-white twintails draped over knees",
-      "large melancholic dark brown eyes",
-      "fragile porcelain pale complexion",
-      "faint nostalgic porch light in traditional Japanese country home",
-      "masterpiece",
-      "high quality"
+      "gothic black white slip dress",
+      "black bunny plushie",
+      "sitting on wooden step",
+      "silver twintails",
+      "fragile",
+      "dark eyes"
     ],
     "negativeTokens": [],
     "promptProse": "Sora Kasugano waiting faithfully upon the wooden entrance step of her ancestral countryside home deep into the night. Clothed in her iconic gothic monochrome ruffled slip dress, she hugs her worn black bunny plushie tightly against her small frame. Her floor-brushing silver pigtails frame a fragile, porcelain countenance as her dark eyes look up with heartbreaking, devoted longing.",
-    "animaCaption": "kasugano sora, 1girl, gothic black white slip dress, black bunny plushie, sitting on wooden step, silver twintails, fragile, dark eyes, highres",
+    "animaCaption": "Sora Kasugano waiting faithfully upon the wooden entrance step of her ancestral countryside home deep into the night. Clothed in her iconic gothic monochrome ruffled slip dress, she hugs her worn black bunny plushie tightly against her small frame.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

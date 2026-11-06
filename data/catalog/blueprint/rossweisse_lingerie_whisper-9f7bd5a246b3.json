@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3463,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
   "data": {
     "id": "rossweisse_lingerie_whisper",
     "characterId": "rossweisse",
@@ -34,24 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rossweisse",
-      "solo",
-      "valkyrie",
-      "slumping sideways on low living room table",
-      "tipsy blushing cheeks",
-      "long silver-blue hair spilling onto wood surface",
-      "clutching supermarket discount coupon flyers",
-      "empty highball can",
-      "teary pouty eyes",
-      "relatable funny romantic mood"
+      "slumped over table",
+      "holding discount flyers",
+      "highball can",
+      "blush",
+      "blue hair",
+      "teary eyes",
+      "silver snowflake filigree",
+      "plunge neckline",
+      "matching sheer bikini briefs",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rossweisse, solo, valkyrie, slumping sideways on low living room table, tipsy blushing cheeks, long silver-blue hair spilling onto wood surface, clutching supermarket discount coupon flyers, empty highball can, teary pouty eyes, relatable funny romantic mood",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rossweisse, solo, valkyrie, slumping sideways on low living room table, tipsy blushing cheeks, long silver-blue hair spilling onto wood surface, clutching supermarket discount coupon flyers, empty highball can, teary pouty eyes, relatable funny romantic mood",
+    "promptProse": "Rossweisse slumps sideways on low living room table, wearing a nordic ice-blue sheer floral lace bralette set. Valkyrie, tipsy blushing cheeks, long silver-blue hair spilling onto wood surface amidst clutching supermarket discount coupon flyers, empty highball can, teary pouty eyes.",
+    "animaCaption": "Rossweisse slumps over a low table, clutching discount flyers beside an empty highball can.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

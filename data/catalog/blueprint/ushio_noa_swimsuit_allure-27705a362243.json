@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3428,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.282Z",
   "data": {
     "id": "ushio_noa_swimsuit_allure",
     "characterId": "ushio_noa",
@@ -37,25 +37,18 @@
       "soft_afternoon"
     ],
     "promptTokens": [
-      "ushio noa",
-      "1girl",
       "halo",
-      "pale lilac and ivory monokini",
-      "architectural side cutouts",
-      "sheer violet organdy wrap skirt",
-      "sitting poised on white wooden terrace bench",
-      "holding sleek digital stylus to soft lips",
-      "long silver hair fluttering",
-      "gentle lilac eyes",
-      "teasing demure smile",
-      "sunlight filtering through slatted pergola",
-      "serene coastal resort background",
-      "masterpiece",
-      "high quality"
+      "lilac monokini",
+      "cutouts",
+      "sitting on bench",
+      "stylus to lips",
+      "silver hair",
+      "gentle smile",
+      "resort terrace"
     ],
     "negativeTokens": [],
     "promptProse": "Noa Ushio seated with immaculate poise on a sun-dappled white timber bench beneath an open pergola overlooking the sea. She wears a graceful pale lilac and ivory-white monokini featuring delicate architectural side cutouts and a sheer lavender sarong. Touching a high-tech recording stylus pensively to her lips, she observes the viewer with an amused, tenderly teasing secretary's smile.",
-    "animaCaption": "ushio noa, 1girl, halo, lilac monokini, cutouts, sitting on bench, stylus to lips, silver hair, gentle smile, resort terrace, highres",
+    "animaCaption": "Noa Ushio seated with immaculate poise on a sun-dappled white timber bench beneath an open pergola overlooking the sea. She wears a graceful pale lilac and ivory-white monokini featuring delicate architectural side cutouts and a sheer lavender sarong.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

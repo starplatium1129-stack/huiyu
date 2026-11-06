@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3146,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.765Z",
   "data": {
     "id": "horn_arknights_lingerie_whisper",
     "characterId": "horn_arknights",
@@ -37,23 +37,17 @@
       "resolute_soldier"
     ],
     "promptTokens": [
-      "horn (arknights)",
-      "1girl",
-      "lupo white wolf ears perked alert",
-      "fluffy white wolf tail",
-      "military issue pure white heavy-cotton ribbed tank top",
-      "desert camo athletic sleep shorts",
-      "standing straight with impeccable military posture by washstand",
-      "drying wet wavy golden blonde hair with coarse linen towel",
-      "resolute clear amber-gold eyes",
-      "crisp dawn light beaming through metal barracks slats",
-      "heroic low angle",
-      "masterpiece",
-      "high quality"
+      "wolf ears",
+      "white tank top",
+      "camo shorts",
+      "drying blonde hair with towel",
+      "tall posture",
+      "amber eyes",
+      "barracks"
     ],
     "negativeTokens": [],
     "promptProse": "Horn (Rita Skamandros) completing her dawn hygiene regimen inside an austere field barracks. Sporting a regulation white ribbed cotton tank top and desert camouflage lounge shorts that highlight her commanding military physique, she stands with rod-straight posture. Towel-drying her golden curls as her lupo ears perk, her proud amber eyes shine with unwavering resolve.",
-    "animaCaption": "horn (arknights), 1girl, wolf ears, white tank top, camo shorts, drying blonde hair with towel, tall posture, amber eyes, barracks, highres",
+    "animaCaption": "Horn (Rita Skamandros) completing her dawn hygiene regimen inside an austere field barracks. Sporting a regulation white ribbed cotton tank top and desert camouflage lounge shorts that highlight her commanding military physique, she stands with rod-straight posture.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

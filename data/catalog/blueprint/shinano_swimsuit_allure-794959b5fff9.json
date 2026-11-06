@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3444,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
   "data": {
     "id": "shinano_swimsuit_allure",
     "characterId": "shinano",
@@ -37,27 +37,20 @@
       "ethereal"
     ],
     "promptTokens": [
-      "shinano (azur lane)",
-      "1girl",
-      "fox girl",
       "fox ears",
-      "nine huge fluffy fox tails",
-      "midnight indigo sheer monokini",
-      "translucent chiffon kimono wrap",
-      "silver crescent moon embroidery",
-      "reclining on sea reef rock",
-      "shallow ocean water",
-      "full moon reflection",
-      "blue bioluminescent waves",
-      "sleepy half-closed purple eyes",
-      "flowing long silver hair",
-      "cinematic wide angle",
-      "masterpiece",
-      "high quality"
+      "nine tails",
+      "kimono wrap swimsuit",
+      "sheer chiffon",
+      "reclining",
+      "reef rock",
+      "night beach",
+      "moon",
+      "glowing water",
+      "silver hair"
     ],
     "negativeTokens": [],
     "promptProse": "Shinano resting gracefully on a moonlit sea reef submerged in calm nighttime tides. She wears an elegant midnight indigo kimono-inspired wrap monokini with sheer star-patterned chiffon drapes. Her nine magnificent fluffy fox tails fan out lazily across the water which glimmers with gentle blue bioluminescence. She gazes softly with half-lidded amethyst eyes beneath silver hair bathed in celestial moonlight.",
-    "animaCaption": "shinano (azur lane), 1girl, fox ears, nine tails, kimono wrap swimsuit, sheer chiffon, night beach, moon, glowing water, silver hair, masterpiece",
+    "animaCaption": "Shinano reclines on a reef in the calm night sea, her fox tails drifting on the water.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3225,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.846Z",
   "data": {
     "id": "illyasviel_von_einzbern_lingerie_whisper",
     "characterId": "illyasviel_von_einzbern",
@@ -37,22 +37,17 @@
       "fairy_tale_bedroom"
     ],
     "promptTokens": [
-      "illyasviel von einzbern",
-      "1girl",
-      "einzbern princess",
-      "pale lilac velvet camisole nightdress with marshmallow-fluffy white pom pom trim",
-      "rolling playfully on enormous antique canopy bed",
-      "hugging oversized giant white polar bear plushie",
-      "glorious long silver-white hair splayed across dark crimson velvet duvet",
-      "sparkling large ruby-red eyes",
-      "adorable demanding pouty smile",
-      "warm fairytale castle chandelier glow",
-      "masterpiece",
-      "high quality"
+      "lilac velvet nightdress",
+      "pom pom trim",
+      "giant polar bear plushie",
+      "rolling on bed",
+      "silver hair",
+      "ruby red eyes",
+      "cute pout"
     ],
     "negativeTokens": [],
     "promptProse": "Illyasviel von Einzbern holding court from the middle of her opulent four-poster canopy bed in the Einzbern castle. Wearing a sweet pale-lilac velvet camisole dress bordered with fluffy white pom-poms, she rolls around hugging a giant plush polar bear nearly twice her size. Her shimmering silver tresses pool over the duvet as her ruby eyes beam with demanding, affectionate princess charm.",
-    "animaCaption": "illya, 1girl, lilac velvet nightdress, pom pom trim, giant polar bear plushie, rolling on bed, silver hair, ruby red eyes, cute pout, highres",
+    "animaCaption": "Illyasviel von Einzbern holding court from the middle of her opulent four-poster canopy bed in the Einzbern castle. Wearing a sweet pale-lilac velvet camisole dress bordered with fluffy white pom-poms, she rolls around hugging a giant plush polar bear nearly twice her size.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

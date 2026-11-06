@@ -1,5 +1,5 @@
-import { kvGet } from '../../composables/useKVStore'
-import { imgList, imgGet, imgDeleteMany } from '../../composables/useImageStore'
+import { kvGet } from './kvStore'
+import { imgList, imgGet, imgDeleteMany } from './imageStore'
 import { ARTWORK_HISTORY_KV_KEY, ARTWORK_PROJECTS_KV_KEY, ARTWORK_TRASH_KV_KEY, ARTWORK_HISTORY_QUARANTINE_KEY } from '../../utils/storageKeys'
 import type { BackupRecord } from '../../utils/backupCore'
 

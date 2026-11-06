@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3504,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.238Z",
   "data": {
     "id": "arihara_nanami_lingerie_whisper",
     "characterId": "arihara_nanami",
@@ -37,23 +37,17 @@
       "cozy_home"
     ],
     "promptTokens": [
-      "arihara nanami",
-      "1girl",
-      "cute pink and white coral fleece hooded pajama set",
-      "cat ear hood resting over hair",
-      "holding small wooden serving tray with two steaming teacups",
-      "standing at bedroom doorway in cozy house slippers",
-      "playful winking affectionate smile",
-      "short styled dark brown hair",
-      "warm hazel eyes",
-      "cozy apartment corridor warm lighting",
-      "slice of life romance",
-      "masterpiece",
-      "high quality"
+      "pink fleece pajamas",
+      "cat hood",
+      "tea tray",
+      "doorway",
+      "winking smile",
+      "cozy slippers",
+      "night"
     ],
     "negativeTokens": [],
     "promptProse": "Nanami Arihara making a late-night tea delivery outside her brother's room. She is dressed in an adorably fluffy pink-and-white coral fleece pajama set featuring a cat-eared hood. Balancing a wooden tray with two hot cups of tea while leaning against the doorway with a playful wink, her expressive eyes radiate domestic warmth and mischievous secret-agent charm.",
-    "animaCaption": "arihara nanami, 1girl, pink fleece pajamas, cat hood, tea tray, doorway, winking smile, cozy slippers, night, highres",
+    "animaCaption": "Nanami Arihara making a late-night tea delivery outside her brother's room. She is dressed in an adorably fluffy pink-and-white coral fleece pajama set featuring a cat-eared hood.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

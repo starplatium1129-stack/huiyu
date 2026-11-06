@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3382,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yamada_ryo_lingerie_whisper",
     "characterId": "yamada_ryo",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yamada ryo",
-      "solo",
-      "bassist",
-      "lounging carelessly on beaten leather sofa with bare feet propped on black bass guitar hardcase",
-      "nibbling grassy herbal snack",
-      "short dark-blue hair with hairpin",
-      "deadpan cool amber eyes",
-      "rehearsal studio with amplifiers"
+      "chaise lounge",
+      "acoustic guitar",
+      "bare feet",
+      "blue hair",
+      "amber eyes",
+      "relaxed boy-shorts",
+      "raw hem details",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yamada ryo, solo, bassist, lounging carelessly on beaten leather sofa with bare feet propped on black bass guitar hardcase, nibbling grassy herbal snack, short dark-blue hair with hairpin, deadpan cool amber eyes, rehearsal studio with amplifiers",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yamada ryo, solo, bassist, lounging carelessly on beaten leather sofa with bare feet propped on black bass guitar hardcase, nibbling grassy herbal snack, short dark-blue hair with hairpin, deadpan cool amber eyes, rehearsal studio with amplifiers",
+    "promptProse": "Yamada Ryo lounges carelessly on beaten leather sofa with bare feet propped on black bass guitar hardcase, wearing a dark indigo-teal minimalist athletic tank bralette. Bassist, nibbling grassy herbal snack, short dark-blue hair with hairpin amidst deadpan cool amber eyes, rehearsal studio with amplifiers.",
+    "animaCaption": "Yamada Ryo lounges carelessly on beaten leather sofa with bare feet propped on black bass guitar hardcase, wearing a dark indigo-teal minimalist athletic tank bralette. Bassist, nibbling grassy herbal snack, short dark-blue hair with hairpin amidst deadpan cool amber eyes, rehearsal studio with amplifiers.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

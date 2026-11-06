@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3522,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.692Z",
   "data": {
     "id": "gotoh_hitori_lingerie_whisper",
     "characterId": "gotoh_hitori",
@@ -37,24 +37,15 @@
       "bocchi_panic"
     ],
     "promptTokens": [
-      "gotoh hitori",
-      "1girl",
-      "bocchi the rock",
-      "faded rose-pink oversized zip-up tracksuit jersey",
-      "zipper pulled all the way up to cover chin",
-      "curled into tight trembling ball inside cardboard fruit box within dark closet",
-      "hugging knees to chest",
-      "messy long pink hair tangled around shoulders",
-      "cube hair ornament",
-      "teary spiraling cartoon anxiety eyes",
-      "glowing smartphone in hand",
-      "hilarious awkward safehouse",
-      "masterpiece",
-      "high quality"
+      "pink tracksuit zipped up",
+      "inside cardboard box in closet",
+      "curled up shivering",
+      "pink hair",
+      "funny anxiety eyes"
     ],
     "negativeTokens": [],
     "promptProse": "Hitori Gotoh (Bocchi) retreating to absolute social isolation inside the depths of her bedroom closet. Buried within a weathered citrus cardboard box wearing her faded pink zip-up tracksuit zipped tight to her mouth, she curls into a quivering ball. Clutching her glowing phone as panic spirals in her teary turquoise eyes, she prays the world forgets her existence.",
-    "animaCaption": "bocchi, 1girl, pink tracksuit zipped up, inside cardboard box in closet, curled up shivering, pink hair, funny anxiety eyes, highres",
+    "animaCaption": "Hitori Gotoh (Bocchi) retreating to absolute social isolation inside the depths of her bedroom closet. Buried within a weathered citrus cardboard box wearing her faded pink zip-up tracksuit zipped tight to her mouth, she curls into a quivering ball.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

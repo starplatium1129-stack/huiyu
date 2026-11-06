@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3474,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.893Z",
   "data": {
     "id": "itsuwa_lingerie_whisper",
     "characterId": "itsuwa",
@@ -37,23 +37,17 @@
       "amakusa_service"
     ],
     "promptTokens": [
-      "itsuwa (toaru)",
-      "1girl",
-      "amakusa-style",
-      "pure white plush terrycloth bath wrap towel tucked over bust",
-      "matching hair towel wrap",
-      "bare shoulders and damp glowing porcelain skin",
-      "holding small wooden lacquer tray with hot rolled towel",
-      "face blushing violently red with comic steam rising",
-      "quivering embarrassed mouth",
-      "short dark hair damp around neck",
-      "warm dorm corridor lighting",
-      "masterpiece",
-      "high quality"
+      "white towel wrap",
+      "hair towel",
+      "holding tray with hot towel",
+      "violent red blush",
+      "steam",
+      "dark hair",
+      "flustered"
     ],
     "negativeTokens": [],
     "promptProse": "Itsuwa completely overwhelmed by mortification while executing her 'hot towel service' plan outside Kamijou Touma's room. Wearing only a tucked white terrycloth bath towel and hair wrap fresh from the shower, she balances a wooden lacquer tray with trembling hands. Her entire face flushes into a steaming scarlet blaze of hopeless, pure-hearted embarrassment.",
-    "animaCaption": "itsuwa, 1girl, white towel wrap, hair towel, holding tray with hot towel, violent red blush, steam, dark hair, flustered, highres",
+    "animaCaption": "Itsuwa completely overwhelmed by mortification while executing her 'hot towel service' plan outside Kamijou Touma's room. Wearing only a tucked white terrycloth bath towel and hair wrap fresh from the shower, she balances a wooden lacquer tray with trembling hands.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

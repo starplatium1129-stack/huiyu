@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3355,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.537Z",
   "data": {
     "id": "elfaria_alvis_serfort_lingerie_whisper",
     "characterId": "elfaria_alvis_serfort",
@@ -37,23 +37,17 @@
       "lovesick_queen"
     ],
     "promptTokens": [
-      "elfaria alvis serfort",
-      "1girl",
-      "magia vande",
-      "pale azure icy silk fluid slip chemise",
-      "frosted crystal trim",
-      "curled up reclining on luxurious polar white fur daybed",
-      "conjuring miniature glowing ice sculpture of a boy in palm",
-      "immense ankle-length blue hair spreading over furs",
-      "tender longing deep-blue eyes",
-      "glowing ice pillars and warm fireplace light",
-      "breathtaking royal palace",
-      "masterpiece",
-      "high quality"
+      "pale azure silk slip",
+      "ice palace",
+      "polar furs",
+      "conjuring ice doll",
+      "blue hair",
+      "deep blue eyes",
+      "longing gaze"
     ],
     "negativeTokens": [],
     "promptProse": "Elfaria Alvis Serfort resting within her majestic frosted tower sanctum late at night. She is attired in an ethereal pale-azure ice-silk slip gown trimmed with delicate crystalline frost lace. Reclining amid white polar furs while conjuring a tiny, detailed ice sculpture of her beloved Will within her palm, her formidable Magia Vande authority dissolves into pure, lovesick devotion.",
-    "animaCaption": "elfaria, 1girl, pale azure silk slip, ice palace, polar furs, conjuring ice doll, blue hair, deep blue eyes, longing gaze, highres",
+    "animaCaption": "Elfaria Alvis Serfort resting within her majestic frosted tower sanctum late at night. She is attired in an ethereal pale-azure ice-silk slip gown trimmed with delicate crystalline frost lace.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

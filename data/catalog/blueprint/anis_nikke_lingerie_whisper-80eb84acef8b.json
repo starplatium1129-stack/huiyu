@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_nikke_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3378,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
   "data": {
     "id": "anis_nikke_lingerie_whisper",
     "characterId": "anis_nikke",
@@ -37,25 +37,17 @@
       "hilarious_casual"
     ],
     "promptTokens": [
-      "anis (nikke)",
-      "1girl",
-      "yellow and white ribbed casual tank top",
-      "comfy grey cotton booty shorts",
-      "voluptuous curvy figure",
-      "slouching deeply into plush single armchair",
-      "one bare leg lazily slung over the sofa armrest",
-      "holding chilled soda can with water droplets",
-      "short orange bob hair",
-      "relaxed cheeky smirk",
-      "amber eyes",
-      "glowing television screen background",
-      "candid late-night living room",
-      "masterpiece",
-      "high quality"
+      "yellow tank top",
+      "grey shorts",
+      "slouching in armchair",
+      "holding soda can",
+      "leg over armrest",
+      "curvy",
+      "relaxed smirk"
     ],
     "negativeTokens": [],
     "promptProse": "Anis indulging in lazy late-night comfort in the outpost commander's quarters. She sports a relaxed yellow-and-white ribbed athletic tank top paired with grey cotton sleep shorts accentuating her full, curvaceous frame. Sprawling deep into a plush armchair with one leg slung over the armrest while savoring an iced soda can, she glances back with a hilariously uninhibited, affectionate comrade smirk.",
-    "animaCaption": "anis (nikke), 1girl, yellow tank top, grey shorts, slouching on sofa, soda can, leg over armrest, curvy, relaxed smirk, highres",
+    "animaCaption": "Anis lounges in an armchair with one leg over the armrest, holding a cold can of soda.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

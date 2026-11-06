@@ -16,8 +16,8 @@ const {
 const write = process.argv.includes('--write');
 const check = process.argv.includes('--check');
 
-const pinnedPath = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT
-  || path.resolve(__dirname, '..', '..'), 'data', 'prompt-pinned-scenes.json');
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+const pinnedPath = path.resolve(resolveContentRoot(), 'data', 'prompt-pinned-scenes.json');
 let pinnedScenes: Record<string, unknown> = {};
 try {
   const pinned: unknown = JSON.parse(fs.readFileSync(pinnedPath, 'utf8'));

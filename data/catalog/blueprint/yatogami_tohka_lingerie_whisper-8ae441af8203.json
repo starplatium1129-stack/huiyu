@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3332,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yatogami_tohka_lingerie_whisper",
     "characterId": "yatogami_tohka",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yatogami tohka",
-      "solo",
-      "spirit princess",
-      "sitting cross-legged holding fresh golden kinako bread with both hands",
-      "sugar dust on lower lip",
-      "voluminous royal purple hair cascading",
-      "radiant sparkling purple eyes",
-      "warm cozy living room in afternoon sunshine"
+      "sitting",
+      "purple hair",
+      "purple eyes",
+      "silver starburst clasp",
+      "flutter hemline",
+      "imperial purple hue",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yatogami tohka, solo, spirit princess, sitting cross-legged holding fresh golden kinako bread with both hands, sugar dust on lower lip, voluminous royal purple hair cascading, radiant sparkling purple eyes, warm cozy living room in afternoon sunshine",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yatogami tohka, solo, spirit princess, sitting cross-legged holding fresh golden kinako bread with both hands, sugar dust on lower lip, voluminous royal purple hair cascading, radiant sparkling purple eyes, warm cozy living room in afternoon sunshine",
+    "promptProse": "Tohka Yatogami sits cross-legged holding fresh golden kinako bread with both hands, wearing a violet purple double-layered chiffon babydoll slip. Spirit princess, sugar dust on lower lip, voluminous royal purple hair cascading amidst radiant sparkling purple eyes, warm cozy living room in afternoon sunshine.",
+    "animaCaption": "Tohka Yatogami sits cross-legged holding fresh golden kinako bread with both hands, wearing a violet purple double-layered chiffon babydoll slip. Spirit princess, sugar dust on lower lip, voluminous royal purple hair cascading amidst radiant sparkling purple eyes, warm cozy living room in afternoon sunshine.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

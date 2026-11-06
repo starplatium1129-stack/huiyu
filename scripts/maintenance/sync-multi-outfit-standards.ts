@@ -16,7 +16,8 @@ const path: typeof import('path') = require('path');
 const referenceStore: typeof import('../lib/reference-store') = require('../lib/reference-store');
 const { mergeReferenceLibrary }: typeof import('../lib/reference-library-merge') = require('../lib/reference-library-merge');
 
-const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+const ROOT = resolveContentRoot();
 // 2026-08-29：参考图迁出项目 → AI 工作区 CharacterReferences（样张模式，桌面
 // 安装包不再携带 ~1GB 媒体图）；找不到外部目录时退回项目 assets 兼容旧环境。
 const OUT_BASE = (() => {

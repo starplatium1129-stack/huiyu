@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3280,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.335Z",
   "data": {
     "id": "ayanami_rei_lingerie_whisper",
     "characterId": "ayanami_rei",
@@ -37,24 +37,18 @@
       "fragile_doll"
     ],
     "promptTokens": [
-      "ayanami rei",
-      "1girl",
-      "first child",
-      "plain hospital-white seamless cotton tank top",
-      "matching simple white cotton shorts",
-      "sitting rigidly on edge of austere single wire-frame bed",
-      "hands neatly folded on lap",
-      "bare feet on bare concrete floor",
-      "short pale blue hair with soft bangs",
-      "luminous crimson red eyes",
-      "single streetlamp shining through dusty window",
-      "stark barren minimalist apartment",
-      "masterpiece",
-      "high quality"
+      "plain white tank top",
+      "shorts",
+      "sitting on cot",
+      "pale blue hair",
+      "red eyes",
+      "concrete floor",
+      "barren room",
+      "streetlight"
     ],
     "negativeTokens": [],
     "promptProse": "Rei Ayanami seated in profound solitude upon the edge of an austere single cot within her barren apartment. Clothed in a plain hospital-white seamless cotton tank and shorts, her hands rest folded over her knees while bare feet touch the cold floor. Her luminous crimson eyes peer toward the doorway, reflecting the lonely glow of an outdoor streetlight with fragile, doll-like stillness.",
-    "animaCaption": "ayanami rei, 1girl, plain white tank top, shorts, sitting on cot, pale blue hair, red eyes, concrete floor, barren room, streetlight, highres",
+    "animaCaption": "Rei Ayanami seated in profound solitude upon the edge of an austere single cot within her barren apartment. Clothed in a plain hospital-white seamless cotton tank and shorts, her hands rest folded over her knees while bare feet touch the cold floor.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

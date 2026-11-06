@@ -1,6 +1,6 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-import { imgPutRecord, imgDeleteMany } from '@/composables/useImageStore'
-import { kvGet, kvSetMany } from '@/composables/useKVStore'
+import { imgPutRecord, imgDeleteMany } from '@/platform/web/imageStore'
+import { kvGet, kvSetMany } from '@/platform/web/kvStore'
 import { withArtworkMutation } from './artworkMutation'
 import { mergeBackupRecords, type BackupFile, type BackupRecord } from '@/utils/backupCore'
 import { prepareBackupSettings } from '@/utils/backupSettings'

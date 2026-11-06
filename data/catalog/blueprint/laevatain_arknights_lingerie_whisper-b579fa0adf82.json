@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3182,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "laevatain_arknights_lingerie_whisper",
     "characterId": "laevatain_arknights",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "laevatain arknights",
-      "solo",
-      "sitting on industrial metallic workbench edge",
-      "bare feet dangling",
-      "one hand braced on surface",
-      "fiery orange-red eyes",
-      "glowing originium crystal accents",
-      "glowing amber holographic monitors in background",
-      "sci-fi outpost quarters"
+      "sitting",
+      "bench",
+      "bare feet",
+      "red eyes",
+      "glowing",
+      "high-tech cutout details",
+      "industrial strap accents",
+      "sci-fi futuristic lingerie",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, laevatain arknights, solo, sitting on industrial metallic workbench edge, bare feet dangling, one hand braced on surface, fiery orange-red eyes, glowing originium crystal accents, glowing amber holographic monitors in background, sci-fi outpost quarters",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, laevatain arknights, solo, sitting on industrial metallic workbench edge, bare feet dangling, one hand braced on surface, fiery orange-red eyes, glowing originium crystal accents, glowing amber holographic monitors in background, sci-fi outpost quarters",
+    "promptProse": "Laevatain sits on industrial metallic workbench edge, wearing a ember fiery orange-red geometric sheer bralette. Bare feet dangling, one hand braced on surface, fiery orange-red eyes amidst glowing originium crystal accents, glowing amber holographic monitors in background, sci-fi outpost quarters.",
+    "animaCaption": "Laevatain sits on industrial metallic workbench edge, wearing a ember fiery orange-red geometric sheer bralette. Bare feet dangling, one hand braced on surface, fiery orange-red eyes amidst glowing originium crystal accents, glowing amber holographic monitors in background, sci-fi outpost quarters.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

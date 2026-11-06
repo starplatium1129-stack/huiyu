@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3268,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kyouyama_kazusa_lingerie_whisper",
     "characterId": "kyouyama_kazusa",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kyouyama kazusa",
-      "solo",
-      "leaning against beanbag chair",
-      "cat tail flicking on wool blanket",
-      "cat ears twitching",
-      "blushing face looking away shyly",
-      "holding pink macaron ribbon",
-      "low wooden coffee table with tea cup",
-      "warm fairy lights background"
+      "cat ears",
+      "blush",
+      "ribbon",
+      "teacup",
+      "mug",
+      "cat-ear notched neckline",
+      "satin ribbon bows",
+      "ruffled hem tap pants",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kyouyama kazusa, solo, leaning against beanbag chair, cat tail flicking on wool blanket, cat ears twitching, blushing face looking away shyly, holding pink macaron ribbon, low wooden coffee table with tea cup, warm fairy lights background",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kyouyama kazusa, solo, leaning against beanbag chair, cat tail flicking on wool blanket, cat ears twitching, blushing face looking away shyly, holding pink macaron ribbon, low wooden coffee table with tea cup, warm fairy lights background",
+    "promptProse": "Kyouyama Kazusa leans against beanbag chair, wearing a smoky mauve and grey lace trim camisole set. Cat tail flicking on wool blanket, cat ears twitching, blushing face looking away shyly amidst holding pink macaron ribbon, low wooden coffee table with tea cup, warm fairy lights background.",
+    "animaCaption": "Kyouyama Kazusa leans against beanbag chair, wearing a smoky mauve and grey lace trim camisole set. Cat tail flicking on wool blanket, cat ears twitching, blushing face looking away shyly amidst holding pink macaron ribbon, low wooden coffee table with tea cup, warm fairy lights background.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

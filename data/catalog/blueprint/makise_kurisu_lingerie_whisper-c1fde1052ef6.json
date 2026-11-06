@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makise_kurisu_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3479,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "makise_kurisu_lingerie_whisper",
     "characterId": "makise_kurisu",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "makise kurisu",
-      "solo",
-      "curled up on vintage laboratory brown couch",
-      "pulling thin fleece blanket up to chest with both hands",
-      "blushing furiously",
-      "red-violet eyes looking away indignantly",
-      "chestnut hair disheveled",
-      "CRT monitors glowing warmly in dark lab room"
+      "chaise lounge",
+      "blush",
+      "purple eyes",
+      "glowing",
+      "black eyelash lace edges",
+      "geometric soft cup bralette",
+      "tiny black ribbon bows",
+      "stylish tsundere lingerie",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, makise kurisu, solo, curled up on vintage laboratory brown couch, pulling thin fleece blanket up to chest with both hands, blushing furiously, red-violet eyes looking away indignantly, chestnut hair disheveled, CRT monitors glowing warmly in dark lab room",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, makise kurisu, solo, curled up on vintage laboratory brown couch, pulling thin fleece blanket up to chest with both hands, blushing furiously, red-violet eyes looking away indignantly, chestnut hair disheveled, CRT monitors glowing warmly in dark lab room",
+    "promptProse": "Makise Kurisu curls up on vintage laboratory brown couch, wearing a crimson satin trimmed sheer camisole set. Pulling thin fleece blanket up to chest with both hands, blushing furiously, red-violet eyes looking away indignantly amidst chestnut hair disheveled, CRT monitors glowing warmly in dark lab room.",
+    "animaCaption": "Makise Kurisu curls up on vintage laboratory brown couch, wearing a crimson satin trimmed sheer camisole set. Pulling thin fleece blanket up to chest with both hands, blushing furiously, red-violet eyes looking away indignantly amidst chestnut hair disheveled, CRT monitors glowing warmly in dark lab room.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

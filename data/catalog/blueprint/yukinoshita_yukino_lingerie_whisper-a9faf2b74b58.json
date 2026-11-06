@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3217,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yukinoshita_yukino_lingerie_whisper",
     "characterId": "yukinoshita_yukino",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yukinoshita yukino",
-      "solo",
-      "sitting on bed edge holding black-and-white Pan-san stuffed animal in lap",
-      "cascading waist-length raven hair",
-      "porcelain skin",
-      "crystalline cool blue eyes melting into profound tenderness",
-      "neat bookshelf of literature books",
-      "serene winter night"
+      "bed",
+      "sitting",
+      "black hair",
+      "crystals",
+      "blue eyes",
+      "books",
+      "night",
+      "ultra-thin straps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yukinoshita yukino, solo, sitting on bed edge holding black-and-white Pan-san stuffed animal in lap, cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness, neat bookshelf of literature books, serene winter night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yukinoshita yukino, solo, sitting on bed edge holding black-and-white Pan-san stuffed animal in lap, cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness, neat bookshelf of literature books, serene winter night",
+    "promptProse": "Yukinoshita Yukino sits on bed edge holding black-and-white Pan-san stuffed animal in lap, wearing a ice blue minimalist liquid-silk slip gown. Cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness amidst neat bookshelf of literature books, serene winter night.",
+    "animaCaption": "Yukinoshita Yukino sits on bed edge holding black-and-white Pan-san stuffed animal in lap, wearing a ice blue minimalist liquid-silk slip gown. Cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness amidst neat bookshelf of literature books, serene winter night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

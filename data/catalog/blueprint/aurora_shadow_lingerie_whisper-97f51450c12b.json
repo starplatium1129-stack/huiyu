@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3511,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.326Z",
   "data": {
     "id": "aurora_shadow_lingerie_whisper",
     "characterId": "aurora_shadow",
@@ -37,24 +37,16 @@
       "dangerous_witch"
     ],
     "promptTokens": [
-      "aurora (the eminence in shadow)",
-      "1girl",
-      "witch of calamity",
-      "deep purple semi-sheer velvet plunge bodysuit",
-      "daring neckline",
-      "asymmetric lace garters",
-      "leaning against floating luminescent violet crystal spire",
-      "fingers twirling loose dark purple curls",
-      "amused teasing crimson eyes",
+      "purple velvet bodysuit",
+      "floating crystal",
+      "twirling hair",
+      "ruby eyes",
       "seductive smirk",
-      "ancient floating ruins with purple twilight abyss",
-      "dramatic glowing lighting",
-      "masterpiece",
-      "high quality"
+      "ancient ruins"
     ],
     "negativeTokens": [],
     "promptProse": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace. Leaning against a levitating violet crystal while twirling a lock of hair around her fingertip, her crimson eyes tease the viewer with ancient, intoxicating allure.",
-    "animaCaption": "aurora (shadow), 1girl, purple velvet bodysuit, floating crystal, twirling hair, ruby eyes, seductive smirk, ancient ruins, highres",
+    "animaCaption": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

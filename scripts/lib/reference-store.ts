@@ -7,10 +7,11 @@ import type { ReferenceStandards, ReferenceView } from './reference-standards';
 const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
 const { acquireMaintenanceLease }: typeof import('./maintenance-lease') = require('./maintenance-lease');
 const { prepareMaintenanceTransaction, commitMaintenanceTransaction, rollbackMaintenanceTransaction }: typeof import('./maintenance-transaction') = require('./maintenance-transaction');
+const { resolveContentRoot }: typeof import('./content-contract-root') = require('./content-contract-root');
 
 export type Library = { standards: ReferenceStandards; view: ReferenceView };
 const json = (value: unknown) => JSON.stringify(value, null, 2) + '\n';
-const defaultRoot = () => path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '../..'));
+const defaultRoot = () => resolveContentRoot();
 const directory = (root: string) => path.join(root, 'data/references');
 const products = (root: string) => ['character-reference-standards.json', 'character-reference-view.json'].map(name => path.join(root, 'data', name));
 const read = (file: string): unknown => JSON.parse(io.readBytes(file, false)!.toString('utf8'));

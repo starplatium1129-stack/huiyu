@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3267,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "sorasaki_hina_lingerie_whisper",
     "characterId": "sorasaki_hina",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "sorasaki hina",
-      "solo",
-      "demon girl",
-      "massive dark purple feathered wings drooping tiredly to office floor",
-      "glowing violet halo above head",
-      "resting chin on hands on executive desk",
-      "long unruly silver hair",
-      "vulnerable exhausted purple eyes",
-      "stacks of paperwork"
+      "angel wings",
+      "halo",
+      "glowing",
+      "silver hair",
+      "purple eyes",
+      "tiny black satin bow",
+      "delicate ruffled hemline",
+      "protective gentle nightwear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, sorasaki hina, solo, demon girl, massive dark purple feathered wings drooping tiredly to office floor, glowing violet halo above head, resting chin on hands on executive desk, long unruly silver hair, vulnerable exhausted purple eyes, stacks of paperwork",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, sorasaki hina, solo, demon girl, massive dark purple feathered wings drooping tiredly to office floor, glowing violet halo above head, resting chin on hands on executive desk, long unruly silver hair, vulnerable exhausted purple eyes, stacks of paperwork",
+    "promptProse": "Sorasaki Hina rests chin on hands on executive desk, wearing a deep violet sheer double-layer chiffon babydoll slip. Demon girl, massive dark purple feathered wings drooping tiredly to office floor, glowing violet halo above head amidst long unruly silver hair, vulnerable exhausted purple eyes, stacks of paperwork.",
+    "animaCaption": "Sorasaki Hina rests chin on hands on executive desk, wearing a deep violet sheer double-layer chiffon babydoll slip. Demon girl, massive dark purple feathered wings drooping tiredly to office floor, glowing violet halo above head amidst long unruly silver hair, vulnerable exhausted purple eyes, stacks of paperwork.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

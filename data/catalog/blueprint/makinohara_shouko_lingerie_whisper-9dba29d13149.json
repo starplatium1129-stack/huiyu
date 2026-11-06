@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3200,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "makinohara_shouko_lingerie_whisper",
     "characterId": "makinohara_shouko",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "makinohara shouko",
-      "solo",
-      "adult version",
-      "standing by sheer fluttery balcony curtains",
-      "looking back over shoulder with tender smile",
-      "long dark purple hair blowing in ocean breeze",
-      "bare feet on sunny wooden floor",
-      "morning sea horizon outside",
-      "ethereal nostalgic atmosphere"
+      "curtains",
+      "balcony",
+      "standing",
+      "smile",
+      "purple hair",
+      "bare feet",
+      "delicate flutter sleeves",
+      "double layered sheer hemline"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, makinohara shouko, solo, adult version, standing by sheer fluttery balcony curtains, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze, bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, makinohara shouko, solo, adult version, standing by sheer fluttery balcony curtains, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze, bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere",
+    "promptProse": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere.",
+    "animaCaption": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

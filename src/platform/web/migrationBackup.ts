@@ -1,5 +1,6 @@
 import type { MigrationEnvelope, MigrationRecord } from '../../../types/migration'
-import { migrationFingerprint, type MigrationSink } from './migrationExport'
+import type { MigrationSink } from './migrationExport'
+import { migrationFingerprint } from './migrationFingerprint'
 
 /** A user-selected backup directory is independent of both IndexedDB and the
  * destination candidate. Files are closed before read-back verification. */

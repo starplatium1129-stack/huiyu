@@ -10,7 +10,7 @@ impl Prepared {
         &self.backend.input
     }
     pub(crate) fn provider(&self) -> &str {
-        &self.backend.provider
+        self.backend.provider()
     }
 }
 #[derive(serde::Deserialize)]

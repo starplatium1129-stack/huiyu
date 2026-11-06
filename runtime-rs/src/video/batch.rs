@@ -10,9 +10,13 @@ use std::time::Instant;
 use tokio::sync::Mutex;
 pub struct BatchPrepared {
     pub input: Value,
-    pub provider: String,
     first: Prepared,
     originals: inputs::Captured,
+}
+impl BatchPrepared {
+    pub(crate) fn provider(&self) -> &str {
+        self.first.provider()
+    }
 }
 pub(super) struct Batch {
     pub id: String,
@@ -194,7 +198,6 @@ impl Service {
         };
         Ok(BatchPrepared {
             input,
-            provider: "comfy".into(),
             first,
             originals,
         })

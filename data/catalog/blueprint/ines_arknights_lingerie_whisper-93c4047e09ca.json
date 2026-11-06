@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3121,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.862Z",
   "data": {
     "id": "ines_arknights_lingerie_whisper",
     "characterId": "ines_arknights",
@@ -37,24 +37,17 @@
       "shadow_courier"
     ],
     "promptTokens": [
-      "ines (arknights)",
-      "1girl",
-      "curved caprinae horns",
-      "matte black faux-leather stretch athletic tank top",
-      "snug black sleep shorts",
-      "seated deeply in shadows of worn leather armchair",
-      "one leg thrown over armrest",
-      "peeling a red apple with combat dagger, peel curling down",
-      "long dark purple hair with side braid",
-      "sharp piercing violet eyes gazing from darkness",
-      "single dim candle casting long dramatic shadows",
-      "film noir atmosphere",
-      "masterpiece",
-      "high quality"
+      "horns",
+      "black faux-leather tank",
+      "peeling apple with dagger",
+      "dark room",
+      "single candle",
+      "violet eyes",
+      "film noir"
     ],
     "negativeTokens": [],
     "promptProse": "Ines observing from the darkest recesses of a dimly lit intelligence safehouse at midnight. Clothed in a form-fitting matte-black faux-leather stretch tank and low-rise sleep shorts, she lounges in an armchair with one leg slung over the side. Skillfully spiraling the peel from a red apple using her combat dagger, her sharp violet gaze slices through the shadows with lethal, magnetic calm.",
-    "animaCaption": "ines (arknights), 1girl, horns, black faux-leather tank, peeling apple with dagger, dark room, single candle, violet eyes, film noir, highres",
+    "animaCaption": "Ines observing from the darkest recesses of a dimly lit intelligence safehouse at midnight. Clothed in a form-fitting matte-black faux-leather stretch tank and low-rise sleep shorts, she lounges in an armchair with one leg slung over the side.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

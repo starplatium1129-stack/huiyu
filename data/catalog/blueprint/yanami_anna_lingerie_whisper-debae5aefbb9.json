@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3351,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yanami_anna_lingerie_whisper",
     "characterId": "yanami_anna",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yanami anna",
-      "solo",
-      "otter-like cuteness",
-      "sitting cross-legged at low table hugging massive tub of strawberry ice cream with big spoon in mouth",
-      "teary pleading blue eyes",
-      "long light-blue hair",
-      "scattered snack wrappers and tissue box",
-      "sunset room glow"
+      "sitting",
+      "teacup",
+      "blue eyes",
+      "blue hair",
+      "sunset",
+      "bubble bloomers tap shorts",
+      "sweet pastel ribbon bow",
+      "comfortable food-lover fit",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yanami anna, solo, otter-like cuteness, sitting cross-legged at low table hugging massive tub of strawberry ice cream with big spoon in mouth, teary pleading blue eyes, long light-blue hair, scattered snack wrappers and tissue box, sunset room glow",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yanami anna, solo, otter-like cuteness, sitting cross-legged at low table hugging massive tub of strawberry ice cream with big spoon in mouth, teary pleading blue eyes, long light-blue hair, scattered snack wrappers and tissue box, sunset room glow",
+    "promptProse": "Anna Yanami sits cross-legged at low table hugging massive tub of strawberry ice cream with big spoon in mouth, wearing a powder pink ruffled double-cotton camisole set. Otter-like cuteness, teary pleading blue eyes, long light-blue hair amidst scattered snack wrappers and tissue box, sunset room glow.",
+    "animaCaption": "Anna Yanami sits cross-legged at low table hugging massive tub of strawberry ice cream with big spoon in mouth, wearing a powder pink ruffled double-cotton camisole set. Otter-like cuteness, teary pleading blue eyes, long light-blue hair amidst scattered snack wrappers and tissue box, sunset room glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

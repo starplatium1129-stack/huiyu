@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3526,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.717Z",
   "data": {
     "id": "hayasaka_ai_lingerie_whisper",
     "characterId": "hayasaka_ai",
@@ -37,21 +37,16 @@
       "undercover_exhaustion"
     ],
     "promptTokens": [
-      "hayasaka ai",
-      "1girl",
-      "ice-blue sleek mulberry silk slip chemise",
-      "thin spaghetti straps",
-      "sitting on bed edge soaking bare feet in steaming wooden foot bath basin",
-      "peeling off cosmetic nail extensions with tired expression",
-      "short blonde hair disheveled without styling",
-      "weary deadpan blue eyes",
-      "modern soundproof bedroom with soft cool blue mood lighting",
-      "masterpiece",
-      "high quality"
+      "ice blue silk slip",
+      "soaking feet in basin",
+      "tired deadpan face",
+      "short blonde hair",
+      "blue eyes",
+      "modern room"
     ],
     "negativeTokens": [],
     "promptProse": "Ai Hayasaka finally shedding her exhaustive double life in the quiet safety of her private bedroom. Dressed in a streamlined ice-blue silk slip chemise, she sits along the mattress soaking her tired feet in a warm wooden herbal foot basin. Running a hand through her unstyled blonde locks with a weary, unbothered deadpan gaze, she savors the bliss of zero expectations.",
-    "animaCaption": "hayasaka ai, 1girl, ice blue silk slip, soaking feet in basin, tired deadpan face, short blonde hair, blue eyes, modern room, highres",
+    "animaCaption": "Ai Hayasaka finally shedding her exhaustive double life in the quiet safety of her private bedroom. Dressed in a streamlined ice-blue silk slip chemise, she sits along the mattress soaking her tired feet in a warm wooden herbal foot basin.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

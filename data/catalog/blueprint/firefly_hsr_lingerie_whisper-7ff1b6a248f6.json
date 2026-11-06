@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_hsr_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3387,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.642Z",
   "data": {
     "id": "firefly_hsr_lingerie_whisper",
     "characterId": "firefly_hsr",
@@ -37,23 +37,17 @@
       "starlit_romance"
     ],
     "promptTokens": [
-      "firefly (honkai: star rail)",
-      "1girl",
-      "mint-cyan and pure white layered chiffon camisole",
-      "fluttery lace hem",
-      "matching ruffled shorts",
-      "sitting on high edge of metallic rooftop balcony railing",
-      "bare legs dangling over surreal sea of clouds",
-      "holding sweet oak roll pastry delicacy",
-      "black hair ribbon in long wavy pale silver-grey hair",
-      "glowing dual-tone cyan-blue eyes",
-      "dreamy sparkling pastel dreamscape galaxy sky",
-      "masterpiece",
-      "high quality"
+      "mint and white camisole",
+      "rooftop railing",
+      "dangling legs",
+      "eating cake",
+      "silver hair",
+      "glowing cyan eyes",
+      "dreamscape"
     ],
     "negativeTokens": [],
     "promptProse": "Firefly sharing a quiet, miraculous moment upon the precipice of her secret dreamscape rooftop. She wears an ethereal mint-cyan and alabaster chiffon camisole set with delicate fluttering hems. Dangling her bare feet over a sea of glowing clouds while nibbling an oak cake roll, her radiant cyan eyes look back with unforgettable, tender gratitude beneath the starlit canopy.",
-    "animaCaption": "firefly (hsr), 1girl, mint and white camisole, rooftop railing, dangling legs, eating cake, silver hair, glowing cyan eyes, dreamscape, highres",
+    "animaCaption": "Firefly sharing a quiet, miraculous moment upon the precipice of her secret dreamscape rooftop. She wears an ethereal mint-cyan and alabaster chiffon camisole set with delicate fluttering hems.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

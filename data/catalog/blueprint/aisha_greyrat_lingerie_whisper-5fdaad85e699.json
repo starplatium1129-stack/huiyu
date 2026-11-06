@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aisha_greyrat_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3529,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.109Z",
   "data": {
     "id": "aisha_greyrat_lingerie_whisper",
     "characterId": "aisha_greyrat",
@@ -37,26 +37,17 @@
       "playful_clever"
     ],
     "promptTokens": [
-      "aisha greyrat",
-      "1girl",
-      "amber peach silk camisole slip",
-      "apron-style frilled bustier",
-      "pale cream lace trim",
-      "lying on stomach on cozy floral carpet",
-      "propping chin in cupped hands",
-      "feet kicking up playfully behind",
-      "closed leather ledger book nearby",
-      "long brown hair in loose messy braid",
-      "bright amber eyes",
-      "teasing fond grin",
-      "warm brass oil lamp glow",
-      "wood panel bedroom",
-      "masterpiece",
-      "high quality"
+      "peach silk camisole",
+      "lying on rug",
+      "feet up",
+      "chin on hands",
+      "ledger book",
+      "lamp light",
+      "teasing smile"
     ],
     "negativeTokens": [],
     "promptProse": "Aisha Greyrat lounging on the plush rug of her private bedroom late at night. She wears an apron-inspired warm peach silk camisole trimmed with sweet ivory ruffles. Propping her chin within her palms with feet kicked up playfully behind her beside a closed household ledger, she looks up with an affectionate, cunning younger-sister smirk beneath warm oil lantern light.",
-    "animaCaption": "aisha greyrat, 1girl, peach silk camisole, lying on rug, feet up, chin on hands, ledger book, lamp light, teasing smile, highres",
+    "animaCaption": "Aisha Greyrat lounging on the plush rug of her private bedroom late at night. She wears an apron-inspired warm peach silk camisole trimmed with sweet ivory ruffles.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

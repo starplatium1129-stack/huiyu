@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3142,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.625Z",
   "data": {
     "id": "fiammetta_arknights_lingerie_whisper",
     "characterId": "fiammetta_arknights",
@@ -37,25 +37,17 @@
       "fiery_phoenix"
     ],
     "promptTokens": [
-      "fiammetta (arknights)",
-      "1girl",
-      "liberi phoenix girl",
-      "white and blazing orange-red hair feathers",
-      "fiery crimson tactical strappy camisole",
-      "black athletic boy shorts",
-      "leaning against cold iron railing of ship balcony",
-      "holding cold aluminum drink can",
-      "wind whipping long white hair across face",
-      "fierce sharp golden-red eyes",
-      "scowling yet approachable expression",
-      "night sky over open deck",
-      "dramatic wind effect",
-      "masterpiece",
-      "high quality"
+      "bird feathers",
+      "crimson camisole",
+      "boy shorts",
+      "holding drink can",
+      "balcony railing",
+      "wind blown white hair",
+      "fiery gaze"
     ],
     "negativeTokens": [],
     "promptProse": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale. Chugging a bitter chilled beverage while glaring with fiery tsundere exasperation, she tosses a drink can toward the viewer.",
-    "animaCaption": "fiammetta (arknights), 1girl, bird feathers, crimson camisole, boy shorts, holding drink can, balcony railing, wind blown white hair, fiery gaze, highres",
+    "animaCaption": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

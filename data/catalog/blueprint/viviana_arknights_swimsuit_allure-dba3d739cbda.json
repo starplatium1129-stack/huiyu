@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viviana_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3289,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "viviana_arknights_swimsuit_allure",
     "characterId": "viviana_arknights",
@@ -37,25 +37,19 @@
       "poetic_elegance"
     ],
     "promptTokens": [
-      "viviana (arknights)",
-      "1girl",
+      "deer horns",
       "deer ears",
-      "golden deer antlers",
-      "pearl white silk swim corset",
-      "translucent gold chiffon drape",
-      "sitting by white linen table on twilight beach",
-      "cupping hands gently around glowing glass hurricane candle lantern",
-      "radiant amber eyes",
-      "flowing wavy golden hair",
-      "warm candlelight illuminating face",
-      "deep blue evening sea background",
-      "intimate portrait",
-      "masterpiece",
-      "high quality"
+      "white and gold swimdress",
+      "sitting",
+      "table",
+      "holding candle lantern",
+      "twilight beach",
+      "gentle smile",
+      "poetry"
     ],
     "negativeTokens": [],
     "promptProse": "Viviana sitting gracefully beside a white linen-draped beachside table in the gathering dusk. She is adorned in a regal pearl-white silk swim corset layered with flowing gold-tinted chiffon. Her delicate hands shelter the flickering flame of a hurricane candle lantern, its warm amber glow illuminating her noble deer features and gentle, poetic golden eyes against the tranquil twilight sea.",
-    "animaCaption": "viviana (arknights), 1girl, deer horns, deer ears, white and gold swimdress, holding candle lantern, twilight beach, gentle smile, poetry, highres",
+    "animaCaption": "Viviana sits by a white linen-covered table on the beach, holding a candle lantern in the fading light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

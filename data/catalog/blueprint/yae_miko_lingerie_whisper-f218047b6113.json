@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3347,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yae_miko_lingerie_whisper",
     "characterId": "yae_miko",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yae miko",
-      "solo",
-      "kitsune fox girl",
-      "soft pink fox ears twitching",
-      "reclining lazily on vermilion veranda of Grand Narukami Shrine",
-      "swirling golden tassel earring with finger",
-      "seductive smirking violet eyes",
-      "glowing sacred sakura tree shedding luminous petals under full moon"
+      "fox ears",
+      "reclining",
+      "purple eyes",
+      "glowing",
+      "waist-high open slit",
+      "flowing sheer peignoir sleeves",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yae miko, solo, kitsune fox girl, soft pink fox ears twitching, reclining lazily on vermilion veranda of Grand Narukami Shrine, swirling golden tassel earring with finger, seductive smirking violet eyes, glowing sacred sakura tree shedding luminous petals under full moon",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yae miko, solo, kitsune fox girl, soft pink fox ears twitching, reclining lazily on vermilion veranda of Grand Narukami Shrine, swirling golden tassel earring with finger, seductive smirking violet eyes, glowing sacred sakura tree shedding luminous petals under full moon",
+    "promptProse": "Yae Miko reclines lazily on vermilion veranda of Grand Narukami Shrine, wearing a scarlet and pure white silk kimono-cut slip robe. Kitsune fox girl, soft pink fox ears twitching, swirling golden tassel earring with finger amidst seductive smirking violet eyes, glowing sacred sakura tree shedding luminous petals under full moon.",
+    "animaCaption": "Yae Miko reclines lazily on vermilion veranda of Grand Narukami Shrine, wearing a scarlet and pure white silk kimono-cut slip robe. Kitsune fox girl, soft pink fox ears twitching, swirling golden tassel earring with finger amidst seductive smirking violet eyes, glowing sacred sakura tree shedding luminous petals under full moon.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

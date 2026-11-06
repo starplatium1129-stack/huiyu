@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "belfast_azur_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3206,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
   "data": {
     "id": "belfast_azur_lingerie_whisper",
     "characterId": "belfast_azur",
@@ -37,24 +37,20 @@
       "perfect_maid"
     ],
     "promptTokens": [
-      "belfast (azur lane)",
-      "1girl",
-      "head maid",
-      "royal navy blue silk slip chemise",
-      "delicate white floral lace along neckline",
-      "daring high side slit",
-      "sitting poised with crossed ankles on crimson velvet armchair",
-      "pouring steaming tea from antique silver teapot into porcelain cup",
-      "short wavy silver hair with maid headband",
-      "gentle devoted blue eyes",
-      "warm crackling fireplace embers",
-      "luxurious victorian study",
-      "masterpiece",
-      "high quality"
+      "navy blue silk slip",
+      "high slit",
+      "silver hair",
+      "maid band",
+      "sitting",
+      "crossed ankles",
+      "armchair",
+      "pouring tea",
+      "fireplace",
+      "elegant poise"
     ],
     "negativeTokens": [],
     "promptProse": "Belfast attending to her Master late at night before the glowing embers of a hearth. Clad in a luxurious royal navy-blue silk slip dress framed by white French lace with a high side slit, she sits with immaculate posture upon a velvet armchair. Pouring chamomile tea from an ornate silver teapot, her gentle blue eyes reflect unshakeable loyalty and refined royal grace.",
-    "animaCaption": "belfast (azur lane), 1girl, navy blue silk slip, high slit, silver hair, maid band, pouring tea, fireplace, elegant poise, highres",
+    "animaCaption": "Belfast sits with her ankles crossed in a velvet armchair, pouring tea in the warmth of the fireplace.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

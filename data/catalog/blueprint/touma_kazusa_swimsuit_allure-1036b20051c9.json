@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3490,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.260Z",
   "data": {
     "id": "touma_kazusa_swimsuit_allure",
     "characterId": "touma_kazusa",
@@ -37,27 +37,17 @@
       "kuudere"
     ],
     "promptTokens": [
-      "touma kazusa",
-      "1girl",
-      "pianist",
-      "asymmetric one-shoulder black swimsuit",
-      "white diagonal strap inspired by piano keys",
-      "minimalist black choker",
-      "sitting on grey coastal pebbles",
-      "holding fluttered music sheet paper",
-      "knee drawn up",
-      "long messy black hair blown across pale face",
-      "intense brooding dark eyes",
-      "lonely northern sea beach",
-      "overcast chilly dusk sky",
-      "orange horizon streak",
-      "melancholic atmosphere",
-      "masterpiece",
-      "high quality"
+      "black one-shoulder swimsuit",
+      "piano key motif",
+      "pebble beach",
+      "music sheet",
+      "windy",
+      "overcast dusk",
+      "kuudere"
     ],
     "negativeTokens": [],
     "promptProse": "Kazusa Touma seated alone upon damp grey pebbles along a desolate northern headland at dusk. She wears a striking asymmetric monochrome one-piece swimsuit in pitch black accented with a diagonal ivory strap evoking piano keys. One hand clutches wind-tousled sheet music against a bent knee while she peers sideways through raven bangs with a guarded, fiercely loyal yet fragile gaze.",
-    "animaCaption": "touma kazusa, 1girl, black one-shoulder swimsuit, piano key motif, pebble beach, music sheet, windy, overcast dusk, kuudere, highres",
+    "animaCaption": "Kazusa Touma seated alone upon damp grey pebbles along a desolate northern headland at dusk. She wears a striking asymmetric monochrome one-piece swimsuit in pitch black accented with a diagonal ivory strap evoking piano keys.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

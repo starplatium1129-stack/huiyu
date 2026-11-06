@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3177,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.237Z",
   "data": {
     "id": "tohsaka_rin_swimsuit_allure",
     "characterId": "tohsaka_rin",
@@ -37,25 +37,17 @@
       "dramatic_wind"
     ],
     "promptTokens": [
-      "tohsaka rin",
-      "1girl",
-      "jewel mage",
-      "rich jewel crimson and black strappy high-waist bikini",
-      "waist wrap ties",
-      "black hair tied in iconic twin tails with black ribbons",
-      "arms crossed under bust",
-      "standing boldly by cliff railing overlooking panoramic sea",
-      "haughty confident smirk with blushing cheeks",
-      "aqua blue eyes",
-      "dramatic coastal wind blowing hair",
-      "intense sun flare",
-      "low angle heroic view",
-      "masterpiece",
-      "high quality"
+      "crimson and black bikini",
+      "twin tails",
+      "arms crossed",
+      "cliff railing",
+      "sea wind",
+      "blushing tsundere",
+      "midday sun"
     ],
     "negativeTokens": [],
     "promptProse": "Rin Tohsaka standing proudly at the edge of a breezy seaside cliff overlook railing. She dons an exquisite jewel-mage crimson bikini bordered in pitch-black satin with crisscrossing waist cords. Her classic twin tails whip through the radiant sea wind as she crosses her arms and tilts her chin defiantly, trying to mask a flustered crimson blush with haughty aristocratic bravado.",
-    "animaCaption": "tohsaka rin, 1girl, crimson and black bikini, twin tails, arms crossed, cliff railing, sea wind, blushing tsundere, midday sun, highres",
+    "animaCaption": "Rin Tohsaka standing proudly at the edge of a breezy seaside cliff overlook railing. She dons an exquisite jewel-mage crimson bikini bordered in pitch-black satin with crisscrossing waist cords.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

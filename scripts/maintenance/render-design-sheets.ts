@@ -51,7 +51,8 @@ const crypto: typeof import('crypto') = require('crypto');
 const { compress }: typeof import('../lib/precompressed-artifacts') = require('../lib/precompressed-artifacts');
 
 const HOST = gateway.gatewayUrl();
-const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+const ROOT = resolveContentRoot();
 const VIEW_FILE = path.join(ROOT, 'data', 'character-reference-view.json');
 const REF_ROOT = process.env.AI_WORKSPACE_ROOT
   ? path.join(process.env.AI_WORKSPACE_ROOT, 'CharacterReferences')

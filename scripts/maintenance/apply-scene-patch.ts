@@ -12,7 +12,8 @@ const zlib: typeof import('node:zlib') = require('node:zlib');
 const { spawnSync }: typeof import('node:child_process') = require('node:child_process');
 const { expectedDataVersion }: typeof import('../lib/data-version') = require('../lib/data-version');
 
-const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '../..'));
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+const ROOT = resolveContentRoot();
 const PROTECTED_SCENE_FIELDS = Object.freeze(['prompt', 'negative', 'animaCaption', 'recommendedSize', 'rating', 'mature']);
 const FORBIDDEN_KEYS = new Set(['id', '__proto__', 'prototype', 'constructor']);
 

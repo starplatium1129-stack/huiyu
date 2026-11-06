@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "furina_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3283,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.668Z",
   "data": {
     "id": "furina_lingerie_whisper",
     "characterId": "furina",
@@ -37,22 +37,16 @@
       "vulnerable_actress"
     ],
     "promptTokens": [
-      "furina (genshin impact)",
-      "1girl",
-      "deep ultramarine navy silk satin slip nightgown",
-      "narcissus floral lace ruffles",
-      "sitting before lighted vintage theater vanity mirror",
-      "holding small silver dessert fork eating bite of opera cake",
-      "loosened wavy white and blue streaked hair",
-      "heterochromia blue eyes filled with vulnerable relief",
-      "soft gentle melancholy smile",
-      "warm incandescent backstage mirror bulbs",
-      "masterpiece",
-      "high quality"
+      "ultramarine satin slip",
+      "eating cake with fork",
+      "vanity mirror",
+      "heterochromia eyes",
+      "white blue hair",
+      "vulnerable smile"
     ],
     "negativeTokens": [],
     "promptProse": "Furina unwinding backstage inside her grand opera house dressing room at the end of a long trial. Adorned in a luxurious deep-ultramarine satin slip dress decorated with ruffled narcissus lace, she sits at her illuminated makeup mirror with an opera cake slice. Her heterochromatic blue eyes reflect vulnerability and bittersweet relief as she sheds her flamboyant theatrical facade.",
-    "animaCaption": "furina, 1girl, ultramarine satin slip, eating cake with fork, vanity mirror, heterochromia eyes, white blue hair, vulnerable smile, highres",
+    "animaCaption": "Furina unwinding backstage inside her grand opera house dressing room at the end of a long trial. Adorned in a luxurious deep-ultramarine satin slip dress decorated with ruffled narcissus lace, she sits at her illuminated makeup mirror with an opera cake slice.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

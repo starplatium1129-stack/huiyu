@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3357,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "maomao_lingerie_whisper",
     "characterId": "maomao",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "maomao",
-      "kusuriya no hitorigoto",
-      "solo",
-      "sitting cross-legged on mat at low wooden desk",
-      "smelling dried herbal sprig near nose",
-      "loose hair pinned with wooden hairpin",
-      "cat-like observant green eyes",
-      "hanging herbs from ceiling",
-      "warm flickering oil lamp lighting"
+      "sitting",
+      "green eyes",
+      "desk lamp",
+      "jade green silk dudou bodice",
+      "traditional oriental innerwear",
+      "floral jacquard weave",
+      "herbal apothecary loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, maomao, kusuriya no hitorigoto, solo, sitting cross-legged on mat at low wooden desk, smelling dried herbal sprig near nose, loose hair pinned with wooden hairpin, cat-like observant green eyes, hanging herbs from ceiling, warm flickering oil lamp lighting",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, maomao, kusuriya no hitorigoto, solo, sitting cross-legged on mat at low wooden desk, smelling dried herbal sprig near nose, loose hair pinned with wooden hairpin, cat-like observant green eyes, hanging herbs from ceiling, warm flickering oil lamp lighting",
+    "promptProse": "Maomao sits cross-legged on mat at low wooden desk, wearing a jade green silk dudou bodice. Smelling dried herbal sprig near nose, loose hair pinned with wooden hairpin, cat-like observant green eyes amidst hanging herbs from ceiling, warm flickering oil lamp lighting.",
+    "animaCaption": "Maomao sits cross-legged on mat at low wooden desk, wearing a jade green silk dudou bodice. Smelling dried herbal sprig near nose, loose hair pinned with wooden hairpin, cat-like observant green eyes amidst hanging herbs from ceiling, warm flickering oil lamp lighting.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

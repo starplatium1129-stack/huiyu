@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinomiya_kaguya_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3311,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.073Z",
   "data": {
     "id": "shinomiya_kaguya_swimsuit_allure",
     "characterId": "shinomiya_kaguya",
@@ -37,28 +37,19 @@
       "afternoon"
     ],
     "promptTokens": [
-      "shinomiya kaguya",
-      "1girl",
-      "black and gold halter bikini",
-      "high-cut bikini bottoms",
-      "delicate gold hip chain",
-      "sitting on luxury sunbed",
-      "holding iced tea glass",
+      "black halter bikini",
+      "gold chains",
+      "iced tea",
+      "sun lounger",
       "crossed legs",
-      "red ribbon hair bow",
-      "black hair",
+      "blush",
       "red eyes",
-      "blushing ears",
-      "haughty teasing expression",
-      "beach umbrella shade",
-      "private resort beach background",
-      "half-body portrait",
-      "masterpiece",
-      "high quality"
+      "resort",
+      "parasol"
     ],
     "negativeTokens": [],
     "promptProse": "Kaguya Shinomiya seated regally on a plush wooden lounge chair beneath a beach parasol at a private resort. She is dressed in a tailored matte black halter bikini adorned with subtle gold chains and trim. Holding a crystal glass of iced tea with crossed legs, her ears blush softly while she maintains her composed, slightly haughty gaze, challenging the viewer with calculating tsundere pride.",
-    "animaCaption": "shinomiya kaguya, 1girl, black halter bikini, gold chains, iced tea, sun lounger, crossed legs, blush, red eyes, resort, parasol, masterpiece",
+    "animaCaption": "Kaguya Shinomiya seated regally on a plush wooden lounge chair beneath a beach parasol at a private resort. She is dressed in a tailored matte black halter bikini adorned with subtle gold chains and trim.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

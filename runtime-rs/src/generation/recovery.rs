@@ -92,9 +92,7 @@ impl Service {
             .map_err(|_| ApiError::new(429, "GENERATION_QUEUE_FULL", "生成队列已满"))?;
         Ok(Prepared {
             input: serde_json::to_value(&input)?,
-            provider: provider.into(),
             execution: Execution::Webui(Box::new(input)),
-            selected: "webui",
             permit,
             gpu: None,
         })

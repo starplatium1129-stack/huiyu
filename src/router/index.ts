@@ -8,7 +8,6 @@ import { needsDocumentReload } from './documentPolicy'
 import { createRoutePrefetcher } from './prefetch'
 import { captureScrollAnchor, restoreScrollAnchor } from '@/utils/scrollAnchor'
 import { loadRoom, type RoomPage } from './roomResources'
-export { needsDocumentReload } from './documentPolicy'
 export { prefetchRouteResources } from './prefetch'
 
 /** Keep a bounded window-scroll snapshot for explicit SPA returns to cached pages. */

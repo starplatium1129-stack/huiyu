@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3191,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "krista_lenz_lingerie_whisper",
     "characterId": "krista_lenz",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "krista lenz",
-      "historia reiss",
-      "solo",
-      "kneeling on rustic linen bedding",
-      "hands gently brushing golden blonde hair",
-      "pure tender expression",
-      "large blue eyes",
-      "rustic stone room with wooden window open to misty meadows",
-      "ethereal morning dawn light",
-      "renaissance painting quality"
+      "bed",
+      "kneeling",
+      "blonde hair",
+      "blue eyes",
+      "ivory white linen corset-slip",
+      "gold thread floral embroidery",
+      "scalloped raw edges",
+      "delicate cotton ties",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, krista lenz, historia reiss, solo, kneeling on rustic linen bedding, hands gently brushing golden blonde hair, pure tender expression, large blue eyes, rustic stone room with wooden window open to misty meadows, ethereal morning dawn light, renaissance painting quality",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, krista lenz, historia reiss, solo, kneeling on rustic linen bedding, hands gently brushing golden blonde hair, pure tender expression, large blue eyes, rustic stone room with wooden window open to misty meadows, ethereal morning dawn light, renaissance painting quality",
+    "promptProse": "Historia Reiss kneels on rustic linen bedding, wearing a ivory white linen corset-slip. Hands gently brushing golden blonde hair, pure tender expression, large blue eyes amidst rustic stone room with wooden window open to misty meadows, ethereal morning dawn light.",
+    "animaCaption": "Historia Reiss kneels on rustic linen bedding, wearing a ivory white linen corset-slip. Hands gently brushing golden blonde hair, pure tender expression, large blue eyes amidst rustic stone room with wooden window open to misty meadows, ethereal morning dawn light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

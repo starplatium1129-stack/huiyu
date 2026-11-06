@@ -1,4 +1,4 @@
-import { executeCompanionTool } from '@/api/companionToolsApi'
+import { executeCompanionTool } from '@/composables/chat/executeCompanionTool'
 import { isCompanionDrawingPath, parseCompanionDrawingDraft } from '@/types/companionDrawing'
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent'
 import type { PromptDeepLinkDeps } from './usePromptDeepLink'

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3492,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.379Z",
   "data": {
     "id": "yarai_miu_swimsuit_allure",
     "characterId": "yarai_miu",
@@ -37,25 +37,17 @@
       "gothic_romance"
     ],
     "promptTokens": [
-      "yarai miu",
-      "1girl",
-      "vampire girl",
-      "deep wine-red velvet high-cut monokini",
-      "black lace-up side ties",
-      "holding translucent black lace parasol to block moonlight",
-      "standing ankle-deep in moonlit sea foam",
-      "long flowing silver hair",
-      "glowing ruby red eyes",
-      "cute sharp vampire fang showing in mischievous smirk",
-      "seaside sea cave rocks",
-      "glimmering nocturnal ocean waves",
-      "charming gothic angle",
-      "masterpiece",
-      "high quality"
+      "vampire fangs",
+      "wine red velvet monokini",
+      "black lace parasol",
+      "silver hair",
+      "red eyes",
+      "midnight sea",
+      "moonlight"
     ],
     "negativeTokens": [],
     "promptProse": "Miu Yarai standing ankle-deep in moonlit seafoam at the entrance of a shadowy coastal cavern at midnight. She wears an alluring wine-red velvet monokini with black crisscross side lacing. Holding a delicate black lace parasol to ward off the full moon's brilliance, she glances back over her shoulder, silver hair billowing as she flashes a tiny, teasing vampire fang in the pale lunar glow.",
-    "animaCaption": "yarai miu, 1girl, vampire fangs, wine red velvet monokini, black lace parasol, silver hair, red eyes, midnight sea, moonlight, highres",
+    "animaCaption": "Miu Yarai standing ankle-deep in moonlit seafoam at the entrance of a shadowy coastal cavern at midnight. She wears an alluring wine-red velvet monokini with black crisscross side lacing.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

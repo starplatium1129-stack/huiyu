@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3178,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "tohsaka_rin_lingerie_whisper",
     "characterId": "tohsaka_rin",
@@ -34,21 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "tohsaka rin",
-      "solo",
-      "sitting in antique armchair with legs crossed",
-      "adjusting top lace band of black over-knee stockings",
-      "iconic twintails with black ribbons",
-      "fiery emerald green eyes blushing indignantly",
-      "antique Tohsaka parlor with gemstones on mahogany desk"
+      "sitting",
+      "twintails",
+      "ribbon",
+      "blush",
+      "green eyes",
+      "crimson silk bralette set",
+      "black eyelash lace trims",
+      "low-rise matching briefs",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, tohsaka rin, solo, sitting in antique armchair with legs crossed, adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly, antique Tohsaka parlor with gemstones on mahogany desk",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, tohsaka rin, solo, sitting in antique armchair with legs crossed, adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly, antique Tohsaka parlor with gemstones on mahogany desk",
+    "promptProse": "Tohsaka Rin sits in antique armchair with legs crossed, wearing a crimson silk bralette set. Adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly amidst antique Tohsaka parlor with gemstones on mahogany desk.",
+    "animaCaption": "Tohsaka Rin sits in antique armchair with legs crossed, wearing a crimson silk bralette set. Adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly amidst antique Tohsaka parlor with gemstones on mahogany desk.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

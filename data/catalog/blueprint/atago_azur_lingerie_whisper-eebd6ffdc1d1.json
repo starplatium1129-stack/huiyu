@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_azur_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3447,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.317Z",
   "data": {
     "id": "atago_azur_lingerie_whisper",
     "characterId": "atago_azur",
@@ -37,24 +37,17 @@
       "pampering"
     ],
     "promptTokens": [
-      "atago (azur lane)",
-      "1girl",
       "dog ears",
-      "fluffy black canine tail swishing",
-      "crimson sheer silk kimono robe with blooming floral prints",
-      "partially open collar",
-      "kneeling gracefully on tatami mat beside thick futon",
-      "one hand gently patting her own shapely thighs inviting lap pillow",
-      "voluptuous mature figure",
-      "alluring golden eyes",
-      "sweet pampering smile",
-      "warm Japanese paper lantern glow",
-      "masterpiece",
-      "high quality"
+      "tail",
+      "crimson kimono robe",
+      "patting lap",
+      "kneeling on tatami",
+      "voluptuous",
+      "seductive smile"
     ],
     "negativeTokens": [],
     "promptProse": "Atago creating an irresistible haven of comfort late at night in a traditional Japanese tatami chamber. She wears an intoxicating crimson sheer silk kimono robe adorned with painted sakura blooms, loosely draped to reveal her radiant neckline. Patting her lap with an affectionate, indulgent smile while her black dog ears twitch happily, she beckons the Commander to rest his weary head.",
-    "animaCaption": "atago (azur lane), 1girl, dog ears, tail, crimson kimono robe, patting lap, kneeling on tatami, voluptuous, seductive smile, highres",
+    "animaCaption": "Atago creating an irresistible haven of comfort late at night in a traditional Japanese tatami chamber. She wears an intoxicating crimson sheer silk kimono robe adorned with painted sakura blooms, loosely draped to reveal her radiant neckline.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

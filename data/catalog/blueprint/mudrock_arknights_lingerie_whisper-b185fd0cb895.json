@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3238,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "mudrock_arknights_lingerie_whisper",
     "characterId": "mudrock_arknights",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "mudrock arknights",
-      "solo",
-      "sitting on thick wool blanket hugging knees",
-      "large curved black horns",
-      "long pure white hair",
-      "ruby red eyes looking up shyly",
-      "massive heavy armor suit standing inactive in dark workshop background",
-      "gentle vulnerable expression"
+      "sitting",
+      "horns",
+      "red eyes",
+      "standing",
+      "cross-back straps",
+      "breathable technical fabric",
+      "low-rise boy-shorts",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, mudrock arknights, solo, sitting on thick wool blanket hugging knees, large curved black horns, long pure white hair, ruby red eyes looking up shyly, massive heavy armor suit standing inactive in dark workshop background, gentle vulnerable expression",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, mudrock arknights, solo, sitting on thick wool blanket hugging knees, large curved black horns, long pure white hair, ruby red eyes looking up shyly, massive heavy armor suit standing inactive in dark workshop background, gentle vulnerable expression",
+    "promptProse": "Mudrock sits on thick wool blanket hugging knees, wearing a basalt black strapping industrial-mesh bralette set. Large curved black horns, long pure white hair, ruby red eyes looking up shyly amidst massive heavy armor suit standing inactive in dark workshop background, gentle vulnerable expression.",
+    "animaCaption": "Mudrock sits on thick wool blanket hugging knees, wearing a basalt black strapping industrial-mesh bralette set. Large curved black horns, long pure white hair, ruby red eyes looking up shyly amidst massive heavy armor suit standing inactive in dark workshop background, gentle vulnerable expression.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

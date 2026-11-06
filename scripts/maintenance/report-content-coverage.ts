@@ -41,6 +41,7 @@ import { PathOrFileDescriptor } from 'node:fs';
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
 const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 const {
   parseSelectionArgs, collectKnownIds, assertSelectionKnown,
@@ -350,7 +351,7 @@ function main(argv: string[] = process.argv.slice(2)) {
   }
   const root = rootIndex >= 0 && argv[rootIndex + 1]
     ? path.resolve(argv[rootIndex + 1])
-    : path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.resolve(__dirname, '..', '..'));
+    : resolveContentRoot();
 
   let sources: ReturnType<typeof loadSources>;
   try {

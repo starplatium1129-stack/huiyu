@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_midgar_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3506,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.128Z",
   "data": {
     "id": "alexia_midgar_lingerie_whisper",
     "characterId": "alexia_midgar",
@@ -37,27 +37,18 @@
       "haughty_blush"
     ],
     "promptTokens": [
-      "alexia midgar",
-      "1girl",
-      "princess",
-      "ivory white silk slip nightdress",
-      "crimson velvet piping",
-      "royal crest embroidery",
-      "perched on edge of luxury four-poster canopy bed",
-      "one leg drawn up",
-      "hand resting against bedpost",
-      "chin tilted up proudly",
-      "blushing cheeks",
-      "piercing crimson eyes",
-      "short silver hair with side braid",
-      "warm chandelier light",
-      "lavish royal bedchamber",
-      "masterpiece",
-      "high quality"
+      "ivory silk slip",
+      "crimson trim",
+      "canopy bed",
+      "silver hair",
+      "haughty gaze",
+      "blush",
+      "red eyes",
+      "royal room"
     ],
     "negativeTokens": [],
     "promptProse": "Alexia Midgar commanding attention from the edge of her lavish four-poster canopy bed in her academy quarters. She is dressed in an exquisite ivory silk slip dress edged in imperial crimson velvet trim. Resting one hand casually on the mahogany bedpost with chin held high, her haughty royal demeanor barely masks the flustered blush spreading across her cheeks as her crimson eyes lock onto the viewer.",
-    "animaCaption": "alexia midgar, 1girl, ivory silk slip, crimson trim, canopy bed, silver hair, haughty gaze, blush, red eyes, royal room, highres",
+    "animaCaption": "Alexia Midgar commanding attention from the edge of her lavish four-poster canopy bed in her academy quarters. She is dressed in an exquisite ivory silk slip dress edged in imperial crimson velvet trim.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

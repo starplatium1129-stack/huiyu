@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_oriana_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3509,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "rose_oriana_lingerie_whisper",
     "characterId": "rose_oriana",
@@ -34,23 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rose oriana",
-      "no. 666",
-      "solo",
-      "standing on moonlit marble ruins terrace",
-      "one hand pressed over heart in sacred pledge",
-      "long wavy blonde hair flowing in night wind",
-      "resolute devoted gaze",
-      "ancient fountain with crystal clear water",
-      "starry moonlit night"
+      "balcony",
+      "standing",
+      "blonde hair",
+      "night",
+      "water",
+      "antique gold wing clasp",
+      "grecian draped silhouette",
+      "semi-sheer flowing chiffon"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rose oriana, no. 666, solo, standing on moonlit marble ruins terrace, one hand pressed over heart in sacred pledge, long wavy blonde hair flowing in night wind, resolute devoted gaze, ancient fountain with crystal clear water, starry moonlit night",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rose oriana, no. 666, solo, standing on moonlit marble ruins terrace, one hand pressed over heart in sacred pledge, long wavy blonde hair flowing in night wind, resolute devoted gaze, ancient fountain with crystal clear water, starry moonlit night",
+    "promptProse": "Rose Oriana stands on moonlit marble ruins terrace, wearing a pure white gold-threaded one-shoulder sheer slip. No. 666, one hand pressed over heart in sacred pledge, long wavy blonde hair flowing in night wind amidst resolute devoted gaze, ancient fountain with crystal clear water, starry moonlit night.",
+    "animaCaption": "Rose Oriana stands on moonlit marble ruins terrace, wearing a pure white gold-threaded one-shoulder sheer slip. No. 666, one hand pressed over heart in sacred pledge, long wavy blonde hair flowing in night wind amidst resolute devoted gaze, ancient fountain with crystal clear water, starry moonlit night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

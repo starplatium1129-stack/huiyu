@@ -1,4 +1,4 @@
-import type { StoredImageRecord } from '@/composables/useImageStore'
+import type { StoredImageRecord } from '@/platform/web/imageStore'
 import { createBackup, normalizeBackup, summarizeBackup } from './backupCore'
 import { withImageMime } from './imageFormat'
 import { MAX_BACKUP_BYTES, BACKUP_SIZE_MESSAGE } from './backupLimits'

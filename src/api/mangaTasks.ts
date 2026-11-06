@@ -1,5 +1,5 @@
 import { mangaManifest, type MangaJob, type MangaRequest } from './mangaApi'
-import { fetchImageTaskResult, type ImageTask } from '@/composables/tasks/useImageTaskSession'
+import { fetchImageTaskResult, type ImageTask } from './imageTask'
 
 const object = (v: unknown): v is Record<string, unknown> => !!v && typeof v === 'object' && !Array.isArray(v)
 /** The panel is a view of the durable task, including after a reconnect. */

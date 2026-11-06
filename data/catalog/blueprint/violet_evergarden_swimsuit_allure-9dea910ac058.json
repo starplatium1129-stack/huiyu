@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evergarden_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3309,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.291Z",
   "data": {
     "id": "violet_evergarden_swimsuit_allure",
     "characterId": "violet_evergarden",
@@ -37,25 +37,16 @@
       "oil_painting_aesthetic"
     ],
     "promptTokens": [
-      "violet evergarden",
-      "1girl",
-      "prussian blue classical corset swimdress",
-      "white pleated lace hem",
-      "emerald brooch at chest",
-      "holding elegant white lace sun parasol with silver handle",
-      "standing poised on stone cliff staircase filled with summer blooms",
-      "long blonde hair in braided buns with red ribbons",
-      "crystal deep blue eyes",
-      "gentle serene dignified expression",
-      "sapphire ocean panorama",
-      "pristine morning sun",
-      "cinematic painting",
-      "masterpiece",
-      "high quality"
+      "prussian blue swimdress",
+      "lace parasol",
+      "emerald brooch",
+      "blonde braided hair",
+      "cliff flowers",
+      "ocean morning"
     ],
     "negativeTokens": [],
     "promptProse": "Violet Evergarden standing regally atop a blooming stone cliffside staircase overlooking a sparkling sapphire sea. She wears an exquisite classical Prussian-blue corset swimdress trimmed with pleated ivory lace and accented by her signature emerald brooch. Holding a delicate white lace parasol against the pristine morning sunlight, her cornflower-blue eyes reflect the infinite ocean horizon with transcendent purity.",
-    "animaCaption": "violet evergarden, 1girl, prussian blue swimdress, lace parasol, emerald brooch, blonde braided hair, cliff flowers, ocean morning, masterpiece",
+    "animaCaption": "Violet Evergarden standing regally atop a blooming stone cliffside staircase overlooking a sparkling sapphire sea. She wears an exquisite classical Prussian-blue corset swimdress trimmed with pleated ivory lace and accented by her signature emerald brooch.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

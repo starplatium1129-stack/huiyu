@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3470,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "nymph_lingerie_whisper",
     "characterId": "nymph",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "nymph sora no otoshimono",
-      "solo",
-      "sitting on rusty water tower dome edge",
-      "holding snack bag",
-      "long twin tails fluttering in evening wind",
-      "iridescent transparent electronic wings glowing softly",
-      "teary pouting face looking sideways",
-      "sunset sky panorama"
+      "sitting",
+      "water",
+      "twintails",
+      "angel wings",
+      "glowing",
+      "teacup",
+      "sunset",
+      "golden bell choker collar",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, nymph sora no otoshimono, solo, sitting on rusty water tower dome edge, holding snack bag, long twin tails fluttering in evening wind, iridescent transparent electronic wings glowing softly, teary pouting face looking sideways, sunset sky panorama",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, nymph sora no otoshimono, solo, sitting on rusty water tower dome edge, holding snack bag, long twin tails fluttering in evening wind, iridescent transparent electronic wings glowing softly, teary pouting face looking sideways, sunset sky panorama",
+    "promptProse": "Nymph sits on rusty water tower dome edge, wearing a sky blue translucent chiffon frill playsuit. Nymph sora no otoshimono, holding snack bag, long twin tails fluttering in evening wind amidst iridescent transparent electronic wings glowing softly, teary pouting face looking sideways, sunset sky panorama.",
+    "animaCaption": "Nymph sits on rusty water tower dome edge, wearing a sky blue translucent chiffon frill playsuit. Nymph sora no otoshimono, holding snack bag, long twin tails fluttering in evening wind amidst iridescent transparent electronic wings glowing softly, teary pouting face looking sideways, sunset sky panorama.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

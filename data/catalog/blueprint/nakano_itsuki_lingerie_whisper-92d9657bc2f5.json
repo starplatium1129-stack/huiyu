@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3392,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "nakano_itsuki_lingerie_whisper",
     "characterId": "nakano_itsuki",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "nakano itsuki",
-      "solo",
-      "caught at kitchen dining table at midnight",
-      "cheeks stuffed with meat bun like hamster",
-      "blushing violently",
-      "starry hairclips in reddish hair",
-      "modern white kitchen background",
-      "hilarious cute guilty expression"
+      "night",
+      "blush",
+      "tiny golden star embroidery",
+      "comfortable relaxed fit",
+      "mother-of-pearl buttons",
+      "wholesome cozy loungewear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, nakano itsuki, solo, caught at kitchen dining table at midnight, cheeks stuffed with meat bun like hamster, blushing violently, starry hairclips in reddish hair, modern white kitchen background, hilarious cute guilty expression",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, nakano itsuki, solo, caught at kitchen dining table at midnight, cheeks stuffed with meat bun like hamster, blushing violently, starry hairclips in reddish hair, modern white kitchen background, hilarious cute guilty expression",
+    "promptProse": "Nakano Itsuki relaxes in caught at kitchen dining table at midnight, wearing a scarlet red cotton button-front camisole slip. Caught at kitchen dining table at midnight, cheeks stuffed with meat bun like hamster, blushing violently amidst starry hairclips in reddish hair, modern white kitchen background, hilarious cute guilty expression.",
+    "animaCaption": "Nakano Itsuki relaxes in caught at kitchen dining table at midnight, wearing a scarlet red cotton button-front camisole slip. Caught at kitchen dining table at midnight, cheeks stuffed with meat bun like hamster, blushing violently amidst starry hairclips in reddish hair, modern white kitchen background, hilarious cute guilty expression.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

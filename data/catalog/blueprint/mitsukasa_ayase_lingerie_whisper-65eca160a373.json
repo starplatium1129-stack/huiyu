@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3501,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "mitsukasa_ayase_lingerie_whisper",
     "characterId": "mitsukasa_ayase",
@@ -34,23 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "mitsukasa ayase",
-      "solo",
-      "caught off guard in dressing room in front of mirror",
-      "desperately shielding chest with crossed forearms",
-      "furiously blushing red face",
-      "long silver-aquamarine hair",
-      "flustered glare",
-      "warm wardrobe lighting",
-      "dynamic motion"
+      "mirror",
+      "blush",
+      "scalloped floral eyelash lace",
+      "low-rise matching shorts",
+      "delicate underwire support",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, mitsukasa ayase, solo, caught off guard in dressing room in front of mirror, desperately shielding chest with crossed forearms, furiously blushing red face, long silver-aquamarine hair, flustered glare, warm wardrobe lighting, dynamic motion",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, mitsukasa ayase, solo, caught off guard in dressing room in front of mirror, desperately shielding chest with crossed forearms, furiously blushing red face, long silver-aquamarine hair, flustered glare, warm wardrobe lighting, dynamic motion",
+    "promptProse": "Mitsukasa Ayase stands caught off guard in dressing room in front of mirror, wearing a midnight navy sheer lace push-up camisole. Desperately shielding chest with crossed forearms, furiously blushing red face, long silver-aquamarine hair amidst flustered glare, warm wardrobe lighting.",
+    "animaCaption": "Mitsukasa Ayase stands caught off guard in dressing room in front of mirror, wearing a midnight navy sheer lace push-up camisole. Desperately shielding chest with crossed forearms, furiously blushing red face, long silver-aquamarine hair amidst flustered glare, warm wardrobe lighting.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

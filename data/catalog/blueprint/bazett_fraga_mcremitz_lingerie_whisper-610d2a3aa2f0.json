@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3495,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_lingerie_whisper",
     "characterId": "bazett_fraga_mcremitz",
@@ -37,24 +37,19 @@
       "muscular_beauty"
     ],
     "promptTokens": [
-      "bazett fraga mcremitz",
-      "1girl",
-      "sealing designation enforcer",
-      "matte charcoal tactical ribbed camisole",
-      "black athletic boxing shorts",
-      "one knee kneeling on wooden practice floor",
-      "grey sweat towel draped over neck",
-      "wiping damp brow with towel edge",
-      "athletic toned physique with visible muscle definition",
-      "short layered plum-brown hair",
-      "serious honest hazel eyes",
-      "crisp dawn light through paper sliding doors",
-      "masterpiece",
-      "high quality"
+      "charcoal tank top",
+      "boxing shorts",
+      "kneeling on one knee",
+      "wooden floor",
+      "sweat",
+      "towel around neck",
+      "athletic toned",
+      "plum short hair",
+      "morning light"
     ],
     "negativeTokens": [],
     "promptProse": "Bazett Fraga McRemitz catching her breath after an intense morning conditioning workout. She wears a tactical matte-charcoal ribbed camisole and black boxing sleep shorts showing off her superbly conditioned athletic build. Resting one knee upon the floorboards while mopping sweat from her collarbone with a gym towel, she offers a polite, earnest nod with natural soldierly discipline.",
-    "animaCaption": "bazett, 1girl, charcoal tank top, boxing shorts, sweat, towel around neck, athletic toned, plum short hair, morning light, highres",
+    "animaCaption": "After training, Bazett kneels on a wooden floor to catch her breath, a towel resting around her neck.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

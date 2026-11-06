@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakurajima_mai_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3208,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "sakurajima_mai_lingerie_whisper",
     "characterId": "sakurajima_mai",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "sakurajima mai",
-      "solo",
-      "standing beside floor-to-ceiling glass window holding ceramic coffee mug",
-      "brushing back long raven hair",
-      "bunny hairclip in hair",
-      "teasing affectionate smile",
-      "stunning slender legs",
-      "golden ocean sunrise outside",
-      "cinematic morning light"
+      "mug",
+      "standing",
+      "black hair",
+      "teacup",
+      "smile",
+      "morning sunlight",
+      "thigh-high side slit",
+      "minimalist cross-back straps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, sakurajima mai, solo, standing beside floor-to-ceiling glass window holding ceramic coffee mug, brushing back long raven hair, bunny hairclip in hair, teasing affectionate smile, stunning slender legs, golden ocean sunrise outside, cinematic morning light",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, sakurajima mai, solo, standing beside floor-to-ceiling glass window holding ceramic coffee mug, brushing back long raven hair, bunny hairclip in hair, teasing affectionate smile, stunning slender legs, golden ocean sunrise outside, cinematic morning light",
+    "promptProse": "Sakurajima Mai stands beside floor-to-ceiling glass window holding ceramic coffee mug, wearing a inky black watered-silk slip dress. Brushing back long raven hair, bunny hairclip in hair, teasing affectionate smile amidst stunning slender legs, golden ocean sunrise outside, cinematic morning light.",
+    "animaCaption": "Sakurajima Mai stands beside floor-to-ceiling glass window holding ceramic coffee mug, wearing a inky black watered-silk slip dress. Brushing back long raven hair, bunny hairclip in hair, teasing affectionate smile amidst stunning slender legs, golden ocean sunrise outside, cinematic morning light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

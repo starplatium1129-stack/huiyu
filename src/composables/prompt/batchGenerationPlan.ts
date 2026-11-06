@@ -6,6 +6,9 @@ import type { SDQueueJob } from '../generation/useSDQueue'
 import type { BatchDrawRunnerInput, BatchDrawRunnerResult } from '../generation/useBatchDraw'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import type { AnimaJobMetadata } from '@/types/anima'
+import { animaRequestPayload } from '../generation/animaSessionContract'
+import type { BatchDrawPlan } from '../generation/batchDrawPlan'
+import type { RuntimeImageBatchInput } from '@/api/imageBatches'
 
 type HistoryInput = Parameters<ReturnType<typeof usePromptBuilderStore>['commitHistoryEntry']>[0]
 type HistorySnapshot = Omit<HistoryInput, 'blob'>
@@ -45,6 +48,14 @@ export function readPreparedBatch(value: unknown): PreparedBatchImage | null {
       || typeof value.request.modelId !== 'string' || !Number.isFinite(value.request.width) || !Number.isFinite(value.request.height)) return null
   } else return null
   return JSON.parse(JSON.stringify(value)) as PreparedBatchImage
+}
+
+export function runtimeBatchInput(plan: BatchDrawPlan): RuntimeImageBatchInput {
+  return { ...plan, jobs: plan.jobs.map(job => {
+    const prepared = readPreparedBatch(job.snapshot)
+    if (!prepared || prepared.engine === 'sd' || job.status !== 'pending') throw new Error('批次中有不可执行的配方，请调整后重新开始')
+    return { ...job, taskInput: animaRequestPayload(prepared.request) }
+  }) }
 }
 
 /** Resume observes the original task, or fences an absent request before settling it. */

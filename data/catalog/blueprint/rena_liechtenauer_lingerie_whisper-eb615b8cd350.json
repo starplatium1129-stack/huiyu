@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3499,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "rena_liechtenauer_lingerie_whisper",
     "characterId": "rena_liechtenauer",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "rena liechtenauer",
-      "solo",
-      "sitting on windowsill swinging bare legs",
-      "long blonde twin tails blowing in sea breeze",
-      "holding window frame",
-      "confident radiant grin",
-      "blue eyes sparkling",
-      "shimmering ocean under moonlight in background"
+      "sitting",
+      "twintails",
+      "smile",
+      "blue eyes",
+      "moonlight",
+      "racerback cut",
+      "lightweight airy fabric",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, rena liechtenauer, solo, sitting on windowsill swinging bare legs, long blonde twin tails blowing in sea breeze, holding window frame, confident radiant grin, blue eyes sparkling, shimmering ocean under moonlight in background",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, rena liechtenauer, solo, sitting on windowsill swinging bare legs, long blonde twin tails blowing in sea breeze, holding window frame, confident radiant grin, blue eyes sparkling, shimmering ocean under moonlight in background",
+    "promptProse": "Lena Liechtenauer sits on windowsill swinging bare legs, wearing a azure sky blue breathable sports-mesh camisole. Long blonde twin tails blowing in sea breeze, holding window frame, confident radiant grin amidst blue eyes sparkling, shimmering ocean under moonlight in background.",
+    "animaCaption": "Lena Liechtenauer sits on windowsill swinging bare legs, wearing a azure sky blue breathable sports-mesh camisole. Long blonde twin tails blowing in sea breeze, holding window frame, confident radiant grin amidst blue eyes sparkling, shimmering ocean under moonlight in background.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

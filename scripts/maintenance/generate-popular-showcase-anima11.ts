@@ -1,5 +1,7 @@
 #!/usr/bin/env node
-import { gatewayJson, readGatewayJob } from '../lib/gateway-json';
+import { indexShowcaseCandidates, prepareShowcaseCandidate, generateShowcaseCandidate, matchesShowcaseImage, saveShowcaseImage,
+  showcaseAttempt, showcaseImagePath, showcaseManifestError, showcaseSlot } from '../lib/legacy-showcase-generation';
+const { assertOutput, lockDirectory, noLinks, runCli }: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
 const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 import type { PopularCharacter, SceneBlueprint } from '../../src/utils/popularContent';
 import type { ModelProfile } from '../../src/utils/promptPolicyTypes';
@@ -33,7 +35,6 @@ const animaConstants = (require('../lib/generation/anima-model-catalog.js') as t
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
-const SHOWCASE_ROOT = path.resolve(AI_ROOT, 'SceneShowcase');
 const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', '2026-10-01_miaomiao16-popular-all-rella');
 const popularData: unknown = readJson(path.join(ROOT, 'data', 'popular-characters.json'));
 const blueprintData: unknown = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
@@ -42,13 +43,14 @@ const { parsePresetCatalog }: typeof import('../../src/utils/modelProfileDefault
 const profiles = parsePresetCatalog(presets).modelProfiles;
 
 type Candidate = ReturnType<typeof buildCandidate>;
-type StoredCandidate = Record<string, unknown> & Pick<Candidate, 'recordId' | 'characterId' | 'blueprintId' | 'attempt'>;
+type StoredCandidate = Record<string, unknown> & Pick<Candidate, 'key' | 'recordId' | 'characterId' | 'blueprintId' | 'attempt'>;
 
 function readRecords(value: unknown): StoredCandidate[] {
   if (!Array.isArray(value)) throw new Error('generation manifest must be an array');
   return value.map((record: unknown) => {
-    if (!object(record) || typeof record.recordId !== 'string' || typeof record.characterId !== 'string'
-      || typeof record.blueprintId !== 'string' || typeof record.attempt !== 'number' || !Number.isFinite(record.attempt)
+    if (!object(record) || typeof record.key !== 'string' || typeof record.recordId !== 'string' || typeof record.characterId !== 'string'
+      || typeof record.blueprintId !== 'string' || record.key !== `popular:${record.characterId}:${record.blueprintId}`
+      || typeof record.attempt !== 'number' || !Number.isSafeInteger(record.attempt)
       || record.attempt < 1) throw new Error('invalid popular generation record');
     return record as StoredCandidate;
   });
@@ -77,13 +79,6 @@ function readJson(file: string): unknown {
 function stableSeed(characterId: string, blueprintId: string, attempt: number) {
   const digest = crypto.createHash('sha256').update(`popular-all-rella:${characterId}:${blueprintId}:${attempt}`).digest();
   return digest.readUInt32BE(0) & 0x7fffffff;
-}
-function assertIsolated(output: string) {
-  const resolved = path.resolve(output);
-  if (resolved === SHOWCASE_ROOT || resolved.startsWith(SHOWCASE_ROOT + path.sep)) {
-    throw new Error(`refusing to write candidates into public showcase: ${resolved}`);
-  }
-  return resolved;
 }
 function resolveProfile() {
   if (!animaConstants.MODELS[ANIMA_MODEL_ID] || !ANIMA_MODEL_ID.startsWith('anima-')) {
@@ -180,53 +175,11 @@ function canReuseCandidate(previous: StoredCandidate | undefined, candidate: Can
   const fields = ['modelId', 'profileId', 'checkpoint', 'prompt', 'negative', 'width', 'height', 'steps', 'cfg', 'seed', 'sampler', 'scheduler', 'teaCache', 'teaCacheThresh'] as const;
   return previous?.status === 'succeeded' && fields.every(field => previous[field] === candidate[field]);
 }
-async function submitCandidate(base: string, candidate: Candidate) {
-  const route = '/api/anima/jobs';
-  let submitted: Awaited<ReturnType<typeof gatewayJson>> | null = null;
-  // 429 队列满：退避重试（网关 MAX_PENDING=4，并发脚本撞队列时自愈）。
-  for (let retry = 0; retry < 5; retry += 1) {
-    submitted = await gatewayJson(base, route, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(buildSubmissionBody(candidate)),
-    });
-    const busy = submitted.response && submitted.response.status === 429;
-    if (!busy) break;
-    await new Promise<void>(resolve => setTimeout(resolve, 5000 * (retry + 1)));
-  }
-  let job = readGatewayJob(submitted?.data);
-  if (!submitted?.response || submitted.response.status !== 202 || !job) {
-    const status = submitted?.response ? submitted.response.status : 'network';
-    return { ok: false as const, error: `submission failed (${status}): ${submitted?.error || JSON.stringify(submitted?.data)}` };
-  }
-  const deadline = Date.now() + 15 * 60 * 1000;
-  while (Date.now() < deadline) {
-    const state = await gatewayJson(base, `${route}/${encodeURIComponent(job.id)}`, undefined);
-    const updated = readGatewayJob(state.data);
-    if (state.response?.ok && updated) job = updated;
-    if (job.status === 'failed' || job.status === 'cancelled') {
-      return { ok: false as const, error: `job failed: ${job.error || job.status} (${job.code || ''})`, jobId: job.id };
-    }
-    if (job.status === 'succeeded' && job.resultUrl) break;
-    await new Promise<void>(resolve => setTimeout(resolve, 2000));
-  }
-  if (job.status !== 'succeeded' || !job.resultUrl) return { ok: false as const, error: `job timed out: ${job.status}`, jobId: job.id };
-  const result = await fetch(base.replace(/\/$/, '') + job.resultUrl, { cache: 'no-store' });
-  if (!result.ok) return { ok: false as const, error: `result fetch failed (HTTP ${result.status})`, jobId: job.id };
-  return {
-    ok: true as const,
-    buffer: Buffer.from(await result.arrayBuffer()),
-    jobId: job.id,
-    provider: job.provider || '',
-    actualSeed: job.metadata?.seed ?? job.seed ?? candidate.seed,
-    metadata: job.metadata || {},
-    mime: result.headers.get('content-type') || 'image/png',
-  };
-}
-
-async function main() {
+async function main(signal?: AbortSignal) {
   const keys = splitList(argument('--keys'));
-  const attempt = Math.max(1, Number(argument('--attempt', '1')) || 1);
-  const seedAttempt = Math.max(1, Number(argument('--seed-attempt', String(attempt))) || attempt);
-  const output = assertIsolated(path.resolve(argument('--output', DEFAULT_OUTPUT)));
+  const attempt = showcaseAttempt(argument('--attempt', '1'), '--attempt');
+  const seedAttempt = showcaseAttempt(argument('--seed-attempt', String(attempt)), '--seed-attempt');
+  const output = assertOutput({ output: argument('--output', DEFAULT_OUTPUT), root: ROOT, env: process.env });
   const gateway = argument('--gateway', 'http://127.0.0.1:3000');
   const limit = Math.max(1, Number(argument('--limit', '9999')) || 9999);
   const concurrency = Math.max(1, Math.min(4, Number(argument('--concurrency', '3')) || 3));
@@ -238,68 +191,83 @@ async function main() {
     throw new Error(`unknown keys: ${keys.filter(k => !found.has(k)).join(', ')}`);
   }
   const manifestPath = path.join(output, MANIFEST_NAME);
-  const existing = fs.existsSync(manifestPath) ? readRecords(readJson(manifestPath)) : [];
-  const records = new Map(existing.map(record => [record.recordId, record]));
   if (dryRun) {
     console.log(JSON.stringify({ output, gateway, count: selected.length, candidates: selected }, null, 2));
     return;
   }
   fs.mkdirSync(output, { recursive: true });
-  const pending = selected.filter(candidate => {
-    const previous = records.get(candidate.recordId);
-    const imageRel = `images/${candidate.characterId}/${candidate.blueprintId}/attempt-${attempt}.png`;
-    const imageFile = path.join(output, imageRel.split('/').join(path.sep));
-    if (!force && canReuseCandidate(previous, candidate) && fs.existsSync(imageFile) && fs.statSync(imageFile).size > 1000) {
-      console.log(`[reuse] ${candidate.recordId}`);
-      return false;
-    }
-    return true;
-  });
-  if (limit < pending.length) pending.length = limit;
-  console.log(`[plan] ${selected.length} candidates, ${pending.length} to generate (concurrency ${concurrency})`);
-  let generated = 0;
-  let failed = 0;
-  let cursor = 0;
-  async function worker() {
-    while (cursor < pending.length) {
-      const candidate = pending[cursor];
-      cursor += 1;
+  const unlock = lockDirectory(output);
+  try {
+    if (fs.existsSync(path.join(output, 'candidate-run.json'))) throw new Error('候选目录属于另一生成流程，请选择独立目录');
+    noLinks(manifestPath);
+    const existing = fs.existsSync(manifestPath) ? readRecords(readJson(manifestPath)) : [];
+    const records = indexShowcaseCandidates(existing);
+    const pending = selected.filter(candidate => {
+      const previous = records.get(showcaseSlot(candidate));
       const imageRel = `images/${candidate.characterId}/${candidate.blueprintId}/attempt-${attempt}.png`;
-      const imageFile = path.join(output, imageRel.split('/').join(path.sep));
-      console.log(`[generate] ${candidate.recordId} ${candidate.width}x${candidate.height} seed ${candidate.seed}`);
-      const result = await submitCandidate(gateway, candidate);
-      if (!result.ok) {
-        records.set(candidate.recordId, Object.assign({}, candidate, {
-          status: 'failed', error: result.error, jobId: result.jobId || '', image: '', generatedAt: new Date().toISOString(),
-        }));
-        writeJsonAtomic(manifestPath, [...records.values()]);
-        console.log(`[failed] ${candidate.recordId}: ${result.error}`);
-        failed += 1;
-        continue;
+      const imageFile = showcaseImagePath(output, candidate.characterId, candidate.blueprintId, `attempt-${attempt}.png`);
+      if (!force && canReuseCandidate(previous, candidate) && previous?.image === imageRel && matchesShowcaseImage(previous, imageFile)) {
+        console.log(`[reuse] ${previous.recordId}`);
+        return false;
       }
-      fs.mkdirSync(path.dirname(imageFile), { recursive: true });
-      fs.writeFileSync(imageFile, result.buffer);
-      records.set(candidate.recordId, Object.assign({}, candidate, {
-        status: 'succeeded', error: '', image: imageRel, generatedAt: new Date().toISOString(),
-        bytes: result.buffer.length, mime: result.mime, sha256: crypto.createHash('sha256').update(result.buffer).digest('hex'),
-        jobId: result.jobId, provider: result.provider, actualSeed: result.actualSeed, metadata: result.metadata,
-      }));
-      writeJsonAtomic(manifestPath, [...records.values()]);
-      console.log(`[ok] ${candidate.recordId} -> ${imageRel} (${result.buffer.length} bytes)`);
-      generated += 1;
+      return true;
+    });
+    if (limit < pending.length) pending.length = limit;
+    console.log(`[plan] ${selected.length} candidates, ${pending.length} to generate (concurrency ${concurrency})`);
+    let generated = 0;
+    let failed = 0;
+    let cursor = 0;
+    let manifestFailed = false;
+    const manifestFailures = new Set<string>();
+    const batchAbort = new AbortController();
+    const active = signal ? AbortSignal.any([signal, batchAbort.signal]) : batchAbort.signal;
+    async function worker() {
+      while (!active.aborted && cursor < pending.length) {
+        const candidate = pending[cursor];
+        cursor += 1;
+        const imageRel = `images/${candidate.characterId}/${candidate.blueprintId}/attempt-${attempt}.png`;
+        const imageFile = showcaseImagePath(output, candidate.characterId, candidate.blueprintId, `attempt-${attempt}.png`);
+        try {
+          const record = prepareShowcaseCandidate(candidate, records.get(showcaseSlot(candidate)), gateway, buildSubmissionBody(candidate), force);
+          console.log(`[generate] ${record.recordId} ${candidate.width}x${candidate.height} seed ${candidate.seed}`);
+          const expectedHash = typeof record.sha256 === 'string' ? record.sha256 : undefined;
+          const save = (value: typeof record) => {
+            records.set(showcaseSlot(candidate), value);
+            try { writeJsonAtomic(manifestPath, [...records.values()]); }
+            catch (error) {
+              const failure = showcaseManifestError(value, error);
+              manifestFailures.add(failure.message);
+              if (!manifestFailed) { manifestFailed = true; batchAbort.abort(failure); }
+              throw error;
+            }
+          };
+          const result = await generateShowcaseCandidate(record, save, 4, active);
+          const sha256 = saveShowcaseImage(imageFile, result.buffer, expectedHash);
+          save(Object.assign(record, {
+            status: 'succeeded', error: '', image: imageRel, generatedAt: new Date().toISOString(),
+            bytes: result.buffer.length, mime: result.mime, sha256,
+            jobId: result.jobId, provider: result.provider, actualSeed: result.actualSeed, metadata: result.metadata,
+          }));
+          console.log(`[ok] ${record.recordId} -> ${imageRel} (${result.buffer.length} bytes)`);
+          generated += 1;
+        } catch (error) {
+          if (manifestFailed) throw error;
+          if (signal?.aborted) return;
+          console.log(`[failed] ${candidate.recordId}: ${error instanceof Error ? error.message : String(error)}`);
+          failed += 1;
+        }
+      }
     }
-  }
-  await Promise.all(Array.from({ length: Math.min(concurrency, pending.length) }, () => worker()));
-  const normalized = [...records.values()].sort((left, right) =>
-    left.characterId.localeCompare(right.characterId) || left.blueprintId.localeCompare(right.blueprintId) || left.attempt - right.attempt);
-  writeJsonAtomic(manifestPath, normalized);
-  console.log(JSON.stringify({ output, planned: selected.length, generated, failed }, null, 2));
-  if (failed) process.exitCode = 1;
+    const workers = await Promise.allSettled(Array.from({ length: Math.min(concurrency, pending.length) }, () => worker()));
+    if (manifestFailed) throw new Error([...manifestFailures].join('\n'));
+    const failure = workers.find(result => result.status === 'rejected');
+    if (failure) throw failure.reason;
+    const normalized = [...records.values()].sort((left, right) =>
+      left.characterId.localeCompare(right.characterId) || left.blueprintId.localeCompare(right.blueprintId) || left.attempt - right.attempt);
+    writeJsonAtomic(manifestPath, normalized);
+    console.log(JSON.stringify({ output, planned: selected.length, generated, failed }, null, 2));
+    return { exitCode: signal?.aborted ? 130 : failed ? 1 : 0 };
+  } finally { unlock(); }
 }
 
-if (require.main === module) {
-  main().catch((error: unknown) => {
-    console.error(error instanceof Error ? error.stack || error.message : error);
-    process.exitCode = 1;
-  });
-}
+if (require.main === module) runCli(async (_args, options) => main(options.signal));

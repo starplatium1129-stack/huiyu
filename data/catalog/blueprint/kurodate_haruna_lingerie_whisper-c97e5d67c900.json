@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3438,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "kurodate_haruna_lingerie_whisper",
     "characterId": "kurodate_haruna",
@@ -34,23 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "kurodate haruna",
-      "solo",
-      "sitting elegantly sideways on terrace dining chair",
-      "swirling sparkling wine in crystal goblet",
-      "long black hair cascading down back",
-      "glowing red eyes",
-      "refined mischievous smile",
-      "candlelit silver table setting",
-      "luxurious night skyline background"
+      "balcony",
+      "sitting",
+      "wine glass",
+      "black hair",
+      "glowing",
+      "red eyes",
+      "smile",
+      "city skyline",
+      "night",
+      "black scalloped lace overlay"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, kurodate haruna, solo, sitting elegantly sideways on terrace dining chair, swirling sparkling wine in crystal goblet, long black hair cascading down back, glowing red eyes, refined mischievous smile, candlelit silver table setting, luxurious night skyline background",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, kurodate haruna, solo, sitting elegantly sideways on terrace dining chair, swirling sparkling wine in crystal goblet, long black hair cascading down back, glowing red eyes, refined mischievous smile, candlelit silver table setting, luxurious night skyline background",
+    "promptProse": "Kurodate Haruna sits elegantly sideways on terrace dining chair, wearing a wine red velvet underwire corset bra. Swirling sparkling wine in crystal goblet, long black hair cascading down back, glowing red eyes amidst refined mischievous smile, candlelit silver table setting, luxurious night skyline background.",
+    "animaCaption": "Kurodate Haruna sits elegantly sideways on terrace dining chair, wearing a wine red velvet underwire corset bra. Swirling sparkling wine in crystal goblet, long black hair cascading down back, glowing red eyes amidst refined mischievous smile, candlelit silver table setting, luxurious night skyline background.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

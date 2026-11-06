@@ -267,6 +267,15 @@ impl TaskRuntime {
                 .recover_provider(storage, principal, &current, &mut cancellation)
                 .await;
         }
+        // A remote request may not have arrived yet. Its scoped cancellation
+        // records the original identity before a delayed submission can start.
+        if current.cancel_requested_at.is_some()
+            && observed.as_ref().is_err_and(|error| error.code == "REMOTE_REQUEST_UNKNOWN")
+            && let Some(remote) = self.recovered_remote_job(&current)
+        {
+            let _ = self.cancel_provider(current.kind, remote, principal).await;
+            observed = self.query_provider(current.kind, remote, principal).await;
+        }
         let mut observation = match observed {
             Ok(observation) => observation,
             Err(_) => {
@@ -283,11 +292,11 @@ impl TaskRuntime {
                 .await;
             }
         };
-        if current.cancel_requested_at.is_some()
-            && !observation.settled
-            && let Some(job) = job
-        {
-            let _ = self.cancel_provider(current.kind, &job, principal).await;
+        if current.cancel_requested_at.is_some() && !observation.settled {
+            let recovered_remote = self.recovered_remote_job(&current);
+            if let Some(job) = job.as_deref().or(recovered_remote) {
+                let _ = self.cancel_provider(current.kind, job, principal).await;
+            }
         }
         drop(current);
         let has_outputs = !observation.outputs.is_empty();

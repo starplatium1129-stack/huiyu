@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3187,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "ling_arknights_lingerie_whisper",
     "characterId": "ling_arknights",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "ling arknights",
-      "dragon girl",
-      "translucent dragon horns glowing softly",
-      "leaning on carved wooden pavilion railing over lake",
-      "tilting white porcelain wine cup",
-      "loose flowing teal-blue hair",
-      "misty water lotus pond under full moon",
-      "poetic drunken smile"
+      "dragon horns",
+      "horns",
+      "glowing",
+      "teacup",
+      "blue hair",
+      "water",
+      "smile",
+      "billowing wide sleeves",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, ling arknights, dragon girl, translucent dragon horns glowing softly, leaning on carved wooden pavilion railing over lake, tilting white porcelain wine cup, loose flowing teal-blue hair, misty water lotus pond under full moon, poetic drunken smile",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, ling arknights, dragon girl, translucent dragon horns glowing softly, leaning on carved wooden pavilion railing over lake, tilting white porcelain wine cup, loose flowing teal-blue hair, misty water lotus pond under full moon, poetic drunken smile",
+    "promptProse": "Ling leans on carved wooden pavilion railing over lake, wearing a celadon green silk lounging open robe. Dragon girl, translucent dragon horns glowing softly, tilting white porcelain wine cup amidst loose flowing teal-blue hair, misty water lotus pond under full moon, poetic drunken smile.",
+    "animaCaption": "Ling leans on carved wooden pavilion railing over lake, wearing a celadon green silk lounging open robe. Dragon girl, translucent dragon horns glowing softly, tilting white porcelain wine cup amidst loose flowing teal-blue hair, misty water lotus pond under full moon, poetic drunken smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

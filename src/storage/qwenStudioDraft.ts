@@ -2,8 +2,7 @@ import { profileLocalStorage, writeProfileLocal } from '@/platform/web/profileSt
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { artworkRepository } from './artworkRepository'
 import { inspectMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
-import { qwenModels } from '@/api/qwenApi'
-import { mossModels, validMossSpectrumFlexWindow } from '@/api/mossApi'
+import { qwenModels, mossModels, validMossSpectrumFlexWindow } from '@/config/directImageModels'
 
 // Registered model-draft namespace: profile media_refs recursively retains imageId.
 // All mounted instances hand off through one queue. A fullPath remount must

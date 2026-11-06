@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3288,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
   "data": {
     "id": "texas_arknights_swimsuit_allure",
     "characterId": "texas_arknights",
@@ -37,27 +37,19 @@
       "calm_loyalty"
     ],
     "promptTokens": [
-      "texas (arknights)",
-      "1girl",
-      "lupo wolf ears",
+      "wolf ears",
       "wolf tail",
-      "tactical matte black bikini",
-      "leather buckle harness straps",
-      "low-rise waterproof shorts",
-      "standing atop giant concrete tetrapod barrier",
-      "biting chocolate biscuit stick",
-      "hands casually hooking waist",
-      "long black hair blowing wild",
-      "calm stoic amber eyes",
-      "rough industrial ocean harbor",
-      "dramatic sunset horizon",
-      "cool cinematic composition",
-      "masterpiece",
-      "high quality"
+      "tactical black bikini",
+      "standing",
+      "tetrapod",
+      "biting pocky",
+      "industrial dock",
+      "sunset",
+      "stoic"
     ],
     "negativeTokens": [],
     "promptProse": "Texas standing poised on a massive concrete tetrapod wave breaker at the edge of an industrial harbor as sunset paints the horizon in steel grey and deep amber. She wears a sleek tactical matte-black bikini anchored with leather utility straps and low-slung board shorts. Biting a chocolate snack stick calmly while her wolf ears tilt against the coastal gale, she observes the ocean in cool, unwavering silence.",
-    "animaCaption": "texas (arknights), 1girl, wolf ears, wolf tail, tactical black bikini, tetrapod, biting pocky, industrial dock, sunset, stoic, highres",
+    "animaCaption": "Texas stands on a concrete wave breaker, biting a snack stick while the sun sets over the harbor.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

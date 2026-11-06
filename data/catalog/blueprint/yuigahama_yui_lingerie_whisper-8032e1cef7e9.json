@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuigahama_yui_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3254,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "yuigahama_yui_lingerie_whisper",
     "characterId": "yuigahama_yui",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "yuigahama yui",
-      "solo",
-      "sitting hugging knees on soft pink rug",
-      "side bun hair fluttering",
-      "biting lower lip with glistening tearful bright eyes",
-      "peach hair",
-      "deeply blushing cheeks",
-      "warm pastel bedroom with heart cushions and dog photos",
-      "golden sunset streaming through curtains"
+      "sitting",
+      "teacup",
+      "blush",
+      "cushion",
+      "bed",
+      "curtains",
+      "sunset",
+      "lettuce edge frills",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, yuigahama yui, solo, sitting hugging knees on soft pink rug, side bun hair fluttering, biting lower lip with glistening tearful bright eyes, peach hair, deeply blushing cheeks, warm pastel bedroom with heart cushions and dog photos, golden sunset streaming through curtains",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, yuigahama yui, solo, sitting hugging knees on soft pink rug, side bun hair fluttering, biting lower lip with glistening tearful bright eyes, peach hair, deeply blushing cheeks, warm pastel bedroom with heart cushions and dog photos, golden sunset streaming through curtains",
+    "promptProse": "Yui sits hugging knees on soft pink rug, wearing a peach pink ruffled double-cotton camisole set. Side bun hair fluttering, biting lower lip with glistening tearful bright eyes, peach hair amidst deeply blushing cheeks, warm pastel bedroom with heart cushions and dog photos, golden sunset streaming through curtains.",
+    "animaCaption": "Yui sits hugging knees on soft pink rug, wearing a peach pink ruffled double-cotton camisole set. Side bun hair fluttering, biting lower lip with glistening tearful bright eyes, peach hair amidst deeply blushing cheeks, warm pastel bedroom with heart cushions and dog photos, golden sunset streaming through curtains.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayase_yuuka_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3286,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.725Z",
   "data": {
     "id": "hayase_yuuka_lingerie_whisper",
     "characterId": "hayase_yuuka",
@@ -37,23 +37,18 @@
       "cute_accountant"
     ],
     "promptTokens": [
-      "hayase yuuka",
-      "1girl",
       "halo",
-      "navy blue and white pinstripe button-up cotton pajama set",
-      "long sleeves",
-      "sitting cross-legged on carpet before low desk cluttered with receipts",
-      "one hand slamming calculator with red display",
-      "other hand gripping messy dark blue twintails in comical frustration",
-      "glaring at viewer with cute angry pouting cheeks",
-      "bright purple eyes",
-      "warm office late-night lights",
-      "masterpiece",
-      "high quality"
+      "navy striped pajamas",
+      "calculator",
+      "receipts",
+      "angry pout",
+      "messy twintails",
+      "purple eyes",
+      "office night"
     ],
     "negativeTokens": [],
     "promptProse": "Yuuka Hayase losing her financial composure over late-night accounting inside the Seminar bureau. Clothed in a classic navy-and-white pinstriped button-up cotton pajama set, she sits cross-legged surrounded by mountains of expense receipts. Punching figures furiously into a desk calculator with one hand while clutching her messy blue twintails in comic despair, she glares at Sensei with adorable accountant fury.",
-    "animaCaption": "hayase yuuka, 1girl, halo, navy striped pajamas, calculator, receipts, angry pout, messy twintails, purple eyes, office night, highres",
+    "animaCaption": "Yuuka Hayase losing her financial composure over late-night accounting inside the Seminar bureau. Clothed in a classic navy-and-white pinstriped button-up cotton pajama set, she sits cross-legged surrounded by mountains of expense receipts.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

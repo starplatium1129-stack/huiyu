@@ -1,4 +1,4 @@
-import { executeCompanionTool, type CompanionToolResult } from '@/api/companionToolsApi'
+import { executeCompanionTool, type CompanionToolResult } from './executeCompanionTool'
 import type { captureCompanionImageSource } from './companionChatImages'
 import type { ArtworkRepository } from '@/storage/artworkRepository'
 import type { CompanionChatImage } from '@/types/companionDrawing'

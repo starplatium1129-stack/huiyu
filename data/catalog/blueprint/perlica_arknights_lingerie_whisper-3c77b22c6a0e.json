@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3240,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "perlica_arknights_lingerie_whisper",
     "characterId": "perlica_arknights",
@@ -34,21 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "perlica arknights",
-      "solo",
-      "standing beside floating blue holographic planetary hologram",
-      "holding tactical headset in one hand",
-      "long slate-blue hair framing bare back",
-      "composed dignified expression with subtle blush",
-      "sci-fi bridge quarters"
+      "hologram",
+      "standing",
+      "floating",
+      "blue hair",
+      "blush",
+      "deep v cut",
+      "boyleg shorts",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, perlica arknights, solo, standing beside floating blue holographic planetary hologram, holding tactical headset in one hand, long slate-blue hair framing bare back, composed dignified expression with subtle blush, sci-fi bridge quarters",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, perlica arknights, solo, standing beside floating blue holographic planetary hologram, holding tactical headset in one hand, long slate-blue hair framing bare back, composed dignified expression with subtle blush, sci-fi bridge quarters",
+    "promptProse": "Perlica stands beside floating blue holographic planetary hologram, wearing a slate blue nano-mesh breathable crop bustier set. Holding tactical headset in one hand, long slate-blue hair framing bare back, composed dignified expression with subtle blush amidst sci-fi bridge quarters.",
+    "animaCaption": "Perlica stands beside floating blue holographic planetary hologram, wearing a slate blue nano-mesh breathable crop bustier set. Holding tactical headset in one hand, long slate-blue hair framing bare back, composed dignified expression with subtle blush amidst sci-fi bridge quarters.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

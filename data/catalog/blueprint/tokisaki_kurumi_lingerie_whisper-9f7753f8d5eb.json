@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tokisaki_kurumi_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3517,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "tokisaki_kurumi_lingerie_whisper",
     "characterId": "tokisaki_kurumi",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "tokisaki kurumi",
-      "solo",
-      "nightmare spirit",
-      "reclining on ornate gothic crimson chaise lounge",
-      "left golden clock-eye ticking",
-      "mischievous seductive smile showing sharp teeth",
-      "black and red gothic hair ribbons",
-      "floating antique clock gears and dark feathers in void"
+      "night",
+      "chaise lounge",
+      "reclining",
+      "smile",
+      "ribbon",
+      "floating",
+      "layered black rose lace",
+      "boned underbust waist cincher",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, tokisaki kurumi, solo, nightmare spirit, reclining on ornate gothic crimson chaise lounge, left golden clock-eye ticking, mischievous seductive smile showing sharp teeth, black and red gothic hair ribbons, floating antique clock gears and dark feathers in void",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, tokisaki kurumi, solo, nightmare spirit, reclining on ornate gothic crimson chaise lounge, left golden clock-eye ticking, mischievous seductive smile showing sharp teeth, black and red gothic hair ribbons, floating antique clock gears and dark feathers in void",
+    "promptProse": "Tokisaki Kurumi reclines on ornate gothic crimson chaise lounge, wearing a crimson and black gothic corseted babydoll slip. Nightmare spirit, left golden clock-eye ticking, mischievous seductive smile showing sharp teeth amidst black and red gothic hair ribbons, floating antique clock gears and dark feathers in void.",
+    "animaCaption": "Tokisaki Kurumi reclines on ornate gothic crimson chaise lounge, wearing a crimson and black gothic corseted babydoll slip. Nightmare spirit, left golden clock-eye ticking, mischievous seductive smile showing sharp teeth amidst black and red gothic hair ribbons, floating antique clock gears and dark feathers in void.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

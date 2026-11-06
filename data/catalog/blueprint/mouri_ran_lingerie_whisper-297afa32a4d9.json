@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3340,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "mouri_ran_lingerie_whisper",
     "characterId": "mouri_ran",
@@ -34,23 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "mouri ran",
-      "solo",
-      "sitting on sofa near coffee table",
-      "drying damp black hair with white towel",
-      "blushing frantically",
-      "covering chest with arms",
-      "brown eyes wide in shock",
-      "retro cozy Japanese living room",
-      "warm ceiling lamp"
+      "chaise lounge",
+      "mug",
+      "sitting",
+      "black hair",
+      "blush",
+      "desk lamp",
+      "matching relaxed sleep shorts",
+      "athletic toned physique",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, mouri ran, solo, sitting on sofa near coffee table, drying damp black hair with white towel, blushing frantically, covering chest with arms, brown eyes wide in shock, retro cozy Japanese living room, warm ceiling lamp",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, mouri ran, solo, sitting on sofa near coffee table, drying damp black hair with white towel, blushing frantically, covering chest with arms, brown eyes wide in shock, retro cozy Japanese living room, warm ceiling lamp",
+    "promptProse": "Ran Mouri sits on sofa near coffee table, wearing a cherry blossom pink striped soft cotton cami. Drying damp black hair with white towel, blushing frantically, covering chest with arms amidst brown eyes wide in shock, retro cozy Japanese living room, warm ceiling lamp.",
+    "animaCaption": "Ran Mouri sits on sofa near coffee table, wearing a cherry blossom pink striped soft cotton cami. Drying damp black hair with white towel, blushing frantically, covering chest with arms amidst brown eyes wide in shock, retro cozy Japanese living room, warm ceiling lamp.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

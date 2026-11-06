@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vladilena_milize_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3310,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.327Z",
   "data": {
     "id": "vladilena_milize_swimsuit_allure",
     "characterId": "vladilena_milize",
@@ -37,25 +37,16 @@
       "steadfast_trust"
     ],
     "promptTokens": [
-      "vladilena milize",
-      "1girl",
-      "handler one",
-      "pristine white and prussian navy halter bikini",
-      "silver military button accents",
-      "detachable pleated white half-skirt",
-      "standing at metal harbor pier railing",
-      "one hand on railing",
-      "immense long silver hair whipping in sea breeze",
-      "deep violet eyes",
-      "tender modest blush on porcelain cheeks",
-      "clear bright morning sky and azure sea",
-      "low angle dynamic hero shot",
-      "masterpiece",
-      "high quality"
+      "white and navy bikini",
+      "silver hair blowing in wind",
+      "violet eyes",
+      "harbor railing",
+      "blushing",
+      "morning light"
     ],
     "negativeTokens": [],
     "promptProse": "Vladilena Milizé standing gallantly beside a whitewashed harbor railing beneath a vibrant blue morning sky. She wears a crisp military-inspired halter bikini in immaculate white and Prussian navy with silver emblem accents and a pleated side skirt. Her breathtaking silver hair billows in the offshore gale while her vivid violet eyes turn toward the viewer with an earnest, heartfelt blush.",
-    "animaCaption": "vladilena milize, 1girl, white and navy bikini, silver hair blowing in wind, violet eyes, harbor railing, blushing, morning light, highres",
+    "animaCaption": "Vladilena Milizé standing gallantly beside a whitewashed harbor railing beneath a vibrant blue morning sky. She wears a crisp military-inspired halter bikini in immaculate white and Prussian navy with silver emblem accents and a pleated side skirt.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

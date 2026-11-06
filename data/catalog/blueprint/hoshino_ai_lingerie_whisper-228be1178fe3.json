@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3273,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.787Z",
   "data": {
     "id": "hoshino_ai_lingerie_whisper",
     "characterId": "hoshino_ai",
@@ -37,23 +37,16 @@
       "ultimate_idol"
     ],
     "promptTokens": [
-      "hoshino ai",
-      "1girl",
-      "legendary idol",
-      "shimmering magenta-pink silk slip dress with micro star sequins",
-      "thin diamond-accent straps",
-      "sitting at vanity mirror surrounded by bright bulb lights",
-      "one finger forming cute half-heart on cheek",
-      "winking playfully with left eye",
-      "iconic six-pointed bright star pupils in radiant purple eyes",
-      "long gradient purple hair cascading down",
-      "breathtaking captivating idol smile",
-      "masterpiece",
-      "high quality"
+      "magenta sequin silk slip",
+      "vanity mirror",
+      "winking",
+      "finger heart",
+      "star pupils in purple eyes",
+      "stunning smile"
     ],
     "negativeTokens": [],
     "promptProse": "Ai Hoshino basking in the quiet aftermath of a sold-out dome concert inside her private dressing room. Clothed in a shimmering magenta-pink silk slip dress dusted with sparkling star spangles, she sits before the illuminated vanity mirror. Forming a playful finger-heart at her cheek while winking with her mesmerizing star-pupiled eyes, she offers an intimate, bewitching glimpse behind the idol's mask.",
-    "animaCaption": "hoshino ai, 1girl, magenta sequin silk slip, vanity mirror, winking, finger heart, star pupils in purple eyes, stunning smile, highres",
+    "animaCaption": "Ai Hoshino basking in the quiet aftermath of a sold-out dome concert inside her private dressing room. Clothed in a shimmering magenta-pink silk slip dress dusted with sparkling star spangles, she sits before the illuminated vanity mirror.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

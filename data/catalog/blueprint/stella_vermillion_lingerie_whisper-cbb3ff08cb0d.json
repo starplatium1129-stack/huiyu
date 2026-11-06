@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_vermillion_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3455,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "stella_vermillion_lingerie_whisper",
     "characterId": "stella_vermillion",
@@ -34,21 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "stella vermillion",
-      "solo",
-      "sitting on bed edge hugging feather pillow in front of chest",
-      "fiery crimson-red twintails spilling over shoulders",
-      "brilliant ruby eyes with adorable angry blush",
-      "school dorm room at night",
-      "warm soft nightlight"
+      "bed",
+      "sitting",
+      "twintails",
+      "blush",
+      "red eyes",
+      "night",
+      "crimson silk bralette set",
+      "fine gold rose embroidery",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, stella vermillion, solo, sitting on bed edge hugging feather pillow in front of chest, fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night, warm soft nightlight",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, stella vermillion, solo, sitting on bed edge hugging feather pillow in front of chest, fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night, warm soft nightlight",
+    "promptProse": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set. Fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night amidst warm soft nightlight.",
+    "animaCaption": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set. Fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night amidst warm soft nightlight.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

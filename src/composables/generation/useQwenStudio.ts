@@ -1,8 +1,10 @@
 import { computed, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
-import { qwenModels, qwenStatus, uploadQwenImage, readQwenTaskInput, type QwenModelStatus } from '@/api/qwenApi'
-import { MOSS_MODEL_ID, mossModels, mossStatus, validMossSpectrumFlexWindow } from '@/api/mossApi'
+import { qwenStatus, uploadQwenImage, readQwenTaskInput } from '@/api/qwenApi'
+import { mossStatus } from '@/api/mossApi'
+import { MOSS_MODEL_ID, mossModels, qwenModels, validMossSpectrumFlexWindow, type DirectImageModelStatus } from '@/config/directImageModels'
 import { compileMossPrompt, MOSS_NEGATIVE } from '@/utils/mossPrompt'
-import { useImageTaskSession, imageTaskSettled as terminal, imageTaskMessage, fetchImageTaskResult, type ImageTask } from '@/composables/tasks/useImageTaskSession'
+import { useImageTaskSession } from '@/composables/tasks/useImageTaskSession'
+import { imageTaskSettled as terminal, imageTaskMessage, fetchImageTaskResult, type ImageTask } from '@/api/imageTask'
 import { createImageTaskArchiver, imageTaskArtworkId } from '@/composables/tasks/imageTaskArtwork'
 import { MOSS_REQUEST_DRAFT_KEY, QWEN_REQUEST_DRAFT_KEY, QWEN_EDITOR_REQUEST_DRAFT_KEY } from '@/utils/storageKeys'
 import { imageMediaSession } from '@/platform/imageMediaSession'
@@ -46,7 +48,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       return false
     }
   }
-  const models = shallowRef<QwenModelStatus[]>([]), checking = ref(false), ready = ref(false), initializing = ref(false), statusError = ref('')
+  const models = shallowRef<DirectImageModelStatus[]>([]), checking = ref(false), ready = ref(false), initializing = ref(false), statusError = ref('')
   const result = shallowRef<ImageTask | null>(null), resultBlob = shallowRef<Blob | null>(null), resultUrl = ref('')
   const busy = ref(false), importing = ref(false), observing = ref(false), cancelling = ref(false), saving = ref(false), saved = ref(false)
   const error = ref(''), notice = ref(''), sourceChanged = ref(false)

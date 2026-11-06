@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3170,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.684Z",
   "data": {
     "id": "goldenglow_arknights_lingerie_whisper",
     "characterId": "goldenglow_arknights",
@@ -37,23 +37,16 @@
       "adorable_barber"
     ],
     "promptTokens": [
-      "goldenglow (arknights)",
-      "1girl",
-      "feline cat ears fully fluffed from static",
-      "feline tail sparking with tiny electricity motes",
-      "pastel buttercup-yellow calico floral cotton camisole set",
-      "sitting in front of dressing mirror holding stuck hair comb",
-      "puffy wildly frizzy pastel pink hair standing on end",
-      "teary golden eyes looking pleadingly at viewer",
-      "pouting quivering lip",
-      "fairy lights framing mirror",
-      "wholesome comedy bedroom",
-      "masterpiece",
-      "high quality"
+      "cat ears frizzy",
+      "static hair",
+      "yellow floral camisole",
+      "hairbrush stuck",
+      "teary eyes",
+      "funny cute"
     ],
     "negativeTokens": [],
     "promptProse": "Susie (Goldenglow) in a state of comical despair inside her personal styling salon quarters. Dressed in a charming buttercup-yellow floral cotton camisole set, her pastel pink hair and feline ears have exploded into an enormous frizzy puffball of static electricity. Clutching a hairbrush stuck in her static mane with tearful golden eyes, she whines cutely for the Doctor's rescue.",
-    "animaCaption": "goldenglow (arknights), 1girl, cat ears frizzy, static hair, yellow floral camisole, hairbrush stuck, teary eyes, funny cute, highres",
+    "animaCaption": "Susie (Goldenglow) in a state of comical despair inside her personal styling salon quarters. Dressed in a charming buttercup-yellow floral cotton camisole set, her pastel pink hair and feline ears have exploded into an enormous frizzy puffball of static electricity.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

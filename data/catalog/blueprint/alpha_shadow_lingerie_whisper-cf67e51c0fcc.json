@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_shadow_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3502,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.160Z",
   "data": {
     "id": "alpha_shadow_lingerie_whisper",
     "characterId": "alpha_shadow",
@@ -37,25 +37,17 @@
       "aristocratic"
     ],
     "promptTokens": [
-      "alpha (the eminence in shadow)",
-      "1girl",
       "elf ears",
-      "abyss black satin halter robe",
-      "gold trim embroidery",
-      "backless design",
-      "holding antique parchment scroll",
-      "standing up gracefully from plush velvet armchair",
-      "long flowing golden blonde hair",
-      "striking intelligent blue eyes",
-      "warm worshipful gentle smile",
-      "private gothic library background",
-      "dramatic chiaroscuro lighting",
-      "masterpiece",
-      "high quality"
+      "black and gold halter robe",
+      "golden hair",
+      "holding scroll",
+      "velvet chair",
+      "devoted smile",
+      "dramatic light"
     ],
     "negativeTokens": [],
     "promptProse": "Alpha pausing her nocturnal research inside a private study deep within Shadow Garden's headquarters. She is clothed in an alluring backless black satin halter robe bordered in imperial gold embroidery. Holding an ancient parchment with pointed elf ears peeking through cascading golden locks, she rises gracefully with deep, unconditional reverence and warmth shining in her brilliant blue eyes.",
-    "animaCaption": "alpha (shadow), 1girl, elf ears, black and gold halter robe, golden hair, holding scroll, velvet chair, devoted smile, dramatic light, highres",
+    "animaCaption": "Alpha pausing her nocturnal research inside a private study deep within Shadow Garden's headquarters. She is clothed in an alluring backless black satin halter robe bordered in imperial gold embroidery.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

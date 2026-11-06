@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3176,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "makima_lingerie_whisper",
     "characterId": "makima",
@@ -34,24 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "makima",
-      "solo",
-      "sitting centrally on dark leather couch",
-      "legs crossed gracefully",
-      "hands clasped over knees",
-      "long reddish-braided hair",
-      "golden ringed eyes",
-      "gentle unsettling smile",
-      "rain lashing against huge glass window behind",
-      "dominant commanding aura"
+      "chaise lounge",
+      "sitting",
+      "braid",
+      "smile",
+      "underwire contour cups",
+      "black velvet choker necklace",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, makima, solo, sitting centrally on dark leather couch, legs crossed gracefully, hands clasped over knees, long reddish-braided hair, golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, makima, solo, sitting centrally on dark leather couch, legs crossed gracefully, hands clasped over knees, long reddish-braided hair, golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura",
+    "promptProse": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura.",
+    "animaCaption": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

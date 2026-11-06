@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3527,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shinjou_akane_lingerie_whisper",
     "characterId": "shinjou_akane",
@@ -34,22 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shinjou akane",
-      "solo",
-      "sitting cross-legged on messy carpet holding hand-sculpted kaiju figure",
+      "sitting",
       "bare feet",
-      "short lilac-pink hair",
-      "glowing pink eyes with empty cold smile",
-      "shelves packed with custom monster figurines",
-      "moody computer monitor glow"
+      "pink hair",
+      "smile",
+      "glowing",
+      "relaxed casual fit",
+      "porcelain skin contrast",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shinjou akane, solo, sitting cross-legged on messy carpet holding hand-sculpted kaiju figure, bare feet, short lilac-pink hair, glowing pink eyes with empty cold smile, shelves packed with custom monster figurines, moody computer monitor glow",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shinjou akane, solo, sitting cross-legged on messy carpet holding hand-sculpted kaiju figure, bare feet, short lilac-pink hair, glowing pink eyes with empty cold smile, shelves packed with custom monster figurines, moody computer monitor glow",
+    "promptProse": "Akane Shinjou sits cross-legged on messy carpet holding hand-sculpted kaiju figure, wearing a smoky pink ribbed knit off-shoulder camisole slip. Bare feet, short lilac-pink hair, glowing pink eyes with empty cold smile amidst shelves packed with custom monster figurines, moody computer monitor glow.",
+    "animaCaption": "Akane Shinjou sits cross-legged on messy carpet holding hand-sculpted kaiju figure, wearing a smoky pink ribbed knit off-shoulder camisole slip. Bare feet, short lilac-pink hair, glowing pink eyes with empty cold smile amidst shelves packed with custom monster figurines, moody computer monitor glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

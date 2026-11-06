@@ -38,12 +38,9 @@ interface TagShardFile {
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const zlib: typeof import('node:zlib') = require('node:zlib');
+const { resolveContentRoot }: typeof import('./content-contract-root') = require('./content-contract-root');
 
-const root = path.resolve(
-  process.env.AICS_DATA_ROOT
-    || process.env.AICS_APP_ROOT
-    || path.resolve(__dirname, '..', '..'),
-);
+const root = resolveContentRoot();
 const dataDir = path.join(root, 'data');
 const shardsDir = path.join(dataDir, 'tags');
 const manifestPath = path.join(shardsDir, 'manifest.json');

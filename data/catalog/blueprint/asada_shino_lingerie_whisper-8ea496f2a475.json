@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3337,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.263Z",
   "data": {
     "id": "asada_shino_lingerie_whisper",
     "characterId": "asada_shino",
@@ -37,23 +37,17 @@
       "stoic_sniper"
     ],
     "promptTokens": [
-      "asada shino",
-      "1girl",
-      "sinon",
-      "mint green ribbed athletic camisole tank",
-      "grey stretch sleep shorts",
-      "sitting sideways on apartment bay window sill",
-      "one knee drawn up to chest",
-      "wiping sniper rifle optical scope with microfiber cloth",
-      "short teal-cyan hair blowing in breeze",
-      "calm sharp slate-blue eyes",
-      "city streetlights and midnight shadows outside",
-      "masterpiece",
-      "high quality"
+      "mint green camisole",
+      "bay window",
+      "sniper scope",
+      "cyan hair",
+      "knee drawn up",
+      "midnight city",
+      "cool gaze"
     ],
     "negativeTokens": [],
     "promptProse": "Shino Asada passing the quiet hours of midnight seated on the ledge of her apartment bay window. Dressed in a mint-green ribbed athletic camisole and grey sleep shorts, she sits with one knee drawn up while meticulously cleaning a high-magnification sniper scope with a soft cloth. Her cool cyan gaze turns toward the doorway with calculating, quiet camaraderie.",
-    "animaCaption": "asada shino, 1girl, mint green camisole, bay window, sniper scope, cyan hair, knee drawn up, midnight city, cool gaze, highres",
+    "animaCaption": "Shino Asada passing the quiet hours of midnight seated on the ledge of her apartment bay window. Dressed in a mint-green ribbed athletic camisole and grey sleep shorts, she sits with one knee drawn up while meticulously cleaning a high-magnification sniper scope with a soft cloth.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

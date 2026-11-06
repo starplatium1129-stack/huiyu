@@ -5,12 +5,9 @@ const { object }: typeof import('./content-history-reader') = require('./content
 
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
+const { resolveContentRoot }: typeof import('./content-contract-root') = require('./content-contract-root');
 
-const root = path.resolve(
-  process.env.AICS_DATA_ROOT
-    || process.env.AICS_APP_ROOT
-    || path.resolve(__dirname, '..', '..'),
-);
+const root = resolveContentRoot();
 const dataDir = path.join(root, 'data');
 const shardsDir = path.join(dataDir, 'scenes');
 const manifestPath = path.join(shardsDir, 'manifest.json');

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3189,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "mikasa_ackerman_lingerie_whisper",
     "characterId": "mikasa_ackerman",
@@ -34,23 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "mikasa ackerman",
-      "solo",
-      "sitting on rustic wooden bunk bed edge",
-      "gently folding iconic red scarf on pillow",
-      "toned athletic abs",
-      "short black hair",
-      "intense devoted dark grey eyes",
-      "stone fireplace embers glowing warmly",
-      "quiet military quarters"
+      "bed",
+      "sitting",
+      "black hair",
+      "fireplace",
+      "glowing",
+      "understated sensual knitwear",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, mikasa ackerman, solo, sitting on rustic wooden bunk bed edge, gently folding iconic red scarf on pillow, toned athletic abs, short black hair, intense devoted dark grey eyes, stone fireplace embers glowing warmly, quiet military quarters",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, mikasa ackerman, solo, sitting on rustic wooden bunk bed edge, gently folding iconic red scarf on pillow, toned athletic abs, short black hair, intense devoted dark grey eyes, stone fireplace embers glowing warmly, quiet military quarters",
+    "promptProse": "Mikasa Ackerman sits on rustic wooden bunk bed edge, wearing a charcoal grey ribbed knit crop camisole. Gently folding iconic red scarf on pillow, toned athletic abs, short black hair amidst intense devoted dark grey eyes, stone fireplace embers glowing warmly, quiet military quarters.",
+    "animaCaption": "Mikasa Ackerman sits on rustic wooden bunk bed edge, wearing a charcoal grey ribbed knit crop camisole. Gently folding iconic red scarf on pillow, toned athletic abs, short black hair amidst intense devoted dark grey eyes, stone fireplace embers glowing warmly, quiet military quarters.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

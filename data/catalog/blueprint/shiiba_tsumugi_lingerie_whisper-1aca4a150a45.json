@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3497,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shiiba_tsumugi_lingerie_whisper",
     "characterId": "shiiba_tsumugi",
@@ -34,21 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shiiba tsumugi",
-      "solo",
-      "sitting on bed edge clutching pajama hem tightly with both hands",
-      "short light-brown hair revealing bright red earlobes",
-      "looking up with watery shy blue eyes",
-      "male school uniform hanging in corner",
-      "warm bedside light"
+      "bed",
+      "sitting",
+      "brown hair",
+      "water",
+      "blue eyes",
+      "delicate puff sleeves",
+      "tiny gathered neckline",
+      "soft pastel tone",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shiiba tsumugi, solo, sitting on bed edge clutching pajama hem tightly with both hands, short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner, warm bedside light",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shiiba tsumugi, solo, sitting on bed edge clutching pajama hem tightly with both hands, short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner, warm bedside light",
+    "promptProse": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown. Short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner amidst warm bedside light.",
+    "animaCaption": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown. Short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner amidst warm bedside light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -47,19 +47,11 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
                     let _ = app.emit("aics:open-atelier", ());
                 }
                 MENU_TOGGLE_ALWAYS_ON_TOP => {
-                    if let Some(w) = app.get_webview_window("companion") {
-                        let next = !w.is_always_on_top().unwrap_or(false);
-                        let _ = w.set_always_on_top(next);
-                        state.preferences.lock().unwrap().always_on_top = next;
-                        state.save_preferences();
-                        crate::chat_dock::follow(app);
-                        refresh_tray_menu(app);
-                    }
+                    crate::bridge::toggle_always_on_top(app.clone(), state);
                 }
                 MENU_TOGGLE_PASSTHROUGH => {
                     let next = !state.ignore_mouse_events.load(std::sync::atomic::Ordering::Relaxed);
                     crate::bridge::set_ignore_mouse_events(app, next);
-                    refresh_tray_menu(app);
                 }
                 MENU_TOGGLE_AUTOSTART => {
                     let currently = app.autolaunch().is_enabled().unwrap_or(false);

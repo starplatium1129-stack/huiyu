@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3342,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.472Z",
   "data": {
     "id": "chloe_von_einzbern_lingerie_whisper",
     "characterId": "chloe_von_einzbern",
@@ -37,25 +37,17 @@
       "succubus_playful"
     ],
     "promptTokens": [
-      "chloe von einzbern",
-      "1girl",
-      "kuro",
-      "tanned skin",
-      "vibrant fuchsia pink strappy lace babydoll",
-      "crisscross waist straps",
-      "lying upside down on edge of bed with head hanging backwards",
-      "hair spilling down towards floor",
-      "licking lip playfully with small tongue",
-      "one hand reaching to tug viewer's collar",
-      "mischievous glowing amber eyes",
-      "playful devilish smirk",
-      "moonlit bedroom",
-      "masterpiece",
-      "high quality"
+      "tanned",
+      "pink lace babydoll",
+      "upside down on bed",
+      "licking lip",
+      "pulling collar",
+      "amber eyes",
+      "seductive"
     ],
     "negativeTokens": [],
     "promptProse": "Chloe von Einzbern (Kuro) teasing the viewer while hanging upside down off the edge of a bed at midnight. Sporting a seductive fuchsia-pink strappy lace babydoll over her warm tanned skin, her dark crimson hair cascades toward the carpet. Licking her lip mischievously while reaching out to tug the viewer's shirt, her amber eyes glitter with vampiric, playful appetite.",
-    "animaCaption": "chloe von einzbern, 1girl, tanned, pink lace babydoll, upside down on bed, licking lip, pulling collar, amber eyes, seductive, highres",
+    "animaCaption": "Chloe von Einzbern (Kuro) teasing the viewer while hanging upside down off the edge of a bed at midnight. Sporting a seductive fuchsia-pink strappy lace babydoll over her warm tanned skin, her dark crimson hair cascades toward the carpet.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

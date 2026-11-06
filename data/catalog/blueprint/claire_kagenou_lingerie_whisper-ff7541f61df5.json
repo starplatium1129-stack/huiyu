@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_kagenou_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3510,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.482Z",
   "data": {
     "id": "claire_kagenou_lingerie_whisper",
     "characterId": "claire_kagenou",
@@ -37,22 +37,17 @@
       "overprotective_sister"
     ],
     "promptTokens": [
-      "claire kagenou",
-      "1girl",
-      "onyx black and crimson red silk slip dress",
-      "thin crisscross shoulder straps",
-      "standing boldly in open bedroom doorway with hands on hips",
-      "long dark hair swaying in corridor draft",
-      "fierce overprotective crimson eyes",
-      "authoritative scolding pout",
-      "barefoot on dark oak floorboards",
-      "flickering hallway candlestick shadows",
-      "masterpiece",
-      "high quality"
+      "black and red silk slip",
+      "hands on hips",
+      "doorway",
+      "barefoot",
+      "dark hair",
+      "red eyes",
+      "scolding expression"
     ],
     "negativeTokens": [],
     "promptProse": "Claire Kagenou barging into her brother's bedroom unannounced in the dead of night. Wearing an alluring onyx-black silk slip dress with striking crimson straps, she plants both hands firmly on her hips in the doorway. Her long dark tresses flutter in the corridor draft while her intense crimson eyes flash with fierce, overbearing elder-sister authority.",
-    "animaCaption": "claire kagenou, 1girl, black and red silk slip, hands on hips, doorway, barefoot, dark hair, red eyes, scolding expression, highres",
+    "animaCaption": "Claire Kagenou barging into her brother's bedroom unannounced in the dead of night. Wearing an alluring onyx-black silk slip dress with striking crimson straps, she plants both hands firmly on her hips in the doorway.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

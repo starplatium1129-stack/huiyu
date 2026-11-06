@@ -8,6 +8,7 @@ const os: typeof import('node:os') = require('node:os');
 const crypto: typeof import('node:crypto') = require('node:crypto');
 const gateway: typeof import('./generation-gateway') = require('./generation-gateway');
 const { object }: typeof import('./content-history-reader') = require('./content-history-reader');
+const { resolveContentRoot }: typeof import('./content-contract-root') = require('./content-contract-root');
 
 const CODE_ROOT = path.resolve(__dirname, '..', '..');
 const hash = (value: string | NodeJS.ArrayBufferView) => crypto.createHash('sha256').update(value).digest('hex');
@@ -45,7 +46,7 @@ function parseArgs(args: string[], extra: OptionSpec = {}, env: NodeJS.ProcessEn
     return item;
   };
   const output = value('output');
-  const opts = { ...parsed, help: false as const, env, root: path.resolve(value('root') || env.AICS_DATA_ROOT || env.AICS_APP_ROOT || CODE_ROOT),
+  const opts = { ...parsed, help: false as const, env, root: path.resolve(value('root') || resolveContentRoot(env)),
     gateway: gateway.gatewayUrl(value('gateway'), env), dryRun: !!parsed['dry-run'],
     retryUnknown: !!parsed['retry-unknown'], output: output ? path.resolve(output) : null,
     concurrency: Number(parsed.concurrency ?? env.CONCURRENCY ?? 3) };
@@ -83,7 +84,7 @@ function noLinks(file: string) {
   return path.resolve(file);
 }
 
-function assertOutput(opts: CandidateOptions, protectedPaths: Array<string | undefined> = []) {
+function assertOutput(opts: Pick<CandidateOptions, 'output' | 'root' | 'env'>, protectedPaths: Array<string | undefined> = []) {
   if (!opts.output) throw new Error('--output <isolated candidate directory> is required');
   const output = noLinks(opts.output);
   for (const root of new Set([CODE_ROOT, opts.root])) {
@@ -128,15 +129,17 @@ function atomic(file: string, value: unknown) {
 function lockDirectory(output: string) {
   const file = noLinks(path.join(output, '.generation.lock'));
   if (fs.existsSync(file)) {
-    const owner: unknown = JSON.parse(fs.readFileSync(file, 'utf8'));
-    if (!object(owner) || owner.host !== os.hostname() || typeof owner.pid !== 'number' || !Number.isInteger(owner.pid) || owner.pid < 1) throw new Error('unrecognized candidate lock; inspect before recovery');
-    let alive = true;
-    try { process.kill(owner.pid, 0); } catch (error) { if (runtimeErrorCode(error) === 'ESRCH') alive = false; else throw error; }
-    if (alive) throw new Error('candidate directory is in use');
-    fs.unlinkSync(file);
+    throw new Error(`candidate directory is locked; verify the owner has exited before removing ${file}`);
   }
-  fs.writeFileSync(file, JSON.stringify({ pid: process.pid, host: os.hostname() }), { flag: 'wx', mode: 0o600 });
-  return () => fs.unlinkSync(file);
+  const token = crypto.randomUUID(), host = os.hostname();
+  fs.writeFileSync(file, JSON.stringify({ pid: process.pid, host, token }), { flag: 'wx', mode: 0o600 });
+  return () => {
+    const owner: unknown = JSON.parse(fs.readFileSync(noLinks(file), 'utf8'));
+    if (!object(owner) || owner.pid !== process.pid || owner.host !== host || owner.token !== token) {
+      throw new Error('candidate lock ownership changed; refusing to release it');
+    }
+    fs.unlinkSync(file);
+  };
 }
 
 function openStore(opts: CandidateOptions, script: string, protectedPaths: string[]) {
@@ -339,4 +342,4 @@ function runCli(main: (args: string[], deps: GenerationOptions) => Promise<{ exi
   });
 }
 
-export = { CODE_ROOT, hash, parseArgs, help, snapshot, noLinks, runCandidates, runCli };
+export = { CODE_ROOT, hash, parseArgs, help, snapshot, noLinks, assertOutput, lockDirectory, runCandidates, runCli };

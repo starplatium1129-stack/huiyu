@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3491,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "touma_kazusa_lingerie_whisper",
     "characterId": "touma_kazusa",
@@ -34,22 +34,17 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "touma kazusa",
-      "solo",
-      "sitting at black grand piano pressing discordant keys with one hand",
-      "other hand against forehead",
-      "disheveled jet black hair over bare shoulders",
-      "tear tracks glistening on pale cheeks",
-      "passionate tortured gaze",
-      "heavy snowfall outside window"
+      "sitting",
+      "black hair",
+      "teacup",
+      "minimalist thin straps",
+      "thigh-high slit",
+      "fluid bias-cut drape",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, touma kazusa, solo, sitting at black grand piano pressing discordant keys with one hand, other hand against forehead, disheveled jet black hair over bare shoulders, tear tracks glistening on pale cheeks, passionate tortured gaze, heavy snowfall outside window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, touma kazusa, solo, sitting at black grand piano pressing discordant keys with one hand, other hand against forehead, disheveled jet black hair over bare shoulders, tear tracks glistening on pale cheeks, passionate tortured gaze, heavy snowfall outside window",
+    "promptProse": "Touma Kazusa sits at black grand piano pressing discordant keys with one hand, wearing a inky black heavy liquid-silk slip gown. Other hand against forehead, disheveled jet black hair over bare shoulders, tear tracks glistening on pale cheeks amidst passionate tortured gaze, heavy snowfall outside window.",
+    "animaCaption": "Touma Kazusa sits at black grand piano pressing discordant keys with one hand, wearing a inky black heavy liquid-silk slip gown. Other hand against forehead, disheveled jet black hair over bare shoulders, tear tracks glistening on pale cheeks amidst passionate tortured gaze, heavy snowfall outside window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3384,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "nakano_miku_lingerie_whisper",
     "characterId": "nakano_miku",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "nakano miku",
-      "solo",
-      "sitting on floor pillow hugging large bolster pillow over lower face",
-      "iconic large blue wireless headphones around slender neck",
-      "messy auburn hair covering one eye",
-      "deep shy blue eyes",
-      "samurai history books on floor",
-      "warm reading lamp"
+      "sitting",
+      "blue eyes",
+      "books",
+      "desk lamp",
+      "open shoulder cut",
+      "chunky cozy knit texture",
+      "delicate ribbed hemline",
+      "shy sweet home attire",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, nakano miku, solo, sitting on floor pillow hugging large bolster pillow over lower face, iconic large blue wireless headphones around slender neck, messy auburn hair covering one eye, deep shy blue eyes, samurai history books on floor, warm reading lamp",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, nakano miku, solo, sitting on floor pillow hugging large bolster pillow over lower face, iconic large blue wireless headphones around slender neck, messy auburn hair covering one eye, deep shy blue eyes, samurai history books on floor, warm reading lamp",
+    "promptProse": "Nakano Miku sits on floor pillow hugging large bolster pillow over lower face, wearing a mist blue soft cable-knit halter camisole slip. Iconic large blue wireless headphones around slender neck, messy auburn hair covering one eye, deep shy blue eyes amidst samurai history books on floor, warm reading lamp.",
+    "animaCaption": "Nakano Miku sits on floor pillow hugging large bolster pillow over lower face, wearing a mist blue soft cable-knit halter camisole slip. Iconic large blue wireless headphones around slender neck, messy auburn hair covering one eye, deep shy blue eyes amidst samurai history books on floor, warm reading lamp.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

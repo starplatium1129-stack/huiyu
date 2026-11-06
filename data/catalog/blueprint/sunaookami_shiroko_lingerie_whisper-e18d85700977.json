@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3440,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "sunaookami_shiroko_lingerie_whisper",
     "characterId": "sunaookami_shiroko",
@@ -34,22 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "sunaookami shiroko",
-      "solo",
-      "wolf girl",
-      "fluffy white lupo ears swiveling",
-      "sitting on cot bending down adjusting ankle strap of athletic socks",
-      "sleek road bicycle parked by wall",
-      "cool pale blue eyes",
-      "bright desert dawn light streaming through window"
+      "sitting",
+      "exercise bike",
+      "blue eyes",
+      "racerback straps",
+      "snug boyleg workout shorts",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, sunaookami shiroko, solo, wolf girl, fluffy white lupo ears swiveling, sitting on cot bending down adjusting ankle strap of athletic socks, sleek road bicycle parked by wall, cool pale blue eyes, bright desert dawn light streaming through window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, sunaookami shiroko, solo, wolf girl, fluffy white lupo ears swiveling, sitting on cot bending down adjusting ankle strap of athletic socks, sleek road bicycle parked by wall, cool pale blue eyes, bright desert dawn light streaming through window",
+    "promptProse": "Sunaookami Shiroko sits on cot bending down adjusting ankle strap of athletic socks, wearing a soft grey and cyan-blue athletic sports cami set. Wolf girl, fluffy white lupo ears swiveling, sleek road bicycle parked by wall amidst cool pale blue eyes, bright desert dawn light streaming through window.",
+    "animaCaption": "Sunaookami Shiroko sits on cot bending down adjusting ankle strap of athletic socks, wearing a soft grey and cyan-blue athletic sports cami set. Wolf girl, fluffy white lupo ears swiveling, sleek road bicycle parked by wall amidst cool pale blue eyes, bright desert dawn light streaming through window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

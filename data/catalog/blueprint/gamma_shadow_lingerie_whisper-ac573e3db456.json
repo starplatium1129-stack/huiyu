@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3513,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.676Z",
   "data": {
     "id": "gamma_shadow_lingerie_whisper",
     "characterId": "gamma_shadow",
@@ -37,23 +37,17 @@
       "luxurious_study"
     ],
     "promptTokens": [
-      "gamma (the eminence in shadow)",
-      "1girl",
       "elf ears",
-      "sophisticated navy blue silk wrap nightgown with high slit",
-      "gold-rimmed spectacles perched on nose",
-      "carrying leather ledger folio",
-      "body suddenly pitching forward mid-trip over own hem",
-      "comical wide-eyed panic breaking through refined smile",
-      "long dark blue hair with side parting",
-      "voluptuous mature figure",
-      "grand chandelier illuminated executive office",
-      "masterpiece",
-      "high quality"
+      "navy silk gown",
+      "glasses",
+      "tripping forward",
+      "dropping papers",
+      "blue hair",
+      "funny cute panic"
     ],
     "negativeTokens": [],
     "promptProse": "Gamma in the middle of her signature clumsy mishap inside her lavish Mitsugoshi executive office. Clad in a mature navy-blue silk wrap nightgown with an elegant high side slit and scholarly gold-rimmed glasses, she carries revenue ledgers toward Lord Shadow. The split second before she crashes into the rug over her own trailing hem, her brilliant business-queen poise shatters into frantic panic.",
-    "animaCaption": "gamma (shadow), 1girl, elf ears, navy silk gown, glasses, tripping forward, dropping papers, blue hair, funny cute panic, highres",
+    "animaCaption": "Gamma in the middle of her signature clumsy mishap inside her lavish Mitsugoshi executive office. Clad in a mature navy-blue silk wrap nightgown with an elegant high side slit and scholarly gold-rimmed glasses, she carries revenue ledgers toward Lord Shadow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,6 +1,5 @@
-import { apiClient } from './client'
 import { runtimeFetch } from '@/platform/runtimeUrl'
-import { decodeInterrogateReadiness } from '@/composables/useInterrogateReadiness'
+import { readInterrogateReadiness } from './interrogateReadiness'
 import { decodeInterrogateResult, type InterrogateMode, type InterrogateResult } from './interrogateResult'
 import { assertWorkspaceMediaAuthority, type MediaSource } from '@/platform/desktop/workspaceMediaSource'
 
@@ -42,9 +41,7 @@ async function readResult(response: Response, signal: AbortSignal, mode: Interro
 /** Companion uses the same local PixAI readiness and response contracts as the workbench. */
 export async function interrogateImage(source: string | Readonly<MediaSource>, signal: AbortSignal): Promise<InterrogateResult> {
   if (typeof source !== 'string') assertWorkspaceMediaAuthority(source.authority)
-  const ready = decodeInterrogateReadiness(await apiClient.request('/api/interrogate/status', {
-    cache: 'no-store', cachePolicy: 'bypass', timeoutMs: 8000, signal,
-  }))
+  const ready = await readInterrogateReadiness(signal)
   if (ready.state !== 'ready') throw new Error(ready.message)
   const active = AbortSignal.any([signal, AbortSignal.timeout(120_000)])
   try {

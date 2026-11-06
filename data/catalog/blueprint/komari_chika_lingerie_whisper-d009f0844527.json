@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "komari_chika_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3472,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "komari_chika_lingerie_whisper",
     "characterId": "komari_chika",
@@ -34,25 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "komari chika",
-      "solo",
-      "curled up on tatami cushion",
-      "hugging knees tightly",
-      "pulling hemline over knees",
-      "red-framed eyeglasses",
-      "extremely blushing face",
-      "brown hair with twin tails",
-      "messy stacks of literature books around",
-      "warm desk lamp lighting",
-      "shy nervous expression"
+      "tatami",
+      "cushion",
+      "glasses",
+      "blush",
+      "brown hair",
+      "twintails",
+      "books",
+      "desk lamp",
+      "mint blue cotton camisole set",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, komari chika, solo, curled up on tatami cushion, hugging knees tightly, pulling hemline over knees, red-framed eyeglasses, extremely blushing face, brown hair with twin tails, messy stacks of literature books around, warm desk lamp lighting, shy nervous expression",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, komari chika, solo, curled up on tatami cushion, hugging knees tightly, pulling hemline over knees, red-framed eyeglasses, extremely blushing face, brown hair with twin tails, messy stacks of literature books around, warm desk lamp lighting, shy nervous expression",
+    "promptProse": "Chika Komari curls up on tatami cushion, wearing a mint blue cotton camisole set. Hugging knees tightly, pulling hemline over knees, red-framed eyeglasses amidst extremely blushing face, brown hair with twin tails, messy stacks of literature books around, warm desk lamp lighting, shy nervous expression.",
+    "animaCaption": "Chika Komari curls up on tatami cushion, wearing a mint blue cotton camisole set. Hugging knees tightly, pulling hemline over knees, red-framed eyeglasses amidst extremely blushing face, brown hair with twin tails, messy stacks of literature books around, warm desk lamp lighting, shy nervous expression.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

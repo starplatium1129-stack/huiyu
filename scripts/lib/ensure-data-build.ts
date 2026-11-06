@@ -21,6 +21,7 @@
  */
 
 const fs: typeof import('fs') = require('fs');
+const { resolveContentRoot }: typeof import('./content-contract-root') = require('./content-contract-root');
 const referenceStore: typeof import('./reference-store') = require('./reference-store');
 const {
   aggregatePath: scenesAggregatePath,
@@ -112,7 +113,7 @@ function ensureTagsBuilt({ onlyIfMissing = false } = {}) {
 }
 
 function ensureReferencesBuilt({ onlyIfMissing = false } = {}) {
-  const root = require('node:path').resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || require('node:path').join(__dirname, '../..'));
+  const root = resolveContentRoot();
   const files = ['standards', 'view'].map(name => require('node:path').join(root, `data/character-reference-${name}.json`));
   if (onlyIfMissing && files.every(file => fs.existsSync(file))) return { rebuilt: false };
   if (referenceStore.aggregateIsCurrent(root)) return { rebuilt: false };
@@ -127,7 +128,7 @@ function ensureReferencesBuilt({ onlyIfMissing = false } = {}) {
  *    自愈不能把守卫静默抹掉。 */
 function ensureAll({ onlyIfMissing = false } = {}) {
   const catalog = require('./catalog-snapshot') as typeof import('./catalog-snapshot');
-  const root = require('node:path').resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || require('node:path').join(__dirname, '../..'));
+  const root = resolveContentRoot();
   const records = catalog.read(root);
   if (records) {
     const view = catalog.views(records);

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mayuri_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3480,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.054Z",
   "data": {
     "id": "shiina_mayuri_swimsuit_allure",
     "characterId": "shiina_mayuri",
@@ -37,26 +37,18 @@
       "gentle_smile"
     ],
     "promptTokens": [
-      "shiina mayuri",
-      "1girl",
-      "retro blue frilled one-piece swimdress",
-      "tiny daisy floral pattern",
-      "straw sunhat with blue ribbon",
-      "holding soda popsicle",
-      "eating ice pop",
-      "barefoot in white sand",
-      "beach umbrella",
-      "gentle ocean breeze",
-      "morning sun",
-      "sweet smile",
-      "looking at viewer",
-      "medium shot",
-      "masterpiece",
-      "high quality"
+      "retro swimdress",
+      "daisy print",
+      "straw hat",
+      "popsicle",
+      "beach",
+      "ocean",
+      "smile",
+      "morning light"
     ],
     "negativeTokens": [],
     "promptProse": "Mayuri Shiina standing barefoot on a sunny white-sand beach under a colorful umbrella. She wears a charming retro pastel blue one-piece swimdress with delicate frilled edges and daisy motifs, along with a wide-brim straw hat. She is happily nibbling on a soda popsicle and offering the other half to the viewer, smiling warmly with innocent blue eyes in the radiant morning sunlight.",
-    "animaCaption": "shiina mayuri, 1girl, retro swimdress, daisy print, straw hat, popsicle, beach, ocean, smile, morning light, highres",
+    "animaCaption": "Mayuri Shiina standing barefoot on a sunny white-sand beach under a colorful umbrella. She wears a charming retro pastel blue one-piece swimdress with delicate frilled edges and daisy motifs, along with a wide-brim straw hat.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

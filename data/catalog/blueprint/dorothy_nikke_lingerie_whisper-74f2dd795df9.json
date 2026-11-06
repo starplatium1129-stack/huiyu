@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_lingerie_whisper",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3359,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
   "data": {
     "id": "dorothy_nikke_lingerie_whisper",
     "characterId": "dorothy_nikke",
@@ -37,23 +37,18 @@
       "tragic_goddess"
     ],
     "promptTokens": [
-      "dorothy (nikke)",
-      "1girl",
-      "fallen goddess",
-      "haute couture white sheer silk halter nightgown",
-      "delicate white swan feather embroidery along hem",
-      "sitting regally on white marble fountain steps",
-      "holding crystal wine glass with deep red wine",
-      "immense wavy pastel pink and pale blonde hair pooling on marble",
-      "dramatic sorrowful violet eyes",
-      "bittersweet melancholy smile",
-      "cool moonlight reflecting in water basin",
-      "masterpiece",
-      "high quality"
+      "white feather nightgown",
+      "sitting",
+      "holding wine glass",
+      "marble fountain steps",
+      "pink blonde hair",
+      "sad smile",
+      "violet eyes",
+      "moonlight"
     ],
     "negativeTokens": [],
     "promptProse": "Dorothy presiding over a solitary nocturnal reverie beside a pristine marble fountain in Eden. Clothed in a celestial white sheer silk halter gown edged with downy swan feathers, she rests on the stone steps while holding a goblet of red wine. Her breathtaking pastel pink-blonde hair spills like liquid silk across the marble under a silver moon that mirrors her tragic, immortal elegance.",
-    "animaCaption": "dorothy (nikke), 1girl, white feather nightgown, wine glass, marble fountain steps, pink blonde hair, sad smile, violet eyes, moonlight, highres",
+    "animaCaption": "Dorothy sits on marble fountain steps, holding a glass of wine as moonlight falls across the courtyard.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

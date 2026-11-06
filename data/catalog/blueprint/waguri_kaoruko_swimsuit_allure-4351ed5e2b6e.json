@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_kaoruko_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3321,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.343Z",
   "data": {
     "id": "waguri_kaoruko_swimsuit_allure",
     "characterId": "waguri_kaoruko",
@@ -37,24 +37,19 @@
       "innocent_romance"
     ],
     "promptTokens": [
-      "waguri kaoruko",
-      "1girl",
-      "pastel honey-yellow and strawberry pink gingham frill bikini",
-      "candy bow ties",
-      "eating strawberry cream shaved ice from glass bowl with small spoon",
-      "cheeks puffed with food",
-      "tiny dab of whipped cream near corner of mouth",
-      "wide sparkling dark eyes blushing bashfully",
-      "soft brown hair fluttering",
-      "striped beach parasol patio",
-      "warm sparkling morning light",
-      "adorable close-up portrait",
-      "masterpiece",
-      "high quality"
+      "gingham bikini",
+      "honey yellow",
+      "strawberry shaved ice",
+      "cream on lip",
+      "puffed cheeks",
+      "blushing",
+      "cafe umbrella",
+      "morning",
+      "cute"
     ],
     "negativeTokens": [],
     "promptProse": "Kaoruko Waguri enjoying a towering glass bowl of strawberry shaved ice at an outdoor seaside cafe under a cheerful striped umbrella. She wears a sweet honey-yellow and strawberry-pink gingham bikini decorated with dainty sugar-bow ties. With her cheeks delightfully puffed and a stray dab of whipped cream at her lip, she blushes bashfully when caught savoring her treat.",
-    "animaCaption": "waguri kaoruko, 1girl, gingham bikini, honey yellow, strawberry shaved ice, cream on lip, puffed cheeks, blushing, cafe umbrella, morning, cute, highres",
+    "animaCaption": "Kaoruko Waguri enjoying a towering glass bowl of strawberry shaved ice at an outdoor seaside cafe under a cheerful striped umbrella. She wears a sweet honey-yellow and strawberry-pink gingham bikini decorated with dainty sugar-bow ties.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

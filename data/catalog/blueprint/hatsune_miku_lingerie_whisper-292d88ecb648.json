@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3214,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.707Z",
   "data": {
     "id": "hatsune_miku_lingerie_whisper",
     "characterId": "hatsune_miku",
@@ -37,24 +37,16 @@
       "eternal_diva"
     ],
     "promptTokens": [
-      "hatsune miku",
-      "1girl",
-      "vocaloid",
-      "sleek black silk camisole with glowing cyan fiber-optic seams",
-      "matching black tap shorts",
-      "sitting cross-legged atop circular glowing holographic pedestal",
-      "super long cyan twintails cascading down touching ground",
-      "futuristic glowing in-ear monitors",
-      "patting knees gently keeping musical rhythm",
-      "sparkling aqua-cyan eyes",
-      "warm affectionate smile",
-      "floating neon holographic music notes in air",
-      "masterpiece",
-      "high quality"
+      "black silk camisole",
+      "glowing cyan seams",
+      "holographic platform",
+      "floor length twintails",
+      "headphones",
+      "sweet smile"
     ],
     "negativeTokens": [],
     "promptProse": "Hatsune Miku humming softly into the late hours aboard a floating holographic platform in a futuristic studio. She wears a modern black silk camisole and sleep shorts traced with luminescent cyan fiber-optic seams. Her iconic floor-length cyan pigtails pool gracefully over the glass as she keeps time to a melody on her knees, smiling warmly across dimensions.",
-    "animaCaption": "hatsune miku, 1girl, black silk camisole, glowing cyan seams, holographic platform, floor length twintails, headphones, sweet smile, highres",
+    "animaCaption": "Hatsune Miku humming softly into the late hours aboard a floating holographic platform in a futuristic studio. She wears a modern black silk camisole and sleep shorts traced with luminescent cyan fiber-optic seams.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

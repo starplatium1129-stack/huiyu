@@ -1,5 +1,5 @@
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
-import type { CompanionToolResult as ToolCallResult } from '@/api/companionToolsApi'
+import type { CompanionToolResult as ToolCallResult } from './executeCompanionTool'
 import { reactive, ref, type ComputedRef, type Ref } from 'vue'
 import { createMessageId, type CharacterConfig } from '../../config/characters.ts'
 import { useChatStorage } from './useChatStorage.ts'

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3185,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "misono_mika_lingerie_whisper",
     "characterId": "misono_mika",
@@ -34,24 +34,18 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "misono mika",
-      "solo",
-      "angel girl",
-      "white feathered wings folded behind",
-      "sitting on ornate marble bench",
-      "resting cheek in palm",
-      "long wavy pink hair with golden highlights",
-      "golden cross-shaped pupils",
-      "starry sky with shooting stars outside Trinity cathedral balcony",
-      "fairytale romantic atmosphere"
+      "angel wings",
+      "sitting",
+      "bench",
+      "pink hair",
+      "balcony",
+      "starry sky",
+      "tiny glitter star specks",
+      "flowing high-low hem"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, misono mika, solo, angel girl, white feathered wings folded behind, sitting on ornate marble bench, resting cheek in palm, long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, misono mika, solo, angel girl, white feathered wings folded behind, sitting on ornate marble bench, resting cheek in palm, long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere",
+    "promptProse": "Misono Mika sits on ornate marble bench, wearing a pearly pink and lilac sheer star-dusted chiffon babydoll. Angel girl, white feathered wings folded behind, resting cheek in palm amidst long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere.",
+    "animaCaption": "Misono Mika sits on ornate marble bench, wearing a pearly pink and lilac sheer star-dusted chiffon babydoll. Angel girl, white feathered wings folded behind, resting cheek in palm amidst long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

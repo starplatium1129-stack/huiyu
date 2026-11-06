@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3130,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.221Z",
   "data": {
     "id": "archetto_arknights_lingerie_whisper",
     "characterId": "archetto_arknights",
@@ -37,24 +37,18 @@
       "charming_purity"
     ],
     "promptTokens": [
-      "archetto (arknights)",
-      "1girl",
-      "griffon avian feather ears",
-      "soft feathery tail",
-      "modest sky azure and white linen hooded wrap robe",
-      "golden cross pendant",
-      "kneeling gracefully by dark wooden prayer kneeler",
-      "hands clasped in prayer near heart",
-      "glancing cheekily toward business notes on desk",
-      "cyan-blue eyes with timid blush",
-      "flickering brass candlestick glow",
-      "peaceful sanctuary dorm",
-      "masterpiece",
-      "high quality"
+      "bird ears",
+      "azure linen robe",
+      "praying hands",
+      "candle light",
+      "holy",
+      "side glance",
+      "blush",
+      "serene"
     ],
     "negativeTokens": [],
     "promptProse": "Archetto finishing her evening devotions in a serene monastery-style chamber aboard Rhodes Island. She is draped in a sky-azure and pristine white linen wrap robe accented with a golden cross. Kneeling beside a wooden prayer bench with feathered ears glowing under candlelight, her pious prayer posture is betrayed by a cheeky sideways glance at commercial brewery recipes on her desk.",
-    "animaCaption": "archetto (arknights), 1girl, bird ears, azure linen robe, praying hands, candle light, holy, side glance, blush, serene, highres",
+    "animaCaption": "Archetto finishing her evening devotions in a serene monastery-style chamber aboard Rhodes Island. She is draped in a sky-azure and pristine white linen wrap robe accented with a golden cross.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

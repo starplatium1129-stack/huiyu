@@ -1,18 +1,10 @@
-import { kvPage } from '../../composables/useKVStore'
-import { imgPage } from '../../composables/useImageStore'
+import { kvPage } from './kvStore'
+import { imgPage } from './imageStore'
 import { classifyMigrationKey, credentialFields, parseMigrationValue } from './migrationClassification'
 import { freezeMigrationSource } from './migrationBarrier'
 import type { MigrationEnvelope, MigrationIdentity, MigrationRecord, MigrationRecordManifest } from '../../../types/migration'
+import { migrationFingerprint, migrationSha } from './migrationFingerprint'
 
-function canonical(value: unknown): unknown {
-  if (Array.isArray(value)) return value.map(canonical)
-  if (value && typeof value === 'object') return Object.fromEntries(Object.entries(value).sort(([a], [b]) => a < b ? -1 : a > b ? 1 : 0).map(([key, item]) => [key, canonical(item)]))
-  return value
-}
-async function sha(bytes: Uint8Array): Promise<string> {
-  return Array.from(new Uint8Array(await crypto.subtle.digest('SHA-256', new Uint8Array(bytes)))).map(byte => byte.toString(16).padStart(2, '0')).join('')
-}
-export const migrationFingerprint = (value: unknown): Promise<string> => sha(new TextEncoder().encode(JSON.stringify(canonical(value))))
 export interface MigrationSink {
   /** Durable independent backup, before any candidate import. */
   record(id: string, value: MigrationRecord): Promise<void>
@@ -106,7 +98,7 @@ export async function exportMigrationSource(options: {
         const bytes = new Uint8Array(await entry.blob.arrayBuffer())
         const { blob: _blob, ...metadata } = entry
         if (credentialFields(metadata).length) { blockers.push(`credential:${await migrationFingerprint(['media', entry.id])}`); continue }
-        media.push({ alias: entry.id, sha256: await sha(bytes), bytes: bytes.length, mime: entry.type || entry.blob.type,
+        media.push({ alias: entry.id, sha256: await migrationSha(bytes), bytes: bytes.length, mime: entry.type || entry.blob.type,
           metadata, derived: entry.id.startsWith('thumb:') })
         for (let offset = 0; offset < bytes.length; offset += 1024 * 1024) {
           options.signal?.throwIfAborted()

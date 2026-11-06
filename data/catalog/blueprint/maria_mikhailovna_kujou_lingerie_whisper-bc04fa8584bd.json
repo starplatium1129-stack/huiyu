@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3354,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "maria_mikhailovna_kujou_lingerie_whisper",
     "characterId": "maria_mikhailovna_kujou",
@@ -34,24 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "maria mikhailovna kujou",
-      "masha",
-      "solo",
-      "kneeling on fluffy white sheepskin rug",
-      "patting empty space beside her gently",
-      "long wavy brunette-blonde hair falling over bust",
-      "big gentle brown eyes",
-      "comforting motherly smile",
-      "crackling brick fireplace",
-      "falling snow outside window"
+      "kneeling",
+      "blonde hair",
+      "smile",
+      "fireplace",
+      "deep v ruffle neckline",
+      "empire waistline",
+      "flowing floor-length hem",
+      "luxurious soft drape",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, maria mikhailovna kujou, masha, solo, kneeling on fluffy white sheepskin rug, patting empty space beside her gently, long wavy brunette-blonde hair falling over bust, big gentle brown eyes, comforting motherly smile, crackling brick fireplace, falling snow outside window",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, maria mikhailovna kujou, masha, solo, kneeling on fluffy white sheepskin rug, patting empty space beside her gently, long wavy brunette-blonde hair falling over bust, big gentle brown eyes, comforting motherly smile, crackling brick fireplace, falling snow outside window",
+    "promptProse": "Masha kneels on fluffy white sheepskin rug, wearing a mist blue double-layered chiffon nightgown. Masha, patting empty space beside her gently, long wavy brunette-blonde hair falling over bust amidst big gentle brown eyes, comforting motherly smile, crackling brick fireplace, falling snow outside window.",
+    "animaCaption": "Masha kneels on fluffy white sheepskin rug, wearing a mist blue double-layered chiffon nightgown. Masha, patting empty space beside her gently, long wavy brunette-blonde hair falling over bust amidst big gentle brown eyes, comforting motherly smile, crackling brick fireplace, falling snow outside window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

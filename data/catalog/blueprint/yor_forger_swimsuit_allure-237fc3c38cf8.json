@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_forger_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3258,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
   "data": {
     "id": "yor_forger_swimsuit_allure",
     "characterId": "yor_forger",
@@ -37,25 +37,19 @@
       "gap_moe"
     ],
     "promptTokens": [
-      "yor forger",
-      "1girl",
-      "thorn princess",
-      "midnight black backless halter swimsuit",
-      "blood-red rose ornament at collar",
-      "crisscross fine back cords",
-      "standing calf-deep in crystal clear coral beach water",
-      "hands nervously clenched near chest",
-      "blushing intensely crimson across cheeks and ears",
-      "long black hair in side braids with golden rose hairpins",
-      "red eyes filled with bashful worry",
-      "dappled caustic water reflections",
-      "tender intimate portrait",
-      "masterpiece",
-      "high quality"
+      "black backless swimsuit",
+      "rose brooch",
+      "standing in water",
+      "crystal clear water",
+      "blushing red",
+      "shy pose",
+      "black hair",
+      "red eyes",
+      "gap moe"
     ],
     "negativeTokens": [],
     "promptProse": "Yor Forger standing calf-deep within transparent turquoise shallows on a quiet coral cove. She is dressed in a striking midnight-black halter swimsuit featuring a backless design accented by delicate crisscross cords and a blood-red fabric rose brooch. Clenching her fists shyly against her chest with an overwhelming crimson blush across her lovely face, her assassin's prowess is completely disarmed by charming, pure-hearted bashfulness.",
-    "animaCaption": "yor forger, 1girl, black backless swimsuit, rose brooch, crystal clear water, blushing red, shy pose, black hair, red eyes, gap moe, highres",
+    "animaCaption": "Yor stands in clear, calf-deep water by a quiet coral cove, as the gentle surf laps around her legs.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

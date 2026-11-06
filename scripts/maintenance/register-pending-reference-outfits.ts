@@ -34,7 +34,8 @@ type PopularOutfit = NonNullable<PopularCharacter['outfits']>[number];
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 
-const ROOT = path.resolve(process.env.AICS_DATA_ROOT || process.env.AICS_APP_ROOT || path.join(__dirname, '..', '..'));
+const { resolveContentRoot }: typeof import('../lib/content-contract-root') = require('../lib/content-contract-root');
+const ROOT = resolveContentRoot();
 const POPULAR_FILE = path.join(ROOT, 'data', 'popular-characters.json');
 
 const argv = process.argv.slice(2);

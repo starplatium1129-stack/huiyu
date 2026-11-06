@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3519,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.936Z",
   "data": {
     "id": "kaltsit_arknights_lingerie_whisper",
     "characterId": "kaltsit_arknights",
@@ -37,22 +37,17 @@
       "kaltsit_wisdom"
     ],
     "promptTokens": [
-      "kal'tsit (arknights)",
-      "1girl",
-      "feline lynx ears with black tufts",
-      "cool sage-green minimalist high-neck silk belted robe",
-      "tailored waist sash",
-      "sitting with upright composure in leather medical executive chair",
-      "one slender hand lightly resting on nape of neck cooling spine port",
-      "long light green hair tied gracefully",
-      "unreadable deep emerald-green eyes",
-      "holographic diagnostic charts casting cool cyan glow",
-      "masterpiece",
-      "high quality"
+      "lynx ears",
+      "sage green silk robe",
+      "high neck",
+      "sitting in chair",
+      "hand on neck",
+      "emerald eyes",
+      "medical hologram"
     ],
     "negativeTokens": [],
     "promptProse": "Kal'tsit reflecting on the fate of Terra late at night in her private medical office. She is dressed in an austere, elegant sage-green silk robe featuring a high mandarin neck and belted waist. Resting one hand against the thermal port on the back of her neck as her tufted lynx ears listen to the quiet hum of Rhodes Island, her ancient emerald eyes hold centuries of unspoken vigilance.",
-    "animaCaption": "kaltsit, 1girl, lynx ears, sage green silk robe, high neck, sitting in chair, hand on neck, emerald eyes, medical hologram, highres",
+    "animaCaption": "Kal'tsit reflecting on the fate of Terra late at night in her private medical office. She is dressed in an austere, elegant sage-green silk robe featuring a high mandarin neck and belted waist.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -29,6 +29,7 @@ pub(super) fn create(
 ) -> Arc<Job> {
     let id = uuid::Uuid::new_v4().simple().to_string();
     let created = now();
+    let provider = prepared.provider();
     // Release the caller's ledger copy before rebuilding from private execution.
     drop(prepared.input);
     let input = prepared.execution.input();
@@ -46,7 +47,7 @@ pub(super) fn create(
         }
     };
     metadata["id"] = json!(id);
-    if prepared.selected == "comfy" {
+    if provider == "comfy" {
         metadata["createdAt"] = json!(created);
     }
     Arc::new(Job {
@@ -54,7 +55,7 @@ pub(super) fn create(
         owner,
         input,
         execution: prepared.execution,
-        provider: prepared.selected,
+        provider,
         created,
         state: Mutex::new(JobState {
             status: "queued".into(),
@@ -65,7 +66,7 @@ pub(super) fn create(
             upstream_id: String::new(),
             progress: None,
             current_node: None,
-            progress_text: if prepared.selected == "native" {
+            progress_text: if provider == "native" {
                 "等待独立推理"
             } else {
                 "等待提交到 ComfyUI…"

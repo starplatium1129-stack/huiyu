@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3350,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "shirogane_kei_lingerie_whisper",
     "characterId": "shirogane_kei",
@@ -34,22 +34,19 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "shirogane kei",
-      "solo",
-      "sitting on bed edge hugging arms stubbornly",
-      "cute blue eyes looking away in a huff",
-      "bob silver-grey hair",
-      "blushing ears and cheeks",
-      "modest old apartment bedroom",
-      "warm desk lamp"
+      "bed",
+      "sitting",
+      "blue eyes",
+      "blush",
+      "desk lamp",
+      "delicate spaghetti straps",
+      "gathered paperbag sleep shorts",
+      "minimalistic clean cut",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, shirogane kei, solo, sitting on bed edge hugging arms stubbornly, cute blue eyes looking away in a huff, bob silver-grey hair, blushing ears and cheeks, modest old apartment bedroom, warm desk lamp",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, shirogane kei, solo, sitting on bed edge hugging arms stubbornly, cute blue eyes looking away in a huff, bob silver-grey hair, blushing ears and cheeks, modest old apartment bedroom, warm desk lamp",
+    "promptProse": "Kei Shirogane sits on bed edge hugging arms stubbornly, wearing a ice grey ribbed cotton camisole set. Cute blue eyes looking away in a huff, bob silver-grey hair, blushing ears and cheeks amidst modest old apartment bedroom, warm desk lamp.",
+    "animaCaption": "Kei Shirogane sits on bed edge hugging arms stubbornly, wearing a ice grey ribbed cotton camisole set. Cute blue eyes looking away in a huff, bob silver-grey hair, blushing ears and cheeks amidst modest old apartment bedroom, warm desk lamp.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

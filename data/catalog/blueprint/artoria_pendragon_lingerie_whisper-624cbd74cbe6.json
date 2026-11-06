@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3212,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T04:52:36.255Z",
   "data": {
     "id": "artoria_pendragon_lingerie_whisper",
     "characterId": "artoria_pendragon",
@@ -37,24 +37,17 @@
       "knightly_grace"
     ],
     "promptTokens": [
-      "artoria pendragon",
-      "1girl",
-      "saber",
-      "royal blue and pristine white silk wrap kimono robe",
-      "tied satin sash",
-      "ahoge fluttering softly",
-      "long golden blonde hair let down over shoulders",
-      "standing poised along polished wooden engawa corridor",
-      "sword rack holding sheathed Excalibur in background",
-      "clear emerald green eyes",
-      "warm dignified gentle expression",
-      "japanese garden night lanterns",
-      "masterpiece",
-      "high quality"
+      "royal blue silk robe",
+      "ahoge",
+      "blonde hair down",
+      "wooden engawa",
+      "sword rack",
+      "green eyes",
+      "gentle smile"
     ],
     "negativeTokens": [],
     "promptProse": "Artoria Pendragon enjoying unburdened nighttime tranquility along a traditional wooden veranda. She wears an elegant royal-blue and pure-white silk wrap robe cinched neatly with a satin obi. With her iconic ahoge swaying in the courtyard breeze and Excalibur safely resting upon its rack, her luminous emerald eyes meet the viewer with serene, regal tenderness.",
-    "animaCaption": "artoria pendragon, 1girl, royal blue silk robe, ahoge, blonde hair down, wooden engawa, sword rack, green eyes, gentle smile, highres",
+    "animaCaption": "Artoria Pendragon enjoying unburdened nighttime tranquility along a traditional wooden veranda. She wears an elegant royal-blue and pure-white silk wrap robe cinched neatly with a satin obi.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

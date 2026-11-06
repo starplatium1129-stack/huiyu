@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_lingerie_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3417,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-06T05:42:57.127Z",
   "data": {
     "id": "saten_ruiko_lingerie_whisper",
     "characterId": "saten_ruiko",
@@ -34,21 +34,16 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "masterpiece",
-      "best quality",
-      "ultra-detailed",
-      "1girl",
-      "saten ruiko",
-      "solo",
-      "on windy rooftop holding down nightgown hemline with both hands",
-      "white plum blossom hairpin in fluttering dark hair",
-      "radiant bright laugh",
+      "night",
       "amber eyes",
-      "illuminated Academy City windmills spinning in background"
+      "tiny plum blossom embroidery",
+      "ruffled airy hem",
+      "spaghetti straps",
+      "indoors"
     ],
     "negativeTokens": [],
-    "promptProse": "masterpiece, best quality, ultra-detailed, 1girl, saten ruiko, solo, on windy rooftop holding down nightgown hemline with both hands, white plum blossom hairpin in fluttering dark hair, radiant bright laugh, amber eyes, illuminated Academy City windmills spinning in background",
-    "animaCaption": "masterpiece, best quality, ultra-detailed, 1girl, saten ruiko, solo, on windy rooftop holding down nightgown hemline with both hands, white plum blossom hairpin in fluttering dark hair, radiant bright laugh, amber eyes, illuminated Academy City windmills spinning in background",
+    "promptProse": "Saten Ruiko relaxes in on windy rooftop holding down nightgown hemline with both hands, wearing a pure white breathable cotton slip dress. On windy rooftop holding down nightgown hemline with both hands, white plum blossom hairpin in fluttering dark hair, radiant bright laugh amidst amber eyes, illuminated Academy City windmills spinning in background.",
+    "animaCaption": "Saten Ruiko relaxes in on windy rooftop holding down nightgown hemline with both hands, wearing a pure white breathable cotton slip dress. On windy rooftop holding down nightgown hemline with both hands, white plum blossom hairpin in fluttering dark hair, radiant bright laugh amidst amber eyes, illuminated Academy City windmills spinning in background.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

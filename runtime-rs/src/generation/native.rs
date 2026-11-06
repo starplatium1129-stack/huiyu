@@ -121,9 +121,7 @@ impl Service {
         }
         Ok(Prepared {
             input: plan.input.as_ref().clone(),
-            provider: "native".into(),
             execution: Execution::Native(Box::new(plan)),
-            selected: "native",
             permit,
             gpu: None,
         })

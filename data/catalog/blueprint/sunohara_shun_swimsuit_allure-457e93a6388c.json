@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3436,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-06T04:52:37.163Z",
   "data": {
     "id": "sunohara_shun_swimsuit_allure",
     "characterId": "sunohara_shun",
@@ -37,25 +37,18 @@
       "luxurious"
     ],
     "promptTokens": [
-      "sunohara shun",
-      "1girl",
       "halo",
-      "emerald green and black cheongsam-style high-slit monokini",
-      "mandarin collar with frog buttons",
-      "reclining on bamboo lounger in seaside tea pavilion",
-      "waving sandalwood folding fan",
-      "legs crossed gracefully",
-      "long black hair with side braid",
-      "warm mature affectionate smile",
-      "bamboo blinds casting gentle striped shadows",
-      "voluptuous elegant figure",
-      "medium shot",
-      "masterpiece",
-      "high quality"
+      "cheongsam monokini",
+      "high slit",
+      "folding fan",
+      "reclining on bamboo couch",
+      "mature",
+      "gentle smile",
+      "shade"
     ],
     "negativeTokens": [],
     "promptProse": "Shun Sunohara resting luxuriously on a bamboo lounge couch within an open-air seaside pavilion. She wears a tailored emerald-green and sheer-black cheongsam monokini featuring an ornate mandarin collar and an alluring high side slit. Gently fanning a fragrant sandalwood folding fan, her mature eyes beam with nurturing fondness through the soft slatted sunlight of the bamboo blinds.",
-    "animaCaption": "sunohara shun, 1girl, halo, cheongsam monokini, high slit, folding fan, reclining on bamboo couch, mature, gentle smile, shade, highres",
+    "animaCaption": "Shun Sunohara resting luxuriously on a bamboo lounge couch within an open-air seaside pavilion. She wears a tailored emerald-green and sheer-black cheongsam monokini featuring an ornate mandarin collar and an alluring high side slit.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }
