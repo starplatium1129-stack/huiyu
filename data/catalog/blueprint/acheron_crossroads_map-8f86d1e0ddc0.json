@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_crossroads_map",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2060,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-07T11:45:00.000Z",
   "data": {
     "id": "acheron_crossroads_map",
     "title": "黄泉 · 岔路与地图",
@@ -17,16 +17,18 @@
     "lighting": "云层间柔光",
     "camera": "medium shot",
     "mood": "短暂停留",
-    "promptProse": "At a fork beside a stone bridge, Acheron holds an unfolded map and looks up at the signpost beneath overcast afternoon light.",
+    "promptProse": "At a fork beside a weathered stone bridge, Acheron holds an unfolded, yellowed map and looks up at an ancient, moss-covered signpost beneath overcast afternoon light. In the background, rolling hills stretch toward the horizon, and wildflowers sway in the gentle breeze along the riverbank.",
     "promptTokens": [
       "crossroads",
-      "stone bridge",
+      "weathered stone bridge",
       "holding map",
-      "signpost",
+      "moss-covered signpost",
       "looking up",
       "overcast",
       "medium shot",
-      "sunlight"
+      "rolling hills",
+      "wildflowers",
+      "riverbank"
     ],
     "animaCaption": "She compares the map with the signpost.",
     "characterId": "acheron",
