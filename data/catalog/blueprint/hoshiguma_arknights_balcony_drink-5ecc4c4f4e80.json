@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_balcony_drink",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2994,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T11:30:00.000Z",
   "data": {
     "id": "hoshiguma_arknights_balcony_drink",
     "characterId": "hoshiguma_arknights",
@@ -28,7 +28,7 @@
       "warm light",
       "medium close-up"
     ],
-    "promptProse": "Hoshiguma leans forward with a cold drink and smiles at the viewer on a balcony.",
+    "promptProse": "On a moonlit balcony overlooking the sprawling city skyline, Hoshiguma leans forward, a chilled glass in hand, her confident smile illuminated by soft, warm lantern light. The metal railing is silhouetted against the vibrant city lights below, creating a relaxed and intimate atmosphere.",
     "animaCaption": "",
     "promptTokens": [
       "sitting",
@@ -38,7 +38,9 @@
       "confident smile",
       "balcony",
       "warm light",
-      "medium close-up"
+      "medium close-up",
+      "city skyline",
+      "moonlit"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

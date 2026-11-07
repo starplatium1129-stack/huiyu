@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_motorcycle_helmet",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2987,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-07T11:35:00.000Z",
   "data": {
     "id": "hoshiguma_arknights_motorcycle_helmet",
     "characterId": "hoshiguma_arknights",
@@ -26,16 +26,18 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Hoshiguma wipes a motorcycle helmet outside a garage.",
+    "promptProse": "Standing just outside a sunlit garage, Hoshiguma gently wipes dust off her motorcycle helmet with a soft cloth. In the background, part of her powerful motorcycle is visible, gleaming under the clear morning daylight, while toolboxes and garage equipment are neatly organized, adding to the authentic, casual environment.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
       "standing",
       "holding motorcycle helmet",
       "garage",
       "motorcycle",
       "daylight",
-      "medium shot"
+      "medium shot",
+      "sunlit garage",
+      "toolboxes",
+      "casual environment"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
