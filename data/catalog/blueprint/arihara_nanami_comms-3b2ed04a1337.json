@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_comms",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2442,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-07T12:00:00.000Z",
   "data": {
     "id": "arihara_nanami_comms",
     "characterId": "arihara_nanami",
@@ -18,12 +18,16 @@
     "lighting": "corridor light",
     "camera": "cowboy shot",
     "mood": "警觉",
-    "promptProse": "In a building corridor, Nanami checks her earpiece and holds a notebook as the communication signal returns.",
+    "promptProse": "In a dimly lit, modern building corridor, Nanami pauses to adjust her earpiece, holding a leather-bound notebook in her other hand as the communication signal flickers back to life. The overhead fluorescent lights cast crisp shadows against the sleek wall, emphasizing the quiet, tense anticipation of her mission.",
     "promptTokens": [
-      "corridor",
+      "modern building corridor",
       "holding notebook",
       "touching earpiece",
-      "overhead light",
+      "overhead fluorescent light",
+      "crisp shadows",
+      "sleek wall",
+      "tense atmosphere",
+      "night",
       "cowboy shot"
     ],
     "animaCaption": "",
