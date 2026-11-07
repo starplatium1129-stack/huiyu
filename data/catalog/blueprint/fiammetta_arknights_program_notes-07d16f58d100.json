@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_program_notes",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2982,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:28:56.623Z",
   "data": {
     "id": "fiammetta_arknights_program_notes",
     "characterId": "fiammetta_arknights",
@@ -25,14 +25,17 @@
       "warm light",
       "medium shot"
     ],
-    "promptProse": "Fiammetta reads a theater program in the foyer.",
+    "promptProse": "Standing in the ornate, high-ceilinged foyer of a historic theater, Fiammetta holds a folded program in both hands, glancing down at it as she takes a quiet moment before the show. Soft, elegant ambient lighting reflects off the polished marble floors, gilded ceiling moldings, and large art deco posters on the walls, creating a refined, serene atmosphere.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding program",
       "theater foyer",
-      "warm light",
+      "holding program",
+      "high ceiling",
+      "polished marble floor",
+      "gilded ceiling moldings",
+      "art deco posters",
+      "soft elegant ambient light",
+      "serene quiet moment",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_curtain_call",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2985,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:28:56.623Z",
   "data": {
     "id": "fiammetta_arknights_curtain_call",
     "characterId": "fiammetta_arknights",
@@ -27,15 +27,18 @@
       "stage light",
       "medium close-up"
     ],
-    "promptProse": "Fiammetta parts a curtain and looks toward the viewer with a shy blush backstage.",
+    "promptProse": "Peering out from behind the heavy, velvet-draped theater curtains, Fiammetta beckons the viewer into the dimly lit, secret space of the wings. A warm, golden stage spotlight catches the faint blush on her cheeks as she turns to look at the viewer, with complex stage rigging, dangling light fixtures, and the blurred anticipation of the theater audience in the distant background.",
     "animaCaption": "",
     "promptTokens": [
-      "holding curtain",
+      "holding heavy velvet theater curtains",
       "leaning forward",
-      "looking at viewer",
-      "blush",
-      "theater backstage",
-      "stage light",
+      "looking toward viewer",
+      "shy blush",
+      "theater backstage wings",
+      "golden stage light",
+      "dangling lighting rigging",
+      "blurred audience background",
+      "intimate professional moment",
       "medium close-up"
     ],
     "negativeTokens": [],

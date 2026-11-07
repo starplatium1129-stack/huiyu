@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_morning_coffee",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2976,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-07T04:28:56.623Z",
   "data": {
     "id": "fiammetta_arknights_morning_coffee",
     "characterId": "fiammetta_arknights",
@@ -26,15 +26,16 @@
       "morning light",
       "medium shot"
     ],
-    "promptProse": "Fiammetta reads a newspaper beside a coffee cup in a café.",
+    "promptProse": "Seated at a small, bistro-style cafe table during a breezy morning, Fiammetta sets aside her steaming cup of coffee to focus intently on a spread-out newspaper. Bright morning sunlight streams through the window, catching the glossy pages of the paper, the steam rising from her coffee, and the rustic charm of the quiet street-side café background.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
+      "cafe bistro table",
       "sitting",
-      "newspaper",
-      "coffee cup",
-      "cafe",
-      "morning light",
+      "reading newspaper",
+      "steaming coffee cup",
+      "morning sunlight",
+      "rustic cafe decor",
+      "focused pensive expression",
       "medium shot"
     ],
     "negativeTokens": [],
