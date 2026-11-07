@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_seedling_box",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3067,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:42:20.104Z",
   "data": {
     "id": "mon3tr_arknights_seedling_box",
     "characterId": "mon3tr_arknights",
@@ -26,15 +26,17 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Mon3tr observes seedlings in a greenhouse tray.",
+    "promptProse": "Inside a humid, lush hydroponics bay, Mon3tr crouches beside a tiered seedling tray, gently inspecting a fragile emerald sprout pushing through nutrient sponge cubes. Soft automated grow-lights cast violet and white illumination across leafy hydroponic tubes, bubbling water reservoirs, and its glowing green crystalline spikes.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "looking at seedlings",
-      "seedling tray",
-      "greenhouse",
-      "daylight",
+      "hydroponics bay",
+      "crouching beside seedling tray",
+      "fragile emerald sprout",
+      "nutrient sponge cubes",
+      "violet grow-lights",
+      "hydroponic pipes and water",
+      "glowing crystalline spikes",
+      "protective curious inspection",
       "medium shot"
     ],
     "negativeTokens": [],

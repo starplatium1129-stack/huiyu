@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_bird_reference",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3071,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:42:20.101Z",
   "data": {
     "id": "mon3tr_arknights_bird_reference",
     "characterId": "mon3tr_arknights",
@@ -26,15 +26,17 @@
       "soft light",
       "medium shot"
     ],
-    "promptProse": "Mon3tr reads a bird encyclopedia in a library.",
+    "promptProse": "Perched on a reinforced stool inside a quiet, high-ceilinged library alcove, Mon3tr carefully examines an open ornithology reference atlas, tracing the skeletal structure of a raptor with a sharp crystalline claw. Daylight streams through high clerestory windows, illuminating floating dust motes and towering mahogany bookshelves stacked with scientific volumes.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "open bird book",
-      "bird illustration",
-      "library",
-      "soft light",
+      "library alcove",
+      "open ornithology atlas",
+      "tracing bird anatomy",
+      "sharp crystalline claw",
+      "clerestory window daylight",
+      "floating dust motes",
+      "scientific bookshelves",
+      "intrigued analytical posture",
       "medium shot"
     ],
     "negativeTokens": [],

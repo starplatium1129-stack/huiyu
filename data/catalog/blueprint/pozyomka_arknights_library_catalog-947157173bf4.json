@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_library_catalog",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2931,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:39:18.786Z",
   "data": {
     "id": "pozyomka_arknights_library_catalog",
     "characterId": "pozyomka_arknights",
@@ -26,14 +26,18 @@
       "soft light",
       "medium shot"
     ],
-    "promptProse": "Pozyomka reads a library shelf catalog and selects a book.",
+    "promptProse": "Gliding gracefully along the polished floor of an opulent private library, Pozyomka slides open a slender brass-handled wooden drawer in an expansive card catalog cabinet, selecting a reference card with poised fingers. Towering floor-to-ceiling bookshelves lined with leather-bound Durin fairy tales and golden window light frame her aristocratic, literary demeanor.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "holding book",
-      "library shelves",
-      "catalog",
-      "soft light",
+      "library card catalog",
+      "brass drawer handles",
+      "holding reference card",
+      "floor-to-ceiling bookshelves",
+      "leather-bound volumes",
+      "golden afternoon light",
+      "aristocratic literary demeanor",
+      "fluffy wolf tail",
+      "scholarly elegance",
       "medium shot"
     ],
     "negativeTokens": [],

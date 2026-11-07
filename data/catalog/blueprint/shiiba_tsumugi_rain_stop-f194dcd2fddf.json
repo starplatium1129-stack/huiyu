@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_rain_stop",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2413,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-07T04:46:11.215Z",
   "data": {
     "id": "shiiba_tsumugi_rain_stop",
     "characterId": "shiiba_tsumugi",
@@ -18,15 +18,17 @@
     "lighting": "overcast daylight",
     "camera": "cowboy shot",
     "mood": "从容",
-    "promptProse": "Under a street awning, Tsumugi opens a borrowed umbrella and watches the rain before stepping out.",
+    "promptProse": "Sheltered beneath the colorful striped canvas awning of a corner bakery, Tsumugi unfurls a bright yellow borrowed umbrella, pausing on the threshold to watch the rain slacken. Puddles on the stone sidewalk shimmer with vibrant reflections of storefront neon and flower shop displays, while fresh rain droplets fall from the awning onto the glistening pavement.",
     "promptTokens": [
-      "outdoors",
-      "awning",
-      "rain",
-      "holding umbrella",
-      "overcast",
-      "cowboy shot",
-      "sunlight"
+      "striped canvas awning",
+      "unfurling yellow umbrella",
+      "watching rain slacken",
+      "shimmering street puddles",
+      "storefront neon reflections",
+      "flower shop display",
+      "glistening stone pavement",
+      "cheerful anticipation",
+      "medium shot"
     ],
     "animaCaption": "",
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_garden_gate",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2996,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:39:18.780Z",
   "data": {
     "id": "horn_arknights_garden_gate",
     "characterId": "horn_arknights",
@@ -25,14 +25,18 @@
       "morning light",
       "medium shot"
     ],
-    "promptProse": "Horn adjusts a flowerpot beside a garden gate.",
+    "promptProse": "Beside an ornate black wrought-iron garden gate intertwined with blooming white jasmine, Horn pauses to straighten a terracotta planter with her gloved hands. Morning dew glistens on green hedge leaves and flagstone pathways, while the peaceful brick courtyard behind her basks in soft dawn sunlight.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "crouching",
-      "flowerpot",
-      "garden gate",
-      "morning light",
+      "wrought-iron garden gate",
+      "blooming white jasmine",
+      "straightening terracotta planter",
+      "gloved hands",
+      "morning dew on hedges",
+      "flagstone path",
+      "brick courtyard",
+      "soft dawn sunlight",
+      "calm vigilant mood",
       "medium shot"
     ],
     "negativeTokens": [],

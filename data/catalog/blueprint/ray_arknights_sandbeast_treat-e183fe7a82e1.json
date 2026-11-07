@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_sandbeast_treat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2912,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:42:20.106Z",
   "data": {
     "id": "ray_arknights_sandbeast_treat",
     "characterId": "ray_arknights",
@@ -26,14 +26,18 @@
       "soft daylight",
       "medium shot"
     ],
-    "promptProse": "Ray sets a small bowl of food beside a sandbeast in a lounge.",
+    "promptProse": "Sitting on a plush woven floor rug in a sunlit lounge, Ray holds out a small ceramic bowl of dried berry treats, watching with an affectionate, beaming smile as her fluffy sandbeast nibbles happily. Floor cushions, trailing houseplants, and bright afternoon sunbeams pool around the pair in a picture of domestic joy.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "sandbeast (arknights)",
-      "pet food bowl",
-      "lounge",
-      "soft daylight",
+      "woven floor rug",
+      "holding ceramic treat bowl",
+      "feeding pet sandbeast",
+      "affectionate beaming smile",
+      "sunlit lounge interior",
+      "floor cushions and plants",
+      "bright afternoon sunbeams",
+      "floppy rabbit ears",
+      "domestic joy",
       "medium shot"
     ],
     "negativeTokens": [],

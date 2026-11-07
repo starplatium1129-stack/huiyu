@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_blue_ribbon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3038,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:39:18.782Z",
   "data": {
     "id": "nightingale_arknights_blue_ribbon",
     "characterId": "nightingale_arknights",
@@ -26,15 +26,17 @@
       "window light",
       "medium close-up"
     ],
-    "promptProse": "Nightingale ties a blue ribbon around a book at a desk.",
+    "promptProse": "At an antique writing bureau bathed in afternoon window glow, Nightingale carefully knots a slender cornflower-blue silk ribbon around a pressed volume of healing hymns. Vials of medicinal tinctures, dried lavender bundles, and illuminated parchment pages create a tranquil, sacred sanctuary around her tender movements.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "tying blue ribbon",
-      "book",
-      "desk",
-      "window light",
+      "writing bureau",
+      "knotting blue silk ribbon",
+      "pressed volume of hymns",
+      "medicinal tincture vials",
+      "dried lavender bundles",
+      "illuminated parchment",
+      "afternoon window glow",
+      "tender sacred tranquility",
       "medium close-up"
     ],
     "negativeTokens": [],

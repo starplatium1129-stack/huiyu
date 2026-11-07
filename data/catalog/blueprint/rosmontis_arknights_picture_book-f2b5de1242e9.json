@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_picture_book",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2960,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:37:16.608Z",
   "data": {
     "id": "rosmontis_arknights_picture_book",
     "characterId": "rosmontis_arknights",
@@ -26,15 +26,17 @@
       "soft light",
       "medium shot"
     ],
-    "promptProse": "Rosmontis reads an illustrated animal book in the library.",
+    "promptProse": "Tucked inside an upholstered library reading nook with plush pillows, Rosmontis turns the pages of an oversized picture book depicting woodland animals. Soft reading lamp illumination washes over colorful watercolor illustrations, while towering bookshelves and arched doorways create a cozy, safe haven of quiet learning.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "open picture book",
-      "animal illustrations",
-      "library",
-      "soft light",
+      "library reading nook",
+      "plush upholstered pillows",
+      "oversized animal picture book",
+      "watercolor illustrations",
+      "soft reading lamp glow",
+      "towering bookshelves",
+      "gentle inquisitive expression",
+      "cozy quiet haven",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_omamori_mending",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2859,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:42:20.100Z",
   "data": {
     "id": "vulpisfoglia_arknights_omamori_mending",
     "characterId": "vulpisfoglia_arknights",
@@ -27,16 +27,18 @@
       "soft daylight",
       "close-up"
     ],
-    "promptProse": "Vulpisfoglia carefully mends the edge of an omamori with needle and thread.",
+    "promptProse": "Sitting near a quiet window at a small antique side table, Vulpisfoglia delicately stitches the frayed silk corner of an ornate woven protection amulet with needle and gold thread. Soft late-afternoon sunbeams highlight the focused precision in her sharp eyes, while scattered thread spools, silver shears, and her calm posture show a deeply grounded, unexpected domestic care.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "sewing",
-      "needle and thread",
-      "omamori",
-      "table",
-      "soft daylight",
-      "close-up"
+      "mending silk amulet",
+      "needle and gold thread",
+      "small antique side table",
+      "soft late-afternoon sunbeams",
+      "scattered thread spools",
+      "silver embroidery shears",
+      "focused precise gaze",
+      "unexpected domestic tenderness",
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

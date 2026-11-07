@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_observatory_sky",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2902,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:35:59.983Z",
   "data": {
     "id": "hoolheyak_arknights_observatory_sky",
     "characterId": "hoolheyak_arknights",
@@ -26,14 +26,17 @@
       "night",
       "wide shot"
     ],
-    "promptProse": "Ho’olheyak reads a star chart at an observatory beneath the night sky.",
+    "promptProse": "Under the vast open dome of a classical brass observatory, Ho'olheyak leans over a sweeping star chart unrolled on the stone parapet, tracing celestial trajectories with an elegant fingertip. The night sky is awash in shimmering nebulae and crystalline stars, while moonlight softly outlines her serpentine tail and iridescent wing feathers against the distant planetary silhouette.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "holding star chart",
-      "observatory",
-      "starry sky",
-      "night",
+      "classical observatory dome",
+      "stone parapet",
+      "unrolled celestial star chart",
+      "tracing constellation",
+      "shimmering nebulae and stars",
+      "moonlight contours",
+      "feathered wings and tail",
+      "nocturnal mystery",
       "wide shot"
     ],
     "negativeTokens": [],

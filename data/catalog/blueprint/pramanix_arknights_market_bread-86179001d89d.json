@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_market_bread",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2847,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:42:20.097Z",
   "data": {
     "id": "pramanix_arknights_market_bread",
     "characterId": "pramanix_arknights",
@@ -27,15 +27,17 @@
       "warm light",
       "medium shot"
     ],
-    "promptProse": "At a bakery counter, Pramanix points to a loaf behind the glass.",
+    "promptProse": "Inside a rustic alpine bakery filled with the mouthwatering aroma of toasted caraway and yeast, Pramanix stands before a warm wooden glass display counter, pointing with a gloved finger at a crusty round loaf of mountain sourdough. Morning sunbeams illuminate floating flour dust, hanging herb bundles, and snowy mountain slopes visible through the front door.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "pointing",
-      "bakery",
-      "bread display",
-      "shop window",
-      "warm light",
+      "alpine village bakery",
+      "pointing at sourdough loaf",
+      "wooden glass display counter",
+      "floating flour dust",
+      "hanging dried herb bundles",
+      "morning sunbeams",
+      "snowy mountain view",
+      "cozy village life",
       "medium shot"
     ],
     "negativeTokens": [],

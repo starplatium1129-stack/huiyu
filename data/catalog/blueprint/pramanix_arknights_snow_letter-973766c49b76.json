@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_snow_letter",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2846,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:42:20.098Z",
   "data": {
     "id": "pramanix_arknights_snow_letter",
     "characterId": "pramanix_arknights",
@@ -26,15 +26,18 @@
       "morning light",
       "medium shot"
     ],
-    "promptProse": "Pramanix reads a letter at a frosted guesthouse window, a cup of tea steaming beside her.",
+    "promptProse": "At a deep wooden windowsill inside a cozy mountain guesthouse, Pramanix reads a handwritten letter from home while cradling a steaming cup of herbal tea. Delicate ice crystals pattern the glass pane, through which silent snowflakes drift down onto snow-laden evergreen boughs, casting serene, cool twilight shadows across her thoughtful profile.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "reading letter",
-      "frosted window",
-      "tea cup",
-      "morning light",
-      "medium shot"
+      "cozy guesthouse windowsill",
+      "reading handwritten letter",
+      "steaming cup of herbal tea",
+      "ice crystals on window glass",
+      "falling snowflakes outside",
+      "snow-laden evergreen boughs",
+      "serene twilight shadows",
+      "tender nostalgic expression",
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_keys",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2389,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-29T08:54:33.119184700+00:00",
+  "updatedAt": "2026-11-07T04:44:16.356Z",
   "data": {
     "id": "touma_kazusa_keys",
     "characterId": "touma_kazusa",
@@ -18,17 +18,18 @@
     "lighting": "soft backstage light",
     "camera": "medium shot",
     "mood": "平静",
-    "promptProse": "Backstage, Kazusa sits at a piano and rests her fingertips on the keys.",
+    "promptProse": "Seated before a glossy black concert grand piano in the shadowed wings backstage, Kazusa rests her pale, slender fingertips lightly on the ivory keys without pressing them down. Dramatic high-contrast theatrical spotlighting spills through the edge of the acoustic baffling, outlining her sharp profile and disheveled black hair in stark chiaroscuro.",
     "promptTokens": [
-      "backstage",
-      "piano",
-      "piano bench",
-      "hands on keys",
-      "night",
-      "backstage light",
-      "warm lighting",
-      "soft shadows",
-      "medium shot"
+      "backstage wings",
+      "concert grand piano",
+      "fingertips resting on keys",
+      "theatrical spotlight spill",
+      "sharp profile",
+      "stark chiaroscuro",
+      "acoustic baffling",
+      "quiet anticipation",
+      "disheveled raven hair",
+      "medium close-up"
     ],
     "animaCaption": "Soft backstage light illuminates her face and fingers as she plays the piano.",
     "negativeTokens": [

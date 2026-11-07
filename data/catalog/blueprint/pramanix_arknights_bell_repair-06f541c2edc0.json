@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_bell_repair",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2848,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-04T04:07:12.451480400+00:00",
+  "updatedAt": "2026-11-07T04:42:20.092Z",
   "data": {
     "id": "pramanix_arknights_bell_repair",
     "characterId": "pramanix_arknights",
@@ -26,15 +26,19 @@
       "window light",
       "close-up"
     ],
-    "promptProse": "Pramanix threads a new cord through a small bell at a workshop table.",
+    "promptProse": "At a wooden alpine workshop table scattered with braided silver thread and carved bone needles, Saintess Pramanix delicately threads a heavy ceremonial cord through the loop of an antique brass prayer bell. Soft morning light streams through a frosty double-glazed window, illuminating floating wool fibers, traditional Kjerag woven tapestries, and her massive fluffy snow leopard tail curled calmly beside her.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "threading cord",
-      "bell",
-      "workbench",
-      "window light",
-      "close-up"
+      "alpine workshop table",
+      "threading prayer bell",
+      "braided silver cord",
+      "antique brass bell",
+      "frosty window light",
+      "floating wool fibers",
+      "kjerag tapestries",
+      "massive fluffy leopard tail",
+      "patient artisan grace",
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

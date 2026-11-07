@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_puzzle_clock",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3069,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:42:20.102Z",
   "data": {
     "id": "mon3tr_arknights_puzzle_clock",
     "characterId": "mon3tr_arknights",
@@ -26,15 +26,16 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Mon3tr places the last piece of a jigsaw puzzle.",
+    "promptProse": "At a circular wooden table in a quiet activity room, Mon3tr carefully fits the final wooden gear-shaped jigsaw puzzle piece into a complex clockwork illustration. Sunlight reflects off the smooth polished puzzle surface, with colorful markers, timer devices, and storage bins creating a tidy, peaceful recreational setting.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "placing puzzle piece",
-      "jigsaw puzzle",
-      "table",
-      "window light",
+      "activity room table",
+      "fitting jigsaw puzzle piece",
+      "clockwork puzzle illustration",
+      "wooden puzzle surface",
+      "sunlight reflections",
+      "timer devices and markers",
+      "quiet satisfaction",
       "medium shot"
     ],
     "negativeTokens": [],

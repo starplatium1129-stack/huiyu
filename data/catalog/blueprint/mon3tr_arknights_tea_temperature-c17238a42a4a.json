@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_tea_temperature",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3070,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:42:20.104Z",
   "data": {
     "id": "mon3tr_arknights_tea_temperature",
     "characterId": "mon3tr_arknights",
@@ -26,16 +26,18 @@
       "warm light",
       "medium shot"
     ],
-    "promptProse": "Mon3tr checks the temperature of tea at a table.",
+    "promptProse": "Seated at a small breakfast table in a sunlit break room, Mon3tr hovers a sharp claw tip over a steaming porcelain teacup, using thermal sensors to gauge the exact drinking temperature. A plate of buttered toast, morning marmalade jars, and bright window daylight reflecting off clean tiles frame an adorable, calculated moment of domestic service.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "tea cup",
-      "thermometer",
-      "table",
-      "warm light",
-      "medium shot"
+      "sunlit break room table",
+      "hovering claw over teacup",
+      "measuring tea temperature",
+      "steaming porcelain cup",
+      "toast and marmalade",
+      "bright window daylight",
+      "clean tiled kitchen",
+      "adorable calculated care",
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

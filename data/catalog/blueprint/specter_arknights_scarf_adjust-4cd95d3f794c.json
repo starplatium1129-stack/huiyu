@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_scarf_adjust",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3035,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:37:16.609Z",
   "data": {
     "id": "specter_arknights_scarf_adjust",
     "characterId": "specter_arknights",
@@ -27,15 +27,18 @@
       "evening",
       "medium close-up"
     ],
-    "promptProse": "Specter holds her scarf and leans toward the viewer beneath a streetlight.",
+    "promptProse": "Under the moody amber halo of an old iron streetlamp on a deserted seaside promenade, Specter catches the fluttering end of her heavy knit scarf in the ocean wind, leaning close to the viewer with an intimate, mocking smile. Sea spray mists the glistening wet pavement, while distant lighthouse flashes and crashing dark breakers create a dramatic nocturnal maritime backdrop.",
     "animaCaption": "",
     "promptTokens": [
-      "holding scarf",
-      "leaning toward viewer",
-      "looking at viewer",
-      "soft smile",
-      "streetlight",
-      "evening",
+      "iron streetlamp amber halo",
+      "deserted seaside promenade",
+      "holding fluttering knit scarf",
+      "leaning close to viewer",
+      "mocking intimate smile",
+      "sea spray mist",
+      "wet pavement reflections",
+      "distant lighthouse beam",
+      "crashing ocean breakers",
       "medium close-up"
     ],
     "negativeTokens": [],

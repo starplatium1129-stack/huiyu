@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_pond_reflection",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2877,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:35:59.986Z",
   "data": {
     "id": "muelsyse_arknights_pond_reflection",
     "characterId": "muelsyse_arknights",
@@ -26,14 +26,18 @@
       "dappled sunlight",
       "medium shot"
     ],
-    "promptProse": "Muelsyse reaches for a leaf drifting on a shaded pond.",
+    "promptProse": "Kneeling on the mossy stone edge of a secluded woodland pond under dappled canopy shade, Muelsyse reaches out a hand over the glassy water, willing a drifting autumn leaf toward her fingers with subtle ripples. Shimmering reflections of willow boughs and floating water lily pads frame her calm, mystical connection to the living water.",
     "animaCaption": "",
     "promptTokens": [
-      "kneeling",
-      "reaching toward water",
-      "floating leaf",
-      "pond",
-      "dappled sunlight",
+      "kneeling beside woodland pond",
+      "mossy stone bank",
+      "reaching toward water surface",
+      "floating drifting leaf",
+      "subtle ripples",
+      "water lily pads",
+      "willow reflections",
+      "dappled canopy shade",
+      "mystical water affinity",
       "medium shot"
     ],
     "negativeTokens": [],

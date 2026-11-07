@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_menu",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2404,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-07T04:44:16.361Z",
   "data": {
     "id": "bazett_fraga_mcremitz_menu",
     "characterId": "bazett_fraga_mcremitz",
@@ -18,15 +18,17 @@
     "lighting": "warm restaurant lighting",
     "camera": "medium shot",
     "mood": "犹豫",
-    "promptProse": "At a small restaurant, Bazett reads a menu with one finger resting beside an item.",
+    "promptProse": "In an intimate, wood-paneled traditional restaurant booth, Bazett studies an embossed leather dinner menu, her index finger resting beside an authentic hearty stew. Soft pendant lamp lighting illuminates the checkered tablecloth, silverware, and her surprisingly earnest, flustered expression as she tries to select a non-standard meal.",
     "promptTokens": [
-      "restaurant",
-      "table",
-      "sitting",
-      "holding menu",
-      "reading",
-      "warm lighting",
-      "medium shot"
+      "traditional restaurant booth",
+      "wood-paneled interior",
+      "reading leather menu",
+      "index finger on menu",
+      "checkered tablecloth",
+      "silverware",
+      "soft pendant light",
+      "earnest flustered expression",
+      "medium close-up"
     ],
     "animaCaption": "",
     "negativeTokens": [],

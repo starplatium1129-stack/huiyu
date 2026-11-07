@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_rooftop_evening",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2914,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:42:20.105Z",
   "data": {
     "id": "ray_arknights_rooftop_evening",
     "characterId": "ray_arknights",
@@ -28,16 +28,17 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "Ray holds back windblown hair and looks over her shoulder at the viewer on a rooftop.",
+    "promptProse": "Standing on a breezy industrial rooftop as twilight blazes across the horizon, Ray holds back windblown strands of honey hair, looking over her shoulder toward the viewer. The sky glows with vibrant peach and purple sunset hues, while towering radio antennae, satellite dishes, and sparkling city streetlights create an evocative open-air moment.",
     "animaCaption": "",
     "promptTokens": [
-      "leaning on railing",
-      "holding hair",
+      "industrial rooftop at dusk",
+      "holding windblown hair",
       "looking over shoulder",
-      "shy smile",
-      "rooftop",
-      "city lights",
-      "night",
+      "vibrant peach and purple sunset",
+      "floppy bunny ears blowing in wind",
+      "radio antennae and satellites",
+      "sparkling city lights below",
+      "breezy twilight atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

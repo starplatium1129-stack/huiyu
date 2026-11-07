@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_run",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2408,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-07T04:44:16.361Z",
   "data": {
     "id": "bazett_fraga_mcremitz_run",
     "characterId": "bazett_fraga_mcremitz",
@@ -18,15 +18,17 @@
     "lighting": "early morning light",
     "camera": "wide shot",
     "mood": "清醒",
-    "promptProse": "On a riverside path at dawn, Bazett slows down and checks her wristwatch.",
+    "promptProse": "Slowing her jog to a measured walk along a misty riverside gravel path at sunrise, Bazett checks her digital chronograph watch to log her lap time. The rising sun casts a brilliant golden reflection across the moving river water, illuminating weeping willow silhouettes, morning dew on the grass, and her breath misting in the crisp morning air.",
     "promptTokens": [
-      "riverside",
-      "path",
-      "walking",
-      "looking at watch",
-      "dawn",
-      "wide shot",
-      "morning_sunlight"
+      "misty riverside gravel path",
+      "checking chronograph watch",
+      "logging morning run",
+      "golden sunrise on water",
+      "weeping willow silhouettes",
+      "morning dew on grass",
+      "vapor breath in air",
+      "athletic physique",
+      "full body"
     ],
     "animaCaption": "",
     "negativeTokens": [],

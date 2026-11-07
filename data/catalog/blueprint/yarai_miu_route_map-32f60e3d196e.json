@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_route_map",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2394,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-07T04:44:16.365Z",
   "data": {
     "id": "yarai_miu_route_map",
     "characterId": "yarai_miu",
@@ -18,15 +18,16 @@
     "lighting": "window light",
     "camera": "medium shot",
     "mood": "准备",
-    "promptProse": "Miu marks an intersection on a street map at the security office desk.",
+    "promptProse": "At a wooden security office table covered in regional patrol diagrams, Miu uses a red highlighter marker to trace an intersection checkpoint, checking her pocket watch to confirm patrol schedules. Warm desk lamp light illuminates clipped security badges, incident files, and her serious, dependable dedication to guarding the town.",
     "promptTokens": [
-      "office",
-      "desk",
-      "map",
-      "pencil",
-      "writing",
-      "window light",
-      "medium shot"
+      "security office desk",
+      "marking street map with highlighter",
+      "pocket watch and schedule",
+      "clipped security badges",
+      "incident files",
+      "warm desk lamp glow",
+      "serious dependable dedication",
+      "medium close-up"
     ],
     "animaCaption": "",
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_pencil_box",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2927,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:39:18.787Z",
   "data": {
     "id": "pozyomka_arknights_pencil_box",
     "characterId": "pozyomka_arknights",
@@ -26,14 +26,17 @@
       "window light",
       "medium close-up"
     ],
-    "promptProse": "Pozyomka compares boxes of pencils in a stationery shop.",
+    "promptProse": "In an upscale boutique stationery shop filled with bespoke paper and artists' tools, Pozyomka thoughtfully examines an opened cedar wood box containing freshly sharpened graphite sketching pencils of varying hardness. Sunlight illuminates glass display cases of sealing waxes, imported inks, and her connoisseur-like appraisal of the fine artist materials.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "holding pencil box",
-      "stationery shop",
-      "shelves",
-      "window light",
+      "boutique stationery shop",
+      "cedar wood pencil box",
+      "sharpened graphite pencils",
+      "connoisseur appraisal",
+      "glass display cases",
+      "imported inks and paper",
+      "bright morning light",
+      "refined artistic taste",
       "medium close-up"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_tea_tin",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2898,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:35:59.984Z",
   "data": {
     "id": "hoolheyak_arknights_tea_tin",
     "characterId": "hoolheyak_arknights",
@@ -26,14 +26,18 @@
       "window light",
       "medium close-up"
     ],
-    "promptProse": "Ho’olheyak reads the label on a tea tin in a tea shop.",
+    "promptProse": "In an aromatic tea merchant's apothecary lined with floor-to-ceiling wooden apothecary drawers, Ho'olheyak lifts a painted lacquer tea tin, reading the calligraphic herbal description with curious delight. Sunbeams piercing through vintage window glass illuminate floating dried tea leaves, weighing scales, and ceramic jars in a rich, sensory-laden boutique.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "holding tea tin",
-      "tea shop",
-      "shelves",
-      "window light",
+      "tea merchant boutique",
+      "apothecary drawers",
+      "holding painted tea tin",
+      "reading calligraphic label",
+      "sunbeams through window",
+      "herbal aromas",
+      "brass weighing scales",
+      "ceramic jars",
+      "refined curiosity",
       "medium close-up"
     ],
     "negativeTokens": [],

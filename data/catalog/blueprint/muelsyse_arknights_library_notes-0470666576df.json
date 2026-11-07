@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_library_notes",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2880,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:35:59.985Z",
   "data": {
     "id": "muelsyse_arknights_library_notes",
     "characterId": "muelsyse_arknights",
@@ -26,14 +26,18 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Muelsyse writes notes beside an illustrated botanical book in a library.",
+    "promptProse": "At a spacious blonde-wood study carrel inside a peaceful botanical library, Muelsyse writes concise field observations onto sticky tabs beside a massive open botanical atlas. Broad daylight pours through double-height windows, highlighting leaf diagrams, dried specimen slides, and her pointed ears perked with scholarly focus.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "writing notes",
-      "botanical book",
-      "library desk",
-      "window light",
+      "botanical library carrel",
+      "writing on sticky tabs",
+      "open botanical atlas",
+      "specimen slides and diagrams",
+      "pointed elf ears",
+      "scholarly focus",
+      "double-height windows",
+      "bright daylight",
+      "tranquil atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

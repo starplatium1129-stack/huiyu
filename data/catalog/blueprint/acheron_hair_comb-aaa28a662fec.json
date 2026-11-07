@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "acheron_hair_comb",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2066,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-27T14:52:35.635383+00:00",
+  "updatedAt": "2026-11-07T04:46:11.214Z",
   "data": {
     "id": "acheron_hair_comb",
     "title": "黄泉 · 梳理长发",
@@ -17,13 +17,17 @@
     "lighting": "梳妆台暖灯",
     "camera": "medium shot",
     "mood": "沉思",
-    "promptProse": "Acheron combs the ends of her long hair at the dressing table and glances toward a photograph.",
+    "promptProse": "Sitting before an antique mahogany dressing table illuminated by the warm, nostalgic glow of a fringe-shaded lamp, Acheron slowly draws an engraved tortoiseshell comb through the long ends of her flowing violet-tipped white hair. Scattered across the vanity are faded black-and-white travel photographs, dried spider lilies, and her sheathed nodachi resting quietly against the wall.",
     "promptTokens": [
-      "sitting at dressing table",
-      "combing hair",
-      "photograph on table",
-      "warm lamp",
-      "medium shot"
+      "antique mahogany dressing table",
+      "combing long flowing hair",
+      "tortoiseshell comb",
+      "fringe-shaded lamp glow",
+      "faded travel photographs",
+      "dried spider lilies",
+      "sheathed nodachi against wall",
+      "nostalgic pensive reflection",
+      "medium close-up"
     ],
     "animaCaption": "Her comb pauses at the ends of her hair.",
     "characterId": "acheron",

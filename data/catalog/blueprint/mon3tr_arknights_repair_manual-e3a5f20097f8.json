@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_repair_manual",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3068,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-07T04:42:20.103Z",
   "data": {
     "id": "mon3tr_arknights_repair_manual",
     "characterId": "mon3tr_arknights",
@@ -26,16 +26,18 @@
       "task lighting",
       "medium close-up"
     ],
-    "promptProse": "Mon3tr reads a device manual at an engineering workbench.",
+    "promptProse": "Hunched over a cluttered engineering workbench covered in multimeter probes, soldering irons, and disassembled drone circuits, Mon3tr reads a dog-eared equipment schematic manual under a bright magnifying work lamp. The metallic workshop glow, racks of spare components, and its focused analytical gaze create an industrious laboratory scene.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "open manual",
-      "small tools",
-      "workbench",
-      "task lighting",
-      "medium close-up"
+      "engineering workbench",
+      "reading schematic manual",
+      "dog-eared equipment manual",
+      "magnifying work lamp",
+      "soldering irons and circuits",
+      "multimeter probes",
+      "component racks",
+      "industrious laboratory focus",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

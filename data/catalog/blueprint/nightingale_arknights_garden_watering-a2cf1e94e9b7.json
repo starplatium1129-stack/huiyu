@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_garden_watering",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3037,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:39:18.782Z",
   "data": {
     "id": "nightingale_arknights_garden_watering",
     "characterId": "nightingale_arknights",
@@ -27,16 +27,17 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Nightingale waters a potted flower in a garden.",
+    "promptProse": "In a sunlit courtyard overflowing with therapeutic herbs and white roses, Nightingale lifts a vintage verdigris copper watering can, gently sprinkling droplets over potted bellflowers. The rising mist glints with miniature rainbows in the morning rays, while stone cloister arches and ivy-covered walls shelter her fragile, serene grace.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "watering plant",
-      "watering can",
-      "flowerpot",
-      "garden",
-      "daylight",
+      "herb courtyard",
+      "vintage copper watering can",
+      "sprinkling potted bellflowers",
+      "rainbow mist droplets",
+      "morning sunbeams",
+      "stone cloister arches",
+      "ivy-covered walls",
+      "fragile serene grace",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_scarf",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2371,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-07T04:44:16.359Z",
   "data": {
     "id": "ogiso_setsuna_scarf",
     "characterId": "ogiso_setsuna",
@@ -18,14 +18,17 @@
     "lighting": "streetlamp light",
     "camera": "medium shot",
     "mood": "安静",
-    "promptProse": "On a winter street, Setsuna holds her scarf near her chin as she waits beside the crossing.",
+    "promptProse": "Waiting beside a busy pedestrian crosswalk on a snowy winter evening, Setsuna buries her chin into the thick folds of her white cable-knit scarf, looking up with wide, sparkling eyes at the viewer. Blurred car taillights and shop windows create a dazzling sea of crimson and gold bokeh in the falling snow, framing her breathtaking, festive warmth.",
     "promptTokens": [
-      "street",
-      "crosswalk",
-      "winter",
-      "holding scarf",
-      "streetlight",
-      "medium shot"
+      "pedestrian crosswalk in snow",
+      "chin buried in cable-knit scarf",
+      "sparkling happy eyes",
+      "falling snowflakes",
+      "blurred car taillights bokeh",
+      "shop window illuminations",
+      "festive winter evening",
+      "breathtaking warmth",
+      "medium close-up"
     ],
     "animaCaption": "",
     "negativeTokens": [],

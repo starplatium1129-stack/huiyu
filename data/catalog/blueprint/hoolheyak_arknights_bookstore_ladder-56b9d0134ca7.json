@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_bookstore_ladder",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2900,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:35:59.982Z",
   "data": {
     "id": "hoolheyak_arknights_bookstore_ladder",
     "characterId": "hoolheyak_arknights",
@@ -26,14 +26,18 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Ho’olheyak looks up at a high bookshelf in a secondhand bookshop.",
+    "promptProse": "Standing on the brass rungs of a rolling wooden library ladder in an atmospheric antiquarian bookshop, Ho'olheyak gazes upward along towering mahogany shelves stacked to the ceiling with gold-leaf tomes. Warm ambient lamplight catches the jewel tones of her feathered wings and the intricate leather bindings, highlighting a serene, book-hunting moment amidst the scent of aged paper.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
+      "antiquarian bookshop",
+      "rolling library ladder",
+      "towering mahogany bookshelves",
       "looking up",
-      "bookshelf",
-      "old bookshop",
-      "window light",
+      "gold-leaf leather tomes",
+      "feathered wings",
+      "warm ambient lamps",
+      "scent of aged paper",
+      "scholarly elegance",
       "medium shot"
     ],
     "negativeTokens": [],

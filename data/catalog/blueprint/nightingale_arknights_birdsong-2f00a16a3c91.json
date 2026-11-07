@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_birdsong",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3036,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-07T04:39:18.781Z",
   "data": {
     "id": "nightingale_arknights_birdsong",
     "characterId": "nightingale_arknights",
@@ -26,15 +26,17 @@
       "morning light",
       "medium shot"
     ],
-    "promptProse": "Nightingale listens to a bird beside a lounge window.",
+    "promptProse": "Sitting serenely on a cushioned window seat in the quiet rehabilitation lounge, Nightingale listens with a peaceful, gentle tilt of her head to a singing songbird perched outside on a blossoming plum branch. Translucent lace curtains filter soft morning sunlight, casting delicate filigree shadows over her white gown and silver hair.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "looking at bird",
-      "window",
-      "tree branch",
-      "morning light",
+      "cushioned window seat",
+      "listening to birdsong",
+      "singing bird on plum branch",
+      "translucent lace curtains",
+      "soft morning sunlight",
+      "filigree shadow patterns",
+      "white gown and silver hair",
+      "peaceful restorative silence",
       "medium shot"
     ],
     "negativeTokens": [],

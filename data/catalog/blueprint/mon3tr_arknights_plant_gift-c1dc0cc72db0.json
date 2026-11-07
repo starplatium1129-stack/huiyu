@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_plant_gift",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3075,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:42:20.102Z",
   "data": {
     "id": "mon3tr_arknights_plant_gift",
     "characterId": "mon3tr_arknights",
@@ -25,14 +25,17 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Mon3tr carries a small potted plant through a corridor.",
+    "promptProse": "Navigating a clean, brightly illuminated medical corridor, Mon3tr gently cradles a small terracotta pot containing a vibrant green succulent in its two sharp claws. White antimicrobial walls, glass observation panels, and the warm morning light filtering through skylights frame its careful, deliberate strides to deliver the gift.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding potted plant",
-      "corridor",
-      "daylight",
+      "clean medical corridor",
+      "cradling potted succulent",
+      "delicate crystalline claws",
+      "terracotta pot",
+      "white clinical walls",
+      "skylight morning light",
+      "careful deliberate strides",
+      "protective posture",
       "medium shot"
     ],
     "negativeTokens": [],

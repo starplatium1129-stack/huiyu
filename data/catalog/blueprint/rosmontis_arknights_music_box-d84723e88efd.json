@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_music_box",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2965,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:37:16.608Z",
   "data": {
     "id": "rosmontis_arknights_music_box",
     "characterId": "rosmontis_arknights",
@@ -26,15 +26,17 @@
       "evening",
       "medium shot"
     ],
-    "promptProse": "Rosmontis listens to an open music box at a living room table.",
+    "promptProse": "Resting her chin on her hands at an antique mahogany living room table, Rosmontis watches the tiny rotating ballerina inside a vintage brass wind-up music box. Warm evening lamplight casts golden reflections across the varnished wood and lace doilies, with the cozy, quiet living room interior enveloping her in nostalgic wonder.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "music box",
-      "table",
-      "warm lamp light",
-      "evening",
+      "antique mahogany table",
+      "chin on hands",
+      "vintage brass music box",
+      "rotating ballerina figurine",
+      "warm evening lamplight",
+      "varnished wood reflections",
+      "lace doilies",
+      "nostalgic innocent wonder",
       "medium shot"
     ],
     "negativeTokens": [],

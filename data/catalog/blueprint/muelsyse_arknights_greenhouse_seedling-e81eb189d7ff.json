@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_greenhouse_seedling",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2876,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-04T04:14:35.971176500+00:00",
+  "updatedAt": "2026-11-07T04:35:59.985Z",
   "data": {
     "id": "muelsyse_arknights_greenhouse_seedling",
     "characterId": "muelsyse_arknights",
@@ -26,14 +26,18 @@
       "morning light",
       "medium shot"
     ],
-    "promptProse": "Muelsyse crouches beside a new seedling in a glass greenhouse.",
+    "promptProse": "Crouching beside a wooden nursery bench inside an airy glass greenhouse, Muelsyse smiles warmly as she watches a tiny emerald sprout unfurl under her moist fingertips. Shimmering condensed moisture clings to the glass dome, through which bright morning sunlight streams, illuminating rows of terracotta seedling pots, watering cans, and lush hydroponic vines.",
     "animaCaption": "",
     "promptTokens": [
-      "crouching",
-      "seedling",
-      "plant pot",
-      "greenhouse",
-      "morning light",
+      "glass greenhouse nursery",
+      "crouching beside seedling",
+      "tiny emerald sprout",
+      "moist fingertips",
+      "condensed moisture on glass",
+      "morning sunbeams",
+      "terracotta pots",
+      "hydroponic greenery",
+      "caring elf expression",
       "medium shot"
     ],
     "negativeTokens": [],

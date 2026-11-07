@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_harbor",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2390,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-07T04:44:16.363Z",
   "data": {
     "id": "yarai_miu_harbor",
     "characterId": "yarai_miu",
@@ -18,15 +18,17 @@
     "lighting": "harbor lamps",
     "camera": "wide shot",
     "mood": "警觉",
-    "promptProse": "At the harbor, Miu checks a folded patrol map beside the railing.",
+    "promptProse": "Standing along the iron safety railing of a bustling coastal harbor at dusk, Miu holds an unfolded maritime patrol chart against the ocean breeze. Massive cargo freighters, illuminated harbor cranes, and the rhythmic lap of tidal waves reflecting sunset orange and purple hues frame her vigilant nighttime patrol.",
     "promptTokens": [
-      "harbor",
-      "railing",
-      "holding map",
-      "standing",
-      "evening",
-      "streetlight",
-      "wide shot"
+      "coastal harbor at dusk",
+      "iron safety railing",
+      "holding maritime patrol chart",
+      "cargo freighters and cranes",
+      "sunset orange and purple sky",
+      "tidal wave reflections",
+      "ocean breeze ruffling hair",
+      "vigilant nighttime patrol",
+      "medium shot"
     ],
     "animaCaption": "",
     "negativeTokens": [],

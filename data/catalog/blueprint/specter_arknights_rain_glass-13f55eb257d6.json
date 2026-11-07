@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_rain_glass",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3032,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:37:16.609Z",
   "data": {
     "id": "specter_arknights_rain_glass",
     "characterId": "specter_arknights",
@@ -25,14 +25,18 @@
       "overcast light",
       "medium shot"
     ],
-    "promptProse": "Specter watches raindrops trace a lounge window.",
+    "promptProse": "Standing beside a panoramic floor-to-ceiling lounge window streaked with streaming raindrops, Specter gently rests a pale fingertip against the cold glass, tracking the path of a sliding droplet. Overcast silvery daylight casts cool chiaroscuro across her gothic dress and platinum wavy hair, while the muted, rain-drowned cityscape stretches into misty infinity outside.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "rain on window",
-      "looking through window",
-      "overcast light",
+      "panoramic rain-streaked window",
+      "fingertip on glass",
+      "tracking rain droplet",
+      "cool chiaroscuro lighting",
+      "overcast silvery daylight",
+      "gothic dress and lace",
+      "platinum wavy hair",
+      "rain-drowned cityscape",
+      "melancholic enigmatic smile",
       "medium shot"
     ],
     "negativeTokens": [],

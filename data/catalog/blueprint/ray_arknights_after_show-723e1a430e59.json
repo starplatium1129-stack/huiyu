@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_after_show",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2915,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:42:20.104Z",
   "data": {
     "id": "ray_arknights_after_show",
     "characterId": "ray_arknights",
@@ -28,17 +28,19 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "Ray pats the seat beside her on an empty stage and looks toward the viewer with a shy smile.",
+    "promptProse": "Sitting on the edge of a darkened theater stage with legs dangling after a lively band performance, Cautus girl Ray pats the wooden floorboards beside her, looking toward the viewer with a shy, endearing blush. Fading stage spotlights in violet and amber cast long shadows across scattered cables and amplifier cabinets, while her long floppy bunny ears droop softly in the quiet aftermath.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting on stage",
-      "patting seat",
-      "looking at viewer",
-      "shy smile",
-      "empty seats",
-      "stage lights",
-      "night",
-      "medium close-up"
+      "darkened theater stage",
+      "legs dangling off stage",
+      "patting floorboard beside her",
+      "shy endearing blush",
+      "long floppy bunny ears",
+      "fading stage spotlights",
+      "scattered audio cables",
+      "amplifier cabinets",
+      "quiet post-performance intimacy",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

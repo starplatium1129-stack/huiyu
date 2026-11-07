@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_tea_tray",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2424,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-07T04:46:11.212Z",
   "data": {
     "id": "rena_liechtenauer_tea_tray",
     "characterId": "rena_liechtenauer",
@@ -18,14 +18,17 @@
     "lighting": "soft indoor light",
     "camera": "cowboy shot",
     "mood": "认真",
-    "promptProse": "In an inn hallway, Lena steadies a tray of tea before knocking on a guest room door.",
+    "promptProse": "Walking gracefully along a quiet, tatami-lined inn corridor illuminated by paper shoji lanterns, Lena balances a polished wooden tray holding a steaming porcelain teapot and two delicate cups. The soft, rhythmic creak of polished cedar floorboards and the serene aroma of toasted green tea accompany her attentive, hospitable stride.",
     "promptTokens": [
-      "inn hallway",
-      "sliding door",
-      "holding tray",
-      "teacup",
-      "soft light",
-      "cowboy shot"
+      "traditional inn hallway",
+      "carrying wooden tea tray",
+      "steaming porcelain teapot",
+      "delicate ceramic cups",
+      "tatami and cedar floor",
+      "paper shoji lantern lighting",
+      "hospitable attentive smile",
+      "tranquil ryokan atmosphere",
+      "medium shot"
     ],
     "animaCaption": "",
     "negativeTokens": [],

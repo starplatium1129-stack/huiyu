@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_concert_seat",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3002,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:39:18.779Z",
   "data": {
     "id": "horn_arknights_concert_seat",
     "characterId": "horn_arknights",
@@ -25,14 +25,17 @@
       "soft lighting",
       "medium shot"
     ],
-    "promptProse": "Horn reads a program in a concert hall seat.",
+    "promptProse": "Sitting in the plush crimson velvet orchestra seats of an opulent symphony hall before the overture, Horn studies an embossed gold-trimmed musical program under the warm illumination of a soaring crystal chandelier. Surrounding tier balconies, gilded moldings, and the low hum of gathering concertgoers frame her composed, cultured profile.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding program",
-      "concert hall",
-      "soft lighting",
+      "symphony hall orchestra seat",
+      "crimson velvet chair",
+      "gold-trimmed concert program",
+      "crystal chandelier glow",
+      "gilded tier balconies",
+      "ornate architecture",
+      "composed cultured expression",
+      "evening formal atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

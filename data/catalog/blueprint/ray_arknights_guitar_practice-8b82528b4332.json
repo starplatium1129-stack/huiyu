@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_guitar_practice",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2910,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:42:20.105Z",
   "data": {
     "id": "ray_arknights_guitar_practice",
     "characterId": "ray_arknights",
@@ -26,14 +26,18 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Ray practices a chord on an electric guitar in a rehearsal room.",
+    "promptProse": "Sitting cross-legged on an amplifier cabinet in a soundproofed garage rehearsal studio, Ray concentrates earnestly on fingerpicking an acoustic chord on a vintage sunburst guitar. Strips of acoustic foam, mic stands, scattered sheet music, and warm Edison bulb lighting frame her dedicated practice as her bunny ears twitch to the vibrating strings.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "holding electric guitar",
-      "playing guitar",
-      "rehearsal room",
-      "window light",
+      "garage rehearsal studio",
+      "sitting on amplifier cabinet",
+      "fingerpicking sunburst guitar",
+      "acoustic foam panels",
+      "microphone stands",
+      "scattered sheet music",
+      "warm Edison bulbs",
+      "twitching bunny ears",
+      "earnest concentration",
       "medium shot"
     ],
     "negativeTokens": [],

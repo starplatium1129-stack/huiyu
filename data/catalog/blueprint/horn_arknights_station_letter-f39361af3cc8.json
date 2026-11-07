@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_station_letter",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2999,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-07T04:39:18.780Z",
   "data": {
     "id": "horn_arknights_station_letter",
     "characterId": "horn_arknights",
@@ -26,16 +26,19 @@
       "daylight",
       "medium close-up"
     ],
-    "promptProse": "Horn folds a letter on a station waiting bench.",
+    "promptProse": "Seated on a polished wooden waiting bench on a sunlit steam train platform, Horn methodically folds a handwritten dispatch into its envelope, sealing it with quiet deliberation. Billowing white steam from a departing locomotive catches the morning light, with iron platform trusses, baggage carts, and brass station clocks framing her composed solitary journey.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "folding letter",
-      "envelope",
-      "station bench",
-      "daylight",
-      "medium close-up"
+      "steam train platform",
+      "wooden waiting bench",
+      "folding handwritten letter",
+      "locomotive steam clouds",
+      "morning sunlight",
+      "iron station trusses",
+      "baggage carts",
+      "brass station clock",
+      "composed soldierly reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

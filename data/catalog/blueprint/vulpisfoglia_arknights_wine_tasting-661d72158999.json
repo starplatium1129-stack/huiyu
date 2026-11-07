@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_wine_tasting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2857,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:42:20.101Z",
   "data": {
     "id": "vulpisfoglia_arknights_wine_tasting",
     "characterId": "vulpisfoglia_arknights",
@@ -25,13 +25,17 @@
       "evening",
       "medium close-up"
     ],
-    "promptProse": "Vulpisfoglia studies a glass of wine at a small bar.",
+    "promptProse": "At an intimate speakeasy mahogany bar lined with backlit bottles of vintage amaro, Vulpisfoglia gently swirls a glass of deep ruby Chianti, observing its legs against the warm bar lighting. Brass footrails, smoked mirrors, and jazz vinyl playing softly create an atmosphere of mature, sophisticated camaraderie as she shares a toast with the viewer.",
     "animaCaption": "",
     "promptTokens": [
-      "holding wine glass",
-      "bar counter",
-      "amber lighting",
-      "evening",
+      "speakeasy mahogany bar",
+      "swirling ruby wine glass",
+      "backlit vintage bottles",
+      "smoked mirrors",
+      "brass footrails",
+      "mature sophisticated atmosphere",
+      "warm bar lighting",
+      "subtle knowing smile",
       "medium close-up"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_02",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1706,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-07T04:46:11.216Z",
   "data": {
     "id": "vivy_r18_b9_02",
     "title": "Vivy · 维护休眠水舱排热蒸汽中的水光湿身 ·「机体核心过热……需要排解情感回路积累的冗余数据」",
@@ -30,16 +30,16 @@
       "liquid",
       "steam"
     ],
-    "promptProse": "Vivy touches herself while floating in turquoise coolant, ripples moving through the pod around her long hair.",
+    "promptProse": "Submerged within an illuminated vertical cylindrical hibernation tube filled with bubbling turquoise bioluminescent coolant fluid, songstress AI Vivy floats weightlessly as thermal exhaust steam vents in swirling clouds from the metallic chamber ceiling. Holographic diagnostics flicker across the curved glass, illuminating her cascading cyan hair and sensitive physical awakening.",
     "promptTokens": [
-      "Vivy",
-      "android",
-      "floating",
-      "maintenance pod",
-      "coolant",
-      "blue light",
-      "masturbation",
-      "ripples",
+      "vertical hibernation tube",
+      "turquoise coolant fluid",
+      "floating weightless",
+      "thermal exhaust steam",
+      "holographic diagnostics",
+      "cascading cyan hair",
+      "curved glass reflections",
+      "cybernetic maintenance",
       "medium shot"
     ],
     "negativeTokens": [],

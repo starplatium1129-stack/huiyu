@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_06",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1700,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-07T04:46:11.216Z",
   "data": {
     "id": "vivy_sfw_b9_06",
     "title": "Vivy · 缝纫与服装保养",
@@ -30,17 +30,17 @@
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "Vivy mends her performance cape across her lap, quietly humming beneath the lamp.",
+    "promptProse": "Seated on a vintage stool beside an antique Singer sewing machine in her private green room, Vivy carefully mends an embroidered hem on her stage performance cape spread across her knees. A warm gooseneck work lamp illuminates thread spools, brass tailoring shears, and her calm, melodious humming under the quiet theater ceiling.",
     "promptTokens": [
-      "Vivy",
-      "needle",
-      "thread",
-      "costume",
-      "rest room",
-      "medium shot",
-      "sewing",
-      "humming",
-      "lamplight"
+      "private green room",
+      "vintage sewing machine",
+      "mending stage cape",
+      "cape spread on lap",
+      "gooseneck work lamp",
+      "thread spools and shears",
+      "calm melodious humming",
+      "theatrical backstage tranquility",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

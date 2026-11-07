@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_swimsuit_pool",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 903,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-07T04:46:11.213Z",
   "data": {
     "action": "披薄纱外套站在池边",
     "adult": false,
@@ -26,15 +26,17 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "sfw_private_pool_onepiece",
-    "promptProse": "Rio studies the clear pool water, summer reflections flickering across her cover-up.",
+    "promptProse": "Resting beside an illuminated infinity pool on an exclusive high-rise penthouse terrace at dusk, Rio gazes thoughtfully into the crystal water while adjusting the sheer chiffon wrap over her structured black swimsuit. Pale turquoise aquatic light ripples across her pale skin and the dark granite decking, reflecting the quiet, strategic calculations behind her calm composure.",
     "promptTokens": [
-      "Rio",
-      "pool",
-      "from below",
-      "medium shot",
-      "standing",
-      "water reflection",
-      "sunlight"
+      "penthouse infinity pool",
+      "dark granite decking",
+      "structured black swimsuit",
+      "sheer chiffon cover-up",
+      "turquoise water ripples",
+      "twilight city view",
+      "calm strategic composure",
+      "crystal pool water",
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",

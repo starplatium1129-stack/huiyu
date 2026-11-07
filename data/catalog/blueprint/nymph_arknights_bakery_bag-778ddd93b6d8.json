@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_bakery_bag",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2893,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-05T17:31:59.373Z",
+  "updatedAt": "2026-11-07T04:39:18.783Z",
   "data": {
     "id": "nymph_arknights_bakery_bag",
     "characterId": "nymph_arknights",
@@ -26,15 +26,18 @@
       "warm window light",
       "medium shot"
     ],
-    "promptProse": "Nymph receives a paper bag of bread at a bakery counter.",
+    "promptProse": "Outside a quaint bakery on a sunny corner, Sarkaz girl Nymph excitedly hugs a crinkling paper bag of warm, powdered pastries to her chest, her red hair catching the morning rays. The shop's bright striped awning flutters overhead, while colorful sidewalk chalk drawings, window displays of tiered cakes, and lively morning pedestrians create a cheerful, bustling street scene.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding paper bag",
-      "bread",
-      "bakery counter",
-      "warm window light",
+      "corner bakery storefront",
+      "hugging paper bag of pastries",
+      "crinkling paper bag",
+      "striped awning",
+      "sidewalk chalk drawings",
+      "cake window display",
+      "morning sunlight",
+      "cheerful excited grin",
+      "sarkaz horns",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_window_snow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2934,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-07T04:39:18.787Z",
   "data": {
     "id": "pozyomka_arknights_window_snow",
     "characterId": "pozyomka_arknights",
@@ -28,16 +28,17 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "Pozyomka looks over her shoulder and beckons the viewer closer by a snowy window.",
+    "promptProse": "Standing beside a frosted multi-pane salon window watching silent winter snowflakes fall into the glowing twilight street, Pozyomka looks back over her shoulder, extending a welcoming hand toward the viewer. The room's roaring stone fireplace casts dancing golden and amber reflections across her knit shawl and the frosted glass, creating an inviting sanctuary from the winter chill.",
     "animaCaption": "",
     "promptTokens": [
-      "leaning against window",
-      "looking over shoulder",
-      "beckoning",
-      "soft smile",
-      "snowy window",
-      "warm interior light",
-      "night",
+      "frosted salon window",
+      "falling winter snowflakes",
+      "looking back over shoulder",
+      "welcoming outstretched hand",
+      "roaring stone fireplace glow",
+      "knit shawl",
+      "warm amber reflections",
+      "cozy winter sanctuary",
       "medium close-up"
     ],
     "negativeTokens": [],

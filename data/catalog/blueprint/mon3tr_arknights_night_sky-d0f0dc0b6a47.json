@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_night_sky",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3074,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-07T04:42:20.102Z",
   "data": {
     "id": "mon3tr_arknights_night_sky",
     "characterId": "mon3tr_arknights",
@@ -26,15 +26,17 @@
       "night",
       "wide shot"
     ],
-    "promptProse": "Mon3tr consults a star chart in a rooftop garden.",
+    "promptProse": "On an elevated observation catwalk beneath a crystal-clear starry sky, Mon3tr holds up a translucent digital star chart, cross-referencing celestial constellations with automated telescope sensors. The cold starlight glints off its dark jagged carapace and glowing emerald core, while the vast silent desert horizon sweeps endlessly below.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding star chart",
-      "starry sky",
-      "rooftop garden",
-      "night",
+      "observation catwalk",
+      "digital star chart",
+      "stargazing at night",
+      "automated telescope sensors",
+      "cold starlight reflections",
+      "dark jagged carapace",
+      "glowing emerald core",
+      "vast desert horizon",
       "wide shot"
     ],
     "negativeTokens": [],

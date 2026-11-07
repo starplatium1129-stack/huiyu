@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_art_album",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3030,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:37:16.609Z",
   "data": {
     "id": "specter_arknights_art_album",
     "characterId": "specter_arknights",
@@ -26,15 +26,18 @@
       "soft light",
       "medium close-up"
     ],
-    "promptProse": "Specter reads an ocean art book in a library.",
+    "promptProse": "In a quiet cathedral-like archive room, Laurentina (Specter) slowly turns the heavy parchment pages of an antique illuminated maritime art book, her slender finger tracing the deep cobalt hues of a stormy seascape. Golden sunbeams lance through tall arched stained-glass windows, illuminating swirling marble dust on the oak table and the dark crimson glint in her mesmerizing eyes.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "open art book",
-      "ocean painting",
-      "library",
-      "soft light",
+      "cathedral archive room",
+      "illuminated maritime art book",
+      "tracing cobalt seascape",
+      "stormy ocean painting",
+      "tall stained-glass windows",
+      "sunbeam shafts",
+      "swirling marble dust",
+      "dark crimson eyes",
+      "mesmerizing contemplative gaze",
       "medium close-up"
     ],
     "negativeTokens": [],

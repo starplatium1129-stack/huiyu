@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_window_glance",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3003,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:39:18.781Z",
   "data": {
     "id": "horn_arknights_window_glance",
     "characterId": "horn_arknights",
@@ -28,16 +28,17 @@
       "sunset light",
       "medium close-up"
     ],
-    "promptProse": "Horn offers a cup of tea and looks warmly toward the viewer by a window.",
+    "promptProse": "Standing beside a sunny casement window overlooking a green estate courtyard, Horn offers a steaming porcelain cup of morning tea toward the viewer with a warm, open smile. Sheer curtains billow in the fresh breeze, while sunlight outlines her golden hair and athletic silhouette against the polished wooden floorboards.",
     "animaCaption": "",
     "promptTokens": [
-      "holding tea cup",
-      "offering",
-      "leaning toward viewer",
-      "looking at viewer",
-      "gentle smile",
-      "window",
-      "sunset light",
+      "sunny casement window",
+      "offering cup of tea",
+      "warm open smile",
+      "sheer billowing curtains",
+      "green courtyard view",
+      "golden hair highlights",
+      "polished wooden floorboards",
+      "fresh morning breeze",
       "medium close-up"
     ],
     "negativeTokens": [],

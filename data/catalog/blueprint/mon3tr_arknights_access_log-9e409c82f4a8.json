@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_access_log",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3066,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-07T04:42:20.101Z",
   "data": {
     "id": "mon3tr_arknights_access_log",
     "characterId": "mon3tr_arknights",
@@ -26,15 +26,17 @@
       "bright light",
       "medium shot"
     ],
-    "promptProse": "Mon3tr checks an access log at an office desk.",
+    "promptProse": "In a secure, darkened server room aboard Rhodes Island illuminated by pulsating green terminal screens, Mon3tr sits upright at an illuminated console, scrolling through digital security access manifests. Crystalline bio-luminescent conduits pulse faintly along its dark carapace, with server racks, diagnostic cables, and high-tech command readouts framing its vigilant, mechanical focus.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "reading document",
-      "computer terminal",
-      "office desk",
-      "bright light",
+      "secure server room",
+      "illuminated terminal console",
+      "scrolling access manifests",
+      "green screen illumination",
+      "pulsing crystalline conduits",
+      "dark crystalline carapace",
+      "server racks and cables",
+      "vigilant mechanical focus",
       "medium shot"
     ],
     "negativeTokens": [],

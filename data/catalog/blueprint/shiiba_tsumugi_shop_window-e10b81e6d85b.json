@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_shop_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2410,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-07T04:46:11.215Z",
   "data": {
     "id": "shiiba_tsumugi_shop_window",
     "characterId": "shiiba_tsumugi",
@@ -18,15 +18,17 @@
     "lighting": "window reflections",
     "camera": "medium shot",
     "mood": "犹豫",
-    "promptProse": "Outside a clothing shop, Tsumugi holds a red hairband up beside the display window, considering it carefully.",
+    "promptProse": "Outside a fashionable boutique on a sunlit shopping promenade, Tsumugi holds a polished red polka-dot hairband up beside her reflection in the clean shop window glass. Mannequins in stylish autumn ensembles, potted topiaries, and walking shoppers create a vibrant town backdrop as she checks how the accessory complements her short hair.",
     "promptTokens": [
-      "shop window",
-      "holding hairband",
-      "looking at hairband",
-      "window reflections",
-      "medium shot",
-      "window_light",
-      "water_reflection"
+      "boutique display window",
+      "holding red hairband to head",
+      "checking reflection in glass",
+      "stylish autumn mannequins",
+      "sunlit shopping promenade",
+      "potted topiaries",
+      "vibrant town backdrop",
+      "playful stylish curiosity",
+      "medium shot"
     ],
     "animaCaption": "",
     "negativeTokens": [],

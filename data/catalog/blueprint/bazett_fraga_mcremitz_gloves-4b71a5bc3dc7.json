@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_gloves",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2400,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-28T02:51:28.359224600+00:00",
+  "updatedAt": "2026-11-07T04:44:16.361Z",
   "data": {
     "id": "bazett_fraga_mcremitz_gloves",
     "characterId": "bazett_fraga_mcremitz",
@@ -18,15 +18,17 @@
     "lighting": "streetlamp light",
     "camera": "cowboy shot",
     "mood": "警觉",
-    "promptProse": "At a quiet crossing, Bazett adjusts one glove beneath a streetlamp.",
+    "promptProse": "Standing under the cool amber illumination of an ornate cast-iron gas streetlamp at a foggy cobbled intersection, Bazett methodically tugs and fastens the wrist-strap of her reinforced black leather combat glove. Dense night fog swirls through the quiet alleyways, catching the glow of lamplight on wet granite and her composed, vigilant stance.",
     "promptTokens": [
-      "city street",
-      "crosswalk",
-      "adjusting gloves",
-      "standing",
-      "night",
-      "streetlight",
-      "cowboy shot"
+      "cast-iron gas streetlamp",
+      "foggy cobbled intersection",
+      "adjusting leather combat glove",
+      "wrist-strap buckle",
+      "dense night fog",
+      "wet granite reflections",
+      "composed vigilant stance",
+      "crisp formal suit",
+      "medium close-up"
     ],
     "animaCaption": "",
     "negativeTokens": [],

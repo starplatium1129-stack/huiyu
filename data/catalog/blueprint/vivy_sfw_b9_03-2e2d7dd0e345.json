@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1697,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-07T04:46:11.216Z",
   "data": {
     "id": "vivy_sfw_b9_03",
     "title": "Vivy · 雨中的伞与流浪狗",
@@ -30,18 +30,17 @@
       "doorway_light",
       "medium_shot"
     ],
-    "promptProse": "Vivy tilts her umbrella over the soaked dog beneath the park eaves, doorway light reaching the wet path.",
+    "promptProse": "Under the sheltering concrete eaves of a quiet park pavilion during an evening storm, Vivy kneels gently to angle her clear umbrella over a soaked, shivering stray dog huddled on the pavement. Golden doorway illumination from a nearby caretaker cottage washes across the wet park gravel, water puddles, and her compassionate, gentle android smile.",
     "promptTokens": [
-      "Vivy",
-      "umbrella",
-      "stray dog",
-      "crouching",
-      "rain",
-      "amusement park",
-      "medium shot",
-      "holding umbrella",
-      "gentle expression",
-      "doorway light"
+      "park pavilion concrete eaves",
+      "kneeling in rainstorm",
+      "angling umbrella over stray dog",
+      "shivering soaked puppy",
+      "cottage doorway illumination",
+      "wet park gravel",
+      "puddle reflections",
+      "compassionate gentle smile",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

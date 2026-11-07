@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_birdwatching",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2911,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:42:20.104Z",
   "data": {
     "id": "ray_arknights_birdwatching",
     "characterId": "ray_arknights",
@@ -27,15 +27,17 @@
       "daylight",
       "wide shot"
     ],
-    "promptProse": "Ray watches a flock of birds through binoculars on a grassy overlook.",
+    "promptProse": "Standing on a windswept grassy plateau overlooking vast golden savanna plains, Ray holds a pair of heavy-duty field binoculars to her eyes, tracking a flock of migrating raptors. Crisp morning sunlight sweeps across swaying wild grasses, acacia trees, and her sandbeast companion peeking from a canvas backpack, creating a breathtaking wildlife expedition.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "holding binoculars",
-      "birdwatching",
-      "flock of birds",
-      "grassland",
-      "daylight",
+      "windswept savanna plateau",
+      "holding field binoculars",
+      "tracking migrating birds",
+      "golden wild grasses",
+      "morning sunbeams",
+      "sandbeast in backpack",
+      "long floppy bunny ears",
+      "breathtaking landscape",
       "wide shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_record_player",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2899,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:35:59.983Z",
   "data": {
     "id": "hoolheyak_arknights_record_player",
     "characterId": "hoolheyak_arknights",
@@ -25,13 +25,18 @@
       "lamplight",
       "medium shot"
     ],
-    "promptProse": "Ho’olheyak listens beside a record player in a softly lit music room.",
+    "promptProse": "Curled gracefully in a velvet armchair beside a vintage brass-horned phonograph in a moody salon, Ho'olheyak taps her fingers in time with a crackling jazz melody spinning on vinyl. Muted amber wall sconces, stacked record sleeves on a low credenza, and dancing shadows create an atmosphere of sultry, sophisticated evening leisure.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "record player",
-      "music room",
-      "lamplight",
+      "moody salon",
+      "velvet armchair",
+      "vintage brass phonograph",
+      "spinning vinyl record",
+      "listening to jazz",
+      "fingers tapping rhythm",
+      "amber wall sconces",
+      "record sleeves",
+      "sultry sophisticated mood",
       "medium shot"
     ],
     "negativeTokens": [],

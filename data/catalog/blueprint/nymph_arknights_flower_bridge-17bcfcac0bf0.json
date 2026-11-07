@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_flower_bridge",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2888,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-04T04:17:10.952616500+00:00",
+  "updatedAt": "2026-11-07T04:39:18.784Z",
   "data": {
     "id": "nymph_arknights_flower_bridge",
     "characterId": "nymph_arknights",
@@ -26,15 +26,17 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Nymph bends to look at a flower beside a small garden bridge.",
+    "promptProse": "Leaning over the rustic wooden railing of an arched footbridge in a sun-drenched botanical park, Nymph peers down at vibrant water lilies and yellow irises blooming along the babbling creek. Dappled sunlight sparkles across the moving water ripples, while weeping willow branches and stone stepping stones frame her curious, youthful exploration.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "bending forward",
-      "looking at flower",
-      "garden bridge",
-      "flower bed",
-      "daylight",
+      "arched wooden footbridge",
+      "leaning over railing",
+      "blooming water lilies and irises",
+      "babbling creek ripples",
+      "dappled sunlight",
+      "weeping willow branches",
+      "stone stepping stones",
+      "curious youthful expression",
       "medium shot"
     ],
     "negativeTokens": [],
