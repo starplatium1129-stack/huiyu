@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_pamphlet_table",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2916,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:23:37.003933500+00:00",
+  "updatedAt": "2026-11-07T15:05:00.000Z",
   "data": {
     "id": "archetto_arknights_pamphlet_table",
     "characterId": "archetto_arknights",
@@ -18,31 +18,26 @@
     "lighting": "窗边日光",
     "camera": "中景，折页和桌面同框",
     "mood": "认真",
-    "sceneTags": [
-      "sitting",
-      "folding pamphlets",
-      "paper stack",
-      "lounge table",
-      "window light",
-      "medium shot"
-    ],
-    "promptProse": "Archetto organizes folded monastery pamphlets at a lounge table.",
-    "animaCaption": "",
+    "promptProse": "In a peaceful, sun-drenched ship lounge, Archetto meticulously arranges a neat stack of folded monastery pamphlets on a circular wooden table. Brilliant morning daylight pours through a large nearby window, casting soft shadows and highlighting the texture of the crisp, printed paper, while the warm, airy lounge background adds to the serene, industrious atmosphere.",
     "promptTokens": [
+      "lounge table",
       "sitting",
       "folding pamphlets",
       "paper stack",
-      "lounge table",
-      "window light",
+      "morning window light",
+      "crisp paper texture",
+      "sunlight and shadows",
+      "serene lounge atmosphere",
+      "meticulous expression",
       "medium shot"
     ],
-    "negativeTokens": [],
+    "animaCaption": "",
+    "characterId": "archetto_arknights",
     "recommendedSize": "1152x1536",
+    "negativeTokens": [],
     "adult": false,
-    "sampleRating": "All",
-    "coverageTags": [
-      "daily"
-    ],
-    "compositionIntent": "single"
+    "isNsfw": false,
+    "rating": "All",
+    "mature": false
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_meeting_notes",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2919,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T15:00:00.000Z",
   "data": {
     "id": "archetto_arknights_meeting_notes",
     "characterId": "archetto_arknights",
@@ -26,14 +26,19 @@
       "daylight",
       "medium close-up"
     ],
-    "promptProse": "Archetto writes notes on a proposal in a meeting room.",
+    "promptProse": "In a well-lit, professional meeting room, Archetto sits at a long polished table, focused on jotting down precise modifications on an open proposal document. Soft natural daylight floods the room, glinting off the metal pen in her hand and illuminating the crisp, stacked documents, tablet, and water pitcher on the table, creating a serene, highly professional work atmosphere.",
     "animaCaption": "",
     "promptTokens": [
       "sitting",
       "writing notes",
-      "papers",
-      "meeting table",
+      "open proposal document",
+      "long polished meeting table",
       "daylight",
+      "scattered documents",
+      "tablet device",
+      "water pitcher",
+      "professional work atmosphere",
+      "focused expression",
       "medium close-up"
     ],
     "negativeTokens": [],

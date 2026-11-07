@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_rooftop_chime",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2925,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T15:10:00.000Z",
   "data": {
     "id": "archetto_arknights_rooftop_chime",
     "characterId": "archetto_arknights",
@@ -28,16 +28,18 @@
       "soft light",
       "medium close-up"
     ],
-    "promptProse": "Archetto leans close at a rooftop railing and smiles toward the viewer under the night sky.",
+    "promptProse": "High on a breezy rooftop terrace under a vast, star-studded night sky, Archetto leans closely against the metal railing, offering a warm, inviting smile to the viewer. The distant, shimmering city lights create a beautiful bokeh effect in the background, while soft, ambient side-lighting gently contours her features, highlighting her intimate expression and the peaceful, nocturnal atmosphere of the terrace.",
     "animaCaption": "",
     "promptTokens": [
       "leaning on railing",
       "leaning toward viewer",
       "looking at viewer",
-      "gentle smile",
-      "rooftop",
-      "night sky",
-      "soft light",
+      "gentle inviting smile",
+      "rooftop terrace",
+      "vast star-studded night sky",
+      "distant city lights bokeh",
+      "soft ambient side-lighting",
+      "intimate atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],
