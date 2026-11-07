@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_theater_glance",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3023,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-07T04:27:53.535Z",
   "data": {
     "id": "entelechia_arknights_theater_glance",
     "characterId": "entelechia_arknights",
@@ -26,14 +26,19 @@
       "warm light",
       "medium close-up"
     ],
-    "promptProse": "Entelechia touches her collar and looks over her shoulder with a knowing smile.",
+    "promptProse": "In the opulent, velvet-lined grand foyer of an opera house after the final applause, Entelechia lightly touches the jewel at her collar, glancing back over her shoulder toward the viewer with a conspiratorial, bewitching smile. Enormous crystal chandeliers cast dazzling golden light over marble grand staircases, gilded railings, and the departing, murmuring crowd in the grand hall.",
     "animaCaption": "",
     "promptTokens": [
-      "touching collar",
-      "looking over shoulder",
-      "knowing smile",
-      "theater foyer",
-      "warm light",
+      "opera house grand foyer",
+      "touching jewel collar",
+      "looking back over shoulder",
+      "bewitching conspiratorial smile",
+      "crystal chandeliers",
+      "golden light",
+      "marble grand staircase",
+      "gilded railings",
+      "velvet drapery",
+      "evening glamour",
       "medium close-up"
     ],
     "negativeTokens": [],

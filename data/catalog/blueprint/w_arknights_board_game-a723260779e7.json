@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_board_game",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2937,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:22:41.841Z",
   "data": {
     "id": "w_arknights_board_game",
     "characterId": "w_arknights",
@@ -26,14 +26,19 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "W moves a piece on a board game at a lounge table.",
+    "promptProse": "Slouched comfortably in a worn leather armchair inside a dimly lit ship lounge, W lazily slides a carved game piece across a wooden strategy board on the table. Sunlight filters through metal industrial louvers, illuminating dust motes, scattered snack wrappers, and a tilted soda can, as she watches the viewer's reaction with playful, scheming amusement.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "board game",
+      "slouched in leather armchair",
+      "lounge table",
+      "strategy board game",
       "moving game piece",
-      "table",
-      "window light",
+      "playful scheming expression",
+      "industrial louvers",
+      "filtered sunlight",
+      "dust motes",
+      "snack wrappers",
+      "metal interior",
       "medium shot"
     ],
     "negativeTokens": [],

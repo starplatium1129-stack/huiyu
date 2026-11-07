@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_rooftop_plants",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2871,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:31:51.048Z",
   "data": {
     "id": "ines_arknights_rooftop_plants",
     "characterId": "ines_arknights",
@@ -27,15 +27,17 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Ines waters a potted mint plant in a small rooftop garden.",
+    "promptProse": "Perched on the edge of a breezy, sun-soaked industrial rooftop, Ines carefully tends to a collection of hearty potted plants arranged on a weathered metal grating. Soft, golden late-afternoon sunbeams illuminate the lush greenery, rustling urban rooftop ventilation shafts, and the vast, sprawling city view extending into the hazy, distant horizon.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "watering plants",
-      "watering can",
-      "potted mint",
-      "rooftop garden",
-      "daylight",
+      "industrial rooftop",
+      "tending to potted plants",
+      "weathered metal grating",
+      "golden afternoon sunbeams",
+      "lush greenery",
+      "rooftop ventilation shafts",
+      "vast city skyline view",
+      "breezy atmospheric day",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_garden_wheel",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3013,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:24:28.728Z",
   "data": {
     "id": "blemishine_arknights_garden_wheel",
     "characterId": "blemishine_arknights",
@@ -26,15 +26,18 @@
       "soft daylight",
       "medium shot"
     ],
-    "promptProse": "Blemishine checks the wheel of a garden cart.",
+    "promptProse": "Kneeling on the soft grass of a blossoming flower garden, Blemishine tightens the wheel axle of a rustic green wooden handcart with an open-ended wrench. Surrounding her are vibrant blooming roses, clay planting pots, and watering cans, all drenched in warm morning light filtering through overhead trellis vines.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "crouching",
-      "garden cart",
-      "toolbox",
-      "flower garden",
-      "soft daylight",
+      "kneeling on garden grass",
+      "repairing wooden handcart",
+      "holding wrench",
+      "blooming rose bushes",
+      "clay pots and watering cans",
+      "trellis vines",
+      "morning sunlight",
+      "lush garden scenery",
+      "industrious mood",
       "medium shot"
     ],
     "negativeTokens": [],

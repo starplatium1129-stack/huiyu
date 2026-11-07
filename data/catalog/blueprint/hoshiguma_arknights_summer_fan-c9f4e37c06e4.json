@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_summer_fan",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2990,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-07T04:21:24.678Z",
   "data": {
     "id": "hoshiguma_arknights_summer_fan",
     "characterId": "hoshiguma_arknights",
@@ -26,15 +26,18 @@
       "summer daylight",
       "medium shot"
     ],
-    "promptProse": "Hoshiguma rests on a shaded bench with a folding fan.",
+    "promptProse": "On a sweltering summer afternoon, Hoshiguma relaxes on a weathered wooden park bench tucked under the dense green shade of a camphor tree. Dappled sunlight filters through the fluttering leaves, dancing across her skin as she offers an ornate paper folding fan toward the viewer, with a sweating glass of iced citrus soda resting on the bench beside her.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding folding fan",
-      "bench",
-      "tree shade",
-      "summer daylight",
+      "sitting on park bench",
+      "holding ornate folding fan",
+      "offering fan",
+      "glass of iced soda",
+      "dense tree shade",
+      "dappled sunlight",
+      "fluttering leaves",
+      "sweltering summer daylight",
+      "relaxed expression",
       "medium shot"
     ],
     "negativeTokens": [],

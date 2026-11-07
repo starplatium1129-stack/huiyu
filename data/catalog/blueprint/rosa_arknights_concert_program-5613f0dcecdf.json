@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_concert_program",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2951,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-07T04:32:11.971Z",
   "data": {
     "id": "rosa_arknights_concert_program",
     "characterId": "rosa_arknights",
@@ -25,14 +25,17 @@
       "warm lighting",
       "medium shot"
     ],
-    "promptProse": "Rosa reads a concert program in a music hall foyer.",
+    "promptProse": "Standing in a refined, high-ceilinged theater foyer, Rosa holds a glossy concert program in her hands, her eyes tracing the schedule with refined interest. Gilded wall sconces cast a sophisticated, warm light across her formal attire, with marble columns, red velvet carpets, and the anticipation of the upcoming performance reflected in the grand hall's elegant architecture.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding program",
-      "music hall foyer",
-      "warm lighting",
+      "theater foyer",
+      "glossy concert program",
+      "reading intently",
+      "refined formal attire",
+      "gilded wall sconces",
+      "marble columns",
+      "red velvet carpets",
+      "sophisticated atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

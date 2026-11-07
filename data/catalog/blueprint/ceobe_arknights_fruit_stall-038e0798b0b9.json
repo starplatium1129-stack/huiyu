@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_fruit_stall",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3060,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:26:09.846Z",
   "data": {
     "id": "ceobe_arknights_fruit_stall",
     "characterId": "ceobe_arknights",
@@ -26,15 +26,18 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Ceobe chooses oranges at a market fruit stall.",
+    "promptProse": "In a vibrant open-air fruit market shaded by colorful striped awnings, Ceobe leans over a rustic wooden crate, happily cradling a plump, bright orange in both hands to smell its citrus zest. Woven baskets brim with glistening apples, grapes, and berries around her, while warm daylight filters through market canopies onto the bustling street scene.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding orange",
-      "fruit stall",
-      "basket",
-      "daylight",
+      "market fruit stall",
+      "wooden fruit crates",
+      "holding ripe orange",
+      "smelling fruit",
+      "woven baskets of fruit",
+      "colorful striped awnings",
+      "bright filtered daylight",
+      "busy market background",
+      "happy eager smile",
       "medium shot"
     ],
     "negativeTokens": [],

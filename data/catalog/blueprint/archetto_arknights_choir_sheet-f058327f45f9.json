@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_choir_sheet",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2922,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T14:30:00.000Z",
   "data": {
     "id": "archetto_arknights_choir_sheet",
     "characterId": "archetto_arknights",
@@ -26,14 +26,17 @@
       "warm light",
       "medium shot"
     ],
-    "promptProse": "Archetto sets sheet music on a music stand in a rehearsal room.",
+    "promptProse": "Inside the quiet rehearsal room, Archetto carefully sets a fresh page of sheet music onto a metallic music stand, pausing to ensure it is perfectly aligned. Warm, soft golden light from the ceiling fixtures glows across the rehearsal space, highlighting the dark wooden flooring, rows of organized chairs, and the quiet, focused anticipation of the upcoming choir session.",
     "animaCaption": "",
     "promptTokens": [
       "standing",
       "sheet music",
-      "music stand",
-      "rehearsal room",
-      "warm light",
+      "metallic music stand",
+      "rehearsal room interior",
+      "warm golden light",
+      "dark wooden floor",
+      "organized rehearsal space",
+      "focused anticipation",
       "medium shot"
     ],
     "negativeTokens": [],

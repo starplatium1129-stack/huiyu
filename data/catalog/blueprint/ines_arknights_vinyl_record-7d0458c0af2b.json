@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_vinyl_record",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2870,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:31:51.049Z",
   "data": {
     "id": "ines_arknights_vinyl_record",
     "characterId": "ines_arknights",
@@ -26,14 +26,17 @@
       "warm lamplight",
       "medium shot"
     ],
-    "promptProse": "Ines looks at a record sleeve beside a turntable in a music room.",
+    "promptProse": "In a dimly lit music nook filled with shelves of vinyl records and vintage stereo gear, Ines carefully places a needle on an spinning record player, listening intently to the music. The soft, rhythmic crackle of the vinyl, warm amber glow from a tube amplifier, and shelves overflowing with album art create an intimate, sound-rich environment.",
     "animaCaption": "",
     "promptTokens": [
-      "leaning forward",
-      "holding record sleeve",
-      "record player",
-      "music room",
-      "warm lamplight",
+      "music nook",
+      "vinyl record player",
+      "vintage stereo equipment",
+      "placing needle on record",
+      "tube amplifier amber glow",
+      "shelves of album art",
+      "rhythmic sound",
+      "intimate musical atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

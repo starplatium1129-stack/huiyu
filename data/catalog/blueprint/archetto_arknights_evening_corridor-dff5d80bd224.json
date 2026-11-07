@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_evening_corridor",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2924,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-07T14:40:00.000Z",
   "data": {
     "id": "archetto_arknights_evening_corridor",
     "characterId": "archetto_arknights",
@@ -27,15 +27,18 @@
       "dusk",
       "medium close-up"
     ],
-    "promptProse": "Archetto looks back and offers her hand to the viewer in a lamplit corridor.",
+    "promptProse": "In a quiet, atmospheric monastery corridor at dusk, Archetto turns to look back, extending a welcoming hand toward the viewer with a gentle, inviting smile. Warm, antique-style lamps mounted on the stone walls cast a soft, golden glow that contrasts beautifully with the cool, deep purple tones of the twilight sky visible through the side arches, emphasizing an intimate, peaceful walk.",
     "animaCaption": "",
     "promptTokens": [
       "looking back",
       "reaching toward viewer",
-      "smile",
+      "gentle smile",
       "monastery corridor",
-      "warm lamps",
-      "dusk",
+      "antique wall lamps",
+      "warm golden glow",
+      "cool twilight dusk",
+      "stone arches",
+      "intimate atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

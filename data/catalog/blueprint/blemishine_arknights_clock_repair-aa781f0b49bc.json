@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_clock_repair",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3006,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-07T04:24:28.727Z",
   "data": {
     "id": "blemishine_arknights_clock_repair",
     "characterId": "blemishine_arknights",
@@ -26,15 +26,18 @@
       "daylight",
       "medium close-up"
     ],
-    "promptProse": "Blemishine repairs an alarm clock with a small screwdriver.",
+    "promptProse": "At a cluttered wooden workbench strewn with miniature gears and brass springs, Blemishine leans in with intense focus, wielding a precision screwdriver inside an opened retro alarm clock. Sunlight cuts across the workshop, illuminating floating brass dust, blueprint sketches pinned to the wall, and glass jars of clockwork components.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding screwdriver",
-      "alarm clock",
-      "workbench",
-      "daylight",
+      "sitting at workbench",
+      "holding precision screwdriver",
+      "open mechanical alarm clock",
+      "gears and springs",
+      "cluttered workshop",
+      "pinned blueprints",
+      "glass jars of parts",
+      "directional sunlight",
+      "intense focused expression",
       "medium close-up"
     ],
     "negativeTokens": [],

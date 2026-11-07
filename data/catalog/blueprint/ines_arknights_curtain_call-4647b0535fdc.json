@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_curtain_call",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2874,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:31:51.047Z",
   "data": {
     "id": "ines_arknights_curtain_call",
     "characterId": "ines_arknights",
@@ -27,16 +27,18 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "Ines parts a curtain and reaches back toward the viewer in warm backstage light.",
+    "promptProse": "Backstage in the dramatic, shadow-filled theater wings, Ines peeks from behind heavy velvet stage curtains, watching the vibrant, energetic performance on stage. Beams of blue and white spotlight light spill into the gloom, casting sharp silhouettes of stage scenery, rigging equipment, and her own poised, observing figure.",
     "animaCaption": "",
     "promptTokens": [
-      "holding curtain",
-      "reaching toward viewer",
-      "looking back",
-      "theater backstage",
-      "stage light",
-      "night",
-      "medium close-up"
+      "theater backstage wings",
+      "peeking behind velvet curtain",
+      "watching performance",
+      "dramatic spotlight rays",
+      "sharp stage rigging silhouettes",
+      "gloom and shadows",
+      "poised observant figure",
+      "theatrical intensity",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

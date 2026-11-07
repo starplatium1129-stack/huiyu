@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_library_page",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2947,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:32:11.972Z",
   "data": {
     "id": "rosa_arknights_library_page",
     "characterId": "rosa_arknights",
@@ -27,16 +27,17 @@
       "soft light",
       "medium close-up"
     ],
-    "promptProse": "Rosa opens a book and checks a bookmark in the library.",
+    "promptProse": "Seated at an oversized oak library table surrounded by mountains of open reference books, Rosa turns a delicate, yellowed page of an ancient manuscript with utmost care. The room is filled with the scent of old paper, while warm, focused light from a desk lamp illuminates the intricate handwritten notes, ink-stained parchment, and her thoughtful, absorbed expression.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "open book",
-      "bookmark",
-      "library",
-      "bookshelves",
-      "soft light",
+      "oak library table",
+      "ancient manuscript",
+      "turning aged page",
+      "mountains of reference books",
+      "focused desk lamp light",
+      "ink-stained parchment",
+      "thoughtful absorbed expression",
+      "library atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

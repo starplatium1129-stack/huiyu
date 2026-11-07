@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_movie_tickets",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2936,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:22:41.842Z",
   "data": {
     "id": "w_arknights_movie_tickets",
     "characterId": "w_arknights",
@@ -26,14 +26,19 @@
       "warm sign light",
       "medium shot"
     ],
-    "promptProse": "W holds two movie tickets outside a cinema and looks back.",
+    "promptProse": "Outside the glowing entrance of a vintage cinema at dusk, W wiggles two paper movie tickets between her fingers, looking back over her shoulder with an impatient, impish smirk. Dazzling marquee signage in red and yellow casts bright highlights across her jacket, while movie posters and a bustling evening crowd add lively energy to the city street.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "holding tickets",
       "cinema entrance",
-      "evening",
-      "warm sign light",
+      "vintage marquee sign",
+      "holding movie tickets",
+      "looking back over shoulder",
+      "impish smirk",
+      "glowing neon lights",
+      "movie posters",
+      "bustling evening crowd",
+      "street reflections",
+      "dusk",
       "medium shot"
     ],
     "negativeTokens": [],

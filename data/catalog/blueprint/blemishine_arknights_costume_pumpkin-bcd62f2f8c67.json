@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_costume_pumpkin",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3008,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T04:41:33.226964100+00:00",
+  "updatedAt": "2026-11-07T04:24:28.728Z",
   "data": {
     "id": "blemishine_arknights_costume_pumpkin",
     "characterId": "blemishine_arknights",
@@ -26,15 +26,18 @@
       "warm light",
       "medium shot"
     ],
-    "promptProse": "Blemishine decorates a pumpkin lantern with paper stars.",
+    "promptProse": "Inside a lively community activity room decorated for autumn, Blemishine sits cross-legged beside a glowing carved pumpkin lantern, carefully affixing gold foil paper stars to its rind. Strings of autumn leaves and paper bunting hang overhead, bathed in warm festive lamplight that casts playful pumpkin-face shadows across the wooden floor.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "pumpkin lantern",
-      "paper stars",
-      "activity room",
-      "warm light",
+      "sitting cross-legged",
+      "carved pumpkin lantern",
+      "applying paper stars",
+      "autumn activity room",
+      "paper bunting and leaves",
+      "warm festive lighting",
+      "carved face shadows",
+      "wooden floorboards",
+      "playful creative mood",
       "medium shot"
     ],
     "negativeTokens": [],

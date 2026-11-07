@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_curtain_reveal",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2944,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:22:41.842Z",
   "data": {
     "id": "w_arknights_curtain_reveal",
     "characterId": "w_arknights",
@@ -28,16 +28,17 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "Wis’adel parts a curtain and beckons the viewer closer with a mischievous smile.",
+    "promptProse": "Peering out from behind a heavy dark velvet stage curtain, W crooks a gloved finger to beckon the viewer into the shadowed wings of the theater with a sly, conspiratorial smile. Beams of dramatic amber stage lights spill past the draped fabric, creating bold rim lighting along her silhouette and illuminating stage trusses and lighting rigs in the gloom.",
     "animaCaption": "",
     "promptTokens": [
-      "holding curtain",
-      "looking back",
-      "beckoning",
-      "mischievous smile",
-      "theater backstage",
-      "stage light",
-      "night",
+      "heavy velvet stage curtain",
+      "beckoning with finger",
+      "sly conspiratorial smile",
+      "theater backstage wings",
+      "spilling stage lights",
+      "dramatic rim lighting",
+      "stage trusses",
+      "shadows and haze",
       "medium close-up"
     ],
     "negativeTokens": [],

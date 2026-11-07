@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_picnic_basket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3058,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:26:09.847Z",
   "data": {
     "id": "ceobe_arknights_picnic_basket",
     "characterId": "ceobe_arknights",
@@ -27,16 +27,17 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Ceobe takes a sandwich from a picnic basket.",
+    "promptProse": "Sitting on a red-and-white checkered picnic blanket spread under the cool shade of an ancient oak tree, Ceobe happily holds up a thick, layered deli sandwich with fresh lettuce and cheese. An open wicker picnic hamper sits beside glass bottles of cold lemonade and fruit bowls, with bright sunbeams filtering through the leafy tree canopy.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding sandwich",
-      "picnic basket",
-      "picnic blanket",
-      "grass",
-      "daylight",
+      "sitting on checkered picnic blanket",
+      "holding big sandwich",
+      "wicker picnic hamper",
+      "bottles of lemonade",
+      "oak tree shade",
+      "sunbeams through leaves",
+      "hungry happy smile",
+      "green meadow background",
       "medium shot"
     ],
     "negativeTokens": [],

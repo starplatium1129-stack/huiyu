@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_dressing_room",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2873,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-07T04:31:51.047Z",
   "data": {
     "id": "ines_arknights_dressing_room",
     "characterId": "ines_arknights",
@@ -26,15 +26,18 @@
       "vanity lights",
       "medium close-up"
     ],
-    "promptProse": "Ines adjusts her collar and meets the viewer’s gaze through a vanity mirror.",
+    "promptProse": "Inside a chic backstage dressing room with glowing Hollywood marquee bulbs, Ines sits at a vanity table, meticulously checking her reflection while surrounded by piles of performance props, colorful makeup palettes, and silk garments. The atmosphere is bustling and filled with the scent of hairspray and excitement, reflected beautifully in the large vanity mirror.",
     "animaCaption": "",
     "promptTokens": [
-      "adjusting collar",
-      "looking at viewer through mirror",
-      "slight smile",
-      "dressing room",
-      "vanity lights",
-      "medium close-up"
+      "backstage dressing room",
+      "sitting at vanity",
+      "glowing marquee lightbulbs",
+      "checking reflection",
+      "makeup palettes and brushes",
+      "silk garments",
+      "bustling backstage atmosphere",
+      "mirror reflection",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

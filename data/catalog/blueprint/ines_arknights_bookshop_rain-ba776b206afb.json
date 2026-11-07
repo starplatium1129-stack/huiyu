@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_bookshop_rain",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2866,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T04:12:12.440020100+00:00",
+  "updatedAt": "2026-11-07T04:31:51.042Z",
   "data": {
     "id": "ines_arknights_bookshop_rain",
     "characterId": "ines_arknights",
@@ -27,15 +27,17 @@
       "soft daylight",
       "medium shot"
     ],
-    "promptProse": "Ines examines an old book beside a rain-streaked bookshop window.",
+    "promptProse": "Standing in the cozy, dimly lit aisle of an old-fashioned bookshop, Ines browses a shelf while rain taps rhythmically against the window. Warm, amber-hued reading lamps highlight the textures of aged leather-bound spines and dusty oak shelves, while the blurred rainy street outside contrasts with the serene, scholarly interior.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "open book",
-      "bookshop",
-      "bookshelves",
-      "rainy window",
-      "soft daylight",
+      "old bookshop",
+      "browsing bookshelves",
+      "rain on window",
+      "amber reading lamps",
+      "leather-bound books",
+      "dusty oak shelves",
+      "serene scholarly atmosphere",
+      "quiet rain",
       "medium shot"
     ],
     "negativeTokens": [],

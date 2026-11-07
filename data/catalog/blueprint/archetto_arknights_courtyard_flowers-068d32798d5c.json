@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "archetto_arknights_courtyard_flowers",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2920,
   "createdAt": "2026-11-04T04:23:37.003933500+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T14:35:00.000Z",
   "data": {
     "id": "archetto_arknights_courtyard_flowers",
     "characterId": "archetto_arknights",
@@ -25,13 +25,18 @@
       "sunlight",
       "medium shot"
     ],
-    "promptProse": "Archetto carries a potted flower into a sunny monastery courtyard.",
+    "promptProse": "In the serene, vibrant monastery courtyard, Archetto carefully carries a blooming potted plant toward a patch of warm sunlight. The cobblestone ground and ancient stone arches create a beautiful, textured environment, while the brilliant morning sunlight casts crisp shadows and makes the lush green leaves of the plant pop with color against the backdrop of a peaceful, garden-filled cloister.",
     "animaCaption": "",
     "promptTokens": [
       "standing",
       "holding potted plant",
       "monastery courtyard",
       "sunlight",
+      "cobblestone path",
+      "ancient stone arches",
+      "lush green leaves",
+      "crisp shadows",
+      "peaceful garden atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

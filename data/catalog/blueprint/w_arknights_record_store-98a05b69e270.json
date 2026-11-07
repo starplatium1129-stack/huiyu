@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_record_store",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2940,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:22:41.843Z",
   "data": {
     "id": "w_arknights_record_store",
     "characterId": "w_arknights",
@@ -26,14 +26,17 @@
       "soft light",
       "medium shot"
     ],
-    "promptProse": "W examines a record sleeve in a music shop.",
+    "promptProse": "Browsing through wooden bins in a vintage vinyl record shop, W slides out a bold, colorful album sleeve, inspecting the psychedelic tracklist under warm Edison bulbs. Rows of vinyl records, retro band posters plastered on brick walls, and turntable display listening stations craft a cozy, counter-culture sanctuary around her.",
     "animaCaption": "",
     "promptTokens": [
-      "standing",
-      "holding record sleeve",
-      "record store",
-      "shelves",
-      "soft light",
+      "vinyl record shop",
+      "holding album sleeve",
+      "browsing wooden record bins",
+      "psychedelic album art",
+      "warm Edison bulb lighting",
+      "retro posters on brick wall",
+      "turntables and headphones",
+      "music store atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

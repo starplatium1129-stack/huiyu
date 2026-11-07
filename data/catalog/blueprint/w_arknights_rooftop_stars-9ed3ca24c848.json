@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_rooftop_stars",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2942,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-04T05:30:31.608169600+00:00",
+  "updatedAt": "2026-11-07T04:22:41.843Z",
   "data": {
     "id": "w_arknights_rooftop_stars",
     "characterId": "w_arknights",
@@ -26,14 +26,18 @@
       "night",
       "wide shot"
     ],
-    "promptProse": "W sits on a rooftop bench beneath the night sky.",
+    "promptProse": "Lounging back against the weathered concrete ledge of an open rooftop, W tilts her head upward toward a brilliant canopy of twinkling stars and a glowing silver moon. The sprawling night skyline of the city glimmers with distant tower beacons and moving headlights below, while a gentle night breeze ruffles her white hair against the dark velvet sky.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "rooftop bench",
-      "starry sky",
-      "city lights",
-      "night",
+      "open rooftop ledge",
+      "lounging back",
+      "looking up at starry sky",
+      "glowing silver moon",
+      "city night skyline",
+      "distant city lights",
+      "cool night breeze",
+      "weathered concrete",
+      "calm contemplative mood",
       "wide shot"
     ],
     "negativeTokens": [],

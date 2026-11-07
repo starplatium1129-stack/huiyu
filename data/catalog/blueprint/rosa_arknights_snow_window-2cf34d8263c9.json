@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_snow_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2953,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:32:11.973Z",
   "data": {
     "id": "rosa_arknights_snow_window",
     "characterId": "rosa_arknights",
@@ -26,15 +26,15 @@
       "soft daylight",
       "medium shot"
     ],
-    "promptProse": "Rosa watches falling snow through a lounge window with a warm drink.",
+    "promptProse": "Sitting beside a frost-patterned window on a cold winter evening, Rosa gazes out at the swirling, heavy snowfall blanketing the city below. The warm orange light from the room reflects faintly against the icy pane, while she holds a cozy, steaming cup of herbal tea, watching the silent, majestic winter storm with a serene and calm detachment.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding mug",
-      "window",
-      "falling snow",
-      "soft daylight",
+      "frost-patterned window",
+      "heavy swirling snowfall",
+      "steaming herbal tea",
+      "warm interior glow",
+      "serene calm detachment",
+      "cold winter evening atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

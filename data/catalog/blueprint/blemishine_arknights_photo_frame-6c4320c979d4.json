@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_photo_frame",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3014,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:24:28.729Z",
   "data": {
     "id": "blemishine_arknights_photo_frame",
     "characterId": "blemishine_arknights",
@@ -26,15 +26,18 @@
       "warm lamplight",
       "medium close-up"
     ],
-    "promptProse": "Blemishine places a group photo in a picture frame.",
+    "promptProse": "Seated at a polished side table in a warm family living room, Blemishine smiles tenderly as she fastens the backing of an engraved wooden picture frame holding a cherished family portrait. Soft ambient lamp glow reflects off framed photographs on the wall behind her, illuminating cozy knit blankets, a sleeping house cat on the sofa, and homey evening tranquility.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding picture frame",
-      "photograph",
-      "living room",
-      "warm lamplight",
+      "sitting at side table",
+      "holding wooden picture frame",
+      "cherished family photograph",
+      "tender gentle smile",
+      "living room interior",
+      "soft ambient lamp light",
+      "knit blankets",
+      "sleeping cat on sofa",
+      "homey tranquility",
       "medium close-up"
     ],
     "negativeTokens": [],

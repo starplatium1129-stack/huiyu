@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_train_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3022,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:37:08.161511700+00:00",
+  "updatedAt": "2026-11-07T04:27:53.535Z",
   "data": {
     "id": "entelechia_arknights_train_window",
     "characterId": "entelechia_arknights",
@@ -25,14 +25,18 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Entelechia watches the scenery from a train window seat.",
+    "promptProse": "Resting comfortably in the plush velvet seat of a vintage passenger train compartment, Entelechia sets aside a glossy literature magazine to gaze out the wide picture window. Rolling emerald hills, distant terracotta rooftops, and a towering clocktower sweep past under bright afternoon sunlight, casting kinetic, rhythmic shadows across the mahogany compartment walls.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "sitting",
-      "train window",
-      "magazine",
-      "daylight",
+      "vintage train compartment",
+      "plush velvet seat",
+      "wide picture window",
+      "glossy magazine on table",
+      "rolling emerald hills",
+      "terracotta rooftops and clocktower",
+      "afternoon sunlight",
+      "rhythmic shadows",
+      "contemplative travel mood",
       "medium shot"
     ],
     "negativeTokens": [],

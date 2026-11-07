@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_train_window",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2868,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-04T05:26:35.927073100+00:00",
+  "updatedAt": "2026-11-07T04:31:51.048Z",
   "data": {
     "id": "ines_arknights_train_window",
     "characterId": "ines_arknights",
@@ -26,14 +26,17 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Ines sits by a train window watching fields pass outside.",
+    "promptProse": "Sitting in a sleek, modern train carriage, Ines watches the blurred, high-speed landscape of distant mountains and flickering neon city signs pass outside the dark train window. The cool, muted interior cabin lighting contrasts with the vibrant, rushing light streaks of the passing outside world, reflected on the glass surface beside her.",
     "animaCaption": "",
     "promptTokens": [
-      "sitting",
-      "train interior",
-      "looking out window",
-      "fields",
-      "daylight",
+      "modern train carriage",
+      "sitting by window",
+      "rushing landscape outside",
+      "flickering neon signs",
+      "cool cabin lighting",
+      "vibrant light streaks",
+      "glass reflection",
+      "contemplative travel mood",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_museum_frame",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2949,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:34:11.848069100+00:00",
+  "updatedAt": "2026-11-07T04:32:11.972Z",
   "data": {
     "id": "rosa_arknights_museum_frame",
     "characterId": "rosa_arknights",
@@ -26,15 +26,16 @@
       "soft indoor light",
       "medium shot"
     ],
-    "promptProse": "Rosa studies a framed painting in a quiet gallery.",
+    "promptProse": "Standing in the hushed, cavernous hall of a history museum, Rosa thoughtfully examines a large, ornate golden-gilded frame containing a faded, historical painting on the wall. Dramatic gallery spotlights cast sharp shadows, highlighting the intricate woodwork of the frame, the cracks in the oil painting, and the serene, reverent posture she maintains in the dignified museum silence.",
     "animaCaption": "",
     "promptTokens": [
-      "general",
-      "standing",
-      "looking at painting",
-      "art gallery",
-      "framed picture",
-      "soft indoor light",
+      "history museum hall",
+      "examining gilded painting frame",
+      "dramatic gallery spotlights",
+      "sharp shadows",
+      "oil painting details",
+      "serene reverent posture",
+      "dignified museum silence",
       "medium shot"
     ],
     "negativeTokens": [],
