@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_parcel_ribbon",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3076,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-06T14:56:43.023Z",
   "data": {
     "id": "angelina_arknights_parcel_ribbon",
     "characterId": "angelina_arknights",
@@ -26,15 +26,18 @@
       "bright light",
       "medium shot"
     ],
-    "promptProse": "Angelina ties string around a parcel in a mail room.",
-    "animaCaption": "",
+    "promptProse": "At a busy courier sorting station, Angelina secures a thick parcel wrapped in heavy kraft paper with sturdy cross-tied hemp twine. Beside her work counter sit a mechanical brass scale, postage ink stamps, and neatly organized stacks of delivery manifests.",
+    "animaCaption": "Knotted hemp twine pulled taut around the parcel, she affixes a priority destination stamp with swift, practiced efficiency.",
     "promptTokens": [
-      "general",
-      "standing",
-      "tying parcel",
-      "paper package",
+      "standing at sorting counter",
+      "tying package",
+      "postal parcel",
+      "kraft paper package",
+      "hemp twine",
+      "postage scale",
+      "rubber stamps",
       "mail room",
-      "bright light",
+      "bright indoor lighting",
       "medium shot"
     ],
     "negativeTokens": [],

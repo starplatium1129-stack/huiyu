@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_music_sheet",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2970,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.174Z",
   "data": {
     "id": "wakaba_mutsumi_arknights_music_sheet",
     "characterId": "wakaba_mutsumi_arknights",
@@ -27,15 +27,16 @@
       "window light",
       "medium close-up"
     ],
-    "promptProse": "Mutsumi marks a music score with a pencil in a rehearsal room.",
-    "animaCaption": "",
+    "promptProse": "Mutsumi sits quietly before a black metal music stand, using a wooden pencil to add subtle chord notations across a sheet of guitar tablature. Eraser shavings scatter on the tray, while the dark silhouette of her guitar rests securely on its floor stand beside her.",
+    "animaCaption": "Pencil poised over the musical bar, she lightly marks a rhythmic pause, staring thoughtfully at the handwritten staves.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "writing on sheet music",
-      "pencil",
-      "music stand",
-      "rehearsal room",
+      "sitting before music stand",
+      "annotating sheet music",
+      "pencil in hand",
+      "eraser shavings",
+      "manuscript score",
+      "guitar on stand",
+      "rehearsal studio",
       "window light",
       "medium close-up"
     ],

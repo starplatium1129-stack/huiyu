@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_umbrella_share",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3114,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.146Z",
   "data": {
     "id": "swire_arknights_umbrella_share",
     "characterId": "swire_arknights",
@@ -28,16 +28,17 @@
       "neon reflections",
       "medium close-up"
     ],
-    "promptProse": "Swire holds an umbrella and reaches back toward the viewer with a playful smile.",
-    "animaCaption": "",
+    "promptProse": "Under a steady Lungmen drizzle, Swire holds a wide canopy umbrella and looks back over her shoulder, extending an impatient yet caring hand to pull the viewer into the dry space. Vivid neon reflections streak across the rain-slicked asphalt around them.",
+    "animaCaption": "Tipping the umbrella over the viewer, she tugs their sleeve with a feigned scowl that quickly gives way to a fond, playful smile.",
     "promptTokens": [
-      "holding umbrella",
-      "reaching toward viewer",
-      "looking back",
-      "playful smile",
+      "holding black umbrella",
+      "looking over shoulder",
+      "reaching hand to viewer",
+      "playful pout",
       "rain",
-      "city street",
-      "neon reflections",
+      "wet city street",
+      "neon reflections in puddles",
+      "night",
       "medium close-up"
     ],
     "negativeTokens": [],

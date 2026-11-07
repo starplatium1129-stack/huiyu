@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_flower_market",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3107,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T04:49:19.360555+00:00",
+  "updatedAt": "2026-11-06T14:56:43.138Z",
   "data": {
     "id": "swire_arknights_flower_market",
     "characterId": "swire_arknights",
@@ -25,14 +25,18 @@
       "warm festive light",
       "medium shot"
     ],
-    "promptProse": "Swire chooses festive flowers at a market stall.",
-    "animaCaption": "",
+    "promptProse": "Navigating the vibrant corridor of a festive flower market, Swire holds an elegant budding peach blossom branch against her shoulder. Rows of potted orchids, miniature citrus trees, and fluttering crimson banners glow warmly under strings of market lanterns.",
+    "animaCaption": "Holding the flowering peach branch upright, she inspects the tightness of the pink buds with practiced, festive enthusiasm.",
     "promptTokens": [
-      "general",
-      "standing",
+      "standing at flower market",
       "holding flowering branch",
-      "flower market",
-      "warm festive light",
+      "peach blossoms",
+      "potted orchids",
+      "festive red banners",
+      "hanging lanterns",
+      "crowded flower stalls",
+      "holiday market",
+      "warm lighting",
       "medium shot"
     ],
     "negativeTokens": [],

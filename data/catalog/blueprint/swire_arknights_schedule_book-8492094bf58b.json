@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_schedule_book",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3108,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.142Z",
   "data": {
     "id": "swire_arknights_schedule_book",
     "characterId": "swire_arknights",
@@ -26,15 +26,17 @@
       "window light",
       "medium close-up"
     ],
-    "promptProse": "Swire checks an appointment book at her desk.",
-    "animaCaption": "",
+    "promptProse": "Seated at a polished mahogany executive desk overlooking Lungmen's towering cityscape, Swire reviews appointments in an embossed leather-bound planner using a solid gold fountain pen. A crystal paperweight and leather blotter gleam under warm afternoon window light.",
+    "animaCaption": "With a decisive flick of her gold pen, she confirms an evening schedule entry, looking up from her leather planner with sharp confidence.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "appointment book",
-      "pen",
-      "office desk",
-      "window light",
+      "sitting at executive desk",
+      "opening leather planner",
+      "gold fountain pen",
+      "crystal paperweight",
+      "mahogany desk",
+      "high-rise office window",
+      "city skyline",
+      "warm afternoon sunlight",
       "medium close-up"
     ],
     "negativeTokens": [],

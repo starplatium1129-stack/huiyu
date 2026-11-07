@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_garden_photo",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3085,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.021Z",
   "data": {
     "id": "angelina_arknights_garden_photo",
     "characterId": "angelina_arknights",
@@ -25,14 +25,18 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Angelina holds a camera in a flower garden.",
-    "animaCaption": "",
+    "promptProse": "In a lush botanical garden framed by blooming rose trellises, Angelina raises a retro instant camera to her eye with an excited, bright smile. Terraced flowerbeds, stone garden balustrades, and vivid morning sunshine surround her cheerful pose.",
+    "animaCaption": "Peering through the camera viewfinder with a bright wink, she prepares to click the shutter for a vibrant garden snapshot.",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding camera",
-      "flower garden",
-      "daylight",
+      "standing in botanical garden",
+      "holding instant camera",
+      "aiming camera",
+      "blooming flowerbeds",
+      "rose bushes",
+      "stone balustrade",
+      "park pavilion",
+      "sunny daylight",
+      "cheerful expression",
       "medium shot"
     ],
     "negativeTokens": [],

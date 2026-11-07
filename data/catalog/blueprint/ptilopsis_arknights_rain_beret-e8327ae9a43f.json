@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_rain_beret",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3054,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:54:18.368015200+00:00",
+  "updatedAt": "2026-11-06T14:56:43.098Z",
   "data": {
     "id": "ptilopsis_arknights_rain_beret",
     "characterId": "ptilopsis_arknights",
@@ -26,14 +26,18 @@
       "streetlight reflections",
       "medium close-up"
     ],
-    "promptProse": "Ptilopsis holds her beret and offers her hand to the viewer on a wet street.",
-    "animaCaption": "",
+    "promptProse": "On a freshly washed city pavement glistening after a rainstorm, Ptilopsis adjusts her beret with one hand while extending her other hand toward the viewer. Wet streetlamps cast long golden reflections across the asphalt beside her neatly folded umbrella.",
+    "animaCaption": "Adjusting her beret against the damp breeze, she turns and extends a gloved hand, suggesting a safe, synchronized walking pace.",
     "promptTokens": [
-      "holding beret",
+      "standing on wet sidewalk",
+      "adjusting beret",
+      "reaching hand toward viewer",
       "looking back",
-      "reaching toward viewer",
-      "wet street",
+      "closed umbrella",
+      "rain puddles",
+      "wet asphalt",
       "streetlight reflections",
+      "evening light",
       "medium close-up"
     ],
     "negativeTokens": [],

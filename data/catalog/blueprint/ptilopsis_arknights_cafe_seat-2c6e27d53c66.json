@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_cafe_seat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3053,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-06T14:56:43.091Z",
   "data": {
     "id": "ptilopsis_arknights_cafe_seat",
     "characterId": "ptilopsis_arknights",
@@ -28,16 +28,17 @@
       "warm light",
       "medium close-up"
     ],
-    "promptProse": "Ptilopsis rests her chin on her hand and gives the viewer a small smile across a café table.",
-    "animaCaption": "",
+    "promptProse": "Sitting in a cozy wooden cafe booth, Ptilopsis rests her chin in one hand while gazing directly at the viewer across two ceramic latte mugs. Her laboratory lanyard lies neatly folded beside a saucer as warm pendant lamps illuminate her subtly softened gaze.",
+    "animaCaption": "Resting her chin on her hand, she meets the viewer's gaze with a rare, quiet smile, officially designating the scheduled break interval.",
     "promptTokens": [
-      "sitting",
+      "sitting at cafe table",
       "chin on hand",
       "looking at viewer",
-      "slight smile",
-      "coffee cup",
-      "cafe",
-      "warm light",
+      "faint gentle smile",
+      "two coffee mugs",
+      "ID card on lanyard",
+      "wooden cafe booth",
+      "warm lighting",
       "medium close-up"
     ],
     "negativeTokens": [],

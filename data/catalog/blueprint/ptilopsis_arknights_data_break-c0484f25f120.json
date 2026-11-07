@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_data_break",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3046,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T04:44:31.169195600+00:00",
+  "updatedAt": "2026-11-06T14:56:43.093Z",
   "data": {
     "id": "ptilopsis_arknights_data_break",
     "characterId": "ptilopsis_arknights",
@@ -25,14 +25,17 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Ptilopsis closes a folder at her desk.",
-    "animaCaption": "",
+    "promptProse": "At a sleek laboratory terminal, Ptilopsis snaps a bulky research folder shut as on-screen diagnostic charts settle into standby mode. A desktop organizer holding stylus pens and data chips gleams beside her keyboard in the fading blue twilight.",
+    "animaCaption": "With the final data batch logged, she firmly closes the binder and exhales quietly, concluding her analytical cycle for the day.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "closing folder",
-      "desk",
-      "window light",
+      "sitting at office desk",
+      "closing project folder",
+      "glowing computer terminal",
+      "data charts",
+      "desktop organizer",
+      "Rhine Lab office",
+      "twilight window",
+      "cool and warm lighting",
       "medium shot"
     ],
     "negativeTokens": [],

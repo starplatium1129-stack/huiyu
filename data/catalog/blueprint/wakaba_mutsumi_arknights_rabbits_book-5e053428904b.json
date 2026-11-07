@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_rabbits_book",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2969,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T04:36:35.463404+00:00",
+  "updatedAt": "2026-11-06T14:56:43.177Z",
   "data": {
     "id": "wakaba_mutsumi_arknights_rabbits_book",
     "characterId": "wakaba_mutsumi_arknights",
@@ -27,16 +27,17 @@
       "soft light",
       "medium close-up"
     ],
-    "promptProse": "Mutsumi reads an illustrated book about rabbits in a library.",
-    "animaCaption": "",
+    "promptProse": "In a quiet alcove of the library, Mutsumi sits absorbed in an oversized illustrated storybook depicting forest rabbits. Soft ambient light from tall library windows illuminates the detailed watercolor fur textures across the open pages.",
+    "animaCaption": "Her eyes linger on a painted rabbit nibbling clover, turning the heavyweight page with delicate, silent movements.",
     "promptTokens": [
-      "general",
-      "sitting",
+      "sitting at library desk",
       "reading picture book",
-      "rabbit illustration",
-      "library",
-      "bookshelves",
-      "soft light",
+      "open illustrated book",
+      "rabbit drawings",
+      "library bookshelves",
+      "oak desk",
+      "soft lighting",
+      "quiet atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

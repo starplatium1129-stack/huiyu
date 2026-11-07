@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_festival_fan",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3115,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.136Z",
   "data": {
     "id": "swire_arknights_festival_fan",
     "characterId": "swire_arknights",
@@ -29,17 +29,18 @@
       "warm light",
       "medium close-up"
     ],
-    "promptProse": "Swire leans forward behind a folding fan and raises an eyebrow at the viewer.",
-    "animaCaption": "",
+    "promptProse": "In a luxurious banquet ballroom, Swire leans forward across a linen-clad table, playfully concealing her smile behind a painted silk folding fan. Her sharp, calculating golden eyes and raised brow gaze intently at the viewer beneath glittering crystal chandeliers.",
+    "animaCaption": "Peeking over the edge of her painted silk fan, she arches an eyebrow at the viewer, challenging them to guess her next move.",
     "promptTokens": [
-      "holding folding fan",
-      "fan near face",
+      "holding silk folding fan",
+      "fan partially covering face",
       "leaning forward",
+      "arched eyebrow",
       "looking at viewer",
-      "raised eyebrow",
       "playful smile",
       "banquet hall",
-      "warm light",
+      "crystal chandelier",
+      "warm festive lighting",
       "medium close-up"
     ],
     "negativeTokens": [],

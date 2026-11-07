@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_window_lamp",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3055,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-06T14:56:43.101Z",
   "data": {
     "id": "ptilopsis_arknights_window_lamp",
     "characterId": "ptilopsis_arknights",
@@ -28,16 +28,18 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "Ptilopsis closes a book and leans toward the viewer with a quiet smile by lamplight.",
-    "animaCaption": "",
+    "promptProse": "In a quiet study lounge after hours, Ptilopsis closes her leather research log and leans forward under the warm glow of an adjustable desk lamp. The dark window behind her reflects the softly lit room and distant city lights as she addresses the viewer.",
+    "animaCaption": "Closing her binder with a muted snap, she leans slightly forward in the lamplight, delivering a tranquil goodnight message.",
     "promptTokens": [
-      "sitting",
-      "closed book",
+      "sitting at desk",
+      "closed leather binder",
       "leaning toward viewer",
       "looking at viewer",
-      "slight smile",
-      "warm lamplight",
-      "night",
+      "quiet smile",
+      "warm desk lamp",
+      "night window",
+      "city reflection",
+      "intimate night atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

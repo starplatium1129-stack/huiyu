@@ -42,7 +42,7 @@ All six screenshots were supplied by the author and retain their original 3840×
 | Model preparation | Choose the AI directory, models and runtimes in the control room; download and verification begin on explicit preparation |
 | Artwork and recipes | Collections, search, favorites, recipe reuse, scene and blueprint editing |
 
-MiaoMiao 2.9B Beta 1.1 has been checked with one local SFW render using TeaCache 0.08. It currently uses the path without character LoRAs. New SD / WAI generation is retired; old artwork, task queries and original recipe facts remain available. See the [model and environment guide](docs/guides/setup-and-models.md) for weights, hardware and capability boundaries.
+New SD / WAI generation is retired; old artwork and task queries remain available. See the [model and environment guide](docs/guides/setup-and-models.md) for details on weights, hardware and setup.
 
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> Character room and desktop companion
 

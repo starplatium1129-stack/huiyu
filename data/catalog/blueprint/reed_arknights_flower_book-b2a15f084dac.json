@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_flower_book",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3089,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-05T17:31:59.377Z",
+  "updatedAt": "2026-11-06T14:56:43.105Z",
   "data": {
     "id": "reed_arknights_flower_book",
     "characterId": "reed_arknights",
@@ -26,15 +26,18 @@
       "soft light",
       "medium close-up"
     ],
-    "promptProse": "Reed reads a botanical book in a library.",
-    "animaCaption": "",
+    "promptProse": "Reed sits quietly at an oak library table, carefully studying an open botanical encyclopedia filled with delicate watercolor depictions of marsh flora. A dried lavender blossom marks the adjacent page beside a brass reading lamp that casts gentle amber light across the paper.",
+    "animaCaption": "Her fingertip follows the painted contours of a marshland wildflower in the open herbarium, absorbed in the quiet calm of the library.",
     "promptTokens": [
-      "general",
-      "sitting",
+      "sitting at wooden desk",
       "open botanical book",
-      "flower illustration",
+      "watercolor flower illustration",
+      "pressed flower bookmark",
+      "brass reading lamp",
       "library",
-      "soft light",
+      "bookshelves",
+      "warm soft lighting",
+      "quiet atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_postcard_arrival",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3079,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.026Z",
   "data": {
     "id": "angelina_arknights_postcard_arrival",
     "characterId": "angelina_arknights",
@@ -26,15 +26,16 @@
       "soft light",
       "medium shot"
     ],
-    "promptProse": "Angelina chooses a city postcard at a stationery shop.",
-    "animaCaption": "",
+    "promptProse": "Inside a charming stationery boutique, Angelina inspects a scenic watercolor postcard selected from a rotating wire rack. Shelves of colored inks, wax seals, and textured letter paper line the background beneath cozy incandescent ceiling lamps.",
+    "animaCaption": "Spinning the wire postcard carousel with a light flick of her fingers, she selects a vibrant city view to send to her friends.",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding postcard",
-      "postcard rack",
-      "stationery shop",
-      "soft light",
+      "standing in stationery shop",
+      "spinning postcard rack",
+      "holding scenic postcard",
+      "postcard display",
+      "stationery shelves",
+      "vintage ink bottles",
+      "warm indoor lighting",
       "medium shot"
     ],
     "negativeTokens": [],

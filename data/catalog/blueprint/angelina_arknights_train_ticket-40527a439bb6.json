@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_train_ticket",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3080,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.031Z",
   "data": {
     "id": "angelina_arknights_train_ticket",
     "characterId": "angelina_arknights",
@@ -26,15 +26,18 @@
       "daylight",
       "medium close-up"
     ],
-    "promptProse": "Angelina puts a train ticket inside a notebook.",
-    "animaCaption": "",
+    "promptProse": "Seated on a polished wooden bench in a bustling railway concourse, Angelina tucks a newly stamped train ticket between the pages of her travel notebook. A canvas weekend bag rests by her boots as morning sunbeams stream through the station's high vaulted windows.",
+    "animaCaption": "She slips the train ticket securely between the notebook pages, smoothing the paper with an eager smile for the journey ahead.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "train ticket",
+      "sitting on station bench",
+      "inserting train ticket",
+      "travel journal",
       "notebook",
-      "station bench",
-      "daylight",
+      "fountain pen",
+      "duffel bag",
+      "train station concourse",
+      "arched windows",
+      "morning daylight",
       "medium close-up"
     ],
     "negativeTokens": [],

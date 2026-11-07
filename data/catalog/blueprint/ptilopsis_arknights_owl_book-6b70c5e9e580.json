@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_owl_book",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3048,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-05T17:31:59.375Z",
+  "updatedAt": "2026-11-06T14:56:43.096Z",
   "data": {
     "id": "ptilopsis_arknights_owl_book",
     "characterId": "ptilopsis_arknights",
@@ -26,15 +26,17 @@
       "soft light",
       "medium close-up"
     ],
-    "promptProse": "Ptilopsis reads an owl encyclopedia in a library.",
-    "animaCaption": "",
+    "promptProse": "Ptilopsis sits at a polished oak library desk, analytically comparing feather distribution diagrams in an open hardcover ornithology volume. A green banker's lamp casts focused light across her grid-lined notebook, mechanical pencil, and the quiet rows of book stacks.",
+    "animaCaption": "Her finger rests beneath a technical diagram of an owl's wing feather, quietly cross-referencing acoustic dampening structures.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "open bird book",
-      "owl illustration",
-      "library",
-      "soft light",
+      "sitting at oak table",
+      "open ornithology book",
+      "owl anatomy illustration",
+      "technical notebook",
+      "ballpoint pen",
+      "green banker lamp",
+      "library bookshelves",
+      "soft focused lighting",
       "medium close-up"
     ],
     "negativeTokens": [],

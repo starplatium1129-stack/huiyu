@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_route_note",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3077,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.030Z",
   "data": {
     "id": "angelina_arknights_route_note",
     "characterId": "angelina_arknights",
@@ -26,15 +26,17 @@
       "morning light",
       "medium shot"
     ],
-    "promptProse": "Angelina checks a route map on a street bench.",
-    "animaCaption": "",
+    "promptProse": "Angelina sits on a sun-dappled park bench, studying a folding delivery route map marked with vibrant sticky note tabs. Her scuffed leather courier satchel and a stainless steel thermos flask rest beside her as crisp morning light filters through the trees.",
+    "animaCaption": "Tracing a delivery loop with her ballpoint pen on the folding map, she takes a quick sip from her thermos, energized for the morning route.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding map",
-      "sticky notes",
-      "street bench",
-      "morning light",
+      "sitting on park bench",
+      "holding paper map",
+      "delivery route map",
+      "colorful sticky notes",
+      "leather messenger bag",
+      "thermos bottle",
+      "park trees",
+      "morning sunlight",
       "medium shot"
     ],
     "negativeTokens": [],

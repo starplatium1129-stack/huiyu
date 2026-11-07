@@ -1,12 +1,10 @@
 # 桌面端部署与同步指南
 
-统一入口：**`deploy-desktop.bat`**（位于项目根目录）。  
-日常开发同步默认采用 `desktop-local` 快速档位生成无压缩升级包；正式发行保持原 release 配置与完整 LZMA 包。
-本机快速升级包按 SHA256 复用安装目录内未变化的资源、Rust 网关和原生 DLL，只携带变化或缺失的文件及桌面宿主；安装前逐项复核复用文件，并保留完整卸载清单。源码、SDK、产物绑定和安装校验继续保留；该增量包只适用于它核对过的安装基线，正式发行包不受影响。
-安装包记录实际随包文件的路径、大小和 SHA256。升级或资源同步完成后，只有旧清单中存在、新清单中已移除且字节仍与旧包一致的应用文件会被清理；用户修改、未知文件、链接及个人运行目录保留。清理器还内嵌已核验的 1.9.2、2.0.0 旧包文件身份，使没有安装清单的老版本也能在独立安装新版后自动清理。清理失败会提示并保留旧清单，供下次重试。
-桌面暂存有有效 catalog 快照时省略旧 `scenes/`、`popular/`、`blueprints/` 导入分片，以及 catalog 动态接口对应的静态预压副本；各本地分片目录只携带 JSON 原件。原始聚合文件仍供原生维护和远程发布读取，参考发布校验文件、其他静态接口的预压副本和两种前端入口继续保留。图标母图与仅用于仓库 README 的软件预览截图不随包分发，生成后的应用图标和用户手册继续保留。
-浏览器前端与桌面内嵌前端共用字体清理：保留 WOFF2，移除对应的 WOFF 回退源和文件，在宿主编译前完成，不改字体内容。
-日常运行 `deploy-desktop.bat`；纯资源同步显式选择 `-ResourcesOnly`，首次安装或修复显式选择发行完整包。脚本显示所选方式及原因；需要提权时由用户确认 Windows UAC。
+桌面部署与同步的唯一入口：**`deploy-desktop.bat`**（位于项目根目录）。
+
+- **日常开发**：默认生成 `desktop-local` 快速无压缩升级包，按 SHA-256 复用未变化的资源与二进制，秒级更新。
+- **正式发行**：采用 release 配置与完整 LZMA 压缩包，保证分发独立性。
+- **用户数据保护**：部署自动采用 `--preserve-local` 合并内容快照，不覆盖用户数据库中的自定义修改。
 
 ---
 
@@ -14,64 +12,50 @@
 
 | 场景 | 命令 | 说明 |
 |---|---|---|
-| **日常程序更新** | `.\deploy-desktop.bat` | 检查源码、构建及安装身份，选择复用升级包、重新封装或快速重编；默认静默安装 |
-| **首次安装 / 完整修复** | `.\deploy-desktop.bat -UseInstaller -InstallerPath "<发行完整包路径>"` | 显式选择 full 完整包，保留同名 `.deployment.json` |
-| **仅同步静态资源** | `.\deploy-desktop.bat -ResourcesOnly` | 要求已安装 EXE/DLL 与构建字节一致；已有匹配构建时可加 `-SkipBuild` |
-| **同时同步个人参考分片** | `.\deploy-desktop.bat -ResourcesOnly -ReferenceIds natsume,nene` | 仅同步指定角色的参考分片，覆盖前保留备份；受保护的参考发布版本需走发布流程 |
-| **复用已有升级包** | `.\deploy-desktop.bat -UseInstaller` | 跳过构建与封装，直接安装当前版本已绑定的升级包 |
+| **日常程序更新** | `.\deploy-desktop.bat` | 检查源码、构建与安装身份；自动选择复用升级包或快速重编；默认静默安装 |
+| **首次安装 / 完整修复** | `.\deploy-desktop.bat -UseInstaller -InstallerPath "<完整包路径>"` | 显式使用 full 完整包进行全新安装或覆盖修复 |
+| **仅同步静态资源** | `.\deploy-desktop.bat -ResourcesOnly` | 仅同步 `assets/` 与数据快照（要求已安装 EXE/DLL 字节一致；可加 `-SkipBuild` 跳过重新构建） |
+| **同步私有参考分片** | `.\deploy-desktop.bat -ResourcesOnly -ReferenceIds natsume,nene` | 同步指定角色的参考分片到个人目录，覆盖前自动备份 |
+| **复用已有升级包** | `.\deploy-desktop.bat -UseInstaller` | 跳过构建与封装，直接安装当前已生成的升级包 |
 | **部署后不自动重启** | `.\deploy-desktop.bat -NoRestart` | 安装完成后保持客户端关闭状态 |
-| **修复启动资源和缓存** | `.\deploy-desktop.bat -StartupRepair` | 核对并修复启动资源、快捷方式，清理 WebView 缓存；日常部署保留缓存 |
-| **强制重新构建** | `.\deploy-desktop.bat -ForceBuild` | 排错时覆盖自动复用判断；日常无需添加 |
-| **采用项目内容库** | `.\deploy-desktop.bat -AdoptProjectCatalog` | 仅在用户明确要求放弃当前内容库时使用；先保留原数据库及历史，再切换到安装包中的项目快照 |
-
-`-QuietInstall`、`-Cleanup` 仍兼容旧调用；资源清理由安装包和资源同步自动处理，不扫描删除个人文件。
+| **修复启动资源与缓存** | `.\deploy-desktop.bat -StartupRepair` | 核对快捷方式与资源，清理 WebView 缓存 |
+| **强制重新构建** | `.\deploy-desktop.bat -ForceBuild` | 排错时跳过构建复用判断，执行全量构建 |
+| **重置为项目内容库** | `.\deploy-desktop.bat -AdoptProjectCatalog` | 仅在明确放弃本地个性化数据时使用；先备份原库，再切换为项目快照 |
 
 > [!NOTE]
-> 部署过程如弹出 Windows UAC（用户账户控制）提权弹窗，请点击“是”允许写入安装目录（默认为 `C:\Program Files\AI-CG-Studio`）。
+> 部署过程中若弹出 Windows UAC（用户账户控制）提权弹窗，请点击“是”允许写入安装目录（默认 `C:\Program Files\AI-CG-Studio`）。
 
 ---
 
-## 按改动选择
+## 数据同步机制
 
-前端已编译进桌面 EXE；前端、后端或宿主程序变化时使用升级包。`assets/` 与 `data/catalog/` 快照等纯资源变化使用 `-ResourcesOnly`，只有安装的 EXE/DLL 与构建字节一致才能同步。构建与源码匹配时可加 `-SkipBuild`，否则先准备匹配构建。
+桌面端人物、服装、场景和蓝图的运行时权威位于用户个人目录：  
+`%APPDATA%\com.aics.studio\gateway\content\catalog.sqlite`
 
-脚本也有自动判断模式，会检查安装位置、源码、SDK 和构建绑定，并可能自行选择资源同步或发行完整包。本项目操作时仍按上表显式选择纯资源同步和首次安装／修复；不将快速构建冒充发行完整包。
-
----
-
-## 数据改动如何到达桌面端
-
-人物、服装、场景和蓝图的运行时工作权威是用户个人运行目录中的 SQLite 数据库：  
-**`%APPDATA%\com.aics.studio\gateway\content\catalog.sqlite`**。
-
-- **`data/catalog/`** 是 Git 跟踪的项目快照，用于生成发行基线与升级同步源。
-- **自动合并机制**：运行 `deploy-desktop.bat` 时，会在安装后、客户端启动前，读取安装目录中的快照，调用原生接口以 `--preserve-local` 模式增量合并到用户的 `catalog.sqlite` 中，并在 `gateway/content-update-backups/` 保留安全备份。**既有数据库不会被覆盖，用户自定义数据与修改完整保留**。
-- 用户明确要求以项目快照替换当前内容库时，`-AdoptProjectCatalog` 会先生成并核对新库，将原 SQLite、历史和定稿保护文件保留在 `content-update-backups/`，再切换内容库及其保护基线；作品册、设置和内容目录中的其他文件不参与替换。普通部署仍使用保留本地修改的合并策略。
-- 参考索引、标签等仍是文件维护域，不属于 SQLite 记录。指定 `-ReferenceIds` 时，部署从已核验的安装资源中复制所选参考分片到个人目录，并先备份原文件；不覆盖其他个人分片。参考素材存在受保护发布版本时拒绝此操作，需使用参考库发布流程。旧的 `desktop:content-sync` 工具不会更新 `catalog.sqlite`，也不是本项目的桌面部署入口。
+- **Git 快照**：`data/catalog/` 是版本跟踪的项目快照。
+- **自动增量合并**：运行 `deploy-desktop.bat` 时，安装器会自动读取快照，通过 `--preserve-local` 增量合并至用户数据库，并在 `gateway/content-update-backups/` 备份。用户修改与新增内容完好保留。
 
 ---
 
-## 打包前环境检查
+## 环境要求与体检
 
-在首次构建或环境异常时，先运行环境体检命令：
+首次构建或环境异常时，运行体检命令：
 ```powershell
 npm run wf -- desktop:doctor --json
 ```
 
-**必备工具链要求**：
+**必备工具链**：
 1. **Windows 10 / 11 64-bit**
-2. **Node.js 22.18 或更高版本**（项目开发版本见 `.nvmrc`）
-3. **Rust MSVC stable**：通过 [rustup](https://rust-lang.org/tools/install/) 安装，脚本自动识别 `%USERPROFILE%\.cargo\bin`。
+2. **Node.js ≥22.18**
+3. **Rust MSVC stable**（通过 [rustup](https://rust-lang.org/tools/install/) 安装）
 4. **Visual Studio C++ Build Tools & Windows SDK**
-5. **Live2D Cubism SDK for Native R5**：放置在 `runtime/desktop-build-sdk/CubismSdkForNative-5-r.5` 或配置环境变量 `LIVE2D_CUBISM_SDK_DIR`。
+5. **Live2D Cubism SDK for Native R5**（位于 `runtime/desktop-build-sdk/CubismSdkForNative-5-r.5` 或配置 `LIVE2D_CUBISM_SDK_DIR`）
 
 ---
 
-## 正式发版与自动更新
+## 正式发版流程
 
 日常开发**不需要**执行此流程，仅供发布正式版本使用：
-
-需要只提供一个完整安装包时，构建使用 `npm run release:desktop -- --full-only --bump major`，提交并推送后用 `npm run release:desktop -- --full-only --skip-build --publish` 发布。该模式保持 release/LZMA、部署清单和原更新签名，自动更新也下载完整包，不生成另一份升级包。
 
 ```powershell
 # 1. 自动递增版本号并构建全量 LZMA 完整包与升级包
@@ -81,20 +65,17 @@ node scripts/maintenance/release-desktop-update.js --bump patch
 node scripts/maintenance/release-desktop-update.js --skip-build --publish
 ```
 
-- 发版脚本会自动生成并上传 `full-setup.exe`、`upgrade-setup.exe`、对应的 `.sig` 签名、`.sha256` 校验和以及用于自动更新的 `latest.json`。
-- 客户端启动时通过 `tauri-plugin-updater` 检测版本。发现新版本时在控制面板顶部展示更新横幅，必须由用户主动点击确认后才会下载升级。
+发版脚本会自动生成并上传 `full-setup.exe`、`upgrade-setup.exe`、签名文件、校验和及自动更新索引 `latest.json`。
 
 ---
 
 ## 常见问题排查
 
-- **Q: 为什么部署时会弹出 Windows 提权 (UAC) 弹窗？**  
-  A: 桌面端默认安装在 `C:\Program Files\AI-CG-Studio`，向系统目录更新二进制与资源必须拥有管理员权限。请在弹窗中选择“是”。
-- **Q: 为什么源端 `assets/` 删除了某个文件，安装目录里仍然残留？**  
-  A: 升级完成后自动清理新版已移除、大小和 SHA256 仍匹配旧包的文件，不必先卸载。没有安装清单的老版本使用清理器内嵌的迁移基线（`installer/legacy-resources.gz`，含来源包 SHA256）：1.9.2 来自本机留存的完整发行包，2.0.0 来自已核验安装包的部署清单。完整包、本机升级包、发行升级包和资源同步共用清理器；`deploy-desktop.bat` 还会补充读取 `runtime/desktop-updates/` 内与安装包匹配的历史 `.deployment.json`。无法匹配基线的更早版本、用户修改、未知文件、链接和个人运行数据继续保留，因此不能保证每台旧安装都缩减到全新安装的大小。后续升级继续使用安装清单追踪文件，无需持续补充迁移基线。
-- **Q: 部署过程提示桌面端正在运行怎么办？**  
-  A: `deploy-desktop.bat` 会自动请求新宿主安全排空写入并退出。若旧版本或异常卡住，请在系统右下角托盘右键退出“绘遇 HUIYU”后再执行部署。
-- **Q: 部署后只有后台进程、没有窗口，日志提示 `WORKSPACE_LOCKED`？**
-  A: 异常退出可能留下工作区占用记录。宿主启动时只恢复 Windows 已确认退出进程的记录，并持有该文件句柄防止替换；运行中、权限不足或身份不明的记录继续保留。部署预检允许已确认退出的记录留待新宿主恢复，不手动清锁或改写作品数据库。
+- **Q: 为什么部署时会弹出 Windows UAC 提权弹窗？**  
+  A: 默认安装目录 `C:\Program Files\AI-CG-Studio` 属于系统保护目录，更新二进制与资源必须获取管理员权限。
+- **Q: 部署过程提示桌面端正在运行？**  
+  A: 脚本会自动尝试优雅退出宿主。若旧版本异常卡住，请在系统右下角托盘右键退出“绘遇 HUIYU”后再执行部署。
+- **Q: 部署后没有窗口，日志提示 `WORKSPACE_LOCKED`？**  
+  A: 异常退出可能遗留占用锁。重启宿主会自动恢复已结束进程的锁，正常无需手动清锁。
 - **Q: 部署日志在哪里查看？**  
-  A: 终端显示部署方式、阶段、耗时和结果；`runtime/desktop-deploy-last.log` 保留部署过程，`runtime/desktop-deploy-build.log` 保留完整构建输出和警告。构建失败时终端显示末尾 20 行及详细日志位置。日常部署保留 WebView 图片、代码和 GPU 缓存，仅 `-StartupRepair` 清理。
+  A: 终端会打印主要阶段；详细日志保存在 `runtime/desktop-deploy-last.log` 与 `runtime/desktop-deploy-build.log`。

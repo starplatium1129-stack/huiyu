@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reed_arknights_museum_close",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3094,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-06T14:56:43.109Z",
   "data": {
     "id": "reed_arknights_museum_close",
     "characterId": "reed_arknights",
@@ -26,14 +26,17 @@
       "warm light",
       "medium close-up"
     ],
-    "promptProse": "Reed leans toward the viewer with a hopeful smile in a softly lit museum.",
-    "animaCaption": "",
+    "promptProse": "As the museum galleries quiet down before evening closing, Reed turns from a framed classical canvas and leans toward the viewer with a hopeful, bashful smile. Soft directional spotlights trace the contours of the hall's marble pedestals and wooden flooring.",
+    "animaCaption": "Leaning close amidst the dimming gallery spotlights, she whispers an invitation to return again together, her smile full of quiet warmth.",
     "promptTokens": [
       "leaning toward viewer",
       "looking at viewer",
-      "hopeful smile",
-      "museum",
-      "warm light",
+      "shy hopeful smile",
+      "museum gallery",
+      "framed paintings",
+      "marble pedestals",
+      "dimmed museum lights",
+      "evening atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

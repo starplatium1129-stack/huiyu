@@ -42,7 +42,7 @@
 | 模型准备 | 在控制室选择 AI 工作目录、模型与运行环境，显式准备后下载并核对文件 |
 | 作品与配方 | 成片入册、搜索收藏、历史配方沿用、场景与蓝图编辑 |
 
-MiaoMiao 2.9B Beta 1.1 已完成一张本机全年龄样图和 TeaCache 0.08 的实际工作流验证，暂按无角色 LoRA 路径使用。SD／WAI 新生成已退役，旧作品、任务查询和原配方事实保留。完整的权重、硬件与能力边界见[模型与环境指南](docs/guides/setup-and-models.md)。
+SD／WAI 新生图已退役，保留旧任务查询与历史作品。完整的权重、硬件与模型接入细节见 [模型与环境指南](docs/guides/setup-and-models.md)。
 
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> 角色房间与桌面陪伴
 

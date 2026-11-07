@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_flower_vase",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3101,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.160Z",
   "data": {
     "id": "virtuosa_arknights_flower_vase",
     "characterId": "virtuosa_arknights",
@@ -26,14 +26,18 @@
       "soft daylight",
       "medium shot"
     ],
-    "promptProse": "Virtuosa arranges flowers beside a musical instrument.",
-    "animaCaption": "",
+    "promptProse": "Virtuosa stands beside her upright cello in a quiet conservatory room, gently arranging deep purple blooms and fresh foliage into a fluted crystal vase. Garden scissors and snipped stems lie on the mahogany side table, while filtered sunlight through sheer linen curtains warms the parquet floor.",
+    "animaCaption": "Adjusting a slender flower stem in the crystal vase beside her cello, she takes a quiet breath of floral scent before resuming her afternoon practice.",
     "promptTokens": [
-      "general",
       "standing",
       "arranging flowers",
-      "vase",
+      "cut flowers",
+      "crystal vase",
+      "floral shears",
+      "beside upright cello",
       "music room",
+      "wooden parquet floor",
+      "sheer curtains",
       "soft daylight",
       "medium shot"
     ],

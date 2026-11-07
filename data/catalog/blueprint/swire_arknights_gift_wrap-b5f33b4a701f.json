@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_gift_wrap",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3111,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.139Z",
   "data": {
     "id": "swire_arknights_gift_wrap",
     "characterId": "swire_arknights",
@@ -25,14 +25,16 @@
       "soft light",
       "medium shot"
     ],
-    "promptProse": "Swire chooses wrapping paper at a gift shop.",
-    "animaCaption": "",
+    "promptProse": "At an upscale gift boutique counter, Swire compares two swatches of heavy embossed metallic wrapping paper between her hands. Spools of burgundy velvet ribbon and ornate brass scissors rest on the polished marble surface under flattering overhead chandeliers.",
+    "animaCaption": "Comparing the gold-foil textures between her fingers, she decisively selects the richer pattern for the presentation box.",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding wrapping paper",
-      "gift shop counter",
-      "soft light",
+      "standing at boutique counter",
+      "holding luxury wrapping paper",
+      "gold foil embossed paper",
+      "velvet ribbon rolls",
+      "marble counter",
+      "gift shop",
+      "upscale interior lighting",
       "medium shot"
     ],
     "negativeTokens": [],

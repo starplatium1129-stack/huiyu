@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_city_balcony",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3113,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.134Z",
   "data": {
     "id": "swire_arknights_city_balcony",
     "characterId": "swire_arknights",
@@ -28,15 +28,17 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "Swire leans forward with a glass and gives the viewer a confident smile on a balcony.",
-    "animaCaption": "",
+    "promptProse": "Leaning against the tempered glass railing of a high-rise penthouse terrace, Swire raises a crystal champagne flute toward the viewer with a knowing, confident smile. Behind her, Lungmen's neon-drenched skyscrapers and harbor lights glow against the midnight sky.",
+    "animaCaption": "Clinking her champagne flute lightly toward the viewer, she leans forward against the balustrade with an inviting, competitive grin.",
     "promptTokens": [
-      "holding glass",
-      "leaning forward",
+      "leaning on balcony railing",
+      "holding champagne flute",
       "looking at viewer",
-      "confident smile",
-      "restaurant balcony",
-      "city lights",
+      "confident smirk",
+      "rooftop terrace",
+      "glowing city skyline",
+      "neon lights",
+      "harbor reflections",
       "night",
       "medium close-up"
     ],

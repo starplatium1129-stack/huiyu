@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_seed_envelopes",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2968,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.180Z",
   "data": {
     "id": "wakaba_mutsumi_arknights_seed_envelopes",
     "characterId": "wakaba_mutsumi_arknights",
@@ -26,15 +26,18 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Mutsumi labels small seed envelopes at a desk.",
-    "animaCaption": "",
+    "promptProse": "At a sunlit wooden desk, Mutsumi carefully inscribes plant labels onto small brown kraft seed envelopes with a fine-point pen. A clear glass jar filled with dried cucumber seeds and small paper pouches are arranged tidily across the pale wooden surface.",
+    "animaCaption": "With quiet concentration, she prints each seed label in neat script, sliding the small envelope onto an organized stack.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "writing",
-      "seed envelopes",
-      "desk",
+      "sitting at desk",
+      "writing on kraft envelope",
+      "seed packets",
+      "glass jar of seeds",
+      "felt tip pen",
+      "wooden desk",
+      "indoor plant",
       "window light",
+      "morning atmosphere",
       "medium shot"
     ],
     "negativeTokens": [],

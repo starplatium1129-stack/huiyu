@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_bread_bag",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3047,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-04T05:39:13.776172300+00:00",
+  "updatedAt": "2026-11-06T14:56:43.090Z",
   "data": {
     "id": "ptilopsis_arknights_bread_bag",
     "characterId": "ptilopsis_arknights",
@@ -26,15 +26,17 @@
       "morning light",
       "medium shot"
     ],
-    "promptProse": "Ptilopsis carries a paper bag of bread at a bakery.",
-    "animaCaption": "",
+    "promptProse": "Standing beside a sunlit glass bakery counter, Ptilopsis holds a brown paper bag filled with fresh artisan baguettes while verifying an itemized receipt. Golden morning light floods through plate-glass windows across pristine pastry displays and polished tile flooring.",
+    "animaCaption": "Holding the warm bag of bread securely in one arm, she reviews the receipt with disciplined precision before stepping into the street.",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding paper bag",
-      "bread",
-      "bakery",
-      "morning light",
+      "standing at bakery counter",
+      "holding kraft paper bag",
+      "fresh baguettes",
+      "checking paper receipt",
+      "glass bakery showcase",
+      "pastry display",
+      "morning sunlight",
+      "bright clean interior",
       "medium shot"
     ],
     "negativeTokens": [],

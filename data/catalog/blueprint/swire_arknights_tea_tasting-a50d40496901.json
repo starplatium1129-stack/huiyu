@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_tea_tasting",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3112,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.144Z",
   "data": {
     "id": "swire_arknights_tea_tasting",
     "characterId": "swire_arknights",
@@ -25,14 +25,18 @@
       "window light",
       "medium close-up"
     ],
-    "promptProse": "Swire tastes tea at a tea house table.",
-    "animaCaption": "",
+    "promptProse": "Seated at a carved rosewood table in a private tea pavilion, Swire delicately raises a pale celadon cup of rare vintage oolong tea to her lips. A dark Yixing clay pot and an inscribed bamboo tea tray steam gently in the filtered daylight.",
+    "animaCaption": "She takes a measured sip of the freshly steeped oolong, savoring the floral bouquet before passing a companion cup across the tray.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding tea cup",
-      "tea house",
-      "window light",
+      "sitting at tea table",
+      "holding celadon teacup",
+      "tasting tea",
+      "yixing clay teapot",
+      "carved tea tray",
+      "steam rising",
+      "rosewood furniture",
+      "traditional teahouse",
+      "soft window light",
       "medium close-up"
     ],
     "negativeTokens": [],

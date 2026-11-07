@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_flower_delivery",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3081,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T04:46:53.580783100+00:00",
+  "updatedAt": "2026-11-06T14:56:43.020Z",
   "data": {
     "id": "angelina_arknights_flower_delivery",
     "characterId": "angelina_arknights",
@@ -25,14 +25,18 @@
       "soft daylight",
       "medium shot"
     ],
-    "promptProse": "Angelina receives a wrapped bouquet at a flower shop.",
-    "animaCaption": "",
+    "promptProse": "Outside a vibrant florist shop, Angelina holds an abundant bouquet of fresh sunflowers and wildflowers wrapped in crisp butcher paper. Her messenger satchel and delivery receipt clipboard rest securely across her shoulder in the warm morning sunshine.",
+    "animaCaption": "Cradling the sunflower bouquet in both arms, she checks the recipient's address on her clip with a bright, beaming smile.",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding bouquet",
-      "flower shop",
-      "soft daylight",
+      "standing outside flower shop",
+      "holding fresh bouquet",
+      "wrapped sunflowers",
+      "daisies",
+      "delivery clipboard",
+      "courier bag",
+      "potted flowers",
+      "sunny street",
+      "morning daylight",
       "medium shot"
     ],
     "negativeTokens": [],

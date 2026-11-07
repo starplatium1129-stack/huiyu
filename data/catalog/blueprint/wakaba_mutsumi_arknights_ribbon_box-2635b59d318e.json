@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_ribbon_box",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2974,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.179Z",
   "data": {
     "id": "wakaba_mutsumi_arknights_ribbon_box",
     "characterId": "wakaba_mutsumi_arknights",
@@ -26,15 +26,17 @@
       "warm vanity light",
       "medium shot"
     ],
-    "promptProse": "Mutsumi puts a blue ribbon into a small box backstage.",
-    "animaCaption": "",
+    "promptProse": "At a backstage dressing table, Mutsumi gently coils a deep blue satin stage ribbon and places it into a dark lacquered trinket box. Glowing vanity mirror bulbs illuminate her quiet expression and reflect jars of hairpins across the wooden surface.",
+    "animaCaption": "Tucking the rolled blue ribbon into its wooden box compartment, she closes the lid with a soft, solemn motion.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding ribbon",
-      "small box",
-      "backstage",
-      "warm vanity light",
+      "sitting at vanity table",
+      "folding blue ribbon",
+      "satin ribbon",
+      "wooden jewelry box",
+      "vanity mirror with light bulbs",
+      "backstage dressing room",
+      "hairpin tray",
+      "warm vanity lighting",
       "medium shot"
     ],
     "negativeTokens": [],

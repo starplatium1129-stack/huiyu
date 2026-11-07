@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_postcard_rabbit",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2972,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.175Z",
   "data": {
     "id": "wakaba_mutsumi_arknights_postcard_rabbit",
     "characterId": "wakaba_mutsumi_arknights",
@@ -26,15 +26,18 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Mutsumi writes a rabbit postcard at a café table.",
-    "animaCaption": "",
+    "promptProse": "Seated in a quiet cafe nook, Mutsumi pens a brief message onto a postcard featuring a watercolor illustration of a wild rabbit. A plain ceramic teacup sits on the warm timber table as afternoon sunlight slants through the cafe window.",
+    "animaCaption": "Writing a single thoughtful line beside the rabbit illustration, she pauses to let the dark fountain ink dry on the card.",
     "promptTokens": [
-      "general",
-      "sitting",
+      "sitting at cafe table",
       "writing postcard",
-      "rabbit illustration",
-      "cafe table",
-      "window light",
+      "rabbit illustration on postcard",
+      "fountain pen",
+      "tea cup",
+      "saucer",
+      "wooden table",
+      "cafe window",
+      "warm sunlight",
       "medium shot"
     ],
     "negativeTokens": [],

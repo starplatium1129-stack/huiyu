@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_market_bag",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2971,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.173Z",
   "data": {
     "id": "wakaba_mutsumi_arknights_market_bag",
     "characterId": "wakaba_mutsumi_arknights",
@@ -26,14 +26,16 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Mutsumi carries a paper bag containing vegetable seedlings at a market.",
-    "animaCaption": "",
+    "promptProse": "Mutsumi walks along a lively open-air market stall, cradling a brown paper bag from which vibrant green vegetable seedlings sprout. Rustic wooden fruit crates and potted culinary herbs line the sunny cobblestone alleyway in crisp morning daylight.",
+    "animaCaption": "She cradles the paper bag of fragile seedlings against her chest, navigating the market crowd with careful, deliberate steps.",
     "promptTokens": [
-      "general",
-      "standing",
-      "holding paper bag",
-      "seedlings",
-      "market stall",
+      "standing at farmers market",
+      "holding brown paper bag",
+      "green plant seedlings",
+      "wooden crates",
+      "market stalls",
+      "potted herbs",
+      "sunny morning",
       "daylight",
       "medium shot"
     ],

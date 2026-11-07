@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_candle_conversation",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3105,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.158Z",
   "data": {
     "id": "virtuosa_arknights_candle_conversation",
     "characterId": "virtuosa_arknights",
@@ -27,15 +27,21 @@
       "candlelight",
       "close-up"
     ],
-    "promptProse": "Virtuosa leans forward with her chin on her hand and smiles at the viewer by candlelight.",
-    "animaCaption": "",
+    "promptProse": "Across a polished mahogany table in a dim salon, Virtuosa rests her chin in one delicate hand and leans close to the viewer in warm candlelight. A flickering brass candelabra, twin porcelain teacups, and a delicate silver pot cast dancing amber reflections between them.",
+    "animaCaption": "Resting her chin on her palm in the candlelight, she leans closer across the teacups, her gaze playfully searching the viewer's face.",
     "promptTokens": [
       "sitting",
       "chin on hand",
-      "leaning forward",
+      "leaning across table",
       "looking at viewer",
-      "smile",
+      "warm smile",
+      "candlestick",
+      "burning candle",
+      "porcelain teacups",
+      "silver teapot",
+      "mahogany table",
       "candlelight",
+      "intimate lighting",
       "close-up"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_melody_for_you",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3103,
   "createdAt": "2026-11-04T04:49:19.360555+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.163Z",
   "data": {
     "id": "virtuosa_arknights_melody_for_you",
     "characterId": "virtuosa_arknights",
@@ -27,15 +27,19 @@
       "warm light",
       "medium close-up"
     ],
-    "promptProse": "Virtuosa holds a violin bow and leans toward the viewer with an inviting smile.",
-    "animaCaption": "",
+    "promptProse": "Sitting with her cello in an intimate music salon, Virtuosa lowers her bow slightly and leans forward toward the viewer with an inviting, conspiratorial smile. An ornate brass music stand bearing handwritten scores and the rich glow of shaded floor lamps frame her poised figure.",
+    "animaCaption": "Leaning forward with her bow resting lightly near the strings, she fixes the viewer with an amused, tender gaze, offering a private reprise of the melody.",
     "promptTokens": [
-      "holding violin bow",
-      "leaning toward viewer",
+      "sitting with cello",
+      "holding cello bow",
+      "leaning forward",
       "looking at viewer",
       "inviting smile",
-      "music room",
-      "warm light",
+      "wooden music stand",
+      "handwritten sheet music",
+      "music salon",
+      "warm amber lighting",
+      "intimate atmosphere",
       "medium close-up"
     ],
     "negativeTokens": [],

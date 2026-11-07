@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_cafe_menu",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3082,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-04T05:41:40.018499400+00:00",
+  "updatedAt": "2026-11-06T14:56:43.018Z",
   "data": {
     "id": "angelina_arknights_cafe_menu",
     "characterId": "angelina_arknights",
@@ -25,14 +25,17 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "Angelina reads a drink menu at a café table.",
-    "animaCaption": "",
+    "promptProse": "At a sunny sidewalk cafe terrace, Angelina peruses an illustrated drinks menu while sitting beside a sweating glass of iced citrus tea. The cafe's striped awning flutters in the breeze as dappled sunlight dances across the wooden tabletop.",
+    "animaCaption": "Tapping the illustrated menu with her finger, she ponders between seasonal sodas, enjoying the afternoon terrace breeze.",
     "promptTokens": [
-      "general",
-      "sitting",
-      "holding menu",
-      "cafe table",
-      "window light",
+      "sitting at outdoor cafe table",
+      "holding drink menu",
+      "illustrated menu",
+      "glass of iced tea",
+      "mint sprig",
+      "wooden patio table",
+      "cafe umbrella",
+      "sunny daylight",
       "medium shot"
     ],
     "negativeTokens": [],
