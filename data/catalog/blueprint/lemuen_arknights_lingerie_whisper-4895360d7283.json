@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3184,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "lemuen_arknights_lingerie_whisper",
     "characterId": "lemuen_arknights",
@@ -14,7 +14,7 @@
     "location": "拉特兰大教堂后侧的玻璃温室，盛开的白百合与悬挂藤萝环绕",
     "timeOfDay": "明媚阳光穿透温室的午后",
     "lighting": "阳光穿透彩色花格温室穹顶，在纯白衣裙与娇美脸容上洒落斑斓的光斑",
-    "camera": "平视半身特写，以垂挂的绿植藤蔓为前焦点虚化，突出轮椅中优雅从容的姿态",
+    "camera": "medium shot, eye level, 平视中景，垂挂藤蔓前景虚化与轮椅优雅坐姿同框",
     "mood": "圣洁宁静中透着成熟大姐姐的温柔戏谑",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "wheelchair",
+      "greenhouse",
+      "lilies",
+      "vines",
+      "hanging_plants",
+      "sunlight",
+      "dappled_sunlight",
+      "smile",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "halo",
-      "glowing",
+      "sitting",
       "wheelchair",
-      "smile",
-      "angel wing embroidery",
-      "silver metallic threads",
-      "gossamer layered fabric",
-      "delicate double straps",
-      "indoors"
+      "greenhouse",
+      "white lilies",
+      "hanging vines",
+      "sunlight",
+      "dappled sunlight",
+      "gentle smile",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Lemuen leans gracefully back in white wicker wheelchair, wearing a pure white sheer chiffon slip dress. Sankta, glowing golden halo, light blanket over lap showing bare ankles amidst chin resting on hand, smiling gently with curved eyes, lush white lilies and ferns in sunlit greenhouse.",
-    "animaCaption": "Lemuen leans gracefully back in white wicker wheelchair, wearing a pure white sheer chiffon slip dress. Sankta, glowing golden halo, light blanket over lap showing bare ankles amidst chin resting on hand, smiling gently with curved eyes, lush white lilies and ferns in sunlit greenhouse.",
+    "promptProse": "Lemuen relaxes gracefully in a white wicker wheelchair inside the sunlit cathedral greenhouse, chin resting lightly on one hand. Golden afternoon sunlight filters through stained glass and hanging ivy, casting soft dappled light across white lilies and her serene smile.",
+    "animaCaption": "Resting in a wicker wheelchair inside the cathedral greenhouse, she smiles gently amidst blooming lilies and warm sunlight.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

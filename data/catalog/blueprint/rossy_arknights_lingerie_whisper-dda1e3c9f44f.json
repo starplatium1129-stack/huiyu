@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3368,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "rossy_arknights_lingerie_whisper",
     "characterId": "rossy_arknights",
@@ -14,7 +14,7 @@
     "location": "终末地技术探索部前哨站，观测窗口外是塔卫二苍凉的荧光矿脉",
     "timeOfDay": "深夜雷达休眠周期",
     "lighting": "仪表盘泛出的淡琥珀暖光与窗外矿脉的幽蓝冷光交相辉映",
-    "camera": "仰视中景镜头，仪器箱金属质感衬托出修长柔韧的双腿与从容坐姿",
+    "camera": "medium shot, eye level, 平视中景，高脚仪器箱与塔卫二苍凉矿脉同框",
     "mood": "科技前哨站的硬朗冰冷与研究员少女的知性温存碰撞",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_crate",
+      "crate",
+      "outpost",
+      "observation_window",
+      "sci-fi",
+      "alien_planet",
+      "glowing_minerals",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "sitting",
-      "equipment crate",
-      "holding sensor antenna",
-      "frontier outpost",
-      "crystal veins",
-      "smile",
-      "glowing",
-      "sheer black mesh side panels",
-      "industrial miniature buckles",
-      "low-rise boyleg briefs",
-      "indoors"
+      "sitting on crate",
+      "equipment container",
+      "outpost observation post",
+      "panoramic reinforced window",
+      "alien planetary horizon",
+      "glowing crystal veins",
+      "adjusting scanner antenna",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Rossi sits atop metallic equipment crate, wearing a bronze gold silk strappy bralette set. Holding tactical sensor antenna, golden-bronze wavy hair, calm intelligent eyes with slight smile amidst sci-fi frontier outpost, glowing crystal veins outside window.",
-    "animaCaption": "Rossi sits on an equipment crate, holding a sensor antenna while crystal veins glow beyond the outpost window.",
+    "promptProse": "Rossy sits poised on an equipment container before a panoramic reinforced observation window in the Endfield frontier post, adjusting the antenna of a portable scanner. Outside, luminescent mineral veins cast alien violet and cyan glows across Talos-II.",
+    "animaCaption": "Sitting on an equipment container before the frontier window, she adjusts her scanner antenna.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

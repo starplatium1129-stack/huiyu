@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3123,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "muelsyse_arknights_lingerie_whisper",
     "characterId": "muelsyse_arknights",
@@ -14,7 +14,7 @@
     "location": "莱茵生命生态水培园区，温润的浅水池中漂浮着发光的转基因睡莲",
     "timeOfDay": "生态园闭园后的温存时光",
     "lighting": "水池底部的青碧色防水射灯向上投射，在少女肌肤与周围水生植物上泛起粼粼水纹",
-    "camera": "低角度平拍捕捉水花飞溅的动态与水中晃动的倒影",
+    "camera": "low angle, medium shot, 低机位中景，水池台阶与踢起的水花同框",
     "mood": "水灵剔透、狡黠俏皮的精灵魅力，充满湿润清新的浪漫感",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "stairs",
+      "feet_in_water",
+      "shallow_water",
+      "water_pool",
+      "splashing",
+      "water_drops",
+      "water_lilies",
+      "greenhouse",
+      "glowing_water",
+      "low_angle",
+      "medium_shot"
     ],
     "promptTokens": [
       "sitting",
-      "water",
-      "glowing",
-      "green eyes",
-      "translucent wet-look chiffon",
-      "open back",
-      "floating ruffled hemline",
-      "water lily hair accessory",
-      "indoors"
+      "white marble stairs",
+      "feet in water",
+      "shallow pool",
+      "splashing",
+      "water droplets",
+      "water lilies",
+      "botanical greenhouse",
+      "glowing water",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Muelsyse sits on white marble step dipping bare legs in glowing shallow pool, wearing a crystal aqua gradient halter sheer slip dress. Elf girl, pointed ears, splashing water drops amidst long green wavy hair, mischievous emerald eyes, water droplets on skin, glowing water lilies in botanical laboratory.",
-    "animaCaption": "Muelsyse sits on white marble step dipping bare legs in glowing shallow pool, wearing a crystal aqua gradient halter sheer slip dress. Elf girl, pointed ears, splashing water drops amidst long green wavy hair, mischievous emerald eyes, water droplets on skin, glowing water lilies in botanical laboratory.",
+    "promptProse": "Muelsyse sits on white marble steps dipping her bare legs into a shallow hydroponic pool, kicking up crystal water droplets with a playful wink. Glowing water lilies drift across the pool surface, casting emerald and turquoise caustics through the tranquil botanical greenhouse.",
+    "animaCaption": "Dipping her legs in the glowing hydroponic pool, she kicks up crystal water droplets with a playful wink.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

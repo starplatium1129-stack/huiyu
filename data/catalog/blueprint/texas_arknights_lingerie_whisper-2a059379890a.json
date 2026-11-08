@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3523,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "texas_arknights_lingerie_whisper",
     "characterId": "texas_arknights",
@@ -14,7 +14,7 @@
     "location": "叙拉古郊外安全屋汽车旅馆，推拉窗外是荒芜公路与远山连绵的夜色",
     "timeOfDay": "长途押运中途的子夜短歇",
     "lighting": "床头昏黄的老式壁灯投下暖橙色光晕，将少女深邃冷静的面庞刻画得深情而温柔",
-    "camera": "平视特写中近景，嘴叼巧克力棒的慵懒侧颜与随性搭在膝上的手极富质感",
+    "camera": "medium close-up, eye level, 平视中近景，嘴叼巧克力棒与坐于皮箱的沉静姿态",
     "mood": "冷酷干练的信使私下流露的松弛与默契，烟火气与杀手气质的奇妙融合",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_suitcase",
+      "suitcase",
+      "pocky",
+      "pocky_in_mouth",
+      "window",
+      "night_sky",
+      "motel",
+      "dim_lighting",
+      "medium_close_up",
+      "eye_level"
     ],
     "promptTokens": [
-      "wolf ears",
-      "amber eyes",
       "sitting",
+      "on suitcase",
+      "suitcase",
+      "pocky in mouth",
+      "window",
       "night",
-      "ultra-thin straps",
-      "relaxed boyleg tap shorts",
-      "clean modern cuts",
-      "indoors",
-      "street light",
-      "window light",
-      "dim lighting"
+      "motel room",
+      "dim lighting",
+      "medium close-up",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night. Cold neon street illumination from the rain-slicked city below seeps through parted curtains, casting quiet moody highlights along her stoic profile.",
-    "animaCaption": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night. Cold neon street illumination from the rain-slicked city below seeps through parted curtains, casting quiet moody highlights along her stoic profile.",
+    "promptProse": "Sitting calmly upon a leather courier case in a quiet roadside motel room, Texas bites on a slender chocolate pocky stick. A dim wall lamp casts a warm amber glow over her relaxed profile, while the dark wilderness highway stretches outside the sliding window.",
+    "animaCaption": "Sitting on a courier case biting a chocolate pocky stick, she gazes calmly beside the quiet motel window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

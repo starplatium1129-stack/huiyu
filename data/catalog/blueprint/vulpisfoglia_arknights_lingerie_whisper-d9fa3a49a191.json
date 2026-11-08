@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3119,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T06:36:43.004228700+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_lingerie_whisper",
     "characterId": "vulpisfoglia_arknights",
@@ -14,7 +14,7 @@
     "location": "叙拉古老城区阴暗废弃庭院，雨后地砖上映出昏暗的路灯倒影",
     "timeOfDay": "黑帮清洗前夕的雨夜",
     "lighting": "庭院角落昏黄老路灯的孤光，在冰冷刀刃与湿润石板上反射出凛冽的白光",
-    "camera": "低角度平视中景，破败砖墙与旋转短刀的手势凸显出孤胆杀手的冷艳危险感",
+    "camera": "low angle, medium shot, 低机位中景，破败砖墙与旋转短刀同框",
     "mood": "叙拉古荒野孤狼的冷酷警觉与刀锋般的野性美，危险又令人沉迷",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "standing",
+      "leaning_against_wall",
+      "holding_dagger",
+      "dagger",
+      "courtyard",
+      "brick_wall",
+      "puddle",
+      "reflection",
+      "street_lamp",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "low_angle",
+      "medium_shot"
     ],
     "promptTokens": [
       "standing",
       "leaning against wall",
       "holding dagger",
-      "fox ears",
-      "fox tail",
-      "brick wall",
-      "street lamp",
+      "tactical dagger",
+      "courtyard",
+      "weathered brick wall",
       "puddle reflection",
+      "street lamp",
       "night",
+      "low angle",
       "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Vulpisfoglia leans against a weathered brick courtyard wall holding a tactical dagger, wearing an olive grey tactical athletic mesh bralette set. Vulpo, fluffy golden fox ears perked up, tall athletic frame with intense amber eyes, beside rain puddle reflections under a lone streetlamp.",
-    "animaCaption": "Vulpisfoglia leans against a weathered brick courtyard wall holding a tactical dagger, her golden fox ears alert beside rain puddle reflections under a streetlamp.",
+    "promptProse": "Vulpisfoglia leans against a weathered brick wall in an abandoned Siracusan courtyard, twirling a tactical dagger with focused composure. Rain puddles on the dark pavement reflect a lonely amber streetlamp, illuminating her alert expression amidst the rainy night shadows.",
+    "animaCaption": "Leaning against a brick courtyard wall with dagger in hand, she watches alertly beside rain puddles.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "virtuosa_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3166,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "virtuosa_arknights_lingerie_whisper",
     "characterId": "virtuosa_arknights",
@@ -14,7 +14,7 @@
     "location": "莱塔尼亚古堡回音大厅，月光透过玫瑰花窗洒在冰冷的大理石地面上",
     "timeOfDay": "深夜无人的乐音鸣响之刻",
     "lighting": "冷白月光经由哥特花窗滤成幽紫与暗红光柱，将少女白皙的身躯与黑色大提琴融为一体",
-    "camera": "仰视中景构图，双膝夹琴的优雅仪态与修长指节、琴弓线条构成极具张力的艺术感画面",
+    "camera": "low angle, medium shot, 仰视中景，大理石回音大厅与大提琴同框",
     "mood": "引导人们直面内心深层欲望与本能的魔性演奏家，优雅、深邃而极度蛊惑",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "playing_cello",
+      "cello",
+      "musical_instrument",
+      "bow_(music)",
+      "gothic_architecture",
+      "stained_glass",
+      "marble_floor",
+      "moonlight",
+      "low_angle",
+      "medium_shot"
     ],
     "promptTokens": [
-      "smile",
-      "halo",
-      "glowing",
+      "sitting",
+      "playing cello",
+      "cello",
+      "musical instrument",
+      "bow",
+      "gothic hall",
+      "stained glass",
+      "marble floor",
       "moonlight",
-      "thigh-high cello slit",
-      "delicate black lace trims",
-      "open back",
-      "flowing liquid train",
-      "indoors"
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Virtuosa relaxes in arturia giallo, wearing a deep midnight purple watered-silk slip gown. Arturia giallo, sankta, holding black cello between knees with bow poised over strings amidst tilted head with serene hypnotic smile, glowing dual-toned halo, gothic hall with moonlight through stained-glass.",
-    "animaCaption": "Virtuosa relaxes in arturia giallo, wearing a deep midnight purple watered-silk slip gown. Arturia giallo, sankta, holding black cello between knees with bow poised over strings amidst tilted head with serene hypnotic smile, glowing dual-toned halo, gothic hall with moonlight through stained-glass.",
+    "promptProse": "Virtuosa sits in a gothic castle echo hall, holding a polished black cello between her knees with bow poised gracefully across strings. Purple and crimson beams of moonlight stream through tall stained-glass windows, reflecting along the cold marble floor as she listens with a hypnotic smile.",
+    "animaCaption": "Holding her black cello in the gothic cathedral hall, she listens to string resonance with a hypnotic smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

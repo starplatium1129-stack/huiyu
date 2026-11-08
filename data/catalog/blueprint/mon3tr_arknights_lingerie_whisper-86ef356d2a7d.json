@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3160,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "mon3tr_arknights_lingerie_whisper",
     "characterId": "mon3tr_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛医疗下层隔离观测室，绿光监视器有节奏地闪烁着平稳波形",
     "timeOfDay": "午夜深层休眠周期",
     "lighting": "荧光绿控制台仪表投射出冷冽幽光，在漆黑地面上映出修长的几何投影",
-    "camera": "斜俯低角度中景，展现背部结晶矿物与白皙柔韧肌肤的极致质感碰撞",
+    "camera": "low angle, medium shot, 低机位中景，观察室控制台与结晶背影同框",
     "mood": "非人存在的冰冷孤傲与被驯服边界处的危险吸引力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,24 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "crouching",
+      "bench",
+      "laboratory",
+      "monitor",
+      "glowing",
+      "green_lighting",
+      "dark",
+      "looking_at_viewer",
+      "low_angle",
+      "medium_shot"
     ],
     "promptTokens": [
       "crouching",
-      "bench",
-      "crystals",
-      "glowing",
-      "red eyes",
-      "edgy bio-mechanical lingerie",
-      "indoors"
+      "metallic bench",
+      "observation laboratory",
+      "monitoring screens",
+      "glowing crystalline shards",
+      "cool green ambient lighting",
+      "dark room",
+      "piercing red eyes",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Mon3tr crouches gracefully on sleek metallic bench, wearing a obsidian crystalline cut-out structured bralette. Humanoid form, glowing green crystalline spikes along slender back, sharp crimson eyes amidst pale skin, cold predatory smirk, dark high-tech medical laboratory, glowing bio-monitors.",
-    "animaCaption": "Mon3tr crouches gracefully on sleek metallic bench, wearing a obsidian crystalline cut-out structured bralette. Humanoid form, glowing green crystalline spikes along slender back, sharp crimson eyes amidst pale skin, cold predatory smirk, dark high-tech medical laboratory, glowing bio-monitors.",
+    "promptProse": "Mon3tr crouches with feline grace upon a sleek metallic observation bench in the sub-level medical isolation chamber. Pulsing green monitor displays cast stark geometric shadows across the floor as deep crystalline facets catch the dim technological light.",
+    "animaCaption": "Crouching upon a metal bench in the dark isolation lab, she fixes an intense, piercing red-eyed gaze.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

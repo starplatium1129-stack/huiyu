@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ptilopsis_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3156,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "ptilopsis_arknights_lingerie_whisper",
     "characterId": "ptilopsis_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛中央主机机房辅室，幽蓝色的机柜呼吸灯有节奏地明灭",
     "timeOfDay": "凌晨服务器例行重构时刻",
     "lighting": "机房矩阵蓝绿呼吸灯在少女纯白衣裙与淡色发丝上投下科技感强烈的交替光晕",
-    "camera": "正面端坐中景，构图规整对称，精准捕捉微红耳尖与毫无表情的无辜眼眸",
+    "camera": "medium shot, eye level, 平视中景，服务器机柜与端坐姿态同框",
     "mood": "三无机械心智与真挚情感之间的萌系反差，精密而动人",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "server_room",
+      "computer",
+      "terminal",
+      "electronic_equipment",
+      "glowing",
+      "soft_smile",
+      "blush",
+      "dim_lighting",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
       "sitting",
-      "blush",
-      "glowing",
-      "geometric honeycomb cutouts",
-      "minimalist streamline piping",
-      "supportive wireless cups",
-      "cybernetic owl lingerie",
-      "indoors"
+      "server room",
+      "computer terminal",
+      "server racks",
+      "pulsing blue led lights",
+      "electronic equipment",
+      "soft smile",
+      "faint blush",
+      "dim lighting",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Ptilopsis sits upright on server chassis, wearing a ice grey technical sheer mesh teddy bodysuit. Liberi, owl girl, small owl feathers on head twitching amidst hands folded neatly on knees, deadpan expression with glowing red blush on cheeks, blue server rack pulsing lights background.",
-    "animaCaption": "Ptilopsis sits upright on server chassis, wearing a ice grey technical sheer mesh teddy bodysuit. Liberi, owl girl, small owl feathers on head twitching amidst hands folded neatly on knees, deadpan expression with glowing red blush on cheeks, blue server rack pulsing lights background.",
+    "promptProse": "Ptilopsis sits primly beside a central mainframe terminal in the quiet server auxiliary room, hands neatly placed on her lap. Rhythmic blue LED server lights pulse in the dim room, casting a cool technological glow as a faint blush warms her calm mechanical demeanor.",
+    "animaCaption": "Sitting beside glowing server racks in the mainframe room, she looks forward with a quiet, subtle blush.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

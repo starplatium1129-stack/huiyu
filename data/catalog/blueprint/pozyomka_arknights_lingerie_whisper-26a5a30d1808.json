@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3132,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "pozyomka_arknights_lingerie_whisper",
     "characterId": "pozyomka_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛私人书房，古旧皮面精装书堆叠至屋顶，打字机上夹着未写完的诗篇",
     "timeOfDay": "深秋落叶雨夜",
     "lighting": "复古黄铜绿罩台灯在厚重羊皮纸与丝绒裙上洒下浓郁温润的金绿暖调",
-    "camera": "侧平视中景，钢笔抵唇的优雅动作与垂在身后的毛绒狼尾形成动人反差",
+    "camera": "medium shot, eye level, 平视中景，打字机书桌与深情目光同框",
     "mood": "贵族文豪的忧郁浪漫与只对一人倾注的至深眷恋",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "at_desk",
+      "desk",
+      "bookshelf",
+      "books",
+      "typewriter",
+      "pen",
+      "holding_pen",
+      "warm_lighting",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "wolf ears",
       "sitting",
-      "silver hair",
-      "vintage ecru lace trim",
-      "side slit showing long legs",
-      "structured bodice",
-      "aristocratic poet loungewear",
-      "indoors",
-      "lamp",
-      "warm lighting",
-      "dim lighting"
+      "wooden desk",
+      "vintage typewriter",
+      "manuscript papers",
+      "leather-bound books",
+      "bookshelf",
+      "holding fountain pen",
+      "warm desk lamp",
+      "loving gaze",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter. A vintage green-shaded reading lamp sheds rich warm illumination over open poetry anthologies, casting sophisticated amber highlights across her lupine ears.",
-    "animaCaption": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter. A vintage green-shaded reading lamp sheds rich warm illumination over open poetry anthologies, casting sophisticated amber highlights across her lupine ears.",
+    "promptProse": "Pozyomka sits sideways at a polished mahogany desk in her private book-lined study, gently touching a fountain pen to her lips beside an unfinished manuscript on her typewriter. Towering bookshelves and warm lamplight frame her tender, poetic gaze.",
+    "animaCaption": "Resting a pen at her lips beside the typewriter in her book-filled study, she looks up with poetic tenderness.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

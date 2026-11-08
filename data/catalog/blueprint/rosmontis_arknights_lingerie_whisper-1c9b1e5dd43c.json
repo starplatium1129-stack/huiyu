@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3138,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "rosmontis_arknights_lingerie_whisper",
     "characterId": "rosmontis_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛个人寝室，几块沉重的歼灭战术构件在空气中平静悬浮，散发温和防卫光圈",
     "timeOfDay": "深夜就寝读日记时分",
     "lighting": "床头小蘑菇夜灯散发的温润浅粉暖光，柔化了悬浮金属战术构件的冰冷感",
-    "camera": "微俯平视特写，猫耳软趴趴耷拉着，小脸靠在记事本边缘，极具保护欲激发力",
+    "camera": "medium shot, eye level, 平视中景，毛绒大靠枕堆与怀抱记事本同框",
     "mood": "纯洁无垢的幼小依恋，被残酷实验伤害后在避风港中找到的极致安宁",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_floor",
+      "hugging_notebook",
+      "notebook",
+      "floating_objects",
+      "bedroom",
+      "cushions",
+      "shy",
+      "gentle_smile",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "cat ears",
-      "blue eyes",
-      "floating",
-      "night",
-      "tiny kitten paw embroidery",
-      "white scallop trim",
-      "loose empire silhouette",
-      "indoors",
-      "glow",
-      "warm lighting"
+      "sitting on floor",
+      "hugging notebook to chest",
+      "plush cushions",
+      "personal dormitory",
+      "floating tactical apparatus",
+      "soft protective aura",
+      "gentle shy smile",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Rosmontis relaxes in feline, wearing a pale mint green ultra-soft cloud cotton babydoll slip. Feline, silver-white cat ears drooped down sweetly, hugging leather notebook to chest on pile of fluffy pillows amidst huge innocent cyan eyes, heavy telekinetic steel plates floating peacefully in background, warm nightlight glow.",
-    "animaCaption": "Rosmontis relaxes in feline, wearing a pale mint green ultra-soft cloud cotton babydoll slip. Feline, silver-white cat ears drooped down sweetly, hugging leather notebook to chest on pile of fluffy pillows amidst huge innocent cyan eyes, heavy telekinetic steel plates floating peacefully in background, warm nightlight glow.",
+    "promptProse": "Rosmontis curls comfortably amidst a pile of plush cushions on her dormitory floor, hugging a treasured notebook tightly to her chest. Heavy tactical apparatuses hover serenely in the air above, emitting soft protective halos in the quiet bedroom.",
+    "animaCaption": "Curling amidst plush cushions hugging a notebook, she looks up with shy, trusting eyes.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

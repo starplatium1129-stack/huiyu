@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shu_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3372,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "shu_arknights_lingerie_whisper",
     "characterId": "shu_arknights",
@@ -14,7 +14,7 @@
     "location": "大荒城外的水田木栈道，四周是沉甸甸垂头的金黄稻浪，远山泛着炊烟暮霭",
     "timeOfDay": "秋日丰收的黄昏向晚",
     "lighting": "落日熔金的橙黄夕阳铺满天际，将稻田与神性龙角镀上一层丰收的璀璨金晖",
-    "camera": "低角度平拍，将金黄麦浪的前景与回廊上温柔坐卧的身影融为一体",
+    "camera": "wide shot, low angle, 水田回廊远景微仰，金黄稻浪与炊烟同框",
     "mood": "大地母亲般的无限包容与农家丰收的温暖眷恋，恬淡而治愈",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "leaning_on_railing",
+      "wooden_walkway",
+      "paddy_field",
+      "rice",
+      "rural",
+      "sunset",
+      "dusk",
+      "evening",
+      "wide_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "dragon horns",
-      "horns",
-      "bare feet",
       "sitting",
-      "water",
-      "smile",
+      "leaning on railing",
+      "wooden walkway",
+      "paddy field",
+      "golden rice stalks",
+      "rural landscape",
+      "distant mountains",
       "sunset",
-      "jade green tube top innerwear",
-      "indoors"
+      "warm dusk light",
+      "wide shot",
+      "low angle"
     ],
     "negativeTokens": [],
-    "promptProse": "Shu sits on rustic wooden deck swinging bare feet over paddy water, wearing a warm wheat-yellow linen wrap robe. Dragon girl, translucent jade green dragon horns with golden wheat stalks, gentle motherly smile amidst vast golden rice fields waving in sunset wind, tranquil harvest dusk.",
-    "animaCaption": "Shu sits on rustic wooden deck swinging bare feet over paddy water, wearing a warm wheat-yellow linen wrap robe. Dragon girl, translucent jade green dragon horns with golden wheat stalks, gentle motherly smile amidst vast golden rice fields waving in sunset wind, tranquil harvest dusk.",
+    "promptProse": "Shu sits leisurely on the wooden walkway edge above vast golden paddy fields, holding her woven bamboo hat with one hand. Gentle evening breezes rustle the ripening rice stalks beneath distant mountain twilight, while she smiles with warm elder-sisterly affection.",
+    "animaCaption": "Sitting on the wooden walkway overlooking golden paddy fields, she smiles warmly in the sunset breeze.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

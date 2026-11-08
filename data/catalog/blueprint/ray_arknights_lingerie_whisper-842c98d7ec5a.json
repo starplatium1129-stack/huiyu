@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3128,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "ray_arknights_lingerie_whisper",
     "characterId": "ray_arknights",
@@ -14,7 +14,7 @@
     "location": "雷姆必拓改装野营房车后舱，圆形舷窗外是荒野落日染红的漫天风沙",
     "timeOfDay": "荒原露营的日落时刻",
     "lighting": "房车舷窗射入的浓郁橙黄夕照，将粗布床单与少女肌肤染上一层焦糖色光晕",
-    "camera": "低角度平视特写，趴卧托腮的姿态娇俏可爱，兔耳与白尾巴的摇动生动鲜活",
+    "camera": "medium shot, eye level, 平视中景，房车大床与舷窗落日风沙同框",
     "mood": "荒野猎人的机敏野趣与房车温软被窝里的亲昵调侃",
     "adult": true,
     "sampleRating": "R15",
@@ -27,23 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "lying_on_stomach",
+      "on_bed",
+      "bed",
+      "camper_van",
+      "van",
+      "porthole",
+      "desert",
+      "sand",
+      "sunset",
+      "winking",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "reclining",
-      "sunset",
-      "white pom-pom string ties",
-      "cute flutter hem shorts",
-      "wild frontier rabbit nightwear",
-      "indoors"
+      "lying on stomach",
+      "on bed",
+      "camper van interior",
+      "round porthole window",
+      "sunset horizon",
+      "desert sandstorm",
+      "chin on hands",
+      "playful wink",
+      "warm sunset light",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Ray lies prone on camper van mattress propping chin on hands, wearing a apricot peach linen open-back ruffled camisole set. Cautus, long floppy bunny ears twitching playfully, fluffy white cotton tail raised amidst mischievous golden eyes, circular porthole showing orange desert sunset.",
-    "animaCaption": "Ray lies prone on camper van mattress propping chin on hands, wearing a apricot peach linen open-back ruffled camisole set. Cautus, long floppy bunny ears twitching playfully, fluffy white cotton tail raised amidst mischievous golden eyes, circular porthole showing orange desert sunset.",
+    "promptProse": "Ray lies on her stomach upon the wide camper van bed, resting her chin in both hands with a mischievous wink. Through the circular porthole window, the setting desert sun paints the swirling Rim Billiton sandstorm in vivid shades of amber and rose.",
+    "animaCaption": "Lying on the camper bed with chin in hands, she winks playfully against the sunset sandstorm outside.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

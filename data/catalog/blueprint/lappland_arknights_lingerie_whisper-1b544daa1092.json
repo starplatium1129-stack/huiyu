@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3192,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "lappland_arknights_lingerie_whisper",
     "characterId": "lappland_arknights",
@@ -14,7 +14,7 @@
     "location": "叙拉古废弃安全屋屋顶露台，雨后湿漉的地面映出远处街道的昏红灯火",
     "timeOfDay": "阴雨初歇的午夜",
     "lighting": "雨雾弥漫中远方猩红霓虹灯的背光散射，在白发与白皙肌肤上勾勒出冷冽剪影",
-    "camera": "倾斜三分之二角度中景，雨滴从发梢滑落，展现狼性十足的松弛感",
+    "camera": "three quarter view, medium shot, 倾斜侧面中景，雨滴从发梢滑落与远方街灯同框",
     "mood": "危险、野性、不羁却又带着宿命般的致命吸引力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "leaning_on_railing",
+      "rooftop",
+      "puddle",
+      "wet_ground",
+      "rain",
+      "night_sky",
+      "neon_lights",
+      "city_lights",
+      "smirk",
+      "medium_shot",
+      "three_quarter_view"
     ],
     "promptTokens": [
-      "silver hair",
-      "smile",
-      "night",
-      "asymmetrical single strap",
-      "dark leather buckle accent",
-      "sheer side slits",
-      "wolf girl punk loungewear",
-      "untamed edgy boudoir",
-      "indoors",
+      "leaning on railing",
+      "rooftop",
+      "puddle",
+      "wet ground",
+      "rain",
+      "night sky",
       "neon lights",
-      "dim lighting"
+      "city lights",
+      "smirk",
+      "medium shot",
+      "three quarter view"
     ],
     "negativeTokens": [],
-    "promptProse": "Lappland leans lazily against rooftop concrete ledge, wearing a charcoal distressed raw-edge silk slip dress. Wolf girl, fluffy white lupo ears and tail, running fingers through disheveled silver hair amidst wild ecstatic grin, rain-soaked rooftop puddle reflections, misty city neon night.",
-    "animaCaption": "Lappland leans lazily against rooftop concrete ledge, wearing a charcoal distressed raw-edge silk slip dress. Wolf girl, fluffy white lupo ears and tail, running fingers through disheveled silver hair amidst wild ecstatic grin, rain-soaked rooftop puddle reflections, misty city neon night.",
+    "promptProse": "Lappland leans lazily against a weathered concrete rooftop ledge, rain droplets sliding from disheveled silver hair, a wild teasing smirk upon her pale face. Distant neon streetlights and misty rain reflect across the wet rooftop under the dark Siracusan sky.",
+    "animaCaption": "Leaning against the rooftop ledge in the Siracusan rain, she smirks amidst red neon reflections and wet puddles.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

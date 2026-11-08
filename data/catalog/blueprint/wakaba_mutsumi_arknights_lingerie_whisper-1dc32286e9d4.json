@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "wakaba_mutsumi_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3140,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights_lingerie_whisper",
     "characterId": "wakaba_mutsumi_arknights",
@@ -14,7 +14,7 @@
     "location": "高级公寓阳台温室角落，花盆里整齐攀爬着绿意葱茏的黄瓜藤架",
     "timeOfDay": "深夜独处无言时分",
     "lighting": "城市远景的冷白高楼光线与阳台暗处形成静止的剪影，绿叶反光透出淡淡生机",
-    "camera": "平视中景，怀中抱黄瓜的古怪小动作与清冷神态形成极具辨识度的生动反差",
+    "camera": "medium shot, eye level, 平视中景，折叠椅与阳台黄瓜藤架同框",
     "mood": "沉默寡言吉他手的内向孤寂与笨拙真挚的心意，带着独特的植物系忧郁",
     "adult": true,
     "sampleRating": "R15",
@@ -27,23 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "sitting",
+      "folding_chair",
+      "balcony",
+      "greenhouse",
+      "potted_plant",
+      "cucumber",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "city_lights",
+      "calm_expression",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "balcony",
-      "night",
-      "ultra-thin straps",
-      "clean square neckline",
-      "straight relaxed cut",
-      "dim lighting"
+      "sitting",
+      "small folding chair",
+      "apartment balcony",
+      "cucumber vines in planter",
+      "holding fresh cucumber",
+      "night sky",
+      "city building lights",
+      "quiet impassive gaze",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Mutsumi Wakaba curls up on small folding balcony chair hugging a fresh green cucumber to chest, wearing a sage green minimalist raw linen slip dress. Short dark-green bob hair, pale expression with quiet golden eyes, potted cucumber vines in background amidst quiet city night lights.",
-    "animaCaption": "Mutsumi Wakaba curls up on small folding balcony chair hugging a fresh green cucumber to chest, wearing a sage green minimalist raw linen slip dress. Short dark-green bob hair, pale expression with quiet golden eyes, potted cucumber vines in background amidst quiet city night lights.",
+    "promptProse": "Mutsumi curls quietly on a compact folding chair in a secluded apartment balcony corner, holding a fresh green cucumber in both hands. Neat cucumber vines climb across trellised pots, catching distant cool high-rise city reflections in the night air.",
+    "animaCaption": "Curled in a folding chair holding a fresh cucumber on the balcony, she gazes into the city night.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

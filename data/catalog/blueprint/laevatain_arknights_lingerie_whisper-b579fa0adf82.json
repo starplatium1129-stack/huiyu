@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3182,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "laevatain_arknights_lingerie_whisper",
     "characterId": "laevatain_arknights",
@@ -14,7 +14,7 @@
     "location": "终末地重工业前哨站生活舱，全息投影熔炉数据在暗处闪烁橙光",
     "timeOfDay": "深宵检修间歇",
     "lighting": "控制台全息屏幕散发的荧光橙红暖光，在金属表面与少女锁骨间投下火热高光",
-    "camera": "平视微仰中景，突出金属工作台的冰冷机械感与少女赤足肌肤的温度对比",
+    "camera": "medium shot, eye level, 平视中景，隔热工作台与全息熔炉光影同框",
     "mood": "工业科幻风格的硬朗与内在炽热情感的奇妙融合",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_table",
+      "table",
+      "barefoot",
+      "sci-fi",
+      "outpost",
+      "holographic_screen",
+      "glowing",
+      "orange_lighting",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
       "sitting",
-      "bench",
-      "bare feet",
-      "red eyes",
-      "glowing",
-      "high-tech cutout details",
-      "industrial strap accents",
-      "sci-fi futuristic lingerie",
-      "indoors"
+      "on metallic workbench",
+      "barefoot",
+      "sci-fi outpost",
+      "holographic furnace telemetry",
+      "glowing orange displays",
+      "warm amber reflections",
+      "intense red gaze",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Laevatain sits on industrial metallic workbench edge, wearing a ember fiery orange-red geometric sheer bralette. Bare feet dangling, one hand braced on surface, fiery orange-red eyes amidst glowing originium crystal accents, glowing amber holographic monitors in background, sci-fi outpost quarters.",
-    "animaCaption": "Laevatain sits on industrial metallic workbench edge, wearing a ember fiery orange-red geometric sheer bralette. Bare feet dangling, one hand braced on surface, fiery orange-red eyes amidst glowing originium crystal accents, glowing amber holographic monitors in background, sci-fi outpost quarters.",
+    "promptProse": "Laevatain sits cross-legged along the rim of a thermal insulated workbench in the Endfield heavy industrial outpost, bare feet dangling freely. Blazing orange holographic furnace readouts cast intense fiery highlights across her face and the dark metallic chamber.",
+    "animaCaption": "Sitting on the workbench in the industrial outpost, orange holographic readouts illuminate her warm gaze.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

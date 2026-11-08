@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3154,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "nightingale_arknights_lingerie_whisper",
     "characterId": "nightingale_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛特殊疗养温室病房，悬挂的金丝鸟笼在微风中轻晃",
     "timeOfDay": "破晓露水未晞之时",
     "lighting": "清冷苍白的晨光穿过雾化玻璃，将整个空间浸染在纯净柔和的高调冷白光中",
-    "camera": "侧景横幅中景，透过金丝鸟笼的虚化轮廓拍摄白衣长发的病弱圣女",
+    "camera": "medium shot, eye level, 平视中景，温室软垫与悬挂金丝鸟笼同框",
     "mood": "脆弱、圣洁而充满深沉怜悯的治愈之美，如水晶般易碎",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,30 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "leaning_back",
+      "cushion",
+      "birdcage",
+      "greenhouse",
+      "flowers",
+      "soft_lighting",
+      "gentle_expression",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "cushion",
-      "reclining",
-      "green eyes",
-      "gossamer flowing fabric",
-      "angelic fragile beauty",
-      "sanctuary hospital loungewear",
-      "indoors",
-      "soft lighting"
+      "leaning back",
+      "soft cushions",
+      "ornate golden birdcage",
+      "hanging plants",
+      "convalescent greenhouse",
+      "gentle light",
+      "serene gaze",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Nightingale reclines gently against pale cushions, wearing a ivory white feather-jacquard double silk slip robe. Slender finger holding imaginary light bird, cascading pure white hair, gentle melancholic green eyes amidst ornate antique birdcage in soft focus foreground, luminous white clinic sanctuary.",
-    "animaCaption": "Nightingale reclines gently against pale cushions, wearing a ivory white feather-jacquard double silk slip robe. Slender finger holding imaginary light bird, cascading pure white hair, gentle melancholic green eyes amidst ornate antique birdcage in soft focus foreground, luminous white clinic sanctuary.",
+    "promptProse": "Nightingale rests gently against soft cushions in a peaceful medical convalescence greenhouse, a decorative golden birdcage swaying in the faint breeze. Pale silvery daylight and potted white blossoms surround her calm, ethereal presence.",
+    "animaCaption": "Resting against cushions beside an ornate birdcage in the greenhouse, her emerald eyes gaze softly.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3117,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "pramanix_arknights_lingerie_whisper",
     "characterId": "pramanix_arknights",
@@ -14,7 +14,7 @@
     "location": "谢拉格圣殿最高神龛后侧的隐秘暖阁，银质香炉升起细细雪莲熏香",
     "timeOfDay": "风雪封山之夜",
     "lighting": "神龛长明酥油灯散发温暖柔和的金红火光，与窗外肆虐的风雪蓝夜形成鲜明温差",
-    "camera": "微俯平视中景，怀中大尾巴将少女身形半裹，毛绒质感与白皙肌肤相得益彰",
+    "camera": "medium shot, eye level, 平视中景，白熊皮地毯与雪山神龛暖阁同框",
     "mood": "褪去神圣外壳后回归少女本真的依赖与温存，毛茸茸的极度治愈",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "kneeling",
+      "fur_rug",
+      "temple",
+      "shrine",
+      "incense_burner",
+      "hugging_tail",
+      "blush",
+      "warm_lighting",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "silver hair",
-      "ribbon",
-      "silver bell ribbon anklet",
-      "gossamer semi-translucent silk",
-      "holy maiden boudoir attire",
-      "indoors",
-      "candlelight",
-      "dim lighting"
+      "kneeling",
+      "white fur rug",
+      "mountain shrine",
+      "wooden altar",
+      "silver incense burner",
+      "scented smoke",
+      "hugging tail",
+      "blush",
+      "warm lamp",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside. Solemn flickering silver candelabras in the temple shrine cast dancing golden reflections against snow outside, warming her fluffy leopard tail and holy vestments.",
-    "animaCaption": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside. Solemn flickering silver candelabras in the temple shrine cast dancing golden reflections against snow outside, warming her fluffy leopard tail and holy vestments.",
+    "promptProse": "Pramanix kneels on a white fur rug in the hidden inner sanctuary of the Kjerag summit shrine, cradling her fluffy snow leopard tail in her arms with a sweet blush. Delicate scented smoke rises from a silver censer, filling the warm chamber away from her heavy holy duties.",
+    "animaCaption": "Kneeling on a fur rug in the mountain sanctuary cradling her tail, she smiles with sweet relief.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

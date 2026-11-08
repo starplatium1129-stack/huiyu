@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3125,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "nymph_arknights_lingerie_whisper",
     "characterId": "nymph_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛深层心理观测室，单向玻璃反射出幽暗暖黄的台灯光泽",
     "timeOfDay": "深夜心智复盘时分",
     "lighting": "桌底向上投射的单点暖黄光源，在萨卡兹小角与下颌间形成深邃的戏剧性阴影",
-    "camera": "正面平视特写，越过椅背椅架的金属线条，对焦于含着狡黠笑意的红瞳",
+    "camera": "medium close-up, eye level, 平视中近景，倒坐转椅与下巴抵椅背姿态同框",
     "mood": "小恶魔般的戏谑探究，掌控心理防线的危险刺激感",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "backwards_sitting",
+      "swivel_chair",
+      "observation_room",
+      "lamp",
+      "warm_lighting",
+      "chin_rest",
+      "smirk",
+      "medium_close_up",
+      "eye_level"
     ],
     "promptTokens": [
-      "sitting",
-      "horns",
-      "red hair",
-      "smile",
-      "red eyes",
-      "mirror",
-      "rose gold miniature buckles",
-      "black fishnet insets",
-      "indoors",
-      "starlight",
-      "window light",
-      "soft lighting"
+      "sitting backwards",
+      "swivel chair",
+      "chin resting on chair back",
+      "psychology observation room",
+      "warm desk lamp",
+      "shadowy room",
+      "mischievous smirk",
+      "medium close-up",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror. Soft starlight through the high arched window casts a dreamy silvery halo around her floating ribbons and delicate lace nightgown.",
-    "animaCaption": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror. Soft starlight through the high arched window casts a dreamy silvery halo around her floating ribbons and delicate lace nightgown.",
+    "promptProse": "Nymph sits backwards in a leather swivel chair in the Rhodes Island counseling observation office, resting her chin on the chair back with a perceptive smirk. A single warm desk lamp casts playful highlights across her features in the dim, private room.",
+    "animaCaption": "Resting her chin on the back of a swivel chair, she flashes a perceptive, playful smirk.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

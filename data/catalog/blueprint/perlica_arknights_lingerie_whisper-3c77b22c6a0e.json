@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "perlica_arknights_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3240,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
   "data": {
     "id": "perlica_arknights_lingerie_whisper",
     "characterId": "perlica_arknights",
@@ -14,7 +14,7 @@
     "location": "终末地技术探索指挥舱，淡蓝色的行星地貌全息云在空气中缓缓旋转",
     "timeOfDay": "深空跳跃静默期",
     "lighting": "全息星图散发幽蓝冷光，勾勒出修长的肩颈与后背弧度，地面泛着金属光泽",
-    "camera": "后侧方四分之三角度中景，展现露背睡裙的利落线条与回眸时的端庄神态",
+    "camera": "medium shot, eye level, 平视中景，全息星图与指挥舱回眸同框",
     "mood": "铁血总监私下独处时的知性反差，克制与心绪波动的微妙平衡",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "standing",
+      "bridge",
+      "hologram",
+      "star_chart",
+      "sci-fi",
+      "headphones",
+      "looking_back",
+      "blue_lighting",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "hologram",
       "standing",
-      "floating",
-      "blue hair",
-      "blush",
-      "deep v cut",
-      "boyleg shorts",
-      "indoors",
-      "desk lamp",
-      "dim lighting"
+      "control bridge",
+      "celestial star chart",
+      "rotating blue planetary hologram",
+      "tactical headset around neck",
+      "looking back over shoulder",
+      "ambient blue light",
+      "medium shot",
+      "eye level"
     ],
     "negativeTokens": [],
-    "promptProse": "Perlica stands beside floating blue holographic planetary hologram, wearing a slate blue nano-mesh breathable crop bustier set. Holding tactical headset in one hand, long slate-blue hair framing bare back, composed dignified expression with subtle blush amidst sci-fi bridge quarters. A compact LED desk lamp provides focused cool-white illumination across technical blueprints, casting precise clean shadows over her organized workspace.",
-    "animaCaption": "Perlica stands beside floating blue holographic planetary hologram, wearing a slate blue nano-mesh breathable crop bustier set. Holding tactical headset in one hand, long slate-blue hair framing bare back, composed dignified expression with subtle blush amidst sci-fi bridge quarters. A compact LED desk lamp provides focused cool-white illumination across technical blueprints, casting precise clean shadows over her organized workspace.",
+    "promptProse": "Perlica stands before an expansive planetary star chart in the Endfield command bridge, holding a tactical headset lowered to her collar. A revolving blue planetary holographic cloud casts serene reflections across her composed, focused silhouette.",
+    "animaCaption": "Looking back from the planetary star chart on the command bridge, she pauses with composed focus.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }
