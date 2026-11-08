@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_access_log",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3066,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "mon3tr_arknights_access_log",
     "characterId": "mon3tr_arknights",
@@ -16,10 +16,10 @@
     "action": "查看桌上的记录表",
     "timeOfDay": "上午",
     "lighting": "明亮室内光",
-    "camera": "中景，记录表与终端同框",
+    "camera": "medium shot, 中景，记录表与终端同框",
     "mood": "认真",
     "sceneTags": [
-      "sitting",
+      "standing",
       "reading document",
       "computer terminal",
       "office desk",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_slime_sculpt_mirror_check",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2480,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "epsilon_slime_sculpt_mirror_check",
     "characterId": "epsilon_shadow",
@@ -28,7 +28,6 @@
       "flustered",
       "embarrassed",
       "close-up",
-      "sunlight",
       "warm_lighting"
     ],
     "negativeTokens": [],
@@ -36,6 +35,7 @@
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "sceneTags": []
   }
 }

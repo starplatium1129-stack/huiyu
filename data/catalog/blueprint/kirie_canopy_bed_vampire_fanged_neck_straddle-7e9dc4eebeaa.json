@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_canopy_bed_vampire_fanged_neck_straddle",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2367,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "kirie_canopy_bed_vampire_fanged_neck_straddle",
     "characterId": "kagari_no_kirie",
@@ -31,7 +31,6 @@
       "garter_straps",
       "heavy_blush",
       "close-up",
-      "sunlight",
       "soft_lighting"
     ],
     "negativeTokens": [],
@@ -40,6 +39,7 @@
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "sceneTags": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3325,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "izumi_sagiri_swimsuit_allure",
     "characterId": "izumi_sagiri",
@@ -29,7 +29,6 @@
     "sceneTags": [
       "ocean",
       "seashore",
-      "night",
       "dim_lighting",
       "blush",
       "eye_level"
@@ -38,7 +37,6 @@
       "eye level",
       "ocean",
       "seashore",
-      "night",
       "dim lighting",
       "blush",
       "1girl",

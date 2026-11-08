@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1600,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_02",
     "title": "战栗的龙卷 · 私人豪华顶层浴缸念动力水波水光湿身 ·「连浴缸的水都在跟我作对……混蛋！」",
@@ -40,8 +40,6 @@
       "masturbation",
       "water reflection",
       "medium shot",
-      "sunlight",
-      "water_reflection",
       "soft_lighting"
     ],
     "negativeTokens": [],

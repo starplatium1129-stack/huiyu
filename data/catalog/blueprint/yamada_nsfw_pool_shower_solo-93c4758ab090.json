@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_pool_shower_solo",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 1503,
   "createdAt": null,
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "yamada_nsfw_pool_shower_solo",
     "title": "山田杏奈 · 泳池更衣室淋浴的水光湿身 ·「训练完好热……市川递一下浴巾好不好」",
@@ -19,19 +19,17 @@
     "mood": "唯美动情、私密深情",
     "sceneTags": [
       "indoors",
-      "bedroom",
-      "night",
+      "shower",
       "warm_lighting",
       "standing",
-      "cowboy_shot"
+      "cowboy_shot",
+      "evening"
     ],
     "promptProse": "Adult Yamada stands beneath the shower in her soaked navy competition swimsuit, one hand resting over her lower abdomen as the warm water runs down the white side panels.",
     "nsfwProse": "",
     "promptTokens": [
       "cowboy shot",
       "indoors",
-      "bedroom",
-      "night",
       "warm lighting",
       "standing",
       "adult",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_nsfw_kitchen_apron_malfunction",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1482,
   "createdAt": null,
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "mahiru_nsfw_kitchen_apron_malfunction",
     "title": "椎名真昼 · 厨房真空围裙的系带松脱事故 ·「做饭的时候……不可以乱碰啦」",
@@ -20,11 +20,11 @@
     "sceneTags": [
       "kitchen",
       "counter",
-      "night",
       "warm_lighting",
       "blush",
       "medium_shot",
-      "wide_shot"
+      "wide_shot",
+      "sunset"
     ],
     "promptProse": "Adult Mahiru braces both palms on the counter and looks back as her apron ties come undone and the fabric slides loose, leaving her bare beneath it beside the simmering stove. Golden-hour window light meets warm ambient light beside the stove.",
     "nsfwProse": "",
@@ -33,7 +33,6 @@
       "wide shot",
       "kitchen",
       "counter",
-      "night",
       "warm lighting",
       "blush",
       "pink striped apron",

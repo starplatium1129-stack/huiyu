@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_nikke_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3443,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "scarlet_nikke_lingerie_whisper",
     "characterId": "scarlet_nikke",
@@ -27,8 +27,9 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "indoors",
-      "bedroom",
+      "cherry_blossoms",
+      "garden",
+      "outdoors",
       "night",
       "moonlight",
       "cool_lighting",
@@ -37,10 +38,10 @@
       "low_angle"
     ],
     "promptTokens": [
+      "cherry blossoms",
+      "japanese garden",
       "wide shot",
       "low angle",
-      "indoors",
-      "bedroom",
       "night",
       "moonlight",
       "cool lighting",

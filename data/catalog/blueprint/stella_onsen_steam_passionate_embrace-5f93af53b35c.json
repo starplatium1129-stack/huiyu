@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_onsen_steam_passionate_embrace",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2188,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "stella_onsen_steam_passionate_embrace",
     "characterId": "stella_vermillion",
@@ -15,7 +15,7 @@
     "recommendedSize": "832x1216",
     "location": "secluded private outdoor hot spring bath surrounded by rocks",
     "action": "soaking in steaming outdoor hot spring, wet crimson hair clinging to bare shoulders, maple leaves floating, water droplets on flushed skin, proud yet blushing gaze at viewer",
-    "timeOfDay": "night",
+    "timeOfDay": "afternoon",
     "lighting": "dappled sunlight through red autumn leaves hitting steamy water surface",
     "camera": "cowboy_shot",
     "mood": "vibrant passionate beauty, secluded autumn warmth",
@@ -50,6 +50,7 @@
     "rating": "R15",
     "mature": false,
     "adult": true,
-    "sampleRating": "R15"
+    "sampleRating": "R15",
+    "sceneTags": []
   }
 }

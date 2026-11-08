@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_bikini_fitting_malfunction",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1504,
   "createdAt": null,
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "yamada_nsfw_bikini_fitting_malfunction",
     "title": "山田杏奈 · 摄影棚更衣室的超紧比基尼勒肉事故 ·「系带要断了……市川别光看着，快帮我系住！」",
@@ -20,9 +20,9 @@
     "sceneTags": [
       "indoors",
       "bedroom",
-      "night",
       "warm_lighting",
-      "cowboy_shot"
+      "cowboy_shot",
+      "afternoon"
     ],
     "promptProse": "Adult Yamada steadies herself against the studio vanity with one hand and holds the ill-fitting bikini front with the other, looking back toward the offscreen viewer for fitting help.",
     "nsfwProse": "",
@@ -30,7 +30,6 @@
       "cowboy shot",
       "indoors",
       "bedroom",
-      "night",
       "warm lighting",
       "adult",
       "navy and white striped micro bikini",

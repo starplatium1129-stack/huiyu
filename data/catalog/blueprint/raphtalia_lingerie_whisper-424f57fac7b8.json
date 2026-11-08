@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3331,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "raphtalia_lingerie_whisper",
     "characterId": "raphtalia",
@@ -27,7 +27,7 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "apartment",
+      "attic",
       "bedroom",
       "window",
       "bed",
@@ -41,7 +41,7 @@
     "promptTokens": [
       "medium close-up",
       "high angle",
-      "apartment",
+      "attic",
       "bedroom",
       "window",
       "bed",

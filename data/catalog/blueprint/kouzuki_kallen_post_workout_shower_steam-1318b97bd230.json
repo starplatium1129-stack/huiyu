@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_post_workout_shower_steam",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1991,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "kouzuki_kallen_post_workout_shower_steam",
     "characterId": "kouzuki_kallen",
@@ -32,7 +32,6 @@
       "blush",
       "bathroom",
       "close-up",
-      "sunlight",
       "warm_lighting",
       "soft_lighting"
     ],
@@ -40,6 +39,7 @@
     "isNsfw": false,
     "rating": "R15",
     "mature": false,
-    "negativeTokens": []
+    "negativeTokens": [],
+    "sceneTags": []
   }
 }

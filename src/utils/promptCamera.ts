@@ -30,7 +30,7 @@ export function cameraTokensFromText(text = ''): string[] {
     .replace(/medium closeup/g, 'medium close up')
     .replace(/\bwide medium shot\b/g, 'wide shot, medium shot')
     .replace(/\b(cowboy|medium|wide) (?:two|group) shot\b/g, '$1 shot')
-    .replace(/medium[- ]full(?:[- ]frontal)?(?: dynamic)?(?: anime)?(?: tracking)? shot/g, (_, front: string) => `cowboy shot${front ? ', front view' : ''}`)
+    .replace(/medium[- ]full(?:[- ]frontal)?(?: dynamic)?(?: anime)?(?: tracking)? shot/g, m => `cowboy shot${m.includes('frontal') ? ', front view' : ''}`)
     .replace(/\bmedium[- ]portrait\b/g, 'medium shot')
     .replace(/\bmedium tracking shot\b/g, 'medium shot')
     .replace(/\bwide (?:cinematic|dynamic|anime|horizontal|ensemble)(?: sports| concert| pool)?(?: action)?(?: shot| landscape)?\b/g, 'wide shot')

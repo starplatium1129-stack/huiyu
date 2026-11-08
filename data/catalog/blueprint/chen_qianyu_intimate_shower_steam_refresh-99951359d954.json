@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_shower_steam_refresh",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2021,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "tea_linen",
@@ -37,7 +37,6 @@
       "looking_back",
       "soft_expression",
       "cowboy_shot",
-      "sunlight",
       "warm_lighting",
       "soft_lighting"
     ],
@@ -45,6 +44,7 @@
     "animaCaption": "Qianyu looking back through refreshing shower steam at the outpost base.",
     "isNsfw": false,
     "rating": "R15",
-    "mature": false
+    "mature": false,
+    "sceneTags": []
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_night_sky",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3074,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "mon3tr_arknights_night_sky",
     "characterId": "mon3tr_arknights",
@@ -16,10 +16,10 @@
     "action": "拿着星图看夜空",
     "timeOfDay": "夜晚",
     "lighting": "星光与远处灯光",
-    "camera": "远景，星图与夜空同框",
+    "camera": "wide shot, 远景，星图与夜空同框",
     "mood": "平静",
     "sceneTags": [
-      "standing",
+      "sitting",
       "holding star chart",
       "starry sky",
       "rooftop garden",

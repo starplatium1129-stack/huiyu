@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_guren_hangar_rest",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1986,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
   "data": {
     "id": "kouzuki_kallen_guren_hangar_rest",
     "characterId": "kouzuki_kallen",
@@ -32,13 +32,13 @@
       "mecha",
       "confident",
       "cowboy_shot",
-      "sunlight",
       "soft_lighting"
     ],
     "animaCaption": "Kallen holding her helmet with a proud smile in the mecha hangar.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "negativeTokens": []
+    "negativeTokens": [],
+    "sceneTags": []
   }
 }
