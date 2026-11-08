@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_sticker_notebook",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3063,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-07T04:26:09.848Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "ceobe_arknights_sticker_notebook",
     "characterId": "ceobe_arknights",
@@ -29,15 +29,17 @@
     "promptProse": "At a sunny wooden study desk, Ceobe carefully presses a shiny holographic sticker of a frosted cupcake into a colorful personal scrapbook, sticking out the tip of her tongue in deep concentration. Sheets of cute food stickers, glitter pens, and washi tapes clutter the desk, while soft morning sunshine pours over potted plants on the windowsill.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "wooden desk",
       "pasting food sticker",
       "colorful scrapbook",
-      "tongue out in concentration",
       "sheets of stickers",
-      "glitter pens and washi tape",
+      "pen",
+      "washi tape",
       "sunny windowsill plants",
       "morning sunshine",
       "cute focused expression",
+      "soft daylight",
       "medium close-up"
     ],
     "negativeTokens": [],

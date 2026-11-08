@@ -52,11 +52,11 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
   })
 
   async function refreshVoiceStatus() {
+    // Background polling must not load voice models or evict resident drawing models.
+    // Voice preparation belongs to an actual voice turn or explicit room setup.
     await voice.refreshAvailability()
     if (isDisposed()) return
     updateVoiceCapability()
-    const voiceId = currentCharacter.value.voice
-    if (voice.readyFor(voiceId)) voice.prepare(voiceId, true)
   }
 
   async function refreshRoomState() {

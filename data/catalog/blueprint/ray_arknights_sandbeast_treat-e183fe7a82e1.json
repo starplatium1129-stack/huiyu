@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_sandbeast_treat",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2912,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-07T04:42:20.106Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "ray_arknights_sandbeast_treat",
     "characterId": "ray_arknights",
@@ -26,9 +26,10 @@
       "soft daylight",
       "medium shot"
     ],
-    "promptProse": "Sitting on a plush woven floor rug in a sunlit lounge, Ray holds out a small ceramic bowl of dried berry treats, watching with an affectionate, beaming smile as her fluffy sandbeast nibbles happily. Floor cushions, trailing houseplants, and bright afternoon sunbeams pool around the pair in a picture of domestic joy.",
+    "promptProse": "Sitting on a plush woven floor rug in a sunlit lounge, Ray holds out a small ceramic bowl of dried berry treats, watching with an affectionate, beaming smile as her fluffy sandbeast nibbles happily. Floor cushions, trailing houseplants, and bright afternoon sunbeams pool around the pair in a peaceful domestic afternoon.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "woven floor rug",
       "holding ceramic treat bowl",
       "feeding pet sandbeast",
@@ -36,8 +37,6 @@
       "sunlit lounge interior",
       "floor cushions and plants",
       "bright afternoon sunbeams",
-      "floppy rabbit ears",
-      "domestic joy",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_garden_bench",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2959,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-07T04:37:16.607Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "rosmontis_arknights_garden_bench",
     "characterId": "rosmontis_arknights",
@@ -28,6 +28,7 @@
     "promptProse": "Perched on a quiet white-painted wrought-iron bench beneath the lush weeping canopy of an olive tree, Rosmontis pats the empty cushion beside her, looking up with wide, trusting blue eyes. Gentle breezes rustle silver-green leaves above, scattering dappled sunlight over brick garden paths and stone birdbaths.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "white wrought-iron bench",
       "weeping olive tree canopy",
       "patting empty seat",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_shrine_path",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2423,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T04:46:11.212Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "rena_liechtenauer_shrine_path",
     "characterId": "rena_liechtenauer",
@@ -20,6 +20,7 @@
     "mood": "开心",
     "promptProse": "Standing at the base of moss-covered stone stairs leading up into a dense, misty cedar grove, Lena looks upward toward a weathered vermilion torii gate after tucking away her travel guidebook. Sunlight streams through the towering forest canopy in ethereal god rays, illuminating swirling morning mist and stone lantern shrines.",
     "promptTokens": [
+      "walking",
       "shrine stone steps",
       "weathered vermilion torii gate",
       "misty cedar grove",
@@ -27,8 +28,7 @@
       "stone lantern shrines",
       "looking up with reverence",
       "fresh morning mountain air",
-      "travel adventure",
-      "medium shot"
+      "full body"
     ],
     "animaCaption": "",
     "negativeTokens": [],

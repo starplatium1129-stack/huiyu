@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_ribbon_box",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3031,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:37:16.609Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "specter_arknights_ribbon_box",
     "characterId": "specter_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Seated at an antique rosewood vanity in her dimly lit quarters, Specter smooths out a length of vintage deep-crimson velvet ribbon between her pale fingers before winding it slowly into an inlaid mother-of-pearl trinket box. Soft amber candlelight flickers across antique hand mirrors, dried sea ferns, and the enigmatic, private half-smile playing on her lips.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "antique rosewood vanity",
       "winding crimson velvet ribbon",
       "mother-of-pearl trinket box",

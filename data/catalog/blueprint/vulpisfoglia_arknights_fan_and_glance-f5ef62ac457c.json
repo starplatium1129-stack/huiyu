@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_fan_and_glance",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2864,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-07T04:42:20.100Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_fan_and_glance",
     "characterId": "vulpisfoglia_arknights",
@@ -31,15 +31,18 @@
     "promptProse": "Lowering an ornate dark silk folding fan with intricate gold embroidery just below her lips, Vulpisfoglia fixes the viewer with an intensely playful, predatory amber gaze. Warm amber chandeliers in the private opera salon illuminate gilded wall panels, plush velvet draperies, and her statuesque, commanding presence.",
     "animaCaption": "",
     "promptTokens": [
-      "lowering silk folding fan",
+      "standing",
+      "folding fan",
       "gold embroidered fan",
-      "playful predatory amber gaze",
+      "smirk",
+      "amber eyes",
       "private opera salon",
       "warm amber chandeliers",
       "gilded wall panels",
       "plush velvet draperies",
       "statuesque commanding aura",
-      "close-up"
+      "warm ambient lighting",
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

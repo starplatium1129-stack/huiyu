@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_winter_letters",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2948,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-07T04:32:11.973Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "rosa_arknights_winter_letters",
     "characterId": "rosa_arknights",
@@ -29,8 +29,10 @@
     "promptProse": "At a mahogany desk inside a brightly lit winter parlor, Rosa finishes sealing a thick, cream-colored envelope with a traditional red wax stamp. A roaring fireplace crackles nearby, casting dancing, warm orange light across the writing desk, stacks of winter holiday letters, a vintage fountain pen, and the soft, festive coziness of the parlor scene.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "mahogany writing desk",
-      "sealing envelope with wax stamp",
+      "wax seal",
+      "envelope",
       "winter holiday letters",
       "vintage fountain pen",
       "roaring fireplace glow",

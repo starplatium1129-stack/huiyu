@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_06",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1700,
   "createdAt": null,
-  "updatedAt": "2026-11-07T04:46:11.216Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "vivy_sfw_b9_06",
     "title": "Vivy · 缝纫与服装保养",
@@ -26,20 +26,19 @@
       "scissors",
       "fabric",
       "cream_blouse",
-      "humming",
       "lamplight",
       "medium_shot"
     ],
-    "promptProse": "Seated on a vintage stool beside an antique Singer sewing machine in her private green room, Vivy carefully mends an embroidered hem on her stage performance cape spread across her knees. A warm gooseneck work lamp illuminates thread spools, brass tailoring shears, and her calm, melodious humming under the quiet theater ceiling.",
+    "promptProse": "Seated on a vintage stool beside an antique sewing machine in her private green room, Vivy carefully mends an embroidered hem on her stage cape spread across her knees. A warm gooseneck work lamp illuminates thread spools, tailoring shears, and her calm, composed expression.",
     "promptTokens": [
-      "private green room",
-      "vintage sewing machine",
-      "mending stage cape",
-      "cape spread on lap",
-      "gooseneck work lamp",
-      "thread spools and shears",
-      "calm melodious humming",
-      "theatrical backstage tranquility",
+      "sitting",
+      "green room",
+      "sewing machine",
+      "holding needle",
+      "cape on lap",
+      "desk lamp",
+      "thread spools",
+      "calm expression",
       "medium shot"
     ],
     "negativeTokens": [],
@@ -51,6 +50,6 @@
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She mends the performance cape across her lap while quietly humming."
+    "animaCaption": "She mends the performance cape across her lap under the warm work lamp."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_window_evening",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2853,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-07T04:42:20.099Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "pramanix_arknights_window_evening",
     "characterId": "pramanix_arknights",
@@ -30,6 +30,7 @@
     "promptProse": "Standing beside a multi-paned parlor window overlooking the village's evening lights, Pramanix extends a warm, welcoming hand toward the viewer with a tender, reassuring smile. A glowing bronze oil lamp on the sill casts rich golden highlights over her silver embroidered robes, while outside, dusk settles in deep indigo over the snowcapped Kjerag peaks.",
     "animaCaption": "",
     "promptTokens": [
+      "leaning",
       "parlor window at dusk",
       "extending welcoming hand",
       "tender reassuring smile",

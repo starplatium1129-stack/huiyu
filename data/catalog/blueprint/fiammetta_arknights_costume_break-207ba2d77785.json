@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_costume_break",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2979,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:28:56.622Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "fiammetta_arknights_costume_break",
     "characterId": "fiammetta_arknights",
@@ -25,16 +25,18 @@
       "vanity lights",
       "medium shot"
     ],
-    "promptProse": "Inside a cramped, dimly lit backstage dressing room filled with the scent of hairspray, Fiammetta stands before a vanity mirror surrounded by bright, hot marquee bulbs, meticulously arranging the folds of her vibrant red performance cape. Costume racks laden with elaborate theater attire, props, and scattered script pages create a chaotic, lively backstage atmosphere, while her expression transitions from tense to amused as she reflects in the glass.",
+    "promptProse": "Inside a backstage dressing room, Fiammetta stands before a vanity mirror surrounded by bright marquee bulbs, adjusting the folds of her vibrant red performance cape with an amused smile. Costume racks laden with theater attire, stage props, and script pages on the table frame her reflection in the glass.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "backstage dressing room",
-      "vanity mirror with marquee lights",
+      "vanity mirror",
+      "vanity lights",
       "adjusting red cape",
       "costume racks",
-      "scattered scripts and props",
-      "chaotic theatrical atmosphere",
-      "amused focused expression",
+      "stage props",
+      "amused smile",
+      "mirror reflection",
       "medium shot"
     ],
     "negativeTokens": [],

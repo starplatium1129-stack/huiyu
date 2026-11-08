@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_photo_booth",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2938,
   "createdAt": "2026-11-04T04:28:09.832851600+00:00",
-  "updatedAt": "2026-11-07T04:22:41.842Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "w_arknights_photo_booth",
     "characterId": "w_arknights",
@@ -28,12 +28,13 @@
     "promptProse": "Stepping out from behind the velvet curtain of an arcade photo booth, W holds up a freshly printed strip of four glossy candid photos, giggling uncontrollably at their silly poses. The vibrant neon glow of arcade cabinets, claw machines, and flashing pixel marquees fills the background with vivid pink and cyan highlights.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "arcade photo booth",
-      "holding printed photo strip",
+      "holding photo strip",
       "giggling laughing expression",
       "arcade machines",
       "claw machines",
-      "neon pink and cyan lighting",
+      "neon lighting",
       "retro arcade background",
       "candid moment",
       "medium close-up"

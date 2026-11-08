@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_hat_mirror",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3017,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:27:53.533Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "entelechia_arknights_hat_mirror",
     "characterId": "entelechia_arknights",
@@ -28,6 +28,7 @@
     "promptProse": "Standing gracefully before a full-length gilded mirror inside a quiet, classical boutique, Entelechia adjusts the tilted brim of her elegant hat with poised fingertips. Warm, glowing vanity sconces illuminate the polished parquet flooring, velvet fitting curtains, and antique wooden millinery stands, reflecting her serene, calculating appraisal in the crystal glass.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "full-length gilded mirror",
       "classical boutique",
       "adjusting hat brim",

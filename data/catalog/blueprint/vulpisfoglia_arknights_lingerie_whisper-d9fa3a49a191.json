@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3119,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T06:36:43.004228700+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_lingerie_whisper",
     "characterId": "vulpisfoglia_arknights",
@@ -34,15 +34,20 @@
       "soft_lighting"
     ],
     "promptTokens": [
-      "wolf ears",
-      "desk lamp",
-      "sporty boyleg shorts",
-      "firm athletic midriff",
-      "indoors"
+      "standing",
+      "leaning against wall",
+      "holding dagger",
+      "fox ears",
+      "fox tail",
+      "brick wall",
+      "street lamp",
+      "puddle reflection",
+      "night",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Vulpisfoglia leans against weathered brick courtyard wall flipping tactical dagger, wearing a olive grey tactical athletic mesh bralette set. Lupo, fluffy dark wolf ears perked up, athletic tall frame amidst intense brooding dark eyes, rain puddle reflections under lone streetlamp.",
-    "animaCaption": "Vulpisfoglia leans against weathered brick courtyard wall flipping tactical dagger, wearing a olive grey tactical athletic mesh bralette set. Lupo, fluffy dark wolf ears perked up, athletic tall frame amidst intense brooding dark eyes, rain puddle reflections under lone streetlamp.",
+    "promptProse": "Vulpisfoglia leans against a weathered brick courtyard wall holding a tactical dagger, wearing an olive grey tactical athletic mesh bralette set. Vulpo, fluffy golden fox ears perked up, tall athletic frame with intense amber eyes, beside rain puddle reflections under a lone streetlamp.",
+    "animaCaption": "Vulpisfoglia leans against a weathered brick courtyard wall holding a tactical dagger, her golden fox ears alert beside rain puddle reflections under a streetlamp.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

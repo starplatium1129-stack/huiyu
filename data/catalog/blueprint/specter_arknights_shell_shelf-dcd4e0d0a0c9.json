@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_shell_shelf",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 3026,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:37:16.610Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "specter_arknights_shell_shelf",
     "characterId": "specter_arknights",
@@ -29,14 +29,17 @@
     "promptProse": "In a sun-dappled coastal salon filled with marine curiosities, Specter delicately places an iridescent spiral nautilus shell onto a dark mahogany display shelf, turning it so the pearlescent aperture catches the window light. Driftwood carvings, brass barometers, and linen curtains billowing in the sea breeze frame her elegant, artistic contemplation.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "coastal salon interior",
-      "arranging nautilus shell on shelf",
+      "seashell",
+      "wooden shelf",
       "iridescent pearlescent aperture",
       "dark mahogany display",
-      "driftwood carvings and brass barometers",
+      "wood carving",
+      "barometer",
       "billowing linen curtains",
-      "sea breeze",
       "artistic contemplation",
+      "soft daylight",
       "medium shot"
     ],
     "negativeTokens": [],

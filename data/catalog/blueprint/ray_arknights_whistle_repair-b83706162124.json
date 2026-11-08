@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_whistle_repair",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2908,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-07T04:42:20.106Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "ray_arknights_whistle_repair",
     "characterId": "ray_arknights",
@@ -29,14 +29,13 @@
     "promptProse": "At a tidy wooden worktable strewn with leather lanyards and miniature brass split-rings, Ray threads a sturdy braided cord through a vintage silver tracking whistle. Daylight from an adjacent casement window illuminates fine tool scratches, polishing cloths, and the focused, capable dexterity of her hands.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "wooden worktable",
       "threading silver tracking whistle",
       "braided cord lanyard",
       "split-rings and tools",
       "casement window daylight",
       "polishing cloths",
-      "focused capable dexterity",
-      "floppy rabbit ears",
       "medium close-up"
     ],
     "negativeTokens": [],

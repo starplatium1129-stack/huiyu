@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_market_feed",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2909,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-07T04:42:20.105Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "ray_arknights_market_feed",
     "characterId": "ray_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "In an aromatic pet merchant's stall in an open-air desert bazaar, Ray carefully compares two canvas sacks of dried seed mix and protein pellets, her nose wrinkling with discernment. Colorful woven saddle blankets, ceramic pet bowls, and tethered friendly desert beasts surround her in the bright, dusty marketplace sunlight.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "desert bazaar pet stall",
       "comparing feed sacks",
       "holding seed bags",
@@ -36,8 +37,8 @@
       "woven saddle blankets",
       "ceramic bowls",
       "desert marketplace sunshine",
-      "floppy rabbit ears",
       "lively outdoor market",
+      "warm ambient lighting",
       "medium shot"
     ],
     "negativeTokens": [],

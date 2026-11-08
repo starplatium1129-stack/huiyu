@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_after_souvenir",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2497,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-07T04:46:11.207Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "rena_liechtenauer_after_souvenir",
     "characterId": "rena_liechtenauer",
@@ -20,6 +20,7 @@
     "mood": "欣喜",
     "promptProse": "Outside a charming wooden souvenir shop in an old hot-spring town, Lena holds out a beautifully wrapped package with both hands toward her partner, her golden hair glowing in the crisp morning sun. The cobblestone lane, lined with traditional wooden facades, steam rising from street gutters, and colorful fabric banners, creates a delightfully authentic, romantic travel memory.",
     "promptTokens": [
+      "standing",
       "hot spring town street",
       "offering wrapped gift",
       "holding gift with both hands",
@@ -29,6 +30,7 @@
       "rising hot spring steam",
       "morning sunshine",
       "crisp autumn air",
+      "soft daylight",
       "medium shot"
     ],
     "animaCaption": "The gift is extended toward her partner outside the frame.",

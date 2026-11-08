@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_puzzle_clock",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3069,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-07T04:42:20.102Z",
+  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
   "data": {
     "id": "mon3tr_arknights_puzzle_clock",
     "characterId": "mon3tr_arknights",
@@ -26,16 +26,17 @@
       "window light",
       "medium shot"
     ],
-    "promptProse": "At a circular wooden table in a quiet activity room, Mon3tr carefully fits the final wooden gear-shaped jigsaw puzzle piece into a complex clockwork illustration. Sunlight reflects off the smooth polished puzzle surface, with colorful markers, timer devices, and storage bins creating a tidy, peaceful recreational setting.",
+    "promptProse": "Sitting at a circular wooden table in a quiet activity room, Mon3tr carefully fits the final wooden gear-shaped jigsaw puzzle piece into a complex clockwork illustration. Sunlight reflects off the smooth polished puzzle surface, with colorful markers, timer devices, and storage bins creating a tidy recreational setting.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "activity room table",
       "fitting jigsaw puzzle piece",
       "clockwork puzzle illustration",
       "wooden puzzle surface",
       "sunlight reflections",
       "timer devices and markers",
-      "quiet satisfaction",
+      "cat ears",
       "medium shot"
     ],
     "negativeTokens": [],

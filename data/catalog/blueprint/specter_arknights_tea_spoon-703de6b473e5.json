@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_tea_spoon",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3029,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:37:16.610Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "specter_arknights_tea_spoon",
     "characterId": "specter_arknights",
@@ -26,19 +26,20 @@
       "warm window light",
       "medium shot"
     ],
-    "promptProse": "Sitting in an atmospheric, wood-paneled tea salon, Specter stirs a cup of black tea with a silver spoon, pausing as the quiet clink of metal against porcelain resonates in the room. Warm amber light filters through lace blinds, casting intricate shadow filigree across the dark polished table, an antique clock, and her sharp, listening gaze attuned to distant oceanic echoes.",
+    "promptProse": "In a wood-paneled tea salon, Specter stirs a delicate porcelain teacup with a silver spoon at a wooden table, red eyes quiet as soft afternoon window light filters through lace blinds, casting gentle patterned light across her white hair, the teacup, and an antique mantel clock.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "wood-paneled tea salon",
-      "stirring teacup with silver spoon",
+      "stirring tea",
+      "teacup",
       "porcelain teacup",
-      "lace blind shadows",
-      "filigree patterns",
-      "dark polished table",
+      "tea table",
+      "lace blinds",
+      "window light",
+      "soft afternoon light",
       "antique mantel clock",
-      "sharp listening gaze",
-      "subtle uncanny elegance",
-      "medium shot"
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

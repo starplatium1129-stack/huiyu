@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_flower_press",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3043,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:39:18.782Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "nightingale_arknights_flower_press",
     "characterId": "nightingale_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Seated at a round wrought-iron table in a secluded garden gazebo, Nightingale arranges delicate blue forget-me-not petals between parchment sheets to craft a bookmark. Climbing white clematis vines weave through the gazebo arches, while golden late-afternoon sunbeams illuminate floating thistle down around her slender, gentle hands.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "garden gazebo",
       "wrought-iron table",
       "pressing blue flower petals",

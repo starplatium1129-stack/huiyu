@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_letters",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2379,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.359Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "ogiso_setsuna_letters",
     "characterId": "ogiso_setsuna",
@@ -20,6 +20,7 @@
     "mood": "认真",
     "promptProse": "At a tidy wooden bedroom desk under the cozy golden cone of a desk lamp, Setsuna reads a handwritten letter with blushing cheeks and shining eyes. Colored gel pens, delicate stationery envelopes, and framed school festival photos surround her hands, while soft night rain patters against the darkened window.",
     "promptTokens": [
+      "standing",
       "bedroom study desk",
       "reading handwritten letter",
       "blushing cheeks",
@@ -27,8 +28,7 @@
       "colored gel pens and stationery",
       "framed photos",
       "night rain on window",
-      "tender emotional warmth",
-      "medium close-up"
+      "medium shot"
     ],
     "animaCaption": "",
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_sheet_music",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2385,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.357Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "touma_kazusa_sheet_music",
     "characterId": "touma_kazusa",
@@ -20,16 +20,17 @@
     "mood": "日常",
     "promptProse": "Gathering loose, ink-annotated sheets of music into a black leather portfolio on the piano bench, Kazusa looks up sharply toward the doorway as if interrupted. The quiet music room is bathed in the cool silver twilight of early winter, with frost feathering the corners of the tall windows and a discarded woolen scarf draped over a chair.",
     "promptTokens": [
-      "gathering sheet music into folder",
+      "standing",
+      "sheet music",
+      "folder",
       "black leather portfolio",
       "piano bench",
-      "looking up sharply toward door",
+      "looking up",
       "cool silver twilight",
       "frosted window corners",
       "discarded woolen scarf",
       "quiet music room",
-      "defensive vulnerable posture",
-      "medium shot"
+      "cowboy shot"
     ],
     "animaCaption": "",
     "negativeTokens": [],

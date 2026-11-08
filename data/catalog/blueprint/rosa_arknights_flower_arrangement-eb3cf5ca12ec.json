@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_flower_arrangement",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2955,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-07T04:32:11.972Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "rosa_arknights_flower_arrangement",
     "characterId": "rosa_arknights",
@@ -29,8 +29,10 @@
     "promptProse": "Inside a bright, airy workshop, Rosa delicately arranges a variety of fresh winter flowers—white lilies, holly, and blue-tinted seasonal blooms—into a crystalline glass vase. Sunbeams stream through a large window, creating sparkling refractions on the vase, while scattered green stems, floral shears, and ribbons litter the wooden workbench, bathed in crisp, clean morning light.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "flower workshop",
-      "arranging bouquet in glass vase",
+      "flower arrangement",
+      "glass vase",
       "winter flowers",
       "floral shears and ribbons",
       "wooden workbench",

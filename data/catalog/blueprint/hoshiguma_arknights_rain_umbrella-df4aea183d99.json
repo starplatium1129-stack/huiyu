@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_rain_umbrella",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2995,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:21:24.678Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "hoshiguma_arknights_rain_umbrella",
     "characterId": "hoshiguma_arknights",
@@ -31,6 +31,7 @@
     "promptProse": "Under a steady evening downpour on a vibrant Lungmen street, Hoshiguma shares a single transparent umbrella, pulling the viewer close so their shoulders brush. The asphalt glistens with vivid reflections of neon shop signs and glowing red paper lanterns, while fine raindrops mist across the dark night air and halo the warm streetlights around them.",
     "animaCaption": "",
     "promptTokens": [
+      "leaning",
       "holding transparent umbrella",
       "sharing umbrella",
       "close to viewer",

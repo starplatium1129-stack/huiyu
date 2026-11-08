@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_seaside_walk",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 3028,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:37:16.610Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "specter_arknights_seaside_walk",
     "characterId": "specter_arknights",
@@ -28,6 +28,7 @@
     "promptProse": "Standing on a weathered wooden coastal boardwalk overlooking a surging, tempestuous gray ocean, Specter gazes out toward the churning foam, holding her dark shawl tight against the gale. Low scudding clouds, soaring sea gulls, and salty ocean spray surround her tall, gothic silhouette with an untamed, oceanic majesty.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "weathered coastal boardwalk",
       "surging tempestuous ocean",
       "churning sea foam",
@@ -37,6 +38,7 @@
       "salty spray",
       "tall gothic silhouette",
       "oceanic majesty",
+      "soft daylight",
       "wide shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_memory_notebook",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2956,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-07T04:37:16.607Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "rosmontis_arknights_memory_notebook",
     "characterId": "rosmontis_arknights",
@@ -30,6 +30,7 @@
     "promptProse": "At a low wooden study desk bathed in soft afternoon window light, Rosmontis carefully writes notes in her worn leather-bound memory notebook using a pencil with a kitten eraser. Scattered sticky notes, colored pencil sketches, and telekinetically hovering paper clips surround her as she concentrates earnestly on remembering the day.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "wooden study desk",
       "writing in memory notebook",
       "pencil with kitten eraser",

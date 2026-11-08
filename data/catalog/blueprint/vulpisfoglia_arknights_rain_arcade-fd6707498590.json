@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_rain_arcade",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2862,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-07T04:42:20.101Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_rain_arcade",
     "characterId": "vulpisfoglia_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Sitting at a cozy outdoor cafe table under a wide vaulted stone arcade while a torrential Mediterranean rainstorm washes the street, Vulpisfoglia sips an espresso with composed relaxation. Cascading rainwater gushes from stone gargoyle spouts into glistening cobblestone gutters, while warm cafe lamps illuminate her sharp, handsome features against the gray storm.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "vaulted stone arcade",
       "outdoor cafe table",
       "sipping espresso",

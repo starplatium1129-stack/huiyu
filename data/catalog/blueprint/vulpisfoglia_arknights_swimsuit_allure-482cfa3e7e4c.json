@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3118,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.335Z",
+  "updatedAt": "2026-11-08T06:36:43.004228700+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_swimsuit_allure",
     "characterId": "vulpisfoglia_arknights",
@@ -37,18 +37,22 @@
       "mafia_chic"
     ],
     "promptTokens": [
-      "wolf ears",
-      "lupo tail",
+      "standing",
+      "leaning on wall",
+      "fox ears",
+      "fox tail",
       "olive green monokini",
+      "holding cup",
       "iced coffee",
-      "cliff wall",
+      "limestone wall",
       "pine tree",
-      "confident",
-      "mediterranean"
+      "mediterranean",
+      "sunlight",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Vulpisfoglia leaning commanding yet relaxed against a sun-warmed limestone parapet beneath gnarled coastal pine branches. She wears a tailored Italian olive-green high-cut monokini accented with antique brass buckles and a sheer graphite sarong. Sipping a glass of iced espresso with lupo ears perked, her sharp amber eyes appraise the viewer with cool authority and magnetic charm.",
-    "animaCaption": "Vulpisfoglia leaning commanding yet relaxed against a sun-warmed limestone parapet beneath gnarled coastal pine branches. She wears a tailored Italian olive-green high-cut monokini accented with antique brass buckles and a sheer graphite sarong.",
+    "promptProse": "Vulpisfoglia leans commanding yet relaxed against a sun-warmed limestone parapet beneath coastal pine branches. She wears a tailored Italian olive-green high-cut monokini accented with antique brass buckles and a sheer graphite sarong. Sipping a glass of iced espresso with golden fox ears perked, her sharp amber eyes appraise the viewer with cool authority.",
+    "animaCaption": "Vulpisfoglia leans against a sun-warmed limestone parapet beneath coastal pine branches, holding a glass of iced espresso with her golden fox ears perked.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

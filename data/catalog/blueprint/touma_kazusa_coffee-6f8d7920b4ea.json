@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_coffee",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2384,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.355Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "touma_kazusa_coffee",
     "characterId": "touma_kazusa",
@@ -20,6 +20,7 @@
     "mood": "休息",
     "promptProse": "Sitting alone by the steamed-up window of a quiet, jazz-filled second-floor cafe, Kazusa holds a steaming ceramic mug of black coffee with both hands, watching silent snowflakes drift past glowing streetlamps outside. Condensation drips down the glass, framing her guarded, wistful gaze as soft amber cafe lighting reflects in her dark eyes.",
     "promptTokens": [
+      "sitting",
       "cafe window seat",
       "steamed-up glass window",
       "holding black coffee mug",

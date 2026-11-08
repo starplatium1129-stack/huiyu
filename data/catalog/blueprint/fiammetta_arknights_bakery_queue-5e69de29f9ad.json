@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_bakery_queue",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2977,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:28:56.619Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "fiammetta_arknights_bakery_queue",
     "characterId": "fiammetta_arknights",
@@ -26,17 +26,19 @@
       "warm light",
       "medium shot"
     ],
-    "promptProse": "Standing in a sun-drenched, bustling bakery queue, Fiammetta receives a warm, grease-spotted paper bag of freshly baked crusty bread from the apron-clad shopkeeper. The bakery is filled with the enticing aroma of yeast and sugar, while bright, cheerful morning light reflects off glass pastry displays brimming with tarts, rolls, and glistening fruit-topped danishes in the lively background.",
+    "promptProse": "Standing in a sun-drenched bakery queue on a cobblestone street, Fiammetta receives a warm paper bag of freshly baked bread at the shop counter, crossing her other arm with an impatient pout. Bright morning sunlight reflects off glass pastry displays brimming with fruit tarts, rolls, and golden croissants.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "bakery counter",
       "standing in queue",
-      "receiving paper bag of bread",
-      "warm fresh bread aroma",
+      "holding paper bag",
+      "bread",
+      "crossed arms",
+      "pout",
       "glass pastry displays",
       "fruit tarts and danishes",
       "bright morning light",
-      "cheerful bustling shop",
       "medium shot"
     ],
     "negativeTokens": [],

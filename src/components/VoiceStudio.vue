@@ -190,10 +190,6 @@ async function refreshVoiceStatus() {
     if (voiceBusy.value || ownedSpeech || operation !== operationRevision) return
     if (voiceOnline.value && voiceConfigured.value) {
       voiceStatus.value = data.online ? `${data.engine || '语音服务'} 已连接；可翻译或生成角色声线。` : '角色声线将在使用时加载。'
-      // 预热是 best-effort：失败只让首次合成稍慢，真实错误会在生成时展示。
-      void voiceApi.prepare({ voice, translation: voiceLang.value === 'ja' }, callOptions).then(() => {
-        if (viewActive && !controller.signal.aborted && request === statusRequest && voiceChar.value === voice) voiceLoaded.value = true
-      }).catch(() => {})
     } else if (voiceOnline.value) {
       voiceStatus.value = '当前角色声线尚未配置。'
     } else {

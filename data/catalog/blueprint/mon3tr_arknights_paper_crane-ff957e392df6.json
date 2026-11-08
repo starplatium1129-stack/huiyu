@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mon3tr_arknights_paper_crane",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3073,
   "createdAt": "2026-11-04T04:46:53.580783100+00:00",
-  "updatedAt": "2026-11-07T04:42:20.102Z",
+  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
   "data": {
     "id": "mon3tr_arknights_paper_crane",
     "characterId": "mon3tr_arknights",
@@ -26,17 +26,16 @@
       "daylight",
       "medium close-up"
     ],
-    "promptProse": "Sitting at a low metal worktable in a brightly lit recreation room, Mon3tr uses its delicate, sharp crystalline fingertips to fold a small origami paper crane, following step-by-step printed diagrams. Colored paper squares, discarded fold attempts, and warm overhead fluorescent light capture a surprising, endearing moment of delicate precision.",
+    "promptProse": "Sitting at a low metal worktable in a brightly lit recreation room, Mon3tr carefully folds a small origami paper crane, following step-by-step printed diagrams. Colored paper squares, discarded fold attempts, and warm overhead fluorescent light illuminate her focused expression and cat ears.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "recreation room table",
       "folding origami paper crane",
-      "delicate crystalline fingertips",
       "colored paper squares",
       "step-by-step diagrams",
       "bright overhead light",
-      "endearing precision",
-      "unusual tenderness",
+      "cat ears",
       "medium close-up"
     ],
     "negativeTokens": [],

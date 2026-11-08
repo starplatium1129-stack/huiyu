@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_museum_postcard",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2878,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-07T04:35:59.985Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "muelsyse_arknights_museum_postcard",
     "characterId": "muelsyse_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Standing beside a rotating display stand in a sunlit botanical museum gift shop, Muelsyse compares two beautifully printed postcards of extinct flora, holding them up to catch the window light. Surrounded by glass terrariums, pressed plant bookmarks, and shelves of nature field guides, she turns to the viewer with an earnest, enthusiastic discussion.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "museum gift shop",
       "holding botanical postcards",
       "comparing flower illustrations",

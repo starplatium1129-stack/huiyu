@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_lyrics",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2370,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.359Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "ogiso_setsuna_lyrics",
     "characterId": "ogiso_setsuna",
@@ -18,16 +18,15 @@
     "lighting": "soft window light",
     "camera": "medium shot",
     "mood": "专注",
-    "promptProse": "Curled up on a folding chair in an empty school music club room, Setsuna uses a wooden pencil to underline poignant lyric lines in an open notebook, softly mouthing the words to herself. Golden late-afternoon sunlight pours through dusty classroom windows, illuminating chalk dust, acoustic guitar cases, and the deep, earnest devotion in her brown eyes.",
+    "promptProse": "Curled up on a folding chair in an empty school music club room, Setsuna uses a wooden pencil to underline poignant lyric lines in an open notebook, softly mouthing the words to herself. Golden late-afternoon sunlight pours through dusty classroom windows, illuminating chalk dust, acoustic guitar cases, and the gentle focus in her brown eyes.",
     "promptTokens": [
+      "sitting",
       "school music club room",
       "underlining lyric notebook",
       "mouthing song lyrics",
       "folding chair",
       "golden afternoon sunlight",
       "chalk dust in air",
-      "acoustic guitar case",
-      "earnest devoted gaze",
       "school uniform",
       "medium shot"
     ],

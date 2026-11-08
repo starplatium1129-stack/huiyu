@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_ridge_map",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2849,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-07T04:42:20.097Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "pramanix_arknights_ridge_map",
     "characterId": "pramanix_arknights",
@@ -30,6 +30,7 @@
     "promptProse": "Standing at a windswept mountain pass overlook atop the snowy crags of Kjerag, Pramanix unfolds a heavy canvas topographical map against a weathered stone cairn. Swirling white snowflakes dance through the crisp alpine air, while dramatic azure peaks and sunlit glacier valleys stretch boundlessly beneath an awe-inspiring northern sky.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "windswept mountain pass",
       "snowy stone cairn",
       "holding canvas map",
@@ -39,6 +40,7 @@
       "boundless northern sky",
       "fluffy fur coat",
       "majestic alpine view",
+      "soft daylight",
       "wide shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_rehearsal_break",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2913,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-07T04:42:20.105Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "ray_arknights_rehearsal_break",
     "characterId": "ray_arknights",
@@ -31,15 +31,16 @@
     "promptProse": "Resting during band rehearsal in a studio corner, Ray hugs her electric guitar close to her chest, looking up at the viewer with a warm, flustered blush and an adorable shy smile. Neon rehearsal signs, stacked speaker monitors, and a sweating bottle of iced green tea on an amp cabinet create a casual, musically charged backstage intimacy.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "studio rehearsal corner",
       "hugging electric guitar",
       "shy flustered blush",
       "adorable smile",
       "neon rehearsal signs",
       "speaker monitors",
-      "floppy bunny ears",
       "iced tea on amplifier",
       "musical backstage intimacy",
+      "soft daylight",
       "medium close-up"
     ],
     "negativeTokens": [],

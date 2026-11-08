@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_bus_stop",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2388,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.351Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "touma_kazusa_bus_stop",
     "characterId": "touma_kazusa",
@@ -20,15 +20,16 @@
     "mood": "等待",
     "promptProse": "Inside a glass bus shelter illuminated by a solitary buzzing fluorescent tube during a cold evening rainstorm, Touma Kazusa waits with hands deep in her dark trench coat pockets, holding a creased paper ticket. Streaming rainwater sheets down the glass walls, distorting the headlights of distant passing vehicles and neon signs into abstract streaks across the wet asphalt.",
     "promptTokens": [
+      "standing",
       "glass bus shelter",
       "waiting in rainstorm",
-      "hands in trench coat pockets",
+      "hands in pockets",
+      "trench coat",
       "creased bus ticket",
       "fluorescent tube lighting",
       "streaming rainwater on glass",
       "distorted headlights and neon",
       "wet dark asphalt",
-      "gloomy melancholic mood",
       "wide shot"
     ],
     "animaCaption": "Streetlight reflected from the wet pavement reveals her face and the bus shelter.",

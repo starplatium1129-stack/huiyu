@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_museum_audio",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2897,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-07T04:35:59.983Z",
+  "updatedAt": "2026-11-08T03:33:19.687375200+00:00",
   "data": {
     "id": "hoolheyak_arknights_museum_audio",
     "characterId": "hoolheyak_arknights",
@@ -26,18 +26,14 @@
       "day",
       "medium shot"
     ],
-    "promptProse": "In a quiet, dimly lit museum exhibition hall, Ho'olheyak rests a hand against a glass display vitrine showcasing ancient terracotta relics and bronze ornaments. She listens with an amused, skeptical expression as she tilts an audio guide earpiece away from her ear, while recessed spotlights create dramatic circular pools of light on the dark granite gallery floor.",
+    "promptProse": "Ho’olheyak listens to an audio guide beside a museum display.",
     "animaCaption": "",
     "promptTokens": [
-      "museum exhibition hall",
-      "glass display vitrine",
-      "ancient relics and bronze",
-      "audio guide earpiece",
-      "amused skeptical expression",
-      "recessed spotlights",
-      "pools of light",
-      "dark granite floor",
-      "feathered wings",
+      "standing",
+      "headphones",
+      "museum display",
+      "soft display lighting",
+      "day",
       "medium shot"
     ],
     "negativeTokens": [],

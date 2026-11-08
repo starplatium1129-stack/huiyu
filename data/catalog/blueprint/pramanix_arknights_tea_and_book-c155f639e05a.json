@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_tea_and_book",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2850,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-07T04:42:20.099Z",
+  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
   "data": {
     "id": "pramanix_arknights_tea_and_book",
     "characterId": "pramanix_arknights",
@@ -26,18 +26,19 @@
       "window light",
       "medium close-up"
     ],
-    "promptProse": "Sitting in a quiet wood-paneled tearoom in the temple sanctuary, Pramanix pauses mid-page in a leather-bound theological text to inhale the soothing aroma of freshly brewed mountain black tea. Soft lamplight illuminates antique brass prayer wheels, polished cedar tables, and the peaceful, scholarly serenity of her secluded mountain life.",
+    "promptProse": "Sitting in a quiet wood-paneled tearoom in the temple sanctuary, Pramanix pauses mid-page with an open leather-bound book to lift a steaming porcelain teacup. Soft lamplight illuminates antique brass prayer wheels, polished cedar tables, and her fluffy snow leopard tail resting beside the chair.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
+      "holding teacup",
+      "open book",
       "wood-paneled temple tearoom",
-      "leather-bound theological book",
       "steaming black tea",
       "antique brass prayer wheels",
       "polished cedar table",
       "warm ambient lamplight",
-      "peaceful scholarly serenity",
       "fluffy snow leopard tail",
-      "medium shot"
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

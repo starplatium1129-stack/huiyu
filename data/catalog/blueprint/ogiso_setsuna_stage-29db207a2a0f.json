@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_stage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2372,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.360Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "ogiso_setsuna_stage",
     "characterId": "ogiso_setsuna",
@@ -18,8 +18,9 @@
     "lighting": "stage lights from beyond the curtain",
     "camera": "cowboy shot",
     "mood": "期待",
-    "promptProse": "Standing in the shadowed wings of a bustling school festival stage, Setsuna holds a wireless microphone tightly with both hands, peeking through a gap in the velvet curtain toward the cheering crowd. Blinding stage lights illuminate swirling stage haze and silhouette banners overhead, while her heart beats visibly beneath her school blazer.",
+    "promptProse": "Standing in the quiet backstage area of a bustling school festival stage, Setsuna holds a wireless microphone tightly with both hands, peeking through a gap in the velvet curtain toward the cheering crowd. Blinding stage lights illuminate swirling stage haze and silhouette banners overhead, while her heart beats visibly beneath her school blazer.",
     "promptTokens": [
+      "standing",
       "backstage curtain gap",
       "holding microphone tightly",
       "peeking at cheering crowd",
@@ -28,7 +29,7 @@
       "school festival banners",
       "nervous excited anticipation",
       "school blazer",
-      "medium shot"
+      "cowboy shot"
     ],
     "animaCaption": "",
     "negativeTokens": [],

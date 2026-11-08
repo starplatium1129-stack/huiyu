@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_sfw_b9_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1697,
   "createdAt": null,
-  "updatedAt": "2026-11-07T04:46:11.216Z",
+  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
   "data": {
     "id": "vivy_sfw_b9_03",
     "title": "Vivy · 雨中的伞与流浪狗",
@@ -30,17 +30,17 @@
       "doorway_light",
       "medium_shot"
     ],
-    "promptProse": "Under the sheltering concrete eaves of a quiet park pavilion during an evening storm, Vivy kneels gently to angle her clear umbrella over a soaked, shivering stray dog huddled on the pavement. Golden doorway illumination from a nearby caretaker cottage washes across the wet park gravel, water puddles, and her compassionate, gentle android smile.",
+    "promptProse": "Standing center stage in an open amphitheater bathed in dynamic spotlights, Vivy holds her microphone close as she sings. Brilliant stage lights cut through theatrical haze, illuminating the vast auditorium before her.",
     "promptTokens": [
-      "park pavilion concrete eaves",
-      "kneeling in rainstorm",
-      "angling umbrella over stray dog",
-      "shivering soaked puppy",
-      "cottage doorway illumination",
-      "wet park gravel",
-      "puddle reflections",
-      "compassionate gentle smile",
-      "medium shot"
+      "standing",
+      "stage",
+      "holding microphone",
+      "singing",
+      "stage lighting",
+      "spotlight",
+      "concert hall",
+      "confetti",
+      "wide shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

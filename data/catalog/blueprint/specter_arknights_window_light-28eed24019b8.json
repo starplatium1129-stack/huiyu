@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_window_light",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3034,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:37:16.610Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "specter_arknights_window_light",
     "characterId": "specter_arknights",
@@ -30,8 +30,10 @@
     "promptProse": "Leaning back against an antique mullioned window frame as rain pours through the night, Specter extends an open, pale hand toward the viewer with a gentle, hypnotic smile. A single kerosene lantern on the nearby sill casts warm, flickering orange light across her dark lace cuffs, water droplets running down the glass, and the seductive invitation in her crimson eyes.",
     "animaCaption": "",
     "promptTokens": [
+      "walking",
       "mullioned window frame",
-      "reaching open hand toward viewer",
+      "reaching toward viewer",
+      "open hand",
       "gentle hypnotic smile",
       "flickering kerosene lantern",
       "dark lace cuffs",

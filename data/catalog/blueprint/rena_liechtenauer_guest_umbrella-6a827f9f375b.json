@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_guest_umbrella",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2426,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T04:46:11.211Z",
+  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
   "data": {
     "id": "rena_liechtenauer_guest_umbrella",
     "characterId": "rena_liechtenauer",
@@ -18,16 +18,17 @@
     "lighting": "overcast daylight",
     "camera": "medium shot",
     "mood": "细心",
-    "promptProse": "At the stone entryway of an authentic countryside inn after a fresh rainstorm, Lena sorts through a ceramic umbrella jar, setting aside wet bamboo-frame umbrellas with diligent care. Raindrops sparkle along the cedar eaves and mossy garden stepping stones, while soft paper lanterns illuminate the welcoming entrance.",
+    "promptProse": "At the wooden entryway of a traditional inn on a drizzly afternoon, Lena Liechtenauer sorts through a ceramic umbrella stand, carefully setting aside wet umbrellas with diligent care. Raindrops glisten along the cedar eaves and mossy garden stepping stones outside, while soft warm lanterns illuminate the genkan.",
     "promptTokens": [
+      "standing",
       "traditional inn entrance",
+      "genkan",
       "sorting wet umbrellas",
       "ceramic umbrella stand",
-      "bamboo-frame umbrellas",
+      "water droplets on umbrella",
       "dripping cedar eaves",
       "mossy garden stepping stones",
       "paper lantern glow",
-      "fresh rainy scent",
       "medium shot"
     ],
     "animaCaption": "",

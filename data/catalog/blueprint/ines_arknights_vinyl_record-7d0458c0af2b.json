@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_vinyl_record",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2870,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-07T04:31:51.049Z",
+  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
   "data": {
     "id": "ines_arknights_vinyl_record",
     "characterId": "ines_arknights",
@@ -26,18 +26,19 @@
       "warm lamplight",
       "medium shot"
     ],
-    "promptProse": "In a dimly lit music nook filled with shelves of vinyl records and vintage stereo gear, Ines carefully places a needle on an spinning record player, listening intently to the music. The soft, rhythmic crackle of the vinyl, warm amber glow from a tube amplifier, and shelves overflowing with album art create an intimate, sound-rich environment.",
+    "promptProse": "In a cozy music nook filled with shelves of vinyl records, Ines carefully places a needle on a spinning record player on a wooden cabinet. A warm amber desk lamp illuminates the turntable, her hands, and nearby album sleeves under gentle evening light.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "music nook",
       "vinyl record player",
-      "vintage stereo equipment",
+      "turntable",
       "placing needle on record",
-      "tube amplifier amber glow",
+      "wooden cabinet",
+      "warm lamplight",
+      "table lamp",
       "shelves of album art",
-      "rhythmic sound",
-      "intimate musical atmosphere",
-      "medium shot"
+      "medium close-up"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

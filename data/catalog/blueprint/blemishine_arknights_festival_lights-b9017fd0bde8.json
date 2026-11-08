@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_festival_lights",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3010,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:24:28.728Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "blemishine_arknights_festival_lights",
     "characterId": "blemishine_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Standing in the vibrant town square of Kazimierz at twilight, Blemishine gazes upward in wide-eyed wonder at dazzling canopies of hanging fairy lights and illuminated banners stretching between ornate buildings. The evening air glows with warm amber and festive purple hues, while cobblestones reflect the sparkling celebration and laughing festival-goers in the background.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "town square at twilight",
       "looking up in wonder",
       "canopies of fairy lights",

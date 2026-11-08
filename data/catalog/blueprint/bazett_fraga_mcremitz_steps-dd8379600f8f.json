@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_steps",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2409,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.362Z",
+  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_steps",
     "characterId": "bazett_fraga_mcremitz",
@@ -18,17 +18,17 @@
     "lighting": "light from the church doorway",
     "camera": "full body",
     "mood": "沉着",
-    "promptProse": "Descending the worn limestone steps of an ancient stone cathedral under the warm glow of an archway lantern, Bazett straightens the collar of her suit jacket with disciplined precision. Rain-slicked cobblestones in the square reflect the stained-glass window lights, while ancient gargoyles and heavy oak portals frame her commanding exit into the night.",
+    "promptProse": "Sitting on the wide stone steps outside a historic cathedral during a midday break, Bazett holds a paper-wrapped sandwich, watching city pedestrians in the adjacent park. Warm sunlight filters through autumn foliage, casting soft shadows across the granite stairs.",
     "promptTokens": [
-      "cathedral limestone steps",
-      "archway lantern glow",
-      "straightening suit collar",
-      "disciplined precision",
-      "rain-slicked cobblestones",
-      "stained-glass window reflections",
-      "heavy oak portal",
-      "commanding nighttime presence",
-      "full body"
+      "sitting on stairs",
+      "stone steps",
+      "holding sandwich",
+      "eating",
+      "park in background",
+      "autumn trees",
+      "afternoon sunlight",
+      "calm expression",
+      "medium shot"
     ],
     "animaCaption": "Soft light from the church reveals her face and the stone steps.",
     "negativeTokens": [

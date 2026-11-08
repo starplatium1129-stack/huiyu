@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_winter_guesthouse",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2928,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-07T04:39:18.788Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "pozyomka_arknights_winter_guesthouse",
     "characterId": "pozyomka_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Sitting beside a heavy timber window in a rustic alpine guesthouse, Pozyomka cradles a steaming stoneware mug of spiced winter tea in both hands, gazing serenely at snow-covered rooftops outside. A cozy wool blanket drapes over her knees, with rough-hewn pine walls, a crackling woodstove, and glowing lantern light crafting an atmosphere of profound warmth and peace.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "timber guesthouse window",
       "cradling steaming stoneware mug",
       "spiced winter tea",

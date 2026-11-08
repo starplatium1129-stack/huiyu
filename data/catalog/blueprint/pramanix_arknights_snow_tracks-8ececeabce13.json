@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_snow_tracks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2852,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-07T04:42:20.098Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "pramanix_arknights_snow_tracks",
     "characterId": "pramanix_arknights",
@@ -36,7 +36,8 @@
       "frost-coated silver birch",
       "fluffy tail brushing snow",
       "peaceful wilderness exploration",
-      "medium shot"
+      "soft daylight",
+      "full body"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

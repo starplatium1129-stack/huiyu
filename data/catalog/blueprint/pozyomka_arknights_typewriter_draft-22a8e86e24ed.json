@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_typewriter_draft",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2926,
   "createdAt": "2026-11-04T04:26:05.975831300+00:00",
-  "updatedAt": "2026-11-07T04:39:18.787Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "pozyomka_arknights_typewriter_draft",
     "characterId": "pozyomka_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Seated beside a tall sunlit study window overlooking snowy pines, Pozyomka pauses with her fingers hovering over the round keys of a vintage mechanical typewriter, deep in inspired thought. A fresh sheet of cotton paper is loaded in the carriage, with crumpled revision balls in a wicker bin, a ticking desk clock, and golden sunlight highlighting her silver-pink hair.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "vintage mechanical typewriter",
       "fingers hovering over keys",
       "cotton paper in carriage",
@@ -37,6 +38,7 @@
       "crumpled draft papers",
       "ticking desk clock",
       "inspired creative pause",
+      "soft daylight",
       "medium shot"
     ],
     "negativeTokens": [],

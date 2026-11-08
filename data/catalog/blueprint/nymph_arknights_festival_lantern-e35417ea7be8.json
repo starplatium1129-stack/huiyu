@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_festival_lantern",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2895,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-07T04:39:18.784Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "nymph_arknights_festival_lantern",
     "characterId": "nymph_arknights",
@@ -27,19 +27,18 @@
       "warm light",
       "full body"
     ],
-    "promptProse": "In a lively festival square at twilight, Nymph points excitedly at a brightly illuminated animal-shaped paper lantern hanging from overhead festoon lines. Warm red and gold lantern glows reflect in her wide crimson eyes and glossy curved horns, while celebratory banners, food stalls, and laughing festival crowds fill the festive night.",
+    "promptProse": "In a lively festival square at twilight, Nymph points excitedly at a brightly illuminated animal-shaped paper lantern hanging from overhead festoon lines. Warm red and gold lantern glows reflect in her wide pink eyes and glossy horns, while celebratory banners and brightly lit festival stalls fill the colorful night.",
     "animaCaption": "",
     "promptTokens": [
+      "walking",
       "twilight festival square",
       "pointing at paper lantern",
       "animal-shaped lantern",
       "festoon string lights",
-      "crimson eyes and horns",
+      "warm lantern light",
       "celebratory banners",
-      "food stall aromas",
-      "laughing festival crowd",
-      "playful joyful energy",
-      "full body"
+      "festival stalls",
+      "medium shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

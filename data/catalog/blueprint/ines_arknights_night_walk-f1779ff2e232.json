@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_night_walk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2872,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-07T04:31:51.047Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "ines_arknights_night_walk",
     "characterId": "ines_arknights",
@@ -28,6 +28,7 @@
     "promptProse": "Strolling along a quiet urban sidewalk late at night, Ines walks with a steady, graceful pace under the warm, rhythmic glow of glowing streetlights. The damp, dark asphalt of the street reflects the amber halos of the lights, while quiet city storefronts, locked bicycle racks, and the distant, twinkling city skyline create a calm, atmospheric nighttime mood.",
     "animaCaption": "",
     "promptTokens": [
+      "walking",
       "night walk",
       "quiet urban sidewalk",
       "rhythmic streetlights",

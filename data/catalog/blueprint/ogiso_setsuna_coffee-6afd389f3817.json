@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_coffee",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2374,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.358Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "ogiso_setsuna_coffee",
     "characterId": "ogiso_setsuna",
@@ -20,8 +20,9 @@
     "mood": "轻松",
     "promptProse": "Seated at a small round table in a sun-drenched second-floor cafe overlooking a bustling city intersection, Setsuna neatly pens a list of favorite pop ballads onto the back of a paper napkin. A warm ceramic mug of caramel latte with latte art sits beside a silver pen and her phone, while bright morning daylight bathes her radiant, cheerful smile.",
     "promptTokens": [
+      "sitting",
       "second-floor cafe table",
-      "writing song list on napkin",
+      "writing on napkin",
       "caramel latte with art",
       "silver pen and phone",
       "busy street intersection below",

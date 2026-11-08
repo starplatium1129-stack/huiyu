@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_market_apples",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2890,
   "createdAt": "2026-11-04T04:17:10.952616500+00:00",
-  "updatedAt": "2026-11-07T04:39:18.785Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "nymph_arknights_market_apples",
     "characterId": "nymph_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "At a bustling outdoor fruit market stall under a yellow canvas canopy, Nymph examines two shiny red apples, holding them up to inspect their glossy polish with a cheeky smirk. Wooden crates piled high with oranges, peaches, and berries, alongside blackboard price signs and bustling shoppers, create an authentic, mouthwatering market ambiance.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "outdoor fruit stall",
       "yellow canvas canopy",
       "holding two shiny apples",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_fold_towels",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2425,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T04:46:11.211Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "rena_liechtenauer_fold_towels",
     "characterId": "rena_liechtenauer",
@@ -20,13 +20,14 @@
     "mood": "专心",
     "promptProse": "On the sunlit wooden engawa veranda of a traditional hot-spring ryokan, Lena carefully folds crisp, sun-dried white cotton towels into a neat, fragrant stack. A manicured Japanese zen garden with raked gravel and bamboo water fountains spreads out before her, bathed in warm, gentle afternoon sunlight.",
     "promptTokens": [
+      "standing",
       "traditional ryokan engawa",
       "folding clean white towels",
       "neat linen stack",
       "manicured zen garden",
-      "raked gravel and bamboo fountain",
+      "raked gravel",
+      "bamboo fountain",
       "warm afternoon sunlight",
-      "domestic peaceful grace",
       "gentle focused expression",
       "medium shot"
     ],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_library_flower",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3041,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:39:18.783Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "nightingale_arknights_library_flower",
     "characterId": "nightingale_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "In the hushed reading alcove of an ancient botanical library, Nightingale gently turns the vellum page of an illustrated floral herbarium. A green glass banker's lamp casts a focused emerald and amber circle of light over watercolor wild lilies, while towering dark walnut bookshelves create a haven of quiet contemplation.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "botanical library alcove",
       "turning vellum page",
       "illustrated floral herbarium",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_postcard_stall",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3018,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:27:53.534Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "entelechia_arknights_postcard_stall",
     "characterId": "entelechia_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "At an open-air vintage postcard kiosk on a sunlit cobblestone promenade, Entelechia delicately slides a sepia-toned architectural card from a revolving wire rack. Dappled sunlight filters through the canvas umbrella canopy, illuminating stacks of antique stamps, tourist maps, and the picturesque European canal and arched stone bridges in the tranquil background.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "open-air postcard kiosk",
       "revolving wire rack",
       "holding sepia postcard",

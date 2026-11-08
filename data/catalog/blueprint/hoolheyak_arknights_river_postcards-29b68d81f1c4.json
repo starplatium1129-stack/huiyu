@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_river_postcards",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2901,
   "createdAt": "2026-11-04T04:19:24.444282600+00:00",
-  "updatedAt": "2026-11-07T04:35:59.983Z",
+  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
   "data": {
     "id": "hoolheyak_arknights_river_postcards",
     "characterId": "hoolheyak_arknights",
@@ -26,17 +26,18 @@
       "daylight",
       "medium shot"
     ],
-    "promptProse": "Browsing a rustic revolving metal postcard stand beside a stone river embankment, Ho'olheyak holds up a sepia photograph of an ancient arched bridge, examining its weathered masonry with connoisseur appreciation. Shimmering sunlight dances off the gentle river currents behind her, while weeping willows, vintage kiosks, and strolling pedestrians create a tranquil afternoon scene.",
+    "promptProse": "Browsing a revolving metal postcard stand beside a stone river embankment, Ho'olheyak holds up a vintage postcard with an arched stone bridge, examining the details with a subtle smile. Gentle afternoon sunlight glints off the river currents behind her, framed by weeping willows and a tranquil riverside promenade.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "riverside embankment",
       "revolving postcard stand",
-      "holding sepia postcard",
-      "connoisseur appreciation",
-      "shimmering river currents",
+      "holding postcard",
+      "looking at postcard",
+      "gentle smile",
+      "shimmering river",
       "weeping willows",
-      "sunny afternoon daylight",
-      "vintage kiosk",
+      "afternoon sunlight",
       "medium shot"
     ],
     "negativeTokens": [],

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_bookshop_ribbon",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2950,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-07T04:32:11.967Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "rosa_arknights_bookshop_ribbon",
     "characterId": "rosa_arknights",
@@ -28,11 +28,13 @@
     "promptProse": "In the quietest corner of an old bookshop, Rosa carefully ties a delicate blue ribbon around a thick, antique hardbound book. Towering dark wooden bookshelves loaded with leather-bound classics fill the background, while the soft, amber glow of vintage reading lamps creates a serene, scholarly sanctuary for her peaceful activity.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "old bookshop interior",
       "towering wooden bookshelves",
       "tying blue ribbon",
       "antique hardbound book",
-      "soft amber reading lamp light",
+      "reading lamp",
+      "amber light",
       "leather-bound spines",
       "serene scholarly atmosphere",
       "peaceful activity",

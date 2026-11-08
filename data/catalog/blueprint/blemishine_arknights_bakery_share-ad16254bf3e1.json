@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_bakery_share",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3011,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-07T04:24:28.723Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "blemishine_arknights_bakery_share",
     "characterId": "blemishine_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "Stepping out from a cozy artisan bakery in early morning, Blemishine beams brightly while clutching a warm brown paper bag filled with crusty baguettes. Golden dawn light washes over the cobblestone street, illuminating glass bakery displays of fruit tarts and pastries, while mouthwatering steam wafts into the crisp morning air.",
     "animaCaption": "",
     "promptTokens": [
+      "standing",
       "holding paper bag",
       "warm fresh bread",
       "artisan bakery storefront",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vulpisfoglia_arknights_wine_tasting",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2857,
   "createdAt": "2026-11-04T04:09:13.633613700+00:00",
-  "updatedAt": "2026-11-07T04:42:20.101Z",
+  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
   "data": {
     "id": "vulpisfoglia_arknights_wine_tasting",
     "characterId": "vulpisfoglia_arknights",
@@ -25,17 +25,17 @@
       "evening",
       "medium close-up"
     ],
-    "promptProse": "At an intimate speakeasy mahogany bar lined with backlit bottles of vintage amaro, Vulpisfoglia gently swirls a glass of deep ruby Chianti, observing its legs against the warm bar lighting. Brass footrails, smoked mirrors, and jazz vinyl playing softly create an atmosphere of mature, sophisticated camaraderie as she shares a toast with the viewer.",
+    "promptProse": "Sitting at a speakeasy mahogany bar lined with backlit bottles of vintage amaro, Vulpisfoglia gently swirls a glass of deep ruby wine, looking toward the viewer with a subtle, knowing smile. Brass accents, smoked mirrors, and warm amber bar lighting illuminate the polished counter and her tailored suit.",
     "animaCaption": "",
     "promptTokens": [
-      "speakeasy mahogany bar",
-      "swirling ruby wine glass",
-      "backlit vintage bottles",
-      "smoked mirrors",
-      "brass footrails",
-      "mature sophisticated atmosphere",
-      "warm bar lighting",
+      "sitting at bar",
+      "holding wine glass",
       "subtle knowing smile",
+      "speakeasy mahogany bar",
+      "backlit bottles",
+      "smoked mirrors",
+      "warm amber lighting",
+      "bar counter",
       "medium close-up"
     ],
     "negativeTokens": [],

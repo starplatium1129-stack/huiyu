@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosa_arknights_photo_album",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2954,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-07T04:32:11.973Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "rosa_arknights_photo_album",
     "characterId": "rosa_arknights",
@@ -29,6 +29,7 @@
     "promptProse": "On a comfortable, cushioned window seat, Rosa flips through an expansive, leather-bound family photo album, her face lighting up with nostalgic fondness as she encounters a cherished childhood photograph. Soft twilight filters through the window pane, casting a gentle, moody glow over the aged paper pages, photo corners, and her reflective, sentimental expression.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "cushioned window seat",
       "leather-bound photo album",
       "nostalgic childhood photograph",

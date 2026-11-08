@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "muelsyse_arknights_window_lights",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2883,
   "createdAt": "2026-11-04T04:14:35.971176500+00:00",
-  "updatedAt": "2026-11-07T04:35:59.986Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "muelsyse_arknights_window_lights",
     "characterId": "muelsyse_arknights",
@@ -31,6 +31,7 @@
     "promptProse": "Standing before a panoramic floor-to-ceiling high-rise window overlooking a neon-drenched metropolis at night, Muelsyse turns playfully back toward the viewer, pointing to their twin reflections transparently mirrored on the dark glass. Warm amber room lighting softly illuminates her silhouette and aqua hair tips, contrasting against the endless galaxy of city lights outside.",
     "animaCaption": "",
     "promptTokens": [
+      "leaning",
       "panoramic high-rise window",
       "city skyline night lights",
       "pointing at glass reflection",

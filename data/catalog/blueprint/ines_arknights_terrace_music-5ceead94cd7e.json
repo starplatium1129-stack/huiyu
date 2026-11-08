@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ines_arknights_terrace_music",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2875,
   "createdAt": "2026-11-04T04:12:12.440020100+00:00",
-  "updatedAt": "2026-11-07T04:31:51.048Z",
+  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
   "data": {
     "id": "ines_arknights_terrace_music",
     "characterId": "ines_arknights",
@@ -27,16 +27,17 @@
       "night",
       "medium close-up"
     ],
-    "promptProse": "On a wide, elegant stone terrace overlooking a moonlit garden at night, Ines stands relaxed, her posture attuned to the soft, lingering notes of ambient background music drifting through the air. Glowing paper lanterns nestled in garden bushes create warm, inviting pockets of light that contrast with the deep blue shadows of the night terrace.",
+    "promptProse": "On a wide stone terrace overlooking a quiet garden at dusk, Ines leans against the balustrade and looks back toward the viewer. Warm golden light spills from an open doorway, highlighting her silhouette and horns against the indigo twilight sky and distant garden lanterns.",
     "animaCaption": "",
     "promptTokens": [
-      "elegant stone terrace",
-      "listening to music",
-      "moonlit garden background",
-      "glowing paper lanterns",
-      "soft warm light pockets",
-      "deep blue night shadows",
-      "relaxed contemplative posture",
+      "standing",
+      "leaning on railing",
+      "looking at viewer",
+      "stone terrace",
+      "open doorway",
+      "warm indoor lighting",
+      "garden lanterns",
+      "twilight sky",
       "medium shot"
     ],
     "negativeTokens": [],

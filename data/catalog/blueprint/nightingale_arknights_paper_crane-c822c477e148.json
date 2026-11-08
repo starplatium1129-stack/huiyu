@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nightingale_arknights_paper_crane",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3040,
   "createdAt": "2026-11-04T04:44:31.169195600+00:00",
-  "updatedAt": "2026-11-07T04:39:18.783Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "nightingale_arknights_paper_crane",
     "characterId": "nightingale_arknights",
@@ -26,17 +26,18 @@
       "daylight",
       "medium close-up"
     ],
-    "promptProse": "At a low wooden tea table in a peaceful meditation room, Nightingale meticulously folds an iridescent white origami crane with her slender fingertips. A simple ceramic vase holding a single flowering branch and a bamboo water basin outside the open sliding screen complete a sanctuary of gentle healing and hope.",
+    "promptProse": "At a low wooden tea table in a peaceful meditation room, Nightingale meticulously folds an iridescent white origami crane with her slender fingertips. A simple ceramic vase holding a single flowering branch and a bamboo water basin outside the open sliding screen complete a serene setting of gentle healing.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "meditation room",
       "folding white origami crane",
-      "slender fingertips",
-      "ceramic vase with branch",
-      "bamboo water basin",
-      "sliding screen doorway",
-      "soft natural light",
-      "sanctuary of healing and hope",
+      "folding origami crane",
+      "vase",
+      "flower branch",
+      "bamboo fountain",
+      "shoji",
+      "natural light",
       "medium close-up"
     ],
     "negativeTokens": [],

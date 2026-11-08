@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_empty_hall",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 2373,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-07T04:44:16.358Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "ogiso_setsuna_empty_hall",
     "characterId": "ogiso_setsuna",
@@ -18,18 +18,18 @@
     "lighting": "学园祭散场礼堂顶灯柔和余辉与舞台微光",
     "camera": "wide shot",
     "mood": "余韵",
-    "promptProse": "Sitting alone in the first row of an empty, shadowed auditorium after the crowd has dispersed, Setsuna hugs a folded school festival program against her chest, looking up at the darkened stage with a tender, bittersweet smile. Faint blue work lights illuminate floating dust motes and rows of empty red theater seats, capturing her nostalgic longing.",
+    "promptProse": "Sitting alone in the first row of an empty, shadowed auditorium after the crowd has dispersed, Setsuna hugs a folded school festival program against her chest, looking up at the darkened stage with a tender, bittersweet smile. Faint blue work lights illuminate floating dust motes and rows of empty red theater seats, capturing her nostalgic warmth.",
     "promptTokens": [
+      "sitting",
       "empty auditorium front row",
       "hugging folded festival program",
       "tender bittersweet smile",
-      "darkened stage",
       "faint blue work lights",
       "floating dust motes",
-      "rows of red theater seats",
+      "theater seats",
       "nostalgic longing",
       "school uniform",
-      "medium shot"
+      "wide shot"
     ],
     "animaCaption": "Fading auditorium stage lights cast gentle golden trails across the velvet seats where Setsuna sits in quiet nostalgia.",
     "negativeTokens": [],

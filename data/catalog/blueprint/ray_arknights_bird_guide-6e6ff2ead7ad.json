@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ray_arknights_bird_guide",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2907,
   "createdAt": "2026-11-04T04:21:58.632181200+00:00",
-  "updatedAt": "2026-11-07T04:42:20.105Z",
+  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
   "data": {
     "id": "ray_arknights_bird_guide",
     "characterId": "ray_arknights",
@@ -30,10 +30,10 @@
     "promptProse": "Seated at an oversized oak study desk in a nature reserve library, Ray points with a finger at a vivid hand-colored illustration of a desert sand-grouse in an open wildlife compendium. Sunlight streams through tall arched windows, illuminating floating dust specks, bird skulls, and specimen feather jars in a rich natural history setting.",
     "animaCaption": "",
     "promptTokens": [
+      "sitting",
       "nature reserve library",
       "pointing at bird illustration",
       "wildlife compendium",
-      "floppy bunny ears",
       "feather jars and specimens",
       "tall arched windows",
       "warm sunlight beams",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_shared_umbrella",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2854,
   "createdAt": "2026-11-04T04:07:12.451480400+00:00",
-  "updatedAt": "2026-11-07T04:42:20.098Z",
+  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
   "data": {
     "id": "pramanix_arknights_shared_umbrella",
     "characterId": "pramanix_arknights",
@@ -31,6 +31,7 @@
     "promptProse": "Walking along a snow-dusted village lane during a soft evening snowfall, Pramanix holds a heavy oiled-paper umbrella overhead, pulling the viewer half a step closer under the shared canopy. Warm yellow lantern light spilling from rustic chalet windows reflects off the fresh powdery snow, highlighting her shy, blushing smile and the gentle flakes resting on her dark eyelashes.",
     "animaCaption": "",
     "promptTokens": [
+      "leaning",
       "snowy village lane",
       "sharing oiled-paper umbrella",
       "soft evening snowfall",
