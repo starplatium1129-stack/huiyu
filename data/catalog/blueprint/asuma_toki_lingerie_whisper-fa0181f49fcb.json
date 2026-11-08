@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_lingerie_whisper",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3269,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.298Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "asuma_toki_lingerie_whisper",
     "characterId": "asuma_toki",
@@ -42,11 +42,13 @@
       "stoic face",
       "blonde twintails",
       "industrial bed",
-      "deadpan cute"
+      "deadpan cute",
+      "wall lamp",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Toki Asuma executing her bedtime routine with mechanical precision inside a Millennium workshop bunker. Clad in a form-fitting graphite-black seamless lounge bodysuit, she sits ramrod straight on her metal cot. Holding up her signature double peace signs beside her stoic cheeks without cracking a smile, her bright blue eyes await the Sensei's goodnight pats.",
-    "animaCaption": "Toki Asuma executing her bedtime routine with mechanical precision inside a Millennium workshop bunker. Clad in a form-fitting graphite-black seamless lounge bodysuit, she sits ramrod straight on her metal cot.",
+    "promptProse": "Toki Asuma executing her bedtime routine with mechanical precision inside a Millennium workshop bunker. Clad in a form-fitting graphite-black seamless lounge bodysuit, she sits ramrod straight on her metal cot. Holding up her signature double peace signs beside her stoic cheeks without cracking a smile, her bright blue eyes await the Sensei's goodnight pats. Cool industrial wall lamps illuminate the metal shelving with sharp geometric shadows, casting a clean, sterile technological glow across her resting posture.",
+    "animaCaption": "Toki Asuma executing her bedtime routine with mechanical precision inside a Millennium workshop bunker. Clad in a form-fitting graphite-black seamless lounge bodysuit, she sits ramrod straight on her metal cot. Cool industrial wall lamps illuminate the metal shelving with sharp geometric shadows, casting a clean, sterile technological glow across her resting posture.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

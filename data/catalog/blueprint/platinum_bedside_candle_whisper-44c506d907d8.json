@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_bedside_candle_whisper",
+  "revision": 1,
+  "sortOrder": 3108,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_bedside_candle_whisper",
+    "characterId": "platinum_arknights",
+    "outfitId": "midnight_silk_slip",
+    "title": "白金 · 烛影摇曳的榻上依偎",
+    "category": "闺房温存",
+    "description": "【静谧深闺卧室·深夜】暖调香薰烛光在丝绒软榻旁静静摇曳。白金侧卧在深色床单上，单手支着下巴，冰蓝细吊带衬托出优美的腰线与背部线条。她指尖轻轻勾弄着你的衣襟，低声诉说着卸下刺客面具后的真实心事。",
+    "location": "丝绒寝居双人床榻",
+    "action": "侧卧倚枕伸手轻勾衣襟低语",
+    "timeOfDay": "夜深人静",
+    "lighting": "床头琥珀色香薰烛光跳动弱光",
+    "camera": "斜俯卧姿近景，目光与呼吸近距离聚焦",
+    "mood": "深情依恋",
+    "sceneTags": [
+      "lying on side",
+      "on bed",
+      "pillows",
+      "candlelight",
+      "dim lighting",
+      "tender smile",
+      "intimate"
+    ],
+    "promptProse": "Lying gracefully on side upon a deep velvet bed surrounded by soft candlelight, Platinum rests her cheek upon a silk pillow. Her slender fingers reach out delicately towards the viewer. The warm flickering amber candlelight glints along the curves of her ice-blue slip dress, capturing a quiet, deeply intimate moment of unspoken devotion.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "lying on side",
+      "on bed",
+      "pillows",
+      "candlelight",
+      "dim lighting",
+      "reaching towards viewer",
+      "tender smile",
+      "intimate atmosphere",
+      "romantic",
+      "soft shadows",
+      "glowing skin"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "coverageTags": [
+      "nsfw",
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

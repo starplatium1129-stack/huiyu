@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hitachi_mako_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3197,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.740Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hitachi_mako_lingerie_whisper",
     "characterId": "hitachi_mako",
@@ -43,7 +43,8 @@
       "toned abs",
       "amber eyes",
       "short hair",
-      "loyal bodyguard"
+      "loyal bodyguard",
+      "moonlight"
     ],
     "negativeTokens": [],
     "promptProse": "Mako Hitachi dropping soundlessly from the timber rafters into a defensive guard stance inside the master's bedchamber. Dressed for combat readiness in a snug black cotton sarashi chest-wrap and athletic high-slit sleep shorts that reveal her chiseled ninja core, she drops to one knee. Her amber eyes stay vigilant even as a charming flush betrays her modesty under the moonlit lattice.",

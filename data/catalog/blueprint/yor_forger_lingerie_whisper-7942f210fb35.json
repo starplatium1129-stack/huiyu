@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_forger_lingerie_whisper",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3259,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "yor_forger_lingerie_whisper",
     "characterId": "yor_forger",
@@ -42,11 +42,14 @@
       "red eyes",
       "bed",
       "criss-cross back strapping",
-      "indoors"
+      "indoors",
+      "vanity light",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box.",
-    "animaCaption": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box.",
+    "promptProse": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box. Warm vanity mirror lighting reflects a gentle golden luster across her porcelain neck, softening her assassin instincts into tender domestic serenity.",
+    "animaCaption": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box. Warm vanity mirror lighting reflects a gentle golden luster across her porcelain neck, softening her assassin instincts into tender domestic serenity.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

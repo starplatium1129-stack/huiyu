@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "katou_megumi_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3313,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.994Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "katou_megumi_lingerie_whisper",
     "characterId": "katou_megumi",
@@ -42,11 +42,14 @@
       "swinging legs on bed",
       "phone in hand",
       "brown bob hair",
-      "neutral gentle expression"
+      "neutral gentle expression",
+      "soft lighting",
+      "ceiling light",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Megumi Kato exuding her quietly unbeatable main-heroine aura from the edge of the bed late in the evening. Wearing an understated ivory-white ribbed cotton camisole and matching sleep shorts, she lazily swings her bare feet while texting on her phone. Turning her head with her trademark tranquil, unruffled gaze, her soft brown eyes welcome the viewer with effortless domestic peace.",
-    "animaCaption": "Megumi Kato exuding her quietly unbeatable main-heroine aura from the edge of the bed late in the evening. Wearing an understated ivory-white ribbed cotton camisole and matching sleep shorts, she lazily swings her bare feet while texting on her phone.",
+    "promptProse": "Megumi Kato exuding her quietly unbeatable main-heroine aura from the edge of the bed late in the evening. Wearing an understated ivory-white ribbed cotton camisole and matching sleep shorts, she lazily swings her bare feet while texting on her phone. Turning her head with her trademark tranquil, unruffled gaze, her soft brown eyes welcome the viewer with effortless domestic peace. A quiet diffused ceiling lamp sheds gentle, unpretentious warm illumination across the clean bedroom, softly highlighting her relaxed profile and mobile screen.",
+    "animaCaption": "Megumi Kato exuding her quietly unbeatable main-heroine aura from the edge of the bed late in the evening. Wearing an understated ivory-white ribbed cotton camisole and matching sleep shorts, she lazily swings her bare feet while texting on her phone. A quiet diffused ceiling lamp sheds gentle, unpretentious warm illumination across the clean bedroom, softly highlighting her relaxed profile and mobile screen.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

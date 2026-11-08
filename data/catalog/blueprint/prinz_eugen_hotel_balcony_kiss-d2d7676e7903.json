@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_hotel_balcony_kiss",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2152,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "prinz_eugen_hotel_balcony_kiss",
     "characterId": "prinz_eugen",
@@ -39,7 +39,10 @@
       "wind",
       "sultry_smile",
       "looking_at_viewer",
-      "medium_shot"
+      "medium_shot",
+      "moonlight",
+      "starlight",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Prinz Eugen in a bikini holding a wine glass on a moonlit resort balcony above the sea.",

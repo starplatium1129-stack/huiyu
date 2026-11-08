@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshino_ai_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3273,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.787Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hoshino_ai_lingerie_whisper",
     "characterId": "hoshino_ai",
@@ -42,7 +42,9 @@
       "winking",
       "finger heart",
       "star pupils in purple eyes",
-      "stunning smile"
+      "stunning smile",
+      "starlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Ai Hoshino basking in the quiet aftermath of a sold-out dome concert inside her private dressing room. Clothed in a shimmering magenta-pink silk slip dress dusted with sparkling star spangles, she sits before the illuminated vanity mirror. Forming a playful finger-heart at her cheek while winking with her mesmerizing star-pupiled eyes, she offers an intimate, bewitching glimpse behind the idol's mask.",

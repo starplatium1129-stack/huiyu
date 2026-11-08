@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kamome_pier_suitcase_perch_treasure_map",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2346,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kamome_pier_suitcase_perch_treasure_map",
     "characterId": "kushima_kamome",
@@ -29,7 +29,8 @@
       "bright_smile",
       "ocean",
       "blue_sky",
-      "medium_shot"
+      "medium_shot",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kamome Kushima sitting on her trunk at the pier with a treasure map in hand.",

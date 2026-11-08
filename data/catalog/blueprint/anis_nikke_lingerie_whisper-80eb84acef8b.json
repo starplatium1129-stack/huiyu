@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "anis_nikke_lingerie_whisper",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 3378,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "anis_nikke_lingerie_whisper",
     "characterId": "anis_nikke",
@@ -43,11 +43,14 @@
       "holding soda can",
       "leg over armrest",
       "curvy",
-      "relaxed smirk"
+      "relaxed smirk",
+      "dim lighting",
+      "screen glow",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Anis indulging in lazy late-night comfort in the outpost commander's quarters. She sports a relaxed yellow-and-white ribbed athletic tank top paired with grey cotton sleep shorts accentuating her full, curvaceous frame. Sprawling deep into a plush armchair with one leg slung over the armrest while savoring an iced soda can, she glances back with a hilariously uninhibited, affectionate comrade smirk.",
-    "animaCaption": "Anis lounges in an armchair with one leg over the armrest, holding a cold can of soda.",
+    "promptProse": "Anis indulging in lazy late-night comfort in the outpost commander's quarters. She sports a relaxed yellow-and-white ribbed athletic tank top paired with grey cotton sleep shorts accentuating her full, curvaceous frame. Sprawling deep into a plush armchair with one leg slung over the armrest while savoring an iced soda can, she glances back with a hilariously uninhibited, affectionate comrade smirk. The cool flickering glow of the television screen and a spill of soft white light from the cracked refrigerator illuminate the room, casting casual shadows across the couch.",
+    "animaCaption": "Anis lounges in an armchair with one leg over the armrest, holding a cold can of soda. The cool flickering glow of the television screen and a spill of soft white light from the cracked refrigerator illuminate the room, casting casual shadows across the couch.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

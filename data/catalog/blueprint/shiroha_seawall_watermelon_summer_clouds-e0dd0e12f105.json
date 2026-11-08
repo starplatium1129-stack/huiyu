@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiroha_seawall_watermelon_summer_clouds",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2334,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "shiroha_seawall_watermelon_summer_clouds",
     "characterId": "naruse_shiroha",
@@ -19,7 +19,7 @@
     "lighting": "dazzling seaside summer sun illuminating pure white hair and ocean foam",
     "camera": "medium_shot",
     "mood": "pristine island youth, nostalgic Key summer atmosphere, adorable tsundere gap moe",
-    "promptProse": "Perched on a seaside seawall under summer clouds, white-haired Shiroha eats watermelon, casting a shy tsundere glance with crimson eyes.",
+    "promptProse": "Perched on a seaside seawall under summer clouds, white-haired Shiroha eats watermelon, casting a shy tsundere glance with crimson eyes. Clear, intense island sunlight beats down on the concrete seawall, reflecting brilliant white light off breaking waves under billowing cumulus clouds.",
     "promptTokens": [
       "seawall",
       "ocean",
@@ -30,10 +30,13 @@
       "sitting",
       "wind_blown_hair",
       "slight_blush",
-      "medium_shot"
+      "medium_shot",
+      "sunlight",
+      "direct sunlight",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "animaCaption": "Shiroha Naruse eating fresh watermelon on a coastal breakwater under sunny skies.",
+    "animaCaption": "Shiroha Naruse eating fresh watermelon on a coastal breakwater under sunny skies. Clear, intense island sunlight beats down on the concrete seawall, reflecting brilliant white light off breaking waves under billowing cumulus clouds.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

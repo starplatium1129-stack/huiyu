@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fubuki_one_punch_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3339,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.658Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "fubuki_one_punch_lingerie_whisper",
     "characterId": "fubuki_one_punch",
@@ -43,11 +43,14 @@
       "dark green hair",
       "hourglass figure",
       "queenly smirk",
-      "night skyline"
+      "night skyline",
+      "candlelight",
+      "city lights",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Fubuki holding court within her high-rise penthouse suite late at night. She reclines with regal elegance upon an emerald velvet chaise lounge, dressed in a plunging deep-green crushed velvet slip gown with a high slit accentuating her iconic hourglass curves. Swirling a vintage wine glass while fixing her piercing green gaze on the viewer, she exudes absolute commanding magnetism.",
-    "animaCaption": "Fubuki holding court within her high-rise penthouse suite late at night. She reclines with regal elegance upon an emerald velvet chaise lounge, dressed in a plunging deep-green crushed velvet slip gown with a high slit accentuating her iconic hourglass curves.",
+    "promptProse": "Fubuki holding court within her high-rise penthouse suite late at night. She reclines with regal elegance upon an emerald velvet chaise lounge, dressed in a plunging deep-green crushed velvet slip gown with a high slit accentuating her iconic hourglass curves. Swirling a vintage wine glass while fixing her piercing green gaze on the viewer, she exudes absolute commanding magnetism. A panoramic sea of glowing city lights beyond the floor-to-ceiling glass blends with flickering scented candlelight on the marble table, wrapping her emerald velvet gown in opulence.",
+    "animaCaption": "Fubuki holding court within her high-rise penthouse suite late at night. She reclines with regal elegance upon an emerald velvet chaise lounge, dressed in a plunging deep-green crushed velvet slip gown with a high slit accentuating her iconic hourglass curves. A panoramic sea of glowing city lights beyond the floor-to-ceiling glass blends with flickering scented candlelight on the marble table, wrapping her emerald velvet gown in opulence.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3497,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "shiiba_tsumugi_lingerie_whisper",
     "characterId": "shiiba_tsumugi",
@@ -42,7 +42,10 @@
       "delicate puff sleeves",
       "tiny gathered neckline",
       "soft pastel tone",
-      "indoors"
+      "indoors",
+      "starlight",
+      "desk lamp",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown. Short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner amidst warm bedside light.",

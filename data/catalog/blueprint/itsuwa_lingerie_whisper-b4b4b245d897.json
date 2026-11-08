@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3474,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.893Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "itsuwa_lingerie_whisper",
     "characterId": "itsuwa",
@@ -43,11 +43,13 @@
       "violent red blush",
       "steam",
       "dark hair",
-      "flustered"
+      "flustered",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Itsuwa completely overwhelmed by mortification while executing her 'hot towel service' plan outside Kamijou Touma's room. Wearing only a tucked white terrycloth bath towel and hair wrap fresh from the shower, she balances a wooden lacquer tray with trembling hands. Her entire face flushes into a steaming scarlet blaze of hopeless, pure-hearted embarrassment.",
-    "animaCaption": "Itsuwa completely overwhelmed by mortification while executing her 'hot towel service' plan outside Kamijou Touma's room. Wearing only a tucked white terrycloth bath towel and hair wrap fresh from the shower, she balances a wooden lacquer tray with trembling hands.",
+    "promptProse": "Itsuwa completely overwhelmed by mortification while executing her 'hot towel service' plan outside Kamijou Touma's room. Wearing only a tucked white terrycloth bath towel and hair wrap fresh from the shower, she balances a wooden lacquer tray with trembling hands. Her entire face flushes into a steaming scarlet blaze of hopeless, pure-hearted embarrassment. Warm white hallway ceiling light catches rising steam from the hot bath towel, illuminating her flushed dewy cheeks and earnest, flustered posture.",
+    "animaCaption": "Itsuwa completely overwhelmed by mortification while executing her 'hot towel service' plan outside Kamijou Touma's room. Wearing only a tucked white terrycloth bath towel and hair wrap fresh from the shower, she balances a wooden lacquer tray with trembling hands. Warm white hallway ceiling light catches rising steam from the hot bath towel, illuminating her flushed dewy cheeks and earnest, flustered posture.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

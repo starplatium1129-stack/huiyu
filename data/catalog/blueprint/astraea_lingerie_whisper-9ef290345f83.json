@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_lingerie_whisper",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3459,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.282Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "astraea_lingerie_whisper",
     "characterId": "astraea",
@@ -43,11 +43,14 @@
       "futon blanket",
       "teary eyes",
       "blonde hair",
-      "funny cute"
+      "funny cute",
+      "flashlight",
+      "dim lighting",
+      "glow"
     ],
     "negativeTokens": [],
-    "promptProse": "Astraea caught red-handed hoarding midnight snacks beneath her fluffy futon covers. Wearing a pure white sheer slip chemise accented with soft feather trim, her golden photon wings flutter frantically as she is caught with half a dorayaki in her mouth and a bag of crisps in her arms, tears of panic welling in her large golden eyes.",
-    "animaCaption": "Astraea caught red-handed hoarding midnight snacks beneath her fluffy futon covers. Wearing a pure white sheer slip chemise accented with soft feather trim, her golden photon wings flutter frantically as she is caught with half a dorayaki in her mouth and a bag of crisps in her arms, tears of panic welling in her large golden eyes.",
+    "promptProse": "Astraea caught red-handed hoarding midnight snacks beneath her fluffy futon covers. Wearing a pure white sheer slip chemise accented with soft feather trim, her golden photon wings flutter frantically as she is caught with half a dorayaki in her mouth and a bag of crisps in her arms, tears of panic welling in her large golden eyes. A narrow beam of flashlight illumination from the lifted blanket corner mingles with a faint golden glow from her feathers, creating playful high-contrast shadows.",
+    "animaCaption": "Astraea caught red-handed hoarding midnight snacks beneath her fluffy futon covers. Wearing a pure white sheer slip chemise accented with soft feather trim, her golden photon wings flutter frantically as she is caught with half a dorayaki in her mouth and a bag of crisps in her arms, tears of panic welling in her large golden eyes. A narrow beam of flashlight illumination from the lifted blanket corner mingles with a faint golden glow from her feathers, creating playful high-contrast shadows.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

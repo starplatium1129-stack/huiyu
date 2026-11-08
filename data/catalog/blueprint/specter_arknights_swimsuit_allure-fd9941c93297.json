@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3151,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.136Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "specter_arknights_swimsuit_allure",
     "characterId": "specter_arknights",
@@ -43,7 +43,8 @@
       "submerged stairs",
       "ocean ruins",
       "mist",
-      "mysterious smile"
+      "mysterious smile",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Specter descending into the surging tide along the submerged white marble steps of a ruined seaside chapel. She is adorned in an exquisite gothic nun-inspired corset swimdress of contrasting black and alabaster white with delicate lace trims. Holding her damp ruffled skirt hem daintily, she strokes her long wavy silver locks with an enigmatic, rapturous smile as dawn mist envelops the sea.",

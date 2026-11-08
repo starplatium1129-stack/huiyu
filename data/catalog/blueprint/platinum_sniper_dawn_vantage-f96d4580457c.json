@@ -1,0 +1,56 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_sniper_dawn_vantage",
+  "revision": 1,
+  "sortOrder": 3100,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_sniper_dawn_vantage",
+    "characterId": "platinum_arknights",
+    "outfitId": "assassin_standard",
+    "title": "白金 · 拂晓高塔的天马视界",
+    "category": "战斗高光",
+    "description": "【大骑士领钟楼天台·拂晓】清晨冷风掠过卡西米尔的哥特式尖顶，白金单膝跪在天台石砌围栏后，从容拉开漆黑重弓。箭簇尖端亮起微弱的源石光晕，青蓝眼眸平静无波，锁定了数千米外的商业联合会目标。",
+    "location": "大骑士领钟楼天台",
+    "action": "单膝跪姿拉满机械重弓瞄准",
+    "timeOfDay": "拂晓黎明",
+    "lighting": "地平线冷蓝与薄金晨曦对冲光",
+    "camera": "仰视中远景，高耸尖顶与城市地平线为底",
+    "mood": "冷静专注",
+    "sceneTags": [
+      "standing",
+      "kneeling",
+      "holding bow",
+      "aiming",
+      "rooftop",
+      "dawn light",
+      "city skyline"
+    ],
+    "promptProse": "On a gothic clocktower rooftop at chilly daybreak, Platinum kneels gracefully behind stone balustrades, pulling back a sleek high-tech compound longbow. Her silver-white straight hair and hooded cape whip dynamically in the morning gale. A glowing crystalline arrow tip illuminates her sharp, tranquil blue eyes, overlooking the sprawling skyline of Kazimierz in soft dawn mist.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "kneeling",
+      "holding bow",
+      "aiming",
+      "compound bow",
+      "rooftop",
+      "gothic clocktower",
+      "dawn sky",
+      "city skyline",
+      "wind",
+      "floating hair",
+      "intense gaze",
+      "cool lighting"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "combat"
+    ],
+    "compositionIntent": "single"
+  }
+}

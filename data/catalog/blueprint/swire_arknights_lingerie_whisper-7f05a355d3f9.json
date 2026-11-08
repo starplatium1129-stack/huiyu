@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "swire_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3168,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "swire_arknights_lingerie_whisper",
     "characterId": "swire_arknights",
@@ -41,11 +41,14 @@
       "metallic gold tiger embroidery",
       "thigh-high slit",
       "delicate gold chain straps",
-      "indoors"
+      "indoors",
+      "chandelier",
+      "city lights",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Swire reclines on luxury velvet lounge chair by rooftop infinity pool, wearing a inky black heavy silk slip gown. Feline, tiger ears and striped tail flicking lazily, holding crystal goblet with pomegranate juice amidst glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline.",
-    "animaCaption": "Swire reclines on luxury velvet lounge chair by rooftop infinity pool, wearing a inky black heavy silk slip gown. Feline, tiger ears and striped tail flicking lazily, holding crystal goblet with pomegranate juice amidst glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline.",
+    "promptProse": "Swire reclines on luxury velvet lounge chair by rooftop infinity pool, wearing a inky black heavy silk slip gown. Feline, tiger ears and striped tail flicking lazily, holding crystal goblet with pomegranate juice amidst glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline. Dazzling Victoria harbor skyline lights blend with the lavish crystal chandelier above, bathing the penthouse suite in radiant, wealthy golden warmth.",
+    "animaCaption": "Swire reclines on luxury velvet lounge chair by rooftop infinity pool, wearing a inky black heavy silk slip gown. Feline, tiger ears and striped tail flicking lazily, holding crystal goblet with pomegranate juice amidst glamorous voluminous blonde curls, haughty smirking green eyes, glittering Lungmen skyscraper skyline. Dazzling Victoria harbor skyline lights blend with the lavish crystal chandelier above, bathing the penthouse suite in radiant, wealthy golden warmth.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

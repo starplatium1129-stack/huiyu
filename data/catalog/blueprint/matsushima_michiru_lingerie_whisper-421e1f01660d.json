@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matsushima_michiru_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3530,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "matsushima_michiru_lingerie_whisper",
     "characterId": "matsushima_michiru",
@@ -42,7 +42,9 @@
       "high-waisted bloomers shorts",
       "bright energetic cotton",
       "playful tsundere loungewear",
-      "indoors"
+      "indoors",
+      "desk lamp",
+      "glow"
     ],
     "negativeTokens": [],
     "promptProse": "Matsushima Michiru stands with hands on hips puffing out chest then blushing, wearing a lemon yellow polka dot camisole set. Bright blonde twin tails flying, fake haughty expression breaking into blush, lemon soda cans and vitamin jars on desk amidst bright dorm room lighting.",

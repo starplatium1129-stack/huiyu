@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3172,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "roxy_migurdia_lingerie_whisper",
     "characterId": "roxy_migurdia",
@@ -42,7 +42,8 @@
       "floating",
       "fine accordion pleats",
       "tiny white ribbon bows",
-      "indoors"
+      "indoors",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Roxy Migurdia sits on rustic wooden bed hugging oversized water-god magic staff, wearing a ocean blue double-layered chiffon camisole slip. Witch hat set on pillow, blue twin braids resting on shoulders, deeply blushing face amidst bare toes curling on rug, floating aquatic magic light sphere, cozy study room.",

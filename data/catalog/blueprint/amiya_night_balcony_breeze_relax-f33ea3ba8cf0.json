@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_night_balcony_breeze_relax",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2627,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "amiya_night_balcony_breeze_relax",
     "characterId": "amiya",
@@ -19,7 +19,7 @@
     "lighting": "cool starlight and distant nebulae mixed with soft warm deck footlights",
     "camera": "medium_shot",
     "mood": "peaceful quiet sanctuary, heartfelt unburdened warmth",
-    "promptProse": "Standing at the landship observation railing under a canopy of stars, Amiya holds a warm steaming mug. Her oversized knit sweater slips softly over one shoulder as she turns with a peaceful, loving gaze in the cool night breeze.",
+    "promptProse": "Standing at the landship observation railing under a canopy of stars, Amiya holds a warm steaming mug. Her oversized knit sweater slips softly over one shoulder as she turns with a peaceful, loving gaze in the cool night breeze. Distant starlight and faint nebulae glow above the observation deck, blending with the gentle amber illumination of low deck footlights along the railing.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -40,10 +40,12 @@
       "wind",
       "gentle_smile",
       "looking_at_viewer",
-      "medium_shot"
+      "medium_shot",
+      "starlight",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Amiya standing on an observation deck in an oversized sweater under a starry sky.",
+    "animaCaption": "Amiya standing on an observation deck in an oversized sweater under a starry sky. Distant starlight and faint nebulae glow above the observation deck, blending with the gentle amber illumination of low deck footlights along the railing.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,

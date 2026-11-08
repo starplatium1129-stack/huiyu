@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3170,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.684Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "goldenglow_arknights_lingerie_whisper",
     "characterId": "goldenglow_arknights",
@@ -42,11 +42,14 @@
       "yellow floral camisole",
       "hairbrush stuck",
       "teary eyes",
-      "funny cute"
+      "funny cute",
+      "fairy lights",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Susie (Goldenglow) in a state of comical despair inside her personal styling salon quarters. Dressed in a charming buttercup-yellow floral cotton camisole set, her pastel pink hair and feline ears have exploded into an enormous frizzy puffball of static electricity. Clutching a hairbrush stuck in her static mane with tearful golden eyes, she whines cutely for the Doctor's rescue.",
-    "animaCaption": "Susie (Goldenglow) in a state of comical despair inside her personal styling salon quarters. Dressed in a charming buttercup-yellow floral cotton camisole set, her pastel pink hair and feline ears have exploded into an enormous frizzy puffball of static electricity.",
+    "promptProse": "Susie (Goldenglow) in a state of comical despair inside her personal styling salon quarters. Dressed in a charming buttercup-yellow floral cotton camisole set, her pastel pink hair and feline ears have exploded into an enormous frizzy puffball of static electricity. Clutching a hairbrush stuck in her static mane with tearful golden eyes, she whines cutely for the Doctor's rescue. A string of warm fairy lights wrapped around the vanity mirror casts a soft peach glow over her fluffy pink feline ears and flustered smile.",
+    "animaCaption": "Susie (Goldenglow) in a state of comical despair inside her personal styling salon quarters. Dressed in a charming buttercup-yellow floral cotton camisole set, her pastel pink hair and feline ears have exploded into an enormous frizzy puffball of static electricity. A string of warm fairy lights wrapped around the vanity mirror casts a soft peach glow over her fluffy pink feline ears and flustered smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasumigaoka_utaha_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3198,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.985Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kasumigaoka_utaha_lingerie_whisper",
     "characterId": "kasumigaoka_utaha",
@@ -43,11 +43,14 @@
       "dangling slipper",
       "glasses",
       "laptop",
-      "seductive smirk"
+      "seductive smirk",
+      "desk lamp",
+      "dim lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Utaha Kasumigaoka commanding the room from her swivel chair in a luxury hotel suite while writing her novel. Dressed in a provocative wine-red silk slip with a sky-high slit revealing her flawless sheer black pantyhose-clad legs, she lounges with crossed thighs, a hotel slipper dangling from her pointed toe. Peering over her glasses with a venomous, intoxicating smirk, she challenges the viewer.",
-    "animaCaption": "Utaha Kasumigaoka commanding the room from her swivel chair in a luxury hotel suite while writing her novel. Dressed in a provocative wine-red silk slip with a sky-high slit revealing her flawless sheer black pantyhose-clad legs, she lounges with crossed thighs, a hotel slipper dangling from her pointed toe.",
+    "promptProse": "Utaha Kasumigaoka commanding the room from her swivel chair in a luxury hotel suite while writing her novel. Dressed in a provocative wine-red silk slip with a sky-high slit revealing her flawless sheer black pantyhose-clad legs, she lounges with crossed thighs, a hotel slipper dangling from her pointed toe. Peering over her glasses with a venomous, intoxicating smirk, she challenges the viewer. The narrow warm beam of an antique brass desk lamp pools across manuscript pages and black coffee mugs, casting long sultry shadows over her crossed legs.",
+    "animaCaption": "Utaha Kasumigaoka commanding the room from her swivel chair in a luxury hotel suite while writing her novel. Dressed in a provocative wine-red silk slip with a sky-high slit revealing her flawless sheer black pantyhose-clad legs, she lounges with crossed thighs, a hotel slipper dangling from her pointed toe. The narrow warm beam of an antique brass desk lamp pools across manuscript pages and black coffee mugs, casting long sultry shadows over her crossed legs.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

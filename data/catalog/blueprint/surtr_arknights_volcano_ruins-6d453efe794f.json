@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_volcano_ruins",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 518,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "action": "单手将炽热的莱瓦汀巨剑抗在肩头，身后熔岩火巨人拔地而起，暗红长发与炽热火星在狂风中疯狂飞扬",
     "camera": "wide shot, low angle, Surtr in the foreground with the fire giant rising behind",
@@ -30,7 +30,11 @@
       "outstretched hand",
       "smoke",
       "fire particles",
-      "wide shot"
+      "wide shot",
+      "firelight",
+      "flame",
+      "volcano",
+      "warm lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [

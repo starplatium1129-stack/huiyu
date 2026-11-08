@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_steamy_bathroom_mirror",
+  "revision": 1,
+  "sortOrder": 3107,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_steamy_bathroom_mirror",
+    "characterId": "platinum_arknights",
+    "outfitId": "bath_towel_wrap",
+    "title": "白金 · 水雾氤氲的沐后私语",
+    "category": "私密时光",
+    "description": "【大理石浴室·夜间】温热的水汽在大理石墙壁和镜面上凝结成细密水珠。白金单手扶着镜台，另一只手拿着干毛巾轻拭着湿漉漉的发梢，白皙双颊被热气熏染得微红，眼波流转间带着一丝羞涩的嗔怪。",
+    "location": "大理石雾气浴室梳妆镜前",
+    "action": "手执毛巾擦拭湿发抚弄耳际",
+    "timeOfDay": "深夜沐浴后",
+    "lighting": "雾气漫射的乳白顶灯与镜前柔光",
+    "camera": "镜面虚实双重构图半身景深",
+    "mood": "微醺羞涩",
+    "sceneTags": [
+      "bathroom",
+      "steam",
+      "condensation",
+      "damp hair",
+      "wet hair",
+      "blush",
+      "mirror reflection"
+    ],
+    "promptProse": "Inside a luxurious marble bathroom filled with rising warm steam and condensation on mirrors, Platinum stands wrapping a white towel around her chest. She delicately dries her damp silver hair with a hand towel, water droplets tracing down her bare slender shoulders. Her cheeks flush with post-bath warmth, casting a coy glance at the open doorway.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "bathroom",
+      "steam",
+      "condensation",
+      "damp hair",
+      "wet hair",
+      "blush",
+      "flushed skin",
+      "holding towel",
+      "water drops",
+      "mirror reflection",
+      "soft lighting",
+      "alluring gaze",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "coverageTags": [
+      "nsfw",
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

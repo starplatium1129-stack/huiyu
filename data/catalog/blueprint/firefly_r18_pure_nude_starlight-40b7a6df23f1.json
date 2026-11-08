@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_r18_pure_nude_starlight",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1874,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
   "data": {
     "id": "firefly_r18_pure_nude_starlight",
     "characterId": "firefly_hsr",
@@ -15,52 +15,56 @@
     "sampleRating": "R15",
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@tony taka",
-    "description": "落地观星穹顶下的纯白大床上，全裸的成年流萤长发如瀑散落。修长笔直的双腿在柔白被单上大张弓起，双手十指紧扣着爱人的手背，在强烈的绝顶浪潮冲击中仰起修长粉颈失神啜泣——「啊……全部……都被你填满了……永远……不要放开我……！」",
-    "action": "全裸仰卧白床单，双腿大张高抬，双手紧握恋人手掌迎来绝顶抽搐",
+    "description": "能够仰望漫天银河的阁楼卧室内，流萤恬静地侧卧在蓬松的大床上。浅银色的长发铺散在羽枕间，在巨大玻璃天窗倾泻的星光下泛着清透的微蓝。她单手枕在微红的面颊下，青紫渐变的明眸倒映着绚烂星河与心爱之人，嘴角带着释怀而温柔的甜美微笑。",
+    "action": "侧卧在仰望夜空的阁楼床榻上，银发在透光天窗下染着星辉，单手枕在颊边，如梦似幻的双眸带着安稳而深情的笑意，卸去一切沉重负担",
     "location": "观星穹顶卧室纯白大床",
     "timeOfDay": "深夜",
     "mood": "炽烈绝顶",
     "lighting": "穹顶流淌的璀璨群星冷辉与床头柔暖微光",
-    "camera": "full-body shot, from above, intimate framing",
+    "camera": "cowboy shot, lying on side beneath skylight, starlight and warm bedside glow",
     "promptTokens": [
-      "adult",
-      "nude",
-      "on back",
-      "spread legs",
-      "legs up",
+      "firefly (honkai: star rail)",
+      "silver hair",
+      "long hair",
+      "purple eyes",
+      "bare shoulders",
+      "collarbone",
+      "lying on side",
+      "resting head on arm",
+      "hand near face",
+      "soft blush",
+      "sweet smile",
+      "looking at viewer",
       "white sheets",
-      "holding hands",
-      "arching back",
-      "blush",
-      "tears",
-      "climax",
-      "night",
-      "full body",
-      "bedroom",
       "bed",
-      "skylight",
+      "glass skylight",
+      "starry sky",
       "starlight",
+      "bedside lamp",
       "warm lighting",
-      "from above"
+      "cowboy shot"
     ],
     "sceneTags": [
       "bedroom",
       "bed",
-      "white_sheets",
-      "completely_nude",
-      "legs_up",
-      "spread_legs",
-      "climax",
-      "arching_back",
-      "heavy_blush",
-      "teary_eyes"
+      "skylight",
+      "starlight",
+      "silver_hair",
+      "purple_eyes",
+      "lying_on_side",
+      "sweet_smile"
     ],
-    "promptProse": "Lying completely naked across pure white linens beneath the starry domed skylight, her slender thighs spread apart and back arching in deep, ecstatic climax while holding his hands tight.",
+    "promptProse": "Firefly lying peacefully on her side on a cozy bed under a large glass skylight, long silver hair with pale blue tips spread across pillows, purple and cyan eyes, soft blush, resting cheek on hand, looking at viewer with a gentle smile, white duvet, starry night sky above, gentle starlight, warm bedside lamp.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
-      "special_nsfw"
+      "daily"
     ],
-    "animaCaption": "She holds her companion's hands beneath the star-filled domed skylight."
+    "animaCaption": "She rests on her side looking up toward the starry skylight.",
+    "nsfwTokens": [
+      "bare shoulders",
+      "bare legs"
+    ],
+    "compositionIntent": "single"
   }
 }

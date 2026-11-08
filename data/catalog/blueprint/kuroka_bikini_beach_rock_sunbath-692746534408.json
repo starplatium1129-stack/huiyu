@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_bikini_beach_rock_sunbath",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2748,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-06T12:10:27.269121300+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kuroka_bikini_beach_rock_sunbath",
     "characterId": "kuroka",
@@ -31,7 +31,9 @@
       "waves crashing",
       "wet glistening skin",
       "summer sun",
-      "languid smirk"
+      "languid smirk",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Reclining against sun-warmed coastal rocks, Kuroka sunbathes in her strappy black bikini with twin tails dipping into the sea.",

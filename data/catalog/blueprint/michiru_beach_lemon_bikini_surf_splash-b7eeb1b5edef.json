@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_beach_lemon_bikini_surf_splash",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1911,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "michiru_beach_lemon_bikini_surf_splash",
     "characterId": "matsushima_michiru",
@@ -44,7 +44,8 @@
       "tsundere confident smile",
       "cowboy shot",
       "glittering ocean waves",
-      "bright summer sun"
+      "bright summer sun",
+      "sunlight"
     ],
     "promptProse": "Splashing barefoot through the sunlit shallows in her lemon-yellow ruffled bikini, she flashes a defiant peace sign. Her blonde twintails catch the coastal breeze as ocean spray glitters around her triumphant grin.",
     "animaCaption": "She flashes a peace sign while splashing in the shallows in a yellow bikini.",

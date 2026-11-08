@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3391,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "nakano_yotsuba_lingerie_whisper",
     "characterId": "nakano_yotsuba",
@@ -41,7 +41,8 @@
       "racerback cut",
       "side-slit runner shorts",
       "energetic athletic sleep set",
-      "cheerful sunny homewear"
+      "cheerful sunny homewear",
+      "sunlight"
     ],
     "negativeTokens": [],
     "promptProse": "Nakano Yotsuba relaxes in stretching arms upward on sunny balcony, wearing a bright clover green breathable athletic cami. Stretching arms upward on sunny balcony, energetic radiant smile, green ribbon hair accessory amidst bright orange hair, toned supple waistline, potted lush green plants, dazzling clear blue morning sky.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3341,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "medusa_rider_lingerie_whisper",
     "characterId": "medusa_rider",
@@ -42,7 +42,8 @@
       "glasses",
       "triangle soft cups",
       "high-leg brazilian cut",
-      "indoors"
+      "indoors",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Rider sits on polished wooden floor leaning against full-length dressing mirror, wearing a inky black strappy sheer lingerie set. Incredibly long lilac hair pooled on floor, wearing reading glasses, striking tall slender physique amidst calm enigmatic gaze, warm indirect floor strip lighting.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3364,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.445Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_swimsuit_allure",
     "characterId": "zhuang_fangyi_arknights",
@@ -42,7 +42,8 @@
       "foot on rock",
       "breakwater",
       "athletic",
-      "morning sun"
+      "morning sun",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Zhuang Fangyi standing with commanding martial presence upon a rugged shoreline boulder outside a coastal defense embankment. She wears a high-utility bamboo-green and charcoal tactical bikini fitted with jade-ring connectors and athletic cross-harness straps. Raising both arms to securely tie her damp black hair into a sleek high ponytail, her keen dark eyes inspect the surf with unflinching resolve in the early dawn sun.",

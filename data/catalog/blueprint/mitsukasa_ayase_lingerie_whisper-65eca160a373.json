@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3501,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "mitsukasa_ayase_lingerie_whisper",
     "characterId": "mitsukasa_ayase",
@@ -39,7 +39,9 @@
       "scalloped floral eyelash lace",
       "low-rise matching shorts",
       "delicate underwire support",
-      "indoors"
+      "indoors",
+      "desk lamp",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Mitsukasa Ayase stands caught off guard in dressing room in front of mirror, wearing a midnight navy sheer lace push-up camisole. Desperately shielding chest with crossed forearms, furiously blushing red face, long silver-aquamarine hair amidst flustered glare, warm wardrobe lighting.",

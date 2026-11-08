@@ -1,0 +1,55 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_breakroom_magazine_nap",
+  "revision": 1,
+  "sortOrder": 3102,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_breakroom_magazine_nap",
+    "characterId": "platinum_arknights",
+    "outfitId": "breakroom_hoodie",
+    "title": "白金 · 休息室的偷懒午后",
+    "category": "基地日常",
+    "description": "【罗德岛生活区干员休息室·午后】阳光斜斜落在米色软皮沙发上，白金慵懒地蜷着腿靠在抱枕堆里，手里翻着刚到的卡西米尔潮流时尚杂志，桌上摆着吃了一半的蓝莓慕斯蛋糕，神情惬意自得。",
+    "location": "罗德岛干员休息室",
+    "action": "侧卧沙发翻看时尚杂志",
+    "timeOfDay": "温暖午后",
+    "lighting": "百叶窗倾泻而下的柔和自然光斑",
+    "camera": "俯角中景，完整收纳沙发与茶几甜点",
+    "mood": "慵懒惬意",
+    "sceneTags": [
+      "reclining",
+      "on couch",
+      "reading magazine",
+      "cake",
+      "lounge",
+      "sunlight",
+      "relaxed"
+    ],
+    "promptProse": "In a bright modern lounge bathed in golden afternoon sunlight, Platinum reclines sideways on a plush leather sofa surrounded by cushions. She lazily flips through an open glossy magazine while nibbling on a slice of blueberry cheesecake. Warm sunbeams cast soft window shadows across her relaxed posture and soft white hair.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "reclining",
+      "on couch",
+      "reading magazine",
+      "cake on table",
+      "lounge",
+      "sunlight through window",
+      "cozy atmosphere",
+      "peaceful",
+      "relaxed expression",
+      "interior",
+      "afternoon"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

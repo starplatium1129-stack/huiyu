@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_killer_wife_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3452,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.520Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "d_killer_wife_lingerie_whisper",
     "characterId": "d_killer_wife",
@@ -42,11 +42,13 @@
       "kitchen counter",
       "blonde hair updo",
       "sweet smile",
-      "deadly wife"
+      "deadly wife",
+      "spotlight",
+      "bright lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "D in her 'loving wife' undercover persona, waiting by the kitchen island late in the evening. Dressed in a sheer, pleated white chiffon apron chemise featuring a deep-V neckline, she tenderly offers an apple slice. Her perfectly warm matrimonial smile is subtly sharpened by cold, calculating agent eyes as her hand brushes near a concealed ceramic blade.",
-    "animaCaption": "D in her 'loving wife' undercover persona, waiting by the kitchen island late in the evening. Dressed in a sheer, pleated white chiffon apron chemise featuring a deep-V neckline, she tenderly offers an apple slice.",
+    "promptProse": "D in her 'loving wife' undercover persona, waiting by the kitchen island late in the evening. Dressed in a sheer, pleated white chiffon apron chemise featuring a deep-V neckline, she tenderly offers an apple slice. Her perfectly warm matrimonial smile is subtly sharpened by cold, calculating agent eyes as her hand brushes near a concealed ceramic blade. Bright recessed kitchen ceiling spotlights focus sharply upon the marble countertop, glinting off metallic culinary blades and her pristine white apron ties.",
+    "animaCaption": "D in her 'loving wife' undercover persona, waiting by the kitchen island late in the evening. Dressed in a sheer, pleated white chiffon apron chemise featuring a deep-V neckline, she tenderly offers an apple slice. Bright recessed kitchen ceiling spotlights focus sharply upon the marble countertop, glinting off metallic culinary blades and her pristine white apron ties.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

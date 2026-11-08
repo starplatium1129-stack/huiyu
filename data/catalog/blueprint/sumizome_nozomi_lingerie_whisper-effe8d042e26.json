@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3398,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sumizome_nozomi_lingerie_whisper",
     "characterId": "sumizome_nozomi",
@@ -41,7 +41,10 @@
       "drawstring gathered waist",
       "daisy eyelet lace trim",
       "relaxed breathable muslin",
-      "indoors"
+      "indoors",
+      "starlight",
+      "lantern",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Sumizome Nozomi sits bare-footed on highest stone step under vermilion torii gate, wearing a pale cream cotton romper sleepsuit. Hands braced behind on stone, light-brown bob hair fluttering in night wind, gentle hazel eyes smiling warmly amidst panoramic town lights below under starry sky.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_hotel_poolside_steamy_straddle",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2242,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kei_hotel_poolside_steamy_straddle",
     "characterId": "karuizawa_kei",
@@ -41,7 +41,9 @@
       "winking",
       "blush",
       "looking_at_viewer",
-      "cowboy_shot"
+      "cowboy_shot",
+      "lamp",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kei sitting by an indoor pool in a floral bikini, winking playfully with wet blonde hair.",

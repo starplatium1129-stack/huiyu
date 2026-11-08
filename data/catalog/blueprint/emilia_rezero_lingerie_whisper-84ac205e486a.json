@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "emilia_rezero_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3223,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.548Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "emilia_rezero_lingerie_whisper",
     "characterId": "emilia_rezero",
@@ -43,11 +43,14 @@
       "violet eyes",
       "sitting on bed",
       "angelic smile",
-      "warm room"
+      "warm room",
+      "wall lamp",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Emilia wishing a heartwarming goodnight from her bedroom inside Roswaal Manor. She wears an enchanting double-layered white and lilac chiffon nightgown cinched softly beneath the bust. Sitting demurely upon the bedpost with pointed elf ears peeking through silver tresses, her violet eyes gaze with innocent, heart-melting tenderness.",
-    "animaCaption": "Emilia wishing a heartwarming goodnight from her bedroom inside Roswaal Manor. She wears an enchanting double-layered white and lilac chiffon nightgown cinched softly beneath the bust.",
+    "promptProse": "Emilia wishing a heartwarming goodnight from her bedroom inside Roswaal Manor. She wears an enchanting double-layered white and lilac chiffon nightgown cinched softly beneath the bust. Sitting demurely upon the bedpost with pointed elf ears peeking through silver tresses, her violet eyes gaze with innocent, heart-melting tenderness. The gentle amber radiance of a wall sconce wraps the velvet canopy bed in soothing warmth, catching crystalline silver reflections along her flowing hair.",
+    "animaCaption": "Emilia wishing a heartwarming goodnight from her bedroom inside Roswaal Manor. She wears an enchanting double-layered white and lilac chiffon nightgown cinched softly beneath the bust. The gentle amber radiance of a wall sconce wraps the velvet canopy bed in soothing warmth, catching crystalline silver reflections along her flowing hair.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ram_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3202,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "ram_lingerie_whisper",
     "characterId": "ram",
@@ -39,7 +39,9 @@
       "blush",
       "black underbust lace-up cords",
       "scalloped hemline",
-      "indoors"
+      "indoors",
+      "candlelight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Ram stands with arms crossed leaning against open wardrobe door, wearing a crimson berry square-neck sheer corset nightdress. Ram rezero, sharp short pink hair covering one eye, scornful proud glare with slight blush amidst maid uniform hanging on door, warm vintage candle illumination.",

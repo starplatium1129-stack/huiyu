@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayasaka_ai_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3526,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T04:52:36.717Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hayasaka_ai_lingerie_whisper",
     "characterId": "hayasaka_ai",
@@ -42,11 +42,14 @@
       "tired deadpan face",
       "short blonde hair",
       "blue eyes",
-      "modern room"
+      "modern room",
+      "blue lighting",
+      "dim lighting",
+      "ambient lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Ai Hayasaka finally shedding her exhaustive double life in the quiet safety of her private bedroom. Dressed in a streamlined ice-blue silk slip chemise, she sits along the mattress soaking her tired feet in a warm wooden herbal foot basin. Running a hand through her unstyled blonde locks with a weary, unbothered deadpan gaze, she savors the bliss of zero expectations.",
-    "animaCaption": "Ai Hayasaka finally shedding her exhaustive double life in the quiet safety of her private bedroom. Dressed in a streamlined ice-blue silk slip chemise, she sits along the mattress soaking her tired feet in a warm wooden herbal foot basin.",
+    "promptProse": "Ai Hayasaka finally shedding her exhaustive double life in the quiet safety of her private bedroom. Dressed in a streamlined ice-blue silk slip chemise, she sits along the mattress soaking her tired feet in a warm wooden herbal foot basin. Running a hand through her unstyled blonde locks with a weary, unbothered deadpan gaze, she savors the bliss of zero expectations. Subdued indirect cool blue night lighting wraps the private bedroom in serene quiet, glinting softly along her icy blue silk camisole and bare legs.",
+    "animaCaption": "Ai Hayasaka finally shedding her exhaustive double life in the quiet safety of her private bedroom. Dressed in a streamlined ice-blue silk slip chemise, she sits along the mattress soaking her tired feet in a warm wooden herbal foot basin. Subdued indirect cool blue night lighting wraps the private bedroom in serene quiet, glinting softly along her icy blue silk camisole and bare legs.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suzuran_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 3247,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.182Z",
+  "updatedAt": "2026-11-08T14:17:27.060486200+00:00",
   "data": {
     "id": "suzuran_arknights_swimsuit_allure",
     "characterId": "suzuran_arknights",
@@ -37,14 +37,20 @@
       "pure_innocence"
     ],
     "promptTokens": [
+      "1girl",
+      "solo",
+      "suzuran (arknights)",
       "fox ears",
-      "nine tails",
-      "modest yellow swimdress",
-      "ruffled",
+      "multiple tails",
+      "yellow swimdress",
+      "ruffled dress",
       "holding seashell",
       "tide pool",
       "morning sun",
-      "cute"
+      "looking at viewer",
+      "sunlight",
+      "water reflection",
+      "bright lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Suzuran squatting happily beside a shallow, crystal-clear tide pool on a sunlit golden beach. She is clad in a modest cream-white and pale yellow swimdress embellished with tiny daisy embroidery and double-ruffled shoulders. Her nine fluffy golden fox tails are carefully curled behind her above the water as she beams upward, presenting an iridescent seashell with innocent pride.",

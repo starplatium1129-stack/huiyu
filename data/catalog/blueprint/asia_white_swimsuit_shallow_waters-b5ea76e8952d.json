@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_white_swimsuit_shallow_waters",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2769,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-06T12:10:27.269121300+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "asia_white_swimsuit_shallow_waters",
     "characterId": "asia_argento",
@@ -30,7 +30,10 @@
       "splashing water",
       "bright sunshine",
       "shy blush",
-      "looking at viewer"
+      "looking at viewer",
+      "sunlight",
+      "water reflection",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Asia wades hesitantly through sparkling turquoise shallows, shyly cupping crystal water with flushed cheeks under the tropical sun.",

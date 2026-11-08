@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_midgar_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3506,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.128Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "alexia_midgar_lingerie_whisper",
     "characterId": "alexia_midgar",
@@ -44,11 +44,14 @@
       "haughty gaze",
       "blush",
       "red eyes",
-      "royal room"
+      "royal room",
+      "chandelier",
+      "soft lighting",
+      "ambient lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Alexia Midgar commanding attention from the edge of her lavish four-poster canopy bed in her academy quarters. She is dressed in an exquisite ivory silk slip dress edged in imperial crimson velvet trim. Resting one hand casually on the mahogany bedpost with chin held high, her haughty royal demeanor barely masks the flustered blush spreading across her cheeks as her crimson eyes lock onto the viewer.",
-    "animaCaption": "Alexia Midgar commanding attention from the edge of her lavish four-poster canopy bed in her academy quarters. She is dressed in an exquisite ivory silk slip dress edged in imperial crimson velvet trim.",
+    "promptProse": "Alexia Midgar commanding attention from the edge of her lavish four-poster canopy bed in her academy quarters. She is dressed in an exquisite ivory silk slip dress edged in imperial crimson velvet trim. Resting one hand casually on the mahogany bedpost with chin held high, her haughty royal demeanor barely masks the flustered blush spreading across her cheeks as her crimson eyes lock onto the viewer. The soft ambient glow of a dimmed crystal chandelier washes gently across the velvet drapery, highlighting the smooth ivory silk of her nightgown.",
+    "animaCaption": "Alexia Midgar commanding attention from the edge of her lavish four-poster canopy bed in her academy quarters. She is dressed in an exquisite ivory silk slip dress edged in imperial crimson velvet trim. The soft ambient glow of a dimmed crystal chandelier washes gently across the velvet drapery, highlighting the smooth ivory silk of her nightgown.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

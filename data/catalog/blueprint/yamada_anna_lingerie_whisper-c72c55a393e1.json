@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_anna_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3320,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "yamada_anna_lingerie_whisper",
     "characterId": "yamada_anna",
@@ -41,11 +41,14 @@
       "relaxed draped silhouette",
       "thin straps",
       "soft ruffled hem",
-      "indoors"
+      "indoors",
+      "lamp",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom.",
-    "animaCaption": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom.",
+    "promptProse": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom. A gentle bedside lamp casts warm golden illumination across the bedspread, lighting up her innocent, snack-filled cheeks with sweet domestic tranquility.",
+    "animaCaption": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom. A gentle bedside lamp casts warm golden illumination across the bedspread, lighting up her innocent, snack-filled cheeks with sweet domestic tranquility.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3356,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "vivy_lingerie_whisper",
     "characterId": "vivy",
@@ -40,11 +40,14 @@
       "floating",
       "delicate underwire cups",
       "songstress diva boudoir",
-      "indoors"
+      "indoors",
+      "vanity light",
+      "hologram",
+      "blue glow"
     ],
     "negativeTokens": [],
-    "promptProse": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background.",
-    "animaCaption": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background.",
+    "promptProse": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background. Warm incandescent vanity bulbs contrast sharply with the soft blue luminescence of a floating holographic interface, illuminating her artificial skin with subtle complexity.",
+    "animaCaption": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background. Warm incandescent vanity bulbs contrast sharply with the soft blue luminescence of a floating holographic interface, illuminating her artificial skin with subtle complexity.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elfaria_alvis_serfort_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3355,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.537Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "elfaria_alvis_serfort_lingerie_whisper",
     "characterId": "elfaria_alvis_serfort",
@@ -43,11 +43,14 @@
       "conjuring ice doll",
       "blue hair",
       "deep blue eyes",
-      "longing gaze"
+      "longing gaze",
+      "fireplace",
+      "firelight",
+      "blue lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Elfaria Alvis Serfort resting within her majestic frosted tower sanctum late at night. She is attired in an ethereal pale-azure ice-silk slip gown trimmed with delicate crystalline frost lace. Reclining amid white polar furs while conjuring a tiny, detailed ice sculpture of her beloved Will within her palm, her formidable Magia Vande authority dissolves into pure, lovesick devotion.",
-    "animaCaption": "Elfaria Alvis Serfort resting within her majestic frosted tower sanctum late at night. She is attired in an ethereal pale-azure ice-silk slip gown trimmed with delicate crystalline frost lace.",
+    "promptProse": "Elfaria Alvis Serfort resting within her majestic frosted tower sanctum late at night. She is attired in an ethereal pale-azure ice-silk slip gown trimmed with delicate crystalline frost lace. Reclining amid white polar furs while conjuring a tiny, detailed ice sculpture of her beloved Will within her palm, her formidable Magia Vande authority dissolves into pure, lovesick devotion. Faint azure luminescence from frozen palace pillars contrasts dramatically with warm golden flames dancing in the stone fireplace beside her plush fur bed.",
+    "animaCaption": "Elfaria Alvis Serfort resting within her majestic frosted tower sanctum late at night. She is attired in an ethereal pale-azure ice-silk slip gown trimmed with delicate crystalline frost lace. Faint azure luminescence from frozen palace pillars contrasts dramatically with warm golden flames dancing in the stone fireplace beside her plush fur bed.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

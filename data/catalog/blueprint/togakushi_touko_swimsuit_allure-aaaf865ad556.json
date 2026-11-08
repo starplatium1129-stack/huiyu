@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3395,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.229Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "togakushi_touko_swimsuit_allure",
     "characterId": "togakushi_touko",
@@ -43,11 +43,14 @@
       "black hair",
       "gentle smile",
       "beach resort",
-      "morning"
+      "morning",
+      "sunlight",
+      "dappled sunlight",
+      "tree shade"
     ],
     "negativeTokens": [],
-    "promptProse": "Touko Togakushi sitting with regal poise upon a shaded wooden bench on a resort pavilion overlooking the beach. She wears an elegant student-council styled navy blue swimdress with crisp white nautical piping and a flared A-line silhouette. Holding a rolled summer itinerary lightly beneath her chin, she offers a reassuring, impeccably polite smile that conveys both authority and tender warmth.",
-    "animaCaption": "Touko Togakushi sitting with regal poise upon a shaded wooden bench on a resort pavilion overlooking the beach. She wears an elegant student-council styled navy blue swimdress with crisp white nautical piping and a flared A-line silhouette.",
+    "promptProse": "Touko Togakushi sitting with regal poise upon a shaded wooden bench on a resort pavilion overlooking the beach. She wears an elegant student-council styled navy blue swimdress with crisp white nautical piping and a flared A-line silhouette. Holding a rolled summer itinerary lightly beneath her chin, she offers a reassuring, impeccably polite smile that conveys both authority and tender warmth. Gentle sunlight filtering through coastal pine branches casts soft dappled shadows across the wooden promenade bench and her calm aristocratic gaze.",
+    "animaCaption": "Touko Togakushi sitting with regal poise upon a shaded wooden bench on a resort pavilion overlooking the beach. She wears an elegant student-council styled navy blue swimdress with crisp white nautical piping and a flared A-line silhouette. Gentle sunlight filtering through coastal pine branches casts soft dappled shadows across the wooden promenade bench and her calm aristocratic gaze.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

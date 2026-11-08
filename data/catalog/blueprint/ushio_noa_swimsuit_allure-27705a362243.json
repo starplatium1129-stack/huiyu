@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3428,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.282Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "ushio_noa_swimsuit_allure",
     "characterId": "ushio_noa",
@@ -44,11 +44,14 @@
       "stylus to lips",
       "silver hair",
       "gentle smile",
-      "resort terrace"
+      "resort terrace",
+      "sunlight",
+      "dappled sunlight",
+      "poolside"
     ],
     "negativeTokens": [],
-    "promptProse": "Noa Ushio seated with immaculate poise on a sun-dappled white timber bench beneath an open pergola overlooking the sea. She wears a graceful pale lilac and ivory-white monokini featuring delicate architectural side cutouts and a sheer lavender sarong. Touching a high-tech recording stylus pensively to her lips, she observes the viewer with an amused, tenderly teasing secretary's smile.",
-    "animaCaption": "Noa Ushio seated with immaculate poise on a sun-dappled white timber bench beneath an open pergola overlooking the sea. She wears a graceful pale lilac and ivory-white monokini featuring delicate architectural side cutouts and a sheer lavender sarong.",
+    "promptProse": "Noa Ushio seated with immaculate poise on a sun-dappled white timber bench beneath an open pergola overlooking the sea. She wears a graceful pale lilac and ivory-white monokini featuring delicate architectural side cutouts and a sheer lavender sarong. Touching a high-tech recording stylus pensively to her lips, she observes the viewer with an amused, tenderly teasing secretary's smile. Sunlight filtering through poolside foliage casts gentle dappled patterns of light and shadow across the white timber bench and her poised posture.",
+    "animaCaption": "Noa Ushio seated with immaculate poise on a sun-dappled white timber bench beneath an open pergola overlooking the sea. She wears a graceful pale lilac and ivory-white monokini featuring delicate architectural side cutouts and a sheer lavender sarong. Sunlight filtering through poolside foliage casts gentle dappled patterns of light and shadow across the white timber bench and her poised posture.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

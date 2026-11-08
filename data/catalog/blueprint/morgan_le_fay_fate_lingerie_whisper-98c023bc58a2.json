@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3276,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "morgan_le_fay_fate_lingerie_whisper",
     "characterId": "morgan_le_fay_fate",
@@ -42,11 +42,14 @@
       "thigh-high sheer leg slit",
       "royal train",
       "cold majestic queen lingerie",
-      "indoors"
+      "indoors",
+      "moonlight",
+      "chandelier",
+      "blue lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Morgan le Fay leans against obsidian carved bedpost, wearing a glacial ice-blue layered gossamer peignoir. Tall slender frame, long silver hair with blue velvet ribbons, cold piercing violet eyes amidst authoritative regal gaze, gothic palace chamber with frosted arched windows, floating ice mist.",
-    "animaCaption": "Morgan le Fay leans against obsidian carved bedpost, wearing a glacial ice-blue layered gossamer peignoir. Tall slender frame, long silver hair with blue velvet ribbons, cold piercing violet eyes amidst authoritative regal gaze, gothic palace chamber with frosted arched windows, floating ice mist.",
+    "promptProse": "Morgan le Fay leans against obsidian carved bedpost, wearing a glacial ice-blue layered gossamer peignoir. Tall slender frame, long silver hair with blue velvet ribbons, cold piercing violet eyes amidst authoritative regal gaze, gothic palace chamber with frosted arched windows, floating ice mist. Cool crystalline moonlight streams through high arched cathedral windows, mingling with pale blue chandelier crystals to illuminate her sovereign, solitary figure.",
+    "animaCaption": "Morgan le Fay leans against obsidian carved bedpost, wearing a glacial ice-blue layered gossamer peignoir. Tall slender frame, long silver hair with blue velvet ribbons, cold piercing violet eyes amidst authoritative regal gaze, gothic palace chamber with frosted arched windows, floating ice mist. Cool crystalline moonlight streams through high arched cathedral windows, mingling with pale blue chandelier crystals to illuminate her sovereign, solitary figure.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

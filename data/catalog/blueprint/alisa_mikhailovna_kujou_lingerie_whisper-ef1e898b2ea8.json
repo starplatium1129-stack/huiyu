@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alisa_mikhailovna_kujou_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3250,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.152Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "alisa_mikhailovna_kujou_lingerie_whisper",
     "characterId": "alisa_mikhailovna_kujou",
@@ -43,7 +43,9 @@
       "silver hair",
       "heavy blush",
       "blue eyes",
-      "midnight"
+      "midnight",
+      "glow",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Alisa Mikhailovna Kujou sitting curled up upon a white sheepskin floor mat beside a panoramic city-view window late at night. She wears a delicate sky-blue and frosty lace silk chemise. Resting her chin bashfully upon drawn-up knees as her silver locks spill around her, she murmurs affectionate secrets in Russian with glowing ruby-red cheeks in the shimmering nocturnal panorama.",

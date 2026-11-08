@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_r18_pure_nude_butterfly",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1864,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
   "data": {
     "id": "nakano_nino_r18_pure_nude_butterfly",
     "characterId": "nakano_nino",
@@ -15,50 +15,56 @@
     "sampleRating": "R15",
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@tony taka",
-    "description": "纯白洁净的床褥上，全身褪去衣物仅在发间留着那对标志性黑色蝴蝶发饰的二乃仰面躺卧。修长笔直的双腿被高高举起分开，腰肢剧烈弓起，汗水涔涔的粉色双马尾散乱如瀑。在强烈的绝顶浪潮冲击下，二乃双眼失神翻起晶莹泪花，死死抓住恋人的手背哭泣抽搐——「太深了……啊啊……二乃的心……连同身体……全都是你的了……！」",
-    "action": "全裸仰卧床单，双腿高高抬起大张，双手紧抓对方手背迎来绝顶抽搐",
+    "description": "深夜的中野家卧室内，二乃侧卧在整洁舒适的大床上。标志性的黑色双蝴蝶发饰别在粉色秀发间，发丝随性铺展在枕面。她一手拉着身前被角，脸颊泛着动人绯红，虽然神情带着标志性的娇蛮与别扭，眸光中却洋溢着毫无保留的眷恋与深情。",
+    "action": "侧卧在柔软被褥上，标志性的双黑蝶发饰斜倚枕间，粉色长发如缎披散，眼神虽带着娇蛮傲娇的羞红，指尖却不自觉拉紧身前被角，凝视着视线不放",
     "location": "深夜主卧纯白大床",
     "timeOfDay": "深夜",
     "mood": "炽烈绝顶",
     "lighting": "柔和漫射壁灯与静谧夜色交织",
-    "camera": "full-body shot, from above, intimate framing",
+    "camera": "cowboy shot, lying on side on bed, warm nightstand lamp",
     "promptTokens": [
-      "adult",
-      "nude",
+      "nakano nino",
+      "pink hair",
+      "long hair",
+      "blue eyes",
       "butterfly hair ornament",
-      "on back",
-      "legs up",
-      "spread legs",
-      "white sheets",
-      "holding hands",
-      "arching back",
-      "blush",
-      "tears",
-      "climax",
-      "full body",
+      "black ribbon",
+      "bare shoulders",
+      "collarbone",
+      "lying on side",
+      "holding blanket",
+      "hand on sheets",
+      "tsundere blush",
+      "looking at viewer",
+      "white bedding",
       "bed",
-      "warm lighting",
-      "from above"
+      "bedroom",
+      "warm nightstand lamp",
+      "soft shadows",
+      "cowboy shot"
     ],
     "sceneTags": [
       "bedroom",
       "bed",
-      "white_sheets",
-      "completely_nude",
+      "white_bedding",
       "butterfly_hair_ornament",
-      "legs_up",
-      "spread_legs",
-      "climax",
-      "arching_back",
-      "heavy_blush",
-      "teary_eyes"
+      "pink_hair",
+      "blue_eyes",
+      "lying_on_side",
+      "tsundere_blush"
     ],
-    "promptProse": "Lying completely naked on white bedsheets with her dark butterfly ribbons framed in pink hair, her slender legs held high and spread apart as her hips arch in uncontrollable, tearful climax while holding his hands.",
+    "promptProse": "Nakano Nino lying on her side on comfortable white bedding, twin black butterfly hair ribbons in her long pink hair, blue eyes, tsundere blush, looking at viewer, one hand gripping the corner of the blanket near collarbone, bare shoulders, cozy bedroom, warm nightstand lamp, intimate soft lighting.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
-      "special_nsfw"
+      "daily"
     ],
-    "animaCaption": "She holds her companion's hands above the white sheets framed by dark butterfly ribbons."
+    "animaCaption": "She rests on her side with butterfly hair ornaments in soft light.",
+    "nsfwTokens": [
+      "cleavage",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3429,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "ushio_noa_lingerie_whisper",
     "characterId": "ushio_noa",
@@ -42,11 +42,14 @@
       "delicate micro-pleated bodice",
       "double gossamer layer",
       "thin spaghetti straps",
-      "indoors"
+      "indoors",
+      "ambient lighting",
+      "soft lighting",
+      "lamp"
     ],
     "negativeTokens": [],
-    "promptProse": "Ushio Noa sits gracefully on sofa armrest leaning forward, wearing a pure white translucent pleated chiffon slip dress. Holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes amidst sweet soft smile, modern high-tech lounge at night.",
-    "animaCaption": "Ushio Noa sits gracefully on sofa armrest leaning forward, wearing a pure white translucent pleated chiffon slip dress. Holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes amidst sweet soft smile, modern high-tech lounge at night.",
+    "promptProse": "Ushio Noa sits gracefully on sofa armrest leaning forward, wearing a pure white translucent pleated chiffon slip dress. Holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes amidst sweet soft smile, modern high-tech lounge at night. Soft diffuse lighting from an adjacent floor lamp spreads calm white radiance across the sofa armrest, highlighting her pristine notebook and serene expression.",
+    "animaCaption": "Ushio Noa sits gracefully on sofa armrest leaning forward, wearing a pure white translucent pleated chiffon slip dress. Holding sleek electronic tablet, cascading silver-white hair flowing to floor, gentle captivating pale violet eyes amidst sweet soft smile, modern high-tech lounge at night. Soft diffuse lighting from an adjacent floor lamp spreads calm white radiance across the sofa armrest, highlighting her pristine notebook and serene expression.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

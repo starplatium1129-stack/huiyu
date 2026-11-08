@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3176,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "makima_lingerie_whisper",
     "characterId": "makima",
@@ -40,11 +40,14 @@
       "smile",
       "underwire contour cups",
       "black velvet choker necklace",
-      "indoors"
+      "indoors",
+      "city lights",
+      "dim lighting",
+      "ambient lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura.",
-    "animaCaption": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura.",
+    "promptProse": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura. A mesmerizing sweep of distant Tokyo high-rise city lights through the wide panoramic window casts a cool, hypnotic ambient silhouette over her poised posture.",
+    "animaCaption": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura. A mesmerizing sweep of distant Tokyo high-rise city lights through the wide panoramic window casts a cool, hypnotic ambient silhouette over her poised posture.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

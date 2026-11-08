@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rosmontis_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3138,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "rosmontis_arknights_lingerie_whisper",
     "characterId": "rosmontis_arknights",
@@ -41,7 +41,9 @@
       "tiny kitten paw embroidery",
       "white scallop trim",
       "loose empire silhouette",
-      "indoors"
+      "indoors",
+      "glow",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Rosmontis relaxes in feline, wearing a pale mint green ultra-soft cloud cotton babydoll slip. Feline, silver-white cat ears drooped down sweetly, hugging leather notebook to chest on pile of fluffy pillows amidst huge innocent cyan eyes, heavy telekinetic steel plates floating peacefully in background, warm nightlight glow.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_haruno_swimsuit_allure",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3319,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.417Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "yukinoshita_haruno_swimsuit_allure",
     "characterId": "yukinoshita_haruno",
@@ -43,11 +43,15 @@
       "looking back",
       "wet black hair",
       "teasing smile",
-      "night city"
+      "night city",
+      "soft lighting",
+      "poolside",
+      "water reflection",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Haruno Yukinoshita resting her folded arms along the transparent acrylic rim of a penthouse infinity pool over a nocturnal cityscape. She wears an alluring burgundy wine deep-V monokini accented with intricate crisscrossing waist cords. Her damp black tresses cling gracefully to her pale shoulders as she rests her chin on her arm, offering a tantalizingly playful yet unnervingly shrewd elder-sister smirk.",
-    "animaCaption": "Haruno Yukinoshita resting her folded arms along the transparent acrylic rim of a penthouse infinity pool over a nocturnal cityscape. She wears an alluring burgundy wine deep-V monokini accented with intricate crisscrossing waist cords.",
+    "promptProse": "Haruno Yukinoshita resting her folded arms along the transparent acrylic rim of a penthouse infinity pool over a nocturnal cityscape. She wears an alluring burgundy wine deep-V monokini accented with intricate crisscrossing waist cords. Her damp black tresses cling gracefully to her pale shoulders as she rests her chin on her arm, offering a tantalizingly playful yet unnervingly shrewd elder-sister smirk. Glowing underwater pool lights blend seamlessly with warm terrace sconces, sending emerald and gold shimmering reflections across her leaning form.",
+    "animaCaption": "Haruno Yukinoshita resting her folded arms along the transparent acrylic rim of a penthouse infinity pool over a nocturnal cityscape. She wears an alluring burgundy wine deep-V monokini accented with intricate crisscrossing waist cords. Glowing underwater pool lights blend seamlessly with warm terrace sconces, sending emerald and gold shimmering reflections across her leaning form.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

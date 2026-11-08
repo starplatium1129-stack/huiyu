@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3436,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.163Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sunohara_shun_swimsuit_allure",
     "characterId": "sunohara_shun",
@@ -44,7 +44,10 @@
       "reclining on bamboo couch",
       "mature",
       "gentle smile",
-      "shade"
+      "shade",
+      "sunlight",
+      "shadow",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Shun Sunohara resting luxuriously on a bamboo lounge couch within an open-air seaside pavilion. She wears a tailored emerald-green and sheer-black cheongsam monokini featuring an ornate mandarin collar and an alluring high side slit. Gently fanning a fragrant sandalwood folding fan, her mature eyes beam with nurturing fondness through the soft slatted sunlight of the bamboo blinds.",

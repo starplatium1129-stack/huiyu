@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_summer_sunflower",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1827,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kita_ikuyo_summer_sunflower",
     "characterId": "kita_ikuyo",
@@ -29,7 +29,10 @@
       "full body",
       "walking",
       "smile",
-      "hat brim hold"
+      "hat brim hold",
+      "sunlight",
+      "daylight",
+      "bright lighting"
     ],
     "sceneTags": [
       "sunflower",
@@ -40,12 +43,12 @@
       "reaching_towards_viewer",
       "dress_lift"
     ],
-    "promptProse": "Walking along the sunflower trail under the vibrant blue sky, she presses one hand against her straw hat and reaches the other backward toward the viewer with an affectionate beaming smile.",
+    "promptProse": "Walking along the sunflower trail under the vibrant blue sky, she presses one hand against her straw hat and reaches the other backward toward the viewer with an affectionate beaming smile. Brilliant summer sunlight washes over the expansive sunflower field, casting radiant golden light and cheerful reflections across her sunlit smile.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "One hand holds the hat brim while the other reaches backward toward the viewer."
+    "animaCaption": "One hand holds the hat brim while the other reaches backward toward the viewer. Brilliant summer sunlight washes over the expansive sunflower field, casting radiant golden light and cheerful reflections across her sunlit smile."
   }
 }

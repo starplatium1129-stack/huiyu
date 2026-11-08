@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3409,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_lingerie_whisper",
     "characterId": "sawamura_spencer_eriri",
@@ -41,7 +41,10 @@
       "delicate gold lace trim",
       "black underwire cups",
       "tiny velvet ribbon bows",
-      "indoors"
+      "indoors",
+      "lamp",
+      "backlighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Eriri Spencer Sawamura sits backwards on computer chair clutching pen tablet to chest, wearing a forest green silk bralette set. Cute little fang bared in indignation, blushing furiously, blonde twintails flaring up amidst colorful art markers and messy desk in background, bright screen backlight.",

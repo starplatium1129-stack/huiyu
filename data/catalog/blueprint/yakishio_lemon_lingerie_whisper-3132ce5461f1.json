@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yakishio_lemon_lingerie_whisper",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3471,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "yakishio_lemon_lingerie_whisper",
     "characterId": "yakishio_lemon",
@@ -40,11 +40,13 @@
       "night",
       "runner tap shorts",
       "dark skin tone contrast",
-      "indoors"
+      "indoors",
+      "stadium light",
+      "bright lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Lemon Yakishio sits on school bleachers wiping sweat from neck with white towel, wearing a bright lemon yellow and charcoal athletic racerback camisole set. Athletic dark skin tone, drinking from lemon water sports bottle, short dark hair amidst brilliant open smile, stadium track in night background.",
-    "animaCaption": "Lemon Yakishio sits on school bleachers wiping sweat from neck with white towel, wearing a bright lemon yellow and charcoal athletic racerback camisole set. Athletic dark skin tone, drinking from lemon water sports bottle, short dark hair amidst brilliant open smile, stadium track in night background.",
+    "promptProse": "Lemon Yakishio sits on school bleachers wiping sweat from neck with white towel, wearing a bright lemon yellow and charcoal athletic racerback camisole set. Athletic dark skin tone, drinking from lemon water sports bottle, short dark hair amidst brilliant open smile, stadium track in night background. A distant floodlight beam from the sports grounds casts clear white illumination across the bleachers, catching glistening beads of perspiration on her sun-tanned collarbone.",
+    "animaCaption": "Lemon Yakishio sits on school bleachers wiping sweat from neck with white towel, wearing a bright lemon yellow and charcoal athletic racerback camisole set. Athletic dark skin tone, drinking from lemon water sports bottle, short dark hair amidst brilliant open smile, stadium track in night background. A distant floodlight beam from the sports grounds casts clear white illumination across the bleachers, catching glistening beads of perspiration on her sun-tanned collarbone.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

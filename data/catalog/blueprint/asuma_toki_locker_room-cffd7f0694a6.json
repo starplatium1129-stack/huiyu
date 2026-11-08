@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_locker_room",
-  "revision": 11,
+  "revision": 13,
   "sortOrder": 876,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
-    "action": "一手拉开战斗紧身衣前襟拉链，另一手扶住长凳，转头看向视角",
+    "action": "坐在更衣室长凳上，黑白战术连体衣拉链滑落至腰侧，双手轻按长凳边缘，修长双腿并拢斜放，侧头露出无口冷娇浅笑",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, front three-quarter view",
+    "camera": "cowboy shot, sitting on wooden bench, soft locker room lighting",
     "category": "成人私密",
     "characterId": "asuma_toki",
     "coverageTags": [
-      "special_nsfw"
+      "daily"
     ],
-    "description": "激战归来的更衣室内，时侧身面向你解开战斗紧身衣前襟的拉链，金发披散在光滑白皙的后背与腰窝间。面对你的视线，她平静地回过头，蓝眸里带着全然的信赖——「主人，装备维护需要褪下紧身内衬……在主人面前，时没有任何需要隐藏的秘密。」",
+    "description": "任务归来后的 C&C 专属更衣室内，时坐在长木凳上更换装备。紧致的黑白战术衣拉链拉开至腰间，露出光滑无瑕的后背与优美肩颈线。整齐的储物柜前，她双腿并拢斜坐，双手撑在身侧凳面，金发随侧头动作轻垂，深蓝双瞳带着任务圆满达成的纯真与信任。",
     "id": "asuma_toki_locker_room",
     "kreaStyleHint": "",
     "lighting": "冷白更衣室灯",
@@ -24,28 +24,46 @@
     "mood": "冷静暴露",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
-    "outfitId": "black_white_combat_suit",
-    "promptProse": "Turning toward the viewer in a front three-quarter view, she lowers the front zipper with one hand and steadies herself on the bench with the other. Cold locker-room light reaches the open suit and metal lockers.",
-    "promptTokens": [
-      "locker room",
-      "black and white combat suit",
-      "unzipped",
-      "topless",
-      "bench",
-      "looking at viewer",
-      "hand on bench",
-      "cool lighting",
-      "medium shot",
-      "front three-quarter view"
+    "nsfwTokens": [
+      "bare shoulders",
+      "cleavage",
+      "bare legs"
     ],
-    "recommendedSize": "1536x1152",
+    "outfitId": "black_white_combat_suit",
+    "promptProse": "Toki sitting sideways on a wooden locker room bench, black and white combat suit unzipped down to the waist revealing bare shoulders and back, blonde side ponytail gently falling over neck, blue halo, blue eyes, legs placed neatly together, hands resting on bench, soft warm indoor lighting, rows of metal lockers in background.",
+    "promptTokens": [
+      "toki (blue archive)",
+      "halo",
+      "blonde hair",
+      "side ponytail",
+      "blue eyes",
+      "black and white combat suit",
+      "front zipper unzipped",
+      "off-shoulder",
+      "bare shoulders",
+      "collarbone",
+      "cleavage",
+      "bare legs",
+      "sitting on bench",
+      "legs together",
+      "hands on bench",
+      "looking at viewer",
+      "subtle smile",
+      "locker room",
+      "lockers",
+      "soft indoor lighting",
+      "rim light",
+      "cowboy shot"
+    ],
+    "recommendedSize": "1152x1536",
     "sampleRating": "R15",
     "sceneTags": [
-      "millennium",
       "locker_room",
-      "maid",
-      "intimate"
+      "combat_suit",
+      "unzipped",
+      "sitting_on_bench",
+      "bare_legs",
+      "lockers"
     ],
     "timeOfDay": "夜晚",
     "title": "飞鸟马时 · C&C更衣室半脱",
@@ -61,6 +79,7 @@
       "halo",
       "blue_archive"
     ],
-    "animaCaption": "One hand lowers the front zipper while the other steadies her on the bench."
+    "animaCaption": "She sits on the locker room bench with combat suit unzipped off her shoulders.",
+    "compositionIntent": "single"
   }
 }

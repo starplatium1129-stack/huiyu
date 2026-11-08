@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanroji_mitsuri_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3335,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kanroji_mitsuri_lingerie_whisper",
     "characterId": "kanroji_mitsuri",
@@ -45,7 +45,9 @@
       "puffed cheeks",
       "pink green braids",
       "voluptuous",
-      "heavy blush"
+      "heavy blush",
+      "lantern",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Mitsuri Kanroji indulging in her absolute favorite late-night feast inside her blossom-filled estate. Wearing a remarkably soft peach-pink cotton lounge set with a forgiving sweetheart neckline, she sits cross-legged on a heart cushion. Cheeks blissfully stuffed with giant sakura mochi as her pink-and-lime braids bounce, she blushes with radiant, overflowing romantic joy.",

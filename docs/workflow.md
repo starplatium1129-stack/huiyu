@@ -45,6 +45,7 @@ npm run wf -- diagnostics:window-capture -Out runtime/<输出图片.png> [-Title
 | 场景快照构建 | `npm run wf -- data:build` | `data/catalog` → `scenes.json` |
 | 热门角色快照构建 | `npm run wf -- popular:build` | `data/catalog` → `popular-characters.json` |
 | 蓝图快照构建 | `npm run wf -- blueprints:build` | `data/catalog` → `scene-blueprints.json` |
+| 蓝图/场景自动纠错 | `npm run wf -- content:autofix --changed --apply` | 本地 D/G 来源词库与确定规则优先，按需单次模型纠正，合批写回及导出；`--online-tags` 批量补查、`--render` 补充出图，离线不阻断；未知项保留，定稿与优质参考跳过 |
 | 单条定稿基线更新 | `npm run wf -- scenes:pin-capture -- --id=<场景ID>` | 单条更新定稿保护基线；批量任务跳过 |
 | 词条构建与检查 | `npm run wf -- tags:build` / `tags:check` | 校验 manifest 与别名映射，生成词条聚合与字典 |
 | 离线待补词统计 | `npm run wf -- tags:untranslated --input <文件>` | 分析本地未翻译词条与频次 |

@@ -1,0 +1,58 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_morning_sunlight_stretch",
+  "revision": 1,
+  "sortOrder": 3106,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_morning_sunlight_stretch",
+    "characterId": "platinum_arknights",
+    "outfitId": "morning_boyfriend_shirt",
+    "title": "白金 · 晨光微醺的落地窗前",
+    "category": "闺房温存",
+    "description": "【主卧落地窗前·清晨】初升的薄暖朝阳透过白纱帘洒在厚地毯上。白金微仰着头舒展着纤细双臂伸懒腰，宽大的白衬衫领口自然滑落半边，银白长发如瀑散落，带着初醒时慵懒迷蒙的轻吟。",
+    "location": "主卧飘窗与落地白纱前",
+    "action": "高举双臂舒展懒腰轻微回眸",
+    "timeOfDay": "清晨日出",
+    "lighting": "逆光白纱透射的柔金晨雾光晕",
+    "camera": "中景立姿，勾勒修长身姿与透光发丝",
+    "mood": "慵懒亲昵",
+    "sceneTags": [
+      "stretching",
+      "standing",
+      "bedroom",
+      "sheer curtains",
+      "morning sunlight",
+      "off shoulder",
+      "intimate"
+    ],
+    "promptProse": "In a tranquil sunlit master bedroom at dawn, Platinum stretches her slender arms upward against sheer white fluttering curtains. The oversized white shirt slips casually over one shoulder, revealing delicate collarbones and smooth porcelain skin bathed in soft golden morning haze. Her drowsy blue eyes look warmly toward the viewer with sleepy affection.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "stretching",
+      "standing",
+      "bedroom",
+      "sheer curtains",
+      "morning sunlight",
+      "sunbeams",
+      "messy hair",
+      "off shoulder",
+      "collarbone",
+      "sleepy",
+      "soft blush",
+      "intimate",
+      "upper body"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "coverageTags": [
+      "nsfw",
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

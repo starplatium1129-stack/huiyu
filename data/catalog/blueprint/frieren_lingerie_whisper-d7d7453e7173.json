@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frieren_lingerie_whisper",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 3210,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.651Z",
+  "updatedAt": "2026-11-08T14:17:27.060486200+00:00",
   "data": {
     "id": "frieren_lingerie_whisper",
     "characterId": "frieren",
@@ -37,13 +37,20 @@
       "frieren_lazy"
     ],
     "promptTokens": [
+      "1girl",
+      "solo",
+      "frieren",
       "elf ears",
       "wrapped in blanket cocoon",
       "sleepy eyes",
       "messy white hair",
       "linen nightgown",
       "lazy morning",
-      "funny cute"
+      "bedhead",
+      "sleepy",
+      "morning sunlight",
+      "sunbeam",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Frieren waging her eternal, losing battle against waking up inside an inn bedroom. Rolled completely into a fluffy down blanket cocoon wearing an oversized stark white linen night robe, only half her sleepy face and her long pointed elf ears poke out. With messy white tresses splayed across the mattress, her half-closed eyes beg for another hour of sleep in the warm morning sunbeams.",

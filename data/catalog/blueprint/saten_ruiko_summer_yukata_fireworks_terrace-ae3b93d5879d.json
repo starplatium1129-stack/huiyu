@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_summer_yukata_fireworks_terrace",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2641,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "saten_ruiko_summer_yukata_fireworks_terrace",
     "characterId": "saten_ruiko",
@@ -37,7 +37,9 @@
       "wind",
       "radiant_smile",
       "looking_at_viewer",
-      "cowboy_shot"
+      "cowboy_shot",
+      "night",
+      "lantern"
     ],
     "negativeTokens": [],
     "animaCaption": "Ruiko in a floral yukata looking back as festival fireworks illuminate the night sky.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_r18_throne_spread_legs",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 172,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "jalter_r18_throne_spread_legs",
     "characterId": "jeanne_alter",
@@ -50,7 +50,10 @@
       "dark castle hall",
       "torchlight",
       "embers",
-      "cowboy shot"
+      "cowboy shot",
+      "moonlight",
+      "glow",
+      "dim lighting"
     ],
     "negativeTokens": [
       "from behind",

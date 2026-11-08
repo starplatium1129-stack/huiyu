@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_rainy_cafe_window",
+  "revision": 1,
+  "sortOrder": 3104,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_rainy_cafe_window",
+    "characterId": "platinum_arknights",
+    "outfitId": "rainy_trench_coat",
+    "title": "白金 · 雨落街角的温热可可",
+    "category": "街头漫步",
+    "description": "【大骑士领老城区咖啡馆·雨天】窗外淅淅沥沥下着秋雨，玻璃窗挂满了密密麻麻的水珠。白金双手捧着温热的马克杯，下巴微收埋在柔软围巾里，安静看着街道上形色匆匆的行人，目光沉静而放松。",
+    "location": "老城区街角复古咖啡馆",
+    "action": "双手捧热杯倚窗放空远眺",
+    "timeOfDay": "阴雨午后",
+    "lighting": "室内复古黄铜暖灯与窗外清冷雨幕",
+    "camera": "半身近景，窗面雨滴倒影与人物虚实交融",
+    "mood": "静谧沉思",
+    "sceneTags": [
+      "sitting",
+      "holding cup",
+      "cafe",
+      "rainy window",
+      "water droplets",
+      "warm lighting"
+    ],
+    "promptProse": "Sitting by the steaming window of a quaint European coffee shop on a rainy afternoon, Platinum cradles a warm ceramic mug with both hands. Raindrops bead dynamically on the transparent glass panes behind her. She looks wistfully outside with calm, contemplative eyes, surrounded by the cozy ambient glow of vintage brass lamps.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "sitting",
+      "holding cup",
+      "cafe",
+      "rainy window",
+      "water droplets on glass",
+      "autumn rain",
+      "warm indoor lighting",
+      "nostalgic",
+      "peaceful",
+      "upper body",
+      "steam"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

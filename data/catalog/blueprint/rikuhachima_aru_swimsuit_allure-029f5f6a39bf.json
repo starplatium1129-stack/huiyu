@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3434,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
     "id": "rikuhachima_aru_swimsuit_allure",
     "characterId": "rikuhachima_aru",
@@ -52,11 +52,12 @@
       "wave washing over feet",
       "beach lounger",
       "bright midday sun",
-      "comedic cute anime expression",
-      "depth of field"
+      "panicked",
+      "depth of field",
+      "sunlight"
     ],
     "negativeTokens": [],
-    "promptProse": "Rikuhachima Aru from Blue Archive flusters comically on a sunny beach in her burgundy-and-black designer bikini, her dark sunglasses slipping as a sudden wave washes away her sandals.",
+    "promptProse": "Rikuhachima Aru from Blue Archive flusters comically on a beach under blazing coastal sunlight in her burgundy-and-black designer bikini, her dark sunglasses slipping as a sudden wave washes away her sandals.",
     "animaCaption": "Bright midday sunshine betrays the 'hard-boiled' outlaw's panic as the sea claims her prized designer flip-flop.",
     "nsfwTokens": [],
     "nsfwProse": ""

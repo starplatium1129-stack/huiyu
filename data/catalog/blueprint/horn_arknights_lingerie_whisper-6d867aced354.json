@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3146,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.765Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "horn_arknights_lingerie_whisper",
     "characterId": "horn_arknights",
@@ -43,7 +43,8 @@
       "drying blonde hair with towel",
       "tall posture",
       "amber eyes",
-      "barracks"
+      "barracks",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Horn (Rita Skamandros) completing her dawn hygiene regimen inside an austere field barracks. Sporting a regulation white ribbed cotton tank top and desert camouflage lounge shorts that highlight her commanding military physique, she stands with rod-straight posture. Towel-drying her golden curls as her lupo ears perk, her proud amber eyes shine with unwavering resolve.",

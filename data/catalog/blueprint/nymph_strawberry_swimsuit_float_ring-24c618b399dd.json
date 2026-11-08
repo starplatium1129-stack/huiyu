@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_strawberry_swimsuit_float_ring",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2793,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-06T12:10:27.269121300+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "nymph_strawberry_swimsuit_float_ring",
     "characterId": "nymph",
@@ -30,7 +30,8 @@
       "sparkling water",
       "summer sun",
       "puffed cheeks",
-      "tsundere pout"
+      "tsundere pout",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Floating inside a candy-striped swim ring, Nymph munches on a popsicle and turns away with an adorable tsundere pout.",

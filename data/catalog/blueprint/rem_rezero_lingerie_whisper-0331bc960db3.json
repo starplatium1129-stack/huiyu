@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3221,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "rem_rezero_lingerie_whisper",
     "characterId": "rem_rezero",
@@ -42,7 +42,10 @@
       "blue eyes",
       "smile",
       "white satin ribbon bows",
-      "indoors"
+      "indoors",
+      "candlelight",
+      "glow",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Rem kneels on guest bed, wearing a sky blue sheer floral lace babydoll dress. Hands clasped together in gentle prayer gesture at chest, short sky-blue hair with pink ribbon clip, sparkling blue eyes with happy tears amidst pure angelic smile, single flickering candle lighting the room.",

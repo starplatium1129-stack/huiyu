@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izayoi_miku_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3461,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.901Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "izayoi_miku_lingerie_whisper",
     "characterId": "izayoi_miku",
@@ -42,11 +42,14 @@
       "diamond headphones",
       "humming on chaise lounge",
       "purple hair",
-      "recording studio"
+      "recording studio",
+      "screen glow",
+      "dim lighting",
+      "city lights"
     ],
     "negativeTokens": [],
-    "promptProse": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones. Humming with blissful self-absorption, her luminous purple eyes flutter open with theatrical diva charm.",
-    "animaCaption": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones.",
+    "promptProse": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones. Humming with blissful self-absorption, her luminous purple eyes flutter open with theatrical diva charm. Dancing LED level-meter lights from the sound mixing console pulse across the darkened penthouse, throwing streaks of neon color over her dark silk robe.",
+    "animaCaption": "Miku Izayoi basking in the brilliance of her own recorded vocals inside her penthouse sound studio at midnight. Dressed in a sumptuous deep-violet damask silk gown with an audacious high slit draping her legs over gold brocade cushions, she wears diamond-studded monitor headphones. Dancing LED level-meter lights from the sound mixing console pulse across the darkened penthouse, throwing streaks of neon color over her dark silk robe.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

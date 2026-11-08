@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aoyama_nanami_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3473,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.204Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "aoyama_nanami_lingerie_whisper",
     "characterId": "aoyama_nanami",
@@ -43,7 +43,9 @@
       "tatami desk",
       "studying",
       "gentle blush",
-      "night"
+      "night",
+      "desk lamp",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Nanami Aoyama practicing voice acting scripts late into the night within her cozy tatami room at Sakurasou. Clad in a breathable peach-striped cotton loungedress with her iconic ponytail undone, she sits with disciplined posture at a low wooden table. Highlighting dialogue lines under a focused lamp, she looks up with an earnest, slightly flustered blush as someone enters.",

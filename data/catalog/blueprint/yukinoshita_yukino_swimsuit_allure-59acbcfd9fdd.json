@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_swimsuit_allure",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3216,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.425Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "yukinoshita_yukino_swimsuit_allure",
     "characterId": "yukinoshita_yukino",
@@ -44,11 +44,13 @@
       "black hair",
       "blue eyes",
       "cool beauty",
-      "morning"
+      "morning",
+      "sunlight",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Yukino Yukinoshita sitting with impeccable aristocratic posture beneath a pristine white canvas canopy at a quiet corner of the coastline. She wears a minimalist, dignified deep navy-blue high-neck one-piece swimsuit defined by sharp white piping and hydrodynamic contours. Lightly holding a paperback book across her knees while taming a windblown black lock, she gazes coolly over the page with subtle, guarded tenderness.",
-    "animaCaption": "Yukino Yukinoshita sitting with impeccable aristocratic posture beneath a pristine white canvas canopy at a quiet corner of the coastline. She wears a minimalist, dignified deep navy-blue high-neck one-piece swimsuit defined by sharp white piping and hydrodynamic contours.",
+    "promptProse": "Yukino Yukinoshita sitting with impeccable aristocratic posture beneath a pristine white canvas canopy at a quiet corner of the coastline. She wears a minimalist, dignified deep navy-blue high-neck one-piece swimsuit defined by sharp white piping and hydrodynamic contours. Lightly holding a paperback book across her knees while taming a windblown black lock, she gazes coolly over the page with subtle, guarded tenderness. Gentle diffused sunlight filtering through the white beach parasol casts a pristine, soft luminescence over her aristocratic silhouette and cool composure.",
+    "animaCaption": "Yukino Yukinoshita sitting with impeccable aristocratic posture beneath a pristine white canvas canopy at a quiet corner of the coastline. She wears a minimalist, dignified deep navy-blue high-neck one-piece swimsuit defined by sharp white piping and hydrodynamic contours. Gentle diffused sunlight filtering through the white beach parasol casts a pristine, soft luminescence over her aristocratic silhouette and cool composure.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

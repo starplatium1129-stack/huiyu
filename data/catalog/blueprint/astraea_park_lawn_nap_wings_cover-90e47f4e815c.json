@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_park_lawn_nap_wings_cover",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2209,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "astraea_park_lawn_nap_wings_cover",
     "characterId": "astraea",
@@ -19,7 +19,7 @@
     "lighting": "brilliant summer daylight diffused softly by translucent white feathers",
     "camera": "medium_shot",
     "mood": "peaceful angelic devotion, supreme tenderness, warm idyllic nap",
-    "promptProse": "Lying in a wildflower meadow, Astraea wraps her huge white wings around partner to provide shade, smiling with pure dog-like devotion.",
+    "promptProse": "Lying in a wildflower meadow, Astraea wraps her huge white wings around partner to provide shade, smiling with pure dog-like devotion. Brilliant summer sunlight filters softly through the translucent white plumage of her grand wings, casting dappled shade across the flower-strewn grass.",
     "promptTokens": [
       "meadow",
       "lying_on_grass",
@@ -28,10 +28,13 @@
       "nuzzling",
       "happy_smile",
       "sunny_day",
-      "medium_shot"
+      "medium_shot",
+      "sunlight",
+      "dappled sunlight",
+      "daylight"
     ],
     "negativeTokens": [],
-    "animaCaption": "Astraea shielding partner from the sun with large white wings on a grassy hill.",
+    "animaCaption": "Astraea shielding partner from the sun with large white wings on a grassy hill. Brilliant summer sunlight filters softly through the translucent white plumage of her grand wings, casting dappled shade across the flower-strewn grass.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

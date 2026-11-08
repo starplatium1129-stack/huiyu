@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_r18_lab_self_experiment",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2843,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "eta_shadow_r18_lab_self_experiment",
     "characterId": "eta_shadow",
@@ -36,7 +36,9 @@
       "spread legs",
       "stopwatch",
       "clipboard",
-      "deadpan"
+      "deadpan",
+      "lamp",
+      "shadow"
     ],
     "negativeTokens": [],
     "coverageTags": [],

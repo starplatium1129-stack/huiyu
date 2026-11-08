@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3511,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.326Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "aurora_shadow_lingerie_whisper",
     "characterId": "aurora_shadow",
@@ -42,11 +42,14 @@
       "twirling hair",
       "ruby eyes",
       "seductive smirk",
-      "ancient ruins"
+      "ancient ruins",
+      "glow",
+      "twilight",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace. Leaning against a levitating violet crystal while twirling a lock of hair around her fingertip, her crimson eyes tease the viewer with ancient, intoxicating allure.",
-    "animaCaption": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace.",
+    "promptProse": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace. Leaning against a levitating violet crystal while twirling a lock of hair around her fingertip, her crimson eyes tease the viewer with ancient, intoxicating allure. Mystical violet crystal glow mingles with the twilight sky through the stone arches, casting otherworldly purple light across her sleek silhouette.",
+    "animaCaption": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace. Mystical violet crystal glow mingles with the twilight sky through the stone arches, casting otherworldly purple light across her sleek silhouette.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

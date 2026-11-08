@@ -1,10 +1,10 @@
 import type { Scene } from '../types/scene'
 import type { DraftOutfitOverride } from './promptBuilderPersistence'
-import { OUTFIT_BUNDLES } from '../composables/scene/useDirectorCatalog'
-import { UNIVERSAL_WARDROBE_PRESETS } from '../config/universalWardrobe'
-import { CANONICAL_OUTFITS } from './canonicalOutfits'
-import { isGarmentToken, isOutfitToken } from './popularIdentity'
-import { normalizeKey, tokenize } from './promptPolicy'
+import { OUTFIT_BUNDLES } from '../composables/scene/useDirectorCatalog.ts'
+import { UNIVERSAL_WARDROBE_PRESETS } from '../config/universalWardrobe.ts'
+import { CANONICAL_OUTFITS } from './canonicalOutfits.ts'
+import { isGarmentToken, isOutfitToken } from './popularIdentity.ts'
+import { normalizeKey, tokenize } from './promptPolicy.ts'
 
 /** Keep previous hand-picked clothing available when the replacement is removed. */
 export function suppressedOutfitTags(tags: Iterable<string>): string[] {

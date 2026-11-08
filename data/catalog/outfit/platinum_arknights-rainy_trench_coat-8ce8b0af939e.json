@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/rainy_trench_coat",
+  "revision": 1,
+  "sortOrder": 404,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "rainy_trench_coat",
+      "characterId": "platinum_arknights",
+      "name": "卡西米尔浅灰双排扣风衣",
+      "prose": "A classic tailored light grey double-breasted trench coat draped over a black turtleneck sweater, pleated woolen skirt, and ankle leather boots.",
+      "tokens": [
+        "trench coat",
+        "turtleneck sweater",
+        "skirt",
+        "boots",
+        "scarf",
+        "coat"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3200,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "makinohara_shouko_lingerie_whisper",
     "characterId": "makinohara_shouko",
@@ -41,11 +41,14 @@
       "purple hair",
       "bare feet",
       "delicate flutter sleeves",
-      "double layered sheer hemline"
+      "double layered sheer hemline",
+      "soft lighting",
+      "warm lighting",
+      "window light"
     ],
     "negativeTokens": [],
-    "promptProse": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere.",
-    "animaCaption": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere.",
+    "promptProse": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere. Gentle, nostalgic evening lamplight filters through sheer curtains, enveloping her mature, serene features in a comforting golden glow.",
+    "animaCaption": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere. Gentle, nostalgic evening lamplight filters through sheer curtains, enveloping her mature, serene features in a comforting golden glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

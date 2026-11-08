@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_electric_battle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 393,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "action": "指尖弹出硬币，电光贯穿夜空",
     "camera": "full body, from below",
@@ -32,7 +32,8 @@
       "blue lightning",
       "orange beam",
       "full body",
-      "from below"
+      "from below",
+      "soft lighting"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [

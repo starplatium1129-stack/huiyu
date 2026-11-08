@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_flaming_ruins_flag",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 169,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "jalter_flaming_ruins_flag",
     "characterId": "jeanne_alter",
@@ -35,7 +35,9 @@
       "from below",
       "holding flagpole",
       "reverse grip",
-      "confident smile"
+      "confident smile",
+      "fireplace",
+      "firelight"
     ],
     "negativeTokens": [
       "cropped sword"

@@ -1,23 +1,21 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_white_bed_supine_devotion",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1329,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
   "data": {
-    "action": "全裸仰卧在纯白床榻上，双腿大开曲膝，双手拉着视角手掌十指紧扣，眼眸水润迷乱",
+    "action": "侧倚在松软的纯白大床被褥间，金色短发凌乱铺散，赤瞳倒映着柔和光晕，单手轻伸向身前，红润唇瓣微启露出毫无防备的温柔",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, first-person view from above",
+    "camera": "cowboy shot, lying on side, warm bedroom candlelight and soft moonlight",
     "category": "私密温存",
     "characterId": "arcueid_brunestud",
     "coverageTags": [
-      "nsfw",
-      "supine",
-      "special_nsfw"
+      "daily"
     ],
-    "description": "铺着蓬松鹅毛垫的纯白大床上，爱尔奎特浑身赤裸仰卧其中。金色的短发散落在枕间，修长的双腿自然张开曲起，向你彻底敞开她毫无防备的娇躯。饱满柔嫩的雪白双乳因剧烈的心跳与情动而起伏，粉嫩小巧的乳头挺立充血。她双手紧紧扣住你的手掌十指相交，赤红眼眸水雾迷离，小虎牙轻抵下唇娇喘连连——「我的身体……全部都在发烫……进来吧……把你的全部都交给我……」",
+    "description": "铺着蓬松羽绒的纯白大床上，爱尔奎特舒适地侧身斜倚在枕被间。金色短发散落，白皙细腻的肌肤在夜色中如羊脂玉般温润。她一只手枕在脸侧，另一只手在床单上轻轻伸向前方，赤红剔透的眼眸闪烁着水润光泽，带着对爱人全然信任的娇俏浅笑。",
     "id": "arcueid_nsfw_white_bed_supine_devotion",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "窗外如银水般的月光与床头昏暗暖烛",
@@ -26,37 +24,47 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "She lies on the white bed with knees bent, interlocking both hands with the viewer's hands in the foreground. Cool moonlight and a dim bedside candle separate the pillows from the room's shadows.",
+    "promptProse": "Arcueid Brunestud lying comfortably on her side on fluffy white bedsheets, short blonde hair resting on pillows, bright red eyes, gentle affectionate smile, subtle blush, resting head on one arm, other hand resting on white duvet, bare shoulders, collarbone, warm candlelight, window moonlight, cozy western bedroom.",
     "promptTokens": [
-      "bedroom",
-      "nude",
-      "lying",
-      "on back",
-      "knees up",
-      "holding hands",
-      "interlocked fingers",
-      "moonlight",
-      "from above",
+      "arcueid brunestud",
+      "blonde hair",
+      "short hair",
+      "red eyes",
+      "bare shoulders",
+      "collarbone",
+      "lying on side",
+      "resting head on pillow",
+      "hand on sheets",
+      "soft blush",
+      "gentle smile",
+      "looking at viewer",
       "white sheets",
-      "bedside candle"
+      "pillows",
+      "bed",
+      "bedroom",
+      "bedside candle",
+      "moonlight",
+      "soft warm lighting",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
     "sceneTags": [
       "bedroom",
+      "bed",
       "white_sheets",
-      "completely_nude",
-      "lying_on_back",
-      "spread_legs",
-      "bare_breasts",
-      "pink_nipples",
-      "interlocked_fingers",
+      "blonde_hair",
       "red_eyes",
-      "heavy_blush",
-      "parted_lips"
+      "lying_on_side",
+      "candlelight"
     ],
     "timeOfDay": "深夜",
     "title": "爱尔奎特 · 纯白床榻的深情仰卧交付",
-    "animaCaption": "Both of the viewer's hands enter the foreground with their fingers interlocked."
+    "animaCaption": "She rests comfortably on her side on fluffy white bedding.",
+    "nsfwTokens": [
+      "bare shoulders",
+      "bare legs"
+    ],
+    "compositionIntent": "single"
   }
 }

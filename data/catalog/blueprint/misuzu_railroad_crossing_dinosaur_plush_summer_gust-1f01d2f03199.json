@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_railroad_crossing_dinosaur_plush_summer_gust",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2352,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "misuzu_railroad_crossing_dinosaur_plush_summer_gust",
     "characterId": "kamio_misuzu",
@@ -19,7 +19,7 @@
     "lighting": "dazzling white midsummer sunlight reflecting off steel rails and azure ocean",
     "camera": "medium_shot",
     "mood": "legendary nostalgic youth, bittersweet summer purity, iconic 2000s anime majesty",
-    "promptProse": "Standing by coastal train tracks clutching a plush dinosaur, golden-haired Misuzu smiles warmly under the vast blue summer sky.",
+    "promptProse": "Standing by coastal train tracks clutching a plush dinosaur, golden-haired Misuzu smiles warmly under the vast blue summer sky. Intense midsummer sunlight beats down on the rural railroad crossing, reflecting brilliant white light off warning gates and casting clear sharp shadows on the road.",
     "promptTokens": [
       "train_crossing",
       "railroad_tracks",
@@ -29,10 +29,13 @@
       "blue_sky",
       "wind",
       "bright_sun",
-      "medium_shot"
+      "medium_shot",
+      "sunlight",
+      "direct sunlight",
+      "bright lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Misuzu Kamio holding her plush dinosaur by the seaside railroad crossing.",
+    "animaCaption": "Misuzu Kamio holding her plush dinosaur by the seaside railroad crossing. Intense midsummer sunlight beats down on the rural railroad crossing, reflecting brilliant white light off warning gates and casting clear sharp shadows on the road.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/white_lace_lingerie",
+  "revision": 1,
+  "sortOrder": 409,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "white_lace_lingerie",
+      "characterId": "platinum_arknights",
+      "name": "纯白法式刺绣蕾丝内衣套组",
+      "prose": "An elegant pure white floral lace lingerie set with translucent mesh bralette, dainty ribbon bow accents, and sheer matching thigh-high lace stockings.",
+      "tokens": [
+        "white lingerie",
+        "lace bra",
+        "lace trim",
+        "ribbon bow",
+        "sheer mesh",
+        "stockings"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3421,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "power_lingerie_whisper",
     "characterId": "power",
@@ -40,7 +40,8 @@
       "blonde hair",
       "bold vibrant red",
       "wild untamed fiend sleep set",
-      "indoors"
+      "indoors",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Power lies sprawled on futon mattress, wearing a crimson red athletic cotton tube top. Hugging orange cat meowy to chest, red fiend horns pointing up from messy strawberry-blonde hair, sharp shark teeth in cocky laugh amidst messy room with manga and empty cans around, bright morning light.",

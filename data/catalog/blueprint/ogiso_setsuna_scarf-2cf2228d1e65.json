@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_scarf",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2371,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "ogiso_setsuna_scarf",
     "characterId": "ogiso_setsuna",
@@ -28,7 +28,10 @@
       "blurred car taillights bokeh",
       "shop window illuminations",
       "festive winter evening",
-      "medium shot"
+      "medium shot",
+      "lamp",
+      "street light",
+      "warm lighting"
     ],
     "animaCaption": "",
     "negativeTokens": [],

@@ -12,7 +12,7 @@ import { isManualDirectorValue } from './promptDirector.ts'
 import { studioDualSubject } from './studioDualSubject.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
 import type { DraftOutfitOverride } from './promptBuilderPersistence'
-import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from './outfitReplacement'
+import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from './outfitReplacement.ts'
 
 export interface PromptLoraMetadata {
   id?: string

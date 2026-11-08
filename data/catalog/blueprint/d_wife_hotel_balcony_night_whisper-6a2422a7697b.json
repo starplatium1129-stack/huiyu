@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_wife_hotel_balcony_night_whisper",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2176,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "d_wife_hotel_balcony_night_whisper",
     "characterId": "d_killer_wife",
@@ -19,7 +19,7 @@
     "lighting": "soft starlight and warm balcony wall sconce illumination",
     "camera": "medium_shot",
     "mood": "glamorous covert romance, lingering dangerous intimacy",
-    "promptProse": "Resting on a luxury hotel balcony under a starry night sky, D wears an elegant black silk evening gown. The ocean breeze plays with her brown locks as she gazes back with calm, understated devotion.",
+    "promptProse": "Resting on a luxury hotel balcony under a starry night sky, D wears an elegant black silk evening gown. The ocean breeze plays with her brown locks as she gazes back with calm, understated devotion. Soft starlight and the warm amber glow of a balcony wall sconce illuminate her evening silhouette against the panoramic night vista of the sprawling city.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -39,10 +39,14 @@
       "wind",
       "calm_smile",
       "looking_at_viewer",
-      "medium_shot"
+      "medium_shot",
+      "sconce",
+      "starlight",
+      "city lights",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "D standing on a night balcony in an elegant black gown, looking back with serene affection.",
+    "animaCaption": "D standing on a night balcony in an elegant black gown, looking back with serene affection. Soft starlight and the warm amber glow of a balcony wall sconce illuminate her evening silhouette against the panoramic night vista of the sprawling city.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,

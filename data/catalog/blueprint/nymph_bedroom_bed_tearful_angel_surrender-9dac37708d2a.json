@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_bedroom_bed_tearful_angel_surrender",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2271,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "nymph_bedroom_bed_tearful_angel_surrender",
     "characterId": "nymph",
@@ -41,7 +41,10 @@
       "blush",
       "sweet_smile",
       "looking_at_viewer",
-      "medium_shot"
+      "medium_shot",
+      "lamp",
+      "glow",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Nymph curled in bed with glowing transparent wings, smiling through happy tears.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3491,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "touma_kazusa_lingerie_whisper",
     "characterId": "touma_kazusa",
@@ -40,7 +40,8 @@
       "minimalist thin straps",
       "thigh-high slit",
       "fluid bias-cut drape",
-      "indoors"
+      "indoors",
+      "chandelier"
     ],
     "negativeTokens": [],
     "promptProse": "Touma Kazusa sits at black grand piano pressing discordant keys with one hand, wearing a inky black heavy liquid-silk slip gown. Other hand against forehead, disheveled jet black hair over bare shoulders, tear tracks glistening on pale cheeks amidst passionate tortured gaze, heavy snowfall outside window.",

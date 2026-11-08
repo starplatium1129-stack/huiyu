@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pramanix_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3117,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "pramanix_arknights_lingerie_whisper",
     "characterId": "pramanix_arknights",
@@ -39,11 +39,13 @@
       "silver bell ribbon anklet",
       "gossamer semi-translucent silk",
       "holy maiden boudoir attire",
-      "indoors"
+      "indoors",
+      "candlelight",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside.",
-    "animaCaption": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside.",
+    "promptProse": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside. Solemn flickering silver candelabras in the temple shrine cast dancing golden reflections against snow outside, warming her fluffy leopard tail and holy vestments.",
+    "animaCaption": "Pramanix relaxes in feline, wearing a silver white sheer silk slip dress. Feline, snowy leopard girl, massive fluffy spotted snow leopard tail hugged tightly in lap amidst white leopard ears folded, long silver hair with dark spots, gentle silver bell tied to ribbon, warm private temple alcove, snowy blizzard outside. Solemn flickering silver candelabras in the temple shrine cast dancing golden reflections against snow outside, warming her fluffy leopard tail and holy vestments.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

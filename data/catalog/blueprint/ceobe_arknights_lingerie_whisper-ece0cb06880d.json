@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ceobe_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3158,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.426Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "ceobe_arknights_lingerie_whisper",
     "characterId": "ceobe_arknights",
@@ -45,11 +45,14 @@
       "crumbs",
       "pantry",
       "caught",
-      "funny cute"
+      "funny cute",
+      "dim lighting",
+      "light beam",
+      "shadows"
     ],
     "negativeTokens": [],
-    "promptProse": "Ceobe caught in the middle of a midnight raid on the Rhodes Island bakery stores. She wears a vibrant sunny-yellow ribbed tank top stamped with a canine paw print and casual gym shorts. Squatting behind a flour barrel with cheeks stuffed with honey biscuits while her furry ears stand on end, she flashes a guilty, irresistibly adorable grin at the Doctor.",
-    "animaCaption": "Ceobe caught in the middle of a midnight raid on the Rhodes Island bakery stores. She wears a vibrant sunny-yellow ribbed tank top stamped with a canine paw print and casual gym shorts.",
+    "promptProse": "Ceobe caught in the middle of a midnight raid on the Rhodes Island bakery stores. She wears a vibrant sunny-yellow ribbed tank top stamped with a canine paw print and casual gym shorts. Squatting behind a flour barrel with cheeks stuffed with honey biscuits while her furry ears stand on end, she flashes a guilty, irresistibly adorable grin at the Doctor. A cool beam of white light spilling from the cracked refrigerator door cuts through the dark kitchen, catching golden crumbs on her lips and her alert twitching ears.",
+    "animaCaption": "Ceobe caught in the middle of a midnight raid on the Rhodes Island bakery stores. She wears a vibrant sunny-yellow ribbed tank top stamped with a canine paw print and casual gym shorts. A cool beam of white light spilling from the cracked refrigerator door cuts through the dark kitchen, catching golden crumbs on her lips and her alert twitching ears.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

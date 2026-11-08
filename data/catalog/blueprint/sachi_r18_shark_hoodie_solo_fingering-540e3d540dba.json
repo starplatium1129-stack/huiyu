@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sachi_r18_shark_hoodie_solo_fingering",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1200,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sachi_r18_shark_hoodie_solo_fingering",
     "title": "小岭幸 · 鲨鱼睡衣拉链大敞的私密自抚",
@@ -48,7 +48,8 @@
       "gray shorts",
       "open hoodie",
       "hand on chest",
-      "orange nightlight"
+      "orange nightlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

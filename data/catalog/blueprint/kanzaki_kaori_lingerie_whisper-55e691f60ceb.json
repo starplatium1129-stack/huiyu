@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_kaori_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3475,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.961Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "kanzaki_kaori_lingerie_whisper",
     "characterId": "kanzaki_kaori",
@@ -42,7 +42,9 @@
       "sitting seiza",
       "long ponytail",
       "rainy window",
-      "noble gaze"
+      "noble gaze",
+      "candlelight",
+      "dim lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Kaori Kanzaki engaged in solemn post-combat reflection inside a quiet London dormitory while rain pounds the glass. She wears a minimalist pure white modal one-shoulder tank top and asymmetrical lounge pants echoing her iconic combat silhouette. Sitting in flawless seiza with her two-meter nodachi resting across her knees, her noble features radiate saintly, self-sacrificing dedication.",

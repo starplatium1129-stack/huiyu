@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_r18_den_restless_night",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2840,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "zeta_shadow_r18_den_restless_night",
     "characterId": "zeta_shadow",
@@ -28,7 +28,7 @@
       "tail",
       "solo"
     ],
-    "promptProse": "On the nights her leopard blood runs hot, adult Zeta locks her hideout door, strips off her slime suit and curls naked on the blanket, tail coiling around her thigh, biting her hand quiet as she touches herself.",
+    "promptProse": "On the nights her leopard blood runs hot, adult Zeta locks her hideout door, strips off her slime suit and curls naked on the blanket, tail coiling around her thigh, biting her hand quiet as she touches herself. A narrow shaft of cool moonlight cuts through the hideout grate, casting a sharp silvery beam across her restless posture and golden feline gaze.",
     "promptTokens": [
       "small room",
       "blanket",
@@ -38,7 +38,10 @@
       "cat tail",
       "masturbation",
       "spread legs",
-      "biting hand"
+      "biting hand",
+      "moonlight",
+      "window light",
+      "dim lighting"
     ],
     "negativeTokens": [],
     "coverageTags": [],
@@ -53,6 +56,6 @@
       "spread legs"
     ],
     "nsfwProse": "",
-    "animaCaption": "One glance from him at noon is enough to burn all night. Zeta bites down and gives in to the heat."
+    "animaCaption": "One glance from him at noon is enough to burn all night. Zeta bites down and gives in to the heat. A narrow shaft of cool moonlight cuts through the hideout grate, casting a sharp silvery beam across her restless posture and golden feline gaze."
   }
 }

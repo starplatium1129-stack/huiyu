@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/coral_coast_sunlit",
+  "revision": 1,
+  "sortOrder": 403,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "coral_coast_sunlit",
+      "characterId": "platinum_arknights",
+      "name": "珊瑚海岸 · 灿神天蓝比基尼",
+      "prose": "Coral Coast series beachwear featuring a sky-blue and white halterneck bikini paired with a sheer translucent chiffon cover-up, straw sunhat, and pearl ankle bracelet.",
+      "tokens": [
+        "bikini",
+        "halterneck",
+        "translucent cover-up",
+        "sun hat",
+        "barefoot",
+        "swimwear"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_night_festival_fireworks_clinging",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2270,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "nymph_night_festival_fireworks_clinging",
     "characterId": "nymph",
@@ -19,7 +19,7 @@
     "lighting": "colorful bursts of red and gold fireworks illuminating the night sky",
     "camera": "cowboy_shot",
     "mood": "sweet protective date, dependent girlfriend warmth, awe-inspiring festival night",
-    "promptProse": "Clinging tightly to partner arm in a festival crowd, startled Nymph buries her face in his bicep with trembling wings beneath exploding fireworks.",
+    "promptProse": "Clinging tightly to partner arm in a festival crowd, startled Nymph buries her face in his bicep with trembling wings beneath exploding fireworks. Exploding festival fireworks illuminate the summer night sky in vibrant bursts of color, casting warm crimson light from nearby hanging paper lanterns.",
     "promptTokens": [
       "festival",
       "night",
@@ -29,10 +29,12 @@
       "blushing",
       "wings",
       "tears_in_eyes",
-      "cowboy_shot"
+      "cowboy_shot",
+      "lantern",
+      "night sky"
     ],
     "negativeTokens": [],
-    "animaCaption": "Nymph clinging tightly to partner arm under festival fireworks.",
+    "animaCaption": "Nymph clinging tightly to partner arm under festival fireworks. Exploding festival fireworks illuminate the summer night sky in vibrant bursts of color, casting warm crimson light from nearby hanging paper lanterns.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

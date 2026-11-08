@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_moonlit_wild_hunt",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 670,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "action": "手持苍蓝电弧双刃凌空跃起斩击，白狼尾狂甩，狂气大笑露出尖牙",
     "camera": "wide shot, low angle",
@@ -20,7 +20,7 @@
     "mood": "狂放狂乱",
     "negativeTokens": [],
     "outfitId": "standard_mercenary",
-    "promptProse": "Lappland leaps through the colosseum ruins with both blades arcing blue lightning beneath the blood moon.",
+    "promptProse": "Lappland leaps through the colosseum ruins with both blades arcing blue lightning beneath the blood moon. Pale moonlight from a blood-red crescent moon cuts through the darkness, clashing with the blinding azure electric light of Originium lightning crackling along her twin blades.",
     "promptTokens": [
       "dual wielding",
       "swords",
@@ -29,7 +29,11 @@
       "ruins",
       "blood moon",
       "wide shot",
-      "colosseum ruins"
+      "colosseum ruins",
+      "moonlight",
+      "crescent moon",
+      "lightning",
+      "dim lighting"
     ],
     "recommendedSize": "1536x1152",
     "sceneTags": [
@@ -49,6 +53,6 @@
     ],
     "timeOfDay": "狂月之夜",
     "title": "拉普兰德 · 狂月下的双刃猎杀",
-    "animaCaption": "Blue lightning follows both blades through the ruined colosseum."
+    "animaCaption": "Blue lightning follows both blades through the ruined colosseum. Pale moonlight from a blood-red crescent moon cuts through the darkness, clashing with the blinding azure electric light of Originium lightning crackling along her twin blades."
   }
 }

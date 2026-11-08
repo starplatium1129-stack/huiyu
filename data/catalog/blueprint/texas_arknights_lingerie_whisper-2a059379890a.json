@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "texas_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3523,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "texas_arknights_lingerie_whisper",
     "characterId": "texas_arknights",
@@ -41,11 +41,14 @@
       "ultra-thin straps",
       "relaxed boyleg tap shorts",
       "clean modern cuts",
-      "indoors"
+      "indoors",
+      "street light",
+      "window light",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night.",
-    "animaCaption": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night.",
+    "promptProse": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night. Cold neon street illumination from the rain-slicked city below seeps through parted curtains, casting quiet moody highlights along her stoic profile.",
+    "animaCaption": "Texas sits on leather courier case, wearing a charcoal grey minimalist silk camisole set. Lupo, dark wolf ears twitching, biting thin chocolate pocky stick in lips amidst dark hair falling over shoulders, calm amber eyes, rustic roadside motel room at night. Cold neon street illumination from the rain-slicked city below seeps through parted curtains, casting quiet moody highlights along her stoic profile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

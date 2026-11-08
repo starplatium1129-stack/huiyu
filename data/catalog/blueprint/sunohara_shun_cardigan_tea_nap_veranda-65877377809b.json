@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_cardigan_tea_nap_veranda",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2669,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sunohara_shun_cardigan_tea_nap_veranda",
     "characterId": "sunohara_shun",
@@ -42,7 +42,10 @@
       "mature_female",
       "peaceful",
       "looking_at_viewer",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "dappled sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Shun lounging on a wooden veranda in an off-shoulder cardigan, smiling in dappled sunlight.",

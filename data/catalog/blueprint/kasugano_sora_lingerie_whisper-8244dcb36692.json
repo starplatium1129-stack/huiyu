@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3344,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.977Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kasugano_sora_lingerie_whisper",
     "characterId": "kasugano_sora",
@@ -42,11 +42,14 @@
       "sitting on wooden step",
       "silver twintails",
       "fragile",
-      "dark eyes"
+      "dark eyes",
+      "window light",
+      "afternoon light",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Sora Kasugano waiting faithfully upon the wooden entrance step of her ancestral countryside home deep into the night. Clothed in her iconic gothic monochrome ruffled slip dress, she hugs her worn black bunny plushie tightly against her small frame. Her floor-brushing silver pigtails frame a fragile, porcelain countenance as her dark eyes look up with heartbreaking, devoted longing.",
-    "animaCaption": "Sora Kasugano waiting faithfully upon the wooden entrance step of her ancestral countryside home deep into the night. Clothed in her iconic gothic monochrome ruffled slip dress, she hugs her worn black bunny plushie tightly against her small frame.",
+    "promptProse": "Sora Kasugano waiting faithfully upon the wooden entrance step of her ancestral countryside home deep into the night. Clothed in her iconic gothic monochrome ruffled slip dress, she hugs her worn black bunny plushie tightly against her small frame. Her floor-brushing silver pigtails frame a fragile, porcelain countenance as her dark eyes look up with heartbreaking, devoted longing. Warm late afternoon sunlight filters through white lace window curtains, bathing her silver pigtails and porcelain doll-like features in nostalgic gold.",
+    "animaCaption": "Sora Kasugano waiting faithfully upon the wooden entrance step of her ancestral countryside home deep into the night. Clothed in her iconic gothic monochrome ruffled slip dress, she hugs her worn black bunny plushie tightly against her small frame. Warm late afternoon sunlight filters through white lace window curtains, bathing her silver pigtails and porcelain doll-like features in nostalgic gold.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hiuchidani_mei_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3400,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.749Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hiuchidani_mei_lingerie_whisper",
     "characterId": "hiuchidani_mei",
@@ -43,7 +43,8 @@
       "peace sign",
       "sweat glisten",
       "short hair",
-      "energetic smile"
+      "energetic smile",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Mei Hiuchidani cooling down with advanced flexibility stretches on her bedroom yoga mat late in the evening. Wearing a sporty lilac-purple seamless bandeau crop top and breathable boxer shorts over sun-kissed skin, she holds a flawless split on the floor. Flashing a high-spirited peace sign with sweat glistening on her brow, her laughter lights up the cozy attic.",

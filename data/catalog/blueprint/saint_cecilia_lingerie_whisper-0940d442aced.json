@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saint_cecilia_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3266,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "saint_cecilia_lingerie_whisper",
     "characterId": "saint_cecilia",
@@ -39,7 +39,9 @@
       "delicate pearlescent buttons",
       "scalloped collar",
       "relaxed oversized fit",
-      "indoors"
+      "indoors",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Cecilia relaxes in cecilia pastor lawrence, wearing a ivory white pure cotton ruffled nightdress. Cecilia pastor lawrence, buried in fluffy white duvet showing sleepy face, messy golden blonde hair splayed on pillows amidst rubbing eyes with tiny yawn, white lily on sunlit windowsill, ethereal warm church morning light.",

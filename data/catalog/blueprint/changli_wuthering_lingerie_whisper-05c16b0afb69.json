@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3348,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "changli_wuthering_lingerie_whisper",
     "characterId": "changli_wuthering",
@@ -44,11 +44,14 @@
       "chessboard",
       "incense",
       "red hair",
-      "elegant smile"
+      "elegant smile",
+      "lantern",
+      "warm lighting",
+      "firelight"
     ],
     "negativeTokens": [],
-    "promptProse": "Changli conducting a midnight review over a weiqi chessboard in her refined oriental pavilion. Draped in an opulent vermilion silk wrap robe richly embroidered with golden phoenix plumage and featuring an alluring side slit, she balances an obsidian stone between her fingers. Her luminous vermilion eyes meet the viewer with profound intellect and enchanting, strategic warmth.",
-    "animaCaption": "Changli kneels by a weiqi table, balancing a glossy black stone between her fingers as incense curls through the room.",
+    "promptProse": "Changli conducting a midnight review over a weiqi chessboard in her refined oriental pavilion. Draped in an opulent vermilion silk wrap robe richly embroidered with golden phoenix plumage and featuring an alluring side slit, she balances an obsidian stone between her fingers. Her luminous vermilion eyes meet the viewer with profound intellect and enchanting, strategic warmth. Warm vermilion lantern light and rising incense smoke weave across the bamboo blinds, casting gentle cinnabar reflections upon the polished chessboard.",
+    "animaCaption": "Changli kneels by a weiqi table, balancing a glossy black stone between her fingers as incense curls through the room. Warm vermilion lantern light and rising incense smoke weave across the bamboo blinds, casting gentle cinnabar reflections upon the polished chessboard.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

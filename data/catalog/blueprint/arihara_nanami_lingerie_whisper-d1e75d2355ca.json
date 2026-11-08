@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3504,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.238Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "arihara_nanami_lingerie_whisper",
     "characterId": "arihara_nanami",
@@ -43,11 +43,13 @@
       "doorway",
       "winking smile",
       "cozy slippers",
-      "night"
+      "night",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Nanami Arihara making a late-night tea delivery outside her brother's room. She is dressed in an adorably fluffy pink-and-white coral fleece pajama set featuring a cat-eared hood. Balancing a wooden tray with two hot cups of tea while leaning against the doorway with a playful wink, her expressive eyes radiate domestic warmth and mischievous secret-agent charm.",
-    "animaCaption": "Nanami Arihara making a late-night tea delivery outside her brother's room. She is dressed in an adorably fluffy pink-and-white coral fleece pajama set featuring a cat-eared hood.",
+    "promptProse": "Nanami Arihara making a late-night tea delivery outside her brother's room. She is dressed in an adorably fluffy pink-and-white coral fleece pajama set featuring a cat-eared hood. Balancing a wooden tray with two hot cups of tea while leaning against the doorway with a playful wink, her expressive eyes radiate domestic warmth and mischievous secret-agent charm. Warm hallway ceiling light casts a gentle amber glow over the doorway, highlighting the fluffy texture of her pastel fleece loungewear with cozy warmth.",
+    "animaCaption": "Nanami Arihara making a late-night tea delivery outside her brother's room. She is dressed in an adorably fluffy pink-and-white coral fleece pajama set featuring a cat-eared hood. Warm hallway ceiling light casts a gentle amber glow over the doorway, highlighting the fluffy texture of her pastel fleece loungewear with cozy warmth.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

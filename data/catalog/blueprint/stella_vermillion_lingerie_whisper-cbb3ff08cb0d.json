@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_vermillion_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3455,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "stella_vermillion_lingerie_whisper",
     "characterId": "stella_vermillion",
@@ -42,11 +42,14 @@
       "night",
       "crimson silk bralette set",
       "fine gold rose embroidery",
-      "indoors"
+      "indoors",
+      "candlelight",
+      "starlight",
+      "firelight"
     ],
     "negativeTokens": [],
-    "promptProse": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set. Fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night amidst warm soft nightlight.",
-    "animaCaption": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set. Fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night amidst warm soft nightlight.",
+    "promptProse": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set. Fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night amidst warm soft nightlight. Warm flickering candlelight from a palace candelabra intermingles with cool starlight, casting vibrant crimson reflections over her ruby hair.",
+    "animaCaption": "Stella Vermillion sits on bed edge hugging feather pillow in front of chest, wearing a crimson silk bralette set. Fiery crimson-red twintails spilling over shoulders, brilliant ruby eyes with adorable angry blush, school dorm room at night amidst warm soft nightlight. Warm flickering candlelight from a palace candelabra intermingles with cool starlight, casting vibrant crimson reflections over her ruby hair.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

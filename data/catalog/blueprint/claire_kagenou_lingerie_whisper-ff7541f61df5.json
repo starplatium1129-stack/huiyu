@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_kagenou_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3510,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.482Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "claire_kagenou_lingerie_whisper",
     "characterId": "claire_kagenou",
@@ -43,11 +43,13 @@
       "barefoot",
       "dark hair",
       "red eyes",
-      "scolding expression"
+      "scolding expression",
+      "candlelight",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Claire Kagenou barging into her brother's bedroom unannounced in the dead of night. Wearing an alluring onyx-black silk slip dress with striking crimson straps, she plants both hands firmly on her hips in the doorway. Her long dark tresses flutter in the corridor draft while her intense crimson eyes flash with fierce, overbearing elder-sister authority.",
-    "animaCaption": "Claire Kagenou barging into her brother's bedroom unannounced in the dead of night. Wearing an alluring onyx-black silk slip dress with striking crimson straps, she plants both hands firmly on her hips in the doorway.",
+    "promptProse": "Claire Kagenou barging into her brother's bedroom unannounced in the dead of night. Wearing an alluring onyx-black silk slip dress with striking crimson straps, she plants both hands firmly on her hips in the doorway. Her long dark tresses flutter in the corridor draft while her intense crimson eyes flash with fierce, overbearing elder-sister authority. Flickering hallway candlelight casts dancing elongated shadows against the stone corridor walls, outlining her sharp aristocratic posture and crimson ribbons.",
+    "animaCaption": "Claire Kagenou barging into her brother's bedroom unannounced in the dead of night. Wearing an alluring onyx-black silk slip dress with striking crimson straps, she plants both hands firmly on her hips in the doorway. Flickering hallway candlelight casts dancing elongated shadows against the stone corridor walls, outlining her sharp aristocratic posture and crimson ribbons.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

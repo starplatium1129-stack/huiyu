@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hyoudou_michiru_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3477,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.796Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "hyoudou_michiru_lingerie_whisper",
     "characterId": "hyoudou_michiru",
@@ -42,11 +42,15 @@
       "playing electric guitar on bed",
       "barefoot",
       "wild laugh",
-      "energetic"
+      "energetic",
+      "ceiling light",
+      "screen glow",
+      "dim lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Michiru Hyoudou turning her cousin's guest bedroom into an impromptu midnight rock stage. Dressed in a raw-edged distressed black racerback tank and frayed denim sleep shorts that showcase her sun-kissed legs, she perches one bare foot boldly atop the bedboard. Blasting heavy riffs from an electric guitar, she laughs with untamed, electrifying childhood-friend insolence.",
-    "animaCaption": "Michiru Hyoudou turning her cousin's guest bedroom into an impromptu midnight rock stage. Dressed in a raw-edged distressed black racerback tank and frayed denim sleep shorts that showcase her sun-kissed legs, she perches one bare foot boldly atop the bedboard.",
+    "promptProse": "Michiru Hyoudou turning her cousin's guest bedroom into an impromptu midnight rock stage. Dressed in a raw-edged distressed black racerback tank and frayed denim sleep shorts that showcase her sun-kissed legs, she perches one bare foot boldly atop the bedboard. Blasting heavy riffs from an electric guitar, she laughs with untamed, electrifying childhood-friend insolence. Overhead bedroom light mingles with tiny red and blue power LEDs from the guitar amplifier on the floor, charging the spontaneous jam session with raw energy.",
+    "animaCaption": "Michiru Hyoudou turning her cousin's guest bedroom into an impromptu midnight rock stage. Dressed in a raw-edged distressed black racerback tank and frayed denim sleep shorts that showcase her sun-kissed legs, she perches one bare foot boldly atop the bedboard. Overhead bedroom light mingles with tiny red and blue power LEDs from the guitar amplifier on the floor, charging the spontaneous jam session with raw energy.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

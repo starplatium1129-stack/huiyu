@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_lingerie_whisper",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 3225,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.846Z",
+  "updatedAt": "2026-11-08T14:17:27.060486200+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_lingerie_whisper",
     "characterId": "illyasviel_von_einzbern",
@@ -37,16 +37,22 @@
       "fairy_tale_bedroom"
     ],
     "promptTokens": [
+      "1girl",
+      "solo",
+      "illyasviel von einzbern",
       "lilac velvet nightdress",
       "pom pom trim",
       "giant polar bear plushie",
       "rolling on bed",
       "silver hair",
       "ruby red eyes",
-      "cute pout"
+      "pout",
+      "chandelier",
+      "soft lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Illyasviel von Einzbern holding court from the middle of her opulent four-poster canopy bed in the Einzbern castle. Wearing a sweet pale-lilac velvet camisole dress bordered with fluffy white pom-poms, she rolls around hugging a giant plush polar bear nearly twice her size. Her shimmering silver tresses pool over the duvet as her ruby eyes beam with demanding, affectionate princess charm.",
+    "promptProse": "Illyasviel von Einzbern holding court from the middle of her opulent four-poster canopy bed in the Einzbern castle. Wearing a sweet pale-lilac velvet camisole dress bordered with fluffy white pom-poms, she rolls around hugging a giant plush polar bear nearly twice her size. Her shimmering silver tresses pool over the duvet as her ruby eyes beam with demanding, affectionate princess charm. Soft golden chandelier light cascades across the opulent canopy drapery, bathing her playful antics in royal warmth.",
     "animaCaption": "Illyasviel von Einzbern holding court from the middle of her opulent four-poster canopy bed in the Einzbern castle. Wearing a sweet pale-lilac velvet camisole dress bordered with fluffy white pom-poms, she rolls around hugging a giant plush polar bear nearly twice her size.",
     "nsfwTokens": [],
     "nsfwProse": ""

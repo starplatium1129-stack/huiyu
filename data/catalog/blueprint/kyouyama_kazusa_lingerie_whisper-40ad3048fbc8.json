@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3268,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kyouyama_kazusa_lingerie_whisper",
     "characterId": "kyouyama_kazusa",
@@ -42,7 +42,8 @@
       "cat-ear notched neckline",
       "satin ribbon bows",
       "ruffled hem tap pants",
-      "indoors"
+      "indoors",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Kyouyama Kazusa leans against beanbag chair, wearing a smoky mauve and grey lace trim camisole set. Cat tail flicking on wool blanket, cat ears twitching, blushing face looking away shyly amidst holding pink macaron ribbon, low wooden coffee table with tea cup, warm fairy lights background.",

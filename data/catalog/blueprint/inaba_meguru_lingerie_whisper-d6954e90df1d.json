@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "inaba_meguru_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3394,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.854Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "inaba_meguru_lingerie_whisper",
     "characterId": "inaba_meguru",
@@ -43,11 +43,14 @@
       "blush",
       "messy hair",
       "extensions on desk",
-      "teary amber eyes"
+      "teary amber eyes",
+      "vanity light",
+      "soft lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Meguru Inaba in a state of sheer romantic mortification inside her private apartment bedroom. Dressed in a delicate sakura-pink strappy lace camisole and ruffled tap shorts, she clutches both hands over her head to conceal her unstyled natural hair after taking out her extensions. Blushing furiously to the tips of her ears, she begs the viewer to avert their eyes with irresistible gyaru vulnerability.",
-    "animaCaption": "Meguru Inaba in a state of sheer romantic mortification inside her private apartment bedroom. Dressed in a delicate sakura-pink strappy lace camisole and ruffled tap shorts, she clutches both hands over her head to conceal her unstyled natural hair after taking out her extensions.",
+    "promptProse": "Meguru Inaba in a state of sheer romantic mortification inside her private apartment bedroom. Dressed in a delicate sakura-pink strappy lace camisole and ruffled tap shorts, she clutches both hands over her head to conceal her unstyled natural hair after taking out her extensions. Blushing furiously to the tips of her ears, she begs the viewer to avert their eyes with irresistible gyaru vulnerability. Soft diffused vanity bulb lighting surrounds the dressing mirror, casting flattering rosy illumination over her blushing face and delicate lace straps.",
+    "animaCaption": "Meguru Inaba in a state of sheer romantic mortification inside her private apartment bedroom. Dressed in a delicate sakura-pink strappy lace camisole and ruffled tap shorts, she clutches both hands over her head to conceal her unstyled natural hair after taking out her extensions. Soft diffused vanity bulb lighting surrounds the dressing mirror, casting flattering rosy illumination over her blushing face and delicate lace straps.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

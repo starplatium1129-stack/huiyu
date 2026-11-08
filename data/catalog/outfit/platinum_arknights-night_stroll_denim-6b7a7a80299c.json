@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/night_stroll_denim",
+  "revision": 1,
+  "sortOrder": 405,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "night_stroll_denim",
+      "characterId": "platinum_arknights",
+      "name": "大骑士领夜市短款夹克穿搭",
+      "prose": "A stylish cropped denim jacket worn over a simple white crop top, high-waisted black tennis skirt, and leather choker necklace.",
+      "tokens": [
+        "denim jacket",
+        "crop top",
+        "tennis skirt",
+        "choker",
+        "sneakers",
+        "streetwear"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

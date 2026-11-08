@@ -34,6 +34,14 @@ const ROOT = path.resolve(__dirname, '..');
 const { LEGACY_WORKFLOWS } = require('./lib/workflow-legacy') as typeof import('./lib/workflow-legacy');
 const WORKFLOWS: import('./lib/workflow-types').RegisteredWorkflows = {
   ...LEGACY_WORKFLOWS,
+  'content:autofix': { desc: '蓝图/场景快速自动纠错：本地来源词库、确定规则、按需单次模型；合批写回，外站与出图不阻断',
+    cmd: ['node', 'scripts/maintenance/repair-scene-prompts.js'],
+    opts: '[--changed | --ids <ID,...> | --character <ID> | --all] [--kind blueprint|scene] [--runtime-root runtime] [--output runtime/scene-repair/automatic] [--model <Anima模型>] [--reviewer <模型>] [--concurrency 1-8] [--limit <数量>] [--apply] [--dry-run] [--no-model] [--online-tags] [--render] [--gateway <URL>]', docs: 'docs/workflow.md',
+    run: { nature: ['external-model', 'writes-product'], machine: ['node'],
+      switches: { '--dry-run': ['preview', 'read-only'], '--render': ['external-model', 'writes-product'], '--apply': ['writes-product', 'writes-source'], '--online-tags': ['read-only'], '--no-model': ['writes-product'] },
+      resume: 'checkpoint', evidence: 'scripts/maintenance/repair-scene-prompts.ts',
+      notes: ['默认处理 Git 改动对应的权威 SQLite 记录；4 路处理、角色上下文缓存、逐条断点、合批写回及定向导出；apply 不要求 render；模型与外站不可用时执行本地确定修正，未知词保留；定稿及优质参考跳过；不重复提交未知出图任务'],
+      unknown: ['未执行出图的修正不代表视觉通过；模型仍可能误判；来源缓存证明已有词条，不保证当前底模必然识别'] } },
   'models:import-moss-int8': { desc: '校验导入 MOSS INT8 主模型或文本编码器；新版本可复用已准备组件，保留下载源', cmd: ['python', '-I', '-B', 'scripts/maintenance/import-moss-int8.py'], required: ['--source', '--model-dir'], opts: '--source <INT8文件> --model-dir <目标MOSS目录> [--model-id <已登记版本>] [--reuse-from <已有MOSS目录>] [--component transformer|text_encoder] [--apply]；运行前关闭目标模型推理', docs: 'docs/guides/independent-inference.md',
     run: { nature: ['preview', 'read-only'], machine: ['python'], switches: { '--apply': ['writes-product'] }, resume: 'idempotent', evidence: 'scripts/maintenance/import-moss-int8.py', unknown: ['导入与 SHA-256 不代表算子、出图或性能验收'], notes: ['只接受固定来源 SHA-256；原始文件与 FP16/BF16 不变；不导入 ML、不执行推理、不安装依赖'] } },
   'content:catalog': { desc: '记录式内容库：AI 创作上下文、整位角色、记录/历史读取、局部快照合并导出与字段补丁；patch/import 默认预览', cmd: ['node', 'scripts/maintenance/run-rust-runtime.js', 'catalog'], opts: '<stats|query|record|history|character|authoring|export|patch|import|check|colors> [--root <内容来源>] [--seed-root <随包默认目录>] --runtime-root <运行目录> [--kind <类型> --id <ID> --revision <修订>] [--character <ID> ...] [authoring: --example <参考角色ID> | --kind scene [--id <现有场景ID>]] [--record <kind:id> ...] [--created-from <RFC3339> --created-to <RFC3339>] [--sort <排序> --page <页> --page-size <数量>] [--file <JSON>] [--out <导出目录>] [--apply] [import: --preserve-local]', docs: 'docs/maintenance.md',

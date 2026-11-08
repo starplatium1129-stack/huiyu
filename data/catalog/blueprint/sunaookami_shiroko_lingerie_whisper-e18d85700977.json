@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3440,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sunaookami_shiroko_lingerie_whisper",
     "characterId": "sunaookami_shiroko",
@@ -39,7 +39,8 @@
       "blue eyes",
       "racerback straps",
       "snug boyleg workout shorts",
-      "indoors"
+      "indoors",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Sunaookami Shiroko sits on cot bending down adjusting ankle strap of athletic socks, wearing a soft grey and cyan-blue athletic sports cami set. Wolf girl, fluffy white lupo ears swiveling, sleek road bicycle parked by wall amidst cool pale blue eyes, bright desert dawn light streaming through window.",

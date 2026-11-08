@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3177,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.237Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "tohsaka_rin_swimsuit_allure",
     "characterId": "tohsaka_rin",
@@ -43,7 +43,8 @@
       "cliff railing",
       "sea wind",
       "blushing tsundere",
-      "midday sun"
+      "midday sun",
+      "sunlight"
     ],
     "negativeTokens": [],
     "promptProse": "Rin Tohsaka standing proudly at the edge of a breezy seaside cliff overlook railing. She dons an exquisite jewel-mage crimson bikini bordered in pitch-black satin with crisscrossing waist cords. Her classic twin tails whip through the radiant sea wind as she crosses her arms and tilts her chin defiantly, trying to mask a flustered crimson blush with haughty aristocratic bravado.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_steaming_folding_screen_hitch_passionate_entwine",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2363,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "renge_steaming_folding_screen_hitch_passionate_entwine",
     "characterId": "renge_mangekyou",
@@ -19,7 +19,7 @@
     "lighting": "dim steamy glow from warm onsen lanterns filtering through cedar lattice",
     "camera": "medium_shot",
     "mood": "steamy breathless abandon, primal traditional intimacy, unreserved lovers union",
-    "promptProse": "Pinned against an antique Japanese screen in bathhouse steam, Renge wraps her legs around partner in frantic, breathless abandonment.",
+    "promptProse": "Pinned against an antique Japanese screen in bathhouse steam, Renge wraps her legs around partner in frantic, breathless abandonment. Soft amber light from a traditional paper lantern filters through rising bathhouse steam, casting warm shimmering silhouettes against the painted folding screen.",
     "promptTokens": [
       "against_folding_screen",
       "Japanese_screen",
@@ -29,10 +29,13 @@
       "heavy_blush",
       "open_mouth",
       "arched_back",
-      "medium_shot"
+      "medium_shot",
+      "lantern",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Renge pinned against an ornate screen in the onsen steam, lost in passionate ecstasy.",
+    "animaCaption": "Renge pinned against an ornate screen in the onsen steam, lost in passionate ecstasy. Soft amber light from a traditional paper lantern filters through rising bathhouse steam, casting warm shimmering silhouettes against the painted folding screen.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,

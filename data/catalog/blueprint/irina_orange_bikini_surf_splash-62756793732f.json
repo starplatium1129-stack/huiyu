@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "irina_orange_bikini_surf_splash",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2760,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-06T12:10:27.269121300+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "irina_orange_bikini_surf_splash",
     "characterId": "irina_shidou",
@@ -31,7 +31,8 @@
       "sunny sky",
       "energetic laugh",
       "water droplets",
-      "dynamic pose"
+      "dynamic pose",
+      "sunlight"
     ],
     "negativeTokens": [],
     "animaCaption": "Irina bounds through the shallow ocean waves in her bright orange bikini, waving cheerfully with sparkling water drops flying.",

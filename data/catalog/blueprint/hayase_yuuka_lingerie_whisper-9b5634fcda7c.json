@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hayase_yuuka_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3286,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.725Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hayase_yuuka_lingerie_whisper",
     "characterId": "hayase_yuuka",
@@ -44,11 +44,14 @@
       "angry pout",
       "messy twintails",
       "purple eyes",
-      "office night"
+      "office night",
+      "desk lamp",
+      "fluorescent light",
+      "bright room"
     ],
     "negativeTokens": [],
-    "promptProse": "Yuuka Hayase losing her financial composure over late-night accounting inside the Seminar bureau. Clothed in a classic navy-and-white pinstriped button-up cotton pajama set, she sits cross-legged surrounded by mountains of expense receipts. Punching figures furiously into a desk calculator with one hand while clutching her messy blue twintails in comic despair, she glares at Sensei with adorable accountant fury.",
-    "animaCaption": "Yuuka Hayase losing her financial composure over late-night accounting inside the Seminar bureau. Clothed in a classic navy-and-white pinstriped button-up cotton pajama set, she sits cross-legged surrounded by mountains of expense receipts.",
+    "promptProse": "Yuuka Hayase losing her financial composure over late-night accounting inside the Seminar bureau. Clothed in a classic navy-and-white pinstriped button-up cotton pajama set, she sits cross-legged surrounded by mountains of expense receipts. Punching figures furiously into a desk calculator with one hand while clutching her messy blue twintails in comic despair, she glares at Sensei with adorable accountant fury. Crisp fluorescent lamplight from the seminar desk lamp casts clean geometric shadows over budget ledgers, catching the neat pinstripes of her sleepwear.",
+    "animaCaption": "Yuuka Hayase losing her financial composure over late-night accounting inside the Seminar bureau. Clothed in a classic navy-and-white pinstriped button-up cotton pajama set, she sits cross-legged surrounded by mountains of expense receipts. Crisp fluorescent lamplight from the seminar desk lamp casts clean geometric shadows over budget ledgers, catching the neat pinstripes of her sleepwear.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

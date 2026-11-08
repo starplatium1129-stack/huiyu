@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3519,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T04:52:36.936Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kaltsit_arknights_lingerie_whisper",
     "characterId": "kaltsit_arknights",
@@ -43,7 +43,9 @@
       "sitting in chair",
       "hand on neck",
       "emerald eyes",
-      "medical hologram"
+      "medical hologram",
+      "glow",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Kal'tsit reflecting on the fate of Terra late at night in her private medical office. She is dressed in an austere, elegant sage-green silk robe featuring a high mandarin neck and belted waist. Resting one hand against the thermal port on the back of her neck as her tufted lynx ears listen to the quiet hum of Rhodes Island, her ancient emerald eyes hold centuries of unspoken vigilance.",

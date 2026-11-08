@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3217,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "yukinoshita_yukino_lingerie_whisper",
     "characterId": "yukinoshita_yukino",
@@ -42,11 +42,14 @@
       "books",
       "night",
       "ultra-thin straps",
-      "indoors"
+      "indoors",
+      "desk lamp",
+      "moonlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Yukinoshita Yukino sits on bed edge holding black-and-white Pan-san stuffed animal in lap, wearing a ice blue minimalist liquid-silk slip gown. Cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness amidst neat bookshelf of literature books, serene winter night.",
-    "animaCaption": "Yukinoshita Yukino sits on bed edge holding black-and-white Pan-san stuffed animal in lap, wearing a ice blue minimalist liquid-silk slip gown. Cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness amidst neat bookshelf of literature books, serene winter night.",
+    "promptProse": "Yukinoshita Yukino sits on bed edge holding black-and-white Pan-san stuffed animal in lap, wearing a ice blue minimalist liquid-silk slip gown. Cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness amidst neat bookshelf of literature books, serene winter night. Pale winter moonlight from the window interlaces with the warm amber glow of a small bedside lamp, tracing a crystalline halo around her snow-white nightwear.",
+    "animaCaption": "Yukinoshita Yukino sits on bed edge holding black-and-white Pan-san stuffed animal in lap, wearing a ice blue minimalist liquid-silk slip gown. Cascading waist-length raven hair, porcelain skin, crystalline cool blue eyes melting into profound tenderness amidst neat bookshelf of literature books, serene winter night. Pale winter moonlight from the window interlaces with the warm amber glow of a small bedside lamp, tracing a crystalline halo around her snow-white nightwear.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

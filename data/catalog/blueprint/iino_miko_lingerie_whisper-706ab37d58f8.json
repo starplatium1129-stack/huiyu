@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3425,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.819Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "iino_miko_lingerie_whisper",
     "characterId": "iino_miko",
@@ -43,11 +43,14 @@
       "curled on bed",
       "short pigtails",
       "vulnerable gaze",
-      "warm nightlight"
+      "warm nightlight",
+      "night light",
+      "dim lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears. Squeezing a cherished teddy bear against her chest, her soft eyes peek out with endearing, unguarded vulnerability.",
-    "animaCaption": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears.",
+    "promptProse": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears. Squeezing a cherished teddy bear against her chest, her soft eyes peek out with endearing, unguarded vulnerability. A faint amber night light on the bedside table casts minimal comforting illumination across the cozy bedroom corner, gently tracing her tucked-in silhouette.",
+    "animaCaption": "Miko Iino seeking sanctuary from schoolyard stress inside the quiet corner of her bed. Dressed in a prim, double-layered white pintuck cotton nightdress buttoned cleanly to the throat, she curls up small with oversized audio headphones on her ears. A faint amber night light on the bedside table casts minimal comforting illumination across the cozy bedroom corner, gently tracing her tucked-in silhouette.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3332,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "yatogami_tohka_lingerie_whisper",
     "characterId": "yatogami_tohka",
@@ -40,7 +40,9 @@
       "silver starburst clasp",
       "flutter hemline",
       "imperial purple hue",
-      "indoors"
+      "indoors",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Tohka Yatogami sits cross-legged holding fresh golden kinako bread with both hands, wearing a violet purple double-layered chiffon babydoll slip. Spirit princess, sugar dust on lower lip, voluminous royal purple hair cascading amidst radiant sparkling purple eyes, warm cozy living room in afternoon sunshine.",

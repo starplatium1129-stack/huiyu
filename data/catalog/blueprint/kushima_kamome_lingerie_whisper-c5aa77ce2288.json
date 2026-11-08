@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kushima_kamome_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3484,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "kushima_kamome_lingerie_whisper",
     "characterId": "kushima_kamome",
@@ -42,7 +42,10 @@
       "wireless soft cups",
       "breathable cotton briefs",
       "breezy coastal homewear",
-      "indoors"
+      "indoors",
+      "water reflection",
+      "sunlight",
+      "morning light"
     ],
     "negativeTokens": [],
     "promptProse": "Kushima Kamome sits atop an antique leather trunk suitcase, wearing a navy and white pinstriped linen bralette set. Bare feet on wooden floorboards, short light-blonde hair fluttering in ocean wind, bright turquoise eyes amidst sea gull outside arched window, dazzling morning ocean horizon.",

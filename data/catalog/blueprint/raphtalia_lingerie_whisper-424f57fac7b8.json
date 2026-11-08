@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3331,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "raphtalia_lingerie_whisper",
     "characterId": "raphtalia",
@@ -41,11 +41,14 @@
       "soft leather lace-up ties",
       "rustic autumnal embroidery",
       "faithful demi-human loungewear",
-      "indoors"
+      "indoors",
+      "fireplace",
+      "firelight",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass.",
-    "animaCaption": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass.",
+    "promptProse": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass. Cozy firelight from the hearth crackles softly in the rustic room, bathing her tan raccoon ears and simple cotton chemise in gentle amber warmth.",
+    "animaCaption": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass. Cozy firelight from the hearth crackles softly in the rustic room, bathing her tan raccoon ears and simple cotton chemise in gentle amber warmth.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

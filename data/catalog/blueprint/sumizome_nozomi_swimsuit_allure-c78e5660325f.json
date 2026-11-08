@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3397,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.146Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sumizome_nozomi_swimsuit_allure",
     "characterId": "sumizome_nozomi",
@@ -42,7 +42,9 @@
       "mountain stream",
       "sunny morning",
       "energetic",
-      "smile"
+      "smile",
+      "sunlight",
+      "dappled sunlight"
     ],
     "negativeTokens": [],
     "promptProse": "Nozomi Sumizome splashing pure mountain spring water enthusiastically toward the viewer with cupped hands. She wears a charming azure-blue yukata-wrap swimdress patterned with blooming morning glories and cheerful ruffled skirts. Droplets sparkle in midair like diamonds against the dappled woodland sunbeams as her eyes crinkle with genuine laughter.",

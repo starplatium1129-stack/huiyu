@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_slime_fitting_measurement",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2820,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "eta_shadow_slime_fitting_measurement",
     "characterId": "eta_shadow",
@@ -19,7 +19,7 @@
     "lighting": "测量室均匀的白色灯光",
     "camera": "full_shot",
     "mood": "clinical fitting, drowsy vanity",
-    "promptProse": "Eta stands alone on the fitting platform in her pleated slime outfit, checking a measuring tape around her waist in the mirror.",
+    "promptProse": "Eta stands alone on the fitting platform in her pleated slime outfit, checking a measuring tape around her waist in the mirror. Even, bright fluorescent lighting washes over the examination platform, casting clean clinical reflections across full-length mirrors and measuring instruments.",
     "promptTokens": [
       "fitting room",
       "standing",
@@ -27,10 +27,12 @@
       "measuring tape",
       "measuring waist",
       "clipboard",
-      "sleepy expression"
+      "sleepy expression",
+      "fluorescent light",
+      "bright lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Eta checks the tape against the notes on her clipboard.",
+    "animaCaption": "Eta checks the tape against the notes on her clipboard. Even, bright fluorescent lighting washes over the examination platform, casting clean clinical reflections across full-length mirrors and measuring instruments.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

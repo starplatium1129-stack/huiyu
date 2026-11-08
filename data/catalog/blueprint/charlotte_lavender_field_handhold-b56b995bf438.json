@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_lavender_field_handhold",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2180,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "charlotte_lavender_field_handhold",
     "characterId": "charlotte_dunois",
@@ -19,7 +19,7 @@
     "lighting": "brilliant summer daylight with soft purple flower reflections",
     "camera": "cowboy_shot",
     "mood": "idyllic romantic freedom, poetic travel bliss, sun-drenched beauty",
-    "promptProse": "Walking through a sea of blooming lavender in a floral sundress, Charlotte looks back holding hands with an enchanting smile.",
+    "promptProse": "Walking through a sea of blooming lavender in a floral sundress under brilliant summer sunlight, Charlotte looks back holding hands with an enchanting smile.",
     "promptTokens": [
       "lavender_field",
       "flowers",
@@ -28,7 +28,9 @@
       "straw_hat",
       "summer_breeze",
       "sunny_day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Charlotte holding hands amidst purple lavender fields under summer sunlight.",

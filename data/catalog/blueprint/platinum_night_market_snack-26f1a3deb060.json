@@ -1,0 +1,54 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_night_market_snack",
+  "revision": 1,
+  "sortOrder": 3105,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_night_market_snack",
+    "characterId": "platinum_arknights",
+    "outfitId": "night_stroll_denim",
+    "title": "白金 · 霓虹夜市的晚风散策",
+    "category": "街头漫步",
+    "description": "【大骑士领下城区夜市·夜晚】五彩斑斓的霓虹灯牌与热闹的小吃摊烟火缭绕，白金手里举着晶莹剔透的糖苹果，在人群喧嚣中转头看向落后半步的博士：“走快点啦，前面那家手工章鱼烧排队很长哦。”",
+    "location": "下城区霓虹夜市街",
+    "action": "举糖苹果回首唤同伴前行",
+    "timeOfDay": "华灯初上之夜",
+    "lighting": "霓虹灯管的粉紫与浅蓝环境光斑",
+    "camera": "动态跟随微仰中景，突出街景烟火与人物灵动",
+    "mood": "欢快鲜活",
+    "sceneTags": [
+      "walking",
+      "looking back",
+      "holding candy apple",
+      "night market",
+      "neon lights",
+      "bokeh"
+    ],
+    "promptProse": "Strolling through a bustling neon-lit night market lined with lively street food stalls and hanging lanterns, Platinum holds up a shiny candy apple, glancing back over her shoulder with an amused, playful expression. Neon pink and cyan city lights reflect on her hair and casual street attire.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "walking",
+      "looking back",
+      "holding candy apple",
+      "night market",
+      "neon lights",
+      "street lanterns",
+      "bokeh",
+      "night city",
+      "playful smile",
+      "dynamic lighting",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

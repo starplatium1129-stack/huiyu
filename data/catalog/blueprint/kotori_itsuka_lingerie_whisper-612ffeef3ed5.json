@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_itsuka_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3467,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kotori_itsuka_lingerie_whisper",
     "characterId": "kotori_itsuka",
@@ -42,7 +42,9 @@
       "bare feet",
       "cushion",
       "empire waist ruffled hem",
-      "indoors"
+      "indoors",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Kotori Itsuka lies sideways on velvet chaise lounge, wearing a crimson strawberry print babydoll nightdress. Itsuka kotori, holding chupa chups lollipop in mouth, red twintails tied with white ribbons amidst bare feet dangling, cute strawberry cushions, warm afternoon sunlight beams, sweet innocent pout.",

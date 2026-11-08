@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshimi_miyabi_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3194,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hoshimi_miyabi_lingerie_whisper",
     "characterId": "hoshimi_miyabi",
@@ -44,11 +44,14 @@
       "meditating",
       "silver hair",
       "closed eyes",
-      "zen dojo"
+      "zen dojo",
+      "floor lamp",
+      "purple glow",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Miyabi Hoshimi deep in midnight sword meditation upon the polished cedar floorboards of Section 6's training hall. She wears a striking jet-black asymmetrical one-shoulder wrap chemise echoing traditional shinto garments. With her legendary katana resting horizontally across her crossed legs and fox ears perked in tranquil focus, she radiates untouchable, ethereal swordmaster grace.",
-    "animaCaption": "Miyabi sits cross-legged in the quiet dojo, meditating with her katana resting across her lap.",
+    "promptProse": "Miyabi Hoshimi deep in midnight sword meditation upon the polished cedar floorboards of Section 6's training hall. She wears a striking jet-black asymmetrical one-shoulder wrap chemise echoing traditional shinto garments. With her legendary katana resting horizontally across her crossed legs and fox ears perked in tranquil focus, she radiates untouchable, ethereal swordmaster grace. Pale violet luminescence from the distant New Eridu hollow boundary filters into the dojo, merging with warm wooden floor lanterns into an ethereal glow.",
+    "animaCaption": "Miyabi sits cross-legged in the quiet dojo, meditating with her katana resting across her lap. Pale violet luminescence from the distant New Eridu hollow boundary filters into the dojo, merging with warm wooden floor lanterns into an ethereal glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_fur_coat_winter_cafe_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2673,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kurodate_haruna_fur_coat_winter_cafe_whisper",
     "characterId": "kurodate_haruna",
@@ -45,7 +45,9 @@
       "blush",
       "sweet_smile",
       "looking_at_viewer",
-      "medium_shot"
+      "medium_shot",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Haruna in a fur coat inside a snowy cafe offering a sweet treat with a charming smile.",

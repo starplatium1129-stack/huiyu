@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_training_ground_fall",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2803,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "gamma_shadow_training_ground_fall",
     "characterId": "gamma_shadow",
@@ -19,13 +19,15 @@
     "lighting": "训练场正午的明亮日光",
     "camera": "full_shot",
     "mood": "endearing clumsiness, stubborn perseverance",
-    "promptProse": "Gamma understands every sword form perfectly — her feet simply refuse. Fallen but unbowed, she grips her sword again.",
+    "promptProse": "Gamma understands every sword form perfectly under the harsh afternoon sunlight — her feet simply refuse. Fallen in the dust but unbowed, she grips her sword again.",
     "promptTokens": [
       "training ground",
       "practice sword",
       "fall",
       "wooden dummy",
-      "determination"
+      "determination",
+      "sunlight",
+      "shadow"
     ],
     "negativeTokens": [],
     "animaCaption": "The weakest of the Seven Shadows falls again, and stands up again. That, too, is Gamma.",

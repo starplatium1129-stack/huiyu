@@ -1,49 +1,54 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_church_couch_supine_devotion",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 216,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
   "data": {
     "id": "caren_nsfw_church_couch_supine_devotion",
     "title": "卡莲 · 教会软榻的深情仰卧索吻",
     "category": "私密温存",
     "characterId": "caren_hortensia",
-    "description": "烛光圣堂里，卡莲独自斜卧深色绒榻。白色礼装敞开并堆在腰侧，红色圣骸布绕过手腕与一条屈起大腿，形成由她控制的柔软张力；她一手收紧缎带，一手沿裸露腿间缓慢自抚。银发铺在靠垫上，琥珀色眼睛安静含泪，克制神情让私密动作更显危险。",
+    "description": "幽静的教会祷告室内，卡莲侧倚在华丽的深蓝天鹅绒长榻上。纯白的礼装纽扣解开，露出白皙锁骨与纤细颈项。鲜红的圣骸布缎带静静垂在身侧靠垫上作为点缀，银色短发散落，琥珀色的双眸在温暖的壁灯与烛火中倒映着近在咫尺的身影。",
     "location": "教会幽静祷告室深处天鹅绒长榻中央",
-    "action": "独自斜卧圣堂绒榻，以圣骸布绕住手腕和屈腿，一手收紧缎带、一手在腿间自抚",
+    "action": "侧卧在圣堂深蓝天鹅绒软榻上，解开衣领的白礼服微敞，红色圣骸布如缎带般垂落在沙发靠垫旁，琥珀眼眸微润含羞凝望",
     "timeOfDay": "深夜",
     "lighting": "昏暗柔和的壁灯与烛火勾勒娇躯线条",
-    "camera": "cowboy shot, from above",
+    "camera": "cowboy shot, lying on side on velvet couch, warm church candlelight",
     "mood": "深情交付",
     "sceneTags": [
-      "church_room",
-      "velvet_couch",
-      "lying_on_back",
-      "spread_legs",
-      "bare_breasts",
-      "pink_nipples",
-      "heavy_blush",
-      "parted_lips"
-    ],
-    "promptProse": "She reclines with her white dress gathered at her waist and loose shroud ribbons around one wrist and raised thigh, holding the silk with one hand while the other rests between her legs. Dim wall lamps and candlelight outline her against the dark velvet couch.",
-    "promptTokens": [
       "church",
-      "velvet couch",
+      "velvet_couch",
+      "white_dress",
+      "bare_shoulders",
+      "collarbone",
+      "red_ribbon",
+      "lying_on_side",
+      "candlelight"
+    ],
+    "promptProse": "Caren Hortensia lying on her side on a navy blue velvet couch, white ceremonial dress unbuttoned at collar, bare shoulders and collarbone, red decorative shroud ribbons draped across the couch cushions, short silver hair, amber eyes, gentle blush, looking at viewer, church prayer room, dim wall lamps, warm candlelight.",
+    "promptTokens": [
+      "caren hortensia",
+      "white hair",
+      "short hair",
+      "amber eyes",
       "white dress",
-      "open clothes",
-      "topless",
-      "red ribbons",
-      "masturbation",
+      "unbuttoned collar",
+      "bare shoulders",
+      "collarbone",
+      "lying on side",
+      "resting on couch",
+      "hand touching collarbone",
+      "red ribbon draped on couch",
+      "velvet couch",
+      "church room",
+      "prayer room",
       "candlelight",
-      "reclining",
-      "raised leg",
-      "holding ribbon",
-      "heavy blush",
-      "wall lamp",
-      "cowboy shot",
-      "from above"
+      "soft blush",
+      "looking at viewer",
+      "warm indoor lighting",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -53,12 +58,15 @@
     "animaStyleHint": "r18_explicit_h_cg",
     "outfitId": "white_ceremonial_dress",
     "coverageTags": [
-      "nsfw",
-      "supine",
-      "special_nsfw"
+      "daily"
     ],
     "nsfwProse": "",
-    "nsfwTokens": [],
-    "animaCaption": "One hand holds the loose silk around her wrist and thigh; the other rests between her legs."
+    "nsfwTokens": [
+      "cleavage",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "animaCaption": "She lies on her side on the velvet couch with red ribbons draped beside her.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "specter_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3152,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "specter_arknights_lingerie_whisper",
     "characterId": "specter_arknights",
@@ -42,11 +42,14 @@
       "underwire contour",
       "strappy cutout hips",
       "delicate mesh trims",
-      "indoors"
+      "indoors",
+      "moonlight",
+      "stained glass",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Specter sits elegantly with crossed legs on velvet bench in sculpture studio, wearing a gothic black sheer coral-lace bralette set. Laurentina, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder amidst teasing blood-red eyes, dramatic theatrical spotlighting.",
-    "animaCaption": "Specter sits elegantly with crossed legs on velvet bench in sculpture studio, wearing a gothic black sheer coral-lace bralette set. Laurentina, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder amidst teasing blood-red eyes, dramatic theatrical spotlighting.",
+    "promptProse": "Specter sits elegantly with crossed legs on velvet bench in sculpture studio, wearing a gothic black sheer coral-lace bralette set. Laurentina, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder amidst teasing blood-red eyes, dramatic theatrical spotlighting. Pale moonlight filtering through stained glass windows casts intricate gothic patterns and deep shadows across her white nightgown and enigmatic grin.",
+    "animaCaption": "Specter sits elegantly with crossed legs on velvet bench in sculpture studio, wearing a gothic black sheer coral-lace bralette set. Laurentina, holding chisel against unfinished marble bust, long wavy platinum blonde hair dusted with marble powder amidst teasing blood-red eyes, dramatic theatrical spotlighting. Pale moonlight filtering through stained glass windows casts intricate gothic patterns and deep shadows across her white nightgown and enigmatic grin.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_rihavein_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3457,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "la_folia_rihavein_lingerie_whisper",
     "characterId": "la_folia_rihavein",
@@ -40,7 +40,10 @@
       "starry sky",
       "slit sheer floating peignoir",
       "regal high-end lingerie",
-      "indoors"
+      "indoors",
+      "starlight",
+      "fireplace",
+      "firelight"
     ],
     "negativeTokens": [],
     "promptProse": "La Folia Rihavein lounges gracefully on silver fur settee, wearing a silver sheer chiffon bandeau bra. Long pure silver hair cascading like waterfall, piercing azure eyes, mischievous royal smile amidst pulling thin sheer strap slightly, starlight streaming from panoramic glass dome ceiling above.",

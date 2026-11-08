@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_department_store_blueprint",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2816,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "eta_shadow_department_store_blueprint",
     "characterId": "eta_shadow",
@@ -19,16 +19,19 @@
     "lighting": "建筑工作室高窗的明亮日光",
     "camera": "cowboy_shot",
     "mood": "architectural genius, drowsy pride",
-    "promptProse": "Over the blueprint of Mitsugoshi's flagship store, Eta explains load-bearing arches in the tone of someone about to nap.",
+    "promptProse": "Over the blueprint of Mitsugoshi's flagship store, Eta explains load-bearing arches in the tone of someone about to nap. Crisp morning sunlight pours through tall studio windows across the vast drafting table, illuminating architectural blueprints and detailed wooden models with clean geometry.",
     "promptTokens": [
       "blueprint",
       "drafting table",
       "architecture",
       "scale model",
-      "studio"
+      "studio",
+      "sunlight",
+      "window light",
+      "bright room"
     ],
     "negativeTokens": [],
-    "animaCaption": "Architect of the Year, they called her. Eta yawned through the ceremony, probably.",
+    "animaCaption": "Architect of the Year, they called her. Eta yawned through the ceremony, probably. Crisp morning sunlight pours through tall studio windows across the vast drafting table, illuminating architectural blueprints and detailed wooden models with clean geometry.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

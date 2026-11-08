@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "entelechia_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3150,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.557Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "entelechia_arknights_lingerie_whisper",
     "characterId": "entelechia_arknights",
@@ -43,11 +43,13 @@
       "wavy dark hair",
       "antique brass",
       "deep purple eyes",
-      "melodic"
+      "melodic",
+      "dim lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards. Leaning beside a vintage brass-horned phonograph while gently handling a vinyl disc, her dark wavy curls and deep amethyst gaze evoke the sublime mysteries of the oceanic deep.",
-    "animaCaption": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards.",
+    "promptProse": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards. Leaning beside a vintage brass-horned phonograph while gently handling a vinyl disc, her dark wavy curls and deep amethyst gaze evoke the sublime mysteries of the oceanic deep. Muted golden lamplight catches the polished flare of a vintage brass gramophone, casting subdued amber reflections across the dark silk of her slip.",
+    "animaCaption": "Entelechia lingering in the resonance of a completed symphony late at night. She is dressed in an avant-garde charcoal and black asymmetric silk slip dress with subtle tidal jacquards. Muted golden lamplight catches the polished flare of a vintage brass gramophone, casting subdued amber reflections across the dark silk of her slip.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

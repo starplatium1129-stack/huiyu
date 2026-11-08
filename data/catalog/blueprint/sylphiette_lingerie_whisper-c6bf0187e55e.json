@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3252,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sylphiette_lingerie_whisper",
     "characterId": "sylphiette",
@@ -41,7 +41,10 @@
       "white clover lace applique",
       "scalloped mini hem",
       "delicate double straps",
-      "indoors"
+      "indoors",
+      "sunlight",
+      "dappled sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Sylphiette sits on edge of sunlit wooden bed, wearing a pale mint green sheer chiffon camisole slip. Elf girl, long pointed elven ears blushing pink, short white hair amidst delicate green eyes filled with tender affection, warm afternoon light filtering through tree leaves outside window.",

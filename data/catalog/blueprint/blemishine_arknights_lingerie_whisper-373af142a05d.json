@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "blemishine_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3148,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.386Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "blemishine_arknights_lingerie_whisper",
     "characterId": "blemishine_arknights",
@@ -42,11 +42,14 @@
       "pencil in hair",
       "tinkering with gears",
       "crosslegged",
-      "bright smile"
+      "bright smile",
+      "desk lamp",
+      "rim lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil. Her equine ears perk up joyfully as she turns around holding tiny clockwork gears, smiling like the brightest morning sun.",
-    "animaCaption": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil.",
+    "promptProse": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil. Her equine ears perk up joyfully as she turns around holding tiny clockwork gears, smiling like the brightest morning sun. A ring lamp over the magnifying workbench casts focused amber light on tiny brass gears, tracing a clean rim light along her intent, youthful face.",
+    "animaCaption": "Maria Nearl (Blemishine) completely absorbed in mechanical tinkering late at night within her engineering quarters. She is dressed in a cozy, relaxed golden-yellow gingham cotton jumpsuit pajama, her thick blonde mane playfully pinned up with a drafting pencil. A ring lamp over the magnifying workbench casts focused amber light on tiny brass gears, tracing a clean rim light along her intent, youthful face.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

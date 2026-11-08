@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3162,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.187Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "angelina_arknights_lingerie_whisper",
     "characterId": "angelina_arknights",
@@ -43,7 +43,8 @@
       "floating in air",
       "hugging pillow",
       "starry room",
-      "happy smile"
+      "happy smile",
+      "starlight"
     ],
     "negativeTokens": [],
     "promptProse": "Angelina enjoying zero-gravity relaxation in her personal dorm room at night. Clothed in a breezy coral-pink polka-dot silk camisole and sleep shorts set, she floats playfully a few inches above her mattress thanks to gentle anti-gravity Arts. Hugging a plush celestial pillow with her fluffy fox tail drifting happily, she greets the viewer with sparkling amber eyes beneath cosmic starlight projections.",

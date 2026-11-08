@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_yacht_deck_champagne_toast",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2196,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "la_folia_yacht_deck_champagne_toast",
     "characterId": "la_folia_rihavein",
@@ -19,7 +19,7 @@
     "lighting": "brilliant Mediterranean sun reflecting off deep blue ocean waves",
     "camera": "cowboy_shot",
     "mood": "dazzling royal glamour, audacious playfulness, sun-drenched opulence",
-    "promptProse": "Standing on a luxury yacht deck in a gold bikini, La Folia raises a champagne glass, her long silver hair flying in the ocean wind with a teasing smile.",
+    "promptProse": "Standing on a luxury yacht deck in a gold bikini, La Folia raises a champagne glass, her long silver hair flying in the ocean wind with a teasing smile. Golden hour sunset light radiates across the open yacht deck, reflecting brilliant amber and crimson hues off the champagne flute and calm sea surface.",
     "promptTokens": [
       "yacht",
       "deck",
@@ -29,10 +29,13 @@
       "windblown_hair",
       "confident_smile",
       "sunny_day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunset light",
+      "golden hour",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "animaCaption": "La Folia raising a champagne glass in the ocean breeze on a luxury yacht.",
+    "animaCaption": "La Folia raising a champagne glass in the ocean breeze on a luxury yacht. Golden hour sunset light radiates across the open yacht deck, reflecting brilliant amber and crimson hues off the champagne flute and calm sea surface.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

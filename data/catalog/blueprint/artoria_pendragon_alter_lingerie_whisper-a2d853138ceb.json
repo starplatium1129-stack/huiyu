@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "artoria_pendragon_alter_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3521,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T04:52:36.248Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "artoria_pendragon_alter_lingerie_whisper",
     "characterId": "artoria_pendragon_alter",
@@ -43,11 +43,14 @@
       "golden eyes",
       "blonde hair",
       "dark room",
-      "imperious glare"
+      "imperious glare",
+      "neon lights",
+      "dim lighting",
+      "blue lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Artoria Pendragon (Alter) dominating a black leather recliner late into the night. She sports an imposing gothic matte-black lace corset camisole with structural boning and micro sleep shorts. Holding a juicy cheeseburger in one hand while surveying the viewer with icy golden eyes, her ruthless tyrant persona contrasts deliciously with her midnight junk-food feast.",
-    "animaCaption": "Artoria Pendragon (Alter) dominating a black leather recliner late into the night. She sports an imposing gothic matte-black lace corset camisole with structural boning and micro sleep shorts.",
+    "promptProse": "Artoria Pendragon (Alter) dominating a black leather recliner late into the night. She sports an imposing gothic matte-black lace corset camisole with structural boning and micro sleep shorts. Holding a juicy cheeseburger in one hand while surveying the viewer with icy golden eyes, her ruthless tyrant persona contrasts deliciously with her midnight junk-food feast. Cool bluish television light and the subtle glow of a crimson neon sign cut through the dim room, casting moody cinematic shadows across her leather recliner.",
+    "animaCaption": "Artoria Pendragon (Alter) dominating a black leather recliner late into the night. She sports an imposing gothic matte-black lace corset camisole with structural boning and micro sleep shorts. Cool bluish television light and the subtle glow of a crimson neon sign cut through the dim room, casting moody cinematic shadows across her leather recliner.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

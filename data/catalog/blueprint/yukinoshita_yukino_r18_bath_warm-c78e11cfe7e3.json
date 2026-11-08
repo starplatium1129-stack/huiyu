@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yukinoshita_yukino_r18_bath_warm",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 345,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T14:24:15.273444+00:00",
   "data": {
     "id": "yukinoshita_yukino_r18_bath_warm",
     "title": "雪之下雪乃 · 热汤浴后",
@@ -12,10 +12,10 @@
     "characterId": "yukinoshita_yukino",
     "description": "温泉旅馆的私人风吕里弥漫着滚烫的水汽，雪乃整个人浸润在清澈的温泉中，黑亮的长发挽在脑后。被热水蒸透的白皙雪肤泛着诱人的粉色，她双手遮在胸前垂下眼帘——「温泉的温度似乎有点太高了……心跳一直快得停不下来。你、你不准靠得太近。」",
     "location": "温泉旅馆私人风吕",
-    "action": "泡在浴缸里",
+    "action": "轻拢纯白湿浴巾护在胸口，微低螓首，湿润的黑色发丝盘起，水珠顺着白皙肩颈滑落，双颊泛起融雪般的绯红",
     "timeOfDay": "夜晚",
     "lighting": "soft warm bathroom light and steam",
-    "camera": "medium shot, face, hands and waterline visible",
+    "camera": "cowboy shot, eye level, seated in cedar bath, graceful upper body and arms visible",
     "mood": "冰融的松弛",
     "sceneTags": [
       "bathroom",
@@ -25,22 +25,28 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Yukino sits immersed in the warm bath with her hair pinned up, both hands holding the wet white towel across her chest. She lowers her gaze through the steam beneath soft bathroom light.",
+    "promptProse": "Yukino sits upright in the warm cedar tub with her black hair swept up in an elegant bun, holding a translucent wet white towel securely against her chest. Clear droplets glisten along her pale bare shoulders and collarbone as she lowers her blue eyes through the fragrant steam in quiet shyness.",
     "promptTokens": [
-      "adult",
+      "1girl",
+      "solo",
+      "yukinoshita yukino",
+      "black hair",
+      "hair bun",
+      "blue eyes",
+      "blush",
+      "looking down",
+      "shy",
+      "holding towel",
       "wet towel",
-      "see-through",
-      "sitting",
+      "translucent",
+      "bare shoulders",
+      "collarbone",
       "wooden tub",
       "steam",
-      "blush",
+      "water droplets",
+      "soft lighting",
       "night",
-      "hair up",
-      "submerged",
-      "holding towel",
-      "both hands",
-      "looking down",
-      "soft light"
+      "cowboy shot"
     ],
     "negativeTokens": [
       "school uniform"
@@ -54,6 +60,6 @@
     "adultArtistHint": "@atdan",
     "outfitId": "white_bath_towel",
     "sampleRating": "R15",
-    "animaCaption": "Both hands hold the wet towel across her chest above the bathwater."
+    "animaCaption": "Yukino clutches the wet towel against her chest above the water, her bare shoulders and flushed cheeks luminous in the rising steam."
   }
 }

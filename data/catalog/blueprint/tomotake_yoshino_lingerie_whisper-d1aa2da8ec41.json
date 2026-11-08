@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tomotake_yoshino_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3296,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "tomotake_yoshino_lingerie_whisper",
     "characterId": "tomotake_yoshino",
@@ -42,11 +42,14 @@
       "embroidered wisteria blossoms",
       "flowing sheer kimono sleeves",
       "side ribbon bow",
-      "indoors"
+      "indoors",
+      "lantern",
+      "water reflection",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool.",
-    "animaCaption": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool.",
+    "promptProse": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool. Warm paper lanterns along the wooden shrine pavilion reflect gentle golden ripples off the hot spring water, bathing her polite seiza posture in soft light.",
+    "animaCaption": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool. Warm paper lanterns along the wooden shrine pavilion reflect gentle golden ripples off the hot spring water, bathing her polite seiza posture in soft light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

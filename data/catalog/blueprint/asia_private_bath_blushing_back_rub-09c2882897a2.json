@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_private_bath_blushing_back_rub",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "asia_private_bath_blushing_back_rub",
     "characterId": "asia_argento",
@@ -19,7 +19,7 @@
     "lighting": "soft diffused warm bathroom light filtering through dense steam mist",
     "camera": "cowboy_shot",
     "mood": "tender innocent bashfulness, pure heart-melting vulnerability",
-    "promptProse": "Sitting on a wooden bath stool in a steamy bathroom, Asia holds a fluffy white towel securely in front of her. Her damp blonde hair rests against dewy bare shoulders as she glances back with a shy, adorable blush.",
+    "promptProse": "Sitting on a wooden bath stool in a steamy bathroom, Asia holds a fluffy white towel securely in front of her. Her damp blonde hair rests against dewy bare shoulders as she glances back with a shy, adorable blush. Soft warm bathroom light filters through thick swirling steam, casting gentle golden highlights across her damp shoulders and dewy skin.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -38,10 +38,12 @@
       "shy",
       "heavy_blush",
       "looking_at_viewer",
-      "cowboy_shot"
+      "cowboy_shot",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Asia sitting in a steamy bathroom holding a white towel, looking back with shy green eyes.",
+    "animaCaption": "Asia sitting in a steamy bathroom holding a white towel, looking back with shy green eyes. Soft warm bathroom light filters through thick swirling steam, casting gentle golden highlights across her damp shoulders and dewy skin.",
     "isNsfw": true,
     "rating": "R15",
     "mature": false,

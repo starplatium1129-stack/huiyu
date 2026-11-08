@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_kaoruko_swimsuit_allure",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3321,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.343Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "waguri_kaoruko_swimsuit_allure",
     "characterId": "waguri_kaoruko",
@@ -45,11 +45,14 @@
       "blushing",
       "cafe umbrella",
       "morning",
-      "cute"
+      "cute",
+      "sunlight",
+      "bright lighting",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "promptProse": "Kaoruko Waguri enjoying a towering glass bowl of strawberry shaved ice at an outdoor seaside cafe under a cheerful striped umbrella. She wears a sweet honey-yellow and strawberry-pink gingham bikini decorated with dainty sugar-bow ties. With her cheeks delightfully puffed and a stray dab of whipped cream at her lip, she blushes bashfully when caught savoring her treat.",
-    "animaCaption": "Kaoruko Waguri enjoying a towering glass bowl of strawberry shaved ice at an outdoor seaside cafe under a cheerful striped umbrella. She wears a sweet honey-yellow and strawberry-pink gingham bikini decorated with dainty sugar-bow ties.",
+    "promptProse": "Kaoruko Waguri enjoying a towering glass bowl of strawberry shaved ice at an outdoor seaside cafe under a cheerful striped umbrella. She wears a sweet honey-yellow and strawberry-pink gingham bikini decorated with dainty sugar-bow ties. With her cheeks delightfully puffed and a stray dab of whipped cream at her lip, she blushes bashfully when caught savoring her treat. Bright cheerful summer sunlight sparkles through the glass bowl of shaved ice, scattering crystalline rainbow glints across her delighted smile.",
+    "animaCaption": "Kaoruko Waguri enjoying a towering glass bowl of strawberry shaved ice at an outdoor seaside cafe under a cheerful striped umbrella. She wears a sweet honey-yellow and strawberry-pink gingham bikini decorated with dainty sugar-bow ties. Bright cheerful summer sunlight sparkles through the glass bowl of shaved ice, scattering crystalline rainbow glints across her delighted smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

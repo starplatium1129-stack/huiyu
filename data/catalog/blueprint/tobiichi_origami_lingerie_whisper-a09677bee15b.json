@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3333,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "tobiichi_origami_lingerie_whisper",
     "characterId": "tobiichi_origami",
@@ -40,7 +40,8 @@
       "sheer lace garters",
       "sheer tulle fingerless gloves",
       "delicate scalloped edges",
-      "indoors"
+      "indoors",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Origami Tobiichi sits completely straight on center of white bed holding sheer bridal lace veil, wearing a pure white bridal lace bralette set. Short platinum hair, intense deadpan cyan eyes, meticulous tactical stalker charts on wall in background amidst bright pure white lighting.",

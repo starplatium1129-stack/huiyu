@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tohsaka_rin_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3178,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "tohsaka_rin_lingerie_whisper",
     "characterId": "tohsaka_rin",
@@ -42,11 +42,14 @@
       "crimson silk bralette set",
       "black eyelash lace trims",
       "low-rise matching briefs",
-      "indoors"
+      "indoors",
+      "fireplace",
+      "firelight",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Tohsaka Rin sits in antique armchair with legs crossed, wearing a crimson silk bralette set. Adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly amidst antique Tohsaka parlor with gemstones on mahogany desk.",
-    "animaCaption": "Tohsaka Rin sits in antique armchair with legs crossed, wearing a crimson silk bralette set. Adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly amidst antique Tohsaka parlor with gemstones on mahogany desk.",
+    "promptProse": "Tohsaka Rin sits in antique armchair with legs crossed, wearing a crimson silk bralette set. Adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly amidst antique Tohsaka parlor with gemstones on mahogany desk. Warm dancing firelight from the stone fireplace illuminates the mahogany desk, casting rich amber highlights across her crossed legs and blushing cheeks.",
+    "animaCaption": "Tohsaka Rin sits in antique armchair with legs crossed, wearing a crimson silk bralette set. Adjusting top lace band of black over-knee stockings, iconic twintails with black ribbons, fiery emerald green eyes blushing indignantly amidst antique Tohsaka parlor with gemstones on mahogany desk. Warm dancing firelight from the stone fireplace illuminates the mahogany desk, casting rich amber highlights across her crossed legs and blushing cheeks.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_swimsuit_allure",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 3408,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_swimsuit_allure",
     "characterId": "sawamura_spencer_eriri",
@@ -55,11 +55,13 @@
       "tsundere yell",
       "striped sun umbrella",
       "summer afternoon",
-      "depth of field"
+      "depth of field",
+      "sunlight",
+      "dappled sunlight"
     ],
     "negativeTokens": [],
-    "promptProse": "Sawamura Spencer Eriri flusters furiously on a beach chair in her green tartan sailor bikini, hugging an art sketchbook to her chest with pencil in mouth and twin blonde tails swinging in adorable indignation.",
-    "animaCaption": "Striped beach umbrella shade fails to cool her fiery blush as the perfectionist illustrator guards her secret sketches.",
+    "promptProse": "Sawamura Spencer Eriri flusters furiously on a beach chair in her green tartan sailor bikini, hugging an art sketchbook to her chest with pencil in mouth and twin blonde tails swinging in adorable indignation. Warm summer sunlight filters through the fabric edge of the beach parasol, casting subtle luminous highlights across her fair skin and blonde twintails.",
+    "animaCaption": "Striped beach umbrella shade fails to cool her fiery blush as the perfectionist illustrator guards her secret sketches. Warm summer sunlight filters through the fabric edge of the beach parasol, casting subtle luminous highlights across her fair skin and blonde twintails.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

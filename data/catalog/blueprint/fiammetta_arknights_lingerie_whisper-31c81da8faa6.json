@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiammetta_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3142,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.625Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "fiammetta_arknights_lingerie_whisper",
     "characterId": "fiammetta_arknights",
@@ -43,11 +43,15 @@
       "holding drink can",
       "balcony railing",
       "wind blown white hair",
-      "fiery gaze"
+      "fiery gaze",
+      "red lighting",
+      "dim lighting",
+      "night",
+      "cool lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale. Chugging a bitter chilled beverage while glaring with fiery tsundere exasperation, she tosses a drink can toward the viewer.",
-    "animaCaption": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale.",
+    "promptProse": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale. Chugging a bitter chilled beverage while glaring with fiery tsundere exasperation, she tosses a drink can toward the viewer. Cool white illumination from deck navigation lights and the amber fizz of bitter tonic in her glass cast sharp, determined highlights along her crimson camisole.",
+    "animaCaption": "Fiammetta cooling off in the fierce midnight draft along the exterior catwalk of Rhodes Island. Sporting a fiery crimson tactical strappy camisole and sleek black boy shorts, her blazing white-and-red plumage whips wildly in the gale. Cool white illumination from deck navigation lights and the amber fizz of bitter tonic in her glass cast sharp, determined highlights along her crimson camisole.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

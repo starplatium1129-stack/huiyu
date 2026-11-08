@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/morning_boyfriend_shirt",
+  "revision": 1,
+  "sortOrder": 406,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "morning_boyfriend_shirt",
+      "characterId": "platinum_arknights",
+      "name": "晨光宽松男款白衬衫",
+      "prose": "An oversized unbuttoned crisp white dress shirt with drooping sleeves, delicate collarbones visible, and bare legs in morning glow.",
+      "tokens": [
+        "oversized shirt",
+        "white shirt",
+        "collared shirt",
+        "open collar",
+        "bare legs",
+        "bedroom wear"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

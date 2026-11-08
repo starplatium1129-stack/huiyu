@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_old_library",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 856,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "action": "抱书差点绊倒扶住书架",
     "adult": false,
@@ -26,7 +26,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "trinity_uniform",
-    "promptProse": "She traps the recipe books against her chest with one arm and catches the shelf with her free palm, one foot unsteadily lifted beneath the skylight.",
+    "promptProse": "She traps the recipe books against her chest with one arm and catches the shelf with her free palm, one foot unsteadily lifted beneath the skylight. Slanted sunbeams from a dusty high clerestory window cut through the shadowy old library archives, illuminating motes of dust dancing in golden shafts of light.",
     "promptTokens": [
       "recipe books",
       "stumbling",
@@ -36,7 +36,10 @@
       "books against chest",
       "hand on shelf",
       "foot up",
-      "skylight"
+      "skylight",
+      "sunbeam",
+      "god rays",
+      "window light"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
@@ -49,6 +52,6 @@
     ],
     "timeOfDay": "下午",
     "title": "杏山和纱 · 古书馆的秘密角落",
-    "animaCaption": "One arm traps the books as her free hand catches the shelf."
+    "animaCaption": "One arm traps the books as her free hand catches the shelf. Slanted sunbeams from a dusty high clerestory window cut through the shadowy old library archives, illuminating motes of dust dancing in golden shafts of light."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3361,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "togawa_sakiko_lingerie_whisper",
     "characterId": "togawa_sakiko",
@@ -38,7 +38,9 @@
       "black hair",
       "teacup",
       "delicate frail silhouette",
-      "indoors"
+      "indoors",
+      "dappled sunlight",
+      "dim lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Sakiko Togawa sits on edge of cheap metal frame cot in cramped rundown apartment, wearing a inky black tailored sheer chiffon nightgown. One hand covering half face crying silently, long black hair disheveled, tears glinting amidst proud desperate expression, flashing train lights through window.",

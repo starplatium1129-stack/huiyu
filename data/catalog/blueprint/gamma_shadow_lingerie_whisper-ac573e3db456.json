@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3513,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.676Z",
+  "updatedAt": "2026-11-08T14:11:57.455912400+00:00",
   "data": {
     "id": "gamma_shadow_lingerie_whisper",
     "characterId": "gamma_shadow",
@@ -37,13 +37,17 @@
       "luxurious_study"
     ],
     "promptTokens": [
+      "1girl",
+      "solo",
+      "gamma (the eminence in shadow)",
       "elf ears",
       "navy silk gown",
       "glasses",
       "tripping forward",
       "dropping papers",
       "blue hair",
-      "funny cute panic"
+      "panicked",
+      "flustered"
     ],
     "negativeTokens": [],
     "promptProse": "Gamma in the middle of her signature clumsy mishap inside her lavish Mitsugoshi executive office. Clad in a mature navy-blue silk wrap nightgown with an elegant high side slit and scholarly gold-rimmed glasses, she carries revenue ledgers toward Lord Shadow. The split second before she crashes into the rug over her own trailing hem, her brilliant business-queen poise shatters into frantic panic.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3191,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "krista_lenz_lingerie_whisper",
     "characterId": "krista_lenz",
@@ -42,7 +42,8 @@
       "gold thread floral embroidery",
       "scalloped raw edges",
       "delicate cotton ties",
-      "indoors"
+      "indoors",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Historia Reiss kneels on rustic linen bedding, wearing a ivory white linen corset-slip. Hands gently brushing golden blonde hair, pure tender expression, large blue eyes amidst rustic stone room with wooden window open to misty meadows, ethereal morning dawn light.",

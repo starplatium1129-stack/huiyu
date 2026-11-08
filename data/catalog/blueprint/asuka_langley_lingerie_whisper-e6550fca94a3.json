@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuka_langley_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3281,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.289Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "asuka_langley_lingerie_whisper",
     "characterId": "asuka_langley",
@@ -43,11 +43,13 @@
       "auburn hair blowing",
       "confident glare",
       "post-shower",
-      "bedroom"
+      "bedroom",
+      "bright lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Asuka Langley Soryu dominating her bedroom after a hot shower in Misato's apartment. Sporting a fiery crimson racerback modal tank top and sleek black sleep shorts, she stands barefoot on the rug with hands planted defiantly on her hips. Her long auburn hair whips through the warm air of a hairdryer as she glares with proud, untouchable tsundere ferocity.",
-    "animaCaption": "Asuka Langley Soryu dominating her bedroom after a hot shower in Misato's apartment. Sporting a fiery crimson racerback modal tank top and sleek black sleep shorts, she stands barefoot on the rug with hands planted defiantly on her hips.",
+    "promptProse": "Asuka Langley Soryu dominating her bedroom after a hot shower in Misato's apartment. Sporting a fiery crimson racerback modal tank top and sleek black sleep shorts, she stands barefoot on the rug with hands planted defiantly on her hips. Her long auburn hair whips through the warm air of a hairdryer as she glares with proud, untouchable tsundere ferocity. Bright incandescent bedroom lighting casts sharp warm illumination across the room, highlighting the vibrant crimson of her tank top and her fiery auburn tresses.",
+    "animaCaption": "Asuka Langley Soryu dominating her bedroom after a hot shower in Misato's apartment. Sporting a fiery crimson racerback modal tank top and sleek black sleep shorts, she stands barefoot on the rug with hands planted defiantly on her hips. Bright incandescent bedroom lighting casts sharp warm illumination across the room, highlighting the vibrant crimson of her tank top and her fiery auburn tresses.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

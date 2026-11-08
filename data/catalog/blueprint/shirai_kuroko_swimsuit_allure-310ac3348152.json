@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3412,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.080Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "shirai_kuroko_swimsuit_allure",
     "characterId": "shirai_kuroko",
@@ -42,7 +42,10 @@
       "poolside",
       "winking",
       "dynamic pose",
-      "water ripples"
+      "water ripples",
+      "sunlight",
+      "water reflection",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Kuroko Shirai dynamically positioned on the edge of a sunlit school swimming pool. She wears a bold crimson-and-white strappy bandeau bikini with playful crisscross ties and her iconic Judgement armband. Kneeling gracefully with one hand supporting herself on warm pool tiles, her twin curls bounce as she winks with audacious confidence.",

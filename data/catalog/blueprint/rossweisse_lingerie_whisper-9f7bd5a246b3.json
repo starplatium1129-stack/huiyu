@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_lingerie_whisper",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 3463,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "rossweisse_lingerie_whisper",
     "characterId": "rossweisse",
@@ -43,11 +43,13 @@
       "silver snowflake filigree",
       "plunge neckline",
       "matching sheer bikini briefs",
-      "indoors"
+      "indoors",
+      "ceiling light",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Rossweisse slumps sideways on low living room table, wearing a nordic ice-blue sheer floral lace bralette set. Valkyrie, tipsy blushing cheeks, long silver-blue hair spilling onto wood surface amidst clutching supermarket discount coupon flyers, empty highball can, teary pouty eyes.",
-    "animaCaption": "Rossweisse slumps over a low table, clutching discount flyers beside an empty highball can.",
+    "promptProse": "Rossweisse slumps sideways on low living room table, wearing a nordic ice-blue sheer floral lace bralette set. Valkyrie, tipsy blushing cheeks, long silver-blue hair spilling onto wood surface amidst clutching supermarket discount coupon flyers, empty highball can, teary pouty eyes. Warm overhead ceiling light gently illuminates discount grocery flyers scattered on the table, casting homely golden highlights over her silver braids.",
+    "animaCaption": "Rossweisse slumps over a low table, clutching discount flyers beside an empty highball can. Warm overhead ceiling light gently illuminates discount grocery flyers scattered on the table, casting homely golden highlights over her silver braids.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

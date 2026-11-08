@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hori_kyouko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3330,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.757Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hori_kyouko_lingerie_whisper",
     "characterId": "hori_kyouko",
@@ -43,7 +43,9 @@
       "domestic living room",
       "warm smile",
       "brown hair",
-      "cozy"
+      "cozy",
+      "chandelier",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Kyouko Hori tending to domestic chores in her family living room late into the evening. Dressed down in a soft, washed olive-green oversized t-shirt with her long chestnut hair secured loosely in a tortoiseshell claw clip, she kneels over an ironing board. Turning around with a steaming iron in hand, her face lights up with an unpretentious, deeply affectionate smile.",

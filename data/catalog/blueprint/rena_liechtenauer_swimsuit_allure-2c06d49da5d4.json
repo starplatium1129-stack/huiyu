@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3498,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "rena_liechtenauer_swimsuit_allure",
     "characterId": "rena_liechtenauer",
@@ -53,7 +53,8 @@
       "wind blowing hair",
       "bright summer sun",
       "dazzling confident smile",
-      "depth of field"
+      "depth of field",
+      "sunlight"
     ],
     "negativeTokens": [],
     "promptProse": "Rena Liechtenauer stands radiantly against the railing of a gleaming white yacht in her ivory-and-gold royal bikini, raising a champagne glass with a proud, joyous laugh under open ocean skies.",

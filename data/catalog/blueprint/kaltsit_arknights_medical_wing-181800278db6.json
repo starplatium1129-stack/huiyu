@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaltsit_arknights_medical_wing",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 526,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "action": "翻阅病历，目光沉静",
     "camera": "medium shot, eye level",
@@ -22,7 +22,7 @@
       "readable patient records"
     ],
     "outfitId": "standard",
-    "promptProse": "Holding the tablet in both hands, she pauses in the bright medical corridor to review the chart, her gaze calm and lowered.",
+    "promptProse": "Holding the tablet in both hands, she pauses in the bright medical corridor to review the chart, her gaze calm and lowered. Clean fluorescent clinical light washes over the sterile hospital corridor, casting sharp, pristine reflections across the polished floor and her digital tablet.",
     "promptTokens": [
       "tablet",
       "hospital",
@@ -31,7 +31,9 @@
       "both hands",
       "looking down",
       "calm expression",
-      "bright corridor"
+      "bright corridor",
+      "fluorescent light",
+      "bright lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -43,6 +45,6 @@
     ],
     "timeOfDay": "白天",
     "title": "凯尔希 · 医疗部巡诊",
-    "animaCaption": "She pauses in the medical corridor to review the chart."
+    "animaCaption": "She pauses in the medical corridor to review the chart. Clean fluorescent clinical light washes over the sterile hospital corridor, casting sharp, pristine reflections across the polished floor and her digital tablet."
   }
 }

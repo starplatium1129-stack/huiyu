@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chloe_von_einzbern_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3342,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.472Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "chloe_von_einzbern_lingerie_whisper",
     "characterId": "chloe_von_einzbern",
@@ -43,11 +43,14 @@
       "licking lip",
       "pulling collar",
       "amber eyes",
-      "seductive"
+      "seductive",
+      "moonlight",
+      "window light",
+      "rim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Chloe von Einzbern (Kuro) teasing the viewer while hanging upside down off the edge of a bed at midnight. Sporting a seductive fuchsia-pink strappy lace babydoll over her warm tanned skin, her dark crimson hair cascades toward the carpet. Licking her lip mischievously while reaching out to tug the viewer's shirt, her amber eyes glitter with vampiric, playful appetite.",
-    "animaCaption": "Chloe von Einzbern (Kuro) teasing the viewer while hanging upside down off the edge of a bed at midnight. Sporting a seductive fuchsia-pink strappy lace babydoll over her warm tanned skin, her dark crimson hair cascades toward the carpet.",
+    "promptProse": "Chloe von Einzbern (Kuro) teasing the viewer while hanging upside down off the edge of a bed at midnight. Sporting a seductive fuchsia-pink strappy lace babydoll over her warm tanned skin, her dark crimson hair cascades toward the carpet. Licking her lip mischievously while reaching out to tug the viewer's shirt, her amber eyes glitter with vampiric, playful appetite. Silvery midnight moonlight streams through the bay window, etching crisp rim highlights along her sun-kissed skin and the dark lace trims of her lingerie.",
+    "animaCaption": "Chloe von Einzbern (Kuro) teasing the viewer while hanging upside down off the edge of a bed at midnight. Sporting a seductive fuchsia-pink strappy lace babydoll over her warm tanned skin, her dark crimson hair cascades toward the carpet. Silvery midnight moonlight streams through the bay window, etching crisp rim highlights along her sun-kissed skin and the dark lace trims of her lingerie.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

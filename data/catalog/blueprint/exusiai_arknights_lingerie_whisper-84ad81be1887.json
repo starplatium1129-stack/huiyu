@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "exusiai_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3233,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:11:35.577532100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "exusiai_arknights_lingerie_whisper",
     "characterId": "exusiai_arknights",
@@ -45,7 +45,10 @@
       "barstool",
       "rock sign",
       "auburn hair",
-      "winking"
+      "winking",
+      "chandelier",
+      "neon lights",
+      "glow"
     ],
     "negativeTokens": [],
     "promptProse": "Exusiai bringing infectious high energy into the Penguin Logistics loft late at night. Wearing a sporty cropped white-and-orange zip-up lounge hoodie over comfortable shorts, her luminous Sankta halo and angel wings glow cheerfully. Perched cross-legged on a barstool with a slice of apple pie between her teeth, she throws up a rock-on hand sign with an irresistible wink.",

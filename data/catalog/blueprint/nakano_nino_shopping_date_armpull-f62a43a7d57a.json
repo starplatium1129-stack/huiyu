@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_nino_shopping_date_armpull",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1858,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "nakano_nino_shopping_date_armpull",
     "characterId": "nakano_nino",
@@ -31,7 +31,8 @@
       "sunny day",
       "cowboy shot",
       "leaning",
-      "looking up"
+      "looking up",
+      "sunlight"
     ],
     "sceneTags": [
       "city",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_2b_swimsuit_allure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3292,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "yorha_2b_swimsuit_allure",
     "characterId": "yorha_2b",
@@ -45,7 +45,8 @@
       "sword in water",
       "short silver hair",
       "post-apocalyptic ocean",
-      "morning"
+      "morning",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "2B standing vigilant on the flooded terrace of a sunken skyscraper engulfed by the calm ocean at dawn. She wears an aerodynamic YoRHa combat-grade tactical black high-cut leotard swimsuit detailed with subtle white feather embroidery. Resting one gloved hand upon the pommel of her greatsword embedded in the shallow tide, her iconic black blindfold conceals emotions of profound, quiet devotion beneath a solitary morning sky.",

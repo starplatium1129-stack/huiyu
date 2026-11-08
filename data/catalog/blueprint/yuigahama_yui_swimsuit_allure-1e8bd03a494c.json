@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuigahama_yui_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3253,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.409Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "yuigahama_yui_swimsuit_allure",
     "characterId": "yuigahama_yui",
@@ -43,7 +43,9 @@
       "hair bun",
       "knee deep in water",
       "cheerful smile",
-      "bright summer"
+      "bright summer",
+      "sunlight",
+      "water reflection"
     ],
     "negativeTokens": [],
     "promptProse": "Yui Yuigahama standing knee-deep in glistening coastal surf at a vibrant beach resort. She is dressed in an energetic coral-pink tiered frill halter bikini embellished with a tiny silver heart charm. Clutching a whimsical yellow duck inner tube while enthusiastically waving her other hand high above her bouncy pink hair bun, she radiates pure, affectionate summer cheer.",

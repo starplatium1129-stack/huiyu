@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinomiya_kaguya_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3311,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.073Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "shinomiya_kaguya_swimsuit_allure",
     "characterId": "shinomiya_kaguya",
@@ -45,11 +45,14 @@
       "blush",
       "red eyes",
       "resort",
-      "parasol"
+      "parasol",
+      "sunlight",
+      "water reflection",
+      "skylight"
     ],
     "negativeTokens": [],
-    "promptProse": "Kaguya Shinomiya seated regally on a plush wooden lounge chair beneath a beach parasol at a private resort. She is dressed in a tailored matte black halter bikini adorned with subtle gold chains and trim. Holding a crystal glass of iced tea with crossed legs, her ears blush softly while she maintains her composed, slightly haughty gaze, challenging the viewer with calculating tsundere pride.",
-    "animaCaption": "Kaguya Shinomiya seated regally on a plush wooden lounge chair beneath a beach parasol at a private resort. She is dressed in a tailored matte black halter bikini adorned with subtle gold chains and trim.",
+    "promptProse": "Kaguya Shinomiya seated regally on a plush wooden lounge chair beneath a beach parasol at a private resort. She is dressed in a tailored matte black halter bikini adorned with subtle gold chains and trim. Holding a crystal glass of iced tea with crossed legs, her ears blush softly while she maintains her composed, slightly haughty gaze, challenging the viewer with calculating tsundere pride. Pure natural sunlight pouring through high glass skylights reflects off the crystal-clear private pool, casting luminous turquoise water caustic patterns upon her skin.",
+    "animaCaption": "Kaguya Shinomiya seated regally on a plush wooden lounge chair beneath a beach parasol at a private resort. She is dressed in a tailored matte black halter bikini adorned with subtle gold chains and trim. Pure natural sunlight pouring through high glass skylights reflects off the crystal-clear private pool, casting luminous turquoise water caustic patterns upon her skin.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

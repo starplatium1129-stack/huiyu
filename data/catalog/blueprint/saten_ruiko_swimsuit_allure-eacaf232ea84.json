@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3416,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "saten_ruiko_swimsuit_allure",
     "characterId": "saten_ruiko",
@@ -53,11 +53,14 @@
       "sandy beach volleyball court",
       "bright blue summer sky",
       "dynamic active posture",
-      "depth of field"
+      "depth of field",
+      "sunlight",
+      "poolside",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "promptProse": "Saten Ruiko stands energetically on a golden sand volleyball court in her bright yellow hibiscus-print bikini, clutching a beach volleyball with an open, spirited laugh under clear morning skies.",
-    "animaCaption": "Endless azure summer skies and salty sea spray ignite the Level 0 maiden's unstoppable, vibrant enthusiasm.",
+    "promptProse": "Saten Ruiko stands energetically on a golden sand volleyball court in her bright yellow hibiscus-print bikini, clutching a beach volleyball with an open, spirited laugh under clear morning skies. Dazzling midsummer sunlight sparkles across the school pool surface, throwing lively turquoise caustic reflections across her cheerful summer pose.",
+    "animaCaption": "Endless azure summer skies and salty sea spray ignite the Level 0 maiden's unstoppable, vibrant enthusiasm. Dazzling midsummer sunlight sparkles across the school pool surface, throwing lively turquoise caustic reflections across her cheerful summer pose.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

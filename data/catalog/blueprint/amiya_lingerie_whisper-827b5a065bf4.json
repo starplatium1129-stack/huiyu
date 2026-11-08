@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3402,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.178Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "amiya_lingerie_whisper",
     "characterId": "amiya",
@@ -43,11 +43,15 @@
       "warm smile",
       "brown hair",
       "cozy cabin",
-      "tender"
+      "tender",
+      "warm lighting",
+      "soft lighting",
+      "ceiling light",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents. Latching her dark violin case shut on the wooden desk, she turns with her rabbit ears gently resting, offering the Doctor an unreserved smile overflowing with warmth and familial trust.",
-    "animaCaption": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents.",
+    "promptProse": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents. Latching her dark violin case shut on the wooden desk, she turns with her rabbit ears gently resting, offering the Doctor an unreserved smile overflowing with warmth and familial trust. Soft warm ceiling lighting fills the quiet quarters with a gentle diffuse glow, casting subtle amber highlights across her violin case and pastel nightdress.",
+    "animaCaption": "Amiya winding down after violin practice within her private quarters aboard Rhodes Island. She is dressed in a modest, comforting pastel-blue cotton nightdress with subtle lace collar accents. Soft warm ceiling lighting fills the quiet quarters with a gentle diffuse glow, casting subtle amber highlights across her violin case and pastel nightdress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

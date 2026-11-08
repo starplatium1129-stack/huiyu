@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_steamy_bath_innocent_entanglement",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2254,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kotori_steamy_bath_innocent_entanglement",
     "characterId": "kotori_itsuka",
@@ -39,7 +39,9 @@
       "pouting",
       "heavy_blush",
       "looking_at_viewer",
-      "cowboy_shot"
+      "cowboy_shot",
+      "glow",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Kotori wrapped in a pink towel beside a steamy bath, pouting cutely with flushed cheeks.",

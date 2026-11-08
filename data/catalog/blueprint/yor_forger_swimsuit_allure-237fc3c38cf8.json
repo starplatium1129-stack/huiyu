@@ -1,26 +1,26 @@
 {
   "kind": "blueprint",
   "id": "yor_forger_swimsuit_allure",
-  "revision": 5,
+  "revision": 9,
   "sortOrder": 3258,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:05:20.088255800+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "yor_forger_swimsuit_allure",
     "characterId": "yor_forger",
-    "title": "约尔 · 浅滩波光中的纯情反差",
+    "title": "约尔·福杰 · 浅滩波光中的纯情反差",
     "category": "夏日海滩",
-    "action": "涉水站在齐腿肚深的海水里，双手握拳羞怯地抵在胸前，黑发发辫顺着背部滑落，原本是令人胆寒的顶级杀手，此刻却因泳装的暴露而满脸通红、手足无措地望向对方",
-    "location": "无人海湾清澈见底的浅水珊瑚沙滩",
-    "timeOfDay": "午后",
-    "lighting": "温暖的午后日光打在水面，水纹波光在少女雪白肌肤上流转",
-    "camera": "优雅半身微俯角，展现健美曼妙的身姿与纯情害羞的反差萌",
-    "mood": "纯情羞赧、致命身材、天然呆杀手的极致反差萌",
-    "adult": true,
+    "action": "赤足站在齐小腿深的清澈海水中，双手握拳羞怯地抵在胸前，双膝微微内扣，满脸通红、慌乱无措地抬眸望向对方",
+    "location": "无人珊瑚海湾，浅滩波光与白沙交织处",
+    "timeOfDay": "午后暖阳",
+    "lighting": "温暖的午后日光斜射水面，清澈水波的焦散波纹在雪白肌肤与黑色泳装上流转",
+    "camera": "微俯角正面偏侧中景，聚焦羞红面容与挂脖露背泳装的曼妙身姿",
+    "mood": "纯情羞赧、局促无措、心跳加速的天然呆反差",
+    "adult": false,
     "sampleRating": "R15",
     "animaStyleHint": "soft_light_portrait",
     "adultArtistHint": "",
-    "description": "阳光晶莹的珊瑚浅滩。约尔·福杰身穿荆棘公主暗夜黑玫瑰挂脖露背泳装，局促地立在清澈的海水中。虽然拥有顶级刺客的完美力量感身段，但面对露背泳衣的清凉，她红透了脸颊手足无措，双手轻攥胸前，眼神中尽是纯情主妇的羞怯与不安。",
+    "description": "阳光倾泻的无人珊瑚浅滩，约尔身着暗夜黑玫瑰挂脖露背泳装，局促地立在清澈的海水中。平日习惯了厚实常服与严密礼裙的她，面对露背与薄透泳装大片裸露的肌肤显得手足无措。她双手攥拳抵在胸前，双颊与耳根红透，眼神慌乱却真挚地抬眸轻语——“劳、劳埃德先生……这身泳装真的没问题吗？总觉得后背凉飕飕的……像我这样不擅长打扮的人穿成这样，果然……还是会显得很奇怪吧？”",
     "outfitId": "black_summer_bikini",
     "recommendedSize": "832x1216",
     "coverageTags": [
@@ -29,12 +29,14 @@
     "sceneTags": [
       "coral_beach",
       "clear_water",
+      "shallow_water",
       "backless_halter_swimsuit",
       "rose_brooch",
-      "blushing_heavily",
-      "hands_clenched_in_shyness",
+      "heavy_blush",
+      "fists_clenched",
+      "inward_knees",
       "afternoon_sun",
-      "gap_moe"
+      "water_caustics"
     ],
     "promptTokens": [
       "black backless swimsuit",
@@ -45,11 +47,14 @@
       "shy pose",
       "black hair",
       "red eyes",
-      "gap moe"
+      "gap moe",
+      "sunlight",
+      "water reflection",
+      "bright lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Yor Forger standing calf-deep within transparent turquoise shallows on a quiet coral cove. She is dressed in a striking midnight-black halter swimsuit featuring a backless design accented by delicate crisscross cords and a blood-red fabric rose brooch. Clenching her fists shyly against her chest with an overwhelming crimson blush across her lovely face, her assassin's prowess is completely disarmed by charming, pure-hearted bashfulness.",
-    "animaCaption": "Yor stands in clear, calf-deep water by a quiet coral cove, as the gentle surf laps around her legs.",
+    "promptProse": "Yor Forger standing calf-deep within transparent turquoise shallows on a quiet coral cove. She is dressed in a striking midnight-black halter swimsuit featuring a backless design accented by delicate crisscross cords and a blood-red fabric rose brooch. Clenching her fists shyly against her chest with an overwhelming crimson blush across her lovely face, her assassin's prowess is completely disarmed by charming, pure-hearted bashfulness. Brilliant sunlight plays across the turquoise shallows, casting dynamic dancing water caustics and golden highlights over her wading silhouette.",
+    "animaCaption": "Yor stands in clear, calf-deep water by a quiet coral cove, as the gentle surf laps around her legs. Brilliant sunlight plays across the turquoise shallows, casting dynamic dancing water caustics and golden highlights over her wading silhouette.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

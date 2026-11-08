@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3245,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.173Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "surtr_arknights_swimsuit_allure",
     "characterId": "surtr_arknights",
@@ -42,11 +42,15 @@
       "eating ice cream cone",
       "rock reef",
       "blazing midday sun",
-      "tsundere"
+      "tsundere",
+      "sunlight",
+      "direct sunlight",
+      "harsh shadows",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "promptProse": "Surtr standing proudly under the scorching midday sun on a rugged red-stone reef. She wears a striking athletic halter bikini in matte carbon-black trimmed with molten magma-orange piping. Perching one foot on a warm sea rock while balancing a double-scoop raspberry ice cream cone, she licks an escaping drop with cool irritation, glaring sideways with blazing ruby eyes.",
-    "animaCaption": "Surtr standing proudly under the scorching midday sun on a rugged red-stone reef. She wears a striking athletic halter bikini in matte carbon-black trimmed with molten magma-orange piping.",
+    "promptProse": "Surtr standing proudly under the scorching midday sun on a rugged red-stone reef. She wears a striking athletic halter bikini in matte carbon-black trimmed with molten magma-orange piping. Perching one foot on a warm sea rock while balancing a double-scoop raspberry ice cream cone, she licks an escaping drop with cool irritation, glaring sideways with blazing ruby eyes. Blinding direct sunlight casts sharp dramatic shadows across the warm sea rocks, with glittering water reflections shimmering off the turquoise surf below.",
+    "animaCaption": "Surtr standing proudly under the scorching midday sun on a rugged red-stone reef. She wears a striking athletic halter bikini in matte carbon-black trimmed with molten magma-orange piping. Blinding direct sunlight casts sharp dramatic shadows across the warm sea rocks, with glittering water reflections shimmering off the turquoise surf below.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

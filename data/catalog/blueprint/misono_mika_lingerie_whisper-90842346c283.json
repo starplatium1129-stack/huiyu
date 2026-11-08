@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3185,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "misono_mika_lingerie_whisper",
     "characterId": "misono_mika",
@@ -41,11 +41,14 @@
       "balcony",
       "starry sky",
       "tiny glitter star specks",
-      "flowing high-low hem"
+      "flowing high-low hem",
+      "soft lighting",
+      "ceiling light",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Misono Mika sits on ornate marble bench, wearing a pearly pink and lilac sheer star-dusted chiffon babydoll. Angel girl, white feathered wings folded behind, resting cheek in palm amidst long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere.",
-    "animaCaption": "Misono Mika sits on ornate marble bench, wearing a pearly pink and lilac sheer star-dusted chiffon babydoll. Angel girl, white feathered wings folded behind, resting cheek in palm amidst long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere.",
+    "promptProse": "Misono Mika sits on ornate marble bench, wearing a pearly pink and lilac sheer star-dusted chiffon babydoll. Angel girl, white feathered wings folded behind, resting cheek in palm amidst long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere. A dreamy pastel ceiling lamp bathes the dorm room in comforting blush warmth, casting delicate luminous highlights across her wings and silk nightgown.",
+    "animaCaption": "Misono Mika sits on ornate marble bench, wearing a pearly pink and lilac sheer star-dusted chiffon babydoll. Angel girl, white feathered wings folded behind, resting cheek in palm amidst long wavy pink hair with golden highlights, golden cross-shaped pupils, starry sky with shooting stars outside Trinity cathedral balcony, fairytale romantic atmosphere. A dreamy pastel ceiling lamp bathes the dorm room in comforting blush warmth, casting delicate luminous highlights across her wings and silk nightgown.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

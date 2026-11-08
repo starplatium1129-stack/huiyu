@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_code_geass_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3303,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.416Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "cc_code_geass_lingerie_whisper",
     "characterId": "cc_code_geass",
@@ -43,11 +43,14 @@
       "lying on carpet",
       "green hair",
       "amber eyes",
-      "lazy"
+      "lazy",
+      "floor lamp",
+      "warm lighting",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza. Her magnificent lime-green tresses frame an ageless, wryly affectionate golden gaze.",
-    "animaCaption": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza.",
+    "promptProse": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza. Her magnificent lime-green tresses frame an ageless, wryly affectionate golden gaze. Gentle amber illumination from a corner floor lamp blends with the low glow of the television, draping soft warmth over her ivory gown and flowing green hair.",
+    "animaCaption": "C.C. sprawled comfortably across a thick cream carpet in her private quarters late at night. Wearing a minimalist pure white cotton wrap nightgown inspired by restraint ribbons, she hugs a giant plush Cheese-kun under one arm while taking a bite of hot pizza. Gentle amber illumination from a corner floor lamp blends with the low glow of the television, draping soft warmth over her ivory gown and flowing green hair.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

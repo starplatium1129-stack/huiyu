@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoshiguma_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3144,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.772Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "hoshiguma_arknights_lingerie_whisper",
     "characterId": "hoshiguma_arknights",
@@ -43,7 +43,10 @@
       "foot on stool",
       "drinking sake bowl",
       "laughing",
-      "hannya shield"
+      "hannya shield",
+      "lantern",
+      "shadow",
+      "glow"
     ],
     "negativeTokens": [],
     "promptProse": "Hoshiguma unwinding with exuberant camaraderie late at night inside her personal quarters. Draped in a breezy, open-front black silk-linen lounging robe that shows off her statuesque, powerful build, she props one foot up on a stool while draining a wide ceramic bowl of sake. Her oni horn catches the crimson lantern glow as she laughs with infectious, big-hearted vigor.",

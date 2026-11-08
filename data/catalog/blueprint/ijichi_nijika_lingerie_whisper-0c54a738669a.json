@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3406,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.827Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "ijichi_nijika_lingerie_whisper",
     "characterId": "ijichi_nijika",
@@ -43,11 +43,13 @@
       "triangle ahoge",
       "blonde side ponytail",
       "bright smile",
-      "rehearsal room"
+      "rehearsal room",
+      "spotlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Nijika Ijichi radiating pure warmth behind her drum kit in the STARRY rehearsal studio late at night. She sports a sporty sunny-yellow sleeveless cotton lounge hoodie over grey shorts, with her iconic Dorito-shaped ahoge bouncing atop her blonde side ponytail. Sipping boba milk tea with an infectious, sunny grin, she embodies the tireless, uplifting heart of the band.",
-    "animaCaption": "Nijika Ijichi radiating pure warmth behind her drum kit in the STARRY rehearsal studio late at night. She sports a sporty sunny-yellow sleeveless cotton lounge hoodie over grey shorts, with her iconic Dorito-shaped ahoge bouncing atop her blonde side ponytail.",
+    "promptProse": "Nijika Ijichi radiating pure warmth behind her drum kit in the STARRY rehearsal studio late at night. She sports a sporty sunny-yellow sleeveless cotton lounge hoodie over grey shorts, with her iconic Dorito-shaped ahoge bouncing atop her blonde side ponytail. Sipping boba milk tea with an infectious, sunny grin, she embodies the tireless, uplifting heart of the band. Warm amber and orange practice spotlights in the rehearsal room illuminate the drum kit, wrapping her bright sleeveless hoodie in an energetic golden haze.",
+    "animaCaption": "Nijika Ijichi radiating pure warmth behind her drum kit in the STARRY rehearsal studio late at night. She sports a sporty sunny-yellow sleeveless cotton lounge hoodie over grey shorts, with her iconic Dorito-shaped ahoge bouncing atop her blonde side ponytail. Warm amber and orange practice spotlights in the rehearsal room illuminate the drum kit, wrapping her bright sleeveless hoodie in an energetic golden haze.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

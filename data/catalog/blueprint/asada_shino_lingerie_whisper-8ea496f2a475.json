@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asada_shino_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3337,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.263Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "asada_shino_lingerie_whisper",
     "characterId": "asada_shino",
@@ -43,11 +43,14 @@
       "cyan hair",
       "knee drawn up",
       "midnight city",
-      "cool gaze"
+      "cool gaze",
+      "street light",
+      "moonlight",
+      "window light"
     ],
     "negativeTokens": [],
-    "promptProse": "Shino Asada passing the quiet hours of midnight seated on the ledge of her apartment bay window. Dressed in a mint-green ribbed athletic camisole and grey sleep shorts, she sits with one knee drawn up while meticulously cleaning a high-magnification sniper scope with a soft cloth. Her cool cyan gaze turns toward the doorway with calculating, quiet camaraderie.",
-    "animaCaption": "Shino Asada passing the quiet hours of midnight seated on the ledge of her apartment bay window. Dressed in a mint-green ribbed athletic camisole and grey sleep shorts, she sits with one knee drawn up while meticulously cleaning a high-magnification sniper scope with a soft cloth.",
+    "promptProse": "Shino Asada passing the quiet hours of midnight seated on the ledge of her apartment bay window. Dressed in a mint-green ribbed athletic camisole and grey sleep shorts, she sits with one knee drawn up while meticulously cleaning a high-magnification sniper scope with a soft cloth. Her cool cyan gaze turns toward the doorway with calculating, quiet camaraderie. Amber street light from the avenue mingles with pale window moonlight, casting a sharp blue specular highlight across the metallic sniper scope.",
+    "animaCaption": "Shino Asada passing the quiet hours of midnight seated on the ledge of her apartment bay window. Dressed in a mint-green ribbed athletic camisole and grey sleep shorts, she sits with one knee drawn up while meticulously cleaning a high-magnification sniper scope with a soft cloth. Amber street light from the avenue mingles with pale window moonlight, casting a sharp blue specular highlight across the metallic sniper scope.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

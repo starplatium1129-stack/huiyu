@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lappland_siracusa_rain_ruins_solitude",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 676,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "action": "独自坐在雨夜古堡断壁顶端，双刀插在身侧，仰天狂笑，任由暴雨冲刷",
     "camera": "cowboy shot, low angle",
@@ -20,7 +20,7 @@
     "mood": "狂暴凄美",
     "negativeTokens": [],
     "outfitId": "nomad_wasteland",
-    "promptProse": "Lappland sits atop the ruined wall with both swords planted beside her, laughing into the storm. A blue-white lightning flash reveals her rain-soaked hair and the broken stone against the dark sky.",
+    "promptProse": "Lappland sits atop the ruined wall with both swords planted beside her, laughing into the storm. A blue-white lightning flash reveals her rain-soaked hair and the broken stone against the dark sky. Blinding flashes of white lightning shatter the rainy night sky above stone ruins, casting stark fleeting highlights and mirroring across drenched puddle reflections.",
     "promptTokens": [
       "swords",
       "sitting",
@@ -30,7 +30,9 @@
       "from below",
       "swords planted",
       "wet hair",
-      "lightning"
+      "lightning",
+      "puddle reflection",
+      "dim lighting"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +49,6 @@
     ],
     "timeOfDay": "深夜暴雨",
     "title": "拉普兰德 · 废墟雨夜的孤狼狂想",
-    "animaCaption": "Both swords stand planted beside her on the ruined wall."
+    "animaCaption": "Both swords stand planted beside her on the ruined wall. Blinding flashes of white lightning shatter the rainy night sky above stone ruins, casting stark fleeting highlights and mirroring across drenched puddle reflections."
   }
 }

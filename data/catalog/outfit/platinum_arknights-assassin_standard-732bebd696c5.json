@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/assassin_standard",
+  "revision": 1,
+  "sortOrder": 400,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "assassin_standard",
+      "characterId": "platinum_arknights",
+      "name": "无胄盟刺客轻铠制服",
+      "prose": "A stylized assassin outfit with lightweight silver-blue chestplate, asymmetric hooded cape, fitted dark blue tunic, thigh-high boots, and tactical gloves.",
+      "tokens": [
+        "assassin armor",
+        "hooded cape",
+        "tunic",
+        "thighhighs",
+        "boots",
+        "gloves",
+        "asymmetrical clothes"
+      ],
+      "default": true,
+      "isDefault": true
+    }
+  }
+}

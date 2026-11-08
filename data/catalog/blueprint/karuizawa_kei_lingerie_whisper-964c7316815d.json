@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "karuizawa_kei_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3465,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.969Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "karuizawa_kei_lingerie_whisper",
     "characterId": "karuizawa_kei",
@@ -43,11 +43,14 @@
       "blue eyes",
       "sweet blush",
       "bed corner",
-      "cozy"
+      "cozy",
+      "vanity light",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Kei Karuizawa indulging in quiet romance inside her private dorm room late at night. She wears an exquisite champagne-beige silk slip dress detailed with fine eyelash lace. Sitting along the mattress edge carefully applying pink lacquer to her toenails, she peeks upward with honey-blonde curls framing flushed cheeks and eyes brimming with tender, devoted trust.",
-    "animaCaption": "Kei Karuizawa indulging in quiet romance inside her private dorm room late at night. She wears an exquisite champagne-beige silk slip dress detailed with fine eyelash lace.",
+    "promptProse": "Kei Karuizawa indulging in quiet romance inside her private dorm room late at night. She wears an exquisite champagne-beige silk slip dress detailed with fine eyelash lace. Sitting along the mattress edge carefully applying pink lacquer to her toenails, she peeks upward with honey-blonde curls framing flushed cheeks and eyes brimming with tender, devoted trust. Warm golden light from the vanity mirror sconce catches her freshly blow-dried blonde curls, illuminating the champagne satin of her camisole with gentle luster.",
+    "animaCaption": "Kei Karuizawa indulging in quiet romance inside her private dorm room late at night. She wears an exquisite champagne-beige silk slip dress detailed with fine eyelash lace. Warm golden light from the vanity mirror sconce catches her freshly blow-dried blonde curls, illuminating the champagne satin of her camisole with gentle luster.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

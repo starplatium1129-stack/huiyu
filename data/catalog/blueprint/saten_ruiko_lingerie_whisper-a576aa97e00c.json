@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3417,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "saten_ruiko_lingerie_whisper",
     "characterId": "saten_ruiko",
@@ -39,7 +39,10 @@
       "tiny plum blossom embroidery",
       "ruffled airy hem",
       "spaghetti straps",
-      "indoors"
+      "indoors",
+      "neon lights",
+      "shadow",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Saten Ruiko relaxes in on windy rooftop holding down nightgown hemline with both hands, wearing a pure white breathable cotton slip dress. On windy rooftop holding down nightgown hemline with both hands, white plum blossom hairpin in fluttering dark hair, radiant bright laugh amidst amber eyes, illuminated Academy City windmills spinning in background.",

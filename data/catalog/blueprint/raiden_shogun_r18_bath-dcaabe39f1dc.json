@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_bath",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T14:24:15.273444+00:00",
   "data": {
     "id": "raiden_shogun_r18_bath",
     "title": "雷电将军 · 天守阁汤殿",
@@ -12,10 +12,10 @@
     "characterId": "raiden_shogun",
     "description": "温热的水汽与松木香气在宽阔的石砌汤池中弥漫，暗紫色的灯影在水面轻轻荡漾。影背靠池壁仰起脸庞，水珠沿着优美的下颌与锁骨缓缓滑落，被水温熏蒸得酡红的脸庞满是动情——「即便身为雷电之神，在这池暖水中……似乎也会生出贪恋体温的软弱呢。」",
     "location": "天守阁汤殿",
-    "action": "泡在热气蒸腾的汤池中",
+    "action": "优雅侧倚在天守阁深色石砌汤池池沿，单臂搭在石沿上，微扬下颌任温热水汽熏蒸白皙肩颈与精致锁骨，暗紫眼眸在水光中流转",
     "timeOfDay": "夜晚",
     "lighting": "warm steam and soft violet lantern glow",
-    "camera": "intimate medium shot, waterline composition",
+    "camera": "cowboy shot, eye level, elegant reclining against stone bath rim, glistening bare shoulders and chest visible",
     "mood": "冷艳与氤氲水汽",
     "sceneTags": [
       "japanese_bath",
@@ -26,18 +26,30 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Seen at water level, Ei rests against the stone bath with her face tilted upward; violet lantern reflections ripple beneath steam and water beads at her jaw.",
+    "promptProse": "Raiden Ei reclines gracefully against the polished stone rim of the tenshukaku bath, her glistening bare shoulders, slender neck, and elegant collarbone raised above the warm violet-tinted water. One arm rests casually along the stone edge as drifting steam and soft purple lantern lanterns shimmer across the ripples.",
     "promptTokens": [
-      "adult",
+      "1girl",
+      "solo",
+      "raiden shogun",
+      "purple hair",
+      "long hair",
+      "braid",
+      "purple eyes",
+      "hair flower",
+      "hair ornament",
       "nude",
-      "reclining",
-      "head back",
+      "bare shoulders",
+      "collarbone",
       "stone bath",
       "steam",
-      "violet lighting",
+      "arm on edge",
+      "reclining",
+      "wet skin",
       "water droplets",
-      "water reflection",
-      "medium shot"
+      "violet lighting",
+      "lantern",
+      "night",
+      "cowboy shot"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
@@ -49,6 +61,6 @@
     "adultArtistHint": "@tiv",
     "outfitId": "bath_unclothed",
     "sampleRating": "R15",
-    "animaCaption": "Her face tilts upward above the waterline as violet lantern reflections ripple below her jaw."
+    "animaCaption": "Ei reclines against the stone bath edge with one arm resting along the rim, her gleaming bare shoulders and collarbone radiant in the soft violet steam."
   }
 }

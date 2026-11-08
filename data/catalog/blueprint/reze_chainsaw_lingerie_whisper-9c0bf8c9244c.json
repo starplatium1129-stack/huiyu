@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_chainsaw_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3260,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "reze_chainsaw_lingerie_whisper",
     "characterId": "reze_chainsaw",
@@ -41,11 +41,14 @@
       "scalloped floral edges",
       "low-rise cheeky briefs",
       "seductive soviet spy nightwear",
-      "indoors"
+      "indoors",
+      "street light",
+      "window light",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky.",
-    "animaCaption": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky.",
+    "promptProse": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky. Distant yellow streetlights through the apartment window frame cast quiet cinematic shadows across the bed, catching a mysterious glint in her half-lowered eyes.",
+    "animaCaption": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky. Distant yellow streetlights through the apartment window frame cast quiet cinematic shadows across the bed, catching a mysterious glint in her half-lowered eyes.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

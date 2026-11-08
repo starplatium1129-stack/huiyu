@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "komine_sachi_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3298,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "komine_sachi_lingerie_whisper",
     "characterId": "komine_sachi",
@@ -41,7 +41,10 @@
       "balcony",
       "halo",
       "white lace apronette trim",
-      "delicate frilled choker"
+      "delicate frilled choker",
+      "sunlight",
+      "backlighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Komine Sachi sits formally on bed edge, wearing a pure white maid-inspired sheer ruffler bra. Hands neatly folded on lap, pink twintails, gentle obedient expression amidst maid demeanor, morning breeze blowing sheer white curtains, sunlit balcony door background, soft backlit halo.",

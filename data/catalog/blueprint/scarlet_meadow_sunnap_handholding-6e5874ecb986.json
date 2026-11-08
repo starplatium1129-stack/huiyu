@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_meadow_sunnap_handholding",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2138,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "scarlet_meadow_sunnap_handholding",
     "characterId": "scarlet_nikke",
@@ -19,7 +19,7 @@
     "lighting": "bright cheerful sunlit day with gentle flower dappled light",
     "camera": "from_above",
     "mood": "idyllic serenity, timeless peaceful love, gentle summer warmth",
-    "promptProse": "Lying side by side in a wildflower meadow, Scarlet holds hands with interlocked fingers while smiling up at the blue summer sky.",
+    "promptProse": "Lying side by side in a wildflower meadow, Scarlet holds hands with interlocked fingers while smiling up at the blue summer sky. Bright afternoon sunlight streams through open prairie branches, casting gentle dappled warmth across the grass and their joined hands.",
     "promptTokens": [
       "meadow",
       "lying_on_grass",
@@ -28,10 +28,12 @@
       "sedge_hat",
       "wildflowers",
       "sunny_day",
-      "from_above"
+      "from_above",
+      "sunlight",
+      "dappled sunlight"
     ],
     "negativeTokens": [],
-    "animaCaption": "Scarlet holding hands while resting on a grassy meadow under the sunny sky.",
+    "animaCaption": "Scarlet holding hands while resting on a grassy meadow under the sunny sky. Bright afternoon sunlight streams through open prairie branches, casting gentle dappled warmth across the grass and their joined hands.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

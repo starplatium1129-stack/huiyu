@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_throne_hall_meditation",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "jalter_throne_hall_meditation",
     "title": "贞德[Alter] · 王座厅沉思",
@@ -31,7 +31,7 @@
       "torchlight",
       "medium_shot"
     ],
-    "promptProse": "Jeanne Alter sits on the throne armrest, one hand steadying the sheathed sword across her knees while the other taps its hilt. Torchlight catches her face as she looks toward the viewer; the banner stands beside the steps.",
+    "promptProse": "Jeanne Alter sits on the throne armrest, one hand steadying the sheathed sword across her knees while the other taps its hilt. Torchlight catches her face as she looks toward the viewer; the banner stands beside the steps. Warm flickering torchlight along the blackened stone pillars barely pierces the cavernous gloom of the throne hall, casting long dancing shadows behind her.",
     "promptTokens": [
       "1girl",
       "solo",
@@ -43,12 +43,14 @@
       "sitting on armrest",
       "boot on step",
       "looking at viewer",
-      "banner"
+      "banner",
+      "firelight",
+      "dim lighting"
     ],
     "negativeTokens": [
       "banner in hands"
     ],
     "recommendedSize": "1152x1536",
-    "animaCaption": "The sheathed sword rests across her knees as one hand taps its hilt."
+    "animaCaption": "The sheathed sword rests across her knees as one hand taps its hilt. Warm flickering torchlight along the blackened stone pillars barely pierces the cavernous gloom of the throne hall, casting long dancing shadows behind her."
   }
 }

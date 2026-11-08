@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_r18_pure_nude_sheets",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1884,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
   "data": {
     "id": "chizuru_r18_pure_nude_sheets",
     "characterId": "mizuhara_chizuru",
@@ -15,49 +15,56 @@
     "sampleRating": "R18",
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "@tony taka",
-    "description": "纯白大床上，全裸的千鹤秀发凌乱散落在枕畔。修长完美的双腿被高高举起分开，腰肢弓起痉挛，双手紧抓着爱人的手背。在最深切的撞击中，千鹤双眼泛起幸福的绝顶泪花，失神地将心扉彻底敞开——「啊……太舒服了……我爱你……和也……！」",
-    "action": "全裸仰卧床单，双腿高抬大张，腰肢弓起迎来强烈的高潮痉挛",
+    "description": "夜晚温馨整洁的单人公寓内，千鹤侧卧在蓬松的白被之间。脱去平日严防死守的伪装与防线，微卷的棕色秀发凌乱散在枕侧。她单手将薄被拉至锁骨下方，轻咬下唇，那双清亮的大眼睛泛着难以抑制的羞涩水雾，凝望着近在咫尺的恋人。",
+    "action": "侧卧在微乱的白色床褥中，褪去平日职业假面的长发披散，一手将薄被稍稍拉过胸前，咬着唇瓣双颊绯红，眼神湿润而真挚地凝望",
     "location": "深夜主卧纯白大床",
     "timeOfDay": "深夜",
     "mood": "极致高潮",
     "lighting": "床头台灯洒在雪白肌肤上的暖光",
-    "camera": "full-body shot, from above, intimate framing",
+    "camera": "cowboy shot, lying on side on white sheets, intimate warm lighting",
     "promptTokens": [
-      "adult",
-      "nude",
-      "on back",
-      "legs up",
-      "spread legs",
+      "mizuhara chizuru",
+      "brown hair",
+      "long hair",
+      "hazel eyes",
+      "bare shoulders",
+      "collarbone",
+      "lying on side",
+      "holding sheets",
+      "pulling sheet to chest",
+      "heavy blush",
+      "biting lip",
+      "looking at viewer",
       "white sheets",
-      "holding hands",
-      "arching back",
-      "blush",
-      "tears",
-      "climax",
-      "full body",
-      "lying on back",
-      "messy hair",
-      "desk_lamp",
-      "warm_lighting"
+      "bed",
+      "bedroom",
+      "apartment",
+      "warm bedside lamp",
+      "soft lighting",
+      "cowboy shot"
     ],
     "sceneTags": [
       "bedroom",
       "bed",
       "white_sheets",
-      "completely_nude",
-      "legs_up",
-      "spread_legs",
-      "climax",
-      "arching_back",
-      "heavy_blush",
-      "teary_eyes"
+      "brown_hair",
+      "hazel_eyes",
+      "lying_on_side",
+      "holding_sheets",
+      "blush"
     ],
-    "promptProse": "Sprawled naked on pristine white sheets with her dark wavy hair tangled, her slender legs held high and hips arched in breathless, weeping climactic ecstasy while gripping his hand.",
+    "promptProse": "Mizuhara Chizuru lying on her side on white bedsheets, long wavy brown hair spread on pillow, hazel eyes, heavy blush, biting lip, looking at viewer with shy vulnerability, one hand holding white sheet up to chest, bare shoulders, cozy modern apartment bedroom, warm bedside lamp glow, soft shadows.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
-      "special_nsfw"
+      "daily"
     ],
-    "animaCaption": "She holds her companion's hand above the white sheets."
+    "animaCaption": "She rests on her side holding the white bedsheet to her chest.",
+    "nsfwTokens": [
+      "cleavage",
+      "bare shoulders",
+      "bare legs"
+    ],
+    "compositionIntent": "single"
   }
 }

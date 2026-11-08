@@ -1,22 +1,22 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_interrogation",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 880,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-08T13:56:31.670080300+00:00",
   "data": {
-    "action": "交腿坐在椅上，一手按录音机开关，另一手留在大腿处的破损衣料下。",
+    "action": "从容端坐在秘密审讯室金属转椅上，黑白战术紧身衣前置拉链半开，修长双腿优雅交叠，冷艳蓝瞳与耳麦在战术顶灯下从容凝视",
     "adult": true,
     "adultArtistHint": "",
     "animaStyleHint": "",
-    "camera": "medium shot, dramatic top light",
+    "camera": "cowboy shot, sitting on chair, slightly low angle, cinematic lighting",
     "category": "成人私密",
     "characterId": "asuma_toki",
     "coverageTags": [
-      "special_nsfw"
+      "daily"
     ],
-    "description": "反审讯演练后的汇报室里，成年时衣装破损，坐在顶部冷灯照着的椅子上；双腕没有束缚，一手搭在录音机开关旁。",
+    "description": "模拟反审讯演练结束后的汇报室内，时从容端坐在单人金属椅中央。专属的黑白战术紧身衣前置拉链滑开至胸下透气，展现出紧致曼妙的腰身与白皙锁骨。修长双腿利落交叠，单手轻扶耳麦，标志性的双同心圆光环静谧悬浮，清澈冷冽的深蓝眼眸注视着眼前记录者，散发着顶级特工兼具无口反差的迷人魅力。",
     "id": "asuma_toki_interrogation",
     "kreaStyleHint": "",
     "lighting": "顶部冷光灯",
@@ -24,32 +24,55 @@
     "mood": "危险冷艳",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "cleavage",
+      "bare shoulders",
+      "high-leg cut"
+    ],
     "outfitId": "black_white_combat_suit",
-    "promptProse": "She sits with her legs crossed beneath the cold overhead lamp with wrists unbound. One hand rests on the recorder switch at the chair arm; the other stays beneath the torn fabric at her thigh.",
+    "promptProse": "Toki sitting composed on a metallic swivel chair in an interrogation room, black and white combat suit with front zipper unzipped to mid-chest revealing her collarbone and cleavage, slender legs crossed in high-leg tactical cut with thigh strap, earpiece, blue halo, blue eyes, cool kuudere expression, overhead tactical spotlight with subtle blue rim lighting, cinematic atmosphere.",
     "promptTokens": [
-      "debriefing room",
-      "chair",
+      "toki (blue archive)",
+      "halo",
+      "blonde hair",
+      "side ponytail",
+      "blue eyes",
+      "earpiece",
       "black and white combat suit",
-      "torn clothes",
-      "topless",
+      "front zipper unzipped",
+      "partially unzipped",
+      "collarbone",
+      "bare shoulders",
+      "cleavage",
+      "thigh strap",
+      "high-leg cut",
+      "sitting on chair",
       "crossed legs",
-      "recorder",
-      "overhead light",
-      "sitting",
-      "cool lighting",
-      "medium shot"
+      "hand on chair arm",
+      "kuudere",
+      "calm expression",
+      "looking at viewer",
+      "debriefing room",
+      "interrogation room",
+      "overhead spotlight",
+      "blue rim light",
+      "cinematic lighting",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "All",
     "sceneTags": [
-      "millennium",
       "interrogation",
+      "chair",
+      "combat_suit",
+      "front_zipper_unzipped",
+      "crossed_legs",
       "night",
-      "intimate"
+      "c&c"
     ],
     "timeOfDay": "深夜",
     "title": "飞鸟马时 · 秘密审讯室的伪装",
-    "animaCaption": "One hand rests on the recorder switch; her wrists remain unbound."
+    "animaCaption": "She sits composed with crossed legs and an unzipped combat suit in the interrogation room.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "w_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3133,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.361Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "w_arknights_swimsuit_allure",
     "characterId": "w_arknights",
@@ -43,7 +43,8 @@
       "sitting on rusty buoy",
       "crazy smile",
       "red eyes",
-      "splash"
+      "splash",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "W perched boldly atop a massive, rusted naval sea buoy in shallow sun-drenched waters. She rocks a rebellious cropped red-and-black zip-up rashguard covered in anarchic street tags, partially unzipped over micro string bottoms. Hefting an oversized pressurized water bazooka over one shoulder, she bares a wicked, razor-sharp mercenary grin while her demonic horns gleam in the blazing sun.",

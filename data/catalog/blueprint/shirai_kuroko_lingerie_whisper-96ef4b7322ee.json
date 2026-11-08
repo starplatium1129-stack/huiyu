@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3413,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "shirai_kuroko_lingerie_whisper",
     "characterId": "shirai_kuroko",
@@ -38,11 +38,14 @@
       "teacup",
       "blush",
       "lace-topped stockings",
-      "indoors"
+      "indoors",
+      "lamp",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall.",
-    "animaCaption": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall.",
+    "promptProse": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall. A small bedside reading lamp casts warm focused light across the dorm nightstand, highlighting her sly smirk and coiled teleporter ribbons.",
+    "animaCaption": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall. A small bedside reading lamp casts warm focused light across the dorm nightstand, highlighting her sly smirk and coiled teleporter ribbons.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

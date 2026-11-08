@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3450,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "viper_nikke_lingerie_whisper",
     "characterId": "viper_nikke",
@@ -41,7 +41,8 @@
       "extreme plunge underwire cups",
       "cheeky thong briefs",
       "dangerous siren boudoir",
-      "indoors"
+      "indoors",
+      "neon lights"
     ],
     "negativeTokens": [],
     "promptProse": "Viper lounges on circular bed surrounded by pink plush pillows, wearing a hot pink and sheer black lace strappy lingerie set. Holding smartphone snapping a selfie, tugging thin strap down shoulder playfully, long wavy pink hair amidst dazzling ruby eyes with seductive wink, pink neon lighting.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_night_festival_fireworks_handhold",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2264,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "kuroneko_night_festival_fireworks_handhold",
     "characterId": "kuroneko",
@@ -19,7 +19,7 @@
     "lighting": "multicolored bursts of festival fireworks illuminating the dark summer sky",
     "camera": "wide_shot",
     "mood": "legendary romantic confession, emotional fireworks climax, unforgettable soulmate bond",
-    "promptProse": "On shrine stairs under exploding summer festival fireworks, Ruri Gokou clutches partner hand tightly with both hands, crying tears of passionate joy.",
+    "promptProse": "On shrine stairs under exploding summer festival fireworks, Ruri Gokou clutches partner hand tightly with both hands, crying tears of passionate joy. Brilliant blooming fireworks burst across the midnight sky above, their multi-colored flashes harmonizing with warm red paper lanterns along the stone shrine steps.",
     "promptTokens": [
       "shrine",
       "stairs",
@@ -29,10 +29,12 @@
       "tears_of_joy",
       "blushing",
       "looking_at_viewer",
-      "wide_shot"
+      "wide_shot",
+      "lantern",
+      "night sky"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ruri Gokou crying joyful tears under fireworks holding partner hands.",
+    "animaCaption": "Ruri Gokou crying joyful tears under fireworks holding partner hands. Brilliant blooming fireworks burst across the midnight sky above, their multi-colored flashes harmonizing with warm red paper lanterns along the stone shrine steps.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

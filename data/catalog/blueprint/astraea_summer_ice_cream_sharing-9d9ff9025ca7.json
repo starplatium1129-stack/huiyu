@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_summer_ice_cream_sharing",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2210,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "astraea_summer_ice_cream_sharing",
     "characterId": "astraea",
@@ -19,7 +19,7 @@
     "lighting": "radiant midday tropical sunlight and azure sea bokeh",
     "camera": "cowboy_shot",
     "mood": "playful summer date, sweet clumsy affection, sun-drenched joy",
-    "promptProse": "On a sunny beach in a sunflower sundress, Astraea offers a bite of her melting ice cream cone with an adorable beaming grin.",
+    "promptProse": "On a sunny beach in a sunflower sundress, Astraea offers a bite of her melting ice cream cone with an adorable beaming grin. Radiant tropical midday sunlight sparkles against the azure sea, bathing the beach promenade in vibrant coastal warmth and shimmering bokeh reflections.",
     "promptTokens": [
       "beach",
       "holding_ice_cream",
@@ -28,10 +28,13 @@
       "angel_wings",
       "ocean_breeze",
       "sunny_day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "direct sunlight",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "animaCaption": "Astraea offering a bite of melting ice cream on a sunny beach promenade.",
+    "animaCaption": "Astraea offering a bite of melting ice cream on a sunny beach promenade. Radiant tropical midday sunlight sparkles against the azure sea, bathing the beach promenade in vibrant coastal warmth and shimmering bokeh reflections.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "irisu_makina_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3375,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.877Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "irisu_makina_lingerie_whisper",
     "characterId": "irisu_makina",
@@ -42,7 +42,8 @@
       "barefoot on sofa",
       "twintails",
       "jumping to hug",
-      "happy smile"
+      "happy smile",
+      "moonlight"
     ],
     "negativeTokens": [],
     "promptProse": "Makina Irisu greeting her beloved 'Papa' Yuji with unbridled joy inside her Mihama Academy room. Swallowed up in an oversized men's white oxford button-down shirt that reaches past her fingertips and down to her thighs, she balances barefoot on the back of the sofa. Spreading her baggy sleeves wide to leap into a tackle hug, her face lights up with pure, childlike adoration.",

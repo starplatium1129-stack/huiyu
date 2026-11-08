@@ -97,6 +97,7 @@ scripts/maintenance/ui-shots/
 # Tauri generated artifacts
 desktop-tauri/src-tauri/target/
 desktop-tauri/src-tauri/resources/
+desktop-tauri/src-tauri/resources.previous-*/
 desktop-tauri/src-tauri/binaries/
 desktop-tauri/src-tauri/gen/
 desktop-tauri/web/
@@ -141,3 +142,7 @@ desktop-tauri/src-tauri/installer/generated/
 
 # unreal-agent runner session logs (GUI agent workspace artifacts)
 logs/
+
+# 宣传片与物料生成工具（本地媒体渲染脚本，不入库）
+tools/promotional-film/
+

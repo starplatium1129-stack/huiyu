@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_seminar_night_desk_relief",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2654,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "ushio_noa_seminar_night_desk_relief",
     "characterId": "ushio_noa",
@@ -40,7 +40,10 @@
       "night",
       "gentle_smile",
       "looking_at_viewer",
-      "medium_shot"
+      "medium_shot",
+      "desk lamp",
+      "glow",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Noa relaxing in an office chair at midnight in her unbuttoned seminar coat, smiling warmly.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_beachside_sunscreen_apply",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2156,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "atago_beachside_sunscreen_apply",
     "characterId": "atago_azur",
@@ -19,7 +19,7 @@
     "lighting": "brilliant tropical summer sunlight with blue sea reflections",
     "camera": "cowboy_shot",
     "mood": "radiant summer romance, playful intimacy, sun-kissed happiness",
-    "promptProse": "Kneeling on a beach mat under a parasol, Atago applies sunscreen to partner shoulder with an affectionate loving smile by the turquoise sea.",
+    "promptProse": "Kneeling on a beach mat under a parasol, Atago applies sunscreen to partner shoulder with an affectionate loving smile by the turquoise sea. Bright tropical summer sunlight reflects off the dazzling white sand and turquoise sea, casting warm shimmering caustic reflections beneath the beach parasol.",
     "promptTokens": [
       "beach",
       "parasol",
@@ -28,10 +28,13 @@
       "sunscreen",
       "sweet_smile",
       "sunny_day",
-      "cowboy_shot"
+      "cowboy_shot",
+      "sunlight",
+      "water reflection",
+      "bright lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Atago applying sunscreen under a beach parasol with a sweet summer smile.",
+    "animaCaption": "Atago applying sunscreen under a beach parasol with a sweet summer smile. Bright tropical summer sunlight reflects off the dazzling white sand and turquoise sea, casting warm shimmering caustic reflections beneath the beach parasol.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

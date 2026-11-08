@@ -1,24 +1,21 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_white_bed_supine_intertwined",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1318,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T13:40:02.789948200+00:00",
   "data": {
-    "action": "全裸仰卧在纯白床榻上，双腿大开曲膝，双手与视角十指相扣，眼眸迷离泛着潮红",
+    "action": "侧卧在纯白真丝床榻上，翠绿长发如瀑散落枕畔，单手轻抵心口，金眸在清冷月色与床头微光中柔和凝视",
     "adult": true,
     "animaStyleHint": "r18_explicit_h_cg",
-    "camera": "cowboy shot, from above, pov",
+    "camera": "cowboy shot, lying on side on white sheets, gentle moonlight and warm rim light",
     "category": "私密温存",
     "characterId": "cc_code_geass",
     "coverageTags": [
-      "nsfw",
-      "supine",
-      "romantic",
-      "special_nsfw"
+      "daily"
     ],
-    "description": "洁白无瑕的真丝床单上，C.C.全身不着寸缕仰卧其中。如瀑布般的翠绿长发在纯白枕被上肆意流淌，双腿自然张开曲膝。她小巧挺拔的白皙双乳随急促呼吸剧烈起伏，粉嫩的乳尖因情动而挺立。她双手十指与你紧扣在枕侧，金色眼眸中翻涌着数百年未曾有过的滚烫情欲，微启双唇发出轻颤的微吟——「这就是……凡人的体温吗……真温暖……不要停下，把你的全部都交给我……」",
+    "description": "洁白无瑕的真丝床榻上，C.C.优雅地侧卧其中。如瀑布般的翠绿长发在纯白枕被上肆意流淌，泛着如玉光泽的肌肤在柔和光影中若隐若现。她一手轻抚在胸前，另一手自然枕在脸侧，金色眼眸中翻涌着漫长岁月未曾有过的温存依恋，微启双唇发出轻柔温和的微叹。",
     "id": "cc_nsfw_white_bed_supine_intertwined",
     "kreaStyleHint": "r18_explicit_h_cg",
     "lighting": "白纱帘透进来的朦胧银白月色",
@@ -27,37 +24,47 @@
     "negativeTokens": [],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
-    "promptProse": "She lies on white silk and interlocks her fingers with both of the viewer's hands beside the pillow, looking upward in moonlight.",
+    "promptProse": "C.C. lying gracefully on her side on pure white silk sheets, long green hair cascading across the pillows, golden eyes, soft blush, resting head on one arm, other hand resting on chest, looking at viewer, white bedding, window moonlight, warm ambient bedside light, cozy bedroom, cinematic lighting.",
     "promptTokens": [
+      "c.c. (code geass)",
+      "green hair",
+      "very long hair",
+      "golden eyes",
+      "bare shoulders",
+      "collarbone",
+      "lying on side",
+      "resting head on arm",
+      "hand on chest",
+      "soft blush",
+      "looking at viewer",
+      "white sheets",
+      "pillows",
+      "silk bed",
       "bedroom",
-      "nude",
-      "lying",
-      "on back",
-      "knees up",
-      "holding hands",
+      "night",
       "moonlight",
-      "from above",
-      "interlocked fingers",
-      "looking up"
+      "warm rim light",
+      "cowboy shot"
     ],
     "recommendedSize": "1152x1536",
     "sampleRating": "R15",
     "sceneTags": [
       "bedroom",
+      "bed",
       "white_sheets",
-      "completely_nude",
-      "lying_on_back",
-      "spread_legs",
-      "bare_breasts",
-      "pink_nipples",
-      "interlocked_fingers",
       "green_hair",
-      "heavy_blush",
-      "parted_lips"
+      "golden_eyes",
+      "lying_on_side",
+      "moonlight"
     ],
     "timeOfDay": "深夜",
     "title": "C.C. · 纯白床榻的深情仰卧交付",
-    "nsfwTokens": [],
-    "animaCaption": "Both of the viewer's hands meet hers beside the pillow."
+    "nsfwTokens": [
+      "bare shoulders",
+      "bare back",
+      "bare legs"
+    ],
+    "animaCaption": "She lies gracefully on her side on white sheets under soft moonlight.",
+    "compositionIntent": "single"
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_fluffy_knit_sofa_watermelon",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2753,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-06T12:10:27.269121300+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "astraea_fluffy_knit_sofa_watermelon",
     "characterId": "astraea",
@@ -30,7 +30,9 @@
       "living room sofa",
       "sunny morning",
       "blissful smile",
-      "playful expression"
+      "playful expression",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Sitting cozily by the sofa, Astraea munches on a crisp slice of watermelon with puffed cheeks and pure contentment.",

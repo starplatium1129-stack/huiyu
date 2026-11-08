@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3293,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "murasame_swimsuit_allure",
     "characterId": "murasame",
@@ -53,11 +53,14 @@
       "sunny forest morning",
       "joyful excited expression",
       "shrine woods",
-      "depth of field"
+      "depth of field",
+      "sunlight",
+      "dappled sunlight",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "promptProse": "Murasame kicks her feet excitedly in a cold mountain stream while perched on a red wooden bridge in her shrine-maiden swimdress, laughing happily under the morning forest canopy.",
-    "animaCaption": "Morning mountain mist parts over the babbling brook as the spirit blade maiden revels in icy cold waters.",
+    "promptProse": "Murasame kicks her feet excitedly in a cold mountain stream while perched on a red wooden bridge in her shrine-maiden swimdress, laughing happily under the morning forest canopy. Morning mountain sunlight filters through the forest canopy in shimmering dappled patterns, casting playful sparkling reflections off the rushing river rapids.",
+    "animaCaption": "Morning mountain mist parts over the babbling brook as the spirit blade maiden revels in icy cold waters. Morning mountain sunlight filters through the forest canopy in shimmering dappled patterns, casting playful sparkling reflections off the rushing river rapids.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

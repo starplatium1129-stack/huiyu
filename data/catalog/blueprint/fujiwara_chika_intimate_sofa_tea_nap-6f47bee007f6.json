@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_sofa_tea_nap",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 2028,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "weekend_parka",
@@ -19,7 +19,7 @@
     "lighting": "soft afternoon rays through tall arched windows",
     "camera": "medium_shot",
     "mood": "adorable lavish carefree sweetness",
-    "promptProse": "Fast asleep curled up on the luxurious leather sofa of the empty student council room, Fujiwara Chika rests after tea time. Her pink wavy hair and black bow drape over the cushions as she mumbles cute nonsense in her peaceful slumber.",
+    "promptProse": "Fast asleep curled up on the luxurious leather sofa of the empty student council room, Fujiwara Chika rests after tea time. Her pink wavy hair and black bow drape over the cushions as she mumbles cute nonsense in her peaceful slumber. Gentle afternoon sunlight filters through tall arched student council windows, casting long golden light beams and soft shadows across the plush leather sofa.",
     "promptTokens": [
       "fujiwara_chika",
       "1girl",
@@ -36,10 +36,13 @@
       "afternoon_sun",
       "cute",
       "peaceful",
-      "medium_shot"
+      "medium_shot",
+      "sunlight",
+      "window light",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Chika sleeping adorably on the leather couch after tea time.",
+    "animaCaption": "Chika sleeping adorably on the leather couch after tea time. Gentle afternoon sunlight filters through tall arched student council windows, casting long golden light beams and soft shadows across the plush leather sofa.",
     "isNsfw": false,
     "rating": "R15",
     "mature": false

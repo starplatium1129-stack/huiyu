@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eris_greyrat_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3272,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.565Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "eris_greyrat_lingerie_whisper",
     "characterId": "eris_greyrat",
@@ -43,11 +43,14 @@
       "sweat on abs",
       "wild red hair",
       "furious blush",
-      "tsundere"
+      "tsundere",
+      "torch",
+      "firelight",
+      "moonlight"
     ],
     "negativeTokens": [],
-    "promptProse": "Eris Boreas Greyrat collapsed in complete physical exhaustion after midnight sword training. Sporting a drenched crimson ribbed crop tank and boy-boxer shorts that highlight her toned warrior physique, she sprawls star-shaped across the floor rug. With her wild scarlet mane spread across the floorboards, she glares sideways with a furiously flushed, tsundere scowl as her chest heaves.",
-    "animaCaption": "Eris Boreas Greyrat collapsed in complete physical exhaustion after midnight sword training. Sporting a drenched crimson ribbed crop tank and boy-boxer shorts that highlight her toned warrior physique, she sprawls star-shaped across the floor rug.",
+    "promptProse": "Eris Boreas Greyrat collapsed in complete physical exhaustion after midnight sword training. Sporting a drenched crimson ribbed crop tank and boy-boxer shorts that highlight her toned warrior physique, she sprawls star-shaped across the floor rug. With her wild scarlet mane spread across the floorboards, she glares sideways with a furiously flushed, tsundere scowl as her chest heaves. Vigorous torchlight from an iron bracket clashes with pale moonlight on the dojo floorboards, glinting off sweat on her toned midriff and crimson hair.",
+    "animaCaption": "Eris Boreas Greyrat collapsed in complete physical exhaustion after midnight sword training. Sporting a drenched crimson ribbed crop tank and boy-boxer shorts that highlight her toned warrior physique, she sprawls star-shaped across the floor rug. Vigorous torchlight from an iron bracket clashes with pale moonlight on the dojo floorboards, glinting off sweat on her toned midriff and crimson hair.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

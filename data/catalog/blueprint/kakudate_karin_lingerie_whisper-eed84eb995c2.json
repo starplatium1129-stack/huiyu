@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3433,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.927Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "kakudate_karin_lingerie_whisper",
     "characterId": "kakudate_karin",
@@ -44,11 +44,14 @@
       "legs in air",
       "sniper manual",
       "golden eyes",
-      "ponytail"
+      "ponytail",
+      "spotlight",
+      "warm lighting",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Karin Kakudate studying precision ballistics late at night within her Millennium dorm room. Draped in an alluring dark-chocolate satin slip dress with high side slits that complement her rich dark skin, she lies prone across the charcoal mattress with legs crossed in the air. Glancing up from her sniper manual with golden eyes, her formidable presence melts into quiet, focused companionship.",
-    "animaCaption": "Karin Kakudate studying precision ballistics late at night within her Millennium dorm room. Draped in an alluring dark-chocolate satin slip dress with high side slits that complement her rich dark skin, she lies prone across the charcoal mattress with legs crossed in the air.",
+    "promptProse": "Karin Kakudate studying precision ballistics late at night within her Millennium dorm room. Draped in an alluring dark-chocolate satin slip dress with high side slits that complement her rich dark skin, she lies prone across the charcoal mattress with legs crossed in the air. Glancing up from her sniper manual with golden eyes, her formidable presence melts into quiet, focused companionship. A focused bedside spotlight casts warm amber radiance across the duvet, creating alluring golden specular highlights along her velvety dark skin.",
+    "animaCaption": "Karin Kakudate studying precision ballistics late at night within her Millennium dorm room. Draped in an alluring dark-chocolate satin slip dress with high side slits that complement her rich dark skin, she lies prone across the charcoal mattress with legs crossed in the air. A focused bedside spotlight casts warm amber radiance across the duvet, creating alluring golden specular highlights along her velvety dark skin.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

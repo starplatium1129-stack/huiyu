@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_beach_sunbed_breeze",
+  "revision": 1,
+  "sortOrder": 3103,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_beach_sunbed_breeze",
+    "characterId": "platinum_arknights",
+    "outfitId": "coral_coast_sunlit",
+    "title": "白金 · 珊瑚海岸的夏日私暇",
+    "category": "夏日海滩",
+    "description": "【珊瑚海岸度假海滩·午间】热带棕榈树与条纹遮阳伞投下清凉阴凉，白金斜倚在木质沙滩躺椅上，修长指尖托着冰镇海盐柠檬水，微眯着清澈眼眸吹着海风：“呼……这才是生活啊，在罗德岛加班什么的就先忘掉吧。”",
+    "location": "珊瑚海岸沙滩木质栈桥",
+    "action": "斜倚躺椅手持冷饮微眯双眸",
+    "timeOfDay": "正午盛夏",
+    "lighting": "碧海蓝天与遮阳伞下的清爽漫射阴影",
+    "camera": "侧向全身镜头，远景海浪与近景躺椅",
+    "mood": "悠然度假",
+    "sceneTags": [
+      "lying on side",
+      "sunbed",
+      "beach",
+      "ocean",
+      "parasol",
+      "summer breeze",
+      "drink in hand"
+    ],
+    "promptProse": "Lounging comfortably under a striped beach parasol on a tropical wooden boardwalk, Platinum rests on a sunbed with glistening turquoise ocean waves in the distance. Her semi-sheer chiffon cover-up flutters gently in the salty ocean breeze as she sips iced lemonade, looking towards the viewer with half-lidded relaxed eyes.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "lying on side",
+      "sunbed",
+      "holding drink",
+      "beach",
+      "ocean",
+      "palm trees",
+      "parasol",
+      "summer breeze",
+      "sunshine",
+      "lens flare",
+      "serene",
+      "sensual glance",
+      "full body"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "Sensitive",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

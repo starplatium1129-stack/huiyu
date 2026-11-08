@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "quillpen_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3242,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "quillpen_arknights_lingerie_whisper",
     "characterId": "quillpen_arknights",
@@ -42,7 +42,9 @@
       "soft feathery white lace trim",
       "elasticized shirred bustier",
       "relaxed sleep dress",
-      "indoors"
+      "indoors",
+      "spotlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "La Pluma curls up on plush leather sofa in dimly lit tavern after hours, wearing a dusty lilac crinkled chiffon tube slip. Liberi, small feathered ear tufts, hugging sofa cushion amidst rubbing sleepy eyes, messy blonde hair, peaceful drowsy expression, warm single spotlight overhead.",

@@ -1,0 +1,59 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_private_boudoir_allure",
+  "revision": 1,
+  "sortOrder": 3109,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_private_boudoir_allure",
+    "characterId": "platinum_arknights",
+    "outfitId": "white_lace_lingerie",
+    "title": "白金 · 丝绒被褥间的心跳距离",
+    "category": "深层欢愉",
+    "description": "【私密寝居·夜色正浓】月光如水穿过半掩的窗扉，与床头暖灯交汇。白金轻倚在靠枕上，纯白蕾丝与如雪银发交融，青蓝眼眸中泛着温润的水光。她微微倾身，呼吸温热可触，等待着仅属于两人的漫长夜晚。",
+    "location": "主卧深闺被褥之间",
+    "action": "半倚软枕微启双唇近身倾诉",
+    "timeOfDay": "子夜时分",
+    "lighting": "清冷窗月与床畔温润壁灯冷暖交融",
+    "camera": "第一人称极近距离面庞与双眸特写",
+    "mood": "情动动人",
+    "sceneTags": [
+      "reclining",
+      "on bed",
+      "sheets",
+      "bedroom",
+      "moonlight",
+      "dim lighting",
+      "blushing",
+      "parted lips",
+      "intimate"
+    ],
+    "promptProse": "In an intimate softly-lit bedroom late at night, Platinum leans back against plush pillows with moonlight streaming through half-drawn curtains. Pure white floral lace and flowing silver hair cascade over luxurious sheets. Her gaze is captivated and tender, cheeks glowing with soft blush as she leans forward with gentle parted lips.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "reclining",
+      "on bed",
+      "sheets",
+      "bedroom",
+      "moonlight",
+      "dim warm lighting",
+      "blushing",
+      "parted lips",
+      "looking at viewer",
+      "romantic",
+      "intimate gaze",
+      "alluring"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": true,
+    "sampleRating": "R18",
+    "coverageTags": [
+      "nsfw",
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

@@ -1,30 +1,30 @@
 {
   "kind": "blueprint",
   "id": "himeragi_yukina_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3456,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.733Z",
+  "updatedAt": "2026-11-08T13:12:09.860563600+00:00",
   "data": {
     "id": "himeragi_yukina_lingerie_whisper",
     "characterId": "himeragi_yukina",
     "title": "姬柊雪菜 · 雪霞狼长枪靠墙时的监视宣言",
     "category": "私密内衣",
-    "action": "坐在双层公寓被褥上，双手端正放在膝头，雪霞狼长枪盒倚在墙角，认真严肃地向古城重申“前辈，这是我的监视职责”",
-    "location": "弦神岛晓家公寓隔壁雪菜单人卧室榻榻米上",
-    "timeOfDay": "睡前",
-    "lighting": "和室纸拉门透进的微弱城市夜景蓝光与床头一盏柔和白炽台灯，映照出圣洁无垢的气息",
-    "camera": "端庄正襟危坐的正景平视，将剑巫少女的一丝不苟与内里青涩的纯情反差完美呈现",
-    "mood": "严谨端庄、恪尽职守、纯洁青涩的监视宣言",
+    "action": "榻榻米被褥上端庄正坐，双手叠膝微红着脸昂首宣布",
+    "location": "和风公寓榻榻米和室",
+    "timeOfDay": "深夜",
+    "lighting": "和风月色与角落纸灯笼的清冷与温润交错光",
+    "camera": "平视牛仔景，完整展现雪霞狼长琴盒与正坐姿态",
+    "mood": "认真正经，反差傲娇可爱",
     "adult": true,
-    "sampleRating": "R15",
+    "sampleRating": "R18",
     "animaStyleHint": "r18_explicit_h_cg",
     "adultArtistHint": "",
-    "description": "弦神岛深夜微风吹拂的公寓和室。狮子王机关的剑巫姬柊雪菜刚刚完成晚间沐浴，换上一件由圣别白亚麻编织的高领刺绣系带长睡裙。著名的神枪‘雪霞狼’长琴盒端正地倚在墙角。雪菜两手规整地交叠在双膝上，正坐在被褥正中，清秀的黑长发整齐垂落。她看着推门进来的晓古城，虽然脸颊浮上一抹微红，眼神却依然坚定执着——「前辈，这么晚过来有什么事吗？……请不要误会，即使到了就寝时间，贴身监视第四真祖也是雪菜不可推卸的职责！不准笑话我的睡裙保守！」",
+    "description": "弦神岛深夜微风吹拂的和室。狮子王机关的剑巫雪菜刚沐浴完毕，换上一尘不染的白亚麻高领长睡裙。灵格神枪“雪霞狼”的长琴盒端正倚在墙角。雪菜在榻榻米被褥上端正正坐，两手规整地搭在双膝上。虽然双颊浮上一抹微红，眼神却依然一本正经地宣告贴身监视第四真祖是不可推卸的职责，严禁前辈笑话睡裙保守。",
     "outfitId": "silver_lace_lingerie",
-    "recommendedSize": "832x1216",
+    "recommendedSize": "1152x1536",
     "coverageTags": [
-      "special_nsfw"
+      "daily"
     ],
     "sceneTags": [
       "tatami_bedding",
@@ -37,19 +37,31 @@
       "sword_shaman"
     ],
     "promptTokens": [
-      "white linen nightgown",
-      "high neck",
+      "solo",
+      "sitting",
       "sitting seiza",
-      "futon",
-      "spear case",
+      "on futon",
+      "tatami",
+      "white nightgown",
+      "long dress",
+      "high neck",
+      "violin case",
+      "guitar case",
       "black hair",
       "brown eyes",
-      "serious blush"
+      "blush",
+      "serious expression",
+      "looking up",
+      "japanese room",
+      "paper lantern",
+      "moonlight",
+      "cowboy shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Yukina Himeragi maintaining her solemn sword-shaman vigil inside her tatami apartment at bedtime. Dressed in a modest, pristine white linen nightgown with a high gathered neck and subtle talismanic embroidery, she sits in disciplined seiza on her futon with hands folded neatly. With her holy spear case resting close at hand, she looks up with earnest, blushing dedication.",
-    "animaCaption": "Yukina Himeragi maintaining her solemn sword-shaman vigil inside her tatami apartment at bedtime. Dressed in a modest, pristine white linen nightgown with a high gathered neck and subtle talismanic embroidery, she sits in disciplined seiza on her futon with hands folded neatly.",
+    "promptProse": "Inside a quiet tatami room at night, Yukina sits in disciplined seiza upon her futon, maintaining her solemn sword-shaman vigil. She is clothed in an immaculate high-neck white linen nightgown with subtle talismanic embroidery. Resting beside the wall is the elongated violin case holding her sacred spear Schneewalzer. Looking upward with flushed cheeks and determined amber eyes, her serious expression carries an adorable tsundere earnestness.",
+    "animaCaption": "Sitting seiza on the tatami futon in her white linen nightgown, guarding her spear case with a blushing, serious expression.",
     "nsfwTokens": [],
-    "nsfwProse": ""
+    "nsfwProse": "",
+    "compositionIntent": "single"
   }
 }

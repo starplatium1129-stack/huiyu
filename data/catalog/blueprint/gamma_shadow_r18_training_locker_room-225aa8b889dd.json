@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_r18_training_locker_room",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2828,
   "createdAt": "2026-10-31T04:39:58.773044+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "gamma_shadow_r18_training_locker_room",
     "characterId": "gamma_shadow",
@@ -26,7 +26,7 @@
       "sweat",
       "training"
     ],
-    "promptProse": "In the training ground locker room, adult Gamma leans against the lockers and unzips her slime bodysuit to cool down, sweat tracing her collarbone after another fall-filled practice.",
+    "promptProse": "In the training ground locker room, adult Gamma leans against the lockers and unzips her slime bodysuit to cool down under dim yellow work lamps and a shaft of daylight, sweat tracing her collarbone after another fall-filled practice.",
     "promptTokens": [
       "locker room",
       "black bodysuit",
@@ -34,7 +34,10 @@
       "topless",
       "sweat",
       "leaning back",
-      "metal locker"
+      "metal locker",
+      "sunlight",
+      "lamp",
+      "shadow"
     ],
     "negativeTokens": [],
     "coverageTags": [],

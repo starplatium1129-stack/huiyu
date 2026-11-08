@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3431,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.169Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "amau_ako_lingerie_whisper",
     "characterId": "amau_ako",
@@ -45,7 +45,10 @@
       "couch",
       "pouting blush",
       "cyan hair",
-      "midnight"
+      "midnight",
+      "desk lamp",
+      "glow",
+      "dim lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Ako Amau unwinding late at night inside the Prefect Team office after hours of paperwork. She wears a midnight-blue velvet cutout slip dress paired with her signature leather choker collar. Perched on a leather couch rubbing a sore ankle with bare feet on the rug, her demonic horns catch the desk lamp light as she pouts with flustered, tsundere exhaustion at the viewer.",

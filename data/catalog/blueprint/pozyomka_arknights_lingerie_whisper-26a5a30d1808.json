@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "pozyomka_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3132,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "pozyomka_arknights_lingerie_whisper",
     "characterId": "pozyomka_arknights",
@@ -41,11 +41,14 @@
       "side slit showing long legs",
       "structured bodice",
       "aristocratic poet loungewear",
-      "indoors"
+      "indoors",
+      "lamp",
+      "warm lighting",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter.",
-    "animaCaption": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter.",
+    "promptProse": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter. A vintage green-shaded reading lamp sheds rich warm illumination over open poetry anthologies, casting sophisticated amber highlights across her lupine ears.",
+    "animaCaption": "Pozyomka sits sideways at mahogany writing desk, wearing a raspberry burgundy velvet corseted boudoir slip. Lupo, fluffy wolf ears and magnificent tail, pressing fountain pen to lip thoughtfully amidst long pinkish-silver hair, deep soulful pink eyes, antique library with vintage typewriter. A vintage green-shaded reading lamp sheds rich warm illumination over open poetry anthologies, casting sophisticated amber highlights across her lupine ears.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

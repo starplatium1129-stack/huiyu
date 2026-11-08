@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_r18_mist_form_aftereffect",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2834,
   "createdAt": "2026-10-31T04:39:58.773044+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "eta_shadow_r18_mist_form_aftereffect",
     "characterId": "eta_shadow",
@@ -26,7 +26,7 @@
       "formation_circle",
       "experiment"
     ],
-    "promptProse": "After the atomization trial, adult Eta calmly inspects her misaligned, half-translucent slime clothes, clipboard in hand, noting the side effect in a flat, sleepy tone.",
+    "promptProse": "After the atomization trial, adult Eta calmly inspects her misaligned, half-translucent slime clothes, clipboard in hand, noting the side effect in a flat, sleepy tone. A faint violet glow pulses from the runic magic circle on the laboratory floor, casting ethereal purple luminescence through her semi-translucent mist attire.",
     "promptTokens": [
       "laboratory",
       "mist",
@@ -34,7 +34,10 @@
       "translucent fabric",
       "formation circle",
       "clipboard",
-      "deadpan"
+      "deadpan",
+      "glow",
+      "purple lighting",
+      "dim lighting"
     ],
     "negativeTokens": [],
     "coverageTags": [],
@@ -49,6 +52,6 @@
       "wardrobe_malfunction"
     ],
     "nsfwProse": "",
-    "animaCaption": "'Side effect: embarrassment. Recommendation: ignore.' Eta writes it down and reaches for her coffee."
+    "animaCaption": "'Side effect: embarrassment. Recommendation: ignore.' Eta writes it down and reaches for her coffee. A faint violet glow pulses from the runic magic circle on the laboratory floor, casting ethereal purple luminescence through her semi-translucent mist attire."
   }
 }

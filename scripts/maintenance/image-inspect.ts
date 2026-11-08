@@ -31,11 +31,14 @@ import { errorMessage as runtimeErrorMessage } from '../lib/runtime-errors';
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const http: typeof import('http') = require('http');
+const https: typeof import('https') = require('https');
 const { object }: typeof import('../lib/content-history-reader') = require('../lib/content-history-reader');
 type Options = {
   task: string; mode: string; model: string | null; prompt: string | null; expect: string | null;
   out: string | null; json: boolean; maxTokens: number; timeoutMs: number; help: boolean;
   noFallback: boolean; concurrency: number; paths: string[];
+  signal?: AbortSignal;
+  attempts?: number;
 };
 type ImageFile = { file: string; size: number };
 type ContentPart = { type: 'text'; text: string } | { type: 'image_url'; image_url: { url: string } };
@@ -60,9 +63,6 @@ function resolveVisionApiKey() {
   return '';
 }
 const DEFAULT_API_KEY = resolveVisionApiKey();
-if (!DEFAULT_API_KEY) {
-  console.error('⚠️ 未配置视觉后端 API key：请设 VISION_API_KEY 环境变量，或把 key 写入 runtime/vision-api-key.txt 首行（该文件已被 .gitignore 忽略）。');
-}
 const DEFAULT_MODEL = process.env.VISION_MODEL || 'gemini-3.7-flash-high';
 // 主端点连接失败时回退的本地 llama-server 后端；与主端点相同则视为禁用（亦可 --no-fallback）
 const FALLBACK_BASE_URL = process.env.VISION_FALLBACK_BASE_URL || 'http://127.0.0.1:8000/v1';
@@ -196,17 +196,24 @@ function httpJson(method: string, urlPath: string, body: unknown, opts: Options,
   return new Promise<unknown>((resolve, reject) => {
     const url = new URL((base || DEFAULT_BASE_URL) + urlPath);
     const payload = body ? JSON.stringify(body) : null;
-    const req = http.request({
-      hostname: url.hostname, port: url.port || 80, path: url.pathname, method,
+    const req = (url.protocol === 'https:' ? https : http).request(url, {
+      method, signal: opts.signal,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${DEFAULT_API_KEY}`,
         ...(payload ? { 'Content-Length': Buffer.byteLength(payload) } : {}),
       },
     }, res => {
-      let d = '';
-      res.on('data', (chunk: Buffer) => d += chunk.toString());
+      const chunks: Buffer[] = [];
+      let size = 0;
+      res.on('error', reject);
+      res.on('data', (chunk: Buffer) => {
+        size += chunk.length;
+        if (size > 2 * 1024 * 1024) req.destroy(new Error('视觉响应超过 2 MiB'));
+        else chunks.push(chunk);
+      });
       res.on('end', () => {
+        const d = Buffer.concat(chunks).toString('utf8');
         let json: unknown = null;
         try { json = JSON.parse(d); } catch { /* raw below */ }
         if (res.statusCode !== undefined && res.statusCode >= 200 && res.statusCode < 300 && json) return resolve(json);
@@ -249,10 +256,11 @@ async function fetchModelId(base: string, opts: Options) {
 
 async function attemptBackend(base: string, model: string, messages: Message[], opts: Options, file: string): Promise<BackendResult> {
   let lastErr: unknown;
-  for (let attempt = 0; attempt < 2; attempt++) {
+  for (let attempt = 0; attempt < (opts.attempts ?? 2); attempt++) {
+    opts.signal?.throwIfAborted();
     if (attempt > 0) {
       console.error(`[重试 ${attempt}] ${file || 'group'}（等待 2s）`);
-      await new Promise<void>(resolve => setTimeout(resolve, 2000));
+      await require('node:timers/promises').setTimeout(2000, undefined, { signal: opts.signal });
     }
     try {
       const j = await chatCompletion(messages, opts, model, base);
@@ -299,9 +307,36 @@ function buildTextAndImages(prompt: string, files: ImageFile[]) {
   return content;
 }
 
+/** Shared text/vision transport for maintenance; malformed model output is never a pass. */
+export async function isInspectAvailable(signal: AbortSignal): Promise<boolean> {
+  try {
+    const result = await httpJson('GET', '/models', null, { ...parseArgs([]), timeoutMs: 1200, signal });
+    return object(result) && Array.isArray(result.data) && result.data.length > 0;
+  } catch { signal.throwIfAborted(); return false; }
+}
+
+export async function inspectContent(prompt: string, files: string[], options: {
+  model?: string; signal?: AbortSignal; timeoutMs?: number; attempts?: number;
+} = {}) {
+  const opts = { ...parseArgs([]), noFallback: true, maxTokens: 8000, signal: options.signal,
+    timeoutMs: options.timeoutMs ?? 180000, attempts: options.attempts ?? 2 };
+  const images = files.map(file => {
+    const info = fs.statSync(file);
+    if (!info.isFile() || info.size > MAX_IMAGE_BYTES || !IMAGE_EXT.has(path.extname(file).toLowerCase()))
+      throw new Error('审核图片无效或超过 15 MiB');
+    return { file, size: info.size };
+  });
+  const content: ContentPart[] = images.length ? buildTextAndImages(prompt, images) : [{ type: 'text', text: prompt }];
+  const result = await requestWithRetry([{ role: 'user', content }], opts, options.model || DEFAULT_MODEL, files.join('; '));
+  if (!result.ok) throw new Error(result.error);
+  if (typeof result.content !== 'string' || !result.content.trim()) throw new Error('模型未返回完整文本');
+  return { model: result.model, content: result.content };
+}
+
 async function main() {
   const opts = parseArgs(process.argv.slice(2));
   if (opts.help) { printHelp(); return; }
+  if (!DEFAULT_API_KEY) console.error('未配置视觉 API key：请设置 VISION_API_KEY 或 runtime/vision-api-key.txt。');
   if (opts.paths.length === 0) {
     console.error('[错误] 至少需要一个图片路径或目录（--help 查看用法）');
     process.exit(2);

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_arknights_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3125,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "nymph_arknights_lingerie_whisper",
     "characterId": "nymph_arknights",
@@ -42,11 +42,14 @@
       "mirror",
       "rose gold miniature buckles",
       "black fishnet insets",
-      "indoors"
+      "indoors",
+      "starlight",
+      "window light",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror.",
-    "animaCaption": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror.",
+    "promptProse": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror. Soft starlight through the high arched window casts a dreamy silvery halo around her floating ribbons and delicate lace nightgown.",
+    "animaCaption": "Nymph sits backwards on office swivel chair, wearing a wine red velvet strappy bralette set. Chin rested on chair back, tiny curved sarkaz horns in fiery red hair, mischievous cat-like grin amidst crimson eyes, dark interrogation observation room with two-way mirror. Soft starlight through the high arched window casts a dreamy silvery halo around her floating ribbons and delicate lace nightgown.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakaki_yumiko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3374,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "sakaki_yumiko_lingerie_whisper",
     "characterId": "sakaki_yumiko",
@@ -39,11 +39,14 @@
       "blush",
       "sharp structured cups",
       "gold ring clasps",
-      "indoors"
+      "indoors",
+      "window light",
+      "dim lighting",
+      "cool lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite.",
-    "animaCaption": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite.",
+    "promptProse": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite. Cool twilight window light filters through academy curtains, tracing sharp elegant contours along her dark plum camisole and aloof expression.",
+    "animaCaption": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite. Cool twilight window light filters through academy curtains, tracing sharp elegant contours along her dark plum camisole and aloof expression.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

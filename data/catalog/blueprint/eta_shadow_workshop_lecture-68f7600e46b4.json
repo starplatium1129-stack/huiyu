@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_workshop_lecture",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2824,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "eta_shadow_workshop_lecture",
     "characterId": "eta_shadow",
@@ -19,7 +19,7 @@
     "lighting": "讲堂窗户透入的明亮日光",
     "camera": "cowboy_shot",
     "mood": "sleepy preparation, quiet concentration",
-    "promptProse": "Before the lecture, Eta stands alone at the blackboard in an empty hall, adding a chalk note beside her formulas while trying not to yawn.",
+    "promptProse": "Before the lecture, Eta stands alone at the blackboard in an empty hall, adding a chalk note beside her formulas while trying not to yawn. Bright afternoon sunlight streams through lecture hall windows, catching chalk dust drifting in the air and illuminating dense formulas on the blackboard.",
     "promptTokens": [
       "empty lecture hall",
       "blackboard",
@@ -27,10 +27,13 @@
       "writing on blackboard",
       "holding chalk",
       "yawning",
-      "empty desks"
+      "empty desks",
+      "sunlight",
+      "window light",
+      "bright room"
     ],
     "negativeTokens": [],
-    "animaCaption": "A sleepy Eta adds one last note to the board.",
+    "animaCaption": "A sleepy Eta adds one last note to the board. Bright afternoon sunlight streams through lecture hall windows, catching chalk dust drifting in the air and illuminating dense formulas on the blackboard.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

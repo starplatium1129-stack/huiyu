@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3367,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "rossy_arknights_swimsuit_allure",
     "characterId": "rossy_arknights",
@@ -52,11 +52,14 @@
       "crashing surf waves",
       "bright midday sun",
       "dynamic athletic pose",
-      "depth of field"
+      "depth of field",
+      "sunlight",
+      "direct sunlight",
+      "water reflection"
     ],
     "negativeTokens": [],
-    "promptProse": "Rossy from Arknights: Endfield rests her foot boldly against a colorful surfboard on black sands in her yellow-and-black zip wetsuit, throwing a triumphant peace sign with an infectious, sun-drenched grin.",
-    "animaCaption": "Pounding alien surf rumbles behind her as the spirited Endfield scout celebrates riding the wildest breakers.",
+    "promptProse": "Rossy from Arknights: Endfield rests her foot boldly against a colorful surfboard on black sands in her yellow-and-black zip wetsuit, throwing a triumphant peace sign with an infectious, sun-drenched grin. Brilliant Mediterranean midday sunlight bounces off the azure water surface, casting bright dancing caustic ripples across her athletic swimwear.",
+    "animaCaption": "Pounding alien surf rumbles behind her as the spirited Endfield scout celebrates riding the wildest breakers. Brilliant Mediterranean midday sunlight bounces off the azure water surface, casting bright dancing caustic ripples across her athletic swimwear.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

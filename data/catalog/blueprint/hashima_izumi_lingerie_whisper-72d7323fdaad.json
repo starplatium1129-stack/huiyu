@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hashima_izumi_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3476,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.700Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "hashima_izumi_lingerie_whisper",
     "characterId": "hashima_izumi",
@@ -42,11 +42,14 @@
       "energy drinks",
       "messy twintails",
       "deadline panic",
-      "late night"
+      "late night",
+      "monitor glow",
+      "bright lighting",
+      "warm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus. Her twintails fly wild as empty energy drink cans litter the desk, her eyes blazing with pure doujin creator fervor beneath the glare of her tablet.",
-    "animaCaption": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus.",
+    "promptProse": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus. Her twintails fly wild as empty energy drink cans litter the desk, her eyes blazing with pure doujin creator fervor beneath the glare of her tablet. Bright cool-white light radiating from the large graphic tablet screen illuminates the cluttered studio desk, casting sharp highlights across scattered doujinshi manuscripts.",
+    "animaCaption": "Izumi Hashima battling the brutal Comic Market manuscript deadline in her chaotic studio bedroom. Wearing an oversized cobalt-blue boyfriend t-shirt slipping off her bare shoulder, she grips her digital stylus with manic focus. Bright cool-white light radiating from the large graphic tablet screen illuminates the cluttered studio desk, casting sharp highlights across scattered doujinshi manuscripts.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_nikke_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3376,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "rapi_nikke_lingerie_whisper",
     "characterId": "rapi_nikke",
@@ -40,11 +40,14 @@
       "military harness accents",
       "molded underwire contour",
       "high-waist boyleg briefs",
-      "indoors"
+      "indoors",
+      "wall lamp",
+      "dim lighting",
+      "cool lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night.",
-    "animaCaption": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night.",
+    "promptProse": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night. Subdued tactical wall lamps illuminate the military bunk quarters with calm cool tones, casting disciplined clean shadows across her posture.",
+    "animaCaption": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night. Subdued tactical wall lamps illuminate the military bunk quarters with calm cool tones, casting disciplined clean shadows across her posture.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ichinose_asuna_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3291,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.804Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "ichinose_asuna_lingerie_whisper",
     "characterId": "ichinose_asuna",
@@ -42,7 +42,9 @@
       "leaping on bed",
       "floor length blonde hair flying",
       "dazzling smile",
-      "blue eyes"
+      "blue eyes",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Asuna Ichinose launching herself with golden-retriever joy directly into the viewer's arms in the Schale dormitory bedroom. Clad in a flowing, backless pure white gossamer lace halter chemise, she lunges forward across the duvet with her floor-length golden mane billowing like a sunlit tide. Her bright blue eyes beam with unfiltered, ecstatic devotion as she demands immediate cuddles.",

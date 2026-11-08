@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_azur_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3448,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "st_louis_azur_lingerie_whisper",
     "characterId": "st_louis_azur",
@@ -39,7 +39,8 @@
       "ultra-deep v neckline",
       "sheer gossamer side panels",
       "liquid drape silk",
-      "indoors"
+      "indoors",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "St. Louis rests elbow on door frame, wearing a ice blue watered-silk plunging slip gown. Turning in leather sports car seat, running hand through voluminous wavy light-blue hair, sultry violet eyes amidst curvaceous mature figure, coastal scenic overlook with distant harbor lights.",

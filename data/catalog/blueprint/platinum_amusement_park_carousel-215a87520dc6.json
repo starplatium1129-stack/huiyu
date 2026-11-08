@@ -1,0 +1,57 @@
+{
+  "kind": "blueprint",
+  "id": "platinum_amusement_park_carousel",
+  "revision": 1,
+  "sortOrder": 3101,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "id": "platinum_amusement_park_carousel",
+    "characterId": "platinum_arknights",
+    "outfitId": "amusement_park_casual",
+    "title": "白金 · 游乐园的回眸浅笑",
+    "category": "日常约会",
+    "description": "【卡西米尔主题乐园·黄昏】旋转木马的金色灯带在薄暮中次第亮起，白金一只手拿着印有天马图案的草莓可丽饼，另一只手轻轻拉住身侧同行者的衣角，难得露出毫无防备的温柔微笑：“博士，说好了今天不谈公事。”",
+    "location": "卡西米尔主题乐园旋转木马前",
+    "action": "手持可丽饼回首牵衣角微笑",
+    "timeOfDay": "黄昏薄暮",
+    "lighting": "旋转木马金色暖光灯带与暮色晚霞",
+    "camera": "平视半身特写，背景暖色光斑虚化",
+    "mood": "温情轻松",
+    "sceneTags": [
+      "standing",
+      "holding food",
+      "crepe",
+      "amusement park",
+      "carousel",
+      "twilight",
+      "gentle smile"
+    ],
+    "promptProse": "At an amusement park during dusk, warm golden lights illuminate a vintage merry-go-round in the soft blurred background. Platinum holds a sweet strawberry crepe wrapped in decorative paper, turning around with a gentle relaxed smile. Her long silver hair catches the twilight reflections, looking affectionately at the viewer.",
+    "animaCaption": "",
+    "promptTokens": [
+      "solo",
+      "standing",
+      "turning around",
+      "holding food",
+      "crepe",
+      "amusement park",
+      "carousel",
+      "bokeh",
+      "twilight",
+      "warm lights",
+      "gentle smile",
+      "happy",
+      "blush",
+      "medium shot"
+    ],
+    "negativeTokens": [],
+    "recommendedSize": "1152x1536",
+    "adult": false,
+    "sampleRating": "All",
+    "coverageTags": [
+      "daily"
+    ],
+    "compositionIntent": "single"
+  }
+}

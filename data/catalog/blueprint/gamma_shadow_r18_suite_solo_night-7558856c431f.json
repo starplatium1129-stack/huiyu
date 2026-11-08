@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_r18_suite_solo_night",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2837,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "gamma_shadow_r18_suite_solo_night",
     "characterId": "gamma_shadow",
@@ -26,7 +26,7 @@
       "nude",
       "solo"
     ],
-    "promptProse": "Alone in her president suite at night, adult Gamma lies naked on the velvet sofa, nightgown discarded, long indigo hair spilling everywhere, pleasuring herself while whispering for one more word of praise.",
+    "promptProse": "Alone in her president suite at night, adult Gamma lies naked on the velvet sofa, nightgown discarded, long indigo hair spilling everywhere, pleasuring herself while whispering for one more word of praise. Mellow lamplight inside the velvet executive suite blends with the glittering nocturnal glow of the capital through sheer curtains, setting a tranquil mood.",
     "promptTokens": [
       "sofa",
       "night",
@@ -35,7 +35,10 @@
       "masturbation",
       "spread legs",
       "closed eyes",
-      "blush"
+      "blush",
+      "lamp",
+      "city lights",
+      "dim lighting"
     ],
     "negativeTokens": [],
     "coverageTags": [],
@@ -50,6 +53,6 @@
       "spread legs"
     ],
     "nsfwProse": "",
-    "animaCaption": "The president who never miscalculates counts her own heartbeat wrong tonight — on purpose, with his words in her ears."
+    "animaCaption": "The president who never miscalculates counts her own heartbeat wrong tonight — on purpose, with his words in her ears. Mellow lamplight inside the velvet executive suite blends with the glittering nocturnal glow of the capital through sheer curtains, setting a tranquil mood."
   }
 }

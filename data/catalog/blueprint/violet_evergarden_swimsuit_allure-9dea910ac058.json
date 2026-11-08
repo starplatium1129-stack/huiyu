@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evergarden_swimsuit_allure",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3309,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:37.291Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "violet_evergarden_swimsuit_allure",
     "characterId": "violet_evergarden",
@@ -42,7 +42,9 @@
       "emerald brooch",
       "blonde braided hair",
       "cliff flowers",
-      "ocean morning"
+      "ocean morning",
+      "sunlight",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Violet Evergarden standing regally atop a blooming stone cliffside staircase overlooking a sparkling sapphire sea. She wears an exquisite classical Prussian-blue corset swimdress trimmed with pleated ivory lace and accented by her signature emerald brooch. Holding a delicate white lace parasol against the pristine morning sunlight, her cornflower-blue eyes reflect the infinite ocean horizon with transcendent purity.",

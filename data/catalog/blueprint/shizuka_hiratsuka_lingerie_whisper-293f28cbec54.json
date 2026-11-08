@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_hiratsuka_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3466,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "shizuka_hiratsuka_lingerie_whisper",
     "characterId": "shizuka_hiratsuka",
@@ -42,11 +42,14 @@
       "black hair",
       "deep plunging neckline",
       "opulent drape",
-      "indoors"
+      "indoors",
+      "street light",
+      "window light",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Shizuka Hiratsuka sits cross-legged on carpet leaning on coffee table, wearing a wine red heavyweight silk slip gown. Mature female teacher, holding can of beer in one hand, slim cigarette smoke curling amidst long glossy raven hair, flushed tipsy cheeks, soulful dark eyes, cozy single apartment.",
-    "animaCaption": "Shizuka sits cross-legged beside a coffee table, holding a can of beer as cigarette smoke curls through her apartment.",
+    "promptProse": "Shizuka Hiratsuka sits cross-legged on carpet leaning on coffee table, wearing a wine red heavyweight silk slip gown. Mature female teacher, holding can of beer in one hand, slim cigarette smoke curling amidst long glossy raven hair, flushed tipsy cheeks, soulful dark eyes, cozy single apartment. Distant amber neon and streetlamp glow through the studio apartment window cast a melancholic, mature silhouette across her lounging posture.",
+    "animaCaption": "Shizuka sits cross-legged beside a coffee table, holding a can of beer as cigarette smoke curls through her apartment. Distant amber neon and streetlamp glow through the studio apartment window cast a melancholic, mature silhouette across her lounging posture.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_frieren_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3262,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.616Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "fern_frieren_lingerie_whisper",
     "characterId": "fern_frieren",
@@ -43,11 +43,14 @@
       "pouting",
       "purple eyes",
       "wooden inn",
-      "cozy night"
+      "cozy night",
+      "lantern",
+      "warm lighting",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Fern dealing with nightly chores inside a cozy timber inn room. Clothed in a modest, sensible deep-violet high-neck belted cotton robe, she sits at the vanity towel-drying her magnificent dark purple hair. Her cheeks are comically puffed out like an adorable hamster as she glares with deadpan exasperation at Frieren lounging lazily on the bed.",
-    "animaCaption": "Fern dealing with nightly chores inside a cozy timber inn room. Clothed in a modest, sensible deep-violet high-neck belted cotton robe, she sits at the vanity towel-drying her magnificent dark purple hair.",
+    "promptProse": "Fern dealing with nightly chores inside a cozy timber inn room. Clothed in a modest, sensible deep-violet high-neck belted cotton robe, she sits at the vanity towel-drying her magnificent dark purple hair. Her cheeks are comically puffed out like an adorable hamster as she glares with deadpan exasperation at Frieren lounging lazily on the bed. Quiet amber light from a vintage kerosene lamp glows softly upon the wooden vanity, warming her deep violet locks and modest nightgown.",
+    "animaCaption": "Fern dealing with nightly chores inside a cozy timber inn room. Clothed in a modest, sensible deep-violet high-neck belted cotton robe, she sits at the vanity towel-drying her magnificent dark purple hair. Quiet amber light from a vintage kerosene lamp glows softly upon the wooden vanity, warming her deep violet locks and modest nightgown.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

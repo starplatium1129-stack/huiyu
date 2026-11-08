@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_lingerie_whisper",
-  "revision": 4,
+  "revision": 8,
   "sortOrder": 3326,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.909Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "izumi_sagiri_lingerie_whisper",
     "characterId": "izumi_sagiri",
@@ -43,11 +43,15 @@
       "stylus in hand",
       "silver hair",
       "shut-in",
-      "funny cute"
+      "funny cute",
+      "monitor glow",
+      "dim lighting",
+      "warm lighting",
+      "high contrast"
     ],
     "negativeTokens": [],
-    "promptProse": "Sagiri Izumi executing her trademark defensive maneuver at her locked bedroom door. Wearing a slouchy pastel-pink and white striped cotton sleep romper, she opens the door a crack on its safety chain. Peeking out behind a comical festival paper mask while clutching her digital art stylus, she stubbornly denies her illustrator identity to her older brother.",
-    "animaCaption": "Sagiri Izumi executing her trademark defensive maneuver at her locked bedroom door. Wearing a slouchy pastel-pink and white striped cotton sleep romper, she opens the door a crack on its safety chain.",
+    "promptProse": "Sagiri Izumi executing her trademark defensive maneuver at her locked bedroom door. Wearing a slouchy pastel-pink and white striped cotton sleep romper, she opens the door a crack on its safety chain. Peeking out behind a comical festival paper mask while clutching her digital art stylus, she stubbornly denies her illustrator identity to her older brother. A stark wedge of brilliant white monitor light from the graphics tablet pierces the dim hallway from the cracked bedroom door, casting sharp dramatic shadows.",
+    "animaCaption": "Sagiri Izumi executing her trademark defensive maneuver at her locked bedroom door. Wearing a slouchy pastel-pink and white striped cotton sleep romper, she opens the door a crack on its safety chain. A stark wedge of brilliant white monitor light from the graphics tablet pierces the dim hallway from the cracked bedroom door, casting sharp dramatic shadows.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

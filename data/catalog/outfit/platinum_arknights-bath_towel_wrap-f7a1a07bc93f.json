@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "platinum_arknights/bath_towel_wrap",
+  "revision": 1,
+  "sortOrder": 407,
+  "createdAt": "2026-11-08T12:40:12.822104+00:00",
+  "updatedAt": "2026-11-08T12:40:12.822104+00:00",
+  "data": {
+    "characterId": "platinum_arknights",
+    "outfit": {
+      "id": "bath_towel_wrap",
+      "characterId": "platinum_arknights",
+      "name": "纯白吸水大浴巾",
+      "prose": "A fluffy white bath towel snugly wrapped above the bust, bare shoulders and neck glinting with moist water droplets, and damp hair.",
+      "tokens": [
+        "towel",
+        "towel wrap",
+        "bath towel",
+        "bare shoulders",
+        "wet hair",
+        "damp skin"
+      ],
+      "default": false,
+      "isDefault": false
+    }
+  }
+}

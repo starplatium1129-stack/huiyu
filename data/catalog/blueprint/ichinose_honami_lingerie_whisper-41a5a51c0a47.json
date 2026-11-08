@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ichinose_honami_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3390,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.811Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "ichinose_honami_lingerie_whisper",
     "characterId": "ichinose_honami",
@@ -42,11 +42,14 @@
       "curled on armchair",
       "holding tea mug",
       "strawberry blonde hair",
-      "sweet kind smile"
+      "sweet kind smile",
+      "candlelight",
+      "warm lighting",
+      "soft lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Honami Ichinose providing an oasis of unconditional warmth in her high-school dorm room late in the evening. She wears an ultra-soft dusty-rose ribbed modal camisole and matching sleep shorts. Tucking her legs comfortably into an armchair while cradling a steaming mug of tea, her luminous sapphire eyes gaze with boundless, gentle empathy that melts all anxiety away.",
-    "animaCaption": "Honami Ichinose providing an oasis of unconditional warmth in her high-school dorm room late in the evening. She wears an ultra-soft dusty-rose ribbed modal camisole and matching sleep shorts.",
+    "promptProse": "Honami Ichinose providing an oasis of unconditional warmth in her high-school dorm room late in the evening. She wears an ultra-soft dusty-rose ribbed modal camisole and matching sleep shorts. Tucking her legs comfortably into an armchair while cradling a steaming mug of tea, her luminous sapphire eyes gaze with boundless, gentle empathy that melts all anxiety away. The flickering golden flame of a scented citrus candle on the low coffee table casts a soothing, comforting warmth across her gentle smiling features.",
+    "animaCaption": "Honami Ichinose providing an oasis of unconditional warmth in her high-school dorm room late in the evening. She wears an ultra-soft dusty-rose ribbed modal camisole and matching sleep shorts. The flickering golden flame of a scented citrus candle on the low coffee table casts a soothing, comforting warmth across her gentle smiling features.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

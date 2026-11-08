@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_delta_bicker",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2812,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "zeta_shadow_delta_bicker",
     "characterId": "zeta_shadow",
@@ -19,16 +19,19 @@
     "lighting": "走廊石柱间的明暗交界光",
     "camera": "medium_shot",
     "mood": "feline disdain, daily rivalry",
-    "promptProse": "Arms crossed, eyes half-lidded, Zeta delivers her third \"stupid dog\" of the day. Delta, off-frame, is surely barking back.",
+    "promptProse": "Arms crossed, eyes half-lidded, Zeta delivers her third \"stupid dog\" of the day. Delta, off-frame, is surely barking back. Shafts of stone corridor light and deep pillar shadows alternate across the floor, highlighting her crossed arms and deadpan, half-lidded glare.",
     "promptTokens": [
       "corridor",
       "pillar",
       "arms crossed",
       "exasperated",
-      "cat ears"
+      "cat ears",
+      "dim lighting",
+      "shadow",
+      "shadows"
     ],
     "negativeTokens": [],
-    "animaCaption": "Cat and dog, oil and water — the Garden's oldest daily show.",
+    "animaCaption": "Cat and dog, oil and water — the Garden's oldest daily show. Shafts of stone corridor light and deep pillar shadows alternate across the floor, highlighting her crossed arms and deadpan, half-lidded glare.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_touden_intimate_inn_bed_morning_sun",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2046,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfitId": "inn_soft_nightgown",
@@ -35,7 +35,9 @@
       "drowsy",
       "sleepy",
       "sweet",
-      "close-up"
+      "close-up",
+      "sunlight",
+      "soft lighting"
     ],
     "negativeTokens": [],
     "animaCaption": "Falin waking up softly in the morning sun at the adventurer inn.",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kama_fate_lingerie_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 3199,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.944Z",
+  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
   "data": {
     "id": "kama_fate_lingerie_whisper",
     "characterId": "kama_fate",
@@ -43,11 +43,14 @@
       "chin on hand",
       "ruby eyes",
       "seductive smirk",
-      "abyss"
+      "abyss",
+      "glow",
+      "darkness",
+      "purple lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm. Twirling a golden arrow between her fingers with a cynical, intoxicating smirk, she beckons the Master into sweet, ruinous damnation.",
-    "animaCaption": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm.",
+    "promptProse": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm. Twirling a golden arrow between her fingers with a cynical, intoxicating smirk, she beckons the Master into sweet, ruinous damnation. Pulsing dark-violet and crimson magic auras radiating from the abyssal void behind her lotus seat illuminate her sheer gossamer fabrics with ominous allure.",
+    "animaCaption": "Kama hovering weightlessly over an abyssal dark-red lotus throne in the depths of the Ooku. Draped in translucent, floating veils of corrupted violet gossamer chiffon that drift with dark mana, she props her chin on one palm. Pulsing dark-violet and crimson magic auras radiating from the abyssal void behind her lotus seat illuminate her sheer gossamer fabrics with ominous allure.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

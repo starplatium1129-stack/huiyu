@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "horn_arknights_window_glance",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3003,
   "createdAt": "2026-11-04T04:41:33.226964100+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "horn_arknights_window_glance",
     "characterId": "horn_arknights",
@@ -39,7 +39,9 @@
       "green courtyard view",
       "golden hair highlights",
       "polished wooden floorboards",
-      "medium close-up"
+      "medium close-up",
+      "sunlight",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

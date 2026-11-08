@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_azur_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3447,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.317Z",
+  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
   "data": {
     "id": "atago_azur_lingerie_whisper",
     "characterId": "atago_azur",
@@ -43,7 +43,8 @@
       "patting lap",
       "kneeling on tatami",
       "voluptuous",
-      "seductive smile"
+      "seductive smile",
+      "warm lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Atago creating an irresistible haven of comfort late at night in a traditional Japanese tatami chamber. She wears an intoxicating crimson sheer silk kimono robe adorned with painted sakura blooms, loosely draped to reveal her radiant neckline. Patting her lap with an affectionate, indulgent smile while her black dog ears twitch happily, she beckons the Commander to rest his weary head.",
