@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3398,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "sumizome_nozomi_lingerie_whisper",
     "characterId": "sumizome_nozomi",
@@ -14,7 +14,7 @@
     "location": "小镇后山墨染神社鸟居下，俯瞰山脚下万家灯火与星河长明",
     "timeOfDay": "初夏蝉鸣刚歇的清凉午夜",
     "lighting": "红色鸟居旁常夜石灯笼的暖红火光，将少女白皙的双腿与侧脸笼罩在古朴温存的光影中",
-    "camera": "低角度仰拍，长长石阶作为纵深线条，将少女纤细小巧的身影勾勒在星空画布前",
+    "camera": "low angle, 低角度仰拍，长长石阶作为纵深线条，将少女纤细小巧的身影勾勒在星空画布前",
     "mood": "青梅竹马纯真温暖的陪伴感，夏夜微风般的清爽自然与怦然心动",
     "adult": true,
     "sampleRating": "R15",
@@ -27,15 +27,23 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "shrine",
+      "torii",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "candlelight",
+      "warm_lighting",
+      "sitting",
+      "smile",
+      "low_angle"
     ],
     "promptTokens": [
-      "sitting",
+      "low angle",
+      "shrine",
+      "torii",
       "night",
+      "candlelight",
+      "warm lighting",
+      "sitting",
       "smile",
       "starry sky",
       "drawstring gathered waist",
@@ -43,12 +51,11 @@
       "relaxed breathable muslin",
       "indoors",
       "starlight",
-      "lantern",
-      "warm lighting"
+      "lantern"
     ],
     "negativeTokens": [],
     "promptProse": "Sumizome Nozomi sits bare-footed on highest stone step under vermilion torii gate, wearing a pale cream cotton romper sleepsuit. Hands braced behind on stone, light-brown bob hair fluttering in night wind, gentle hazel eyes smiling warmly amidst panoramic town lights below under starry sky.",
-    "animaCaption": "Sumizome Nozomi sits bare-footed on highest stone step under vermilion torii gate, wearing a pale cream cotton romper sleepsuit. Hands braced behind on stone, light-brown bob hair fluttering in night wind, gentle hazel eyes smiling warmly amidst panoramic town lights below under starry sky.",
+    "animaCaption": "Sumizome Nozomi sits bare-footed on highest stone step under vermilion torii gate, wearing a pale cream cotton romper sleepsuit.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

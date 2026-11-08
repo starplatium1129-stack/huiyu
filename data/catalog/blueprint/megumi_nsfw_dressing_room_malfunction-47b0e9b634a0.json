@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_dressing_room_malfunction",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1449,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "megumi_nsfw_dressing_room_malfunction",
     "title": "加藤惠 · 服装店试衣间的白裙拉链卡壳事故 ·「伦也君……能进来帮我拉一下吗」",
@@ -18,15 +18,20 @@
     "camera": "wide shot, first-person view, from behind",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "indoors",
+      "bedroom",
+      "night",
+      "warm_lighting",
+      "wide_shot"
     ],
     "promptProse": "Adult Megumi rests her shoulder against the fitting-room mirror and reaches both hands behind for the jammed zipper, looking back toward the viewer through the curtain gap.",
     "nsfwProse": "",
     "promptTokens": [
+      "wide shot",
+      "indoors",
+      "bedroom",
+      "night",
+      "warm lighting",
       "white dress",
       "stuck zipper",
       "cleavage",

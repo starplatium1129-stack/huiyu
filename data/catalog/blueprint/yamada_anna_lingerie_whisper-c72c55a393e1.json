@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_anna_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3320,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yamada_anna_lingerie_whisper",
     "characterId": "yamada_anna",
@@ -14,7 +14,7 @@
     "location": "山田家宽敞整洁的现代卧室，床头柜塞满了各式各样偷偷藏起来的零食包装",
     "timeOfDay": "深夜突击补刀零食的幸福时刻",
     "lighting": "床头暖黄色球形小灯散发柔光，照亮了少女微红的脸颊与乌黑柔顺的长发",
-    "camera": "微俯平视全景，长身美腿与蜷缩吃零食的小动物神态形成极致的反差魅力",
+    "camera": "medium shot, high angle, 卧室零食秘藏处的俯拍中景，长身微蜷与偷吃零食的贪嘴可爱",
     "mood": "高挑美少女模特私底下的吃货反差萌，又纯又欲的青春心动与依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_bed",
+      "snack_wrappers",
+      "gummy_candy",
+      "chocolate",
+      "bedroom",
+      "cheeks_puffed",
+      "blush",
+      "eating",
+      "dim_lighting",
+      "medium_shot",
+      "high_angle"
     ],
     "promptTokens": [
-      "bed",
-      "sitting",
-      "black hair",
-      "blush",
-      "relaxed draped silhouette",
-      "thin straps",
-      "soft ruffled hem",
-      "indoors",
-      "lamp",
-      "warm lighting",
-      "soft lighting"
+      "medium shot",
+      "high angle",
+      "sitting with long legs tucked on bed",
+      "stash of hidden snack bags",
+      "holding chocolate bar",
+      "puffed chipmunk cheeks",
+      "flustered guilty blush",
+      "bedroom lamp light",
+      "midnight snacking"
     ],
     "negativeTokens": [],
-    "promptProse": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom. A gentle bedside lamp casts warm golden illumination across the bedspread, lighting up her innocent, snack-filled cheeks with sweet domestic tranquility.",
-    "animaCaption": "Anna Yamada sits on bed edge clutching large bag of chocolate snacks, wearing a pale mint green pinstriped oversized cotton slip dress. Tall junior high model, adorable biscuit in mouth, tall slender legs amidst long glossy black hair, blushing cheeks looking up with big doe-like eyes, cozy modern bedroom. A gentle bedside lamp casts warm golden illumination across the bedspread, lighting up her innocent, snack-filled cheeks with sweet domestic tranquility.",
+    "promptProse": "Anna curls her long legs onto the bed surrounded by her secret midnight candy hoard, cheeks puffed with chocolate as she freezes like a guilty squirrel.",
+    "animaCaption": "Curled on her bed surrounded by secret snack bags, cheeks stuffed with chocolate as she blushes with guilty sweetness.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

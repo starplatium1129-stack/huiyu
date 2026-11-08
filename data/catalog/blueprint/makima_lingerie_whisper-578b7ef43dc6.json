@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3176,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "makima_lingerie_whisper",
     "characterId": "makima",
@@ -14,7 +14,7 @@
     "location": "极简现代顶层公寓，巨大的玻璃幕墙外暴雨倾盆撞击玻璃",
     "timeOfDay": "暴雨倾城之夜",
     "lighting": "阴郁的冷灰雨天漫射光，唯有头顶暗藏的暖白筒灯柔和打在发丝与双肩上",
-    "camera": "正视低机位仰拍，构图端严绝对居中，凸显掌控全局的绝对上位者气场",
+    "camera": "low angle, cowboy shot, 极富压迫感的微仰中景，暴雨倾盆的玻璃幕墙与居高临下的掌控感",
     "mood": "压倒性的掌控欲与令人窒息的知性魅力，冷静而致命",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "standing",
+      "window",
+      "rain_on_glass",
+      "rainstorm",
+      "wet_window",
+      "penthouse",
+      "city_lights",
+      "storm",
+      "controlling_smile",
+      "low_angle",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "chaise lounge",
-      "sitting",
-      "braid",
-      "smile",
-      "underwire contour cups",
-      "black velvet choker necklace",
-      "indoors",
-      "city lights",
-      "dim lighting",
-      "ambient lighting"
+      "cowboy shot",
+      "low angle",
+      "standing near floor-to-ceiling glass wall",
+      "heavy rain hitting glass",
+      "droplets streaming down window",
+      "stormy city skyline bokeh",
+      "minimalist dark penthouse",
+      "composed commanding smile",
+      "chilling calm"
     ],
     "negativeTokens": [],
-    "promptProse": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura. A mesmerizing sweep of distant Tokyo high-rise city lights through the wide panoramic window casts a cool, hypnotic ambient silhouette over her poised posture.",
-    "animaCaption": "Makima sits centrally on dark leather couch, wearing a pure black sheer floral lace corset babydoll. Legs crossed gracefully, hands clasped over knees, long reddish-braided hair amidst golden ringed eyes, gentle unsettling smile, rain lashing against huge glass window behind, dominant commanding aura. A mesmerizing sweep of distant Tokyo high-rise city lights through the wide panoramic window casts a cool, hypnotic ambient silhouette over her poised posture.",
+    "promptProse": "Makima stands composed before a massive glass curtain wall as torrential rain lashes against the high-rise penthouse, regarding the viewer with cold, hypnotic command.",
+    "animaCaption": "Standing composed before rain-streaked glass in a dark penthouse as storm clouds and city lights loom below.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

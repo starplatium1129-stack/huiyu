@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaka_mikoto_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3518,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "misaka_mikoto_lingerie_whisper",
     "characterId": "misaka_mikoto",
@@ -14,7 +14,7 @@
     "location": "常盘台宿舍高层露台，学园都市万家灯火与远方巨大风力发电风车相伴",
     "timeOfDay": "初夏夜风微凉时",
     "lighting": "学园都市璀璨的蓝白霓虹远景，伴随指间电火花跳跃出的瞬间冷蓝辉光",
-    "camera": "侧视中景，聚焦指尖跃起的蓝色电火花与通红可爱的耳垂",
+    "camera": "medium shot, eye level, 平视中景，夏日夜风吹拂发丝，学园都市万家灯火与微电火花交织",
     "mood": "王牌超能力者的羞涩少女心事，微电跃动的傲娇恋爱感",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,30 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "leaning_on_railing",
+      "rooftop",
+      "wind_turbine",
+      "city_lights",
+      "night_sky",
+      "sparks",
+      "electric_spark",
+      "summer_night",
+      "tsundere_blush",
+      "medium_shot"
     ],
     "promptTokens": [
-      "balcony",
-      "brown hair",
-      "night",
-      "blush",
-      "white taped edges",
-      "sporty tsundere homewear",
-      "street light",
-      "window light",
-      "dim lighting"
+      "medium shot",
+      "leaning against rooftop railing",
+      "Tokiwadai dorm roof",
+      "spinning wind turbines",
+      "shimmering city skyline bokeh",
+      "tiny blue electric sparks on fingertips",
+      "summer night breeze",
+      "embarrassed tsundere blush"
     ],
     "negativeTokens": [],
-    "promptProse": "Misaka Mikoto leans against high dormitory balcony railing, wearing a coral pink soft cotton camisole set. Holding arcade coin, tiny harmless blue electric sparks flickering between fingertips, short brown hair blowing in night breeze amidst deeply blushing cheeks, Academy City futuristic windmills and skyline behind. Cool amber street light from Academy City avenues peeks through the half-drawn drapes, casting soft shadows across her cotton camisole and flushed cheeks.",
-    "animaCaption": "Misaka Mikoto leans against high dormitory balcony railing, wearing a coral pink soft cotton camisole set. Holding arcade coin, tiny harmless blue electric sparks flickering between fingertips, short brown hair blowing in night breeze amidst deeply blushing cheeks, Academy City futuristic windmills and skyline behind. Cool amber street light from Academy City avenues peeks through the half-drawn drapes, casting soft shadows across her cotton camisole and flushed cheeks.",
+    "promptProse": "Mikoto leans against the railing on the dorm rooftop under the summer night breeze, tiny blue electric sparks dancing playfully on her knuckles as she tries to hide her blushing face.",
+    "animaCaption": "Leaning against a rooftop railing under summer night winds with tiny sparks crackling on her fingertips, blushing shyly.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

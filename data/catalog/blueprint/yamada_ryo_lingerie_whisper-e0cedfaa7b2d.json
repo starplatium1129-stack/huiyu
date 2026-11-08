@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3382,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yamada_ryo_lingerie_whisper",
     "characterId": "yamada_ryo",
@@ -14,7 +14,7 @@
     "location": "下北泽Livehouse后台乐器存放间，四周靠放着音箱、效果器与纠缠的音频线",
     "timeOfDay": "深夜贝斯独奏练习结束后",
     "lighting": "排练室昏暗的黄光与效果器面板上闪烁的红绿指示灯交相辉映，氛围慵懒深邃",
-    "camera": "低角度平视全景，翘脚在琴盒上的大爷姿态与修长四肢构成生动的摇滚少女日常",
+    "camera": "medium shot, eye level, 侧坐平视中景，聚焦贝斯琴弦与毫无防备的散漫吃相",
     "mood": "古怪怪人贝斯手的独特三无帅气，随性不羁又带着令人捉摸不透的奇妙魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_amp",
+      "bass_guitar",
+      "holding_pick",
+      "audio_cables",
+      "eating_snack",
+      "backstage",
+      "livehouse",
+      "blank_expression",
+      "dim_lighting",
+      "medium_shot"
     ],
     "promptTokens": [
-      "chaise lounge",
-      "acoustic guitar",
-      "bare feet",
-      "blue hair",
-      "amber eyes",
-      "relaxed boy-shorts",
-      "raw hem details",
-      "indoors",
-      "dim lighting",
-      "lamp",
-      "warm lighting"
+      "medium shot",
+      "sitting on amplifier",
+      "holding bass guitar",
+      "audio cables on floor",
+      "eating snack",
+      "backstage dressing room",
+      "livehouse",
+      "deadpan expression",
+      "stage lighting bleed",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Yamada Ryo lounges carelessly on beaten leather sofa with bare feet propped on black bass guitar hardcase, wearing a dark indigo-teal minimalist athletic tank bralette. Bassist, nibbling grassy herbal snack, short dark-blue hair with hairpin amidst deadpan cool amber eyes, rehearsal studio with amplifiers. Dim warm lamplight pools over the battered leather sofa, highlighting her careless slouch and casting subtle guitar-shaped shadows on the floor.",
-    "animaCaption": "Yamada Ryo lounges carelessly on beaten leather sofa with bare feet propped on black bass guitar hardcase, wearing a dark indigo-teal minimalist athletic tank bralette. Bassist, nibbling grassy herbal snack, short dark-blue hair with hairpin amidst deadpan cool amber eyes, rehearsal studio with amplifiers. Dim warm lamplight pools over the battered leather sofa, highlighting her careless slouch and casting subtle guitar-shaped shadows on the floor.",
+    "promptProse": "Ryo perches nonchalantly atop a bass amplifier in the dimly lit Livehouse equipment room, nibbling a snack with an unfazed deadpan expression beside coiled audio cables.",
+    "animaCaption": "Sitting atop an amplifier in the livehouse backstage room, resting a bass guitar beside her with a cool deadpan gaze.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

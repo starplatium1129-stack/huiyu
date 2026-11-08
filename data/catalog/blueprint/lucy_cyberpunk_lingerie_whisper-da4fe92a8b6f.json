@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lucy_cyberpunk_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3196,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:15:54.736382+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "lucy_cyberpunk_lingerie_whisper",
     "characterId": "lucy_cyberpunk",
@@ -14,7 +14,7 @@
     "location": "夜之城摩天豪宅高层飘窗，脚下是无边无际的赛博霓虹灯海与悬浮穿梭机",
     "timeOfDay": "凌晨四点的电子霓虹深处",
     "lighting": "窗外品红与青蓝色的巨幅全息霓虹广告，将冰冷反光切进室内黑暗中",
-    "camera": "后侧方四分之三角度拍摄，飘窗玻璃清晰倒映出精致忧伤的侧脸",
+    "camera": "medium shot, low angle, 极富赛博科幻感的高层飘窗视角，夜城霓虹天际线与冷艳月色",
     "mood": "赛博朋克的末世孤寂与属于两人的纯净浪漫",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "window_sill",
+      "window",
+      "neon_lights",
+      "cyberpunk_city",
+      "flying_vehicles",
+      "night_city",
+      "moon_reflection",
+      "cool_lighting",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "sitting",
-      "hugging knees",
-      "window ledge",
-      "holding cigarette",
-      "night city",
-      "glowing neon",
-      "geometric side cutouts",
-      "high-cut leg line",
-      "iridescent luminescent fabric",
-      "cyber chic strappy bodysuit",
-      "futuristic loungewear",
-      "indoors"
+      "medium shot",
+      "low angle",
+      "sitting on deep window sill",
+      "panoramic bay window",
+      "sprawling Night City neon skyline below",
+      "hovering AV transit",
+      "cool holographic blue and magenta lighting",
+      "wistful distant gaze"
     ],
     "negativeTokens": [],
-    "promptProse": "Lucy sits hugging knees on high-rise panoramic window ledge, wearing a holographic aurora sheer monokini. Colorful iridescent bob hair, holding slim cigarette between fingers, looking out at giant digital moon over Night City skyscrapers amidst glowing neon reflections, melancholic romantic aura.",
-    "animaCaption": "Lucy sits on a high-rise window ledge, hugging her knees and holding a cigarette as neon lights glow across Night City.",
+    "promptProse": "Lucy gazes out from the high-rise penthouse ledge over the endless neon ocean of Night City at 4 AM, the cold blue glow of holo-ads reflecting in her quiet, longing eyes.",
+    "animaCaption": "Perched on a high-rise window sill overlooking the sprawling neon lights of Night City, lost in quiet contemplation.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

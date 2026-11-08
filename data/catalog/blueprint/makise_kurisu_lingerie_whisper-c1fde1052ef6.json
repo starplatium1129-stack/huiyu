@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makise_kurisu_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3479,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "makise_kurisu_lingerie_whisper",
     "characterId": "makise_kurisu",
@@ -14,7 +14,7 @@
     "location": "秋叶原未来道具研究所里间，古旧显像管显示器泛着温暖琥珀色幽光",
     "timeOfDay": "深夜实验告一段落时",
     "lighting": "显像管显示器的绿色文字与单侧工作台灯在昏暗房间里勾勒出暖黄与微绿光影",
-    "camera": "四分之三侧面中近景，捕捉抓紧毯子的手指泛白细节与红透的双颊",
+    "camera": "medium shot, eye level, 侧坐平视中景，古旧CRT显像管琥珀幽光与傲娇脸红",
     "mood": "经典傲娇天才少女的防线崩溃，极度羞涩可爱",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "office_chair",
+      "lab_desk",
+      "crt_monitor",
+      "oscilloscope",
+      "dr_pepper",
+      "lab_coat",
+      "tsundere_blush",
+      "amber_lighting",
+      "medium_shot"
     ],
     "promptTokens": [
-      "chaise lounge",
-      "blush",
-      "purple eyes",
-      "glowing",
-      "black eyelash lace edges",
-      "geometric soft cup bralette",
-      "tiny black ribbon bows",
-      "stylish tsundere lingerie",
-      "indoors"
+      "medium shot",
+      "sitting in swivel chair",
+      "CRT computer monitor glowing",
+      "oscilloscope wires on workbench",
+      "can of Dr Pepper",
+      "Future Gadget Lab inner room",
+      "amber screen light",
+      "indignant tsundere blush",
+      "crossing arms"
     ],
     "negativeTokens": [],
-    "promptProse": "Makise Kurisu curls up on vintage laboratory brown couch, wearing a crimson satin trimmed sheer camisole set. Pulling thin fleece blanket up to chest with both hands, blushing furiously, red-violet eyes looking away indignantly amidst chestnut hair disheveled, CRT monitors glowing warmly in dark lab room.",
-    "animaCaption": "Makise Kurisu curls up on vintage laboratory brown couch, wearing a crimson satin trimmed sheer camisole set. Pulling thin fleece blanket up to chest with both hands, blushing furiously, red-violet eyes looking away indignantly amidst chestnut hair disheveled, CRT monitors glowing warmly in dark lab room.",
+    "promptProse": "Kurisu swivels her desk chair inside the cluttered Future Gadget Lab, crossing her arms in blushing tsundere protest under the warm amber glow of retro CRT monitors.",
+    "animaCaption": "Sitting in a lab desk chair beside a glowing CRT monitor and a can of soda, blushing with tsundere indignation.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

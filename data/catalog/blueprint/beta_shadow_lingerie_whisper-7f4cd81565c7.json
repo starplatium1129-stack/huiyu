@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3505,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.374Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "beta_shadow_lingerie_whisper",
     "characterId": "beta_shadow",
@@ -14,7 +14,7 @@
     "location": "暗影庭园研究室起居套间的豪华卧榻",
     "timeOfDay": "深夜",
     "lighting": "床头欧式古董玻璃罩油灯发出柔和的蜜黄暖光，映照在丰腴傲人的身材与银灰真丝睡衣上",
-    "camera": "充满趣味与魅力的斜向微俯角，将‘著名小说家夏目’的狂热迷妹反差萌生动刻画",
+    "camera": "medium shot, high angle, 充满趣味与魅力的斜向微俯角，将‘著名小说家夏目’的狂热迷妹反差萌生动刻画",
     "mood": "狂热崇拜、花痴心动、丰腴魅惑下的少女情怀",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "feather_quill",
-      "gold_notebook",
-      "silver_grey_satin_slip",
-      "lying_on_bed",
-      "writing_furiously",
-      "voluptuous_chest",
-      "blushing_fangirl",
-      "cozy_velvet"
+      "sitting",
+      "writing_desk",
+      "manuscript",
+      "fountain_pen",
+      "plush_cushion",
+      "shadow_notes",
+      "adoring_smile",
+      "blush",
+      "warm_lighting",
+      "medium_shot",
+      "high_angle"
     ],
     "promptTokens": [
-      "silver satin slip",
-      "lying on bed",
-      "writing with quill",
-      "voluptuous bust",
-      "blushing fan",
-      "silver hair",
-      "lantern"
+      "medium shot",
+      "high angle",
+      "sitting at ornate writing desk",
+      "fountain pen in hand",
+      "secret handwritten manuscript of Shadow-sama",
+      "plush armchair",
+      "bookshelves",
+      "ecstatic starry-eyed blush",
+      "warm table lamp"
     ],
     "negativeTokens": [],
-    "promptProse": "Beta furiously scribbling down the heroic exploits of Lord Shadow in her private chamber at midnight. Clothed in a lavish silver-grey silk slip dress with a plunging ruffled neckline that accentuates her voluptuous figure, she lies prone on an enormous velvet mattress. Dipping a peacock quill into ink with flushed, infatuated cheeks, she looks up with starstruck, flustered adoration.",
-    "animaCaption": "Beta furiously scribbling down the heroic exploits of Lord Shadow in her private chamber at midnight. Clothed in a lavish silver-grey silk slip dress with a plunging ruffled neckline that accentuates her voluptuous figure, she lies prone on an enormous velvet mattress.",
+    "promptProse": "Beta writes furiously in her ornate private study with a gold-nibbed pen, giggling in starry-eyed ecstasy over her secret fanatical chronicles of Lord Shadow.",
+    "animaCaption": "Sitting at an ornate desk writing in a secret manuscript, smiling with an ecstatic, starry-eyed fanatical blush.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

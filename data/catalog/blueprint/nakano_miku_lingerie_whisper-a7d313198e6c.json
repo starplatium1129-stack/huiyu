@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3384,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "nakano_miku_lingerie_whisper",
     "characterId": "nakano_miku",
@@ -14,7 +14,7 @@
     "location": "榻榻米地板上铺着软垫，四周散落着武田信玄与战国武将的历史图鉴",
     "timeOfDay": "静夜读史的心动时分",
     "lighting": "桌面小阅读灯在书页与发丝上投下一圈温暖的橘黄光晕，其余环境柔和沉静",
-    "camera": "微俯平视中近景，大抱枕挡住半张脸，唯独露出一双深情款款的秋水明眸",
+    "camera": "medium close-up, high angle, 微俯平视中近景，大抱枕挡住半张脸，唯独露出一双深情款款的秋水明眸",
     "mood": "内向三妹的无声告白，温柔、克制而满怀深情",
     "adult": true,
     "sampleRating": "R15",
@@ -27,15 +27,23 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "tatami",
+      "japanese_room",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "hugging_pillow",
+      "medium_close_up",
+      "high_angle"
     ],
     "promptTokens": [
+      "medium close-up",
+      "high angle",
+      "tatami",
+      "japanese room",
+      "night",
+      "warm lighting",
+      "hugging pillow",
       "sitting",
-      "blue eyes",
       "books",
       "desk lamp",
       "open shoulder cut",
@@ -46,7 +54,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Nakano Miku sits on floor pillow hugging large bolster pillow over lower face, wearing a mist blue soft cable-knit halter camisole slip. Iconic large blue wireless headphones around slender neck, messy auburn hair covering one eye, deep shy blue eyes amidst samurai history books on floor, warm reading lamp.",
-    "animaCaption": "Nakano Miku sits on floor pillow hugging large bolster pillow over lower face, wearing a mist blue soft cable-knit halter camisole slip. Iconic large blue wireless headphones around slender neck, messy auburn hair covering one eye, deep shy blue eyes amidst samurai history books on floor, warm reading lamp.",
+    "animaCaption": "Nakano Miku sits on floor pillow hugging large bolster pillow over lower face, wearing a mist blue soft cable-knit halter camisole slip.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gotoh_hitori_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3522,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "gotoh_hitori_lingerie_whisper",
     "characterId": "gotoh_hitori",
@@ -14,7 +14,7 @@
     "location": "后藤家二楼壁橱深处改装的“波奇秘密基地”",
     "timeOfDay": "深夜",
     "lighting": "壁橱拉门缝隙漏进的一线微弱房间吸顶灯光，与手机屏幕的荧光将纸箱照得宛如地下掩体",
-    "camera": "充满标志性自闭幽默的狭窄逼仄构图，完美还原‘波奇酱’的社恐崩溃现场",
+    "camera": "close-up, high angle, 充满标志性自闭幽默的狭窄逼仄构图，完美还原‘波奇酱’的社恐崩溃现场",
     "mood": "社交恐惧、极度自闭、阴暗爬行但又可爱到极致的喜剧反差",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
+      "curled_up",
+      "sitting",
+      "on_floor",
+      "closet",
+      "blanket",
       "cardboard_box",
-      "closet_hiding",
-      "faded_pink_tracksuit",
-      "zipper_to_chin",
-      "hugging_knees_shivering",
-      "phone_screen_glow",
-      "social_anxiety",
-      "bocchi_panic"
+      "guitar",
+      "panicked_blush",
+      "sweatdrop",
+      "dim_lighting",
+      "close_up",
+      "high_angle"
     ],
     "promptTokens": [
-      "pink tracksuit zipped up",
-      "inside cardboard box in closet",
-      "curled up shivering",
-      "pink hair",
-      "funny anxiety eyes",
-      "lamp",
-      "glow"
+      "close-up",
+      "high angle",
+      "curled up in closet corner",
+      "wrapped in blanket",
+      "guitar case nearby",
+      "cardboard box",
+      "panicked blush",
+      "flustered",
+      "trembling",
+      "dim room",
+      "soft lamp"
     ],
     "negativeTokens": [],
-    "promptProse": "Hitori Gotoh (Bocchi) retreating to absolute social isolation inside the depths of her bedroom closet. Buried within a weathered citrus cardboard box wearing her faded pink zip-up tracksuit zipped tight to her mouth, she curls into a quivering ball. Clutching her glowing phone as panic spirals in her teary turquoise eyes, she prays the world forgets her existence.",
-    "animaCaption": "Hitori Gotoh (Bocchi) retreating to absolute social isolation inside the depths of her bedroom closet. Buried within a weathered citrus cardboard box wearing her faded pink zip-up tracksuit zipped tight to her mouth, she curls into a quivering ball.",
+    "promptProse": "Curled defensively inside her cozy closet corner wrapped in a blanket, Bocchi clutches her guitar case in comic social panic, trembling with a flustered blush as the door cracks open.",
+    "animaCaption": "Curled inside a closet corner wrapped in a blanket, looking up with a trembling, comedic social panic blush.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

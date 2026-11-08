@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3396,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "togakushi_touko_lingerie_whisper",
     "characterId": "togakushi_touko",
@@ -14,7 +14,7 @@
     "location": "夜晚熄灯后的学生会室，厚重窗帘半掩，月光切过大会议桌的一角",
     "timeOfDay": "午夜秘密小酌时刻",
     "lighting": "窗隙漏入的微冷月光与单支香薰蜡烛的橙红暖意交融，烘托出暧昧高贵的私密感",
-    "camera": "低角度侧景特写，微摇红酒杯的优雅动作与深V露背形成的惊艳线条完美入镜",
+    "camera": "close-up, low angle, side view, 低角度侧景特写，微摇红酒杯的优雅动作与深V露背形成的惊艳线条完美入镜",
     "mood": "可靠成熟学生会长的秘密反差，优雅、沉稳而极具包容感的年上诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,41 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
+      "window",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "moonlight",
+      "candlelight",
+      "warm_lighting",
+      "sitting",
+      "smile",
+      "close_up",
+      "low_angle",
+      "side_view"
     ],
     "promptTokens": [
+      "close-up",
+      "low angle",
+      "side view",
+      "indoors",
+      "bedroom",
+      "window",
+      "night",
+      "moonlight",
+      "candlelight",
+      "warm lighting",
+      "sitting",
+      "smile",
       "chaise lounge",
       "reclining",
-      "moonlight",
       "curtains",
       "open back to lower spine",
-      "black eyelash lace trims",
-      "sleek mermaid drape",
-      "indoors"
+      "sleek mermaid drape"
     ],
     "negativeTokens": [],
     "promptProse": "Togakushi Touko reclines gracefully on leather student council sofa, wearing a wine red velvet plunging slip dress. Swirling red wine in crystal glass, long wavy brunette hair, mature sultry hazel eyes amidst moonlight cutting through heavy curtains in dark office, scented candle flickering.",
-    "animaCaption": "Togakushi Touko reclines gracefully on leather student council sofa, wearing a wine red velvet plunging slip dress. Swirling red wine in crystal glass, long wavy brunette hair, mature sultry hazel eyes amidst moonlight cutting through heavy curtains in dark office, scented candle flickering.",
+    "animaCaption": "Togakushi Touko reclines gracefully on leather student council sofa, wearing a wine red velvet plunging slip dress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

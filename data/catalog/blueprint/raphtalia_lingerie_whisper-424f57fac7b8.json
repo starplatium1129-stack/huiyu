@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3331,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "raphtalia_lingerie_whisper",
     "characterId": "raphtalia",
@@ -14,7 +14,7 @@
     "location": "边境小镇乡间旅馆阁楼，斜顶木天窗外满天繁星与银河流转",
     "timeOfDay": "冒险途中的宁静深夜",
     "lighting": "天窗倾泻而下的银亮星光，照亮了少女饱含倾慕的琥珀色双瞳与温润肌肤",
-    "camera": "微俯平拍中近景，毛茸茸耳朵压低与大尾巴轻晃的动作充满动物灵动感",
+    "camera": "medium close-up, high angle, 微俯平拍中近景，毛茸茸耳朵压低与大尾巴轻晃的动作充满动物灵动感",
     "mood": "忠诚亚人少女的无尽信赖与从幼小成长为成熟女性的动人情愫",
     "adult": true,
     "sampleRating": "R15",
@@ -27,16 +27,28 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "apartment",
+      "bedroom",
+      "window",
+      "bed",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "dim_lighting",
+      "kneeling",
+      "blush",
+      "medium_close_up",
+      "high_angle"
     ],
     "promptTokens": [
-      "kneeling",
-      "amber eyes",
+      "medium close-up",
+      "high angle",
+      "apartment",
+      "bedroom",
+      "window",
+      "bed",
       "night",
+      "dim lighting",
+      "kneeling",
+      "blush",
       "ivory cotton underlay",
       "soft leather lace-up ties",
       "rustic autumnal embroidery",
@@ -48,7 +60,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass. Cozy firelight from the hearth crackles softly in the rustic room, bathing her tan raccoon ears and simple cotton chemise in gentle amber warmth.",
-    "animaCaption": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip. Demi-human, fluffy raccoon ears flattened shyly, thick striped raccoon tail swishing behind amidst clutching duvet hem, warm amber eyes filled with devotion, starry night through glass. Cozy firelight from the hearth crackles softly in the rustic room, bathing her tan raccoon ears and simple cotton chemise in gentle amber warmth.",
+    "animaCaption": "Raphtalia kneels on rustic straw mattress under attic skylight, wearing a russet brown linen criss-cross apron slip.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

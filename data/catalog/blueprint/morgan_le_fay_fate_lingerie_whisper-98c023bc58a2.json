@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "morgan_le_fay_fate_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3276,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "morgan_le_fay_fate_lingerie_whisper",
     "characterId": "morgan_le_fay_fate",
@@ -14,7 +14,7 @@
     "location": "不列颠卡美洛王宫寝殿，高耸哥特花窗外飘散着终年不息的白垩冷雾",
     "timeOfDay": "冬夜寂灭更深时",
     "lighting": "银蓝色的魔法冷光在地面流淌，银烛台跳跃着微弱冷焰，勾勒出如冰霜雕刻的躯体轮廓",
-    "camera": "低角度仰拍全景，黑曜石床柱与漫天冷雾衬托出不容置疑的女王威严与修长身姿",
+    "camera": "cowboy shot, low angle, 极具王者威严的低机位中景，哥特王宫花窗与白垩寒雾同框",
     "mood": "至高女王的绝对支配欲与面对伴侣时的清冷深情",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "throne",
+      "gothic_palace",
+      "stained_glass",
+      "winter_mist",
+      "cold_fog",
+      "regal",
+      "commanding_gaze",
+      "cool_lighting",
+      "cowboy_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "bed",
-      "silver hair",
-      "ribbon",
-      "purple eyes",
-      "floating",
-      "thigh-high sheer leg slit",
-      "royal train",
-      "cold majestic queen lingerie",
-      "indoors",
-      "moonlight",
-      "chandelier",
-      "blue lighting"
+      "cowboy shot",
+      "low angle",
+      "sitting on dark gothic throne",
+      "monumental cathedral stained glass window",
+      "endless white winter fog outside",
+      "Camelot royal chambers",
+      "imperious sovereign gaze",
+      "icy blue backlight"
     ],
     "negativeTokens": [],
-    "promptProse": "Morgan le Fay leans against obsidian carved bedpost, wearing a glacial ice-blue layered gossamer peignoir. Tall slender frame, long silver hair with blue velvet ribbons, cold piercing violet eyes amidst authoritative regal gaze, gothic palace chamber with frosted arched windows, floating ice mist. Cool crystalline moonlight streams through high arched cathedral windows, mingling with pale blue chandelier crystals to illuminate her sovereign, solitary figure.",
-    "animaCaption": "Morgan le Fay leans against obsidian carved bedpost, wearing a glacial ice-blue layered gossamer peignoir. Tall slender frame, long silver hair with blue velvet ribbons, cold piercing violet eyes amidst authoritative regal gaze, gothic palace chamber with frosted arched windows, floating ice mist. Cool crystalline moonlight streams through high arched cathedral windows, mingling with pale blue chandelier crystals to illuminate her sovereign, solitary figure.",
+    "promptProse": "Morgan le Fay sits upright on her obsidian throne inside the high-vaulted Camelot royal quarters, her cool, sovereign gaze holding the viewer motionless amidst drifting winter fog.",
+    "animaCaption": "Seated upon an obsidian throne inside a vaulted winter palace, surveying her domain with cold sovereign grace.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

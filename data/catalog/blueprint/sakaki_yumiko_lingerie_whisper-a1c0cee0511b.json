@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakaki_yumiko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3374,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "sakaki_yumiko_lingerie_whisper",
     "characterId": "sakaki_yumiko",
@@ -14,7 +14,7 @@
     "location": "美滨学园豪华宿舍套房，红木书架与昂贵地毯，角落堆放着精装箱套小说",
     "timeOfDay": "午夜深更的对峙时刻",
     "lighting": "窗外冰冷月光与书桌台灯的暖黄色调切出强烈的冷暖反差，轮廓分明",
-    "camera": "低角度平视中景，展现优雅端坐的气质与指尖冰冷锋利的刀片反光",
+    "camera": "medium shot, eye level, 侧身平视中景，聚焦修长红木书架与冷傲神态",
     "mood": "带刺黑玫瑰的严苛防线，千金大小姐的高傲与极度缺乏安全感的内心",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "armchair",
+      "bookshelf",
+      "books",
+      "carpet",
+      "box_cutter",
+      "sharp_glare",
+      "tsundere",
+      "dim_lighting",
+      "medium_shot"
     ],
     "promptTokens": [
-      "sitting",
-      "black hair",
-      "blush",
-      "sharp structured cups",
-      "gold ring clasps",
-      "indoors",
-      "window light",
+      "medium shot",
+      "sitting in armchair",
+      "mahogany bookshelf",
+      "books",
+      "box cutter on table",
+      "sharp glare",
+      "tsundere",
       "dim lighting",
-      "cool lighting"
+      "warm lamp"
     ],
     "negativeTokens": [],
-    "promptProse": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite. Cool twilight window light filters through academy curtains, tracing sharp elegant contours along her dark plum camisole and aloof expression.",
-    "animaCaption": "Sakaki Yumiko sits in high-back leather executive chair, wearing a deep royal purple velvet camisole slip. Spinning metallic utility cutter in slender fingers, long lustrous black hair, sharp amethyst eyes amidst defiant aloof expression with blushing earlobes, elegant dorm library suite. Cool twilight window light filters through academy curtains, tracing sharp elegant contours along her dark plum camisole and aloof expression.",
+    "promptProse": "Yumiko sits back in a high-backed armchair inside her luxurious Mihama suite, surrounded by tall mahogany bookshelves and boxed novels, regarding the viewer with cold, defensive wariness.",
+    "animaCaption": "Sitting in a stately armchair beside mahogany bookshelves, watching the viewer with sharp, guarded composure.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

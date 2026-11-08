@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_rihavein_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3457,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "la_folia_rihavein_lingerie_whisper",
     "characterId": "la_folia_rihavein",
@@ -14,7 +14,7 @@
     "location": "皇家飞空艇豪华主卧舱，全景穹顶外繁星璀璨银河倒悬",
     "timeOfDay": "深夜巡航万里星空",
     "lighting": "穹顶落下的璀璨冷色星辉与舱内壁炉散发的金色暖光交相辉映",
-    "camera": "侧卧特写中景，星空穹顶与银狐毛皮衬托出尊贵身姿与毫无防备的亲近",
+    "camera": "close-up, 侧卧特写中景，星空穹顶与银狐毛皮衬托出尊贵身姿与毫无防备的亲近",
     "mood": "高贵王女从容不迫的挑逗与尊崇魅力，奢华而如梦如幻",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "reclining",
+      "smile",
+      "close_up"
     ],
     "promptTokens": [
-      "silver hair",
-      "water",
+      "close-up",
+      "indoors",
+      "bedroom",
+      "night",
+      "warm lighting",
+      "reclining",
       "smile",
+      "water",
       "starry sky",
       "slit sheer floating peignoir",
       "regal high-end lingerie",
-      "indoors",
       "starlight",
       "fireplace",
       "firelight"
     ],
     "negativeTokens": [],
     "promptProse": "La Folia Rihavein lounges gracefully on silver fur settee, wearing a silver sheer chiffon bandeau bra. Long pure silver hair cascading like waterfall, piercing azure eyes, mischievous royal smile amidst pulling thin sheer strap slightly, starlight streaming from panoramic glass dome ceiling above.",
-    "animaCaption": "La Folia Rihavein lounges gracefully on silver fur settee, wearing a silver sheer chiffon bandeau bra. Long pure silver hair cascading like waterfall, piercing azure eyes, mischievous royal smile amidst pulling thin sheer strap slightly, starlight streaming from panoramic glass dome ceiling above.",
+    "animaCaption": "La Folia Rihavein lounges gracefully on silver fur settee, wearing a silver sheer chiffon bandeau bra.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

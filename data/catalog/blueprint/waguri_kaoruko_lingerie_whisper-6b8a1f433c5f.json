@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "waguri_kaoruko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3322,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "waguri_kaoruko_lingerie_whisper",
     "characterId": "waguri_kaoruko",
@@ -14,7 +14,7 @@
     "location": "千鸟高校附近自家蛋糕店后厨，空气中弥漫着香草精与温热奶油的甜香",
     "timeOfDay": "傍晚打烊后的二人甜点试吃",
     "lighting": "烘焙烤箱内散发的橙金暖光与后厨柔和的白日光灯交融，室内满溢着蜜意与香气",
-    "camera": "正面特写微仰，递出马卡龙的手势与通红可爱的笑脸极具治愈初恋感",
+    "camera": "medium shot, eye level, 蛋糕店后厨平视中景，烘焙甜香与傍晚夕阳下的甜美告白",
     "mood": "甜到心坎里的高中初恋时光，如刚出炉的草莓甜点般温暖治愈、纯白美好",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "bakery_counter",
+      "pastries",
+      "whisk",
+      "mixing_bowl",
+      "kitchen",
+      "sunset",
+      "warm_lighting",
+      "sweet_smile",
+      "blush",
+      "medium_shot"
     ],
     "promptTokens": [
-      "sitting",
-      "blush",
-      "smile",
-      "tiny strawberry floral print",
-      "cotton eyelet lace trim",
-      "sweet empire waist",
-      "indoors",
-      "sunlight",
-      "glow",
-      "warm lighting"
+      "medium shot",
+      "sitting on tall kitchen stool",
+      "family bakery counter",
+      "freshly baked tarts and pastries",
+      "mixing bowl with vanilla cream",
+      "dusk sunlight through kitchen window",
+      "warm golden glow",
+      "sweet affectionate blush"
     ],
     "negativeTokens": [],
-    "promptProse": "Kaoruko Waguri sits on edge of wooden bakery table holding warm pink strawberry macaron with both hands, wearing a cream white double-cotton slip dress. Blushing cheeks, bright sparkling eyes with sunny radiant smile, cozy sweet bakery kitchen background with warm oven glow.",
-    "animaCaption": "Kaoruko Waguri sits on edge of wooden bakery table holding warm pink strawberry macaron with both hands, wearing a cream white double-cotton slip dress. Blushing cheeks, bright sparkling eyes with sunny radiant smile, cozy sweet bakery kitchen background with warm oven glow.",
+    "promptProse": "Kaoruko perches on a counter stool in her family cake shop's warm kitchen after hours, sweet vanilla scent in the air as she offers a pastry with a glowing, tender blush.",
+    "animaCaption": "Perched on a stool in a warm bakery kitchen beside fresh pastries, blushing sweetly in the sunset glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

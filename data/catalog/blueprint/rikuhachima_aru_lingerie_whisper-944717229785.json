@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3435,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "rikuhachima_aru_lingerie_whisper",
     "characterId": "rikuhachima_aru",
@@ -14,7 +14,7 @@
     "location": "便利屋68事务所后室，红色天鹅绒沙发旁堆着未付的拉面账单与通缉令",
     "timeOfDay": "深夜整理账目后的突发会面",
     "lighting": "桌面复古绿罩台灯在酒红沙发上投下浓郁复古的光晕，衬托出阿露丰满艳丽的身段",
-    "camera": "稍低角度特写平视，捕捉从高傲冷酷恶党瞬间切换成满脸通红眼眶泛泪的生动表情",
+    "camera": "medium shot, eye level, 侧坐平视中景，将强撑的恶徒气场与穿帮后的慌乱生动定格",
     "mood": "装腔作势的大佬气场与瞬间破功的少女娇羞，极度搞笑可爱",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "red_sofa",
+      "velvet_couch",
+      "wanted_posters",
+      "unpaid_bills",
+      "office",
+      "cigar_smoke",
+      "panicked_blush",
+      "awkward_smirk",
+      "dim_lighting",
+      "medium_shot"
     ],
     "promptTokens": [
-      "chaise lounge",
-      "reclining",
-      "blush",
-      "red hair",
-      "red eyes",
-      "black velvet trims",
-      "playful villainess aesthetic",
-      "flustered outlaw boudoir",
-      "indoors",
-      "desk lamp",
-      "warm lighting"
+      "medium shot",
+      "sitting stiffly on red velvet sofa",
+      "Problem Solver office",
+      "scattered unpaid bills on table",
+      "outlaw poster",
+      "panicked blush",
+      "awkward confident smirk",
+      "dim desk lamp",
+      "night"
     ],
     "negativeTokens": [],
-    "promptProse": "Rikuhachima Aru reclines on crimson velvet office sofa trying to look hardboiled mafia boss, wearing a magenta and black lace ruffle-trimmed bustier set. Then blushing frantically covering chest, long wavy magenta-red hair, horned hairpins amidst comical flustered red eyes, retro office with scattered bills. A single brass desk lamp illuminates the chaotic paperwork of Problem Solver 68, casting dramatic warm shadows as she maintains her hard-boiled facade.",
-    "animaCaption": "Rikuhachima Aru reclines on crimson velvet office sofa trying to look hardboiled mafia boss, wearing a magenta and black lace ruffle-trimmed bustier set. Then blushing frantically covering chest, long wavy magenta-red hair, horned hairpins amidst comical flustered red eyes, retro office with scattered bills. A single brass desk lamp illuminates the chaotic paperwork of Problem Solver 68, casting dramatic warm shadows as she maintains her hard-boiled facade.",
+    "promptProse": "Aru tries desperately to project the poise of a cold-blooded hard-boiled outlaw on the red velvet sofa of her office, sweating bullets over stacks of unpaid ramen receipts.",
+    "animaCaption": "Sitting stiffly on a red velvet office sofa, attempting a suave hard-boiled smirk while sweating bullets.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

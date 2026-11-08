@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3440,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "sunaookami_shiroko_lingerie_whisper",
     "characterId": "sunaookami_shiroko",
@@ -14,7 +14,7 @@
     "location": "阿拜多斯对策委员会活动室，靠墙停放着保养得一尘不染的公路自行车",
     "timeOfDay": "清晨五点沙漠晨风初起",
     "lighting": "阿拜多斯初升的沙漠晨曦穿透玻璃，将纯白银发与白皙肌肤照耀得如同初雪发亮",
-    "camera": "侧视中景，系袜带的弯腰姿态完美展现优美的脊背线条与紧致小腹",
+    "camera": "wide shot, full body, 全景横幅，公路自行车与大漠破晓微风勾勒出元气与野性",
     "mood": "冷酷干练中带着极度直球的依恋，晨曦中健美无暇的少女身姿",
     "adult": true,
     "sampleRating": "R15",
@@ -27,24 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "road_bicycle",
+      "clubroom",
+      "window",
+      "desert",
+      "dawn",
+      "sunrise",
+      "morning_breeze",
+      "sporty",
+      "calm_smile",
+      "wide_shot",
+      "full_body"
     ],
     "promptTokens": [
-      "sitting",
-      "exercise bike",
-      "blue eyes",
-      "racerback straps",
-      "snug boyleg workout shorts",
-      "indoors",
-      "soft lighting"
+      "wide shot",
+      "full body",
+      "sitting on table edge",
+      "pristine road bicycle leaning nearby",
+      "Abydos committee room",
+      "wide window",
+      "desert horizon",
+      "dawn glow",
+      "cool morning breeze",
+      "calm stoic smile"
     ],
     "negativeTokens": [],
-    "promptProse": "Sunaookami Shiroko sits on cot bending down adjusting ankle strap of athletic socks, wearing a soft grey and cyan-blue athletic sports cami set. Wolf girl, fluffy white lupo ears swiveling, sleek road bicycle parked by wall amidst cool pale blue eyes, bright desert dawn light streaming through window.",
-    "animaCaption": "Sunaookami Shiroko sits on cot bending down adjusting ankle strap of athletic socks, wearing a soft grey and cyan-blue athletic sports cami set. Wolf girl, fluffy white lupo ears swiveling, sleek road bicycle parked by wall amidst cool pale blue eyes, bright desert dawn light streaming through window.",
+    "promptProse": "Shiroko rests on the table edge in the Abydos clubroom at 5 AM beside her tuned road bicycle, watching the desert horizon glow with the first amber rays of dawn.",
+    "animaCaption": "Perched calmly in the clubroom beside her road bicycle as dawn light sweeps across the desert horizon outside.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

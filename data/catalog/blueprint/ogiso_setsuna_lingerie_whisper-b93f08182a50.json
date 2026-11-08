@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3489,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "ogiso_setsuna_lingerie_whisper",
     "characterId": "ogiso_setsuna",
@@ -14,7 +14,7 @@
     "location": "峰城大附属音乐教室角落，钢琴旁整齐叠放着未完成的五线谱",
     "timeOfDay": "冬夜初雪敲窗时",
     "lighting": "窗外白雪反射的清冷微光与室内走廊投进的微暖泛光交织，形成透明冷艳的空气感",
-    "camera": "侧平视中景，怀中木吉他与低头抚弦的姿态构成静谧如歌的画面",
+    "camera": "medium shot, eye level, 侧平视中景，怀中木吉他与低头抚弦的姿态构成静谧如歌的画面",
     "mood": "经典白学冬日恋曲的深情与哀愁，纯粹至极的依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "music_room",
+      "piano",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
-      "acoustic guitar",
+      "medium shot",
+      "eye level",
+      "music room",
+      "piano",
+      "night",
+      "warm lighting",
       "sitting",
+      "acoustic guitar",
       "bench",
       "soft pom-pom ribbon bow",
       "delicate ribbed texture",
       "ankle-length flowing drape",
       "indoors",
-      "soft lighting",
-      "warm lighting"
+      "soft lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Ogiso Setsuna sits on piano bench cradling acoustic guitar in lap, wearing a pure snow white fine-knit slip dress. Gentle fingers on strings, long glossy dark hair spilling over shoulder, melancholic tender brown eyes amidst grand piano in background, snow drifting against tall windows. A soft ceiling lamp wraps the comfortable apartment bedroom in gentle warm tones, casting tender amber highlights across her flowing dark tresses.",
-    "animaCaption": "Ogiso Setsuna sits on piano bench cradling acoustic guitar in lap, wearing a pure snow white fine-knit slip dress. Gentle fingers on strings, long glossy dark hair spilling over shoulder, melancholic tender brown eyes amidst grand piano in background, snow drifting against tall windows. A soft ceiling lamp wraps the comfortable apartment bedroom in gentle warm tones, casting tender amber highlights across her flowing dark tresses.",
+    "animaCaption": "Ogiso Setsuna sits on piano bench cradling acoustic guitar in lap, wearing a pure snow white fine-knit slip dress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

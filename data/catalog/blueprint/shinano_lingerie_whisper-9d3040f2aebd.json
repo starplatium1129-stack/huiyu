@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3445,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shinano_lingerie_whisper",
     "characterId": "shinano",
@@ -14,7 +14,7 @@
     "location": "重樱神木顶端的幻梦神殿，脚下水面上漂浮着发光的睡莲与紫藤花瓣",
     "timeOfDay": "永夜幽冥与黎明交接之刻",
     "lighting": "紫藤花散发的荧光紫气与殿顶星图投下的冷月辉光，在九尾与白皙肌体上流动",
-    "camera": "宏大横幅低角度构图，九条巨大银尾如云雾般铺展填满画面两侧，视觉冲击力极强",
+    "camera": "wide shot, low angle, 宏大横幅低角度构图，九条巨大银尾如云雾般铺展填满画面两侧，视觉冲击力极强",
     "mood": "至高神狐的深邃神性与慵懒妩媚，如同梦境般宏大而摄人心魄",
     "adult": true,
     "sampleRating": "R15",
@@ -27,18 +27,27 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "shrine",
+      "torii",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "moonlight",
+      "cool_lighting",
+      "reclining",
+      "wide_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "fox ears",
+      "wide shot",
+      "low angle",
+      "shrine",
+      "torii",
+      "night",
+      "moonlight",
+      "cool lighting",
+      "reclining",
       "chaise lounge",
       "water",
       "sleepy",
-      "purple eyes",
       "floating",
       "glowing",
       "flowers",
@@ -47,7 +56,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Shinano lounges sideways on dark purple brocade water couch, wearing a midnight purple translucent wisteria-embroidered open robe. Kitsune fox girl, nine massive majestic silver fox tails spread around like ocean waves, fox ears twitching amidst sleepy purple eyes, floating wisteria and glowing lotus flowers, dreamlike sanctuary.",
-    "animaCaption": "Shinano lounges sideways on dark purple brocade water couch, wearing a midnight purple translucent wisteria-embroidered open robe. Kitsune fox girl, nine massive majestic silver fox tails spread around like ocean waves, fox ears twitching amidst sleepy purple eyes, floating wisteria and glowing lotus flowers, dreamlike sanctuary.",
+    "animaCaption": "Shinano lounges sideways on dark purple brocade water couch, wearing a midnight purple translucent wisteria-embroidered open robe.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

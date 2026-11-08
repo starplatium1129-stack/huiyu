@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3360,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shiranui_mai_lingerie_whisper",
     "characterId": "shiranui_mai",
@@ -14,7 +14,7 @@
     "location": "不知火流古风和室道场内庭，庭院石灯笼在樱花树下散发暖红火光",
     "timeOfDay": "春夜忍术修习后的月下微凉",
     "lighting": "庭院石灯笼的暖红火苗投射出流动的光影，与银亮月光交织，将肌肤衬得如凝脂般诱人",
-    "camera": "仰视四分之三角度中景，折扇遮面的古典美与傲人胸线形成绝顶的视觉冲击",
+    "camera": "medium shot, low angle, 仰视四分之三角度中景，折扇遮面的古典美与傲人胸线形成绝顶的视觉冲击",
     "mood": "格斗女王的极致艳丽与致命诱惑，传统日式忍道美人的热烈狂野",
     "adult": true,
     "sampleRating": "R15",
@@ -27,18 +27,27 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "tatami",
+      "japanese_room",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "moonlight",
+      "candlelight",
+      "warm_lighting",
+      "reclining",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
+      "medium shot",
+      "low angle",
       "tatami",
+      "japanese room",
+      "night",
+      "moonlight",
+      "candlelight",
+      "warm lighting",
+      "reclining",
       "folding fan",
-      "ponytail",
-      "ribbon",
-      "amber eyes",
       "cherry blossoms",
       "floating",
       "lantern",
@@ -47,7 +56,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Mai Shiranui leans gracefully against Japanese tatami railing, wearing a scarlet red silk halter dudou bodice. Half-covering red lips with white folding fan, high brown ponytail tied with red tassel ribbons, captivating amber eyes amidst cherry blossoms floating, stone lantern glowing in tranquil garden.",
-    "animaCaption": "Mai Shiranui leans gracefully against Japanese tatami railing, wearing a scarlet red silk halter dudou bodice. Half-covering red lips with white folding fan, high brown ponytail tied with red tassel ribbons, captivating amber eyes amidst cherry blossoms floating, stone lantern glowing in tranquil garden.",
+    "animaCaption": "Mai Shiranui leans gracefully against Japanese tatami railing, wearing a scarlet red silk halter dudou bodice.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

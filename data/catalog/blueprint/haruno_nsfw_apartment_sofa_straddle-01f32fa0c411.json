@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_apartment_sofa_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 376,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "haruno_nsfw_apartment_sofa_straddle",
     "title": "雪之下阳乃 · 深夜单身公寓的黑丝魅影 ·「真物什么的……比得上现在贴紧的温度吗」",
@@ -18,15 +18,22 @@
     "camera": "cowboy shot, from below",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "apartment",
+      "bedroom",
+      "night",
+      "warm_lighting",
+      "sitting",
+      "cowboy_shot"
     ],
     "promptProse": "Adult Haruno sits astride her companion on the leather sofa, both hands resting on their shoulders. Her black chemise is gathered at her hips and the city lights glow beyond the apartment window.",
     "nsfwProse": "",
     "promptTokens": [
+      "cowboy shot",
+      "apartment",
+      "bedroom",
+      "night",
+      "warm lighting",
+      "sitting",
       "black chemise",
       "clothes down",
       "topless",
@@ -34,15 +41,12 @@
       "blush",
       "sofa",
       "city lights",
-      "night",
       "from below",
       "black stockings",
       "pov",
       "on lap",
       "straddling",
-      "hands on shoulders",
-      "warm lighting",
-      "cowboy shot"
+      "hands on shoulders"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

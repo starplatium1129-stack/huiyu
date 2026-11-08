@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hoolheyak_arknights_velvet_midnight_whisper",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 3087,
   "createdAt": "2026-11-04T15:22:22.723187200+00:00",
-  "updatedAt": "2026-11-04T15:22:22.723187200+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "hoolheyak_arknights_velvet_midnight_whisper",
     "characterId": "hoolheyak_arknights",
@@ -14,7 +14,7 @@
     "location": "暮色高空奢华套房",
     "timeOfDay": "暮夜",
     "lighting": "落地窗外繁华都市夜景光斑与室内琥珀色暖光交织的轮廓光",
-    "camera": "cowboy shot",
+    "camera": "cowboy shot, side view, 侧身半身，红丝绒贵妃榻与落地窗夜景同框",
     "mood": "极致慵懒魅惑",
     "adult": true,
     "sampleRating": "R15",
@@ -25,29 +25,26 @@
     "sceneTags": [
       "twilight",
       "penthouse",
-      "luxury_bedroom",
+      "velvet_chaise_lounge",
       "city_lights",
       "bokeh",
-      "velvet_chaise_lounge",
-      "seductive_smile",
       "lying_on_side",
-      "snake_tail_curled",
       "sheer_lace",
-      "garter_straps"
+      "garter_straps",
+      "cowboy_shot",
+      "side_view"
     ],
     "promptTokens": [
       "cowboy shot",
+      "side view",
       "reclining",
       "lying on side",
       "velvet chaise lounge",
       "leaning on one elbow",
       "seductive smile",
-      "smirking",
       "bedroom eyes",
-      "parted lips",
       "blush",
-      "snake tail coiling around leg",
-      "luxury penthouse bedroom",
+      "luxury penthouse",
       "panoramic window",
       "evening city skyline bokeh",
       "twilight",
@@ -57,8 +54,8 @@
       "sheer curtains"
     ],
     "negativeTokens": [],
-    "promptProse": "Ho'olheyak reclines languidly on an emerald and crimson velvet chaise in a luxury penthouse at dusk, her snake tail coiling softly against her bare thigh as she casts a sultry, captivating glance with a knowing smile.",
-    "animaCaption": "She reclines gracefully on the velvet chaise in a sheer black lace negligee, her tail curled around her leg as city lights glow softly through the panoramic window.",
+    "promptProse": "Ho'olheyak reclines languidly on an emerald and crimson velvet chaise in a high-rise penthouse at dusk, casting a sultry, captivating glance with a knowing smile toward the panoramic city skyline.",
+    "animaCaption": "Reclining gracefully on a velvet chaise lounge in a penthouse suite, she smiles knowingly with city lights shimmering through the window.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

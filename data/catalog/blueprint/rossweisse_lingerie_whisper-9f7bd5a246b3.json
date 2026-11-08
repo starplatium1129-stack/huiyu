@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_lingerie_whisper",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 3463,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "rossweisse_lingerie_whisper",
     "characterId": "rossweisse",
@@ -14,7 +14,7 @@
     "location": "兵藤家客厅矮桌前，桌上整齐放着几张折角超市打折传单与喝空的冰结罐",
     "timeOfDay": "周五深夜酒意微醺时",
     "lighting": "暖白色的客厅吸顶灯，照亮了少女白皙泛着酒晕的红润双颊与微敞的衣领",
-    "camera": "俯视特写镜头，微醺趴在桌上的慵懒曲线与散落的打折传单构成极具生活趣味的画面",
+    "camera": "close-up, high angle, 俯视特写镜头，微醺趴在桌上的慵懒曲线与散落的打折传单构成极具生活趣味的画面",
     "mood": "成熟知性女武神的生活化反差萌，既好笑又让人心动不已的恋爱烦恼",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,29 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "close_up",
+      "high_angle"
     ],
     "promptTokens": [
+      "close-up",
+      "high angle",
+      "indoors",
+      "bedroom",
+      "night",
+      "warm lighting",
       "slumped over table",
       "holding discount flyers",
       "highball can",
       "blush",
-      "blue hair",
       "teary eyes",
       "silver snowflake filigree",
       "plunge neckline",
       "matching sheer bikini briefs",
-      "indoors",
-      "ceiling light",
-      "warm lighting"
+      "ceiling light"
     ],
     "negativeTokens": [],
     "promptProse": "Rossweisse slumps sideways on low living room table, wearing a nordic ice-blue sheer floral lace bralette set. Valkyrie, tipsy blushing cheeks, long silver-blue hair spilling onto wood surface amidst clutching supermarket discount coupon flyers, empty highball can, teary pouty eyes. Warm overhead ceiling light gently illuminates discount grocery flyers scattered on the table, casting homely golden highlights over her silver braids.",

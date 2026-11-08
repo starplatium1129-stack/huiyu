@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mouri_ran_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3340,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "mouri_ran_lingerie_whisper",
     "characterId": "mouri_ran",
@@ -14,7 +14,7 @@
     "location": "毛利侦探事务所二楼客厅，电视播放着晚间综艺，木茶几上放着热茶",
     "timeOfDay": "夜间沐浴后的安闲时刻",
     "lighting": "客厅日光灯与电视荧幕交织出温暖的生活气息，水汽蒸腾使空气带着柔焦感",
-    "camera": "平视特写中景，对焦于湿发垂在肩头的发梢与慌乱护住胸口的手腕",
+    "camera": "close-up, eye level, 平视特写中景，对焦于湿发垂在肩头的发梢与慌乱护住胸口的手腕",
     "mood": "健康的青梅竹马日常感与突如其来的少女羞涩",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
+      "sofa",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "close_up",
+      "eye_level"
     ],
     "promptTokens": [
+      "close-up",
+      "eye level",
+      "indoors",
+      "bedroom",
+      "sofa",
+      "night",
+      "warm lighting",
+      "sitting",
       "chaise lounge",
       "mug",
-      "sitting",
-      "black hair",
       "blush",
       "desk lamp",
       "matching relaxed sleep shorts",
-      "athletic toned physique",
-      "indoors"
+      "athletic toned physique"
     ],
     "negativeTokens": [],
     "promptProse": "Ran Mouri sits on sofa near coffee table, wearing a cherry blossom pink striped soft cotton cami. Drying damp black hair with white towel, blushing frantically, covering chest with arms amidst brown eyes wide in shock, retro cozy Japanese living room, warm ceiling lamp.",
-    "animaCaption": "Ran Mouri sits on sofa near coffee table, wearing a cherry blossom pink striped soft cotton cami. Drying damp black hair with white towel, blushing frantically, covering chest with arms amidst brown eyes wide in shock, retro cozy Japanese living room, warm ceiling lamp.",
+    "animaCaption": "Ran Mouri sits on sofa near coffee table, wearing a cherry blossom pink striped soft cotton cami.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

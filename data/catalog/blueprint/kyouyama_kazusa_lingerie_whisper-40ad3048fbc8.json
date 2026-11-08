@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kyouyama_kazusa_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3268,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kyouyama_kazusa_lingerie_whisper",
     "characterId": "kyouyama_kazusa",
@@ -14,7 +14,7 @@
     "location": "点缀着小彩灯的温馨单间，矮几上放着吃了一半的马卡龙盒与红茶杯",
     "timeOfDay": "深夜放学后的秘密私语",
     "lighting": "暖粉色与琥珀色的小彩灯提供主环境光，柔化了少女傲娇的神态轮廓",
-    "camera": "侧面特写中景，对焦于泛红的耳垂与微翘的猫耳，虚化背景闪烁的小彩灯",
+    "camera": "medium shot, side view, 侧面特写中景，对焦于泛红的耳垂与微翘的猫耳，虚化背景闪烁的小彩灯",
     "mood": "傲娇猫系少女的心动防御瓦解，既酷又甜的依恋",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_floor",
+      "macaron_box",
+      "tea_cup",
+      "fairy_lights",
+      "cozy_room",
+      "blush",
+      "tsundere_glance",
+      "soft_lighting",
+      "medium_shot",
+      "side_view"
     ],
     "promptTokens": [
-      "cat ears",
-      "blush",
-      "ribbon",
+      "medium shot",
+      "side view",
+      "sitting cross-legged on rug",
+      "low table",
+      "open macaron box",
+      "half-eaten sweet",
       "teacup",
-      "mug",
-      "cat-ear notched neckline",
-      "satin ribbon bows",
-      "ruffled hem tap pants",
-      "indoors",
-      "warm lighting"
+      "twinkling fairy lights",
+      "cozy apartment",
+      "flustered blush",
+      "turning away shyly",
+      "warm dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Kyouyama Kazusa leans against beanbag chair, wearing a smoky mauve and grey lace trim camisole set. Cat tail flicking on wool blanket, cat ears twitching, blushing face looking away shyly amidst holding pink macaron ribbon, low wooden coffee table with tea cup, warm fairy lights background.",
-    "animaCaption": "Kyouyama Kazusa leans against beanbag chair, wearing a smoky mauve and grey lace trim camisole set. Cat tail flicking on wool blanket, cat ears twitching, blushing face looking away shyly amidst holding pink macaron ribbon, low wooden coffee table with tea cup, warm fairy lights background.",
+    "promptProse": "Kazusa sits on a fluffy rug beside a low wooden table dotted with half-eaten macarons and tea, turning her head aside with a flustered blush beneath twinkling fairy lights.",
+    "animaCaption": "Sitting cross-legged beside a box of macarons with a flustered sideways glance, soft fairy lights glowing behind.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_azur_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3447,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "atago_azur_lingerie_whisper",
     "characterId": "atago_azur",
@@ -14,7 +14,7 @@
     "location": "重樱风格指挥官休息室的障子门前",
     "timeOfDay": "深夜",
     "lighting": "纸质障子门内透射出的昏黄暖灯，与榻榻米上的月影相映，弥漫着浓郁的荷尔蒙与温柔乡气息",
-    "camera": "极度撩人的微俯视角，将丰腴修长的黑丝/白嫩双腿与犬耳大姐姐的包容展现到极致",
+    "camera": "high angle, 极度撩人的微俯视角，将丰腴修长的黑丝/白嫩双腿与犬耳大姐姐的包容展现到极致",
     "mood": "成熟包容、极致诱惑、宠溺至极的大姐姐膝枕",
     "adult": true,
     "sampleRating": "R15",
@@ -27,24 +27,29 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "tatami_bedding",
-      "dog_ears_and_tail",
-      "crimson_kimono_robe",
-      "patting_lap",
-      "lap_pillow",
-      "mature_seduction",
-      "warm_paper_lamp",
-      "pampering"
+      "indoors",
+      "bedroom",
+      "night",
+      "moonlight",
+      "warm_lighting",
+      "kneeling",
+      "smile",
+      "high_angle"
     ],
     "promptTokens": [
-      "dog ears",
-      "tail",
+      "high angle",
+      "indoors",
+      "bedroom",
+      "night",
+      "moonlight",
+      "warm lighting",
+      "kneeling",
+      "smile",
       "crimson kimono robe",
       "patting lap",
       "kneeling on tatami",
       "voluptuous",
-      "seductive smile",
-      "warm lighting"
+      "seductive smile"
     ],
     "negativeTokens": [],
     "promptProse": "Atago creating an irresistible haven of comfort late at night in a traditional Japanese tatami chamber. She wears an intoxicating crimson sheer silk kimono robe adorned with painted sakura blooms, loosely draped to reveal her radiant neckline. Patting her lap with an affectionate, indulgent smile while her black dog ears twitch happily, she beckons the Commander to rest his weary head.",

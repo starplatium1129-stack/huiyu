@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ubel_frieren_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3334,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "ubel_frieren_lingerie_whisper",
     "characterId": "ubel_frieren",
@@ -14,7 +14,7 @@
     "location": "帝国废弃古代魔法遗迹石桥，断桥下深渊升腾着夜雾与点点荧光菌丛",
     "timeOfDay": "一等魔法使考试过后的午夜",
     "lighting": "遗迹废墟升起的冷蓝荧光与深绿魔法微光在白皙锁骨与纤细手臂间勾勒出危险轮廓",
-    "camera": "低角度仰拍，断桥与深渊的险峻凸显出少女凌空而坐的从容与致命魅力",
+    "camera": "medium shot, side view, 侧身回眸中景，残破古桥上的冰冷魔导利刃与危险诱惑",
     "mood": "极度危险的同理心杀手，疯狂、随性而又不可思议地亲昵动人",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "stone_bridge",
+      "ancient_ruins",
+      "cleaver",
+      "holding_weapon",
+      "night_fog",
+      "glowing_mushrooms",
+      "chasm",
+      "dangerous_smirk",
+      "medium_shot",
+      "side_view"
     ],
     "promptTokens": [
-      "sitting",
-      "ponytail",
-      "mug",
-      "smile",
-      "green eyes",
-      "glowing",
-      "asymmetrical side cutouts",
-      "raw jagged edge hemline",
-      "indoors"
+      "medium shot",
+      "side view",
+      "sitting perched on crumbling stone bridge",
+      "holding heavy cleaver blade",
+      "ancient overgrown ruins",
+      "drifting night mist",
+      "bioluminescent fungi in chasm",
+      "teasing predatory smirk",
+      "moonlight"
     ],
     "negativeTokens": [],
-    "promptProse": "Übel sits perched on ruined stone bridge ledge over misty abyss, wearing a inky black deep plunging halter mini slip. Dangling bare legs, playing with slender magic staff edge, dark green side ponytail amidst smug piercing green eyes with dangerously playful smile, mystical glowing ruins.",
-    "animaCaption": "Übel sits perched on ruined stone bridge ledge over misty abyss, wearing a inky black deep plunging halter mini slip. Dangling bare legs, playing with slender magic staff edge, dark green side ponytail amidst smug piercing green eyes with dangerously playful smile, mystical glowing ruins.",
+    "promptProse": "Ubel perches precariously on the broken ledge of an ancient ruin bridge at midnight, resting her cleaver across her knees while casting a dangerously playful over-the-shoulder smirk.",
+    "animaCaption": "Perched on an ancient ruined stone bridge with her cleaver in hand, casting a dangerously playful sideways smirk.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

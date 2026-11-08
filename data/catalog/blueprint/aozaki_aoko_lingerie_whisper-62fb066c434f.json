@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3411,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.211Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "aozaki_aoko_lingerie_whisper",
     "characterId": "aozaki_aoko",
@@ -14,7 +14,7 @@
     "location": "久远寺邸阁楼青子的简朴房间",
     "timeOfDay": "清晨",
     "lighting": "晨初清冽的朝霞斜穿过百叶窗，在地板上切出一道道金橙色的条纹光斑",
-    "camera": "充满生命力与张力的中低视角，捕捉健美紧致的腹肌与毫不做作的帅气姿态",
+    "camera": "medium shot, low angle, 充满生命力与张力的中低视角，捕捉健美紧致的体魄与帅气不羁的姿态",
     "mood": "爽朗果决、英气勃发与充满活力的夏晨",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "wooden_floor",
-      "sunlight_through_blinds",
-      "navy_racerback_tank",
-      "cotton_boxers",
-      "stretching_arms",
-      "toned_abs",
-      "morning_energy",
-      "cool_heroine"
+      "sitting",
+      "bed_frame",
+      "leaning_back",
+      "athletic",
+      "spacious_room",
+      "window",
+      "city_lights",
+      "confident_smirk",
+      "warm_lighting",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "navy tank top",
-      "boxer shorts",
-      "stretching overhead",
-      "toned abs",
-      "auburn hair",
-      "wooden floor",
-      "morning sunlight",
-      "energetic"
+      "medium shot",
+      "low angle",
+      "sitting on edge of bed",
+      "leaning back on palms",
+      "athletic toned figure",
+      "wide window",
+      "distant city lights",
+      "breezy night",
+      "confident dashing smirk",
+      "warm room lamp"
     ],
     "negativeTokens": [],
-    "promptProse": "Aoko Aozaki greeting the dawn with unbridled vigor inside the Kuonji mansion. Dressed in a minimalist navy-blue racerback tank top and comfortable cotton sleep boxers, she sits cross-legged on the polished parquet floor, stretching both arms high above her head with interlocked fingers. The slanting morning sunlight highlights her toned core as she turns with a confident, carefree smirk.",
-    "animaCaption": "Aoko Aozaki greeting the dawn with unbridled vigor inside the Kuonji mansion. Dressed in a minimalist navy-blue racerback tank top and comfortable cotton sleep boxers, she sits cross-legged on the polished parquet floor, stretching both arms high above her head with interlocked fingers.",
+    "promptProse": "Aoko leans back casually on her hands upon the bed in her spacious dorm, radiating raw magic energy and bold, unpretentious charm with a rakish grin.",
+    "animaCaption": "Leaning back comfortably on the bed with an athletic, confident posture and a dashing, carefree grin.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

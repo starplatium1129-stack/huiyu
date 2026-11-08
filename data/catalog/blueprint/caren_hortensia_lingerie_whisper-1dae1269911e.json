@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_hortensia_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3277,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.395Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "caren_hortensia_lingerie_whisper",
     "characterId": "caren_hortensia",
@@ -14,7 +14,7 @@
     "location": "冬木市教会偏堂洗礼池石阶",
     "timeOfDay": "黎明破晓",
     "lighting": "破晓玫瑰紫的微弱天光穿透高处彩色玻璃花窗，在修道袍与石阶上投下斑驳神圣又妖异的冷光",
-    "camera": "充满戏剧张力的仰角构图，将神圣修女的空灵与毒舌小恶魔的冷酷嘲弄完美结合",
+    "camera": "low angle, cowboy shot, 充满戏剧张力的仰角构图，将神圣修女的空灵与毒舌小恶魔的嘲弄完美结合",
     "mood": "神圣冷冽、毒舌微讽、洞悉人性罪恶的奇妙快感",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "church_confessional",
+      "standing",
+      "church",
+      "cross",
+      "stone_pillars",
+      "moonlight",
       "stained_glass",
-      "monochrome_linen_robe",
-      "high_slit",
-      "arms_crossed",
-      "barefoot_stone",
-      "silver_hair",
-      "sadistic_smirk"
+      "mocking_smile",
+      "sadistic",
+      "cool_lighting",
+      "low_angle",
+      "cowboy_shot"
     ],
     "promptTokens": [
-      "monochrome linen robe",
-      "high slit",
-      "arms crossed",
-      "barefoot on marble",
-      "silver hair",
-      "golden eyes",
-      "mocking smirk",
-      "dawn chapel"
+      "cowboy shot",
+      "low angle",
+      "standing in stone cathedral nave",
+      "carved wooden crucifix",
+      "moonlight through high clerestory",
+      "marble pillars",
+      "mocking saintly smile",
+      "angelic poison tease",
+      "silver moonlight"
     ],
     "negativeTokens": [],
-    "promptProse": "Caren Hortensia greeting first light outside the confessional booth of an ancient seaside chapel. Clothed in a stark monochrome black-and-white sleeveless linen night robe with an audacious thigh-high slit, she leans barefoot against the stone portal with arms crossed. Her piercing golden gaze and faintly sadistic smile pierce through the viewer's defenses in the rose-violet dawn light.",
-    "animaCaption": "Caren Hortensia greeting first light outside the confessional booth of an ancient seaside chapel. Clothed in a stark monochrome black-and-white sleeveless linen night robe with an audacious thigh-high slit, she leans barefoot against the stone portal with arms crossed.",
+    "promptProse": "Caren stands beneath the stone arches of the deserted church, bathed in pure silver moonlight as she tilts her head with a deliciously cruel, mock-innocent smirk.",
+    "animaCaption": "Standing beneath church stone arches in cold silver moonlight, offering a delightfully wicked, mock-saintly smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

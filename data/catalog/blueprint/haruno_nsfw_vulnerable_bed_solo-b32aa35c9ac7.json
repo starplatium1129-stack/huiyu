@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_vulnerable_bed_solo",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 379,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "haruno_nsfw_vulnerable_bed_solo",
     "title": "雪之下阳乃 · 卸下伪装的床褥动情独奏 ·「哪怕是虚伪的温柔……今晚也给我吧」",
@@ -18,15 +18,22 @@
     "camera": "cowboy shot, from above",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "apartment",
+      "bedroom",
+      "bed",
+      "night",
+      "warm_lighting",
+      "cowboy_shot"
     ],
     "promptProse": "Haruno lies on the disheveled silk sheets, touching herself with a tearful expression in the blue dawn light.",
     "nsfwProse": "",
     "promptTokens": [
+      "cowboy shot",
+      "apartment",
+      "bedroom",
+      "bed",
+      "night",
+      "warm lighting",
       "on bed",
       "messy hair",
       "silk nightwear",

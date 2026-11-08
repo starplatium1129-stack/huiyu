@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3514,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "zeta_shadow_lingerie_whisper",
     "characterId": "zeta_shadow",
@@ -14,7 +14,7 @@
     "location": "暗影庭园古代遗迹神殿顶梁阴影处，下方的宏伟大厅沉浸在静谧月光中",
     "timeOfDay": "午夜执行密令的暗夜潜伏时刻",
     "lighting": "遗迹高窗斜射入的一道苍白月光恰好切过猫耳与暗金眼眸，在黑色紧身胸衣上折射出冷光",
-    "camera": "低角度大仰拍，从地面仰望倒挂在木梁上的灵巧猫娘身姿与倒垂的银灰长发",
+    "camera": "medium shot, high angle, 居高临下的梁上俯视，阴影中金瞳闪烁与野性猫娘的致命伏击感",
     "mood": "暗影庭园第六席的猫系致命敏捷与对暗影大人的狂热神化崇拜",
     "adult": true,
     "sampleRating": "R15",
@@ -27,23 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "perched",
+      "wooden_beam",
+      "shadows",
+      "grand_hall",
+      "cat_eyes",
+      "stealth",
+      "daggers",
+      "ancient_ruins",
+      "predatory_smile",
+      "medium_shot",
+      "high_angle"
     ],
     "promptTokens": [
-      "cat ears",
-      "glowing",
-      "moonlight",
-      "open back for cat tail",
-      "sleek feline silhouette",
-      "indoors"
+      "medium shot",
+      "high angle",
+      "perched effortlessly on high wooden rafter",
+      "deep ceiling shadows",
+      "grand moonlit hall below",
+      "twin daggers at waist",
+      "predatory cat-like grin",
+      "moonlight piercing dark"
     ],
     "negativeTokens": [],
-    "promptProse": "Zeta relaxes in zeta shadow eminence in shadow, wearing a inky black tactical elastic sheer monokini set. Zeta shadow eminence in shadow, beastkin cat girl, black cat ears twitching amidst long flexible tail swaying, hanging effortlessly upside-down from ceiling beam, silver-grey hair spilling downward, glowing golden cat eyes, moonlight piercing ancient dark cathedral.",
-    "animaCaption": "Zeta relaxes in zeta shadow eminence in shadow, wearing a inky black tactical elastic sheer monokini set. Zeta shadow eminence in shadow, beastkin cat girl, black cat ears twitching amidst long flexible tail swaying, hanging effortlessly upside-down from ceiling beam, silver-grey hair spilling downward, glowing golden cat eyes, moonlight piercing ancient dark cathedral.",
+    "promptProse": "Zeta crouches agilely atop a high roof beam in the ancient temple ruins, gazing down into the moonlit hall like a sleek cat about to drop silently onto its prey.",
+    "animaCaption": "Perched gracefully upon a high ceiling beam in moonlit ruins, smiling with a stealthy, feline readiness.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

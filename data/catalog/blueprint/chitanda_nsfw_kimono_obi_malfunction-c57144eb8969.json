@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_kimono_obi_malfunction",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1493,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "chitanda_nsfw_kimono_obi_malfunction",
     "title": "千反田爱瑠 · 和服腰带松脱的更衣室事故 ·「带结解不开了……折木同学快帮帮我」",
@@ -18,15 +18,20 @@
     "camera": "wide shot, from the side",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "indoors",
+      "bedroom",
+      "night",
+      "warm_lighting",
+      "wide_shot"
     ],
     "promptProse": "She leans toward the cedar table while reaching behind with both hands to free the caught obi. Warm dressing-room light falls across the loosened kimono and the tatami below.",
     "nsfwProse": "",
     "promptTokens": [
+      "wide shot",
+      "indoors",
+      "bedroom",
+      "night",
+      "warm lighting",
       "dressing room",
       "purple furisode",
       "gold obi",
@@ -34,11 +39,9 @@
       "cleavage",
       "bent over",
       "looking back",
-      "wide shot",
       "crane print",
       "hands behind back",
       "teary eyes",
-      "warm lighting",
       "tatami",
       "side view"
     ],

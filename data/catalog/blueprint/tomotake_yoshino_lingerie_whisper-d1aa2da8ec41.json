@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tomotake_yoshino_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3296,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "tomotake_yoshino_lingerie_whisper",
     "characterId": "tomotake_yoshino",
@@ -14,7 +14,7 @@
     "location": "朝武神社深处温泉池畔的木质水榭，头顶开满如紫色飞瀑般的百年紫藤花",
     "timeOfDay": "春夜神乐祭后的私语时刻",
     "lighting": "温泉水面反光的柔和水波光斑，与木栈道旁挂着的昏黄纸提灯交相辉映",
-    "camera": "正视微俯中景，古典端庄的正坐姿态与垂挂的紫藤花构成诗意国画意境",
+    "camera": "medium shot, high angle, front view, 正视微俯中景，古典端庄的正坐姿态与垂挂的紫藤花构成诗意国画意境",
     "mood": "古风巫女的绝对温婉与奉献精神，清幽高雅中透着极致柔媚",
     "adult": true,
     "sampleRating": "R15",
@@ -27,16 +27,26 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "shrine",
+      "torii",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "kneeling",
+      "blush",
+      "medium_shot",
+      "high_angle",
+      "front_view"
     ],
     "promptTokens": [
+      "medium shot",
+      "high angle",
+      "front view",
+      "shrine",
+      "torii",
+      "night",
+      "warm lighting",
       "kneeling",
-      "black hair",
-      "purple eyes",
+      "blush",
       "teacup",
       "water",
       "embroidered wisteria blossoms",
@@ -44,12 +54,11 @@
       "side ribbon bow",
       "indoors",
       "lantern",
-      "water reflection",
-      "warm lighting"
+      "water reflection"
     ],
     "negativeTokens": [],
     "promptProse": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool. Warm paper lanterns along the wooden shrine pavilion reflect gentle golden ripples off the hot spring water, bathing her polite seiza posture in soft light.",
-    "animaCaption": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress. Hands resting gently on lap, wisteria floral hairpin in glossy black hair, gentle shy purple eyes amidst cascading purple wisteria blooms overhead, steam rising from onsen pool. Warm paper lanterns along the wooden shrine pavilion reflect gentle golden ripples off the hot spring water, bathing her polite seiza posture in soft light.",
+    "animaCaption": "Tomotake Yoshino kneels in polite seiza on wooden shrine pavilion deck, wearing a pale lavender silk yukata-style camisole dress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

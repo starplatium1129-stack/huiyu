@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3493,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yarai_miu_lingerie_whisper",
     "characterId": "yarai_miu",
@@ -14,7 +14,7 @@
     "location": "海上特区现代化公寓卧室，落地窗外是满月照耀下翻滚着银浪的浩瀚大海",
     "timeOfDay": "午夜吸血饥渴期发作之时",
     "lighting": "满月无暇的银白冷光如巨幅幕布洒满全身，在银红双色发丝与雪白锁骨上形成冰冷反光",
-    "camera": "仰视特写镜头，咬唇隐忍的神态与抓紧床单的手指细节将张力拉满",
+    "camera": "medium shot, low angle, 现代化海景卧室微低机位，银浪海潮与吸血冲动前的娇喘隐忍",
     "mood": "真祖吸血鬼少女的隐秘饥渴与反差娇羞，危险致命中透着极致的纯情依赖",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "kneeling",
+      "on_bed",
+      "window",
+      "full_moon",
+      "ocean",
+      "waves",
+      "fampire_fangs",
+      "blush",
+      "heavy_breathing",
+      "cool_lighting",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "bed",
-      "pink hair",
-      "crimson rose lace applique",
-      "strappy harness hip details",
-      "sheer side panels",
-      "indoors",
-      "dim lighting",
-      "red lighting",
-      "moonlight"
+      "medium shot",
+      "low angle",
+      "kneeling on sleek bed",
+      "panoramic window",
+      "full moon reflecting across dark crashing ocean waves",
+      "tiny vampire fangs",
+      "flushed panting cheeks",
+      "holding chest",
+      "cool silver moonlight"
     ],
     "negativeTokens": [],
-    "promptProse": "Miu Yarai relaxes in vampire girl, wearing a inky black underwire corset bralette. Vampire girl, sharp little fangs biting lower lip, clutching bedsheets tightly on luxury bed amidst eyes shifting between gold and crimson, silver and reddish-pink hair, breathless flustered gaze, massive full moon over ocean outside window. Deep crimson and gold ambient illumination in the vampire salon casts alluring jewel-toned highlights across her black corsage and pale, luminous skin.",
-    "animaCaption": "Miu Yarai relaxes in vampire girl, wearing a inky black underwire corset bralette. Vampire girl, sharp little fangs biting lower lip, clutching bedsheets tightly on luxury bed amidst eyes shifting between gold and crimson, silver and reddish-pink hair, breathless flustered gaze, massive full moon over ocean outside window. Deep crimson and gold ambient illumination in the vampire salon casts alluring jewel-toned highlights across her black corsage and pale, luminous skin.",
+    "promptProse": "Miu kneels on the bed before the moonlit ocean view, clutching her chest as a full moon stirs her vampiric thirst with a breathless, flushed gaze.",
+    "animaCaption": "Kneeling on a bed before a moonlit ocean window, panting with flushed cheeks as tiny vampire fangs glint in the moonlight.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

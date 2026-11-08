@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_desk_straddle",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 365,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "iroha_nsfw_desk_straddle",
     "title": "一色彩羽 · 成年同事会室桌上的小恶魔诱惑 ·「前辈……是在向我求欢吗？真拿你没办法♪」",
@@ -18,15 +18,26 @@
     "camera": "cowboy shot, from below",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "indoors",
+      "bedroom",
+      "dusk",
+      "sunset",
+      "dim_lighting",
+      "sitting",
+      "smile",
+      "cowboy_shot"
     ],
     "promptProse": "Adult Iroha straddles the offscreen viewer's lap at the conference-table edge and touches one finger to their lips, smiling as the last amber light fades across the dark office.",
     "nsfwProse": "",
     "promptTokens": [
+      "cowboy shot",
+      "indoors",
+      "bedroom",
+      "dusk",
+      "sunset",
+      "dim lighting",
+      "sitting",
+      "smile",
       "adult",
       "office",
       "conference table",
@@ -39,10 +50,8 @@
       "straddling",
       "leaning forward",
       "smirk",
-      "sunset",
       "from below",
-      "finger to another's lips",
-      "cowboy shot"
+      "finger to another's lips"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

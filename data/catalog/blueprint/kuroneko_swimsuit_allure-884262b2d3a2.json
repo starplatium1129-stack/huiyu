@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3469,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kuroneko_swimsuit_allure",
     "characterId": "kuroneko",
@@ -27,22 +27,27 @@
       "daily"
     ],
     "sceneTags": [
-      "night_beach",
+      "ocean",
+      "seashore",
+      "night",
       "moonlight",
-      "black_swimsuit",
-      "frilled_swimsuit",
-      "black_hair",
-      "straight_bangs",
-      "gothic_allure",
-      "tsundere_blush"
+      "cool_lighting",
+      "blush",
+      "cowboy_shot"
     ],
     "promptTokens": [
+      "cowboy shot",
+      "ocean",
+      "seashore",
+      "night",
+      "moonlight",
+      "cool lighting",
+      "blush",
       "1girl",
       "solo",
       "kuroneko (oreimo)",
       "long black hair",
       "hime cut",
-      "blue eyes",
       "black one-piece swimsuit",
       "frilled swimsuit",
       "standing on moonlit beach rocks",

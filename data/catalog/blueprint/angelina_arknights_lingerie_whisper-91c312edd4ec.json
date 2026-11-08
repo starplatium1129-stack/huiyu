@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "angelina_arknights_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3162,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "angelina_arknights_lingerie_whisper",
     "characterId": "angelina_arknights",
@@ -14,7 +14,7 @@
     "location": "罗德岛外勤信使宿舍的温馨单人房",
     "timeOfDay": "晚间",
     "lighting": "天花板投射的星空投影灯打出旋转的淡蓝星系流光，烘托出梦幻私密的少女房间",
-    "camera": "轻盈微仰角，捕捉身体半空悬浮的超现实灵动感与狐耳少女的元气可爱",
+    "camera": "low angle, medium shot, 轻盈微仰角，捕捉身体半空悬浮的超现实灵动感与元气可爱",
     "mood": "奇幻灵动、元气可爱、俏皮浪漫的心动日常",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,37 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "floating_in_air",
+      "floating",
       "anti_gravity",
-      "star_projector",
-      "coral_pink_silk",
-      "vulpo_ears_and_tail",
+      "on_bed",
       "hugging_pillow",
-      "whimsical_bedroom",
-      "cheerful"
+      "star_projector",
+      "starry_sky_print",
+      "cheerful",
+      "happy_smile",
+      "bedroom",
+      "starlight",
+      "low_angle",
+      "medium_shot"
     ],
     "promptTokens": [
-      "fox ears",
-      "tail",
-      "coral pink silk camisole",
-      "floating in air",
+      "floating",
+      "anti gravity",
+      "above bed",
       "hugging pillow",
-      "starry room",
+      "star projector",
+      "starry sky print",
+      "cheerful",
       "happy smile",
-      "starlight"
+      "bedroom",
+      "starlight",
+      "blue lighting",
+      "low angle",
+      "medium shot"
     ],
     "negativeTokens": [],
-    "promptProse": "Angelina enjoying zero-gravity relaxation in her personal dorm room at night. Clothed in a breezy coral-pink polka-dot silk camisole and sleep shorts set, she floats playfully a few inches above her mattress thanks to gentle anti-gravity Arts. Hugging a plush celestial pillow with her fluffy fox tail drifting happily, she greets the viewer with sparkling amber eyes beneath cosmic starlight projections.",
-    "animaCaption": "Angelina enjoying zero-gravity relaxation in her personal dorm room at night. Clothed in a breezy coral-pink polka-dot silk camisole and sleep shorts set, she floats playfully a few inches above her mattress thanks to gentle anti-gravity Arts.",
+    "promptProse": "Angelina relaxes in zero-gravity bliss in her cozy Rhodes Island dorm room at night, floating weightlessly a few inches above her mattress thanks to gentle Arts. Rotating blue star projector lights illuminate her playful evening routine.",
+    "animaCaption": "Floating weightlessly above her bed with gentle anti-gravity Arts, hugging a plush pillow with a cheerful smile beneath starlight projection.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

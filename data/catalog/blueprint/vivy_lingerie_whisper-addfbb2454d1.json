@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "vivy_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3356,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "vivy_lingerie_whisper",
     "characterId": "vivy",
@@ -14,7 +14,7 @@
     "location": "近未来主题公园巨蛋舞台后室，全息音乐波形发生器在空气中泛起涟漪",
     "timeOfDay": "百年巡演终幕后台",
     "lighting": "梳妆台冷白环形灯与全息乐谱的青蓝光芒交相辉映，在冰肌玉骨上勾勒出未来科技质感",
-    "camera": "正面特写平视，按抚胸口金属核心的手势与纯净青绿的AI眼眸充满灵魂感染力",
+    "camera": "medium shot, low angle, 近未来后台中景，全息声波谱线与人造歌姬的微弱心跳",
     "mood": "歌姬AI在漫长岁月里用歌声寻觅“倾注心意”的终极命题，崇高、清冷而深情",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,29 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "backstage_couch",
+      "holographic_display",
+      "audio_waveform",
+      "concert_dome",
+      "glowing_lines",
+      "cyberpunk",
+      "serene",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "vanity",
-      "sitting",
-      "blue hair",
-      "floating",
-      "delicate underwire cups",
-      "songstress diva boudoir",
-      "indoors",
-      "vanity light",
-      "hologram",
-      "blue glow"
+      "medium shot",
+      "low angle",
+      "resting on backstage sofa",
+      "floating holographic sound wave graphs",
+      "futuristic concert stadium backstage",
+      "soft blue stage lighting bleed",
+      "contemplative robotic serenity"
     ],
     "negativeTokens": [],
-    "promptProse": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background. Warm incandescent vanity bulbs contrast sharply with the soft blue luminescence of a floating holographic interface, illuminating her artificial skin with subtle complexity.",
-    "animaCaption": "Vivy sits on dressing room vanity stool with hand pressed over left chest audio-core, wearing a crystalline cyan fiber-optic sheer teddy bodysuit. Vivy fluorite eye's song, android diva, voluminous cyan-blue hair cascading down amidst striking turquoise digital eyes, floating holographic soundwaves in background. Warm incandescent vanity bulbs contrast sharply with the soft blue luminescence of a floating holographic interface, illuminating her artificial skin with subtle complexity.",
+    "promptProse": "Vivy rests backstage in the quiet stadium after her grand centenary concert, watching holographic melody waveforms pulse gently in the blue ambient light.",
+    "animaCaption": "Resting backstage after a grand concert as holographic melody waveforms ripple softly in the blue light.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

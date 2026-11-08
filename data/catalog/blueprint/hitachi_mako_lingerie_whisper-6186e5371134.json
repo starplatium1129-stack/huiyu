@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hitachi_mako_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3197,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "hitachi_mako_lingerie_whisper",
     "characterId": "hitachi_mako",
@@ -14,7 +14,7 @@
     "location": "朝武家大宅主卧天花板横梁下铺设的草席前",
     "timeOfDay": "午夜",
     "lighting": "障子门外庭院月光从窗格透入，在墨黑缠胸布与健美修长的腹部线条上勾勒出冷冽的银霜",
-    "camera": "充满忍者敏捷张力的低位仰拍，突显女忍者结实优美的身段与全神贯注的护卫姿态",
+    "camera": "low angle, 充满忍者敏捷张力的低位仰拍，突显女忍者结实优美的身段与全神贯注的护卫姿态",
     "mood": "忠诚机敏、贴身死士、内敛坚毅下的少女羞怯",
     "adult": true,
     "sampleRating": "R15",
@@ -27,24 +27,29 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "wooden_beams",
-      "ninja_kneeling",
-      "black_sarashi_chest_wrap",
-      "slit_cotton_shorts",
-      "one_knee_down",
-      "toned_midriff",
-      "loyal_bodyguard",
-      "kunoichi_blush"
+      "indoors",
+      "bedroom",
+      "bed",
+      "night",
+      "moonlight",
+      "cool_lighting",
+      "kneeling",
+      "low_angle"
     ],
     "promptTokens": [
+      "low angle",
+      "indoors",
+      "bedroom",
+      "bed",
+      "night",
+      "moonlight",
+      "cool lighting",
+      "kneeling",
       "black sarashi wrap",
       "ninja shorts",
       "kneeling on one knee",
       "toned abs",
-      "amber eyes",
-      "short hair",
-      "loyal bodyguard",
-      "moonlight"
+      "loyal bodyguard"
     ],
     "negativeTokens": [],
     "promptProse": "Mako Hitachi dropping soundlessly from the timber rafters into a defensive guard stance inside the master's bedchamber. Dressed for combat readiness in a snug black cotton sarashi chest-wrap and athletic high-slit sleep shorts that reveal her chiseled ninja core, she drops to one knee. Her amber eyes stay vigilant even as a charming flush betrays her modesty under the moonlit lattice.",

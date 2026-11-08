@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_chainsaw_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3260,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "reze_chainsaw_lingerie_whisper",
     "characterId": "reze_chainsaw",
@@ -14,7 +14,7 @@
     "location": "老旧公寓高层露台窗台，远处夜空中依稀绽放着夏日祭典的绚烂花火",
     "timeOfDay": "夏夜花火大会的终章",
     "lighting": "远方夜空中夏日烟花爆发出的红绿紫三色绚烂光华，将窗台边缘照耀得梦幻迷离",
-    "camera": "侧逆光中近景，拉扯颈项皮圈的特写动作充满性感的危险暗示",
+    "camera": "medium shot, side view, 侧身平视中景，微风拂动发丝，夜空中绽放的花火光华如梦似幻",
     "mood": "致命特工的危险罗曼史，甜美诱人与随时引爆的狂乱交织",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "window_sill",
+      "window",
+      "fireworks",
+      "night_sky",
+      "city_lights",
+      "summer_night",
+      "melancholy_smile",
+      "warm_lighting",
+      "medium_shot",
+      "side_view"
     ],
     "promptTokens": [
-      "sitting",
-      "choker",
-      "green eyes",
-      "night",
-      "scalloped floral edges",
-      "low-rise cheeky briefs",
-      "seductive soviet spy nightwear",
-      "indoors",
-      "street light",
-      "window light",
-      "dim lighting"
+      "medium shot",
+      "side view",
+      "sitting on apartment window sill",
+      "summer festival fireworks exploding in sky",
+      "colorful bursts of light",
+      "city rooftop bokeh",
+      "summer night breeze",
+      "soft wistful smile",
+      "mysterious warmth"
     ],
     "negativeTokens": [],
-    "promptProse": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky. Distant yellow streetlights through the apartment window frame cast quiet cinematic shadows across the bed, catching a mysterious glint in her half-lowered eyes.",
-    "animaCaption": "Reze sits on high windowsill, wearing a smoky violet sheer lace cropped bralette set. Pulling slim black choker ring at neck with one finger, dark purple bob hair, biting lower lip with seductive playful smirk amidst emerald green eyes, distant summer fireworks blooming in night sky. Distant yellow streetlights through the apartment window frame cast quiet cinematic shadows across the bed, catching a mysterious glint in her half-lowered eyes.",
+    "promptProse": "Reze perches on the open window sill of a run-down apartment as vibrant summer festival fireworks light up the night sky behind her, wearing a soft, bittersweet smile.",
+    "animaCaption": "Perched on a window sill as festival fireworks burst across the night sky, sharing a tender, bittersweet smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinjou_akane_lingerie_whisper",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 3527,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shinjou_akane_lingerie_whisper",
     "characterId": "shinjou_akane",
@@ -14,7 +14,7 @@
     "location": "凌乱昏暗的粉灰调少女卧室，满墙货架摆满了亲手雕刻的邪恶怪兽软胶手办",
     "timeOfDay": "午夜造物时刻",
     "lighting": "电脑显示器惨白的光芒正面打在脸上，背景房间沉浸在暗淡阴郁的冷灰阴影中",
-    "camera": "低角度平视中近景，怪兽头雕的前景虚化凸显赤足与少女不带温度的笑脸",
+    "camera": "medium close-up, low angle, 低角度平视中近景，怪兽头雕的前景虚化凸显赤足与少女不带温度的笑脸",
     "mood": "病态、寂寞、渴望被爱又企图毁灭世界的创世神明魅力，极具中毒性",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,37 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "cool_lighting",
+      "sitting",
+      "smile",
+      "medium_close_up",
+      "low_angle"
     ],
     "promptTokens": [
+      "medium close-up",
+      "low angle",
+      "indoors",
+      "bedroom",
+      "night",
+      "cool lighting",
       "sitting",
-      "bare feet",
-      "pink hair",
       "smile",
-      "glowing",
+      "1girl",
+      "solo",
+      "shinjou akane",
+      "bare feet",
+      "pale skin",
       "relaxed casual fit",
-      "porcelain skin contrast",
-      "indoors"
+      "monitor glow",
+      "dim lighting",
+      "shadow"
     ],
     "negativeTokens": [],
     "promptProse": "Akane Shinjou sits cross-legged on messy carpet holding hand-sculpted kaiju figure, wearing a smoky pink ribbed knit off-shoulder camisole slip. Bare feet, short lilac-pink hair, glowing pink eyes with empty cold smile amidst shelves packed with custom monster figurines, moody computer monitor glow.",
-    "animaCaption": "Akane Shinjou sits cross-legged on messy carpet holding hand-sculpted kaiju figure, wearing a smoky pink ribbed knit off-shoulder camisole slip. Bare feet, short lilac-pink hair, glowing pink eyes with empty cold smile amidst shelves packed with custom monster figurines, moody computer monitor glow.",
+    "animaCaption": "Akane Shinjou sits cross-legged on messy carpet holding hand-sculpted kaiju figure, wearing a smoky pink ribbed knit off-shoulder camisole slip.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

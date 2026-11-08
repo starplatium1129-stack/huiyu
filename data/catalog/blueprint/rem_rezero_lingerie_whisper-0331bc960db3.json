@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rem_rezero_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3221,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "rem_rezero_lingerie_whisper",
     "characterId": "rem_rezero",
@@ -14,7 +14,7 @@
     "location": "罗兹瓦尔宅邸客房床榻，黄铜烛台上的白色蜡烛正静静淌下烛泪",
     "timeOfDay": "深夜万籁俱寂的私密倾诉",
     "lighting": "单支蜡烛的温润暖光投射在水蓝发丝与泪珠上，折射出钻石般的璀璨微光",
-    "camera": "正面特写微仰视，合十祈祷的动作与满含泪光的澄澈蓝眸极具感染力",
+    "camera": "medium shot, eye level, 侧身平视中景，客房烛影摇曳与无怨无悔的倾诉温存",
     "mood": "世界级女主角的绝对深情，无保留的献祭般温柔与至高幸福感",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_bed",
+      "candlestick",
+      "candle",
+      "dripping_wax",
+      "guest_room",
+      "mansion",
+      "tender_smile",
+      "devoted",
+      "warm_lighting",
+      "medium_shot"
     ],
     "promptTokens": [
-      "bed",
-      "kneeling",
-      "blue hair",
-      "ribbon",
-      "teacup",
-      "blue eyes",
-      "smile",
-      "white satin ribbon bows",
-      "indoors",
-      "candlelight",
-      "glow",
-      "warm lighting"
+      "medium shot",
+      "sitting gracefully on edge of guest bed",
+      "brass candlestick on side table",
+      "dripping white wax",
+      "Roswaal mansion guest quarters",
+      "warm dancing candlelight",
+      "tender devoted smile",
+      "gentle longing gaze"
     ],
     "negativeTokens": [],
-    "promptProse": "Rem kneels on guest bed, wearing a sky blue sheer floral lace babydoll dress. Hands clasped together in gentle prayer gesture at chest, short sky-blue hair with pink ribbon clip, sparkling blue eyes with happy tears amidst pure angelic smile, single flickering candle lighting the room.",
-    "animaCaption": "Rem kneels on guest bed, wearing a sky blue sheer floral lace babydoll dress. Hands clasped together in gentle prayer gesture at chest, short sky-blue hair with pink ribbon clip, sparkling blue eyes with happy tears amidst pure angelic smile, single flickering candle lighting the room.",
+    "promptProse": "Rem sits gently on the edge of the guest bed inside the quiet Roswaal manor, bathed in the amber glow of a single brass candlestick as she listens with pure, devoted warmth.",
+    "animaCaption": "Sitting on the edge of a bed beside a glowing candlestick, smiling with heartfelt, gentle devotion.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

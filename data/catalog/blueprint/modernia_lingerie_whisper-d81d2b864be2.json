@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3441,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "modernia_lingerie_whisper",
     "characterId": "modernia",
@@ -14,7 +14,7 @@
     "location": "前哨基地指挥官卧室，床头摆放着柔软的泰迪熊与机械积木",
     "timeOfDay": "晨光熹微的初醒时刻",
     "lighting": "透过白纱帘的柔白晨光，将整个被褥烘托得如梦似幻般纯净明朗",
-    "camera": "正面平视特写，镜头对焦于紧紧抱住大衣的纤巧手臂与天真烂漫的笑颜",
+    "camera": "close-up, eye level, front view, 正面平视特写，镜头对焦于紧紧抱住大衣的纤巧手臂与天真烂漫的笑颜",
     "mood": "犹如初生幼鸟般的极致依恋与纯洁无垢的爱意",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,37 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "indoors",
+      "bedroom",
+      "bed",
+      "morning",
+      "sunlight",
+      "dim_lighting",
+      "kneeling",
+      "smile",
+      "close_up",
+      "eye_level",
+      "front_view"
     ],
     "promptTokens": [
-      "teddy bear",
+      "close-up",
+      "eye level",
+      "front view",
+      "indoors",
+      "bedroom",
       "bed",
+      "morning",
+      "sunlight",
+      "dim lighting",
       "kneeling",
-      "blue hair",
-      "glowing",
-      "red eyes",
       "smile",
-      "soft white satin ribbon wraps",
-      "indoors"
+      "teddy bear",
+      "glowing",
+      "soft white satin ribbon wraps"
     ],
     "negativeTokens": [],
     "promptProse": "Modernia kneels on plush bed, wearing a pure white sheer bandage-inspired slip dress. Marian, clutching commander's black trenchcoat tightly to chest, disheveled short grey-blue hair amidst wide glowing red eyes, sweet pure childlike smile, sun-drenched bedroom with plush toys.",
-    "animaCaption": "Modernia kneels on plush bed, wearing a pure white sheer bandage-inspired slip dress. Marian, clutching commander's black trenchcoat tightly to chest, disheveled short grey-blue hair amidst wide glowing red eyes, sweet pure childlike smile, sun-drenched bedroom with plush toys.",
+    "animaCaption": "Modernia kneels on plush bed, wearing a pure white sheer bandage-inspired slip dress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

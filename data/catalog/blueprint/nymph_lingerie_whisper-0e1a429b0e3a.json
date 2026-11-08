@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3470,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "nymph_lingerie_whisper",
     "characterId": "nymph",
@@ -14,7 +14,7 @@
     "location": "小镇最高处生锈水塔圆顶，晚霞如火烧云般铺满整片地平线",
     "timeOfDay": "落日余晖落尽时",
     "lighting": "浓烈的夕阳橙紫反光照亮电子翅膀，在半透明翅膜上折射出虹彩数码光效",
-    "camera": "大广角仰拍，夕阳壮烈的天际线映衬水塔边缘单薄的少女身影与透明羽翼",
+    "camera": "low angle, 大广角仰拍，夕阳壮烈的天际线映衬水塔边缘单薄的少女身影与透明羽翼",
     "mood": "傲娇电子天使的纯情与执拗，暮色下让人怦然心动的脆弱",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,29 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "low_angle"
     ],
     "promptTokens": [
+      "low angle",
+      "indoors",
+      "bedroom",
+      "night",
+      "warm lighting",
       "sitting",
       "water",
-      "twintails",
-      "angel wings",
       "glowing",
       "teacup",
       "sunset",
-      "golden bell choker collar",
-      "indoors"
+      "golden bell choker collar"
     ],
     "negativeTokens": [],
     "promptProse": "Nymph sits on rusty water tower dome edge, wearing a sky blue translucent chiffon frill playsuit. Nymph sora no otoshimono, holding snack bag, long twin tails fluttering in evening wind amidst iridescent transparent electronic wings glowing softly, teary pouting face looking sideways, sunset sky panorama.",
-    "animaCaption": "Nymph sits on rusty water tower dome edge, wearing a sky blue translucent chiffon frill playsuit. Nymph sora no otoshimono, holding snack bag, long twin tails fluttering in evening wind amidst iridescent transparent electronic wings glowing softly, teary pouting face looking sideways, sunset sky panorama.",
+    "animaCaption": "Nymph sits on rusty water tower dome edge, wearing a sky blue translucent chiffon frill playsuit.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

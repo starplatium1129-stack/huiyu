@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maomao_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3357,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "maomao_lingerie_whisper",
     "characterId": "maomao",
@@ -14,7 +14,7 @@
     "location": "后宫偏僻的私密草药房，干燥草药束倒悬在房梁下，黄铜小药碾摆在桌头",
     "timeOfDay": "深夜熬药时刻",
     "lighting": "油灯微弱而温暖的红黄火光，在木质墙壁与散发微光的药草间摇曳晃动",
-    "camera": "侧俯角度中景，桌面摆满的药碾、研钵与少女单薄的肚兜背影相映成趣",
+    "camera": "medium shot, high angle, back view, 侧俯角度中景，桌面摆满的药碾、研钵与少女单薄的肚兜背影相映成趣",
     "mood": "东方宫廷的神秘药香，清冷理智却又带着猫一般的俏皮野趣",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "candlelight",
+      "warm_lighting",
+      "sitting",
+      "medium_shot",
+      "high_angle",
+      "back_view"
     ],
     "promptTokens": [
+      "medium shot",
+      "high angle",
+      "back view",
+      "indoors",
+      "bedroom",
+      "night",
+      "candlelight",
+      "warm lighting",
       "sitting",
-      "green eyes",
       "desk lamp",
       "jade green silk dudou bodice",
       "traditional oriental innerwear",
       "floral jacquard weave",
-      "herbal apothecary loungewear",
-      "indoors"
+      "herbal apothecary loungewear"
     ],
     "negativeTokens": [],
     "promptProse": "Maomao sits cross-legged on mat at low wooden desk, wearing a jade green silk dudou bodice. Smelling dried herbal sprig near nose, loose hair pinned with wooden hairpin, cat-like observant green eyes amidst hanging herbs from ceiling, warm flickering oil lamp lighting.",
-    "animaCaption": "Maomao sits cross-legged on mat at low wooden desk, wearing a jade green silk dudou bodice. Smelling dried herbal sprig near nose, loose hair pinned with wooden hairpin, cat-like observant green eyes amidst hanging herbs from ceiling, warm flickering oil lamp lighting.",
+    "animaCaption": "Maomao sits cross-legged on mat at low wooden desk, wearing a jade green silk dudou bodice.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

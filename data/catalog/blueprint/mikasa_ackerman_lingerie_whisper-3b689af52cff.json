@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mikasa_ackerman_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3189,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "mikasa_ackerman_lingerie_whisper",
     "characterId": "mikasa_ackerman",
@@ -14,7 +14,7 @@
     "location": "兵团旧石砌营房宿舍，粗糙的木床与壁炉中渐渐微弱的红炭火光",
     "timeOfDay": "战役前夕的沉寂夜晚",
     "lighting": "壁炉残火映出深红暖光，在充满健康肌肉线条的腹部与锁骨处投下立体阴影",
-    "camera": "侧视中景，聚焦修剪利落的黑发侧影与整理红色围巾时的轻柔动作",
+    "camera": "medium shot, side view, 侧视中景，聚焦修剪利落的黑发侧影与整理红色围巾时的轻柔动作",
     "mood": "硬朗战士外壳下最纯粹无私的深情，坚毅、静默而不可撼动",
     "adult": true,
     "sampleRating": "R15",
@@ -27,24 +27,37 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "fireplace",
+      "firelight",
+      "bed",
+      "dusk",
+      "sunset",
+      "candlelight",
+      "warm_lighting",
+      "sitting",
+      "hugging_pillow",
+      "medium_shot",
+      "side_view"
     ],
     "promptTokens": [
-      "bed",
-      "sitting",
-      "black hair",
+      "medium shot",
+      "side view",
       "fireplace",
+      "firelight",
+      "bed",
+      "dusk",
+      "sunset",
+      "candlelight",
+      "warm lighting",
+      "sitting",
+      "hugging pillow",
       "glowing",
       "understated sensual knitwear",
       "indoors"
     ],
     "negativeTokens": [],
     "promptProse": "Mikasa Ackerman sits on rustic wooden bunk bed edge, wearing a charcoal grey ribbed knit crop camisole. Gently folding iconic red scarf on pillow, toned athletic abs, short black hair amidst intense devoted dark grey eyes, stone fireplace embers glowing warmly, quiet military quarters.",
-    "animaCaption": "Mikasa Ackerman sits on rustic wooden bunk bed edge, wearing a charcoal grey ribbed knit crop camisole. Gently folding iconic red scarf on pillow, toned athletic abs, short black hair amidst intense devoted dark grey eyes, stone fireplace embers glowing warmly, quiet military quarters.",
+    "animaCaption": "Mikasa Ackerman sits on rustic wooden bunk bed edge, wearing a charcoal grey ribbed knit crop camisole.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

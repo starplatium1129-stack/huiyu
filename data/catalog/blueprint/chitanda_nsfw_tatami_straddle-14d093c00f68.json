@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_nsfw_tatami_straddle",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "chitanda_nsfw_tatami_straddle",
     "title": "千反田爱瑠 · 千反田家和室的主控跨坐 ·「奉太郎……我很好奇……男女之间的事」",
@@ -18,17 +18,24 @@
     "camera": "medium shot, first-person view from below",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "tatami",
+      "japanese_room",
+      "night",
+      "warm_lighting",
+      "sitting",
+      "blush",
+      "medium_shot"
     ],
     "promptProse": "She leans forward while straddling the viewer's hips, her loosened yukata lit by moonlight and warm light beyond the screens.",
     "nsfwProse": "",
     "promptTokens": [
-      "japanese room",
+      "medium shot",
       "tatami",
+      "japanese room",
+      "night",
+      "warm lighting",
+      "sitting",
+      "blush",
       "ivory yukata",
       "open clothes",
       "topless",
@@ -36,10 +43,7 @@
       "moonlight",
       "from below",
       "purple hydrangea print",
-      "leaning forward",
-      "blush",
-      "warm lighting",
-      "medium shot"
+      "leaning forward"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

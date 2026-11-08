@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3180,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kitagawa_marin_lingerie_whisper",
     "characterId": "kitagawa_marin",
@@ -14,7 +14,7 @@
     "location": "堆满cosplay布料与彩妆盘的卧室梳妆台前，环形补光灯散发柔光",
     "timeOfDay": "深夜试装时刻",
     "lighting": "环形柔光灯提供明亮清透的主光源，背景点缀暖黄小串灯营造温馨卧室感",
-    "camera": "中近景特写，由上而下聚焦于椅背上搭着的手臂与俏皮狡黠的眨眼神态",
+    "camera": "medium close-up, 中近景特写，由上而下聚焦于椅背上搭着的手臂与俏皮狡黠的眨眼神态",
     "mood": "热烈火辣，充满辣妹风情的自信与心动互动",
     "adult": true,
     "sampleRating": "R15",
@@ -27,16 +27,22 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "vanity",
+      "mirror",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "smile",
+      "medium_close_up"
     ],
     "promptTokens": [
+      "medium close-up",
       "vanity",
+      "mirror",
+      "night",
+      "warm lighting",
       "sitting",
-      "blonde hair",
+      "smile",
       "ring light",
       "bed",
       "strappy underwire crop bustier",
@@ -46,7 +52,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Kitagawa Marin sits backwards on vanity chair, wearing a leopard print sheer lace bralette set. Chin resting on hands on chair back, winking playfully, blonde hair with pink gradient ends amidst red-orange gradient eyes, bedroom vanity with cosmetics and ring light in background, confident playful gyaru expression.",
-    "animaCaption": "Kitagawa Marin sits backwards on vanity chair, wearing a leopard print sheer lace bralette set. Chin resting on hands on chair back, winking playfully, blonde hair with pink gradient ends amidst red-orange gradient eyes, bedroom vanity with cosmetics and ring light in background, confident playful gyaru expression.",
+    "animaCaption": "Kitagawa Marin sits backwards on vanity chair, wearing a leopard print sheer lace bralette set.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

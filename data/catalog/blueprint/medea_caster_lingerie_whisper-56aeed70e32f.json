@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3343,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "medea_caster_lingerie_whisper",
     "characterId": "medea_caster",
@@ -14,7 +14,7 @@
     "location": "柳洞寺后山秘密魔术工坊，一侧案台上整齐摆放着未拼装的城堡手办",
     "timeOfDay": "午夜魔术研习之时",
     "lighting": "指尖魔力蝴蝶散发神秘幽紫冷光，工坊四角的古铜烛台提供跳跃的暖橙底光",
-    "camera": "侧仰特写镜头，手托魔力飞蝶的动作优美如芭蕾，展示高贵修长的肩颈线条",
+    "camera": "medium shot, side view, 侧身中景，工坊烛火映照下的城堡手办与魔女罕见的温顺依恋",
     "mood": "神代魔女的成熟高雅、深邃知性与私下对待爱侣的无尽柔情",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "workbench",
+      "candles",
+      "magic_workshop",
+      "castle_model",
+      "tools",
+      "stone_wall",
+      "warm_lighting",
+      "enamored_gaze",
+      "medium_shot",
+      "side_view"
     ],
     "promptTokens": [
-      "chaise lounge",
-      "butterfly",
-      "glowing",
-      "blonde hair",
-      "purple eyes",
-      "gold filigree runic embroidery",
-      "sweetheart neckline",
-      "indoors"
+      "medium shot",
+      "side view",
+      "sitting beside crafting workbench",
+      "half-built model castle kit",
+      "flickering candles",
+      "magic scrolls",
+      "secret cavern workshop",
+      "warm amber flame glow",
+      "affectionate gentle gaze"
     ],
     "negativeTokens": [],
-    "promptProse": "Caster lounges gracefully on low couch, wearing a deep royal purple velvet slip dress. Conjuring glowing purple magical butterfly on slender fingertip, golden hair in high updo showing slender neck, seductive mature purple eyes amidst gothic workshop with hobby model kits on shelf.",
-    "animaCaption": "Caster lounges gracefully on low couch, wearing a deep royal purple velvet slip dress. Conjuring glowing purple magical butterfly on slender fingertip, golden hair in high updo showing slender neck, seductive mature purple eyes amidst gothic workshop with hobby model kits on shelf.",
+    "promptProse": "Medea sits contentedly at her workshop table in Ryuudou temple, tenderly assembling a plastic model castle under flickering candlelight away from the prying eyes of the world.",
+    "animaCaption": "Sitting beside a half-built model castle in her candlelit workshop, gazing with tender, domestic affection.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

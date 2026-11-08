@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3417,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "saten_ruiko_lingerie_whisper",
     "characterId": "saten_ruiko",
@@ -14,7 +14,7 @@
     "location": "学园都市学生宿舍屋顶平台，栏杆外是远近交错的巨大风力发电风车与璀璨灯火",
     "timeOfDay": "夏日微风习习的凉夜",
     "lighting": "城市天际线的蓝白霓虹与楼顶暖黄防空灯相映，风车阴影随夜风缓缓掠过",
-    "camera": "微仰全身横幅构图，压裙摆的动作自然可爱，充满瞬间抓拍的鲜活空气感",
+    "camera": "medium shot, side view, 侧身迎风中景，夏夜微风吹拂发梢与天台夜景的元气浪漫",
     "mood": "元气无能力者少女的爽朗治愈，随性、健康而充满青春悸动",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "standing",
+      "leaning_on_railing",
+      "rooftop",
+      "wind_turbine",
+      "city_lights",
+      "summer_breeze",
+      "hair_flower",
+      "cheerful_smile",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "medium_shot",
+      "side_view"
     ],
     "promptTokens": [
-      "night",
-      "amber eyes",
-      "tiny plum blossom embroidery",
-      "ruffled airy hem",
-      "spaghetti straps",
-      "indoors",
-      "neon lights",
-      "shadow",
-      "warm lighting"
+      "medium shot",
+      "side view",
+      "leaning over rooftop fence",
+      "summer night wind blowing hair",
+      "white flower in hair",
+      "Academy City skyline bokeh",
+      "spinning wind turbine towers",
+      "bright cheerful laugh",
+      "warm city glow"
     ],
     "negativeTokens": [],
-    "promptProse": "Saten Ruiko relaxes in on windy rooftop holding down nightgown hemline with both hands, wearing a pure white breathable cotton slip dress. On windy rooftop holding down nightgown hemline with both hands, white plum blossom hairpin in fluttering dark hair, radiant bright laugh amidst amber eyes, illuminated Academy City windmills spinning in background.",
-    "animaCaption": "Saten Ruiko relaxes in on windy rooftop holding down nightgown hemline with both hands, wearing a pure white breathable cotton slip dress. On windy rooftop holding down nightgown hemline with both hands, white plum blossom hairpin in fluttering dark hair, radiant bright laugh amidst amber eyes, illuminated Academy City windmills spinning in background.",
+    "promptProse": "Ruiko laughs with breezy summer energy on the dorm roof, the night wind fluttering through her hair and skirt against the glittering backdrop of wind turbines and city lights.",
+    "animaCaption": "Leaning on a rooftop fence with wind tossing her hair, laughing cheerfully against the glittering city lights.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

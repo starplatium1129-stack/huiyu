@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3413,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shirai_kuroko_lingerie_whisper",
     "characterId": "shirai_kuroko",
@@ -14,7 +14,7 @@
     "location": "常盘台宿舍双人间，床头挂着御坂美琴的海报与呱太抱枕",
     "timeOfDay": "深夜实施“姐姐大人攻略作战”前夕",
     "lighting": "天花板吸顶灯的纯白荧光清晰照亮了手里的可疑喷雾与通红的双颊",
-    "camera": "正面特写微仰，精准捕捉手忙脚乱藏东西与满脸蒸汽红晕的滑稽神态",
+    "camera": "close-up, eye level, 正面平视近景，被抓包更衣时的慌乱娇羞与对姐姐大人的痴态反差",
     "mood": "搞笑痴女模式瞬间切换成极度羞耻的纯情反差，极具戏剧张力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,29 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_bed",
+      "poster",
+      "gekota_pillow",
+      "dorm_room",
+      "flustered",
+      "panicked_blush",
+      "embarrassed",
+      "medium_close_up"
     ],
     "promptTokens": [
-      "twintails",
-      "teacup",
-      "blush",
-      "lace-topped stockings",
-      "indoors",
-      "lamp",
-      "warm lighting",
-      "soft lighting"
+      "medium close-up",
+      "sitting suddenly on bed edge",
+      "Tokiwadai double room",
+      "Gekota plush pillow on headboard",
+      "Mikoto poster on wall",
+      "bright crimson panic blush",
+      "flustered flailing hands",
+      "dorm lamp light"
     ],
     "negativeTokens": [],
-    "promptProse": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall. A small bedside reading lamp casts warm focused light across the dorm nightstand, highlighting her sly smirk and coiled teleporter ribbons.",
-    "animaCaption": "Shirai Kuroko relaxes in caught red-handed adjusting lace garter belt, wearing a crimson sheer lace underwire bra set. Caught red-handed adjusting lace garter belt, holding suspicious small pink spray bottle, twintails sticking up amidst steam pouring from blushing face, wide panicked eyes, Tokiwadai dormitory with Mikoto poster on wall. A small bedside reading lamp casts warm focused light across the dorm nightstand, highlighting her sly smirk and coiled teleporter ribbons.",
+    "promptProse": "Kuroko is caught mid-teleport in her dorm room, collapsing back onto the mattress in total flustered panic while attempting to hide her beloved Onee-sama photo.",
+    "animaCaption": "Caught mid-action in her dorm room, collapsing back onto the bed with an intensely flustered, comedic blush.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

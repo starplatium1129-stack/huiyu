@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kazami_kazuki_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3297,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kazami_kazuki_lingerie_whisper",
     "characterId": "kazami_kazuki",
@@ -14,7 +14,7 @@
     "location": "私人书斋躺椅畔，百叶窗透入冷色月光与黑白棋盘相伴",
     "timeOfDay": "深宵静谧时刻",
     "lighting": "银白冷月穿过百叶窗格投下黑白相间的条纹光影，轮廓光勾勒修长身段",
-    "camera": "中景斜俯拍，聚焦下颌优美线条与指间黑曜石棋子",
+    "camera": "medium shot, high angle, 中景斜俯拍，聚焦下颌优美线条与指间黑曜石棋子",
     "mood": "清冷知性，沉着神秘而充满支配感",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "reclining",
+      "chaise_lounge",
+      "study",
+      "chessboard",
+      "chess_piece",
+      "holding_chess_piece",
+      "window_blinds",
+      "moonlight",
+      "shadows",
+      "medium_shot",
+      "high_angle"
     ],
     "promptTokens": [
-      "chaise lounge",
+      "medium shot",
+      "high angle",
       "reclining",
-      "chess piece",
-      "silver hair",
+      "chaise lounge",
+      "holding chess piece",
+      "chessboard",
+      "study room",
       "window blinds",
       "moonlight",
-      "chessboard",
-      "geometric sheer mesh cutouts",
-      "indoors"
+      "shadow play",
+      "dim lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Kazami Kazuki reclines on dark velvet chaise lounge, wearing a charcoal grey silk camisole slip. Holding an obsidian chess piece between slender fingers, silver hair cascading over shoulder, sharp intelligent eyes amidst moonlight through venetian blinds, chess table nearby, intricate shadow play.",
-    "animaCaption": "Kazami Kazuki reclines on dark velvet chaise lounge, wearing a charcoal grey silk camisole slip. Holding an obsidian chess piece between slender fingers, silver hair cascading over shoulder, sharp intelligent eyes amidst moonlight through venetian blinds, chess table nearby, intricate shadow play.",
+    "promptProse": "Kazami Kazuki reclines on a dark velvet chaise lounge in her private study, holding an obsidian chess piece between slender fingers. Cold moonlight filters through venetian blinds, casting sharp grid shadows across the chessboard beside her.",
+    "animaCaption": "Reclining on a velvet chaise lounge in a moonlit study, holding a chess piece with a calm, intellectual gaze beside the board.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

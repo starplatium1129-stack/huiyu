@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_azur_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3448,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "st_louis_azur_lingerie_whisper",
     "characterId": "st_louis_azur",
@@ -14,7 +14,7 @@
     "location": "海滨沿海公路观景停车点，远处是繁星点点的港区夜景与平静浪潮",
     "timeOfDay": "午夜兜风后的私密停车时光",
     "lighting": "车内氛围灯的淡紫冷光与远方港湾灯火在车窗镀膜上反射出朦胧的流光溢彩",
-    "camera": "平视特写中近景，真皮座椅的奢华质感衬托出惊人完美的丰满身姿与撩人神态",
+    "camera": "medium close-up, eye level, 平视特写中近景，真皮座椅的奢华质感衬托出惊人完美的丰满身姿与撩人神态",
     "mood": "绝对成熟诱人的都市佳人魅力，温柔从容又极具侵略性的成人罗曼史",
     "adult": true,
     "sampleRating": "R15",
@@ -27,15 +27,22 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "ocean",
+      "seashore",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "candlelight",
+      "cool_lighting",
+      "medium_close_up",
+      "eye_level"
     ],
     "promptTokens": [
-      "blue hair",
-      "purple eyes",
+      "medium close-up",
+      "eye level",
+      "ocean",
+      "seashore",
+      "night",
+      "candlelight",
+      "cool lighting",
       "ultra-deep v neckline",
       "sheer gossamer side panels",
       "liquid drape silk",
@@ -44,7 +51,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "St. Louis rests elbow on door frame, wearing a ice blue watered-silk plunging slip gown. Turning in leather sports car seat, running hand through voluminous wavy light-blue hair, sultry violet eyes amidst curvaceous mature figure, coastal scenic overlook with distant harbor lights.",
-    "animaCaption": "St. Louis rests elbow on door frame, wearing a ice blue watered-silk plunging slip gown. Turning in leather sports car seat, running hand through voluminous wavy light-blue hair, sultry violet eyes amidst curvaceous mature figure, coastal scenic overlook with distant harbor lights.",
+    "animaCaption": "St.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

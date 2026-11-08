@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togawa_sakiko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3361,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "togawa_sakiko_lingerie_whisper",
     "characterId": "togawa_sakiko",
@@ -14,7 +14,7 @@
     "location": "逼仄昏暗的单身出租屋，窗外轰鸣的电车高架桥投下斑驳光影",
     "timeOfDay": "深夜兼职归来的崩溃边缘",
     "lighting": "窗外电车疾驰而过的一道道冷白电光，在狭窄阴暗的房间内割裂出瞬息明灭的明暗对比",
-    "camera": "俯角侧面特写，紧紧抠住床单的手指与颤抖的泪痕极具情感爆发力",
+    "camera": "close-up, high angle, side view, 俯角侧面特写，紧紧抠住床单的手指与颤抖的泪痕极具情感爆发力",
     "mood": "昔日千金大小姐跌落尘埃的绝望、自尊与执念，凄美、决绝而撕心裂肺",
     "adult": true,
     "sampleRating": "R15",
@@ -27,15 +27,28 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "stone_bridge",
+      "river",
+      "window",
+      "bed",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "cool_lighting",
+      "sitting",
+      "close_up",
+      "high_angle",
+      "side_view"
     ],
     "promptTokens": [
+      "close-up",
+      "high angle",
+      "side view",
+      "stone bridge",
+      "river",
+      "window",
+      "bed",
+      "night",
+      "cool lighting",
       "sitting",
-      "black hair",
       "teacup",
       "delicate frail silhouette",
       "indoors",
@@ -44,7 +57,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Sakiko Togawa sits on edge of cheap metal frame cot in cramped rundown apartment, wearing a inky black tailored sheer chiffon nightgown. One hand covering half face crying silently, long black hair disheveled, tears glinting amidst proud desperate expression, flashing train lights through window.",
-    "animaCaption": "Sakiko Togawa sits on edge of cheap metal frame cot in cramped rundown apartment, wearing a inky black tailored sheer chiffon nightgown. One hand covering half face crying silently, long black hair disheveled, tears glinting amidst proud desperate expression, flashing train lights through window.",
+    "animaCaption": "Sakiko Togawa sits on edge of cheap metal frame cot in cramped rundown apartment, wearing a inky black tailored sheer chiffon nightgown.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

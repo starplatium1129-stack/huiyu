@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mimori_byakuya_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3264,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "mimori_byakuya_lingerie_whisper",
     "characterId": "mimori_byakuya",
@@ -14,7 +14,7 @@
     "location": "狭小单身公寓的开放式厨房吧台前，暖黄色吊灯投下温馨小圆光斑",
     "timeOfDay": "夜晚巡逻归来的私密时光",
     "lighting": "吧台上方悬挂的一盏复古小吊灯，散发浓郁甜润的暖黄色光晕",
-    "camera": "平视半身特写，对焦于带着奶沫的粉润唇瓣与晃荡的细白脚踝",
+    "camera": "close-up, eye level, 平视半身特写，对焦于带着奶沫的粉润唇瓣与晃荡的细白脚踝",
     "mood": "魔法少女与恶之参谋的荒诞甜蜜日常，纯真无邪又直球心动",
     "adult": true,
     "sampleRating": "R15",
@@ -27,17 +27,26 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "kitchen",
+      "counter",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "smile",
+      "close_up",
+      "eye_level"
     ],
     "promptTokens": [
-      "bare feet",
+      "close-up",
+      "eye level",
+      "kitchen",
+      "counter",
+      "night",
+      "warm lighting",
       "sitting",
+      "smile",
+      "bare feet",
       "mug",
-      "pink hair",
       "desk lamp",
       "powder pink cotton nightshirt",
       "dotted sheer tulle overlay",
@@ -46,7 +55,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Mimori Byakuya sits on kitchen bar stool dangling bare feet, wearing a powder pink cotton nightshirt. Holding mug of warm milk with tiny milk mustache on lip, short pink hair with cute cowlick, bright wide sparkling eyes amidst tiny cozy apartment kitchen, warm pendant lamp.",
-    "animaCaption": "Mimori Byakuya sits on kitchen bar stool dangling bare feet, wearing a powder pink cotton nightshirt. Holding mug of warm milk with tiny milk mustache on lip, short pink hair with cute cowlick, bright wide sparkling eyes amidst tiny cozy apartment kitchen, warm pendant lamp.",
+    "animaCaption": "Mimori Byakuya sits on kitchen bar stool dangling bare feet, wearing a powder pink cotton nightshirt.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

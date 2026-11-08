@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3333,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "tobiichi_origami_lingerie_whisper",
     "characterId": "tobiichi_origami",
@@ -14,7 +14,7 @@
     "location": "士道隔壁卧室，墙上密密麻麻贴着士道的日常生活作息调查表",
     "timeOfDay": "深夜突击夜袭时刻",
     "lighting": "纯白吸顶灯的光晕宛如教堂圣光，照亮了纯白蕾丝与少女毫无瑕疵的瓷白身躯",
-    "camera": "正面绝对对称构图，纯白被褥与端坐如雕塑般的神情展现战术级的严密压迫感",
+    "camera": "medium shot, eye level, 平视中景，墙面调查图表与毫无动摇的战术求爱反差",
     "mood": "三无电波系少女的极致反差，冷静到极点的狂热爱意，既好笑又让人心跳过载",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,27 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_bed",
+      "charts_on_wall",
+      "surveillance_photos",
+      "bedroom",
+      "stoic_expression",
+      "deadpan",
+      "medium_shot"
     ],
     "promptTokens": [
-      "bed",
-      "sitting",
-      "blue eyes",
-      "sheer lace garters",
-      "sheer tulle fingerless gloves",
-      "delicate scalloped edges",
-      "indoors",
-      "soft lighting"
+      "medium shot",
+      "sitting upright on bed",
+      "walls covered in detailed schedules and photos",
+      "impassive expressionless face",
+      "tactical posture",
+      "soft bedroom lamp",
+      "deadpan gaze"
     ],
     "negativeTokens": [],
-    "promptProse": "Origami Tobiichi sits completely straight on center of white bed holding sheer bridal lace veil, wearing a pure white bridal lace bralette set. Short platinum hair, intense deadpan cyan eyes, meticulous tactical stalker charts on wall in background amidst bright pure white lighting.",
-    "animaCaption": "Origami Tobiichi sits completely straight on center of white bed holding sheer bridal lace veil, wearing a pure white bridal lace bralette set. Short platinum hair, intense deadpan cyan eyes, meticulous tactical stalker charts on wall in background amidst bright pure white lighting.",
+    "promptProse": "Origami sits perfectly upright on her bed in deadpan resolve, surrounded by exhaustive surveillance charts of Shido pinned to the walls while waiting impassively for the next tactical move.",
+    "animaCaption": "Sitting perfectly straight on her bed surrounded by surveillance charts, staring with deadpan tactical resolve.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

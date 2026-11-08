@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mizuhara_chizuru_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3389,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "mizuhara_chizuru_lingerie_whisper",
     "characterId": "mizuhara_chizuru",
@@ -14,7 +14,7 @@
     "location": "公寓相连的晾衣阳台，夕阳将晾晒的白衬衫染上橙金暖晕",
     "timeOfDay": "黄昏收衣服的私密时刻",
     "lighting": "东京黄昏壮丽的夕阳残照，在发丝与微透真丝边缘镀上一圈金红色轮廓光",
-    "camera": "侧逆光中近景，捕捉撩起长发露出的修长白皙后颈与红透的耳垂",
+    "camera": "medium close-up, 侧逆光中近景，捕捉撩起长发露出的修长白皙后颈与红透的耳垂",
     "mood": "卸下完美女友面具后的真实羞涩，日常邻家感与心动交织",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "balcony",
+      "railing",
+      "dusk",
+      "sunset",
+      "dim_lighting",
+      "smile",
+      "medium_close_up"
     ],
     "promptTokens": [
+      "medium close-up",
       "balcony",
+      "railing",
+      "dusk",
+      "sunset",
+      "dim lighting",
+      "smile",
       "standing",
       "hair clip",
-      "black hair",
       "blush",
-      "sunset",
       "fine pleats at bust",
       "delicate beige lace trim"
     ],
     "negativeTokens": [],
     "promptProse": "Mizuhara Chizuru stands on apartment balcony at dusk, wearing a terracotta orange-brown silk slip dress. Ichinose chizuru, gathering long wet black hair with hair clip, blushing deeply amidst natural shy expression without rental persona, laundry fluttering on clothesline, golden hour Tokyo sunset skyline.",
-    "animaCaption": "Mizuhara Chizuru stands on apartment balcony at dusk, wearing a terracotta orange-brown silk slip dress. Ichinose chizuru, gathering long wet black hair with hair clip, blushing deeply amidst natural shy expression without rental persona, laundry fluttering on clothesline, golden hour Tokyo sunset skyline.",
+    "animaCaption": "Mizuhara Chizuru stands on apartment balcony at dusk, wearing a terracotta orange-brown silk slip dress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

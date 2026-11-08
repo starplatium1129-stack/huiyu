@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruno_nsfw_wine_bath_solo",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 377,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "haruno_nsfw_wine_bath_solo",
     "title": "雪之下阳乃 · 豪华大理石浴缸的红酒水光独奏 ·「把醉意都发泄在水里……就不算失态了吧」",
@@ -18,15 +18,22 @@
     "camera": "cowboy shot, eye level",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "apartment",
+      "bedroom",
+      "night",
+      "warm_lighting",
+      "cowboy_shot",
+      "eye_level"
     ],
     "promptProse": "Haruno reclines in the marble jacuzzi with the wine glass resting on the tub rim, one hand between her thighs beneath the water.",
     "nsfwProse": "",
     "promptTokens": [
+      "cowboy shot",
+      "eye level",
+      "apartment",
+      "bedroom",
+      "night",
+      "warm lighting",
       "black teddy",
       "lace",
       "wet clothes",
@@ -38,9 +45,7 @@
       "chandelier",
       "reclining",
       "marble bathtub",
-      "hand between legs",
-      "warm lighting",
-      "cowboy shot"
+      "hand between legs"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

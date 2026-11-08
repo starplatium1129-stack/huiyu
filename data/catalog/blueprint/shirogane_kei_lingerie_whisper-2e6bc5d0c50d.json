@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3350,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shirogane_kei_lingerie_whisper",
     "characterId": "shirogane_kei",
@@ -14,7 +14,7 @@
     "location": "白银家老旧公寓小卧室，门口挂着“闲人免进”的可爱挂牌",
     "timeOfDay": "晚饭后的叛逆少女时间",
     "lighting": "小书桌台灯柔和的白光打在银发与侧脸轮廓上，照亮泛红的脸颊与白皙双肩",
-    "camera": "侧视中景特写，捕捉抱胸扭头的倔强动作与脚尖小动作的灵动反差",
+    "camera": "close-up, side view, 侧视中景特写，捕捉抱胸扭头的倔强动作与脚尖小动作的灵动反差",
     "mood": "青春期叛逆妹妹的极致傲娇与笨拙的爱意，让人心生怜爱",
     "adult": true,
     "sampleRating": "R15",
@@ -27,16 +27,24 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "apartment",
+      "bedroom",
+      "bed",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "dim_lighting",
+      "sitting",
+      "close_up",
+      "side_view"
     ],
     "promptTokens": [
+      "close-up",
+      "side view",
+      "apartment",
+      "bedroom",
       "bed",
+      "night",
+      "dim lighting",
       "sitting",
-      "blue eyes",
       "blush",
       "desk lamp",
       "delicate spaghetti straps",
@@ -46,7 +54,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Kei Shirogane sits on bed edge hugging arms stubbornly, wearing a ice grey ribbed cotton camisole set. Cute blue eyes looking away in a huff, bob silver-grey hair, blushing ears and cheeks amidst modest old apartment bedroom, warm desk lamp.",
-    "animaCaption": "Kei Shirogane sits on bed edge hugging arms stubbornly, wearing a ice grey ribbed cotton camisole set. Cute blue eyes looking away in a huff, bob silver-grey hair, blushing ears and cheeks amidst modest old apartment bedroom, warm desk lamp.",
+    "animaCaption": "Kei Shirogane sits on bed edge hugging arms stubbornly, wearing a ice grey ribbed cotton camisole set.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

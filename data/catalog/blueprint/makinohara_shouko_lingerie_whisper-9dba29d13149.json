@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makinohara_shouko_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3200,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "makinohara_shouko_lingerie_whisper",
     "characterId": "makinohara_shouko",
@@ -14,7 +14,7 @@
     "location": "湘南海岸边的木造老屋二楼阳台门前，窗外是晨雾弥漫的辽阔大海与江之岛",
     "timeOfDay": "初夏破晓晨曦",
     "lighting": "地平线升起的第一缕金白晨光，穿透海雾在少女周身勾勒出梦幻的金色轮廓",
-    "camera": "逆光侧身回眸特写，微风托起发丝与薄纱衣角，构图极具空气感",
+    "camera": "close-up, side view, 逆光侧身回眸特写，微风托起发丝与薄纱衣角，构图极具空气感",
     "mood": "超越时空的温柔眷恋，治愈、圣洁又带着一丝淡淡的宿命伤感",
     "adult": true,
     "sampleRating": "R15",
@@ -27,18 +27,29 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
-    ],
-    "promptTokens": [
-      "curtains",
       "balcony",
+      "railing",
+      "window",
+      "morning",
+      "sunlight",
+      "dim_lighting",
       "standing",
       "smile",
-      "purple hair",
+      "close_up",
+      "side_view"
+    ],
+    "promptTokens": [
+      "close-up",
+      "side view",
+      "balcony",
+      "railing",
+      "window",
+      "morning",
+      "sunlight",
+      "dim lighting",
+      "standing",
+      "smile",
+      "curtains",
       "bare feet",
       "delicate flutter sleeves",
       "double layered sheer hemline",
@@ -48,7 +59,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere. Gentle, nostalgic evening lamplight filters through sheer curtains, enveloping her mature, serene features in a comforting golden glow.",
-    "animaCaption": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress. Adult version, looking back over shoulder with tender smile, long dark purple hair blowing in ocean breeze amidst bare feet on sunny wooden floor, morning sea horizon outside, ethereal nostalgic atmosphere. Gentle, nostalgic evening lamplight filters through sheer curtains, enveloping her mature, serene features in a comforting golden glow.",
+    "animaCaption": "Shouko Makinohara stands by sheer fluttery balcony curtains, wearing a pearl white ruffled silk slip dress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3267,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "sorasaki_hina_lingerie_whisper",
     "characterId": "sorasaki_hina",
@@ -14,7 +14,7 @@
     "location": "格黑娜风纪委员会最高行政办公室，桌面上堆积如山的处分文件被整齐码放",
     "timeOfDay": "凌晨四点全校熄灯时分",
     "lighting": "台灯散发出昏暗柔和的暖黄光芒，将小巧面颊与巨大黑翼的边缘镀上一圈金边",
-    "camera": "平视微俯中景，办公桌厚重的文件堆与少女娇小的身躯、垂落的巨翼形成强烈对比",
+    "camera": "medium shot, high angle, 俯角中景，堆积如山的公文与疲惫娇小的身姿形成强烈反差",
     "mood": "背负一校安危的幼小统领的极致疲惫，唯独在老师面前展现的柔弱依赖",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "executive_chair",
+      "huge_desk",
+      "paperwork_piles",
+      "office",
+      "window",
+      "late_night",
+      "exhausted",
+      "vulnerable",
+      "dim_lighting",
+      "medium_shot",
+      "high_angle"
     ],
     "promptTokens": [
-      "angel wings",
-      "halo",
-      "glowing",
-      "silver hair",
-      "purple eyes",
-      "tiny black satin bow",
-      "delicate ruffled hemline",
-      "protective gentle nightwear",
-      "indoors"
+      "medium shot",
+      "high angle",
+      "swallowed in executive leather chair",
+      "monumental piles of paperwork",
+      "prefect team head office",
+      "panoramic night window",
+      "city lights",
+      "drooping eyes",
+      "exhausted sigh",
+      "desk lamp glow"
     ],
     "negativeTokens": [],
-    "promptProse": "Sorasaki Hina rests chin on hands on executive desk, wearing a deep violet sheer double-layer chiffon babydoll slip. Demon girl, massive dark purple feathered wings drooping tiredly to office floor, glowing violet halo above head amidst long unruly silver hair, vulnerable exhausted purple eyes, stacks of paperwork.",
-    "animaCaption": "Sorasaki Hina rests chin on hands on executive desk, wearing a deep violet sheer double-layer chiffon babydoll slip. Demon girl, massive dark purple feathered wings drooping tiredly to office floor, glowing violet halo above head amidst long unruly silver hair, vulnerable exhausted purple eyes, stacks of paperwork.",
+    "promptProse": "Hina slumps into her oversized leather executive chair in the dark Prefect Team headquarters at 4 AM, buried beneath towering paper stacks with an exhausted, unguarded sigh.",
+    "animaCaption": "Slumped in a massive executive chair behind towering stacks of documents in the dead of night, looking exhausted and gentle.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

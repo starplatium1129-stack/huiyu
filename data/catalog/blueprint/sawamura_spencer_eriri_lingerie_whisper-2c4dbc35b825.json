@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3409,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_lingerie_whisper",
     "characterId": "sawamura_spencer_eriri",
@@ -14,7 +14,7 @@
     "location": "洋房二楼画室，桌上数位屏还亮着未画完的同人本线稿，散落着彩色马克笔",
     "timeOfDay": "截稿日凌晨三点",
     "lighting": "数位屏散发的高色温白光正面照亮面容，身后暖黄画室落地灯烘托出凌乱温暖的房间",
-    "camera": "正面平视特写，用数位板遮挡胸口的小动作与炸毛虎牙神态极为传神",
+    "camera": "close-up, eye level, front view, 正面平视特写，用数位板遮挡胸口的小动作与炸毛虎牙神态极为传神",
     "mood": "经典傲娇败犬青梅竹马的炸毛与羞窘，生动活泼趣味十足",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,37 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "indoors",
+      "bedroom",
+      "morning",
+      "sunlight",
+      "warm_lighting",
+      "sitting",
+      "close_up",
+      "eye_level",
+      "front_view"
     ],
     "promptTokens": [
+      "close-up",
+      "eye level",
+      "front view",
+      "indoors",
+      "bedroom",
+      "morning",
+      "sunlight",
+      "warm lighting",
       "sitting",
       "blush",
-      "twintails",
       "forest green silk bralette set",
       "delicate gold lace trim",
       "black underwire cups",
       "tiny velvet ribbon bows",
-      "indoors",
       "lamp",
-      "backlighting",
-      "warm lighting"
+      "backlighting"
     ],
     "negativeTokens": [],
     "promptProse": "Eriri Spencer Sawamura sits backwards on computer chair clutching pen tablet to chest, wearing a forest green silk bralette set. Cute little fang bared in indignation, blushing furiously, blonde twintails flaring up amidst colorful art markers and messy desk in background, bright screen backlight.",
-    "animaCaption": "Eriri Spencer Sawamura sits backwards on computer chair clutching pen tablet to chest, wearing a forest green silk bralette set. Cute little fang bared in indignation, blushing furiously, blonde twintails flaring up amidst colorful art markers and messy desk in background, bright screen backlight.",
+    "animaCaption": "Eriri Spencer Sawamura sits backwards on computer chair clutching pen tablet to chest, wearing a forest green silk bralette set.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

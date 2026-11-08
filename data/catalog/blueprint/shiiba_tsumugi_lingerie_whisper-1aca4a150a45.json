@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3497,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shiiba_tsumugi_lingerie_whisper",
     "characterId": "shiiba_tsumugi",
@@ -14,7 +14,7 @@
     "location": "温馨的小阁楼卧室，角落挂着平时穿的英俊男装制服，窗外星光闪烁",
     "timeOfDay": "卸下伪装的深夜更衣时刻",
     "lighting": "床头暖色小台灯在金茶色短发上投下温暖的金芒，室内光线柔和而私密",
-    "camera": "微俯平视中近景，聚焦揪着衣摆的泛白指节与含羞抬眸的动人瞬间",
+    "camera": "medium close-up, high angle, 微俯平视中近景，聚焦揪着衣摆的泛白指节与含羞抬眸的动人瞬间",
     "mood": "假小子脱去伪装后的惊人纯美与极致害羞，令人无比心动",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,37 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "apartment",
+      "bedroom",
+      "window",
+      "bed",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "medium_close_up",
+      "high_angle"
     ],
     "promptTokens": [
+      "medium close-up",
+      "high angle",
+      "apartment",
+      "bedroom",
+      "window",
       "bed",
+      "night",
+      "warm lighting",
       "sitting",
-      "brown hair",
       "water",
-      "blue eyes",
       "delicate puff sleeves",
       "tiny gathered neckline",
       "soft pastel tone",
       "indoors",
       "starlight",
-      "desk lamp",
-      "warm lighting"
+      "desk lamp"
     ],
     "negativeTokens": [],
     "promptProse": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown. Short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner amidst warm bedside light.",
-    "animaCaption": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown. Short light-brown hair revealing bright red earlobes, looking up with watery shy blue eyes, male school uniform hanging in corner amidst warm bedside light.",
+    "animaCaption": "Shiiba Tsumugi sits on bed edge clutching pajama hem tightly with both hands, wearing a pale apricot double-gauze babydoll nightgown.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

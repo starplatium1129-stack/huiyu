@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3421,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "power_lingerie_whisper",
     "characterId": "power",
@@ -14,7 +14,7 @@
     "location": "早川家狭小的榻榻米卧室，地板上散落着漫画书、可乐空罐与猫粮碗",
     "timeOfDay": "周日早晨赖床时刻",
     "lighting": "晨光透过微开的窗帘直直切入室内，照亮空气中漂浮的细微尘粒与金灿灿的乱发",
-    "camera": "正俯视角全景特写，凌乱铺开的发丝与张扬毫无顾忌的睡姿尽收眼底",
+    "camera": "medium shot, high angle, 充满荒诞生活感的俯拍中景，散落的漫画空罐与猫咪同框",
     "mood": "魔人的混沌野性与毫无戒备的憨态，搞笑又极度吸睛",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "lying_on_floor",
+      "tatami",
+      "futon",
+      "messy_room",
+      "manga",
+      "soda_can",
+      "cat_bowl",
+      "morning",
+      "sunlight",
+      "boastful_grin",
+      "medium_shot",
+      "high_angle"
     ],
     "promptTokens": [
-      "reclining",
-      "futon",
-      "horns",
-      "blonde hair",
-      "bold vibrant red",
-      "wild untamed fiend sleep set",
-      "indoors",
-      "soft lighting"
+      "medium shot",
+      "high angle",
+      "sprawled on tatami floor",
+      "tousled futon",
+      "scattered comic books",
+      "empty soda cans",
+      "cat food dish",
+      "morning sunbeam through window",
+      "smug haughty grin",
+      "lazy Sunday"
     ],
     "negativeTokens": [],
-    "promptProse": "Power lies sprawled on futon mattress, wearing a crimson red athletic cotton tube top. Hugging orange cat meowy to chest, red fiend horns pointing up from messy strawberry-blonde hair, sharp shark teeth in cocky laugh amidst messy room with manga and empty cans around, bright morning light.",
-    "animaCaption": "Power lies sprawled on futon mattress, wearing a crimson red athletic cotton tube top. Hugging orange cat meowy to chest, red fiend horns pointing up from messy strawberry-blonde hair, sharp shark teeth in cocky laugh amidst messy room with manga and empty cans around, bright morning light.",
+    "promptProse": "Power sprawls unabashedly across the cluttered tatami floor of the Hayakawa apartment on Sunday morning, flashing a proud, mischievous fang among empty soda cans and manga.",
+    "animaCaption": "Sprawled lazily on a sunlit tatami floor among manga books and empty cans, flashing a proud, bratty grin.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

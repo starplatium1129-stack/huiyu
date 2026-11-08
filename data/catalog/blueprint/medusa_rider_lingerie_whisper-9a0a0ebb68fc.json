@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "medusa_rider_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3341,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "medusa_rider_lingerie_whisper",
     "characterId": "medusa_rider",
@@ -14,7 +14,7 @@
     "location": "现代极简风格公寓衣帽间，巨大的无框落地穿衣镜清晰映出修长背影",
     "timeOfDay": "深夜沐浴后放松之时",
     "lighting": "踢脚线隐藏式暖光灯带贴地向上洗光，在光洁地板与白皙肌理上勾勒出优美边缘线",
-    "camera": "超广角平视全身构图，利用落地大镜形成双重镜像，尽显逆天长腿与如瀑紫发",
+    "camera": "wide shot, full body, 落地穿衣长镜前的大气全景，优雅修长体态与镜中背影相得益彰",
     "mood": "成熟冷艳的御姐气质，高挑身段与柔顺长发带来的绝对视觉震撼",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,30 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "standing",
+      "in_front_of_mirror",
+      "full_length_mirror",
+      "dressing_room",
+      "reflection",
+      "tall_figure",
+      "elegant",
+      "modern_apartment",
+      "wide_shot",
+      "full_body"
     ],
     "promptTokens": [
-      "full-length mirror",
-      "sitting",
-      "wooden floor",
-      "leaning against mirror",
-      "purple hair",
-      "glasses",
-      "triangle soft cups",
-      "high-leg brazilian cut",
-      "indoors",
-      "warm lighting"
+      "wide shot",
+      "full body",
+      "standing before tall frameless mirror",
+      "mirror reflection of bare back",
+      "minimalist dressing room",
+      "soft diffused lighting",
+      "poised elegant posture",
+      "subtle composed gaze"
     ],
     "negativeTokens": [],
-    "promptProse": "Rider sits on polished wooden floor leaning against full-length dressing mirror, wearing a inky black strappy sheer lingerie set. Incredibly long lilac hair pooled on floor, wearing reading glasses, striking tall slender physique amidst calm enigmatic gaze, warm indirect floor strip lighting.",
-    "animaCaption": "Rider sits on the wooden floor against a full-length mirror, her long hair pooling beside her in warm indirect light.",
+    "promptProse": "Medusa stands tall and poised before an expansive full-length mirror in a minimalist dressing room, her reflection framed against clean architectural lines in quiet contemplation.",
+    "animaCaption": "Standing poised before a tall mirror in a minimalist room, admiring her reflection with calm, graceful elegance.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

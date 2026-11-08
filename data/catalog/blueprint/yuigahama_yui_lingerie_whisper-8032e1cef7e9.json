@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuigahama_yui_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3254,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yuigahama_yui_lingerie_whisper",
     "characterId": "yuigahama_yui",
@@ -14,7 +14,7 @@
     "location": "由比滨家明亮的粉白少女卧室，床头摆着心形抱枕与爱犬萨布鲁的照片",
     "timeOfDay": "侍奉部活动结束后的黄昏",
     "lighting": "夕阳的蜜糖橙光穿透窗纱，将整个粉色系房间与少女柔润的肌肤烘托得暖意融融",
-    "camera": "微俯平视特写，抱膝的娇小姿态与红透的脸颊、含泪明眸形成极具触动力的画面",
+    "camera": "medium close-up, front view, 正面微俯特写，刻画抱枕微陷与发间微风的真情流露",
     "mood": "元气团子少女卸下社交迎合后的真心决堤，温柔、执着而令人心碎的纯真爱意",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_bed",
+      "hugging_pillow",
+      "heart_pillow",
+      "framed_photo",
+      "teen_room",
+      "sunset",
+      "dusk",
+      "warm_glow",
+      "blush",
+      "affectionate_smile",
+      "medium_close_up"
     ],
     "promptTokens": [
-      "sitting",
-      "teacup",
-      "blush",
-      "cushion",
-      "bed",
-      "curtains",
+      "medium close-up",
+      "sitting on bed",
+      "hugging heart pillow",
+      "framed dog photo on nightstand",
+      "pastel girl bedroom",
       "sunset",
-      "lettuce edge frills",
-      "indoors"
+      "dusk",
+      "warm golden hour glow",
+      "blush",
+      "tender smile"
     ],
     "negativeTokens": [],
-    "promptProse": "Yui sits hugging knees on soft pink rug, wearing a peach pink ruffled double-cotton camisole set. Side bun hair fluttering, biting lower lip with glistening tearful bright eyes, peach hair amidst deeply blushing cheeks, warm pastel bedroom with heart cushions and dog photos, golden sunset streaming through curtains.",
-    "animaCaption": "Yui sits hugging knees on soft pink rug, wearing a peach pink ruffled double-cotton camisole set. Side bun hair fluttering, biting lower lip with glistening tearful bright eyes, peach hair amidst deeply blushing cheeks, warm pastel bedroom with heart cushions and dog photos, golden sunset streaming through curtains.",
+    "promptProse": "Yui clutches a pink heart cushion to her chest in her pastel-hued bedroom, warm twilight glow illuminating her blushing, genuine smile after a long club afternoon.",
+    "animaCaption": "Clutching a heart-shaped pillow on her bed at sunset, blushing warmly with an affectionate, honest smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

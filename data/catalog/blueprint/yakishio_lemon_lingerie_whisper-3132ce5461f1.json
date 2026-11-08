@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yakishio_lemon_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3471,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yakishio_lemon_lingerie_whisper",
     "characterId": "yakishio_lemon",
@@ -14,7 +14,7 @@
     "location": "夜晚熄灯后的学校田径场看台，操场塑胶跑道延伸至夜色中",
     "timeOfDay": "深夜加练田径冲刺之后",
     "lighting": "操场远处一盏未关的高杆水银探照灯投下清朗白光，在小麦色肌肤上勾勒出透亮的高光",
-    "camera": "仰视特写镜头，擦汗的健康姿态与紧致有力的小腹、大腿肌肉线条充满健美力量感",
+    "camera": "medium shot, low angle, 田径场看台微仰中景，塑胶跑道夜色与运动少女的健康汗香",
     "mood": "运动系败犬少女的健康活力与纯真直率，汗水与柠檬水交织的青春荷尔蒙",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "sitting",
+      "bleachers",
+      "track_and_field",
+      "running_track",
+      "sports_drink",
+      "stadium_lights",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "athletic",
+      "sweat",
+      "cheerful_smile",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "sitting",
-      "water",
-      "smile",
-      "night",
-      "runner tap shorts",
-      "dark skin tone contrast",
-      "indoors",
-      "stadium light",
-      "bright lighting"
+      "medium shot",
+      "low angle",
+      "sitting on athletic field bleachers",
+      "rubber running track stretching into darkness",
+      "towel around neck",
+      "plastic sports bottle",
+      "stadium floodlight rim",
+      "light glistening sweat",
+      "healthy athletic tan",
+      "bright energetic smile"
     ],
     "negativeTokens": [],
-    "promptProse": "Lemon Yakishio sits on school bleachers wiping sweat from neck with white towel, wearing a bright lemon yellow and charcoal athletic racerback camisole set. Athletic dark skin tone, drinking from lemon water sports bottle, short dark hair amidst brilliant open smile, stadium track in night background. A distant floodlight beam from the sports grounds casts clear white illumination across the bleachers, catching glistening beads of perspiration on her sun-tanned collarbone.",
-    "animaCaption": "Lemon Yakishio sits on school bleachers wiping sweat from neck with white towel, wearing a bright lemon yellow and charcoal athletic racerback camisole set. Athletic dark skin tone, drinking from lemon water sports bottle, short dark hair amidst brilliant open smile, stadium track in night background. A distant floodlight beam from the sports grounds casts clear white illumination across the bleachers, catching glistening beads of perspiration on her sun-tanned collarbone.",
+    "promptProse": "Lemon sits on the stadium bleachers catching her breath after late-night sprint drills, wiping sweat with a sports towel while offering an unpretentious, sunny grin.",
+    "animaCaption": "Catching her breath on stadium bleachers beside the dark running track, smiling with energetic athletic charm.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

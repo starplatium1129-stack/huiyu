@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evergarden_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3525,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "violet_evergarden_lingerie_whisper",
     "characterId": "violet_evergarden",
@@ -14,7 +14,7 @@
     "location": "C.H邮政公司阁楼寝室，桌上摆着翡翠胸针与一束盛开的紫罗兰",
     "timeOfDay": "深夜替人代写情书告罄后",
     "lighting": "桌面黄铜绿罩台灯在羊皮纸与金发上投下典雅温润的暖光，义肢金属关节反射出冷银光辉",
-    "camera": "侧平视中景，打字机精密机械键位与银色义肢、柔嫩肌肤形成惊人的质感三重奏",
+    "camera": "medium shot, front view, 正面中景，阁楼木桌打字机与盛开紫罗兰，人偶少女渐懂人心的温存",
     "mood": "从战场杀戮兵器蜕变为懂得爱为何物的人偶，凄美、圣洁而纯粹至极",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "wooden_chair",
+      "desk",
+      "typewriter",
+      "letter",
+      "emerald_brooch",
+      "violet_flowers",
+      "attic_window",
+      "gentle_smile",
+      "medium_shot",
+      "front_view"
     ],
     "promptTokens": [
-      "sitting",
-      "blonde hair",
-      "braid",
-      "blue eyes",
-      "desk lamp",
-      "structured soft bodice",
-      "floor-length flowing hem",
-      "indoors"
+      "medium shot",
+      "front view",
+      "sitting at wooden writing desk",
+      "mechanical typewriter",
+      "half-written letter",
+      "glowing emerald brooch on blotter",
+      "fresh bouquet of violets",
+      "CH Postal attic bedroom",
+      "gentle soft smile",
+      "golden lamp light"
     ],
     "negativeTokens": [],
-    "promptProse": "Violet Evergarden sits at antique typewriter on mahogany desk, wearing a ivory Victorian lace-trimmed slip gown. Slender silver prosthetic mechanical hands touching letter parchment, loose blonde hair in braids, large brilliant blue eyes amidst green emerald brooch resting on desk, soft vintage lamp glow.",
-    "animaCaption": "Violet Evergarden sits at antique typewriter on mahogany desk, wearing a ivory Victorian lace-trimmed slip gown. Slender silver prosthetic mechanical hands touching letter parchment, loose blonde hair in braids, large brilliant blue eyes amidst green emerald brooch resting on desk, soft vintage lamp glow.",
+    "promptProse": "Violet sits quietly at her wooden typewriter desk in the postal attic, touching the emerald brooch resting beside a vase of fresh violets with a tender, hard-won smile.",
+    "animaCaption": "Sitting before an antique typewriter at a wooden desk adorned with fresh violets and an emerald brooch, smiling softly.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

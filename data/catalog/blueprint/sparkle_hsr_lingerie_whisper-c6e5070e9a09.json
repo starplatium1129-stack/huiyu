@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_hsr_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3524,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "sparkle_hsr_lingerie_whisper",
     "characterId": "sparkle_hsr",
@@ -14,7 +14,7 @@
     "location": "匹诺康尼黄金时刻的梦境戏院包厢露台，天空落着永恒的金色礼花与香槟喷泉",
     "timeOfDay": "无尽梦境狂欢的最高潮",
     "lighting": "露台外梦境世界的金粉霓虹与全息烟火投下炫目的流光溢彩，光怪陆离",
-    "camera": "超低角度仰拍，飞转的假面与灵动赤足构成充满动感与冲击力的构图",
+    "camera": "medium shot, low angle, 梦境剧院包厢仰角，金色礼花与香槟喷泉衬托欢愉假面捉弄",
     "mood": "捉摸不透的欢愉假面愚者，荒诞、迷乱、狂气与极度性感的舞台魔术",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "theatre_balcony",
+      "gold_confetti",
+      "champagne_fountain",
+      "fox_mask",
+      "theatre_curtains",
+      "neon_lights",
+      "mischievous_smile",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "sitting",
-      "mask",
-      "bare feet",
-      "glowing",
-      "twintails",
-      "red eyes",
-      "balcony",
-      "gold cord laced sides"
+      "medium shot",
+      "low angle",
+      "sitting on velvet theatre box balcony",
+      "golden falling confetti",
+      "flowing champagne fountain",
+      "traditional kitsune mask resting beside",
+      "Penacony dreamscape theatre",
+      "neon carnival lighting",
+      "mischievous impish grin"
     ],
     "negativeTokens": [],
-    "promptProse": "Sparkle sits backwards on ornate crimson railing, wearing a scarlet red and lacquer gold geometric cutout tube dress. Spinning kitsune mask on fingertip, bare feet swinging over glowing dreamscape, vibrant pinkish-black twintails amidst mischievous red eyes, golden confetti falling outside theater balcony.",
-    "animaCaption": "Sparkle sits backwards on ornate crimson railing, wearing a scarlet red and lacquer gold geometric cutout tube dress. Spinning kitsune mask on fingertip, bare feet swinging over glowing dreamscape, vibrant pinkish-black twintails amidst mischievous red eyes, golden confetti falling outside theater balcony.",
+    "promptProse": "Sparkle dangles her feet from the gilded balcony of Penacony's grand dream theatre, golden confetti showering around her as she flashes an unpredictable, delightful grin.",
+    "animaCaption": "Perched on a velvet theatre box balcony amidst golden confetti showers, smiling with mischievous theatrical delight.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

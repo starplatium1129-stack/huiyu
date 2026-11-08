@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3528,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "marcille_donato_lingerie_whisper",
     "characterId": "marcille_donato",
@@ -14,7 +14,7 @@
     "location": "迷宫深处带有古老壁画的安全石室，晶石灯在天花板上散发温和黄光",
     "timeOfDay": "地下城营地休息时间",
     "lighting": "发光的魔法矿石散发出柔和的暖黄天光，驱散了地底原本的阴暗湿冷",
-    "camera": "平视中景，聚焦夸张可爱的表情与向下耷拉的精灵长耳",
+    "camera": "medium shot, eye level, 平视中景，聚焦夸张可爱的表情与向下耷拉的精灵长耳",
     "mood": "高傲精灵少女沦落搞笑境地的羞恼与可爱，充满冒险营地的生动趣味",
     "adult": true,
     "sampleRating": "R15",
@@ -27,18 +27,26 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "ancient_ruins",
+      "stone_wall",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "blush",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
+      "medium shot",
+      "eye level",
+      "ancient ruins",
+      "stone wall",
+      "night",
+      "warm lighting",
       "sitting",
+      "blush",
       "glowing",
-      "braid",
       "teacup",
-      "red eyes",
       "lantern",
       "gold and ivy vine embroidery",
       "elven leaf clasps",
@@ -46,7 +54,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "Marcille Donato sits on fur-lined stone slab in dungeon camp, wearing a forest green sheer chiffon slip. Hands covering glowing red cheeks, long pointed elven ears drooping in embarrassment, blonde twin braids coming undone amidst teary flustered eyes, glowing magic crystal lantern above.",
-    "animaCaption": "Marcille Donato sits on fur-lined stone slab in dungeon camp, wearing a forest green sheer chiffon slip. Hands covering glowing red cheeks, long pointed elven ears drooping in embarrassment, blonde twin braids coming undone amidst teary flustered eyes, glowing magic crystal lantern above.",
+    "animaCaption": "Marcille Donato sits on fur-lined stone slab in dungeon camp, wearing a forest green sheer chiffon slip.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

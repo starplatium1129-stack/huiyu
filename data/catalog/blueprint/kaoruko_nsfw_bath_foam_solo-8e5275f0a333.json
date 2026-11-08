@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bath_foam_solo",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kaoruko_nsfw_bath_foam_solo",
     "title": "和栗薰子 · 甜香泡泡浴池的水光湿身独奏 ·「把奶油洗掉了……可是身上的甜味还在」",
@@ -18,22 +18,26 @@
     "camera": "medium shot, first-person view, from above",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "indoors",
+      "bedroom",
+      "night",
+      "warm_lighting",
+      "medium_shot"
     ],
     "promptProse": "Adult Kaoruko touches herself beneath the bathwater as foam slips from her chest in the cedar tub. Warm bathroom wall lights illuminate the tub rim and water while the far background stays dim through the steam.",
     "nsfwProse": "",
     "promptTokens": [
+      "medium shot",
+      "indoors",
+      "bedroom",
+      "night",
+      "warm lighting",
       "nude",
       "masturbation",
       "hand between legs",
       "wooden bathtub",
       "soap bubbles",
       "steam",
-      "night",
       "adult",
       "wall lamps",
       "warm light"

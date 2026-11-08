@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matsushima_michiru_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3530,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "matsushima_michiru_lingerie_whisper",
     "characterId": "matsushima_michiru",
@@ -14,7 +14,7 @@
     "location": "美滨学园女生宿舍，桌上摆着柠檬汽水拉环罐与彩色维生素软糖",
     "timeOfDay": "午夜突击查房时刻",
     "lighting": "天花板吸顶灯的纯白荧光与书桌台灯形成明亮清爽的现代卧室采光",
-    "camera": "稍低角度全身仰拍，展现叉腰挺胸的虚张声势与瞬间破功的可爱神态",
+    "camera": "medium shot, eye level, 侧平视中景，展现俏皮任性与手忙脚乱的可爱姿态",
     "mood": "笨拙金发傲娇的滑稽与纯情，元气搞怪又极度惹人喜爱",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "desk",
+      "chair",
+      "soda_can",
+      "gummy_candy",
+      "dorm_room",
+      "tsundere_pout",
+      "blush",
+      "lamp",
+      "medium_shot"
     ],
     "promptTokens": [
+      "medium shot",
+      "sitting backwards on chair",
+      "study desk",
+      "lemon soda can",
+      "candy bag",
+      "dorm room",
+      "tsundere pout",
       "blush",
-      "standing",
-      "twintails",
-      "reclining",
-      "ruffled lettuce edge hem",
-      "high-waisted bloomers shorts",
-      "bright energetic cotton",
-      "playful tsundere loungewear",
-      "indoors",
       "desk lamp",
-      "glow"
+      "night"
     ],
     "negativeTokens": [],
-    "promptProse": "Matsushima Michiru stands with hands on hips puffing out chest then blushing, wearing a lemon yellow polka dot camisole set. Bright blonde twin tails flying, fake haughty expression breaking into blush, lemon soda cans and vitamin jars on desk amidst bright dorm room lighting.",
-    "animaCaption": "Matsushima Michiru stands with hands on hips puffing out chest then blushing, wearing a lemon yellow polka dot camisole set. Bright blonde twin tails flying, fake haughty expression breaking into blush, lemon soda cans and vitamin jars on desk amidst bright dorm room lighting.",
+    "promptProse": "Michiru sits backwards on her desk chair in her Mihama dorm room, cheeks puffed out in an exaggerated tsundere pout beside an open can of lemon soda and colorful vitamin gummies.",
+    "animaCaption": "Sitting backwards on a desk chair with a flustered tsundere pout, an open can of lemon soda resting on the desk.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

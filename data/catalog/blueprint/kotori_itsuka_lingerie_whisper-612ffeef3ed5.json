@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_itsuka_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3467,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kotori_itsuka_lingerie_whisper",
     "characterId": "kotori_itsuka",
@@ -14,7 +14,7 @@
     "location": "温馨客厅的长绒贵妃沙发上，散落着草莓靠垫与卡通毯子",
     "timeOfDay": "午后惬意阳光斜照",
     "lighting": "暖金色的斜阳斜斜切入客厅，在地板上拉长柔和的树影与光斑",
-    "camera": "侧景横幅中景，展现伸展的优美曲线与悬空轻点脚尖的灵动动态",
+    "camera": "medium shot, side view, 侧景横幅中景，展现伸展的优美曲线与悬空轻点脚尖的灵动动态",
     "mood": "妹妹模式的娇憨可爱与任性依赖，午后甜美慵懒",
     "adult": true,
     "sampleRating": "R15",
@@ -27,28 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "reclining",
+      "sofa",
+      "strawberry_cushion",
+      "lollipop",
+      "living_room",
+      "afternoon",
+      "sunlight",
+      "bratty_smile",
+      "white_ribbon",
+      "medium_shot",
+      "side_view"
     ],
     "promptTokens": [
-      "chaise lounge",
-      "reclining",
-      "lollipop",
-      "twintails",
-      "ribbon",
-      "bare feet",
-      "cushion",
-      "empire waist ruffled hem",
-      "indoors",
-      "sunlight",
-      "warm lighting"
+      "medium shot",
+      "side view",
+      "reclining across plush living room sofa",
+      "clutching strawberry cushion",
+      "holding chupa chups lollipop",
+      "afternoon sunlight through window",
+      "white hair ribbons",
+      "spoiled playful pout",
+      "cozy home warmth"
     ],
     "negativeTokens": [],
-    "promptProse": "Kotori Itsuka lies sideways on velvet chaise lounge, wearing a crimson strawberry print babydoll nightdress. Itsuka kotori, holding chupa chups lollipop in mouth, red twintails tied with white ribbons amidst bare feet dangling, cute strawberry cushions, warm afternoon sunlight beams, sweet innocent pout.",
-    "animaCaption": "Kotori Itsuka lies sideways on velvet chaise lounge, wearing a crimson strawberry print babydoll nightdress. Itsuka kotori, holding chupa chups lollipop in mouth, red twintails tied with white ribbons amidst bare feet dangling, cute strawberry cushions, warm afternoon sunlight beams, sweet innocent pout.",
+    "promptProse": "Kotori stretches out across the soft living room sofa in her playful white-ribbon sister mode, kicking her bare feet while demanding sweet treats with a spoiled, adorable grin.",
+    "animaCaption": "Reclining lazily across the living room sofa with a strawberry cushion, smiling with spoiled afternoon sweetness.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

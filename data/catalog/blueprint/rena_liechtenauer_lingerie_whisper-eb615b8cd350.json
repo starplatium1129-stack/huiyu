@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3499,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "rena_liechtenauer_lingerie_whisper",
     "characterId": "rena_liechtenauer",
@@ -14,7 +14,7 @@
     "location": "反重力鞋合宿宿舍海景木窗前，窗外是泛着碎银月光的黑夜大海",
     "timeOfDay": "深夜FC特训归来",
     "lighting": "窗外皎洁的海上月光照亮金发双马尾，室内暖光从背后勾勒出匀称紧致的运动体态",
-    "camera": "仰视半身特写，月光大海作为宽广背景，凸显少女凌空而坐的洒脱英姿",
+    "camera": "close-up, low angle, 仰视半身特写，月光大海作为宽广背景，凸显少女凌空而坐的洒脱英姿",
     "mood": "空竞少女的洒脱与野性，海风拂面般的畅快自由与明朗魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "ocean",
+      "seashore",
+      "window",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "moonlight",
+      "warm_lighting",
+      "sitting",
+      "close_up",
+      "low_angle"
     ],
     "promptTokens": [
-      "sitting",
-      "twintails",
-      "smile",
-      "blue eyes",
+      "close-up",
+      "low angle",
+      "ocean",
+      "seashore",
+      "window",
+      "night",
       "moonlight",
+      "warm lighting",
+      "sitting",
+      "smile",
       "racerback cut",
       "lightweight airy fabric",
       "indoors"
     ],
     "negativeTokens": [],
     "promptProse": "Lena Liechtenauer sits on windowsill swinging bare legs, wearing a azure sky blue breathable sports-mesh camisole. Long blonde twin tails blowing in sea breeze, holding window frame, confident radiant grin amidst blue eyes sparkling, shimmering ocean under moonlight in background.",
-    "animaCaption": "Lena Liechtenauer sits on windowsill swinging bare legs, wearing a azure sky blue breathable sports-mesh camisole. Long blonde twin tails blowing in sea breeze, holding window frame, confident radiant grin amidst blue eyes sparkling, shimmering ocean under moonlight in background.",
+    "animaCaption": "Lena Liechtenauer sits on windowsill swinging bare legs, wearing a azure sky blue breathable sports-mesh camisole.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

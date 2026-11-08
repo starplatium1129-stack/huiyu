@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3270,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "tsukatsuki_rio_lingerie_whisper",
     "characterId": "tsukatsuki_rio",
@@ -14,7 +14,7 @@
     "location": "千禧年未公开深层地下中枢指挥室，数百面全息监视荧幕环绕四周",
     "timeOfDay": "深夜全城防卫监控演算间歇",
     "lighting": "荧幕矩阵散发的幽蓝与品红冷光勾勒出修长身形，操作台指示灯在镜片上泛起微光",
-    "camera": "正面中景微仰，构图森严而充满未来科技感，凸显上位者的知性威严与私下反差",
+    "camera": "medium shot, low angle, 低机位全景，数百面全息监控荧幕环绕下理性崩塌的脆弱瞬间",
     "mood": "绝对理性的大小姐会长被情感攻破防线，知性、严谨与致命诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "command_chair",
+      "holographic_screens",
+      "control_room",
+      "monitors",
+      "blue_lighting",
+      "exhausted",
+      "lonely",
+      "cyberpunk",
+      "low_angle",
+      "medium_shot"
     ],
     "promptTokens": [
-      "sitting",
-      "black hair",
-      "glasses",
-      "red eyes",
-      "glowing",
-      "structured underwire support",
-      "low-rise matching boy-shorts",
-      "sleek high-collar strap",
-      "indoors"
+      "medium shot",
+      "low angle",
+      "sitting on command chair",
+      "circular holographic surveillance monitors",
+      "underground central hub",
+      "data streams",
+      "cool blue glow",
+      "exhausted posture",
+      "cold calculated solitude"
     ],
     "negativeTokens": [],
-    "promptProse": "Tsukatsuki Rio sits in high-tech swivel command chair, wearing a matte black faux-leather and sheer tech-mesh bustier set. Hands folded under chin, long raven hair, sharp crimson eyes behind thin-framed glasses amidst hundreds of glowing holographic security screens surrounding her in dark cyber room.",
-    "animaCaption": "Tsukatsuki Rio sits in high-tech swivel command chair, wearing a matte black faux-leather and sheer tech-mesh bustier set. Hands folded under chin, long raven hair, sharp crimson eyes behind thin-framed glasses amidst hundreds of glowing holographic security screens surrounding her in dark cyber room.",
+    "promptProse": "Rio sits alone in the deep Millennium underground bunker, encircled by hundreds of glowing holographic security screens casting cool azure luminescence across her stoic, fatigued expression.",
+    "animaCaption": "Seated alone in a subterranean command hub encircled by floating holographic screens in cold blue glow.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

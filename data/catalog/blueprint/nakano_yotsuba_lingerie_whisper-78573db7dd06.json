@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3391,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "nakano_yotsuba_lingerie_whisper",
     "characterId": "nakano_yotsuba",
@@ -14,7 +14,7 @@
     "location": "清晨的阳光露台，木质花架上摆放着几盆绿意盎然的吊兰与多肉",
     "timeOfDay": "初夏清晨六点的活力朝气",
     "lighting": "明艳的初夏晨光自侧面泼洒而入，在紧致白皙的小腹与修长四肢上泛起健康光芒",
-    "camera": "侧后仰角全身镜头，捕捉双手上举时伸展的优美脊柱线条与回眸笑容",
+    "camera": "wide shot, low angle, rear three quarter view, 侧后仰角全身镜头，捕捉双手上举时伸展的优美脊柱线条与回眸笑容",
     "mood": "如向日葵般灿烂纯净的治愈活力，毫无保留的开朗与健美魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "balcony",
+      "railing",
+      "morning",
+      "sunlight",
+      "dim_lighting",
+      "smile",
+      "wide_shot",
+      "low_angle",
+      "rear_three_quarter_view"
     ],
     "promptTokens": [
+      "wide shot",
+      "low angle",
+      "rear three quarter view",
       "balcony",
+      "railing",
+      "morning",
+      "sunlight",
+      "dim lighting",
       "smile",
-      "ribbon",
       "white binding trim",
       "racerback cut",
       "side-slit runner shorts",
       "energetic athletic sleep set",
-      "cheerful sunny homewear",
-      "sunlight"
+      "cheerful sunny homewear"
     ],
     "negativeTokens": [],
     "promptProse": "Nakano Yotsuba relaxes in stretching arms upward on sunny balcony, wearing a bright clover green breathable athletic cami. Stretching arms upward on sunny balcony, energetic radiant smile, green ribbon hair accessory amidst bright orange hair, toned supple waistline, potted lush green plants, dazzling clear blue morning sky.",
-    "animaCaption": "Nakano Yotsuba relaxes in stretching arms upward on sunny balcony, wearing a bright clover green breathable athletic cami. Stretching arms upward on sunny balcony, energetic radiant smile, green ribbon hair accessory amidst bright orange hair, toned supple waistline, potted lush green plants, dazzling clear blue morning sky.",
+    "animaCaption": "Nakano Yotsuba relaxes in stretching arms upward on sunny balcony, wearing a bright clover green breathable athletic cami.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

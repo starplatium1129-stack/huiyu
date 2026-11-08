@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3349,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shorekeeper_lingerie_whisper",
     "characterId": "shorekeeper",
@@ -14,7 +14,7 @@
     "location": "黑海岸核心星核水镜大厅，四周垂落着发光的数据水母与无垠的深海星云",
     "timeOfDay": "文明复苏的沉静归宿之刻",
     "lighting": "星核散发纯净透明的青蓝光芒，照亮若隐若现的白皙肌肤与如水波流淌的长发",
-    "camera": "对称全景仰拍，水镜倒影与无重力飘浮的轻纱构成绝美的科幻神话构图",
+    "camera": "wide shot, low angle, 对称全景仰拍，水镜倒影与无重力飘浮的轻纱构成绝美的科幻神话构图",
     "mood": "空灵、神圣、超越凡俗的数据神性与对命定之人的永恒守候",
     "adult": true,
     "sampleRating": "R15",
@@ -27,14 +27,22 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "vanity",
+      "mirror",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "cool_lighting",
+      "standing",
+      "wide_shot",
+      "low_angle"
     ],
     "promptTokens": [
+      "wide shot",
+      "low angle",
+      "vanity",
       "mirror",
+      "night",
+      "cool lighting",
+      "standing",
       "floating",
       "water",
       "glowing",
@@ -42,7 +50,7 @@
     ],
     "negativeTokens": [],
     "promptProse": "The Shorekeeper relaxes in shorekeeper wuthering waves, wearing a crystalline azure gradient jellyfish gossamer slip gown. Shorekeeper wuthering waves, floating weightlessly over mirror-like dark water pool, holding glowing stellar crystal core in open palms amidst jellyfish-like gossamer sheer gown drifting in air, glowing data particles, cosmic deep blue abyss background.",
-    "animaCaption": "The Shorekeeper relaxes in shorekeeper wuthering waves, wearing a crystalline azure gradient jellyfish gossamer slip gown. Shorekeeper wuthering waves, floating weightlessly over mirror-like dark water pool, holding glowing stellar crystal core in open palms amidst jellyfish-like gossamer sheer gown drifting in air, glowing data particles, cosmic deep blue abyss background.",
+    "animaCaption": "The Shorekeeper relaxes in shorekeeper wuthering waves, wearing a crystalline azure gradient jellyfish gossamer slip gown.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

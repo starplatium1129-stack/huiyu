@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_nikke_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3376,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "rapi_nikke_lingerie_whisper",
     "characterId": "rapi_nikke",
@@ -14,7 +14,7 @@
     "location": "反击部队野战指挥所单间，关闭的战术全息地图终端在黑暗中沉寂",
     "timeOfDay": "地表作战前夜的休眠周期",
     "lighting": "桌上一盏军用手电筒泛出的暖白散射光，照亮了紧绷平坦的小腹与利落的军人锁骨",
-    "camera": "正面平视特写，军人端坐的挺拔姿态与睡袍微敞露出的红黑内衣形成强烈反差",
+    "camera": "close-up, eye level, front view, 正面平视特写，军人端坐的挺拔姿态与睡袍微敞露出的红黑内衣形成强烈反差",
     "mood": "钢铁般坚毅的军人意志与内心深处纯真女性柔情的强烈碰撞",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,36 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "blush",
+      "close_up",
+      "eye_level",
+      "front_view"
     ],
     "promptTokens": [
-      "sitting",
-      "red eyes",
+      "close-up",
+      "eye level",
+      "front view",
+      "indoors",
+      "bedroom",
       "night",
+      "warm lighting",
+      "sitting",
+      "blush",
       "military harness accents",
       "molded underwire contour",
       "high-waist boyleg briefs",
-      "indoors",
       "wall lamp",
       "dim lighting",
       "cool lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night. Subdued tactical wall lamps illuminate the military bunk quarters with calm cool tones, casting disciplined clean shadows across her posture.",
-    "animaCaption": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set. Partially open dark robe revealing structured lingerie, calm intense red eyes with subtle vulnerability, tactical beret set aside on crate amidst rugged field command bunker at night. Subdued tactical wall lamps illuminate the military bunk quarters with calm cool tones, casting disciplined clean shadows across her posture.",
+    "animaCaption": "Rapi sits disciplined on field cot edge, wearing a scarlet and tactical carbon-weave sheer bralette set.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

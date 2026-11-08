@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yae_miko_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3347,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yae_miko_lingerie_whisper",
     "characterId": "yae_miko",
@@ -14,7 +14,7 @@
     "location": "影向山鸣神大社最高殿宇回廊，古老神樱树在夜空中散落万千发光花瓣",
     "timeOfDay": "月上中天微风拂樱之刻",
     "lighting": "神樱树散发的荧光粉紫微光与满月清霜交融，在朱红回廊与白皙如雪的胴体上流淌",
-    "camera": "侧卧平视中景，神樱落花飘过镜头前景，展现修长优美的颈项与曼妙身段",
+    "camera": "wide shot, full body, 神社最高回廊横幅全景，发光神樱花瓣在夜风中轻拂醉卧狐仙",
     "mood": "千年狐妖的极度从容与玩世不恭，兼具神圣威仪与惊心动魄的肉食系诱惑",
     "adult": true,
     "sampleRating": "R15",
@@ -27,24 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "reclining",
+      "veranda",
+      "shrine",
+      "sacred_sakura",
+      "falling_petals",
+      "tatami",
+      "sake_cup",
+      "moonlight",
+      "seductive_smile",
+      "fox_spirit",
+      "wide_shot",
+      "full_body"
     ],
     "promptTokens": [
-      "fox ears",
-      "reclining",
-      "purple eyes",
-      "glowing",
-      "waist-high open slit",
-      "flowing sheer peignoir sleeves",
-      "indoors"
+      "wide shot",
+      "full body",
+      "reclining gracefully on wooden shrine engawa",
+      "glowing Sacred Sakura tree",
+      "swirling pink sakura petals",
+      "lacquer sake cup nearby",
+      "Grand Narukami Shrine veranda",
+      "full moon sky",
+      "sly teasing smile"
     ],
     "negativeTokens": [],
-    "promptProse": "Yae Miko reclines lazily on vermilion veranda of Grand Narukami Shrine, wearing a scarlet and pure white silk kimono-cut slip robe. Kitsune fox girl, soft pink fox ears twitching, swirling golden tassel earring with finger amidst seductive smirking violet eyes, glowing sacred sakura tree shedding luminous petals under full moon.",
-    "animaCaption": "Yae Miko reclines lazily on vermilion veranda of Grand Narukami Shrine, wearing a scarlet and pure white silk kimono-cut slip robe. Kitsune fox girl, soft pink fox ears twitching, swirling golden tassel earring with finger amidst seductive smirking violet eyes, glowing sacred sakura tree shedding luminous petals under full moon.",
+    "promptProse": "Yae Miko reclines across the lacquered veranda of the Grand Narukami Shrine beneath the midnight full moon, sipping sake as glowing cherry petals swirl around her languid form.",
+    "animaCaption": "Reclining gracefully on a moonlit shrine veranda as glowing cherry blossom petals swirl in the night breeze.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

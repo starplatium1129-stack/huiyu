@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuonji_alice_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3345,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kuonji_alice_lingerie_whisper",
     "characterId": "kuonji_alice",
@@ -14,7 +14,7 @@
     "location": "维多利亚风格老宅阁楼卧室，彩色花窗外高悬着冷冽银月",
     "timeOfDay": "午夜零点钟鸣时刻",
     "lighting": "穿透哥特式尖顶花窗的银蓝月光，与壁炉残余的幽暗微火交织出冷暖反差",
-    "camera": "正视平拍中景，古典构图沉稳对称，突出少女深邃的气场与端正坐姿",
+    "camera": "medium shot, front view, 正视平拍中景，古典对称构图突显幽夜孤高与魔女深邃气场",
     "mood": "神秘幽邃，古典哥特魔女的绝对孤高与深邃魔性",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "antique_chair",
+      "stained_glass",
+      "attic_window",
+      "full_moon",
+      "victorian_mansion",
+      "shadows",
+      "stoic",
+      "cool_lighting",
+      "medium_shot",
+      "front_view"
     ],
     "promptTokens": [
-      "sitting",
-      "grimoire",
-      "moonlight",
-      "night",
-      "bed",
-      "high lace illusion neckline",
-      "antique cameo silver pendant",
-      "dark vintage sleepwear",
-      "indoors"
+      "medium shot",
+      "front view",
+      "sitting symmetrically in antique wooden chair",
+      "high Victorian attic window",
+      "stained glass colors",
+      "brilliant full moon outside",
+      "deep midnight shadows",
+      "unwavering stoic gaze",
+      "cool moonlit highlights"
     ],
     "negativeTokens": [],
-    "promptProse": "Alice Kuonji sits in antique high-back velvet armchair, wearing a midnight teal velvet slip dress. Clutching leather grimoire on lap, pitch black bob hair, dark piercing eyes amidst gothic stained-glass arched window, midnight blue moonlight, mysterious vintage mansion bedroom.",
-    "animaCaption": "Alice Kuonji sits in antique high-back velvet armchair, wearing a midnight teal velvet slip dress. Clutching leather grimoire on lap, pitch black bob hair, dark piercing eyes amidst gothic stained-glass arched window, midnight blue moonlight, mysterious vintage mansion bedroom.",
+    "promptProse": "Alice Kuonji sits rigidly upright in an antique high-backed chair in her Victorian attic manor at midnight, framed against stained-glass windows illuminated by a cold silver full moon.",
+    "animaCaption": "Sitting upright in an antique chair before stained-glass attic windows illuminated by a cold midnight moon.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

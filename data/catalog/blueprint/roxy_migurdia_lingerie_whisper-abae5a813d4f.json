@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3172,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "roxy_migurdia_lingerie_whisper",
     "characterId": "roxy_migurdia",
@@ -14,7 +14,7 @@
     "location": "拉诺亚魔法大学附近的石造公寓卧室，书桌上堆满了古老魔法典籍",
     "timeOfDay": "深夜魔术研习结束时",
     "lighting": "悬浮在空中的温和水系照明光球，散发着如水波般轻柔晃动的海蓝光晕",
-    "camera": "俯角特写平视，捕捉大号法杖与娇小身形的对比，以及法师帽边缘露出的红润侧脸",
+    "camera": "medium shot, eye level, 侧身平视中景，桌案法典与微澜水纹交织出的知性与娇羞",
     "mood": "老师身份与娇小体型的反差萌，害羞、认真又透着深切爱意",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "study_desk",
+      "magic_tome",
+      "scrolls",
+      "staff",
+      "stone_room",
+      "candles",
+      "water_magic",
+      "blush",
+      "shy_look",
+      "medium_shot"
     ],
     "promptTokens": [
-      "bed",
-      "sitting",
-      "water",
-      "braid",
-      "blush",
-      "floating",
-      "fine accordion pleats",
-      "tiny white ribbon bows",
-      "indoors",
-      "soft lighting"
+      "medium shot",
+      "sitting at wooden desk",
+      "stacks of ancient grimoires",
+      "magic staff resting on wall",
+      "floating water droplets",
+      "stone apprentice chamber",
+      "flickering candles",
+      "shy earnest blush",
+      "amber candlelight"
     ],
     "negativeTokens": [],
-    "promptProse": "Roxy Migurdia sits on rustic wooden bed hugging oversized water-god magic staff, wearing a ocean blue double-layered chiffon camisole slip. Witch hat set on pillow, blue twin braids resting on shoulders, deeply blushing face amidst bare toes curling on rug, floating aquatic magic light sphere, cozy study room.",
-    "animaCaption": "Roxy Migurdia sits on rustic wooden bed hugging oversized water-god magic staff, wearing a ocean blue double-layered chiffon camisole slip. Witch hat set on pillow, blue twin braids resting on shoulders, deeply blushing face amidst bare toes curling on rug, floating aquatic magic light sphere, cozy study room.",
+    "promptProse": "Roxy sits at her study desk in Ranoa surrounded by weighty magical tomes, tiny water droplets floating magically around her fingertips as she looks up with an earnest blush.",
+    "animaCaption": "Sitting at her study desk surrounded by ancient grimoires and water magic motes, looking up with an earnest blush.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

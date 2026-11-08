@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3520,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "mash_kyrielight_lingerie_whisper",
     "characterId": "mash_kyrielight",
@@ -14,7 +14,7 @@
     "location": "迦勒底个人生活间，天花板模拟出绚烂而深邃的星云宇宙投影",
     "timeOfDay": "深夜灵子模拟演练后",
     "lighting": "星云投影散发的深蓝与紫粉色微光流转在床单上，提供如梦似幻的轮廓冷光",
-    "camera": "正面平视特写，从靠枕上方露出泛红微翘的鼻尖与澄澈的紫色眼睛",
+    "camera": "medium shot, eye level, 平视中景，天花板星云光海投射在少女清澈坚毅的面容上",
     "mood": "纯洁忠诚的学妹情怀，科幻孤独中的绝对信任与温情羁绊",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_bed",
+      "hugging_knees",
+      "star_projection",
+      "nebula",
+      "chaldea_dorm",
+      "modest",
+      "tender_smile",
+      "blue_lighting",
+      "medium_shot"
     ],
     "promptTokens": [
-      "bed",
-      "kneeling",
-      "purple hair",
-      "glowing",
-      "purple eyes",
-      "blush",
-      "silver star pendant",
-      "criss-cross back straps",
-      "indoors"
+      "medium shot",
+      "sitting on bed",
+      "hugging knees",
+      "cosmic galaxy projection on ceiling",
+      "nebula glow",
+      "Chaldea personal quarters",
+      "modest posture",
+      "gentle dedicated smile",
+      "ambient blue light"
     ],
     "negativeTokens": [],
-    "promptProse": "Mash Kyrielight kneels on white bed, wearing a lilac sheer lace teddy bodysuit. Hugging shield-shaped white pillow to chest, short lilac hair covering eye partially, glowing violet eyes amidst blushing sweetly, ceiling projecting glowing nebula galaxy, Chaldea dorm quarters.",
-    "animaCaption": "Mash Kyrielight kneels on white bed, wearing a lilac sheer lace teddy bodysuit. Hugging shield-shaped white pillow to chest, short lilac hair covering eye partially, glowing violet eyes amidst blushing sweetly, ceiling projecting glowing nebula galaxy, Chaldea dorm quarters.",
+    "promptProse": "Mash sits on her bed in her quiet Chaldea quarters, hugging her knees under cosmic starlight simulated on the ceiling with a devoted, warm smile after mission training.",
+    "animaCaption": "Sitting on her bed hugging her knees beneath a ceiling of simulated cosmic starlight, smiling with quiet warmth.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

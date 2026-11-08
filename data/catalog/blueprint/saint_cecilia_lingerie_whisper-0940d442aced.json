@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saint_cecilia_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3266,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "saint_cecilia_lingerie_whisper",
     "characterId": "saint_cecilia",
@@ -14,7 +14,7 @@
     "location": "教堂后方简朴明亮的圣女起居室，窗台上的白色百合花随晨风摇曳",
     "timeOfDay": "礼拜日初曦晨光普照",
     "lighting": "金灿灿的初升晨光从高耸拱窗穿透而入，给纯白被褥镀上一层温暖的天使金晕",
-    "camera": "俯拍被窝特写，乱蓬蓬的灿烂金发与白羽绒被形成极度治愈的柔软画面",
+    "camera": "close-up, high angle, 俯拍被窝特写，乱蓬蓬的灿烂金发与白羽绒被形成极度治愈的柔软画面",
     "mood": "备受宠溺的呆萌圣女日常，圣洁与无防备的娇憨完美融合",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,36 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "indoors",
+      "bedroom",
+      "window",
+      "morning",
+      "sunlight",
+      "warm_lighting",
+      "hugging_pillow",
+      "smile",
+      "close_up",
+      "high_angle"
     ],
     "promptTokens": [
+      "close-up",
+      "high angle",
+      "indoors",
+      "bedroom",
+      "window",
+      "morning",
+      "sunlight",
+      "warm lighting",
+      "hugging pillow",
+      "smile",
       "sleepy",
-      "blonde hair",
       "delicate pearlescent buttons",
       "scalloped collar",
-      "relaxed oversized fit",
-      "indoors",
-      "sunlight",
-      "warm lighting"
+      "relaxed oversized fit"
     ],
     "negativeTokens": [],
     "promptProse": "Cecilia relaxes in cecilia pastor lawrence, wearing a ivory white pure cotton ruffled nightdress. Cecilia pastor lawrence, buried in fluffy white duvet showing sleepy face, messy golden blonde hair splayed on pillows amidst rubbing eyes with tiny yawn, white lily on sunlit windowsill, ethereal warm church morning light.",
-    "animaCaption": "Cecilia relaxes in cecilia pastor lawrence, wearing a ivory white pure cotton ruffled nightdress. Cecilia pastor lawrence, buried in fluffy white duvet showing sleepy face, messy golden blonde hair splayed on pillows amidst rubbing eyes with tiny yawn, white lily on sunlit windowsill, ethereal warm church morning light.",
+    "animaCaption": "Cecilia relaxes in cecilia pastor lawrence, wearing a ivory white pure cotton ruffled nightdress.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

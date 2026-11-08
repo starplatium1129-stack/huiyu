@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_lingerie_whisper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 3446,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "prinz_eugen_lingerie_whisper",
     "characterId": "prinz_eugen",
@@ -14,7 +14,7 @@
     "location": "复古铁血军官豪华起居室，高脚水晶酒瓶中盛着半瓶陈年杜松子酒",
     "timeOfDay": "午夜私密庆功宴后",
     "lighting": "室内落地灯的暖黄光芒与酒瓶折射出的琥珀红光相衬，环境色调暧昧迷离",
-    "camera": "低角度平视全景，长椅横向贯穿画面，修长曼妙的曲线展露无遗",
+    "camera": "wide shot, low angle, 低角度平视全景，长椅横向贯穿画面，修长曼妙的曲线展露无遗",
     "mood": "从容老练的坏心眼调戏，成熟重巡洋舰的绝对性感与掌控力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
+      "sofa",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "reclining",
+      "wide_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "chaise lounge",
+      "wide shot",
+      "low angle",
+      "indoors",
+      "bedroom",
+      "sofa",
+      "night",
+      "warm lighting",
       "reclining",
-      "silver hair",
+      "chaise lounge",
       "teacup",
-      "purple eyes",
       "silver iron cross pendant",
       "sheer mesh waist cutouts",
       "high-leg brazilian cut",
-      "indoors",
       "city lights",
-      "dim lighting",
-      "warm lighting"
+      "dim lighting"
     ],
     "negativeTokens": [],
     "promptProse": "Prinz Eugen reclines lazily on scarlet velvet chaise lounge, wearing a inky black deep-plunge strappy lace chemise. Twisting strand of silver hair with finger, iconic beauty mark under bottom lip, teasing seductive violet eyes amidst crystal decanter of liqueur nearby, opulent vintage naval suite. Harbor lights through sheer hotel glass mingle with the deep crimson glow of a wine glass, casting alluring low-key reflections across her teasing posture.",
-    "animaCaption": "Prinz Eugen reclines lazily on scarlet velvet chaise lounge, wearing a inky black deep-plunge strappy lace chemise. Twisting strand of silver hair with finger, iconic beauty mark under bottom lip, teasing seductive violet eyes amidst crystal decanter of liqueur nearby, opulent vintage naval suite. Harbor lights through sheer hotel glass mingle with the deep crimson glow of a wine glass, casting alluring low-key reflections across her teasing posture.",
+    "animaCaption": "Prinz Eugen reclines lazily on scarlet velvet chaise lounge, wearing a inky black deep-plunge strappy lace chemise.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

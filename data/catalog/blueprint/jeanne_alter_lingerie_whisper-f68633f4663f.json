@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jeanne_alter_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3255,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.917Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "jeanne_alter_lingerie_whisper",
     "characterId": "jeanne_alter",
@@ -14,7 +14,7 @@
     "location": "迦勒底黑贞私人房间双人床深处被窝里",
     "timeOfDay": "深夜",
     "lighting": "黑贞掌心因羞怒下意识燃起的暗黑狱火红光，将焦黑暗红紧身吊带与通红的面容映照得如同魔王降世",
-    "camera": "充满魄力与爆笑反差的半身正面张力特写，将复仇魔女被戳破少女心时的恼羞成怒展现到极致",
+    "camera": "medium close-up, front view, 半身正面张力特写，复仇魔女被戳破少女心时的恼羞成怒展现到极致",
     "mood": "恼羞成怒、极度傲娇、嘴硬到底的少女心反差萌",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,37 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "bed_covers",
+      "sitting",
+      "on_bed",
+      "bed_sheet",
+      "hugging_book",
+      "shojo_manga",
       "black_flames",
-      "charred_black_camisole",
-      "shojo_manga_in_hands",
       "furious_blush",
-      "golden_eyes",
-      "short_silver_hair",
-      "avenger_gap_moe"
+      "embarrassed",
+      "tsundere",
+      "dim_lighting",
+      "medium_close_up",
+      "front_view"
     ],
     "promptTokens": [
-      "black camisole",
-      "reading shojo manga",
+      "sitting",
+      "on bed",
+      "bed sheet",
+      "holding book",
+      "manga",
       "black flames in hand",
-      "furious red blush",
-      "golden eyes",
-      "silver hair",
-      "bed"
+      "blush",
+      "furious",
+      "embarrassed",
+      "pout",
+      "dim lighting",
+      "medium close-up",
+      "front view"
     ],
     "negativeTokens": [],
-    "promptProse": "Jeanne d'Arc (Alter) experiencing absolute, apocalyptic embarrassment inside her Chaldea quarters. Clad in a scorched-black and crimson form-fitting camisole and shorts, she is caught dead to rights in bed reading a sweet teenage shojo manga. Clenching the volume against her chest while dark flames burst from her fist, her golden eyes blaze with mortified, tsundere fury.",
-    "animaCaption": "Jeanne d'Arc (Alter) experiencing absolute, apocalyptic embarrassment inside her Chaldea quarters. Clad in a scorched-black and crimson form-fitting camisole and shorts, she is caught dead to rights in bed reading a sweet teenage shojo manga.",
+    "promptProse": "Caught completely off guard in her personal Chaldea bedroom, Jeanne d'Arc (Alter) sits in bed hugging a volume of sweet shojo manga tightly against her chest. Her face flushes bright crimson with tsundere fury as crackling dark flames erupt from her fist.",
+    "animaCaption": "Caught in bed reading a sweet shojo manga, clutching the book with an embarrassed tsundere blush as dark flames flicker from her hand.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

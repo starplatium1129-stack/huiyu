@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_forger_lingerie_whisper",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 3259,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yor_forger_lingerie_whisper",
     "characterId": "yor_forger",
@@ -14,7 +14,7 @@
     "location": "福杰家主卧双人床畔，梳妆台上放着针线盒与切好的苹果盘",
     "timeOfDay": "深夜暗杀任务执行完毕、卸妆沐浴之后",
     "lighting": "梳妆台暖黄镜前灯将深红衣物与雪白肌肤烘托得极为柔和，褪去了所有暗杀的血腥",
-    "camera": "后侧方四分之三角度中景，镜中倒映的温柔侧颜与露出的光滑后背构成动人画面",
+    "camera": "medium shot, eye level, 主卧梳妆台平视中景，针线盒与苹果盘映衬卸下杀戮后的贤淑温存",
     "mood": "致命杀手荆棘公主与温柔人妻母亲的绝妙反差，既危险妖娆又纯洁害羞",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "dressing_table",
+      "vanity",
+      "apple_slices",
+      "sewing_box",
+      "bedroom",
+      "mirror",
+      "warm_lighting",
+      "gentle_smile",
+      "blush",
+      "medium_shot"
     ],
     "promptTokens": [
-      "vanity",
-      "sitting",
-      "black hair",
-      "blush",
-      "smile",
-      "red eyes",
-      "bed",
-      "criss-cross back strapping",
-      "indoors",
-      "vanity light",
-      "warm lighting",
-      "soft lighting"
+      "medium shot",
+      "sitting at wooden vanity stool",
+      "plate of freshly sliced apples",
+      "sewing needle and thread kit",
+      "mirror reflection",
+      "master bedroom",
+      "gentle domestic smile",
+      "soft blushing cheeks",
+      "warm lamp glow"
     ],
     "negativeTokens": [],
-    "promptProse": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box. Warm vanity mirror lighting reflects a gentle golden luster across her porcelain neck, softening her assassin instincts into tender domestic serenity.",
-    "animaCaption": "Yor Forger sits at vanity table smoothing knit collar, wearing a scarlet red soft-knit halter open-back slip gown. Glossy raven hair down over bare shoulders, deep blushing cheeks with sweet hesitant smile, ruby red eyes amidst cozy family bedroom with sewing box. Warm vanity mirror lighting reflects a gentle golden luster across her porcelain neck, softening her assassin instincts into tender domestic serenity.",
+    "promptProse": "Yor sits softly by her bedroom vanity after a late-night mission, setting aside her sewing kit and sliced apples with a serene, devoted housewife's warmth.",
+    "animaCaption": "Sitting at a bedroom vanity beside freshly sliced apples and a sewing kit, offering a serene, blushing smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3501,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "mitsukasa_ayase_lingerie_whisper",
     "characterId": "mitsukasa_ayase",
@@ -14,7 +14,7 @@
     "location": "学生宿舍衣帽间镜前，推拉门微敞，暖色调梳妆台灯映着换衣时的慌乱",
     "timeOfDay": "秘密潜入归来的更衣时刻",
     "lighting": "暖黄色的壁灯与穿衣镜边框补光灯，照亮羞红的粉颊与局促遮挡的纤指",
-    "camera": "后方侧拍捕捉镜中反光与少女急忙侧身回防的生动瞬间",
+    "camera": "side view, 后方侧拍捕捉镜中反光与少女急忙侧身回防的生动瞬间",
     "mood": "伪现充特工少女的秘密被撞破，极度羞愤、娇羞与紧张感迸发",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "vanity",
+      "mirror",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "standing",
+      "blush",
+      "side_view"
     ],
     "promptTokens": [
+      "side view",
+      "vanity",
       "mirror",
+      "night",
+      "warm lighting",
+      "standing",
       "blush",
       "scalloped floral eyelash lace",
       "low-rise matching shorts",
       "delicate underwire support",
       "indoors",
-      "desk lamp",
-      "warm lighting"
+      "desk lamp"
     ],
     "negativeTokens": [],
     "promptProse": "Mitsukasa Ayase stands caught off guard in dressing room in front of mirror, wearing a midnight navy sheer lace push-up camisole. Desperately shielding chest with crossed forearms, furiously blushing red face, long silver-aquamarine hair amidst flustered glare, warm wardrobe lighting.",
-    "animaCaption": "Mitsukasa Ayase stands caught off guard in dressing room in front of mirror, wearing a midnight navy sheer lace push-up camisole. Desperately shielding chest with crossed forearms, furiously blushing red face, long silver-aquamarine hair amidst flustered glare, warm wardrobe lighting.",
+    "animaCaption": "Mitsukasa Ayase stands caught off guard in dressing room in front of mirror, wearing a midnight navy sheer lace push-up camisole.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

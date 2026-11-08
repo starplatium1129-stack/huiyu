@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3332,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yatogami_tohka_lingerie_whisper",
     "characterId": "yatogami_tohka",
@@ -14,7 +14,7 @@
     "location": "五河家客厅矮几旁，茶几上放着两杯热麦茶与厚厚的面包包装袋",
     "timeOfDay": "周六午后点心分享时光",
     "lighting": "午后暖洋洋的斜阳穿透窗户，在木地板与少女深紫色的长发上镀上一层晶莹的蜜金色",
-    "camera": "正面平视特写，捧着面包的纯真手势与闪闪发亮的璀璨紫瞳极具感染力",
+    "camera": "medium shot, front view, 正面中景，茶几面包袋与麦茶散发的纯真无邪生活感",
     "mood": "纯洁无垢的精灵公主对美食与心上人的赤诚爱意，明亮、神圣而毫无杂念",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_floor",
+      "coffee_table",
+      "bread_wrapper",
+      "tea_cup",
+      "crumbs",
+      "living_room",
+      "afternoon",
+      "sunlight",
+      "innocent_smile",
+      "medium_shot",
+      "front_view"
     ],
     "promptTokens": [
-      "sitting",
-      "purple hair",
-      "purple eyes",
-      "silver starburst clasp",
-      "flutter hemline",
-      "imperial purple hue",
-      "indoors",
-      "sunlight",
-      "warm lighting"
+      "medium shot",
+      "front view",
+      "sitting on floor cushion by coffee table",
+      "kinako bread wrapper",
+      "crumbs on lips",
+      "two cups of barley tea",
+      "sunlit living room",
+      "bright innocent smile",
+      "cheerful warmth"
     ],
     "negativeTokens": [],
-    "promptProse": "Tohka Yatogami sits cross-legged holding fresh golden kinako bread with both hands, wearing a violet purple double-layered chiffon babydoll slip. Spirit princess, sugar dust on lower lip, voluminous royal purple hair cascading amidst radiant sparkling purple eyes, warm cozy living room in afternoon sunshine.",
-    "animaCaption": "Tohka Yatogami sits cross-legged holding fresh golden kinako bread with both hands, wearing a violet purple double-layered chiffon babydoll slip. Spirit princess, sugar dust on lower lip, voluminous royal purple hair cascading amidst radiant sparkling purple eyes, warm cozy living room in afternoon sunshine.",
+    "promptProse": "Tohka beams with pure, unclouded joy from the living room floor, crumbs of her favorite kinako bread on her cheek as she offers half her snack to the viewer.",
+    "animaCaption": "Sitting by the living room coffee table with bread crumbs on her cheek, beaming with pure, innocent delight.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

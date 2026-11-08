@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3351,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yanami_anna_lingerie_whisper",
     "characterId": "yanami_anna",
@@ -14,7 +14,7 @@
     "location": "温馨的小卧室矮桌前，桌上堆着空泡芙盒、烤肉味薯片袋与纸巾盒",
     "timeOfDay": "周日傍晚败犬疗伤暴饮暴食时刻",
     "lighting": "黄昏暮色穿透窗帘，给散落的零食与少女圆润白皙的肩头披上一层橘粉色的暖意",
-    "camera": "平视特写中景，咬着大勺子鼓腮帮的表情与大眼睛里的水汽充满生动的二次元水獭感",
+    "camera": "medium shot, eye level, 卧室矮桌平视中景，空泡芙盒薯片袋与水獭般哭泣的暴食反差",
     "mood": "败犬女主天花板的顶级可爱与治愈吃货属性，好气好笑又极度惹人喜爱",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_floor",
+      "coffee_table",
+      "cream_puff_box",
+      "potato_chips",
+      "tissue_box",
+      "crying_eyes",
+      "eating",
+      "cozy_room",
+      "dim_lighting",
+      "medium_shot"
     ],
     "promptTokens": [
-      "sitting",
-      "teacup",
-      "blue eyes",
-      "blue hair",
-      "sunset",
-      "bubble bloomers tap shorts",
-      "sweet pastel ribbon bow",
-      "comfortable food-lover fit",
-      "indoors"
+      "medium shot",
+      "sitting cross-legged by low table",
+      "empty cream puff containers",
+      "crinkled potato chip bags",
+      "box of tissues",
+      "crying comic tears",
+      "stuffed cheeks",
+      "flustered pout",
+      "warm bedroom lamp"
     ],
     "negativeTokens": [],
-    "promptProse": "Anna Yanami sits cross-legged at low table hugging massive tub of strawberry ice cream with big spoon in mouth, wearing a powder pink ruffled double-cotton camisole set. Otter-like cuteness, teary pleading blue eyes, long light-blue hair amidst scattered snack wrappers and tissue box, sunset room glow.",
-    "animaCaption": "Anna Yanami sits cross-legged at low table hugging massive tub of strawberry ice cream with big spoon in mouth, wearing a powder pink ruffled double-cotton camisole set. Otter-like cuteness, teary pleading blue eyes, long light-blue hair amidst scattered snack wrappers and tissue box, sunset room glow.",
+    "promptProse": "Anna sits on the floor drowning her romantic heartbreak in a sea of empty cream puff boxes and barbecue chips, sniffling comically while stuffing another treat into her mouth.",
+    "animaCaption": "Sitting cross-legged on the floor drowning heartbreak in empty cream puff boxes, sniffling with comic sweetness.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

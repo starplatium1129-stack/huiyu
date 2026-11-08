@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3352,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "tachibana_mikari_lingerie_whisper",
     "characterId": "tachibana_mikari",
@@ -14,7 +14,7 @@
     "location": "东京漫展附近商务酒店客房，行李箱敞开在一旁露出各色cos道具",
     "timeOfDay": "漫展狂欢落幕后的深夜",
     "lighting": "客房床头壁灯投下暖白色的聚光，勾勒出娇小紧致的身材轮廓与金发的亮泽",
-    "camera": "正面微俯视特写，咬唇欲泣却又强装倔强的动人神态极具感染力",
+    "camera": "close-up, high angle, front view, 正面微俯视特写，咬唇欲泣却又强装倔强的动人神态极具感染力",
     "mood": "默默守护十年的青梅竹马的心痛与执着，从容少女私下彻底袒露的脆弱真情",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
+      "bed",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "warm_lighting",
+      "sitting",
+      "close_up",
+      "high_angle",
+      "front_view"
     ],
     "promptTokens": [
-      "bed",
-      "sitting",
-      "night",
-      "teacup",
-      "twintails",
-      "layered flutter ruffles",
-      "sweet pastel aesthetic",
+      "close-up",
+      "high angle",
+      "front view",
       "indoors",
-      "warm lighting"
+      "bedroom",
+      "bed",
+      "night",
+      "warm lighting",
+      "sitting",
+      "teacup",
+      "layered flutter ruffles",
+      "sweet pastel aesthetic"
     ],
     "negativeTokens": [],
     "promptProse": "Mikari Tachibana sits in center of hotel bed pulling down nightgown hemline, wearing a cherry blossom pink sheer lace bralette set. Biting lower lip with glistening teary eyes, blonde twin tails draped over shoulders, emotional desperate gaze amidst hotel room with open suitcase and cosplay props in corner.",
-    "animaCaption": "Mikari Tachibana sits in center of hotel bed pulling down nightgown hemline, wearing a cherry blossom pink sheer lace bralette set. Biting lower lip with glistening teary eyes, blonde twin tails draped over shoulders, emotional desperate gaze amidst hotel room with open suitcase and cosplay props in corner.",
+    "animaCaption": "Mikari Tachibana sits in center of hotel bed pulling down nightgown hemline, wearing a cherry blossom pink sheer lace bralette set.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

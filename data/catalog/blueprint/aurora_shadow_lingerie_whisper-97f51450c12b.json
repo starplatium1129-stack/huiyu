@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3511,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "aurora_shadow_lingerie_whisper",
     "characterId": "aurora_shadow",
@@ -14,7 +14,7 @@
     "location": "圣域深层古代神殿残迹的紫晶回廊",
     "timeOfDay": "异界暮光",
     "lighting": "悬浮紫晶石散发出的幽秘荧光与异界紫红色黄昏天光交相辉映，充满妖艳与神秘感",
-    "camera": "极具侵略性的侧视角低机位，突显魔女超脱生死的大胆曲线与捉弄人心的致命魅力",
+    "camera": "medium shot, low angle, 极具侵略性的侧视角低机位，突显魔女超脱生死的大胆曲线与捉弄人心的致命魅力",
     "mood": "危险魅惑、戏谑挑逗、深藏悲伤的古老魔女",
     "adult": true,
     "sampleRating": "R15",
@@ -27,29 +27,31 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "purple_crystals",
-      "ancient_sanctuary",
-      "deep_purple_velvet_bodysuit",
-      "plunging_neckline",
-      "twirling_hair",
-      "ruby_eyes",
-      "otherworldly_twilight",
-      "dangerous_witch"
+      "reclining",
+      "stone_throne",
+      "dungeon_ruins",
+      "violet_flames",
+      "chains",
+      "seductive_smile",
+      "witch",
+      "magic_aura",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "purple velvet bodysuit",
-      "floating crystal",
-      "twirling hair",
-      "ruby eyes",
-      "seductive smirk",
-      "ancient ruins",
-      "glow",
-      "twilight",
-      "dim lighting"
+      "medium shot",
+      "low angle",
+      "reclining back on ancient stone throne",
+      "ruined sanctuary",
+      "flickering violet soul flames",
+      "crumbled chains on floor",
+      "seductive knowing smile",
+      "alluring tease",
+      "purple ambient glow"
     ],
     "negativeTokens": [],
-    "promptProse": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace. Leaning against a levitating violet crystal while twirling a lock of hair around her fingertip, her crimson eyes tease the viewer with ancient, intoxicating allure. Mystical violet crystal glow mingles with the twilight sky through the stone arches, casting otherworldly purple light across her sleek silhouette.",
-    "animaCaption": "Aurora lounging with dangerous elegance inside the mystical crystalline sanctuary. She wears a breathtaking deep-purple semi-sheer velvet bodysuit featuring a daring plunge neckline and delicate side lace. Mystical violet crystal glow mingles with the twilight sky through the stone arches, casting otherworldly purple light across her sleek silhouette.",
+    "promptProse": "Aurora lounges languidly on the cold stone of an ancient sanctuary, violet soul-fire flickering at her fingertips as she offers an irresistible, enigmatic smile from across the centuries.",
+    "animaCaption": "Lounging on an ancient stone throne amidst flickering violet flames, offering an alluring, timeless smile.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

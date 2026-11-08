@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3380,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "kita_ikuyo_lingerie_whisper",
     "characterId": "kita_ikuyo",
@@ -14,7 +14,7 @@
     "location": "温馨明亮的少女卧室，木吉他斜倚在墙角，米白羊毛地毯上散落着乐谱",
     "timeOfDay": "清晨旭日初升",
     "lighting": "金灿灿的初升朝阳洒满房间，透光窗帘滤出温暖柔和的金色尘晕",
-    "camera": "平视微俯拍特写，捕捉抱枕上探出的小半张羞红脸庞与明澈双眸",
+    "camera": "close-up, eye level, 平视微俯拍特写，捕捉抱枕上探出的小半张羞红脸庞与明澈双眸",
     "mood": "元气少女的羞涩清晨，明亮治愈且甜美可人",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,35 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "lying_on_stomach",
+      "on_bed",
+      "hugging_pillow",
+      "guitar_case",
+      "sheet_music",
+      "carpet",
+      "morning",
+      "sunrise",
+      "sunlight",
+      "blush",
+      "shy_smile",
+      "close_up"
     ],
     "promptTokens": [
-      "sitting",
-      "teddy bear",
+      "close-up",
+      "lying on stomach",
+      "on bed",
+      "hugging pillow",
+      "guitar leaning on wall",
+      "sheet music on carpet",
+      "bright morning",
+      "sunrise",
+      "sunbeam",
       "blush",
-      "amber eyes",
-      "ponytail",
-      "acoustic guitar",
-      "morning sunlight",
-      "peach pink knit camisole set",
-      "indoors"
+      "shy smile"
     ],
     "negativeTokens": [],
-    "promptProse": "Kita Ikuyo sits on fluffy white carpet, wearing a peach pink knit camisole set. Hugging a cute teddy bear plushie to chest, blushing cheeks, bright yellow eyes amidst vibrant red side ponytail, acoustic guitar leaning against wall in background, warm morning sunlight, dust motes dancing in sunbeams.",
-    "animaCaption": "Kita Ikuyo sits on fluffy white carpet, wearing a peach pink knit camisole set. Hugging a cute teddy bear plushie to chest, blushing cheeks, bright yellow eyes amidst vibrant red side ponytail, acoustic guitar leaning against wall in background, warm morning sunlight, dust motes dancing in sunbeams.",
+    "promptProse": "Kita peeks bashfully from behind a soft pillow in her sunny bedroom, morning sunbeams illuminating her guitar case and scattered sheet music on the carpet.",
+    "animaCaption": "Peeking shyly from behind a fluffy bed pillow in the bright morning sunlight, a guitar leaning against the wall.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "matou_sakura_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3257,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "matou_sakura_lingerie_whisper",
     "characterId": "matou_sakura",
@@ -14,7 +14,7 @@
     "location": "卫宫邸传统和室，月光透过日式障子木格窗在草席上投下清晰方格影",
     "timeOfDay": "深宵万籁俱寂时",
     "lighting": "皎洁月光穿透障子纸形成大面积柔白漫射，与走廊投进的微弱暖光形成静谧对比",
-    "camera": "侧平视中景，严整端正的正坐姿态与微侧垂首形成婉约的日本画风韵",
+    "camera": "medium shot, eye level, 侧平视中景，严整端正的正坐姿态与微侧垂首形成婉约的日本画风韵",
     "mood": "传统大和抚子的极致顺从与深藏于心底的炽烈执念",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "tatami",
+      "japanese_room",
+      "window",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "moonlight",
+      "warm_lighting",
+      "sitting",
+      "medium_shot",
+      "eye_level"
     ],
     "promptTokens": [
+      "medium shot",
+      "eye level",
       "tatami",
-      "sitting",
-      "ribbon",
-      "purple hair",
-      "braid",
-      "purple eyes",
+      "japanese room",
+      "window",
+      "night",
       "moonlight",
+      "warm lighting",
+      "sitting",
       "cross-over front bodice",
       "indoors"
     ],
     "negativeTokens": [],
     "promptProse": "Matou Sakura sits in traditional seiza on tatami mat, wearing a cherry blossom pink sheer silk yukata-inspired camisole. Fingers twisting sash ribbon shyly, long purple hair in side braid draped over chest, gentle melancholic violet eyes amidst moonlight through shoji screen sliding doors, serene Japanese interior.",
-    "animaCaption": "Matou Sakura sits in traditional seiza on tatami mat, wearing a cherry blossom pink sheer silk yukata-inspired camisole. Fingers twisting sash ribbon shyly, long purple hair in side braid draped over chest, gentle melancholic violet eyes amidst moonlight through shoji screen sliding doors, serene Japanese interior.",
+    "animaCaption": "Matou Sakura sits in traditional seiza on tatami mat, wearing a cherry blossom pink sheer silk yukata-inspired camisole.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

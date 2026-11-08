@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_nikke_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3443,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "scarlet_nikke_lingerie_whisper",
     "characterId": "scarlet_nikke",
@@ -14,7 +14,7 @@
     "location": "方舟外地表荒野的古风日式庭院，盛开的古樱树在月夜下落英缤纷",
     "timeOfDay": "春夜花好月圆时",
     "lighting": "皎洁满月的冷银霜光照亮古樱与白皙双肩，红木酒盏反射出温润的朱红光斑",
-    "camera": "侧低角度全景仰拍，古树落樱与拔刀横卧的姿态充满古典浪人美学",
+    "camera": "wide shot, low angle, 侧低角度全景仰拍，古树落樱与拔刀横卧的姿态充满古典浪人美学",
     "mood": "流浪剑客的旷达不羁与醉眼看人间的无尽风流，孤傲而浪漫",
     "adult": true,
     "sampleRating": "R15",
@@ -27,25 +27,33 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
+      "indoors",
+      "bedroom",
       "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "moonlight",
+      "cool_lighting",
+      "sitting",
+      "wide_shot",
+      "low_angle"
     ],
     "promptTokens": [
+      "wide shot",
+      "low angle",
+      "indoors",
+      "bedroom",
+      "night",
+      "moonlight",
+      "cool lighting",
       "sitting",
       "smile",
       "glowing",
-      "night",
       "single bare shoulder",
       "red cord tassel knot",
-      "silk floral trim",
-      "indoors"
+      "silk floral trim"
     ],
     "negativeTokens": [],
     "promptProse": "Scarlet sits cross-legged on wooden veranda beneath cherry blossom tree, wearing a scarlet and white asymmetrical kimono-style tube robe. Sipping sake from lacquered cup, long silver-white hair fluttering with falling petals, flushed tipsy cheeks amidst serene wandering swordsman smile, glowing moonlit night.",
-    "animaCaption": "Scarlet sits cross-legged on wooden veranda beneath cherry blossom tree, wearing a scarlet and white asymmetrical kimono-style tube robe. Sipping sake from lacquered cup, long silver-white hair fluttering with falling petals, flushed tipsy cheeks amidst serene wandering swordsman smile, glowing moonlit night.",
+    "animaCaption": "Scarlet sits cross-legged on wooden veranda beneath cherry blossom tree, wearing a scarlet and white asymmetrical kimono-style tube robe.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zero_two_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3336,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "zero_two_lingerie_whisper",
     "characterId": "zero_two",
@@ -14,7 +14,7 @@
     "location": "第13都市种植园宿舍单间，墙壁上绘满了色彩斑斓的绘本涂鸦",
     "timeOfDay": "战后夜晚的私密游玩时刻",
     "lighting": "房间内柔和的未来派暖光从脚底向上漫射，照亮暗红小角与粉色长发的通透质感",
-    "camera": "仰视近景特写，跨坐栏杆的野性姿态与棒棒糖甜美动作形成强烈的视觉冲击",
+    "camera": "medium shot, low angle, 种植园宿舍微仰中景，满墙绘本涂鸦与绯红小角下的蜜糖依恋",
     "mood": "叫龙公主的野性不羁与对Darling至死不渝的炽烈占有欲，火辣、狂放而充满野性魅力",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "on_bed",
+      "wall_doodles",
+      "drawings_on_wall",
+      "candy_wrapper",
+      "lollipop",
+      "dorm_room",
+      "teasing_smile",
+      "red_horns",
+      "soft_lighting",
+      "medium_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "horns",
-      "pink hair",
-      "glowing",
-      "lollipop",
-      "bed",
-      "sitting",
-      "smile",
-      "angel wings",
-      "high-cut hip harness cords",
-      "indoors"
+      "medium shot",
+      "low angle",
+      "sitting cross-legged on cot",
+      "walls covered in colorful picture book doodles",
+      "holding cherry lollipop",
+      "small crimson horns",
+      "mischievous darling smirk",
+      "warm dorm lighting"
     ],
     "negativeTokens": [],
-    "promptProse": "Zero Two sits astride bed frame holding colorful lollipop, wearing a crimson red and black patent leather strappy bralette set. Klaxosaur princess, small red horns glowing softly in pink hair, striking turquoise eyes with red eyeliner amidst playful predatory grin, futuristic living quarters with colorful picture book drawings on wall.",
-    "animaCaption": "Zero Two sits astride bed frame holding colorful lollipop, wearing a crimson red and black patent leather strappy bralette set. Klaxosaur princess, small red horns glowing softly in pink hair, striking turquoise eyes with red eyeliner amidst playful predatory grin, futuristic living quarters with colorful picture book drawings on wall.",
+    "promptProse": "Zero Two sits cross-legged on her bed inside the colorful, doodle-covered dormitory, holding a sweet lollipop with a daring, affectionate smirk meant only for her Darling.",
+    "animaCaption": "Sitting cross-legged in a doodle-covered dorm room holding a lollipop, smirking with affectionate mischief.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

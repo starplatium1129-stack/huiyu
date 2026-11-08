@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iroha_nsfw_locker_room_rain_solo",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 366,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "iroha_nsfw_locker_room_rain_solo",
     "title": "一色彩羽 · 暴雨更衣室的湿身白衬衫独奏 ·「被雨淋湿成这样……前辈要负责擦干哦」",
@@ -18,15 +18,24 @@
     "camera": "cowboy shot, eye level",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "track_and_field",
+      "stadium",
+      "night",
+      "dim_lighting",
+      "sitting",
+      "cowboy_shot",
+      "eye_level"
     ],
     "promptProse": "Adult Iroha sits on the bench with one hand beneath her wet skirt, looking toward the viewer. Rain streaks the window behind her.",
     "nsfwProse": "",
     "promptTokens": [
+      "cowboy shot",
+      "eye level",
+      "track and field",
+      "stadium",
+      "night",
+      "dim lighting",
+      "sitting",
       "adult",
       "locker room",
       "bench",
@@ -36,14 +45,12 @@
       "see-through",
       "pleated skirt",
       "black pantyhose",
-      "sitting",
       "masturbation",
       "smirk",
       "rain",
       "looking at viewer",
       "window",
-      "overcast light",
-      "cowboy shot"
+      "overcast light"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yorha_a2_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3427,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T10:08:50.459766100+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yorha_a2_lingerie_whisper",
     "characterId": "yorha_a2",
@@ -14,7 +14,7 @@
     "location": "寄叶部队叛逃后的荒废都市工厂高层，锈蚀钢架外是漫天废墟与落日尘埃",
     "timeOfDay": "末日黄昏苍凉时分",
     "lighting": "末日落日的血红余晖照亮废墟工厂，在破损的人工皮肤与金属接缝处拉出长长的冷影",
-    "camera": "大广角仰拍，钢梁高耸入云，将少女单薄却极富破坏力的人造人身躯刻画得如雕像般悲壮",
+    "camera": "wide shot, low angle, 废墟高层苍凉全景，锈蚀钢架与落日尘埃勾勒末日独行流亡",
     "mood": "孤独叛逆人造人的苍凉与野性，饱经背叛与杀戮后的冰冷孤傲与内在脆弱",
     "adult": true,
     "sampleRating": "R15",
@@ -27,27 +27,32 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "steel_beam",
+      "ruined_factory",
+      "rubble",
+      "post_apocalyptic",
+      "sunset",
+      "dusk",
+      "dust_particles",
+      "somber",
+      "melancholy",
+      "wide_shot",
+      "low_angle"
     ],
     "promptTokens": [
-      "charcoal tube top",
-      "sitting",
-      "steel beam",
-      "holding sword",
-      "ruined city",
-      "silver hair",
-      "wind",
-      "sunset",
-      "battle-worn edge accents",
-      "athletic android physique"
+      "wide shot",
+      "low angle",
+      "sitting perched on rusted steel girders",
+      "collapsed factory ruins",
+      "overgrown wasteland below",
+      "hazy apocalyptic sunset",
+      "dust motes in warm amber light",
+      "weary hardened stoicism"
     ],
     "negativeTokens": [],
-    "promptProse": "YoRHa Type A No. 2 sits on rusty industrial I-beam edge overlooking ruined city, wearing a charcoal distressed faux-leather tube top set. Rogue android, holding massive battered broadsword hilt, long wild platinum hair whipping in wind amidst weathered synthetic skin textures, melancholy fierce heterochromatic gaze, apocalyptic crimson sunset.",
-    "animaCaption": "A2 sits on a rusted steel beam above a ruined city, gripping her sword as the wind lifts her long hair.",
+    "promptProse": "A2 sits alone upon a rusted steel girder high inside the overgrown factory ruins, watching dust motes drift through the dying orange glow of a desolate wasteland sunset.",
+    "animaCaption": "Perched upon rusted steel beams amid crumbling post-apocalyptic ruins as sunset washes the wasteland in amber.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

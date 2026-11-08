@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiina_mayuri_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3481,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T05:42:57.127Z",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "shiina_mayuri_lingerie_whisper",
     "characterId": "shiina_mayuri",
@@ -14,7 +14,7 @@
     "location": "未来道具研究所沙发旁，桌上摆着吃了一半的水多汁炸鸡块与香蕉",
     "timeOfDay": "夏日傍晚蝉鸣渐歇时",
     "lighting": "夕阳的暖橙金光斜斜切过窗台，给少女周身染上一层温馨梦幻的金色余晖",
-    "camera": "平视特写中景，双手合捧怀表的动作与甜美的眯眼笑颜极具感染力",
+    "camera": "medium shot, front view, 正面中景，研究所沙发旁炸鸡块与傍晚微风里的纯真笑容",
     "mood": "世界线收束中最温柔的锚点，温暖治愈一切阴暗的天然纯善",
     "adult": true,
     "sampleRating": "R15",
@@ -27,26 +27,34 @@
       "special_nsfw"
     ],
     "sceneTags": [
-      "luxury_bedroom",
-      "night",
-      "lingerie",
-      "intimate",
-      "soft_lighting"
+      "sitting",
+      "sofa",
+      "table",
+      "fried_chicken",
+      "banana",
+      "pocket_watch",
+      "lab",
+      "summer_dusk",
+      "warm_lighting",
+      "cheerful_smile",
+      "tutturu",
+      "medium_shot",
+      "front_view"
     ],
     "promptTokens": [
-      "chaise lounge",
-      "sitting",
-      "night",
-      "smile",
-      "sunset",
-      "white daisy flower applique",
-      "ruffled smocked bodice",
-      "airy flared hem",
-      "indoors"
+      "medium shot",
+      "front view",
+      "sitting cross-legged on worn green sofa",
+      "paper carton of juicy fried chicken",
+      "ripe banana on table",
+      "silver pocket watch",
+      "Future Gadget Lab",
+      "summer twilight breeze",
+      "beaming innocent smile"
     ],
     "negativeTokens": [],
-    "promptProse": "Shiina Mayuri sits on sofa armrest clasping antique pocket watch to chest, wearing a sky blue cotton babydoll camisole. Dark short bob hair, iconic baby blue sundress-inspired nightdress, radiant angelic closed-eye smile amidst warm summer sunset light through lab window.",
-    "animaCaption": "Shiina Mayuri sits on sofa armrest clasping antique pocket watch to chest, wearing a sky blue cotton babydoll camisole. Dark short bob hair, iconic baby blue sundress-inspired nightdress, radiant angelic closed-eye smile amidst warm summer sunset light through lab window.",
+    "promptProse": "Mayuri sits happily on the green lab sofa at dusk, holding up her beloved pocket watch with a radiant Tutturu smile while offering to share her box of fried chicken.",
+    "animaCaption": "Sitting cheerfully on the lab sofa with a carton of fried chicken, beaming with innocent summer warmth.",
     "nsfwTokens": [],
     "nsfwProse": ""
   }

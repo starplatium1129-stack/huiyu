@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_nsfw_library_corner_solo",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1505,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
   "data": {
     "id": "yamada_nsfw_library_corner_solo",
     "title": "山田杏奈 · 图书馆死角长腿撩裙的私密自持 ·「市川躲在书架后面……偷看会变兴奋吗」",
@@ -18,15 +18,22 @@
     "camera": "full body, three-quarter view",
     "mood": "唯美动情、私密深情",
     "sceneTags": [
-      "nsfw",
-      "sensual_solo",
-      "bare_breasts",
-      "exposed_pussy",
-      "special_nsfw"
+      "study",
+      "books",
+      "desk",
+      "night",
+      "warm_lighting",
+      "full_body"
     ],
     "promptProse": "Yamada props one leg on a low stool behind the bookshelves, touching herself through the torn tights while looking through a shelf gap with a cherry lollipop between her lips.",
     "nsfwProse": "",
     "promptTokens": [
+      "full body",
+      "study",
+      "books",
+      "desk",
+      "night",
+      "warm lighting",
       "adult",
       "skirt lift",
       "torn pantyhose",
@@ -38,7 +45,6 @@
       "stool",
       "library",
       "noon",
-      "full body",
       "pleated skirt",
       "leg on stool",
       "torn tights",
