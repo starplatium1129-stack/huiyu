@@ -1,50 +1,52 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_reef_rest",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 609,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
   "data": {
-    "action": "盘腿坐在礁石上，剑横在膝上",
-    "camera": "full body, seated figure, sword across lap and ankles in water visible",
+    "action": "赤足盘腿坐于平整礁石上，双手轻按膝头横放大剑",
+    "camera": "full body, wide shot, 全身中全景，平礁、巨剑与平缓水面同框",
     "category": "泰拉自然",
     "characterId": "skadi_arknights",
-    "description": "涨潮时分孤立于海中央的巨大平坦礁石上，斯卡蒂赤足盘腿而坐，巨剑平横在修长的大腿上，任由冰凉的海水漫过脚踝。她微微扬起下颌——「在海里游累的时候，我总是喜欢像这样坐在礁石上晒干头发。博士，坐到我身边来，这块礁石很平整。」",
+    "description": "退潮时分浮出水面的平整黑礁石上，斯卡蒂赤足盘腿而坐，巨剑平稳横放在膝上，任由清凉的浅水漫过脚边。午后日光洒在平静的海面与银白长发上，她微微低眸，享受着远离喧嚣的片刻宁静。",
     "id": "skadi_arknights_reef_rest",
-    "lighting": "bright sea light",
-    "location": "泰拉近海礁石",
-    "mood": "海阔天高",
-    "negativeTokens": [
-      "city skyline"
-    ],
+    "lighting": "午后清朗海面反射的自然日光",
+    "location": "近海平坦黑礁石台",
+    "mood": "宁静从容",
+    "negativeTokens": [],
     "outfitId": "reef_rest_barefoot",
-    "promptProse": "Skadi rests her sword across her lap on the reef as the afternoon tide washes over her ankles.",
+    "promptProse": "Resting upon a flat black tidal reef exposed by the receding tide, Skadi sits cross-legged barefoot with her massive greatsword resting across her lap. Gentle afternoon sunlight glints off calm shallow pools around her as she looks downward in quiet repose.",
     "promptTokens": [
-      "Skadi",
       "cross-legged",
-      "greatsword",
-      "reef",
-      "sea",
-      "full body",
       "sitting",
+      "barefoot",
+      "holding sword",
+      "greatsword",
       "sword on lap",
-      "waves",
-      "ankle-deep water",
+      "reef",
+      "shallow water",
+      "calm water",
       "afternoon",
-      "sunlight",
-      "soft_lighting"
+      "full body"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "reef",
-      "sea",
+      "cross-legged",
       "sitting",
+      "barefoot",
+      "holding_sword",
+      "greatsword",
+      "sword_on_lap",
+      "reef",
+      "shallow_water",
+      "calm_water",
       "afternoon",
-      "greatsword"
+      "full_body"
     ],
     "timeOfDay": "午后",
-    "title": "斯卡蒂 · 礁石小憩",
-    "animaCaption": "The tide washes over her ankles beneath the sword across her lap."
+    "title": "斯卡蒂 · 近海平礁的赤足小憩",
+    "animaCaption": "Sitting cross-legged barefoot on the smooth tidal reef with her greatsword across her lap, she rests in the calm afternoon sea breeze."
   }
 }

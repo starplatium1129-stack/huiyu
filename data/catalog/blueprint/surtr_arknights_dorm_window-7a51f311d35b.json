@@ -1,46 +1,55 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_dorm_window",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 516,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
   "data": {
-    "action": "抱着膝盖坐在窗台上望向远方",
-    "camera": "medium shot, eye level",
+    "action": "赤足蜷坐于宽厚窗台抱膝，侧首凝望窗外荒原晚霞",
+    "camera": "medium shot, eye level, 中景平视，窗台木框、抱膝少女与窗外地平线同框",
     "category": "泰拉日常",
     "characterId": "surtr_arknights",
     "coverageTags": [
       "daily"
     ],
-    "description": "罗德岛黄昏的单人宿舍内，史尔特尔双手抱着膝盖坐在窗台上，火红色的长发在夕阳余晖中如流动的余烬。她凝望着窗外荒原上飞掠而过的风滚草，眼神迷茫中带着一丝烦躁——「脑海里的那些记忆碎片又开始吵闹了……博士，别站在门口发呆，过来陪我坐一会儿。」",
+    "description": "罗德岛生活区单人宿舍内，史尔特尔赤足蜷坐在宽厚的木制窗台上，双臂环抱着膝盖，静静注视着窗外地平线上翻滚的晚霞与苍茫荒原。晚风吹拂着额前酒红色的发丝，夕阳将她的剪影拉得很长。",
     "id": "surtr_arknights_dorm_window",
-    "lighting": "warm dusk light through the window",
-    "location": "罗德岛·史尔特尔宿舍窗边",
-    "mood": "安静而疏离",
+    "lighting": "窗外漫天铺洒的赤金色夕阳余晖与室内阴影",
+    "location": "罗德岛生活区个人宿舍窗台",
+    "mood": "沉思静谧",
     "negativeTokens": [],
     "outfitId": "lava_silk_loungewear",
-    "promptProse": "Surtr watches the wasteland from the broad windowsill, dusk catching her red hair above her gathered knees.",
+    "promptProse": "Perched barefoot on a wide wooden windowsill inside her quarters, Surtr sits hugging her knees comfortably. She gazes out the large window at vast desolate plains stretching toward a fiery amber sunset, warm golden dusk washing over her quiet profile.",
     "promptTokens": [
-      "Surtr",
-      "hugging knees",
-      "windowsill",
-      "wasteland",
-      "medium shot",
+      "on windowsill",
       "sitting",
-      "looking outside",
-      "dusk light"
+      "barefoot",
+      "hugging knees",
+      "window",
+      "looking out window",
+      "wasteland",
+      "sunset",
+      "dusk",
+      "medium shot",
+      "eye level"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "rhodes_island",
-      "dorm_room",
+      "on_windowsill",
+      "sitting",
+      "barefoot",
+      "hugging_knees",
       "window",
-      "dusk_light",
-      "window_seat"
+      "looking_out_window",
+      "wasteland",
+      "sunset",
+      "dusk",
+      "medium_shot",
+      "eye_level"
     ],
     "timeOfDay": "黄昏",
-    "title": "史尔特尔 · 宿舍窗边",
-    "animaCaption": "She watches the wasteland from the sill with her knees held close beneath her red hair."
+    "title": "史尔特尔 · 宿舍窗畔的晚霞抱膝",
+    "animaCaption": "Sitting barefoot on the windowsill with knees hugged close, she gazes across the distant plains in the amber dusk."
   }
 }

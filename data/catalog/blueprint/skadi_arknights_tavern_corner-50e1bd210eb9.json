@@ -1,46 +1,52 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_tavern_corner",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 610,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
   "data": {
-    "action": "单手撑着下颌，酒杯未动",
-    "camera": "medium shot",
+    "action": "独坐于木桌前单手托腮，身旁放着琥珀色烈酒杯与昏黄马灯",
+    "camera": "medium shot, eye level, 中景平视，木桌、酒杯与人物构成视觉三角",
     "category": "泰拉都市",
     "characterId": "skadi_arknights",
-    "description": "伊比利亚沿海嘈杂阴暗的地下酒馆深处，斯卡蒂独自坐在最偏僻昏暗的木桌旁，单手支颐静静注视着面前未动一口的烈朗姆酒。她低垂着眼帘——「陆地上的酒很苦，陆地上的人也很吵……不过，有你坐在我的对面，倒也没那么难以忍受。」",
+    "description": "旧港昏暗嘈杂的酒馆角落里，斯卡蒂独自坐在粗木方桌前。桌面上一盏防风马灯散发着昏黄光晕，烈酒杯中琥珀色酒液轻晃。她单手托腮，静静听着水手们粗俗的笑骂与远处浪涛，眼神淡漠却透着审视。",
     "id": "skadi_arknights_tavern_corner",
-    "lighting": "dim tavern light",
-    "location": "泰拉港口酒馆",
-    "mood": "疏离淡漠",
-    "negativeTokens": [
-      "neon signs"
-    ],
+    "lighting": "桌角防风马灯散发的暖黄色微弱顶光与环境阴影",
+    "location": "沿海旧港地下酒馆角落",
+    "mood": "疏离警惕",
+    "negativeTokens": [],
     "outfitId": "quiet_barista_uniform",
-    "promptProse": "Skadi rests her chin on one hand at the secluded table, looking past untouched rum toward the viewer; faint lantern light crosses her lowered eyes.",
+    "promptProse": "Tucked into the dimly lit corner of a rustic coastal tavern, Skadi sits alone at a scarred wooden table resting her chin in one hand. An amber glass of liquor sits beside a brass hurricane lantern that casts warm golden light across her quiet, observant expression amidst deep tavern shadows.",
     "promptTokens": [
-      "Skadi",
-      "chin rest",
-      "rum",
+      "sitting",
+      "sitting at table",
+      "wooden table",
+      "hand to chin",
+      "glass",
       "tavern",
+      "lantern",
+      "dim lighting",
+      "expressionless",
       "medium shot",
-      "chin in hand",
-      "looking at viewer",
-      "untouched drink",
-      "lantern light"
+      "eye level"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
+      "sitting",
+      "sitting_at_table",
+      "wooden_table",
+      "hand_to_chin",
+      "glass",
       "tavern",
-      "bar",
-      "night",
-      "drink",
-      "corner"
+      "lantern",
+      "dim_lighting",
+      "expressionless",
+      "medium_shot",
+      "eye_level"
     ],
     "timeOfDay": "夜晚",
-    "title": "斯卡蒂 · 酒馆角落",
-    "animaCaption": "The rum stays untouched between her lowered gaze and the viewer."
+    "title": "斯卡蒂 · 海港酒馆的昏黄独酌",
+    "animaCaption": "Resting her chin in one hand beside a brass lantern and a glass on the wooden tavern table, she observes quietly in the warm dim light."
   }
 }

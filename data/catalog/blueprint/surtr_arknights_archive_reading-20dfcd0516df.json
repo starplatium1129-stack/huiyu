@@ -1,48 +1,55 @@
 {
   "kind": "blueprint",
   "id": "surtr_arknights_archive_reading",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 521,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
   "data": {
-    "action": "低头翻看一本旧书",
-    "camera": "medium close-up, eye level, face and open book visible",
+    "action": "单手轻按书桌，另一手指尖翻动泛黄旧书页",
+    "camera": "medium close-up, eye level, 中近景，翻书的指尖、书页与专注神情",
     "category": "泰拉日常",
     "characterId": "surtr_arknights",
     "coverageTags": [
       "daily"
     ],
-    "description": "罗德岛深层档案室昏暗静谧的书架间，史尔特尔倚靠在书桌旁，指尖缓缓翻过一本泛黄的古代萨卡兹地理志。察觉到你的靠近，她合上书页低声自语——「找遍了所有记录，依然没有我真正出身的村落……不过只要有你在，找不到过去的答案似乎也没那么糟糕了。」",
+    "description": "罗德岛深层档案室昏暗静谧的书架间，史尔特尔倚靠在厚木书桌旁，指尖缓缓翻过一本泛黄的古代萨卡兹地理志。午后阳光透过高排书架洒在书页上，她神情安静地读着字里行间的记录。",
     "id": "surtr_arknights_archive_reading",
-    "lighting": "dusty golden light through shelves",
-    "location": "罗德岛档案室",
+    "lighting": "高排书架间透射的温暖午后斜光与微尘",
+    "location": "罗德岛综合图书档案室",
     "mood": "沉静知性",
-    "negativeTokens": [
-      "readable text"
-    ],
+    "negativeTokens": [],
     "outfitId": "liberte_echec",
-    "promptProse": "Surtr turns the yellowed pages of an old Sakaz geography book at the archive desk, golden light filtering through the shelves beside her skateboard.",
+    "promptProse": "In the quiet aisles of an expansive wooden archive, Surtr leans against a study table, turning the fragile pages of a weathered history tome with quiet focus. Golden afternoon sunbeams filter between towering bookshelves, highlighting drifting dust motes and her thoughtful expression.",
     "promptTokens": [
-      "Surtr",
-      "book",
-      "skateboard",
-      "archive",
+      "standing",
+      "leaning on table",
+      "open book",
+      "turning page",
       "reading",
-      "turning pages",
-      "window light",
-      "close up"
+      "archive",
+      "bookshelf",
+      "sunlight",
+      "dust",
+      "medium close-up",
+      "eye level"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
-      "library",
-      "bookshelf",
+      "standing",
+      "leaning_on_table",
+      "open_book",
+      "turning_page",
       "reading",
       "archive",
-      "afternoon"
+      "bookshelf",
+      "sunlight",
+      "dust",
+      "medium_close_up",
+      "eye_level"
     ],
     "timeOfDay": "午后",
-    "title": "史尔特尔 · 档案室午读",
-    "animaCaption": "She turns the yellowed geography-book pages at the archive desk, her skateboard beside her."
+    "title": "史尔特尔 · 档案室午后的萨卡兹志",
+    "animaCaption": "Turning the pages of a weathered volume at the study table between tall bookshelves, she reads quietly in the filtered afternoon sunlight."
   }
 }

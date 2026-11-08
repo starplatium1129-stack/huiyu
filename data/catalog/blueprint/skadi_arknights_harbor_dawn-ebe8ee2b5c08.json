@@ -1,43 +1,50 @@
 {
   "kind": "blueprint",
   "id": "skadi_arknights_harbor_dawn",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 606,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-08T16:14:52.666436200+00:00",
   "data": {
-    "action": "倚着集装箱，遥望海面",
-    "camera": "medium full shot, side view, rusted container and foggy harbor visible",
+    "action": "单手轻扶生锈集装箱边缘，伫立于晨雾中远眺海面",
+    "camera": "medium shot, side view, 侧身中景，生锈集装箱与清冷港口雾气",
     "category": "泰拉都市",
     "characterId": "skadi_arknights",
-    "description": "伊比利亚冷雾弥漫的破旧港口旁，身着黑色深海猎人风衣的斯卡蒂单手倚在生锈的集装箱边，孤身远眺汹涌翻滚的深海。海风吹拂着她银白色的及膝长发，深红色的眼眸平静却藏着无尽的孤寂——「海浪的声音很吵，那些怪物的低语从未停止……博士，离我远一点，我的身边只有危险。」",
+    "description": "伊比利亚冷雾弥漫的破旧港口旁，斯卡蒂单手扶着生锈的集装箱边缘，独自远眺翻滚的深海。海风吹拂着她如雪的长发，绯红双眸沉静而警惕。",
     "id": "skadi_arknights_harbor_dawn",
-    "lighting": "misty dawn light",
-    "location": "泰拉港口",
-    "mood": "清冷孤寂",
+    "lighting": "穿透海港浓雾的清冷拂晓微光",
+    "location": "伊比利亚沿海旧港货场",
+    "mood": "沉静警惕",
     "negativeTokens": [],
     "outfitId": "deep_sea_hunter_trench_coat",
-    "promptProse": "Skadi braces a hand against a rusted container and watches the sea through harbor fog in the first dawn light.",
+    "promptProse": "Amidst cold morning mist shrouding a weathered Iberian port, Skadi stands resting one hand against a rusted shipping container, gazing out across the tumultuous dark sea. Gentle dawn light filters through the sea fog, illuminating her calm profile.",
     "promptTokens": [
-      "Skadi",
+      "standing",
+      "side view",
       "shipping container",
       "harbor",
+      "pier",
       "fog",
+      "mist",
       "dawn",
-      "hand on container",
       "looking at sea",
-      "dawn light"
+      "medium shot"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
+      "standing",
+      "side_view",
+      "shipping_container",
       "harbor",
+      "pier",
+      "fog",
       "mist",
       "dawn",
-      "container",
-      "sea"
+      "looking_at_sea",
+      "medium_shot"
     ],
     "timeOfDay": "清晨",
-    "title": "斯卡蒂 · 港口晨雾",
-    "animaCaption": "Her hand braces against the rusted container above the foggy harbor."
+    "title": "斯卡蒂 · 港口晨雾的独行侧影",
+    "animaCaption": "Standing with one hand resting against a rusted shipping container, she gazes quietly across the fog-shrouded harbor in the early dawn."
   }
 }

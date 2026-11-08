@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "skadi_arknights",
-  "revision": 9,
+  "revision": 12,
   "sortOrder": 33,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-08T15:46:56.664683700+00:00",
   "data": {
     "id": "skadi_arknights",
     "profile": {
@@ -410,7 +410,8 @@
               "二队长"
             ],
             "role": "深海猎人 / 归溟幽灵鲨",
-            "summary": "深海猎人二队成员，斯卡哈最珍视的战友。历经源石神经侵蚀与教会折磨后重拾清醒记忆，以雕塑家与狂傲战士的姿态重返战场守护家园。"
+            "summary": "深海猎人二队成员，斯卡哈最珍视的战友。历经源石神经侵蚀与教会折磨后重拾清醒记忆，以雕塑家与狂傲战士的姿态重返战场守护家园。",
+            "characterId": "specter_arknights"
           },
           {
             "id": "logos",
@@ -467,6 +468,335 @@
             ],
             "role": "莱茵生命科考信使 / 极地探险家",
             "summary": "性格乐观坚韧的莱茵生命勘探员。在萨米冰原与北方极地深入考察，与提丰在风雪猎原中结伴探索邪魔遗迹。"
+          },
+          {
+            "id": "hoshiguma",
+            "name": "星熊",
+            "aliases": [
+              "Hoshiguma",
+              "星熊督察",
+              "熊姐",
+              "般若"
+            ],
+            "characterId": "hoshiguma_arknights",
+            "role": "龙门近卫局特别督察 / 鬼族重装守卫",
+            "summary": "豪爽重义的鬼族近卫局督察，手持坚不可摧的“般若”巨盾，是陈最信任的长官与战友，在切尔诺伯格危机中多次担任全军中流砥柱。"
+          },
+          {
+            "id": "swire",
+            "name": "诗怀雅",
+            "aliases": [
+              "Swire",
+              "碧翠克斯·诗怀雅",
+              "叉烧猫",
+              "诗怀雅警司"
+            ],
+            "characterId": "swire_arknights",
+            "role": "龙门近卫局高级警司 / 太古广场千金",
+            "summary": "出身龙门名门望族的千金警司，精明果断且脾气火爆，虽与陈日常争吵不休，但在正义与大局面前绝不含糊。"
+          },
+          {
+            "id": "w",
+            "name": "W",
+            "aliases": [
+              "W",
+              "维什戴尔",
+              "Wis'adel",
+              "萨卡兹佣兵头领"
+            ],
+            "characterId": "w_arknights",
+            "role": "巴别塔旧部 / 萨卡兹佣兵领袖 / 维什戴尔",
+            "summary": "狂放不羁且精于爆破的萨卡兹雇佣兵，心中唯独将特蕾西娅视作永恒的光芒，在残酷战火中以疯癫伪装掩盖深沉决意。"
+          },
+          {
+            "id": "ines",
+            "name": "伊内丝",
+            "aliases": [
+              "Ines",
+              "影法术萨卡兹",
+              "佣兵斥候"
+            ],
+            "characterId": "ines_arknights",
+            "role": "萨卡兹雇佣兵核心斥候 / 影法术宗师",
+            "summary": "精通辨识人心阴影的雇佣兵侦察专家，沉着冷静且洞察秋毫，多次在各方致命阴谋中为同伴抢出生路。"
+          },
+          {
+            "id": "mon3tr",
+            "name": "Mon3tr",
+            "aliases": [
+              "Mon3tr",
+              "怪兽",
+              "脊柱结晶生物"
+            ],
+            "characterId": "mon3tr_arknights",
+            "role": "凯尔希共生使魔 / 史前结晶生命体",
+            "summary": "自凯尔希脊柱延伸而出的未知构造生命体，拥有撕裂钢铁的毁灭力量，是凯尔希跨越万年文明纪元不可分割的忠诚共生守护者。"
+          },
+          {
+            "id": "muelsyse",
+            "name": "缪尔赛思",
+            "aliases": [
+              "Muelsyse",
+              "缪缪",
+              "水精灵",
+              "生态科主任"
+            ],
+            "characterId": "muelsyse_arknights",
+            "role": "莱茵生命生态科主任 / 埃拉菲亚末裔",
+            "summary": "外表轻灵俏皮的水精灵少女，身怀操纵流体生态的秘术，在冷酷复杂的哥伦比亚科研竞争中独自守护孤独的种族誓约。"
+          },
+          {
+            "id": "hoolheyak",
+            "name": "霍尔海雅",
+            "aliases": [
+              "Hoolheyak",
+              "羽蛇",
+              "特异调查科顾问"
+            ],
+            "characterId": "hoolheyak_arknights",
+            "role": "哥伦比亚国防部特异调查科顾问 / 奎克库克羽蛇",
+            "summary": "古老羽蛇神血脉的继承者，优雅而危险的情报专家与遗迹探索者，为找寻族群失落的古老源头而在泰拉各方势力间周旋。"
+          },
+          {
+            "id": "ptilopsis",
+            "name": "白面鸮",
+            "aliases": [
+              "Ptilopsis",
+              "白面鸮数据员",
+              "乔伊斯"
+            ],
+            "characterId": "ptilopsis_arknights",
+            "role": "莱茵生命前数据分析员 / 罗德岛医疗干员",
+            "summary": "因严重矿石病感染而植入脑部抑制芯片的黎博利少女，日常以类AI般绝对理性的程序口吻交流，内心深处却饱含对同伴的温柔善意。"
+          },
+          {
+            "id": "rosmontis",
+            "name": "迷迭香",
+            "aliases": [
+              "Rosmontis",
+              "小猫",
+              "罗德岛精英干员"
+            ],
+            "characterId": "rosmontis_arknights",
+            "role": "罗德岛精英干员 / 歼灭战术念力核心",
+            "summary": "经历非人神经实验的幼小菲林少女，能具现化恐怖巨剑撕裂敌阵，饱受严重顺行性遗忘症困扰，把罗德岛视作唯一的家。"
+          },
+          {
+            "id": "blemishine",
+            "name": "瑕光",
+            "aliases": [
+              "Blemishine",
+              "玛莉娅·临光",
+              "玛莉娅",
+              "工匠骑士"
+            ],
+            "characterId": "blemishine_arknights",
+            "role": "卡西米尔年轻骑士 / 临光家族次女",
+            "summary": "耀骑士玛嘉烈·临光的亲妹妹，热爱机械制造与锻造工艺，为了不让家族名誉断绝而毅然披挂踏上商业特锦赛泥潭。"
+          },
+          {
+            "id": "pramanix",
+            "name": "初雪",
+            "aliases": [
+              "Pramanix",
+              "恩雅·银灰",
+              "喀兰圣女"
+            ],
+            "characterId": "pramanix_arknights",
+            "role": "谢拉格喀兰圣女 / 蔓珠院大巫女",
+            "summary": "谢拉格宗教领袖圣女，银灰的亲妹妹，在家族政治牺牲中被迫承担神权枷锁，常在神殿高台迎风摇铃倾听雪域叹息。"
+          },
+          {
+            "id": "fiammetta",
+            "name": "菲亚梅塔",
+            "aliases": [
+              "Fiammetta",
+              "苦难陈述者",
+              "黎博利烈火",
+              "公证所特工"
+            ],
+            "characterId": "fiammetta_arknights",
+            "role": "拉特兰公证所高级特工 / 铳骑兵监督者",
+            "summary": "性格如烈焰般炽热火爆的拉特兰黎博利特工，肩扛多联装榴弹炮，长年追随并监督堕天的好友莫斯提马，誓要查明当年惨剧真相。"
+          },
+          {
+            "id": "nightingale",
+            "name": "夜莺",
+            "aliases": [
+              "Nightingale",
+              "丽兹",
+              "使徒萨满",
+              "提卡兹圣女"
+            ],
+            "characterId": "nightingale_arknights",
+            "role": "萨卡兹圣职医疗师 / 使徒三人组成员",
+            "summary": "被幽禁剥夺自由与记忆的萨卡兹纯洁少女，拥有展开圣域庇护生灵的神迹般法术，与闪灵、临光组成游荡泰拉的‘使徒’同行。"
+          },
+          {
+            "id": "ceobe",
+            "name": "刻俄柏",
+            "aliases": [
+              "Ceobe",
+              "小刻",
+              "大鲍勃的朋友",
+              "武器收藏家"
+            ],
+            "characterId": "ceobe_arknights",
+            "role": "佩洛荒原流浪战士 / 投掷武器行家",
+            "summary": "性格如同忠犬般单纯质朴的佩洛少女，凭敏锐野性直觉与无与伦比的体魄收集各式冷兵器，对博士充满纯真的依恋与保护欲。"
+          },
+          {
+            "id": "angelina",
+            "name": "安洁莉娜",
+            "aliases": [
+              "Angelina",
+              "安心院安洁莉娜",
+              "小安洁",
+              "信使少女"
+            ],
+            "characterId": "angelina_arknights",
+            "role": "叙拉古信使 / 反重力源石术师",
+            "summary": "高中生年纪便感染矿石病离家的叙拉古信使，心性坚强阳光，以反重力源石技艺穿行于大荒险途，对博士怀揣纯净爱恋。"
+          },
+          {
+            "id": "rosa",
+            "name": "早露",
+            "aliases": [
+              "Rosa",
+              "娜塔莉娅·安德烈耶芙娜·罗斯托娃",
+              "早露",
+              "学生自治团"
+            ],
+            "characterId": "rosa_arknights",
+            "role": "乌萨斯贵族千金 / 切城学生自治团核心",
+            "summary": "曾是切尔诺伯格地位尊贵的罗斯托夫伯爵之女，在切城事变残酷的校园惨剧中历经人性绝境，加入罗德岛后在赎罪中重建新生。"
+          },
+          {
+            "id": "horn",
+            "name": "号角",
+            "aliases": [
+              "Horn",
+              "丽塔·斯卡曼德罗斯",
+              "风暴突击队队长"
+            ],
+            "characterId": "horn_arknights",
+            "role": "维多利亚风暴突击队第二分队队长 / 白狼重装卫士",
+            "summary": "维多利亚正规军的铁血军魂，在伦蒂尼姆战火中誓死抗击萨卡兹侵略军，即便身陷囹圄受尽严刑拷打依然昂首吹响反击号角。"
+          },
+          {
+            "id": "reed",
+            "name": "焰影苇草",
+            "aliases": [
+              "Reed",
+              "拉芙希妮",
+              "苇草",
+              "纯白德拉科"
+            ],
+            "characterId": "reed_arknights",
+            "role": "塔拉德拉科王脉末裔 / 生命烈焰医者",
+            "summary": "深池领袖爱布拉娜的双生胞妹，生来被作为替身与影子摆布，在经历塔拉动乱后觉醒治愈生命的纯净火焰，走出独立求生之路。"
+          },
+          {
+            "id": "virtuosa",
+            "name": "塑心",
+            "aliases": [
+              "Virtuosa",
+              "阿尔图罗·吉亚洛",
+              "大提琴家",
+              "送葬人堂妹"
+            ],
+            "characterId": "virtuosa_arknights",
+            "role": "莱塔尼亚大提琴演奏家 / 情感共鸣法术家",
+            "summary": "琴弓能拨动乃至引爆生灵内心最本真执念与情感的音乐天才，萨科塔流亡者，在莱塔尼亚巫王余波中以琴声见证文明兴衰。"
+          },
+          {
+            "id": "pozyomka",
+            "name": "鸿雪",
+            "aliases": [
+              "Pozyomka",
+              "阿芙朵嘉",
+              "鸿雪",
+              "杜林守护者"
+            ],
+            "characterId": "pozyomka_arknights",
+            "role": "杜林地下城安多恩区学者 / 罗德岛重巡狙击",
+            "summary": "原乌萨斯名门阿芙朵嘉，在政治暗杀中侥幸生还并坠入地下杜林城，被善良纯朴的杜林人感化治愈，发誓守护这片地下乐土。"
+          },
+          {
+            "id": "archetto",
+            "name": "空弦",
+            "aliases": [
+              "Archetto",
+              "席尔瓦",
+              "修道院见习修士",
+              "空弦"
+            ],
+            "characterId": "archetto_arknights",
+            "role": "兰赛尔修道院见习修士 / 罗德岛狙击干员",
+            "summary": "卡兰道尔兰赛尔修道院的虔诚修士，精通百步穿杨的古典复合弓箭术，为筹措善款挽救濒临倒闭的修道院而四处奔走推销啤酒。"
+          },
+          {
+            "id": "ray",
+            "name": "莱伊",
+            "aliases": [
+              "Ray",
+              "莱伊",
+              "沙地兽猎人",
+              "雷姆必拓保镖"
+            ],
+            "characterId": "ray_arknights",
+            "role": "雷姆必拓地下矿区保镖 / 荒原猎手",
+            "summary": "生活在雷姆必拓地底矿井边缘的敏锐猎手，拥有一只极具灵性的沙地兽伙伴，常年在暗箭与生存压力下磨砺出超凡的狙击本领。"
+          },
+          {
+            "id": "nymph",
+            "name": "妮芙",
+            "aliases": [
+              "Nymph",
+              "妮芙",
+              "温迪戈学徒",
+              "萨卡兹少女"
+            ],
+            "characterId": "nymph_arknights",
+            "role": "萨卡兹温迪戈古巫术学徒 / 咒术师",
+            "summary": "罕见继承了已逝古老温迪戈一脉血巫术与骨笔仪式的纯真萨卡兹少女，心怀对大地安宁的向往，跟随Logos等同伴探寻萨卡兹未来。"
+          },
+          {
+            "id": "entelechia",
+            "name": "隐德来希",
+            "aliases": [
+              "Entelechia",
+              "隐德来希",
+              "死魂灵之音"
+            ],
+            "characterId": "entelechia_arknights",
+            "role": "死魂灵血脉意志集结者 / 萨卡兹远古回响",
+            "summary": "凝聚了无数世代萨卡兹死魂灵哀伤与执念的化身，超越凡人个体生死的沉静凝视者，见证着卡兹戴尔千次覆灭与重生的漫长轮回。"
+          },
+          {
+            "id": "vulpisfoglia",
+            "name": "忍冬",
+            "aliases": [
+              "Vulpisfoglia",
+              "伊莱克特拉",
+              "忍冬",
+              "黑帮狼首"
+            ],
+            "characterId": "vulpisfoglia_arknights",
+            "role": "叙拉古家族狼首 / 家族秩序裁决者",
+            "summary": "叙拉古黑手党家族冷酷精干的头目，以忍冬花为名，在血雨腥风的家族倾轧与城市变迁中维持着残酷的理性与平衡。"
+          },
+          {
+            "id": "platinum",
+            "name": "白金",
+            "aliases": [
+              "Platinum",
+              "白金大位",
+              "无胄盟刺客"
+            ],
+            "characterId": "platinum_arknights",
+            "role": "前卡西米尔无胄盟刺客大位 / 罗德岛狙击干员",
+            "summary": "表面慵懒厌倦纷争的库兰塔神射手，曾身居无胄盟刺客大位，脱离刺杀生涯加入罗德岛后最渴望与博士度过平和日常。"
           }
         ],
         "relations": [
@@ -1211,6 +1541,972 @@
               "title": "鹰角网络 · 《明日方舟》羽毛笔语音档案",
               "url": "https://ak.hypergryph.com"
             }
+          },
+          {
+            "id": "chen-hoshiguma-lungmen_shields",
+            "source": "chen",
+            "target": "hoshiguma",
+            "label": "生死相托的近卫局砥柱",
+            "description": "龙门近卫局的黄金搭档，陈冲锋陷阵时的最坚实护盾与挚友，在切尔诺伯格事变与局势剧变中始终相互扶持。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 龙门风云",
+            "evidence": {
+              "title": "PRTS维基 · 星熊干员档案",
+              "url": "https://prts.wiki/w/星熊"
+            }
+          },
+          {
+            "id": "hoshiguma-swire-close_colleagues",
+            "source": "hoshiguma",
+            "target": "swire",
+            "label": "并肩执法的可靠长官与调解者",
+            "description": "经常在中和陈与诗怀雅性格摩擦的同时维持近卫局秩序，深得包括诗怀雅在内全员尊敬与信赖的兄长般前辈。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 龙门近卫局日常",
+            "evidence": {
+              "title": "PRTS维基 · 诗怀雅干员档案",
+              "url": "https://prts.wiki/w/诗怀雅"
+            }
+          },
+          {
+            "id": "hoshiguma-doctor-trust_and_toast",
+            "source": "hoshiguma",
+            "target": "doctor",
+            "label": "豪爽结交的战术同盟与酒友",
+            "description": "极具江湖义气的鬼族女警官，对博士的运筹帷幄充满敬佩，公事之余常邀博士畅饮谈心。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》星熊语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "chen-swire-rivalry_and_sisterhood",
+            "source": "chen",
+            "target": "swire",
+            "label": "针锋相对的青梅冤家与默契搭档",
+            "description": "自幼相识的名门同僚，日常见面必斗嘴冷嘲热讽，但在切城救援与龙门守护的关键时刻能够毫无保留地背靠背作战。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 切尔诺伯格战役",
+            "evidence": {
+              "title": "PRTS维基 · 诗怀雅干员档案",
+              "url": "https://prts.wiki/w/诗怀雅"
+            }
+          },
+          {
+            "id": "swire-doctor-strategic_investment",
+            "source": "swire",
+            "target": "doctor",
+            "label": "商业后盾与高效战术协力",
+            "description": "凭借庞大的家族商业人脉为罗德岛提供强力资源支持，以挑剔但极为赞赏的态度认同博士的指挥谋略。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 多索雷斯假日",
+            "evidence": {
+              "title": "PRTS维基 · 诗怀雅干员密录",
+              "url": "https://prts.wiki/w/诗怀雅"
+            }
+          },
+          {
+            "id": "w-theresa-sacred_reverence",
+            "source": "w",
+            "target": "theresa",
+            "label": "心中唯一的救赎与无悔追随",
+            "description": "特蕾西娅是冷酷佣兵W内心中不可触碰的纯洁信仰与毕生所向，为践行特蕾西娅的遗愿不惜赌上一切。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "微型故事集 · 生于黑夜",
+            "evidence": {
+              "title": "PRTS维基 · 生于黑夜全文本",
+              "url": "https://prts.wiki/w/生于黑夜"
+            }
+          },
+          {
+            "id": "w-ines-mercenary_comrades",
+            "source": "w",
+            "target": "ines",
+            "label": "生死相托的佣兵铁血同伴",
+            "description": "与伊内丝在萨卡兹内战泥潭中并肩摸爬滚打多年，毒舌互损背后是能把后背完全托付的绝对信任。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "微型故事集 · 生于黑夜",
+            "evidence": {
+              "title": "PRTS维基 · 生于黑夜全文本",
+              "url": "https://prts.wiki/w/生于黑夜"
+            }
+          },
+          {
+            "id": "w-doctor-complex_vendetta_and_truce",
+            "source": "w",
+            "target": "doctor",
+            "label": "染血旧怨与新时代的宿命和解",
+            "description": "曾因巴别塔旧日悲剧对博士恨之入骨并屡次试探，在见证博士守护阿米娅与泰拉未来后逐渐选择并肩同行。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线 · 狂风听我号令",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》维什戴尔档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "w-amiya-crown_acknowledgement",
+            "source": "w",
+            "target": "amiya",
+            "label": "魔王继承的审视与默默守护",
+            "description": "起初质疑年轻幼弱的阿米娅能否承载特蕾西娅的魔王冠冕，最终在卡兹戴尔风暴中完全认可了阿米娅的觉悟。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "主线 · 伦蒂尼姆战役",
+            "evidence": {
+              "title": "PRTS维基 · 主线第十四章文本",
+              "url": "https://prts.wiki/w/慈悲灯塔"
+            }
+          },
+          {
+            "id": "ines-doctor-shadow_gaze",
+            "source": "ines",
+            "target": "doctor",
+            "label": "洞悉影痕的默契情报搭档",
+            "description": "通过独特的影法术探查过博士复杂沉寂的内心深处，因其非同常人的精神坚毅而给予高度重视与战术协同。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 枯荣同源",
+            "evidence": {
+              "title": "PRTS维基 · 伊内丝干员档案",
+              "url": "https://prts.wiki/w/伊内丝"
+            }
+          },
+          {
+            "id": "ines-kaltsit-clandestine_contract",
+            "source": "ines",
+            "target": "kaltsit",
+            "label": "暗线情报交换与大局制衡",
+            "description": "与凯尔希保持着长期的隐秘情报传递与战略默契，在卡兹戴尔内战暗流中守护着罗德岛的侧翼。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 伦蒂尼姆危机",
+            "evidence": {
+              "title": "PRTS维基 · 伊内丝干员密录",
+              "url": "https://prts.wiki/w/伊内丝"
+            }
+          },
+          {
+            "id": "kaltsit-mon3tr-symbiotic_soul",
+            "source": "kaltsit",
+            "target": "mon3tr",
+            "label": "血肉共生的万年守护实体",
+            "description": "既是凯尔希生理机能的一部分，也是经历无尽纪元依然相濡以沫的无言同伴，只服从凯尔希与博士的绝对指令。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛核心医疗系统",
+            "evidence": {
+              "title": "PRTS维基 · 凯尔希干员档案",
+              "url": "https://prts.wiki/w/凯尔希"
+            }
+          },
+          {
+            "id": "mon3tr-amiya-silent_protector",
+            "source": "mon3tr",
+            "target": "amiya",
+            "label": "默默躬身的温和铁甲守护者",
+            "description": "在外人面前暴戾撕裂敌阵的结晶巨兽，在阿米娅面前会收敛锋刃如同忠犬般温顺低下头颅。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "主线 · 罗德岛行动记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》官方设定集",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "muelsyse-doctor-crystal_tears_bond",
+            "source": "muelsyse",
+            "target": "doctor",
+            "label": "以水为契的真挚灵魂共鸣",
+            "description": "在孤星浩劫与莱茵生命的冷酷博弈中，唯有在博士面前展露脆弱真实的本体，将最后一滴水与无尽希冀托付给博士。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "SideStory · 孤星",
+            "evidence": {
+              "title": "PRTS维基 · 孤星剧情文本",
+              "url": "https://prts.wiki/w/孤星"
+            }
+          },
+          {
+            "id": "muelsyse-kaltsit-scientific_alliance",
+            "source": "muelsyse",
+            "target": "kaltsit",
+            "label": "莱茵与罗德岛的生态外交纽带",
+            "description": "代表莱茵生命生态科与凯尔希促成多项深度环保与生命科学合作，对凯尔希渊博的古老智慧怀有崇敬。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 翠玉梦境",
+            "evidence": {
+              "title": "PRTS维基 · 缪尔赛思干员档案",
+              "url": "https://prts.wiki/w/缪尔赛思"
+            }
+          },
+          {
+            "id": "muelsyse-hoolheyak-clash_of_ideals",
+            "source": "muelsyse",
+            "target": "hoolheyak",
+            "label": "特异调查与生态探索的试探交锋",
+            "description": "在哥伦比亚国防部与莱茵生命总辖克丽斯腾的计划中立场迥异，于危机交错中互为警惕对手与临时同盟。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "SideStory · 孤星",
+            "evidence": {
+              "title": "PRTS维基 · 孤星剧情文本",
+              "url": "https://prts.wiki/w/孤星"
+            }
+          },
+          {
+            "id": "hoolheyak-doctor-subtle_entanglement",
+            "source": "hoolheyak",
+            "target": "doctor",
+            "label": "亦敌亦友的知性试探与博弈",
+            "description": "善于用暧昧语言与致命情报试探博士的心理边界，对博士体内沉睡的史前文明密码充满浓烈的好奇与执念。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 孤星",
+            "evidence": {
+              "title": "PRTS维基 · 霍尔海雅干员档案",
+              "url": "https://prts.wiki/w/霍尔海雅"
+            }
+          },
+          {
+            "id": "hoolheyak-kaltsit-ancient_whispers",
+            "source": "hoolheyak",
+            "target": "kaltsit",
+            "label": "古老文明与先民余烬的见证者对谈",
+            "description": "凯尔希深知羽蛇一族被时代淘汰的历史沉重，在严加防范其冒险行径的同时为其指引通往真相的求索之路。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "SideStory · 孤星后日谈",
+            "evidence": {
+              "title": "PRTS维基 · 霍尔海雅干员密录",
+              "url": "https://prts.wiki/w/霍尔海雅"
+            }
+          },
+          {
+            "id": "ptilopsis-doctor-system_standby_trust",
+            "source": "ptilopsis",
+            "target": "doctor",
+            "label": "绝对理性的数据陪伴与安心休眠",
+            "description": "习惯在博士办公桌下蜷缩进入系统休眠状态，将博士的脑电与生命体征作为最高安全等级基准参数。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》白面鸮语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "ptilopsis-kaltsit-neural_clinical_care",
+            "source": "ptilopsis",
+            "target": "kaltsit",
+            "label": "神经源石病抑制治疗与精密临床监测",
+            "description": "凯尔希亲自参与主导了白面鸮脑部病灶的控制方案，对其坚毅对抗病魔的精神给予高度医者敬意。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 医疗部病例档案",
+            "evidence": {
+              "title": "PRTS维基 · 白面鸮干员档案",
+              "url": "https://prts.wiki/w/白面鸮"
+            }
+          },
+          {
+            "id": "kaltsit-rosmontis-maternal_shield",
+            "source": "kaltsit",
+            "target": "rosmontis",
+            "label": "如母如师的庇护与心灵治愈",
+            "description": "凯尔希倾尽全力为迷迭香修复脑部创伤，以无比罕见的母性温情呵护这位承受过度苦难的精英干员。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "主线 · 怒号光明",
+            "evidence": {
+              "title": "PRTS维基 · 迷迭香干员档案",
+              "url": "https://prts.wiki/w/迷迭香"
+            }
+          },
+          {
+            "id": "amiya-rosmontis-kindred_spirits",
+            "source": "amiya",
+            "target": "rosmontis",
+            "label": "战火中相依为命的少女同伴",
+            "description": "年龄相仿但背负血火宿命的两人，在切尔诺伯格核心舱战役中手挽手共同面对残酷战场，给予彼此活下去的勇气。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 苦难摇篮",
+            "evidence": {
+              "title": "PRTS维基 · 主线第七章剧情",
+              "url": "https://prts.wiki/w/苦难摇篮"
+            }
+          },
+          {
+            "id": "rosmontis-doctor-memory_anchor",
+            "source": "rosmontis",
+            "target": "doctor",
+            "label": "终端日记中永远刻印的温暖信赖",
+            "description": "尽管每天醒来记忆都会逐渐消退，但迷迭香在便携终端上最醒目的一行字永远是：“博士是绝对不会伤害我的人”。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》迷迭香语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "nearl-blemishine-radiant_sisters",
+            "source": "nearl",
+            "target": "blemishine",
+            "label": "长姐如光的宠溺与家族重托",
+            "description": "玛嘉烈·临光深爱并呵护着天真善良的妹妹，在特锦赛赛场破晓归来救下玛莉娅，是玛莉娅心中永远崇敬的金色太阳。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 玛莉娅·临光",
+            "evidence": {
+              "title": "PRTS维基 · 玛莉娅·临光剧情文本",
+              "url": "https://prts.wiki/w/玛莉娅·临光"
+            }
+          },
+          {
+            "id": "blemishine-doctor-workshop_mentorship",
+            "source": "blemishine",
+            "target": "doctor",
+            "label": "车间工匠的求知热忱与真诚信赖",
+            "description": "热衷于为博士维护改装指挥终端与日常装备，将博士视作能够理解自己工程奇思妙想的无话不谈知己。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》瑕光语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "blemishine-viviana-tournament_admiration",
+            "source": "blemishine",
+            "target": "viviana",
+            "label": "特锦赛场上的崇敬与骑士礼赞",
+            "description": "在卡西米尔骑士竞技中对高洁典雅的微风骑士薇薇安娜充满敬重，两者在罗德岛重聚并结下深厚友情。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 耀日将临",
+            "evidence": {
+              "title": "PRTS维基 · 耀日将临剧情文本",
+              "url": "https://prts.wiki/w/耀日将临"
+            }
+          },
+          {
+            "id": "pramanix-doctor-snowfield_confidant",
+            "source": "pramanix",
+            "target": "doctor",
+            "label": "雪山神殿唯一的坦率知己",
+            "description": "唯有在面对超然于谢拉格政教纷争的博士时，初雪才能卸下不可侵犯的圣女仪轨，流露出普通的少女心事与温柔依赖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 风雪过境",
+            "evidence": {
+              "title": "PRTS维基 · 风雪过境剧情文本",
+              "url": "https://prts.wiki/w/风雪过境"
+            }
+          },
+          {
+            "id": "pramanix-amiya-spiritual_and_temporal_talks",
+            "source": "pramanix",
+            "target": "amiya",
+            "label": "和平理念相惜的年轻领袖对谈",
+            "description": "对年轻却背负沉重命运的阿米娅感同身受，在谢拉格面向外界开放的进程中全力维护罗德岛的医疗通道。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 风雪过境",
+            "evidence": {
+              "title": "PRTS维基 · 初雪干员密录",
+              "url": "https://prts.wiki/w/初雪"
+            }
+          },
+          {
+            "id": "fiammetta-mostima-relentless_supervision",
+            "source": "fiammetta",
+            "target": "mostima",
+            "label": "至死追随的监督与痛彻心扉的执念",
+            "description": "亲眼目睹挚友莫斯提马长出黑角堕天与队长罹难，此后数年无论莫斯提马流浪到泰拉何方，菲亚梅塔始终寸步不离严加盯防。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "SideStory · 吾导先路",
+            "evidence": {
+              "title": "PRTS维基 · 吾导先路剧情文本",
+              "url": "https://prts.wiki/w/吾导先路"
+            }
+          },
+          {
+            "id": "fiammetta-lemuen-sacred_bond_recovery",
+            "source": "fiammetta",
+            "target": "lemuen",
+            "label": "昔日重创战友的坚定照拂与挂念",
+            "description": "对在圣堂惨剧中双腿重伤瘫痪的蕾缪安怀有极深的保护欲，在蕾缪安重新站起回到公证所后全力支持其调查工作。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 空想花庭",
+            "evidence": {
+              "title": "PRTS维基 · 空想花庭剧情文本",
+              "url": "https://prts.wiki/w/空想花庭"
+            }
+          },
+          {
+            "id": "fiammetta-exusiai-laterano_camaraderie",
+            "source": "fiammetta",
+            "target": "exusiai",
+            "label": "公证所与企鹅物流的热诚故人",
+            "description": "深知能天使对姐姐蕾缪安与莫斯提马的牵挂，以看似粗暴但极为可靠的方式在拉特兰与龙门之间传递平安。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 拉特兰干员联络记录",
+            "evidence": {
+              "title": "PRTS维基 · 菲亚梅塔干员密录",
+              "url": "https://prts.wiki/w/菲亚梅塔"
+            }
+          },
+          {
+            "id": "nearl-nightingale-apostle_guardianship",
+            "source": "nearl",
+            "target": "nightingale",
+            "label": "使徒同盟的金色护卫长剑",
+            "description": "玛嘉烈·临光自被放逐之日起便与闪灵一同承担起守护丽兹的誓言，在荒原长夜中为其遮风挡雨阻击追兵。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "微型故事集 · 牢不可破",
+            "evidence": {
+              "title": "PRTS维基 · 夜莺干员档案",
+              "url": "https://prts.wiki/w/夜莺"
+            }
+          },
+          {
+            "id": "kaltsit-nightingale-hospice_sanctuary",
+            "source": "kaltsit",
+            "target": "nightingale",
+            "label": "源石结晶逆转监测与长久庇护所",
+            "description": "凯尔希高度关切丽兹脆弱的神经反射与神秘的法术抗性体质，在罗德岛为其设立静谧疗养庭园。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 医疗部绝密病例",
+            "evidence": {
+              "title": "PRTS维基 · 夜莺干员密录",
+              "url": "https://prts.wiki/w/夜莺"
+            }
+          },
+          {
+            "id": "nightingale-doctor-gentle_cage_whisper",
+            "source": "nightingale",
+            "target": "doctor",
+            "label": "鸟笼启封的微光与静谧依托",
+            "description": "虽然大部分过去皆成空白，但在博士身边时总能感受到微风与花香般的安宁，轻声感谢博士为她打开心灵之门。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》夜莺语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "ceobe-doctor-honey_biscuit_bond",
+            "source": "ceobe",
+            "target": "doctor",
+            "label": "给蜜饼就摇尾巴的忠犬守护者",
+            "description": "小刻最喜欢黏在博士身后讨要好吃的蜜饼，任何想要伤害博士的敌人都会瞬间迎来她暴风雨般的重掷飞斧与长矛。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "集成战略 · 刻俄柏的灰蕈迷境",
+            "evidence": {
+              "title": "PRTS维基 · 刻俄柏的灰蕈迷境剧情",
+              "url": "https://prts.wiki/w/刻俄柏的灰蕈迷境"
+            }
+          },
+          {
+            "id": "ceobe-kaltsit-fearful_obedience",
+            "source": "ceobe",
+            "target": "kaltsit",
+            "label": "敬畏如神明与严厉家长的体检大魔王",
+            "description": "天不怕地不怕的小刻一听到凯尔希医生的脚步声就会吓得耳朵紧贴头皮乖乖站好，是罗德岛最有趣的日常风景。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "微型故事集 · 午间逸话",
+            "evidence": {
+              "title": "PRTS维基 · 刻俄柏干员档案",
+              "url": "https://prts.wiki/w/刻俄柏"
+            }
+          },
+          {
+            "id": "ceobe-eunectes-wild_kinship",
+            "source": "ceobe",
+            "target": "eunectes",
+            "label": "雨林与荒原的野性交流",
+            "description": "同样来自原始旷野的同伴，祖玛玛的大丑机器常常吸引小刻兴奋围观敲打，两人日常相处颇为投缘。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 密林悍将归来",
+            "evidence": {
+              "title": "PRTS维基 · 密林悍将归来文本",
+              "url": "https://prts.wiki/w/密林悍将归来"
+            }
+          },
+          {
+            "id": "angelina-doctor-starlight_longing",
+            "source": "angelina",
+            "target": "doctor",
+            "label": "星空下的纯真爱慕与思念回响",
+            "description": "在舰桥甲板上轻盈跃起如同飘向星辰，小心翼翼地把亲手采摘的花朵与情书塞给博士，将博士视作漂泊人生唯一的归宿。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》安洁莉娜语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "angelina-suzuran-kind_elder_sister",
+            "source": "angelina",
+            "target": "suzuran",
+            "label": "同胞叙拉古少女的温柔相伴",
+            "description": "对年幼的铃兰极为怜爱关照，闲暇时经常带铃兰在罗德岛走廊散步，给小狐狸讲解信使路途上的趣味见闻。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "微型故事集 · 回响",
+            "evidence": {
+              "title": "PRTS维基 · 铃兰干员密录",
+              "url": "https://prts.wiki/w/铃兰"
+            }
+          },
+          {
+            "id": "angelina-amiya-youth_solidarity",
+            "source": "angelina",
+            "target": "amiya",
+            "label": "同龄感染者战友的真诚勉励",
+            "description": "深深为阿米娅小巧身躯所承担的伟大使命所打动，主动担任外勤高危送信任务，为罗德岛的航程全力以赴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛外勤信使档案",
+            "evidence": {
+              "title": "PRTS维基 · 安洁莉娜干员档案",
+              "url": "https://prts.wiki/w/安洁莉娜"
+            }
+          },
+          {
+            "id": "rosa-doctor-penance_and_guidance",
+            "source": "rosa",
+            "target": "doctor",
+            "label": "剖白暗影罪疚的灵魂救赎引路人",
+            "description": "在深夜办公室向博士坦白切城校园惨剧中的软弱与绝望，被博士温柔包容接纳，从此将博士视作指引新生的明灯。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "微型故事集 · 乌萨斯的孩子们",
+            "evidence": {
+              "title": "PRTS维基 · 乌萨斯的孩子们剧情文本",
+              "url": "https://prts.wiki/w/乌萨斯的孩子们"
+            }
+          },
+          {
+            "id": "rosa-pozyomka-ursus_nobility_echo",
+            "source": "rosa",
+            "target": "pozyomka",
+            "label": "乌萨斯贵族残阳下的同病相怜",
+            "description": "两人皆曾身处乌萨斯统治阶层顶端，又皆因政治风暴跌入尘埃看清世界真相，在罗德岛经常一同品茗交流文学与反思。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 乌萨斯干员文化沙龙",
+            "evidence": {
+              "title": "PRTS维基 · 鸿雪干员密录",
+              "url": "https://prts.wiki/w/鸿雪"
+            }
+          },
+          {
+            "id": "rosa-kaltsit-psychological_rehabilitation",
+            "source": "rosa",
+            "target": "kaltsit",
+            "label": "战后PTSD创伤修复与思想成熟",
+            "description": "凯尔希多次为其进行深度心理辅导，引导娜塔莉娅摆脱自戕倾向，成长为罗德岛成熟沉稳的文书分析干员。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "微型故事集 · 乌萨斯的孩子们",
+            "evidence": {
+              "title": "PRTS维基 · 早露干员档案",
+              "url": "https://prts.wiki/w/早露"
+            }
+          },
+          {
+            "id": "horn-amiya-londinium_allies",
+            "source": "horn",
+            "target": "amiya",
+            "label": "伦蒂尼姆战火中的铁血同盟",
+            "description": "在维多利亚首都废墟中与罗德岛先遣队汇合，被阿米娅超越种族的仁勇所折服，正式结为解放伦蒂尼姆的同盟。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 飞向暴风雨",
+            "evidence": {
+              "title": "PRTS维基 · 主线第十章剧情",
+              "url": "https://prts.wiki/w/飞向暴风雨"
+            }
+          },
+          {
+            "id": "horn-doctor-tactical_resonance",
+            "source": "horn",
+            "target": "doctor",
+            "label": "军人相惜的顶级战役指挥默契",
+            "description": "作为受过帝国顶级军校培养的职业指挥官，对博士精密如神迹的战场调度五体投地，愿为博士的前沿战术化身坚盾利刃。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "主线 · 淬火尘霾",
+            "evidence": {
+              "title": "PRTS维基 · 号角干员档案",
+              "url": "https://prts.wiki/w/号角"
+            }
+          },
+          {
+            "id": "horn-kaltsit-victoria_crown_truth",
+            "source": "horn",
+            "target": "kaltsit",
+            "label": "探寻帝国覆亡真相的军事搭档",
+            "description": "从凯尔希处得知维多利亚诸王争霸与深渊灾难的古老脉络，更加坚定了为人民而非腐败贵族而战的信念。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线 · 惊霆无声",
+            "evidence": {
+              "title": "PRTS维基 · 主线第十一章剧情",
+              "url": "https://prts.wiki/w/惊霆无声"
+            }
+          },
+          {
+            "id": "reed-doctor-beacon_of_individuality",
+            "source": "reed",
+            "target": "doctor",
+            "label": "驱散影子宿命的唯一阳光",
+            "description": "博士是第一个不把她当成姐姐爱布拉娜的替身、而是真切呼唤她本名“拉芙希妮”的人，成为她挣脱宿命泥潭的心灵灯塔。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 照我以火",
+            "evidence": {
+              "title": "PRTS维基 · 照我以火剧情文本",
+              "url": "https://prts.wiki/w/照我以火"
+            }
+          },
+          {
+            "id": "reed-amiya-sorrow_and_empathy",
+            "source": "reed",
+            "target": "amiya",
+            "label": "背负苦难火种的王脉共鸣",
+            "description": "两位同样拥有王族血脉与沉重宿命的年轻少女，在交谈中达成对感染者和平与大地平息战火的深刻共识。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 照我以火后日谈",
+            "evidence": {
+              "title": "PRTS维基 · 焰影苇草干员档案",
+              "url": "https://prts.wiki/w/焰影苇草"
+            }
+          },
+          {
+            "id": "reed-kaltsit-draco_legacy_custody",
+            "source": "reed",
+            "target": "kaltsit",
+            "label": "德拉科古老血统的守护与医学观察",
+            "description": "凯尔希妥善安置拉芙希妮以防其再遭维多利亚各方暗杀势力猎杀，为其身体机能恢复提供周密方案。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛核心档案",
+            "evidence": {
+              "title": "PRTS维基 · 焰影苇草干员密录",
+              "url": "https://prts.wiki/w/焰影苇草"
+            }
+          },
+          {
+            "id": "virtuosa-doctor-abyssal_resonance",
+            "source": "virtuosa",
+            "target": "doctor",
+            "label": "渴望演奏终极深渊的知音乐师",
+            "description": "对博士那跨越沧海桑田、非凡人所能拥有的深邃广袤心智极度痴迷，常在博士耳畔拉响大提琴探索灵魂尽头。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 崔林特尔梅之秋",
+            "evidence": {
+              "title": "PRTS维基 · 塑心干员档案",
+              "url": "https://prts.wiki/w/塑心"
+            }
+          },
+          {
+            "id": "viviana-virtuosa-leithanien_cadence",
+            "source": "viviana",
+            "target": "virtuosa",
+            "label": "莱塔尼亚诗歌与大提琴的灵魂对谈",
+            "description": "薇薇安娜与阿尔图罗在金秋的崔林特尔梅相遇，一位以诗篇烛光驱散阴云，一位以狂放乐章奏响执念，形成相惜又警惕的艺术交锋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 崔林特尔梅之秋",
+            "evidence": {
+              "title": "PRTS维基 · 崔林特尔梅之秋剧情文本",
+              "url": "https://prts.wiki/w/崔林特尔梅之秋"
+            }
+          },
+          {
+            "id": "virtuosa-kaltsit-dangerous_harmony_control",
+            "source": "virtuosa",
+            "target": "kaltsit",
+            "label": "高危法术受控协议与哲学探讨",
+            "description": "凯尔希亲自监管阿尔图罗的受限制行动，对其琴声引动群体情绪坍塌的危险性施加严密伦理防线。",
+            "directed": true,
+            "spoiler": true,
+            "stage": "SideStory · 崔林特尔梅之秋",
+            "evidence": {
+              "title": "PRTS维基 · 塑心干员密录",
+              "url": "https://prts.wiki/w/塑心"
+            }
+          },
+          {
+            "id": "pozyomka-doctor-peaceful_retreat",
+            "source": "pozyomka",
+            "target": "doctor",
+            "label": "卸下仇恨防线的宁静归宿",
+            "description": "原本对地面政治家极度厌恶排斥，但在被博士无私救援与真诚对待后彻底卸下心防，在罗德岛找到第二处安宁之所。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 理想城：长夏狂欢季",
+            "evidence": {
+              "title": "PRTS维基 · 理想城剧情文本",
+              "url": "https://prts.wiki/w/理想城"
+            }
+          },
+          {
+            "id": "pozyomka-kaltsit-underground_treaty",
+            "source": "pozyomka",
+            "target": "kaltsit",
+            "label": "杜林地下城与地表科学交流协议",
+            "description": "协助凯尔希打通了罗德岛与杜林地下文明的医疗与技术互通走廊，确保杜林人不被地表贪婪势力侵扰。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "SideStory · 理想城：长夏狂欢季",
+            "evidence": {
+              "title": "PRTS维基 · 鸿雪干员档案",
+              "url": "https://prts.wiki/w/鸿雪"
+            }
+          },
+          {
+            "id": "archetto-exusiai-archery_and_gun_banter",
+            "source": "archetto",
+            "target": "exusiai",
+            "label": "古典弓术与拉特兰铳斗术的射击较量",
+            "description": "同为信仰虔诚的远程大师，空弦经常与能天使切磋箭术与弹道手感，在商业推销修道院麦酒时也得到能天使的热情捧场。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 烘炉示岁",
+            "evidence": {
+              "title": "PRTS维基 · 空弦干员档案",
+              "url": "https://prts.wiki/w/空弦"
+            }
+          },
+          {
+            "id": "archetto-doctor-monastery_revival_partner",
+            "source": "archetto",
+            "target": "doctor",
+            "label": "修道院振兴的商业合作与战术依托",
+            "description": "把博士视作精通经营策划的商业奇才，努力向博士推销修道院特色产品，并在博士战场调度中提供极速精准的箭雨压制。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》空弦语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "ray-doctor-desert_hunter_trust",
+            "source": "ray",
+            "target": "doctor",
+            "label": "从提防戒备到性命相托的守护契约",
+            "description": "从最初只认报酬的地下保镖，逐渐被博士的关怀与尊重打动，成为无论在何种恶劣气候下都能为博士狙杀敌酋的王牌护卫。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 怀黍离",
+            "evidence": {
+              "title": "PRTS维基 · 莱伊干员档案",
+              "url": "https://prts.wiki/w/莱伊"
+            }
+          },
+          {
+            "id": "ray-amiya-heartwarming_shelter",
+            "source": "ray",
+            "target": "amiya",
+            "label": "荒原流浪者被照亮的温暖心房",
+            "description": "在阿米娅身上看到了雷姆必拓矿区孩子们从未享有过的温柔与希望，发誓要用自己手中的重弩守护这个脆弱而坚定的领袖。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》莱伊语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "nymph-logos-ancient_rite_tutelage",
+            "source": "nymph",
+            "target": "logos",
+            "label": "古老温迪戈咒术与骨笔传承的师承指引",
+            "description": "Logos作为最后的温迪戈血脉与大咒术师，在罗德岛耐心指引并规整妮芙那尚未完全觉醒的古老法术，防止其被仪式反噬。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "SideStory · 太阳甩在身后",
+            "evidence": {
+              "title": "PRTS维基 · 妮芙干员档案",
+              "url": "https://prts.wiki/w/妮芙"
+            }
+          },
+          {
+            "id": "nymph-doctor-gentle_elder_brother",
+            "source": "nymph",
+            "target": "doctor",
+            "label": "如同兄长般的亲近依靠与敬慕",
+            "description": "性格腼腆但善解人意的妮芙最喜欢向博士展示自己练习写下的萨卡兹古文字，在博士身边总能感受到远离杀戮的和平暖意。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》妮芙语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "entelechia-theresa-echoes_of_kazdel",
+            "source": "entelechia",
+            "target": "theresa",
+            "label": "萨卡兹千年悲愿与死魂灵的叹息共鸣",
+            "description": "在特蕾西娅重铸卡兹戴尔魔王权柄的岁月里，死魂灵的意志长河始终环绕左右，既是对慈悲魔王的考验，也是为其铺路的千古先祖意志。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线 · 慈悲灯塔",
+            "evidence": {
+              "title": "PRTS维基 · 主线第十四章文本",
+              "url": "https://prts.wiki/w/慈悲灯塔"
+            }
+          },
+          {
+            "id": "entelechia-kaltsit-ancient_witnesses",
+            "source": "entelechia",
+            "target": "kaltsit",
+            "label": "跨越文明废墟的古老对视",
+            "description": "一位是行走了万年文明的活历史，一位是萨卡兹血脉沉淀的死者回响，两者在卡兹戴尔核心王座下的对谈贯穿了整个泰拉的兴衰史。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线 · 慈悲灯塔",
+            "evidence": {
+              "title": "PRTS维基 · 隐德来希档案",
+              "url": "https://prts.wiki/w/隐德来希"
+            }
+          },
+          {
+            "id": "entelechia-doctor-primordial_creator_dialogue",
+            "source": "entelechia",
+            "target": "doctor",
+            "label": "创生者与被造物命运的终极探问",
+            "description": "洞悉博士并非泰拉凡胎而是史前先民的真相，以超越仇恨的超然态度探问这片大地生命演进的最终答案。",
+            "directed": false,
+            "spoiler": true,
+            "stage": "主线 · 慈悲灯塔",
+            "evidence": {
+              "title": "PRTS维基 · 主线第十四章文本",
+              "url": "https://prts.wiki/w/慈悲灯塔"
+            }
+          },
+          {
+            "id": "vulpisfoglia-texas-siracusa_reorganization",
+            "source": "vulpisfoglia",
+            "target": "texas",
+            "label": "叙拉古新旧秩序重构的交锋与认可",
+            "description": "在叙拉古家族大清洗与新城建立的血战中与德克萨斯多次周旋对决，被德克萨斯超脱家族仇恨的气度所触动并达成战略停火。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 叙拉古人",
+            "evidence": {
+              "title": "PRTS维基 · 叙拉古人剧情文本",
+              "url": "https://prts.wiki/w/叙拉古人"
+            }
+          },
+          {
+            "id": "vulpisfoglia-lappland-wilderness_wolf_standoff",
+            "source": "vulpisfoglia",
+            "target": "lappland",
+            "label": "家族秩序与荒原狂狼的锋刃对峙",
+            "description": "深知拉普兰德疯狂外表下所蕴含的破灭力量，在叙拉古地下暗道中与其数度刀刃相见并对其危险性保持最高警戒。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "SideStory · 叙拉古人",
+            "evidence": {
+              "title": "PRTS维基 · 忍冬干员档案",
+              "url": "https://prts.wiki/w/忍冬"
+            }
+          },
+          {
+            "id": "vulpisfoglia-doctor-underworld_diplomacy",
+            "source": "vulpisfoglia",
+            "target": "doctor",
+            "label": "地下家族首领与罗德岛的跨国合作",
+            "description": "将罗德岛视作值得信赖的独立中立实体，与博士达成多项叙拉古矿产与安保外包战略协议。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 叙拉古外勤报告",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》忍冬语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "platinum-doctor-amusement_park_wish",
+            "source": "platinum",
+            "target": "doctor",
+            "label": "渴望逃离阴谋的游乐园之约",
+            "description": "厌倦了作为刺客被操控的命运，唯独在博士面前卸下防备展露少女心性，期盼着任务结束后能与博士一同去游乐园坐旋转木马。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "共通线 · 罗德岛干员信赖记录",
+            "evidence": {
+              "title": "鹰角网络 · 《明日方舟》白金语音档案",
+              "url": "https://ak.hypergryph.com"
+            }
+          },
+          {
+            "id": "platinum-nearl-knight_and_assassin",
+            "source": "platinum",
+            "target": "nearl",
+            "label": "暗影刺客对金色曜光的动容与收手",
+            "description": "曾奉卡西米尔商业联合会之命猎杀临光，在见证耀骑士打破暗室破晓归来的光芒后彻底对无胄盟产生动摇并选择放弃暗杀。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "SideStory · 玛莉娅·临光",
+            "evidence": {
+              "title": "PRTS维基 · 玛莉娅·临光剧情文本",
+              "url": "https://prts.wiki/w/玛莉娅·临光"
+            }
+          },
+          {
+            "id": "platinum-blemishine-arena_mercy",
+            "source": "platinum",
+            "target": "blemishine",
+            "label": "赛场暗处的留情与暗杀止步",
+            "description": "在特锦赛暗流中多次奉命监视并清除年轻的玛莉娅，却在最后一刻心生怜悯暗中放水，为临光姐妹留下了翻盘生机。",
+            "directed": true,
+            "spoiler": false,
+            "stage": "SideStory · 玛莉娅·临光",
+            "evidence": {
+              "title": "PRTS维基 · 玛莉娅·临光剧情文本",
+              "url": "https://prts.wiki/w/玛莉娅·临光"
+            }
           }
         ]
       }
@@ -1251,15 +2547,7 @@
         "red eyes",
         "arknights"
       ],
-      "negativeTokens": [
-        "bad anatomy",
-        "bad hands",
-        "extra limbs",
-        "blurry",
-        "lowres",
-        "signature",
-        "watermark"
-      ],
+      "negativeTokens": [],
       "originalName": "Skadi",
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -1268,8 +2556,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "skadi (arknights)",
-        "Skadi"
+        "skadi (arknights)"
       ],
       "copyrightTokens": [
         "arknights"
