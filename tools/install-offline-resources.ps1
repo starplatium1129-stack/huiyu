@@ -167,9 +167,13 @@ try {
   $trustedSource = $null
   if ($TrustedRelease) {
     # Independent publisher approval shipped with this helper, never loaded from
-    # the selected ZIP, sibling checksums or a user setting. Checked 2026-10-29.
+    # the selected ZIP, sibling checksums or a user setting.
     # Adding an edition requires a reviewed helper update from the official source.
     $catalog = @{
+      'd1dcedc032c95f78f218432814bd3b1827922c58daaae24e3b1e189dd9218d00' = @{
+        id = 'huiyu-resources-20261031-full'
+        source = 'https://github.com/starplatium1129-stack/huiyu/releases/tag/huiyu-resources-20261031-full'
+      }
       '2010090d2a48a192424cffb1278b68a259e5f0f7b724537258f8edb1f1f1d98f' = @{
         id = 'huiyu-resources-20261029-r1'
         source = 'https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.0.0'
