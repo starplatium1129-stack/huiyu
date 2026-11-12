@@ -41,8 +41,6 @@ export type { CharKey, HistoryEntry } from '@/types/promptHistory';
 
 const PROMPT_MAP_EMOTION: Record<string, string> = Object.fromEntries(EMOTION.map(item => [item.id, item.prompt || '']))
 
-export const NEGATIVE_DEFAULT = 'worst quality, low quality, normal quality, lowres, blurry, jpeg artifacts, text, watermark, logo, signature, bad anatomy, bad hands, extra fingers, missing fingers, extra arms, extra legs, deformed, cropped, duplicate'
-
 export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   // ── Core director state ─────────────────────────────────────────────────
   const storyOrigin = ref<StoryOrigin>()

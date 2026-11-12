@@ -18,7 +18,7 @@
 | 文档链接检查 | `npm run wf -- docs:check` | 检查死链接与重定向映射 |
 | 生成品牌图标 | `npm run wf -- brand:build` | SVG 生成深浅字标、favicon 与桌面图标 |
 | 开发前端 / 启动网关 | `npm run wf -- dev:web` / `npm run wf -- dev:server` | 分别在两个终端运行 |
-| TypeScript 类型检查 | `npm run wf -- check:typescript` | 检查前端、网关、工具与脚本类型 |
+| TypeScript 类型检查 | `npm run typecheck` | 检查 Vue 应用、Node 工具和独立浏览器脚本 |
 | 桌面打包能力检查 | `npm run wf -- desktop:doctor --json` | 检测本机构建与打包环境 |
 | 桌面部署与同步 | `deploy-desktop.bat` | 桌面端同步与安装（详见 [部署指南](desktop-deployment.md)） |
 | 安装器界面预览 | `npm run wf -- installer:modern --preview --capture` | 预览现代安装器，加 `--uninstall` 预览卸载 |
@@ -85,6 +85,7 @@ npm run wf -- diagnostics:window-capture -Out runtime/<输出图片.png> [-Title
 
 ---
 
+<a id="门禁与构建"></a>
 ## 4. 门禁与构建
 
 **严禁编写和运行任何测试**。仓库不包含且不运行单测、组件测试、E2E 测试与覆盖率统计。代码通过源码审查、类型检查与真实构建进行验证：

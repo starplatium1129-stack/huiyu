@@ -13,6 +13,11 @@ let epochController = new AbortController()
 let started = false
 let stop = () => {}
 export function getDesktopRuntime(): DesktopConnectionState { return state }
+export function desktopRuntimeIdentity(bootstrap = state.bootstrap): string {
+  const runtime = bootstrap?.runtime, workspace = runtime?.workspace
+  return JSON.stringify([bootstrap?.sourceProfileId, runtime?.origin, runtime?.runtimeEpoch,
+    workspace?.workspaceId, workspace?.principalId, workspace?.runtimeEpoch, workspace?.generation])
+}
 export function getDesktopWindowRole() { return state.bootstrap?.windowRole }
 export function onDesktopRuntime(listener: (value: DesktopConnectionState) => void): () => void {
   listeners.add(listener); listener(state)
@@ -27,7 +32,7 @@ export const desktopRuntimeFetch: FetchImplementation = async (input, init = {})
   const url = resolveRuntimeUrl(rawUrl)
   if (!url) throw new Error('资源地址不属于已验证的运行时')
   const headers = new Headers(init.headers)
-  const pathname = new URL(url).pathname
+  const { pathname, origin } = new URL(url)
   const privateRequest = pathname.startsWith('/api/workspace/') || pathname === '/api/tasks/v1' || pathname.startsWith('/api/tasks/v1/')
   if (privateRequest) {
     const session = bootstrap.runtime.workspace
@@ -38,7 +43,7 @@ export const desktopRuntimeFetch: FetchImplementation = async (input, init = {})
   // Same-origin GET/HEAD omit Origin. The private session authority also needs
   // browser provenance; send only the origin while retaining the document's
   // no-referrer policy for unrelated requests and never emitting a private URL.
-  const referrerPolicy = privateRequest && new URL(url).origin === window.location.origin ? 'origin' : init.referrerPolicy
+  const referrerPolicy = privateRequest && origin === window.location.origin ? 'origin' : init.referrerPolicy
   let response: Response
   try { response = await fetch(url, { ...init, headers, signal, referrerPolicy }) }
   catch (error) {
@@ -59,15 +64,11 @@ export function refreshDesktopRuntime(force = false): Promise<void> {
         timer = setTimeout(() => reject(new Error('桌面握手超时')), 4000)
       })])
       if (sequence !== refreshSequence) return
-      const previous = state.bootstrap?.runtime
-      const next = bootstrap.runtime
-      const changed = previous?.runtimeEpoch !== next?.runtimeEpoch || previous?.origin !== next?.origin
-        || previous?.workspace?.generation !== next?.workspace?.generation
-        || previous?.workspace?.workspaceId !== next?.workspace?.workspaceId
-        || previous?.workspace?.runtimeEpoch !== next?.workspace?.runtimeEpoch
-      setRuntimeOrigin(next?.origin ?? null, true, next?.runtimeEpoch)
+      const next = { connection: bootstrap.connection, bootstrap }
+      const changed = state.connection !== next.connection || desktopRuntimeIdentity() !== desktopRuntimeIdentity(bootstrap)
+      setRuntimeOrigin(bootstrap.runtime?.origin ?? null, true, bootstrap.runtime?.runtimeEpoch)
       if (changed) { epochController.abort(); epochController = new AbortController(); configureApiTransport(desktopRuntimeFetch) }
-      publish({ connection: bootstrap.connection, bootstrap })
+      publish(next)
     } catch {
       if (sequence !== refreshSequence) return
       setRuntimeOrigin(null, true)

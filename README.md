@@ -4,7 +4,7 @@
 
 <p align="center">A local AI character studio for drawing, inspiration, artwork collections and desktop companionship.</p>
 
-<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.1.0">Download HUIYU 2.1.0 for Windows</a> · <a href="docs/releases/v2.1.0.md">Release notes</a> · <a href="README_zh.md">中文说明</a></p>
+<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/latest">Download for Windows</a> · <a href="docs/INDEX.md#发行说明">Documentation and release notes</a> · <a href="README_zh.md">中文说明</a></p>
 
 Start with a character and a scene. Choose an outfit, camera and lighting, turn the moment into a CG, then keep the finished image and its recipe in your own artwork collection. Draw directly or browse the reference album for your next idea.
 
@@ -29,14 +29,14 @@ Choose your character and materials on the left, view the canvas in the center, 
   </tr>
 </table>
 
-All six screenshots were supplied by the author and retain their original 3840×2158 dimensions. Click an image to view it full size.
+Screenshots by the author. Click an image to view it full size.
 
 ## <img src="docs/images/icons/model.svg" width="24" height="24" alt=""> Creative tools
 
 | Feature | Current support |
 | --- | --- |
-| Local drawing | Anima and Krea 2, with prompts compiled for the selected engine |
-| Anima checkpoints | MiaoMiao Harem 1.6 by default; Base, Aesthetic, Yume, MiaoMiao 1.2 and the newly integrated MiaoMiao 2.9B Beta 1.1 |
+| Drawing | Anima, Krea 2, Qwen and MOSS. Prompts follow the selected engine, and native drawing can connect to another HUIYU instance |
+| Anima checkpoints | MiaoMiao Harem 1.6 by default, with Base, Aesthetic, Yume, MiaoMiao 1.2 and MiaoMiao 2.9B Beta 1.1 available |
 | Character LoRAs | HUIYU author's Ayachi Nene and Shiki Natsume Anima v21; an Endfield collection with model-specific character bindings |
 | Video studio | Shot lists, reference images and local Wan 2.2 TI2V 5B / MiniMax H3 paths |
 | Model preparation | Choose the AI directory, models and runtimes in the control room; download and verification begin on explicit preparation |
@@ -50,7 +50,7 @@ A separate character room provides text chat, Live2D display and voice playback;
 
 ## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> Install and start creating
 
-1. Download an installer from the [2.1.0 release](https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.1.0). This version uses one **full installer** for new installations, upgrades, and resource repair.
+1. Use the **full installer** for a first installation or repair. An existing installation can use the upgrade package when provided. [Windows downloads](https://github.com/starplatium1129-stack/huiyu/releases/latest)
 2. Import the resources you need using the [offline resource guide](docs/guides/offline-resources.md). Resource packs are distributed separately; a program upgrade does not require downloading existing resources again.
 3. Open the control room, choose the data and AI directories, and prepare models or connect existing services.
 4. Pick a character and scene in the drawing studio. Save the finished image to My artwork.
@@ -59,7 +59,7 @@ A separate character room provides text chat, Live2D display and voice playback;
 
 ## <img src="docs/images/icons/manager.svg" width="24" height="24" alt=""> Run from source
 
-Windows is the primary development and desktop environment. Source builds require Node.js ≥22.18, npm and the Rust MSVC toolchain. For local Anima drawing, start with the control room's managed native runtime and complete model setup. ComfyUI remains an engine option for Anima and is required for Krea 2 and video. See the [independent inference guide](docs/guides/independent-inference.md) for supported devices and setup boundaries.
+Source builds on Windows require Node.js ≥22.18, npm and the Rust MSVC toolchain.
 
 ```powershell
 git clone https://github.com/starplatium1129-stack/huiyu.git
@@ -69,48 +69,18 @@ npm run build
 npm run start:run
 ```
 
-See [STARTUP](STARTUP.md) for runtime setup, the [desktop deployment guide](docs/desktop-deployment.md) for packaging and installation, and the [workflow guide](docs/workflow.md) for maintenance commands.
+See [startup and troubleshooting](STARTUP.md), [desktop deployment](docs/desktop-deployment.md) and the [workflow guide](docs/workflow.md).
 
 ## Architecture
 
-HUIYU has three main parts: the **Vue studio, Tauri desktop shell and local Rust gateway**. The frontend uses a common API for workspace data, content and generation tasks. The gateway owns persistence, task lifecycles and connections to external AI services.
-
-| Layer | Technology and responsibility |
+| Directory | Responsibility |
 | --- | --- |
-| Studio | Vue 3, TypeScript, Vite and Pinia; presentation, creative state, prompt compilation and interactions |
-| Desktop shell | Tauri 2 and Rust; windows, tray, desktop companion, native Live2D and owned gateway management |
-| Local gateway | Rust, Axum and Tokio; HTTP / streaming APIs, task admission, queries, cancellation, media and resources |
-| Data and content | Desktop SQLite for workspace metadata and the content catalog, IndexedDB on the web; media stored separately |
-| AI services | Managed native runtime or ComfyUI for Anima; ComfyUI for Krea 2 and video; llama.cpp / Ollama / compatible APIs for chat; separate interrogation, translation and voice services |
-| Build and maintenance | Node.js, npm and project scripts for frontend builds, resource preparation, release packaging and maintenance checks |
+| `src/` | Vue studio, prompt compilation and platform adapters. The web workspace uses IndexedDB |
+| `desktop-tauri/` | Desktop windows, tray, native Live2D and gateway startup |
+| `runtime-rs/` | Rust gateway, persistent tasks, SQLite workspace and service connections |
+| `types/`, `tools/`, `scripts/` | Shared contracts, model workers, build and maintenance tools |
 
 The runtime's `content/catalog.sqlite` is the working authority for characters, outfits, scenes and blueprints. `data/catalog/` contains explicitly exported project snapshots. Models and personal artwork live in the selected local directories. See the [engineering contracts](docs/engineering-contracts.md) and [documentation index](docs/INDEX.md) for detailed boundaries and storage designs.
-
-## Repository layout
-
-```text
-AI-CG-Studio/
-├── src/                    Vue studio
-│   ├── views/              Pages and route views
-│   ├── components/         UI, hand-drawn icons and studio panels
-│   ├── composables/        Creative, generation and interaction state
-│   ├── stores/             Pinia stores
-│   ├── application/        Use cases and ports
-│   ├── platform/           Web / desktop adapters
-│   ├── api/                API clients and response boundaries
-│   └── utils/              Prompts, recipes and shared logic
-├── runtime-rs/             Rust gateway, tasks, storage and service adapters
-├── desktop-tauri/          Tauri host and native Live2D
-├── types/                  Cross-platform contract types
-├── data/                   Content snapshots, model profiles and indexes
-├── assets/                 Brand, character and interface assets
-├── scripts/                Build, maintenance, release and targeted checks
-├── tools/                  Model services and installation helpers
-├── docs/                   Guides, architecture, releases and evidence
-└── plans/                  Unified planning entry
-```
-
-Local `runtime/` holds build caches and raw acceptance artifacts; it is not committed as product source. Find maintenance commands with `npm run workflow -- --help`.
 
 ## Project and licensing
 

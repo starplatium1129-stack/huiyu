@@ -66,6 +66,6 @@ tooltip 同时支持 hover 与键盘焦点。首个说明可有短延迟；同�
 
 ## 画面验收
 
-范围与记录遵循 [AGENTS.md · 审查与验收](../../../../AGENTS.md#审查与验收)。沿受影响流程查看适用的状态与恢复操作；涉及浮层时查看真实触发器的返焦、dialog 内 portal 的层级、标题栏和固定动作区避让、长内容滚动及视觉退出期间的输入隔离。布局变化涉及入口隐藏时，查看变化前后的浮层收拢和焦点交接；源码不能代替这些画面证据。
+范围与记录遵循 [AGENTS.md · 验证与止损](../../../../AGENTS.md#验证与止损)。沿受影响流程查看适用的状态与恢复操作；涉及浮层时查看真实触发器的返焦、dialog 内 portal 的层级、标题栏和固定动作区避让、长内容滚动及视觉退出期间的输入隔离。布局变化涉及入口隐藏时，查看变化前后的浮层收拢和焦点交接；源码不能代替这些画面证据。
 
 来源：[emil-design-eng](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/emil-design-eng/SKILL.md)、[apple-design](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/apple-design/SKILL.md)、[pick-ui-library](https://github.com/emilkowalski/skills/blob/2d228630ba1446365f614a108cb8252f1feda202/skills/pick-ui-library/SKILL.md)；保留绘遇现有组件和 Windows 桌面语义。

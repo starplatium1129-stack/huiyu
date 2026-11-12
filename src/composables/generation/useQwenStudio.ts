@@ -423,5 +423,6 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
   onScopeDispose(() => { stopRuntime(); clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
   return { modelOptions, alignment, maxSize, form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
     busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, canUpscale, upscaleResult, inputSize, progress, taskText,
-    ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, clearResult, initialize }
+    ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft,
+    continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, clearResult, initialize }
 }

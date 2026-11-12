@@ -3,7 +3,7 @@ import { cancelRuntimeTaskKey, getRuntimeTaskByKey, hasRuntimeTasks, submitRunti
 import { newTaskRequestDraft, readTaskRequestDraft, type TaskRequestDraft } from '@/storage/taskRequestDraft'
 import { assertRequestOwner, clearRequestDraft, writeRequestDraft } from '@/storage/requestDraft'
 
-export const taskSettled = (task: TaskRecord | null) => !!task && task.upstreamSettled && task.recoveryState === 'normal'
+const taskSettled = (task: TaskRecord | null) => !!task && task.upstreamSettled && task.recoveryState === 'normal'
   && ['succeeded', 'failed', 'cancelled'].includes(task.status)
 
 /** One durable acceptance key per visit. Unknown admission is queried or cancelled, never resubmitted. */

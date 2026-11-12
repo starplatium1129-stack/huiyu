@@ -4,7 +4,7 @@
 
 <p align="center">本地运行的 AI 角色创作工作室 · 绘图、灵感画册、作品收藏与桌面陪伴</p>
 
-<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.1.0">下载 Windows 桌面版 2.1.0</a> · <a href="docs/releases/v2.1.0.md">更新说明</a> · <a href="README.md">English</a></p>
+<p align="center"><a href="https://github.com/starplatium1129-stack/huiyu/releases/latest">下载 Windows 桌面版</a> · <a href="docs/INDEX.md#发行说明">文档与更新说明</a> · <a href="README.md">English</a></p>
 
 绘遇从角色和场景出发：选一位主角，挑选衣装、镜头与光线，把想象整理成一张 CG，再把成片和生成配方一起留在自己的作品册里。可以直接创作，也可以先翻翻参考画册，寻找下一幕的灵感。
 
@@ -29,14 +29,14 @@
   </tr>
 </table>
 
-以上六张截图由作者提供，保留 3840×2158 原始尺寸，点击查看大图。
+截图由作者提供，点击查看原图。
 
 ## <img src="docs/images/icons/model.svg" width="24" height="24" alt=""> 创作工具
 
 | 功能 | 当前支持 |
 | --- | --- |
-| 本地绘图 | Anima 与 Krea 2；提示词按所选引擎编译 |
-| Anima 底模 | 默认 MiaoMiao Harem 1.6，另有 Base、Aesthetic、Yume、MiaoMiao 1.2 与新接入的 MiaoMiao 2.9B Beta 1.1 |
+| 绘图 | Anima、Krea 2、Qwen 与 MOSS。提示词按引擎编译，原生绘图可连接另一台绘遇 |
+| Anima 底模 | 默认 MiaoMiao Harem 1.6，另有 Base、Aesthetic、Yume、MiaoMiao 1.2 与 MiaoMiao 2.9B Beta 1.1 |
 | 角色 LoRA | 宁宁、夏目 Anima v21 由绘遇作者亲自训练；另接入终末地角色合集，按底模与角色匹配 |
 | 短片工作台 | 分镜、参考图与本地 Wan 2.2 TI2V 5B／MiniMax H3 路径 |
 | 模型准备 | 在控制室选择 AI 工作目录、模型与运行环境，显式准备后下载并核对文件 |
@@ -50,7 +50,7 @@ SD／WAI 新生图已退役，保留旧任务查询与历史作品。完整的�
 
 ## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> 安装与开始创作
 
-1. 在 [2.1.0 发布页](https://github.com/starplatium1129-stack/huiyu/releases/tag/v2.1.0)下载安装包。本版统一使用 **full 完整安装包**，支持首次安装、升级与资源修复。
+1. 首次安装或修复使用 **full 完整安装包**。已安装桌面版时，可使用当期提供的升级包。[Windows 下载](https://github.com/starplatium1129-stack/huiyu/releases/latest)
 2. 按[离线素材指南](docs/guides/offline-resources.md)导入需要的素材。完整资源包与程序分开发行，已有素材不必因程序升级重复下载。
 3. 打开控制室，选择数据目录和 AI 工作目录，准备所需模型，或连接已有服务。
 4. 进入绘制工作台，选角色与场景，生成后保存到“我的作品”。
@@ -59,7 +59,7 @@ SD／WAI 新生图已退役，保留旧任务查询与历史作品。完整的�
 
 ## <img src="docs/images/icons/manager.svg" width="24" height="24" alt=""> 从源码运行
 
-Windows 为主要开发与桌面运行环境。源码构建需要 Node.js ≥22.18、npm 与 Rust MSVC 工具链；本地绘图另需 ComfyUI。
+在 Windows 从源码构建需要 Node.js ≥22.18、npm 与 Rust MSVC 工具链。
 
 ```powershell
 git clone https://github.com/starplatium1129-stack/huiyu.git
@@ -73,44 +73,14 @@ npm run start:run
 
 ## 技术架构
 
-绘遇由三个主要部分组成：**Vue 工作台、Tauri 桌面壳和 Rust 本地网关**。前端通过统一 API 使用工作区、内容与生成任务；网关负责持久化、任务生命周期和外部 AI 服务连接。
-
-| 层 | 技术与职责 |
+| 目录 | 职责 |
 | --- | --- |
-| 工作台 | Vue 3、TypeScript、Vite、Pinia；组件展示、创作状态、提示词编译与界面交互 |
-| 桌面壳 | Tauri 2、Rust；窗口与托盘、桌面陪伴、原生 Live2D 与自有网关管理 |
-| 本地网关 | Rust、Axum、Tokio；HTTP／流式接口、任务准入、查询取消、媒体与资源管理 |
-| 数据与内容 | 桌面 SQLite 管理工作区元数据与内容目录，Web 使用 IndexedDB；图片等媒体单独存放 |
-| AI 服务 | ComfyUI 绘图与视频；llama.cpp／Ollama／兼容 API 聊天；独立反推、翻译和语音服务 |
-| 构建与维护 | Node.js、npm 与项目脚本；前端构建、资源准备、发行封装与维护校验 |
+| `src/` | Vue 工作台、提示词编译与平台适配。网页工作区使用 IndexedDB |
+| `desktop-tauri/` | 桌面窗口、托盘、原生 Live2D 与网关启动 |
+| `runtime-rs/` | Rust 网关、持久任务、SQLite 工作区与 AI 服务连接 |
+| `types/`、`tools/`、`scripts/` | 跨端契约、模型工作进程、构建和维护工具 |
 
 角色、服装、场景和蓝图以运行目录的 `content/catalog.sqlite` 为工作权威，`data/catalog/` 是显式导出的项目快照。模型与用户作品保存在本机选择的目录。工程边界见[工程契约](docs/engineering-contracts.md)，工作区与内容设计见[文档索引](docs/INDEX.md)。
-
-## 项目目录
-
-```text
-AI-CG-Studio/
-├── src/                    Vue 工作台
-│   ├── views/              页面与路由视图
-│   ├── components/         界面组件、手绘图标与绘制面板
-│   ├── composables/        创作、生成与交互状态编排
-│   ├── stores/             Pinia 状态
-│   ├── application/        用例与端口
-│   ├── platform/           Web／desktop 适配
-│   ├── api/                API 客户端与响应边界
-│   └── utils/              提示词、配方与其他共享逻辑
-├── runtime-rs/             Rust 网关、任务、存储与服务适配
-├── desktop-tauri/          Tauri 桌面宿主与原生 Live2D
-├── types/                  跨端契约类型
-├── data/                   内容快照、模型配方与资源索引
-├── assets/                 品牌、人物与界面静态资源
-├── scripts/                构建、维护、发行与定向检查入口
-├── tools/                  独立模型服务与安装助手
-├── docs/                   指南、架构、版本说明与证据
-└── plans/                  统一规划入口
-```
-
-本机 `runtime/` 保存构建缓存和原始验收材料，不作为产品源码提交。常用开发维护命令统一从 `npm run workflow -- --help` 查找。
 
 ## 项目与许可
 

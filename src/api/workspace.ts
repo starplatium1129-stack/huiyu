@@ -1,4 +1,4 @@
-import { desktopRuntimeFetch, getDesktopRuntime } from '@/platform/desktop/runtime'
+import { desktopRuntimeIdentity, desktopRuntimeFetch, getDesktopRuntime } from '@/platform/desktop/runtime'
 import { publishProfileChange } from '@/platform/desktop/profileChanges'
 import { abortableTask } from '@/utils/abortableTask'
 import type { WorkspaceJobProgress } from './workspaceJobs'
@@ -41,7 +41,6 @@ function resource(command: Record<string, unknown>): [string, string] {
     case 'patchArtwork': return ['PATCH', entity]
     case 'softDeleteArtwork': return ['DELETE', entity]
     case 'softDeleteArtworks': return ['POST', '/artworks/trash-batch']
-    case 'hardDeleteArtwork': return ['DELETE', `/artworks/${id}/permanent?idType=${typeof command.id}`]
     case 'restoreArtwork': return ['POST', `/artworks/${id}/restore?idType=${typeof command.id}`]
     case 'restoreArtworks': return ['POST', '/artworks/restore-batch']
     case 'saveProject': return ['POST', '/projects']
@@ -83,18 +82,25 @@ function resource(command: Record<string, unknown>): [string, string] {
   }
 }
 async function requestOnce<T>(command: Record<string, unknown>, signal?: AbortSignal): Promise<T> {
-  const session = getDesktopRuntime().bootstrap?.runtime?.workspace
-  if (!session) throw new Error('私人工作区尚未连接')
+  const runtime = getDesktopRuntime(), session = runtime.bootstrap?.runtime?.workspace
+  if (runtime.connection !== 'ready' || !session) throw new Error('私人工作区尚未连接')
+  const identity = desktopRuntimeIdentity(runtime.bootstrap)
   const [method, path] = resource(command)
   const deadline = AbortSignal.timeout(command.kind === 'restoreArtworks' ? 125_000 : 35_000)
   const requestSignal = signal ? AbortSignal.any([signal, deadline]) : deadline
+  const checkSession = () => {
+    requestSignal.throwIfAborted()
+    if (getDesktopRuntime().connection !== 'ready' || desktopRuntimeIdentity() !== identity) throw new Error('工作区连接已变化，请重新读取')
+  }
   requestSignal.throwIfAborted()
   if (method !== 'GET') command = structuredClone(command)
   const { path: target, ...payload } = method === 'GET' ? { path }
     : (await abortableTask(() => import('./workspacePayload'), requestSignal)).workspacePayload(command, session.workspaceId, path)
+  checkSession()
   const response = await desktopRuntimeFetch('/api/workspace' + target, { method, signal: requestSignal,
     ...payload })
   const result = await response.json()
+  checkSession()
   if (!response.ok) throw new WorkspaceRequestError(result.error || result.message || '工作区操作未完成', result.code, command.operationId, response.status)
   if (result.workspaceId !== session.workspaceId || result.runtimeEpoch !== session.runtimeEpoch) throw new Error('工作区连接已变化，请重新读取')
   if (command.kind === 'profile.saveSetting') publishProfileChange('settings')

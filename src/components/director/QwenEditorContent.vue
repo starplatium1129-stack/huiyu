@@ -73,7 +73,8 @@ const loadImageViewer = () => import('@/components/visual/ZoomableImageViewer.vu
 const title = 'Qwen 图片编辑'
 const { modelOptions, alignment, maxSize, form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
   busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, progress, taskText,
-  ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft, parentId, continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize } = useQwenStudio('qwen', true)
+  ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft,
+  continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, initialize } = useQwenStudio('qwen', true)
 const route = useRoute(), router = useRouter(), picker = ref<HTMLInputElement | null>(null), preview = ref<'result' | 'source'>('result')
 const referencePicker = ref<HTMLInputElement | null>(null), referenceButton = ref<HTMLButtonElement | null>(null), sourceButton = ref<HTMLButtonElement | null>(null), referencePreview = ref('')
 const previewInputUrl = computed(() => references.value.find(value => value.id === referencePreview.value)?.url || sourceUrl.value)

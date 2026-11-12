@@ -1,10 +1,12 @@
 # 项目文档索引
 
-从这里查找现行指南、架构和维护入口；已提交的历史资料可从 Git 历史读取。
+## 使用绘遇
+
+[浏览手册](index.html) · [上手教程](getting-started.html) · [模型配置](guides/setup-and-models.md) · [离线资源](guides/offline-resources.md)
 
 ## 日常入口
 
-| 文档 | 唯一维护职责 |
+| 文档 | 内容 |
 | --- | --- |
 | [项目说明](../README_zh.md) / [English](../README.md) | 产品、下载与功能入口 |
 | [启动与排错](../STARTUP.md) | 安装、源码启动与常见故障 |
@@ -16,7 +18,11 @@
 | [设计规范](../DESIGN.md) | 品牌、双主题与融合 Emil Kowalski 原则的交互和动效标准 |
 | [桌面部署](desktop-deployment.md) | 构建、安装、同步及 UAC |
 
-协作规则见 [AGENTS.md](../AGENTS.md)。普通用户从[浏览入口](index.html)、[上手教程](getting-started.html)、[模型配置](guides/setup-and-models.md)和[离线资源](guides/offline-resources.md)开始。发行说明见 [2.1.1](releases/v2.1.1.md)、[2.1.0](releases/v2.1.0.md) 和 [2.0.0](releases/v2.0.0.md)，公开发行与本机安装分别核对。
+协作规则见 [AGENTS.md](../AGENTS.md)。
+
+## 发行说明
+
+[2.1.2](releases/v2.1.2.md) · [2.1.1](releases/v2.1.1.md) · [2.1.0](releases/v2.1.0.md) · [2.0.0](releases/v2.0.0.md) · [1.9.2](releases/v1.9.2.md)
 
 ## 架构与验收
 
@@ -37,6 +43,6 @@
 
 ## 维护方式
 
-同一事实只在一处维护：状态在 project-status，待办在 roadmap，命令在 workflow，长期规则在契约或指南。优先更新现有页；原始 JSON、截图和日志放入被忽略的 runtime/，不要链接干净检出中不存在的文件。第三方许可证和正式阅读页资源保留。
+按上表更新对应页面。原始 JSON、临时截图和日志放入被忽略的 `runtime/`，文档链接指向干净检出中可用的文件。
 
-增删文档同步本索引、分类索引、脚本引用和[旧地址映射](redirects.json)，运行 npm run wf -- docs:check。查旧过程使用 git log -- <路径> 与 git show <提交>:<路径>，不把历史文件重新复制到现行目录。
+增删文档时同步索引、脚本引用和[旧地址映射](redirects.json)，运行 `npm run wf -- docs:check`。历史内容可通过 `git log -- <路径>` 和 `git show <提交>:<路径>` 查阅。

@@ -1,7 +1,6 @@
-import { recordGalleryMutation } from './galleryStorage';
+import { captureGallerySource, recordGalleryMutation } from './galleryStorage';
 import { confirmAction } from '@/composables/useConfirm';
 import { ARTWORK_DELETE_BATCH_SIZE, ARTWORK_RESTORE_BATCH_SIZE } from '@/application/artwork/artworkRepository';
-import { artworkRepository } from '@/storage/artworkRepository';
 import { type ArtworkRecord } from '@/types/artwork';
 import { storageWriteMessage } from '@/utils/storageWriteError';
 import { ArtworkMutationUnconfirmedError, ArtworkTrashConflictError } from '@/application/artwork/artworkMutationOutcome';
@@ -11,6 +10,7 @@ type Context = Pick<ReturnType<typeof useGalleryWorkspace>, "showToast" | "delet
     isCurrentView?: () => boolean;
 };
 interface FavoriteWrite {
+    source: ReturnType<typeof captureGallerySource>;
     tail: Promise<void>;
     confirmed: boolean;
     unconfirmed: boolean;
@@ -35,18 +35,21 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
         favoriteWrites.set(ctx.history, writes);
     }
     let state = writes.get(item.id);
-    if (!state) {
-        state = { tail: Promise.resolve(), confirmed: Boolean(item.favorite), unconfirmed: false, revision: 0 };
+    if (!state || !state.source.isCurrent()) {
+        state = { source: captureGallerySource(), tail: Promise.resolve(), confirmed: Boolean(item.favorite), unconfirmed: false, revision: 0 };
         writes.set(item.id, state);
     }
     const currentWrite = state;
+    const { source } = currentWrite;
     const revision = ++state.revision;
     const desired = !item.favorite;
     item.favorite = desired;
     // Serialize writes for this artwork while immediately reflecting the latest click.
     state.tail = state.tail.then(async () => {
         try {
-            const result = await artworkRepository.patchArtwork(item.id, { favorite: desired });
+            if (!source.isCurrent()) return;
+            const result = await source.repository.patchArtwork(item.id, { favorite: desired });
+            if (!source.isCurrent()) return;
             if (!result.updated)
                 throw new Error('没找到这幅作品，收藏没能保存');
             currentWrite.confirmed = desired;
@@ -58,6 +61,7 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
             }
         }
         catch (error) {
+            if (!source.isCurrent()) return;
             if (error instanceof ArtworkMutationUnconfirmedError) currentWrite.unconfirmed = true;
             if (currentWrite.unconfirmed) {
                 // An older confirmed value is not a rollback target after a lost
@@ -72,8 +76,10 @@ export async function toggleFavoriteAction(ctx: Pick<Context, 'history' | 'showT
             if (!currentWrite.unconfirmed) ctx.showToast(storageWriteMessage(error, '收藏状态'), 'error');
         }
         finally {
-            if (revision === currentWrite.revision)
-                writes.delete(item.id);
+            if (revision === currentWrite.revision) {
+                source.release();
+                if (writes.get(item.id) === currentWrite) writes.delete(item.id);
+            }
         }
     });
     await state.tail;
@@ -82,12 +88,14 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
     const { showToast, deleting, viewerIndex, visible, history, releaseCardResources, pendingDeleteId, closeViewer, openViewer } = ctx;
     if (deleting.value)
         return;
+    const source = captureGallerySource();
     deleting.value = true;
     try {
         const wasOpen = viewerIndex.value >= 0;
         const removedIndex = ctx.indexOf(item);
         // Repository 先完成跨库删除与补偿回滚，再改界面；失败时界面不动作。
-        const result = await artworkRepository.softDeleteArtwork(item.id);
+        const result = await source.repository.softDeleteArtwork(item.id);
+        if (!source.isCurrent()) return;
         if (!result.deleted) {
             showToast('这幅作品已不在作品册，请刷新后重试', 'warning');
             return;
@@ -106,10 +114,11 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
         }
         showToast('已移入回收站，30 天内可撤销', 'info', 5000, {
             label: '撤销',
-            onClick: () => { void undoDeleteAction(ctx, item); },
+            onClick: () => { void undoDeleteAction(ctx, item, source); },
         });
     }
     catch (e) {
+        if (!source.isCurrent()) return;
         console.warn('delete artwork failed', e);
         if (e instanceof ArtworkMutationUnconfirmedError) {
             showToast('移入回收站的结果尚未确认，请核对重新读取的作品册和回收站，不要重复删除', 'warning');
@@ -118,6 +127,7 @@ export async function confirmDeleteAction(ctx: Context, item: ArtworkRecord): Pr
         else showToast('删除失败，请重试');
     }
     finally {
+        source.release();
         deleting.value = false;
     }
 }
@@ -127,6 +137,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
         return;
     // Approval belongs to this exact selection and visit, not later UI state.
     const ids = [...selectedIds.value];
+    const source = captureGallerySource();
     bulkDeleting.value = true;
     const failed: (string | number)[] = [];
     const confirmed: (string | number)[] = [];
@@ -138,13 +149,14 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
             confirmLabel: '移入回收站',
             danger: true,
         });
-        if (!ok || ctx.isCurrentView?.() === false)
+        if (!ok || !source.isCurrent() || ctx.isCurrentView?.() === false)
             return;
         let unconfirmed = false;
         for (let offset = 0; offset < ids.length; offset += ARTWORK_DELETE_BATCH_SIZE) {
+            if (!source.isCurrent()) return;
             const batch = ids.slice(offset, offset + ARTWORK_DELETE_BATCH_SIZE);
             try {
-                const results = await artworkRepository.softDeleteArtworks(batch);
+                const results = await source.repository.softDeleteArtworks(batch);
                 const deleted = new Set(results.filter(result => result.deleted).map(result => result.id));
                 confirmed.push(...batch.filter(id => deleted.has(id)));
                 failed.push(...batch.filter(id => !deleted.has(id)));
@@ -157,6 +169,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
                 }
             }
         }
+        if (!source.isCurrent()) return;
         const done = confirmed.length;
         if (done) {
             presentDeleted(ctx, confirmed);
@@ -173,6 +186,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
         }
         // Also reconcile an unknown commit; never leave a successfully deleted batch visible after a lost response.
         if (done || unconfirmed) await loadGalleryStorage();
+        if (!source.isCurrent()) return;
         if (conflicts) {
             const outcomes: string[] = [];
             if (done) outcomes.push(`${done} 幅已移入回收站`);
@@ -181,7 +195,7 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
             const undoIds = Object.freeze(confirmed.slice());
             showToast(outcomes.join('；'), 'warning', 5000, done ? {
                 label: '撤销',
-                onClick: () => { void undoBulkDeleteAction(ctx, [...undoIds]); },
+                onClick: () => { void undoBulkDeleteAction(ctx, [...undoIds], source); },
             } : undefined);
         }
         else if (failed.length) {
@@ -192,15 +206,16 @@ export async function bulkDeleteAction(ctx: Context): Promise<void> {
         else {
             showToast(`${done} 幅已移入回收站，30 天内可撤销`, 'info', 6000, {
                 label: '撤销',
-                onClick: () => { void undoBulkDeleteAction(ctx, ids); },
+                onClick: () => { void undoBulkDeleteAction(ctx, ids, source); },
             });
         }
     }
     finally {
+        source.release();
         bulkDeleting.value = false;
     }
 }
-async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Promise<void> {
+async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[], source: ReturnType<typeof captureGallerySource>): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;
     let restored = 0;
     let missingImages = 0;
@@ -209,9 +224,10 @@ async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Pro
     let conflicts = 0;
     const requested = ids.slice();
     for (let offset = 0; offset < requested.length; offset += ARTWORK_RESTORE_BATCH_SIZE) {
+        if (!source.isCurrent()) return;
         const batch = requested.slice(offset, offset + ARTWORK_RESTORE_BATCH_SIZE);
         try {
-            const results = await artworkRepository.restoreArtworks(batch);
+            const results = await source.repository.restoreArtworks(batch);
             for (const result of results) {
                 if (result.restored)
                     restored += 1;
@@ -227,6 +243,7 @@ async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Pro
         }
         catch { unconfirmed += batch.length; }
     }
+    if (!source.isCurrent()) return;
     await loadGalleryStorage();
     const outcomes: string[] = [];
     if (restored) outcomes.push(`已把 ${restored} 幅放回展墙`);
@@ -236,10 +253,12 @@ async function undoBulkDeleteAction(ctx: Context, ids: (string | number)[]): Pro
     if (unconfirmed) outcomes.push(`${unconfirmed} 幅恢复尚未确认，请重新查看回收站后重试`);
     showToast(outcomes.join('；'), restored === requested.length ? 'success' : 'warning');
 }
-async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void> {
+async function undoDeleteAction(ctx: Context, item: ArtworkRecord, source: ReturnType<typeof captureGallerySource>): Promise<void> {
     const { showToast, loadGalleryStorage } = ctx;
+    if (!source.isCurrent()) return;
     try {
-        const result = await artworkRepository.restoreArtwork(item.id);
+        const result = await source.repository.restoreArtwork(item.id);
+        if (!source.isCurrent()) return;
         if (!result.restored) {
             showToast(result.missingImageIds?.length
                 ? '原图已缺失，无法完整恢复；回收站快照仍保留'
@@ -250,6 +269,7 @@ async function undoDeleteAction(ctx: Context, item: ArtworkRecord): Promise<void
         showToast('已恢复到作品册');
     }
     catch (e) {
+        if (!source.isCurrent()) return;
         console.warn('restore artwork failed', e);
         if (e instanceof ArtworkMutationUnconfirmedError) {
             showToast('恢复结果尚未确认，正在重新读取；请核对作品册和回收站后再操作', 'warning');

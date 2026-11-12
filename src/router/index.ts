@@ -50,7 +50,7 @@ function scheduleScrollRestore(path: string, position: { left: number; top: numb
 
 /**
  * Live2D（PixiJS）编译着色器要用 new Function，需要 CSP 的 'unsafe-eval'。
- * 服务端只给 Live2D 页面文档放行（server/security.js），可是 SPA 只在首次
+ * 网关只给 Live2D 页面文档放行（runtime-rs/src/security.rs），而 SPA 只在首次
  * 请求时拿一次 CSP：从首页点进 Live2D 路由属于前端跳转，不发新文档请求，
  * 沿用的还是首页那份不含 unsafe-eval 的策略，于是 Live2D 必然初始化失败。
  * 这也解释了"直接打开 Live2D 页面正常、从站内点进去就挂"。

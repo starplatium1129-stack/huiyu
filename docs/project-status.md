@@ -6,9 +6,9 @@
 
 | 层次 | 当前状态 | 说明 |
 | --- | --- | --- |
-| 当前源码 | `package.json` 版本 2.1.1；当前工作区改动以 Git 为准 | 源码变更不等于已安装或已发布 |
-| 发行说明 | [2.1.1](releases/v2.1.1.md)、[2.1.0](releases/v2.1.0.md)、[2.0.0](releases/v2.0.0.md) | 公开发行状态以 GitHub Release 为准 |
-| 本机桌面安装 | 2026-10-24 以快速升级包更新至 `D:/AI-CG-Studio` | EXE/DLL 绑定及宿主网关启动通过；历史记录仅供参考 |
+| 源码版本 | [package.json](../package.json) | 工作区改动以 Git 为准 |
+| 发行说明 | [版本索引](INDEX.md#发行说明) | 公开发行以 [GitHub Releases](https://github.com/starplatium1129-stack/huiyu/releases) 为准 |
+| 本机安装记录 | 2026-10-24 以快速升级包更新至 `D:/AI-CG-Studio` | 当时确认 EXE/DLL 绑定及宿主网关启动 |
 | 资料迁移记录 | 2026-10-24 激活 SQLite 工作区（格式 v6） | 原 IndexedDB 留存备用，来源隔离不覆盖 |
 | 桌面实现 | Tauri 2 宿主、Rust 网关、原生 Live2D 线程渲染 | 参见 [桌面接入](architecture/DESKTOP-INTEGRATION-DESIGN.md) 与 [原生运行时](guides/desktop/live2d-native-runtime.md) |
 
@@ -17,7 +17,7 @@
 | 范围 | 已实现能力 | 边界与说明 |
 | --- | --- | --- |
 | **持久化与任务** | Web 保留 IndexedDB；桌面版由 Rust/SQLite 权威管理；任务生命周期独立于前端页面 | 历史旧库与跨机器迁移按 [Workspace 契约](architecture/WORKSPACE-MIGRATION-DESIGN.md) 执行 |
-| **创作引擎** | Anima 与 Krea 2 新生图、换装、蓝图与视频分镜；SD 新生成已退役，旧任务/作品查询保留 | 模型具体参数与环境见 [模型指南](guides/setup-and-models.md) |
+| **创作引擎** | Anima、Krea 2、Qwen 与 MOSS 生图，另有换装、蓝图与视频分镜。保留旧 SD 任务与作品查询 | [模型指南](guides/setup-and-models.md)与[原生绘图连接](guides/independent-inference.md#在另一台绘遇上使用原生绘图) |
 | **受管绘图与反推** | 控制室一键准备独立运行库与 PixAI 反推环境，逐项下载校验并支持断点续传 | 首次运行需检查硬件显存是否满足要求 |
 | **AMD 核显支持** | 实验性支持 Windows AMD Portable v0.39.0（分块注意力与低显存模式） | 已验证 Radeon 880M 基本可用性，画质与性能需实测 |
 | **独立 Anima 推理** | 内置 TeaCache 加速，复用现成资源，任务完成后自动释放空闲显存 | 支持 resident / offload 显存策略 |

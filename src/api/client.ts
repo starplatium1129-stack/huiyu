@@ -1,6 +1,6 @@
 import { startDiagnosticRequest } from '../utils/localDiagnostics.ts'
 
-export type ApiClientErrorKind =
+type ApiClientErrorKind =
   | 'http'
   | 'timeout'
   | 'aborted'
@@ -9,7 +9,7 @@ export type ApiClientErrorKind =
 
 export type ApiResponseObject = Record<string, unknown>
 
-export interface ApiClientErrorOptions {
+interface ApiClientErrorOptions {
   kind: ApiClientErrorKind
   status?: number
   code?: string
@@ -48,9 +48,9 @@ export type FetchImplementation = (
  * - `default`：读同 URL 缓存，并可搭车同 URL 进行中的 GET；
  * - `refresh`：跳过缓存并强制新传输（不搭车写前 inflight），成功后回填缓存；
  * - `bypass`：完全不参与内存缓存：不读、不搭车、不登记、不回填。 */
-export type ApiCachePolicy = 'default' | 'refresh' | 'bypass'
+type ApiCachePolicy = 'default' | 'refresh' | 'bypass'
 
-export interface ApiRequestOptions extends Omit<RequestInit, 'body' | 'signal'> {
+interface ApiRequestOptions extends Omit<RequestInit, 'body' | 'signal'> {
   body?: unknown
   signal?: AbortSignal
   timeoutMs?: number
@@ -103,30 +103,45 @@ function invalidResponse(
   })
 }
 
-function httpFailure(response: Response, body: ApiResponseObject): ApiClientError {
-  const detail = stringField(body, 'detail')
-  const primary = stringField(body, 'error') || `请求失败（HTTP ${response.status}）`
+function httpFailure(response: Response, body: ApiResponseObject | null = null): ApiClientError {
+  const fields = body ?? {}
+  const detail = stringField(fields, 'detail')
+  const fallback = response.ok ? '请求返回了失败状态' : `请求失败（HTTP ${response.status}）`
+  const primary = stringField(fields, 'error') || fallback
   return new ApiClientError(detail && detail !== primary ? `${primary}：${detail}` : primary, {
-    kind: 'http',
+    // An unstructured 4xx does not establish whether a write was admitted.
+    kind: body || response.status >= 500 ? 'http' : 'invalid-response',
     status: response.status,
-    code: stringField(body, 'code'),
+    code: stringField(fields, 'code'),
     detail,
-    retryAfterSeconds: retryAfter(body, response),
+    retryAfterSeconds: retryAfter(fields, response),
     responseBody: body,
   })
 }
 
-function explicitFailure(response: Response, body: ApiResponseObject): ApiClientError {
-  const detail = stringField(body, 'detail')
-  const primary = stringField(body, 'error') || '请求返回了失败状态'
-  return new ApiClientError(detail && detail !== primary ? `${primary}：${detail}` : primary, {
-    kind: 'http',
-    status: response.status,
-    code: stringField(body, 'code'),
-    detail,
-    retryAfterSeconds: retryAfter(body, response),
-    responseBody: body,
-  })
+async function readResponse(response: Response, signal: AbortSignal): Promise<ApiResponseObject> {
+  const invalidBody = (detail: string) => response.ok
+    ? invalidResponse(response.status, detail)
+    : httpFailure(response)
+  let text: string
+  try {
+    text = await response.text()
+  } catch {
+    signal.throwIfAborted()
+    throw invalidBody('响应正文未能完整读取')
+  }
+  signal.throwIfAborted()
+  if (!text.trim()) throw invalidBody('响应正文为空')
+
+  let parsed: unknown
+  try {
+    parsed = JSON.parse(text)
+  } catch {
+    throw invalidBody('响应正文不是完整、有效的 JSON')
+  }
+  if (!isResponseObject(parsed)) throw invalidBody('JSON 顶层必须是对象')
+  if (!response.ok || parsed.ok === false) throw httpFailure(response, parsed)
+  return parsed
 }
 
 function errorDetail(error: unknown): string | undefined {
@@ -397,31 +412,8 @@ function createApiClient(fetchImplementation: FetchImplementation = defaultFetch
             signal: controller.signal,
           })
 
-          let text: string
-          try {
-            text = await response.text()
-          } catch (error) {
-            if (abortSource !== null) throw error
-            throw invalidResponse(response.status, '响应正文未能完整读取')
-          }
-          if (!text.trim()) throw invalidResponse(response.status, '响应正文为空')
-
-          let parsed: unknown
-          try {
-            parsed = JSON.parse(text)
-          } catch {
-            throw invalidResponse(response.status, '响应正文不是完整、有效的 JSON')
-          }
-          if (!isResponseObject(parsed)) {
-            throw invalidResponse(response.status, 'JSON 顶层必须是对象')
-          }
-
-          if (!response.ok) throw httpFailure(response, parsed)
-          if (parsed.ok === false) {
-            throw explicitFailure(response, parsed)
-          }
-          // 共享层到此为止：调用者的 validate 由各消费者在副本上分别执行（R2）
-          return { value: parsed, status: response.status }
+          const value = await readResponse(response, controller.signal)
+          return { value, status: response.status }
         } finally {
           entry.settled = true
           // A cancelled request may finish after its replacement has started.

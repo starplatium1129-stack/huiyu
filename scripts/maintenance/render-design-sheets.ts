@@ -59,15 +59,11 @@ const REF_ROOT = process.env.AI_WORKSPACE_ROOT
   : path.resolve(ROOT, '..', 'AI', 'CharacterReferences');
 const JOB_ROOT = path.join(process.env.AICS_RUNTIME_ROOT || path.join(ROOT, 'runtime'), 'reference-design-jobs');
 
-// 负面词：基础词照抄项目前端权威来源 promptBuilderStore.ts NEGATIVE_DEFAULT，
-// 双人参考页保留防双子镜像追加词（identical twins /
-// merged bodies / fused limbs / duplicate person / cloned face / swapped hair），
-// 防掀裙追加自然语言负面（2026-08-31：back 视角曾翻车成掀裙）。
+// 参考页专用负面词，包含双人镜像、肢体融合和背面视角掀裙的排除项。
 const NEGATIVE =
   'worst quality, low quality, lowres, bad anatomy, bad hands, extra fingers, fewer fingers, missing fingers, extra limbs, missing limbs, deformed, mutilated, disfigured, bad proportions, duplicate, cloned face, ugly, blurry, jpeg artifacts, watermark, text, signature, logo, monochrome, grayscale, frame, border, username, artist name, bad_prompt, bad_prompt_version2, bad-hands-5, ng_deepnegative_v1_75t, scenery, cityscape, complex_background, identical twins, merged bodies, fused limbs, duplicate person, swapped hair, extra person, skirt lift, lifted skirt, skirt blown up';
 
-// 视角模板（2026-08-31 修订）：side/back 曾翻车为双子镜像 / 掀裙，
-// 靠负面词压制（见 NEGATIVE，照抄项目现成词表），视角词保持标准。
+// 视角模板使用标准视角词，排除项集中在 NEGATIVE。
 const VIEWS: Partial<Record<string, string>> = {
   front: 'front_view, facing_viewer, looking_at_viewer, solo, single character',
   side: 'side_view, profile, looking_ahead, solo, single character',

@@ -3,7 +3,7 @@ import { assertDirectImageRuntime, imageJob, jobPath, type DirectImageFamily } f
 import { acceptDirectGenerationRequest, cancelDirectGenerationRequest, type DirectRequestOptions } from './directGenerationRequests'
 
 type Family = DirectImageFamily
-export const imageRequestPath = (family: Family, key: string) => jobPath(family).replace(/\/jobs$/, '/requests/') + encodeURIComponent(key)
+const imageRequestPath = (family: Family, key: string) => jobPath(family).replace(/\/jobs$/, '/requests/') + encodeURIComponent(key)
 function imageRequest(family: Family, key: string, input: Record<string, unknown> = {}) {
   return { key, submitPath: jobPath(family), receiptPath: imageRequestPath(family, key), body: input, field: 'job' as const,
     decode: (value: Record<string, unknown>) => {
