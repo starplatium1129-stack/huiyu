@@ -3,7 +3,6 @@ from __future__ import annotations
 
 import gc
 import copy
-import sys
 import time
 from concurrent.futures import ThreadPoolExecutor
 
@@ -43,6 +42,7 @@ class PipelineCache:
         self.file_identity = None
         self.fusion = None
         self.memory = None
+        self.device = None
         self.reused_components = ()
 
     def prepare(self, check):
@@ -133,9 +133,8 @@ class PipelineCache:
         if not had_resources:
             return
         gc.collect()
-        cuda = getattr(sys.modules.get("torch"), "cuda", None)
-        if cuda is not None and cuda.is_available():
-            cuda.empty_cache()
+        if self.device is not None:
+            self.device.api.empty_cache()
 
     def clear_upscaler(self):
         if self.upscale_cache is not None:
@@ -147,8 +146,9 @@ class PipelineCache:
         if self.memory is not None:
             self.memory.offload_all()
 
-    def acquire(self, identity, root, cfg, blocks, loras, load, load_loras, try_hotswap=None, *, memory_tools):
+    def acquire(self, identity, root, cfg, blocks, loras, load, load_loras, try_hotswap=None, *, memory_tools, device):
         from diffusers import AnimaModularPipeline, FlowMatchEulerDiscreteScheduler, ClassifierFreeGuidance
+        self.device = device
         base_key = {key: value for key, value in identity.items() if key != "loras"}
         previous_base = ({key: value for key, value in self.identity.items() if key != "loras"}
                          if self.identity is not None else None)
@@ -218,9 +218,9 @@ class PipelineCache:
                     self.fusion.bind_source(root, model_sha256,
                         lambda: lease.base_is_valid(root, model_sha256))
                 self.fusion.fuse(self.components,
-                    stage_device="cuda:0" if memory_tools.POLICY == "offload" else None)
+                    stage_device=device.device if device.memory_policy == "offload" else None)
             if self.memory is None:
-                self.memory = memory_tools.Residency(self.components)
+                self.memory = memory_tools.Residency(self.components, device)
             self.memory.bind(pipeline)
             self.identity = copy.deepcopy(identity)
         except Exception:

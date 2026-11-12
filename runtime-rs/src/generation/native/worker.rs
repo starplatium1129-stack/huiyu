@@ -83,11 +83,7 @@ impl Worker {
                         stage_text(&event)?;
                     }
                     Some("progress") if !produced && !cancelled => {
-                        let step = event["step"].as_u64().ok_or_else(protocol_error)?;
-                        event["total"]
-                            .as_u64()
-                            .filter(|total| *total > 0 && step <= *total)
-                            .ok_or_else(protocol_error)?;
+                        super::output::progress(&event)?;
                     }
                     Some("result") if !produced && !cancelled => {
                         if event["outputPath"].as_str() != output.to_str() {

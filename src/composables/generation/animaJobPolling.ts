@@ -21,7 +21,7 @@ export async function runDirectAnima(options: DirectOwner & { request: AnimaRequ
   if (!current()) return
   patch({ phase: 'running', backendStatus: accepted.status, statusText: '生成中…', progressText: accepted.progressText || (accepted.status === 'queued' ? '正在排队…' : '正在绘制…'), job: metadataFromJob(accepted, request, family) })
   const job = await waitForDirectImageJob(family, accepted.id, signal, {
-    client, timeoutMs: 10 * 60 * 1000,
+    client, timeoutMs: 10 * 60 * 1000, intervalMs: family === 'anima' && accepted.provider === 'native' ? 350 : undefined,
     reconnecting: () => { if (current()) patch({ progressText: '连接暂时中断，正在重新读取任务进度…' }) },
     update: job => {
       if (!current()) return

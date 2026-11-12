@@ -49,7 +49,8 @@
   .pb .stage-placeholder.is-generating::after {
     opacity:0;
   }
-  .pb .stage-generation-feedback { display:flex; align-items:center; justify-content:center; gap:var(--s-3); min-width:0; width:min(240px,calc(100% - 32px)); position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:0; border:0; background:transparent; box-shadow:none; pointer-events:none; }
+  .pb .stage-generation-feedback { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--s-2) var(--s-3); min-width:0; width:min(240px,calc(100% - 32px)); position:absolute; left:50%; bottom:24px; transform:translateX(-50%); z-index:calc(var(--z-raised) + 2); padding:0; border:0; background:transparent; box-shadow:none; pointer-events:none; }
+  .pb .stage-progress-caption { flex-basis:100%; color:var(--text-secondary); font-size:var(--fs-label-xs); font-variant-numeric:tabular-nums; text-align:center; overflow-wrap:anywhere; }
   /* Reuse native-controls.css for the progress track and theme colors. */
   .pb .stage-progress { flex:1; width:0; min-width:0; height:6px; }
   .pb .stage-progress-percent { min-width:4ch; color:var(--text-secondary); font:500 var(--fs-label-xs) var(--font-mono); font-variant-numeric:tabular-nums; text-align:right; }

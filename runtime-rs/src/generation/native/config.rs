@@ -42,7 +42,7 @@ fn default_remote_port() -> u16 {
     3211
 }
 fn default_memory_policy() -> String {
-    "resident".into()
+    "auto".into()
 }
 fn default_adapter_memory_policy() -> String {
     "offload".into()
@@ -135,7 +135,7 @@ impl Settings {
         ) {
             return Err(ApiError::invalid("独立推理加速模式无效"));
         }
-        if !matches!(self.memory_policy.as_str(), "resident" | "offload")
+        if !matches!(self.memory_policy.as_str(), "auto" | "resident" | "offload")
             || !matches!(self.adapter_memory_policy.as_str(), "resident" | "offload")
         {
             return Err(ApiError::invalid("独立推理显存策略无效"));

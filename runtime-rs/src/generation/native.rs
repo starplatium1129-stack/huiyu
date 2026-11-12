@@ -390,14 +390,12 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                         }
                     }
                     Some("progress") if !produced => {
-                        let step = event["step"].as_u64().ok_or_else(protocol_error)?;
-                        let total = event["total"]
-                            .as_u64()
-                            .filter(|n| *n > 0 && step <= *n)
-                            .ok_or_else(protocol_error)?;
+                        let (step, total, sampling) = output::progress(&event)?;
                         let mut state = job.state.lock().await;
                         state.progress = Some(step as f64 / total as f64);
-                        state.progress_text = if plan.input["mossUpscaleScale"].is_number() {
+                        state.progress_text = if let Some(sampling) = sampling {
+                            sampling
+                        } else if plan.input["mossUpscaleScale"].is_number() {
                             format!("Remacri 放大 {step}/{total}")
                         } else { format!("独立推理 {step}/{total}") };
                     }

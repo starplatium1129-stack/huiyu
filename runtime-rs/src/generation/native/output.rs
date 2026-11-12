@@ -1,6 +1,26 @@
 use super::*;
 use std::path::Path;
 
+pub(super) fn progress(event: &Value) -> Result<(u64, u64, Option<String>)> {
+    let step = event["step"].as_u64().ok_or_else(protocol_error)?;
+    let total = event["total"].as_u64()
+        .filter(|total| *total > 0 && step <= *total)
+        .ok_or_else(protocol_error)?;
+    let Some(sampling) = event.get("sampling") else {
+        return Ok((step, total, None));
+    };
+    let passes = sampling["passes"].as_u64().filter(|n| (1..=2).contains(n)).ok_or_else(protocol_error)?;
+    let pass = sampling["pass"].as_u64().filter(|n| (1..=passes).contains(n)).ok_or_else(protocol_error)?;
+    let count = sampling["total"].as_u64().filter(|n| *n > 0 && *n <= total).ok_or_else(protocol_error)?;
+    let done = sampling["step"].as_u64().filter(|n| *n <= count && *n <= step).ok_or_else(protocol_error)?;
+    let text = if passes == 1 {
+        format!("采样 {done}/{count} 步")
+    } else {
+        format!("第 {pass}/{passes} 轮 · {done}/{count} 步")
+    };
+    Ok((step, total, Some(text)))
+}
+
 pub(super) fn anima_request(
     job: &Job,
     plan: &Plan,

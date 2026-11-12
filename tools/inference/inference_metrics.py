@@ -15,27 +15,27 @@ def _counts(values, names):
 
 
 class RuntimeMetrics:
-    def __init__(self, torch, started):
-        self.torch, self.started = torch, started
+    def __init__(self, device, started):
+        self.device, self.started = device, started
         self.timings, self.mask_cache = {}, None
         self.mask_execution_revision = None
         self.loading = None
         self.memory_scheduling = None
         self.lora_loading = self.fusion_restore = None
         self.tracking = False
-        self.memory = dict(status="unverified", reason="not-started", deviceIndex=0,
+        self.memory = dict(status="unverified", reason="not-started", deviceIndex=device.device.index,
             scope="image-preparation-through-pipeline", peakAllocatedBytes=None, peakReservedBytes=None)
 
     def begin_memory(self, explicit_report=False):
         try:
             # Existing TeaCache/measure/collect reports already attempted reset.
             # Preserve that one attempt; never initialize CUDA or retry on failure.
-            if not explicit_report and not self.torch.cuda.is_initialized():
-                self.memory["reason"] = "cuda-uninitialized-at-window-start"
-            elif self.torch.cuda.get_allocator_backend() != "native":
+            if not explicit_report and not self.device.api.is_initialized():
+                self.memory["reason"] = "device-uninitialized-at-window-start"
+            elif self.device.device.type == "cuda" and self.device.api.get_allocator_backend() != "native":
                 self.memory["reason"] = "unsupported-allocator"
             else:
-                self.torch.cuda.reset_peak_memory_stats(0)
+                self.device.api.reset_peak_memory_stats(self.device.device)
                 self.tracking = True
         except Exception:
             self.memory["reason"] = "allocator-observation-error"
@@ -45,7 +45,7 @@ class RuntimeMetrics:
             return
         self.tracking = False
         try:
-            values = self.torch.cuda.memory_stats(0)
+            values = self.device.api.memory_stats(self.device.device)
             allocated, reserved = (values[key] for key in ("allocated_bytes.all.peak", "reserved_bytes.all.peak"))
             if any(type(value) is not int or value < 0 for value in (allocated, reserved)):
                 raise ValueError("Invalid allocator counters")
@@ -73,7 +73,7 @@ class RuntimeMetrics:
         self.lora_loading = getattr(pipeline, "_huiyu_lora_loading", None)
         self.fusion_restore = getattr(pipeline, "_huiyu_fusion_restore", None)
         if report is not None:
-            self.torch.cuda.synchronize()  # Existing TeaCache report boundary, never added for product observations.
+            self.device.api.synchronize(self.device.device)
         self.timings["modelAcquireWallSeconds"] = time.perf_counter() - started
         self.timings["residentFingerprintSeconds"] = fingerprint
         if report is not None:
@@ -82,7 +82,7 @@ class RuntimeMetrics:
 
     def pipeline_finished(self, started, report, tea, cache_text):
         if report is not None:
-            self.torch.cuda.synchronize()  # Preserve the pre-existing report, including its timing scope.
+            self.device.api.synchronize(self.device.device)
         elapsed = time.perf_counter() - started
         self.timings["pipelineWallSeconds"] = elapsed
         self.finish_memory()
@@ -113,6 +113,7 @@ class RuntimeMetrics:
             cached.update(algorithm=report.get("algorithm", "calibrated-local"), threshold=tea.threshold)
         return dict(schemaVersion=1, timingMode="cpu-wall-no-extra-sync", timingsAreAdditive=False,
             existingReportSynchronization=report is not None, timings=self.timings, baseReused=reused, completedSteps=completed_steps,
+            accelerator=self.device.diagnostic(),
             textCache=text, maskCache=mask, teaCache=cached, memory=self.memory,
             memoryPolicy=memory_policy, componentReuse=list(component_reuse), samplingRevision="anima-workflow-effects-v3",
             **({"maskExecutionRevision": self.mask_execution_revision} if self.mask_execution_revision is not None else {}),

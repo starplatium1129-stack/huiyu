@@ -152,7 +152,7 @@ pub(super) fn runtime_support(
             .iter()
             .any(|name| name.to_ascii_lowercase().contains("nvidia"))
     {
-        reasons.push(format!("已检测到 {}。此原生运行库支持 NVIDIA CUDA，尚未提供 AMD、Intel 或 CPU 推理；当前显卡不能运行此包",other_names.join("、")));
+        reasons.push(format!("已检测到 {}。此一键安装包面向 NVIDIA CUDA。AMD ROCm 和 Intel XPU 可在高级设置中选择已配置的 Anima Python 环境",other_names.join("、")));
     } else if devices.is_empty() {
         reasons.push("未能通过 nvidia-smi 读取 NVIDIA 设备；请检查驱动和 nvidia-smi 是否可用，再刷新。此状态不代表显卡性能不足".into());
     }

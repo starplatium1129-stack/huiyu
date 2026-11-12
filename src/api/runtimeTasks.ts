@@ -209,7 +209,7 @@ export function taskMessage(task: TaskSummary): string {
   return ({ queued: '任务已接收。', submitting: '正在提交生成。', running: '正在生成，可切换页面。', succeeded: '正在收取结果。', cancelled: '任务已取消。' } as Record<string, string>)[task.status] || ''
 }
 export async function waitForRuntimeTask(id: string, signal: AbortSignal, update: (task: TaskSummary) => void,
-  options: { timeoutMs?: number; onDetail?: (task: TaskRecord) => void } = {}): Promise<TaskRecord> {
+  options: { timeoutMs?: number; runningIntervalMs?: number; onDetail?: (task: TaskRecord) => void } = {}): Promise<TaskRecord> {
   const deadline = options.timeoutMs === undefined ? Infinity : Date.now() + options.timeoutMs
   for (;;) {
     signal.throwIfAborted()
@@ -235,7 +235,8 @@ export async function waitForRuntimeTask(id: string, signal: AbortSignal, update
     if (Date.now() >= deadline) throw new Error('本次查看已超时，任务仍保留在任务中心，可重新连接')
     await new Promise<void>((resolve, reject) => {
       const stop = () => { clearTimeout(timer); signal.removeEventListener('abort', stop); reject(new DOMException('停止查看', 'AbortError')) }
-      const timer = setTimeout(() => { signal.removeEventListener('abort', stop); resolve() }, 1000)
+      const interval = task.status === 'running' && task.recoveryState === 'normal' ? options.runningIntervalMs ?? 1000 : 1000
+      const timer = setTimeout(() => { signal.removeEventListener('abort', stop); resolve() }, interval)
       signal.addEventListener('abort', stop, { once: true })
     })
   }

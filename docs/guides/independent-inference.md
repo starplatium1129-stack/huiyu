@@ -22,7 +22,30 @@
 
 密钥保存在两端本机设置中。端口使用 HTTP，传输依赖 Tailscale 私网加密，不应直接暴露到公网；撤销转发使用 `tailscale serve --tcp=3211 off`。状态中的模型就绪只表示远端文件可用，CUDA 与成图仍需在实际设备上确认。
 
-**硬件要求**：
+### Anima 显卡与运行环境
+
+| 设备 | PyTorch 后端 | 配置入口 |
+| --- | --- | --- |
+| NVIDIA GeForce / RTX / 工作站显卡 | CUDA | 控制室一键准备，或使用兼容的独立 Python |
+| AMD Radeon 独显与 Ryzen Radeon 核显 | ROCm / HIP | 安装对应设备和驱动支持的 ROCm PyTorch，在高级设置选择 Anima Python |
+| Intel Arc 等受 PyTorch 支持的 Intel GPU | XPU | 安装 Intel XPU PyTorch，在高级设置选择 Anima Python |
+
+AMD 和 Intel 使用高级设置中的「原生计算」加速与「自动」显存策略。保存后重启绘遇，在同一面板执行「检查 Anima 依赖与设备」，确认显示 `AMD ROCm` 或 `Intel XPU`。现有 Anima 完整模型目录可直接使用。显卡、驱动和 Python 版本以 [AMD 兼容矩阵](https://rocm.docs.amd.com/projects/radeon-ryzen/en/latest/docs/compatibility/compatibilityryz/windows/windows_compatibility.html) 与 [PyTorch Intel GPU 指南](https://docs.pytorch.org/docs/2.9/notes/get_start_xpu.html) 为准。
+
+Anima 接受 `torch 2.8.0 / torchvision 0.23.0` 和 `torch 2.9.1 / torchvision 0.24.1` 两组。先在独立环境安装相应 GPU 构建，再从仓库根目录补齐其他固定依赖。下面的 PowerShell 命令保留该环境的 GPU 版 Torch：
+
+```powershell
+$animaPython = 'D:\HuiyuAI\inference\rocm\Scripts\python.exe'
+$animaPackages = Get-Content tools/inference/requirements.txt | Where-Object { $_ -match '^[a-zA-Z]' -and $_ -notmatch '^torch(vision)?==' }
+& $animaPython -m pip install @animaPackages
+& $animaPython -I -B tools/inference/worker.py --diagnose
+```
+
+多显卡时，启动网关前可设置 `HUIYU_ANIMA_DEVICE=cuda:1` 或 `xpu:1`。ROCm 沿用 PyTorch 的 `cuda:N` 编号。默认使用首个 CUDA/ROCm 设备，其次是首个 XPU 设备。
+
+ROCm 的 Anima 注意力先确认 Flash SDPA 可实际执行，其他形状用 PyTorch 分块计算。ROCm 优先使用经设备运算验证的 BF16，其余设备用 FP32 保留动态范围。自动显存策略在共享显存、Intel XPU、ROCm FP32 和可用显存低于 12 GiB 的 AMD 设备上优先分阶段加载。采样步数在画布与生成栏同步显示，高清修复的两轮分别计数。 [ComfyUI 显卡与注意力选择](https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/model_management.py)
+
+**NVIDIA 受管运行库要求**
 - Windows 10 22H2 / 11 x64
 - NVIDIA Ampere 至 Blackwell 架构独显（支持 BF16，建议 12 GB 及以上显存）
 - 显卡驱动 $\ge$ 572.61，系统内存建议 32 GiB

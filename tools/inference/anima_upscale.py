@@ -135,8 +135,8 @@ def load_remacri(path, device="cpu", *, upload, report, cache=None, identity=Non
     if not path.is_absolute() or path.name not in (WEIGHT_NAME, ULTRASHARP_NAME) or not path.is_file():
         raise ValueError("RRDB upscaling requires the fixed local Remacri or UltraSharp checkpoint")
     device = torch.device(device)
-    if device.type not in ("cpu", "cuda"):
-        raise ValueError("Remacri supports only CPU or CUDA")
+    if device.type not in ("cpu", "cuda", "xpu"):
+        raise ValueError("Remacri requires CPU, CUDA/ROCm or XPU")
     with torch.device("meta"):
         model = _network()
     hit = cache is not None and identity is not None and cache.identity == identity
@@ -163,7 +163,7 @@ def load_remacri(path, device="cpu", *, upload, report, cache=None, identity=Non
         check()
     started = time.perf_counter()
     observation = {}
-    if device.type != "cuda" or not upload([model], target_device=device, observation=observation):
+    if device.type != "cuda" or torch.version.hip or not upload([model], target_device=device, observation=observation):
         model.to(device=device, dtype=torch.float32)
         observation["strategy"] = "module-to"
     report.update(uploadWallSeconds=time.perf_counter() - started, upload=observation)
@@ -244,12 +244,12 @@ def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=
     if (not isinstance(images, torch.Tensor) or images.ndim != 4 or images.shape[1] != 3
             or any(size <= 0 for size in images.shape)
             or images.dtype not in (torch.float16, torch.bfloat16, torch.float32)
-            or images.device.type not in ("cpu", "cuda")):
+            or images.device.type not in ("cpu", "cuda", "xpu")):
         raise ValueError("Remacri requires a nonempty CPU/CUDA floating RGB [N,3,H,W] tensor")
     if tile_size not in (128, 256, 512) or overlap != 32 or tiling is None:
         raise ValueError("Remacri requires 512/256/128 tiles, overlap 32 and the bundled tiling helper")
     parameter = next(model.parameters())
-    if parameter.dtype != torch.float32 or parameter.device.type not in ("cpu", "cuda"):
+    if parameter.dtype != torch.float32 or parameter.device.type not in ("cpu", "cuda", "xpu"):
         raise ValueError("Remacri model must be FP32 on CPU/CUDA")
     report = {} if report is None else report
     def predict(patch):
@@ -262,10 +262,10 @@ def upscale_4x(model, images, *, tile_size=512, overlap=32, tiling=None, report=
                 output = tiling.stitch(images, predict,
                     tile=tile_size, overlap=overlap, scale=4, channels=3, report=report, progress=progress)
                 return output.clamp_(0, 1)
-            except torch.cuda.OutOfMemoryError:
-                if parameter.device.type != "cuda" or tile_size <= 128:
+            except torch.OutOfMemoryError:
+                if parameter.device.type not in ("cuda", "xpu") or tile_size <= 128:
                     raise
             # Leave the exception scope before releasing the allocator: the
             # failed stitch's traceback must not retain tile activations.
-            torch.cuda.empty_cache()
+            getattr(torch, parameter.device.type).empty_cache()
             tile_size //= 2

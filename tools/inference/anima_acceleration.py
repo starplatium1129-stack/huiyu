@@ -1,6 +1,7 @@
 """Explicit, pinned Cosmos execution modes; LoRA fusion is separately opt-in."""
 import importlib.metadata
 import importlib.util
+from functools import lru_cache
 import os
 from pathlib import Path
 
@@ -23,17 +24,20 @@ def validate():
     return MODE
 
 
-def configure(transformer, execution, tools):
+def configure(transformer, execution, tools, device):
     mode = validate()
+    if mode != "native" and device.backend != "cuda":
+        raise ValueError("Select native acceleration for AMD ROCm or Intel XPU")
     from diffusers.models.transformers.transformer_cosmos import CosmosAttnProcessor2_0
     # Sage modes already require this exact Triton wheel and the SM89 runtime.
     # Native mode keeps its dependency-free PyTorch path.
     fused = tools("worker_lifecycle").load_sibling("anima_fused") if mode != "native" else None
-    execution.kernel_backend = "triton-cosmos-v1" if fused is not None else "pytorch"
+    attention = _rocm_attention if device.backend == "rocm" else None
+    execution.kernel_backend = "triton-cosmos-v1" if fused is not None else "rocm-bounded-sdpa" if attention else "pytorch"
     for block in transformer.transformer_blocks:
         for attn in (block.attn1, block.attn2):
             if type(attn.processor) is CosmosAttnProcessor2_0:
-                attn.set_processor(_CosmosProcessor(fused))
+                attn.set_processor(_CosmosProcessor(fused, attention))
         if fused is not None:
             for norm in (block.norm1, block.norm2, block.norm3):
                 fused.bind_adaln(norm)
@@ -43,7 +47,7 @@ def configure(transformer, execution, tools):
         return
     import torch
     from diffusers.models.attention_dispatch import attention_backend
-    if torch.cuda.get_device_capability(0) != (8, 9):
+    if torch.cuda.get_device_capability(device.device) != (8, 9):
         raise ValueError("This Sage candidate requires the validated Ada SM89 device family")
     original = transformer.forward
 
@@ -68,6 +72,53 @@ def configure(transformer, execution, tools):
             block.forward = execution.compile_block(block.forward)
 
 
+@lru_cache(maxsize=8)
+def _rocm_flash_available(device, dtype, head_dim):
+    import torch
+    from torch.nn.attention import SDPBackend, sdpa_kernel
+
+    if dtype not in (torch.float16, torch.bfloat16) or not torch.backends.cuda.is_flash_attention_available():
+        return False
+    # Check the wheel's actual kernel before allowing it on the full canvas.
+    try:
+        sample = torch.ones((1, 1, 16, head_dim), device=device, dtype=dtype)
+        args = torch.backends.cuda.SDPAParams(sample, sample, sample, None, 0., False, False)
+        if not torch.backends.cuda.can_use_flash_attention(args):
+            return False
+        with sdpa_kernel(SDPBackend.FLASH_ATTENTION):
+            result = torch.nn.functional.scaled_dot_product_attention(sample, sample, sample)
+        return torch.isfinite(result).all().item()
+    except (RuntimeError, NotImplementedError):
+        return False
+
+
+def _rocm_attention(query, key, value, mask):
+    import torch
+    from torch.nn.attention import SDPBackend, sdpa_kernel
+
+    attention = torch.nn.functional.scaled_dot_product_attention
+    if mask is None and _rocm_flash_available(query.device, query.dtype, query.shape[-1]):
+        args = torch.backends.cuda.SDPAParams(query, key, value, None, 0., False, False)
+        if torch.backends.cuda.can_use_flash_attention(args):
+            with sdpa_kernel(SDPBackend.FLASH_ATTENTION):
+                return attention(query, key, value)
+    # Bound the FP32 score matrix on wheels without a compatible fused kernel.
+    # Each query still attends to the complete key sequence.
+    rows = max(1, (32 * 1024 ** 2) // (4 * query.shape[0] * query.shape[1] * key.shape[-2]))
+    with sdpa_kernel(SDPBackend.MATH):
+        if rows >= query.shape[-2]:
+            return attention(query, key, value, attn_mask=mask)
+        result = query.new_empty((*query.shape[:-1], value.shape[-1]))
+        key, value = key.float(), value.float()
+        for start in range(0, query.shape[-2], rows):
+            end = start + rows
+            tile_mask = mask[..., start:end, :] if mask is not None and mask.ndim > 1 and mask.shape[-2] > 1 else mask
+            if tile_mask is not None and tile_mask.dtype != torch.bool:
+                tile_mask = tile_mask.float()
+            result[..., start:end, :] = attention(query[..., start:end, :].float(), key, value, attn_mask=tile_mask)
+        return result
+
+
 class _CosmosProcessor:
     """Pinned Cosmos math without copying K/V when their repeat factor is one.
 
@@ -76,8 +127,8 @@ class _CosmosProcessor:
     License: ANIMA_CONVERSION_LICENSE.txt (Apache-2.0); distributed AS IS.
     https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/models/transformers/transformer_cosmos.py
     """
-    def __init__(self, fused):
-        self.fused = fused
+    def __init__(self, fused, attention=None):
+        self.fused, self.attention = fused, attention
 
     def __call__(self, attn, hidden_states, encoder_hidden_states=None,
                  attention_mask=None, image_rotary_emb=None):
@@ -101,7 +152,10 @@ class _CosmosProcessor:
             key = key.repeat_interleave(key_repeats, dim=3)
         if value_repeats != 1:
             value = value.repeat_interleave(value_repeats, dim=3)
-        result = dispatch_attention_fn(query.transpose(1, 2), key.transpose(1, 2), value.transpose(1, 2),
-                                       attn_mask=attention_mask, dropout_p=0.0, is_causal=False)
+        if self.attention is not None:
+            result = self.attention(query, key, value, attention_mask).transpose(1, 2)
+        else:
+            result = dispatch_attention_fn(query.transpose(1, 2), key.transpose(1, 2), value.transpose(1, 2),
+                                           attn_mask=attention_mask, dropout_p=0.0, is_causal=False)
         result = result.flatten(2, 3).type_as(query)
         return attn.to_out[1](attn.to_out[0](result))

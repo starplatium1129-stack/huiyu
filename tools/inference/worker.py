@@ -270,9 +270,9 @@ def try_hotswap_loras(pipeline, adapters):
         raise WorkerError("UNSUPPORTED_LORA", str(exc)) from exc
 
 
-def load_pipeline(root, cfg, blocks=None, reusable=None, stage=None):
+def load_pipeline(root, cfg, blocks=None, reusable=None, stage=None, *, device):
     return load_mask_tools("anima_loader").load(validate_model(str(root)), cfg,
-        blocks, reusable, load_mask_tools, WorkerError, stage=stage)
+        blocks, reusable, load_mask_tools, device, stage=stage)
 
 
 def generate(job, stream, *, collect_teacache=False, teacache_profile=None, measure_teacache=False, resident=None, cache_text=True, cache_mask=True, collect_cache_strategy="phase-envelope", control=None, prepared=None):
@@ -293,16 +293,14 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         stage("fingerprint")
         identity, resident_fingerprint, dependency_seconds = prepared if prepared is not None else resident.prepare_and_fingerprint(
             lambda: dependencies(full=False), root, job.get("loras", []), load_mask_tools)
-    import torch
-    if not torch.cuda.is_available():
-        raise WorkerError("DEVICE_UNAVAILABLE", "A CUDA-capable PyTorch installation and NVIDIA GPU are required")
-    # Device setup is required by inference; initialize before the allocator
-    # observation window so the first job has real peaks instead of an error.
-    torch.cuda.get_device_properties(0)
-    metrics = load_mask_tools("inference_metrics").RuntimeMetrics(torch, job_started)
+    try:
+        device = load_mask_tools("anima_device").select()
+    except (ValueError, RuntimeError) as exc:
+        raise WorkerError("DEVICE_UNAVAILABLE", str(exc)) from exc
+    metrics = load_mask_tools("inference_metrics").RuntimeMetrics(device, job_started)
     metrics.timings["dependencySetupWallSeconds"] = dependency_seconds
     tea, tea_report = load_mask_tools("anima_cache").select(
-        job, data, root, identity, load_mask_tools, WorkerError,
+        job, data, root, identity, load_mask_tools, WorkerError, device=device,
         collect=collect_teacache, profile=teacache_profile, measure=measure_teacache,
         strategy=collect_cache_strategy)
     composition = load_mask_tools("anima_composition").Composition(job, data, load_mask_tools, control.check if control is not None else None)
@@ -351,21 +349,21 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     started = time.perf_counter()
     post_load_fingerprint, reused = 0, False
     from functools import partial
-    loader = partial(load_pipeline, stage=stage)
+    loader = partial(load_pipeline, stage=stage, device=device)
     if resident is None:
         pipeline = loader(root, data["cfg"], blocks=blocks)
         stage("adapters")
         load_loras(pipeline, job.get("loras", []))
         if load_mask_tools("anima_acceleration").MODE == "compiled-fused-sage":
             pipeline.transformer._huiyu_lora_fusion.fuse(pipeline.components,
-                stage_device="cuda:0" if load_mask_tools("anima_memory").POLICY == "offload" else None)
-        memory = load_mask_tools("anima_memory").Residency(pipeline.components)
+                stage_device=device.device if device.memory_policy == "offload" else None)
+        memory = load_mask_tools("anima_memory").Residency(pipeline.components, device)
         memory.bind(pipeline)
     else:
         key = {"root": str(root), **identity}
         stage("adapters")
         pipeline, reused = resident.acquire(key, root, data["cfg"], blocks, job.get("loras", []), loader, load_loras, try_hotswap_loras,
-            memory_tools=load_mask_tools("anima_memory"))
+            memory_tools=load_mask_tools("anima_memory"), device=device)
         if resident.weights_loaded:
             protected_load = resident.file_identity.cached
             verified_at = time.perf_counter()
@@ -423,7 +421,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
                 before_decode=before_decode, check=control.check if control is not None else None,
                 vae_tools=load_mask_tools("anima_vae"), tiling=load_mask_tools("anima_tiling"),
                 observe_schedule=(lambda phase, scheduler, count: load_mask_tools("resident_benchmark").capture_schedule(scheduler, count)) if capture and data.get("hiresFix") else None,
-                progress=control.progress if control is not None else lambda step, total: emit(stream, job["id"], "progress", step=step, total=total))
+                progress=control.progress if control is not None else lambda step, total, **extra: emit(
+                    stream, job["id"], "progress", step=step, total=total, **extra))
     finally:
         if tea is not None:
             tea.clear()
@@ -466,11 +465,13 @@ def main(argv=None):
         with contextlib.redirect_stdout(sys.stderr):
             if args.diagnose:
                 versions = dependencies()
-                import torch
-                available = torch.cuda.is_available()
+                try:
+                    device = load_mask_tools("anima_device").select()
+                except (ValueError, RuntimeError) as exc:
+                    raise WorkerError("DEVICE_UNAVAILABLE", str(exc)) from exc
                 emit(stream, None, "diagnostic", valid=True, dependencies=versions,
-                     cudaAvailable=available, deviceName=torch.cuda.get_device_name(0) if available else None,
-                     scope="imports-and-device-only; no weights loaded or generation tested")
+                     cudaAvailable=device.device.type == "cuda", memoryPolicy=device.memory_policy,
+                     scope="imports-and-device-only; no weights loaded or generation tested", **device.diagnostic())
             elif args.validate:
                 root = validate_model(args.validate)
                 versions = dependencies()

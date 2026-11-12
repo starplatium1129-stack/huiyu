@@ -6,6 +6,11 @@ not leave an unvisited prefetched group on CUDA. Placement never changes dtype.
 import copy
 
 
+def memory_info(device):
+    import torch
+    return getattr(torch, device.type).mem_get_info(device)
+
+
 def tensor_bytes(module):
     tensors = {id(tensor): tensor for tensor in (*module.parameters(), *module.buffers())}
     return sum(tensor.numel() * tensor.element_size() for tensor in tensors.values())
@@ -31,8 +36,10 @@ def block_layout(module):
 
 class Residency:
     """One existing worker owns placement; ComponentsManager owns stage handoff."""
-    def __init__(self, components, policy, *, activation_reserve=None):
+    def __init__(self, components, policy, *, activation_reserve=None, device="cuda:0"):
         import torch
+        self.device = torch.device(device)
+        self.activation_reserve = activation_reserve
         self.policy, self.manager, self.grouped = policy, None, []
         self.bound = False
         self.modules = {}
@@ -45,8 +52,9 @@ class Residency:
                     self.add(name, module)
                 return
             from diffusers import ComponentsManager
-            torch.cuda.empty_cache()  # Reclaim inactive reserves before measuring the weights budget.
-            free, total = torch.cuda.mem_get_info(0)
+            with getattr(torch, self.device.type).device(self.device):
+                getattr(torch, self.device.type).empty_cache()
+            free, total = memory_info(self.device)
             # A conservative weights budget, not an activation/OOM guarantee.
             # External users of the device and requested image/video shapes still matter.
             reserve = activation_reserve if activation_reserve is not None else max(1024 ** 3, total // 4)
@@ -70,7 +78,7 @@ class Residency:
         row = dict(name=name, mode="resident" if self.policy == "resident" else "component", weightBytes=size)
         self.report["components"].append(row)
         if self.policy == "resident":
-            module.to("cuda:0")
+            module.to(self.device)
             return
         from diffusers.hooks.group_offloading import apply_group_offloading
         budget = self.report["weightBudgetBytes"]
@@ -86,7 +94,7 @@ class Residency:
             mode = "block_level" if blocks and largest + remainder <= budget else "leaf_level"
             count = max(1, min(8, (budget - remainder) // max(1, largest))) if mode == "block_level" else None
             self.grouped.append(module)
-            apply_group_offloading(module, onload_device=torch.device("cuda:0"),
+            apply_group_offloading(module, onload_device=self.device,
                 offload_device=torch.device("cpu"), offload_type=mode,
                 num_blocks_per_group=count, block_modules=sorted(ancestors),
                 use_stream=False, non_blocking=False)
@@ -94,8 +102,7 @@ class Residency:
         self.manager.add(name, module)
 
     def _activate(self):
-        import torch
-        self.manager.enable_auto_cpu_offload(device=torch.device("cuda:0"),
+        self.manager.enable_auto_cpu_offload(device=self.device,
             offload_strategy=lambda hooks, model_id, model, execution_device: hooks)
         self._invalidate_registries()
 
@@ -105,7 +112,7 @@ class Residency:
             # task's scheduler/wrappers and activations have been retired.
             modules = dict(self.modules)
             self.close()
-            self.__init__(modules, self.policy)
+            self.__init__(modules, self.policy, activation_reserve=self.activation_reserve, device=self.device)
         if self.manager is not None and not self.manager.model_hooks:
             self._activate()
         self.bound = True

@@ -150,7 +150,6 @@ class Composition:
                     if len(pipeline.transformer.transformer_blocks) != 28:
                         raise ValueError("The official Sketch adapter supports only 28-layer Anima; expanded 40-layer models are unsupported")
                     from PIL import Image, ImageOps
-                    import torch
                     with Image.open(self.job["sketchImagePath"]) as source:
                         if source.format not in {"PNG", "JPEG", "WEBP"} or getattr(source, "n_frames", 1) != 1 or source.width * source.height > 4096 * 4096:
                             raise ValueError("Sketch must be one PNG/JPEG/WebP with at most 16 megapixels")
@@ -162,8 +161,8 @@ class Composition:
                         white.close()
                     # The small extra is explicitly owned here, outside base/group-offload hooks.
                     weight_bytes = sum(value.numel() * value.element_size() for value in self.sketch.parameters())
-                    if torch.cuda.mem_get_info()[0] < weight_bytes * 2 + 64 * 1024 * 1024:
-                        raise ValueError("Insufficient free CUDA memory for the task-owned Sketch adapter")
+                    if pipeline._huiyu_memory.free_bytes() < weight_bytes * 2 + 64 * 1024 * 1024:
+                        raise ValueError("Insufficient accelerator memory for the task-owned Sketch adapter")
                     self.sketch.to(device=pipeline._execution_device, dtype=pipeline.transformer.dtype)
                     self.sketch.bind(pipeline.transformer)
                     self.check()

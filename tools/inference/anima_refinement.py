@@ -6,6 +6,7 @@ display RGB float tensors [1,3,H,W]; normalized diffusion latents stay
 No Comfy implementation is imported or copied. Single-frame VAE operations
 delegate to the pinned Apache-2.0 Diffusers modules through anima_vae.py.
 """
+from collections import deque
 from contextlib import contextmanager
 import math
 import time
@@ -164,7 +165,9 @@ def _finite_decode(vae, tiling, before_decode=None):
         if raw_finite is not None:
             finite &= raw_finite
         if not bool(finite):
-            raise ValueError("VAE latents or decoded pixels contain nonfinite values; refusing to publish a corrupted result")
+            if not bool(latent_finite):
+                raise ValueError("The sampler produced nonfinite latents")
+            raise ValueError("The VAE produced nonfinite pixels")
         return result
 
     vae.decode = decode
@@ -258,6 +261,39 @@ def _second_pipeline(pipeline, data, spec, sampling, mask_tools, vae_tools, tili
     return second
 
 
+class _StepProgress:
+    """Report finished work with at most one step of GPU work queued ahead."""
+
+    def __init__(self, device, emit, check):
+        self.device, self.emit, self.check = device, emit, check
+        self.pending = deque()
+
+    def update(self, step, total, sampling):
+        if self.check is not None:
+            self.check()
+        if self.emit is None:
+            return
+        if self.device.backend == "cuda":
+            self.emit(step, total, sampling=sampling)
+            return
+        event = self.device.api.Event()
+        event.record(self.device.api.current_stream(self.device.device))
+        self.pending.append((event, step, total, sampling))
+        if len(self.pending) > 1:
+            self.pending[0][0].synchronize()
+        self._publish_ready()
+
+    def _publish_ready(self):
+        while self.pending and self.pending[0][0].query():
+            _, step, total, sampling = self.pending.popleft()
+            self.emit(step, total, sampling=sampling)
+
+    def flush(self):
+        if self.pending:
+            self.pending[-1][0].synchronize()
+            self._publish_ready()
+
+
 def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None,
         postprocess=None, upscale=None, progress=None, prepare_second_blocks=None,
         observe_schedule=None, before_decode=None, vae_tools=None, tiling=None, check=None):
@@ -273,9 +309,9 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
     first/second and steps are that pass's actual scheduler calls, never the sum.
     check() is the optional cooperative cancellation boundary for VAE tiles.
 
-    Stage timings are CPU wall spans without extra CUDA synchronization; queued
-    GPU work can finish in a later stage. Only real CUDA OOM permits the bounded
-    VAE/Remacri tile fallback; no precision or inference-device fallback occurs.
+    Stage timings are CPU wall spans. The ROCm/XPU progress events bound
+    queued sampling work. Only accelerator OOM permits the bounded VAE/Remacri
+    tile fallback; precision and device stay fixed for the task.
     """
     import torch
     from PIL import Image
@@ -303,21 +339,31 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
 
     first_steps = data["steps"]
     total = first_steps + spec["secondSteps"]
+    steps = _StepProgress(pipeline._huiyu_memory.device, progress, check)
+
+    def decoding():
+        steps.flush()
+        if before_decode is not None:
+            before_decode()
 
     def execute(current, phase, kwargs):
         previous = current.scheduler.step
+        first_pass = phase == "firstPassSteps"
+        pass_total = first_steps if first_pass else spec["secondSteps"]
 
         def step(*args, **kw):
             result = previous(*args, **kw)
             report[phase] += 1
-            if progress is not None:
-                progress(report["firstPassSteps"] + report["secondPassSteps"], total)
+            steps.update(report["firstPassSteps"] + report["secondPassSteps"], total,
+                         {"pass": 1 if first_pass else 2, "passes": 2 if spec["second"] else 1,
+                          "step": report[phase], "total": pass_total})
             return result
 
         current.scheduler.step = step
         try:
-            with _finite_decode(current.vae, tiling, before_decode):
+            with _finite_decode(current.vae, tiling, decoding):
                 result = timed("pipelineWallSeconds", lambda: current(**kwargs))
+            steps.flush()
             if observe_schedule is not None:
                 name = "first" if phase == "firstPassSteps" else "second"
                 report.setdefault("schedules", {})[name] = observe_schedule(name, current.scheduler, report[phase])

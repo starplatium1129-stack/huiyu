@@ -244,6 +244,9 @@ async fn diagnose(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<V
                         .is_some_and(|values| values.values().all(Value::is_string))
                     || !probe["cudaAvailable"].is_boolean()
                     || !(probe["deviceName"].is_null() || probe["deviceName"].is_string())
+                    || probe.get("backend").is_some_and(|value| {
+                        !matches!(value.as_str(), Some("cuda" | "rocm" | "xpu"))
+                    })
                     || !probe["scope"].is_string()
                 {
                     return Err(protocol_error());

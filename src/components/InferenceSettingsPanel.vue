@@ -82,8 +82,8 @@
           </div>
           <div class="inference-field">
             <label for="inference-memory">Anima 显存策略</label>
-            <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="Anima 显存策略" :options="memoryOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('memoryPolicy')" aria-describedby="inference-memory-hint" />
-            <small id="inference-memory-hint">{{ draft.memoryPolicy === 'offload' ? '减少显存占用，在内存与显卡间调度。' : '模型驻留显卡，连续生成优先。' }}</small>
+            <StudioSelect id="inference-memory" v-model="draft.memoryPolicy" label="Anima 显存策略" :options="animaMemoryOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('memoryPolicy')" aria-describedby="inference-memory-hint" />
+            <small id="inference-memory-hint">{{ memoryHints[draft.memoryPolicy] }}</small>
           </div>
           <div class="inference-field">
             <label for="inference-adapter-memory">其他模型显存策略</label>
@@ -125,7 +125,7 @@
           <button class="btn btn-ghost btn-sm" type="button" :disabled="probing" @click="diagnose">{{ probing ? '检查中…' : '检查 Anima 依赖与设备' }}</button>
           <p v-if="probeError" role="alert">{{ probeError }}</p>
           <div v-if="probe" role="status">
-            <p>当前运行环境 · {{ probe.probe.cudaAvailable ? `CUDA 可用：${probe.probe.deviceName || '设备名称未知'}` : 'CUDA 不可用' }}</p>
+            <p>当前运行环境 · {{ deviceLabel }}</p>
             <ul><li v-for="(version, name) in probe.probe.dependencies" :key="name">{{ name }}：{{ version }}</li></ul>
           </div>
           </div>
@@ -214,6 +214,19 @@ watch(() => draft.engine, engine => { if (engine !== 'native') draft.remoteServe
 const engineOptions = [{ value: 'native', label: '本机原生引擎' }, { value: 'remote', label: '远程绘遇原生引擎' }, { value: 'comfy', label: 'ComfyUI（兼容已有环境）' }]
 const accelerationOptions = [{ value: 'native', label: '原生计算' }, { value: 'sage', label: 'SageAttention' }, { value: 'compiled-sage', label: '编译 + SageAttention' }, { value: 'compiled-fused-sage', label: '编译 + SageAttention + LoRA 融合' }]
 const memoryOptions = [{ value: 'resident', label: '模型常驻显卡（连续生成优先）' }, { value: 'offload', label: '分阶段加载（减少显存占用）' }]
+const animaMemoryOptions = [{ value: 'auto', label: '自动（按设备选择）' }, ...memoryOptions]
+const memoryHints = {
+  auto: '共享显存、Intel XPU 和可用显存较少的 AMD 设备优先分阶段加载。',
+  offload: '减少显存占用，在内存与显卡间调度。',
+  resident: '模型驻留显卡，连续生成优先。',
+}
+const deviceLabel = computed(() => {
+  const value = probe.value?.probe
+  const backend = value?.backend ?? (value?.cudaAvailable ? 'cuda' : undefined)
+  if (!backend) return '未发现可用显卡'
+  const label = { cuda: 'NVIDIA CUDA', rocm: 'AMD ROCm', xpu: 'Intel XPU' }[backend]
+  return `${label} · ${value?.deviceName || '设备名称未知'}`
+})
 const engineLabel = (engine: string) => engine === 'native' ? '本机原生' : engine === 'remote' ? '远程原生' : 'ComfyUI'
 const pathFields = [
   { key: 'modelsRoot', label: '模型根目录', hint: '可以沿用已有模型根目录，不搬移文件。目录格式：模型根目录 / 模型 ID / 完整 Diffusers 组件；不是原始单文件权重目录。' },

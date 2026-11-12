@@ -19,6 +19,7 @@ pub(super) const ANIMA_WORKER_FILES: &[&str] = &[
     "inference_metrics.py",
     "anima_execution.py",
     "anima_dependencies.py",
+    "anima_device.py",
     "anima_lora.py",
     "anima_lora_fusion.py",
     "anima_sampling.py",

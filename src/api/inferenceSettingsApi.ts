@@ -4,7 +4,7 @@ import { isLocalStudioHost } from '../utils/runtimeEnvironment.ts'
 export interface InferenceSettings {
   engine: 'comfy' | 'native' | 'remote'
   acceleration: 'native' | 'sage' | 'compiled-sage' | 'compiled-fused-sage'
-  memoryPolicy: 'resident' | 'offload'
+  memoryPolicy: 'auto' | 'resident' | 'offload'
   adapterMemoryPolicy: 'resident' | 'offload'
   modelsRoot: string
   lorasRoot: string
@@ -49,7 +49,7 @@ export interface InferenceDiscovery {
 export interface InferenceProbeResponse {
   ok: true
   basis: 'active'
-  probe: { id: null; event: 'diagnostic'; valid: true; dependencies: Record<string, string>; cudaAvailable: boolean; deviceName: string | null; scope: string }
+  probe: { id: null; event: 'diagnostic'; valid: true; dependencies: Record<string, string>; cudaAvailable: boolean; deviceName: string | null; backend?: 'cuda' | 'rocm' | 'xpu'; scope: string }
 }
 export interface InferenceSettingsApi {
   diagnose(signal?: AbortSignal): Promise<InferenceProbeResponse>
@@ -61,7 +61,7 @@ const object = (value: unknown): value is ApiResponseObject => typeof value === 
 function settings(value: unknown): boolean {
   return object(value) && (value.engine === 'comfy' || value.engine === 'native' || value.engine === 'remote')
     && typeof value.acceleration === 'string' && ['native', 'sage', 'compiled-sage', 'compiled-fused-sage'].includes(value.acceleration)
-    && (value.memoryPolicy === 'resident' || value.memoryPolicy === 'offload')
+    && (value.memoryPolicy === 'auto' || value.memoryPolicy === 'resident' || value.memoryPolicy === 'offload')
     && (value.adapterMemoryPolicy === 'resident' || value.adapterMemoryPolicy === 'offload')
     && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof value[key] === 'string')
     && (value.adapterPython == null || typeof value.adapterPython === 'string')
@@ -99,6 +99,7 @@ export const inferenceSettingsApi: InferenceSettingsApi = {
           && probe.id === null && probe.event === 'diagnostic' && probe.valid === true
           && object(probe.dependencies) && Object.values(probe.dependencies).every(version => typeof version === 'string')
           && typeof probe.cudaAvailable === 'boolean' && (probe.deviceName === null || typeof probe.deviceName === 'string')
+          && (probe.backend === undefined || probe.backend === 'cuda' || probe.backend === 'rocm' || probe.backend === 'xpu')
           && typeof probe.scope === 'string'
       },
     })

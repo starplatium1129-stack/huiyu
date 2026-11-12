@@ -2,7 +2,7 @@
 
 Public encode/decode retain pinned Diffusers offload hooks. Raw single-frame
 operations use the existing Apache-2.0 model modules with no video feature cache.
-Normal inference precedes one CUDA-OOM-only spatial feather fallback; latent
+Normal inference precedes one accelerator-OOM-only spatial feather fallback; latent
 normalization and display conversion are FP32, not BF16 component arithmetic.
 Model integration adapted from Diffusers 0.41 (Apache-2.0), Copyright 2026
 The HuggingFace Team; license text is retained in ANIMA_CONVERSION_LICENSE.txt.
@@ -22,8 +22,9 @@ def _encode_tile(vae, pixels):
 def _decode_size(latents):
     import torch
     height, width = latents.shape[-2:]
-    free, total = torch.cuda.mem_get_info(latents.device)
-    reclaimable = max(0, torch.cuda.memory_reserved(latents.device) - torch.cuda.memory_allocated(latents.device))
+    api = getattr(torch, latents.device.type)
+    free, total = api.mem_get_info(latents.device)
+    reclaimable = max(0, api.memory_reserved(latents.device) - api.memory_allocated(latents.device))
     coefficient = 2200 * 64 * latents.element_size()
     budget = min(coefficient * height * width, int(total * .8), free + reclaimable)
     size = 32
@@ -40,8 +41,8 @@ def _perform(vae, values, kind, tiling, check=None):
     event = dict(kind=kind, mode="full", tileSize=0, overlap=0, tileCount=1, outputDevice=values.device.type)
     try:
         output = operation(vae, values)
-    except torch.cuda.OutOfMemoryError:
-        if values.device.type != "cuda":
+    except torch.OutOfMemoryError:
+        if values.device.type not in ("cuda", "xpu"):
             raise
     else:
         vae._huiyu_vae_events.append(event)
@@ -50,7 +51,7 @@ def _perform(vae, values, kind, tiling, check=None):
     if check is not None:
         check()
     vae.clear_cache()
-    torch.cuda.empty_cache()
+    getattr(torch, values.device.type).empty_cache()
     size = 256 if kind == "encode" else _decode_size(values)
     event["mode"] = "tiled"
     def perform_tile(patch):
@@ -82,6 +83,10 @@ def _single_frame(vae, kind, tiling, check=None):
                 if (values.shape[2] == 1 and cache_x is None and layer.dilation[0] == 1
                         and layer._padding[4] == layer.kernel_size[0] - 1 and layer._padding[5] == 0
                         and layer._padding[0] == layer._padding[1] and layer._padding[2] == layer._padding[3]):
+                    if values.device.type == "xpu" or (values.device.type == "cuda" and torch.version.hip):
+                        return torch.nn.functional.conv2d(values[:, :, 0], layer.weight[:, :, -1], layer.bias,
+                            stride=layer.stride[1:], padding=(layer._padding[2], layer._padding[0]),
+                            dilation=layer.dilation[1:], groups=layer.groups).unsqueeze(2)
                     return torch.nn.functional.conv3d(values, layer.weight[:, :, -1:], layer.bias,
                         stride=layer.stride, padding=(0, layer._padding[2], layer._padding[0]),
                         dilation=layer.dilation, groups=layer.groups)
@@ -92,7 +97,7 @@ def _single_frame(vae, kind, tiling, check=None):
                 normalized = torch.nn.functional.normalize(values, dim=1 if layer.channel_first else -1)
                 if (type(values) is torch.Tensor and type(normalized) is torch.Tensor
                         and normalized.layout == torch.strided and normalized.is_contiguous()
-                        and normalized.device.type in ("cpu", "cuda")
+                        and normalized.device.type in ("cpu", "cuda", "xpu")
                         and normalized.dtype in (torch.float16, torch.bfloat16, torch.float32)
                         and not torch.is_grad_enabled() and not torch.is_autocast_enabled(normalized.device.type)
                         and layer.channel_first and normalized.ndim in (4, 5)
@@ -146,7 +151,7 @@ def _preprocess(processor, image, *, height, width):
     from diffusers.image_processor import VaeImageProcessor
     if (type(processor) is VaeImageProcessor and type(image) is torch.Tensor
             and image.layout == torch.strided and image.dtype == torch.float32
-            and image.device.type in ("cpu", "cuda") and not image.requires_grad
+            and image.device.type in ("cpu", "cuda", "xpu") and not image.requires_grad
             and image.ndim == 4 and image.shape[:2] == (1, 3)
             and image.shape[-2] > 0 and image.shape[-1] > 0
             and (image.is_contiguous() or image.is_contiguous(memory_format=torch.channels_last))

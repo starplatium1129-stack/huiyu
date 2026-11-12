@@ -16,7 +16,9 @@ async function image(kind: 'anima' | 'creative', input: Record<string, unknown>,
   const accepted = resume ? await getRuntimeTaskByKey(key, signal) : await submitRuntimeTask(kind, input, key, context, { signal, onSubmitting })
   if (!accepted) throw new Error('原请求接收状态尚未确认，已保留身份；不会重复生成')
   signal.throwIfAborted()
-  const task = await waitForRuntimeTask(accepted.taskId, signal, update)
+  const task = await waitForRuntimeTask(accepted.taskId, signal, update, {
+    runningIntervalMs: kind === 'anima' && accepted.provider === 'native' ? 350 : undefined,
+  })
   const blob = await fetchRuntimeResult(runtimeResultPath(task), signal, task)
   signal.throwIfAborted()
   return { task, blob }

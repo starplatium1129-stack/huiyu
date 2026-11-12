@@ -13,7 +13,7 @@ import sys
 import threading
 import time
 
-if sys.platform == "win32" and os.environ.get("HUIYU_INFERENCE_MEMORY") == "offload":
+if sys.platform == "win32" and os.environ.get("HUIYU_INFERENCE_MEMORY") in ("auto", "offload"):
     # PyTorch's Windows mimalloc must return freed weight pages between stages,
     # rather than retaining commit while the next component is being loaded.
     os.environ.setdefault("MIMALLOC_PURGE_DELAY", "0")
@@ -71,9 +71,9 @@ class JobControl:
             values["component"] = component
         self.emit(self.stream, self.id, "stage", **values)
 
-    def progress(self, step, total):
+    def progress(self, step, total, **details):
         self.check()
-        self.emit(self.stream, self.id, "progress", step=step, total=total)
+        self.emit(self.stream, self.id, "progress", step=step, total=total, **details)
 
 
 class Requests:
@@ -143,12 +143,13 @@ def settle_resources(cancelled):
     # components/adapters/text cache; no weight or model-state mutation occurs.
     gc.collect()
     torch = sys.modules.get("torch")
-    if torch is not None and torch.cuda.is_initialized():
-        if cancelled:
-            torch.cuda.synchronize()
-        # Keep live resident weights; return completed-job allocator reserves,
-        # particularly large hires activations, instead of holding them idle.
-        torch.cuda.empty_cache()
+    if torch is None:
+        return
+    for api in (torch.cuda, getattr(torch, "xpu", None)):
+        if api is not None and api.is_initialized():
+            if cancelled:
+                api.synchronize()
+            api.empty_cache()
 
 
 def serve(generate, *, input_stream, stream, emit, error, initialize, cancel_cleanup=None):

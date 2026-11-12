@@ -88,9 +88,9 @@
 
     <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
     <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
+      <span class="stage-progress-caption" role="status">{{ stageStatus }}</span>
       <progress class="stage-progress" :value="stageProgress ?? undefined" max="1" :aria-label="waitingForResult ? '成片读取进度' : '生图进度'" />
       <strong v-if="stageProgress !== null" class="stage-progress-percent" aria-hidden="true">{{ Math.round(stageProgress * 100) }}%</strong>
-      <span class="sr-only" role="status">{{ stageStatus }}</span>
     </div>
 
     <!-- Result image -->

@@ -38,7 +38,7 @@ def _rcas_rows(images, strength, top, bottom):
 def rcas(images, strength=0.75):
     """Sharpen finite display-referred RGB [N,3,H,W] tensors already in [0,1].
 
-    CPU/CUDA float16, bfloat16 and float32 are supported. Shape, dtype and device
+    CPU, CUDA and XPU float16, bfloat16 and float32 are supported. Shape, dtype and device
     are preserved; input is never modified. Strength must be a finite scalar in
     [0,1]: 0 returns the original tensor exactly, 1 is maximum RCAS, and 0.75 is
     the product workflow's sharpening strength.
@@ -56,7 +56,7 @@ def rcas(images, strength=0.75):
     if (not isinstance(images, torch.Tensor) or images.ndim != 4 or images.shape[1] != 3
             or any(size <= 0 for size in images.shape)
             or images.dtype not in (torch.float16, torch.bfloat16, torch.float32)
-            or images.device.type not in ("cpu", "cuda")):
+            or images.device.type not in ("cpu", "cuda", "xpu")):
         raise ValueError("RCAS requires a nonempty CPU/CUDA floating RGB [N,3,H,W] tensor")
     if strength == 0:
         return images

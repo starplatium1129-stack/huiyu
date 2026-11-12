@@ -193,6 +193,18 @@ pub(super) fn capture(value: &Value) -> Value {
         if let Some(execution) = value.get("execution") {
             result["execution"] = super::execution::anima(execution).unwrap_or_else(|| json!({"status":"unverified","reason":"invalid-anima-execution"}));
         }
+        if let Some(device) = value.get("accelerator") {
+            let backend = device["backend"].as_str()?;
+            let dtype = device["dtype"].as_str()?;
+            if !matches!(backend, "cuda" | "rocm" | "xpu")
+                || !matches!(dtype, "float16" | "bfloat16" | "float32")
+            {
+                return None;
+            }
+            result["accelerator"] = json!({
+                "backend":backend,"dtype":dtype,"sharedMemory":device["sharedMemory"].as_bool()?
+            });
+        }
         if let Some(policy) = value.get("memoryPolicy") {
             let policy = policy.as_str()?;
             if !matches!(policy, "resident" | "offload") {
@@ -392,10 +404,11 @@ pub(super) fn capture(value: &Value) -> Value {
             result["teaCache"]["threshold"] = json!(threshold);
         }
         let memory = &value["memory"];
-        if memory["deviceIndex"] != 0 || memory["scope"] != "image-preparation-through-pipeline" {
+        let index = memory["deviceIndex"].as_u64().filter(|index| *index <= 999)?;
+        if memory["scope"] != "image-preparation-through-pipeline" {
             return None;
         }
-        let mut captured = json!({"deviceIndex":0,"scope":"image-preparation-through-pipeline"});
+        let mut captured = json!({"deviceIndex":index,"scope":"image-preparation-through-pipeline"});
         match memory["status"].as_str()? {
             "per-job-allocator" => {
                 captured["status"] = json!("per-job-allocator");
@@ -413,7 +426,7 @@ pub(super) fn capture(value: &Value) -> Value {
                 let reason = memory["reason"].as_str()?;
                 if !matches!(
                     reason,
-                    "cuda-uninitialized-at-window-start"
+                    "cuda-uninitialized-at-window-start" | "device-uninitialized-at-window-start"
                         | "unsupported-allocator"
                         | "allocator-observation-error"
                 ) || !memory["peakAllocatedBytes"].is_null()
@@ -444,7 +457,7 @@ pub(super) fn capture(value: &Value) -> Value {
                     captured[key] = json!(number);
                 }
                 let device = source["outputDevice"].as_str()?;
-                if !matches!(device, "cpu" | "cuda") {
+                if !matches!(device, "cpu" | "cuda" | "xpu") {
                     return None;
                 }
                 captured["outputDevice"] = json!(device);

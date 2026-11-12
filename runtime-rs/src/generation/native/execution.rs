@@ -68,7 +68,8 @@ pub(super) fn anima(source: &Value) -> Option<Value> {
     }
     compilation["failures"] = json!(failures);
     let kernel = match source["kernelBackend"].as_str() {
-        Some("pytorch" | "triton-cosmos-v1") if source["kernelScope"] == "configured" => {
+        Some("pytorch" | "triton-cosmos-v1" | "rocm-bounded-sdpa")
+            if source["kernelScope"] == "configured" => {
             source["kernelBackend"].clone()
         }
         None => json!("unverified"),
