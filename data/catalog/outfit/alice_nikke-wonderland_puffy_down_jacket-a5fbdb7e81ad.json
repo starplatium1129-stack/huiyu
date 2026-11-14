@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "alice_nikke/wonderland_puffy_down_jacket",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1532,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-11-14T07:05:43.871415200+00:00",
   "data": {
     "characterId": "alice_nikke",
     "outfit": {
@@ -19,8 +19,7 @@
         "fur_trim",
         "hood",
         "bodysuit",
-        "gloves",
-        "winter_clothes"
+        "gloves"
       ],
       "default": false,
       "isDefault": false

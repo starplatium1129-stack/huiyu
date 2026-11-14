@@ -136,7 +136,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -322,7 +322,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -976,7 +976,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -1130,8 +1130,7 @@
             "turtleneck",
             "sweater",
             "wool_coat",
-            "scarf",
-            "winter_clothes"
+            "scarf"
           ]
         },
         {
@@ -1177,7 +1176,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -1314,7 +1313,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -1501,7 +1500,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -1666,7 +1665,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -1832,7 +1831,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -2004,7 +2003,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -2164,7 +2163,6 @@
             "fur_trim",
             "hooded_cloak",
             "cloak",
-            "winter_clothes",
             "fur_collar",
             "long_cloak",
             "warm_clothes"
@@ -2193,7 +2191,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -2346,7 +2344,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -2487,8 +2485,7 @@
             "pants",
             "boots",
             "messenger_bag",
-            "casual",
-            "winter_clothes"
+            "casual"
           ]
         },
         {
@@ -2830,8 +2827,7 @@
             "boots",
             "leather_gloves",
             "beret",
-            "casual",
-            "autumn_clothes"
+            "casual"
           ]
         },
         {
@@ -2998,7 +2994,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, bare skin, natural supple female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural supple female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "tokens": [
             "nude",
             "uncensored",

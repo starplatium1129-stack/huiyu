@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "ayase_aragaki/sheer_violet_silk_slip_nightgown",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1780,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "ayase_aragaki",
     "outfit": {
@@ -16,7 +16,6 @@
         "dusty rose camisole",
         "modal sleep capris",
         "white scalloped lace",
-        "heart pillow",
         "modest loungewear",
         "pure model style"
       ],

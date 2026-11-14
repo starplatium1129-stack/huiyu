@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "faln_touden/gold_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2488,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfit": {
@@ -24,8 +24,7 @@
         "blonde hair",
         "tall soft build",
         "gentle smile",
-        "bare shoulders",
-        "warm radiance"
+        "bare shoulders"
       ]
     }
   }

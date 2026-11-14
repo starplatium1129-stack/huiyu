@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "yukinoshita_yukino/snow_dress",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 195,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:23:25.153789200+00:00",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "yukinoshita_yukino",
     "outfit": {
@@ -19,8 +19,7 @@
         "plaid_scarf",
         "cashmere_scarf",
         "black_tights",
-        "riding_boots",
-        "winter_clothes"
+        "riding_boots"
       ],
       "characterId": "yukinoshita_yukino",
       "default": false,

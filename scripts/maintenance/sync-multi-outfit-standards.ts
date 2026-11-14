@@ -118,7 +118,7 @@ const HEROINE_CHARACTERS = [
         id: "nsfw_nude",
         name: "私密全裸 / 纯粹形态",
         isNsfw: true,
-        prose: "completely naked, full nudity, bare skin, natural female body, medium breasts, pink nipples, slender waist, navel, bare legs and bare feet, intimate soft bedroom lighting",
+        prose: "completely naked, full nudity, bare skin, natural female body, medium breasts, pink nipples, slender waist, navel, bare legs and bare feet",
         tokens: ["nude", "completely_naked", "uncensored", "breasts", "nipples", "navel", "bare_shoulders", "collarbone", "bare_legs", "bare_feet"]
       }
     ]
@@ -148,7 +148,7 @@ const HEROINE_CHARACTERS = [
         id: "nsfw_nude",
         name: "私密全裸 / 纯粹形态",
         isNsfw: true,
-        prose: "completely naked, full nudity, bare skin, natural slender female body, delicate small breasts, pink nipples, mole under eye visible, slender waist, navel, bare legs, soft warm ambient lighting",
+        prose: "completely naked, full nudity, bare skin, natural slender female body, delicate small breasts, pink nipples, mole under eye visible, slender waist, navel, bare legs and bare feet",
         tokens: ["nude", "completely_naked", "uncensored", "small_breasts", "breasts", "nipples", "navel", "bare_shoulders", "collarbone", "bare_legs", "bare_feet"]
       }
     ]
@@ -179,7 +179,7 @@ function buildMultiOutfitMatrix() {
         name: "私密全裸 / 纯粹形态",
         isDefault: false,
         isNsfw: true,
-        prose: `completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting`,
+        prose: `completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet`,
         tokens: ["nude", "completely_naked", "uncensored", "breasts", "nipples", "navel", "bare_shoulders", "collarbone", "bare_legs", "bare_feet"]
       });
     }

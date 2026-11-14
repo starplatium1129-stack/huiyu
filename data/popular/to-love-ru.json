@@ -709,7 +709,7 @@
           "id": "nsfw_nude",
           "isDefault": false,
           "name": "🔞 私密全裸 / 纯粹形态",
-          "prose": "completely naked, full nudity, pristine porcelain fair skin, bountiful firm breasts with tender rose-pink nipples, slender athletic waist, lush curved hips, exposed pussy, cascading silky black hair, iconic white hairband still perched in hair, furiously blushing tsundere expression, bare feet, soft dim bedroom lighting",
+          "prose": "completely naked, full nudity, pristine porcelain fair skin, bountiful firm breasts with tender rose-pink nipples, slender athletic waist, lush curved hips, exposed pussy, cascading silky black hair, iconic white hairband still perched in hair, furiously blushing tsundere expression, bare feet",
           "styleHint": "tender romantic candlelight",
           "tokens": [
             "nude",
@@ -1096,7 +1096,7 @@
           "id": "tender_lingerie",
           "isDefault": false,
           "name": "浅蓝缎带纯情蕾丝内衣",
-          "prose": "delicate pale-blue cotton and lace lingerie with small ribbon bows, modest yet charming, accentuating her graceful figure beneath warm bedroom lighting",
+          "prose": "delicate pale-blue cotton and lace lingerie with small ribbon bows, modest yet charming, accentuating her graceful figure",
           "tokens": [
             "light_blue_bra",
             "lace_bra",

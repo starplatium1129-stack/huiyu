@@ -1,17 +1,17 @@
 {
   "kind": "outfit",
   "id": "aoyama_nanami/summer_resort_navy_bikini",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1799,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "aoyama_nanami",
     "outfit": {
       "characterId": "aoyama_nanami",
       "id": "summer_resort_navy_bikini",
       "name": "盛夏海滩·成熟深蓝挂脖系带比基尼",
-      "prose": "A chic navy blue halterneck bikini with clean white borders, highlighting her slender athletic waist and sunlit smooth skin.",
+      "prose": "A navy-blue halterneck bikini with crisp white edging, paired with side-tie bottoms.",
       "tokens": [
         "bikini",
         "navy_bikini",

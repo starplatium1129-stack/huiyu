@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "sairenji_haruna/tender_lingerie",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1494,
   "createdAt": null,
-  "updatedAt": "2026-10-21T12:00:00.000000000+00:00",
+  "updatedAt": "2026-11-14T07:05:43.871415200+00:00",
   "data": {
     "characterId": "sairenji_haruna",
     "outfit": {
@@ -12,7 +12,7 @@
       "id": "tender_lingerie",
       "isDefault": false,
       "name": "浅蓝缎带纯情蕾丝内衣",
-      "prose": "delicate pale-blue cotton and lace lingerie with small ribbon bows, modest yet charming, accentuating her graceful figure beneath warm bedroom lighting",
+      "prose": "delicate pale-blue cotton and lace lingerie with small ribbon bows, modest yet charming, accentuating her graceful figure",
       "tokens": [
         "light_blue_bra",
         "lace_bra",

@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "delta_shadow/matsuri_happi",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1892,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "delta_shadow",
     "outfit": {
@@ -17,7 +17,6 @@
         "open_coat",
         "shorts",
         "black_shorts",
-        "japanese_festival",
         "fox_mask",
         "festival_clothes"
       ],

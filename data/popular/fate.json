@@ -288,8 +288,7 @@
             "coat",
             "purple_coat",
             "fur_trim",
-            "hood",
-            "winter_clothes"
+            "hood"
           ],
           "default": true,
           "isDefault": true
@@ -362,7 +361,7 @@
             "bare_legs",
             "bare_feet"
           ],
-          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet, clean soft cinematic studio lighting",
+          "prose": "completely naked, full nudity, bare skin, natural female body, breasts, pink nipples, slender waist, navel, bare shoulders, collarbone, bare legs, bare feet",
           "styleHint": "tender romantic candlelight",
           "isDefault": false,
           "default": false
@@ -450,8 +449,7 @@
             "black_bikini",
             "strappy_bikini",
             "sarong",
-            "katana",
-            "summer_clothes"
+            "katana"
           ],
           "prose": "wearing her Berserker summer strappy black bikini with a sheer wrap and carrying a katana sword",
           "styleHint": "dramatic sunset ocean glow",
@@ -644,7 +642,6 @@
             "matou_sakura_winter_outfit",
             "winter_coat",
             "coat",
-            "winter_clothes",
             "warm_clothes",
             "long_sleeves",
             "skirt",
@@ -1086,7 +1083,6 @@
             "duffle_coat",
             "red_coat",
             "beanie",
-            "winter_clothes",
             "tights",
             "boots"
           ],
@@ -1941,7 +1937,6 @@
             "pantyhose",
             "dark_pantyhose",
             "knee_boots",
-            "winter_clothes",
             "casual_wear"
           ]
         },

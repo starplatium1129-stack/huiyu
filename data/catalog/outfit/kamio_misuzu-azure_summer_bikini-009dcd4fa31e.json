@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "kamio_misuzu/azure_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2541,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "kamio_misuzu",
     "outfit": {
@@ -24,8 +24,7 @@
         "dinosaur beach towel",
         "blonde twintails",
         "blue eyes",
-        "gentle radiant smile",
-        "nostalgic atmosphere"
+        "gentle radiant smile"
       ]
     }
   }

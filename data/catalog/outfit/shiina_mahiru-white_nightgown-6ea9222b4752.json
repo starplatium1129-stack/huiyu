@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "shiina_mahiru/white_nightgown",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1233,
   "createdAt": "2026-10-15T14:37:47.276866400+00:00",
-  "updatedAt": "2026-11-01T04:09:32.334972600+00:00",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "shiina_mahiru",
     "outfit": {
@@ -19,8 +19,7 @@
         "deep_v_neck",
         "lace_trim",
         "high_slit",
-        "barefoot",
-        "boudoir"
+        "barefoot"
       ],
       "characterId": "shiina_mahiru",
       "default": false,

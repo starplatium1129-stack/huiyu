@@ -1,10 +1,10 @@
 {
   "kind": "outfit",
   "id": "nightingale_arknights/azure_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2248,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
   "data": {
     "characterId": "nightingale_arknights",
     "outfit": {
@@ -26,8 +26,7 @@
         "long hair",
         "blue eyes",
         "pointed ears",
-        "gentle fragility",
-        "soft light"
+        "gentle fragility"
       ]
     }
   }

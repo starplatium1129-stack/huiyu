@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "natsume",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-14T07:05:43.871415200+00:00",
   "data": {
     "id": "natsume",
     "profile": {
@@ -128,9 +128,7 @@
           ],
           "official_sleepwear": [
             "natsume_sleepwear",
-            "blue_shirt",
-            "pillow",
-            "on_bed"
+            "blue_shirt"
           ],
           "special_virgin_killer": [
             "virgin_killer_sweater",
