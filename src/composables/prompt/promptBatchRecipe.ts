@@ -161,9 +161,9 @@ export function createPromptBatchRecipe(input: PromptBatchRecipeInput) {
         return manual ? pb.selections[key] : decisions?.[key] ?? null
       }
       const shot = pick('shot'), lighting = pick('lighting'), composition = pick('composition')
-      const colorMood = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood) ? pb.colorMood : null
-      directorSources.colorMood = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood) ? 'manual' : 'scene'
-      const mood = COLOR_MOODS.find(option => option.id === (colorMood ?? decisions?.colorMood))
+      const manualColor = isManualDirectorValue(pb.directorSources, 'colorMood', pb.colorMood, inherited?.colorMood)
+      directorSources.colorMood = manualColor ? 'manual' : 'scene'
+      const mood = COLOR_MOODS.find(option => option.id === (manualColor ? pb.colorMood : decisions?.colorMood))
       const inheritedTags = target.kind === 'character' ? roamingContent.tags : []
       const manual = withoutSuppressedOutfitTags(target.kind === 'character' ? inheritedTags : pb.manualTags, pb.outfitOverride)
         .filter(tag => !identityDomainOf(tag) && !sourceKeys.has(normalizeKey(tag)))

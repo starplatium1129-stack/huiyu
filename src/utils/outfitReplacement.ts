@@ -4,7 +4,8 @@ import { OUTFIT_BUNDLES } from '../composables/scene/useDirectorCatalog.ts'
 import { UNIVERSAL_WARDROBE_PRESETS } from '../config/universalWardrobe.ts'
 import { CANONICAL_OUTFITS } from './canonicalOutfits.ts'
 import { isGarmentToken, isOutfitToken } from './popularIdentity.ts'
-import { normalizeKey, tokenize } from './promptPolicy.ts'
+import { normalizeKey, splitBreaks, tokenize } from './promptPolicy.ts'
+import { isWardrobeContextTag, wardrobeTokens } from './wardrobeContent.ts'
 
 /** Keep previous hand-picked clothing available when the replacement is removed. */
 export function suppressedOutfitTags(tags: Iterable<string>): string[] {
@@ -12,11 +13,11 @@ export function suppressedOutfitTags(tags: Iterable<string>): string[] {
   const bundles = [...OUTFIT_BUNDLES, ...UNIVERSAL_WARDROBE_PRESETS]
   const bundled = new Set(bundles.filter(bundle => bundle.tags.length && bundle.tags.every(tag => keys.has(normalizeKey(tag))))
     .flatMap(bundle => bundle.tags).map(normalizeKey))
-  return values.filter(tag => isOutfitToken(tag) || bundled.has(normalizeKey(tag)))
+  return values.filter(tag => !isWardrobeContextTag(tag) && (isOutfitToken(tag) || bundled.has(normalizeKey(tag))))
 }
 
 export function withoutSuppressedOutfitTags(tags: Iterable<string>, override?: DraftOutfitOverride | null): string[] {
-  const suppressed = new Set((override?.suppressedTags || []).map(normalizeKey))
+  const suppressed = new Set(wardrobeTokens(override?.suppressedTags ?? []).map(normalizeKey))
   return [...tags].filter(tag => !suppressed.has(normalizeKey(tag)))
 }
 
@@ -43,14 +44,15 @@ export function sceneProseWithChangedOutfit(prose: string, source: { tokens: rea
 /** Derive a temporary scene; source catalogue records remain untouched. */
 export function studioSceneWithOutfit(scene: Scene | null, sourceControls: readonly string[], selected: readonly string[]): Scene | null {
   if (!scene) return null
-  const tokens = tokenize(scene.prompt || '')
+  const sections = splitBreaks((scene.prompt || '').replace(/_BREAK_/g, ' BREAK ')).map(tokenize)
   const trained = new Set(Object.values(CANONICAL_OUTFITS).map(outfit => normalizeKey(outfit.tags[0])))
-  const controls = new Set(sourceControls.filter(tag => !/^(?:(?:nene|natsume)_r18|pillow|on_bed|twin_braids)$/i.test(normalizeKey(tag))).map(normalizeKey))
-  const isOldOutfit = (tag: string) => isOutfitToken(tag) || trained.has(normalizeKey(tag)) || controls.has(normalizeKey(tag))
-  const source = { tokens: [...tokens, ...sourceControls], prose: '' }
+  const controls = new Set(wardrobeTokens(sourceControls).map(normalizeKey).filter(key => !/^(?:(?:nene|natsume)_r18|twin_braids)$/.test(key)))
+  const isOldOutfit = (tag: string) => !isWardrobeContextTag(tag)
+    && (isOutfitToken(tag) || trained.has(normalizeKey(tag)) || controls.has(normalizeKey(tag)))
+  const source = { tokens: [...sections.flat(), ...sourceControls], prose: '' }
   const clothed = selected.some(isGarmentToken) && !selected.some(tag => /^(?:nude|naked|fully_nude|completely_nude|no_clothes|unclothed)$/.test(normalizeKey(tag)))
   const replace = (value?: string) => value ? sceneProseWithChangedOutfit(value, source, clothed) : value
-  return { ...scene, prompt: tokens.filter(tag => !isOldOutfit(tag)).join(', '),
+  return { ...scene, prompt: sections.map(tokens => tokens.filter(tag => !isOldOutfit(tag)).join(', ')).filter(Boolean).join(' BREAK '),
     animaCaption: replace(scene.animaCaption), promptProse: replace(scene.promptProse),
     identityTokensOverride: scene.identityTokensOverride?.filter(tag => !isOldOutfit(tag)),
     identityProseOverride: replace(scene.identityProseOverride) }

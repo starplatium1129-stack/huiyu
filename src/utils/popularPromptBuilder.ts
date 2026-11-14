@@ -23,6 +23,7 @@ import { isGarmentToken, isOutfitToken, standaloneIdentityTokens, standaloneIden
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
 import { withoutReplacedPose } from './promptCaption.ts'
 import { sceneProseWithChangedOutfit } from './outfitReplacement.ts'
+import { isWardrobeContextTag, wardrobeProse, wardrobeTokens } from './wardrobeContent.ts'
 
 // ── Prompt 组装（唯一渲染层 = createPromptPlan + renderPromptPlan） ─────────
 
@@ -94,23 +95,6 @@ export function scanStudioTokenLeaks(text: string): string[] {
 }
 
 /**
- * 人物/服装层禁携环境词（2026-08-29 干净人物提示词契约）：地点、季节、时段
- * 属于场景蓝图职责域。曾实测泄漏：5 个泳装带 summer、mika/hina 带 beach、
- * 防寒服带 snow、针织带 autumn——人物提示词与场景叠加（含反推叠加）时这些
- * 词会与蓝图词条打架。tea_party（套装语义）不在此列。
- */
-const ENVIRONMENT_TOKENS = new Set([
-  'beach', 'summer', 'winter', 'autumn', 'ocean', 'sea', 'underwater',
-  'swimming_pool', 'poolside', 'indoors', 'outdoors', 'nightlife',
-  'classroom', 'library', 'bedroom', 'festival',
-])
-
-/** 扫描词条数组中的环境词泄漏（identityTokens / outfit tokens 通用）。 */
-function scanEnvironmentLeaks(tokens: ReadonlyArray<string>): string[] {
-  return tokens.filter(token => ENVIRONMENT_TOKENS.has(String(token || '').toLowerCase()))
-}
-
-/**
  * 角色数据全字段污染扫描：identityTokens/exactTokens/identityProse/aliases/
  * exactPrefixes 以及每个 outfit 的 prose+tokens，统一在此判定，供内容契约
  * 校验与单测共用，避免两处各自维护一套正则漂移。
@@ -129,14 +113,14 @@ export function scanCharacterPollution(character: PopularCharacter): string[] {
   for (const [field, text] of textSources) {
     scanStudioTokenLeaks(text).forEach(leak => leaks.push(`${character.id}.${field}: ${leak}`))
   }
-  scanEnvironmentLeaks(character.identityTokens).forEach(token => {
+  character.identityTokens.filter(isWardrobeContextTag).forEach(token => {
     leaks.push(`${character.id}.identityTokens: environment token "${token}"`)
   })
   character.outfits.forEach(outfit => {
     scanStudioTokenLeaks(`${outfit.prose} ${outfit.tokens.join(' ')}`).forEach(leak => {
       leaks.push(`${character.id}.outfit.${outfit.id}: ${leak}`)
     })
-    scanEnvironmentLeaks(outfit.tokens).forEach(token => {
+    outfit.tokens.filter(isWardrobeContextTag).forEach(token => {
       leaks.push(`${character.id}.outfit.${outfit.id}: environment token "${token}"`)
     })
   })
@@ -153,21 +137,6 @@ function identityWithoutOutfit(prose: string): string {
 
 const ADULT_IDENTITY_EXCLUDE_RE =
   /^(?:child|children|loli|underage|minor|young_girl|schoolgirl|student|teenager|middle_school_student|junior_high_student|high_school_student)$/
-
-/** Krea 渲染模板自带动词（"wearing X"），服装 prose 若
- *  自带 "wearing/dressed in" 开头必须剥除，否则编译出 "wearing wearing"。
- *  2026-08-24 实测：8 角色 37 套服装踩坑（yor/reze/fern/jalter/sakura/yui/sylphiette/mimori/cecilia）。 */
-function outfitProseForRender(prose: string): string {
-  return String(prose || '').replace(/^(?:wearing|dressed in)\s+/i, '').trim()
-}
-
-/**
- * 反推顶替服装时的服装描述：把 tag 还原成可渲染的自然语言（下划线转空格）。
- * Krea 渲染模板自带 "wearing X"，这里只给名词短语。
- */
-function outfitOverrideProse(tokens: ReadonlyArray<string>): string {
-  return tokens.map(token => String(token || '').replace(/_/g, ' ').trim()).filter(Boolean).join(', ')
-}
 
 /**
  * 剥离身份散文里的服装描写（2026-08-29）。
@@ -201,10 +170,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   const manual = sanitizePopularManual(options.manual || [])
   // 反推顶替的服装（非空即整体替换 outfit.tokens 与 outfit.prose）
-  const overridden = options.outfitOverride?.length ? [...options.outfitOverride] : null
-  const sourceOutfit = blueprint?.outfitId
-    ? character.outfits.find(item => item.id === blueprint.outfitId)
-    : character.outfits.find(item => item.default) ?? character.outfits[0]
+  const overrideTokens = options.outfitOverride ? wardrobeTokens(options.outfitOverride) : null
+  const overridden = overrideTokens?.length ? overrideTokens : null
+  const outfitTokens = overridden ?? wardrobeTokens(outfit.tokens)
+  const sourceOutfit = character.outfits.find(item => item.id === blueprint?.outfitId)
+    ?? character.outfits.find(item => item.default) ?? character.outfits[0]
   // Adult blueprints own their clothing unless the user explicitly changes it.
   const adultOutfitOverride = adult && Boolean(overridden
     || (options.outfitExplicit && blueprint && sourceOutfit && sourceOutfit.id !== outfit.id))
@@ -217,9 +187,11 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // 手动和参考服装的 Mature 词条共同联动分级与负向，不参与访问控制。
   const manualR18 = isManualR18Tags([...manual, ...(overridden ?? [])], options.matureTokens)
   const outfitAppearance = outfitActive && (!adult || adultOutfitOverride) && !overridden ? outfit : null
+  const outfitIdentity = wardrobeTokens(outfitAppearance?.identityTokensOverride ?? [])
   const identitySource = blueprint?.identityTokensOverride?.length ? blueprint.identityTokensOverride
-    : outfitAppearance?.identityTokensOverride?.length ? outfitAppearance.identityTokensOverride : character.identityTokens
-  const identityProse = blueprint?.identityProseOverride || outfitAppearance?.identityProseOverride || character.identityProse
+    : outfitIdentity.length ? outfitIdentity : character.identityTokens
+  const identityProse = blueprint?.identityProseOverride
+    || wardrobeProse(outfitAppearance?.identityProseOverride) || character.identityProse
   const ratingLevel = (adult || manualR18) ? 'R18' : 'ALL'
   const inherited = inferBlueprintDecisions(blueprint)
   const cameraSource = isManualDirectorValue(options.directorSources, 'shot', options.shot, inherited.shot) ? 'manual' : 'scene'
@@ -258,17 +230,18 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   // An explicit wardrobe choice takes precedence over the scene's clothing.
   const outfitProse = ((adult && !adultOutfitOverride) || !outfitActive)
     ? ''
-    : (overridden ? outfitProseForRender(options.outfitOverrideProse || outfitOverrideProse(overridden)) : outfitProseForRender(outfit.prose))
+    : wardrobeProse(overridden ? options.outfitOverrideProse : outfit.prose, outfitTokens)
 
   const manualPose = manual.map(mutualGroupWithCategory).find(h => h?.category === 'pose')
   const manualViewpoint = manual.map(mutualGroupWithCategory).find(h => h?.category === 'viewpoint')
   const stableIdentity = new Set([...character.exactTokens, ...identitySource.filter(token =>
     !isGarmentToken(normalizeProseKey(token)) && mutualGroupWithCategory(token)?.category !== 'outfit')].map(normalizeProseKey))
-  const outfitChanged = Boolean((!adult || adultOutfitOverride) && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id))
+  const outfitChanged = Boolean(outfitActive && (!adult || adultOutfitOverride)
+    && sourceOutfit && (overridden || sourceOutfit.id !== outfit.id))
   const replacedOutfit = outfitChanged && sourceOutfit
-    ? new Set(sourceOutfit.tokens.map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
+    ? new Set(wardrobeTokens(sourceOutfit.tokens).map(normalizeProseKey).filter(key => !stableIdentity.has(key)))
     : new Set<string>()
-  const selectedOutfit = (overridden ?? outfit.tokens).map(normalizeProseKey)
+  const selectedOutfit = outfitTokens.map(normalizeProseKey)
   const selectedShoes = selectedOutfit.some(key => SHOE_TOKENS.has(key) || /(?:^|_)(?:boots|shoes|sneakers|heels|sandals|loafers|slippers)$/.test(key))
   const selectedBarefoot = selectedOutfit.some(key => BAREFOOT_TOKENS.has(key))
   const nakedState = new Set(['nude', 'naked', 'fully_nude', 'completely_nude', 'no_clothes', 'unclothed'])
@@ -277,6 +250,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     ? sceneProseWithChangedOutfit(originalSceneProse, sourceOutfit, selectedClothing) : originalSceneProse
   const sceneProse = engine === 'moss' ? withoutReplacedPose(manual, outfitSceneProse, blueprint) : outfitSceneProse
   const replacedSceneOutfit = (token: string) => {
+    if (isWardrobeContextTag(token)) return false
     const key = normalizeProseKey(token)
     if (replacedOutfit.has(key)) return true
     if (outfitChanged && isOutfitToken(token)) return true
@@ -310,7 +284,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const exactIdentity = (!blueprint ? standaloneIdentityTokens(character.exactTokens) : character.exactTokens).filter(token => !referenceIdentity
     || (mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
   const exactControls = [...new Set([
-    ...(((adult && !adultOutfitOverride) || !outfitActive) ? [] : (overridden ?? outfit.tokens)),
+    ...(((adult && !adultOutfitOverride) || !outfitActive) ? [] : outfitTokens),
     ...exactIdentity,
     ...nsfwTokens,
   ])]

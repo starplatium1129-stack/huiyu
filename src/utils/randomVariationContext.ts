@@ -7,6 +7,9 @@ import { inferBlueprintLighting } from './blueprintLighting.ts'
 import { DIRECTOR_CONTROL_KEYS, isManualDirectorValue } from './promptDirector.ts'
 import type { DirectorControlSources } from '../types/promptDirector.ts'
 import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
+import { wardrobeTokens } from './wardrobeContent.ts'
+import { normalizeKey, tokenize } from './promptPrimitives.ts'
+import { randomSceneWardrobe } from './randomSceneVariation.ts'
 
 type Context = { char: string; sceneId: string | null; subject: unknown }
 type Controls = { selections: { shot: string | null; lighting: string | null }; directorSources?: DirectorControlSources; visualDescription: string }
@@ -28,13 +31,29 @@ export function activeRandomVariation(variation: DraftRandomVariation | null, co
   return variation?.context === randomVariationContext(context) && variation.source === randomVariationSource(source) ? variation : null
 }
 
+export function withoutRandomOutfit(variation: DraftRandomVariation, source: Source | null,
+  catalog: ReadonlyArray<{ en: string; cat: string }>): DraftRandomVariation {
+  if (!variation.outfit.length) return variation
+  // The overlay originally removed the scene's clothing and rewrote its caption.
+  // Restore those inputs so a replacement, and later clearing it, use the authored wardrobe.
+  const isWardrobe = randomSceneWardrobe(catalog)
+  const restore = (authored: string[], retained: string[]) => {
+    const keys = new Set(retained.map(normalizeKey))
+    return authored.filter(token => keys.has(normalizeKey(token)) || isWardrobe(token))
+  }
+  return { ...variation,
+    prompt: restore(source?.promptTokens ?? tokenize(source?.prompt ?? ''), tokenize(variation.prompt)).join(', '),
+    tags: restore(source?.sceneTags ?? source?.tags ?? [], variation.tags),
+    prose: source?.promptTokens ? source.promptProse ?? '' : source?.animaCaption ?? '', outfit: [] }
+}
+
 // The compiler's existing ASCII gate remains authoritative for user descriptions.
 const userDescription = (text: string) => /^[\x20-\x7e]+$/.test(text.trim()) ? text.trim() : ''
 export function variedStudioScene(source: Scene, variation: DraftRandomVariation, controls: Controls): Scene {
   const shot = isManualDirectorValue(controls.directorSources, 'shot', controls.selections.shot, sceneShot(source)) ? controls.selections.shot : null
   const lighting = isManualDirectorValue(controls.directorSources, 'lighting', controls.selections.lighting, sceneLighting(source)) ? controls.selections.lighting : null
   const prose = userDescription(controls.visualDescription) || renderRandomVariationProse(variation.prose, shot, lighting, sceneLighting(source))
-  return { ...source, prompt: [variation.prompt, ...variation.outfit].filter(Boolean).join(', '), tags: variation.tags,
+  return { ...source, prompt: [variation.prompt, ...wardrobeTokens(variation.outfit)].filter(Boolean).join(', '), tags: variation.tags,
     animaCaption: prose, promptProse: prose,
     camera: shot ? '' : source.camera, lighting: source.lighting || sceneLighting(source) || '', emotion: '' }
 }

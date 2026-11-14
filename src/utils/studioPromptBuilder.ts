@@ -13,6 +13,7 @@ import { studioDualSubject } from './studioDualSubject.ts'
 import { renderMossDrawingPrompt } from './mossPrompt.ts'
 import type { DraftOutfitOverride } from './promptBuilderPersistence'
 import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from './outfitReplacement.ts'
+import { sanitizeOutfitOverride, wardrobeProse, wardrobeTokens } from './wardrobeContent.ts'
 
 export interface PromptLoraMetadata {
   id?: string
@@ -74,17 +75,18 @@ export function studioSubjectProse(character: string): string {
 /** Resolve the scene once, then pass all authored context to the public renderer. */
 export function buildStudioPromptPlan(options: StudioPromptOptions) {
   const { character, engine } = options
-  const manual = withoutSuppressedOutfitTags(options.manual || [], options.outfitOverride)
-  const manualAdult = isManualR18Tags([...manual, ...(options.outfitOverride?.tokens || [])], options.matureTokens)
+  const override = sanitizeOutfitOverride(options.outfitOverride)
+  const manual = withoutSuppressedOutfitTags(options.manual || [], override)
+  const manualAdult = isManualR18Tags([...manual, ...(override?.tokens || [])], options.matureTokens)
   const supported = options.scene && sceneSupportsCharacter(options.scene, character) ? options.scene : null
   const originalScene: Scene | null = manualAdult
     ? { ...(supported || { id: 'custom_r18', title: '自定义 R18', prompt: '', tags: [], negative: '' }), rating: 'R18', mature: true }
     : supported
   const activeLoras = engine === 'anima' ? options.activeLoras || {} : {}
   const profile = engine === 'moss' ? null : studioPromptProfile(options.profile ?? null, engine, activeLoras, options.loraMeta)
-  const originalControls = characterControlTokens(originalScene, character, activeLoras)
-  const scene = options.outfitOverride ? studioSceneWithOutfit(originalScene, originalControls, options.outfitOverride.tokens) : originalScene
-  const overrideTokens = options.outfitOverride?.tokens.filter(tag => engine === 'anima' || !/^(?:nene|natsume)_/i.test(tag)) || []
+  const originalControls = wardrobeTokens(characterControlTokens(originalScene, character, activeLoras))
+  const scene = override ? studioSceneWithOutfit(originalScene, originalControls, override.tokens) : originalScene
+  const overrideTokens = override?.tokens.filter(tag => engine === 'anima' || !/^(?:nene|natsume)_/i.test(tag)) || []
   const inherited = { shot: sceneShot(scene), lighting: sceneLighting(scene), composition: sceneComposition(scene) }
   const selections = {
     shot: options.shot === undefined ? inherited.shot : options.shot,
@@ -112,10 +114,10 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
   const plan = createPromptPlan({
     profile, identity,
     ...STUDIO_PROMPT_SUBJECTS[character], ...subject,
-    controls: options.outfitOverride
+    controls: override
       ? [...originalControls.filter(tag => /^(?:nene|natsume)_r18$/i.test(tag)), ...overrideTokens]
-      : options.controls ?? originalControls,
-    outfitProse: options.outfitOverride?.prose || overrideTokens.map(tag => tag.replace(/_/g, ' ')).join(', '),
+      : options.controls ? wardrobeTokens(options.controls) : originalControls,
+    outfitProse: wardrobeProse(override?.prose, overrideTokens),
     artists: [...(options.artistTags || [])], artistProse: options.artistProse,
     camera: selections.shot ? [SHOT.find(item => item.id === selections.shot)?.prompt || ''] : [],
     lighting: selections.lighting ? [LIGHTING.find(item => item.id === selections.lighting)?.prompt || ''] : [],

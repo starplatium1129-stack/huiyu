@@ -1,3 +1,5 @@
+import { CANONICAL_OUTFITS } from '../../utils/canonicalOutfits.ts'
+
 export interface OutfitBundle {
   id: string
   character: 'nene' | 'natsume'
@@ -103,7 +105,7 @@ export const OUTFIT_BUNDLES: OutfitBundle[] = [
   },
   {
     id: 'natsume-sleepwear', character: 'natsume', label: '夏目 · 睡衣',
-    tags: ['natsume_sleepwear', 'shirt', 'blue_shirt', 'pillow', 'on_bed'],
+    tags: [...CANONICAL_OUTFITS.natsumeSleepwear.tags],
   },
 ]
 

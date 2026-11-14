@@ -4,6 +4,7 @@ import { isGarmentToken } from './popularIdentity.ts'
 import { isStableIdentityToken } from './interrogateReference.ts'
 import type { DraftRandomVariation } from './promptBuilderPersistence.ts'
 import { lightingTokenId } from './promptLighting.ts'
+import { isWardrobeContextTag } from './wardrobeContent.ts'
 
 /** Authored rendering input, not search metadata or a character's recommended scene. */
 export interface RandomSceneContext {
@@ -74,15 +75,24 @@ export function sceneAllowsAction(scene: RandomSceneContext, token: string): boo
 const cameraKeys = new Set(SHOT.filter(option => !['turn', 'over'].includes(option.id)).map(option => key(option.prompt ?? '')))
 const compositionKeys = new Set(COMPOSITION.map(option => key(option.prompt ?? '')))
 
+export function randomSceneWardrobe(catalog: ReadonlyArray<{ en: string; cat: string }>) {
+  const clothing = new Set(catalog.filter(tag => tag.cat === 'Clothing').flatMap(tag => tokenize(tag.en).map(key)))
+  return (token: string): boolean => {
+    const normalized = key(token)
+    return !isWardrobeContextTag(normalized) && !isStableIdentityToken(normalized)
+      && (isGarmentToken(normalized) || clothing.has(normalized) || mutualGroupWithCategory(normalized)?.category === 'outfit')
+  }
+}
+
 /** Remove known replaceable fields only; unknown relationship tokens survive. */
 export function sceneVariationOverlay(scene: RandomSceneContext | undefined, outfit: string[],
   catalog: ReadonlyArray<{ en: string; cat: string }>, shot: string | null, lighting: string | null): DraftRandomVariation {
   const categories = new Map(catalog.flatMap(tag => tokenize(tag.en).map(token => [key(token), tag.cat] as const)))
+  const isWardrobe = randomSceneWardrobe(catalog)
   const variable = (token: string) => {
     const normalized = key(token)
     if (isStableIdentityToken(normalized) || ['looking_back', 'selfie'].includes(normalized)) return false
-    if (outfit.length && (isGarmentToken(normalized) || categories.get(normalized) === 'Clothing'
-      || mutualGroupWithCategory(normalized)?.category === 'outfit')) return true
+    if (outfit.length && isWardrobe(token)) return true
     return (Boolean(shot) && (cameraKeys.has(normalized) || categories.get(normalized) === 'Camera'))
       || compositionKeys.has(normalized) || (Boolean(lighting) && lighting !== scene?.lighting && Boolean(scene?.lighting) && lightingTokenId(token) === scene?.lighting)
       || (!scene?.prose && categories.get(normalized) === 'Emotion')

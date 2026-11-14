@@ -8,6 +8,7 @@ import { isStableIdentityToken } from '@/utils/interrogateReference'
 import { isGarmentToken } from '@/utils/popularIdentity'
 import { normalizeKey } from '@/utils/promptPolicy'
 import { suppressedOutfitTags } from '@/utils/outfitReplacement'
+import { wardrobeProse, wardrobeTokens } from '@/utils/wardrobeContent'
 import type { PromptTagSource } from '@/utils/promptTagDictionary'
 
 const OUTFIT_TYPES = [
@@ -90,7 +91,7 @@ export function useOutfitPresetLibrary(
   const items = computed<OutfitItem[]>(() => {
     const universal: BundleOutfit[] = UNIVERSAL_WARDROBE_PRESETS.map(preset => ({
       id: `universal/${preset.id}`, kind: 'universal', name: preset.label, sourceName: '通用套装',
-      description: preset.description, tokens: preset.tags,
+      description: preset.description, tokens: wardrobeTokens(preset.tags),
       search: searchText([preset.label, preset.id, preset.description, ...preset.tags].join(' ')),
       types: outfitTypes([preset.label, preset.id, ...preset.tags].join(' ')),
     }))
@@ -98,7 +99,7 @@ export function useOutfitPresetLibrary(
       .filter(bundle => !pb.isPopular && (pb.char === 'triad' || bundle.character === pb.char))
       .map(bundle => ({
         id: `bundle/${bundle.id}`, kind: 'bundle', name: bundle.label.split(' · ').slice(1).join(' · '),
-        sourceName: `${bundle.label.split(' · ')[0]} · 角色词包`, description: bundle.tags.join(', '), tokens: bundle.tags,
+        sourceName: `${bundle.label.split(' · ')[0]} · 角色词包`, description: wardrobeTokens(bundle.tags).join(', '), tokens: wardrobeTokens(bundle.tags),
         search: searchText([bundle.label, bundle.id, ...bundle.tags].join(' ')),
         types: outfitTypes([bundle.label, bundle.id, ...bundle.tags].join(' ')),
       }))
@@ -205,16 +206,16 @@ export function useOutfitPresetLibrary(
     const identity = new Set(item.identity.map(normalizeKey))
     const bunnyCostume = item.tokens.some(token => /bunny[_ -]suit/i.test(token))
     const removed: string[] = []
-    const tokens = item.tokens.filter(token => {
+    const tokens = wardrobeTokens(item.tokens).filter(token => {
       const key = normalizeKey(token)
-      const studioControl = /^(?:nene|natsume)_/.test(key)
+      const studioControl = /^(?:nene|natsume)_/.test(key) && (pb.isPopular || pb.char !== item.sourceId)
       const identityToken = (isStableIdentityToken(token) && !(key === 'bunny_ears' && bunnyCostume))
         || (identity.has(key) && !isGarmentToken(token) && !/(?:ribbon|bow|clip|ornament|flower|earring)$/.test(key))
       if (studioControl || identityToken) { removed.push(token); return false }
       return true
     })
     const proseKey = normalizeKey(item.prose)
-    const prose = removed.some(token => proseKey.includes(normalizeKey(token))) ? '' : item.prose
+    const prose = removed.some(token => proseKey.includes(normalizeKey(token))) ? '' : wardrobeProse(item.prose)
     return { tokens, prose }
   }
   function select(item: OutfitItem) {

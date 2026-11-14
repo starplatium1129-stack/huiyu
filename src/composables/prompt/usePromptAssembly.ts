@@ -35,6 +35,7 @@ import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import { compositionTokens } from '@/utils/blueprintComposition'
 import { mossArtistTags } from '@/utils/mossPrompt'
 import { studioSceneWithOutfit, withoutSuppressedOutfitTags } from '@/utils/outfitReplacement'
+import { sanitizeOutfitOverride, wardrobeTokens } from '@/utils/wardrobeContent'
 
 type PromptBuilderStore = ReturnType<typeof usePromptBuilderStore>
 export type PromptAssemblyState = Pick<PromptBuilderStore, 'activeScene' | 'artistStyleIds' | 'char' | 'characters' | 'charPrompt'
@@ -78,7 +79,8 @@ export function usePromptAssembly(
 
   /** 场景必须支持当前角色，否则不套用场景模板；若手动勾选了 R18 词条或触发词，自动提升为 R18 评级以解除负面拦截。 */
   const effectiveScene = computed(() => {
-    const isManualR18 = isManualR18Tags([...withoutSuppressedOutfitTags(pb.manualTags, pb.outfitOverride), ...(pb.outfitOverride?.tokens || [])], matureTokenSet.value)
+    const override = sanitizeOutfitOverride(pb.outfitOverride)
+    const isManualR18 = isManualR18Tags([...withoutSuppressedOutfitTags(pb.manualTags, override), ...(override?.tokens || [])], matureTokenSet.value)
     const original = pb.activeScene
     const variation = activeRandomVariation(pb.randomVariation, pb, original)
     const scene = original && variation ? variedStudioScene(original, variation, pb) : original
@@ -164,9 +166,10 @@ export function usePromptAssembly(
     const parts: PromptPart[] = []
     const selections = pb.selections
     const originalScene = effectiveScene.value
-    const originalControls = characterControlTokens(originalScene, pb.char, controlLoraIds.value)
-    const scene = pb.outfitOverride ? studioSceneWithOutfit(originalScene, originalControls, pb.outfitOverride.tokens) : originalScene
-    const manualTags = new Set(withoutSuppressedOutfitTags(pb.manualTags, pb.outfitOverride))
+    const originalControls = wardrobeTokens(characterControlTokens(originalScene, pb.char, controlLoraIds.value))
+    const override = sanitizeOutfitOverride(pb.outfitOverride)
+    const scene = override ? studioSceneWithOutfit(originalScene, originalControls, override.tokens) : originalScene
+    const manualTags = new Set(withoutSuppressedOutfitTags(pb.manualTags, override))
     const profile = modelProfile.value
     const sceneTemplate = sceneTemplateText(scene, {
       char: pb.char,
@@ -183,8 +186,8 @@ export function usePromptAssembly(
     const traitTags = currentTraits.value
       .filter(trait => manualTags.has(trait.tag))
       .map(trait => trait.tag)
-    const controlTags = pb.outfitOverride
-      ? [...originalControls.filter(tag => /^(?:nene|natsume)_r18$/i.test(tag)), ...pb.outfitOverride.tokens] : originalControls
+    const controlTags = override
+      ? [...originalControls.filter(tag => /^(?:nene|natsume)_r18$/i.test(tag)), ...override.tokens] : originalControls
     const charLine = compositionTokens(tokenize(pb.charPrompt), { ...scene, promptTokens: tokenize(sceneTemplate) }).join(', ')
     if (charLine) {
       const identityTags = [...controlTags, ...traitTags]

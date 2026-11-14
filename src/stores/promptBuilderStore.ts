@@ -2,7 +2,7 @@ import type { StoryOrigin } from '@/types/storyOrigin'
 import { usePromptDraft } from '@/composables/prompt/usePromptDraft'
 import { usePromptSceneFilters } from '@/composables/prompt/usePromptSceneFilters'
 import { usePromptArtworkHistory } from '@/composables/prompt/usePromptArtworkHistory'
-import { sceneStyleBaseline } from '@/utils/randomVariationContext'
+import { activeRandomVariation, randomVariationContext, sceneStyleBaseline, withoutRandomOutfit } from '@/utils/randomVariationContext'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import { DIRECTOR_CONTROL_KEYS, normalizeDirectorSources, restoreDirectorSources, sceneDirectorSources } from '@/utils/promptDirector'
 import type { DirectorControlSource, DirectorControlSources, DirectorControlValues } from '@/types/promptDirector'
@@ -34,6 +34,7 @@ import type { DrawSubject } from '@/utils/popularContent'
 import type { RecipeRestoreReport } from '@/utils/recipeComparison'
 import { normalizeArtistStyleIds } from '@/config/artistStyles'
 import { CHAR_PROMPT, EMOTION } from '@/config/promptConstants'
+import { sanitizeOutfitOverride, wardrobeTokens } from '@/utils/wardrobeContent'
 export { CHAR_PROMPT } from '@/config/promptConstants'
 
 import type { CharKey, Selections } from '@/types/promptHistory'
@@ -61,7 +62,24 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   const outfitOverride = ref<DraftOutfitOverride | null>(null)
   const referenceInput = ref<DraftReferenceInput | null>(null)
   const randomVariation = ref<DraftRandomVariation | null>(null)
-  watch(() => JSON.stringify([char.value, sceneId.value, subject.value, outfitOverride.value]), clearRandomVariation, { flush: 'sync' })
+  watch([char, sceneId, subject, outfitOverride], ([nextChar, nextScene, next, override], [oldChar, oldScene, old, oldOverride]) => {
+    if (!randomVariation.value) return
+    if (nextChar !== oldChar || nextScene !== oldScene || next.kind !== old.kind
+      || (next.kind === 'popular' && old.kind === 'popular' && (next.characterId !== old.characterId || next.blueprintId !== old.blueprintId))) {
+      clearRandomVariation()
+      return
+    }
+    const outfitChanged = next.kind === 'popular' && old.kind === 'popular'
+      && (next.outfitId !== old.outfitId || next.outfitExplicit !== old.outfitExplicit)
+    if (outfitChanged || JSON.stringify(override?.tokens) !== JSON.stringify(oldOverride?.tokens)) {
+      const source = next.kind === 'popular' ? sceneBlueprints.value.find(item => item.id === next.blueprintId) ?? null : activeScene.value
+      const variation = activeRandomVariation(randomVariation.value, { char: oldChar, sceneId: oldScene, subject: old }, source)
+      if (!variation) { clearRandomVariation(); return }
+      removeRandomOutfitTags()
+      const adjusted = withoutRandomOutfit(variation, source, tags.value)
+      randomVariation.value = { ...adjusted, context: randomVariationContext({ char: nextChar, sceneId: nextScene, subject: next }) }
+    }
+  }, { flush: 'sync' })
   const artistStyleIds = ref<string[]>([])
   const projectId  = ref('')
 
@@ -225,9 +243,12 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
   )
 
   // ── Mutations ───────────────────────────────────────────────────────────
-  function clearRandomVariation() {
+  function removeRandomOutfitTags() {
     const outfit = new Set(randomVariation.value?.outfit.map(normalizeKey) ?? [])
     if (outfit.size) manualTags.value = new Set([...manualTags.value].filter(token => !outfit.has(normalizeKey(token))))
+  }
+  function clearRandomVariation() {
+    removeRandomOutfitTags()
     randomVariation.value = null
   }
   function clearInheritedStory(nextBlueprintId: string | null = null) {
@@ -261,9 +282,10 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     storyOrigin.value = undefined
     clearInheritedStory()
     clearRandomVariation()
-    const suppressed = new Set((outfitOverride.value?.suppressedTags || []).map(normalizeKey))
+    const override = sanitizeOutfitOverride(outfitOverride.value)
+    const suppressed = new Set((override?.suppressedTags || []).map(normalizeKey))
     manualTags.value = new Set([...manualTags.value].filter(tag => !suppressed.has(normalizeKey(tag))))
-    for (const token of outfitOverride.value?.tokens ?? []) manualTags.value.add(token)
+    for (const token of override?.tokens ?? []) manualTags.value.add(token)
     subject.value = { kind: 'studio' }
     char.value = 'none'
     sceneId.value = null; sceneBaseStory.value = ''
@@ -276,7 +298,6 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
     options: { preserveReference?: boolean; preserveOutfitOverride?: boolean; outfitExplicit?: boolean } = {}) {
     clearInheritedStory(blueprintId)
     if (storyOrigin.value) storyOrigin.value = blueprintId ? undefined : { ...storyOrigin.value, characterId, outfitId, outfitProse: undefined }
-    clearRandomVariation()
     subject.value = { kind: 'popular', characterId, outfitId, blueprintId, outfitExplicit: options.outfitExplicit }
     if (!options.preserveReference) clearReferenceInput()
     if (!options.preserveOutfitOverride) outfitOverride.value = null
@@ -310,9 +331,11 @@ export const usePromptBuilderStore = defineStore('promptBuilder', () => {
 
   /** 反推出跨族服装：顶替角色默认服装（replaced 为被顶替的服装族名，用于提示）。 */
   function setOutfitOverride(tokens: string[], replaced: string | null, preset?: Pick<DraftOutfitOverride, 'presetId' | 'label' | 'prose' | 'suppressedTags'>) {
-    outfitOverride.value = tokens.length ? { tokens: [...new Set(tokens.map(tagDictionary.value.canonicalize))], replaced,
+    const normalized = [...new Set(wardrobeTokens(tokens.map(tagDictionary.value.canonicalize)))]
+    if (tokens.length && !normalized.length) return
+    outfitOverride.value = sanitizeOutfitOverride({ tokens: normalized, replaced,
       ...(preset?.presetId ? { presetId: preset.presetId } : {}), ...(preset?.label ? { label: preset.label } : {}),
-      ...(preset?.prose ? { prose: preset.prose } : {}), ...(preset?.suppressedTags?.length ? { suppressedTags: [...preset.suppressedTags] } : {}) } : null
+      ...(preset?.prose ? { prose: preset.prose } : {}), ...(preset?.suppressedTags?.length ? { suppressedTags: [...preset.suppressedTags] } : {}) })
   }
   /** 一键恢复角色默认服装。 */
   function clearOutfitOverride() { outfitOverride.value = null }

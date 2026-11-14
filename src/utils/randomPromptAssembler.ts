@@ -9,6 +9,7 @@ import { normalizeArtistStyleIds, ARTIST_STYLE_CANDIDATES } from '../config/arti
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '../config/promptConstants.ts'
 import { normalizeKey, mutualGroupWithCategory } from './promptPolicy.ts'
 import { appendRandomTag, compatibleRandomDetail, randomTokens, visibleInRandomShot } from './randomPromptConstraints.ts'
+import { isWardrobeContextTag, wardrobeTokens } from './wardrobeContent.ts'
 
 /**
  * 随机灵感采样器（2026-08-29，详见 docs/guides/engineering/random-prompt-assembler-design.md）。
@@ -312,7 +313,8 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     if (officialKeys.length && chance(0.6, rng)) {
       const key = draw(officialKeys, 1, rng)[0]
       if (key) {
-        const tokens = (officialOutfits?.[key] ?? []).flatMap(randomTokens).filter(token => !exclude.has(normalizeKey(token)) && !isStableIdentityToken(token) && visible(token))
+        const tokens = wardrobeTokens((officialOutfits?.[key] ?? []).flatMap(randomTokens))
+          .filter(token => !exclude.has(normalizeKey(token)) && !isStableIdentityToken(token) && visible(token))
         const canonical = tokens[0]
         if (canonical) add(canonical)
         // 额外补 0~2 个签名 token（官方套装通常 4~12 个 token，全塞会淹没画面）
@@ -320,7 +322,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
         for (const extra of extras) add(extra)
       }
     } else if (clothingPool.length) {
-      const generic = draw(clothingPool.filter(visible), 1, rng)[0]
+      const generic = draw(clothingPool.filter(token => !isWardrobeContextTag(token) && visible(token)), 1, rng)[0]
       if (generic) add(generic)
     }
   }

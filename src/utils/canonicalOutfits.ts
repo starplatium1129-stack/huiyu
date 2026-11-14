@@ -98,7 +98,7 @@ export const CANONICAL_OUTFITS = {
   },
   natsumeSleepwear: {
     tags: [
-      'natsume_sleepwear', 'shirt', 'blue_shirt', 'pillow', 'on_bed',
+      'natsume_sleepwear', 'shirt', 'blue_shirt',
     ],
     prose: 'her pale blue sleepwear',
   },

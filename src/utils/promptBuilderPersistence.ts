@@ -1,4 +1,5 @@
 import { normalizeKey } from './promptPrimitives.ts'
+import { sanitizeOutfitOverride } from './wardrobeContent.ts'
 import type { DirectorControlSources, DirectorControlValues } from '../types/promptDirector.ts'
 
 export type DraftCharKey = 'nene' | 'natsume' | 'triad' | 'none'
@@ -51,9 +52,9 @@ export function parseOutfitOverride(value: unknown): DraftOutfitOverride | null 
   const suppressedTags = Array.isArray(input.suppressedTags)
     ? [...new Set(input.suppressedTags.filter((tag): tag is string => typeof tag === 'string' && !!tag.trim()).map(tag => tag.trim()))].slice(0, 256)
     : []
-  return { tokens, replaced: typeof input.replaced === 'string' ? input.replaced : null,
+  return sanitizeOutfitOverride({ tokens, replaced: typeof input.replaced === 'string' ? input.replaced : null,
     ...(presetId ? { presetId } : {}), ...(label ? { label } : {}), ...(prose ? { prose } : {}),
-    ...(suppressedTags.length ? { suppressedTags } : {}) }
+    ...(suppressedTags.length ? { suppressedTags } : {}) })
 }
 
 /** Only tags actually introduced by reverse inference; user-owned duplicates are excluded. */
