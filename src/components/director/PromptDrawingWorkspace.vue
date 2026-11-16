@@ -76,6 +76,7 @@
           :provider="native.mode.value ? 'native' : animaState.provider" :readiness-text="engineStatusText"
           :size="genBarSize"
           :anima-sizes="animaBarSizes"
+          :custom-size="animaSizeLimits"
           :show-size="!actionBarDocked" :docked="actionBarDocked"
           :blocked-reason="generateBlockReason"
           :has-result="Boolean(displayResultUrl)"
@@ -180,7 +181,7 @@
             <template #style><PromptInspectorStyle :bindings="styleBindings" engine="moss" /></template>
           </component></AsyncPanel>
           <AsyncPanel v-else :loader="loadInspectorRender" label="绘制参数" v-slot="{ component }"><component :is="component" :bindings="renderBindings">
-            <template #size><GenerationSizePicker :engine="drawEngine" :size="genBarSize" :anima-sizes="animaBarSizes" :busy="generationBusy" @update:size="genBarSize = $event" /></template>
+            <template #size><GenerationSizePicker :engine="drawEngine" :size="genBarSize" :anima-sizes="animaBarSizes" :custom-size="animaSizeLimits" :busy="generationBusy" @update:size="genBarSize = $event" /></template>
             <template #style><PromptInspectorStyle :bindings="styleBindings" /></template>
           </component></AsyncPanel>
           <OutfitOverrideNotice v-if="outfitOverridden && !native.mode.value" />
@@ -353,6 +354,10 @@ healthBindings,
 deliveryBindings,
 dialogBindings
 } = workspace
+
+const animaSizeLimits = computed(() => drawEngine.value === 'anima'
+  ? animaState.value.models.find(model => model.id === animaState.value.modelId)?.capabilities?.customSize
+  : undefined)
 const getBlueprint = () => currentBlueprintData.value
 const resizeSides = computed(() => pb.focusMode || directorLayout.compact.value ? []
   : (['materials', 'inspector'] as const).filter(side => !directorLayout.collapsed.value[side]))

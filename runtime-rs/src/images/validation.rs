@@ -1,5 +1,15 @@
 use super::*;
 use crate::generation::truthy;
+
+const MIN_SIDE: u64 = 512;
+const MAX_SIDE: u64 = 1536;
+const ANIMA_SIZE_STEP: u64 = 16;
+const ANIMA_MAX_PIXELS: u64 = 1_850_000;
+
+pub(super) fn anima_size_limits() -> Value {
+    json!({"min": MIN_SIDE, "max": MAX_SIDE, "step": ANIMA_SIZE_STEP, "maxPixels": ANIMA_MAX_PIXELS})
+}
+
 pub(super) fn number(
     value: &Value,
     name: &str,
@@ -116,15 +126,12 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
     } else {
         Value::Null
     };
-    let width = number(&body["width"], "width", 512., 1536., true)?;
-    let height = number(&body["height"], "height", 512., 1536., true)?;
+    let dimension = |key: &str| number(&body[key], key, MIN_SIDE as f64, MAX_SIDE as f64, true);
+    let width = dimension("width")?;
+    let height = dimension("height")?;
     let w = width.as_u64().unwrap();
     let h = height.as_u64().unwrap();
-    let inpaint = !krea
-        && body["initImage"]
-            .as_str()
-            .is_some_and(|s| !s.trim().is_empty());
-    if !inpaint
+    if krea
         && !model["sizes"]
             .as_array()
             .unwrap()
@@ -132,10 +139,10 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
     {
         return Err(error("INVALID_PARAMETER", "不支持的输出尺寸"));
     }
-    if inpaint && (w % 16 != 0 || h % 16 != 0) {
-        return Err(error("INVALID_PARAMETER", "局部重绘尺寸必须是 16 的倍数"));
+    if !krea && (w % ANIMA_SIZE_STEP != 0 || h % ANIMA_SIZE_STEP != 0) {
+        return Err(error("INVALID_PARAMETER", "Anima 画幅宽高必须是 16 的倍数"));
     }
-    if !krea && w * h > 1_850_000 {
+    if !krea && w * h > ANIMA_MAX_PIXELS {
         return Err(error("INVALID_PARAMETER", "输出尺寸超过允许面积"));
     }
     let validate_limit = |key: &str, value: &Value| {

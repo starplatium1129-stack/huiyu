@@ -129,7 +129,7 @@ export function useDirectorEngine(input: UseDirectorEngineInput) {
       : '已切换到 Krea 2（自然语言、无角色 LoRA，身份不保证）')
   }
 
-  /** 推荐尺寸必须收敛到当前底模白名单（服务端 400 INVALID_PARAMETER 兜底）。 */
+  /** 保留底模支持的尺寸，超出范围时按画幅比例选择预设。 */
   function applyRecommendedSize(size: string) {
     const normalized = size.replace('×', 'x')
     sdSize.value = normalized

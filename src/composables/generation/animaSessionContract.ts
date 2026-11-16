@@ -1,5 +1,5 @@
 import type { ApiClient } from '@/api/client'
-import type { AnimaGenerationState, AnimaOption, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
+import type { AnimaGenerationState, AnimaOption, AnimaSizeLimits, ComfyNodeReadiness, AnimaResult, AnimaResultContext } from '@/types/anima'
 import type { CharKey } from '@/stores/promptBuilderStore'
 import type { AnimaSketchControl, AnimaPromptRegion } from '@/types/animaComposition'
 import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
@@ -166,13 +166,29 @@ export function animaRequestPayload(
   }
 }
 
-/** If a desired size is unsupported, converge to the closest supported aspect ratio. */
+type DrawingSizeModel = { sizes?: readonly string[]; capabilities?: { customSize?: AnimaSizeLimits } }
+
+export function validCustomSize(width: number, height: number, limits: AnimaSizeLimits): boolean {
+  const { min, max, step, maxPixels } = limits
+  return [width, height].every(side => Number.isInteger(side) && side >= min && side <= max && side % step === 0)
+    && width * height <= maxPixels
+}
+
+export function supportsDrawingSize(model: DrawingSizeModel | undefined, size: string): boolean {
+  if (model?.sizes?.includes(size)) return true
+  const custom = model?.capabilities?.customSize
+  if (!custom) return !model?.sizes?.length
+  const [width, height] = size.split('x').map(Number)
+  return validCustomSize(width, height, custom)
+}
+
+/** If a desired size is unsupported, converge to the closest preset aspect ratio. */
 export function closestSupportedSize(
-  model: { sizes?: ReadonlyArray<string> | string[] } | undefined,
+  model: DrawingSizeModel | undefined,
   desired: string,
 ): string {
   const sizes = model?.sizes || []
-  if (!sizes.length || sizes.includes(desired)) return desired
+  if (!sizes.length || supportsDrawingSize(model, desired)) return desired
   const [desiredWidth, desiredHeight] = desired.split('x').map(Number)
   if (!desiredWidth || !desiredHeight) return sizes[0]
   const desiredRatio = desiredWidth / desiredHeight

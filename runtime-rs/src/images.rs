@@ -328,6 +328,12 @@ impl Service {
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.query(id, owner).await
     }
+    pub(crate) async fn wait_remote_completion(&self, id: &str, owner: &str, family: &str) -> bool {
+        let Some(remote) = &self.remote else {
+            return false;
+        };
+        remote.wait_for_completion(id, owner, family, &self.shutdown).await
+    }
     pub async fn result(&self, id: &str, owner: &str, family: &str) -> Result<Output> {
         if let Some(remote) = &self.remote {
             return remote.result(id, owner, family, &self.shutdown).await;

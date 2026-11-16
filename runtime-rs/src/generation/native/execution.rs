@@ -75,11 +75,17 @@ pub(super) fn anima(source: &Value) -> Option<Value> {
         None => json!("unverified"),
         _ => return None,
     };
-    Some(
-        json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync","timingsAreAdditive":false,
+    let mut result = json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync","timingsAreAdditive":false,
         "timings":timings(&source["timings"], &["encoding", "sampling", "decoding"])?,
-        "ropeCache":cache,"compile":compilation,"kernelBackend":kernel,"kernelScope":"configured","performanceVerified":false}),
-    )
+        "ropeCache":cache,"compile":compilation,"kernelBackend":kernel,"kernelScope":"configured","performanceVerified":false});
+    if let Some(cache) = source.get("crossAttentionCache") {
+        let hits = cache["hits"].as_u64().filter(|n| *n <= 1_000_000)?;
+        let peak_bytes = cache["peakBytes"]
+            .as_u64()
+            .filter(|n| *n <= 256 * 1024 * 1024)?;
+        result["crossAttentionCache"] = json!({"hits":hits,"peakBytes":peak_bytes});
+    }
+    Some(result)
 }
 
 pub(super) fn qwen_prefix(source: &Value) -> Option<Value> {

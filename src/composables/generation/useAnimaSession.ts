@@ -11,6 +11,7 @@ import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
 import {
   ANIMA_LORA_BY_CHARACTER,
   closestSupportedSize,
+  supportsDrawingSize,
   type AnimaRequest,
   type AnimaSessionOptions,
   type AnimaStatusResponse,
@@ -145,7 +146,10 @@ export function useAnimaSession(options: AnimaSessionOptions) {
 
   function applyModel(modelIdToApply: string) {
     const model = state.value.models.find(item => item.id === modelIdToApply)
-    const size = closestSupportedSize(model, options.preferredSize() || `${state.value.width}x${state.value.height}`)
+    const currentSize = `${state.value.width}x${state.value.height}`
+    const keepCustom = model?.capabilities?.customSize && !model.sizes?.includes(currentSize)
+      && supportsDrawingSize(model, currentSize)
+    const size = closestSupportedSize(model, keepCustom ? currentSize : options.preferredSize() || currentSize)
     const [width, height] = size.split('x').map(Number)
     defaultsAppliedFor = modelIdToApply
     patchState({
@@ -216,12 +220,10 @@ export function useAnimaSession(options: AnimaSessionOptions) {
         ? state.value.loraId
         : (familyLoras[0]?.id || '')
       const selectedModel = visibleModels.find(model => model.id === modelIdCurrent)
-      // 切到新 family 时若当前尺寸不在该底模支持范围内，落到该底模推荐尺寸。
-      // （Krea 与 Anima 尺寸白名单不同；否则请求会以 400 INVALID_PARAMETER 失败。）
+      // Keep custom sizes across status refreshes while the model accepts them.
       let width = state.value.width
       let height = state.value.height
-      if (selectedModel && Array.isArray(selectedModel.sizes) && selectedModel.sizes.length
-        && !selectedModel.sizes.includes(`${width}x${height}`)) {
+      if (selectedModel?.sizes?.length && !supportsDrawingSize(selectedModel, `${width}x${height}`)) {
         const [nextWidth, nextHeight] = String(selectedModel.sizes[0]).split('x').map(Number)
         if (Number.isInteger(nextWidth) && Number.isInteger(nextHeight)) { width = nextWidth; height = nextHeight }
       }

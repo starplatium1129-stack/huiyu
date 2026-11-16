@@ -249,6 +249,7 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
         drop(state);
         jobs::discard_output(&job).await;
         snapshots::remove(&inner, &job.id).await;
+        job.notify.notify_waiters();
         jobs::notify_settled(&job);
         return Ok(());
     }

@@ -1,8 +1,11 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref, useId, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioSelect, { type StudioSelectGroup } from '@/components/ui/StudioSelect.vue'
-const props = defineProps<{ engine: string; size: string; animaSizes: string[]; busy: boolean; compact?: boolean }>()
+import { validCustomSize } from '@/composables/generation/animaSessionContract'
+import type { AnimaSizeLimits } from '@/types/anima'
+const props = defineProps<{ engine: string; size: string; animaSizes: string[]; busy: boolean; compact?: boolean; customSize?: AnimaSizeLimits }>()
 const emit = defineEmits<{ 'update:size': [value: string] }>()
 const sizeGroups: StudioSelectGroup[] = [
   { label: '竖图 Portrait', options: [
@@ -42,6 +45,33 @@ const sizeOptions = computed(() => cards.value.map(({ value, label }) => ({ valu
   label: props.engine === 'moss' ? `${label} · ${value.replace('x', ' × ')}` : value.replace('x', ' × '),
 })))
 function change(value: string | number) { if (value !== '') emit('update:size', String(value)) }
+
+const fieldId = useId()
+const customOpen = ref(false)
+const customWidth = ref<number | string>('')
+const customHeight = ref<number | string>('')
+const attempted = ref(false)
+const validSize = computed(() => !!props.customSize && validCustomSize(Number(customWidth.value), Number(customHeight.value), props.customSize))
+const showError = computed(() => attempted.value && !validSize.value)
+watch(() => props.busy || !props.customSize, blocked => { if (blocked) customOpen.value = false })
+
+function openCustom(open: boolean) {
+  if (open) {
+    const [width, height] = props.size.split('x').map(Number)
+    customWidth.value = width
+    customHeight.value = height
+    attempted.value = false
+  }
+  customOpen.value = open
+}
+
+function applyCustom() {
+  if (props.busy) return
+  attempted.value = true
+  if (!validSize.value) return
+  change(`${customWidth.value}x${customHeight.value}`)
+  customOpen.value = false
+}
 </script>
 <template>
   <div class="generation-size-picker" :class="{ 'is-compact': compact }" role="group" aria-label="画幅比例">
@@ -54,6 +84,28 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
         <ArchiveIcon v-if="size === card.value" class="size-picker-check" name="success" />
       </button>
     </div>
+    <StudioPopover v-if="customSize" label="自定义画幅" :open="customOpen" :side="compact ? 'top' : 'bottom'" @update:open="openCustom">
+      <template #trigger>
+        <button type="button" class="btn btn-quiet size-picker-custom" aria-label="自定义画幅" :disabled="busy">自定义</button>
+      </template>
+      <form class="size-picker-form" novalidate @submit.prevent="applyCustom">
+        <div class="size-picker-fields">
+          <label :for="fieldId + '-width'">宽度（px）
+            <input :id="fieldId + '-width'" v-model.number="customWidth" class="input" type="number" inputmode="numeric"
+              :min="customSize.min" :max="customSize.max" :step="customSize.step" :aria-invalid="showError || undefined"
+              :aria-describedby="fieldId + '-help'">
+          </label>
+          <label :for="fieldId + '-height'">高度（px）
+            <input :id="fieldId + '-height'" v-model.number="customHeight" class="input" type="number" inputmode="numeric"
+              :min="customSize.min" :max="customSize.max" :step="customSize.step" :aria-invalid="showError || undefined"
+              :aria-describedby="fieldId + '-help'">
+          </label>
+        </div>
+        <p :id="fieldId + '-help'">每边 {{ customSize.min }}–{{ customSize.max }} px，为 {{ customSize.step }} 的倍数，总面积最多 {{ customSize.maxPixels.toLocaleString('zh-CN') }} 像素。</p>
+        <p v-if="showError" class="size-picker-error" role="alert">宽度或高度超出画幅范围，请调整后应用。</p>
+        <button type="submit" class="btn btn-primary" :disabled="busy">应用尺寸</button>
+      </form>
+    </StudioPopover>
     <p v-if="!compact">{{ engine === 'moss' ? '提供标准与大尺寸的竖幅、方形预设，影响下一次输出。' : '画幅影响下一次输出，参考图保持原始比例。' }}</p>
   </div>
 </template>
@@ -72,7 +124,16 @@ function change(value: string | number) { if (value !== '') emit('update:size', 
 .size-picker-grid small { grid-column:2; font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
 .size-picker-grid .size-picker-check { position:absolute; top:var(--s-2); right:var(--s-2); width:12px; height:12px; transform:none; transition:none; }
 .generation-size-picker p { margin:var(--s-3) 0 0; font-size:var(--fs-label-xs); line-height:var(--lh-body); color:var(--text-secondary); }
+.size-picker-custom { margin-block-start:var(--s-2); flex-shrink:0; white-space:nowrap; }
+.size-picker-form { display:grid; gap:var(--s-3); }
+.size-picker-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
+.size-picker-fields label { display:grid; gap:var(--s-1); font-size:var(--fs-label); }
+.size-picker-fields input { min-width:0; width:100%; }
+.size-picker-form p { margin:0; font-size:var(--fs-label-xs); line-height:var(--lh-body); color:var(--text-secondary); }
+.size-picker-form .size-picker-error { color:var(--danger); }
+.size-picker-form button { justify-self:end; }
 .is-compact { display:flex; align-items:center; gap:var(--s-3); }
+.is-compact .size-picker-custom { margin:0; }
 .is-compact .size-picker-heading { margin:0; }.is-compact .size-picker-heading>span { display:none; }
 .is-compact .studio-select-wrapper { flex:1; min-width:0; }
 /* Horizontal cards keep the size readable in narrow rails; a third column

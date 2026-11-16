@@ -33,11 +33,15 @@ def configure(transformer, execution, tools, device):
     # Native mode keeps its dependency-free PyTorch path.
     fused = tools("worker_lifecycle").load_sibling("anima_fused") if mode != "native" else None
     attention = _rocm_attention if device.backend == "rocm" else None
+    execution.cache_cross_attention = (
+        device.backend == "rocm" and device.shared and not transformer.config.use_crossattn_projection
+    )
     execution.kernel_backend = "triton-cosmos-v1" if fused is not None else "rocm-bounded-sdpa" if attention else "pytorch"
     for block in transformer.transformer_blocks:
         for attn in (block.attn1, block.attn2):
             if type(attn.processor) is CosmosAttnProcessor2_0:
-                attn.set_processor(_CosmosProcessor(fused, attention))
+                cache = execution if execution.cache_cross_attention and attn is block.attn2 else None
+                attn.set_processor(_CosmosProcessor(fused, attention, cache))
         if fused is not None:
             for norm in (block.norm1, block.norm2, block.norm3):
                 fused.bind_adaln(norm)
@@ -119,6 +123,12 @@ def _rocm_attention(query, key, value, mask):
         return result
 
 
+def _project_kv(attn, encoder):
+    key = attn.to_k(encoder).unflatten(2, (attn.heads, -1)).transpose(1, 2)
+    value = attn.to_v(encoder).unflatten(2, (attn.heads, -1)).transpose(1, 2)
+    return key, value
+
+
 class _CosmosProcessor:
     """Pinned Cosmos math without copying K/V when their repeat factor is one.
 
@@ -127,8 +137,8 @@ class _CosmosProcessor:
     License: ANIMA_CONVERSION_LICENSE.txt (Apache-2.0); distributed AS IS.
     https://github.com/huggingface/diffusers/blob/v0.41.0/src/diffusers/models/transformers/transformer_cosmos.py
     """
-    def __init__(self, fused, attention=None):
-        self.fused, self.attention = fused, attention
+    def __init__(self, fused, attention=None, cache=None):
+        self.fused, self.attention, self.cache = fused, attention, cache
 
     def __call__(self, attn, hidden_states, encoder_hidden_states=None,
                  attention_mask=None, image_rotary_emb=None):
@@ -136,8 +146,10 @@ class _CosmosProcessor:
         from diffusers.models.embeddings import apply_rotary_emb
         encoder = hidden_states if encoder_hidden_states is None else encoder_hidden_states
         query = attn.to_q(hidden_states).unflatten(2, (attn.heads, -1)).transpose(1, 2)
-        key = attn.to_k(encoder).unflatten(2, (attn.heads, -1)).transpose(1, 2)
-        value = attn.to_v(encoder).unflatten(2, (attn.heads, -1)).transpose(1, 2)
+        if self.cache is not None and encoder_hidden_states is not None and image_rotary_emb is None:
+            key, value = self.cache.cross_attention_kv(attn, encoder, _project_kv)
+        else:
+            key, value = _project_kv(attn, encoder)
         fused = (self.fused.rms_rope(query, key, attn.norm_q, attn.norm_k, image_rotary_emb)
                  if self.fused is not None and image_rotary_emb is not None else None)
         if fused is not None:

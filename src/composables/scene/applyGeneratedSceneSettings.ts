@@ -4,6 +4,7 @@ import type { AnimaGenerationState } from '@/types/anima'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import { sceneDirectorSources } from '@/utils/promptDirector'
 import { parseOutfitOverride } from '@/utils/promptBuilderPersistence'
+import { supportsDrawingSize } from '@/composables/generation/animaSessionContract'
 
 /** Apply the recorded engine before its settings; unsupported resources are reported explicitly. */
 export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPopularInput): string[] {
@@ -61,7 +62,7 @@ export function applyGeneratedSceneSettings(value: unknown, input: UseDirectorPo
     const patch: Partial<AnimaGenerationState> = { family: recipe.engine, styleLoraId: '' }
     if (size) {
       const [width, height] = size.split('x').map(Number)
-      if (model?.sizes?.length && !model.sizes.includes(size)) notes.push(`原画幅 ${size} 不受当前底模支持，请调整后生成`)
+      if (!supportsDrawingSize(model, size)) notes.push(`原画幅 ${size} 不受当前底模支持，请调整后生成`)
       patch.width = width; patch.height = height
     }
     for (const key of ['cfg', 'steps', 'hiresScale', 'hiresDenoise', 'loraStrength'] as const) {

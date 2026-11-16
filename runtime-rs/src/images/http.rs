@@ -46,7 +46,7 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
             generation::limit_request,
         ))
 }
-fn family(uri: &axum::http::Uri) -> &'static str {
+pub(super) fn family(uri: &axum::http::Uri) -> &'static str {
     if uri.path().starts_with("/api/anima/") {
         "anima"
     } else if uri.path().starts_with("/api/qwen/") {
@@ -391,7 +391,10 @@ async fn result(
                 if !stat.is_file() {
                     return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
                 }
-                (Body::from_stream(ReaderStream::new(file)), stat.len())
+                (
+                    Body::from_stream(ReaderStream::with_capacity(file, 64 * 1024)),
+                    stat.len(),
+                )
             }
         };
         Response::builder()

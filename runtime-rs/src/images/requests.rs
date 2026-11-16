@@ -3,6 +3,7 @@ use super::*;
 pub(super) use crate::generation::receipts::Requests;
 use crate::generation::receipts::{Acceptance, Receipt};
 use futures_util::future::BoxFuture;
+use std::time::Duration;
 
 impl Service {
     async fn receipt_value(&self, mut receipt: Receipt) -> Result<Value> {
@@ -59,6 +60,22 @@ impl Service {
                 Ok(value)
             }
             None => Ok(json!({"requestKey":key,"job":null,"found":false})),
+        }
+    }
+    pub(super) async fn wait_request_completion(
+        &self,
+        key: &str,
+        owner: &str,
+        family: &str,
+        wait: Duration,
+    ) -> Result<bool> {
+        let Some(receipt) = self.requests.status(key, owner, family).await? else {
+            return Ok(false);
+        };
+        if let Some(id) = receipt.job_id.as_deref() {
+            self.backend.wait_image_completion(id, owner, family, wait).await
+        } else {
+            Ok(receipt.error.is_some() || receipt.cancel_requested)
         }
     }
     pub(super) async fn accept_request(

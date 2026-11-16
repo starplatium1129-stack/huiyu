@@ -373,23 +373,36 @@ impl TaskRuntime {
                 }
                 return;
             }
-            // Durable observations do not carry step progress. Completion and
-            // checkpoint hooks wake changes; polling remains a finite fallback.
-            // Only an unchanged live running task uses the longer cadence.
-            let delay = if live
-                && observed.as_ref().is_ok_and(|task| {
-                    last_revision == Some(task.revision)
-                        && task.status == TaskStatus::Running
-                        && task.recovery_state == TaskRecoveryState::Normal
-                        && task.cancel_requested_at.is_none()
-                        && task.error_code.is_none()
-                }) {
+            let running = observed.as_ref().ok().filter(|task| {
+                live && task.status == TaskStatus::Running
+                    && task.recovery_state == TaskRecoveryState::Normal
+                    && task.cancel_requested_at.is_none()
+                    && task.error_code.is_none()
+            });
+            let delay = if running.is_some_and(|task| last_revision == Some(task.revision)) {
                 STABLE_FOLLOW_INTERVAL
             } else {
                 FOLLOW_INTERVAL
             };
+            let remote = running.and_then(|task| {
+                let providers::ProviderRoute::Image(family) = task.kind.into() else {
+                    return None;
+                };
+                Some((self.recovered_remote_job(task)?.to_owned(), family))
+            });
             last_revision = observed.as_ref().ok().map(|task| task.revision);
             drop(observed);
+            let next_poll = tokio::time::Instant::now() + delay;
+            // A completion wait never owns the task operation lock. Local
+            // cancellation/recovery can run while the peer holds the request.
+            let wake = async {
+                if let Some((job, family)) = remote
+                    && self.images.wait_remote_completion(&job, principal, family).await
+                {
+                    return;
+                }
+                tokio::time::sleep_until(next_poll).await;
+            };
             tokio::select! {
                 biased;
                 _=self.shutdown.cancelled()=>{
@@ -399,7 +412,7 @@ impl TaskRuntime {
                     return;
                 },
                 _=notified=>{},
-                _=tokio::time::sleep(delay)=>{},
+                _=wake=>{},
             }
         }
     }

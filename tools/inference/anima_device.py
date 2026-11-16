@@ -47,6 +47,10 @@ class Device:
         # with FP32 if this accelerator cannot execute BF16.
         fallback = torch.float32 if self.backend == "rocm" else torch.float16
         self.dtype = torch.bfloat16 if native_bf16 else fallback
+        if self.backend == "rocm" and self.shared and native_bf16:
+            # PyTorch reads this on its first eligible attention dispatch. The
+            # per-shape probe still owns Flash admission in anima_acceleration.
+            os.environ.setdefault("TORCH_ROCM_AOTRITON_ENABLE_EXPERIMENTAL", "1")
         self.memory_policy = self._memory_policy(os.environ.get("HUIYU_INFERENCE_MEMORY", "auto"), torch)
 
     def _rocm_bf16(self, torch):

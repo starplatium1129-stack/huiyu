@@ -28,6 +28,13 @@ export interface ComfyNodeReadiness {
   missing: string[]
 }
 
+export interface AnimaSizeLimits {
+  min: number
+  max: number
+  step: number
+  maxPixels: number
+}
+
 export interface AnimaOption {
   id: string
   label?: string
@@ -51,7 +58,7 @@ export interface AnimaOption {
     qualityVerified: boolean
   }
   capabilities?: { negative: boolean; lora: boolean; noLora?: boolean; img2img?: boolean; mask?: boolean; teaCache?: boolean; hires?: boolean; hiresUpscalers?: string[]; rcas?: boolean; weightSyntax?: boolean; characterIdentity: boolean; experimental: boolean;
-    fixedSampling?: boolean; regionalPrompting?: boolean; sketchControl?: boolean; sketchControlStatus?: { available: boolean; reason?: string | null; file?: string; source?: string } }
+    fixedSampling?: boolean; regionalPrompting?: boolean; sketchControl?: boolean; sketchControlStatus?: { available: boolean; reason?: string | null; file?: string; source?: string }; customSize?: AnimaSizeLimits }
   sizes?: string[]
 }
 

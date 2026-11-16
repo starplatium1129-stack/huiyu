@@ -1,11 +1,19 @@
 use super::super::*;
+use super::{COMPLETION_HEADER, COMPLETION_WAIT};
 use axum::{
-    extract::{Request, State},
-    http::StatusCode,
+    Extension, Router,
+    extract::{ConnectInfo, OriginalUri, Path, Query, Request, State},
+    http::{HeaderMap, HeaderValue, StatusCode, header},
     middleware::{self, Next},
     response::{IntoResponse, Response},
+    routing::get,
 };
-use std::sync::atomic::{AtomicBool, Ordering};
+use std::{
+    collections::HashMap,
+    net::SocketAddr,
+    sync::atomic::{AtomicBool, Ordering},
+};
+use tokio::sync::Semaphore;
 
 static LISTENING: AtomicBool = AtomicBool::new(false);
 
@@ -44,7 +52,39 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         "x-huiyu-image-protocol",
         axum::http::HeaderValue::from_static("1"),
     );
+    if response.status().is_success() {
+        response
+            .headers_mut()
+            .insert(COMPLETION_HEADER, HeaderValue::from_static("1"));
+    }
     response
+}
+
+async fn completion(
+    State(state): State<crate::AppState>,
+    Extension(slots): Extension<Arc<Semaphore>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    OriginalUri(uri): OriginalUri,
+    Path((_, key)): Path<(String, String)>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
+) -> Result<impl IntoResponse> {
+    state.host.check_running()?;
+    let status = if let Ok(_slot) = slots.try_acquire() {
+        let images = state.images.as_ref().ok_or_else(closed)?;
+        let owner = generation::request_owner(&headers, peer, &query);
+        if images
+            .wait_request_completion(&key, &owner, http::family(&uri), COMPLETION_WAIT)
+            .await?
+        {
+            StatusCode::NO_CONTENT
+        } else {
+            StatusCode::ACCEPTED
+        }
+    } else {
+        StatusCode::ACCEPTED
+    };
+    Ok((status, [(header::CACHE_CONTROL, "no-store")]))
 }
 
 pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHandle<()>> {
@@ -63,7 +103,11 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
                 return None;
             }
         };
-    let mut app = super::super::router(images);
+    let mut app = super::super::router(images).merge(
+        Router::new()
+            .route("/api/{family}/requests/{key}/completion", get(completion))
+            .layer(Extension(Arc::new(Semaphore::new(16)))),
+    );
     if let Some(maintenance) = &state.maintenance {
         app = app.layer(middleware::from_fn_with_state(
             (maintenance.clone(), state.shutdown.clone()),

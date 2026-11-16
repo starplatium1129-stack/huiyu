@@ -1,6 +1,6 @@
 {
   "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-  "pinnedAt": "2026-10-30T15:27:24",
+  "pinnedAt": "2026-11-15T07:39:11",
   "scenes": {
     "sc264": {
       "prompt": "nene_r18, nene_school_uniform, adult, visual novel event CG, dutch angle, medium close up, 1girl, solo, very_long_hair, teary eyes, heavy blush, sweat on face, parted lips, embarrassed, plaid skirt, pleated skirt, miniskirt, skirt lift, pink panties, bow panties, pantyshot, black thighhighs, zettai ryouiki, narrow aisle, bookshelf, library, golden hour, rim light, <lora:ayachi_nene_v18_wd14:0.95>",
@@ -60,7 +60,7 @@
       ]
     },
     "sc152": {
-      "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, pink_striped_hat_ribbon, vivid_pink_lining, striped_bow, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, black_boots, costume_straps_loosened, undressing, bare_shoulders, lying_on_bed, ahoge, heavy_blush, intense_look, heavy_breathing, bedroom, night, dim_lighting, sweat, warm_lighting, witch_hat, black_cape, criss_cross_halter, crop_top, strap_between_breasts, midriff, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, <lora:ayachi_nene_v18_wd14:0.85>",
+      "prompt": "1girl, adult, ayachi_nene, nene_witch_canonical, pink_striped_hat_ribbon, vivid_pink_lining, striped_bow, cleavage, sideboob, underboob, no bra, black_pleated_mini_skirt, black_boots, costume_straps_loosened, undressing, bare_shoulders, lying_on_bed, ahoge, heavy_blush, intense_look, heavy_breathing, bedroom, night, dim_lighting, sweat, warm_lighting, witch_hat, black_cape, criss_cross_halter, crop_top, strap_between_breasts, midriff, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, <lora:ayachi_nene_v18_wd14:0.85>, looking up, lamp light",
       "negative": "generic witch dress, plain black dress, full-length gown",
       "animaCaption": "She lies on the soft bedding with her costume partially unfastened and both hands against the viewer's chest, looking up at them under dim warm lamplight.",
       "rating": "R15",
@@ -70,7 +70,8 @@
         "candidate-sha256:20c2476a9929b9e2460f6cc78106f21c01f324312e83fe4724586257eb335d9d",
         "candidate-sha256:ce67077cb02f3c0823b3d833f85cdc662b8e7bf0d19191d6ce2e7e78a4b35774",
         "candidate-sha256:f29bf0ef5884fd2cc29c2cd0bd0e72804802f357a79a4cdf612658d4ec758583",
-        "candidate-sha256:4268f97ed03d593bbe69a2aa24f750060803d244d3c134a78bdae17eda22d760"
+        "candidate-sha256:4268f97ed03d593bbe69a2aa24f750060803d244d3c134a78bdae17eda22d760",
+        "candidate-sha256:1f709bbee7a662eaf54a7e0c4530d6b98be3dcc02a9c2893717d8da61e0f09af"
       ]
     },
     "sc234": {
@@ -118,7 +119,7 @@
       ]
     },
     "sc300": {
-      "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black pleated miniskirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, ahoge, sitting, bar stool, holding cup, coffee, cafe, wooden bar counter, arched window, golden hour, warm lighting, rim light, medium shot, <lora:ayachi_nene_v18_wd14:0.85>",
+      "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black pleated miniskirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, ahoge, sitting, bar stool, holding cup, coffee, cafe, wooden bar counter, arched window, golden hour, warm lighting, rim light, medium shot, <lora:ayachi_nene_v18_wd14:0.85>, shy smile, looking at viewer",
       "negative": "distant shot, generic witch dress, plain black dress, full-length gown",
       "animaCaption": "Seated at the wooden counter, she holds the coffee cup with both hands and looks toward the viewer with a shy smile; golden sunlight through the arched window meets the cafe's warm light.",
       "recommendedSize": "832×1216",
@@ -130,7 +131,8 @@
         "candidate-sha256:17b607545761652995a1ad9b004d4bb8f01014a16274e5895dc5c32a79e36865",
         "candidate-sha256:bb604ee52e09dd26fe2b33003827efe8feaaf6f3734b25177bd43dd9d7290e97",
         "candidate-sha256:68205458096d85c428e9c17332771d27513aa3e5e884ffa1ffbe822fc74b19e2",
-        "candidate-sha256:88e2e9db0a321796e6280d6cdb944a86c3ed91a374b4b612fb464f7f80916e71"
+        "candidate-sha256:88e2e9db0a321796e6280d6cdb944a86c3ed91a374b4b612fb464f7f80916e71",
+        "candidate-sha256:4a8fd1578eecad80d8b45139a8362008cffa341c32864a91214f78a33779ddf9"
       ]
     },
     "sc285": {
@@ -452,7 +454,7 @@
       ]
     },
     "sc113": {
-      "prompt": "1girl, ayachi_nene, ahoge, towel_slip, wet_hair, hair_down, no_hair_ribbon, water_droplets_on_body, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+      "prompt": "1girl, ayachi_nene, ahoge, towel_slip, wet_hair, hair_down, no_hair_ribbon, water_droplets_on_body, sitting_on_counter, bare_shoulders, cleavage, bare_legs, heavy_blush, embarrassed, panicked, bathroom, steam, night, soft_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>, doorway, mirror",
       "negative": "",
       "animaCaption": "Seated on the counter with damp hair loose around her shoulders, she looks toward the doorway in surprise; warm mirror light softens the steam between them.",
       "rating": "R15",
@@ -461,7 +463,8 @@
         "61f4ab9",
         "candidate-sha256:fdbc334356c9ff4b2f00ecac967fd964c5f90dbcd9e2b50b4ef9f2ca508a668a",
         "candidate-sha256:c7534465f63e0e15b8c15f1bfa99bb1c69d7bc256e6778b5b005f35d881891fb",
-        "candidate-sha256:ff831ae02674fe3848dfa8fcf8b4f0cc17b8ed94b316baaab5dd0be772cfb74f"
+        "candidate-sha256:ff831ae02674fe3848dfa8fcf8b4f0cc17b8ed94b316baaab5dd0be772cfb74f",
+        "candidate-sha256:8ba919a547a77941c6af7cd4d027c8a0d96fe88d8bc302a9fc674987e72c5350"
       ]
     },
     "sc119": {
@@ -503,7 +506,7 @@
       ]
     },
     "sc137": {
-      "prompt": "1girl, ayachi_nene, ahoge, (unzipped evening gown still visibly worn:1.55), open-back formal gown, bare_back, sideboob, cleavage, lying_on_bed, heavy_blush, tears_in_eyes, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>",
+      "prompt": "1girl, ayachi_nene, ahoge, (unzipped evening gown still visibly worn:1.55), open-back formal gown, bare_back, sideboob, cleavage, lying_on_bed, heavy_blush, tears_in_eyes, bedroom, night, dim_lighting, sensual, warm_lighting, <lora:ayachi_nene_v18_wd14:0.85>, holding bedsheet, pink dress",
       "negative": "pajamas, nightgown, lingerie only, nude without gown",
       "animaCaption": "She gathers the sheet beside her, the loosened gown still wrapped around her body and spread over the bed. Warm lamplight catches its pink silk.",
       "rating": "R15",
@@ -511,7 +514,8 @@
       "pinSource": [
         "2bf23e1",
         "candidate-sha256:62446b21d2619ac4614aeb8782e0e6e792c5712f08e36c36d8d63c0f32f7fbc9",
-        "candidate-sha256:e0b05c5975e3fd16dc786dd328b5af02049342ebf00968befbc89fbf0aa955dc"
+        "candidate-sha256:e0b05c5975e3fd16dc786dd328b5af02049342ebf00968befbc89fbf0aa955dc",
+        "candidate-sha256:f2c257e9307277c4014ea10453e3ccd369e5b22447ab5365d7edf47688ae4dfa"
       ]
     },
     "sc158": {

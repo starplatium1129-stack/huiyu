@@ -1,6 +1,6 @@
 import { computed, ref, watch, type Ref } from 'vue'
 import { apiClient } from '@/api/client'
-import type { AnimaStatusResponse } from '@/composables/generation/animaSessionContract'
+import { supportsDrawingSize, type AnimaStatusResponse } from '@/composables/generation/animaSessionContract'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import { recommendBlueprints } from '@/utils/blueprintRecommendations'
 import {
@@ -352,8 +352,7 @@ export function useDirectorPopular(input: UseDirectorPopularInput) {
         const decision = inferBlueprintDecisions(restoredBlueprint)
         let restoredSize = decision.size
         const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId)
-        if (activeModel && Array.isArray(activeModel.sizes) && activeModel.sizes.length
-          && !activeModel.sizes.includes(restoredSize)) {
+        if (activeModel?.sizes?.length && !supportsDrawingSize(activeModel, restoredSize)) {
           restoredSize = activeModel.sizes[0]
         }
         sdSize.value = restoredSize

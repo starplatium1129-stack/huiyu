@@ -136,8 +136,7 @@ export function usePromptWorkspace() {
     const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备高清重绘…' : compositionPreparing.value ? '正在准备构图…' : '',
         () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value),
         () => { void animaSession.recover(); });
-    // ── 吸附出图条尺寸源：SD 直写 sdSize；Anima/Krea2 走 applyRecommendedSize，
-    // 先收敛到当前底模白名单（closestSupportedSize）再同步双引擎，防服务端 400。
+    // SD 直写 sdSize；Anima/Krea 2 通过底模的尺寸规则同步双引擎。
     const genBarSize = computed({
         get: () => drawEngine.value === 'sd'
             ? sdSize.value
@@ -148,7 +147,7 @@ export function usePromptWorkspace() {
                 applyRecommendedSize(value);
         },
     });
-    /** 出图条候选尺寸：当前底模白名单；当前生效值不在列时兜底置顶，避免 select 空显。 */
+    /** 画幅预设保留当前生效尺寸，供紧凑选择器显示。 */
     const animaBarSizes = computed<string[]>(() => {
         const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId);
         const sizes = activeModel?.sizes?.length ? [...activeModel.sizes] : ['832x1216', '1024x1024', '1216x832'];

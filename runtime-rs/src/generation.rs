@@ -283,6 +283,38 @@ impl Service {
         let job = jobs::find(&self.inner, id, owner, false).await?;
         jobs::public(&job).await
     }
+    pub(crate) async fn wait_image_completion(
+        &self,
+        id: &str,
+        owner: &str,
+        family: &str,
+        wait: Duration,
+    ) -> Result<bool> {
+        let job = jobs::find(&self.inner, id, owner, false).await?;
+        if job.provider != "native" || job.input["family"] != family {
+            return Err(ApiError::new(404, "JOB_NOT_FOUND", "生成任务不存在"));
+        }
+        let completion = async {
+            loop {
+                let notified = job.notify.notified();
+                tokio::pin!(notified);
+                // Register before the snapshot so completion cannot fall between
+                // the observation and the wait.
+                notified.as_mut().enable();
+                {
+                    let state = job.state.lock().await;
+                    if state.unknown || (state.settled && !state.collection_pending) {
+                        return;
+                    }
+                }
+                notified.await;
+            }
+        };
+        tokio::select! {
+            _ = self.inner.cancel.cancelled() => Err(closed()),
+            result = tokio::time::timeout(wait, completion) => Ok(result.is_ok()),
+        }
+    }
     pub async fn query(&self, id: &str, owner: &str) -> Result<Observation> {
         jobs::observe(&self.inner, id, owner).await
     }

@@ -1,7 +1,7 @@
 <template>
   <!-- 桌面常驻侧栏；窄窗口独立吸附于整个编辑区，保留尺寸、生成与停止。 -->
   <div ref="generationBar" class="gen-bar" :data-docked="docked || undefined" role="group" aria-label="出图尺寸与生成">
-    <GenerationSizePicker v-if="showSize" class="gen-bar-size" compact v-bind="{ engine, size, animaSizes, busy }" @update:size="$emit('update:size', $event)" />
+    <GenerationSizePicker v-if="showSize" class="gen-bar-size" compact v-bind="{ engine, size, animaSizes, busy, customSize }" @update:size="$emit('update:size', $event)" />
     <div class="gen-bar-meta">
       <div class="gen-bar-status">
         <span role="status"><ArchiveIcon :name="busy ? 'spark' : error || !online || blockedReason || presentation.needsReview ? 'warning' : 'success'" />{{ statusSummary }}</span>
@@ -49,6 +49,7 @@ import { computed, nextTick, onActivated, onBeforeUnmount, onDeactivated, ref, w
 import { useResizeObserver, useEventListener } from '@vueuse/core'
 import { contentMotion as vContentMotion } from '@/directives/contentMotion'
 import { usePressRipple } from '@/composables/usePressRipple'
+import type { AnimaSizeLimits } from '@/types/anima'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import GenerationSizePicker from './GenerationSizePicker.vue'
 import { RouterLink } from 'vue-router'
@@ -65,10 +66,9 @@ const props = defineProps<{
   connected?: boolean
   provider?: 'native' | 'comfy'
   readinessText?: string
-  /** 当前生效尺寸：SD 取 sdSize，Anima/Krea2 取 width×height（宿主统一收敛）。 */
   size: string
-  /** Anima/Krea2 候选尺寸（当前底模白名单，含当前值兜底）。 */
   animaSizes: string[]
+  customSize?: AnimaSizeLimits
   showSize: boolean
   docked: boolean
   hasResult: boolean

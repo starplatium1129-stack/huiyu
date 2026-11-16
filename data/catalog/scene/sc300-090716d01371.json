@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc300",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 295,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-15T07:39:11.898806700+00:00",
   "data": {
     "id": "sc300",
     "title": "暖金咖啡馆的魔女休息日",
@@ -62,7 +62,7 @@
       "R15"
     ],
     "recommendedSize": "832×1216",
-    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black pleated miniskirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, ahoge, sitting, bar stool, holding cup, coffee, cafe, wooden bar counter, arched window, golden hour, warm lighting, rim light, medium shot, <lora:ayachi_nene_v18_wd14:0.85>",
+    "prompt": "1girl, solo, adult, ayachi_nene, nene_r18, nene_witch_canonical, witch_hat, pink_striped_hat_ribbon, black_cape, vivid_pink_lining, criss_cross_halter, crop_top, strap_between_breasts, striped_bow, bare_midriff, cleavage, sideboob, underboob, no bra, black pleated miniskirt, asymmetrical_legwear, striped_thighhighs, single_thighhigh, frilled_socks, very_long_hair, ahoge, sitting, bar stool, holding cup, coffee, cafe, wooden bar counter, arched window, golden hour, warm lighting, rim light, medium shot, <lora:ayachi_nene_v18_wd14:0.85>, shy smile, looking at viewer",
     "negative": "distant shot, generic witch dress, plain black dress, full-length gown",
     "audit": {
       "reviewer": "user-selection-and-direct-vision",

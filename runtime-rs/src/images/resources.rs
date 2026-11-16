@@ -267,7 +267,11 @@ fn local_status(root: PathBuf, anima: bool) -> Value {
                 },
             )
             && available("vae", "qwen_image_vae.safetensors");
-        models.push(json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCacheThresh":model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))},"sizes":model["sizes"],"capabilities":{"negative":!krea,"lora":!krea,"noLora":krea||model["noLora"]==true,"characterIdentity":!krea,"experimental":krea||model["noLora"]==true}}));
+        let mut entry = json!({"id":id,"label":model["label"],"family":model["family"],"profileId":model["profileId"],"available":available,"defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"],"scheduler":model["scheduler"],"teaCacheThresh":model.get("teaCacheThresh").cloned().unwrap_or(json!(0.08))},"sizes":model["sizes"],"capabilities":{"negative":!krea,"lora":!krea,"noLora":krea||model["noLora"]==true,"characterIdentity":!krea,"experimental":krea||model["noLora"]==true}});
+        if !krea {
+            entry["capabilities"]["customSize"] = validation::anima_size_limits();
+        }
+        models.push(entry);
     }
     let mut loras = Vec::new();
     for (id, lora) in catalog::CATALOG["LORAS"].as_object().unwrap() {

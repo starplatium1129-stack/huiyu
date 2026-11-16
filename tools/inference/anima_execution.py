@@ -1,11 +1,12 @@
-"""Task-owned exact RoPE reuse and guarded Cosmos block compilation.
+"""Task-owned RoPE and text projection reuse, and guarded Cosmos block compilation.
 
 The pinned PyTorch 2.8 compiler keeps its guards. A warm graph miss uses eager
 execution for that block for the rest of the task; CUDA failures still escape.
-No conditioning/LoRA outputs or sampling approximations are cached here.
 """
 from contextlib import contextmanager
 import time
+
+MAX_CROSS_ATTENTION_BYTES = 256 * 1024**2
 
 
 class Execution:
@@ -15,6 +16,8 @@ class Execution:
         self.task = 0
         self.failures = set()
         self.rope = {}
+        self.cache_cross_attention = False
+        self.cross_attention = {}
         self.check = lambda: None
         original = transformer.rope.forward
 
@@ -35,6 +38,29 @@ class Execution:
             return result
 
         transformer.rope.forward = rope
+
+    def cross_attention_kv(self, attn, encoder, project):
+        import torch
+
+        if (not self.active or not self.cross_attention_budget or attn.training or
+                torch.is_grad_enabled() or encoder.is_inference() or
+                torch.is_autocast_enabled(encoder.device.type)):
+            return project(attn, encoder)
+        # LoRA weights/scales are fixed for the task. Tensor identity and
+        # version keep distinct CFG inputs and any in-place edits separate.
+        identity = (attn, id(encoder), encoder._version)
+        cached = self.cross_attention.get(identity)
+        if cached is not None:
+            self.cross_attention_hits += 1
+            return cached[1:]
+        key, value = project(attn, encoder)
+        size = key.nbytes + value.nbytes
+        if self.cross_attention_bytes + size <= self.cross_attention_budget:
+            # Retain the encoder so its identity cannot be recycled.
+            self.cross_attention[identity] = (encoder, key, value)
+            self.cross_attention_bytes += size
+            self.cross_attention_peak = max(self.cross_attention_peak, self.cross_attention_bytes)
+        return key, value
 
     def compile_block(self, original):
         import torch
@@ -100,6 +126,9 @@ class Execution:
         now = time.perf_counter()
         if self.phase_name is not None:
             self.timings[self.phase_name] = self.timings.get(self.phase_name, 0) + now - self.phase_started
+        if name != "sampling":
+            self.cross_attention.clear()
+            self.cross_attention_bytes = 0
         self.phase_name = name if name in ("encoding", "sampling", "decoding") else None
         self.phase_started = now
 
@@ -109,9 +138,17 @@ class Execution:
         self.active, self.check = True, check
         self.rope_hits = self.rope_misses = self.rope_bytes = 0
         self.compiled_calls = self.recompile_skips = 0
+        self.cross_attention_hits = self.cross_attention_peak = self.cross_attention_bytes = 0
+        self.cross_attention_budget = 0
         self.timings, self.phase_name, self.phase_started = {}, None, time.perf_counter()
-        self.allow_compile = not any(row["name"] == "transformer" and row["mode"] == "leaf_level"
-                                     for row in pipeline._huiyu_memory.observation()["components"])
+        placement = pipeline._huiyu_memory.observation()
+        transformer = next(row for row in placement["components"] if row["name"] == "transformer")
+        self.allow_compile = transformer["mode"] != "leaf_level"
+        if self.cache_cross_attention and transformer["mode"] == "component":
+            # Use only the headroom left after the full denoiser and the
+            # scheduler's activation reserve. Layered offload has no such budget.
+            headroom = placement["weightBudgetBytes"] - transformer["weightBytes"]
+            self.cross_attention_budget = max(0, min(MAX_CROSS_ATTENTION_BYTES, headroom))
         handles = []
         def enter(name):
             if self.phase_name != name:
@@ -130,5 +167,8 @@ class Execution:
                 timings=dict(self.timings), ropeCache=dict(hits=self.rope_hits, misses=self.rope_misses, bytes=self.rope_bytes),
                 compile=dict(compiledBlockCalls=self.compiled_calls, recompileSkips=self.recompile_skips,
                              failures=sorted(self.failures), leafOffload=not self.allow_compile), performanceVerified=False)
+            if self.cache_cross_attention:
+                self.result["crossAttentionCache"] = dict(hits=self.cross_attention_hits, peakBytes=self.cross_attention_peak)
             self.rope.clear()
+            self.cross_attention.clear()
             self.active, self.check = False, lambda: None
