@@ -4,3 +4,8 @@
   --pb-active: var(--mood-love);
   @apply tw:relative tw:isolate;
 }
+.first-drawing { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-3); margin-block-end:var(--s-4); padding:var(--s-3) var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); }
+.first-drawing :is(h2,p) { margin:0; }
+.first-drawing h2 { color:var(--text-primary); font-size:var(--fs-label); }
+.first-drawing p { color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
+.first-drawing-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); }

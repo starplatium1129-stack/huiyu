@@ -27,7 +27,7 @@
                 <span>{{ drawEngineLabel }} {{ engineOnline ? engineConnected ? '已连接' : '待启动' : '未连接' }}</span>
               </button>
             </StudioTooltip>
-            <RouterLink v-if="!engineOnline" class="api-recovery-link" :to="{ path: '/control', query: { engine: native.mode.value ? 'native' : drawEngine, ...(native.session.value ? { model: native.session.value.form.modelId } : {}) } }">控制面板</RouterLink>
+            <RouterLink v-if="!engineOnline || workspace.preparedModelPending.value" class="api-recovery-link" :to="drawingSetupRoute">绘图配置</RouterLink>
           </div>
         </div>
         <div class="pb-header-meta"><PromptDraftNotice :get-blueprint="getBlueprint" :link-error="deepLinkError" :link-retrying="retryingDeepLink" :generation-busy="generationBusy" @retry-link="retryDeepLink" /></div>
@@ -60,6 +60,20 @@
         </div>
       </div>
     </div>
+
+    <section v-if="route.query.firstDraw === '1' && !displayResultUrl && !pb.focusMode" class="first-drawing" aria-labelledby="first-drawing-title">
+      <div>
+        <h2 id="first-drawing-title">生成第一张图</h2>
+        <p role="status">{{ firstDrawingHint }}</p>
+      </div>
+      <div class="first-drawing-actions">
+        <template v-if="!generationBusy && workspace.draftReady.value">
+          <button v-if="workspace.preparedModelPending.value && !native.mode.value" class="btn btn-ghost btn-sm" type="button" @click="materialBindings.retryInitialization()">重新选用模型</button>
+          <button v-if="canFillExample" class="btn btn-primary btn-sm" type="button" @click="fillExample">填入示例画面</button>
+          <button v-if="engineOnline && !workspace.preparedModelPending.value" ref="exampleEditButton" class="btn btn-ghost btn-sm" type="button" @click="editDescription">编辑画面描述</button>
+        </template>
+      </div>
+    </section>
 
     <nav v-if="pb.directorMode !== 'pro'" class="drawing-jump-links tw:w-fit tw:rounded-pill tw:p-s-1" data-fluid-glass aria-label="绘制区快捷导航">
       <RouterLink :to="{ query: route.query, hash: '#drawing-materials' }">素材</RouterLink><RouterLink :to="{ query: route.query, hash: '#drawing-canvas' }">画布</RouterLink><RouterLink :to="{ query: route.query, hash: '#stepResult' }" @click="inspector?.selectSection('render')">参数</RouterLink>
@@ -363,6 +377,33 @@ const resizeSides = computed(() => pb.focusMode || directorLayout.compact.value 
   : (['materials', 'inspector'] as const).filter(side => !directorLayout.collapsed.value[side]))
 const actionBarDocked = computed(() => !!inspectorActions.value && directorLayout.desktop.value && !pb.focusMode && !directorLayout.collapsed.value.inspector)
 const descriptionInHeader = computed(() => pb.focusMode)
+const exampleEditButton = ref<HTMLButtonElement | null>(null)
+const drawingSetupRoute = computed(() => {
+  const requested = route.query.preparedModel
+  const model = typeof requested === 'string' ? requested : native.session.value?.form.modelId
+  const provider = animaState.value.provider
+  const hash = !native.mode.value && provider === 'comfy' ? '#control-comfy'
+    : model || provider === 'native' ? '#control-setup' : '#control-inference'
+  return { path: '/control', hash, query: model ? { model } : {} }
+})
+const drawingHasContent = computed(() => !!(pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
+  || pb.subject.kind === 'popular' && pb.subject.blueprintId || pb.manualTags.size || native.mossLayout.value))
+const canFillExample = computed(() => workspace.draftReady.value && engineOnline.value && !generationBusy.value
+  && !workspace.preparedModelPending.value && !drawingHasContent.value)
+const firstDrawingHint = computed(() => {
+  if (!workspace.draftReady.value) return '正在恢复画室…'
+  if (workspace.preparedModelPending.value) return '请先确认从控制室选用的绘图模型。'
+  if (!engineOnline.value) return '绘图模型尚未就绪。可从上方状态重新检查，或返回绘图配置。'
+  if (drawingHasContent.value && generateBlockReason.value && !generationBusy.value) return generateBlockReason.value
+  return drawingHasContent.value ? '画面已准备好。确认描述后点击「生成图片」。' : '填入示例或写下画面描述，然后点击「生成图片」。'
+})
+async function fillExample(event: MouseEvent) {
+  if (!canFillExample.value) return
+  const transferFocus = document.activeElement === event.currentTarget
+  pb.visualDescription = 'An anime illustration of a young woman sitting by a studio window, warming her hands around an ivory teacup. A soft afternoon beam catches the steam, with books and a small vase in the background. Medium shot, warm natural light.'
+  await nextTick()
+  if (transferFocus && document.activeElement === document.body) exampleEditButton.value?.focus({ preventScroll: true })
+}
 const currentSceneTitle = computed(() => {
   const subject = pb.subject
   return subject.kind === 'popular'

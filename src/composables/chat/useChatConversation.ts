@@ -232,7 +232,8 @@ export function useChatConversation(options: ChatConversationOptions) {
     }
     const report = (message: string) => { watchdog.touch(); if (canPresent()) options.onToolActivity?.(message) }
     const sourceImage = turn.restricted ? undefined : captureCompanionImageSource(
-      sendOptions.image || [...turn.messages].reverse().flatMap(message => message.images || [])[0], sendOptions.imageAuthority, controller)
+      sendOptions.image || turn.messages.findLast(message => message.images?.length)?.images?.[0],
+      sendOptions.imageAuthority, controller)
     let originalImages: ReturnType<typeof import('./chatRegenerationImages')['captureRegenerationImages']> | undefined
     let imageUrls = imageUrl ? [imageUrl] : []
     const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl }

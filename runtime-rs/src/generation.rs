@@ -283,6 +283,10 @@ impl Service {
         let job = jobs::find(&self.inner, id, owner, false).await?;
         jobs::public(&job).await
     }
+    pub(crate) async fn image_job(&self, id: &str, owner: &str, family: &str) -> Result<Value> {
+        let job = jobs::find_scoped(&self.inner, id, owner, false, Some(family)).await?;
+        jobs::public(&job).await
+    }
     pub(crate) async fn wait_image_completion(
         &self,
         id: &str,
@@ -290,8 +294,8 @@ impl Service {
         family: &str,
         wait: Duration,
     ) -> Result<bool> {
-        let job = jobs::find(&self.inner, id, owner, false).await?;
-        if job.provider != "native" || job.input["family"] != family {
+        let job = jobs::find_scoped(&self.inner, id, owner, false, Some(family)).await?;
+        if job.provider != "native" {
             return Err(ApiError::new(404, "JOB_NOT_FOUND", "生成任务不存在"));
         }
         let completion = async {
@@ -319,7 +323,10 @@ impl Service {
         jobs::observe(&self.inner, id, owner).await
     }
     pub async fn result(&self, id: &str, owner: &str) -> Result<Output> {
-        jobs::result(&self.inner, id, owner).await
+        jobs::result(&self.inner, id, owner, None).await
+    }
+    pub(crate) async fn image_result(&self, id: &str, owner: &str, family: &str) -> Result<Output> {
+        jobs::result(&self.inner, id, owner, Some(family)).await
     }
     pub async fn cancel(&self, id: &str, owner: &str) -> Result<Value> {
         let job = jobs::find(&self.inner, id, owner, false).await?;

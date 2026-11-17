@@ -96,7 +96,7 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
   const cameraSource = isManualDirectorValue(options.directorSources, 'shot', selections.shot, inherited.shot) ? 'manual' : 'scene'
   const lightingSource = isManualDirectorValue(options.directorSources, 'lighting', selections.lighting, inherited.lighting) ? 'manual' : 'scene'
   const template = sceneTemplateText(scene, { char: character, manualTags: new Set(manual), shot: selections.shot, engine, profile })
-  const subject = character === 'triad' && (engine === 'krea2' || engine === 'moss')
+  const subject: ReturnType<typeof studioDualSubject> = character === 'triad' && (engine === 'krea2' || engine === 'moss')
     ? studioDualSubject(template) : { scenePrompt: template, subjectProse: studioSubjectProse(character) }
   const identity = options.identity ?? CHAR_PROMPT[character] ?? ''
   const identityTokens = scene?.identityTokensOverride?.length ? scene.identityTokensOverride : tokenize(identity)
@@ -129,6 +129,10 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
     visualDescription, scene,
   })
   if (engine === 'moss') {
+    if (character === 'triad') {
+      plan.mossLayout = { compositionIntent: scene?.compositionIntent || 'group',
+        subjects: subject.subjects }
+    }
     const rendered = renderMossDrawingPrompt(plan, options.visualDescription || '', '')
     return { plan, ...rendered, adult: sceneRating(scene) === 'R18', profile, selections }
   }

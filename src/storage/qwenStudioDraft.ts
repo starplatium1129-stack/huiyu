@@ -19,6 +19,7 @@ export interface QwenForm {
   mossAcceleration?: 'off' | 'spectrum'; mossTextPrecision?: 'bf16' | 'fp8' | 'int8'; mossCompile?: boolean
   mossSpectrumFlexWindow?: number
   mossWeightPrecision?: 'auto' | 'fp16' | 'int8'
+  mossLayout?: string
 }
 export interface QwenDraftState {
   form: QwenForm; randomSeed: boolean; resize: boolean; parentId: string | number | null
@@ -45,11 +46,14 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
   && (form.mossCompile === undefined || mossModels.some(model => model.value === form.modelId) && typeof form.mossCompile === 'boolean')
   && (form.mossWeightPrecision === undefined || mossModels.some(model => model.value === form.modelId)
     && (form.mossWeightPrecision === 'auto' || form.mossWeightPrecision === 'fp16' || form.mossWeightPrecision === 'int8'))
+  && (form.mossLayout === undefined || mossModels.some(model => model.value === form.modelId)
+    && typeof form.mossLayout === 'string' && form.mossLayout.length <= 12000)
   && ['width', 'height', 'steps', 'cfg', 'seed'].every(key => typeof form[key] === 'number' && Number.isFinite(form[key]))
 const copyForm = (form: QwenForm): QwenForm => ({ modelId: form.modelId, prompt: form.prompt, negative: form.negative,
   width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed,
   ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? 'spectrum', mossSpectrumFlexWindow: form.mossSpectrumFlexWindow ?? 0.5,
-    mossTextPrecision: form.mossTextPrecision ?? 'bf16', mossCompile: form.mossCompile ?? false, mossWeightPrecision: form.mossWeightPrecision ?? 'auto' } : {}) })
+    mossTextPrecision: form.mossTextPrecision ?? 'bf16', mossCompile: form.mossCompile ?? false, mossWeightPrecision: form.mossWeightPrecision ?? 'auto',
+    mossLayout: form.mossLayout ?? '' } : {}) })
 function read(selectedKey: string, models: readonly { value: string }[]): StoredDraft | null {
   const raw = profileLocalStorage.getItem(selectedKey)
   if (!raw) return null

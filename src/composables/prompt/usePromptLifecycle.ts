@@ -1,6 +1,5 @@
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 import { useSceneStore } from '@/stores/sceneStore'
-import { settingsRepository, STARTER_MODEL_SETTING } from '@/storage/settingsRepository'
 
 import { nextTick,onActivated,onBeforeUnmount,onDeactivated,onMounted,watch } from 'vue';
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router';
@@ -49,22 +48,23 @@ export function usePromptLifecycle({ draftRecovery, router, generationBusy, appl
         const q = route.query, request = initializationRequest;
         if (route.path !== '/prompt-builder' || q.engine === 'moss' || q.engine === 'qwen' || typeof q.preparedModel !== 'string' || q === consumedPreparedQuery) return;
         consumedPreparedQuery = q;
-        const modelId = q.preparedModel, wasBusy = generationBusy.value;
-        const query = { ...q }; delete query.preparedModel;
+        const modelId = q.preparedModel, entry = entryKey();
+        const current = () => !disposed && viewActive && request === initializationRequest && entryKey() === entry;
+        if (generationBusy.value || ['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string')) {
+            consumedPreparedQuery = undefined;
+            return;
+        }
+        if (!await applyPreparedModel(modelId, current, q.firstDraw === '1') || !current()) {
+            if (consumedPreparedQuery === q) consumedPreparedQuery = undefined;
+            return;
+        }
+        const query = { ...route.query }; delete query.preparedModel;
         const target = router.resolve({ path: route.path, query, hash: route.hash });
         const targetEntry = JSON.stringify([target.path, { ...target.query, taskCenter: undefined }]);
         const prepared = { entry: targetEntry };
         preparedTarget = prepared;
         try { await router.replace(target.fullPath); }
         finally { if (preparedTarget === prepared) preparedTarget = null; }
-        const current = () => !disposed && viewActive && request === initializationRequest && consumedPreparedQuery === q && entryKey() === targetEntry;
-        if (!current() || ['remix', 'regen', 'variant'].some(key => typeof q[key] === 'string')) return;
-        if (wasBusy || generationBusy.value) { pb.flash('生成进行中，完成或停止后再从控制室选用准备的底模'); return; }
-        if (modelId !== settingsRepository.get(STARTER_MODEL_SETTING)) {
-            pb.flash('准备的底模选择已改变，请回到控制室重新检查');
-            return;
-        }
-        await applyPreparedModel(modelId, current);
     }
     watch(entryKey, entry => {
         // Consuming preparedModel is this visit's own navigation, not a replacement entry.

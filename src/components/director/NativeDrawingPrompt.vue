@@ -1,90 +1,97 @@
 <script setup lang="ts">
-import { computed, nextTick, ref } from 'vue'
+import { computed, nextTick, ref, useId } from 'vue'
 import { copyText } from '@/utils/clipboard'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import PromptPreviewContent from '@/components/director/PromptPreviewContent.vue'
 import PromptTagWorkbench from './PromptTagWorkbench.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import type { NativeDrawing } from '@/composables/prompt/useNativeDrawing'
-import { MOSS_QUALITY } from '@/utils/mossPrompt'
-import { promptPreviewScopes, type PromptPreviewLayer } from '@/utils/promptPreview'
 import '@/assets/css/director/components/PromptHealthPanel.css'
 
 const props = defineProps<{ drawing: NativeDrawing }>()
 const isMoss = computed(() => props.drawing.mode.value === 'moss')
-const title = computed(() => `${isMoss.value ? 'MiaoMiao MOSS' : 'Qwen'} 提示词`)
-const prompt = computed(() => isMoss.value && !props.drawing.recipe.value.raw.trim() ? '' : props.drawing.recipe.value.prompt)
+const title = computed(() => isMoss.value ? 'MOSS · JSON 布局' : 'Qwen 提示词')
+const prompt = computed(() => props.drawing.recipe.value.prompt)
 const negative = computed(() => props.drawing.session.value?.turbo.value ? '' : props.drawing.recipe.value.negative)
-const mossScopes = computed<PromptPreviewLayer[][]>(() => {
-  const recipe = props.drawing.recipe.value
-  if (!isMoss.value || !prompt.value || recipe.error) return []
-  const raw = recipe.raw.trim()
-  if (raw.startsWith('{')) return [[{
-    id: 'prose', number: '01', label: '布局 JSON', empty: '未填写布局', groups: [], prose: recipe.prompt,
-  }]]
-  const plan = props.drawing.mossPlan.value
-  const prefix = recipe.prompt.endsWith(raw) ? recipe.prompt.slice(0, -raw.length).replace(/,\s*$/, '') : ''
-  const caption = recipe.tagLine && raw.startsWith(recipe.tagLine)
-    ? raw.slice(recipe.tagLine.length).replace(/^\n/, '') : raw
-  const tags = [prefix, recipe.tagLine].filter(Boolean).join(', ')
-  return promptPreviewScopes(`${tags}\n${caption}`, {
-    format: 'anima-tags', qualityTokens: MOSS_QUALITY.split(', '),
-    characterTokens: plan?.characterTokens || [],
-    copyrightTokens: plan?.copyrightTokens || [], artists: plan?.artists || [],
-  })
-})
 const readerDialog = ref<HTMLDialogElement | null>(null), readerLoaded = ref(false)
+const editor = ref<HTMLTextAreaElement | null>(null), editing = ref(false)
+const draft = ref(''), editError = ref(''), editorId = useId()
 const reader = useFluidDialog(readerDialog)
 const copy = () => copyText(prompt.value)
-async function openReader(event: MouseEvent) {
+async function openReader(event: MouseEvent, edit = false) {
   const source = event.currentTarget as HTMLElement
+  editing.value = edit
+  if (edit) {
+    draft.value = props.drawing.mossLayout.value || prompt.value
+    editError.value = ''
+  }
   readerLoaded.value = true
   await nextTick()
   if (source.isConnected) reader.open(source)
+}
+async function applyLayout(automatic = false) {
+  try {
+    if (!automatic && !draft.value.trim()) throw new Error('请填写 JSON 布局')
+    props.drawing.applyMossLayout(automatic ? '' : draft.value)
+    reader.close()
+  } catch (cause) {
+    editError.value = cause instanceof Error ? cause.message : '布局无法应用'
+    await nextTick()
+    editor.value?.focus()
+  }
 }
 function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDialog.value)) reader.close() }
 </script>
 
 <template>
   <section class="native-prompt" aria-label="当前引擎提示词">
-    <PromptTagWorkbench v-if="isMoss" prompt-format="moss-hybrid" :model-profile="null" />
+    <PromptTagWorkbench v-if="isMoss && !drawing.mossLayout.value" prompt-format="moss-layout" :model-profile="null" />
     <header class="native-prompt-heading">
       <h4>{{ title }}</h4>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="!prompt" aria-label="展开阅读完整提示词" @click="openReader"><ArchiveIcon name="expand" />阅读</button>
+      <button class="btn btn-ghost btn-sm" type="button" :disabled="!prompt" aria-label="展开阅读完整提示词" @click="openReader($event)"><ArchiveIcon name="expand" />阅读</button>
     </header>
-    <StudioCopyButton class="btn btn-ghost btn-sm" label="复制提示词" :action="copy" :content-key="prompt" :disabled="!prompt" />
+    <div class="native-prompt-actions">
+      <StudioCopyButton class="btn btn-ghost btn-sm" label="复制提示词" :action="copy" :content-key="prompt" :disabled="!prompt" />
+      <button v-if="isMoss" class="btn btn-ghost btn-sm" type="button" :disabled="drawing.locked.value" @click="openReader($event, true)">编辑布局</button>
+    </div>
     <p v-if="drawing.recipe.value.error" role="alert">{{ drawing.recipe.value.error }}</p>
-    <template v-if="isMoss">
-      <PromptPreviewContent :prompt="prompt" :scopes="mossScopes" :negative-text="negative" />
-      <details v-if="prompt && !drawing.recipe.value.raw.trim().startsWith('{')" class="prompt-preview-details">
-        <StudioDisclosureSummary>完整正向原文</StudioDisclosureSummary><p class="native-prompt-text">{{ prompt }}</p>
-      </details>
+    <p v-else-if="!prompt">选择场景或输入画面描述<span v-if="isMoss">，也可直接编辑布局</span>。</p>
+    <template v-else-if="isMoss">
+      <p v-if="drawing.mossLayout.value">已应用自定义布局</p>
+      <pre class="native-layout-json" aria-label="发送给 MOSS 的布局">{{ prompt }}</pre>
     </template>
-    <template v-else>
-      <p v-if="!prompt" class="native-prompt-empty">选择场景或输入描述后生成提示词。</p>
-      <p v-else class="native-prompt-text" aria-label="画面提示词">{{ prompt }}</p>
-      <details v-if="negative" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
-    </template>
+    <p v-else class="native-prompt-text" aria-label="画面提示词">{{ prompt }}</p>
+    <details v-if="negative && (!isMoss || prompt)" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
 
     <dialog ref="readerDialog" class="prompt-reader" aria-labelledby="native-prompt-reader-heading" @cancel.prevent="reader.close()" @click="onReaderClick">
-      <header class="prompt-reader-heading"><h2 id="native-prompt-reader-heading">{{ title }}</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭提示词阅读" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
-      <div class="prompt-reader-content" tabindex="0" role="region" aria-label="提示词正文">
-        <div v-if="readerLoaded" class="native-reader-body">
-          <template v-if="isMoss">
-            <PromptPreviewContent :prompt="prompt" :scopes="mossScopes" :negative-text="negative" />
-            <details v-if="prompt && !drawing.recipe.value.raw.trim().startsWith('{')" class="prompt-preview-details">
-              <StudioDisclosureSummary>完整正向原文</StudioDisclosureSummary><p class="native-prompt-text">{{ prompt }}</p>
-            </details>
-          </template>
-          <template v-else>
-            <p class="native-prompt-text">{{ prompt }}</p>
-            <details v-if="negative" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
-          </template>
+      <header class="prompt-reader-heading"><h2 id="native-prompt-reader-heading">{{ editing ? '编辑 MOSS 布局' : title }}</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭提示词窗口" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
+      <div v-if="editing" class="prompt-reader-content">
+        <div class="native-layout-editor">
+          <label :for="editorId">布局 JSON</label>
+          <p :id="`${editorId}-help`">当前画幅 {{ drawing.size.value.replace('x', ' × ') }}。原生 bbox 使用中心原点和 [上, 左, 下, 右]。也可粘贴带宽高的像素草稿。自定义坐标随原稿保留。</p>
+          <textarea :id="editorId" ref="editor" v-model="draft" class="textarea" rows="14"
+            required spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
+            :aria-invalid="editError ? 'true' : undefined" :aria-describedby="`${editorId}-help${editError ? ` ${editorId}-error` : ''}`"
+            @input="editError = ''" />
+          <p :id="`${editorId}-error`" class="native-layout-error">{{ editError }}</p>
         </div>
       </div>
-      <footer class="prompt-reader-actions"><StudioCopyButton class="btn btn-primary" label="复制提示词" :action="copy" :content-key="prompt" :disabled="!prompt" /></footer>
+      <div v-else class="prompt-reader-content" tabindex="0" role="region" aria-label="提示词正文">
+        <div v-if="readerLoaded" class="native-reader-body">
+          <pre v-if="isMoss" class="native-layout-json">{{ prompt }}</pre>
+          <p v-else class="native-prompt-text">{{ prompt }}</p>
+          <details v-if="negative" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
+        </div>
+      </div>
+      <footer class="prompt-reader-actions">
+        <template v-if="editing">
+          <button v-if="drawing.mossLayout.value" class="btn btn-quiet" type="button" @click="applyLayout(true)">恢复自动布局</button>
+          <button class="btn btn-ghost" type="button" @click="reader.close()">取消</button>
+          <button class="btn btn-primary" type="button" @click="applyLayout()">应用布局</button>
+        </template>
+        <StudioCopyButton v-else class="btn btn-primary" label="复制提示词" :action="copy" :content-key="prompt" :disabled="!prompt" />
+      </footer>
     </dialog>
   </section>
 </template>
@@ -96,6 +103,12 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
 .native-prompt-heading .btn { flex:none; }
 .native-prompt p { margin:0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
 .native-prompt .native-prompt-text { color:var(--text-primary); white-space:pre-wrap; overflow-wrap:anywhere; user-select:text; }
-.native-prompt > .btn { justify-self:start; }
+.native-prompt-actions { display:flex; flex-wrap:wrap; gap:var(--s-2); }
+.native-layout-json { margin:0; padding:var(--s-3); border-radius:var(--r-md); background:var(--bg-elevated); color:var(--text-primary); font:400 var(--fs-label)/var(--lh-body) var(--font-mono); white-space:pre-wrap; overflow-wrap:anywhere; user-select:text; }
+.native-layout-editor { display:grid; gap:var(--s-2); }
+.native-layout-editor label { color:var(--text-primary); font-size:var(--fs-label); }
+.native-layout-editor textarea { font-family:var(--font-mono); }
+.native-layout-editor .native-layout-error { color:var(--danger-text); }
+.native-layout-error:empty { display:none; }
 .native-reader-body { max-width:80ch; margin-inline:auto; font-size:var(--fs-label); }
 </style>

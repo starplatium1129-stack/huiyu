@@ -59,7 +59,7 @@ export function atlasPortraitField(centers: Array<{ x: number; y: number }>) {
     }
     return hull.slice(0, -1)
   }
-  const hull = [...half(points), ...half([...points].reverse())]
+  const hull = [...half(points), ...half(points.toReversed())]
   const origin = { x: points[0].x - 6, y: Math.min(...points.map(point => point.y)) - 6 }
   const local = (point: Point) => `${point.x - origin.x},${point.y - origin.y}`
   // Subpixel separation gives coincident portraits distinct cells without moving their cards.

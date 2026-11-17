@@ -49,7 +49,11 @@
           <ArchiveIcon name="warning" /> 检测到 {{ violations.length }} 个不建议使用的标签：{{ violations.join('、') }}
         </div>
         <div class="prompt-label">色彩预设词条</div>
-        <div class="prompt-code" v-html="colorizedPrompt"></div>
+        <div class="prompt-code">
+          <template v-for="(tag, index) in colorizedPrompt" :key="index">
+            {{ index ? ',' : '' }}<span v-if="tag.warn" class="violate">{{ tag.text }}</span><template v-else>{{ tag.text }}</template>
+          </template>
+        </div>
         <div class="result-actions tw:flex tw:flex-wrap tw:gap-s-2">
           <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :content-key="selected.id" :action="copyPrompt" />
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
@@ -180,23 +184,18 @@ async function chooseMood(id: string) {
   panel.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
 }
 
-function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
-
 const violations = computed(() => {
   if (!selected.value) return []
   const lower = selected.value.prompt.toLowerCase()
   return BANNED_TAGS.filter(b => lower.includes(b.toLowerCase()))
 })
 
-const colorizedPrompt = computed(() => {
-  if (!selected.value) return ''
-  return selected.value.prompt.split(',').map(tk => {
-    const t = tk.trim()
-    const low = t.toLowerCase().replace(/[\s\/]+/g, '_')
-    const bad = BANNED_TAGS.some(b => low === b.toLowerCase().replace(/[\s\/]+/g,'_') || low.includes(b.toLowerCase().replace(/[\s\/]+/g,'_')))
-    return bad ? `<span class="violate">${esc(tk)}</span>` : esc(tk)
-  }).join(',')
-})
+const normalizeTerm = (tag: string) => tag.toLowerCase().replace(/[\s/]+/g, '_')
+const bannedTerms = BANNED_TAGS.map(normalizeTerm)
+const colorizedPrompt = computed(() => selected.value?.prompt.split(',').map(text => {
+  const normalized = normalizeTerm(text.trim())
+  return { text, warn: bannedTerms.some(term => normalized.includes(term)) }
+}) ?? [])
 
 async function copyPrompt() {
   if (!selected.value) return false

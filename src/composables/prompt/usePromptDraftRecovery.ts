@@ -1,14 +1,14 @@
-import { watch } from 'vue'
+import { shallowReactive, watch } from 'vue'
 import type { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 
 /** Shared by cold workspace setup and URL resume; KeepAlive retains this owner. */
 export function usePromptDraftRecovery(pb: ReturnType<typeof usePromptBuilderStore>) {
-  const recovery = {
+  const recovery = shallowReactive({
     initialized: false,
     textRevision: 0,
     restoredRevision: null as number | null,
     restoreDraft,
-  }
+  })
 
   // Catalog/profile/backend defaults do not write these two editable text fields.
   // A revision also preserves edits that return to their original text.

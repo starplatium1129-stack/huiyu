@@ -6,7 +6,8 @@
         <h2 id="control-start-title">准备绘图环境</h2>
         <p>自动配置推荐底模；聊天与扩展工具可按需随时添加。</p>
         <div class="control-start-actions">
-          <RouterLink class="btn btn-primary" :to="{ path: '/control', hash: '#control-setup' }"><ArchiveIcon name="download" />配置绘图模型</RouterLink>
+          <RouterLink class="btn btn-primary" to="/control#control-inference"><ArchiveIcon name="download" />准备本机绘图</RouterLink>
+          <RouterLink class="btn btn-ghost" to="/control#control-remote">连接另一台绘遇</RouterLink>
           <RouterLink class="btn btn-quiet" to="/scene-explorer">浏览灵感场景<ArchiveIcon name="chevron-down" class="control-forward-icon" /></RouterLink>
         </div>
       </div>
@@ -14,7 +15,7 @@
       <ol class="control-start-steps" aria-label="入门流程">
         <li><span>1</span><div><strong>选择目录</strong><small>确认磁盘空间</small></div></li>
         <li><span>2</span><div><strong>自动配置</strong><small>推荐底模起步</small></div></li>
-        <li><span>3</span><div><strong>开始绘制</strong><small>选角色与场景</small></div></li>
+        <li><span>3</span><div><strong>生成第一张图</strong><small>使用示例或自己的描述</small></div></li>
       </ol>
     </section>
     <section class="control-health" aria-labelledby="control-health-title" :aria-busy="serviceChecking">

@@ -1,6 +1,7 @@
 import type { Component } from 'vue'
 
 let promptWorkspaceImport: Promise<{ default: Component }> | null = null
+let drawingResourcePrefetch: Promise<void> | null = null
 
 /** Share the drawing route's primary import between intent prefetch and the
  * mounted shell. A rejected transfer can be retried by AsyncPanel. */
@@ -14,4 +15,19 @@ export function loadPromptDrawingWorkspace(): Promise<{ default: Component }> {
     promptWorkspaceImport = current
   }
   return promptWorkspaceImport
+}
+
+/** Share the store-owned catalog reads between navigation intent and route entry. */
+export function prefetchDrawingResources(): void {
+  if (drawingResourcePrefetch) return
+  const current = import('@/stores/sceneStore').then(async ({ useSceneStore }) => {
+    const store = useSceneStore()
+    await Promise.all([store.load(), store.loadPresetCatalog()])
+  })
+  drawingResourcePrefetch = current
+  void current.catch(error => {
+    console.warn('[route-prefetch] /prompt-builder', error)
+  }).finally(() => {
+    if (drawingResourcePrefetch === current) drawingResourcePrefetch = null
+  })
 }

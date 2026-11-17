@@ -99,15 +99,27 @@ pub(super) async fn find(
     owner: &str,
     result: bool,
 ) -> Result<Arc<Job>> {
+    find_scoped(inner, id, owner, result, None).await
+}
+pub(super) async fn find_scoped(
+    inner: &Arc<Inner>,
+    id: &str,
+    owner: &str,
+    result: bool,
+    family: Option<&str>,
+) -> Result<Arc<Job>> {
     snapshots::initialize(inner.clone()).await?;
     let state = inner.state.lock().await;
     if let Some(job) = state.jobs.get(id).filter(|j| j.owner == owner) {
-        return Ok(job.clone());
-    }
-    if state
+        if family.is_none_or(|family| job.input["family"] == family) {
+            return Ok(job.clone());
+        }
+    } else if state
         .lost
         .get(id)
-        .is_some_and(|stored| stored.owner == owner)
+        .is_some_and(|stored| {
+            stored.owner == owner && family.is_none_or(|family| stored.family.as_deref() == Some(family))
+        })
     {
         return Err(ApiError::new(
             410,
@@ -124,6 +136,8 @@ pub(super) async fn find(
         },
         if result {
             "结果不存在"
+        } else if family.is_some() {
+            "生成任务不存在"
         } else {
             "任务不存在"
         },
@@ -216,10 +230,22 @@ pub(super) async fn observe(inner: &Arc<Inner>, id: &str, owner: &str) -> Result
     observation.metadata = metadata;
     Ok(observation)
 }
-pub(super) async fn result(inner: &Arc<Inner>, id: &str, owner: &str) -> Result<Output> {
-    let job = find(inner, id, owner, true).await?;
+pub(super) async fn result(
+    inner: &Arc<Inner>,
+    id: &str,
+    owner: &str,
+    family: Option<&str>,
+) -> Result<Output> {
+    let job = find_scoped(inner, id, owner, family.is_none(), family).await?;
     let state = job.state.lock().await;
     if state.status != "succeeded" {
+        if family.is_some() {
+            return Err(ApiError::new(
+                if state.status == "failed" { 502 } else { 409 },
+                state.code.as_deref().unwrap_or("RESULT_NOT_READY"),
+                state.error.as_deref().unwrap_or("结果尚未就绪"),
+            ));
+        }
         return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
     }
     state

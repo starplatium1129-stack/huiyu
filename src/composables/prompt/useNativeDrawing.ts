@@ -6,22 +6,43 @@ import type { GenerationPresentation } from './useGenerationPresentation'
 import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { nativeDrawingPrompt } from '@/utils/nativeDrawingPrompt'
 import { renderMossDrawingPrompt } from '@/utils/mossPrompt'
+import { compileMossLayout } from '@/utils/mossLayout'
 
 export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace>) {
   const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter(), active = ref(true)
   const mode = navigation.mode, session = shallowRef<ReturnType<typeof useQwenStudio> | null>(null)
   let scope: EffectScope | undefined
+  const mossLayout = computed(() => session.value?.form.mossLayout ?? '')
+  function mossCanvas() {
+    const state = session.value
+    const { width, height } = state?.form ?? { width: 768, height: 1280 }
+    const maxSize = state?.maxSize ?? 1536, alignment = state?.alignment ?? 16
+    if (![width, height].every(n => Number.isInteger(n) && n >= 512 && n <= maxSize && n % alignment === 0)) {
+      throw new Error(`MOSS 画幅宽高需为 512–${maxSize} 内的 ${alignment} 倍数`)
+    }
+    return { width, height }
+  }
   const recipe = computed(() => {
     try {
       const description = workspace.pb.visualDescription, negative = session.value?.form.negative || ''
       return { ...(mode.value === 'moss'
-        ? renderMossDrawingPrompt(workspace.mossPlan.value, description, negative)
-        : { ...nativeDrawingPrompt(workspace.healthBindings.structuredPlan.value, description, negative), tagLine: '' }), error: '' }
+        ? renderMossDrawingPrompt(mossLayout.value ? null : workspace.mossPlan.value, mossLayout.value || description, negative, mossCanvas())
+        : nativeDrawingPrompt(workspace.healthBindings.structuredPlan.value, description, negative)), error: '' }
     }
-    catch (cause) { return { raw: workspace.pb.visualDescription, prompt: '', negative: '', tagLine: '', error: cause instanceof Error ? cause.message : '提示词尚未准备好' } }
+    catch (cause) { return { raw: workspace.pb.visualDescription, prompt: '', negative: '', error: cause instanceof Error ? cause.message : '提示词尚未准备好' } }
   })
   const busy = computed(() => !!session.value && (session.value.busy.value || session.value.unresolved.value || session.value.importing.value || session.value.cancelling.value))
   const locked = computed(() => !session.value || session.value.locked.value)
+  function applyMossLayout(value: string) {
+    const state = session.value
+    if (mode.value !== 'moss' || !state || locked.value) throw new Error('当前无法修改布局')
+    const source = value.trim()
+    if (source) {
+      const { prompt } = compileMossLayout(source, mossCanvas())
+      if (source.length > 12000 || prompt.length > 12000) throw new Error('布局提示词超过 12000 字符，请精简描述')
+    }
+    state.form.mossLayout = source
+  }
   const blocked = computed(() => {
     const state = session.value
     if (!state?.ready.value) return state?.error.value || '正在恢复绘图参数…'
@@ -57,6 +78,8 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     await state.initialize(typeof entry.preparedModel === 'string' ? entry.preparedModel : undefined,
       typeof entry.job === 'string' ? entry.job : undefined)
     if (session.value !== state || !state.ready.value || state.error.value || state.draftRecoveryNeeded.value || state.restoredInputMissing.value || !(entry.job || entry.preparedModel)) return
+    if (route.query.firstDraw === '1' && entry.preparedModel
+      && (!state.selected.value?.available || state.selected.value.id !== entry.preparedModel)) return
     if (!await state.persistDraft() || session.value !== state || route.query.editor === 'qwen') return
     const query = { ...route.query }
     if (query.job === entry.job) delete query.job
@@ -75,7 +98,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   async function generate() {
     const state = session.value
     if (!state || locked.value || blocked.value) return
-    state.form.prompt = recipe.value.raw
+    state.form.prompt = mode.value === 'moss' ? recipe.value.prompt : recipe.value.raw
     const pb = workspace.pb, subject = pb.subject
     await state.run({ negative: state.turbo.value ? '' : recipe.value.negative, context: {
       character: pb.char, characterId: pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char,
@@ -94,6 +117,6 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   onDeactivated(() => { active.value = false; dispose() })
   onActivated(() => { if (!active.value) { active.value = true; void initialize() } })
   onScopeDispose(dispose)
-  return { mode, session, recipe, mossPlan: workspace.mossPlan, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, initialize, saveBeforeSwitch }
+  return { mode, session, recipe, mossLayout, applyMossLayout, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, initialize, saveBeforeSwitch }
 }
 export type NativeDrawing = ReturnType<typeof useNativeDrawing>

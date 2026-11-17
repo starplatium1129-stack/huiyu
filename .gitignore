@@ -89,6 +89,10 @@ assets/live2d-candidates/
 !.agents/skills/studio-ui-design/**
 !.agents/skills/humanizer-zh/
 !.agents/skills/humanizer-zh/**
+!.agents/skills/modern-web-guidance/
+.agents/skills/modern-web-guidance/*
+!.agents/skills/modern-web-guidance/SKILL.md
+!.agents/skills/modern-web-guidance/LICENSE
 skills-lock.json
 
 # 临时 UI 截图（Gemini 视觉复核用，不入库）

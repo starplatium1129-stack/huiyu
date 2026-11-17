@@ -280,7 +280,7 @@ export function createLifecycleController(
         ctx.timers.load = window.setTimeout(() => { destroyRuntime(); fallback('Live2D 加载超时', '模型在 20 秒内没有完成初始化') }, 20000)
         const isCurrent = () => generation === runtimeGeneration && !ctx.destroyed.value
           && ctx.enabled.value && char === ctx.character.value
-        if (ctx.hostEl) ctx.hostEl.innerHTML = ''
+        ctx.hostEl?.replaceChildren()
         // 加载状态必须在 connect 之前显示：原生后端 setCharacter 在渲染线程
         // 加载模型与纹理可能耗时数秒，期间 UI 线程保持空闲，loading 立即可见。
         setState('loading', 'Live2D 加载中…')
@@ -534,7 +534,7 @@ export function createLifecycleController(
     ctx.gaze.active = false
     ctx.gaze.kind = 'idle'
     ctx.nativeOverlayReady = false
-    if (ctx.hostEl) ctx.hostEl.innerHTML = ''
+    ctx.hostEl?.replaceChildren()
   }
 
   function destroy() {

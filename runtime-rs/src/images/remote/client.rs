@@ -1,5 +1,5 @@
 use super::super::*;
-use super::{COMPLETION_HEADER, COMPLETION_WAIT};
+use super::{COMPLETION_HEADER, COMPLETION_WAIT, Completion};
 use futures_util::{StreamExt, TryStreamExt, stream};
 use reqwest::Method;
 use std::sync::atomic::{AtomicBool, Ordering};
@@ -91,36 +91,7 @@ impl Client {
                 Ordering::Relaxed,
             );
         }
-        let length = response.content_length();
-        if length.is_some_and(|n| n > max as u64) {
-            return Err(ApiError::new(
-                502,
-                "REMOTE_RESPONSE_INVALID",
-                "远程绘图返回的数据过大",
-            ));
-        }
-        let mut stream = response.bytes_stream();
-        let mut bytes = Vec::with_capacity(if status.is_success() {
-            length.unwrap_or_default() as usize
-        } else {
-            0
-        });
-        loop {
-            let chunk = tokio::select! {
-                _ = cancel.cancelled() => return Err(inputs::cancelled()),
-                chunk = stream.next() => chunk,
-            };
-            let Some(chunk) = chunk else { break };
-            let chunk = chunk.map_err(|_| unavailable())?;
-            if bytes.len().saturating_add(chunk.len()) > max {
-                return Err(ApiError::new(
-                    502,
-                    "REMOTE_RESPONSE_INVALID",
-                    "远程绘图返回的数据过大",
-                ));
-            }
-            bytes.extend_from_slice(&chunk);
-        }
+        let bytes = read_body(response, max, cancel).await?;
         if !status.is_success() {
             let value: Value = serde_json::from_slice(&bytes).unwrap_or(Value::Null);
             let message = value["error"]
@@ -150,7 +121,7 @@ impl Client {
                 path,
                 body,
                 "application/json",
-                2 * 1024 * 1024,
+                RECEIPT_LIMIT,
                 cancel,
             )
             .await?;
@@ -314,25 +285,47 @@ impl Client {
         owner: &str,
         family: &str,
         cancel: &CancellationToken,
-    ) -> bool {
+    ) -> Option<Completion> {
         if !self.completion_supported.load(Ordering::Relaxed) {
-            return false;
+            return None;
         }
-        let (Ok(remote_id), Ok(route)) = (remote_request_id(id, owner), route(family)) else {
-            return false;
-        };
+        let remote_id = remote_request_id(id, owner).ok()?;
+        let route = route(family).ok()?;
         let request = self
             .http
-            .get(format!("{}/api/{route}/requests/{remote_id}/completion", self.base))
+            .get(format!("{}/api/{route}/requests/{remote_id}/completion?receipt=1", self.base))
             .header("x-token", &self.key)
             .timeout(COMPLETION_WAIT + Duration::from_secs(5));
-        tokio::select! {
+        let response = tokio::select! {
             biased;
-            _ = cancel.cancelled() => false,
-            response = request.send() => response.is_ok_and(|response|
-                response.status() == reqwest::StatusCode::NO_CONTENT
-                    && header_enabled(&response, "x-huiyu-image-protocol")
-                    && header_enabled(&response, COMPLETION_HEADER)),
+            _ = cancel.cancelled() => return None,
+            response = request.send() => response.ok()?,
+        };
+        if !header_enabled(&response, "x-huiyu-image-protocol")
+            || !header_enabled(&response, COMPLETION_HEADER)
+        {
+            return None;
+        }
+        match response.status() {
+            reqwest::StatusCode::NO_CONTENT => Some(Completion::Signalled),
+            reqwest::StatusCode::OK => {
+                let receipt = read_body(response, RECEIPT_LIMIT, cancel)
+                    .await
+                    .ok()
+                    .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
+                if let Some(receipt) = receipt
+                    && receipt["ok"] == true
+                    && receipt["found"] == true
+                    && receipt["requestKey"] == remote_id
+                    && (receipt["rejected"].is_object()
+                        || (receipt["job"]["upstreamSettled"] == true
+                            && receipt["job"]["unknown"] == false))
+                {
+                    return Some(Completion::Receipt(receipt));
+                }
+                Some(Completion::Signalled)
+            }
+            _ => None,
         }
     }
 
@@ -375,10 +368,14 @@ impl Client {
         id: &str,
         owner: &str,
         family: &str,
+        completed: Option<Value>,
         cancel: &CancellationToken,
     ) -> Result<Observation> {
-        let receipt = self.receipt(id, owner, family, cancel).await?;
-        let job = Self::job_from_receipt(&receipt, id, family)?;
+        let receipt = match completed {
+            Some(receipt) if receipt["requestKey"] == remote_request_id(id, owner)? => receipt,
+            _ => self.receipt(id, owner, family, cancel).await?,
+        };
+        let mut job = Self::job_from_receipt(&receipt, id, family)?;
         let status = job["status"].as_str().ok_or_else(protocol)?.to_owned();
         let settled = job["upstreamSettled"] == true;
         let unknown = job["unknown"] == true;
@@ -387,7 +384,7 @@ impl Client {
         } else {
             vec![]
         };
-        let mut metadata = job["metadata"].clone();
+        let mut metadata = job["metadata"].take();
         metadata["gatewayJobId"] = json!(id);
         Ok(Observation {
             status,
@@ -452,15 +449,51 @@ impl Client {
         cancel: &CancellationToken,
     ) -> Result<Value> {
         let remote_id = remote_request_id(id, owner)?;
-        self.json(
+        let receipt = self.json(
             Method::DELETE,
             &format!("/api/{}/requests/{remote_id}", route(family)?),
             None,
             cancel,
         )
         .await?;
+        if receipt["requestKey"] == remote_id && receipt["job"].is_object() {
+            return Self::job_from_receipt(&receipt, id, family);
+        }
         self.job(id, owner, family, cancel).await
     }
+}
+
+const RECEIPT_LIMIT: usize = 2 * 1024 * 1024;
+
+async fn read_body(
+    response: reqwest::Response,
+    max: usize,
+    cancel: &CancellationToken,
+) -> Result<Vec<u8>> {
+    let too_large = || ApiError::new(502, "REMOTE_RESPONSE_INVALID", "远程绘图返回的数据过大");
+    let length = response.content_length().unwrap_or_default();
+    if length > max as u64 {
+        return Err(too_large());
+    }
+    let mut bytes = Vec::with_capacity(if response.status().is_success() {
+        length as usize
+    } else {
+        0
+    });
+    let mut stream = response.bytes_stream();
+    loop {
+        let chunk = tokio::select! {
+            _ = cancel.cancelled() => return Err(inputs::cancelled()),
+            chunk = stream.next() => chunk,
+        };
+        let Some(chunk) = chunk else { break };
+        let chunk = chunk.map_err(|_| unavailable())?;
+        if chunk.len() > max - bytes.len() {
+            return Err(too_large());
+        }
+        bytes.extend_from_slice(&chunk);
+    }
+    Ok(bytes)
 }
 
 fn header_enabled(response: &reqwest::Response, header: &str) -> bool {

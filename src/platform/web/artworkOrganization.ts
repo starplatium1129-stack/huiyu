@@ -98,7 +98,7 @@ export function createArtworkOrganization({ kv, enqueue }: Dependencies) {
       if (!original) throw new Error('本次整理的撤销记录已不可用')
       const { history, projects } = await read()
       let restored = 0, skipped = 0, projectsChanged = false
-      for (const change of [...original.changes].reverse()) {
+    for (const change of original.changes.toReversed()) {
         const source = history.map(record).find(value => comparableId(value?.id) === comparableId(change.id))
         if (!source) { skipped++; continue }
         const after = change.after

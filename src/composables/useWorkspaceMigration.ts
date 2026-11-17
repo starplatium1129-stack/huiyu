@@ -102,7 +102,7 @@ export function useWorkspaceMigration(onMessage: (message: string) => void) {
           try { await activateDesktopWorkspace(status.migrationId, false) } catch (error) { activationError = error }
           try { await reconcileMigrationAuthority() } catch (error) {
             const detail = error instanceof Error ? error.message : '激活结果尚未确认。'
-            throw new Error(activationError instanceof Error ? `${detail} 本机确认：${activationError.message}` : detail)
+            throw new Error(activationError instanceof Error ? `${detail} 本机确认：${activationError.message}` : detail, { cause: error })
           }
         },
       })

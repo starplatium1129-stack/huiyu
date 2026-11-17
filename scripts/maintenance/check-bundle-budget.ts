@@ -148,6 +148,10 @@ function kib(bytes: number) {
   return `${(bytes / 1024).toFixed(1)} KiB`;
 }
 
+function largestBy<T>(entries: readonly T[], bytes: (entry: T) => number): T {
+  return entries.reduce((largest, entry) => bytes(entry) > bytes(largest) ? entry : largest);
+}
+
 function run(distDir = path.resolve(__dirname, '../../dist'), options: { json?: boolean } = {}) {
   const manifestPath = path.join(distDir, '.vite', 'manifest.json');
   if (!fs.existsSync(manifestPath)) {
@@ -206,21 +210,21 @@ function run(distDir = path.resolve(__dirname, '../../dist'), options: { json?: 
     result.entryClosureJavaScript = entryClosure;
   }
 
-  const largestJs = [...result.routes].sort((a, b) => b.javascript - a.javascript)[0];
-  const largestCss = [...result.routes].sort((a, b) => b.css - a.css)[0];
-  const largestLazy = lazy.sort((a, b) => b.javascript - a.javascript)[0];
-  const largestClosure = [...result.routes].sort((a, b) => b.closureJavaScript - a.closureJavaScript)[0];
-  if (!options.json) console.log(
-    `Route bundle budget passed: ${result.routes.length} routes; `
-    + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `
-    + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}; `
-    + `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}; `
-    + `entry closure JS ${kib(result.entryClosureJavaScript ?? 0)} / ${kib(DEFAULT_BUDGETS.entryClosureJavaScript)}; `
-    + `largest route closure ${largestClosure.route} ${kib(largestClosure.closureJavaScript)} / ${kib(DEFAULT_BUDGETS.routeClosureJavaScript)}; `
-    + `entry CSS ${kib(entryCssBytes)} / ${kib(DEFAULT_BUDGETS.entryCss)}`,
-  );
   if (options.json) console.log(JSON.stringify(result, null, 2));
   else {
+    const largestJs = largestBy(result.routes, route => route.javascript);
+    const largestCss = largestBy(result.routes, route => route.css);
+    const largestClosure = largestBy(result.routes, route => route.closureJavaScript);
+    const largestLazy = lazy.length ? largestBy(lazy, entry => entry.javascript) : undefined;
+    console.log(
+      `Route bundle budget passed: ${result.routes.length} routes; `
+      + `largest JS ${largestJs.route} ${kib(largestJs.javascript)} / ${kib(DEFAULT_BUDGETS.routeJavaScript)}; `
+      + `largest CSS ${largestCss.route} ${kib(largestCss.css)} / ${kib(DEFAULT_BUDGETS.routeCss)}; `
+      + (largestLazy ? `largest lazy ${path.basename(largestLazy.key)} ${kib(largestLazy.javascript)} / ${kib(DEFAULT_BUDGETS.lazyChunk)}; ` : '')
+      + `entry closure JS ${kib(result.entryClosureJavaScript ?? 0)} / ${kib(DEFAULT_BUDGETS.entryClosureJavaScript)}; `
+      + `largest route closure ${largestClosure.route} ${kib(largestClosure.closureJavaScript)} / ${kib(DEFAULT_BUDGETS.routeClosureJavaScript)}; `
+      + `entry CSS ${kib(entryCssBytes)} / ${kib(DEFAULT_BUDGETS.entryCss)}`,
+    );
     const measured = result.pages.filter((page): page is typeof page & { pageJavaScript: number } => page.status === 'measured').sort((a, b) => b.pageJavaScript - a.pageJavaScript);
     console.log(`Page JS union (report only): ${measured.length}/${result.pages.length} resolved; `
       + measured.slice(0, 3).map(page => `${page.route} ${kib(page.pageJavaScript)}`).join('; '));

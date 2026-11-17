@@ -8,6 +8,8 @@
 
 - **开工准备**：明确目标、受影响文件、完成标准与验证方式；仅缺少关键决策或授权时询问。
 - **技能按需加载**：图像提示词读 [studio-prompt-craft](.agents/skills/studio-prompt-craft/SKILL.md)；角色/故事文案读 [humanizer-zh](.agents/skills/humanizer-zh/SKILL.md)；UI 与动效读 [DESIGN.md](DESIGN.md) 与 [studio-ui-design](.agents/skills/studio-ui-design/SKILL.md)。其余任务不加载无关技能。
+- **Modern Web Guidance**：HTML、CSS 和浏览器端 JavaScript 改动先查阅 [Modern Web Guidance](.agents/skills/modern-web-guidance/SKILL.md)（上游 v1.0.1），按任务搜索并读取对应指南。全局现代化用 `legacy-scan` 定位候选，结合源码复核后再改，按本项目的验证规则交付。
+- **浏览器兼容目标**：Windows 桌面核对实际 WebView2 运行时；共用前端以 [package.json](package.json) 的 browserslist 和 [Vite 构建目标](vite.config.ts) 为准。新 API 若超出支持范围，通过特性检测渐进增强，兼容路径保留相同的核心操作。
 - **代码探索**：优先使用 `codegraph_explore` 查看实现与调用关系；工具不可用时直接阅读源码并使用 `rg`。
 - **Git 规范**：写入前核对 `git status` 与 `git diff`，保留其他会话改动。严禁 `git add .` 和 `git reset --hard`；仅暂存和提交本次审查过的文件。
 - **并行开发**：仅用于可独立拆分的任务，各自使用 worktree 且不同时修改同一文件；主会话负责复核。

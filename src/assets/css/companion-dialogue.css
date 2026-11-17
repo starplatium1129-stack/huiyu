@@ -119,6 +119,9 @@ html:has(.companion-dialogue-window) dialog[data-fluid-dialog]::backdrop { backg
 .companion-dialogue-composer,.companion-dialogue-attachment,.companion-dialogue-connection,.companion-dialogue-feedback,.companion-dialogue-presence,.companion-dialogue-latest { flex-shrink:0; }
 .companion-dialogue-feedback { max-height:80px; overflow:auto; }
 .companion-dialogue-input { box-sizing:border-box; flex:1; width:100%; min-width:0; min-height:var(--control-height); max-height:108px; margin:0; padding:var(--s-2) 0; resize:none; border:0; border-radius:0; box-shadow:none; background:transparent; color:var(--text-primary); font:400 var(--fs-body)/var(--lh-label) var(--font-sans); scrollbar-width:thin; }
+@supports (field-sizing: content) {
+  .companion-dialogue-input { field-sizing: content; height: auto; }
+}
 .companion-dialogue-input::placeholder { color:var(--text-muted); }
 /* The composer border shows focus; override the window's stronger generic focus ring. */
 .companion-dialogue-window .companion-dialogue-composer .companion-dialogue-input:focus-visible { outline:none; box-shadow:none; }

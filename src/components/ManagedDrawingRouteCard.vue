@@ -106,8 +106,7 @@ async function restoreBanner() {
   routeCard.value?.querySelector('summary')?.focus()
 }
 
-const recipes = computed(() => [...props.history]
-  .reverse()
+const recipes = computed(() => props.history.toReversed()
   .filter(entry => {
     if (!entry.image_id) return false
     if (props.subject.kind === 'popular') {

@@ -163,6 +163,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useChatSpeechInteraction } from '@/composables/chat/useChatSpeechInteraction'
 import type { ChatUserProfile } from '@/utils/chatUserProfile'
 import { submitChatOnEnter } from '@/utils/chatInput'
+import { copyText } from '@/utils/clipboard'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
 const ChatStoryPicker = defineAsyncComponent(() => import('@/components/ChatStoryPicker.vue'))
@@ -311,8 +312,8 @@ const currentLine = computed(() => lastAssistantMessage.value?.content || person
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
 async function copyMessage(content: string) {
-  try { await navigator.clipboard.writeText(content); setError('已复制', 'info', 1800) }
-  catch { setError('复制失败，可以选中文字后复制。', 'warning') }
+  if (await copyText(content)) setError('已复制', 'info', 1800)
+  else setError('复制失败，可以选中文字后复制。', 'warning')
 }
 
 const personalizedGreeting = computed(() => {

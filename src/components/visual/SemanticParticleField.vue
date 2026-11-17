@@ -220,7 +220,7 @@ function setShape(animate = true) {
     shape = createParticleShape(props.shape, count)
   }
   if (!shape.length) return
-  const previous = particles.slice().sort((a, b) => {
+  const previous = particles.toSorted((a, b) => {
     const rowA = Math.round(a.y / Math.max(1, height) * 18)
     const rowB = Math.round(b.y / Math.max(1, height) * 18)
     return rowA === rowB ? a.x - b.x : rowA - rowB

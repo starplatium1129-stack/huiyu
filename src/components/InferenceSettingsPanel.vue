@@ -10,6 +10,32 @@
       <button v-if="error && !snapshot" class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="retrySettings">重新读取推理设置</button>
       <p v-if="notice" role="status">{{ notice }}</p>
       <template v-if="snapshot">
+        <section v-if="snapshot.active.remoteServe" class="inference-connection" aria-label="本机远程绘图">
+          <div v-if="snapshot.remoteAddress" class="inference-actions">
+            <div class="inference-address">
+              <span class="inference-active">本机远程绘图地址</span>
+              <code>{{ snapshot.remoteAddress }}</code>
+            </div>
+            <StudioCopyButton class="btn btn-ghost btn-sm" label="复制地址"
+              :content-key="snapshot.remoteAddress" :action="() => copyText(snapshot?.remoteAddress ?? '')" />
+            <StudioCopyButton class="btn btn-quiet btn-sm" label="复制连接密钥"
+              :content-key="snapshot.active.remoteKey" :action="() => copyText(snapshot?.active.remoteKey ?? '')" />
+          </div>
+          <template v-else>
+            <p role="status">
+              {{ !snapshot.remoteListening ? '远程绘图未能监听，请检查端口是否被占用。'
+                : loading ? '正在读取远程绘图地址…'
+                : snapshot.remoteAddress === undefined ? '当前网关暂未提供远程绘图地址。'
+                : `本机端口 ${snapshot.active.remotePort} 已监听。配置 Tailscale 转发后刷新地址。` }}
+            </p>
+            <div v-if="snapshot.remoteListening && snapshot.remoteAddress === null" class="inference-actions">
+              <StudioCopyButton class="btn btn-ghost btn-sm" label="复制转发命令"
+                :content-key="remoteForwardCommand" :action="() => copyText(remoteForwardCommand)" />
+              <button class="btn btn-quiet btn-sm" type="button" :disabled="loading || saving" @click="refresh">刷新地址</button>
+            </div>
+          </template>
+        </section>
+        <AvailableDrawingModels v-if="showAvailableModels" :key="snapshot.active.engine" :provider="snapshot.active.engine" @local="showLocalPreparation = true" />
         <section v-if="videoSetupRequested" class="inference-video-help" aria-labelledby="inference-video-title">
           <h3 id="inference-video-title">准备视频模型</h3>
           <ol>
@@ -25,17 +51,18 @@
         </section>
         <p v-if="snapshot.restartRequired" role="status">新设置将在重启后生效。</p>
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
-        <p v-if="blocked" role="status">上方的模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty">请先保存引擎设置的修改，再继续原生准备。</p>
-        <details class="inference-remote">
+        <p v-if="blocked" role="status">模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty && draft.engine !== 'remote'">请先保存引擎设置的修改，再继续本机准备。</p>
+        <details id="control-remote" ref="remoteDetails" class="inference-remote">
           <StudioDisclosureSummary><span>绘图引擎与远程连接<small class="inference-disclosure-hint">使用另一台绘遇的显卡，或开放本机绘图</small></span></StudioDisclosureSummary>
-          <form class="inference-form" data-disclosure-content @submit.prevent="saveSettings">
+          <form class="inference-form" aria-label="绘图引擎与远程连接" data-disclosure-content @submit.prevent="saveSettings">
+            <p v-if="draft.engine === 'remote'" class="inference-paths">在有显卡的电脑上启用远程绘图并准备模型，再填入那台电脑的私网地址和连接密钥。</p>
             <div class="inference-field">
               <label for="inference-engine">绘图引擎</label>
               <StudioSelect id="inference-engine" v-model="draft.engine" label="绘图引擎" :options="engineOptions" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('engine')" />
             </div>
             <div v-if="draft.engine === 'remote'" class="inference-field">
               <label for="inference-remote-url">远程绘遇地址</label>
-              <input id="inference-remote-url" v-model.trim="draft.remoteUrl" class="input input-mono" type="url" placeholder="http://100.x.x.x:3211" autocomplete="off" spellcheck="false" :disabled="blocked || saving || loading || setupBusy" />
+              <input id="inference-remote-url" v-model.trim="draft.remoteUrl" class="input input-mono" type="url" name="remoteUrl" required placeholder="http://100.x.x.x:3211" autocomplete="off" autocapitalize="off" spellcheck="false" :disabled="blocked || saving || loading || setupBusy || restarting" />
             </div>
             <label v-if="draft.engine === 'native'" class="inference-remote-toggle"><input v-model="draft.remoteServe" type="checkbox" :disabled="blocked || saving || loading || setupBusy" />允许其他绘遇连接本机绘图</label>
             <div v-if="draft.engine === 'native' && draft.remoteServe" class="inference-field">
@@ -44,16 +71,20 @@
             </div>
             <div v-if="draft.engine === 'remote' || draft.remoteServe" class="inference-field inference-paths">
               <label for="inference-remote-key">连接密钥</label>
-              <input id="inference-remote-key" v-model.trim="draft.remoteKey" class="input input-mono" :type="showRemoteKey ? 'text' : 'password'" autocomplete="off" spellcheck="false" aria-describedby="inference-remote-key-hint" :disabled="blocked || saving || loading || setupBusy" />
-              <small id="inference-remote-key-hint">两端使用相同的 64 位密钥。密钥保存在本机设置；请通过 Tailscale 等加密私网连接。</small>
+              <input id="inference-remote-key" v-model.trim="draft.remoteKey" class="input input-mono" :type="showRemoteKey ? 'text' : 'password'" name="remoteKey" required minlength="64" maxlength="64" pattern="[0-9A-Fa-f]{64}" autocomplete="off" autocapitalize="off" spellcheck="false" aria-describedby="inference-remote-key-hint" :disabled="blocked || saving || loading || setupBusy || restarting" />
+              <small id="inference-remote-key-hint">粘贴两端共用的 64 字符密钥。连接使用 Tailscale 等加密私网。</small>
               <div class="inference-actions"><button class="btn btn-quiet btn-sm" type="button" @click="showRemoteKey = !showRemoteKey">{{ showRemoteKey ? '隐藏密钥' : '显示密钥' }}</button><button v-if="draft.remoteServe" class="btn btn-quiet btn-sm" type="button" :disabled="blocked || saving || loading || setupBusy" @click="generateRemoteKey">生成密钥</button></div>
             </div>
-            <p v-if="snapshot.active.remoteServe" class="inference-paths" role="status">{{ snapshot.remoteListening ? `本机远程绘图端口 ${snapshot.active.remotePort} 已就绪，可通过 Tailscale 私网转发。` : '远程绘图未能监听，请检查端口是否被占用。' }}</p>
-            <p v-if="draft.engine === 'remote'" class="inference-paths">模型和 LoRA 使用远端的资源；图片结果保存到本机。漫画处理需切回本机原生引擎，视频使用单独的引擎设置。</p>
-            <div class="inference-actions"><button class="btn btn-primary btn-sm" type="submit" :disabled="blocked || saving || loading || setupBusy || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button><span v-if="dirty">保存后重启绘遇生效</span></div>
+            <p v-if="draft.engine === 'remote'" class="inference-paths">远端负责出图，成图保存到这台电脑。</p>
+            <div class="inference-actions">
+              <button v-if="remoteRestart && desktop?.restartForSetup && !dirty" class="btn btn-primary btn-sm" type="button" :disabled="blocked || loading || setupBusy || restarting" @click="restartSetup">{{ restarting ? '正在重启…' : '重启并检查远端' }}</button>
+              <button v-else class="btn btn-primary btn-sm" type="submit" :disabled="blocked || saving || loading || setupBusy || restarting || !dirty">{{ saving ? '保存中…' : draft.engine === 'remote' ? '保存远程连接' : '保存设置' }}</button>
+              <span v-if="dirty">保存后重启绘遇生效</span>
+              <button v-if="draft.engine === 'remote' && !showLocalPreparation" class="btn btn-quiet btn-sm" type="button" :disabled="saving || restarting" @click="openLocalPreparation">准备本机模型</button>
+            </div>
           </form>
         </details>
-        <AsyncPanel :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="blocked || loading || saving || dirty" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @working="setupWorking = $event" @activated="activated" /></AsyncPanel>
+        <AsyncPanel v-if="localPreparationVisited" v-show="showLocalSetup" :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="blocked || loading || saving || dirty || restarting" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @working="setupWorking = $event" @activated="activated" /></AsyncPanel>
         <details class="inference-advanced" :open="advancedOpen" @toggle="advancedOpen = ($event.target as HTMLDetailsElement).open">
           <StudioDisclosureSummary><span>复用已有资源与高级设置<small class="inference-disclosure-hint">路径配置与性能选项</small></span></StudioDisclosureSummary>
           <div data-disclosure-content>
@@ -150,8 +181,13 @@ import { computed, nextTick, onMounted, ref, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { videoReturnLocation } from '@/utils/videoNavigation'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+import AvailableDrawingModels from '@/components/control/AvailableDrawingModels.vue'
+import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
+import { flushProfileWrites } from '@/platform/web/profileStorage'
+import { copyText } from '@/utils/clipboard'
 const loadInferenceSetup = () => import('./InferenceSetupPanel.vue')
 import type { PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import { useInferenceSettings } from '@/composables/useInferenceSettings'
@@ -162,7 +198,57 @@ const videoSetupRequested = computed(() => route.query.videoSetup === '1')
 const videoReturnTarget = computed(() => videoReturnLocation(route.query))
 const emit = defineEmits<{ busy: [value: boolean]; configured: []; ready: [] }>()
 const setupBusy = ref(false), setupWorking = ref(false)
-watch([setupWorking, saving], values => emit('busy', values.some(Boolean)), { immediate: true })
+const remoteDetails = ref<HTMLDetailsElement | null>(null)
+const desktop = getDesktopCapabilities()
+const showLocalPreparation = ref(route.hash === '#control-inference'), restarting = ref(false)
+const remoteRestart = computed(() => snapshot.value?.restartRequired && snapshot.value.configured.engine === 'remote')
+const showLocalSetup = computed(() => !!snapshot.value && (draft.engine !== 'remote' || showLocalPreparation.value))
+const showAvailableModels = computed(() => {
+  const current = snapshot.value
+  if (!current || current.restartRequired || dirty.value || videoSetupRequested.value) return false
+  return current.active.engine === 'native' || current.active.engine === 'remote' && !showLocalPreparation.value
+})
+const localPreparationVisited = ref(false)
+watch(showLocalSetup, visible => { if (visible) localPreparationVisited.value = true }, { immediate: true })
+const remoteForwardCommand = computed(() => {
+  const port = snapshot.value?.active.remotePort
+  return port ? `tailscale serve --bg --tcp=${port} tcp://127.0.0.1:${port}` : ''
+})
+watch([setupWorking, saving, restarting], values => emit('busy', values.some(Boolean)), { immediate: true })
+let openedRemote = ''
+watch([() => route.hash, remoteDetails, snapshot], ([hash, details, settings]) => {
+  if (hash !== '#control-remote') {
+    openedRemote = ''
+    if (hash === '#control-inference') showLocalPreparation.value = true
+    return
+  }
+  if (!details || !settings || openedRemote === route.fullPath) return
+  openedRemote = route.fullPath
+  details.open = true
+  showLocalPreparation.value = false
+  if (!dirty.value && !setupWorking.value && !settings.environmentOverrides.includes('engine')) {
+    if (settings.configured.remoteServe) draft.remoteKey = ''
+    draft.engine = 'remote'
+  }
+}, { immediate: true })
+watch([remoteDetails, remoteRestart], ([details, pending]) => { if (details && pending) details.open = true })
+function openLocalPreparation() {
+  const configured = snapshot.value?.configured
+  if (configured && draft.engine === 'remote' && configured.engine !== 'remote' && !remoteRestart.value) {
+    Object.assign(draft, { engine: configured.engine, remoteServe: configured.remoteServe, remoteUrl: configured.remoteUrl, remoteKey: configured.remoteKey })
+  }
+  showLocalPreparation.value = true
+}
+async function restartSetup() {
+  if (!desktop?.restartForSetup || props.blocked || setupBusy.value || restarting.value || !remoteRestart.value || dirty.value) return
+  restarting.value = true; error.value = ''
+  try {
+    await flushProfileWrites()
+    await desktop.restartForSetup()
+  } catch (cause) {
+    error.value = cause instanceof Error ? cause.message : '重启未完成，请退出后重新打开绘遇'
+  } finally { restarting.value = false }
+}
 watch(() => props.settingsRevision, () => { void refresh() })
 async function saveSettings() {
   if (props.blocked || setupBusy.value) return
@@ -243,6 +329,11 @@ onMounted(async () => { await refresh(); emit('ready') })
 .inference-heading h2 { margin:0; font-size:var(--fs-title-sm); }
 .inference-disclosure-hint { display:block; margin-top:var(--s-1); color:var(--text-secondary); font-size:var(--fs-label-xs); font-weight:400; }
 .inference-active { font-size: var(--fs-label-sm); color: var(--text-secondary); }
+.inference-connection { margin-block-start:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-elevated); }
+.inference-connection p { margin:0; }
+.inference-connection p + .inference-actions { margin-block-start:var(--s-2); }
+.inference-address { display:grid; gap:var(--s-1); min-inline-size:0; }
+.inference-address code { color:var(--text-primary); font-family:var(--font-mono); overflow-wrap:anywhere; }
 .inference-video-help { margin-top:var(--s-4); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-md); }
 .inference-video-help h3 { margin:0; }
 .inference-advanced { margin-top: var(--s-4); border-top: 1px solid var(--border-soft); padding-top: var(--s-2); }

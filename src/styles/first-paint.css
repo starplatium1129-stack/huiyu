@@ -21,10 +21,12 @@
   /* Match the theme before its full stylesheet arrives, then use its tokens. */
   --first-paint-background: #151c24;
   --first-paint-text: #edf3fa;
+  color-scheme: dark;
 }
 :root[data-theme="light"] {
   --first-paint-background: #faf8f4;
   --first-paint-text: #202a33;
+  color-scheme: light;
 }
 :root[data-theme-style="terraria"] {
   --first-paint-background:#111d2a;

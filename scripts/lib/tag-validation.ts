@@ -18,8 +18,13 @@ function record(value: unknown, context: string): void {
   if (!value || typeof value !== 'object' || Array.isArray(value)) throw new Error(`${context} must be an object`);
 }
 function sameMembers(actual: string[], expected: unknown): boolean {
-  return Array.isArray(expected) && expected.every(item => typeof item === 'string')
-    && new Set(expected).size === expected.length && JSON.stringify([...actual].sort()) === JSON.stringify([...expected].sort());
+  if (!Array.isArray(expected) || expected.length !== actual.length) return false;
+  const members = new Set(expected);
+  if (members.size !== expected.length) return false;
+  for (const member of actual) {
+    if (!members.delete(member)) return false;
+  }
+  return true;
 }
 
 export function validateTagManifest(value: unknown): asserts value is TagManifest {

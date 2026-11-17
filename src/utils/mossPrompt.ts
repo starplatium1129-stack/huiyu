@@ -6,6 +6,7 @@ import { resolveCameraTags } from './promptCamera.ts'
 import { normalizeKey, tokenize } from './promptPrimitives.ts'
 import { proseToken } from './promptPhraseTables.ts'
 import { orderPromptTags } from './animaPromptOrder.ts'
+import { compileMossLayout, isMossLayoutInput, mossLayoutJson, mossSubjectBox, type MossCanvasSize, type MossLayoutSide } from './mossLayout.ts'
 
 // MIAOKA's shared BASE v1.0/v1.1 positive and negative recipe.
 export const MOSS_QUALITY = 'masterpiece, best quality, very aesthetic, ultra-detailed, high contrast'
@@ -19,14 +20,20 @@ export function mossArtistTags(ids: readonly string[]): string[] {
   })
 }
 
+const compositionPlacement: Record<string, MossLayoutSide | 'center'> = {
+  subject_on_the_left_side_of_the_image: 'left',
+  subject_on_the_right_side_of_the_image: 'right',
+  centered_composition: 'center',
+}
+
 /** Render MOSS visual facts without an Anima/Krea profile or LoRA controls. */
-export function renderMossDrawingPrompt(plan: PromptPlan | null, description: string, negative: string) {
+export function renderMossDrawingPrompt(plan: PromptPlan | null, description: string, negative: string, size?: MossCanvasSize) {
   const authored = description.trim()
   const mergeNegative = (base: string) => [...new Set([base, ...(plan?.negative ?? [])]
     .flatMap(tokenize).map(value => value.trim()).filter(Boolean))].join(', ')
-  if (authored.startsWith('{')) {
-    const layout = compileMossPrompt(authored, negative)
-    return { raw: authored, prompt: layout.prompt, negative: mergeNegative(layout.negative), tagLine: '' }
+  if (isMossLayoutInput(authored)) {
+    const layout = compileMossPrompt(authored, negative, size)
+    return { raw: authored, prompt: layout.prompt, negative: mergeNegative(layout.negative) }
   }
 
   const rawTags = plan ? [
@@ -62,9 +69,37 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
   const ordered = plan?.freeSubject && (plan.characterTokens.length || plan.copyrightTokens.length)
     ? orderPromptTags({ ...plan, quality: MOSS_QUALITY.split(', ') }, tags) : tags
   const tagLine = ordered.join(', ')
+  if (size) {
+    // Keep the relationships authored in prose, with exact visual cues inside the caption.
+    const caption = [...new Set([authored, ...prose, tagLine].filter(Boolean))].join('\n')
+    if (!caption) return { raw: '', prompt: '', negative: mergeNegative(negative) }
+    const intent = plan?.mossLayout?.compositionIntent || plan?.scene?.compositionIntent
+    const multiPanel = intent === 'triptych' || ordered.some(tag => /^(?:triptych|diptych|three panels|two panels|multi panel)$/i.test(tag))
+    const subjects = plan?.mossLayout?.subjects
+    const explicitlySplit = !multiPanel && subjects?.length === 2 && new Set(subjects.map(subject => subject.side)).size === 2
+      && subjects.every(subject => subject.side)
+    const people = ordered.flatMap(tag => tag.match(/^(\d+)\s*(?:girls?|boys?|people|women|men|others?)$/i)?.[1] ?? [])
+    const singleSubject = !multiPanel && intent !== 'group'
+      && people.length <= 1 && !people.some(count => Number(count) > 1)
+      && !ordered.some(tag => /^(?:group|multiple girls|multiple boys)$/i.test(tag))
+    const mainCharacter = singleSubject && Boolean(plan?.subjectProse || people[0] === '1')
+    const placement = singleSubject ? compositionPlacement[normalizeKey(plan?.composition[0] ?? '')] : undefined
+    const sceneDetail = authored || prose.at(-1) || tagLine
+    const characterDetail = plan?.subjectProse ? prose.slice(0, 2).filter(Boolean).join('. ') : sceneDetail
+    const items = explicitlySplit
+      ? subjects.map(subject => ({ label: 'character' as const, caption: subject.caption, bbox: mossSubjectBox(size, subject.side) }))
+      : [{
+          label: mainCharacter ? 'character' as const : 'object' as const,
+          caption: mainCharacter ? characterDetail || sceneDetail : sceneDetail,
+          bbox: mossSubjectBox(size, placement),
+        }]
+    const raw = mossLayoutJson(caption, items, multiPanel)
+    const compiled = compileMossPrompt(raw, negative, size)
+    return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
+  }
   const raw = [...new Set([tagLine, ...prose, authored].filter(Boolean))].join('\n')
   const compiled = compileMossPrompt(raw, negative)
-  return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative), tagLine }
+  return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
 }
 
 /** Only explicit lettering cues relax the author defaults; custom exclusions remain intact. */
@@ -83,17 +118,11 @@ function mossTextNegative(negative: string, hasText: boolean): string {
     : negative.trim()
 }
 
-export function compileMossPrompt(prompt: string, negative: string) {
+export function compileMossPrompt(prompt: string, negative: string, size?: MossCanvasSize) {
   const text = prompt.trim()
-  if (text.startsWith('{')) {
-    let layout: unknown
-    try { layout = JSON.parse(text) } catch { throw new Error('布局 JSON 无法解析，请检查引号、逗号和括号') }
-    if (!layout || typeof layout !== 'object' || Array.isArray(layout)) throw new Error('布局须为 JSON 对象')
-    // Layout is one intact input. Never prepend tags or rewrite coordinates.
-    // Author-default text exclusions yield to an explicitly authored text item.
-    const items = 'items' in layout ? layout.items : undefined
-    const hasText = Array.isArray(items) && items.some(item => item && typeof item.text === 'string' && item.text.trim())
-    return { prompt: text, negative: mossTextNegative(negative, hasText) }
+  if (isMossLayoutInput(text)) {
+    const layout = compileMossLayout(text, size)
+    return { prompt: layout.prompt, negative: mossTextNegative(negative, layout.hasText || mossTextIntent(layout.caption)) }
   }
   const authored = new Set(text.split(/[,\n]/).map(token => token.trim().toLowerCase()))
   const quality = MOSS_QUALITY.split(', ').filter(token => !authored.has(token))

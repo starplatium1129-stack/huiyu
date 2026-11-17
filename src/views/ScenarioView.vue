@@ -48,7 +48,16 @@
                 <p class="act-settings">{{ LOCK_PARAMS }}</p>
                 <p class="res-rec">{{ resInfo(a.res).reason }} · {{ resInfo(a.res).vram }}</p>
                 <div v-if="warnings.length" class="art-warn show"><ArchiveIcon name="warning" />本幕有 {{ warnings.length }} 个违反美术规范的标签: {{ warnings.join(', ') }}</div>
-                <div class="prompt-label">正向草稿 · 工作台按所选模型编译</div><div class="prompt-code" v-html="modules"></div>
+                <div class="prompt-label">正向草稿 · 工作台按所选模型编译</div>
+                <div class="prompt-code">
+                  <template v-for="(module, index) in modules" :key="index">
+                    {{ index ? '\n' : '' }}<span class="mod" :class="module.style">
+                      <template v-for="(tag, tagIndex) in module.tags" :key="tagIndex">
+                        {{ tagIndex ? ', ' : '' }}<span v-if="tag.warn" class="violate">{{ tag.text }}</span><template v-else>{{ tag.text }}</template>
+                      </template>
+                    </span>
+                  </template>
+                </div>
                 <div class="neg-section"><div class="prompt-label prompt-label-neg">本幕排除项</div><p class="act-settings">基础负向由工作台所选模型管理</p><div class="neg-output">{{ a.neg }}</div></div>
               </div>
             </details>
@@ -184,7 +193,6 @@ function coverId(id: string) { return COVER_IDS[id]?.[currentChar.value] || '' }
 function frameIcon(res: ScenarioResolution) { return res === 'Close-up' ? 'closeup' : res === 'Wide CG' || res === 'Full CG' ? 'wideshot' : 'midshot' }
 
 
-function esc(s: string) { return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') }
 function norm(t: string) { return t.split(/[,\r\n\u2028\u2029]+/).map(s => s.trim().replace(/[\s-]+/g,'_')).filter(Boolean).join(', ') }
 function resInfo(res: ScenarioResolution) { return RES_MAP[res] }
 function violations(a: ScenarioAct) {
@@ -199,21 +207,19 @@ function buildFullPrompt(a: ScenarioAct, char: ScenarioCharacter) {
 }
 
 const MODULE_CLASSES = ['m-q','m-c','m-cl','m-s','m-e','m-sh','m-co','m-l','m-d','m-lora']
+const bannedTerms = BANNED_TAGS.map(tag => tag.toLowerCase())
 function renderModules(a: ScenarioAct) {
   const char = currentChar.value
   const modPrompt = substitutePrompt(a.prompt, char)
-  const modules = modPrompt.split('\n')
-  modules.push('LoRA 与采样参数由工作台引擎自动管理')
-  return modules.map((line, i) => {
-    const cls = MODULE_CLASSES[i] || 'm-q'
-    const parts = line.split(',').map(tk => {
-      const t = tk.trim(); if (!t) return ''
-      const low = t.toLowerCase()
-      const bad = BANNED_TAGS.some(b => low === b.toLowerCase() || low.includes(b.toLowerCase()))
-      return bad ? `<span class="violate">${esc(t)}</span>` : esc(t)
-    }).join(', ')
-    return `<span class="mod ${cls}">${parts}</span>`
-  }).join('\n')
+  const lines = [...modPrompt.split('\n'), 'LoRA 与采样参数由工作台引擎自动管理']
+  return lines.map((line, index) => ({
+    style: MODULE_CLASSES[index] || 'm-q',
+    tags: line.split(',').map(tag => {
+      const text = tag.trim()
+      const lower = text.toLowerCase()
+      return { text, warn: bannedTerms.some(term => lower.includes(term)) }
+    }),
+  }))
 }
 
 const renderedActs = computed(() => (activeScenario.value?.acts ?? []).map(act => ({

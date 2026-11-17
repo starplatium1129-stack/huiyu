@@ -93,7 +93,7 @@ export function useHomeRecentWorks(grid: Ref<HTMLElement | null>) {
       const history = await repository.readRecentHistory(controller.signal)
       if (!current()) return
       clearCovers()
-      recentWorks.value = history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
+      recentWorks.value = history.toSorted((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 3)
       await nextTick()
       if (current()) void loadCovers()
     } catch (cause) {

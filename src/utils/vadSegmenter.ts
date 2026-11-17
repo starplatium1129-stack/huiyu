@@ -111,7 +111,7 @@ export function createVadSegmenter(rawConfig?: Partial<VadSegmenterConfig>): Vad
     if (calibrationRms.length > 0) {
       // 低百分位（p10）估计噪声底：开头就说话时，median 会被语音帧抬到
       // 高于语音本身，导致整段丢失；p10 几乎只反映底噪，语音帧污染极小。
-      const sorted = [...calibrationRms].sort((a, b) => a - b)
+      const sorted = calibrationRms.toSorted((a, b) => a - b)
       const floorEstimate = sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.1))]
       // 噪声底的 2 倍，且不低于配置阈值。
       thresholdEstimate = Math.max(config.threshold, floorEstimate * 2)

@@ -6,14 +6,14 @@ import { localSetupApi } from '@/api/localSetupApi'
 import { waitLocalSetupOperation } from '@/api/localSetupOperation'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
-import { readSetupRecovery, saveSetupRecovery, type SetupRecovery } from '@/storage/inferenceSetupRecovery'
+import { readSetupRecovery, saveSetupRecovery, savedSetupModel, saveSetupModel, type SetupRecovery } from '@/storage/inferenceSetupRecovery'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 
 type Submission = { kind: 'prepare-inference-runtime'; input: RuntimePreparationInput }
   | { kind: 'import-inference-model'; input: ModelImportInput }
   | { kind: 'install-native-runtime' | 'download-native-model' | 'download-native-resource' | 'prepare-native-engine'; input: ManagedInferenceInput }
 
-export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: Ref<boolean>, onActivated: () => void) {
+export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: Ref<boolean>, onActivated: () => void, requestedModel: Readonly<Ref<string>>) {
   const desktop = getDesktopCapabilities()
   const plan = shallowRef<NativeSetupPlan | null>(null)
   const basePython = ref(''), wheelhouse = ref(''), workspacePath = ref(''), runtimeReviewed = ref(false), reviewed = ref(false)
@@ -88,8 +88,18 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     const revision = ++planVersion
     planController?.abort(); planController = new AbortController()
     try {
-      const [result, binding] = await Promise.all([inferenceSetupApi.getPlan(planController.signal, modelId.value || undefined), desktop?.getWorkspace()])
+      const signal = planController.signal
+      let [result, binding] = await Promise.all([inferenceSetupApi.getPlan(signal, modelId.value || undefined), desktop?.getWorkspace()])
       if (disposed || revision !== planVersion) return
+      if (!modelId.value) {
+        const preferred = [requestedModel.value, savedSetupModel(result.workspacePath)]
+          .find(id => result.models.some(model => model.id === id))
+        if (preferred && preferred !== result.selectedModelId) {
+          result = await inferenceSetupApi.getPlan(signal, preferred)
+          if (disposed || revision !== planVersion) return
+        }
+        modelId.value = result.selectedModelId
+      }
       if (binding && binding.activeRoot !== result.workspacePath) throw new Error('当前 AI 工作区与运行时目录不一致，请重启绘遇后重新检查')
       workspacePending.value = binding?.restartRequired ?? false
       // Background readiness owns the saved state, not an open directory draft.
@@ -359,6 +369,10 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     if (!desktop?.restartForSetup || locked.value || disposed) return
     restarting.value = true; error.value = ''
     try {
+      if (modelId.value) {
+        const workspace = workspacePending.value ? workspaceDraft.value : workspacePath.value
+        if (workspace) await saveSetupModel(workspace, modelId.value)
+      }
       await flushProfileWrites()
       if (disposed) return
       await desktop.restartForSetup()

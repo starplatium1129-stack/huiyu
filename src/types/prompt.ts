@@ -27,6 +27,10 @@ export interface PromptSceneContext {
 export interface PromptPlan {
   /** Free-subject inputs must not invent a woman, a solo count or an empty scene. */
   freeSubject?: boolean
+  mossLayout?: {
+    compositionIntent?: PromptSceneContext['compositionIntent']
+    subjects?: readonly { caption: string; side?: import('../utils/mossLayout').MossLayoutSide }[]
+  }
   quality: string[]; rating: string[]; identity: string[]; exactControls: string[]
   /** Name/alias classification only; appearance and outfit tokens stay in ordinary tags. */
   characterTokens: string[]

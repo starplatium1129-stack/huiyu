@@ -14,7 +14,7 @@ export const controlSections: Array<{ id: string; group: string; label: string; 
   { id: 'control-logs', group: '偏好与管理', label: '日志与排查', icon: 'book', description: '系统运行日志与脱敏诊断导出。' },
 ]
 const aliases: Record<string, string> = {
-  'control-inference': 'control-setup', 'control-image-resources': 'control-setup',
+  'control-inference': 'control-setup', 'control-image-resources': 'control-setup', 'control-remote': 'control-setup',
   'control-comfy': 'control-setup', 'setup-chat-options': 'control-setup',
   'control-resources': 'control-services', 'control-service-status': 'control-services',
   'control-connection-settings': 'control-services', 'control-service-webui': 'control-services',

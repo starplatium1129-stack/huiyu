@@ -51,7 +51,9 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
   const generationIndex = computed(() => new Map(history.value.map(item => [item, artworkGenerationConditions(item)])));
   const recordedGenerationOptions = computed(() => generationConditionOptions(generationIndex.value.values(), emptyGenerationConditions()));
   const generationOptions = computed(() => Object.fromEntries(GENERATION_FILTER_FIELDS.map(field => {
-    const options = query.enabled.value ? [...(query.catalog.value?.generation[field] || [])].sort((a, b) => b.count - a.count || a.value.localeCompare(b.value)).map(item => ({ value: item.value, label: `${generationConditionLabel(field, item.value)} · ${item.count}` }))
+    const options = query.enabled.value ? (query.catalog.value?.generation[field] || [])
+      .toSorted((a, b) => b.count - a.count || a.value.localeCompare(b.value))
+      .map(item => ({ value: item.value, label: `${generationConditionLabel(field, item.value)} · ${item.count}` }))
       : recordedGenerationOptions.value[field], selected = generationConditions.value[field];
     // Recorded counts are positive; the only zero entry is "missing", which
     // sorts before all "v:" values. An unknown selection therefore appends.

@@ -2,6 +2,7 @@ import { apiClient, type ApiResponseObject } from './client'
 import type { InferenceSettings } from './inferenceSettingsApi'
 import type { ControlOperationView } from '@/types/api'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
+import type { SetupDrawingFamily } from '@/utils/setupDrawingRoute'
 import catalog from '../../runtime-rs/src/control/setup-models.json'
 
 export type PreparedInferencePaths = Pick<InferenceSettings, 'python' | 'worker' | 'modelsRoot' | 'lorasRoot'>
@@ -26,7 +27,7 @@ export interface NativeSetupPlan {
   warnings?: string[]
   freeBytes: number | null
   runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
-  models: { preparation?: 'checkpoint-conversion' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: string; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
+  models: { preparation?: 'checkpoint-conversion' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: SetupDrawingFamily; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
   resources: NativeImageResource[]
   activeEngine: string
   configuredEngine: string
@@ -34,7 +35,7 @@ export interface NativeSetupPlan {
   workspaceMatches: boolean
   steps: { runtime: string; model: string; engine: string }
 }
-export interface NativeActivationResult { ok: true; restartRequired: boolean; active: { engine: 'native' | 'comfy' }; configured: { engine: 'native' } }
+export interface NativeActivationResult { ok: true; restartRequired: boolean; active: { engine: InferenceSettings['engine'] }; configured: { engine: 'native' } }
 export interface InferenceSetupOperation extends ControlOperationView {
   interrupted?: boolean
   kind: 'prepare-inference-runtime' | 'import-inference-model' | 'install-native-runtime' | 'download-native-model' | 'download-native-resource' | 'prepare-native-engine'
@@ -120,7 +121,7 @@ function validPlan(value: ApiResponseObject): boolean {
       && nonempty(model.revision) && nonempty(model.license) && secureUrl(model.licenseUrl) && secureUrl(model.sourceUrl)
       && bytes(model.downloadBytes) && bytes(model.requiredBytes) && typeof model.installed === 'boolean')
     && new Set(models.map(model => model.id)).size === models.length
-    && ['native', 'comfy'].includes(String(value.activeEngine)) && ['native', 'comfy'].includes(String(value.configuredEngine))
+    && ['native', 'comfy', 'remote'].includes(String(value.activeEngine)) && ['native', 'comfy', 'remote'].includes(String(value.configuredEngine))
     && typeof value.restartRequired === 'boolean' && typeof value.workspaceMatches === 'boolean'
     && object(steps) && ['runtime', 'model', 'engine'].every(key => typeof steps[key] === 'string')
 }
@@ -179,7 +180,7 @@ export const inferenceSetupApi: InferenceSetupApi = {
     return apiClient.request<NativeActivationResult>('/api/inference/setup/activate', {
       method: 'POST', body, signal, timeoutMs: 185_000,
       validate: value => value.ok === true && typeof value.restartRequired === 'boolean'
-        && object(value.active) && ['native', 'comfy'].includes(String(value.active.engine))
+        && object(value.active) && ['native', 'comfy', 'remote'].includes(String(value.active.engine))
         && object(value.configured) && value.configured.engine === 'native',
     })
   },

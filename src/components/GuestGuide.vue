@@ -25,7 +25,7 @@
       </div>
       <footer class="guest-guide-actions">
         <RouterLink class="btn btn-quiet" to="/guide" @click="dismiss"><span class="studio-control-label">使用指南</span></RouterLink>
-        <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">开始配置</button>
+        <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">配置绘图</button>
         <button ref="dismissButton" class="btn" :class="isLocalHost ? 'btn-ghost' : 'btn-primary'" type="button" @click="dismiss">
           {{ isLocalHost ? '先浏览' : '开始浏览' }}
         </button>
@@ -67,7 +67,7 @@ const { returnFocus } = useFocusTrap(guideEl, () => visible.value, {
 })
 
 function openGuide() { visible.value = true }
-function beginSetup() { dismiss(); void router.push('/control#control-setup') }
+function beginSetup() { dismiss(); void router.push('/control#control-inference') }
 onMounted(() => {
   if (shouldShow) visible.value = true
   window.addEventListener('atelier:welcome', openGuide)

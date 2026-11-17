@@ -24,6 +24,15 @@
   function applyTheme(theme: string) {
     document.documentElement.setAttribute('data-theme', theme);
     document.documentElement.style.colorScheme = theme;
+    let scheme = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+    if (!scheme) {
+      scheme = document.createElement('meta');
+      scheme.name = 'color-scheme';
+      scheme.content = theme;
+      document.head.append(scheme);
+    } else {
+      scheme.content = theme;
+    }
   }
 
   /* ---------- toggle 按钮 ---------- */

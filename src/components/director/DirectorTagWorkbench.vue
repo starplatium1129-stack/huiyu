@@ -100,9 +100,9 @@ import '@/assets/css/director/components/DirectorTagWorkbench.css'
 type TagEntry = PromptTagSource
 
 const pb = usePromptBuilderStore()
-const props = defineProps<{ promptFormat: DrawCapabilities['promptFormat'] | 'moss-hybrid'; modelProfile: ModelProfile | null }>()
+const props = defineProps<{ promptFormat: DrawCapabilities['promptFormat'] | 'moss-layout'; modelProfile: ModelProfile | null }>()
 const isAnima = computed(() => props.promptFormat === 'anima-tags')
-const isMoss = computed(() => props.promptFormat === 'moss-hybrid')
+const isMoss = computed(() => props.promptFormat === 'moss-layout')
 const usesTagSyntax = computed(() => isAnima.value || isMoss.value)
 // Format only the visible label. Selection keeps the catalogue key; site-specific
 // synonym changes require evidence and never rewrite exact LoRA control tokens.

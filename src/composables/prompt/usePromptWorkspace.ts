@@ -551,6 +551,7 @@ export function usePromptWorkspace() {
         handleInterrogateResult, handleInterrogateError, genBarSize, animaBarSizes, generationPresetSummary, generateBlockReason,
         cancelGeneration, outfitOverridden, sdQueue,
         materialBindings, renderBindings, styleBindings, healthBindings, deliveryBindings, dialogBindings, compositionBindings, mossPlan: unified.mossPlan,
+        draftReady: computed(() => draftRecovery.initialized),
         recipePreviewContext: { engine: drawEngine, animaRequest: () => engine.buildAnimaRequest(true) },
     };
 }

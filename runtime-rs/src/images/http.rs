@@ -59,7 +59,7 @@ pub(super) fn family(uri: &axum::http::Uri) -> &'static str {
         "krea2"
     }
 }
-fn response(result: Result<Value>, status: StatusCode) -> Response {
+pub(super) fn response(result: Result<Value>, status: StatusCode) -> Response {
     let mut response = match result {
         Ok(mut value) => {
             value["ok"] = json!(true);

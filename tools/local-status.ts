@@ -23,16 +23,14 @@
     }
   };
   let refreshTimer = 0;
+  let pendingRefresh: Promise<void> | null = null;
 
-  function fetchJson(url: string, timeout?: number): Promise<unknown> {
-    let controller = new AbortController();
-    let timer = window.setTimeout(function () { controller.abort(); }, timeout || 2200);
-    return fetch(url, { cache:'no-store', signal:controller.signal })
+  function fetchJson(url: string, timeout: number): Promise<unknown> {
+    return fetch(url, { cache:'no-store', signal:AbortSignal.timeout(timeout) })
       .then(function (response) {
         if (!response.ok) throw new Error('HTTP ' + response.status);
         return response.json();
-      })
-      .finally(function () { window.clearTimeout(timer); });
+      });
   }
 
   function statusMarkup() {
@@ -90,10 +88,11 @@
   }
 
   function refresh() {
+    if (pendingRefresh) return pendingRefresh;
     const host = document.querySelector('.local-status');
     if (!host) return Promise.resolve();
     host.classList.add('checking');
-    return Promise.allSettled([
+    pendingRefresh = Promise.allSettled([
       fetchJson('/api/health', 1600),
       fetchJson('/sdapi/v1/options', 1800),
       fetchJson('/api/chat-status', 2200),
@@ -106,7 +105,22 @@
       render();
     }).finally(function () {
       host.classList.remove('checking');
+      pendingRefresh = null;
     });
+    return pendingRefresh;
+  }
+
+  function stopAutoRefresh() {
+    window.clearInterval(refreshTimer);
+    refreshTimer = 0;
+  }
+  function syncAutoRefresh() {
+    if (document.hidden) {
+      stopAutoRefresh();
+      return;
+    }
+    if (!refreshTimer) refreshTimer = window.setInterval(refresh, 60000);
+    void refresh();
   }
 
   function init() {
@@ -122,7 +136,7 @@
       '</button>' +
       '<section class="local-status-panel" id="localStatusPanel" hidden aria-label="本机创作服务状态">' +
         '<div class="local-status-head"><span>LOCAL ATELIER</span><button type="button" class="local-status-refresh" aria-label="刷新本机服务状态" title="刷新">↻</button></div>' +
-        '<p class="local-status-summary">正在确认本机创作服务…</p>' +
+        '<p class="local-status-summary" role="status">正在确认本机创作服务…</p>' +
         '<div class="local-status-services">' + statusMarkup() + '</div>' +
         '<div class="local-status-actions">' +
           '<a href="' + d + 'prompt-builder">开始绘制</a>' +
@@ -156,12 +170,12 @@
         trigger.focus();
       }
     });
-    document.addEventListener('visibilitychange', function () {
-      if (!document.hidden) refresh();
+    document.addEventListener('visibilitychange', syncAutoRefresh);
+    window.addEventListener('pagehide', stopAutoRefresh);
+    window.addEventListener('pageshow', function (event) {
+      if (event.persisted) syncAutoRefresh();
     });
-    refresh();
-    refreshTimer = window.setInterval(refresh, 60000);
-    window.addEventListener('pagehide', function () { window.clearInterval(refreshTimer); }, { once:true });
+    syncAutoRefresh();
   }
 
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init);

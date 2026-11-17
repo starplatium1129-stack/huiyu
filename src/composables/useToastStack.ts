@@ -11,7 +11,7 @@ export function useToastStack(host: Ref<HTMLElement | null>) {
   const reduced = useMotionPreference()
   const slots = new Map<number, HTMLElement>()
   let observer: ResizeObserver | undefined, hovered = false
-  const newestFirst = computed(() => [...toasts.value].reverse())
+  const newestFirst = computed(() => toasts.value.toReversed())
   const positions = computed(() => {
     let offset = 0
     return new Map(newestFirst.value.map((item, index) => {

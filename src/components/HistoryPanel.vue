@@ -121,7 +121,7 @@ function setSelected(id: ArtworkRecord['id'], checked: boolean) {
 const selectedEntries = computed(() =>
   props.history.filter(entry => selectedSet.value.has(entry.id)))
 
-const items = computed(() => props.history.slice().sort((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 12))
+const items = computed(() => props.history.toSorted((a, b) => artworkTimestamp(b) - artworkTimestamp(a)).slice(0, 12))
 const thumbs = useHistoryThumbnails(() => items.value, () => props.active)
 
 function engineSummary(item: ArtworkRecord): string {

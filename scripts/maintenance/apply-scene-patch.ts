@@ -54,10 +54,6 @@ function validateOutput(output: string, reserved: string[], root: string) {
   }
 }
 function changeSetReport(plan: PatchPlan, { sources, entries, pinned, derivedFiles, apply, outcome }: ChangeSetInput) {
-  validatePatch(entries);
-  if (!Array.isArray(sources) || sources.some(doc => !object(doc) || typeof doc.file !== 'string') || !Array.isArray(derivedFiles) || derivedFiles.some(file => typeof file !== 'string') || !object(pinned) || !Object.keys(pinned).length || typeof apply !== 'boolean' || !object(outcome) || typeof outcome.applied !== 'boolean') throw new Error('变更集证据缺少必要字段');
-  const expected = planPatches(sources, entries, pinned);
-  if (JSON.stringify(expected) !== JSON.stringify(plan)) throw new Error('变更集计划与输入不一致');
   return { schema: 'ai-cg-studio.scene-patch-report', schemaVersion: 1, patchSchema: { type: 'array', version: 1 },
     sourceFiles: sources.map(doc => doc.file), changedRecords: plan.results.filter(item => Object.keys(item.diff).length),
     protectedFieldDecision: { status: 'allowed', fields: PROTECTED_SCENE_FIELDS, pinnedIds: entries.filter(item => item.type === 'scene' && Object.hasOwn(pinned, item.id)).map(item => item.id) },
@@ -109,12 +105,10 @@ function validatePatch(entries: unknown): PatchEntry[] {
   return records as PatchEntry[];
 }
 
-/** Build an immutable write plan from full canonical source documents. */
+/** Build a detached write plan from validated input and the canonical source documents. */
 function planPatches(sources: SourceInput[], entries: PatchEntry[], pinned: PinnedScenes): PatchPlan {
-  validatePatch(entries);
-  if (!object(pinned) || !Object.keys(pinned).length) throw new Error('缺少有效定稿保护基线');
   const documents = sources.map((source): SourceDocument => {
-    const data: unknown = JSON.parse(JSON.stringify(source.data));
+    const data = structuredClone(source.data);
     const records: unknown = source.type === 'scene' ? data : object(data) ? data.blueprints : undefined;
     if (!Array.isArray(records) || !records.every((record: unknown) => object(record) && typeof record.id === 'string')) {
       throw new Error(`分片结构无效: ${source.file}`);
@@ -271,7 +265,7 @@ function main(argv = process.argv.slice(2)) {
   let outcome: PatchOutcome = { applied: false, outcome: args.apply ? 'planned' : 'dry-run' };
   const report = () => ({ createdAt: new Date().toISOString(), dryRun: !args.apply, entries: entries.length, changed: changed.length, results: plan.results, ...outcome,
     ...changeSetReport(plan, { sources, entries, pinned, derivedFiles, apply: args.apply, outcome }) });
-  if (args.out) writeTextAtomic(path.resolve(args.out), jsonText(report()));
+  if (args.out && args.apply) writeTextAtomic(path.resolve(args.out), jsonText(report()));
   if (args.apply) {
     try {
     outcome = commitPlan(plan, {

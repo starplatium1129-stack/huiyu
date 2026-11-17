@@ -1,5 +1,5 @@
 <template>
-  <div v-if="operation" class="panel-card operation-panel" :class="opDisconnected ? 'disconnected' : operation.cancelled ? 'cancelled' : operation.status">
+  <div v-if="operation && showOperation" class="panel-card operation-panel" :class="opDisconnected ? 'disconnected' : operation.cancelled ? 'cancelled' : operation.status">
     <details v-if="operation.status === 'completed' && !opDisconnected" class="operation-history">
       <StudioDisclosureSummary><span>上次操作 · {{ transfer ? setupOperationLabels[transfer.kind] : operationTitle }}</span><span class="op-state">已完成</span></StudioDisclosureSummary>
       <div class="operation-detail" data-disclosure-content>
@@ -75,6 +75,8 @@ const route = useRoute()
 const { status, actions } = useControlContext()
 const { canCancelOperation, operationCancelling, cancelOperation } = actions
 const { operation, opDisconnected, opStatusLabel, opCompletedStages, opProgress } = status
+const showOperation = computed(() => !opDisconnected.value || status.imageProvider.value === 'comfy'
+  || props.activeSection === 'control-services' || route.hash === '#control-comfy')
 const operationTitle = computed(() => opDisconnected.value ? '上次启动绘图服务' : ({ 'prepare-environment': '准备运行环境', 'comfy-start': '启动绘图服务', 'comfy-stop': '停止绘图服务' })[operation.value?.kind as 'prepare-environment' | 'comfy-start' | 'comfy-stop'] ?? operation.value?.label)
 const transfer = computed(() => isInferenceSetupOperation(operation.value) || isInterrogateSetupOperation(operation.value) ? operation.value : null)
 const transferSection = computed(() => transfer.value?.kind === 'prepare-pixai' ? 'control-interrogate' : 'control-setup')

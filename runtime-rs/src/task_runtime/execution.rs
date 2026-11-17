@@ -120,7 +120,7 @@ impl TaskRuntime {
         id: &str,
     ) -> Result<Value> {
         Ok(self
-            .reconcile_inner(storage, principal, id, ReconcileMode::Explicit, None)
+            .reconcile_inner(storage, principal, id, ReconcileMode::Explicit, None, None)
             .await?
             .into_value()?)
     }
@@ -131,6 +131,7 @@ impl TaskRuntime {
         id: &str,
         mode: ReconcileMode,
         notification: Option<&Arc<tokio::sync::Notify>>,
+        completed: Option<Value>,
     ) -> Result<TaskRecord> {
         self.check_running()?;
         let observe_after = mode != ReconcileMode::Follow;
@@ -253,7 +254,17 @@ impl TaskRuntime {
         let job = self.job(storage, id).filter(|job| !job.is_empty());
         let mut recovered_single = job.is_none() && current.kind != TaskKind::Batch;
         let mut observed = if let Some(job) = &job {
-            self.query_provider(current.kind, job, principal).await
+            if current.cancel_requested_at.is_none()
+                && self.recovered_remote_job(&current) == Some(job.as_str())
+                && let (providers::ProviderRoute::Image(family), Some(receipt)) =
+                    (current.kind.into(), completed)
+            {
+                self.images
+                    .query_with_receipt(job, principal, family, Some(receipt))
+                    .await
+            } else {
+                self.query_provider(current.kind, job, principal).await
+            }
         } else {
             self.recover_provider(storage, principal, &current, &mut cancellation)
                 .await

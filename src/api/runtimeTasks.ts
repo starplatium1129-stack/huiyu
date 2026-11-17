@@ -11,7 +11,7 @@ export { hasRuntimeTasks, isRuntimeTaskId } from './runtimeTaskAuthority'
 export type { TaskRecord, TaskSummary } from '../../types/tasks'
 
 const base = '/api/tasks/v1'
-let activeEpoch = '', activeWorkspace = '', sequence = 0, activeRead = 0
+let activeEpoch = '', activeWorkspace = '', activeRead = 0
 let readEpoch = '', readRevision = 0
 function epoch() { return getDesktopRuntime().bootstrap?.runtime?.workspace?.runtimeEpoch || '' }
 function ensureAuthority() {
@@ -39,27 +39,22 @@ async function request<T>(path: string, method = 'GET', body?: unknown, signal?:
 }
 export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
   if (!hasRuntimeTasks()) return
-  const read = ++sequence; activeRead = read
+  const read = ++activeRead
   const expected = epoch()
   try {
     const after = readEpoch === expected ? readRevision : 0
     const items: TaskSummary[] = []
-    let before: number | null = null, through: number | undefined
+    let before: number | undefined, through: number | undefined
     do {
-      const params = new URLSearchParams({ afterRevision: String(after), limit: '100', summary: 'true', scope: after ? 'all' : 'overview' })
-      if (before !== null) params.set('before', String(before))
-      if (through !== undefined) params.set('throughRevision', String(through))
-      const page = await request<TaskPage>('?' + params, 'GET', undefined, signal)
+      const page = await requestTaskPage(after ? 'all' : 'overview', { after, before, through, limit: 100, signal })
       if (read !== activeRead || expected !== epoch()) return
-      if (!Number.isSafeInteger(page.throughRevision) || page.throughRevision < after || (through !== undefined && through !== page.throughRevision)
-        || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= after || (before !== null && page.nextCursor >= before)))) throw new Error('任务分页响应无效')
       items.push(...page.items)
       through = page.throughRevision
-      before = page.nextCursor
-    } while (before !== null)
+      before = page.nextCursor ?? undefined
+    } while (before !== undefined)
     signal?.throwIfAborted()
     mergeTasks(items, expected, readEpoch !== expected)
-    readEpoch = expected; readRevision = through!
+    readEpoch = expected; readRevision = through
     runtimeTaskError.value = ''
   } catch (error) {
     if (read === activeRead && expected === epoch() && !signal?.aborted) {
@@ -68,24 +63,29 @@ export async function refreshRuntimeTasks(signal?: AbortSignal): Promise<void> {
     throw error
   }
 }
-/** A bounded history page is separate from the active-task subscription and its delta cursor. */
-export async function readRuntimeTaskPage(scope: TaskListScope, options: { after?: number; before?: number; through?: number; limit?: number; signal?: AbortSignal } = {}): Promise<TaskPage> {
+interface TaskPageOptions { after?: number; before?: number; through?: number; limit?: number; signal?: AbortSignal }
+async function requestTaskPage(scope: TaskListScope, options: TaskPageOptions): Promise<TaskPage> {
   const params = new URLSearchParams({ scope, summary: 'true', limit: String(options.limit ?? 30) })
   if (options.before !== undefined) params.set('before', String(options.before))
   if (options.after !== undefined) params.set('afterRevision', String(options.after))
   if (options.through !== undefined) params.set('throughRevision', String(options.through))
   const page = await request<TaskPage>('?' + params, 'GET', undefined, options.signal)
-  if (!Array.isArray(page.items) || !Number.isSafeInteger(page.throughRevision) || page.throughRevision < 0
-    || (options.after !== undefined && page.throughRevision < options.after)
+  if (!page || !Array.isArray(page.items) || !Number.isSafeInteger(page.throughRevision) || page.throughRevision < (options.after ?? 0)
     || (options.through !== undefined && page.throughRevision !== options.through)
     || (page.nextCursor !== null && (!Number.isSafeInteger(page.nextCursor) || page.nextCursor <= (options.after ?? 0) || (options.before !== undefined && page.nextCursor >= options.before)))) throw new Error('任务分页响应无效')
-  if (page.items.some(task => task.runtimeEpoch !== epoch())) throw new Error('运行时已更换，请重新读取任务')
+  return page
+}
+/** A bounded history page is separate from the active-task subscription and its delta cursor. */
+export async function readRuntimeTaskPage(scope: TaskListScope, options: TaskPageOptions = {}): Promise<TaskPage> {
+  const page = await requestTaskPage(scope, options)
+  const expected = epoch()
+  if (page.items.some(task => task?.runtimeEpoch !== expected)) throw new Error('运行时已更换，请重新读取任务')
   return { ...page, items: page.items.map(summarizeTask) }
 }
 interface TaskObservation { signal?: AbortSignal; onSubmitting?: () => void }
 /** Acceptance is one POST followed only by lookups in the same runtime session. */
 async function acceptedTaskRequest(path: string, body: unknown, key: string, observation: TaskObservation,
-  validate: (task: TaskRecord) => void = () => {}): Promise<TaskRecord> {
+  validate: (task: TaskRecord) => void): Promise<TaskRecord> {
   let submitting = false
   const expected = epoch()
   const received = (task: TaskRecord) => {
@@ -130,9 +130,14 @@ export async function getRuntimeTaskSummary(id: string, signal?: AbortSignal): P
   mergeTasks([task], epoch())
   return task
 }
-export async function getRuntimeTaskByKey(key: string, signal?: AbortSignal): Promise<TaskRecord | null> {
-  const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'GET', undefined, signal)
-  return task ? remember(task) : null
+async function requestTaskByKey(key: string, method: 'GET' | 'DELETE', signal?: AbortSignal): Promise<TaskRecord | null> {
+  const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), method, undefined, signal)
+  if (task === null) return null
+  if (task?.requestKey !== key) throw new Error('请求编号回执无效，原请求状态仍待核对')
+  return remember(task)
+}
+export function getRuntimeTaskByKey(key: string, signal?: AbortSignal): Promise<TaskRecord | null> {
+  return requestTaskByKey(key, 'GET', signal)
 }
 export async function readRuntimeTaskHistory(): Promise<unknown> {
   const { snapshots } = await request<{ snapshots: unknown[] }>('/legacy-history')
@@ -148,18 +153,16 @@ export async function readRuntimeTaskHistory(): Promise<unknown> {
   return { version: 1, records, deleted }
 }
 export async function cancelRuntimeTaskKey(key: string, signal?: AbortSignal) {
-  const task = await request<TaskRecord | null>('/by-key/' + encodeURIComponent(key), 'DELETE', undefined, signal)
-  if (task) remember(task)
-  else if (task === null) forgetTaskRequest(key)
-  else throw new Error('取消回执无效，原请求状态仍待核对')
+  const task = await requestTaskByKey(key, 'DELETE', signal)
+  if (task === null) forgetTaskRequest(key)
   return task
 }
 /** Missing reads prove nothing. A committed cancel intent fences late acceptance. */
 export async function recoverRuntimeTaskRequest(key: string, signal?: AbortSignal): Promise<TaskRecord> {
   const expected = epoch()
   const existing = await getRuntimeTaskByKey(key, signal)
-  if (existing) return existing
-  if (existing !== null || expected !== epoch()) throw new Error('原请求状态仍待核对，请恢复原连接后重试')
+  if (existing !== null) return existing
+  if (expected !== epoch()) throw new Error('原请求状态仍待核对，请恢复原连接后重试')
   const cancelled = await cancelRuntimeTaskKey(key, signal)
   if (cancelled) return cancelled
   throw new TaskSubmissionRejected(key, '原请求已保存取消意图并安全结算，可重试或重置。', 'TASK_REQUEST_CANCELLED')
@@ -306,7 +309,7 @@ export function startRuntimeTaskPolling(): () => void {
     const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace?.workspaceId || ''
     if (workspace && activeWorkspace && workspace !== activeWorkspace) resetRuntimeTaskWorkspace()
     if (workspace) activeWorkspace = workspace
-    if (activeEpoch !== next) { activeEpoch = next; activeRead = ++sequence; controller.abort(); controller = new AbortController(); if (!runtimeTasksEnabled.value) clearRuntimeTasks() }
+    if (activeEpoch !== next) { activeEpoch = next; activeRead++; controller.abort(); controller = new AbortController(); if (!runtimeTasksEnabled.value) clearRuntimeTasks() }
     if (runtimeTasksEnabled.value) void refresh()
   })
   const timer = setInterval(() => { void refresh() }, 2500)

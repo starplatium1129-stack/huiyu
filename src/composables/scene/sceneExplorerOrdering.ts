@@ -38,7 +38,7 @@ export function orderExplorerScenes(scenes: readonly ExplorerScene[], options: {
         : mode === 'smart' ? used * 400 + personal * 500 + curated : curated)
     }
   }
-  return [...scenes].sort((a, b) => {
+  return scenes.toSorted((a, b) => {
     const relevant = (relevance.get(b.id) ?? 0) - (relevance.get(a.id) ?? 0)
     if (relevant) return relevant
     if (mode === 'title') return titleOrder.compare(String(a.title), String(b.title)) || baseOrder(a, b)

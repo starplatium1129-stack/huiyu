@@ -19,5 +19,5 @@ try {
   const savedTheme = localStorage.getItem('aics_theme');
   const initialTheme = savedTheme === 'light' ? 'light' : 'dark';
   document.documentElement.dataset.theme = initialTheme;
-  document.documentElement.style.colorScheme = initialTheme;
+  document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]')?.setAttribute('content', initialTheme);
 } catch { /* Storage may be unavailable; the document's dark default remains usable. */ }

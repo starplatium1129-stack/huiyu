@@ -21,7 +21,7 @@ import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import DeferredPanel from './DeferredPanel.vue'
 import '@/assets/css/director/components/PromptHealthPanel.css'
 
-defineProps<{ promptFormat: DrawCapabilities['promptFormat'] | 'moss-hybrid'; modelProfile: ModelProfile | null }>()
+defineProps<{ promptFormat: DrawCapabilities['promptFormat'] | 'moss-layout'; modelProfile: ModelProfile | null }>()
 const pb = usePromptBuilderStore(), headingId = useId()
 const loadWorkbench = () => import('./DirectorTagWorkbench.vue')
 const workbenchDialog = ref<HTMLDialogElement | null>(null), loaded = ref(false)

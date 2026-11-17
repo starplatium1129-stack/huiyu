@@ -330,6 +330,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       }
   const plan = createPromptPlan({ ...commonInput, ...modelInput })
   if (engine === 'moss') {
+    plan.mossLayout = { compositionIntent: blueprint?.compositionIntent }
     const rendered = renderMossDrawingPrompt(plan, userVisual, '')
     return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }
   }

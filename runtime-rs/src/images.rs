@@ -318,36 +318,38 @@ impl Service {
         if let Some(remote) = &self.remote {
             return remote.job(id, owner, family, &self.shutdown).await;
         }
-        self.backend.family_allowed(id, owner, family).await?;
-        self.backend.get_job(id, owner).await
+        self.backend.image_job(id, owner, family).await
     }
     pub async fn query(&self, id: &str, owner: &str, family: &str) -> Result<Observation> {
+        self.query_with_receipt(id, owner, family, None).await
+    }
+    pub(crate) async fn query_with_receipt(
+        &self,
+        id: &str,
+        owner: &str,
+        family: &str,
+        completed: Option<Value>,
+    ) -> Result<Observation> {
         if let Some(remote) = &self.remote {
-            return remote.observe(id, owner, family, &self.shutdown).await;
+            return remote.observe(id, owner, family, completed, &self.shutdown).await;
         }
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.query(id, owner).await
     }
-    pub(crate) async fn wait_remote_completion(&self, id: &str, owner: &str, family: &str) -> bool {
-        let Some(remote) = &self.remote else {
-            return false;
-        };
+    pub(crate) async fn wait_remote_completion(
+        &self,
+        id: &str,
+        owner: &str,
+        family: &str,
+    ) -> Option<remote::Completion> {
+        let remote = self.remote.as_ref()?;
         remote.wait_for_completion(id, owner, family, &self.shutdown).await
     }
     pub async fn result(&self, id: &str, owner: &str, family: &str) -> Result<Output> {
         if let Some(remote) = &self.remote {
             return remote.result(id, owner, family, &self.shutdown).await;
         }
-        self.backend.family_allowed(id, owner, family).await?;
-        let job = self.backend.get_job(id, owner).await?;
-        if job["status"] != "succeeded" {
-            return Err(ApiError::new(
-                if job["status"] == "failed" { 502 } else { 409 },
-                job["code"].as_str().unwrap_or("RESULT_NOT_READY"),
-                job["error"].as_str().unwrap_or("结果尚未就绪"),
-            ));
-        }
-        self.backend.result(id, owner).await
+        self.backend.image_result(id, owner, family).await
     }
     pub async fn cancel(&self, id: &str, owner: &str, family: &str) -> Result<Value> {
         if let Some(remote) = &self.remote {

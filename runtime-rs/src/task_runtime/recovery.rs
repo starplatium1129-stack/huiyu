@@ -1,4 +1,5 @@
 use super::*;
+use crate::images::remote::Completion;
 use futures_util::{StreamExt, TryStreamExt, stream};
 use std::{
     collections::{HashSet, VecDeque},
@@ -199,7 +200,7 @@ impl TaskRuntime {
         tokio::select! {
             biased;
             _ = self.shutdown.cancelled() => Err(recovery_closed()),
-            result = tokio::time::timeout(RECOVERY_TIMEOUT, self.reconcile_inner(storage, principal, id, execution::ReconcileMode::Startup, None)) => {
+            result = tokio::time::timeout(RECOVERY_TIMEOUT, self.reconcile_inner(storage, principal, id, execution::ReconcileMode::Startup, None, None)) => {
                 match result {
                     Ok(result) => result.map(|_| ()),
                     Err(_) => {
@@ -314,6 +315,7 @@ impl TaskRuntime {
         notification: Arc<tokio::sync::Notify>,
     ) {
         let mut last_revision = None;
+        let mut completed = None;
         loop {
             // Register before observation so a transition during an awaited
             // provider/storage call cannot disappear before the next wait.
@@ -338,6 +340,7 @@ impl TaskRuntime {
                     id,
                     execution::ReconcileMode::Follow,
                     Some(&notification),
+                    completed.take(),
                 )
                 .await;
             if !self
@@ -396,14 +399,17 @@ impl TaskRuntime {
             // A completion wait never owns the task operation lock. Local
             // cancellation/recovery can run while the peer holds the request.
             let wake = async {
-                if let Some((job, family)) = remote
-                    && self.images.wait_remote_completion(&job, principal, family).await
-                {
-                    return;
+                if let Some((job, family)) = remote {
+                    match self.images.wait_remote_completion(&job, principal, family).await {
+                        Some(Completion::Receipt(receipt)) => return Some(receipt),
+                        Some(Completion::Signalled) => return None,
+                        None => {}
+                    }
                 }
                 tokio::time::sleep_until(next_poll).await;
+                None
             };
-            tokio::select! {
+            completed = tokio::select! {
                 biased;
                 _=self.shutdown.cancelled()=>{
                     let _=patch(storage,principal,id,TaskPatch { recovery_state: Some(TaskRecoveryState::Unknown), error_code: Some(Some("TASK_RUNTIME_INTERRUPTED".into())), ..Default::default() }).await;
@@ -411,9 +417,9 @@ impl TaskRuntime {
                         && Arc::ptr_eq(&job.changed, &notification) {job.watching=false;}
                     return;
                 },
-                _=notified=>{},
-                _=wake=>{},
-            }
+                _=notified=>None,
+                receipt=wake=>receipt,
+            };
         }
     }
     pub(super) async fn recover_provider(

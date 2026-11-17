@@ -10,10 +10,10 @@
         <div class="setup-buttons">
           <button v-if="automation.engineRestartRequired.value && canRestart" class="btn btn-primary" type="button" :disabled="restarting || blocked" @click="emit('restart')"><ArchiveIcon name="refresh" />{{ restarting ? '正在重启…' : '重启以启用绘图' }}</button>
           <span v-else-if="automation.engineRestartRequired.value">重启绘遇后生效。</span>
-          <RouterLink v-else-if="automation.drawing.value" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { preparedModel: automation.modelId.value } }"><ArchiveIcon name="spark" />生成第一张图片</RouterLink>
+          <RouterLink v-else-if="automation.drawing.value" class="btn btn-primary" :to="firstDrawingRoute(automation.modelId.value, 'anima')"><ArchiveIcon name="spark" />去画室生成第一张图</RouterLink>
           <RouterLink v-if="automation.chatId.value && !automation.engineRestartRequired.value" class="btn btn-ghost" to="/chat"><ArchiveIcon name="chat" />开始聊天</RouterLink>
         </div>
-        <small v-if="automation.engineRestartRequired.value && canRestart">重启后自动进入画室</small>
+        <small v-if="automation.engineRestartRequired.value && canRestart">重启后回到绘图配置，确认就绪即可进入画室。</small>
       </div>
     </template>
     <template v-else-if="automation.busy.value">
@@ -94,6 +94,7 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import SetupTransferProgress from '@/components/control/SetupTransferProgress.vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import { useLocalSetupAutomation } from '../composables/useLocalSetupAutomation'
+import { firstDrawingRoute } from '@/utils/setupDrawingRoute'
 import { formatSetupBytes as formatBytes, modelPreparationState } from '../utils/localSetupPreparation'
 const props = defineProps<{ snapshot: LocalSetupResponse; workspaceBlocked: boolean; blocked: boolean; settingsRevision: number; statusConfirmed: boolean; canRestart: boolean; canChooseWorkspace: boolean; restarting: boolean }>()
 const emit = defineEmits<{ refresh: []; configured: []; 'download-result': [result: LocalSetupDownloadResult]; 'model-selected': [modelId: string]; phase: [value: 'selection' | 'preparing' | 'ready']; restart: []; workspace: [] }>()
@@ -119,7 +120,7 @@ watch(automation.error, async value => {
 })
 watch(automation.modelId, model => emit('model-selected', model), { immediate: true })
 watch([automation.busy, automation.completed], () => emit('phase', automation.busy.value ? 'preparing' : automation.completed.value ? 'ready' : 'selection'), { immediate: true })
-const imageOptions = computed(() => [...automation.imageModels.value].sort((a, b) => Number(b.id === props.snapshot.recommendedModel) - Number(a.id === props.snapshot.recommendedModel))
+const imageOptions = computed(() => automation.imageModels.value.toSorted((a, b) => Number(b.id === props.snapshot.recommendedModel) - Number(a.id === props.snapshot.recommendedModel))
   .map(model => ({ value: model.id, label: model.label + (model.id === props.snapshot.recommendedModel && !model.label.includes('推荐') ? ' · 推荐' : '') })))
 const selectedImage = computed(() => automation.imageModels.value.find(model => model.id === automation.modelId.value))
 const selectedChat = computed(() => automation.chatModels.value.find(model => model.id === automation.chatId.value))

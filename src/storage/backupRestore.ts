@@ -149,7 +149,7 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean, owne
       checkRecovery()
       if (!unchanged) {
         console.warn('[backup-restore] commit unknown; images retained', { operationId, imageIds: stagedIds, error })
-        throw new Error(`恢复结果暂时无法确认；原有作品与原图未删除，导入图片已保留。请先核对作品册再重试（${operationId}）`)
+        throw new Error(`恢复结果暂时无法确认；原有作品与原图未删除，导入图片已保留。请先核对作品册再重试（${operationId}）`, { cause: error })
       }
     }
     const cleanupErrors: string[] = []
@@ -161,6 +161,6 @@ async function restoreBackupDataNow(imported: BackupFile, replace: boolean, owne
     checkRecovery()
     if (cleanupErrors.length) console.warn('[backup-restore] cleanup failed', { operationId, imageIds: stagedIds, cleanupErrors, error })
     const message = error instanceof Error ? error.message : String(error)
-    throw new Error(`${message}；原有作品与原图未删除${cleanupErrors.length ? `；${cleanupErrors.join('、')}` : ''}`)
+    throw new Error(`${message}；原有作品与原图未删除${cleanupErrors.length ? `；${cleanupErrors.join('、')}` : ''}`, { cause: error })
   }
 }

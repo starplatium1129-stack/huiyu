@@ -40,7 +40,7 @@ function commitPalette(value: Theme) {
   displayTheme.value = value
   root.dataset.themeChanging = ''
   root.dataset.theme = value
-  root.style.colorScheme = value
+  document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]')?.setAttribute('content', value)
   cancelAnimationFrame(paletteFrame)
   // Paint one palette, without interpolating thousands of local surface colors.
   paletteFrame = requestAnimationFrame(() => {

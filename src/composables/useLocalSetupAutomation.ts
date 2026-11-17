@@ -23,7 +23,7 @@ const suggestedChat = (snapshot: LocalSetupResponse): SetupDraft['llamaEnvironme
 export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, blocked: Ref<boolean>, onResult:(result:LocalSetupDownloadResult)=>void, refresh:()=>void, statusConfirmed:Ref<boolean>, onConfigured:()=>void) {
   const draft=readSetupDraft(snapshot.value.workspace.path)
   const savedModel=draft&&snapshot.value.models.some(model=>model.id===draft.modelId&&model.id.startsWith('anima-')&&model.preparation)?draft.modelId:undefined
-  const modelId=ref(savedModel??snapshot.value.recommendedModel??snapshot.value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'),chatId=ref(draft&&snapshot.value.models.some(model=>model.id===draft.chatId&&model.kind==='chat')?draft.chatId:''), drawing=ref(draft?.drawing??true), loras=ref(draft?.loras??true), reviewed=ref(false)
+  const modelId=ref(savedModel??snapshot.value.recommendedModel??snapshot.value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'),chatId=ref(draft&&snapshot.value.models.some(model=>model.id===draft.chatId&&model.kind==='chat')?draft.chatId:''), drawing=ref(draft?.drawing??true), loras=ref(draft?.loras??false), reviewed=ref(false)
   const installed=snapshot.value.comfy.managedEnvironment
   // Initialize from verified installation evidence once; later refreshes must preserve the user's choice.
   const environment=ref(installed?.state==='verified'?installed.environment:draft?.environment??suggestedComfy(snapshot.value)),llamaEnvironment=ref(draft?.llamaEnvironment??suggestedChat(snapshot.value))
@@ -63,7 +63,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     const saved=readSetupDraft(workspace.value),value=snapshot.value,receipt=value.comfy.managedEnvironment
     modelId.value=saved&&value.models.some(model=>model.id===saved.modelId&&model.id.startsWith('anima-')&&model.preparation)?saved.modelId:value.recommendedModel??value.models.find(model=>model.required&&model.id.startsWith('anima-'))?.id??'anima-miaomiao-v1.6'
     chatId.value=saved&&value.models.some(model=>model.id===saved.chatId&&model.kind==='chat')?saved.chatId:''
-    drawing.value=saved?.drawing??true;loras.value=saved?.loras??true
+    drawing.value=saved?.drawing??true;loras.value=saved?.loras??false
     environment.value=receipt?.state==='verified'?receipt.environment:saved?.environment??suggestedComfy(value)
     llamaEnvironment.value=saved?.llamaEnvironment??suggestedChat(value);restoringDraft=false
   },{flush:'sync'})
@@ -134,7 +134,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     }catch(cause){
       if(!disposed&&activeOperation){
         operationUncertain.value=true
-        throw new Error('当前准备状态尚未确认，请重新检查状态；后台操作可能仍在运行。'+(cause instanceof Error?cause.message:''))
+        throw new Error('当前准备状态尚未确认，请重新检查状态；后台操作可能仍在运行。' + (cause instanceof Error ? cause.message : ''), { cause })
       }
       throw cause
     }finally{

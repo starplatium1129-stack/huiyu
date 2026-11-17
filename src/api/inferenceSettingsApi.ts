@@ -23,6 +23,7 @@ export interface InferenceSettingsResponse {
   restartRequired: boolean
   environmentOverrides: string[]
   remoteListening: boolean
+  remoteAddress?: string | null
 }
 export interface InferenceDiagnostics {
   basis: 'configured'
@@ -77,6 +78,7 @@ function status(value: ApiResponseObject): boolean {
   const diagnostics = value.diagnostics
   const discovery = value.discovery
   return response(value) && object(diagnostics) && diagnostics.basis === 'configured'
+    && (value.remoteAddress == null || typeof value.remoteAddress === 'string')
     && ['valid', 'invalid'].includes(String(diagnostics.configuration))
     && object(diagnostics.files) && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof (diagnostics.files as ApiResponseObject)[key] === 'boolean')
     && diagnostics.dependencies === 'unchecked' && diagnostics.runtime === 'unverified' && typeof diagnostics.message === 'string'

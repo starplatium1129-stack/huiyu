@@ -24,8 +24,10 @@
           </div>
         </div>
         <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
-          <img v-if="neneHero.src && !heroFailed.nene" v-bind="neneHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" fetchpriority="high" />
-          <img v-if="natsumeHero.src && !heroFailed.natsume" v-bind="natsumeHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
+          <img v-if="neneHero.src && !heroFailed.nene" :fetchpriority="homeMuse === 'nene' ? 'high' : 'low'"
+            v-bind="neneHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
+          <img v-if="natsumeHero.src && !heroFailed.natsume" :fetchpriority="homeMuse === 'natsume' ? 'high' : 'low'"
+            v-bind="natsumeHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
           <img :src="paintedHeroes.nene?.src" :crossorigin="paintedHeroes.nene?.crossorigin" class="hero-character nene" :class="{ 'is-current': displayedMuse === 'nene' }" :alt="displayedMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="displayedMuse !== 'nene'" width="1024" height="1497" decoding="sync" />
           <img :src="paintedHeroes.natsume?.src" :crossorigin="paintedHeroes.natsume?.crossorigin" class="hero-character natsume" :class="{ 'is-current': displayedMuse === 'natsume' }" :alt="displayedMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="displayedMuse !== 'natsume'" width="1024" height="1497" decoding="sync" />
           <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="[homeMuse, { 'over-art': displayedMuse }]">

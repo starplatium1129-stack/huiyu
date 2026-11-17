@@ -192,7 +192,7 @@ export function closestSupportedSize(
   const [desiredWidth, desiredHeight] = desired.split('x').map(Number)
   if (!desiredWidth || !desiredHeight) return sizes[0]
   const desiredRatio = desiredWidth / desiredHeight
-  return [...sizes].sort((left, right) => {
+  return sizes.toSorted((left, right) => {
     const [leftWidth, leftHeight] = left.split('x').map(Number)
     const [rightWidth, rightHeight] = right.split('x').map(Number)
     return Math.abs(leftWidth / leftHeight - desiredRatio) - Math.abs(rightWidth / rightHeight - desiredRatio)

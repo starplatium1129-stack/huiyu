@@ -62,20 +62,17 @@ export const SCENE_DATA_TIMEOUT_MS = 15_000
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
 async function fetchJson<T>(file: string, version: number): Promise<T> {
-  const controller = new AbortController()
-  const timeout = setTimeout(() => controller.abort(), SCENE_DATA_TIMEOUT_MS)
+  const signal = AbortSignal.timeout(SCENE_DATA_TIMEOUT_MS)
   try {
-    const response = await runtimeFetch(`/data/${file}?v=${version}`, { signal: controller.signal })
+    const response = await runtimeFetch(`/data/${file}?v=${version}`, { signal })
     if (!response.ok) {
       if (response.status === 403) throw new Error('此内容尚未审核为远程可用，请在本机工作室查看。')
       throw new Error(`${file} HTTP ${response.status}`)
     }
     return (await response.json()) as T
   } catch (error) {
-    if (controller.signal.aborted) throw new Error(`${file} 请求超时`)
+    if (signal.aborted) throw new Error(`${file} 请求超时`, { cause: error })
     throw error
-  } finally {
-    clearTimeout(timeout)
   }
 }
 
@@ -95,7 +92,7 @@ function sceneNumber(scene: Scene): number {
 }
 
 function sortScenes(list: Scene[]): Scene[] {
-  return [...list].sort((left, right) => (typeof left.sortOrder === 'number' ? left.sortOrder : sceneNumber(left)) - (typeof right.sortOrder === 'number' ? right.sortOrder : sceneNumber(right)) || String(left.id).localeCompare(String(right.id)))
+  return list.toSorted((left, right) => (typeof left.sortOrder === 'number' ? left.sortOrder : sceneNumber(left)) - (typeof right.sortOrder === 'number' ? right.sortOrder : sceneNumber(right)) || String(left.id).localeCompare(String(right.id)))
 }
 
 function mergeScenes(...lists: Array<Scene[] | undefined>): Scene[] {

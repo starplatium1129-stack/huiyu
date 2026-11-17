@@ -3,6 +3,7 @@ import { qwenStatus, uploadQwenImage, readQwenTaskInput } from '@/api/qwenApi'
 import { mossStatus } from '@/api/mossApi'
 import { MOSS_MODEL_ID, mossModels, qwenModels, validMossSpectrumFlexWindow, type DirectImageModelStatus } from '@/config/directImageModels'
 import { compileMossPrompt, MOSS_NEGATIVE } from '@/utils/mossPrompt'
+import { isMossLayoutInput } from '@/utils/mossLayout'
 import { useImageTaskSession } from '@/composables/tasks/useImageTaskSession'
 import { imageTaskSettled as terminal, imageTaskMessage, fetchImageTaskResult, type ImageTask } from '@/api/imageTask'
 import { createImageTaskArchiver, imageTaskArtworkId } from '@/composables/tasks/imageTaskArtwork'
@@ -24,7 +25,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0,
     mossAcceleration: 'spectrum' as 'off' | 'spectrum', mossTextPrecision: 'bf16' as 'bf16' | 'fp8' | 'int8', mossCompile: false,
     mossSpectrumFlexWindow: 0.5,
-    mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8' })
+    mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8', ...(moss ? { mossLayout: '' } : {}) })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
   const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
@@ -233,8 +234,8 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       if (moss && (!['auto', 'fp16', 'int8'].includes(form.mossWeightPrecision)
         || form.mossWeightPrecision === 'fp16' && !selected.value?.mossFp16Ready
         || form.mossWeightPrecision === 'int8' && !selected.value?.mossInt8Ready)) throw new Error('所选主模型权重未准备，请选择自动或已导入的精度')
-      const compiled = moss ? compileMossPrompt(form.prompt, negative) : { prompt: form.prompt.trim(), negative }
-      if (compiled.prompt.length > 12000) throw new Error('加入模型质量词后的提示词超过 12000 字符，请精简描述')
+      const compiled = moss ? compileMossPrompt(form.prompt, negative, form) : { prompt: form.prompt.trim(), negative }
+      if (compiled.prompt.length > 12000) throw new Error('编译后的提示词超过 12000 字符，请精简描述')
       if (moss && (source.value || references.value.length)) throw new Error('MOSS 当前仅支持文生图，请移除编辑输入')
       const input: Record<string, unknown> = { modelId: form.modelId, ...compiled,
         ...(moss ? { mossAcceleration: form.mossAcceleration,
@@ -385,6 +386,9 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
             form.mossTextPrecision = input.mossTextPrecision === 'int8' ? 'int8' : input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
             form.mossCompile = input.mossCompile === true
             form.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
+            if (taskId && task.value?.taskId === taskId && typeof input.prompt === 'string' && isMossLayoutInput(input.prompt)) {
+              form.mossLayout = input.prompt
+            }
           }
         }
         const context = request.value?.context || task.value?.metadata.context
@@ -415,8 +419,9 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       }
       draftActive = !restoredInputMissing.value && !draftRecoveryNeeded.value; ready.value = true
       if (draftActive) void persistDraft()
-      void refresh()
+      const modelCheck = refresh()
       if (request.value || task.value) void observe()
+      if (modelId) await modelCheck
     } catch (cause) { if (!lifetime.signal.aborted) error.value = message(cause) }
     finally { initializing.value = false }
   }

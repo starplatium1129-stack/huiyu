@@ -2,12 +2,12 @@
   <section ref="panel" class="inference-setup" aria-labelledby="native-setup-title">
     <div class="setup-intro">
       <span class="setup-mark"><ArchiveIcon name="spark" /></span>
-      <div><h3 id="native-setup-title" ref="title" tabindex="-1">模型与环境</h3></div>
+      <div><h3 id="native-setup-title" ref="title" tabindex="-1">准备本机绘图</h3><p>确认存放位置和模型后，绘遇会下载所需文件并启用引擎。</p></div>
     </div>
     <ol class="setup-route" aria-label="配置流程">
-      <li><span>1</span>确认存放位置</li>
-      <li><span>2</span>选择绘图模型</li>
-      <li><span>3</span>下载并启用</li>
+      <li :aria-current="!workspacePending && !pendingRestart && !nativeEnabled ? 'step' : undefined"><span>1</span>准备模型</li>
+      <li :aria-current="pendingRestart || workspacePending ? 'step' : undefined"><span>2</span>启用引擎</li>
+      <li :aria-current="nativeEnabled ? 'step' : undefined"><span>3</span>进入画室</li>
     </ol>
     <div class="setup-location">
       <ArchiveIcon name="folder" />
@@ -20,10 +20,11 @@
       <div class="setup-field setup-model-choice">
         <label for="native-model-download">绘图模型</label>
         <StudioSelect id="native-model-download" :model-value="modelId" label="绘图模型" :options="modelOptions" :disabled="locked" @update:model-value="chooseModel" />
+        <small v-if="plan.supported && modelId === 'anima-miaomiao-v1.6'">入门推荐 · 可自动下载权重</small>
       </div>
       <div class="setup-status" :data-state="nativeEnabled ? 'ready' : plan.supported ? 'available' : 'unavailable'" role="status">
         <ArchiveIcon :name="plan.supported ? 'success' : 'info'" />
-        <div><strong>{{ nativeEnabled ? '原生引擎已就绪' : plan.supported ? '设备可用' : unavailableTitle }}</strong><p>{{ deviceName }}</p><p v-if="!plan.supported">{{ unavailableHint }}</p></div>
+        <div><strong>{{ nativeEnabled ? '原生引擎和模型已就绪' : plan.supported ? '可以自动准备' : unavailableTitle }}</strong><p>{{ deviceName }}</p><p v-if="!plan.supported">{{ unavailableHint }}</p></div>
         <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="recheck">重新检查</button>
       </div>
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
@@ -48,7 +49,7 @@
         <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>同意安装并接受<a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="所选模型许可，在新窗口打开">模型许可</a></span></label>
         <small v-if="!running" class="setup-hint">{{ selectedModel.license }} · 已有文件保留</small>
       </template>
-      <p v-if="pendingRestart" role="status">准备完成。重启后即可使用原生引擎。</p>
+      <p v-if="pendingRestart" role="status">模型与运行库已准备好。重启绘遇后会回到这里，继续进入画室。</p>
     </template>
     <p v-else role="status">{{ checking ? '正在检查设备与配置…' : '暂时无法读取配置，请重新检查。' }}</p>
     <SetupTransferProgress v-if="running" :title="operationTitle" :phase="setupTransferPhase(operation)"
@@ -59,13 +60,16 @@
     <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
     <p v-else-if="message && !running && !pendingRestart && !nativeEnabled" role="status">{{ message }}</p>
     <div ref="actions" class="setup-primary" tabindex="-1" role="group" aria-label="原生引擎操作">
-      <RouterLink v-if="nativeEnabled && !operationUncertain" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { preparedModel: modelId, ...(selectedModel?.family === 'moss-image' ? { engine: 'moss' } : selectedModel?.family === 'qwen-image' ? { engine: 'qwen' } : {}) } }"><ArchiveIcon name="spark" />开始绘图</RouterLink>
+      <RouterLink v-if="nativeEnabled && selectedModel && !locked" class="btn btn-primary" :to="firstDrawingRoute(modelId, selectedModel.family)"><ArchiveIcon name="spark" />去画室生成第一张图</RouterLink>
       <button v-else-if="desktop?.restartForSetup && !operationUncertain && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
       <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续下载与配置' : '下载并自动配置' }}</button>
       <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="recheck">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
-      <RouterLink v-else-if="plan && !plan.supported && !workspacePending" class="btn btn-quiet" :to="{ path: '/control', hash: '#control-comfy' }">ComfyUI 配置</RouterLink>
+      <template v-if="!running && !workspacePending && !nativeEnabled">
+        <RouterLink class="btn btn-quiet" to="/control#control-remote">连接另一台绘遇</RouterLink>
+        <RouterLink v-if="plan && !plan.supported" class="btn btn-quiet" to="/control#control-comfy">使用 ComfyUI</RouterLink>
+      </template>
     </div>
     <details v-if="plan && !workspacePending" id="control-image-resources" class="setup-details" :open="typeof route.query.resource === 'string' || route.hash === '#control-image-resources'">
       <StudioDisclosureSummary><span>添加更多绘图能力<small class="setup-disclosure-hint">自动蒙版、高清放大、草图与角色 LoRA · 按需下载</small></span></StudioDisclosureSummary>
@@ -127,14 +131,17 @@ import { useInferenceSetup } from '@/composables/useInferenceSetup'
 import { inferenceImportModels, type PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import type { InferenceSettings } from '@/api/inferenceSettingsApi'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
+import { firstDrawingRoute } from '@/utils/setupDrawingRoute'
 const props = defineProps<{ configured: InferenceSettings; blocked: boolean }>()
 const emit = defineEmits<{ prepared: [paths: PreparedInferencePaths]; busy: [value: boolean]; working: [value: boolean]; activated: [] }>()
+const route = useRoute()
+const requestedModel = computed(() => typeof route.query.model === 'string' ? route.query.model : '')
 const { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
   basePython, wheelhouse, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
   operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, message, error, cancelState, operationUncertain,
   workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
   recheck, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
-  openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'))
+  openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'), requestedModel)
 const modelOptions = computed(() => plan.value?.models.map(model => ({ value: model.id, label: model.label })) ?? [])
 const resourceOptions = computed(() => plan.value?.resources.map(value => ({ value: value.id, label: value.label })) ?? [])
 function fillResourcePaths() {
@@ -145,10 +152,10 @@ const modelName = computed(() => selectedModel.value?.label.split(' · ')[0] ?? 
 const running = computed(() => operation.value?.status === 'running')
 const pendingRestart = computed(() => plan.value?.supported && plan.value.workspaceMatches && plan.value.configuredEngine === 'native' && plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
 const deviceName = computed(() => [...(plan.value?.hardware.devices ?? []), ...(plan.value?.hardware.otherDevices ?? [])].map(device => device.name).join('、') || '未检测到可用显卡')
-const unavailableTitle = computed(() => plan.value?.freeBytes === null ? '先选择可用的存放位置' : '设备检查尚未通过')
+const unavailableTitle = computed(() => plan.value?.freeBytes === null ? '先选择可用的存放位置' : '当前无法一键安装本机环境')
 const unavailableHint = computed(() => {
   if (plan.value?.freeBytes === null) return '请选择可写且空间充足的文件夹。'
-  if (/AMD|Intel/i.test(deviceName.value) && !plan.value?.hardware.devices.length) return '当前版本需要受支持的 NVIDIA 显卡。其他设备支持尚未接入。'
+  if (/AMD|Intel|Radeon/i.test(deviceName.value) && !plan.value?.hardware.devices.length) return '自动安装使用受支持的 NVIDIA 显卡。可连接另一台绘遇，或在高级设置复用配好的 Anima 环境。'
   return plan.value?.reasons[0] ?? '请查看设备要求，再重新检查。'
 })
 const downloadBytes = computed(() => (plan.value?.runtime.installed ? 0 : plan.value?.runtime.downloadBytes ?? 0) + (selectedModel.value?.installed ? 0 : selectedModel.value?.downloadBytes ?? 0))
@@ -159,23 +166,17 @@ const resourcePaths = computed(() => plan.value ? [
 ] : [])
 function sourceName(label: string) { return label.startsWith('Python') ? 'Python.org' : label.startsWith('PyTorch') ? 'PyTorch' : label.startsWith('PyPI') ? 'PyPI' : label.startsWith('Microsoft') ? 'Microsoft VC++' : label.startsWith('NVIDIA') ? 'NVIDIA CUDA' : label }
 function fillSettings() { if (preparedPaths.value && !locked.value) emit('prepared', { ...preparedPaths.value }) }
-const route = useRoute()
 let appliedResourceQuery: string | null = null
 watch([() => route.query.resource, locked], ([value, isLocked]) => {
   if (typeof value !== 'string') { appliedResourceQuery = null; return }
   if (!isLocked && value !== appliedResourceQuery) { resourceId.value = value; appliedResourceQuery = value }
 }, { immediate: true })
-const linkedModels = ['anima-miaomiao-v1.6', 'anima-miaomiao-realskin-2.9b-v1.0', 'anima-base-v1.0', 'krea2-raw', 'krea2-turbo', 'qwen-image-2.1', 'qwen-image-2.1-turbo', 'moss-miaomiao-base-v1.0']
 let appliedModelQuery: string | null = null
-if (typeof route.query.model === 'string' && linkedModels.includes(route.query.model)) {
-  modelId.value = route.query.model
-  appliedModelQuery = route.query.model
-}
-watch([() => route.query.model, locked], ([value, isLocked]) => {
-  if (typeof value !== 'string') { appliedModelQuery = null; return }
-  if (!isLocked && linkedModels.includes(value) && value !== appliedModelQuery) {
+watch([requestedModel, locked], ([value, isLocked]) => {
+  if (!value) { appliedModelQuery = null; return }
+  if (!isLocked && plan.value?.models.some(model => model.id === value) && value !== appliedModelQuery) {
     appliedModelQuery = value
-    void selectModel(value)
+    if (modelId.value !== value) void selectModel(value)
   }
 })
 let revealedResourceLink = ''

@@ -3,7 +3,7 @@ import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipan
 import { createChatDraftPersistence } from './chatDraftPersistence'
 import { profileLocalStorage as localStorage } from '../../platform/web/profileStorage.ts'
 
-import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { computed, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
 import { usePolling } from '../usePolling.ts'
 import { useRouter } from 'vue-router'
 import {
@@ -25,6 +25,7 @@ import type { ChatStoryAction } from '@/types/companionDrawing'
 import { useChatRegenerationEligibility } from './useChatRegenerationEligibility'
 import { useCompanionChatAttachments } from './useCompanionChatAttachments'
 import { decodeCompanionChatLiveState, type CompanionChatLiveState } from '@/utils/companionChatLiveState'
+import { copyText } from '@/utils/clipboard'
 
 export function useCompanionChatWindow() {
 
@@ -356,13 +357,17 @@ const releaseMaintenance = registerMaintenanceParticipant(() => { if (sending.va
 function onInput() {
   draft.schedule(activeChar.value, inputText.value)
 }
-function resizeComposer() {
-  const input = inputRef.value
-  if (!input) return
-  input.style.height = 'auto'
-  input.style.height = `${Math.min(input.scrollHeight, 108)}px`
+if (!CSS.supports('field-sizing', 'content')) {
+  const resizeComposer = () => {
+    const input = inputRef.value
+    if (!input) return
+    input.style.height = 'auto'
+    input.style.height = `${input.scrollHeight}px`
+  }
+  watch([inputRef, inputText], resizeComposer, { flush: 'post' })
+  onMounted(() => window.addEventListener('resize', resizeComposer))
+  onUnmounted(() => window.removeEventListener('resize', resizeComposer))
 }
-watch(inputText, () => { void nextTick(resizeComposer) })
 
 const { showLatest: hasNew, latest } = useConversationReading(listRef, () => visibleMessages.value, computed(() => `${activeChar.value}:${branchId.value}`))
 const docked = ref(true), docking = ref(false)
@@ -391,8 +396,8 @@ async function toggleDock() {
   finally { docking.value = false }
 }
 async function copyMessage(content: string) {
-  try { await navigator.clipboard.writeText(content); listenerNotice('已复制') }
-  catch { listenerError('复制失败，可以选中文字后复制。') }
+  if (await copyText(content)) listenerNotice('已复制')
+  else listenerError('复制失败，可以选中文字后复制。')
 }
 
 /* —— 生命周期 —— */
@@ -411,8 +416,6 @@ onMounted(() => {
   readLive()
   inputText.value = storage.draft(activeChar.value)
   liveInitialized = true
-  void nextTick(resizeComposer)
-  window.addEventListener('resize', resizeComposer)
   window.addEventListener('focus', onVisibilityChange)
   window.addEventListener('blur', onVisibilityChange)
   const initialDockRevision = dockRevision
@@ -459,7 +462,6 @@ onUnmounted(() => {
   attachments.cancelAttachments()
   quietClock.stop()
   storage.setDraft(activeChar.value, inputText.value)
-  window.removeEventListener('resize', resizeComposer)
   window.removeEventListener('focus', onVisibilityChange)
   window.removeEventListener('blur', onVisibilityChange)
   stopSpeechSessionWatch()

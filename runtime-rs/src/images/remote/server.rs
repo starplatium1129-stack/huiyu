@@ -68,15 +68,20 @@ async fn completion(
     Path((_, key)): Path<(String, String)>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
-) -> Result<impl IntoResponse> {
+) -> Result<Response> {
     state.host.check_running()?;
     let status = if let Ok(_slot) = slots.try_acquire() {
         let images = state.images.as_ref().ok_or_else(closed)?;
         let owner = generation::request_owner(&headers, peer, &query);
-        if images
+        if let Some(receipt) = images
             .wait_request_completion(&key, &owner, http::family(&uri), COMPLETION_WAIT)
             .await?
         {
+            if query.get("receipt").is_some_and(|value| value == "1") {
+                let mut value = images.receipt_value(receipt).await?;
+                value["found"] = json!(true);
+                return Ok(http::response(Ok(value), StatusCode::OK));
+            }
             StatusCode::NO_CONTENT
         } else {
             StatusCode::ACCEPTED
@@ -84,7 +89,7 @@ async fn completion(
     } else {
         StatusCode::ACCEPTED
     };
-    Ok((status, [(header::CACHE_CONTROL, "no-store")]))
+    Ok((status, [(header::CACHE_CONTROL, "no-store")]).into_response())
 }
 
 pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHandle<()>> {

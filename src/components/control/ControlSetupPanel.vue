@@ -2,10 +2,11 @@
   <div class="control-panel-stack">
     <div class="setup-engine-switch studio-segments" role="group" aria-label="配置入口">
       <AnimatedSelection />
-      <button type="button" :aria-pressed="mode === 'native'" @click="choose('native')">原生绘图</button>
+      <button type="button" :aria-pressed="mode === 'native'" @click="choose('native')">本机与远程绘图</button>
       <button type="button" :aria-pressed="mode === 'comfy'" @click="choose('comfy')">ComfyUI · 本地聊天</button>
     </div>
     <div v-if="localVisited" v-show="mode === 'comfy'" class="panel-card">
+      <AvailableDrawingModels v-if="mode === 'comfy' && status.imageProvider.value === 'comfy' && !localBusy" provider="comfy" />
       <AsyncPanel :loader="loadLocalSetup" label="绘图与本地聊天" v-slot="{ component }"><component :is="component" :blocked="nativeBusy" :settings-revision="nativeRevision" @busy="localBusy = $event" @configured="localRevision++" /></AsyncPanel>
     </div>
     <div v-if="nativeVisited" v-show="mode === 'native'" ref="nativePanel" class="panel-card control-native-options">
@@ -20,19 +21,20 @@ import { useRoute } from 'vue-router'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import InferenceSettingsPanel from '@/components/InferenceSettingsPanel.vue'
+import AvailableDrawingModels from './AvailableDrawingModels.vue'
 import { isInferenceSetupOperation } from '@/api/inferenceSetupApi'
 import { useControlContext } from '@/composables/useControlContext'
 const route = useRoute()
 const { status } = useControlContext()
 const loadLocalSetup = () => import('@/components/LocalSetupPanel.vue')
 const nativePanel = ref<HTMLElement | null>(null)
-const mode = ref<'native' | 'comfy'>(status.imageProvider.value === 'native' || status.imageProvider.value === 'remote' ? 'native' : 'comfy')
+const mode = ref<'native' | 'comfy'>(status.imageProvider.value === 'comfy' ? 'comfy' : 'native')
 const nativeVisited = ref(false), localVisited = ref(false), chosen = ref(false)
 const nativeBusy = ref(false), localBusy = ref(false)
 const nativeRevision = ref(0), localRevision = ref(0)
 const nativeReady = ref(false)
 const localLink = computed(() => route.hash === '#setup-chat-options' || route.hash === '#control-comfy')
-const nativeLink = computed(() => ['#control-inference', '#control-image-resources'].includes(route.hash)
+const nativeLink = computed(() => ['#control-inference', '#control-image-resources', '#control-remote'].includes(route.hash)
   || ['', '#control-setup'].includes(route.hash) && (route.query.resource || route.query.engine === 'native'
     || ['anima', 'krea2'].includes(String(route.query.engine)) && (status.imageProvider.value === 'native' || status.imageProvider.value === 'remote')
     || /^(anima-miaomiao-v1\.6|anima-miaomiao-realskin-2\.9b-v1\.0|anima-base-v1\.0|krea2|qwen-image|moss-miaomiao)/.test(String(route.query.model ?? ''))))
@@ -41,7 +43,7 @@ watch(mode, value => { if (value === 'native') nativeVisited.value = true; else 
 watch([() => route.fullPath, status.imageProvider, status.statusLoaded], () => {
   if (nativeLink.value) mode.value = 'native'
   else if (localLink.value) mode.value = 'comfy'
-  else if (!chosen.value && status.statusLoaded.value) mode.value = status.imageProvider.value === 'native' || status.imageProvider.value === 'remote' ? 'native' : 'comfy'
+  else if (!chosen.value && status.statusLoaded.value) mode.value = status.imageProvider.value === 'comfy' ? 'comfy' : 'native'
 }, { immediate: true })
 watch([() => route.fullPath, nativeLink, nativeReady], async () => {
   if (route.path !== '/control' || !nativeLink.value || !nativeReady.value) return
@@ -51,7 +53,8 @@ watch([() => route.fullPath, nativeLink, nativeReady], async () => {
   if (location !== route.fullPath || !nativePanel.value?.getClientRects().length) return
   const resource = route.query.resource || route.hash === '#control-image-resources'
     ? document.getElementById('control-image-resources') : null
-  const target = resource?.getClientRects().length ? resource : nativePanel.value
+  const remote = route.hash === '#control-remote' ? document.getElementById('control-remote') : null
+  const target = remote?.getClientRects().length ? remote : resource?.getClientRects().length ? resource : nativePanel.value
   target.scrollIntoView({ block: 'start', behavior: 'instant' })
 }, { immediate: true })
 watch(status.operation, operation => {

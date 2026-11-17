@@ -60,7 +60,7 @@ const steps = [
       <div>
         <h2 id="guide-preparation-title">确认绘图服务</h2>
         <p>生成前请在控制面板确认绘图环境就绪。</p>
-        <RouterLink class="btn btn-ghost" to="/control#control-setup"><span class="studio-control-label">配置模型与服务</span><ArchiveIcon name="chevron-down" class="guide-link-arrow" /></RouterLink>
+        <RouterLink class="btn btn-ghost" to="/control#control-inference"><span class="studio-control-label">配置绘图</span><ArchiveIcon name="chevron-down" class="guide-link-arrow" /></RouterLink>
       </div>
     </section>
 

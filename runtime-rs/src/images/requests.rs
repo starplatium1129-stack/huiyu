@@ -6,7 +6,7 @@ use futures_util::future::BoxFuture;
 use std::time::Duration;
 
 impl Service {
-    async fn receipt_value(&self, mut receipt: Receipt) -> Result<Value> {
+    pub(super) async fn receipt_value(&self, mut receipt: Receipt) -> Result<Value> {
         let waiting =
             if receipt.job_id.is_none() && receipt.error.is_none() && !receipt.cancel_requested {
                 let (latest, waiting) = self.requests.refresh(receipt).await?;
@@ -68,15 +68,16 @@ impl Service {
         owner: &str,
         family: &str,
         wait: Duration,
-    ) -> Result<bool> {
+    ) -> Result<Option<Receipt>> {
         let Some(receipt) = self.requests.status(key, owner, family).await? else {
-            return Ok(false);
+            return Ok(None);
         };
-        if let Some(id) = receipt.job_id.as_deref() {
-            self.backend.wait_image_completion(id, owner, family, wait).await
+        let ready = if let Some(id) = receipt.job_id.as_deref() {
+            self.backend.wait_image_completion(id, owner, family, wait).await?
         } else {
-            Ok(receipt.error.is_some() || receipt.cancel_requested)
-        }
+            receipt.error.is_some() || receipt.cancel_requested
+        };
+        Ok(ready.then_some(receipt))
     }
     pub(super) async fn accept_request(
         self: &Arc<Self>,

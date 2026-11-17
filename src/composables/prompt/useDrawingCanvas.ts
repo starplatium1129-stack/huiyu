@@ -9,6 +9,9 @@ import type { ResultSnapshot } from './promptResultSnapshot'
 export function useDrawingCanvas(workspace: ReturnType<typeof usePromptWorkspace>) {
   const native = useNativeDrawing(workspace), enabled = computed(() => !!native.mode.value)
   const state = native.session
+  const preparedModelPending = computed(() => workspace.route.query.firstDraw === '1'
+    && typeof workspace.route.query.preparedModel === 'string'
+    && (!enabled.value || state.value?.selected.value?.id !== workspace.route.query.preparedModel || !state.value?.selected.value?.available))
   const mossCompare = useCompareSnapshots<ResultSnapshot>({ build: url => {
     const task = state.value?.result.value
     if (!task || task.kind !== 'moss') throw new Error('MOSS 结果尚未就绪')
@@ -43,12 +46,16 @@ export function useDrawingCanvas(workspace: ReturnType<typeof usePromptWorkspace
     drawEngineLabel: computed(() => native.mode.value === 'moss' ? 'MiaoMiao MOSS' : native.mode.value === 'qwen' ? 'Qwen' : workspace.drawEngineLabel.value),
     engineOnline: computed(() => enabled.value ? !!state.value?.selected.value?.available : workspace.engineOnline.value),
     engineConnected: computed(() => enabled.value ? !!state.value?.selected.value?.available : workspace.animaState.value.online),
-    engineStatusText: computed(() => enabled.value ? state.value?.statusError.value || state.value?.selected.value?.unavailableReason || '原生模型待准备' : workspace.engineStatusText.value),
+    engineStatusText: computed(() => !enabled.value ? workspace.engineStatusText.value
+      : state.value?.statusError.value || state.value?.selected.value?.unavailableReason
+        || (state.value?.selected.value?.available ? '绘图模型已就绪' : '原生模型待准备')),
     generationBusy: computed(() => workspace.generationBusy.value || native.busy.value),
     generationError: computed(() => enabled.value ? state.value?.error.value || '' : workspace.generationError.value),
     generationStopped: computed(() => enabled.value ? state.value?.task.value?.status === 'cancelled' : workspace.generationStopped.value),
     generationPresentation: computed(() => enabled.value ? native.presentation.value : workspace.generationPresentation.value),
-    generateBlockReason: computed(() => enabled.value ? native.blocked.value : workspace.generateBlockReason.value),
+    preparedModelPending,
+    generateBlockReason: computed(() => enabled.value ? native.blocked.value : preparedModelPending.value
+      ? '请先确认刚准备的绘图模型' : workspace.generateBlockReason.value),
     genBarSize: computed({ get: () => enabled.value ? native.size.value : workspace.genBarSize.value,
       set: value => { if (enabled.value) native.size.value = value; else workspace.genBarSize.value = value } }),
     animaBarSizes: computed(() => enabled.value ? native.sizes.value : workspace.animaBarSizes.value),
@@ -59,7 +66,7 @@ export function useDrawingCanvas(workspace: ReturnType<typeof usePromptWorkspace
     inpaintOriginalUrl: computed(() => enabled.value ? null : workspace.inpaintOriginalUrl.value),
     inpaintCompareActive: computed({ get: () => !enabled.value && workspace.inpaintCompareActive.value,
       set: value => { if (!enabled.value) workspace.inpaintCompareActive.value = value } }),
-    callGenerate: () => enabled.value ? native.generate() : workspace.callGenerate(),
+    callGenerate: () => preparedModelPending.value ? Promise.resolve() : enabled.value ? native.generate() : workspace.callGenerate(),
     cancelGeneration: () => enabled.value ? state.value?.cancel() : workspace.cancelGeneration(),
     recheckEngineConnection: () => enabled.value ? state.value?.refresh() : workspace.recheckEngineConnection(),
     saveResult: () => enabled.value ? state.value?.exportResult('save') : workspace.saveResult(),
