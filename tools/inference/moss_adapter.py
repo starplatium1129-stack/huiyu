@@ -5,7 +5,6 @@ Never load model-directory Python or apply Anima LoRA/TeaCache recipes.
 """
 from huiyu_worker_lifecycle import load_sibling
 import re
-import sys
 
 
 def pipeline_class():
@@ -14,15 +13,12 @@ def pipeline_class():
 
 def load(root, control, contract, *, text_precision="bf16", weight_precision="auto"):
     import torch
-    from accelerate import init_empty_weights
     from diffusers import AutoencoderKLFlux2
-    from safetensors.torch import load_file
     from transformers import Qwen3_5Model, Qwen2TokenizerFast
     module = load_sibling("moss_pipeline")
     quant = load_sibling("moss_int8")
     variant = quant.selected(root, weight_precision, contract)
-    if variant is not None:
-        quant.require_backend(contract)
+    backend = quant.require_backend(contract) if variant is not None else None
     control.stage("loading", component="text_encoder")
     text = load_sibling("moss_text")
     encoder = (text.load_int8(root, control, contract) if text_precision == "int8" else
@@ -46,8 +42,24 @@ def load(root, control, contract, *, text_precision="bf16", weight_precision="au
     tokenizer = Qwen2TokenizerFast.from_pretrained(str(root / "tokenizer"), local_files_only=True, trust_remote_code=False)
     control.check()
     control.stage("loading", component="transformer")
+    transformer = load_transformer(root, control, contract, variant, backend)
+    transformer._huiyu_compiler = load_sibling("moss_execution").Compiler(transformer, encoder)
+    control.check()
+    control.stage("loading", component="vae")
+    vae = AutoencoderKLFlux2.from_pretrained(str(root / "vae"), local_files_only=True,
+        use_safetensors=True, torch_dtype=torch.float32).eval()
+    scheduler = module.MOSSImageScheduler.from_config(contract.config(root, root / "scheduler/scheduler_config.json"), shift=5.0)
+    return module.MOSSImagePipeline(transformer=transformer, scheduler=scheduler,
+        text_encoder=encoder, tokenizer=tokenizer, vae=vae)
+
+
+def load_transformer(root, control, contract, variant, backend):
+    import torch
+    from accelerate import init_empty_weights
+    module = load_sibling("moss_pipeline")
+    quant = load_sibling("moss_int8")
     checkpoint = contract.safe_file(root, root / (variant["path"] if variant else "transformer/diffusion_pytorch_model.safetensors"))
-    weights = load_file(str(checkpoint), device="cpu", backend="pread" if sys.platform == "win32" else "mmap")
+    weights = quant.read_weights(checkpoint)
     control.check()
     types = (torch.float16, torch.bfloat16, torch.float32, torch.int8, torch.uint8) if variant else (
         torch.float16, torch.bfloat16, torch.float32)
@@ -81,20 +93,12 @@ def load(root, control, contract, *, text_precision="bf16", weight_precision="au
             for part in ("q", "k", "v"):
                 del projections[part]
         if variant is not None:
-            quant.configure(transformer, weights, contract, variant)
+            quant.configure(transformer, weights, contract, variant, backend)
     transformer.load_state_dict(weights, strict=True, assign=True)
     del weights
     # Preserve the original FP16 file views on CPU. Placement converts on GPU,
     # instead of allocating a second full BF16 checkpoint in host RAM.
-    transformer.eval()
-    transformer._huiyu_compiler = load_sibling("moss_execution").Compiler(transformer, encoder)
-    control.check()
-    control.stage("loading", component="vae")
-    vae = AutoencoderKLFlux2.from_pretrained(str(root / "vae"), local_files_only=True,
-        use_safetensors=True, torch_dtype=torch.float32).eval()
-    scheduler = module.MOSSImageScheduler.from_config(contract.config(root, root / "scheduler/scheduler_config.json"), shift=5.0)
-    return module.MOSSImagePipeline(transformer=transformer, scheduler=scheduler,
-        text_encoder=encoder, tokenizer=tokenizer, vae=vae)
+    return transformer.eval()
 
 
 def generate(pipeline, data, control, observation):

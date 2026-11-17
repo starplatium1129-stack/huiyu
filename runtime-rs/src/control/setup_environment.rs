@@ -202,25 +202,53 @@ impl ControlService {
             let path_for = |id: &str| -> Result<std::path::PathBuf> {
                 Ok(model_root(&self.config.ai_workspace_root, id)?.join(model_file(id)?.path))
             };
-            for id in ids {
+            let mut archives = Vec::with_capacity(ids.len());
+            for (index, id) in ids.iter().enumerate() {
                 let root = model_root(&self.config.ai_workspace_root, id)?;
                 let spec = model_file(id)?;
                 let token = cancel.clone();
                 let identity = (*id).to_owned();
-                let verified = tokio::task::spawn_blocking(move || {
+                let checks = self.setup_archives.clone();
+                self.work_progress(
+                    operation,
+                    index as u64,
+                    ids.len() as u64,
+                    &format!("正在核对运行包 {}/{}", index + 1, ids.len()),
+                );
+                let archive = tokio::task::spawn_blocking(move || -> Result<_> {
+                    let missing = || {
+                        ApiError::new(
+                            409,
+                            "ENVIRONMENT_PACKAGE_MISSING",
+                            format!("请先下载或重新校验 {identity}"),
+                        )
+                    };
+                    let (archive, checked) = checks
+                        .hold(&root.join(&spec.path), &root, &spec.sha256)
+                        .map_err(|_| missing())?;
+                    if checked {
+                        return Ok(archive);
+                    }
                     let (sender, _receiver) = tokio::sync::mpsc::unbounded_channel();
-                    // Keep a receiver alive during inspection; no synthetic download progress.
-                    inspect(&root, &spec, &identity, &sender, &token)
+                    let checked = inspect(&root, &spec, &identity, &sender, &token)["state"]
+                        == "sha256-match";
+                    if token.is_cancelled() {
+                        return Err(ApiError::new(
+                            499,
+                            "CANCELLED",
+                            "环境准备已取消，已有文件保留",
+                        ));
+                    }
+                    if !checked {
+                        return Err(missing());
+                    }
+                    Ok(archive)
                 })
                 .await
-                .map_err(|_| ApiError::new(503, "ENVIRONMENT_VERIFY_FAILED", "运行包校验未完成"))?;
-                if verified["state"] != "sha256-match" {
-                    return Err(ApiError::new(
-                        409,
-                        "ENVIRONMENT_PACKAGE_MISSING",
-                        format!("请先下载或重新校验 {id}"),
-                    ));
-                }
+                .map_err(|_| {
+                    ApiError::new(503, "ENVIRONMENT_VERIFY_FAILED", "运行包校验未完成")
+                })??;
+                archives.push(archive);
             }
             if cancel.is_cancelled() {
                 return Err(ApiError::new(499, "CANCELLED", "环境准备已取消"));
@@ -328,6 +356,7 @@ impl ControlService {
                 ));
             }
             self.log(&String::from_utf8_lossy(&out));
+            drop(archives);
             self.stage(operation, 2);
             Ok(())
         }
@@ -396,10 +425,16 @@ pub(super) fn managed_comfy_environment(root: &std::path::Path) -> Value {
     else {
         return unknown();
     };
-    let Ok(spec) = setup_verify::model_file(&format!("runtime-{environment}")) else {
+    let Ok(source) = setup_verify::model_source(&format!("runtime-{environment}")) else {
         return unknown();
     };
-    if receipt["archiveSha256"] != spec.sha256 {
+    let hash = &receipt["archiveSha256"];
+    let known_archive = hash.is_string()
+        && (hash == &source["sha256"]
+            || source["previousArchiveSha256"]
+                .as_array()
+                .is_some_and(|previous| previous.contains(hash)));
+    if !known_archive {
         return json!({"state":"mismatch","environment":null});
     }
     json!({"state":"verified","environment":environment})

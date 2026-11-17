@@ -40,9 +40,13 @@ impl ControlService {
                 .unwrap()
                 .iter()
                 .find(|value| value["id"] == model.id)
-                .unwrap()["requiredBytes"]
-                .as_u64()
-                .unwrap()
+                .unwrap()[if body.checkpoint_path.is_some() {
+                "requiredBytesWithCheckpoint"
+            } else {
+                "requiredBytes"
+            }]
+            .as_u64()
+            .unwrap()
         } else {
             plan["runtime"]["requiredBytes"].as_u64().unwrap()
         };
@@ -115,6 +119,7 @@ impl ControlService {
                                 &service,
                                 &model,
                                 body.checkpoint_path.as_deref(),
+                                &operation,
                                 &cancel,
                             )
                             .await?
@@ -126,7 +131,7 @@ impl ControlService {
                                 &cancel,
                                 &permit,
                                 body.hf_token.as_deref(),
-                                imported.as_deref(),
+                                imported.as_ref(),
                                 None,
                             )
                             .await
@@ -175,9 +180,24 @@ impl ControlService {
             .join(&runtime.runtime_id);
         plan::safe_directory(&cache)?;
         self.native_stage(operation, 1);
-        self.download_native_files(&cache, &runtime.files, operation, cancel)
+        let resuming = image_models::runtime_receipt(self, runtime).is_some()
+            || plan::candidate_ready(&workspace.join("inference"), runtime);
+        let files: Vec<_> = runtime
+            .files
+            .iter()
+            .filter(|file| !resuming || file.kind == "vc-redist")
+            .cloned()
+            .collect();
+        let mut download_operation = operation.clone();
+        download_operation["reusedBytes"] = json!(
+            runtime
+                .download_bytes
+                .saturating_sub(files.iter().map(|file| file.bytes).sum::<u64>())
+        );
+        self.download_native_files(&cache, &files, &download_operation, cancel)
             .await?;
         stopped(cancel)?;
+        let held = self.hold_native_files(&cache, &files, cancel).await?;
         self.native_stage(operation, 2);
         let mut command = tokio::process::Command::new("powershell.exe");
         command
@@ -205,7 +225,13 @@ impl ControlService {
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());
         let value = self
-            .run_native_installer(&mut command, cancel, operation, permit.clone(), keep_alive)
+            .run_native_installer(
+                &mut command,
+                cancel,
+                operation,
+                permit.clone(),
+                Some(Arc::new((held, keep_alive))),
+            )
             .await?;
         let paths = runtime_paths(self, runtime);
         if value["engine"] != "native"
@@ -247,7 +273,7 @@ impl ControlService {
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
         hf_token: Option<&str>,
-        imported: Option<&str>,
+        imported: Option<&checkpoint_models::LocalCheckpoint>,
         resolved: Option<Vec<Artifact>>,
     ) -> Result<()> {
         let workspace = &self.config.ai_workspace_root;
@@ -255,6 +281,25 @@ impl ControlService {
         if receipt_matches(&target, model) {
             return Ok(());
         }
+        let workspace_check = workspace.clone();
+        let app = self.config.app_root.clone();
+        let model_copy = model.clone();
+        let checkpoint_taken = imported.is_some();
+        tokio::task::spawn_blocking(move || -> Result<()> {
+            let free = plan::safe_workspace(&workspace_check, &app)?;
+            let (required, with_checkpoint) =
+                plan::model_space(&workspace_check.join("inference"), &model_copy);
+            flow::require_space(
+                Some(free),
+                if checkpoint_taken {
+                    with_checkpoint
+                } else {
+                    required
+                },
+            )
+        })
+        .await
+        .map_err(|_| ApiError::new(503, "WORKSPACE_CHECK_FAILED", "工作区检查未完成"))??;
         if model.conversion_profile.is_some() {
             return self
                 .install_anima_checkpoint(model, &target, imported, operation, cancel, permit)
@@ -273,25 +318,62 @@ impl ControlService {
             Some(files) => files,
             None => image_models::resolve_files(self, model, root, hf_token, cancel).await?,
         };
-        let pending: Vec<_> = files
+        let mut pending: Vec<_> = files
             .into_iter()
-            .filter(|file| imported != Some(file.path.as_str()))
+            .filter(|file| imported.is_none_or(|local| local.artifact != file.path))
             .collect();
+        let mut download_operation = operation.clone();
+        let moss = moss_models::is_moss(model);
+        if moss {
+            // Resolve the author download first so login or source failures do not
+            // start the multi-gigabyte encoder download.
+            if let Some(index) = pending
+                .iter()
+                .position(|file| file.url.starts_with("https://civitai.com/"))
+            {
+                let checkpoint = pending.remove(index);
+                self.download_native_files(
+                    root,
+                    std::slice::from_ref(&checkpoint),
+                    operation,
+                    cancel,
+                )
+                .await?;
+            }
+            let remaining: u64 = pending.iter().map(|file| file.bytes).sum();
+            download_operation["reusedBytes"] = json!(
+                model
+                    .files
+                    .iter()
+                    .map(|file| file.bytes)
+                    .sum::<u64>()
+                    .saturating_sub(remaining)
+            );
+        }
         self.download_native_files_authorized(
             root,
             &pending,
-            operation,
+            &download_operation,
             cancel,
             hf_token,
             !model.requires_access,
         )
         .await?;
         self.native_stage(operation, 2);
+        if moss {
+            self.convert_moss_checkpoint(root, model, operation, cancel, permit)
+                .await?;
+            self.native_progress(operation, json!({"phase":"validating","stage":"validating","message":"正在登记原生 MOSS 模型"}));
+        }
         stopped(cancel)?;
         self.native_stage(operation, 3);
-        let document = json!({"schemaVersion":1,"modelId":model.id,"revision":model.revision,
+        let mut document = json!({"schemaVersion":1,"modelId":model.id,"revision":model.revision,
             "scope":"downloaded-files-sha256","readyForGeneration":false});
-        let bytes = serde_json::to_vec_pretty(&document)?;
+        if moss_models::text_is_int8(model) {
+            document["mossTextPrecision"] = json!("int8");
+        }
+        let mut records = moss_models::receipts(model);
+        records.push(("huiyu-model.json", document));
         let root = root.clone();
         let target_copy = target.clone();
         let token = cancel.clone();
@@ -299,11 +381,13 @@ impl ControlService {
             use std::io::Write;
             plan::safe_directory(&root)?;
             stopped(&token)?;
-            let mut temp = tempfile::NamedTempFile::new_in(&root)?;
-            temp.write_all(&bytes)?;
-            temp.as_file().sync_all()?;
-            temp.persist(root.join("huiyu-model.json"))
-                .map_err(|e| ApiError::from(e.error))?;
+            for (name, document) in records {
+                let mut temp = tempfile::NamedTempFile::new_in(&root)?;
+                temp.write_all(&serde_json::to_vec_pretty(&document)?)?;
+                temp.as_file().sync_all()?;
+                temp.persist(root.join(name))
+                    .map_err(|e| ApiError::from(e.error))?;
+            }
             if !existed {
                 plan::safe_directory(target_copy.parent().unwrap())?;
                 std::fs::create_dir_all(target_copy.parent().unwrap())?;

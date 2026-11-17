@@ -56,6 +56,8 @@ pub struct ControlService {
     instance_id: String,
     probe_lock: tokio::sync::Mutex<()>,
     setup_verify_lock: Arc<tokio::sync::Semaphore>,
+    #[cfg(windows)]
+    setup_archives: Arc<setup_download::VerifiedArchives>,
     environment_cancel: Mutex<Option<CancellationToken>>,
     llama_cancel: Mutex<Option<CancellationToken>>,
     llama_process: tokio::sync::Mutex<Option<crate::processes::OwnedProcess>>,
@@ -152,6 +154,8 @@ impl ControlService {
             instance_id: uuid::Uuid::new_v4().to_string(),
             probe_lock: tokio::sync::Mutex::new(()),
             setup_verify_lock: Arc::new(tokio::sync::Semaphore::new(1)),
+            #[cfg(windows)]
+            setup_archives: Arc::new(setup_download::VerifiedArchives::default()),
             environment_cancel: Mutex::new(None),
             llama_cancel: Mutex::new(None),
             llama_process: tokio::sync::Mutex::new(None),

@@ -28,16 +28,17 @@
         <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="recheck">重新检查</button>
       </div>
       <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
+        <p v-if="selectedModel.preparation === 'moss-checkpoint' && !selectedModel.installed && !running" class="setup-hint">绘遇会先下载作者权重，再补齐编码器和 VAE，并自动适配原生格式。若 Civitai 要求登录，请从作者发布页下载对应文件，再使用下方的本地权重入口。</p>
         <details v-if="selectedModel.checkpointFilename && !selectedModel.installed && !running" class="setup-details" :open="!selectedModel.checkpointOptional">
           <StudioDisclosureSummary>使用已下载的权重{{ selectedModel.checkpointOptional ? '（可选）' : '' }}</StudioDisclosureSummary>
           <div class="setup-field" data-disclosure-content>
           <label for="author-checkpoint-path">已下载的作者权重{{ selectedModel.checkpointOptional ? '（可选）' : '' }}</label>
           <input id="author-checkpoint-path" v-model="checkpointPath" class="input" :disabled="locked" :placeholder="`例如 D:\\Models\\${selectedModel.checkpointFilename}`" spellcheck="false" aria-describedby="author-checkpoint-hint" />
-          <small id="author-checkpoint-hint"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">作者发布页</a> · {{ selectedModel.checkpointFilename }} · 非量化版，原文件保留</small>
+          <small id="author-checkpoint-hint"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">作者发布页</a> · {{ selectedModel.checkpointFilename }} · {{ selectedModel.preparation === 'complete-model' ? '选择原始完整权重' : '使用该版本的完整权重' }}</small>
           </div>
         </details>
         <div class="setup-model">
-          <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>{{ selectedModel.preparation === 'checkpoint-conversion' ? '下载原始权重，自动转换为原生模型' : '完整原生模型 · 无需转换' }}</small></div></div>
+          <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>{{ modelPreparationLabel }}</small></div></div>
           <div class="setup-budget"><span>最多下载<strong>{{ formatSetupBytes(downloadBytes) }}</strong></span><span>所需空间<strong>{{ formatSetupBytes(setupRequiredBytes) }}</strong></span></div>
         </div>
         <p v-if="!setupSpaceEnough" class="setup-error" role="status">空间不足，请更换存放位置或释放空间后重新检查。</p>
@@ -52,8 +53,10 @@
       <p v-if="pendingRestart" role="status">模型与运行库已准备好。重启绘遇后会回到这里，继续进入画室。</p>
     </template>
     <p v-else role="status">{{ checking ? '正在检查设备与配置…' : '暂时无法读取配置，请重新检查。' }}</p>
-    <SetupTransferProgress v-if="running" :title="operationTitle" :phase="setupTransferPhase(operation)"
-      :received="operation?.downloadedBytes" :total="operation?.totalBytes" :current-file="operation?.currentFile"
+    <SetupTransferProgress v-if="running" :title="operationTitle" :phase="operationPhase"
+      :scope="operationPhase === 'converting' ? 'conversion' : 'manifest'"
+      :received="operationPhase === 'converting' ? operation?.workDone : operation?.downloadedBytes"
+      :total="operationPhase === 'converting' ? operation?.workTotal : operation?.totalBytes" :current-file="operation?.currentFile"
       :message="operation?.message">
       <small v-if="operation?.cancelAllowed === false">{{ operation.phase === 'activating' ? '正在启用配置，请等待完成。' : '系统安装步骤请在 Windows 安装器中继续或取消。' }}</small>
     </SetupTransferProgress>
@@ -63,7 +66,7 @@
       <RouterLink v-if="nativeEnabled && selectedModel && !locked" class="btn btn-primary" :to="firstDrawingRoute(modelId, selectedModel.family)"><ArchiveIcon name="spark" />去画室生成第一张图</RouterLink>
       <button v-else-if="desktop?.restartForSetup && !operationUncertain && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
-      <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ busy ? '正在准备…' : operation?.status === 'failed' ? '继续下载与配置' : '下载并自动配置' }}</button>
+      <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ prepareLabel }}</button>
       <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="recheck">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
       <template v-if="!running && !workspacePending && !nativeEnabled">
@@ -103,7 +106,7 @@
         <section><h4>来源与许可</h4><ul class="setup-sources"><li v-for="source in plan.runtime.sources" :key="source.url"><a :href="source.url" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}来源，在新窗口打开`">{{ sourceName(source.label) }}</a><a :href="source.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="运行库许可，在新窗口打开">许可</a></li></ul><p v-if="selectedModel"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer" aria-label="模型来源，在新窗口打开">模型来源</a> · <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="模型许可，在新窗口打开">模型许可</a></p><p v-if="selectedModel">固定版本：<code>{{ selectedModel.revision }}</code></p><p>官方文件逐项核对固定版本与 SHA-256。Krea 需先授权取得文件清单。缺少 VC++ 运行库时，由你确认 Windows 授权。</p></section>
         <section><h4>存放位置</h4><dl class="setup-paths"><template v-for="item in resourcePaths" :key="item.label"><dt>{{ item.label }}</dt><dd><code>{{ item.value }}</code></dd></template></dl></section>
         <p v-if="plan.runtime.recoveryReady">已发现完整候选，继续准备会直接采用，无需重新解包。</p>
-        <p>取消或中断后保留下载进度，重新准备可续传。仅支持完整原生模型；单文件权重暂不支持直接导入。</p>
+        <p>中断后可续传。绘遇会优先复用当前工作区中与清单匹配的 Anima 权重。</p>
       </div>
     </details>
     <details class="setup-details">
@@ -149,6 +152,11 @@ function fillResourcePaths() {
     modelsRoot: props.configured.modelsRoot, lorasRoot: plan.value.paths.lorasRoot })
 }
 const modelName = computed(() => selectedModel.value?.label.split(' · ')[0] ?? 'Anima')
+const modelPreparationLabel = computed(() => {
+  if (selectedModel.value?.preparation === 'moss-checkpoint') return selectedModel.value.id === 'moss-miaomiao-base-v1.1'
+    ? '作者 INT8 权重与 INT8 文本编码器' : '作者 FP16 权重与 BF16 文本编码器'
+  return selectedModel.value?.preparation === 'checkpoint-conversion' ? '下载原始权重，自动转换为原生模型' : '完整原生模型'
+})
 const running = computed(() => operation.value?.status === 'running')
 const pendingRestart = computed(() => plan.value?.supported && plan.value.workspaceMatches && plan.value.configuredEngine === 'native' && plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
 const deviceName = computed(() => [...(plan.value?.hardware.devices ?? []), ...(plan.value?.hardware.otherDevices ?? [])].map(device => device.name).join('、') || '未检测到可用显卡')
@@ -160,6 +168,12 @@ const unavailableHint = computed(() => {
 })
 const downloadBytes = computed(() => (plan.value?.runtime.installed ? 0 : plan.value?.runtime.downloadBytes ?? 0) + (selectedModel.value?.installed ? 0 : selectedModel.value?.downloadBytes ?? 0))
 const operationTitle = computed(() => operation.value?.flowStep === 'activate' || activating.value ? '校验并启用引擎' : operation.value?.flowStep === 'model' ? '准备绘图模型' : operation.value?.flowStep === 'runtime' ? '准备运行库' : operation.value?.stages[operation.value.stageIndex] ?? '正在准备')
+const operationPhase = computed(() => setupTransferPhase(operation.value))
+const prepareLabel = computed(() => {
+  if (busy.value) return '正在准备…'
+  if (plan.value?.runtime.installed && selectedModel.value?.installed) return '启用原生绘图'
+  return operation.value?.status === 'failed' ? '继续准备并启用' : '一键准备并启用'
+})
 const resourcePaths = computed(() => plan.value ? [
   { label: '运行库', value: plan.value.paths.runtimeRoot }, { label: '底模', value: plan.value.paths.modelsRoot },
   { label: 'LoRA', value: plan.value.paths.lorasRoot }, { label: '下载缓存', value: plan.value.paths.cacheRoot }, { label: '临时文件', value: plan.value.paths.tempRoot },

@@ -85,9 +85,8 @@ fn start_gateway_monitor(app: AppHandle) {
                     state.info(&format!("gateway restarted at {url}"));
                     // Existing documents reconnect through the typed transport;
                     // navigation here would discard unsaved drafts and task views.
-                    if app.get_webview_window("companion").is_none() {
-                        let visible = !std::env::args().any(|arg| arg == "--hidden");
-                        if let Err(error) = main_shared::create_companion_window(&app, &url, visible) {
+                    if app.get_webview_window("companion").is_none() && !std::env::args().any(|arg| arg == "--hidden") {
+                        if let Err(error) = main_shared::create_companion_window(&app, &url, true) {
                             state.error(&format!("companion recovery failed: {error}"));
                         }
                     }
@@ -394,7 +393,7 @@ fn main() {
             let handle = app.handle().clone();
             let show_on_start = !std::env::args().any(|arg| arg == "--hidden");
             tauri::async_runtime::spawn(async move {
-                if resource_assistant::recovery_pending(&handle) { return; }
+                if !show_on_start || resource_assistant::recovery_pending(&handle) { return; }
                 let start = Instant::now();
                 while !ui_entry::bundled(&handle) {
                     tokio::time::sleep(Duration::from_millis(200)).await;
@@ -407,7 +406,7 @@ fn main() {
                 if url.is_empty() && !ui_entry::bundled(&handle) {
                     return;
                 }
-                if let Err(e) = main_shared::create_companion_window(&handle, &url, show_on_start) {
+                if let Err(e) = main_shared::create_companion_window(&handle, &url, true) {
                     eprintln!("companion window: {e}");
                 }
             });

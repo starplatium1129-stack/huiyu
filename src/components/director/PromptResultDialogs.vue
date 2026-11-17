@@ -1,6 +1,6 @@
 <template>
   <DeferredDialogHost v-if="compareOpen && prevResult && lastResult && !comparePanel"
-    :loader="loadComparePanel" title="出图对比" icon="compare" @ready="comparePanel = $event" @close="closeCompare" />
+    :loader="loadComparePanel" title="出图对比" icon="compare" @ready="showComparePanel" @close="closeCompare" />
   <Teleport to="body">
     <FluidTransition>
       <component :is="comparePanel" v-if="comparePanel && compareOpen && prevResult && lastResult"
@@ -47,6 +47,7 @@ const inpaintDialog = ref<HTMLElement | null>(null), closeButton = ref<HTMLButto
 const inpaintPanel = shallowRef<typeof import('@/components/AnimaInpaintModal.vue').default | null>(null)
 const comparePanel = shallowRef<Component | null>(null)
 const loadComparePanel = () => import('./PromptComparePanel.vue')
+function showComparePanel(component: Component) { comparePanel.value = component }
 const panelLoading = ref(false), panelFailed = ref(false), wholeImage = ref(false)
 const inpaintTitle = computed(() => wholeImage.value ? '整图重绘' : inpaintProvider.value === 'native' ? '局部重绘（实验性）' : '智能局部换装')
 let attached = true, panelRequest = 0

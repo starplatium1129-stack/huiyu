@@ -87,16 +87,7 @@ pub(super) fn input_root(target: &Path, model: &ModelBundle) -> PathBuf {
         .join(format!("{}-{}", model.id, model.revision))
 }
 
-pub(super) fn output_files(root: &Path) -> Result<Vec<ModelFile>> {
-    let path = root.join("huiyu-model.json");
-    if std::fs::metadata(&path)?.len() > 65536 {
-        return Err(ApiError::invalid("转换模型的文件清单过大，请重新准备"));
-    }
-    let receipt: Value = serde_json::from_slice(&std::fs::read(path)?)?;
-    parse_outputs(receipt["outputs"].clone())
-}
-
-fn parse_outputs(value: Value) -> Result<Vec<ModelFile>> {
+pub(super) fn parse_outputs(value: Value) -> Result<Vec<ModelFile>> {
     let files: Vec<ModelFile> = serde_json::from_value(value)?;
     if files.is_empty()
         || files.len() > 256
@@ -122,7 +113,7 @@ impl ControlService {
         &self,
         model: &ModelBundle,
         target: &Path,
-        imported_checkpoint: Option<&str>,
+        imported_checkpoint: Option<&checkpoint_models::LocalCheckpoint>,
         operation: &Value,
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
@@ -143,15 +134,22 @@ impl ControlService {
         let pending: Vec<_> = model
             .files
             .iter()
-            .filter(|file| imported_checkpoint != Some(file.path.as_str()))
+            .filter(|file| imported_checkpoint.is_none_or(|local| local.artifact != file.path))
             .cloned()
             .collect();
-        self.download_native_files(&inputs, &pending, operation, cancel)
+        let mut download_operation = operation.clone();
+        if let Some(checkpoint) = checkpoint_models::conversion_checkpoint(model)
+            .filter(|_| imported_checkpoint.is_some())
+        {
+            download_operation["reusedBytes"] = json!(checkpoint.bytes);
+        }
+        self.download_native_files(&inputs, &pending, &download_operation, cancel)
             .await?;
         // managed_file has already verified every downloaded or reused input.
         stopped(cancel)?;
+        let held = self.hold_native_files(&inputs, &pending, cancel).await?;
         self.native_stage(operation, 2);
-        self.native_progress(operation, json!({"phase":"converting","stage":"converting",
+        self.native_progress(operation, json!({"phase":"converting","stage":"converting","currentFile":"",
             "message":format!("正在将 {} 转换为原生模型；仅使用 CPU，完成前不会启用", model.label)}));
         let staging = self.config.ai_workspace_root.join("inference/.staging");
         plan::safe_directory(&staging)?;
@@ -184,11 +182,14 @@ impl ControlService {
             .app_root
             .join("scripts/maintenance/convert-anima-checkpoint.py");
         let mut command = crate::native_python::command(&settings.python, &script);
+        let checkpoint = imported_checkpoint
+            .map(|local| local.path.clone())
+            .unwrap_or_else(|| inputs.join("checkpoint.safetensors"));
         command
             .arg("--profile")
             .arg(model.conversion_profile.as_deref().unwrap())
             .arg("--checkpoint")
-            .arg(inputs.join("checkpoint.safetensors"))
+            .arg(checkpoint)
             .arg("--transformer-config")
             .arg(transformer_config)
             .arg("--text-encoder")
@@ -211,21 +212,30 @@ impl ControlService {
                 cancel,
                 3600,
                 permit.clone(),
-                Some(temporary.clone()),
+                Some(Arc::new((
+                    temporary.clone(),
+                    held,
+                    imported_checkpoint.and_then(|local| local.guard.clone()),
+                ))),
                 Some(operation),
             )
             .await?;
         if value["mode"] != "converted"
-            || value["weightsStrictlyLoaded"] != true
+            || value["architectureVerified"] != true
+            || value["weightsStrictlyMapped"] != true
             || value["profile"].as_str() != model.conversion_profile.as_deref()
-            || value["outputDir"]
-                .as_str()
-                .is_none_or(|path| Path::new(path) != output)
+            || !value["outputDir"].as_str().is_some_and(|path| {
+                Path::new(path).canonicalize().is_ok_and(|actual| {
+                    output
+                        .canonicalize()
+                        .is_ok_and(|expected| actual == expected)
+                })
+            })
         {
             return Err(ApiError::new(
                 502,
                 "NATIVE_CONVERSION_INCOMPLETE",
-                "MiaoMiao 原生转换未完成，请查看准备日志",
+                "原生模型转换未完成，请查看准备日志",
             ));
         }
         parse_outputs(value["outputs"].clone())?;

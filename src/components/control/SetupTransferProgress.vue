@@ -14,11 +14,11 @@ const props = withDefaults(defineProps<{
   message?: string
   completedFiles?: number
   totalFiles?: number
-  scope?: 'file' | 'manifest'
+  scope?: 'file' | 'manifest' | 'conversion'
 }>(), { scope: 'manifest' })
 const headingId = useId()
 const phases: Record<string, string> = {
-  checking: '检查已有文件', downloading: '正在下载', verifying: '校验文件',
+  checking: '检查已有文件', connecting: '连接下载源', downloading: '正在下载', retrying: '正在重试', verifying: '校验文件',
   'download-progress': '正在下载', 'copy-progress': '正在复制',
   extracting: '正在解压', installing: '正在安装', activating: '正在启用',
   validating: '核验环境与模型', converting: '正在转换模型', preparing: '正在准备',
@@ -26,13 +26,14 @@ const phases: Record<string, string> = {
   service: '启动服务', validation: '检查配置',
 }
 const phaseLabel = computed(() => phases[props.phase ?? ''] || '正在处理')
-const bytePhase = computed(() => !props.phase || ['checking', 'downloading', 'verifying', 'download-progress', 'copy-progress'].includes(props.phase))
 const totalBytes = computed(() => props.total && Number.isFinite(props.total) && props.total > 0 ? props.total : null)
+const bytePhase = computed(() => !props.phase || (props.scope === 'conversion' && totalBytes.value !== null)
+  || ['checking', 'connecting', 'downloading', 'retrying', 'verifying', 'download-progress', 'copy-progress'].includes(props.phase))
 const receivedBytes = computed(() => Number.isFinite(props.received) ? Math.max(0, props.received ?? 0) : 0)
 const fileProgress = computed(() => !bytePhase.value && (props.totalFiles ?? 0) > 0)
 const percent = computed(() => fileProgress.value ? Math.min(100, Math.floor((props.completedFiles ?? 0) / props.totalFiles! * 100))
   : bytePhase.value && totalBytes.value !== null ? Math.min(100, Math.floor(receivedBytes.value / totalBytes.value * 100)) : null)
-const progressLabel = computed(() => props.scope === 'file' ? '当前文件进度' : '文件处理进度')
+const progressLabel = computed(() => props.phase === 'converting' ? '模型转换进度' : props.scope === 'file' ? '当前文件进度' : '文件处理进度')
 </script>
 
 <template>
@@ -49,7 +50,7 @@ const progressLabel = computed(() => props.scope === 'file' ? '当前文件进�
     </div>
     <div v-if="fileProgress" class="transfer-volume"><span>环境文件</span><strong>{{ completedFiles ?? 0 }} / {{ totalFiles }}</strong></div>
     <div v-if="bytePhase" class="transfer-volume">
-      <span>{{ scope === 'file' ? '当前文件' : '文件处理量' }}</span>
+      <span>{{ phase === 'converting' ? '已转换' : scope === 'file' ? '当前文件' : '文件处理量' }}</span>
       <strong>{{ formatSetupBytes(receivedBytes) }} <span>/ {{ totalBytes === null ? '总量待确认' : formatSetupBytes(totalBytes) }}</span></strong>
     </div>
     <p v-if="message" class="transfer-message">{{ message }}</p>

@@ -210,12 +210,19 @@ impl ControlService {
             let model_views: Vec<_> = models.iter().map(|model| {
                 let model_root = root.join("models").join(&model.id);
                 let installed = receipt_matches(&model_root, model);
+                let local_checkpoint = !installed && checkpoint_models::workspace_checkpoint(&service.config.ai_workspace_root, model).is_some();
+                let (required, required_with_checkpoint) = if installed { (0, 0) } else { model_space(&root, model) };
                 json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
-                    "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else{"complete-model"},
+                    "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else if moss_models::is_moss(model){"moss-checkpoint"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
-                    "checkpointFilename":model.checkpoint_filename,"checkpointOptional":model.conversion_profile.as_deref()==Some("anima-cosmos2b-v041"),
+                    "checkpointFilename":model.checkpoint_filename,"checkpointOptional":
+                        model.conversion_profile.as_deref()==Some("anima-cosmos2b-v041")
+                        || moss_models::is_moss(model)
+                        || local_checkpoint
+                        || (model.conversion_profile.is_some() && anima_models::input_root(&model_root, model).join("checkpoint.safetensors").is_file()),
                     "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else if model.id.starts_with("moss-"){"moss-image"}else{"anima"},
-                    "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":if installed {0}else{model_needed(&root, model)},
+                    "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":if local_checkpoint { required_with_checkpoint } else { required },
+                    "requiredBytesWithCheckpoint":required_with_checkpoint,
                     "installed":installed,"path":model_root})
             }).collect();
             let model_ready = model_views.iter().any(|value| value["id"] == selected && value["installed"] == true);
@@ -242,19 +249,55 @@ impl ControlService {
 }
 pub(super) fn candidate_ready(root: &Path, runtime: &RuntimeBundle) -> bool {
     let candidate = root.join(".staging").join(&runtime.runtime_id);
-    let value = std::fs::read(candidate.join("runtime-config.json"))
-        .ok()
-        .filter(|bytes| bytes.len() < 65536)
-        .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
+    let Ok(target) = crate::file_paths::key(&root.join(&runtime.runtime_id)) else {
+        return false;
+    };
+    let target_matches = |value: &Value| {
+        value.as_str().is_some_and(|path| {
+            crate::file_paths::key(Path::new(path)).is_ok_and(|actual| actual == target)
+        })
+    };
+    let manifest = image_models::manifest_hash(runtime);
+    let read_record = |name| {
+        use std::io::Read;
+        let mut bytes = Vec::new();
+        std::fs::File::open(candidate.join(name))
+            .ok()?
+            .take(65537)
+            .read_to_end(&mut bytes)
+            .ok()?;
+        (bytes.len() <= 65536)
+            .then(|| {
+                serde_json::from_slice::<Value>(
+                    bytes.strip_prefix(b"\xef\xbb\xbf").unwrap_or(&bytes),
+                )
+                .ok()
+            })
+            .flatten()
+    };
+    let owner_matches = read_record(".huiyu-candidate.json").is_some_and(|owner| {
+        owner["schemaVersion"] == 1
+            && owner["runtimeId"] == runtime.runtime_id
+            && owner["manifestSha256"] == manifest
+            && target_matches(&owner["targetRoot"])
+    });
+    if !owner_matches {
+        return false;
+    }
+    let requirements: &[u8] = if image_models::is_adapter_runtime(runtime) {
+        include_bytes!("../../../../tools/inference/requirements-adapters.txt")
+    } else {
+        include_bytes!("../../../../tools/inference/requirements.txt")
+    };
+    let value = read_record("runtime-config.json");
     value.is_some_and(|value| {
         value["schemaVersion"] == 1
             && value["engine"] == "native"
             && value["managedRuntimeId"] == runtime.runtime_id
-            && value["manifestSha256"] == image_models::manifest_hash(runtime)
+            && value["manifestSha256"] == manifest
+            && value["requirementsSha256"] == hex::encode(Sha256::digest(requirements))
             && value["environment"]["cudaAvailable"] == true
-            && value["root"]
-                .as_str()
-                .is_some_and(|path| Path::new(path) == root.join(&runtime.runtime_id))
+            && target_matches(&value["root"])
             && candidate.join("venv/Scripts/python.exe").is_file()
     })
 }
@@ -281,25 +324,31 @@ pub(super) fn retained(root: &Path, files: &[Artifact]) -> u64 {
         })
         .sum()
 }
-pub(super) fn model_needed(root: &Path, model: &ModelBundle) -> u64 {
+pub(super) fn model_space(root: &Path, model: &ModelBundle) -> (u64, u64) {
     let target = root.join("models").join(&model.id);
-    if model.conversion_profile.is_some() {
-        return model
+    if let Some(checkpoint) = checkpoint_models::conversion_checkpoint(model) {
+        let inputs = anima_models::input_root(&target, model);
+        let required = model
             .required_bytes
-            .saturating_sub(retained(
-                &anima_models::input_root(&target, model),
-                &model.files,
-            ))
-            .saturating_add(64 * 1024 * 1024);
+            .saturating_sub(retained(&inputs, &model.files));
+        let extra_checkpoint =
+            checkpoint.bytes - retained(&inputs, std::slice::from_ref(checkpoint));
+        return (
+            required.saturating_add(64 * 1024 * 1024),
+            required
+                .saturating_sub(extra_checkpoint)
+                .saturating_add(64 * 1024 * 1024),
+        );
     }
     let stage = root
         .join(".staging")
         .join(format!("{}-{}", model.id, model.revision));
-    model
+    let required = model
         .required_bytes
         .saturating_sub(retained(
             if target.exists() { &target } else { &stage },
             &image_models::cached_artifacts(root, model),
         ))
-        .saturating_add(64 * 1024 * 1024)
+        .saturating_add(64 * 1024 * 1024);
+    (required, required)
 }

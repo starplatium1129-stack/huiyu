@@ -2,6 +2,8 @@ use super::*;
 use crate::download_transport::{self as transfer, CopyError, CopyEvent, Error};
 use tokio::io::AsyncSeekExt;
 use tokio::io::AsyncWriteExt;
+#[path = "setup_download/ranges.rs"]
+mod ranges;
 #[path = "setup_sources.rs"]
 mod sources;
 
@@ -17,7 +19,7 @@ fn error(error: Error) -> ApiError {
             } else {
                 "DOWNLOAD_HTTP"
             },
-            format!("固定来源返回 HTTP {status}，请检查来源访问权限后重试"),
+            format!("下载源暂未提供文件（HTTP {status}），请稍后重试"),
         ),
         Error::Range => ApiError::new(
             502,
@@ -45,62 +47,109 @@ pub(super) async fn write(
     cancel: &CancellationToken,
     output: &mut tokio::io::BufWriter<tokio::fs::File>,
 ) -> Result<u64> {
-    let mirror = plan
-        .allow_mirror
-        .then(|| transfer::public_mirror(&plan.url))
-        .flatten();
-    let mut sources = Vec::new();
-    sources.push(plan.url.clone());
+    let mut sources = vec![plan.url.clone()];
     if let Some(mirror) = sources::model_mirror(plan) {
         sources.push(mirror);
     }
-    if let Some(mirror) = mirror {
-        sources.push(mirror);
+    if plan.allow_mirror {
+        let regional: Vec<_> = sources
+            .iter()
+            .filter_map(|url| transfer::public_mirror(url))
+            .collect();
+        for mirror in regional {
+            if !sources.contains(&mirror) {
+                sources.push(mirror);
+            }
+        }
     }
-    sources::order(plan, client, cancel, &mut sources).await?;
+    let present = output.get_ref().metadata().await.map_err(io_error)?.len();
+    if present == plan.spec.bytes {
+        return Ok(present);
+    }
+    let range_capable = if present == 0 || plan.parallel_ranges {
+        if sources.len() > 1 {
+            let _ = send.try_send(json!({
+                "type":"progress","modelId":plan.id,"phase":"connecting",
+                "bytesRead":present.min(plan.spec.bytes),"expectedBytes":plan.spec.bytes,
+                "message":"正在选择可用下载源",
+            }));
+        }
+        sources::order(plan, client, cancel, &mut sources, present).await?
+    } else {
+        false
+    };
+    if plan.parallel_ranges
+        && plan.spec.bytes.saturating_sub(present) >= ranges::MIN_BYTES
+        && (range_capable || sources.len() == 1)
+    {
+        match ranges::write(plan, &sources[0], client, send, cancel, output, present).await? {
+            ranges::Outcome::Complete(count) => return Ok(count),
+            ranges::Outcome::Resume {
+                try_other_source: true,
+            } => sources.rotate_left(1),
+            ranges::Outcome::Resume {
+                try_other_source: false,
+            } => {}
+        }
+    }
     let mut last = None;
+    let mut origin_failure = None;
     for round in 0..3 {
+        let mut restart_source = None;
+        let mut retryable = false;
         for source in &sources {
-            stopped(cancel, send)?;
-            let mut retained = 0;
             let failure =
-                match write_source(plan, source, client, send, cancel, output, &mut retained).await
-                {
+                match write_source(plan, source, client, send, cancel, output, false).await {
                     Ok(bytes) => return Ok(bytes),
                     Err(failure) => failure,
                 };
-            let transient = matches!(
+            if failure.code == "RANGE_UNSUPPORTED" {
+                restart_source.get_or_insert(source);
+                continue;
+            }
+            if transient(&failure) {
+                retryable = true;
+                last = Some(failure);
+            } else if !matches!(
                 failure.code.as_str(),
-                "DOWNLOAD_FAILED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_RETRYABLE_HTTP"
-            );
-            // A missing or denied mirror may fall back to the publisher. Auth,
-            // filesystem and integrity failures never trigger repeated requests.
-            let mirror_unavailable = source != &plan.url
-                && matches!(
-                    failure.code.as_str(),
-                    "DOWNLOAD_HTTP" | "DOWNLOAD_ACCESS" | "SIZE_MISMATCH" | "RANGE_MISMATCH"
-                );
-            if !transient && !mirror_unavailable {
+                "DOWNLOAD_HTTP" | "DOWNLOAD_ACCESS" | "SIZE_MISMATCH" | "RANGE_MISMATCH"
+            ) {
                 return Err(failure);
+            } else if source == &plan.url {
+                origin_failure = Some(failure);
+            } else if last.is_none() {
+                last = Some(failure);
             }
             output.flush().await.map_err(io_error)?;
-            if mirror_unavailable {
-                // Discard only bytes added by a protocol-invalid mirror. Keep
-                // the earlier resumable prefix when falling back to the publisher.
-                output.get_ref().set_len(retained).await.map_err(io_error)?;
-                output
-                    .seek(std::io::SeekFrom::Start(retained))
-                    .await
-                    .map_err(io_error)?;
+        }
+        if let Some(source) = restart_source
+            && (!retryable || round == 2)
+        {
+            match write_source(plan, source, client, send, cancel, output, true).await {
+                Ok(bytes) => return Ok(bytes),
+                Err(failure) if transient(&failure) && round < 2 => {
+                    output.flush().await.map_err(io_error)?;
+                    retryable = true;
+                    last = Some(failure);
+                }
+                Err(failure) => return Err(failure),
             }
-            last = Some(failure);
+        }
+        if !retryable {
+            return Err(origin_failure
+                .or(last)
+                .unwrap_or_else(|| error(Error::Network)));
         }
         if round == 2 {
-            break;
+            let mut failure = last.unwrap_or_else(|| error(Error::Network));
+            failure
+                .message
+                .push_str("；已自动重试 2 次，可点击重试继续");
+            return Err(failure);
         }
         let received = output.get_ref().metadata().await.map_err(io_error)?.len();
         let _ = send.try_send(
-            json!({"type":"progress","modelId":plan.id,"phase":"downloading",
+            json!({"type":"progress","modelId":plan.id,"phase":"retrying",
             "bytesRead":received,"expectedBytes":plan.spec.bytes,
             "message":format!("连接中断，正在重试（{}/2）；已下载部分保留", round + 1)}),
         );
@@ -110,12 +159,16 @@ pub(super) async fn write(
             _ = tokio::time::sleep(Duration::from_secs(1 << round)) => {}
         }
     }
-    let mut failure = last.unwrap();
-    failure
-        .message
-        .push_str("；已自动重试 2 次，已下载部分保留，可点击重试继续");
-    Err(failure)
+    Err(error(Error::Network))
 }
+
+fn transient(error: &ApiError) -> bool {
+    matches!(
+        error.code.as_str(),
+        "DOWNLOAD_FAILED" | "DOWNLOAD_TIMEOUT" | "DOWNLOAD_RETRYABLE_HTTP"
+    )
+}
+
 async fn write_source(
     plan: &DownloadPlan,
     source: &str,
@@ -123,19 +176,18 @@ async fn write_source(
     send: &Sender<Value>,
     cancel: &CancellationToken,
     output: &mut tokio::io::BufWriter<tokio::fs::File>,
-    retained: &mut u64,
+    allow_restart: bool,
 ) -> Result<u64> {
+    stopped(cancel, send)?;
     let mut count = output.get_ref().metadata().await.map_err(io_error)?.len();
     if count > plan.spec.bytes {
         output.get_ref().set_len(0).await.map_err(io_error)?;
         count = 0;
     }
-    *retained = count;
     output
         .seek(std::io::SeekFrom::Start(count))
         .await
         .map_err(io_error)?;
-    download_progress(plan, send, source, count);
     if count == plan.spec.bytes {
         return Ok(count);
     }
@@ -144,7 +196,11 @@ async fn write_source(
         headers.insert("range", format!("bytes={count}-").parse().unwrap());
     }
     let url = url::Url::parse(source).map_err(|_| ApiError::invalid("模型来源地址无效"))?;
-    let timeout = if plan.allow_mirror && transfer::public_mirror(&plan.url).is_some() {
+    let host = url.host_str().unwrap_or_default().to_owned();
+    download_progress(plan, send, "connecting", &host, count, None);
+    let timeout = if plan.allow_mirror
+        && (transfer::public_mirror(&plan.url).is_some() || sources::model_mirror(plan).is_some())
+    {
         15
     } else {
         60
@@ -205,14 +261,22 @@ async fn write_source(
     }
     let start = transfer::range(&response, count, plan.spec.bytes, None).map_err(error)?;
     if start == 0 && count > 0 {
+        if !allow_restart {
+            return Err(ApiError::new(
+                502,
+                "RANGE_UNSUPPORTED",
+                "来源未接受续传，正在检查其他来源",
+            ));
+        }
         output.get_ref().set_len(0).await.map_err(io_error)?;
-        *retained = 0;
         output
             .seek(std::io::SeekFrom::Start(0))
             .await
             .map_err(io_error)?;
     }
-    transfer::copy(
+    download_progress(plan, send, "downloading", &host, start, None);
+    let mut meter = Speed::new(start);
+    let copied = transfer::copy(
         response,
         output,
         start,
@@ -226,24 +290,68 @@ async fn write_source(
                 report: true,
             } = event
             {
-                download_progress(plan, send, source, received);
+                download_progress(
+                    plan,
+                    send,
+                    "downloading",
+                    &host,
+                    received,
+                    meter.sample(received),
+                );
             }
             Ok(())
         },
     )
-    .await
-    .map_err(|failure| match failure {
+    .await;
+    if matches!(&copied, Err(CopyError::Transfer(Error::Size))) {
+        // An oversized body is a source error. Preserve the prefix from before this request.
+        output.flush().await.map_err(io_error)?;
+        output.get_ref().set_len(start).await.map_err(io_error)?;
+    }
+    copied.map_err(|failure| match failure {
         CopyError::Transfer(cause) => error(cause),
         CopyError::Observer(cause) => cause,
     })
 }
-fn download_progress(plan: &DownloadPlan, send: &Sender<Value>, source: &str, received: u64) {
-    let host = url::Url::parse(source)
-        .ok()
-        .and_then(|url| url.host_str().map(str::to_owned))
-        .unwrap_or_default();
-    let _ = send.try_send(json!({"type":"progress","modelId":plan.id,"phase":"downloading",
-        "bytesRead":received,"expectedBytes":plan.spec.bytes,"message":format!("下载中（{host}）：{}",plan.spec.path)}));
+
+struct Speed {
+    sampled_at: Instant,
+    received: u64,
+    rate: Option<f64>,
+}
+
+impl Speed {
+    fn new(received: u64) -> Self {
+        Self {
+            sampled_at: Instant::now(),
+            received,
+            rate: None,
+        }
+    }
+
+    fn sample(&mut self, received: u64) -> Option<f64> {
+        let now = Instant::now();
+        let elapsed = now.duration_since(self.sampled_at).as_secs_f64();
+        if elapsed >= 1.0 {
+            let current = received.saturating_sub(self.received) as f64 / elapsed;
+            self.rate = Some(self.rate.map_or(current, |rate| rate * 0.6 + current * 0.4));
+            self.sampled_at = now;
+            self.received = received;
+        }
+        self.rate
+    }
+}
+
+fn download_progress(
+    plan: &DownloadPlan,
+    send: &Sender<Value>,
+    phase: &str,
+    host: &str,
+    received: u64,
+    speed: Option<f64>,
+) {
+    let _ = send.try_send(json!({"type":"progress","modelId":plan.id,"phase":phase,
+        "bytesRead":received,"expectedBytes":plan.spec.bytes,"source":host,"bytesPerSecond":speed}));
 }
 fn civitai_failure(status: &str) -> ApiError {
     ApiError::new(

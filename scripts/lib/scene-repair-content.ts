@@ -101,6 +101,17 @@ export function protectedReason(ctx: Context): string | undefined {
     return '场景角色需要单独核对，不自动选择人物';
 }
 
+export function closestSceneSize(sizes: readonly string[], requested: string): string {
+  const size = /^(\d+)x(\d+)$/.exec(requested);
+  if (!size) throw new Error('场景画幅格式无效');
+  if (sizes.includes(requested)) return requested;
+  const ratio = Number(size[1]) / Number(size[2]);
+  return [...sizes].sort((a, b) => {
+    const [aw, ah] = a.split('x').map(Number), [bw, bh] = b.split('x').map(Number);
+    return Math.abs(aw / ah - ratio) - Math.abs(bw / bh - ratio);
+  })[0];
+}
+
 export function compile(ctx: Context, data: Data, root: string, modelId: string) {
   const catalog = parsePresetCatalog(JSON.parse(fs.readFileSync(path.join(root, 'data/presets.json'), 'utf8')));
   const profile = resolveModelProfile(catalog.modelProfiles, modelId, 'anima');
@@ -134,13 +145,7 @@ export function compile(ctx: Context, data: Data, root: string, modelId: string)
   }
   if (!result.prompt.trim()) throw new Error('编译后的正向提示词为空');
   const requested = String(data.recommendedSize || profile.size || '832x1216').replace('×', 'x');
-  const size = /^(\d+)x(\d+)$/.exec(requested);
-  if (!size) throw new Error('场景画幅格式无效');
-  const ratio = Number(size[1]) / Number(size[2]);
-  const selected = model.sizes.includes(requested) ? requested : [...model.sizes].sort((a, b) => {
-    const [aw, ah] = a.split('x').map(Number), [bw, bh] = b.split('x').map(Number);
-    return Math.abs(aw / ah - ratio) - Math.abs(bw / bh - ratio);
-  })[0];
+  const selected = closestSceneSize(model.sizes, requested);
   const [width, height] = selected.split('x').map(Number);
   return { prompt: result.prompt, negative: result.negative, selections: result.selections,
     tagText: result.prompt.split('\n')[0],

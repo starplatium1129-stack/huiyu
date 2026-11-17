@@ -2,6 +2,42 @@
   "schemaVersion": 1,
   "files": [
     {
+      "sourceUrl": "https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/diffusion_models/anima-aesthetic-v1.1.safetensors",
+      "mirrorUrl": "https://modelscope.cn/models/circlestone-labs/Anima/resolve/b28539e30f7b5a421abb1a17f47dd9408456ce3d/split_files/diffusion_models/anima-aesthetic-v1.1.safetensors",
+      "bytes": 4182230656,
+      "sha256": "3c1868387a3a1ff504bbb87c33678321965ead381fcf87afbd0264daa600c082"
+    },
+    {
+      "sourceUrl": "https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/diffusion_models/anima-base-v1.0.safetensors",
+      "mirrorUrl": "https://modelscope.cn/models/circlestone-labs/Anima/resolve/79d627c66e8a669625c60f48d2633e61f8982eab/split_files/diffusion_models/anima-base-v1.0.safetensors",
+      "bytes": 4182218328,
+      "sha256": "bd43b7cffe1ed1153d9c41e7beb2f18cb1273eafbaa3af3edd6a173dc90a006e"
+    },
+    {
+      "sourceUrl": "https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/text_encoders/qwen_3_06b_base.safetensors",
+      "mirrorUrl": "https://modelscope.cn/models/circlestone-labs/Anima/resolve/ed04460b568d64b84b28c067441b240039923a16/split_files/text_encoders/qwen_3_06b_base.safetensors",
+      "bytes": 1192135096,
+      "sha256": "cd2a512003e2f9f3cd3c32a9c3573f820bb28c940f73c57b1ddaa983d9223eba"
+    },
+    {
+      "sourceUrl": "https://huggingface.co/circlestone-labs/Anima/resolve/f973fc41ec7545364ac9776c2440285f43ff2a30/split_files/vae/qwen_image_vae.safetensors",
+      "mirrorUrl": "https://modelscope.cn/models/circlestone-labs/Anima/resolve/ed04460b568d64b84b28c067441b240039923a16/split_files/vae/qwen_image_vae.safetensors",
+      "bytes": 253806246,
+      "sha256": "a70580f0213e67967ee9c95f05bb400e8fb08307e017a924bf3441223e023d1f"
+    },
+    {
+      "sourceUrl": "https://civitai.com/api/download/models/3248362?fileId=3131298",
+      "mirrorUrl": "https://huggingface.co/icekinfe/civitai_models/resolve/1fcc3be7121f96c0464000af18929277478fc247/miaomiaoHarem_anima16.safetensors",
+      "bytes": 4182218328,
+      "sha256": "6bbb6b6785b4eb0df467658ce47f5f52f1d11fe992b1375b3c67ff02becf193b"
+    },
+    {
+      "sourceUrl": "https://civitai.com/api/download/models/3065644?fileId=2944325",
+      "mirrorUrl": "https://huggingface.co/duongve/AnimaYume/resolve/e6d0f401dedb712a0a1b9620cd926ccf99c8ece3/split_files/diffusion_models/AnimaYume_v10_final_base.safetensors",
+      "bytes": 4182219230,
+      "sha256": "5d2a1a1f8488cb2ce6f3647859ac4c6ff1f4a81c84d147100898fc3c2847fb88"
+    },
+    {
       "sourceUrl": "https://huggingface.co/Qwen/Qwen-Image-2.1/resolve/d26bb61231c349cf6b7896fa83353113880e1ba3/LICENSE",
       "mirrorUrl": "https://modelscope.cn/models/Qwen/Qwen-Image-2.1/resolve/4b1751dd4e00f6c1a097c5a80d05e6521cea1c39/LICENSE",
       "bytes": 7831,

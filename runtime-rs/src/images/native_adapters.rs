@@ -101,17 +101,17 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         _ => return Err(error("INVALID_PARAMETER", "仅 MOSS 支持 Spectrum 加速强度")),
     };
     let moss_text_precision = match raw.get("mossTextPrecision") {
-        None => "bf16",
+        None => "auto",
         Some(Value::String(value))
             if spec["family"] == "moss-image"
-                && matches!(value.as_str(), "bf16" | "fp8" | "int8") =>
+                && matches!(value.as_str(), "auto" | "bf16" | "fp8" | "int8") =>
         {
             value
         }
         _ => {
             return Err(error(
                 "INVALID_PARAMETER",
-                "MOSS 文本编码精度仅支持 bf16、fp8 或 int8；其他模型不接受此参数",
+                "MOSS 文本编码精度支持 auto、bf16、fp8 和 int8",
             ));
         }
     };

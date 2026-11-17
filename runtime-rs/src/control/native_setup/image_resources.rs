@@ -58,6 +58,7 @@ fn entries() -> Result<Vec<Resource>> {
                 url: entry["sourceUrl"].as_str().unwrap().into(),
                 bytes: entry["bytes"].as_u64().unwrap(),
                 sha256: entry["sha256"].as_str().unwrap().into(),
+                kind: String::new(),
                 git_blob_id: String::new(),
                 lfs: false,
             }],

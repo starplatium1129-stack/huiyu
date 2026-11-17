@@ -20,13 +20,45 @@
       <ol class="setup-pipeline" aria-label="自动配置进度">
         <li v-for="(item, index) in progressSteps" :key="item.id" :data-current="automation.stage.value === item.id" :data-done="index < stageIndex" :aria-current="automation.stage.value === item.id ? 'step' : undefined"><span><ArchiveIcon v-if="index < stageIndex" name="success" /><template v-else>{{ index + 1 }}</template></span><strong>{{ item.label }}</strong></li>
       </ol>
-      <SetupTransferProgress :title="activePackage?.label || progressSteps[stageIndex]?.label || '正在核对准备进度'"
-        :phase="(automation.download.activeId.value ? automation.download.phase.value : automation.stage.value) ?? 'preparing'"
-        :received="automation.download.bytesRead.value" :total="automation.download.expectedBytes.value"
-        :completed-files="automation.workProgress.value?.done" :total-files="automation.workProgress.value?.total"
-        :message="automation.download.activeId.value && automation.download.progressMessage.value || automation.message.value" scope="file">
-        <button class="btn btn-ghost" type="button" :disabled="automation.recoveryPending.value || ['pending', 'accepted'].includes(automation.cancelState.value)" @click="automation.cancel">{{ automation.cancelState.value === 'pending' ? '取消中…' : automation.cancelState.value === 'accepted' ? '等待步骤结束…' : automation.cancelState.value === 'failed' ? '重试取消' : '取消准备' }}</button>
-      </SetupTransferProgress>
+      <section v-if="downloadRows.length" class="setup-downloads" :aria-labelledby="downloadHeading">
+        <div class="setup-manifest-heading">
+          <h3 :id="downloadHeading">{{ automation.stage.value === 'environment' ? '运行环境文件' : '模型下载' }}</h3>
+          <span role="status">{{ downloadedFiles }} / {{ downloadRows.length }} 个文件就绪</span>
+        </div>
+        <div class="setup-transfer-total">
+          <div class="setup-transfer-file">
+            <strong :id="downloadTotalLabel">本批下载进度</strong>
+            <strong aria-hidden="true">{{ batchProgress.percent }}%</strong>
+          </div>
+          <progress :max="batchProgress.total" :value="batchProgress.received" :aria-labelledby="downloadTotalLabel" />
+          <div class="setup-transfer-metrics">
+            <span>{{ formatBytes(batchProgress.received) }} / {{ formatBytes(batchProgress.total) }}</span>
+            <span v-if="batchProgress.speed">{{ formatBytes(Math.round(batchProgress.speed)) }}/秒<span v-if="batchProgress.eta"> · 约剩 {{ batchProgress.eta }}</span></span>
+          </div>
+        </div>
+        <ul class="setup-transfer-list">
+          <li v-for="row in downloadRows" :key="row.model.id">
+            <div class="setup-transfer-file">
+              <strong>{{ packageName(row.model) }}</strong>
+              <span>{{ downloadPhases[row.phase] }}</span>
+            </div>
+            <template v-if="['checking', 'connecting', 'downloading', 'retrying', 'verifying'].includes(row.phase)">
+              <progress :max="row.expectedBytes" :value="row.bytesRead" :aria-label="`${packageName(row.model)} · ${downloadPhases[row.phase]}`" />
+              <div class="setup-transfer-metrics">
+                <span>{{ formatBytes(row.bytesRead) }} / {{ formatBytes(row.expectedBytes) }}</span>
+                <span v-if="row.phase === 'downloading' && row.bytesPerSecond">{{ formatBytes(Math.round(row.bytesPerSecond)) }}/秒</span>
+              </div>
+            </template>
+            <small v-if="row.source || row.message" class="setup-transfer-detail">{{ [row.source, row.message].filter(Boolean).join(' · ') }}</small>
+          </li>
+        </ul>
+      </section>
+      <SetupTransferProgress v-else :title="progressSteps[stageIndex]?.label || '正在核对准备进度'"
+        :phase="automation.stage.value ?? 'preparing'" :completed-files="automation.workProgress.value?.done"
+        :total-files="automation.workProgress.value?.total" :message="automation.message.value" />
+      <div class="setup-buttons">
+        <button class="btn btn-ghost" type="button" :disabled="automation.recoveryPending.value || ['pending', 'accepted'].includes(automation.cancelState.value)" @click="automation.cancel">{{ cancelLabel }}</button>
+      </div>
     </template>
     <template v-else>
       <div class="setup-choice-grid">
@@ -86,7 +118,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, toRef, watch } from 'vue'
+import { computed, nextTick, ref, toRef, useId, watch } from 'vue'
 import { RouterLink, useRoute } from 'vue-router'
 import type { LocalSetupResponse, LocalSetupDownloadResult, LocalSetupModel } from '../../types/local-setup'
 import StudioSelect from './ui/StudioSelect.vue'
@@ -129,7 +161,38 @@ const chatEnabled = computed({ get: () => !!automation.chatId.value, set: (enabl
 const canRun = computed(() => !props.blocked && props.statusConfirmed && !props.workspaceBlocked && !automation.environmentRequired.value && !automation.serviceMustStop.value && automation.reviewed.value && automation.hasSelection.value)
 const progressSteps = computed(() => [{ id: 'environment', label: '安装环境' }, { id: 'models', label: '下载模型' }, { id: 'service', label: automation.drawing.value ? '启动服务' : '启动聊天' }, { id: 'validation', label: '检查配置' }])
 const stageIndex = computed(() => progressSteps.value.findIndex(item => item.id === automation.stage.value))
-const activePackage = computed(() => automation.plan.value.find(model => model.id === automation.download.activeId.value))
+const downloadHeading = useId()
+const downloadTotalLabel = useId()
+const downloadRows = automation.download.rows
+const downloadedFiles = computed(() => downloadRows.value.filter(row => row.phase === 'ready').length)
+function formatRemainingTime(seconds: number) {
+  if (seconds <= 0) return ''
+  if (seconds < 60) return `${Math.ceil(seconds)} 秒`
+  const minutes = Math.ceil(seconds / 60)
+  if (minutes < 60) return `${minutes} 分`
+  return `${Math.floor(minutes / 60)} 小时 ${minutes % 60} 分`
+}
+const batchProgress = computed(() => {
+  let total = 0
+  let received = 0
+  let speed = 0
+  for (const row of downloadRows.value) {
+    total += row.expectedBytes
+    if (row.phase === 'verifying' || row.phase === 'ready') received += row.expectedBytes
+    else if (row.phase !== 'checking') received += row.bytesRead
+    if (row.phase === 'downloading') speed += row.bytesPerSecond || 0
+  }
+  const seconds = speed > 0 ? (total - received) / speed : 0
+  return { total, received, speed, eta: formatRemainingTime(seconds), percent: Math.floor(received / (total || 1) * 100) }
+})
+const cancelLabel = computed(() => ({
+  idle: downloadRows.value.length ? '停止下载' : '取消准备',
+  pending: '取消中…', accepted: '等待步骤结束…', failed: '重试取消',
+})[automation.cancelState.value])
+const downloadPhases = {
+  queued: '排队中', checking: '检查已有文件', connecting: '连接下载源', downloading: '下载中',
+  retrying: '正在重试', verifying: '校验 SHA-256', ready: '已就绪', failed: '准备失败',
+}
 const packagePresent = (model: LocalSetupModel) => modelPreparationState(model) === 'bytes-match'
 function packageName(model: LocalSetupModel) { return model.id === 'qwen-encoder' ? '文字编码器' : model.id === 'qwen-vae' ? '图像解码器' : model.id.startsWith('runtime-comfy') ? 'ComfyUI 绘图环境' : model.id === 'runtime-kjnodes' ? '绘图必需节点' : model.id === 'runtime-anima-teacache' ? '绘图加速节点' : model.label }
 </script>
@@ -155,6 +218,18 @@ function packageName(model: LocalSetupModel) { return model.id === 'qwen-encoder
 .setup-runtime > small { color:var(--text-secondary); line-height:var(--lh-body); }
 .setup-runtime > details { border-top:1px solid var(--border-soft); padding-top:var(--s-2); }
 .setup-manifest { border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-deep); padding:var(--s-4); }
+.setup-downloads { min-width:0; padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-elevated); }
+.setup-downloads .setup-manifest-heading > span { color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; }
+.setup-transfer-total { display:grid; gap:var(--s-2); margin-block-start:var(--s-3); padding:var(--s-3); border-radius:var(--r-md); background:var(--bg-surface); }
+.setup-transfer-total strong { font-variant-numeric:tabular-nums; }
+.setup-transfer-list { display:grid; gap:var(--s-3); list-style:none; margin:var(--s-3) 0 0; padding:0; }
+.setup-transfer-list li { display:grid; gap:var(--s-2); min-width:0; padding-block-end:var(--s-3); border-block-end:1px solid var(--border-soft); }
+.setup-transfer-list li:last-child { padding-block-end:0; border-block-end:0; }
+.setup-transfer-total progress, .setup-transfer-list progress { inline-size:100%; }
+.setup-transfer-file, .setup-transfer-metrics { display:flex; flex-wrap:wrap; align-items:baseline; justify-content:space-between; gap:var(--s-1) var(--s-3); }
+.setup-transfer-file strong { overflow-wrap:anywhere; }
+.setup-transfer-file span, .setup-transfer-metrics, .setup-transfer-detail { color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; }
+.setup-transfer-detail { overflow-wrap:anywhere; }
 .setup-manifest-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-2); padding-bottom:var(--s-3); border-bottom:1px solid var(--border-soft); }
 .setup-manifest-heading h3 { font-size:var(--fs-label); }
 .setup-manifest-heading > strong { color:var(--accent); font-size:var(--fs-title-xs); font-variant-numeric:tabular-nums; min-inline-size:8ch; text-align:end; }

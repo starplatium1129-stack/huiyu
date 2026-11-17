@@ -106,6 +106,27 @@ fn read_snapshot(directory: &Path) -> Result<(Vec<Record>, Vec<Record>, Vec<u8>)
     Ok((records, retired, digest.finalize().to_vec()))
 }
 impl Catalog {
+    pub(crate) fn matches_bundled_records(
+        &self,
+        directory: &Path,
+        keys: &[[String; 2]],
+    ) -> Result<bool> {
+        let transaction = self.connection.unchecked_transaction()?;
+        for [kind, id] in keys {
+            validation::key(kind, id)?;
+            let path = directory.join(snapshot_name(kind, id));
+            let expected: Record = serde_json::from_reader(std::fs::File::open(path)?)?;
+            if expected.kind != *kind
+                || expected.id != *id
+                || self.get(kind, id)?.data != expected.data
+            {
+                return Ok(false);
+            }
+        }
+        transaction.commit()?;
+        Ok(true)
+    }
+
     pub fn snapshot(&self) -> Result<Value> {
         self.snapshot_selected(&Scope::default())
     }
@@ -275,22 +296,7 @@ impl Catalog {
         let _staging_cleanup = Staging(staging.clone());
         let mut files = Vec::new();
         for record in records {
-            let digest = hex::encode(Sha256::digest(record.id.as_bytes()));
-            // Readable stable names, including Windows-safe outfit keys. Hash
-            // suffix prevents sanitization/case collisions on Windows.
-            let label = record
-                .id
-                .chars()
-                .map(|c| {
-                    if c.is_ascii_alphanumeric() || c == '_' || c == '-' {
-                        c
-                    } else {
-                        '-'
-                    }
-                })
-                .take(120)
-                .collect::<String>();
-            let name = format!("{}/{}-{}.json", record.kind, label, &digest[..12]);
+            let name = snapshot_name(&record.kind, &record.id);
             std::fs::create_dir_all(staging.join(&record.kind))?;
             let original = directory.join(&name);
             if original_fingerprint.is_some()
@@ -350,6 +356,22 @@ impl Catalog {
             json!({"ok":true,"count":count,"total":files.len(),"partial":scope.partial(),"directory":directory,"version":version,"cleanupWarning":cleanup_warning}),
         )
     }
+}
+
+fn snapshot_name(kind: &str, id: &str) -> String {
+    let digest = hex::encode(Sha256::digest(id.as_bytes()));
+    let label: String = id
+        .chars()
+        .take(120)
+        .map(|c| {
+            if c.is_ascii_alphanumeric() || c == '_' || c == '-' {
+                c
+            } else {
+                '-'
+            }
+        })
+        .collect();
+    format!("{kind}/{label}-{}.json", &digest[..12])
 }
 fn snapshot_value(records: Vec<Record>, retired: Vec<Record>) -> Result<Value> {
     let mut value = json!({"version":1,"records":null,"retired":null});

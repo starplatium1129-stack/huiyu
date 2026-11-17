@@ -16,7 +16,7 @@ function activeKey(key: string, selectionKey: string, recoveryKey: string) {
 }
 export interface QwenForm {
   modelId: string; prompt: string; negative: string; width: number; height: number; steps: number; cfg: number; seed: number
-  mossAcceleration?: 'off' | 'spectrum'; mossTextPrecision?: 'bf16' | 'fp8' | 'int8'; mossCompile?: boolean
+  mossAcceleration?: 'off' | 'spectrum'; mossTextPrecision?: 'auto' | 'bf16' | 'fp8' | 'int8'; mossCompile?: boolean
   mossSpectrumFlexWindow?: number
   mossWeightPrecision?: 'auto' | 'fp16' | 'int8'
   mossLayout?: string
@@ -42,7 +42,7 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
     || form.mossAcceleration === 'spectrum' && mossModels.some(model => model.value === form.modelId))
   && (form.mossSpectrumFlexWindow === undefined || mossModels.some(model => model.value === form.modelId) && validMossSpectrumFlexWindow(form.mossSpectrumFlexWindow))
   && (form.mossTextPrecision === undefined || mossModels.some(model => model.value === form.modelId)
-    && (form.mossTextPrecision === 'bf16' || form.mossTextPrecision === 'fp8' || form.mossTextPrecision === 'int8'))
+    && (form.mossTextPrecision === 'auto' || form.mossTextPrecision === 'bf16' || form.mossTextPrecision === 'fp8' || form.mossTextPrecision === 'int8'))
   && (form.mossCompile === undefined || mossModels.some(model => model.value === form.modelId) && typeof form.mossCompile === 'boolean')
   && (form.mossWeightPrecision === undefined || mossModels.some(model => model.value === form.modelId)
     && (form.mossWeightPrecision === 'auto' || form.mossWeightPrecision === 'fp16' || form.mossWeightPrecision === 'int8'))
@@ -52,7 +52,7 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
 const copyForm = (form: QwenForm): QwenForm => ({ modelId: form.modelId, prompt: form.prompt, negative: form.negative,
   width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed,
   ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? 'spectrum', mossSpectrumFlexWindow: form.mossSpectrumFlexWindow ?? 0.5,
-    mossTextPrecision: form.mossTextPrecision ?? 'bf16', mossCompile: form.mossCompile ?? false, mossWeightPrecision: form.mossWeightPrecision ?? 'auto',
+    mossTextPrecision: form.mossTextPrecision ?? 'auto', mossCompile: form.mossCompile ?? false, mossWeightPrecision: form.mossWeightPrecision ?? 'auto',
     mossLayout: form.mossLayout ?? '' } : {}) })
 function read(selectedKey: string, models: readonly { value: string }[]): StoredDraft | null {
   const raw = profileLocalStorage.getItem(selectedKey)

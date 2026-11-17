@@ -49,13 +49,13 @@ export function useLocalSetup(blocked: Ref<boolean>) {
     else failures[result.modelId] = result.path
     verificationFailures.value = failures
   }
-  function recordDownload(result: LocalSetupDownloadResult) {
+  function recordDownload(result: LocalSetupDownloadResult, refreshAfter = true) {
     if (result.state === 'failed') {
       if (result.code === 'MODEL_CONFLICT') verificationFailures.value = { ...verificationFailures.value, [result.modelId]: result.path }
       return
     }
     const failures = { ...verificationFailures.value }; delete failures[result.modelId]; verificationFailures.value = failures
-    void refresh()
+    if (refreshAfter) void refresh()
   }
   const readiness = computed(() => snapshot.value ? drawingSetupReadiness(snapshot.value, selectedModel.value) : null)
   const currentCheck = computed(() => !loading.value && !error.value && !cancelled.value && !workspacePending.value && !workspaceUnconfirmed.value)

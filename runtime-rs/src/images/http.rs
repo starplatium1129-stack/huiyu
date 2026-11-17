@@ -3,15 +3,14 @@ use super::*;
 use crate::{AppState, security};
 use axum::{
     Extension, Json, Router,
-    body::{Body, Bytes},
+    body::Bytes,
     extract::{ConnectInfo, DefaultBodyLimit, OriginalUri, Path, Query, State},
-    http::{HeaderMap, HeaderValue, StatusCode, header},
+    http::{HeaderMap, HeaderValue, Method, StatusCode, header},
     response::{IntoResponse, Response},
     routing::{get, post},
 };
 use futures_util::future::BoxFuture;
 use std::{collections::HashMap, net::SocketAddr, sync::Mutex};
-use tokio_util::io::ReaderStream;
 struct Http {
     service: Arc<Service>,
 }
@@ -75,12 +74,17 @@ pub(super) fn response(result: Result<Value>, status: StatusCode) -> Response {
 async fn status(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
+    guide: Option<Extension<remote::Guide>>,
     OriginalUri(uri): OriginalUri,
 ) -> Response {
     response(
         async {
             state.host.check_running()?;
-            http.service.get_status(family(&uri)).await
+            let mut status = http.service.get_status(family(&uri)).await?;
+            if guide.is_some() {
+                status["museGuide"] = remote::Guide::document().clone();
+            }
+            Ok(status)
         }
         .await,
         StatusCode::OK,
@@ -350,33 +354,42 @@ async fn result(
     Path(id): Path<String>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
+    method: Method,
 ) -> Response {
+    use crate::http_media::{self, Source};
     let result = async {
         state.host.check_running()?;
-        let output = http
-            .service
-            .result(
-                &id,
-                &generation::request_owner(&headers, peer, &query),
-                family(&uri),
+        let owner = generation::request_owner(&headers, peer, &query);
+        let family = family(&uri);
+        let lineart = uri.path().ends_with("/lineart");
+        let output = http.service.result(&id, &owner, family).await?;
+        let (output, etag) = if lineart {
+            (
+                http.service.lineart_result(&id, &owner, output).await?,
+                None,
             )
-            .await?;
-        let output = if uri.path().ends_with("/lineart") {
-            http.service
-                .lineart_result(
-                    &id,
-                    &generation::request_owner(&headers, peer, &query),
-                    output,
-                )
-                .await?
         } else {
-            output
+            let etag = if http
+                .service
+                .backend
+                .remote_store()
+                .is_some_and(|store| store.owner == owner)
+            {
+                http.service
+                    .get_job(&id, &owner, family)
+                    .await
+                    .ok()
+                    .and_then(|job| job["resultSha256"].as_str().map(|sha| format!("\"{sha}\"")))
+            } else {
+                None
+            };
+            (output, etag)
         };
         let mime = output.mime().to_string();
-        let (body, length) = match output {
+        let (source, length) = match output {
             Output::Bytes { bytes, .. } => {
                 let length = bytes.len() as u64;
-                (Body::from(Bytes::from_owner(SharedBytes(bytes))), length)
+                (Source::Bytes(Bytes::from_owner(SharedBytes(bytes))), length)
             }
             Output::File { path, .. } => {
                 let root =
@@ -392,19 +405,41 @@ async fn result(
                     return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
                 }
                 (
-                    Body::from_stream(ReaderStream::with_capacity(file, 64 * 1024)),
+                    Source::Opened(file, http.service.shutdown.clone()),
                     stat.len(),
                 )
             }
         };
-        Response::builder()
-            .status(200)
-            .header(header::CACHE_CONTROL, "no-store")
-            .header(header::CONTENT_TYPE, mime)
-            .header(header::CONTENT_LENGTH, length)
-            .header(header::X_CONTENT_TYPE_OPTIONS, "nosniff")
-            .body(body)
-            .map_err(|_| ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"))
+        let range = headers
+            .get(header::RANGE)
+            .filter(|_| {
+                method == Method::GET
+                    && headers.get(header::IF_RANGE).is_none_or(|value| {
+                        etag.as_deref()
+                            .is_some_and(|etag| value.as_bytes() == etag.as_bytes())
+                    })
+            })
+            .map(|value| value.to_str().unwrap_or(""));
+        let mut response = match http_media::range(range, length) {
+            Ok(range) => {
+                http_media::stream(&method, range, source, http.service.shutdown.clone()).await?
+            }
+            Err(response) => response,
+        };
+        let headers = response.headers_mut();
+        headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
+        headers.insert(header::ACCEPT_RANGES, HeaderValue::from_static("bytes"));
+        headers.insert(
+            header::X_CONTENT_TYPE_OPTIONS,
+            HeaderValue::from_static("nosniff"),
+        );
+        if let Ok(mime) = HeaderValue::from_str(&mime) {
+            headers.insert(header::CONTENT_TYPE, mime);
+        }
+        if let Some(etag) = etag.and_then(|value| HeaderValue::from_str(&value).ok()) {
+            headers.insert(header::ETAG, etag);
+        }
+        Ok::<_, ApiError>(response)
     }
     .await;
     match result {

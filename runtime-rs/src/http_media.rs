@@ -1,6 +1,6 @@
 //! HTTP byte ranges and on-demand file delivery, after the caller authorizes its source.
 use axum::{
-    body::Body,
+    body::{Body, Bytes},
     http::{Method, StatusCode},
     response::{IntoResponse, Response},
 };
@@ -14,6 +14,7 @@ use tokio_util::{io::ReaderStream, sync::CancellationToken};
 
 pub(crate) enum Source {
     Opened(File, CancellationToken),
+    Bytes(Bytes),
     // Provider results have no workspace lifetime. HEAD must not open their file.
     Path(PathBuf),
 }
@@ -90,21 +91,34 @@ pub(crate) async fn stream(
     source: Source,
     shutdown: CancellationToken,
 ) -> std::io::Result<Response> {
-    let body = if method == Method::HEAD {
-        Body::empty()
-    } else {
-        let (mut file, closed) = match source {
-            Source::Opened(file, closed) => (file, closed),
-            Source::Path(path) => (File::open(path).await?, shutdown.clone()),
-        };
+    async fn file_body(
+        mut file: File,
+        closed: CancellationToken,
+        shutdown: CancellationToken,
+        range: &ByteRange,
+    ) -> std::io::Result<Body> {
         file.seek(SeekFrom::Start(range.start)).await?;
         // Disconnect and either source/runtime shutdown drop the owned file;
         // no producer queue or background file reader outlives this body.
-        Body::from_stream(
+        Ok(Body::from_stream(
             ReaderStream::with_capacity(file.take(range.length), 64 * 1024)
                 .take_until(closed.cancelled_owned())
                 .take_until(shutdown.cancelled_owned()),
-        )
+        ))
+    }
+    let body = if method == Method::HEAD {
+        Body::empty()
+    } else {
+        match source {
+            Source::Opened(file, closed) => file_body(file, closed, shutdown, &range).await?,
+            Source::Path(path) => {
+                file_body(File::open(path).await?, shutdown.clone(), shutdown, &range).await?
+            }
+            Source::Bytes(bytes) => {
+                let start = range.start as usize;
+                Body::from(bytes.slice(start..start + range.length as usize))
+            }
+        }
     };
     let mut response = body.into_response();
     let headers = response.headers_mut();

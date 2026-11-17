@@ -8,9 +8,9 @@ mod model_layout;
 pub(crate) use input::InputFile;
 use input::RunFiles;
 pub(crate) use model_layout::model_issue;
-mod observations;
 mod execution;
 mod moss;
+mod observations;
 pub(in crate::generation) mod recovery;
 pub(crate) mod resources;
 mod results;
@@ -39,24 +39,24 @@ pub(crate) struct Plan {
 pub(crate) struct Engine {
     processes: Arc<crate::processes::Processes>,
     tokens: Mutex<HashMap<String, CancellationToken>>,
+    pub(super) queue: std::sync::Mutex<VecDeque<String>>,
     slot: Arc<Semaphore>,
     pub(crate) gpu_owned: AtomicBool,
     comfy_leased: AtomicBool,
     admission: Arc<Semaphore>,
     worker: Mutex<Option<worker::Worker>>,
-    idle_timeout: Duration,
 }
 impl Default for Engine {
     fn default() -> Self {
         Self {
             processes: Arc::default(),
             tokens: Mutex::default(),
+            queue: std::sync::Mutex::default(),
             slot: Arc::new(Semaphore::new(1)),
             gpu_owned: AtomicBool::new(false),
             comfy_leased: AtomicBool::new(false),
             admission: Arc::new(Semaphore::new(4)),
             worker: Mutex::new(None),
-            idle_timeout: Duration::from_secs(600),
         }
     }
 }
@@ -76,6 +76,16 @@ impl Engine {
     }
 }
 impl Service {
+    pub(crate) fn remote_capacity(&self) -> Result<bool> {
+        if self.inner.cancel.is_cancelled() || self.inner.closed.load(Ordering::Relaxed) {
+            return Err(closed());
+        }
+        if self.inner.native.admission.is_closed() {
+            return Err(worker::release_error());
+        }
+        Ok(self.inner.native.admission.available_permits() > 0)
+    }
+
     pub(crate) fn reserve_native(
         &self,
         cancel: &CancellationToken,
@@ -141,15 +151,31 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
     }
     let worker = inner.clone();
     inner.tasks.spawn(async move {
+        let mut registered = false;
+        let acquire = worker.native.slot.acquire();
+        tokio::pin!(acquire);
         let slot = tokio::select! {
             biased;
             _ = token.cancelled() => Err(closed()),
-            slot = worker.native.slot.acquire() => slot.map_err(|_| {
+            slot = std::future::poll_fn(|cx| {
+                use std::future::Future;
+                if !registered {
+                    // Establish order in the same critical section as the first
+                    // fair semaphore poll, including jobs from the video service.
+                    let mut queue = worker.native.queue.lock().unwrap();
+                    queue.push_back(job.id.clone());
+                    registered = true;
+                    acquire.as_mut().poll(cx)
+                } else {
+                    acquire.as_mut().poll(cx)
+                }
+            }) => slot.map_err(|_| {
                 if token.is_cancelled() { closed() } else { worker::release_error() }
             }),
         };
         match slot {
             Ok(slot) => {
+                job.started_at.store(now(), Ordering::Relaxed);
                 worker.native.gpu_owned.store(true, Ordering::SeqCst);
                 let outcome = run(&worker, &job, &token).await;
                 // Hold the GPU slot through the cancellation acknowledgement
@@ -166,6 +192,14 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) {
             Err(error) => {
                 settle(&worker, &job, Err(error), token.is_cancelled()).await;
             }
+        }
+        if registered {
+            worker
+                .native
+                .queue
+                .lock()
+                .unwrap()
+                .retain(|id| id != &job.id);
         }
         worker.native.tokens.lock().await.remove(&job.id);
     });
@@ -194,6 +228,9 @@ async fn settle(
                 // run already received ready; publication cancellation cannot
                 // make its clean resident model unsafe for the next request.
                 cancelled(job).await;
+                if let Some(archive) = inner.archive_for(job) {
+                    archive.finish(job, "cancelled", None, None).await;
+                }
             }
             return false;
         }
@@ -222,9 +259,27 @@ async fn settle(
         state.finished = Some(now());
         state.permit.take();
     }
+    let archive_status = if inner.cancel.is_cancelled() {
+        "interrupted"
+    } else {
+        &state.status
+    }
+    .to_owned();
+    let archive_error = state.error.clone();
+    let archive_code = state.code.clone();
     drop(state);
     job.notify.notify_waiters();
     jobs::notify_settled(job);
+    if let Some(archive) = inner.archive_for(job) {
+        archive
+            .finish(
+                job,
+                &archive_status,
+                archive_error.as_deref(),
+                archive_code.as_deref(),
+            )
+            .await;
+    }
     unconfirmed
 }
 async fn cancelled(job: &Job) {
@@ -244,6 +299,9 @@ async fn cancelled(job: &Job) {
 pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
     let _collection = job.collection.lock().await;
     let mut state = job.state.lock().await;
+    if state.status == "succeeded" && state.result_sha256.is_some() {
+        return Ok(());
+    }
     if state.status == "succeeded" && state.collection_pending {
         state.status = "cancelled".into();
         drop(state);
@@ -398,7 +456,9 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
                             sampling
                         } else if plan.input["mossUpscaleScale"].is_number() {
                             format!("Remacri 放大 {step}/{total}")
-                        } else { format!("独立推理 {step}/{total}") };
+                        } else {
+                            format!("独立推理 {step}/{total}")
+                        };
                     }
                     Some("result") if !produced => {
                         if event["outputPath"].as_str() != output.to_str() {
@@ -496,7 +556,12 @@ async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &CancellationToken) -> R
     if retain {
         // Ready confirms worker-side cleanup; the request keeps its directory Arc.
         worker.current_temp.lock().unwrap().take();
-        Engine::retain_worker(inner.clone(), worker).await;
+        let idle = Duration::from_secs(if plan.input["family"] == "moss-image" {
+            90
+        } else {
+            600
+        });
+        Engine::retain_worker(inner.clone(), worker, idle).await;
         return value;
     }
     // Unacknowledged cancellation, faults and timeouts still retire the process

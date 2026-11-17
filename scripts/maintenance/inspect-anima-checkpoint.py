@@ -9,6 +9,7 @@ import argparse
 import importlib.util
 import json
 import math
+import os
 from pathlib import Path
 import re
 import struct
@@ -37,24 +38,32 @@ def unique_object(pairs):
 
 def read_header(path: Path) -> dict:
     with path.open("rb") as stream:
-        prefix = stream.read(8)
-        if len(prefix) != 8:
-            raise ValueError("Missing safetensors header length")
-        size = struct.unpack("<Q", prefix)[0]
-        if not 2 <= size <= MAX_HEADER:
-            raise ValueError(f"Safetensors header exceeds bounded range (2..{MAX_HEADER} bytes): {size}")
-        payload_size = path.stat().st_size - 8 - size
-        if payload_size < 0:
-            raise ValueError("Truncated safetensors header")
-        raw = stream.read(size)
+        tensors, _, _ = read_tensor_layout(stream)
+        return tensors
+
+
+def read_tensor_layout(stream):
+    prefix = stream.read(8)
+    if len(prefix) != 8:
+        raise ValueError("Missing safetensors header length")
+    size = struct.unpack("<Q", prefix)[0]
+    if not 2 <= size <= MAX_HEADER:
+        raise ValueError(f"Safetensors header exceeds bounded range (2..{MAX_HEADER} bytes): {size}")
+    payload_start = 8 + size
+    payload_size = os.fstat(stream.fileno()).st_size - payload_start
+    raw = stream.read(size)
+    if payload_size < 0 or len(raw) != size:
+        raise ValueError("Truncated safetensors header")
     if not raw.startswith(b"{"):
         raise ValueError("Safetensors header must begin with a JSON object")
     header = json.loads(raw, object_pairs_hook=unique_object)
     if not isinstance(header, dict):
         raise ValueError("Safetensors header is not an object")
-    tensors, spans = {}, []
+    tensors, ranges, spans = {}, {}, []
     for name, entry in header.items():
         if name == "__metadata__":
+            if not isinstance(entry, dict) or any(not isinstance(value, str) for value in entry.values()):
+                raise ValueError("Safetensors metadata values must be strings")
             continue
         if not isinstance(entry, dict):
             raise ValueError(f"Invalid tensor entry: {name}")
@@ -69,6 +78,7 @@ def read_header(path: Path) -> dict:
         if math.prod(shape) * DTYPE_BYTES[dtype] != offsets[1] - offsets[0]:
             raise ValueError(f"Tensor shape/data length disagree: {name}")
         tensors[name] = {"shape": shape, "dtype": dtype}
+        ranges[name] = tuple(offsets)
         if offsets[1] > offsets[0]:
             spans.append(tuple(offsets))
     end = 0
@@ -78,7 +88,7 @@ def read_header(path: Path) -> dict:
         end = stop
     if end != payload_size or not tensors:
         raise ValueError("Empty tensor map or unindexed trailing tensor data")
-    return tensors
+    return tensors, ranges, payload_start
 
 
 def dimension(tensors, key, index, rank):

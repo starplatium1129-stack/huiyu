@@ -157,8 +157,12 @@ def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
             # Follow that preparation contract instead of rescanning tens of GB at
             # every worker start. Changed/unmanaged files keep full-byte validation.
             prepared_at = marker.stat().st_mtime_ns
+            files = spec["files"]
+            if model_id.startswith("moss-") and receipt.get("mossTextPrecision") == "int8":
+                text = contract.model(model_id)["mossTextInt8"]
+                files = [item for item in files if not item["path"].startswith("text_encoder/model")] + [text]
             ready = True
-            for item in spec["files"]:
+            for item in files:
                 control.check()
                 path = contract.safe_file(root, root / item["path"])
                 info = path.stat()
@@ -169,7 +173,7 @@ def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
                 digest = hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(",", ":")).encode())
                 if model_id.startswith("moss-"):
                     digest.update(json.dumps(variant or {"precision": "fp16"}, sort_keys=True).encode())
-                known = {item["path"] for item in spec["files"]}
+                known = {item["path"] for item in files}
                 for path in sorted(root.rglob("*.json")):
                     control.check()
                     # Include derived compatibility configs, which are not downloads.
@@ -221,6 +225,8 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
         emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
         return
     root = contract.layout(job["modelDir"], spec)
+    if spec["family"] == "moss-image" and data["mossTextPrecision"] == "auto":
+        data["mossTextPrecision"] = "int8" if sibling("moss_int8").selected(root, "auto", contract, component="text_encoder") else "bf16"
     style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
     if style_path is not None:
         sibling("krea_style").require_dependency()
@@ -395,6 +401,7 @@ def main():
     modes.add_argument("--catalog", action="store_true")
     modes.add_argument("--diagnose", action="store_true")
     modes.add_argument("--validate", metavar="MODEL_DIR")
+    modes.add_argument("--prepare-moss", metavar="MODEL_DIR")
     parser.add_argument("--model-id")
     args = parser.parse_args()
     stream = sys.stdout
@@ -414,6 +421,20 @@ def main():
                 root = contract.layout(args.validate, contract.model(args.model_id))
                 emit(stream, None, "validation", valid=True, modelDir=str(root), dependencies=dependencies(),
                      scope="layout-and-imports-only; no weight correctness or GPU inference proof", validation="待主力机验证")
+            elif args.prepare_moss:
+                spec = contract.model(args.model_id)
+                if spec["family"] != "moss-image":
+                    raise Error("NATIVE_MODEL_UNSUPPORTED", "请选择已登记的 MOSS 模型")
+                root = contract.layout(args.prepare_moss, spec)
+                control = SimpleNamespace(check=lambda: None)
+                compact = args.model_id == "moss-miaomiao-base-v1.1"
+                variant = spec["mossInt8"] if compact else None
+                print("HUIYU:CONVERT|核对并适配 MOSS 主模型结构", file=sys.stderr, flush=True)
+                sibling("moss_adapter").load_transformer(root, control, contract, variant, None)
+                if compact:
+                    print("HUIYU:CONVERT|核对并适配 INT8 文本编码器", file=sys.stderr, flush=True)
+                    sibling("moss_text").load_int8(root, control, contract, spec["mossTextInt8"], None)
+                print(json.dumps({"ok": True, "preparedModel": args.model_id, "weightsMapped": True}), file=stream, flush=True)
             else:
                 resident = sibling("resident_adapters").PipelineCache()
                 def initialize(job, ready):

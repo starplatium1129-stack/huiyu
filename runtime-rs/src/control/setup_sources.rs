@@ -26,9 +26,10 @@ pub(super) async fn order(
     client: &reqwest::Client,
     cancel: &CancellationToken,
     sources: &mut Vec<String>,
-) -> Result<()> {
+    retained: u64,
+) -> Result<bool> {
     if sources.len() < 2 || plan.spec.bytes < 32 * 1024 * 1024 {
-        return Ok(());
+        return Ok(false);
     }
     let chosen = {
         let mut attempts = FuturesUnordered::new();
@@ -37,7 +38,7 @@ pub(super) async fn order(
             let cancel = cancel.clone();
             let total = plan.spec.bytes;
             attempts.push(async move {
-                probe(&client, &source, total, &cancel)
+                probe(&client, &source, total, retained, &cancel)
                     .await
                     .then_some(source)
             });
@@ -53,41 +54,37 @@ pub(super) async fn order(
             } => chosen,
         }
     };
-    if let Some(chosen) = chosen {
-        sources.retain(|source| source != &chosen);
-        sources.insert(0, chosen);
+    let Some(chosen) = chosen else {
+        return Ok(false);
+    };
+    sources.retain(|source| source != &chosen);
+    if chosen != plan.url {
+        // A publisher that lost the live probe remains a fallback after the other mirrors.
+        sources.rotate_left(1);
     }
-    Ok(())
+    sources.insert(0, chosen);
+    Ok(true)
 }
 
 async fn probe(
     client: &reqwest::Client,
     source: &str,
     total: u64,
+    retained: u64,
     cancel: &CancellationToken,
 ) -> bool {
     let bytes = 128 * 1024;
+    let start = retained.max(1024 * 1024).min(total - bytes);
+    let end = start + bytes - 1;
     let probe = async {
         let mut headers = reqwest::header::HeaderMap::new();
-        headers.insert("range", format!("bytes=0-{}", bytes - 1).parse().unwrap());
+        headers.insert("range", format!("bytes={start}-{end}").parse().unwrap());
         let url = url::Url::parse(source).ok()?;
         let mut response =
             transfer::response(client, url, headers, Duration::from_secs(8), cancel, false)
                 .await
                 .ok()?;
-        let range = format!("bytes 0-{}/{total}", bytes - 1);
-        if response.status() != reqwest::StatusCode::PARTIAL_CONTENT
-            || response
-                .headers()
-                .get("content-range")
-                .and_then(|value| value.to_str().ok())
-                != Some(range.as_str())
-            || transfer::length(&response)
-                .ok()?
-                .is_some_and(|length| length != bytes)
-        {
-            return None;
-        }
+        transfer::partial_range(&response, start, end, total, None).ok()?;
         let mut received = 0;
         while let Some(chunk) = response.chunk().await.ok()? {
             received += chunk.len() as u64;

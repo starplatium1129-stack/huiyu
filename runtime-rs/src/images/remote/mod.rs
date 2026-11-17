@@ -1,4 +1,6 @@
 mod client;
+mod guide;
+mod muse;
 mod server;
 
 const COMPLETION_HEADER: &str = "x-huiyu-image-completion";
@@ -10,4 +12,5 @@ pub(crate) enum Completion {
 }
 
 pub(super) use client::Client;
+pub(super) use guide::Guide;
 pub(crate) use server::{listening, start};

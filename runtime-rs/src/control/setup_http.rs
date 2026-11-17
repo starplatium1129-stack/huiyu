@@ -29,6 +29,10 @@ pub(super) fn routes() -> Router<crate::AppState> {
             "/api/local-setup/download/{model}",
             post(download_setup_model),
         )
+        .route(
+            "/api/local-setup/download-batch",
+            post(download_setup_batch),
+        )
 }
 async fn local_setup(
     Extension(s): Extension<Arc<ControlService>>,
@@ -93,4 +97,11 @@ async fn download_setup_model(
     Json(body): Json<setup_download::DownloadRequest>,
 ) -> Result<Response> {
     s.download_setup_model(model, body)
+}
+
+async fn download_setup_batch(
+    Extension(s): Extension<Arc<ControlService>>,
+    Json(body): Json<setup_download::BatchDownloadRequest>,
+) -> Result<Response> {
+    s.download_setup_batch(body)
 }

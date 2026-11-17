@@ -22,7 +22,7 @@
       <p v-if="!snapshot && loading" role="status" class="setup-note">读取模型清单中… <button class="btn btn-quiet btn-sm" type="button" @click="cancelCheck">取消检查</button></p>
       <template v-if="snapshot">
         <div v-show="!workspacePending" class="setup-download-step">
-          <LocalSetupAutomation :snapshot="snapshot" :status-confirmed="currentCheck" :workspace-blocked="workspacePending || workspaceUnconfirmed" :blocked="blocked || manualBusy || workspaceLoading || workspaceSaving || restarting" :settings-revision="settingsRevision" :can-restart="!!desktop?.restartForSetup" :can-choose-workspace="!!desktop" :restarting="restarting" @refresh="refresh" @download-result="recordDownload" @model-selected="selectSetupModel" @phase="setupPhase = $event" @configured="emit('configured')" @restart="restartForSetup" @workspace="chooseWorkspace" />
+          <LocalSetupAutomation :snapshot="snapshot" :status-confirmed="currentCheck" :workspace-blocked="workspacePending || workspaceUnconfirmed" :blocked="blocked || manualBusy || workspaceLoading || workspaceSaving || restarting" :settings-revision="settingsRevision" :can-restart="!!desktop?.restartForSetup" :can-choose-workspace="!!desktop" :restarting="restarting" @refresh="refresh" @download-result="recordDownload($event, false)" @model-selected="selectSetupModel" @phase="setupPhase = $event" @configured="emit('configured')" @restart="restartForSetup" @workspace="chooseWorkspace" />
         </div>
         <details v-if="!setupBusy" class="setup-details">
           <StudioDisclosureSummary>手动配置与已有环境</StudioDisclosureSummary>

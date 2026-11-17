@@ -14,5 +14,5 @@ export const validMossSpectrumFlexWindow = (value: unknown): value is number => 
 export interface DirectImageModelStatus {
   id: string; available: boolean; unavailableReason: string | null; licenseUrl: string
   mossSpectrum?: boolean; mossFlexWindow?: boolean; mossRemacri?: boolean; mossFp8?: boolean; mossCompile?: boolean
-  mossFp16Ready?: boolean; mossInt8Ready?: boolean; mossTextInt8Ready?: boolean
+  mossFp16Ready?: boolean; mossInt8Ready?: boolean; mossTextInt8Ready?: boolean; mossTextBf16Ready?: boolean
 }

@@ -69,7 +69,8 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { r
     }
     // Re-encode large static portraits losslessly. Keep original dimensions,
     // pixels, format and URLs; cache by input bytes to avoid repeat build work.
-    if (portrait && /\.png$/i.test(entry.rel) && staged.length > 256 * 1024) {
+    const builtinAtlas = entry.rel === 'live2d/nene/textures/texture_00.png';
+    if ((portrait || builtinAtlas) && /\.png$/i.test(entry.rel) && staged.length > 256 * 1024) {
       const cache = child(pngCache, digest(staged) + '-png9-v1.png');
       let packed: Buffer | null = null;
       if (fs.existsSync(cache) && fs.existsSync(cache + '.sha256')) {

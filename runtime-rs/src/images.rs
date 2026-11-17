@@ -331,7 +331,9 @@ impl Service {
         completed: Option<Value>,
     ) -> Result<Observation> {
         if let Some(remote) = &self.remote {
-            return remote.observe(id, owner, family, completed, &self.shutdown).await;
+            return remote
+                .observe(id, owner, family, completed, &self.shutdown)
+                .await;
         }
         self.backend.family_allowed(id, owner, family).await?;
         self.backend.query(id, owner).await
@@ -343,7 +345,9 @@ impl Service {
         family: &str,
     ) -> Option<remote::Completion> {
         let remote = self.remote.as_ref()?;
-        remote.wait_for_completion(id, owner, family, &self.shutdown).await
+        remote
+            .wait_for_completion(id, owner, family, &self.shutdown)
+            .await
     }
     pub async fn result(&self, id: &str, owner: &str, family: &str) -> Result<Output> {
         if let Some(remote) = &self.remote {
@@ -355,8 +359,13 @@ impl Service {
         if let Some(remote) = &self.remote {
             return remote.cancel(id, owner, family, &self.shutdown).await;
         }
-        self.backend.family_allowed(id, owner, family).await?;
-        self.backend.cancel(id, owner).await
+        match self.backend.family_allowed(id, owner, family).await {
+            Ok(()) => self.backend.cancel(id, owner).await,
+            Err(error) if matches!(error.status.as_u16(), 404 | 410) => {
+                self.backend.image_job(id, owner, family).await
+            }
+            Err(error) => Err(error),
+        }
     }
     async fn lineart_result(&self, id: &str, owner: &str, output: Output) -> Result<Output> {
         let job = self.get_job(id, owner, "manga-screen").await?;

@@ -48,7 +48,7 @@ function Find-Directory([string]$root,[string]$file) {
   if ($found.Count -ne 1) { throw ('运行包入口不唯一：'+$file) }
   return $found[0].Directory.FullName
 }
-function Install-Node([string]$source,[string]$name,[string]$comfy,[string]$python) {
+function Stage-Node([string]$source,[string]$name,[string]$comfy) {
   $target=Join-Path (Join-Path $comfy 'custom_nodes') $name
   Assert-InWorkspace $target
   if (Test-Path -LiteralPath $target) { throw ('全新运行包中存在冲突节点：'+$name) }
@@ -58,32 +58,36 @@ function Install-Node([string]$source,[string]$name,[string]$comfy,[string]$pyth
   if ($folders.Count -ne 1) { throw '节点包目录布局无效' }
   $nodeRoot=$folders[0].FullName
   if (-not (Test-Path -LiteralPath (Join-Path $nodeRoot '__init__.py') -PathType Leaf)) { throw ('固定节点包缺少入口：'+$name) }
-  $requirements=Join-Path $nodeRoot 'requirements.txt'
-  if (Test-Path -LiteralPath $requirements) {
+  New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
+  Assert-InWorkspace $nodeRoot
+  Assert-InWorkspace $target
+  Move-Item -LiteralPath $nodeRoot -Destination $target
+  $requirements=Join-Path $target 'requirements.txt'
+  if (Test-Path -LiteralPath $requirements -PathType Leaf) { return $requirements }
+}
+function Install-NodeDependencies([string[]]$requirements,[string]$python) {
+  if ($requirements.Count -gt 0) {
+    $requirementsArgs=@(foreach ($path in $requirements) { '-r'; $path })
     $pipCache=Join-Path $setupRoot 'pip-cache'
     Assert-InWorkspace $pipCache
     $pipSources=@('https://pypi.tuna.tsinghua.edu.cn/simple','https://pypi.org/simple')
     $pipExit=-1
     foreach ($pipSource in $pipSources) {
-      Write-EnvironmentProgress ('正在安装节点依赖：'+$name+'，来源：'+$pipSource)
-      Write-Output ('安装节点依赖：'+$name+'，来源：'+$pipSource)
+      Write-EnvironmentProgress ('正在安装绘图节点依赖 · '+$pipSource)
+      Write-Output ('安装绘图节点依赖 · '+$pipSource)
       # Native stderr carries retry warnings too. Let pip finish and use its
       # exit code, rather than terminating on PowerShell 5.1 ErrorRecord output.
       $previousPreference=$ErrorActionPreference
       try {
         $ErrorActionPreference='Continue'
-        & $python -I -B -m pip install --disable-pip-version-check --cache-dir $pipCache --index-url $pipSource --retries 2 --timeout 30 -r $requirements
+        & $python -I -B -m pip install --disable-pip-version-check --cache-dir $pipCache --index-url $pipSource --retries 2 --timeout 30 @requirementsArgs
         $pipExit=$LASTEXITCODE
       } finally { $ErrorActionPreference=$previousPreference }
       if ($pipExit -eq 0) { break }
-      Write-Output ('节点依赖来源未完成，将尝试下一来源；缓存保留：'+$name)
+      Write-Output '节点依赖来源未完成，将尝试下一来源。已下载部分保留在缓存。'
     }
-    if ($pipExit -ne 0) { throw ('节点依赖安装失败：'+$name+'；清华镜像和 PyPI 均未完成，请检查网络后重试，已下载缓存保留') }
+    if ($pipExit -ne 0) { throw '绘图节点依赖安装失败，清华镜像和 PyPI 均未完成。请检查网络后重试，已下载缓存保留。' }
   }
-  New-Item -ItemType Directory -Force -Path (Split-Path -Parent $target) | Out-Null
-  Assert-InWorkspace $nodeRoot
-  Assert-InWorkspace $target
-  Move-Item -LiteralPath $nodeRoot -Destination $target
 }
 
 try {
@@ -131,8 +135,11 @@ try {
       Write-EnvironmentProgress ('已识别 AMD 设备：'+$device.name+'；真实模型出图仍需确认')
     }
     # Only freshly extracted code is ever run or used to establish a baseline.
-    Install-Node $KjArchive 'ComfyUI-KJNodes' $comfy $python
-    Install-Node $TeaArchive 'ComfyUI-Anima-TeaCache' $comfy $python
+    $nodeRequirements=@(
+      Stage-Node $KjArchive 'ComfyUI-KJNodes' $comfy
+      Stage-Node $TeaArchive 'ComfyUI-Anima-TeaCache' $comfy
+    )
+    Install-NodeDependencies $nodeRequirements $python
     $runtimes=Split-Path -Parent $managedRoot
     New-Item -ItemType Directory -Force -Path $runtimes | Out-Null
     $preserved=Join-Path $runtimes ('comfy-preserved-'+[Guid]::NewGuid().ToString('N'))

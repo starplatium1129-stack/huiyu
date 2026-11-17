@@ -37,6 +37,44 @@ pub struct Query {
     pub page_size: Option<i64>,
 }
 impl Catalog {
+    pub(crate) fn remote_rating(&self, kind: &str, id: &str) -> Result<String> {
+        Ok(self.connection.query_row(
+            "SELECT rating FROM content_records WHERE kind=?1 AND id=?2 AND deleted=0",
+            [kind, id],
+            |row| row.get(0),
+        )?)
+    }
+    pub(crate) fn remote_character_id(&self, character: &str) -> Result<String> {
+        if character.is_empty() {
+            return Ok(String::new());
+        }
+        Ok(self.connection.query_row("SELECT id FROM content_records
+            WHERE kind='character' AND deleted=0 AND (id=?1 COLLATE NOCASE OR title=?1 COLLATE NOCASE)
+            ORDER BY (id=?1) DESC,id LIMIT 1", [character], |row| row.get(0)).optional()?
+            .unwrap_or_else(|| character.to_owned()))
+    }
+    pub(crate) fn remote_lookup(
+        &self,
+        query: &Query,
+        cache: &FacetCache,
+        additional: &[Value],
+    ) -> Result<Value> {
+        let result = self.query_page(query, Some(cache), additional, 500)?;
+        let next_page = (result.page * result.page_size < result.total).then_some(result.page + 1);
+        let items: Vec<_> = result
+            .items
+            .into_iter()
+            .map(|row| {
+                json!({"id":row["id"],"kind":row["kind"],"title":row["title"],
+                "characterId":row["characterId"],"category":row["category"],"rating":row["rating"]})
+            })
+            .collect();
+        Ok(
+            json!({"items":items,"total":result.total,"page":result.page,"pageSize":result.page_size,
+                "nextPage":next_page,"ratings":result.facets["ratings"]}),
+        )
+    }
+
     pub fn query(&self, query: &Query) -> Result<Value> {
         let Page {
             ok,
@@ -54,6 +92,16 @@ impl Catalog {
         Ok(value)
     }
     pub(super) fn query_cached(&self, query: &Query, cache: Option<&FacetCache>) -> Result<Page> {
+        self.query_page(query, cache, &[], 100)
+    }
+
+    fn query_page(
+        &self,
+        query: &Query,
+        cache: Option<&FacetCache>,
+        additional: &[Value],
+        max_page_size: i64,
+    ) -> Result<Page> {
         let transaction = self.connection.unchecked_transaction()?;
         let date = |text: &str| -> Result<Option<chrono::DateTime<chrono::FixedOffset>>> {
             if text.is_empty() {
@@ -74,7 +122,7 @@ impl Catalog {
             return Err(ApiError::invalid("记录类型无效"));
         }
         let page = query.page.unwrap_or(1).max(1);
-        let size = query.page_size.unwrap_or(24).clamp(1, 100);
+        let size = query.page_size.unwrap_or(24).clamp(1, max_page_size);
         let order = match query.sort.as_str() {
             "title" => "title COLLATE NOCASE,sort_order,id",
             "relevance" if !query.search.trim().is_empty() => {
@@ -166,17 +214,28 @@ impl Catalog {
             )?
         } else {
             unfiltered_total
-        };
+        } + additional.len() as i64;
         let selected_page = page.min(((total + size - 1) / size).max(1));
+        let offset = (selected_page - 1) * size;
+        let mut items: Vec<_> = additional
+            .iter()
+            .skip(offset as usize)
+            .take(size as usize)
+            .cloned()
+            .collect();
         let mut statement = self.connection.prepare(&format!("SELECT kind,id,revision,sort_order,created_at,updated_at,title,character_id,category,rating FROM content_records WHERE {filter} ORDER BY {order} LIMIT ? OFFSET ?"))?;
         if query.sort == "relevance" && !search.is_empty() {
             values.extend((0..3).map(|_| search.clone().into()));
         }
-        values.extend([size.into(), ((selected_page - 1) * size).into()]);
-        let items = statement.query_map(rusqlite::params_from_iter(&values), |r| {
+        values.extend([
+            (size - items.len() as i64).into(),
+            (offset - additional.len() as i64).max(0).into(),
+        ]);
+        let rows = statement.query_map(rusqlite::params_from_iter(&values), |r| {
             Ok(json!({"kind":text_column(r,0)?,"id":text_column(r,1)?,"revision":r.get::<_,i64>(2)?,"sortOrder":r.get::<_,i64>(3)?,"createdAt":optional_text_column(r,4)?,"updatedAt":optional_text_column(r,5)?,
                 "title":text_column(r,6)?,"characterId":text_column(r,7)?,"category":text_column(r,8)?,"rating":text_column(r,9)?}))
         })?.collect::<rusqlite::Result<Vec<_>>>()?;
+        items.extend(rows);
         let value = Page {
             ok: true,
             version,

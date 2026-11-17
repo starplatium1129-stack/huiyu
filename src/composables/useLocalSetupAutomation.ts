@@ -5,7 +5,7 @@ import { localSetupApi } from '../api/localSetupApi'
 import { controlApi } from '../api/controlApi'
 import { inferenceSettingsApi } from '../api/inferenceSettingsApi'
 import { waitLocalSetupOperation } from '../api/localSetupOperation'
-import { useLocalSetupDownload } from './useLocalSetupDownload'
+import { useLocalSetupBatchDownload } from './useLocalSetupBatchDownload'
 import { LOCAL_SETUP_DRAFT_SETTING, clearSetupOperation, readSetupDraft, setupOperationKind, type SetupDraft } from '../utils/localSetupDraft'
 import { localChatRecommendation } from '../utils/localChatRecommendation'
 import { modelPreparationState, drawingSetupReadiness } from '../utils/localSetupPreparation'
@@ -14,8 +14,12 @@ import { settingsRepository, DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING } from '
 
 function suggestedComfy(snapshot: LocalSetupResponse): SetupDraft['environment'] {
   if (snapshot.comfy.installation !== 'missing') return ''
+  const nvidia = snapshot.hardware.devices.filter(device => /nvidia/i.test(device.name))
+  if (nvidia.length) {
+    return nvidia.every(device => /\b(?:GTX|GT)\s+(?:\d{3}|10\d{2})\b/i.test(device.name)) ? 'comfy-cu126' : 'comfy-nvidia'
+  }
   if (snapshot.hardware.devices.some(device => /Radeon.*(?:880M|890M)/i.test(device.name))) return 'comfy-amd'
-  return snapshot.hardware.devices.some(device => /nvidia/i.test(device.name)) ? 'comfy-nvidia' : ''
+  return ''
 }
 const suggestedChat = (snapshot: LocalSetupResponse): SetupDraft['llamaEnvironment'] =>
   snapshot.hardware.devices.some(device => /Radeon/i.test(device.name)) ? 'llama-vulkan' : 'llama-cuda'
@@ -38,7 +42,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const workspace=computed(()=>snapshot.value.workspace.path)
   const hasSelection=computed(()=>drawing.value||!!chatId.value)
   const ready=computed(()=>reviewed.value&&!blocked.value&&hasSelection.value)
-  const download=useLocalSetupDownload(workspace,ready,onResult)
+  const download=useLocalSetupBatchDownload(workspace,onResult)
   const chatStorage=useChatStorage(cause=>{error.value=cause})
   const hasComfy=computed(()=>snapshot.value.comfy.installation==='present')
   const rebuildComfy=ref(false)
@@ -96,14 +100,6 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const plan=computed(()=>[...runtimeIds.value,...weightIds.value].map(id=>requireModel(id)))
   const downloadBytes=computed(()=>plan.value.filter(model=>modelPreparationState(model)!=='bytes-match').reduce((sum,model)=>sum+(model.preparation?.expectedBytes??0),0))
   function checkpoint(){if(disposed||cancelled)throw new Error('准备已停止；已完成文件保留')}
-  async function fetchFile(id:string){
-    checkpoint()
-    const model=requireModel(id)
-    message.value='正在准备 '+model.label
-    await download.download(model)
-    checkpoint()
-    if(download.failed.value[id])throw new Error(download.notices.value[id]||'下载未完成')
-  }
   async function waitOperation(result:ControlActionResult,confirmedWorkspace=workspace.value){
     const id=result.operation?.id
     if(!id)throw new Error('准备操作尚未确认，请重新检查控制室')
@@ -162,7 +158,7 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
     onConfigured()
   }
   function beginRun(){
-    workProgress.value=null
+    workProgress.value=null;message.value='';stage.value=null
     busy.value=true;cancelled=false;cancelState.value='idle';operationUncertain.value=false;completed.value=false;engineRestartRequired.value=false;error.value=''
   }
   async function startExisting(){
@@ -180,20 +176,23 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   async function run(){
     if(busy.value||!statusConfirmed.value||environmentRequired.value||serviceMustStop.value||!ready.value||(!drawing.value&&!chatId.value))return
     beginRun()
-    const runtime=[...runtimeIds.value],weights=[...weightIds.value],prepareComfy=drawing.value&&needsComfyPreparation.value
+    const prepareComfy=drawing.value&&needsComfyPreparation.value
     const prepareLlama=!!chatId.value&&!snapshot.value.chat?.runtimePresent,selectedChat=chatId.value,confirmedWorkspace=workspace.value
     const prepareDrawing=drawing.value,selectedModel=modelId.value,externalDrawing=externalEnvironment.value
-    const selectedEnvironment=environment.value
+    const selectedEnvironment=environment.value,selectedLlamaEnvironment=llamaEnvironment.value
     try{
+      const runtime=runtimeIds.value.map(requireModel),weights=weightIds.value.map(requireModel)
       stage.value='environment'
-      for(const id of runtime)await fetchFile(id)
+      await download.run(runtime,confirmedWorkspace)
+      checkpoint()
       if(prepareComfy){
         await waitOperation(await localSetupApi.prepareEnvironment(selectedEnvironment,confirmedWorkspace),confirmedWorkspace)
         rebuildComfy.value=false
       }
-      if(prepareLlama)await waitOperation(await localSetupApi.prepareEnvironment(llamaEnvironment.value,confirmedWorkspace),confirmedWorkspace)
+      if(prepareLlama)await waitOperation(await localSetupApi.prepareEnvironment(selectedLlamaEnvironment,confirmedWorkspace),confirmedWorkspace)
       stage.value='models'
-      for(const id of weights)await fetchFile(id)
+      await download.run(weights,confirmedWorkspace)
+      checkpoint()
       if(prepareDrawing){
         stage.value='service'
         if(!externalDrawing)await waitOperation(await controlApi.serviceAction('comfy','start'),confirmedWorkspace)
@@ -217,8 +216,11 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
       message.value=prepareDrawing
         ? '绘图服务已连接，所选模型与节点检查已完成。前往绘图画室生成第一张图片，确认实际效果。'
         : '聊天环境与文件已准备。进入角色房间发送一条短消息，确认本机实际效果。'
-      refresh()
-    }catch(cause){if(!disposed)error.value=cause instanceof Error?cause.message:'准备未完成，请重试'}
+    }catch(cause){
+      if(!disposed)error.value=cancelled&&!activeOperation
+        ? '准备已停止。已完成的文件保留，重新开始时会尝试续传。'
+        : cause instanceof Error?cause.message:'准备未完成，请重试'
+    }
     finally{if(!disposed){busy.value=!!activeOperation;if(!activeOperation)refresh()}}
   }
   async function cancel(){

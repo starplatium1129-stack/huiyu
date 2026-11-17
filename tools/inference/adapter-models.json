@@ -86,7 +86,7 @@
       "source": "https://civitai.com/models/3015023?modelVersionId=3434952",
       "license": "OpenMOSS Apache-2.0; MIAOKA checkpoint terms also apply",
       "licenseUrl": "https://civitai.com/models/3015023?modelVersionId=3434952",
-      "layoutNote": "MIAOKA BASE v1.1 INT8 ConvRot with the same pinned Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. INT8 uses comfy-kitchen 0.2.37 and CUDA 13 runtime. Current image quality and performance require device acceptance.",
+      "layoutNote": "MIAOKA BASE v1.1 INT8 ConvRot with the paired INT8 Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. Supports the managed CUDA PyTorch INT8 path and an installed comfy-kitchen CUDA 13 backend.",
       "sizes": [
         "768x1280",
         "1280x768",
@@ -145,7 +145,7 @@
       "source": "https://civitai.com/models/3015023?modelVersionId=3422319",
       "license": "OpenMOSS Apache-2.0; MIAOKA checkpoint terms also apply",
       "licenseUrl": "https://civitai.com/models/3015023?modelVersionId=3422319",
-      "layoutNote": "MIAOKA FP16 or explicitly imported author BASE v1.0 INT8 ConvRot with pinned Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. INT8 uses comfy-kitchen 0.2.37 and CUDA 13 runtime. Current image quality and performance require device acceptance.",
+      "layoutNote": "MIAOKA FP16 or imported author BASE v1.0 INT8 ConvRot with pinned Qwen3.5-9B encoder, tokenizer and FLUX.2 VAE. INT8 supports the managed CUDA PyTorch path and an installed comfy-kitchen CUDA 13 backend.",
       "sizes": ["768x1280", "1280x768", "1280x1280", "960x1536", "1536x960", "1536x1536"],
       "steps": 50, "cfg": 3.5, "maxSize": 1536, "alignment": 16,
       "shift": 5, "uncondSkipLayers": [22],

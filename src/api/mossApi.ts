@@ -25,9 +25,11 @@ export async function mossStatus(signal: AbortSignal): Promise<DirectImageModelS
     if (model.mossFp16Ready !== undefined && typeof model.mossFp16Ready !== 'boolean') throw new Error('MOSS FP16 权重状态无效，请更新并重启后端')
     if (model.mossInt8Ready !== undefined && typeof model.mossInt8Ready !== 'boolean') throw new Error('MOSS 权重状态无效，请更新并重启后端')
     if (model.mossTextInt8Ready !== undefined && typeof model.mossTextInt8Ready !== 'boolean') throw new Error('MOSS 文本权重状态无效，请更新并重启后端')
+    if (model.mossTextBf16Ready !== undefined && typeof model.mossTextBf16Ready !== 'boolean') throw new Error('MOSS 文本权重状态无效，请更新并重启后端')
+    const mossTextBf16Ready = model.mossTextBf16Ready !== false
     return { id: selected.value, available: model.available, unavailableReason: model.unavailableReason,
       licenseUrl: model.licenseUrl, mossSpectrum: Array.isArray(acceleration) && acceleration.includes('spectrum'), mossFlexWindow: model.mossSpectrumFlexWindow === true, mossRemacri: model.mossRemacri === true,
-      mossFp8: Array.isArray(precision) && precision.includes('fp8'), mossCompile: model.mossCompile === true,
+      mossTextBf16Ready, mossFp8: mossTextBf16Ready && Array.isArray(precision) && precision.includes('fp8'), mossCompile: model.mossCompile === true,
       mossFp16Ready: model.mossFp16Ready === true,
       mossInt8Ready: model.mossInt8Ready === true,
       mossTextInt8Ready: Array.isArray(precision) && precision.includes('int8') && model.mossTextInt8Ready === true }

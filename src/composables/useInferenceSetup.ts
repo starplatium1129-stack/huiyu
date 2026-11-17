@@ -19,6 +19,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const basePython = ref(''), wheelhouse = ref(''), workspacePath = ref(''), runtimeReviewed = ref(false), reviewed = ref(false)
   const hfToken = ref('')
   const checkpointPath = ref('')
+  const checkpointSource = computed(() => checkpointPath.value.trim().replace(/^"(.*)"$/, '$1'))
   const resourceId = ref(''), resourceReviewed = ref(false)
   const selectedResource = computed(() => plan.value?.resources.find(value => value.id === resourceId.value))
   const modelId = ref(''), sourceDir = ref(''), importModelId = ref('anima-miaomiao-v1.6'), importReviewed = ref(false)
@@ -37,13 +38,17 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     && selectedResource.value.freeBytes >= selectedResource.value.requiredBytes)
   const selectedModel = computed(() => plan.value?.models.find(model => model.id === modelId.value))
   const runtimeSpaceEnough = computed(() => !!plan.value && plan.value.freeBytes !== null && plan.value.freeBytes >= plan.value.runtime.requiredBytes)
-  const modelSpaceEnough = computed(() => !!plan.value && !!selectedModel.value && plan.value.freeBytes !== null && plan.value.freeBytes >= selectedModel.value.requiredBytes)
+  const modelRequiredBytes = computed(() => {
+    const model = selectedModel.value
+    return (checkpointSource.value ? model?.requiredBytesWithCheckpoint ?? model?.requiredBytes : model?.requiredBytes) ?? 0
+  })
+  const modelSpaceEnough = computed(() => !!plan.value && !!selectedModel.value && plan.value.freeBytes !== null && plan.value.freeBytes >= modelRequiredBytes.value)
   const canInstall = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && !plan.value.runtime.installed && runtimeSpaceEnough.value)
-  const checkpointReady = computed(() => !selectedModel.value?.checkpointFilename || selectedModel.value.checkpointOptional || selectedModel.value.installed || !!checkpointPath.value.trim())
+  const checkpointReady = computed(() => !selectedModel.value?.checkpointFilename || selectedModel.value.checkpointOptional || selectedModel.value.installed || !!checkpointSource.value)
   const canDownload = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && plan.value.runtime.installed && selectedModel.value && !selectedModel.value.installed && modelSpaceEnough.value && checkpointReady.value)
   const canActivate = computed(() => !locked.value && currentPlan.value && plan.value?.supported && plan.value.runtime.installed && selectedModel.value?.installed)
   const nativeEnabled = computed(() => currentPlan.value && plan.value?.supported && plan.value.workspaceMatches && plan.value.activeEngine === 'native' && !plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
-  const setupRequiredBytes = computed(() => (plan.value?.runtime.installed ? 0 : plan.value?.runtime.requiredBytes ?? 0) + (selectedModel.value?.requiredBytes ?? 0))
+  const setupRequiredBytes = computed(() => (plan.value?.runtime.installed ? 0 : plan.value?.runtime.requiredBytes ?? 0) + modelRequiredBytes.value)
   const setupSpaceEnough = computed(() => plan.value?.freeBytes !== null && plan.value?.freeBytes !== undefined && plan.value.freeBytes >= setupRequiredBytes.value)
   const canSetup = computed(() => !locked.value && currentPlan.value && plan.value?.supported && selectedModel.value && reviewed.value && setupSpaceEnough.value && !nativeEnabled.value && checkpointReady.value)
   const canPrepare = computed(() => !locked.value && currentPlan.value && !preparedPaths.value && runtimeReviewed.value && !!basePython.value.trim() && !!wheelhouse.value.trim())
@@ -274,8 +279,8 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     } finally { if ('hfToken' in next.input) delete next.input.hfToken; if (!disposed) busy.value = hasRunningOperation.value || operationUncertain.value }
   }
   function managedInput(): ManagedInferenceInput { return { workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true, modelId: modelId.value,
-    ...(selectedModel.value?.checkpointFilename && checkpointPath.value.trim() ? { checkpointPath: checkpointPath.value.trim() } : {}),
-    ...(hfToken.value.trim() ? { hfToken: hfToken.value.trim() } : {}) } }
+    ...(selectedModel.value?.checkpointFilename && checkpointSource.value ? { checkpointPath: checkpointSource.value } : {}),
+    ...(selectedModel.value?.requiresAccess && hfToken.value.trim() ? { hfToken: hfToken.value.trim() } : {}) } }
   async function prepareEngine() { if (local() && canSetup.value) await start({ kind: 'prepare-native-engine', input: { ...managedInput(), modelId: modelId.value } }) }
   async function installRuntime() { if (local() && canInstall.value) await start({ kind: 'install-native-runtime', input: managedInput() }) }
   async function downloadModel() { if (local() && canDownload.value) await start({ kind: 'download-native-model', input: { ...managedInput(), modelId: modelId.value } }) }

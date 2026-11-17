@@ -9,6 +9,7 @@ mod plan;
 mod probe;
 pub(crate) mod receipts;
 mod recovery;
+pub(crate) mod remote_images;
 mod resources;
 mod service;
 mod snapshots;
@@ -36,7 +37,7 @@ use std::{
     collections::{HashMap, VecDeque},
     sync::{
         Arc,
-        atomic::{AtomicBool, AtomicU64, Ordering},
+        atomic::{AtomicBool, AtomicI64, AtomicU64, Ordering},
     },
     time::{Duration, Instant},
 };
@@ -82,6 +83,7 @@ struct Inner {
     native: Arc<native::Engine>,
     native_images: bool,
     native_settings: native::Settings,
+    remote_images: Option<Arc<remote_images::Store>>,
     scope: Scope,
     config: Config,
     transport: LocalUpstream,
@@ -143,6 +145,7 @@ struct Job {
     execution: Execution,
     provider: &'static str,
     created: i64,
+    started_at: AtomicI64,
     state: Mutex<JobState>,
     collection: Mutex<()>,
     notify: Notify,
@@ -156,6 +159,7 @@ struct JobState {
     collection_pending: bool,
     status: String,
     result: Option<Output>,
+    result_sha256: Option<String>,
     error: Option<String>,
     code: Option<String>,
     metadata: Arc<Value>,
@@ -233,6 +237,15 @@ impl Service {
             native: native_engine.unwrap_or_default(),
             native_images: matches!(scope, Scope::Images | Scope::Video)
                 && native_settings.engine == "native",
+            remote_images: (matches!(scope, Scope::Images)
+                && native_settings.engine == "native"
+                && native_settings.remote_serve)
+                .then(|| {
+                    Arc::new(remote_images::Store::new(
+                        config.runtime_root.clone(),
+                        &native_settings.remote_key,
+                    ))
+                }),
             native_settings,
             scope,
             config,
@@ -284,8 +297,16 @@ impl Service {
         jobs::public(&job).await
     }
     pub(crate) async fn image_job(&self, id: &str, owner: &str, family: &str) -> Result<Value> {
-        let job = jobs::find_scoped(&self.inner, id, owner, false, Some(family)).await?;
-        jobs::public(&job).await
+        match jobs::find_scoped(&self.inner, id, owner, false, Some(family)).await {
+            Ok(job) => jobs::public(&job).await,
+            Err(error) if matches!(error.status.as_u16(), 404 | 410) => {
+                match self.remote_store().filter(|store| store.owner == owner) {
+                    Some(store) => store.get(id, family).await?.ok_or(error),
+                    None => Err(error),
+                }
+            }
+            Err(error) => Err(error),
+        }
     }
     pub(crate) async fn wait_image_completion(
         &self,
@@ -294,7 +315,20 @@ impl Service {
         family: &str,
         wait: Duration,
     ) -> Result<bool> {
-        let job = jobs::find_scoped(&self.inner, id, owner, false, Some(family)).await?;
+        let job = match jobs::find_scoped(&self.inner, id, owner, false, Some(family)).await {
+            Ok(job) => job,
+            Err(error) if matches!(error.status.as_u16(), 404 | 410) => {
+                let Some(store) = self.remote_store().filter(|store| store.owner == owner) else {
+                    return Err(error);
+                };
+                return store
+                    .get(id, family)
+                    .await?
+                    .map(|job| job["upstreamSettled"] == true || job["unknown"] == true)
+                    .ok_or(error);
+            }
+            Err(error) => return Err(error),
+        };
         if job.provider != "native" {
             return Err(ApiError::new(404, "JOB_NOT_FOUND", "生成任务不存在"));
         }
@@ -326,7 +360,18 @@ impl Service {
         jobs::result(&self.inner, id, owner, None).await
     }
     pub(crate) async fn image_result(&self, id: &str, owner: &str, family: &str) -> Result<Output> {
-        jobs::result(&self.inner, id, owner, Some(family)).await
+        match jobs::result(&self.inner, id, owner, Some(family)).await {
+            Err(error) if matches!(error.status.as_u16(), 404 | 410) => {
+                match self.remote_store().filter(|store| store.owner == owner) {
+                    Some(store) => store.result(id, family).await?.ok_or(error),
+                    None => Err(error),
+                }
+            }
+            result => result,
+        }
+    }
+    pub(crate) fn remote_store(&self) -> Option<&Arc<remote_images::Store>> {
+        self.inner.remote_images.as_ref()
     }
     pub async fn cancel(&self, id: &str, owner: &str) -> Result<Value> {
         let job = jobs::find(&self.inner, id, owner, false).await?;
@@ -343,7 +388,19 @@ impl Service {
         service::close(self.inner.clone()).await;
     }
 }
-fn now() -> i64 {
+impl Inner {
+    fn archive_for(&self, job: &Job) -> Option<&Arc<remote_images::Store>> {
+        self.remote_images.as_ref().filter(|store| {
+            job.provider == "native"
+                && store.owner == job.owner
+                && job.input["family"]
+                    .as_str()
+                    .and_then(remote_images::image_route)
+                    .is_some()
+        })
+    }
+}
+pub(crate) fn now() -> i64 {
     std::time::SystemTime::now()
         .duration_since(std::time::UNIX_EPOCH)
         .unwrap_or_default()

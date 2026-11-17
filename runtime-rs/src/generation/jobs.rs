@@ -57,9 +57,11 @@ pub(super) fn create(
         execution: prepared.execution,
         provider,
         created,
+        started_at: AtomicI64::new(0),
         state: Mutex::new(JobState {
             status: "queued".into(),
             result: None,
+            result_sha256: None,
             error: None,
             code: None,
             metadata: metadata.into(),
@@ -114,13 +116,10 @@ pub(super) async fn find_scoped(
         if family.is_none_or(|family| job.input["family"] == family) {
             return Ok(job.clone());
         }
-    } else if state
-        .lost
-        .get(id)
-        .is_some_and(|stored| {
-            stored.owner == owner && family.is_none_or(|family| stored.family.as_deref() == Some(family))
-        })
-    {
+    } else if state.lost.get(id).is_some_and(|stored| {
+        stored.owner == owner
+            && family.is_none_or(|family| stored.family.as_deref() == Some(family))
+    }) {
         return Err(ApiError::new(
             410,
             "JOB_LOST",
@@ -155,6 +154,8 @@ pub(super) async fn public(job: &Job) -> Result<Value> {
         .filter(|s| *s <= 9_007_199_254_740_991)
         .unwrap_or(job.input["seed"].as_u64().unwrap_or(0));
     let mut public = json!({"id":job.id,"status":state.status,"provider":job.provider,"seed":seed,"resultAvailable":available,"resultUrl":result_url,"metadata":null,"error":state.error,"code":state.code});
+    public["resultBytes"] = json!(state.result.as_ref().filter(|_| available).map(Output::len));
+    public["resultSha256"] = json!(state.result_sha256.as_ref().filter(|_| available));
     public["upstreamSettled"] = json!(state.settled && !state.collection_pending);
     public["unknown"] = json!(state.unknown);
     let tracked = matches!(job.provider, "comfy" | "native");
@@ -310,6 +311,34 @@ pub(super) fn notify_settled(job: &Job) {
 /// the successful result even if the workspace write fails, and retry only the
 /// idempotent collection hook, never a generation request.
 pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) {
+    // A cancellation can win before publication; hold the same claim as native
+    // cancel only while committing the durable copy and terminal transition.
+    let archive = inner.archive_for(job);
+    let _publication = if archive.is_some() {
+        Some(job.collection.lock().await)
+    } else {
+        None
+    };
+    let digest = if let Some(archive) = archive.filter(|_| !inner.cancel.is_cancelled()) {
+        let running = job.state.lock().await.status == "running";
+        if running {
+            match archive.publish(job, &output).await {
+                Ok(digest) => Some(digest),
+                Err(error) => {
+                    // Preserve the existing live result if the archive drive
+                    // is full. The history explains the retention failure.
+                    archive
+                        .finish(job, "succeeded", Some(&error.message), Some(&error.code))
+                        .await;
+                    None
+                }
+            }
+        } else {
+            None
+        }
+    } else {
+        None
+    };
     {
         let mut state = job.state.lock().await;
         if state.status != "running" {
@@ -327,6 +356,7 @@ pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) 
             return;
         }
         state.result = Some(output);
+        state.result_sha256 = digest;
         state.status = "succeeded".into();
         state.settled = true;
         state.unknown = false;
@@ -339,6 +369,7 @@ pub(super) async fn succeed(inner: &Arc<Inner>, job: &Arc<Job>, output: Output) 
         // The GPU has completed; storage retries must not retain GPU capacity.
         state.release_capacity();
     }
+    drop(_publication);
     job.notify.notify_waiters();
     if job.hooks.is_none() {
         return;

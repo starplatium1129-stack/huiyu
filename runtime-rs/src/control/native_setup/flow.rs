@@ -6,6 +6,19 @@ impl ControlService {
         let permit = self.setup_permit()?;
         let plan = self.native_setup_plan(body.model_id.as_deref()).await?;
         require_supported(&plan)?;
+        let active = self.active_inference()?;
+        if active.engine != "native"
+            && active
+                .environment_overrides
+                .iter()
+                .any(|key| key == "engine")
+        {
+            return Err(ApiError::new(
+                409,
+                "CONFIG_ENV_OVERRIDE",
+                "当前引擎由启动环境指定，请移除覆盖并重启绘遇后再准备原生引擎",
+            ));
+        }
         let (_, models) = bundles()?;
         let runtime = image_models::runtime_for(body.model_id.as_deref())?;
         let model = models
@@ -23,7 +36,15 @@ impl ControlService {
         } else {
             plan["runtime"]["requiredBytes"].as_u64().unwrap()
         }
-        .saturating_add(model_view["requiredBytes"].as_u64().unwrap());
+        .saturating_add(
+            model_view[if body.checkpoint_path.is_some() {
+                "requiredBytesWithCheckpoint"
+            } else {
+                "requiredBytes"
+            }]
+            .as_u64()
+            .unwrap(),
+        );
         require_space(plan["freeBytes"].as_u64(), required)?;
         let mut operation = self.begin_with_id(
             "prepare-native-engine",
@@ -115,6 +136,7 @@ impl ControlService {
                 self,
                 &model,
                 body.checkpoint_path.as_deref(),
+                operation,
                 cancel,
             )
             .await?
@@ -152,36 +174,18 @@ impl ControlService {
             json!({"downloadedBytes":runtime_bytes,"message":"运行库已就绪"}),
         );
         stopped(cancel)?;
-        let workspace = self.config.ai_workspace_root.clone();
-        let app = self.config.app_root.clone();
-        let model_copy = model.clone();
-        let (free, needed) = tokio::task::spawn_blocking(move || -> Result<_> {
-            let free = plan::safe_workspace(&workspace, &app)?;
-            Ok((
-                free,
-                plan::model_needed(&workspace.join("inference"), &model_copy),
-            ))
-        })
-        .await
-        .map_err(|_| ApiError::new(503, "WORKSPACE_CHECK_FAILED", "工作区检查未完成"))??;
-        require_space(Some(free), needed)?;
         let mut model_operation = operation.clone();
         model_operation["flowStep"] = json!("model");
         model_operation["downloadOffset"] = json!(runtime_bytes);
         self.native_progress(&model_operation, json!({"stage":"checking","phase":"checking","currentFile":"","message":"准备完整模型"}));
-        let model_root = self
-            .config
-            .ai_workspace_root
-            .join("inference/models")
-            .join(&model.id);
-        if !receipt_matches(&model_root, &model) {
+        if !installed {
             self.install_native_model(
                 &model,
                 &model_operation,
                 cancel,
                 permit,
                 body.hf_token.as_deref(),
-                imported.as_deref(),
+                imported.as_ref(),
                 resolved,
             )
             .await?;
@@ -236,7 +240,7 @@ fn require_supported(plan: &Value) -> Result<()> {
     }
     Ok(())
 }
-fn require_space(free: Option<u64>, required: u64) -> Result<()> {
+pub(super) fn require_space(free: Option<u64>, required: u64) -> Result<()> {
     if free.is_none_or(|free| free < required) {
         return Err(ApiError::new(
             409,

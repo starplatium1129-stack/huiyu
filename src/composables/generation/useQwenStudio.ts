@@ -23,7 +23,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
   const alignment = moss ? 16 : 32, maxSize = moss ? 1536 : 2816
   const form = reactive({ modelId: moss ? MOSS_MODEL_ID : 'qwen-image-2.1-turbo', prompt: '', negative: moss ? MOSS_NEGATIVE : '',
     width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0,
-    mossAcceleration: 'spectrum' as 'off' | 'spectrum', mossTextPrecision: 'bf16' as 'bf16' | 'fp8' | 'int8', mossCompile: false,
+    mossAcceleration: 'spectrum' as 'off' | 'spectrum', mossTextPrecision: 'auto' as 'auto' | 'bf16' | 'fp8' | 'int8', mossCompile: false,
     mossSpectrumFlexWindow: 0.5,
     mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8', ...(moss ? { mossLayout: '' } : {}) })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
@@ -72,6 +72,12 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     draftTimer = setTimeout(() => { void persistDraft() }, 400)
   }, { deep: true, flush: 'sync' })
   const selected = computed(() => models.value.find(model => model.id === form.modelId))
+  if (moss) watch([selected, () => form.mossTextPrecision], ([model, precision]) => {
+    if (!model?.available) return
+    if (precision === 'bf16' && model.mossTextBf16Ready === false || precision === 'fp8' && !model.mossFp8 || precision === 'int8' && !model.mossTextInt8Ready) {
+      form.mossTextPrecision = 'auto'
+    }
+  })
   const turbo = computed(() => form.modelId === 'qwen-image-2.1-turbo')
   const locked = computed(() => !ready.value || busy.value || importing.value || observing.value || saving.value || cancelling.value || unresolved.value)
   const inputSize = computed(() => source.value ? mangaInputSize(source.value) : null)
@@ -227,9 +233,10 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
         || form.mossAcceleration === 'spectrum' && !selected.value?.mossSpectrum)) throw new Error('当前后端尚未提供 MOSS Spectrum，请更新并重启或关闭缓存加速')
       if (moss && (!validMossSpectrumFlexWindow(form.mossSpectrumFlexWindow)
         || form.mossAcceleration === 'spectrum' && !selected.value?.mossFlexWindow)) throw new Error('Spectrum 加速强度需为 0–2，且后端支持窗口调节；请检查参数或更新后端')
-      if (moss && (!['bf16', 'fp8', 'int8'].includes(form.mossTextPrecision)
+      if (moss && (!['auto', 'bf16', 'fp8', 'int8'].includes(form.mossTextPrecision)
+        || form.mossTextPrecision === 'bf16' && selected.value?.mossTextBf16Ready === false
         || form.mossTextPrecision === 'fp8' && !selected.value?.mossFp8
-        || form.mossTextPrecision === 'int8' && !selected.value?.mossTextInt8Ready)) throw new Error('所选 MOSS 文本编码精度未准备好，请更新后端、导入对应权重或选择原始精度')
+        || form.mossTextPrecision === 'int8' && !selected.value?.mossTextInt8Ready)) throw new Error('请选择已准备好的 MOSS 文本编码器')
       if (moss && (typeof form.mossCompile !== 'boolean' || form.mossCompile && !selected.value?.mossCompile)) throw new Error('当前后端尚未提供 MOSS 编译，请更新并重启或关闭内核编译')
       if (moss && (!['auto', 'fp16', 'int8'].includes(form.mossWeightPrecision)
         || form.mossWeightPrecision === 'fp16' && !selected.value?.mossFp16Ready
@@ -239,7 +246,8 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       if (moss && (source.value || references.value.length)) throw new Error('MOSS 当前仅支持文生图，请移除编辑输入')
       const input: Record<string, unknown> = { modelId: form.modelId, ...compiled,
         ...(moss ? { mossAcceleration: form.mossAcceleration,
-          ...(selected.value?.mossFlexWindow ? { mossSpectrumFlexWindow: form.mossSpectrumFlexWindow } : {}), mossTextPrecision: form.mossTextPrecision,
+          ...(selected.value?.mossFlexWindow ? { mossSpectrumFlexWindow: form.mossSpectrumFlexWindow } : {}),
+          mossTextPrecision: form.mossTextPrecision === 'auto' ? (selected.value?.mossTextInt8Ready ? 'int8' : 'bf16') : form.mossTextPrecision,
           mossCompile: form.mossCompile, mossWeightPrecision: form.mossWeightPrecision } : {}),
         width: form.width, height: form.height, steps: turbo.value ? 8 : form.steps, cfg: moss || negative ? form.cfg : 1,
         ...(randomSeed.value ? {} : { seed: form.seed }) }
@@ -383,7 +391,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
           if (moss) {
             form.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
             form.mossSpectrumFlexWindow = validMossSpectrumFlexWindow(input.mossSpectrumFlexWindow) ? input.mossSpectrumFlexWindow : 0.5
-            form.mossTextPrecision = input.mossTextPrecision === 'int8' ? 'int8' : input.mossTextPrecision === 'fp8' ? 'fp8' : 'bf16'
+            form.mossTextPrecision = input.mossTextPrecision === 'int8' || input.mossTextPrecision === 'fp8' || input.mossTextPrecision === 'bf16' ? input.mossTextPrecision : 'auto'
             form.mossCompile = input.mossCompile === true
             form.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
             if (taskId && task.value?.taskId === taskId && typeof input.prompt === 'string' && isMossLayoutInput(input.prompt)) {

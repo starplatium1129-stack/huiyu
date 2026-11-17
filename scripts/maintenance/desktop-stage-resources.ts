@@ -7,6 +7,7 @@ import { execFileSync } from 'node:child_process';
 const { withWorkspaceLock }: typeof import('../lib/workspace-lock') = require('../lib/workspace-lock');
 const { copyRustPayload, runtimeBuild }: typeof import('./desktop-rust-inputs') = require('./desktop-rust-inputs');
 const catalog: typeof import('../lib/catalog-snapshot') = require('../lib/catalog-snapshot');
+const { stageRemoteSceneRecipes }: typeof import('../lib/remote-scene-recipes') = require('../lib/remote-scene-recipes');
 const { includeAsset }: typeof import('../lib/resource-install-packaging') = require('../lib/resource-install-packaging');
 import safe = require('../lib/delivery-paths');
 import type { DesktopBuildProfile } from '../lib/desktop-build-profile';
@@ -100,7 +101,8 @@ function stageResources(options: StageOptions = {}) {
   if (!['full', 'base'].includes(profile)) throw Error('Resource profile must be full or base');
   const buildProfile = options.buildProfile || 'release';
   runtimeBuild(root, buildProfile); // Fail before replacing or copying anything if source/executable binding is stale.
-  const catalogSnapshot = catalog.read(root) !== null;
+  const catalogRows = catalog.read(root);
+  const catalogSnapshot = catalogRows !== null;
   for (const name of OFFLINE_TOOLS) {
     const file = safe.resolveSafe(root, `tools/${name}`);
     if (!fs.statSync(file).isFile() || fs.statSync(file).size === 0) throw Error(`Missing offline resource assistant: ${name}`);
@@ -117,6 +119,9 @@ function stageResources(options: StageOptions = {}) {
         const rel = path.relative(from, file).split(path.sep);
         if(source==='data'&&!includeData(rel,file,catalogSnapshot))return false;
         if(source==='tools'&&!includeTools(rel,file))return false;
+        // Desktop Chromium and modern browsers use Brotli; other clients can
+        // still use the original file. Shipping both variants duplicates bytes.
+        if ((source === 'dist' || source === 'data') && file.endsWith('.gz') && fs.existsSync(file.replace(/\.gz$/, '.br'))) return false;
         if (source === 'assets' && !includeAsset(rel.join('/'))) return false;
         // Promotional screenshots are referenced only by repository READMEs.
         if (source === 'docs' && rel[0] === 'images' && rel[1] === 'software-preview') return false;
@@ -129,6 +134,7 @@ function stageResources(options: StageOptions = {}) {
     const inferencePrep = path.join(gateway, 'scripts/maintenance'); fs.mkdirSync(inferencePrep, { recursive: true });
     for (const name of ['prepare-inference.py', 'inspect-anima-checkpoint.py', 'convert-anima-checkpoint.py', 'calibrate-anima-teacache.py', 'import-anima-directory.py']) fs.copyFileSync(safe.resolveSafe(root, `scripts/maintenance/${name}`), path.join(inferencePrep, name));
     execFileSync(process.execPath, [path.join(__dirname, 'desktop-resource-profile.js'), root, gateway, profile], { windowsHide: true, stdio: 'pipe' });
+    if (catalogRows) logger(`[stage] 远程场景配方 ${stageRemoteSceneRecipes(root, gateway, catalogRows)} 条`);
     writeResourceInventory(temporary);
     const after = runtimeBuild(root, buildProfile);
     if (after.receipt.source.sha256 !== report.source || after.receipt.binary.sha256 !== report.runtime.sha256) throw Error('Rust build changed during staging');

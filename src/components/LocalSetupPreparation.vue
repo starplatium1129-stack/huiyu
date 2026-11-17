@@ -129,7 +129,10 @@ const downloadReady = computed(() => reviewed.value && confirmed.value && !works
 const { activeId: downloadId, bytesRead: downloadBytes, expectedBytes: downloadExpected, phase: downloadPhase,
   notices: downloadNotices, failed: downloadFailed, download, cancel: cancelDownload } = useLocalSetupDownload(
   computed(() => props.snapshot.workspace.path), downloadReady, result => emit('download-result', result))
-const downloadPhaseLabel = computed(() => ({ checking: '正在核对已有文件', downloading: '正在下载', verifying: '正在验证并发布' })[downloadPhase.value] ?? '正在处理')
+const downloadPhaseLabel = computed(() => ({
+  checking: '正在核对已有文件', connecting: '正在连接下载源', downloading: '正在下载',
+  retrying: '正在重试下载', verifying: '正在验证并发布',
+})[downloadPhase.value] ?? '正在处理')
 watch([activeId, downloadId], values => emit('busy', values.some(Boolean)), { immediate: true })
 const downloadPercent = computed(() => Math.max(0, Math.min(100, Math.floor(downloadBytes.value / (downloadExpected.value || 1) * 100))))
 watch(results, values => { for (const result of Object.values(values)) emit('verification-result', result) })

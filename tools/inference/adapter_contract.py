@@ -159,9 +159,9 @@ def validate(job):
             raise AdapterError("INVALID_PARAMETER", "MOSS acceleration must be off or spectrum")
         result["mossAcceleration"] = acceleration
         result["mossSpectrumFlexWindow"] = number(data, "mossSpectrumFlexWindow", 0.5, 0, 2)
-        precision = data.get("mossTextPrecision", "bf16")
-        if type(precision) is not str or precision not in ("bf16", "fp8", "int8"):
-            raise AdapterError("INVALID_PARAMETER", "MOSS text precision must be bf16, fp8 or int8")
+        precision = data.get("mossTextPrecision", "auto")
+        if type(precision) is not str or precision not in ("auto", "bf16", "fp8", "int8"):
+            raise AdapterError("INVALID_PARAMETER", "MOSS text precision must be auto, bf16, fp8 or int8")
         result["mossTextPrecision"] = precision
         if type(data.get("mossCompile", False)) is not bool:
             raise AdapterError("INVALID_PARAMETER", "MOSS compilation must be a boolean")

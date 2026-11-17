@@ -104,25 +104,35 @@ pub(crate) fn range(
     total: u64,
     etag: Option<&str>,
 ) -> Result<u64, Error> {
-    let length = length(response)?;
     if response.status() == reqwest::StatusCode::OK {
-        if length.is_some_and(|length| length != total) {
+        if length(response)?.is_some_and(|length| length != total) {
             return Err(Error::Size);
         }
         return Ok(0);
     }
+    partial_range(response, offset, total.saturating_sub(1), total, etag)?;
+    Ok(offset)
+}
+
+pub(crate) fn partial_range(
+    response: &Response,
+    start: u64,
+    end: u64,
+    total: u64,
+    etag: Option<&str>,
+) -> Result<(), Error> {
     if response.status() != reqwest::StatusCode::PARTIAL_CONTENT {
         return Err(Error::Status(response.status().as_u16()));
     }
-    let expected = format!("bytes {offset}-{}/{}", total.saturating_sub(1), total);
-    if total == 0
-        || offset >= total
+    let expected = format!("bytes {start}-{end}/{total}");
+    if start > end
+        || end >= total
         || response
             .headers()
             .get("content-range")
             .and_then(|value| value.to_str().ok())
             != Some(expected.as_str())
-        || length.is_some_and(|length| length != total - offset)
+        || length(response)?.is_some_and(|length| length != end - start + 1)
         || etag.is_some_and(|etag| {
             response
                 .headers()
@@ -133,7 +143,7 @@ pub(crate) fn range(
     {
         return Err(Error::Range);
     }
-    Ok(offset)
+    Ok(())
 }
 /** Observer checks run before and after every write; only progress notification is throttled. Flush/sync remains with the file owner. */
 pub(crate) async fn copy<W: AsyncWrite + Unpin, E>(

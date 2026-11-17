@@ -14,10 +14,9 @@
     "skipLibCheck": true,
     "rootDir": ".",
     "outDir": ".",
-    "baseUrl": ".",
     "paths": {
       "@/*": [
-        "src/*"
+        "./src/*"
       ]
     },
     "types": [

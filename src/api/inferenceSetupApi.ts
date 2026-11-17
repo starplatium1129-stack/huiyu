@@ -27,7 +27,7 @@ export interface NativeSetupPlan {
   warnings?: string[]
   freeBytes: number | null
   runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
-  models: { preparation?: 'checkpoint-conversion' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: SetupDrawingFamily; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; installed: boolean }[]
+  models: { preparation?: 'checkpoint-conversion' | 'moss-checkpoint' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: SetupDrawingFamily; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; requiredBytesWithCheckpoint?: number; installed: boolean }[]
   resources: NativeImageResource[]
   activeEngine: string
   configuredEngine: string
@@ -115,10 +115,11 @@ function validPlan(value: ApiResponseObject): boolean {
       && nonempty(source.label) && secureUrl(source.url) && secureUrl(source.licenseUrl))
     && Array.isArray(models) && models.length > 0 && models.every(model => object(model) && nonempty(model.id) && nonempty(model.label)
       && (model.checkpointOptional === undefined || typeof model.checkpointOptional === 'boolean')
-      && (model.preparation === undefined || ['checkpoint-conversion', 'complete-model'].includes(String(model.preparation)))
+      && (model.preparation === undefined || ['checkpoint-conversion', 'moss-checkpoint', 'complete-model'].includes(String(model.preparation)))
       && (model.checkpointFilename === undefined || model.checkpointFilename === null || nonempty(model.checkpointFilename))
       && typeof model.requiresAccess === 'boolean' && ['anima', 'krea2', 'qwen-image', 'moss-image'].includes(String(model.family))
       && nonempty(model.revision) && nonempty(model.license) && secureUrl(model.licenseUrl) && secureUrl(model.sourceUrl)
+      && (model.requiredBytesWithCheckpoint === undefined || bytes(model.requiredBytesWithCheckpoint))
       && bytes(model.downloadBytes) && bytes(model.requiredBytes) && typeof model.installed === 'boolean')
     && new Set(models.map(model => model.id)).size === models.length
     && ['native', 'comfy', 'remote'].includes(String(value.activeEngine)) && ['native', 'comfy', 'remote'].includes(String(value.configuredEngine))
@@ -143,6 +144,8 @@ export function isInferenceSetupOperation(value: unknown): value is InferenceSet
     && (value.stageIndex === undefined || bytes(value.stageIndex))
     && (value.downloadedBytes === undefined || bytes(value.downloadedBytes))
     && (value.totalBytes === undefined || bytes(value.totalBytes))
+    && (value.workDone === undefined || bytes(value.workDone))
+    && (value.workTotal === undefined || bytes(value.workTotal))
     && (value.cancelAllowed === undefined || typeof value.cancelAllowed === 'boolean')
     && (value.phase === undefined || typeof value.phase === 'string')
     && (value.currentFile === undefined || typeof value.currentFile === 'string')

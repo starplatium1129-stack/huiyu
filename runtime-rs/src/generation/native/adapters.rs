@@ -46,8 +46,39 @@ pub(crate) fn model(id: &str) -> Option<&'static Value> {
 pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
     model(id)
         .ok_or_else(|| "该模型尚无原生适配".to_owned())
-        .and_then(|model| super::model_layout::inspect_adapter(root, model))
+        .and_then(|model| {
+            super::model_layout::inspect_adapter(root, model)?;
+            if model["family"] == "moss-image" {
+                if !root
+                    .join("transformer/diffusion_pytorch_model.safetensors")
+                    .is_file()
+                    && !moss_int8_ready(root, &model["mossInt8"], "huiyu-moss-int8.json")
+                {
+                    return Err("请在控制室继续准备 MOSS 主模型".to_owned());
+                }
+                if !moss_bf16_ready(root)
+                    && !moss_int8_ready(root, &model["mossTextInt8"], "huiyu-moss-text-int8.json")
+                {
+                    return Err("请在控制室继续准备 MOSS 文本编码器".to_owned());
+                }
+            }
+            Ok(())
+        })
         .err()
+}
+
+fn moss_int8_ready(root: &Path, spec: &Value, marker: &str) -> bool {
+    spec["path"].as_str().is_some_and(|file| {
+        root.join(marker).is_file()
+            && std::fs::metadata(root.join(file))
+                .is_ok_and(|info| info.is_file() && spec["bytes"].as_u64() == Some(info.len()))
+    })
+}
+
+fn moss_bf16_ready(root: &Path) -> bool {
+    root.join("text_encoder/model.safetensors.index.json")
+        .is_file()
+        || root.join("text_encoder/model.safetensors").is_file()
 }
 pub(crate) fn settings(settings: &Settings) -> Result<Settings> {
     let mut adapter = settings.clone();
@@ -101,21 +132,18 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
         "mossSpectrumFlexWindow":model["mossSpectrumFlexWindow"],
         "mossRemacri":model["family"] == "moss-image" && resources::remacri(&settings.models_root).is_some(),
         "mossTextPrecision":model["mossTextPrecision"],
+        "mossTextBf16Ready":model["family"] == "moss-image" && moss_bf16_ready(&path),
         "mossCompile":model["mossCompile"],
         "mossFp16Ready":model["family"] == "moss-image" && path.join("transformer/diffusion_pytorch_model.safetensors").is_file(),
-        "mossInt8Ready":model["mossInt8"]["path"].as_str().is_some_and(|file|
-            path.join("huiyu-moss-int8.json").is_file() && std::fs::metadata(path.join(file)).ok()
-                .is_some_and(|info| info.is_file() && Some(info.len()) == model["mossInt8"]["bytes"].as_u64())),
-        "mossTextInt8Ready":model["mossTextInt8"]["path"].as_str().is_some_and(|file|
-            path.join("huiyu-moss-text-int8.json").is_file() && std::fs::metadata(path.join(file)).ok()
-                .is_some_and(|info| info.is_file() && Some(info.len()) == model["mossTextInt8"]["bytes"].as_u64())),
+        "mossInt8Ready":moss_int8_ready(&path, &model["mossInt8"], "huiyu-moss-int8.json"),
+        "mossTextInt8Ready":moss_int8_ready(&path, &model["mossTextInt8"], "huiyu-moss-text-int8.json"),
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
         "capabilities":capabilities,
         "modes":if model["media"]=="video" {json!(["text"])}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
 }
 pub(crate) async fn plan(
     settings: &Settings,
-    input: Value,
+    mut input: Value,
     image: Option<super::InputFile>,
 ) -> Result<Plan> {
     let id = input["modelId"]
@@ -126,7 +154,8 @@ pub(crate) async fn plan(
     let root = adapter.models_root.clone();
     let model_id = id.to_owned();
     let upscale = input["mossUpscaleScale"].is_number();
-    let (path, upscale_model_path) = tokio::task::spawn_blocking(move || {
+    let text_auto = input["mossTextPrecision"] == "auto";
+    let (path, upscale_model_path, text_precision) = tokio::task::spawn_blocking(move || {
         validate_runtime(&inspected)?;
         if upscale {
             let remacri = resources::remacri(&root).ok_or_else(|| {
@@ -136,7 +165,7 @@ pub(crate) async fn plan(
                     "模型根目录 upscale_models 内缺少 Remacri safetensors 文件",
                 )
             })?;
-            return Ok((root, Some(remacri)));
+            return Ok((root, Some(remacri), None));
         }
         let path = within(&root, &root.join(&model_id)).ok_or_else(|| {
             ApiError::new(
@@ -148,10 +177,22 @@ pub(crate) async fn plan(
         if let Some(issue) = model_issue(&path, &model_id) {
             return Err(ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", issue));
         }
-        Ok((path, None))
+        let text_precision = text_auto.then(|| {
+            if model(&model_id).is_some_and(|spec| {
+                moss_int8_ready(&path, &spec["mossTextInt8"], "huiyu-moss-text-int8.json")
+            }) {
+                "int8"
+            } else {
+                "bf16"
+            }
+        });
+        Ok((path, None, text_precision))
     })
     .await
     .map_err(|_| ApiError::new(503, "NATIVE_MODEL_UNAVAILABLE", "模型目录核验未完成"))??;
+    if let Some(precision) = text_precision {
+        input["mossTextPrecision"] = json!(precision);
+    }
     Ok(Plan {
         input: input.into(),
         settings: adapter,

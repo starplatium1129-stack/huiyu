@@ -7,6 +7,7 @@ mod image_models;
 mod image_resources;
 mod installer;
 mod jobs;
+mod moss_models;
 mod pixai;
 mod plan;
 
@@ -26,6 +27,8 @@ use tokio::sync::OwnedSemaphorePermit;
 
 #[derive(Clone, Deserialize)]
 struct Artifact {
+    #[serde(default)]
+    kind: String,
     #[serde(alias = "filename")]
     path: String,
     url: String,
@@ -110,7 +113,8 @@ fn bundles() -> Result<(Arc<RuntimeBundle>, Vec<Arc<ModelBundle>>)> {
             "../../../tools/inference/managed-adapter-models.json"
         ))?;
         models.extend(Vec::<ModelBundle>::deserialize(&adapters["models"])?);
-        for model in &models {
+        for model in &mut models {
+            moss_models::prepare_bundle(model)?;
             validate_artifacts(&model.files)?;
         }
         Ok(models.into_iter().map(Arc::new).collect())
@@ -216,19 +220,25 @@ fn stopped(cancel: &CancellationToken) -> Result<()> {
     }
 }
 fn receipt_matches(root: &Path, model: &ModelBundle) -> bool {
-    let receipt = std::fs::read(root.join("huiyu-model.json"))
+    let Some(mut receipt) = std::fs::read(root.join("huiyu-model.json"))
         .ok()
         .filter(|bytes| bytes.len() < 65536)
-        .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok());
-    receipt.is_some_and(|value| value["modelId"] == model.id && value["revision"] == model.revision)
+        .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok())
+    else {
+        return false;
+    };
+    receipt["modelId"] == model.id
+        && receipt["revision"] == model.revision
         && image_models::model_issue(root, &model.id).is_none()
         && if model.conversion_profile.is_some() {
-            anima_models::output_files(root).is_ok_and(|files| {
+            anima_models::parse_outputs(receipt["outputs"].take()).is_ok_and(|files| {
                 files.iter().all(|file| {
                     std::fs::symlink_metadata(root.join(&file.path))
                         .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
                 })
             })
+        } else if moss_models::is_moss(model) {
+            moss_models::ready(root, model, &receipt)
         } else {
             model.files.iter().all(|file| {
                 std::fs::symlink_metadata(root.join(&file.path))

@@ -37,6 +37,12 @@ pub(super) async fn submit(
         jobs::remove(&inner, &job).await;
         return Err(closed());
     }
+    if let Some(archive) = inner.archive_for(&job)
+        && let Err(error) = archive.register(&job).await
+    {
+        jobs::fail(&job, error, false).await;
+        return jobs::public(&job).await;
+    }
     if job.provider == "native" {
         native::submit(inner.clone(), job.clone()).await;
     } else if job.provider == "webui" {

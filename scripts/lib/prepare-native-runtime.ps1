@@ -93,9 +93,24 @@ if ($existingRuntime -and (VisualCpp-Ready)) {
   $document | ConvertTo-Json -Depth 20 -Compress
   exit 0
 }
+$stageParent=Join-Path $inferenceRoot '.staging'
+$stageRoot=Join-Path $stageParent $RuntimeId
+$ownerPath=Join-Path $stageRoot '.huiyu-candidate.json'
+$reuseCandidate=$false
+Assert-NoLinks $stageRoot
+if (!$existingRuntime -and (Test-Path -LiteralPath $stageRoot)) {
+  if (-not (Test-Path -LiteralPath $ownerPath -PathType Leaf)) { throw '候选目录缺少绘遇管理标记；未清理或覆盖，请检查目录冲突' }
+  Assert-NoLinks $ownerPath
+  $owner=Get-Content -LiteralPath $ownerPath -Raw -Encoding UTF8 | ConvertFrom-Json
+  if ($owner.schemaVersion -ne 1 -or $owner.runtimeId -ne $RuntimeId -or $owner.manifestSha256 -ne $manifestHash -or (Resolve-NativePath $owner.targetRoot) -ne $targetRoot) { throw '候选目录的绘遇管理记录不匹配；未清理或覆盖' }
+  if (Test-Path -LiteralPath (Join-Path $stageRoot 'runtime-config.json') -PathType Leaf) {
+    $document=Read-Runtime $stageRoot
+    $reuseCandidate=$true
+  }
+}
 Write-Stage '准备已下载的运行库文件'
 foreach ($file in $manifest.files) {
-  if ($existingRuntime -and $file.kind -ne 'vc-redist') { continue }
+  if (($existingRuntime -or $reuseCandidate) -and $file.kind -ne 'vc-redist') { continue }
   if ([IO.Path]::GetFileName($file.filename) -ne $file.filename -or $file.sha256 -notmatch '^[0-9a-f]{64}$') { throw '固定资源文件名或 SHA-256 无效' }
   $path=Join-Path $cachePath $file.filename
   Assert-NoLinks $path
@@ -127,20 +142,14 @@ if ($existingRuntime) {
   $document | ConvertTo-Json -Depth 20 -Compress
   exit 0
 }
-$stageParent=Join-Path $inferenceRoot '.staging'
 Assert-NoLinks $stageParent
 New-Item -ItemType Directory -Force -Path $stageParent | Out-Null
-$stageRoot=Join-Path $stageParent $RuntimeId
 Assert-NoLinks $stageRoot
-$ownerPath=Join-Path $stageRoot '.huiyu-candidate.json'
-$reuseCandidate=$false
-if (Test-Path -LiteralPath $stageRoot) {
-  if (-not (Test-Path -LiteralPath $ownerPath -PathType Leaf)) { throw '候选目录缺少绘遇管理标记；未清理或覆盖，请检查目录冲突' }
+if (!$reuseCandidate -and (Test-Path -LiteralPath $stageRoot)) {
   Assert-NoLinks $ownerPath
   $owner=Get-Content -LiteralPath $ownerPath -Raw -Encoding UTF8 | ConvertFrom-Json
   if ($owner.schemaVersion -ne 1 -or $owner.runtimeId -ne $RuntimeId -or $owner.manifestSha256 -ne $manifestHash -or (Resolve-NativePath $owner.targetRoot) -ne $targetRoot) { throw '候选目录的绘遇管理记录不匹配；未清理或覆盖' }
-  if (Test-Path -LiteralPath (Join-Path $stageRoot 'runtime-config.json') -PathType Leaf) { $reuseCandidate=$true }
-  else {
+  if (Test-Path -LiteralPath (Join-Path $stageRoot 'runtime-config.json') -PathType Leaf) { throw '候选目录在准备期间改变，请重新准备以继续' }
     # Check every child without following links before recursively deleting only
     # this exact application-owned, uncompleted candidate. Never touch versions.
     $pending=[Collections.Generic.Queue[string]]::new()
@@ -156,16 +165,15 @@ if (Test-Path -LiteralPath $stageRoot) {
     if (-not $resolvedStage.Equals($expectedStage,[StringComparison]::OrdinalIgnoreCase)) { throw '候选清理目标不在固定工作区路径内；已停止' }
     Write-Stage '恢复上次中断：仅清理本版本未完成候选，保留下载缓存与已有运行库'
     Remove-Item -LiteralPath $resolvedStage -Recurse -Force
-  }
 }
 if (-not $reuseCandidate) {
   New-Item -ItemType Directory -Path $stageRoot | Out-Null
   @{schemaVersion=1;runtimeId=$RuntimeId;manifestSha256=$manifestHash;targetRoot=$targetRoot} | ConvertTo-Json -Compress | Set-Content -LiteralPath $ownerPath -Encoding UTF8
 }
-Write-Stage ('准备新的独立版本目录：'+$stageRoot)
+if ($reuseCandidate) { Write-Stage '恢复已完成的运行库候选' }
+else { Write-Stage ('准备新的独立版本目录：'+$stageRoot) }
 try {
-  if ($reuseCandidate) { $document=Read-Runtime $stageRoot }
-  else {
+  if (!$reuseCandidate) {
   $pythonFiles=@($manifest.files | Where-Object { $_.kind -eq 'python' })
   if ($pythonFiles.Count -ne 1) { throw '固定清单缺少唯一的嵌入 Python' }
   $scripts=Join-Path $stageRoot 'venv/Scripts'

@@ -9,7 +9,7 @@ type Sharp = (input?: any, options?: any) => any;
 const sharp: Sharp = require('sharp');
 const ROOT = path.resolve(__dirname, '../..');
 const INSTALLER = path.join(ROOT, 'desktop-tauri/src-tauri/installer');
-const TEMPLATE_HASH = 'dabed59013b1d78b879a1a85bc7f2eed2993b33a9a90cdabe5946de3d3950597';
+const TEMPLATE_HASH = 'd00089d3b1a2c4a30d7b6e098079100cb8f25e980f84d4515aca4597b95e967d';
 
 function replaceOnce(source: any, from: any, to: any) {
   if (source.split(from).length !== 2) throw new Error(`Installer template anchor drift: ${from.slice(0, 65)}`);
@@ -20,7 +20,7 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
   const escapePath = (value: any) => value.replace(/\$/g, '$$$$');
   let output = replaceOnce(source, '; Installer pages, must be ordered as they appear',
     `!define GAME_BACKGROUND "${escapePath(background)}"\n!define GAME_ASSET_DIR "${escapePath(path.dirname(background))}"\n!include "${escapePath(uiFile)}"\n\n; Installer pages, must be ordered as they appear`);
-  output = replaceOnce(output, 'Section EarlyChecks', `!include "${escapePath(path.join(path.dirname(uiFile), 'game-install-policy.nsh'))}"\n\nFunction GameReconcileResources
+  output = replaceOnce(output, 'Section WebView2', `!include "${escapePath(path.join(path.dirname(uiFile), 'game-install-policy.nsh'))}"\n\nFunction GameReconcileResources
   nsExec::ExecToStack /TIMEOUT=120000 '"$INSTDIR\\gateway\\installer-resource-cleanup.exe" "$INSTDIR"'
   Pop $0
   Pop $1
@@ -33,7 +33,7 @@ function customizeTemplate(source: any, background: any, uiFile: any) {
     Quit
   \${EndIf}
 FunctionEnd
-\nSection EarlyChecks\n  Call GameCheckStopped`);
+\nSection EarlyChecks\n  Call GameCheckStopped\nSectionEnd\n\nSection WebView2`);
   // A full package must repair a missing WebView2 on updates as well as fresh installs.
   // Upgrade-only packages set the mode to skip and verify their existing runtime separately.
   output = replaceOnce(output, '    ; Skip if updating\n    ${If} $UpdateMode <> 1\n', '');
@@ -125,7 +125,7 @@ async function bitmap(source: any, destination: any, width: any = 1920, height: 
 }
 
 async function buildGameInstaller({ preview = false, capture = false, page = 'welcome', theme = 'system' }: any = {}) {
-  const vendor = fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.12.0.nsi'));
+  const vendor = fs.readFileSync(path.join(INSTALLER, 'vendor/tauri-2.12.5.nsi'));
   if (crypto.createHash('sha256').update(vendor).digest('hex') !== TEMPLATE_HASH) throw new Error('Pinned Tauri installer template hash mismatch');
   const generated = path.join(INSTALLER, 'generated');
   fs.mkdirSync(generated, { recursive: true });
@@ -184,7 +184,7 @@ async function buildGameInstaller({ preview = false, capture = false, page = 'we
       } finally { windows.terminateOwnedPids([pid]); }
     }
   }
-  console.log('[installer] game pages and bitmap ready (Tauri 2.12.0 pinned)');
+  console.log('[installer] game pages and bitmap ready (Tauri 2.12.5 pinned)');
 }
 
 if (require.main === module) {

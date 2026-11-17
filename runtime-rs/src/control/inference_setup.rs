@@ -246,9 +246,9 @@ impl ControlService {
         let work = async {
             let (out, err) = tokio::try_join!(
                 bounded_output(stdout, 131072),
-                helper_stderr(stderr, |message| {
+                helper_stderr(stderr, |done, total, message| {
                     if let Some(operation) = operation {
-                        self.work_progress(operation, 0, 0, message);
+                        self.work_progress(operation, done, total, message);
                     }
                 })
             )?;
@@ -341,7 +341,7 @@ async fn bounded_output<R: AsyncRead + Unpin>(stream: Option<R>, limit: u64) -> 
 }
 async fn helper_stderr<R: AsyncRead + Unpin>(
     stream: Option<R>,
-    progress: impl Fn(&str),
+    progress: impl Fn(u64, u64, &str),
 ) -> Result<Vec<u8>> {
     use tokio::io::{AsyncBufReadExt, BufReader};
     let mut reader = BufReader::new(stream.ok_or_else(protocol_error)?);
@@ -366,8 +366,18 @@ async fn helper_stderr<R: AsyncRead + Unpin>(
             return Err(protocol_error());
         }
         let text = String::from_utf8_lossy(&line);
-        if let Some(message) = text.trim().strip_prefix("HUIYU:CONVERT|") {
-            progress(message);
+        if let Some(fields) = text.trim().strip_prefix("HUIYU:CONVERT_BYTES|") {
+            let mut fields = fields.splitn(3, '|');
+            if let (Some(done), Some(total), Some(message)) =
+                (fields.next(), fields.next(), fields.next())
+                && let (Ok(done), Ok(total)) = (done.parse::<u64>(), total.parse::<u64>())
+                && done <= total
+                && total <= 9_007_199_254_740_991
+            {
+                progress(done, total, message);
+            }
+        } else if let Some(message) = text.trim().strip_prefix("HUIYU:CONVERT|") {
+            progress(0, 0, message);
         } else {
             output.extend_from_slice(&line);
             if output.len() > 32768 {

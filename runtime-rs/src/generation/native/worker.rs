@@ -202,7 +202,7 @@ impl Engine {
         }
         Worker::spawn(self, settings)
     }
-    pub(super) async fn retain_worker(inner: Arc<Inner>, mut worker: Worker) {
+    pub(super) async fn retain_worker(inner: Arc<Inner>, mut worker: Worker, timeout: Duration) {
         worker.idle = CancellationToken::new();
         let idle = worker.idle.clone();
         *inner.native.worker.lock().await = Some(worker);
@@ -211,7 +211,7 @@ impl Engine {
             tokio::select! {
                 _ = idle.cancelled() => return,
                 _ = owner.cancel.cancelled() => return,
-                _ = tokio::time::sleep(owner.native.idle_timeout) => {}
+                _ = tokio::time::sleep(timeout) => {}
             }
             // Submission can fail before take_worker cancels the old timer.
             // Wait for its GPU slot instead of abandoning idle cleanup, but

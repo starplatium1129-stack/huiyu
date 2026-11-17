@@ -45,7 +45,7 @@ fn open_regular(path: &Path) -> std::io::Result<File> {
     Ok(file)
 }
 
-fn same_file_at(path: &Path, identity: &crate::file_identity::Identity) -> bool {
+pub(super) fn same_file_at(path: &Path, identity: &crate::file_identity::Identity) -> bool {
     // Reuse the cross-platform identity authority, but reopen through the
     // nonblocking regular-file guard rather than allowing a replacement FIFO.
     open_regular(path)

@@ -89,7 +89,17 @@ pub fn position_window_client_area(window: &tauri::WebviewWindow, target: tauri:
 
 pub fn show_companion(app: &AppHandle, focus: bool) {
     if crate::maintenance::active(app) { return; }
-    let Some(w) = app.get_webview_window("companion") else { return };
+    let Some(w) = app.get_webview_window("companion") else {
+        let gateway = app.state::<AppState>().gateway_url.lock().unwrap().clone();
+        if gateway.is_empty() && !crate::ui_entry::bundled(app) { return; }
+        let app = app.clone();
+        tauri::async_runtime::spawn_blocking(move || {
+            if let Err(error) = create_companion_window(&app, &gateway, true) {
+                app.state::<AppState>().error(&format!("open companion: {error}"));
+            }
+        });
+        return;
+    };
     let was_visible = w.is_visible().unwrap_or(false);
     // 最小化状态下 show() 不解除最小化（2026-08-15 实机：窗口被最小化后
     // 托盘"显示 Companion"无效，窗口留在屏幕外）。先 unminimize 再 show。
@@ -119,8 +129,7 @@ pub fn hide_companion(app: &AppHandle) {
 }
 
 pub fn toggle_companion_visibility(app: &AppHandle) {
-    let Some(w) = app.get_webview_window("companion") else { return };
-    if w.is_visible().unwrap_or(false) {
+    if app.get_webview_window("companion").is_some_and(|window| window.is_visible().unwrap_or(false)) {
         hide_companion(app);
     } else {
         show_companion(app, true);
@@ -198,7 +207,10 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
 }
 
 pub fn create_companion_window(app: &AppHandle, gateway_url: &str, show_on_start: bool) -> tauri::Result<()> {
+    static OPEN: std::sync::Mutex<()> = std::sync::Mutex::new(());
+    let _open = OPEN.lock().unwrap_or_else(|error| error.into_inner());
     if crate::maintenance::active(app) { return Ok(()); }
+    if app.get_webview_window("companion").is_some() { return Ok(()); }
     let state = app.state::<AppState>();
     let placement = companion_bounds(app, &state);
     let bounds = &placement.logical;

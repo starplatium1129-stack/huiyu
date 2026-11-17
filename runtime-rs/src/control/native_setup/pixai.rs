@@ -60,6 +60,7 @@ fn artifacts() -> Result<Arc<Vec<Artifact>>> {
                 ),
                 bytes: file.bytes,
                 sha256: file.sha256.clone(),
+                kind: String::new(),
                 git_blob_id: String::new(),
                 lfs: false,
             })

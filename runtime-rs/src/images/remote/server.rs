@@ -1,5 +1,5 @@
 use super::super::*;
-use super::{COMPLETION_HEADER, COMPLETION_WAIT};
+use super::{COMPLETION_HEADER, COMPLETION_WAIT, guide};
 use axum::{
     Extension, Router,
     extract::{ConnectInfo, OriginalUri, Path, Query, Request, State},
@@ -7,6 +7,7 @@ use axum::{
     middleware::{self, Next},
     response::{IntoResponse, Response},
     routing::get,
+    serve::ListenerExt,
 };
 use std::{
     collections::HashMap,
@@ -30,7 +31,17 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
     // This interface is for another runtime, not browser cross-origin requests.
     let allowed = ["/api/anima/", "/api/creative/", "/api/qwen/", "/api/moss/"]
         .iter()
-        .any(|prefix| request.uri().path().starts_with(prefix));
+        .any(|prefix| request.uri().path().starts_with(prefix))
+        || matches!(
+            request.uri().path(),
+            "/api/muse/catalog"
+                | "/api/muse/jobs"
+                | "/api/muse/queue"
+                | "/api/muse/batches"
+                | guide::PATH
+        )
+        || request.uri().path().starts_with("/api/muse/catalog/")
+        || request.uri().path().starts_with("/api/muse/batches/");
     let mut response = if !allowed {
         StatusCode::NOT_FOUND.into_response()
     } else if !crate::remote_content::token_matches(&key, supplied)
@@ -56,6 +67,9 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         response
             .headers_mut()
             .insert(COMPLETION_HEADER, HeaderValue::from_static("1"));
+        response
+            .headers_mut()
+            .append(header::LINK, HeaderValue::from_static(guide::LINK));
     }
     response
 }
@@ -108,11 +122,15 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
                 return None;
             }
         };
-    let mut app = super::super::router(images).merge(
-        Router::new()
-            .route("/api/{family}/requests/{key}/completion", get(completion))
-            .layer(Extension(Arc::new(Semaphore::new(16)))),
-    );
+    let mut app = super::super::router(images.clone())
+        .layer(Extension(guide::Guide))
+        .merge(super::muse::router(images, state.host.clone()))
+        .route(guide::PATH, get(guide::read))
+        .merge(
+            Router::new()
+                .route("/api/{family}/requests/{key}/completion", get(completion))
+                .layer(Extension(Arc::new(Semaphore::new(16)))),
+        );
     if let Some(maintenance) = &state.maintenance {
         app = app.layer(middleware::from_fn_with_state(
             (maintenance.clone(), state.shutdown.clone()),
@@ -131,8 +149,16 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
         .layer(tower_http::timeout::RequestBodyTimeoutLayer::new(
             std::time::Duration::from_secs(30),
         ))
-        .with_state(state.clone());
+        .with_state(state.clone())
+        // The base URL advertises only the static guide. The API subtree above
+        // keeps the same authentication and owner checks.
+        .route("/", get(guide::read));
     LISTENING.store(true, Ordering::Release);
+    let listener = listener.tap_io(|stream| {
+        if let Err(error) = stream.set_nodelay(true) {
+            eprintln!("Remote image TCP_NODELAY: {error}");
+        }
+    });
     Some(tokio::spawn(async move {
         let cancel = state.shutdown.clone();
         let result = axum::serve(
