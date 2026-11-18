@@ -167,6 +167,16 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   async function canSwitch() {
     return !dirtyEditor.value || await confirmAction({ title: '放下这次修改？', message: '当前内容还没有暂存，离开后这些修改会丢失。', confirmLabel: '放弃修改', danger: true })
   }
+  async function changeKind(value: CatalogKind) {
+    if (busy.value || disposed) return false
+    if (value === kind.value) return true
+    const seq = invalidateDetail()
+    if (!await canSwitch() || disposed || busy.value || seq !== detailSeq) return false
+    resetEditor()
+    kind.value = value
+    hint.value = ''
+    return true
+  }
   async function select(item: CatalogSummary | { kind: CatalogKind; id: string }): Promise<boolean> {
     if (busy.value || disposed || item.kind !== kind.value) return false
     const seq = invalidateDetail()
@@ -338,7 +348,13 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
         lastOnboardedCharacter.value = submission.find(change => change.kind === 'character' && change.expectedRevision === 0
           && fieldValue(change.data ?? {}, 'popular') && submission.some(item => item.kind === 'outfit' && item.id.startsWith(change.id + '/')))?.id ?? ''
         if (lastOnboardedCharacter.value && submission.some(change => change.kind === 'character' && change.id === lastOnboardedCharacter.value && fieldValue(change.data ?? {}, 'profile.portrait.image') === '../assets/characters/portrait-pending.svg')) markCatalogPendingPortrait(lastOnboardedCharacter.value)
-        pending.value = []; resetEditor(); useSceneStore().invalidateCatalog(receipt)
+        pending.value = []
+        const saved = receipt.diffs.find(diff => editor && diff.kind === editor.kind && diff.id === editor.id)
+        if (saved && ownsEditor()) {
+          resetEditor(saved.after && clone(saved.after))
+          if (selected.value) void loadHistory()
+        }
+        useSceneStore().invalidateCatalog(receipt)
         const warnings = receipt.promptReview?.issues.length ?? 0
         if (warnings) preview.value = receipt
         hint.value = '已保存 ' + receipt.items.length + ' 项修改' + (warnings ? `；有 ${warnings} 项提示词建议，请查看下方需复核内容` : ''); await load()
@@ -364,7 +380,7 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   function adoptRevision() {
     if (!selected.value || !currentServer.value || editorPendingNotice.value) return
     if (selected.value.kind !== currentServer.value.kind || selected.value.id !== currentServer.value.id) return
-    selected.value.revision = currentServer.value.revision; preview.value = null
+    selected.value.revision = currentServer.value.revision; currentServer.value = null; preview.value = null
     hint.value = '已对齐最新版本，请确认合并后的内容再保存'
   }
   async function restore(revision: number) {
@@ -458,18 +474,26 @@ export function useCatalogMaintenance(editorPane: Ref<HTMLElement | null>) {
   const exportDraft = () => download({ format: 'huiyu-content-draft', version: 2, changes: pending.value,
     editor: selected.value, advanced: advanced.value, baseline: baseline.value ? JSON.parse(baseline.value) : null }, 'content-draft.json')
   async function exportSnapshot() { try { download(await catalogApi.snapshot(), 'content-snapshot.json'); hint.value = '已下载本机内容库备份。项目快照仍需通过维护命令定向导出；未保存的修改请另行备份。' } catch (e) { hint.value = (e as Error).message } }
-  watch(kind, invalidateDetail, { flush: 'sync' })
-  watch([kind, character, category, rating, sort], () => { page.value = 1; void load() })
-  watch(search, () => { clearTimeout(timer); timer = setTimeout(() => { page.value = 1; void load() }, 180) })
+  watch(kind, () => {
+    invalidateDetail()
+    search.value = ''; character.value = ''; category.value = ''; rating.value = ''
+  }, { flush: 'sync' })
+  const listOptions = computed(() => [kind.value, character.value, category.value, rating.value, sort.value])
+  watch([listOptions, search], ([options], [previous]) => {
+    clearTimeout(timer)
+    const refresh = () => { page.value = 1; void load() }
+    if (options === previous && search.value) timer = setTimeout(refresh, 180)
+    else refresh()
+  })
   watch(page, () => { if (page.value !== result.value?.page && page.value !== requestedPage) void load() })
   watch(bulkInput, () => { ++bulkReadSeq }, { flush: 'sync' })
   watch(busy, value => { if (value) ++bulkReadSeq }, { flush: 'sync' })
-  watch(pending, () => { preview.value = null }, { deep: true })
+  watch(pending, () => { preview.value = null }, { flush: 'sync' })
   watch(() => [selected.value?.id, selected.value?.sortOrder, selected.value?.data], () => { fieldError.value = null }, { flush: 'sync' })
   const release = registerMaintenanceParticipant(() => { if (dirty.value) throw new Error('UNSAVED_CONTENT'); if (busy.value) throw new Error('CONTENT_BUSY') })
   const beforeUnload = (event: BeforeUnloadEvent) => { if (dirty.value || busy.value) event.preventDefault() }
   onMounted(() => { window.addEventListener('beforeunload', beforeUnload); void load() })
   onBeforeUnmount(() => { disposed = true; ++bulkReadSeq; ++listSeq; invalidateDetail(); clearHistory(); listController?.abort(); detailController?.abort(); namesController?.abort(); clearTimeout(timer); release(); window.removeEventListener('beforeunload', beforeUnload) })
   onBeforeRouteLeave(async () => !busy.value && (!dirty.value || await confirmAction({ title: '离开内容维护？', message: '未保存修改将丢失，可先导出草稿。', confirmLabel: '离开', danger: true })))
-  return { kind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, lastOnboardedCharacter, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
+  return { kind, changeKind, search, character, category, rating, sort, page, result, listScope, listMatchesKind, counts, loading, error, hint, selected, currentServer, detailLoading, pending, busy, preview, history, historyLoading, historyError, loadHistory, advanced, advancedError, fieldError, editorSession, updateAdvanced, applyAdvanced, discardAdvanced, dirtyEditor, dirty, editorPendingNotice, totalPages, bulkInput, bulkError, importSnapshot, importPreview, importContent, load, select, add, stage, remove, withdrawPending, submit, compareCurrent, adoptRevision, lastOnboardedCharacter, restore, loadBulk, readBulkFile, exportDraft, exportSnapshot, characterNames }
 }

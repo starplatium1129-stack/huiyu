@@ -79,7 +79,7 @@ const router = createRouter({
         { path: 'character',      name: 'character',     meta: { title: '角色档案' }, component: () => import('@/views/CharacterView.vue') },
         { path: 'style',          name: 'style',         meta: { title: '画风' }, component: () => import('@/views/StyleView.vue') },
         { path: 'lora',           name: 'lora',          meta: { title: '模型资料' }, component: () => import('@/views/LoraView.vue') },
-        { path: 'scene-manager',  name: 'manager',       meta: { title: '场景管理' }, component: () => import('@/views/SceneManagerView.vue') },
+        { path: 'scene-manager',  name: 'manager',       meta: { title: '内容维护' }, component: () => import('@/views/SceneManagerView.vue') },
         { path: 'color-script',   name: 'color-script',  meta: { title: '色彩情绪' }, component: () => import('@/views/ColorScriptView.vue') },
         { path: 'scenario',       name: 'scenario',      meta: { title: '剧本模式' }, component: () => import('@/views/ScenarioView.vue') },
         // 兜底路由：没有它，任何拼错的地址都只渲染一个空白外壳

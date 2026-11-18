@@ -1,6 +1,6 @@
 <template>
   <section class="catalog-editor" aria-label="编写内容">
-    <header class="catalog-editor-head"><span class="catalog-editor-kind"><ArchiveIcon :name="icon" /></span><div><p>{{ CATALOG_LABELS[record.kind] }}</p><h2>{{ title }}</h2></div><small v-if="!record.revision" class="catalog-new-badge">新内容</small></header>
+    <header class="catalog-editor-head"><span class="catalog-editor-kind"><ArchiveIcon :name="icon" /></span><div><p>{{ CATALOG_LABELS[record.kind] }}<template v-if="record.id"> · {{ record.id }}</template></p><h2>{{ title }}</h2></div><small class="catalog-revision">{{ record.revision ? '第 ' + record.revision + ' 版' : '新内容' }}</small></header>
     <template v-if="record.kind !== 'document'">
       <details v-for="section in sections" :key="section" class="catalog-writing-section" :open="defaultOpen(section) || forcedOpen.has(section)" @toggle="toggleSection(section, $event)">
         <StudioDisclosureSummary>{{ sectionLabel(section) }}</StudioDisclosureSummary>
@@ -9,14 +9,14 @@
           <label v-for="field in fields.filter(f => f.section === section && !technicalPaths.has(f.path) && !derivedPaths.has(f.path))" :key="field.path" class="form-group" :class="{ 'form-group-full': field.type === 'long' || field.type === 'list' }" :data-catalog-field="field.path">
             <span class="field-label">{{ field.label }}</span>
             <ToggleSwitch v-if="field.type === 'boolean'" :model-value="Boolean(fieldValue(record.data, field.path))" :label="field.label" :disabled="fieldsDisabled || locked(field.path)" @update:model-value="update(field, $event)" />
-            <StudioSelect v-else-if="fieldOptions.get(field.path)?.length" :model-value="String(fieldValue(record.data, field.path) ?? '')" :label="field.label" :disabled="fieldsDisabled || locked(field.path)" :options="fieldOptions.get(field.path)" :aria-invalid="fieldError?.field === field.path || undefined" @update:model-value="update(field, String($event))" />
-            <textarea v-else-if="field.type === 'long' || field.type === 'list'" class="input" :value="text(field)" :rows="field.path === 'story' || field.path === 'profile.bg_story' ? 7 : 4" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" :aria-invalid="fieldError?.field === field.path || undefined" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea>
-            <input v-else class="input" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" :aria-invalid="fieldError?.field === field.path || undefined" @input="update(field, ($event.target as HTMLInputElement).value)" />
+            <StudioSelect v-else-if="fieldOptions.get(field.path)?.length" :model-value="String(fieldValue(record.data, field.path) ?? '')" :label="field.label" :disabled="fieldsDisabled || locked(field.path)" :options="fieldOptions.get(field.path)" :aria-invalid="fieldError?.field === field.path || undefined" :aria-describedby="fieldError?.field === field.path ? fieldErrorId : undefined" @update:model-value="update(field, String($event))" />
+            <textarea v-else-if="field.type === 'long' || field.type === 'list'" class="input" :value="text(field)" :rows="field.path === 'story' || field.path === 'profile.bg_story' ? 7 : 4" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" :aria-invalid="fieldError?.field === field.path || undefined" :aria-describedby="fieldError?.field === field.path ? fieldErrorId : undefined" @input="update(field, ($event.target as HTMLTextAreaElement).value)"></textarea>
+            <input v-else class="input" :value="text(field)" :disabled="fieldsDisabled || locked(field.path)" :placeholder="placeholder(field)" :aria-invalid="fieldError?.field === field.path || undefined" :aria-describedby="fieldError?.field === field.path ? fieldErrorId : undefined" @input="update(field, ($event.target as HTMLInputElement).value)" />
             <span v-if="field.type === 'list'" class="catalog-field-note">每行一项</span>
             <span v-if="field.path === 'rating'" class="catalog-field-note">成人内容标记随分级同步</span>
             <span v-if="field.path === 'sampleRating'" class="catalog-field-note">新上传样张使用此分级，已有样张保持原分级</span>
             <span v-if="field.path === 'outfitId' && outfitReadError" class="catalog-error" role="alert">服装列表暂时无法读取：{{ outfitReadError }}</span>
-            <span v-if="fieldError?.field === field.path" class="catalog-error" role="alert">{{ fieldError.message }}</span>
+            <span v-if="fieldError?.field === field.path" :id="fieldErrorId" class="catalog-error" role="alert">{{ fieldError.message }}</span>
           </label>
           </template>
         </div>
@@ -71,7 +71,7 @@ const record = defineModel<CatalogRecord>('record', { required: true })
 const emit = defineEmits<{ stage: []; duplicate: []; remove: []; fieldInput: []; advanced: [text: string, owner: number]; applyAdvanced: [owner: number]; discardAdvanced: [owner: number] }>()
 const fields = computed(() => CATALOG_FIELDS[record.value.kind].filter(field => !field.path.startsWith('draftDefaultOutfit.') || !!fieldValue(record.value.data, 'draftDefaultOutfit'))), sections = computed(() => [...new Set(fields.value.map(f => f.section))])
 const title = computed(() => recordTitle(record.value) === '未命名内容' ? '从这里开始写' : recordTitle(record.value))
-const icon = computed<ArchiveIconName>(() => ({ character: 'character', outfit: 'image', scene: 'scene', blueprint: 'spark', document: 'manager' } as const)[record.value.kind])
+const icon = computed<ArchiveIconName>(() => ({ character: 'character', outfit: 'wardrobe', scene: 'scene', blueprint: 'spark', document: 'manager' } as const)[record.value.kind])
 const technicalPaths = new Set(['outfit.id', 'popular.exactTokens', 'popular.exactPrefixes', 'popular.supportedEngines', 'profile.portrait', 'compositionIntent', 'coverageTags'])
 const derivedPaths = new Set(['mature'])
 const error = ref(''), advancedRevealed = ref(props.advanced !== null), advancedOpen = ref(props.advanced !== null)
