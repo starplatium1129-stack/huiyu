@@ -56,6 +56,11 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             "recent": {"method": "GET", "path": "/api/muse/jobs", "usage": "断线后先查 items；entryType=batch 表示批次，image 表示单张。按 statusPath 恢复，since 接受 RFC3339 或 Unix 毫秒。"}
         },
         "retry": "每次新出图生成新的 requestKey（推荐 UUID）。同一次提交因断线重试时，复用原请求体和原编号。",
+        "resultParts": {
+            "partBytes": crate::images::http::PART_BYTES,
+            "usage": "弱网下从 resultUrl 加 ?part=0 开始，按编号取分片。每片响应是二进制，按 X-Result-Offset 放到对应位置，以 Content-Length 和 X-Part-Sha256 校验该片。断线、空响应或校验失败时只重取这一片。每片 X-Result-Sha256 应与回执一致。集齐 resultBytes 后核对整图 resultSha256，再交给用户。",
+            "timing": "generationMs 是生成耗时；下载耗时从第一次取图到整图校验通过，由调用方另行计时。"
+        },
         "followup": "提交后直接 GET 响应顶层的 statusPath，或 GET /api/muse/batches/{batchKey}。看 items 中每张图的 status、progress 和 resultUrl。收到 waiting 表示已入队，可以继续查同一路径。取消时向返回的 cancelPath 发 DELETE。旧版单图仍可沿原回执路径读取 job。",
         "download": "从成功的 job、item 或批次 items 取 resultUrl。断线后保留部分文件，以 Range: bytes=N- 和原 ETag 作为 If-Range 续传。仅在 206 且 Content-Range 从 N 开始时追加，200 时替换。完成后核对可用的 resultBytes 和 resultSha256 再展示。"
     })

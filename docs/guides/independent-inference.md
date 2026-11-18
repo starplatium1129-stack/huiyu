@@ -27,7 +27,11 @@
 
 ### 在 iOS Muse 查询素材和按场景出图
 
-沿用已经能出图的 Tailscale 地址、3211 端口和 `X-Token` 请求头，绘遇需保持运行。Muse 可直接读取连接根地址 `GET /` 的 JSON 指南，也可读取远程模型状态里的 `museGuide`，或带密钥请求 `GET /api/muse/guide`。
+Muse 可以通过私人 Cloudflare HTTPS 中转连接笔记本。出图时让绘遇保持运行，调用方只需填中转地址和自己的 `X-Token`。中转会接收提交的提示词、任务回执和原图。每个中转对应一台出图机，图片最多保留 48 小时，单张上限 32 MiB，总容量 256 MiB。也可以继续使用已配置的 Tailscale 私网直连。
+
+首次开通时，在笔记本控制室开启「允许连接」并保存。使用项目要求的 Node.js，在项目根目录运行 `.\tools\muse-relay\setup.ps1`，按 Cloudflare 的提示登录个人账号。首次使用 Workers 时需选择可用的 workers.dev 子域名。脚本会部署私人 Worker，生成两把独立的密钥并保存到本机，输出 Muse 的 HTTPS 地址。用 `.\tools\muse-relay\setup.ps1 -CopyToken` 复制调用方的密钥。已运行的新版绘遇会自动读取首次配置。更换已有配置后重启绘遇。Cloudflare 的免费套餐有每日用量限制。[Cloudflare 官方用量说明](https://developers.cloudflare.com/durable-objects/platform/pricing/)
+
+中转根地址 `GET /` 提供接入说明。带密钥读取 `GET /api/muse/connection` 可查看笔记本是否在线，`GET /api/muse/guide` 提供素材与出图接口的完整用法。调用方应发送自己的应用名称，例如 `User-Agent: Huiyu-Muse/1.0`。实测 Cloudflare 会对默认的 `Python-urllib` 标识返回 403/1010。桌面之间的模型探测和上传参考图仍使用上一节的桌面连接方式。
 
 **查目录**可用 `GET /api/muse/catalog`。查宁宁服装用 `?kind=outfit&character=nene`。`kind` 也可为 `character`、`media`（默认，场景和蓝图）、`scene` 或 `blueprint`。支持 `search`、`character`、`category` 和 `rating`。`rating=R18` 等值在服务端筛选，`ratings` 列出可用分级。用 `pageSize=500` 快速枚举，跟随 `nextPage`。服装详情用 `GET /api/muse/catalog/outfit/{完整 ID}`，例如 `/api/muse/catalog/outfit/studio/natsume-maid`，返回 `tokens` 和 `compatibleModels`。场景和蓝图详情可查种子与变体上限。
 
@@ -38,6 +42,10 @@
 **查刚提交的图**：单张和多张都返回 `batchKey` 和顶层 `statusPath`。直接 GET 这个路径，也可用 `GET /api/muse/batches/{batchKey}`。从 `items` 看每张图的 `status`、`progress` 和成功后的 `resultUrl`。`waiting` 表示已排队，继续查同一路径即可。取消整批或某张图时，向对应的 `cancelPath` 发 `DELETE`。升级前的单图若仍保有回执，可用当初的 `requestKey` 查批次路径，也可沿原回执路径读取 `job`。
 
 **队列和恢复**用 `GET /api/muse/queue` 查看排位。丢失编号时用 `GET /api/muse/jobs` 找回近期记录。`items` 同时含 `entryType=batch` 的批次和 `entryType=image` 的单张任务。可传 `since`（Unix 毫秒或 RFC3339），并以 `nextBefore` 翻页。
+
+**等待图片传完**。中转回执中，`status=succeeded` 表示笔记本已经出图，`generationMs` 是生成耗时。`deliveryStatus=transferring` 表示中转还在收图，`deliveryBytes` 为已经校验的字节数。即使调用方退出，中转也会继续接收已经提交的批次。等到 `deliveryStatus=ready`，再用同一个中转地址和密钥下载 `resultUrl`。此时 `deliveryMs` 是笔记本向中转传送这张图的耗时，手机自己的下载时间另算。中转已收全的图在笔记本离线后仍可下载。回执保留 `resultBytes` 和 `resultSha256`。遇到空响应、429 或 503，按 `Retry-After` 或短暂退避重查原路径。
+
+**弱网取图**。从 `resultUrl?part=0` 开始依次取 128 KiB 分片，最后一片可较小。收到的字节数应等于 `Content-Length`，分片 SHA-256 应等于 `X-Part-Sha256`，按 `X-Result-Offset` 写入。掉线只需重取缺少的分片。所有分片拼好后，用回执的大小和 SHA-256 核对整图，再交给用户。可直接用 Python 3.11+ 的下载工具，运行 `py tools/muse-relay/get_result.py <HTTPS地址> <batchKey> 成图.png`。工具会提示输入密钥，也可读取环境变量 `MUSE_TOKEN`。重复运行会沿用已经收好的分片，批次中的第 2 张可加 `--item 2`。
 
 **断点续传**时用同一个地址和 `X-Token` 下载 `resultUrl`。断线后保留部分文件，从已收到的 `N` 字节发送 `Range: bytes=N-`，并用原 `ETag` 作为 `If-Range`。`206` 且 `Content-Range` 从 `N` 开始时追加，`200` 时使用完整响应替换。完成后核对 `resultBytes` 和 `resultSha256`。任务记录保留约 7 天，原图最长保留 48 小时，受 2 GiB 缓存上限约束。
 

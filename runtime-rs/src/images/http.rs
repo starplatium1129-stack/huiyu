@@ -1,3 +1,4 @@
+mod result_part;
 use super::upload_body::RawUploadBody;
 use super::*;
 use crate::{AppState, security};
@@ -10,6 +11,7 @@ use axum::{
     routing::{get, post},
 };
 use futures_util::future::BoxFuture;
+pub(super) use result_part::PART_BYTES;
 use std::{collections::HashMap, net::SocketAddr, sync::Mutex};
 struct Http {
     service: Arc<Service>,
@@ -393,11 +395,25 @@ async fn result(
                 .remote_store()
                 .is_some_and(|store| store.owner == owner)
             {
-                http.service
-                    .get_job(&id, &owner, family)
-                    .await
-                    .ok()
-                    .and_then(|job| job["resultSha256"].as_str().map(|sha| format!("\"{sha}\"")))
+                let receipt = http.service.get_job(&id, &owner, family).await?;
+                if receipt["resultBytes"].as_u64() != Some(output.len()) {
+                    return Err(ApiError::new(
+                        409,
+                        "RESULT_CHANGED",
+                        "原图与回执长度不符，请重新查询任务",
+                    ));
+                }
+                let sha = receipt["resultSha256"]
+                    .as_str()
+                    .filter(|sha| sha.len() == 64 && sha.bytes().all(|b| b.is_ascii_hexdigit()))
+                    .ok_or_else(|| {
+                        ApiError::new(
+                            409,
+                            "RESULT_DIGEST_MISSING",
+                            "原图暂缺校验值，请重新查询任务",
+                        )
+                    })?;
+                Some(format!("\"{sha}\""))
             } else {
                 None
             };
@@ -409,7 +425,7 @@ async fn result(
                 let length = bytes.len() as u64;
                 (Source::Bytes(Bytes::from_owner(SharedBytes(bytes))), length)
             }
-            Output::File { path, .. } => {
+            Output::File { path, bytes, .. } => {
                 let root =
                     tokio::fs::canonicalize(http.service.config.runtime_root.join("outputs/anima"))
                         .await?;
@@ -422,12 +438,27 @@ async fn result(
                 if !stat.is_file() {
                     return Err(ApiError::new(404, "RESULT_NOT_FOUND", "结果不存在"));
                 }
+                if stat.len() != bytes {
+                    return Err(ApiError::new(409, "RESULT_CHANGED", "原图在读取前发生变化"));
+                }
                 (
                     Source::Opened(file, http.service.shutdown.clone()),
                     stat.len(),
                 )
             }
         };
+        if let Some(part) = query.get("part") {
+            if headers.contains_key(header::RANGE) {
+                return Err(ApiError::invalid(
+                    "分片请求无需 Range；请单独使用 part 或 Range",
+                ));
+            }
+            let digest = etag
+                .as_deref()
+                .and_then(|value| value.strip_prefix('"')?.strip_suffix('"'))
+                .ok_or_else(|| ApiError::invalid("分片只适用于带 SHA-256 回执的远程成图"))?;
+            return result_part::serve(source, length, digest, part, &method).await;
+        }
         let range = headers
             .get(header::RANGE)
             .filter(|_| {
@@ -445,7 +476,10 @@ async fn result(
             Err(response) => response,
         };
         let headers = response.headers_mut();
-        headers.insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
+        headers.insert(
+            header::CACHE_CONTROL,
+            HeaderValue::from_static("private, no-store, no-transform"),
+        );
         headers.insert(header::ACCEPT_RANGES, HeaderValue::from_static("bytes"));
         headers.insert(
             header::X_CONTENT_TYPE_OPTIONS,

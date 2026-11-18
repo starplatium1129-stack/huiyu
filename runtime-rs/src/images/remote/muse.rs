@@ -27,6 +27,7 @@ const RECIPE_MODELS: &[&str] = &[ANIMA, "moss-miaomiao-base-v1.0", "moss-miaomia
 struct Muse {
     images: Arc<Service>,
     search_limit: generation::RateLimit,
+    poll_limit: generation::RateLimit,
     job_limit: generation::RateLimit,
     batch_ready: Notify,
     batch_gate: Mutex<()>,
@@ -39,6 +40,7 @@ pub(super) fn router(
     let muse = Arc::new(Muse {
         images,
         search_limit: generation::RateLimit::with("素材查询", 30, 500),
+        poll_limit: generation::RateLimit::with("出图进度查询", 60, 100),
         job_limit: generation::RateLimit::new("场景出图"),
         batch_ready: Notify::new(),
         batch_gate: Mutex::new(()),

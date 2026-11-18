@@ -169,6 +169,14 @@ pub(super) async fn public(job: &Job) -> Result<Value> {
         };
         public["elapsedSeconds"] =
             json!((state.finished.unwrap_or_else(now) - job.created).max(0) / 1000);
+        let started = job.started_at.load(Ordering::Relaxed);
+        public["finishedAt"] = json!(state.finished);
+        public["generationMs"] = json!(
+            state
+                .finished
+                .filter(|_| started > 0)
+                .map(|end| (end - started).max(0))
+        );
         public["currentNode"] = json!(state.current_node);
         public["progressText"] = json!(state.progress_text);
     }

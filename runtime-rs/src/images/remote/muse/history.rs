@@ -13,7 +13,7 @@ pub(super) async fn recent(
     Extension(muse): Extension<Arc<Muse>>,
     Query(input): Query<Recent>,
 ) -> Response {
-    if let Some(response) = muse.search_limit.check(false) {
+    if let Some(response) = muse.poll_limit.check(false) {
         return response;
     }
     let result = async {
@@ -116,7 +116,7 @@ pub(super) async fn queue(
     State(state): State<crate::AppState>,
     Extension(muse): Extension<Arc<Muse>>,
 ) -> Response {
-    if let Some(response) = muse.search_limit.check(false) {
+    if let Some(response) = muse.poll_limit.check(false) {
         return response;
     }
     let result = async {

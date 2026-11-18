@@ -226,7 +226,7 @@ pub(super) async fn status(
     Extension(muse): Extension<Arc<Muse>>,
     Path(key): Path<String>,
 ) -> Response {
-    if let Some(response) = muse.search_limit.check(false) {
+    if let Some(response) = muse.poll_limit.check(false) {
         return response;
     }
     http::response(
@@ -252,7 +252,7 @@ pub(super) async fn item_status(
     Extension(muse): Extension<Arc<Muse>>,
     Path((key, request)): Path<(String, String)>,
 ) -> Response {
-    if let Some(response) = muse.search_limit.check(false) {
+    if let Some(response) = muse.poll_limit.check(false) {
         return response;
     }
     http::response(async {
@@ -390,6 +390,8 @@ async fn read(muse: &Muse, key: String, request: Option<String>, hydrate: bool) 
                     "resultUrl",
                     "resultBytes",
                     "resultSha256",
+                    "generationMs",
+                    "finishedAt",
                     "progress",
                     "progressText",
                     "error",

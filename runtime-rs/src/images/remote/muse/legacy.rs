@@ -61,6 +61,8 @@ pub(super) async fn view(muse: &Muse, receipt: Receipt) -> Result<Value> {
         "resultUrl",
         "resultBytes",
         "resultSha256",
+        "generationMs",
+        "finishedAt",
         "code",
         "error",
     ] {

@@ -1,0 +1,13 @@
+{
+  "name": "huiyu-muse",
+  "main": "worker.mjs",
+  "compatibility_date": "2026-04-01",
+  "compatibility_flags": ["nodejs_compat"],
+  "workers_dev": true,
+  "preview_urls": false,
+  "durable_objects": {
+    "bindings": [{ "name": "RELAY", "class_name": "MuseRelay" }]
+  },
+  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["MuseRelay"] }],
+  "observability": { "enabled": false }
+}

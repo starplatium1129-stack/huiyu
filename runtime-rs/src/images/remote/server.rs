@@ -159,7 +159,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
             crate::admission::track,
         ))
         .layer(middleware::from_fn_with_state(
-            Arc::new(settings.remote_key),
+            Arc::new(settings.remote_key.clone()),
             authorize,
         ))
         .layer(tower_http::timeout::RequestBodyTimeoutLayer::new(
@@ -177,12 +177,21 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
     });
     Some(tokio::spawn(async move {
         let cancel = state.shutdown.clone();
+        let relay_cancel = cancel.child_token();
+        let relay = tokio::spawn(super::relay::run(
+            state.config.runtime_root.clone(),
+            settings.remote_port,
+            settings.remote_key,
+            relay_cancel.clone(),
+        ));
         let result = axum::serve(
             listener,
             app.into_make_service_with_connect_info::<std::net::SocketAddr>(),
         )
         .with_graceful_shutdown(async move { cancel.cancelled().await })
         .await;
+        relay_cancel.cancel();
+        let _ = relay.await;
         LISTENING.store(false, Ordering::Release);
         if let Err(error) = result {
             eprintln!("远程绘图服务已停止：{error}");

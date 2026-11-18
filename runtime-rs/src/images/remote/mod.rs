@@ -1,6 +1,7 @@
 mod client;
 mod guide;
 mod muse;
+mod relay;
 mod server;
 mod upload_index;
 

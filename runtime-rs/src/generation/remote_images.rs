@@ -213,11 +213,11 @@ impl Store {
             let mut statement = db.prepare(&format!("SELECT * FROM (
                 SELECT {COLUMNS}, 'job' AS entry, 'job:'||id AS sort_id FROM image_jobs WHERE owner=?1 AND created>=?2
                 UNION ALL
-                SELECT key,'','','',0,created,NULL,'',NULL,NULL,NULL,NULL,'{{}}','batch','batch:'||key
+                SELECT key,'','','',0,created,NULL,'',NULL,NULL,NULL,NULL,'{{}}',NULL,'batch','batch:'||key
                 FROM muse_batches WHERE owner=?1 AND created>=?2
             ) WHERE (created,sort_id)<(?3,?4) ORDER BY created DESC,sort_id DESC LIMIT ?5"))?;
             let rows = statement.query_map(params![store.owner, since, time, id, limit], |row| {
-                if row.get_ref(13)?.as_str()? == "batch" {
+                if row.get_ref("entry")?.as_str()? == "batch" {
                     let key: String = row.get(0)?;
                     let path = format!("/api/muse/batches/{key}");
                     let (count, active, done, failed, cancelled): (i64,i64,i64,i64,i64) = db.query_row(
@@ -336,7 +336,7 @@ impl Store {
 }
 
 const COLUMNS: &str =
-    "id,epoch,family,model,seed,created,finished,status,error,code,bytes,digest,metadata";
+    "id,epoch,family,model,seed,created,finished,status,error,code,bytes,digest,metadata,duration";
 const FAMILIES: &[(&str, &str)] = &[
     ("anima", "anima"),
     ("krea2", "creative"),
@@ -380,7 +380,7 @@ fn row_value(row: &rusqlite::Row<'_>, store: &Store) -> rusqlite::Result<Value> 
     let unknown = code.as_deref() == Some("TERMINATION_UNCONFIRMED") && epoch == store.epoch;
     Ok(
         json!({"id":id,"family":family,"provider":"native","modelId":row.get::<_,String>(3)?, "seed":row.get::<_,i64>(4)?,
-        "createdAt":row.get::<_,i64>(5)?,"finishedAt":finished,"status":status,"error":error,"code":code,
+        "createdAt":row.get::<_,i64>(5)?,"finishedAt":finished,"generationMs":row.get::<_,Option<i64>>("duration")?,"status":status,"error":error,"code":code,
         "metadata":metadata,"upstreamSettled":terminal(&status)&&!unknown,"unknown":unknown,
         "statusPath":path,"cancelPath":path,"resultAvailable":bytes.is_some(),
         "resultUrl":url,"resultBytes":bytes,"resultSha256":digest,
