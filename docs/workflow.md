@@ -2,6 +2,12 @@
 
 > 命令注册和默认参数以 `scripts/workflow.ts` 为准。统一短入口：`npm run wf -- <命令>`。
 
+## 给协作者派任务
+
+写清从哪个入口操作、希望看到什么结果，以及哪些决定需要你确认。能定位问题的文件、截图或原始日志可以直接附上。通用约定见 [AGENTS.md](../AGENTS.md)。这一写法参考了 [OpenAI 的 GPT‑6.2 Astra 提示指南](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra#prompting-best-practices)。
+
+例如，想改角色房间的帮助文档，可以这样提：「请在模型配置指南里说明，使用 OpenAI 的房间工具时该选哪个预设。对照当前预设和网关实际发送的请求，改完检查文档链接。只改文档。」
+
 ## 1. 入口与常用命令
 
 - **查看所有命令**：`npm run wf -- --help`

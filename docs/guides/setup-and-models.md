@@ -163,6 +163,8 @@ npm run wf -- models:check --json --verify-hashes
 | **通义千问 / 百炼** | `https://dashscope.aliyuncs.com/compatible-mode/v1` | `qwen3.8-flash`, `qwen3.7-plus` | 阿里云官方兼容端点 |
 | **Kimi** | `https://api.moonshot.cn/v1` | `kimi-k2.6` | 官方 OpenAI 兼容接口 |
 
+使用 OpenAI 的房间工具或联网检索时，选表中的 `gpt-6-luna` 预设。绘遇房间目前通过 Chat Completions 发送请求，而 GPT‑6.2 Astra 的工具调用需要 Responses API。手动填写 `gpt-6.2-astra` 时，请关闭「房间工具」和「联网检索」。[OpenAI 官方接入说明](https://developers.openai.com/api/docs/guides/latest-model?model=gpt-6.2-astra#migration-quickstart)
+
 ### 本机连接选项
 - **绘遇受管 llama.cpp**：在控制室直接一键准备，免手动配置端口或密钥。
 - **已有 Ollama**：服务默认运行在 `http://127.0.0.1:11434/v1`，无需填 Key。
