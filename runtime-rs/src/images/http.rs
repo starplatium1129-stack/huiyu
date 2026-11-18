@@ -457,7 +457,8 @@ async fn result(
                 .as_deref()
                 .and_then(|value| value.strip_prefix('"')?.strip_suffix('"'))
                 .ok_or_else(|| ApiError::invalid("分片只适用于带 SHA-256 回执的远程成图"))?;
-            return result_part::serve(source, length, digest, part, &method).await;
+            return result_part::serve(source, length, digest, part, query.get("count"), &method)
+                .await;
         }
         let range = headers
             .get(header::RANGE)

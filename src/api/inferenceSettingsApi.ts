@@ -24,6 +24,7 @@ export interface InferenceSettingsResponse {
   environmentOverrides: string[]
   remoteListening: boolean
   remoteAddress?: string | null
+  museRelayUrl?: string | null
 }
 export interface InferenceDiagnostics {
   basis: 'configured'
@@ -79,6 +80,7 @@ function status(value: ApiResponseObject): boolean {
   const discovery = value.discovery
   return response(value) && object(diagnostics) && diagnostics.basis === 'configured'
     && (value.remoteAddress == null || typeof value.remoteAddress === 'string')
+    && (value.museRelayUrl == null || typeof value.museRelayUrl === 'string')
     && ['valid', 'invalid'].includes(String(diagnostics.configuration))
     && object(diagnostics.files) && ['modelsRoot', 'lorasRoot', 'python', 'worker'].every(key => typeof (diagnostics.files as ApiResponseObject)[key] === 'boolean')
     && diagnostics.dependencies === 'unchecked' && diagnostics.runtime === 'unverified' && typeof diagnostics.message === 'string'
@@ -90,6 +92,13 @@ function status(value: ApiResponseObject): boolean {
     && typeof discovery.preservesSavedSettings === 'boolean' && discovery.scope === 'local-files-only'
 }
 function localOnly() { if (!isLocalStudioHost()) throw new Error('推理引擎设置仅限本机访问') }
+export async function readMuseToken(signal: AbortSignal) {
+  localOnly()
+  return apiClient.request<{ ok: true; url: string; token: string }>('/api/inference/muse-token', {
+    method: 'POST', signal, cache: 'no-store', cachePolicy: 'bypass',
+    validate: value => value.ok === true && typeof value.url === 'string' && typeof value.token === 'string' && /^[a-f0-9]{64}$/i.test(value.token),
+  })
+}
 export const inferenceSettingsApi: InferenceSettingsApi = {
   async diagnose(signal) {
     localOnly()

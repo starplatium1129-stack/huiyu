@@ -83,31 +83,54 @@ export class Results {
     if (!job.resultAvailable) job.resultUrl = null
     if (job.metadata) job.metadata.resultUrl = job.resultUrl
   }
-  next() {
+  next(maxParts) {
     const now = Date.now()
     const file = this.sql.exec("SELECT * FROM files WHERE state='transferring' AND due<=? AND expires>? ORDER BY due LIMIT 1", now, now).toArray()[0]
     if (!file) return
-    this.sql.exec('UPDATE files SET due=? WHERE path=?', now + 40000, file.path)
-    return { method: 'GET', path: file.path + '?part=' + file.part, file }
+    // A dropped large upload formerly had to wait for a round trip per 128 KiB.
+    // Negotiate the window with this agent; a failed lease retries one small part.
+    const count = file.attempts ? 1 : Math.min(maxParts, Math.ceil(file.size / PART) - file.part)
+    this.sql.exec('UPDATE files SET due=?, attempts=attempts+1 WHERE path=?', now + 40000, file.path)
+    return { method: 'GET', path: file.path + '?part=' + file.part + (count > 1 ? '&count=' + count : ''), file, count }
   }
-  accept({ file }, status, headers, bytes) {
+  accept({ file, count }, status, headers, bytes) {
     const current = this.find(file.path)
     if (!current || current.part !== file.part || current.state !== 'transferring') return
     const now = Date.now()
     const offset = file.part * PART
     const partHash = hash(bytes)
-    if (status !== 200 || bytes.byteLength !== Math.min(PART, file.size - offset)
+    if (status !== 200 || bytes.byteLength !== Math.min(PART * count, file.size - offset)
       || headers.get('x-result-offset') !== String(offset) || headers.get('x-result-bytes') !== String(file.size)
       || headers.get('x-result-sha256') !== file.digest || headers.get('x-part-sha256') !== partHash) {
       const state = [404,410].includes(status) ? 'expired' : 'transferring'
-      this.sql.exec('UPDATE files SET state=?, attempts=attempts+1, due=? WHERE path=?',
+      this.sql.exec('UPDATE files SET state=?, due=? WHERE path=?',
         state, now + Math.min(60000, 1000 * 2 ** Math.min(6, file.attempts)), file.path)
       return
     }
-    this.storage.transactionSync(() => {
-      this.sql.exec('INSERT INTO parts(path,n,digest,data) VALUES(?,?,?,?)', file.path, file.part, partHash, bytes)
-      this.sql.exec('UPDATE files SET part=part+1, attempts=0, due=? WHERE path=?', now, file.path)
-      if (offset + bytes.byteLength !== file.size) return
+    this.savePieces(current, file.part, bytes)
+    this.sql.exec('UPDATE files SET attempts=0, due=? WHERE path=?', now, file.path)
+  }
+  // Parallel uploads may finish in any order. Persist verified pieces even if
+  // the agent disconnects before acknowledging its window.
+  savePieces(file, first, bytes) {
+    const now = Date.now()
+    return this.storage.transactionSync(() => {
+      for (let start = 0; start < bytes.byteLength; start += PART) {
+        const piece = bytes.slice(start, start + PART)
+        const n = first + start / PART
+        const digest = hash(piece)
+        const saved = this.sql.exec('SELECT digest FROM parts WHERE path=? AND n=?', file.path, n).toArray()[0]
+        if (saved && saved.digest !== digest) throw new Error('Conflicting result piece')
+        if (!saved) this.sql.exec('INSERT INTO parts(path,n,digest,data) VALUES(?,?,?,?)', file.path, n, digest, piece)
+      }
+      if (file.state === 'ready') return
+      let next = file.part
+      for (const row of this.sql.exec('SELECT n FROM parts WHERE path=? AND n>=? ORDER BY n', file.path, next)) {
+        if (row.n !== next) break
+        next++
+      }
+      this.sql.exec('UPDATE files SET part=? WHERE path=?', next, file.path)
+      if (next * PART < file.size) return
       const full = createHash('sha256')
       for (const row of this.sql.exec('SELECT data FROM parts WHERE path=? ORDER BY n', file.path)) full.update(new Uint8Array(row.data))
       const state = full.digest('hex') === file.digest ? 'ready' : 'integrityError'
@@ -115,14 +138,26 @@ export class Results {
       if (state !== 'ready') this.sql.exec('DELETE FROM parts WHERE path=?', file.path)
     })
   }
-  serve(request, url) {
+  upload(path, first, bytes, headers) {
+    const file = this.find(path)
+    if (!file || file.expires <= Date.now()) return problem(410, 'MUSE_RESULT_EXPIRED', '原图回执已过期')
+    const length = bytes.byteLength
+    const end = first * PART + length
+    if (!['ready','transferring'].includes(file.state) || !length || length > 4 * PART || end > file.size
+      || (end < file.size && length % PART !== 0) || headers.get('x-result-sha256') !== file.digest
+      || headers.get('x-part-sha256') !== hash(bytes)) return problem(409, 'MUSE_PART_INVALID', '原图分片与回执不符')
+    this.savePieces(file, first, bytes)
+    return new Response(null, { status: 204 })
+  }
+  serve(request, url, waitForPart) {
     const file = this.find(url.pathname)
     if (!file) return problem(404, 'MUSE_RESULT_UNKNOWN', '请先查原任务的 statusPath')
     if (file.expires <= Date.now() || file.state === 'expired') return problem(410, 'MUSE_RESULT_EXPIRED', '中转原图已过期')
     if (file.state === 'integrityError') return problem(502, 'MUSE_RESULT_INTEGRITY', '整图校验失败，请检查出图机归档')
-    if (file.state !== 'ready') return problem(409, 'MUSE_RESULT_TRANSFERRING', '已出图，正在传送原图', { 'Retry-After': '2' })
+    if (file.state !== 'ready' && !waitForPart) return problem(409, 'MUSE_RESULT_TRANSFERRING', '已出图，正在传送原图', { 'Retry-After': '2' })
     const etag = '"' + file.digest + '"'
     const headers = { 'Accept-Ranges': 'bytes', 'Content-Type': 'image/png', ETag: etag,
+      'X-Result-Bytes': String(file.size), 'X-Result-Sha256': file.digest,
       'Cache-Control': 'private, no-store, no-transform', 'X-Content-Type-Options': 'nosniff' }
     const invalid = () => problem(416, 'INVALID_RANGE', '请求的字节或分片超出范围', { 'Content-Range': 'bytes */' + file.size, ETag: etag })
     const range = request.headers.get('Range')
@@ -154,10 +189,23 @@ export class Results {
     // an entire image for each simultaneous download.
     const output = new FixedLengthStream(length)
     const sql = this.sql
+    const results = this
     let offset = first
     const source = new ReadableStream({
-      pull(controller) {
+      async pull(controller) {
         const n = Math.floor(offset / PART)
+        if (waitForPart && file.state !== 'ready') {
+          const deadline = Date.now() + 30000
+          for (;;) {
+            const current = results.find(file.path)
+            if (!current || current.expires <= Date.now() || !['transferring','ready'].includes(current.state)
+              || request.signal.aborted || Date.now() >= deadline) throw new Error('Original transfer interrupted')
+            // Keep the final part until the entire stored PNG matches the receipt.
+            // A failed upload cannot produce a complete-looking response.
+            if (current.state === 'ready' || (n < current.part && (n + 1) * PART < file.size)) break
+            await waitForPart(request.signal, deadline - Date.now())
+          }
+        }
         const { data } = sql.exec('SELECT data FROM parts WHERE path=? AND n=?', file.path, n).one()
         const chunk = new Uint8Array(data).subarray(offset % PART, Math.min(data.byteLength, last - n * PART + 1))
         offset += chunk.byteLength

@@ -12,6 +12,7 @@ pub(super) fn routes() -> Router<crate::AppState> {
     Router::new()
         .route("/api/inference/settings", get(settings).post(save))
         .route("/api/inference/status", get(status))
+        .route("/api/inference/muse-token", post(muse_token))
         .route("/api/inference/diagnostics", post(diagnose))
 }
 impl ControlService {
@@ -213,7 +214,50 @@ async fn status(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Val
     });
     value["discovery"] = discovery?;
     value["remoteAddress"] = json!(address);
+    value["museRelayUrl"] = json!(
+        crate::images::remote::muse_relay_address(&s.config.runtime_root)
+            .await
+            .map(|url| url.origin().ascii_serialization())
+    );
     Ok(Json(value))
+}
+
+// The caller key is DPAPI-protected in the user's existing deployment vault.
+// Only the local control router can request it. Never serialize the agent key.
+async fn muse_token(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
+    let unavailable = || {
+        ApiError::new(
+            404,
+            "MUSE_TOKEN_UNAVAILABLE",
+            "无法读取这台电脑保存的 Muse 调用方密钥，请确认登录的是开通中转时的 Windows 用户",
+        )
+    };
+    let url = crate::images::remote::muse_relay_address(&s.config.runtime_root)
+        .await
+        .ok_or_else(unavailable)?;
+    let mut command = tokio::process::Command::new("powershell.exe");
+    #[cfg(windows)]
+    command.creation_flags(0x08000000);
+    command.args(["-NoProfile", "-NonInteractive", "-Command", r#"
+        $ErrorActionPreference='Stop'
+        $pair=Import-Clixml -LiteralPath (Join-Path $env:LOCALAPPDATA 'com.aics.studio/muse-relay/connection.clixml')
+        $conn=Get-Content -Raw -LiteralPath $env:HUIYU_MUSE_CONNECTOR | ConvertFrom-Json
+        if (([Net.NetworkCredential]::new('', $pair.Agent)).Password -cne $conn.agentToken) { exit 1 }
+        [Console]::Write(([Net.NetworkCredential]::new('', $pair.Muse)).Password)
+    "#]).env("HUIYU_MUSE_CONNECTOR", s.config.runtime_root.join("muse-relay.json")).kill_on_drop(true);
+    let output = tokio::time::timeout(Duration::from_secs(6), command.output())
+        .await
+        .ok()
+        .and_then(|v| v.ok())
+        .filter(|v| v.status.success())
+        .ok_or_else(unavailable)?;
+    let token = std::str::from_utf8(&output.stdout)
+        .ok()
+        .filter(|v| v.len() == 64 && v.bytes().all(|b| b.is_ascii_hexdigit()))
+        .ok_or_else(unavailable)?;
+    Ok(Json(
+        json!({"ok":true,"url":url.origin().ascii_serialization(),"token":token}),
+    ))
 }
 
 async fn tailscale_drawing_address(local_port: u16) -> Option<String> {
@@ -241,7 +285,9 @@ async fn tailscale_drawing_address(local_port: u16) -> Option<String> {
         .filter_map(|(port, handler)| {
             let target = handler["TCPForward"].as_str()?;
             if (target != loopback && target != localhost)
-                || handler["TerminateTLS"].as_str().is_some_and(|host| !host.is_empty())
+                || handler["TerminateTLS"]
+                    .as_str()
+                    .is_some_and(|host| !host.is_empty())
             {
                 return None;
             }
@@ -256,15 +302,21 @@ async fn tailscale_json(args: &[&str]) -> Option<Value> {
 
     #[cfg(windows)]
     let mut command = {
-        let programs = std::env::var_os("ProgramW6432").or_else(|| std::env::var_os("ProgramFiles"))?;
-        let mut command = Command::new(std::path::PathBuf::from(programs).join("Tailscale/tailscale.exe"));
+        let programs =
+            std::env::var_os("ProgramW6432").or_else(|| std::env::var_os("ProgramFiles"))?;
+        let mut command =
+            Command::new(std::path::PathBuf::from(programs).join("Tailscale/tailscale.exe"));
         command.creation_flags(0x08000000);
         command
     };
     #[cfg(not(windows))]
     let mut command = Command::new("tailscale");
 
-    command.args(args).stdin(Stdio::null()).stderr(Stdio::null()).kill_on_drop(true);
+    command
+        .args(args)
+        .stdin(Stdio::null())
+        .stderr(Stdio::null())
+        .kill_on_drop(true);
     let output = tokio::time::timeout(std::time::Duration::from_secs(2), command.output())
         .await
         .ok()?

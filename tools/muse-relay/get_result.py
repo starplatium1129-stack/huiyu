@@ -21,6 +21,41 @@ class NoRedirect(urllib.request.HTTPRedirectHandler):
         return None
 
 
+def save_original(reply, target, receipt):
+    size = int(reply.headers.get("Content-Length") or 0)
+    digest = reply.headers.get("X-Result-Sha256") or receipt.get("resultSha256") or ""
+    if not (0 < size <= 32 * 1024 * 1024 and re.fullmatch(r"[a-f0-9]{64}", digest)
+            and reply.headers.get_content_type() == "image/png"
+            and reply.headers.get("X-Result-Bytes", str(size)) == str(size)
+            and receipt.get("resultBytes") in (None, size) and receipt.get("resultSha256") in (None, digest)):
+        raise ValueError("Invalid PNG receipt")
+    sha = hashlib.sha256()
+    received = 0
+    started = time.monotonic()
+    temporary = None
+    try:
+        with tempfile.NamedTemporaryFile(dir=target.parent, delete=False) as output:
+            temporary = Path(output.name)
+            while data := reply.read(min(128 * 1024, size - received + 1)):
+                received += len(data)
+                if received > size:
+                    raise ValueError("Incorrect Content-Length")
+                sha.update(data)
+                output.write(data)
+        if received != size or sha.hexdigest() != digest:
+            raise ValueError("Incomplete original")
+        try:
+            os.link(temporary, target)
+        except FileExistsError:
+            with target.open("rb") as src:
+                if target.stat().st_size != size or hashlib.file_digest(src, "sha256").hexdigest() != digest:
+                    raise SystemExit(f"Output already exists with different contents: {target}")
+        print(f"Verified {target} | {size} bytes | SHA-256 {digest} | download {time.monotonic() - started:.2f} s")
+    finally:
+        if temporary:
+            temporary.unlink(missing_ok=True)
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("address", help="Muse HTTPS address")
@@ -36,10 +71,13 @@ def main():
     token = os.getenv("MUSE_TOKEN") or getpass.getpass("Muse X-Token: ")
     client = urllib.request.build_opener(NoRedirect())
 
-    def fetch(path, parse):
-        request = urllib.request.Request(args.address.rstrip("/") + path, headers={
+    def make_request(path):
+        return urllib.request.Request(args.address.rstrip("/") + path, headers={
             "X-Token": token, "Accept-Encoding": "identity", "User-Agent": "Huiyu-Muse/1.0",
         })
+
+    def fetch(path, parse):
+        request = make_request(path)
         for attempt in range(8):
             try:
                 with client.open(request, timeout=25) as reply:
@@ -55,6 +93,10 @@ def main():
         raise SystemExit(f"Download interrupted at {path}: {last}")
 
     path = args.receipt if args.receipt.startswith("/") else "/api/muse/batches/" + args.receipt
+    original = re.fullmatch(r"(/api/muse/batches/[a-zA-Z0-9_-]+)/original/([1-9][0-9]?)", path)
+    if original:
+        path, args.item = original[1], int(original[2])
+    fast = True
     while True:
         receipt = fetch(path, lambda reply: json.loads(reply.read()))
         items = receipt.get("items") or [receipt.get("job") or receipt.get("item") or {}]
@@ -63,6 +105,20 @@ def main():
         job = items[args.item - 1]
         if job.get("status") in ("failed", "cancelled") or job.get("deliveryStatus") in ("expired", "storageFull", "integrityError", "invalidReceipt"):
             raise SystemExit(job.get("error") or job.get("deliveryStatus") or job.get("status"))
+        download = job.get("receivePath") or job.get("resultUrl") or ""
+        if fast and re.fullmatch(r"/api/(?:muse/batches/[A-Za-z0-9_-]{1,160}/original/[1-9][0-9]?|(?:anima|moss|creative|qwen)/jobs/[a-f0-9]{32}/result)", download):
+            try:
+                while True:
+                    with client.open(make_request(download), timeout=35) as reply:
+                        if reply.status == 202:
+                            continue
+                        save_original(reply, args.output, job)
+                        return
+            except (urllib.error.URLError, http.client.HTTPException, TimeoutError, ValueError, ConnectionError):
+                # Recheck job state; a truncated response or broken proxy falls
+                # back to the existing verified, resumable 128 KiB parts.
+                fast = False
+                continue
         if job.get("resultAvailable") and job.get("resultUrl"):
             break
         if job.get("status") == "succeeded" and job.get("deliveryStatus") != "transferring":

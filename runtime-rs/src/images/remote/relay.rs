@@ -4,6 +4,7 @@ use futures_util::StreamExt;
 use reqwest::{Client, Method, Response, Url};
 use serde::Deserialize;
 use serde_json::Value;
+use sha2::{Digest, Sha256};
 use std::{path::PathBuf, time::Duration};
 use tokio_util::sync::CancellationToken;
 
@@ -14,12 +15,34 @@ struct Config {
     agent_token: String,
 }
 
+impl Config {
+    fn address(&self) -> Option<Url> {
+        let url = Url::parse(&self.url).ok()?;
+        (url.scheme() == "https"
+            && url.host_str().is_some()
+            && url.path() == "/"
+            && url.username().is_empty()
+            && url.password().is_none()
+            && url.query().is_none()
+            && url.fragment().is_none()
+            && (32..=256).contains(&self.agent_token.len()))
+        .then_some(url)
+    }
+}
+
+pub(crate) async fn configured_address(root: &std::path::Path) -> Option<Url> {
+    let bytes = tokio::fs::read(root.join("muse-relay.json")).await.ok()?;
+    serde_json::from_slice::<Config>(&bytes).ok()?.address()
+}
+
 #[derive(Deserialize)]
 struct Command {
     ticket: String,
     method: String,
     path: String,
     body: Option<Value>,
+    #[serde(default)]
+    parallel: bool,
 }
 
 const MAX_REPLY: usize = 2 * 1024 * 1024;
@@ -72,9 +95,11 @@ fn allowed(method: &Method, path: &str) -> bool {
             *method == Method::GET
                 && id.len() == 32
                 && id.bytes().all(|b| b.is_ascii_hexdigit())
-                && path
-                    .split_once("?part=")
-                    .is_some_and(|(_, n)| n.parse::<u32>().is_ok())
+                && path.split_once("?part=").is_some_and(|(_, query)| {
+                    let (n, count) = query.split_once("&count=").unwrap_or((query, "1"));
+                    n.parse::<u32>().is_ok()
+                        && count.parse::<u8>().is_ok_and(|v| (1..=16).contains(&v))
+                })
         }
         _ => false,
     }
@@ -98,6 +123,7 @@ async fn bounded(response: Response, limit: usize) -> Result<Vec<u8>, ()> {
 
 struct Bridge {
     cloud: Client,
+    media: Client,
     local: Client,
     base: Url,
     agent_token: String,
@@ -105,16 +131,67 @@ struct Bridge {
     key: String,
 }
 impl Bridge {
+    async fn upload_window(
+        &self,
+        path: &str,
+        headers: &reqwest::header::HeaderMap,
+        bytes: &[u8],
+    ) -> Result<(), ()> {
+        const PART: usize = crate::images::http::PART_BYTES as usize;
+        let route = path
+            .split('?')
+            .next()
+            .ok_or(())?
+            .split('/')
+            .collect::<Vec<_>>();
+        let ["", "api", family, "jobs", id, "result"] = route.as_slice() else {
+            return Err(());
+        };
+        let value = |name| headers.get(name).and_then(|v| v.to_str().ok()).ok_or(());
+        let offset = value("x-result-offset")?.parse::<usize>().map_err(|_| ())?;
+        let digest = value("x-result-sha256")?;
+        if bytes.is_empty()
+            || offset % PART != 0
+            || value("x-part-sha256")? != hex::encode(Sha256::digest(bytes))
+        {
+            return Err(());
+        }
+        let per_lane = bytes.len().div_ceil(PART).div_ceil(4) * PART;
+        futures_util::future::try_join_all(bytes.chunks(per_lane).enumerate().map(
+            |(index, piece)| async move {
+                let first = (offset + index * per_lane) / PART;
+                let endpoint = self
+                    .base
+                    .join(&format!("_agent/parts/{family}/{id}/{first}"))
+                    .map_err(|_| ())?;
+                self.media
+                    .post(endpoint)
+                    .bearer_auth(&self.agent_token)
+                    .header("X-Result-Sha256", digest)
+                    .header("X-Part-Sha256", hex::encode(Sha256::digest(piece)))
+                    .body(piece.to_owned())
+                    .send()
+                    .await
+                    .map_err(|_| ())?
+                    .error_for_status()
+                    .map_err(|_| ())?;
+                Ok::<(), ()>(())
+            },
+        ))
+        .await?;
+        Ok(())
+    }
     async fn once(&self) -> Result<(), ()> {
         let request = self
             .cloud
             .post(self.base.join("_agent/next").map_err(|_| ())?)
+            .header("X-Muse-Part-Count", "16")
+            .header("X-Muse-Parallel", "1")
             .bearer_auth(&self.agent_token)
             .send()
             .await
             .map_err(|_| ())?;
         if request.status() == reqwest::StatusCode::NO_CONTENT {
-            tokio::time::sleep(Duration::from_secs(2)).await;
             return Ok(());
         }
         let request = request.error_for_status().map_err(|_| ())?;
@@ -164,6 +241,25 @@ impl Bridge {
             let status = response.status();
             let headers = response.headers().clone();
             if let Ok(bytes) = bounded(response, MAX_REPLY).await {
+                if cmd.parallel && status == reqwest::StatusCode::OK {
+                    let status = if self
+                        .upload_window(&cmd.path, &headers, &bytes)
+                        .await
+                        .is_ok()
+                    {
+                        204
+                    } else {
+                        503
+                    };
+                    reply
+                        .header("X-Upstream-Status", status)
+                        .send()
+                        .await
+                        .map_err(|_| ())?
+                        .error_for_status()
+                        .map_err(|_| ())?;
+                    return Ok(());
+                }
                 for name in [
                     "content-type",
                     "x-result-offset",
@@ -192,7 +288,13 @@ impl Bridge {
     }
 }
 
-pub(super) async fn run(root: PathBuf, port: u16, key: String, shutdown: CancellationToken) {
+pub(super) async fn run(
+    root: PathBuf,
+    port: u16,
+    key: String,
+    archive: Option<std::sync::Arc<crate::generation::remote_images::Store>>,
+    shutdown: CancellationToken,
+) {
     let settings = loop {
         match tokio::fs::read(root.join("muse-relay.json")).await {
             Ok(bytes) => break bytes,
@@ -209,48 +311,58 @@ pub(super) async fn run(root: PathBuf, port: u16, key: String, shutdown: Cancell
         eprintln!("Muse 中转配置格式无效");
         return;
     };
-    let Ok(base) = Url::parse(&config.url) else {
-        eprintln!("Muse 中转地址无效");
-        return;
-    };
-    if base.scheme() != "https"
-        || base.host_str().is_none()
-        || base.path() != "/"
-        || !base.username().is_empty()
-        || base.password().is_some()
-        || base.query().is_some()
-        || base.fragment().is_some()
-        || !(32..=256).contains(&config.agent_token.len())
-    {
+    let Some(base) = config.address() else {
         eprintln!("Muse 中转需要 HTTPS 根地址和有效的出图机密钥");
         return;
-    }
+    };
     let make = || {
         Client::builder()
             .redirect(reqwest::redirect::Policy::none())
             .connect_timeout(Duration::from_secs(6))
     };
-    let (Ok(local), Ok(cloud)) = (
+    let (Ok(local), Ok(cloud), Ok(media)) = (
         make().no_proxy().timeout(Duration::from_secs(25)).build(),
         make().timeout(Duration::from_secs(40)).build(),
+        make().http1_only().timeout(Duration::from_secs(30)).build(),
     ) else {
         return;
     };
     let bridge = Bridge {
         local,
         cloud,
+        media,
         base,
         agent_token: config.agent_token,
         port,
         key,
     };
-    let mut retry = 1;
-    loop {
-        tokio::select! { biased; _ = shutdown.cancelled() => break, result = bridge.once() => {
-            if result.is_ok() { retry = 1; continue; }
-            if retry == 1 { eprintln!("Muse 中转暂未连通，正在自动重连"); }
-        } }
-        tokio::select! { _ = shutdown.cancelled() => break, _ = tokio::time::sleep(Duration::from_secs(retry)) => {} }
-        retry = (retry * 2).min(30);
-    }
+    let poll = async {
+        let mut retry = 1;
+        loop {
+            tokio::select! { biased; _ = shutdown.cancelled() => break, result = bridge.once() => {
+                if result.is_ok() { retry = 1; continue; }
+                if retry == 1 { eprintln!("Muse 中转暂未连通，正在自动重连"); }
+            } }
+            tokio::select! { _ = shutdown.cancelled() => break, _ = tokio::time::sleep(Duration::from_secs(retry)) => {} }
+            retry = (retry * 2).min(30);
+        }
+    };
+    let notify = async {
+        let Some(archive) = archive else { return };
+        let Ok(endpoint) = bridge.base.join("_agent/finished") else {
+            return;
+        };
+        loop {
+            archive.published.notified().await;
+            // A missed hint is recovered by the relay's normal batch polling.
+            let _ = bridge
+                .cloud
+                .post(endpoint.clone())
+                .bearer_auth(&bridge.agent_token)
+                .timeout(Duration::from_secs(5))
+                .send()
+                .await;
+        }
+    };
+    tokio::select! { _ = shutdown.cancelled() => {}, _ = async { tokio::join!(poll, notify); } => {} }
 }

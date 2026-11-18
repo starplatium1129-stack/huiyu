@@ -11,6 +11,7 @@ pub(super) async fn serve(
     total: u64,
     digest: &str,
     index: &str,
+    count: Option<&String>,
     method: &Method,
 ) -> Result<Response> {
     let start = index
@@ -25,7 +26,11 @@ pub(super) async fn serve(
                 "分片从 0 开始，编号超出原图范围",
             )
         })?;
-    let size = (total - start).min(PART_BYTES) as usize;
+    let count = count
+        .map_or(Some(1), |s| s.parse::<u64>().ok())
+        .filter(|n| (1..=16).contains(n))
+        .ok_or_else(|| ApiError::invalid("每次可取 1 至 16 片原图"))?;
+    let size = (total - start).min(PART_BYTES * count) as usize;
     let bytes = match source {
         Source::Bytes(bytes) => bytes.slice(start as usize..start as usize + size),
         Source::Opened(mut file, cancel) => {

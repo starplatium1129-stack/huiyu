@@ -29,7 +29,7 @@
 
 Muse 可以通过私人 Cloudflare HTTPS 中转连接笔记本。出图时让绘遇保持运行，调用方只需填中转地址和自己的 `X-Token`。中转会接收提交的提示词、任务回执和原图。每个中转对应一台出图机，图片最多保留 48 小时，单张上限 32 MiB，总容量 256 MiB。也可以继续使用已配置的 Tailscale 私网直连。
 
-首次开通时，在笔记本控制室开启「允许连接」并保存。使用项目要求的 Node.js，在项目根目录运行 `.\tools\muse-relay\setup.ps1`，按 Cloudflare 的提示登录个人账号。首次使用 Workers 时需选择可用的 workers.dev 子域名。脚本会部署私人 Worker，生成两把独立的密钥并保存到本机，输出 Muse 的 HTTPS 地址。用 `.\tools\muse-relay\setup.ps1 -CopyToken` 复制调用方的密钥。已运行的新版绘遇会自动读取首次配置。更换已有配置后重启绘遇。Cloudflare 的免费套餐有每日用量限制。[Cloudflare 官方用量说明](https://developers.cloudflare.com/durable-objects/platform/pricing/)
+首次开通时，在出图机控制室开启「允许连接」并保存。使用项目要求的 Node.js，在项目根目录运行 `.\tools\muse-relay\setup.ps1`，按 Cloudflare 的提示登录个人账号。首次使用 Workers 时需选择可用的 workers.dev 子域名。开通后进入「控制室 → 绘图与模型 → 原生绘图 → Muse 远程出图」，可以查看、复制中转地址与调用方的 X-Token。使用命令行时也可运行 `.\tools\muse-relay\setup.ps1 -CopyToken`。已运行的新版绘遇会自动读取首次配置。更换已有配置后重启绘遇。Cloudflare 的免费套餐有每日用量限制。[Cloudflare 官方用量说明](https://developers.cloudflare.com/durable-objects/platform/pricing/)
 
 中转根地址 `GET /` 提供接入说明。带密钥读取 `GET /api/muse/connection` 可查看笔记本是否在线，`GET /api/muse/guide` 提供素材与出图接口的完整用法。调用方应发送自己的应用名称，例如 `User-Agent: Huiyu-Muse/1.0`。实测 Cloudflare 会对默认的 `Python-urllib` 标识返回 403/1010。桌面之间的模型探测和上传参考图仍使用上一节的桌面连接方式。
 
@@ -42,6 +42,8 @@ Muse 可以通过私人 Cloudflare HTTPS 中转连接笔记本。出图时让绘
 **查刚提交的图**：单张和多张都返回 `batchKey` 和顶层 `statusPath`。直接 GET 这个路径，也可用 `GET /api/muse/batches/{batchKey}`。从 `items` 看每张图的 `status`、`progress` 和成功后的 `resultUrl`。`waiting` 表示已排队，继续查同一路径即可。取消整批或某张图时，向对应的 `cancelPath` 发 `DELETE`。升级前的单图若仍保有回执，可用当初的 `requestKey` 查批次路径，也可沿原回执路径读取 `job`。
 
 **队列和恢复**用 `GET /api/muse/queue` 查看排位。丢失编号时用 `GET /api/muse/jobs` 找回近期记录。`items` 同时含 `entryType=batch` 的批次和 `entryType=image` 的单张任务。可传 `since`（Unix 毫秒或 RFC3339），并以 `nextBefore` 翻页。
+
+**Muse 自动收原图**。公网提交成功后，立即带同一个 X-Token 向回执的 `receivePath` 发 GET。多图分别使用各项的 `items[].receivePath`。中转会等候最多 20 秒，原图就绪时直接返回 `200 image/png`。收到 `202` 就立即对同一路径再发 GET；出错按状态码退避重试。超时或退出后保留该路径即可继续接收。将收到的字节数与 `Content-Length` 和 `X-Result-Bytes` 比对，SHA-256 与 `X-Result-Sha256` 比对，通过后自动展示或保存。也可用 `py tools/muse-relay/get_result.py <HTTPS地址> <batchKey> 成图.png` 完成整个接收过程。已有调用方可继续使用原先的状态查询和分片下载。
 
 **等待图片传完**。中转回执中，`status=succeeded` 表示笔记本已经出图，`generationMs` 是生成耗时。`deliveryStatus=transferring` 表示中转还在收图，`deliveryBytes` 为已经校验的字节数。即使调用方退出，中转也会继续接收已经提交的批次。等到 `deliveryStatus=ready`，再用同一个中转地址和密钥下载 `resultUrl`。此时 `deliveryMs` 是笔记本向中转传送这张图的耗时，手机自己的下载时间另算。中转已收全的图在笔记本离线后仍可下载。回执保留 `resultBytes` 和 `resultSha256`。遇到空响应、429 或 503，按 `Retry-After` 或短暂退避重查原路径。
 

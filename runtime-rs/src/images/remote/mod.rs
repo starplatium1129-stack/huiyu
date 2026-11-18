@@ -17,4 +17,5 @@ pub(crate) enum Completion {
 
 pub(super) use client::Client;
 pub(super) use guide::Guide;
+pub(crate) use relay::configured_address as muse_relay_address;
 pub(crate) use server::{listening, start};

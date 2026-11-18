@@ -17,6 +17,7 @@ pub(crate) struct Store {
     ready: std::sync::Mutex<bool>,
     pub(crate) owner: String,
     epoch: String,
+    pub(crate) published: tokio::sync::Notify,
 }
 
 impl Store {
@@ -26,6 +27,7 @@ impl Store {
             ready: std::sync::Mutex::new(false),
             owner: hex::encode(Sha256::digest(key.as_bytes())),
             epoch: uuid::Uuid::new_v4().simple().to_string(),
+            published: tokio::sync::Notify::new(),
         }
     }
 
@@ -191,7 +193,10 @@ impl Store {
                 ],
             );
             match saved {
-                Ok(1) => Ok(digest),
+                Ok(1) => {
+                    store.published.notify_one();
+                    Ok(digest)
+                }
                 result => {
                     let _ = fs::remove_file(target);
                     result?;

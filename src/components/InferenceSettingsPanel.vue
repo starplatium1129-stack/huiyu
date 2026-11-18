@@ -10,6 +10,7 @@
       <button v-if="error && !snapshot" class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="retrySettings">重新读取推理设置</button>
       <p v-if="notice" role="status">{{ notice }}</p>
       <template v-if="snapshot">
+        <MuseRelayConnection v-if="snapshot.museRelayUrl" :key="snapshot.museRelayUrl" :url="snapshot.museRelayUrl" />
         <section v-if="snapshot.active.remoteServe" class="inference-connection" aria-label="本机远程绘图">
           <div v-if="snapshot.remoteAddress" class="inference-actions">
             <div class="inference-address">
@@ -185,6 +186,7 @@ import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AvailableDrawingModels from '@/components/control/AvailableDrawingModels.vue'
+import MuseRelayConnection from '@/components/control/MuseRelayConnection.vue'
 import { getDesktopCapabilities } from '@/platform/desktop/capabilities'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { copyText } from '@/utils/clipboard'

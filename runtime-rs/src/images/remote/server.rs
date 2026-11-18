@@ -133,6 +133,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
                 return None;
             }
         };
+    let archive = images.backend.remote_store().cloned();
     let mut app = super::super::router(images.clone())
         .merge(upload_index::router())
         .layer(Extension(Arc::new(UploadIndex::new(inputs::root(
@@ -182,6 +183,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
             state.config.runtime_root.clone(),
             settings.remote_port,
             settings.remote_key,
+            archive,
             relay_cancel.clone(),
         ));
         let result = axum::serve(
