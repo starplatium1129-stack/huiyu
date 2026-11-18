@@ -75,6 +75,7 @@ async fn status(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
     guide: Option<Extension<remote::Guide>>,
+    reuse: Option<Extension<Arc<remote::UploadIndex>>>,
     OriginalUri(uri): OriginalUri,
 ) -> Response {
     response(
@@ -83,6 +84,9 @@ async fn status(
             let mut status = http.service.get_status(family(&uri)).await?;
             if guide.is_some() {
                 status["museGuide"] = remote::Guide::document().clone();
+            }
+            if let Some(Extension(index)) = reuse {
+                status["inputReuse"] = json!(index.has_uploads());
             }
             Ok(status)
         }
@@ -93,6 +97,7 @@ async fn status(
 async fn upload_raw(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
+    reuse: Option<Extension<Arc<remote::UploadIndex>>>,
     ConnectInfo(peer): ConnectInfo<SocketAddr>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
@@ -102,11 +107,24 @@ async fn upload_raw(
         return error.into_response();
     }
     let owner = generation::request_owner(&headers, peer, &query);
+    let indexed = reuse.is_some();
     let result = http
         .service
-        .upload(bytes, owner, http.service.shutdown.child_token(), admission)
+        .upload(
+            bytes,
+            owner,
+            http.service.shutdown.child_token(),
+            admission,
+            reuse.map(|Extension(index)| index),
+        )
         .await
-        .map(|name| json!({"name":name}));
+        .map(|name| {
+            if indexed {
+                json!({"name":name,"inputReuse":true})
+            } else {
+                json!({"name":name})
+            }
+        });
     response(result, StatusCode::OK)
 }
 struct SubmissionGuard {

@@ -12,13 +12,15 @@ mod extra;
 mod showcase;
 
 use crate::remote_content::PUBLIC_DATA_FILES;
-pub(crate) const PAGES: &[&str] = &[
+const PAGES: &[&str] = &[
     "/",
     "/index.html",
+    "/guide",
     "/scene-explorer",
     "/popular-scenes",
     "/prompt-builder",
     "/qwen-studio",
+    "/moss-studio",
     "/video-studio",
     "/chat",
     "/showcase",
@@ -33,6 +35,10 @@ pub(crate) const PAGES: &[&str] = &[
     "/companion-chat",
     "/control",
 ];
+
+pub(crate) fn page_path(path: &str) -> bool {
+    path == "/" || PAGES.contains(&path.trim_end_matches('/'))
+}
 
 pub async fn serve(State(state): State<AppState>, mut request: Request) -> Response {
     let raw = request.uri().path();
@@ -114,7 +120,7 @@ pub async fn serve(State(state): State<AppState>, mut request: Request) -> Respo
     if let Some(response) = extra::redirect(&state, &path, request.uri().query()).await {
         return response;
     }
-    let (base, relative, immutable) = if PAGES.contains(&path.as_ref()) {
+    let (base, relative, immutable) = if page_path(&path) {
         (root.join("dist"), "index.html".to_owned(), false)
     } else if let Some(name) = path.strip_prefix("/data/") {
         if !PUBLIC_DATA_FILES.contains(&name) {

@@ -1,3 +1,6 @@
+mod download;
+mod transport;
+mod uploads;
 use super::super::*;
 use super::{COMPLETION_HEADER, COMPLETION_WAIT, Completion};
 use futures_util::{StreamExt, TryStreamExt, stream};
@@ -5,6 +8,7 @@ use reqwest::Method;
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::time::Duration;
 use tokio::sync::{OwnedSemaphorePermit, Semaphore};
+use transport::{RECEIPT_LIMIT, header_enabled, read_body};
 
 const UPLOAD_PARALLELISM: usize = 2;
 
@@ -15,6 +19,7 @@ pub(in crate::images) struct Client {
     admission: Arc<Semaphore>,
     uploads: Semaphore,
     completion_supported: AtomicBool,
+    reuse_supported: AtomicBool,
 }
 
 impl Client {
@@ -40,6 +45,7 @@ impl Client {
             admission: Arc::new(Semaphore::new(4)),
             uploads: Semaphore::new(UPLOAD_PARALLELISM),
             completion_supported: AtomicBool::new(false),
+            reuse_supported: AtomicBool::new(false),
         })
     }
 
@@ -50,86 +56,6 @@ impl Client {
         self.admission.clone().try_acquire_owned().map_err(|_| {
             ApiError::new(429, "REMOTE_QUEUE_FULL", "远程绘图请求正在准备，请稍后重试")
         })
-    }
-
-    async fn bytes(
-        &self,
-        method: Method,
-        path: &str,
-        body: Option<Vec<u8>>,
-        content_type: &str,
-        max: usize,
-        cancel: &CancellationToken,
-    ) -> Result<Vec<u8>> {
-        let mut request = self
-            .http
-            .request(method, format!("{}{path}", self.base))
-            .header("x-token", &self.key)
-            .timeout(Duration::from_secs(if path.ends_with("/status") {
-                4
-            } else {
-                60
-            }));
-        if let Some(body) = body {
-            request = request.header("content-type", content_type).body(body);
-        }
-        let response = tokio::select! {
-            _ = cancel.cancelled() => return Err(inputs::cancelled()),
-            response = request.send() => response.map_err(|_| unavailable())?,
-        };
-        if !header_enabled(&response, "x-huiyu-image-protocol") {
-            return Err(ApiError::new(
-                502,
-                "REMOTE_PROTOCOL_MISMATCH",
-                "该地址不是兼容的绘遇远程绘图端口",
-            ));
-        }
-        let status = response.status();
-        if status.is_success() {
-            self.completion_supported.store(
-                header_enabled(&response, COMPLETION_HEADER),
-                Ordering::Relaxed,
-            );
-        }
-        let bytes = read_body(response, max, cancel).await?;
-        if !status.is_success() {
-            let value: Value = serde_json::from_slice(&bytes).unwrap_or(Value::Null);
-            let message = value["error"]
-                .as_str()
-                .unwrap_or("请检查远程绘图服务、地址和连接密钥")
-                .replace(&self.key, "[redacted]");
-            return Err(ApiError::new(
-                status.as_u16(),
-                "REMOTE_REQUEST_FAILED",
-                message.chars().take(300).collect::<String>(),
-            ));
-        }
-        Ok(bytes)
-    }
-
-    async fn json(
-        &self,
-        method: Method,
-        path: &str,
-        body: Option<&Value>,
-        cancel: &CancellationToken,
-    ) -> Result<Value> {
-        let body = body.map(serde_json::to_vec).transpose()?;
-        let bytes = self
-            .bytes(
-                method,
-                path,
-                body,
-                "application/json",
-                RECEIPT_LIMIT,
-                cancel,
-            )
-            .await?;
-        let value: Value = serde_json::from_slice(&bytes).map_err(|_| protocol())?;
-        if value["ok"] != true {
-            return Err(protocol());
-        }
-        Ok(value)
     }
 
     pub async fn status(&self, family: &str, cancel: &CancellationToken) -> Result<Value> {
@@ -149,6 +75,8 @@ impl Client {
             ));
         }
         value["remote"] = json!(true);
+        self.reuse_supported
+            .store(value["inputReuse"] == true, Ordering::Relaxed);
         Ok(value)
     }
 
@@ -163,21 +91,11 @@ impl Client {
         cancel: &CancellationToken,
     ) -> Result<Value> {
         let route = route(family)?;
-        if !originals.is_empty() {
-            let path = format!("/api/{route}/images/raw");
-            let path = path.as_str();
-            let mut uploads = stream::iter(0..originals.len())
-                .map(|index| async move {
-                    let original = &originals[index];
-                    self.upload(original, path, cancel)
-                        .await
-                        .map(|name| (original.name.as_str(), name))
-                })
-                .buffer_unordered(UPLOAD_PARALLELISM);
-            while let Some((original, name)) = uploads.try_next().await? {
-                replace_name(&mut raw, original, &name);
-            }
+        if cancel.is_cancelled() {
+            return Err(inputs::cancelled());
         }
+        self.prepare_uploads(&mut raw, originals, route, cancel)
+            .await?;
         raw["seed"] = input["seed"].clone();
         let key = uuid::Uuid::new_v4().simple().to_string();
         if let Some(hooks) = hooks {
@@ -201,47 +119,6 @@ impl Client {
         Ok(json!({"id":key,"provider":"native","status":"queued"}))
     }
 
-    async fn upload(
-        &self,
-        original: &inputs::Original,
-        path: &str,
-        cancel: &CancellationToken,
-    ) -> Result<String> {
-        let _permit = tokio::select! {
-            biased;
-            _ = cancel.cancelled() => return Err(inputs::cancelled()),
-            permit = self.uploads.acquire() => permit.map_err(|_| unavailable())?,
-        };
-        original.input.check()?;
-        let bytes = tokio::select! {
-            _ = cancel.cancelled() => return Err(inputs::cancelled()),
-            bytes = tokio::fs::read(original.input.path()) => bytes?,
-        };
-        use sha2::{Digest, Sha256};
-        original.input.check()?;
-        if bytes.len() as u64 != original.input.bytes
-            || hex::encode(Sha256::digest(&bytes)) != original.input.hash
-        {
-            return Err(error("TASK_INPUT_CHANGED", "输入快照发生变化"));
-        }
-        let uploaded = self
-            .bytes(
-                Method::POST,
-                path,
-                Some(bytes),
-                "application/octet-stream",
-                65536,
-                cancel,
-            )
-            .await?;
-        let response: Value = serde_json::from_slice(&uploaded).map_err(|_| protocol())?;
-        response["name"]
-            .as_str()
-            .filter(|s| !s.is_empty() && s.len() <= 128)
-            .map(str::to_owned)
-            .ok_or_else(protocol)
-    }
-
     async fn receipt(
         &self,
         id: &str,
@@ -258,6 +135,9 @@ impl Client {
                 cancel,
             )
             .await?;
+        if value["requestKey"] != remote_id {
+            return Err(protocol());
+        }
         if value["found"] != true {
             return Err(ApiError::new(
                 503,
@@ -292,9 +172,10 @@ impl Client {
         let remote_id = remote_request_id(id, owner).ok()?;
         let route = route(family).ok()?;
         let request = self
-            .http
-            .get(format!("{}/api/{route}/requests/{remote_id}/completion?receipt=1", self.base))
-            .header("x-token", &self.key)
+            .request(
+                Method::GET,
+                &format!("/api/{route}/requests/{remote_id}/completion?receipt=1&progress=1"),
+            )
             .timeout(COMPLETION_WAIT + Duration::from_secs(5));
         let response = tokio::select! {
             biased;
@@ -308,7 +189,7 @@ impl Client {
         }
         match response.status() {
             reqwest::StatusCode::NO_CONTENT => Some(Completion::Signalled),
-            reqwest::StatusCode::OK => {
+            status @ (reqwest::StatusCode::OK | reqwest::StatusCode::ACCEPTED) => {
                 let receipt = read_body(response, RECEIPT_LIMIT, cancel)
                     .await
                     .ok()
@@ -317,13 +198,14 @@ impl Client {
                     && receipt["ok"] == true
                     && receipt["found"] == true
                     && receipt["requestKey"] == remote_id
-                    && (receipt["rejected"].is_object()
+                    && ((status == reqwest::StatusCode::ACCEPTED && receipt["job"].is_object())
+                        || receipt["rejected"].is_object()
                         || (receipt["job"]["upstreamSettled"] == true
                             && receipt["job"]["unknown"] == false))
                 {
                     return Some(Completion::Receipt(receipt));
                 }
-                Some(Completion::Signalled)
+                (status == reqwest::StatusCode::OK).then_some(Completion::Signalled)
             }
             _ => None,
         }
@@ -331,8 +213,12 @@ impl Client {
 
     fn job_from_receipt(receipt: &Value, id: &str, family: &str) -> Result<Value> {
         if let Some(rejected) = receipt["rejected"].as_object() {
+            let status = match rejected.get("code").and_then(Value::as_str) {
+                Some("IMAGE_REQUEST_CANCELLED" | "CANCELLED") => "cancelled",
+                _ => "failed",
+            };
             return Ok(
-                json!({"id":id,"provider":"native","status":"failed","upstreamSettled":true,"unknown":false,"resultAvailable":false,"metadata":{},"code":rejected.get("code"),"error":rejected.get("message")}),
+                json!({"id":id,"provider":"native","status":status,"upstreamSettled":true,"unknown":false,"resultAvailable":false,"metadata":{},"code":rejected.get("code"),"error":rejected.get("message")}),
             );
         }
         if receipt["job"].is_null() {
@@ -380,7 +266,10 @@ impl Client {
         let settled = job["upstreamSettled"] == true;
         let unknown = job["unknown"] == true;
         let outputs = if status == "succeeded" && settled && !unknown {
-            vec![self.download_result(&receipt["job"], family, cancel).await?]
+            vec![
+                self.download_result(&receipt["job"], family, cancel)
+                    .await?,
+            ]
         } else {
             vec![]
         };
@@ -407,40 +296,6 @@ impl Client {
         self.download_result(&receipt["job"], family, cancel).await
     }
 
-    async fn download_result(
-        &self,
-        job: &Value,
-        family: &str,
-        cancel: &CancellationToken,
-    ) -> Result<Output> {
-        let job_id = job["id"]
-            .as_str()
-            .filter(|id| id.len() == 32 && id.bytes().all(|b| b.is_ascii_hexdigit()))
-            .ok_or_else(protocol)?;
-        if job["status"] != "succeeded" {
-            return Err(ApiError::new(409, "RESULT_NOT_READY", "远程结果尚未就绪"));
-        }
-        let bytes = self
-            .bytes(
-                Method::GET,
-                &format!("/api/{}/jobs/{job_id}/result", route(family)?),
-                None,
-                "",
-                32 * 1024 * 1024,
-                cancel,
-            )
-            .await?;
-        if crate::image_decode::sniff(&bytes).map(|x| x.0) != Some("image/png") {
-            return Err(protocol());
-        }
-        let bytes = Arc::new(bytes);
-        crate::image_decode::validate(bytes.clone(), cancel).await?;
-        Ok(Output::Bytes {
-            bytes,
-            mime: "image/png".into(),
-        })
-    }
-
     pub async fn cancel(
         &self,
         id: &str,
@@ -449,55 +304,19 @@ impl Client {
         cancel: &CancellationToken,
     ) -> Result<Value> {
         let remote_id = remote_request_id(id, owner)?;
-        let receipt = self.json(
-            Method::DELETE,
-            &format!("/api/{}/requests/{remote_id}", route(family)?),
-            None,
-            cancel,
-        )
-        .await?;
+        let receipt = self
+            .json(
+                Method::DELETE,
+                &format!("/api/{}/requests/{remote_id}", route(family)?),
+                None,
+                cancel,
+            )
+            .await?;
         if receipt["requestKey"] == remote_id && receipt["job"].is_object() {
             return Self::job_from_receipt(&receipt, id, family);
         }
         self.job(id, owner, family, cancel).await
     }
-}
-
-const RECEIPT_LIMIT: usize = 2 * 1024 * 1024;
-
-async fn read_body(
-    response: reqwest::Response,
-    max: usize,
-    cancel: &CancellationToken,
-) -> Result<Vec<u8>> {
-    let too_large = || ApiError::new(502, "REMOTE_RESPONSE_INVALID", "远程绘图返回的数据过大");
-    let length = response.content_length().unwrap_or_default();
-    if length > max as u64 {
-        return Err(too_large());
-    }
-    let mut bytes = Vec::with_capacity(if response.status().is_success() {
-        length as usize
-    } else {
-        0
-    });
-    let mut stream = response.bytes_stream();
-    loop {
-        let chunk = tokio::select! {
-            _ = cancel.cancelled() => return Err(inputs::cancelled()),
-            chunk = stream.next() => chunk,
-        };
-        let Some(chunk) = chunk else { break };
-        let chunk = chunk.map_err(|_| unavailable())?;
-        if chunk.len() > max - bytes.len() {
-            return Err(too_large());
-        }
-        bytes.extend_from_slice(&chunk);
-    }
-    Ok(bytes)
-}
-
-fn header_enabled(response: &reqwest::Response, header: &str) -> bool {
-    response.headers().get(header).is_some_and(|value| value == "1")
 }
 
 fn remote_request_id(id: &str, owner: &str) -> Result<String> {
@@ -524,24 +343,6 @@ fn route(family: &str) -> Result<&'static str> {
             "REMOTE_FAMILY_UNSUPPORTED",
             "远程原生绘图暂不支持该任务类型",
         )),
-    }
-}
-
-fn replace_name(input: &mut Value, old: &str, new: &str) {
-    for key in ["initImage", "maskImage", "penLines"] {
-        if input[key] == old {
-            input[key] = json!(new);
-        }
-    }
-    if input["sketchControl"]["image"] == old {
-        input["sketchControl"]["image"] = json!(new);
-    }
-    if let Some(references) = input["referenceImages"].as_array_mut() {
-        for value in references {
-            if *value == old {
-                *value = json!(new);
-            }
-        }
     }
 }
 

@@ -25,80 +25,8 @@
           </div>
         </div>
 
-        <div class="video-choice-group">
-          <span class="field-label">统一画幅</span>
-          <div class="video-segmented studio-segments studio-segments--compact" role="group" aria-label="选择分镜画幅">
-            <AnimatedSelection />
-            <button
-              v-for="item in aspectOptions"
-              :key="item.id"
-              type="button"
-              :class="{ active: aspectRatio === item.id }"
-              :aria-pressed="aspectRatio === item.id"
-              :disabled="batchActive || submitting"
-              @click="aspectRatio = item.id"
-            >{{ item.label }}</button>
-          </div>
-        </div>
-
-        <div class="video-quality-row">
-          <span class="field-label">画质档位</span>
-          <div class="video-quality-grid" role="group" aria-label="选择视频画质档位">
-            <button
-              v-for="item in status?.qualities || []"
-              :key="item.id"
-              type="button"
-              :class="{ active: quality === item.id }"
-              :aria-pressed="quality === item.id"
-              :disabled="batchActive || submitting"
-              @click="quality = item.id"
-            >
-              <strong>{{ item.label }}</strong>
-              <em>{{ item.sizes[aspectRatio] }}</em>
-            </button>
-          </div>
-        </div>
-
-        <div class="shot-options">
-          <ToggleSwitch
-            :model-value="linkLastFrame"
-            :disabled="batchActive || submitting"
-            label="自动衔接上一镜尾帧"
-            @update:model-value="linkLastFrame = $event"
-          >
-            <span>
-              <strong>自动衔接上一镜尾帧</strong>
-            </span>
-          </ToggleSwitch>
-
-          <ToggleSwitch
-            :model-value="steps === 4"
-            :disabled="batchActive || submitting"
-            label="极速 4 步（整批）"
-            @update:model-value="steps = $event ? 4 : 8"
-          >
-            <span>
-              <strong>极速 4 步（整批）</strong>
-              <small>更快生成预览，画面细节会略有减少。</small>
-            </span>
-          </ToggleSwitch>
-        </div>
-
-        <label class="field shot-identity-field">
-          <span class="field-label">各镜头共用的角色描述</span>
-          <textarea
-            v-model="identityCard"
-            :disabled="batchActive || submitting"
-            class="textarea"
-            rows="2"
-            maxlength="600"
-            placeholder="英文身份锚点：a girl with long silver hair and red eyes, wearing a dark coat …"
-            spellcheck="false"
-            autocorrect="off"
-            autocapitalize="off"
-          ></textarea>
-        </label>
-
+        <ShotBatchSettings v-model:aspect-ratio="aspectRatio" v-model:quality="quality" v-model:link-last-frame="linkLastFrame"
+          v-model:steps="steps" v-model:identity-card="identityCard" :qualities="status?.qualities ?? []" :disabled="batchActive || submitting" />
       </section>
       <section class="video-panel shot-reference-panel" aria-labelledby="shotReferencesTitle">
         <div class="shot-reference-section">
@@ -211,9 +139,15 @@
           </div>
         </div>
         <div class="shot-toolbar tw:p-s-2 tw:rounded-lg" data-fluid-glass>
-          <StudioSelect size="sm" label="从场景蓝图快速填充镜头描述" v-model="sceneFillId" :options="sceneFillOptions" :disabled="batchActive || submitting" />
+          <StudioSelect size="sm" label="蓝图角色" v-model="blueprintCharacter" :options="blueprintCharacters" :disabled="storyboardBusy || batchActive || submitting" />
+          <span v-if="directoryFailed" role="status">角色目录读取失败 <button class="btn btn-ghost btn-sm" type="button" @click="readCharacters">重试</button></span>
+          <span v-if="blueprintCharacter && !blueprintReady" role="status">{{ blueprintError || '正在读取角色蓝图…' }}
+            <button v-if="blueprintError" class="btn btn-ghost btn-sm" type="button" @click="retryBlueprints">重试</button>
+          </span>
+          <span v-else-if="blueprintCharacter && !sceneBlueprints.length" role="status">这个角色暂无蓝图</span>
+          <StudioSelect size="sm" label="从场景蓝图快速填充镜头描述" v-model="sceneFillId" :options="sceneFillOptions" :disabled="!sceneBlueprints.length || batchActive || submitting" />
           <button class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="addShot"><ArchiveIcon name="gallery" />添加镜头</button>
-          <StudioSelect size="sm" label="选择场景蓝图生成四镜剧本" v-model="storyboardBlueprintId" :options="storyboardOptions" :disabled="storyboardBusy || batchActive || submitting" />
+          <StudioSelect size="sm" label="选择场景蓝图生成四镜剧本" v-model="storyboardBlueprintId" :options="storyboardOptions" :disabled="!sceneBlueprints.length || storyboardBusy || batchActive || submitting" />
           <input
             v-model="storyboardIntent"
             class="input shot-intent-input"
@@ -445,14 +379,13 @@
 </template>
 
 <script setup lang="ts">
-import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
+import ShotBatchSettings from './ShotBatchSettings.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { StudioSelectOption } from '@/components/ui/StudioSelect.vue'
 import { computed, nextTick, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
 import ShotReviewIssues from './ShotReviewIssues.vue'
 import ShotScriptDialog from './ShotScriptDialog.vue'
@@ -468,10 +401,10 @@ function locateShot(index: number) {
   row?.focus({ preventScroll:true })
 }
 const {
- frameInputs,h3Ready, aspectOptions, aspectRatio, quality, linkLastFrame, steps,
+ frameInputs,h3Ready, aspectRatio, quality, linkLastFrame, steps,
 identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
-popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
-        setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, sceneBlueprints, addShot,
+popularCharacters, directoryFailed, readCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
+        setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, blueprintCharacter, blueprintReady, blueprintError, retryBlueprints, sceneBlueprints, addShot,
 storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,
 firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptNote, scriptOpen,
 reviewBusy, runAiReview, aiSnapshot, restoreAiSnapshot, polishSnapshot, restorePolishSnapshot,
@@ -500,6 +433,8 @@ const concatTranscript = computed(() => (batch.value?.shots ?? [])
 
 // —— 原生 <select> → StudioSelect 选项构造（2026-09-22 去原生化）——
 const cardCharacterGroups = computed(() => characterSelectGroups(popularCharacters.value))
+const blueprintCharacters = computed(() => [{ value: '', label: '选择蓝图角色' },
+  ...popularCharacters.value.map(character => ({ value: character.id, label: character.displayName }))])
 
 const sceneFillOptions = computed<StudioSelectOption[]>(() => [
   { value: '', label: '场景蓝图 → 填入空镜头' },

@@ -63,7 +63,7 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
   const scenes = shallowRef<SceneItem[]>([])
   const scenesLoading = ref(false), scenesError = ref('')
   let scenesReady = false, scenesRequest = 0
-  const { works, worksError, worksLoading, loadWorks, resetWorks } = useGlobalSearchWorks(query)
+  const { works, worksError, worksLoading, retryWorks } = useGlobalSearchWorks(open, query)
 
   const queryTerms = computed(() => query.value.trim().toLowerCase().split(/\s+/).filter(Boolean))
 
@@ -148,16 +148,15 @@ export function useGlobalSearchResults(open: Readonly<Ref<boolean>>, query: Read
   }
 
   function retryScenes() { if (local) catalog.search(); else { scenesError.value = ''; void loadScenes() } }
-  function reset() { resetSceneRead(); resetWorks() }
   watch([() => sceneStore.version, runtimeResourceIdentity], () => { resetSceneRead(); scenesReady = false; scenes.value = []; void loadScenes() }, { flush: 'sync' })
-  watch(open, visible => { if (!visible) reset() }, { flush: 'sync' })
+  watch(open, visible => { if (!visible) resetSceneRead() }, { flush: 'sync' })
   watch([query, open], () => {
     if (!open.value) return
-    if (!queryTerms.value.length) reset()
-    else { void loadScenes(); loadWorks() }
+    if (!queryTerms.value.length) resetSceneRead()
+    else void loadScenes()
   })
   onScopeDispose(resetSceneRead)
   return { queryTerms, resultGroups, flat, moreCatalogGroups, loadMoreCatalog: catalog.loadMore,
     scenesLoading: local ? catalog.loading : scenesLoading,
-    scenesError: local ? catalog.error : scenesError, worksLoading, worksError, retryScenes }
+    scenesError: local ? catalog.error : scenesError, worksLoading, worksError, retryScenes, retryWorks }
 }

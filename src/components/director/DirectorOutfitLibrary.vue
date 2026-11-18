@@ -30,12 +30,14 @@
               </button>
             </template>
             <div class="wardrobe-source-list">
-              <strong>内容相同 · 选择来源</strong>
-              <button v-for="variant in group.variants" :key="variant.id" class="wardrobe-source-option" type="button" data-control-motion
-                :disabled="!canApply" :aria-pressed="pb.outfitOverride?.presetId === variant.id"
+              <strong>选择套装来源</strong>
+              <StudioSearch v-if="group.variants.length > 12" v-model="sourceSearch" label="搜索套装来源" placeholder="搜索角色或套装名称…" size="sm" />
+              <p v-if="!sourceOptions.length" role="status">没有匹配的来源。</p>
+              <button v-for="variant in sourceOptions" :key="variant.id" class="wardrobe-source-option" type="button" data-control-motion
+                :disabled="variant.kind === 'catalog' && !canApply" :aria-pressed="isSelected(variant)"
                 @click="select(variant); openSources = null">
                 <span><strong>{{ variant.sourceName }}</strong><small>{{ variant.name }}</small></span>
-                <ArchiveIcon v-if="pb.outfitOverride?.presetId === variant.id" name="success" />
+                <ArchiveIcon v-if="isSelected(variant)" name="success" />
               </button>
             </div>
           </StudioPopover>
@@ -53,10 +55,11 @@
 </template>
 
 <script setup lang="ts">
-import { ref, toRef, useId, watch } from 'vue'
+import { computed, ref, toRef, useId, watch } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import { OUTFIT_SOURCE_OPTIONS, OUTFIT_TYPE_OPTIONS, useOutfitPresetLibrary } from '@/composables/prompt/useOutfitPresetLibrary'
@@ -73,6 +76,13 @@ const search = toRef(props, 'search')
 const { pb, limit, type, source, canApply, matched, visible, isSelected, select } = useOutfitPresetLibrary(search, toRef(props, 'tags'), props.tagMeaning)
 const typeId = useId(), sourceId = useId(), results = ref<HTMLElement | null>(null), loadSentinel = ref<HTMLElement | null>(null)
 const openSources = ref<string | null>(null)
+const sourceSearch = ref('')
+const sourceOptions = computed(() => {
+  const variants = visible.value.find(group => group.id === openSources.value)?.variants || []
+  const words = sourceSearch.value.trim().toLowerCase().replace(/[_-]+/g, ' ').split(/\s+/).filter(Boolean)
+  return words.length ? variants.filter(item => words.every(word => item.search.includes(word))) : variants
+})
+watch(openSources, () => { sourceSearch.value = '' }, { flush: 'sync' })
 watch([search, type, source], () => { openSources.value = null; if (results.value) results.value.scrollTop = 0 })
 useIntersectionObserver(loadSentinel, entries => {
   if (entries.some(entry => entry.target === loadSentinel.value && entry.isIntersecting) && visible.value.length < matched.value.length) limit.value += 48

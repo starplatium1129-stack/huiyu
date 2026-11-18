@@ -228,7 +228,7 @@ fn local_document_navigation(
             .get("sec-fetch-mode")
             .is_none_or(|v| v != "navigate")
         || !matches!(*method, Method::GET | Method::HEAD)
-        || !crate::static_files::PAGES.contains(&path.trim_end_matches('/')) && path != "/"
+        || !crate::static_files::page_path(path)
     {
         return false;
     }

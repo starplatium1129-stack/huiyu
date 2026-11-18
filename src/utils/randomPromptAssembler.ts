@@ -1,14 +1,19 @@
-import { hasVariableCamera, hasVariableLight } from './randomVariationProse.ts'
+import { hasVariableCamera } from './randomVariationProse.ts'
 import { isStableIdentityToken } from './interrogateReference.ts'
-import { canVarySceneOutfit, sceneAllowsAction, sceneAllowsLight, sceneVariationOverlay, type RandomSceneContext } from './randomSceneVariation.ts'
+import { canVarySceneOutfit, sceneAllowsAction, randomSceneLightOptions, randomSceneWardrobe, sceneVariationOverlay, type RandomSceneContext } from './randomSceneVariation.ts'
+import { cameraTokensFromText } from './promptCamera.ts'
+import { sceneShot } from './sceneInference.ts'
+import { inferBlueprintLighting } from './blueprintLighting.ts'
 import type { DraftRandomVariation } from './promptBuilderPersistence.ts'
 import type { DirectorControlSources } from '../types/promptDirector.ts'
 import pools from '../config/randomInspirationPools.json' with { type: 'json' }
 import type { ArtistStyleOption } from '../config/artistStyles.ts'
 import { normalizeArtistStyleIds, ARTIST_STYLE_CANDIDATES } from '../config/artistStyles.ts'
 import { COLOR_MOODS, COMPOSITION, EMOTION, LIGHTING, SHOT } from '../config/promptConstants.ts'
-import { normalizeKey, mutualGroupWithCategory } from './promptPolicy.ts'
-import { appendRandomTag, compatibleRandomDetail, randomTokens, visibleInRandomShot } from './randomPromptConstraints.ts'
+import { normalizeKey } from './promptPolicy.ts'
+import { fitsRandomFacts, compatibleRandomDetail, outfitFitsSetting, randomTokens, visibleInRandomShot } from './randomPromptConstraints.ts'
+import { RANDOM_SETTINGS } from './randomSceneSettings.ts'
+import { isGarmentToken, isOutfitToken } from './popularIdentity.ts'
 import { isWardrobeContextTag, wardrobeTokens } from './wardrobeContent.ts'
 
 /**
@@ -32,6 +37,8 @@ export interface RandomInspirationOptions {
   /** Explicit caller opt-in: popular wardrobes may vary unless manually selected. */
   allowClothing?: boolean
   rich?: boolean
+  negative?: string[]
+  visualDescription?: string
   /** 工作室角色（studio 模式）。popular 模式改传 identityExclude，不传 char。 */
   char?: 'nene' | 'natsume' | 'triad'
   /** Explicit identity anchors replace the studio lookup. Popular callers opt into
@@ -44,7 +51,7 @@ export interface RandomInspirationOptions {
   /** 注入随机源（测试用）。缺省 Math.random。 */
   rng?: () => number
   /** 项目标签池（data/tags.json，经 sceneStore 加载）。 */
-  tags: ReadonlyArray<{ en: string; cat: string }>
+  tags: ReadonlyArray<{ en: string; cat: string; status?: string; verification?: { postCount: number } }>
   /** 官方服装（loras.json outfit_guidance，key → token 列表）。 */
   officialOutfits?: Readonly<Record<string, readonly string[]>>
   /** 画师候选，缺省复用轻量白名单；显式空数组表示不采样。 */
@@ -55,7 +62,7 @@ export interface RandomDraw {
   directorSources: DirectorControlSources
   variation: DraftRandomVariation
   kept: string[]
-  /** EMOTION id 列表（1~2 个，进入 store.selections.emotion）。 */
+  /** EMOTION id 列表（最多一个，进入 store.selections.emotion）。 */
   emotions: string[]
   /** SHOT id 或 null。 */
   shot: string | null
@@ -83,23 +90,6 @@ const IDENTITY_TOKENS: Record<string, ReadonlySet<string>> = {
 /** 与身份/构图无关的元标签，随机时一律丢弃。 */
 const META_TOKENS = new Set(['general', 'official_cg', 'visual_audited', 'anime', 'landscape', 'portrait', 'safe', 'sensitive', 'nsfw'])
 
-/** 场景室内外互斥（未命中集合的标签视为中性，可与任意一侧共存）。 */
-const INDOOR_SCENE = new Set([
-  'indoor', 'indoors', 'classroom', 'library', 'bedroom', 'cafe', 'cafe_interior',
-  'home_theater', 'storage_room', 'breakroom', 'kitchen', 'music_room', 'arcade',
-  'garage', 'attic', 'oriental_room', 'workshop', 'convenience_store', 'hotel_room',
-  'fitting_room', 'car_interior', 'lounge', 'bathroom', 'living_room', 'tatami',
-  'safehouse', 'gymnasium', 'swimming_pool', 'train_interior', 'art_studio', 'infirmary', 'izakaya', 'steamy_bathroom',
-])
-const OUTDOOR_SCENE = new Set([
-  'beach', 'shrine', 'park', 'train_station', 'school_rooftop', 'rooftop', 'grassy_hill',
-  'fireworks', 'street', 'bus_stop', 'stone_stairs', 'city_lights', 'cityscape',
-  'balcony', 'ocean', 'wet_road', 'festival', 'greenhouse', 'hotel_balcony', 'sea_wall', 'bridge', 'rooftop_fence',
-])
-
-/** 温和身体细节（可随机）；其余 Body 标签（cleavage/no_panties 等）并入 Mature 池。 */
-const BODY_MILD = new Set(['collarbone', 'shoulder_blade', 'bare_shoulders', 'wet_skin', 'water_droplets', 'bare_legs', 'backless', 'bare_streaks', 'wet_hair'])
-
 /** 极端重度/道具约束标签（在常规随机灵感中过滤，优先唯美情调与高级感）。 */
 const MATURE_HARDCORE = new Set([
   'anal', 'fellatio', 'blowjob', 'cunnilingus', 'facesitting', 'deepthroat',
@@ -109,34 +99,21 @@ const MATURE_HARDCORE = new Set([
   'tied_up', 'rope', 'handcuffs', 'blindfold', 'mating_press', 'sumata',
 ])
 
-/** 核心独立主地点（建筑/大型场景，画面中只允许出现一个核心地点，防止空间重叠）。 */
-const PRIMARY_LOCATIONS = new Set([
-  'classroom', 'library', 'bedroom', 'cafe', 'cafe_interior',
-  'home_theater', 'storage_room', 'breakroom', 'kitchen', 'music_room', 'arcade',
-  'garage', 'attic', 'oriental_room', 'workshop', 'convenience_store', 'hotel_room',
-  'fitting_room', 'car_interior', 'lounge', 'bathroom', 'living_room', 'tatami',
-  'safehouse', 'gymnasium', 'swimming_pool', 'art_studio', 'infirmary', 'izakaya', 'steamy_bathroom',
-  'beach', 'shrine', 'train_station', 'school_rooftop', 'rooftop', 'train_platform',
-  'bus_stop', 'sea_wall', 'bridge', 'hotel_balcony', 'train_interior', 'rooftop_fence',
-])
-
-/** LIGHTING 主光源池（互斥）；back 逆光可叠加。 */
-const LIGHT_MAIN = LIGHTING.filter(option => option.id !== 'back').map(option => option.id)
-
-/** 情绪基调互斥家族：第二情绪不得与第一情绪同族。 */
-const EMOTION_FAMILY: Readonly<Record<string, string>> = pools.emotionFamily
 const COLOR_MOOD_LINK: Readonly<Record<string, readonly string[]>> = pools.colorMoodLink
+const ENVIRONMENT_SHOTS = SHOT.filter(option => !['detail', 'over', 'turn'].includes(option.id))
+const SOLO_ACTIONS = ['standing', 'sitting', 'leaning', 'stretching', 'waving', 'walking']
+const GROUP_INTIMACY = new Set(['handjob', 'vaginal', 'missionary', 'doggystyle', 'standing_sex', 'leg_lock',
+  'spooning', 'sitting_on_face', 'sixty_nine', 'paizuri', 'footjob', 'thigh_sex', 'french_kiss', 'kissing_neck',
+  'ear_bite', 'groping', 'waist_grab', 'facial', 'cum_in_mouth'])
+const EXPRESSION_DETAILS = new Set(['teasing', 'smug', 'ahegao', 'rolling_eyes', 'orgasm', 'moaning'])
+const EXPOSURE_DETAILS = new Set(['breasts', 'nipples', 'puffy_nipples', 'inverted_nipples', 'pussy', 'anus',
+  'pubic_hair', 'underboob', 'bare_hips', 'bare_back', 'midriff'])
+const WARDROBE_DETAILS = new Set(['garter_belt', 'garter_straps', 'thong'])
 
-const ALL_EMOTION_IDS = EMOTION.map(option => option.id)
-const ALL_SHOT_IDS = SHOT.map(option => option.id)
-const ALL_COMPOSITION_IDS = COMPOSITION.map(option => option.id)
-const ALL_COLOR_MOOD_IDS = COLOR_MOODS.map(option => option.id)
-
-/** 从池中不重复抽取 n 个（洗牌取前 n），池不足时全取。 */
-function draw(pool: readonly string[], count: number, rng: () => number, exclude?: ReadonlySet<string>): string[] {
+function draw<T>(pool: readonly T[], count: number, rng: () => number, exclude?: ReadonlySet<T>): T[] {
   const candidates = [...new Set(pool)].filter(item => !exclude || !exclude.has(item))
   if (!candidates.length) return []
-  const result: string[] = []
+  const result: T[] = []
   const remaining = [...candidates]
   const take = Math.min(count, remaining.length)
   for (let i = 0; i < take; i += 1) {
@@ -161,6 +138,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
     : (IDENTITY_TOKENS[char] ?? IDENTITY_TOKENS.nene)
   const exclude = new Set<string>()
   for (const token of identitySource) for (const part of randomTokens(token)) exclude.add(normalizeKey(part))
+  for (const value of options.negative ?? []) for (const token of randomTokens(value)) exclude.add(normalizeKey(token))
   META_TOKENS.forEach(token => exclude.add(token))
 
   // 跨角色特征单向隔离：单人抽取时，屏蔽其他主角的标志性外观特征
@@ -179,6 +157,7 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   // One pass, canonical-key deduplication: duplicate source IDs do not bias sampling.
   const catalog = new Map<string, Map<string, string>>()
   for (const tag of options.tags) {
+    if (tag.status === 'retired' || (tag.verification && tag.verification.postCount <= 0)) continue
     const pool = catalog.get(tag.cat) ?? new Map<string, string>()
     for (const token of randomTokens(tag.en)) {
       const key = normalizeKey(token)
@@ -188,157 +167,132 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   }
   const byCat = (cat: string): string[] => [...(catalog.get(cat)?.values() ?? [])]
 
-  const scenePool = options.scene ? [] : byCat('Scene').filter(tag => !exclude.has(tag))
-  const actionPool = byCat('Action').filter(tag => !exclude.has(tag) && (!options.scene || sceneAllowsAction(options.scene, tag)))
-  const appearancePool = byCat('Appearance').filter(tag => !exclude.has(tag))
-  const stylePool = byCat('Style').filter(tag => !exclude.has(tag))
-  const bodyPool = byCat('Body').filter(tag => BODY_MILD.has(tag))
-  const maturePool = byCat('Mature').filter(tag => !exclude.has(tag) && !MATURE_HARDCORE.has(tag))
-  const clothingPool = byCat('Clothing').filter(tag => !exclude.has(tag))
-
+  const scene = options.scene
   const manualTags: string[] = []
+  const available = new Set([...catalog.values()].flatMap(category => [...category.keys()]))
+  const pick = <T>(values: readonly T[]): T | undefined => draw(values, 1, rng)[0]
+  const known = (tag: string) => available.has(normalizeKey(tag))
+  const authored = [...randomTokens(scene?.prompt ?? ''), ...(scene?.fixedTokens ?? [])]
+  const originalFacts = [...authored, ...(scene?.tags ?? [])]
+  const userProse = options.visualDescription?.trim()
+  const narrative = Boolean(scene?.prose || scene?.otherProse || scene?.prompt.includes('\n') || userProse)
+  const blocked = (tag: string) => randomTokens(tag).some(part => exclude.has(normalizeKey(part)))
+  const allowedChoice = (choice: {prompt?: string}) => !blocked(choice.prompt ?? '')
 
-  // ── 情绪（1~2，跨族） ────────────────────────────────────────────────
-  const emotions: string[] = []
-  const firstEmotion = draw(ALL_EMOTION_IDS, 1, rng)[0]
-  if (firstEmotion) {
-    emotions.push(firstEmotion)
-    if (chance(0.3, rng)) {
-      const family = EMOTION_FAMILY[firstEmotion]
-      const secondPool = ALL_EMOTION_IDS.filter(id => EMOTION_FAMILY[id] !== family)
-      const second = draw(secondPool, 1, rng)[0]
-      if (second) emotions.push(second)
-    }
+  // Choose one place, its visible surroundings and one motivated light together.
+  const locations = RANDOM_SETTINGS.filter(setting => known(setting.tags[0])
+    && LIGHTING.some(light => light.id === setting.lighting && allowedChoice(light)))
+  const complete = locations.filter(setting => setting.tags.every(known))
+  const setting = !scene && !userProse ? pick(complete.length ? complete : locations) : undefined
+  const sceneSetting = scene && RANDOM_SETTINGS.find(item => authored.some(tag => normalizeKey(tag) === item.tags[0]))
+  const authoredLight = userProse ? inferBlueprintLighting({ lighting: userProse }) : null
+  const lightIds = authoredLight ? [authoredLight] : scene ? randomSceneLightOptions(scene) : setting ? [setting.lighting]
+    : userProse ? [] : ['window', 'golden', 'moon', 'lantern', 'overcast']
+  const lighting = pick(lightIds.filter(id => LIGHTING.some(item => item.id === id && allowedChoice(item)))) ?? null
+  const inheritedShot = !!scene && (scene.prompt.includes('\n') || !!scene.otherProse || !!scene.prose && !hasVariableCamera(scene.prose))
+  const shot = userProse && hasVariableCamera(userProse) ? sceneShot({ tags: cameraTokensFromText(userProse) })
+    : inheritedShot ? scene.shot : pick(ENVIRONMENT_SHOTS.filter(allowedChoice))?.id ?? null
+  const placement = [scene?.camera, scene?.prose, scene?.otherProse, scene?.prompt, userProse].join(' ').replace(/_/g, ' ')
+  const keepComposition = Boolean(scene?.composition || /\b(?:left|right|cent(?:er|re)(?:d)?|symmetr\w*|thirds|panels?|triptych|diptych)\b|居中|分格|三分法/i.test(placement))
+  const directorSources: DirectorControlSources = {
+    shot: inheritedShot ? 'scene' : 'manual', lighting: scene && lighting === scene.lighting ? 'scene' : 'manual',
+    composition: keepComposition && scene ? 'scene' : 'manual', colorMood: narrative && scene ? 'scene' : 'manual',
   }
-
-  if (options.scene && (options.scene.prose || options.scene.prompt.includes('\n'))) emotions.length = 0
-
-  // ── 色彩情调（50%，与情绪弱联动） ────────────────────────────────────
-  let colorMood: string | null = null
-  if (chance(0.5, rng)) {
-    const linked = firstEmotion ? COLOR_MOOD_LINK[firstEmotion] : undefined
-    const pool = linked && linked.length ? linked : ALL_COLOR_MOOD_IDS
-    colorMood = draw(pool, 1, rng)[0] ?? null
-  }
-
-  if (options.scene && ['calm', 'warmth'].includes(colorMood ?? '')) colorMood = null
-
-  // ── 镜头（100% 抽 1） + 构图（50%） ──────────────────────────────────
-  const shotPool = options.scene ? ALL_SHOT_IDS.filter(id => !['turn', 'over', 'detail'].includes(id)) : ALL_SHOT_IDS
-  const inheritedShot = options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableCamera(options.scene.prose)))
-  const shot = inheritedShot ? options.scene!.shot
-    : draw(shotPool, 1, rng)[0] ?? null
-  const directorSources: DirectorControlSources = { shot: inheritedShot ? 'scene' : 'manual', lighting: 'manual', composition: 'manual', colorMood: 'manual' }
-  const composition = chance(options.rich ? 1 : 0.5, rng) ? (draw(options.scene ? ALL_COMPOSITION_IDS.filter(id => id !== 'bywindow') : ALL_COMPOSITION_IDS, 1, rng)[0] ?? null) : null
+  const composition = keepComposition ? scene?.composition ?? null : chance(options.rich ? 1 : 0.5, rng)
+    ? pick(COMPOSITION.filter(item => allowedChoice(item) && (item.id !== 'bywindow' || lighting === 'window')))?.id ?? null : null
+  const controls = [SHOT.find(item => item.id === shot), LIGHTING.find(item => item.id === lighting),
+    COMPOSITION.find(item => item.id === composition)].flatMap(item => randomTokens(item?.prompt ?? ''))
   const visible = (token: string) => visibleInRandomShot(token, shot)
-  const add = (token: string) => {
-    for (const part of randomTokens(token)) {
-      if (!exclude.has(normalizeKey(part)) && visible(part)) appendRandomTag(manualTags, part)
-    }
+  const add = (token: string, fixed = originalFacts) => {
+    if (!blocked(token) && visible(token) && !manualTags.some(item => normalizeKey(item) === normalizeKey(token))
+      && fitsRandomFacts(token, [...fixed, ...controls, ...manualTags])) manualTags.push(token)
+  }
+  if (setting) setting.tags.filter(known).forEach(tag => add(tag))
+  if (scene?.rawLighting && !userProse) {
+    const source = catalog.get('Lighting')?.get(normalizeKey(scene.rawLighting))
+    if (source && !authored.some(tag => normalizeKey(tag) === normalizeKey(source))) add(source)
+  }
+  if (sceneSetting && !narrative) {
+    // Add a physical detail to a sparse, recognizable location without changing its time or weather.
+    const detail = sceneSetting.tags.slice(1).find(tag => ['bookshelf', 'desk', 'piano', 'bed', 'couch', 'flower', 'stone_stairs', 'ocean'].includes(tag))
+    if (detail && known(detail) && !originalFacts.some(tag => normalizeKey(tag) === detail)) add(detail)
   }
 
-  // ── 光照（主光源 1 个 + 40% 叠逆光） ──────────────────────────────────
-  let lighting: string | null = null
-  if (chance(options.rich ? 1 : 0.9, rng)) {
-    lighting = draw(options.scene ? LIGHTING.map(item => item.id).filter(id => sceneAllowsLight(options.scene!, id)) : LIGHT_MAIN, 1, rng)[0] ?? null
-    if (options.scene && (options.scene.prompt.includes('\n') || (options.scene.prose && !hasVariableLight(options.scene.prose, options.scene.lighting)))) {
-      lighting = options.scene.lighting
-      directorSources.lighting = 'scene'
-    }
-    if (lighting && chance(0.4, rng)) {
-      // back 逆光作为可叠加标签进入 manualTags（与主光源不互斥）
-      add('backlighting')
-    }
-  }
+  const varyOutfit = (options.allowClothing ?? !explicitIdentity) && char !== 'triad' && !userProse && (!scene || canVarySceneOutfit(scene))
+  const isWardrobe = randomSceneWardrobe(options.tags)
+  const fixedOutfitFacts = varyOutfit ? originalFacts.filter(tag => !isWardrobe(tag)) : originalFacts
+  const canAct = !narrative && !scene?.action && !scene?.fixedTokens?.length
+    && !authored.some(tag => catalog.get('Action')?.has(normalizeKey(tag)) || /^(?:holding|carrying|sitting|standing|lying)_/.test(normalizeKey(tag)))
+  const fixedExpression = narrative || originalFacts.some(tag => catalog.get('Emotion')?.has(normalizeKey(tag)))
+  // One mature fact can itself define the wardrobe, action or expression.
+  const matureCandidates = byCat('Mature').filter(tag => {
+    const key = normalizeKey(tag)
+    if (!canAct || !visible(tag) || MATURE_HARDCORE.has(key) || !fitsRandomFacts(tag, originalFacts)) return false
+    if (/(?:breasts|chest)$/.test(key) && key !== 'breasts') return false
+    if (GROUP_INTIMACY.has(key) && char !== 'triad') return false
+    if (fixedExpression && EXPRESSION_DETAILS.has(key)) return false
+    if (EXPOSURE_DETAILS.has(key) && originalFacts.some(isWardrobe)) return false
+    if (!varyOutfit && (EXPOSURE_DETAILS.has(key) || isOutfitToken(key) || WARDROBE_DETAILS.has(key)
+      || ['clothes_pull', 'clothing_aside', 'undressing'].includes(key))) return false
+    return !scene || sceneAllowsAction(scene, tag)
+  })
+  const mature = chance(0.5, rng) ? pick(matureCandidates) : undefined
+  const matureKey = normalizeKey(mature ?? '')
+  const matureWardrobe = !!mature && (isOutfitToken(matureKey) || WARDROBE_DETAILS.has(matureKey))
+  const matureExposure = EXPOSURE_DETAILS.has(matureKey)
+  const matureEvent = !!mature && !matureWardrobe && !matureExposure
+  const emotion = !fixedExpression && !EXPRESSION_DETAILS.has(matureKey) ? pick(EMOTION.filter(allowedChoice)) : undefined
+  const emotions = emotion ? [emotion.id] : []
+  const palette = COLOR_MOODS.filter(mood => allowedChoice(mood) && COLOR_MOOD_LINK[emotion?.id ?? '']?.includes(mood.id)
+    && !(lighting === 'moon' && mood.prompt.includes('warm tones'))
+    && !(['golden', 'lantern'].includes(lighting ?? '') && ['sad', 'tension'].includes(mood.id)))
+  const colorMood = narrative && scene ? scene.colorMood ?? null : chance(0.5, rng) ? pick(palette)?.id ?? null : null
 
-  // ── 场景（70% 1 个 / 30% 2 个，室内外互斥 + 核心建筑排他） ─────────
-  if (options.rich && !options.scene) {
-    const location = draw(scenePool.filter(token => INDOOR_SCENE.has(token) || OUTDOOR_SCENE.has(token)), 1, rng)[0]
-    if (location) add(location)
-  }
-  const sceneCount = chance(0.7, rng) ? 1 : 2
-  for (const scene of draw(scenePool.filter(token => {
-    const time = mutualGroupWithCategory(token)
-    const primary = LIGHTING.find(option => option.id === lighting)?.prompt
-    const primaryTime = primary ? mutualGroupWithCategory(primary) : null
-    return time?.category !== 'time' || primaryTime?.category !== 'time' || time.group === primaryTime.group
-  }), sceneCount, rng)) {
-    if (!manualTags.length) {
-      add(scene)
-      continue
-    }
-    const indoor = manualTags.some(tag => INDOOR_SCENE.has(tag))
-    const outdoor = manualTags.some(tag => OUTDOOR_SCENE.has(tag))
-    if (INDOOR_SCENE.has(scene) && outdoor) continue
-    if (OUTDOOR_SCENE.has(scene) && indoor) continue
-    const hasPrimaryLocation = manualTags.some(tag => PRIMARY_LOCATIONS.has(tag))
-    if (hasPrimaryLocation && PRIMARY_LOCATIONS.has(scene)) continue
-    add(scene)
-  }
-
-  // ── 动作（60% 抽 1） ────────────────────────────────────────────────
-  if (chance(options.rich ? 1 : 0.6, rng)) {
-    const action = draw(actionPool.filter(visible), 1, rng)[0]
+  if (canAct && !matureEvent && chance(options.rich ? 1 : 0.6, rng)) {
+    const choices = setting?.actions ?? sceneSetting?.actions ?? SOLO_ACTIONS
+    const action = pick(choices.filter(tag => known(tag) && visible(tag) && (!scene || sceneAllowsAction(scene, tag))))
     if (action) add(action)
   }
 
-  // ── 外观（60% 1 个 / 25% 2 个，已排除身份 token；特写镜头过滤下肢细节） ────
-  const appearanceCandidates = appearancePool.filter(token => visible(token)
-    && (!options.scene || !['sunbeam', 'lens_flare', 'dappled_light'].includes(normalizeKey(token)) || ['golden', 'window'].includes(lighting ?? '')))
-  const appearanceCount = chance(0.6, rng) ? 1 : 0
-  if (appearanceCount) {
-    for (const item of draw(appearanceCandidates, chance(0.25, rng) ? 2 : 1, rng)) {
-      add(item)
-    }
-  }
-
-  // ── 身体（50% 1 个，仅温和细节；特写镜头过滤下肢细节） ───────────────
-  if (chance(0.5, rng)) {
-    const bodyCandidates = bodyPool.filter(visible)
-    const body = draw(bodyCandidates, 1, rng)[0]
-    if (body) add(body)
-  }
-
-  // ── 风格媒介（30% 1 个，如 visual_novel_event_cg） ───────────────────
-  if (chance(0.3, rng)) {
-    const style = draw(stylePool, 1, rng)[0]
-    if (style) add(style)
-  }
-
-  // ── 服装（官方 60% / 通用 40%；triad 与热门角色不抽服装） ─────────────
-  const officialOutfits = options.officialOutfits
-  const officialKeys = officialOutfits ? Object.keys(officialOutfits) : []
   const outfitStart = manualTags.length
-  if ((options.allowClothing ?? !explicitIdentity) && char !== 'triad' && (!options.scene || canVarySceneOutfit(options.scene))) {
-    if (officialKeys.length && chance(0.6, rng)) {
-      const key = draw(officialKeys, 1, rng)[0]
-      if (key) {
-        const tokens = wardrobeTokens((officialOutfits?.[key] ?? []).flatMap(randomTokens))
-          .filter(token => !exclude.has(normalizeKey(token)) && !isStableIdentityToken(token) && visible(token))
-        const canonical = tokens[0]
-        if (canonical) add(canonical)
-        // 额外补 0~2 个签名 token（官方套装通常 4~12 个 token，全塞会淹没画面）
-        const extras = draw(tokens.slice(1), chance(0.5, rng) ? 2 : 1, rng)
-        for (const extra of extras) add(extra)
-      }
-    } else if (clothingPool.length) {
-      const generic = draw(clothingPool.filter(token => !isWardrobeContextTag(token) && visible(token)), 1, rng)[0]
-      if (generic) add(generic)
+  if (matureWardrobe && mature) add(mature, fixedOutfitFacts)
+  else if (varyOutfit && !matureExposure && !matureEvent) {
+    const fitsSetting = (tokens: string[]) => outfitFitsSetting(tokens, setting?.tags[0] ?? sceneSetting?.tags[0], [...originalFacts, ...manualTags])
+    const official = Object.values(options.officialOutfits ?? {}).map(bundle =>
+      wardrobeTokens(bundle.flatMap(randomTokens)).filter(token => !isStableIdentityToken(token)
+        && !catalog.get('Action')?.has(normalizeKey(token)) && !/^(?:holding|carrying|looking)_/.test(normalizeKey(token))))
+      .filter(bundle => bundle.length && !bundle.some(blocked) && visible(bundle[0]) && fitsSetting(bundle))
+    const bundle = chance(0.6, rng) ? pick(official) : undefined
+    if (bundle) {
+      add(bundle[0], fixedOutfitFacts)
+      draw(bundle.slice(1).filter(visible), 2, rng).forEach(tag => add(tag, fixedOutfitFacts))
+    } else {
+      const generic = pick(byCat('Clothing').filter(tag => isGarmentToken(tag) && !isWardrobeContextTag(tag) && visible(tag) && fitsSetting([tag])))
+      if (generic) add(generic, fixedOutfitFacts)
+    }
+    if (setting?.tags.includes('snow') && manualTags.length > outfitStart) {
+      const clothing = manualTags.slice(outfitStart).map(normalizeKey).join(' ')
+      if (shot !== 'close' && shot !== 'medium' && !/skirt|dress|pants|jeans|tights|legwear/.test(clothing) && known('jeans')) add('jeans', fixedOutfitFacts)
+      if (!/boots|shoes|footwear|barefoot/.test(clothing) && known('boots')) add('boots', fixedOutfitFacts)
     }
   }
-
   const outfit = manualTags.slice(outfitStart)
+  if (mature && !matureWardrobe) add(mature)
 
-  // ── Mature（50% 抽 1~4，无独立开关，本地直连本就放行） ──────────────
-  // 2026-08-29 提额：20%→50%。此前的三重叠加（概率低 + isManualR18 正则只认
-  // 5 个词 + 评级不升则负面压制）导致"想随机 NSFW 根本随机不到"；评级联动
-  // 由 usePromptAssembly.isManualR18Tags（词条池 Mature 分类命中）兜住。
-  if (maturePool.length && chance(0.5, rng)) {
-    const roll = rng()
-    const count = roll < 0.35 ? 1 : roll < 0.65 ? 2 : roll < 0.85 ? 3 : 4
-    for (const tag of draw(maturePool, count, rng)) {
-      add(tag)
-    }
+  if (!narrative && chance(0.4, rng)) {
+    const wet = setting?.tags.some(tag => ['rain', 'ocean'].includes(tag))
+    const detail = pick(byCat('Appearance').concat(byCat('Body')).filter(tag => {
+      const key = normalizeKey(tag)
+      if (key === 'bokeh') return shot === 'close' || shot === 'medium'
+      if (key === 'petals') return setting?.tags.includes('flower')
+      if (key === 'water_droplets') return wet
+      return key === 'tears' && ['sad', 'moved', 'wronged'].includes(emotion?.id ?? '')
+    }))
+    if (detail) add(detail)
+  }
+  if (!narrative && chance(0.3, rng)) {
+    const style = pick(byCat('Style').filter(tag => normalizeKey(tag) !== 'game_asset'))
+    if (style) add(style)
   }
 
   // ── 画师（默认 0 位；includeArtists 开启后 0~2 位；keepArtists 恒保留） ──
@@ -356,8 +310,9 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
   }
   const artistStyleIds = normalizeArtistStyleIds([...keep, ...drawn])
 
+  const diffuse = /rain|overcast|snow|cloudy|阴|雨|雪/i.test([scene?.weather, ...originalFacts, ...manualTags].join(' '))
   for (const category of ['Lighting', 'Camera'] as const) {
-    const pool = byCat(category).filter(token => compatibleRandomDetail(token, category, shot, lighting))
+    const pool = narrative || (category === 'Lighting' && !lighting) ? [] : byCat(category).filter(token => compatibleRandomDetail(token, category, shot, lighting, diffuse))
     if (pool.length && chance(0.35, rng)) {
       const detail = draw(pool, 1, rng)[0]
       if (detail) add(detail)
@@ -371,9 +326,9 @@ export function randomPromptPlan(options: RandomInspirationOptions): RandomDraw 
       ...(!(options.allowClothing ?? !explicitIdentity) || !canVarySceneOutfit(options.scene) ? ['服装'] : []),
       ...(options.scene.prose ? ['原文表情'] : []),
       ...(options.scene.prose && !hasVariableCamera(options.scene.prose) ? ['原文镜头'] : []),
-      ...(options.scene.prose && !hasVariableLight(options.scene.prose, options.scene.lighting) ? ['原文光源'] : []),
+      ...(directorSources.lighting === 'scene' ? ['原文光源'] : []),
     ] : [],
-    variation: { ...sceneVariationOverlay(options.scene, outfit, options.tags, shot, lighting), context: options.context ?? '' },
+    variation: { ...sceneVariationOverlay(scene, outfit, options.tags, !!shot && !inheritedShot, !!composition && !keepComposition), context: options.context ?? '' },
     emotions,
     shot,
     lighting,

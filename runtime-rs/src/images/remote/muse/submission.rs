@@ -33,6 +33,10 @@ pub(super) struct SceneSelection {
 }
 
 impl SceneSelection {
+    pub(super) fn is_custom(&self) -> bool {
+        self.prompt.is_some() || self.kind.as_deref() == Some("prompt")
+    }
+
     pub(super) fn uses_raw_fields(&self) -> bool {
         self.negative.is_some()
             || self.width.is_some()
@@ -44,6 +48,28 @@ impl SceneSelection {
             || self.lora_strength.is_some()
             || self.style_lora_id.is_some()
     }
+}
+
+pub(super) fn prepare_batch(
+    config: &crate::config::Config,
+    loras: PathBuf,
+    scenes: Vec<SceneSelection>,
+    model: Option<&str>,
+) -> Result<Vec<PreparedScene>> {
+    let mut library = None;
+    scenes
+        .into_iter()
+        .map(|scene| {
+            if scene.is_custom() {
+                return custom(scene, model, &loras);
+            }
+            let recipes = match &library {
+                Some(recipes) => recipes,
+                None => library.insert(RecipeLibrary::new(config, loras.clone())?),
+            };
+            recipes.prepare(scene, model)
+        })
+        .collect()
 }
 
 pub(super) fn limits(input: &SceneSelection, family: &str) -> Result<(u64, u8)> {

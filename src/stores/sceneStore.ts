@@ -1,3 +1,5 @@
+import type { CharacterDirectoryEntry } from '../types/character'
+import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import { runtimeFetch, runtimeResourceIdentity } from '../platform/runtimeUrl.ts'
 import type { CatalogReceipt } from '../api/catalogApi'
 import { catalogInvalidation } from './catalogInvalidation'
@@ -7,11 +9,11 @@ import type { SceneRecord as Scene } from '../types/scene.ts'
 export type { SceneRecord as Scene } from '../types/scene.ts'
 
 import { defineStore } from 'pinia'
-import { nextTick, ref, watch } from 'vue'
+import { nextTick, ref, shallowRef, watch } from 'vue'
 import { DATA_VERSION } from 'virtual:data-version'
 import { requireDataRecords, requireDataCollection } from '../utils/dataRecords.ts'
 import {
-  parsePopularCharacters,
+  characterDirectoryEntry, parsePopularCharacters,
   type PopularCharacter,
 } from '../utils/popularContent.ts'
 
@@ -61,10 +63,11 @@ export { DATA_VERSION }
 export const SCENE_DATA_TIMEOUT_MS = 15_000
 
 /** 带 response.ok 检查的 JSON 读取 —— 否则 HTML 错误页会被当数据解析 */
-async function fetchJson<T>(file: string, version: number): Promise<T> {
+async function fetchJson<T>(file: string, version: number, onMissing?: () => Promise<T>): Promise<T> {
   const signal = AbortSignal.timeout(SCENE_DATA_TIMEOUT_MS)
   try {
     const response = await runtimeFetch(`/data/${file}?v=${version}`, { signal })
+    if (response.status === 404 && onMissing) return onMissing()
     if (!response.ok) {
       if (response.status === 403) throw new Error('此内容尚未审核为远程可用，请在本机工作室查看。')
       throw new Error(`${file} HTTP ${response.status}`)
@@ -115,6 +118,9 @@ export const useSceneStore = defineStore('scenes', () => {
   const loras = ref<LoraMeta[]>([])
   const tags = ref<TagMeta[]>([])
   const presets = ref<Record<string, unknown> | unknown[]>([])
+  const directoryCharacters = shallowRef<CharacterDirectoryEntry[]>([])
+  const sceneTitles = shallowRef(new Map<string, string>())
+  let cachedCuration: CurationData = {}
   const popularCharacters = ref<PopularCharacter[]>([])
   const blueprintCatalog = useBlueprintCatalog(() => fetchJson('scene-blueprints.json', version.value))
   const { sceneBlueprints, loadBlueprintCharacter, hasBlueprintCharacter } = blueprintCatalog
@@ -131,84 +137,86 @@ export const useSceneStore = defineStore('scenes', () => {
   let loadEpoch = 0
   let catalogReceiptVersion: number | null = null
 
-  /** 活跃加载数：loading 反映"任意入口在途"，避免多目标并发时先完成者提前熄灯。 */
-  let activeLoads = 0
-  function beginLoad() {
-    activeLoads += 1
-    loading.value = true
-  }
-  function endLoad() {
-    activeLoads = Math.max(0, activeLoads - 1)
-    if (activeLoads === 0) loading.value = false
-  }
-
-  // ── 元数据层：必需/可选区分 + 逐资源成功缓存 ───────────────────────────
-
   interface MetaSpec {
     file: string
     /** 必需资源失败必须让整次加载失败并可见；可选资源失败保留上次成功数据。 */
     required: boolean
-    /** lite=true：目录页（首页/全局搜索）轻载也需要的资源。 */
-    lite: boolean
+    read?: (epoch: number, version: number) => Promise<unknown>
     parse: (raw: unknown) => unknown
     apply: (data: unknown) => void
   }
 
   const META_SPECS: MetaSpec[] = [
-    { file: 'curation.json', required: false, lite: true, parse: (raw) => raw ?? {}, apply: (d) => { curation.value = d as CurationData } },
-    { file: 'characters.json', required: true, lite: false, parse: (raw) => requireDataRecords(raw, 'characters.json'), apply: (d) => { characters.value = d as Array<Record<string, unknown>>; adoptCatalogPendingPortraits(d) } },
-    { file: 'loras.json', required: false, lite: false, parse: (raw) => requireDataRecords(raw, 'LoRA资料'), apply: (d) => { loras.value = d as LoraMeta[] } },
-    { file: 'tags.json', required: false, lite: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
-    { file: 'presets.json', required: false, lite: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
-    { file: 'popular-characters.json', required: true, lite: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[]; adoptCatalogPendingPortraits(d) } },
+    { file: 'curation.json', required: false, parse: (raw) => raw ?? {}, apply: (d) => { cachedCuration = d as CurationData; curation.value = structuredClone(cachedCuration) } },
+    { file: 'characters.json', required: true, parse: (raw) => requireDataRecords(raw, 'characters.json'), apply: (d) => { characters.value = d as Array<Record<string, unknown>>; adoptCatalogPendingPortraits(d) } },
+    { file: 'loras.json', required: false, parse: (raw) => requireDataRecords(raw, 'LoRA资料'), apply: (d) => { loras.value = d as LoraMeta[] } },
+    { file: 'tags.json', required: false, parse: (raw) => (Array.isArray(raw) ? raw : []), apply: (d) => { tags.value = d as TagMeta[] } },
+    { file: 'presets.json', required: false, parse: (raw) => raw ?? [], apply: (d) => { presets.value = d as Record<string, unknown> | unknown[] } },
+    { file: 'popular-characters.json', required: true, parse: (raw) => parsePopularCharacters(requireDataCollection(raw, 'characters')), apply: (d) => { popularCharacters.value = d as PopularCharacter[]; adoptCatalogPendingPortraits(d) } },
   ]
 
-  interface MetaCacheEntry { epoch: number; data: unknown }
+  const directorySpec: MetaSpec = {
+    file: 'popular-directory.json', required: true,
+    read: (_epoch, version) => {
+      const fallback = () => fetchJson<unknown>('popular-characters.json', version)
+      return isLocalStudioHost() ? fetchJson('popular-directory.json', version, fallback) : fallback()
+    },
+    parse: raw => requireDataRecords(requireDataCollection(raw, 'characters'), '角色目录').map(characterDirectoryEntry),
+    apply: data => { directoryCharacters.value = data as CharacterDirectoryEntry[]; adoptCatalogPendingPortraits(data) },
+  }
+  const titlesSpec: MetaSpec = {
+    file: 'scene-titles.json', required: true,
+    read: (epoch, version) => {
+      const fallback = () => Promise.all((['shared', 'nene', 'natsume'] as const)
+        .map(shard => loadShard(shard, epoch, version))).then(lists => mergeScenes(...lists))
+      return isLocalStudioHost() ? fetchJson('scene-titles.json', version, fallback) : fallback()
+    },
+    parse: raw => new Map(requireDataRecords(raw, '场景标题').map(row => [row.id as string, typeof row.title === 'string' ? row.title : ''])),
+    apply: data => { sceneTitles.value = data as Map<string, string> },
+  }
+
   interface MetaLoadResult { file: string; required: boolean; ok: boolean; error?: unknown }
   interface MetaInflightEntry { epoch: number; promise: Promise<MetaLoadResult> }
 
   /** 只缓存当前代际的成功解析结果；旧代际完成后不可污染新代际。 */
-  const metaOk = new Map<string, MetaCacheEntry>()
+  const metaOk = new Set<string>()
   const metaInflight = new Map<string, MetaInflightEntry>()
-  const metaFailuresByEpoch = new Map<number, Set<string>>()
-  let metaLoadedEpoch: number | null = null
   const requestedMetadata = new Set<MetaSpec>()
 
   function publishMetaResult(epoch: number, result: MetaLoadResult) {
     if (epoch !== loadEpoch) return
-    const failures = metaFailuresByEpoch.get(epoch) || new Set<string>()
+    const failed = !result.ok
+    if (metaFailedFiles.value.has(result.file) === failed) return
+    const failures = new Set(metaFailedFiles.value)
     if (result.ok) failures.delete(result.file)
     else failures.add(result.file)
-    metaFailuresByEpoch.set(epoch, failures)
-    metaFailedFiles.value = new Set(failures)
+    metaFailedFiles.value = failures
   }
 
   function loadMetaSpec(
     spec: MetaSpec,
     epoch: number,
     requestVersion: number,
-    force: boolean,
   ): Promise<MetaLoadResult> {
     requestedMetadata.add(spec)
-    const cached = metaOk.get(spec.file)
-    if (!force && cached?.epoch === epoch) {
+    if (epoch === loadEpoch && metaOk.has(spec.file)) {
       const result = { file: spec.file, required: spec.required, ok: true }
       publishMetaResult(epoch, result)
       return Promise.resolve(result)
     }
 
     const existing = metaInflight.get(spec.file)
-    if (!force && existing?.epoch === epoch) return existing.promise
+    if (existing?.epoch === epoch) return existing.promise
 
     const entry: MetaInflightEntry = { epoch, promise: Promise.resolve({ file: spec.file, required: spec.required, ok: false }) }
     entry.promise = (async () => {
       try {
-        const parsed = spec.parse(await fetchJson(spec.file, requestVersion))
+        const raw = await (spec.read ? spec.read(epoch, requestVersion) : fetchJson(spec.file, requestVersion))
         // The response may belong to a previous force load. Let that caller
         // finish, but never publish its data into the current store.
         if (epoch === loadEpoch) {
-          metaOk.set(spec.file, { epoch, data: parsed })
-          spec.apply(structuredClone(parsed))
+          spec.apply(spec.parse(raw))
+          metaOk.add(spec.file)
         }
         const result = { file: spec.file, required: spec.required, ok: true }
         publishMetaResult(epoch, result)
@@ -227,26 +235,22 @@ export const useSceneStore = defineStore('scenes', () => {
     return entry.promise
   }
 
-  /** Read the model reference catalog without loading scenes or blueprints. */
-  async function loadLoraCatalog(): Promise<void> {
-    const spec = META_SPECS.find(item => item.file === 'loras.json')!
-    const result = await loadMetaSpec(spec, loadEpoch, version.value, false)
+  async function loadOne(spec: MetaSpec) {
+    const result = await loadMetaSpec(spec, loadEpoch, version.value)
     if (!result.ok) throw result.error
   }
+  const metadata = (file: string) => META_SPECS.find(spec => spec.file === file)!
+  const loadLoraCatalog = () => loadOne(metadata('loras.json'))
+  const loadPresetCatalog = () => loadOne(metadata('presets.json'))
+  const loadPopularCharacters = () => loadOne(metadata('popular-characters.json'))
+  const loadCharacterDirectory = () => loadOne(directorySpec)
+  const loadSceneTitles = () => loadOne(titlesSpec)
+  const loadCuration = () => loadOne(metadata('curation.json'))
 
-  /** Drawing requires profiles even though scene browsing can finish without them. */
-  async function loadPresetCatalog(): Promise<void> {
-    const spec = META_SPECS.find(item => item.file === 'presets.json')!
-    const result = await loadMetaSpec(spec, loadEpoch, version.value, false)
-    if (!result.ok) throw result.error
-  }
-
-  async function loadMeta(force = false, lite = false, only?: ReadonlySet<string>): Promise<void> {
+  async function loadMeta(specs = META_SPECS): Promise<void> {
     const epoch = loadEpoch
     const requestVersion = version.value
-    if (!force && metaLoadedEpoch === epoch) return
-    const specs = only ? META_SPECS.filter((spec) => only.has(spec.file)) : lite ? META_SPECS.filter((spec) => spec.lite) : META_SPECS
-    const requests = specs.map((spec) => loadMetaSpec(spec, epoch, requestVersion, force))
+    const requests = specs.map((spec) => loadMetaSpec(spec, epoch, requestVersion))
     const results = await Promise.all(requests.filter((_request, index) => specs[index].required))
     if (epoch !== loadEpoch) return
 
@@ -256,12 +260,6 @@ export const useSceneStore = defineStore('scenes', () => {
     if (requiredFailures.length) {
       throw new Error(`必需数据加载失败：${requiredFailures.join('；')}`)
     }
-    // Optional catalogs may be slow or unavailable; the scene view can become
-    // usable after required data is ready. Their completion still updates the
-    // per-file failure set and the all-metadata cache marker in the background.
-    void Promise.all(requests).then(() => {
-      if (epoch === loadEpoch) metaLoadedEpoch = META_SPECS.every((spec) => metaOk.get(spec.file)?.epoch === epoch) ? epoch : null
-    })
   }
 
   // ── 分片层：逐分片缓存 + 在途去重 ─────────────────────────────────────
@@ -290,75 +288,26 @@ export const useSceneStore = defineStore('scenes', () => {
     return entry.promise
   }
 
-  // ── 视图层：按目标键去重 + 最新意图守卫 ────────────────────────────────
-
-  /** 当前展示目标键。每次调用 load / loadHome 都是一次意图申明。 */
-  let viewTarget: string | null = null
-  /** 同键强制重载的代际：只有该键最新一次工作才允许回写视图。 */
-  let workSeq = 0
-  const latestSeqByKey = new Map<string, number>()
-  interface TargetInflightEntry { epoch: number; promise: Promise<void> }
-  const inflightByKey = new Map<string, TargetInflightEntry>()
-
-  /**
-   * 按目标键启动/加入一个视图加载。同键并发去重；不同键各自成行。
-   * work 收到 isCurrent 守卫：目标未被更新意图取代且仍是该键最新一次工作。
-   * 旧响应（慢网/强制重载竞态）一律不得覆盖新意图的视图与错误态。
-   */
-  function beginTargetLoad(
-    key: string,
-    work: (isCurrent: () => boolean, epoch: number, requestVersion: number) => Promise<Scene[]>,
-  ): Promise<void> {
-    viewTarget = key
-    const existing = inflightByKey.get(key)
-    if (existing?.epoch === loadEpoch) return existing.promise
-    if (existing) inflightByKey.delete(key)
-    const seq = ++workSeq
-    const epoch = loadEpoch
-    const requestVersion = version.value
-    latestSeqByKey.set(key, seq)
-    const isCurrent = () => viewTarget === key && latestSeqByKey.get(key) === seq
-    beginLoad()
-    error.value = null
-    const entry: TargetInflightEntry = { epoch, promise: Promise.resolve() }
-    entry.promise = (async () => {
-      try {
-        const list = await work(isCurrent, epoch, requestVersion)
-        if (epoch === loadEpoch && isCurrent()) scenes.value = structuredClone(list)
-      } catch (e) {
-        if (epoch === loadEpoch && isCurrent()) {
-          error.value = String((e as Error)?.message ?? e)
-        }
-      } finally {
-        if (inflightByKey.get(key) === entry) inflightByKey.delete(key)
-        if (epoch === loadEpoch) endLoad()
-      }
-    })()
-    inflightByKey.set(key, entry)
-    return entry.promise
-  }
+  let fullRequest: Promise<void> | undefined
+  let fullRequested = false
 
   function invalidate(sourceChanged = false, scope?: ReturnType<typeof catalogInvalidation>) {
     loadEpoch += 1
     loaded.value = false
-    activeLoads = 0
+    fullRequest = undefined
     loading.value = false
     if (!scope) { shardCache = {}; metaOk.clear(); catalogReceiptVersion = null }
     else {
-      for (const [file, entry] of metaOk) {
-        if (scope.metadata.has(file)) metaOk.delete(file)
-        else entry.epoch = loadEpoch
-      }
+      for (const file of scope.metadata) metaOk.delete(file)
       for (const char of Object.keys(shardCache) as SceneShard[]) {
         if (scope.shards.has(char)) delete shardCache[char]
         else shardCache[char]!.epoch = loadEpoch
       }
     }
-    metaLoadedEpoch = null
-    metaFailuresByEpoch.clear()
     metaFailedFiles.value = new Set()
     blueprintCatalog.invalidate(scope?.blueprints)
     if (sourceChanged) {
+      directoryCharacters.value = []; sceneTitles.value = new Map(); cachedCuration = {}
       scenes.value = []; curation.value = {}; characters.value = []; loras.value = []
       adoptCatalogPendingPortraits([])
       tags.value = []; presets.value = []; popularCharacters.value = []
@@ -379,18 +328,14 @@ export const useSceneStore = defineStore('scenes', () => {
   }
 
   watch(runtimeResourceIdentity, () => {
-    const target = viewTarget
     invalidate(true)
     const epoch = loadEpoch
     // Runtime publication finishes installing the transport after publishing
     // its resource identity. Reload only catalogs already requested by this UI.
     void nextTick().then(async () => {
       if (epoch !== loadEpoch) return
-      const reads: Promise<unknown>[] = [...requestedMetadata].map(spec => loadMetaSpec(spec, epoch, version.value, false))
-      if (target === viewTarget) {
-        if (target === 'full') reads.push(load())
-        else if (target === 'home') reads.push(loadHome())
-      }
+      const reads: Promise<unknown>[] = [...requestedMetadata].map(spec => loadMetaSpec(spec, epoch, version.value))
+      if (fullRequested) reads.push(load())
       await Promise.all(reads)
     }).catch(cause => { if (epoch === loadEpoch) error.value = String(cause instanceof Error ? cause.message : cause) })
   }, { flush: 'sync' })
@@ -399,20 +344,24 @@ export const useSceneStore = defineStore('scenes', () => {
     return char === 'natsume' ? 'natsume' : char === 'triad' || char === 'shared' ? 'shared' : 'nene'
   }
 
+  async function prefetchCoreScenes(): Promise<void> {
+    await Promise.all([loadCuration(), loadShard('shared'), loadShard('core')])
+  }
+
   /** Browsing needs scene shards and curation, not the studio's model/tag/blueprint catalogs. */
   async function loadBrowserScenes(target: SceneBrowseTarget): Promise<{ scenes: Scene[]; curation: CurationData }> {
     const epoch = loadEpoch, requestVersion = version.value
     const files: SceneShard[] = target === 'all' ? ['shared', 'nene', 'natsume']
       : target === 'core' ? ['shared', 'core'] : ['shared', resolveShard(target)]
-    const [metadata, lists] = await Promise.all([
-      loadMetaSpec(META_SPECS.find(spec => spec.file === 'curation.json')!, epoch, requestVersion, false),
+    const [curationResult, lists] = await Promise.all([
+      loadMetaSpec(metadata('curation.json'), epoch, requestVersion),
       Promise.all([...new Set(files)].map(file => loadShard(file, epoch, requestVersion))),
     ])
     if (epoch !== loadEpoch) throw new Error('场景目录已更新，请重新读取。')
-    if (!metadata.ok) throw metadata.error
+    if (!curationResult.ok) throw curationResult.error
     // Browser filters must not replace the studio's active scene list, nor edit
     // cached JSON through a shared mutable reference.
-    return { scenes: structuredClone(mergeScenes(...lists)), curation: structuredClone(metaOk.get('curation.json')!.data as CurationData) }
+    return { scenes: structuredClone(mergeScenes(...lists)), curation: structuredClone(cachedCuration) }
   }
 
   /**
@@ -420,61 +369,33 @@ export const useSceneStore = defineStore('scenes', () => {
    * @param force 场景管理保存后需要读回落盘结果时传 true
    */
   function load(force = false): Promise<void> {
-    if (force) {
-      invalidate()
-      inflightByKey.delete('full')
-    }
-    if (loaded.value && !force) return Promise.resolve()
-    return beginTargetLoad('full', async (_isCurrent, epoch, requestVersion) => {
-      const [, shared, nene, natsume] = await Promise.all([
-        loadMeta(false),
-        loadShard('shared', epoch, requestVersion),
-        loadShard('nene', epoch, requestVersion),
-        loadShard('natsume', epoch, requestVersion),
-      ])
-      if (epoch === loadEpoch) loaded.value = true
-      return mergeScenes(shared, nene, natsume)
-    })
+    if (force) invalidate()
+    fullRequested = true
+    if (loaded.value) return Promise.resolve()
+    if (fullRequest) return fullRequest
+    const epoch = loadEpoch
+    loading.value = true; error.value = null
+    fullRequest = Promise.all([loadMeta(), loadShard('shared'), loadShard('nene'), loadShard('natsume')])
+      .then(([, shared, nene, natsume]) => {
+        if (epoch !== loadEpoch) return
+        scenes.value = structuredClone(mergeScenes(shared, nene, natsume))
+        loaded.value = true
+      })
+      .catch(cause => { if (epoch === loadEpoch) error.value = cause instanceof Error ? cause.message : String(cause) })
+      .finally(() => { if (epoch === loadEpoch) { loading.value = false; fullRequest = undefined } })
+    return fullRequest
   }
 
-  /** 角色档案首屏壳：只取角色目录与热门角色，不等待场景/蓝图大资源。 */
   function loadCharacterShell(force = false): Promise<void> {
-    if (force) {
-      invalidate()
-      inflightByKey.delete('character-shell')
-    }
-    return loadMeta(force, false, new Set(['characters.json', 'popular-characters.json']))
-  }
-
-  /** Blueprint browsers need metadata, not character scene shards or studio options. */
-  async function loadBlueprintCatalog(): Promise<void> {
-    await Promise.all([
-      loadMeta(false, false, new Set(['popular-characters.json'])),
-      loadMetaSpec(META_SPECS.find(spec => spec.file === 'curation.json')!, loadEpoch, version.value, false),
-    ])
-  }
-  /**
-   * 目录页轻载（审计 2026-09-05 P2-02）：首页与全局搜索只吃 curation/角色目录
-   * 与三分片；3.4MB 场景蓝图与 prompt 元数据不在此拉取，由创作页的 load()
-   * 依据逐资源缓存增量补拉。有意不置 loaded 标志——
-   * 它只代表"重元数据也齐了"的全量完成态。
-   */
-  function loadHome(): Promise<void> {
-    return beginTargetLoad('home', async (_isCurrent, epoch, requestVersion) => {
-      const [, shared, nene, natsume] = await Promise.all([
-        loadMeta(false, true),
-        loadShard('shared', epoch, requestVersion),
-        loadShard('nene', epoch, requestVersion),
-        loadShard('natsume', epoch, requestVersion),
-      ])
-      return mergeScenes(shared, nene, natsume)
-    })
+    if (force) invalidate()
+    return loadMeta([metadata('characters.json'), metadata('popular-characters.json')])
   }
 
   return {
     scenes, curation, characters, loras, tags, presets,
     popularCharacters, sceneBlueprints, hasBlueprintCharacter,
     loading, error, loaded, version, metaFailedFiles,
-    load, loadBrowserScenes, loadBlueprintCatalog, loadBlueprintCharacter, loadCharacterShell, loadHome, loadLoraCatalog, loadPresetCatalog, invalidate, invalidateCatalog,
+    directoryCharacters, sceneTitles, loadCharacterDirectory, loadSceneTitles, loadCuration, loadPopularCharacters,
+    load, prefetchCoreScenes, loadBrowserScenes, loadBlueprintCharacter, loadCharacterShell, loadLoraCatalog, loadPresetCatalog, invalidate, invalidateCatalog,
   }
 })

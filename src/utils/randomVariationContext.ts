@@ -12,23 +12,26 @@ import { normalizeKey, tokenize } from './promptPrimitives.ts'
 import { randomSceneWardrobe } from './randomSceneVariation.ts'
 
 type Context = { char: string; sceneId: string | null; subject: unknown }
-type Controls = { selections: { shot: string | null; lighting: string | null }; directorSources?: DirectorControlSources; visualDescription: string }
+type Controls = { selections: { shot: string | null; lighting: string | null; emotion?: string[] }; directorSources?: DirectorControlSources; visualDescription: string }
 type Source = {
   id: string; char?: string; characterId?: string; prompt?: string; promptTokens?: string[];
   animaCaption?: string; promptProse?: string; tags?: string[]; sceneTags?: string[];
   time?: string; timeOfDay?: string; lighting?: string; camera?: string; location?: string; action?: unknown
+  weather?: string; negative?: string; negativeTokens?: string[]; nsfwTokens?: string[]; nsfwProse?: string
 }
 
 export const randomVariationContext = (value: Context): string => JSON.stringify([value.char, value.sceneId, value.subject])
-export function randomVariationSource(value: Source | null): string {
+export function randomVariationSource(value: Source | null, legacy = false): string {
   if (!value) return ''
   return JSON.stringify([value.id, value.char, value.characterId, value.promptTokens?.join(', ') ?? value.prompt ?? '',
     value.promptProse ?? value.animaCaption ?? '', value.sceneTags ?? value.tags ?? [],
     value.timeOfDay ?? value.time ?? '', value.lighting, value.camera, value.location, value.action,
-    ...(value.promptProse === undefined || value.animaCaption === undefined ? [] : [value.animaCaption])])
+    ...(value.promptProse === undefined || value.animaCaption === undefined ? [] : [value.animaCaption]),
+    ...(legacy ? [] : [value.weather, value.negativeTokens ?? value.negative, value.nsfwTokens, value.nsfwProse])])
 }
 export function activeRandomVariation(variation: DraftRandomVariation | null, context: Context, source: Source | null) {
-  return variation?.context === randomVariationContext(context) && variation.source === randomVariationSource(source) ? variation : null
+  if (!variation || variation.context !== randomVariationContext(context)) return null
+  return variation.source === randomVariationSource(source) || variation.source === randomVariationSource(source, true) ? variation : null
 }
 
 export function withoutRandomOutfit(variation: DraftRandomVariation, source: Source | null,
@@ -54,18 +57,22 @@ export function variedStudioScene(source: Scene, variation: DraftRandomVariation
   const lighting = isManualDirectorValue(controls.directorSources, 'lighting', controls.selections.lighting, sceneLighting(source)) ? controls.selections.lighting : null
   const prose = userDescription(controls.visualDescription) || renderRandomVariationProse(variation.prose, shot, lighting, sceneLighting(source))
   return { ...source, prompt: [variation.prompt, ...wardrobeTokens(variation.outfit)].filter(Boolean).join(', '), tags: variation.tags,
-    animaCaption: prose, promptProse: prose,
-    camera: shot ? '' : source.camera, lighting: source.lighting || sceneLighting(source) || '', emotion: '' }
+    animaCaption: prose, promptProse: source.promptProse && source.promptProse !== source.animaCaption
+      ? userDescription(controls.visualDescription) || renderRandomVariationProse(source.promptProse, shot, lighting, sceneLighting(source)) : prose,
+    camera: shot ? '' : source.camera, lighting: source.lighting || sceneLighting(source) || '',
+    emotion: controls.selections.emotion?.length ? '' : source.emotion }
 }
 export function variedPopularScene(source: SceneBlueprint, variation: DraftRandomVariation, controls: Controls): SceneBlueprint {
   const inherited = inferBlueprintDecisions(source)
   const shot = isManualDirectorValue(controls.directorSources, 'shot', controls.selections.shot, inherited.shot) ? controls.selections.shot : null
   const lighting = isManualDirectorValue(controls.directorSources, 'lighting', controls.selections.lighting, inherited.lighting) ? controls.selections.lighting : null
-  const prose = userDescription(controls.visualDescription) ? '' : renderRandomVariationProse(variation.prose, shot, lighting, inherited.lighting)
+  const userVisual = userDescription(controls.visualDescription)
+  const prose = userVisual ? '' : renderRandomVariationProse(variation.prose, shot, lighting, inherited.lighting)
   return { ...source, promptTokens: variation.prompt.split(',').map(token => token.trim()).filter(Boolean),
-    promptProse: prose, animaCaption: prose,
+    promptProse: prose, animaCaption: !userVisual && source.animaCaption !== undefined && source.animaCaption !== source.promptProse
+      ? renderRandomVariationProse(source.animaCaption, shot, lighting, inherited.lighting) : prose,
     sceneTags: variation.tags, camera: shot ? '' : source.camera,
-    lighting: source.lighting || inferBlueprintLighting(source) || '', mood: '' }
+    lighting: source.lighting || inferBlueprintLighting(source) || '', mood: controls.selections.emotion?.length ? '' : source.mood }
 }
 
 export function sceneStyleBaseline(scene: Scene) {

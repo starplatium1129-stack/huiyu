@@ -2,7 +2,7 @@ import { computed, ref, watch, type Ref } from 'vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useSceneStore } from '@/stores/sceneStore'
 import { usePromptTagTools } from '@/composables/prompt/usePromptTagTools'
-import { OUTFIT_BUNDLES } from '@/composables/scene/useDirectorCatalog'
+import { OUTFIT_BUNDLES, studioOutfitBundle } from '@/composables/scene/useDirectorCatalog'
 import { UNIVERSAL_WARDROBE_PRESETS } from '@/config/universalWardrobe'
 import { isStableIdentityToken } from '@/utils/interrogateReference'
 import { isGarmentToken } from '@/utils/popularIdentity'
@@ -44,20 +44,19 @@ export const OUTFIT_SOURCE_OPTIONS = [
 interface ItemBase {
   id: string
   name: string
+  sourceName: string
   search: string
   types: string[]
 }
 interface CatalogOutfit extends ItemBase {
   kind: 'catalog'
   sourceId: string
-  sourceName: string
   tokens: string[]
   prose: string
   identity: string[]
 }
 interface BundleOutfit extends ItemBase {
   kind: 'bundle' | 'universal'
-  sourceName: string
   description: string
   tokens: string[]
 }
@@ -68,8 +67,33 @@ interface ClothingTag extends ItemBase {
 type OutfitItem = CatalogOutfit | BundleOutfit | ClothingTag
 interface OutfitGroup {
   id: string
-  item: OutfitItem
-  variants: CatalogOutfit[]
+  variants: OutfitItem[]
+}
+
+/** One browsing card per name or applied recipe. Each source keeps its own action and ID. */
+function groupOutfits(items: OutfitItem[], recipeKey: (item: CatalogOutfit | BundleOutfit) => string | null) {
+  const byTitle = new Map<string, OutfitGroup>()
+  for (const item of items) {
+    const title = item.name.trim().normalize('NFKC').toLowerCase().replace(/\s+/g, ' ')
+    const key = item.kind === 'tag' || !title ? item.id : `outfit/${title}`
+    const group = byTitle.get(key)
+    if (group) group.variants.push(item)
+    else byTitle.set(key, { id: item.id, variants: [item] })
+  }
+  const result: OutfitGroup[] = [], byRecipe = new Map<string, OutfitGroup>()
+  for (const group of byTitle.values()) {
+    // An alternate name can join a card only if *every* source has that recipe.
+    // A title with several distinct looks must keep its own set of choices.
+    const recipes = new Set(group.variants.map(item => item.kind === 'tag' ? null : recipeKey(item)))
+    const [key] = recipes
+    if (key && recipes.size === 1) {
+      const same = byRecipe.get(key)
+      if (same) { same.variants.push(...group.variants); continue }
+      byRecipe.set(key, group)
+    }
+    result.push(group)
+  }
+  return result
 }
 
 const record = (value: unknown): value is Record<string, unknown> => !!value && typeof value === 'object' && !Array.isArray(value)
@@ -105,7 +129,7 @@ export function useOutfitPresetLibrary(
       }))
     const clothingTags: ClothingTag[] = tags.value.map(tag => {
       const meaning = tagMeaning(tag.en, tag.cn)
-      return { id: `tag/${tag.en}`, kind: 'tag', name: meaning, tag,
+      return { id: `tag/${tag.en}`, kind: 'tag', name: meaning, sourceName: '服装词条', tag,
         search: searchText([tag.en, meaning, tag.cn || '', ...(tag.aliases || []), tag.desc || ''].join(' ')),
         types: outfitTypes([tag.en, meaning, tag.cn || '', ...(tag.aliases || [])].join(' ')) }
     })
@@ -118,7 +142,7 @@ export function useOutfitPresetLibrary(
       for (const [outfitId, value] of Object.entries(wardrobe)) {
         const tokens = Array.isArray(value) ? value.filter((tag): tag is string => typeof tag === 'string' && !!tag.trim()) : []
         if (!tokens.length) continue
-        const bundle = OUTFIT_BUNDLES.find(item => item.character === id && tokens.includes(item.tags[0]))
+        const bundle = studioOutfitBundle(id, outfitId)
         const name = bundle?.label.split(' · ').slice(1).join(' · ') || outfitId.replace(/_/g, ' ')
         studio.push({ id: `studio/${id}/${outfitId}`, kind: 'catalog', name, sourceId: id, sourceName, tokens, prose: '', identity: [],
           search: searchText([sourceName, id, outfitId, name, ...tokens].join(' ')),
@@ -143,62 +167,64 @@ export function useOutfitPresetLibrary(
     }
     return combined
   })
+  const groups = computed(() => groupOutfits(items.value, item => {
+    const { tokens, prose } = item.kind === 'catalog' ? prepareCatalogOutfit(item) : { tokens: item.tokens, prose: '' }
+    const applied = [...new Set(tokens.map(pb.tagDictionary.canonicalize))]
+    return applied.length ? 'recipe/' + JSON.stringify([applied, prose]) : null
+  }))
   const matched = computed(() => {
     const terms = searchText(search.value.trim()).split(/\s+/).filter(Boolean)
-    const groups: OutfitGroup[] = [], byContent = new Map<string, OutfitGroup>()
-    for (const item of items.value) {
+    if (!terms.length && type.value === 'all' && source.value === 'all') return groups.value
+    function matches(item: OutfitItem) {
       const matchesSource = source.value === 'all'
         || (source.value === 'character' ? item.kind === 'catalog' || item.kind === 'bundle'
           : source.value === 'official' ? item.kind === 'tag' && item.tag.cat === 'Official Outfit' : item.kind === source.value)
-      if (!matchesSource || (type.value !== 'all' && !item.types.includes(type.value))
-        || !terms.every(term => item.search.includes(term))) continue
-      if (item.kind === 'catalog') {
-        const prepared = prepareCatalogOutfit(item)
-        if (prepared.tokens.length) {
-          // Group only identical applied content; token order and prose may affect rendering.
-          const tokens = [...new Set(prepared.tokens.map(pb.tagDictionary.canonicalize))]
-          const key = JSON.stringify([tokens, prepared.prose])
-          const existing = byContent.get(key)
-          if (existing) { existing.variants.push(item); continue }
-          const group = { id: item.id, item, variants: [item] }
-          byContent.set(key, group); groups.push(group)
-          continue
-        }
-      }
-      groups.push({ id: item.id, item, variants: item.kind === 'catalog' ? [item] : [] })
+      return matchesSource && (type.value === 'all' || item.types.includes(type.value))
+        && terms.every(term => item.search.includes(term))
     }
-    return groups
+    return groups.value.flatMap(group => {
+      const variants = group.variants.filter(matches)
+      return variants.length ? [{ id: group.id, variants }] : []
+    })
   })
   const visible = computed(() => {
     const characterId = pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char
-    return matched.value.slice(0, limit.value).map(group => ({ ...group,
-      item: group.variants.find(variant => variant.id === pb.outfitOverride?.presetId)
-        || group.variants.find(variant => variant.sourceId === characterId) || group.item }))
+    return matched.value.slice(0, limit.value).map(group => {
+      const item = group.variants.find(variant => isSelected(variant) && (variant.kind !== 'catalog' || canApply.value))
+        || group.variants.find(variant => variant.kind === 'catalog' && variant.sourceId === characterId)
+        || group.variants.find(variant => variant.kind !== 'catalog' || canApply.value)
+        || group.variants[0]
+      return { ...group, item }
+    })
   })
   watch([search, source, type], () => { limit.value = 48 })
 
   function isPresetActive(tokens: string[]): boolean {
     if (!tokens.length) return false
-    const canonical = tokens.map(pb.tagDictionary.canonicalize)
-    const selected = pb.outfitOverride
-      ? new Set(pb.outfitOverride.tokens.map(pb.tagDictionary.canonicalize)) : pb.manualTags
-    return canonical.every(token => selected.has(token))
+    const canonical = [...new Set(tokens.map(pb.tagDictionary.canonicalize))]
+    if (pb.outfitOverride) {
+      const selected = pb.outfitOverride.tokens.map(pb.tagDictionary.canonicalize)
+      return canonical.length === selected.length && canonical.every((token, i) => token === selected[i])
+    }
+    return canonical.every(token => pb.manualTags.has(token))
   }
   function isSelected(item: OutfitItem): boolean {
     if (item.kind === 'tag') return pb.manualTags.has(item.tag.en)
-    return item.kind === 'catalog' ? pb.outfitOverride?.presetId === item.id : isPresetActive(item.tokens)
+    if (item.kind === 'catalog' || pb.outfitOverride?.presetId) return pb.outfitOverride?.presetId === item.id
+    if (pb.outfitOverride?.label && pb.outfitOverride.label !== item.name) return false
+    return isPresetActive(item.tokens)
   }
   function selectBundle(item: BundleOutfit) {
     if (!pb.isPopular && (pb.isUnbound || pb.char === 'triad')) {
       const active = isPresetActive(item.tokens)
       toggleOutfitBundle(item.tokens)
       pb.flash(active ? `已卸下「${item.name}」` : `已装配「${item.name}」`)
-    } else if (isPresetActive(item.tokens)) {
+    } else if (isSelected(item)) {
       if (pb.outfitOverride) pb.clearOutfitOverride()
       else toggleOutfitBundle(item.tokens)
       pb.flash(`已卸下「${item.name}」`)
     } else {
-      pb.setOutfitOverride(item.tokens, null, { label: item.name, suppressedTags: suppressedOutfitTags(pb.manualTags) })
+      pb.setOutfitOverride(item.tokens, null, { presetId: item.id, label: item.name, suppressedTags: suppressedOutfitTags(pb.manualTags) })
       pb.flash(`已换装「${item.name}」`)
     }
   }

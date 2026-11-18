@@ -15,6 +15,7 @@ export function useUnboundPromptAssembly(pb: PromptAssemblyState & Pick<PopularP
     const subjects = [...Object.values(STUDIO_PROMPT_SUBJECTS), ...pb.popularCharacters]
     return compilePromptRecipe({
       kind: 'free', engine: target, profile: target === 'moss' ? null : profile.value,
+      randomSetting: pb.randomVariation?.source === '',
       manual: [...pb.manualTags], emotion: pb.emotionPrompt ? [pb.emotionPrompt] : [],
       shot: pb.selections.shot, lighting: pb.selections.lighting, composition: pb.selections.composition,
       palette: [COLOR_MOODS.find(item => item.id === pb.colorMood)?.prompt || ''],

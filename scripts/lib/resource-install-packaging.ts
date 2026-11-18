@@ -71,7 +71,7 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { r
     // pixels, format and URLs; cache by input bytes to avoid repeat build work.
     const builtinAtlas = entry.rel === 'live2d/nene/textures/texture_00.png';
     if ((portrait || builtinAtlas) && /\.png$/i.test(entry.rel) && staged.length > 256 * 1024) {
-      const cache = child(pngCache, digest(staged) + '-png9-v1.png');
+      const cache = child(pngCache, digest(staged) + '-png9-rgb-v2.png');
       let packed: Buffer | null = null;
       if (fs.existsSync(cache) && fs.existsSync(cache + '.sha256')) {
         const bytes = readBytes(fs, cache);
@@ -81,7 +81,7 @@ async function applyResourceProfile({ root, gatewayRoot, profile = 'full' }: { r
         const input = sharp(staged, { limitInputPixels: 100_000_000 });
         const metadata = await input.metadata();
         if ((!metadata.pages || metadata.pages === 1) && metadata.depth === 'uchar' && metadata.space === 'srgb' && !metadata.icc) {
-          packed = await input.keepMetadata().png({ compressionLevel: 9, effort: 10 }).toBuffer();
+          packed = await input.keepMetadata().png({ compressionLevel: 9, adaptiveFiltering: true, palette: false }).toBuffer();
           writeAtomic(fs, cache, packed);
           writeAtomic(fs, cache + '.sha256', Buffer.from(digest(packed)));
         }

@@ -1,0 +1,245 @@
+@media (prefers-reduced-motion: reduce) {
+  /* 只移除会造成位移、缩放、旋转或持续扫光的动效，颜色与透明度反馈仍保留。 */
+  :root:not([data-motion='full']) .nav-links > a::after, :root:not([data-motion='full']) :is(.spin,
+  .route-atmosphere *,
+  [data-reveal], [class*="stagger-in"], .stagger-container > *) {
+    animation:none !important;
+  }
+  :root:not([data-motion='full']) :is(
+  .layer-fade-enter-active,
+  .layer-fade-leave-active) { transition:opacity var(--motion-control) ease-out; }
+  html:not([data-motion='full']) { scroll-behavior:auto !important; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) .nav-links > a::after,
+:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.spin,
+.route-atmosphere *,
+[data-reveal], [class*="stagger-in"], .stagger-container > *) {
+  animation:none !important;
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) :is(
+.layer-fade-enter-active,
+.layer-fade-leave-active) { transition:opacity var(--motion-control) ease-out; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) { scroll-behavior:auto !important; }
+
+/* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；
+   其余页面仍保留首屏水印（滚动后由 RouteAtmosphere 渐隐） */
+
+@media (prefers-reduced-transparency: reduce) {
+  :root { --glass-fill:var(--bg-surface); --glass-fill-strong:var(--bg-elevated); }
+  .nav, .card, .card-info, .card-create { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+}
+
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .nav, .card, .card-info, .card-create { background:var(--bg-base); }
+}
+
+/* ---- Utility ---- */
+.skip-link {
+  @apply tw:absolute tw:left-s-3 tw:top-s-3;
+  z-index: var(--z-skip);
+  padding: 8px 14px;
+  @apply tw:rounded-md;
+  background: var(--bg-elevated);
+  @apply tw:text-primary;
+  border: 1px solid var(--accent);
+  box-shadow: var(--shadow-md);
+  @apply tw:text-body tw:font-bold;
+  transform: translateY(-140%);
+  transition: transform var(--motion-hover);
+}
+.skip-link:focus,
+.skip-link:focus-visible {
+  transform: translateY(0);
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+/* ---- Prose tones(替代散落各页的 color+font-size 内联组合) ---- */
+.lede      { @apply tw:text-secondary tw:text-body-lg tw:leading-loose; }
+.note      { @apply tw:text-secondary tw:text-body-sm tw:leading-loose; }
+.note-sm   { @apply tw:text-muted tw:text-label-sm tw:leading-body; }
+.emphasis  { @apply tw:text-accent tw:font-semibold; }
+.section-title { margin: var(--s-6) 0 var(--s-3); @apply tw:text-title; }
+.section-title:first-child { @apply tw:mt-0; }
+
+/* ---- Layout utilities ---- */
+.row      { @apply tw:flex tw:items-center tw:gap-s-3 tw:flex-wrap; }
+.row-tight{ @apply tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap; }
+.stack    { @apply tw:grid tw:gap-s-3; }
+.spread   { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3; }
+
+/* ---- Spacing utilities(仅 token 档位) ---- */
+.mt-3 { @apply tw:mt-s-3; }
+.mt-5 { @apply tw:mt-s-5; }
+.mt-6 { @apply tw:mt-s-6; }
+.mb-2 { @apply tw:mb-s-2; }
+.mb-3 { @apply tw:mb-s-3; }
+.m-0  { @apply tw:m-0; }
+
+.muted   { @apply tw:text-muted; }
+.sr-only {
+  @apply tw:absolute! tw:w-[1px]! tw:h-[1px]! tw:p-0! tw:m-[-1px]! tw:overflow-hidden!;
+  clip: rect(0, 0, 0, 0) !important; @apply tw:whitespace-nowrap!; border: 0 !important;
+}
+.accent  { @apply tw:text-accent; }
+.mono    { @apply tw:font-mono; }
+.t-center { @apply tw:text-center; }
+.mt-4    { @apply tw:mt-s-4; }
+.mb-4    { @apply tw:mb-s-4; }
+.flex    { @apply tw:flex; }
+.wrap    { @apply tw:flex-wrap; }
+
+/* ============================================================
+   动画工具类 / 滚动揭示 / 交互增强
+   ============================================================ */
+
+/* ── 滚动揭示：初始隐藏 → JS 添加 data-revealed 后淡入 ── */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(18px);
+  transition: opacity var(--motion-atmosphere) var(--ease-out), transform var(--motion-atmosphere) var(--ease-out);
+}
+[data-reveal][data-revealed] {
+  opacity: 1;
+  transform: none;
+}
+
+/* ============================================================
+   日系演出元素：集中线 / 速度线 / 拟声词
+   ------------------------------------------------------------
+   2026-08-28 补齐。项目已有的日系语汇是"静态质感"（1px 网点、竖排假名、
+   朱印、分镜角框、樱花景深），缺的是"事件性演出"—— 而这三类恰恰是
+   日系辨识度最高、且纯 CSS 就能做的。它们也天然满足 DESIGN.md 的规矩：
+   只为标记一个真实发生的事件（如"这一张出完了"）而存在，不是背景噪声。
+
+   使用约束：
+   - 全部 pointer-events:none 且建议 aria-hidden，它们是装饰，不是信息；
+   - 颜色一律走令牌，不写死色值；
+   - 动画只用 transform / opacity（合成器属性，符合动效铁律）；
+   - 一次只在一处出现，不做常驻氛围层（那正是这次要收敛的东西）。
+   ============================================================ */
+
+/* ── 集中線：从中心放射的漫画集中线，用于"事件完成"的瞬间闪光 ──
+   中心留空（mask 掏空内圈）是为了不糊住被强调的主体本身。 */
+.fx-focus-lines {
+  @apply tw:absolute;
+  inset: 0;
+  @apply tw:pointer-events-none;
+  opacity: 0;
+  background: repeating-conic-gradient(from 0deg at 50% 50%,
+    transparent 0deg 2.2deg,
+    var(--accent-glow) 2.2deg 3.2deg);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 16%, #000 44%, transparent 76%);
+          mask: radial-gradient(circle at 50% 50%, transparent 16%, #000 44%, transparent 76%);
+}
+.fx-focus-lines.is-bursting { animation: fx-focus-burst var(--motion-route-cut) var(--ease-out) both; }
+@keyframes fx-focus-burst {
+  from { opacity: 0;  transform: scale(.55); }
+  30%  { opacity: .9; }
+  to   { opacity: 0;  transform: scale(1.3); }
+}
+
+/* ── 速度線：斜向细线横向流动，用于"进行中"的持续状态 ──
+   伪元素做到 200% 宽再 translateX(-50%)，这样流动走的是合成器，
+   而不是动画 background-position（那会逐帧重绘）。 */
+.fx-speed-lines {
+  @apply tw:absolute;
+  inset: 0;
+  @apply tw:overflow-hidden tw:pointer-events-none;
+}
+.fx-speed-lines::before {
+  content: "";
+  @apply tw:absolute tw:top-0 tw:bottom-0 tw:left-0 tw:w-[200%];
+  background-image: repeating-linear-gradient(105deg,
+    transparent 0 6px,
+    var(--accent-soft) 6px 7px);
+  animation: fx-speed-scroll 1.1s linear infinite;
+}
+@keyframes fx-speed-scroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* ── 拟声詞：漫画式音效字，配合集中线使用 ──
+   paint-order 让描边画在填充之下，避免描边吃掉字形内侧。 */
+.fx-onome {
+  @apply tw:font-display tw:font-bold tw:italic;
+  letter-spacing: .04em;
+  @apply tw:text-accent;
+  -webkit-text-stroke: 3px var(--bg-deep);
+  paint-order: stroke fill;
+  transform: skewX(-8deg);
+  @apply tw:pointer-events-none;
+  opacity: 0;
+}
+.fx-onome.is-popping { animation: fx-onome-pop var(--motion-route-cut) var(--spring-bounce) both; }
+@keyframes fx-onome-pop {
+  0%   { opacity: 0;   transform: skewX(-8deg) scale(.5) rotate(-7deg); }
+  30%  { opacity: 1;   transform: skewX(-8deg) scale(1.18) rotate(3deg); }
+  62%  { opacity: 1;   transform: skewX(-8deg) scale(1) rotate(-1deg); }
+  to   { opacity: 0;   transform: skewX(-8deg) scale(1.06) translateY(-10px); }
+}
+
+/* 降级：动效关掉，但保留静态可见性 —— 拟声词承载的"完成了"是真实反馈，
+   不该因为 reduced-motion 就整个消失（JS 仍会在延时后移除它）。 */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) :is(.fx-focus-lines.is-bursting,
+  .fx-onome.is-popping) { animation: none; opacity: 1; }
+  :root:not([data-motion='full']) .fx-speed-lines::before { animation: none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.fx-focus-lines.is-bursting,
+.fx-onome.is-popping) { animation: none; opacity: 1; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .fx-speed-lines::before { animation: none; }
+[data-reveal][data-reveal-delay="1"] { transition-delay: var(--motion-press); }
+[data-reveal][data-reveal-delay="2"] { transition-delay: var(--motion-hover); }
+[data-reveal][data-reveal-delay="3"] { transition-delay: var(--motion-surface); }
+[data-reveal][data-reveal-delay="4"] { transition-delay: var(--motion-route); }
+
+/* ── 旋转加载圈 ── */
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin .7s linear infinite; }
+
+/* ── 浮动悬停（卡片增强） ── */
+
+/* ── 按钮加载与防重入状态 ── */
+.btn[data-loading],
+.btn[aria-busy="true"]:not([data-cancel]):not([data-action="cancel"]):not(.btn-cancel):not([data-gesture-toggle]) {
+  pointer-events: none;
+}
+.btn:is([data-cancel], [data-action="cancel"], .btn-cancel, [data-gesture-toggle]) {
+  pointer-events: auto !important;
+}
+.btn[data-loading]::after {
+  content: '';
+  @apply tw:inline-block tw:w-[.85em] tw:h-[.85em] tw:ml-[.5em];
+  border: 2px solid currentColor;
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin .65s linear infinite;
+  vertical-align: middle;
+}
+
+/* ── 淡入淡出与阶梯动效工具 ── */
+
+@keyframes stagger-in {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: none; }
+}
+/* 容器内的直接子项自动级联入场：列表只需挂 stagger-container 类 */
+.stagger-container > * {
+  animation: stagger-in var(--motion-control) var(--ease-out) both;
+}
+.stagger-container > *:nth-child(2) { animation-delay: 20ms; }
+.stagger-container > *:nth-child(3) { animation-delay: 40ms; }
+/* 首屏轻微错峰，后续卡片同时落位，避免筛选时等待长波次。 */
+.stagger-container > *:nth-child(n+4) { animation-delay: 60ms; }
+/* 高频筛选直接呈现结果，保留首页与静态目录的轻入场。 */
+:is(.scene-grid, .showcase-grid, .gallery-wall).stagger-container > * { animation: none; }
+
+/* ── Archive 质感扩展：硬质面板、刻度、微型坐标与网格底纹 ── */
+
+/* ── 数字/内容变化高亮 ── */
+
+/* Theme colors commit together; local control motion remains available. */
+:root[data-theme-changing] *,
+:root[data-theme-changing] *::before,
+:root[data-theme-changing] *::after { transition-property:transform,opacity !important; }

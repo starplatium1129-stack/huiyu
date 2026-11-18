@@ -78,7 +78,7 @@ function sfcStyleBlocks(source: string) {
 }
 
 /** 设计系统 token 定义所在的文件（应用加载的那一份） */
-const DESIGN_SYSTEM = 'src/assets/css/design-system.css';
+const DESIGN_SYSTEM = 'src/assets/css/design/tokens.css';
 
 export = {
   ROOT,

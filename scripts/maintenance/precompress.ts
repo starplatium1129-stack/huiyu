@@ -25,12 +25,12 @@ import { COMPRESSIBLE, MIN_BYTES, compressAsync } from '../lib/precompressed-art
 const ROOT = path.resolve(__dirname, '..', '..');
 const TARGET_DIRS = ['dist', 'data'];
 
-function walk(dir: string): string[] {
-  if (!fs.existsSync(dir)) return [];
+function walk(dir: string, skipDir?: string): string[] {
+  if (dir === skipDir || !fs.existsSync(dir)) return [];
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap(entry => {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) return walk(full);
-    return [full];
+    if (entry.isDirectory()) return walk(full, skipDir);
+    return entry.isFile() ? [full] : [];
   });
 }
 
@@ -90,10 +90,13 @@ function artifactMatchesSource(artifact: string) {
  */
 function listStaleArtifacts(root = ROOT) {
   const stale: string[] = [];
+  const catalog = path.join(root, 'data', 'catalog') + path.sep;
   for (const dir of TARGET_DIRS) {
     for (const file of walk(path.join(root, dir))) {
       if (!/\.(?:br|gz)$/i.test(file)) continue;
       const source = file.replace(/\.(?:br|gz)$/i, '');
+      // SQLite is seeded from raw catalog JSON. The gateway never serves these sidecars.
+      if (file.startsWith(catalog) && source.endsWith('.json')) { stale.push(file); continue; }
       if (!fs.existsSync(source)) { stale.push(file); continue; }
       if (!COMPRESSIBLE.test(source) || fs.statSync(source).size < MIN_BYTES) stale.push(file);
     }
@@ -119,12 +122,12 @@ async function main(root = ROOT, argv = process.argv.slice(2)) {
     const stale = listStaleArtifacts(root);
     for (const file of stale) fs.unlinkSync(file);
     if (stale.length) {
-      console.log(`Pruned ${stale.length} orphaned/stale precompress artifacts（源已删除或低于阈值）`);
+      console.log(`Pruned ${stale.length} unused precompress artifacts`);
     }
   }
 
   for (const dir of TARGET_DIRS) {
-    for (const file of walk(path.join(root, dir))) {
+    for (const file of walk(path.join(root, dir), path.join(root, 'data', 'catalog'))) {
       if (!COMPRESSIBLE.test(file)) continue;
       if (/\.(?:br|gz)$/i.test(file)) continue;
       if (fs.statSync(file).size < MIN_BYTES) continue;

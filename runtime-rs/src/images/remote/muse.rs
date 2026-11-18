@@ -322,9 +322,6 @@ impl RecipeLibrary {
         Ok(serde_json::from_slice(&decoded)?)
     }
     fn prepare(&self, scene: SceneSelection, default_model: Option<&str>) -> Result<PreparedScene> {
-        if scene.prompt.is_some() || scene.kind.as_deref() == Some("prompt") {
-            return submission::custom(scene, default_model, &self.loras);
-        }
         if scene.uses_raw_fields() {
             return Err(ApiError::invalid(
                 "尺寸、LoRA 和自定义参数需要与 prompt 一起使用",
@@ -440,10 +437,7 @@ async fn draw(
             .ok_or_else(|| ApiError::invalid("请为出图提交指定 requestKey"))?;
         let input: SceneSelection = serde_json::from_value(input)
             .map_err(|error| ApiError::invalid(format!("出图参数无效：{error}")))?;
-        if input.variants.unwrap_or(1) != 1
-            || input.prompt.is_some()
-            || input.kind.as_deref() == Some("prompt")
-        {
+        if input.variants.unwrap_or(1) != 1 || input.is_custom() {
             return batches::enqueue(&state.config, &muse, &owner, key, None, vec![input]).await;
         }
         let settings = muse.images.backend.native_settings()?;

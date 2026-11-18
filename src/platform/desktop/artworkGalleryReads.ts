@@ -1,6 +1,6 @@
 import type { GalleryCatalog, GalleryCursor, GalleryPage, GalleryQuery } from '../../application/artwork/galleryQuery.ts'
 import { artworkTimestamp, type ArtworkRecord } from '../../types/artwork.ts'
-import { parseArtworkRecentIndex, parseArtworkRow } from './artworkReadModel.ts'
+import { compareArtworkKeys, parseArtworkRecentIndex, parseArtworkRow } from './artworkReadModel.ts'
 import { getDesktopRuntime } from './runtime.ts'
 
 type Request = <T>(command: Record<string, unknown>, signal?: AbortSignal) => Promise<T>
@@ -30,7 +30,7 @@ export function createDesktopGalleryReads(request: Request, session: () => strin
     if (!Array.isArray(page.items) || page.items.length > limit || !Number.isSafeInteger(page.total) || page.total < 0) throw new Error('作品分页无效')
     const next = page.nextCursor
     if (next !== null && (!next || typeof next.key !== 'string' || !Number.isFinite(next.time) || next.revision !== page.revision
-      || next.projects !== page.projectsVersion || typeof next.query !== 'string' || cursor && next.query !== cursor.query || cursor && !(next.time < cursor.time || next.time === cursor.time && next.key > cursor.key))) throw new Error('作品翻页游标无效')
+      || next.projects !== page.projectsVersion || typeof next.query !== 'string' || cursor && next.query !== cursor.query || cursor && !(next.time < cursor.time || next.time === cursor.time && compareArtworkKeys(next.key, cursor.key) > 0))) throw new Error('作品翻页游标无效')
     if (cursor && (cursor.revision !== page.revision || cursor.projects !== page.projectsVersion)) throw new Error('作品库在翻页期间发生变更，请重新读取')
     const items = page.items.map(record)
     if (new Set(items.map(item => String(item.id).trim())).size !== items.length) throw new Error('作品分页含重复记录')

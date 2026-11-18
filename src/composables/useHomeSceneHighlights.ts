@@ -60,7 +60,7 @@ function selectScenes(curation: CurationData, available: ReadonlySet<string>, re
   return { featured, remaining, canRefresh: pool.size > 3, recent: recent.filter(id => available.has(id)).slice(0, 6) }
 }
 
-/** The home cards need only their selected records; full search keeps loadHome's contract. */
+/** The home cards need only their selected records. */
 export function useHomeSceneHighlights() {
   const store = useSceneStore()
   const featuredScenes = shallowRef<HomeJournalEntry[]>([]), recentScenes = shallowRef<HomeScene[]>([])

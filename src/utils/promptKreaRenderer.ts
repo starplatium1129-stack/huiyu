@@ -1,7 +1,10 @@
 import type { PromptPlan, PromptSceneContext } from '../types/prompt'
 import { sceneLighting, sceneShot } from './sceneInference.ts'
 import { authoredSceneCaption } from './promptCaption.ts'
-import { lightingOverride } from './promptLighting.ts'
+import { lightingOverride, lightingTokenId } from './promptLighting.ts'
+import { kreaSetting, matchingRandomSetting } from './randomSceneSettings.ts'
+import { tokenize } from './promptPrimitives.ts'
+import { isGarmentToken } from './popularIdentity.ts'
 import { sanitizeKreaProse, sanitizeKreaTokens } from './promptVisualText.ts'
 import { resolveCameraTags } from './promptCamera.ts'
 import { SHOT, LIGHTING } from '../config/promptConstants.ts'
@@ -75,7 +78,7 @@ function inferredKreaStyle(plan: PromptPlan): string {
 
 function outfitPhrases(plan: PromptPlan): string[] {
   if (plan.outfitProse) return [clean(plan.outfitProse)]
-  const keys = new Set([...plan.exactControls, ...plan.sceneVisualFragments].map(normalizeProseKey))
+  const keys = new Set([...plan.exactControls, ...plan.sceneVisualFragments, ...plan.manual].map(normalizeProseKey))
   const canonical = Object.values(CANONICAL_OUTFITS).find(outfit => keys.has(outfit.tags[0]))
   if (canonical) return [canonical.prose]
   // 角色主词（preserveTokens = exactTokens）是**身份**不是服装。outfitProse 为空时
@@ -187,13 +190,14 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   const subjectNames = new Set(plan.characterTokens.map(token => normalizeProseKey(token.split('(')[0])))
   const workNames = new Set(plan.copyrightTokens.map(normalizeProseKey))
   const exactKeys = new Set(plan.exactControls.map(normalizeProseKey))
-  const outfitKeys = new Set([...exactKeys, ...plan.sceneVisualFragments.map(normalizeProseKey)])
+  const outfitKeys = new Set([...exactKeys, ...plan.sceneVisualFragments.map(normalizeProseKey), ...plan.manual.map(normalizeProseKey)])
   const outfit = outfitPhrases(plan)
   const consumedOutfitKey = !plan.outfitProse
     ? Object.values(CANONICAL_OUTFITS).find(outfit => outfitKeys.has(outfit.tags[0]))?.tags[0] : undefined
   const authoredProse = plan.sceneProse || sanitizeKreaProse(plainEnglish(plan.scene?.promptProse ?? plan.scene?.animaCaption))
 
   const action: string[] = []
+  const features: string[] = []
   const artists = [...plan.artists].map(token => proseToken(token.replace(/^@/, '')))
   const mood: string[] = [...plan.emotion.map(moodPhrase).filter(Boolean)]
   const environment: string[] = []
@@ -206,6 +210,9 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
     const name = normalizeProseKey(token.split('(')[0])
     if (subjectNames.has(name) && subjectText.includes(`_${name}_`)) continue
     if (identityKeys.has(key) && subjectText.includes(`_${key}_`)) continue
+    if (identityKeys.has(key) && /(?:^|_)(?:twintails|braids?|ponytail|ahoge|hairclips?)$/.test(key)) {
+      features.push(proseToken(token)); continue
+    }
     if (/^no_hair_ribbons?$/.test(key) && subject.includes('no ribbons in her hair')) continue
     if (token.startsWith('@')) { artists.push(proseToken(token.slice(1))); continue }
     // These objects do not imply a worn garment or an active light source.
@@ -214,7 +221,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
     if (KREA_CAMERA_KEYS.has(key)) { camera.push(cameraPhrase(token)); continue }
     if (KREA_LIGHT_KEYS.has(key) || /(?:light|lighting|shadow|shadows|backlit)$/.test(key)) { lighting.push(lightPhrase(token)); continue }
     if (isEnvironmentKey(key) && /(?:^|_)(?:cafe|shop|store|boutique)$/.test(key)) { environment.push(environmentPhrase(token)); continue }
-    if (KREA_OUTFIT_RE.test(key) && !/_(?:on|over|beside|under|by)_/.test(key)) {
+    if ((KREA_OUTFIT_RE.test(key) || isGarmentToken(key)) && !/_(?:on|over|beside|under|by)_/.test(key)) {
       if (key === 'apron_only' && outfit.some(item => /only .*apron/i.test(item))) continue
       outfit.push(outfitPhrase(token).replace(/^(?:wearing|dressed in)\s+/i, ''))
       continue
@@ -238,8 +245,9 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
   if (artists.length) parts.push(sentence(`Use artistic influences from ${naturalList(artists)}`))
   const outfitText = naturalList(outfit)
   if (subject) parts.push(sentence(subject))
+  if (features.length) parts.push(sentence(`Distinctive features include ${naturalList(features)}`))
   // Outfit prose may already be a complete sentence; do not attach it to "wearing".
-  if (outfitText) parts.push(sentence(`Clothing: ${outfitText}`))
+  if (outfitText) parts.push(sentence(/^her\b/i.test(outfitText) ? `She wears ${outfitText}` : `Clothing: ${outfitText}`))
   const actionText = naturalList(action.map(proseClause))
   const moodText = naturalList(compactMood(mood))
   const portrayal: string[] = []
@@ -276,7 +284,7 @@ function buildStructuredKreaDescription(plan: PromptPlan): string {
     if (direction) clauses.push(`The composition uses ${direction}`)
     if (atmosphere) clauses.push(`the scene is lit by ${atmosphere}`)
     if (palette) clauses.push(`the color palette uses ${palette}`)
-    parts.push(sentence(clauses.join(', while ')))
+    parts.push(...clauses.map(sentence))
   }
   // 2026-08-30 调研 §四/§五.2：媒介词（medium）放散文末尾收尾——官方
   // 「命名工作室收尾」让模型承诺特定完成度（polished X style/finish）。
@@ -305,7 +313,7 @@ function buildFreeKreaDescription(plan: PromptPlan): string {
     else if (key === 'solo') subjects.push('a single subject')
     else if (key === 'no_humans') subjects.push('no people')
     else if (KREA_META_KEYS.has(key)) continue
-    else if (KREA_CAMERA_KEYS.has(key)) camera.push(cameraPhrase(safe))
+    else if (KREA_CAMERA_KEYS.has(key) || plan.composition.includes(token)) camera.push(cameraPhrase(safe))
     else if (KREA_LIGHT_KEYS.has(key) || /(?:light|lighting|shadow|shadows|backlit)$/.test(key)) lighting.push(lightPhrase(safe))
     else details.push(actionPhrase(safe))
   }
@@ -329,10 +337,18 @@ function proseClause(value: string): string {
 
 /** Natural-language rendering and sanitization stay within the Krea model boundary. */
 export function renderKreaPrompt(plan: PromptPlan): { prompt: string; negative: string } {
+  // Only omit facts from the prose projection when its caption actually conveys them.
+  // The shared plan keeps the original tokens for later editing and batch compilation.
+  const setting = plan.sceneProse && matchingRandomSetting(plan.manual, lightingTokenId(plan.lighting[0] ?? ''))
+  if (setting && setting.caption === plan.sceneProse) {
+    const { prose, remaining } = kreaSetting(setting, plan.manual)
+    plan = { ...plan, sceneProse: prose, manual: plan.manual.filter(remaining),
+      sceneVisualFragments: plan.sceneVisualFragments.filter(remaining), lighting: [] }
+  }
   const proseSafe: PromptPlan = {
     ...plan,
     identity: sanitizeKreaTokens(plan.identity), exactControls: sanitizeKreaTokens(plan.exactControls),
-    sceneVisualFragments: sanitizeKreaTokens(plan.sceneVisualFragments), emotion: sanitizeKreaTokens(plan.emotion),
+    sceneVisualFragments: sanitizeKreaTokens(plan.sceneVisualFragments), emotion: sanitizeKreaTokens(plan.emotion.flatMap(tokenize)),
     camera: sanitizeKreaTokens(plan.camera), lighting: sanitizeKreaTokens(plan.lighting),
     palette: sanitizeKreaTokens(plan.palette), composition: sanitizeKreaTokens(plan.composition),
     manual: sanitizeKreaTokens(plan.manual),

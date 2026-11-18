@@ -61,7 +61,7 @@ impl Catalog {
     ) -> Result<Value> {
         let result = self.query_page(query, Some(cache), additional, 500)?;
         let next_page = (result.page * result.page_size < result.total).then_some(result.page + 1);
-        let items: Vec<_> = result
+        let mut items: Vec<_> = result
             .items
             .into_iter()
             .map(|row| {
@@ -69,6 +69,37 @@ impl Catalog {
                 "characterId":row["characterId"],"category":row["category"],"rating":row["rating"]})
             })
             .collect();
+        if query.kind == "outfit" && !items.is_empty() {
+            // Scope labels to this page. All variants retain their own drawable catalog ID.
+            let ids: std::collections::BTreeSet<_> = items
+                .iter()
+                .filter_map(|item| item["characterId"].as_str())
+                .collect();
+            let mut statement = self.connection.prepare(
+                "SELECT id,title FROM content_records
+                WHERE kind='character' AND deleted=0 AND id IN (SELECT value FROM json_each(?1))",
+            )?;
+            let names = statement
+                .query_map([serde_json::to_string(&ids)?], |row| {
+                    Ok((row.get::<_, String>(0)?, row.get::<_, String>(1)?))
+                })?
+                .collect::<rusqlite::Result<std::collections::HashMap<_, _>>>()?;
+            for item in &mut items {
+                let id = item["characterId"].as_str().unwrap_or_default();
+                let character = names.get(id).map(String::as_str).unwrap_or(id);
+                let title = item["title"].as_str().unwrap_or_default();
+                let display = if character.is_empty()
+                    || item["id"]
+                        .as_str()
+                        .is_some_and(|id| id.starts_with("studio/"))
+                {
+                    title.to_owned()
+                } else {
+                    format!("{character} · {title}")
+                };
+                item["displayTitle"] = json!(display);
+            }
+        }
         Ok(
             json!({"items":items,"total":result.total,"page":result.page,"pageSize":result.page_size,
                 "nextPage":next_page,"ratings":result.facets["ratings"]}),

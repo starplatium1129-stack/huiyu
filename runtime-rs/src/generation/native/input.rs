@@ -113,6 +113,36 @@ impl InputFile {
             result = work => result.map_err(|_| ApiError::new(503, "TASK_INPUT_UNAVAILABLE", "输入图像校验未完成"))?,
         }
     }
+    pub async fn read_verified(&self, cancel: &CancellationToken) -> Result<Vec<u8>> {
+        let permit = worker(cancel).await?;
+        let snapshot = self.clone();
+        let scope = cancel.child_token();
+        let _guard = scope.clone().drop_guard();
+        let work = tokio::task::spawn_blocking(move || {
+            let _permit = permit;
+            snapshot.check()?;
+            let mut bytes = Vec::with_capacity(snapshot.bytes as usize + 1);
+            File::open(snapshot.path())?
+                .take(snapshot.bytes + 1)
+                .read_to_end(&mut bytes)?;
+            let mut hash = Sha256::new();
+            for chunk in bytes.chunks(256 * 1024) {
+                if scope.is_cancelled() {
+                    return Err(cancelled());
+                }
+                hash.update(chunk);
+            }
+            if bytes.len() as u64 != snapshot.bytes || hex::encode(hash.finalize()) != snapshot.hash
+            {
+                return Err(ApiError::new(409, "TASK_INPUT_CHANGED", "输入快照发生变化"));
+            }
+            Ok(bytes)
+        });
+        tokio::select! { biased;
+            _ = cancel.cancelled() => Err(cancelled()),
+            result = work => result.map_err(|_| ApiError::new(503, "TASK_INPUT_UNAVAILABLE", "输入快照读取未完成"))?,
+        }
+    }
     pub fn path(&self) -> &Path {
         self.file.path()
     }

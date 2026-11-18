@@ -30,7 +30,15 @@ pub(super) fn location(state: &AppState, path: &str) -> Option<(PathBuf, String)
         return Some((base, relative.into()));
     }
     if let Some(relative) = path.strip_prefix("/src/assets/css/") {
-        return ["design-system.css", "light-theme.css"]
+        return [
+            "design-system.css", "light-theme.css",
+            "design/tokens.css",
+            "design/layout.css",
+            "design/page-chrome.css",
+            "design/components.css",
+            "design/motion-and-utilities.css",
+            "design/accessibility-and-responsive.css",
+        ]
             .contains(&relative)
             .then(|| {
                 let compiled = root.join("dist/src/assets/css");

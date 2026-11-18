@@ -42,6 +42,7 @@ export interface StudioPromptOptions {
   artistTags?: string[]
   artistProse?: string
   visualDescription?: string
+  backgroundProse?: string
   negativeCustom?: string
   matureTokens?: ReadonlySet<string>
 }
@@ -126,7 +127,7 @@ export function buildStudioPromptPlan(options: StudioPromptOptions) {
     manual, emotion: [...(options.emotion || [])],
     palette: options.palette ? [...options.palette] : tokenize(COLOR_MOODS.find(mood => mood.id === sceneColorMood(scene))?.prompt || ''),
     negative: scene?.negative || '', rating: profileRatingTag(profile, scene) || sceneRating(scene).toLowerCase(),
-    visualDescription, scene,
+    visualDescription, scene, sceneProse: options.backgroundProse,
   })
   if (engine === 'moss') {
     if (character === 'triad') {

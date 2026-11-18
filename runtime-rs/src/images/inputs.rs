@@ -43,10 +43,13 @@ pub(super) fn path(config: &Config, name: &str) -> Result<PathBuf> {
     path_for(config, name, false)
 }
 pub(super) fn path_for(config: &Config, name: &str, native: bool) -> Result<PathBuf> {
-    if !NAME.is_match(name) {
+    if !valid_name(name) {
         return Err(error("TASK_INPUT_INVALID", "输入图像文件名无效"));
     }
     Ok(root(config, native).join(name))
+}
+pub(super) fn valid_name(name: &str) -> bool {
+    NAME.is_match(name)
 }
 async fn open(config: &Config, name: &str, native: bool) -> Result<(tokio::fs::File, u64)> {
     let file = path_for(config, name, native)?;

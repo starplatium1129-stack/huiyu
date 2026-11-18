@@ -47,6 +47,7 @@ enum PreparedBackend {
         input: Value,
         raw: Value,
         family: String,
+        cancel: CancellationToken,
         _permit: tokio::sync::OwnedSemaphorePermit,
     },
 }
@@ -209,6 +210,7 @@ impl Service {
                         input,
                         raw,
                         family: family.into(),
+                        cancel,
                         _permit: permit,
                     },
                     originals,
@@ -268,20 +270,15 @@ impl Service {
                 input,
                 raw,
                 family,
+                cancel,
                 _permit,
             } => {
                 let remote = self.remote.as_ref().ok_or_else(closed)?;
-                remote
-                    .submit(
-                        raw,
-                        &input,
-                        &family,
-                        &prepared.originals,
-                        &owner,
-                        hooks.as_deref(),
-                        &self.shutdown,
-                    )
-                    .await
+                tokio::select! {
+                    biased;
+                    _ = self.shutdown.cancelled() => Err(closed()),
+                    result = remote.submit(raw, &input, &family, &prepared.originals, &owner, hooks.as_deref(), &cancel) => result,
+                }
             }
         }
     }
@@ -392,12 +389,13 @@ impl Service {
             bytes: stat.len(),
         })
     }
-    pub(crate) async fn upload(
+    async fn upload(
         &self,
         image: axum::body::Bytes,
         owner: String,
         cancel: CancellationToken,
         admission: tokio::sync::OwnedSemaphorePermit,
+        reuse: Option<Arc<remote::UploadIndex>>,
     ) -> Result<String> {
         if self.shutdown.is_cancelled() {
             return Err(closed());
@@ -408,7 +406,11 @@ impl Service {
         let (reply, result) = tokio::sync::oneshot::channel();
         self.uploads.spawn(async move {
             let _admission = admission;
-            let value = admission::store(root, image, owner, limits, scope).await;
+            let record = reuse.map(|index| (index, image.clone(), owner.clone()));
+            let value = admission::store(root, image, owner, limits, scope.clone()).await;
+            if let (Some((index, bytes, owner)), Ok(name)) = (record, &value) {
+                index.remember(owner, name.clone(), bytes, scope).await;
+            }
             let _ = reply.send(value);
         });
         let value = tokio::select! {value=result=>value.map_err(|_|ApiError::new(503,"IMAGE_SAVE_FAILED","素材写入结果未知"))?,_=cancel.cancelled()=>Err(inputs::cancelled())};

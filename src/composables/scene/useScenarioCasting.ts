@@ -24,7 +24,7 @@ export function useScenarioCasting(baseCharacter: Ref<string>) {
   async function reload() {
     if (loading.value) return
     loading.value = true; error.value = ''
-    try { await scenes.loadCharacterShell(Boolean(scenes.metaFailedFiles.size)) }
+    try { await scenes.loadPopularCharacters() }
     catch (cause) { error.value = cause instanceof Error ? cause.message : '角色目录读取失败，可重新读取' }
     finally { loading.value = false }
   }

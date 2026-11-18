@@ -79,7 +79,16 @@ pub(super) async fn recent(
         } else {
             None
         };
-        if let Ok(live) = muse.images.backend.remote_queue(&store.owner).await {
+        let has_active_images = items.iter().any(|item| {
+            item["entryType"] == "image"
+                && matches!(
+                    item["status"].as_str(),
+                    Some("queued" | "running" | "cancelling")
+                )
+        });
+        if has_active_images
+            && let Ok((live, _)) = muse.images.backend.remote_queue(&store.owner).await
+        {
             for item in items.iter_mut().filter(|item| item["entryType"] == "image") {
                 if let Some(current) = live["items"]
                     .as_array()
@@ -113,7 +122,7 @@ pub(super) async fn queue(
     let result = async {
         state.host.check_running()?;
         let store = muse.store()?;
-        let mut live = muse.images.backend.remote_queue(&store.owner).await?;
+        let (mut live, timings) = muse.images.backend.remote_queue(&store.owner).await?;
         let mut items = store.work(|db, store| {
             let mut statement = db.prepare("SELECT request,family,kind,scene,model,seed,variant,status,job,error,code,batch
                 FROM muse_items WHERE owner=?1 AND status='waiting' ORDER BY pos")?;
@@ -125,7 +134,6 @@ pub(super) async fn queue(
             })?;
             Ok(rows.collect::<rusqlite::Result<Vec<_>>>()?)
         }).await?;
-        let timings = if items.is_empty() { HashMap::new() } else { store.timings().await? };
         let ahead = live["gpuAhead"].as_u64().unwrap_or(0);
         let mut seconds = live["estimatedAvailableSeconds"].as_f64();
         for (index, item) in items.iter_mut().enumerate() {

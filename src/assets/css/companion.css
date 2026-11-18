@@ -1,4 +1,5 @@
 @import "./companion/base.css";
+@import "./companion/conversation.css";
 @import "./companion/stage.css";
 @import "./companion/behavior.css";
 @import "./companion/controls.css";

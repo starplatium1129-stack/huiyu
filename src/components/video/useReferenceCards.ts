@@ -7,7 +7,7 @@ import { parsePopularCharacter } from '../../utils/popularContent'
 import { parseCharacterProfiles } from '../../utils/characterProfiles'
 import { isRecord, stringList } from '../../utils/popularParseGuards'
 import { proseToken } from '../../utils/promptPhraseTables'
-import { OUTFIT_BUNDLES } from '../../composables/scene/useDirectorCatalog'
+import { studioOutfitBundle } from '../../composables/scene/useDirectorCatalog'
 import type { PopularOutfit } from '../../types/character'
 import type { VideoImageUploadResponse } from '../../api/videoApi.ts'
 
@@ -204,7 +204,7 @@ export function useReferenceCards(deps: ReferenceCardsDeps) {
             identityProse: [character.alias[0] || character.name, ...traits.map(proseToken)].filter(Boolean).join(', '),
             outfits: Object.entries(wardrobe).map(([id, value], index) => {
               const tokens = stringList(value)
-              const bundle = OUTFIT_BUNDLES.find(item => item.character === charId && tokens.includes(item.tags[0]))
+              const bundle = studioOutfitBundle(charId, id)
               return { id, name: bundle?.label || proseToken(tokens[0] || '') || '自定义服装', prose: tokens.map(proseToken).filter(Boolean).join(', '), tokens, default: index === 0 }
             }),
           }

@@ -26,7 +26,8 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             "catalog": {
                 "method": "GET", "path": "/api/muse/catalog",
                 "query": "kind=character 查角色，kind=outfit 查服装，kind=media 查场景和蓝图。可传 search、character 和 rating（如 R18）。pageSize 最大 500，按 nextPage 翻页，ratings 列出分级。",
-                "example": "/api/muse/catalog?kind=outfit&character=nene"
+                "example": "/api/muse/catalog?kind=outfit&character=nene",
+                "outfitSelection": "服装列表优先展示 displayTitle，它带有角色名称。同名服装可能有不同配方，换装时使用选中项的完整 id。"
             },
             "details": {
                 "method": "GET", "path": "/api/muse/catalog/{kind}/{id}",
@@ -48,6 +49,10 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
                 "usage": "可用 items 逐项指定场景、服装或 prompt。每批最多 16 张，响应含批次和每项的 statusPath。"
             },
             "queue": {"method": "GET", "path": "/api/muse/queue", "usage": "查看排位、进度和可用的时间估算。"},
+            "uploadedInputs": {
+                "method": "POST", "path": "/api/muse/inputs/lookup",
+                "usage": "向支持 inputReuse 的出图机复用参考图。请求体为最多 16 个小写 SHA-256 字符串的数组，返回 inputs 对象，按摘要列出当前连接可用的素材文件名。缺少的素材继续通过对应模型的 images/raw 上传。"
+            },
             "recent": {"method": "GET", "path": "/api/muse/jobs", "usage": "断线后先查 items；entryType=batch 表示批次，image 表示单张。按 statusPath 恢复，since 接受 RFC3339 或 Unix 毫秒。"}
         },
         "retry": "同一次提交重试时复用原请求体和 requestKey。",

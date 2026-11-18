@@ -52,9 +52,6 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
   const chatError = ref('')
   const chatErrorKind = ref('')
   const voiceStatusText = ref('')
-  const voiceCapabilityState = ref('offline')
-  const voiceCapabilityText = ref('检查语音…')
-  const showVoiceRecovery = ref(false)
   const playingMid = ref('')
   const isSpeaking = ref(false)
   const autoVoice = ref(true)
@@ -164,28 +161,8 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     set: value => storage.setWebSearchEnabled(value),
   })
 
-  function updateVoiceCapability() {
-    const voiceId = currentCharacter.value.voice
-    if (!voiceId) {
-      voiceCapabilityText.value = '文字聊天'
-      voiceCapabilityState.value = 'text-only'
-      showVoiceRecovery.value = false
-    } else if (voice.readyFor(voiceId)) {
-      voiceCapabilityText.value = voice.availability.value.online ? 'AI 声线就绪' : 'AI 声线按需加载'
-      voiceCapabilityState.value = voice.availability.value.online ? 'ready' : 'warning'
-      showVoiceRecovery.value = false
-    } else if (voice.availability.value.online || voice.availability.value.available) {
-      voiceCapabilityText.value = '声线未配置'
-      voiceCapabilityState.value = 'warning'
-      showVoiceRecovery.value = true
-    } else {
-      voiceCapabilityText.value = '语音未启动'
-      voiceCapabilityState.value = 'offline'
-      showVoiceRecovery.value = true
-    }
-  }
-
   const {
+    voiceCapabilityState, voiceCapabilityText, showVoiceRecovery, updateVoiceCapability,
     preparingRoom,
     setupTitle,
     setupDescription,
@@ -201,7 +178,6 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     currentCharacter,
     voice,
     refreshChatStatus,
-    updateVoiceCapability,
     setError,
     isDisposed: () => disposed,
   })

@@ -111,8 +111,12 @@ function displayTag(tag: string): string {
   return isAnima.value ? formatPromptForEngine(tag, 'anima', props.modelProfile?.exact_tokens || [], props.modelProfile?.exact_prefixes || []) : tag
 }
 const { tagMeaning, tagLabel, tagWeightTier, addTag } = usePromptTagTools(pb)
-const verifiedTagCount = computed(() => pb.tags.filter(tag => tag.source === 'gelbooru' && tag.verification?.canonicalTag === tag.en).length)
-const gelbooruDictionary = computed(() => verifiedTagCount.value > 0 && pb.tags.every(tag =>
+const dictionaryTags = computed<TagEntry[]>(() => pb.tagDictionary.entries.map(tag => ({
+  en: tag.canonicalTag, cn: tag.zhLabel, cat: tag.category, desc: tag.description,
+  aliases: tag.aliases, source: tag.source, verification: tag.verification,
+})))
+const verifiedTagCount = computed(() => dictionaryTags.value.filter(tag => tag.source === 'gelbooru' && tag.verification?.canonicalTag === tag.en).length)
+const gelbooruDictionary = computed(() => verifiedTagCount.value > 0 && dictionaryTags.value.every(tag =>
   tag.source === 'huiyu/lora' || tag.source === 'gelbooru' && tag.verification?.canonicalTag === tag.en))
 function tagDescription(tag: TagEntry): string {
   const meaning = tagMeaning(tag.en, tag.cn)
@@ -184,10 +188,9 @@ async function clearTags() {
 
 // The catalog is the only vocabulary authority, including registered LoRA
 // controls. Preset contents and scene prose cannot silently expand the dictionary.
-const tagCatalog = computed<TagEntry[]>(() => [...new Map(pb.tags
-  .filter(tag => tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en))
-    && (!isMoss.value || tag.source !== 'huiyu/lora'))
-  .map(tag => [tag.en, tag])).values()])
+const tagCatalog = computed(() => dictionaryTags.value.filter(tag =>
+  tag.cat !== 'Quality' && !NON_MANUAL_TAGS.has(normalizeCatalogKey(tag.en))
+  && (!isMoss.value || tag.source !== 'huiyu/lora')))
 
 const r18Tags = new Set<string>(R18_CONTROLS.map(control => control.tag))
 const categoryForTag = (tag: TagEntry) => r18Tags.has(tag.en) ? 'Mature' : tag.cat === 'Official Outfit' ? 'Clothing' : tag.cat

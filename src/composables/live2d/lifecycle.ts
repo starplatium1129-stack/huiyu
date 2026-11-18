@@ -1,3 +1,4 @@
+import { bindStageContextEvents, createStageVisibility } from './stageVisibility'
 import { selectLive2DBackend } from '@/live2d/createBackend'
 import { compileAdapterProfile } from '@/live2d/adapterProfile'
 import { NATIVE_RENDER_STOPPED, type Live2DBackendKind, type Live2DModelHandle, type Live2DStageSession } from '@/live2d/types'
@@ -37,7 +38,7 @@ export function createLifecycleController(
 ) {
   const setState = hooks.setState
   const desktopHidden = () => ctx.desktopVisible === false
-  let removeMotionListener: (() => void) | undefined
+  const { observeSize, bindVisibility, resumeRendering, syncPause, dispose: disposeVisibility } = createStageVisibility(ctx, controllers, recover)
   /**
    * 原生渲染线程停止（GPU 设备丢失 / swapchain 不可恢复）后的自动重试。
    * 桌宠是长期挂机场景，渲染挂掉时不应只留一个"点我重试"的按钮等人来点；
@@ -318,7 +319,7 @@ export function createLifecycleController(
           // 模型重新加载成功 = 渲染已恢复（含自动重试路径），清零重试计数
           nativeStoppedRetries = 0
           ctx.mouthValue.value = 0; ctx.mouthHooked = false
-          controllers.parameterFrame.bindMouthOverride(); bindContextEvents(); controllers.interactions.bind(); controllers.layoutFit.fit(); controllers.layoutFit.scheduleNativeLayout()
+          controllers.parameterFrame.bindMouthOverride(); bindStageContextEvents(ctx, fallback, retry); controllers.interactions.bind(); controllers.layoutFit.fit(); controllers.layoutFit.scheduleNativeLayout()
           setVisible(true); syncPause(); setState('ready', 'Live2D 已连接')
           // Absolute companion stages do not resize when a model arrives. Fit after
           // visibility is enabled, otherwise the hidden-stage guard skips centering.
@@ -351,53 +352,6 @@ export function createLifecycleController(
     return ctx.loading
   }
 
-  function observeSize() {
-    if (!ctx.hostEl) return
-    if ('ResizeObserver' in window && !ctx.resizeObserver) {
-      ctx.resizeObserver = new ResizeObserver(() => controllers.layoutFit.layout()); ctx.resizeObserver.observe(ctx.hostEl)
-    } else {
-      window.addEventListener('resize', (ctx.onResize = () => controllers.layoutFit.layout()))
-    }
-  }
-
-  function bindVisibility() {
-    if (ctx.visibilityHandler) return
-    ctx.visibilityHandler = syncPause
-    document.addEventListener('visibilitychange', ctx.visibilityHandler)
-    ctx.motionQuery = typeof window.matchMedia === 'function' ? window.matchMedia('(prefers-reduced-motion: reduce)') : null
-    ctx.motionPreferenceHandler = syncPause
-    const media = ctx.motionQuery
-    if (typeof media?.addEventListener === 'function') {
-      media.addEventListener('change', syncPause); removeMotionListener = () => media.removeEventListener('change', syncPause)
-    } else if (typeof media?.addListener === 'function') {
-      media.addListener(syncPause); removeMotionListener = () => media.removeListener(syncPause)
-    }
-    window.addEventListener('atelier:motion-preference', syncPause)
-  }
-
-  function bindContextEvents() {
-    if (!ctx.hostEl) return
-    const cvs = ctx.session?.canvasElement?.() as HTMLCanvasElement | null
-    if (!cvs || cvs.dataset.contextEvents === '1') return
-    cvs.dataset.contextEvents = '1'
-    cvs.addEventListener('webglcontextlost', (e) => {
-      e.preventDefault()
-      // 销毁/卸载阶段（disable、角色切换）移除 canvas 也会触发该事件，
-      // 此时模型已经下线，不能再用"图形上下文已暂停"覆盖退出提示。
-      if (!ctx.ready.value || !ctx.model) return
-      fallback('Live2D 图形上下文已暂停', 'WebGL context lost')
-    })
-    cvs.addEventListener('webglcontextrestored', () => retry())
-  }
-
-  function resumeRendering(refreshLayout = true) {
-    if (!ctx.session || isStageHidden(ctx) || prefersReducedMotion()) return
-    if (refreshLayout) controllers.layoutFit.layout()
-    if (ctx.session.capability.parameterOverride === false && !ctx.nativeOverlayReady) return
-    ctx.session.setPaused(false)
-    controllers.emotionClock.start()
-  }
-
   function setPaused(paused: boolean) {
     ctx.desktopVisible = !paused
     // Explicit desktop hiding releases the model; a background browser tab or
@@ -405,24 +359,6 @@ export function createLifecycleController(
     // so recover() reloads the latest character/outfit when the pet is reopened.
     if (paused) { destroyRuntime(); return }
     syncPause()
-  }
-
-  function syncPause() {
-    if (!ctx.session) { void recover(); return }
-    // 减少动态效果：渲染一帧把立绘摆正，然后停住，不做待机循环
-    const waitingForNativeBounds = ctx.session?.capability.parameterOverride === false && !ctx.nativeOverlayReady
-    const shouldPause = isStageHidden(ctx) || prefersReducedMotion() || waitingForNativeBounds
-    if (ctx.session.kind === 'browser' && ctx.ready.value && ctx.model?.visible
-      && prefersReducedMotion() && !isStageHidden(ctx)) ctx.session.setPaused(true, true)
-    else ctx.session.setPaused(shouldPause)
-    if (shouldPause) {
-      controllers.emotionClock.stop()
-      if (ctx.frames.gaze) window.cancelAnimationFrame(ctx.frames.gaze)
-      ctx.frames.gaze = 0
-      ctx.lastParamFrame = 0
-      if (isStageHidden(ctx)) controllers.interactions.stopAudio()
-    }
-    else controllers.emotionClock.start()
   }
 
   async function recover() {
@@ -544,12 +480,7 @@ export function createLifecycleController(
     ctx.adapter = null
     ctx.adapterReport.value = null
     controllers.layoutFit.resetWindowBounds()
-    ctx.resizeObserver?.disconnect()
-    if (ctx.onResize) window.removeEventListener('resize', ctx.onResize)
-    if (ctx.visibilityHandler) { document.removeEventListener('visibilitychange', ctx.visibilityHandler); ctx.visibilityHandler = null }
-    removeMotionListener?.(); removeMotionListener = undefined
-    window.removeEventListener('atelier:motion-preference', syncPause)
-    ctx.motionQuery = null; ctx.motionPreferenceHandler = null
+    disposeVisibility()
     if (ctx.stageEl && ctx.pointerClickHandler) ctx.stageEl.removeEventListener('click', ctx.pointerClickHandler)
     if (ctx.stageEl && ctx.pointerGazeHandler) ctx.stageEl.removeEventListener('mousemove', ctx.pointerGazeHandler)
     if (ctx.stageEl && ctx.pointerGazeLeaveHandler) ctx.stageEl.removeEventListener('mouseleave', ctx.pointerGazeLeaveHandler)

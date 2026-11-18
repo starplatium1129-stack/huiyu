@@ -101,6 +101,7 @@ scripts/maintenance/ui-shots/
 # Tauri generated artifacts
 desktop-tauri/src-tauri/target/
 desktop-tauri/src-tauri/resources/
+desktop-tauri/src-tauri/resources.tmp-*/
 desktop-tauri/src-tauri/resources.previous-*/
 desktop-tauri/src-tauri/binaries/
 desktop-tauri/src-tauri/gen/

@@ -1,10 +1,11 @@
 import { withArtworkStaging } from '@/storage/artworkSession'
-import { createVideoStoryboard,uploadVideoImage,type VideoBatch,type VideoDefaults,type VideoQuality,type VideoStatusResponse,} from '@/api/videoApi';
+import { uploadVideoImage,type VideoBatch,type VideoDefaults,type VideoQuality,type VideoStatusResponse,} from '@/api/videoApi';
 import { confirmAction } from '@/composables/useConfirm';
 import { artworkRepository } from '@/storage/artworkRepository'
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
 import { useSceneStore } from '@/stores/sceneStore';
+import { useShotStoryboard } from './useShotStoryboard'
 import { computed,onActivated,onBeforeUnmount,onDeactivated,onMounted,ref,watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
 import type { ShotDraft } from './shotListTypes';
@@ -13,7 +14,7 @@ import { useShotAiTools } from './useShotAiTools';
 import { useShotBatchMachine } from './useShotBatchMachine';
 import { useShotDraft } from './useShotDraft';
 import { useShotFirstFrames } from './useShotFirstFrames';
-import { inferShotParams,useShotImport } from './useShotImport';
+import { useShotImport } from './useShotImport';
 import { useScenarioShotImport } from './useScenarioShotImport';
 import { VIDEO_SHOTS_DRAFT_KEY } from '@/utils/storageKeys';
 import { confirmProfileKeys } from '@/platform/web/profileStorage';
@@ -23,17 +24,8 @@ export function useShotWorkspace(props: {
 }) {
     const route = useRoute(), router = useRouter();
     const sceneStore = useSceneStore();
-    const sceneBlueprints = computed(() => sceneStore.sceneBlueprints);
-    const popularCharacters = computed(() => sceneStore.popularCharacters);
+    const popularCharacters = computed(() => sceneStore.directoryCharacters);
     const h3Ready = computed(() => props.status?.models.some((model) => model.id === 'minimax-h3' && model.available) === true);
-    const aspectOptions: Array<{
-        id: VideoBatch['aspectRatio'];
-        label: string;
-    }> = [
-        { id: 'landscape', label: '横屏 16:9' },
-        { id: 'portrait', label: '竖屏 9:16' },
-        { id: 'square', label: '方形 1:1' },
-    ];
     const cameraOptions: Array<{
         value: VideoDefaults['camera'];
         label: string;
@@ -57,7 +49,6 @@ export function useShotWorkspace(props: {
     const steps = ref<4 | 8>(8);
     const linkLastFrame = ref(true);
     const identityCard = ref('');
-    const sceneFillId = ref('');
     const shots = ref<ShotDraft[]>([]);
     const frameInputs = ref<HTMLInputElement[]>([]);
     type FramePicker = { shot: ShotDraft; visit: number; revision: number; repository: typeof artworkRepository; mediaSession: string;
@@ -84,52 +75,11 @@ export function useShotWorkspace(props: {
     watch(() => [...shots.value], next => {
         for (const [shot, request] of frameRequests) if (!next.includes(shot)) request.abort();
     });
-    // ── 场景蓝图一键剧本（2026-08-23）：服务端起承转合四镜确定性派生 ──────────
-    // 与「AI 生成脚本」互补：零 LLM 依赖、即时返回，台词取蓝图原文；生成会整体
-    // 替换镜头草稿（用户主动点生成即明确意图，草稿未提交可随时撤销重生成）。
-    const storyboardBlueprintId = ref('');
-    const storyboardIntent = ref('');
-    const storyboardBusy = ref(false);
-    let storyboardRequest: AbortController | null = null;
-    function stopStoryboard() { storyboardRequest?.abort(); storyboardRequest = null; storyboardBusy.value = false; }
-    async function runStoryboard() {
-        const blueprintId = storyboardBlueprintId.value;
-        if (!blueprintId || storyboardBusy.value || !routeActive.value || batchActive.value || submitting.value) return;
-        const controller = new AbortController(); storyboardRequest = controller;
-        const originalShots = shots.value.slice(), originalText = JSON.stringify(shots.value);
-        const intent = storyboardIntent.value.trim();
-        const current = () => storyboardRequest === controller && !controller.signal.aborted && routeActive.value;
-        storyboardBusy.value = true;
-        batchError.value = '';
-        try {
-            const res = await createVideoStoryboard(blueprintId, intent || undefined, controller.signal);
-            if (!current()) return;
-            if (batchActive.value || submitting.value || storyboardBlueprintId.value !== blueprintId || storyboardIntent.value.trim() !== intent
-                || JSON.stringify(shots.value) !== originalText || shots.value.some((shot, index) => shot !== originalShots[index])) {
-                batchError.value = '生成期间工作区已变化，已保留当前内容；请确认后重新生成剧本';
-                return;
-            }
-            shots.value.forEach(shot => { if (shot.imageUrl) URL.revokeObjectURL(shot.imageUrl); });
-            shots.value = res.storyboard.shots.map((shot) => ({
-                prompt: shot.prompt, dialogue: shot.dialogue ?? '', shotSize: shot.shotSize,
-                camera: shot.camera, motion: shot.motion,
-                // 服务端固定产 3 秒；这里对 API number 做字面量收窄，非法值回落 3。
-                duration: (shot.duration === 5 || shot.duration === 10 || shot.duration === 15 ? shot.duration : 3) as ShotDraft['duration'],
-                seedText: '', imageName: '', imageUrl: '', cast: '',
-                firstFramePrompt: shot.firstFramePrompt ?? undefined,
-            }));
-            storyboardBlueprintId.value = '';
-            storyboardIntent.value = '';
-        }
-        catch (error) {
-            if (current()) batchError.value = error instanceof Error ? error.message : '剧本生成失败，请稍后重试';
-        }
-        finally {
-            if (storyboardRequest === controller) { storyboardRequest = null; storyboardBusy.value = false; }
-        }
-    }
     /** 本组件共用的用户可见错误通道：批量提交/轮询/重抽、首帧与参考图上传失败都回写这里。 */
     const batchError = ref('');
+    const routeActive = ref(true);
+    const { stopStoryboard, ...storyboard } = useShotStoryboard(shots, routeActive, () => batchActive.value || submitting.value, batchError);
+    const { storyboardBusy } = storyboard;
     // ── 一键首帧（2026-08-23）：逐镜 Krea2 增强链路出图 → 上传受控文件 → 回填 ──
     const { firstFrameBusy, firstFrameProgress, generateFirstFrames } = useShotFirstFrames({
         shots, frameRequests,
@@ -302,7 +252,7 @@ export function useShotWorkspace(props: {
         shots.value.splice(target, 0, item);
     }
     // Explicit character links win over restored drafts, but ordinary activation never resets edits.
-    const routeReady = ref(false), routeActive = ref(true);
+    const routeReady = ref(false);
     let routeLoad: AbortController | null = null, consumedIntent = '';
     let workspaceVisit = 0, restoreReady = false, workspaceDisposed = false;
     let workspaceAbort = new AbortController();
@@ -337,28 +287,6 @@ export function useShotWorkspace(props: {
         if (workspaceVisit) resumeWorkspace();
     });
     onDeactivated(() => { workspaceVisit++; workspaceAbort.abort(); routeActive.value = false; if (routeLoad) consumedIntent = ''; routeLoad?.abort(); stopStoryboard(); });
-    // 场景蓝图 → 填入所有空镜头（用户已写的不覆盖），并顺带推断景别/镜头/运动。
-    watch(sceneFillId, (id) => {
-        if (!id)
-            return;
-        const blueprint = sceneBlueprints.value.find((item) => item.id === id);
-        if (!blueprint)
-            return;
-        const prose = (blueprint.promptProse || '').trim()
-            || [blueprint.description, blueprint.action, blueprint.lighting].filter(Boolean).join('，');
-        if (prose) {
-            shots.value.forEach((shot) => {
-                if (!shot.prompt.trim()) {
-                    shot.prompt = prose;
-                    const inferred = inferShotParams(prose);
-                    shot.shotSize = inferred.shotSize;
-                    shot.camera = inferred.camera;
-                    shot.motion = inferred.motion;
-                }
-            });
-        }
-        sceneFillId.value = '';
-    });
     function pickFrame(index: number) {
         const shot = shots.value[index], input = frameInputs.value[index];
         if (!shot || !input || !workspaceCurrent(workspaceVisit) || batchActive.value || submitting.value) return;
@@ -491,10 +419,11 @@ export function useShotWorkspace(props: {
         });
     }
     onMounted(() => {
-        const visit = workspaceVisit;
-        void sceneStore.loadCharacterShell().catch(() => { if (workspaceCurrent(visit)) batchError.value = '角色目录读取失败，请刷新页面重试'; });
         void restoreShotsDraft().then(() => { if (!workspaceDisposed) { restoreReady = true; resumeWorkspace(); } });
     });
+    const directoryFailed = computed(() => sceneStore.metaFailedFiles.has('popular-directory.json'));
+    const readCharacters = () => sceneStore.loadCharacterDirectory().catch(() => {});
+    watch([routeActive, () => sceneStore.version], () => { if (routeActive.value) void readCharacters(); }, { immediate: true });
     onBeforeUnmount(() => {
         workspaceDisposed = true; workspaceVisit++; workspaceAbort.abort(); stopFramesRuntime();
         for (const selected of framePickers.values()) selected.release();
@@ -508,11 +437,11 @@ export function useShotWorkspace(props: {
     });
     return {
 frameInputs,
-        h3Ready, aspectOptions, aspectRatio, quality, linkLastFrame, steps,
+        h3Ready, aspectRatio, quality, linkLastFrame, steps,
         identityCard, loadingRefAssets, loadingRefCardIndex, referenceCards, profileFailed, retryCardProfile, pendingScenarioCount, scenarioImportBlocked, retryScenarioImport, batchActive, addReferenceCard, onCardCharacterSelected,
-        popularCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
-        setReferenceInput, onReferencePicked, retryReferences, shots, sceneFillId, sceneBlueprints, addShot,
-        storyboardBlueprintId, storyboardIntent, storyboardBusy, runStoryboard, firstFrameBusy, generateFirstFrames,
+        popularCharacters, directoryFailed, readCharacters, removeReferenceCard, getCharOutfits, switchCardOutfit, removeReference, pickReference,
+        setReferenceInput, onReferencePicked, retryReferences, shots, addShot,
+        ...storyboard, firstFrameBusy, generateFirstFrames,
         firstFrameProgress, aiBusy, runAiRewrite, runAiPolish, scriptBusy, scriptNote, scriptOpen,
         reviewBusy, runAiReview, aiSnapshot, restoreAiSnapshot, polishSnapshot, restorePolishSnapshot,
         clearShots, aiNote, flowHint, reviewIssues, applyReviewSuggestion, shotIssueCount,

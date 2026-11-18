@@ -43,6 +43,9 @@ export interface PopularCharacter {
   dnaLock?: { must: string[]; flexible: string[]; avoid: string[] }
 }
 
+export type CharacterDirectoryEntry = Pick<PopularCharacter,
+  'id' | 'displayName' | 'originalName' | 'franchise' | 'aliases' | 'characterTokens' | 'portraitPending'>
+
 export interface CharacterIdentity {
   role?: string
   age?: string

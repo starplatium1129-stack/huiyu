@@ -1,15 +1,6 @@
-import { runtimeFetch } from '../platform/runtimeUrl.ts'
-import { isLocalStudioHost } from '../utils/runtimeEnvironment'
 import type { Router } from 'vue-router'
-import { DATA_VERSION } from 'virtual:data-version'
 import { loadPromptDrawingWorkspace, prefetchDrawingResources } from './routeFeatures'
 import { loadRoomComponent, type RoomPage } from './roomResources'
-
-const CORE_RESOURCE_ROUTES = new Set(['/scene-explorer', '/popular-scenes'])
-const CORE_RESOURCE_FILES = ['curation.json', 'scenes-core.json', 'scenes-shared.json']
-const BLUEPRINT_RESOURCE_FILES = ['curation.json', 'popular-characters.json']
-let activeResourcePrefetch: { path: string; controller: AbortController } | null = null
-let galleryResourcePrefetch: Promise<void> | null = null
 
 async function prefetchPrimaryRouteFeature(path: string): Promise<boolean> {
   if (['/chat', '/companion', '/companion-chat'].includes(path)) {
@@ -25,30 +16,6 @@ async function prefetchPrimaryRouteFeature(path: string): Promise<boolean> {
   }
 }
 
-/** Warm artwork library snapshot so the gallery mounts without storage wait. */
-function prefetchGalleryResources(): void {
-  if (galleryResourcePrefetch) return
-  const current = import('@/storage/artworkRepository').then(async ({ artworkRepository }) => {
-    await artworkRepository.readLibrarySnapshot()
-  })
-  galleryResourcePrefetch = current
-  void current.catch(error => {
-    console.warn('[route-prefetch] /gallery', error)
-  }).finally(() => {
-    if (galleryResourcePrefetch === current) galleryResourcePrefetch = null
-  })
-}
-
-async function prefetchCoreResources(signal: AbortSignal, path: string): Promise<void> {
-  const files = path === '/popular-scenes'
-    ? [...BLUEPRINT_RESOURCE_FILES, ...(isLocalStudioHost() ? [] : ['scene-blueprints.json'])]
-    : CORE_RESOURCE_FILES
-  await Promise.all(files.map(file =>
-    runtimeFetch(`/data/${file}?v=${DATA_VERSION}`, { cache: 'force-cache', credentials: 'same-origin', signal })
-      .then(response => { if (!response.ok) throw new Error(`${file} HTTP ${response.status}`) }),
-  ))
-}
-
 /** Warm only committed-intent resources; hover transit remains module-only. */
 export function prefetchRouteResources(path: string): void {
   const routePath = path.split(/[?#]/, 1)[0] || ''
@@ -56,23 +23,11 @@ export function prefetchRouteResources(path: string): void {
     prefetchDrawingResources()
     return
   }
-  if (routePath === '/gallery') {
-    prefetchGalleryResources()
-    return
-  }
-  // The showcase owns its fresh manifest and visible thumbnails; fetching a
-  // second no-store manifest here cannot warm that request or its parsed result.
-  if (!CORE_RESOURCE_ROUTES.has(routePath)) return
-  if (activeResourcePrefetch?.path === routePath) return
-  activeResourcePrefetch?.controller.abort()
-  const controller = new AbortController()
-  activeResourcePrefetch = { path: routePath, controller }
-  const task = prefetchCoreResources(controller.signal, routePath)
-  void task.catch(error => {
-    if (!controller.signal.aborted) console.warn(`[route-prefetch] ${routePath}`, error)
-  }).finally(() => {
-    if (activeResourcePrefetch?.controller === controller) activeResourcePrefetch = null
-  })
+  if (routePath !== '/popular-scenes' && routePath !== '/scene-explorer') return
+  void import('@/stores/sceneStore').then(({ useSceneStore }) => {
+    const store = useSceneStore()
+    return routePath === '/popular-scenes' ? store.loadCharacterDirectory() : store.prefetchCoreScenes()
+  }).catch(error => console.warn(`[route-prefetch] ${routePath}`, error))
 }
 
 /** Share imports across links while allowing failed attempts to be warmed again. */

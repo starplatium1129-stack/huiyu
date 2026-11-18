@@ -92,8 +92,7 @@ pub(super) async fn enqueue(
             }
         };
         if existing(db)? { return Ok(()); }
-        let recipes = RecipeLibrary::new(&config, settings.loras_root)?;
-        let prepared = scenes.into_iter().map(|scene| recipes.prepare(scene, model.as_deref())).collect::<Result<Vec<_>>>()?;
+        let prepared = submission::prepare_batch(&config, settings.loras_root, scenes, model.as_deref())?;
         let tx = db.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
         if existing(&tx)? { return Ok(()); }
         let waiting: i64 = tx.query_row("SELECT count(*) FROM muse_items WHERE owner=?1 AND status='waiting'", [&store.owner], |r| r.get(0))?;

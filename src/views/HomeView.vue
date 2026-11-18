@@ -97,6 +97,9 @@
 
     <section ref="inspirationSection" class="container home-inspiration" aria-label="场景与角色灵感">
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
+        <ArchiveStatePanel v-if="artworkReady.characters && sceneStore.metaFailedFiles.has('popular-directory.json')" compact kind="error" title="角色目录暂时无法读取">
+          <button type="button" class="btn btn-ghost btn-sm" @click="loadPopularCharacters"><ArchiveIcon name="refresh" />重新读取</button>
+        </ArchiveStatePanel>
         <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
           <div class="strip-label" id="popStripLabel">
             <span class="dot"></span> 角色场景 · <span>{{ popularCharacters.length }} 位角色</span><RouterLink to="/popular-scenes" class="link">查看全部 →</RouterLink>
@@ -349,12 +352,11 @@ function retryHero(event: MouseEvent) {
 watch(homeMuse, muse => { if (muse === 'nene' && neneFailed.value) retryNene(); else if (muse === 'natsume' && natsumeFailed.value) retryNatsume() })
 
 // ── 热门角色：样张立绘横条（立绘来自展示库发布 assets/characters/popular-<id>.png） ──
-const popularCharacters = computed(() => sceneStore.popularCharacters)
+const popularCharacters = computed(() => sceneStore.directoryCharacters)
 function loadPopularCharacters() {
-  // The home strip needs the complete ordered character count, but its large
-  // profile catalog should only compete for bandwidth when the strip is near.
-  void sceneStore.loadBlueprintCatalog().catch(error => console.warn('角色加载失败：', error))
+  void sceneStore.loadCharacterDirectory().catch(error => console.warn('角色加载失败：', error))
 }
+watch(() => sceneStore.version, () => { if (artworkReady.characters) loadPopularCharacters() })
 function portraitSrc(id: string): string {
   // 横条卡片仅 ~180px 宽，加载 1.2MB 原图曾把首页资源预算打爆 5 倍（16MB）。
   // 改用 build-character-thumbs.py 预生成的 360px WebP 缩略图（~19KB/张）；

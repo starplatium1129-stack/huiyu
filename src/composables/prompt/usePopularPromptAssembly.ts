@@ -88,6 +88,7 @@ export function usePopularPromptAssembly(
     if (subject.kind !== 'popular' || !character.value || !outfit.value) return null
     return compilePromptRecipe({
       kind: 'popular',
+      randomSetting: !subject.blueprintId && randomVariation.value?.source === '',
       character: character.value,
       outfit: outfit.value,
       blueprint: blueprint.value,

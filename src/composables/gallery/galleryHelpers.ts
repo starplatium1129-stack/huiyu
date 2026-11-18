@@ -1,7 +1,7 @@
 import type { ArtworkRecord } from '@/types/artwork'
 import type { TrashEntry } from '@/storage/artworkRepository'
-import type { Scene, LoraMeta } from '@/stores/sceneStore'
-import type { PopularCharacter } from '@/utils/popularContent'
+import type { LoraMeta } from '@/stores/sceneStore'
+import type { CharacterDirectoryEntry } from '@/types/character'
 import { artworkSearchText } from '@/application/artwork/searchIndex'
 import { artworkTags } from './artworkTags'
 import { tagKey } from '@/utils/animaPromptOrder'
@@ -18,7 +18,7 @@ export function artworkIndexById(items: readonly ArtworkRecord[], id: string | n
   return items.findIndex(item => artworkIdKey(item.id) === key)
 }
 
-export function characterName(value: string | undefined, item: ArtworkRecord | undefined, characters: PopularCharacter[]): string {
+export function characterName(value: string | undefined, item: ArtworkRecord | undefined, characters: CharacterDirectoryEntry[]): string {
   const studioNames: Record<string, string> = { nene: '绫地宁宁', natsume: '四季夏目', triad: '宁宁与夏目', both: '宁宁与夏目' }
   const identities = [item?.characterId, item?.storyOrigin?.characterId, value, item?.character]
     .map(id => id?.trim()).filter((id): id is string => !!id && id.toLowerCase() !== 'none')
@@ -100,12 +100,12 @@ function modelName(value: string | undefined): string {
 export function sceneTitle(
   id: string | null | undefined,
   item: ArtworkRecord | undefined,
-  scenes: Scene[],
-  popularCharacters: PopularCharacter[]
+  titles: ReadonlyMap<string, string>,
+  popularCharacters: CharacterDirectoryEntry[]
 ): string {
   if (item?.sceneTitle) return item.sceneTitle
-  const found = scenes.find(s => s.id === id)
-  if (found && typeof found.title === 'string' && found.title) return found.title
+  const title = id && titles.get(id)
+  if (title) return title
   if (item?.subject === 'popular' || item?.characterId) {
     const popChar = popularCharacters.find(c => c.id === (item.characterId || item.character))
     if (popChar) return `${popChar.displayName} 创作`

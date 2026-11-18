@@ -6,37 +6,43 @@ export function randomTokens(value: string): string[] {
 }
 
 export function visibleInRandomShot(token: string, shot: string | null): boolean {
-  if (shot !== 'close' && shot !== 'detail') return true
+  if (shot !== 'close' && shot !== 'detail' && shot !== 'medium') return true
   // The generic detail option has no body-part target. Keep random details
   // conservative; explicit user-selected close-ups are not changed here.
   const key = normalizeKey(token)
-  return !/(?:^|_)(?:boots?|shoes?|sneakers?|heels?|sandals?|socks?|stockings?|thighhighs|thigh_highs|tabi|legwear|feet|legs)(?:_|$)/.test(key)
-    && !['barefoot', 'bare_feet', 'bare_legs'].includes(key)
+  return !/(?:^|_)(?:boots?|shoes?|sneakers?|heels?|sandals?|socks?|stockings?|thighhighs|thigh_highs|tabi|legwear|feet|legs|kneehighs|pantyhose)(?:_|$)/.test(key)
+    && !['barefoot', 'footjob'].includes(key)
+    && (shot === 'medium' || !['walking', 'running', 'jumping', 'on_desk', 'on_floor', 'sitting_on_sofa'].includes(key))
 }
 
-/** Same-family descriptors compose; only distinct families in one category conflict. */
-export function appendRandomTag(target: string[], token: string): void {
-  const key = normalizeKey(token)
-  if (!key || target.some(item => normalizeKey(item) === key)) return
+/** Earlier choices and authored facts own their slots. Later details cannot evict them. */
+export function fitsRandomFacts(token: string, facts: readonly string[]): boolean {
   const hit = mutualGroupWithCategory(token)
-  if (hit) {
-    for (let index = target.length - 1; index >= 0; index -= 1) {
-      const other = mutualGroupWithCategory(target[index])
-      if (other?.category === hit.category && other.group !== hit.group) target.splice(index, 1)
-    }
-  }
-  target.push(token)
+  return !hit || !facts.some(fact => {
+    const other = mutualGroupWithCategory(fact)
+    return other?.category === hit.category && other.group !== hit.group
+  })
+}
+
+/** Clothing selected as the everyday outfit should fit the place and weather. */
+export function outfitFitsSetting(tokens: readonly string[], location: string | undefined, settingTags: readonly string[]): boolean {
+  if (!location) return true
+  const clothing = tokens.map(normalizeKey).join(' ')
+  if (/swimsuit|swimwear|bikini|monokini/.test(clothing)) return ['beach', 'pool', 'onsen'].includes(location)
+  if (/pajamas|sleepwear|nightgown/.test(clothing)) return ['bedroom', 'living_room', 'hotel_room'].includes(location)
+  if (settingTags.includes('snow')) return /coat|jacket|sweater|hoodie|winter|cardigan/.test(clothing)
+  return true
 }
 
 /** Extra catalog details complement, rather than replace, the primary controls.
  * Unknown additions require a reviewed rule instead of silently becoming eligible.
  */
-export function compatibleRandomDetail(token: string, category: 'Lighting' | 'Camera', shot: string | null, lighting: string | null): boolean {
+export function compatibleRandomDetail(token: string, category: 'Lighting' | 'Camera', shot: string | null, lighting: string | null,
+  diffuse: boolean): boolean {
   const key = normalizeKey(token)
   if (category === 'Lighting') {
     if (['rim_lighting', 'soft_shadows', 'diffused_light'].includes(key)) return true
-    if (['dappled_light', 'sunbeam', 'volumetric_lighting', 'lens_flare'].includes(key)) return lighting === 'golden' || lighting === 'window'
-    if (['screen_glow', 'firelight', 'neon_lights'].includes(key)) return lighting === null || lighting === 'lantern'
+    if (['dappled_light', 'sunbeam', 'volumetric_lighting', 'lens_flare'].includes(key)) return !diffuse && (lighting === 'golden' || lighting === 'window')
     return false
   }
   if (key === 'macro_shot') return shot === 'detail'

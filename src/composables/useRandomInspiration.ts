@@ -5,7 +5,7 @@ import { type RandomInspirationOptions } from '@/utils/randomPromptAssembler'
 import { defaultOutfit, findCharacter, findOutfit } from '@/utils/popularContent.ts'
 import { randomCandidates, type RandomRecipe } from '@/utils/randomPromptRecipe'
 import { sceneSupportsCharacter } from '@/utils/promptPolicy'
-import { sceneShot, sceneLighting } from '@/utils/sceneInference'
+import { sceneShot, sceneLighting, sceneComposition, sceneColorMood } from '@/utils/sceneInference'
 import { inferBlueprintDecisions } from '@/utils/popularBlueprintDecisions'
 import type { RandomSceneContext } from '@/utils/randomSceneVariation'
 import { downloadBlob } from '@/utils/downloadBlob'
@@ -63,6 +63,7 @@ export function useRandomInspiration() {
 
   // Scalar changes must not traverse every catalog to invalidate a preview.
   watch([includeArtists, () => pb.dataReady], clearCandidates, { flush: 'sync' })
+  watch([() => pb.sdParams.negativeCustom, () => pb.visualDescription], clearCandidates, { flush: 'sync' })
   watch([() => pb.tags, () => pb.scenes, () => pb.sceneBlueprints, () => pb.loraMeta, () => pb.popularCharacters], clearCandidates, { deep: true, flush: 'sync' })
 
   watch(contextKey, () => {
@@ -117,6 +118,7 @@ export function useRandomInspiration() {
       return false
     }
     let scene: RandomSceneContext | undefined
+    const negative = [pb.sdParams.negativeCustom || '']
     let allowClothing = !pb.outfitOverride
     let outfits = officialOutfitsFor(pb.char)
     if (pb.subject.kind === 'popular') {
@@ -130,18 +132,24 @@ export function useRandomInspiration() {
         if (!blueprint) { pb.flash('当前场景尚未就绪，无法随机', 2500, 'warning'); return false }
         allowClothing = !pb.outfitOverride && !pb.subject.outfitExplicit && (!selectedOutfit || selectedOutfit.id === defaultOutfit(character)?.id || selectedOutfit.id === blueprint.outfitId)
         const decisions = inferBlueprintDecisions(blueprint)
+        negative.push(...blueprint.negativeTokens)
         scene = { source: randomVariationSource(blueprint), prompt: blueprint.promptTokens.join(', '), prose: blueprint.promptProse,
           tags: blueprint.sceneTags, action: blueprint.action, time: blueprint.timeOfDay,
-          shot: decisions.shot, lighting: decisions.lighting }
+          otherProse: [blueprint.animaCaption !== blueprint.promptProse ? blueprint.animaCaption : '', blueprint.adult ? blueprint.nsfwProse : ''].filter(Boolean).join(' '),
+          fixedTokens: blueprint.adult ? blueprint.nsfwTokens : [], rawLighting: blueprint.lighting, camera: blueprint.camera,
+          shot: decisions.shot, lighting: decisions.lighting, composition: decisions.composition, colorMood: decisions.colorMood }
       }
     } else if (pb.sceneId) {
       const active = pb.activeScene
       if (!active || !sceneSupportsCharacter(active, pb.char)) { pb.flash('当前场景不支持此角色，无法随机', 2500, 'warning'); return false }
+      negative.push(active.negative ?? '')
       scene = { source: randomVariationSource(active), prompt: active.prompt ?? '', prose: active.animaCaption ?? '', tags: active.tags ?? [],
         action: typeof active.action === 'string' ? active.action : '', time: active.timeOfDay ?? active.time ?? '',
-        shot: sceneShot(active), lighting: sceneLighting(active) }
+        otherProse: active.promptProse !== active.animaCaption ? active.promptProse : '', rawLighting: active.lighting, camera: active.camera, weather: active.weather,
+        shot: sceneShot(active), lighting: sceneLighting(active), composition: sceneComposition(active), colorMood: sceneColorMood(active) }
     }
-    const shared = { context: randomVariationContext(pb), scene, rich: true, allowClothing, officialOutfits: outfits }
+    const shared = { context: randomVariationContext(pb), scene, rich: true, allowClothing, officialOutfits: outfits,
+      visualDescription: pb.visualDescription, negative }
     const options: RandomInspirationOptions = identityExclude
       ? {
           ...shared, identityExclude,
@@ -174,7 +182,7 @@ export function useRandomInspiration() {
     const retainedArtists = new Set(recipe.config.keepArtists)
     applying = true
     try {
-      pb.randomVariation = JSON.parse(JSON.stringify(draw.variation))
+      pb.randomVariation = { ...draw.variation, tags: [...draw.variation.tags], outfit: [...draw.variation.outfit] }
       pb.selections.emotion = [...draw.emotions]
       pb.restoreDirectorState(draw, draw.directorSources)
       // The replacement draw owns these tags, even if a reference used the same values.

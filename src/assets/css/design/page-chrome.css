@@ -1,0 +1,129 @@
+/* ============================================================
+   Shared atelier chrome (kickers, back link, toolbars, empty)
+   ============================================================ */
+.nav-back {
+  @apply tw:inline-flex tw:items-center tw:gap-s-2 tw:mb-s-4 tw:text-secondary tw:text-body;
+  text-decoration: none;
+  transition: color var(--motion-hover);
+}
+.nav-back:hover { @apply tw:text-primary; }
+
+.page-kicker {
+  @apply tw:flex tw:items-center tw:gap-[8px] tw:mb-[6px] tw:text-muted;
+  font: 650 var(--fs-mono-sm) var(--font-mono);
+  letter-spacing: 0.13em;
+  @apply tw:uppercase;
+}
+.page-kicker::before {
+  content: "";
+  @apply tw:w-[26px] tw:h-[6px] tw:rounded-pill;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 30%, transparent);
+  transform: rotate(-2deg);
+}
+
+.page-title {
+  @apply tw:m-0 tw:text-primary tw:font-display;
+  font-size: var(--fs-title);
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: var(--lh-tight);
+}
+.page-subtitle {
+  margin: 10px 0 0;
+  @apply tw:max-w-[640px] tw:text-secondary tw:text-body tw:leading-loose;
+}
+
+.filter-pill {
+  @apply tw:min-h-[36px];
+  padding: 0 15px;
+  border: 1px solid transparent;
+  border-radius: var(--r-md);
+  background: transparent;
+  @apply tw:text-secondary;
+  font: 650 var(--fs-label-xs) var(--font-sans);
+  @apply tw:cursor-pointer;
+  transition: border-color var(--motion-hover), background var(--motion-hover), color var(--motion-hover), transform var(--motion-press) var(--ease-out);
+}
+.filter-pill:hover { border-color:var(--border-strong); background:var(--bg-elevated); @apply tw:text-primary; }
+.filter-pill.active:where(:not(:hover)) { border-color:var(--border-strong); background:var(--bg-elevated); color:var(--text-primary); }
+
+/* 空态是首次使用最常看到的画面：给它画框感与一点氛围，
+   而不是一个孤零零的小图标 */
+.empty-state {
+  @apply tw:relative tw:max-w-[720px];
+  margin: 8vh auto 0;
+  padding: clamp(36px, 6vw, 72px) var(--s-5);
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-3xl;
+  background:
+    radial-gradient(circle at 50% 0%, var(--accent-soft), transparent 62%),
+    color-mix(in srgb, var(--bg-surface) 82%, transparent);
+  box-shadow: var(--shadow-glass-sm);
+  @apply tw:text-center tw:overflow-hidden;
+}
+/* 内衬虚线画框：暗示"这里将来会挂画" */
+.empty-state::before {
+  content: "";
+  @apply tw:absolute; inset: 14px;
+  border: 1px dashed color-mix(in srgb, var(--border-strong) 46%, transparent);
+  border-radius: calc(var(--r-3xl) - 8px);
+  @apply tw:pointer-events-none;
+}
+.empty-state > * { @apply tw:relative; z-index: var(--z-base); }
+.empty-state h2 {
+  margin: 0 0 8px;
+  @apply tw:text-primary;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+}
+.empty-state p {
+  @apply tw:max-w-[520px];
+  margin: 0 auto var(--s-5);
+  @apply tw:text-secondary tw:leading-loose;
+}
+.empty-state .btn { @apply tw:justify-center; }
+
+/* 审计修复：涟漪圈原为逐帧补间 box-shadow（无限循环 → 每帧重绘），
+   改为伪元素静态光晕 + transform:scale/opacity 补间（合成器属性，零重绘）。
+   视觉等价：8px 实心点背后扩散一层光晕，放大到约 3.5 倍（=原 10px spread）并淡出。 */
+
+/* ============================================================
+   Typography
+   ============================================================ */
+h1, h2, h3, h4 { @apply tw:leading-tight tw:font-semibold; }
+h2 { @apply tw:text-title tw:mb-s-4; }
+h3 { @apply tw:text-title-sm tw:mb-s-3; }
+p  { @apply tw:text-secondary tw:mb-s-3; }
+
+.section { @apply tw:mb-s-7; }
+
+/* ---- Eyebrow tag（甜系贴纸角标） ---- */
+.eyebrow {
+  @apply tw:inline-block tw:text-label-xs tw:font-semibold; letter-spacing: .12em;
+  @apply tw:uppercase tw:text-accent tw:mb-s-3;
+}
+
+/* ---- Quote block ---- */
+blockquote {
+  border-left: 3px solid var(--accent);
+  padding: var(--s-3) var(--s-4);
+  background: var(--accent-soft);
+  border-radius: 0 var(--r-md) var(--r-md) 0;
+  margin: var(--s-4) 0;
+  @apply tw:italic tw:text-primary;
+}
+
+/* ---- Code ---- */
+code {
+  @apply tw:font-mono;
+  background: var(--bg-elevated);
+  padding: 2px 6px; @apply tw:rounded-sm;
+  font-size: 0.88em; @apply tw:text-accent;
+}
+pre {
+  background: var(--bg-deep);
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-md tw:p-s-4 tw:overflow-x-auto;
+  margin: var(--s-4) 0;
+}
+pre code { background: none; @apply tw:p-0 tw:text-primary; }

@@ -149,7 +149,7 @@ import { ref, computed, nextTick, onUnmounted, watch } from 'vue'
 import { useRoute, useRouter, type LocationQueryRaw } from 'vue-router'
 import { useSceneStore } from '@/stores/sceneStore'
 import BrowsingCharacterDirectory from '@/components/library/BrowsingCharacterDirectory.vue'
-import type { PopularCharacter, SceneBlueprint } from '@/utils/popularContent'
+import type { SceneBlueprint } from '@/utils/popularContent'
 import {
   RATING_OPTS,
   artistLabel,
@@ -213,7 +213,7 @@ watch([settledQuery, category, ratingFilter], () => {
   })
 })
 
-const characters = computed<PopularCharacter[]>(() => sceneStore.popularCharacters)
+const characters = computed(() => sceneStore.directoryCharacters)
 const allBlueprints = computed<SceneBlueprint[]>(() => sceneStore.sceneBlueprints)
 // Same-page navigation reuses this view, so the URL remains the selection owner.
 const selectedId = computed(() => {
@@ -348,7 +348,7 @@ async function init() {
   loading.value = !sceneStore.hasBlueprintCharacter(selectedId.value)
   loadError.value = ''
   try {
-    await sceneStore.loadBlueprintCatalog()
+    await sceneStore.loadCharacterDirectory()
     if (revision !== loadRevision) return
     if (selectedId.value) await sceneStore.loadBlueprintCharacter(selectedId.value)
   } catch (error) {

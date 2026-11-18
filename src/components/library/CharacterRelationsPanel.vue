@@ -449,4 +449,6 @@ function keyboardPan(event: KeyboardEvent) {
 </template>
 
 <style scoped src="@/assets/css/character-relations.css"></style>
+<style scoped src="@/assets/css/character-relations-inspector.css"></style>
+<style scoped src="@/assets/css/character-relations-graph.css"></style>
 <style scoped src="@/assets/css/character-relations-atlas.css"></style>

@@ -72,6 +72,7 @@ fn main() {
     for f in &files {
         build.file(f);
     }
+    build.file("csrc/cubism_framework.cpp");
     build.file("csrc/live2d_model.cpp");
     build.compile("live2d_native");
 

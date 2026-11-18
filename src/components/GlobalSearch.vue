@@ -22,7 +22,7 @@
         </div>
         <div v-if="scenesLoading || scenesError" class="gs-catalog-state">
           <p :role="scenesError ? 'alert' : 'status'">{{ scenesError || '正在读取内容目录…' }}</p>
-          <button v-if="scenesError" type="button" class="btn btn-ghost btn-sm" @click="retryScenes">重新读取目录</button>
+          <button v-if="scenesError" type="button" class="btn btn-ghost btn-sm" @click="retrySearch(retryScenes, $event)">重新读取目录</button>
         </div>
         <div ref="resultsEl" class="gs-results tw:overflow-y-auto tw:p-s-3">
           <ListboxContent :id="listboxId" aria-label="搜索结果">
@@ -36,7 +36,10 @@
             </ListboxGroup>
           </ListboxContent>
           <template v-if="query.trim()">
-            <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
+            <div v-if="worksError" class="gs-catalog-state">
+              <p role="alert">{{ worksError }}</p>
+              <button type="button" class="btn btn-ghost btn-sm" @click="retrySearch(retryWorks, $event)">重新读取作品</button>
+            </div>
             <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
             <div v-if="!scenesLoading && !scenesError && !worksError && !worksLoading && !flat.length" class="gs-empty tw:text-center tw:py-s-3">
               <p class="tw:text-muted tw:text-body-sm tw:mb-s-3">未找到匹配结果</p>
@@ -92,7 +95,7 @@ const inputEl = ref<HTMLInputElement | null>(null), panelEl = ref<HTMLElement | 
 const resultsEl = ref<HTMLElement | null>(null)
 const searchMotion = useFluidSurface('.gs-panel', { animatePanel: true, small: true })
 const { open, query, triggerSource, close, navigate } = useGlobalSearchPanel({ panelEl, inputEl, initial: props })
-const { queryTerms, resultGroups, flat, moreCatalogGroups, loadMoreCatalog, scenesLoading, scenesError, worksLoading, worksError, retryScenes: reloadScenes } = useGlobalSearchResults(open, query)
+const { queryTerms, resultGroups, flat, moreCatalogGroups, loadMoreCatalog, scenesLoading, scenesError, worksLoading, worksError, retryScenes, retryWorks } = useGlobalSearchResults(open, query)
 const searchInstanceId = useId()
 const listboxId = `global-search-listbox-${searchInstanceId}`
 const searchAnnouncementId = `global-search-announcement-${searchInstanceId}`
@@ -118,9 +121,9 @@ function clearQuery() {
   query.value = ''
   inputEl.value?.focus({ preventScroll: true })
 }
-function retryScenes(event: MouseEvent) {
+function retrySearch(retry: () => void, event: MouseEvent) {
   if (document.activeElement === event.currentTarget) inputEl.value?.focus({ preventScroll: true })
-  reloadScenes()
+  retry()
 }
 function recordSelectionKey(event: KeyboardEvent) {
   if (['ArrowDown', 'ArrowUp', 'Home', 'End'].includes(event.key)) selectionTouched.value = true

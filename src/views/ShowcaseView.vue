@@ -102,7 +102,12 @@
               <span>{{ currentEntry.category }}</span>
             </div>
             <div class="viewer-actions">
-              <StudioTooltip v-if="workspaceTarget" :content="viewerClosing ? null : workspaceTarget.hint">
+              <template v-if="destinationError">
+                <span role="status">{{ destinationError }}</span>
+                <button type="button" class="btn btn-ghost" @click="retryDestination">重试</button>
+              </template>
+              <span v-else-if="!workspaceTarget" role="status">正在读取角色场景…</span>
+              <StudioTooltip v-else :content="viewerClosing ? null : workspaceTarget.hint">
                 <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
               </StudioTooltip>
             </div>
@@ -128,6 +133,7 @@
 <script setup lang="ts">
 import '@/assets/css/viewer.css'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
+import { useCharacterBlueprints } from '@/composables/scene/useCharacterBlueprints'
 import { useFluidDialog } from '@/composables/useFluidDialog'
 import { useArtworkInfoDrawer } from '@/composables/useArtworkInfoDrawer'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
@@ -172,7 +178,7 @@ const TYPE_LABELS: Record<string,string> = { scene:'场景样张', artist:'画�
 
 const assets = useShowcaseAssets(() => '暂时无法读取样张目录，请确认媒体磁盘已连接后重试。')
 const { entries, loading: manifestLoading, error: reloadError } = assets
-const albums = useShowcaseAlbums(entries, () => sceneStore.popularCharacters)
+const albums = useShowcaseAlbums(entries, () => sceneStore.directoryCharacters)
 const albumSelection = ref('all')
 const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
 const albumEntryIds = computed(() => selectedAlbum.value ? new Set(selectedAlbum.value.entryIds) : null)
@@ -226,7 +232,7 @@ function norm(s: string) { return String(s||'').trim().toLocaleLowerCase('zh-CN'
 function ratingLabel(v: string) { return LABELS[v] || v || '未分级' }
 function typeLabel(v: string) { return TYPE_LABELS[v] || '场景' }
 const characterLabels = computed(() => {
-  const labels = new Map(sceneStore.popularCharacters.map(character => [character.id, character.displayName]))
+  const labels = new Map(sceneStore.directoryCharacters.map(character => [character.id, character.displayName]))
   for (const entry of entries.value) if (entry.displayName && !labels.has(entry.char)) labels.set(entry.char, entry.displayName)
   return labels
 })
@@ -307,7 +313,28 @@ watch(currentEntry, entry => {
 }, { flush: 'post' })
 watch(currentId, () => { viewerInfoEl.value?.querySelector('.viewer-info-body')?.scrollTo(0, 0) }, { flush: 'post' })
 const viewerThumbs = computed(() => Object.fromEntries(filtered.value.map(entry => [entry.id, thumbSrc(entry)])))
-const workspaceTarget = computed(() => currentEntry.value ? showcaseDestination(currentEntry.value, sceneStore.popularCharacters, sceneStore.sceneBlueprints) : null)
+const directoryReady = ref(false), directoryError = ref('')
+async function readDirectory() {
+  const version = sceneStore.version
+  directoryError.value = ''; directoryReady.value = false
+  try {
+    await sceneStore.loadCharacterDirectory()
+    if (version === sceneStore.version) directoryReady.value = true
+  } catch { if (version === sceneStore.version) directoryError.value = '角色目录读取失败' }
+}
+const selectedCharacter = computed(() => {
+  const entry = currentEntry.value
+  return viewerMounted.value && !viewerClosing.value && entry?.type === 'popular' && directoryReady.value
+    && sceneStore.directoryCharacters.some(character => character.id === entry.char) ? entry.char : ''
+})
+const blueprints = useCharacterBlueprints(() => selectedCharacter.value)
+const destinationError = computed(() => currentEntry.value?.type === 'popular' && (directoryError.value || blueprints.error.value))
+function retryDestination() { if (directoryError.value) void readDirectory(); else blueprints.retry() }
+const workspaceTarget = computed(() => {
+  const entry = currentEntry.value
+  if (!entry || entry.type === 'popular' && (!directoryReady.value || selectedCharacter.value && !blueprints.ready.value)) return null
+  return showcaseDestination(entry, sceneStore.directoryCharacters, blueprints.items.value)
+})
 
 function openViewer(id: string) {
   if (!filtered.value.some(entry => entry.id === id)) return
@@ -409,7 +436,7 @@ async function loadManifest(refreshImages = false) {
   try {
     await Promise.all([
       refreshImages ? assets.refresh() : assets.reload(),
-      sceneStore.loadBlueprintCatalog().catch(() => {})
+      readDirectory(), sceneStore.loadCuration().catch(() => {})
     ])
   } catch { /* The shared manifest owner exposes read failures and retains valid entries. */ }
 }
@@ -428,7 +455,6 @@ onDeactivated(() => {
 onMounted(() => {
   unmounted = false
   document.addEventListener('keydown', onKey)
-  void sceneStore.loadBlueprintCatalog().catch(() => {})
   openLinkedScene()
   // 无限滚动：哨兵进入视口（提前 600px 预载）即自动追加一页，直到全部加载完
   if ('IntersectionObserver' in window) {
@@ -441,6 +467,10 @@ onMounted(() => {
     if (viewActive && loadSentinel.value) sentinelObserver.observe(loadSentinel.value)
   }
 })
+watch(() => sceneStore.version, () => {
+  void readDirectory()
+  void sceneStore.loadCuration().catch(() => {})
+}, { immediate: true })
 onUnmounted(() => {
   unmounted = true
   viewerMotion.dispose()

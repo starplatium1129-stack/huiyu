@@ -168,6 +168,9 @@ impl Service {
             }
             (data.config.clone()?, snapshot.clone())
         };
+        if !self.portrait_matches_catalog(relative, &snapshot) {
+            return None;
+        }
         // Disk authorization and pointer checks must not serialize unrelated
         // requests or prevent cancellation/close from acquiring the state lock.
         if let Err(error) = resolve::mount(&configuration.ctx, &snapshot) {
@@ -189,6 +192,37 @@ impl Service {
             return None;
         }
         Some((configuration, snapshot))
+    }
+    fn portrait_matches_catalog(&self, path: &str, snapshot: &Snapshot) -> bool {
+        let id = path
+            .strip_prefix("assets/characters/popular-")
+            .and_then(|s| s.strip_suffix(".png"))
+            .or_else(|| {
+                path.strip_prefix("assets/characters/thumbs/popular-")
+                    .and_then(|s| s.strip_suffix(".webp"))
+            });
+        let Some(id) = id else { return true };
+        // The catalog versions the full image. Keep its thumbnail on the same revision,
+        // including for unversioned image URLs and base installs with optional originals.
+        let original = format!("assets/characters/popular-{id}.png");
+        let Ok(Some(image)) = crate::catalog::Catalog::open_readonly(
+            crate::catalog::Options::from_config(&self.gateway),
+        )
+        .and_then(|catalog| catalog.portrait_image(id)) else {
+            return true;
+        };
+        let Some(version) = image.strip_prefix(&format!("../{original}?v=")) else {
+            return true;
+        };
+        if !(12..=64).contains(&version.len()) || !version.bytes().all(|b| b.is_ascii_hexdigit()) {
+            return true;
+        }
+        snapshot.entries.get(&original).is_some_and(|entry| {
+            entry
+                .sha256
+                .get(..version.len())
+                .is_some_and(|prefix| prefix.eq_ignore_ascii_case(version))
+        })
     }
     pub(super) fn status(&self, refresh: bool) -> Value {
         let mut data = self.data.lock().unwrap();

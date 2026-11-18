@@ -1,4 +1,4 @@
-import type { AdultEligibility, PopularOutfit, PopularCharacter } from '../types/character'
+import type { AdultEligibility, CharacterDirectoryEntry, PopularOutfit, PopularCharacter } from '../types/character'
 export type { AdultEligibility, PopularOutfit, PopularCharacter } from '../types/character'
 
 // 热门角色无 LoRA 创作模式 —— 数据解析、资格门控与结构化输入构建。
@@ -47,6 +47,18 @@ function parseOutfit(value: unknown): PopularOutfit | null {
   }
 }
 
+export function characterDirectoryEntry(value: Record<string, unknown>): CharacterDirectoryEntry {
+  return {
+    id: requiredString(value, 'id'),
+    displayName: requiredString(value, 'displayName'),
+    originalName: requiredString(value, 'originalName'),
+    franchise: requiredString(value, 'franchise'),
+    portraitPending: value.portraitPending === true,
+    aliases: stringList(value.aliases),
+    characterTokens: stringList(value.characterTokens),
+  }
+}
+
 export function parsePopularCharacter(value: unknown): PopularCharacter | null {
   if (!isRecord(value)) return null
   const id = requiredString(value, 'id')
@@ -64,15 +76,9 @@ export function parsePopularCharacter(value: unknown): PopularCharacter | null {
     ? { must: stringList(dnaRaw.must), flexible: stringList(dnaRaw.flexible), avoid: stringList(dnaRaw.avoid) }
     : undefined
   return {
-    id,
-    displayName: requiredString(value, 'displayName'),
-    portraitPending: value.portraitPending === true,
-    originalName: requiredString(value, 'originalName'),
-    franchise: requiredString(value, 'franchise'),
-    aliases: stringList(value.aliases),
+    ...characterDirectoryEntry(value),
     identityProse: requiredString(value, 'identityProse'),
     identityTokens,
-    characterTokens: stringList(value.characterTokens),
     copyrightTokens: stringList(value.copyrightTokens),
     exactTokens,
     exactPrefixes,

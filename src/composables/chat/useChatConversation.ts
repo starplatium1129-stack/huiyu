@@ -1,15 +1,16 @@
+import type { useChatStorage } from './useChatStorage'
+import type { useVoice } from '../useVoice'
+import type { ChatUserProfile } from '@/utils/chatUserProfile'
+import { createChatTurnConnection, type ChatConnectionOptions } from './chatTurnConnection'
 import { runtimeFetch } from '../../platform/runtimeUrl.ts'
 import type { CompanionToolResult as ToolCallResult } from './executeCompanionTool'
-import { reactive, ref, type ComputedRef, type Ref } from 'vue'
+import { reactive, ref, type Ref, type ComputedRef } from 'vue'
 import { createMessageId, type CharacterConfig } from '../../config/characters.ts'
-import { useChatStorage } from './useChatStorage.ts'
-import { useVoice } from '../useVoice.ts'
 import {
   isAbortError,
   parseNdjsonResponse,
   streamErrorMessage,
 } from '../../utils/stream.ts'
-import type { ChatUserProfile } from '../../utils/chatUserProfile.ts'
 import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { createChatDraftPersistence } from './chatDraftPersistence'
@@ -23,33 +24,18 @@ import { loadCompanionToolPermissions, companionToolAllowed } from './useCompani
 
 type ChatStorage = ReturnType<typeof useChatStorage>
 type VoiceController = ReturnType<typeof useVoice>
-/** A normal turn holds live history; regeneration captures only its question's prefix. */
 type TurnMessages = ReturnType<ChatStorage['messages']>
 
-interface ChatConversationOptions {
+interface ChatConversationOptions extends ChatConnectionOptions {
   storage: ChatStorage
   voice: VoiceController
   activeChar: Ref<string>
   currentCharacter: ComputedRef<CharacterConfig>
   busy: Ref<boolean>
   chatReady: ComputedRef<boolean>
-  chatProvider: Ref<'local' | 'api'>
-  currentModel: Ref<string>
-  apiBaseUrl: Ref<string>
-  hostApiBaseUrl?: Ref<string>
-  apiModel: Ref<string>
-  apiKey: Ref<string>
-  webSearchEnabled: Ref<boolean>
-  /** 使用站主托管配置（访客模式）：前端不带 key，服务端代填 */
-  useHostConfig: Ref<boolean>
-  /** 启用桌宠本地工具（companionTools）：仅桌面应用 + API 模式生效 */
-  companionTools: Ref<boolean>
-  /** 模型推理强度（off/low/medium/high，用户可调；仅 API 模式生效） */
-  reasoning: Ref<'off' | 'low' | 'medium' | 'high'>
   userProfile: Ref<ChatUserProfile>
   recallMemories: (character: string, query: string) => string[]
   setBusy: (value: boolean) => void
-  onError: (message: string, kind?: string, timeout?: number) => void
   /** 流式回复文本驱动情绪（无配音时替代 TTS 情绪通道）；情绪变化才回调 */
   onStreamEmotion?: (emotion: string) => void
   /** 工具执行活动指示（null 表示本轮工具全部结束） */
@@ -147,36 +133,7 @@ export function useChatConversation(options: ChatConversationOptions) {
     return turn
   }
 
-  function captureConnection() {
-    return { provider: options.chatProvider.value, currentModel: options.currentModel.value,
-      baseUrl: options.apiBaseUrl.value, apiModel: options.apiModel.value, apiKey: options.apiKey.value,
-      hostConfig: options.useHostConfig.value, webSearch: options.webSearchEnabled.value,
-      tools: options.companionTools.value, reasoning: options.reasoning.value, hostBaseUrl: options.hostApiBaseUrl?.value || '' }
-  }
-  type TurnConnection = ReturnType<typeof captureConnection>
-  const connectionMatches = (connection: TurnConnection) => {
-    const live = captureConnection()
-    return (Object.keys(connection) as Array<keyof TurnConnection>).every(key => live[key] === connection[key])
-  }
-
-  // A stream may canonicalize its own model, but never a newer connection draft.
-  function applyModelWriteback(rawModel: unknown, hostMode: boolean, useVision: boolean, connection: TurnConnection) {
-    if (connection.provider === 'api' && !hostMode && !useVision && String(rawModel) === connection.apiModel) return
-    const ownsDraft = connectionMatches(connection)
-    if (connection.provider === 'api' && !hostMode && !useVision) {
-      connection.apiModel = String(rawModel)
-      if (!ownsDraft) return
-      options.apiModel.value = connection.apiModel
-      void Promise.resolve(options.storage.setApiSettings({
-        baseUrl: connection.baseUrl, model: connection.apiModel, apiKey: connection.apiKey,
-      }, 'model')).catch(() => { if (connectionMatches(connection)) options.onError('模型配置未能安全保存，当前回复不受影响，请稍后重试。') })
-    } else if (connection.provider !== 'api' || hostMode) {
-      connection.currentModel = String(rawModel)
-      if (!ownsDraft) return
-      options.currentModel.value = connection.currentModel
-      options.storage.setModel(connection.currentModel)
-    }
-  }
+  const { captureConnection, connectionMatches, applyModelWriteback } = createChatTurnConnection(options)
 
   async function sendMessage(customText?: string, imageUrl?: string, sendOptions: CompanionChatSendOptions = {}) {
     const text = (customText !== undefined ? customText : inputText.value).trim()

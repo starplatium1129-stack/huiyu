@@ -1,0 +1,261 @@
+/* ============================================================
+   绘遇 · Design System
+   Source contract: ../DESIGN.md
+   Style: 甜蜜、亲密、以画面为主的 Galgame 创作工作台
+   Theme: dark 默认；light-theme.css 提供纸白浅色覆盖
+   ============================================================ */
+
+/* 字体不在这里 @import —— 字体已本地自托管（@fontsource，见 src/main.ts），
+   离线可用且不依赖 Google Fonts；这里只需声明 font-family。 */
+
+:root {
+  /* 全站共用蓝灰阅读底色，玫粉与角色色只用于交互和局部氛围。 */
+  --ink-base: #080f17;
+  --bg-deep:       #10161d;
+  --bg-base:       #151c24;
+  --bg-surface:    #1e2935;
+  --bg-elevated:   #25313d;
+  --bg-hover:      var(--bg-elevated);
+
+  --border-soft:   rgba(170, 198, 223, 0.14);
+  --border-strong: rgba(187, 214, 235, 0.28);
+
+  /* ---- Text ---- */
+  --text-primary:   #edf3fa;
+  --text-secondary: #bdcbd8;
+  /* 占位/说明。合成到 --bg-elevated 仍 ≥4.5:1。 */
+  --text-muted:     #a8b9c9;
+  --text-inverse:   #111923;   /* 浅色高光底深色字反色 */
+  /* 三级说明文字别名：页面代码按 primary/secondary/tertiary 三级引用。 */
+  --text-tertiary:  var(--text-muted);
+  /* 禁用态文字：直接用达标色值，不再用 opacity 压字。合成到 --bg-elevated 仍 ≥4.5:1。 */
+  --text-disabled:  #a6b3c0;
+
+  /* ---- Accent (糖果樱花粉 & 二次元梦幻强调色) ---- */
+  --accent:         #f2a8be;
+  --accent-hover:   #ffc4d8;
+  --accent-soft:    rgba(242, 168, 190, 0.10);
+  --accent-glow:    rgba(242, 168, 190, 0.16);
+  --accent-violet:  #b784f6;
+  --archive-blue:   #5eead4;
+  --archive-blue-soft: rgba(94, 234, 212, 0.16);
+  --nene-violet:    #b784f6;
+  --natsume-amber:  #fbb040;
+  --editorial-gold: #f2bb68;
+  --editorial-gold-soft: rgba(242, 187, 104, 0.14);
+
+  /* ---- Archive & Technical Semantics (Arknights-inspired) ---- */
+  --archive-cyan:        #5eead4;
+  /* 档案面板圆角：语义别名统一走 --r-lg，避免只改一处。 */
+  --r-dossier:           var(--r-lg);
+  --r-terminal:          10px;
+  --line-hairline:       1px;
+
+  --nav-bg: rgba(21, 28, 36, .96);
+  --glass-highlight: rgba(227, 240, 252, 0.07);
+  /* 内衬高光以共享令牌表达，面板正文保持稳定底色。 */
+  --hl-inset-08: rgba(255, 255, 255, 0.08);
+  --hl-inset-16: rgba(255, 255, 255, 0.16);
+  --hl-inset-22: rgba(255, 255, 255, 0.22);
+  --glass-fill: rgba(30, 41, 53, .94);
+  --glass-fill-strong: var(--bg-elevated);
+  --glass-edge: rgba(187, 214, 235, .18);
+  --glass-specular: color-mix(in srgb, #eaf4ff 15%, transparent);
+  --glass-shadow: 0 12px 32px rgba(5, 11, 18, 0.30);
+  --album-surface: var(--bg-surface);
+
+  /* ---- Functional ---- */
+  --success:        #4ade80;
+  --warning:        #fbbf24;
+  --danger:         #f87171;
+  --info:           #60a5fa;
+
+  /* ---- Color Script moods (美术规范用) ---- */
+  --mood-joy:       #ffd166;
+  --mood-love:      #ff75a0;
+  --mood-calm:      #4ade80;
+  --mood-sad:       #60a5fa;
+  --mood-warmth:    #fbb040;
+
+  /* ---- 文字专用色阶 ----------------------------------------------------
+     上面的功能色与 mood 色是为"色块/描边"调的:高饱和、亮度高。
+     一旦拿来当文字色(.prompt-code .q、.mood-name、.voice-state.warn 等),
+     在浅色主题下只有 1.2–3.0:1,不满足 DESIGN.md §Colors 的 WCAG AA 要求。
+     故拆成两组:原 token 继续做背景与描边,--*-text 专供文字。
+     浅色主题统一压深;深色主题过去直接别名到原色,但只核算了 --bg-deep 一种底 ——
+     合成到 --bg-elevated 上其中四个只有 3.8-4.4:1,而弹层/卡片正是它们的常驻表面,
+     故按需提亮到 4.5:1 以上(deep 底上仍在 6.4:1 以上)。 */
+  --success-text:       var(--success);
+  --warning-text:       var(--warning);
+  --danger-text:        #f87171;   /* 甜系珊瑚红，elevated 上 ≥4.5:1 */
+  --info-text:          var(--info);
+  --mood-joy-text:      var(--mood-joy);
+  --mood-love-text:     #ff8db0;   /* 甜系樱粉，elevated 上 ≥4.5:1 */
+  --mood-calm-text:     var(--mood-calm);
+  --mood-sad-text:      var(--mood-sad);
+  --mood-tension-text:  #c498ff;   /* 薰衣草紫，elevated 上 ≥4.5:1 */
+  --mood-warmth-text:   var(--mood-warmth);
+
+  /* ---- Typography ---- */
+  --font-sans:      -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
+  --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
+  --font-display:   -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
+  /* 首页、章节、角色主名与短台词；长文和控件仍用 sans。 */
+  --font-serif:     "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "SimSun", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
+  --font-serif-jp:  "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif CJK JP", var(--font-serif);
+
+  /* ---- Font size scale (DESIGN.md §Typography 的运行时实现) ----
+     mono-*  机读标签(kicker/badge/seed)   |  label-*  控件与元数据
+     body-*  阅读正文                       |  title-*  标题
+     只用这些档位。新增字号前先确认现有档位不够用。 */
+  --fs-mono-xs:  0.75rem;  /* 装饰编号，不承载操作说明 */
+  --fs-mono-sm:  0.8125rem; /* 单位 / 角标 */
+  --fs-label-xs: 0.8125rem; /* 紧凑元数据 */
+  --fs-label-sm: 0.875rem; /* 常规控件标签 */
+  --fs-label:    0.875rem; /* 参数与工具标签 */
+  --fs-body-sm:  0.9375rem; /* 说明正文 */
+  --fs-body:     1rem;     /* 阅读正文 */
+  --fs-body-lg:  1rem;     /* DESIGN.md typography.body */
+  --fs-title-xs: 1.05rem;  /* 卡片标题 */
+  --fs-title-sm: 1.2rem;   /* h3 */
+  --fs-title:    1.6rem;   /* 24px at the default 15px UI root; DESIGN.md Layout */
+  --fs-display:  2.2rem;   /* h1 / DESIGN.md typography.display */
+  /* 装饰性字形槽(空状态占位图标、画面回退符),不参与文字层级 */
+  --fs-glyph:    2rem;
+  --fs-glyph-lg: 3rem;
+  --fs-brand-caption: .55rem;
+
+  /* ---- Line height —— 与字号阶梯配套（2026-08-28 补齐）----
+     此前全站 191 处裸值散布在 18 种取值上，其中 1.5 与 1.55 这类连设计意图都
+     说不清的偏差就占了 61 处 —— 有字号阶梯却没有行高阶梯，是最大的系统性缺口。
+     档位按"实测众数"定而不是按理想值定：让收敛带来的视觉变化最小
+     （单处最大 0.1，多数仅 0.05），避免一次性改动把密集界面撑破。
+     flush  单行/紧凑控件（按钮、徽章、机读标签）
+     tight  大标题与展示字
+     label  控件标签与卡片标题
+     body   UI 正文（密集区，占比最高）
+     loose  长文阅读（DESIGN.md typography.body 的 1.7 落在这档） */
+  --lh-flush: 1;
+  --lh-tight: 1.25;
+  --lh-label: 1.5;
+  --lh-body: 1.65;
+  --lh-loose: 1.7;
+
+  /* ---- Character accents (route-aware; director may animate) ---- */
+  --character-accent: var(--accent);
+  --character-accent-hover: var(--accent-hover);
+  --character-soft: var(--accent-soft);
+  --character-glow: var(--accent-glow);
+
+  /* ---- Spacing scale (8px base) ---- */
+  --s-1: 4px; --s-2: 8px; --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+  --control-height: 40px;
+  --control-height-sm: 32px;
+
+  /* ---- Radius (DESIGN.md §Shapes) ----
+     sm/md 输入与紧凑控件 | lg/xl 卡片与区块 | 2xl 浮层 | stage 画面框 | pill 筛选与状态
+     取值区间以 DESIGN.md §Shapes 为准：控件 8–10px、卡片 14–20px、主舞台可到 32px。
+     不记录变更史；改值必须同步 DESIGN.md —— 令牌区注释与声明不一致会让 AI 按错误基准改样式。 */
+  --r-sm: 8px; --r-md: 10px; --r-lg: 16px; --r-xl: 20px;
+  --r-2xl: 26px; --r-3xl: 30px; --r-stage: 32px; --r-pill: 999px;
+  --r-brand-mark: 9px 15px 9px 15px;
+  /* 微圆角：徽章内衬 / 小芯片 / 画布控件 */
+  --r-xs: 6px;
+
+  /* ---- Shadow ladder(仅三级,对应 DESIGN.md §Elevation 的 L1/L2/L3) ----
+     二次元水晶亚克力折射与梦幻光晕阶梯 (Crystal Acrylic Specular & Bloom) */
+  --shadow-sm: 0 3px 10px rgba(5, 11, 18, 0.20);
+  --shadow-md: 0 8px 22px rgba(5, 11, 18, 0.30);
+  --shadow-lg: 0 16px 38px rgba(5, 11, 18, 0.42);
+  --shadow-card: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+  /* 玻璃面高光内衬 — 水晶亚克力双层高光折射 (顶部 1px 晶莹雪白，底部环境微阴影与紫夜漫射) */
+  --shadow-glass-sm: inset 0 1px 0 var(--glass-highlight), 0 2px 8px -1px rgba(9, 14, 23, 0.24), 0 1px 3px 0 rgba(183, 132, 246, 0.04);
+  --shadow-glass-md: inset 0 1px 0 var(--glass-highlight), 0 8px 22px -3px rgba(7, 12, 20, 0.32), 0 2px 8px -1px rgba(183, 132, 246, 0.07);
+  --shadow-glass-elevated: inset 0 1px 0 var(--glass-highlight), var(--shadow-lg);
+  /* accent 光晕: 恋爱感柔光弥散 (Bloom) */
+  --glow-md: 0 0 28px var(--accent-glow), 0 0 10px rgba(183, 132, 246, 0.25);
+  /* 焦点用主题墨色底线，选中用单侧标记，不向控件外扩描边。 */
+  --ring-color: var(--focus-color);
+  --ring: inset 0 -2px 0 var(--ring-color);
+  --selection-shadow: inset 0 -2px 0 var(--border-strong), var(--shadow-sm);
+
+  /* ---- Motion -----------------------------------------------------------
+     语义 token 按交互目的命名，避免同一个 "fast" 同时承担按压、浮层和路由。
+     按用途复用语义 token，消除双轨硬编码数值。 */
+  --motion-press: 120ms;
+  --motion-hover: 160ms;
+  --motion-control: 200ms;
+  --motion-surface: 260ms;
+  --motion-route: 320ms;
+  --motion-route-cut: 420ms;
+  --motion-atmosphere: 560ms;
+  --spring-bounce: cubic-bezier(.34, 1.56, .64, 1); /* 果冻微弹 */
+  --spring-soft:   cubic-bezier(.16, 1, .3, 1);    /* 丝滑阻尼 */
+  --ease-out: cubic-bezier(.23, 1, .32, 1);   /* 进入/即时反馈：快速响应，柔和落位 */
+  --ease-in-out: cubic-bezier(.77, 0, .175, 1); /* 屏内移动/形变 */
+  --ease-drawer: cubic-bezier(.32, .72, 0, 1);  /* 抽屉与大面积浮层 */
+
+  /* Spring-to-linear：transform 专用；linear() 不支持时回退 Bézier。 */
+  --spring-bouncy-duration: 650ms;
+  --spring-gentle-ease: var(--spring-soft);
+  --spring-gentle-duration: var(--motion-control);
+
+  /* ---- z-index scale(唯一来源,禁止页面内写魔法数字) ---- */
+  --z-below: -1;      /* 背景光斑 / 装饰层 */
+  --z-base: 1;        /* 卡片内部堆叠 */
+  --z-canvas: 2;      /* 卡内画布/遮罩夹层(位于内容之上、浮起元素之下) */
+  --z-raised: 3;      /* 卡片内浮起元素(角标/渐隐罩) */
+  --z-float: 8;       /* 组件内跟随光标/悬浮控件 */
+  --z-sticky: 20;     /* sticky 工具条 */
+  --z-dock: 60;       /* 页内停靠浮层(批量任务条等,高于内容低于顶栏) */
+  --z-nav: 100;       /* 顶栏 */
+  --z-popover: 200;   /* 顶栏浮层 / 工具气泡 / tooltip */
+  --z-overlay: 300;   /* 弹窗 / 抽屉 / 画作查看器 */
+  --z-confirm: 350;   /* 确认弹窗必须高于发起操作的弹层 */
+  --z-toast: 400;     /* 瞬时反馈 */
+  --z-skip: 500;      /* 跳转链接,必须在最上层 */
+
+  /* ---- On-artwork surface(画面之上的文字与遮罩,与主题底色无关) ----
+     深色图上永远是白字,故这些值不随 light theme 翻转 */
+  --on-art-primary: color-mix(in srgb, white 96%, transparent);
+  --on-art-secondary: color-mix(in srgb, white 68%, transparent);
+  --on-art-line: color-mix(in srgb, white 16%, transparent);
+  --on-art-fill: color-mix(in srgb, white 10%, transparent);
+  /* 极淡的水印/高光层:比 --on-art-fill 再轻一档,用于画面上的巨大装饰字与光泽 */
+  --on-art-wash: color-mix(in srgb, white 7%, transparent);
+  --on-art-sheen: color-mix(in srgb, white 32%, transparent);
+  --art-scrim: rgba(10, 17, 25, 0.78);
+  --art-scrim-soft: rgba(10, 17, 25, 0.44);
+  --art-backdrop: rgba(8, 13, 19, 0.86);
+  /* 画作衬垫(画廊卡片与 letterbox 留边):这一项**随主题翻转**,
+     因为它是画框而不是画面本身 —— 浅色主题下是画册纸白,深色下是暗房底。 */
+  --art-mat: #101820;
+  /* 成片与卡片画框使用固定深墨衬垫；纸面控件继续使用主题表面。 */
+  --art-stage: #1b191e;
+  --art-frame-line: rgba(245, 239, 233, 0.26);
+  --art-frame-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+
+  /* ---- 立绘舞台底(首页 hero、角色页画框) ----
+     这些是"人物身后的空间",随主题翻转:深色是暗房,浅色是画册纸。
+     过去直接硬编码在 HomeView / CharacterView 的 \3c style> 里,
+     其中角色页压根没有浅色值 —— 浅色主题下画框仍是近黑。 */
+  --stage-violet: linear-gradient(155deg, #5b3a7d 0%, #39224f 48%, #1b1227 100%);
+  --stage-amber:  linear-gradient(155deg, #4a3525 0%, #2e2018 48%, #1b1210 100%);
+}
+
+/* Spring-to-linear 烘焙结果：只有支持原生 linear() 的浏览器才启用，
+   旧 Safari/浏览器继续使用上面的 Bézier 与 motion-control fallback。 */
+@supports (transition-timing-function: linear(0, 1)) {
+  :root {
+    --spring-gentle-ease: linear(0, 0.0046 1.042%, 0.0173 2.083%, 0.0364 3.125%, 0.0607 4.167%, 0.1204 6.25%, 0.189 8.333%, 0.3696 13.542%, 0.4383 15.625%, 0.5027 17.708%, 0.5898 20.833%, 0.6413 22.917%, 0.6875 25%, 0.7287 27.083%, 0.7652 29.167%, 0.8119 32.292%, 0.8383 34.375%, 0.8812 38.542%, 0.9133 42.708%, 0.9319 45.833%, 0.9547 51.042%, 0.9786 60.417%, 0.9924 72.917%, 1);
+    --spring-gentle-duration: 550ms;
+  }
+}
+
+/* SPA navigation uses AppLayout.vue transitions. Cross-document automatic
+   transitions require both documents to remain opted in; async route startup
+   can otherwise abort the browser transition before the destination is ready. */
+
+/* Preserve the pixel theme's display face for Japanese ornament too. */
+:root[data-theme-style='terraria'] { --font-serif-jp:var(--font-display); }

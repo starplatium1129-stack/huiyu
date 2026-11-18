@@ -47,7 +47,3 @@ export function renderLightingProse(prose: string, source: string | null, target
   }
   return prose.replace(phrase, match => /(?:moonlit|backlit)$/i.test(match) ? adjective[target!] : replacement)
 }
-
-export function hasVariableLighting(prose: string, source: string | null): boolean {
-  return Boolean(source && sourcePhrases[source] && new RegExp(sourcePhrases[source]).test(prose))
-}

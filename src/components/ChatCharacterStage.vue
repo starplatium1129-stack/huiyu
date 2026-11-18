@@ -136,16 +136,7 @@
         <label>高低 <input type="range" min="-25" max="25" step="1" :value="framing.y" aria-label="角色高低位置" @input="updateFraming('y', Number(($event.target as HTMLInputElement).value))" /></label>
         <button class="btn btn-ghost" type="button" @click="resetFraming">恢复默认取景</button>
       </fieldset>
-      <details v-if="live2d.adapterReport.value" class="live2d-capability-report">
-        <StudioDisclosureSummary>{{ capabilitySummary }}</StudioDisclosureSummary>
-        <ul>
-          <li v-for="item in live2d.adapterReport.value.items" :key="item.id" :data-state="item.status">
-            <span>{{ capabilityLabels[item.id] }}</span>
-            <strong>{{ capabilityStatusLabels[item.status] }}</strong>
-            <small>{{ item.reason }}</small>
-          </li>
-        </ul>
-      </details>
+      <Live2DCapabilityReport v-if="live2d.adapterReport.value" :report="live2d.adapterReport.value" />
       </CharacterStageSettings>
     </div>
   </aside>
@@ -195,7 +186,7 @@ import '@/assets/css/character-stage.css'
 import { createEmotionRuntime, getEmotionRuntimeConfig, type EmotionRuntime } from '@/utils/emotionRuntime'
 import { profileEmotionConfig } from '@/live2d/companionEmotion'
 import type { Live2DBackendKind } from '@/live2d/types'
-import type { Live2DAdapterCapabilityItem, Live2DCapabilityStatus } from '@/live2d/adapterProfile'
+import Live2DCapabilityReport from './Live2DCapabilityReport.vue'
 
 const AsyncPanel = defineAsyncComponent(() => import('@/components/ui/AsyncPanel.vue'))
 const loadModelStudio = () => import('./ModelStudio.vue')
@@ -281,26 +272,6 @@ function updateStageVisibility() {
   live2d.setPaused(!visible)
   if (visible && !anime.selected.value) void live2d.recover()
 }
-const capabilityLabels: Record<Live2DAdapterCapabilityItem['id'], string> = {
-  mouth: '口型', blink: '眨眼', focus: '视线', emotions: '情绪', interactions: '互动',
-  'hit-areas': '点击区', 'overlay-reset': '叠层复位',
-}
-const capabilityStatusLabels: Record<Live2DCapabilityStatus, string> = {
-  detected: '已发现', 'needs-confirmation': '待实机', verified: '已验证',
-  unsupported: '未配置', invalid: '配置无效',
-}
-const capabilitySummary = computed(() => {
-  const report = live2d.adapterReport.value
-  if (!report) return '模型能力'
-  const unavailable = report.items.filter(item => item.status === 'unsupported' || item.status === 'invalid').length
-  const pending = report.items.filter(item => item.status === 'detected' || item.status === 'needs-confirmation').length
-  if (report.status === 'invalid') return '模型能力配置无效'
-  if (unavailable || pending) {
-    const parts = [unavailable ? `${unavailable} 项未配置` : '', pending ? `${pending} 项待实机` : ''].filter(Boolean)
-    return `模型能力 · ${parts.join(' · ')}`
-  }
-  return '模型能力 · 已验证'
-})
 const { quality } = useLive2DPreferences()
 watch([quality, live2d.backendKind], ([value]) => {
   void live2d.setQuality(value)

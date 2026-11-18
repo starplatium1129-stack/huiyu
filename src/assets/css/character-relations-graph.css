@@ -1,0 +1,95 @@
+/* Edge & Handle stylings */
+.relations-canvas :deep(.vue-flow__edge-path) {
+  stroke: var(--text-secondary);
+  stroke-width: 1.6;
+  fill: none;
+  transition: opacity var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .relations-canvas :deep(.vue-flow__edge:hover .vue-flow__edge-path) {
+    stroke: var(--text-primary);
+    stroke-width: 2.4;
+  }
+}
+
+.relations-canvas :deep(.relation-edge-active .vue-flow__edge-path) {
+  stroke: var(--accent);
+  stroke-width: 2.8;
+  opacity: 1 !important;
+}
+
+.relations-canvas :deep(.relation-edge-dimmed .vue-flow__edge-path) {
+  opacity: 0.35;
+}
+
+.relations-canvas :deep(.vue-flow__edge:focus-visible .vue-flow__edge-path) {
+  stroke: var(--accent);
+  stroke-width: 3;
+}
+
+.relations-canvas :deep(.vue-flow__edge-text) {
+  font-family: var(--font-sans);
+}
+
+.relations-canvas :deep(.vue-flow__edge-interaction) {
+  cursor: pointer;
+}
+
+.relations-canvas :deep(.vue-flow__nodesselection-rect) {
+  display: none;
+}
+
+@container (max-width: 900px) {
+  .character-relations.is-fullscreen .relations-layout { display: flex; flex-direction: column; }
+  .character-relations.is-fullscreen .relations-map { flex: 1 0 360px; width: 100%; }
+  .character-relations.is-fullscreen .relations-inspector { height: auto; flex: 0 0 auto; width: 100%; }
+  .relations-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .relations-layout.is-inspector-collapsed {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .relations-inspector-collapsed {
+    display: none;
+  }
+  .relations-inspector {
+    max-height: none;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .relation-description {
+    max-height: none;
+    border-bottom: 0;
+  }
+  .relation-list {
+    border-top: 0;
+    border-left: 1px solid var(--border-soft);
+  }
+}
+
+@container (max-width: 540px) {
+  .relations-inspector {
+    grid-template-columns: 1fr;
+  }
+  .relation-list {
+    border-left: 0;
+    border-top: 1px solid var(--border-soft);
+  }
+}
+
+.relations-inspector-collapsed:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 3px; }
+.character-relations.is-fullscreen .relations-inspector-collapsed { height: 100%; }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .relation-list-item,
+  :root:not([data-motion='full']) .relations-canvas :deep(.vue-flow__edge-path) { transition: none; transform: none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .relation-list-item,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .relations-canvas :deep(.vue-flow__edge-path) { transition: none; transform: none; }
+
+@media (forced-colors: active) {
+  .relations-canvas :deep(.vue-flow__edge-path) { stroke: CanvasText; }
+  .relations-canvas :deep(.relation-edge-active .vue-flow__edge-path) { stroke: Highlight; }
+  .relations-canvas :deep(.vue-flow__edge-textbg) { fill: Canvas; }
+  .relations-canvas :deep(.vue-flow__edge-text) { fill: CanvasText; }
+}

@@ -32,17 +32,17 @@
 .pb .wardrobe-entry > .studio-tooltip-anchor[data-anchor] { display:grid; flex:1; width:100%; }
 .pb .wardrobe-entry .outfit-preset { flex:1; width:100%; }
 .pb .wardrobe-sources-toggle { align-self:flex-start; margin-top:var(--s-1); }
-.pb .wardrobe-source-list { display:grid; gap:var(--s-2); }
-.pb .wardrobe-source-list > strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
-.pb .wardrobe-source-option { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); min-width:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); text-align:left; cursor:pointer; }
-.pb .wardrobe-source-option > span { display:grid; gap:var(--s-1); min-width:0; overflow-wrap:anywhere; }
-.pb .wardrobe-source-option strong { font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
-.pb .wardrobe-source-option small { color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
-.pb .wardrobe-source-option > .archive-icon { flex:none; width:16px; height:16px; }
-.pb .wardrobe-source-option:is(:hover:not(:disabled),[aria-pressed='true']) { border-color:var(--border-strong); background:var(--bg-elevated); }
-.pb .wardrobe-source-option:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.pb .wardrobe-source-option:disabled,.pb .wardrobe-source-option:disabled small { color:var(--text-disabled); cursor:not-allowed; }
-@media (forced-colors:active) { .pb .wardrobe-source-option:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
+.studio-popover .wardrobe-source-list { display:grid; gap:var(--s-2); }
+.studio-popover .wardrobe-source-list > strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.studio-popover .wardrobe-source-option { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); min-width:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); text-align:left; cursor:pointer; }
+.studio-popover .wardrobe-source-option > span { display:grid; gap:var(--s-1); min-width:0; overflow-wrap:anywhere; }
+.studio-popover .wardrobe-source-option strong { font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.studio-popover .wardrobe-source-option small { color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
+.studio-popover .wardrobe-source-option > .archive-icon { flex:none; width:16px; height:16px; }
+.studio-popover .wardrobe-source-option:is(:hover:not(:disabled),[aria-pressed='true']) { border-color:var(--border-strong); background:var(--bg-elevated); }
+.studio-popover .wardrobe-source-option:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.studio-popover .wardrobe-source-option:disabled,.studio-popover .wardrobe-source-option:disabled small { color:var(--text-disabled); cursor:not-allowed; }
+@media (forced-colors:active) { .studio-popover .wardrobe-source-option:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 .pb :is(.outfit-preset,.tag-results button) { display:grid; grid-template-columns:minmax(0,1fr) 16px; gap:var(--s-1) var(--s-2); min-width:0; min-height:var(--control-height); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); text-align:left; cursor:pointer; }
 .pb :is(.outfit-preset,.tag-results button) > :is(strong,small) { grid-column:1; min-width:0; white-space:normal; overflow-wrap:anywhere; }
 .pb :is(.outfit-preset,.tag-results button) > strong { grid-row:1; font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }

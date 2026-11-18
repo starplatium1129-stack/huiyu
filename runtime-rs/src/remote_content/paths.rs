@@ -14,27 +14,6 @@ pub const PUBLIC_DATA_FILES: &[&str] = &[
     "scene-blueprints.json",
     "character-reference-view.json",
 ];
-const PAGES: &[&str] = &[
-    "/",
-    "/index.html",
-    "/scene-explorer",
-    "/popular-scenes",
-    "/prompt-builder",
-    "/qwen-studio",
-    "/video-studio",
-    "/chat",
-    "/showcase",
-    "/gallery",
-    "/character",
-    "/style",
-    "/lora",
-    "/scene-manager",
-    "/color-script",
-    "/scenario",
-    "/companion",
-    "/companion-chat",
-    "/control",
-];
 
 fn normalized(raw: &str) -> Option<String> {
     let decoded = percent_encoding::percent_decode_str(raw)
@@ -84,7 +63,7 @@ pub(super) fn canonical(raw: &str) -> bool {
         && normalized(raw).as_deref() == Some(raw)
 }
 pub(super) fn public_shell(raw: &str) -> bool {
-    if raw == "/" || PAGES.contains(&raw.trim_end_matches('/')) {
+    if crate::static_files::page_path(raw) {
         return true;
     }
     canonical(raw) && (raw.starts_with("/_app/") || ["/favicon.ico", "/favicon.svg"].contains(&raw))

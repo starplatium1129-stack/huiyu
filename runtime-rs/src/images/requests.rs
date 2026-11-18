@@ -68,7 +68,7 @@ impl Service {
         owner: &str,
         family: &str,
         wait: Duration,
-    ) -> Result<Option<Receipt>> {
+    ) -> Result<Option<(Receipt, bool)>> {
         let Some(receipt) = self.requests.status(key, owner, family).await? else {
             return Ok(None);
         };
@@ -77,7 +77,9 @@ impl Service {
         } else {
             receipt.error.is_some() || receipt.cancel_requested
         };
-        Ok(ready.then_some(receipt))
+        // An assigned job was observed for the full wait even if still running.
+        // Pending acceptance and busy slots continue through ordinary polling.
+        Ok((ready || receipt.job_id.is_some()).then_some((receipt, ready)))
     }
     pub(super) async fn accept_request(
         self: &Arc<Self>,

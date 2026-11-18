@@ -405,21 +405,24 @@ fn unavailable() -> ApiError {
 }
 
 impl Service {
-    pub(crate) async fn remote_queue(&self, owner: &str) -> Result<Value> {
+    pub(crate) async fn remote_queue(&self, owner: &str) -> Result<(Value, HashMap<String, f64>)> {
         let store = self
             .remote_store()
             .filter(|store| store.owner == owner)
             .ok_or_else(unavailable)?;
         let timings = store.timings().await?;
         let order = self.inner.native.queue.lock().unwrap().clone();
-        let jobs = self.inner.state.lock().await.jobs.clone();
+        let queued_jobs: Vec<_> = {
+            let state = self.inner.state.lock().await;
+            order.iter().map(|id| state.jobs.get(id).cloned()).collect()
+        };
         let mut items = Vec::new();
         let mut ahead = 0;
         let mut seconds = Some(0.0_f64);
         let mut running = 0;
         let mut queued = 0;
-        for id in order {
-            let Some(job) = jobs.get(&id) else {
+        for job in queued_jobs {
+            let Some(job) = job else {
                 // A different media service may own this GPU slot.
                 ahead += 1;
                 seconds = None;
@@ -447,6 +450,7 @@ impl Service {
             }
             let completion = seconds.zip(runtime).map(|(wait, run)| wait + run);
             if job.owner == owner {
+                let id = &job.id;
                 let path = format!("{}/jobs/{id}", job.execution.route_base());
                 items.push(json!({"id":id,"status":state.status,"modelId":model,"seed":job.input["seed"],"createdAt":job.created,
                     "queuePosition":if started>0 {0} else {ahead+1},"ahead":ahead,
@@ -457,8 +461,9 @@ impl Service {
             seconds = completion;
             ahead += 1;
         }
-        Ok(
+        Ok((
             json!({"items":items,"gpuRunning":running,"gpuQueued":queued,"gpuAhead":ahead,"estimatedAvailableSeconds":seconds}),
-        )
+            timings,
+        ))
     }
 }

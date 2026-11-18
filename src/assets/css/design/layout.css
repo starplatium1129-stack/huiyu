@@ -1,0 +1,191 @@
+/* ---- Reset ---- */
+*, *::before, *::after { @apply tw:box-border tw:m-0 tw:p-0; }
+:where(button, input, textarea, select) { font-family: inherit; }
+
+/* 根字号:rem 体系的基准,不能走 --fs-*(那是它的下游)。
+   必须用相对单位:写死 15px 会把整套 rem 锚在 px 上,
+   用户在浏览器里设的默认字号完全失效(SC 1.4.4)。
+   93.75% ≈ 15px @ 16px 默认,视觉保持原样但跟随用户设置缩放。 */
+html { font-size: 93.75%; scroll-behavior: smooth; }
+
+body {
+  @apply tw:font-sans;
+  background: var(--bg-base);
+  @apply tw:text-primary tw:leading-loose tw:min-h-[100vh];
+  -webkit-font-smoothing: antialiased;
+  @apply tw:isolate;
+  /* Clip horizontal artwork without creating a body scroll container. When a
+     native dialog locks html, overflow:hidden would otherwise make sticky
+     toolbars attach to body and jump offscreen until the modal closes. */
+  @apply tw:overflow-x-clip;
+  /* RouteAtmosphere owns the single bounded ambient layer. */
+}
+
+
+a { @apply tw:text-accent; text-decoration: none; transition: color var(--motion-hover); }
+a:hover { @apply tw:text-primary; }
+
+/* 原生与 role 控件共用底线；重复伪类保留兜底特异性，组件可在边界定制。 */
+:where(a, button, input, select, textarea, summary, [tabindex],
+       [role="button"], [role="tab"], [role="option"], [role="menuitem"],
+       [role="switch"], [role="checkbox"], [role="radio"]):focus-visible:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+
+img { @apply tw:max-w-full tw:block; }
+
+::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff8f4; }
+
+/* ============================================================
+   Layout
+   ============================================================ */
+/* ---- 响应式断点阶梯（2026-08-28 收敛，全项目唯一真相）----
+   此前的 71 处媒体查询散布在 25 种取值上（400/420/460/520/560/601/640/
+   680/720/760/820/860/960/1000/1040/1050/1100/1381…）。已收敛到 6 主档
+   + 2 超宽特殊档。新增断点前先确认现有档位不够用，不要引入第 9 种。
+     --bp-2xs  480px   极小屏（手机竖屏窄机）
+     --bp-xs   600px   手机（横屏 / 大屏手机）
+     --bp-sm   768px   平板竖屏（也是 iPad Portrait）
+     --bp-md   900px   平板横屏
+     --bp-lg   1000px  桌面窄 / 平板宽（保留而非并入 900/1200：
+                        960-1100 六处适配归入任一边都会位移 100px+）
+     --bp-xl   1200px  桌面标准（.container 宽度）
+     （特殊）1380px    导演台超宽布局
+     （特殊）2560px    舞台超宽屏
+   注意：CSS 自定义属性不能用在 @media 查询里（媒体查询在级联解析前
+   求值），上面的 --bp-* 是给 JS 与文档用的，媒体查询里照旧写字面值。 */
+.container {
+  max-width: var(--desktop-workspace-max, 1840px);
+  margin: 0 auto;
+  padding: 0 var(--workspace-gutter, var(--s-5));
+}
+
+/* ---- Sticky footer:body 改列向弹性布局,页脚推至视口底部 ---- */
+body { @apply tw:flex tw:flex-col; }
+body > *:has(+ .footer),
+.pb, .page, .chat-page { @apply tw:mb-s-8; }
+
+/* ---- Top nav ---- */
+.nav {
+  @apply tw:sticky tw:top-0; z-index: var(--z-nav);
+  @apply tw:isolate tw:w-full;
+  margin: 0 auto; padding: 0;
+  background: var(--nav-bg); border-bottom: 1px solid var(--border-soft);
+}
+.nav-inner {
+  @apply tw:relative tw:flex tw:items-center tw:justify-between tw:gap-s-4;
+  min-height: var(--app-navigation-height, 68px); max-width: var(--desktop-workspace-max, 1840px);
+  margin: 0 auto; padding: 0 var(--workspace-gutter, var(--s-5));
+}
+.nav-brand {
+  @apply tw:font-bold tw:text-title-xs tw:text-primary; letter-spacing: .02em;
+  @apply tw:flex tw:items-center tw:gap-s-2 tw:cursor-pointer;
+}
+/* 品牌副标低于 --fs-mono-xs:只承载 6 个 caps 字母,不参与正文层级 */
+.nav-brand small { @apply tw:block tw:mt-[-2px] tw:text-brand-caption tw:font-semibold; letter-spacing:.11em; @apply tw:text-muted; }
+.nav-brand .dot {
+  /* logo 菱形:非对称圆角是品牌图形本身,不是卡片圆角 */
+  @apply tw:w-[18px] tw:h-[18px]; border-radius: var(--r-brand-mark); transform: rotate(45deg);
+  background: linear-gradient(135deg, var(--accent), var(--accent-hover));
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+.nav-menu-toggle {
+  @apply tw:hidden tw:items-center tw:justify-center tw:w-[38px] tw:h-[38px] tw:rounded-md;
+  border: 1px solid var(--border-soft); background: var(--bg-elevated);
+  @apply tw:text-primary tw:cursor-pointer tw:text-title-xs;
+}
+.nav-links { @apply tw:relative tw:isolate tw:flex tw:gap-s-1 tw:items-center; }
+.nav-links a {
+  @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:gap-[6px] tw:text-secondary tw:text-body-sm tw:font-semibold;
+  transition: transform var(--motion-press) var(--ease-out);
+  padding: 10px 12px; @apply tw:rounded-md;
+}
+.nav-links a:focus-visible { transition: none; }
+.nav-links a:hover, .nav-links a.active { @apply tw:text-primary; background: transparent; }
+.nav-links a.active { @apply tw:text-primary; background: transparent; }
+.nav-more { @apply tw:relative; }
+.nav-more-trigger {
+  @apply tw:flex tw:items-center tw:gap-[5px]; list-style:none; @apply tw:cursor-pointer; min-height:var(--control-height); border:0; background:transparent; font-family:inherit;
+  @apply tw:text-secondary; padding:6px 10px; @apply tw:rounded-md tw:text-body-sm tw:font-semibold; transition:transform var(--motion-press) var(--ease-out);
+}
+.nav-more-trigger:disabled { @apply tw:text-disabled; cursor:wait; }
+.nav-more-trigger:hover, .nav-more-trigger[aria-expanded="true"], .nav-more[data-active="true"] .nav-more-trigger {
+  @apply tw:text-primary; background:transparent;
+}
+.nav-more-chevron { @apply tw:text-label-xs; }
+.nav-links .archive-icon { @apply tw:w-[1.05em] tw:h-[1.05em]; }
+
+/* ---- Local atelier status ---- */
+.local-status { @apply tw:relative; }
+.local-status-trigger {
+  @apply tw:inline-flex tw:items-center tw:gap-[7px] tw:min-h-[32px]; padding:5px 10px;
+  border:1px solid var(--border-soft); @apply tw:rounded-pill; background:var(--bg-elevated);
+  @apply tw:text-secondary tw:cursor-pointer; font: 650 var(--fs-label-xs) var(--font-sans);
+  transition:border-color var(--motion-hover),color var(--motion-hover),background var(--motion-hover);
+}
+.local-status-trigger:hover, .local-status-trigger[aria-expanded="true"] { @apply tw:border-strong tw:text-primary; background:var(--bg-elevated); }
+.local-status-led { @apply tw:w-[7px] tw:h-[7px]; border-radius:50%; background:var(--text-muted); box-shadow:0 0 0 3px color-mix(in srgb,var(--text-muted) 12%,transparent); }
+.local-status-trigger[data-state="online"] .local-status-led { background:var(--success); box-shadow:0 0 0 3px color-mix(in srgb,var(--success) 14%,transparent),0 0 10px color-mix(in srgb,var(--success) 45%,transparent); }
+.local-status-trigger[data-state="idle"] .local-status-led { background:var(--warning); box-shadow:0 0 0 3px color-mix(in srgb,var(--warning) 14%,transparent); }
+.local-status-trigger[data-state="offline"] .local-status-led { background:var(--danger); box-shadow:0 0 0 3px color-mix(in srgb,var(--danger) 12%,transparent); }
+.local-status.checking .local-status-led { animation:statusSoftPulse 1s ease-in-out infinite; }
+.local-status-panel {
+  @apply tw:absolute; top:calc(100% + 12px); @apply tw:right-0; width:min(330px,calc(100vw - 32px)); @apply tw:p-[14px];
+  border:1px solid var(--glass-edge); @apply tw:rounded-2xl; background:var(--glass-fill-strong);
+  box-shadow:var(--shadow-lg); -webkit-backdrop-filter:blur(26px) saturate(145%); backdrop-filter:blur(26px) saturate(145%);
+}
+.local-status-panel[hidden] { @apply tw:hidden; }
+.local-status-head { @apply tw:flex tw:items-center tw:justify-between tw:text-accent; font: 800 var(--fs-mono-xs) var(--font-mono); letter-spacing:.14em; }
+.local-status-refresh { @apply tw:w-[28px] tw:h-[28px]; border:0; border-radius:50%; background:transparent; @apply tw:text-muted tw:cursor-pointer tw:text-body-lg; }
+.local-status-refresh:hover { background:transparent; @apply tw:text-primary; }
+.local-status-summary { margin:5px 0 12px; @apply tw:text-muted tw:text-mono-sm tw:leading-body; }
+.local-status-services { @apply tw:grid tw:gap-[6px]; }
+.local-service { @apply tw:grid; grid-template-columns:28px 1fr auto; @apply tw:items-center tw:gap-[8px] tw:p-[9px]; border:1px solid var(--border-soft); @apply tw:rounded-lg; background:color-mix(in srgb,var(--bg-deep) 72%,transparent); }
+.local-service-icon { @apply tw:grid tw:w-[28px] tw:h-[28px]; place-items:center; @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-muted; }
+.local-service strong, .local-service small { @apply tw:block; }
+.local-service strong { @apply tw:text-primary tw:text-label-xs; }
+.local-service small { @apply tw:text-muted tw:text-mono-xs; }
+.local-service em { @apply tw:text-muted; font: 650 var(--fs-mono-sm) var(--font-sans); @apply tw:not-italic; }
+.local-service[data-state="online"] .local-service-icon, .local-service[data-state="online"] em { @apply tw:text-success-text; }
+.local-status-actions { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-[7px] tw:mt-[10px]; }
+.local-status-actions a { @apply tw:flex tw:justify-center; padding:8px 9px; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-secondary tw:text-mono-sm; }
+.local-status-actions a:hover { @apply tw:border-strong tw:text-primary; }
+@keyframes statusSoftPulse { 50% { opacity:.35; transform:scale(.82); } }
+
+/* ---- Theme toggle ---- */
+.theme-toggle {
+  @apply tw:inline-flex tw:items-center tw:justify-center tw:w-[32px] tw:h-[32px];
+  border-radius: 50%;
+  border: 1px solid var(--border-soft);
+  background: var(--bg-elevated);
+  @apply tw:text-secondary tw:cursor-pointer;
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover),
+              transform var(--motion-hover) var(--ease-out);
+  @apply tw:text-body-lg tw:leading-flush;
+}
+@media (hover: hover) and (pointer: fine) {
+  .theme-toggle:hover {
+    @apply tw:border-strong tw:text-primary;
+    transform: rotate(-15deg);
+  }
+}
+.nav-menu-toggle .archive-icon { @apply tw:w-[1em] tw:h-[1em]; }
+
+/* ---- Page header ----
+   层级：首页品牌标题 > 档案页标题 > 工具页标题。
+   .page-header 采用归档页中宽字级；工具页用 .page-header--compact 覆盖。 */
+.page-header {
+  padding: var(--s-8) 0 var(--s-6);
+  @apply tw:text-center;
+  border-bottom: 1px solid var(--border-soft);
+  @apply tw:mb-s-6;
+}
+.page-header h1 {
+  @apply tw:font-display tw:text-display tw:font-bold tw:mb-s-3;
+  color: var(--text-primary);
+}
+.page-header .subtitle {
+  @apply tw:text-secondary tw:text-title-xs tw:max-w-[600px]; margin: 0 auto;
+}
+/* 工具页紧凑标题（训练台 / 控制面板 / 模型 / 场景管理 / Prompt Builder） */

@@ -269,6 +269,7 @@ export function usePromptAssembly(
   function buildStructuredResult(target: 'anima' | 'krea2' | 'moss') {
     return compilePromptRecipe({
       kind: 'studio', character: pb.char, scene: effectiveScene.value,
+      randomSetting: !pb.sceneId && pb.randomVariation?.source === '',
       engine: target, profile: target === 'moss' ? null : modelProfile.value, identity: pb.charPrompt,
       activeLoras: target === 'moss' ? {} : controlLoraIds.value, loraMeta: pb.loraMeta,
       artistTags: target === 'moss' ? mossArtistTags(activeArtistStyleIds.value) : artistTags.value,

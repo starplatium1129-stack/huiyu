@@ -1,0 +1,150 @@
+/* At narrow desktop widths the existing compact menu keeps labels and tools
+   separate. The full navigation fits from the shared 1000px breakpoint. */
+@media (max-width: 1000px) {
+  .nav-inner { @apply tw:relative; }
+  .nav-menu-toggle { @apply tw:inline-flex; }
+  .nav-links {
+    @apply tw:hidden tw:absolute; top: calc(100% + var(--s-3));
+    @apply tw:left-s-4 tw:right-s-4 tw:p-s-3;
+    grid-template-columns: repeat(2, minmax(0, 1fr)); @apply tw:gap-s-2;
+    background: var(--bg-surface); border: 1px solid var(--border-soft);
+    @apply tw:rounded-lg; box-shadow: var(--shadow-lg);
+  }
+  .nav-links.open { @apply tw:grid; max-height: calc(100dvh - 100px); @apply tw:overflow-y-auto; overscroll-behavior: contain; }
+  .nav-links.open {
+    transform-origin:top right;
+    transition:opacity var(--motion-hover),transform var(--motion-surface) var(--ease-out);
+  }
+  @starting-style {
+    .nav-links.open { opacity:0; transform:translateY(-8px) scale(.98); }
+  }
+  .nav-links a { padding: var(--s-2) var(--s-3); @apply tw:rounded-md; background: var(--bg-deep); }
+  .nav-more { grid-column:1 / -1; }
+  .nav-more-trigger { @apply tw:rounded-md; background:var(--bg-deep); padding:var(--s-2) var(--s-3); }
+  .local-status { grid-column:1 / -1; }
+  .local-status-trigger { @apply tw:w-full tw:justify-start tw:min-h-[42px] tw:rounded-md; background:var(--bg-deep); }
+  .local-status-panel { @apply tw:static tw:w-auto tw:mt-s-2; }
+}
+
+@media (max-width: 768px) {
+  .page-header h1 { @apply tw:text-title; }
+  .container { padding: 0 var(--s-4); }
+  .card-info, .card-create { -webkit-backdrop-filter:none; backdrop-filter:none; }
+}
+
+/* Touch controls keep their desktop typography and grow in normal layout so
+   neighboring hit areas cannot overlap. Compact pointer controls stay intact. */
+@media (pointer: coarse) {
+  :root .nav :is(button, summary, a:not(.nav-brand)),
+  :root :is(.btn, .appearance-button, .appearance-close, .app-theme-toggle, .sound-toggle, .filter-pill) {
+    @apply tw:min-w-[44px] tw:min-h-[44px];
+  }
+}
+
+@media (prefers-contrast: more) {
+  .nav, .nav-more-menu, .card-create { background:var(--bg-surface); @apply tw:border-strong; }
+}
+
+/* ── 全局质感：字体渲染 / 选区 / 滚动条 / 数字对齐 / 按压 / 图片入场 ── */
+html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
+::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff8f4; }
+/* App scrollbar styling lives in studio-scrollbars.css. */
+summary {
+  @apply tw:cursor-pointer;
+  list-style: none;
+}
+summary::-webkit-details-marker {
+  @apply tw:hidden;
+}
+/* 统计数字 / 进度 / 参数等机器数字纵向对齐，跳动时不左右抖 */
+:where(code, .mono, .fs-mono, .count, .stat, .seed) { font-variant-numeric: tabular-nums; }
+
+/* ── 排版节奏：叙事行宽 ──
+   subtitle / hint / note 等引导语限宽，避免整行撑满后阅读感散掉 */
+:where(.subtitle, .hint, .note, .page-subtitle) {
+  max-width: 62ch;
+}
+
+/* ── 二次元 Galgame 梦幻质感增强工具类 ── */
+.title-gradient {
+  background: linear-gradient(135deg, var(--text-primary) 0%, var(--mood-love-text) 52%, var(--accent-violet) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 10px var(--accent-glow));
+}
+
+/* ── 键盘快捷键徽章 (<kbd> Keyboard Shortcut Badge) ── */
+kbd {
+  @apply tw:inline-flex tw:items-center tw:justify-center tw:min-w-[18px] tw:h-[18px];
+  padding: 0 5px;
+  font-family: var(--font-mono, monospace);
+  @apply tw:text-mono-sm tw:font-semibold tw:leading-flush tw:text-secondary;
+  background: color-mix(in srgb, var(--bg-surface) 85%, white);
+  border: 1px solid var(--border-soft);
+  border-bottom: 2px solid var(--border-strong);
+  border-radius: var(--r-terminal);
+  box-shadow: 0 1px 2px color-mix(in srgb, black 20%, transparent);
+  @apply tw:select-none;
+  vertical-align: baseline;
+}
+
+/* ── 全站互动控件物理微按压反馈 (Tactile Press - Emil Kowalski 哲学) ── */
+:where(
+  .chip,
+  .prompt-tag,
+  .sc-tag
+):active:not(:disabled):not([aria-disabled="true"]) {
+  transform: scale(0.96);
+  transition: transform var(--motion-press) var(--ease-out);
+}
+
+/* Dialogs and overlays use useFluidSurface; a forwards CSS animation would
+   override its opacity/transform and suppress the exit motion. */
+
+/* ============================================================
+   forced-colors（Windows 高对比度模式）适配
+   ------------------------------------------------------------
+   2026-08-28 补齐。系统开启强制颜色时：
+     - box-shadow 与透明玻璃层会被系统色抹掉 —— 依赖它们的焦点环、
+       分隔与层级标识会整个消失；
+     - color-mix / 低透明度叠加同样不可靠。
+   这里用系统色变量（Highlight / CanvasText / ButtonText）补一层
+   "最低限度可辨识"的兜底。真实设备上如有进一步要求，基于此段扩展。
+   ============================================================ */
+@media (forced-colors: active) {
+  /* 焦点环：项目里大量焦点样式用 box-shadow 实现，强制颜色下会消失。
+     统一补 outline 兜底，并让显式 :focus-visible 走系统高亮色。 */
+  :where(a, button, input, select, textarea, summary, [tabindex],
+         [role="button"], [role="tab"], [role="option"], [role="menuitem"],
+         [role="switch"], [role="checkbox"], [role="radio"]):focus-visible {
+    /* 系统高对比度会移除阴影；此处须优先于组件的普通主题样式。 */
+    outline: 2px solid Highlight !important;
+    outline-offset: 2px !important;
+  }
+
+  /* 卡片/面板：玻璃半透明在强制颜色下变平，用实边框重建层级边界 */
+  .card,
+  .panel,
+  .nav,
+  .modal-card {
+    border: 1px solid CanvasText;
+  }
+
+  /* 状态标识：只靠颜色的状态点/徽章，补文字与边框信号 */
+
+  .tag-chip,
+  .badge {
+    border: 1px solid ButtonText;
+  }
+
+  /* 键盘快捷键提示（kbd）：键帽拟物色被覆盖后至少保留边框 */
+  kbd {
+    border: 1px solid ButtonText;
+  }
+
+  /* 图片回退：无法保证对比的装饰性背景直接隐藏，避免噪音 */
+  /* 2026-09-07: .starfield 随装饰层退役移除，此处同步摘除死选择器 */
+  .hero-orbit::after {
+    @apply tw:hidden;
+  }
+}

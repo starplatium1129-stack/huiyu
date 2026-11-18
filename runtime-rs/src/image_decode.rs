@@ -49,6 +49,34 @@ pub(crate) async fn validate_png_file(
     .await
 }
 
+pub(crate) async fn validate_png_bytes(
+    bytes: Arc<Vec<u8>>,
+    digest: Option<[u8; 32]>,
+    cancel: &CancellationToken,
+) -> Result<()> {
+    use sha2::{Digest, Sha256};
+    run(cancel, move |cancel| {
+        if let Some(digest) = digest {
+            let mut hash = Sha256::new();
+            for chunk in bytes.chunks(1024 * 1024) {
+                if cancel.is_cancelled() {
+                    return Err(cancelled());
+                }
+                hash.update(chunk);
+            }
+            if <[u8; 32]>::from(hash.finalize()) != digest {
+                return Err(ApiError::new(
+                    502,
+                    "REMOTE_RESULT_MISMATCH",
+                    "下载的原图与远端任务的 SHA-256 不符",
+                ));
+            }
+        }
+        decode(Cursor::new(bytes.as_slice()), true, cancel)
+    })
+    .await
+}
+
 async fn run(
     work: &CancellationToken,
     decode: impl FnOnce(&CancellationToken) -> Result<()> + Send + 'static,

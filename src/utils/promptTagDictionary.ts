@@ -26,6 +26,7 @@ export interface PromptTagEntry {
   description: string
   source: string
   version: string
+  verification?: PromptTagVerification
 }
 
 const lookupKey = (value: string) => value.trim().toLowerCase().replace(/[\s_]+/g, '_')
@@ -38,14 +39,23 @@ export function createPromptTagDictionary(catalog: readonly PromptTagSource[]) {
     if (!canonicalTag) continue
     const key = lookupKey(canonicalTag)
     const previous = entries.get(key)
+    const zhLabel = previous?.zhLabel || tag.cn?.trim() || ''
+    const seen = new Set([key, lookupKey(zhLabel), ''])
+    const aliases = [...(previous?.aliases ?? []), tag.cn ?? '', ...(tag.aliases ?? [])].filter(alias => {
+      const normalized = lookupKey(alias)
+      if (seen.has(normalized)) return false
+      seen.add(normalized)
+      return true
+    })
     entries.set(key, {
       canonicalTag: previous?.canonicalTag ?? canonicalTag,
-      zhLabel: previous?.zhLabel || tag.cn || '',
-      aliases: [...new Set([...(previous?.aliases ?? []), ...(tag.aliases ?? [])])],
+      zhLabel,
+      aliases,
       category: previous?.category || tag.cat,
       description: previous?.description || tag.desc || '',
       source: previous?.source || tag.source || 'huiyu/tags',
       version: previous?.version || tag.version || '1',
+      verification: previous?.verification ?? tag.verification,
     })
   }
   const aliases = new Map<string, PromptTagEntry | null>()

@@ -1,22 +1,16 @@
 import { resolveRuntimeUrl, runtimeResourceCors } from '../platform/runtimeUrl.ts'
-import { reactive, ref, shallowReactive } from 'vue'
+import { reactive, shallowReactive } from 'vue'
 import {
   SentenceBuffer, extractSpokenDialogue, inferEmotion, isAbortError,
 } from '../utils/stream.ts'
 import { voiceApi } from '../api/voiceApi.ts'
 import { ApiClientError } from '../api/client.ts'
-import { VoicePcmStream } from './voicePcmStream.ts'
+import type { VoicePcmStream } from './voicePcmStream.ts'
 import { VoiceReplayCache } from './voiceReplayCache.ts'
 import { playVoiceAudio, removeAudioSource, type AudioWithSource, type AudioEndReason } from './voiceAudioPlayback.ts'
 
-export interface VoiceAvailability {
-  online: boolean; available?: boolean
-  voices?: Record<string, boolean>
-  translation?: { ready: boolean }
-  activeVoice?: string
-  streamingPcm?: boolean
-  error?: string
-}
+export type { VoiceAvailability } from './useVoicePreparation.ts'
+import { useVoicePreparation, voiceErrorMessage } from './useVoicePreparation.ts'
 
 interface VoiceTurn {
   mid: string
@@ -52,41 +46,7 @@ interface QueuedClip extends SynthesizedClip {
   observed?: boolean
 }
 
-interface StatusError extends Error {
-  status?: number
-  detail?: unknown
-}
-
 type AudioContextConstructor = new () => AudioContext
-
-function errorMessage(error: unknown): string {
-  if (!(error instanceof Error)) return String(error)
-  const rawDetail = (error as StatusError).detail
-  const detail = typeof rawDetail === 'string'
-    ? rawDetail.replace(/\s+/g, ' ').trim().slice(0, 240)
-    : ''
-  return detail && !error.message.includes(detail) ? `${error.message}：${detail}` : error.message
-}
-
-function isRecord(value: unknown): value is Record<string, unknown> { return typeof value === 'object' && value !== null }
-
-function readVoiceAvailability(value: unknown): VoiceAvailability {
-  if (!isRecord(value)) throw new Error('语音状态响应格式无效')
-  const voices = isRecord(value.voices)
-    ? Object.fromEntries(Object.entries(value.voices).map(([key, available]) => [key, Boolean(available)]))
-    : {}
-  const translation = isRecord(value.translation)
-    ? { ready: Boolean(value.translation.ready) }
-    : undefined
-  return {
-    online: Boolean(value.online), available: value.available === true,
-    voices,
-    translation,
-    activeVoice: typeof value.activeVoice === 'string' ? value.activeVoice : undefined,
-    streamingPcm: value.streamingPcm === true,
-    error: typeof value.error === 'string' ? value.error : undefined,
-  }
-}
 
 function playbackError(reason: AudioEndReason): string {
   if (reason === 'load-timeout') return '语音生成超时，请点击重播再试。'
@@ -110,7 +70,8 @@ export function useVoice(options: {
   const { enabled, onStatus = () => {}, onError = () => {}, onSpeaking = () => {},
     onExpression = () => {}, onMouth = () => {}, onAudioLevel = () => {}, onActivity = () => {} } = options
 
-  const availability = ref<VoiceAvailability>({ online: false, voices: {} })
+  const preparation = useVoicePreparation(enabled, onStatus, onError)
+  const { availability, refreshAvailability, readyFor, prepare } = preparation
 
   // 内部不需要响应式的可变状态
   // GPT-SoVITS is much more stable with a little sentence context. Holding a
@@ -132,52 +93,10 @@ export function useVoice(options: {
   const replayCache = new VoiceReplayCache()
   let audioContext: AudioContext | null = null, analyser: AnalyserNode | null = null
   let gainNode: GainNode | null = null, lipFrame = 0, lipSmooth = 0
-  let prepareKey = '', preparing: Promise<boolean> | null = null
   let turn: VoiceTurn | null = null, _lastEmotion = 'neutral', _neutralStreak = 0
   let _warnedTranslation = false, _warnedAnalyser = false
   let cancelPlayback: (() => void) | null = null, cancelReplay: (() => void) | null = null
-  let prepareRevision = 0, availabilityRevision = 0, destroyed = false, volume = 1
-  let prepareController: AbortController | null = null
-
-  async function refreshAvailability() {
-    const revision = ++availabilityRevision
-    try {
-      const value = readVoiceAvailability(await voiceApi.getStatus())
-      if (!destroyed && revision === availabilityRevision) availability.value = value
-    } catch (e) { if (!destroyed && revision === availabilityRevision) availability.value = { online: false, voices: {}, error: errorMessage(e) } }
-    return availability.value
-  }
-
-  function readyFor(voice: string) {
-    return Boolean((availability.value.online || availability.value.available) && availability.value.voices?.[voice])
-  }
-
-  function prepare(voice: string, needsTranslation = true): Promise<boolean> {
-    if (destroyed || !enabled()) return Promise.resolve(false)
-    if (!readyFor(voice)) return Promise.resolve(false)
-    const translationReady = !needsTranslation || Boolean(availability.value.translation?.ready)
-    const key = voice + ':' + needsTranslation
-    if (preparing && prepareKey === key) return preparing
-    if (!preparing && availability.value.activeVoice === voice && translationReady) { prepareKey = key; return Promise.resolve(true) }
-    const revision = ++prepareRevision
-    prepareController?.abort()
-    prepareController = new AbortController()
-    prepareKey = key
-    onStatus(needsTranslation ? '正在预热声线与翻译…' : '正在预热角色声线…')
-    preparing = voiceApi.prepare({ voice, translation: needsTranslation }, { signal: prepareController.signal }).then(() => {
-      if (revision !== prepareRevision || destroyed) return false
-      availability.value.activeVoice = voice
-      if (needsTranslation) availability.value.translation = { ...(availability.value.translation ?? {}), ready: true }
-      onStatus(''); return true
-    }).catch((e) => {
-      if (revision === prepareRevision && !destroyed && !isAbortError(e)) {
-        if (e instanceof ApiClientError && ['COMFY_RELEASE_UNCONFIRMED', 'DRAWING_BUSY', 'VOICE_BUSY', 'TTS_UNAVAILABLE', 'TTS_FAILED', 'TERMINATION_UNCONFIRMED'].includes(e.code || '')) onError(e.message)
-        else onStatus('声线会在首次播放时加载')
-      }
-      return false
-    }).finally(() => { if (revision === prepareRevision) { preparing = null; prepareController = null } })
-    return preparing
-  }
+  let destroyed = false, volume = 1
 
   function ensureAudioContext() {
     if (destroyed) return
@@ -211,7 +130,7 @@ export function useVoice(options: {
 
   function startTurn(meta: { mid: string; voice: string; character: string }) {
     if (destroyed) return
-    stop({ preserveMessageAudio: true, silent: true, preservePreparation: enabled() && prepareKey === meta.voice + ':true' })
+    stop({ preserveMessageAudio: true, silent: true, preservePreparation: enabled() && preparation.matches(meta.voice, true) })
     if (enabled()) ensureAudioContext(); session++
     controller = new AbortController()
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve()
@@ -239,7 +158,7 @@ export function useVoice(options: {
     const signal = controller.signal; pending++; if (!playing) onStatus('语音合成中…'); notifyActivity()
     const prepared = (translateChain = translateChain
       .then(() => sess !== session || signal.aborted ? null : prepareSentence(sentence, meta, signal))
-      .catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)); return null }))
+      .catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + voiceErrorMessage(e)); return null }))
     synthChain = synthChain.then(async () => {
       const req = await prepared
       if (!req || sess !== session || signal.aborted) return null
@@ -252,7 +171,7 @@ export function useVoice(options: {
       clips.push(stored); messageAudio.set(meta.mid, clips)
       queue.push({ ...item, mid: meta.mid, session: sess, recorded: stored })
       pump(sess); prefetch()
-    }).catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + errorMessage(e)) })
+    }).catch(e => { if (!isAbortError(e) && sess === session) onError('一句配音失败（不影响聊天）：' + voiceErrorMessage(e)) })
     .finally(() => {
       if (sess !== session) return; pending = Math.max(0, pending - 1)
       if (pending === 0 && !playing && !queue.length) onStatus('')
@@ -319,8 +238,12 @@ export function useVoice(options: {
     // its errors and cancellation; this step only selects the playback route.
     if (signal.aborted) throw new DOMException('aborted', 'AbortError')
     const url = await requestTts(request, meta)
+    if (!availability.value.streamingPcm) return { url, emotion: request.emotion }
+    // A missing streaming chunk can still play the same sentence through the whole-clip route.
+    const pcm = await import('./voicePcmStream.ts').catch(() => null)
+    signal.throwIfAborted()
     return { url, emotion: request.emotion,
-      ...(availability.value.streamingPcm ? { stream: new VoicePcmStream(url.replace('/api/tts?', '/api/tts-stream?')) } : {}) }
+      ...(pcm ? { stream: new pcm.VoicePcmStream(url.replace('/api/tts?', '/api/tts-stream?')) } : {}) }
   }
 
   function observeStream(item: QueuedClip) {
@@ -417,7 +340,7 @@ export function useVoice(options: {
         if (item.recorded && !item.recorded.url && messageAudio.get(item.mid)?.includes(item.recorded)) {
           item.recorded.url = item.url
         }
-        onError('一句配音失败：' + errorMessage(e))
+        onError('一句配音失败：' + voiceErrorMessage(e))
       })
         .finally(() => {
           if (sess !== session || currentPcm !== stream) return
@@ -495,7 +418,7 @@ export function useVoice(options: {
 
   function stop(opts: { preserveMessageAudio?: boolean; silent?: boolean; preservePreparation?: boolean } = {}) {
     session++; controller?.abort(); controller = null; turn = null
-    if (!opts.preservePreparation) { prepareRevision++; prepareKey = ''; preparing = null; prepareController?.abort(); prepareController = null }
+    if (!opts.preservePreparation) preparation.cancelPreparation()
     cancelPlayback?.(); cancelPlayback = null
     cancelReplay?.(); cancelReplay = null
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve(); pending = 0
@@ -514,9 +437,9 @@ export function useVoice(options: {
   }
 
   function destroy() {
-    destroyed = true; availabilityRevision++
+    destroyed = true; preparation.dispose()
     document.removeEventListener('visibilitychange', onVisibilityChange)
-    stop({ preserveMessageAudio: false, silent: true })
+    stop({ preserveMessageAudio: false, silent: true, preservePreparation: true })
     releaseAudioContext()
   }
 

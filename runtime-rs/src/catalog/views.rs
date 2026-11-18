@@ -40,6 +40,13 @@ impl Catalog {
             )?
             .exists([id])?)
     }
+    pub(crate) fn portrait_image(&self, id: &str) -> Result<Option<String>> {
+        Ok(self.connection.query_row(
+            "SELECT payload->>'$.profile.portrait.image' FROM content_records
+             WHERE kind='character' AND id=?1 AND deleted=0 AND json_type(payload,'$.profile.portrait.image')='text'",
+            [id], |row| row.get(0),
+        ).optional()?)
+    }
     pub fn next_scene_id(&self) -> Result<String> {
         let highest: i64=self.connection.query_row("SELECT COALESCE(MAX(CAST(substr(id,3) AS INTEGER)),0) FROM content_records WHERE kind='scene'",[],|r|r.get(0))?;
         let retired = self.document("retired-scenes")?;
@@ -100,6 +107,33 @@ impl Catalog {
         Ok(value)
     }
     pub(super) fn projection_owned(&self, name: &str) -> Result<Option<Value>> {
+        if name == "popular-directory.json" {
+            let mut statement = self.connection.prepare(
+                "SELECT json_object(
+                    'id', payload->>'$.popular.id', 'displayName', payload->>'$.popular.displayName',
+                    'originalName', payload->>'$.popular.originalName', 'franchise', payload->>'$.popular.franchise',
+                    'aliases', payload->'$.popular.aliases', 'characterTokens', payload->'$.popular.characterTokens',
+                    'portraitPending', json(CASE WHEN payload->>'$.profile.portrait.image'='../assets/characters/portrait-pending.svg'
+                        THEN 'true' ELSE 'false' END))
+                 FROM content_records WHERE kind='character' AND deleted=0 AND json_type(payload,'$.popular')='object'
+                 ORDER BY sort_order,id",
+            )?;
+            let rows = statement
+                .query_map([], |row| json_column(row, 0))?
+                .collect::<rusqlite::Result<Vec<_>>>()?;
+            return Ok(Some(Value::Array(rows)));
+        }
+        if name == "scene-titles.json" {
+            let mut statement = self.connection.prepare(
+                "SELECT id,title FROM content_records WHERE kind='scene' AND deleted=0 ORDER BY sort_order,id",
+            )?;
+            let rows = statement
+                .query_map([], |row| {
+                    Ok(json!({"id": text_column(row, 0)?, "title": text_column(row, 1)?}))
+                })?
+                .collect::<rusqlite::Result<Vec<_>>>()?;
+            return Ok(Some(Value::Array(rows)));
+        }
         if name == "tags-dictionary.json" {
             let tags = self.document("tags")?;
             let policy = self.document("tag-dictionary-policy")?;
@@ -279,6 +313,8 @@ impl Catalog {
 }
 pub(super) fn projected_file(name: &str) -> bool {
     [
+        "popular-directory.json",
+        "scene-titles.json",
         "characters.json",
         "popular-characters.json",
         "scene-blueprints.json",

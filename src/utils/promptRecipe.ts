@@ -3,14 +3,22 @@ import { buildStudioPromptPlan, type StudioPromptOptions } from './studioPromptB
 import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
 import { isManualDirectorValue } from './promptDirector.ts'
 import { buildFreePromptPlan, type FreePromptOptions } from './freePromptBuilder.ts'
+import { matchingRandomSetting } from './randomSceneSettings.ts'
 
-export type PromptRecipe =
+export type PromptRecipe = (
   | ({ kind: 'popular' } & PopularPromptOptions)
   | ({ kind: 'studio' } & StudioPromptOptions)
   | ({ kind: 'free' } & FreePromptOptions)
+) & { randomSetting?: boolean }
 
 /** Complete content-to-prompt entry point. Callers select inputs; they never append rendered text. */
 export function compilePromptRecipe(recipe: PromptRecipe) {
+  // Recheck the current controls on every compilation. Editing an anchor or light
+  // retires its caption, and an explicit user description always owns the prose.
+  if (recipe.randomSetting && !recipe.visualDescription?.trim()) {
+    const setting = matchingRandomSetting(recipe.manual ?? [], recipe.lighting)
+    if (setting) recipe = { ...recipe, backgroundProse: setting.caption }
+  }
   if (recipe.kind === 'studio') return buildStudioPromptPlan(recipe)
   if (recipe.kind === 'free') return {
     ...buildFreePromptPlan(recipe), profile: recipe.engine === 'moss' ? null : recipe.profile ?? null,

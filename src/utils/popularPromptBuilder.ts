@@ -42,6 +42,7 @@ export interface PopularPromptOptions {
   directorSources?: DirectorControlSources
   /** 用户补充的画面描述；只追加，不得替换角色服装。 */
   visualDescription?: string
+  backgroundProse?: string
   negativeCustom?: string
   /** Model-specific style recipe; omitted values inherit the blueprint's recipe. */
   style?: ResolvedStyle | null
@@ -216,6 +217,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
   const originalSceneProse = [
     // 成人场景：裸体叙述前置，避免被服装散文压过（Krea 2 自然语言模型对句首描述权重最高）。
     ...(nsfwProse ? [nsfwProse] : []),
+    options.backgroundProse,
     engine === 'moss' ? blueprint?.promptProse || blueprint?.animaCaption : blueprint?.promptProse,
   ].filter(Boolean).join(' ')
 

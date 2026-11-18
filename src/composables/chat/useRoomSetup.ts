@@ -12,7 +12,6 @@ export interface UseRoomSetupOptions {
   currentCharacter: ComputedRef<CharacterConfig>
   voice: ReturnType<typeof useVoice>
   refreshChatStatus: () => Promise<void>
-  updateVoiceCapability: () => void
   setError: (message: string, kind?: string, timeout?: number) => void
   isDisposed: () => boolean
 }
@@ -27,10 +26,34 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
     currentCharacter,
     voice,
     refreshChatStatus,
-    updateVoiceCapability,
     setError,
     isDisposed,
   } = options
+
+  const voiceCapabilityState = ref('offline')
+  const voiceCapabilityText = ref('检查语音…')
+  const showVoiceRecovery = ref(false)
+
+  function updateVoiceCapability() {
+    const voiceId = currentCharacter.value.voice
+    if (!voiceId) {
+      voiceCapabilityText.value = '文字聊天'
+      voiceCapabilityState.value = 'text-only'
+      showVoiceRecovery.value = false
+    } else if (voice.readyFor(voiceId)) {
+      voiceCapabilityText.value = voice.availability.value.online ? 'AI 声线就绪' : 'AI 声线按需加载'
+      voiceCapabilityState.value = voice.availability.value.online ? 'ready' : 'warning'
+      showVoiceRecovery.value = false
+    } else if (voice.availability.value.online || voice.availability.value.available) {
+      voiceCapabilityText.value = '声线未配置'
+      voiceCapabilityState.value = 'warning'
+      showVoiceRecovery.value = true
+    } else {
+      voiceCapabilityText.value = '语音未启动'
+      voiceCapabilityState.value = 'offline'
+      showVoiceRecovery.value = true
+    }
+  }
 
   const preparingRoom = ref(false)
   const roomSetupText = ref('一键切到聊天优先：释放受管绘图显存，并启动角色语音服务。')
@@ -171,6 +194,7 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
   }
 
   return {
+    voiceCapabilityState, voiceCapabilityText, showVoiceRecovery, updateVoiceCapability,
     preparingRoom,
     setupTitle,
     setupDescription,

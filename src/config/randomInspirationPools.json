@@ -1,12 +1,5 @@
 {
-  "version": 1,
-  "emotionFamily": {
-    "happy": "happy", "joyful": "happy", "relaxed": "happy",
-    "sad": "sad", "moved": "sad", "miss": "sad", "wronged": "sad",
-    "calm": "calm", "gentle": "calm", "sleepy": "calm",
-    "serious": "serious", "nervous": "serious",
-    "love": "love", "shy": "love", "spoiled": "love", "expect": "love"
-  },
+  "version": 2,
   "colorMoodLink": {
     "happy": ["joy", "love"], "joyful": ["joy", "love"], "relaxed": ["calm", "warmth"],
     "sad": ["sad", "tension"], "moved": ["sad", "joy"], "miss": ["sad", "tension"], "wronged": ["sad"],

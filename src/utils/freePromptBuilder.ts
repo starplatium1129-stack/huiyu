@@ -19,6 +19,7 @@ export interface FreePromptOptions {
   artistTags?: readonly string[]
   artistProse?: string
   visualDescription?: string
+  backgroundProse?: string
   /** Classification candidates only; unentered characters and works are never injected. */
   characterTokens?: readonly string[]
   copyrightTokens?: readonly string[]
@@ -57,7 +58,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
   if (input.engine === 'moss') {
     const tagKeys = new Set(tokenize(tags).map(tagKey))
     const plan = createPromptPlan({
-      freeSubject: true, scenePrompt: manual.join(', '), artists: artistTags,
+      freeSubject: true, scenePrompt: manual.join(', '), artists: artistTags, sceneProse: input.backgroundProse,
       emotion, camera: [camera], lighting: [lighting], composition: [composition], palette, manual,
       characterTokens: (input.characterTokens || []).filter(tag => tagKeys.has(tagKey(tag))),
       copyrightTokens: (input.copyrightTokens || []).filter(tag => tagKeys.has(tagKey(tag))),
@@ -70,7 +71,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
     const plan = createPromptPlan({
       freeSubject: true,
       scenePrompt: manual.join(', '),
-      sceneProse: description,
+      sceneProse: description || input.backgroundProse,
       emotion,
       camera: [camera],
       lighting: [lighting],
@@ -89,7 +90,7 @@ export function buildFreePromptPlan(input: FreePromptOptions): FreePromptResult 
     freeSubject: true,
     profile,
     scenePrompt: sourceTags,
-    sceneProse: description,
+    sceneProse: description || input.backgroundProse,
     artists: artistTags,
     manual,
     camera: [camera],

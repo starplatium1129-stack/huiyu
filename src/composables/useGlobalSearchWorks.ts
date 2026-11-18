@@ -1,8 +1,10 @@
-import { computed, onScopeDispose, shallowRef, type Ref } from 'vue'
+import { computed, onScopeDispose, shallowRef, watch, type Ref } from 'vue'
 import { artworkRepository } from '@/storage/artworkRepository'
+import { onDesktopRuntime } from '@/platform/desktop/runtime'
+import { imageMediaSession } from '@/platform/imageMediaSession'
 import { indexArtworkSearch } from '@/utils/artworkSearch'
 
-export function useGlobalSearchWorks(query: Readonly<Ref<string>>) {
+export function useGlobalSearchWorks(open: Readonly<Ref<boolean>>, query: Readonly<Ref<string>>) {
   const works = shallowRef<ReturnType<typeof indexArtworkSearch> | null>(null)
   const controller = shallowRef<AbortController | null>(null)
   const worksError = shallowRef('')
@@ -18,8 +20,8 @@ export function useGlobalSearchWorks(query: Readonly<Ref<string>>) {
   }
 
   function loadWorks() {
-    if (worksError.value) return
     resetWorks()
+    if (!open.value || !query.value.trim()) return
     const request = new AbortController()
     controller.value = request
     const text = query.value
@@ -29,13 +31,17 @@ export function useGlobalSearchWorks(query: Readonly<Ref<string>>) {
         if (request.signal.aborted) return
         works.value = indexArtworkSearch(raw)
       } catch {
-        if (!request.signal.aborted) worksError.value = '作品读取失败，请关闭搜索后重开以重试。'
+        if (!request.signal.aborted) worksError.value = '作品暂时无法读取。'
       } finally {
         if (controller.value === request) controller.value = null
       }
     }, 150)
   }
 
-  onScopeDispose(resetWorks)
-  return { works, worksError, worksLoading, loadWorks, resetWorks }
+  const source = shallowRef(imageMediaSession())
+  const stopRuntime = onDesktopRuntime(() => { source.value = imageMediaSession() })
+  watch(imageMediaSession, session => { source.value = session }, { flush: 'sync' })
+  watch([open, query, source], loadWorks, { flush: 'sync' })
+  onScopeDispose(() => { stopRuntime(); resetWorks() })
+  return { works, worksError, worksLoading, retryWorks: loadWorks }
 }

@@ -6,6 +6,9 @@ import { beginGalleryProjectRead, captureGallerySource, galleryProjects, type Ga
 import { imageMediaSession } from '@/platform/imageMediaSession'
 import { onDesktopRuntime } from '@/platform/desktop/runtime'
 
+const PAGE_SIZE = 24
+const MAX_PAGE_SIZE = 200
+
 /** Only requested pages enter Vue. Counts and cover representatives come from the authority. */
 export function useGalleryQuery(options: {
   history: Ref<ArtworkRecord[]>; projects: Ref<GalleryProject[]>; loading: Ref<boolean>; reading: Ref<boolean>; error: Ref<string>
@@ -23,7 +26,7 @@ export function useGalleryQuery(options: {
   }
   const stopRuntime = onDesktopRuntime(invalidate)
   watch(imageMediaSession, invalidate, { flush: 'sync' })
-  function read(reset: boolean, refreshCatalog: boolean, retain = 24): Promise<boolean> {
+  function read(reset: boolean, refreshCatalog: boolean, retain = PAGE_SIZE): Promise<boolean> {
     if (!enabled.value || !options.active()) return Promise.resolve(false)
     if (!reset && flight) return flight
     cancel(); started = true
@@ -36,7 +39,7 @@ export function useGalleryQuery(options: {
     const operation = (async () => {
       try {
         const [page, initialDirectory, initialProjects] = await Promise.all([
-          source.repository.readGalleryPage!(query, firstCursor, abort.signal),
+          source.repository.readGalleryPage!(query, firstCursor, abort.signal, Math.min(MAX_PAGE_SIZE, Math.max(PAGE_SIZE, retain))),
           refreshCatalog ? source.repository.readGalleryCatalog!(abort.signal) : null,
           refreshCatalog ? source.repository.readProjects() : null,
         ])
@@ -51,7 +54,8 @@ export function useGalleryQuery(options: {
         if (reset && page.items.length < retain) {
           const ids = new Set(page.items.map(item => String(item.id).trim()))
           while (page.items.length < retain && page.nextCursor) {
-            const next = await source.repository.readGalleryPage!(query, page.nextCursor, abort.signal)
+            const limit = Math.min(MAX_PAGE_SIZE, retain - page.items.length)
+            const next = await source.repository.readGalleryPage!(query, page.nextCursor, abort.signal, limit)
             if (!current()) return false
             for (const item of next.items) {
               const id = String(item.id).trim()
@@ -83,7 +87,7 @@ export function useGalleryQuery(options: {
   async function more() { return !hasMore.value || await read(false, false) }
   async function all() {
     const query = JSON.stringify(options.query()), source = imageMediaSession()
-    while (hasMore.value) if (!await more() || query !== JSON.stringify(options.query()) || source !== imageMediaSession()) return false
+    while (hasMore.value) if (!await read(false, false, MAX_PAGE_SIZE) || query !== JSON.stringify(options.query()) || source !== imageMediaSession()) return false
     return !options.error.value
   }
   async function refresh() {

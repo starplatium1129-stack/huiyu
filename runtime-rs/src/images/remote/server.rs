@@ -1,5 +1,5 @@
 use super::super::*;
-use super::{COMPLETION_HEADER, COMPLETION_WAIT, guide};
+use super::{COMPLETION_HEADER, COMPLETION_WAIT, UploadIndex, guide, upload_index};
 use axum::{
     Extension, Router,
     extract::{ConnectInfo, OriginalUri, Path, Query, Request, State},
@@ -39,6 +39,7 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
                 | "/api/muse/queue"
                 | "/api/muse/batches"
                 | guide::PATH
+                | upload_index::PATH
         )
         || request.uri().path().starts_with("/api/muse/catalog/")
         || request.uri().path().starts_with("/api/muse/batches/");
@@ -87,16 +88,26 @@ async fn completion(
     let status = if let Ok(_slot) = slots.try_acquire() {
         let images = state.images.as_ref().ok_or_else(closed)?;
         let owner = generation::request_owner(&headers, peer, &query);
-        if let Some(receipt) = images
+        if let Some((receipt, ready)) = images
             .wait_request_completion(&key, &owner, http::family(&uri), COMPLETION_WAIT)
             .await?
         {
-            if query.get("receipt").is_some_and(|value| value == "1") {
+            let status = if ready {
+                StatusCode::NO_CONTENT
+            } else {
+                StatusCode::ACCEPTED
+            };
+            if query.get("receipt").is_some_and(|value| value == "1")
+                && (ready || query.get("progress").is_some_and(|value| value == "1"))
+            {
                 let mut value = images.receipt_value(receipt).await?;
                 value["found"] = json!(true);
-                return Ok(http::response(Ok(value), StatusCode::OK));
+                return Ok(http::response(
+                    Ok(value),
+                    if ready { StatusCode::OK } else { status },
+                ));
             }
-            StatusCode::NO_CONTENT
+            status
         } else {
             StatusCode::ACCEPTED
         }
@@ -123,6 +134,11 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
             }
         };
     let mut app = super::super::router(images.clone())
+        .merge(upload_index::router())
+        .layer(Extension(Arc::new(UploadIndex::new(inputs::root(
+            &images.config,
+            true,
+        )))))
         .layer(Extension(guide::Guide))
         .merge(super::muse::router(images, state.host.clone()))
         .route(guide::PATH, get(guide::read))

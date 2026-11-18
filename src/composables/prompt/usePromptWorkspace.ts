@@ -1,3 +1,4 @@
+import { BUSY_HINT, usePromptRenderControls } from './usePromptRenderControls';
 import { useGeneratedSceneCapture } from './useGeneratedSceneCapture';
 import { snapshotResult,type ResultSnapshot } from './promptResultSnapshot';
 
@@ -136,26 +137,8 @@ export function usePromptWorkspace() {
     const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备高清重绘…' : compositionPreparing.value ? '正在准备构图…' : '',
         () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value),
         () => { void animaSession.recover(); });
-    // SD 直写 sdSize；Anima/Krea 2 通过底模的尺寸规则同步双引擎。
-    const genBarSize = computed({
-        get: () => drawEngine.value === 'sd'
-            ? sdSize.value
-            : `${animaState.value.width}x${animaState.value.height}`,
-        set: (value: string) => {
-            if (drawEngine.value === 'sd') { sdSize.value = value; pb.markParamTouched('size'); }
-            else
-                applyRecommendedSize(value);
-        },
-    });
-    /** 画幅预设保留当前生效尺寸，供紧凑选择器显示。 */
-    const animaBarSizes = computed<string[]>(() => {
-        const activeModel = animaState.value.models.find(model => model.id === animaState.value.modelId);
-        const sizes = activeModel?.sizes?.length ? [...activeModel.sizes] : ['832x1216', '1024x1024', '1216x832'];
-        const current = `${animaState.value.width}x${animaState.value.height}`;
-        if (!sizes.includes(current))
-            sizes.unshift(current);
-        return sizes;
-    });
+    const { genBarSize, animaBarSizes, resetSdParams, engineTitle, generateBlockReason } =
+        usePromptRenderControls({ pb, sdSize, drawEngine, animaState, livePrompt }, engine, generationBusy);
     // ── 热门角色编排层（2026-08-28 编排下沉）：subject/服装/蓝图选择与轮换、
     // 蓝图池过滤与推荐、受控绘图路线、热门草稿恢复。
     const materials = usePromptMaterials({
@@ -260,63 +243,6 @@ export function usePromptWorkspace() {
         popularCharacters: () => sceneStore.popularCharacters,
         currentLivePrompt: () => livePrompt.value,
     };
-    // 普通跨页保留工作台任务；整页重载交由全局路由提示。
-    /**
-     * 出图前的可见校验（2026-08-30 UX 审计 P1）。
-     *
-     * 规则必须与 callGenerate 里的守卫保持一致：两处一旦漂移，结果就是「按钮亮着
-     * 但点了才报错」，比没校验更让人困惑。callGenerate 的守卫保留作防御，这里
-     * 负责让原因在点之前就看得见。
-     */
-    /**
-     * 出图参数恢复底模推荐值（2026-08-30 UX 审计 P1）。
-     *
-     * 默认值按 checkpoint 匹配 profile，只有 store 知道，所以实际动作在 store 里；
-     * 这里只负责如实反馈结果——套不上档位时也要说，不能点了没反应。
-     */
-    function resetSdParams() {
-        if (pb.resetParamsToProfile()) {
-            applyRecommendedSize(pb.lastRecommendedSize);
-            pb.flash('已恢复这套底模的推荐参数');
-        }
-        else
-            pb.flash('当前底模没有对应的推荐参数档位，未能恢复');
-    }
-    /**
-     * 生成中禁用控件的统一说明（2026-08-30 UX 审计 P2）。
-     *
-     * 同样的文案在 DirectorStagePanel 里也有一份，改动时记得两边一起改。
-     */
-    const BUSY_HINT = '生成中，请稍候';
-    /**
-     * 引擎按钮的悬停说明：优先讲「为什么点不了」。
-     *
-     * 顺序是 生成中 > 该引擎不支持当前配置。原先这些按钮在生成中冒出来的仍是
-     * 功能介绍，用户面对「点不动 + 一堆功能说明」只会以为软件坏了。
-     */
-    function engineTitle(engine: DrawEngine) {
-        if (generationBusy.value)
-            return BUSY_HINT;
-        if (engine === 'sd')
-            return pb.isPopular ? '热门角色仅支持 Anima 无 LoRA 或 Krea 2' : undefined;
-        if (!pb.isPopular && pb.char === 'triad' && !supportsDualCharacter(engine)) {
-            return '双人模式请使用 SD 引擎';
-        }
-        return undefined;
-    }
-    const generateBlockReason = computed(() => {
-        if (drawEngine.value === 'sd')
-            return '当前仅查看旧 SD 成片；新生成请切到 Anima 或 Krea 2';
-        if (!livePrompt.value)
-            return '先选择场景或填写故事';
-        if (!engineOnline.value)
-            return engineStatusText.value;
-        if (drawEngine.value === 'anima' && !pb.isPopular && !pb.isUnbound) {
-            if (pb.char === 'triad' && !currentCapabilities.value.dualCharacter) return '当前模型不支持双角色，请选择单个角色';
-            if (currentCapabilities.value.lora && currentCapabilities.value.characterIdentity && (animaState.value.characterLoraEnabled === false ? !currentCapabilities.value.noLora : !animaState.value.loraId)) return animaState.value.characterLoraEnabled === false ? '当前底模不支持无角色 LoRA，请更换底模或启用角色 LoRA' : '缺少角色 LoRA，请准备角色包，或关闭角色 LoRA';
-        }
-        return '';
-    });
     /** 分类恢复：对应旧版 runSDRecovery */
     async function copyPrompt() {
         const copied = await copyText(previewPromptView.value);

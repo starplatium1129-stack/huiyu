@@ -34,7 +34,6 @@ export function useGalleryWorkspace() {
     const router = useRouter();
 
     const history = ref<ArtworkRecord[]>([]), projects = ref<GalleryProject[]>([]);
-    const scenes = computed(() => sceneStore.scenes), loras = computed(() => sceneStore.loras);
     const galleryLoading = ref(true), galleryIndexLoading = ref(false), galleryError = ref('');
     const infoOpen = ref(false);
     // Legacy/imported artwork IDs may also be Object prototype property names.
@@ -226,12 +225,12 @@ export function useGalleryWorkspace() {
     const stopComparisonRuntime = onDesktopRuntime(refreshComparisonSession);
     const stopComparisonResources = watch(runtimeResourceIdentity, refreshComparisonSession, { flush: 'sync' });
 
-    const facts = computed(() => artworkFacts(current.value, loras.value));
+    const facts = computed(() => artworkFacts(current.value, sceneStore.loras));
     /* ---------- 工具函数 ---------- */
     function sceneTitle(id: string | null | undefined, item?: ArtworkRecord) {
-        return resolveSceneTitle(id, item, scenes.value, sceneStore.popularCharacters);
+        return resolveSceneTitle(id, item, sceneStore.sceneTitles, sceneStore.directoryCharacters);
     }
-    function characterName(v: string | undefined, item?: ArtworkRecord) { return resolveCharacterName(v, item, sceneStore.popularCharacters); }
+    function characterName(v: string | undefined, item?: ArtworkRecord) { return resolveCharacterName(v, item, sceneStore.directoryCharacters); }
     /** 时间戳兜底：老记录可能把 timestamp 存成字符串，或干脆没有 */
     function stamp(item: ArtworkRecord): number { return artworkTimestamp(item); }
 
@@ -380,15 +379,13 @@ export function useGalleryWorkspace() {
         comparisonNeedsRead.value = true;
         if (await refreshComparisonRecords(isCurrent) && isCurrent()) comparisonNeedsRead.value = false;
     }
+    watch([() => route.path, () => sceneStore.version], ([path]) => {
+        if (path === '/gallery') void Promise.all([sceneStore.loadCharacterDirectory(), sceneStore.loadSceneTitles(), sceneStore.loadLoraCatalog()])
+            .catch(e => console.warn('gallery labels load failed', e));
+    }, { immediate: true });
     onMounted(async () => {
         unmounted = false;
         document.addEventListener('keydown', onKeydown);
-        // Labels are supplemental: library browsing and saved filters do not
-        // depend on the studio's character/tag/preset/blueprint catalogs.
-        void sceneStore.loadHome()
-            .catch(e => console.warn('gallery scene labels load failed', e));
-        void sceneStore.loadLoraCatalog()
-            .catch(e => console.warn('gallery LoRA labels load failed', e));
         restoreFiltersFromQuery();
         await refreshComparison();
         // 回收站懒清理（2026-08-30 UX 审计 P0-8）：真删超期软删条目的图片与

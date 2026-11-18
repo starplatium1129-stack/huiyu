@@ -1,3 +1,4 @@
+import { useVideoJobProgress, formatSeconds, formatTime } from './useVideoJobProgress'
 import { generationTask, canExecuteVideo } from '@/utils/generationTask'
 
 import { useTrackedTask } from '@/composables/useTaskCenter'
@@ -8,13 +9,10 @@ import { computed,onBeforeUnmount,onMounted,ref,watch,onActivated,onDeactivated 
 
 import { useRoute,useRouter } from 'vue-router'
 
-import { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
-
-
+import { useVideoModeOptions, type StudioMode } from './useVideoModeOptions'
 
 import { cancelVideoJob, fetchVideoJob, fetchVideoStatus,
   type VideoDefaults, type VideoJob, type VideoMode, type VideoStatusResponse } from '@/api/videoApi'
-
 
 import { classifySDError } from '@/utils/sdError'
 
@@ -33,86 +31,6 @@ import { useVideoStudioDraft } from '@/components/video/useVideoStudioDraft'
 
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useVideoWorkspace() {
-
-
-type StudioMode = VideoMode | 'shots'
-
-
-const modes: Array<{ id: StudioMode; label: string; ready: boolean; icon: ArchiveIconName }> = [
-  { id: 'text', label: '文字成片', ready: true, icon: 'play' },
-  { id: 'image', label: '图片动起来', ready: true, icon: 'image' },
-  { id: 'first-last-frame', label: '首尾帧过渡', ready: false, icon: 'gallery' },
-  { id: 'shots', label: '分镜短片', ready: false, icon: 'gallery' },
-]
-
-
-// H3 readiness controls generation, never access to draft editing or recovery.
-const shotsModeReady = computed(() =>
-  status.value?.models.some((model) => model.id === 'minimax-h3' && model.available) === true)
-
-
-// 首尾帧模式门槛：同源 H3（FL2VA 尾帧衔接是 H3 原生节点能力，Wan 5B 无此链路）。
-const firstLastFrameReady = computed(() =>
-  status.value?.models.some((model) =>
-    model.id === 'minimax-h3' && model.available && model.modes.includes('first-last-frame')) === true)
-
-
-function modeReady(mode: StudioMode): boolean {
-  if (mode === 'shots') return true
-  if (mode === 'first-last-frame') return firstLastFrameReady.value
-  return true
-}
-
-
-function modeBadge(mode: StudioMode): string {
-  if (statusLoading.value) return '检测中'
-  if (statusReadError.value) return '待重新检测 · 可编辑'
-  if (!status.value) return '待检测'
-  if (mode !== 'shots' && !status.value.models.some(model => model.modes.includes(mode))) return '当前引擎暂不支持 · 可编辑'
-  const modelReady = mode === 'shots' ? shotsModeReady.value
-    : status.value.models.some(model => model.available && model.modes.includes(mode))
-  if (!modelReady) return modeReady(mode) ? '待装权重 · 可编辑' : '待装权重'
-  return status.value.online ? '可生成' : '离线 · 可编辑'
-}
-
-
-const aspectOptions = computed(() => {
-  const base: Array<{ id: VideoDefaults['aspectRatio']; label: string }> = [
-    { id: 'landscape', label: '横屏' },
-    { id: 'portrait', label: '竖屏' },
-    { id: 'square', label: '方形' },
-  ]
-  if (selectedMode.value === 'image' || selectedMode.value === 'first-last-frame') {
-    base.push({ id: 'original', label: '跟随原图' })
-  }
-  return base
-})
-
-const activeQuality = computed(() =>
-  status.value?.qualities.find(item => item.id === quality.value) ?? null)
-
-const aspectSize = computed(() => (id: string) => {
-  if (id === 'original') return '自动匹配'
-  return activeQuality.value?.sizes[id] ?? ''
-})
-
-const cameraOptions: Array<{ id: VideoDefaults['camera']; label: string }> = [
-  { id: 'still', label: '固定镜头 · 最稳' },
-  { id: 'push', label: '缓慢推进' },
-  { id: 'pull', label: '缓慢拉远' },
-  { id: 'pan', label: '平稳横移' },
-  { id: 'orbit', label: '轻微环绕' },
-]
-
-const motionOptions: Array<{ id: VideoDefaults['motion']; label: string }> = [
-  { id: 'subtle', label: '细微运动 · 最稳' },
-  { id: 'natural', label: '自然动作' },
-  { id: 'expressive', label: '表现动作' },
-]
-
-const durationOptions = computed<Array<VideoDefaults['duration']>>(() =>
-  activeModel.value?.id === 'minimax-h3' ? [3, 5, 10, 15] : [3, 5])
-
 
 const selectedMode = ref<StudioMode>('text')
 
@@ -181,7 +99,6 @@ function invalidateSubmission() {
 const stopSubmitRuntime = onDesktopRuntime(invalidateSubmission)
 const stopSubmitSessionWatch = watch(runtimeResourceIdentity, invalidateSubmission, { flush: 'sync' })
 
-
 /**
  * 视频任务失败的分类报告（2026-08-30 UX 审计）。
  *
@@ -193,15 +110,15 @@ const jobErrorReport = computed(() => {
   return classifySDError({ message: raw }, job.value?.provider || 'comfy')
 })
 
-
 // ── 图片动起来（I2VA）状态：首帧来自绘图页「出视频」的跨页上下文 ────────────
 const videoImageId = ref('')
 
 // ── 首尾帧过渡（FL2VA）状态：首帧可来自绘图页或本地上传，尾帧仅本地上传 ────
 const lastFrameImageId = ref('')
 
-
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
+const { modes, modeReady, modeBadge, aspectOptions, aspectSize, cameraOptions, motionOptions, durationOptions } =
+  useVideoModeOptions(status, statusLoading, statusReadError, selectedMode, quality, activeModel)
 const { nativeVideo, environmentState, environmentLabel, archiveStatus, archiveState } = useVideoEnvironment({
   status, activeModel, statusLoading, statusReadError, job,
 })
@@ -212,40 +129,7 @@ const parsedSeed = computed(() => {
   return Number.isSafeInteger(value) && value >= 0 && value <= 0x7fffffff ? value : null
 })
 
-// Only measured progress is determinate; runtime tasks may provide no sample count.
-function formatSeconds(total: number) {
-  const safe = Math.max(0, Math.round(total))
-  const minutes = Math.floor(safe / 60)
-  const seconds = safe % 60
-  return minutes ? `${minutes} 分 ${seconds} 秒` : `${seconds} 秒`
-}
-
-const progressPercent = computed(() => {
-  const current = job.value
-  if (current?.status === 'succeeded') return 100
-  if (!current || current.needsReview || current.status !== 'running' || typeof current.progress !== 'number') return null
-  return Math.max(0, Math.min(100, Math.round(current.progress * 100)))
-})
-
-/** 运行时间异常预警：超过预估 1.5× 提示、2.5× 判疑似卡死。 */
-const progressWarning = computed<{ level: 'warn' | 'danger'; text: string } | null>(() => {
-  const current = job.value
-  if (!current || current.needsReview || current.status !== 'running' || !current.estimatedSeconds) return null
-  const ratio = current.elapsedSeconds / current.estimatedSeconds
-  if (ratio >= 2.5) {
-    return {
-      level: 'danger',
-      text: `运行时间异常：已运行 ${formatSeconds(current.elapsedSeconds)}，超过预估 ${formatSeconds(current.estimatedSeconds)} 的 2.5 倍。请查看任务日志，必要时取消任务。`,
-    }
-  }
-  if (ratio >= 1.5) {
-    return {
-      level: 'warn',
-      text: `运行时间异常：已 ${formatSeconds(current.elapsedSeconds)}，预估 ${formatSeconds(current.estimatedSeconds)}。可查看任务日志确认进度。`,
-    }
-  }
-  return null
-})
+const { progressPercent, progressWarning, jobStatusLabel } = useVideoJobProgress(job)
 
 /** T8 双时钟是 H3 专属路径：仅选中 minimax-h3 时展示徽章（Wan 走原生工作流，与 T8 无关）。 */
 const t8State = computed(() => {
@@ -275,7 +159,6 @@ const canGenerate = computed(() => {
 // 首尾帧模式素材就绪：首帧（绘图页带入 或 本地上传）与尾帧（本地上传）齐备。
 const firstFrameReady = computed(() =>
   hasFirstFrame.value && hasLastFrame.value)
-
 
 const submitTitle = computed(() => {
   if (jobSelectionPending.value || selectedJobReading.value) return selectedJobError.value ? '请先重新读取所选视频任务' : '正在读取所选视频任务'
@@ -309,16 +192,6 @@ const submitDescription = computed(() => {
   return ''
 })
 
-const jobStatusLabel = computed(() => job.value?.needsReview ? '状态待核对' : ({
-  queued: '排队中',
-  running: '生成中',
-  cancelling: '取消中',
-  succeeded: '已完成',
-  failed: '生成失败',
-  cancelled: '已取消',
-})[job.value?.status || 'queued'])
-
-
 async function loadStatus() {
   if (disposed || !pageActive) return
   statusRequest?.abort()
@@ -348,7 +221,6 @@ async function loadStatus() {
   }
 }
 
-
 // ── 绘图页「出视频」跨页上下文与首帧/尾帧素材（已下沉 useVideoFrames）──────
 // 编辑草稿归 useVideoStudioDraft；接收身份与恢复归 useVideoRequest。
 const {
@@ -365,7 +237,6 @@ const {
   available: () => !disposed && pageActive,
   persistImportedCtx: imageId => videoDraftTools.persistImportedCtx(imageId),
 })
-
 
 const videoDraftTools = useVideoStudioDraft({
   selectedMode, prompt, negative, selectedModelId, aspectRatio, quality,
@@ -396,7 +267,6 @@ async function reconnectVideo() {
   const previousError = reconnectState.value === 'failed' ? statusError.value : ''
   if (await observation.recover() && previousError && statusError.value === previousError) statusError.value = ''
 }
-
 
 async function submitVideo() {
   if (disposed || !pageActive || !canGenerate.value) return
@@ -461,7 +331,6 @@ async function submitVideo() {
   }
 }
 
-
 async function cancelJob(original = false) {
   if (disposed || cancelling.value || !original && (jobSelectionPending.value || selectedJobReading.value)) return
   const preparing = submitRequest
@@ -504,17 +373,10 @@ async function cancelJob(original = false) {
   }
 }
 
-
-function formatTime(timestamp: number) {
-  return new Intl.DateTimeFormat('zh-CN', { hour: '2-digit', minute: '2-digit' }).format(timestamp)
-}
-
-
 // 离开图生视频/首尾帧模式时把「跟随原图」复位，避免文字成片带着 original 画幅被后端 400。
 watch(selectedMode, (mode) => {
   if (mode !== 'image' && mode !== 'first-last-frame' && aspectRatio.value === 'original') aspectRatio.value = 'landscape'
 })
-
 
 let activatedOnce = false, initialRestorePending = true
 

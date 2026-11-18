@@ -1,7 +1,7 @@
 import { normalizeKey, tokenize, splitBreaks, sceneRating } from './promptPrimitives.ts'
 export { normalizeKey, tokenize, splitBreaks, sceneRating } from './promptPrimitives.ts'
-import { WIDE_TOKENS, CLOSE_TOKENS, MID_TOKENS } from './promptFramingTokens.ts'
-import type { PromptPart, PromptEngine, ModelProfile, LoraMeta } from './promptPolicyTypes.ts'
+export { resolveFramingMode, applyFraming } from './sceneFraming.ts'
+import type { PromptPart, PromptEngine, ModelProfile } from './promptPolicyTypes.ts'
 export type { PromptPart, PromptEngine, DrawCapabilities, ModelProfile, LoraMeta } from './promptPolicyTypes.ts'
 import { mutualGroupWithCategory } from './promptDiagnostics.ts'
 export {
@@ -21,7 +21,7 @@ export {
   GAZE_AND_EYE_DETAIL_TOKENS,
 } from './promptDiagnostics.ts'
 export type { MutualGroupCategory, MutualGroupHit, PromptReport } from './promptDiagnostics.ts'
-import { framingShot, type PromptScene } from './sceneFraming.ts'
+import { filterFraming, framingShot, type PromptScene } from './sceneFraming.ts'
 export type { PromptScene } from './sceneFraming.ts'
 // Prompt policy — 从重构前 tools/prompt-policy.js + prompt-builder/prompt.js 迁移
 // 负责：标签格式化、模型 profile 质量/负面前缀、LoRA 权重策略、
@@ -33,22 +33,11 @@ import { compositionIntent, compositionNegative } from './blueprintComposition.t
 
 export { sanitizeSoloTemplate } from './soloTemplateSanitize.ts'
 
-
-
-
-
 /**
  * 引擎/底模能力表：把“这个引擎能不能做 X”从散落硬编码收敛成数据驱动。
  * 后端 AnimaOption.capabilities 是运行时模型白名单；这里作为前端统一视图，
  * 由引擎默认值 + data/presets.json 的 profile.capabilities + 后端模型能力合并。
  */
-
-
-
-
-
-
-
 
 const NEGATIVE_BOILERPLATE = new Set([
   'bad_quality', 'worst_quality', 'low_quality', 'normal_quality', 'worst_detail',
@@ -345,48 +334,6 @@ export function assembleNegative(
   return formatted
 }
 
-// ── Framing（镜头冲突消解） ────────────────────────────────────────────────
-
-
-
-
-
-export function resolveFramingMode(shot?: string | null, manualTags: string[] = []): '' | 'wide' | 'close' | 'mid' {
-  if (shot === 'wide') return 'wide'
-  if (shot === 'close' || shot === 'detail') return 'close'
-  if (shot === 'medium') return 'mid'
-  if (shot) return ''
-  const keys = manualTags.map(normalizeKey)
-  if (keys.some(k => WIDE_TOKENS.has(k))) return 'wide'
-  if (keys.some(k => CLOSE_TOKENS.has(k))) return 'close'
-  if (keys.some(k => MID_TOKENS.has(k))) return 'mid'
-  return ''
-}
-
-/** 同一 prompt 里不能既 close_up 又 full_body：保留当前镜头，剔除冲突项 */
-function filterFraming(text: string, shot?: string | null): string {
-  const mode = resolveFramingMode(shot)
-  if (!mode) return text
-  const drop = mode === 'wide'
-    ? new Set([...CLOSE_TOKENS, ...MID_TOKENS])
-    : mode === 'close'
-      ? new Set([...WIDE_TOKENS, ...MID_TOKENS])
-      : new Set([...WIDE_TOKENS, ...CLOSE_TOKENS])
-  return splitBreaks(text)
-    .map(section => tokenize(section).filter(token => !drop.has(normalizeKey(token))).join(', '))
-    .filter(Boolean)
-    .join(' BREAK ')
-}
-
-export function applyFraming(parts: PromptPart[], shot?: string | null): PromptPart[] {
-  const mode = resolveFramingMode(shot)
-  if (!mode) return parts
-  return parts.map(part => {
-    if (part.cls === 'n' || part.cls === 'l') return part
-    return { ...part, text: filterFraming(part.text, shot) }
-  }).filter(part => part.text.trim())
-}
-
 export function dedupeParts(parts: PromptPart[]): PromptPart[] {
   const positiveSeen = new Set<string>()
   const negativeSeen = new Set<string>()
@@ -480,90 +427,4 @@ export function sceneTemplateText(
   return filterFraming(opts.engine === 'moss' ? template : formatPromptForProfile(template, opts.profile || null, opts.engine || 'sd'), framingShot(opts.shot, scene.camera))
 }
 
-// ── LoRA 权重策略 ─────────────────────────────────────────────────────────
-
-export interface LoraSpec { name: string; weight: number }
-
-export interface SceneLoraRef { name: string; weight: number | null }
-
-/**
- * WAI LoRA 解析器：在场景模板剥离之前读取显式 <lora:name:weight>，
- * 返回原始 name 与作者写的权重（无权重时为 null）。
- */
-export function parseScenePromptLoras(scene: PromptScene | null | undefined): SceneLoraRef[] {
-  const text = String(scene?.prompt || '')
-  const refs: SceneLoraRef[] = []
-  const re = /<lora:([^>:]+)(?::([\d.]+))?>/gi
-  let match
-  while ((match = re.exec(text))) {
-    const name = String(match[1] || '').trim()
-    if (!name) continue
-    const weight = match[2] === undefined ? null : Number(match[2])
-    refs.push({ name, weight: weight !== null && Number.isFinite(weight) ? weight : null })
-  }
-  return refs
-}
-
-/** 历史版本号迁移到 characters.json 的正式模型名。 */
-function canonicalLoraName(name: string, fallbackByChar: Record<string, string>): string {
-  if (/^ayachi_nene_v\d+/i.test(name) && fallbackByChar.nene) return fallbackByChar.nene
-  if (/^shiki_natsume_v\d+/i.test(name) && fallbackByChar.natsume) return fallbackByChar.natsume
-  return name
-}
-
-/**
- * LoRA 权重解析：
- * 场景模板里的显式 <lora:name:weight> 优先（保留作者权重）；没有时才回退到
- * scene.lora / fallbackByChar 并按镜头动态解析（双人 0.62 / 复杂 0.7 /
- * 全身 0.75 / 特写 0.85 / 默认）。
- */
-export function resolveLoraSpecs(
-  character: string,
-  scene: PromptScene | null | undefined,
-  loraMeta: LoraMeta[],
-  fallbackByChar: Record<string, string>,
-  context: { shot?: string | null; manualTags?: Set<string> } = {},
-): LoraSpec[] {
-  const promptRefs = parseScenePromptLoras(scene).map(ref => ({
-    name: canonicalLoraName(ref.name, fallbackByChar),
-    explicit: ref.weight,
-  }))
-  const refs = promptRefs.length
-    ? promptRefs
-    : String(scene?.lora ? scene.lora : (fallbackByChar[character] || ''))
-        .split(',')
-        .map(value => {
-          const clean = value.trim().replace(/^<lora:/i, '').replace(/>$/, '')
-          const parts = clean.split(':')
-          return { name: canonicalLoraName((parts[0] || '').trim(), fallbackByChar), explicit: Number(parts[1]) }
-        })
-        .filter(item => item.name)
-  if (!refs.length) return []
-
-  const dual = character === 'triad' || refs.length > 1
-  const complex = scene && (scene.category === '战斗' || scene.category === 'Active_Sync_Scenes')
-  const mode = resolveFramingMode(context.shot, [...(context.manualTags ?? new Set<string>())])
-  const wide = mode === 'wide'
-  const portrait = mode === 'close'
-
-  return refs.map(ref => {
-    const meta = loraMeta.find(m => m?.name === ref.name) || null
-    const recommended = meta?.recommended_weight || {}
-    let base = Number(meta?.strength?.default)
-    if (!Number.isFinite(base)) base = 0.8
-    const weight = typeof ref.explicit === 'number' && ref.explicit > 0
-      ? ref.explicit
-      : dual ? 0.62
-      : complex ? (Number(recommended.complex_scene) || 0.7)
-      : wide ? (Number(recommended.fullbody) || 0.75)
-      : portrait ? (Number(recommended.portrait) || 0.85)
-      : base
-    return { name: ref.name, weight: Number(Number(weight).toFixed(2)) }
-  })
-}
-
-export function loraSpecText(spec: LoraSpec): string {
-  return `${spec.name}:${spec.weight}`
-}
-
-// ── 结构健康报告 ──────────────────────────────────────────────────────────
+export { parseScenePromptLoras, resolveLoraSpecs, loraSpecText, type LoraSpec, type SceneLoraRef } from './sceneLoras.ts'

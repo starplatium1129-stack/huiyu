@@ -1,0 +1,363 @@
+/* ============================================================
+   Components
+   ============================================================ */
+
+/* ---- Card ---- */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-lg tw:p-s-5;
+  backdrop-filter: none;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--motion-hover);
+}
+.card:hover { @apply tw:border-strong; }
+
+.card-grid {
+  @apply tw:grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  @apply tw:gap-s-4;
+}
+
+/* ---- Card levels · 三级卡片 ----
+   info    L1 静态展示 (详情/列表项/参考)   — 低密度,弱边
+   create  L2 可点击 (网格/选择器)         — 中密度,hover 上移
+   direct  L3 主操作 (单点入口/角色/项目)   — 高密度,accent 渐变边 + 强阴影
+   阶梯: shadow-sm → md → lg
+*/
+.card-info   { background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-lg tw:p-s-5; backdrop-filter: none; box-shadow: var(--shadow-card); }
+.card-create {
+  @apply tw:relative tw:overflow-hidden;
+  background:linear-gradient(145deg,var(--glass-highlight),transparent 34%),var(--bg-surface);
+  border:1px solid var(--border-strong); @apply tw:rounded-lg tw:p-s-3;
+  backdrop-filter:none; box-shadow: var(--shadow-card);
+  transition:transform var(--motion-hover) var(--ease-out);
+}
+.card-create::before {
+  content:""; @apply tw:absolute; inset:0 auto auto 10%; @apply tw:w-[52%] tw:h-[1px];
+  background:linear-gradient(90deg,transparent,var(--glass-specular),transparent);
+  @apply tw:pointer-events-none;
+}
+.card-create:hover { @apply tw:border-strong; }
+.card-direct {
+  @apply tw:relative;
+  background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
+  border: 1px solid var(--accent);
+  @apply tw:rounded-xl tw:p-s-5;
+  box-shadow: var(--shadow-card);
+  transition: transform var(--motion-hover);
+}
+/* 战术切角：右上角 45° 斜切，档案终端质感（设计规范 §1.2） */
+.card-direct::after {
+  content:""; @apply tw:absolute tw:top-[-1px] tw:right-[-1px] tw:w-[18px] tw:h-[18px];
+  background: linear-gradient(225deg, var(--bg-base) 0 50%, transparent 50%);
+  @apply tw:pointer-events-none;
+}
+/* Shared cards keep their shadow static and composite a prepainted edge. The
+   existing top glint and cut corner retain their own pseudo-elements. */
+.card-create::after, .card-direct::before {
+  content: ''; @apply tw:absolute tw:inset-0 tw:pointer-events-none;
+  border-radius: inherit; z-index: var(--z-raised);
+  box-shadow: var(--focus-shadow);
+  opacity: 0; transition: opacity var(--motion-hover);
+}
+@media (hover:hover) and (pointer:fine) {
+  .card-create:hover::after,.card-direct:hover::before { opacity:1; }
+}
+.card-create:focus-visible::after,.card-direct:focus-visible::before { opacity:1; transition:none; }
+
+/* shadow 阶梯修饰 — 与三级叠加使用 */
+.card-level-2 { box-shadow: var(--shadow-md); }
+.card-level-3 { box-shadow: var(--shadow-lg); }
+
+/* ---- Button (DESIGN.md §Buttons:同组按钮共享高度/圆角/图标风格/基线) ----
+   primary 继续或生成 | ghost 调整或查看 | danger 破坏性或中断
+   尺寸修饰: .btn-sm 紧凑行内 / 默认 40px / .btn-lg 页面主入口
+   所有变体共享 disabled 与 :active 行为,页面不要再造第二套 */
+.btn {
+  @apply tw:relative tw:overflow-hidden tw:isolate tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2;
+  min-height: var(--control-height);
+  padding: var(--s-2) var(--s-4);
+  @apply tw:rounded-md;
+  font: 600 var(--fs-label) / 1.2 var(--font-sans);
+  border: 1px solid transparent;
+  @apply tw:cursor-pointer;
+  text-decoration: none;
+  transition: transform var(--motion-press) var(--ease-out);
+}
+.btn-primary {
+  background: var(--accent); @apply tw:text-inverse;
+  border-color: transparent; box-shadow: none;
+}
+.btn-primary:hover { background: var(--accent-hover); box-shadow: var(--shadow-sm); }
+.btn-ghost {
+  background: transparent; @apply tw:text-secondary tw:border-soft;
+}
+.btn-ghost:hover { @apply tw:border-strong tw:text-primary; background: transparent; }
+.btn-danger { background: transparent; @apply tw:text-danger-text; border-color: color-mix(in srgb, var(--danger) 42%, transparent); }
+.btn-danger:hover { background: color-mix(in srgb, var(--danger) 12%, transparent); @apply tw:border-danger-text; }
+/* Anchor buttons retain contrasting primary/danger ink over the global link hover. */
+a.btn-primary, a.btn-primary:hover, a.btn-primary:active { @apply tw:text-inverse; }
+a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-text; }
+/* 按压反馈：微触感压缩与平滑回位，保留点击命中区与焦点环 */
+.btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) {
+  box-shadow: none;
+  transform: scale(0.98);
+}
+.btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) > :where(.studio-control-label,.studio-control-icon,.archive-icon:not(.spin),.u008-icons,.u008-label) {
+  transform: none;
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+  transform: none;
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .btn:active {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .btn:active {
+    transform: none;
+  }
+}
+/* 统一禁用态:同时覆盖真 disabled 与 aria-disabled 链接
+   2026-08-28 审计修复：不再用 opacity 压字。alpha 合成后实测文字对比度只剩
+   3.45:1（深色 --bg-elevated 上），而按钮文案是「生成」「发送」这类需要读懂
+   才知道为什么不能点的内容，WCAG 1.4.3 的装饰豁免不适用。
+   改为显式压暗容器 + 给达标的文字色（--text-disabled 约 4.8:1），
+   视觉上仍是"灰下去"，但字还看得清。 */
+.btn:disabled,
+.btn[aria-disabled="true"] {
+  @apply tw:text-disabled tw:border-soft;
+  background: var(--bg-surface);
+  @apply tw:cursor-not-allowed;
+  transform: none;
+  box-shadow: none;
+  @apply tw:pointer-events-none;
+}
+.btn:disabled::before,
+.btn[aria-disabled="true"]::before { @apply tw:hidden; }
+/* Low-frequency actions retain the shared hit area and focus treatment. */
+.btn-quiet { background:transparent; border-color:transparent; @apply tw:text-secondary; font-weight:500; box-shadow:none; }
+.btn-quiet:hover { background:transparent; @apply tw:text-primary; }
+.btn-quiet:disabled,
+.btn-quiet[aria-disabled="true"] { background:transparent; border-color:transparent; }
+.btn-sm { min-height: var(--control-height-sm); padding: var(--s-1) var(--s-3); @apply tw:text-label-sm tw:rounded-sm; }
+.btn-lg { @apply tw:min-h-[52px]; padding: var(--s-3) var(--s-6); @apply tw:text-title-xs tw:rounded-md; }
+/* 图标按钮:DESIGN.md 禁止图标唯一化关键操作,故必须带 aria-label */
+.btn-icon { min-width:var(--control-height); padding:var(--s-2); }
+.btn-icon.btn-sm { min-width:var(--control-height-sm); padding:var(--s-1); }
+:root .btn-icon > .archive-icon { width:20px; height:20px; }
+:root .btn-icon.btn-sm > .archive-icon { width:16px; height:16px; }
+.btn-block { @apply tw:w-full; }
+/* 主入口的光晕:只在 .btn-lg.btn-primary 上出现一次,避免每页自定义阴影 */
+.btn-lg.btn-primary { box-shadow: var(--shadow-sm); }
+.btn-lg.btn-primary:hover:not(:focus-visible) { box-shadow: var(--shadow-sm); }
+
+@media (hover: hover) and (pointer: fine) {
+  .card-create:hover { transform: translateY(-2px); }
+  .card-direct:hover { transform: translateY(-2px); }
+}
+
+/* ---- Form controls ---- */
+.field { @apply tw:grid tw:gap-s-1; }
+.field > label,
+.field-label {
+  @apply tw:text-secondary;
+  font: 600 var(--fs-label-xs) var(--font-sans);
+  letter-spacing: .02em;
+}
+.field-hint { @apply tw:text-muted tw:text-mono-sm tw:leading-body; }
+
+/* ---- Status badge（二次元博客甜系贴纸角标：颜色不是唯一信号，保留文字与圆点） ---- */
+.badge {
+  @apply tw:inline-flex tw:items-center tw:gap-s-1;
+  padding: 3px 9px;
+  border: 1px solid color-mix(in srgb, var(--badge-color, var(--text-muted)) 38%, transparent);
+  @apply tw:rounded-pill;
+  background: color-mix(in srgb, var(--badge-color, var(--text-muted)) 13%, transparent);
+  color: var(--badge-color, var(--text-muted));
+  font: 700 var(--fs-mono-xs) var(--font-mono);
+  letter-spacing: .04em;
+  @apply tw:whitespace-nowrap;
+  box-shadow: inset 0 1px 0 var(--hl-inset-16), 0 2px 8px color-mix(in srgb, var(--badge-color, var(--text-muted)) 20%, transparent);
+  transition: border-color var(--motion-hover), transform var(--motion-hover) var(--ease-out);
+}
+.badge:hover {
+  border-color: var(--badge-color, var(--text-muted));
+  box-shadow: inset 0 1px 0 var(--hl-inset-22), 0 0 10px color-mix(in srgb, var(--badge-color, var(--text-muted)) 32%, transparent);
+}
+.badge::before {
+  content: ""; @apply tw:w-[5px] tw:h-[5px]; border-radius: 50%;
+  background: currentColor; flex: none;
+  box-shadow: 0 0 6px currentColor;
+}
+.badge-warning { --badge-color: var(--warning-text); }
+
+/* ---- Meter / progress(值走 --fill,样式留在 CSS) ---- */
+.meter {
+  @apply tw:overflow-hidden tw:h-[6px] tw:rounded-pill;
+  background: color-mix(in srgb, var(--text-muted) 18%, transparent);
+}
+.meter-fill {
+  @apply tw:block;
+  width: var(--fill, 0%);
+  @apply tw:h-full;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--accent), var(--accent-hover));
+  /* compositor-exempt: 进度值更新是低频事件；scaleX 会压扁 inherit 圆头并横向拉伸
+     填充上的扫光伪元素，保 width 过渡（单元素小子树重排可忽略）。 */
+  transition: width var(--motion-surface) var(--ease-out);
+}
+
+/* ---- Overlay / modal(6 套弹层实现的统一目标) ---- */
+/* Scroll ownership and scrollbar geometry live in utils/pageScrollLock. */
+.overlay {
+  @apply tw:fixed; inset: 0; z-index: var(--z-overlay);
+  @apply tw:grid; place-items: center;
+  @apply tw:p-s-4;
+  background: var(--art-backdrop);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+}
+.overlay[hidden] { @apply tw:hidden; }
+/* ── 弹层统一进出场（Vue <Transition name="layer-pop">，2026-08-22 动效审计 #7；
+   2026-08-31 plans/003：退场曲线从加速曲线 cubic-bezier(.55,0,.85,.36) 收敛为
+   --ease-out 快速响应 —— ease-in 风格曲线让退出先迟滞再飞走，触感发黏。
+   遮罩淡入淡出、内容卡（首个子元素）上浮落位，退场保持更短的 --motion-hover。
+   接入方：Teleport 内 v-if 弹层根节点包 <Transition name="layer-pop">；
+   原 .overlay/.modal-card 的入场 animation 已删，避免与 Transition 双重动画。 */
+/* 纯淡入淡出变体：弹层内的二级浮层（大图预览等） */
+.layer-fade-enter-active { transition: opacity var(--motion-control) var(--ease-out); }
+.layer-fade-leave-active { transition: opacity var(--motion-hover) var(--ease-out); }
+.layer-fade-enter-from, .layer-fade-leave-to { opacity: 0; }
+.modal-card {
+  width: min(560px, 100%);
+  max-height: min(84vh, 720px);
+  @apply tw:overflow-auto tw:p-s-5;
+  border: 1px solid var(--glass-edge);
+  @apply tw:rounded-2xl;
+  background: var(--bg-elevated);
+  box-shadow: var(--shadow-lg);
+  transform-origin: center;
+}
+.modal-card-wide { width: min(880px, 100%); }
+.modal-head {
+  @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:mb-s-4;
+}
+.modal-head h2, .modal-head h3 { @apply tw:m-0 tw:text-title-sm; }
+.modal-actions {
+  @apply tw:flex tw:justify-end tw:gap-s-2 tw:flex-wrap tw:mt-s-5;
+}
+
+/* ---- Page shell(19 份 .page / 16 份 .title / 16 份 .subtitle 的统一目标) ----
+   页面只需覆写 --page-max,不要重新声明 .page/.title/.subtitle */
+.page {
+  width: min(var(--page-max, 1200px), 100%);
+  margin: 0 auto;
+  padding: var(--workspace-pad-top, var(--s-5)) var(--workspace-gutter, var(--s-5)) var(--s-7);
+}
+.page-narrow { --page-max: 860px; }
+/* 注意:保持单类选择器(0,1,0),这样尚未迁移的页面本地 .title 仍能按层叠顺序覆盖 */
+.title {
+  margin: 0 0 var(--s-2);
+  @apply tw:text-primary tw:font-display;
+  font-size: clamp(1.55rem, 2.4vw, var(--fs-display));
+  font-weight: 700;
+  letter-spacing: 0;
+  line-height: var(--lh-tight);
+}
+.subtitle {
+  @apply tw:max-w-[640px];
+  margin: 0 0 var(--s-5);
+  @apply tw:text-secondary tw:text-body tw:leading-loose;
+}
+
+/* ---- Tag chip（日系轻博客胶囊标签） ---- */
+.chip {
+  @apply tw:inline-flex tw:items-center tw:gap-s-1;
+  padding: 3px 12px; @apply tw:rounded-pill tw:text-label tw:font-semibold;
+  background: color-mix(in srgb, var(--bg-elevated) 88%, transparent);
+  border: 1px solid var(--border-soft);
+  @apply tw:text-secondary tw:cursor-pointer;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.20), inset 0 1px 0 var(--hl-inset-08);
+  transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
+}
+/* Press feedback shares the control layer; hover keeps the neutral chip surface. */
+.chip:hover {
+  @apply tw:border-strong tw:text-primary;
+  background: var(--bg-elevated);
+  box-shadow: none;
+}
+.chip.active:where(:not(:hover)) {
+  background:var(--bg-elevated);
+  @apply tw:border-strong tw:text-primary;
+  box-shadow: var(--shadow-sm);
+}
+
+/* ---- Prompt code block(统一 4 套语法高亮:scenario / color-script / prompt-spec / art-direction)
+   同一语义在各页曾经用不同颜色(quality 既是 mood-joy 又是 info),此处定为唯一映射。
+   短 class 名(.q/.c/.l…)是各页 JS 已经产出的历史名,保留为别名以免改动控制器。 */
+.prompt-code {
+  @apply tw:p-s-3;
+  border: 1px solid var(--border-soft);
+  @apply tw:rounded-md;
+  background: var(--bg-deep);
+  @apply tw:text-secondary;
+  font: 400 var(--fs-label) / 1.8 var(--font-mono);
+  @apply tw:whitespace-pre-wrap;
+  word-break: break-word;
+  overflow-wrap: anywhere;
+}
+.prompt-code .mod { @apply tw:block; padding: 1px 0; }
+.prompt-code .m-q,  .prompt-code .q,  .prompt-code .quality   { color: var(--mood-joy-text); }
+.prompt-code .m-c,  .prompt-code .c,  .prompt-code .character { @apply tw:text-accent; }
+.prompt-code .m-e,  .prompt-code .e,  .prompt-code .emotion   { color: var(--mood-warmth-text); }
+.prompt-code .m-s,  .prompt-code .s,  .prompt-code .scene     { color: var(--mood-calm-text); }
+.prompt-code .m-l,  .prompt-code .l,  .prompt-code .lighting  { @apply tw:text-info-text; }
+.prompt-code .m-cl, .prompt-code .x,  .prompt-code .composition { color: var(--mood-tension-text); }
+.prompt-code .m-lora, .prompt-code .lo, .prompt-code .lora    { @apply tw:text-success-text; }
+.prompt-code .m-sh, .prompt-code .m-co, .prompt-code .t       { color: var(--mood-sad-text); }
+.prompt-code .m-d { @apply tw:text-muted; }
+.prompt-code .violate {
+  padding: 0 var(--s-1);
+  @apply tw:rounded-sm;
+  background: color-mix(in srgb, var(--danger) 20%, transparent);
+  @apply tw:text-danger-text;
+  text-decoration: underline;
+}
+
+/* ---- Table ---- */
+table {
+  @apply tw:w-full; border-collapse: collapse;
+  margin: var(--s-4) 0;
+}
+th, td {
+  padding: var(--s-3) var(--s-4);
+  @apply tw:text-left;
+  border-bottom: 1px solid var(--border-soft);
+}
+th {
+  @apply tw:text-secondary tw:font-semibold tw:text-body-sm tw:uppercase; letter-spacing: 0.05em;
+}
+td { @apply tw:text-primary; }
+tr:hover td { background: var(--bg-hover); }
+
+/* ---- Callout box ---- */
+.callout {
+  @apply tw:rounded-md tw:p-s-4;
+  margin: var(--s-4) 0;
+  /* 3px 边框属于非文字图形(3:1);兄弟 .callout-warn/-danger/-success 已用 --*-text,
+     这条漏了,统一过来 */
+  border-left: 3px solid var(--info-text);
+  background: color-mix(in srgb, var(--info) 8%, transparent);
+}
+
+/* ---- Progress / step ---- */
+
+/* ---- Footer ---- */
+.footer {
+  @apply tw:mt-auto; /* sticky footer:短内容页页脚贴底(原 margin-top 由主体容器 margin-bottom 提供间距) */
+  padding: var(--s-6) 0;
+  border-top: 1px solid var(--border-soft);
+  @apply tw:text-center tw:text-muted tw:text-body-sm;
+}
