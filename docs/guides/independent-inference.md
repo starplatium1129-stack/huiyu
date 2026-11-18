@@ -31,11 +31,13 @@
 
 **查目录**可用 `GET /api/muse/catalog`。查宁宁服装用 `?kind=outfit&character=nene`。`kind` 也可为 `character`、`media`（默认，场景和蓝图）、`scene` 或 `blueprint`。支持 `search`、`character`、`category` 和 `rating`。`rating=R18` 等值在服务端筛选，`ratings` 列出可用分级。用 `pageSize=500` 快速枚举，跟随 `nextPage`。服装详情用 `GET /api/muse/catalog/outfit/{完整 ID}`，例如 `/api/muse/catalog/outfit/studio/natsume-maid`，返回 `tokens` 和 `compatibleModels`。场景和蓝图详情可查种子与变体上限。
 
-**按目录出图**可用 `POST /api/muse/jobs`，传 `id` 和新生成的 `requestKey`（推荐 UUID）。可加同一角色的 `outfitId` 换装，示例为 `{"id":"sc093","outfitId":"studio/natsume-maid","requestKey":"每次生成的新 UUID"}`。也可以只传 `outfitId` 生成这套服装。跨角色或无法指定唯一角色的场景换装会返回 `OUTFIT_INCOMPATIBLE`。目录配方支持 `anima-miaomiao-v1.6`（默认）、`moss-miaomiao-base-v1.0` 和 `moss-miaomiao-base-v1.1`，以笔记本已安装版本为准。本机新建或改写的场景可在画室用当前内容出图。
+**按目录出图**可用 `POST /api/muse/jobs`，传场景或蓝图 `id` 和新生成的 `requestKey`（推荐 UUID）。省略尺寸时使用配方的画幅。笔记本想用 832×1216 出图，可直接提交 `{"id":"sc093","width":832,"height":1216,"requestKey":"replace-with-new-uuid"}`。宽高需成对提供，并符合所选模型的范围。可加同一角色的 `outfitId` 换装，也可只传 `outfitId` 生成这套服装。跨角色或无法指定唯一角色的场景换装会返回 `OUTFIT_INCOMPATIBLE`。目录配方支持 `anima-miaomiao-v1.6`（默认）、`moss-miaomiao-base-v1.0` 和 `moss-miaomiao-base-v1.1`，以出图机已安装版本为准。本机新建或改写的场景可在画室用当前内容出图。
 
-**自定义或批量出图**也用同一接口。自定义提交 `prompt` 与 `requestKey`，可加 `modelId`、`seed`、`variants`、`negative`、`steps`、`cfg` 或成对的 `width`、`height`，模型参数由选用的模型校验。Anima 可传 `character` 自动匹配已安装的 LoRA。多个任务用 `POST /api/muse/batches`，用 `ids` 批量传目录 ID，或用 `items` 逐项传出图参数。每项最多 8 张，每批合计最多 16 张。提供 `seed` 时后续变体递增。网络重试复用原请求体和 `requestKey`。
+**自定义或批量出图**也用同一接口。自定义提交 `prompt` 与 `requestKey`，可加 `modelId`、`seed`、`variants`、`negative`、`steps`、`cfg` 或成对的 `width`、`height`，模型参数由选用的模型校验。Anima 可传 `character` 自动匹配已安装的 LoRA。多个任务用 `POST /api/muse/batches`，用 `ids` 批量传目录 ID，或用 `items` 逐项传出图参数。整批可共用顶层 `width` 和 `height`，某一项需要不同尺寸时在该项内成对覆盖。每项最多 8 张，每批合计最多 16 张。提供 `seed` 时后续变体递增。网络重试复用原请求体和 `requestKey`。
 
-**队列和恢复**用 `GET /api/muse/queue` 查看排位和进度。Muse 重启后用 `GET /api/muse/jobs` 找回记录。`items` 同时含 `entryType=batch` 的批次和 `entryType=image` 的单张任务。可传 `since`（Unix 毫秒或 RFC3339），并以 `nextBefore` 翻页。批次提交时，整批和单项均返回 `statusPath` 与 `cancelPath`。对 `statusPath` 发 `GET` 查询，对 `cancelPath` 发 `DELETE` 取消。
+**查刚提交的图**：单张和多张都返回 `batchKey` 和顶层 `statusPath`。直接 GET 这个路径，也可用 `GET /api/muse/batches/{batchKey}`。从 `items` 看每张图的 `status`、`progress` 和成功后的 `resultUrl`。`waiting` 表示已排队，继续查同一路径即可。取消整批或某张图时，向对应的 `cancelPath` 发 `DELETE`。升级前的单图若仍保有回执，可用当初的 `requestKey` 查批次路径，也可沿原回执路径读取 `job`。
+
+**队列和恢复**用 `GET /api/muse/queue` 查看排位。丢失编号时用 `GET /api/muse/jobs` 找回近期记录。`items` 同时含 `entryType=batch` 的批次和 `entryType=image` 的单张任务。可传 `since`（Unix 毫秒或 RFC3339），并以 `nextBefore` 翻页。
 
 **断点续传**时用同一个地址和 `X-Token` 下载 `resultUrl`。断线后保留部分文件，从已收到的 `N` 字节发送 `Range: bytes=N-`，并用原 `ETag` 作为 `If-Range`。`206` 且 `Content-Range` 从 `N` 开始时追加，`200` 时使用完整响应替换。完成后核对 `resultBytes` 和 `resultSha256`。任务记录保留约 7 天，原图最长保留 48 小时，受 2 GiB 缓存上限约束。
 

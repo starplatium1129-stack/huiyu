@@ -53,9 +53,10 @@
     class="artwork-button"
     :type="selectionMode ? undefined : 'button'"
     :aria-label="selectionMode ? undefined : `欣赏作品：${title}`"
-    @click="!selectionMode && emit('open', $event)"
+    @click="openArtwork"
   >
-    <div class="artwork-media" :style="{ '--art-ratio': String(ratio) }">
+    <div class="artwork-media" @pointerenter="tilt.enter" @pointermove="tilt.move" @pointerleave="tilt.reset" @pointercancel="tilt.reset">
+      <div ref="imagePlane" class="artwork-plane">
       <!-- 底层：缩略图垫底（HD 就绪前先出图，也避免 LRU 淘汰 HD 后回退成骨架屏） -->
       <img :crossorigin="cors"
         ref="thumbImage"
@@ -86,6 +87,7 @@
         @load="onImageLoad($event, 'image')"
         @error="onImageError($event, 'image')"
       />
+      </div>
       <Transition :css="false" @leave="skeleton.leave" @leave-cancelled="skeleton.cancel"><div v-if="previewPending" class="artwork-skeleton" aria-hidden="true"></div></Transition>
     </div>
       <div class="artwork-caption">
@@ -114,6 +116,7 @@ import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import { artworkContinueTarget } from '@/utils/artworkNavigation'
 import { useOpacityLeave } from '@/composables/useOpacityLeave'
+import { useArtworkTilt } from '@/composables/useArtworkTilt'
 import { readStoryOrigin, storyOriginRoute } from '@/types/storyOrigin'
 const props = defineProps<{
   item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
@@ -130,6 +133,13 @@ const thumbImage = ref<HTMLImageElement | null>(null)
 const hdImage = ref<HTMLImageElement | null>(null)
 const thumbFailed = ref(false), imageFailed = ref(false)
 const thumbLoaded = ref(false), imageLoaded = ref(false)
+const imagePlane = ref<HTMLElement | null>(null)
+const tilt = useArtworkTilt(imagePlane, () => !props.selectionMode && !props.confirmingDelete && (thumbLoaded.value || imageLoaded.value))
+function openArtwork(event: MouseEvent) {
+  if (props.selectionMode) return
+  tilt.flatten()
+  emit('open', event)
+}
 const thumbAttempt = ref(0), imageAttempt = ref(0)
 const paintedImageUrl = ref(props.imageUrl)
 let pendingImage: HTMLImageElement | null = null

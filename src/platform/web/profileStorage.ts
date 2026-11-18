@@ -309,7 +309,7 @@ export const profileLocalStorage = createStorage(false)
 export const profileDraftStorage = createStorage(true)
 
 /** Explicit mutations for new consumers. Storage setters above remain optimistic compatibility reads/writes. */
-export function writeProfileValue(key: string, value: string | null, session = false): ProfileWriteReceipt {
+function writeProfileValue(key: string, value: string | null, session = false): ProfileWriteReceipt {
   const domain = profileDomainForKey(key)
   if (port && domain) return queueWrite(domain, key, value, session)
   assertProfileWritable()

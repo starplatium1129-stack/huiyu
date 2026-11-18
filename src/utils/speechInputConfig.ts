@@ -1,15 +1,11 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
+import { SPEECH_INPUT_KEY } from './storageKeys.ts'
 /**
  * 语音输入（ASR）配置：load/save/normalize，localStorage 持久化。
  *
  * 端点协议目前支持 OpenAI 兼容 /audio/transcriptions（whisper.cpp、
  * faster-whisper、OpenAI 等均兼容）；端点未配置时语音输入入口隐藏。
- *
- * SPEECH_INPUT_KEY 与 storageKeys.ts 同步登记；持久化由 profile adapter 负责。
  */
-
-/** profile 存储键（storageKeys.ts 同步登记）。 */
-export const SPEECH_INPUT_KEY = 'aics_speech_input_v1'
 
 export type SpeechInputKind = 'openai'
 

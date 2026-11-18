@@ -4,16 +4,6 @@
    保留选择器层叠；基础声明由 Tailwind 工具类编译。
    ============================================================ */
    .pb .result-image-wrap { @apply tw:relative tw:overflow-hidden; background:var(--bg-deep); }
-    .pb .result-image-reveal {
-      @apply tw:block tw:w-full; max-height:min(78vh,920px); margin:0 auto;
-    }
-    .pb .result-image {
-     @apply tw:block tw:w-full; max-height:min(78vh,920px); @apply tw:object-contain;
-     margin:0 auto; background:transparent;
-     filter:none;
-   }
-   /* CgImageReveal owns its image motion; keep the resting image visible. */
-   .pb .result-image-reveal .result-image { opacity:1; transform:none; }
    .pb .result-image-actions { @apply tw:flex tw:items-center tw:gap-s-2; padding:var(--s-1) var(--s-2); border-top:1px solid var(--border-soft); background:var(--bg-surface); }
   .pb[data-character="triad"] .stage-placeholder {
     background:
@@ -72,15 +62,17 @@
 .pb .stage-error-detail { @apply tw:block tw:max-h-[100px] tw:overflow-auto tw:mt-s-2; overflow-wrap:anywhere; }
 .pb .stage-placeholder.is-generating::after { z-index:var(--z-base); }
 
-@media (min-width:1024px) {
-  /* Reserve the image slot before decoding so the existing reveal keeps stable bounds. */
-  .pb.journal-workspace[data-director-mode] .result-image-reveal { flex:1; min-height:0; max-height:none; }
-  .pb.journal-workspace[data-director-mode] .result-image-reveal .result-image { position:absolute; inset:0; height:100%; }
-}
-
 /* Fit the frame to the actual image ratio so its shadow follows the work, not letterboxing. */
 .pb.atelier-workspace .result-image-wrap.archive-canvas { --canvas-artwork-inset:clamp(var(--s-3),1.5cqw,var(--s-5)); display:flex; align-items:center; justify-content:center; border:0; border-radius:0; padding:var(--canvas-artwork-inset); background:var(--bg-base); box-shadow:none; }
 .pb.atelier-workspace .result-artwork { position:relative; flex:none; width:min(100%,calc((100cqh - 2 * var(--canvas-artwork-inset)) * var(--result-aspect))); max-height:100%; aspect-ratio:var(--result-aspect); border-radius:var(--r-sm); box-shadow:none; }
+.pb .result-art-plane { position:absolute; inset:0; border-radius:inherit; }
+.pb .result-artwork.can-tilt .result-art-plane { transition:transform var(--motion-control) var(--ease-out); }
+.pb .result-art-plane::before { content:""; position:absolute; inset:0; border-radius:inherit; box-shadow:var(--shadow-lg); opacity:0; pointer-events:none; transition:opacity var(--motion-hover) var(--ease-out); }
+@media (hover:hover) and (pointer:fine) {
+  .pb .result-artwork.can-tilt:hover .result-art-plane::before { opacity:1; }
+}
+.pb .stage-feedback-enter-active,.pb .stage-feedback-leave-active { transition:opacity var(--motion-control) var(--ease-out); }
+.pb .stage-feedback-enter-from,.pb .stage-feedback-leave-to { opacity:0; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal,
 .pb.atelier-workspace .result-image-reveal .result-image { background:transparent; border-radius:inherit; }
 .pb.atelier-workspace .result-image-wrap .image-compare-slider { border-radius:inherit; }
@@ -110,21 +102,28 @@
 .pb.journal-workspace.atelier-workspace[data-director-mode] .stage-message { width:100%; height:100%; min-height:0; overflow:hidden; align-items:center; }
 .pb.atelier-workspace .stage-content { position:relative; height:100%; min-height:0; display:flex; flex-direction:column; justify-content:center; overflow:hidden; }
 .pb.atelier-workspace .stage-generation-orbit { position:absolute; left:50%; top:43%; z-index:var(--z-raised); width:min(100%,480px); max-height:86%; aspect-ratio:1.38; transform:translate(-50%,-50%); pointer-events:none; }
+.pb .stage-generation-orbit.is-forming { opacity:0; transition:opacity var(--motion-control) var(--ease-out); }
 .pb.journal-workspace.atelier-workspace .stage-placeholder.is-generating { z-index:calc(var(--z-raised) - 1); background:var(--bg-base); border:0; border-radius:0; box-shadow:none; }
 .pb.atelier-workspace .result-image-reveal.cg-image-reveal { width:100%; height:100%; max-height:none; }
-.pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; max-height:none; }
+.pb.atelier-workspace .result-image-reveal .result-image { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
 .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-hover); pointer-events:none; }
 .pb.atelier-workspace .stage-content .scene-reference { min-height:0; flex:1; }
 .pb.atelier-workspace .stage-content .stage-idle { flex:0 0 auto; }
-@container (max-height:400px) {
+@container drawing-stage (max-height:400px) {
   .pb.atelier-workspace .scene-reference figcaption p { display:none; }
   /* Reserve short-canvas space for the full title, copy and scene action, not just the illustration. */
   .pb.atelier-workspace .stage-idle-guide .atelier-canvas-illustration { width:auto; max-width:min(336px,70%); max-height:max(64px,calc(100cqh - 216px)); margin-bottom:var(--s-3); }
+}
+@container drawing-stage (max-height:280px) {
+  .pb.atelier-workspace .stage-idle-guide .atelier-canvas-illustration,.pb.atelier-workspace .scene-reference-label { display:none; }
+  .pb.atelier-workspace .stage-content { padding:var(--s-2) var(--s-3); }
+  .pb.atelier-workspace .stage-content:has([role="alert"],[role="status"],.stage-quick-actions:focus-within) { justify-content:safe center; overflow-y:auto; }
+  .pb .stage-generation-feedback { bottom:var(--s-2); }
 }
 @media (prefers-reduced-motion:reduce) {
   :root:not([data-motion='full']) .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-press); }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .pb.atelier-workspace .stage-swap-leave-active { transition-duration:var(--motion-press); }
 
-.pb.atelier-workspace .stage-content { padding:24px; }
+.pb.atelier-workspace .stage-content { padding:clamp(var(--s-2),4cqh,var(--s-5)); }
 .pb.atelier-workspace .stage-placeholder:has(.scene-reference):not(.is-error):not(.is-paused) .stage-idle-guide { display:none; }

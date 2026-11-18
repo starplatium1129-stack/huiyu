@@ -12,7 +12,7 @@ import { useRoute,useRouter } from 'vue-router'
 import { useVideoModeOptions, type StudioMode } from './useVideoModeOptions'
 
 import { cancelVideoJob, fetchVideoJob, fetchVideoStatus,
-  type VideoDefaults, type VideoJob, type VideoMode, type VideoStatusResponse } from '@/api/videoApi'
+  type VideoDefaults, type VideoJob, type VideoStatusResponse } from '@/api/videoApi'
 
 import { classifySDError } from '@/utils/sdError'
 

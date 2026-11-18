@@ -12,10 +12,8 @@ export interface GenerationOrbitSurface {
 }
 export function generationOrbitPose(width: number, height: number, progress: number, time: number, rotation: number): GenerationOrbitPose {
   const formed = smoothGenerationPhase(.08, .66, progress), finishing = smoothGenerationPhase(.65, .98, progress)
-  return { radius: generationOrbitRadius(width, height, formed, finishing), formed, finishing, time, rotation }
-}
-export function generationOrbitRadius(width: number, height: number, formed: number, finishing: number) {
-  return Math.min(width * .29, height * .3, 116) * (1 - formed * .1 - finishing * .28)
+  const radius = Math.min(width * .29, height * .3, 116) * (1 - formed * .1 - finishing * .28)
+  return { radius, formed, finishing, time, rotation }
 }
 export function smoothGenerationPhase(start: number, end: number, value: number) {
   const t = Math.max(0, Math.min(1, (value - start) / (end - start)))

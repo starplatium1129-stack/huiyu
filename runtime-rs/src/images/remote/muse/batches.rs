@@ -11,6 +11,8 @@ pub(super) struct Batch {
     model_id: Option<String>,
     variants: Option<u8>,
     seed: Option<u64>,
+    width: Option<u64>,
+    height: Option<u64>,
     #[serde(default, alias = "items")]
     scenes: Vec<SceneSelection>,
     #[serde(default)]
@@ -41,9 +43,17 @@ pub(super) async fn create(
                 id: Some(id),
                 ..Default::default()
             }));
+        let default_size = submission::dimensions(input.width, input.height)?;
         for scene in &mut input.scenes {
             scene.variants = scene.variants.or(input.variants);
             scene.seed = scene.seed.or(input.seed);
+            if scene.width.is_none()
+                && scene.height.is_none()
+                && let Some((width, height)) = default_size
+            {
+                scene.width = Some(width);
+                scene.height = Some(height);
+            }
         }
         enqueue(
             &state.config,
@@ -82,19 +92,28 @@ pub(super) async fn enqueue(
     let settings = muse.images.backend.native_settings()?;
     let config = config.clone();
     let batch = key.clone();
-    store.work(move |db, store| {
+    let old_receipt = legacy::find(muse, &key).await?;
+    let replay = store.work(move |db, store| {
         let existing = |db: &Connection| -> Result<bool> {
             match db.query_row("SELECT fingerprint FROM muse_batches WHERE owner=?1 AND key=?2",
                 params![store.owner, batch], |r| r.get::<_, String>(0)).optional()? {
                 None => Ok(false),
                 Some(value) if value == fingerprint => Ok(true),
-                Some(_) => Err(ApiError::new(409, "MUSE_BATCH_CONFLICT", "这批请求编号已经绑定其他场景或种子")),
+                Some(_) => Err(ApiError::new(409, "MUSE_BATCH_CONFLICT", "此编号已用于其他出图参数；更改场景、尺寸或种子后请换一个 requestKey")),
             }
         };
-        if existing(db)? { return Ok(()); }
-        let prepared = submission::prepare_batch(&config, settings.loras_root, scenes, model.as_deref())?;
+        if existing(db)? { return Ok(None); }
+        let mut prepared = submission::prepare_batch(&config, settings.loras_root, scenes, model.as_deref())?;
+        if let Some(receipt) = old_receipt {
+            if !legacy::matches(&receipt, &mut prepared) {
+                return Err(ApiError::new(409, "MUSE_BATCH_CONFLICT", "此编号已用于其他出图参数；新任务请换一个 requestKey"));
+            }
+            if receipt.job_id.is_some() || receipt.cancel_requested || !receipt.error.as_ref().is_some_and(|error| error.status == 429) {
+                return Ok(Some(receipt));
+            }
+        }
         let tx = db.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;
-        if existing(&tx)? { return Ok(()); }
+        if existing(&tx)? { return Ok(None); }
         let waiting: i64 = tx.query_row("SELECT count(*) FROM muse_items WHERE owner=?1 AND status='waiting'", [&store.owner], |r| r.get(0))?;
         if waiting + count as i64 > MAX_WAITING {
             return Err(ApiError::new(429, "MUSE_QUEUE_FULL", "远程批量队列已满，请等前面的任务完成或取消等待项"));
@@ -116,8 +135,11 @@ pub(super) async fn enqueue(
         }
         drop(insert);
         tx.commit()?;
-        Ok(())
+        Ok(None)
     }).await?;
+    if let Some(receipt) = replay {
+        return legacy::view(muse, receipt).await;
+    }
     muse.batch_ready.notify_one();
     read(muse, key, None, false).await
 }
@@ -210,7 +232,15 @@ pub(super) async fn status(
     http::response(
         async {
             state.host.check_running()?;
-            read(&muse, key, None, true).await
+            match read(&muse, key.clone(), None, true).await {
+                Err(error) if error.code == "MUSE_BATCH_NOT_FOUND" => {
+                    match legacy::find(&muse, &key).await? {
+                        Some(receipt) => legacy::view(&muse, receipt).await,
+                        None => Err(error),
+                    }
+                }
+                result => result,
+            }
         }
         .await,
         StatusCode::OK,
@@ -336,6 +366,8 @@ async fn read(muse: &Muse, key: String, request: Option<String>, hydrate: bool) 
         let rows = statement.query_map(params![store.owner,batch,request], |r| view(r, &batch))?;
         Ok((created, rows.collect::<rusqlite::Result<Vec<_>>>()?))
     }).await?;
+    let single = items.len() == 1;
+    let mut single_job = Value::Null;
     if hydrate {
         for item in &mut items {
             let (Some(id), Some(family)) = (item["jobId"].as_str(), item["family"].as_str()) else {
@@ -365,13 +397,18 @@ async fn read(muse: &Muse, key: String, request: Option<String>, hydrate: bool) 
                 ] {
                     item[field] = job[field].clone();
                 }
+                if single {
+                    single_job = job;
+                }
             }
         }
     }
     let path = format!("/api/muse/batches/{key}");
-    Ok(
-        json!({"requestKey":key,"batchKey":key,"createdAt":created,"items":items,"statusPath":path,"cancelPath":path}),
-    )
+    let mut batch = json!({"requestKey":key,"batchKey":key,"createdAt":created,"items":items,"statusPath":path,"cancelPath":path});
+    if single {
+        batch["job"] = single_job;
+    }
+    Ok(batch)
 }
 
 pub(super) fn view(r: &rusqlite::Row<'_>, batch: &str) -> rusqlite::Result<Value> {

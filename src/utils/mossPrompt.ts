@@ -9,7 +9,7 @@ import { orderPromptTags } from './animaPromptOrder.ts'
 import { compileMossLayout, isMossLayoutInput, mossLayoutJson, mossSubjectBox, type MossCanvasSize, type MossLayoutSide } from './mossLayout.ts'
 
 // MIAOKA's shared BASE v1.0/v1.1 positive and negative recipe.
-export const MOSS_QUALITY = 'masterpiece, best quality, very aesthetic, ultra-detailed, high contrast'
+const MOSS_QUALITY = 'masterpiece, best quality, very aesthetic, ultra-detailed, high contrast'
 export const MOSS_NEGATIVE = 'extra toes, lowres, (bad), text, error, fewer, extra, missing, worst quality, jpeg artifacts, low quality, watermark, unfinished, displeasing, oldest, early, signature, artistic error, username, bad feet, scan, [abstract], english text, shiny hair'
 
 /** MOSS consumes names/styles as tags; it does not parse artist weights. */

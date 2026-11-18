@@ -83,12 +83,13 @@ void main(){
  if(revealProgress>=0.0){
   waitingPose(departureRect,departureDust,position,dimensions,alpha,mixColor,rounding,orientation);
   float t=clamp(revealProgress,0.0,1.0);
-  float delay=length((cell+.5)/grid-.5)*.113+seed*.04;
-  float formation=clamp((t-delay)/(.88-delay),0.0,1.0);
+  vec2 location=(cell+.5)/grid;
+  float delay=.15*location.y+.07*location.x+.04*seed;
+  float formation=clamp((t-delay)/(.95-delay),0.0,1.0);
   float arrival=formation*formation*formation*(formation*(formation*6.0-15.0)+10.0);
   vec2 target=imageRect.xy+(cell+.5)/grid*imageRect.zw;
   vec2 offset=position-target;
-  position=mix(position,target,arrival)+vec2(-offset.y,offset.x)*sin(arrival*3.14159)*.08;
+  position=mix(position,target,arrival)+vec2(-offset.y,offset.x)*sin(arrival*3.14159)*(.10+.04*float(band));
   dimensions=mix(dimensions,imageRect.zw/grid*1.003,arrival);
   alpha=mix(alpha,1.0,arrival);
   mixColor*=1.0-smoothstep(.08,.82,arrival);
@@ -270,7 +271,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
       // Keep the orbit-to-image formation, then crossfade to the decoded original
       // before the sampled particles become a complete low-resolution surface.
       if (reveal >= 0 && resultImage) {
-        const handoff = smoothGenerationPhase(.55, .8, reveal)
+        const handoff = smoothGenerationPhase(.72, .97, reveal)
         resultImage.style.opacity = String(resultOpacity * handoff)
         canvas.style.opacity = String(1 - handoff)
       }
@@ -319,7 +320,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
     canvas.addEventListener('webglcontextlost', contextLost)
     draw(); host.append(canvas); started = true
     /* compositor-exempt: bounded instanced particles share the display RAF; no FPS cap, per-frame texture upload or CPU particle loop. */
-    stopFrames = registerParticleFrame((now, deltaMs) => {
+    function advance(now: number, deltaMs: number) {
       elapsed += deltaMs / 1000
       try {
         if (revealElapsed !== null) {
@@ -331,8 +332,13 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
           if (!handedOff && elapsed >= 1.65) { handedOff = true; options.onHandoff?.() }
         }
         draw()
+        if (options.generation && revealElapsed === null && dustTime() < 0) {
+          stopFrames?.()
+          stopFrames = null
+        }
       } catch { finish() }
-    })
+    }
+    if (image) stopFrames = registerParticleFrame(advance)
     return {
       stop: finish,
       resize,
@@ -359,6 +365,7 @@ export function startCanvasTextureParticles(image: HTMLImageElement | null, host
           restoreImage = () => { next.style.opacity = opacity }
           draw()
           revealStartedAt = performance.now()
+          stopFrames ??= registerParticleFrame(advance)
         }
         catch { finish(); return null }
         return revealEffect

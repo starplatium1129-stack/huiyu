@@ -2,7 +2,6 @@ import type { PromptScene } from './sceneFraming.ts'
 import { normalizeKey, sceneRating } from './promptPrimitives.ts'
 
 import { TRAINED_OUTFIT_BUNDLES } from './canonicalOutfits.ts'
-export { TRAINED_OUTFIT_BUNDLES } from './canonicalOutfits.ts'
 
 function appendOutfitBundle(controls: string[], bundle: readonly string[]): void {
   controls.push(...bundle)

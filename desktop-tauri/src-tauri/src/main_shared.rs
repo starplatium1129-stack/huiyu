@@ -9,6 +9,8 @@ use crate::window_state::{
     WindowBounds, WindowPlacement,
 };
 
+pub const ATELIER_MIN_SIZE: (i64, i64) = (480, 360);
+
 /// 只接受应用内的单段路径与编码后的查询参数，保留绘画草稿等深链。
 pub fn normalize_atelier_path(value: Option<&str>) -> String {
     match value {
@@ -30,13 +32,14 @@ pub fn normalize_atelier_path(value: Option<&str>) -> String {
 
 pub fn companion_bounds(app: &AppHandle, state: &AppState) -> WindowPlacement {
     let (saved, physical) = load_window_bounds(&state.paths.companion_window_file, None);
-    restore_window_placement(&normalize_companion_bounds(&saved), physical.as_ref(), &display_work_areas(app), None)
+    let logical = if physical.is_none() { normalize_companion_bounds(&saved) } else { saved };
+    restore_window_placement(&logical, physical.as_ref(), &display_work_areas(app), None)
 }
 
 pub fn atelier_bounds(app: &AppHandle, state: &AppState) -> WindowPlacement {
     let fallback = WindowBounds { x: 120, y: 72, width: 1440, height: 960 };
     let (saved, physical) = load_window_bounds(&state.paths.atelier_window_file, Some(&fallback));
-    restore_window_placement(&saved, physical.as_ref(), &display_work_areas(app), Some((1024, 720)))
+    restore_window_placement(&saved, physical.as_ref(), &display_work_areas(app), Some(ATELIER_MIN_SIZE))
 }
 
 /// 悬浮对白默认位于角色窗右侧；内容载入后按实际绘制尺寸收缩。
@@ -179,7 +182,7 @@ pub fn open_atelier(app: &AppHandle, gateway_url: &str, target: Option<&str>) {
             .zoom_hotkeys_enabled(false)
             .inner_size(bounds.width as f64, bounds.height as f64)
             .position(bounds.x as f64, bounds.y as f64)
-            .min_inner_size(1024.0_f64.min(bounds.width as f64), 720.0_f64.min(bounds.height as f64))
+            .min_inner_size(ATELIER_MIN_SIZE.0.min(bounds.width) as f64, ATELIER_MIN_SIZE.1.min(bounds.height) as f64)
             .build()
         {
             Ok(win) => {

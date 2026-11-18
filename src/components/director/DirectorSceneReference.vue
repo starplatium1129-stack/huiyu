@@ -1,9 +1,10 @@
 <template>
-  <figure v-if="scene" class="scene-reference" :class="{ 'is-unconnected': !loading && !entry }" :style="{ '--reference-image-ratio': imageRatio && !failed ? String(imageRatio) : undefined }" aria-label="当前场景参考">
-    <div class="scene-reference-picture tw:relative tw:overflow-hidden tw:grid tw:rounded-lg" :class="{ 'is-restricted': restricted }">
-      <img v-if="image.src && !failed" v-bind="image" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" />
+  <figure v-if="scene" class="scene-reference" aria-label="当前场景参考">
+    <div class="scene-reference-picture tw:relative tw:overflow-hidden tw:grid tw:rounded-lg" :class="{ 'is-restricted': restricted }"
+      @pointerenter="tilt.enter" @pointermove="tilt.move" @pointerleave="tilt.reset" @pointercancel="tilt.reset">
+      <img v-if="image.src && !failed" ref="art" v-bind="image" :alt="restricted ? '' : `${scene.title}的场景参考样张`" decoding="async" />
       <div v-else class="scene-reference-empty tw:grid tw:gap-s-3 tw:p-s-4 tw:text-body tw:text-center"><ArchiveIcon name="image" /><span>{{ loading ? '核对样张中…' : !entry || failed ? '暂无参考样张' : '已遮挡' }}</span></div>
-      <span v-if="restricted && canLoad && !failed" class="scene-reference-mask tw:absolute tw:grid tw:text-primary tw:text-label">分级参考 · 已模糊</span>
+      <span v-if="restricted && imageUrl && !failed" class="scene-reference-mask tw:absolute tw:grid tw:text-primary tw:text-label">分级参考 · 已模糊</span>
     </div>
     <figcaption>
       <span class="scene-reference-label tw:block tw:mb-s-2 tw:text-secondary tw:text-label-xs">场景参考</span>
@@ -21,8 +22,8 @@
 
 <script setup lang="ts">
 import { useRuntimeImage } from '@/composables/useRuntimeImage'
-import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
-import { computed, onActivated, onDeactivated, ref, watch } from 'vue'
+import { useArtworkTilt } from '@/composables/useArtworkTilt'
+import { computed, onActivated, onDeactivated, ref } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { COMPOSITION, LIGHTING, SHOT } from '@/config/promptConstants'
@@ -52,16 +53,9 @@ const imageUrl = computed(() => {
   if (!entry.value) return ''
   return restricted.value ? thumbUrl(entry.value.id) : originalUrl(entry.value.id)
 })
-const canLoad = computed(() => !!imageUrl.value)
-const { image: runtimeImage, src, failed } = useRuntimeImage(() => attached.value && canLoad.value ? imageUrl.value : '')
-const imageRatio = ref<number | null>(null)
-watch([src, runtimeResourceIdentity], () => { imageRatio.value = null }, { flush: 'sync' })
-function measureImage(event: Event) {
-  if (!runtimeImage.value.onLoad(event)) return
-  const image = event.target as HTMLImageElement
-  imageRatio.value = image.naturalWidth / image.naturalHeight
-}
-const image = computed(() => ({ ...runtimeImage.value, onLoad: measureImage }))
+const { image, failed } = useRuntimeImage(() => attached.value ? imageUrl.value : '')
+const art = ref<HTMLImageElement | null>(null)
+const tilt = useArtworkTilt(art, () => !restricted.value && !!image.value.src && !failed.value)
 const shot = computed(() => SHOT.find(item => item.id === pb.selections.shot)?.name ?? '跟随场景')
 const composition = computed(() => COMPOSITION.find(item => item.id === pb.selections.composition)?.name ?? '跟随场景')
 const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.lighting)?.name ?? '跟随场景')
@@ -71,6 +65,7 @@ const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.
 .scene-reference { display:flex; flex-direction:column; align-items:center; gap:20px; margin:0; min-height:0; width:100%; text-align:center; }
 .scene-reference-picture { position:relative; width:100%; flex:1; min-height:0; overflow:hidden; display:grid; place-items:center; background:transparent; }
 .scene-reference-picture img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; }
+.scene-reference-picture:not(.is-restricted) img { transition:transform var(--motion-control) var(--ease-out); }
 .scene-reference-picture.is-restricted img { filter:blur(24px); transform:scale(1.15); }
 .scene-reference-mask { inset:0; place-items:center; background:var(--art-scrim); color:var(--on-art-primary); }
 .scene-reference-empty { display:grid; justify-items:center; align-content:center; gap:20px; height:100%; line-height:var(--lh-loose); color:var(--text-primary); }

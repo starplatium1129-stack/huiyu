@@ -1,14 +1,12 @@
 import { onBeforeUnmount, ref, watch, type Ref } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
-import { useVisualActivity } from './useVisualActivity'
 
 type Dissolve = typeof import('@/utils/canvasDissolve')['startCanvasDissolve']
 
 /** Presentation only: snapshot the displayed pixels without owning the result. */
 export function useCanvasClearMotion(
-  host: Ref<HTMLElement | null>, source: () => string, busy: () => boolean, comparing: () => boolean,
+  host: Ref<HTMLElement | null>, enabled: Readonly<Ref<boolean>>, source: () => string, busy: () => boolean, comparing: () => boolean,
 ) {
-  const { canAnimate, lowEffects } = useVisualActivity(host)
   let dissolve: Dissolve | null = null
   let loading = false
   let cleanup: (() => void) | null = null
@@ -37,7 +35,7 @@ export function useCanvasClearMotion(
     stop()
     const root = host.value
     // Comparison has two independently clipped images; never replace it with an incorrect full image.
-    if (!root || comparing() || !canAnimate.value || lowEffects.value) return
+    if (!root || comparing() || !enabled.value) return
     const image = root.querySelector<HTMLImageElement>('img.cg-image-target')
     if (!image?.complete || !image.naturalWidth) return
     hostWidth = root.getBoundingClientRect().width
@@ -58,19 +56,16 @@ export function useCanvasClearMotion(
       stop() // A decorative effect must never prevent the synchronous clear action.
     }
   }
-  watch([source, busy, comparing], ([url, generating, comparison], [oldUrl, wasGenerating]) => {
-    if ((url && url !== oldUrl) || comparison || (!generating && wasGenerating)
-      || (generating && url && generating !== wasGenerating)) stop()
+  watch([source, busy, comparing], ([url, generating, comparison], [oldUrl]) => {
+    if ((url && url !== oldUrl) || comparison || generating) stop()
   }, { flush: 'sync' })
-  watch([canAnimate, lowEffects], () => {
-    if (!canAnimate.value || lowEffects.value) stop()
-  }, { flush: 'sync' })
+  watch(enabled, allowed => { if (!allowed) stop() }, { flush: 'sync' })
   useEventListener(window, 'resize', stop)
   useResizeObserver(host, () => {
     if (cleanup && host.value && Math.abs(host.value.getBoundingClientRect().width - hostWidth) > 1) stop()
   })
   onBeforeUnmount(stop)
-  return { playClear, stop, coveringResult }
+  return { playClear, coveringResult }
 }
 
 /** A tainted canvas can still be displayed; never read pixels or alter CORS for the fallback. */

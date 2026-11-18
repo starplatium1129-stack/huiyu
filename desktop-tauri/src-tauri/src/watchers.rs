@@ -294,8 +294,8 @@ fn clamp_windows(app: &AppHandle, monitors: &[crate::window_state::DisplayWorkAr
             }
             if bounds.width != size.width as i64 || bounds.height != size.height as i64 {
                 let scale = w.scale_factor().unwrap_or(1.0);
-                let minimum = match label { "atelier" => (1024.0_f64, 720.0_f64), "companion-chat" => (320.0, 120.0), _ => (360.0, 480.0) };
-                let _ = w.set_min_size(Some(tauri::LogicalSize::new(minimum.0.min(bounds.width as f64 / scale), minimum.1.min(bounds.height as f64 / scale))));
+                let minimum = match label { "atelier" => crate::main_shared::ATELIER_MIN_SIZE, "companion-chat" => (320, 120), _ => (360, 480) };
+                let _ = w.set_min_size(Some(tauri::LogicalSize::new((minimum.0 as f64).min(bounds.width as f64 / scale), (minimum.1 as f64).min(bounds.height as f64 / scale))));
                 let _ = w.set_size(tauri::PhysicalSize::new(bounds.width as u32, bounds.height as u32));
             }
         }

@@ -3,16 +3,16 @@
 // 标签使用精确规范化匹配；中文只解析专门的 camera / lighting 结构化字段，
 // 绝不扫描故事或检索标签，避免叙事文本里的宽泛词误改导演决策。
 
-export const SHOT_IDS = ['close', 'medium', 'wide', 'pov', 'low', 'high', 'side', 'turn', 'over', 'detail'] as const
+const SHOT_IDS = ['close', 'medium', 'wide', 'pov', 'low', 'high', 'side', 'turn', 'over', 'detail'] as const
 export type ShotId = typeof SHOT_IDS[number]
 
-export const LIGHTING_IDS = ['golden', 'window', 'back', 'moon', 'lantern', 'overcast'] as const
+const LIGHTING_IDS = ['golden', 'window', 'back', 'moon', 'lantern', 'overcast'] as const
 export type LightingId = typeof LIGHTING_IDS[number]
 
 const MOOD_IDS = ['joy', 'love', 'calm', 'sad', 'tension', 'warmth'] as const
 export type MoodId = typeof MOOD_IDS[number]
 
-export const COMPOSITION_IDS = ['center', 'rule3', 'left', 'right', 'foreground', 'frame', 'bywindow'] as const
+const COMPOSITION_IDS = ['center', 'rule3', 'left', 'right', 'foreground', 'frame', 'bywindow'] as const
 export type CompositionId = typeof COMPOSITION_IDS[number]
 
 /** 归一化标签：小写、去权重括号、空格/连字符转下划线。 */

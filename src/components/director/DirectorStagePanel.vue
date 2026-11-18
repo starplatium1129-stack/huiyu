@@ -42,7 +42,7 @@
           <button class="btn btn-ghost" type="button" @click="$emit('openRecovery')">查看恢复选项</button>
           <div class="stage-placeholder-copy">
             请检查参数或连接后重试。
-            <span v-if="generationError" class="stage-error-detail">（{{ generationError }}）</span>
+            <span class="stage-error-detail">（{{ generationError }}）</span>
           </div>
           <div class="stage-quick-actions">
             <button class="btn btn-primary" type="button" @click="$emit('generate')">重新生成</button>
@@ -82,20 +82,22 @@
     </Transition>
 
     <!-- The same fine-line orbit stays mounted through breakup, waiting and formation. -->
-    <div v-if="(generationBusy || waitingForResult || textureMotionActive) && !retryingResult && !coveringResult" class="stage-generation-orbit">
+    <div v-if="(generationBusy || waitingForResult || textureMotionActive || forming) && !retryingResult && !coveringResult"
+      class="stage-generation-orbit" :class="{ 'is-forming': forming && !textureMotionActive }">
       <GenerationParticles ref="generationOrbit" :progress="stageProgress" :palette="generationPalette" />
     </div>
 
     <!-- Keep readable task feedback above the texture canvas's own stacking layer. -->
-    <div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
+    <Transition name="stage-feedback"><div v-if="generationBusy || waitingForResult" class="stage-generation-feedback">
       <span class="stage-progress-caption" role="status">{{ stageStatus }}</span>
       <progress class="stage-progress" :value="stageProgress ?? undefined" max="1" :aria-label="waitingForResult ? '成片读取进度' : '生图进度'" />
       <strong v-if="stageProgress !== null" class="stage-progress-percent" aria-hidden="true">{{ Math.round(stageProgress * 100) }}%</strong>
-    </div>
+    </div></Transition>
 
     <!-- Result image -->
     <div v-if="displayResultUrl" class="result-image-wrap archive-canvas" :class="{ 'is-error': failedResultUrl === displayResultUrl }">
-      <div class="result-artwork" :style="{ '--result-aspect': resultAspect }">
+      <div class="result-artwork" :style="{ '--result-aspect': resultAspect }" :class="{ 'can-tilt': restingResult }"
+        @pointerenter="tilt.enter" @pointermove="tilt.move" @pointerleave="tilt.reset" @pointercancel="tilt.reset">
         <ImageCompareSlider
           v-if="inpaintCompareActive && inpaintOriginalUrl"
           :before-src="inpaintOriginalUrl"
@@ -103,21 +105,21 @@
           before-label="换装前原图"
           after-label="换装后成片"
         />
+        <div v-else ref="artPlane" class="result-art-plane">
         <CgImageReveal
-          v-else
           :key="`${displayResultUrl}:${imageRetry}`"
           class="result-image-reveal"
-          img-class="result-image"
-          :src="resolveRuntimeUrl(displayResultUrl)"
-          :auto-reveal="loadedResultUrl === displayResultUrl && displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
+          :src="displayResultUrl"
+          :auto-reveal="displayResultUrl === resultRevealUrl && !revealedResults.has(displayResultUrl)"
           :reveal-effect="revealTextureResult"
           :duration="900"
           alt="当前生成的画面成片"
           @load="fitResult"
-          @reveal-start="rememberResultReveal"
+          @reveal-start="onRevealStart"
           @reveal-complete="onResultReveal"
           @error="onResultImageError"
         />
+        </div>
       </div>
       <div v-if="!generationBusy && !waitingForResult && !inpaintCompareActive && failedResultUrl !== displayResultUrl" class="result-reading-feedback" role="status"><ArchiveIcon name="image" /><span>正在读取成片…</span></div>
     </div>
@@ -135,8 +137,6 @@
 </template>
 
 <script setup lang="ts">
-import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
-
 import { computed, nextTick, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
@@ -148,6 +148,8 @@ import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasGenerationMotion } from '@/composables/useCanvasGenerationMotion'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
+import { useArtworkTilt } from '@/composables/useArtworkTilt'
+import { useVisualActivity } from '@/composables/useVisualActivity'
 import { usePressRipple } from '@/composables/usePressRipple'
 import type { GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
 import { sampleGenerationPalette } from '@/utils/generationPalette'
@@ -179,37 +181,34 @@ const props = defineProps<{
 }>()
 
 const canvasViewport = ref<HTMLElement | null>(null)
+const { canAnimate, lowEffects } = useVisualActivity(canvasViewport)
+const texturesEnabled = computed(() => canAnimate.value && !lowEffects.value)
 const pressRipple = usePressRipple()
 const generationOrbit = ref<InstanceType<typeof GenerationParticles> | null>(null)
 const resultPalette = ref<string[]>([])
 const generationPalette = ref<string[]>([])
 // Capture before publication/clearing; the new image's load must not recolor an ongoing wait.
 watch(() => props.generationBusy, busy => { if (busy) { generationPalette.value = [...resultPalette.value]; retryingResult.value = false } }, { flush: 'sync' })
-const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generation.progress, () => generationPalette.value, () => resultPalette.value, () => generationOrbit.value)
-const { playClear, coveringResult, stop: stopClearMotion } = useCanvasClearMotion(canvasViewport, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
-
-// A deliberate clear followed by Generate must not leave two GPU effects alive.
-watch(() => props.generationBusy, busy => { if (busy) stopClearMotion() }, { flush: 'sync' })
+const { active: textureMotionActive, reveal: revealTextureResult, stop: stopTextureMotion } = useCanvasGenerationMotion(canvasViewport, texturesEnabled, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive, () => props.generation.progress, () => generationPalette.value, () => resultPalette.value, () => generationOrbit.value)
+const { playClear: dissolveResult, coveringResult } = useCanvasClearMotion(canvasViewport, texturesEnabled, () => props.displayResultUrl, () => props.generationBusy, () => props.inpaintCompareActive)
 
 const resultAspect = ref(1)
 const loadedResultUrl = ref('')
 const failedResultUrl = ref('')
 const imageRetry = ref(0), retryingResult = ref(false)
+const artPlane = ref<HTMLElement | null>(null), forming = ref(false)
 watch(() => props.displayResultUrl, () => {
   const [width, height] = (props.canvasSize || '').split('x').map(Number)
   resultAspect.value = width > 0 && height > 0 ? width / height : 1
   loadedResultUrl.value = ''
   failedResultUrl.value = ''
-  imageRetry.value = 0; retryingResult.value = false
+  imageRetry.value = 0; retryingResult.value = false; forming.value = false
 }, { immediate: true })
-async function fitResult(event: Event) {
-  const image = event.target as HTMLImageElement
-  const source = props.displayResultUrl
+function fitResult(image: HTMLImageElement) {
   resultAspect.value = image.naturalWidth / image.naturalHeight
   resultPalette.value = sampleGenerationPalette(image)
-  // Settle the canvas ratio before the decoded work receives its reveal.
-  await nextTick()
-  if (source === props.displayResultUrl) { loadedResultUrl.value = source; retryingResult.value = false }
+  loadedResultUrl.value = props.displayResultUrl
+  retryingResult.value = false
 }
 
 // Keep reveal history local and bounded. Returning from compare/history must not replay it.
@@ -218,13 +217,19 @@ const waitingForResult = computed(() => retryingResult.value || Boolean(props.di
   && !props.inpaintCompareActive && !revealedResults.value.has(props.displayResultUrl) && failedResultUrl.value !== props.displayResultUrl))
 const stageProgress = computed(() => waitingForResult.value ? null : props.generation.progress)
 const stageStatus = computed(() => retryingResult.value ? '正在重新读取成片…' : waitingForResult.value ? '正在读取成片…' : props.generation.message)
-function onResultImageError() { failedResultUrl.value = props.displayResultUrl; retryingResult.value = false; stopTextureMotion() }
+const restingResult = computed(() => canAnimate.value && !!loadedResultUrl.value && !props.generationBusy && !waitingForResult.value && !forming.value
+  && !coveringResult.value && !props.inpaintCompareActive && !failedResultUrl.value)
+const tilt = useArtworkTilt(artPlane, () => restingResult.value)
+function playClear() { tilt.flatten(); dissolveResult() }
+watch(() => props.generationBusy, busy => { if (busy) tilt.flatten() }, { flush: 'sync' })
+function onResultImageError() { failedResultUrl.value = props.displayResultUrl; retryingResult.value = false; forming.value = false; stopTextureMotion() }
 async function retryResultImage() {
   rememberResultReveal(); failedResultUrl.value = ''; loadedResultUrl.value = ''
   retryingResult.value = true; imageRetry.value++
   await nextTick(); canvasViewport.value?.focus({ preventScroll: true })
 }
-function onResultReveal() { stopTextureMotion(); rememberResultReveal() }
+function onRevealStart() { forming.value = true; rememberResultReveal() }
+function onResultReveal() { forming.value = false; stopTextureMotion(); rememberResultReveal() }
 function rememberResultReveal() {
   const source = props.displayResultUrl
   if (!source || revealedResults.value.has(source)) return
@@ -238,7 +243,10 @@ function rememberResultReveal() {
 // Do not postpone a completion animation until the user leaves history/comparison.
 watch(() => [props.displayResultUrl, props.resultRevealUrl, props.inpaintCompareActive, props.generationBusy], () => {
   if (!props.generationBusy && props.displayResultUrl && props.displayResultUrl !== props.resultRevealUrl) stopTextureMotion()
-  if (props.inpaintCompareActive && props.displayResultUrl === props.resultRevealUrl) rememberResultReveal()
+  if (props.inpaintCompareActive) {
+    forming.value = false
+    if (props.displayResultUrl === props.resultRevealUrl) rememberResultReveal()
+  }
 }, { immediate: true })
 
 const emit = defineEmits<{
@@ -255,8 +263,7 @@ const emit = defineEmits<{
 }>()
 
 const interrogateInputRef = ref<HTMLInputElement | null>(null)
-const { busy: interrogateBusy, error: interrogateErrorRaw, interrogate, cancel } = useInterrogate((result, current) => props.applyInterrogateResult(result, current))
-const interrogateError = computed(() => interrogateErrorRaw.value)
+const { busy: interrogateBusy, error: interrogateError, interrogate, cancel } = useInterrogate((result, current) => props.applyInterrogateResult(result, current))
 const interrogateMode = computed(() => props.drawEngine === 'krea2' ? 'caption' as const : 'tag' as const)
 // Keep the source identity after success so delayed notices also retire when
 // the current picture changes. File/clipboard requests do not own the canvas.
@@ -333,24 +340,5 @@ async function interrogateCurrentImage() {
     console.warn('[interrogate]', msg)
   }
 }
-defineExpose({ playClear, resultAspect, interrogateBusy, interrogateError, cancelInterrogate: cancel, interrogateCurrentImage, interrogateClipboardImage, triggerInterrogatePick, onInterrogatePaste })
+defineExpose({ playClear, interrogateBusy, interrogateError, cancelInterrogate: cancel, interrogateCurrentImage, interrogateClipboardImage, triggerInterrogatePick, onInterrogatePaste })
 </script>
-
-<style scoped>
-@reference "../../assets/css/tailwind.css";
-/* F2：入册状态徽章（设计令牌，深色模式对比度由令牌保证） */
-.stage-archive-badge {
-  @apply tw:self-center;
-  padding: 3px var(--s-2);
-  @apply tw:rounded-pill;
-  font: 700 var(--fs-mono-xs) var(--font-mono);
-}
-.stage-archive-badge[data-archived="true"] {
-  background: color-mix(in srgb, var(--success) 14%, transparent);
-  @apply tw:text-success-text;
-}
-.stage-archive-badge[data-archived="false"] {
-  background: color-mix(in srgb, var(--warning) 12%, transparent);
-  @apply tw:text-warning-text;
-}
-</style>

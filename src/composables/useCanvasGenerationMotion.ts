@@ -1,80 +1,50 @@
-import { onBeforeUnmount, onMounted, ref, watch, type Ref } from 'vue'
+import { onBeforeUnmount, ref, watch, type Ref } from 'vue'
 import { useResizeObserver } from '@vueuse/core'
-import { useVisualActivity } from './useVisualActivity'
 import type { CanvasParticleMotion } from '@/utils/canvasTextureParticles'
 import type { GenerationOrbitSurface } from '@/utils/generationOrbit'
 
-/** Image particles hand off to and from the same fine-line waiting surface.
- * Presentation never owns submission, task receipts, cancellation or results. */
-export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>,
+/** The live orbit owns the wait. Only departing and arriving images need a texture surface. */
+export function useCanvasGenerationMotion(host: Ref<HTMLElement | null>, enabled: Readonly<Ref<boolean>>,
   source: () => string, busy: () => boolean, comparing: () => boolean,
   progress: () => number | null, palette: () => readonly string[], resultPalette: () => readonly string[],
   orbit: () => GenerationOrbitSurface | null,
 ) {
-  const { canAnimate, lowEffects } = useVisualActivity(host)
   const active = ref(false)
   let effect: CanvasParticleMotion | null = null
-  let startParticles: typeof import('@/utils/canvasTextureParticles')['startCanvasTextureParticles'] | null = null
-  let revision = 0
+  let startParticles: typeof import('@/utils/canvasTextureParticles')['startCanvasTextureParticles'] | undefined
   let generationSource = ''
-  function loadParticles() {
-    return import('@/utils/canvasTextureParticles').then(module => { startParticles=module.startCanvasTextureParticles })
-  }
-  // A displayed result can become the next generation's texture. Prepare its
-  // code while the picture is intact, without loading it on an empty workbench.
-  watch([source,canAnimate,lowEffects], () => {
-    if (source() && canAnimate.value && !lowEffects.value && !startParticles)
-      void loadParticles().catch(() => {})
-  }, { immediate:true })
   function stop() {
-    revision++
-    const current=effect; effect=null; active.value=false
-    current?.stop()
+    effect?.stop()
+    effect = null
+    active.value = false
   }
-  function start(previousSource = source(), capturePrevious = true) {
-    stop()
-    const version=revision
-    // The task-start URL is stable across publication/settlement Vue ticks.
-    // DOM src may be runtime-resolved, so don't compare it to business URLs.
-    generationSource = previousSource
-    const root=host.value
-    if (!root || !canAnimate.value || lowEffects.value || comparing()) return
-    const candidate=capturePrevious ? root.querySelector<HTMLImageElement>('img.cg-image-target') : null
-    const image=candidate?.complete && candidate.naturalWidth ? candidate : null
-    function launch() {
-      if (version!==revision || !root?.isConnected || !canAnimate.value || lowEffects.value || comparing() || !startParticles) return
-      effect=startParticles(image,root,{
-        generation:{progress,palette:palette(),orbit},
-        onComplete:() => { if(version===revision) { effect=null; active.value=false } },
-      })
-      active.value=Boolean(effect)
-    }
-    if (startParticles) launch()
-    else {
-      // The ordinary waiting/reveal feedback stays immediate while the optional
-      // texture code loads. A settled or cancelled task cannot start it later.
-      void loadParticles().then(() => { if (busy()) launch() })
-        .catch(() => { /* Keep the existing particle/reveal fallback. */ })
-    }
+  function start(image: HTMLImageElement | null) {
+    if (!host.value || !enabled.value || comparing() || !startParticles) return null
+    effect = startParticles(image, host.value, {
+      generation: { progress, palette: palette(), orbit },
+      onComplete: () => { effect = null; active.value = false },
+    })
+    active.value = !!effect
+    return effect
   }
-  function reveal(image: HTMLImageElement, duration: number) {
-    if (!canAnimate.value || lowEffects.value || comparing()) { stop(); return null }
-    // Late completion or restored visibility can start from the waiting orbit.
-    if (!effect) start(source(),false)
-    return effect?.reveal(image, duration, resultPalette()) ?? null
-  }
-  watch([source,busy,comparing],([url,generating,comparison],[oldUrl,wasGenerating]) => {
+  watch([source, busy, enabled], () => {
+    if (!startParticles && enabled.value && (source() || busy()))
+      void import('@/utils/canvasTextureParticles').then(module => { startParticles = module.startCanvasTextureParticles }).catch(() => {})
+  }, { immediate: true })
+  watch([source, busy, comparing], ([url, generating, comparison], [previous, wasGenerating]) => {
     if (comparison) { stop(); return }
-    if (generating && !wasGenerating) { start(oldUrl); return }
-    if (!generating && wasGenerating && (!url || url===generationSource)) stop()
-    else if (!generating && !wasGenerating && url!==oldUrl && effect) stop()
-  },{flush:'pre'})
-  watch([canAnimate,lowEffects],() => {
-    if (!canAnimate.value || lowEffects.value) stop()
-    else if (busy() && !effect) start(source(),false)
-  },{flush:'sync'})
-  useResizeObserver(host,() => { effect?.resize() })
-  onMounted(() => { if (busy() && !effect) start() })
+    if (generating && !wasGenerating) {
+      stop()
+      generationSource = previous
+      const image = host.value?.querySelector<HTMLImageElement>('img.cg-image-target')
+      if (image?.complete && image.naturalWidth) start(image)
+    } else if (!generating && (wasGenerating ? !url || url === generationSource : url !== previous)) stop()
+  })
+  watch(enabled, allowed => { if (!allowed) stop() }, { flush: 'sync' })
+  useResizeObserver(host, () => effect?.resize())
   onBeforeUnmount(stop)
+  function reveal(image: HTMLImageElement, duration: number) {
+    return (effect ?? start(null))?.reveal(image, duration, resultPalette()) ?? null
+  }
   return { active, reveal, stop }
 }

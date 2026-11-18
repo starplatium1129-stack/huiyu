@@ -17,7 +17,7 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
     json!({
         "name": "绘遇远程出图",
         "protocol": "huiyu-muse",
-        "version": 2,
+        "version": 3,
         "guidePath": PATH,
         "authHeader": "X-Token",
         "usage": "使用当前连接的地址和已保存的 X-Token。以下路径均相对于当前地址。",
@@ -35,18 +35,18 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             },
             "draw": {
                 "method": "POST", "path": "/api/muse/jobs",
-                "json": {"id": "sc093", "requestKey": "new UUID", "variants": 3},
-                "usage": "传场景 id，可加同一角色的 outfitId 换装。只传 outfitId 可独立出服装图。可选 seed、modelId，每项最多 8 张。"
+                "json": {"id": "sc093", "requestKey": "replace-with-new-uuid", "width":832, "height":1216},
+                "usage": "传场景或蓝图 id，可加同一角色的 outfitId 换装。只传 outfitId 可独立出服装图。省略宽高使用配方画幅；也可同时传 width 和 height，按模型支持范围校验。可选 seed、modelId，每项最多 8 张。单张也返回 batchKey 和批次 statusPath。"
             },
             "prompt": {
                 "method": "POST", "path": "/api/muse/jobs",
-                "json": {"prompt":"your image prompt","requestKey":"new UUID"},
+                "json": {"prompt":"your image prompt","requestKey":"replace-with-new-uuid"},
                 "usage": "直接提交自定义提示词，不与目录 ID 混用。可选 modelId、宽高 width/height、seed、variants。Anima 可传 character 自动匹配本机已安装的 LoRA。"
             },
             "batch": {
                 "method": "POST", "path": "/api/muse/batches",
-                "json": {"ids": ["sc041", "sc093"], "requestKey": "new UUID", "variants": 3},
-                "usage": "可用 items 逐项指定场景、服装或 prompt。每批最多 16 张，响应含批次和每项的 statusPath。"
+                "json": {"ids": ["sc041", "sc093"], "requestKey": "replace-with-new-uuid", "width": 832, "height": 1216},
+                "usage": "顶层 width 和 height 可给整批设置默认尺寸。用 items 可逐项指定场景、服装或 prompt，并成对覆盖宽高。每批最多 16 张，响应含批次和每项的 statusPath。"
             },
             "queue": {"method": "GET", "path": "/api/muse/queue", "usage": "查看排位、进度和可用的时间估算。"},
             "uploadedInputs": {
@@ -55,8 +55,8 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             },
             "recent": {"method": "GET", "path": "/api/muse/jobs", "usage": "断线后先查 items；entryType=batch 表示批次，image 表示单张。按 statusPath 恢复，since 接受 RFC3339 或 Unix 毫秒。"}
         },
-        "retry": "同一次提交重试时复用原请求体和 requestKey。",
-        "followup": "GET 返回的 statusPath 查状态，批次单项返回 item。按用户要求取消时，向 cancelPath 发 DELETE。",
+        "retry": "每次新出图生成新的 requestKey（推荐 UUID）。同一次提交因断线重试时，复用原请求体和原编号。",
+        "followup": "提交后直接 GET 响应顶层的 statusPath，或 GET /api/muse/batches/{batchKey}。看 items 中每张图的 status、progress 和 resultUrl。收到 waiting 表示已入队，可以继续查同一路径。取消时向返回的 cancelPath 发 DELETE。旧版单图仍可沿原回执路径读取 job。",
         "download": "从成功的 job、item 或批次 items 取 resultUrl。断线后保留部分文件，以 Range: bytes=N- 和原 ETag 作为 If-Range 续传。仅在 206 且 Content-Range 从 N 开始时追加，200 时替换。完成后核对可用的 resultBytes 和 resultSha256 再展示。"
     })
 });

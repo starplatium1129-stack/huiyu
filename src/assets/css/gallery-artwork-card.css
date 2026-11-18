@@ -7,7 +7,7 @@
 .artwork { @apply tw:w-full tw:relative tw:m-0 tw:overflow-hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 :root body .gallery-page .artwork { border-radius:var(--r-lg); transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-surface) var(--ease-out); }
 :root body .gallery-page .artwork:not(.artwork-selected) { box-shadow:inset 0 1px 0 var(--glass-highlight); }
-:root body .gallery-page .artwork { --card-focus-lift:-6px; --card-focus-scale:1.06; }
+:root body .gallery-page .artwork { --card-focus-lift:-6px; }
 :root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) { border-color:var(--border-strong); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-md); }
 .artwork:not(.artwork-selectable):not(.artwork-pending):has(:focus-visible) .artwork-media::after { opacity:1; }
 .artwork:has(:focus-visible) .artwork-name { color:var(--text-primary); }
@@ -41,14 +41,15 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 /* Keep decoded thumbnails painted across cached returns; only the card enters. */
 /* The explicit aspect ratio preserves wall geometry while offscreen media skips paint. */
 .artwork-media { @apply tw:relative tw:w-full; aspect-ratio:var(--art-ratio,3/4); content-visibility:auto; overflow:hidden; background:var(--bg-elevated); }
-.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); transition:transform var(--motion-route) var(--ease-out); }
+.artwork-plane { position:absolute; inset:0; pointer-events:none; transition:transform var(--motion-control) var(--ease-out); }
+.artwork-image { @apply tw:block tw:w-full tw:h-full tw:object-contain; background:var(--art-stage); }
 /* A fixed, image-only focus glow; no pointer loop, grid blur or extra texture copy. */
 .artwork-media::after { content:""; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
 .artwork:has(.artwork-button:focus-visible) .artwork-caption { box-shadow:var(--focus-shadow); }
 /* No dark interval when HD is the first available image. Cross-fade only over
    an already decoded thumbnail, never over an empty stage. */
 .artwork-image-hd { @apply tw:absolute; inset:0; opacity:0; }
-.artwork-image-hd-crossfade { transition:opacity var(--motion-surface) var(--ease-out),transform var(--motion-route) var(--ease-out); }
+.artwork-image-hd-crossfade { transition:opacity var(--motion-surface) var(--ease-out); }
 .artwork-image-hd.is-loaded { opacity:1; }
 .artwork-recovery { position:absolute; top:0; left:0; width:100%; aspect-ratio:var(--art-ratio,3/4); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:var(--s-2); padding:var(--s-3); background:var(--art-stage); color:var(--on-art-primary); font:500 var(--fs-label-sm)/var(--lh-body) var(--font-sans); text-align:center; pointer-events:none; }
 .artwork-recovery > .archive-icon { width:24px; height:24px; }
@@ -66,7 +67,6 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 
 @media (hover: hover) and (pointer: fine) {
   :root body .gallery-page .artwork:not(.artwork-selectable):not(.artwork-pending):hover { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:inset 0 1px 0 var(--glass-highlight), var(--shadow-md); }
-  .artwork:not(.artwork-selectable):not(.artwork-pending):hover .artwork-image { transform:scale(var(--card-focus-scale)); }
   .artwork:not(.artwork-selectable):not(.artwork-pending):hover .artwork-media::after { opacity:1; }
   .artwork:hover .artwork-name { color:var(--text-primary); }
   .artwork:hover .artwork-tools { opacity:1; transform:none; @apply tw:pointer-events-auto; }
@@ -82,9 +82,9 @@ a.artwork-tool:hover { color:var(--on-art-primary); }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-image-hd { transition:none; }
 
 @media (prefers-reduced-motion:reduce) {
-  :root:not([data-motion='full']) body .gallery-page .artwork { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
-  :root:not([data-motion='full']) .artwork-image, :root:not([data-motion='full']) .artwork-media::after { transition:none; }
+  :root:not([data-motion='full']) body .gallery-page .artwork { --card-focus-lift:0px; transition:none; }
+  :root:not([data-motion='full']) .artwork-plane, :root:not([data-motion='full']) .artwork-media::after { transition:none; }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) body .gallery-page .artwork { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-image,
+:root:is([data-motion='reduce'],[data-motion='reduced']) body .gallery-page .artwork { --card-focus-lift:0px; transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-plane,
 :root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-media::after { transition:none; }

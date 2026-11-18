@@ -17,7 +17,7 @@ import {
   type AnimaStatusResponse,
   type AnimaSubmission,
 } from './animaSessionContract'
-export { ANIMA_LORA_BY_CHARACTER, ANIMA_CHARACTER_BY_CHARACTER, animaRequestPayload, closestSupportedSize, resolveInpaintRequestBinding } from './animaSessionContract'
+export { ANIMA_LORA_BY_CHARACTER, closestSupportedSize, resolveInpaintRequestBinding } from './animaSessionContract'
 export type { AnimaRequest } from './animaSessionContract'
 
 /**

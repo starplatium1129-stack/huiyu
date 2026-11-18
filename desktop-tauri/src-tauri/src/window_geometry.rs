@@ -20,8 +20,8 @@ fn valid_scale(scale: f64) -> f64 {
 
 /// The 540×760 DIP pet design remains resizable. Only restore conspicuously large
 /// old states (over 150% on either axis); old files cannot identify whether they
-/// came from physical-pixel persistence or a deliberate resize. A deliberate
-/// size above this threshold also returns to the design size at the next launch.
+/// came from physical-pixel persistence or a deliberate resize. Current files
+/// carry a physical hint and restore the user's chosen logical dimensions directly.
 pub fn normalize_companion_bounds(bounds: &WindowBounds) -> WindowBounds {
     if bounds.width > 810 || bounds.height > 1140 {
         WindowBounds { width: bounds.width.min(540), height: bounds.height.min(760), ..bounds.clone() }

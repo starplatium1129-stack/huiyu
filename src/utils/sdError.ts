@@ -55,7 +55,7 @@ function errorRecord(error: unknown): Record<string, unknown> {
     : {}
 }
 
-export function errorText(error: unknown): string {
+function errorText(error: unknown): string {
   const source = errorRecord(error)
   let message = clean(source.message || (typeof error === 'string' ? error : ''))
   const detail = clean(source.detail)

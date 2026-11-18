@@ -128,7 +128,7 @@ const MUTUAL_EXCLUSION_GROUPS = [
 ]
 
 /** 返回 tag 命中的互斥组名（无则 null） */
-export function mutualGroupOf(tag: string): string | null {
+function mutualGroupOf(tag: string): string | null {
   const key = normalizeKey(tag)
   const group = MUTUAL_EXCLUSION_GROUPS.find(g => g.tokens.some(t => normalizeKey(t) === key))
   return group ? group.name : null
@@ -180,13 +180,6 @@ export function mutualGroupWithCategory(tag: string): MutualGroupHit | null {
   if (!group) return null
   const category = MUTUAL_CATEGORY_BY_GROUP.get(group) ?? 'outfit'
   return { group, category, label: CATEGORY_LABEL[category] }
-}
-
-/** 返回 tags 中属于 groupName 互斥组的成员 */
-export function membersOfMutualGroup(groupName: string, tags: string[]): string[] {
-  const group = MUTUAL_EXCLUSION_GROUPS.find(g => g.name === groupName)
-  if (!group) return []
-  return tags.filter(t => group.tokens.some(gt => normalizeKey(gt) === normalizeKey(t)))
 }
 
 export interface PromptReport {

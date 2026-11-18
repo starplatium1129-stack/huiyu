@@ -7,7 +7,7 @@ import { registerParticleFrame } from '@/utils/particleScheduler'
 import { smoothGenerationPhase } from '@/utils/generationOrbit'
 
 const props = defineProps<{ progress: number | null; colors: readonly string[]; present: boolean; animate: boolean }>()
-const emit = defineEmits<{ ready: []; unavailable: [] }>()
+const emit = defineEmits<{ unavailable: [] }>()
 const canvas = ref<HTMLCanvasElement | null>(null)
 let gl: WebGL2RenderingContext | null = null
 let program: WebGLProgram | null = null
@@ -174,7 +174,7 @@ onMounted(() => {
     uniforms = Object.fromEntries(['shape','aspect','clipExtent','laneTilt[0]','ribbonPhase[0]','pigmentA','pigmentB','pigmentC'].map(name => [name, gl!.getUniformLocation(program!, name)]))
     gl.uniform2fv(uniforms['laneTilt[0]'], new Float32Array([Math.cos(-.55), Math.sin(-.55), 1, 0, Math.cos(.55), Math.sin(.55)]))
     preparePalette()
-    reconcile(); emit('ready')
+    reconcile()
   } catch { unavailable() }
 })
 onBeforeUnmount(() => {

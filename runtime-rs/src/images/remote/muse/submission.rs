@@ -37,16 +37,22 @@ impl SceneSelection {
         self.prompt.is_some() || self.kind.as_deref() == Some("prompt")
     }
 
-    pub(super) fn uses_raw_fields(&self) -> bool {
+    pub(super) fn uses_prompt_only_fields(&self) -> bool {
         self.negative.is_some()
-            || self.width.is_some()
-            || self.height.is_some()
             || self.steps.is_some()
             || self.cfg.is_some()
             || self.character.is_some()
             || self.lora_id.is_some()
             || self.lora_strength.is_some()
             || self.style_lora_id.is_some()
+    }
+}
+
+pub(super) fn dimensions(width: Option<u64>, height: Option<u64>) -> Result<Option<(u64, u64)>> {
+    match (width, height) {
+        (Some(width), Some(height)) => Ok(Some((width, height))),
+        (None, None) => Ok(None),
+        _ => Err(ApiError::invalid("width 和 height 必须一起指定")),
     }
 }
 
@@ -113,15 +119,14 @@ pub(super) fn custom(
         _ => return Err(ApiError::invalid("请选择已配置的原生图像模型")),
     };
     let (max_seed, variants) = limits(&input, family)?;
-    let (width, height) = match (input.width, input.height) {
-        (Some(width), Some(height)) => (width, height),
-        (None, None) if family == "qwen-image" => (1024, 1024),
-        (None, None) => spec["sizes"][0]
+    let (width, height) = match dimensions(input.width, input.height)? {
+        Some(size) => size,
+        None if family == "qwen-image" => (1024, 1024),
+        None => spec["sizes"][0]
             .as_str()
             .and_then(|size| size.split_once('x'))
             .and_then(|(w, h)| Some((w.parse().ok()?, h.parse().ok()?)))
             .ok_or_else(|| ApiError::invalid("此模型需要显式指定 width 和 height"))?,
-        _ => return Err(ApiError::invalid("width 和 height 必须一起指定")),
     };
     let mut payload = json!({"modelId":model,"prompt":input.prompt,"width":width,"height":height});
     if let Some(value) = input.negative {
@@ -195,11 +200,7 @@ pub(super) fn custom(
     }
     // The normal family validator stays authoritative for prompts, dimensions,
     // options and known model/LoRA combinations.
-    if adapter.is_some() {
-        native_adapters::validate(&payload, family)?;
-    } else {
-        validate(&payload, family)?;
-    }
+    validate_payload(&payload, family)?;
     Ok(PreparedScene {
         kind: "prompt".into(),
         id: "prompt".into(),
@@ -209,4 +210,13 @@ pub(super) fn custom(
         max_seed,
         variants,
     })
+}
+
+pub(super) fn validate_payload(payload: &Value, family: &str) -> Result<()> {
+    if generation::native::adapters::model(payload["modelId"].as_str().unwrap_or("")).is_some() {
+        native_adapters::validate(payload, family)?;
+    } else {
+        validate(payload, family)?;
+    }
+    Ok(())
 }

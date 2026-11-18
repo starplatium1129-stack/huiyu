@@ -5,14 +5,9 @@ import type { PromptPart, PromptEngine, ModelProfile } from './promptPolicyTypes
 export type { PromptPart, PromptEngine, DrawCapabilities, ModelProfile, LoraMeta } from './promptPolicyTypes.ts'
 import { mutualGroupWithCategory } from './promptDiagnostics.ts'
 export {
-  BANNED_TAGS,
   checkArtDirection,
-  QUALITY_WORDS,
   QUALITY_TOKENS,
-  QUALITY_OR_SCORE_RE,
-  mutualGroupOf,
   mutualGroupWithCategory,
-  membersOfMutualGroup,
   analyzeParts,
   FOOTWEAR_AND_LEG_TOKENS,
   SHOE_TOKENS,
@@ -30,8 +25,6 @@ export type { PromptScene } from './sceneFraming.ts'
 import { resolveDrawCapabilities } from './drawCapabilities.ts'
 import { sanitizeSoloTemplate } from './soloTemplateSanitize.ts'
 import { compositionIntent, compositionNegative } from './blueprintComposition.ts'
-
-export { sanitizeSoloTemplate } from './soloTemplateSanitize.ts'
 
 /**
  * 引擎/底模能力表：把“这个引擎能不能做 X”从散落硬编码收敛成数据驱动。
@@ -70,7 +63,7 @@ const UNDERSCORE_TAGS = [
 ].sort((a, b) => b.length - a.length)
 
 /** Danbooru 规范化：逗号分段后空格/连字符 → 下划线 */
-export function norm(text: string): string {
+function norm(text: string): string {
   return String(text || '')
     .split(',')
     .map(seg => {
@@ -251,7 +244,7 @@ export function isManualR18Tags(tags: Iterable<string>, matureTokens?: ReadonlyS
  * 主控制词负责选择服装身份，后续词负责锁定官方配色、剪裁和腿部细节。
  * 这里故意不使用近义词或自然语言改写，避免网站提示词与训练语汇脱节。
  */
-export { characterControlTokens, TRAINED_OUTFIT_BUNDLES } from './characterControlTokens.ts'
+export { characterControlTokens } from './characterControlTokens.ts'
 
 export function profileRatingTag(profile: ModelProfile | null, scene: unknown): string {
   if (!profile || profile.rating_mode === 'prompt') return ''

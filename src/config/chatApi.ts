@@ -2,8 +2,8 @@
  * Sources and protocol limits: docs/guides/setup-and-models.md#房间-api-连接
  * Presets are suggestions, never proof of account access. Saved model IDs stay unchanged.
  */
-export const DEEPSEEK_BASE_URL = 'https://api.deepseek.com'
-export const DEEPSEEK_DEFAULT_MODEL = 'deepseek-flash'
+const DEEPSEEK_BASE_URL = 'https://api.deepseek.com'
+const DEEPSEEK_DEFAULT_MODEL = 'deepseek-flash'
 export const DEFAULT_CHAT_API_BASE_URL = 'https://openrouter.ai/api/v1'
 export const DEFAULT_CHAT_API_MODEL = 'openrouter/free'
 const CLIPROXY_BASE_URL = 'http://127.0.0.1:8317/v1'

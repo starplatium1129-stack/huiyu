@@ -1,17 +1,15 @@
-import { onDeactivated, onScopeDispose, type Ref } from 'vue'
+import { onDeactivated, onScopeDispose, watch, type Ref } from 'vue'
 import { cancelFrame, frame } from 'motion'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 
 // Inspira UI 3D Card, adapted to an illustration plane with a stationary link.
 // Source: unovue/inspira-ui@04c57ab62b9713872ebbf68988dff1836ed3d764,
 // app/components/inspira/ui/card-3d/CardContainer.vue; MIT: assets/licenses/inspira-ui.txt.
-export function useArtworkTilt(plane: Ref<HTMLElement | null>) {
+export function useArtworkTilt(plane: Ref<HTMLElement | null>, enabled = () => true) {
   let host: HTMLElement | null = null
   let x = 0, y = 0, transform = ''
   let release: (() => void) | undefined
-  function reset(event?: Event) {
-    const next = (event as PointerEvent | undefined)?.relatedTarget
-    if (event?.type === 'pointerleave' && next instanceof Node && host?.contains(next)) return
+  function reset() {
     host = null
     cancelFrame(measure); cancelFrame(paint)
     plane.value?.style.removeProperty('transform')
@@ -31,7 +29,10 @@ export function useArtworkTilt(plane: Ref<HTMLElement | null>) {
     if (!rect.width || !rect.height) { reset(); return }
     const horizontal = Math.max(-.5, Math.min(.5, (x - rect.left) / rect.width - .5))
     const vertical = Math.max(-.5, Math.min(.5, (y - rect.top) / rect.height - .5))
-    transform = `perspective(900px) rotateX(${-vertical * 12}deg) rotateY(${horizontal * 16}deg) translateY(-10px)`
+    const span = Math.max(rect.width, rect.height)
+    const tilt = Math.min(14, 5500 / span)
+    const lift = Math.min(8, rect.height * .025)
+    transform = `perspective(${Math.max(600, span * 1.8)}px) translateY(${-lift}px) rotateX(${-vertical * tilt}deg) rotateY(${horizontal * tilt}deg)`
     // Share the card edge light's read/render phases; neither writes between reads.
     frame.render(paint)
   }
@@ -39,7 +40,7 @@ export function useArtworkTilt(plane: Ref<HTMLElement | null>) {
     if (host && plane.value) plane.value.style.transform = transform
   }
   function enter(event: PointerEvent) {
-    if (event.pointerType === 'touch' || document.hidden || prefersReducedMotion()
+    if (!enabled() || event.pointerType === 'touch' || document.hidden || prefersReducedMotion()
       || !matchMedia('(hover:hover) and (pointer:fine)').matches) return
     reset()
     host = event.currentTarget as HTMLElement
@@ -49,7 +50,15 @@ export function useArtworkTilt(plane: Ref<HTMLElement | null>) {
     window.addEventListener('resize', reset)
     move(event)
   }
+  function flatten() {
+    reset()
+    // Snap the plane back before a viewer or a particle effect measures its pixels.
+    for (const animation of plane.value?.getAnimations() ?? []) {
+      if ('transitionProperty' in animation && animation.transitionProperty === 'transform') animation.cancel()
+    }
+  }
+  watch([plane, enabled], reset, { flush: 'sync' })
   onDeactivated(reset)
   onScopeDispose(reset)
-  return { enter, move, reset }
+  return { enter, move, reset, flatten }
 }

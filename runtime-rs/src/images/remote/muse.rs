@@ -14,6 +14,7 @@ use tokio::sync::{Mutex, Notify};
 mod batches;
 mod details;
 mod history;
+mod legacy;
 mod submission;
 use submission::SceneSelection;
 
@@ -322,9 +323,9 @@ impl RecipeLibrary {
         Ok(serde_json::from_slice(&decoded)?)
     }
     fn prepare(&self, scene: SceneSelection, default_model: Option<&str>) -> Result<PreparedScene> {
-        if scene.uses_raw_fields() {
+        if scene.uses_prompt_only_fields() {
             return Err(ApiError::invalid(
-                "尺寸、LoRA 和自定义参数需要与 prompt 一起使用",
+                "negative、steps、cfg 和角色 LoRA 参数需要与 prompt 一起使用；目录出图可以指定 width 和 height",
             ));
         }
         let (kind, id, outfit) = match (scene.id.as_deref(), scene.outfit_id.as_deref()) {
@@ -387,6 +388,11 @@ impl RecipeLibrary {
             recipe.moss
         };
         payload["modelId"] = json!(model);
+        if let Some((width, height)) = submission::dimensions(scene.width, scene.height)? {
+            payload["width"] = json!(width);
+            payload["height"] = json!(height);
+            submission::validate_payload(&payload, family)?;
+        }
         Ok(PreparedScene {
             kind,
             id: id.to_owned(),
@@ -437,28 +443,7 @@ async fn draw(
             .ok_or_else(|| ApiError::invalid("请为出图提交指定 requestKey"))?;
         let input: SceneSelection = serde_json::from_value(input)
             .map_err(|error| ApiError::invalid(format!("出图参数无效：{error}")))?;
-        if input.variants.unwrap_or(1) != 1 || input.is_custom() {
-            return batches::enqueue(&state.config, &muse, &owner, key, None, vec![input]).await;
-        }
-        let settings = muse.images.backend.native_settings()?;
-        let config = state.config.clone();
-        let mut scene = tokio::task::spawn_blocking(move || {
-            RecipeLibrary::new(&config, settings.loras_root)?.prepare(input, None)
-        })
-        .await
-        .map_err(|_| unavailable())??;
-        if let Some(seed) = scene.seed {
-            scene.payload["seed"] = json!(seed);
-        }
-        let route = generation::remote_images::image_route(scene.family).unwrap();
-        let status_path = format!("/api/{route}/requests/{key}");
-        let mut accepted = muse
-            .images
-            .accept_request(scene.payload, key, owner, scene.family, false)
-            .await?;
-        accepted["statusPath"] = json!(status_path);
-        accepted["cancelPath"] = accepted["statusPath"].clone();
-        Ok(accepted)
+        batches::enqueue(&state.config, &muse, &owner, key, None, vec![input]).await
     }
     .await;
     http::response(result, StatusCode::ACCEPTED)

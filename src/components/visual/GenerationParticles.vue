@@ -27,7 +27,7 @@ const GenerationBloomShader = defineAsyncComponent({
   loader: () => import('./GenerationBloomShader.vue'),
   onError: (_error, _retry, fail) => { shaderFailed.value = true; fail() },
 })
-interface Point { phase: number; tone: number; x: number; y: number; depth: number }
+interface Point { phase: number; tone: number; angle: number; x: number; y: number; depth: number }
 let points: Point[] = []
 const colors = ref<string[]>([])
 let sprites: HTMLCanvasElement[] = []
@@ -87,7 +87,7 @@ function preparePoints() {
   if (points.length === count) return
   points = Array.from({ length: count }, (_, index) => ({
     phase: Math.floor(index/3)*Math.PI,
-    tone: index % 3, x: 0, y: 0, depth: 0,
+    tone: index % 3, angle: 0, x: 0, y: 0, depth: 0,
   }))
 }
 
@@ -114,24 +114,27 @@ function draw() {
   for (const point of points) {
     const angle = point.phase + rotation*(point.tone === 1 ? -1.6 : 1.85)+point.tone*1.64
     const p=orbit(angle,point.tone)
-    point.x=p.x; point.y=p.y; point.depth=Math.sin(angle)*.5+.5
+    point.angle=angle; point.x=p.x; point.y=p.y; point.depth=Math.sin(angle)*.5+.5
   }
   points.sort((a, b) => a.depth - b.depth)
-  // Continuous fine trails replace dotted tails; the original orbit and collapse remain.
+  // Taper each trail toward its tail. Near-side pigment stays brighter as the orbit turns.
   if (!lowEffects.value) for (const point of points) {
     const direction = point.tone === 1 ? -1 : 1
-    const angle = point.phase + rotation*(direction < 0 ? -1.6 : 1.85)+point.tone*1.64
-    ctx.strokeStyle=pigments[point.tone]; ctx.globalAlpha=.65; ctx.lineWidth=1.25
-    ctx.beginPath()
-    for (let tail=24; tail>=0; tail--) {
-      const p = orbit(angle-direction*tail*.018, point.tone)
-      if (tail===24) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y)
+    ctx.strokeStyle=pigments[point.tone]
+    for (let part=0; part<3; part++) {
+      ctx.globalAlpha=(.22 + part*.20) * (.65 + point.depth*.35)
+      ctx.lineWidth=.7 + part*.35 + point.depth*.45
+      ctx.beginPath()
+      for (let step=0; step<=8; step++) {
+        const p = orbit(point.angle-direction*(24-part*8-step)*(.024+finishing*.012), point.tone)
+        if (!step) ctx.moveTo(p.x,p.y); else ctx.lineTo(p.x,p.y)
+      }
+      ctx.stroke()
     }
-    ctx.stroke()
   }
   for (const point of points) {
-    const size = 1.4
-    const shimmer = 0.92 + Math.sin(time * 0.8 + point.phase) * 0.08
+    const size = 1.1 + point.depth * 1.3
+    const shimmer = .68 + point.depth * .25 + Math.sin(time * .8 + point.phase) * .07
     ctx.fillStyle = pigments[point.tone]
     if (!lowEffects.value) {
       const spread = size * 2.4+1.5
@@ -186,8 +189,8 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
-.generation-particles { position:relative; isolation:isolate; display:grid; place-items:center; width:100%; height:100%; margin-inline:auto; pointer-events:none; }
-.generation-particle-surface { position:relative; width:min(100%,480px); max-height:100%; aspect-ratio:1.38; animation:generation-line-arrival 420ms ease-out both; }
+.generation-particles { position:relative; isolation:isolate; width:100%; height:100%; pointer-events:none; }
+.generation-particle-surface { position:relative; width:100%; height:100%; animation:generation-line-arrival 420ms ease-out both; }
 @keyframes generation-line-arrival { from { opacity:0; } to { opacity:1; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .generation-particle-surface { animation:none; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .generation-particle-surface { animation:none; } }

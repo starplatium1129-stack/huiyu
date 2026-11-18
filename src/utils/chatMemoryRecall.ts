@@ -37,7 +37,7 @@ export interface RecalledChatFact {
   score: number
 }
 
-export function rankChatFacts(state: ChatMemoryState, character: string, query: string): RecalledChatFact[] {
+function rankChatFacts(state: ChatMemoryState, character: string, query: string): RecalledChatFact[] {
   const queryTerms = terms(query)
   const latest = new Map<string, ChatMemoryItem>()
   for (const item of state.byCharacter[character] || []) {
