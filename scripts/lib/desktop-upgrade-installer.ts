@@ -137,8 +137,10 @@ export async function buildUpgradeInstaller(root: string, options: { installDir?
       && entry.path.startsWith('desktop-tauri/src-tauri/resources/'))
       .map((entry: Asset) => ({ path: entry.path.slice('desktop-tauri/src-tauri/resources/'.length), bytes: entry.bytes, sha256: entry.sha256 }));
     const assets = await timeDesktopBuild('upgrade retained file selection', () => resources.filter(entry => {
-      if (RETAIN.test(entry.path)) return true;
-      if (!options.local || !LOCAL_RETAIN.test(entry.path)) return false;
+      // The bundled Nene texture is re-encoded with the portraits; older releases
+      // can have a different PNG at the same path.
+      if (!options.local) return RETAIN.test(entry.path) && entry.path !== 'gateway/assets/live2d/nene/textures/texture_00.png';
+      if (!LOCAL_RETAIN.test(entry.path)) return false;
       // Missing, changed or unsafe files are never authorized for reuse. The
       // embedded verifier rechecks every retained byte immediately before writes.
       const installed = safe.fileEntry(options.installDir!, entry.path);
