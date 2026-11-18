@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_iuno_sc04",
+  "revision": 1,
+  "sortOrder": 3704,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "踏水立于水镜祭坛中央手提银月灯笼，浅笑凝望",
+    "adult": false,
+    "animaCaption": "Standing across a shallow mirror-like sanctuary pool reflecting the full moon and stars, she holds a silver crescent lantern as gentle ripples spread around her feet.",
+    "camera": "全身镜头，水面倒影对称构图",
+    "category": "索拉里斯日常",
+    "characterId": "iuno_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "倒映着满月与星河的浅水镜祭坛中央，尤诺身着白蓝金丝祭典长裙，手提银色新月灯笼缓步踏水，水波荡起银色光圈。",
+    "id": "wuwa_iuno_sc04",
+    "lighting": "水面倒映的银月星辉与提灯冰蓝微光",
+    "location": "七丘月神浅水镜祭坛",
+    "mature": false,
+    "mood": "空灵圣洁",
+    "negativeTokens": [
+      "daylight"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "moonlit_festival_hakama",
+    "promptProse": "Stepping across the shallow reflective basin of the Lunar Altar under a full moon, Iuno carries a silver filigree lantern in her ceremonial white-and-cobalt festival attire.",
+    "promptTokens": [
+      "blue hair",
+      "twin tails",
+      "long hair",
+      "blue eyes",
+      "crescent hair ornament",
+      "white top",
+      "wide sleeves",
+      "blue skirt",
+      "long skirt",
+      "silver belt",
+      "standing on shallow water",
+      "holding silver lantern",
+      "gentle smile",
+      "looking at viewer",
+      "water reflection",
+      "full moon",
+      "starry night",
+      "moonlight",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing on water",
+      "holding lantern",
+      "water mirror",
+      "reflection",
+      "full moon",
+      "starry sky",
+      "gentle smile",
+      "night",
+      "moonlight",
+      "full body"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "尤诺 · 月神水镜祭坛提灯祈福"
+  }
+}

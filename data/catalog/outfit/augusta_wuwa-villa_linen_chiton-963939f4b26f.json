@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "augusta_wuwa/villa_linen_chiton",
+  "revision": 1,
+  "sortOrder": 3606,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "augusta_wuwa",
+    "outfit": {
+      "id": "villa_linen_chiton",
+      "name": "日照庭院纯白亚麻金绳系带长裙",
+      "prose": "A breezy draped white linen Grecian dress tied around the waist with a braided gold cord, leaving her shoulders and arms bare.",
+      "tokens": [
+        "white dress",
+        "grecian dress",
+        "sleeveless",
+        "gold belt",
+        "bare shoulders",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

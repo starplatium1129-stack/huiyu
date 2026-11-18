@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phoebe_wuwa/meadow_pilgrim_sundress",
+  "revision": 1,
+  "sortOrder": 3305,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phoebe_wuwa",
+    "outfit": {
+      "id": "meadow_pilgrim_sundress",
+      "name": "海岬野花刺绣亚麻巡礼裙",
+      "prose": "A sunlit white cotton dress embroidered with tiny blue forget-me-nots along the hem, paired with a woven straw bonnet and leather satchel.",
+      "tokens": [
+        "white dress",
+        "floral embroidery",
+        "bonnet",
+        "straw hat",
+        "leather bag",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

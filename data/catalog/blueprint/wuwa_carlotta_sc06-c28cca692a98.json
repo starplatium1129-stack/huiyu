@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_carlotta_sc06",
+  "revision": 1,
+  "sortOrder": 3206,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于铸铁花椅端起骨瓷茶杯，明媚微笑",
+    "adult": false,
+    "animaCaption": "Seated at a wrought-iron garden table beneath blooming citrus trees, she raises a porcelain teacup with a bright smile beside a tiered tray of pastries.",
+    "camera": "中景，平视，前景点心架与茶具",
+    "category": "索拉里斯日常",
+    "characterId": "carlotta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "阳光明媚的庄园柑橘花园藤架下，白色铸铁圆桌上摆满三层银质点心架与红茶，珂莱塔戴着丝带遮阳帽端起瓷杯轻笑。",
+    "id": "wuwa_carlotta_sc06",
+    "lighting": "穿过藤叶与柑橘枝桠的斑驳阳光",
+    "location": "拉古那庄园柑橘花园藤架",
+    "mature": false,
+    "mood": "明媚甜美",
+    "negativeTokens": [
+      "night"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "villa_sunlit_organza",
+    "promptProse": "Under a sunlit pergola framed by fragrant citrus trees, Carlotta enjoys afternoon tea in a pastel rose organza dress and ribbon-trimmed sunhat, lifting a porcelain cup with a warm smile.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "pink eyes",
+      "earrings",
+      "pink dress",
+      "organza",
+      "puff sleeves",
+      "waist ribbon",
+      "sunhat",
+      "ribbon",
+      "sitting",
+      "holding teacup",
+      "smile",
+      "looking at viewer",
+      "garden pergola",
+      "tea table",
+      "cake stand",
+      "citrus trees",
+      "afternoon",
+      "dappled sunlight",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "holding teacup",
+      "tea party",
+      "tiered cake stand",
+      "citrus trees",
+      "garden pergola",
+      "sunhat",
+      "afternoon",
+      "dappled sunlight",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "珂莱塔 · 柑橘园花架下午茶甜点时光"
+  }
+}

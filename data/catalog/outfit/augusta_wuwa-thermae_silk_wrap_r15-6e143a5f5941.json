@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "augusta_wuwa/thermae_silk_wrap_r15",
+  "revision": 1,
+  "sortOrder": 3607,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "augusta_wuwa",
+    "outfit": {
+      "id": "thermae_silk_wrap_r15",
+      "name": "七丘温泉行宫金边白丝浴袍",
+      "prose": "A damp white silk bath sheet trimmed with gold meander embroidery, wrapped loosely around her torso and revealing her wet shoulders and long legs.",
+      "tokens": [
+        "towel",
+        "white silk",
+        "gold trim",
+        "wet skin",
+        "bare shoulders",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

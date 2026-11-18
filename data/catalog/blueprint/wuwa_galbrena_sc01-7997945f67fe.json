@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_galbrena_sc01",
+  "revision": 1,
+  "sortOrder": 3801,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于钟楼石沿单手持枪指尖燃起幽蓝火焰，冷峻侧目",
+    "adult": false,
+    "animaCaption": "Standing on the wet stone ledge of a clock tower above city lights, she holds a sleek pistol with ghostly blue flames flickering from her fingertips.",
+    "camera": "全身镜头，低机位微斜角",
+    "category": "索拉里斯日常",
+    "characterId": "galbrena_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "雨后霓虹倒映的古城钟楼顶层边沿，嘉贝莉娜身着幽蓝猎魔人短风衣战装，单手持双枪、指尖燃起幽蓝魔焰，冷峻回眸。",
+    "id": "wuwa_galbrena_sc01",
+    "lighting": "幽蓝魔焰强冷光与远方城市霓虹湿润反光",
+    "location": "雨后古城霓虹钟楼顶层",
+    "mature": false,
+    "mood": "冷峻凌厉",
+    "negativeTokens": [
+      "daylight",
+      "bright sun"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "azure_demon_hunter_coat",
+    "promptProse": "High on the rain-slicked parapet of an old clock tower overlooking glowing city lights, Galbrena wears her cropped hunter coat and thigh-high boots, azure hellfire dancing around her pistol.",
+    "promptTokens": [
+      "grey hair",
+      "blue streaks",
+      "medium hair",
+      "blue eyes",
+      "black coat",
+      "cropped jacket",
+      "silver buckles",
+      "sleeveless turtleneck",
+      "black shorts",
+      "thigh boots",
+      "standing",
+      "holding pistol",
+      "blue fire",
+      "confident expression",
+      "looking at viewer",
+      "stone clock tower",
+      "wet rooftop",
+      "city night lights",
+      "blue lighting",
+      "dutch angle",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding gun",
+      "blue fire",
+      "clock tower",
+      "rooftop",
+      "city lights",
+      "night",
+      "blue lighting",
+      "dutch angle",
+      "full body"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "嘉贝莉娜 · 霓虹钟楼顶层幽蓝魔焰拔枪"
+  }
+}

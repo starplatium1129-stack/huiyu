@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "iuno_wuwa/astrolabe_scholar_blouse",
+  "revision": 1,
+  "sortOrder": 3703,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "iuno_wuwa",
+    "outfit": {
+      "id": "astrolabe_scholar_blouse",
+      "name": "星盘书库银扣立领丝绸衬衫裙",
+      "prose": "A crisp silver-white ruffled blouse with a sapphire ribbon tie paired with a high-waisted navy pleated skirt and knee-high socks.",
+      "tokens": [
+        "white blouse",
+        "blue ribbon",
+        "navy skirt",
+        "pleated skirt",
+        "kneehighs",
+        "loafers"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

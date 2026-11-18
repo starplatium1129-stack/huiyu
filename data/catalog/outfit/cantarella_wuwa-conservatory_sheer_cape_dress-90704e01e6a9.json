@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/conservatory_sheer_cape_dress",
+  "revision": 1,
+  "sortOrder": 3404,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "conservatory_sheer_cape_dress",
+      "name": "水母穹顶薄纱披风高开衩长裙",
+      "prose": "A sleeveless plum-silk column dress with a high thigh slit, paired with an iridescent gossamer cape and silver filigree heels.",
+      "tokens": [
+        "sleeveless dress",
+        "purple dress",
+        "high slit",
+        "sheer cape",
+        "iridescent",
+        "silver heels"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

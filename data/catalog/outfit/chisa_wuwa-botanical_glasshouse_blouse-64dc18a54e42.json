@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chisa_wuwa/botanical_glasshouse_blouse",
+  "revision": 1,
+  "sortOrder": 3906,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "chisa_wuwa",
+    "outfit": {
+      "id": "botanical_glasshouse_blouse",
+      "name": "温室标本室荷叶边白衬衫与背带长裙",
+      "prose": "A ruffled long-sleeve white chiffon blouse paired with a high-waisted charcoal suspender midi skirt and red ribbon hair clip.",
+      "tokens": [
+        "white blouse",
+        "frills",
+        "suspender skirt",
+        "black skirt",
+        "long skirt",
+        "red hair ribbon"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

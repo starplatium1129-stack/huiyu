@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_carlotta_sc05",
+  "revision": 1,
+  "sortOrder": 3205,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于大型油画前侧身回眸，手持展览目录",
+    "adult": false,
+    "animaCaption": "Standing on the polished marble floor of a sunlit art gallery before gilded oil paintings, she holds a gallery catalog and turns toward the viewer with a refined smile.",
+    "camera": "全身镜头，建筑对称透视",
+    "category": "索拉里斯日常",
+    "characterId": "carlotta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "阳光透过玻璃天窗洒进莫塔里私人艺术画廊，珂莱塔身着象牙白粗花呢高腰套装，双手交叠在鎏金画框前驻足鉴赏。",
+    "id": "wuwa_carlotta_sc05",
+    "lighting": "玻璃天窗柔和漫射光与画廊射灯",
+    "location": "莫塔里琉璃艺术画廊",
+    "mature": false,
+    "mood": "知性典雅",
+    "negativeTokens": [
+      "crowded"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "gallery_curator_suit",
+    "promptProse": "Beneath the glass skylight of a private art gallery lined with gilded frames, Carlotta wears a tailored ivory tweed blazer and high-slit pencil skirt, holding an exhibition booklet with poised charm.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "pink eyes",
+      "earrings",
+      "white blazer",
+      "tweed",
+      "pencil skirt",
+      "slit skirt",
+      "sheer pantyhose",
+      "pumps",
+      "standing",
+      "holding catalog",
+      "looking at viewer",
+      "slight smile",
+      "art gallery",
+      "framed paintings",
+      "marble floor",
+      "skylight",
+      "morning",
+      "soft lighting",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding book",
+      "art gallery",
+      "paintings",
+      "gilded frames",
+      "skylight",
+      "morning",
+      "soft lighting",
+      "full body"
+    ],
+    "timeOfDay": "上午",
+    "title": "珂莱塔 · 琉璃艺术画廊鉴赏油画名作"
+  }
+}

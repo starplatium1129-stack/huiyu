@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chisa_wuwa/taisho_hakama_festival",
+  "revision": 1,
+  "sortOrder": 3903,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "chisa_wuwa",
+    "outfit": {
+      "id": "taisho_hakama_festival",
+      "name": "学园祭红椿矢絣纹二尺袖袴装",
+      "prose": "A traditional crimson-and-ivory arrow-feather patterned kimono blouse tucked into a high-waisted dark maroon hakama skirt with lace-up boots.",
+      "tokens": [
+        "hakama",
+        "red kimono",
+        "pleated hakama",
+        "red hair ribbon",
+        "lace-up boots",
+        "wide sleeves"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

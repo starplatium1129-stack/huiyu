@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phrolova_sc06",
+  "revision": 1,
+  "sortOrder": 3506,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "蜷坐天鹅绒扶手椅双手捧红茶杯，闭目聆听黑胶旋律",
+    "adult": false,
+    "animaCaption": "Curled in a plush armchair beside a brass gramophone spinning a vinyl record, she cradles a warm teacup in her gold-embroidered black silk robe with a quiet, relaxed smile.",
+    "camera": "中景，平视，留声机与书架背景",
+    "category": "索拉里斯日常",
+    "characterId": "phrolova_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "古典黄铜喇叭留声机正旋转着黑胶唱片，弗洛洛身着墨黑金线彼岸花纹居家丝绸长袍，赤足蜷坐在丝绒扶手椅中手捧红茶。",
+    "id": "wuwa_phrolova_sc06",
+    "lighting": "落地台灯暖橘光晕与留声机黄铜反光",
+    "location": "古典留声机私人书房",
+    "mature": false,
+    "mood": "慵懒惬意",
+    "negativeTokens": [
+      "headphones"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "crimson_silk_lounging_kimono",
+    "promptProse": "Beside a vintage brass gramophone playing a vinyl record in her study, Phrolova curls up barefoot in a jet-black silk robe embroidered with golden spider lilies, holding a steaming cup of tea.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "red eyes",
+      "eyepatch",
+      "red flower",
+      "black robe",
+      "silk",
+      "gold embroidery",
+      "red sash",
+      "wide sleeves",
+      "bare feet",
+      "sitting",
+      "velvet armchair",
+      "holding teacup",
+      "relaxed smile",
+      "looking at viewer",
+      "vintage gramophone",
+      "bookshelves",
+      "evening",
+      "warm lamp light",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "armchair",
+      "holding teacup",
+      "gramophone",
+      "vinyl record",
+      "bookshelves",
+      "relaxed",
+      "evening",
+      "warm lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "弗洛洛 · 留声机旁茶歇黑金丝绸长袍小憩"
+  }
+}

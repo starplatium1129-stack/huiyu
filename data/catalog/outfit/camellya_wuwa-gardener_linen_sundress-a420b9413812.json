@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "camellya_wuwa/gardener_linen_sundress",
+  "revision": 1,
+  "sortOrder": 3105,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "camellya_wuwa",
+    "outfit": {
+      "id": "gardener_linen_sundress",
+      "name": "温室亚麻红结吊带茶歇裙",
+      "prose": "A breezy cream linen sundress tied at the shoulders with crimson satin ribbons, paired with woven wrist cuffs and barefoot sandals.",
+      "tokens": [
+        "cream dress",
+        "sundress",
+        "ribbon-trimmed",
+        "red ribbons",
+        "bare shoulders",
+        "sandals"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

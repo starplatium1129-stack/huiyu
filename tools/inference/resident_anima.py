@@ -99,7 +99,7 @@ class PipelineCache:
 
     def prepare_job(self, job, validate_job, validate_model, check, tools, imports_ready):
         """Validate before overlapping first-job imports and protected hashing."""
-        validate_job(job)
+        data = validate_job(job)
         root = validate_model(job.get("modelDir"))
         def initialize():
             try:
@@ -108,7 +108,8 @@ class PipelineCache:
                 # Resume cancellation reads as soon as DLL initialization ends,
                 # including when a slow disk is still finishing its digest.
                 imports_ready()
-        return self.prepare_and_fingerprint(initialize, root, job.get("loras", []), tools)
+        identity = self.prepare_and_fingerprint(initialize, root, job.get("loras", []), tools)
+        return data, root, identity
 
     def clear(self, *, keep_mask=False, keep_fingerprint=False, keep_text=False):
         self.clear_upscaler()

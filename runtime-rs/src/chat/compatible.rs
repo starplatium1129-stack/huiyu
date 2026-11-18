@@ -241,7 +241,6 @@ pub(super) struct Decoder {
     calls: std::collections::BTreeMap<usize, Tool>,
     reasoning: String,
     pub terminal: bool,
-    pub malformed: bool,
 }
 impl Decoder {
     pub fn new(vendor: String) -> Self {

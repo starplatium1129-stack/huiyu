@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "augusta_wuwa/marble_thermae_nude_r18",
+  "revision": 1,
+  "sortOrder": 3610,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "augusta_wuwa",
+    "outfit": {
+      "id": "marble_thermae_nude_r18",
+      "name": "大理石日轮浴池全裸倚靠姿态",
+      "prose": "Completely nude resting against the warm marble edge of a sunlit bath, water droplets glistening across her bare breasts and abdomen.",
+      "tokens": [
+        "nude",
+        "completely nude",
+        "wet skin",
+        "water",
+        "bare breasts",
+        "nipples"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phoebe_wuwa/white_silk_undergarments_r15",
+  "revision": 1,
+  "sortOrder": 3308,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phoebe_wuwa",
+    "outfit": {
+      "id": "white_silk_undergarments_r15",
+      "name": "圣洁白丝缎带抹胸与蕾丝过膝袜",
+      "prose": "A delicate ivory satin bandeau bra and ruffled lace panties tied with sky-blue silk bows, paired with sheer white thigh-high stockings.",
+      "tokens": [
+        "white bra",
+        "satin",
+        "white panties",
+        "blue bow",
+        "white thighhighs",
+        "blush"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc02",
+  "revision": 1,
+  "sortOrder": 3302,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于管风琴长凳轻抚琴键与乐谱，侧颜微笑",
+    "adult": false,
+    "animaCaption": "Seated at the wooden console of a grand pipe organ with open sheet music before her, she rests her fingers lightly on the keys and smiles softly in warm afternoon window light.",
+    "camera": "中景，四分之三侧面构图",
+    "category": "索拉里斯日常",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "修会大管风琴前的木质圣咏台上，菲比身着天青金丝斗篷长裙，轻按琴键并低头翻看古籍赞美诗乐谱，午后阳光温暖。",
+    "id": "wuwa_phoebe_sc02",
+    "lighting": "侧窗洒入的金色午后暖光",
+    "location": "隐海修会管风琴圣咏台",
+    "mature": false,
+    "mood": "宁静虔诚",
+    "negativeTokens": [
+      "electric guitar"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "stained_glass_choir_robe",
+    "promptProse": "At the carved wooden bench of an ornate pipe organ, Phoebe wears a sky-blue gold-embroidered choir mantle over her ivory pleated gown, her fingers poised gently over the ivory keys.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "ivory dress",
+      "long dress",
+      "blue capelet",
+      "gold embroidery",
+      "pleated skirt",
+      "sitting",
+      "pipe organ",
+      "sheet music",
+      "hands on keys",
+      "gentle smile",
+      "church interior",
+      "afternoon",
+      "window light",
+      "warm lighting",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "pipe organ",
+      "sheet music",
+      "playing instrument",
+      "slight smile",
+      "church interior",
+      "afternoon",
+      "window light",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "菲比 · 管风琴圣咏台翻阅金色乐谱"
+  }
+}

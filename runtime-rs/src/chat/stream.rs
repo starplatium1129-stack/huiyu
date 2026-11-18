@@ -5,6 +5,7 @@ use axum::{
 };
 use futures_util::StreamExt;
 mod lines;
+mod sse;
 use lines::Lines;
 use serde::Serialize;
 use serde_json::{Value, json};
@@ -56,6 +57,7 @@ struct Events {
     lines: Lines,
     protocol: Protocol,
     decoder: Decoder,
+    sse: sse::Frames,
     pending: VecDeque<Event>,
     json: String,
     finished: bool,
@@ -116,27 +118,15 @@ impl Events {
                 },
                 Protocol::Sse => {
                     if let Some(line) = line {
-                        let Some(payload) = line.trim().strip_prefix("data:").map(str::trim) else {
-                            continue;
-                        };
-                        if payload.is_empty() {
-                            continue;
-                        }
-                        if payload == "[DONE]" {
-                            self.decoder.terminal = true;
-                            self.finish()?;
-                            continue;
-                        }
-                        match serde_json::from_str::<Value>(payload) {
-                            Ok(event) => self
+                        match self.sse.push(&line)? {
+                            Some(sse::Frame::Event(event)) => self
                                 .pending
                                 .extend(self.decoder.decode(event)?.into_iter().flatten()),
-                            Err(_) => self.decoder.malformed = true,
+                            Some(sse::Frame::Done) => self.finish()?,
+                            None => {}
                         }
                     } else {
-                        if !self.decoder.terminal {
-                            return Err(Error::stream("INVALID_SSE", "自定义 API 返回了畸形 SSE"));
-                        }
+                        self.sse.end(self.decoder.terminal)?;
                         self.finish()?;
                     }
                 }
@@ -169,9 +159,6 @@ impl Events {
         }
     }
     fn finish(&mut self) -> Result<()> {
-        if self.decoder.malformed {
-            return Err(Error::stream("INVALID_SSE", "自定义 API 返回了畸形 SSE"));
-        }
         self.pending.extend(self.decoder.finish()?);
         self.finished = true;
         Ok(())
@@ -189,9 +176,11 @@ fn events(prepared: Prepared, shutdown: CancellationToken) -> Events {
             } else {
                 120
             }),
+            matches!(prepared.protocol, Protocol::Sse),
         ),
         protocol: prepared.protocol,
         decoder: Decoder::new(vendor),
+        sse: sse::Frames::default(),
         pending: VecDeque::from([Event::Meta {
             model: prepared.model,
             queue_wait_ms: wait,

@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc06",
+  "revision": 1,
+  "sortOrder": 3306,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于灯塔石栏边手提黄铜风灯，微风拂动斗篷",
+    "adult": false,
+    "animaCaption": "Standing on the stone balcony of a coastal lighthouse at dusk, she holds a glowing brass lantern in her midnight-blue velvet cloak as evening breezes stir her blonde hair.",
+    "camera": "中景，平视，海天晚霞背景",
+    "category": "索拉里斯日常",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "落日沉入海平线的古老石砌灯塔观景台上，菲比披着深蓝天鹅绒金扣连帽斗篷，双手提着暖光黄铜风灯望向归航船影。",
+    "id": "wuwa_phoebe_sc06",
+    "lighting": "暮色晚霞紫橙渐变与风灯暖光",
+    "location": "拉古那外海古石灯塔观景台",
+    "mature": false,
+    "mood": "温暖守望",
+    "negativeTokens": [
+      "noon"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "lighthouse_velvet_cloak",
+    "promptProse": "High on the stone gallery of a seaside lighthouse as twilight deepens over the waves, Phoebe wraps herself in a midnight-blue velvet cloak fastened with a gold sun clasp, holding a warm brass lantern.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "blue cloak",
+      "hooded cloak",
+      "gold clasp",
+      "white blouse",
+      "pleated skirt",
+      "standing",
+      "holding brass lantern",
+      "gentle smile",
+      "looking at viewer",
+      "lighthouse balcony",
+      "stone railing",
+      "ocean",
+      "twilight",
+      "sunset glow",
+      "wind",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding lantern",
+      "lighthouse",
+      "stone railing",
+      "ocean",
+      "sunset",
+      "twilight",
+      "wind",
+      "medium shot"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "菲比 · 暮色灯塔观景台手提黄铜风灯"
+  }
+}

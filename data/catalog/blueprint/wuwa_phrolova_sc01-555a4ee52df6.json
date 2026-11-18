@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phrolova_sc01",
+  "revision": 1,
+  "sortOrder": 3501,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于舞台中央单手举起指挥棒，彼岸花瓣旋舞",
+    "adult": false,
+    "animaCaption": "Standing center stage inside a moonlit ruined opera house, she raises a crimson conductor's baton while red spider lilies bloom along the boards and petals drift through the silver light.",
+    "camera": "全身镜头，微仰视舞台透视",
+    "category": "索拉里斯日常",
+    "characterId": "phrolova_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "穹顶破损的古典歌剧院废墟舞台上，月光如银色聚光灯倾泻而下，弗洛洛身着黑红燕尾指挥礼服，抬手轻握猩红指挥棒，彼岸花飞舞。",
+    "id": "wuwa_phrolova_sc01",
+    "lighting": "破损穹顶倾泻的清冷月光柱与暗红残响微光",
+    "location": "月光废墟歌剧院中央舞台",
+    "mature": false,
+    "mood": "悲壮优雅",
+    "negativeTokens": [
+      "modern concert crowd"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "spider_lily_conductor_coat",
+    "promptProse": "Beneath the shattered dome of a moonlit opera house, Phrolova stands upon the weathered wooden stage in her black-and-crimson conductor tailcoat, raising her baton amidst swirling spider lily petals.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "red eyes",
+      "eyepatch",
+      "red flower",
+      "black tailcoat",
+      "red lining",
+      "asymmetrical dress",
+      "gold trim",
+      "cravat",
+      "black thighhighs",
+      "standing",
+      "holding conductor baton",
+      "raised hand",
+      "serene expression",
+      "looking at viewer",
+      "ruined opera stage",
+      "red spider lilies",
+      "floating red petals",
+      "moonlight",
+      "dramatic lighting",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding baton",
+      "conducting",
+      "red spider lilies",
+      "flying petals",
+      "ruined theater",
+      "stage",
+      "moonlight",
+      "dramatic lighting",
+      "full body"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "弗洛洛 · 废墟歌剧院月光舞台举起指挥棒"
+  }
+}

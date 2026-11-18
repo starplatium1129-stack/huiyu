@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phrolova_sc04",
+  "revision": 1,
+  "sortOrder": 3504,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于三角钢琴前手持红笔批注总谱，抬头回望",
+    "adult": false,
+    "animaCaption": "Seated at a grand piano with open orchestral scores on the stand, she pauses with a pen in hand and looks toward the viewer in the warm afternoon window light.",
+    "camera": "中景，平视，三角钢琴琴盖与乐谱架入镜",
+    "category": "索拉里斯日常",
+    "characterId": "phrolova_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "午后阳光透过高窗照在黑色三角钢琴上，弗洛洛身着维多利亚高领褶皱白衬衫与红织锦百褶裙，坐于琴凳上用红笔批注手写总谱。",
+    "id": "wuwa_phrolova_sc04",
+    "lighting": "斜射进琴房的温暖午后光束",
+    "location": "古典弦乐排练厅三角钢琴前",
+    "mature": false,
+    "mood": "专注优雅",
+    "negativeTokens": [
+      "synthesizer"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "chamber_rehearsal_blouse",
+    "promptProse": "At a polished black grand piano in a sunlit chamber rehearsal hall, Phrolova wears a pleated ivory Victorian blouse and crimson brocade skirt, annotating handwritten orchestral scores.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "red eyes",
+      "eyepatch",
+      "red flower",
+      "white blouse",
+      "victorian",
+      "black ribbon",
+      "red skirt",
+      "pleated skirt",
+      "black stockings",
+      "sitting",
+      "piano bench",
+      "grand piano",
+      "sheet music",
+      "holding pen",
+      "looking at viewer",
+      "slight smile",
+      "rehearsal hall",
+      "afternoon",
+      "window light",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "grand piano",
+      "sheet music",
+      "holding pen",
+      "music room",
+      "afternoon",
+      "window light",
+      "soft lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "弗洛洛 · 弦乐排练厅钢琴前批注交响乐谱"
+  }
+}

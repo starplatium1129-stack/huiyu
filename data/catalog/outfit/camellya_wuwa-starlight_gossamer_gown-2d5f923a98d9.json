@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "camellya_wuwa/starlight_gossamer_gown",
+  "revision": 1,
+  "sortOrder": 3104,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "camellya_wuwa",
+    "outfit": {
+      "id": "starlight_gossamer_gown",
+      "name": "星海薄纱露背晚礼服",
+      "prose": "A flowing ivory and ruby backless evening gown with sheer pleated tulle sleeves and a crystal camellia waist brooch.",
+      "tokens": [
+        "evening gown",
+        "backless dress",
+        "white and red dress",
+        "sheer sleeves",
+        "tulle",
+        "brooch"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

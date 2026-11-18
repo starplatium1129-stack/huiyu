@@ -123,6 +123,7 @@ pub(super) fn normalize(mut input: Value) -> Result<Value> {
 pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
     let settings = backend.native_settings()?;
     let models = tokio::task::spawn_blocking(move || {
+        let runtime = adapters::Status::new(&settings);
         catalog::constants()["MODEL_CATALOG"]
             .as_array()
             .unwrap()
@@ -133,7 +134,7 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
                 status
                     .as_object_mut()
                     .unwrap()
-                    .extend(adapters::status(&settings, id).as_object().unwrap().clone());
+                    .extend(runtime.model(id).as_object().unwrap().clone());
                 let supported = adapters::model(id).is_some_and(|m| m["media"] == "video");
                 status["executable"] = json!(supported);
                 status["modes"] = if supported {

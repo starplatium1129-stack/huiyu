@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "augusta_wuwa/unclasped_crimson_cloak_r18",
+  "revision": 1,
+  "sortOrder": 3609,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "augusta_wuwa",
+    "outfit": {
+      "id": "unclasped_crimson_cloak_r18",
+      "name": "解开战甲披风与日轮金冠全裸",
+      "prose": "Completely nude beneath her unclasped crimson velvet cloak, wearing only her golden sun laurel crown and gold wrist cuffs.",
+      "tokens": [
+        "nude",
+        "open cloak",
+        "red cape",
+        "gold laurel crown",
+        "bare breasts",
+        "nipples"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

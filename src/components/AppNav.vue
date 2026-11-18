@@ -10,7 +10,7 @@
       </RouterLink>
 
       <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }" @keydown="onNavigationKey">
-        <AnimatedSelection target=":scope > a.active" variant="underline" />
+        <AnimatedSelection target=":scope > a.active" variant="underline" stretch />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
           v-for="item in primaryNav"

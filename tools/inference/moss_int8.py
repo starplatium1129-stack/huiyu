@@ -37,19 +37,21 @@ def read_weights(path):
     return load_file(str(path), device="cpu")
 
 
-def selected(root, choice, contract, *, component="transformer"):
+def selected(root, choice, contract, *, component="transformer", expected_model=None):
     if choice == "fp16":
         return None
-    model_id = contract.config(root, root / "huiyu-model.json").get("modelId")
-    try:
-        spec = component_spec(model_id, component)
-    except ValueError as error:
-        raise contract.AdapterError("MODEL_CHANGED", str(error)) from error
     marker = root / (TEXT_RECEIPT if component == "text_encoder" else RECEIPT)
     if not marker.exists():
         if choice == "int8":
             raise contract.AdapterError("MODEL_INCOMPLETE", f"请先导入 MOSS {component} INT8 文件，或选择原始精度")
         return None
+    model_id = contract.config(root, root / "huiyu-model.json").get("modelId")
+    if expected_model is not None and model_id != expected_model:
+        raise contract.AdapterError("MODEL_CHANGED", "MOSS INT8 安装记录与所选模型不符")
+    try:
+        spec = component_spec(model_id, component)
+    except (KeyError, ValueError) as error:
+        raise contract.AdapterError("MODEL_CHANGED", str(error)) from error
     value = contract.config(root, marker)
     if value != receipt_document(model_id, component):
         raise contract.AdapterError("MODEL_CHANGED", "MOSS INT8 导入记录不匹配，请重新导入作者文件")

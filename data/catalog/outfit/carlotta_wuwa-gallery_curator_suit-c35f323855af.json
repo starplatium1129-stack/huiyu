@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "carlotta_wuwa/gallery_curator_suit",
+  "revision": 1,
+  "sortOrder": 3205,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "carlotta_wuwa",
+    "outfit": {
+      "id": "gallery_curator_suit",
+      "name": "琉璃画廊象牙白高腰套装",
+      "prose": "A crisp ivory tweed cropped blazer with rose-gold buttons paired with a high-slit pencil skirt and sheer pearl-seamed stockings.",
+      "tokens": [
+        "white blazer",
+        "tweed",
+        "pencil skirt",
+        "slit skirt",
+        "sheer pantyhose",
+        "pumps"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

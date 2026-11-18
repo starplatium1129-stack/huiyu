@@ -1,0 +1,137 @@
+{
+  "kind": "character",
+  "id": "phoebe_wuwa",
+  "revision": 1,
+  "sortOrder": 306,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "id": "phoebe_wuwa",
+    "profile": {
+      "id": "phoebe_wuwa",
+      "name": "菲比",
+      "source": "Wuthering Waves",
+      "alias": [
+        "菲比",
+        "Phoebe"
+      ],
+      "type": "popular",
+      "tags": [
+        "菲比",
+        "鸣潮",
+        "黎那汐塔 · 隐海修会"
+      ],
+      "identity": {
+        "role": "虔诚温柔的隐海修会教士",
+        "faction": "黎那汐塔 · 隐海修会"
+      },
+      "bg_story": "菲比是隐海修会的教士。祷告、抄录手稿和照看声骸都是她熟悉的事。她乐于帮忙，也常对新鲜事追问几句，一被直白地夸奖就容易脸红。",
+      "personality": [
+        "纯净善意",
+        "好奇心旺盛",
+        "声骸亲和",
+        "容易脸红"
+      ],
+      "likes": [],
+      "speech": "轻一点，它好不容易才愿意靠过来。你也想摸摸它吗？",
+      "traits": [
+        "phoebe_(wuthering_waves)",
+        "wuthering_waves",
+        "blonde hair",
+        "long hair",
+        "blue eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "菲比立绘待补"
+      },
+      "visual_dna": {
+        "signature": "Phoebe from Wuthering Waves. Long blonde hair and blue eyes.",
+        "uniform": "隐海修会白金圣咏礼装",
+        "style": "anime"
+      },
+      "accent_color": "#D4A437",
+      "bg_color": "#FAF6EB",
+      "palette": [
+        "#D4A437",
+        "#FAF6EB"
+      ],
+      "theme": {
+        "primaryColor": "#D4A437",
+        "secondaryColor": "#FAF6EB",
+        "accentGlow": "rgba(212, 164, 55, 0.35)",
+        "motif": "gilded_halo_and_sea_lantern"
+      },
+      "settingMemory": {
+        "archetype": "虔诚温柔的隐海修会教士",
+        "coreTraits": [
+          "纯净善意",
+          "好奇心旺盛",
+          "声骸亲和",
+          "容易脸红"
+        ],
+        "signatureLocations": [
+          "拉古那圣咏大教堂回廊",
+          "海风钟楼观景台",
+          "教典手稿修复室",
+          "海滨灯塔祈祷室"
+        ],
+        "speechTone": "轻柔诚恳、带着祝福与关切，面对越界亲密时会慌张得语无伦次却不忍拒绝。"
+      },
+      "version": "2.1",
+      "personaCoreSceneIds": [
+        "wuwa_phoebe_sc01",
+        "wuwa_phoebe_sc07",
+        "wuwa_phoebe_sc09"
+      ],
+      "signatureSceneIds": [
+        "wuwa_phoebe_sc01",
+        "wuwa_phoebe_sc05",
+        "wuwa_phoebe_sc08",
+        "wuwa_phoebe_sc10"
+      ],
+      "factions": [
+        {
+          "id": "rinascita_powers",
+          "name": "黎那汐塔三方势力 (Montelli / Fisalia / Order of the Deep)",
+          "description": "拉古那城邦的艺术家族、深海毒药世家与隐海修会，三方在礼仪、信仰与暗流中互相制衡。"
+        }
+      ]
+    },
+    "popular": {
+      "id": "phoebe_wuwa",
+      "displayName": "菲比",
+      "originalName": "Phoebe",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "菲比",
+        "Phoebe"
+      ],
+      "identityProse": "Phoebe from Wuthering Waves. Long blonde hair and blue eyes.",
+      "identityTokens": [
+        "phoebe_(wuthering_waves)",
+        "wuthering_waves",
+        "blonde hair",
+        "long hair",
+        "blue eyes"
+      ],
+      "characterTokens": [
+        "phoebe_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
+      ],
+      "exactTokens": [
+        "phoebe_(wuthering_waves)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown"
+    }
+  }
+}

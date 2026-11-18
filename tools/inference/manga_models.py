@@ -21,7 +21,7 @@ def prepare(data):
     # Called per job: a warm CPU worker may receive its first model task later.
     if data.get("rewrite"):
         if not _adapter_ready:
-            sibling("adapter_worker").dependencies()
+            sibling("adapter_worker").dependencies(data["rewrite"]["modelId"])
             _adapter_ready = _line_ready = True
     elif data.get("autoLines") and not _line_ready:
         try:

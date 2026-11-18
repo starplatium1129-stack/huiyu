@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_cantarella_sc03",
+  "revision": 1,
+  "sortOrder": 3403,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于水廊柱旁半转身回眸，指尖轻抚珍珠链",
+    "adult": false,
+    "animaCaption": "Pausing along a moonlit marble colonnade above the sea, she glances back over her bare shoulder while trailing her gloved fingers along the pearl chains of her lavender mermaid gown.",
+    "camera": "全身镜头，三分之二背影回眸",
+    "category": "索拉里斯日常",
+    "characterId": "cantarella_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "海浪轻拍柱基的月夜大理石水廊上，坎特蕾拉身着露背紫罗兰人鱼尾礼服，背对海月回眸轻抚肩头珍珠串链。",
+    "id": "wuwa_cantarella_sc03",
+    "lighting": "清冷海月银辉与廊柱壁灯暖光",
+    "location": "翡萨烈临海珍珠大理石回廊",
+    "mature": false,
+    "mood": "华贵魅惑",
+    "negativeTokens": [
+      "daylight"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "pearl_mermaid_evening_dress",
+    "promptProse": "Along a sea-facing marble colonnade bathed in full moonlight, Cantarella turns her head over a pearl-draped bare shoulder, the train of her lavender satin mermaid dress pooling on the stone floor.",
+    "promptTokens": [
+      "purple hair",
+      "very long hair",
+      "wavy hair",
+      "purple eyes",
+      "mole under eye",
+      "mermaid dress",
+      "purple dress",
+      "backless dress",
+      "pearl chains",
+      "sheer gloves",
+      "standing",
+      "from behind",
+      "looking back",
+      "hand on shoulder",
+      "gentle smile",
+      "marble colonnade",
+      "ocean",
+      "full moon",
+      "night",
+      "moonlight",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "from behind",
+      "looking back",
+      "pearl chains",
+      "marble colonnade",
+      "ocean",
+      "full moon",
+      "night",
+      "moonlight",
+      "full body"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "坎特蕾拉 · 月夜珍珠回廊回眸轻抚珍珠链"
+  }
+}

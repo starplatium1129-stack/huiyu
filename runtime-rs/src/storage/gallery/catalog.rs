@@ -119,9 +119,8 @@ pub(in crate::storage) fn read(c: &Context) -> Result<Value> {
             let f = filter(c, &json!({"projectId":id}))?;
             let mut ids = Vec::new();
             for item in items(c, &f, 3)? {
-                let record = &item["record"];
-                ids.push(record["id"].clone());
-                covers.insert(item["key"].as_str().unwrap().into(), record.clone());
+                ids.push(item.record["id"].clone());
+                covers.insert(item.key, item.record);
             }
             json!({"id":id,"count":count(c,&f)?,"coverIds":ids})
         } else {

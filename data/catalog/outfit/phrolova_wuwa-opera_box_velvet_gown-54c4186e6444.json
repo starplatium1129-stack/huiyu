@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phrolova_wuwa/opera_box_velvet_gown",
+  "revision": 1,
+  "sortOrder": 3502,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phrolova_wuwa",
+    "outfit": {
+      "id": "opera_box_velvet_gown",
+      "name": "猩红歌剧院丝绒露肩晚礼服",
+      "prose": "A gothic crimson velvet evening dress with black Chantilly lace sleeves, corset lacing, and silver chain accents.",
+      "tokens": [
+        "red dress",
+        "velvet",
+        "off-shoulder dress",
+        "black lace sleeves",
+        "corset",
+        "silver chain"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

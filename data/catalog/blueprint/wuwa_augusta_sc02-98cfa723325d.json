@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_augusta_sc02",
+  "revision": 1,
+  "sortOrder": 3602,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "肩扛训练大剑单手叉腰，爽朗大笑汗水微光",
+    "adult": false,
+    "animaCaption": "Resting a heavy training sword across one shoulder inside a sunlit stone colosseum, she places her other hand on her hip and beams with a bright, confident grin as sweat glistens on her skin.",
+    "camera": "全身镜头，平视微仰",
+    "category": "索拉里斯日常",
+    "characterId": "augusta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "烈日照耀的七丘圆形角斗训练场内，奥古斯塔身着赤铜束腰短战裙，刚结束晨练，额角挂着汗珠单手扛剑爽朗大笑。",
+    "id": "wuwa_augusta_sc02",
+    "lighting": "明亮地中海晴空阳光与砂石地面反光",
+    "location": "七丘圆形大理石角斗场",
+    "mature": false,
+    "mood": "豪迈坦荡",
+    "negativeTokens": [
+      "blood",
+      "gore"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "arena_gladiator_tunic",
+    "promptProse": "In the center of Septimont's sunlit stone arena after morning drills, Augusta rests a broadsword across her shoulder in a sleeveless white athletic tunic and bronze waist belt, grinning brightly.",
+    "promptTokens": [
+      "red hair",
+      "long hair",
+      "yellow eyes",
+      "tall",
+      "sleeveless dress",
+      "white tunic",
+      "wide belt",
+      "leather bracers",
+      "gold trim",
+      "gladiator sandals",
+      "standing",
+      "sword over shoulder",
+      "hand on hip",
+      "sweat",
+      "bright grin",
+      "looking at viewer",
+      "stone colosseum",
+      "training arena",
+      "morning",
+      "bright sunlight",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "sword over shoulder",
+      "hand on hip",
+      "sweat",
+      "laughing",
+      "colosseum",
+      "arena",
+      "morning",
+      "bright sunlight",
+      "full body"
+    ],
+    "timeOfDay": "上午",
+    "title": "奥古斯塔 · 大理石角斗训练场挥汗收剑"
+  }
+}

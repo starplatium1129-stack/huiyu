@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/fisalia_jellyfish_gown",
+  "revision": 1,
+  "sortOrder": 3401,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "fisalia_jellyfish_gown",
+      "name": "翡萨烈海月紫纱多层露肩礼裙",
+      "prose": "An opulent violet and pearl-white gown with translucent jellyfish-bell organza ruffles, deep sweetheart neckline, and pearl-draped sleeves.",
+      "tokens": [
+        "purple dress",
+        "off-shoulder dress",
+        "sheer ruffles",
+        "organza",
+        "deep cleavage",
+        "pearl jewelry"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

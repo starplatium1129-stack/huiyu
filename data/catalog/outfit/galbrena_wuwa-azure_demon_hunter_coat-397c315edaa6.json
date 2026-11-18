@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "galbrena_wuwa/azure_demon_hunter_coat",
+  "revision": 1,
+  "sortOrder": 3801,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "galbrena_wuwa",
+    "outfit": {
+      "id": "azure_demon_hunter_coat",
+      "name": "幽蓝猎魔人双排扣短风衣战装",
+      "prose": "A cropped charcoal and navy leather hunter coat with silver buckles over a fitted high-neck sleeveless top, belted shorts, and thigh-high boots.",
+      "tokens": [
+        "black coat",
+        "cropped jacket",
+        "silver buckles",
+        "sleeveless turtleneck",
+        "black shorts",
+        "thigh boots"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,11 +1,15 @@
 /* The component owns internal spacing and both placements. Parent layouts only
    allocate the actions slot and its sticky/grid position. No glass backdrop. */
 .pb .gen-bar {
+  --generation-ready-fill:color-mix(in srgb,var(--accent) 70%,var(--text-primary));
+  --generation-ready-ink:var(--text-inverse);
   position:sticky; z-index:var(--z-sticky); min-width:0;
   display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2) var(--s-4);
   padding:var(--s-3) var(--s-4); border:1px solid var(--border-soft);
   border-radius:var(--r-lg); background:var(--bg-surface);
 }
+:root[data-theme='light'] .pb .gen-bar { --generation-ready-fill:var(--accent); }
+:root[data-theme-style='terraria'] .pb .gen-bar { --generation-ready-fill:var(--terraria-action); --generation-ready-ink:var(--terraria-on-wood); }
 .pb .gen-bar-size { flex:1 1 200px; min-width:0; }
 .pb .gen-bar-size .studio-select-wrapper { flex:1; min-width:0; max-width:100%; }
 .pb .gen-bar-meta {
@@ -25,31 +29,45 @@
 /* The tooltip wrapper, not its nested button, participates in flex layout. */
 .pb .gen-bar-actions>.studio-tooltip-anchor { flex:1; min-width:0; }
 .pb .gen-bar .generation-action {
+  --generation-fill:var(--bg-elevated);
+  --generation-edge:var(--border-strong);
+  --generation-ink:var(--text-primary);
   position:relative; isolation:isolate; width:100%; min-width:0; min-height:44px;
   padding:var(--s-2) var(--s-3); border:0; border-radius:var(--r-md);
-  background:transparent; color:var(--text-primary); box-shadow:none; font-size:var(--fs-label); line-height:1.2;
+  background:transparent; color:var(--generation-ink); box-shadow:none; font-size:var(--fs-label); line-height:1.2;
 }
-.pb .generation-action-surface { position:absolute; inset:0; z-index:-1; border:1px solid var(--border-strong); border-radius:inherit; background:transparent; transform-origin:top left; }
-.pb .generation-action-content { width:100%; display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2); }
+.pb .gen-bar .generation-action[data-state="idle"] { --generation-fill:var(--generation-ready-fill); --generation-edge:transparent; --generation-ink:var(--generation-ready-ink); }
+.pb .gen-bar .generation-action[data-state="success"] { --generation-ink:var(--success-text); --generation-edge:currentColor; }
+.pb .gen-bar .generation-action[data-state="error"] { --generation-ink:var(--danger-text); --generation-edge:currentColor; }
+.pb .generation-action::before { display:none; }
+/* The outer surface owns the task-state morph. Only its inset face compresses under the pointer. */
+.pb .generation-action-surface { position:absolute; inset:0; z-index:-1; border-radius:inherit; transform-origin:top left; }
+.pb .generation-action-face { display:block; height:100%; border:1px solid var(--generation-edge); border-radius:inherit; background:linear-gradient(var(--generation-fill),var(--generation-fill)),var(--text-primary); }
+.pb .generation-action-content { width:100%; display:flex; align-items:center; justify-content:center; gap:var(--s-2); }
 .pb .generation-action-label { display:flex; align-items:center; justify-content:center; gap:var(--s-2); white-space:nowrap; }
-.pb .generation-action[data-state="success"]:not(:disabled) { color:var(--success-text); }
-.pb .generation-action[data-state="error"]:not(:disabled) { color:var(--danger-text); }
-.pb .generation-action:is([data-state="success"],[data-state="error"]) .generation-action-surface { border-color:currentColor; }
-.pb .is-drawing .generation-action-content { padding-bottom:5px; }
+.pb .generation-action-face,.pb .generation-action-label { transition:scale var(--motion-control) var(--spring-soft); }
+.pb .generation-action:active:not(:disabled):not([aria-disabled="true"]) { transform:none; }
+.pb .generation-action:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) :is(.generation-action-face,.generation-action-label) { scale:var(--generation-press-scale,.98); transition-duration:0s; }
+.pb .is-drawing .generation-action-content { justify-content:space-between; padding-bottom:5px; }
 .pb .is-drawing .generation-action-label { justify-content:flex-start; }
 /* Progress lives inside the same 44px action; starting/stopping does not grow it. */
 .pb .generation-track { position:absolute; inset:auto 12px 5px; display:block; height:3px; overflow:hidden; border-radius:var(--r-pill); background:var(--border-strong); }
 .pb .generation-track i { display:block; width:100%; height:100%; transform-origin:left; background:currentColor; border-radius:inherit; transition:transform var(--motion-surface) var(--ease-out); }
 .pb .generation-track.is-indeterminate i { width:28%; animation:generation-traverse 1100ms linear infinite; }
 .pb .generation-percent { min-inline-size:4ch; text-align:end; white-space:nowrap; font:600 var(--fs-label-xs)/1.2 var(--font-mono); font-variant-numeric:tabular-nums; }
-.pb .generation-action:disabled { color:var(--text-disabled); }
-.pb .generation-action:disabled .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
-.pb .generation-action[aria-disabled="true"] { color:var(--text-disabled); cursor:wait; }
-.pb .generation-action[aria-disabled="true"] .generation-action-surface { border-color:var(--border-soft); background:var(--bg-elevated); }
-.pb :is(.gen-bar-recovery,.generation-action):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.pb .gen-bar .generation-action:is(:disabled,[aria-disabled="true"]) { --generation-ink:var(--text-disabled); --generation-edge:var(--border-soft); --generation-fill:var(--bg-elevated); }
+.pb .generation-action[aria-disabled="true"] { cursor:wait; }
+.pb .gen-bar-recovery:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.pb .gen-bar .generation-action:focus-visible { outline:2px solid var(--focus-color); outline-offset:2px; }
 .pb .gen-bar[data-docked] { flex-direction:column; align-items:stretch; border:0; border-radius:0; }
 .pb .gen-bar[data-docked] :is(.gen-bar-meta,.gen-bar-blocked,.gen-bar-actions) { flex:0 0 auto; width:100%; margin:0; }
 @keyframes generation-traverse { from { transform:translateX(-110%); } to { transform:translateX(370%); } }
+@media (hover:hover) and (pointer:fine) {
+  .pb .gen-bar .generation-action:hover:not(:disabled):not([aria-disabled="true"]) .generation-action-face { box-shadow:inset 0 0 0 1px currentColor; }
+}
+.pb .gen-bar .generation-action:active:not(:disabled):not([aria-disabled="true"]) .generation-action-face { box-shadow:inset 0 0 0 2px currentColor; }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .generation-action { --generation-press-scale:1; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .generation-action { --generation-press-scale:1; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .pb .generation-track i { animation:none; transition:none; } }
 :root:is([data-motion="reduce"],[data-motion="reduced"]) .pb .generation-track i { animation:none; transition:none; }
 @media (max-width:600px) {
@@ -59,5 +77,6 @@
 }
 @media (forced-colors:active) {
   .pb .gen-bar { background:Canvas; color:CanvasText; }
-  .pb .generation-action-surface { background:ButtonFace; border-color:ButtonText; }
+  .pb .generation-action-face { background:ButtonFace; border-color:ButtonText; }
+  .pb .generation-action:disabled .generation-action-face { border-color:GrayText; }
 }

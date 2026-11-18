@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_chisa_sc06",
+  "revision": 1,
+  "sortOrder": 3906,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于木质花架旁手持银剪修剪红玫瑰，恬静微笑",
+    "adult": false,
+    "animaCaption": "Standing beside wooden shelves of potted plants inside a sunlit botanical greenhouse, she holds small silver pruning scissors near a blooming red rose bush with a calm smile.",
+    "camera": "中景，平视",
+    "category": "索拉里斯日常",
+    "characterId": "chisa_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "绿意盎然的学院植物标本温室内，千咲身着荷叶边白衬衫与炭黑背带长裙，手持精巧银剪修剪盆栽红玫瑰，阳光透过玻璃棚顶。",
+    "id": "wuwa_chisa_sc06",
+    "lighting": "玻璃温室清透晨光与叶片嫩绿通透感",
+    "location": "星炬学院植物标本玻璃温室",
+    "mature": false,
+    "mood": "清新细致",
+    "negativeTokens": [
+      "night"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "botanical_glasshouse_blouse",
+    "promptProse": "Surrounded by thriving greenery in Startorch Academy's botanical glasshouse, Chisa wears a frilled white blouse and charcoal suspender skirt, trimming a potted crimson rose with silver shears.",
+    "promptTokens": [
+      "black hair",
+      "long hair",
+      "blunt bangs",
+      "red eyes",
+      "red hair ribbon",
+      "white blouse",
+      "frills",
+      "suspender skirt",
+      "black skirt",
+      "long skirt",
+      "standing",
+      "holding small silver scissors",
+      "potted red roses",
+      "gentle smile",
+      "looking at viewer",
+      "botanical greenhouse",
+      "wooden plant shelves",
+      "morning",
+      "sunlight",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding scissors",
+      "pruning",
+      "potted roses",
+      "greenhouse",
+      "plants",
+      "gentle smile",
+      "morning",
+      "sunlight",
+      "medium shot"
+    ],
+    "timeOfDay": "上午",
+    "title": "千咲 · 学院植物标本温室修剪红玫瑰枝叶"
+  }
+}

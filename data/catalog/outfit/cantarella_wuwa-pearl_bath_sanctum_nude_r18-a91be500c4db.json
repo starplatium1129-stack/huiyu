@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/pearl_bath_sanctum_nude_r18",
+  "revision": 1,
+  "sortOrder": 3410,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "pearl_bath_sanctum_nude_r18",
+      "name": "月光珍珠水镜浴池全裸仰卧",
+      "prose": "Completely nude in a rose-and-lavender perfumed marble bath, wet violet hair floating around her bare breasts.",
+      "tokens": [
+        "nude",
+        "completely nude",
+        "wet hair",
+        "bare breasts",
+        "nipples",
+        "water"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

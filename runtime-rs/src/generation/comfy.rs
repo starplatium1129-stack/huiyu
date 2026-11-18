@@ -1,5 +1,6 @@
 mod cancellation;
 mod poll;
+pub(super) mod progress;
 use super::*;
 use reqwest::Method;
 #[derive(serde::Serialize)]
@@ -21,15 +22,11 @@ pub(super) async fn cancel(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
 fn encode(value: &str) -> String {
     percent_encoding::utf8_percent_encode(value, percent_encoding::NON_ALPHANUMERIC).to_string()
 }
-fn watch(inner: &Inner, id: &str, active: bool) {
+fn unwatch(inner: &Inner, id: &str) {
     if let Some(initialized) = inner.initialized.get()
         && let Some(progress) = &*initialized.progress.lock().unwrap()
     {
-        if active {
-            progress.watch(id)
-        } else {
-            progress.unwatch(id)
-        }
+        progress.unwatch(id);
     }
 }
 
@@ -145,7 +142,9 @@ pub(super) async fn submit(inner: Arc<Inner>, job: Arc<Job>) -> Result<()> {
         state.progress_text = "已提交，等待 ComfyUI 执行…".into();
         cancelling
     };
-    watch(&inner, &upstream, true);
+    if let Some(monitor) = &*initialized.progress.lock().unwrap() {
+        monitor.watch(&upstream, &job.id);
+    }
     let observed = if let Some(hooks) = &job.hooks {
         let snapshot = job.state.lock().await.metadata.clone();
         let mut metadata = Arc::unwrap_or_clone(snapshot);

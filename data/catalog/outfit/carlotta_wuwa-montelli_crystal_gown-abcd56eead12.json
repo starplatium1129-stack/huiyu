@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "carlotta_wuwa/montelli_crystal_gown",
+  "revision": 1,
+  "sortOrder": 3201,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "carlotta_wuwa",
+    "outfit": {
+      "id": "montelli_crystal_gown",
+      "name": "莫塔里酒红水晶燕尾礼装",
+      "prose": "A structured burgundy and ivory tailored aristocrat dress with crystal-faceted shoulder epaulets, ruffled jabot, and white silk thigh-highs.",
+      "tokens": [
+        "burgundy dress",
+        "aristocrat",
+        "jabot",
+        "epaulets",
+        "white thighhighs",
+        "crystal jewelry"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

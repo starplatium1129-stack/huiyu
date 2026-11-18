@@ -1,6 +1,6 @@
 <template>
   <article class="page color-script-page creative-library-page">
-    <CreativeLibraryHeader title="色彩情绪" description="光照与调色预设" />
+    <CreativeLibraryHeader chapter="color-script" />
 
     <section class="color-selection" data-route-arrive aria-labelledby="mood-palette-title">
     <header class="color-section-heading"><div><h2 id="mood-palette-title">心境色板</h2></div><span v-if="selected" class="color-current"><ArchiveIcon name="success" />已选 {{ selected.name }}</span></header>
@@ -13,13 +13,11 @@
         :aria-pressed="selected?.id === m.id"
         @click="chooseMood(m.id)"
       >
-        <div class="mood-strip" aria-hidden="true">
-          <div v-for="c in m.palette" :key="c" class="mood-swatch" :style="{ '--swatch': c }"></div>
-        </div>
+        <div class="mood-strip" :style="{ '--palette-wash': m.palette[1] }"><MoodPaletteFan :colors="m.palette" /></div>
         <div class="mood-body">
           <div class="mood-name"><ArchiveIcon :name="m.iconName" /> {{ m.name }}</div>
           <div class="mood-en">{{ m.en }}</div>
-          <span class="mood-choice-mark" aria-hidden="true"><ArchiveIcon :name="selected?.id === m.id ? 'success' : 'chevron-down'" /></span>
+          <LibraryChoiceMark class="mood-choice-mark" :selected="selected?.id === m.id" />
         </div>
         <CardEdgeLight />
       </button>
@@ -100,6 +98,8 @@
 import '@/assets/css/mood.css'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
+import LibraryChoiceMark from '@/components/library/LibraryChoiceMark.vue'
+import MoodPaletteFan from '@/components/library/MoodPaletteFan.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import { ref, computed, nextTick, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
@@ -110,6 +110,7 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import { COLOR_MOODS } from '@/config/promptConstants'
 import { BANNED_TAGS } from '@/utils/promptDiagnostics'
 import { scrollBehavior } from '@/utils/motionPreference'
+import { focusReadingPanel } from '@/utils/focusReadingPanel'
 import { downloadBlob } from '@/utils/downloadBlob'
 const loadNotebook = () => import('@/components/library/ColorLightNotebook.vue')
 
@@ -178,10 +179,7 @@ async function resetMood() {
 async function chooseMood(id: string) {
   selected.value = MOODS.find(mood => mood.id === id) ?? null
   await nextTick()
-  const panel = resultPanel.value
-  if (!panel?.isConnected || panel.closest('[inert]')) return
-  panel.focus({ preventScroll: true })
-  panel.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
+  if (route.path === '/color-script' && selected.value?.id === id) focusReadingPanel(resultPanel.value)
 }
 
 const violations = computed(() => {
@@ -222,18 +220,14 @@ function exportTxt() {
 .color-mood-grid { grid-template-columns:repeat(auto-fit,minmax(min(100%,160px),1fr)); }
 .color-mood-grid .mood-card { position:relative; isolation:isolate; border-radius:var(--r-lg); box-shadow:inset 0 1px 0 var(--glass-highlight); }
 .color-mood-grid .mood-card.active { border-color:var(--border-strong); box-shadow:var(--shadow-sm); }
-.color-mood-grid .mood-strip { height:72px; gap:var(--s-1); padding:var(--s-3) var(--s-3) 0; overflow:hidden; background:var(--bg-base); }
-.color-mood-grid .mood-swatch { height:100%; border-radius:var(--r-sm) var(--r-sm) 0 0; transition:transform var(--palette-duration) var(--spring-soft); }
-.color-mood-grid .mood-swatch:nth-child(even) { transform:translateY(8px); }
+.color-mood-grid .mood-strip { height:clamp(100px,9vw,134px); padding:var(--s-2); overflow:hidden; background:radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--palette-wash) 13%,transparent),transparent 75%),var(--bg-base); }
+.color-mood-grid .mood-card.active { --fan-spread:15px; --fan-angle:15deg; }
 .color-mood-grid .mood-body { position:relative; padding:var(--s-4); padding-right:40px; transform:none; transition:none; }
 .color-mood-grid .mood-card.active .mood-body { background:var(--bg-elevated); box-shadow:none; }
 .color-mood-grid .mood-name { display:flex; align-items:center; gap:var(--s-2); }
 .color-mood-grid .mood-name .archive-icon { width:18px; height:18px; color:var(--text-secondary); }
 .color-mood-grid .mood-en { margin-top:var(--s-1); }
-.mood-choice-mark { position:absolute; right:var(--s-3); top:50%; display:grid; place-items:center; width:24px; height:24px; border:1px solid var(--border-soft); border-radius:var(--r-sm); color:var(--text-secondary); background:var(--bg-surface); transform:translateY(-50%); }
-.mood-choice-mark .archive-icon { width:14px; height:14px; transform:rotate(-90deg); }
-.active .mood-choice-mark { color:var(--text-primary); border-color:var(--border-strong); }
-.active .mood-choice-mark .archive-icon { transform:none; }
+.mood-choice-mark { position:absolute; right:var(--s-3); top:50%; transform:translateY(-50%); }
 .color-mood-grid .mood-card:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .color-mood-grid .mood-card:focus-visible .mood-body { box-shadow:none; }
 .palette-result-heading > div > p { @apply tw:m-0 tw:mb-s-2 tw:text-accent tw:text-label-xs; }
@@ -290,13 +284,14 @@ function exportTxt() {
 
 
 @media (hover:hover) and (pointer:fine) {
-  .color-mood-grid .mood-card:hover:not(:focus-visible) .mood-swatch:nth-child(even) { transform:translateY(calc(8px + var(--palette-shift))); }
+  .color-mood-grid .mood-card:hover:not(:focus-visible) { --fan-spread:16px; --fan-angle:17deg; }
   .palette-swatch:hover:not(:focus-visible) .palette-color { transform:translateY(var(--palette-shift)); }
 }
 .palette-swatch:active:not(:focus-visible) .palette-color { transform:scale(var(--palette-press)); transition-duration:var(--motion-press); }
+.color-mood-grid .mood-card:active:not(:focus-visible) { --fan-spread:10px; --fan-angle:10deg; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .color-script-page { --palette-duration:0s; --palette-shift:0px; --palette-press:1; }
-@media (forced-colors:active) { .color-mood-grid .mood-card.active { outline:2px solid Highlight; } .palette-swatch:focus-visible,.color-mood-grid .mood-card:focus-visible { outline:2px solid Highlight; } }
+@media (forced-colors:active) { .palette-color { forced-color-adjust:none; } .color-mood-grid .mood-card.active { outline:2px solid Highlight; } .palette-swatch:focus-visible,.color-mood-grid .mood-card:focus-visible { outline:2px solid Highlight; } }
 @media(max-width:768px) { .art-ref { grid-template-columns:1fr; } }
 @media(max-width:540px) { .mapping-grid { grid-template-columns:1fr; } }
 </style>

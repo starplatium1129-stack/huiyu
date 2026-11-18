@@ -11,6 +11,8 @@
       "bytes": 4182230656,
       "sha256": "3c1868387a3a1ff504bbb87c33678321965ead381fcf87afbd0264daa600c082",
       "id": "anima-aesthetic-v1.1",
+      "nativeConversionProfile": "anima-cosmos2b-v041",
+      "label": "Anima Aesthetic v1.1",
       "kind": "image"
     },
     {
@@ -37,6 +39,7 @@
     },
     {
       "id": "anima-miaomiao-v1.6",
+      "nativeConversionProfile": "anima-cosmos2b-v041",
       "kind": "image",
       "path": "diffusion_models/miaomiaoHarem_anima16.safetensors",
       "bytes": 4182218328,
@@ -63,6 +66,7 @@
     },
     {
       "id": "anima-miaomiao-v1.2",
+      "nativeConversionProfile": "anima-cosmos2b-v041",
       "kind": "image",
       "path": "diffusion_models/miaomiaoHarem_anima12.safetensors",
       "bytes": 4182218328,
@@ -76,6 +80,7 @@
     },
     {
       "id": "anima-yume-v1.0",
+      "nativeConversionProfile": "anima-yume2b-rope-v041",
       "kind": "image",
       "path": "diffusion_models/AnimaYume_v10_final_base.safetensors",
       "bytes": 4182219230,
@@ -89,6 +94,7 @@
     },
     {
       "id": "anima-miaomiao-2.9b-beta1.1",
+      "nativeConversionProfile": "anima-cosmos29b-v041",
       "kind": "image",
       "path": "diffusion_models/miaomiaoHarem_29BBETA11.safetensors",
       "bytes": 5843203272,
@@ -102,6 +108,8 @@
     },
     {
       "id": "anima-miaomiao-realskin-2.9b-v1.0",
+      "nativeConversionProfile": "anima-cosmos29b-v041",
+      "requiresLocalCheckpoint": true,
       "kind": "image",
       "path": "diffusion_models/miaomiaoRealskin_anima29B10.safetensors",
       "bytes": 5843203272,

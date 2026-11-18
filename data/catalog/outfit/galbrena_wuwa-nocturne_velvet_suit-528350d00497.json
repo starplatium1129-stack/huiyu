@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "galbrena_wuwa/nocturne_velvet_suit",
+  "revision": 1,
+  "sortOrder": 3805,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "galbrena_wuwa",
+    "outfit": {
+      "id": "nocturne_velvet_suit",
+      "name": "夜宴潜行午夜蓝丝绒西装礼裙",
+      "prose": "A sleek midnight-blue velvet tuxedo dress with satin peak lapels, silver chain brooch, and sheer dark stockings.",
+      "tokens": [
+        "blue dress",
+        "tuxedo dress",
+        "velvet",
+        "lapels",
+        "sheer pantyhose",
+        "heels"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_carlotta_sc02",
+  "revision": 1,
+  "sortOrder": 3202,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "戴长手套手持羽毛假面置于颊侧，含笑凝视",
+    "adult": false,
+    "animaCaption": "Beneath a glittering crystal chandelier in a grand ballroom, she lowers an ornate feathered masquerade mask in her white opera-gloved hand and offers a confident, enigmatic smile.",
+    "camera": "中近景，微仰拍，背景舞会宾客虚化",
+    "category": "索拉里斯日常",
+    "characterId": "carlotta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "金色水晶吊灯璀璨的假面舞会大厅中，珂莱塔戴着白丝长手套轻摘羽毛假面，紫红丝绒拖尾长裙在旋转舞步间流光溢彩。",
+    "id": "wuwa_carlotta_sc02",
+    "lighting": "水晶吊灯璀璨暖光与珠宝折射星芒",
+    "location": "拉古那大剧院舞会厅",
+    "mature": false,
+    "mood": "华丽神秘",
+    "negativeTokens": [
+      "full face mask"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "ragunna_masquerade_dress",
+    "promptProse": "Under a towering crystal chandelier at Ragunna's masquerade ball, Carlotta lowers a silver-feathered Venetian mask with a white opera-gloved hand, her plum velvet gown gleaming in the warm light.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "pink eyes",
+      "hair ornament",
+      "earrings",
+      "ball gown",
+      "off-shoulder dress",
+      "purple dress",
+      "white opera gloves",
+      "silver jewelry",
+      "standing",
+      "holding masquerade mask",
+      "removing mask",
+      "confident smile",
+      "looking at viewer",
+      "grand ballroom",
+      "crystal chandelier",
+      "bokeh",
+      "night",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding mask",
+      "masquerade mask",
+      "opera gloves",
+      "ballroom",
+      "chandelier",
+      "bokeh",
+      "night",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "珂莱塔 · 拉古那假面舞会水晶吊灯下摘面具"
+  }
+}

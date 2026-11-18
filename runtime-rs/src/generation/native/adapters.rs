@@ -102,27 +102,62 @@ pub(super) fn validate_runtime(settings: &Settings) -> Result<()> {
     }
     Ok(())
 }
-pub(crate) fn status(settings: &Settings, id: &str) -> Value {
-    let Some(model) = model(id) else {
-        return json!({"id":id,"available":false,"readiness":"unavailable", "validation":"待主力机验证",
+/// One filesystem inspection per status request. Each submission checks again.
+pub(crate) struct Status<'a> {
+    settings: &'a Settings,
+    pub(crate) runtime_error: Option<ApiError>,
+}
+
+impl<'a> Status<'a> {
+    pub(crate) fn new(settings: &'a Settings) -> Self {
+        let runtime_error = self::settings(settings)
+            .and_then(|adapter| validate_runtime(&adapter))
+            .err();
+        Self {
+            settings,
+            runtime_error,
+        }
+    }
+
+    fn issue(&self, id: &str, path: &Path) -> Option<String> {
+        if let Some(error) = &self.runtime_error {
+            Some(error.message.clone())
+        } else if within(&self.settings.models_root, path).is_none() {
+            Some("模型根目录内缺少完整 Diffusers 目录".to_owned())
+        } else {
+            model_issue(path, id)
+        }
+    }
+
+    pub(crate) fn image_count(&self) -> usize {
+        if self.runtime_error.is_some() {
+            return 0;
+        }
+        manifest()["models"]
+            .as_object()
+            .unwrap()
+            .iter()
+            .filter(|(id, spec)| {
+                spec["media"] == "image"
+                    && self
+                        .issue(id, &self.settings.models_root.join(id))
+                        .is_none()
+            })
+            .count()
+    }
+
+    pub(crate) fn model(&self, id: &str) -> Value {
+        let settings = self.settings;
+        let Some(model) = model(id) else {
+            return json!({"id":id,"available":false,"readiness":"unavailable", "validation":"待主力机验证",
             "unavailableReason":manifest()["pendingVideo"][id].as_str().unwrap_or("尚无原生适配")});
-    };
-    let path = settings.models_root.join(id);
-    let runtime_issue = self::settings(settings)
-        .and_then(|adapter| validate_runtime(&adapter))
-        .err()
-        .map(|e| e.message);
-    let issue = if runtime_issue.is_some() {
-        runtime_issue
-    } else if within(&settings.models_root, &path).is_none() {
-        Some("模型根目录内缺少完整 Diffusers 目录".to_owned())
-    } else {
-        model_issue(&path, id)
-    };
-    let capabilities = json!({"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
+        };
+        let path = settings.models_root.join(id);
+        let issue = self.issue(id, &path);
+        let capabilities = json!({"txt2img":model["media"]=="image","img2img":model["edit"],"negative":model["negative"],
         "lora":false,"noLora":true,"characterIdentity":false,"mask":false,"hires":false,"rcas":false,"teaCache":false,"weightSyntax":false,"fixedSampling":model["distilled"]==true,"experimental":true,
         "maxReferenceImages":if model["family"]=="qwen-image"{4}else{0}});
-    json!({"id":id,"label":model["label"],"family":model["family"],"available":issue.is_none(),
+        json!({"id":id,"label":model["label"],"family":model["family"],"available":issue.is_none(),
         "profileId":model["profileId"],"sizes":model["sizes"],
         "readiness":if issue.is_none(){"files-ready"}else{"unavailable"},"unavailableReason":issue,
         "validation":"待主力机验证","generationVerified":false,"performanceVerified":false,
@@ -140,6 +175,7 @@ pub(crate) fn status(settings: &Settings, id: &str) -> Value {
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
         "capabilities":capabilities,
         "modes":if model["media"]=="video" {json!(["text"])}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
+    }
 }
 pub(crate) async fn plan(
     settings: &Settings,

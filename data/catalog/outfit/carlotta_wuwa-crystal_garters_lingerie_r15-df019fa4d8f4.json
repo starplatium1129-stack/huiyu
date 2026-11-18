@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "carlotta_wuwa/crystal_garters_lingerie_r15",
+  "revision": 1,
+  "sortOrder": 3208,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "carlotta_wuwa",
+    "outfit": {
+      "id": "crystal_garters_lingerie_r15",
+      "name": "酒红丝绒吊袜带与水晶镶边内衣",
+      "prose": "A wine-red velvet balconette bra and matching lace panties trimmed with tiny crystal beads, paired with white garter stockings.",
+      "tokens": [
+        "red bra",
+        "velvet",
+        "lace panties",
+        "garter belt",
+        "white thighhighs",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

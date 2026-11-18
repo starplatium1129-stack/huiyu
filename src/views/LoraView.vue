@@ -1,6 +1,6 @@
 <template>
   <article class="page lora-page creative-library-page">
-    <CreativeLibraryHeader title="模型资料" description="角色 LoRA 与画风模型库" />
+    <CreativeLibraryHeader chapter="lora" />
     <div ref="catalogRoot" class="model-catalog" role="region" aria-label="模型目录" :aria-busy="loading" tabindex="-1">
     <ArchiveStatePanel
       v-if="loading"
@@ -28,11 +28,11 @@
     </div>
     <div class="model-search-row">
       <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="搜索模型、角色或触发词…" />
-      <span class="model-result-count" role="status">{{ visibleLoras.length }} / {{ loras.length }}</span>
-    </div>
-    <div v-if="engineOptions.length > 1" class="model-engine-filters studio-segments" role="group" aria-label="按绘图引擎筛选模型">
-      <AnimatedSelection />
-      <button v-for="option in engineOptions" :key="option.value" type="button" :aria-pressed="engine === option.value" @click="engine = option.value">{{ option.label }}<span>{{ option.count }}</span></button>
+      <div v-if="engineOptions.length > 1" class="model-engine-filters studio-segments" role="group" aria-label="按绘图引擎筛选模型">
+        <AnimatedSelection stretch />
+        <button v-for="option in engineOptions" :key="option.value" type="button" :aria-pressed="engine === option.value" @click="engine = option.value">{{ option.label }}<span>{{ option.count }}</span></button>
+      </div>
+      <span class="model-result-count" role="status">显示 {{ visibleLoras.length }} / {{ loras.length }} 个模型</span>
     </div>
     <ArchiveStatePanel v-if="!visibleLoras.length" compact kind="filtered" title="没有匹配的模型">
       <button class="btn btn-ghost btn-sm" type="button" @click="resetFilters">重置筛选</button>
@@ -222,13 +222,14 @@ onMounted(() => { void loadCatalog() })
 .model-details summary, .evaluation-panel summary { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:cursor-pointer tw:min-h-[44px] tw:rounded-sm; padding:var(--s-3) var(--s-2); margin-inline:calc(-1 * var(--s-2)); }
 .model-details summary:hover, .evaluation-panel summary:hover { color:var(--text-primary); }
 .model-details-body { @apply tw:pb-s-4; }
-.model-facts { @apply tw:grid tw:gap-s-3 tw:m-0 tw:mb-s-3; }
-.model-facts dt { @apply tw:mb-s-1 tw:text-muted tw:text-label-xs; }
+.model-facts { display:grid; margin:0 0 var(--s-3); }
+.model-facts > div { display:grid; grid-template-columns:5em minmax(0,1fr); align-items:baseline; gap:var(--s-3); padding-block:var(--s-2); border-bottom:1px solid var(--border-soft); }
+.model-facts dt { color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .model-facts dd { @apply tw:m-0 tw:text-secondary; overflow-wrap:anywhere; }
-.model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); margin-bottom:var(--s-4); }
+.model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); margin-bottom:var(--s-5); }
 .model-search-field { flex:1 1 320px; max-width:560px; min-width:0; }
-.model-result-count { color:var(--text-secondary); font-size:var(--fs-label); font-variant-numeric:tabular-nums; white-space:nowrap; }
-.model-engine-filters { width:fit-content; max-width:100%; flex-wrap:wrap; margin-bottom:var(--s-5); }
+.model-result-count { margin-inline-start:auto; color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.model-engine-filters { width:fit-content; max-width:100%; flex-wrap:wrap; }
 .model-engine-filters button > span { display:grid; place-items:center; min-width:22px; min-height:22px; border:1px solid var(--border-soft); border-radius:var(--r-pill); font:400 var(--fs-mono-xs)/1 var(--font-mono); }
 .model-identity { display:flex; align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); }
 .model-identity-copy { flex:1; min-width:0; }
@@ -256,7 +257,6 @@ onMounted(() => { void loadCatalog() })
     linear-gradient(145deg,color-mix(in srgb,var(--model-color) 8%,transparent),transparent 48%),
     var(--bg-surface);
   box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-sm);
-  transition:transform var(--motion-surface) var(--ease-out);
 }
 .lora-card[data-character='nene'] { --model-color:var(--nene-violet); }
 .lora-card[data-character='natsume'] { --model-color:var(--natsume-amber); }
@@ -289,7 +289,10 @@ onMounted(() => { void loadCatalog() })
 
 .model-details summary:focus-visible, .evaluation-panel summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media (max-width:768px) { .lora-grid { grid-template-columns:minmax(0,1fr); } }
-@media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) { transform:translateY(-2px); } .lora-card:hover:not(:focus-within) .model-identity .archive-icon { transform:rotate(-8deg) translateY(-3px); } }
+@media (max-width:540px) {
+  .model-engine-filters.studio-segments[role] > button { gap:var(--s-1); padding-inline:var(--s-2); }
+}
+@media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) .model-identity .archive-icon { transform:rotate(-8deg) translateY(-3px); } }
 @media (hover:hover) and (pointer:fine) { .lora-card:hover:not(:focus-within) .model-portrait img { transform:rotate(-4deg) translateY(-3px); } }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .lora-page :is(.lora-card,.model-identity .archive-icon,.model-portrait img) { transition:none; transform:none; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .lora-page :is(.lora-card,.model-identity .archive-icon,.model-portrait img) { transition:none; transform:none; }

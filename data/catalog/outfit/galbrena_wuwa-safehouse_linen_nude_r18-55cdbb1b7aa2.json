@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "galbrena_wuwa/safehouse_linen_nude_r18",
+  "revision": 1,
+  "sortOrder": 3810,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "galbrena_wuwa",
+    "outfit": {
+      "id": "safehouse_linen_nude_r18",
+      "name": "雨夜安全屋全裸卸防仰躺姿态",
+      "prose": "Completely nude on dark grey linen sheets in her candlelit safehouse, wearing only a silver dog-tag pendant.",
+      "tokens": [
+        "nude",
+        "completely nude",
+        "necklace",
+        "bare breasts",
+        "nipples",
+        "spread legs"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

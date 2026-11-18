@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "galbrena_wuwa",
+  "revision": 1,
+  "sortOrder": 311,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "id": "galbrena_wuwa",
+    "profile": {
+      "id": "galbrena_wuwa",
+      "name": "嘉贝莉娜",
+      "source": "Wuthering Waves",
+      "alias": [
+        "嘉贝莉娜",
+        "Galbrena"
+      ],
+      "type": "popular",
+      "tags": [
+        "嘉贝莉娜",
+        "鸣潮",
+        "独行猎魔人 · 幽蓝巡猎者"
+      ],
+      "identity": {
+        "role": "冷峻孤高的幽蓝猎魔枪手",
+        "faction": "独行猎魔人 · 幽蓝巡猎者"
+      },
+      "bg_story": "嘉贝莉娜是一名独行猎魔人，擅长用双枪和幽蓝火焰夜战。出门前她会动手检查枪械，回到安全屋才肯松一口气。她说话简短，关心别人时也很少多作解释。",
+      "personality": [
+        "冷静果敢",
+        "外冷内热",
+        "夜战老手",
+        "警惕松懈后的反差"
+      ],
+      "likes": [],
+      "speech": "枪已经检查过了。坐吧，咖啡还热。",
+      "traits": [
+        "galbrena_(wuthering_waves)",
+        "wuthering_waves",
+        "grey hair",
+        "blue streaks",
+        "medium hair",
+        "blue eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "嘉贝莉娜立绘待补"
+      },
+      "visual_dna": {
+        "signature": "Galbrena from Wuthering Waves. Medium-length gray hair with blue streaks and blue eyes.",
+        "uniform": "幽蓝猎魔人双排扣短风衣战装",
+        "style": "anime"
+      },
+      "accent_color": "#1F5E9C",
+      "bg_color": "#E6EFF8",
+      "palette": [
+        "#1F5E9C",
+        "#E6EFF8"
+      ],
+      "theme": {
+        "primaryColor": "#1F5E9C",
+        "secondaryColor": "#E6EFF8",
+        "accentGlow": "rgba(31, 94, 156, 0.38)",
+        "motif": "azure_hellfire_and_twin_pistols"
+      },
+      "settingMemory": {
+        "archetype": "冷峻孤高的幽蓝猎魔枪手",
+        "coreTraits": [
+          "冷静果敢",
+          "外冷内热",
+          "夜战老手",
+          "警惕松懈后的反差"
+        ],
+        "signatureLocations": [
+          "雨夜霓虹天台安全屋",
+          "边境废弃钟楼武器库",
+          "荒原篝火露营地",
+          "冷色调工业风寓所"
+        ],
+        "speechTone": "简短利落、不废话，只有在确认绝对安全与信任后才会卸下防备显露温柔。"
+      },
+      "version": "2.7",
+      "personaCoreSceneIds": [
+        "wuwa_galbrena_sc01",
+        "wuwa_galbrena_sc07",
+        "wuwa_galbrena_sc09"
+      ],
+      "signatureSceneIds": [
+        "wuwa_galbrena_sc01",
+        "wuwa_galbrena_sc03",
+        "wuwa_galbrena_sc08",
+        "wuwa_galbrena_sc10"
+      ],
+      "factions": [
+        {
+          "id": "lone_hunter_and_academy",
+          "name": "独行猎手与星炬学院",
+          "description": "游走于暗夜前沿的猎魔枪手与新一代学院优等生。"
+        }
+      ]
+    },
+    "popular": {
+      "id": "galbrena_wuwa",
+      "displayName": "嘉贝莉娜",
+      "originalName": "Galbrena",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "嘉贝莉娜",
+        "Galbrena"
+      ],
+      "identityProse": "Galbrena from Wuthering Waves. Medium-length gray hair with blue streaks and blue eyes.",
+      "identityTokens": [
+        "galbrena_(wuthering_waves)",
+        "wuthering_waves",
+        "grey hair",
+        "blue streaks",
+        "medium hair",
+        "blue eyes"
+      ],
+      "characterTokens": [
+        "galbrena_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
+      ],
+      "exactTokens": [
+        "galbrena_(wuthering_waves)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown"
+    }
+  }
+}

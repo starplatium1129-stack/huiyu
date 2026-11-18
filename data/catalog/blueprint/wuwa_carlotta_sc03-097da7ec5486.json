@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_carlotta_sc03",
+  "revision": 1,
+  "sortOrder": 3203,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于皮质长椅擦拭晶簇手枪，侧目凝视",
+    "adult": false,
+    "animaCaption": "Seated on a leather bench inside a vaulted private shooting gallery, she inspects an ornate crystal-inlaid flintlock pistol in her gloved hands with calm precision.",
+    "camera": "中景，三分之二侧面视角",
+    "category": "索拉里斯日常",
+    "characterId": "carlotta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "莫塔里家族地下私人靶场内，珂莱塔身着酒红双排扣骑士装，用丝绸手帕细心擦拭镶嵌紫晶的燧发手枪，眼神专注冷冽。",
+    "id": "wuwa_carlotta_sc03",
+    "lighting": "靶场射灯冷暖对比与水晶枪身微光",
+    "location": "莫塔里庄园私人射击靶场",
+    "mature": false,
+    "mood": "冷静专注",
+    "negativeTokens": [
+      "modern assault rifle"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "velvet_riding_habit",
+    "promptProse": "Inside a stone-vaulted private shooting gallery, Carlotta sits in a tailored wine-red riding jacket and knee boots, calmly inspecting the crystal chamber of her bespoke flintlock pistol.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "pink eyes",
+      "earrings",
+      "red jacket",
+      "double-breasted",
+      "white shirt",
+      "riding breeches",
+      "knee boots",
+      "leather gloves",
+      "sitting",
+      "holding gun",
+      "flintlock pistol",
+      "looking at viewer",
+      "composed expression",
+      "indoor shooting range",
+      "stone arches",
+      "warm spotlights",
+      "afternoon",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "holding gun",
+      "flintlock pistol",
+      "wiping",
+      "shooting range",
+      "leather bench",
+      "afternoon",
+      "dramatic lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "珂莱塔 · 私人射击靶场擦拭晶簇燧发枪"
+  }
+}

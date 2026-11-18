@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/midnight_salon_bustier_skirt",
+  "revision": 1,
+  "sortOrder": 3405,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "midnight_salon_bustier_skirt",
+      "name": "暗夜沙龙紫晶束胸与百褶长裙",
+      "prose": "A boned amethyst brocade bustier paired with a flowing black-violet chiffon maxi skirt and an ornate silver poison-ring.",
+      "tokens": [
+        "bustier",
+        "purple top",
+        "cleavage",
+        "chiffon skirt",
+        "long skirt",
+        "ring"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

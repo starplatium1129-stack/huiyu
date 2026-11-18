@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_galbrena_sc05",
+  "revision": 1,
+  "sortOrder": 3805,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "倚靠露台护栏手持威士忌古典杯，冷艳浅笑",
+    "adult": false,
+    "animaCaption": "Leaning against the glass railing of a penthouse terrace overlooking harbor lights, she holds a crystal whiskey glass in her midnight-blue velvet tuxedo dress with a cool, poised smile.",
+    "camera": "中景，平视",
+    "category": "索拉里斯日常",
+    "characterId": "galbrena_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "俯瞰海港灯火的高层酒店露台酒会角落，嘉贝莉娜身着午夜蓝丝绒西装礼裙，单手倚靠玻璃护栏轻晃琥珀色威士忌杯，眼神冷艳。",
+    "id": "wuwa_galbrena_sc05",
+    "lighting": "室内水晶灯暖光与海港夜景蓝调",
+    "location": "高层海港酒店夜宴露台",
+    "mature": false,
+    "mood": "冷艳干练",
+    "negativeTokens": [
+      "daylight"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "nocturne_velvet_suit",
+    "promptProse": "On a quiet corner of a high-rise terrace above the illuminated harbor, Galbrena wears a tailored midnight-blue velvet tuxedo dress, swirling an amber glass of whiskey with cool composure.",
+    "promptTokens": [
+      "grey hair",
+      "blue streaks",
+      "medium hair",
+      "blue eyes",
+      "blue dress",
+      "tuxedo dress",
+      "velvet",
+      "lapels",
+      "sheer pantyhose",
+      "heels",
+      "standing",
+      "leaning on glass railing",
+      "holding whiskey glass",
+      "slight smile",
+      "looking at viewer",
+      "penthouse terrace",
+      "harbor city lights",
+      "night",
+      "warm lighting",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "leaning on railing",
+      "holding glass",
+      "whiskey",
+      "cityscape",
+      "harbor lights",
+      "slight smile",
+      "night",
+      "medium shot"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "嘉贝莉娜 · 午夜酒会露台倚栏摇晃冰块威士忌"
+  }
+}

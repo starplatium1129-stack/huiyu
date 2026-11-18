@@ -47,8 +47,39 @@ impl Drop for Staging {
         }
     }
 }
-fn fingerprint(directory: &Path) -> Result<Vec<u8>> {
-    Ok(read_snapshot(directory)?.2)
+#[derive(Default)]
+struct SnapshotIdentity {
+    manifest: [u8; 32],
+    // Index by the output name, retaining the actual name listed in the input manifest.
+    files: std::collections::HashMap<String, (String, [u8; 32])>,
+}
+
+impl SnapshotIdentity {
+    fn matches(&self, directory: &Path) -> Result<bool> {
+        let digest = |name: &str| -> Result<[u8; 32]> {
+            let mut file = std::fs::File::open(directory.join(name))?;
+            let mut hash = Sha256::new();
+            std::io::copy(&mut file, &mut hash)?;
+            Ok(hash.finalize().into())
+        };
+        if self.manifest != digest("manifest.json")? {
+            return Ok(false);
+        }
+        for (name, expected) in self.files.values() {
+            if *expected != digest(name)? {
+                return Ok(false);
+            }
+        }
+        Ok(true)
+    }
+}
+
+fn export_conflict() -> ApiError {
+    ApiError::new(
+        409,
+        "CATALOG_EXPORT_CONFLICT",
+        "目标快照在导出期间改变，未覆盖目标；请重新读取后导出",
+    )
 }
 impl Scope {
     fn partial(&self) -> bool {
@@ -56,13 +87,16 @@ impl Scope {
     }
 }
 pub(super) fn read(directory: &Path) -> Result<(Vec<Record>, Vec<Record>)> {
-    let (records, retired, _) = read_snapshot(directory)?;
-    Ok((records, retired))
+    read_snapshot(directory, None)
 }
-fn read_snapshot(directory: &Path) -> Result<(Vec<Record>, Vec<Record>, Vec<u8>)> {
+fn read_snapshot(
+    directory: &Path,
+    mut identity: Option<&mut SnapshotIdentity>,
+) -> Result<(Vec<Record>, Vec<Record>)> {
     let manifest_bytes = std::fs::read(directory.join("manifest.json"))?;
-    let mut digest = Sha256::new();
-    digest.update(&manifest_bytes);
+    if let Some(identity) = identity.as_deref_mut() {
+        identity.manifest = Sha256::digest(&manifest_bytes).into();
+    }
     let mut manifest: Value = serde_json::from_slice(&manifest_bytes)?;
     if manifest["version"] != 1 {
         return Err(ApiError::invalid("快照格式版本无效"));
@@ -83,11 +117,20 @@ fn read_snapshot(directory: &Path) -> Result<(Vec<Record>, Vec<Record>, Vec<u8>)
             return Err(ApiError::invalid("快照路径无效"));
         }
         let bytes = std::fs::read(directory.join(name))?;
-        digest.update(&bytes);
         let record: Record = serde_json::from_slice(&bytes)?;
         validation::key(&record.kind, &record.id)?;
         if record.revision < 1 || !seen.insert((record.kind.clone(), record.id.clone())) {
             return Err(ApiError::invalid("快照 ID 重复或修订无效"));
+        }
+        if let Some(identity) = identity.as_deref_mut() {
+            let key = snapshot_name(&record.kind, &record.id);
+            if identity
+                .files
+                .insert(key, (name.to_owned(), Sha256::digest(&bytes).into()))
+                .is_some()
+            {
+                return Err(ApiError::invalid("导出文件名冲突"));
+            }
         }
         records.push(record);
     }
@@ -103,7 +146,7 @@ fn read_snapshot(directory: &Path) -> Result<(Vec<Record>, Vec<Record>, Vec<u8>)
             return Err(ApiError::invalid("退役记录 ID 重复或修订无效"));
         }
     }
-    Ok((records, retired, digest.finalize().to_vec()))
+    Ok((records, retired))
 }
 impl Catalog {
     pub(crate) fn matches_bundled_records(
@@ -230,8 +273,9 @@ impl Catalog {
         if scope.partial() && directory.exists() {
             // Merge only the selected records into the project's existing export,
             // never copy unrelated personal database records over that snapshot.
-            let (previous, previous_retired, digest) = read_snapshot(directory)?;
-            original_fingerprint = Some(digest);
+            let mut identity = SnapshotIdentity::default();
+            let (previous, previous_retired) = read_snapshot(directory, Some(&mut identity))?;
+            original_fingerprint = Some(identity);
             let mut merged = std::collections::BTreeMap::new();
             for (record, removed) in previous
                 .into_iter()
@@ -254,7 +298,15 @@ impl Catalog {
                         &record,
                         removed,
                     )?;
-                    if super::provenance::same(before, &record) && *was_removed == removed {
+                    // An unknown creation date may be backfilled independently of content.
+                    // Keep the project's established creation date on later content edits.
+                    if before.created_at.is_some() {
+                        record.created_at.clone_from(&before.created_at);
+                    }
+                    if super::provenance::same(before, &record)
+                        && *was_removed == removed
+                        && before.created_at == record.created_at
+                    {
                         continue;
                     }
                     // The project revision is an upstream publication counter.
@@ -279,7 +331,7 @@ impl Catalog {
                         },
                     )?;
                 }
-                changed.insert(key.clone());
+                changed.insert(snapshot_name(&record.kind, &record.id));
                 merged.insert(key, (record, removed));
             }
             records = Vec::new();
@@ -292,18 +344,26 @@ impl Catalog {
                 }
             }
         }
+        source_snapshot.commit()?;
         std::fs::create_dir(&staging)?;
         let _staging_cleanup = Staging(staging.clone());
         let mut files = Vec::new();
         for record in records {
             let name = snapshot_name(&record.kind, &record.id);
             std::fs::create_dir_all(staging.join(&record.kind))?;
-            let original = directory.join(&name);
-            if original_fingerprint.is_some()
-                && !changed.contains(&(record.kind.clone(), record.id.clone()))
-                && original.is_file()
+            if !changed.contains(&name)
+                && let Some((original, expected)) = original_fingerprint
+                    .as_ref()
+                    .and_then(|source| source.files.get(&name))
             {
-                std::fs::copy(original, staging.join(&name))?;
+                let source = directory.join(original);
+                let bytes = std::fs::read(&source)?;
+                if <[u8; 32]>::from(Sha256::digest(&bytes)) != *expected {
+                    return Err(export_conflict());
+                }
+                let destination = staging.join(&name);
+                std::fs::write(&destination, bytes)?;
+                std::fs::set_permissions(destination, source.metadata()?.permissions())?;
             } else {
                 write_export(&staging.join(&name), &record)?;
             }
@@ -317,12 +377,8 @@ impl Catalog {
         };
         write_export(&staging.join("manifest.json"), &manifest)?;
         if let Some(before) = original_fingerprint {
-            if !directory.exists() || fingerprint(directory)? != before {
-                return Err(ApiError::new(
-                    409,
-                    "CATALOG_EXPORT_CONFLICT",
-                    "目标快照在导出期间改变，未覆盖目标；请重新读取后导出",
-                ));
+            if !directory.exists() || !before.matches(directory)? {
+                return Err(export_conflict());
             }
         } else if directory.exists() {
             return Err(ApiError::new(
@@ -351,7 +407,6 @@ impl Catalog {
         } else {
             None
         };
-        source_snapshot.commit()?;
         Ok(
             json!({"ok":true,"count":count,"total":files.len(),"partial":scope.partial(),"directory":directory,"version":version,"cleanupWarning":cleanup_warning}),
         )

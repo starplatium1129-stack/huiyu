@@ -2,11 +2,13 @@ use super::*;
 use std::process::Stdio;
 
 pub(super) fn is_moss(model: &ModelBundle) -> bool {
-    model.id.starts_with("moss-")
+    crate::generation::native::adapters::model(&model.id)
+        .is_some_and(|spec| spec["family"] == "moss-image")
 }
 
 pub(super) fn text_is_int8(model: &ModelBundle) -> bool {
-    model.id == "moss-miaomiao-base-v1.1"
+    crate::generation::native::adapters::model(&model.id)
+        .is_some_and(|spec| spec["managedPrecision"]["text_encoder"] == "int8")
 }
 
 pub(super) fn prepare_bundle(model: &mut ModelBundle) -> Result<()> {

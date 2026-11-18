@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_iuno_sc07",
+  "revision": 1,
+  "sortOrder": 3707,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于床沿双腿并拢微倾，手抚长发娇羞侧目",
+    "adult": false,
+    "animaCaption": "Seated on the edge of her bed in front of a moonlit arched window, her translucent ice-blue silk chemise catches the silver light as she touches her hair with a deep blush.",
+    "camera": "中近景，平视",
+    "category": "索拉里斯私密",
+    "characterId": "iuno_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "r15_intimate"
+    ],
+    "description": "月光透过拱形落地窗洒进神官静谧寝阁，尤诺身着星月薄纱半透冰蓝真丝睡裙坐在丝绸床沿，单手轻拢发丝，耳根泛红别过眼神。",
+    "id": "wuwa_iuno_sc07",
+    "lighting": "拱形落地窗清冷月光穿透半透冰蓝真丝",
+    "location": "七丘月相神官寝阁落地窗前",
+    "mature": false,
+    "mood": "清冷娇羞",
+    "negativeTokens": [
+      "nude",
+      "explicit"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "starlight_sheer_chemise_r15",
+    "promptProse": "Bathed in silver moonlight from a tall arched window, Iuno sits on the edge of her bed in a sheer ice-blue silk babydoll chemise trimmed with star lace, blushing as she touches one blue twin tail.",
+    "promptTokens": [
+      "blue hair",
+      "twin tails",
+      "long hair",
+      "blue eyes",
+      "crescent hair ornament",
+      "blue chemise",
+      "sheer",
+      "lace trim",
+      "thin straps",
+      "bare shoulders",
+      "bare thighs",
+      "sitting on bed",
+      "hand in hair",
+      "blush",
+      "parted lips",
+      "looking at viewer",
+      "bedroom",
+      "arched window",
+      "moonlight",
+      "soft blue light",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R15",
+    "sceneTags": [
+      "sitting on bed",
+      "sheer chemise",
+      "hand in hair",
+      "blush",
+      "looking away",
+      "arched window",
+      "moonlight",
+      "bedroom",
+      "medium close-up"
+    ],
+    "timeOfDay": "深夜",
+    "title": "尤诺 · 月光神官寝阁半透冰蓝真丝睡裙"
+  }
+}

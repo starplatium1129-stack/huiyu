@@ -1,0 +1,141 @@
+{
+  "kind": "character",
+  "id": "chisa_wuwa",
+  "revision": 1,
+  "sortOrder": 312,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "id": "chisa_wuwa",
+    "profile": {
+      "id": "chisa_wuwa",
+      "name": "千咲",
+      "source": "Wuthering Waves",
+      "alias": [
+        "千咲",
+        "Chisa"
+      ],
+      "type": "popular",
+      "tags": [
+        "千咲",
+        "鸣潮",
+        "星炬学院 · 学生"
+      ],
+      "identity": {
+        "role": "文静敏锐的星炬学院优等生",
+        "faction": "星炬学院 · 学生",
+        "school": "星炬学院",
+        "classificationSource": "绘遇《鸣潮》9 角色扩充包"
+      },
+      "bg_story": "千咲是星炬学院的学生。她常在图书馆翻看频率笔记，也会去茶道社和植物标本温室。她待人有礼，习惯先理清事情的来龙去脉，到了必须作决定的时候也很果断。",
+      "personality": [
+        "知性守礼",
+        "冷静分析",
+        "反差果断",
+        "纯情认真"
+      ],
+      "likes": [],
+      "speech": "昨天那段频率，我在笔记上标出来了。一起听一遍？",
+      "traits": [
+        "chisa_(wuthering_waves)",
+        "wuthering_waves",
+        "black hair",
+        "long hair",
+        "blunt bangs",
+        "red eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "千咲立绘待补"
+      },
+      "visual_dna": {
+        "signature": "Chisa from Wuthering Waves. Long black hair with blunt bangs and red eyes.",
+        "uniform": "星炬学院黑红缎带水手校服",
+        "style": "anime"
+      },
+      "accent_color": "#B82538",
+      "bg_color": "#F7ECEE",
+      "palette": [
+        "#B82538",
+        "#F7ECEE"
+      ],
+      "theme": {
+        "primaryColor": "#B82538",
+        "secondaryColor": "#F7ECEE",
+        "accentGlow": "rgba(184, 37, 56, 0.35)",
+        "motif": "crimson_ribbon_and_startorch_crest"
+      },
+      "settingMemory": {
+        "archetype": "文静敏锐的星炬学院优等生",
+        "coreTraits": [
+          "知性守礼",
+          "冷静分析",
+          "反差果断",
+          "纯情认真"
+        ],
+        "signatureLocations": [
+          "星炬学院夕阳天台",
+          "玻璃穹顶资料图书馆",
+          "学院社团茶水间",
+          "宿舍窗边书桌"
+        ],
+        "speechTone": "礼貌克制、条理清晰，面对意外亲密接触时会认真思考如何回应而面红耳赤。"
+      },
+      "version": "2.8",
+      "personaCoreSceneIds": [
+        "wuwa_chisa_sc01",
+        "wuwa_chisa_sc07",
+        "wuwa_chisa_sc09"
+      ],
+      "signatureSceneIds": [
+        "wuwa_chisa_sc01",
+        "wuwa_chisa_sc02",
+        "wuwa_chisa_sc08",
+        "wuwa_chisa_sc10"
+      ],
+      "factions": [
+        {
+          "id": "lone_hunter_and_academy",
+          "name": "独行猎手与星炬学院",
+          "description": "游走于暗夜前沿的猎魔枪手与新一代学院优等生。"
+        }
+      ]
+    },
+    "popular": {
+      "id": "chisa_wuwa",
+      "displayName": "千咲",
+      "originalName": "Chisa",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "千咲",
+        "Chisa"
+      ],
+      "identityProse": "Chisa from Wuthering Waves. Long black hair with blunt bangs and red eyes.",
+      "identityTokens": [
+        "chisa_(wuthering_waves)",
+        "wuthering_waves",
+        "black hair",
+        "long hair",
+        "blunt bangs",
+        "red eyes"
+      ],
+      "characterTokens": [
+        "chisa_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
+      ],
+      "exactTokens": [
+        "chisa_(wuthering_waves)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown"
+    }
+  }
+}

@@ -19,7 +19,7 @@
         <button
           ref="generationAction"
           :data-testid="engine === 'sd' ? 'sd-generate' : 'anima-generate'"
-          class="btn btn-ghost generation-action studio-press-ripple"
+          class="btn generation-action studio-press-ripple"
           :class="{ 'is-drawing': busy }"
           :data-state="status"
           type="button"
@@ -30,7 +30,7 @@
           @click.capture="pressRipple"
           @click="activate"
         >
-          <span class="generation-action-surface" aria-hidden="true" />
+          <span class="generation-action-surface" aria-hidden="true"><span class="generation-action-face" /></span>
           <span class="generation-action-content">
             <span class="generation-action-label"><ArchiveIcon :name="actionIcon" aria-hidden="true" /><span v-content-motion="actionText">{{ actionText }}</span></span>
             <strong v-if="busy && progressValue !== null" class="generation-percent" aria-hidden="true">{{ progressValue }}%</strong>

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_chisa_sc08",
+  "revision": 1,
+  "sortOrder": 3908,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于床沿双膝并拢双手轻护胸口，满面通红",
+    "adult": false,
+    "animaCaption": "Sitting on the edge of her bed beside sheer sunset-lit curtains in a black satin lingerie set with small red bows and black thigh-highs, she holds her hands near her chest with a bright blush.",
+    "camera": "中景，平视",
+    "category": "索拉里斯私密",
+    "characterId": "chisa_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "r15_intimate"
+    ],
+    "description": "百叶窗与白色薄纱帘映照的宿舍床沿上，千咲身着黑蕾丝红丝带缎面内衣与黑丝过膝袜，双手轻护胸口，赤红双眸羞怯躲闪。",
+    "id": "wuwa_chisa_sc08",
+    "lighting": "夕阳余晖穿透白纱帘的柔和逆光",
+    "location": "星炬学院宿舍白纱帘床沿",
+    "mature": false,
+    "mood": "羞涩紧张",
+    "negativeTokens": [
+      "nude",
+      "explicit"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "crimson_ribbon_camisole_r15",
+    "promptProse": "Backed by sheer white curtains glowing with late afternoon sun, Chisa sits neatly on her bed in a crimson-bowed black satin bra, matching panties, and black thigh-highs, blushing intensely.",
+    "promptTokens": [
+      "black hair",
+      "long hair",
+      "blunt bangs",
+      "red eyes",
+      "red hair ribbon",
+      "black bra",
+      "satin",
+      "red bow",
+      "black panties",
+      "black thighhighs",
+      "sitting on bed",
+      "knees together",
+      "hands near chest",
+      "heavy blush",
+      "embarrassed",
+      "looking at viewer",
+      "dormitory bedroom",
+      "sheer white curtains",
+      "sunset light",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R15",
+    "sceneTags": [
+      "sitting on bed",
+      "hands on chest",
+      "heavy blush",
+      "embarrassed",
+      "looking at viewer",
+      "white curtains",
+      "bedroom",
+      "sunset",
+      "soft lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "千咲 · 宿舍窗帘后黑蕾丝红丝带内衣羞赧掩胸"
+  }
+}

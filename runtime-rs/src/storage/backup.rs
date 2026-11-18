@@ -37,7 +37,7 @@ impl Files {
             Ok(())
         }
     }
-    fn progress(&self, phase: &str, completed: u64, total: u64) {
+    fn progress(&self, phase: &'static str, completed: u64, total: u64) {
         if let Some(job) = &self.job {
             job.progress(phase, completed, total);
         }
@@ -52,7 +52,7 @@ pub(super) struct Completion {
     key: String,
     operation_id: Value,
     kind: Value,
-    backup_id: Option<String>,
+    pub(super) backup_id: Option<String>,
     pub cancel: Arc<AtomicBool>,
 }
 pub(super) struct CopyJob {
@@ -62,10 +62,8 @@ pub(super) struct CopyJob {
 }
 enum CopyKind {
     Backup {
-        directory: PathBuf,
-        manifest: Value,
-        existing: bool,
-        source: Option<Connection>,
+        id: String,
+        source: Option<(Connection, i64)>,
     },
     Restore {
         backup_id: String,
@@ -76,33 +74,13 @@ impl CopyJob {
     pub(super) fn run(&mut self) -> Result<Value> {
         // Own the reader locally before any early return. Even a pre-cancelled
         // copy must release its read transaction before queuing completion.
-        let source = match &mut self.kind {
-            CopyKind::Backup { source, .. } => source.take(),
-            CopyKind::Restore { .. } => None,
-        };
-        self.files.check_cancel()?;
-        if let (
-            Some(source),
-            CopyKind::Backup {
-                directory,
-                manifest,
-                ..
-            },
-        ) = (source, &mut self.kind)
-        {
-            // Read the same pinned revision as the database copy. The writer
-            // already leased this snapshot's objects before yielding its queue.
-            manifest["media"] = Value::Array(media_rows(&self.files, &source)?);
-            copy_database(
-                &self.files,
-                source,
-                directory,
-                string(manifest, "backupId")?,
-            )?;
-            manifest["database"] = digest_file(&self.files, &directory.join("huiyu.sqlite3"))?;
-            marker(directory, "snapshot.json", manifest)?;
+        match &mut self.kind {
+            CopyKind::Backup { id, source } => copy_job::backup(&self.files, id, source.take()),
+            CopyKind::Restore {
+                backup_id,
+                candidate_id,
+            } => copy_job::restore_backup(&self.files, backup_id, candidate_id),
         }
-        copy_job::run(&self.files, &mut self.kind)
     }
 }
 
@@ -179,7 +157,10 @@ pub(super) fn prepare(c: &mut Context, principal: &str, command: &Value) -> Resu
             candidate_id: id.clone(),
         }
     } else {
-        prepare_snapshot(c, &files, &id)?
+        CopyKind::Backup {
+            source: pin_snapshot(c, &id)?,
+            id: id.clone(),
+        }
     };
     Ok(Prepared::Copy(Box::new(CopyJob {
         files,
@@ -194,43 +175,16 @@ pub(super) fn prepare(c: &mut Context, principal: &str, command: &Value) -> Resu
     })))
 }
 
-fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind> {
+fn has_snapshot(c: &Context, id: &str) -> Result<bool> {
     let directory = schema::safe(&c.root, format!("backups/{id}"))?;
-    if schema::safe(&directory, "manifest.json")?.exists() {
-        let manifest = manifest(files, &directory, id)?;
-        return Ok(CopyKind::Backup {
-            directory,
-            manifest,
-            existing: true,
-            source: None,
-        });
+    Ok(schema::safe(&directory, "manifest.json")?.try_exists()?
+        || schema::safe(&directory, "snapshot.json")?.try_exists()?)
+}
+
+fn pin_snapshot(c: &mut Context, id: &str) -> Result<Option<(Connection, i64)>> {
+    if has_snapshot(c, id)? {
+        return Ok(None);
     }
-    let directory = prepare_directory(files, &format!("backups/{id}"), id)?;
-    if schema::safe(&directory, "snapshot.json")?.exists() {
-        let manifest = validate_manifest(files, read_json(&directory, "snapshot.json")?, id)?;
-        if manifest["backupId"] != id
-            || manifest["workspaceId"] != c.workspace_id
-            || digest_file(files, &directory.join("huiyu.sqlite3"))? != manifest["database"]
-        {
-            return Err(invalid_backup(
-                "Incomplete backup snapshot identity or digest mismatch",
-            ));
-        }
-        return Ok(CopyKind::Backup {
-            directory,
-            manifest,
-            existing: false,
-            source: None,
-        });
-    }
-    let revision = c.transaction(|c| {
-        c.db.execute(
-            "INSERT OR IGNORE INTO leases
-             SELECT ?1 || ':' || hash,'backup',hash,NULL,?2 FROM media_objects",
-            params![id, now()],
-        )?;
-        c.revision()
-    })?;
     let source = Connection::open_with_flags(
         schema::safe(&c.root, "huiyu.sqlite3")?,
         rusqlite::OpenFlags::SQLITE_OPEN_READ_ONLY | rusqlite::OpenFlags::SQLITE_OPEN_NO_MUTEX,
@@ -246,19 +200,40 @@ fn prepare_snapshot(c: &mut Context, files: &Files, id: &str) -> Result<CopyKind
         [],
         |row| Ok((row.get(0)?, row.get(1)?, row.get(2)?)),
     )?;
-    if source_revision != revision || workspace != c.workspace_id || epoch != c.epoch {
-        return Err(conflict(
-            "WORKSPACE_IDENTITY",
-            "Backup source no longer matches the workspace",
-        ));
+    c.transaction(|c| {
+        if source_revision != c.revision()? || workspace != c.workspace_id || epoch != c.epoch {
+            return Err(conflict(
+                "WORKSPACE_IDENTITY",
+                "Backup source no longer matches the workspace",
+            ));
+        }
+        c.db.execute(
+            "INSERT OR IGNORE INTO leases
+             SELECT ?1 || ':' || hash,'backup',hash,NULL,?2 FROM media_objects",
+            params![id, now()],
+        )?;
+        Ok(())
+    })?;
+    Ok(Some((source, source_revision)))
+}
+
+// Before snapshot.json is published, a retry takes a new SQLite snapshot.
+// After publication its media must stay leased even when copying was cancelled.
+pub(super) fn release_unsealed(c: &Context, id: Option<&str>) {
+    let Some(id) = id else { return };
+    let cleanup = || -> Result<()> {
+        if !has_snapshot(c, id)? {
+            c.db.execute(
+                "DELETE FROM leases WHERE kind='backup' AND id LIKE ?1
+                AND (SELECT value FROM meta WHERE key='writerEpoch')=?2",
+                params![format!("{id}:%"), c.epoch],
+            )?;
+        }
+        Ok(())
+    };
+    if let Err(error) = cleanup() {
+        eprintln!("workspace backup lease cleanup: {error}");
     }
-    let manifest = json!({"formatVersion":1,"kind":"huiyu-workspace-backup","backupId":id,"workspaceId":c.workspace_id,"schemaVersion":schema::VERSION,"revision":revision});
-    Ok(CopyKind::Backup {
-        directory,
-        manifest,
-        existing: false,
-        source: Some(source),
-    })
 }
 
 fn copy_database(files: &Files, source: Connection, directory: &Path, id: &str) -> Result<()> {
@@ -306,7 +281,7 @@ pub(super) fn finish(
     completion: Completion,
     result: Result<Value>,
 ) -> Result<Value> {
-    let result = result?;
+    let result = result.inspect_err(|_| release_unsealed(c, completion.backup_id.as_deref()))?;
     c.cancel = completion.cancel;
     // Publish receipt and release leases together; cancelled copies remain prepared
     // even when their immutable manifest was completed just before cancellation.

@@ -53,7 +53,7 @@ async function select(value: AcceptableValue | AcceptableValue[]) {
       class="drawing-engine-switch studio-segments studio-segments--compact" data-fluid-glass data-segment-keyboard="managed"
       :disabled="disabled || switching || navigation.importing.value" @update:model-value="select">
       <AnimatedSelection />
-      <ToggleGroupItem v-for="option in options" :key="option.value" :value="option.value" :data-engine="option.value" :disabled="option.disabled" :aria-label="option.name"><span class="studio-control-label">{{ option.label }}</span></ToggleGroupItem>
+      <ToggleGroupItem v-for="option in options" :key="option.value" :value="option.value" :data-engine="option.value" data-spring-button :disabled="option.disabled" :aria-label="option.name"><span class="studio-control-label">{{ option.label }}</span></ToggleGroupItem>
     </ToggleGroupRoot>
     <p v-if="navigation.error.value" class="drawing-engine-error" role="alert">{{ navigation.error.value }}</p>
   </div>

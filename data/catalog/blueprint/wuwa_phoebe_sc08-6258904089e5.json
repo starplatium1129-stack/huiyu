@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc08",
+  "revision": 1,
+  "sortOrder": 3308,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "微侧身双手交叉轻护胸口，泪眼汪汪满面通红",
+    "adult": false,
+    "animaCaption": "Caught mid-change beside a wooden folding screen in white satin undergarments and sheer thigh-highs, she presses both hands over her chest with teary eyes and a bright crimson blush.",
+    "camera": "中景，平视",
+    "category": "索拉里斯私密",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "r15_intimate"
+    ],
+    "description": "彩色花窗投光更衣屏风旁，正在更换礼服的菲比仅着白丝缎带抹胸与蕾丝过膝袜，察觉视线后慌张用双手护住胸口，耳根通红。",
+    "id": "wuwa_phoebe_sc08",
+    "lighting": "彩窗柔和漫射光映照白丝缎面光泽",
+    "location": "圣堂侧厅彩窗更衣屏风旁",
+    "mature": false,
+    "mood": "慌乱纯真",
+    "negativeTokens": [
+      "nude",
+      "explicit"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "white_silk_undergarments_r15",
+    "promptProse": "Beside a carved wooden screen in the sacristy dressing room, Phoebe freezes in an ivory satin bandeau bra, bow-trimmed panties, and white thigh-high stockings, crossing her hands over her chest in a flustered blush.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "white bra",
+      "satin",
+      "white panties",
+      "blue bow",
+      "white thighhighs",
+      "standing",
+      "hands on chest",
+      "heavy blush",
+      "teary eyes",
+      "flustered",
+      "looking at viewer",
+      "dressing room",
+      "wooden folding screen",
+      "stained glass window",
+      "afternoon",
+      "soft lighting",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R15",
+    "sceneTags": [
+      "standing",
+      "hands on chest",
+      "covering self",
+      "heavy blush",
+      "teary eyes",
+      "flustered",
+      "folding screen",
+      "stained glass",
+      "afternoon",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "菲比 · 更衣屏风后白丝缎带内衣慌张遮掩"
+  }
+}

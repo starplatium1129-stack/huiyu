@@ -1,8 +1,10 @@
 use crate::error::{ApiError, Result};
+use futures_util::FutureExt;
 use serde_json::{Value, json};
 use std::{
-    collections::HashMap,
+    collections::VecDeque,
     future::Future,
+    panic::AssertUnwindSafe,
     sync::{
         Arc, Mutex,
         atomic::{AtomicBool, Ordering},
@@ -13,16 +15,26 @@ use tokio_util::task::TaskTracker;
 
 #[derive(Default)]
 pub(crate) struct Jobs {
-    entries: Mutex<HashMap<(String, String), Arc<Job>>>,
+    entries: Mutex<VecDeque<Arc<Job>>>,
     tasks: TaskTracker,
 }
 pub(crate) struct Job {
+    principal: String,
     input: Value,
     pub cancel: Arc<AtomicBool>,
-    progress: Mutex<Value>,
+    progress: Mutex<Progress>,
     outcome: Mutex<Option<Result<Value>>>,
 }
+#[derive(Clone, Copy, serde::Serialize)]
+struct Progress {
+    phase: &'static str,
+    completed: u64,
+    total: u64,
+}
 impl Job {
+    fn matches(&self, principal: &str, id: &str) -> bool {
+        self.principal == principal && self.input["operationId"] == id
+    }
     pub fn check(&self) -> Result<()> {
         if self.cancel.load(Ordering::Relaxed) {
             Err(ApiError::new(
@@ -34,12 +46,17 @@ impl Job {
             Ok(())
         }
     }
-    pub fn progress(&self, phase: &str, completed: u64, total: u64) {
-        *self.progress.lock().unwrap() = json!({"phase":phase,"completed":completed,"total":total});
+    pub fn progress(&self, phase: &'static str, completed: u64, total: u64) {
+        *self.progress.lock().unwrap() = Progress {
+            phase,
+            completed,
+            total,
+        };
     }
     fn snapshot(&self) -> Value {
         let outcome = self.outcome.lock().unwrap();
-        let mut value = json!({"operationId":self.input["operationId"],"kind":self.input["kind"],"state":"running","progress":self.progress.lock().unwrap().clone()});
+        let progress = *self.progress.lock().unwrap();
+        let mut value = json!({"operationId":self.input["operationId"],"kind":self.input["kind"],"state":"running","progress":progress});
         match outcome.as_ref() {
             Some(Ok(result)) => {
                 value["state"] = json!("succeeded");
@@ -79,16 +96,17 @@ impl Jobs {
             .as_str()
             .filter(|id| !id.is_empty() && id.len() <= 200)
             .ok_or_else(|| ApiError::invalid("A stable operation ID is required"))?;
-        let key = (principal.to_owned(), id.to_owned());
         let mut entries = self.entries.lock().unwrap();
-        if self.tasks.is_closed() {
+        if self.tasks.is_closed() || shutdown.is_cancelled() {
             return Err(ApiError::new(
                 503,
                 "SHUTTING_DOWN",
                 "Workspace operations are closing",
             ));
         }
-        if let Some(job) = entries.get(&key) {
+        let previous = entries.iter().position(|job| job.matches(principal, id));
+        if let Some(index) = previous {
+            let job = &entries[index];
             if job.input != input {
                 return Err(ApiError::new(
                     409,
@@ -96,17 +114,15 @@ impl Jobs {
                     "Operation ID has different input",
                 ));
             }
-            let snapshot = job.snapshot();
-            if matches!(
-                snapshot["state"].as_str(),
-                Some("running" | "cancelling" | "succeeded")
-            ) {
-                return Ok(snapshot);
+            if !matches!(job.outcome.lock().unwrap().as_ref(), Some(Err(_))) {
+                let job = job.clone();
+                drop(entries);
+                return Ok(job.snapshot());
             }
         }
         if entries
-            .values()
-            .any(|job| job.outcome.lock().unwrap().is_none())
+            .back()
+            .is_some_and(|job| job.outcome.lock().unwrap().is_none())
         {
             return Err(ApiError::new(
                 409,
@@ -114,32 +130,46 @@ impl Jobs {
                 "Another workspace operation is running",
             ));
         }
-        if entries.len() >= 32 {
-            entries.clear();
+        // Only one operation runs at a time and it is always the newest entry.
+        if let Some(index) = previous {
+            entries.remove(index);
+        } else if entries.len() >= 32 {
+            entries.pop_front();
         }
         let job = Arc::new(Job {
+            principal: principal.to_owned(),
             input,
             cancel: Arc::new(AtomicBool::new(false)),
-            progress: Mutex::new(json!({"phase":"preparing","completed":0,"total":0})),
+            progress: Mutex::new(Progress {
+                phase: "preparing",
+                completed: 0,
+                total: 0,
+            }),
             outcome: Mutex::new(None),
         });
-        entries.insert(key, job.clone());
+        entries.push_back(job.clone());
         let snapshot = job.snapshot();
         self.tasks.spawn(async move {
-            let future = work(job.clone());
+            let future = AssertUnwindSafe(async { work(job.clone()).await }).catch_unwind();
             tokio::pin!(future);
             let result = tokio::select! {
                 result = &mut future => result,
                 _ = shutdown.cancelled() => { job.cancel.store(true,Ordering::Relaxed); future.await }
             };
-            *job.outcome.lock().unwrap() = Some(result);
+            *job.outcome.lock().unwrap() = Some(result.unwrap_or_else(|_| {
+                Err(ApiError::new(503, "WORKSPACE_JOB_INTERRUPTED", "Workspace worker stopped unexpectedly"))
+            }));
         });
         Ok(snapshot)
     }
     pub fn status(&self, principal: &str, id: &str, cancel: bool) -> Result<Value> {
-        let entries = self.entries.lock().unwrap();
-        let job = entries
-            .get(&(principal.to_owned(), id.to_owned()))
+        let job = self
+            .entries
+            .lock()
+            .unwrap()
+            .iter()
+            .find(|job| job.matches(principal, id))
+            .cloned()
             .ok_or_else(|| {
                 ApiError::new(
                     404,
@@ -153,7 +183,7 @@ impl Jobs {
         Ok(job.snapshot())
     }
     pub fn cancel_all(&self) {
-        for job in self.entries.lock().unwrap().values() {
+        for job in self.entries.lock().unwrap().iter() {
             job.cancel.store(true, Ordering::Relaxed);
         }
     }
@@ -161,7 +191,7 @@ impl Jobs {
         {
             let entries = self.entries.lock().unwrap();
             self.tasks.close();
-            for job in entries.values() {
+            for job in entries.iter() {
                 job.cancel.store(true, Ordering::Relaxed);
             }
         }

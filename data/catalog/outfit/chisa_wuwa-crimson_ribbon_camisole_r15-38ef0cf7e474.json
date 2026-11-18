@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chisa_wuwa/crimson_ribbon_camisole_r15",
+  "revision": 1,
+  "sortOrder": 3908,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "chisa_wuwa",
+    "outfit": {
+      "id": "crimson_ribbon_camisole_r15",
+      "name": "黑蕾丝红丝带缎面吊带内衣与黑丝",
+      "prose": "A black satin camisole bra and matching lace panties tied with small crimson bows, paired with black thigh-high stockings.",
+      "tokens": [
+        "black bra",
+        "satin",
+        "red bow",
+        "black panties",
+        "black thighhighs",
+        "blush"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

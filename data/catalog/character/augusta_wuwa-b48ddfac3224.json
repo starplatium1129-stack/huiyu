@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "augusta_wuwa",
+  "revision": 1,
+  "sortOrder": 309,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "id": "augusta_wuwa",
+    "profile": {
+      "id": "augusta_wuwa",
+      "name": "奥古斯塔",
+      "source": "Wuthering Waves",
+      "alias": [
+        "奥古斯塔",
+        "Augusta"
+      ],
+      "type": "popular",
+      "tags": [
+        "奥古斯塔",
+        "鸣潮",
+        "七丘 · 执政官"
+      ],
+      "identity": {
+        "role": "如烈日般坦荡威严的七丘女统帅",
+        "faction": "七丘 · 执政官"
+      },
+      "bg_story": "奥古斯塔执掌七丘，既在议事殿处理城邦事务，也会到角斗场亲自练剑。她把守护七丘视为自己的责任，说话直截了当，在信任的人面前也一样坦率。",
+      "personality": [
+        "霸气果断",
+        "荣耀守护",
+        "炽烈直率",
+        "反差坦诚"
+      ],
+      "likes": [],
+      "speech": "卷轴放在案上。要谈城防，就随我走一趟城墙。",
+      "traits": [
+        "augusta_(wuthering_waves)",
+        "wuthering_waves",
+        "red hair",
+        "long hair",
+        "yellow eyes",
+        "tall"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "奥古斯塔立绘待补"
+      },
+      "visual_dna": {
+        "signature": "Augusta from Wuthering Waves. A tall woman with long red hair and golden eyes.",
+        "uniform": "七丘烈日执政官红金战袍",
+        "style": "anime"
+      },
+      "accent_color": "#C96A1B",
+      "bg_color": "#FBF0E4",
+      "palette": [
+        "#C96A1B",
+        "#FBF0E4"
+      ],
+      "theme": {
+        "primaryColor": "#C96A1B",
+        "secondaryColor": "#FBF0E4",
+        "accentGlow": "rgba(201, 106, 27, 0.36)",
+        "motif": "solarium_laurel_and_greatsword"
+      },
+      "settingMemory": {
+        "archetype": "如烈日般坦荡威严的七丘女统帅",
+        "coreTraits": [
+          "霸气果断",
+          "荣耀守护",
+          "炽烈直率",
+          "反差坦诚"
+        ],
+        "signatureLocations": [
+          "七丘日轮议事殿",
+          "大理石角斗训练场",
+          "山巅烈日柱廊露台",
+          "红金帷幔温泉行宫"
+        ],
+        "speechTone": "铿锵有力、光明磊落，卸下披风与冠冕后对信任之人展现出毫无保留的热烈。"
+      },
+      "version": "2.6",
+      "personaCoreSceneIds": [
+        "wuwa_augusta_sc01",
+        "wuwa_augusta_sc07",
+        "wuwa_augusta_sc09"
+      ],
+      "signatureSceneIds": [
+        "wuwa_augusta_sc01",
+        "wuwa_augusta_sc02",
+        "wuwa_augusta_sc08",
+        "wuwa_augusta_sc10"
+      ],
+      "factions": [
+        {
+          "id": "septimont",
+          "name": "七丘城邦 (Septimont)",
+          "description": "崇尚荣耀、角斗与星象神谕的古典山岳城邦，由执政官与月相神官共同维系。"
+        }
+      ]
+    },
+    "popular": {
+      "id": "augusta_wuwa",
+      "displayName": "奥古斯塔",
+      "originalName": "Augusta",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "奥古斯塔",
+        "Augusta"
+      ],
+      "identityProse": "Augusta from Wuthering Waves. A tall woman with long red hair and golden eyes.",
+      "identityTokens": [
+        "augusta_(wuthering_waves)",
+        "wuthering_waves",
+        "red hair",
+        "long hair",
+        "yellow eyes",
+        "tall"
+      ],
+      "characterTokens": [
+        "augusta_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
+      ],
+      "exactTokens": [
+        "augusta_(wuthering_waves)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown"
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phoebe_wuwa/stained_glass_choir_robe",
+  "revision": 1,
+  "sortOrder": 3302,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phoebe_wuwa",
+    "outfit": {
+      "id": "stained_glass_choir_robe",
+      "name": "圣咏合唱团天青金丝斗篷长裙",
+      "prose": "An ankle-length ivory pleated choir gown layered under a sky-blue velvet shoulder mantle embroidered with golden sea-star motifs.",
+      "tokens": [
+        "ivory dress",
+        "long dress",
+        "blue capelet",
+        "gold embroidery",
+        "pleated skirt",
+        "ribbon bow"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

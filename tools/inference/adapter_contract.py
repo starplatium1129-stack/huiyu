@@ -54,19 +54,19 @@ def layout(value, spec):
     index = config(root, root / spec.get("indexFile", "model_index.json"))
     if index.get("_class_name") != spec["pipeline"]:
         raise AdapterError("MODEL_INVALID", f"Expected {spec['pipeline']}; Comfy split files cannot be used")
-    if spec["pipeline"] == "Krea2Pipeline" and index.get("is_distilled") is not spec["distilled"]:
-        raise AdapterError("MODEL_INVALID", "Krea RAW/Turbo is_distilled does not match selected model")
-    if spec["pipeline"] == "QwenImage21Pipeline" and index.get("sample_sigmas") != spec.get("sampleSigmas"):
-        raise AdapterError("MODEL_INVALID", "Qwen base/Turbo sample_sigmas does not match selected model")
+    layout_name = spec.get("layout", spec["pipeline"])
+    for field, source in MANIFEST["variantFields"].get(layout_name, {}).items():
+        if not same_index_value(index.get(field), spec.get(source)):
+            raise AdapterError("MODEL_INVALID", f"{layout_name}: {field} does not match the selected model variant")
     if spec["pipeline"] == "WanPipeline" and spec.get("layout") != "WanA14B" and (index.get("expand_timesteps") is not True
             or index.get("boundary_ratio") is not None or index.get("transformer_2", [None, None]) != [None, None]):
         raise AdapterError("MODEL_INVALID", "Expected the single-transformer Wan 2.2 TI2V 5B configuration")
-    if spec.get("layout") == "WanA14B" and (index.get("boundary_ratio") != spec["boundaryRatio"] or index.get("expand_timesteps", False) is not False):
+    if layout_name == "WanA14B" and index.get("expand_timesteps", False) is not False:
         raise AdapterError("MODEL_INVALID", "Expected Wan A14B T2V high/low-noise boundary 0.875")
     modular = spec.get("blocks") is not None
     if modular and index.get("_blocks_class_name") != spec["blocks"]:
-        raise AdapterError("MODEL_INVALID", "Expected official MiniMaxH3Blocks modular index")
-    for name, types in MANIFEST["layouts"][spec.get("layout", spec["pipeline"])].items():
+        raise AdapterError("MODEL_INVALID", f"Expected modular blocks {spec['blocks']}")
+    for name, types in MANIFEST["layouts"][layout_name].items():
         entry = index.get(name)
         if not isinstance(entry, list) or len(entry) not in ((2, 3) if modular else (2,)) or entry[0] != types[0] or entry[1] not in types[1:]:
             raise AdapterError("MODEL_INVALID", f"Unsupported component identity: {name}")
@@ -96,7 +96,13 @@ def layout(value, spec):
                     config(root, folder / "preprocessor_config.json")
                 elif not isinstance(image_config, dict) or any(key in image_config for key in ("auto_map", "quantization_config", "custom_pipeline", "trust_remote_code")):
                     raise AdapterError("UNSUPPORTED_MODEL", "Invalid/custom-code nested image processor configuration")
-                safe_file(root, folder / ("chat_template.json" if modular else "chat_template.jinja"))
+                legacy = folder / "chat_template.json"
+                if legacy.exists() or legacy.is_symlink():
+                    template = config(root, legacy).get("chat_template")
+                    if not isinstance(template, str) or not template.strip() or any((folder / "chat_templates").glob("*.jinja")):
+                        raise AdapterError("MODEL_INVALID", "Invalid or conflicting legacy processor chat template")
+                else:
+                    safe_file(root, folder / "chat_template.jinja")
         else:
             cfg = config(root, folder / "config.json")
             if cfg.get("_class_name", entry[1]) != entry[1]:
@@ -115,6 +121,15 @@ def layout(value, spec):
                         raise AdapterError("MODEL_INVALID", f"Unsafe shard: {name}")
                     safe_file(root, folder / shard)
     return root
+
+
+def same_index_value(actual, expected):
+    if isinstance(expected, list):
+        return (isinstance(actual, list) and len(actual) == len(expected)
+                and all(same_index_value(a, b) for a, b in zip(actual, expected)))
+    if type(expected) in (int, float):
+        return type(actual) in (int, float) and actual == expected
+    return type(actual) is type(expected) and actual == expected
 
 
 def number(data, key, default, low, high, integer=False):

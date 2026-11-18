@@ -60,7 +60,11 @@ export function usePressRipple(enabled: () => boolean = () => true) {
     // Convert the pressed, scaled rect back to local CSS coordinates.
     const x = (event.clientX - rect.left) * button.offsetWidth / rect.width - button.clientLeft
     const y = (event.clientY - rect.top) * button.offsetHeight / rect.height - button.clientTop
-    const size = Math.hypot(button.clientWidth, button.clientHeight) * 2
+    const size = 2 * Math.hypot(Math.max(x, button.clientWidth - x), Math.max(y, button.clientHeight - y))
+    const style = getComputedStyle(button)
+    const duration = cssTimeToMilliseconds(style.getPropertyValue('--motion-surface'))
+    const easing = style.getPropertyValue('--ease-out').trim()
+    if (!(duration > 0)) return
     const layer = document.createElement('span')
     layer.className = 'studio-press-ripple-surface'
     layer.setAttribute('aria-hidden', 'true')
@@ -68,15 +72,12 @@ export function usePressRipple(enabled: () => boolean = () => true) {
     dot.className = 'studio-press-ripple-dot'
     Object.assign(dot.style, { width: `${size}px`, height: `${size}px`, left: `${x - size / 2}px`, top: `${y - size / 2}px` })
     layer.append(dot)
-    button.append(layer)
-    const style = getComputedStyle(button)
+    // Build the pulse off-DOM so a failed animation cannot leave a clipped overlay.
     const animation = dot.animate([
-      { transform: 'scale(.1)', opacity: .08 },
+      { transform: 'scale(.06)', opacity: .2 },
       { transform: 'scale(1)', opacity: 0 },
-    ], {
-      duration: cssTimeToMilliseconds(style.getPropertyValue('--motion-control')),
-      easing: style.getPropertyValue('--ease-out').trim(),
-    })
+    ], { duration, easing: easing || 'ease-out' })
+    button.append(layer)
     active.set(button, { layer, animation })
     animation.onfinish = animation.oncancel = () => remove(button)
   }

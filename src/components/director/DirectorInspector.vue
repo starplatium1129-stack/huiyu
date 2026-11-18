@@ -5,7 +5,7 @@
     <TabsList class="workbench-tabs inspector-tabs" aria-label="参数分类">
       <AnimatedSelection variant="underline" />
       <TabsTrigger v-for="tab in tabs" :key="tab.id" :value="tab.id" as-child>
-        <button :id="`inspector-tab-${tab.id}`" type="button" :aria-controls="`inspector-${tab.id}`">
+        <button :id="`inspector-tab-${tab.id}`" type="button" data-spring-button :aria-controls="`inspector-${tab.id}`">
           <span class="studio-control-label">{{ tab.label }}</span><span v-if="tab.id === 'delivery' && queueCount" class="inspector-count">{{ queueCount }}</span>
         </button>
       </TabsTrigger>

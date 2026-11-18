@@ -71,8 +71,8 @@
             选择场景或输入画面描述。
           </div>
           <div class="stage-quick-actions">
-            <button class="btn btn-primary" type="button" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /> 挑选场景</button>
-            <button class="btn btn-quiet" type="button" @click="$emit('editDescription')"><ArchiveIcon name="spark" />写画面描述</button>
+            <button class="btn btn-primary studio-press-ripple" type="button" @click.capture="pressRipple" @click="$emit('exploreScenes')"><ArchiveIcon name="scene" /><span class="studio-control-label">挑选场景</span></button>
+            <button class="btn btn-quiet" type="button" @click="$emit('editDescription')"><ArchiveIcon name="spark" /><span class="studio-control-label">写画面描述</span></button>
           </div>
         </div>
         </template>
@@ -148,6 +148,7 @@ import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
 import { useCanvasGenerationMotion } from '@/composables/useCanvasGenerationMotion'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
+import { usePressRipple } from '@/composables/usePressRipple'
 import type { GenerationPresentation } from '@/composables/prompt/useGenerationPresentation'
 import { sampleGenerationPalette } from '@/utils/generationPalette'
 import { useInterrogate } from '@/composables/useInterrogate'
@@ -178,6 +179,7 @@ const props = defineProps<{
 }>()
 
 const canvasViewport = ref<HTMLElement | null>(null)
+const pressRipple = usePressRipple()
 const generationOrbit = ref<InstanceType<typeof GenerationParticles> | null>(null)
 const resultPalette = ref<string[]>([])
 const generationPalette = ref<string[]>([])

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phrolova_wuwa/crimson_velvet_stage_nude_r18",
+  "revision": 1,
+  "sortOrder": 3510,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phrolova_wuwa",
+    "outfit": {
+      "id": "crimson_velvet_stage_nude_r18",
+      "name": "猩红天鹅绒幕布与彼岸花瓣全裸",
+      "prose": "Completely nude on crimson velvet cushions surrounded by spider lily petals, wearing only her red flower eyepatch.",
+      "tokens": [
+        "nude",
+        "completely nude",
+        "flower petals",
+        "bare breasts",
+        "nipples",
+        "spread legs"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

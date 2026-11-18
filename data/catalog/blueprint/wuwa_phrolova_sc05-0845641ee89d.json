@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phrolova_sc05",
+  "revision": 1,
+  "sortOrder": 3505,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于红叶石阶上轻扶银柄手杖，微侧头凝望",
+    "adult": false,
+    "animaCaption": "Standing on stone steps carpeted with crimson autumn leaves, she rests both gloved hands on a silver-topped cane as golden afternoon light filters through the trees.",
+    "camera": "全身镜头，石阶纵深构图",
+    "category": "索拉里斯日常",
+    "characterId": "phrolova_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "铺满红枫与银杏落叶的古老石阶长廊上，弗洛洛身着暗金滚边短斗篷与高腰马裤装，双手轻握银柄手杖，微风吹动银白长发。",
+    "id": "wuwa_phrolova_sc05",
+    "lighting": "秋日暖金斜阳穿透红叶林荫",
+    "location": "秋日古堡红叶石阶长廊",
+    "mature": false,
+    "mood": "沉静从容",
+    "negativeTokens": [
+      "snow"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "gothic_capelet_travelling_suit",
+    "promptProse": "On moss-edged stone steps strewn with crimson autumn foliage, Phrolova wears a gold-braided charcoal shoulder capelet and tailored riding trousers, resting her gloved hands upon a silver cane.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "red eyes",
+      "eyepatch",
+      "red flower",
+      "black capelet",
+      "gold trim",
+      "red vest",
+      "black pants",
+      "ankle boots",
+      "gloves",
+      "standing",
+      "holding cane",
+      "stone steps",
+      "autumn leaves",
+      "falling leaves",
+      "slight smile",
+      "looking at viewer",
+      "afternoon",
+      "golden hour",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding cane",
+      "stone steps",
+      "autumn leaves",
+      "red leaves",
+      "wind",
+      "afternoon",
+      "golden hour",
+      "full body"
+    ],
+    "timeOfDay": "下午",
+    "title": "弗洛洛 · 秋日落叶石阶长廊漫步"
+  }
+}

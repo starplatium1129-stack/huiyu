@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/open_jellyfish_veil_r18",
+  "revision": 1,
+  "sortOrder": 3409,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "open_jellyfish_veil_r18",
+      "name": "敞开海月紫纱与珍珠身体链全裸",
+      "prose": "An open sheer violet organza veil draped off her shoulders over her completely bare breasts and torso, adorned only with pearl body chains.",
+      "tokens": [
+        "open robe",
+        "sheer veil",
+        "body chain",
+        "pearl jewelry",
+        "bare breasts",
+        "nipples",
+        "nude"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

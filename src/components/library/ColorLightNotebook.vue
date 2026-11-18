@@ -6,13 +6,13 @@
     </header>
     <div class="comparison-choices studio-segments tw:flex tw:flex-wrap tw:gap-s-2" data-fluid-glass role="group" aria-label="选择光色对照">
       <AnimatedSelection />
-      <button v-for="(pair, index) in PAIRS" :key="pair.name" type="button" :aria-pressed="active === index" @click="active = index">
+      <button v-for="(pair, index) in PAIRS" :key="pair.name" type="button" :aria-pressed="active === index" @click="selectPair(index, $event)">
         <span>0{{ index + 1 }}</span>{{ pair.name }}
       </button>
     </div>
     <p class="comparison-question tw:text-body tw:leading-body tw:text-secondary" v-content-motion:fade="active">{{ current.question }}</p>
     <p v-if="referenceError" class="library-reference-feedback" role="status"><span>{{ referenceError }}</span><button class="btn btn-ghost btn-sm" type="button" :disabled="loading" @click="retryReferences"><ArchiveIcon name="refresh" />重新读取参考</button></p>
-    <div class="comparison-spread tw:grid tw:gap-s-5" v-content-motion:up="active">
+    <div class="comparison-spread tw:grid tw:gap-s-5" v-content-motion:[direction]="active">
       <figure v-for="sample in current.samples" :key="sample.id" class="light-study tw:min-w-0 tw:m-0 tw:overflow-hidden tw:rounded-lg">
         <RuntimeImage :src="referenceUrl(sample.id)" v-slot="{ image, loaded, failed }">
           <div class="study-image" :class="{ 'is-failed': failed }">
@@ -69,6 +69,12 @@ const PAIRS = [
   ] },
 ]
 const active = ref(0)
+const direction = ref<'left' | 'right' | 'fade'>('fade')
+function selectPair(index: number, event: MouseEvent) {
+  if (active.value === index) return
+  direction.value = event.detail === 0 ? 'fade' : index > active.value ? 'right' : 'left'
+  active.value = index
+}
 const current = computed(() => PAIRS[active.value]!)
 const { loading, error: referenceError, reload, referenceUrl, retryReference } = useMoodReferences()
 function retryCover(id: string, event: MouseEvent) {

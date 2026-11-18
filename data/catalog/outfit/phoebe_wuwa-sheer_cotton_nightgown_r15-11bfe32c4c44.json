@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phoebe_wuwa/sheer_cotton_nightgown_r15",
+  "revision": 1,
+  "sortOrder": 3307,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phoebe_wuwa",
+    "outfit": {
+      "id": "sheer_cotton_nightgown_r15",
+      "name": "修道院蕾丝领半透纯白棉纱睡裙",
+      "prose": "A vintage white cotton-voile nightgown with eyelet lace ruffles, unbuttoned at the collar and softly translucent against warm candlelight.",
+      "tokens": [
+        "white nightgown",
+        "sheer",
+        "lace trim",
+        "ruffles",
+        "unbuttoned",
+        "bare shoulders"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

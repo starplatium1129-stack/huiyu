@@ -67,6 +67,8 @@ struct ModelBundle {
     conversion_profile: Option<String>,
     #[serde(default)]
     checkpoint_filename: Option<String>,
+    #[serde(default)]
+    requires_local_checkpoint: bool,
 }
 #[derive(Clone, Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
@@ -99,21 +101,35 @@ fn bundles() -> Result<(Arc<RuntimeBundle>, Vec<Arc<ModelBundle>>)> {
     static MODELS: LazyLock<Result<Vec<Arc<ModelBundle>>>> = LazyLock::new(|| {
         let models: Value =
             serde_json::from_str(include_str!("../../../tools/inference/managed-models.json"))?;
-        let mut models = Vec::<ModelBundle>::deserialize(&models["models"])?;
-        let miaomiao =
-            anima_models::bundle(&models[0], setup::RECOMMENDED_MODEL, "anima-cosmos2b-v041")?;
-        let realskin = anima_models::bundle(
-            &models[0],
-            "anima-miaomiao-realskin-2.9b-v1.0",
-            "anima-cosmos29b-v041",
-        )?;
-        models.insert(0, miaomiao);
-        models.insert(1, realskin);
+        let complete = Vec::<ModelBundle>::deserialize(&models["models"])?;
+        let base = complete
+            .iter()
+            .find(|model| model.id == "anima-base-v1.0")
+            .ok_or_else(|| ApiError::invalid("缺少 Anima 基础组件清单"))?;
+        let mut models = Vec::new();
+        let sources = setup_verify::model_manifest()?;
+        for source in sources["files"]
+            .as_array()
+            .ok_or_else(|| ApiError::invalid("缺少模型来源清单"))?
+        {
+            if let Some(profile) = source.get("nativeConversionProfile") {
+                let profile = profile
+                    .as_str()
+                    .ok_or_else(|| ApiError::invalid("原生转换规格无效"))?;
+                models.push(anima_models::bundle(base, source, profile)?);
+            }
+        }
+        models.sort_by_key(|model| model.id != setup::RECOMMENDED_MODEL);
+        models.extend(complete);
         let adapters: Value = serde_json::from_str(include_str!(
             "../../../tools/inference/managed-adapter-models.json"
         ))?;
         models.extend(Vec::<ModelBundle>::deserialize(&adapters["models"])?);
+        let mut ids = std::collections::HashSet::new();
         for model in &mut models {
+            if !ids.insert(model.id.clone()) {
+                return Err(ApiError::invalid(format!("原生模型 ID 重复：{}", model.id)));
+            }
             moss_models::prepare_bundle(model)?;
             validate_artifacts(&model.files)?;
         }
@@ -192,6 +208,9 @@ fn plan_id(workspace: &Path) -> String {
         "../../../tools/inference/managed-auxiliary-models.json"
     ));
     hash.update(include_bytes!("setup-models.json"));
+    hash.update(include_bytes!(
+        "../../../tools/inference/adapter-models.json"
+    ));
     hex::encode(hash.finalize())
 }
 fn check_request(service: &ControlService, request: &Request) -> Result<()> {

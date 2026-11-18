@@ -123,8 +123,9 @@ pub(super) async fn model_dir(settings: &Settings, input: &Value) -> Result<Path
 
 pub(super) fn status(settings: &Settings) -> Value {
     let issue = line_issue(settings);
+    let adapters = adapters::Status::new(settings);
     json!({"rewrite":MANIFEST["rewrite"]["models"].as_array().unwrap().iter()
-        .map(|id| adapters::status(settings, id.as_str().unwrap())).collect::<Vec<_>>(),
+        .map(|id| adapters.model(id.as_str().unwrap())).collect::<Vec<_>>(),
         "lineart":{"available":issue.is_none(),"unavailableReason":issue,"readiness":"files-only",
             "device":"cpu","validation":"主力机已验证"},"memoryPolicy":settings.adapter_memory_policy})
 }

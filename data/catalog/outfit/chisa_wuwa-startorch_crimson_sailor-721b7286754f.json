@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chisa_wuwa/startorch_crimson_sailor",
+  "revision": 1,
+  "sortOrder": 3901,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "chisa_wuwa",
+    "outfit": {
+      "id": "startorch_crimson_sailor",
+      "name": "星炬学院黑红缎带水手校服",
+      "prose": "A tailored charcoal-black sailor uniform with crimson-piped collar, crisp red silk bow, pleated skirt, and black over-the-knee socks.",
+      "tokens": [
+        "black sailor collar",
+        "sailor uniform",
+        "red neckerchief",
+        "pleated skirt",
+        "black skirt",
+        "black thighhighs"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

@@ -14,7 +14,7 @@ function select(value: AcceptableValue | AcceptableValue[]) {
   <ToggleGroupRoot type="single" :model-value="modelValue" orientation="horizontal"
     class="studio-segments studio-segments--compact" data-fluid-glass data-segment-keyboard="managed" aria-label="切换绘图工作模式" @update:model-value="select">
     <AnimatedSelection />
-    <ToggleGroupItem value="basic"><span class="studio-control-label">场景模式</span></ToggleGroupItem>
-    <ToggleGroupItem value="pro"><span class="studio-control-label">专家模式</span></ToggleGroupItem>
+    <ToggleGroupItem value="basic" data-spring-button><span class="studio-control-label">场景模式</span></ToggleGroupItem>
+    <ToggleGroupItem value="pro" data-spring-button><span class="studio-control-label">专家模式</span></ToggleGroupItem>
   </ToggleGroupRoot>
 </template>

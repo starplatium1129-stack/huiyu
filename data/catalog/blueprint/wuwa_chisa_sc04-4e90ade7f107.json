@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_chisa_sc04",
+  "revision": 1,
+  "sortOrder": 3904,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于初雪月台双手轻扶绯红围巾，微红鼻尖微笑",
+    "adult": false,
+    "animaCaption": "Standing on a snow-dusted train platform as gentle snowflakes drift down, she holds the ends of her crimson cashmere scarf with a soft smile and rosy cheeks.",
+    "camera": "中近景，平视，雪花飘落前景",
+    "category": "索拉里斯日常",
+    "characterId": "chisa_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "飘着细碎初雪的学院电车站木质月台上，千咲身着炭黑牛角扣大衣，双手轻拢颈间绯红羊绒围巾，呼出淡淡白雾微笑等待。",
+    "id": "wuwa_chisa_sc04",
+    "lighting": "冬日清晨柔白雪光与站台复古暖灯",
+    "location": "学院初雪木质电车站月台",
+    "mature": false,
+    "mood": "冬日暖意",
+    "negativeTokens": [
+      "summer beach"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "rooftop_duffle_coat_winter",
+    "promptProse": "On a quiet wooden train platform dusted with the season's first snow, Chisa wears a charcoal duffle coat and adjusts her soft crimson scarf with a warm morning smile.",
+    "promptTokens": [
+      "black hair",
+      "long hair",
+      "blunt bangs",
+      "red eyes",
+      "red hair ribbon",
+      "black coat",
+      "duffle coat",
+      "red scarf",
+      "pleated skirt",
+      "black pantyhose",
+      "standing",
+      "hands on red scarf",
+      "gentle smile",
+      "slight blush",
+      "looking at viewer",
+      "train station platform",
+      "falling snow",
+      "winter",
+      "morning",
+      "soft lighting",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "adjusting scarf",
+      "red scarf",
+      "falling snow",
+      "train station",
+      "platform",
+      "cold breath",
+      "slight blush",
+      "gentle smile",
+      "morning",
+      "medium close-up"
+    ],
+    "timeOfDay": "清晨",
+    "title": "千咲 · 初雪车站月台整理绯红羊绒围巾"
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc01",
+  "revision": 1,
+  "sortOrder": 3301,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "双手怀抱金边圣典微侧头微笑，彩窗光辉洒落",
+    "adult": false,
+    "animaCaption": "Standing beneath towering stained-glass windows inside a sunlit cathedral, she holds a gold-trimmed prayer book against her chest and smiles warmly in her wide-brimmed liturgical hat.",
+    "camera": "中景，微仰视，高耸哥特立柱与花窗背景",
+    "category": "索拉里斯日常",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "清晨的拉古那圣咏大教堂内，五彩斑斓的玫瑰花窗洒下金色光束，菲比身着白金圣咏礼装，双手合十捧着金色祈祷书温柔微笑。",
+    "id": "wuwa_phoebe_sc01",
+    "lighting": "彩绘花窗投射的七彩晨光光束",
+    "location": "拉古那圣咏大教堂玫瑰花窗下",
+    "mature": false,
+    "mood": "神圣温柔",
+    "negativeTokens": [
+      "darkness"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "order_gilded_vestments",
+    "promptProse": "Bathed in jewel-toned morning light streaming through cathedral stained glass, Phoebe cradles a gilt-edged scripture book in her white-and-gold ceremonial vestments, offering a serene smile.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "wide-brimmed hat",
+      "white dress",
+      "capelet",
+      "gold trim",
+      "navy ribbon",
+      "standing",
+      "holding book",
+      "gentle smile",
+      "looking at viewer",
+      "cathedral",
+      "stained glass",
+      "sunbeams",
+      "morning",
+      "soft lighting",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding book",
+      "gentle smile",
+      "cathedral",
+      "stained glass",
+      "sunbeams",
+      "morning",
+      "warm lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "清晨",
+    "title": "菲比 · 圣咏大教堂彩绘玻璃晨祷"
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_chisa_sc05",
+  "revision": 1,
+  "sortOrder": 3905,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "跪坐榻榻米双手捧起青瓷抹茶碗向前递出，礼貌微笑",
+    "adult": false,
+    "animaCaption": "Kneeling neatly on tatami mats in a traditional tea room overlooking a bamboo garden, she offers a ceramic bowl of whisked matcha with both hands and a polite, gentle smile.",
+    "camera": "中景，平视，茶筅与竹林庭院背景",
+    "category": "索拉里斯日常",
+    "characterId": "chisa_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "拉门敞开望见竹林庭院的学院茶道社和室内，千咲正坐在榻榻米茶席上，身着酒红短披肩蕾丝领连衣裙，双手捧起青瓷茶碗礼貌递出。",
+    "id": "wuwa_chisa_sc05",
+    "lighting": "庭院竹叶过滤的柔和自然漫射光",
+    "location": "星炬学院竹林茶道社和室",
+    "mature": false,
+    "mood": "端庄温婉",
+    "negativeTokens": [
+      "shoes indoors"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "tea_club_bolero_dress",
+    "promptProse": "Kneeling in formal seiza on the tatami floor of the academy tea club with shoji screens open to a bamboo garden, Chisa presents a ceramic bowl of matcha in a burgundy bolero and lace-collared white dress.",
+    "promptTokens": [
+      "black hair",
+      "long hair",
+      "blunt bangs",
+      "red eyes",
+      "red hair ribbon",
+      "white dress",
+      "lace collar",
+      "red bolero",
+      "pleated dress",
+      "kneeling",
+      "seiza",
+      "holding ceramic tea bowl",
+      "gentle smile",
+      "looking at viewer",
+      "tatami room",
+      "sliding shoji doors",
+      "bamboo garden",
+      "afternoon",
+      "soft lighting",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "seiza",
+      "kneeling",
+      "holding teacup",
+      "matcha",
+      "tatami",
+      "tea room",
+      "bamboo garden",
+      "gentle smile",
+      "afternoon",
+      "soft lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "千咲 · 和风茶道社塌塌米茶室敬奉抹茶"
+  }
+}

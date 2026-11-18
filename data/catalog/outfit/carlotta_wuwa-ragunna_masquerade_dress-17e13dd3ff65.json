@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "carlotta_wuwa/ragunna_masquerade_dress",
+  "revision": 1,
+  "sortOrder": 3202,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "carlotta_wuwa",
+    "outfit": {
+      "id": "ragunna_masquerade_dress",
+      "name": "拉古那假面舞会银蔷薇拖尾裙",
+      "prose": "A plum-velvet off-shoulder ballroom gown encrusted with silver rose beading, long white opera gloves, and a feathered Venetian mask.",
+      "tokens": [
+        "ball gown",
+        "off-shoulder dress",
+        "purple dress",
+        "white opera gloves",
+        "masquerade mask",
+        "silver jewelry"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/sea_breeze_lace_parasol_set",
+  "revision": 1,
+  "sortOrder": 3406,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "sea_breeze_lace_parasol_set",
+      "name": "海岬露台紫丁香蕾丝披肩礼装",
+      "prose": "A lilac-tinted Chantilly lace day dress with tiered bell sleeves, pearl waist chain, and a matching frilled lace parasol.",
+      "tokens": [
+        "lilac dress",
+        "lace dress",
+        "bell sleeves",
+        "waist chain",
+        "parasol",
+        "pearl necklace"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

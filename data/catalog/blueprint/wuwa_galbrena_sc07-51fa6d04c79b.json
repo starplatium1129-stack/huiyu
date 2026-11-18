@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_galbrena_sc07",
+  "revision": 1,
+  "sortOrder": 3807,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "斜倚皮质沙发单手解开衬衫领口，耳根泛红凝望",
+    "adult": false,
+    "animaCaption": "Slouching back on a worn leather sofa with her white shirt unbuttoned over a black lace bralette and leather chest straps, she fingers her collar with flushed cheeks and parted lips.",
+    "camera": "中景，平视",
+    "category": "索拉里斯私密",
+    "characterId": "galbrena_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "r15_intimate"
+    ],
+    "description": "深夜台灯暖光下的安全屋做旧皮质沙发上，嘉贝莉娜解开白衬衫纽扣，皮质肩带枪套绑带勒出黑蕾丝内衣轮廓，冷艳双颊罕见泛红。",
+    "id": "wuwa_galbrena_sc07",
+    "lighting": "落地台灯暖琥珀光与窗外雨夜冷蓝",
+    "location": "猎魔人安全屋做旧皮质沙发",
+    "mature": false,
+    "mood": "反差娇羞",
+    "negativeTokens": [
+      "nude",
+      "explicit"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "unbuttoned_shirt_holster_r15",
+    "promptProse": "Relaxing on a distressed leather couch in her dimly lit safehouse, Galbrena leaves her white button-down open over a black lace bralette and leather shoulder-holster harness, blushing faintly.",
+    "promptTokens": [
+      "grey hair",
+      "blue streaks",
+      "medium hair",
+      "blue eyes",
+      "unbuttoned shirt",
+      "white shirt",
+      "black bralette",
+      "harness",
+      "cleavage",
+      "black shorts",
+      "sitting",
+      "leather sofa",
+      "hand on collar",
+      "blush",
+      "parted lips",
+      "looking at viewer",
+      "loft apartment",
+      "warm lamp light",
+      "rainy window",
+      "night",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R15",
+    "sceneTags": [
+      "sitting",
+      "leather sofa",
+      "unbuttoned shirt",
+      "harness",
+      "cleavage",
+      "blush",
+      "parted lips",
+      "lamp light",
+      "night",
+      "medium shot"
+    ],
+    "timeOfDay": "深夜",
+    "title": "嘉贝莉娜 · 安全屋皮质沙发半敞白衬衫与肩带绑缚"
+  }
+}

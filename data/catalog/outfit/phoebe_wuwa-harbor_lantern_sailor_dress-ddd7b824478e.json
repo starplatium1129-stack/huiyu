@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phoebe_wuwa/harbor_lantern_sailor_dress",
+  "revision": 1,
+  "sortOrder": 3303,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phoebe_wuwa",
+    "outfit": {
+      "id": "harbor_lantern_sailor_dress",
+      "name": "海灯节白蓝水手领百褶巡游裙",
+      "prose": "A nautical white and cerulean pleated dress with a gold-braided sailor collar, bell-shaped cuffs, and white Mary Jane shoes.",
+      "tokens": [
+        "sailor collar",
+        "white and blue dress",
+        "pleated skirt",
+        "gold trim",
+        "white stockings",
+        "mary janes"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

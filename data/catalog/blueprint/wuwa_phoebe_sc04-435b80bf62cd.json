@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc04",
+  "revision": 1,
+  "sortOrder": 3304,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于木桌前手握鹅毛笔抄写手稿，抬头微笑",
+    "adult": false,
+    "animaCaption": "Seated at a cluttered library desk piled with old tomes, she pauses with a quill pen over an open manuscript and looks up through round glasses with a warm smile.",
+    "camera": "中景，平视，书堆与墨水瓶前景",
+    "category": "索拉里斯日常",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "阳光洒落的修会古籍资料室内，书架高耸，菲比戴着圆框眼镜穿着米白针织披肩长裙，伏案用鹅毛笔认真抄录羊皮卷手稿。",
+    "id": "wuwa_phoebe_sc04",
+    "lighting": "高窗斜射的柔和日光与台灯暖光",
+    "location": "隐海修会古籍修复室",
+    "mature": false,
+    "mood": "专注恬静",
+    "negativeTokens": [
+      "laptop",
+      "computer"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "archivist_cardigan_ensemble",
+    "promptProse": "Surrounded by towering bookshelves in the Order's scriptorium, Phoebe wears round reading glasses and an oatmeal knit cardigan, pausing with a feather quill over an illuminated manuscript.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "glasses",
+      "beige cardigan",
+      "white blouse",
+      "navy skirt",
+      "long skirt",
+      "sitting",
+      "wooden desk",
+      "holding quill pen",
+      "open manuscript",
+      "stacked books",
+      "gentle smile",
+      "looking at viewer",
+      "library",
+      "bookshelves",
+      "morning",
+      "window light",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "desk",
+      "writing",
+      "quill pen",
+      "open book",
+      "stacked books",
+      "library",
+      "morning",
+      "window light",
+      "medium shot"
+    ],
+    "timeOfDay": "上午",
+    "title": "菲比 · 修会古籍修复室鹅毛笔抄录手稿"
+  }
+}

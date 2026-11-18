@@ -52,12 +52,12 @@ pub(super) async fn stage_checkpoint(
             .join(".staging")
             .join(format!("{}-{}", model.id, model.revision))
     };
-    let artifact = model
-        .files
-        .iter()
-        .find(|file| {
-            file.url
-                .starts_with("https://civitai.com/api/download/models/")
+    let artifact = conversion_checkpoint(model)
+        .or_else(|| {
+            model.files.iter().find(|file| {
+                file.url
+                    .starts_with("https://civitai.com/api/download/models/")
+            })
         })
         .ok_or_else(|| ApiError::invalid("作者权重清单缺失"))?
         .clone();
@@ -88,11 +88,7 @@ pub(super) async fn stage_checkpoint(
         // Existing inputs are verified once by the normal model downloader.
         return Ok(None);
     }
-    // MOSS and Anima 2B can fetch the pinned author checkpoint directly.
-    if source.is_none()
-        && (model.conversion_profile.as_deref() == Some("anima-cosmos2b-v041")
-            || moss_models::is_moss(model))
-    {
+    if source.is_none() && !model.requires_local_checkpoint {
         return Ok(None);
     }
     let source = source

@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_iuno_sc05",
+  "revision": 1,
+  "sortOrder": 3705,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "蜷坐露台软垫双手捧热茶杯，微红脸颊别过视线",
+    "adult": false,
+    "animaCaption": "Curled up on a cushioned balcony chair wrapped in a silver-fringed knit shawl, she holds a steaming teacup in both hands and glances sideways with a faint blush.",
+    "camera": "中景，平视",
+    "category": "索拉里斯日常",
+    "characterId": "iuno_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "微凉的夜风拂过观星塔露台藤椅，尤诺披着银流苏冰蓝针织披肩连衣裙，赤足蜷在软垫上双手捧着温热花茶杯，耳根微红撇过视线。",
+    "id": "wuwa_iuno_sc05",
+    "lighting": "露台风灯暖黄微光与夜空冷蓝对比",
+    "location": "观星塔私人露台藤椅",
+    "mature": false,
+    "mood": "嘴硬心软",
+    "negativeTokens": [
+      "noon"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "terrace_knit_shawl_dress",
+    "promptProse": "Tucked into a cushioned wicker chair on the observatory terrace, Iuno wraps herself in an ice-blue off-shoulder knit dress and fringed shawl, cradling a steaming mug of herbal tea.",
+    "promptTokens": [
+      "blue hair",
+      "twin tails",
+      "long hair",
+      "blue eyes",
+      "crescent hair ornament",
+      "blue dress",
+      "off-shoulder sweater",
+      "knit dress",
+      "shawl",
+      "thighhighs",
+      "bare feet",
+      "sitting on cushioned chair",
+      "holding warm teacup",
+      "steam",
+      "slight blush",
+      "looking to the side",
+      "balcony",
+      "lantern light",
+      "starry night",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "holding mug",
+      "steam",
+      "balcony",
+      "lantern",
+      "starry sky",
+      "slight blush",
+      "looking away",
+      "night",
+      "warm lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "尤诺 · 夜风露台针织披肩捧热花茶"
+  }
+}

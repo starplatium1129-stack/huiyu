@@ -6,8 +6,16 @@ use super::super::{
 use super::*;
 use std::process::Stdio;
 
-pub(super) fn bundle(base: &ModelBundle, model_id: &str, profile: &str) -> Result<ModelBundle> {
-    let source = setup_verify::model_source(model_id)?;
+fn field<'a>(record: &'a Value, name: &str) -> Result<&'a str> {
+    record[name]
+        .as_str()
+        .filter(|value| !value.is_empty())
+        .ok_or_else(|| ApiError::invalid(format!("Anima 模型来源缺少 {name}")))
+}
+
+pub(super) fn bundle(base: &ModelBundle, source: &Value, profile: &str) -> Result<ModelBundle> {
+    let model_id = field(source, "id")?;
+    let manifest = setup_verify::model_manifest()?;
     let mut files = Vec::<Artifact>::new();
     for (id, path) in [
         (model_id, "checkpoint.safetensors"),
@@ -15,17 +23,15 @@ pub(super) fn bundle(base: &ModelBundle, model_id: &str, profile: &str) -> Resul
         ("qwen-vae", "vae.safetensors"),
     ] {
         let value = setup_verify::model_source(id)?;
-        let url = value["sourceUrl"]
-            .as_str()
-            .map(str::to_owned)
-            .unwrap_or_else(|| {
-                format!(
-                    "https://huggingface.co/{}/resolve/{}/{}",
-                    value["repo"].as_str().unwrap(),
-                    value["revision"].as_str().unwrap(),
-                    value["remotePath"].as_str().unwrap()
-                )
-            });
+        let url = match value["sourceUrl"].as_str() {
+            Some(url) => url.to_owned(),
+            None => format!(
+                "https://huggingface.co/{}/resolve/{}/{}",
+                field(value, "repo")?,
+                field(value, "revision")?,
+                field(value, "remotePath")?
+            ),
+        };
         files.push(serde_json::from_value(json!({"path":path,"url":url,
             "bytes":value["bytes"],"sha256":value["sha256"]}))?);
     }
@@ -45,7 +51,7 @@ pub(super) fn bundle(base: &ModelBundle, model_id: &str, profile: &str) -> Resul
         id: model_id.into(),
         label: format!(
             "{}{}",
-            source["label"].as_str().unwrap(),
+            field(source, "label")?,
             if model_id == RECOMMENDED_MODEL {
                 " · 推荐"
             } else {
@@ -54,20 +60,29 @@ pub(super) fn bundle(base: &ModelBundle, model_id: &str, profile: &str) -> Resul
         ),
         revision: format!(
             "{}-{}-convert-v1",
-            source["revision"].as_str().unwrap(),
+            field(source, "revision")?,
             base.revision
         ),
         license: base.license.clone(),
-        license_url: source["licenseUrl"].as_str().unwrap().into(),
-        source_url: source["modelCardUrl"].as_str().unwrap().into(),
+        license_url: source["licenseUrl"]
+            .as_str()
+            .or(manifest["licenseUrl"].as_str())
+            .ok_or_else(|| ApiError::invalid("缺少模型许可地址"))?
+            .into(),
+        source_url: source["modelCardUrl"]
+            .as_str()
+            .or(manifest["modelCardUrl"].as_str())
+            .ok_or_else(|| ApiError::invalid("缺少模型来源地址"))?
+            .into(),
         required_bytes: download_bytes.saturating_mul(2),
         files,
         requires_access: false,
+        requires_local_checkpoint: source["requiresLocalCheckpoint"] == true,
         conversion_profile: Some(profile.into()),
         checkpoint_filename: Some(
-            Path::new(source["path"].as_str().unwrap())
+            Path::new(field(source, "path")?)
                 .file_name()
-                .unwrap()
+                .ok_or_else(|| ApiError::invalid("作者权重文件名无效"))?
                 .to_string_lossy()
                 .into_owned(),
         ),

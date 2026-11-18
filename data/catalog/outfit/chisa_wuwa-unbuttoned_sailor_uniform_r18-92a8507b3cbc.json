@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "chisa_wuwa/unbuttoned_sailor_uniform_r18",
+  "revision": 1,
+  "sortOrder": 3909,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "chisa_wuwa",
+    "outfit": {
+      "id": "unbuttoned_sailor_uniform_r18",
+      "name": "褪下水手服上衣与红丝带黑丝全裸",
+      "prose": "Her black sailor uniform pulled open and off her shoulders to expose her bare breasts, wearing her crimson neck ribbon and black thigh-highs.",
+      "tokens": [
+        "open clothes",
+        "sailor collar",
+        "red neckerchief",
+        "black thighhighs",
+        "bare breasts",
+        "nipples",
+        "nude"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

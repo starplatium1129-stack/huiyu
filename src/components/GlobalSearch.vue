@@ -4,9 +4,14 @@
     <div v-show="open" class="global-search" :inert="!open" @pointerdown.self="close()">
       <ListboxRoot ref="listbox" as-child highlight-on-hover :model-value="''" @highlight="activeKey = typeof $event?.value === 'string' ? $event.value : undefined" @update:model-value="run">
       <div ref="panelEl" class="gs-panel" :data-trigger="triggerSource" role="dialog" aria-modal="true" aria-label="全局搜索" @keydown.capture="recordSelectionKey">
-        <div class="gs-heading tw:flex tw:items-center tw:justify-between tw:gap-s-3 tw:text-primary tw:text-body-sm"><strong>全局搜索</strong></div>
-        <div class="gs-input-row tw:flex tw:items-center tw:gap-s-3">
-          <StudioSearch v-model="query" class="gs-search" label="搜索角色、服装、场景、蓝图、作品或页面" placeholder="搜索角色、场景、作品…" :clear-on-escape="false">
+        <header class="gs-heading">
+          <h2>全局搜索</h2>
+          <StudioTooltip content="关闭搜索（Esc）">
+            <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭搜索" @click="close()"><ArchiveIcon name="close" /></button>
+          </StudioTooltip>
+        </header>
+        <div class="gs-input-row">
+          <StudioSearch v-model="query" class="gs-search" label="搜索角色、服装、场景、蓝图、作品或页面" placeholder="搜索角色、场景、作品或页面…" :clear-on-escape="false">
             <template #input="{ inputProps }">
               <ListboxFilter v-model="query" as-child>
                 <input ref="inputEl" v-bind="inputProps" role="combobox" aria-haspopup="listbox" :aria-expanded="open"
@@ -14,36 +19,34 @@
               </ListboxFilter>
             </template>
           </StudioSearch>
-          <StudioTooltip content="关闭搜索（Esc）">
-            <button type="button" class="btn btn-ghost btn-icon gs-esc" aria-label="关闭搜索" @click="close()"><ArchiveIcon name="close" /></button>
-          </StudioTooltip>
         </div>
         <div v-if="scenesLoading || scenesError" class="gs-catalog-state">
           <p :role="scenesError ? 'alert' : 'status'">{{ scenesError || '正在读取内容目录…' }}</p>
           <button v-if="scenesError" type="button" class="btn btn-ghost btn-sm" @click="retryScenes">重新读取目录</button>
         </div>
-        <ListboxContent as-child>
-        <div :id="listboxId" ref="resultsEl" class="gs-results tw:overflow-y-auto tw:p-s-3" aria-label="搜索结果">
-          <ListboxGroup v-for="group in resultGroups" :key="group.id" class="gs-group tw:mb-s-2">
-            <ListboxGroupLabel as="h4" class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">{{ group.label }}</ListboxGroupLabel>
-            <ListboxItem v-for="item in group.items" :key="item.key" :value="item.key" as="button" type="button"
-              class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" @pointermove="selectionTouched = true">
-              <ArchiveIcon :name="item.icon" /><span>{{ item.label }}</span><small v-if="item.meta">{{ item.meta }}</small>
-            </ListboxItem>
-          </ListboxGroup>
+        <div ref="resultsEl" class="gs-results tw:overflow-y-auto tw:p-s-3">
+          <ListboxContent :id="listboxId" aria-label="搜索结果">
+            <ListboxGroup v-for="group in resultGroups" :key="group.id" class="gs-group tw:mb-s-2">
+              <ListboxGroupLabel as="h3" class="gs-group-title tw:text-muted tw:text-label-sm tw:font-semibold">{{ group.label }}</ListboxGroupLabel>
+              <ListboxItem v-for="item in group.items" :key="item.key" :value="item.key" as="button" type="button"
+                class="gs-row tw:flex tw:items-center tw:gap-s-3 tw:w-full tw:min-h-[46px] tw:rounded-md tw:text-primary tw:text-left tw:cursor-pointer" @pointermove="selectionTouched = true">
+                <span class="gs-row-icon" aria-hidden="true"><ArchiveIcon :name="item.icon" /></span>
+                <span class="gs-row-label">{{ item.label }}</span><small v-if="item.meta">{{ item.meta }}</small>
+              </ListboxItem>
+            </ListboxGroup>
+          </ListboxContent>
           <template v-if="query.trim()">
             <p v-if="worksError" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="alert">{{ worksError }}</p>
             <p v-else-if="worksLoading" class="gs-empty tw:text-muted tw:text-center tw:text-body-sm" role="status">正在读取作品…</p>
             <div v-if="!scenesLoading && !scenesError && !worksError && !worksLoading && !flat.length" class="gs-empty tw:text-center tw:py-s-3">
               <p class="tw:text-muted tw:text-body-sm tw:mb-s-3">未找到匹配结果</p>
               <div class="tw:flex tw:justify-center tw:gap-s-2">
-                <button type="button" class="btn btn-ghost btn-sm" @click="query = ''">清空</button>
+                <button type="button" class="btn btn-ghost btn-sm" @click="clearQuery">清空</button>
                 <RouterLink to="/scene-explorer" class="btn btn-primary btn-sm" @click="close">浏览场景</RouterLink>
               </div>
             </div>
           </template>
         </div>
-        </ListboxContent>
         <div v-if="moreCatalogGroups.length" class="gs-more" aria-label="更多目录结果">
           <button v-for="group in moreCatalogGroups" :key="group.id" type="button" class="btn btn-quiet btn-sm"
             :aria-disabled="group.loadingMore" @click="showMore(group.id, $event)">
@@ -51,7 +54,11 @@
           </button>
         </div>
         <p :id="searchAnnouncementId" class="gs-sr-status tw:absolute tw:w-[1px] tw:h-[1px] tw:p-0 tw:m-[-1px] tw:overflow-hidden tw:whitespace-nowrap" role="status" aria-live="polite" aria-atomic="true">{{ resultsAnnouncement }}</p>
-        <div class="gs-footer tw:flex tw:justify-between tw:gap-s-3 tw:text-muted tw:text-label-sm" aria-hidden="true"><span>↑ ↓ 选择 · Enter 打开</span><span>Esc 关闭</span></div>
+        <div class="gs-footer" aria-hidden="true">
+          <span><kbd>↑</kbd><kbd>↓</kbd>选择</span>
+          <span><kbd>Enter</kbd>打开</span>
+          <span><kbd>Esc</kbd>关闭</span>
+        </div>
       </div>
       </ListboxRoot>
     </div>
@@ -106,6 +113,10 @@ const resultsAnnouncement = computed(() => {
 function run(key: unknown) {
   const item = flat.value.find(result => result.key === key)
   if (item) return navigate(item)
+}
+function clearQuery() {
+  query.value = ''
+  inputEl.value?.focus({ preventScroll: true })
 }
 function retryScenes(event: MouseEvent) {
   if (document.activeElement === event.currentTarget) inputEl.value?.focus({ preventScroll: true })
@@ -167,34 +178,41 @@ watch(flat, () => {
   @apply tw:overflow-hidden;
 }
 .gs-input-row {
-  padding: var(--s-4) var(--s-5);
-  background: var(--bg-base);
+  padding: var(--s-2) var(--s-5) var(--s-4);
   border-bottom: 1px solid var(--border-soft);
 }
-.gs-search { flex:1; min-width:0; }
-.gs-heading { padding:var(--s-3) var(--s-5); }
-.gs-heading span { @apply tw:text-secondary tw:text-label-xs; }
+.gs-search { min-height:48px; background:var(--bg-base); }
+.gs-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-5) 0; }
+.gs-heading h2 { margin:0; color:var(--text-primary); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .gs-catalog-state { display:flex; align-items:center; gap:var(--s-3); flex-shrink:0; padding:var(--s-2) var(--s-5); border-bottom:1px solid var(--border-soft); }
 .gs-catalog-state p { flex:1; min-width:0; margin:0; color:var(--text-secondary); font-size:var(--fs-label-xs); line-height:var(--lh-body); overflow-wrap:anywhere; }
 .gs-catalog-state button { flex:none; }
 .gs-more { display:flex; flex-wrap:wrap; gap:var(--s-1); padding:var(--s-2) var(--s-4); border-top:1px solid var(--border-soft); }
-.gs-esc { flex:0 0 auto; }
 .gs-heading, .gs-input-row, .gs-footer { flex-shrink:0; }
 .gs-results { min-height:0; flex:1 1 auto; max-height: min(52vh, 480px); overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
 .gs-group-title {
-  margin: var(--s-2) var(--s-2) var(--s-1);
+  display:flex;
+  align-items:center;
+  gap:var(--s-3);
+  margin:var(--s-2) var(--s-3) var(--s-1);
 }
-.gs-row { padding: var(--s-2) var(--s-3);
+.gs-group-title::after { content:''; flex:1; height:1px; background:var(--border-soft); }
+.gs-row { position:relative; padding: var(--s-1) var(--s-3);
   border: 0;
   background: transparent;
   font: inherit;
 }
-.gs-row > .archive-icon { width:16px; height:16px; flex-shrink:0; }
-.gs-row > span { flex:1; min-width:0; overflow-wrap:anywhere; }
+.gs-row-icon { display:grid; place-items:center; flex:none; width:30px; height:30px; color:var(--text-secondary); }
+.gs-row-icon .archive-icon { width:18px; height:18px; }
+.gs-row-label { flex:1; min-width:0; overflow-wrap:anywhere; }
 .gs-row small { @apply tw:min-w-0 tw:ml-auto tw:text-muted tw:text-label-sm tw:whitespace-nowrap tw:overflow-hidden tw:text-ellipsis tw:max-w-[46%]; }
-.gs-row[data-highlighted] { background: var(--bg-hover); @apply tw:text-primary; }
+.gs-row[data-highlighted] { background:var(--bg-elevated); }
+.gs-row[data-highlighted]::before { content:''; position:absolute; inset-inline-start:0; width:3px; height:18px; border-radius:var(--r-pill); background:var(--text-primary); }
+.gs-row[data-highlighted] .gs-row-icon { color:var(--text-primary); }
 .gs-row[data-highlighted] small { @apply tw:text-secondary; }
-.gs-footer { padding: var(--s-3) var(--s-5); border-top: 1px solid var(--border-soft); background: var(--bg-surface); }
+.gs-footer { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-4); padding:var(--s-3) var(--s-5); border-top:1px solid var(--border-soft); background:var(--bg-base); color:var(--text-secondary); font-size:var(--fs-label-sm); }
+.gs-footer span { display:inline-flex; align-items:center; gap:var(--s-1); }
+.gs-footer span:last-child { margin-inline-start:auto; }
 .gs-sr-status { clip: rect(0 0 0 0); clip-path: inset(50%); border: 0; }
 @media (max-width:600px) { .global-search { --search-inset:var(--s-5); } .gs-results { @apply tw:max-h-[60dvh]; } }
 .gs-empty { padding: var(--s-6) var(--s-4); }

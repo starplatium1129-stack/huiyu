@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/pearl_mermaid_evening_dress",
+  "revision": 1,
+  "sortOrder": 3403,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "pearl_mermaid_evening_dress",
+      "name": "人鱼泪珠露背紫罗兰鱼尾礼服",
+      "prose": "A form-fitting lavender satin mermaid gown with a plunging back, draped strands of lustrous sea pearls, and sheer evening gloves.",
+      "tokens": [
+        "mermaid dress",
+        "purple dress",
+        "backless dress",
+        "pearl chains",
+        "sheer gloves",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phrolova_wuwa/mirror_lake_mourning_veil",
+  "revision": 1,
+  "sortOrder": 3503,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phrolova_wuwa",
+    "outfit": {
+      "id": "mirror_lake_mourning_veil",
+      "name": "镜湖黑纱彼岸花刺绣长裙",
+      "prose": "A layered black silk chiffon dress embroidered with crimson spider lilies along the hem, worn with a sheer black lace half-veil.",
+      "tokens": [
+        "black dress",
+        "chiffon",
+        "floral embroidery",
+        "red flowers",
+        "black veil",
+        "bare shoulders"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

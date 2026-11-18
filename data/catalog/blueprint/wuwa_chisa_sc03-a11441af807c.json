@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_chisa_sc03",
+  "revision": 1,
+  "sortOrder": 3903,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于祭典灯笼摊前双手轻握红色苹果糖，温柔浅笑",
+    "adult": false,
+    "animaCaption": "Standing along a lantern-lit festival walkway beneath crimson maple leaves in a patterned kimono blouse and maroon hakama, she holds a glossy candy apple with a shy, happy smile.",
+    "camera": "全身镜头，祭典摊位纵深虚化",
+    "category": "索拉里斯日常",
+    "characterId": "chisa_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "红叶掩映的学园祭灯笼参道上，千咲换上红椿矢絣纹二尺袖袴装，双手捧着晶莹的红苹果糖，眼眸弯起露出一丝羞涩欢喜。",
+    "id": "wuwa_chisa_sc03",
+    "lighting": "祭典屋台暖橙灯笼光与暮色蓝调天空",
+    "location": "星炬学园祭红叶灯笼参道",
+    "mature": false,
+    "mood": "节日喜悦",
+    "negativeTokens": [
+      "modern traffic"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "taisho_hakama_festival",
+    "promptProse": "Along an evening festival path lined with glowing paper lanterns and red maple trees, Chisa wears an arrow-feather patterned kimono top and maroon hakama, holding a shiny crimson candy apple.",
+    "promptTokens": [
+      "black hair",
+      "long hair",
+      "blunt bangs",
+      "red eyes",
+      "red hair ribbon",
+      "hakama",
+      "red kimono",
+      "pleated hakama",
+      "lace-up boots",
+      "wide sleeves",
+      "standing",
+      "holding candy apple",
+      "gentle smile",
+      "slight blush",
+      "looking at viewer",
+      "autumn festival",
+      "glowing paper lanterns",
+      "red maple leaves",
+      "evening",
+      "warm lighting",
+      "bokeh",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding candy apple",
+      "festival",
+      "paper lanterns",
+      "autumn leaves",
+      "gentle smile",
+      "slight blush",
+      "evening",
+      "warm lighting",
+      "full body"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "千咲 · 学园祭红叶石灯笼参道手持苹果糖"
+  }
+}

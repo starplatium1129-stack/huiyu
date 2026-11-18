@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "galbrena_wuwa/unbuttoned_shirt_holster_r15",
+  "revision": 1,
+  "sortOrder": 3807,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "galbrena_wuwa",
+    "outfit": {
+      "id": "unbuttoned_shirt_holster_r15",
+      "name": "半敞白衬衫与皮质肩带绑缚内衣",
+      "prose": "An unbuttoned crisp white shirt hanging loosely over a black lace bralette and leather chest-holster straps, with dark shorts.",
+      "tokens": [
+        "unbuttoned shirt",
+        "white shirt",
+        "black bralette",
+        "harness",
+        "cleavage",
+        "black shorts"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

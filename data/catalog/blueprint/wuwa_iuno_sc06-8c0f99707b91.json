@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_iuno_sc06",
+  "revision": 1,
+  "sortOrder": 3706,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于雕花竖琴旁双手轻拨琴弦，神情宁静专注",
+    "adult": false,
+    "animaCaption": "Seated beside an ornate silver harp in a moonlit marble colonnade, she plucks the strings delicately as faint starlight motes drift through the night air.",
+    "camera": "中景，四分之三侧面构图",
+    "category": "索拉里斯日常",
+    "characterId": "iuno_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "月光倾泻的白色大理石神殿回廊中，尤诺身着银丝露背晚礼服，坐于雕花竖琴旁修长指尖轻拨银色琴弦，星尘光点随音符飘散。",
+    "id": "wuwa_iuno_sc06",
+    "lighting": "月光倾泻的银白光柱与琴弦微光",
+    "location": "七丘月神殿大理石回廊",
+    "mature": false,
+    "mood": "空灵诗意",
+    "negativeTokens": [
+      "electric guitar"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "celestial_harpist_gown",
+    "promptProse": "In a moonlit marble colonnade overlooking the valley, Iuno sits beside a carved silver harp in a Grecian-draped silver-blue silk gown, her fingers coaxing gentle notes from the strings.",
+    "promptTokens": [
+      "blue hair",
+      "twin tails",
+      "long hair",
+      "blue eyes",
+      "crescent hair ornament",
+      "blue dress",
+      "grecian dress",
+      "backless dress",
+      "silver jewelry",
+      "armlet",
+      "chiffon",
+      "sitting",
+      "playing harp",
+      "gentle smile",
+      "marble colonnade",
+      "glowing starlight particles",
+      "night",
+      "moonlight",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "playing harp",
+      "harp",
+      "marble columns",
+      "glowing particles",
+      "serene expression",
+      "night",
+      "moonlight",
+      "medium shot"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "尤诺 · 月光柱廊拨动银弦竖琴"
+  }
+}

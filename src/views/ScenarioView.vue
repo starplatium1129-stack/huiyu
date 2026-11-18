@@ -1,46 +1,54 @@
 <template>
   <article class="page scenario-page creative-library-page">
-    <CreativeLibraryHeader title="剧本模式" description="分幕故事与连贯场景" />
-    <header class="scenario-library-heading">
-      <div><h2>故事手帖</h2><p>{{ SCENARIOS.length }} 部故事</p></div>
-      <div v-if="!casting.castId.value" class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
-        <AnimatedSelection />
-        <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" /><span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span></button>
-      </div>
-    </header>
-    <div class="scenario-casting">
-      <label>故事角色<StudioSelect v-model="casting.castId.value" :options="casting.options.value" label="故事角色" placeholder="选择内容目录角色" /></label>
-      <label v-if="casting.castId.value">故事衣装<StudioSelect v-model="casting.outfitId.value" :options="casting.outfitOptions.value" label="故事衣装" /></label>
-      <p v-if="casting.error.value || !casting.ready.value" role="status">{{ casting.error.value || '所选角色或衣装尚未读取，请重新选择或读取目录' }}<button type="button" class="btn btn-ghost btn-sm" :disabled="casting.loading.value" @click="casting.reload">重新读取</button></p>
-    </div>
-    <p v-if="referenceError || referenceRetryStarted" class="library-reference-feedback"><span role="status">{{ loadingReferences ? '正在重新读取样张清单…' : referenceError || '样张清单已更新' }}</span><button type="button" class="btn btn-ghost btn-sm scenario-reference-retry" :aria-disabled="loadingReferences" @click="retryReferences"><ArchiveIcon name="refresh" />{{ loadingReferences ? '正在读取…' : '重新读取封面' }}</button></p>
-    <div class="scenario-workspace" data-route-arrive>
-      <div class="scenario-list" v-content-motion:fade="currentChar" role="group" aria-label="故事手帖">
-        <RuntimeImage v-for="s in SCENARIOS" :key="s.id" :src="referenceUrl(coverId(s.id))" v-slot="{ image, loaded, failed }">
-          <article class="scenario-book" :class="{ 'cover-failed': failed }">
-            <button type="button" class="scenario-card" :class="{ active: activeScenario?.id === s.id }" :aria-pressed="activeScenario?.id === s.id" @click="openScenario(s)">
-              <span class="scenario-cover" :data-character="currentChar">
-                <img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="(currentChar === 'nene' ? '宁宁' : '夏目') + ' · ' + s.name + '氛围参考'" width="560" height="818" loading="lazy" decoding="async" />
-                <span v-if="!loaded" class="scenario-cover-missing" role="status"><ArchiveIcon :name="s.iconName" /><span>{{ failed ? '封面加载失败' : image.src ? '正在载入封面…' : loadingReferences ? '正在翻开画册…' : '氛围参考暂未连接' }}</span></span>
-              </span>
-              <span class="scenario-book-copy tw:grid tw:gap-s-2 tw:p-s-4"><span class="scenario-book-title tw:flex tw:items-center tw:justify-between tw:gap-s-2"><strong class="scenario-name">{{ s.name }}</strong><ArchiveIcon v-if="activeScenario?.id === s.id" name="success" /></span><span class="scenario-desc">{{ s.desc }}</span><span class="scenario-count">{{ s.acts.length }} 幕故事<span>{{ s.en }}</span></span></span>
-              <CardEdgeLight />
-            </button>
-            <button v-if="failed" type="button" class="btn btn-ghost btn-sm scenario-cover-retry" :aria-label="'重新读取' + (currentChar === 'nene' ? '宁宁' : '夏目') + '的《' + s.name + '》封面'" @click="retryCover(coverId(s.id), $event)"><ArchiveIcon name="refresh" />重新读取封面</button>
-          </article>
-        </RuntimeImage>
-      </div>
-      <section v-if="activeScenario" ref="reader" class="viewer" aria-label="分幕手帖" tabindex="-1">
+    <CreativeLibraryHeader chapter="scenario" />
+    <div class="scenario-workspace">
+      <section class="scenario-shelf" aria-label="选择故事" data-route-arrive>
+        <header class="scenario-library-heading">
+          <div><h2>故事手帖</h2><p>{{ SCENARIOS.length }} 部故事</p></div>
+          <div v-if="!casting.castId.value" class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
+            <AnimatedSelection />
+            <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" /><span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span></button>
+          </div>
+        </header>
+        <div class="scenario-casting">
+          <label>故事角色<StudioSelect v-model="casting.castId.value" :options="casting.options.value" label="故事角色" placeholder="选择内容目录角色" /></label>
+          <label v-if="casting.castId.value">故事衣装<StudioSelect v-model="casting.outfitId.value" :options="casting.outfitOptions.value" label="故事衣装" /></label>
+          <p v-if="casting.error.value || !casting.ready.value" role="status">{{ casting.error.value || '所选角色或衣装尚未读取，请重新选择或读取目录' }}<button type="button" class="btn btn-ghost btn-sm" :disabled="casting.loading.value" @click="casting.reload">重新读取</button></p>
+        </div>
+        <p v-if="referenceError || referenceRetryStarted" class="library-reference-feedback"><span role="status">{{ loadingReferences ? '正在重新读取样张清单…' : referenceError || '样张清单已更新' }}</span><button type="button" class="btn btn-ghost btn-sm scenario-reference-retry" :aria-disabled="loadingReferences" @click="retryReferences"><ArchiveIcon name="refresh" />{{ loadingReferences ? '正在读取…' : '重新读取封面' }}</button></p>
+        <div class="scenario-list" v-content-motion:fade="currentChar" role="group" aria-label="故事手帖">
+          <RuntimeImage v-for="s in SCENARIOS" :key="s.id" :src="referenceUrl(coverId(s.id))" v-slot="{ image, loaded, failed }">
+            <article class="scenario-book" :class="{ 'cover-failed': failed }">
+              <button type="button" class="scenario-card" :class="{ active: activeScenario?.id === s.id }" :aria-pressed="activeScenario?.id === s.id" @click="openScenario(s)">
+                <span class="scenario-cover" :data-character="currentChar">
+                  <img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="(currentChar === 'nene' ? '宁宁' : '夏目') + ' · ' + s.name + '氛围参考'" width="560" height="818" loading="lazy" decoding="async" />
+                  <span v-if="!loaded" class="scenario-cover-missing" role="status"><ArchiveIcon :name="s.iconName" /><span>{{ failed ? '封面加载失败' : image.src ? '正在载入封面…' : loadingReferences ? '正在翻开画册…' : '氛围参考暂未连接' }}</span></span>
+                </span>
+                <span class="scenario-book-copy tw:grid tw:gap-s-2 tw:p-s-4">
+                  <span class="scenario-book-title tw:flex tw:items-center tw:justify-between tw:gap-s-2">
+                    <strong class="scenario-name">{{ s.name }}</strong><LibraryChoiceMark :selected="activeScenario?.id === s.id" />
+                  </span>
+                  <span class="scenario-desc">{{ s.desc }}</span>
+                  <span class="scenario-count">{{ s.acts.length }} 幕故事<span lang="en">{{ s.en }}</span></span>
+                </span>
+                <CardEdgeLight />
+              </button>
+              <button v-if="failed" type="button" class="btn btn-ghost btn-sm scenario-cover-retry" :aria-label="'重新读取' + (currentChar === 'nene' ? '宁宁' : '夏目') + '的《' + s.name + '》封面'" @click="retryCover(coverId(s.id), $event)"><ArchiveIcon name="refresh" />重新读取封面</button>
+            </article>
+          </RuntimeImage>
+        </div>
+      </section>
+      <section v-if="activeScenario" ref="reader" class="viewer" aria-label="分幕手帖" tabindex="-1" data-route-arrive>
         <header class="viewer-header-row"><div><span class="scenario-kicker">分幕手帖 / {{ activeScenario.acts.length }} 幕</span><h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2><p class="viewer-desc">{{ activeScenario.desc }}</p></div><button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />制作分镜短片</button></header>
-        <div class="acts" :data-act-count="activeScenario.acts.length" data-route-arrive v-content-motion:up="`${activeScenario.id}:${currentChar}`">
+        <div class="acts" :data-act-count="activeScenario.acts.length" v-content-motion:up="`${activeScenario.id}:${currentChar}`">
           <article v-for="{ act: a, warnings, modules } in renderedActs" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
             <div class="act-heading tw:flex tw:items-center tw:gap-s-3"><span class="act-num">{{ a.n }}</span><div><h3 class="act-title">{{ a.title }}</h3><span class="act-en">{{ a.en }}</span></div></div>
             <div class="act-intent"><span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true"><ArchiveIcon :name="frameIcon(a.res)" /></span><div><span class="act-emotion">{{ a.emotion }}</span><p class="act-desc">{{ a.desc }}</p></div></div>
             <div class="act-format"><span>{{ casting.character.value?.displayName || (currentChar === 'nene' ? '宁宁' : '夏目') }}{{ casting.outfit.value ? ` · ${casting.outfit.value.name}` : '' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
             <div class="act-actions">
-              <RouterLink v-if="casting.ready.value" :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, act: a.n, ...casting.query.value } }" class="btn btn-primary">绘制这一幕</RouterLink>
-              <button type="button" class="btn btn-ghost" @click="sendToVideoStudio(a.n)">加入分镜</button>
-              <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" />
+              <RouterLink v-if="casting.ready.value" :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, act: a.n, ...casting.query.value } }" class="btn btn-ghost">绘制这一幕</RouterLink>
+              <button type="button" class="btn btn-quiet" @click="sendToVideoStudio(a.n)">加入分镜</button>
+              <StudioCopyButton class="btn btn-quiet" label="复制 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" />
             </div>
             <details class="act-details" :open="expandedActs.includes(a.n)" :data-scenario="activeScenario.id" :data-act="a.n" @toggle="syncAct">
               <StudioDisclosureSummary><span>提示词与参数</span></StudioDisclosureSummary>
@@ -74,6 +82,7 @@ import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
+import LibraryChoiceMark from '@/components/library/LibraryChoiceMark.vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useVideoStore, type StagedScenarioAct } from '@/stores/videoStore'
@@ -87,7 +96,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { useScenarioCasting } from '@/composables/scene/useScenarioCasting'
 import { scenarioCastPrompt } from '@/utils/scenarioCasting'
 import { useMoodReferences } from '@/composables/useMoodReferences'
-import { scrollBehavior } from '@/utils/motionPreference'
+import { focusReadingPanel } from '@/utils/focusReadingPanel'
 import { BANNED_TAGS } from '@/utils/promptDiagnostics'
 import {
   SCENARIOS,
@@ -236,10 +245,7 @@ async function openScenario(s: Scenario) {
   const request = ++readerRequest
   activeScenario.value = s
   await nextTick()
-  const target = reader.value
-  if (request !== readerRequest || !target?.isConnected || target.closest('[inert]')) return
-  target.focus({ preventScroll: true })
-  target.scrollIntoView({ block: 'start', behavior: scrollBehavior() })
+  if (request === readerRequest) focusReadingPanel(reader.value)
 }
 
 // ── 剧本模式激活（2026-08-23）：整本分幕 → 视频工坊分镜镜头 ────────────────

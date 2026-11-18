@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phrolova_sc02",
+  "revision": 1,
+  "sortOrder": 3502,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "靠在丝绒包厢护栏单手支颐，微侧头凝望",
+    "adult": false,
+    "animaCaption": "Resting her cheek in one hand along the gilded railing of a crimson velvet opera box, she gazes across the shadowed auditorium with a faint, melancholic smile.",
+    "camera": "中近景，微仰拍包厢视角",
+    "category": "索拉里斯日常",
+    "characterId": "phrolova_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "金箔雕花的二层猩红天鹅绒歌剧包厢内，弗洛洛身着黑蕾丝袖丝绒晚礼服，单手支颐靠在包厢护栏上，低垂眼帘俯瞰空荡观众席。",
+    "id": "wuwa_phrolova_sc02",
+    "lighting": "包厢壁灯暖琥珀光与舞台暗红余晖",
+    "location": "歌剧院二层猩红天鹅绒包厢",
+    "mature": false,
+    "mood": "冷艳孤高",
+    "negativeTokens": [
+      "bright noon"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "opera_box_velvet_gown",
+    "promptProse": "Framed by heavy crimson velvet drapes inside a gilded opera box, Phrolova leans on the balustrade in an off-shoulder velvet gown with black Chantilly lace sleeves, gazing quietly into the dusk.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "red eyes",
+      "eyepatch",
+      "red flower",
+      "red dress",
+      "velvet",
+      "off-shoulder dress",
+      "black lace sleeves",
+      "corset",
+      "silver chain",
+      "leaning on railing",
+      "hand on cheek",
+      "looking at viewer",
+      "slight smile",
+      "theater balcony box",
+      "red velvet curtains",
+      "gilded railing",
+      "warm sconce light",
+      "twilight",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "leaning on railing",
+      "hand on cheek",
+      "opera box",
+      "velvet curtains",
+      "gold trim",
+      "slight smile",
+      "twilight",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "弗洛洛 · 猩红天鹅绒歌剧包厢凭栏俯瞰"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "iuno_wuwa/starlight_sheer_chemise_r15",
+  "revision": 1,
+  "sortOrder": 3707,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "iuno_wuwa",
+    "outfit": {
+      "id": "starlight_sheer_chemise_r15",
+      "name": "星月薄纱半透冰蓝真丝睡裙",
+      "prose": "A translucent ice-blue silk babydoll chemise trimmed with silver star lace, revealing her collarbone and slender thighs in moonlight.",
+      "tokens": [
+        "blue chemise",
+        "sheer",
+        "lace trim",
+        "thin straps",
+        "bare shoulders",
+        "bare thighs"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

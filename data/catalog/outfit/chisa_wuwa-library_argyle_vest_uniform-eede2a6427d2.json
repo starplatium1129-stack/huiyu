@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chisa_wuwa/library_argyle_vest_uniform",
+  "revision": 1,
+  "sortOrder": 3902,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "chisa_wuwa",
+    "outfit": {
+      "id": "library_argyle_vest_uniform",
+      "name": "图书馆红黑菱格针织背心学院装",
+      "prose": "A crisp white button-down blouse with a crimson ribbon tie layered under a black-and-red argyle knit vest and pleated plaid skirt.",
+      "tokens": [
+        "white shirt",
+        "red ribbon",
+        "knit vest",
+        "argyle",
+        "plaid skirt",
+        "pleated skirt"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

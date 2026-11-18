@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc03",
+  "revision": 1,
+  "sortOrder": 3303,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "蹲在码头石阶双手捧起发光金色海灯，眼眸闪亮",
+    "adult": false,
+    "animaCaption": "Crouching on the stone steps of a lantern-lit harbor at night, she cradles a glowing golden paper lantern in both hands with a joyful smile as hundreds of lights drift across the sea behind her.",
+    "camera": "中近景，平视，海面灯火虚化背景",
+    "category": "索拉里斯日常",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "海灯节夜晚的拉古那白石码头边，成千上万盏金色莲花水灯随海浪漂远，菲比身着白蓝水手领巡游裙蹲在石阶上双手捧灯许愿。",
+    "id": "wuwa_phoebe_sc03",
+    "lighting": "海灯暖金火光映照脸庞与海面星灯",
+    "location": "拉古那海灯节白石码头",
+    "mature": false,
+    "mood": "憧憬喜悦",
+    "negativeTokens": [
+      "daylight"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "harbor_lantern_sailor_dress",
+    "promptProse": "Kneeling on the seaside stone steps during Ragunna's lantern festival, Phoebe holds a warm glowing paper lantern in both palms, wearing a nautical white-and-cerulean pleated sailor dress.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "sailor collar",
+      "white and blue dress",
+      "pleated skirt",
+      "gold trim",
+      "crouching",
+      "holding glowing lantern",
+      "smile",
+      "looking at viewer",
+      "stone harbor steps",
+      "floating lanterns on sea",
+      "night",
+      "warm lantern light",
+      "bokeh",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "crouching",
+      "holding lantern",
+      "paper lantern",
+      "harbor",
+      "stone steps",
+      "floating lanterns",
+      "smile",
+      "night",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "菲比 · 拉古那海灯节码头放飞水灯"
+  }
+}

@@ -49,13 +49,17 @@ pub(super) async fn prepare<T: serde::Serialize + ?Sized>(
     path: &Path,
     value: &T,
 ) -> Result<tempfile::TempPath> {
+    prepare_bytes(path, &serde_json::to_vec(value)?).await
+}
+
+async fn prepare_bytes(path: &Path, bytes: &[u8]) -> Result<tempfile::TempPath> {
     let (file, pending) =
         tempfile::NamedTempFile::new_in(path.parent().unwrap_or_else(|| Path::new(".")))?
             .into_parts();
     // Own the path before yielding: cancelled Tokio file operations may finish
     // in the background, but TempPath still removes only our temporary file.
     let mut file = tokio::fs::File::from_std(file);
-    file.write_all(&serde_json::to_vec(value)?).await?;
+    file.write_all(bytes).await?;
     // sync_all waits for pending writes but does not propagate their errors.
     file.flush().await?;
     file.sync_all().await?;
@@ -193,13 +197,41 @@ async fn drain(inner: &Inner) -> HashMap<String, Lost> {
     lost
 }
 
-pub(super) async fn progress_event(
-    inner: &Inner,
-    event: Option<Arc<crate::upstream::progress::ProgressUpdate>>,
-) {
-    let lost = event
-        .as_ref()
-        .is_none_or(|event| event.event == "connection_lost");
+async fn client_id(inner: &Inner) -> Result<String> {
+    let directory = inner.config.runtime_root.join("state");
+    tokio::fs::create_dir_all(&directory).await?;
+    let name = inner.scope.client();
+    let path = directory.join(format!("comfy_client_{name}.id"));
+    match tokio::fs::read(&path).await {
+        Ok(bytes) => {
+            if let Ok(id) = std::str::from_utf8(&bytes) {
+                let id = id.trim();
+                if (8..=80).contains(&id.len())
+                    && id.bytes().all(|b| b.is_ascii_alphanumeric() || b == b'-')
+                {
+                    return Ok(id.to_owned());
+                }
+            }
+        }
+        Err(error) if error.kind() == std::io::ErrorKind::NotFound => {}
+        Err(error) => return Err(error.into()),
+    }
+    let generated = format!("aics-{name}-{}", uuid::Uuid::new_v4().simple());
+    prepare_bytes(&path, format!("{generated}\n").as_bytes())
+        .await?
+        .persist(&path)
+        .map_err(|error| ApiError::from(error.error))?;
+    Ok(generated)
+}
+
+async fn prune_outputs(inner: &Inner) {
+    native::prune(inner).await;
+    if let Some(store) = &inner.remote_images {
+        store.prune().await;
+    }
+}
+
+async fn prune_jobs(inner: &Inner) {
     let jobs = inner
         .state
         .lock()
@@ -209,35 +241,19 @@ pub(super) async fn progress_event(
         .cloned()
         .collect::<Vec<_>>();
     for job in jobs {
-        if job.provider != "comfy" {
-            continue;
-        }
-        let mut state = job.state.lock().await;
-        if state.settled || state.upstream_id.is_empty() {
-            continue;
-        }
-        if lost {
-            state.progress_live = false;
-            state.progress = None;
-            state.progress_text = "进度连接暂时中断，正在核对任务…".into();
-            state.history_urgent = true;
-            job.notify.notify_one();
-        } else if let Some(event) = &event
-            && state.upstream_id == event.prompt_id
-        {
-            state.progress = event.progress;
-            state.current_node.clone_from(&event.current_node);
-            state.progress_text.clone_from(&event.progress_text);
-            state.progress_live = true;
-            state.execution_started = true;
-            if event.terminal_hint() {
-                // WebSocket hints shorten the next authoritative HTTP check;
-                // they never settle a job or release its provider capacity.
-                state.history_urgent = true;
-                state.history_finishing =
-                    Some(tokio::time::Instant::now() + Duration::from_secs(5));
-                job.notify.notify_one();
-            }
+        let retention = match &job.execution {
+            Execution::Webui(_) => 2 * 60 * 60 * 1000,
+            Execution::Native(_) => 30 * 60 * 1000,
+            Execution::Comfy(plan) => plan.retention.as_millis() as i64,
+        };
+        let expired = {
+            let state = job.state.lock().await;
+            state.finished.is_some_and(|time| now() - time >= retention)
+                && state.permit.is_none()
+                && !(job.provider == "native" && state.collection_pending)
+        };
+        if expired {
+            jobs::remove(inner, &job).await;
         }
     }
 }
@@ -246,26 +262,39 @@ pub(super) async fn initialize(inner: Arc<Inner>) -> Result<()> {
     if inner.closed.load(Ordering::Relaxed) || inner.cancel.is_cancelled() {
         return Err(closed());
     }
-    inner.initialized.get_or_try_init(||async {
-        let state=inner.config.runtime_root.join("state");tokio::fs::create_dir_all(&state).await?;let identity_file=state.join(format!("comfy_client_{}.id",inner.scope.client()));
-        let existing=tokio::fs::read_to_string(&identity_file).await.unwrap_or_default();let existing=existing.trim();
-        let client_id=if (8..=80).contains(&existing.len())&&existing.bytes().all(|c|c.is_ascii_alphanumeric()||c==b'-'){existing.to_string()}else{
-            let generated=format!("aics-{}-{}",inner.scope.client(),uuid::Uuid::new_v4().simple());let pending=state.join(format!("comfy_client_{}.{}.tmp",inner.scope.client(),uuid::Uuid::new_v4()));tokio::fs::write(&pending,format!("{generated}\n")).await?;tokio::fs::rename(pending,identity_file).await?;generated
-        };
-        webui_results::prune(&inner).await;
-        native::prune(&inner).await; if let Some(store) = &inner.remote_images { store.prune().await; }
-        inner.state.lock().await.lost=drain(&inner).await;
-        let progress = if inner.native_images { None } else {
-        let progress=crate::upstream::progress::ProgressMonitor::new(&inner.config.comfy_host,&client_id)?;
-        let mut events=progress.subscribe();let weak=Arc::downgrade(&inner);let cancel=inner.cancel.clone();
-        inner.tasks.spawn(async move {loop{tokio::select!{_=cancel.cancelled()=>return,event=events.recv()=>{
-            let event=match event{Ok(event)=>Some(event),Err(tokio::sync::broadcast::error::RecvError::Lagged(_))=>None,Err(_)=>return};let Some(inner)=weak.upgrade()else{return};
-            progress_event(&inner,event).await;
-        }}}});
-        Some(progress) };
-        let weak=Arc::downgrade(&inner);let cancel=inner.cancel.clone();
-        inner.tasks.spawn(async move {loop{tokio::select!{_=cancel.cancelled()=>return,_=tokio::time::sleep(Duration::from_secs(60))=>{let Some(inner)=weak.upgrade()else{return};webui_results::prune(&inner).await;let jobs=inner.state.lock().await.jobs.values().cloned().collect::<Vec<_>>();for job in jobs{let expired={let state=job.state.lock().await;state.finished.is_some_and(|t|now()-t>=match &job.execution{Execution::Webui(_)=>2*60*60*1000,Execution::Native(_)=>30*60*1000,Execution::Comfy(plan)=>plan.retention.as_millis() as i64})&&state.permit.is_none()&&!(job.provider=="native"&&state.collection_pending)};if expired{jobs::remove(&inner,&job).await;}}native::prune(&inner).await; if let Some(store) = &inner.remote_images { store.prune().await; }}}}});
-        Ok::<_,ApiError>(Initialized {client_id,session_id:uuid::Uuid::new_v4().simple().to_string(),progress:std::sync::Mutex::new(progress)})
-    }).await?;
+    inner
+        .initialized
+        .get_or_try_init(|| async {
+            let client_id = client_id(&inner).await?;
+            webui_results::prune(&inner).await;
+            prune_outputs(&inner).await;
+            let lost = drain(&inner).await;
+            inner.state.lock().await.lost = lost;
+            let progress = if inner.native_images {
+                None
+            } else {
+                Some(comfy::progress::start(&inner, &client_id)?)
+            };
+            let weak = Arc::downgrade(&inner);
+            let cancel = inner.cancel.clone();
+            inner.tasks.spawn(async move {
+                loop {
+                    tokio::select! {
+                        _ = cancel.cancelled() => return,
+                        _ = tokio::time::sleep(Duration::from_secs(60)) => {}
+                    }
+                    let Some(inner) = weak.upgrade() else { return };
+                    webui_results::prune(&inner).await;
+                    prune_jobs(&inner).await;
+                    prune_outputs(&inner).await;
+                }
+            });
+            Ok::<_, ApiError>(Initialized {
+                client_id,
+                session_id: uuid::Uuid::new_v4().simple().to_string(),
+                progress: std::sync::Mutex::new(progress),
+            })
+        })
+        .await?;
     Ok(())
 }

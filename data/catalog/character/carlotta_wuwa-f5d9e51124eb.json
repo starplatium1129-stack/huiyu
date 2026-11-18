@@ -1,0 +1,137 @@
+{
+  "kind": "character",
+  "id": "carlotta_wuwa",
+  "revision": 1,
+  "sortOrder": 305,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "id": "carlotta_wuwa",
+    "profile": {
+      "id": "carlotta_wuwa",
+      "name": "珂莱塔",
+      "source": "Wuthering Waves",
+      "alias": [
+        "珂莱塔",
+        "Carlotta"
+      ],
+      "type": "popular",
+      "tags": [
+        "珂莱塔",
+        "鸣潮",
+        "黎那汐塔 · 莫塔里家族"
+      ],
+      "identity": {
+        "role": "优雅果决的莫塔里家族二小姐",
+        "faction": "黎那汐塔 · 莫塔里家族"
+      },
+      "bg_story": "珂莱塔是莫塔里家族的二小姐。她熟悉拉古那的礼节和拍卖沙龙，也能果断地用晶簇枪火打破僵局。她在社交场合说话周全，到了私下，反而更愿意试探着把话说开。",
+      "personality": [
+        "贵族礼仪",
+        "冷冽决断",
+        "晶簇狙击",
+        "私下娇矜"
+      ],
+      "likes": [],
+      "speech": "露台上安静些。等这杯喝完，我们再谈正事。",
+      "traits": [
+        "carlotta_(wuthering_waves)",
+        "wuthering_waves",
+        "white hair",
+        "long hair",
+        "pink eyes"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "珂莱塔立绘待补"
+      },
+      "visual_dna": {
+        "signature": "Carlotta from Wuthering Waves. Long white hair and pink eyes.",
+        "uniform": "莫塔里酒红水晶燕尾礼装",
+        "style": "anime"
+      },
+      "accent_color": "#9B2C56",
+      "bg_color": "#F5EAF0",
+      "palette": [
+        "#9B2C56",
+        "#F5EAF0"
+      ],
+      "theme": {
+        "primaryColor": "#9B2C56",
+        "secondaryColor": "#F5EAF0",
+        "accentGlow": "rgba(155, 44, 86, 0.35)",
+        "motif": "montelli_crystal_and_flintlock"
+      },
+      "settingMemory": {
+        "archetype": "优雅果决的莫塔里家族二小姐",
+        "coreTraits": [
+          "贵族礼仪",
+          "冷冽决断",
+          "晶簇狙击",
+          "私下娇矜"
+        ],
+        "signatureLocations": [
+          "拉古那莫塔里庄园露台",
+          "琉璃艺术拍卖沙龙",
+          "运河私人贡多拉船舱",
+          "晶簇密室酒窖"
+        ],
+        "speechTone": "礼貌从容、措辞考究却暗藏锋芒，独处时会流露出少女式的试探与坦率。"
+      },
+      "version": "2.0",
+      "personaCoreSceneIds": [
+        "wuwa_carlotta_sc01",
+        "wuwa_carlotta_sc07",
+        "wuwa_carlotta_sc09"
+      ],
+      "signatureSceneIds": [
+        "wuwa_carlotta_sc01",
+        "wuwa_carlotta_sc04",
+        "wuwa_carlotta_sc08",
+        "wuwa_carlotta_sc10"
+      ],
+      "factions": [
+        {
+          "id": "rinascita_powers",
+          "name": "黎那汐塔三方势力 (Montelli / Fisalia / Order of the Deep)",
+          "description": "拉古那城邦的艺术家族、深海毒药世家与隐海修会，三方在礼仪、信仰与暗流中互相制衡。"
+        }
+      ]
+    },
+    "popular": {
+      "id": "carlotta_wuwa",
+      "displayName": "珂莱塔",
+      "originalName": "Carlotta",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "珂莱塔",
+        "Carlotta"
+      ],
+      "identityProse": "Carlotta from Wuthering Waves. Long white hair and pink eyes.",
+      "identityTokens": [
+        "carlotta_(wuthering_waves)",
+        "wuthering_waves",
+        "white hair",
+        "long hair",
+        "pink eyes"
+      ],
+      "characterTokens": [
+        "carlotta_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
+      ],
+      "exactTokens": [
+        "carlotta_(wuthering_waves)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown"
+    }
+  }
+}

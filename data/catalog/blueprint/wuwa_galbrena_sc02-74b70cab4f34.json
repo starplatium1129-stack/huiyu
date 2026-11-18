@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_galbrena_sc02",
+  "revision": 1,
+  "sortOrder": 3802,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于霓虹雨夜天桥双手插风衣口袋，微抬眼帘凝望",
+    "adult": false,
+    "animaCaption": "Standing on a rain-swept urban overpass with hands tucked into her open indigo trench coat, she meets the viewer's gaze as neon lights shimmer in the wet puddles behind her.",
+    "camera": "中景，平视，霓虹光斑虚化背景",
+    "category": "索拉里斯日常",
+    "characterId": "galbrena_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "细雨如丝的深夜都市天桥上，积水倒映着冷蓝与品红霓虹，嘉贝莉娜敞开深靛防风长风衣双手插兜，雨水打湿银灰发梢。",
+    "id": "wuwa_galbrena_sc02",
+    "lighting": "湿润柏油路面霓虹反射与冷蓝雨夜氛围光",
+    "location": "深夜细雨都市高架天桥",
+    "mature": false,
+    "mood": "孤高冷冽",
+    "negativeTokens": [
+      "umbrella",
+      "sunny"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "rainy_rooftop_trench",
+    "promptProse": "Under a steady midnight drizzle on a city overpass, Galbrena stands in a rain-darkened indigo trench coat with her hands in her pockets, cool neon reflections blurring behind her.",
+    "promptTokens": [
+      "grey hair",
+      "blue streaks",
+      "medium hair",
+      "wet hair",
+      "blue eyes",
+      "blue trench coat",
+      "open coat",
+      "tank top",
+      "black pants",
+      "fingerless gloves",
+      "wet clothes",
+      "standing",
+      "hands in pockets",
+      "cool expression",
+      "looking at viewer",
+      "rainy overpass",
+      "neon reflections",
+      "falling rain",
+      "night",
+      "bokeh",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "hands in pockets",
+      "rain",
+      "puddles",
+      "neon lights",
+      "overpass",
+      "wet hair",
+      "night",
+      "bokeh",
+      "medium shot"
+    ],
+    "timeOfDay": "深夜",
+    "title": "嘉贝莉娜 · 细雨高架天桥霓虹水洼夜巡"
+  }
+}

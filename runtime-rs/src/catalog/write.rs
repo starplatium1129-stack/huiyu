@@ -332,19 +332,17 @@ impl Catalog {
             let imported = seed_index.get(&(change.kind.as_str(), change.id.as_str()));
             let created_at = if let Some(date) = &change.created_at {
                 let date = chrono::DateTime::parse_from_rfc3339(date)
-                    .map_err(|_| ApiError::invalid("createdAt 需要有来源的 RFC3339 日期时间"))?
-                    .with_timezone(&chrono::Utc)
-                    .to_rfc3339();
-                if current
-                    .as_ref()
-                    .and_then(|(r, _)| r.created_at.as_ref())
-                    .is_some_and(|old| old != &date)
-                {
-                    return Err(ApiError::invalid(
-                        "已有创建时间不能重写；createdAt 只补录未知时间",
-                    ));
+                    .map_err(|_| ApiError::invalid("createdAt 需要有来源的 RFC3339 日期时间"))?;
+                if let Some(old) = current.as_ref().and_then(|(r, _)| r.created_at.as_ref()) {
+                    if chrono::DateTime::parse_from_rfc3339(old).ok() != Some(date) {
+                        return Err(ApiError::invalid(
+                            "已有创建时间不能重写；createdAt 只补录未知时间",
+                        ));
+                    }
+                    Some(old.clone())
+                } else {
+                    Some(date.with_timezone(&chrono::Utc).to_rfc3339())
                 }
-                Some(date)
             } else {
                 current.as_ref().map_or_else(
                     || imported.map_or_else(|| Some(at.clone()), |r| r.created_at.clone()),

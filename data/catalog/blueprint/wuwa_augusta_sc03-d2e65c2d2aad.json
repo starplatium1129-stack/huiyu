@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_augusta_sc03",
+  "revision": 1,
+  "sortOrder": 3603,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于沙盘长桌前双手展开烫金卷轴，沉稳微笑",
+    "adult": false,
+    "animaCaption": "Standing beside a carved map table inside a grand marble council hall, she holds an unfurled gilded scroll in her crimson velvet toga and meets the viewer's gaze with composed authority.",
+    "camera": "中景，平视，地图沙盘与大理石雕像背景",
+    "category": "索拉里斯日常",
+    "characterId": "augusta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "壁画环绕的七丘元老院议事厅内，奥古斯塔身着暗红金边单肩托加礼袍，立于青铜沙盘与长桌前审阅烫金城邦盟约卷轴。",
+    "id": "wuwa_augusta_sc03",
+    "lighting": "拱顶天窗倾泻的温暖日光束",
+    "location": "七丘元老院议事长厅",
+    "mature": false,
+    "mood": "睿智果断",
+    "negativeTokens": [
+      "modern office"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "senate_velvet_toga",
+    "promptProse": "Beside an engraved strategy table inside Septimont's senate chamber, Augusta wears a one-shoulder crimson velvet toga over a pleated ivory gown, holding an unfurled parchment treaty.",
+    "promptTokens": [
+      "red hair",
+      "long hair",
+      "yellow eyes",
+      "gold laurel crown",
+      "tall",
+      "one-shoulder dress",
+      "red toga",
+      "velvet",
+      "gold brooch",
+      "white dress",
+      "gold bracelet",
+      "standing",
+      "holding open scroll",
+      "map table",
+      "composed smile",
+      "looking at viewer",
+      "grand council hall",
+      "marble statues",
+      "afternoon",
+      "sunbeams",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding scroll",
+      "reading",
+      "map table",
+      "council chamber",
+      "marble statues",
+      "afternoon",
+      "sunbeams",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "奥古斯塔 · 元老院议事厅审阅烫金城邦卷轴"
+  }
+}

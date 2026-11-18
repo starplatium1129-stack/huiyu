@@ -1,0 +1,30 @@
+{
+  "kind": "outfit",
+  "id": "iuno_wuwa/moon_mirror_oracle_gown",
+  "revision": 1,
+  "sortOrder": 3711,
+  "createdAt": "2026-11-18T05:36:32.260654700+00:00",
+  "updatedAt": "2026-11-18T05:36:32.260654700+00:00",
+  "data": {
+    "characterId": "iuno_wuwa",
+    "outfit": {
+      "id": "moon_mirror_oracle_gown",
+      "name": "月神水镜白金露背礼服",
+      "prose": "A white Grecian backless gown with blue drapery, gilded clasps and a gold choker. Gold anklets are linked by fine chains to toe rings.",
+      "tokens": [
+        "white dress",
+        "grecian dress",
+        "backless dress",
+        "gold jewelry",
+        "gold choker",
+        "gold hair ornaments",
+        "gold anklet",
+        "ankle chain",
+        "toe ring"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

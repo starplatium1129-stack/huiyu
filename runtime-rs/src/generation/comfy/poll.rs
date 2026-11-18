@@ -58,13 +58,13 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
             )
         };
         if terminal(&status) && settled {
-            watch(&inner, &id, false);
+            unwatch(&inner, &id);
             return;
         }
         if status == "cancelling" || (status == "failed" && !settled && cancel_requested) {
             if !pending && cancellation::confirm(&inner, &job, &id).await {
                 if job.state.lock().await.settled {
-                    watch(&inner, &id, false);
+                    unwatch(&inner, &id);
                     return;
                 }
             }
@@ -101,7 +101,7 @@ pub(super) async fn run(inner: Arc<Inner>, job: Arc<Job>) {
                 true,
             )
             .await;
-            watch(&inner, &id, false);
+            unwatch(&inner, &id);
             delay = Duration::from_secs(3);
             continue;
         }

@@ -116,6 +116,13 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 - `anima-cosmos29b-v041`：40 层、2048 宽度（MiaoMiao 2.9B Beta 1.1）
 - `anima-yume2b-rope-v041`：28 层 Yume 1.0（额外核验静态 RoPE 派生缓冲）
 
+控制室可直接准备 Aesthetic 1.1、MiaoMiao 1.2、MiaoMiao 2.9B Beta 1.1 和 Yume 1.0。已有作者权重可填写本机路径，准备流程会核对文件大小和 SHA-256，再交给对应的转换器。
+
+### 维护同架构模型
+
+- **Anima 单文件**　在绘图目录登记模型后，在对应的下载来源记录上填写 `nativeConversionProfile`。控制室从该字段生成准备选项，复用基础模型的编码器、VAE 和 tokenizer。需要用户自行提供权重的版本可声明 `requiresLocalCheckpoint`。 [绘图目录](../../runtime-rs/src/images/catalog.json) · [下载来源](../../runtime-rs/src/control/setup-models.json)
+- **Diffusers 变体**　在适配清单的 `models` 中复用已有 `family`、`pipeline` 和组件布局，填写变体的实际参数。Rust 和 Python 都按 `variantFields` 核对本地索引。例如 Krea 用 `distilled` 区分 RAW 和 Turbo。提供受管下载时，再按同一模型 ID 登记固定版本的文件。 [适配清单](../../tools/inference/adapter-models.json) · [受管下载清单](../../tools/inference/managed-adapter-models.json)
+
 ---
 
 ## 4. 原生图像适配器与多模型支持

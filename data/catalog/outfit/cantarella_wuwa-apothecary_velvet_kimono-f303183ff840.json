@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/apothecary_velvet_kimono",
+  "revision": 1,
+  "sortOrder": 3402,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "apothecary_velvet_kimono",
+      "name": "深海紫藤刺绣丝绒宽袖调香袍",
+      "prose": "A floor-sweeping amethyst velvet robe embroidered with silver wisteria, secured by a pearl-tasseled sash over a low-cut lavender silk camisole.",
+      "tokens": [
+        "purple robe",
+        "velvet",
+        "wisteria print",
+        "low-cut",
+        "cleavage",
+        "wide sleeves"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

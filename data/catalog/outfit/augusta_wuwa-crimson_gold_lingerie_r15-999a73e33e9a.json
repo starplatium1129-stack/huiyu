@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "augusta_wuwa/crimson_gold_lingerie_r15",
+  "revision": 1,
+  "sortOrder": 3608,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "augusta_wuwa",
+    "outfit": {
+      "id": "crimson_gold_lingerie_r15",
+      "name": "烈日金链赤红丝缎束腰内衣",
+      "prose": "A scarlet satin balconette bra and high-cut briefs accented with delicate gold waist chains and matching red thigh-highs.",
+      "tokens": [
+        "red bra",
+        "satin",
+        "red panties",
+        "waist chain",
+        "red thighhighs",
+        "large breasts"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

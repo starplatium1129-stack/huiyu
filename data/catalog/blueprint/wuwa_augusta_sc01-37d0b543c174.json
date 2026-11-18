@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_augusta_sc01",
+  "revision": 1,
+  "sortOrder": 3601,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于神殿石栏边单手扶巨剑剑柄，英气微笑",
+    "adult": false,
+    "animaCaption": "Standing along a sunlit marble temple colonnade overlooking the mountain city of Septimont, she rests one hand on her greatsword hilt with a radiant, commanding smile as sunrise gilds her red cape.",
+    "camera": "全身镜头，低机位英雄仰拍",
+    "category": "索拉里斯日常",
+    "characterId": "augusta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "俯瞰七丘山城的白色大理石日轮神殿柱廊上，朝阳金辉洒满大地，奥古斯塔身着红金执政官战袍与黄金桂冠，单手扶剑柄霸气俯瞰。",
+    "id": "wuwa_augusta_sc01",
+    "lighting": "破晓烈日金辉与大理石柱廊强轮廓光",
+    "location": "七丘日轮神殿大理石柱廊",
+    "mature": false,
+    "mood": "威严炽烈",
+    "negativeTokens": [
+      "modern skyscrapers"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "solarium_archon_regalia",
+    "promptProse": "High on the white marble colonnade of Septimont's solar temple at dawn, Augusta stands tall in her crimson-and-gold archon regalia and golden laurel crown, resting a hand upon her greatsword.",
+    "promptTokens": [
+      "red hair",
+      "long hair",
+      "yellow eyes",
+      "gold laurel crown",
+      "tall",
+      "white and red dress",
+      "pleated dress",
+      "gold armor",
+      "pauldrons",
+      "red cape",
+      "standing",
+      "hand on sword hilt",
+      "confident smile",
+      "looking at viewer",
+      "marble columns",
+      "temple terrace",
+      "mountain city",
+      "sunrise",
+      "golden hour",
+      "rim light",
+      "low angle",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding sword",
+      "marble columns",
+      "temple balcony",
+      "mountain city",
+      "sunrise",
+      "golden hour",
+      "rim light",
+      "low angle",
+      "full body"
+    ],
+    "timeOfDay": "清晨",
+    "title": "奥古斯塔 · 七丘日轮神殿柱廊烈阳加冕"
+  }
+}

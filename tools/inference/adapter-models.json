@@ -7,6 +7,11 @@
     "license": "Apache-2.0",
     "transformers": "5.17.0"
   },
+  "variantFields": {
+    "Krea2Pipeline": {"is_distilled": "distilled"},
+    "QwenImage21Pipeline": {"sample_sigmas": "sampleSigmas"},
+    "WanA14B": {"boundary_ratio": "boundaryRatio"}
+  },
   "layouts": {
     "MOSSImagePipeline": {
       "text_encoder": ["transformers", "Qwen3_5Model"],
@@ -78,6 +83,7 @@
   "models": {
     "moss-miaomiao-base-v1.1": {
       "label": "MiaoMiao Harem MOSS · BASE v1.1",
+      "managedPrecision": {"transformer": "int8", "text_encoder": "int8"},
       "family": "moss-image",
       "media": "image",
       "pipeline": "MOSSImagePipeline",

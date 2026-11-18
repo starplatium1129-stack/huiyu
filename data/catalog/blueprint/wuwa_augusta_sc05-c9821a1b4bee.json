@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_augusta_sc05",
+  "revision": 1,
+  "sortOrder": 3605,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "高举黄金双耳酒杯微笑致意，火炬火星飞舞",
+    "adult": false,
+    "animaCaption": "Raising an ornate golden goblet beneath a starry sky lit by festival torches, she beams with a warm, celebratory smile in her gold-and-crimson silk evening gown.",
+    "camera": "中近景，微仰视",
+    "category": "索拉里斯日常",
+    "characterId": "augusta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "火炬与星光交映的七丘夏至庆典露台宴会上，奥古斯塔身着金丝高开衩露背晚礼服，高举盛满蜜酒的黄金双耳圣爵致意。",
+    "id": "wuwa_augusta_sc05",
+    "lighting": "庆典火炬跃动暖金光与璀璨星空",
+    "location": "七丘夏至火炬庆典露台",
+    "mature": false,
+    "mood": "热烈欢庆",
+    "negativeTokens": [
+      "daylight"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "solstice_banquet_gown",
+    "promptProse": "At Septimont's torchlit solstice banquet under a clear starry sky, Augusta lifts a hammered gold chalice in toast, wearing a draped gold-and-crimson backless silk gown.",
+    "promptTokens": [
+      "red hair",
+      "long hair",
+      "yellow eyes",
+      "gold laurel crown",
+      "tall",
+      "evening gown",
+      "gold and red dress",
+      "backless dress",
+      "high slit",
+      "armlet",
+      "cleavage",
+      "standing",
+      "raising golden goblet",
+      "joyful smile",
+      "looking at viewer",
+      "festival terrace",
+      "flaming torches",
+      "glowing embers",
+      "starry night",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "raising goblet",
+      "gold cup",
+      "banquet",
+      "torches",
+      "sparks",
+      "starry sky",
+      "smile",
+      "night",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "奥古斯塔 · 夏至火炬庆典高举黄金圣爵"
+  }
+}

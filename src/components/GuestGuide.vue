@@ -12,14 +12,12 @@
   >
     <div class="guest-guide-card">
       <header class="guest-guide-heading">
-        <h2 id="guest-guide-title">欢迎来到 绘遇</h2>
+        <h2 id="guest-guide-title">欢迎来到绘遇</h2>
         <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭使用引导" @click="dismiss"><ArchiveIcon name="close" /></button>
       </header>
       <div class="guest-guide-body">
         <nav class="guest-guide-destinations" aria-label="开始创作">
-          <RouterLink to="/scene-explorer" data-control-motion @click="dismiss"><ArchiveIcon name="scene" /><strong class="studio-control-label">选场景</strong></RouterLink>
-          <RouterLink to="/prompt-builder" data-control-motion @click="dismiss"><ArchiveIcon name="palette" /><strong class="studio-control-label">绘制</strong></RouterLink>
-          <RouterLink to="/gallery" data-control-motion @click="dismiss"><ArchiveIcon name="gallery" /><strong class="studio-control-label">我的作品</strong></RouterLink>
+          <CreationDestinations @navigate="dismiss" />
         </nav>
         <p v-if="!isLocalHost" id="guest-guide-description">生成任务在分享者的电脑上执行。</p>
       </div>
@@ -38,6 +36,7 @@
 <script setup lang="ts">
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import CreationDestinations from '@/components/home/CreationDestinations.vue'
 import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
 import { useFocusTrap } from '@/composables/useFocusTrap'
 import { appearanceFocusOrigin } from '@/composables/useDesktopInteraction'
@@ -102,7 +101,7 @@ async function dismiss() {
   backdrop-filter: blur(10px);
 }
 .guest-guide-card {
-  width: min(520px, 100%);
+  width: min(600px, 100%);
   max-height:100%;
   display:grid;
   grid-template-rows:auto minmax(0,1fr) auto;
@@ -112,17 +111,11 @@ async function dismiss() {
   background: var(--bg-surface);
   box-shadow: var(--shadow-lg);
 }
-.guest-guide-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
-.guest-guide-heading h2 { margin:0; color:var(--text-primary); font-size:var(--fs-title-sm); font-weight:600; }
-.guest-guide-body { min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
+.guest-guide-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-4) var(--s-5) var(--s-2); }
+.guest-guide-heading h2 { margin:0; color:var(--text-primary); font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); }
+.guest-guide-body { min-height:0; padding:var(--s-2) var(--s-5) var(--s-5); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
 .guest-guide-body p { margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
-.guest-guide-destinations { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); }
-.guest-guide-destinations a { display:grid; justify-items:center; gap:var(--s-2); min-width:0; padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--accent); background:var(--bg-base); text-decoration:none; overflow-wrap:anywhere; }
-@media (hover:hover) and (pointer:fine) { .guest-guide-destinations a:hover { border-color:var(--border-strong); } }
-.guest-guide-destinations a:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.guest-guide-destinations .archive-icon { width:20px; height:20px; }
-.guest-guide-destinations strong { color:var(--text-primary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
-.guest-guide-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:var(--s-2); padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); }
+.guest-guide-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:var(--s-2); padding:var(--s-3) var(--s-5); border-top:1px solid var(--border-soft); background:var(--bg-base); }
 .guest-guide-actions > a { margin-inline-end:auto; }
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) .guest-guide { backdrop-filter: none; animation: none; }

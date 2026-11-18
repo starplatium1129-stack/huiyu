@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shorekeeper",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 143,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
   "data": {
     "id": "shorekeeper",
     "profile": {
@@ -144,8 +144,9 @@
               "黑海岸执花人",
               "红椿寄生共鸣者"
             ],
-            "role": "黑海岸特命调查员 / 迷狂之花",
-            "summary": "性格捉摸不定、享受战斗与极致快感的黑海岸共鸣者。对漂泊者怀有本能般的痴缠与追寻，在危机中展现狂暴的花枝战力。"
+            "role": "危险狂热的观察者与执花",
+            "summary": "椿是黑海岸的执花。她常在温室和泰缇斯观测台出入，也把狩猎与交锋比作种子发芽。她说话带笑，越是碰上有意思的对手，越喜欢慢慢试探。",
+            "characterId": "camellya_wuwa"
           },
           {
             "id": "jiyan",
@@ -168,6 +169,104 @@
             ],
             "role": "夜归巡尉 / 柔风感知者",
             "summary": "性格轻柔温婉的随行向导。能倾听风的气息指引方向，是漂泊者苏醒后第一位结伴同行的伙伴。"
+          },
+          {
+            "id": "carlotta_wuwa",
+            "name": "珂莱塔",
+            "aliases": [
+              "Carlotta"
+            ],
+            "characterId": "carlotta_wuwa",
+            "role": "优雅果决的莫塔里家族二小姐",
+            "summary": "珂莱塔是莫塔里家族的二小姐。她熟悉拉古那的礼节和拍卖沙龙，也能果断地用晶簇枪火打破僵局。她在社交场合说话周全，到了私下，反而更愿意试探着把话说开。"
+          },
+          {
+            "id": "phoebe_wuwa",
+            "name": "菲比",
+            "aliases": [
+              "Phoebe"
+            ],
+            "characterId": "phoebe_wuwa",
+            "role": "虔诚温柔的隐海修会教士",
+            "summary": "菲比是隐海修会的教士。祷告、抄录手稿和照看声骸都是她熟悉的事。她乐于帮忙，也常对新鲜事追问几句，一被直白地夸奖就容易脸红。"
+          },
+          {
+            "id": "cantarella_wuwa",
+            "name": "坎特蕾拉",
+            "aliases": [
+              "Cantarella"
+            ],
+            "characterId": "cantarella_wuwa",
+            "role": "深海海月与毒药世家的慵懒家主",
+            "summary": "坎特蕾拉掌管翡萨烈家族。她熟悉药剂与香料，常在水母穹顶下招待访客。一杯茶还没喝完，她已经借着一句双关把话题引向了自己真正想问的事。"
+          },
+          {
+            "id": "phrolova_wuwa",
+            "name": "弗洛洛",
+            "aliases": [
+              "Phrolova"
+            ],
+            "characterId": "phrolova_wuwa",
+            "role": "执掌彼岸残响的悲剧指挥家",
+            "summary": "弗洛洛是残星会的指挥家。废弃歌剧院与排练厅是她熟悉的地方，她用指挥棒统御彼岸的残响。平日她说话平静，谈到自己的乐章时，她的执着才变得明显。"
+          },
+          {
+            "id": "augusta_wuwa",
+            "name": "奥古斯塔",
+            "aliases": [
+              "Augusta"
+            ],
+            "characterId": "augusta_wuwa",
+            "role": "如烈日般坦荡威严的七丘女统帅",
+            "summary": "奥古斯塔执掌七丘，既在议事殿处理城邦事务，也会到角斗场亲自练剑。她把守护七丘视为自己的责任，说话直截了当，在信任的人面前也一样坦率。"
+          },
+          {
+            "id": "iuno_wuwa",
+            "name": "尤诺",
+            "aliases": [
+              "Iuno"
+            ],
+            "characterId": "iuno_wuwa",
+            "role": "清冷傲娇的七丘月相占星先知",
+            "summary": "尤诺是七丘的月相神官，常在观星塔转动星盘、推演天象。她习惯用星象解释自己的关心，被人当面点破时，又会若无其事地把话题拨回天上。"
+          },
+          {
+            "id": "galbrena_wuwa",
+            "name": "嘉贝莉娜",
+            "aliases": [
+              "Galbrena"
+            ],
+            "characterId": "galbrena_wuwa",
+            "role": "冷峻孤高的幽蓝猎魔枪手",
+            "summary": "嘉贝莉娜是一名独行猎魔人，擅长用双枪和幽蓝火焰夜战。出门前她会动手检查枪械，回到安全屋才肯松一口气。她说话简短，关心别人时也很少多作解释。"
+          },
+          {
+            "id": "chisa_wuwa",
+            "name": "千咲",
+            "aliases": [
+              "Chisa"
+            ],
+            "characterId": "chisa_wuwa",
+            "role": "文静敏锐的星炬学院优等生",
+            "summary": "千咲是星炬学院的学生。她常在图书馆翻看频率笔记，也会去茶道社和植物标本温室。她待人有礼，习惯先理清事情的来龙去脉，到了必须作决定的时候也很果断。"
+          },
+          {
+            "id": "nene",
+            "name": "绫地宁宁",
+            "aliases": [
+              "Ayachi Nene",
+              "綾地寧々"
+            ],
+            "characterId": "nene"
+          },
+          {
+            "id": "natsume",
+            "name": "四季夏目",
+            "aliases": [
+              "Shiki Natsume",
+              "四季ナツメ"
+            ],
+            "characterId": "natsume"
           }
         ],
         "relations": [
@@ -296,6 +395,182 @@
               "title": "库洛游戏《鸣潮》第一章主线战役 · 夜归云陵",
               "url": "https://mc.kurogames.com/"
             }
+          },
+          {
+            "id": "carlotta_wuwa-cantarella_wuwa-tense_elegance",
+            "source": "carlotta_wuwa",
+            "target": "cantarella_wuwa",
+            "label": "世家博弈 · 社交场宿敌",
+            "description": "莫塔里家族与翡萨烈家族在拉古那艺术沙龙与海贸航线上针锋相对，一个以晶簇枪火破局，一个以毒酿与帷幔设局，在晚宴碰杯间言语交锋。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "tense_elegance",
+            "duoPromptHook": "2girls, carlotta_(wuthering_waves), cantarella_(wuthering_waves), wuthering waves, clinking wine glasses, masquerade salon, chandelier, warm lighting, medium shot"
+          },
+          {
+            "id": "carlotta_wuwa-phoebe_wuwa-mutual_respect",
+            "source": "carlotta_wuwa",
+            "target": "phoebe_wuwa",
+            "label": "城邦礼敬 · 世家千金与修会教士",
+            "description": "珂莱塔常为隐海修会的艺术修复与海灯节提供赞助，对菲比的纯粹虔诚抱有难得的温和与保护欲。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "mutual_respect",
+            "duoPromptHook": "2girls, carlotta_(wuthering_waves), phoebe_(wuthering_waves), wuthering waves, cathedral cloister, stained glass, holding teacup, afternoon, soft lighting, medium shot"
+          },
+          {
+            "id": "cantarella_wuwa-phoebe_wuwa-intriguing_contrast",
+            "source": "cantarella_wuwa",
+            "target": "phoebe_wuwa",
+            "label": "深海与圣光 · 试探与净化",
+            "description": "坎特蕾拉总喜欢用晦涩的深海比喻逗弄纯真的菲比，而菲比则认真地为这位危险的翡萨烈家主祈祷安宁。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "intriguing_contrast",
+            "duoPromptHook": "2girls, cantarella_(wuthering_waves), phoebe_(wuthering_waves), wuthering waves, harbor terrace, sea breeze, lantern light, twilight, medium shot"
+          },
+          {
+            "id": "augusta_wuwa-iuno_wuwa-trusted_partners",
+            "source": "augusta_wuwa",
+            "target": "iuno_wuwa",
+            "label": "七丘双璧 · 烈日执政与月相先知",
+            "description": "七丘最核心的搭档：奥古斯塔以烈阳般的决断征战四方，尤诺在月轮观星塔为她推演星轨与归途；尤诺嘴上抱怨执政官鲁莽，却总为她留着夜灯。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "trusted_partners",
+            "duoPromptHook": "2girls, augusta_(wuthering_waves), iuno_(wuthering_waves), wuthering waves, marble observatory terrace, astrolabe, sunset, golden hour, starry sky, medium shot"
+          },
+          {
+            "id": "camellya-phrolova_wuwa-dangerous_rivals",
+            "source": "camellya",
+            "target": "phrolova_wuwa",
+            "label": "宿命对峙 · 执花与彼岸指挥家",
+            "description": "黑海岸与残星会的危险共鸣者，一个以赤花藤蔓狩猎心动目标，一个以红彼岸花指挥残响乐章，二人交锋宛如一场致命的华尔兹。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "dangerous_rivals",
+            "duoPromptHook": "2girls, camellya_(wuthering_waves), phrolova_(wuthering_waves), wuthering waves, ruined opera stage, red spider lilies, crimson petals, moonlight, dramatic lighting, full body"
+          },
+          {
+            "id": "camellya-galbrena_wuwa-volatile_respect",
+            "source": "camellya",
+            "target": "galbrena_wuwa",
+            "label": "危险试探 · 狂热藤蔓与幽蓝枪火",
+            "description": "嘉贝莉娜敏锐地察觉到椿身上危险的狩猎气息，二人在荒野营地与夜雨天台间既互相戒备又欣赏彼此的战斗本能。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "volatile_respect",
+            "duoPromptHook": "2girls, camellya_(wuthering_waves), galbrena_(wuthering_waves), wuthering waves, rainy rooftop, neon reflections, blue fire, red petals, night, medium shot"
+          },
+          {
+            "id": "galbrena_wuwa-chisa_wuwa-protective_mentorship",
+            "source": "galbrena_wuwa",
+            "target": "chisa_wuwa",
+            "label": "前辈与优等生 · 实战与理论的互补",
+            "description": "千咲用星炬学院的精密频率测算协助嘉贝莉娜追踪残象踪迹，嘉贝莉娜则会在归途给熬夜整理资料的千咲带回热饮。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "protective_mentorship",
+            "duoPromptHook": "2girls, galbrena_(wuthering_waves), chisa_(wuthering_waves), wuthering waves, academy library, open books, desk lamp, night, warm lighting, medium shot"
+          },
+          {
+            "id": "phoebe_wuwa-chisa_wuwa-warm_friendship",
+            "source": "phoebe_wuwa",
+            "target": "chisa_wuwa",
+            "label": "跨城书友 · 修会典籍与学院笔记",
+            "description": "同样热爱阅读与记录的少女，常在午后茶席交换拉古那手稿与星炬学院的声骸观察笔记。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "warm_friendship",
+            "duoPromptHook": "2girls, phoebe_(wuthering_waves), chisa_(wuthering_waves), wuthering waves, sunlit library table, stacked books, teacups, afternoon, window light, medium shot"
+          },
+          {
+            "id": "augusta_wuwa-carlotta_wuwa-diplomatic_allies",
+            "source": "augusta_wuwa",
+            "target": "carlotta_wuwa",
+            "label": "城邦外交 · 七丘统帅与拉古那名门",
+            "description": "在跨城邦盛典与条约会晤中结识，奥古斯塔欣赏珂莱塔的果敢枪法，珂莱塔则敬重七丘执政官的坦荡气度。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 角色关系设定",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "diplomatic_allies",
+            "duoPromptHook": "2girls, augusta_(wuthering_waves), carlotta_(wuthering_waves), wuthering waves, grand banquet hall, marble columns, wine glasses, warm chandelier light, medium shot"
+          },
+          {
+            "id": "chisa_wuwa-nene-studio_crossover",
+            "source": "chisa_wuwa",
+            "target": "nene",
+            "label": "绘遇工作室联动 · 跨次元优等生茶会",
+            "description": "在绘遇工作室的跨作品主题企划中，星炬学院的千咲与绫地宁宁在午后咖啡馆分享甜点与学习手账。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 工作室联动",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "studio_crossover",
+            "duoPromptHook": "2girls, chisa_(wuthering_waves), ayachi_nene, wuthering waves, cozy cafe booth, strawberry cake, teacups, afternoon, window light, medium shot"
+          },
+          {
+            "id": "iuno_wuwa-natsume-studio_crossover",
+            "source": "iuno_wuwa",
+            "target": "natsume",
+            "label": "绘遇工作室联动 · 月下占星与古风茶席",
+            "description": "尤诺在月夜庭院为四季夏目占卜星象，两位外表清冷却各自怀揣细腻心事的少女在灯火下安静对坐。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "绘遇扩充包 · 工作室联动",
+            "evidence": {
+              "title": "绘遇《鸣潮》9 角色扩充包 · 角色关系",
+              "url": "https://drive.google.com/file/d/1RuRws8Vo_gk9rqmMkBo7YDsHlSb_IUdM/view"
+            },
+            "affinity": "studio_crossover",
+            "duoPromptHook": "2girls, iuno_(wuthering_waves), shiki_natsume, wuthering waves, moonlit courtyard veranda, paper lanterns, astrolabe, night, soft lighting, medium shot"
           }
         ]
       }

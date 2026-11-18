@@ -1,0 +1,70 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_galbrena_sc03",
+  "revision": 1,
+  "sortOrder": 3803,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于工作台前单手握持拆解的金属手枪，侧目浅笑",
+    "adult": false,
+    "animaCaption": "At a cluttered metal workbench inside an underground armory lined with weapon racks, she holds a custom pistol with rolled-up sleeves and gives a faint, confident smile.",
+    "camera": "中景，平视，武器架与工具箱背景",
+    "category": "索拉里斯日常",
+    "characterId": "galbrena_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "挂满冷兵器与弹药箱的地下砖墙武器库内，台灯照亮金属零件，嘉贝莉娜卷起衬衫袖口佩戴肩带枪套，俯身校准枪管准星。",
+    "id": "wuwa_galbrena_sc03",
+    "lighting": "工业金属吊灯暖白聚光与冷灰砖墙阴影",
+    "location": "猎魔人地下砖墙武器库",
+    "mature": false,
+    "mood": "干练专注",
+    "negativeTokens": [
+      "bright garden"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "armory_vest_and_holster",
+    "promptProse": "In a brick-walled underground armory lit by an overhead industrial lamp, Galbrena wears a slate shirt with rolled sleeves and leather shoulder holsters, inspecting a customized pistol at her workbench.",
+    "promptTokens": [
+      "grey hair",
+      "blue streaks",
+      "medium hair",
+      "blue eyes",
+      "grey shirt",
+      "rolled-up sleeves",
+      "navy vest",
+      "shoulder holster",
+      "black pants",
+      "belt",
+      "standing",
+      "workbench",
+      "holding disassembled pistol",
+      "slight smile",
+      "looking at viewer",
+      "underground armory",
+      "weapon racks",
+      "toolboxes",
+      "hanging industrial lamp",
+      "medium shot"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "workbench",
+      "holding pistol",
+      "weapons rack",
+      "armory",
+      "slight smile",
+      "industrial lamp",
+      "afternoon",
+      "medium shot"
+    ],
+    "timeOfDay": "下午",
+    "title": "嘉贝莉娜 · 地下武器库工作台改装猎魔双枪"
+  }
+}

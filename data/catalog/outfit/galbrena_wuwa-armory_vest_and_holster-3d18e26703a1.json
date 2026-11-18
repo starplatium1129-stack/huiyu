@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "galbrena_wuwa/armory_vest_and_holster",
+  "revision": 1,
+  "sortOrder": 3803,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "galbrena_wuwa",
+    "outfit": {
+      "id": "armory_vest_and_holster",
+      "name": "武器库战术马甲与肩带枪套便装",
+      "prose": "A fitted slate-grey dress shirt with rolled sleeves, a dark navy waistcoat, leather shoulder holsters, and pleated dark trousers.",
+      "tokens": [
+        "grey shirt",
+        "rolled-up sleeves",
+        "navy vest",
+        "shoulder holster",
+        "black pants",
+        "belt"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "camellya_wuwa/sheer_camellia_corset_r15",
+  "revision": 1,
+  "sortOrder": 3108,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "camellya_wuwa",
+    "outfit": {
+      "id": "sheer_camellia_corset_r15",
+      "name": "赤花刺绣半透蕾丝束腰内衣",
+      "prose": "A sheer black mesh bustier embroidered with crimson camellia vines, paired with matching lace garter straps and sheer thigh-highs.",
+      "tokens": [
+        "black lingerie",
+        "sheer",
+        "floral embroidery",
+        "bustier",
+        "garter straps",
+        "sheer thighhighs"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

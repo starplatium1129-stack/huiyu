@@ -79,8 +79,6 @@ def _validate_skip_layers(layers, depth, name='skip_layers'):
 
 def _rotate(x, rope):
     sin, cos = rope.chunk(2, -1)
-    sin = torch.cat((sin, sin), -1).unsqueeze(-2)
-    cos = torch.cat((cos, cos), -1).unsqueeze(-2)
     a, b = x.chunk(2, -1)
     return x * cos + torch.cat((-b, a), -1) * sin
 
@@ -245,7 +243,10 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
             context = embeds[index:index + 1, mask[index].bool()]
         if context.shape[1] == 0:
             raise ValueError('Each sample needs at least one valid text token.')
-        rope = self.rope(height, width, context.shape[1], device).to(dtype)
+        # Share the broadcast-ready bands across Q/K and every attention block.
+        # The task-local context cache accounts for the expanded tensor's bytes.
+        sin, cos = self.rope(height, width, context.shape[1], device).to(dtype).chunk(2, -1)
+        rope = torch.cat((sin, sin, cos, cos), -1).unsqueeze(-2)
         return rope, self.text_embedder(context, rope[:, height * width:])
 
     def forward(self, hidden_states, timestep, encoder_hidden_states,
@@ -418,8 +419,11 @@ class MOSSImagePipeline(DiffusionPipeline):
                 raise ValueError('Prompt embeddings must be [B, S, C] with matching batch size.')
             if mask is None:
                 mask = torch.ones(embeds.shape[:2], dtype=torch.bool, device=embeds.device)
-            return (embeds.to(device).repeat_interleave(num_images_per_prompt, 0),
-                    mask.to(device).repeat_interleave(num_images_per_prompt, 0))
+            embeds, mask = embeds.to(device), mask.to(device)
+            if num_images_per_prompt == 1:
+                return embeds, mask
+            return (embeds.repeat_interleave(num_images_per_prompt, 0),
+                    mask.repeat_interleave(num_images_per_prompt, 0))
         positive, positive_mask = prepare(prompt_embeds, prompt_attention_mask)
         do_cfg = guidance_scale != 1.0
         if do_cfg:

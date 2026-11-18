@@ -1,0 +1,139 @@
+{
+  "kind": "character",
+  "id": "phrolova_wuwa",
+  "revision": 1,
+  "sortOrder": 308,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "id": "phrolova_wuwa",
+    "profile": {
+      "id": "phrolova_wuwa",
+      "name": "弗洛洛",
+      "source": "Wuthering Waves",
+      "alias": [
+        "弗洛洛",
+        "Phrolova"
+      ],
+      "type": "popular",
+      "tags": [
+        "弗洛洛",
+        "鸣潮",
+        "残星会 · 会监"
+      ],
+      "identity": {
+        "role": "执掌彼岸残响的悲剧指挥家",
+        "faction": "残星会 · 会监"
+      },
+      "bg_story": "弗洛洛是残星会的指挥家。废弃歌剧院与排练厅是她熟悉的地方，她用指挥棒统御彼岸的残响。平日她说话平静，谈到自己的乐章时，她的执着才变得明显。",
+      "personality": [
+        "冷漠忧郁",
+        "艺术偏执",
+        "优雅危险",
+        "孤独共鸣"
+      ],
+      "likes": [],
+      "speech": "这里要停一拍。等那道回声散尽，再接下一句。",
+      "traits": [
+        "phrolova_(wuthering_waves)",
+        "wuthering_waves",
+        "white hair",
+        "long hair",
+        "red eyes",
+        "eyepatch"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "弗洛洛立绘待补"
+      },
+      "visual_dna": {
+        "signature": "Phrolova from Wuthering Waves. Long white hair, a red eye and a flowered eyepatch.",
+        "uniform": "彼岸残响黑红燕尾指挥礼服",
+        "style": "anime"
+      },
+      "accent_color": "#8C1D2E",
+      "bg_color": "#EAE6E8",
+      "palette": [
+        "#8C1D2E",
+        "#EAE6E8"
+      ],
+      "theme": {
+        "primaryColor": "#8C1D2E",
+        "secondaryColor": "#EAE6E8",
+        "accentGlow": "rgba(140, 29, 46, 0.38)",
+        "motif": "spider_lily_and_crimson_baton"
+      },
+      "settingMemory": {
+        "archetype": "执掌彼岸残响的悲剧指挥家",
+        "coreTraits": [
+          "冷漠忧郁",
+          "艺术偏执",
+          "优雅危险",
+          "孤独共鸣"
+        ],
+        "signatureLocations": [
+          "废弃歌剧院金色包厢",
+          "彼岸花镜湖水榭",
+          "弦乐残响排练厅",
+          "猩红天鹅绒幕后休息室"
+        ],
+        "speechTone": "平静克制、宛如念诵乐章批注，在极端情绪波动时才会流露出灼热的执念。"
+      },
+      "version": "2.5",
+      "personaCoreSceneIds": [
+        "wuwa_phrolova_sc01",
+        "wuwa_phrolova_sc07",
+        "wuwa_phrolova_sc09"
+      ],
+      "signatureSceneIds": [
+        "wuwa_phrolova_sc01",
+        "wuwa_phrolova_sc03",
+        "wuwa_phrolova_sc08",
+        "wuwa_phrolova_sc10"
+      ],
+      "factions": [
+        {
+          "id": "fractsidus",
+          "name": "残星会 (Fractsidus)",
+          "description": "操控残象与悲剧乐章的危险结社，与黑海岸长期对峙。"
+        }
+      ]
+    },
+    "popular": {
+      "id": "phrolova_wuwa",
+      "displayName": "弗洛洛",
+      "originalName": "Phrolova",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "弗洛洛",
+        "Phrolova"
+      ],
+      "identityProse": "Phrolova from Wuthering Waves. Long white hair, a red eye and a flowered eyepatch.",
+      "identityTokens": [
+        "phrolova_(wuthering_waves)",
+        "wuthering_waves",
+        "white hair",
+        "long hair",
+        "red eyes",
+        "eyepatch"
+      ],
+      "characterTokens": [
+        "phrolova_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
+      ],
+      "exactTokens": [
+        "phrolova_(wuthering_waves)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown"
+    }
+  }
+}

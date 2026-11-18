@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "phrolova_wuwa/unbuttoned_conductor_shirt_r18",
+  "revision": 1,
+  "sortOrder": 3509,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phrolova_wuwa",
+    "outfit": {
+      "id": "unbuttoned_conductor_shirt_r18",
+      "name": "敞开指挥白衬衫与彼岸红花眼罩全裸",
+      "prose": "Wearing only an unbuttoned white Victorian shirt falling off her shoulders, her red flower eyepatch, and black thigh-highs.",
+      "tokens": [
+        "unbuttoned shirt",
+        "white shirt",
+        "open clothes",
+        "black thighhighs",
+        "bare breasts",
+        "nipples",
+        "nude"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

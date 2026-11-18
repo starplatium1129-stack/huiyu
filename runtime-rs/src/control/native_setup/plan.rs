@@ -216,11 +216,10 @@ impl ControlService {
                     "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else if moss_models::is_moss(model){"moss-checkpoint"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
                     "checkpointFilename":model.checkpoint_filename,"checkpointOptional":
-                        model.conversion_profile.as_deref()==Some("anima-cosmos2b-v041")
-                        || moss_models::is_moss(model)
+                        (model.checkpoint_filename.is_some() && !model.requires_local_checkpoint)
                         || local_checkpoint
                         || (model.conversion_profile.is_some() && anima_models::input_root(&model_root, model).join("checkpoint.safetensors").is_file()),
-                    "requiresAccess":model.requires_access,"family":if model.id.starts_with("krea2-"){"krea2"}else if model.id.starts_with("qwen-"){"qwen-image"}else if model.id.starts_with("moss-"){"moss-image"}else{"anima"},
+                    "requiresAccess":model.requires_access,"family":crate::generation::native::adapters::model(&model.id).and_then(|spec| spec["family"].as_str()).unwrap_or("anima"),
                     "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":if local_checkpoint { required_with_checkpoint } else { required },
                     "requiredBytesWithCheckpoint":required_with_checkpoint,
                     "installed":installed,"path":model_root})

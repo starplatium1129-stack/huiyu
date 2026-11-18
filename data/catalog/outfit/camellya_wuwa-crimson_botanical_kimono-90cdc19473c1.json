@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "camellya_wuwa/crimson_botanical_kimono",
+  "revision": 1,
+  "sortOrder": 3102,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "camellya_wuwa",
+    "outfit": {
+      "id": "crimson_botanical_kimono",
+      "name": "绯椿织金宽袖羽织和服",
+      "prose": "A black silk kimono printed with blooming red camellias, cinched with a gold-embroidered crimson obi and draped off one shoulder.",
+      "tokens": [
+        "black kimono",
+        "floral print",
+        "red obi",
+        "off-shoulder kimono",
+        "wide sleeves",
+        "gold trim"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

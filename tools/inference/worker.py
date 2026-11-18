@@ -284,14 +284,18 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         if control is not None:
             control.stage(name, component=component)
     stage("dependencies")
-    data = validate_job(job)
-    root = validate_model(job.get("modelDir"))
+    if prepared is None:
+        data = validate_job(job)
+        root = validate_model(job.get("modelDir"))
+        fingerprint = None
+    else:
+        data, root, fingerprint = prepared
     identity, resident_fingerprint, dependency_seconds = None, 0.0, 0.0
     if resident is None:
         dependencies(full=False)
     else:
         stage("fingerprint")
-        identity, resident_fingerprint, dependency_seconds = prepared if prepared is not None else resident.prepare_and_fingerprint(
+        identity, resident_fingerprint, dependency_seconds = fingerprint if fingerprint is not None else resident.prepare_and_fingerprint(
             lambda: dependencies(full=False), root, job.get("loras", []), load_mask_tools)
     try:
         device = load_mask_tools("anima_device").select()

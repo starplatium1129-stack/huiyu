@@ -21,7 +21,7 @@ pub(super) fn run(
             return;
         }
     };
-    let mut copying = false;
+    let mut copying: Option<Arc<AtomicBool>> = None;
     let mut collecting: Option<Arc<AtomicBool>> = None;
     let mut closing = Vec::new();
 
@@ -29,55 +29,15 @@ pub(super) fn run(
         match work {
             Work::MigrationVerified(id, result) => {
                 migration::verification::finish(&mut context, id, result);
-                if !closing.is_empty()
-                    && !copying
-                    && collecting.is_none()
-                    && context.result_commit.is_none()
-                    && context.restore_commit.is_none()
-                    && context.upload.is_none()
-                    && context.migration_verification.is_none()
-                {
-                    break;
-                }
             }
             Work::UploadFinished(id, result) => {
                 upload::finish(&mut context, id, result);
-                if !closing.is_empty()
-                    && !copying
-                    && collecting.is_none()
-                    && context.result_commit.is_none()
-                    && context.restore_commit.is_none()
-                    && context.upload.is_none()
-                    && context.migration_verification.is_none()
-                {
-                    break;
-                }
             }
             Work::ResultVerified(id, verified) => {
                 result_commit::finish(&mut context, id, verified, &sender);
-                if !closing.is_empty()
-                    && !copying
-                    && collecting.is_none()
-                    && context.result_commit.is_none()
-                    && context.restore_commit.is_none()
-                    && context.upload.is_none()
-                    && context.migration_verification.is_none()
-                {
-                    break;
-                }
             }
             Work::RestoreVerified(id, verified) => {
                 restore::finish(&mut context, id, verified);
-                if !closing.is_empty()
-                    && !copying
-                    && collecting.is_none()
-                    && context.result_commit.is_none()
-                    && context.restore_commit.is_none()
-                    && context.upload.is_none()
-                    && context.migration_verification.is_none()
-                {
-                    break;
-                }
             }
             Work::TaskMediaCopy(command, source, principal, cancel, reply, permit) => {
                 if !closing.is_empty() {
@@ -336,7 +296,7 @@ pub(super) fn run(
                         }
                     }
                 } else if matches!(command["kind"].as_str(), Some("backup" | "restoreBackup")) {
-                    if copying {
+                    if copying.is_some() {
                         let _ = reply.send(Err(ApiError::new(
                             429,
                             "WORKSPACE_BUSY",
@@ -349,11 +309,14 @@ pub(super) fn run(
                             let _ = reply.send(Ok(value));
                         }
                         Ok(backup::Prepared::Copy(mut job)) => {
+                            let backup_id = job.completion.backup_id.clone();
                             let Some(sender) = sender.upgrade() else {
+                                backup::release_unsealed(&context, backup_id.as_deref());
                                 let _ = reply.send(Err(unavailable()));
                                 continue;
                             };
 
+                            let cancellation = job.completion.cancel.clone();
                             let thread = std::thread::Builder::new()
                                 .name("workspace-copy".into())
                                 .spawn(move || {
@@ -373,9 +336,12 @@ pub(super) fn run(
                                         reply,
                                     ));
                                 });
-                            copying = thread.is_ok();
-                            if let Err(error) = thread {
-                                eprintln!("workspace copy startup: {error}");
+                            match thread {
+                                Ok(_) => copying = Some(cancellation),
+                                Err(error) => {
+                                    backup::release_unsealed(&context, backup_id.as_deref());
+                                    eprintln!("workspace copy startup: {error}");
+                                }
                             }
                         }
                         Err(error) => {
@@ -401,34 +367,16 @@ pub(super) fn run(
             Work::CopyFinished(completion, result, reply) => {
                 let result = backup::finish(&mut context, completion, result);
                 let _ = reply.send(result);
-                copying = false;
-                if !closing.is_empty()
-                    && collecting.is_none()
-                    && context.result_commit.is_none()
-                    && context.restore_commit.is_none()
-                    && context.upload.is_none()
-                    && context.migration_verification.is_none()
-                {
-                    break;
-                }
+                copying = None;
             }
             Work::GarbageFinished(completion, result, reply) => {
                 let result = garbage::finish(&mut context, completion, result);
                 let _ = reply.send(result);
                 collecting = None;
-                if !closing.is_empty()
-                    && !copying
-                    && context.result_commit.is_none()
-                    && context.restore_commit.is_none()
-                    && context.upload.is_none()
-                    && context.migration_verification.is_none()
-                {
-                    break;
-                }
             }
             Work::Close(reply) => {
                 closing.push(reply);
-                if let Some(cancel) = &collecting {
+                for cancel in copying.iter().chain(&collecting) {
                     cancel.store(true, Ordering::Relaxed);
                 }
                 if let Some(pending) = &context.result_commit {
@@ -443,16 +391,17 @@ pub(super) fn run(
                 if let Some(pending) = &context.migration_verification {
                     pending.cancel();
                 }
-                if !copying
-                    && collecting.is_none()
-                    && context.result_commit.is_none()
-                    && context.restore_commit.is_none()
-                    && context.upload.is_none()
-                    && context.migration_verification.is_none()
-                {
-                    break;
-                }
             }
+        }
+        if !closing.is_empty()
+            && copying.is_none()
+            && collecting.is_none()
+            && context.result_commit.is_none()
+            && context.restore_commit.is_none()
+            && context.upload.is_none()
+            && context.migration_verification.is_none()
+        {
+            break;
         }
     }
     // Refuse admission before acknowledging Close. Each filesystem worker keeps

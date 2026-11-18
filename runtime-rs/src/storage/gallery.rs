@@ -50,7 +50,15 @@ impl Filter {
         self.bind(id);
     }
     fn search(&mut self, search: &str) {
-        for term in search.to_lowercase().split_whitespace() {
+        let search = search.to_lowercase();
+        let terms: std::collections::BTreeSet<_> = search.split_whitespace().collect();
+        // Long pasted searches must not exceed SQLite's expression depth.
+        if terms.len() > 32 {
+            self.and("NOT EXISTS(SELECT 1 FROM json_each(?) term WHERE instr(i.search_text,term.value)=0)");
+            self.bind(serde_json::to_string(&terms).expect("strings serialize to JSON"));
+            return;
+        }
+        for term in terms {
             self.and("instr(i.search_text,?)>0");
             self.bind(term);
         }
@@ -149,7 +157,13 @@ fn count(c: &Context, f: &Filter) -> Result<i64> {
         |r| r.get(0),
     )?)
 }
-fn items(c: &Context, f: &Filter, limit: i64) -> Result<Vec<Value>> {
+struct GalleryItem {
+    record: Value,
+    time: f64,
+    key: String,
+}
+
+fn items(c: &Context, f: &Filter, limit: i64) -> Result<Vec<GalleryItem>> {
     let sql = format!(
         "SELECT a.id_json,{},a.revision,a.deleted_at,g.time,g.id_key FROM {FROM} JOIN artworks a USING(id_key) WHERE {} ORDER BY g.time DESC,g.id_key LIMIT {limit}",
         records::GALLERY_BODY,
@@ -160,21 +174,30 @@ fn items(c: &Context, f: &Filter, limit: i64) -> Result<Vec<Value>> {
     let mut items = Vec::new();
     while let Some(row) = rows.next()? {
         c.check_cancel()?;
-        items.push(json!({"record":records::decode_artwork(row)?,"time":row.get::<_,f64>(4)?,"key":row.get::<_,String>(5)?}));
+        items.push(GalleryItem {
+            record: records::decode_artwork(row)?,
+            time: row.get(4)?,
+            key: row.get(5)?,
+        });
     }
     Ok(items)
 }
+pub(super) struct PageCount {
+    revision: i64,
+    projects: String,
+    query: String,
+    total: i64,
+}
+
 pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
-    let revision = artwork_index::revision(c)?;
-    let projects = project_version(c)?;
-    let query = canonical::fingerprint(&command["query"]);
-    let mut f = filter(c, &command["query"])?;
-    let total = count(c, &f)?;
     let limit = command["limit"].as_i64().unwrap_or(24);
     if !(1..=200).contains(&limit) {
         return Err(invalid("Gallery limit must be 1–200"));
     }
-    if let Some(cursor) = command.get("cursor").filter(|v| !v.is_null()) {
+    let revision = artwork_index::revision(c)?;
+    let projects = project_version(c)?;
+    let query = canonical::fingerprint(&command["query"]);
+    let cursor = if let Some(cursor) = command.get("cursor").filter(|v| !v.is_null()) {
         if cursor["query"] != query {
             return Err(invalid("Gallery cursor belongs to a different query"));
         }
@@ -189,6 +212,33 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
             .filter(|t| t.is_finite())
             .ok_or_else(|| invalid("Invalid gallery cursor"))?;
         let key = string(cursor, "key")?;
+        Some((time, key))
+    } else {
+        None
+    };
+    let mut f = filter(c, &command["query"])?;
+    let cached = c
+        .gallery_page_count
+        .borrow()
+        .as_ref()
+        .filter(|page| {
+            page.revision == revision && page.projects == projects && page.query == query
+        })
+        .map(|page| page.total);
+    let total = match cached {
+        Some(total) => total,
+        None => {
+            let total = count(c, &f)?;
+            *c.gallery_page_count.borrow_mut() = Some(PageCount {
+                revision,
+                projects: projects.clone(),
+                query: query.clone(),
+                total,
+            });
+            total
+        }
+    };
+    if let Some((time, key)) = cursor {
         f.and("(g.time<? OR (g.time=? AND g.id_key>?))");
         f.values.extend([
             SqlValue::Real(time),
@@ -201,11 +251,11 @@ pub(super) fn read(c: &Context, command: &Value) -> Result<Value> {
     page.truncate(limit as usize);
     let next = if more {
         let last = page.last().unwrap();
-        json!({"time":last["time"],"key":last["key"],"revision":revision,"projects":projects,"query":query})
+        json!({"time":last.time,"key":last.key,"revision":revision,"projects":projects,"query":query})
     } else {
         Value::Null
     };
-    Ok(
-        json!({"items":page.into_iter().map(|mut item| item["record"].take()).collect::<Vec<_>>(),"total":total,"nextCursor":next,"revision":revision,"projectsVersion":projects}),
-    )
+    let mut value = json!({"items":null,"total":total,"nextCursor":next,"revision":revision,"projectsVersion":projects});
+    value["items"] = Value::Array(page.into_iter().map(|item| item.record).collect());
+    Ok(value)
 }

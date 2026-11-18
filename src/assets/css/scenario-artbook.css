@@ -1,13 +1,13 @@
 @reference "./tailwind.css";
-.scenario-page { @apply tw:pt-s-5; --scenario-art-duration:var(--motion-art-hover); --scenario-art-zoom:1.04; --scenario-art-press:.98; }
-.scenario-library-heading { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-4; margin:var(--s-5) 0 var(--s-4); }
+.scenario-page { @apply tw:pt-s-5; container:story-page / inline-size; --scenario-art-duration:var(--motion-art-hover); --scenario-art-zoom:1.04; --scenario-art-press:.98; }
+.scenario-library-heading { @apply tw:flex tw:justify-between tw:items-center tw:gap-s-4; margin:0 0 var(--s-4); }
 .scenario-library-heading h2 { margin:0 0 var(--s-1); font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
-.scenario-library-heading p { @apply tw:text-secondary tw:text-body tw:leading-loose; }
+.scenario-library-heading p { margin:0; color:var(--text-secondary); font-size:var(--fs-label-sm); }
 .char-btn { @apply tw:flex tw:items-center tw:gap-s-2; font:inherit; }
 .scenario-list { @apply tw:grid; grid-template-columns:repeat(3,minmax(0,1fr)); @apply tw:gap-s-4; }
 .scenario-book { position:relative; isolation:isolate; display:flex; min-width:0; }
 .scenario-card { position:relative; isolation:isolate; @apply tw:min-w-0 tw:w-full tw:overflow-hidden tw:p-0; border:1px solid var(--border-soft); border-radius:var(--r-lg); @apply tw:text-left; background:var(--bg-surface); box-shadow:inset 0 1px 0 var(--glass-highlight); @apply tw:text-primary; font:inherit; @apply tw:cursor-pointer; }
-.scenario-card.active { border-color:var(--border-strong); box-shadow:var(--shadow-sm); }
+.scenario-card.active { border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
 .scenario-cover { position:relative; @apply tw:block; aspect-ratio:16 / 9; @apply tw:overflow-hidden; background:var(--bg-elevated); }
 .scenario-cover img { @apply tw:block tw:w-full tw:h-full tw:object-cover; object-position:center 30%; opacity:0; transition:opacity var(--scenario-cover-duration,var(--motion-surface)) var(--ease-out),transform var(--scenario-art-duration) var(--spring-soft); }
 .scenario-cover img.ready { opacity:1; }
@@ -17,7 +17,6 @@
 .scenario-book.cover-failed .scenario-cover-missing { padding:calc(var(--control-height) + var(--s-3)) var(--s-2) var(--s-2); gap:var(--s-2); }
 .scenario-book.cover-failed .scenario-cover-missing .archive-icon { width:24px; height:24px; }
 .scenario-cover-retry { position:absolute; z-index:var(--z-raised); inset:var(--s-2) var(--s-2) auto; justify-content:center; min-height:var(--control-height); background:var(--bg-surface); }
-.scenario-book-title .archive-icon { @apply tw:text-primary tw:shrink-0; }
 .scenario-name { font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .scenario-desc { @apply tw:min-h-[3em] tw:text-body-sm tw:leading-body tw:text-secondary; }
 .scenario-count { @apply tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2 tw:text-accent tw:text-body-sm; }
@@ -38,7 +37,7 @@
 .act-num { @apply tw:text-accent; font:500 var(--fs-title)/1 var(--font-serif); }
 .act-title { margin:0 0 var(--s-1); @apply tw:text-body-lg; }
 .act-en { @apply tw:text-muted tw:text-body-sm; }
-.act-intent { @apply tw:flex tw:items-center tw:gap-s-3 tw:min-h-[152px]; margin-block:var(--s-3); }
+.act-intent { @apply tw:flex tw:items-center tw:gap-s-3; min-height:96px; margin-block:var(--s-3); }
 .act-framing { aspect-ratio:var(--act-ratio); @apply tw:w-[64px] tw:max-h-[108px] tw:grid; place-items:center; @apply tw:shrink-0; border:1px solid var(--border-strong); border-radius:var(--r-sm); background:var(--bg-base); }
 .act-framing .archive-icon { @apply tw:w-[70%] tw:h-[70%] tw:text-accent; }
 .act-emotion { @apply tw:text-accent tw:text-body-sm; }
@@ -55,8 +54,8 @@
 .neg-layer { @apply tw:mb-s-3; }
 .neg-layer-label { @apply tw:text-secondary tw:text-body-sm tw:mb-s-1; }
 .art-warn { @apply tw:mb-s-3 tw:text-warning-text tw:text-body-sm; }
-.act-actions { margin-top:var(--s-3); }
-.act-actions .btn { @apply tw:w-full tw:min-h-[44px] tw:text-body-sm; }
+.act-actions { display:flex; flex-wrap:wrap; gap:var(--s-1); margin-block:var(--s-3) var(--s-1); }
+.act-actions .btn { min-width:0; min-height:40px; padding-inline:var(--s-2); font-size:var(--fs-label); }
 .scenario-handoff { @apply tw:flex tw:justify-between tw:items-center tw:flex-wrap tw:gap-s-3 tw:mt-s-5 tw:pt-s-4; border-top:1px solid var(--border-soft); @apply tw:text-secondary tw:text-body-sm; }
 .scenario-card:focus-visible, .scenario-cover-retry:focus-visible, .char-btn:focus-visible, .act-details > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 @media(hover:hover) and (pointer:fine) {
@@ -65,6 +64,23 @@
 }
 .scenario-card:active:not(:focus-visible) .scenario-cover img { transform:scale(var(--scenario-art-press)); transition-duration:var(--motion-press); }
 .scenario-card:focus-visible .scenario-cover img { transform:none; transition:none; }
+@container story-page (min-width:68rem) {
+  .scenario-workspace { display:grid; grid-template-columns:clamp(320px,26%,400px) minmax(0,1fr); align-items:start; gap:var(--s-6); }
+  .scenario-shelf { min-width:0; padding-inline-end:var(--s-5); border-inline-end:1px solid var(--border-soft); }
+  .scenario-list { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
+  .scenario-card { display:grid; grid-template-columns:30% minmax(0,1fr); align-items:stretch; }
+  .scenario-cover { aspect-ratio:auto; min-height:122px; }
+  .scenario-cover img { position:absolute; inset:0; object-position:center 20%; }
+  .scenario-book-copy { align-content:center; padding:var(--s-3); }
+  .scenario-name { font-size:var(--fs-title-xs); }
+  .scenario-desc { min-height:0; font-size:var(--fs-label-sm); }
+  .scenario-count { font-size:var(--fs-label-xs); }
+  .scenario-count > span { overflow-wrap:anywhere; }
+  .scenario-book.cover-failed .scenario-cover-missing { padding:var(--s-1); font-size:var(--fs-label-xs); text-align:center; }
+  .scenario-book.cover-failed { display:grid; gap:var(--s-1); }
+  .scenario-book.cover-failed .scenario-cover-retry { position:static; justify-self:start; }
+  .viewer { min-width:0; margin-top:0; }
+}
 @media(max-width:768px) {
   .scenario-list { @apply tw:flex tw:overflow-x-auto; padding:var(--s-1) var(--s-1) var(--s-3); scroll-snap-type:x proximity; }
   .scenario-book { flex:0 0 min(82vw,340px); scroll-snap-align:start; }

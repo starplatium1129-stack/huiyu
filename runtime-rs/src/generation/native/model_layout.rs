@@ -61,13 +61,15 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
             ));
         }
         safe_config(&index, "model_index")?;
-        if class == "Krea2Pipeline" && index["is_distilled"] != model["distilled"] {
-            return Err("Krea RAW/Turbo 的 is_distilled 与模型身份不匹配".into());
-        }
-        if class == "QwenImage21Pipeline"
-            && index.get("sample_sigmas").filter(|v| !v.is_null()) != model.get("sampleSigmas")
-        {
-            return Err("Qwen 2.1 基础版/Turbo 的采样配置不匹配".into());
+        let layout = model["layout"].as_str().unwrap_or(class);
+        let manifest = super::adapters::manifest();
+        if let Some(fields) = manifest["variantFields"][layout].as_object() {
+            for (field, source) in fields {
+                let source = source.as_str().ok_or("模型变体声明无效")?;
+                if !same_index_value(&index[field], &model[source]) {
+                    return Err(format!("{class} 索引字段 {field} 与所选模型变体不匹配"));
+                }
+            }
         }
         if class == "WanPipeline"
             && model["layout"] != "WanA14B"
@@ -79,34 +81,30 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
         {
             return Err("需要 Wan 2.2 TI2V 5B 单模型配置".into());
         }
-        if model["layout"] == "WanA14B"
-            && (index["boundary_ratio"] != model["boundaryRatio"]
-                || index.get("expand_timesteps").is_some_and(|v| v != false))
+        if model["layout"] == "WanA14B" && index.get("expand_timesteps").is_some_and(|v| v != false)
         {
             return Err("需要 Wan A14B T2V 双噪声模型与 0.875 分界配置".into());
         }
-        if model
-            .get("blocks")
-            .is_some_and(|blocks| &index["_blocks_class_name"] != blocks)
+        if let Some(blocks) = model.get("blocks")
+            && index["_blocks_class_name"] != *blocks
         {
-            return Err("需要官方 MiniMaxH3Blocks 模块化索引".into());
+            return Err(format!("{class} 模块化索引的 blocks 配置不匹配"));
         }
-        adapter_components = super::adapters::manifest()["layouts"]
-            [model["layout"].as_str().unwrap_or(class)]
-        .as_object()
-        .ok_or("未知原生管线")?
-        .iter()
-        .map(|(name, spec)| {
-            (
-                name.as_str(),
-                spec[0].as_str().unwrap(),
-                spec.as_array().unwrap()[1..]
-                    .iter()
-                    .map(|v| v.as_str().unwrap())
-                    .collect::<Vec<_>>(),
-            )
-        })
-        .collect::<Vec<_>>();
+        adapter_components = manifest["layouts"][layout]
+            .as_object()
+            .ok_or("未知原生管线")?
+            .iter()
+            .map(|(name, spec)| {
+                (
+                    name.as_str(),
+                    spec[0].as_str().unwrap(),
+                    spec.as_array().unwrap()[1..]
+                        .iter()
+                        .map(|v| v.as_str().unwrap())
+                        .collect::<Vec<_>>(),
+                )
+            })
+            .collect::<Vec<_>>();
         adapter_components
             .iter()
             .map(|(n, l, c)| (*n, *l, c.as_slice()))
@@ -154,16 +152,29 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
                 };
                 safe_config(&config, name)?;
                 safe_config(&json(&folder.join("tokenizer_config.json"))?, name)?;
-                if !file(&root, &folder.join("tokenizer.json"))
-                    || !file(
-                        &root,
-                        &folder.join(if model.is_some_and(|m| m.get("blocks").is_some()) {
-                            "chat_template.json"
-                        } else {
-                            "chat_template.jinja"
-                        }),
-                    )
-                {
+                let legacy = folder.join("chat_template.json");
+                let template = if legacy.exists() || linked(&legacy) {
+                    let config = json(&legacy)?;
+                    safe_config(&config, "chat_template")?;
+                    let extra = folder.join("chat_templates");
+                    let has_extra = extra.is_dir()
+                        && fs::read_dir(extra)
+                            .map_err(|_| "无法读取 processor 模板目录")?
+                            .filter_map(Result::ok)
+                            .any(|entry| {
+                                entry
+                                    .path()
+                                    .extension()
+                                    .is_some_and(|ext| ext.eq_ignore_ascii_case("jinja"))
+                            });
+                    config["chat_template"]
+                        .as_str()
+                        .is_some_and(|value| !value.trim().is_empty())
+                        && !has_extra
+                } else {
+                    file(&root, &folder.join("chat_template.jinja"))
+                };
+                if !file(&root, &folder.join("tokenizer.json")) || !template {
                     return Err("缺少 processor 的 tokenizer.json 或对应 chat_template".into());
                 }
             }
@@ -287,6 +298,19 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
         }
     }
     Ok(())
+}
+
+// JSON model indexes may serialize a whole-valued sigma as 1 or 1.0.
+fn same_index_value(actual: &Value, expected: &Value) -> bool {
+    match (actual, expected) {
+        (Value::Array(a), Value::Array(b)) => {
+            a.len() == b.len() && a.iter().zip(b).all(|(a, b)| same_index_value(a, b))
+        }
+        (Value::Number(a), Value::Number(b)) if a.is_f64() || b.is_f64() => {
+            a.as_f64() == b.as_f64()
+        }
+        _ => actual == expected,
+    }
 }
 
 fn safe_config(value: &Value, name: &str) -> Result<(), String> {

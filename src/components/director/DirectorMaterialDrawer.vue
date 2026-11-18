@@ -6,7 +6,7 @@
     </div>
     <TabsList class="workbench-tabs material-switch" aria-label="素材分类">
       <AnimatedSelection variant="underline" />
-      <TabsTrigger v-for="item in sections" :key="item.id" :value="item.id" as-child><button type="button"
+      <TabsTrigger v-for="item in sections" :key="item.id" :value="item.id" as-child><button type="button" data-spring-button
         :id="`material-tab-${item.id}`" :aria-controls="`material-${item.id}`">
         <ArchiveIcon :name="item.icon" /><span class="studio-control-label">{{ item.label }}</span>
       </button></TabsTrigger>

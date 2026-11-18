@@ -1,15 +1,33 @@
 @reference "./tailwind.css";
 /* One reading frame for the four creative-library routes; their bodies keep their own task layouts. */
 .page.creative-library-page { --page-max:1600px; padding:clamp(var(--s-5),2.4vw,var(--s-6)) clamp(var(--s-5),2.4vw,var(--s-6)) var(--s-8); }
-.creative-library-header { @apply tw:mb-s-5; }
-.creative-library-heading { display:flex; align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); }
-.creative-library-heading h1 { margin:0; @apply tw:text-primary tw:font-display tw:font-semibold; font-size:var(--fs-title); line-height:var(--lh-tight); }
+.creative-library-header {
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-wrap:wrap;
+  gap:var(--s-4) var(--s-6);
+  padding-bottom:var(--s-5);
+  margin-bottom:var(--s-5);
+  border-bottom:1px solid var(--border-soft);
+}
+.creative-library-heading { display:flex; align-items:center; gap:var(--s-4); }
+.creative-library-heading h1 { margin:0; color:var(--text-primary); font:500 clamp(1.65rem,2.3vw,var(--fs-display))/var(--lh-tight) var(--font-serif); }
 .creative-library-kicker { margin:0 0 var(--s-1); color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
-.creative-library-description { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
+.creative-library-description { margin:var(--s-1) 0 0; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
 .library-reference-feedback { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); margin:0 0 var(--s-4); color:var(--text-secondary); font-size:var(--fs-body-sm); overflow-wrap:anywhere; }
 .library-reference-feedback > span { min-width:0; flex:1 1 20rem; }
-.creative-library-mark { position:relative; isolation:isolate; display:grid; place-items:center; width:48px; height:56px; flex:none; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--accent); box-shadow:var(--workspace-inset); }
-.creative-library-mark::before { content:''; position:absolute; z-index:-1; inset:3px; border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--accent-soft); transform:rotate(-8deg); }
-.creative-library-mark .archive-icon { width:24px; height:24px; }
-/* Destinations read as chapters; selection and keyboard geometry stay shared. */
-.page.creative-library-page .creative-library-nav a { font-size:var(--fs-label-sm); line-height:var(--lh-label); }
+.creative-library-mark { width:clamp(68px,7vw,96px); height:auto; aspect-ratio:1; flex:none; object-fit:contain; }
+:root[data-theme-style='terraria'] .creative-library-mark { image-rendering:pixelated; }
+html body .creative-library-nav.studio-segments[role] {
+  display:grid;
+  width:min(100%,37rem);
+  grid-template-columns:repeat(4,minmax(0,1fr));
+}
+.creative-library-nav a { min-width:0; }
+.creative-library-nav .archive-icon { width:18px; height:18px; flex:none; }
+@media (max-width:650px) {
+  html body .creative-library-nav.studio-segments[role] { width:100%; grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .page.creative-library-page { padding-inline:var(--s-4); }
+  .creative-library-header { padding-bottom:var(--s-4); }
+}

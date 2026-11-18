@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_galbrena_sc06",
+  "revision": 1,
+  "sortOrder": 3806,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于落地窗前双臂上举慵懒伸懒腰，毛衣滑落一侧肩头",
+    "adult": false,
+    "animaCaption": "Standing barefoot on wooden floorboards before sunlit loft windows, she stretches both arms overhead as her oversized charcoal knit sweater slips off one shoulder with a sleepy smile.",
+    "camera": "全身镜头，平视",
+    "category": "索拉里斯日常",
+    "characterId": "galbrena_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "晨光洒进工业风安全屋落地窗前，卸下所有装备的嘉贝莉娜穿着宽松炭灰一字领麻花毛衣，赤脚踩在木地板上伸懒腰打哈欠。",
+    "id": "wuwa_galbrena_sc06",
+    "lighting": "百叶窗洒入的金色晨光与暖木地板反光",
+    "location": "猎魔人工业风安全屋落地窗前",
+    "mature": false,
+    "mood": "卸防慵懒",
+    "negativeTokens": [
+      "guns",
+      "armor"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "safehouse_oversized_knit",
+    "promptProse": "In the warm morning sunlight streaming through tall loft windows, Galbrena stretches lazily in an oversized off-shoulder charcoal cable-knit sweater and lounge shorts.",
+    "promptTokens": [
+      "grey hair",
+      "blue streaks",
+      "medium hair",
+      "blue eyes",
+      "grey sweater",
+      "oversized sweater",
+      "off-shoulder sweater",
+      "black shorts",
+      "socks",
+      "standing",
+      "stretching",
+      "arms up",
+      "sleepy smile",
+      "looking at viewer",
+      "industrial loft apartment",
+      "large windows",
+      "morning",
+      "sunlight",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "stretching",
+      "arms up",
+      "off shoulder",
+      "sleepy",
+      "slight smile",
+      "apartment",
+      "floor-to-ceiling windows",
+      "morning",
+      "sunlight",
+      "full body"
+    ],
+    "timeOfDay": "清晨",
+    "title": "嘉贝莉娜 · 清晨安全屋落地窗前慵懒伸懒腰"
+  }
+}

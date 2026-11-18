@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_iuno_sc02",
+  "revision": 1,
+  "sortOrder": 3702,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "双手轻捧发光星象水晶球，侧头微撇嘴",
+    "adult": false,
+    "animaCaption": "Holding a glowing crystal sphere between both hands beside a large brass telescope, she glances toward the viewer with a slight pout beneath the constellation-lit observatory dome.",
+    "camera": "中近景，平视，巨大黄铜望远镜背景",
+    "category": "索拉里斯日常",
+    "characterId": "iuno_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "黄铜天文望远镜圆顶观测室内，星图投影在拱顶流转，尤诺披着金星刺绣半透披风裙，双手捧着星光水晶球低声解读星谕。",
+    "id": "wuwa_iuno_sc02",
+    "lighting": "水晶球内部银河微光映照脸庞与圆顶星图",
+    "location": "观星塔黄铜望远镜圆顶室",
+    "mature": false,
+    "mood": "傲娇认真",
+    "negativeTokens": [
+      "noon"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "observatory_star_cape_dress",
+    "promptProse": "Inside the domed telescope chamber illuminated by projected star charts, Iuno wears a constellation-embroidered sheer capelet over her navy dress, cradling a luminous crystal orb.",
+    "promptTokens": [
+      "blue hair",
+      "twin tails",
+      "long hair",
+      "blue eyes",
+      "crescent hair ornament",
+      "blue dress",
+      "sleeveless dress",
+      "sheer capelet",
+      "star print",
+      "gold embroidery",
+      "standing",
+      "holding glowing crystal ball",
+      "pouting slightly",
+      "looking at viewer",
+      "observatory dome",
+      "brass telescope",
+      "starry ceiling",
+      "night",
+      "soft blue light",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "holding crystal ball",
+      "telescope",
+      "observatory dome",
+      "constellations",
+      "night",
+      "blue glow",
+      "medium close-up"
+    ],
+    "timeOfDay": "深夜",
+    "title": "尤诺 · 望远镜圆顶下占星水晶球占卜"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "kind": "outfit",
+  "id": "carlotta_wuwa/unfastened_opera_gloves_r18",
+  "revision": 1,
+  "sortOrder": 3209,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "carlotta_wuwa",
+    "outfit": {
+      "id": "unfastened_opera_gloves_r18",
+      "name": "褪下礼裙的白丝长手套与吊袜带",
+      "prose": "Nude except for long white satin opera gloves, crystal drop earrings, and white lace thigh-high stockings held by a garter belt.",
+      "tokens": [
+        "nude",
+        "opera gloves",
+        "white gloves",
+        "garter belt",
+        "white thighhighs",
+        "bare breasts",
+        "nipples"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

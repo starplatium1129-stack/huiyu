@@ -2,13 +2,7 @@ use super::client::{CONNECT_TIMEOUT, local_url};
 use crate::error::Result;
 use futures_util::StreamExt;
 use serde_json::Value;
-use std::{
-    borrow::Cow,
-    collections::{HashMap, HashSet},
-    fmt::Write,
-    sync::Arc,
-    time::Duration,
-};
+use std::{borrow::Cow, collections::HashMap, fmt::Write, sync::Arc, time::Duration};
 use tokio::{
     sync::{broadcast, watch},
     task::JoinHandle,
@@ -36,7 +30,7 @@ impl ProgressUpdate {
 /// Best-effort progress only. History polling remains authoritative for terminal
 /// state; providers must unwatch finished/cancelled jobs and ignore late updates.
 pub struct ProgressMonitor {
-    active: watch::Sender<HashSet<String>>,
+    active: watch::Sender<HashMap<String, String>>,
     events: broadcast::Sender<Arc<ProgressUpdate>>,
     cancel: CancellationToken,
     task: JoinHandle<()>,
@@ -48,7 +42,7 @@ impl ProgressMonitor {
         url.set_scheme("ws").expect("HTTP URL supports WS scheme");
         url.set_path("/ws");
         url.query_pairs_mut().append_pair("clientId", client_id);
-        let (active, receiver) = watch::channel(HashSet::new());
+        let (active, receiver) = watch::channel(HashMap::new());
         let (events, _) = broadcast::channel(32);
         let cancel = CancellationToken::new();
         let task = tokio::spawn(run(
@@ -65,15 +59,21 @@ impl ProgressMonitor {
         })
     }
 
-    pub fn watch(&self, prompt_id: impl Into<String>) {
-        self.active.send_modify(|set| {
-            set.insert(prompt_id.into());
+    pub fn watch(&self, prompt_id: &str, job_id: &str) {
+        self.active.send_modify(|jobs| {
+            jobs.insert(prompt_id.to_owned(), job_id.to_owned());
         });
     }
     pub fn unwatch(&self, prompt_id: &str) {
-        self.active.send_modify(|set| {
-            set.remove(prompt_id);
-        });
+        self.active
+            .send_if_modified(|jobs| jobs.remove(prompt_id).is_some());
+    }
+    pub fn watched_jobs(&self, prompt_id: Option<&str>) -> Vec<String> {
+        let jobs = self.active.borrow();
+        match prompt_id {
+            Some(id) => jobs.get(id).cloned().into_iter().collect(),
+            None => jobs.values().cloned().collect(),
+        }
     }
     pub fn subscribe(&self) -> broadcast::Receiver<Arc<ProgressUpdate>> {
         self.events.subscribe()
@@ -92,13 +92,13 @@ impl Drop for ProgressMonitor {
 
 async fn run(
     url: String,
-    mut active: watch::Receiver<HashSet<String>>,
+    mut active: watch::Receiver<HashMap<String, String>>,
     events: broadcast::Sender<Arc<ProgressUpdate>>,
     cancel: CancellationToken,
 ) {
     let mut states: HashMap<String, Arc<ProgressUpdate>> = HashMap::new();
     loop {
-        if active.borrow().is_empty() {
+        if active.borrow_and_update().is_empty() {
             states.clear();
             tokio::select! { _ = cancel.cancelled() => return, result = active.changed() => if result.is_err() { return; } }
             continue;
@@ -115,7 +115,7 @@ async fn run(
                     changed = active.changed() => {
                         if changed.is_err() { return; }
                         let current = active.borrow_and_update();
-                        states.retain(|id, _| current.contains(id));
+                        states.retain(|id, _| current.contains_key(id));
                         if current.is_empty() { break; }
                     },
                     message = socket.next() => match message {
@@ -129,6 +129,8 @@ async fn run(
                 }
             }
         }
+        // A reconnected socket has no reliable previous node or progress sample.
+        states.clear();
         if active.borrow().is_empty() {
             continue;
         }
@@ -154,7 +156,7 @@ fn text(value: &Value) -> Option<Cow<'_, str>> {
 
 fn apply(
     raw: &str,
-    active: &HashSet<String>,
+    active: &HashMap<String, String>,
     states: &mut HashMap<String, Arc<ProgressUpdate>>,
 ) -> Option<Arc<ProgressUpdate>> {
     let message: Value = serde_json::from_str(raw).ok()?;
@@ -174,7 +176,7 @@ fn apply(
     }
     let data = &message["data"];
     let prompt_id = text(data.get("prompt_id").unwrap_or(&message["prompt_id"]))?;
-    if !active.contains(prompt_id.as_ref()) {
+    if !active.contains_key(prompt_id.as_ref()) {
         return None;
     }
     let snapshot = states

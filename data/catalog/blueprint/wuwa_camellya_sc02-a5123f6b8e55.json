@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_camellya_sc02",
+  "revision": 1,
+  "sortOrder": 3102,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "倚靠木柱手持漆器茶盏，唇角含笑",
+    "adult": false,
+    "animaCaption": "Leaning casually against a wooden veranda pillar beneath glowing paper lanterns, she holds a lacquered teacup with a knowing smirk as moonlight touches the blooming camellia trees behind her.",
+    "camera": "中近景，平视，廊柱与夜色庭院构图",
+    "category": "索拉里斯日常",
+    "characterId": "camellya_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "庭院回廊的纸灯笼下，椿身着织金绯椿黑丝和服斜倚木柱，端起漆器茶盏轻嗅花香，眼尾微挑。",
+    "id": "wuwa_camellya_sc02",
+    "lighting": "暖色纸灯笼与月光交织的檐下光影",
+    "location": "黑海岸东方庭院木廊",
+    "mature": false,
+    "mood": "慵懒魅惑",
+    "negativeTokens": [
+      "daylight"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "crimson_botanical_kimono",
+    "promptProse": "Under the warm amber glow of hanging paper lanterns on a wooden veranda, Camellya leans against a timber column in an off-shoulder crimson camellia kimono, raising a teacup with an alluring smirk.",
+    "promptTokens": [
+      "two-tone hair",
+      "white hair",
+      "red hair",
+      "long hair",
+      "red eyes",
+      "ahoge",
+      "black kimono",
+      "floral print",
+      "red obi",
+      "off-shoulder kimono",
+      "wide sleeves",
+      "gold trim",
+      "leaning against pillar",
+      "holding teacup",
+      "smirk",
+      "looking at viewer",
+      "wooden veranda",
+      "paper lanterns",
+      "camellia tree",
+      "night",
+      "warm lighting",
+      "moonlight",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "leaning against pillar",
+      "holding teacup",
+      "smirk",
+      "wooden veranda",
+      "paper lanterns",
+      "camellia tree",
+      "night",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "椿 · 绯椿廊下夜樱茶席"
+  }
+}

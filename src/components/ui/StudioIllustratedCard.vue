@@ -51,11 +51,26 @@ const tilt = useArtworkTilt(plane)
 .is-lead .illustrated-card-plane :deep(img) { max-height:380px; }
 .is-lead .illustrated-card-title { font-size:var(--fs-title); }
 .is-lead .illustrated-card-copy { gap:var(--s-3); padding-top:var(--s-5); }
-.illustrated-card.is-compact { grid-template-columns:80px minmax(0,1fr); grid-template-rows:auto; align-items:center; padding:var(--s-3); }
-.is-compact .illustrated-card-art { min-height:88px; padding:0; }
-.is-compact .illustrated-card-copy { padding:var(--s-2) 24px var(--s-2) var(--s-2); }
-.is-compact .illustrated-card-title { font:600 var(--fs-body-sm)/var(--lh-label) var(--font-sans); }
-.is-compact .illustrated-card-arrow { width:24px; height:24px; right:var(--s-3); bottom:var(--s-3); }
+.illustrated-card.is-compact {
+  container: illustrated-card / inline-size;
+  grid-template-columns: minmax(64px, 32%) minmax(0, 1fr) auto;
+  grid-template-rows: auto;
+  align-items: center;
+  column-gap: var(--s-3);
+  padding: var(--s-3);
+  background: linear-gradient(105deg, color-mix(in srgb, var(--destination-tint, var(--card-color)) 7%, transparent), transparent 70%), var(--bg-surface);
+}
+.is-compact .illustrated-card-art { height:clamp(74px, 25cqi, 120px); padding:0; }
+.is-compact .illustrated-card-plane { grid-template: minmax(0, 1fr) / minmax(0, 1fr); }
+.is-compact .illustrated-card-copy { min-width:0; padding:0; }
+.is-compact .illustrated-card-title { font:600 var(--fs-body)/var(--lh-label) var(--font-sans); }
+.is-compact .illustrated-card-arrow { position:relative; inset:auto; width:28px; height:28px; justify-self:end; }
+@container illustrated-card (max-width: 225px) {
+  .is-compact .illustrated-card-art { grid-column:1/-1; height:76px; }
+  .is-compact .illustrated-card-copy { grid-column:1/3; padding-block:var(--s-2); }
+  .is-compact .illustrated-card-title { font-size:var(--fs-label); }
+  .is-compact .illustrated-card-arrow { width:24px; height:24px; }
+}
 .illustrated-card:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .illustrated-card:focus-visible :is(.illustrated-card-plane,.illustrated-card-copy,.illustrated-card-orbit) { transform:none; transition:none; }
 @media (hover:hover) and (pointer:fine) {
@@ -65,6 +80,7 @@ const tilt = useArtworkTilt(plane)
   .illustrated-card:hover:not(:focus-visible) .illustrated-card-arrow .archive-icon:first-child { transform:translateX(28px) rotate(-90deg); opacity:0; }
   .illustrated-card:hover:not(:focus-visible) .illustrated-card-arrow .archive-icon + .archive-icon { transform:rotate(-90deg); opacity:1; }
 }
+.illustrated-card:active:not(:focus-visible) .illustrated-card-copy { transform:scale(.98); transform-origin:left center; transition-duration:var(--motion-press); }
 @media (max-width:1000px) {
   .illustrated-card.is-lead { grid-row:auto; grid-column:1/-1; grid-template-columns:1fr 1fr; grid-template-rows:auto; align-items:center; }
   .is-lead .illustrated-card-copy { padding-top:var(--s-3); }

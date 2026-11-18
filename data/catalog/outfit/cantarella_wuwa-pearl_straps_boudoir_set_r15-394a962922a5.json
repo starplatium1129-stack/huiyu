@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "cantarella_wuwa/pearl_straps_boudoir_set_r15",
+  "revision": 1,
+  "sortOrder": 3408,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "cantarella_wuwa",
+    "outfit": {
+      "id": "pearl_straps_boudoir_set_r15",
+      "name": "珍珠链条紫罗兰蕾丝吊袜内衣",
+      "prose": "A sheer lavender lace bra and high-cut panties draped with strands of luminous pearls and dark violet thigh-high stockings.",
+      "tokens": [
+        "purple bra",
+        "lace panties",
+        "pearl chains",
+        "garter straps",
+        "purple thighhighs",
+        "large breasts"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

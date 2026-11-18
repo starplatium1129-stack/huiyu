@@ -11,17 +11,18 @@ def pipeline_class():
     return load_sibling("moss_pipeline").MOSSImagePipeline
 
 
-def load(root, control, contract, *, text_precision="bf16", weight_precision="auto"):
+def load(root, control, contract, model_id, *, text_precision="bf16", weight_precision="auto"):
     import torch
     from diffusers import AutoencoderKLFlux2
     from transformers import Qwen3_5Model, Qwen2TokenizerFast
     module = load_sibling("moss_pipeline")
     quant = load_sibling("moss_int8")
-    variant = quant.selected(root, weight_precision, contract)
+    spec = contract.model(model_id)
+    variant = quant.selected(root, weight_precision, contract, expected_model=model_id)
     backend = quant.require_backend(contract) if variant is not None else None
     control.stage("loading", component="text_encoder")
     text = load_sibling("moss_text")
-    encoder = (text.load_int8(root, control, contract) if text_precision == "int8" else
+    encoder = (text.load_int8(root, control, contract, expected_model=model_id) if text_precision == "int8" else
         Qwen3_5Model.from_pretrained(str(root / "text_encoder"), local_files_only=True,
             trust_remote_code=False, use_safetensors=True, dtype=torch.bfloat16).eval())
     text.bind_fast_convolution(encoder)
@@ -48,7 +49,7 @@ def load(root, control, contract, *, text_precision="bf16", weight_precision="au
     control.stage("loading", component="vae")
     vae = AutoencoderKLFlux2.from_pretrained(str(root / "vae"), local_files_only=True,
         use_safetensors=True, torch_dtype=torch.float32).eval()
-    scheduler = module.MOSSImageScheduler.from_config(contract.config(root, root / "scheduler/scheduler_config.json"), shift=5.0)
+    scheduler = module.MOSSImageScheduler.from_config(contract.config(root, root / "scheduler/scheduler_config.json"), shift=spec["shift"])
     return module.MOSSImagePipeline(transformer=transformer, scheduler=scheduler,
         text_encoder=encoder, tokenizer=tokenizer, vae=vae)
 
@@ -101,7 +102,7 @@ def load_transformer(root, control, contract, variant, backend):
     return transformer.eval()
 
 
-def generate(pipeline, data, control, observation):
+def generate(pipeline, data, control, observation, spec):
     import torch
     observer = load_sibling("adapter_video").observe_scheduler
     # The upstream MOSS pipeline exposes scheduler.step rather than callbacks.
@@ -125,7 +126,7 @@ def generate(pipeline, data, control, observation):
         with observer(pipeline.scheduler, control), torch.inference_mode():
             return pipeline(prompt=data["prompt"], negative_prompt=data["negativePrompt"],
                 width=data["width"], height=data["height"], num_inference_steps=data["steps"],
-                guidance_scale=data["cfg"], uncond_skip_layers=[22], output_type="np",
+                guidance_scale=data["cfg"], uncond_skip_layers=spec["uncondSkipLayers"], output_type="np",
                 generator=torch.Generator("cpu").manual_seed(data["seed"]))
     finally:
         pipeline.transformer._huiyu_execution = None

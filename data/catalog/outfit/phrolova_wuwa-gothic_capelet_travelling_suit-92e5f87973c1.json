@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phrolova_wuwa/gothic_capelet_travelling_suit",
+  "revision": 1,
+  "sortOrder": 3505,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phrolova_wuwa",
+    "outfit": {
+      "id": "gothic_capelet_travelling_suit",
+      "name": "暗金滚边短斗篷与高腰马裤装",
+      "prose": "A tailored charcoal wool shoulder capelet edged in gold braid over a burgundy waistcoat, black riding pants, and heeled ankle boots.",
+      "tokens": [
+        "black capelet",
+        "gold trim",
+        "red vest",
+        "black pants",
+        "ankle boots",
+        "gloves"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

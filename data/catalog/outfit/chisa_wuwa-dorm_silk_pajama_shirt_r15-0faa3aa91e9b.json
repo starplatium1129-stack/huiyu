@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "chisa_wuwa/dorm_silk_pajama_shirt_r15",
+  "revision": 1,
+  "sortOrder": 3907,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "chisa_wuwa",
+    "outfit": {
+      "id": "dorm_silk_pajama_shirt_r15",
+      "name": "宿舍绯红滚边象牙白真丝睡衣衬衫",
+      "prose": "A silky ivory button-up pajama shirt with crimson piping, loosely buttoned to reveal her collarbone and bare thighs.",
+      "tokens": [
+        "white shirt",
+        "pajamas",
+        "red trim",
+        "unbuttoned",
+        "bare thighs",
+        "blush"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

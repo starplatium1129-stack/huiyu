@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_iuno_sc03",
+  "revision": 1,
+  "sortOrder": 3703,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于书架木梯怀抱星图古籍，微红耳根回眸",
+    "adult": false,
+    "animaCaption": "Standing on a wooden library ladder with a stack of leather-bound star atlases in her arms, she looks back over her shoulder with a faint blush in the afternoon window light.",
+    "camera": "全身镜头，螺旋书架纵深构图",
+    "category": "索拉里斯日常",
+    "characterId": "iuno_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "摆放着古老星象手稿的螺旋书架图书馆内，尤诺身着银扣立领衬衫与藏青百褶裙，踩在移动木梯上怀抱厚重星图典籍回眸。",
+    "id": "wuwa_iuno_sc03",
+    "lighting": "高窗洒入的清亮午后阳光与书页微尘",
+    "location": "七丘神殿螺旋星象图书馆",
+    "mature": false,
+    "mood": "知性清甜",
+    "negativeTokens": [
+      "modern computers"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "astrolabe_scholar_blouse",
+    "promptProse": "Halfway up a rolling wooden ladder in Septimont's celestial archive, Iuno hugs a stack of gilded star atlases in a silver-buttoned blouse and navy pleated skirt, glancing back over her shoulder.",
+    "promptTokens": [
+      "blue hair",
+      "twin tails",
+      "long hair",
+      "blue eyes",
+      "crescent hair ornament",
+      "white blouse",
+      "blue ribbon",
+      "navy skirt",
+      "pleated skirt",
+      "kneehighs",
+      "loafers",
+      "standing on wooden ladder",
+      "holding stack of books",
+      "looking back",
+      "slight blush",
+      "looking at viewer",
+      "grand library",
+      "tall bookshelves",
+      "afternoon",
+      "window light",
+      "full body"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "ladder",
+      "holding books",
+      "looking back",
+      "library",
+      "bookshelves",
+      "afternoon",
+      "window light",
+      "full body"
+    ],
+    "timeOfDay": "下午",
+    "title": "尤诺 · 螺旋星象图书馆抱书阶梯回眸"
+  }
+}

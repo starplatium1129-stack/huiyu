@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "camellya_wuwa/petal_bath_unclad_r18",
+  "revision": 1,
+  "sortOrder": 3110,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "camellya_wuwa",
+    "outfit": {
+      "id": "petal_bath_unclad_r18",
+      "name": "红椿花瓣浴池全裸湿身姿态",
+      "prose": "Completely unclothed with glistening wet skin, crimson camellia petals clinging to her shoulders and collarbones.",
+      "tokens": [
+        "nude",
+        "completely nude",
+        "wet skin",
+        "flower petals",
+        "bare shoulders",
+        "nipples"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": true
+    }
+  }
+}

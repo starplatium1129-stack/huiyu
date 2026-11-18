@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "camellya_wuwa/tethys_velvet_trench",
+  "revision": 1,
+  "sortOrder": 3103,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "camellya_wuwa",
+    "outfit": {
+      "id": "tethys_velvet_trench",
+      "name": "泰缇斯深红天鹅绒猎装大衣",
+      "prose": "A tailored burgundy velvet long coat with silver filigree buttons over a high-neck white blouse, pleated culottes, and heeled lace-up boots.",
+      "tokens": [
+        "burgundy coat",
+        "velvet",
+        "white blouse",
+        "black shorts",
+        "thighhighs",
+        "lace-up boots"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

@@ -1,0 +1,71 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc07",
+  "revision": 1,
+  "sortOrder": 3307,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "抱膝坐于床榻领口微敞，双手轻抓睡裙下摆脸红",
+    "adult": false,
+    "animaCaption": "Sitting on her bed with knees drawn up in a candlelit stone room, her sheer white cotton nightgown is unbuttoned at the collar as she blushes deeply and looks toward the viewer.",
+    "camera": "中近景，平视",
+    "category": "索拉里斯私密",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "r15_intimate"
+    ],
+    "description": "深夜修道院静谧寝室内，烛台暖光映照着半透纯白棉纱蕾丝睡裙，领口纽扣解开露出白皙锁骨，菲比抱膝坐在床榻上羞红了脸。",
+    "id": "wuwa_phoebe_sc07",
+    "lighting": "床头黄铜烛台暖黄柔光穿透薄纱轮廓",
+    "location": "修道院烛光静谧寝室",
+    "mature": false,
+    "mood": "纯情羞涩",
+    "negativeTokens": [
+      "nude",
+      "explicit"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "sheer_cotton_nightgown_r15",
+    "promptProse": "In the quiet warmth of a candlelit dormitory chamber, Phoebe sits on her linen bed with knees tucked close, wearing an unbuttoned sheer white eyelet nightgown that glows softly against the candlelight.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "white nightgown",
+      "sheer",
+      "lace trim",
+      "ruffles",
+      "unbuttoned",
+      "bare shoulders",
+      "sitting on bed",
+      "knees up",
+      "blushing",
+      "embarrassed",
+      "looking at viewer",
+      "stone bedroom",
+      "wooden bed",
+      "candlelight",
+      "warm lighting",
+      "medium close-up"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R15",
+    "sceneTags": [
+      "sitting on bed",
+      "hug knees",
+      "sheer nightgown",
+      "unbuttoned",
+      "heavy blush",
+      "embarrassed",
+      "looking at viewer",
+      "candlelight",
+      "bedroom",
+      "medium close-up"
+    ],
+    "timeOfDay": "深夜",
+    "title": "菲比 · 烛光修道院寝室半透白纱睡裙羞涩"
+  }
+}

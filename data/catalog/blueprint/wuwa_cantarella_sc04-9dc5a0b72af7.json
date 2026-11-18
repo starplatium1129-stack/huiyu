@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_cantarella_sc04",
+  "revision": 1,
+  "sortOrder": 3404,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "单手轻贴海底玻璃幕墙侧身回望，裙摆薄纱飘动",
+    "adult": false,
+    "animaCaption": "Standing inside an underwater glass corridor where fish and jellyfish glide past, she rests one hand against the glass as blue water ripples play across her high-slit silk dress and iridescent cape.",
+    "camera": "全身镜头，广角水族隧道构图",
+    "category": "索拉里斯日常",
+    "characterId": "cantarella_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "深海蓝色水波光影摇曳的庄园海底长廊中，坎特蕾拉身着薄纱披风高开衩紫丝长裙，单手轻贴玻璃幕墙，成群银鱼游过身侧。",
+    "id": "wuwa_cantarella_sc04",
+    "lighting": "深海湛蓝水波焦散光（caustic light）",
+    "location": "翡萨烈庄园海底玻璃长廊",
+    "mature": false,
+    "mood": "梦幻深邃",
+    "negativeTokens": [
+      "dry desert"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "conservatory_sheer_cape_dress",
+    "promptProse": "Walking through a vaulted underwater glass tunnel illuminated by rippling blue caustics, Cantarella touches one palm to the viewing wall as her iridescent cape billows around her high-slit plum gown.",
+    "promptTokens": [
+      "purple hair",
+      "very long hair",
+      "wavy hair",
+      "purple eyes",
+      "mole under eye",
+      "large breasts",
+      "sleeveless dress",
+      "purple dress",
+      "high slit",
+      "sheer cape",
+      "iridescent",
+      "silver heels",
+      "standing",
+      "hand on glass",
+      "looking at viewer",
+      "slight smile",
+      "underwater tunnel",
+      "aquarium glass",
+      "swimming fish",
+      "jellyfish",
+      "blue water",
+      "caustic light",
+      "full body"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "hand on glass",
+      "underwater tunnel",
+      "aquarium",
+      "fish",
+      "jellyfish",
+      "caustic light",
+      "blue lighting",
+      "full body"
+    ],
+    "timeOfDay": "下午",
+    "title": "坎特蕾拉 · 海底水族长廊抚摸玻璃幕墙"
+  }
+}

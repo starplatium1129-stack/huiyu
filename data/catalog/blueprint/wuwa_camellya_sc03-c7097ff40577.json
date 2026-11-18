@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_camellya_sc03",
+  "revision": 1,
+  "sortOrder": 3103,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐在玻璃栏杆边缘双腿轻晃，单手托腮",
+    "adult": false,
+    "animaCaption": "Perched on the glass railing of an orbital data walkway above a glowing blue nebula, she rests her chin in one hand and smiles down at the viewer in a tailored burgundy velvet coat.",
+    "camera": "全身镜头，微斜角（dutch angle）",
+    "category": "索拉里斯日常",
+    "characterId": "camellya_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "悬浮于蓝色星海数据流之上的泰缇斯观测栈桥，椿身着深红天鹅绒猎装大衣坐在玻璃栏杆上，晃动双腿俯瞰星轨。",
+    "id": "wuwa_camellya_sc03",
+    "lighting": "全息星海蓝光与大衣深红轮廓光",
+    "location": "泰缇斯系统星海栈桥",
+    "mature": false,
+    "mood": "好奇兴奋",
+    "negativeTokens": [
+      "falling"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "tethys_velvet_trench",
+    "promptProse": "High above a swirling sea of holographic starlight inside the Tethys observatory, Camellya balances effortlessly on a glass balustrade in a burgundy velvet trench coat, tilting her head with a mischievous smile.",
+    "promptTokens": [
+      "two-tone hair",
+      "white hair",
+      "red hair",
+      "long hair",
+      "red eyes",
+      "ahoge",
+      "burgundy coat",
+      "velvet",
+      "white blouse",
+      "black shorts",
+      "thighhighs",
+      "lace-up boots",
+      "sitting on railing",
+      "hand on cheek",
+      "looking at viewer",
+      "playful smile",
+      "sci-fi observatory",
+      "glass walkway",
+      "holographic stars",
+      "starry nebula",
+      "blue lighting",
+      "rim light",
+      "dutch angle",
+      "full body"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting on railing",
+      "hand on cheek",
+      "swinging legs",
+      "holographic stars",
+      "sci-fi observatory",
+      "dutch angle",
+      "full body",
+      "blue lighting"
+    ],
+    "timeOfDay": "深夜",
+    "title": "椿 · 泰缇斯星枢数据栈桥"
+  }
+}

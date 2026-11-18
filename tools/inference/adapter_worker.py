@@ -8,8 +8,8 @@ from __future__ import annotations
 import argparse
 from collections import deque
 from concurrent.futures import ThreadPoolExecutor
+from functools import lru_cache
 import contextlib
-import gc
 import hashlib
 import importlib.metadata
 import importlib.util
@@ -53,11 +53,11 @@ def emit(stream, job_id, event, **values):
     stream.flush()
 
 
-def dependencies():
+@lru_cache(maxsize=1)
+def runtime_dependencies():
     sibling("resident_adapters")
     sibling("native_memory")
     sibling("locked_identity")
-    sibling("qwen_prefix_cache")
     versions = {}
     expected_versions = {"torch": "2.9.0", "torchvision": "0.24.0", "transformers": "5.17.0",
                          "accelerate": "1.12.0", "safetensors": "0.8.0", "Pillow": "11.3.0", "ftfy": "6.3.1",
@@ -86,25 +86,48 @@ def dependencies():
         import numpy
         import diffusers
         from PIL import Image
-        from transformers import Qwen3VLModel, Qwen3VLForConditionalGeneration, Qwen3VLProcessor, UMT5EncoderModel
-        for name in {model["pipeline"] for model in contract.MANIFEST["models"].values()}:
-            if name == "MOSSImagePipeline":
-                sibling("moss_adapter").pipeline_class()
-                from transformers import Qwen3_5Model
-                continue  # MOSS uses the existing task-local scheduler observer.
-            pipeline = getattr(diffusers, name)
-            if name in ("HunyuanVideo15Pipeline", "MiniMaxH3ModularPipeline"):
-                continue  # These use the task-local scheduler observer, not pipeline callbacks.
-            if "callback_on_step_end" not in inspect.signature(pipeline.__call__).parameters:
-                raise Error("DEPENDENCY_API", f"{name} lacks the required progress/cancellation callback")
-        if "sample_sigmas" not in inspect.signature(diffusers.QwenImage21Pipeline.__init__).parameters:
-            raise Error("DEPENDENCY_API", "Qwen 2.1 Turbo requires pipeline-configured sample_sigmas")
         versions["diffusers"] = distribution.version
     except Error:
         raise
     except Exception as exc:
         raise Error("DEPENDENCY_IMPORT", f"Native adapter imports failed: {exc}") from exc
     return versions
+
+
+@lru_cache(maxsize=None)
+def pipeline_dependencies(name, layout):
+    try:
+        import diffusers
+        import transformers
+        for component, (library, cls, *_) in contract.MANIFEST["layouts"][layout].items():
+            if library == "transformers" and (component.startswith("text_encoder") or component == "processor"):
+                getattr(transformers, cls)
+        if name == "MOSSImagePipeline":
+            sibling("moss_adapter").pipeline_class()
+            return
+        pipeline = getattr(diffusers, name)
+        if name not in ("HunyuanVideo15Pipeline", "MiniMaxH3ModularPipeline"):
+            if "callback_on_step_end" not in inspect.signature(pipeline.__call__).parameters:
+                raise Error("DEPENDENCY_API", f"{name} lacks the required progress/cancellation callback")
+        if name == "QwenImage21Pipeline":
+            sibling("qwen_prefix_cache")
+            if "sample_sigmas" not in inspect.signature(pipeline.__init__).parameters:
+                raise Error("DEPENDENCY_API", "Qwen 2.1 Turbo requires pipeline-configured sample_sigmas")
+    except Error:
+        raise
+    except Exception as exc:
+        raise Error("DEPENDENCY_IMPORT", f"{name} import failed: {exc}") from exc
+
+
+def dependencies(model_id=None):
+    versions = runtime_dependencies()
+    models = contract.MANIFEST["models"].values() if model_id is None else (contract.model(model_id),)
+    for model in models:
+        pipeline_dependencies(model["pipeline"], model.get("layout", model["pipeline"]))
+    return versions
+
+
+MODEL_SUFFIXES = {".json", ".safetensors", ".model", ".txt", ".jinja"}
 
 
 def fingerprint(root, control):
@@ -119,7 +142,7 @@ def fingerprint(root, control):
                 raise Error("MODEL_INVALID", f"Linked model directory: {path}")
         for name in files:
             path = Path(parent) / name
-            if path.suffix in (".json", ".safetensors", ".model", ".txt", ".jinja"):
+            if path.suffix.lower() in MODEL_SUFFIXES:
                 paths.append(path)
                 if len(paths) > 10000:
                     raise Error("MODEL_INVALID", "Too many model assets")
@@ -144,7 +167,9 @@ def fingerprint(root, control):
 
 
 def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
-    variant = sibling("moss_int8").selected(root, moss_weight_precision, contract) if model_id.startswith("moss-") else None
+    model = contract.model(model_id)
+    moss = model["family"] == "moss-image"
+    variant = sibling("moss_int8").selected(root, moss_weight_precision, contract, expected_model=model_id) if moss else None
     marker = root / "huiyu-model.json"
     if marker.is_file():
         receipt = contract.config(root, marker)
@@ -158,29 +183,40 @@ def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
             # every worker start. Changed/unmanaged files keep full-byte validation.
             prepared_at = marker.stat().st_mtime_ns
             files = spec["files"]
-            if model_id.startswith("moss-") and receipt.get("mossTextPrecision") == "int8":
-                text = contract.model(model_id)["mossTextInt8"]
+            if moss and receipt.get("mossTextPrecision") == "int8":
+                text = model["mossTextInt8"]
                 files = [item for item in files if not item["path"].startswith("text_encoder/model")] + [text]
             ready = True
             for item in files:
                 control.check()
-                path = contract.safe_file(root, root / item["path"])
+                path = root / item["path"]
+                if not path.exists():
+                    ready = False
+                    break
+                contract.safe_file(root, path)
                 info = path.stat()
                 if info.st_size != item["bytes"] or info.st_mtime_ns > prepared_at:
                     ready = False
                     break
             if ready:
                 digest = hashlib.sha256(json.dumps(spec, sort_keys=True, separators=(",", ":")).encode())
-                if model_id.startswith("moss-"):
+                if moss:
                     digest.update(json.dumps(variant or {"precision": "fp16"}, sort_keys=True).encode())
                 known = {item["path"] for item in files}
-                for path in sorted(root.rglob("*.json")):
+                for path in sorted(root.rglob("*")):
                     control.check()
-                    # Include derived compatibility configs, which are not downloads.
-                    if path.relative_to(root).as_posix() not in known and path != marker:
+                    relative = path.relative_to(root).as_posix()
+                    if path == marker or relative in known or path.suffix.lower() not in MODEL_SUFFIXES or path.is_dir():
+                        continue
+                    # A local tokenizer or weight variant can change what from_pretrained loads.
+                    # Only the downloaded files and the checked derived configs are covered here.
+                    if path.suffix.lower() == ".json":
                         contract.config(root, path)
-                        digest.update(path.relative_to(root).as_posix().encode() + b"\0" + path.read_bytes())
-                return {"sha256": digest.hexdigest(), "scope": "prepared-download-record"}
+                        digest.update(relative.encode() + b"\0" + path.read_bytes())
+                    else:
+                        break
+                else:
+                    return {"sha256": digest.hexdigest(), "scope": "prepared-download-record"}
     return {"sha256": fingerprint(root, control), "scope": "full-byte-chunk-sha256"}
 
 
@@ -218,15 +254,24 @@ def windows_weight_reads():
             os.environ["HF_DEACTIVATE_ASYNC_LOAD"] = async_loading
 
 
-def generate(job, control, _prepared, *, result_callback=None, resident=None, reference_resolution=None):
+def prepare_job(job):
     data, spec = contract.validate(job)
+    if "mossUpscaleScale" in data:
+        runtime_dependencies()
+    else:
+        dependencies(data["modelId"])
+    return data, spec
+
+
+def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None):
+    data, spec = prepared if prepared is not None else prepare_job(job)
     if "mossUpscaleScale" in data:
         observation = sibling("moss_upscale").run(job, data, control, Error, resident)
         emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
         return
     root = contract.layout(job["modelDir"], spec)
     if spec["family"] == "moss-image" and data["mossTextPrecision"] == "auto":
-        data["mossTextPrecision"] = "int8" if sibling("moss_int8").selected(root, "auto", contract, component="text_encoder") else "bf16"
+        data["mossTextPrecision"] = "int8" if sibling("moss_int8").selected(root, "auto", contract, component="text_encoder", expected_model=data["modelId"]) else "bf16"
     style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
     if style_path is not None:
         sibling("krea_style").require_dependency()
@@ -261,7 +306,7 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
             try:
                 if spec["family"] == "moss-image":
                     with windows_weight_reads():
-                        template = sibling("moss_adapter").load(root, control, contract,
+                        template = sibling("moss_adapter").load(root, control, contract, data["modelId"],
                             text_precision=data["mossTextPrecision"], weight_precision=data["mossWeightPrecision"])
                     if policy == "resident":
                         if getattr(template.transformer, "_huiyu_int8_count", 0):
@@ -368,7 +413,7 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
         with torch.inference_mode(), sibling("qwen_prefix_cache").context(
                 use_prefix, pipeline, branches, control, observation) as prefix, attention as backend:
             observation["attentionBackend"] = backend
-            output = (sibling("moss_adapter").generate(pipeline, data, control, observation)
+            output = (sibling("moss_adapter").generate(pipeline, data, control, observation, spec)
                       if spec["family"] == "moss-image" else pipeline(**args))
         control.stage("saving")
         media.png(output.images[0], job["outputPath"], data, Error)
@@ -383,7 +428,6 @@ def generate(job, control, _prepared, *, result_callback=None, resident=None, re
         # calls without a cache still release Qwen before CPU line extraction.
         pipeline = None
         cache.finish(success and not owned)
-        gc.collect()
         if success:
             control.check()
             if result_callback is None:
@@ -419,7 +463,7 @@ def main():
                      scope="imports and device visibility; no weights or inference", validation="待主力机验证")
             elif args.validate:
                 root = contract.layout(args.validate, contract.model(args.model_id))
-                emit(stream, None, "validation", valid=True, modelDir=str(root), dependencies=dependencies(),
+                emit(stream, None, "validation", valid=True, modelDir=str(root), dependencies=dependencies(args.model_id),
                      scope="layout-and-imports-only; no weight correctness or GPU inference proof", validation="待主力机验证")
             elif args.prepare_moss:
                 spec = contract.model(args.model_id)
@@ -427,20 +471,20 @@ def main():
                     raise Error("NATIVE_MODEL_UNSUPPORTED", "请选择已登记的 MOSS 模型")
                 root = contract.layout(args.prepare_moss, spec)
                 control = SimpleNamespace(check=lambda: None)
-                compact = args.model_id == "moss-miaomiao-base-v1.1"
-                variant = spec["mossInt8"] if compact else None
+                precision = spec.get("managedPrecision", {})
+                variant = spec["mossInt8"] if precision.get("transformer") == "int8" else None
                 print("HUIYU:CONVERT|核对并适配 MOSS 主模型结构", file=sys.stderr, flush=True)
                 sibling("moss_adapter").load_transformer(root, control, contract, variant, None)
-                if compact:
+                if precision.get("text_encoder") == "int8":
                     print("HUIYU:CONVERT|核对并适配 INT8 文本编码器", file=sys.stderr, flush=True)
                     sibling("moss_text").load_int8(root, control, contract, spec["mossTextInt8"], None)
                 print(json.dumps({"ok": True, "preparedModel": args.model_id, "weightsMapped": True}), file=stream, flush=True)
             else:
                 resident = sibling("resident_adapters").PipelineCache()
                 def initialize(job, ready):
-                    contract.validate(job)
-                    dependencies()
+                    prepared = prepare_job(job)
                     ready()
+                    return prepared
                 try:
                     return lifecycle.serve(lambda job, control, prepared: generate(job, control, prepared, resident=resident),
                         input_stream=sys.stdin, stream=stream, emit=emit, error=Error,

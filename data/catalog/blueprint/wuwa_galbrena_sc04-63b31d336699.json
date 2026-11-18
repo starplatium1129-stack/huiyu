@@ -1,0 +1,68 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_galbrena_sc04",
+  "revision": 1,
+  "sortOrder": 3804,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "坐于营地木箱双手捧热咖啡杯，火光映照柔和微笑",
+    "adult": false,
+    "animaCaption": "Seated on a wooden crate beside a crackling campfire beneath a starry canyon sky, she wraps both gloved hands around a warm tin mug and offers a rare, gentle smile.",
+    "camera": "中近景，平视",
+    "category": "索拉里斯日常",
+    "characterId": "galbrena_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "群星璀璨的荒原峡谷营地里，跃动的篝火驱散夜寒，嘉贝莉娜披着靛蓝几何纹羊毛斗篷坐在木箱上，手捧搪瓷咖啡杯难得露出柔和笑意。",
+    "id": "wuwa_galbrena_sc04",
+    "lighting": "篝火暖橙跃动火光与深蓝银河夜空对比",
+    "location": "荒原峡谷星空篝火营地",
+    "mature": false,
+    "mood": "外冷内暖",
+    "negativeTokens": [
+      "crowd"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "campfire_wool_poncho",
+    "promptProse": "Beside a crackling campfire in a quiet rocky canyon under the Milky Way, Galbrena wears a heavy charcoal-and-indigo woven poncho and holds a steaming tin mug with a softened, genuine smile.",
+    "promptTokens": [
+      "grey hair",
+      "blue streaks",
+      "medium hair",
+      "blue eyes",
+      "poncho",
+      "blue and black",
+      "black sweater",
+      "pants",
+      "gloves",
+      "sitting on wooden crate",
+      "campfire",
+      "holding tin mug",
+      "gentle smile",
+      "looking at viewer",
+      "rocky canyon",
+      "starry night",
+      "warm firelight",
+      "medium close-up"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "sitting",
+      "campfire",
+      "holding mug",
+      "gentle smile",
+      "canyon",
+      "starry sky",
+      "night",
+      "warm firelight",
+      "medium close-up"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "嘉贝莉娜 · 荒原篝火旁披靛蓝羊毛斗篷煮咖啡"
+  }
+}

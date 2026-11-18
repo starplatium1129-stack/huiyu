@@ -34,6 +34,14 @@ def block_layout(module):
     return ancestors, blocks, remainder
 
 
+def placement(size, budget, largest, remainder):
+    if size <= budget:
+        return "component", None
+    if largest is None or largest + remainder > budget:
+        return "leaf_level", None
+    return "block_level", max(1, min(8, (budget - remainder) // max(1, largest)))
+
+
 class Residency:
     """One existing worker owns placement; ComponentsManager owns stage handoff."""
     def __init__(self, components, policy, *, activation_reserve=None, device="cuda:0"):
@@ -43,6 +51,7 @@ class Residency:
         self.policy, self.manager, self.grouped = policy, None, []
         self.bound = False
         self.modules = {}
+        self.layer_plans = []
         self.report = dict(strategy="budgeted-offload-v1", components=[])
         if policy not in ("resident", "offload"):
             raise ValueError("Use resident or offload")
@@ -52,14 +61,7 @@ class Residency:
                     self.add(name, module)
                 return
             from diffusers import ComponentsManager
-            with getattr(torch, self.device.type).device(self.device):
-                getattr(torch, self.device.type).empty_cache()
-            free, total = memory_info(self.device)
-            # A conservative weights budget, not an activation/OOM guarantee.
-            # External users of the device and requested image/video shapes still matter.
-            reserve = activation_reserve if activation_reserve is not None else max(1024 ** 3, total // 4)
-            budget = max(0, free - reserve)
-            self.report.update(freeBytes=free, activationReserveBytes=reserve, weightBudgetBytes=budget)
+            self.refresh_budget()
             self.manager = ComponentsManager()
             for name, module in components.items():
                 self.add(name, module)
@@ -68,6 +70,17 @@ class Residency:
         except BaseException:
             self.close()
             raise
+
+    def refresh_budget(self):
+        import torch
+        api = getattr(torch, self.device.type)
+        with api.device(self.device):
+            api.empty_cache()
+        free, total = memory_info(self.device)
+        reserve = self.activation_reserve if self.activation_reserve is not None else max(1024 ** 3, total // 4)
+        budget = max(0, free - reserve)
+        self.report.update(freeBytes=free, activationReserveBytes=reserve, weightBudgetBytes=budget)
+        return budget
 
     def add(self, name, module):
         import torch
@@ -84,21 +97,22 @@ class Residency:
         budget = self.report["weightBudgetBytes"]
         layered = name in ("text_encoder", "text_encoder_2", "text_conditioner", "transformer", "transformer_2")
         # VAE encode/decode can bypass forward; preserve its component placement.
-        if layered and size > budget:
-            ancestors, blocks, remainder = block_layout(module)
-            if name == "text_encoder":
-                # Qwen VLM calls embed_tokens before language_model.forward.
-                # Give that child its own group instead of waiting for the parent.
-                ancestors.add("embed_tokens")
-            largest = max((tensor_bytes(block) for block in blocks), default=0)
-            mode = "block_level" if blocks and largest + remainder <= budget else "leaf_level"
-            count = max(1, min(8, (budget - remainder) // max(1, largest))) if mode == "block_level" else None
-            self.grouped.append(module)
-            apply_group_offloading(module, onload_device=self.device,
-                offload_device=torch.device("cpu"), offload_type=mode,
-                num_blocks_per_group=count, block_modules=sorted(ancestors),
-                use_stream=False, non_blocking=False)
-            row.update(mode=mode, blocksPerGroup=count)
+        if layered:
+            largest, remainder = None, 0
+            if size > budget:
+                ancestors, blocks, remainder = block_layout(module)
+                if name == "text_encoder":
+                    # Qwen VLM calls embed_tokens before language_model.forward.
+                    ancestors.add("embed_tokens")
+                largest = max((tensor_bytes(block) for block in blocks), default=None)
+                mode, count = placement(size, budget, largest, remainder)
+                self.grouped.append(module)
+                apply_group_offloading(module, onload_device=self.device,
+                    offload_device=torch.device("cpu"), offload_type=mode,
+                    num_blocks_per_group=count, block_modules=sorted(ancestors),
+                    use_stream=False, non_blocking=False)
+                row.update(mode=mode, blocksPerGroup=count)
+            self.layer_plans.append((size, largest, remainder, (row["mode"], row.get("blocksPerGroup"))))
         self.manager.add(name, module)
 
     def _activate(self):
@@ -110,9 +124,13 @@ class Residency:
         if self.bound and self.policy == "offload":
             # Re-evaluate real free memory at each task, after the previous
             # task's scheduler/wrappers and activations have been retired.
-            modules = dict(self.modules)
-            self.close()
-            self.__init__(modules, self.policy, activation_reserve=self.activation_reserve, device=self.device)
+            self.offload_all()
+            budget = self.refresh_budget()
+            if any(placement(size, budget, largest, remainder) != previous
+                   for size, largest, remainder, previous in self.layer_plans):
+                modules = dict(self.modules)
+                self.close()
+                self.__init__(modules, self.policy, activation_reserve=self.activation_reserve, device=self.device)
         if self.manager is not None and not self.manager.model_hooks:
             self._activate()
         self.bound = True

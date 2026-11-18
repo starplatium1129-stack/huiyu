@@ -331,17 +331,8 @@ fn python_relative() -> &'static str {
     }
 }
 impl Settings {
-    pub(crate) fn model_count(&self) -> usize {
+    pub(crate) fn anima_model_count(&self) -> usize {
         model_count(&self.models_root)
-            + super::adapters::manifest()["models"]
-                .as_object()
-                .unwrap()
-                .iter()
-                .filter(|(id, spec)| {
-                    spec["media"] == "image"
-                        && super::adapters::status(self, id)["available"] == true
-                })
-                .count()
     }
     pub(crate) fn lora_count(&self) -> usize {
         lora_count(&self.loras_root)

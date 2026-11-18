@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "carlotta_wuwa/ivory_silk_robe_r15",
+  "revision": 1,
+  "sortOrder": 3207,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "carlotta_wuwa",
+    "outfit": {
+      "id": "ivory_silk_robe_r15",
+      "name": "象牙白真丝晨袍与玫瑰蕾丝衬裙",
+      "prose": "A loosely belted ivory silk dressing gown falling open over a dusty-rose lace chemise and white silk thigh-high stockings.",
+      "tokens": [
+        "white bathrobe",
+        "silk",
+        "unfastened",
+        "pink chemise",
+        "lace trim",
+        "white thighhighs"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

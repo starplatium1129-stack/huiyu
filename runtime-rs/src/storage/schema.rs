@@ -348,6 +348,7 @@ pub(super) fn open(
     let mut context = Context {
         db,
         gallery_catalog: Default::default(),
+        gallery_page_count: Default::default(),
         image_batch_recovery: None,
         task_payloads: Default::default(),
         root,

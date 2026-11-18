@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phrolova_sc08",
+  "revision": 1,
+  "sortOrder": 3508,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "斜倚丝绒长椅指尖轻拉胸前红丝带，脸红微喘",
+    "adult": false,
+    "animaCaption": "Reclining on a crimson velvet sofa in a black lace lingerie set laced with red satin ribbons, she hooks one finger into the ribbon bow at her chest and gazes up with parted lips and a deep blush.",
+    "camera": "中景，微俯视斜角",
+    "category": "索拉里斯私密",
+    "characterId": "phrolova_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "r15_intimate"
+    ],
+    "description": "暗红色天鹅绒长椅上，弗洛洛身着暗红丝带十字绑缚的黑蕾丝内衣与吊袜黑丝，斜倚扶手轻拉胸前丝带蝴蝶结，赤瞳微颤。",
+    "id": "wuwa_phrolova_sc08",
+    "lighting": "落地红纱灯罩暖红暗调光影",
+    "location": "残星会私密猩红会客厅",
+    "mature": false,
+    "mood": "危险诱惑",
+    "negativeTokens": [
+      "nude",
+      "explicit"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "crimson_ribbon_lingerie_r15",
+    "promptProse": "Lounging against crimson velvet cushions in a private parlor, Phrolova wears a black Chantilly lace bra and garter set laced with scarlet satin ribbons, tugging lightly at the center ribbon with a flushed gaze.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "red eyes",
+      "eyepatch",
+      "red flower",
+      "black bra",
+      "lace",
+      "red ribbons",
+      "garter belt",
+      "black thighhighs",
+      "cleavage",
+      "reclining",
+      "velvet couch",
+      "finger on ribbon",
+      "blush",
+      "parted lips",
+      "looking at viewer",
+      "dim lighting",
+      "warm red light",
+      "from above",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R15",
+    "sceneTags": [
+      "reclining",
+      "velvet couch",
+      "pulling ribbon",
+      "blush",
+      "parted lips",
+      "dim lighting",
+      "red lighting",
+      "from above",
+      "medium shot"
+    ],
+    "timeOfDay": "深夜",
+    "title": "弗洛洛 · 猩红天鹅绒沙发暗红丝带十字绑缚内衣"
+  }
+}

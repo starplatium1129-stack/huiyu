@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "iuno_wuwa/observatory_star_cape_dress",
+  "revision": 1,
+  "sortOrder": 3702,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "iuno_wuwa",
+    "outfit": {
+      "id": "observatory_star_cape_dress",
+      "name": "观星塔夜空金星刺绣半透披风裙",
+      "prose": "A midnight-blue velvet sleeveless dress layered under a sheer navy tulle capelet embroidered with golden constellations and moon phases.",
+      "tokens": [
+        "blue dress",
+        "sleeveless dress",
+        "sheer capelet",
+        "star print",
+        "gold embroidery",
+        "ankle boots"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

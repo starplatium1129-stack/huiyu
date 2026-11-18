@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_augusta_sc04",
+  "revision": 1,
+  "sortOrder": 3604,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于山巅石垛旁单手指向云海远方，披风猎猎飞扬",
+    "adult": false,
+    "animaCaption": "Standing atop a windswept mountain ridge above a sea of sunset clouds, she points toward the horizon as her gold-embroidered crimson cloak billows beside a blazing stone brazier.",
+    "camera": "全身镜头，广角云海山巅构图",
+    "category": "索拉里斯日常",
+    "characterId": "augusta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "落日余晖染红云海的七丘山巅烽火台边，奥古斯塔披着金线日轮刺绣红毛领披风，山风吹起火红长发，她伸手指向远方山脊。",
+    "id": "wuwa_augusta_sc04",
+    "lighting": "火烧云霞光与烽火台火盆暖橙火光",
+    "location": "七丘云海山巅烽火台",
+    "mature": false,
+    "mood": "壮阔豪情",
+    "negativeTokens": [
+      "indoor"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "mountain_ridge_cloak_suit",
+    "promptProse": "High above a crimson sea of sunset clouds on Septimont's ridge watchtower, Augusta gestures toward the distant peaks while the mountain wind sweeps her gold-embroidered scarlet travel cloak.",
+    "promptTokens": [
+      "red hair",
+      "long hair",
+      "yellow eyes",
+      "tall",
+      "red cloak",
+      "gold embroidery",
+      "black turtleneck",
+      "corset belt",
+      "black pants",
+      "knee boots",
+      "standing",
+      "pointing into distance",
+      "wind",
+      "flowing hair",
+      "proud smile",
+      "mountain peak",
+      "sea of clouds",
+      "burning brazier",
+      "sunset",
+      "golden hour",
+      "full body"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "pointing",
+      "wind",
+      "flowing cape",
+      "mountain peak",
+      "sea of clouds",
+      "brazier",
+      "sunset",
+      "golden hour",
+      "full body"
+    ],
+    "timeOfDay": "黄昏",
+    "title": "奥古斯塔 · 云海山巅烽火台暮雪巡行"
+  }
+}

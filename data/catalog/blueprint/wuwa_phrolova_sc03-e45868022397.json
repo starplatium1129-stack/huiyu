@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phrolova_sc03",
+  "revision": 1,
+  "sortOrder": 3503,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于雨中水榭栈道轻抚黑纱，低眸望向彼岸花海",
+    "adult": false,
+    "animaCaption": "Standing on a wooden pier beside a still lake bordered by vibrant red spider lilies in a gentle evening rain, she touches the edge of her sheer black veil as ripples mirror the crimson blooms.",
+    "camera": "全身镜头，水面倒影对称构图",
+    "category": "索拉里斯日常",
+    "characterId": "phrolova_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "水岸盛开着大片火红彼岸花的静谧镜湖木栈道上，细雨蒙蒙，弗洛洛披着半透黑蕾丝头纱低头凝视水中花影。",
+    "id": "wuwa_phrolova_sc03",
+    "lighting": "暮雨银灰漫射光与彼岸花艳红高饱和对比",
+    "location": "彼岸花镜湖水榭栈道",
+    "mature": false,
+    "mood": "凄美静谧",
+    "negativeTokens": [
+      "sunny beach"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "mirror_lake_mourning_veil",
+    "promptProse": "On a rain-darkened wooden jetty beside a mirror-still lake ringed with crimson spider lilies, Phrolova stands in a spider-lily embroidered black chiffon gown and sheer lace veil.",
+    "promptTokens": [
+      "white hair",
+      "long hair",
+      "red eyes",
+      "eyepatch",
+      "red flower",
+      "black dress",
+      "chiffon",
+      "floral embroidery",
+      "red flowers",
+      "black veil",
+      "bare shoulders",
+      "standing",
+      "hand near veil",
+      "looking down",
+      "gentle expression",
+      "wooden dock",
+      "mirror lake",
+      "red spider lilies",
+      "light rain",
+      "water ripples",
+      "twilight",
+      "full body"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "red spider lilies",
+      "lake",
+      "reflection",
+      "rain",
+      "wooden dock",
+      "melancholic",
+      "twilight",
+      "overcast",
+      "full body"
+    ],
+    "timeOfDay": "傍晚",
+    "title": "弗洛洛 · 彼岸花镜湖水榭暮雨黑纱"
+  }
+}

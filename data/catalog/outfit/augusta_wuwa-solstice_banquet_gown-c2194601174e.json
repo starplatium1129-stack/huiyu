@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "augusta_wuwa/solstice_banquet_gown",
+  "revision": 1,
+  "sortOrder": 3605,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "augusta_wuwa",
+    "outfit": {
+      "id": "solstice_banquet_gown",
+      "name": "夏至庆典金丝高开衩露背长裙",
+      "prose": "A radiant gold-and-crimson draped silk evening gown with a plunging back, thigh-high slit, and golden armlets.",
+      "tokens": [
+        "evening gown",
+        "gold and red dress",
+        "backless dress",
+        "high slit",
+        "armlet",
+        "cleavage"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

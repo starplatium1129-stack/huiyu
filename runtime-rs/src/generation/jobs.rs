@@ -424,14 +424,6 @@ async fn try_collect(inner: &Inner, job: &Job) -> bool {
     }
     match result {
         Ok(()) => {
-            if job.provider == "native"
-                && let Output::File { path, .. } = &output
-            {
-                native::recovery::forget(path).await;
-            }
-            if matches!(job.provider, "webui" | "native") {
-                snapshots::remove(inner, &job.id).await;
-            }
             state.collection_pending = false;
             state.code = None;
             state.error = None;
@@ -446,5 +438,17 @@ async fn try_collect(inner: &Inner, job: &Job) -> bool {
     let complete = !state.collection_pending;
     drop(state);
     job.notify.notify_waiters();
+    // The collect hook has committed. Filesystem cleanup only needs the
+    // collection claim, so status and progress reads can already proceed.
+    if complete {
+        if job.provider == "native"
+            && let Output::File { path, .. } = &output
+        {
+            native::recovery::forget(path).await;
+        }
+        if matches!(job.provider, "webui" | "native") {
+            snapshots::remove(inner, &job.id).await;
+        }
+    }
     complete
 }

@@ -62,7 +62,9 @@ impl ControlService {
             }
             let selected = Settings::deserialize(&target)?;
             selected.validate()?;
-            let model_count = selected.model_count();
+            let adapter_count =
+                crate::generation::native::adapters::Status::new(&selected).image_count();
+            let model_count = selected.anima_model_count() + adapter_count;
             let lora_count = selected.lora_count();
             let mut missing = Vec::new();
             let receipt = receipt.filter(|_| selected.python == suggested.python);
@@ -73,16 +75,7 @@ impl ControlService {
                     .environment_overrides
                     .iter()
                     .any(|key| key == "python");
-            let adapter_ready = crate::generation::native::adapters::manifest()["models"]
-                .as_object()
-                .unwrap()
-                .iter()
-                .any(|(id, model)| {
-                    model["media"] == "image"
-                        && crate::generation::native::adapters::status(&selected, id)["available"]
-                            == true
-                });
-            if !adapter_ready
+            if adapter_count == 0
                 && (!selected.python.is_file() || (receipt.is_none() && !explicit_python))
             {
                 missing.push("兼容的本机 Python 运行库");

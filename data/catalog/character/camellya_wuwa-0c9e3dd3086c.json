@@ -1,0 +1,147 @@
+{
+  "kind": "character",
+  "id": "camellya_wuwa",
+  "revision": 1,
+  "sortOrder": 304,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "id": "camellya_wuwa",
+    "profile": {
+      "id": "camellya_wuwa",
+      "name": "椿",
+      "source": "Wuthering Waves",
+      "alias": [
+        "椿",
+        "Camellya"
+      ],
+      "type": "popular",
+      "tags": [
+        "椿",
+        "鸣潮",
+        "黑海岸 · 执花"
+      ],
+      "identity": {
+        "role": "危险狂热的观察者与执花",
+        "faction": "黑海岸 · 执花"
+      },
+      "bg_story": "椿是黑海岸的执花。她常在温室和泰缇斯观测台出入，也把狩猎与交锋比作种子发芽。她说话带笑，越是碰上有意思的对手，越喜欢慢慢试探。",
+      "personality": [
+        "病娇狂热",
+        "战斗直觉",
+        "缠绕执念",
+        "慵懒挑衅"
+      ],
+      "likes": [],
+      "speech": "再近一点。这朵山茶才刚开，你还没看清吧？",
+      "traits": [
+        "camellya_(wuthering_waves)",
+        "wuthering_waves",
+        "two-tone hair",
+        "white hair",
+        "red hair",
+        "long hair",
+        "red eyes",
+        "ahoge",
+        "tacet mark on chest",
+        "vine tattoo"
+      ],
+      "portrait": {
+        "image": "../assets/characters/portrait-pending.svg",
+        "alt": "椿立绘待补"
+      },
+      "visual_dna": {
+        "signature": "Camellya from Wuthering Waves. Long white-and-red hair with a prominent forelock, red eyes, a Tacet Mark on her chest and vine-like markings.",
+        "uniform": "执花荆棘双层礼裙",
+        "style": "anime"
+      },
+      "accent_color": "#C81E3A",
+      "bg_color": "#F8E8EC",
+      "palette": [
+        "#C81E3A",
+        "#F8E8EC"
+      ],
+      "theme": {
+        "primaryColor": "#C81E3A",
+        "secondaryColor": "#F8E8EC",
+        "accentGlow": "rgba(200, 30, 58, 0.35)",
+        "motif": "crimson_camellia_and_thorns"
+      },
+      "settingMemory": {
+        "archetype": "危险狂热的观察者与执花",
+        "coreTraits": [
+          "病娇狂热",
+          "战斗直觉",
+          "缠绕执念",
+          "慵懒挑衅"
+        ],
+        "signatureLocations": [
+          "黑海岸温室花房",
+          "泰缇斯深层观测台",
+          "星海海岸悬崖",
+          "赤花藤蔓私密厢房"
+        ],
+        "speechTone": "尾音上扬、带着危险笑意与试探性的亲昵，常把战斗与狩猎比作盛放的种子。"
+      },
+      "version": "1.4",
+      "personaCoreSceneIds": [
+        "wuwa_camellya_sc01",
+        "wuwa_camellya_sc07",
+        "wuwa_camellya_sc09"
+      ],
+      "signatureSceneIds": [
+        "wuwa_camellya_sc01",
+        "wuwa_camellya_sc03",
+        "wuwa_camellya_sc08",
+        "wuwa_camellya_sc10"
+      ],
+      "factions": [
+        {
+          "id": "black_shores",
+          "name": "黑海岸 (Black Shores)",
+          "description": "守护索拉里斯文明边界的神秘组织，观测星海与声骸频率。"
+        }
+      ]
+    },
+    "popular": {
+      "id": "camellya_wuwa",
+      "displayName": "椿",
+      "originalName": "Camellya",
+      "franchise": "Wuthering Waves",
+      "aliases": [
+        "椿",
+        "Camellya"
+      ],
+      "identityProse": "Camellya from Wuthering Waves. Long white-and-red hair with a prominent forelock, red eyes, a Tacet Mark on her chest and vine-like markings.",
+      "identityTokens": [
+        "camellya_(wuthering_waves)",
+        "wuthering_waves",
+        "two-tone hair",
+        "white hair",
+        "red hair",
+        "long hair",
+        "red eyes",
+        "ahoge",
+        "tacet mark on chest",
+        "vine tattoo"
+      ],
+      "characterTokens": [
+        "camellya_(wuthering_waves)"
+      ],
+      "copyrightTokens": [
+        "wuthering_waves"
+      ],
+      "exactTokens": [
+        "camellya_(wuthering_waves)"
+      ],
+      "exactPrefixes": [],
+      "recommendedEngine": "anima-miaomiao-v1.6",
+      "supportedEngines": [
+        "anima-miaomiao-v1.6",
+        "anima-miaomiao-v1.2",
+        "krea2-turbo-fp8"
+      ],
+      "adultEligibility": "unknown"
+    }
+  }
+}

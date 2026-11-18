@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "phrolova_wuwa/spider_lily_conductor_coat",
+  "revision": 1,
+  "sortOrder": 3501,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "phrolova_wuwa",
+    "outfit": {
+      "id": "spider_lily_conductor_coat",
+      "name": "彼岸残响黑红燕尾指挥礼服",
+      "prose": "A dramatic black and crimson asymmetric conductor tailcoat with gold filigree cuffs, ruffled cravat, and a spider-lily lapel brooch.",
+      "tokens": [
+        "black tailcoat",
+        "red lining",
+        "asymmetrical dress",
+        "gold trim",
+        "cravat",
+        "black thighhighs"
+      ],
+      "default": true,
+      "isDefault": true,
+      "isNsfw": false
+    }
+  }
+}

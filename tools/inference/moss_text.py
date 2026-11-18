@@ -7,13 +7,13 @@ import json
 from huiyu_worker_lifecycle import load_sibling
 
 
-def load_int8(root, control, contract, variant=None, backend=None):
+def load_int8(root, control, contract, variant=None, backend=None, *, expected_model=None):
     import torch
     from accelerate import init_empty_weights
     from transformers import Qwen3_5Config, Qwen3_5Model
     quant = load_sibling("moss_int8")
     if variant is None:
-        variant = quant.selected(root, "int8", contract, component="text_encoder")
+        variant = quant.selected(root, "int8", contract, component="text_encoder", expected_model=expected_model)
         backend = quant.require_backend(contract)
     config = Qwen3_5Config.from_pretrained(str(root / "text_encoder"), local_files_only=True)
     with init_empty_weights():

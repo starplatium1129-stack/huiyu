@@ -1,0 +1,27 @@
+{
+  "kind": "outfit",
+  "id": "camellya_wuwa/obsidian_fencing_attire",
+  "revision": 1,
+  "sortOrder": 3106,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "characterId": "camellya_wuwa",
+    "outfit": {
+      "id": "obsidian_fencing_attire",
+      "name": "黑曜石刺绣剑舞修身服",
+      "prose": "A fitted black brocade sleeveless vest with crimson lapel piping, high-waisted tailored trousers, and crimson leather gauntlets.",
+      "tokens": [
+        "black vest",
+        "sleeveless",
+        "red trim",
+        "fitted pants",
+        "leather gloves",
+        "ascot"
+      ],
+      "default": false,
+      "isDefault": false,
+      "isNsfw": false
+    }
+  }
+}

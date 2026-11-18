@@ -1,0 +1,69 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_phoebe_sc05",
+  "revision": 1,
+  "sortOrder": 3305,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "蹲在野花草坡伸手轻抚可爱小声骸，开心大笑",
+    "adult": false,
+    "animaCaption": "Crouching in a breezy wildflower meadow overlooking the sparkling blue sea, she gently pets a small fluffy creature with a radiant, happy smile.",
+    "camera": "全身镜头，广角海岸花海构图",
+    "category": "索拉里斯日常",
+    "characterId": "phoebe_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "蔚蓝海岸边的野花草坡上，海风轻拂，菲比身着刺绣亚麻巡礼裙戴着草编遮阳帽，蹲在花丛中微笑着伸手抚摸温顺的小声骸。",
+    "id": "wuwa_phoebe_sc05",
+    "lighting": "明媚晴空自然光与海面反光",
+    "location": "黎那汐塔海岬野花草坡",
+    "mature": false,
+    "mood": "纯真欢快",
+    "negativeTokens": [
+      "storm",
+      "night"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "meadow_pilgrim_sundress",
+    "promptProse": "On a sun-kissed coastal meadow carpeted with blue and white wildflowers, Phoebe wears an embroidered linen pilgrim dress and straw bonnet, kneeling to gently pet a friendly little Echo creature.",
+    "promptTokens": [
+      "blonde hair",
+      "long hair",
+      "blue eyes",
+      "white dress",
+      "floral embroidery",
+      "straw hat",
+      "leather bag",
+      "crouching",
+      "petting small white creature",
+      "happy smile",
+      "wildflower meadow",
+      "coastal cliff",
+      "blue ocean",
+      "white clouds",
+      "afternoon",
+      "bright sunlight",
+      "full body"
+    ],
+    "recommendedSize": "1344x768",
+    "sampleRating": "All",
+    "sceneTags": [
+      "crouching",
+      "petting creature",
+      "cute mascot",
+      "wildflowers",
+      "meadow",
+      "blue sea",
+      "clear sky",
+      "afternoon",
+      "sunlight",
+      "full body"
+    ],
+    "timeOfDay": "下午",
+    "title": "菲比 · 海岬野花草坡抚摸小声骸"
+  }
+}

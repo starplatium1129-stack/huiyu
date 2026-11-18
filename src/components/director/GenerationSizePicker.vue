@@ -79,9 +79,9 @@ function applyCustom() {
     <StudioSelect v-if="compact || engine === 'sd'" label="画幅比例" :model-value="size" :disabled="busy"
       :groups="engine === 'sd' ? sizeGroups : undefined" :options="engine === 'sd' ? undefined : sizeOptions" @update:model-value="change" />
     <div v-else class="size-picker-grid">
-      <button v-for="card in cards" :key="card.value" type="button" data-control-motion :aria-pressed="size === card.value" :disabled="busy" @click="change(card.value)">
-        <i :style="{ aspectRatio: card.ratio }" aria-hidden="true"></i><span>{{ card.label }}</span><small>{{ card.value.replace('x', ' × ') }}</small>
-        <ArchiveIcon v-if="size === card.value" class="size-picker-check" name="success" />
+      <button v-for="card in cards" :key="card.value" type="button" data-spring-button :aria-pressed="size === card.value" :disabled="busy" @click="change(card.value)">
+        <i :style="{ aspectRatio: card.ratio }" data-press-content aria-hidden="true"></i><span>{{ card.label }}</span><small>{{ card.value.replace('x', ' × ') }}</small>
+        <span class="size-picker-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
       </button>
     </div>
     <StudioPopover v-if="customSize" label="自定义画幅" :open="customOpen" :side="compact ? 'top' : 'bottom'" @update:open="openCustom">
@@ -122,7 +122,16 @@ function applyCustom() {
 .size-picker-grid button:disabled { color:var(--text-disabled); cursor:not-allowed; }
 .size-picker-grid i { grid-row:1/3; justify-self:center; height:21px; max-width:28px; border:1.4px solid currentColor; border-radius:2px; }
 .size-picker-grid small { grid-column:2; font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
-.size-picker-grid .size-picker-check { position:absolute; top:var(--s-2); right:var(--s-2); width:12px; height:12px; transform:none; transition:none; }
+.size-picker-check {
+  position:absolute; top:var(--s-1); right:var(--s-1);
+  display:grid; place-items:center; width:17px; height:17px; border-radius:50%;
+  background:var(--bg-surface); color:var(--text-primary);
+  opacity:0; transform:translateY(2px) scale(.78);
+  transition:transform var(--motion-control) var(--spring-soft),opacity var(--motion-hover) var(--ease-out);
+}
+.size-picker-check .archive-icon { width:12px; height:12px; }
+.size-picker-grid button[aria-pressed="true"] .size-picker-check { opacity:1; transform:none; }
+.size-picker-grid:has(:focus-visible) .size-picker-check { transition:none; }
 .generation-size-picker p { margin:var(--s-3) 0 0; font-size:var(--fs-label-xs); line-height:var(--lh-body); color:var(--text-secondary); }
 .size-picker-custom { margin-block-start:var(--s-2); flex-shrink:0; white-space:nowrap; }
 .size-picker-form { display:grid; gap:var(--s-3); }
@@ -140,5 +149,7 @@ function applyCustom() {
    is useful only when each card has room for its icon and resolution. */
 @container generation-size (min-width:440px) { .size-picker-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
 @media (hover:hover) and (pointer:fine) { .size-picker-grid button:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-hover); } }
+@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .size-picker-check { transition:none; transform:none; } }
+:root:is([data-motion='reduce'],[data-motion='reduced']) .size-picker-check { transition:none; transform:none; }
 @media (forced-colors:active) { .size-picker-grid button[aria-pressed=true] { outline:2px solid Highlight; } }
 </style>

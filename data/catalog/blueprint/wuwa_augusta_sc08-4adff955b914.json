@@ -1,0 +1,73 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_augusta_sc08",
+  "revision": 1,
+  "sortOrder": 3608,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "单膝跪于丝绒床榻单手轻触金色腰链，双颊微红",
+    "adult": false,
+    "animaCaption": "Kneeling on a broad velvet-draped bed in a scarlet satin lingerie set accented with gold waist chains and red thigh-highs, she rests one hand on her hip and gazes directly at the viewer with flushed cheeks.",
+    "camera": "中景，平视",
+    "category": "索拉里斯私密",
+    "characterId": "augusta_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "r15_intimate"
+    ],
+    "description": "垂挂红金丝绸帐幔的执政官私人寝殿内，奥古斯塔身着烈日金链赤红丝缎内衣与红丝过膝袜，单膝跪在宽大丝绒床榻上直率凝视。",
+    "id": "wuwa_augusta_sc08",
+    "lighting": "壁炉暖火与青铜油灯金辉勾勒健美线条",
+    "location": "七丘执政官红金丝绒寝殿",
+    "mature": false,
+    "mood": "炽烈坦诚",
+    "negativeTokens": [
+      "nude",
+      "explicit"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "crimson_gold_lingerie_r15",
+    "promptProse": "In the warm firelight of her crimson-and-gold bedchamber, Augusta kneels on the plush mattress in a scarlet satin bra, matching briefs, red thigh-highs, and delicate gold waist chains.",
+    "promptTokens": [
+      "red hair",
+      "long hair",
+      "yellow eyes",
+      "tall",
+      "red bra",
+      "satin",
+      "red panties",
+      "waist chain",
+      "red thighhighs",
+      "large breasts",
+      "kneeling",
+      "bed",
+      "hand on hip",
+      "blush",
+      "parted lips",
+      "looking at viewer",
+      "luxury bedroom",
+      "red and gold curtains",
+      "warm firelight",
+      "night",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "R15",
+    "sceneTags": [
+      "kneeling",
+      "bed",
+      "waist chain",
+      "cleavage",
+      "blush",
+      "parted lips",
+      "velvet curtains",
+      "fireplace",
+      "warm lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "深夜",
+    "title": "奥古斯塔 · 寝宫红金丝缎束腰内衣与金腰链"
+  }
+}

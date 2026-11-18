@@ -4,7 +4,6 @@ import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from '
 import { frame, cancelFrame } from 'motion'
 import { createFluidMotion } from '@/utils/fluidSpring'
 import { SELECTION_SPRING } from '@/utils/controlSprings'
-import { prefersReducedMotion } from '@/utils/motionPreference'
 import '@/assets/css/studio-segments.css'
 const props = withDefaults(defineProps<{ target?: string; stretch?: boolean; variant?: 'surface' | 'underline' }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]', stretch: false, variant: 'surface' })
 const indicator = ref<HTMLElement | null>(null)
@@ -12,21 +11,14 @@ const highlight = ref<HTMLElement | null>(null)
 let resize: ResizeObserver | undefined
 let mutations: MutationObserver | undefined
 let fluid: ReturnType<typeof createFluidMotion> | undefined
-let baseWidth = 1, baseHeight = 1
-let targetX = 0, targetY = 0
 let suspended = false
-type Measurement = { x: number; y: number; width: number; height: number; box: string }
+type Measurement = { control: HTMLElement; x: number; y: number; width: number; height: number }
 let measurement: Measurement | null = null
-const layoutCache = new Map<HTMLElement, Measurement>()
+let destination: Measurement | null = null
 const observedControls = new Set<HTMLElement>()
-let media: MediaQueryList | undefined
-let removeMediaListener: (() => void) | undefined
-let initialized = false
 let parent: HTMLElement | null = null
 let observing = false
-let destinationBox = ''
 let parentBox = ''
-let layoutReady = false
 let keyboardInput = false
 function keyboard(event: KeyboardEvent) {
   // Keep keyboard selection and its painted state together in every group;
@@ -35,7 +27,7 @@ function keyboard(event: KeyboardEvent) {
   // current position/velocity through repeated arrow keys and pointer presses.
   if (event.defaultPrevented || event.isComposing || event.keyCode === 229) return
   if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return
-  keyboardInput = true; schedule()
+  keyboardInput = true
   if (parent && event.target instanceof HTMLButtonElement && parent.contains(event.target)) {
     // Reka tabs with data-orientation own their own roving focus. Plain button groups and custom tablists use roving keys here.
     if (parent.dataset.segmentKeyboard === 'managed' || parent.hasAttribute('data-orientation') || parent.closest('[data-reka-tabs-list]')) return
@@ -84,14 +76,9 @@ function focusSegment(button: HTMLButtonElement) {
   if (x || y) window.scrollBy({ left:x, top:y, behavior:'instant' })
 }
 function pointer() { keyboardInput = false }
-// Motion batches all indicator reads before any indicator writes in this frame.
-function schedule() {
-  if (layoutReady && !suspended && !document.hidden) frame.read(update)
-}
 function cancelScheduled() {
-  cancelFrame(update); cancelFrame(render); measurement = null
-  // Reactivation must snap to the selected target, not retain a paused spring.
-  initialized = false; destinationBox = ''
+  cancelFrame(render)
+  measurement = destination = null
 }
 function onVisibilityChange() {
   if (typeof document !== 'undefined' && document.hidden) {
@@ -101,55 +88,54 @@ function onVisibilityChange() {
     fluid = undefined
   } else {
     startObserving()
-    schedule()
   }
 }
 function startObserving() {
   if (observing || suspended || document.hidden || !parent) return
   observing = true
   resize?.observe(parent)
+  observeControls()
   mutations?.observe(parent, { subtree: true, childList: true, attributes: true, attributeFilter: ['class', 'aria-current', 'aria-pressed', 'aria-selected', 'aria-checked', 'data-state', 'hidden'] })
 }
 function stopObserving() {
   observing = false
   resize?.disconnect()
   mutations?.disconnect()
-  observedControls.clear(); layoutCache.clear()
+  observedControls.clear()
   parentBox = ''
-  layoutReady = false
 }
 function resized(entries: ResizeObserverEntry[]) {
-  if (suspended || document.hidden) return
+  if (!observing || suspended || document.hidden) return
   const entry = entries.find(entry => entry.target === parent)
   if (entry) {
     const box = `${entry.contentRect.width}:${entry.contentRect.height}`
     const reflowed = parentBox !== '' && parentBox !== box
     parentBox = box
-    layoutReady = true
     if (reflowed) {
       // A row/size change belongs to layout, not selection travel. Snap before
       // the next indicator paint. Keep every observer's reads ahead of writes.
       cancelScheduled()
     }
   }
-  measureControls()
-  // Observing a newly selected button produces an initial notification too;
-  // it must not interrupt the ordinary continuous selection spring.
-  // Initial reads follow natural layout; all groups still share Motion's write phase.
-  if (layoutReady) update()
+  // Sibling resizes can move the selection. Read only the active control after
+  // layout, then let all groups share Motion's render phase.
+  const control = selectedElement()
+  const width = control?.offsetWidth, height = control?.offsetHeight
+  measurement = control && width && height
+    ? { control, x: control.offsetLeft, y: control.offsetTop, width, height }
+    : null
+  frame.render(render)
 }
-function measureControls() {
+function observeControls() {
   if (!parent) return
-  const selected = selectedElement()
   const controls = new Set(parent.querySelectorAll<HTMLElement>('button, a, [role="tab"], [role="radio"]'))
+  const selected = selectedElement()
   if (selected) controls.add(selected)
   for (const control of observedControls) if (!controls.has(control)) {
-    resize?.unobserve(control); observedControls.delete(control); layoutCache.delete(control)
+    resize?.unobserve(control); observedControls.delete(control)
   }
   for (const control of controls) {
     if (!observedControls.has(control)) { observedControls.add(control); resize?.observe(control) }
-    const x = control.offsetLeft, y = control.offsetTop, width = control.offsetWidth, height = control.offsetHeight
-    layoutCache.set(control, { x, y, width, height, box: [x, y, width, height].join(',') })
   }
 }
 function selectedElement() {
@@ -163,39 +149,33 @@ function refreshLayout() {
   // them. Request a fresh natural-layout delivery instead of reading now.
   resize?.unobserve(parent); resize?.observe(parent)
 }
-function mutated() {
+function mutated(records: MutationRecord[]) {
+  if (records.some(record => record.type === 'childList')) observeControls()
   refreshLayout()
-  schedule()
-}
-function update() {
-  const el = indicator.value
-  const selected = selectedElement()
-  if (!el || !parent || (typeof document !== 'undefined' && document.hidden)) return
-  const geometry = selected ? layoutCache.get(selected) : undefined
-  if (selected && !geometry) resize?.observe(selected)
-  if (!geometry?.width || !geometry.height) { measurement = null; frame.render(render); return }
-  // Controls and their indicator share a positioned parent. Layout coordinates
-  // exclude opening/press transforms, which would otherwise be applied twice.
-  const { box } = geometry
-  if (initialized && box === destinationBox && !media?.matches) return
-  measurement = geometry
-  frame.render(render)
 }
 function render() {
   const el = indicator.value
   if (!el || suspended || document.hidden) return
-  if (!measurement) { fluid?.dispose(); fluid = undefined; el.style.opacity = '0'; initialized = false; destinationBox = ''; return }
-  const { x, y, width, height, box } = measurement
-  destinationBox = box
-  baseWidth = width; baseHeight = height
-  targetX = x; targetY = y
-  el.style.width = baseWidth + 'px'
-  el.style.height = baseHeight + 'px'
+  if (!measurement) {
+    fluid?.dispose()
+    fluid = undefined
+    destination = null
+    el.style.opacity = '0'
+    return
+  }
+  const { x, y, width, height, control } = measurement
+  const previous = destination
+  destination = measurement
+  if (previous && previous.x === x && previous.y === y && previous.width === width && previous.height === height) return
+  el.style.width = width + 'px'
+  el.style.height = height + 'px'
   el.style.opacity = '1'
   fluid ??= createFluidMotion([x, y, width, height], ([left, top, width, height]) => {
+    if (!destination) return
+    const { x: targetX, y: targetY, width: baseWidth, height: baseHeight } = destination
     // Lucian #039 / #043 · MIT (c) 2026 Seokwoooo. Stretch the existing
     // spring surface toward its destination; labels keep their own geometry.
-    const extension = props.stretch && !prefersReducedMotion() && !keyboardInput ? Math.min(baseWidth * .65, Math.abs(targetX - left) * .2) : 0
+    const extension = props.stretch && !keyboardInput ? Math.min(baseWidth * .65, Math.abs(targetX - left) * .2) : 0
     const leadingLeft = left - (targetX < left ? extension : 0)
     el.style.transform = `translate(${leadingLeft}px,${top}px) scale(${(width + extension) / baseWidth},${height / baseHeight})`
     // Light travels with the existing geometry spring and disappears when settled.
@@ -207,40 +187,25 @@ function render() {
       light.style.transform = `translateX(${Math.sign(targetX - left) * energy * 14}%)`
     }
   }, SELECTION_SPRING.frequency, SELECTION_SPRING.damping)
-  fluid.to([x, y, width, height], !initialized)
-  initialized = true
+  // Layout changes under the same selection snap. Selecting another control
+  // retargets the current spring and preserves its velocity.
+  fluid.to([x, y, width, height], !previous || previous.control === control)
 }
 onMounted(() => {
-  if (typeof window !== 'undefined' && typeof window.matchMedia === 'function') {
-    const m = window.matchMedia('(prefers-reduced-motion: reduce)')
-    media = m
-    if (typeof m.addEventListener === 'function') {
-      m.addEventListener('change', schedule)
-      removeMediaListener = () => m.removeEventListener('change', schedule)
-    } else if (typeof m.addListener === 'function') {
-      m.addListener(schedule)
-      removeMediaListener = () => m.removeListener(schedule)
-    }
-  }
-  if (typeof document !== 'undefined') {
-    document.addEventListener('visibilitychange', onVisibilityChange)
-  }
+  document.addEventListener('visibilitychange', onVisibilityChange)
   parent = indicator.value?.parentElement ?? null
   if (!parent) return
   resize = new ResizeObserver(resized)
   mutations = new MutationObserver(mutated)
   startObserving()
-  parent.addEventListener('scroll', schedule, { passive: true })
   parent.addEventListener('keydown', keyboard, true)
   parent.addEventListener('pointerdown', pointer, true)
   window.addEventListener('resize', refreshLayout)
   document.fonts?.addEventListener('loadingdone', refreshLayout)
-  schedule()
 })
 onActivated(() => {
   suspended = false
   startObserving()
-  schedule()
 })
 onDeactivated(() => {
   suspended = true
@@ -249,19 +214,17 @@ onDeactivated(() => {
   fluid?.dispose()
   fluid = undefined
 })
-watch(() => props.target, schedule)
+watch(() => props.target, refreshLayout, { flush: 'post' })
 onUnmounted(() => {
   suspended = true
   document.fonts?.removeEventListener('loadingdone', refreshLayout)
   window.removeEventListener('resize', refreshLayout)
-  removeMediaListener?.()
   if (typeof document !== 'undefined') {
     document.removeEventListener('visibilitychange', onVisibilityChange)
   }
   stopObserving()
   fluid?.dispose()
   cancelScheduled()
-  parent?.removeEventListener('scroll', schedule)
   parent?.removeEventListener('keydown', keyboard, true)
   parent?.removeEventListener('pointerdown', pointer, true)
 })

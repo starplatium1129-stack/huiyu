@@ -1,0 +1,72 @@
+{
+  "kind": "blueprint",
+  "id": "wuwa_iuno_sc01",
+  "revision": 1,
+  "sortOrder": 3701,
+  "createdAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "data": {
+    "action": "立于黄铜浑天仪旁轻拨星环，微抬下巴傲娇浅笑",
+    "adult": false,
+    "animaCaption": "Standing beside a spinning brass astrolabe atop an open-air mountain observatory under a full moon, she touches a celestial ring with a composed, knowing smile.",
+    "camera": "中景，微仰视，璀璨银河与天文仪器背景",
+    "category": "索拉里斯日常",
+    "characterId": "iuno_wuwa",
+    "compositionIntent": "single",
+    "coverageTags": [
+      "daily"
+    ],
+    "description": "七丘最高处的露天月轮观星塔台上，悬浮着精密的黄铜天文星盘，尤诺身着银蓝星纱百褶神装，指尖轻拨旋转星环，清冷双眸望向镜头。",
+    "id": "wuwa_iuno_sc01",
+    "lighting": "满月银辉与星盘蓝白全息星轨微光",
+    "location": "七丘露天月轮观星塔",
+    "mature": false,
+    "mood": "清冷神秘",
+    "negativeTokens": [
+      "daylight",
+      "clouds"
+    ],
+    "nsfwProse": "",
+    "nsfwTokens": [],
+    "outfitId": "lunar_oracle_chiton",
+    "promptProse": "High atop Septimont's open-air lunar observatory beneath a starry sky, Iuno rests her fingertips on a rotating brass astrolabe in her white-and-sapphire oracle attire.",
+    "promptTokens": [
+      "blue hair",
+      "twin tails",
+      "long hair",
+      "blue eyes",
+      "crescent hair ornament",
+      "white and blue dress",
+      "pleated dress",
+      "blue ribbons",
+      "detached sleeves",
+      "standing",
+      "touching brass astrolabe",
+      "slight smile",
+      "looking at viewer",
+      "open-air observatory",
+      "starry sky",
+      "full moon",
+      "night",
+      "moonlight",
+      "blue glow",
+      "medium shot"
+    ],
+    "recommendedSize": "1152x1536",
+    "sampleRating": "All",
+    "sceneTags": [
+      "standing",
+      "astrolabe",
+      "reaching out",
+      "starry sky",
+      "full moon",
+      "observatory",
+      "slight smile",
+      "night",
+      "blue lighting",
+      "medium shot"
+    ],
+    "timeOfDay": "夜晚",
+    "title": "尤诺 · 月轮观星塔黄铜星盘星象推演"
+  }
+}
