@@ -1,0 +1,14 @@
+{
+  "description": "绘遇 Muse 微信群问答卡片",
+  "compileType": "miniprogram",
+  "appid": "touristappid",
+  "projectname": "huiyu-muse-group-card",
+  "libVersion": "3.8.2",
+  "miniprogramRoot": "miniprogram/",
+  "cloudfunctionRoot": "cloudfunctions/",
+  "setting": {
+    "es6": true,
+    "minified": true,
+    "urlCheck": true
+  }
+}

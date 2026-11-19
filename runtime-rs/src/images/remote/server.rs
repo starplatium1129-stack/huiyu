@@ -29,11 +29,15 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         .and_then(|v| v.to_str().ok())
         .unwrap_or("");
     // This interface is for another runtime, not browser cross-origin requests.
-    let allowed = ["/api/anima/", "/api/creative/", "/api/qwen/", "/api/moss/"]
-        .iter()
-        .any(|prefix| request.uri().path().starts_with(prefix))
+    let path = request.uri().path();
+    let qq_chat = path.starts_with("/api/muse/qq/");
+    let allowed = (request.uri().query().is_none()
+        && super::relay::qq_route(request.method(), path))
+        || ["/api/anima/", "/api/creative/", "/api/qwen/", "/api/moss/"]
+            .iter()
+            .any(|prefix| path.starts_with(prefix))
         || matches!(
-            request.uri().path(),
+            path,
             "/api/muse/catalog"
                 | "/api/muse/jobs"
                 | "/api/muse/queue"
@@ -41,8 +45,8 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
                 | guide::PATH
                 | upload_index::PATH
         )
-        || request.uri().path().starts_with("/api/muse/catalog/")
-        || request.uri().path().starts_with("/api/muse/batches/");
+        || path.starts_with("/api/muse/catalog/")
+        || path.starts_with("/api/muse/batches/");
     let mut response = if !allowed {
         StatusCode::NOT_FOUND.into_response()
     } else if !crate::remote_content::token_matches(&key, supplied)
@@ -64,6 +68,12 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         "x-huiyu-image-protocol",
         axum::http::HeaderValue::from_static("1"),
     );
+    if qq_chat {
+        response.headers_mut().insert(
+            header::CACHE_CONTROL,
+            HeaderValue::from_static("private, no-store"),
+        );
+    }
     if response.status().is_success() {
         response
             .headers_mut()
@@ -142,6 +152,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
         )))))
         .layer(Extension(guide::Guide))
         .merge(super::muse::router(images, state.host.clone()))
+        .merge(crate::companion_channels::muse_qq_router())
         .route(guide::PATH, get(guide::read))
         .merge(
             Router::new()

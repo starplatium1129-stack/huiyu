@@ -1,0 +1,10 @@
+{
+  "name": "huiyu-muse-wechat-card",
+  "version": "1.0.0",
+  "private": true,
+  "main": "index.js",
+  "dependencies": {
+    "image-size": "2.1.0",
+    "wx-server-sdk": "4.0.2"
+  }
+}

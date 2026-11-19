@@ -1,17 +1,20 @@
 use super::*;
 use futures_util::SinkExt;
+use rustls::{ClientConfig, RootCertStore, crypto::aws_lc_rs};
 use tokio::net::TcpStream;
 use tokio_tungstenite::{
-    MaybeTlsStream, WebSocketStream, connect_async_with_config,
+    Connector, MaybeTlsStream, WebSocketStream, connect_async_tls_with_config,
     tungstenite::{Message as Frame, protocol::WebSocketConfig},
 };
 
 type Socket = WebSocketStream<MaybeTlsStream<TcpStream>>;
 type GatewayResult<T> = std::result::Result<T, &'static str>;
+const NEW_SESSION: &str = "QQ 长连接会话已失效，正在重新登录";
 
 #[derive(Default)]
 pub(super) struct Resume {
     session: Option<String>,
+    bot_id: Option<String>,
     sequence: Option<u64>,
     pub connected: bool,
 }
@@ -20,21 +23,18 @@ pub(super) async fn connect(
     app: &AppState,
     storage: &Storage,
     api: &Api,
-    direct: &mpsc::Sender<Message>,
-    groups: &mpsc::Sender<Message>,
+    inboxes: &Inboxes,
     resume: &mut Resume,
 ) -> GatewayResult<()> {
-    let token = api
-        .token()
+    let address = api
+        .authenticated(api.client.get(format!("{API}/gateway")))
         .await
-        .map_err(|_| "QQ 凭据验证失败，请核对 AppID 和 AppSecret")?;
-    let address = json_response(
-        api.client
-            .get(format!("{API}/gateway"))
-            .header("authorization", format!("QQBot {token}")),
-    )
-    .await
-    .map_err(|_| "无法获取 QQ 长连接，请检查机器人权限和网络")?;
+        .map_err(|error| match error.code.as_str() {
+            "QQ_CREDENTIALS" | "QQ_TOKEN_REJECTED" => "QQ 凭据验证失败，请核对 AppID 和 AppSecret",
+            "QQ_PERMISSION_DENIED" => "QQ 机器人缺少连接权限，请检查开放平台设置",
+            "QQ_RATE_LIMIT" => "QQ 连接请求已限频，正在稍后重试",
+            _ => "无法获取 QQ 长连接，请检查机器人权限和网络",
+        })?;
     let address = address["url"]
         .as_str()
         .and_then(|value| url::Url::parse(value).ok())
@@ -49,9 +49,21 @@ pub(super) async fn connect(
     let config = WebSocketConfig::default()
         .max_message_size(Some(512 * 1024))
         .max_frame_size(Some(512 * 1024));
+    // The runtime links both Rustls providers, so choose one explicitly for QQ.
+    let roots = RootCertStore::from_iter(webpki_roots::TLS_SERVER_ROOTS.iter().cloned());
+    let tls = ClientConfig::builder_with_provider(Arc::new(aws_lc_rs::default_provider()))
+        .with_safe_default_protocol_versions()
+        .map_err(|_| CONNECTION_ERROR)?
+        .with_root_certificates(roots)
+        .with_no_client_auth();
     let (mut socket, _) = tokio::time::timeout(
         Duration::from_secs(12),
-        connect_async_with_config(address.as_str(), Some(config), false),
+        connect_async_tls_with_config(
+            address.as_str(),
+            Some(config),
+            false,
+            Some(Connector::Rustls(Arc::new(tls))),
+        ),
     )
     .await
     .map_err(|_| CONNECTION_ERROR)?
@@ -64,6 +76,7 @@ pub(super) async fn connect(
         .filter(|value| (1000..=180_000).contains(value))
         .filter(|_| hello["op"] == 10)
         .ok_or(CONNECTION_ERROR)?;
+    let token = api.token().await.map_err(|_| "无法取得 QQ 登录凭据")?;
     let credentials = format!("QQBot {token}");
     let sign_in = match (resume.session.as_ref(), resume.sequence) {
         (Some(session), Some(sequence)) => {
@@ -93,11 +106,20 @@ pub(super) async fn connect(
                 awaiting_ack = true;
             }
             event = read(&mut socket) => {
-                let event = event?;
+                let event = event.inspect_err(|detail| {
+                    if *detail == NEW_SESSION {
+                        resume.session = None;
+                        resume.sequence = None;
+                    }
+                })?;
                 match event["op"].as_u64() {
                     Some(0) => {
                         match event["t"].as_str() {
-                            Some("READY") => { resume.session = event["d"]["session_id"].as_str().map(str::to_owned); ready = true; }
+                            Some("READY") => {
+                                resume.session = event["d"]["session_id"].as_str().map(str::to_owned);
+                                resume.bot_id = open_id(&event["d"]["user"]["id"]).map(str::to_owned);
+                                ready = true;
+                            }
                             Some("RESUMED") => ready = true,
                             _ => {}
                         }
@@ -105,9 +127,9 @@ pub(super) async fn connect(
                             resume.connected = true;
                             app.channels.report(storage, "online", None);
                         }
-                        if let Some(message) = Message::parse(&event) {
+                        if let Some(message) = Message::parse(&event, resume.bot_id.as_deref(), inboxes) {
                             // Resume from the last queued event if the bounded inbox fills.
-                            let inbox = if message.scope == QqScope::Group { groups } else { direct };
+                            let inbox = inboxes.for_message(&message);
                             inbox.try_send(message).map_err(|_| "QQ 消息较多，正在重新接收")?;
                         }
                         if let Some(sequence) = event["s"].as_u64() { resume.sequence = Some(sequence); }
@@ -116,7 +138,7 @@ pub(super) async fn connect(
                     Some(7) => return Ok(()),
                     Some(9) => {
                         if event["d"] != true { resume.session = None; resume.sequence = None; }
-                        return Err("QQ 长连接会话已失效，正在重新登录");
+                        return Err(NEW_SESSION);
                     }
                     Some(11) => awaiting_ack = false,
                     _ => {}
@@ -144,6 +166,7 @@ async fn read(socket: &mut Socket) -> GatewayResult<Value> {
             }
             Some(Ok(Frame::Close(close))) => {
                 return Err(match close.map(|close| u16::from(close.code)) {
+                    Some(4006 | 4007 | 4900..=4913) => NEW_SESSION,
                     Some(4013 | 4014) => "QQ 机器人缺少消息权限，请检查开放平台设置",
                     Some(4914 | 4915) => "QQ 机器人当前无法连接，请检查开放平台状态",
                     _ => CONNECTION_ERROR,

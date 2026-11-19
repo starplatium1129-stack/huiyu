@@ -1,0 +1,9 @@
+<view class="home">
+  <view class="panel">
+    <text class="title">问 Muse</text>
+    <text class="intro">在群卡片里提问或发一张图，收到 Muse 的回答后可以分享到原群。</text>
+    <button wx:if="{{canChoose}}" class="primary" bindtap="chooseGroup" disabled="{{choosing}}">选择微信群</button>
+    <button class="{{canChoose ? 'secondary' : 'primary'}}" open-type="share">分享提问卡片</button>
+    <text wx:if="{{error}}" class="error" aria-role="alert">{{error}}</text>
+  </view>
+</view>

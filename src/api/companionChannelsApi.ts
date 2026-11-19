@@ -12,6 +12,11 @@ export interface QqChannelStatus {
   character: ChannelCharacter
   drawing: boolean
   groupDrawing: boolean
+  groupMuse?: boolean
+  privateMuse?: boolean
+  groupMuseAll?: boolean
+  museProactive?: boolean
+  groupMuseStatus?: 'remoteDisabled' | 'waiting' | 'receiving' | 'vmConfigured' | 'vmUnavailable' | 'vmConfigError' | null
   groups: QqGroup[]
   paired: boolean
   phase: ChannelPhase
@@ -29,12 +34,19 @@ export interface QqChannelSettings {
   enabled: boolean
   drawing: boolean
   groupDrawing: boolean
+  groupMuse?: boolean
+  privateMuse?: boolean
+  groupMuseAll?: boolean
+  museProactive?: boolean
 }
 
 function validate(value: ApiResponseObject): boolean {
   return value.ok === true && !('secret' in value) && !('sealedSecret' in value)
     && typeof value.configured === 'boolean' && typeof value.enabled === 'boolean'
     && typeof value.drawing === 'boolean' && typeof value.paired === 'boolean' && typeof value.groupDrawing === 'boolean'
+    && [value.groupMuse, value.privateMuse, value.groupMuseAll, value.museProactive]
+      .every(flag => flag === undefined || typeof flag === 'boolean')
+    && (value.groupMuseStatus == null || ['remoteDisabled', 'waiting', 'receiving', 'vmConfigured', 'vmUnavailable', 'vmConfigError'].includes(String(value.groupMuseStatus)))
     && Array.isArray(value.groups) && value.groups.every(group => group && typeof group.id === 'string' && typeof group.label === 'string')
     && (value.character === 'nene' || value.character === 'natsume')
     && ['disabled', 'connecting', 'online', 'error'].includes(String(value.phase))

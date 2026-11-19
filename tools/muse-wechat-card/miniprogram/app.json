@@ -1,0 +1,38 @@
+{
+  "pages": ["pages/home/index"],
+  "subPackages": [{
+    "root": "card",
+    "name": "museCard",
+    "pages": ["pages/ask/index"],
+    "independent": true,
+    "renderer": "skyline",
+    "componentFramework": "glass-easel"
+  }],
+  "chatTools": [{
+    "root": "card",
+    "entryPagePath": "pages/ask/index",
+    "desc": "在本群向 Muse 提问或提交图片，并分享回答"
+  }],
+  "darkmode": true,
+  "themeLocation": "theme.json",
+  "window": {
+    "navigationBarTitleText": "绘遇",
+    "navigationBarTextStyle": "@navText",
+    "navigationBarBackgroundColor": "@paper",
+    "backgroundColor": "@paper"
+  },
+  "style": "v2",
+  "componentFramework": "glass-easel",
+  "lazyCodeLoading": "requiredComponents",
+  "rendererOptions": {
+    "skyline": {
+      "disableABTest": true,
+      "defaultDisplayBlock": true,
+      "defaultContentBox": false,
+      "tagNameStyleIsolation": "legacy",
+      "sdkVersionBegin": "3.7.8",
+      "sdkVersionEnd": "15.255.255"
+    }
+  },
+  "sitemapLocation": "sitemap.json"
+}

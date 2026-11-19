@@ -1261,6 +1261,7 @@ dependencies = [
  "regex",
  "reqwest 0.13.5",
  "rusqlite",
+ "rustls",
  "rustxng",
  "ryu-js",
  "serde",
@@ -1277,6 +1278,7 @@ dependencies = [
  "unicode-normalization",
  "url",
  "uuid",
+ "webpki-roots 1.0.12",
  "windows-sys 0.61.2",
 ]
 

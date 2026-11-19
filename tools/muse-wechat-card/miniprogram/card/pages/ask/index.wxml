@@ -1,0 +1,86 @@
+<view class="shell theme-{{theme}}">
+  <view class="nav" style="padding-top: {{top}}px;">
+    <view class="nav-line" style="height: {{barHeight}}px;">
+      <button wx:if="{{canGoBack}}" class="back" bindtap="back" aria-label="返回上一页">返回</button>
+      <text class="nav-title">Muse 群问答</text>
+    </view>
+  </view>
+  <scroll-view class="scroll" scroll-y type="list">
+    <view class="body">
+      <view wx:if="{{screen === 'opening'}}" class="section">
+        <text class="message" aria-role="status">正在连接群卡片…</text>
+      </view>
+      <view wx:elif="{{screen === 'unavailable' || screen === 'other'}}" class="section">
+        <text class="heading">{{screen === 'other' ? '请从已绑定的群打开' : '暂时无法打开卡片'}}</text>
+        <text class="help">{{screen === 'other' ? '这张卡片只在机主绑定的普通微信群中使用。' : feedback}}</text>
+        <button class="primary" bindtap="retryOpen">重新连接</button>
+        <button class="quiet" bindtap="home">回到首页选群</button>
+      </view>
+      <view wx:elif="{{screen === 'bind'}}" class="section">
+        <form bindsubmit="bindGroup">
+          <text class="heading">绑定这个微信群</text>
+          <text class="help">机主可在自己的 Muse 私聊里获取绑定码。绑定后，群友就能打开卡片提问。</text>
+          <label for="group-code" class="label">绑定码</label>
+          <text class="hint">请在获取后 15 分钟内使用。</text>
+          <input id="group-code" name="code" class="input" password maxlength="128" value="{{code}}" focus="{{focusCode}}" bindinput="inputCode" disabled="{{busy}}" aria-label="绑定码" />
+          <text wx:if="{{feedback}}" class="error" aria-role="alert">{{feedback}}</text>
+          <button class="primary" form-type="submit" disabled="{{busy}}">{{busy ? '正在绑定…' : '绑定此群'}}</button>
+        </form>
+      </view>
+      <view wx:elif="{{screen === 'ask'}}" class="section">
+        <form bindsubmit="ask">
+          <label for="question" class="heading">想问 Muse 什么？</label>
+          <text class="help">可以请 Muse 查公开资料，也可以提交一张图片。</text>
+          <textarea id="question" name="question" class="textarea" value="{{text}}" bindinput="inputText" maxlength="1600" placeholder="写下你的问题…" aria-label="提问内容" focus="{{focusQuestion}}" disabled="{{busy || uncertain}}" />
+          <view wx:if="{{hasPhoto}}" class="attachment">
+            <image wx:if="{{draftPath}}" class="thumb" src="{{draftPath}}" mode="aspectFill" bindtap="previewImage" aria-label="查看所选图片" />
+            <text class="caption">已选一张图片</text>
+            <button class="inline" bindtap="removePhoto" disabled="{{busy || picking || uncertain}}">移除</button>
+          </view>
+          <button wx:else class="attach" bindtap="selectPhoto" disabled="{{busy || picking || uncertain}}">{{picking ? '正在处理图片…' : '添加图片'}}</button>
+          <text class="hint">每次可发 1,600 字和一张图片。大图会自动压缩。</text>
+          <text wx:if="{{uncertain && !feedback}}" class="help" aria-role="status">上次提交还没有确认，可以沿用原问题重试。</text>
+          <text wx:if="{{feedback}}" class="error" aria-role="alert">{{feedback}}</text>
+          <button class="primary" form-type="submit" disabled="{{busy || picking}}">{{busy ? '正在提交…' : uncertain ? '重试原问题' : '问 Muse'}}</button>
+          <button wx:if="{{uncertain && !busy}}" class="quiet" bindtap="newQuestion">另写一个问题</button>
+        </form>
+        <button wx:if="{{chatTool}}" class="quiet" bindtap="shareCard">把提问卡片发到群</button>
+        <button wx:else class="quiet" open-type="share">分享提问卡片</button>
+      </view>
+      <view wx:elif="{{screen === 'result'}}" class="section">
+        <block wx:if="{{question}}">
+          <text class="label">提问</text>
+          <text class="question-text" user-select>{{question.text || '一张图片'}}</text>
+          <view class="divider"></view>
+          <block wx:if="{{question.state === 'answered'}}">
+            <text class="label">Muse 的回答</text>
+            <text wx:if="{{question.answerText}}" class="answer-text" user-select>{{question.answerText}}</text>
+            <image wx:if="{{answerPath}}" class="answer-photo" src="{{answerPath}}" mode="widthFix" bindtap="previewImage" aria-label="查看 Muse 返回的图片" />
+            <text wx:if="{{imageBusy}}" class="help" aria-role="status">正在准备回答里的图片…</text>
+            <text wx:if="{{imageError}}" class="error" aria-role="alert">{{imageError}}</text>
+            <button wx:if="{{imageError && !answerPath}}" class="secondary" bindtap="readAnswer" disabled="{{imageBusy}}">重新加载图片</button>
+            <block wx:if="{{answerShareable}}">
+              <button wx:if="{{chatTool}}" class="primary" bindtap="shareCard">把回答卡片发回群</button>
+              <button wx:else class="primary" open-type="share">分享回答卡片</button>
+            </block>
+            <button wx:if="{{question.answerImage}}" class="secondary" bindtap="sharePicture" disabled="{{!answerPath}}">{{chatTool ? '把图片发回群' : '分享图片'}}</button>
+            <button wx:if="{{question.answerText}}" class="quiet" bindtap="copyAnswer">复制回答文字</button>
+          </block>
+          <block wx:elif="{{question.state === 'failed'}}">
+            <text class="label">Muse 暂未完成</text>
+            <text class="error">{{question.error || '可以换个说法，重新提问。'}}</text>
+          </block>
+          <block wx:else>
+            <text class="label" aria-role="status">{{question.state === 'processing' ? 'Muse 正在回答' : '正在等 Muse 收取问题'}}</text>
+            <text class="help">回答会在这里出现。稍后从本群的提问卡片回来，也可以继续查看。</text>
+          </block>
+        </block>
+        <text wx:elif="{{!feedback}}" class="help" aria-role="status">正在读取回答…</text>
+        <text wx:if="{{feedback}}" class="error" aria-role="alert">{{feedback}}</text>
+        <button wx:if="{{feedback}}" class="secondary" bindtap="readAnswer">重新读取</button>
+        <button wx:if="{{(question && (question.state === 'answered' || question.state === 'failed')) || feedback}}" class="quiet" bindtap="newQuestion">回到提问</button>
+      </view>
+    </view>
+  </scroll-view>
+  <canvas type="2d" id="encoder" class="encoder" aria-hidden="true"></canvas>
+</view>

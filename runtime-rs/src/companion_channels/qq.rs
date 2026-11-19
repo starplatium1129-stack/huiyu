@@ -1,4 +1,5 @@
 mod gateway;
+pub(super) mod muse;
 
 use super::{
     conversation::{Context, Conversation, Reply, batch_message},
@@ -7,7 +8,7 @@ use super::{
 use base64::{Engine, engine::general_purpose::STANDARD};
 use futures_util::StreamExt;
 use reqwest::Client;
-use std::{collections::HashMap, sync::Arc};
+use std::{borrow::Cow, collections::HashMap, sync::Arc};
 use tokio::sync::{Mutex as AsyncMutex, mpsc};
 use tokio::time::Instant;
 
@@ -25,9 +26,35 @@ struct Message {
     id: String,
     target: String,
     member: String,
+    nickname: Option<String>,
     scope: QqScope,
+    to_muse: bool,
+    ambient: bool,
+    sent_at: Option<u64>,
     received_at: u64,
     text: String,
+    images: Vec<Value>,
+}
+
+struct Inboxes {
+    private_muse: bool,
+    group_muse: bool,
+    group_muse_all: bool,
+    direct: mpsc::Sender<Message>,
+    groups: mpsc::Sender<Message>,
+    muse: mpsc::Sender<Message>,
+}
+
+impl Inboxes {
+    fn for_message(&self, message: &Message) -> &mpsc::Sender<Message> {
+        match message.scope {
+            // The private worker checks its current owner before forwarding to Muse,
+            // including immediately after a successful pairing in the same session.
+            QqScope::Private => &self.direct,
+            QqScope::Group if message.to_muse => &self.muse,
+            QqScope::Group => &self.groups,
+        }
+    }
 }
 
 #[derive(Clone, Copy)]
@@ -63,45 +90,120 @@ impl Destination<'_> {
 }
 
 impl Message {
-    fn parse(event: &Value) -> Option<Self> {
+    fn muse_question(text: &str, enabled: bool) -> Option<&str> {
+        let (command, question) = text.split_once(char::is_whitespace).unwrap_or((text, ""));
+        match command {
+            "/帮助" | "/help" | "/取图" | "/开始绘图" | "/取消" | "/绑定" | "/绑定群" => {
+                None
+            }
+            command if command.eq_ignore_ascii_case("/muse") => Some(question.trim()),
+            _ if enabled => Some(text),
+            _ => None,
+        }
+    }
+
+    fn parse(event: &Value, bot_id: Option<&str>, inboxes: &Inboxes) -> Option<Self> {
         let data = &event["d"];
         if data["author"]["bot"] == true {
             return None;
         }
-        let (scope, target, member) = match event["t"].as_str()? {
+        let kind = event["t"].as_str()?;
+        let author = &data["author"];
+        let (scope, target, member) = match kind {
             "C2C_MESSAGE_CREATE" => {
-                let peer = open_id(&data["author"]["user_openid"])?;
+                let peer = open_id(&author["user_openid"]).or_else(|| open_id(&author["id"]))?;
                 (QqScope::Private, peer, peer)
             }
-            "GROUP_AT_MESSAGE_CREATE" => (
+            "GROUP_AT_MESSAGE_CREATE" | "GROUP_MESSAGE_CREATE" => (
                 QqScope::Group,
                 open_id(&data["group_openid"])?,
-                open_id(&data["author"]["member_openid"])?,
+                open_id(&author["member_openid"]).or_else(|| open_id(&author["id"]))?,
             ),
             _ => return None,
         };
         let id = data["id"].as_str()?.trim();
-        let text = data["content"].as_str()?.trim();
+        let enabled = match scope {
+            QqScope::Private => inboxes.private_muse,
+            QqScope::Group => inboxes.group_muse,
+        };
+        let text = data["content"].as_str().unwrap_or("").trim();
+        let (content, mentioned) = if scope == QqScope::Group {
+            group_text(
+                text,
+                &data["mentions"],
+                bot_id,
+                kind == "GROUP_AT_MESSAGE_CREATE",
+            )
+        } else {
+            (Cow::Borrowed(text), false)
+        };
+        let text = content.trim();
+        let ambient = kind == "GROUP_MESSAGE_CREATE" && !mentioned;
+        if ambient && !(inboxes.group_muse && inboxes.group_muse_all) {
+            return None;
+        }
         let now = crate::host::now_ms();
-        let received_at = data["timestamp"]
+        let sent_at = data["timestamp"]
             .as_str()
             .and_then(|time| chrono::DateTime::parse_from_rfc3339(time).ok())
             .and_then(|time| u64::try_from(time.timestamp_millis()).ok())
-            .unwrap_or(now)
-            .min(now);
+            .or_else(|| {
+                let value = data["timestamp"]
+                    .as_u64()
+                    .or_else(|| data["timestamp"].as_str()?.parse().ok())?;
+                Some(if value < 10_000_000_000 {
+                    value * 1000
+                } else {
+                    value
+                })
+            });
+        let received_at = sent_at.unwrap_or(now).min(now);
+        let images = if enabled {
+            incoming_images(&data["attachments"])
+        } else {
+            Vec::new()
+        };
         if id.is_empty()
             || id.len() > 512
-            || text.is_empty()
+            || (text.is_empty() && images.is_empty())
             || now.saturating_sub(received_at) >= scope.reply_window_ms()
         {
+            return None;
+        }
+        let question = Self::muse_question(text, enabled);
+        if ambient && question.is_none() {
+            // Unaddressed group commands must never pair a group or control a drawing.
             return None;
         }
         Some(Self {
             id: id.into(),
             target: target.into(),
             member: member.into(),
+            nickname: [
+                &author["member_nickname"],
+                &data["member"]["nick"],
+                &author["nickname"],
+                &author["username"],
+            ]
+            .into_iter()
+            .filter_map(Value::as_str)
+            .map(str::trim)
+            .find(|name| !name.is_empty())
+            .map(|name| name.chars().take(128).collect()),
             scope,
-            text: text.chars().take(1600).collect(),
+            to_muse: question.is_some(),
+            ambient,
+            sent_at,
+            text: question
+                .map(|q| {
+                    if q.is_empty() && !images.is_empty() {
+                        format!("发来了 {} 张图片。", images.len())
+                    } else {
+                        q.to_owned()
+                    }
+                })
+                .unwrap_or_else(|| text.chars().take(1600).collect()),
+            images,
             received_at,
         })
     }
@@ -122,6 +224,76 @@ impl Message {
         };
         Some((scope, code.trim()))
     }
+}
+
+fn incoming_images(attachments: &Value) -> Vec<Value> {
+    attachments
+        .as_array()
+        .into_iter()
+        .flatten()
+        .filter_map(|item| {
+            let mime = item["content_type"].as_str()?;
+            if !mime.starts_with("image/") {
+                return None;
+            }
+            let raw = item["url"].as_str()?.trim();
+            if raw.len() > 4096 {
+                return None;
+            }
+            let url = url::Url::parse(raw).ok()?;
+            let host = url.domain()?;
+            let qq_cdn = ["qq.com", "qq.com.cn", "qpic.cn", "qlogo.cn"]
+                .iter()
+                .any(|domain| {
+                    host == *domain
+                        || host
+                            .strip_suffix(domain)
+                            .is_some_and(|prefix| prefix.ends_with('.'))
+                });
+            if !qq_cdn
+                || !matches!(url.scheme(), "https" | "http")
+                || !url.username().is_empty()
+                || url.password().is_some()
+            {
+                return None;
+            }
+            Some(json!({"mimeType":mime,"url":raw}))
+        })
+        .take(4)
+        .collect()
+}
+
+fn group_text<'a>(
+    text: &'a str,
+    mentions: &Value,
+    bot_id: Option<&str>,
+    at_event: bool,
+) -> (Cow<'a, str>, bool) {
+    let own = mentions.as_array().into_iter().flatten().find(|mention| {
+        mention["is_you"] == true
+            || bot_id.is_some_and(|id| {
+                mention["member_openid"].as_str() == Some(id) || mention["id"].as_str() == Some(id)
+            })
+    });
+    let mut content = Cow::Borrowed(text);
+    let mentioned = at_event || own.is_some();
+    if mentioned && text.contains("<@") {
+        for id in [
+            own.and_then(|mention| open_id(&mention["member_openid"])),
+            own.and_then(|mention| open_id(&mention["id"])),
+            bot_id,
+        ]
+        .into_iter()
+        .flatten()
+        {
+            for token in [format!("<@{id}>"), format!("<@!{id}>")] {
+                if content.contains(&token) {
+                    content = Cow::Owned(content.replace(&token, ""));
+                }
+            }
+        }
+    }
+    (content, mentioned)
 }
 
 fn open_id(value: &Value) -> Option<&str> {
@@ -166,6 +338,35 @@ pub(super) async fn run(
     });
     let (direct_sender, direct) = mpsc::channel(16);
     let (group_sender, groups) = mpsc::channel(16);
+    let (muse_sender, muse_inbox) = mpsc::channel(16);
+    let inboxes = Inboxes {
+        private_muse: settings.private_muse,
+        group_muse: settings.group_muse,
+        group_muse_all: settings.group_muse_all,
+        direct: direct_sender,
+        groups: group_sender,
+        muse: muse_sender.clone(),
+    };
+    let mut poll_server = None;
+    if settings.private_muse || settings.group_muse {
+        let _lock = app.channels.write.lock().await;
+        if read::<Settings>(&settings_path(&app, &storage, &principal))
+            .await
+            .ok()
+            .flatten()
+            .as_ref()
+            != Some(&settings)
+            || !is_current(&app, &storage)
+            || cancel.is_cancelled()
+        {
+            return;
+        }
+        let mailbox =
+            muse::Mailbox::open(&app.config.runtime_root, &storage, api.clone(), &cancel).await;
+        let mailbox = Arc::new(mailbox);
+        *app.channels.muse_qq.lock().unwrap() = Some(mailbox.clone());
+        poll_server = mailbox.start_listener(&app);
+    }
     let worker_cancel = cancel.clone();
     let worker_app = app.clone();
     let worker_storage = storage.clone();
@@ -173,6 +374,13 @@ pub(super) async fn run(
     let worker = tokio::spawn(async move {
         let handle = async {
             tokio::join!(
+                muse::process(
+                    &worker_app,
+                    &worker_storage,
+                    &principal,
+                    &worker_api,
+                    muse_inbox
+                ),
                 process(
                     &worker_app,
                     &worker_storage,
@@ -181,6 +389,7 @@ pub(super) async fn run(
                     &worker_api,
                     &worker_cancel,
                     QqScope::Private,
+                    &muse_sender,
                     direct
                 ),
                 process(
@@ -191,6 +400,7 @@ pub(super) async fn run(
                     &worker_api,
                     &worker_cancel,
                     QqScope::Group,
+                    &muse_sender,
                     groups
                 ),
             );
@@ -203,7 +413,7 @@ pub(super) async fn run(
         app.channels.report(&storage, "connecting", None);
         let result = tokio::select! {
             _ = cancel.cancelled() => break,
-            result = gateway::connect(&app, &storage, &api, &direct_sender, &group_sender, &mut resume) => result,
+            result = gateway::connect(&app, &storage, &api, &inboxes, &mut resume) => result,
         };
         if cancel.is_cancelled() {
             break;
@@ -221,6 +431,10 @@ pub(super) async fn run(
     }
     cancel.cancel();
     let _ = worker.await;
+    app.channels.close_muse_qq();
+    if let Some(server) = poll_server {
+        let _ = server.await;
+    }
 }
 
 async fn process(
@@ -231,6 +445,7 @@ async fn process(
     api: &Api,
     cancel: &CancellationToken,
     scope: QqScope,
+    muse: &mpsc::Sender<Message>,
     mut inbox: mpsc::Receiver<Message>,
 ) {
     let ctx = Context {
@@ -254,7 +469,7 @@ async fn process(
             message = inbox.recv() => {
                 let Some(message) = message else { return };
                 let target = message.destination();
-                if let Some((requested_scope, code)) = message.pairing_request() {
+                if !message.to_muse && let Some((requested_scope, code)) = message.pairing_request() {
                     if requested_scope == scope
                         && let Ok(Some(binding)) = pair(app, storage, principal, &settings.app_id, scope, target.id, code).await
                     {
@@ -274,6 +489,10 @@ async fn process(
                     continue;
                 }
                 if !allows(&settings, target) { continue; }
+                if message.to_muse {
+                    if muse.send(message).await.is_err() { return; }
+                    continue;
+                }
                 let turn = Context { group_member: (scope == QqScope::Group).then_some(message.member.as_str()), ..ctx };
                 let Ok(active) = conversation(&mut conversations, &turn, &settings.app_id, target).await else { continue };
                 reply(&turn, api, active, &message).await;
@@ -447,7 +666,7 @@ async fn deliver(
             return Ok(());
         }
         let (name, bytes) = super::media::read_image(ctx.storage, alias, ctx.cancel).await?;
-        let media = api.image(target, name, bytes).await?;
+        let media = api.image(target, name, &bytes).await?;
         api.send(
             target,
             message_id,
@@ -473,30 +692,65 @@ impl Api {
                 .post("https://bots.qq.com/app/getAppAccessToken")
                 .json(&json!({"appId":self.app_id,"clientSecret":self.secret})),
         )
-        .await?;
+        .await
+        .map_err(|error| {
+            if error.status.as_u16() == 429 || !error.status.is_client_error() {
+                error
+            } else {
+                ApiError::new(
+                    401,
+                    "QQ_CREDENTIALS",
+                    format!("QQ 未能验证 AppID 或 AppSecret。{}", error.message),
+                )
+            }
+        })?;
         let token = response["access_token"]
             .as_str()
             .filter(|token| !token.is_empty() && token.len() <= 4096)
-            .ok_or_else(|| ApiError::invalid("QQ 凭据验证失败"))?;
+            .ok_or_else(|| ApiError::new(502, "QQ_CREDENTIALS", "QQ 凭据回执缺少访问令牌"))?;
         let expires = response["expires_in"]
             .as_u64()
             .or_else(|| response["expires_in"].as_str()?.parse().ok())
             .unwrap_or(300);
+        let expires = expires.min(10_000);
+        let refresh_after = expires - (expires / 10).min(30);
         *cached = Some((
             token.into(),
-            Instant::now() + Duration::from_secs(expires.clamp(40, 10_000).saturating_sub(30)),
+            Instant::now() + Duration::from_secs(refresh_after),
         ));
         Ok(token.into())
     }
 
+    async fn authenticated(&self, mut request: reqwest::RequestBuilder) -> Result<Value> {
+        let mut retry = request.try_clone();
+        loop {
+            let token = self.token().await.map_err(ApiError::not_accepted)?;
+            let result =
+                json_response(request.header("authorization", format!("QQBot {token}"))).await;
+            if !result
+                .as_ref()
+                .is_err_and(|error| error.code == "QQ_TOKEN_REJECTED")
+            {
+                return result;
+            }
+            let mut cached = self.token.lock().await;
+            if cached
+                .as_ref()
+                .is_some_and(|(current, _)| current == &token)
+            {
+                *cached = None;
+            }
+            drop(cached);
+            let Some(next) = retry.take() else {
+                return result;
+            };
+            request = next;
+        }
+    }
+
     async fn post(&self, path: &str, body: Value) -> Result<Value> {
-        let token = self.token().await?;
-        let method = self
-            .client
-            .post(format!("{API}{path}"))
-            .header("authorization", format!("QQBot {token}"))
-            .json(&body);
-        json_response(method).await
+        self.authenticated(self.client.post(format!("{API}{path}")).json(&body))
+            .await
     }
 
     async fn text(&self, target: Destination<'_>, id: &str, text: &str) -> Result<()> {
@@ -514,41 +768,165 @@ impl Api {
     ) -> Result<()> {
         body["msg_id"] = json!(id);
         body["msg_seq"] = json!(seq);
+        self.send_message(target, body).await
+    }
+
+    async fn proactive(&self, target: Destination<'_>, mut body: Value) -> Result<()> {
+        let fields = body
+            .as_object_mut()
+            .ok_or_else(|| ApiError::invalid("QQ 主动消息格式不正确").not_accepted())?;
+        for field in ["msg_id", "msg_seq", "event_id", "is_wakeup"] {
+            fields.remove(field);
+        }
+        self.send_message(target, body).await.map_err(|mut error| {
+            if !error.submission_not_accepted {
+                error.code = "QQ_DELIVERY_UNKNOWN".into();
+                error.message = format!("请先在 QQ 会话核对送达情况。{}", error.message);
+            }
+            error
+        })
+    }
+
+    async fn send_message(&self, target: Destination<'_>, mut body: Value) -> Result<()> {
+        // QQ's older rich-media handlers require a nonempty content field.
+        if body["msg_type"] == 7 && body["content"].as_str().is_none_or(str::is_empty) {
+            body["content"] = json!(" ");
+        }
         let value = self.post(&target.path("messages"), body).await?;
         if value["id"].as_str().is_some_and(|id| !id.is_empty()) {
             Ok(())
         } else {
-            Err(networking())
+            Err(ApiError::new(
+                502,
+                "QQ_RECEIPT_MISSING",
+                "QQ 回执缺少消息 ID",
+            ))
         }
     }
 
-    async fn image(&self, target: Destination<'_>, name: &str, bytes: Vec<u8>) -> Result<String> {
+    async fn image(&self, target: Destination<'_>, name: &str, bytes: &[u8]) -> Result<String> {
         let value = self.post(&target.path("files"), json!({
             "file_type":1,"file_name":name,"file_data":STANDARD.encode(bytes),"srv_send_msg":false,
-        })).await?;
+        })).await.map_err(ApiError::not_accepted)?;
         value["file_info"]
             .as_str()
             .filter(|media| !media.is_empty())
             .map(str::to_owned)
-            .ok_or_else(networking)
+            .ok_or_else(|| networking().not_accepted())
     }
 }
 
 async fn json_response(request: reqwest::RequestBuilder) -> Result<Value> {
-    let response = request.send().await.map_err(|_| networking())?;
-    if !response.status().is_success() {
-        return Err(networking());
-    }
+    let response = request.send().await.map_err(|error| {
+        if error.is_builder() || error.is_connect() && !error.is_timeout() {
+            networking().not_accepted()
+        } else {
+            networking()
+        }
+    })?;
+    let status = response.status();
+    let unreadable = || {
+        if status.is_success() {
+            ApiError::new(
+                502,
+                "QQ_RECEIPT_MISSING",
+                format!("QQ 回执无法读取（HTTP {}）", status.as_u16()),
+            )
+        } else {
+            rejected(status, None)
+        }
+    };
     let mut stream = response.bytes_stream();
     let mut body = Vec::new();
     while let Some(chunk) = stream.next().await {
-        let chunk = chunk.map_err(|_| networking())?;
+        let chunk = chunk.map_err(|_| unreadable())?;
         if body.len() + chunk.len() > 64 * 1024 {
-            return Err(networking());
+            return Err(unreadable());
         }
         body.extend_from_slice(&chunk);
     }
-    serde_json::from_slice(&body).map_err(|_| networking())
+    let value = serde_json::from_slice::<Value>(&body);
+    let code = value.as_ref().ok().and_then(|data| {
+        ["err_code", "code"]
+            .into_iter()
+            .filter_map(|field| {
+                let value = &data[field];
+                value
+                    .as_i64()
+                    .or_else(|| value.as_str()?.parse::<i64>().ok())
+            })
+            .find(|code| *code != 0)
+    });
+    if !status.is_success() || code.is_some() {
+        return Err(rejected(status, code));
+    }
+    value.map_err(|_| unreadable())
+}
+
+fn rejected(status: reqwest::StatusCode, code: Option<i64>) -> ApiError {
+    let http = status.as_u16();
+    let (local_status, name, detail) = match (http, code) {
+        (500..=599 | 408, _) => (502, "QQ_NETWORK", "QQ 服务未能确认请求结果"),
+        (_, Some(304023 | 304024)) => (409, "QQ_AUDIT_PENDING", "QQ 已受理消息，正在审核"),
+        (401, _) | (_, Some(11241 | 11242 | 11243)) => {
+            (401, "QQ_TOKEN_REJECTED", "QQ 拒绝了访问令牌")
+        }
+        (429, _) | (_, Some(22009 | 40034100 | 40093002)) => {
+            (429, "QQ_RATE_LIMIT", "已达到 QQ 发送限额，请稍后重试")
+        }
+        (_, Some(304027 | 304103 | 40034005 | 40034128)) => {
+            (410, "QQ_REPLY_EXPIRED", "QQ 原消息的回复时间或次数已用完")
+        }
+        (_, Some(40054005)) => (409, "QQ_MESSAGE_DUPLICATE", "QQ 已使用这条消息的回复序号"),
+        (_, Some(304003 | 40054010)) => (
+            422,
+            "QQ_URL_REJECTED",
+            "QQ 未允许这条链接，请检查机器人后台的消息 URL 配置",
+        ),
+        (_, Some(850019 | 850031 | 304080)) => (
+            422,
+            "QQ_MEDIA_INVALID",
+            "QQ 无法使用这份图片，请检查文件格式和大小",
+        ),
+        (_, Some(304082 | 304083 | 850026 | 850027 | 40034004 | 40093001)) => (
+            502,
+            "QQ_MEDIA_UNAVAILABLE",
+            "QQ 未能完成媒体转存，可以稍后重试",
+        ),
+        (_, Some(40034101 | 40054003 | 40054004)) => (
+            403,
+            "QQ_TARGET_UNAVAILABLE",
+            "QQ 机器人尚未加入这个群或与该用户建立好友关系",
+        ),
+        (_, Some(304064 | 40034105 | 40054013)) => (
+            403,
+            "QQ_PROACTIVE_DENIED",
+            "请检查机器人的主动发送权限和会话的消息接收开关",
+        ),
+        (403, _) | (_, Some(11253 | 11254 | 11264 | 11265 | 40054002 | 850018)) => {
+            (403, "QQ_PERMISSION_DENIED", "QQ 机器人当前没有发送权限")
+        }
+        (_, Some(40034006 | 304061 | 40054007 | 40054018)) => (
+            422,
+            "QQ_CONTENT_REJECTED",
+            "QQ 拒绝了这条内容，请调整正文或缩短消息",
+        ),
+        (_, Some(40054016 | 50055001 | 50055002)) => {
+            (503, "QQ_SEND_UNAVAILABLE", "QQ 当前无法发送，请稍后重试")
+        }
+        _ => (422, "QQ_REJECTED", "QQ 拒绝了这次请求"),
+    };
+    let reason = match code {
+        Some(code) => format!("HTTP {http}，QQ {code}"),
+        None => format!("HTTP {http}"),
+    };
+    eprintln!("QQ 请求未取得成功回执：{reason}");
+    let error = ApiError::new(local_status, name, format!("{detail}（{reason}）"));
+    if status.is_server_error() || http == 408 || name == "QQ_AUDIT_PENDING" {
+        error
+    } else {
+        error.not_accepted()
+    }
 }
 
 fn networking() -> ApiError {

@@ -23,6 +23,21 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
         "usage": "使用当前连接的地址和已保存的 X-Token。以下路径均相对于当前地址。",
         "sceneModels": ["anima-miaomiao-v1.6", "moss-miaomiao-base-v1.0", "moss-miaomiao-base-v1.1"],
         "operations": {
+            "qqChat": {
+                "inbox": "GET /api/muse/qq/inbox", "reply": "POST /api/muse/qq/reply",
+                "targets": "GET /api/muse/qq/targets", "send": "POST /api/muse/qq/send", "search": "POST /api/muse/qq/search",
+                "json": {"requestKey":"收件项的 requestKey","text":"回到原会话的文字"},
+                "usage": "每约 15 秒收信。用 conversationId 区分会话，senderId 区分发件人。同一 requestKey 处理一次。",
+                "groupRouting": "已启用的私聊和群 @ 消息可交给 Muse，群里也可用 /muse。普通群消息还需要机主开启接收，并且群主在 QQ 同意。绑定、帮助、取图等命令仍交给绘遇。",
+                "image": {"mimeType":"image/jpeg 或 image/png","data":"JPEG 或 PNG 原始文件的标准 base64，原文件最多 3 MiB"},
+                "delivery": "expiresAt 为 Unix 毫秒。在到期前向 reply 提交收件编号，可以带一条 1–1600 字的 text、一张 image 或两者。status=sent 表示 QQ 已确认。重试时沿用原编号和原内容。410 表示原消息已失效，需要发件人重新提问。",
+                "skip": "普通群消息无需插话时，向 reply 或 /qq/replies 提交 {requestKey,skip:true}，返回 status=skipped，不占用 QQ 发送额度。",
+                "proactive": "机主开启 museProactive 主动发送后，先 GET targets 选出已绑定的 conversationId。POST send 提交此 conversationId、新 UUID 作为 requestKey，以及 text 或 image 中的一项。QQ 平台会检查机器人权限和主动消息额度。重试用同一编号和原内容。",
+                "webSearch": "POST search，传原收件项的 requestKey 和 query。主动检索可用新的 UUID 作为 requestKey，并同时传已开启会话的 conversationId 和 query。结果包含 ok、query 和 results，每项是公开网页的 title、url、snippet。可将相关来源发回当前会话。",
+                "vmMode": "QQ_MUSE_VM_POLL 表示 Muse 通过笔记本专用 Tailscale 端口收信。QQ_MUSE_VM_ACTIVE 表示绘遇向虚拟机 POST /qq/questions，随后 GET /qq/replies/{requestKey}。",
+                "vmPoll": {"inbox":"GET /qq/pending","reply":"POST /qq/replies","targets":"GET /qq/targets","send":"POST /qq/send","search":"POST /qq/search"},
+                "vmImageReply": "反向轮询时也可用 POST /qq/replies/{requestKey}/image 提交 JPEG 或 PNG 原始字节。Content-Type 应与文件相符，最多 3 MiB。"
+            },
             "catalog": {
                 "method": "GET", "path": "/api/muse/catalog",
                 "query": "kind=character 查角色，kind=outfit 查服装，kind=media 查场景和蓝图。可传 search、character 和 rating（如 R18）。pageSize 最大 500，按 nextPage 翻页，ratings 列出分级。",

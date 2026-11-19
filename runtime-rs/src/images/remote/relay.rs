@@ -1,11 +1,12 @@
-//! Outbound-only Muse connector. The relay can invoke drawing operations on the
-//! dedicated loopback listener, never choose a destination or supply local credentials.
+//! Outbound-only Muse connector. The relay can invoke drawing and QQ operations on the
+//! dedicated loopback listener. The connector supplies its local credentials only there.
 use futures_util::StreamExt;
 use reqwest::{Client, Method, Response, Url};
 use serde::Deserialize;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
-use std::{path::PathBuf, time::Duration};
+use std::{path::PathBuf, sync::Arc, time::Duration};
+use tokio::task::JoinSet;
 use tokio_util::sync::CancellationToken;
 
 #[derive(Deserialize)]
@@ -46,11 +47,28 @@ struct Command {
 }
 
 const MAX_REPLY: usize = 2 * 1024 * 1024;
+const MAX_COMMAND: usize = 384 * 1024;
+// The message can contain 3 MiB as base64 plus 64 KiB of JSON. The ticket,
+// method and fixed QQ path are added by the relay after it checks that limit.
+const MAX_QQ_COMMAND: usize = 4 * 1024 * 1024 + 64 * 1024 + 1024;
+
+fn qq_message(method: &Method, path: &str) -> bool {
+    *method == Method::POST && matches!(path, "/api/muse/qq/reply" | "/api/muse/qq/send")
+}
+
+pub(super) fn qq_route(method: &Method, path: &str) -> bool {
+    qq_message(method, path)
+        || (*method == Method::GET && matches!(path, "/api/muse/qq/inbox" | "/api/muse/qq/targets"))
+        || (*method == Method::POST && path == "/api/muse/qq/search")
+}
 
 fn allowed(method: &Method, path: &str) -> bool {
     if path.len() > 4096 || path.contains(['#', '\\']) || path.bytes().any(|b| b.is_ascii_control())
     {
         return false;
+    }
+    if qq_route(method, path) {
+        return true;
     }
     let route = path.split('?').next().unwrap_or("");
     let parts: Vec<_> = route.split('/').collect();
@@ -181,7 +199,7 @@ impl Bridge {
         .await?;
         Ok(())
     }
-    async fn once(&self) -> Result<(), ()> {
+    async fn once(self: &Arc<Self>, qq_tasks: &mut JoinSet<()>) -> Result<(), ()> {
         let request = self
             .cloud
             .post(self.base.join("_agent/next").map_err(|_| ())?)
@@ -195,11 +213,20 @@ impl Bridge {
             return Ok(());
         }
         let request = request.error_for_status().map_err(|_| ())?;
+        let qq_media = request
+            .headers()
+            .get("x-muse-qq-media")
+            .is_some_and(|v| v == "1");
+        let limit = if qq_media {
+            MAX_QQ_COMMAND
+        } else {
+            MAX_COMMAND
+        };
         let cmd: Command =
-            serde_json::from_slice(&bounded(request, 384 * 1024).await?).map_err(|_| ())?;
+            serde_json::from_slice(&bounded(request, limit).await?).map_err(|_| ())?;
         let ticket = uuid::Uuid::parse_str(&cmd.ticket).map_err(|_| ())?;
         let method = Method::from_bytes(cmd.method.as_bytes()).map_err(|_| ())?;
-        if !allowed(&method, &cmd.path) {
+        if !allowed(&method, &cmd.path) || (qq_media && !qq_message(&method, &cmd.path)) {
             return Err(());
         }
         if method == Method::POST
@@ -217,6 +244,20 @@ impl Bridge {
         {
             return Err(());
         }
+        if qq_route(&method, &cmd.path) && qq_tasks.len() < 4 {
+            // Keep polling while a search or QQ upload awaits its external service.
+            let bridge = self.clone();
+            qq_tasks.spawn(async move {
+                let _ = bridge.forward(cmd, ticket, method).await;
+            });
+            return Ok(());
+        }
+        self.forward(cmd, ticket, method).await
+    }
+
+    async fn forward(&self, cmd: Command, ticket: uuid::Uuid, method: Method) -> Result<(), ()> {
+        let message = qq_message(&method, &cmd.path);
+        let search = cmd.path == "/api/muse/qq/search";
         let mut upstream = self
             .local
             .request(
@@ -225,6 +266,12 @@ impl Bridge {
             )
             .header("X-Token", &self.key)
             .header("Accept-Encoding", "identity");
+        if message {
+            // A picture needs separate QQ upload and delivery receipts.
+            upstream = upstream.timeout(Duration::from_secs(85));
+        } else if search {
+            upstream = upstream.timeout(Duration::from_secs(35));
+        }
         if let Some(body) = cmd.body {
             upstream = upstream.json(&body);
         }
@@ -327,7 +374,7 @@ pub(super) async fn run(
     ) else {
         return;
     };
-    let bridge = Bridge {
+    let bridge = Arc::new(Bridge {
         local,
         cloud,
         media,
@@ -335,11 +382,13 @@ pub(super) async fn run(
         agent_token: config.agent_token,
         port,
         key,
-    };
+    });
     let poll = async {
         let mut retry = 1;
+        let mut qq_tasks = JoinSet::new();
         loop {
-            tokio::select! { biased; _ = shutdown.cancelled() => break, result = bridge.once() => {
+            while qq_tasks.try_join_next().is_some() {}
+            tokio::select! { biased; _ = shutdown.cancelled() => break, result = bridge.once(&mut qq_tasks) => {
                 if result.is_ok() { retry = 1; continue; }
                 if retry == 1 { eprintln!("Muse 中转暂未连通，正在自动重连"); }
             } }

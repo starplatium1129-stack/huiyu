@@ -3,6 +3,7 @@ mod media;
 mod qq;
 mod secret;
 pub(crate) mod wechat;
+pub(crate) use qq::muse::router as muse_qq_router;
 
 use crate::{
     AppState,
@@ -28,6 +29,7 @@ pub(crate) struct Channels {
     connection: Mutex<Connection>,
     pair: Mutex<Option<Pairing>>,
     group_pair: Mutex<Option<Pairing>>,
+    muse_qq: Mutex<Option<std::sync::Arc<qq::muse::Mailbox>>>,
     wechat_turn: tokio::sync::Mutex<()>,
     wechat_cancel: Mutex<CancellationToken>,
 }
@@ -52,13 +54,13 @@ enum QqScope {
     Group,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 struct QqGroup {
     id: String,
     label: String,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Clone, PartialEq, Serialize, Deserialize)]
 #[serde(rename_all = "camelCase")]
 struct Settings {
     app_id: String,
@@ -69,6 +71,14 @@ struct Settings {
     owner: Option<String>,
     #[serde(default)]
     group_drawing: bool,
+    #[serde(default)]
+    group_muse: bool,
+    #[serde(default)]
+    private_muse: bool,
+    #[serde(default)]
+    group_muse_all: bool,
+    #[serde(default)]
+    muse_proactive: bool,
     #[serde(default)]
     groups: Vec<QqGroup>,
 }
@@ -82,6 +92,19 @@ struct Change {
     enabled: bool,
     drawing: bool,
     group_drawing: Option<bool>,
+    group_muse: Option<bool>,
+    private_muse: Option<bool>,
+    group_muse_all: Option<bool>,
+    muse_proactive: Option<bool>,
+}
+
+impl Settings {
+    fn muse_for(&self, scope: QqScope) -> bool {
+        match scope {
+            QqScope::Private => self.private_muse,
+            QqScope::Group => self.group_muse,
+        }
+    }
 }
 
 #[derive(Deserialize)]
@@ -146,9 +169,22 @@ pub(crate) async fn configure(
                 group_drawing: change
                     .group_drawing
                     .unwrap_or_else(|| same.is_some_and(|old| old.group_drawing)),
+                group_muse: change
+                    .group_muse
+                    .unwrap_or_else(|| same.is_some_and(|old| old.group_muse)),
+                private_muse: change
+                    .private_muse
+                    .unwrap_or_else(|| same.is_some_and(|old| old.private_muse)),
+                group_muse_all: change
+                    .group_muse_all
+                    .unwrap_or_else(|| same.is_some_and(|old| old.group_muse_all)),
+                muse_proactive: change
+                    .muse_proactive
+                    .unwrap_or_else(|| same.is_some_and(|old| old.muse_proactive)),
                 groups: same.map(|old| old.groups.clone()).unwrap_or_default(),
             };
             write(&file, &settings).await?;
+            app.channels.close_muse_qq();
             *app.channels.pair.lock().unwrap() = None;
             *app.channels.group_pair.lock().unwrap() = None;
             app.channels.report(
@@ -196,6 +232,7 @@ pub(crate) async fn configure(
             settings.groups.retain(|group| group.id != *id);
             if settings.groups.len() != previous {
                 write(&file, &settings).await?;
+                app.channels.close_muse_qq();
                 app.channels.updates.notify_one();
             }
             Ok(status(app, storage, Some(&settings)))
@@ -210,10 +247,27 @@ fn status(app: &AppState, storage: &Storage, settings: Option<&Settings>) -> Val
     let enabled = settings.is_some_and(|value| value.enabled);
     let (pair_code, pair_expires) = app.channels.pair_code(storage, QqScope::Private);
     let (group_code, group_expires) = app.channels.pair_code(storage, QqScope::Group);
+    let muse_status =
+        if !enabled || !settings.is_some_and(|value| value.group_muse || value.private_muse) {
+            None
+        } else {
+            Some(
+                app.channels
+                    .muse_qq
+                    .lock()
+                    .unwrap()
+                    .as_ref()
+                    .map_or("waiting", |m| m.status(storage)),
+            )
+        };
     json!({"ok":true,"configured":settings.is_some(),"enabled":enabled,
         "appId":settings.map(|value| &value.app_id),"character":settings.map_or("nene", |value| &value.character),
         "drawing":settings.is_some_and(|value| value.drawing),"paired":settings.is_some_and(|value| value.owner.is_some()),
-        "groupDrawing":settings.is_some_and(|value| value.group_drawing),"groups":settings.map_or(&[][..], |value| value.groups.as_slice()),
+        "groupDrawing":settings.is_some_and(|value| value.group_drawing),"groupMuse":settings.is_some_and(|value| value.group_muse),
+        "privateMuse":settings.is_some_and(|value| value.private_muse),
+        "groupMuseAll":settings.is_some_and(|value| value.group_muse_all),
+        "museProactive":settings.is_some_and(|value| value.muse_proactive),
+        "groupMuseStatus":muse_status,"groups":settings.map_or(&[][..], |value| value.groups.as_slice()),
         "phase":if !enabled { "disabled" } else if current { connection.phase } else { "connecting" },
         "detail":if enabled && current { connection.detail } else { None },
         "pairCode":pair_code,"pairExpiresAt":pair_expires,
@@ -221,6 +275,12 @@ fn status(app: &AppState, storage: &Storage, settings: Option<&Settings>) -> Val
 }
 
 impl Channels {
+    fn close_muse_qq(&self) {
+        if let Some(mailbox) = self.muse_qq.lock().unwrap().take() {
+            mailbox.close();
+        }
+    }
+
     fn pairing(&self, scope: QqScope) -> &Mutex<Option<Pairing>> {
         match scope {
             QqScope::Private => &self.pair,
@@ -373,6 +433,9 @@ async fn pair(
     else {
         return Ok(None);
     };
+    let replaced_owner = scope == QqScope::Private
+        && settings.private_muse
+        && settings.owner.as_deref().is_some_and(|old| old != target);
     match scope {
         QqScope::Private => settings.owner = Some(target.into()),
         QqScope::Group => {
@@ -395,6 +458,10 @@ async fn pair(
     }
     let _admission = app.host.admit()?;
     write(&path, &settings).await?;
+    if replaced_owner {
+        app.channels.close_muse_qq();
+        app.channels.updates.notify_one();
+    }
     *slot.lock().unwrap() = None;
     Ok(Some(settings))
 }

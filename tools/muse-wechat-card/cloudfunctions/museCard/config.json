@@ -1,0 +1,9 @@
+{
+  "triggers": [
+    {
+      "name": "museCardCleanup",
+      "type": "timer",
+      "config": "0 */15 * * * * *"
+    }
+  ]
+}

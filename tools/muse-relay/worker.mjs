@@ -3,6 +3,9 @@ import { DurableObject } from 'cloudflare:workers'
 import { PART, Results, TTL, problem, resultRoute } from './results.mjs'
 
 const ID = '[A-Za-z0-9_-]{1,160}'
+const CONTROL_BODY = 64 * 1024
+const QQ_MESSAGE_BODY = 4 * 1024 * 1024 + CONTROL_BODY
+const qqMessagePath = path => path === '/api/muse/qq/reply' || path === '/api/muse/qq/send'
 const batchRoute = new RegExp('^/api/muse/batches/(' + ID + ')(?:/(' + ID + '))?$')
 const receiveRoute = new RegExp('^/api/muse/batches/(' + ID + ')/original/([1-9][0-9]?)$')
 const uploadRoute = /^\/_agent\/parts\/(anima|moss|qwen|creative)\/([a-f0-9]{32})\/(\d{1,3})$/
@@ -19,6 +22,14 @@ const deliveryErrors = { expired: 410, storageFull: 507, integrityError: 502, in
 const publicGuide = {
   name: '绘遇远程出图（Muse 等 AI 助手）', protocol: 'huiyu-muse', authHeader: 'X-Token',
   guidePath: '/api/muse/guide', drawPath: '/api/muse/jobs', partBytes: PART,
+  qq: {
+    inbox: '/api/muse/qq/inbox', reply: '/api/muse/qq/reply', targets: '/api/muse/qq/targets',
+    send: '/api/muse/qq/send', search: '/api/muse/qq/search',
+    usage: '定时 GET inbox。用收件项的 requestKey 在 expiresAt 前 POST reply，可传 text、image 或两者。image 是 {mimeType,data}，data 为最多 3 MiB 的 JPEG 或 PNG 原图的标准 base64。QQ 确认后返回 status=sent。',
+    skip: '机主开启接收普通群消息且群主同意后，Muse 可读到未 @ 自己的对话。无需插话时向 reply 提交 {requestKey,skip:true}，返回 status=skipped。',
+    proactive: '机主开启主动发送后，GET targets 选出已绑定会话的 conversationId。POST send 携带新 UUID 作为 requestKey、该 conversationId 和 text 或 image 中的一项。QQ 平台会检查主动消息权限与额度。重试使用同一编号和原内容。',
+    webSearch: 'POST search 提交收件项的 requestKey 和 query。也可以用新 UUID、已开启会话的 conversationId 和 query 发起检索。results 中有公开网页的 title、url 和 snippet，Muse 可据此回复。',
+  },
   followup: '用同一 X-Token 跟随每张图的 next。accept 为 application/json 时，按 retryAfterSeconds 等待后读取批次 statusPath。accept 为 image/png 时，自动下载该项的 resultUrl。next 为 null 时查看该项的 status、deliveryStatus 和 error。',
   download: '整图只接受 HTTP 200 且 Content-Type 为 image/png 的响应。检查 PNG 文件头，实际字节数须同时等于 Content-Length 和 X-Result-Bytes，计算的 SHA-256 须等于 X-Result-Sha256。通过后再保存并报成功。receivePath 支持长轮询。收到 202 或收到 200 JSON 且 pending 为 true 时，按 Retry-After 再 GET 同一 receivePath。JSON 只用于读取状态。',
   resultFlow: {
@@ -75,6 +86,8 @@ async function readBody(request, limit) {
 const decode = bytes => JSON.parse(new TextDecoder().decode(bytes))
 
 function control(method, path) {
+  if (path === '/api/muse/qq/inbox' || path === '/api/muse/qq/targets') return method === 'GET'
+  if (qqMessagePath(path) || path === '/api/muse/qq/search') return method === 'POST'
   if (method === 'POST') return path === '/api/muse/jobs' || path === '/api/muse/batches'
   if (batchRoute.test(path) || directRoute.test(path)) return method === 'GET' || method === 'DELETE'
   return method === 'GET' && (/^\/api\/muse\/(catalog|queue|jobs|guide)$/.test(path)
@@ -90,6 +103,7 @@ export class MuseRelay extends DurableObject {
       key TEXT PRIMARY KEY, snapshot TEXT, due INTEGER, expires INTEGER NOT NULL
     ); CREATE INDEX IF NOT EXISTS batch_queue ON batches(due);`)
     this.calls = new Map()
+    this.largeQqMessages = 0
     this.background = new Map()
     this.reads = new Map()
     this.lastAgent = 0
@@ -157,8 +171,20 @@ export class MuseRelay extends DurableObject {
       if (resultRoute.test(url.pathname) && ['GET','HEAD'].includes(request.method)) return this.results.serve(request, url)
       const receive = receiveRoute.exec(url.pathname)
       if (receive && request.method === 'GET') return await this.receive(request, receive[1], Number(receive[2]))
-      if (url.href.length > 4096 || !control(request.method, url.pathname)) return problem(404, 'MUSE_ROUTE_NOT_FOUND', '这个中转仅提供 Muse 出图接口')
-      return await this.client(request, url)
+      if (url.href.length > 4096 || !control(request.method, url.pathname) || (url.pathname.startsWith('/api/muse/qq/') && url.search)) {
+        return problem(404, 'MUSE_ROUTE_NOT_FOUND', '找不到这个 Muse 接口')
+      }
+      const length = request.headers.get('Content-Length')
+      if (qqMessagePath(url.pathname) && (length === null || Number(length) > CONTROL_BODY)) {
+        if (Number(length) > QQ_MESSAGE_BODY) throw new RangeError()
+        // The command stays in memory until the laptop replies. Bound simultaneous images,
+        // including chunked requests, before reading their bodies.
+        if (this.largeQqMessages >= 2) return problem(429, 'MUSE_QQ_BUSY', '图片正在传送，请稍后用相同编号重试', { 'Retry-After': '2' })
+        this.largeQqMessages++
+        try { return await this.client(request, url, QQ_MESSAGE_BODY) }
+        finally { this.largeQqMessages-- }
+      }
+      return await this.client(request, url, url.pathname === '/api/muse/batches' ? 256 * 1024 : CONTROL_BODY)
     } catch (error) {
       if (error instanceof RangeError) return problem(413, 'MUSE_BODY_TOO_LARGE', '数据超过中转单次传输上限')
       if (error instanceof SyntaxError) return problem(400, 'INVALID_JSON', '请求不是完整的 JSON')
@@ -166,10 +192,11 @@ export class MuseRelay extends DurableObject {
       return problem(503, 'MUSE_RELAY_UNAVAILABLE', '中转暂时无法完成请求，请稍后重试', { 'Retry-After': '3' })
     }
   }
-  async client(request, url) {
+  async client(request, url, bodyLimit) {
     const path = url.pathname
     const target = path + url.search
     const method = request.method
+    const qq = path.startsWith('/api/muse/qq/')
     const batch = batchRoute.exec(path)
     if (method === 'GET' && directRoute.test(path) && path.includes('/jobs/')) {
       const job = this.results.job(path)
@@ -186,12 +213,16 @@ export class MuseRelay extends DurableObject {
           relayUpdatedAt: data.relayUpdatedAt, laptopOnline: data.laptopOnline })
       }
     }
-    const cached = method === 'GET' && this.reads.get(target)
+    const cached = !qq && method === 'GET' && this.reads.get(target)
     if (cached && cached.until > Date.now()) return json(this.present(JSON.parse(cached.text)), cached.status, cached.retry)
     if (Date.now() - this.lastAgent > 45000) return unavailable()
     let body
     if (method === 'POST') {
-      body = decode(await readBody(request, path.endsWith('/batches') ? 256 * 1024 : 64 * 1024))
+      const bytes = await readBody(request, bodyLimit)
+      body = decode(bytes)
+      if (qqMessagePath(path) && bytes.byteLength > CONTROL_BODY && typeof body?.image?.data !== 'string') {
+        return problem(413, 'MUSE_BODY_TOO_LARGE', '仅含图片的消息支持超过 64 KiB 的请求体')
+      }
       if (typeof body?.requestKey !== 'string' || !new RegExp('^' + ID + '$').test(body.requestKey)) {
         return problem(400, 'INVALID_REQUEST', '请提供稳定的 requestKey，推荐使用 UUID')
       }
@@ -199,6 +230,7 @@ export class MuseRelay extends DurableObject {
     const call = await this.rpc({ method, path: target, body })
     if (!call) return unavailable()
     const { status, data, retry } = call
+    if (qq) return json(data, status, retry)
     if (status >= 400) return json(data, status, retry)
     if (path === '/api/muse/guide') {
       data.relay = publicGuide
@@ -224,7 +256,10 @@ export class MuseRelay extends DurableObject {
     const ticket = crypto.randomUUID()
     let finish
     const promise = new Promise(resolve => { finish = resolve })
-    const timer = setTimeout(() => { this.calls.delete(ticket); finish(null) }, 30000)
+    let timeout = 30000
+    if (qqMessagePath(command.path)) timeout = 105000
+    if (command.path === '/api/muse/qq/search') timeout = 45000
+    const timer = setTimeout(() => { this.calls.delete(ticket); finish(null) }, timeout)
     this.calls.set(ticket, { command, promise, resolve: value => { clearTimeout(timer); finish(value) } })
     this.wake?.()
     return promise
@@ -276,7 +311,7 @@ export class MuseRelay extends DurableObject {
     for (const [ticket, call] of this.calls) {
       if (call.sent) continue
       call.sent = true
-      if (call.command.method === 'POST') this.watch(call.command.body.requestKey)
+      if (call.command.method === 'POST' && ['/api/muse/jobs', '/api/muse/batches'].includes(call.command.path.split('?')[0])) this.watch(call.command.body.requestKey)
       return { ticket, ...call.command }
     }
     const batch = this.sql.exec('SELECT key FROM batches WHERE due<=? AND expires>? ORDER BY due LIMIT 1', now, now).toArray()[0]
@@ -306,12 +341,16 @@ export class MuseRelay extends DurableObject {
       work = this.dispatch(maxParts, parallel)
     }
     this.lastAgent = Date.now()
-    return work ? json(work) : new Response(null, { status: 204 })
+    if (!work) return new Response(null, { status: 204 })
+    const response = json(work)
+    if (work.method === 'POST' && qqMessagePath(work.path)) response.headers.set('X-Muse-QQ-Media', '1')
+    return response
   }
   async reply(request, ticket) {
     const call = this.calls.get(ticket)
     const work = this.background.get(ticket)
     if (!call && !work) return new Response(null, { status: 204 })
+    const qq = call?.command.path.startsWith('/api/muse/qq/')
     const status = Number(request.headers.get('X-Upstream-Status'))
     if (!Number.isInteger(status) || status < 200 || status > 599) return problem(400, 'INVALID_STATUS', '出图机状态码无效')
     const bytes = await readBody(request, work?.file ? PART * work.count : 2 * 1024 * 1024)
@@ -328,9 +367,13 @@ export class MuseRelay extends DurableObject {
       let data
       try { data = decode(bytes) } catch { data = null }
       if (!data || typeof data !== 'object') {
-        if (call) call.resolve(null)
+        if (qq && status >= 400) {
+          // Axum extractor rejections can be plain text. Keep the status without reflecting
+          // a private message or its base64 image in the error body.
+          call.resolve({ status, data: { ok: false, code: 'MUSE_QQ_REQUEST_REJECTED', message: '绘遇未接受此 QQ 请求，请核对请求格式与大小' }, retry: request.headers.get('Retry-After') })
+        } else if (call) call.resolve(null)
       } else {
-        if (status < 300) this.save(data)
+        if (status < 300 && !qq) this.save(data)
         if (work?.batch && status >= 400) {
           if (status === 404) this.sql.exec('DELETE FROM batches WHERE key=? AND snapshot IS NULL', work.batch)
           this.sql.exec('UPDATE batches SET due=? WHERE key=?', Date.now() + 15000, work.batch)
@@ -340,7 +383,7 @@ export class MuseRelay extends DurableObject {
     }
     this.calls.delete(ticket)
     this.background.delete(ticket)
-    if (!work?.file) await this.scheduleCleanup()
+    if (!work?.file && !qq) await this.scheduleCleanup()
     return new Response(null, { status: 204 })
   }
 }

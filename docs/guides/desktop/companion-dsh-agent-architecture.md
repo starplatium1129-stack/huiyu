@@ -49,6 +49,8 @@
 
 **QQ 群聊**。给机器人开通群聊权限并把它加进目标群。在绘遇的「QQ 群聊」生成口令，回到目标群，先 `@` 机器人，再发形如 `/绑定群 abc123def456` 的整条命令。每个已绑定的群有自己的对话和批次。群成员 `@` 桌宠就能聊天，勾选「允许本机绘图 → 已绑定的群聊」并保存后也能请求出图。发起人可 `@` 桌宠发 `/开始绘图` 或 `/取消`。QQ 群消息的回复期限是 5 分钟。超过期限、自动回传失败或还有更多成图时，在原群 `@` 桌宠发 `/取图`。可以在绘遇解除单个群的绑定。 [QQ 群消息官方文档](https://bot.qq.com/wiki/develop/api-v2/autogen/event/group_at_message_create.html)
 
+**在 QQ 里和 Muse 聊天**。在「服务与连接 → 手机聊天 · QQ」里选择交给 Muse 的私聊和群聊。群友可以 @ 机器人，也可按需开启普通群消息接收和主动发信。Muse 能发文字、图片，或查询公开网页后回复。帮助和取图等命令仍由绘遇处理。设置页显示最近 90 秒是否收到 Muse 的收信请求。[远程连接指南](../independent-inference.md#让-muse-收发-qq-群消息)
+
 **个人微信**。先在同一台电脑运行 OpenClaw，安装 [腾讯官方微信插件](https://github.com/Tencent/openclaw-weixin) 并扫码绑定 ClawBot。然后在绘遇启用微信桥接并保存，生成桥接密钥。以下命令在项目根目录运行，用于把仓库内的桥接插件装到已有的 OpenClaw。
 
 ```powershell
@@ -58,6 +60,8 @@ openclaw plugins install ./tools/huiyu-wechat-bridge
 把绘遇的「复制桥接配置」内容写入 `plugins.entries.huiyu-wechat-bridge.config`，将 `accountId` 替换成官方 `openclaw-weixin` 通道的账号 ID，并启用 `huiyu-wechat-bridge`。如果启用了 `plugins.allow`，保留原有条目并加入 `huiyu-wechat-bridge`。在 ClawBot 私聊发绘遇复制的绑定命令。出图后发 `/取图`，有多页成图时发 `/取图 2` 等。若绘遇运行地址或桥接密钥变更，更新插件配置后重新加载。 [OpenClaw 消息接入文档](https://docs.openclaw.ai/plugins/hooks/messages)
 
 QQ 和微信私聊都支持 `/帮助`、`/取图`、`/取消`。先预览的批次可发 `/开始绘图` 开始。手机回传可能压缩大图，原图仍可在绘遇作品册查看。
+
+**普通微信群的 Muse 卡片**。群友从群里的小程序卡片提问或传图，Muse 回答后，由提问者点击分享回群。项目可独立导入微信开发者工具，通过微信云开发连接 Muse。[导入与开通群卡片](../../../tools/muse-wechat-card/README.md)
 
 ### 对话绘图与图片反推
 * **操作**：直接对桌宠发送指令：

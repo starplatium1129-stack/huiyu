@@ -1,0 +1,69 @@
+page { height: 100%; }
+.shell {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5efe7;
+  color: #29242a;
+}
+.nav { flex-shrink: 0; padding-left: 32rpx; padding-right: 110px; }
+.nav-line { display: flex; flex-direction: row; align-items: center; }
+.nav-title, .label, .heading { display: block; font-weight: 600; }
+.nav-title { font-size: 31rpx; }
+.scroll { flex: 1; min-height: 0; height: 0; }
+.body { padding: 38rpx 30rpx 88rpx; }
+.section {
+  padding: 38rpx 32rpx;
+  background-color: #fffcf6;
+  border: 1px solid #d9cdd0;
+  border-radius: 30rpx;
+}
+.heading { font-size: 45rpx; line-height: 1.35; margin-bottom: 22rpx; }
+.label { font-size: 28rpx; line-height: 1.55; margin-bottom: 10rpx; color: #77354f; }
+.help, .hint, .error, .message, .question-text, .answer-text { display: block; }
+.help, .message { color: #585059; font-size: 29rpx; line-height: 1.7; }
+.help { margin-bottom: 24rpx; }
+.hint, .caption { font-size: 25rpx; line-height: 1.5; color: #585059; }
+.hint { margin-top: 12rpx; margin-bottom: 12rpx; }
+.input, .textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20rpx;
+  border: 1px solid #a29499;
+  border-radius: 16rpx;
+  color: #29242a;
+  background-color: #fffdfa;
+  font-size: 32rpx;
+}
+.input { height: 100rpx; }
+.textarea { min-height: 180rpx; height: 240rpx; line-height: 1.55; }
+.attachment { display: flex; flex-direction: row; align-items: center; margin-top: 20rpx; }
+.thumb { width: 80rpx; height: 80rpx; border-radius: 12rpx; margin-right: 16rpx; }
+.caption { flex: 1; }
+.question-text { font-size: 32rpx; line-height: 1.6; }
+.answer-text { font-size: 32rpx; line-height: 1.75; }
+.question-text, .answer-text, .error { white-space: pre-wrap; word-break: break-all; }
+.divider { height: 1px; background-color: #d9cdd0; margin: 32rpx 0; }
+.answer-photo { width: 100%; margin: 22rpx 0 8rpx; border-radius: 16rpx; }
+.error { margin: 18rpx 0 12rpx; color: #913247; font-size: 27rpx; line-height: 1.6; }
+button { min-height: 48px; padding: 0 22rpx; border-radius: 16rpx; font-size: 29rpx; font-weight: 600; line-height: 48px; }
+button::after { border: 0; }
+.primary, .secondary, .quiet { width: 100%; margin: 16rpx 0 0; }
+.primary { margin-top: 30rpx; background-color: #9b3e61; color: #fff; }
+.secondary, .attach { background-color: #eee7e0; color: #71324b; }
+.attach { margin: 16rpx 0 0; width: auto; }
+.quiet, .back, .inline { background-color: transparent; color: #71324b; }
+.back, .inline { width: auto; min-height: 44px; line-height: 44px; padding: 0 16rpx; margin: 0; }
+.back { margin-right: 14rpx; }
+button[disabled] { background-color: #eee7e0; color: #6d6069; }
+.encoder { position: fixed; width: 2px; height: 2px; top: 0; left: -4px; }
+.theme-dark { background-color: #151c24; color: #edf3fa; }
+.theme-dark .section { background-color: #1e2935; border-color: #465561; }
+.theme-dark .label, .theme-dark .quiet, .theme-dark .back, .theme-dark .inline { color: #f2a8be; }
+.theme-dark .help, .theme-dark .hint, .theme-dark .caption, .theme-dark .message { color: #bdcbd8; }
+.theme-dark .input, .theme-dark .textarea { border-color: #758795; color: #edf3fa; background-color: #151c24; }
+.theme-dark .divider { background-color: #465561; }
+.theme-dark .primary { color: #111923; background-color: #f2a8be; }
+.theme-dark .secondary, .theme-dark .attach { color: #ffc4d8; background-color: #25313d; }
+.theme-dark .error { color: #ffb5bc; }
+.theme-dark button[disabled] { color: #a6b3c0; background-color: #25313d; }

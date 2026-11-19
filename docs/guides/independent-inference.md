@@ -57,6 +57,84 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 
 **断点续传**时用同一个地址和 `X-Token` 下载 `resultUrl`。断线后保留部分文件，从已收到的 `N` 字节发送 `Range: bytes=N-`，并用原 `ETag` 作为 `If-Range`。收到 `206 image/png` 且 `Content-Range` 从 `N` 开始时追加，完成后核对 `resultBytes` 和 `resultSha256`。收到 `200 image/png` 时按完整文件接收，通过整图校验后再替换。桌面端任务记录保留约 7 天，原图最长保留 48 小时，受 2 GiB 缓存上限约束。
 
+### 让 Muse 收发 QQ 群消息
+
+在「服务与连接 → 手机聊天 · QQ」绑定目标群或私聊，在「交给 Muse 的 QQ 对话」勾选相应会话并保存。群里默认通过 @ 提问。想让 Muse 参与平常的群聊，勾选「也接收没有 @ 机器人的群消息」，并在 QQ 给机器人开启获取群内全部消息的权限。需要 Muse 自己开口时，再勾选「允许 Muse 主动发消息」，接收方也要在 QQ 允许机器人主动发送。具体频次和权限由 QQ 执行。[腾讯消息收发规则](https://bot.q.qq.com/wiki/develop/api-v2/server-inter/message/overview.html)
+
+使用 Cloudflare 或绘图端口直连时，请开启原生绘图的「允许连接」。已有 Cloudflare 中转需在原出图机运行 `tools/muse-relay/setup.ps1` 更新 Worker。使用下文的 Tailscale 虚拟机专用端口时，只需更新绘遇。
+
+在 iPhone 的 **Muse from Meta** 里，可以直接用聊天更新绘遇连接。Muse 的工具和后台任务运行在自己的云电脑上，手机用来下指令和确认操作。若已用 Tailscale 收过 QQ 消息，可对 Muse 说「请沿用绘遇现有的 QQ 连接，读取原来 `/qq/pending` 返回的 `operations`，更新我的自定义连接器。保留现在的收信任务，加入主动发文字、发送我选的图片和搜索公开网页。向 QQ 发送前按我的 Muse 授权执行，收到 QQ 回执后再告诉我送达。」可在 Muse 的 Settings → Connectors 管理授权。[Muse 云电脑说明](https://muse.ai/blog/security-and-safety-for-ai-agents-our-approach-with-muse) · [Meta 自定义连接器帮助](https://www.meta.com/help/superintelligence/1687253048996149/)
+
+使用 Cloudflare 或绘图端口的客户端使用上面的连接地址和 `X-Token`，可按下面的协议定时收信。
+
+> 每 15 秒请求一次 `GET /api/muse/qq/inbox`。用 `conversationId` 区分会话，`senderId` 区分发件人。`ambient: true` 表示普通群消息，可自行决定是否插话。向 `POST /api/muse/qq/reply` 提交 `{"requestKey":"来信编号","text":"你的回答"}`，静默跳过则提交 `{"requestKey":"来信编号","skip":true}`。每次请求携带 `X-Token`。同一编号只处理一次，遇到暂时故障，在 `expiresAt` 前用相同编号和内容重试。`status: sent` 表示 QQ 已确认，`skipped` 表示已静默处理。
+
+收件箱里的 `operations` 给出当前连接可以调用的地址和参数。群友可以直接发「@机器人 帮这幅画想个标题」，也可使用 `/muse 问题`。绑定、帮助和取图等命令仍由绘遇处理。文字限 1600 字，每条来信可以回一段文字和一张图片。群回复窗口为 5 分钟，私聊为 60 分钟，`expiresAt` 是 Unix 毫秒。待答消息在内存中保存，返回 410、重启或重新绑定后需要重新提问。
+
+| Muse 要做的事 | 私网直连或 Cloudflare | Tailscale 虚拟机端口 | 请求内容 |
+| --- | --- | --- | --- |
+| 查可联系的群和私聊 | `GET /api/muse/qq/targets` | `GET /qq/targets` | 使用返回的 `conversationId` 选择目标 |
+| 回文字、图片或图文 | `POST /api/muse/qq/reply` | `POST /qq/replies` | 来信 `requestKey`，加 `text`、`image` 或两者 |
+| 主动发一条消息 | `POST /api/muse/qq/send` | `POST /qq/send` | 新 UUID 作 `requestKey`、目标 `conversationId`、`text` 或 `image` 二选一 |
+| 搜公开网页 | `POST /api/muse/qq/search` | `POST /qq/search` | `query` 配来信 `requestKey`。独立搜索时用新 UUID 加目标 `conversationId` |
+
+图片字段格式为 `{"mimeType":"image/png","data":"原图的标准 Base64"}`，支持 JPEG 或静态 PNG，原文件最大 3 MiB。主动发信的收据在本机保留 24 小时。重试沿用相同编号、目标和内容。遇到 `QQ_MUSE_SEND_UNCERTAIN` 时，原编号可查询已有回执，请先在目标会话核对送达情况。
+
+群友或私聊发「帮我搜一下……」时，绘遇会先搜索，再把原话和来源摘要交给 Muse。支持工具的客户端也可自行选择关键词调用搜索接口，获取标题、链接和摘要。检索词最多 400 字。QQ 对外链另有域名要求，可在回复中引用来源标题和站名。[腾讯发送接口](https://bot.q.qq.com/wiki/develop/api-v2/autogen/api/v2_groups_group_openid_messages.post.html)
+
+#### Muse 在 Tailscale 虚拟机上收信
+
+只支持出站连接的虚拟机使用反向轮询。将下面的配置放到绘遇电脑的 `%APPDATA%\com.aics.studio\gateway\muse-qq-vm.json`，把 `localIp` 换成笔记本的 Tailscale IPv4 地址，`vmIp` 换成 Muse 的 Tailscale IPv4 地址。启用至少一种 Muse 对话后，重新保存 QQ 连接或重启绘遇即可生效。移走配置并重新保存 QQ 连接可恢复上一节的中转收信方式。
+
+```json
+{"mode":"poll","localIp":"100.64.0.1","vmIp":"100.64.0.2","port":3212}
+```
+
+绘遇仅在 `localIp:port` 监听，只接受来自 `vmIp` 的直接 TCP 连接。客户端通过 tailnet 加密链路访问，免密钥。为此接口单独选择可用端口，保留已有的绘图端口 3211。笔记本需要允许 Muse 到该地址和端口的 Tailscale 入站连接。
+
+- Muse 每约 10 秒请求 `GET http://<localIp>:3212/qq/pending`。返回的 `items` 是待处理消息，`operations` 是当前接口说明。取题不消费，同一编号只需生成一次回答。有图片的来信会在 `attachments` 列出 QQ 提供的图片地址和 MIME 类型。
+- 回答就绪后，向 `POST http://<localIp>:3212/qq/replies` 提交 UTF-8 JSON，格式为 `{"requestKey":"原编号","text":"回复正文"}`。QQ 确认后绘遇返回 HTTP 200 和 `{"ok":true,"requestKey":"原编号","status":"sent"}`，该题随即从待答列表消失。断线或遇到 5xx 时可在到期前用同一编号和原文重试，已确认的回答会返回同一成功回执。
+- 正文为 1–1600 字。HTTP 409 表示这条消息已提交过不同的回复，410 表示编号已失效。别把过期回复挂到另一条群消息。旧中转的 QQ 收发接口在此模式下返回 `QQ_MUSE_VM_POLL`。
+
+**回一张图片。** Muse 在同一台笔记本上请求 `POST /qq/replies/{requestKey}/image`，以 JPEG 或静态 PNG 原始字节作为请求体，`Content-Type` 对应为 `image/jpeg` 或 `image/png`，单张上限为 3 MiB。图片接口在 QQ 确认后返回 `{"ok":true,"requestKey":"原编号","status":"sent","kind":"image"}`。
+
+**群里直接要宁宁的照片。** 群友发「@宁宁 发一张宁宁的照片」时，绘遇照常把完整问题交给 Muse，再随她的文字回复附上内置的宁宁窗边喝茶插画。如果 Muse 想发自己的照片，可以在提交文字前先上传原图，绘遇会沿用这张图。普通文字回复也可以单独发 `/发图 宁宁` 主动选择内置图。以上文字接口都沿用原来的 `ok`、`requestKey`、`status` 回执。
+
+图文一起提交时，文字和图片分别记录 QQ 回执。断线后重试原图和原文即可。只回一项时，Muse 仍可在窗口内用同一编号补发另一项。
+
+**兼容主动投递。** 能接受入站连接的虚拟机也可以沿用由绘遇主动连接 Muse 的方式。使用以下配置（省略 `mode` 与 `"mode":"push"` 等价）。
+
+```json
+{"localIp":"100.64.0.1","vmIp":"100.64.0.2","port":8765}
+```
+
+Muse 服务监听自己的 Tailscale IPv4 地址，放行绘遇的 Tailscale 源地址。两端使用 tailnet 加密链路上的 HTTP，绘遇绑定 `localIp` 发起连接。虚拟机接口不使用绘遇的 `X-Token` 或 QQ 凭据。启用虚拟机投递后，原收件与回复接口返回 HTTP 409 和 `QQ_MUSE_VM_ACTIVE`。群消息只交给配置的虚拟机。
+
+推送给虚拟机的每条消息都包含 `callbackOrigin` 和 `operations`。虚拟机可通过该笔记本地址使用表中的发送、搜索和回复接口，首次主动联系也能直接使用配置中的笔记本地址。旧客户端仍可在原取答接口返回文字，新客户端也可以在同一 JSON 中返回图片或 `skip`。
+
+**收问题。** 绘遇向虚拟机 `POST /qq/questions` 发送 UTF-8 JSON。Muse 保存问题后立即返回 `202 Accepted`。断线或未收到成功回执时，绘遇会重投相同的请求。请按 `requestKey` 幂等保存，重复提交时也返回成功。若要在绘遇重启后识别 QQ 重放，可另外按 `groupOpenid` 和 `messageId` 去重。
+
+```json
+{
+  "requestKey": "3c40e968-3ae8-4a24-bc1b-4060b5ce858c",
+  "groupOpenid": "QQ_GROUP_OPENID",
+  "senderOpenid": "QQ_MEMBER_OPENID",
+  "senderNickname": null,
+  "messageId": "QQ_MESSAGE_ID",
+  "text": "帮我想个标题",
+  "timestamp": 1700000000000,
+  "expiresAt": 1700000300000
+}
+```
+
+`senderOpenid` 来自 QQ 群事件的 `author.member_openid`，`messageId` 是 QQ 消息 ID，`requestKey` 是这一轮对接号。`text` 已去掉给机器人的提及和 `/muse`。`timestamp` 和 `expiresAt` 均为 Unix 毫秒，QQ 发送时间无法解析时使用绘遇接收时间。群事件可能只给成员 openid。绘遇优先用事件随附的群昵称或用户名，也可在配置中用 `"nicknames":{"群openid":{"成员openid":"已核实的昵称"}}` 补充，均无值时发送 `null`。Muse 可以按群保存已核实的群主 openid，逐条比较 `senderOpenid` 来选用口吻。首次登记时请群主通过已知身份确认其提问对应的 openid，群主变更时更新记录。[腾讯官方群消息 SDK](https://github.com/tencent-connect/botpy/blob/master/botpy/message.py#L220-L241)
+
+**取回复。** 绘遇收到投递成功回执后，每隔约 3 秒请求同一虚拟机的 `GET /qq/replies/{requestKey}`。未完成返回 `204 No Content`，完成返回 `200 OK` 及下方 JSON，正文为 1–1600 字。若记录丢失，返回 `404` 可让绘遇重新投递原问题。请为同一编号保留同一份结果至 `expiresAt`，允许重复 GET。绘遇用原消息 ID 把答复发回原群，收到 QQ 确认后停止；过期、解绑或停用也会停止。VM 收到 GET 仅表示绘遇正在取答复。
+
+```json
+{"requestKey":"3c40e968-3ae8-4a24-bc1b-4060b5ce858c","text":"可以叫《雨停以前》。"}
+```
+
 ### Anima 显卡与运行环境
 
 | 设备 | PyTorch 后端 | 配置入口 |

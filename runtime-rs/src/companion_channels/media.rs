@@ -4,7 +4,7 @@ use crate::{
 };
 use tokio_util::sync::CancellationToken;
 
-const IMAGE_LIMIT: usize = 3 * 1024 * 1024;
+pub(super) const IMAGE_LIMIT: usize = 3 * 1024 * 1024;
 
 pub(super) async fn read_image(
     storage: &Storage,

@@ -37,6 +37,23 @@
           </div>
         </fieldset>
         <p v-if="drawing || groupDrawing" class="field-help">绘图需要支持工具调用的聊天 API 和本机绘图模型。可在角色房间把聊天 API 保存为主机配置。</p>
+        <fieldset v-if="status?.groupMuse !== undefined" class="qq-drawing-permissions qq-field">
+          <legend class="field-label">交给 Muse 的 QQ 对话</legend>
+          <div class="qq-actions">
+            <ToggleSwitch v-if="status.privateMuse !== undefined" v-model="privateMuse">已绑定的私聊</ToggleSwitch>
+            <ToggleSwitch v-model="groupMuse" aria-describedby="qq-muse-help">已绑定的群聊</ToggleSwitch>
+          </div>
+          <p id="qq-muse-help" class="field-help">群友可以 @ 机器人聊天、要图片，或说「帮我搜一下……」。</p>
+          <template v-if="groupMuse && status.groupMuseAll !== undefined">
+            <ToggleSwitch v-model="groupMuseAll" aria-describedby="qq-muse-all-help">也接收没有 @ 机器人的群消息</ToggleSwitch>
+            <p id="qq-muse-all-help" class="field-help">开启后，普通群消息也会交给 Muse。群主需在 QQ 里允许机器人获取群内全部消息。</p>
+          </template>
+          <template v-if="(groupMuse || privateMuse) && status.museProactive !== undefined">
+            <ToggleSwitch v-model="museProactive" aria-describedby="qq-muse-send-help">允许 Muse 主动发消息</ToggleSwitch>
+            <p id="qq-muse-send-help" class="field-help">Muse 可以向上面启用的对话发文字或图片。接收方需在 QQ 允许机器人主动发送。</p>
+          </template>
+          <p v-if="status.groupMuseStatus" class="field-help" role="status">{{ museStatusLabels[status.groupMuseStatus] }}</p>
+        </fieldset>
         <div class="qq-actions">
           <button class="btn btn-primary btn-sm" type="submit" :disabled="busy || !status">{{ busy ? '处理中…' : '保存连接' }}</button>
           <button class="btn btn-ghost btn-sm" type="button" :disabled="busy || !status?.enabled" @click="pair">
@@ -99,6 +116,16 @@ const characters = [{ value: 'nene', label: '绫地宁宁' }, { value: 'natsume'
 const appId = ref(''), secret = ref(''), character = ref<ChannelCharacter>('nene')
 const enabled = ref(false), drawing = ref(false), attempted = ref(false), busy = ref(false), feedback = ref('')
 const groupDrawing = ref(false), groupLabel = ref('')
+const groupMuse = ref(false)
+const privateMuse = ref(false), groupMuseAll = ref(false), museProactive = ref(false)
+const museStatusLabels = {
+  remoteDisabled: '远程接口未启动，请检查原生绘图的「允许连接」。',
+  waiting: '正在等待 Muse 通过远程接口收信。最近 90 秒没有收信请求。',
+  receiving: '最近 90 秒收到过 Muse 的收信请求。',
+  vmConfigured: '已指定 Muse 虚拟机。收到提问后，绘遇会投递问题并查询答复。',
+  vmUnavailable: '虚拟机接口暂未就绪。请检查接收端口和回复格式，绘遇会在消息过期前重试。',
+  vmConfigError: '虚拟机配置无效。请检查 muse-qq-vm.json，然后重新保存 QQ 连接。',
+}
 const groupHeading = shallowRef<HTMLElement | null>(null)
 const workspace = ref(false), status = shallowRef<QqChannelStatus | null>(null)
 const idField = shallowRef<HTMLInputElement | null>(null), secretField = shallowRef<HTMLInputElement | null>(null)
@@ -127,6 +154,10 @@ function apply(value: QqChannelStatus, restoreFields = false) {
   character.value = value.character
   drawing.value = value.drawing
   groupDrawing.value = value.groupDrawing
+  groupMuse.value = value.groupMuse ?? false
+  privateMuse.value = value.privateMuse ?? false
+  groupMuseAll.value = value.groupMuseAll ?? false
+  museProactive.value = value.museProactive ?? false
   enabled.value = value.enabled || !value.configured
 }
 
@@ -181,7 +212,11 @@ async function save() {
     return
   }
   await change(signal => companionQqApi.save({ appId: appId.value, secret: secret.value || undefined, character: character.value,
-    enabled: enabled.value, drawing: drawing.value, groupDrawing: groupDrawing.value }, signal), true)
+    enabled: enabled.value, drawing: drawing.value, groupDrawing: groupDrawing.value,
+    groupMuse: status.value?.groupMuse === undefined ? undefined : groupMuse.value,
+    privateMuse: status.value?.privateMuse === undefined ? undefined : privateMuse.value,
+    groupMuseAll: status.value?.groupMuseAll === undefined ? undefined : groupMuseAll.value,
+    museProactive: status.value?.museProactive === undefined ? undefined : museProactive.value }, signal), true)
 }
 
 function pair() { void change(companionQqApi.pair) }

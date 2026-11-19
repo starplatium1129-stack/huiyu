@@ -91,11 +91,17 @@ impl Conversation {
         self.save().await?;
         let text = text.trim();
         let output = match text {
-            "/帮助" | "/help" if ctx.group_member.is_some() => Reply::Text("在群里 @ 我就能聊天。群绘图开启后，@ 我说想画什么，或发 /取图 查看进度和收图。发起者可以发 /开始绘图 或 /取消。".into()),
+            "/帮助" | "/help" if ctx.group_member.is_some() => Reply::Text("在群里 @ 我就能聊天。机主开启 Muse 后，直接 @ 我提问就由 Muse 回复，也可以保留 /muse 前缀。@ 我发 /取图 可查看本群的绘图进度和收图，发起者可以发 /开始绘图 或 /取消。".into()),
             "/帮助" | "/help" => Reply::Text("直接发文字就能聊天。开启手机绘图后，可以说「用宁宁画一张雨夜街景」。/取图 查看进度和未回传的成图，/开始绘图 开始已预览的批次，/取消 停止上次绘图。".into()),
             "/取图" | "/开始绘图" | "/取消" => self.batch_action(ctx, id, received_at, text).await?,
             _ => {
                 let line: String = text.chars().take(1200).collect();
+                let line = if let Some(member) = ctx.group_member {
+                    let speaker = crate::storage::json_fingerprint(&json!([self.session, member]));
+                    format!("群友 {}：{line}", &speaker[..10])
+                } else {
+                    line
+                };
                 let answer = self.respond(ctx, id, received_at, &line).await?;
                 self.record.history.push(json!({"role":"user","content":line}));
                 self.record.history.push(json!({"role":"assistant","content":answer}));

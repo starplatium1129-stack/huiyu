@@ -1,0 +1,4 @@
+{
+  "light": { "paper": "#F5EFE7", "navText": "black" },
+  "dark": { "paper": "#151C24", "navText": "white" }
+}
