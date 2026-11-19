@@ -41,7 +41,7 @@ export async function readCompanionImage(image: CompanionChatImage, repository: 
 }
 
 /** Both image consumers hand off only after their chat message is durable. */
-export async function retainCompanionImageMessage(storage: { save(): boolean | undefined }, taskId?: string) {
+export async function retainCompanionImageMessage(storage: { save(): boolean | undefined }, taskId?: string, batchId?: string) {
   const reset = chatResetRevision()
   const checkReset = () => {
     if (reset !== chatResetRevision()) throw new DOMException('聊天内容已清空，原图片请求身份已保留', 'AbortError')
@@ -50,7 +50,11 @@ export async function retainCompanionImageMessage(storage: { save(): boolean | u
   await flushProfileWrites()
   // A reset can retire the queued chat write without rejecting its flush.
   checkReset()
-  if (taskId) {
+  if (batchId) {
+    const { acknowledgeCompanionBatch } = await import('./companionDrawingBatch')
+    checkReset()
+    await acknowledgeCompanionBatch(batchId)
+  } else if (taskId) {
     const { acknowledgeCompanionImage } = await import('./companionImageGeneration')
     checkReset()
     await acknowledgeCompanionImage(taskId)
@@ -59,8 +63,10 @@ export async function retainCompanionImageMessage(storage: { save(): boolean | u
 
 export interface CompanionToolContext {
   character: string
+  branch: string
   signal: AbortSignal
   report: (message: string) => void
+  onDrawingBatch?: (id: string) => Promise<void>
   readImage?: NonNullable<ReturnType<typeof captureCompanionImageSource>>['read']
   imageUrl?: string
   screenDestination?: string
@@ -78,6 +84,23 @@ export async function executeSerializedCompanionChatTool(call: { name: string; a
 export async function executeCompanionChatTool(name: string, args: Record<string, unknown>, context: CompanionToolContext, completedDrawings?: Map<string, CompanionToolResult>): Promise<CompanionToolResult> {
   context.signal.throwIfAborted()
   if (name !== 'search_web' && !companionToolAllowed(name, await loadCompanionToolPermissions(context.signal))) throw new Error('房间工具权限已关闭。')
+  if (name === 'search_drawing_catalog') {
+    const { searchDrawingCatalog } = await import('@/api/companionDrawingApi')
+    const catalog = await searchDrawingCatalog(args, context.signal)
+    return { ok: true, output: JSON.stringify(catalog) }
+  }
+  if (name === 'generate_drawing_batch') {
+    const key = `${name}:${JSON.stringify(args)}`
+    const prior = completedDrawings?.get(key)
+    if (prior) return prior
+    if (completedDrawings && [...completedDrawings.values()].some(result => result.drawingBatchId || result.images?.length)) {
+      return { ok: false, output: '这一轮已经有出图卡。后续批次请在下一轮提交。' }
+    }
+    const { generateCompanionDrawingBatch } = await import('./companionDrawingBatch')
+    const result = await generateCompanionDrawingBatch(args, context)
+    if (result.images?.length || result.drawingBatchId) completedDrawings?.set(key, result)
+    return result
+  }
   if (!['generate_character_image', 'generate_image_from_reference'].includes(name)) {
     return executeCompanionTool(name, args, context.signal, context.screenDestination)
   }

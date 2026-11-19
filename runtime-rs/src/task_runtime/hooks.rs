@@ -130,11 +130,13 @@ impl ExecutionHooks for Hooks {
     }
     fn protect_input(&self, name: String, input: Output) -> BoxFuture<'_, Result<()>> {
         Box::pin(async move {
-            if !input.mime().starts_with("image/") {
+            if !input.mime().starts_with("image/")
+                && crate::video::driver_mime(&name) != Some(input.mime())
+            {
                 return Err(ApiError::new(
                     409,
                     "TASK_INPUT_INVALID",
-                    "Protected task input must be an image",
+                    "Unsupported protected task input",
                 ));
             }
             media::persist(

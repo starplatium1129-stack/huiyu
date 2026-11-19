@@ -2,12 +2,12 @@
   <section ref="panel" class="inference-setup" aria-labelledby="native-setup-title">
     <div class="setup-intro">
       <span class="setup-mark"><ArchiveIcon name="spark" /></span>
-      <div><h3 id="native-setup-title" ref="title" tabindex="-1">准备本机绘图</h3><p>确认存放位置和模型后，绘遇会下载所需文件并启用引擎。</p></div>
+      <div><h3 id="native-setup-title" ref="title" tabindex="-1">{{ videoRequested || isVideo ? '准备本机视频' : '准备本机模型' }}</h3><p>确认存放位置和模型后，绘遇会下载所需文件并启用引擎。</p></div>
     </div>
     <ol class="setup-route" aria-label="配置流程">
       <li :aria-current="!workspacePending && !pendingRestart && !nativeEnabled ? 'step' : undefined"><span>1</span>准备模型</li>
       <li :aria-current="pendingRestart || workspacePending ? 'step' : undefined"><span>2</span>启用引擎</li>
-      <li :aria-current="nativeEnabled ? 'step' : undefined"><span>3</span>进入画室</li>
+      <li :aria-current="nativeEnabled ? 'step' : undefined"><span>3</span>{{ isVideo || videoRequested ? '进入故事短片' : '进入画室' }}</li>
     </ol>
     <div class="setup-location">
       <ArchiveIcon name="folder" />
@@ -18,8 +18,8 @@
     <div v-if="workspacePending" class="setup-status" role="status"><ArchiveIcon name="info" /><div><strong>存放位置已更改</strong><p>重启绘遇后，在新目录继续准备。已有文件会保留。</p></div></div>
     <template v-else-if="plan">
       <div class="setup-field setup-model-choice">
-        <label for="native-model-download">绘图模型</label>
-        <StudioSelect id="native-model-download" :model-value="modelId" label="绘图模型" :options="modelOptions" :disabled="locked" @update:model-value="chooseModel" />
+        <label for="native-model-download">{{ modelLabel }}</label>
+        <StudioSelect id="native-model-download" :model-value="modelId" :label="modelLabel" :options="modelOptions" :disabled="locked" @update:model-value="chooseModel" />
         <small v-if="plan.supported && modelId === 'anima-miaomiao-v1.6'">入门推荐 · 可自动下载权重</small>
       </div>
       <div class="setup-status" :data-state="nativeEnabled ? 'ready' : plan.supported ? 'available' : 'unavailable'" role="status">
@@ -27,7 +27,7 @@
         <div><strong>{{ nativeEnabled ? '原生引擎和模型已就绪' : plan.supported ? '可以自动准备' : unavailableTitle }}</strong><p>{{ deviceName }}</p><p v-if="!plan.supported">{{ unavailableHint }}</p></div>
         <button v-if="plan.supported" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="recheck">重新检查</button>
       </div>
-      <template v-if="plan.supported && selectedModel && !nativeEnabled && !pendingRestart">
+      <template v-if="selectedModel && (plan.supported || videoDownloadOnly && !selectedModel.installed) && !nativeEnabled && !pendingRestart">
         <p v-if="selectedModel.preparation === 'moss-checkpoint' && !selectedModel.installed && !running" class="setup-hint">绘遇会先下载作者权重，再补齐编码器和 VAE，并自动适配原生格式。若 Civitai 要求登录，请从作者发布页下载对应文件，再使用下方的本地权重入口。</p>
         <details v-if="selectedModel.checkpointFilename && !selectedModel.installed && !running" class="setup-details" :open="!selectedModel.checkpointOptional">
           <StudioDisclosureSummary>使用已下载的权重{{ selectedModel.checkpointOptional ? '（可选）' : '' }}</StudioDisclosureSummary>
@@ -38,19 +38,22 @@
           </div>
         </details>
         <div class="setup-model">
-          <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">绘图模型</span><strong>{{ modelName }}</strong><small>{{ modelPreparationLabel }}</small></div></div>
-          <div class="setup-budget"><span>最多下载<strong>{{ formatSetupBytes(downloadBytes) }}</strong></span><span>所需空间<strong>{{ formatSetupBytes(setupRequiredBytes) }}</strong></span></div>
+          <div class="setup-model-copy"><ArchiveIcon name="model" /><div><span class="setup-label">{{ modelLabel }}</span><strong>{{ modelName }}</strong><small>{{ modelPreparationLabel }}</small></div></div>
+          <div class="setup-budget"><span>最多下载<strong>{{ formatSetupBytes(videoDownloadOnly ? selectedModel.downloadBytes : downloadBytes) }}</strong></span><span>所需空间<strong>{{ formatSetupBytes(videoDownloadOnly ? modelRequiredBytes : setupRequiredBytes) }}</strong></span></div>
         </div>
-        <p v-if="!setupSpaceEnough" class="setup-error" role="status">空间不足，请更换存放位置或释放空间后重新检查。</p>
+        <p v-if="!(videoDownloadOnly ? modelSpaceEnough : setupSpaceEnough)" class="setup-error" role="status">空间不足，请更换存放位置或释放空间后重新检查。</p>
         <div v-if="selectedModel.requiresAccess && !selectedModel.installed && !running" class="setup-field">
           <label for="native-hf-token">Hugging Face 只读访问令牌</label>
           <input id="native-hf-token" v-model="hfToken" class="input" type="password" :disabled="locked" autocomplete="off" spellcheck="false" maxlength="512" aria-describedby="native-hf-token-hint" />
           <small id="native-hf-token-hint">先在 <a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer">模型页面</a>接受许可并取得访问权，再填写该模型的只读令牌。仅用于本次 Hugging Face 下载，不保存到配置；完整缓存可离线继续。</small>
         </div>
-        <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>同意安装并接受<a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="所选模型许可，在新窗口打开">模型许可</a></span></label>
+        <label v-if="!running" class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !currentPlan" /><span>{{ videoDownloadOnly ? '同意下载模型并接受' : '同意安装并接受' }}<a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="所选模型许可，在新窗口打开">模型许可</a></span></label>
         <small v-if="!running" class="setup-hint">{{ selectedModel.license }} · 已有文件保留</small>
       </template>
-      <p v-if="pendingRestart" role="status">模型与运行库已准备好。重启绘遇后会回到这里，继续进入画室。</p>
+      <p v-if="videoDownloadOnly && selectedModel?.installed" role="status">模型文件已就绪。在高级路径设置中选择兼容的适配器 Python，模型根目录填写 <code>{{ plan.paths.modelsRoot }}</code>。</p>
+      <p v-if="isVideo" class="setup-hint">导出 MP4 需要带 libx264 的 ffmpeg。H3 和 LTX 的音轨还需要 AAC。请将 ffmpeg 加入 PATH，或用 HUIYU_NATIVE_FFMPEG 指定位置。</p>
+      <p v-if="isVideo && plan.supported && !plan.workspaceMatches" class="setup-hint">启用后，图像与视频适配器共用此工作区的模型根目录和适配器 Python。</p>
+      <p v-if="pendingRestart" role="status">模型与运行库已准备好，重启绘遇后生效。</p>
     </template>
     <p v-else role="status">{{ checking ? '正在检查设备与配置…' : '暂时无法读取配置，请重新检查。' }}</p>
     <SetupTransferProgress v-if="running" :title="operationTitle" :phase="operationPhase"
@@ -63,18 +66,20 @@
     <p v-if="error" class="setup-error" role="alert">{{ error }}</p>
     <p v-else-if="message && !running && !pendingRestart && !nativeEnabled" role="status">{{ message }}</p>
     <div ref="actions" class="setup-primary" tabindex="-1" role="group" aria-label="原生引擎操作">
-      <RouterLink v-if="nativeEnabled && selectedModel && !locked" class="btn btn-primary" :to="firstDrawingRoute(modelId, selectedModel.family)"><ArchiveIcon name="spark" />去画室生成第一张图</RouterLink>
+      <RouterLink v-if="nativeEnabled && selectedModel?.family === 'video' && !locked" class="btn btn-primary" :to="videoDestination"><ArchiveIcon name="spark" />进入故事短片</RouterLink>
+      <RouterLink v-else-if="nativeEnabled && selectedModel && selectedModel.family !== 'video' && !locked" class="btn btn-primary" :to="firstDrawingRoute(modelId, selectedModel.family)"><ArchiveIcon name="spark" />去画室生成第一张图</RouterLink>
       <button v-else-if="desktop?.restartForSetup && !operationUncertain && (workspacePending || pendingRestart)" class="btn btn-primary" type="button" :disabled="locked" :aria-busy="restarting" @click="restart">{{ restarting ? '正在重启…' : '重启并继续' }}</button>
       <button v-else-if="operationUncertain" class="btn btn-primary" type="button" :disabled="checking" @click="reconcile">{{ checking ? '核对中…' : '继续核对进度' }}</button>
       <button v-else-if="plan?.supported && !workspacePending && !pendingRestart" class="btn btn-primary" type="button" :disabled="!canSetup" @click="prepareEngine"><ArchiveIcon name="download" />{{ prepareLabel }}</button>
+      <button v-else-if="videoDownloadOnly && !workspacePending && !selectedModel?.installed" class="btn btn-primary" type="button" :disabled="!canDownload" @click="downloadModel"><ArchiveIcon name="download" />仅下载视频模型</button>
       <button v-else class="btn btn-primary" type="button" :disabled="locked" @click="recheck">{{ checking ? '检查中…' : '重新检查' }}</button>
       <button v-if="running" class="btn btn-quiet" type="button" :disabled="!canCancel" @click="cancel">{{ cancelState === 'pending' || cancelState === 'accepted' ? '正在取消…' : '取消准备' }}</button>
       <template v-if="!running && !workspacePending && !nativeEnabled">
-        <RouterLink class="btn btn-quiet" to="/control#control-remote">连接另一台绘遇</RouterLink>
+        <RouterLink v-if="!isVideo" class="btn btn-quiet" to="/control#control-remote">连接另一台绘遇</RouterLink>
         <RouterLink v-if="plan && !plan.supported" class="btn btn-quiet" to="/control#control-comfy">使用 ComfyUI</RouterLink>
       </template>
     </div>
-    <details v-if="plan && !workspacePending" id="control-image-resources" class="setup-details" :open="typeof route.query.resource === 'string' || route.hash === '#control-image-resources'">
+    <details v-if="plan && !workspacePending && !isVideo" id="control-image-resources" class="setup-details" :open="typeof route.query.resource === 'string' || route.hash === '#control-image-resources'">
       <StudioDisclosureSummary><span>添加更多绘图能力<small class="setup-disclosure-hint">自动蒙版、高清放大、草图与角色 LoRA · 按需下载</small></span></StudioDisclosureSummary>
       <div class="setup-detail-content">
         <section>
@@ -102,19 +107,19 @@
       <div class="setup-detail-content">
         <p v-for="warning in plan.warnings" :key="warning" class="setup-hint">{{ warning }}</p>
         <section><h4>设备要求</h4><p>Windows x64 · NVIDIA Ampere 至 Blackwell · 驱动 572.61 以上。默认分层卸载，显存与系统内存容量作为提醒，实际可用画幅和模型需在设备上确认。</p><p>本机内存：{{ plan.hardware.ramBytes === null ? '未知' : formatSetupBytes(plan.hardware.ramBytes) }}。显卡驱动请通过厂商更新。</p><ul v-if="plan.reasons.length"><li v-for="reason in plan.reasons" :key="reason">{{ reason }}</li></ul></section>
-        <section><h4>下载内容</h4><div class="setup-package"><strong>原生运行库</strong><span>{{ plan.runtime.installed ? '已就绪' : formatSetupBytes(plan.runtime.downloadBytes) }}</span><small>{{ plan.runtime.label }}</small></div><div v-if="selectedModel" class="setup-package"><strong>{{ modelName }}</strong><span>{{ selectedModel.installed ? '已就绪' : formatSetupBytes(selectedModel.downloadBytes) }}</span><small>transformer、编码器、VAE、tokenizer 与配置</small></div><p v-if="!plan.supported">首次下载最多 {{ formatSetupBytes(downloadBytes) }}，本次准备需 {{ formatSetupBytes(setupRequiredBytes) }} 可用空间。</p></section>
+        <section><h4>下载内容</h4><div class="setup-package"><strong>原生运行库</strong><span>{{ plan.runtime.installed ? '已就绪' : formatSetupBytes(plan.runtime.downloadBytes) }}</span><small>{{ plan.runtime.label }}</small></div><div v-if="selectedModel" class="setup-package"><strong>{{ modelName }}</strong><span>{{ selectedModel.installed ? '已就绪' : formatSetupBytes(selectedModel.downloadBytes) }}</span><small>transformer、编码器、VAE、tokenizer 与配置</small></div><p v-if="!plan.supported && !videoDownloadOnly">首次下载最多 {{ formatSetupBytes(downloadBytes) }}，本次准备需 {{ formatSetupBytes(setupRequiredBytes) }} 可用空间。</p></section>
         <section><h4>来源与许可</h4><ul class="setup-sources"><li v-for="source in plan.runtime.sources" :key="source.url"><a :href="source.url" target="_blank" rel="noopener noreferrer" :aria-label="`${source.label}来源，在新窗口打开`">{{ sourceName(source.label) }}</a><a :href="source.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="运行库许可，在新窗口打开">许可</a></li></ul><p v-if="selectedModel"><a :href="selectedModel.sourceUrl" target="_blank" rel="noopener noreferrer" aria-label="模型来源，在新窗口打开">模型来源</a> · <a :href="selectedModel.licenseUrl" target="_blank" rel="noopener noreferrer" aria-label="模型许可，在新窗口打开">模型许可</a></p><p v-if="selectedModel">固定版本：<code>{{ selectedModel.revision }}</code></p><p>官方文件逐项核对固定版本与 SHA-256。Krea 需先授权取得文件清单。缺少 VC++ 运行库时，由你确认 Windows 授权。</p></section>
         <section><h4>存放位置</h4><dl class="setup-paths"><template v-for="item in resourcePaths" :key="item.label"><dt>{{ item.label }}</dt><dd><code>{{ item.value }}</code></dd></template></dl></section>
         <p v-if="plan.runtime.recoveryReady">已发现完整候选，继续准备会直接采用，无需重新解包。</p>
-        <p>中断后可续传。绘遇会优先复用当前工作区中与清单匹配的 Anima 权重。</p>
+        <p>中断后可继续下载，已校验的文件可复用。</p>
       </div>
     </details>
-    <details class="setup-details">
-      <StudioDisclosureSummary>离线配置与模型导入</StudioDisclosureSummary>
+    <details v-if="!videoDownloadOnly" class="setup-details">
+      <StudioDisclosureSummary>{{ isVideo ? '单独准备或启用' : '离线配置与模型导入' }}</StudioDisclosureSummary>
       <div class="setup-detail-content">
         <section v-if="plan && !workspacePending"><h4>单项管理</h4><label class="setup-consent"><input v-model="reviewed" type="checkbox" :disabled="locked || !plan.supported" /><span>同意当前清单的下载、安装与许可。</span></label><div class="setup-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="!canInstall" @click="installRuntime">仅准备运行库</button><button class="btn btn-ghost btn-sm" type="button" :disabled="!canDownload" @click="downloadModel">仅准备模型</button><button class="btn btn-ghost btn-sm" type="button" :disabled="!canActivate || nativeEnabled" @click="activate">仅启用引擎</button></div></section>
-        <section><h4>离线运行库</h4><p>使用已有可信 Python 和离线依赖。</p><div class="setup-fields"><div class="setup-field"><label for="native-base-python">Python 文件</label><input id="native-base-python" class="input" v-model="basePython" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div><div class="setup-field"><label for="native-wheelhouse">wheelhouse 目录</label><input id="native-wheelhouse" class="input" v-model="wheelhouse" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><label class="setup-consent"><input v-model="runtimeReviewed" type="checkbox" :disabled="locked" />信任此 Python 与依赖的来源和许可。</label><div class="setup-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="!canPrepare" @click="prepare">准备离线运行库</button><button v-if="preparedPaths" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="fillSettings">填入高级设置</button></div></section>
-        <section><h4>已有模型</h4><p>导入配齐组件的 Anima Diffusers 目录；已有模型和 LoRA 也可在高级设置直接复用。</p><div class="setup-fields"><div class="setup-field"><label for="native-import-model">对应型号</label><StudioSelect id="native-import-model" v-model="importModelId" label="对应型号" :options="inferenceImportModels" :disabled="locked" /></div><div class="setup-field"><label for="native-import-source">来源目录</label><input id="native-import-source" class="input" v-model="sourceDir" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><button class="btn btn-ghost btn-sm" type="button" :disabled="!canInspect" @click="inspect">{{ inspecting ? '检查中…' : '查看导入计划' }}</button><div v-if="inspection" class="setup-import"><p>来源：<code>{{ inspection.sourceDir }}</code></p><p>目标：<code>{{ inspection.targetDir }}</code></p><p>{{ inspection.fileCount }} 个文件 · {{ formatSetupBytes(inspection.totalBytes) }}。复制到新目录，保留来源；仅检查目录布局，兼容性需加载确认。</p><label class="setup-consent"><input v-model="importReviewed" type="checkbox" :disabled="locked" />同意此模型的许可与复制计划。</label><button class="btn btn-ghost btn-sm" type="button" :disabled="!canImport" @click="importModel">导入模型</button></div></section>
+        <section v-if="!isVideo"><h4>离线运行库</h4><p>使用已有可信 Python 和离线依赖。</p><div class="setup-fields"><div class="setup-field"><label for="native-base-python">Python 文件</label><input id="native-base-python" class="input" v-model="basePython" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div><div class="setup-field"><label for="native-wheelhouse">wheelhouse 目录</label><input id="native-wheelhouse" class="input" v-model="wheelhouse" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><label class="setup-consent"><input v-model="runtimeReviewed" type="checkbox" :disabled="locked" />信任此 Python 与依赖的来源和许可。</label><div class="setup-actions"><button class="btn btn-ghost btn-sm" type="button" :disabled="!canPrepare" @click="prepare">准备离线运行库</button><button v-if="preparedPaths" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="fillSettings">填入高级设置</button></div></section>
+        <section v-if="!isVideo"><h4>已有模型</h4><p>导入配齐组件的 Anima Diffusers 目录；已有模型和 LoRA 也可在高级设置直接复用。</p><div class="setup-fields"><div class="setup-field"><label for="native-import-model">对应型号</label><StudioSelect id="native-import-model" v-model="importModelId" label="对应型号" :options="inferenceImportModels" :disabled="locked" /></div><div class="setup-field"><label for="native-import-source">来源目录</label><input id="native-import-source" class="input" v-model="sourceDir" :disabled="locked" type="text" spellcheck="false" autocomplete="off" /></div></div><button class="btn btn-ghost btn-sm" type="button" :disabled="!canInspect" @click="inspect">{{ inspecting ? '检查中…' : '查看导入计划' }}</button><div v-if="inspection" class="setup-import"><p>来源：<code>{{ inspection.sourceDir }}</code></p><p>目标：<code>{{ inspection.targetDir }}</code></p><p>{{ inspection.fileCount }} 个文件 · {{ formatSetupBytes(inspection.totalBytes) }}。复制到新目录，保留来源；仅检查目录布局，兼容性需加载确认。</p><label class="setup-consent"><input v-model="importReviewed" type="checkbox" :disabled="locked" />同意此模型的许可与复制计划。</label><button class="btn btn-ghost btn-sm" type="button" :disabled="!canImport" @click="importModel">导入模型</button></div></section>
       </div>
     </details>
     <CompanionWorkspaceSettings v-if="desktop" :open="workspaceOpen" v-model="workspaceDraft" :saving="workspaceSaving" :error="workspaceError" :return-focus-el="workspaceButton" @close="closeWorkspace" @save="saveWorkspace" />
@@ -134,18 +139,27 @@ import { useInferenceSetup } from '@/composables/useInferenceSetup'
 import { inferenceImportModels, type PreparedInferencePaths } from '@/api/inferenceSetupApi'
 import type { InferenceSettings } from '@/api/inferenceSettingsApi'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
+import { videoReturnLocation } from '@/utils/videoNavigation'
 import { firstDrawingRoute } from '@/utils/setupDrawingRoute'
 const props = defineProps<{ configured: InferenceSettings; blocked: boolean }>()
 const emit = defineEmits<{ prepared: [paths: PreparedInferencePaths]; busy: [value: boolean]; working: [value: boolean]; activated: [] }>()
 const route = useRoute()
+const videoRequested = computed(() => route.query.videoSetup === '1')
+const modelLabel = computed(() => videoRequested.value ? '视频模型' : '本机模型')
 const requestedModel = computed(() => typeof route.query.model === 'string' ? route.query.model : '')
-const { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
+const { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, modelRequiredBytes, modelSpaceEnough, canSetup, canInstall, canDownload, canActivate,
   basePython, wheelhouse, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
   operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, message, error, cancelState, operationUncertain,
   workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,
   recheck, prepareEngine, installRuntime, downloadModel, activate, prepare, inspect, importModel, cancel, reconcile,
-  openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'), requestedModel)
-const modelOptions = computed(() => plan.value?.models.map(model => ({ value: model.id, label: model.label })) ?? [])
+  openWorkspace, closeWorkspace, saveWorkspace, openFolder, restart } = useInferenceSetup(computed(() => props.configured), computed(() => props.blocked), () => emit('activated'), requestedModel, videoRequested)
+const isVideo = computed(() => selectedModel.value?.family === 'video')
+const videoDownloadOnly = computed(() => isVideo.value && !!plan.value && !plan.value.supported && plan.value.freeBytes !== null)
+const videoDestination = computed(() => {
+  const target = videoReturnLocation(route.query)
+  return { ...target, query: { ...target.query, preparedModel: modelId.value } }
+})
+const modelOptions = computed(() => plan.value?.models.filter(model => !videoRequested.value || model.family === 'video').map(model => ({ value: model.id, label: model.label })) ?? [])
 const resourceOptions = computed(() => plan.value?.resources.map(value => ({ value: value.id, label: value.label })) ?? [])
 function fillResourcePaths() {
   if (plan.value && !locked.value) emit('prepared', { python: props.configured.python, worker: props.configured.worker,
@@ -163,15 +177,17 @@ const deviceName = computed(() => [...(plan.value?.hardware.devices ?? []), ...(
 const unavailableTitle = computed(() => plan.value?.freeBytes === null ? '先选择可用的存放位置' : '当前无法一键安装本机环境')
 const unavailableHint = computed(() => {
   if (plan.value?.freeBytes === null) return '请选择可写且空间充足的文件夹。'
+  if (selectedModel.value?.id === 'longcat-avatar-1.6') return plan.value?.reasons[0]
+  if (videoDownloadOnly.value) return '可单独下载视频模型，再在高级路径设置中选择兼容的适配器 Python。'
   if (/AMD|Intel|Radeon/i.test(deviceName.value) && !plan.value?.hardware.devices.length) return '自动安装使用受支持的 NVIDIA 显卡。可连接另一台绘遇，或在高级设置复用配好的 Anima 环境。'
   return plan.value?.reasons[0] ?? '请查看设备要求，再重新检查。'
 })
 const downloadBytes = computed(() => (plan.value?.runtime.installed ? 0 : plan.value?.runtime.downloadBytes ?? 0) + (selectedModel.value?.installed ? 0 : selectedModel.value?.downloadBytes ?? 0))
-const operationTitle = computed(() => operation.value?.flowStep === 'activate' || activating.value ? '校验并启用引擎' : operation.value?.flowStep === 'model' ? '准备绘图模型' : operation.value?.flowStep === 'runtime' ? '准备运行库' : operation.value?.stages[operation.value.stageIndex] ?? '正在准备')
+const operationTitle = computed(() => operation.value?.flowStep === 'activate' || activating.value ? '校验并启用引擎' : operation.value?.flowStep === 'model' ? '准备模型' : operation.value?.flowStep === 'runtime' ? '准备运行库' : operation.value?.stages[operation.value.stageIndex] ?? '正在准备')
 const operationPhase = computed(() => setupTransferPhase(operation.value))
 const prepareLabel = computed(() => {
   if (busy.value) return '正在准备…'
-  if (plan.value?.runtime.installed && selectedModel.value?.installed) return '启用原生绘图'
+  if (plan.value?.runtime.installed && selectedModel.value?.installed) return isVideo.value ? '启用原生视频' : '启用原生绘图'
   return operation.value?.status === 'failed' ? '继续准备并启用' : '一键准备并启用'
 })
 const resourcePaths = computed(() => plan.value ? [
@@ -186,7 +202,9 @@ watch([() => route.query.resource, locked], ([value, isLocked]) => {
   if (!isLocked && value !== appliedResourceQuery) { resourceId.value = value; appliedResourceQuery = value }
 }, { immediate: true })
 let appliedModelQuery: string | null = null
-watch([requestedModel, locked], ([value, isLocked]) => {
+watch([requestedModel, videoRequested, locked], ([requested, video, isLocked]) => {
+  const value = video && !plan.value?.models.some(model => model.family === 'video' && model.id === requested)
+    ? (isVideo.value ? '' : plan.value?.models.find(model => model.family === 'video')?.id) : requested
   if (!value) { appliedModelQuery = null; return }
   if (!isLocked && plan.value?.models.some(model => model.id === value) && value !== appliedModelQuery) {
     appliedModelQuery = value

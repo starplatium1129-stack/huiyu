@@ -1,0 +1,18 @@
+# Dedicated LongCat 1.6 environment. Install CUDA torch 2.6.0 + torchvision
+# 0.21.0 first, then a matching Triton 3.2 build and flash-attn 2.7.4.post1.
+# The Windows Triton distribution is triton-windows. Use a wheel compatible
+# with this interpreter, PyTorch version, CUDA toolchain and GPU architecture.
+diffusers==0.35.1
+transformers==4.41.0
+accelerate==1.6.0
+safetensors==0.5.3
+sentencepiece==0.2.1
+numpy==1.26.4
+ftfy==6.2.0
+einops==0.8.0
+loguru==0.7.2
+imageio==2.37.0
+scipy==1.15.3
+soundfile==0.13.1
+librosa==0.11.0
+pyloudnorm==0.1.1

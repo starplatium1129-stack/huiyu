@@ -240,6 +240,8 @@ pub(super) async fn plan(
         upscale_model_path: None,
         init_image,
         reference_images: Mutex::new(vec![]),
+        last_frame: Mutex::new(None),
+        driving_media: Mutex::new(None),
         pen_lines,
         mask_image: Mutex::new(None),
         sketch_image: Mutex::new(None),

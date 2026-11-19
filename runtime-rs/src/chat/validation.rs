@@ -22,6 +22,7 @@ pub(super) struct Input {
     pub api: Option<ApiSource>,
     pub tool_result_origin: Option<String>,
     pub tools: bool,
+    pub channel_tools: bool,
     pub web_search: bool,
     pub reasoning: String,
     pub messages: Vec<Value>,
@@ -329,6 +330,7 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
         return Err(Error::invalid("推理强度必须是 off / low / medium / high"));
     }
     Ok(Input {
+        channel_tools: false,
         model: string(&body["model"]),
         session_id,
         api,

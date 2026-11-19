@@ -13,7 +13,7 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         // Keep complete job arrays inside SQLite and reuse this bounded list
         // between batch writes, including empty task-center delta polls.
         let plans = {
-            let mut statement = c.db.prepare_cached("SELECT json_object('id',id,'state',json_extract(body,'$.state')) FROM image_batch_plans WHERE principal=? AND (json_extract(body,'$.state')='running' OR EXISTS(SELECT 1 FROM json_each(body,'$.jobs') j WHERE json_extract(j.value,'$.status') IN ('accepted','running'))) ORDER BY revision LIMIT 100")?;
+            let mut statement = c.db.prepare_cached("SELECT json_object('id',id,'state',json_extract(body,'$.state')) FROM image_batch_plans WHERE principal=? AND (json_extract(body,'$.state') IN ('running','cancelling') OR EXISTS(SELECT 1 FROM json_each(body,'$.jobs') j WHERE json_extract(j.value,'$.status') IN ('accepted','running'))) ORDER BY revision LIMIT 100")?;
             let mut rows = statement.query([principal])?;
             let mut plans = Vec::new();
             while let Some(row) = rows.next()? {
@@ -42,11 +42,20 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         let mut plan = read(c, principal, id)?;
         if kind == "imageBatch.create" {
             if !plan.is_null() {
+                if plan["origin"] == "companion-chat" {
+                    if command["plan"]["origin"] == "companion-chat"
+                        && (plan["companionIntent"].is_string() && plan["companionIntent"] == command["plan"]["companionIntent"]
+                            || plan["cancelRequested"] == true && plan["companionIntent"].is_null()) {
+                        return Ok(plan);
+                    }
+                    return Err(conflict("BATCH_KEY_CONFLICT", "Batch identity belongs to another plan"));
+                }
                 let fingerprint: String = c.db.query_row("SELECT fingerprint FROM image_batch_sources WHERE id=?",[id],|row|row.get(0))?;
                 if fingerprint != canonical::fingerprint(&command["plan"]) { return Err(conflict("BATCH_KEY_CONFLICT", "Batch identity belongs to another plan")); }
                 return Ok(plan);
             }
             let source = &command["plan"];
+            let companion = source["origin"] == "companion-chat";
             if source["version"] != 1 || source["runtimeOwned"] != true || source["engine"] != "anima"
                 || source["createdAt"].as_u64().is_none()
                 || source["owner"]["kind"] != "workspace" || source["owner"]["workspaceId"] != c.workspace_id
@@ -61,15 +70,16 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                     return Err(invalid("Invalid batch target"));
                 }
             }
-            let jobs = source["jobs"].as_array().filter(|jobs| !jobs.is_empty() && jobs.len() <= 200).ok_or_else(|| invalid("A batch must contain 1–200 images"))?;
+            let jobs = source["jobs"].as_array().filter(|jobs| !jobs.is_empty() && jobs.len() <= if companion { 16 } else { 200 }).ok_or_else(|| invalid("Invalid batch size"))?;
             let mut keys = std::collections::HashSet::new();
             let mut job_ids = std::collections::HashSet::new();
             for job in jobs {
                 if !job["requestKey"].as_str().is_some_and(|key| !key.is_empty() && key.len() <= 160 && keys.insert(key))
                     || !job["id"].as_str().is_some_and(|id| uuid::Uuid::parse_str(id).is_ok() && job_ids.insert(id))
                     || !job["sceneId"].as_str().is_some_and(|id| target_ids.contains(id))
-                    || job["seed"].as_i64().is_none() || !job["variant"].as_u64().is_some_and(|index| index < 3)
-                    || !matches!(job["snapshot"]["engine"].as_str(), Some("anima" | "krea2"))
+                    || job["seed"].as_i64().is_none() || !job["variant"].as_u64().is_some_and(|index| index < if companion { 8 } else { 3 })
+                    || !(matches!(job["snapshot"]["engine"].as_str(), Some("anima" | "krea2"))
+                        || companion && matches!(job["snapshot"]["engine"].as_str(), Some("qwen-image" | "moss-image")))
                     || !job["taskInput"].is_object() || !job["snapshot"]["context"].is_object()
                     || job["submitted"] != false || job["status"] != "pending" {
                     return Err(invalid("Invalid frozen image batch item"));
@@ -77,13 +87,32 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
             }
             plan = source.clone();
             plan["id"] = json!(id);
-            plan["state"] = json!("running");
+            plan["state"] = json!(if companion && source["preview"] == true { "draft" } else { "running" });
+        } else if plan.is_null() && kind == "imageBatch.control" && command["action"] == "cancel" {
+            // Stop can reach storage before an in-flight submission does.
+            plan = json!({"id":id,"origin":"companion-chat","state":"cancelled","cancelRequested":true,"jobs":[]});
         } else {
             if plan.is_null() { return Err(ApiError::new(404, "BATCH_NOT_FOUND", "Image batch does not exist")); }
             if kind == "imageBatch.control" {
                 match command["action"].as_str() {
+                    Some("cancel") if plan["origin"] == "companion-chat" => {
+                        if plan["state"] == "draft" {
+                            plan["state"] = json!("cancelled");
+                            plan["cancelRequested"] = json!(true);
+                            for job in plan["jobs"].as_array_mut().into_iter().flatten() {
+                                job["status"] = json!("cancelled");
+                            }
+                        } else if !matches!(plan["state"].as_str(), Some("succeeded" | "failed" | "cancelled")) {
+                            plan["cancelRequested"] = json!(true);
+                            plan["state"] = json!("cancelling");
+                            plan["error"] = Value::Null;
+                        }
+                    }
                     Some("pause") => { plan["state"] = json!("paused"); }
                     Some("resume" | "retry") => {
+                        if plan["cancelRequested"] == true {
+                            return Err(invalid("已停止的批次不能继续提交"));
+                        }
                         if command["action"] == "retry" {
                             for job in plan["jobs"].as_array_mut().unwrap() {
                                 if matches!(job["status"].as_str(), Some("failed" | "cancelled")) {
@@ -97,6 +126,8 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
                     }
                     _ => return Err(invalid("Unknown batch action")),
                 }
+            } else if kind == "imageBatch.changeItem" {
+                change_item(c, id, &mut plan, command)?;
             } else if kind == "imageBatch.progress" {
                 if command["expectedRevision"] != plan["revision"] { return Err(conflict("REVISION_CONFLICT", "Image batch changed")); }
                 let mut changed = false;
@@ -128,6 +159,51 @@ pub(super) fn execute(c: &mut Context, principal: &str, command: &Value) -> Resu
         }
         Ok(plan)
     })
+}
+
+fn change_item(c: &Context, id: &str, plan: &mut Value, command: &Value) -> Result<()> {
+    if plan["origin"] != "companion-chat" || command["expectedRevision"] != plan["revision"] {
+        return Err(conflict("REVISION_CONFLICT", "出图卡已有变更，请刷新后再操作"));
+    }
+    let index = command["index"].as_u64().filter(|index| *index < 16)
+        .ok_or_else(|| invalid("图片序号无效"))? as usize;
+    let operation = string(command, "operation")?;
+    let editing = operation == "edit" && plan["state"] == "draft";
+    let rerunning = operation == "rerun" && matches!(plan["state"].as_str(), Some("succeeded" | "failed" | "cancelled"));
+    let job = plan["jobs"].as_array_mut().and_then(|jobs| jobs.get_mut(index))
+        .ok_or_else(|| invalid("找不到这张图"))?;
+    if !(editing && job["status"] == "pending"
+        || rerunning && matches!(job["status"].as_str(), Some("succeeded" | "failed" | "cancelled"))) {
+        return Err(conflict("BATCH_ITEM_BUSY", "图片状态已改变，请刷新出图卡"));
+    }
+    let input = &command["input"];
+    let seed = input["taskInput"]["seed"].as_u64().ok_or_else(|| invalid("图片种子无效"))?;
+    let changed = c.db.execute(
+        "UPDATE image_batch_inputs SET body=? WHERE batch_id=? AND job_index=?",
+        params![stringify(input), id, index as i64],
+    )?;
+    if changed != 1 {
+        return Err(invalid("图片方案已找不到"));
+    }
+    job["seed"] = json!(seed);
+    if rerunning {
+        if job["status"] == "succeeded" {
+            job["previousResult"] = json!({
+                "taskId":job["taskId"], "imageId":job["imageId"], "historyId":job["historyId"]
+            });
+        }
+        let fields = job.as_object_mut().unwrap();
+        for key in ["taskId", "imageId", "historyId", "message", "error"] {
+            fields.remove(key);
+        }
+        job["status"] = json!("pending");
+        job["requestKey"] = json!(uuid::Uuid::new_v4().to_string());
+        job["submitted"] = json!(false);
+        plan["state"] = json!("running");
+        plan["cancelRequested"] = json!(false);
+        plan["error"] = Value::Null;
+    }
+    Ok(())
 }
 
 fn split(plan: &mut Value) -> Result<Vec<Value>> {

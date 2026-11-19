@@ -3,6 +3,7 @@ import os
 import shutil
 import subprocess
 import tempfile
+import threading
 import time
 import wave
 
@@ -42,7 +43,7 @@ def write_audio(value, path, sample_rate, data, control, error):
     import numpy as np
     control.check()
     value = value.detach().float().cpu().numpy()
-    if value.ndim != 2 or value.shape[0] not in (1, 2) or sample_rate not in (32000, 48000):
+    if value.ndim != 2 or value.shape[0] not in (1, 2) or sample_rate not in (32000, 44100, 48000):
         raise error("INVALID_MODEL_OUTPUT", "Expected channel-first mono/stereo audio at the model sample rate")
     expected = data["frames"] / data["fps"] * sample_rate
     if not np.isfinite(value).all() or abs(value.shape[1] - expected) > sample_rate / 4:
@@ -57,43 +58,103 @@ def write_audio(value, path, sample_rate, data, control, error):
             target.writeframes((chunk.clip(-1, 1) * 32767).round().astype("<i2").tobytes())
 
 
-def video(frames, path, data, control, error, soundtrack=None, sample_rate=None):
+def encode_h264(args, frames, data, control, error):
+    # A full pipe can block the generation thread inside write/close. Killing
+    # its reader unblocks the write on Windows as well as on POSIX.
+    timeout = 60 + len(frames) // 2
+    deadline = time.monotonic() + timeout
+    stopped = threading.Event()
+    interrupted = None
+    timed_out = False
+    pipe_error = None
+    with tempfile.TemporaryFile() as log:
+        process = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=log,
+                                   creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
+
+        def watch():
+            nonlocal interrupted, timed_out
+            while not stopped.wait(0.1) and process.poll() is None:
+                try:
+                    control.check()
+                except Exception as exc:
+                    interrupted = exc
+                else:
+                    if time.monotonic() < deadline:
+                        continue
+                    timed_out = True
+                process.kill()
+                return
+
+        watcher = threading.Thread(target=watch, name="native-video-encoder")
+        try:
+            watcher.start()
+            try:
+                with process.stdin:
+                    for frame in frames:
+                        control.check()
+                        process.stdin.write(pixels(frame, data, (3,), error))
+            except OSError as exc:
+                pipe_error = exc
+            status = process.wait()
+        finally:
+            if process.poll() is None:
+                process.kill()
+            stopped.set()
+            if watcher.ident is not None:
+                watcher.join()
+            process.wait()
+            if not process.stdin.closed:
+                process.stdin.close()
+        control.check()
+        if interrupted is not None:
+            raise interrupted
+        if timed_out:
+            return error("NATIVE_VIDEO_ENCODE_TIMEOUT", f"ffmpeg encode exceeded {timeout} seconds")
+        if status or pipe_error is not None:
+            log.seek(0)
+            detail = log.read(4096).decode("utf-8", errors="replace").strip()
+            return error("NATIVE_VIDEO_ENCODE_FAILED", detail or str(pipe_error or f"ffmpeg exited {status}"))
+    return None
+
+
+def video(frames, path, data, control, error, soundtrack=None, sample_rate=None, *, device_backend=None):
     if len(frames) != data["frames"]:
         raise error("INVALID_MODEL_OUTPUT", "Unexpected video frame count")
-    args = [encoder(error), "-nostdin", "-hide_banner", "-loglevel", "error", "-n",
+    args = [encoder(error), "-nostdin", "-hide_banner", "-loglevel", "error", "-xerror", "-n",
             "-f", "rawvideo", "-pix_fmt", "rgb24", "-s:v", f"{data['width']}x{data['height']}",
             "-r", str(data["fps"]), "-i", "pipe:0"]
-    with tempfile.TemporaryDirectory(prefix="native-audio-", dir=os.path.dirname(path)) as work, tempfile.TemporaryFile() as log:
+    if os.path.lexists(path):
+        raise error("NATIVE_VIDEO_ENCODE_FAILED", "Video output already exists")
+    with tempfile.TemporaryDirectory(prefix="native-video-", dir=os.path.dirname(path)) as work:
         if soundtrack is not None:
             audio_path = os.path.join(work, "soundtrack.wav")
             write_audio(soundtrack, audio_path, sample_rate, data, control, error)
             args += ["-i", audio_path, "-map", "0:v:0", "-map", "1:a:0", "-c:a", "aac", "-b:a", "192k"]
         else:
             args += ["-an"]
-        args += ["-c:v", "libx264", "-pix_fmt", "yuv420p", "-t", str(data["frames"] / data["fps"]),
-                 "-movflags", "+faststart", path]
-        process = subprocess.Popen(args, stdin=subprocess.PIPE, stdout=subprocess.DEVNULL, stderr=log,
-                                   creationflags=subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0)
-        try:
-            for frame in frames:
-                control.check()
-                process.stdin.write(pixels(frame, data, (3,), error).tobytes())
-            process.stdin.close()
-            deadline = time.monotonic() + 60
-            while process.poll() is None:
-                control.check()
-                if time.monotonic() > deadline:
-                    raise error("NATIVE_VIDEO_ENCODE_TIMEOUT", "ffmpeg encode did not finish within 60 seconds")
-                time.sleep(0.05)
-            if process.returncode:
-                log.seek(0)
-                raise error("NATIVE_VIDEO_ENCODE_FAILED", log.read(4096).decode("utf-8", errors="replace"))
-        except BrokenPipeError as exc:
-            log.seek(0)
-            raise error("NATIVE_VIDEO_ENCODE_FAILED", log.read(4096).decode("utf-8", errors="replace")) from exc
-        finally:
-            if process.poll() is None:
-                process.kill()
-            process.wait()
-            if process.stdin and not process.stdin.closed:
-                process.stdin.close()
+        codecs = []
+        if device_backend == "cuda":
+            codecs.append(("h264_nvenc", ["-pix_fmt", "nv12", "-rc", "vbr", "-cq", "23", "-b:v", "0"]))
+        elif device_backend == "rocm" and os.name == "nt":
+            codecs.append(("h264_amf", ["-pix_fmt", "nv12", "-rc", "cqp", "-qp_i", "21", "-qp_p", "23"]))
+        elif device_backend == "xpu":
+            codecs.append(("h264_qsv", ["-pix_fmt", "nv12", "-global_quality", "23"]))
+        codecs.append(("libx264", ["-pix_fmt", "yuv420p"]))
+        failures = []
+        for codec, options in codecs:
+            control.check()
+            target = os.path.join(work, f"{codec}.mp4")
+            command = [*args, "-c:v", codec, *options, "-t", str(data["frames"] / data["fps"]),
+                       "-movflags", "+faststart", target]
+            failure = encode_h264(command, frames, data, control, error)
+            if failure is not None:
+                failures.append(f"{codec}: {failure}")
+                continue
+            control.check()
+            # Publish a completed MP4 without replacing an existing job output.
+            if os.name == "nt":
+                os.rename(target, path)
+            else:
+                os.link(target, path)
+            return codec
+        raise error(failure.code, "\n".join(failures))

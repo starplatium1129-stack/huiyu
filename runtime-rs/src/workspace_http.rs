@@ -134,6 +134,14 @@ async fn perform(
             "Workspace session no longer matches this workspace",
         ));
     }
+    if path.first().is_some_and(|part| part == "companion-channels") {
+        if !crate::security::is_direct_local(headers, peer.ip()) {
+            return Err(ApiError::new(403, "LOCAL_ONLY", "桌宠消息连接仅供本机设置"));
+        }
+        return crate::companion_channels::configure(state, &storage, &session, method, &path[1..], body)
+            .await
+            .map(|value| Json(value).into_response());
+    }
     if path.len() == 3
         && path[0] == "media"
         && path[2] == "content"

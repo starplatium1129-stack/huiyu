@@ -4,7 +4,7 @@ import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 
 export function useInferenceSettings() {
   const isLocal = isLocalStudioHost()
-  const draft = reactive<InferenceSettings>({ engine: 'native', acceleration: 'native', memoryPolicy: 'auto', adapterMemoryPolicy: 'offload', modelsRoot: '', lorasRoot: '', python: '', adapterPython: null, worker: '', remoteUrl: '', remoteKey: '', remoteServe: false, remotePort: 3211 })
+  const draft = reactive<InferenceSettings>({ engine: 'native', videoEngine: 'comfy', acceleration: 'native', memoryPolicy: 'auto', adapterMemoryPolicy: 'offload', modelsRoot: '', lorasRoot: '', python: '', adapterPython: null, worker: '', remoteUrl: '', remoteKey: '', remoteServe: false, remotePort: 3211 })
   const snapshot = ref<InferenceSettingsResponse | null>(null)
   const diagnostics = ref<InferenceDiagnostics | null>(null)
   const discovery = ref<InferenceDiscovery | null>(null)
@@ -24,6 +24,7 @@ export function useInferenceSettings() {
     for (const key of inferenceSettingKeys) {
       if (!snapshot.value || draft[key] === previous[key]) {
         if (key === 'engine') draft.engine = result.configured.engine
+        else if (key === 'videoEngine') draft.videoEngine = result.configured.videoEngine
         else if (key === 'acceleration') draft.acceleration = result.configured.acceleration
         else if (key === 'memoryPolicy') draft.memoryPolicy = result.configured.memoryPolicy
         else if (key === 'adapterMemoryPolicy') draft.adapterMemoryPolicy = result.configured.adapterMemoryPolicy

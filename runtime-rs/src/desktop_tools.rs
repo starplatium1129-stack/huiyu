@@ -68,6 +68,12 @@ pub struct DesktopToolsService {
     shutdown: CancellationToken,
 }
 impl DesktopToolsService {
+    pub(crate) async fn check_drawing_permission(&self, name: &str) -> crate::error::Result<()> {
+        self.permissions.check(name, false).await.map_err(|error| {
+            crate::error::ApiError::new(403, "TOOL_PERMISSION_DENIED", error.message)
+        })
+    }
+
     pub fn new(config: &Config, shutdown: CancellationToken) -> Self {
         Self {
             root: config.ai_workspace_root.clone(),

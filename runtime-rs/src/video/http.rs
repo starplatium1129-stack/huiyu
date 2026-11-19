@@ -20,6 +20,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
             post(upload_raw).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
         )
         .route(
+            "/api/video/drivers/{kind}",
+            post(upload_driver).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
+        )
+        .route(
             "/api/video/jobs",
             post(create).layer(DefaultBodyLimit::max(32 * 1024)),
         )
@@ -88,17 +92,41 @@ async fn upload_raw(
         return e.into_response();
     }
     let owner = generation::request_owner(&headers, peer, &query);
-    let reference = query.get("kind").is_some_and(|kind| kind == "reference");
+    let kind = if query.get("kind").is_some_and(|kind| kind == "reference") {
+        crate::images::ImageKind::VideoReference
+    } else {
+        crate::images::ImageKind::VideoInput
+    };
     response(
-        store_image(&http, data, owner, reference, admission).await,
+        store_input(&http, data, owner, kind, admission).await,
         StatusCode::OK,
     )
 }
-async fn store_image(
+async fn upload_driver(
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    Path(kind): Path<String>,
+    Query(query): Query<HashMap<String, String>>,
+    headers: HeaderMap,
+    RawUploadBody(data, admission): RawUploadBody,
+) -> Response {
+    if let Err(e) = state.host.check_running() {
+        return e.into_response();
+    }
+    let kind = match kind.as_str() {
+        "video" => crate::images::ImageKind::MotionVideo,
+        "audio" => crate::images::ImageKind::DrivingAudio,
+        _ => return ApiError::invalid("未知驱动素材类型").into_response(),
+    };
+    let owner = generation::request_owner(&headers, peer, &query);
+    response(store_input(&http, data, owner, kind, admission).await, StatusCode::OK)
+}
+async fn store_input(
     http: &Http,
     data: axum::body::Bytes,
     owner: String,
-    reference: bool,
+    kind: crate::images::ImageKind,
     admission: tokio::sync::OwnedSemaphorePermit,
 ) -> Result<Value> {
     let name = http
@@ -106,7 +134,7 @@ async fn store_image(
         .upload(
             data,
             owner,
-            reference,
+            kind,
             http.service.shutdown.child_token(),
             admission,
         )

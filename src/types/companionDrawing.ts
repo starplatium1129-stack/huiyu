@@ -37,6 +37,11 @@ export interface CompanionChatCommand extends CompanionChatSendOptions {
 
 const mediaAlias = /^(?:image-|img_|task-)[\w-]{1,160}$/
 const resultPath = /^\/api\/tasks\/v1\/[\w-]{1,160}\/results\/\d+$/
+export const MAX_CHAT_DRAWINGS = 16
+
+export function parseCompanionDrawingBatchId(value: unknown): string | undefined {
+  return typeof value === 'string' && /^[\da-f]{8}(?:-[\da-f]{4}){3}-[\da-f]{12}$/i.test(value) ? value : undefined
+}
 
 export function parseCompanionChatImage(value: unknown): CompanionChatImage | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
@@ -53,7 +58,7 @@ export function parseCompanionChatImage(value: unknown): CompanionChatImage | nu
 
 export function parseCompanionChatImages(value: unknown): CompanionChatImage[] {
   return Array.isArray(value) ? value.map(parseCompanionChatImage)
-    .filter((image): image is CompanionChatImage => Boolean(image)).slice(-4) : []
+    .filter((image): image is CompanionChatImage => Boolean(image)).slice(-MAX_CHAT_DRAWINGS) : []
 }
 
 export function isCompanionDrawingPath(value: unknown): value is string {

@@ -4,7 +4,9 @@
     @dragover.prevent @drop="attachments.onImageDrop" @paste="attachments.onImagePaste">
     <section class="companion-dialogue" aria-label="角色对白">
       <header class="companion-dialogue-heading" @mousedown="startWindowDrag">
-        <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
+        <div class="companion-dialogue-identity">
+          <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
+        </div>
         <div class="companion-dialogue-controls">
           <CompanionImportRecoveryDialog :recovery="attachments.importRecovery" :character-id="activeChar" compact />
           <StudioTooltip :content="historyOpen ? '回到最近消息' : '回看对话'">
@@ -25,7 +27,7 @@
           </StudioTooltip>
         </div>
       </header>
-      <ChatStoryPicker :branch-id="branchId" :branches="storyBranches" :disabled="!bridge || replyPending || storyBusy || attachments.sendingImage.value"
+      <ChatStoryPicker v-if="storyBranches.length > 1" :branch-id="branchId" :branches="storyBranches" :disabled="!bridge || replyPending || storyBusy || attachments.sendingImage.value"
         @select="handleStoryAction({ kind: 'switch-branch', branchId: $event })" />
 
       <section v-if="speechSettingsOpen" ref="speechSettingsPanel" tabindex="-1" id="companion-dialogue-preferences" class="companion-dialogue-preferences" aria-label="对白设置">
@@ -47,7 +49,7 @@
           </div>
           <div v-for="msg in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid">
             <div v-if="msg.role === 'assistant'" class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
-            <div class="companion-dialogue-bubble" v-content-motion:fade="msg.mid">
+            <div class="companion-dialogue-bubble" v-content-motion:up="arrivingMessages.has(msg.mid) ? msg.mid : false">
               <div class="companion-dialogue-speaker">
                 <span>{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
                 <ChatMessageActions :can-copy="Boolean(msg.content)" :can-remember="false" :remembered="false" :can-play="false" :playing="false"
@@ -59,12 +61,9 @@
               <div v-if="msg.content" class="companion-dialogue-copy" :class="{ 'is-streaming': liveState.busy && msg.mid === latestReply?.mid }">
                 <p v-for="(paragraph, index) in dialogueParagraphs(msg.content)" :key="index" class="companion-dialogue-line"><ChatMessageText :text="paragraph" /></p>
               </div>
-              <CompanionChatImages v-if="msg.images?.length" :images="msg.images" />
-              <CompanionDrawingDraftCard v-for="drawing in msg.drawingDrafts || []" :key="drawing.path" :draft="drawing" />
-              <div v-if="!msg.content && msg.mid === latestReply?.mid && replyPending" class="companion-dialogue-waiting" role="status">
-                <span class="companion-dialogue-dots" aria-hidden="true"><i></i><i></i><i></i></span>
-                <span>{{ liveState.toolActivity || (liveState.thinking ? '想一想…' : '正在回应你…') }}</span>
-              </div>
+              <ChatMessageAttachments :message="msg" />
+              <ChatTurnIndicator v-if="!msg.content && !msg.drawingBatchId && msg.mid === latestReply?.mid && replyPending"
+                class="companion-dialogue-waiting" :label="liveState.toolActivity || (liveState.thinking ? '思考中…' : '正在回复…')" animated />
               <small v-if="msg.stopped">回复已停止</small>
               <ChatReplyVariants :message="msg" :disabled="!bridge || replyPending || storyBusy || attachments.sendingImage.value"
                 @select="handleStoryAction({ kind: 'select-variant', messageId: msg.mid, variantId: $event })" />
@@ -91,7 +90,8 @@
         @click="attachments.sendPendingImage('generate-from-image')"><ArchiveIcon name="palette" />反推并生成</button>
     </section>
     <input ref="imageInputRef" class="sr-only" type="file" tabindex="-1" aria-hidden="true" accept="image/png,image/jpeg,image/webp" @change="attachments.onImageInputChange" />
-    <div class="companion-dialogue-composer">
+    <ConversationComposer class="companion-dialogue-composer" density="compact" :has-tools="Boolean(bridge) || speechReady">
+      <template #tools>
       <StudioTooltip v-if="bridge" anchor :content="attachments.preparingImage.value ? '正在准备图片…' : '发送图片，也可粘贴或拖入图片'">
         <button class="companion-dialogue-microphone" type="button" aria-label="添加图片" :disabled="attachments.preparingImage.value"
           @click="attachments.pickImage"><ArchiveIcon name="image" /></button>
@@ -107,17 +107,21 @@
           @keydown.space.prevent="speechHold.keyDown" @keydown.enter.prevent="speechHold.keyDown" @keyup="speechHold.keyUp"
           @blur="speechHold.cancelHeld"><ArchiveIcon name="sound" /></button>
       </StudioTooltip>
+      </template>
       <textarea ref="inputRef" v-model="inputText" rows="1" maxlength="1200" class="companion-dialogue-input"
         :placeholder="`对${currentCharacter.name}说…`" aria-label="桌宠聊天输入"
         @input="onInput" @keydown.enter.exact="submitChatOnEnter($event, sendChat)"></textarea>
-      <StudioTooltip v-if="replyPending || liveState.speaking || liveState.voiceActive || attachments.sendingImage.value" content="停止回复或语音">
-        <button class="companion-dialogue-send" type="button" aria-label="停止回复或语音" @click="onStop"><ArchiveIcon name="stop" /></button>
-      </StudioTooltip>
-      <StudioTooltip v-else anchor :content="!bridge ? '请在桌面客户端中发送消息' : !liveState.chatReady ? '请先连接聊天模型' : selectedImage ? '发送图片' : !inputText.trim() ? '先写一条消息' : '发送 · Enter（Shift+Enter 换行）'">
-        <button class="companion-dialogue-send" type="button" aria-label="发送" :disabled="selectedImage ? !attachments.canSendImage.value : !canSend" @click="sendChat"><ArchiveIcon name="send" /></button>
-      </StudioTooltip>
-    </div>
-    <p v-if="liveState.toolActivity" class="companion-dialogue-feedback" role="status">{{ liveState.toolActivity }}</p>
+      <template #commit>
+        <StudioTooltip anchor :content="interruptible ? '停止回复或语音' : !bridge ? '请在桌面客户端中发送消息' : !liveState.chatReady ? '请先连接聊天模型' : selectedImage ? '发送图片' : !inputText.trim() ? '先写一条消息' : '发送 · Enter（Shift+Enter 换行）'">
+          <button class="companion-dialogue-send" type="button" :aria-label="interruptible ? '停止回复或语音' : '发送'"
+            :data-interrupt="interruptible || undefined" :disabled="!interruptible && (selectedImage ? !attachments.canSendImage.value : !canSend)"
+            @click="interruptible ? onStop() : sendChat()">
+            <ArchiveIcon class="dialogue-send-icon" name="send" /><ArchiveIcon class="dialogue-stop-icon" name="stop" />
+          </button>
+        </StudioTooltip>
+      </template>
+    </ConversationComposer>
+    <p v-if="liveState.toolActivity && (latestReply?.content || latestReply?.drawingBatchId || !latestReply)" class="companion-dialogue-feedback" role="status">{{ liveState.toolActivity }}</p>
     <p v-if="errorText || liveState.chatError || speechState === 'error' && speechError || noticeText" class="companion-dialogue-feedback"
       :data-error="Boolean(errorText || liveState.chatError || speechState === 'error' && speechError)" role="status">{{ errorText || liveState.chatError || (speechState === 'error' ? speechError : '') || noticeText }}</p>
     <p v-else-if="speechState === 'acquiring' || speechState === 'capturing' || speechState === 'recognizing'"
@@ -133,6 +137,9 @@ import AppearanceButton from '@/components/AppearanceButton.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ChatMessageText from '@/components/ChatMessageText.vue'
+import ChatMessageAttachments from '@/components/ChatMessageAttachments.vue'
+import ChatTurnIndicator from '@/components/ChatTurnIndicator.vue'
+import ConversationComposer from '@/components/ConversationComposer.vue'
 import ChatMessageActions from '@/components/ChatMessageActions.vue'
 import ChatReplyVariants from '@/components/ChatReplyVariants.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -142,6 +149,7 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
 import { useInlinePanelFocus } from '@/composables/chat/useInlinePanelFocus'
+import { useChatMessageArrival } from '@/composables/chat/useChatMessageArrival'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { resolveCompanionAvatar } from '@/utils/companionRegistry'
 import { companionChatAvatars as chibiAvatars } from '@/config/companionChatAvatars'
@@ -149,8 +157,6 @@ import '@/assets/css/companion-dialogue.css'
 
 const SpeechInputSettings = defineAsyncComponent(() => import('@/components/SpeechInputSettings.vue'))
 const ChatStoryPicker = defineAsyncComponent(() => import('@/components/ChatStoryPicker.vue'))
-const CompanionChatImages = defineAsyncComponent(() => import('@/components/CompanionChatImages.vue'))
-const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
 const {
   attachments, activeChar, currentCharacter, bridge, switchCharacter, openFullRoom, closeWindow, startWindowDrag,
   noticeText, quietHint, listRef, visibleMessages, liveState, inputRef, inputText,
@@ -170,6 +176,8 @@ const speechSettingsTrigger = ref<HTMLElement | null>(null), speechSettingsPanel
 useInlinePanelFocus(speechSettingsOpen, () => speechSettingsPanel.value, speechSettingsTrigger)
 const { surfaceRef, dockSide } = useCompanionDialogueSurface(Boolean(bridge))
 const displayedMessages = computed(() => historyOpen.value ? visibleMessages.value : visibleMessages.value.slice(-12))
+const arrivingMessages = useChatMessageArrival(() => visibleMessages.value, () => `${activeChar.value}:${branchId.value}`, () => replyPending.value)
+const interruptible = computed(() => replyPending.value || liveState.speaking || liveState.voiceActive || attachments.sendingImage.value)
 function dialogueParagraphs(text: string): string[] {
   return text.split(/\r?\n(?:[ \t]*\r?\n)+/).filter(paragraph => paragraph.trim())
 }

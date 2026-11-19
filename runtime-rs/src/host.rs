@@ -2,7 +2,7 @@ mod activation;
 mod authority;
 mod portable;
 
-pub(crate) use authority::OwnedWriteGuard;
+pub(crate) use authority::{OwnedWriteGuard, now_ms};
 pub use authority::{HostAuthority, Session};
 
 use crate::{

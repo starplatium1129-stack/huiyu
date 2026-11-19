@@ -156,6 +156,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
         voice.clone(),
     ));
     let app = crate::router(state.clone());
+    let channels = tokio::spawn(crate::companion_channels::run(state.clone()));
     let remote_server = crate::images::remote::start(state.clone()).await;
     println!(
         "{}",
@@ -180,6 +181,7 @@ pub async fn run() -> Result<(), Box<dyn std::error::Error>> {
     })
     .await;
     shutdown.cancel();
+    let _ = channels.await;
     if let Some(mut server) = remote_server {
         if tokio::time::timeout(std::time::Duration::from_secs(5), &mut server)
             .await

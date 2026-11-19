@@ -8,6 +8,8 @@ export interface CompanionToolResult {
   output: string
   imageDataUrl?: string
   image?: CompanionChatImage
+  images?: CompanionChatImage[]
+  drawingBatchId?: string
 }
 
 export async function executeCompanionTool(name: string, args: Record<string, unknown>, signal?: AbortSignal, screenDestination?: string): Promise<CompanionToolResult> {

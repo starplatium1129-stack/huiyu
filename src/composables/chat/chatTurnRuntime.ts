@@ -73,6 +73,7 @@ export function buildChatRequestBody(args: {
     roundMessages, messages, connection, userProfile, memories } = args
   const historyList = messages.slice(0, useVision && imageUrls.length ? -2 : -1)
     // Persist full replies and alternatives; only the gateway context is bounded.
+    .filter(message => message.content || !message.drawingBatchId)
     .map(message => ({ role: message.role, content: message.content.slice(0, 1200) }))
   return JSON.stringify({
     character: characterId, sessionId, provider: connection.provider,

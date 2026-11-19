@@ -113,8 +113,11 @@ impl ControlService {
     fn inference_snapshot(&self) -> Result<(Value, Settings)> {
         let active = self.active_inference()?;
         let configured = self.configured_inference()?;
-        let current = serde_json::to_value(active)?;
-        let target = serde_json::to_value(&configured)?;
+        let mut current = serde_json::to_value(active)?;
+        let mut target = serde_json::to_value(&configured)?;
+        // Older saved configurations derive the video provider from the image provider.
+        current["videoEngine"] = json!(active.video_engine());
+        target["videoEngine"] = json!(configured.video_engine());
         let value = json!({"ok":true,"restartRequired":current != target,"active":current,
             "configured":target,"environmentOverrides":active.environment_overrides,
             "remoteListening":crate::images::remote::listening()});

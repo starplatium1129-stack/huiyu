@@ -27,7 +27,6 @@ pub use admission::Limits;
 pub(crate) use admission::read_media;
 pub(crate) use admission::{Kind as ImageKind, owner_matches_for, store_for, store_media_for};
 pub use catalog::catalog;
-pub(crate) use decode::sniff;
 pub use generation::Config;
 use serde_json::{Value, json};
 use std::{path::PathBuf, sync::Arc};
@@ -107,6 +106,9 @@ impl Service {
     }
     pub(crate) fn is_remote(&self) -> bool {
         self.remote.is_some()
+    }
+    pub(crate) fn is_local_native(&self) -> bool {
+        self.backend.native_enabled()
     }
     pub fn new(
         config: Config,

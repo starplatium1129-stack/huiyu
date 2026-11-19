@@ -57,21 +57,9 @@
 /* 输入区：布局与基础材质在此定义，后续主题层只处理外观。 */
 .companion-page .companion-composer {
   @apply tw:relative tw:grid;
-  /* textarea | 看屏幕 | 停止(条件) | 发送 | 语音簇 —— 新增看屏幕按钮后
-     列数必须跟上，否则语音簇被挤进隐式行与发送键坐标重叠 */
-  grid-template-columns: minmax(0, 1fr) auto auto auto auto;
+  grid-template-columns: minmax(0, 1fr);
   gap: var(--s-2);
-  @apply tw:p-s-3 tw:rounded-lg tw:text-primary;
-  border: 1px solid var(--border-soft);
-  background: var(--bg-surface);
-  -webkit-backdrop-filter: none;
-  backdrop-filter: none;
-  box-shadow: var(--workspace-lift);
-}
-
-.companion-page .companion-composer > .companion-setup-inline {
-  /* 未就绪提示独占一整行 */
-  grid-column: 1 / -1;
+  --conversation-compose-fill: var(--bg-elevated);
 }
 
 .companion-page .companion-speech-btn {
@@ -84,9 +72,13 @@
   font: 500 var(--fs-label)/var(--lh-label) var(--font-sans);
 }
 
-.companion-page .companion-speech-cluster {
-  @apply tw:flex tw:items-stretch tw:justify-end tw:gap-s-2 tw:min-w-0 tw:self-end;
+.companion-page :is(.companion-vision-btn,.companion-speech-btn) {
+  @apply tw:grid tw:place-items-center;
+  padding:0;
+  inline-size:var(--control-height);
+  block-size:var(--control-height);
 }
+.companion-page .companion-speech-btn .archive-icon { inline-size:16px; block-size:16px; }
 
 .companion-page .companion-speech-btn[data-state='capturing'] {
   border-color: var(--character-accent);
@@ -101,40 +93,20 @@
   @apply tw:cursor-not-allowed;
 }
 
-.companion-page .companion-speech-state,
-.companion-page .companion-speech-session {
-  @apply tw:self-center tw:min-w-0 tw:text-muted tw:text-mono-xs tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
-}
-
-.companion-page .companion-speech-session {
-  @apply tw:inline-flex tw:items-center;
-  color: var(--character-accent);
-}
-
-.companion-page .companion-speech-session-end {
-  @apply tw:w-[18px] tw:h-[18px] tw:ml-[3px] tw:p-0;
-  border: 0;
-  border-radius: 50%;
-  background: transparent;
-  color: inherit;
-  @apply tw:cursor-pointer tw:text-label-sm tw:leading-flush;
-}
-
 .companion-page .companion-tool-indicator {
-  @apply tw:flex tw:items-center tw:gap-s-2;
+  justify-self:start;
   padding: var(--s-2) var(--s-3);
-  border-top: 1px solid var(--border-soft);
-  background: var(--accent-soft);
-  @apply tw:text-accent tw:text-label-sm tw:font-mono;
-  letter-spacing: .02em;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+  @apply tw:text-label-sm;
 }
 
 .companion-page .companion-input {
-  @apply tw:min-w-0 tw:max-h-[84px] tw:resize-none;
+  @apply tw:block tw:w-full tw:min-w-0 tw:max-h-[84px] tw:resize-none;
   min-height: var(--control-height);
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-base);
+  border: 0;
+  background: transparent;
   @apply tw:text-primary;
   font: inherit;
   @apply tw:leading-label;
@@ -142,14 +114,9 @@
 }
 
 .companion-page .companion-input::placeholder { color:var(--text-muted); }
-.companion-page .companion-input:focus {
-  border-color: var(--border-strong);
-  background:var(--bg-elevated);
-  outline: none;
-}
+.companion-page .companion-input:focus { outline:none; }
 
 .companion-page .companion-send,
-.companion-page .companion-vision-btn,
 .companion-page .companion-stop {
   @apply tw:self-end;
   min-width:var(--control-height);
@@ -161,9 +128,10 @@
 }
 
 .companion-page .companion-vision-btn {
-  @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-1;
+  border:1px solid var(--border-soft);
+  border-radius:var(--r-md);
   background: var(--bg-elevated);
-  @apply tw:border-soft tw:text-secondary;
+  @apply tw:text-secondary tw:cursor-pointer;
   transition: border-color var(--motion-hover), color var(--motion-hover), background-color var(--motion-hover);
 }
 
@@ -227,29 +195,9 @@
     @apply tw:max-h-[116px];
   }
 
-  .companion-page .companion-voice-status,
-  .companion-page .companion-speech-state {
+  .companion-page .companion-voice-status {
     @apply tw:hidden;
   }
-
-  .companion-page .companion-speech-session {
-    @apply tw:hidden;
-  }
-
-  .companion-page .companion-composer {
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .companion-page .companion-input,
-  .companion-page .companion-setup-inline,
-  .companion-page .companion-composer-meta { flex: 1 0 100%; }
-  .companion-page .companion-speech-cluster { margin-left: auto; }
-
-  .companion-page .companion-speech-state {
-    @apply tw:max-w-[92px];
-  }
-
-  .companion-page .companion-speech-cluster { @apply tw:gap-[4px]; }
 }
 
 /*   ============================================================
@@ -266,8 +214,7 @@
 
   .companion-page .companion-bubbles { @apply tw:max-h-[84px]; }
 
-  .companion-page .companion-voice-status,
-  .companion-page .companion-speech-state { @apply tw:hidden; }
+  .companion-page .companion-voice-status { @apply tw:hidden; }
 }
 
 html.companion-desktop body {

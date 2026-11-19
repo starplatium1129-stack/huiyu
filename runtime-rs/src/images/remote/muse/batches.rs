@@ -1,13 +1,13 @@
 use super::*;
 use rusqlite::params;
 
-const MAX_BATCH: usize = 16;
+pub(super) const MAX_BATCH: usize = 16;
 const MAX_WAITING: i64 = 64;
 
 #[derive(serde::Deserialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub(super) struct Batch {
-    request_key: String,
+    pub(super) request_key: String,
     model_id: Option<String>,
     variants: Option<u8>,
     seed: Option<u64>,
@@ -19,34 +19,22 @@ pub(super) struct Batch {
     ids: Vec<String>,
 }
 
-pub(super) async fn create(
-    State(state): State<crate::AppState>,
-    Extension(muse): Extension<Arc<Muse>>,
-    ConnectInfo(peer): ConnectInfo<SocketAddr>,
-    headers: HeaderMap,
-    Json(mut input): Json<Batch>,
-) -> Response {
-    if let Some(response) = muse.job_limit.check(false) {
-        return response;
-    }
-    let result = async {
-        state.host.check_running()?;
-        let owner = generation::request_owner(&headers, peer, &HashMap::new());
-        if !input.ids.is_empty() && !input.scenes.is_empty() {
+impl Batch {
+    pub(super) fn selections(mut self) -> Result<(Option<String>, Vec<SceneSelection>)> {
+        if !self.ids.is_empty() && !self.scenes.is_empty() {
             return Err(ApiError::invalid(
                 "请用 ids 提交目录 ID，或用 items 为每项指定参数",
             ));
         }
-        input
-            .scenes
-            .extend(input.ids.into_iter().map(|id| SceneSelection {
+        self.scenes
+            .extend(self.ids.into_iter().map(|id| SceneSelection {
                 id: Some(id),
                 ..Default::default()
             }));
-        let default_size = submission::dimensions(input.width, input.height)?;
-        for scene in &mut input.scenes {
-            scene.variants = scene.variants.or(input.variants);
-            scene.seed = scene.seed.or(input.seed);
+        let default_size = submission::dimensions(self.width, self.height)?;
+        for scene in &mut self.scenes {
+            scene.variants = scene.variants.or(self.variants);
+            scene.seed = scene.seed.or(self.seed);
             if scene.width.is_none()
                 && scene.height.is_none()
                 && let Some((width, height)) = default_size
@@ -55,15 +43,26 @@ pub(super) async fn create(
                 scene.height = Some(height);
             }
         }
-        enqueue(
-            &state.config,
-            &muse,
-            &owner,
-            input.request_key,
-            input.model_id,
-            input.scenes,
-        )
-        .await
+        Ok((self.model_id, self.scenes))
+    }
+}
+
+pub(super) async fn create(
+    State(state): State<crate::AppState>,
+    Extension(muse): Extension<Arc<Muse>>,
+    ConnectInfo(peer): ConnectInfo<SocketAddr>,
+    headers: HeaderMap,
+    Json(input): Json<Batch>,
+) -> Response {
+    if let Some(response) = muse.job_limit.check(false) {
+        return response;
+    }
+    let result = async {
+        state.host.check_running()?;
+        let owner = generation::request_owner(&headers, peer, &HashMap::new());
+        let key = input.request_key.clone();
+        let (model, scenes) = input.selections()?;
+        enqueue(&state.config, &muse, &owner, key, model, scenes).await
     }
     .await;
     http::response(result, StatusCode::ACCEPTED)

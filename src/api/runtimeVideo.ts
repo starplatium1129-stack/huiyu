@@ -2,6 +2,7 @@ import type { TaskRecord, TaskSummary } from '../../types/tasks'
 import type { VideoJob, VideoBatch, VideoBatchShot, CreateVideoBatchInput, VideoDefaults, VideoQuality } from './videoApi'
 import { getRuntimeTask, getRuntimeTaskSummary, runtimeResultPath, taskMessage } from './runtimeTasks'
 import { assertRuntimeTaskSession } from './runtimeTaskAuthority'
+import { videoJobExecution } from './videoApiResponse'
 
 let lastBatch: { id: string; stamp: string; batch: VideoBatch } | undefined
 function batchStamp(task: TaskSummary): string {
@@ -40,6 +41,7 @@ export function taskVideoJob(task: TaskRecord): VideoJob {
     modelId: text(input.modelId), prompt: text(input.originalPrompt || input.prompt), width: number(input.width), height: number(input.height), duration: number(input.duration), fps: number(input.fps), seed: number(input.seed),
     createdAt: task.createdAt, resultAvailable: task.resultRefs.some(ref => ref.index === 0),
     resultUrl: task.resultRefs.some(ref => ref.index === 0) ? runtimeResultPath(task) : null,
+    execution: videoJobExecution(task.provider, task.status, metadata),
     error: needsReview || task.status === 'failed' ? taskMessage(task) : null, code: task.errorCode }
 }
 function videoRetrySource(task: TaskRecord): VideoBatch['retrySource'] {

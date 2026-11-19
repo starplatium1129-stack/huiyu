@@ -53,8 +53,8 @@ def emit(stream, job_id, event, **values):
     stream.flush()
 
 
-@lru_cache(maxsize=1)
-def runtime_dependencies():
+@lru_cache(maxsize=2)
+def runtime_dependencies(video_runtime=False):
     sibling("resident_adapters")
     sibling("native_memory")
     sibling("locked_identity")
@@ -68,7 +68,11 @@ def runtime_dependencies():
         raise Error("DEPENDENCY_MISSING", "Missing torch; prepare the image runtime") from exc
     if current_torch == "2.13.0":
         expected_versions.update(torch="2.13.0", torchvision="0.28.0", transformers="5.14.1",
-                                 Pillow="12.2.0", sageattention="2.2.0")
+                                 Pillow="12.2.0")
+        if not video_runtime:
+            expected_versions["sageattention"] = "2.2.0"
+    elif video_runtime and current_torch == "2.9.1":
+        expected_versions.update(torch="2.9.1", torchvision="0.24.1")
     for name, expected in expected_versions.items():
         try:
             value = importlib.metadata.version(name)
@@ -106,7 +110,7 @@ def pipeline_dependencies(name, layout):
             sibling("moss_adapter").pipeline_class()
             return
         pipeline = getattr(diffusers, name)
-        if name not in ("HunyuanVideo15Pipeline", "MiniMaxH3ModularPipeline"):
+        if name not in ("HunyuanVideo15Pipeline", "MiniMaxH3ModularPipeline", "WanAnimate2DistilledModularPipeline"):
             if "callback_on_step_end" not in inspect.signature(pipeline.__call__).parameters:
                 raise Error("DEPENDENCY_API", f"{name} lacks the required progress/cancellation callback")
         if name == "QwenImage21Pipeline":
@@ -120,9 +124,13 @@ def pipeline_dependencies(name, layout):
 
 
 def dependencies(model_id=None):
-    versions = runtime_dependencies()
+    if model_id and contract.model(model_id).get("runner") == "longcat-avatar":
+        return sibling("longcat_avatar").validate_runtime(contract.model(model_id))
+    versions = runtime_dependencies(model_id is not None and contract.model(model_id)["media"] == "video")
     models = contract.MANIFEST["models"].values() if model_id is None else (contract.model(model_id),)
     for model in models:
+        if model.get("runner") == "longcat-avatar":
+            continue  # This runner has its own interpreter.
         pipeline_dependencies(model["pipeline"], model.get("layout", model["pipeline"]))
     return versions
 
@@ -240,7 +248,7 @@ def windows_weight_reads():
         return reader_class(*args, **kwargs)
 
     # The pinned loader's writable mmap reserves Windows commit for whole files.
-    # Use immutable file views only during Qwen/MOSS loading, then restore readers.
+    # Use immutable file views during weight loading, then restore readers.
     for module, _ in originals:
         module.safe_open = safe_open
     try:
@@ -265,6 +273,13 @@ def prepare_job(job):
 
 def generate(job, control, prepared, *, result_callback=None, resident=None, reference_resolution=None):
     data, spec = prepared if prepared is not None else prepare_job(job)
+    if spec.get("runner") == "longcat-avatar":
+        if resident is not None:
+            resident.clear()
+        observation = sibling("longcat_avatar").generate(job, data, spec, control)
+        control.check()
+        emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
+        return
     if "mossUpscaleScale" in data:
         observation = sibling("moss_upscale").run(job, data, control, Error, resident)
         emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
@@ -277,7 +292,12 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         sibling("krea_style").require_dependency()
     import torch
     import diffusers
-    if not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
+    is_video = spec["media"] == "video"
+    if is_video:
+        acceleration = sibling("video_acceleration")
+        video_device, device_backend = acceleration.device()
+        selected = acceleration.select(data["videoAttention"], video_device, device_backend)
+    elif not torch.cuda.is_available() or not torch.cuda.is_bf16_supported():
         raise Error("DEVICE_UNAVAILABLE", "Native adapters require an NVIDIA CUDA device with BF16 support; CPU fallback is disabled")
     policy = os.environ.get("HUIYU_INFERENCE_MEMORY", "resident")
     if policy not in ("resident", "offload"):
@@ -290,7 +310,7 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
     # for 32-pixel alignment when reserving activation memory for that input.
     reference_pixels = (reference_resolution + 64) ** 2 if reference_resolution is not None else 1024**2
     memory_pixels = render_pixels + ((1 + len(job.get("referenceImagePaths", []))) * reference_pixels if conditioned else 0)
-    if spec["media"] == "video":
+    if is_video:
         media.encoder(Error)  # Fail before allocating/loading weights if encoder is absent.
     owned = resident is None
     cache = sibling("resident_adapters").PipelineCache() if owned else resident
@@ -313,8 +333,11 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                             sibling("moss_int8").place_resident(template.transformer)
                         else:
                             template.transformer.to(device="cuda:0", dtype=torch.bfloat16)
-                elif spec["media"] == "video":
-                    template = video.load(root, spec, data, control, contract)
+                elif is_video:
+                    with windows_weight_reads():
+                        template = video.load(root, spec, data, control, contract)
+                    control.stage("uploading")
+                    placement = sibling("native_memory").Residency(template.components, policy, device=video_device)
                 else:
                     with windows_weight_reads() if spec["family"] == "qwen-image" else contextlib.nullcontext():
                         template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
@@ -361,13 +384,24 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         video.prepare(pipeline, spec, data)
         if policy == "offload" and spec["family"] in ("qwen-image", "moss-image"):
             pipeline.vae.enable_tiling()
-        if spec["media"] == "video":
-            with torch.inference_mode():
-                frames, soundtrack, sample_rate = video.generate(pipeline, spec, data, control)
+        if is_video:
+            for path in (job.get("inputImagePath"), job.get("lastFramePath")):
+                if path is not None:
+                    control.stage("preparing_image")
+                    with media.input_image(path, Error) as frame:
+                        images.append(frame.convert("RGB"))
+            report = dict(device=device_backend, requested=data["videoAttention"], selected=selected,
+                          calls=dict(sdpa=0, slicedSdpa=0, flash2=0, sage=0))
+            observation["videoAcceleration"] = report
+            with torch.inference_mode(), acceleration.attention(pipeline, control, report):
+                frames, soundtrack, sample_rate = video.generate(pipeline, spec, data, control, device=video_device,
+                    image=images[0] if images else None, last_frame=images[1] if len(images) == 2 else None,
+                    driving_video=job.get("drivingVideoPath"))
             control.stage("saving")
             if spec["audio"] and (soundtrack is None or sample_rate != spec["sampleRate"]):
                 raise Error("INVALID_MODEL_OUTPUT", "Joint audio output or its sample rate is missing/invalid")
-            media.video(frames, job["outputPath"], data, control, Error, soundtrack, sample_rate)
+            report["encoder"] = media.video(frames, job["outputPath"], data, control, Error, soundtrack,
+                                            sample_rate, device_backend=device_backend)
             control.check()
             success = True
             return
@@ -419,8 +453,8 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         media.png(output.images[0], job["outputPath"], data, Error)
         control.check()
         success = True
-    except torch.cuda.OutOfMemoryError as exc:
-        raise Error("NATIVE_OUT_OF_MEMORY", "CUDA 显存不足；尝试 offload 或缩小尺寸。分层卸载不保证任意模型/画幅可用，不会回退 ComfyUI") from exc
+    except torch.OutOfMemoryError as exc:
+        raise Error("NATIVE_OUT_OF_MEMORY", "显存不足，请选择分层卸载或缩小画幅。") from exc
     finally:
         for image in images:
             image.close()
@@ -454,7 +488,17 @@ def main():
             if args.catalog:
                 emit(stream, None, "catalog", **contract.MANIFEST)
             elif args.diagnose:
-                versions = dependencies()
+                versions = dependencies(args.model_id)
+                if args.model_id and contract.model(args.model_id)["media"] == "video":
+                    acceleration = sibling("video_acceleration")
+                    target, backend = acceleration.device()
+                    selected = ("flash2" if contract.model(args.model_id).get("runner") == "longcat-avatar"
+                                else acceleration.select("auto", target, backend))
+                    emit(stream, None, "diagnostic", valid=True, dependencies=versions, device=str(target),
+                         deviceBackend=backend, autoAttention=selected,
+                         ffmpeg=media.encoder(Error), scope="imports, encoder path and device visibility",
+                         validation="待主力机验证")
+                    return 0
                 sibling("krea_style").require_dependency()
                 import torch
                 cuda = torch.cuda.is_available()

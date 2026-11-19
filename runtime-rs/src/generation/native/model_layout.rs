@@ -35,6 +35,23 @@ fn inspect(root: &Path) -> Result<(), String> {
 pub(super) fn inspect_adapter(root: &Path, model: &Value) -> Result<(), String> {
     inspect_model(root, Some(model))
 }
+pub(super) fn inspect_managed_bundle(root: &Path, id: &str) -> Result<(), String> {
+    static CATALOG: std::sync::LazyLock<Value> = std::sync::LazyLock::new(|| {
+        serde_json::from_str(include_str!("../../../../tools/inference/managed-adapter-models.json"))
+            .expect("bundled model assets")
+    });
+    let root = root.canonicalize().map_err(|_| "模型目录不可读")?;
+    let files = CATALOG["models"].as_array().and_then(|items| items.iter().find(|item| item["id"] == id))
+        .and_then(|item| item["files"].as_array()).filter(|files| !files.is_empty()).ok_or("模型文件清单缺失")?;
+    for asset in files {
+        let name = asset["path"].as_str().ok_or("无效的模型文件清单")?;
+        let path = root.join(name);
+        if !file(&root, &path) || fs::metadata(&path).ok().map(|meta| meta.len()) != asset["bytes"].as_u64() {
+            return Err(format!("缺少完整模型文件：{name}"));
+        }
+    }
+    Ok(())
+}
 fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
     let root = root
         .canonicalize()
@@ -136,8 +153,9 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
         {
             return Err(format!("不支持的组件类型：{name}"));
         }
+        let qwen_processor = name == "tokenizer" && entry[1] == "Qwen2_5_VLProcessor";
         match name {
-            "processor" => {
+            _ if name == "processor" || qwen_processor => {
                 let combined = folder.join("processor_config.json");
                 let config = if combined.exists() {
                     let value = json(&combined)?;
@@ -151,7 +169,12 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
                     json(&folder.join("preprocessor_config.json"))?
                 };
                 safe_config(&config, name)?;
-                safe_config(&json(&folder.join("tokenizer_config.json"))?, name)?;
+                let tokenizer = json(&folder.join("tokenizer_config.json"))?;
+                safe_config(&tokenizer, name)?;
+                if qwen_processor && (tokenizer["tokenizer_class"] != "Qwen2Tokenizer"
+                    || tokenizer["processor_class"] != entry[1]) {
+                    return Err("Kandinsky 分词器或图像处理器类型不匹配".into());
+                }
                 let legacy = folder.join("chat_template.json");
                 let template = if legacy.exists() || linked(&legacy) {
                     let config = json(&legacy)?;
@@ -182,7 +205,8 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
                 let config = json(&folder.join("tokenizer_config.json"))?;
                 safe_config(&config, name)?;
                 if config.get("tokenizer_class").is_some_and(|class| {
-                    !class.as_str().is_some_and(|class| classes.contains(&class))
+                    !class.as_str().is_some_and(|class| classes.contains(&class)
+                        || entry[1].as_str().and_then(|c| c.strip_suffix("Fast")) == Some(class))
                 }) {
                     return Err(format!("不支持的 tokenizer 类型：{name}"));
                 }
@@ -209,6 +233,7 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
                 }))?;
                 if model.is_some() {
                     safe_config(&config, name)?;
+                    check_component_config(model, name, &config)?;
                 }
                 if !config["_class_name"]
                     .as_str()
@@ -221,6 +246,7 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
             _ => {
                 let config = json(&folder.join("config.json"))?;
                 safe_config(&config, name)?;
+                check_component_config(model, name, &config)?;
                 if config.get("_class_name").is_some_and(|class| {
                     !class.as_str().is_some_and(|class| classes.contains(&class))
                 }) {
@@ -300,6 +326,17 @@ fn inspect_model(root: &Path, model: Option<&Value>) -> Result<(), String> {
     Ok(())
 }
 
+fn check_component_config(model: Option<&Value>, name: &str, config: &Value) -> Result<(), String> {
+    if let Some(fields) = model.and_then(|spec| spec["componentConfigs"][name].as_object()) {
+        for (key, expected) in fields {
+            if !config.get(key).is_some_and(|value| same_index_value(value, expected)) {
+                return Err(format!("组件配置不符合所选模型：{name}/{key}"));
+            }
+        }
+    }
+    Ok(())
+}
+
 // JSON model indexes may serialize a whole-valued sigma as 1 or 1.0.
 fn same_index_value(actual: &Value, expected: &Value) -> bool {
     match (actual, expected) {
@@ -350,10 +387,18 @@ fn json(path: &Path) -> Result<Value, String> {
         return Err(format!("缺少非空配置文件：{}", path.display()));
     }
     let mut bytes = Vec::new();
+    let limit = if path
+        .file_name()
+        .is_some_and(|name| name == "tokenizer_config.json")
+    {
+        2 * 1024 * 1024
+    } else {
+        1024 * 1024
+    };
     fs::File::open(path)
-        .and_then(|file| file.take(1048577).read_to_end(&mut bytes))
+        .and_then(|file| file.take(limit + 1).read_to_end(&mut bytes))
         .map_err(|_| format!("配置不可读：{}", path.display()))?;
-    if bytes.len() > 1048576 {
+    if bytes.len() as u64 > limit {
         return Err(format!("配置文件过大：{}", path.display()));
     }
     serde_json::from_slice::<Value>(&bytes)

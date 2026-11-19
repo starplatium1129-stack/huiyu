@@ -62,6 +62,7 @@ const DRAFT: &[&str] = &[
     "aics_pb_temp_result_v1",
     "aics_image_request_v1",
     "aics_companion_image_request_v1",
+    "aics_companion_drawing_batch_v1",
     "aics_manga_request_v1",
     "aics_qwen_request_v1",
     "aics_qwen_editor_request_v1",

@@ -9,7 +9,14 @@ impl ControlService {
     ) -> Result<Value> {
         check_request(self, &body)?;
         let plan = self.native_setup_plan(body.model_id.as_deref()).await?;
-        if plan["supported"] != true {
+        if !model_download && body.model_id.as_deref().is_some_and(crate::generation::native::adapters::dedicated_runtime) {
+            return Err(ApiError::invalid("LongCat 的专用运行环境需单独准备"));
+        }
+        // Video downloads only verify and publish complete Diffusers files.
+        // CUDA/driver checks belong to the managed Python installer.
+        let video_files =
+            model_download && body.model_id.as_deref().is_some_and(image_models::is_video);
+        if plan["supported"] != true && !(video_files && plan["freeBytes"].is_u64()) {
             return Err(ApiError::new(
                 409,
                 "NATIVE_DEVICE_UNSUPPORTED",
@@ -62,7 +69,7 @@ impl ControlService {
                 ),
             ));
         }
-        if model_download && plan["runtime"]["installed"] != true {
+        if model_download && !video_files && plan["runtime"]["installed"] != true {
             return Err(ApiError::new(
                 409,
                 "NATIVE_RUNTIME_UNAVAILABLE",
@@ -377,10 +384,16 @@ impl ControlService {
         let root = root.clone();
         let target_copy = target.clone();
         let token = cancel.clone();
+        let video_id = image_models::is_video(&model.id).then(|| model.id.clone());
         tokio::task::spawn_blocking(move || -> Result<()> {
             use std::io::Write;
             plan::safe_directory(&root)?;
             stopped(&token)?;
+            if let Some(id) = video_id
+                && let Some(issue) = image_models::model_issue(&root, &id)
+            {
+                return Err(ApiError::new(409, "MODEL_INCOMPLETE", issue));
+            }
             for (name, document) in records {
                 let mut temp = tempfile::NamedTempFile::new_in(&root)?;
                 temp.write_all(&serde_json::to_vec_pretty(&document)?)?;

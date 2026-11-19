@@ -159,7 +159,10 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
     } else if api.vendor == "opencode" && !input.reasoning.is_empty() && input.reasoning != "off" {
         value["reasoning_effort"] = json!(input.reasoning);
     }
-    let tools = persona::tools(input.tools, input.web_search);
+    let mut tools = persona::tools(input.tools, input.web_search);
+    if input.channel_tools {
+        tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_drawing_catalog" | "generate_drawing_batch")));
+    }
     if !tools.is_empty() {
         value["tools"] = Value::Array(tools);
     }

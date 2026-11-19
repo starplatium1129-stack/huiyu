@@ -1,4 +1,4 @@
-import { parseCompanionChatImages, parseCompanionDrawingDraft, type CompanionDrawingDraft } from '@/types/companionDrawing'
+import { parseCompanionChatImages, parseCompanionDrawingBatchId, parseCompanionDrawingDraft, type CompanionDrawingDraft } from '@/types/companionDrawing'
 import type { ChatMessage, ChatReplyVariant } from '@/composables/chat/chatStorageTypes'
 
 const object = (value: unknown): value is Record<string, unknown> => typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -12,25 +12,27 @@ export function canRegenerateChatMessage(messages: readonly ChatMessage[], mid: 
     : messages.slice(0, index).some(message => message.role === 'user')
 }
 export function replySnapshot(message: ChatReplyVariant): ChatReplyVariant {
-  const { mid, content, stopped, recalledMemories, drawingDrafts, images } = message
+  const { mid, content, stopped, recalledMemories, drawingDrafts, drawingBatchId, images } = message
   return JSON.parse(JSON.stringify({ mid, content, stopped, ...(recalledMemories?.length ? { recalledMemories } : {}),
-    ...(drawingDrafts?.length ? { drawingDrafts } : {}), ...(images?.length ? { images } : {}) }))
+    ...(drawingDrafts?.length ? { drawingDrafts } : {}), ...(drawingBatchId ? { drawingBatchId } : {}), ...(images?.length ? { images } : {}) }))
 }
 export function applyReplyVariant(message: ChatMessage, variant: ChatReplyVariant) {
   const snapshot = replySnapshot(variant)
-  delete message.recalledMemories; delete message.drawingDrafts; delete message.images
+  delete message.recalledMemories; delete message.drawingDrafts; delete message.drawingBatchId; delete message.images
   Object.assign(message, snapshot)
 }
 function normalizeVariant(value: unknown, createId: () => string): ChatReplyVariant | null {
   if (!object(value)) return null
   const content = text(value.content, 60_000)
-  if (!content) return null
+  const drawingBatchId = parseCompanionDrawingBatchId(value.drawingBatchId)
+  if (!content && !drawingBatchId) return null
   const recalledMemories = Array.isArray(value.recalledMemories) ? value.recalledMemories.map(item => text(item, 240)).filter(Boolean).slice(0, 6) : []
   const drawingDrafts = Array.isArray(value.drawingDrafts) ? value.drawingDrafts.map(parseCompanionDrawingDraft)
     .filter((item): item is CompanionDrawingDraft => Boolean(item)).slice(-4) : []
   const images = parseCompanionChatImages(value.images)
   return { mid: text(value.mid, 160) || text(value.id, 160) || createId(), content, stopped: value.stopped === true,
-    ...(recalledMemories.length ? { recalledMemories } : {}), ...(drawingDrafts.length ? { drawingDrafts } : {}), ...(images.length ? { images } : {}) }
+    ...(recalledMemories.length ? { recalledMemories } : {}), ...(drawingDrafts.length ? { drawingDrafts } : {}),
+    ...(drawingBatchId ? { drawingBatchId } : {}), ...(images.length ? { images } : {}) }
 }
 export function normalizeChatMessage(value: unknown, createId: () => string): ChatMessage | null {
   if (!object(value) || (value.role !== 'user' && value.role !== 'assistant')) return null
@@ -50,6 +52,6 @@ export function normalizeChatMessages(value: unknown, max: number, createId: () 
 }
 export function mergeReplyVariants(...lists: ChatReplyVariant[][]): ChatReplyVariant[] {
   const variants = new Map<string, ChatReplyVariant>()
-  for (const list of lists) for (const variant of list) if (variant.mid && variant.content) variants.set(variant.mid, replySnapshot(variant))
+  for (const list of lists) for (const variant of list) if (variant.mid && (variant.content || variant.drawingBatchId)) variants.set(variant.mid, replySnapshot(variant))
   return [...variants.values()]
 }

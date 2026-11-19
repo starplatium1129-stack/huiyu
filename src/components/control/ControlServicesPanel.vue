@@ -32,6 +32,9 @@
         </div>
       </section>
 
+      <CompanionQqPanel v-if="desktop" :active="active" />
+      <CompanionWeChatPanel v-if="desktop" :active="active" />
+
       <section id="control-resources" class="panel-card resource-panel">
         <div class="panel-kicker">常用操作</div>
         <h2 class="panel-heading">显存与运行偏好</h2>
@@ -130,6 +133,11 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import CompanionQqPanel from './CompanionQqPanel.vue'
+import CompanionWeChatPanel from './CompanionWeChatPanel.vue'
+import { isDesktopHost } from '@/platform/initializePlatform'
+defineProps<{ active: boolean }>()
+const desktop = isDesktopHost()
 import { useRoute } from 'vue-router'
 import { videoReturnLocation } from '@/utils/videoNavigation'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

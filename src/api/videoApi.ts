@@ -1,4 +1,6 @@
 import { apiClient } from './client'
+import { validVideoDriverName, type DrivingInput } from '@/types/videoDriver'
+export type { DrivingInput, VideoDriver } from '@/types/videoDriver'
 import { isRuntimeTaskId, getRuntimeTask, cancelRuntimeTask, actOnRuntimeTask } from './runtimeTasks'
 import { taskVideoJob, taskVideoBatch, readRuntimeVideoBatch } from './runtimeVideo'
 import {
@@ -11,6 +13,7 @@ import {
 export type VideoMode = 'text' | 'image' | 'first-last-frame'
 export type VideoJobStatus = 'queued' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
 export type VideoQuality = 'fast' | 'standard' | 'fine'
+export type VideoAttention = 'auto' | 'sdpa' | 'sage' | 'flash2'
 
 export interface VideoQualityOption {
   id: VideoQuality
@@ -29,6 +32,12 @@ export interface VideoModelStatus {
   available: boolean
   reason: string
   modes: VideoMode[]
+  durations?: VideoDefaults['duration'][]
+  qualities?: VideoQuality[]
+  supportsNegative?: boolean
+  drivingInput?: DrivingInput
+  attentionModes?: VideoAttention[]
+  canvases?: Record<string, [number, number]> | null
   requirements: string[]
   missing: string[]
 }
@@ -82,6 +91,7 @@ export interface VideoJob {
   createdAt: number
   resultAvailable: boolean
   resultUrl: string | null
+  execution?: { device: string; attention: string[]; encoder: string }
   error: string | null
   code: string | null
 }
@@ -118,6 +128,14 @@ export function uploadVideoImage(data: Blob, kind?: 'reference', signal?: AbortS
     timeoutMs: 60_000,
     validate: (value: Record<string, unknown>) =>
       value.ok === true && typeof value.name === 'string' && typeof value.bytes === 'number',
+  })
+}
+
+export function uploadVideoDriver(file: File, kind: DrivingInput, signal: AbortSignal) {
+  return apiClient.request<VideoImageUploadResponse>(`/api/video/drivers/${kind}`, {
+    method: 'POST', body: file, headers: { 'Content-Type': 'application/octet-stream' }, signal, timeoutMs: 60_000,
+    validate: value => value.ok === true && typeof value.name === 'string' && validVideoDriverName(kind, value.name)
+      && value.bytes === file.size,
   })
 }
 

@@ -6,6 +6,7 @@ mod byte_buffer;
 mod catalog;
 mod character_art;
 mod chat;
+mod companion_channels;
 mod collation;
 mod config;
 mod control;
@@ -64,6 +65,7 @@ pub(crate) struct AppState {
     pub host: Arc<host::HostAuthority>,
     pub shutdown: CancellationToken,
     pub chat: Option<Arc<chat::ChatService>>,
+    pub channels: Arc<companion_channels::Channels>,
     pub voice: Option<Arc<voice::VoiceService>>,
     pub generation: Option<Arc<generation::GenerationService>>,
     pub tasks: Option<Arc<task_runtime::TaskRuntime>>,
@@ -90,6 +92,7 @@ impl AppState {
             host,
             shutdown,
             chat: None,
+            channels: Arc::new(companion_channels::Channels::default()),
             voice: None,
             generation: None,
             tasks: None,
@@ -126,6 +129,7 @@ pub(crate) fn router(state: AppState) -> Router {
         .route("/api/health", get(health))
         .merge(host::router())
         .merge(workspace_http::router())
+        .merge(companion_channels::wechat::router())
         .merge(reference::router())
         .merge(character_art::router())
         .merge(catalog::router())

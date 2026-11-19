@@ -8,6 +8,18 @@ static INPUT: LazyLock<Regex> = LazyLock::new(|| {
 static REFERENCE: LazyLock<Regex> = LazyLock::new(|| {
     Regex::new(r"(?i)^aics_video_ref_[a-f0-9]{16,40}\.(?:png|jpg|jpeg|webp)$").unwrap()
 });
+static MOTION: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^aics_video_motion_[a-f0-9]{40}\.mp4$").unwrap());
+static AUDIO: LazyLock<Regex> = LazyLock::new(|| Regex::new(r"^aics_video_audio_[a-f0-9]{40}\.wav$").unwrap());
+
+pub(crate) fn driver_mime(name: &str) -> Option<&'static str> {
+    if MOTION.is_match(name) {
+        Some("video/mp4")
+    } else if AUDIO.is_match(name) {
+        Some("audio/wav")
+    } else {
+        None
+    }
+}
 static HASHERS: LazyLock<Arc<tokio::sync::Semaphore>> =
     LazyLock::new(|| Arc::new(tokio::sync::Semaphore::new(2)));
 pub(super) fn valid_name(name: &str, reference: bool) -> bool {
@@ -22,20 +34,27 @@ use tokio::io::{AsyncReadExt, AsyncWriteExt, BufReader};
 #[derive(Clone)]
 pub(super) struct Original {
     pub name: String,
-    pub file: PathBuf,
+    pub file: generation::native::InputFile,
     pub mime: String,
-    pub bytes: u64,
-    pub hash: String,
 }
 pub(super) struct Captured {
-    _directory: Arc<tempfile::TempDir>,
     pub originals: Vec<Original>,
 }
 impl Captured {
+    pub fn frame(&self, name: &Value) -> Result<Option<generation::native::InputFile>> {
+        name.as_str()
+            .map(|name| {
+                self.originals
+                    .iter()
+                    .find(|original| original.name == name)
+                    .map(|original| original.file.clone())
+                    .ok_or_else(|| error(409, "TASK_INPUT_MISSING", "找不到已接收的关键帧"))
+            })
+            .transpose()
+    }
     pub fn subset(&self, input: &Value) -> Self {
         let names = names(input);
         Self {
-            _directory: self._directory.clone(),
             originals: self
                 .originals
                 .iter()
@@ -47,7 +66,7 @@ impl Captured {
 }
 pub(super) fn names(input: &Value) -> Vec<&str> {
     let mut names = Vec::new();
-    for key in ["image", "lastFrame"] {
+    for key in ["image", "lastFrame", "drivingAudio", "drivingVideo"] {
         if let Some(name) = input[key].as_str() {
             names.push(name)
         }
@@ -60,7 +79,7 @@ pub(super) fn names(input: &Value) -> Vec<&str> {
     names
 }
 pub(super) fn path(config: &Config, name: &str) -> Result<PathBuf> {
-    if !valid_name(name, false) && !valid_name(name, true) {
+    if !valid_name(name, false) && !valid_name(name, true) && driver_mime(name).is_none() {
         return Err(error(400, "INVALID_PARAMETER", "图片引用格式不受支持"));
     }
     Ok(config.ai_workspace_root.join("ComfyUI/input").join(name))
@@ -147,35 +166,6 @@ async fn fingerprint_file(
     .await
     .map_err(|_| error(503, "TASK_INPUT_UNAVAILABLE", "输入校验未完成"))?
 }
-async fn fingerprint(
-    bytes: Arc<Vec<u8>>,
-    cancel: &CancellationToken,
-) -> Result<(Arc<Vec<u8>>, String)> {
-    let scope = cancel.child_token();
-    let _guard = scope.clone().drop_guard();
-    let cancelled = || error(499, "CANCELLED", "输入保护已取消");
-    let permit = tokio::select! {
-        permit = HASHERS.clone().acquire_owned() => permit.map_err(|_| cancelled())?,
-        _ = cancel.cancelled() => return Err(cancelled()),
-    };
-    tokio::task::spawn_blocking(move || {
-        let _permit = permit;
-        let mut hash = Sha256::new();
-        for chunk in bytes.chunks(1024 * 1024) {
-            if scope.is_cancelled() {
-                return Err(cancelled());
-            }
-            hash.update(chunk);
-        }
-        if scope.is_cancelled() {
-            return Err(cancelled());
-        }
-        // Return the same allocation for capture's write; never clone a frame.
-        Ok((bytes, hex::encode(hash.finalize())))
-    })
-    .await
-    .map_err(|_| error(503, "TASK_INPUT_UNAVAILABLE", "输入校验未完成"))?
-}
 pub(super) async fn size(config: &Config, name: &str) -> Result<(u32, u32)> {
     let path = safe(config, name).await?;
     let file = tokio::fs::File::open(path).await?;
@@ -219,9 +209,6 @@ pub(super) async fn capture(
             ));
         }
     }
-    let directory = tempfile::Builder::new()
-        .prefix("aics-video-input-")
-        .tempdir()?;
     let mut originals = Vec::new();
     let mut captured_bytes = 0u64;
     for name in names {
@@ -236,8 +223,15 @@ pub(super) async fn capture(
                 "任务输入快照超过 512 MiB 或配置的素材额度",
             ));
         }
-        let (mime, _) = crate::images::sniff(&bytes)
-            .ok_or_else(|| error(400, "TASK_INPUT_INVALID", "输入图像格式无效"))?;
+        use crate::images::ImageKind;
+        let kind = match driver_mime(name) {
+            Some("audio/wav") => ImageKind::DrivingAudio,
+            Some("video/mp4") => ImageKind::MotionVideo,
+            _ if valid_name(name, true) => ImageKind::VideoReference,
+            _ => ImageKind::VideoInput,
+        };
+        let (mime, _) = kind.format(&bytes)
+            .ok_or_else(|| error(400, "TASK_INPUT_INVALID", "输入素材格式无效"))?;
         if !local {
             let owner = owner
                 .ok_or_else(|| error(403, "TASK_INPUT_FORBIDDEN", "视频素材需要所有者授权"))?;
@@ -246,11 +240,7 @@ pub(super) async fn capture(
                 name,
                 bytes.clone(),
                 owner,
-                if valid_name(name, true) {
-                    crate::images::ImageKind::VideoReference
-                } else {
-                    crate::images::ImageKind::VideoInput
-                },
+                kind,
                 cancel,
             )
             .await?
@@ -262,24 +252,19 @@ pub(super) async fn capture(
                 ));
             }
         }
-        let file = directory.path().join(name);
-        let (bytes, hash) = fingerprint(bytes, cancel).await?;
-        let mut output = tokio::fs::File::create(&file).await?;
-        output.write_all(bytes.as_slice()).await?;
-        output.flush().await?;
-        drop(output);
+        let file = generation::native::InputFile::capture(
+            config.runtime_root.join("inputs/video-snapshots"),
+            bytes,
+            cancel,
+        )
+        .await?;
         originals.push(Original {
             name: name.into(),
             file,
             mime: mime.into(),
-            bytes: bytes.len() as u64,
-            hash,
         });
     }
-    Ok(Captured {
-        _directory: Arc::new(directory),
-        originals,
-    })
+    Ok(Captured { originals })
 }
 pub(super) async fn protect_restore(
     config: &Config,
@@ -295,9 +280,9 @@ pub(super) async fn protect_restore(
             h.protect_input(
                 original.name.clone(),
                 Output::File {
-                    path: original.file.clone(),
+                    path: original.file.path().to_owned(),
                     mime: original.mime.clone(),
-                    bytes: original.bytes,
+                    bytes: original.file.bytes,
                 },
             )
             .await?;
@@ -313,7 +298,7 @@ pub(super) async fn protect_restore(
             if !restored {
                 let mut source = BufReader::with_capacity(
                     256 * 1024,
-                    tokio::fs::File::open(&original.file).await?,
+                    tokio::fs::File::open(original.file.path()).await?,
                 );
                 // Stream through an owned handle so dropping the copy cannot
                 // recreate a pending path after its cleanup guard has run.
@@ -324,7 +309,7 @@ pub(super) async fn protect_restore(
                     result = tokio::io::copy_buf(&mut source, &mut output) => result?,
                     _ = cancel.cancelled() => return Err(error(499, "CANCELLED", "输入保护已取消")),
                 };
-                if copied != original.bytes {
+                if copied != original.file.bytes {
                     return Err(error(409, "TASK_INPUT_CHANGED", "受保护输入的长度已改变"));
                 }
                 output.flush().await?;
@@ -340,7 +325,7 @@ pub(super) async fn protect_restore(
                 }
             }
         }
-        if fingerprint_file(config, &original.name, cancel).await? != original.hash {
+        if fingerprint_file(config, &original.name, cancel).await? != original.file.hash {
             return Err(error(
                 409,
                 "TASK_INPUT_CHANGED",

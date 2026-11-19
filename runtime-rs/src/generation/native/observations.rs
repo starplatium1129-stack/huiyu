@@ -26,6 +26,7 @@ fn memory_observation(source: &Value) -> Option<Value> {
         if !matches!(
             name,
             "text_encoder"
+                | "image_encoder"
                 | "text_encoder_2"
                 | "text_conditioner"
                 | "transformer"
@@ -163,6 +164,20 @@ pub(super) fn capture(value: &Value) -> Value {
                 result["memoryScheduling"] = memory_observation(memory).unwrap_or_else(
                     || json!({"status":"unverified","reason":"invalid-memory-scheduling"}),
                 );
+            }
+            let video = &value["videoAcceleration"];
+            if super::adapters::model(id).is_some_and(|m| m["media"] == "video")
+                && matches!(video["device"].as_str(), Some("cuda" | "rocm" | "xpu"))
+                && matches!(video["requested"].as_str(), Some("auto" | "sdpa" | "flash2" | "sage"))
+                && matches!(video["selected"].as_str(), Some("sdpa" | "flash2" | "sage"))
+                && matches!(video["encoder"].as_str(), Some("h264_nvenc" | "h264_amf" | "h264_qsv" | "libx264"))
+                && ["sdpa", "slicedSdpa", "flash2", "sage"].iter().all(|key| video["calls"][*key].is_u64())
+            {
+                result["videoAcceleration"] = json!({
+                    "device":video["device"], "requested":video["requested"], "selected":video["selected"], "encoder":video["encoder"],
+                    "calls":{"sdpa":video["calls"]["sdpa"], "slicedSdpa":video["calls"]["slicedSdpa"],
+                             "flash2":video["calls"]["flash2"], "sage":video["calls"]["sage"]}
+                });
             }
             if id.starts_with("moss-") {
                 result["mossAcceleration"] = super::moss::acceleration(&value["mossAcceleration"])

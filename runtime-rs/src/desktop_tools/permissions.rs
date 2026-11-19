@@ -55,7 +55,7 @@ impl Store {
                 "write_file" => permissions.write_files,
                 "capture_screen" => permissions.capture_screen && screen_authorized,
                 "run_command" => permissions.commands,
-                "get_workspace_info" => true,
+                "get_workspace_info" | "search_drawing_catalog" | "generate_drawing_batch" => true,
                 _ => false,
             };
         if !allowed {

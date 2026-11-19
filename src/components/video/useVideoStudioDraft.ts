@@ -1,6 +1,6 @@
 import { onScopeDispose, watch, type Ref } from 'vue'
 import { useVideoStore, type VideoDraftPayload } from '@/stores/videoStore'
-import { type VideoDefaults, type VideoMode } from '@/api/videoApi'
+import { type VideoAttention, type VideoDefaults, type VideoDriver, type VideoMode } from '@/api/videoApi'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
@@ -15,6 +15,8 @@ export interface VideoStudioDraftDeps {
   aspectRatio: Ref<VideoDefaults['aspectRatio']>
   quality: Ref<VideoDefaults['quality']>
   steps: Ref<4 | 8>
+  videoAttention: Ref<VideoAttention>
+  driver: Ref<VideoDriver | null>
   duration: Ref<VideoDefaults['duration']>
   camera: Ref<VideoDefaults['camera']>
   motion: Ref<VideoDefaults['motion']>
@@ -66,6 +68,8 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
       aspectRatio: deps.aspectRatio.value,
       quality: deps.quality.value,
       steps: deps.steps.value,
+      videoAttention: deps.videoAttention.value,
+      ...(deps.driver.value ? { driver: { ...deps.driver.value } } : {}),
       duration: deps.duration.value,
       camera: deps.camera.value,
       motion: deps.motion.value,
@@ -99,8 +103,8 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     })
     const stop = watch(
       [deps.selectedMode, deps.prompt, deps.negative, deps.selectedModelId, deps.aspectRatio,
-        deps.quality, deps.steps, deps.duration, deps.camera, deps.motion, deps.seedText,
-        deps.videoImageId, deps.lastFrameImageId],
+        deps.quality, deps.steps, deps.videoAttention, deps.duration, deps.camera, deps.motion, deps.seedText,
+        deps.videoImageId, deps.lastFrameImageId, deps.driver],
       () => {
         window.clearTimeout(draftTimer)
         draftTimer = window.setTimeout(persistDraft, 350)
@@ -137,6 +141,8 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
         deps.quality.value = draft.quality as VideoDefaults['quality']
       }
       if (draft.steps === 4 || draft.steps === 8) deps.steps.value = draft.steps
+      deps.videoAttention.value = draft.videoAttention ?? 'auto'
+      deps.driver.value = draft.driver ?? null
       if ([3, 5, 10, 15].includes(draft.duration)) {
         deps.duration.value = draft.duration as VideoDefaults['duration']
       }

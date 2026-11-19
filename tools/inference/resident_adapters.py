@@ -85,7 +85,7 @@ class PipelineCache:
                         or (protection is None and fingerprint(root, control) != identity)):
                     raise error("MODEL_CHANGED", "Model assets changed during loading; generation rejected")
                 self.components = dict(template.components)
-                self.parameters = ({} if spec["pipeline"] in ("MiniMaxH3ModularPipeline", "MOSSImagePipeline")
+                self.parameters = ({} if spec.get("blocks") or spec["pipeline"] == "MOSSImagePipeline"
                                    else copy.deepcopy(template.parameters))
                 self.pipeline_class = type(template)
                 self.configs = {name: copy.deepcopy(dict(value.config)) for name, value in self.components.items()
@@ -101,9 +101,9 @@ class PipelineCache:
             # state is always constructed from the pre-inference configuration.
             components = {name: (type(value).from_config(copy.deepcopy(self.configs[name]))
                                 if name in self.configs else value) for name, value in self.components.items()}
-            if spec["pipeline"] == "MiniMaxH3ModularPipeline":
-                pipeline = self.pipeline_class(workflow="t2va")
-                pipeline.update_components(**components)
+            if spec["media"] == "video":
+                pipeline = load_sibling("adapter_video").task_pipeline(self.pipeline_class, components,
+                    copy.deepcopy(self.parameters), spec, data.get("_videoImage", False))
             else:
                 pipeline = self.pipeline_class(**components, **copy.deepcopy(self.parameters))
             for component in self.memory.modules.values():
@@ -111,8 +111,12 @@ class PipelineCache:
                 if registry is not None:
                     registry.reset_stateful_hooks(recurse=True)
             self.memory.bind(pipeline)
-            if spec["family"] in ("qwen-image", "moss-image"):
-                self.bind_conditioning(pipeline)
+            if spec["pipeline"] == "WanPipeline":
+                # Both Wan pipelines call the same T5 recipe independently for
+                # positive and negative text. Keep reusable negatives by prompt.
+                self.bind_conditioning(pipeline, "_get_t5_prompt_embeds", data.get("videoAttention"))
+            elif spec["family"] in ("qwen-image", "moss-image", "hunyuan-video-1.5", "kandinsky-6"):
+                self.bind_conditioning(pipeline, attention=data.get("videoAttention"))
             if self.protection is not None and self.lease.protection_token() is not self.protection:
                 raise error("MODEL_CHANGED", "Model protection was lost before inference; generation rejected")
             if self.style_protection is not None and self.style_lease.protection_token() is not self.style_protection:
@@ -129,9 +133,9 @@ class PipelineCache:
         elif self.memory is not None:
             self.memory.finish()
 
-    def bind_conditioning(self, pipeline):
+    def bind_conditioning(self, pipeline, method="encode_prompt", attention=None):
         import torch
-        original = pipeline.encode_prompt
+        original = getattr(pipeline, method)
         signature = inspect.signature(original)
 
         def copy_tensors(value, device):
@@ -146,14 +150,16 @@ class PipelineCache:
             bound.apply_defaults()
             values = dict(bound.arguments)
             device = values.pop("device", None) or pipeline._execution_device
-            if values.get("prompt_embeds") is not None:
+            if values.get("prompt_embeds") is not None or any(isinstance(value, torch.Tensor) for value in values.values()):
                 return original(*args, **kwargs)
+            if isinstance(values.get("dtype"), torch.dtype):
+                values["dtype"] = str(values["dtype"])
             images = values.pop("image", None) or []
             digest = hashlib.sha256(json.dumps(values, sort_keys=True, ensure_ascii=False).encode())
             for image in images:
                 digest.update(f"{image.mode}:{image.size}".encode())
                 digest.update(image.tobytes())
-            key = digest.digest()
+            key = (type(pipeline).__name__, attention, digest.digest())
             if key in self.conditioning:
                 self.conditioning.move_to_end(key)
                 return copy_tensors(self.conditioning[key][0], device)
@@ -173,4 +179,4 @@ class PipelineCache:
                 return value.numel() * value.element_size()
             return sum(tensor_bytes(item) for item in value) if isinstance(value, tuple) else 0
 
-        pipeline.encode_prompt = encode
+        setattr(pipeline, method, encode)

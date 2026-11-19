@@ -12,7 +12,9 @@ class AdapterError(WorkerError):
 
 
 def document(path):
-    if not path.is_file() or path.stat().st_size > 1024 * 1024:
+    # LTX-2.3's Gemma tokenizer configuration includes its added-token table.
+    limit = (2 if path.name == "tokenizer_config.json" else 1) * 1024 * 1024
+    if not path.is_file() or path.stat().st_size > limit:
         raise AdapterError("MODEL_INCOMPLETE", f"Missing/oversized JSON: {path}")
     try:
         data = json.loads(path.read_text(encoding="utf-8"))
@@ -51,6 +53,13 @@ def layout(value, spec):
     if not isinstance(value, str) or not Path(value).is_absolute():
         raise AdapterError("MODEL_INVALID", "modelDir must be a complete absolute local Diffusers directory")
     root = Path(value).resolve()
+    if spec.get("runner") == "longcat-avatar":
+        bundle = next(item for item in document(Path(__file__).with_name("managed-adapter-models.json"))["models"]
+                      if item["id"] == "longcat-avatar-1.6")
+        for item in bundle["files"]:
+            if safe_file(root, root / item["path"]).stat().st_size != item["bytes"]:
+                raise AdapterError("MODEL_INCOMPLETE", f"LongCat file has unexpected size: {item['path']}")
+        return root
     index = config(root, root / spec.get("indexFile", "model_index.json"))
     if index.get("_class_name") != spec["pipeline"]:
         raise AdapterError("MODEL_INVALID", f"Expected {spec['pipeline']}; Comfy split files cannot be used")
@@ -78,7 +87,12 @@ def layout(value, spec):
             if cfg.get("_class_name") != entry[1] or cfg.get("stochastic_sampling"):
                 raise AdapterError("MODEL_INVALID", "Unexpected scheduler configuration")
         elif name in ("tokenizer", "tokenizer_2", "processor"):
-            config(root, folder / "tokenizer_config.json")
+            tokenizer = config(root, folder / "tokenizer_config.json")
+            cfg = tokenizer
+            qwen_processor = name == "tokenizer" and entry[1] == "Qwen2_5_VLProcessor"
+            if qwen_processor and (tokenizer.get("tokenizer_class") != "Qwen2Tokenizer"
+                                   or tokenizer.get("processor_class") != entry[1]):
+                raise AdapterError("MODEL_INVALID", "Kandinsky tokenizer/processor configuration mismatch")
             if entry[1] == "ByT5Tokenizer":
                 continue  # Byte tokenizer has no vocabulary/model weight file.
             if not (folder / "tokenizer.json").is_file() and name.startswith("tokenizer"):
@@ -89,7 +103,7 @@ def layout(value, spec):
                     safe_file(root, folder / "merges.txt")
             else:
                 safe_file(root, folder / "tokenizer.json")
-            if name == "processor":
+            if name == "processor" or qwen_processor:
                 combined = folder / "processor_config.json"
                 image_config = config(root, combined).get("image_processor") if combined.exists() else None
                 if image_config is None:
@@ -120,6 +134,9 @@ def layout(value, spec):
                     if not isinstance(shard, str) or any(c in shard for c in "/\\:\0") or not shard.endswith(".safetensors"):
                         raise AdapterError("MODEL_INVALID", f"Unsafe shard: {name}")
                     safe_file(root, folder / shard)
+        for key, expected in spec.get("componentConfigs", {}).get(name, {}).items():
+            if key not in cfg or not same_index_value(cfg[key], expected):
+                raise AdapterError("MODEL_INVALID", f"Unexpected {name}/{key} for this model variant")
     return root
 
 
@@ -140,13 +157,24 @@ def number(data, key, default, low, high, integer=False):
 
 
 def validate(job):
-    allowed = {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "referenceImagePaths", "loras", "upscaleModelPath"}
+    allowed = {"id", "op", "modelDir", "outputPath", "input", "inputImagePath", "lastFramePath", "drivingAudioPath", "drivingVideoPath", "referenceImagePaths", "loras", "upscaleModelPath"}
     if not isinstance(job, dict) or set(job) - allowed or job.get("op") != "generate" or not isinstance(job.get("id"), str) or not job["id"]:
         raise AdapterError("INVALID_REQUEST", "Expected a native adapter generation request")
     data = job.get("input")
-    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
+    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "videoAttention", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
         raise AdapterError("UNSUPPORTED_OPTION", "Unsupported adapter input; no silent option fallback")
     spec = model(data.get("modelId"))
+    is_video = spec["media"] == "video"
+    for kind, key in (("audio", "drivingAudioPath"), ("video", "drivingVideoPath")):
+        if spec.get("drivingInput") == kind:
+            path = job.get(key)
+            if not job.get("inputImagePath") or not isinstance(path, str) or not Path(path).is_absolute():
+                raise AdapterError("INVALID_PARAMETER", f"Expected a portrait and a host-owned {kind} file")
+            safe_file(Path(path).parent.resolve(), Path(path))
+        elif key in job:
+            raise AdapterError("UNSUPPORTED_OPTION", f"This model does not take {key}")
+    if not is_video and ("videoAttention" in data or "lastFramePath" in job):
+        raise AdapterError("UNSUPPORTED_OPTION", "Video settings require a video model")
     if "mossUpscaleScale" in data:
         return load_sibling("moss_upscale").validate(job, spec, load_sibling("adapter_contract"))
     if job.get("upscaleModelPath") is not None:
@@ -199,8 +227,17 @@ def validate(job):
     if spec["family"] == "qwen-image" and bool(negative) != (result["cfg"] > 1):
         raise AdapterError("INVALID_PARAMETER", "Qwen negative prompt requires cfg > 1; empty negative requires cfg <= 1")
     if job.get("inputImagePath") is not None:
-        if not spec["edit"] or not isinstance(job["inputImagePath"], str) or not Path(job["inputImagePath"]).is_absolute() or not Path(job["inputImagePath"]).is_file():
-            raise AdapterError("UNSUPPORTED_OPTION", "Only Qwen instruction editing is connected")
+        supported = "image" in spec["modes"] if is_video else spec["edit"]
+        if not supported or not isinstance(job["inputImagePath"], str) or not Path(job["inputImagePath"]).is_absolute():
+            raise AdapterError("UNSUPPORTED_OPTION", "This model requires a supported local image input")
+        first = Path(job["inputImagePath"])
+        safe_file(first.parent.resolve(), first)
+    if job.get("lastFramePath") is not None:
+        last = job["lastFramePath"]
+        if (not job.get("inputImagePath") or "first-last-frame" not in spec["modes"]
+                or not isinstance(last, str) or not Path(last).is_absolute()):
+            raise AdapterError("UNSUPPORTED_OPTION", "A last frame requires a supported first/last-frame model and first frame")
+        safe_file(Path(last).parent.resolve(), Path(last))
     references = job.get("referenceImagePaths", [])
     if (not isinstance(references, list) or len(references) > 3
             or references and (spec["family"] != "qwen-image" or not job.get("inputImagePath"))):
@@ -215,6 +252,11 @@ def validate(job):
     if not isinstance(job.get("outputPath"), str) or not Path(job["outputPath"]).is_absolute() or Path(job["outputPath"]).suffix != suffix:
         raise AdapterError("INVALID_OUTPUT", f"Expected a host-selected absolute {suffix} output")
     if spec["media"] == "video":
+        attention = data.get("videoAttention", "auto")
+        if attention not in spec.get("attentionModes", ("auto", "sdpa", "sage", "flash2")):
+            raise AdapterError("INVALID_PARAMETER", "Unknown video attention setting")
+        result["videoAttention"] = attention
+        result["_videoImage"] = job.get("inputImagePath") is not None
         result["frames"] = number(data, "frames", None, spec["minFrames"], spec["maxFrames"], True)
         if (result["frames"] - spec["frameOffset"]) % spec["frameMultiple"] or data.get("fps") != spec["fps"]:
             raise AdapterError("INVALID_PARAMETER", "Video frame count/rate does not match this model")

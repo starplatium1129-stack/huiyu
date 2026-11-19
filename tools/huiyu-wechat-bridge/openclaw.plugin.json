@@ -1,0 +1,16 @@
+{
+  "id": "huiyu-wechat-bridge",
+  "name": "绘遇微信桥接",
+  "description": "把指定微信 ClawBot 的私聊交给同一台电脑上的绘遇桌宠。",
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": ["origin", "token", "accountId"],
+    "properties": {
+      "origin": { "type": "string", "format": "uri" },
+      "token": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+      "accountId": { "type": "string", "minLength": 1, "maxLength": 512 }
+    }
+  },
+  "uiHints": { "token": { "sensitive": true } }
+}

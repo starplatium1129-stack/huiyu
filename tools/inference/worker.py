@@ -415,7 +415,10 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
     execution = pipeline.transformer._huiyu_execution
     started = time.perf_counter()
     try:
-        with execution.track(pipeline, stage, control.check if control is not None else lambda: None):
+        qk_scope = load_mask_tools("anima_acceleration").rocm_qk_scope(
+            pipeline.transformer, device, load_mask_tools,
+            calibrated=collect_teacache or measure_teacache or teacache_profile is not None or bool(job.get("teaCacheProfilePath")))
+        with qk_scope as qk_kernel, execution.track(pipeline, stage, control.check if control is not None else lambda: None):
             stage("encoding")
             result, step, refinement = composition.run(pipeline, data,
                 image=image, mask=mask if mask_tools is not None else None, mask_tools=mask_tools,
@@ -436,6 +439,8 @@ def generate(job, stream, *, collect_teacache=False, teacache_profile=None, meas
         raise WorkerError("NONFINITE_INFERENCE", "Inference left the finite calibration scope; no result is published")
     metrics.pipeline_finished(started, tea_report, tea, resident is not None and cache_text)
     metrics.execution = execution.result
+    if qk_kernel is not None:
+        metrics.execution["rocmFusedQkCalls"] = qk_kernel.calls
     if capture:
         tea_report["schedule"] = ({"schemaVersion": 2, "passes": refinement["schedules"]} if data.get("hiresFix") else
             load_mask_tools("resident_benchmark").capture_schedule(pipeline.scheduler, step))

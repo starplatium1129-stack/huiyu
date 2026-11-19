@@ -376,6 +376,8 @@ fn anima_plan(
         upscale_model_path,
         settings: settings.clone(),
         init_image: std::sync::Mutex::new(init_image),
+        last_frame: std::sync::Mutex::new(None),
+        driving_media: std::sync::Mutex::new(None),
         reference_images: std::sync::Mutex::new(vec![]),
         mask_image: std::sync::Mutex::new(mask_image),
         pen_lines: std::sync::Mutex::new(None),

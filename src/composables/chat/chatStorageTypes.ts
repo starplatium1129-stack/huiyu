@@ -6,6 +6,7 @@ export interface ChatReplyVariant {
   stopped: boolean
   recalledMemories?: string[]
   drawingDrafts?: CompanionDrawingDraft[]
+  drawingBatchId?: string
   images?: CompanionChatImage[]
 }
 export interface ChatMessage extends ChatReplyVariant {

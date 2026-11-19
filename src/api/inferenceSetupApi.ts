@@ -27,7 +27,7 @@ export interface NativeSetupPlan {
   warnings?: string[]
   freeBytes: number | null
   runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
-  models: { preparation?: 'checkpoint-conversion' | 'moss-checkpoint' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: SetupDrawingFamily; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; requiredBytesWithCheckpoint?: number; installed: boolean }[]
+  models: { preparation?: 'checkpoint-conversion' | 'moss-checkpoint' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: SetupDrawingFamily | 'video'; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; requiredBytesWithCheckpoint?: number; installed: boolean }[]
   resources: NativeImageResource[]
   activeEngine: string
   configuredEngine: string
@@ -35,7 +35,7 @@ export interface NativeSetupPlan {
   workspaceMatches: boolean
   steps: { runtime: string; model: string; engine: string }
 }
-export interface NativeActivationResult { ok: true; restartRequired: boolean; active: { engine: InferenceSettings['engine'] }; configured: { engine: 'native' } }
+export interface NativeActivationResult { ok: true; restartRequired: boolean; active: { engine: InferenceSettings['engine'] }; configured: { engine: InferenceSettings['engine']; videoEngine?: 'native' | 'comfy' } }
 export interface InferenceSetupOperation extends ControlOperationView {
   interrupted?: boolean
   kind: 'prepare-inference-runtime' | 'import-inference-model' | 'install-native-runtime' | 'download-native-model' | 'download-native-resource' | 'prepare-native-engine'
@@ -74,7 +74,7 @@ export interface InferenceSetupApi {
   installRuntime(input: ManagedInferenceInput): Promise<InferenceSetupResult>
   downloadModel(input: ManagedInferenceInput): Promise<InferenceSetupResult>
   downloadResource(input: ManagedInferenceInput): Promise<InferenceSetupResult>
-  activate(input: ManagedInferenceInput, signal?: AbortSignal): Promise<NativeActivationResult>
+  activate(input: ManagedInferenceInput, signal?: AbortSignal, engineKey?: 'engine' | 'videoEngine'): Promise<NativeActivationResult>
   prepareRuntime(input: RuntimePreparationInput): Promise<InferenceSetupResult>
   inspectModel(input: ModelInspectionInput, signal?: AbortSignal): Promise<InferenceModelInspection>
   importModel(input: ModelImportInput): Promise<InferenceSetupResult>
@@ -117,7 +117,7 @@ function validPlan(value: ApiResponseObject): boolean {
       && (model.checkpointOptional === undefined || typeof model.checkpointOptional === 'boolean')
       && (model.preparation === undefined || ['checkpoint-conversion', 'moss-checkpoint', 'complete-model'].includes(String(model.preparation)))
       && (model.checkpointFilename === undefined || model.checkpointFilename === null || nonempty(model.checkpointFilename))
-      && typeof model.requiresAccess === 'boolean' && ['anima', 'krea2', 'qwen-image', 'moss-image'].includes(String(model.family))
+      && typeof model.requiresAccess === 'boolean' && ['anima', 'krea2', 'qwen-image', 'moss-image', 'video'].includes(String(model.family))
       && nonempty(model.revision) && nonempty(model.license) && secureUrl(model.licenseUrl) && secureUrl(model.sourceUrl)
       && (model.requiredBytesWithCheckpoint === undefined || bytes(model.requiredBytesWithCheckpoint))
       && bytes(model.downloadBytes) && bytes(model.requiredBytes) && typeof model.installed === 'boolean')
@@ -177,14 +177,15 @@ export const inferenceSetupApi: InferenceSetupApi = {
   installRuntime: body => managedOperation('/api/inference/runtime/install', body, 'install-native-runtime'),
   downloadModel: body => managedOperation('/api/inference/models/download', body, 'download-native-model'),
   downloadResource: body => managedOperation('/api/inference/resources/download', body, 'download-native-resource'),
-  async activate(body, signal) {
+  async activate(body, signal, engineKey = 'engine') {
     reviewedPlan(body)
     if (!nonempty(body.modelId)) throw new Error('请选择已完整校验的原生模型')
     return apiClient.request<NativeActivationResult>('/api/inference/setup/activate', {
       method: 'POST', body, signal, timeoutMs: 185_000,
       validate: value => value.ok === true && typeof value.restartRequired === 'boolean'
         && object(value.active) && ['native', 'comfy', 'remote'].includes(String(value.active.engine))
-        && object(value.configured) && value.configured.engine === 'native',
+        && object(value.configured) && ['native', 'comfy', 'remote'].includes(String(value.configured.engine))
+        && value.configured[engineKey] === 'native',
     })
   },
   async prepareRuntime(body) {

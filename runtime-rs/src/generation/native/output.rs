@@ -156,6 +156,7 @@ pub(super) fn adapter_request(
     if plan.input["mediaKind"] == "video" {
         input["frames"] = plan.input["frames"].clone();
         input["fps"] = plan.input["fps"].clone();
+        input["videoAttention"] = json!(plan.input["videoAttention"].as_str().unwrap_or("auto"));
     }
     if let Some(trigger) = plan.input["styleLoraTrigger"].as_str() {
         input["prompt"] = json!(format!(
@@ -222,6 +223,7 @@ pub(super) fn stage_text(event: &Value) -> Result<String> {
     let component = match event.get("component").and_then(Value::as_str) {
         None => "",
         Some("text_encoder") => " · 文本编码器",
+        Some("image_encoder") => " · 图像编码器",
         Some("text_encoder_2") => " · 第二文本编码器",
         Some("text_conditioner") => " · 文本条件模型",
         Some("transformer") => " · 扩散模型",

@@ -66,7 +66,7 @@ pub(super) fn support(hardware: &Value, runtime: &RuntimeBundle) -> Vec<String> 
     runtime_support(hardware, runtime, 0, "")
 }
 fn capacity_warnings(hardware: &Value) -> Vec<String> {
-    let mut warnings = vec!["默认启用分层卸载，按空闲显存安排模型；大模型或大画幅仍可能内存不足，可先用 Anima 和较小画幅。".into()];
+    let mut warnings = vec!["默认按空闲显存分层加载。内存不足时，可先使用较小画幅。".into()];
     if hardware["ramBytes"]
         .as_u64()
         .is_none_or(|bytes| bytes < 32 * 1024 * 1024 * 1024)
@@ -166,7 +166,7 @@ impl ControlService {
         let (_, models) = bundles()?;
         let selected = selected.unwrap_or(&models[0].id).to_owned();
         if !models.iter().any(|model| model.id == selected) {
-            return Err(ApiError::invalid("请选择已登记的原生图像模型"));
+            return Err(ApiError::invalid("请选择已登记的原生模型"));
         }
         let runtime = image_models::runtime_for(Some(&selected))?;
         let hardware = hardware::local_hardware().await;
@@ -174,7 +174,9 @@ impl ControlService {
         // Keep local metadata reads off the async request worker.
         // Tracking also keeps shutdown waiting if the requesting page disconnects.
         self.tasks.spawn_blocking(move || {
-            let mut reasons = support(&hardware, &runtime);
+            use crate::generation::native::adapters;
+            let dedicated = adapters::dedicated_runtime(&selected);
+            let mut reasons = if dedicated { Vec::new() } else { support(&hardware, &runtime) };
             let space = safe_workspace(&service.config.ai_workspace_root, &service.config.app_root);
             let free = match space {
                 Ok(bytes) => Some(bytes),
@@ -186,18 +188,36 @@ impl ControlService {
             let root = service.config.ai_workspace_root.join("inference");
             let (discovered, _) = crate::generation::native::Settings::discovered(&service.config.ai_workspace_root);
             let receipt = image_models::runtime_receipt(&service, &runtime);
-            let runtime_python = receipt.as_ref().and_then(|(_, value)| value["python"].as_str()).map(PathBuf::from)
-                .unwrap_or_else(|| root.join(&runtime.runtime_id).join("venv/Scripts/python.exe"));
+            let runtime_python = if dedicated {
+                adapters::longcat_python(&root.join("models"))
+            } else {
+                receipt.as_ref().and_then(|(_, value)| value["python"].as_str()).map(PathBuf::from)
+                    .unwrap_or_else(|| root.join(&runtime.runtime_id).join("venv/Scripts/python.exe"))
+            };
+            let runtime_root = if dedicated {
+                adapters::longcat_environment_root(&runtime_python).to_path_buf()
+            } else {
+                receipt.as_ref().and_then(|(path, _)| path.parent()).map(Path::to_path_buf)
+                    .unwrap_or_else(|| root.join(&runtime.runtime_id))
+            };
             let configured = service.configured_inference()?;
             let active = service.active_inference()?;
+            let video = image_models::is_video(&selected);
+            let active_engine = if video { active.video_engine() } else { &active.engine };
+            let configured_engine = if video { configured.video_engine() } else { &configured.engine };
             let selected_python = if image_models::is_adapter_runtime(&runtime) { configured.adapter_python.clone() } else { Some(configured.python.clone()) };
-            let workspace_matches = selected_python.as_ref() == Some(&runtime_python) && configured.models_root == root.join("models")
+            let workspace_matches = (dedicated || selected_python.as_ref() == Some(&runtime_python)) && configured.models_root == root.join("models")
                 && service.saved.read().unwrap()["inferenceWorkspacePath"]
                     .as_str()
                     .is_none_or(|path| Path::new(path) == service.config.ai_workspace_root);
-            let runtime_ready = receipt.is_some();
-            let recovery_ready = !runtime_ready && candidate_ready(&root, &runtime);
-            let required = if runtime_ready { 0 } else if recovery_ready {
+            let runtime_ready = if dedicated {
+                match adapters::longcat_environment(&runtime_python) {
+                    Ok(()) => true,
+                    Err(e) => { reasons.push(e.message); false }
+                }
+            } else { receipt.is_some() };
+            let recovery_ready = !dedicated && !runtime_ready && candidate_ready(&root, &runtime);
+            let required = if runtime_ready || dedicated { 0 } else if recovery_ready {
                 64 * 1024 * 1024
             } else {
                 runtime
@@ -219,7 +239,7 @@ impl ControlService {
                         (model.checkpoint_filename.is_some() && !model.requires_local_checkpoint)
                         || local_checkpoint
                         || (model.conversion_profile.is_some() && anima_models::input_root(&model_root, model).join("checkpoint.safetensors").is_file()),
-                    "requiresAccess":model.requires_access,"family":crate::generation::native::adapters::model(&model.id).and_then(|spec| spec["family"].as_str()).unwrap_or("anima"),
+                    "requiresAccess":model.requires_access,"family":if image_models::is_video(&model.id) { "video" } else { crate::generation::native::adapters::model(&model.id).and_then(|spec| spec["family"].as_str()).unwrap_or("anima") },
                     "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":if local_checkpoint { required_with_checkpoint } else { required },
                     "requiredBytesWithCheckpoint":required_with_checkpoint,
                     "installed":installed,"path":model_root})
@@ -227,18 +247,18 @@ impl ControlService {
             let model_ready = model_views.iter().any(|value| value["id"] == selected && value["installed"] == true);
             Ok(
                 json!({"ok":true,"selectedModelId":selected,"planId":plan_id(&service.config.ai_workspace_root),"workspacePath":service.config.ai_workspace_root,
-                "paths":{"runtimeRoot":receipt.as_ref().and_then(|(path, _)|path.parent()).map(Path::to_path_buf).unwrap_or_else(||root.join(&runtime.runtime_id)),"modelsRoot":root.join("models"),
+                "paths":{"runtimeRoot":runtime_root,"modelsRoot":root.join("models"),
                     "lorasRoot":discovered.loras_root,"cacheRoot":root.join(".downloads"),"tempRoot":root.join(".staging")},
                 "warnings":capacity_warnings(&hardware),"hardware":hardware,"supported":reasons.is_empty(),"reasons":reasons,"freeBytes":free,
-                "runtime":{"id":runtime.runtime_id,"label":if image_models::is_adapter_runtime(&runtime){"原生图像 · Python 3.11 · PyTorch 2.9 · CUDA 12.8"}else{"Anima · Python 3.11 · CUDA 12.8"},
-                    "downloadBytes":runtime.download_bytes,"requiredBytes":required,"recoveryReady":recovery_ready,"sources":runtime.sources,
+                "runtime":{"id":if dedicated {"longcat-avatar"} else {&runtime.runtime_id},"label":if dedicated {"LongCat · PyTorch 2.6 · CUDA 12.4 · FlashAttention 2"} else if image_models::is_adapter_runtime(&runtime){"图像与视频 · Python 3.11 · PyTorch 2.9 · CUDA 12.8"}else{"Anima · Python 3.11 · CUDA 12.8"},
+                    "downloadBytes":if dedicated {0} else {runtime.download_bytes},"requiredBytes":required,"recoveryReady":recovery_ready,"sources":if dedicated {json!([])} else {json!(runtime.sources)},
                     "installed":runtime_ready,"python":runtime_python},"models":model_views,
                 "resources":image_resources::views(&root, &configured, &service.config.app_root)?,
-                "activeEngine":active.engine,"configuredEngine":configured.engine,"restartRequired":active != &configured,
+                "activeEngine":active_engine,"configuredEngine":configured_engine,"restartRequired":active != &configured,
                 "workspaceMatches":workspace_matches,
                 "steps":{"runtime":if runtime_ready{"installed"}else{"not-downloaded"},
                     "model":if model_ready{"verified"}else{"not-downloaded-or-incomplete"},
-                    "engine":if reasons.is_empty() && active == &configured && active.engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
+                    "engine":if reasons.is_empty() && active == &configured && active_engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
                 "validation":"读取组件与安装记录；文件在下载或导入时校验一次，启用不扫描整库"}),
             )
         })

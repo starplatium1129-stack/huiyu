@@ -12,6 +12,7 @@ use std::{collections::HashMap, io::Read, net::SocketAddr, time::Duration};
 use tokio::sync::{Mutex, Notify};
 
 mod batches;
+pub(crate) mod companion;
 mod details;
 mod history;
 mod legacy;
@@ -119,89 +120,92 @@ async fn search(
     }
     let result = async {
         state.host.check_running()?;
-        let kind = match input.kind.trim() {
-            "wardrobe" | "服装" => "outfit",
-            "角色" => "character",
-            "场景" => "media",
-            kind => kind,
-        };
-        if !matches!(
-            kind,
-            "character" | "outfit" | "scene" | "blueprint" | "media"
-        ) || [
-            &input.search,
-            &input.character,
-            &input.category,
-            &input.rating,
-        ]
-        .iter()
-        .any(|value| value.chars().count() > 160)
-            || input.page < 1
-            || !(1..=500).contains(&input.page_size)
-        {
-            return Err(ApiError::invalid(
-                "查询类型或分页参数无效，pageSize 须为 1–500",
-            ));
-        }
-        let config = state.config.clone();
-        let mut query = crate::catalog::Query {
-            kind: kind.into(),
-            sort: "relevance".into(),
-            search: input.search,
-            character: input.character,
-            category: input.category,
-            rating: match input.rating.trim().to_ascii_lowercase().as_str() {
-                "" => "",
-                "all" => "All",
-                "sfw" => "SFW",
-                "sensitive" => "Sensitive",
-                "r15" => "R15",
-                "r18" | "nsfw" => "R18",
-                "unrated" => "Unrated",
-                _ => {
-                    return Err(ApiError::invalid(
-                        "rating 可用 All、SFW、Sensitive、R15、R18 或 Unrated",
-                    ));
-                }
-            }
-            .into(),
-            page: Some(input.page),
-            page_size: Some(input.page_size),
-            ..Default::default()
-        };
-        let facets = state.catalog_facets.clone();
-        tokio::task::spawn_blocking(move || {
-            let catalog = crate::catalog::Catalog::open_readonly(
-                crate::catalog::Options::from_config(&config),
-            )?;
-            query.character = match query.character.trim() {
-                "宁宁" => "nene".into(),
-                "夏目" => "natsume".into(),
-                character => catalog.remote_character_id(character)?,
-            };
-            let wardrobe = if query.kind == "outfit"
-                && matches!(query.character.as_str(), "" | "nene" | "natsume")
-                && matches!(query.category.as_str(), "" | "Clothing")
-                && matches!(query.rating.as_str(), "" | "Unrated")
-            {
-                studio_wardrobe(&config, &query)?
-            } else {
-                Vec::new()
-            };
-            let mut result = catalog.remote_lookup(&query, &facets, &wardrobe)?;
-            if query.kind == "outfit" {
-                let ratings = result["ratings"].as_array_mut().unwrap();
-                if !ratings.contains(&json!("Unrated")) {
-                    ratings.push(json!("Unrated"));
-                }
-            }
-            Ok(result)
-        })
-        .await
-        .map_err(|_| ApiError::new(503, "CATALOG_UNAVAILABLE", "内容库查询未完成"))?
+        lookup(&state, input).await
     }
     .await;
     http::response(result, StatusCode::OK)
+}
+
+async fn lookup(state: &crate::AppState, input: Search) -> Result<Value> {
+    let kind = match input.kind.trim() {
+        "wardrobe" | "服装" => "outfit",
+        "角色" => "character",
+        "场景" => "media",
+        kind => kind,
+    };
+    if !matches!(
+        kind,
+        "character" | "outfit" | "scene" | "blueprint" | "media"
+    ) || [
+        &input.search,
+        &input.character,
+        &input.category,
+        &input.rating,
+    ]
+    .iter()
+    .any(|value| value.chars().count() > 160)
+        || input.page < 1
+        || !(1..=500).contains(&input.page_size)
+    {
+        return Err(ApiError::invalid(
+            "查询类型或分页参数无效，pageSize 须为 1–500",
+        ));
+    }
+    let config = state.config.clone();
+    let mut query = crate::catalog::Query {
+        kind: kind.into(),
+        sort: "relevance".into(),
+        search: input.search,
+        character: input.character,
+        category: input.category,
+        rating: match input.rating.trim().to_ascii_lowercase().as_str() {
+            "" => "",
+            "all" => "All",
+            "sfw" => "SFW",
+            "sensitive" => "Sensitive",
+            "r15" => "R15",
+            "r18" | "nsfw" => "R18",
+            "unrated" => "Unrated",
+            _ => {
+                return Err(ApiError::invalid(
+                    "rating 可用 All、SFW、Sensitive、R15、R18 或 Unrated",
+                ));
+            }
+        }
+        .into(),
+        page: Some(input.page),
+        page_size: Some(input.page_size),
+        ..Default::default()
+    };
+    let facets = state.catalog_facets.clone();
+    tokio::task::spawn_blocking(move || {
+        let catalog =
+            crate::catalog::Catalog::open_readonly(crate::catalog::Options::from_config(&config))?;
+        query.character = match query.character.trim() {
+            "宁宁" => "nene".into(),
+            "夏目" => "natsume".into(),
+            character => catalog.remote_character_id(character)?,
+        };
+        let wardrobe = if query.kind == "outfit"
+            && matches!(query.character.as_str(), "" | "nene" | "natsume")
+            && matches!(query.category.as_str(), "" | "Clothing")
+            && matches!(query.rating.as_str(), "" | "Unrated")
+        {
+            studio_wardrobe(&config, &query)?
+        } else {
+            Vec::new()
+        };
+        let mut result = catalog.remote_lookup(&query, &facets, &wardrobe)?;
+        if query.kind == "outfit" {
+            let ratings = result["ratings"].as_array_mut().unwrap();
+            if !ratings.contains(&json!("Unrated")) {
+                ratings.push(json!("Unrated"));
+            }
+        }
+        Ok(result)
+    })
+    .await
+    .map_err(|_| ApiError::new(503, "CATALOG_UNAVAILABLE", "内容库查询未完成"))?
 }
 
 #[derive(serde::Deserialize)]

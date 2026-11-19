@@ -166,9 +166,17 @@ impl Service {
             let permit = self.backend.reserve_native(&cancel)?;
             let input = native::normalize(input)?;
             let originals = inputs::capture(&self.config, &input, local, owner, &cancel).await?;
-            let plan =
-                generation::native::adapters::plan(&self.backend.native_settings()?, input, None)
+            let first = originals.frame(&input["image"])?;
+            let last = originals.frame(&input["lastFrame"])?;
+            let driver = match input.get("drivingAudio").or_else(|| input.get("drivingVideo")) {
+                Some(name) => originals.frame(name)?,
+                None => None,
+            };
+            let mut plan =
+                generation::native::adapters::plan(&self.backend.native_settings()?, input, first)
                     .await?;
+            *plan.last_frame.get_mut().unwrap() = last;
+            *plan.driving_media.get_mut().unwrap() = driver;
             let backend = self.backend.prepare_native(plan, permit, &cancel)?;
             return Ok(Prepared { backend, originals });
         }
@@ -251,7 +259,7 @@ impl Service {
         &self,
         data: axum::body::Bytes,
         owner: String,
-        reference: bool,
+        kind: crate::images::ImageKind,
         cancel: CancellationToken,
         admission: tokio::sync::OwnedSemaphorePermit,
     ) -> Result<String> {
@@ -267,11 +275,7 @@ impl Service {
                 owner,
                 crate::images::Limits::from_environment(),
                 scope,
-                if reference {
-                    crate::images::ImageKind::VideoReference
-                } else {
-                    crate::images::ImageKind::VideoInput
-                },
+                kind,
             )
             .await;
             let _ = reply.send(value);

@@ -8,11 +8,11 @@ export function useVideoModeOptions(
   status: Ref<VideoStatusResponse | null>, statusLoading: Ref<boolean>, statusReadError: Ref<string>,
   selectedMode: Ref<StudioMode>, quality: Ref<VideoDefaults['quality']>, activeModel: Readonly<Ref<VideoModelStatus | null>>,
 ) {
-  const modes: Array<{ id: StudioMode; label: string; ready: boolean; icon: ArchiveIconName }> = [
-    { id: 'text', label: '文字成片', ready: true, icon: 'play' },
-    { id: 'image', label: '图片动起来', ready: true, icon: 'image' },
-    { id: 'first-last-frame', label: '首尾帧过渡', ready: false, icon: 'gallery' },
-    { id: 'shots', label: '分镜短片', ready: false, icon: 'gallery' },
+  const modes: Array<{ id: StudioMode; label: string; icon: ArchiveIconName }> = [
+    { id: 'text', label: '文字成片', icon: 'play' },
+    { id: 'image', label: '图片动起来', icon: 'image' },
+    { id: 'first-last-frame', label: '首尾帧过渡', icon: 'gallery' },
+    { id: 'shots', label: '分镜短片', icon: 'gallery' },
   ]
 
 
@@ -32,32 +32,25 @@ export function useVideoModeOptions(
 
   // H3 readiness controls generation, never access to draft editing or recovery.
   const shotsModeReady = computed(() =>
-    status.value?.models.some((model) => model.id === 'minimax-h3' && model.available) === true)
+    status.value?.provider !== 'native' && status.value?.models.some((model) => model.id === 'minimax-h3' && model.available) === true)
 
+  const unsupportedMode = computed(() => {
+    const mode = selectedMode.value
+    return mode !== 'shots' && !!status.value && !status.value.models.some(model => model.executable && model.modes.includes(mode))
+  })
 
-  // 首尾帧模式门槛：同源 H3（FL2VA 尾帧衔接是 H3 原生节点能力，Wan 5B 无此链路）。
-  const firstLastFrameReady = computed(() =>
-    status.value?.models.some((model) =>
-      model.id === 'minimax-h3' && model.available && model.modes.includes('first-last-frame')) === true)
-
-
-  function modeReady(mode: StudioMode): boolean {
-    if (mode === 'shots') return true
-    if (mode === 'first-last-frame') return firstLastFrameReady.value
-    return true
-  }
-
-
-  function modeBadge(mode: StudioMode): string {
-    if (statusLoading.value) return '检测中'
+  const modeBadge = computed(() => {
+    const mode = selectedMode.value
+    if (statusLoading.value) return '检测中 · 可编辑'
     if (statusReadError.value) return '待重新检测 · 可编辑'
     if (!status.value) return '待检测'
-    if (mode !== 'shots' && !status.value.models.some(model => model.modes.includes(mode))) return '当前引擎暂不支持 · 可编辑'
+    if (mode === 'shots' && status.value.provider === 'native') return 'ComfyUI 分镜 · 可编辑'
+    if (unsupportedMode.value) return '当前引擎暂不支持 · 可编辑'
     const modelReady = mode === 'shots' ? shotsModeReady.value
-      : status.value.models.some(model => model.available && model.modes.includes(mode))
-    if (!modelReady) return modeReady(mode) ? '待装权重 · 可编辑' : '待装权重'
+      : status.value.models.some(model => model.executable && model.available && model.modes.includes(mode))
+    if (!modelReady) return '待装权重 · 可编辑'
     return status.value.online ? '可生成' : '离线 · 可编辑'
-  }
+  })
 
 
   const aspectOptions = computed(() => {
@@ -66,21 +59,25 @@ export function useVideoModeOptions(
       { id: 'portrait', label: '竖屏' },
       { id: 'square', label: '方形' },
     ]
+    if (activeModel.value?.canvases) return base.filter(option => activeModel.value?.canvases?.[option.id])
     if (selectedMode.value === 'image' || selectedMode.value === 'first-last-frame') {
       base.push({ id: 'original', label: '跟随原图' })
     }
     return base
   })
 
-  const activeQuality = computed(() =>
-    status.value?.qualities.find(item => item.id === quality.value) ?? null)
+  const qualities = computed(() => (status.value?.qualities ?? []).filter(item =>
+    !activeModel.value?.qualities || activeModel.value.qualities.includes(item.id)))
+  const activeQuality = computed(() => qualities.value.find(item => item.id === quality.value))
 
   const aspectSize = computed(() => (id: string) => {
     if (id === 'original') return '自动匹配'
+    const canvas = activeModel.value?.canvases?.[id]
+    if (canvas) return canvas.join(' × ')
     return activeQuality.value?.sizes[id] ?? ''
   })
 
   const durationOptions = computed<Array<VideoDefaults['duration']>>(() =>
-    activeModel.value?.id === 'minimax-h3' ? [3, 5, 10, 15] : [3, 5])
-  return { modes, modeReady, modeBadge, aspectOptions, aspectSize, cameraOptions, motionOptions, durationOptions }
+    activeModel.value?.durations ?? (activeModel.value?.id === 'minimax-h3' ? [3, 5, 10, 15] : [3, 5]))
+  return { modes, modeBadge, unsupportedMode, aspectOptions, aspectSize, cameraOptions, motionOptions, durationOptions, qualities }
 }

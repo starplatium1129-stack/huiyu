@@ -1,14 +1,14 @@
 <template>
-  <div class="message" :class="[message.role, { streaming, speaking: playing }]" :data-mid="message.mid">
+  <div class="message" :class="[message.role, { streaming, speaking: playing }]" :data-mid="message.mid" :data-has-copy="Boolean(message.content) || undefined">
     <div v-if="message.role === 'assistant'" class="message-avatar" :data-chibi="chibi || undefined" aria-hidden="true">
       <RuntimeImage :src="avatar" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
     </div>
     <div class="message-body">
-      <div class="message-bubble" v-content-motion:fade="message.mid">
+      <div class="message-bubble" v-content-motion:up="arrival ? message.mid : false">
         <ChatMessageText v-if="message.content" :text="message.content" />
-        <CompanionChatImages v-if="message.images?.length" :images="message.images" />
-        <CompanionDrawingDraftCard v-for="drawing in message.drawingDrafts || []" :key="drawing.path" :draft="drawing" />
-        <span v-if="!message.content && streaming" class="room-message-waiting">正在回复…</span>
+        <ChatMessageAttachments :message="message" />
+        <ChatTurnIndicator v-if="!message.content && !message.drawingBatchId && streaming"
+          :label="activity || '正在回复…'" animated />
       </div>
       <span v-if="message.stopped || playing" class="message-note">{{ message.stopped ? '已停止' : '播放中' }}</span>
       <ChatReplyVariants v-if="message.variants?.length" :message="message" :disabled="storyDisabled" @select="emit('select-variant', $event)" />
@@ -25,9 +25,6 @@
 <script lang="ts">
 import { defineAsyncComponent } from 'vue'
 
-// Share resolved attachment components across message rows and room visits.
-const CompanionDrawingDraftCard = defineAsyncComponent(() => import('@/components/CompanionDrawingDraftCard.vue'))
-const CompanionChatImages = defineAsyncComponent(() => import('@/components/CompanionChatImages.vue'))
 const ChatReplyVariants = defineAsyncComponent(() => import('@/components/ChatReplyVariants.vue'))
 </script>
 
@@ -35,6 +32,8 @@ const ChatReplyVariants = defineAsyncComponent(() => import('@/components/ChatRe
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import ChatMessageText from '@/components/ChatMessageText.vue'
+import ChatMessageAttachments from '@/components/ChatMessageAttachments.vue'
+import ChatTurnIndicator from '@/components/ChatTurnIndicator.vue'
 import ChatMessageActions from '@/components/ChatMessageActions.vue'
 import type { ChatMessage } from '@/composables/chat/chatStorageTypes'
 
@@ -43,6 +42,8 @@ defineProps<{
   avatar?: string | null
   chibi: boolean
   streaming: boolean
+  arrival?: boolean
+  activity?: string
   playing: boolean
   remembered: boolean
   hasAudio: (mid: string) => boolean

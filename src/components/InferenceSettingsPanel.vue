@@ -1,8 +1,8 @@
 <template>
   <section id="control-inference" class="panel-card inference-settings" aria-labelledby="inference-settings-title">
     <header class="inference-heading">
-      <div><h2 id="inference-settings-title" tabindex="-1">{{ videoSetupRequested ? '原生视频环境' : '原生绘图' }}</h2></div>
-      <span v-if="snapshot" class="inference-active">{{ videoSetupRequested ? '当前绘图' : '当前使用' }} · {{ engineLabel(snapshot.active.engine) }}</span>
+      <div><h2 id="inference-settings-title" tabindex="-1">{{ videoSetupRequested ? '视频引擎设置' : '原生绘图' }}</h2></div>
+      <span v-if="snapshot" class="inference-active">当前使用 · {{ engineLabel(videoSetupRequested ? snapshot.active.videoEngine : snapshot.active.engine) }}</span>
     </header>
     <p v-if="!isLocal">请在运行绘遇的电脑上修改引擎设置。</p>
     <template v-else>
@@ -37,19 +37,24 @@
           </template>
         </section>
         <AvailableDrawingModels v-if="showAvailableModels" :key="snapshot.active.engine" :provider="snapshot.active.engine" @local="showLocalPreparation = true" />
-        <section v-if="videoSetupRequested" class="inference-video-help" aria-labelledby="inference-video-title">
-          <h3 id="inference-video-title">准备视频模型</h3>
-          <ol>
-            <li>在故事短片中确认模型与缺失项。</li>
-            <li>配置独立 Python 环境与 ffmpeg，模型放入模型根目录。</li>
-            <li>填写模型根目录与独立 Python 路径，保存后重启。</li>
-          </ol>
-          <p>视频状态检查只确认运行库与模型文件。</p>
-          <div class="inference-actions">
-            <button class="btn btn-ghost btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy" @click="openVideoPaths">查看视频路径设置</button>
-            <RouterLink class="btn btn-quiet btn-sm" :to="videoReturnTarget">返回故事短片</RouterLink>
-          </div>
-        </section>
+        <details class="inference-advanced" :open="videoSetupRequested">
+          <StudioDisclosureSummary>视频引擎</StudioDisclosureSummary>
+          <form class="inference-form" data-disclosure-content @submit.prevent="saveSettings">
+            <div class="inference-field">
+              <label for="inference-video-engine">故事短片使用的引擎</label>
+              <StudioSelect id="inference-video-engine" v-model="draft.videoEngine" label="故事短片使用的引擎" :options="videoEngineOptions"
+                :disabled="blocked || loading || saving || setupBusy || restarting" />
+            </div>
+            <p v-if="videoSetupRequested">可在下方为支持的 NVIDIA 显卡准备原生运行库与视频模型。导出 MP4 需要本机安装 ffmpeg。</p>
+            <div class="inference-actions">
+              <button class="btn btn-primary btn-sm" type="submit" :disabled="blocked || loading || saving || setupBusy || restarting || !dirty">{{ saving ? '保存中…' : '保存设置' }}</button>
+              <button v-if="videoRestart && desktop?.restartForSetup" class="btn btn-ghost btn-sm" type="button"
+                :disabled="blocked || loading || saving || setupBusy || restarting || dirty" @click="restartSetup">{{ restarting ? '正在重启…' : '重启并应用视频引擎' }}</button>
+              <button v-if="videoSetupRequested" class="btn btn-quiet btn-sm" type="button" :disabled="blocked || loading || saving || setupBusy" @click="openVideoPaths">复用已有环境与模型</button>
+              <RouterLink v-if="videoSetupRequested" class="btn btn-quiet btn-sm" :to="videoReturnTarget">返回故事短片</RouterLink>
+            </div>
+          </form>
+        </details>
         <p v-if="snapshot.restartRequired" role="status">新设置将在重启后生效。</p>
         <p v-if="snapshot.environmentOverrides.length">{{ snapshot.environmentOverrides.join('、') }} 由启动配置指定，请在启动配置中修改。</p>
         <p v-if="blocked" role="status">模型准备正在处理，完成后可配置原生引擎。</p><p v-if="dirty && draft.engine !== 'remote'">请先保存引擎设置的修改，再继续本机准备。</p>
@@ -133,7 +138,7 @@
                 <small :id="`inference-${field.key}-hint`">{{ field.hint }}</small>
               </div>
             <div class="inference-field inference-paths">
-              <label for="inference-adapter-python">Krea / Qwen 独立 Python</label>
+              <label for="inference-adapter-python">图像与视频适配器 Python</label>
               <input id="inference-adapter-python" v-model="draft.adapterPython" class="input" type="text" :disabled="blocked || saving || loading || setupBusy || snapshot.environmentOverrides.includes('adapterPython')" spellcheck="false" autocomplete="off" aria-describedby="inference-adapter-python-hint" />
               <small id="inference-adapter-python-hint">可选。独立 Python 解释器路径（含 adapters 依赖与视频支持）。</small>
             </div>
@@ -204,7 +209,8 @@ const remoteDetails = ref<HTMLDetailsElement | null>(null)
 const desktop = getDesktopCapabilities()
 const showLocalPreparation = ref(route.hash === '#control-inference'), restarting = ref(false)
 const remoteRestart = computed(() => snapshot.value?.restartRequired && snapshot.value.configured.engine === 'remote')
-const showLocalSetup = computed(() => !!snapshot.value && (draft.engine !== 'remote' || showLocalPreparation.value))
+const videoRestart = computed(() => snapshot.value?.active.videoEngine !== snapshot.value?.configured.videoEngine)
+const showLocalSetup = computed(() => !!snapshot.value && (videoSetupRequested.value || draft.engine !== 'remote' || showLocalPreparation.value))
 const showAvailableModels = computed(() => {
   const current = snapshot.value
   if (!current || current.restartRequired || dirty.value || videoSetupRequested.value) return false
@@ -242,7 +248,7 @@ function openLocalPreparation() {
   showLocalPreparation.value = true
 }
 async function restartSetup() {
-  if (!desktop?.restartForSetup || props.blocked || setupBusy.value || restarting.value || !remoteRestart.value || dirty.value) return
+  if (!desktop?.restartForSetup || props.blocked || setupBusy.value || restarting.value || !(remoteRestart.value || videoRestart.value) || dirty.value) return
   restarting.value = true; error.value = ''
   try {
     await flushProfileWrites()
@@ -300,6 +306,7 @@ function generateRemoteKey() {
 }
 watch(() => draft.engine, engine => { if (engine !== 'native') draft.remoteServe = false })
 const engineOptions = [{ value: 'native', label: '本机原生引擎' }, { value: 'remote', label: '远程绘遇原生引擎' }, { value: 'comfy', label: 'ComfyUI（兼容已有环境）' }]
+const videoEngineOptions = [{ value: 'native', label: '本机原生引擎' }, { value: 'comfy', label: 'ComfyUI' }]
 const accelerationOptions = [{ value: 'native', label: '原生计算' }, { value: 'sage', label: 'SageAttention' }, { value: 'compiled-sage', label: '编译 + SageAttention' }, { value: 'compiled-fused-sage', label: '编译 + SageAttention + LoRA 融合' }]
 const memoryOptions = [{ value: 'resident', label: '模型常驻显卡（连续生成优先）' }, { value: 'offload', label: '分阶段加载（减少显存占用）' }]
 const animaMemoryOptions = [{ value: 'auto', label: '自动（按设备选择）' }, ...memoryOptions]

@@ -4,6 +4,7 @@ mod batch_input;
 mod catalog;
 mod http;
 mod inputs;
+pub(crate) use inputs::driver_mime;
 mod native;
 mod prose;
 mod requests;

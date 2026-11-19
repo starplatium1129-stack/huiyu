@@ -78,6 +78,10 @@ pub(super) fn anima(source: &Value) -> Option<Value> {
     let mut result = json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync","timingsAreAdditive":false,
         "timings":timings(&source["timings"], &["encoding", "sampling", "decoding"])?,
         "ropeCache":cache,"compile":compilation,"kernelBackend":kernel,"kernelScope":"configured","performanceVerified":false});
+    if let Some(value) = source.get("rocmFusedQkCalls") {
+        let calls = value.as_u64().filter(|n| *n <= 1_000_000)?;
+        result["rocmFusedQkCalls"] = json!(calls);
+    }
     if let Some(cache) = source.get("crossAttentionCache") {
         let hits = cache["hits"].as_u64().filter(|n| *n <= 1_000_000)?;
         let peak_bytes = cache["peakBytes"]

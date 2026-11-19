@@ -7,6 +7,8 @@ const FILES: &[&str] = &[
     "adapter_contract.py",
     "adapter_media.py",
     "adapter_video.py",
+    "video_acceleration.py",
+    "wan_motion.py",
     "adapter-models.json",
     "managed-adapter-models.json",
     "worker_lifecycle.py",
@@ -47,6 +49,9 @@ pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
     model(id)
         .ok_or_else(|| "该模型尚无原生适配".to_owned())
         .and_then(|model| {
+            if model["runner"] == "longcat-avatar" {
+                return super::model_layout::inspect_managed_bundle(root, id);
+            }
             super::model_layout::inspect_adapter(root, model)?;
             if model["family"] == "moss-image" {
                 if !root
@@ -95,6 +100,48 @@ pub(crate) fn settings(settings: &Settings) -> Result<Settings> {
     adapter.memory_policy = settings.adapter_memory_policy.clone();
     Ok(adapter)
 }
+pub(crate) fn dedicated_runtime(id: &str) -> bool {
+    model(id).is_some_and(|spec| spec["runner"] == "longcat-avatar")
+}
+
+pub(crate) fn longcat_python(models_root: &Path) -> PathBuf {
+    let fallback = models_root.parent().unwrap_or(models_root)
+        .join("environments/longcat-avatar")
+        .join(if cfg!(windows) { "Scripts/python.exe" } else { "bin/python" });
+    std::env::var_os("HUIYU_LONGCAT_PYTHON").map(PathBuf::from).unwrap_or(fallback)
+}
+
+pub(crate) fn longcat_environment_root(python: &Path) -> &Path {
+    let bin = python.parent().unwrap_or(python);
+    if bin.ends_with("Scripts") || bin.ends_with("bin") { bin.parent().unwrap_or(bin) } else { bin }
+}
+
+pub(crate) fn longcat_environment(python: &Path) -> Result<()> {
+    if !python.is_absolute() || !python.is_file() {
+        return Err(ApiError::new(503, "NATIVE_ADAPTER_RUNTIME_MISSING",
+            format!("请准备 LongCat 专用 Python：{}，或设置 HUIYU_LONGCAT_PYTHON", python.display())));
+    }
+    let source = std::env::var_os("HUIYU_LONGCAT_SOURCE").map(PathBuf::from)
+        .unwrap_or_else(|| longcat_environment_root(python).join("upstream/LongCat-Video"));
+    if !source.join("longcat_video/pipeline_longcat_video_avatar.py").is_file() {
+        return Err(ApiError::new(503, "NATIVE_ADAPTER_RUNTIME_MISSING",
+            format!("请准备固定版本的 LongCat-Video 源码：{}，或设置 HUIYU_LONGCAT_SOURCE", source.display())));
+    }
+    Ok(())
+}
+
+fn model_settings(settings: &Settings, id: &str) -> Result<Settings> {
+    if !dedicated_runtime(id) { return self::settings(settings); }
+    let python = longcat_python(&settings.models_root);
+    longcat_environment(&python)?;
+    let mut dedicated = settings.clone();
+    dedicated.adapter_python = Some(python);
+    let adapter = self::settings(&dedicated)?;
+    if let Some(issue) = resources::worker_bundle_issue(&adapter.worker, &["longcat_avatar.py"]) {
+        return Err(ApiError::new(503, "NATIVE_ADAPTER_RUNTIME_MISSING", issue));
+    }
+    Ok(adapter)
+}
 pub(super) fn validate_runtime(settings: &Settings) -> Result<()> {
     settings.validate_files_sync()?;
     if let Some(issue) = resources::worker_bundle_issue(&settings.worker, FILES) {
@@ -120,9 +167,14 @@ impl<'a> Status<'a> {
     }
 
     fn issue(&self, id: &str, path: &Path) -> Option<String> {
-        if let Some(error) = &self.runtime_error {
-            Some(error.message.clone())
-        } else if within(&self.settings.models_root, path).is_none() {
+        if dedicated_runtime(id) {
+            if let Err(error) = model_settings(self.settings, id).and_then(|adapter| validate_runtime(&adapter)) {
+                return Some(error.message);
+            }
+        } else if let Some(error) = &self.runtime_error {
+            return Some(error.message.clone());
+        }
+        if within(&self.settings.models_root, path).is_none() {
             Some("模型根目录内缺少完整 Diffusers 目录".to_owned())
         } else {
             model_issue(path, id)
@@ -174,7 +226,7 @@ impl<'a> Status<'a> {
         "mossTextInt8Ready":moss_int8_ready(&path, &model["mossTextInt8"], "huiyu-moss-text-int8.json"),
         "durationFrames":model["durationFrames"],"canvases":model["canvases"],"fps":model["fps"],"audio":model["audio"],
         "capabilities":capabilities,
-        "modes":if model["media"]=="video" {json!(["text"])}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
+        "modes":if model["media"]=="video" {model["modes"].clone()}else if model["edit"]==true{json!(["text","image"])}else{json!(["text"])}})
     }
 }
 pub(crate) async fn plan(
@@ -185,7 +237,7 @@ pub(crate) async fn plan(
     let id = input["modelId"]
         .as_str()
         .ok_or_else(|| ApiError::invalid("缺少模型 ID"))?;
-    let adapter = self::settings(settings)?;
+    let adapter = model_settings(settings, id)?;
     let inspected = adapter.clone();
     let root = adapter.models_root.clone();
     let model_id = id.to_owned();
@@ -236,6 +288,8 @@ pub(crate) async fn plan(
         mask_model_dir: None,
         upscale_model_path,
         init_image: std::sync::Mutex::new(image),
+        last_frame: std::sync::Mutex::new(None),
+        driving_media: std::sync::Mutex::new(None),
         reference_images: std::sync::Mutex::new(vec![]),
         mask_image: std::sync::Mutex::new(None),
         pen_lines: std::sync::Mutex::new(None),

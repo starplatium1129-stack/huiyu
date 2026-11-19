@@ -3,6 +3,7 @@ mod native;
 mod payload;
 mod queue;
 mod speech;
+pub(crate) use speech::is_pcm_wave;
 mod translation;
 
 use crate::{

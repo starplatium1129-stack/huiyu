@@ -22,6 +22,7 @@ import { useChatStoryActions } from '@/composables/chat/useChatStoryActions'
 import { useChatConversationClear } from '@/composables/chat/useChatConversationClear'
 import type { CharacterPetControls } from '@/composables/chat/useCharacterPetControls'
 import type { CompanionChatSendOptions } from '@/types/companionDrawing'
+import { screenWatchConnection } from '@/api/companionScreenWatchApi'
 
 interface CharacterStageHandle {
   petControls?: CharacterPetControls
@@ -106,6 +107,8 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
   void refreshHostConfig()
 
   const isLocalHost = computed(() => isLocalStudioHost())
+  const screenWatchTarget = computed(() => isLocalHost.value && chatProvider.value === 'api' && apiConfigured.value && !useHostConfig.value
+    ? screenWatchConnection(apiBaseUrl.value, apiModel.value, apiKey.value) : null)
 
   async function saveToHost() {
     const message = await saveHostConfig()
@@ -414,6 +417,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     activeChar,
     busy,
     voiceActive,
+    screenWatchTarget,
     chatError,
     chatErrorKind,
     toolActivity,

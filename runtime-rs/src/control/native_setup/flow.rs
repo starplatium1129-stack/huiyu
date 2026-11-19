@@ -7,7 +7,8 @@ impl ControlService {
         let plan = self.native_setup_plan(body.model_id.as_deref()).await?;
         require_supported(&plan)?;
         let active = self.active_inference()?;
-        if active.engine != "native"
+        if !body.model_id.as_deref().is_some_and(image_models::is_video)
+            && active.engine != "native"
             && active
                 .environment_overrides
                 .iter()
@@ -69,8 +70,7 @@ impl ControlService {
         operation["cancelAllowed"] = json!(true);
         operation["downloadedBytes"] = json!(0);
         operation["totalBytes"] = json!(
-            runtime
-                .download_bytes
+            plan["runtime"]["downloadBytes"].as_u64().unwrap_or(0)
                 .saturating_add(model.files.iter().map(|file| file.bytes).sum::<u64>())
         );
         self.publish_operation(operation.clone())?;
@@ -155,7 +155,7 @@ impl ControlService {
         } else {
             None
         };
-        let runtime_bytes = runtime.download_bytes;
+        let runtime_bytes = current["runtime"]["downloadBytes"].as_u64().unwrap_or(0);
         let model_bytes = model.files.iter().map(|file| file.bytes).sum::<u64>();
         let mut runtime_operation = operation.clone();
         runtime_operation["flowStep"] = json!("runtime");
@@ -202,7 +202,12 @@ impl ControlService {
         let saved = self
             .activate_native_settings(body, &activation, cancel, permit)
             .await?;
-        if saved["configured"]["engine"] != "native" {
+        let engine_key = if image_models::is_video(&model.id) {
+            "videoEngine"
+        } else {
+            "engine"
+        };
+        if saved["configured"][engine_key] != "native" {
             return Err(ApiError::new(
                 502,
                 "NATIVE_ACTIVATION_INCOMPLETE",
@@ -214,7 +219,9 @@ impl ControlService {
             "modelsRoot":saved["configured"]["modelsRoot"],"lorasRoot":saved["configured"]["lorasRoot"]});
         let mut progress = json!({"stage":"prepared","phase":"prepared", "currentFile":"",
             "result":{"engine":"native","modelId":model.id,
-                "restartRequired":saved["restartRequired"],"active":saved["active"],"configured":saved["configured"],
+                "restartRequired":saved["restartRequired"],
+                "active":{"engine":saved["active"]["engine"],"videoEngine":saved["active"]["videoEngine"]},
+                "configured":{"engine":saved["configured"]["engine"],"videoEngine":saved["configured"]["videoEngine"]},
                 "generationVerified":false}});
         if !image_models::is_adapter_runtime(&runtime) {
             progress["preparedPaths"] = paths;

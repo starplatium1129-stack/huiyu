@@ -46,7 +46,7 @@
                 <section class="panel-card"><h2 class="panel-heading">外观与交互</h2><AppearancePreferences launcher-only /></section>
                 <DesktopPreferences />
               </div>
-              <AsyncPanel v-else-if="item.id === 'control-services'" :loader="loadServices" label="服务与连接" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
+              <AsyncPanel v-else-if="item.id === 'control-services'" :loader="loadServices" label="服务与连接" v-slot="{ component }"><component :is="component" :active="activeSection === item.id" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-share'" :loader="loadShare" label="分享与访问" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-logs'" :loader="loadLogs" label="日志与排查" v-slot="{ component }"><component :is="component" :active="activeSection === item.id" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
             </template>

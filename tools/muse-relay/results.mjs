@@ -3,6 +3,7 @@ import { createHash } from 'node:crypto'
 export const PART = 128 * 1024
 const MAX_FILE = 32 * 1024 * 1024
 const MAX_TOTAL = 256 * 1024 * 1024
+const PNG_SIGNATURE = [0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]
 export const TTL = 48 * 60 * 60 * 1000
 export const resultRoute = /^\/api\/(?:anima|moss|creative|qwen)\/jobs\/[a-f0-9]{32}\/result$/
 const hash = bytes => createHash('sha256').update(new Uint8Array(bytes)).digest('hex')
@@ -45,7 +46,15 @@ export class Results {
   // A shared history listing should never start moving unrelated pictures.
   describe(job, collect) {
     const path = job?.resultUrl
-    if (!resultRoute.test(path)) return
+    if (!resultRoute.test(path)) {
+      if (job?.entryType !== 'batch' && (job?.batchKey || path !== undefined)) {
+        job.resultAvailable = false
+        job.resultUrl = null
+        if (job.metadata) job.metadata.resultUrl = null
+        if (job.status === 'succeeded') job.deliveryStatus ??= path ? 'invalidReceipt' : 'expired'
+      }
+      return
+    }
     const now = Date.now()
     let file = this.find(path)
     let state = 'onDemand'
@@ -132,8 +141,13 @@ export class Results {
       this.sql.exec('UPDATE files SET part=? WHERE path=?', next, file.path)
       if (next * PART < file.size) return
       const full = createHash('sha256')
-      for (const row of this.sql.exec('SELECT data FROM parts WHERE path=? ORDER BY n', file.path)) full.update(new Uint8Array(row.data))
-      const state = full.digest('hex') === file.digest ? 'ready' : 'integrityError'
+      let isPng = false
+      for (const row of this.sql.exec('SELECT n,data FROM parts WHERE path=? ORDER BY n', file.path)) {
+        const piece = new Uint8Array(row.data)
+        if (row.n === 0) isPng = PNG_SIGNATURE.every((byte, index) => piece[index] === byte)
+        full.update(piece)
+      }
+      const state = isPng && full.digest('hex') === file.digest ? 'ready' : 'integrityError'
       this.sql.exec('UPDATE files SET state=?, ready=? WHERE path=?', state, state === 'ready' ? now : null, file.path)
       if (state !== 'ready') this.sql.exec('DELETE FROM parts WHERE path=?', file.path)
     })
@@ -149,12 +163,12 @@ export class Results {
     this.savePieces(file, first, bytes)
     return new Response(null, { status: 204 })
   }
-  serve(request, url, waitForPart) {
+  serve(request, url) {
     const file = this.find(url.pathname)
     if (!file) return problem(404, 'MUSE_RESULT_UNKNOWN', '请先查原任务的 statusPath')
     if (file.expires <= Date.now() || file.state === 'expired') return problem(410, 'MUSE_RESULT_EXPIRED', '中转原图已过期')
     if (file.state === 'integrityError') return problem(502, 'MUSE_RESULT_INTEGRITY', '整图校验失败，请检查出图机归档')
-    if (file.state !== 'ready' && !waitForPart) return problem(409, 'MUSE_RESULT_TRANSFERRING', '已出图，正在传送原图', { 'Retry-After': '2' })
+    if (file.state !== 'ready') return problem(409, 'MUSE_RESULT_TRANSFERRING', '已出图，正在传送原图', { 'Retry-After': '2' })
     const etag = '"' + file.digest + '"'
     const headers = { 'Accept-Ranges': 'bytes', 'Content-Type': 'image/png', ETag: etag,
       'X-Result-Bytes': String(file.size), 'X-Result-Sha256': file.digest,
@@ -189,23 +203,10 @@ export class Results {
     // an entire image for each simultaneous download.
     const output = new FixedLengthStream(length)
     const sql = this.sql
-    const results = this
     let offset = first
     const source = new ReadableStream({
-      async pull(controller) {
+      pull(controller) {
         const n = Math.floor(offset / PART)
-        if (waitForPart && file.state !== 'ready') {
-          const deadline = Date.now() + 30000
-          for (;;) {
-            const current = results.find(file.path)
-            if (!current || current.expires <= Date.now() || !['transferring','ready'].includes(current.state)
-              || request.signal.aborted || Date.now() >= deadline) throw new Error('Original transfer interrupted')
-            // Keep the final part until the entire stored PNG matches the receipt.
-            // A failed upload cannot produce a complete-looking response.
-            if (current.state === 'ready' || (n < current.part && (n + 1) * PART < file.size)) break
-            await waitForPart(request.signal, deadline - Date.now())
-          }
-        }
         const { data } = sql.exec('SELECT data FROM parts WHERE path=? AND n=?', file.path, n).one()
         const chunk = new Uint8Array(data).subarray(offset % PART, Math.min(data.byteLength, last - n * PART + 1))
         offset += chunk.byteLength

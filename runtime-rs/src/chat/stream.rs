@@ -216,6 +216,29 @@ pub(super) async fn collect_text(prepared: Prepared, cancel: CancellationToken) 
     Err(Error::stream("INCOMPLETE_STREAM", "AI 响应中断"))
 }
 
+pub(super) async fn collect_channel(
+    prepared: Prepared,
+    cancel: CancellationToken,
+) -> Result<(String, Vec<ToolCall>)> {
+    let mut events = events(prepared, cancel);
+    let mut text = String::new();
+    let mut calls = Vec::new();
+    while let Some(event) = events.next().await? {
+        match event {
+            Event::Done => return Ok((text, calls)),
+            Event::Token { content } if text.len() + content.len() <= 64 * 1024 => {
+                text.push_str(&content);
+            }
+            Event::ToolCall(call) if calls.len() < 8 => calls.push(*call),
+            Event::Token { .. } | Event::ToolCall(_) => {
+                return Err(Error::stream("RESPONSE_TOO_LARGE", "消息回复过长"));
+            }
+            _ => {}
+        }
+    }
+    Err(Error::stream("INCOMPLETE_STREAM", "消息回复中断"))
+}
+
 pub(super) fn response(prepared: Prepared, shutdown: CancellationToken) -> Response {
     let deadline = tokio::time::Instant::now() + Duration::from_secs(600);
     let wait = prepared.wait_ms;

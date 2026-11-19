@@ -153,6 +153,24 @@ async fn perform(
             "Task request is too large",
         ));
     }
+    if path.first().is_some_and(|part| part == "companion-draw") {
+        if !crate::security::is_direct_local(headers, peer.ip()) {
+            return Err(ApiError::new(403, "LOCAL_ONLY", "对话绘图仅供本机使用"));
+        }
+        use crate::images::remote::muse::companion;
+        let result = match (method.as_str(), path.as_slice()) {
+            ("GET", [_, catalog]) if catalog == "catalog" => {
+                companion::catalog(state, uri).await.map_err(ApiError::not_accepted)?
+            }
+            (_, [_, id]) => companion::batch(state, &storage, &session, method, id, body).await?,
+            (_, [_, id, index]) => companion::item(state, &storage, &session, method, id, index, body).await?,
+            _ => return Err(ApiError::invalid("无效的对话绘图地址")),
+        };
+        return encode_response(
+            json!({"ok":true,"result":result,"runtimeEpoch":storage.runtime_epoch()}),
+        )
+        .await;
+    }
     if path.first().is_some_and(|part| part == "image-batches") {
         let runtime = state
             .tasks

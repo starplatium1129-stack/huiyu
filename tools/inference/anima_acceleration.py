@@ -1,12 +1,23 @@
 """Explicit, pinned Cosmos execution modes; LoRA fusion is separately opt-in."""
 import importlib.metadata
 import importlib.util
+from contextlib import nullcontext
 from functools import lru_cache
 import os
 from pathlib import Path
 
 MODE = os.environ.get("HUIYU_INFERENCE_ACCELERATION", "native")
 PINS = {"sageattention": "2.2.0+cu128torch2.8.0.post3", "triton-windows": "3.4.0.post21"}
+
+
+def rocm_qk_scope(transformer, device, tools, *, calibrated):
+    if (os.name != "nt" or MODE != "native" or device.backend != "rocm" or calibrated
+            or device.arch != "gfx1150" or "880M" not in device.name.upper()):
+        return nullcontext()
+    import torch
+    if device.dtype != torch.bfloat16 or not str(torch.version.hip).startswith("7."):
+        return nullcontext()
+    return tools("anima_rocm_fused").use_kernel(transformer, device.device, _CosmosProcessor)
 
 
 def validate():

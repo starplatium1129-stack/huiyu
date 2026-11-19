@@ -2,7 +2,7 @@
 
 The native asset lease keeps checkpoint files stable. Validate the safetensors
 layout before mapping; views retain their buffer until the resident model retires.
-This reader is scoped to immutable Qwen/MOSS inference, never LoRA mutation.
+This reader is scoped to immutable inference weights.
 """
 import json
 import math

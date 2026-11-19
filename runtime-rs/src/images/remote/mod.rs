@@ -1,6 +1,6 @@
 mod client;
 mod guide;
-mod muse;
+pub(crate) mod muse;
 mod relay;
 mod server;
 mod upload_index;

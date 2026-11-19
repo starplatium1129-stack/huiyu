@@ -15,7 +15,7 @@ import { isLocalStudioHost } from '../../utils/runtimeEnvironment.ts'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { createChatDraftPersistence } from './chatDraftPersistence'
 import type { ChatMessage } from './chatStorageTypes'
-import { parseCompanionChatImage, type CompanionChatSendOptions } from '@/types/companionDrawing'
+import { MAX_CHAT_DRAWINGS, parseCompanionChatImages, type CompanionChatSendOptions } from '@/types/companionDrawing'
 import type { CompanionToolContext } from './companionChatTools'
 import { captureCompanionImageSource } from './companionChatImages'
 import { startTurnWatchdog } from './chatTurnWatchdog'
@@ -193,7 +193,17 @@ export function useChatConversation(options: ChatConversationOptions) {
       sendOptions.imageAuthority, controller)
     let originalImages: ReturnType<typeof import('./chatRegenerationImages')['captureRegenerationImages']> | undefined
     let imageUrls = imageUrl ? [imageUrl] : []
-    const toolContext: CompanionToolContext = { character: turn.characterId, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl }
+    const toolContext: CompanionToolContext = {
+      character: turn.characterId, branch: turn.branch, signal: controller.signal, report, readImage: sourceImage?.read, imageUrl,
+      async onDrawingBatch(id) {
+        const { retainCompanionImageMessage } = await import('./companionChatTools')
+        checkCurrent()
+        turn.assistant.drawingBatchId = id
+        await retainCompanionImageMessage(options.storage)
+        checkCurrent()
+        if (options.nearBottom()) options.scrollBottom()
+      },
+    }
     let toolOrigin: string | undefined
     try { toolOrigin = toolContext.screenDestination = new URL(connection.hostConfig ? connection.hostBaseUrl : connection.baseUrl).origin } catch { /* Unknown recipients cannot receive screenshots. */ }
     const usedTools = new Set<string>()
@@ -343,13 +353,17 @@ export function useChatConversation(options: ChatConversationOptions) {
           }
           checkCurrent()
           if (call.name !== 'search_web') usedTools.add(call.name)
-          if (result.image) {
-            const image = parseCompanionChatImage(result.image)
-            if (image && !turn.assistant.images?.some(existing => existing.taskId === image.taskId && existing.path === image.path)) {
-              turn.assistant.images = [...(turn.assistant.images || []), image].slice(-4)
-              if (!turn.assistant.content.trim()) turn.assistant.content = result.output
+          const images = parseCompanionChatImages(result.images ?? (result.image ? [result.image] : []))
+          if (images.length) {
+            const existing = turn.assistant.images || []
+            const added = images.filter(image => !existing.some(item => item.taskId === image.taskId && item.path === image.path))
+            if (added.length) {
+              turn.assistant.images = [...existing, ...added].slice(-MAX_CHAT_DRAWINGS)
+              if (!turn.assistant.content.trim() && !turn.assistant.drawingBatchId) turn.assistant.content = result.output
             }
-            if (image) await retainCompanionImageMessage(options.storage, image.taskId)
+          }
+          if (images.length || result.drawingBatchId) {
+            await retainCompanionImageMessage(options.storage, result.image?.taskId, result.drawingBatchId)
             checkCurrent()
           }
           roundMessages.push({ role: 'tool', tool_call_id: call.id, content: call.name === 'search_web' ? result.output : result.output.slice(0, 60000) })
@@ -373,8 +387,8 @@ export function useChatConversation(options: ChatConversationOptions) {
       checkCurrent()
       turn.assistant.content = turn.assistant.content.trim()
       if (turn.restricted && !turn.assistant.content) throw new Error('模型没有返回回复，请重试；已有回复已保留。')
-      turn.assistant.content ||= '……'
-      if (canPresent()) replyAnnouncement.value = `${turn.character.name}说：${turn.assistant.content}`
+      if (!turn.assistant.drawingBatchId) turn.assistant.content ||= '……'
+      if (canPresent() && turn.assistant.content) replyAnnouncement.value = `${turn.character.name}说：${turn.assistant.content}`
       options.voice.finishTurn()
     } catch (error) {
       if (!ownsRequest() || !ownsHistory()) return
@@ -385,7 +399,7 @@ export function useChatConversation(options: ChatConversationOptions) {
       // 中断时保留已收到的内容，避免读到一半的回复突然消失。
       turn.assistant.content = turn.assistant.content.trim()
       turn.assistant.stopped = Boolean(turn.assistant.content)
-      if (!turn.assistant.content && !turn.regeneration) {
+      if (!turn.assistant.content && !turn.assistant.drawingBatchId && !turn.regeneration) {
         const history = options.storage.messages(turn.characterId), index = history.indexOf(turn.assistant)
         if (index >= 0) history.splice(index, 1)
       }

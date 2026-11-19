@@ -13,6 +13,7 @@ import { useCompanionBehaviorRuntime } from '../useCompanionBehaviorRuntime.ts';
 import { useCompanionClipboardImport } from '../useCompanionClipboardImport.ts';
 import { useCompanionSpeechInput } from '../useCompanionSpeechInput.ts';
 import { useCompanionPerformance } from '../useCompanionPerformance.ts';
+import { useCompanionScreenWatch } from './useCompanionScreenWatch';
 import { pickCompanionLine } from '../../config/characters.ts';
 import { resolveCompanionPresence } from '../../utils/companionPresence.ts';
 import { scrollBehavior } from '../../utils/motionPreference.ts';
@@ -21,7 +22,7 @@ import type { CompanionChatLiveState } from '../../utils/companionChatLiveState'
 import { computed,onMounted,onUnmounted,ref,watch } from 'vue';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useCompanionWorkspace() {
-    const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState, branchId, storyBusy, handleStoryAction } = useCharacterRoomSession();
+    const { voice, chatListRef, characterStageRef, activeChar, busy, voiceActive, chatError, chatErrorKind, toolActivity, thinkingActivity, voiceStatusText, voiceCapabilityState, isSpeaking, autoVoice, volume, preparingRoom, storage, chatProvider, chatStatusText, statusKind, chatReady, currentCharacter, companionMessages, setupTitle, inputText, replyAnnouncement, onVolumeChange, handleSend, onInputChange, prepareRoom, stopEverything, switchCharacter, onAutoVoiceChange, refreshRoomState, branchId, storyBusy, handleStoryAction, screenWatchTarget } = useCharacterRoomSession();
     const desktopBridge = getDesktopCapabilities();
     const presentationSuspended = useRoomPresentation('companion');
     const { getScore, getLevelInfo } = useCompanionAffection();
@@ -72,12 +73,6 @@ export function useCompanionWorkspace() {
         handleSend: accepted => handleSend(undefined, undefined, accepted),
         isEditableTarget,
     });
-    useCompanionPerformance({ activeChar, reminders: pendingReminders, stage: characterStageRef, voice, autoVoice, voiceActive,
-        voiceId: () => currentCharacter.value.voice, affection: () => affectionScore.value,
-        allowed: () => !presentationSuspended.value && behaviorEnabled.value && !dnd.value && !inQuietHours.value && pageVisible.value && desktopWindowVisible.value
-            && !busy.value && !thinkingActivity.value && !toolActivity.value && !preparingRoom.value
-            && !composerFocused.value && !inputText.value.trim() && speechState.value !== 'capturing',
-    });
     // ── 剪贴板浮卡 / 本地导入 / 看屏检视（已下沉 useCompanionClipboardImport）──
     // 剪贴板订阅、拖拽监听与浮卡 20s 计时器生命周期由 composable 自持。
     const { importInputRef, importRecovery, openImportPicker, clipboardCard, capturingScreen, onImportInputChange, dismissClipboardCard, acceptClipboardCard, onCaptureAndInspectScreen, inspectClipboardImage } = useCompanionClipboardImport({
@@ -94,6 +89,42 @@ export function useCompanionWorkspace() {
         handleSend,
         busy,
         chatReady,
+    });
+    let screenVoiceMid = '';
+    function releaseScreenVoice(stop = false) {
+        if (!screenVoiceMid) return;
+        const mid = screenVoiceMid;
+        screenVoiceMid = '';
+        if (stop && voice.ownsTurn(mid)) voice.stop({ preserveMessageAudio: true, silent: true });
+        voice.clearMessages([mid]);
+    }
+    const screenWatch = useCompanionScreenWatch({
+        connection: () => screenWatchTarget.value,
+        character: () => activeChar.value,
+        visible: () => pageVisible.value && desktopWindowVisible.value,
+        chatting: () => busy.value || storyBusy.value || !chatReady.value || preparingRoom.value || capturingScreen.value
+            || presentationSuspended.value || Boolean(inputText.value.trim())
+            || ['acquiring', 'capturing', 'recognizing'].includes(speechState.value)
+            || voiceActive.value && !voice.ownsTurn(screenVoiceMid),
+        quiet: () => dnd.value || inQuietHours.value,
+        onGesture: () => { if (autoVoice.value) voice.ensureAudioContext(); },
+        onComment: (line, aloud) => {
+            const voiceId = currentCharacter.value.voice;
+            if (!aloud || !autoVoice.value || voice.isActive() || !voice.readyFor(voiceId)) return;
+            releaseScreenVoice();
+            screenVoiceMid = `screen-watch-${crypto.randomUUID()}`;
+            voice.startTurn({ mid: screenVoiceMid, character: activeChar.value, voice: voiceId });
+            voice.append(line);
+            voice.finishTurn();
+        },
+        onInterrupt: () => releaseScreenVoice(true),
+    });
+    watch(voiceActive, playing => { if (!playing && !voice.isActive()) releaseScreenVoice(); });
+    useCompanionPerformance({ activeChar, reminders: pendingReminders, stage: characterStageRef, voice, autoVoice, voiceActive,
+        voiceId: () => currentCharacter.value.voice, affection: () => affectionScore.value,
+        allowed: () => !presentationSuspended.value && behaviorEnabled.value && !dnd.value && !inQuietHours.value && pageVisible.value && desktopWindowVisible.value
+            && !busy.value && !thinkingActivity.value && !toolActivity.value && !preparingRoom.value && !screenWatch.inspecting.value
+            && !composerFocused.value && !inputText.value.trim() && speechState.value !== 'capturing',
     });
     const settingsOpen = ref(false);
     const { workspaceOpen, workspaceInput, workspaceExists, workspaceSaving, workspaceError,
@@ -495,6 +526,6 @@ characterStageRef,
         speechError, speechHold, speechButtonText,
         speechStateText, speechAutoListening, speechSessionActive, onSpeechSessionEnd, speechSettingsOpen, voiceStatusText,
         inQuietHours, quietHoursText, onSpeechSettingsSaved, chatErrorKind, chatError, replyAnnouncement,
-        workspaceInput, saveWorkspace, workspaceSaving, workspaceError, openChatWindow, liveDotState, liveDotText,
+        workspaceInput, saveWorkspace, workspaceSaving, workspaceError, openChatWindow, liveDotState, liveDotText, screenWatch,
     };
 }

@@ -13,7 +13,8 @@ type Submission = { kind: 'prepare-inference-runtime'; input: RuntimePreparation
   | { kind: 'import-inference-model'; input: ModelImportInput }
   | { kind: 'install-native-runtime' | 'download-native-model' | 'download-native-resource' | 'prepare-native-engine'; input: ManagedInferenceInput }
 
-export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: Ref<boolean>, onActivated: () => void, requestedModel: Readonly<Ref<string>>) {
+export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: Ref<boolean>, onActivated: () => void,
+    requestedModel: Readonly<Ref<string>>, videoRequested: Readonly<Ref<boolean>>) {
   const desktop = getDesktopCapabilities()
   const plan = shallowRef<NativeSetupPlan | null>(null)
   const basePython = ref(''), wheelhouse = ref(''), workspacePath = ref(''), runtimeReviewed = ref(false), reviewed = ref(false)
@@ -45,7 +46,9 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const modelSpaceEnough = computed(() => !!plan.value && !!selectedModel.value && plan.value.freeBytes !== null && plan.value.freeBytes >= modelRequiredBytes.value)
   const canInstall = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && !plan.value.runtime.installed && runtimeSpaceEnough.value)
   const checkpointReady = computed(() => !selectedModel.value?.checkpointFilename || selectedModel.value.checkpointOptional || selectedModel.value.installed || !!checkpointSource.value)
-  const canDownload = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && plan.value.runtime.installed && selectedModel.value && !selectedModel.value.installed && modelSpaceEnough.value && checkpointReady.value)
+  const canDownload = computed(() => !locked.value && currentPlan.value && reviewed.value
+    && (selectedModel.value?.family === 'video' || plan.value?.supported && plan.value.runtime.installed)
+    && selectedModel.value && !selectedModel.value.installed && modelSpaceEnough.value && checkpointReady.value)
   const canActivate = computed(() => !locked.value && currentPlan.value && plan.value?.supported && plan.value.runtime.installed && selectedModel.value?.installed)
   const nativeEnabled = computed(() => currentPlan.value && plan.value?.supported && plan.value.workspaceMatches && plan.value.activeEngine === 'native' && !plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
   const setupRequiredBytes = computed(() => (plan.value?.runtime.installed ? 0 : plan.value?.runtime.requiredBytes ?? 0) + modelRequiredBytes.value)
@@ -97,8 +100,9 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       let [result, binding] = await Promise.all([inferenceSetupApi.getPlan(signal, modelId.value || undefined), desktop?.getWorkspace()])
       if (disposed || revision !== planVersion) return
       if (!modelId.value) {
-        const preferred = [requestedModel.value, savedSetupModel(result.workspacePath)]
-          .find(id => result.models.some(model => model.id === id))
+        const choices = videoRequested.value ? result.models.filter(model => model.family === 'video') : result.models
+        const preferred = [requestedModel.value, savedSetupModel(result.workspacePath), choices[0]?.id]
+          .find(id => choices.some(model => model.id === id))
         if (preferred && preferred !== result.selectedModelId) {
           result = await inferenceSetupApi.getPlan(signal, preferred)
           if (disposed || revision !== planVersion) return
@@ -297,8 +301,9 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       await ensureCurrentWorkspace()
       const input = managedInput()
       hfToken.value = ''
-      const result = await inferenceSetupApi.activate(input, activationController.signal).finally(() => { delete input.hfToken })
-      if (!disposed) { message.value = result.restartRequired ? '原生引擎设置已保存。请重启绘遇后确认当前运行引擎，再生成第一张图片。' : '原生引擎设置已保存。正在重新检查当前运行引擎。'; onActivated(); await refreshPlan() }
+      const engineKey = selectedModel.value?.family === 'video' ? 'videoEngine' : 'engine'
+      const result = await inferenceSetupApi.activate(input, activationController.signal, engineKey).finally(() => { delete input.hfToken })
+      if (!disposed) { message.value = result.restartRequired ? '原生引擎设置已保存，重启绘遇后生效。' : '原生引擎设置已保存，正在重新检查。'; onActivated(); await refreshPlan() }
     } catch (cause) {
       if (!disposed) {
         error.value = '启用请求结果尚未确认：' + causeText(cause)
@@ -392,7 +397,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     disposed = true; workspaceOpenVersion++; planVersion++; inspectionVersion++; planController?.abort(); inspectionController?.abort(); activationController?.abort()
     window.removeEventListener('huiyu:ai-workspace-changed', workspaceChanged)
   })
-  return { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, canSetup, canInstall, canDownload, canActivate,
+  return { resourceId, resourceReviewed, selectedResource, canDownloadResource, downloadResource, checkpointPath, hfToken, selectModel, desktop, plan, selectedModel, currentPlan, nativeEnabled, reviewed, setupRequiredBytes, setupSpaceEnough, modelRequiredBytes, modelSpaceEnough, canSetup, canInstall, canDownload, canActivate,
     basePython, wheelhouse, workspacePath, runtimeReviewed, modelId, importModelId, sourceDir, importReviewed, inspection, inspecting, preparedPaths,
     operation, busy, checking, activating, restarting, locked, canPrepare, canInspect, canImport, canCancel, message, error, cancelState, operationUncertain,
     workspaceOpen, workspaceDraft, workspaceSaving, workspacePending, workspaceButton, workspaceError,

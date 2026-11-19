@@ -1,6 +1,7 @@
 import type { VideoCtxPayload, VideoDraftPayload, StagedScenarioAct, ShotsDraftPayload, ShotsDraftShot } from '@/stores/videoStore'
 import { readFirstFrameRequest, type FirstFrameRequest } from '@/types/firstFrameRequest'
 import { readStoryOrigin } from '@/types/storyOrigin'
+import { validVideoDriverName, type VideoDriver } from '@/types/videoDriver'
 
 type RecordValue = Record<string, unknown>
 function object(value: unknown): RecordValue {
@@ -88,8 +89,18 @@ export const videoDraftCodec = {
   video(value: unknown): VideoDraftPayload {
     const v = object(value)
     if (typeof v.mode !== 'string' || typeof v.prompt !== 'string') throw new Error('视频草稿缺少模式或画面描述')
+    let driver: VideoDriver | undefined
+    if (v.driver !== undefined) {
+      const source = object(v.driver)
+      if ((source.kind !== 'audio' && source.kind !== 'video') || !validVideoDriverName(source.kind, text(source.name))) {
+        throw new Error('驱动素材引用无效')
+      }
+      driver = { kind: source.kind, name: text(source.name), label: text(source.label) }
+    }
     return { ...dimensions(v), mode: choice(v.mode, ['text', 'image', 'first-last-frame', 'shots'], 'text'),
       prompt: text(v.prompt), negative: text(v.negative), modelId: text(v.modelId),
+      videoAttention: choice(v.videoAttention, ['auto', 'sdpa', 'sage', 'flash2'] as const, 'auto'),
+      ...(driver ? { driver } : {}),
       camera: choice(v.camera, cameras, 'still'), motion: choice(v.motion, motions, 'subtle'),
       duration: choice(v.duration, durations, 5), seedText: text(v.seedText), videoImageId: text(v.videoImageId), lastFrameImageId: text(v.lastFrameImageId),
       ...(v.importSourceImageId === undefined ? {} : { importSourceImageId: identity(v.importSourceImageId) }) }

@@ -69,6 +69,8 @@ export interface VideoDraftPayload {
   aspectRatio: string
   quality: string
   steps: number
+  videoAttention?: import('@/api/videoApi').VideoAttention
+  driver?: import('@/api/videoApi').VideoDriver
   duration: number
   camera: string
   motion: string

@@ -31,7 +31,7 @@ mime = "0.3"
 percent-encoding = "2"
 image = { version = "0.25", default-features = false, features = ["png", "jpeg", "gif", "webp"] }
 reqwest = { version = "0.13", default-features = false, features = ["stream", "json", "rustls", "multipart", "http2"] }
-tokio-tungstenite = "0.29"
+tokio-tungstenite = { version = "0.29", features = ["rustls-tls-webpki-roots"] }
 unicode-normalization = "0.1"
 regex = "1"
 rustxng = { git = "https://github.com/sahenjp/RustXNG.git", rev = "08338038491d57adcfa4990ddf3d8925af292f4e", default-features = false }
@@ -42,6 +42,9 @@ chrono = { version = "0.4", default-features = false, features = ["std"] }
 libloading = "0.9"
 libc = "0.2"
 tempfile = "3"
+
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.61", features = ["Win32_Foundation", "Win32_Security_Cryptography"] }
 
 
 [profile.release]

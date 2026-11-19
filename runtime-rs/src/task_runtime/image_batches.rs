@@ -70,15 +70,19 @@ impl TaskRuntime {
             let jobs = plan["jobs"]
                 .as_array()
                 .ok_or_else(|| ApiError::invalid("Invalid image batch"))?;
+            let cancelling = plan["state"] == "cancelling";
+            let companion = plan["origin"] == "companion-chat";
             let next = jobs.iter().enumerate().find(|(_, job)| {
                 matches!(
                     job["status"].as_str(),
                     Some("accepted" | "running" | "unknown")
-                ) || plan["state"] == "running" && job["status"] == "pending"
+                ) || (cancelling || plan["state"] == "running") && job["status"] == "pending"
             });
             let Some((index, job)) = next else {
-                if plan["state"] == "running" {
-                    let state = if jobs.iter().any(|job| job["status"] == "failed") {
+                if cancelling || plan["state"] == "running" {
+                    let state = if cancelling {
+                        "cancelled"
+                    } else if jobs.iter().any(|job| job["status"] == "failed") {
                         "failed"
                     } else {
                         "succeeded"
@@ -96,10 +100,34 @@ impl TaskRuntime {
                 .ok_or_else(|| ApiError::invalid("Missing batch request identity"))?;
             let existing = storage.task_record_by_request(key, principal).await?;
             let task = if let Some(task) = existing {
+                if cancelling && !task.upstream_settled && task.cancel_requested_at.is_none() {
+                    self.cancel(storage.clone(), principal.into(), key.into())
+                        .await?;
+                    continue;
+                }
                 task
             } else {
+                if cancelling {
+                    self.batch_progress(
+                        storage,
+                        principal,
+                        id,
+                        &plan,
+                        index,
+                        json!({"status":"cancelled"}),
+                    )
+                    .await?;
+                    continue;
+                }
                 if plan["state"] != "running" {
                     return Ok(());
+                }
+                if companion && !self.images.is_local_native() {
+                    return Err(ApiError::new(
+                        409,
+                        "LOCAL_NATIVE_REQUIRED",
+                        "请切回本机原生绘图引擎后继续此批次",
+                    ));
                 }
                 let input = storage
                     .request(
@@ -107,7 +135,13 @@ impl TaskRuntime {
                         principal,
                     )
                     .await?;
-                let request = json!({"kind":if input["snapshot"]["engine"]=="krea2" {"creative"}else{"anima"},
+                let kind = match input["snapshot"]["engine"].as_str() {
+                    Some("krea2") => TaskKind::Creative,
+                    Some("qwen-image") => TaskKind::Qwen,
+                    Some("moss-image") => TaskKind::Moss,
+                    _ => TaskKind::Anima,
+                };
+                let request = json!({"kind":kind,
                     "requestKey":key,"input":input["taskInput"],"context":input["snapshot"]["context"]});
                 match self
                     .submit(storage.clone(), principal.into(), request)
@@ -138,10 +172,28 @@ impl TaskRuntime {
             } else if task.status == TaskStatus::Succeeded
                 && task.result_state == ResultState::Available
             {
-                let (artwork, alias) =
-                    super::image_batch_artwork::save(storage, principal, &task).await?;
-                Self::delivery(storage, principal, &task.task_id, "saved").await?;
-                json!({"taskId":task.task_id,"submitted":true,"status":"succeeded","historyId":artwork,"imageId":alias,"message":"已入册"})
+                match super::image_batch_artwork::save(storage, principal, &task).await {
+                    Ok((artwork, alias)) => {
+                        if let Err(error) =
+                            Self::delivery(storage, principal, &task.task_id, "saved").await
+                        {
+                            if !companion {
+                                return Err(error);
+                            }
+                            eprintln!("companion batch delivery: {}", error.code);
+                        }
+                        json!({"taskId":task.task_id,"submitted":true,"status":"succeeded","historyId":artwork,"imageId":alias,"message":"已入册"})
+                    }
+                    Err(error) if companion => {
+                        let output = task
+                            .result_refs
+                            .iter()
+                            .find(|output| output.index == 0 && output.mime.starts_with("image/"))
+                            .ok_or(error)?;
+                        json!({"taskId":task.task_id,"submitted":true,"status":"succeeded","imageId":output.alias,"message":"图片可用，作品册保存未确认"})
+                    }
+                    Err(error) => return Err(error),
+                }
             } else if task.upstream_settled
                 && matches!(task.status, TaskStatus::Failed | TaskStatus::Cancelled)
             {
@@ -165,7 +217,12 @@ impl TaskRuntime {
                     ));
                 }
                 let _ = self.reconcile(storage, principal, &task.task_id).await?;
-                json!({"taskId":task.task_id,"submitted":true,"status":"accepted","message":"后台正在生成…"})
+                let status = if companion && task.status == TaskStatus::Running {
+                    "running"
+                } else {
+                    "accepted"
+                };
+                json!({"taskId":task.task_id,"submitted":true,"status":status,"message":"后台正在生成…"})
             };
             self.batch_progress(storage, principal, id, &plan, index, patch)
                 .await?;
@@ -192,7 +249,7 @@ impl TaskRuntime {
     }
 }
 fn needs_work(plan: &Value) -> bool {
-    plan["state"] == "running"
+    matches!(plan["state"].as_str(), Some("running" | "cancelling"))
         || plan["jobs"].as_array().is_some_and(|jobs| {
             jobs.iter()
                 .any(|job| matches!(job["status"].as_str(), Some("accepted" | "running")))

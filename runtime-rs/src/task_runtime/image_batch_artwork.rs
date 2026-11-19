@@ -128,10 +128,11 @@ pub(super) async fn save(
         ("timestamp", json!(task.created_at)),
         (
             "engine",
-            json!(if task.kind == TaskKind::Creative {
-                "krea2"
-            } else {
-                "anima"
+            json!(match task.kind {
+                TaskKind::Creative => "krea2",
+                TaskKind::Qwen => "qwen-image",
+                TaskKind::Moss => "moss-image",
+                _ => "anima",
             }),
         ),
         ("provider", json!(task.provider)),

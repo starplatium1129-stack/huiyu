@@ -2,6 +2,7 @@ mod collect;
 mod local;
 mod streaming;
 mod wave;
+pub(crate) use wave::is_pcm_wave;
 
 use super::{
     config::{Engine, Settings},

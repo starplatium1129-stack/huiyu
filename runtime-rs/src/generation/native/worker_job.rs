@@ -42,6 +42,8 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
             .transpose()
     };
     let input_image_path = accepted(plan.init_image.lock().unwrap().take())?;
+    let last_frame_path = accepted(plan.last_frame.lock().unwrap().take())?;
+    let driver_path = accepted(plan.driving_media.lock().unwrap().take())?;
     let mask_image_path = accepted(plan.mask_image.lock().unwrap().take())?;
     let pen_lines_path = accepted(plan.pen_lines.lock().unwrap().take())?;
     let sketch_image_path = accepted(plan.sketch_image.lock().unwrap().take())?;
@@ -69,6 +71,13 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
     };
     if !reference_paths.is_empty() {
         request["referenceImagePaths"] = json!(reference_paths);
+    }
+    if let Some(path) = last_frame_path {
+        request["lastFramePath"] = json!(path);
+    }
+    if let Some(path) = driver_path {
+        let key = if plan.input["drivingAudio"].is_string() { "drivingAudioPath" } else { "drivingVideoPath" };
+        request[key] = json!(path);
     }
     let mut worker = inner.native.take_worker(&plan.settings).await?;
     *worker.current_temp.lock().unwrap() = Some(Arc::new(RunFiles {

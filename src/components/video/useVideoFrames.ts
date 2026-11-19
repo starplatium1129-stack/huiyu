@@ -161,7 +161,7 @@ export function useVideoFrames(deps: VideoFramesDeps) {
     if (videoStore.videoDraft?.importSourceImageId !== ctx.imageId) {
       clearFrame(first); clearFrame(last)
       deps.selectedMode.value = 'image'; deps.aspectRatio.value = 'original'
-      if (deps.status.value?.models.some(model => model.id === 'minimax-h3')) deps.selectedModelId.value = 'minimax-h3'
+      if (deps.status.value?.provider !== 'native' && deps.status.value?.models.some(model => model.id === 'minimax-h3')) deps.selectedModelId.value = 'minimax-h3'
       deps.prompt.value = composeVideoPrompt(ctx); first.id.value = ctx.imageId
     }
     const version = ++contextVersion

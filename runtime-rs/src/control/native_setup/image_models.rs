@@ -1,4 +1,4 @@
-//! Image-only managed bundles; gated credentials never enter persisted state.
+//! Managed adapter bundles; gated credentials never enter persisted state.
 use super::*;
 use crate::generation::native::{Settings, adapters, resources};
 use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
@@ -6,8 +6,11 @@ use reqwest::header::{AUTHORIZATION, HeaderMap, HeaderValue};
 pub(super) fn is_adapter_runtime(runtime: &RuntimeBundle) -> bool {
     runtime.runtime_id == "cpython3119-torch290-cu128-images-v2"
 }
+pub(super) fn is_video(id: &str) -> bool {
+    adapters::model(id).is_some_and(|spec| spec["media"] == "video")
+}
 pub(super) fn runtime_for(model: Option<&str>) -> Result<Arc<RuntimeBundle>> {
-    if !model.is_some_and(|id| adapters::model(id).is_some_and(|spec| spec["media"] == "image")) {
+    if model.and_then(adapters::model).is_none() {
         return runtime_bundle();
     }
     static RUNTIME: LazyLock<Result<Arc<RuntimeBundle>>> = LazyLock::new(|| {

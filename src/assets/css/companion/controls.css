@@ -103,16 +103,12 @@
 }
 
 .companion-page .companion-composer-meta {
-  @apply tw:flex tw:items-center tw:gap-s-2;
-  grid-column: 1 / -1;
-  @apply tw:min-h-[15px] tw:pt-s-1 tw:text-muted tw:text-mono-xs tw:overflow-hidden tw:whitespace-nowrap;
+  @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs;
 }
 .companion-page .companion-composer-meta > span {
-  @apply tw:overflow-hidden tw:text-ellipsis;
+  overflow-wrap:anywhere;
 }
-.companion-page .companion-composer-meta .companion-chat-status {
-  @apply tw:text-secondary;
-}
+.companion-page .companion-composer-meta button svg { inline-size:1em; block-size:1em; }
 .companion-page .companion-composer-meta .companion-quiet-hours-hint {
   @apply tw:inline-flex tw:items-center tw:gap-[3px] tw:shrink-0;
 }

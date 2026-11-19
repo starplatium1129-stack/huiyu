@@ -1,5 +1,7 @@
 mod compatible;
 mod completion;
+mod channel_turn;
+pub(crate) use channel_turn::{ChannelReply, ChannelTool};
 mod local_persona;
 mod ollama;
 mod persona;

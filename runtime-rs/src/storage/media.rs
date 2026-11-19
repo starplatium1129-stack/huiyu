@@ -39,7 +39,7 @@ pub(super) fn staging_path(root: &Path, key: &str, alias: &str) -> Result<PathBu
         format!("media/staging/{}/{}", key, canonical::digest(alias)),
     )
 }
-pub(super) fn detected_mime(header: &[u8]) -> Option<&'static str> {
+pub(crate) fn detected_mime(header: &[u8]) -> Option<&'static str> {
     if header.starts_with(b"\x89PNG\r\n\x1a\n") {
         return Some("image/png");
     }
@@ -51,6 +51,9 @@ pub(super) fn detected_mime(header: &[u8]) -> Option<&'static str> {
     }
     if header.starts_with(b"RIFF") && header.get(8..12) == Some(b"WEBP") {
         return Some("image/webp");
+    }
+    if header.starts_with(b"RIFF") && header.get(8..12) == Some(b"WAVE") {
+        return Some("audio/wav");
     }
     if header.get(4..8) == Some(b"ftyp") {
         if matches!(header.get(8..12), Some(b"avif" | b"avis")) {
@@ -162,6 +165,7 @@ pub(super) fn validate(input: &Value) -> Result<()> {
                     | "image/avif"
                     | "video/mp4"
                     | "video/webm"
+                    | "audio/wav"
             )
         )
     {

@@ -25,13 +25,13 @@
 
 密钥保存在两端本机设置中。端口使用 HTTP，传输依赖 Tailscale 私网加密，不应直接暴露到公网；撤销转发使用 `tailscale serve --tcp=3211 off`。状态中的模型就绪只表示远端文件可用，CUDA 与成图仍需在实际设备上确认。
 
-### 在 iOS Muse 查询素材和按场景出图
+### 用 Muse 或其他 AI 助手查询素材和出图
 
-Muse 可以通过私人 Cloudflare HTTPS 中转连接笔记本。出图时让绘遇保持运行，调用方只需填中转地址和自己的 `X-Token`。中转会接收提交的提示词、任务回执和原图。每个中转对应一台出图机，图片最多保留 48 小时，单张上限 32 MiB，总容量 256 MiB。也可以继续使用已配置的 Tailscale 私网直连。
+Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人中转。出图时让绘遇保持运行，给助手配置中转根地址和 `X-Token`。助手用 JSON 提交任务、查看进度，等图片就绪再下载文件。中转会接收提示词、任务回执和原图。每个中转对应一台出图机，图片最多保留 48 小时，单张上限 32 MiB，总容量 256 MiB。也可以继续使用已配置的 Tailscale 私网直连。
 
 首次开通时，在出图机控制室开启「允许连接」并保存。使用项目要求的 Node.js，在项目根目录运行 `.\tools\muse-relay\setup.ps1`，按 Cloudflare 的提示登录个人账号。首次使用 Workers 时需选择可用的 workers.dev 子域名。开通后进入「控制室 → 绘图与模型 → 原生绘图 → Muse 远程出图」，可以查看、复制中转地址与调用方的 X-Token。使用命令行时也可运行 `.\tools\muse-relay\setup.ps1 -CopyToken`。已运行的新版绘遇会自动读取首次配置。更换已有配置后重启绘遇。Cloudflare 的免费套餐有每日用量限制。[Cloudflare 官方用量说明](https://developers.cloudflare.com/durable-objects/platform/pricing/)
 
-中转根地址 `GET /` 提供接入说明。带密钥读取 `GET /api/muse/connection` 可查看笔记本是否在线，`GET /api/muse/guide` 提供素材与出图接口的完整用法。调用方应发送自己的应用名称，例如 `User-Agent: Huiyu-Muse/1.0`。实测 Cloudflare 会对默认的 `Python-urllib` 标识返回 403/1010。桌面之间的模型探测和上传参考图仍使用上一节的桌面连接方式。
+让助手先读中转根地址 `GET /`。返回的 JSON 中，`resultFlow` 列出轮询路径、下载条件和响应类型。后续 API 请求都带同一个 `X-Token`。读取 `GET /api/muse/connection` 可查看笔记本是否在线，`GET /api/muse/guide` 提供素材与出图接口的完整用法。调用方应发送自己的应用名称，例如 `User-Agent: Huiyu-Muse/1.0`。实测 Cloudflare 会对默认的 `Python-urllib` 标识返回 403/1010。桌面之间的模型探测和上传参考图仍使用上一节的桌面连接方式。
 
 **查目录**可用 `GET /api/muse/catalog`。查宁宁服装用 `?kind=outfit&character=nene`。`kind` 也可为 `character`、`media`（默认，场景和蓝图）、`scene` 或 `blueprint`。支持 `search`、`character`、`category` 和 `rating`。`rating=R18` 等值在服务端筛选，`ratings` 列出可用分级。用 `pageSize=500` 快速枚举，跟随 `nextPage`。服装详情用 `GET /api/muse/catalog/outfit/{完整 ID}`，例如 `/api/muse/catalog/outfit/studio/natsume-maid`，返回 `tokens` 和 `compatibleModels`。场景和蓝图详情可查种子与变体上限。
 
@@ -43,13 +43,19 @@ Muse 可以通过私人 Cloudflare HTTPS 中转连接笔记本。出图时让绘
 
 **队列和恢复**用 `GET /api/muse/queue` 查看排位。丢失编号时用 `GET /api/muse/jobs` 找回近期记录。`items` 同时含 `entryType=batch` 的批次和 `entryType=image` 的单张任务。可传 `since`（Unix 毫秒或 RFC3339），并以 `nextBefore` 翻页。
 
-**Muse 自动收原图**。公网提交成功后，立即带同一个 X-Token 向回执的 `receivePath` 发 GET。多图分别使用各项的 `items[].receivePath`。中转会等候最多 20 秒，原图就绪时直接返回 `200 image/png`。收到 `202` 就立即对同一路径再发 GET；出错按状态码退避重试。超时或退出后保留该路径即可继续接收。将收到的字节数与 `Content-Length` 和 `X-Result-Bytes` 比对，SHA-256 与 `X-Result-Sha256` 比对，通过后自动展示或保存。也可用 `py tools/muse-relay/get_result.py <HTTPS地址> <batchKey> 成图.png` 完成整个接收过程。已有调用方可继续使用原先的状态查询和分片下载。
+**助手自动收原图**
 
-**等待图片传完**。中转回执中，`status=succeeded` 表示笔记本已经出图，`generationMs` 是生成耗时。`deliveryStatus=transferring` 表示中转还在收图，`deliveryBytes` 为已经校验的字节数。即使调用方退出，中转也会继续接收已经提交的批次。等到 `deliveryStatus=ready`，再用同一个中转地址和密钥下载 `resultUrl`。此时 `deliveryMs` 是笔记本向中转传送这张图的耗时，手机自己的下载时间另算。中转已收全的图在笔记本离线后仍可下载。回执保留 `resultBytes` 和 `resultSha256`。遇到空响应、429 或 503，按 `Retry-After` 或短暂退避重查原路径。
+1. 提交回执中，每张图的 `items[].next` 都给出了下一次请求的 `method`、`path` 和 `accept`。当 `accept` 为 `application/json` 时，等 `retryAfterSeconds` 秒（默认 2 秒），再用读 JSON 的工具查批次的 `statusPath`。同一批只需查一次就能看到所有图片的进度。`next` 为 `null` 时结束该项，并按 `status`、`deliveryStatus` 和 `error` 说明原因。
+2. 某一项的 `resultAvailable` 为 `true` 且有 `resultUrl` 时，`next.accept` 会变为 `image/png`。这时把该项的 `resultUrl` 交给文件下载工具，带同一个 `X-Token` 发 GET。整图应返回 `200 image/png`。
+3. 保存前检查 PNG 文件头（十六进制 `89504e470d0a1a0a`），将实际字节数与 `Content-Length`、`X-Result-Bytes` 比对，计算 SHA-256 并与 `X-Result-Sha256` 比对。校验通过再展示图片、告知用户完成。
+
+**沿用 receivePath 的助手**可以对每项的 `receivePath` 长轮询，单图也可用顶层的同名字段。每次 GET 最多等待 20 秒。收到 `202`，或工具显示 `200 application/json` 且正文含 `"pending":true`，都按等待处理。即使旧回执里有 `"ok":true`，也要继续 GET 同一地址。重试间隔优先读 `Retry-After`（秒），缺省用 2 秒。JSON 只用于读状态，下载整图沿用上述校验。断线后可用原路径继续接收。
+
+**等待图片传完**。中转回执中，`status=succeeded` 表示笔记本已经出图，`generationMs` 是生成耗时。`deliveryStatus=transferring` 表示中转还在收图，`deliveryBytes` 为已经校验的字节数。即使调用方退出，中转也会继续接收已经提交的批次。中转收齐并校验后，`deliveryStatus` 变为 `ready`，`deliveryMs` 记录传送耗时，手机自己的下载时间另算。中转已收全的图在笔记本离线后仍可下载。回执保留 `resultBytes` 和 `resultSha256`。遇到 `expired`、`storageFull`、`invalidReceipt` 或 `integrityError` 时，结束该项并报告原因。遇到空响应、429 或 503，按 `Retry-After` 或短暂退避重查原路径。
 
 **弱网取图**。从 `resultUrl?part=0` 开始依次取 128 KiB 分片，最后一片可较小。收到的字节数应等于 `Content-Length`，分片 SHA-256 应等于 `X-Part-Sha256`，按 `X-Result-Offset` 写入。掉线只需重取缺少的分片。所有分片拼好后，用回执的大小和 SHA-256 核对整图，再交给用户。可直接用 Python 3.11+ 的下载工具，运行 `py tools/muse-relay/get_result.py <HTTPS地址> <batchKey> 成图.png`。工具会提示输入密钥，也可读取环境变量 `MUSE_TOKEN`。重复运行会沿用已经收好的分片，批次中的第 2 张可加 `--item 2`。
 
-**断点续传**时用同一个地址和 `X-Token` 下载 `resultUrl`。断线后保留部分文件，从已收到的 `N` 字节发送 `Range: bytes=N-`，并用原 `ETag` 作为 `If-Range`。`206` 且 `Content-Range` 从 `N` 开始时追加，`200` 时使用完整响应替换。完成后核对 `resultBytes` 和 `resultSha256`。任务记录保留约 7 天，原图最长保留 48 小时，受 2 GiB 缓存上限约束。
+**断点续传**时用同一个地址和 `X-Token` 下载 `resultUrl`。断线后保留部分文件，从已收到的 `N` 字节发送 `Range: bytes=N-`，并用原 `ETag` 作为 `If-Range`。收到 `206 image/png` 且 `Content-Range` 从 `N` 开始时追加，完成后核对 `resultBytes` 和 `resultSha256`。收到 `200 image/png` 时按完整文件接收，通过整图校验后再替换。桌面端任务记录保留约 7 天，原图最长保留 48 小时，受 2 GiB 缓存上限约束。
 
 ### Anima 显卡与运行环境
 
@@ -73,6 +79,8 @@ $animaPackages = Get-Content tools/inference/requirements.txt | Where-Object { $
 多显卡时，启动网关前可设置 `HUIYU_ANIMA_DEVICE=cuda:1` 或 `xpu:1`。ROCm 沿用 PyTorch 的 `cuda:N` 编号。默认使用首个 CUDA/ROCm 设备，其次是首个 XPU 设备。
 
 ROCm 的 Anima 注意力先确认 Flash SDPA 可实际执行，其他形状用 PyTorch 分块计算。ROCm 优先使用经设备运算验证的 BF16，其余设备用 FP32 保留动态范围。自动显存策略在共享显存、Intel XPU、ROCm FP32 和可用显存低于 12 GiB 的 AMD 设备上优先分阶段加载。采样步数在画布与生成栏同步显示，高清修复的两轮分别计数。 [ComfyUI 显卡与注意力选择](https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/model_management.py)
+
+Windows 上的 Radeon 880M 在 ROCm 7 和 BF16 模式下会自动合并 Anima 自注意力中的 Q/K 归一化与位置编码，可配合内置 TeaCache 使用。任务元数据的 `nativeRuntime.execution.rocmFusedQkCalls` 记录实际融合次数。设备或输入不匹配时沿用原计算路径。融合会改变少量浮点舍入结果，同种子出图的细节可能不同。
 
 **NVIDIA 受管运行库要求**
 - Windows 10 22H2 / 11 x64
@@ -139,7 +147,7 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 
 ---
 
-## 4. 原生图像适配器与多模型支持
+## 4. 原生图像与视频模型
 
 原生适配器通过统一的任务队列与内存调度器支持以下模型：
 
@@ -150,13 +158,56 @@ python -I scripts/maintenance/convert-anima-checkpoint.py `
 | `qwen-image-2.1` | Qwen/Qwen-Image-2.1 | `/api/qwen/jobs` | 文生图与最多四图参考指令编辑 |
 | `qwen-image-2.1-turbo` | Qwen/Qwen-Image-2.1-Turbo | `/api/qwen/jobs` | 8 步文生图与参考图编辑 |
 | `moss-miaomiao-base-v1.0` | MIAOKA / OpenMOSS | `/api/moss/jobs` | MiaoMiao MOSS 文生图 |
-| `wan2.2-ti2v-5b` | Wan-AI/Wan2.2-TI2V-5B | `/api/video/jobs` | 3/5 秒文生视频，24 fps |
-| `minimax-h3` | MiniMaxAI/MiniMax-H3 | `/api/video/jobs` | 联合音视频生成，支持 5/10 秒 |
-| `ltx-2.3` | diffusers/LTX-2.3 | `/api/video/jobs` | 单阶段联合音视频生成 |
+| `wan2.2-ti2v-5b` | Wan-AI/Wan2.2-TI2V-5B-Diffusers | `/api/video/jobs` | 文字或首帧，3/5 秒，24 fps |
+| `wan2.2-14b` | Wan-AI/Wan2.2-T2V-A14B-Diffusers | `/api/video/jobs` | 文字，双噪声阶段，3/5 秒，16 fps |
+| `hunyuan-video-1.5` | hunyuanvideo-community/HunyuanVideo-1.5-Diffusers-480p_t2v | `/api/video/jobs` | 文字，480p 版本，3/5 秒，24 fps |
+| `minimax-h3` | MiniMaxAI/MiniMax-H3 | `/api/video/jobs` | 文字、首帧或首尾帧，带音轨，5/10 秒档 |
+| `ltx-2.3` | diffusers/LTX-2.3-Diffusers | `/api/video/jobs` | 文字或首帧，带音轨，3/5 秒。首帧直接使用解码后的 RGB 图像 |
+| `ltx-2.5-distilled` | Lightricks/LTX-2.5-Diffusers | `/api/video/jobs` | 文字或首帧，3/5 秒有声短片。使用 2.5 专用 Gemma 4 文本编码器和单阶段 8 步蒸馏配方 |
+| `kandinsky-6-lite-distill` | kandinskylab/Kandinsky-6.0-Lite-distill-5s-Diffusers | `/api/video/jobs` | 文字或首帧，10 步生成 5 秒视频和 44.1 kHz 单声道音轨 |
+| `wan-animate-2` | Wan-AI/Wan2.2-Animate-2-14B-Distilled-Diffusers | `/api/video/jobs` | 角色图和 H.264 MP4 动作参考，10 步，3/5 秒无声短片 |
+| `longcat-avatar-1.6` | meituan-longcat/LongCat-Video-Avatar-1.6 | `/api/video/jobs` | 角色图和 WAV 配音，8 步，25 fps，3/5 秒单人对白 |
 
 图像适配 Python 与 Anima Python 独立配置。除受管的 PyTorch 2.9 配方外，可复用已有的 PyTorch 2.13.0 / torchvision 0.28.0 / Transformers 5.14.1 / Pillow 12.2.0 / SageAttention 2.2.0 环境；补齐固定版本 Diffusers、Accelerate、PEFT、ftfy 与 huggingface-hub，版本见 `tools/inference/requirements-adapters.txt`。该共享环境的漫画处理使用 NumPy 2.4.4 与 OpenCV headless 5.0.0.93。原生 worker 只使用这些 Python 库，不启动或请求 ComfyUI 服务；切换解释器后重启绘遇，保留 Anima 原配置。
 
 受管模型沿用下载时的完整校验记录，启动只在取得文件保护锁后核对版本、大小与修改状态；不匹配、非受管目录或无法取得保护锁时仍完整读取校验。任务记录的 `modelIdentityScope` 区分准备记录与完整字节摘要，不把二者混称为本次整库校验。
+
+### 原生视频准备与加速
+
+从「故事短片 → 视频引擎设置」选择「本机原生引擎」，准备所选模型，保存并重启绘遇。模型按固定版本下载。LongCat 使用下面的专用环境，其余视频模型使用完整 Diffusers 目录。受管 CUDA 环境面向 NVIDIA。使用 AMD 或 Intel 时，支持该设备的模型可选「仅下载视频模型」，再通过「复用已有环境与模型」填写模型根目录和「图像与视频适配器 Python」。本地 ffmpeg 需有 H.264 编码器，生成音轨还需 AAC。
+
+手动准备时，在单独的 Python 环境安装显卡对应的 BF16 PyTorch。视频适配器支持 torch 2.9.0 / torchvision 0.24.0 和 2.9.1 / 0.24.1。下面的命令使用已有的 GPU 版解释器，从仓库根目录补齐其余依赖，再检查 Wan 5B 的运行环境。
+
+```powershell
+$videoPython = 'D:\HuiyuAI\inference\video\Scripts\python.exe'
+$videoPackages = Get-Content tools/inference/requirements-adapters.txt | Where-Object { $_ -match '^[a-zA-Z]' -and $_ -notmatch '^torch(vision)?==' }
+& $videoPython -m pip install @videoPackages
+& $videoPython -I -B tools/inference/adapter_worker.py --diagnose --model-id wan2.2-ti2v-5b
+```
+
+「注意力加速」默认自动选择。兼容的 NVIDIA 设备优先尝试本地 FlashAttention 2，其次 SageAttention，其他设备使用 PyTorch SDPA。带遮罩等特殊计算保留 SDPA。ROCm 在大画幅缺少可用融合内核时按查询行分块，保留完整注意力范围。显存设置可选常驻或分层卸载。Wan 和混元可复用文本编码，Wan 的卸载模式会分块解码画面。内核选择和显存需求均与模型、尺寸、帧数有关。 [ComfyUI 注意力实现](https://github.com/Comfy-Org/ComfyUI/blob/master/comfy/ldm/modules/attention.py) · [Diffusers 注意力后端](https://huggingface.co/docs/diffusers/optimization/attention_backends)
+
+导出 MP4 时会尝试 NVIDIA NVENC、Windows AMD AMF 或 Intel QSV。硬件编码不可用时，ffmpeg 用 libx264 编码已生成的画面和音轨。已完成任务的 `metadata.nativeRuntime.videoAcceleration` 记录设备、实际调用的注意力内核次数和最终编码器。
+
+在「图片动起来」中选择 Wan-Animate-2 或 LongCat 后，首帧下方会显示对应的素材选择框。Wan 读取动作视频开头的 3 或 5 秒，LongCat 将配音截到所选时长，较短的配音在末尾补静音。接口调用方将文件以 `application/octet-stream` 提交到 `POST /api/video/drivers/video` 或 `POST /api/video/drivers/audio`，再将返回的 `name` 填入生成请求的 `drivingVideo` 或 `drivingAudio`。上传上限为 20 MiB，配音接受 8–192 kHz 的单声道或双声道 PCM WAV。四个新模型按需下载，LTX-2.5 需先在 Hugging Face 接受该版本的许可。 [LTX-2.5 权重](https://huggingface.co/Lightricks/LTX-2.5-Diffusers) · [Wan-Animate-2 权重](https://huggingface.co/Wan-AI/Wan2.2-Animate-2-14B-Distilled-Diffusers)
+
+#### LongCat 专用环境
+
+LongCat 使用支持 BF16 的 NVIDIA 显卡、PyTorch 2.6.0（CUDA 12.4）、torchvision 0.21.0、Triton 3.2 和 FlashAttention 2.7.4.post1。Windows 需使用与 Python、Torch 和 CUDA 匹配的 Triton 和 FlashAttention 构建。把这套环境放在模型根目录旁的 `environments/longcat-avatar`。使用其他位置时，启动绘遇前设置 `HUIYU_LONGCAT_PYTHON` 指向其解释器。
+
+从项目根目录补齐这个环境的依赖并准备官方源码。下面以已装好上述 GPU 依赖的 Windows 环境为例。
+
+```powershell
+$avatarEnv = 'D:\HuiyuAI\inference\environments\longcat-avatar'
+$avatarPython = Join-Path $avatarEnv 'Scripts\python.exe'
+$avatarSource = Join-Path $avatarEnv 'upstream\LongCat-Video'
+& $avatarPython -m pip install -r tools/inference/requirements-longcat-avatar.txt
+git clone https://github.com/meituan-longcat/LongCat-Video $avatarSource
+git -C $avatarSource switch --detach 58eb336edc5c8c63389838727e40b8c18434e54e
+& $avatarPython -I -B tools/inference/adapter_worker.py --diagnose --model-id longcat-avatar-1.6
+```
+
+已有同一修订的源码时，可通过 `HUIYU_LONGCAT_SOURCE` 指向 checkout 根目录。worker 会校验源码摘要后加载。控制室可先单独下载该模型的 DiT、两套 LoRA、文本编码器、Whisper 和 VAE，共约 63.1 GB。环境准备好后再启用原生视频引擎。 [官方模型卡](https://huggingface.co/meituan-longcat/LongCat-Video-Avatar-1.6)
 
 ---
 

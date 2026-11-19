@@ -1,7 +1,7 @@
 use std::ops::Range;
 
 pub(super) fn finish(bytes: &mut [u8]) -> Option<(Range<usize>, bool)> {
-    let (data, pcm) = inspect(bytes)?;
+    let (data, pcm) = inspect(bytes, false)?;
     let length = bytes.len();
     bytes[4..8].copy_from_slice(&((length - 8) as u32).to_le_bytes());
     // Streaming placeholders use the admitted data range, excluding any trailing
@@ -12,7 +12,11 @@ pub(super) fn finish(bytes: &mut [u8]) -> Option<(Range<usize>, bool)> {
 
 // A completed HTTP body can still contain a truncated WAV. Accept the empty
 // sizes used by streaming WAV headers, but reject partial declared chunks.
-fn inspect(bytes: &[u8]) -> Option<(Range<usize>, bool)> {
+pub(crate) fn is_pcm_wave(bytes: &[u8]) -> bool {
+    inspect(bytes, true).is_some()
+}
+
+fn inspect(bytes: &[u8], require_pcm: bool) -> Option<(Range<usize>, bool)> {
     if bytes.len() < 44 || &bytes[..4] != b"RIFF" || &bytes[8..12] != b"WAVE" {
         return None;
     }
@@ -51,6 +55,8 @@ fn inspect(bytes: &[u8]) -> Option<(Range<usize>, bool)> {
             let align = short(start + 12) as usize;
             let bits = short(start + 14) as usize;
             if ![1, 3].contains(&encoding)
+                || (require_pcm && (encoding != 1 || ![1, 2].contains(&channels)
+                    || !(8000..=192000).contains(&rate) || ![8, 16, 24, 32].contains(&bits)))
                 || channels == 0
                 || rate == 0
                 || bits == 0

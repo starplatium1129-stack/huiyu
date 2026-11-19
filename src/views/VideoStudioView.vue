@@ -17,24 +17,29 @@
     <VideoDraftNotice />
 
     <section class="video-mode-strip studio-segments" data-fluid-glass role="group" aria-label="视频创作方式"><AnimatedSelection />
-      <StudioTooltip v-for="mode in modes" :key="mode.id" :anchor="!modeReady(mode.id)" :content="!modeReady(mode.id) ? modeBadge(mode.id) : undefined">
       <button
+        v-for="mode in modes"
+        :key="mode.id"
         class="video-mode-card"
         type="button"
         :class="{ active: selectedMode === mode.id }"
         :aria-pressed="selectedMode === mode.id"
         :aria-describedby="selectedMode === mode.id ? 'video-mode-description' : undefined"
-        :disabled="!modeReady(mode.id)"
         @click="selectedMode = mode.id"
       >
         <span class="video-mode-icon studio-control-icon"><ArchiveIcon :name="mode.icon" /></span>
         <strong class="studio-control-label">{{ mode.label }}</strong>
       </button>
-      </StudioTooltip>
     </section>
     <div class="video-mode-context">
-      <p id="video-mode-description"><strong>{{ modeBadge(selectedMode) }}</strong></p>
-      <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:p-s-1 tw:rounded-md" data-fluid-glass aria-label="视频工作区导航"><RouterLink v-if="selectedMode !== 'text'" :to="{ query: $route.query, hash: '#video-frames' }">准备画面</RouterLink><RouterLink :to="{ query: $route.query, hash: '#video-brief' }">镜头描述</RouterLink><RouterLink :to="{ query: $route.query, hash: '#video-settings' }">画幅与时长</RouterLink><RouterLink :to="{ query: $route.query, hash: '#video-queue' }">查看成片</RouterLink></nav>
+      <p id="video-mode-description"><strong>{{ modeBadge }}</strong></p>
+      <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:p-s-1 tw:rounded-md" data-fluid-glass aria-label="视频工作区导航">
+        <RouterLink v-if="selectedMode !== 'text'" :to="{ query: $route.query, hash: '#video-frames' }">准备画面</RouterLink>
+        <RouterLink :to="{ query: $route.query, hash: '#video-brief' }">镜头描述</RouterLink>
+        <RouterLink :to="{ query: $route.query, hash: '#video-workbench' }">提示词工作台</RouterLink>
+        <RouterLink :to="{ query: $route.query, hash: '#video-settings' }">画幅与时长</RouterLink>
+        <RouterLink :to="{ query: $route.query, hash: '#video-queue' }">查看成片</RouterLink>
+      </nav>
     </div>
     <VideoGenerationBar v-if="selectedMode !== 'shots'" id="video-settings"
       v-model:aspect-ratio="aspectRatio" v-model:duration="duration" v-model:quality="quality"
@@ -44,7 +49,7 @@
       :can-generate="canGenerate" :submitting="submitting" :submit-title="submitTitle" :submit-description="submitDescription"
       @generate="submitVideo">
       <template #recovery>
-        <button v-if="status && !statusLoading && (!status.online || activeModel && !activeModel.available)"
+        <button v-if="status && !statusLoading && (unsupportedMode || !status.online || activeModel && !activeModel.available)"
           class="btn btn-quiet btn-sm" type="button" @click="showEnvironment">查看视频环境</button>
       </template>
     </VideoGenerationBar>
@@ -68,6 +73,14 @@
             <strong>{{ uploadingImage ? '正在准备首帧…' : '上传首帧' }}</strong>
             <span>拖入或点击选择图片</span>
           </label>
+          <div v-if="driverKind" class="field">
+            <label for="video-driving-file" class="field-label">{{ driverKind === 'audio' ? '角色配音' : '动作参考视频' }}</label>
+            <small id="video-driving-hint" class="field-hint">{{ driverKind === 'audio' ? '选择 PCM WAV 配音（20 MiB 以内）。' : '选择 H.264 MP4 视频（20 MiB 以内），时长需覆盖所选镜头。' }}</small>
+            <input id="video-driving-file" type="file" class="input" :accept="driverKind === 'audio' ? '.wav,audio/wav' : '.mp4,video/mp4'"
+              aria-describedby="video-driving-hint" :disabled="driverBusy || submitting" @change="chooseDriver" />
+            <span v-if="driverBusy || driver" role="status">{{ driverBusy ? '正在上传…' : driver?.label }}</span>
+            <button v-if="driver" type="button" class="btn btn-quiet btn-sm" :disabled="driverBusy || submitting" @click="clearDriver">移除素材</button>
+          </div>
         </section>
 
         <section v-else-if="selectedMode === 'first-last-frame'" id="video-frames" class="video-panel video-first-frame-panel">
@@ -105,20 +118,19 @@
         <section id="video-brief" class="video-panel video-brief-panel">
           <div class="video-panel-heading">
             <div>
-              <span class="video-step">01 · 镜头描述</span>
-              <h2>{{ selectedMode === 'text' ? '输入镜头描述' : selectedMode === 'image' ? '动态与运镜描述' : '过渡动态与运镜' }}</h2>
+              <h2><label for="video-shot-description">镜头描述</label></h2>
             </div>
             <span class="video-count" :data-warning="prompt.length > 900 || undefined">
               {{ prompt.length }} / 4000
             </span>
           </div>
           <textarea
+            id="video-shot-description"
             v-model="prompt"
-            aria-label="镜头描述"
             class="textarea video-prompt"
             maxlength="4000"
             rows="7"
-            placeholder="例如：黄昏的电车站，少女回头看向镜头，风吹起发丝和裙摆，镜头缓慢推进，暖色逆光，动作自然连续。"
+            :placeholder="videoPromptGuidance[selectedMode]"
             spellcheck="false"
             autocorrect="off"
             autocapitalize="off"
@@ -126,12 +138,16 @@
         </section>
         </div>
 
-        <section class="video-panel video-details-panel">
+        <section id="video-workbench" class="video-panel video-details-panel">
           <div class="video-panel-heading">
             <div>
-              <h2>镜头与细节</h2>
+              <h2>提示词工作台</h2>
             </div>
           </div>
+
+          <VideoPromptWorkbench :key="selectedMode" :mode="selectedMode" :prompt="prompt" :camera="camera" :motion="motion"
+            :camera-options="cameraSelectOptions" :motion-options="motionSelectOptions" :disabled="submitting"
+            @apply="applyPromptEdit" />
 
           <div class="video-choice-pair">
             <label class="field">
@@ -156,7 +172,7 @@
             <StudioDisclosureSummary class="video-disclosure-heading">高级设置</StudioDisclosureSummary>
             <div class="video-advanced-grid" data-disclosure-content>
               <ToggleSwitch
-                v-if="activeModel?.id === 'minimax-h3'"
+                v-if="!nativeVideo && activeModel?.id === 'minimax-h3'"
                 class="video-steps-toggle"
                 :model-value="steps === 4"
                 label="极速 4 步"
@@ -167,14 +183,20 @@
                   <small>更快生成预览，画面细节会略有减少。</small>
                 </span>
               </ToggleSwitch>
-              <label class="field">
+              <div v-if="nativeVideo" class="field">
+                <label for="video-attention" class="field-label">注意力加速</label>
+                <small id="video-attention-hint" class="field-hint">SageAttention 和 FlashAttention 2 需要兼容的显卡及本地内核。</small>
+                <StudioSelect id="video-attention" v-model="videoAttention" label="注意力加速"
+                  aria-describedby="video-attention-hint" :options="attentionOptions" />
+              </div>
+              <label v-if="activeModel?.supportsNegative !== false" class="field">
                 <span class="field-label">负向描述</span>
                 <textarea
                   v-model="negative"
                   class="textarea"
                   rows="3"
                   maxlength="1000"
-                  placeholder="可选。基础质量与稳定性负向词已由工作室自动补全。"
+                  placeholder="可选。写下希望画面避开的内容。"
                   spellcheck="false"
                   autocorrect="off"
                   autocapitalize="off"
@@ -229,6 +251,11 @@
               <span>{{ job.width }} × {{ job.height }}</span>
               <span>{{ job.duration }} 秒</span>
               <span>Seed {{ job.seed }}</span>
+              <template v-if="job.execution">
+                <span>推理设备 {{ job.execution.device }}</span>
+                <span v-if="job.execution.attention.length">注意力 {{ job.execution.attention.join('、') }}</span>
+                <span>MP4 编码 {{ job.execution.encoder }}</span>
+              </template>
             </div>
             <StudioMediaPlayer
               v-if="job.status === 'succeeded' && job.resultUrl"
@@ -311,13 +338,14 @@
             <p v-else-if="activeModel.missing.length" class="video-install-note">
               此模型暂不支持生成，可选择其他模型。
             </p>
-            <div v-if="activeModel.id === 'minimax-h3'" class="video-route-note">
+            <div v-if="!nativeVideo && activeModel.id === 'minimax-h3'" class="video-route-note">
               <strong>推荐用法</strong>
               <span>Wan 5B 快速验证镜头，H3 再做带原生音效与音乐的最终成片。</span>
             </div>
           </template>
-          <RouterLink v-if="status && (!status.online || nativeVideo && activeModel && !activeModel.available)" class="btn btn-ghost btn-block" :to="videoControlTarget">
-            {{ nativeVideo ? '准备视频运行环境' : '打开服务与连接' }}
+          <RouterLink v-if="status && !nativeVideo && !status.online" class="btn btn-ghost btn-block" :to="comfyControlTarget">打开服务与连接</RouterLink>
+          <RouterLink class="btn btn-ghost btn-block" :to="videoControlTarget">
+            {{ nativeVideo && !activeModel?.available ? '准备视频运行环境' : '视频引擎设置' }}
           </RouterLink>
         </section>
 
@@ -331,7 +359,7 @@
             type="button"
             :class="{ active: selectedModelId === model.id }"
             :aria-pressed="selectedModelId === model.id"
-            @click="selectedModelId = model.id"
+            @click="chooseModel(model.id)"
           >
             <span>
               <strong><ArchiveIcon v-if="selectedModelId === model.id" name="success" />{{ model.label }}</strong>
@@ -379,9 +407,10 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 const loadShotListEditor = () => import('@/components/video/ShotListEditor.vue')
 import VideoDraftNotice from '@/components/video/VideoDraftNotice.vue'
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
+import VideoPromptWorkbench from '@/components/video/VideoPromptWorkbench.vue'
+import { videoPromptGuidance, type VideoPromptEdit } from '@/components/video/videoPromptPresets'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
-import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import TaskMediaDownload from '@/components/tasks/TaskMediaDownload.vue'
 import { useTaskCenter } from '@/composables/useTaskCenter'
@@ -405,6 +434,7 @@ async function removeFrame(event: MouseEvent, slot: 'first' | 'last') {
   if (ownedFocus && !button.isConnected && document.activeElement === document.body && selectedMode.value === mode && target?.isConnected && target.getClientRects().length) target.focus({ preventScroll: true })
 }
 const {
+chooseModel, driverKind, driver, driverBusy, chooseDriver, clearDriver,
 archiveStatus,
 archiveState,
 nativeVideo,
@@ -412,8 +442,8 @@ statusLoading,
 loadStatus,
 modes,
 selectedMode,
-modeReady,
 modeBadge,
+unsupportedMode,
 t8State,
 status,
 videoImageUrl,
@@ -433,10 +463,12 @@ cameraOptions,
 motion,
 motionOptions,
 quality,
+qualities,
 durationOptions,
 duration,
 activeModel,
 steps,
+videoAttention,
 negative,
 seedText,
 canGenerate,
@@ -466,18 +498,31 @@ const aspectSelectOptions = computed(() => aspectOptions.value.map(item => {
   return { value: item.id, label: `${item.label}${size ? ` · ${size}` : ''}` }
 }))
 const durationSelectOptions = computed(() => durationOptions.value.map(seconds => ({ value: seconds, label: `${seconds} 秒` })))
-const qualitySelectOptions = computed(() => (status.value?.qualities || []).map(item => ({ value: item.id, label: item.label })))
+const qualitySelectOptions = computed(() => qualities.value.map(item => ({ value: item.id, label: item.label })))
+const attentionOptions = computed(() => [
+  { value: 'auto', label: '自动选择' },
+  { value: 'sdpa', label: 'PyTorch SDPA' },
+  { value: 'sage', label: 'SageAttention' },
+  { value: 'flash2', label: 'FlashAttention 2' },
+].filter(option => !activeModel.value?.attentionModes || activeModel.value.attentionModes.some(mode => mode === option.value)))
+const videoReturnQuery = computed(() => ({
+  ...(typeof route.query.job === 'string' ? { videoJob: route.query.job } : {}),
+  ...(selectedMode.value === 'shots' ? { videoMode: 'shots' } : {}),
+}))
 const videoControlTarget = computed(() => ({
-  path: '/control',
-  hash: nativeVideo.value ? '#control-inference' : '#control-services',
-  query: {
-    ...(nativeVideo.value ? { videoSetup: '1' } : { engine: 'video' }),
-    ...(typeof route.query.job === 'string' ? { videoJob: route.query.job } : {}),
-    ...(selectedMode.value === 'shots' ? { videoMode: 'shots' } : {}),
-  },
+  path: '/control', hash: '#control-inference',
+  query: { ...videoReturnQuery.value, videoSetup: '1', model: selectedModelId.value },
+}))
+const comfyControlTarget = computed(() => ({
+  path: '/control', hash: '#control-services', query: { ...videoReturnQuery.value, engine: 'video' },
 }))
 const cameraSelectOptions = cameraOptions.map(item => ({ value: item.id, label: item.label }))
 const motionSelectOptions = motionOptions.map(item => ({ value: item.id, label: item.label }))
+function applyPromptEdit(edit: VideoPromptEdit) {
+  prompt.value = edit.prompt
+  camera.value = edit.camera
+  motion.value = edit.motion
+}
 </script>
 
 <style scoped src="@/assets/css/video-studio-view.css"></style>

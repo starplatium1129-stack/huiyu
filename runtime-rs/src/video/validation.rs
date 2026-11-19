@@ -15,6 +15,9 @@ const KEYS: &[&str] = &[
     "lastFrame",
     "shotSize",
     "steps",
+    "videoAttention",
+    "drivingAudio",
+    "drivingVideo",
     "references",
     "adultEnabled", // Accepted only for old saved requests; no longer controls access.
 ];
@@ -23,6 +26,29 @@ pub(super) fn present(value: &Value) -> bool {
 }
 fn invalid(message: &str) -> ApiError {
     error(400, "INVALID_PARAMETER", message)
+}
+pub(super) fn validate_frames(body: &Value, model: &Value) -> Result<()> {
+    for (key, mode, message) in [
+        ("image", "image", "该模型不支持首帧图输入"),
+        ("lastFrame", "first-last-frame", "该模型不支持尾帧图输入"),
+    ] {
+        if !present(&body[key]) {
+            continue;
+        }
+        if !body[key]
+            .as_str()
+            .is_some_and(|s| inputs::valid_name(s, false))
+        {
+            return Err(invalid("帧图引用格式不受支持"));
+        }
+        if !model["modes"]
+            .as_array()
+            .is_some_and(|modes| modes.iter().any(|m| m == mode))
+        {
+            return Err(error(400, "MODEL_INPUT_MODE", message));
+        }
+    }
+    Ok(())
 }
 pub(super) fn integer(value: &Value) -> Option<u64> {
     value
@@ -42,7 +68,7 @@ pub(super) fn validate_for(
         .as_object()
         .ok_or_else(|| error(400, "INVALID_BODY", "请求体必须是 JSON 对象"))?;
     for key in object.keys() {
-        if !KEYS.contains(&key.as_str()) {
+        if !KEYS.contains(&key.as_str()) || (native.is_none() && matches!(key.as_str(), "videoAttention" | "drivingVideo" | "drivingAudio")) {
             return Err(error(
                 400,
                 "UNKNOWN_PARAMETER",
@@ -75,7 +101,7 @@ pub(super) fn validate_for(
     let id = body["modelId"]
         .as_str()
         .ok_or_else(|| error(400, "UNKNOWN_MODEL", "未知视频模型"))?;
-    let model = catalog::model(id).ok_or_else(|| error(400, "UNKNOWN_MODEL", "未知视频模型"))?;
+    let model = native.or_else(|| catalog::model(id)).ok_or_else(|| error(400, "UNKNOWN_MODEL", "未知视频模型"))?;
     if native.is_none() && model["executable"] != true {
         return Err(error(
             409,
@@ -93,25 +119,8 @@ pub(super) fn validate_for(
     if quality_spec.is_null() {
         return Err(invalid("不支持的画质档位"));
     }
-    for (key, mode, message) in [
-        ("image", "image", "该模型不支持首帧图输入"),
-        ("lastFrame", "first-last-frame", "该模型不支持尾帧图输入"),
-    ] {
-        if present(&body[key]) {
-            if !body[key]
-                .as_str()
-                .is_some_and(|s| inputs::valid_name(s, false))
-            {
-                return Err(invalid(if key == "image" {
-                    "图片引用格式不受支持"
-                } else {
-                    "尾帧图片引用格式不受支持"
-                }));
-            }
-            if !model["modes"].as_array().unwrap().iter().any(|m| m == mode) {
-                return Err(error(400, "MODEL_INPUT_MODE", message));
-            }
-        }
+    if native.is_none() {
+        validate_frames(body, model)?;
     }
     let references = if let Some(value) = object.get("references").filter(|v| !v.is_null()) {
         if !h3 {
@@ -217,7 +226,7 @@ pub(super) fn validate_for(
         })
         .ok_or_else(|| {
             invalid(if native.is_some() {
-                "所选原生版本不支持此时长；H3 支持 5/10 秒，其他版本支持 3/5 秒"
+                "所选原生模型不支持此时长"
             } else if h3 {
                 "时长支持 3/5/10/15 秒"
             } else {
@@ -257,6 +266,14 @@ pub(super) fn validate_for(
     };
     let mut input = json!({"prompt":prose::prompt(body,h3 && native.is_none(),duration,&references),"originalPrompt":user.trim(),"negative":negative,"modelId":id,"aspectRatio":aspect,"quality":quality,"width":width,"height":height,"duration":duration,"frames":if h3{prose::frame_count(duration)}else{if duration==3{73}else{121}},"fps":24,"camera":body["camera"],"motion":body["motion"],"seed":seed,"image":if generation::truthy(&body["image"]){body["image"].clone()}else{Value::Null},"lastFrame":if generation::truthy(&body["lastFrame"]){body["lastFrame"].clone()}else{Value::Null},"references":if references.is_empty(){Value::Null}else{json!(references)},"dialogue":if generation::truthy(&body["dialogue"]){body["dialogue"].clone()}else{Value::Null},"dialogueLang":if language=="auto"{None}else{Some(language)},"shotSize":shot,"steps":if h3{steps}else{20},"cfg":5});
     if let Some(spec) = native {
+        for key in ["drivingVideo", "drivingAudio"] {
+            if let Some(name) = body[key].as_str() {
+                input[key] = json!(name);
+            }
+        }
+        if let Some(attention) = body.get("videoAttention") {
+            input["videoAttention"] = attention.clone();
+        }
         input["steps"] = json!(steps);
         input["frames"] = spec["durationFrames"][duration.to_string()].clone();
         input["fps"] = spec["fps"].clone();

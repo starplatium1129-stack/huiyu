@@ -49,6 +49,7 @@ pub(crate) use canonical::{
     digest_object as json_object_digest, stringify, stringify_equal, stringify_object,
 };
 pub use media::Media;
+pub(crate) use media::detected_mime;
 pub(crate) use verification::OpenedMedia;
 
 pub(crate) enum TaskMediaSource {

@@ -30,6 +30,8 @@ pub(crate) struct Plan {
     pub mask_model_dir: Option<PathBuf>,
     pub upscale_model_path: Option<PathBuf>,
     pub init_image: std::sync::Mutex<Option<InputFile>>,
+    pub last_frame: std::sync::Mutex<Option<InputFile>>,
+    pub driving_media: std::sync::Mutex<Option<InputFile>>,
     pub reference_images: std::sync::Mutex<Vec<InputFile>>,
     pub mask_image: std::sync::Mutex<Option<InputFile>>,
     pub pen_lines: std::sync::Mutex<Option<InputFile>>,
@@ -216,6 +218,8 @@ async fn settle(
     if let Execution::Native(plan) = &job.execution {
         plan.init_image.lock().unwrap().take();
         plan.reference_images.lock().unwrap().clear();
+        plan.last_frame.lock().unwrap().take();
+        plan.driving_media.lock().unwrap().take();
         plan.mask_image.lock().unwrap().take();
         plan.pen_lines.lock().unwrap().take();
         plan.sketch_image.lock().unwrap().take();

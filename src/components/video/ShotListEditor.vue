@@ -13,7 +13,7 @@
       <button v-if="requestPending" class="btn btn-ghost btn-sm" type="button" :disabled="cancelling || submitting || retrying" @click="cancelOriginalRequest">{{ cancelling ? '请求取消…' : '取消原请求' }}</button>
     </p>
     <div v-if="!h3Ready" class="video-panel shot-blocked">
-      <p>可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。</p>
+      <p>{{ status?.provider === 'native' ? '可在这里编辑镜头。批量生成时，请在视频引擎设置中选择 ComfyUI。' : '可先编辑镜头、读取已有首帧。生成分镜短片需要 MiniMax H3 权重就绪，安装后点击「重新检测」。' }}</p>
     </div>
 
       <ShotStoryboardStrip v-if="shots.length" :shots="shots" @locate="locateShot" />
@@ -233,6 +233,11 @@
               ></textarea>
             </label>
 
+            <VideoPromptWorkbench :key="promptWorkbenchKey(shot)" :mode="shot.imageId || shot.imageUrl || shot.imageName ? 'image' : 'text'"
+              :prompt="shot.prompt" :camera="shot.camera" :motion="shot.motion" :camera-options="cameraOptions" :motion-options="motionOptions"
+              :max-length="shotPromptLimit" :disabled="batchActive || submitting || aiBusy || scriptBusy || storyboardBusy"
+              @apply="Object.assign(shot, $event)" />
+
             <label class="field shot-field-dialogue">
               <span class="field-label">对白（H3 原生语音 · 口型同步）</span>
               <div class="shot-dialogue-row">
@@ -390,6 +395,8 @@ import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
 import ShotReviewIssues from './ShotReviewIssues.vue'
 import ShotScriptDialog from './ShotScriptDialog.vue'
 import ShotBatchProgress from './ShotBatchProgress.vue'
+import VideoPromptWorkbench from './VideoPromptWorkbench.vue'
+import type { ShotDraft } from './shotListTypes'
 import { characterSelectGroups, durationOptions, scriptCountOptions, scriptTotalOptions, shotSizeOptions } from './shotListEditorOptions'
 import { useShotWorkspace } from "@/components/video/useShotWorkspace"
 import type { VideoStatusResponse } from '@/api/videoApi'
@@ -416,6 +423,17 @@ scriptTotal, runAiScript, canSubmit, submitTitle, submitDescription, cancelling,
 cancelBatch, cancelOriginalRequest, batch, retryAllFailed, canConcat, concating, concatBatch,
 submitBatch, submitting, retrying, batchError, batchReadError, batchReading, batchReadRetryable, batchRecoveryPending, batchSelectionPending, requestPending, retryBatchRead, batchStatusLabel, progressPercent,
 } = useShotWorkspace(props)
+
+const shotPromptLimit = computed(() => {
+  const identity = identityCard.value.trim()
+  return identity ? Math.max(0, 3999 - identity.length) : 4000
+})
+const promptWorkbenchKeys = new WeakMap<ShotDraft, symbol>()
+function promptWorkbenchKey(shot: ShotDraft): symbol {
+  const key = promptWorkbenchKeys.get(shot) ?? Symbol()
+  promptWorkbenchKeys.set(shot, key)
+  return key
+}
 
 async function moveShotWithFocus(index: number, delta: number) {
   moveShot(index, delta)

@@ -17,6 +17,7 @@ const aliases: Record<string, string> = {
   'control-inference': 'control-setup', 'control-image-resources': 'control-setup', 'control-remote': 'control-setup',
   'control-comfy': 'control-setup', 'setup-chat-options': 'control-setup',
   'control-resources': 'control-services', 'control-service-status': 'control-services',
+  'control-companion-channels': 'control-services',
   'control-connection-settings': 'control-services', 'control-service-webui': 'control-services',
   'control-service-comfy': 'control-services', 'control-service-llama': 'control-services',
   'control-service-voice': 'control-services', 'control-service-ollama': 'control-services',

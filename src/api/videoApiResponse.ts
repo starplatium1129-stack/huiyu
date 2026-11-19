@@ -39,7 +39,7 @@ export function isVideoDuration(value: unknown): value is VideoDefaults['duratio
   return value === 3 || value === 5 || value === 10 || value === 15
 }
 
-function isVideoJob(value: unknown): value is VideoJob {
+function isVideoJob(value: unknown): value is VideoJob & { metadata?: unknown } {
   if (!isRecord(value)) return false
   return isNonEmptyText(value.id)
     && ['queued', 'running', 'cancelling', 'succeeded', 'failed', 'cancelled'].includes(String(value.status))
@@ -70,6 +70,14 @@ function isVideoModelStatus(value: unknown): value is VideoModelStatus {
     && isText(value.summary) && typeof value.executable === 'boolean' && typeof value.available === 'boolean'
     && isText(value.reason) && Array.isArray(value.modes)
     && value.modes.every((mode: unknown) => ['text', 'image', 'first-last-frame'].includes(String(mode)))
+    && (value.durations === undefined || Array.isArray(value.durations) && value.durations.length > 0 && value.durations.every(isVideoDuration))
+    && (value.qualities === undefined || Array.isArray(value.qualities) && value.qualities.length > 0 && value.qualities.every(id => ['fast', 'standard', 'fine'].includes(id)))
+    && (value.supportsNegative === undefined || typeof value.supportsNegative === 'boolean')
+    && (value.drivingInput === undefined || value.drivingInput === 'audio' || value.drivingInput === 'video')
+    && (value.attentionModes === undefined || Array.isArray(value.attentionModes) && value.attentionModes.length > 0
+      && value.attentionModes.every(mode => ['auto', 'sdpa', 'sage', 'flash2'].includes(mode)))
+    && (value.canvases == null || isRecord(value.canvases) && Object.values(value.canvases).every(size =>
+      Array.isArray(size) && size.length === 2 && size.every(n => Number.isSafeInteger(n) && n > 0)))
     && Array.isArray(value.requirements) && value.requirements.every(isText)
     && Array.isArray(value.missing) && value.missing.every(isText)
 }
@@ -103,16 +111,31 @@ export function isVideoStatusResponse(value: unknown): boolean {
     && isRecord(value.t8) && typeof value.t8.available === 'boolean' && isText(value.t8.reason)
 }
 
-function isVideoJobResponse(value: unknown): boolean {
-  return isRecord(value) && value.ok === true && isVideoJob(value.job)
+const attentionBackends = { sdpa: 'SDPA', slicedSdpa: '分块 SDPA', flash2: 'FlashAttention 2', sage: 'SageAttention' } as const
+
+export function videoJobExecution(provider: string, status: string, metadata: unknown): VideoJob['execution'] {
+  if (provider !== 'native' || status !== 'succeeded' || !isRecord(metadata) || !isRecord(metadata.nativeRuntime)) return
+  const observed = metadata.nativeRuntime.videoAcceleration
+  if (!isRecord(observed) || !isRecord(observed.calls)) return
+  const { device, encoder, calls } = observed
+  if (device !== 'cuda' && device !== 'rocm' && device !== 'xpu') return
+  if (encoder !== 'h264_nvenc' && encoder !== 'h264_amf' && encoder !== 'h264_qsv' && encoder !== 'libx264') return
+  const attention = []
+  for (const [key, label] of Object.entries(attentionBackends)) {
+    const count = calls[key]
+    if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) return
+    if (count > 0) attention.push(label)
+  }
+  return { device: { cuda: 'CUDA', rocm: 'ROCm', xpu: 'XPU' }[device], attention, encoder }
 }
 export function videoJobResponse(value: unknown, expectedId?: string): { ok: true; job: VideoJob } {
-  if (!isRecord(value) || !isVideoJobResponse(value)) throw new ApiClientError('视频任务响应无效，请重新核对原请求。', { kind: 'invalid-response' })
-  const job = value.job as VideoJob
+  if (!isRecord(value) || value.ok !== true || !isVideoJob(value.job)) throw new ApiClientError('视频任务响应无效，请重新核对原请求。', { kind: 'invalid-response' })
+  const job = value.job
   if (expectedId && job.id !== expectedId) throw new ApiClientError('视频任务编号与原请求不符。', { kind: 'invalid-response' })
   const upstreamSettled = job.upstreamSettled === true, unknown = job.unknown !== false
   const terminal = ['succeeded', 'failed', 'cancelled'].includes(job.status)
   return { ok: true, job: { ...job, upstreamSettled, unknown,
+    execution: videoJobExecution(job.provider, job.status, job.metadata),
     needsReview: job.needsReview === true || unknown || terminal && !upstreamSettled || job.status === 'succeeded' && !job.resultAvailable } }
 }
 

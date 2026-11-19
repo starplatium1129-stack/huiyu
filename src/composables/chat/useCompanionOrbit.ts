@@ -34,12 +34,12 @@ export function useCompanionOrbit(open: () => boolean, root: Ref<HTMLElement | n
       else close()
       return
     }
-    if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End', 'Tab'].includes(event.key)) return
+    if (!['ArrowRight', 'ArrowDown', 'ArrowLeft', 'ArrowUp', 'Home', 'End'].includes(event.key)) return
     const buttons = [...(root.value?.querySelectorAll<HTMLButtonElement>('button:not(:disabled)') || [])].filter(el => el.getClientRects().length)
     if (!buttons.length) return
     event.preventDefault(); event.stopPropagation()
     const current = buttons.indexOf(document.activeElement as HTMLButtonElement)
-    const backward = event.key === 'ArrowLeft' || event.key === 'ArrowUp' || event.key === 'Tab' && event.shiftKey
+    const backward = event.key === 'ArrowLeft' || event.key === 'ArrowUp'
     const index = event.key === 'Home' ? 0 : event.key === 'End' ? buttons.length - 1 : (current + (backward ? -1 : 1) + buttons.length) % buttons.length
     buttons[index]?.focus({ preventScroll: true })
   }

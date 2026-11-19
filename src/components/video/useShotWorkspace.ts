@@ -25,7 +25,7 @@ export function useShotWorkspace(props: {
     const route = useRoute(), router = useRouter();
     const sceneStore = useSceneStore();
     const popularCharacters = computed(() => sceneStore.directoryCharacters);
-    const h3Ready = computed(() => props.status?.models.some((model) => model.id === 'minimax-h3' && model.available) === true);
+    const h3Ready = computed(() => props.status?.provider !== 'native' && props.status?.models.some((model) => model.id === 'minimax-h3' && model.available) === true);
     const cameraOptions: Array<{
         value: VideoDefaults['camera'];
         label: string;
@@ -139,8 +139,9 @@ export function useShotWorkspace(props: {
         if (batchRecoveryPending.value) return batchReading.value ? '正在恢复已有批次' : '已有批次状态尚未确认';
         if (batchActive.value)
             return '整批正在生成中';
+        if (props.status?.provider === 'native') return '分镜批量生成需选择 ComfyUI 引擎';
         if (!props.status?.online)
-            return props.status?.provider === 'native' ? '先准备视频模型与运行环境' : '先启动 ComfyUI';
+            return '先启动 ComfyUI';
         if (!h3Ready.value)
             return '先安装 MiniMax H3 权重';
         if (shots.value.length === 0)
@@ -162,8 +163,9 @@ export function useShotWorkspace(props: {
         if (batchRecoveryPending.value) return '正在核对已有批次；确认后才能生成、重抽或拼接。';
         if (batchActive.value)
             return '逐镜串行排队，可离开页面；失败镜头可单独重抽。';
+        if (props.status?.provider === 'native') return '';
         if (!props.status?.online)
-            return props.status?.provider === 'native' ? '在控制面板准备原生运行环境后，回到这里重新检测。' : '控制面板启动 ComfyUI 后，回到这里重新检测即可。';
+            return '在控制面板启动 ComfyUI 后，回到这里重新检测。';
         return '';
     });
     const batchStatusLabel = computed(() => batch.value?.needsReview ? '状态待核对' : ({

@@ -4,6 +4,7 @@ import { generationTask, canExecuteVideo } from '@/utils/generationTask'
 import { useTrackedTask } from '@/composables/useTaskCenter'
 import { useVideoJobObservation } from './useVideoJobObservation'
 import { useVideoEnvironment } from './useVideoEnvironment'
+import { useVideoDriver } from './useVideoDriver'
 
 import { computed,onBeforeUnmount,onMounted,ref,watch,onActivated,onDeactivated } from 'vue'
 
@@ -12,7 +13,7 @@ import { useRoute,useRouter } from 'vue-router'
 import { useVideoModeOptions, type StudioMode } from './useVideoModeOptions'
 
 import { cancelVideoJob, fetchVideoJob, fetchVideoStatus,
-  type VideoDefaults, type VideoJob, type VideoStatusResponse } from '@/api/videoApi'
+  type VideoAttention, type VideoDefaults, type VideoJob, type VideoStatusResponse } from '@/api/videoApi'
 
 import { classifySDError } from '@/utils/sdError'
 
@@ -51,6 +52,7 @@ const aspectRatio = ref<VideoDefaults['aspectRatio']>('landscape')
 const quality = ref<VideoDefaults['quality']>('standard')
 
 const steps = ref<4 | 8>(8)
+const videoAttention = ref<VideoAttention>('auto')
 
 const duration = ref<VideoDefaults['duration']>(3)
 
@@ -117,10 +119,24 @@ const videoImageId = ref('')
 const lastFrameImageId = ref('')
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
-const { modes, modeReady, modeBadge, aspectOptions, aspectSize, cameraOptions, motionOptions, durationOptions } =
+const { modes, modeBadge, unsupportedMode, aspectOptions, aspectSize, cameraOptions, motionOptions, durationOptions, qualities } =
   useVideoModeOptions(status, statusLoading, statusReadError, selectedMode, quality, activeModel)
+const driverKind = computed(() => selectedMode.value === 'image' ? activeModel.value?.drivingInput : undefined)
+const { source: driverSource, selected: driver, choose: chooseDriver, busy: driverBusy } = useVideoDriver(driverKind, checkOwner, statusError)
+watch([activeModel, videoAttention], ([model, attention]) => {
+  if (model?.attentionModes && !model.attentionModes.includes(attention)) videoAttention.value = 'auto'
+})
+watch(aspectOptions, options => {
+  if (options[0] && !options.some(option => option.id === aspectRatio.value)) aspectRatio.value = options[0].id
+})
 const { nativeVideo, environmentState, environmentLabel, archiveStatus, archiveState } = useVideoEnvironment({
   status, activeModel, statusLoading, statusReadError, job,
+})
+watch([durationOptions, duration], ([options, value]) => {
+  if (activeModel.value && options[0] && !options.includes(value)) duration.value = options[0]
+})
+watch([qualities, quality], ([options, value]) => {
+  if (options[0] && !options.some(option => option.id === value)) quality.value = options[0].id
 })
 
 const parsedSeed = computed(() => {
@@ -133,7 +149,7 @@ const { progressPercent, progressWarning, jobStatusLabel } = useVideoJobProgress
 
 /** T8 双时钟是 H3 专属路径：仅选中 minimax-h3 时展示徽章（Wan 走原生工作流，与 T8 无关）。 */
 const t8State = computed(() => {
-  if (selectedModelId.value !== 'minimax-h3') return null
+  if (nativeVideo.value || selectedModelId.value !== 'minimax-h3') return null
   return status.value?.t8 ?? null
 })
 
@@ -150,6 +166,7 @@ const canGenerate = computed(() => {
     && !statusLoading.value && !statusReadError.value
     && !submitting.value && !requestPending.value && !videoStore.videoTaskIssue
     && !uploadingImage.value
+    && !driverBusy.value && (!driverKind.value || !!driver.value)
     && !jobActive.value
     && !job.value?.needsReview
     && reconnectState.value === 'idle'
@@ -167,6 +184,7 @@ const submitTitle = computed(() => {
   if (jobActive.value) return '已有视频正在生成'
   if (statusLoading.value) return '正在检测视频环境'
   if (statusReadError.value) return '请重新检测视频环境'
+  if (unsupportedMode.value) return '当前引擎没有支持此模式的模型'
   if (activeModel.value && !activeModel.value.executable) return '当前模型暂不支持生成'
   if (!status.value?.online) return nativeVideo.value ? '先准备视频模型与运行环境' : '先启动 ComfyUI'
   if (!activeModel.value?.available) return '先安装本地视频权重'
@@ -175,6 +193,8 @@ const submitTitle = computed(() => {
     return hasFirstFrame.value ? '先上传一张尾帧图' : '先准备首帧与尾帧图'
   }
   if (selectedMode.value === 'image' && !hasFirstFrame.value) return '先带入一张首帧图'
+  if (driverBusy.value) return '正在准备驱动素材'
+  if (driverKind.value && !driver.value) return driverKind.value === 'audio' ? '请选择角色配音 WAV' : '请选择动作参考视频'
   if (uploadingImage.value) return '正在准备帧图'
   if (prompt.value.trim().length < 8) return '写下一个完整的镜头'
   if (parsedSeed.value === null) return 'Seed 格式不正确'
@@ -186,6 +206,7 @@ const submitDescription = computed(() => {
   if (jobActive.value) return '请等待当前任务完成，或取消任务。'
   if (statusLoading.value) return '正在确认本机连接与可用模型，镜头内容可以继续编辑。'
   if (statusReadError.value) return '请重新检测服务状态。'
+  if (unsupportedMode.value) return '可以先编辑草稿，再到视频引擎设置切换执行路线。'
   if (activeModel.value && !activeModel.value.executable) return '请在下方更换已支持的模型，当前镜头描述会保留。'
   if (!status.value?.online) return nativeVideo.value ? activeModel.value?.reason || '在控制面板准备原生运行环境后重新检测。' : '在控制面板启动 ComfyUI 后重新检测。'
   if (!activeModel.value?.available) return '请补齐右侧列出的模型文件。'
@@ -201,24 +222,39 @@ async function loadStatus() {
   try {
     const next = await fetchVideoStatus(controller.signal)
     if (statusRequest !== controller || controller.signal.aborted || disposed) return
+    const newNativeDraft = !status.value && next.provider === 'native' && !videoStore.videoDraft
+      && !submission.request.value && !videoStore.videoTask && !route.query.job
     status.value = next; statusReadError.value = ''
-    if (!next.models.some(model => model.id === selectedModelId.value)) {
-      selectedModelId.value = next.defaults.modelId
+    if (newNativeDraft) selectedModelId.value = next.models.find(model => model.available)?.id ?? next.defaults.modelId
+    else if (!next.models.some(model => model.id === selectedModelId.value)) selectedModelId.value = next.defaults.modelId
+    const prepared = route.query.preparedModel
+    if (typeof prepared === 'string') {
+      const mode = selectedMode.value
+      if (next.provider === 'native' && !route.query.job && mode !== 'shots' && !submission.request.value && !videoStore.videoTask
+        && next.models.some(model => model.id === prepared)) chooseModel(prepared)
+      void router.replace({ query: { ...route.query, preparedModel: undefined }, hash: route.hash })
     }
-    // 图生视频模式下自动落到支持 image 且已就绪的模型（默认 Wan 5B 只能文字成片）。
-    if (selectedMode.value === 'image') {
-      const current = next.models.find(model => model.id === selectedModelId.value)
-      if (!current || !current.modes.includes('image')) {
-        const imageReady = next.models.find(model => model.modes.includes('image') && model.available)
-        if (imageReady) selectedModelId.value = imageReady.id
-      }
-    }
+    selectModelForMode()
   } catch (error) {
     if (statusRequest !== controller || controller.signal.aborted || disposed) return
     statusReadError.value = error instanceof Error ? error.message : '视频环境检测失败'
   } finally {
     if (statusRequest === controller) { statusRequest = null; statusLoading.value = false }
   }
+}
+
+function chooseModel(id: string) {
+  selectedModelId.value = id
+  if (selectedMode.value !== 'shots' && activeModel.value?.executable && activeModel.value.modes[0]
+    && !activeModel.value.modes.includes(selectedMode.value)) selectedMode.value = activeModel.value.modes[0]
+}
+
+function selectModelForMode() {
+  const mode = selectedMode.value
+  if (mode === 'shots' || !status.value || activeModel.value?.modes.includes(mode) && activeModel.value.executable) return
+  const candidates = status.value.models.filter(model => model.executable && model.modes.includes(mode))
+  const model = candidates.find(item => item.available) ?? candidates[0]
+  if (model) selectedModelId.value = model.id
 }
 
 // ── 绘图页「出视频」跨页上下文与首帧/尾帧素材（已下沉 useVideoFrames）──────
@@ -240,7 +276,7 @@ const {
 
 const videoDraftTools = useVideoStudioDraft({
   selectedMode, prompt, negative, selectedModelId, aspectRatio, quality,
-  steps, duration, camera, motion, seedText,
+  steps, videoAttention, driver: driverSource, duration, camera, motion, seedText,
   videoImageId, lastFrameImageId,
   onPersistError: (message) => { statusError.value = message },
 })
@@ -287,7 +323,7 @@ async function submitVideo() {
     const mode = selectedMode.value
     const request = {
       prompt: prompt.value.trim(),
-      negative: negative.value.trim() || undefined,
+      negative: activeModel.value?.supportsNegative === false ? undefined : negative.value.trim() || undefined,
       modelId: selectedModelId.value,
       aspectRatio: aspectRatio.value,
       duration: duration.value,
@@ -295,7 +331,10 @@ async function submitVideo() {
       motion: motion.value,
       seed: typeof parsedSeed.value === 'number' ? parsedSeed.value : undefined,
       quality: quality.value,
-      steps: steps.value,
+      ...(driver.value?.kind === 'audio' ? { drivingAudio: driver.value.name }
+        : driver.value?.kind === 'video' ? { drivingVideo: driver.value.name } : {}),
+      ...(nativeVideo.value ? { videoAttention: videoAttention.value }
+        : selectedModelId.value === 'minimax-h3' ? { steps: steps.value } : {}),
     }
     const frames = await resolveSubmitFrames(mode, controller.signal)
     if (disposed || !pageActive || selection !== selectionVersion) return
@@ -376,6 +415,7 @@ async function cancelJob(original = false) {
 // 离开图生视频/首尾帧模式时把「跟随原图」复位，避免文字成片带着 original 画幅被后端 400。
 watch(selectedMode, (mode) => {
   if (mode !== 'image' && mode !== 'first-last-frame' && aspectRatio.value === 'original') aspectRatio.value = 'landscape'
+  selectModelForMode()
 })
 
 let activatedOnce = false, initialRestorePending = true
@@ -454,11 +494,12 @@ onBeforeUnmount(() => {
   stopDraftWatch()
 })
 return {
+ chooseModel, driverKind, driver, driverBusy, chooseDriver, clearDriver: () => { driverSource.value = null },
  archiveStatus, archiveState, statusLoading, loadStatus, modes, selectedMode, nativeVideo,
-modeReady, modeBadge, t8State, status, videoImageUrl, clearFirstFrame, hasFirstFrame, hasLastFrame,
+modeBadge, unsupportedMode, t8State, status, videoImageUrl, clearFirstFrame, hasFirstFrame, hasLastFrame,
 uploadingImage, handleFrameFile, lastFrameUrl, clearLastFrame, prompt, aspectOptions,
 aspectRatio, aspectSize, camera, cameraOptions, motion, motionOptions,
-quality, durationOptions, duration, activeModel, steps, negative,
+quality, qualities, durationOptions, duration, activeModel, steps, videoAttention, negative,
 seedText, canGenerate, submitTitle, submitDescription, submitVideo, submitting,
 environmentState, environmentLabel, statusError: statusFeedback, selectedModelId, job, jobStatusLabel,
 formatTime, progressPercent, formatSeconds, progressWarning, jobErrorReport, cancelling,

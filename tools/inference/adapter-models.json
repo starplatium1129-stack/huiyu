@@ -13,6 +13,14 @@
     "WanA14B": {"boundary_ratio": "boundaryRatio"}
   },
   "layouts": {
+    "WanAnimate2DistilledModularPipeline": {
+      "image_encoder": ["transformers", "CLIPVisionModel"],
+      "text_encoder": ["transformers", "UMT5EncoderModel"],
+      "tokenizer": ["transformers", "T5TokenizerFast"],
+      "transformer": ["diffusers", "WanAnimate2Transformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLWan"],
+      "scheduler": ["diffusers", "FlowMatchEulerDiscreteScheduler"]
+    },
     "MOSSImagePipeline": {
       "text_encoder": ["transformers", "Qwen3_5Model"],
       "tokenizer": ["transformers", "Qwen2Tokenizer", "Qwen2TokenizerFast"],
@@ -62,6 +70,27 @@
       "vocoder": ["ltx2", "LTX2VocoderWithBWE"],
       "scheduler": ["diffusers", "FlowMatchEulerDiscreteScheduler"]
     },
+    "LTX25Distilled": {
+      "text_encoder": ["transformers", "Gemma4UnifiedForConditionalGeneration"],
+      "tokenizer": ["transformers", "GemmaTokenizer", "GemmaTokenizerFast"],
+      "transformer": ["diffusers", "LTX2VideoTransformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLLTX2Video"],
+      "audio_vae": ["diffusers", "AutoencoderKLLTX2Audio"],
+      "connectors": ["ltx2", "LTX2TextConnectors"],
+      "vocoder": ["ltx2", "LTX2VocoderWithBWE"],
+      "scheduler": ["diffusers", "FlowMatchEulerDiscreteScheduler"]
+    },
+    "Kandinsky6TI2VAPipeline": {
+      "text_encoder": ["transformers", "Qwen2_5_VLForConditionalGeneration"],
+      "tokenizer": ["transformers", "Qwen2_5_VLProcessor"],
+      "text_encoder_2": ["transformers", "CLIPTextModel"],
+      "tokenizer_2": ["transformers", "CLIPTokenizer", "CLIPTokenizerFast"],
+      "transformer": ["diffusers", "Kandinsky6Transformer3DModel"],
+      "vae": ["diffusers", "AutoencoderKLHunyuanVideo"],
+      "audio_vae": ["diffusers", "MMAudioVAE"],
+      "vocoder": ["diffusers", "MMAudioVocoder"],
+      "scheduler": ["diffusers", "PiflowScheduler"]
+    },
     "MiniMaxH3ModularPipeline": {
       "text_encoder": ["transformers", "Qwen3VLForConditionalGeneration"],
       "tokenizer": ["transformers", "Qwen2Tokenizer", "Qwen2TokenizerFast"],
@@ -81,6 +110,20 @@
     }
   },
   "models": {
+    "wan-animate-2": {
+      "label": "Wan-Animate-2 · 14B 蒸馏动作驱动",
+      "family": "wan-animate-2", "media": "video", "pipeline": "WanAnimate2DistilledModularPipeline",
+      "indexFile": "modular_model_index.json", "blocks": "WanAnimate2DistilledBlocks",
+      "repository": "Wan-AI/Wan2.2-Animate-2-14B-Distilled-Diffusers",
+      "revision": "59e4141466bcb1bf9733eca1bc78be6891c9fbdf",
+      "source": "https://github.com/Wan-Video/Wan-Animate-2",
+      "license": "Apache-2.0", "licenseUrl": "https://github.com/Wan-Video/Wan-Animate-2/blob/main/LICENSE",
+      "modes": ["image"], "drivingInput": "video",
+      "steps": 10, "cfg": 1, "minSize": 320, "maxSize": 1344, "alignment": 32,
+      "edit": false, "negative": false, "distilled": true,
+      "fps": 24, "minFrames": 72, "maxFrames": 120, "frameMultiple": 24, "frameOffset": 0,
+      "durationFrames": {"3": 72, "5": 120}, "sampler": "euler", "audio": false
+    },
     "moss-miaomiao-base-v1.1": {
       "label": "MiaoMiao Harem MOSS · BASE v1.1",
       "managedPrecision": {"transformer": "int8", "text_encoder": "int8"},
@@ -239,10 +282,27 @@
       "source": "https://github.com/Wan-Video/Wan2.2",
       "license": "Apache-2.0",
       "licenseUrl": "https://huggingface.co/Wan-AI/Wan2.2-TI2V-5B-Diffusers/blob/main/LICENSE",
-      "steps": 50, "cfg": 5, "maxSize": 1344, "alignment": 32,
+      "modes": ["text", "image"],
+      "steps": 50, "cfg": 5, "minSize": 320, "maxSize": 1344, "alignment": 32,
       "edit": false, "negative": true, "distilled": false,
       "fps": 24, "minFrames": 5, "maxFrames": 121, "frameMultiple": 4, "frameOffset": 1,
       "durationFrames": {"3": 73, "5": 121}, "sampler": "unipc", "audio": false
+    },
+    "longcat-avatar-1.6": {
+      "label": "LongCat-Video-Avatar 1.6 · 配音驱动",
+      "family": "longcat-avatar", "media": "video", "pipeline": "LongCatVideoAvatarPipeline",
+      "runner": "longcat-avatar", "drivingInput": "audio", "modes": ["image"],
+      "attentionModes": ["auto", "flash2"],
+      "repository": "meituan-longcat/LongCat-Video-Avatar-1.6",
+      "revision": "acfc628244201fc53fb6fe8a8903c5bac9bdf68f",
+      "source": "https://github.com/meituan-longcat/LongCat-Video",
+      "sourceRevision": "58eb336edc5c8c63389838727e40b8c18434e54e",
+      "license": "MIT", "licenseUrl": "https://github.com/meituan-longcat/LongCat-Video/blob/58eb336edc5c8c63389838727e40b8c18434e54e/LICENSE",
+      "steps": 8, "minSteps": 8, "cfg": 1, "minSize": 480, "maxSize": 832, "alignment": 32,
+      "canvases": {"landscape": [832, 480], "portrait": [480, 832], "square": [608, 608]},
+      "edit": false, "negative": false, "distilled": true, "fps": 25,
+      "minFrames": 75, "maxFrames": 125, "frameMultiple": 1, "frameOffset": 0,
+      "durationFrames": {"3": 75, "5": 125}, "sampler": "dmd-opsd", "audio": true, "sampleRate": 48000
     },
     "wan2.2-14b": {
       "label": "Wan 2.2 T2V A14B · 原生 BF16",
@@ -251,8 +311,9 @@
       "revision": "5be7df9619b54f4e2667b2755bc6a756675b5cd7",
       "source": "https://github.com/Wan-Video/Wan2.2",
       "license": "Apache-2.0", "licenseUrl": "https://github.com/Wan-Video/Wan2.2/blob/main/LICENSE.txt",
+      "modes": ["text"],
       "steps": 40, "cfg": 4, "cfgLowNoise": 3, "boundaryRatio": 0.875,
-      "maxSize": 1344, "alignment": 32, "edit": false, "negative": true, "distilled": false,
+      "minSize": 352, "maxSize": 1344, "alignment": 32, "edit": false, "negative": true, "distilled": false,
       "fps": 16, "minFrames": 5, "maxFrames": 81, "frameMultiple": 4, "frameOffset": 1,
       "durationFrames": {"3": 49, "5": 81}, "sampler": "unipc", "audio": false
     },
@@ -264,6 +325,7 @@
       "source": "https://github.com/Tencent-Hunyuan/HunyuanVideo-1.5",
       "license": "Tencent Hunyuan Community License", "licenseUrl": "https://github.com/Tencent-Hunyuan/HunyuanVideo-1.5/blob/main/LICENSE",
       "layoutNote": "Diffusers-documented community conversion of the official 480p T2V weights; no I2V or 720p substitution.",
+      "modes": ["text"],
       "steps": 50, "cfg": 6, "minSize": 480, "maxSize": 832, "alignment": 32,
       "canvases": {"landscape": [832, 480], "portrait": [480, 832], "square": [640, 640]},
       "edit": false, "negative": true, "distilled": false,
@@ -278,10 +340,47 @@
       "source": "https://github.com/Lightricks/LTX-2",
       "license": "LTX-2.3 Community License; Gemma license also applies to text encoder",
       "licenseUrl": "https://huggingface.co/Lightricks/LTX-2.3/blob/main/LICENSE",
-      "steps": 30, "cfg": 3, "maxSize": 1344, "alignment": 32,
+      "modes": ["text", "image"],
+      "steps": 30, "cfg": 3, "minSize": 320, "maxSize": 1344, "alignment": 32,
       "edit": false, "negative": true, "distilled": false,
       "fps": 24, "minFrames": 9, "maxFrames": 121, "frameMultiple": 8, "frameOffset": 1,
       "durationFrames": {"3": 73, "5": 121}, "sampler": "euler", "audio": true, "sampleRate": 48000
+    },
+    "ltx-2.5-distilled": {
+      "label": "LTX-2.5 Distilled · 8 步音视频",
+      "family": "ltx-2.5", "media": "video", "pipeline": "LTX2Pipeline", "layout": "LTX25Distilled",
+      "componentConfigs": {
+        "text_encoder": {"model_type": "gemma4_unified"},
+        "scheduler": {"use_dynamic_shifting": false, "shift_terminal": null}
+      },
+      "repository": "Lightricks/LTX-2.5-Diffusers",
+      "revision": "4791a1100e0cf97f7ed5c55c12dd71dce13f9dd3",
+      "source": "https://github.com/Lightricks/LTX-2",
+      "license": "LTX-2.x Community License", "licenseUrl": "https://github.com/Lightricks/LTX-2/blob/main/LICENSE-2_x",
+      "layoutNote": "Official single-stage distilled checkpoint with its fine-tuned Gemma 4 encoder and fixed frame count.",
+      "modes": ["text", "image"],
+      "steps": 8, "cfg": 1, "minSize": 320, "maxSize": 1344, "alignment": 32,
+      "edit": false, "negative": false, "distilled": true,
+      "fps": 24, "minFrames": 73, "maxFrames": 121, "frameMultiple": 8, "frameOffset": 1,
+      "durationFrames": {"3": 73, "5": 121}, "sampler": "euler-distilled", "audio": true, "sampleRate": 48000
+    },
+    "kandinsky-6-lite-distill": {
+      "label": "Kandinsky 6.0 Lite Distill · 5 秒音视频",
+      "family": "kandinsky-6", "media": "video", "pipeline": "Kandinsky6TI2VAPipeline",
+      "componentConfigs": {
+        "transformer": {"model_dim": 1792, "num_visual_blocks": 32, "out_visual_dim": 160},
+        "audio_vae": {"sample_rate": 44100},
+        "scheduler": {"n_grid": 10, "stochastic_sampling": false}
+      },
+      "repository": "kandinskylab/Kandinsky-6.0-Lite-distill-5s-Diffusers",
+      "revision": "4c487e8b4aeeb9059e5a77905aa2ddb59ec28f81",
+      "source": "https://github.com/kandinskylab/kandinsky-6",
+      "license": "MIT; upstream component licenses apply", "licenseUrl": "https://github.com/kandinskylab/kandinsky-6/blob/main/LICENSE",
+      "modes": ["text", "image"],
+      "steps": 10, "cfg": 1, "minSize": 320, "maxSize": 1344, "alignment": 16,
+      "edit": false, "negative": false, "distilled": true,
+      "fps": 24, "minFrames": 121, "maxFrames": 121, "frameMultiple": 4, "frameOffset": 1,
+      "durationFrames": {"5": 121}, "sampler": "piflow", "audio": true, "sampleRate": 44100
     },
     "minimax-h3": {
       "label": "MiniMax H3 · 原生音视频 BF16",
@@ -291,17 +390,18 @@
       "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
       "source": "https://github.com/MiniMax-AI/MiniMax-H3",
       "license": "MiniMax H3 Community License", "licenseUrl": "https://huggingface.co/MiniMaxAI/MiniMax-H3/blob/main/LICENSE",
-      "layoutNote": "Root modular Diffusers components only; transformer_ref and original FL2VA/Ref2VA trees are not needed for t2va. No Comfy INT8/NVFP4 or Turbo LoRA substitution.",
-      "steps": 50, "minSteps": 2, "cfg": 1, "maxSize": 1344, "alignment": 32,
+      "layoutNote": "Text and keyframe workflows share the root modular Diffusers components and the transformer/ weights.",
+      "modes": ["text", "image", "first-last-frame"],
+      "steps": 50, "minSteps": 2, "cfg": 1, "minSize": 320, "maxSize": 1344, "alignment": 32,
       "edit": false, "negative": false, "distilled": false,
       "fps": 24, "minFrames": 124, "maxFrames": 345, "frameMultiple": 17, "frameOffset": 5,
       "durationFrames": {"5": 124, "10": 243}, "sampler": "minimax-h3-dual", "audio": true, "sampleRate": 32000
     }
   },
   "pendingVideo": {
-    "minimax-h3": "尚缺关键帧/Ref2VA、对白专用参数、量化/块卸载、Turbo LoRA；BF16 组件卸载仍需大量内存与显存。3 秒与精确 15 秒未开放。",
+    "minimax-h3": "尚缺 Ref2VA、对白专用参数、量化与 Turbo LoRA。支持 5 秒和 10 秒。",
     "wan2.2-14b": "尚缺独立 I2V 权重及图生视频、LightX2V/量化；当前仅 T2V A14B 双噪声模型。",
     "hunyuan-video-1.5": "尚缺 720p、I2V、蒸馏与超分；当前固定 480p T2V 版本和 standard 画质画布。",
-    "ltx-2.3": "尚缺图生视频、多阶段超分与 distilled 配方；当前仅 2.3 基础单阶段联合音视频，不替换为 2.5。"
+    "ltx-2.3": "尚缺多阶段超分与 distilled 配方；当前使用 2.3 基础单阶段联合音视频。"
   }
 }
