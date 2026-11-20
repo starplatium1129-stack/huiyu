@@ -12,9 +12,10 @@ import os
 import tempfile
 import time
 
-from pipeline_signals import channel_traffic, delivery_view
+from board_sources import CONFIRMATIONS, observe_rows
+from pipeline_signals import channel_traffic, connector_node, delivery_view, intake_edge, probe_cache_path
 
-HOME = "/home/hatch"
+HOME = os.path.expanduser("~")
 OUT = os.path.join(HOME, "workspace/bridge-tools/board-status.json")
 KEEP = 60
 
@@ -39,21 +40,18 @@ def load_receipts(bridge, channel):
     """Sender-kept terminal outcomes; a receipt outranks outbox inference."""
     receipts = {}
     try:
-        with open(os.path.join(bridge, "receipts.jsonl"), "r", encoding="utf-8") as fh:
+        with open(os.path.join(bridge, "receipts.jsonl"), "rb") as fh:
             for line in fh:
                 try:
                     rec = json.loads(line)
-                except json.JSONDecodeError:
+                except (json.JSONDecodeError, UnicodeDecodeError):
                     continue
                 if not isinstance(rec, dict):
                     continue
                 key, via, status = rec.get("key"), rec.get("via"), rec.get("status")
-                if not isinstance(key, str) or not key:
+                if not isinstance(key, str) or not key or not isinstance(via, str) or not isinstance(status, str):
                     continue
-                confirmed = (channel, via, status) in (
-                    ("qq", "reply", "sent"), ("qq", "reply", "skipped"),
-                    ("qq", "send", "sent"), ("desktop", "reply", "accepted"),
-                )
+                confirmed = (channel, via, status) in CONFIRMATIONS
                 # Earlier snapshots treated these two spellings as locally complete.
                 legacy = (channel, via, status) in (
                     ("qq", "reply", "accepted"), ("desktop", "reply", "sent"),
@@ -106,8 +104,12 @@ def qq_rows(now_ms):
         elif sent_at:
             status = "confirmed"
         elif fallback_at:
-            status = "fallback"
-            stages["fallback"] = fallback_at
+            # The old poller also touched fallback-<key> when dropping an expired skip.
+            if out and (out.get("skip") or not (out.get("text") or out.get("audioPath") or out.get("imagePath"))):
+                status = "expired"
+            else:
+                status = "fallback"
+                stages["fallback"] = fallback_at
         elif out is not None:
             status = "waiting_send"
         elif exp and now_ms > exp:
@@ -116,6 +118,7 @@ def qq_rows(now_ms):
             status = "waiting_reply"
         rows.append({
             "channel": "qq",
+            "via": "reply",
             "requestKey": key,
             "conversationId": item.get("conversationId"),
             "who": item.get("senderNickname") or "",
@@ -135,6 +138,7 @@ def qq_rows(now_ms):
         rcpt = receipts.get(("send", key))
         rows.append({
             "channel": "qq",
+            "via": "send",
             "requestKey": key,
             "conversationId": item.get("conversationId"),
             "who": "宁宁（主动）",
@@ -147,6 +151,7 @@ def qq_rows(now_ms):
             "stages": {"received": mtime_ms(path), "confirmed": (rcpt or {}).get("at", sent_at)},
             "expiresAt": 0,
         })
+    observe_rows(rows, bridge, now_ms)
     return rows
 
 
@@ -186,6 +191,7 @@ def desktop_rows(now_ms):
             status = "waiting_reply"
         rows.append({
             "channel": "desktop",
+            "via": "reply",
             "requestKey": key,
             "conversationId": item.get("conversationId"),
             "who": item.get("character") or "",
@@ -198,46 +204,36 @@ def desktop_rows(now_ms):
             "stages": stages,
             "expiresAt": exp,
         })
+    observe_rows(rows, bridge, now_ms)
     return rows
 
 
 def board_signal(row, now_ms):
     """Map one existing board row to the pipeline without inventing worker activity."""
     status = row["status"]
-    via = "send" if row.get("role") == "proactive" else "reply"
-    stages = row["stages"]
-    phase = {
-        "confirmed": "marked_done", "skipped": "marked_skip", "fallback": "fallback",
-        "expired": "expired", "lost": "lost",
-    }.get(status)
-    code = None
+    via = row.get("via") or ("send" if row.get("role") == "proactive" else "reply")
+    attempt = row.get("senderPhase")
+    code = row.get("lastErrorCode") if attempt != "posting" else None
     receipt = row.get("receipt")
+    deadline = row.get("expiresAt") or 0
     if receipt and not receipt.get("legacy"):
         phase = "skipped" if receipt["status"] == "skipped" else "confirmed"
-    elif phase in ("expired", "lost") and stages.get("firstPost"):
-        phase = "uncertain"
-    if phase is None and status in ("waiting_reply", "waiting_send"):
-        # Optional additions from the local worker. A past POST alone cannot show live traffic.
-        attempt = row.get("senderPhase")
-        deadline = row.get("expiresAt") or 0
-        if attempt in ("uncertain", "rejected"):
-            phase = attempt
-        elif deadline and now_ms >= deadline:
-            phase = "uncertain" if (stages.get("firstPost") or attempt == "posting") else "expired"
-        elif status == "waiting_send":
-            code = row.get("lastErrorCode") if attempt != "posting" else None
-            if attempt in ("posting", "retry"):
-                phase = attempt
-            else:
-                observed_pending = row["channel"] == "qq" and (
-                    code == "QQ_AUDIT_PENDING" or (via == "send" and code == "QQ_MUSE_SEND_PENDING")
-                )
-                phase = "uncertain" if stages.get("firstPost") and not observed_pending else "ready"
-        elif stages.get("claimed"):
-            phase = "answering"
-        else:
-            # This snapshot format does not yet export a claim for every worker.
-            phase = "awaiting_answer"
+    elif attempt in ("posting", "rejected", "uncertain", "expired", "fallback", "unknown"):
+        phase = attempt
+    elif status in ("confirmed", "skipped", "fallback") or attempt == "marked_done":
+        phase = {"confirmed": "marked_done", "skipped": "marked_skip", "fallback": "fallback"}.get(status, "marked_done")
+    elif status in ("expired", "lost") or (deadline and now_ms >= deadline):
+        phase = "uncertain" if row["stages"].get("firstPost") or attempt == "retry" else (
+            "lost" if status == "lost" else "expired")
+    elif attempt == "retry":
+        phase = "retry"
+    elif status == "waiting_send":
+        phase = "uncertain" if row["stages"].get("firstPost") else "ready"
+    elif status == "waiting_reply":
+        worker = row.get("workerActive")
+        phase = "awaiting_answer" if worker is None else "answering" if worker else "queued"
+    else:
+        phase = None
     return {"phase": phase, "receipt": receipt, "via": via, "code": code}
 
 
@@ -252,17 +248,27 @@ def pipeline_lanes(rows, now_ms):
         # A reused key across sendbox/inbox is ambiguous. Keep its details visible
         # and count it once as unknown instead of letting traversal order select a row.
         entries[key] = {"phase": None} if key in entries else signal
+    # Both current routes target the same main-machine relay. The independent probe
+    # replaces this sample even on error. Reading the board never performs a GET.
+    node = connector_node(load_json(probe_cache_path()), at=now_ms)
     lanes = {}
     for channel, entries in grouped.items():
         bridge = os.path.join(HOME, "workspace", channel + "-bridge")
         available = os.path.isdir(os.path.join(bridge, "inbox"))
-        lanes[channel] = {"counts": channel_traffic(channel, entries if available else None)}
+        poll = load_json(os.path.join(HOME, "hooks/state", channel + "-bridge", "last-poll.json")) or {}
+        lanes[channel] = {
+            "node": node,
+            "intake": intake_edge(completed_at=poll.get("completedAt"), ok=poll.get("ok"),
+                                  http_status=poll.get("httpStatus"), at=now_ms),
+            "counts": channel_traffic(channel, entries if available else None),
+        }
     return lanes
 
 
 def main():
     now_ms = int(time.time() * 1000)
     rows = qq_rows(now_ms) + desktop_rows(now_ms)
+    now_ms = int(time.time() * 1000)
     lanes = pipeline_lanes(rows, now_ms)
     rows.sort(key=lambda r: r["stages"].get("received") or 0, reverse=True)
     payload = {"generatedAt": now_ms, "rows": rows[:KEEP], "lanes": lanes}

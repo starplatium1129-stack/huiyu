@@ -1,5 +1,8 @@
-"""Read-only signals for the QQ and desktop dashboard. All timestamps are Unix ms."""
+"""Signals for the QQ and desktop dashboard. All timestamps are Unix ms."""
 
+import json
+import os
+import tempfile
 from collections.abc import Mapping
 from http.client import HTTPException
 from time import time_ns
@@ -35,8 +38,33 @@ def probe_relay(get_json):
     return {"observedAt": now_ms(), "online": online, "lastSeenAt": last_seen, "reason": reason}
 
 
+def probe_cache_path():
+    return os.path.expanduser(os.environ.get("HUIYU_BOARD_PROBE_FILE")
+                              or "~/workspace/bridge-tools/main-connection.json")
+
+
+def publish_probe(sample):
+    """Call once from the existing 30s main-relay probe, including on a failed observation.
+
+    publish_probe(probe_relay(get_json)) updates the shared local sample. If the probe
+    already persists those four fields atomically, point HUIYU_BOARD_PROBE_FILE at it.
+    """
+    dest = probe_cache_path()
+    tmp = tempfile.NamedTemporaryFile(dir=os.path.dirname(os.path.abspath(dest)), delete=False,
+                                      mode="w", encoding="utf-8")
+    try:
+        with tmp:
+            json.dump({k: sample[k] for k in ("observedAt", "online", "lastSeenAt", "reason")}, tmp)
+        os.replace(tmp.name, dest)
+    finally:
+        try:
+            os.unlink(tmp.name)
+        except FileNotFoundError:
+            pass
+
+
 def fresh(stamp, now, max_age_ms):
-    return type(stamp) is int and 0 <= now - stamp <= max_age_ms
+    return type(stamp) is int and stamp > 0 and 0 <= now - stamp <= max_age_ms
 
 
 def connector_node(sample, *, direct=False, at=None, max_age_ms=75_000):
@@ -54,7 +82,7 @@ def connector_node(sample, *, direct=False, at=None, max_age_ms=75_000):
         if sample.get("lastSeenAt") is None:
             return {"state": "unknown", "label": "中转尚未见到连接器"}
         return {"state": "offline", "label": "连接器心跳中断"}
-    reason = sample.get("reason")
+    reason = sample.get("reason") if isinstance(sample.get("reason"), str) else None
     labels = {
         "http_401": "探针密钥未通过",
         "http_403": "探针访问被拒",
@@ -92,17 +120,18 @@ def delivery_view(channel, *, receipt=None, phase=None, code=None, via="reply"):
         state, label = "confirmed", "桌面已接收"
     elif (channel, status) == ("qq", "skipped"):
         state, label = "skipped", "已确认跳过"
+    elif channel == "qq" and code == "QQ_AUDIT_PENDING" and phase in ("retry", "uncertain", "ready", None):
+        state, label = "audit", "QQ 审核中"
     elif phase == "uncertain" or code == "QQ_MUSE_SEND_UNCERTAIN":
         state, label = "uncertain", "送达待核对"
     elif phase == "expired":
         state, label = "expired", "回复窗口已关闭"
-    elif channel == "qq" and code == "QQ_AUDIT_PENDING":
-        state, label = "audit", "QQ 审核中"
-    elif channel == "qq" and via == "send" and code == "QQ_MUSE_SEND_PENDING":
+    elif channel == "qq" and via == "send" and code == "QQ_MUSE_SEND_PENDING" and phase in ("retry", "ready", None):
         state, label = "preparing", "网关正在准备发送"
     else:
         stages = {
-            "awaiting_answer": ("awaiting_answer", "待答 · 认领状态未知"),
+            "awaiting_answer": ("awaiting_answer", "待答 · 工人状态未知"),
+            "queued": ("queued", "已收件，等待认领"),
             "answering": ("answering", "已认领，正在答题"),
             "ready": ("queued", "等待发送"),
             "posting": ("posting", "正在提交，等待回执"),
@@ -133,9 +162,7 @@ def channel_traffic(channel, rows_by_key):
         delivery = delivery_view(channel, receipt=row.get("receipt"), phase=phase,
                                  code=row.get("code"), via=row.get("via", "reply"))
         state = delivery["state"]
-        if state == "unknown" and phase in ("queued", "answering"):
-            counts[phase] += 1
-        elif state == "queued":  # A reply exists in the outbox.
+        if state == "queued" and phase == "ready":  # A reply exists in the outbox.
             counts["ready"] += 1
         elif state in counts:
             counts[state] += 1
