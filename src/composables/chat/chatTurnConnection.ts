@@ -1,10 +1,11 @@
 import type { Ref } from 'vue'
 import type { useChatStorage } from './useChatStorage'
+import type { ChatProvider } from './chatStorageTypes'
 
 export interface ChatConnectionOptions {
   storage: Pick<ReturnType<typeof useChatStorage>, 'setApiSettings' | 'setModel'>
   onError: (message: string, kind?: string, timeout?: number) => void
-  chatProvider: Ref<'local' | 'api'>
+  chatProvider: Ref<ChatProvider>
   currentModel: Ref<string>
   apiBaseUrl: Ref<string>
   hostApiBaseUrl?: Ref<string>
@@ -34,6 +35,7 @@ export function createChatTurnConnection(options: ChatConnectionOptions) {
 
   // A stream may canonicalize its own model, but never a newer connection draft.
   function applyModelWriteback(rawModel: unknown, hostMode: boolean, useVision: boolean, connection: TurnConnection) {
+    if (connection.provider === 'muse') return
     if (connection.provider === 'api' && !hostMode && !useVision && String(rawModel) === connection.apiModel) return
     const ownsDraft = connectionMatches(connection)
     if (connection.provider === 'api' && !hostMode && !useVision) {

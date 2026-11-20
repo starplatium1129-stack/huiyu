@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "platinum_arknights",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 303,
   "createdAt": "2026-11-08T12:40:12.822104+00:00",
-  "updatedAt": "2026-11-08T12:46:28.851680600+00:00",
+  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
   "data": {
     "id": "platinum_arknights",
     "profile": {
@@ -51,8 +51,8 @@
         "classificationSource": "游戏内干员基础档案"
       },
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "白金场景样张立绘"
+        "image": "../assets/characters/popular-platinum_arknights.png?v=af92cf60ae6b",
+        "alt": "白金立绘"
       },
       "tags": [
         "银发",

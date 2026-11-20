@@ -1,5 +1,5 @@
 import { profileLocalStorage as localStorage, profileRuntimeActive, writeProfileChatHistory, ensureProfileChatHistory } from '../../platform/web/profileStorage.ts'
-import { reactive, ref, getCurrentScope, onScopeDispose } from 'vue'
+import { reactive, ref, getCurrentScope, onScopeDispose, watch } from 'vue'
 import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipants'
 import { useChatArchiveStorage } from './useChatArchiveStorage'
 import { createChatCredentials } from '@/utils/chatCredentials'
@@ -89,6 +89,23 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
   }))
   const messageSnapshots = new Map<string, string>()
   let synchronizedText: string | null | undefined
+  function includeCharacter(id: string) {
+    if (characterIds.includes(id)) return
+    characterIds.push(id)
+    state.histories[id] = []
+    state.historiesRevisions[id] = 0
+    state.conversations[id] = emptyChatConversation()
+    state.settings.drafts[id] = ''
+    state.settings.live2dOutfits[id] = ''
+    synchronizedText = undefined
+  }
+  watch(listCompanionCharacterIds, ids => ids.forEach(includeCharacter), { flush: 'sync' })
+  // A different window can save a new card's branch before our directory refresh arrives.
+  function includeStoredCards(raw: unknown) {
+    const data = raw as { histories?: object; conversations?: object } | null
+    for (const id of [...Object.keys(data?.histories || {}), ...Object.keys(data?.conversations || {})])
+      if (/^card-[a-f0-9]{64}$/.test(id)) includeCharacter(id)
+  }
   function rememberMessages(characters?: string[]) { rememberChatConversations(state, messageSnapshots, characters) }
   function writeHistory(characters?: string[]) {
     const text = serializeChatStorage(chatHistorySnapshot(state, localStorage.getItem(STORAGE_KEY), normalizeOptions, characters))
@@ -106,6 +123,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
       assertChatVersion(raw, STORAGE_VERSION)
       if (!raw || typeof raw !== 'object') return true
       preserveRetiredCompanionChat(raw)
+      includeStoredCards(raw)
       const remote = normalizeChatStorage(raw, '', { ...normalizeOptions, maxMessages: Number.MAX_SAFE_INTEGER }).state
       mergeChatConversationStates(state, remote, messageSnapshots)
       synchronizedText = text
@@ -212,6 +230,7 @@ export function useChatStorage(onError: (msg: string) => void = () => {}) {
     try {
       assertChatVersion(raw, STORAGE_VERSION)
       preserveRetiredCompanionChat(raw)
+      includeStoredCards(raw)
       const normalized = normalizeChatStorage(
         preferences.overlay(raw),
         localStorage.getItem('aics_chat_model') || '',

@@ -92,6 +92,21 @@ function dataVersionPlugin(): Plugin {
   }
 }
 
+/** Keep the full prompts server-side and expose only the character's greeting to the UI. */
+function chatCardPresentation(): Plugin {
+  return {
+    name: 'chat-card-presentation',
+    enforce: 'pre',
+    transform(source, id) {
+      if (!id.endsWith('.json?chat-presentation')) return
+      const { name, first_mes } = JSON.parse(source).data
+      if (!name || !first_mes || typeof name !== 'string' || typeof first_mes !== 'string')
+        this.error(`Missing chat card presentation in ${id}`)
+      return { code: `export default ${JSON.stringify({ data: { name, first_mes } })}`, moduleType: 'js', map: null }
+    },
+  }
+}
+
 function featureChunk(id: string) {
   // 框架单独成块：应用代码改动不该让 Vue/Router/Pinia 的缓存一起失效
   if (id.includes('node_modules/vue/') ||
@@ -149,6 +164,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     tailwindcss(),
     vue(),
     dataVersionPlugin(),
+    chatCardPresentation(),
     manualStylesPlugin(),
   ]
   if (mode === 'desktop') plugins.push({

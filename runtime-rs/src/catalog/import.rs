@@ -1,16 +1,23 @@
 use super::*;
+#[derive(PartialEq, Eq)]
+pub(super) enum Policy {
+    Strict,
+    PreserveLocal,
+    SyncBundle,
+}
+
 fn same(left: &Record, right: &Record) -> bool {
     left.data == right.data && left.sort_order == right.sort_order
 }
 impl Catalog {
     pub fn import(&mut self, snapshot: &Value, preview: bool) -> Result<Value> {
-        self.import_with_policy(snapshot, preview, false)
+        self.import_with_policy(snapshot, preview, Policy::Strict)
     }
     pub(super) fn import_with_policy(
         &mut self,
         snapshot: &Value,
         preview: bool,
-        preserve_local: bool,
+        policy: Policy,
     ) -> Result<Value> {
         if snapshot["version"] != 1 {
             return Err(ApiError::invalid("快照版本无效"));
@@ -25,7 +32,9 @@ impl Catalog {
         }
         let mut changes = Vec::new();
         let mut preserved = Vec::new();
-        let seeds = records
+        let mut newer_records = Vec::new();
+        let mut kept_newer = Vec::new();
+        let mut seeds = records
             .into_iter()
             .map(|r| (r, false))
             .chain(retired.into_iter().map(|r| (r, true)))
@@ -37,10 +46,13 @@ impl Catalog {
         ))?;
         let mut seed_query =
             read.prepare_cached("SELECT record,deleted FROM content_seed WHERE kind=?1 AND id=?2")?;
-        for (incoming, removed) in &seeds {
-            let removed = *removed;
+        for (incoming, bundle_removed) in &mut seeds {
+            let removed = *bundle_removed;
             validation::key(&incoming.kind, &incoming.id)?;
-            if !seen.insert((&incoming.kind, &incoming.id)) {
+            if incoming.revision < 1 {
+                return Err(ApiError::invalid("快照修订必须为正整数"));
+            }
+            if !seen.insert((incoming.kind.clone(), incoming.id.clone())) {
                 return Err(ApiError::invalid("快照记录重复"));
             }
             let current = current_query
@@ -58,6 +70,21 @@ impl Catalog {
                 .optional()?
                 .map(|(record, removed)| record.map(|record| (record, removed)))
                 .transpose()?;
+            if policy == Policy::SyncBundle
+                && let Some((accepted, _)) = &base
+                && provenance::older_revision(incoming, accepted)?
+            {
+                kept_newer.push(json!({"kind":incoming.kind, "id":incoming.id,
+                    "incomingRevision":incoming.revision, "acceptedRevision":accepted.revision}));
+                newer_records.push(
+                    current
+                        .ok_or_else(|| ApiError::invalid("已接收的上游记录缺少对应的本地记录"))?,
+                );
+                // Recheck this baseline in the write transaction too. It must
+                // never be replaced by the stale bundle or by the local edit.
+                (*incoming, *bundle_removed) = base.unwrap();
+                continue;
+            }
             let equal = current
                 .as_ref()
                 .is_some_and(|(r, old_removed)| same(r, incoming) && *old_removed == removed);
@@ -74,7 +101,7 @@ impl Catalog {
             // Preserve the complete local record, including metadata, on repeat
             // imports too. The original incoming record remains the new seed;
             // a local record must never be mistaken for the upstream baseline.
-            if preserve_local
+            if policy != Policy::Strict
                 && !equal
                 && !untouched
                 && let Some(current) = current
@@ -128,6 +155,11 @@ impl Catalog {
         drop(current_query);
         drop(seed_query);
         read.commit()?;
-        self.apply_with_seeds(&changes, preview, &seeds, &preserved)
+        let mut receipt =
+            self.apply_with_seeds(&changes, preview, &seeds, &preserved, &newer_records)?;
+        if policy == Policy::SyncBundle {
+            receipt["keptNewer"] = Value::Array(kept_newer);
+        }
+        Ok(receipt)
     }
 }

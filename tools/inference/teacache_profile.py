@@ -144,6 +144,7 @@ def compatibility(root, loras, data, mode, dtype, device_name, *, mask_model_dir
         "sampling": {"width": data["width"], "height": data["height"], "steps": data["steps"],
             "cfg": data["cfg"], "mode": mode, "denoisingStrength": data.get("denoisingStrength"),
             "sampler": data.get("sampler", "euler"), "scheduler": data.get("scheduler", "simple"),
+            **({"loraAttentionRevision": "native-sdpa-v1"} if loras and EXECUTION != "native" else {}),
             **({"rcasStrength": data["rcasStrength"], "rcasExecutionRevision": _postprocess_module().EXECUTION_REVISION}
                 if data.get("rcasStrength", 0) else {}),
             **({"promptWeighting": weighting} if weighting else {}),

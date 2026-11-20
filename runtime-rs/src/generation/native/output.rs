@@ -54,7 +54,7 @@ pub(super) fn anima_request(
     ] {
         input[key] = plan.input[key].clone();
     }
-    for key in ["sketchControl", "regions"] {
+    for key in ["hiresOnly", "sketchControl", "regions"] {
         if let Some(value) = plan.input.get(key) {
             input[key] = value.clone();
         }

@@ -47,11 +47,12 @@
             <div class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble"><p class="companion-dialogue-line">{{ currentCharacter.greeting }}</p></div>
           </div>
-          <div v-for="msg in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid">
+          <div v-for="msg in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid"
+            role="group" :aria-label="msg.role === 'user' ? '你的消息' : `${currentCharacter.name}的回复`">
             <div v-if="msg.role === 'assistant'" class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble" v-content-motion:up="arrivingMessages.has(msg.mid) ? msg.mid : false">
               <div class="companion-dialogue-speaker">
-                <span>{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
+                <span aria-hidden="true">{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
                 <ChatMessageActions :can-copy="Boolean(msg.content)" :can-remember="false" :remembered="false" :can-play="false" :playing="false"
                   :can-regenerate="Boolean(bridge && liveState.chatReady && canRegenerateMessage(msg.mid))" :reply-missing="msg.role === 'user'"
                   :can-fork="Boolean(bridge && msg.content)" :story-disabled="replyPending || storyBusy || attachments.sendingImage.value"
@@ -92,11 +93,11 @@
     <input ref="imageInputRef" class="sr-only" type="file" tabindex="-1" aria-hidden="true" accept="image/png,image/jpeg,image/webp" @change="attachments.onImageInputChange" />
     <ConversationComposer class="companion-dialogue-composer" density="compact" :has-tools="Boolean(bridge) || speechReady">
       <template #tools>
-      <StudioTooltip v-if="bridge" anchor :content="attachments.preparingImage.value ? '正在准备图片…' : '发送图片，也可粘贴或拖入图片'">
+      <StudioTooltip v-if="bridge" anchor :content="attachments.preparingImage.value ? '正在准备图片…' : liveState.textOnly ? '添加图片用于反推并生成' : '发送图片，也可粘贴或拖入图片'">
         <button class="companion-dialogue-microphone" type="button" aria-label="添加图片" :disabled="attachments.preparingImage.value"
           @click="attachments.pickImage"><ArchiveIcon name="image" /></button>
       </StudioTooltip>
-      <StudioTooltip v-if="bridge" anchor :content="!liveState.chatReady ? '请先连接聊天模型' : replyPending || attachments.sendingImage.value ? '请等待当前回复或图片发送完成' : '让角色看当前屏幕（需支持图片的聊天模型）'">
+      <StudioTooltip v-if="bridge && !liveState.textOnly" anchor :content="!liveState.chatReady ? '请先连接聊天模型' : replyPending || attachments.sendingImage.value ? '请等待当前回复或图片发送完成' : '让角色看当前屏幕（需支持图片的聊天模型）'">
         <button class="companion-dialogue-microphone" type="button" aria-label="看屏幕"
           :disabled="!liveState.chatReady || replyPending || attachments.sendingImage.value" @click="attachments.onCaptureAndInspectScreen"><ArchiveIcon name="eye" /></button>
       </StudioTooltip>
@@ -108,12 +109,13 @@
           @blur="speechHold.cancelHeld"><ArchiveIcon name="sound" /></button>
       </StudioTooltip>
       </template>
-      <textarea ref="inputRef" v-model="inputText" rows="1" maxlength="1200" class="companion-dialogue-input"
-        :placeholder="`对${currentCharacter.name}说…`" aria-label="桌宠聊天输入"
+      <label class="sr-only" for="dialogue-chat-input">桌宠聊天输入</label>
+      <textarea id="dialogue-chat-input" ref="inputRef" v-model="inputText" rows="1" maxlength="1200" class="companion-dialogue-input"
+        :placeholder="`对${currentCharacter.name}说…`"
         @input="onInput" @keydown.enter.exact="submitChatOnEnter($event, sendChat)"></textarea>
       <template #commit>
-        <StudioTooltip anchor :content="interruptible ? '停止回复或语音' : !bridge ? '请在桌面客户端中发送消息' : !liveState.chatReady ? '请先连接聊天模型' : selectedImage ? '发送图片' : !inputText.trim() ? '先写一条消息' : '发送 · Enter（Shift+Enter 换行）'">
-          <button class="companion-dialogue-send" type="button" :aria-label="interruptible ? '停止回复或语音' : '发送'"
+        <StudioTooltip anchor :content="interruptible ? '停止回复或语音' : !bridge ? '请在桌面客户端中发送消息' : !liveState.chatReady ? '请先连接聊天模型' : selectedImage && liveState.textOnly ? 'Muse 支持文字聊天，移除图片即可发文字' : selectedImage ? '发送图片' : !inputText.trim() ? '先写一条消息' : '发送 · Enter（Shift+Enter 换行）'">
+          <button id="dialogue-chat-submit" class="companion-dialogue-send" type="button" :aria-label="interruptible ? '停止回复或语音' : selectedImage ? '发送图片' : '发送消息'"
             :data-interrupt="interruptible || undefined" :disabled="!interruptible && (selectedImage ? !attachments.canSendImage.value : !canSend)"
             @click="interruptible ? onStop() : sendChat()">
             <ArchiveIcon class="dialogue-send-icon" name="send" /><ArchiveIcon class="dialogue-stop-icon" name="stop" />

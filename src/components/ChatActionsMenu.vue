@@ -3,7 +3,9 @@ import { DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from 'reka
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDropdownMenu from '@/components/ui/StudioDropdownMenu.vue'
 
+defineProps<{ canImport?: boolean; importDisabled?: boolean }>()
 const emit = defineEmits<{
+  (e: 'import-card'): void
   (e: 'clear-all'): void
   (e: 'toggle-archive'): void
   (e: 'toggle-memory'): void
@@ -20,6 +22,9 @@ const emit = defineEmits<{
     </template>
     <template #default="{ run }">
       <DropdownMenuLabel class="chat-more-label">房间与记忆</DropdownMenuLabel>
+      <DropdownMenuItem v-if="canImport" class="chat-more-item" :disabled="importDisabled" @select="run(() => emit('import-card'))">
+        <ArchiveIcon name="character" /><span>导入角色卡（PNG / JSON）</span>
+      </DropdownMenuItem>
       <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-archive'))">
         <ArchiveIcon name="chat" /><span>对话归档</span>
       </DropdownMenuItem>

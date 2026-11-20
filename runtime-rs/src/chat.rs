@@ -1,8 +1,11 @@
 mod compatible;
+mod card_library;
+pub(crate) use card_library::validate_catalog_card;
 mod completion;
 mod channel_turn;
 pub(crate) use channel_turn::{ChannelReply, ChannelTool};
 mod local_persona;
+pub(crate) mod muse;
 mod ollama;
 mod persona;
 mod request_body;
@@ -59,6 +62,7 @@ impl IntoResponse for Error {
 }
 
 pub struct ChatService {
+    muse: muse::Connections,
     transport: transport::Transport,
     ollama: ollama::Ollama,
     settings: OnceCell<settings::Settings>,
@@ -72,6 +76,7 @@ impl Default for ChatService {
 impl ChatService {
     pub fn new() -> Self {
         Self {
+            muse: muse::Connections::default(),
             transport: transport::Transport::new(),
             ollama: ollama::Ollama::new(),
             settings: OnceCell::new(),
@@ -90,7 +95,9 @@ impl ChatService {
 
 pub fn router(service: Arc<ChatService>) -> Router<AppState> {
     Router::new()
+        .merge(card_library::router())
         .route("/api/chat-status", get(status))
+        .route("/api/chat/muse/status", get(muse::status))
         .route(
             "/api/chat",
             post(chat).layer(DefaultBodyLimit::max(14 * 1024 * 1024)),
@@ -149,12 +156,23 @@ async fn chat(
             .map_err(body_error)?;
         let body = request_body::parse(body, &admission, &scope).await?;
         let direct = security::is_direct_local(&headers, peer.ip());
+        let character = body["character"].as_str().filter(|id| !id.is_empty()).unwrap_or("nene");
+        let muse_character = if body["provider"] == "muse" {
+            local(&headers, peer)?;
+            Some(character.to_owned())
+        } else {
+            None
+        };
         let settings = chat.settings(&app).await;
-        let persona = if direct {
+        let imported = if card_library::is_id(character) {
+            local(&headers, peer)?;
+            Some(card_library::load_card(&app, character).await?)
+        } else { None };
+        let persona = if direct && imported.is_none() {
             local_persona::read(
                 settings,
                 &app.config.app_root,
-                body["character"].as_str().unwrap_or("nene"),
+                character,
                 &admission,
                 &scope,
             )
@@ -162,7 +180,10 @@ async fn chat(
         } else {
             None
         };
-        let input = request_body::validate(body, persona, direct, &admission, &scope).await?;
+        let input = request_body::validate(body, persona, imported, direct, &admission, &scope).await?;
+        if let Some(character) = muse_character {
+            return chat.muse.submit(character, input);
+        }
         let managed_auth = app.control.as_ref().map(|control| control.llama_auth());
         let prepared = if input.api.is_some() {
             compatible::prepare(

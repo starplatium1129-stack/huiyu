@@ -2,7 +2,7 @@ import { inferEmotion } from '@/utils/stream'
 import { createMoodTagStream } from '@/utils/moodTag'
 import { hasChatUserProfile, type ChatUserProfile } from '@/utils/chatUserProfile'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
-import type { ChatMessage } from './chatStorageTypes'
+import type { ChatMessage, ChatProvider } from './chatStorageTypes'
 
 /** Protocol mood tags own the whole turn once present; text hints are a fallback. */
 export function createTurnEmotionTracker(characterId: string, append: (text: string) => void, onEmotion?: (emotion: string) => void) {
@@ -49,7 +49,7 @@ export function createTurnEmotionTracker(characterId: string, append: (text: str
 }
 
 interface TurnConnection {
-  provider: 'local' | 'api'
+  provider: ChatProvider
   currentModel: string
   baseUrl: string
   apiModel: string
@@ -74,10 +74,16 @@ export function buildChatRequestBody(args: {
   const historyList = messages.slice(0, useVision && imageUrls.length ? -2 : -1)
     // Persist full replies and alternatives; only the gateway context is bounded.
     .filter(message => message.content || !message.drawingBatchId)
-    .map(message => ({ role: message.role, content: message.content.slice(0, 1200) }))
+    .map(message => {
+      // Community greetings can be a whole scene. Keep its closing cue and reserve room for the user's reply.
+      const content = characterId.startsWith('card-') && message.role === 'assistant'
+        ? message.content.slice(-(12_000 - 1_200)).replace(/^[\uDC00-\uDFFF]/u, '')
+        : message.content.slice(0, 1200).replace(/[\uD800-\uDBFF]$/u, '')
+      return { role: message.role, content }
+    })
   return JSON.stringify({
     character: characterId, sessionId, provider: connection.provider,
-    model: hostMode ? '' : connection.currentModel,
+    model: connection.provider === 'muse' ? undefined : hostMode ? '' : connection.currentModel,
     api: !hostMode && connection.provider === 'api'
       ? { baseUrl: connection.baseUrl, model: connection.apiModel, apiKey: connection.apiKey } : undefined,
     hostConfig: hostMode || undefined,

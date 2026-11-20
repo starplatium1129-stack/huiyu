@@ -21,7 +21,7 @@
     </TransitionGroup>
     <div class="companion-action-dock" role="group" aria-label="桌宠快捷操作">
       <StudioTooltip v-if="showWatch && showChat" content="打开对白窗（Ctrl+Shift+X）">
-        <button type="button" class="btn btn-ghost btn-sm companion-dock-action" aria-label="打开对白" @click="emit('open-chat')">
+        <button type="button" class="btn btn-quiet btn-sm companion-dock-action" aria-label="打开对白" @click="emit('open-chat')">
           <ArchiveIcon name="chat" /><span>对白</span>
         </button>
       </StudioTooltip>

@@ -39,6 +39,10 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 
 **自定义或批量出图**也用同一接口。自定义提交 `prompt` 与 `requestKey`，可加 `modelId`、`seed`、`variants`、`negative`、`steps`、`cfg` 或成对的 `width`、`height`，模型参数由选用的模型校验。Anima 可传 `character` 自动匹配已安装的 LoRA。多个任务用 `POST /api/muse/batches`，用 `ids` 批量传目录 ID，或用 `items` 逐项传出图参数。整批可共用顶层 `width` 和 `height`，某一项需要不同尺寸时在该项内成对覆盖。每项最多 8 张，每批合计最多 16 张。提供 `seed` 时后续变体递增。网络重试复用原请求体和 `requestKey`。
 
+**Anima 高清放大**只需加 `"upscale":"ultrasharp"` 或 `"upscale":"remacri"`。UltraSharp 放大 1.5× 后按 Euler / Normal、10 步、CFG 5.5、重绘 0.8、Shift 3 重绘。Remacri 纯像素放大 1.5×。宽高仍填放大前的尺寸，第一轮沿用原配方或本次传入的步数。顶层 `upscale` 可用于整批，`items` 每项可以覆盖，传 `"off"` 可关闭该项放大。需要放大时，出图机须先安装对应权重。
+
+**直接收图**时，已有目录 ID 或提示词就直接提交。走 Cloudflare 中转且客户端能接收二进制时，用回执里的 `receivePath` 等原图，可跳过目录详情、队列和单图状态查询。需要查看进度时才读批次 `statusPath`。
+
 **查刚提交的图**：单张和多张都返回 `batchKey` 和顶层 `statusPath`。直接 GET 这个路径，也可用 `GET /api/muse/batches/{batchKey}`。从 `items` 看每张图的 `status`、`progress` 和成功后的 `resultUrl`。`waiting` 表示已排队，继续查同一路径即可。取消整批或某张图时，向对应的 `cancelPath` 发 `DELETE`。升级前的单图若仍保有回执，可用当初的 `requestKey` 查批次路径，也可沿原回执路径读取 `job`。
 
 **队列和恢复**用 `GET /api/muse/queue` 查看排位。丢失编号时用 `GET /api/muse/jobs` 找回近期记录。`items` 同时含 `entryType=batch` 的批次和 `entryType=image` 的单张任务。可传 `since`（Unix 毫秒或 RFC3339），并以 `nextBefore` 翻页。
@@ -46,16 +50,35 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 **助手自动收原图**
 
 1. 提交回执中，每张图的 `items[].next` 都给出了下一次请求的 `method`、`path` 和 `accept`。当 `accept` 为 `application/json` 时，等 `retryAfterSeconds` 秒（默认 2 秒），再用读 JSON 的工具查批次的 `statusPath`。同一批只需查一次就能看到所有图片的进度。`next` 为 `null` 时结束该项，并按 `status`、`deliveryStatus` 和 `error` 说明原因。
-2. 某一项的 `resultAvailable` 为 `true` 且有 `resultUrl` 时，`next.accept` 会变为 `image/png`。这时把该项的 `resultUrl` 交给文件下载工具，带同一个 `X-Token` 发 GET。整图应返回 `200 image/png`。
-3. 保存前检查 PNG 文件头（十六进制 `89504e470d0a1a0a`），将实际字节数与 `Content-Length`、`X-Result-Bytes` 比对，计算 SHA-256 并与 `X-Result-Sha256` 比对。校验通过再展示图片、告知用户完成。
+2. 某一项的 `resultAvailable` 为 `true` 且有 `resultUrl` 时，`next.accept` 会变为 `image/png`。使用文件下载工具，带同一个 `X-Token` 请求该地址。原图达到 1 MiB 时，回执的 `next.ranges` 会给出四个 `Range` 值。支持并发的工具可对同一个地址同时发四次 GET。每个 `206 image/png` 响应的 `Content-Range` 和 `Content-Length` 须与所取区间匹配，超时只重取缺失的区间。也可以用一次 GET 收取 `200 image/png` 整图。
+3. 并行取图按起始偏移拼接。保存前检查 PNG 文件头（十六进制 `89504e470d0a1a0a`），将整图字节数和 SHA-256 与回执的 `resultBytes`、`resultSha256` 比对。直接下载整图时，也核对响应的 `Content-Length`、`X-Result-Bytes` 和 `X-Result-Sha256`。校验通过再展示图片、告知用户完成。
 
 **沿用 receivePath 的助手**可以对每项的 `receivePath` 长轮询，单图也可用顶层的同名字段。每次 GET 最多等待 20 秒。收到 `202`，或工具显示 `200 application/json` 且正文含 `"pending":true`，都按等待处理。即使旧回执里有 `"ok":true`，也要继续 GET 同一地址。重试间隔优先读 `Retry-After`（秒），缺省用 2 秒。JSON 只用于读状态，下载整图沿用上述校验。断线后可用原路径继续接收。
 
 **等待图片传完**。中转回执中，`status=succeeded` 表示笔记本已经出图，`generationMs` 是生成耗时。`deliveryStatus=transferring` 表示中转还在收图，`deliveryBytes` 为已经校验的字节数。即使调用方退出，中转也会继续接收已经提交的批次。中转收齐并校验后，`deliveryStatus` 变为 `ready`，`deliveryMs` 记录传送耗时，手机自己的下载时间另算。中转已收全的图在笔记本离线后仍可下载。回执保留 `resultBytes` 和 `resultSha256`。遇到 `expired`、`storageFull`、`invalidReceipt` 或 `integrityError` 时，结束该项并报告原因。遇到空响应、429 或 503，按 `Retry-After` 或短暂退避重查原路径。
 
-**弱网取图**。从 `resultUrl?part=0` 开始依次取 128 KiB 分片，最后一片可较小。收到的字节数应等于 `Content-Length`，分片 SHA-256 应等于 `X-Part-Sha256`，按 `X-Result-Offset` 写入。掉线只需重取缺少的分片。所有分片拼好后，用回执的大小和 SHA-256 核对整图，再交给用户。可直接用 Python 3.11+ 的下载工具，运行 `py tools/muse-relay/get_result.py <HTTPS地址> <batchKey> 成图.png`。工具会提示输入密钥，也可读取环境变量 `MUSE_TOKEN`。重复运行会沿用已经收好的分片，批次中的第 2 张可加 `--item 2`。
+**命令行取图**。用 Python 3.11+ 运行 `py tools/muse-relay/get_result.py <HTTPS地址> <batchKey> 成图.png`。工具提示输入密钥，也可读取环境变量 `MUSE_TOKEN`。先发整图请求。原图达到 1 MiB 且 1.5 秒内尚未收到完整图片时，再开四路并行下载，采用先收齐并通过校验的结果。两种方式都失败时可用可续传分片。加 `--single-connection` 可只用原来的取图方式，取批次中的第 2 张时加 `--item 2`。
+
+带 `--submit` 可以一条命令提交、等待并保存原图。给出 JSON 请求文件时运行 `py tools/muse-relay/get_result.py <HTTPS地址> '@request.json' 成图.png --submit`，也可直接把 JSON 对象作为第二个参数。文件可只写 `{"id":"sc093","upscale":"ultrasharp"}`，工具会生成一个 `requestKey` 并在提交前打印。中断后用这个编号继续取图。批量 JSON 仍可用 `--item` 选择要保存的那张。
+
+**弱网取图**。从 `resultUrl?part=0` 开始依次取 128 KiB 分片，最后一片可较小。收到的字节数应等于 `Content-Length`，分片 SHA-256 应等于 `X-Part-Sha256`，按 `X-Result-Offset` 写入。掉线只需重取缺少的分片。所有分片拼好后，用回执的大小和 SHA-256 核对整图。重复运行下载工具时可复用这些分片。
 
 **断点续传**时用同一个地址和 `X-Token` 下载 `resultUrl`。断线后保留部分文件，从已收到的 `N` 字节发送 `Range: bytes=N-`，并用原 `ETag` 作为 `If-Range`。收到 `206 image/png` 且 `Content-Range` 从 `N` 开始时追加，完成后核对 `resultBytes` 和 `resultSha256`。收到 `200 image/png` 时按完整文件接收，通过整图校验后再替换。桌面端任务记录保留约 7 天，原图最长保留 48 小时，受 2 GiB 缓存上限约束。
+
+### 在桌面角色聊天中使用 Muse
+
+在绘遇打开「角色聊天 → 聊天设置 → 聊天模型」，选择 **Muse**。点「复制给 Muse 的收信说明」，把说明交给正在帮你出图或收 QQ 消息的 Muse，给现有连接增加桌面收信任务。使用 Cloudflare 中转的旧连接需先在出图机用 `tools/muse-relay/setup.ps1` 更新 Worker。使用已启动的 QQ Tailscale 虚拟机专用端口时，沿用原来的地址与端口。
+
+| 连接方式 | 取桌面来信 | 回到桌面角色房间 |
+| --- | --- | --- |
+| 远程绘图端口或 Cloudflare，沿用该地址的 `X-Token` | `GET /api/muse/desktop/inbox` | `POST /api/muse/desktop/reply` |
+| QQ 的 Tailscale 专用端口，沿用已授权的虚拟机 | `GET /desktop/pending` | `POST /desktop/replies` |
+
+请让 Muse 把已有的定时任务改成两个独立的持续收信任务，桌面、QQ 各保持一个 GET。两个收件地址均可加 `?wait=25`，按秒等待，上限 30 秒。队列有来信立即返回，空队列等到期限才返回。HTTP 超时设为至少 40 秒。省略 `wait` 时立即取一次，也可沿用 `Prefer: wait=20` 请求头，两者同时出现时优先用 URL 参数。旧桌面网关走公网时，中转会在 Muse 等待期间每隔约 3 秒再取一次，收件结果标记 `operations.inboxWaitMode: "relay-poll"`。收到空列表就续接同一地址。如果直连旧网关，`operations.inboxWaitSeconds` 缺失或为 0 时，空列表返回后等 2 秒再取。连接失败时按 `Retry-After` 或逐步退避重连。
+
+用 `conversationId` 区分对话，按 `items[].messages` 中的角色设定和聊天上下文生成文字。每个 `requestKey` 只生成一次，写好即在 `expiresAt` 前提交 `{"requestKey":"来信编号","text":"角色的回答"}`，收到回执后继续取信。投递重试用原编号和原回答。桌面发送后可以停止等待，已撤回或过期的问题需在房间里重新发送。
+
+聊天设置显示「Muse 最近已来收信」时，表示绘遇在最近 90 秒收到过桌面收信请求。如果一直显示等待，先让 Muse 核对收信地址与任务，再点「重新检测 Muse」。
 
 ### 让 Muse 收发 QQ 群消息
 
@@ -67,7 +90,7 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 
 使用 Cloudflare 或绘图端口的客户端使用上面的连接地址和 `X-Token`，可按下面的协议定时收信。
 
-> 每 15 秒请求一次 `GET /api/muse/qq/inbox`。用 `conversationId` 区分会话，`senderId` 区分发件人。`ambient: true` 表示普通群消息，可自行决定是否插话。向 `POST /api/muse/qq/reply` 提交 `{"requestKey":"来信编号","text":"你的回答"}`，静默跳过则提交 `{"requestKey":"来信编号","skip":true}`。每次请求携带 `X-Token`。同一编号只处理一次，遇到暂时故障，在 `expiresAt` 前用相同编号和内容重试。`status: sent` 表示 QQ 已确认，`skipped` 表示已静默处理。
+> 独立持续请求 `GET /api/muse/qq/inbox?wait=25`，HTTP 超时至少 40 秒，空结果立即续接。用 `conversationId` 区分会话，`senderId` 区分发件人。普通聊天直接用来信附带的 `recentMessages`，文字写好就回传。`ambient: true` 表示普通群消息，可自行决定是否插话。向 `POST /api/muse/qq/reply` 提交 `{"requestKey":"来信编号","text":"你的回答"}`，静默跳过则提交 `{"requestKey":"来信编号","skip":true}`。每次请求携带 `X-Token`。同一编号只处理一次，遇到暂时故障，按 `Retry-After` 或逐步退避，在 `expiresAt` 前用相同编号和内容重试。`status: sent` 表示 QQ 已确认，`skipped` 表示已静默处理。
 
 已有待答消息时，收件箱立即返回。收件箱为空时，网关可以等 8 秒，这期间有新消息就立即返回。原有轮询任务可以继续使用同一地址和参数。`operations` 给出当前连接可以调用的地址和参数。
 
@@ -81,7 +104,9 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 | 主动发一条消息 | `POST /api/muse/qq/send` | `POST /qq/send` | 新 UUID 作 `requestKey`、目标 `conversationId`、`text`、`image`、`audio` 三选一 |
 | 搜公开网页 | `POST /api/muse/qq/search` | `POST /qq/search` | `query` 配来信 `requestKey`。独立搜索时用新 UUID 加目标 `conversationId` |
 
-群来信的 `recentMessages` 取同一群 `context.items` 中位于本条之前的最多 6 条，保留发言人的昵称、角色、正文、时间和附件类型等字段。网关在本机保存近一小时内每群最多 64 条发言，包括已回复、已跳过的来信和 QQ 已确认的 Muse 回复、主动消息。`eventId` 可用于去重，`author` 区分 `user` 和 `muse`，时间戳为 Unix 毫秒。附件在历史中只记录类型与数量。普通群消息需要在绘遇勾选接收并由群主在 QQ 授权。网关重启后继续使用有效期内的历史。重新保存 QQ 设置或解绑群后，从新消息开始记录。
+群来信的 `recentMessages` 取本条之前的同群发言。绘遇的「手机聊天 · QQ → 每条消息附带的群聊前文」默认 32 条，可选 6、16、32 或 64 条。单独调整条数后，从下一条来信起生效，已有历史和待答来信可继续使用。旧版网关每条附带最多 6 条。需要更早的前文时，可用同群 `context` 读取最近一小时内最多 64 条发言，包括已回复、已跳过的来信和 QQ 已确认的 Muse 回复、主动消息。`eventId` 可用于去重，`author` 区分 `user` 和 `muse`，时间戳为 Unix 毫秒。网关重启后继续使用有效期内的历史。重新保存连接设置或解绑群会开启新的历史记录。
+
+普通群消息需要在绘遇勾选接收并由群主在 QQ 授权。收到的群消息都会带同群稳定的 `senderId`，有昵称时附 `senderNickname`。Muse 可以据此区分发过言的群友。当前来信中的图片通过 `attachments` 提供 QQ 图片链接和类型，每条最多 4 张；远端需打开链接并把图像交给支持识图的模型。群历史只保留附件类型和数量。
 
 排查漏收时，在主力机的 `%APPDATA%\com.aics.studio\desktop.log` 按时间查看 `QQ 入站`。日志里的 `group` 和 `sender` 分别对应会话和发言人编号的前 12 位。同一个 `msg` 可串起分流、过滤原因和入箱记录。入箱后可用 `requestKey` 查到网关首次在收件响应里列出消息、收到 Muse 回信以及取得 QQ 确认的时间。
 
@@ -101,7 +126,7 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 
 绘遇仅在 `localIp:port` 监听，只接受来自 `vmIp` 的直接 TCP 连接。客户端通过 tailnet 加密链路访问，免密钥。为此接口单独选择可用端口，保留已有的绘图端口 3211。笔记本需要允许 Muse 到该地址和端口的 Tailscale 入站连接。
 
-- Muse 每约 10 秒请求 `GET http://<localIp>:3212/qq/pending`。返回的 `items` 是待处理消息，`operations` 是当前接口说明。取题不消费，同一编号只需生成一次回答。有图片的来信会在 `attachments` 列出 QQ 提供的图片地址和 MIME 类型。
+- Muse 持续请求 `GET http://<localIp>:3212/qq/pending?wait=25`，HTTP 超时至少 40 秒，空结果立即续接。返回的 `items` 是待处理消息，`operations` 是当前接口说明。取题不消费，同一编号只需生成一次回答。有图片的来信会在 `attachments` 列出 QQ 提供的图片地址和 MIME 类型。
 - 回答就绪后，向 `POST http://<localIp>:3212/qq/replies` 提交 UTF-8 JSON，格式为 `{"requestKey":"原编号","text":"回复正文"}`。QQ 确认后绘遇返回 HTTP 200 和 `{"ok":true,"requestKey":"原编号","status":"sent"}`，该题随即从待答列表消失。断线或遇到 5xx 时可在到期前用同一编号和原文重试，已确认的回答会返回同一成功回执。
 - 正文为 1–1600 字。HTTP 409 表示这条消息已提交过不同的回复，410 表示编号已失效。别把过期回复挂到另一条群消息。旧中转的 QQ 收发接口在此模式下返回 `QQ_MUSE_VM_POLL`。
 
@@ -141,7 +166,7 @@ Muse 服务监听自己的 Tailscale IPv4 地址，放行绘遇的 Tailscale 源
 
 直连、中转和虚拟机均按 `conversationId` 区分群，按 `senderId` 区分同群发言人；重名或改名后仍按这个 ID 归属消息。`senderNickname` 供称呼，缺失时为 `null`。`senderRole` 优先取 QQ 本条消息的群角色，`owner` 为群主，`admin` 为管理员，`member` 为普通成员。事件缺少角色时，绘遇使用同群同成员最近 5 分钟内的资料，或在 QQ 权限和频率允许时查询。仍缺少依据则返回 `unknown`，Muse 应直接称呼群友。私聊的群角色为 `null`。[群消息字段](https://bot.q.qq.com/wiki/develop/api-v2/autogen/event/group_message_create.html) · [群成员资料](https://bot.q.qq.com/wiki/develop/api-v2/autogen/api/v2_groups_group_openid_members_member_openid.get.html)
 
-**取回复。** 绘遇收到投递成功回执后，每隔约 3 秒请求同一虚拟机的 `GET /qq/replies/{requestKey}`。未完成返回 `204 No Content`，完成返回 `200 OK` 及下方 JSON，正文为 1–1600 字。若记录丢失，返回 `404` 可让绘遇重新投递原问题。请为同一编号保留同一份结果至 `expiresAt`，允许重复 GET。绘遇用原消息 ID 把答复发回原群，收到 QQ 确认后停止；过期、解绑或停用也会停止。VM 收到 GET 仅表示绘遇正在取答复。
+**取回复。** 虚拟机可以在文字写好时直接向问题中 `callbackOrigin` 的 `POST /qq/replies` 回传原 `requestKey` 和 `text`。沿用原有取回复方式时，绘遇收到投递成功回执后，每隔约 3 秒请求同一虚拟机的 `GET /qq/replies/{requestKey}`。未完成返回 `204 No Content`，完成返回 `200 OK` 及下方 JSON，正文为 1–1600 字。若记录丢失，返回 `404` 可让绘遇重新投递原问题。请为同一编号保留同一份结果至 `expiresAt`，允许重复 GET。绘遇用原消息 ID 把答复发回原群，收到 QQ 确认后停止。过期、解绑或停用也会停止。
 
 ```json
 {"requestKey":"3c40e968-3ae8-4a24-bc1b-4060b5ce858c","text":"可以叫《雨停以前》。"}

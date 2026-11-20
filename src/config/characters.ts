@@ -1,4 +1,6 @@
 import type { CompanionDetectedEvent } from '@/utils/companionEvents'
+import neneCard from '../../runtime-rs/src/chat/cards/nene.json?chat-presentation' with { type: 'json' }
+import natsumeCard from '../../runtime-rs/src/chat/cards/natsume.json?chat-presentation' with { type: 'json' }
 
 export interface CharacterConfig {
   id: string
@@ -30,12 +32,12 @@ export interface CharacterConfig {
 export const CHARACTERS: Record<string, CharacterConfig> = {
   nene: {
     id: 'nene',
-    name: '绫地宁宁',
+    name: neneCard.data.name,
     caption: '《魔女的夜宴》姬松学园完美女神，暗藏心之碎片契约；极易因羞耻或直球告白陷入慌乱发赤。',
     description: '无论是心之碎片的秘密、工坊绘制还是日常琐事，我都愿意听你说……不过，要是不小心触发了魔女副作用，请、请千万不要一直盯着看！',
     image: '/assets/characters/nene-official.webp',
     icon: 'nene',
-    greeting: '那个……你来了呀。今天辛苦啦。如果有想和我说的秘密，或者只是想静静待一会儿……我都随时陪着你哦。',
+    greeting: neneCard.data.first_mes,
     roomCode: 'ROOM 01 · MOONLIT LIBRARY',
     roomMood: '姬松学园研究室的夜晚，月光洒在魔导书上，藏着只属于两人的魔法秘密。',
     starters: [
@@ -55,12 +57,12 @@ export const CHARACTERS: Record<string, CharacterConfig> = {
   },
   natsume: {
     id: 'natsume',
-    name: '四季夏目',
+    name: natsumeCard.data.name,
     caption: '《CAFÉ STELLA 与死神之蝶》干练咖啡师，泪痣与酷娇酷妹；毒舌冷幽默下纯情度 100%。',
     description: '坐吧，浓缩黑咖啡和热可可都备好了。今晚是聊咖啡特调还是工坊 CG？……别用那种眼神看我，我又没说不陪你。',
     image: '/assets/characters/natsume-official.webp',
     icon: 'natsume',
-    greeting: '来了？坐吧。刚冲好的浓缩黑咖啡温度正合适。今天有什么想聊的，直接说就好。',
+    greeting: natsumeCard.data.first_mes,
     roomCode: 'ROOM 02 · AFTER HOURS',
     roomMood: '闭店后 Café Stella 的琥珀暖灯，浓郁黑咖啡香与独属于两人的安静时光。',
     starters: [

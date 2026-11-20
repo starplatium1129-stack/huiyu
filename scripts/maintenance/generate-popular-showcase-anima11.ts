@@ -14,7 +14,7 @@ import { writeJsonAtomic } from '../lib/atomic-files';
  *
  *   - engine : MiaoMiao v1.6 by default; --model selects an explicit Anima profile
  *   - prompt : compilePromptRecipe (identity + outfit + blueprint scene +
- *              inferred shot/lighting/composition) with artist tag @rella
+ *              inferred shot/lighting/composition), without an artist preset
  *   - params : 30 steps / CFG 4.5 (global Anima default since 2026-08-14)
  *   - R18 blueprints retain their rating; there is no adult access gate.
  *
@@ -29,13 +29,12 @@ const popularContent: typeof import('../../src/utils/popularContent.ts') = requi
 const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require('../../src/utils/promptRecipe.ts');
 const blueprintDecisions: typeof import('../../src/utils/popularBlueprintDecisions.ts') = require('../../src/utils/popularBlueprintDecisions.ts');
 const { showcaseSubjectGuards }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
-const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
 const { tokenize }: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
 const animaConstants = (require('../lib/generation/anima-model-catalog.js') as typeof import('../lib/generation/anima-model-catalog.js'));
 
 const ROOT = path.resolve(__dirname, '..', '..');
 const AI_ROOT = path.resolve(ROOT, '..', 'AI');
-const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', '2026-10-01_miaomiao16-popular-all-rella');
+const DEFAULT_OUTPUT = path.join(AI_ROOT, 'Reviews', 'ShowcaseRefresh', 'miaomiao16-popular-no-artist');
 const popularData: unknown = readJson(path.join(ROOT, 'data', 'popular-characters.json'));
 const blueprintData: unknown = readJson(path.join(ROOT, 'data', 'scene-blueprints.json'));
 const presets: typeof import('../../data/presets.json') = require('../../data/presets.json');
@@ -59,7 +58,6 @@ function readRecords(value: unknown): StoredCandidate[] {
 const MANIFEST_NAME = 'generation-manifest.json';
 const ANIMA_MODEL_ID = argument('--model', 'anima-miaomiao-v1.6');
 const ANIMA_PROFILE_ID = profiles.find(item => item.model_id === ANIMA_MODEL_ID && item.engine === 'anima')?.id;
-const ARTIST_TAG = 'rella';
 
 function argument(name: string, fallback = '') {
   const index = process.argv.indexOf(name);
@@ -116,8 +114,7 @@ function buildCandidate(character: PopularCharacter, blueprint: SceneBlueprint, 
     blueprint,
     engine: 'anima',
     profile,
-    // Artist selections enter the recipe in the engine's native format.
-    artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
+    style: null,
     manual: tokenize(guards.prompt),
   });
   const prompt = result.prompt;
@@ -131,7 +128,6 @@ function buildCandidate(character: PopularCharacter, blueprint: SceneBlueprint, 
     adult, outfitId: outfit.id,
     engine: 'anima', profileId: profile.id, modelId: ANIMA_MODEL_ID,
     checkpoint: animaConstants.MODELS[ANIMA_MODEL_ID].file,
-    artistTag: '@' + ARTIST_TAG,
     width, height,
     steps: animaConstants.MODELS[ANIMA_MODEL_ID].steps,
     cfg: animaConstants.MODELS[ANIMA_MODEL_ID].cfg,

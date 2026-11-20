@@ -88,7 +88,7 @@ export function useCompanionWorkspace() {
         scrollChatToBottom: () => chatListRef.value?.scrollTo({ top: chatListRef.value.scrollHeight, behavior: scrollBehavior() }),
         handleSend,
         busy,
-        chatReady,
+        chatReady: computed(() => chatReady.value && chatProvider.value !== 'muse'),
     });
     let screenVoiceMid = '';
     function releaseScreenVoice(stop = false) {
@@ -181,13 +181,14 @@ export function useCompanionWorkspace() {
                 voiceActive: voiceActive.value,
                 activeChar: activeChar.value,
                 chatReady: chatReady.value,
+                textOnly: chatProvider.value === 'muse',
                 chatError: chatError.value,
                 ts: Date.now(),
             } satisfies CompanionChatLiveState));
         }
         catch { /* 隐私模式忽略 */ }
     }
-    watch([busy, storyBusy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady, chatError], publishLiveState, { flush: 'sync' });
+    watch([busy, storyBusy, thinkingActivity, toolActivity, isSpeaking, voiceActive, activeChar, chatReady, chatProvider, chatError], publishLiveState, { flush: 'sync' });
     function openChatWindow() {
         desktopBridge?.openChat?.();
     }

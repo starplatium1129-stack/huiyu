@@ -23,6 +23,7 @@ pub(super) struct Input {
     pub tool_result_origin: Option<String>,
     pub tools: bool,
     pub channel_tools: bool,
+    pub card_tools: bool,
     pub web_search: bool,
     pub reasoning: String,
     pub messages: Vec<Value>,
@@ -227,7 +228,11 @@ fn multimodal(parts: &mut [Value]) -> Result<Value> {
     Ok(output.into())
 }
 
-pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
+pub(super) fn chat(
+    body: &mut Value,
+    local: Option<&str>,
+    imported: Option<&persona::CardData>,
+) -> Result<Input> {
     let session_id = match body.get("sessionId") {
         None => uuid::Uuid::new_v4().to_string(),
         Some(Value::String(id))
@@ -247,10 +252,7 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
     } else {
         &character
     };
-    if !["nene", "natsume"].contains(&character) && local.is_none() {
-        return Err(Error::invalid("不支持的聊天角色"));
-    }
-    let system = persona::build(character, body, local)?;
+    let prompt = persona::build(character, body, local, imported)?;
     let raw = body
         .get_mut("messages")
         .and_then(Value::as_array_mut)
@@ -270,7 +272,7 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
     }
     let mut kept = Vec::new();
     let mut used = 0;
-    for item in texts.into_iter().rev().take(24) {
+    for item in texts.into_iter().rev().take(persona::HISTORY_LIMIT) {
         let role = string(&item["role"]);
         if role == "user"
             && let Some(parts) = item.get_mut("content").and_then(Value::as_array_mut)
@@ -282,10 +284,15 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
         }
         let text = trimmed_string(&item["content"]);
         let len = length(&text);
-        if !["user", "assistant"].contains(&role.as_str()) || text.is_empty() || len > 1200 {
+        let limit = if imported.is_some() && role == "assistant" {
+            persona::TEXT_LIMIT
+        } else {
+            1200
+        };
+        if !["user", "assistant"].contains(&role.as_str()) || text.is_empty() || len > limit {
             return Err(Error::invalid("对话消息格式错误或内容过长"));
         }
-        if used + len > 12000 && !kept.is_empty() {
+        if used + len > persona::TEXT_LIMIT && !kept.is_empty() {
             break;
         }
         used += len;
@@ -298,11 +305,8 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
         return Err(Error::invalid("对话记录必须包含有效的消息"));
     }
     kept.reverse();
-    let mut system_message = json!({"role":"system","content":null});
-    system_message["content"] = Value::String(system);
-    let mut messages = vec![system_message];
-    messages.extend(kept);
-    messages.extend(tools);
+    kept.extend(tools);
+    let messages = prompt.messages(kept);
     let api = if body["provider"] == "api" {
         Some(if body["hostConfig"] == true {
             ApiSource::Host
@@ -331,6 +335,7 @@ pub(super) fn chat(body: &mut Value, local: Option<&str>) -> Result<Input> {
     }
     Ok(Input {
         channel_tools: false,
+        card_tools: imported.is_some(),
         model: string(&body["model"]),
         session_id,
         api,

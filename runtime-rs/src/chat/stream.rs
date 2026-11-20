@@ -240,18 +240,31 @@ pub(super) async fn collect_channel(
 }
 
 pub(super) fn response(prepared: Prepared, shutdown: CancellationToken) -> Response {
-    let deadline = tokio::time::Instant::now() + Duration::from_secs(600);
     let wait = prepared.wait_ms;
     let cancel = shutdown.child_token();
+    let events = futures_util::stream::try_unfold(
+        events(prepared, cancel.clone()),
+        |mut events| async move { Ok(events.next().await?.map(|event| (event, events))) },
+    );
+    from_events(events, wait, cancel)
+}
+
+pub(super) fn from_events(
+    events: impl futures_util::Stream<Item = Result<Event>> + Send + 'static,
+    wait: u64,
+    cancel: CancellationToken,
+) -> Response {
+    let deadline = tokio::time::Instant::now() + Duration::from_secs(600);
     let guard = cancel.clone().drop_guard();
-    let mut events = events(prepared, cancel.clone());
     let (send, receive) = tokio::sync::mpsc::channel(4);
     let (finished, terminal) = tokio::sync::oneshot::channel();
     // A connected client can stop polling the body. Keep the deadline outside
     // that body so blocked delivery still releases the Ollama queue and upstream.
     tokio::spawn(async move {
-        let relay = async {
-            while let Some(value) = events.next().await.map_err(|error| error.message)? {
+        let relay = async move {
+            futures_util::pin_mut!(events);
+            while let Some(event) = events.next().await {
+                let value = event.map_err(|error| error.message)?;
                 let mut bytes = serde_json::to_vec(&value).unwrap();
                 bytes.push(b'\n');
                 drop(value);
@@ -267,7 +280,6 @@ pub(super) fn response(prepared: Prepared, shutdown: CancellationToken) -> Respo
             _ = tokio::time::sleep_until(deadline) => Err("聊天流超时".to_owned()),
             result = relay => result,
         };
-        drop(events);
         let _ = finished.send(result);
     });
     // The terminal result has its own slot: a full data channel must not hide

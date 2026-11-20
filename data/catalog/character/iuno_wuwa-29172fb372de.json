@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "iuno_wuwa",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 310,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
   "data": {
     "id": "iuno_wuwa",
     "profile": {
@@ -43,8 +43,8 @@
         "blue eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "尤诺立绘待补"
+        "image": "../assets/characters/popular-iuno_wuwa.png?v=9b95a4f010c8",
+        "alt": "尤诺立绘"
       },
       "visual_dna": {
         "signature": "Iuno from Wuthering Waves. Long blue hair in twin tails and blue eyes.",

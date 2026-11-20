@@ -23,6 +23,8 @@ import { usePromptHistoryReuse } from './usePromptHistoryReuse';
 import { useGenerationPresentation } from './useGenerationPresentation';
 import type { PromptMaterialBindings, PromptRenderBindings, PromptStyleBindings, PromptHealthBindings, PromptDeliveryBindings, PromptDialogBindings } from './promptPanelBindings';
 import type { HiresSource } from './promptGenerationActions';
+import type { AnimaPixelUpscaler } from '@/config/animaHires';
+import { runtimeResourceIdentity } from '@/platform/runtimeUrl';
 import { useDirectorEngine } from '@/composables/scene/useDirectorEngine';
 import { useCompareSnapshots } from '@/composables/useCompareSnapshots';
 import { useUnifiedPromptAssembly } from '@/composables/useUnifiedPromptAssembly';
@@ -32,7 +34,7 @@ import type { AnimaResult,AnimaResultContext } from '@/types/anima';
 import { captureResultContext as snapshotResultContext } from '@/utils/resultContext';
 import { computed, onScopeDispose, reactive, ref, toRef, watch } from 'vue';
 import { useRoute,useRouter } from 'vue-router';
-import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type ActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
+import { DRAW_ENGINE_SETTING,STARTER_MODEL_SETTING,settingsRepository,isActiveDrawEngine,type DrawEngine,} from '@/storage/settingsRepository';
 import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere';
 import { copyText } from '@/utils/clipboard';
 /** Owns workspace state and lifecycle; the view only binds presentation. */
@@ -54,10 +56,15 @@ export function usePromptWorkspace() {
     const inpaintPreparing = ref(false);
     const hiresPreparing = ref(false);
     const compositionPreparing = ref(false), cancelCompositionPreparation = ref<(() => void) | null>(null);
-    let hiresVersion = 0;
+    let hiresPreparation: AbortController | null = null;
     const restore = useResultRestoreOwner(route);
     const { getRestoreOwner } = restore;
-    onScopeDispose(() => { hiresVersion++; hiresPreparing.value = false; }, true);
+    function cancelHiresPreparation() {
+        hiresPreparation?.abort();
+        hiresPreparation = null;
+        hiresPreparing.value = false;
+    }
+    onScopeDispose(cancelHiresPreparation, true);
     const DIRECTOR_MODE_KEY = 'aics_pb_director_mode';
     const storedDrawEngine = settingsRepository.get(DRAW_ENGINE_SETTING);
     const drawEngine = ref<DrawEngine>(storedDrawEngine === 'krea2' ? 'krea2' : 'anima');
@@ -134,7 +141,7 @@ export function usePromptWorkspace() {
     });
     const { currentCapabilities, animaNoLoraMode, supportsDualCharacter, setDrawEngine, applyRecommendedSize, clearDisplayedResult, displayResultUrl, displayResultSeed, drawEngineLabel, generationStatusText, engineOnline, generationBusy: engineGenerationBusy, generationProgress, generationError, generationStopped, engineStatusText, recheckEngineConnection, generationPresetSummary, cancelGeneration: cancelEngineGeneration, selectAnimaModel, updateAnimaPromptState } = engine;
     const generationBusy = computed(() => engineGenerationBusy.value || inpaintPreparing.value || hiresPreparing.value || compositionPreparing.value);
-    const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备高清重绘…' : compositionPreparing.value ? '正在准备构图…' : '',
+    const generationPresentation = useGenerationPresentation(engine, () => inpaintPreparing.value ? '正在准备换装…' : hiresPreparing.value ? '正在准备放大原图…' : compositionPreparing.value ? '正在准备构图…' : '',
         () => Boolean(displayResultUrl.value && resultRevealUrl.value === displayResultUrl.value),
         () => { void animaSession.recover(); });
     const { genBarSize, animaBarSizes, resetSdParams, engineTitle, generateBlockReason } =
@@ -296,7 +303,7 @@ export function usePromptWorkspace() {
         capture: animaSession.captureSubmission, generate: generateAnima, flash: message => pb.flash(message),
     };
     function cancelGeneration() {
-        hiresVersion++; hiresPreparing.value = false;
+        if (hiresPreparing.value) { cancelHiresPreparation(); return; }
         if (compositionPreparing.value) cancelCompositionPreparation.value?.();
         else if (!cancelInpaintPreparation()) cancelEngineGeneration();
     }
@@ -386,27 +393,34 @@ export function usePromptWorkspace() {
                 void refreshManagedRoute();
         }
     });
-    const generationContext = (engine: ActiveDrawEngine) => ({ pb, applyManagedRoute, engine, livePrompt, currentCapabilities, generationBusy, generateAnima })
     async function callGenerate(): Promise<void> {
         if (animaSession.hasPending.value) { await animaSession.recover(); return; }
         const engine = drawEngine.value
         if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 配方仅供查看；请选择 Anima 或 Krea 2 开始新创作'); return }
         const { callGenerateAction } = await import('./promptGenerationActions')
-        await callGenerateAction(generationContext(engine))
+        await callGenerateAction({ pb, applyManagedRoute, livePrompt, generationBusy, generateAnima })
     }
-    async function upscaleCurrentResult(): Promise<void> {
-        if (generationBusy.value || restore.isDisposed()) return;
-        const version = ++hiresVersion, sourceUrl = displayResultUrl.value;
-        const engine = drawEngine.value;
-        if (!isActiveDrawEngine(engine)) { pb.flash('历史 SD 成片不再执行新重绘，请保留原配方'); return; }
-        const source: HiresSource = { engine, anima: engine === 'anima' ? animaSession.resultSubmission() : null };
+    async function upscaleCurrentResult(method: AnimaPixelUpscaler): Promise<void> {
+        if (generationBusy.value || restore.isDisposed() || drawEngine.value !== 'anima') return;
+        if (animaSession.hasPending.value) { pb.flash('请先恢复或取消上一张任务'); return; }
+        const result = animaState.value.result;
+        if (!result || displayResultUrl.value !== result.url) return;
+        const source: HiresSource = { result, anima: animaSession.resultSubmission(), context: animaState.value.resultContext ?? null };
+        const preparation = new AbortController(), identity = runtimeResourceIdentity();
+        const current = () => !preparation.signal.aborted && !restore.isDisposed() && identity === runtimeResourceIdentity()
+            && drawEngine.value === 'anima' && displayResultUrl.value === result.url;
+        hiresPreparation = preparation;
         hiresPreparing.value = true;
         try {
-            const { upscaleCurrentResultAction } = await import('./promptGenerationActions');
-            if (restore.isDisposed() || version !== hiresVersion || source.engine !== drawEngine.value || sourceUrl !== displayResultUrl.value) return;
-            hiresPreparing.value = false;
-            await upscaleCurrentResultAction(generationContext(source.engine), source);
-        } finally { if (version === hiresVersion) hiresPreparing.value = false; }
+            const { prepareResultUpscale } = await import('./promptGenerationActions');
+            if (!current()) return;
+            const submission = await prepareResultUpscale(source, method, preparation.signal);
+            if (!current()) return;
+            cancelHiresPreparation();
+            await generateAnima({}, submission);
+        } catch (error) {
+            if (current()) pb.flash(error instanceof Error ? error.message : '成片放大失败');
+        } finally { if (hiresPreparation === preparation) cancelHiresPreparation(); }
     }
     // Each lazy panel receives a stable, explicit capability surface. Store fields are
     // projected with toRef, so writes still reach the single existing state owner.
@@ -422,7 +436,7 @@ export function usePromptWorkspace() {
             subject: toRef(pb, 'subject'), isPopular: toRef(pb, 'isPopular'), char: toRef(pb, 'char'), visualDescription: toRef(pb, 'visualDescription'),
             sdModelName: toRef(pb, 'sdModelName'), sdParams: toRef(pb, 'sdParams'), markParamTouched: pb.markParamTouched,
         }),
-        displayResultUrl, generationBusy, generationPresentation, animaState, drawEngine, upscaleCurrentResult,
+        displayResultUrl, generationBusy, generationPresentation, animaState, drawEngine,
         generationPresetSummary, managedRoute, applyManagedRoute, reuseSuccessfulRecipe,
         engineTitle, setDrawEngine, supportsDualCharacter, currentCapabilities, BUSY_HINT, selectAnimaModel,
         displayResultSeed, reuseLastSeed, resetSdParams, animaNoLoraMode, patchAnimaState, refreshAnimaBackend,

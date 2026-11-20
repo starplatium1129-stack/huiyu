@@ -337,7 +337,8 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         finally:
             report[field] += time.perf_counter() - before
 
-    first_steps = data["steps"]
+    hires_only = data.get("hiresOnly", False)
+    first_steps = 0 if hires_only else data["steps"]
     total = first_steps + spec["secondSteps"]
     steps = _StepProgress(pipeline._huiyu_memory.device, progress, check)
 
@@ -355,7 +356,7 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
             result = previous(*args, **kw)
             report[phase] += 1
             steps.update(report["firstPassSteps"] + report["secondPassSteps"], total,
-                         {"pass": 1 if first_pass else 2, "passes": 2 if spec["second"] else 1,
+                         {"pass": 1 if first_pass or hires_only else 2, "passes": 2 if spec["second"] and not hires_only else 1,
                           "step": report[phase], "total": pass_total})
             return result
 
@@ -371,34 +372,41 @@ def run(pipeline, data, *, image=None, mask=None, mask_tools=None, sampling=None
         finally:
             current.scheduler.step = previous
 
-    options = (sampling.sampling_options(data.get("sampler", "euler"), data.get("scheduler", "simple"),
-                                        data["steps"], pipeline.scheduler) if sampling is not None else {})
-    kwargs = dict(prompt=data["prompt"], negative_prompt=data.get("negativePrompt", ""), width=data["width"],
-                  height=data["height"], num_inference_steps=data["steps"],
-                  generator=torch.Generator(device="cpu").manual_seed(data["seed"]), **options)
-    if image is not None:
-        kwargs.update(image=image, **sampling.refinement_options(data.get("scheduler", "simple"),
-            data["steps"], data["denoisingStrength"], pipeline.scheduler, sampler=data.get("sampler", "euler")))
-    if mask is not None:
-        kwargs["mask_image"] = mask
-    if spec["enabled"]:
-        primary = "latents" if spec["firstLatents"] else "images"
-        kwargs["output"] = [primary, "prompt_embeds", "negative_prompt_embeds"]
-        if not spec["firstLatents"]:
-            kwargs["output_type"] = "pt"
-    else:
-        kwargs.update(output="images", output_type="pt")
-    with _without_decode(pipeline, spec["firstLatents"]):
-        first = execute(pipeline, "firstPassSteps", kwargs)
-    del kwargs
-
-    pixels = None if spec["firstLatents"] else _rgb(first["images"] if spec["enabled"] else first)
-    conditioning = ({name: first[name] for name in ("prompt_embeds", "negative_prompt_embeds")}
-                    if spec["second"] else {})
-    if spec["second"] and (data.get("hiresCfg") or data["cfg"]) > 1 and conditioning["negative_prompt_embeds"] is None:
+    if hires_only:
+        if image is None or image.size != (data["width"], data["height"]):
+            raise ValueError("Source image size does not match the requested HiRes source size")
+        pixels = _pil_tensor(image, "cpu")
+        first_latents = None
         conditioning = dict(prompt=data["prompt"], negative_prompt=data.get("negativePrompt", ""))
-    first_latents = first["latents"] if spec["firstLatents"] else None
-    del first
+    else:
+        options = (sampling.sampling_options(data.get("sampler", "euler"), data.get("scheduler", "simple"),
+                                            data["steps"], pipeline.scheduler) if sampling is not None else {})
+        kwargs = dict(prompt=data["prompt"], negative_prompt=data.get("negativePrompt", ""), width=data["width"],
+                      height=data["height"], num_inference_steps=data["steps"],
+                      generator=torch.Generator(device="cpu").manual_seed(data["seed"]), **options)
+        if image is not None:
+            kwargs.update(image=image, **sampling.refinement_options(data.get("scheduler", "simple"),
+                data["steps"], data["denoisingStrength"], pipeline.scheduler, sampler=data.get("sampler", "euler")))
+        if mask is not None:
+            kwargs["mask_image"] = mask
+        if spec["enabled"]:
+            primary = "latents" if spec["firstLatents"] else "images"
+            kwargs["output"] = [primary, "prompt_embeds", "negative_prompt_embeds"]
+            if not spec["firstLatents"]:
+                kwargs["output_type"] = "pt"
+        else:
+            kwargs.update(output="images", output_type="pt")
+        with _without_decode(pipeline, spec["firstLatents"]):
+            first = execute(pipeline, "firstPassSteps", kwargs)
+        del kwargs
+
+        pixels = None if spec["firstLatents"] else _rgb(first["images"] if spec["enabled"] else first)
+        conditioning = ({name: first[name] for name in ("prompt_embeds", "negative_prompt_embeds")}
+                        if spec["second"] else {})
+        if spec["second"] and (data.get("hiresCfg") or data["cfg"]) > 1 and conditioning["negative_prompt_embeds"] is None:
+            conditioning = dict(prompt=data["prompt"], negative_prompt=data.get("negativePrompt", ""))
+        first_latents = first["latents"] if spec["firstLatents"] else None
+        del first
     if mask is not None:
         pixels = timed("compositeWallSeconds", lambda: _composite(pixels, image, mask))
     size = (spec["width"], spec["height"])

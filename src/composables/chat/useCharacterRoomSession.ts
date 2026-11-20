@@ -1,8 +1,9 @@
 import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
-import { useRoute } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionCharacterConfig,
+  renderChatGreeting,
 } from '@/utils/companionRegistry'
 import { useChatConversation } from '@/composables/chat/useChatConversation'
 import { useCompanionToolPermissions } from '@/composables/chat/useCompanionToolPermissions'
@@ -43,6 +44,7 @@ interface CharacterStageHandle {
 
 export function useCharacterRoomSession(reading?: { latest: () => void; nearBottom: () => boolean }) {
   const route = useRoute()
+  const router = useRouter()
   const chatListRef = ref<HTMLElement>()
   const characterStageRef = ref<CharacterStageHandle>()
 
@@ -73,10 +75,12 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
   }
 
   const storage = useChatStorage((message) => setError(message, 'warning', 9000))
-  storage.load()
+  const initialStorage = storage.load()
+  let selectionChanged = false
 
   const {
     ollamaOnline, localStatusText, checkingChatStatus,
+    museStatus, museStatusText, checkingMuse, refreshMuseStatus,
     models,
     currentModel,
     chatProvider,
@@ -175,6 +179,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     destroy: destroyRoomSetup,
   } = useRoomSetup({
     chatProvider,
+    chatReady,
     apiConfigured,
     ollamaOnline,
     autoVoice,
@@ -231,6 +236,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     voice,
     clearDraftInput: () => clearDraftInput(),
   })
+  const chatCharacter = computed(() => renderChatGreeting(currentCharacter.value, userProfile.value.callName))
 
   const {
     inputText,
@@ -248,7 +254,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     storage,
     voice,
     activeChar,
-    currentCharacter,
+    currentCharacter: chatCharacter,
     busy,
     chatReady,
     chatProvider,
@@ -303,6 +309,11 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     const acknowledge = (value: boolean) => { acknowledged = true; return accepted?.(value) }
     void withChatTurn(async () => {
       if (disposed || chatMutationBusy.value || activeChar.value !== character || busy.value || !storage.canWrite() || (!chatReady.value && sendOptions.action !== 'generate-from-image') || !(text ?? inputText.value).trim()) { acknowledge(false); return }
+      if (chatProvider.value === 'muse' && (imageUrl || sendOptions.image) && sendOptions.action !== 'generate-from-image') {
+        acknowledge(false)
+        setError('Muse 角色聊天目前支持文字，请用文字描述图片。', 'info')
+        return
+      }
       if (acknowledge(true) === false) { setError('未能接收，请检查连接。'); return }
       try { localStorage.setItem(CHAT_TURN_KEY, String(Date.now())) } catch { /* optional playback coordination */ }
       await sendMessage(text, imageUrl, sendOptions)
@@ -318,12 +329,15 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
   function switchCharacter(char: string) {
     const nextCharacter = getCompanionCharacterConfig(char)
     if (!nextCharacter || char === activeChar.value) return
+    selectionChanged = true
     cancelStoryAction()
     if (busy.value) abortCurrentRequest(true, false)
     storage.setDraft(activeChar.value, inputText.value)
     voice.stop({ preserveMessageAudio: true, silent: true })
     storage.setActive(char)
     activeChar.value = char
+    if (typeof route.query.character === 'string' && route.query.character !== char)
+      void router.replace({ query: { ...route.query, character: char } })
     document.documentElement.style.setProperty('--character-accent', nextCharacter.accent)
     inputText.value = storage.draft(char)
     updateVoiceCapability()
@@ -374,8 +388,17 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
 
   onMounted(async () => {
     window.addEventListener('storage', onChatAuxStorage)
+    await initialStorage
+    if (disposed) return
+    if (!selectionChanged && !busy.value && !inputText.value) {
+      const selected = typeof route.query.character === 'string' ? route.query.character : storage.state.active
+      if (getCompanionCharacterConfig(selected)) {
+        activeChar.value = selected
+        if (storage.state.active !== selected) storage.setActive(selected)
+      }
+      inputText.value = storage.draft(activeChar.value)
+    }
     document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
-    inputText.value = storage.draft(activeChar.value)
     // 预热角色设定卡（约几十 KB，失败不影响聊天：recall 走空设定 + 会话事实）。
     void loadCharacterSettingCards().catch(() => {})
     await refreshChatStatus()
@@ -443,6 +466,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     storage,
     branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
     ollamaOnline, localStatusText, checkingChatStatus,
+    museStatus, museStatusText, checkingMuse, refreshMuseStatus,
     models,
     currentModel,
     chatProvider,
@@ -461,7 +485,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     apiConfigured,
     chatReady,
     isLocalHost,
-    currentCharacter,
+    currentCharacter: chatCharacter,
     currentMessages,
     companionMessages,
     webSearchEnabled, companionTools,

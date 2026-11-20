@@ -24,7 +24,14 @@
 .popular-scene-library .pop-toolbar { display:grid; }
 .popular-scene-library .pop-toolbar-row { display:flex; flex-wrap:wrap; align-items:center; gap:inherit; }
 .popular-scene-library .pop-results-bar { margin:var(--s-2) 0 var(--s-3); }
-.popular-scene-library .library-detail .pop-grid { --scene-row-height:calc(380px * var(--desktop-layout-scale,1)); display:flex; flex-wrap:wrap; gap:var(--s-4) var(--workspace-panel-gap,var(--s-4)); align-items:stretch; }
+.popular-scene-library .library-detail .pop-grid {
+  --scene-row-height:calc(380px * var(--desktop-layout-scale,1));
+  display:flex;
+  flex-wrap:wrap;
+  gap:var(--s-4) var(--workspace-panel-gap,var(--s-4));
+  /* Opening a disclosure should only grow its own card. */
+  align-items:flex-start;
+}
 .popular-scene-library .pop-grid::after { content:''; flex:1000000 1 0; }
 .popular-scene-library .pop-card { flex:var(--scene-preview-ratio) 1 calc(var(--scene-row-height) * var(--scene-preview-ratio)); min-width:min(260px,100%); max-width:100%; }
 .pop-full-description { margin:0 0 var(--s-3); color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); white-space:pre-line; overflow-wrap:anywhere; }

@@ -1,6 +1,6 @@
 import { assertChatVersion } from './chatVersion.ts'
 import { DEFAULT_CHAT_API_BASE_URL, DEFAULT_CHAT_API_MODEL } from '../config/chatApi.ts'
-import type { ChatMessage, ChatConversation } from '@/composables/chat/chatStorageTypes'
+import type { ChatMessage, ChatConversation, ChatProvider } from '@/composables/chat/chatStorageTypes'
 import { normalizeChatMessages } from './chatMessageStorage'
 import { normalizeChatConversations } from './chatConversationStorage'
 export type { ChatMessage as PersistedChatMessage } from '@/composables/chat/chatStorageTypes'
@@ -24,7 +24,7 @@ export interface PersistedChatState {
   conversations: Record<string, ChatConversation>
   settings: {
     model: string
-    provider: 'local' | 'api'
+    provider: ChatProvider
     apiBaseUrl: string
     apiModel: string
     apiKey: string
@@ -150,7 +150,7 @@ export function normalizeChatStorage(
       conversations: normalizeChatConversations(raw.conversations, normalizedHistories, ids, options.createMessageId),
       settings: {
         model: text(settings.model, 200) || text(raw.model, 200) || text(legacyModel, 200),
-        provider: providerCandidate === 'local' ? 'local' : 'api',
+        provider: providerCandidate === 'local' || providerCandidate === 'muse' ? providerCandidate : 'api',
         apiBaseUrl: finalApiBaseUrl,
         apiModel: finalApiModel,
         apiKey: finalApiKey,

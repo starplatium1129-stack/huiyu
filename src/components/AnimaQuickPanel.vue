@@ -53,7 +53,15 @@ const hiresScale = computed({ get: () => props.state.hiresScale ?? 1.5, set: val
 const hiresDenoise = computed({ get: () => props.state.hiresDenoise ?? 0.8, set: value => patch({ hiresDenoise: value }) })
 const hiresSteps = computed({ get: () => props.state.hiresSteps ?? 10, set: value => patch({ hiresSteps: value }) })
 const hiresCfg = computed({ get: () => props.state.hiresCfg ?? 5.5, set: value => patch({ hiresCfg: value }) })
-const hiresUpscaler = computed({ get: () => props.state.hiresUpscaler || '4x-UltraSharp', set: (value: NonNullable<AnimaGenerationState['hiresUpscaler']>) => patch({ hiresUpscaler: value }) })
+const hiresUpscaler = computed(() => props.state.hiresUpscaler || '4x-UltraSharp')
+const hiresMode = computed({
+  get: () => hiresFix.value ? hiresUpscaler.value : '',
+  set: (value: NonNullable<AnimaGenerationState['hiresUpscaler']> | '') => {
+    if (!value) patch({ hiresFix: false })
+    else if (value === '4x-UltraSharp') patch({ ...ANIMA_HIRES_PRESET })
+    else patch({ hiresFix: true, hiresUpscaler: value })
+  },
+})
 const comfyHiresPath = computed(() => {
   if (hiresUpscaler.value === '4x-UltraSharp') return 'refine'
   if (hiresUpscaler.value === 'Latent') return 'latent'
@@ -61,10 +69,11 @@ const comfyHiresPath = computed(() => {
   if (props.state.autoHiresModel === undefined) return 'unknown'
   return props.state.autoHiresModel ? 'pixel' : 'latent'
 })
-const comfyUpscalers = computed(() => [
-  { value: '4x-UltraSharp', label: '4x-UltraSharp · 放大后重绘' },
-  { value: 'Auto', label: 'Auto · 按已识别资源' }, { value: 'Latent', label: 'Latent · 二次重绘' },
-  ...(hiresUpscaler.value === 'Remacri' ? [{ value: 'Remacri', label: 'Remacri · 已保存选择' }] : []),
+const hiresModes = computed(() => [
+  { value: '', label: '关闭' },
+  { value: '4x-UltraSharp', label: 'UltraSharp · 放大后重绘', disabled: native.value && !selectedModel.value?.capabilities?.hiresUpscalers?.includes('4x-UltraSharp') },
+  { value: 'Remacri', label: 'Remacri · 纯放大', disabled: native.value && !selectedModel.value?.capabilities?.hiresUpscalers?.includes('Remacri') },
+  { value: 'Auto', label: '自动' }, { value: 'Latent', label: 'Latent · 二次重绘' },
 ])
 const busy = computed(() => ['submitting', 'running', 'cancelling'].includes(props.state.phase))
 const outputSize = computed(() => {
@@ -131,7 +140,6 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
 
       <!-- 加速与高清修复控制（由能力表驱动，当前仅 Anima 开启） -->
       <div v-if="nativeAnima || capabilities.hires || capabilities.teaCache || hiresFix || teaCache" class="anima-hires-options">
-        <button v-if="state.family === 'anima'" type="button" class="btn btn-quiet btn-sm" :disabled="busy" @click="patch({ ...ANIMA_HIRES_PRESET })">采用 UltraSharp 高清预设</button>
         <ToggleSwitch v-model="teaCache" :disabled="busy || (!capabilities.teaCache && !teaCache)" label="TeaCache 特征缓存加速" class="anima-hires-toggle">
           <ArchiveIcon name="lightning" class="anima-hires-icon" />
           <span>特征缓存 <small>TeaCache</small></span>
@@ -142,34 +150,30 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
           <input :id="idOf('cache-threshold')" type="number" min="0" max="0.25" step="0.01" :value="cacheThreshold" class="input input-sm anima-num" :disabled="busy" :aria-describedby="idOf('cache-threshold-hint')" @change="updateCacheThreshold" />
           <span :id="idOf('cache-threshold-hint')" class="anima-field-hint">0–0.25 · 默认 0.10</span>
         </div>
-        <ToggleSwitch v-model="hiresFix" :disabled="busy || (!(native ? selectedModel?.capabilities?.hires === true : capabilities.hires) && !hiresFix)" label="高清放大修复" class="anima-hires-toggle">
-          <ArchiveIcon name="spark" class="anima-hires-icon" />
-          <span>高清放大</span>
-        </ToggleSwitch>
-        <div v-if="hiresFix" class="anima-parameter-grid">
+        <div v-if="nativeAnima || capabilities.hires || hiresFix" class="anima-parameter-grid">
           <div class="anima-field anima-form-field">
-            <label :for="idOf('upscaler')">放大方式</label>
-            <StudioSelect v-if="native" :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy"
-              :options="[{ value: '4x-UltraSharp', label: '4x-UltraSharp · 放大后重绘', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('4x-UltraSharp') }, { value: 'Auto', label: 'Auto · 优先 Remacri' }, { value: 'Latent', label: 'Latent · 二次采样' }, { value: 'Remacri', label: 'Remacri', disabled: !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri') }]" />
-            <StudioSelect v-else :id="idOf('upscaler')" v-model="hiresUpscaler" label="放大方式" :disabled="busy" :options="comfyUpscalers" />
+            <label :for="idOf('upscaler')">出图时高清放大</label>
+            <StudioSelect :id="idOf('upscaler')" v-model="hiresMode" label="出图时高清放大" :disabled="busy || (!(native ? selectedModel?.capabilities?.hires === true : capabilities.hires) && !hiresFix)" :options="hiresModes" />
           </div>
-          <div class="anima-field anima-form-field">
+          <div v-if="hiresFix" class="anima-field anima-form-field">
             <label :for="idOf('scale')">倍率</label>
             <StudioSelect :id="idOf('scale')" v-model.number="hiresScale" label="倍率" :disabled="busy"
               :options="[{ value: 1.5, label: '1.5×' }, { value: 2.0, label: '2.0×' }]" />
           </div>
-          <div class="anima-field anima-form-field">
-            <label :for="idOf('denoise')">二次重绘幅度</label>
-            <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.1" max="1" step="0.05" class="input input-sm anima-num" :disabled="busy || (!native && comfyHiresPath === 'pixel')" />
-          </div>
-          <div class="anima-field anima-form-field">
-            <label :for="idOf('hires-steps')">高清采样步数</label>
-            <input :id="idOf('hires-steps')" v-model.number="hiresSteps" type="number" min="1" max="60" step="1" class="input input-sm anima-num" :disabled="busy || hiresUpscaler === 'Remacri' || hiresUpscaler === 'Auto'" />
-          </div>
-          <div class="anima-field anima-form-field">
-            <label :for="idOf('hires-cfg')">高清引导强度 CFG</label>
-            <input :id="idOf('hires-cfg')" v-model.number="hiresCfg" type="number" min="0.5" max="10" step="0.5" class="input input-sm anima-num" :disabled="busy || hiresUpscaler === 'Remacri' || hiresUpscaler === 'Auto'" />
-          </div>
+          <template v-if="hiresFix && hiresUpscaler !== 'Remacri'">
+            <div class="anima-field anima-form-field">
+              <label :for="idOf('denoise')">二次重绘幅度</label>
+              <input :id="idOf('denoise')" v-model.number="hiresDenoise" type="number" min="0.1" max="1" step="0.05" class="input input-sm anima-num" :disabled="busy || (!native && comfyHiresPath === 'pixel')" />
+            </div>
+            <div class="anima-field anima-form-field">
+              <label :for="idOf('hires-steps')">高清采样步数</label>
+              <input :id="idOf('hires-steps')" v-model.number="hiresSteps" type="number" min="1" max="60" step="1" class="input input-sm anima-num" :disabled="busy || hiresUpscaler === 'Auto'" />
+            </div>
+            <div class="anima-field anima-form-field">
+              <label :for="idOf('hires-cfg')">高清引导强度 CFG</label>
+              <input :id="idOf('hires-cfg')" v-model.number="hiresCfg" type="number" min="0.5" max="10" step="0.5" class="input input-sm anima-num" :disabled="busy || hiresUpscaler === 'Auto'" />
+            </div>
+          </template>
         </div>
       </div>
       <p v-if="hiresFix" class="anima-output-note"><span>最终画幅</span><output>{{ outputSize }}</output></p>
@@ -179,9 +183,10 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         <template v-else-if="comfyHiresPath === 'pixel'">像素放大{{ hiresUpscaler === 'Auto' && state.autoHiresModel ? `（${state.autoHiresModel}）` : '' }}，重绘幅度不生效。</template>
         <template v-else>Latent 二次重绘生效中。</template>
       </p>
-      <p v-if="native && hiresFix" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">{{ hiresUpscaler === '4x-UltraSharp' ? 'UltraSharp 放大后重绘 · Euler / Normal · Shift 3' : 'Auto 优先使用 Remacri 模型，回退至 Latent 重绘。' }}</p>
+      <p v-if="native && hiresFix && hiresUpscaler === '4x-UltraSharp'" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">UltraSharp 放大后重绘 · Euler / Normal · Shift 3</p>
+      <p v-if="native && hiresFix && hiresUpscaler === 'Auto'" class="anima-hint tw:text-label-xs tw:text-secondary tw:m-0">优先使用 Remacri 纯放大，缺少权重时使用 Latent 重绘。</p>
       <RouterLink v-if="hiresFix && hiresUpscaler === '4x-UltraSharp' && (!native || !selectedModel?.capabilities?.hiresUpscalers?.includes('4x-UltraSharp'))" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'ultrasharp-4x' }, hash: '#control-setup' }">准备 UltraSharp 高清放大</RouterLink>
-      <RouterLink v-if="native && hiresFix && hiresUpscaler !== '4x-UltraSharp' && !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri')" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'remacri-4x' }, hash: '#control-setup' }">准备 Remacri 高清放大</RouterLink>
+      <RouterLink v-if="native && hiresFix && (hiresUpscaler === 'Auto' || hiresUpscaler === 'Remacri') && !selectedModel?.capabilities?.hiresUpscalers?.includes('Remacri')" class="btn btn-quiet btn-sm" :to="{ path: '/control', query: { resource: 'remacri-4x' }, hash: '#control-setup' }">准备 Remacri 高清放大</RouterLink>
 
       <details class="anima-prompt-details"><StudioDisclosureSummary>查看底层提示词</StudioDisclosureSummary><div data-disclosure-content>
       <label :for="idOf('prompt')" class="anima-label">正向提示词</label>

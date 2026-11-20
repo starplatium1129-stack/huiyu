@@ -11,7 +11,7 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 </script>
 
 <template>
-  <button class="u005" type="button" :data-busy="busy" :data-flying="flying" :data-feedback="feedback" :data-reduced-motion="reduced" :disabled="!busy && disabled" :aria-label="busy ? '停止回复或语音' : '发送'" :aria-busy="busy" @click="busy ? emit('stop') : emit('send')">
+  <button class="u005" type="button" :data-busy="busy" :data-flying="flying" :data-feedback="feedback" :data-reduced-motion="reduced" :disabled="!busy && disabled" :aria-label="busy ? '停止回复或语音' : '发送消息'" @click="busy ? emit('stop') : emit('send')">
     <span class="u005-idle" aria-hidden="true"><ArchiveIcon name="send" /></span>
     <span class="u005-ring" aria-hidden="true" />
     <ArchiveIcon v-if="busy" class="u005-stop" name="stop" />

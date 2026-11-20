@@ -116,6 +116,10 @@ export function useChatConversation(options: ChatConversationOptions) {
 
   function beginUserTurn(text: string, imageUrl: string | undefined, customText?: string, sendOptions: CompanionChatSendOptions = {}) {
     const characterId = options.activeChar.value, messages = options.storage.messages(characterId)
+    const greeting = options.currentCharacter.value.greeting
+    if (!messages.length && greeting) {
+      messages.push({ role: 'assistant', content: greeting, mid: createMessageId(), stopped: false })
+    }
     const user: ChatMessage = { role: 'user', content: imageUrl || sendOptions.image ? `${text || '（发送了图片）'} [图片]` : text,
       mid: createMessageId(), stopped: false, ...(sendOptions.image ? { images: [{ ...sendOptions.image }] } : {}) }
     messages.push(user)
@@ -155,6 +159,10 @@ export function useChatConversation(options: ChatConversationOptions) {
       : history.map(message => message.role).lastIndexOf('user', history.length - 2)
     const user = history[userIndex]
     if (!user) { options.onError('找不到这条回复对应的问题，请重新发送消息。'); return }
+    if (options.chatProvider.value === 'muse' && (user.images?.length || /\[图片\]\s*$/.test(user.content))) {
+      options.onError('Muse 角色聊天目前支持文字，请用文字描述图片。', 'info')
+      return
+    }
     const regeneration = target.role === 'assistant' ? { replyId: target.replyId || target.mid, previousMid: target.mid } : undefined
     const assistant = regeneration ? options.storage.prepareRegeneration(characterId, mid) : createAssistant()
     if (!assistant) return
@@ -415,7 +423,7 @@ export function useChatConversation(options: ChatConversationOptions) {
         options.voice.stop({ preserveMessageAudio: true, silent: true })
         if (canPresent()) options.onError(streamErrorMessage(
           error,
-          connection.provider === 'api'
+          connection.provider === 'muse' ? 'Muse 暂时无法回复，请在聊天设置中检查收信状态。' : connection.provider === 'api'
             ? 'API 对话暂不可用，请检查地址、模型名和密钥。'
             : '聊天暂不可用，请检查 Ollama。',
         ))

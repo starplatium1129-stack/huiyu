@@ -388,8 +388,7 @@ pub(super) async fn run(
             .await
             .ok()
             .flatten()
-            .as_ref()
-            != Some(&settings)
+            .is_none_or(|saved| !saved.same_connection(&settings))
             || !is_current(&app, &storage)
             || cancel.is_cancelled()
         {

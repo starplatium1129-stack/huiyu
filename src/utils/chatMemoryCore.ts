@@ -1,6 +1,5 @@
 import { assertChatVersion } from './chatVersion.ts'
 import {
-  DEFAULT_COMPANION_CHARACTER_ID,
   isCompanionCharacterId,
   listCompanionCharacterIds,
 } from './companionRegistry.ts'
@@ -45,17 +44,15 @@ function memoryId(): string {
   return `memory-${Date.now()}-${Math.random().toString(36).slice(2, 10)}`
 }
 
-function normalizeCharacter(value: unknown, fallback = DEFAULT_COMPANION_CHARACTER_ID): ChatMemoryCharacter | null {
-  if (isCompanionCharacterId(value)) return value
-  return isCompanionCharacterId(fallback) ? fallback : null
+function isStoredCharacter(value: unknown): value is string {
+  return isCompanionCharacterId(value) || typeof value === 'string' && /^card-[a-f0-9]{64}$/.test(value)
 }
 
 function normalizeItem(value: unknown, fallbackCharacter: ChatMemoryCharacter): ChatMemoryItem | null {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return null
   const record = value as Record<string, unknown>
-  if (record.character != null && !isCompanionCharacterId(record.character)) return null
-  const character = normalizeCharacter(record.character, fallbackCharacter)
-  if (!character) return null
+  const character = record.character ?? fallbackCharacter
+  if (!isStoredCharacter(character)) return null
   const text = cleanText(record.text)
   if (!text) return null
   const createdAt = Number(record.createdAt)
@@ -78,9 +75,10 @@ export function normalizeChatMemoryState(value: unknown): ChatMemoryState {
   if (!value || typeof value !== 'object' || Array.isArray(value)) return state
   const byCharacter = (value as Record<string, unknown>).byCharacter
   if (!byCharacter || typeof byCharacter !== 'object' || Array.isArray(byCharacter)) return state
-  for (const character of listCompanionCharacterIds()) {
+  for (const character of Object.keys(byCharacter).filter(isStoredCharacter)) {
     const source = (byCharacter as Record<string, unknown>)[character]
     if (!Array.isArray(source)) continue
+    state.byCharacter[character] ??= []
     const seen = new Set<string>()
     const seenIds = new Set<string>()
     const items = source.map(raw => normalizeItem(raw, character)).filter((item): item is ChatMemoryItem => Boolean(item && item.character === character)).sort((a, b) => b.updatedAt - a.updatedAt)
@@ -100,10 +98,11 @@ export function mergeChatMemoryStates(current: ChatMemoryState, incoming: ChatMe
   current = normalizeChatMemoryState(current)
   incoming = normalizeChatMemoryState(incoming)
   const merged = emptyChatMemoryState()
-  for (const character of listCompanionCharacterIds()) {
+  for (const character of new Set([...Object.keys(current.byCharacter), ...Object.keys(incoming.byCharacter)])) {
     const seen = new Set<string>()
     const seenIds = new Set<string>()
-    const items = [...current.byCharacter[character], ...incoming.byCharacter[character]]
+    merged.byCharacter[character] ??= []
+    const items = [...(current.byCharacter[character] || []), ...(incoming.byCharacter[character] || [])]
       .sort((a, b) => b.updatedAt - a.updatedAt)
     for (const item of items) {
       const key = `${item.topic || ''}\n${item.text}`.toLocaleLowerCase()

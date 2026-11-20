@@ -51,6 +51,25 @@ pub(super) fn export_ancestor(
     ))
 }
 
+fn updated_at(record: &Record) -> Result<Option<chrono::DateTime<chrono::FixedOffset>>> {
+    record
+        .updated_at
+        .as_deref()
+        .map(chrono::DateTime::parse_from_rfc3339)
+        .transpose()
+        .map_err(|_| ApiError::invalid("快照 updatedAt 不是有效的 RFC3339 时间"))
+}
+
+/// Only a strictly lower upstream revision is safe to skip during deployment.
+/// Conflicting contents at one revision or contradictory dates require review.
+pub(super) fn older_revision(incoming: &Record, accepted: &Record) -> Result<bool> {
+    if incoming.revision >= accepted.revision {
+        return Ok(false);
+    }
+    let dates = updated_at(incoming)?.zip(updated_at(accepted)?);
+    Ok(dates.is_none_or(|(incoming, accepted)| incoming <= accepted))
+}
+
 /// Bundle records share a previously accepted upstream baseline. This checks
 /// upstream metadata, never the user's independent local revision counter.
 pub(super) fn seed_update(connection: &Connection, incoming: &Record, removed: bool) -> Result<()> {
@@ -66,16 +85,8 @@ pub(super) fn seed_update(connection: &Connection, incoming: &Record, removed: b
     };
     let before: Record = serde_json::from_str(&encoded)?;
     let changed = !same(&before, incoming) || deleted != removed;
-    let timestamp = |record: &Record| -> Result<Option<chrono::DateTime<chrono::FixedOffset>>> {
-        record
-            .updated_at
-            .as_deref()
-            .map(chrono::DateTime::parse_from_rfc3339)
-            .transpose()
-            .map_err(|_| ApiError::invalid("快照 updatedAt 不是有效的 RFC3339 时间"))
-    };
-    let before_time = timestamp(&before)?;
-    let next_time = timestamp(incoming)?;
+    let before_time = updated_at(&before)?;
+    let next_time = updated_at(incoming)?;
     let stale = incoming.revision < before.revision
         || (incoming.revision == before.revision && changed)
         || (before_time.is_some() && next_time < before_time);

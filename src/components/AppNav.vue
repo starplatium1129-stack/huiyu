@@ -16,6 +16,7 @@
           v-for="item in primaryNav"
           :key="item.id"
           :to="item.to"
+          :aria-label="item.id === 'chat' ? '房间 · 角色聊天' : undefined"
           :target="openBesideTask(item.to) ? '_blank' : undefined"
           :rel="openBesideTask(item.to) ? 'noopener' : undefined"
           :class="{ active: activeId === item.id }"

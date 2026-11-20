@@ -121,6 +121,7 @@ def validate_job(job):
     # Accept modelId from older hosts; modelDir alone selects the loaded model.
     supported = {"prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "family", "modelId", "sampler", "scheduler", "denoisingStrength", "growMaskBy", "maskPrompt", "maskThreshold", "teaCache", "teaCacheAuto", "teaCacheThresh", "hiresFix", "hiresScale", "hiresDenoise", "hiresSteps", "hiresCfg", "hiresUpscaler", "hiresSampler", "hiresScheduler", "superResModel", "rcasStrength", "sketchControl", "regions"}
     # Empty/disabled UI options are harmless; active options never silently degrade.
+    supported.add("hiresOnly")
     disabled = {"teacache", "mask", "maskPath", "loras", "lora", "hires", "rcas", "upscaler", "inputImage", "inputImagePath", "image", "initImage"}
     for key, value in data.items():
         if key in disabled and value in (None, False, "", [], {}):
@@ -188,6 +189,10 @@ def validate_job(job):
         raise WorkerError("INVALID_INPUT", "denoisingStrength requires inputImagePath")
     mask_path = job.get("maskImagePath")
     auto_mask = data.get("maskPrompt")
+    hires_only = data.get("hiresOnly", False)
+    if type(hires_only) is not bool or (hires_only and (not needs_upscale or image_path is None
+            or mask_path is not None or auto_mask is not None or data.get("sketchControl") or data.get("regions"))):
+        raise WorkerError("INVALID_INPUT", "Source-only upscale needs one input image and a pixel upscaler")
     if auto_mask is not None:
         try:
             load_mask_tools("clipseg_mask").phrases(auto_mask)

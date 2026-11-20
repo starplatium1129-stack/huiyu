@@ -1,5 +1,7 @@
 import type { CompanionChatImage, CompanionDrawingDraft } from '@/types/companionDrawing'
 
+export type ChatProvider = 'local' | 'api' | 'muse'
+
 export interface ChatReplyVariant {
   content: string
   mid: string
@@ -37,7 +39,7 @@ export interface ChatState {
   conversations: Record<string, ChatConversation>
   settings: {
     model: string
-    provider: 'local' | 'api'
+    provider: ChatProvider
     apiBaseUrl: string
     apiModel: string
     apiKey: string

@@ -9,6 +9,7 @@ export interface CompanionChatLiveState {
   voiceActive: boolean
   activeChar: string
   chatReady: boolean
+  textOnly: boolean
   chatError: string
   ts: number
 }
@@ -29,6 +30,7 @@ export function decodeCompanionChatLiveState(
     activeChar: typeof raw.activeChar === 'string' && getCompanionCharacterConfig(raw.activeChar)
       ? raw.activeChar : previous.activeChar,
     chatReady: typeof raw.chatReady === 'boolean' ? raw.chatReady : previous.chatReady,
+    textOnly: raw.textOnly === true,
     chatError: typeof raw.chatError === 'string' ? raw.chatError.slice(0, 1200) : '',
     ts: Number(raw.ts) || 0,
   }

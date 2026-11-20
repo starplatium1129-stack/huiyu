@@ -10,6 +10,11 @@ const CHAT_API_TIMEOUTS = {
 
 export interface ChatCallOptions { signal?: AbortSignal }
 export interface HostConfigPayload { baseUrl: string; model: string; apiKey: string }
+export interface MuseChatStatus {
+  available: boolean
+  receiving: boolean
+  transport: 'tailscale' | 'relay' | null
+}
 
 function isObject(value: unknown): value is ApiResponseObject {
   return typeof value === 'object' && value !== null && !Array.isArray(value)
@@ -40,6 +45,7 @@ function isProviderTest(value: ApiResponseObject): boolean {
 }
 
 export interface ChatApi {
+  getMuseStatus(options?: ChatCallOptions): Promise<MuseChatStatus>
   getStatus(options?: ChatCallOptions): Promise<ChatStatus>
   getHostConfig(options?: ChatCallOptions): Promise<HostConfig>
   saveHostConfig(payload: HostConfigPayload, options?: ChatCallOptions): Promise<ConfiguredHostConfig>
@@ -48,6 +54,13 @@ export interface ChatApi {
 }
 
 export const chatApi: ChatApi = {
+  getMuseStatus(options = {}) {
+    return apiClient.request<MuseChatStatus>('/api/chat/muse/status', {
+      cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.status,
+      validate: value => typeof value.available === 'boolean' && typeof value.receiving === 'boolean'
+        && (value.transport === null || value.transport === 'tailscale' || value.transport === 'relay'),
+    })
+  },
   getStatus(options = {}) {
     return apiClient.request<ChatStatus>('/api/chat-status', {
       cache: 'no-store', signal: options.signal, timeoutMs: CHAT_API_TIMEOUTS.status,

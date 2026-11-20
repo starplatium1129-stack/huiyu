@@ -36,9 +36,10 @@
           <button class="btn btn-quiet image-tool-action" type="button" :aria-pressed="inpaintCompareActive" @click="$emit('update:inpaintCompareActive', !inpaintCompareActive)"><ArchiveIcon name="compare" /><span>换装前后对比</span><small v-if="inpaintCompareActive">对比中</small><ArchiveIcon name="chevron-down" class="image-tool-chevron" /></button>
         </StudioTooltip>
         <MangaScreenLauncher class="image-tool-entry" variant="row" :source-url="displayResultUrl" :disabled="generationBusy || drawing.importing.value" />
-        <StudioTooltip v-if="displayResultUrl && supportsContinuation" anchor :content="generationBusy ? BUSY_HINT : '将当前画布进行 2x 高清超分放大'">
-          <button class="btn btn-quiet image-tool-action" type="button" :disabled="generationBusy" @click="$emit('upscale')"><ArchiveIcon name="spark" /><span>高清放大</span><small>2×</small><ArchiveIcon name="chevron-down" class="image-tool-chevron" /></button>
-        </StudioTooltip>
+        <template v-if="displayResultUrl && drawEngine === 'anima'">
+          <button class="btn btn-quiet image-tool-action" type="button" :disabled="generationBusy" @click="$emit('upscale', '4x-UltraSharp')"><ArchiveIcon name="spark" /><span>UltraSharp 放大并重绘</span><small>1.5×</small></button>
+          <button class="btn btn-quiet image-tool-action" type="button" :disabled="generationBusy" @click="$emit('upscale', 'Remacri')"><ArchiveIcon name="spark" /><span>Remacri 纯放大</span><small>1.5×</small></button>
+        </template>
       </div>
       <p v-if="drawing.error.value" class="image-tools-error" role="alert">{{ drawing.error.value }}</p>
     </section>
@@ -64,6 +65,7 @@ import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue
 import MangaScreenLauncher from '@/components/manga/MangaScreenLauncher.vue'
 import DeferredToolLauncher from '@/components/director/DeferredToolLauncher.vue'
 import type { AnimaCompositionBindings } from '@/composables/generation/useAnimaComposition'
+import type { AnimaPixelUpscaler } from '@/config/animaHires'
 import '@/assets/css/director/components/DirectorImageTools.css'
 
 const props = defineProps<{
@@ -95,7 +97,7 @@ defineEmits<{
   interrogateCancel: []
   openInpaint: []
   'update:inpaintCompareActive': [value: boolean]
-  upscale: []
+  upscale: [method: AnimaPixelUpscaler]
   goVideo: []
   addToShots: []
   goShots: []

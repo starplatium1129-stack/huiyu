@@ -30,9 +30,12 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         .unwrap_or("");
     // This interface is for another runtime, not browser cross-origin requests.
     let path = request.uri().path();
-    let qq_chat = path.starts_with("/api/muse/qq/");
-    let allowed = (request.uri().query().is_none()
-        && super::relay::qq_route(request.method(), path))
+    let chat = path.starts_with("/api/muse/qq/") || path.starts_with("/api/muse/desktop/");
+    let inbox = request.method() == axum::http::Method::GET
+        && matches!(path, "/api/muse/desktop/inbox" | "/api/muse/qq/inbox");
+    let allowed = ((inbox || request.uri().query().is_none())
+        && (super::relay::qq_route(request.method(), path)
+            || super::relay::desktop_chat_route(request.method(), path)))
         || ["/api/anima/", "/api/creative/", "/api/qwen/", "/api/moss/"]
             .iter()
             .any(|prefix| path.starts_with(prefix))
@@ -68,7 +71,7 @@ async fn authorize(State(key): State<Arc<String>>, mut request: Request, next: N
         "x-huiyu-image-protocol",
         axum::http::HeaderValue::from_static("1"),
     );
-    if qq_chat {
+    if chat {
         response.headers_mut().insert(
             header::CACHE_CONTROL,
             HeaderValue::from_static("private, no-store"),
@@ -144,6 +147,8 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
             }
         };
     let archive = images.backend.remote_store().cloned();
+    let (desktop_chat, desktop_guard) =
+        crate::chat::muse::routes(&state, crate::chat::muse::Transport::Relay, &state.shutdown);
     let mut app = super::super::router(images.clone())
         .merge(upload_index::router())
         .layer(Extension(Arc::new(UploadIndex::new(inputs::root(
@@ -153,6 +158,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
         .layer(Extension(guide::Guide))
         .merge(super::muse::router(images, state.host.clone()))
         .merge(crate::companion_channels::muse_qq_router())
+        .merge(desktop_chat)
         .route(guide::PATH, get(guide::read))
         .merge(
             Router::new()
@@ -188,6 +194,7 @@ pub(crate) async fn start(state: crate::AppState) -> Option<tokio::task::JoinHan
         }
     });
     Some(tokio::spawn(async move {
+        let _desktop_guard = desktop_guard;
         let cancel = state.shutdown.clone();
         let relay_cancel = cancel.child_token();
         let relay = tokio::spawn(super::relay::run(

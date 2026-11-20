@@ -36,9 +36,10 @@ let MODELS: Readonly<Record<string, ModelDefinition>> = Object.freeze({
   // 2026-08-15 用户决策接入：AnimaYume v1.0（circlestone 社区基座微调，Civitai 2385278）。
   // noLora:true = 无 LoRA 创作模式可用；若显式传 loraId，仍走 LORAS 兼容表校验
   // （宁宁/夏目 v21 已声明兼容，用户实测自担效果）。
-  'anima-yume-v1.0': { file:'AnimaYume_v10_final_base.safetensors', label:'Anima Yume v1.0', family:'anima', profileId:'anima_yume_v10', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1024x1024','1216x832'], noLora:true },
-  // 接入：MiaoMiao Harem Anima v1.2（MIAOKA 质感微调，专攻半厚涂肌肤质感与唯美光影）。
-  'anima-miaomiao-v1.2': { file:'miaomiaoHarem_anima12.safetensors', label:'MiaoMiao Harem Anima v1.2', family:'anima', profileId:'anima_miaomiao_v12', steps:generationContract.ANIMA_DEFAULTS.steps, cfg:generationContract.ANIMA_DEFAULTS.cfg, sampler:generationContract.ANIMA_DEFAULTS.sampler, scheduler:generationContract.ANIMA_DEFAULTS.scheduler, sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
+  // 作者版本 3065644 的样图统一为 Normal、30 步、CFG 5.5；原生支持 Euler。
+  'anima-yume-v1.0': { file:'AnimaYume_v10_final_base.safetensors', label:'Anima Yume v1.0', family:'anima', profileId:'anima_yume_v10', steps:30, cfg:5.5, sampler:'euler', scheduler:'normal', sizes:['832x1216','960x1536','1024x1024','1216x832'], noLora:true },
+  // MIAOKA 版本 3020110 推荐 Euler / Normal、30 步、CFG 4–5。
+  'anima-miaomiao-v1.2': { file:'miaomiaoHarem_anima12.safetensors', label:'MiaoMiao Harem Anima v1.2', family:'anima', profileId:'anima_miaomiao_v12', steps:30, cfg:4.5, sampler:'euler', scheduler:'normal', sizes:['832x1216','960x1536','1152x1536','1536x1152','1024x1024','1216x832'], noLora:true },
   // 2026-09-04 接入：MiaoMiao Harem Anima v1.6（MIAOKA Anima 主线正式版，2026-08-20 发布）。
   // 与 v1.2 同架构（实测：685 tensor / 2.091B 参数 / 28 层 DiT / 全 BF16，去掉 safetensors 头部后
   // 权重数据区字节数完全相同 4182137856），属版本迭代而非换底模。

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "camellya_wuwa",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 304,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
   "data": {
     "id": "camellya_wuwa",
     "profile": {
@@ -47,8 +47,8 @@
         "vine tattoo"
       ],
       "portrait": {
-        "image": "../assets/characters/portrait-pending.svg",
-        "alt": "椿立绘待补"
+        "image": "../assets/characters/popular-camellya_wuwa.png?v=cf8e28d251d4",
+        "alt": "椿立绘"
       },
       "visual_dna": {
         "signature": "Camellya from Wuthering Waves. Long white-and-red hair with a prominent forelock, red eyes, a Tacet Mark on her chest and vine-like markings.",

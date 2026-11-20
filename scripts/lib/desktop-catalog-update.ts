@@ -108,9 +108,10 @@ function updateCatalog(app: string, runtime: string, adopt = false) {
   fs.mkdirSync(evidence, { recursive: true });
   const incoming = path.join(evidence, 'incoming.json');
   fs.writeFileSync(incoming, JSON.stringify({ version: 1, records, retired: manifest.retired || [] }));
-  const run = (command: string, args: string[] = []) => {
+  const content = path.join(runtime, 'content');
+  const run = (command: string, args: string[] = [], source = content) => {
     const result = JSON.parse(execFileSync(path.join(app, 'huiyu-runtime.exe'),
-      ['catalog', command, '--root', path.join(runtime, 'content'), '--seed-root', app, '--runtime-root', runtime, ...args],
+      ['catalog', command, '--root', source, '--seed-root', app, '--runtime-root', runtime, ...args],
       { encoding: 'utf8', windowsHide: true, timeout: 120_000, maxBuffer: 64 * 1024 * 1024 }));
     if (result.ok !== true) throw Error(`内容库${command}失败：${JSON.stringify(result)}`);
     return result;
@@ -120,40 +121,53 @@ function updateCatalog(app: string, runtime: string, adopt = false) {
   // interactive/manual imports keep their existing strict conflict policy.
   run('export', ['--out', path.join(evidence, 'before')]);
   if (adopt) return adoptProjectCatalog(app, runtime, evidence, incoming, records.length);
-  const content = path.join(runtime, 'content');
-  const backedUpPins: string[] = [];
-  for (const name of PIN_FILES) {
-    const file = path.join(app, name);
-    const dest = path.join(content, name);
-    if (fs.existsSync(file)) {
+  // Preview just the pin document in the personal DB against the candidate
+  // pin-capture file. Scene changes use the selected personal file later.
+  const pin = records.find(record => record.kind === 'document' && record.id === 'prompt-pinned-scenes');
+  if (!pin) throw Error('CATALOG_PIN_CONFLICT: 内容快照缺少定稿保护基线');
+  const pinSnapshot = path.join(evidence, 'incoming-pins.json');
+  fs.writeFileSync(pinSnapshot, JSON.stringify({ version: 1, records: [pin] }));
+  const pinPlan = run('import', ['--file', pinSnapshot, '--sync-bundle'], app);
+  const useBundlePins = (receipt: { keptNewer: { kind: string; id: string }[]; preservedLocal: { kind: string; id: string }[] }) =>
+    ![...receipt.keptNewer, ...receipt.preservedLocal].some(row => row.kind === pin.kind && row.id === pin.id);
+  const syncPins = useBundlePins(pinPlan);
+  const copiedPins: string[] = [];
+  const args = ['--file', incoming, '--sync-bundle'];
+  let applied;
+  try {
+    for (const name of syncPins ? PIN_FILES : []) {
+      const file = path.join(app, name);
+      if (!fs.existsSync(file)) continue;
+      const dest = path.join(content, name);
       if (fs.existsSync(dest)) {
         const backup = path.join(evidence, 'previous-pins', name);
         fs.mkdirSync(path.dirname(backup), { recursive: true });
         fs.copyFileSync(dest, backup);
-        backedUpPins.push(name);
       }
       fs.mkdirSync(path.dirname(dest), { recursive: true });
+      copiedPins.push(name);
       fs.copyFileSync(file, dest);
     }
-  }
-  try {
-    const args = ['--file', incoming, '--preserve-local'];
     const preview = run('import', args);
     fs.writeFileSync(path.join(evidence, 'preview.json'), JSON.stringify(preview));
-    const applied = run('import', [...args, '--apply']);
-    fs.writeFileSync(path.join(evidence, 'applied.json'), JSON.stringify(applied));
-    const remaining = run('import', args);
-    fs.writeFileSync(path.join(evidence, 'verified.json'), JSON.stringify(remaining));
-    if (remaining.items.length) throw Error('CATALOG_UPDATE_INCOMPLETE: 导入后仍有内容差异，部署未完成。');
-    return { changed: applied.items.length, preservedLocal: applied.preservedLocal, evidence };
+    if (useBundlePins(preview) !== syncPins) throw Error('CATALOG_PIN_CONFLICT: 定稿基线在同步前已变化，请重新部署');
+    applied = run('import', [...args, '--apply']);
   } catch (error) {
-    for (const name of backedUpPins) {
-      try {
-        fs.copyFileSync(path.join(evidence, 'previous-pins', name), path.join(content, name));
-      } catch {}
+    for (const name of copiedPins) {
+      const backup = path.join(evidence, 'previous-pins', name);
+      const dest = path.join(content, name);
+      if (fs.existsSync(backup)) fs.copyFileSync(backup, dest);
+      else fs.rmSync(dest, { force: true });
     }
     throw error;
   }
+  // The DB has committed. Keep its matching pin files even if writing the
+  // receipt or reading the final verification fails.
+  fs.writeFileSync(path.join(evidence, 'applied.json'), JSON.stringify(applied));
+  const remaining = run('import', args);
+  fs.writeFileSync(path.join(evidence, 'verified.json'), JSON.stringify(remaining));
+  if (remaining.items.length) throw Error('CATALOG_UPDATE_INCOMPLETE: 导入后仍有内容差异，部署未完成。');
+  return { changed: applied.items.length, preservedLocal: applied.preservedLocal, keptNewer: applied.keptNewer, evidence };
 }
 
 if (require.main === module) {

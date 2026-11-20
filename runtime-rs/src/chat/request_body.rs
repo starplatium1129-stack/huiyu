@@ -63,6 +63,7 @@ pub(super) async fn parse(
 pub(super) async fn validate(
     body: Value,
     persona: Option<String>,
+    imported: Option<super::persona::CardData>,
     direct: bool,
     admission: &Admission,
     cancel: &CancellationToken,
@@ -81,7 +82,7 @@ pub(super) async fn validate(
             fields.insert("companionTools".into(), Value::Bool(false));
             fields.insert("webSearch".into(), Value::Bool(false));
         }
-        let input = validation::chat(&mut source.0, persona.as_deref())?;
+        let input = validation::chat(&mut source.0, persona.as_deref(), imported.as_ref())?;
         let (body, admission) = source;
         drop(body);
         let output = (input, admission);

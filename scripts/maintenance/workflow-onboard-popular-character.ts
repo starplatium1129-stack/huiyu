@@ -7,7 +7,7 @@
  * 一站式完成新增角色全链路闭环：
  *   1. 档案与场景注册（popular-characters.json / characters.json / scene-blueprints.json）
  *   2. 头像立绘渲染与点阵粒子场构建（assets/characters/ / assets/particles/）
- *   3. Showcase 官方样张渲染与大盘注册（SFW + 显式解剖 NSFW × @rella 统一样式）
+ *   3. Showcase 官方样张使用无画师配方渲染并登记
  *   4. DATA_VERSION 自动哈希校验（由 Vite virtual:data-version 注入）
  *   5. 质量门禁验证与桌面端一键增量部署
  *
@@ -158,7 +158,7 @@ async function runPipeline(charId: any, opts: any = {}) {
         blueprint: bp,
         engine: 'anima',
         profile,
-        artistTags: ['@rella'],
+        style: null,
       });
       if (!plan) throw new Error(`场景 ${bp.id} 未通过生成资格校验`);
 

@@ -1,4 +1,10 @@
 use super::*;
+pub(super) fn editable_document(id: &str) -> bool {
+    matches!(
+        id,
+        "curation" | "tags" | "tag-dictionary-policy" | "chat-cards"
+    )
+}
 pub(super) fn key(kind: &str, id: &str) -> Result<()> {
     if !KINDS.contains(&kind)
         || id.is_empty()
@@ -13,8 +19,21 @@ pub(super) fn key(kind: &str, id: &str) -> Result<()> {
 pub(super) fn data(kind: &str, id: &str, value: &Value) -> Result<()> {
     key(kind, id)?;
     if kind == "document" {
-        if !["curation", "tags", "tag-dictionary-policy"].contains(&id) {
+        if !editable_document(id) {
             return Err(ApiError::invalid("此系统记录只能通过专用维护流程更新"));
+        }
+        if id == "chat-cards" {
+            let cards = value
+                .as_object()
+                .ok_or_else(|| ApiError::invalid("项目聊天卡目录需要按角色 ID 编排"))?;
+            let mut ids = std::collections::HashSet::new();
+            for (character, card) in cards {
+                crate::chat::validate_catalog_card(card, character)?;
+                if !ids.insert(card["id"].as_str()) {
+                    return Err(ApiError::invalid("项目聊天卡 ID 重复"));
+                }
+            }
+            return Ok(());
         }
         if (id == "tags" && !value.is_array()) || (id != "tags" && !value.is_object()) {
             return Err(ApiError::invalid("标签或策展格式无效"));

@@ -77,6 +77,8 @@ struct Settings {
     private_muse: bool,
     #[serde(default)]
     group_muse_all: bool,
+    #[serde(default = "default_muse_context_limit")]
+    muse_context_limit: usize,
     #[serde(default)]
     muse_proactive: bool,
     // Ordinary restarts keep the same history. A new binding/settings session starts fresh.
@@ -98,10 +100,22 @@ struct Change {
     group_muse: Option<bool>,
     private_muse: Option<bool>,
     group_muse_all: Option<bool>,
+    muse_context_limit: Option<usize>,
     muse_proactive: Option<bool>,
 }
 
+fn default_muse_context_limit() -> usize {
+    32
+}
+
 impl Settings {
+    // Context depth is read at intake. It does not change the active QQ connection.
+    fn same_connection(&self, other: &Self) -> bool {
+        let mut comparable = self.clone();
+        comparable.muse_context_limit = other.muse_context_limit;
+        comparable == *other
+    }
+
     fn muse_for(&self, scope: QqScope) -> bool {
         match scope {
             QqScope::Private => self.private_muse,
@@ -162,7 +176,13 @@ pub(crate) async fn configure(
             if !matches!(change.character.as_str(), "nene" | "natsume") {
                 return Err(ApiError::invalid("请选择陪伴角色"));
             }
-            let settings = Settings {
+            let muse_context_limit = change.muse_context_limit.unwrap_or_else(|| {
+                same.map_or_else(default_muse_context_limit, |old| old.muse_context_limit)
+            });
+            if !matches!(muse_context_limit, 6 | 16 | 32 | 64) {
+                return Err(ApiError::invalid("请选择 6、16、32 或 64 条群聊前文"));
+            }
+            let mut settings = Settings {
                 app_id: change.app_id,
                 sealed_secret,
                 character: change.character,
@@ -181,12 +201,22 @@ pub(crate) async fn configure(
                 group_muse_all: change
                     .group_muse_all
                     .unwrap_or_else(|| same.is_some_and(|old| old.group_muse_all)),
+                muse_context_limit,
                 muse_proactive: change
                     .muse_proactive
                     .unwrap_or_else(|| same.is_some_and(|old| old.muse_proactive)),
-                muse_history_generation: uuid::Uuid::new_v4().to_string(),
+                muse_history_generation: same
+                    .map(|old| old.muse_history_generation.clone())
+                    .unwrap_or_default(),
                 groups: same.map(|old| old.groups.clone()).unwrap_or_default(),
             };
+            if same.is_some_and(|old| {
+                old.muse_context_limit != muse_context_limit && old.same_connection(&settings)
+            }) {
+                write(&file, &settings).await?;
+                return Ok(status(app, storage, Some(&settings)));
+            }
+            settings.muse_history_generation = uuid::Uuid::new_v4().to_string();
             write(&file, &settings).await?;
             app.channels.close_muse_qq();
             *app.channels.pair.lock().unwrap() = None;
@@ -271,6 +301,7 @@ fn status(app: &AppState, storage: &Storage, settings: Option<&Settings>) -> Val
         "groupDrawing":settings.is_some_and(|value| value.group_drawing),"groupMuse":settings.is_some_and(|value| value.group_muse),
         "privateMuse":settings.is_some_and(|value| value.private_muse),
         "groupMuseAll":settings.is_some_and(|value| value.group_muse_all),
+        "museContextLimit":settings.map_or_else(default_muse_context_limit, |value| value.muse_context_limit),
         "museProactive":settings.is_some_and(|value| value.muse_proactive),
         "groupMuseStatus":muse_status,"groups":settings.map_or(&[][..], |value| value.groups.as_slice()),
         "phase":if !enabled { "disabled" } else if current { connection.phase } else { "connecting" },

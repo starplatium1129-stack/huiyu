@@ -9,6 +9,7 @@ import { useRouter } from 'vue-router'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionCharacterConfig,
+  renderChatGreeting,
 } from '../../utils/companionRegistry.ts'
 import { useChatStorage } from './useChatStorage.ts'
 import { useVoiceInput } from '../useVoiceInput.ts'
@@ -17,7 +18,8 @@ import { isSpeechInputReady, normalizeSpeechInputConfig, type SpeechInputConfig 
 import { useSpeechInputConfig } from '../useSpeechInputConfig.ts'
 import { createSpeechSession } from '../../utils/speechSession.ts'
 import { createCompanionBehavior, normalizeCompanionConfig } from '../../utils/companionBehavior.ts'
-import { CHAT_RESET_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '../../utils/storageKeys.ts'
+import { CHAT_RESET_KEY, CHAT_USER_PROFILE_KEY, COMPANION_BEHAVIOR_KEY, COMPANION_CHAT_LIVE_KEY } from '../../utils/storageKeys.ts'
+import { loadChatUserProfile } from '@/utils/chatUserProfile'
 
 import { useConversationReading } from './useConversationReading.ts'
 import { relayChatCommand, relayChatTurn } from '../../utils/chatRelayReceipt.ts'
@@ -44,17 +46,19 @@ const liveState = reactive<CompanionChatLiveState>({
   voiceActive: false,
   activeChar: storage.state.active,
   chatReady: false,
+  textOnly: false,
   chatError: '',
   ts: 0,
 })
 const activeChar = computed<string>(() =>
   getCompanionCharacterConfig(liveState.activeChar) ? liveState.activeChar : storage.state.active,
 )
+const callName = ref(loadChatUserProfile().callName)
 const currentCharacter = computed(() => {
   const config = getCompanionCharacterConfig(activeChar.value)
     || getCompanionCharacterConfig(DEFAULT_COMPANION_CHARACTER_ID)
   if (!config) throw new Error('No companion character presentation is registered')
-  return config
+  return renderChatGreeting(config, callName.value)
 })
 
 const inputText = ref('')
@@ -98,7 +102,7 @@ async function handleStoryAction(action: ChatStoryAction) {
 }
 const attachments = useCompanionChatAttachments({
   bridge, activeChar, inputText, busy: computed(() => sending.value || storyBusy.value || liveState.busy),
-  chatReady: computed(() => liveState.chatReady), visible: computed(() => bridge ? windowVisible.value : !pageHidden.value),
+  chatReady: computed(() => liveState.chatReady && !liveState.textOnly), visible: computed(() => bridge ? windowVisible.value : !pageHidden.value),
   writeBlocked: storage.writeBlocked,
   characterName: () => currentCharacter.value.name, persistDraft: text => storage.setDraft(activeChar.value, text),
   notice: listenerNotice, error: listenerError,
@@ -436,6 +440,7 @@ onMounted(() => {
 })
 
 function onStorageChange(event: StorageEvent) {
+  if (!event.key || event.key === CHAT_USER_PROFILE_KEY || event.key === CHAT_RESET_KEY) callName.value = loadChatUserProfile().callName
   if (event.key === CHAT_RESET_KEY) {
     cancelSpeechActivity(); speechSession.endSession()
     draft.clear()

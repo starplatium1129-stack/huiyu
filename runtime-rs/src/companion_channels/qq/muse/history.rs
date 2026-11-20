@@ -9,7 +9,6 @@ use rusqlite::{
 const GROUP_LIMIT: usize = 64;
 const TOTAL_LIMIT: usize = 1024;
 const AGE_MS: i64 = 60 * 60_000;
-const PREVIOUS_LIMIT: usize = 6;
 
 pub(super) struct GroupHistory {
     store: Arc<AsyncMutex<Option<Database>>>,
@@ -63,7 +62,7 @@ impl Database {
         group: &str,
         event: &str,
         value: &Value,
-        with_previous: bool,
+        previous_limit: usize,
     ) -> rusqlite::Result<Vec<Arc<Value>>> {
         let tx = self
             .connection
@@ -87,8 +86,14 @@ impl Database {
              ON CONFLICT(event_id) DO NOTHING",
             params![event, group, recorded, value.to_string()],
         )?;
-        let previous = if with_previous {
-            Self::recent(&tx, &self.generation, group, Some(event), PREVIOUS_LIMIT)?
+        let previous = if previous_limit > 0 {
+            Self::recent(
+                &tx,
+                &self.generation,
+                group,
+                Some(event),
+                previous_limit.min(GROUP_LIMIT),
+            )?
         } else {
             Vec::new()
         };
@@ -201,7 +206,7 @@ impl GroupHistory {
         .unwrap_or_default()
     }
 
-    pub(super) async fn receive(&self, entry: &Entry) -> Vec<Arc<Value>> {
+    pub(super) async fn receive(&self, entry: &Entry, previous_limit: usize) -> Vec<Arc<Value>> {
         let group = entry.conversation_id.clone();
         let event = crate::storage::json_fingerprint(&json!([group, entry.message_id]));
         let mut value = entry.sender_fields();
@@ -214,7 +219,7 @@ impl GroupHistory {
             value["attachmentKind"] = json!("image");
             value["attachmentCount"] = json!(entry.images.len());
         }
-        self.access(move |db| db.record(&group, &event, &value, true))
+        self.access(move |db| db.record(&group, &event, &value, previous_limit))
             .await
     }
 }
@@ -241,7 +246,7 @@ impl Mailbox {
             value["attachmentCount"] = json!(1);
         }
         self.history
-            .access(move |db| db.record(&group, &event, &value, false))
+            .access(move |db| db.record(&group, &event, &value, 0))
             .await;
     }
 }

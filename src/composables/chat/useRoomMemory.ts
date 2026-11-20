@@ -2,6 +2,7 @@ import { computed, ref, type Ref } from 'vue'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
+  getCompanionCharacter,
   getCompanionCharacterConfig,
 } from '@/utils/companionRegistry'
 import {
@@ -43,7 +44,7 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
     return getCompanionCharacterConfig(value) ? value : DEFAULT_COMPANION_CHARACTER_ID
   }
 
-  const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()])
+  const currentMemories = computed(() => chatMemory.value.byCharacter[memoryCharacter()] || [])
   const rememberedMessageIds = computed(() => new Set((currentMemories.value || []).map(item => item.sourceMid)))
 
   function onChatAuxStorage(event: StorageEvent) {
@@ -120,7 +121,8 @@ export function useRoomMemory(options: UseRoomMemoryOptions) {
     if (!getCompanionCharacterConfig(character)) return []
     if (!characterSettingCards().length) void loadCharacterSettingCards().catch(() => {})
     // 人设先于用户事实呈现，但两类召回共用网关预算，不各自占满注入名额。
-    const setting = recallCharacterSetting(characterSettingCards(), memoryCharacter(character), query)
+    const catalogId = getCompanionCharacter(character)?.catalogId || character
+    const setting = recallCharacterSetting(characterSettingCards(), catalogId, query)
     const facts = recallChatFacts(chatMemory.value, memoryCharacter(character), query)
     return packChatMemoryContext(setting, facts)
   }

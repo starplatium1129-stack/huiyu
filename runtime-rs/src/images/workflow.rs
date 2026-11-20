@@ -105,7 +105,8 @@ pub fn build(input: &Value) -> Result<Value> {
     }
     let init = truthy(&input["initImage"]);
     let masked = truthy(&input["maskImage"]) || truthy(&input["maskPrompt"]);
-    if init {
+    let hires_only = input["hiresOnly"] == true;
+    if init && !hires_only {
         inpaint(&mut graph, input, first, decoded);
     }
     let hires = input["hiresFix"] == true && input["hiresScale"].as_f64().unwrap_or(1.) > 1.;
@@ -113,7 +114,12 @@ pub fn build(input: &Value) -> Result<Value> {
         if init && masked {
             inpaint_hires(&mut graph, input, model_link.clone(), positive, negative);
         } else if truthy(&input["superResModel"]) {
-            append_super_res(&mut graph, input, first);
+            graph["20"] = if hires_only {
+                node("LoadImage", json!({"image":input["initImage"]}))
+            } else {
+                node("VAEDecode", json!({"samples":link(first,0),"vae":["3",0]}))
+            };
+            append_super_res(&mut graph, input);
             if input["hiresUpscaler"] == "4x-UltraSharp" {
                 graph["ultrasharp_latent"] = node("VAEEncode", json!({"pixels":["23",0],"vae":["3",0]}));
                 graph["ultrasharp_sample"] = sample(input, model_link, positive, negative, link("ultrasharp_latent", 0), true);
@@ -193,10 +199,9 @@ fn scale(input: &Value, source: &str) -> Value {
         json!({"image":link(source,0),"upscale_method":"lanczos","width":validation::num((input["width"].as_f64().unwrap()*input["hiresScale"].as_f64().unwrap()/8.).round()*8.),"height":validation::num((input["height"].as_f64().unwrap()*input["hiresScale"].as_f64().unwrap()/8.).round()*8.),"crop":"disabled"}),
     )
 }
-fn append_super_res(graph: &mut Value, input: &Value, first: &str) {
+fn append_super_res(graph: &mut Value, input: &Value) {
     // Preserve the existing Remacri path: pixel upscaling without a second VAE/
     // sampling pass. That pass caused the documented high-resolution artifacts.
-    graph["20"] = node("VAEDecode", json!({"samples":link(first,0),"vae":["3",0]}));
     graph["21"] = node(
         "UpscaleModelLoader",
         json!({"model_name":input["superResModel"]}),

@@ -16,6 +16,7 @@ export function loadRoom(page: RoomPage): Promise<{ default: Component }> {
   const current = Promise.all([
     loadRoomComponent(page),
     import('@/utils/localCompanions').then(module => module.loadLocalCompanions()),
+    import('@/utils/chatCards').then(module => module.loadChatCards()),
     import('@/platform/web/profileStorage').then(module => module.ensureProfileChatHistory()),
   ]).then(([component]) => component).finally(() => {
     if (flights.get(page) === current) flights.delete(page)

@@ -22,13 +22,29 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
         "authHeader": "X-Token",
         "usage": "使用当前连接的地址和已保存的 X-Token。以下路径均相对于当前地址。",
         "sceneModels": ["anima-miaomiao-v1.6", "moss-miaomiao-base-v1.0", "moss-miaomiao-base-v1.1"],
+        "quickDraw": {
+            "submit": "已有目录 ID 或提示词时，直接 POST /api/muse/jobs，无需先查目录或队列。每次新任务用新 requestKey，同一次重试用原编号与原请求体。",
+            "receive": "Cloudflare 中转的回执含 receivePath。能接收二进制的客户端可直接 GET 该路径；每次最多等 20 秒，202 或 pending=true 时按 Retry-After 继续同一路径。收到 PNG 后按响应中的原图长度和 SHA-256 校验。需要进度或并行下载时，GET 批次 statusPath。",
+            "cli": "py tools/muse-relay/get_result.py HTTPS根地址 @request.json 成图.png --submit；它会生成缺省 requestKey，并自动提交、等待、校验和保存。断线后用已显示的 batchKey 继续取图。"
+        },
+        "upscale": {
+            "field": "upscale", "family": "anima", "scale": 1.5,
+            "ultrasharp": {"mode": "放大并重绘", "sampler": "euler", "scheduler": "normal", "steps": 10, "cfg": 5.5, "denoise": 0.8, "shift": 3},
+            "remacri": {"mode": "纯放大", "steps": 0},
+            "off": "关闭放大，可覆盖批量默认值。",
+            "usage": "单张目录、自定义提示词及批量均可传这个字段。批量顶层应用到整批，items 内的设置优先。width 和 height 仍指放大前的画幅。"
+        },
         "operations": {
+            "desktopChat": {
+                "inbox": "GET /api/muse/desktop/inbox", "reply": "POST /api/muse/desktop/reply",
+                "usage": "桌面与 QQ 各自持续 GET inbox?wait=25，HTTP 超时至少 40 秒。空结果立即续接，连续出错时退避。按 conversationId 和 messages 回答，写好即在到期前用原 requestKey 和 text 回传，每个编号只生成一次。"
+            },
             "qqChat": {
                 "inbox": "GET /api/muse/qq/inbox", "reply": "POST /api/muse/qq/reply",
                 "targets": "GET /api/muse/qq/targets", "send": "POST /api/muse/qq/send", "search": "POST /api/muse/qq/search",
                 "json": {"requestKey":"收件项的 requestKey","text":"回到原会话的文字"},
-                "usage": "每约 15 秒收信。用 conversationId 区分会话，senderId 区分发件人。同一 requestKey 处理一次。",
-                "context": "GET /api/muse/qq/context/{conversationId}。用 targets 中的群会话编号读取近期发言。群来信的 recentMessages 按相同的收录顺序取本条之前最多 6 条，含已获 QQ 确认的 Muse 发言。",
+                "usage": "单独持续 GET inbox?wait=25，HTTP 超时至少 40 秒。空结果立即续接，失败时退避。用 conversationId 区分会话，senderId 区分发件人。普通文字用 recentMessages 直接回答，写好即回传，同一 requestKey 只生成一次。",
+                "context": "GET /api/muse/qq/context/{conversationId}。用 targets 中的群会话编号读取最近一小时内最多 64 条发言。每条群来信按绘遇的群聊前文设置附上 recentMessages，含已获 QQ 确认的 Muse 发言。",
                 "groupRouting": "已启用的私聊和群 @ 消息可交给 Muse，群里也可用 /muse。普通群消息还需要机主开启接收，并且群主在 QQ 同意。绑定、帮助、取图等命令仍交给绘遇。",
                 "senderIdentity": "群内按 senderId 认人，senderNickname 是显示名。只有 senderRole=owner 才称群主。admin 是管理员，member 是普通成员，unknown 表示未核实。私聊的 senderRole 为 null。",
                 "image": {"mimeType":"image/jpeg 或 image/png","data":"JPEG 或 PNG 原始文件的标准 base64，原文件最多 3 MiB"},
@@ -53,18 +69,18 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             },
             "draw": {
                 "method": "POST", "path": "/api/muse/jobs",
-                "json": {"id": "sc093", "requestKey": "replace-with-new-uuid", "width":832, "height":1216},
-                "usage": "传场景或蓝图 id，可加同一角色的 outfitId 换装。只传 outfitId 可独立出服装图。省略宽高使用配方画幅；也可同时传 width 和 height，按模型支持范围校验。可选 seed、modelId，每项最多 8 张。单张也返回 batchKey 和批次 statusPath。"
+                "json": {"id": "sc093", "requestKey": "replace-with-new-uuid", "upscale": "ultrasharp"},
+                "usage": "传场景或蓝图 id，可加同一角色的 outfitId 换装。只传 outfitId 可独立出服装图。省略宽高使用配方画幅；也可同时传 width 和 height，按模型支持范围校验。可选 seed、modelId、upscale，每项最多 8 张。单张也返回 batchKey 和批次 statusPath。"
             },
             "prompt": {
                 "method": "POST", "path": "/api/muse/jobs",
                 "json": {"prompt":"your image prompt","requestKey":"replace-with-new-uuid"},
-                "usage": "直接提交自定义提示词，不与目录 ID 混用。可选 modelId、宽高 width/height、seed、variants。Anima 可传 character 自动匹配本机已安装的 LoRA。"
+                "usage": "直接提交自定义提示词，不与目录 ID 混用。可选 modelId、宽高 width/height、seed、variants。Anima 可传 upscale，或传 character 自动匹配本机已安装的 LoRA。"
             },
             "batch": {
                 "method": "POST", "path": "/api/muse/batches",
-                "json": {"ids": ["sc041", "sc093"], "requestKey": "replace-with-new-uuid", "width": 832, "height": 1216},
-                "usage": "顶层 width 和 height 可给整批设置默认尺寸。用 items 可逐项指定场景、服装或 prompt，并成对覆盖宽高。每批最多 16 张，响应含批次和每项的 statusPath。"
+                "json": {"ids": ["sc041", "sc093"], "requestKey": "replace-with-new-uuid", "upscale": "remacri"},
+                "usage": "顶层 width、height 和 upscale 可给整批设置默认尺寸与放大方式。用 items 可逐项指定场景、服装或 prompt，并覆盖宽高或 upscale。每批最多 16 张，响应含批次和每项的 statusPath。"
             },
             "queue": {"method": "GET", "path": "/api/muse/queue", "usage": "查看排位、进度和可用的时间估算。"},
             "uploadedInputs": {

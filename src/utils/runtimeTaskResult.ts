@@ -5,7 +5,7 @@ import type { AnimaJobMetadata, AnimaResultContext } from '@/types/anima'
 const metadataKeys = [
   'prompt', 'negative', 'profileId', 'modelId', 'loraId', 'loraStrength', 'loras', 'styleLoraId',
   'width', 'height', 'steps', 'cfg', 'sampler', 'scheduler', 'seed', 'character', 'preview',
-  'hiresFix', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'faceDetailer',
+  'hiresFix', 'hiresOnly', 'hiresScale', 'hiresDenoise', 'hiresUpscaler', 'hiresSteps', 'hiresCfg', 'faceDetailer',
   'teaCache', 'teaCacheThresh', 'initImage', 'maskImage', 'maskPrompt', 'denoisingStrength', 'growMaskBy',
   'sketchControl', 'sketchControlModel', 'regions',
 ] as const

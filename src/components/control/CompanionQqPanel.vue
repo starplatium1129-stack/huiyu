@@ -44,6 +44,12 @@
             <ToggleSwitch v-model="groupMuse" aria-describedby="qq-muse-help">已绑定的群聊</ToggleSwitch>
           </div>
           <p id="qq-muse-help" class="field-help">群友可以 @ 机器人聊天、要图片，或说「帮我搜一下……」。</p>
+          <div v-if="groupMuse && status.museContextLimit !== undefined" class="qq-field">
+            <label class="field-label" for="qq-muse-context">每条消息附带的群聊前文</label>
+            <StudioSelect id="qq-muse-context" v-model="museContextLimit" label="每条消息附带的群聊前文"
+              :options="contextOptions" aria-describedby="qq-muse-context-help" />
+            <p id="qq-muse-context-help" class="field-help">从同一群最近一小时的对话中选取，包括群友发言和 Muse 的回复。</p>
+          </div>
           <template v-if="groupMuse && status.groupMuseAll !== undefined">
             <ToggleSwitch v-model="groupMuseAll" aria-describedby="qq-muse-all-help">也接收没有 @ 机器人的群消息</ToggleSwitch>
             <p id="qq-muse-all-help" class="field-help">开启后，普通群消息也会交给 Muse。群主需在 QQ 里允许机器人获取群内全部消息。</p>
@@ -108,7 +114,7 @@ import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
-import { companionQqApi, type ChannelCharacter, type QqChannelStatus } from '@/api/companionChannelsApi'
+import { companionQqApi, qqMuseContextLimits, type ChannelCharacter, type QqChannelStatus } from '@/api/companionChannelsApi'
 import { desktopRuntimeIdentity, onDesktopRuntime } from '@/platform/desktop/runtime'
 
 const props = defineProps<{ active: boolean }>()
@@ -117,6 +123,8 @@ const appId = ref(''), secret = ref(''), character = ref<ChannelCharacter>('nene
 const enabled = ref(false), drawing = ref(false), attempted = ref(false), busy = ref(false), feedback = ref('')
 const groupDrawing = ref(false), groupLabel = ref('')
 const groupMuse = ref(false)
+const contextOptions = qqMuseContextLimits.map(value => ({ value, label: `${value} 条` }))
+const museContextLimit = ref(32)
 const privateMuse = ref(false), groupMuseAll = ref(false), museProactive = ref(false)
 const museStatusLabels = {
   remoteDisabled: '远程接口未启动，请检查原生绘图的「允许连接」。',
@@ -157,6 +165,7 @@ function apply(value: QqChannelStatus, restoreFields = false) {
   groupMuse.value = value.groupMuse ?? false
   privateMuse.value = value.privateMuse ?? false
   groupMuseAll.value = value.groupMuseAll ?? false
+  museContextLimit.value = value.museContextLimit ?? 32
   museProactive.value = value.museProactive ?? false
   enabled.value = value.enabled || !value.configured
 }
@@ -216,6 +225,7 @@ async function save() {
     groupMuse: status.value?.groupMuse === undefined ? undefined : groupMuse.value,
     privateMuse: status.value?.privateMuse === undefined ? undefined : privateMuse.value,
     groupMuseAll: status.value?.groupMuseAll === undefined ? undefined : groupMuseAll.value,
+    museContextLimit: status.value?.museContextLimit === undefined ? undefined : museContextLimit.value,
     museProactive: status.value?.museProactive === undefined ? undefined : museProactive.value }, signal), true)
 }
 

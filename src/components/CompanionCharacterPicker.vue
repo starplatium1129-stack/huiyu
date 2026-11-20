@@ -6,10 +6,10 @@ import { listCompanionUiCharacters } from '@/utils/companionRegistry'
 
 const props = withDefaults(defineProps<{ modelValue: string; label?: string }>(), { label: '切换角色' })
 const emit = defineEmits<{ 'update:modelValue': [id: string] }>()
-const characters = listCompanionUiCharacters()
-const currentCharacter = computed(() => characters.find(character => character.id === props.modelValue) || characters[0])
-const options = characters.map(character => ({ value: character.id, label: character.name }))
-const characterById = new Map(characters.map(character => [character.id, character]))
+const characters = computed(listCompanionUiCharacters)
+const currentCharacter = computed(() => characters.value.find(character => character.id === props.modelValue) || characters.value[0])
+const options = computed(() => characters.value.map(character => ({ value: character.id, label: character.name })))
+const characterById = computed(() => new Map(characters.value.map(character => [character.id, character])))
 </script>
 
 <template>
@@ -19,7 +19,7 @@ const characterById = new Map(characters.map(character => [character.id, charact
       <template #value>
         <span v-content-motion:up="modelValue" class="companion-picker-value">
           <span class="companion-picker-mark" :data-character="modelValue" aria-hidden="true"><i /></span>
-          <span class="companion-picker-copy"><strong>{{ currentCharacter?.name || '选择角色' }}</strong><small>当前陪伴</small></span>
+          <span class="companion-picker-copy"><strong>{{ currentCharacter?.name || '选择角色' }}</strong><small aria-hidden="true">当前陪伴</small></span>
         </span>
       </template>
       <template #header>
@@ -28,7 +28,7 @@ const characterById = new Map(characters.map(character => [character.id, charact
       <template #option="{ option }">
         <span class="companion-picker-value">
           <span class="companion-picker-mark" :data-character="String(option.value)" aria-hidden="true"><i /></span>
-          <span class="companion-picker-copy"><strong>{{ option.label }}</strong><small>{{ option.value === modelValue ? '正在陪伴' : `切换到${characterById.get(String(option.value))?.shortName || option.label}` }}</small></span>
+          <span class="companion-picker-copy"><strong>{{ option.label }}</strong><small aria-hidden="true">{{ option.value === modelValue ? '正在陪伴' : `切换到${characterById.get(String(option.value))?.shortName || option.label}` }}</small></span>
         </span>
       </template>
     </StudioSelect>

@@ -23,6 +23,7 @@ export interface AnimaJobMetadata {
   character: string | null
   preview?: boolean
   hiresFix?: boolean
+  hiresOnly?: boolean
   hiresScale?: number
   hiresDenoise?: number
   hiresUpscaler?: string | null

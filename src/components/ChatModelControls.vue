@@ -22,6 +22,8 @@
         >
           API 服务
         </button>
+        <button v-if="isLocalHost" type="button" :class="{ active: chatProvider === 'muse' }"
+          :aria-pressed="chatProvider === 'muse'" :disabled="busy" @click="emit('set-provider', 'muse')">Muse</button>
       </div>
       <div v-if="chatProvider === 'local'" v-content-motion:right="chatProvider" class="provider-model-controls">
         <AsyncPanel class="model-select" :loader="loadChatModelPicker" label="本地聊天模型选择" v-slot="{ component }"><component :is="component"
@@ -34,6 +36,14 @@
         /></AsyncPanel>
         <button class="btn btn-ghost btn-sm" type="button" :disabled="busy || checkingLocal" @click="emit('refresh-local')">{{ checkingLocal ? '检测中…' : '重新检测' }}</button>
         <p v-if="localStatusText" class="local-model-help" role="status">{{ localStatusText }}</p>
+      </div>
+      <div v-else-if="chatProvider === 'muse'" v-content-motion:right="chatProvider" class="provider-model-controls">
+        <p class="local-model-help" role="status">{{ museStatusText }}</p>
+        <p v-if="museStatus?.available && !museStatus.receiving" class="local-model-help">首次使用时，把收信说明发给 Muse，让它定时接收这个房间的提问。</p>
+        <button type="button" class="btn btn-ghost btn-sm" :disabled="busy || checkingMuse" @click="emit('refresh-muse')">重新检测 Muse</button>
+        <StudioCopyButton v-if="museStatus?.transport" class="btn btn-ghost btn-sm" label="复制给 Muse 的收信说明"
+          :content-key="museInstructions" :action="() => copyText(museInstructions)" />
+        <RouterLink v-if="isLocalHost && !museStatus?.available" class="btn btn-ghost btn-sm" to="/control#control-inference">远程连接设置</RouterLink>
       </div>
       <div v-else v-content-motion:right="chatProvider" class="provider-model-controls api-model-controls">
         <StudioTooltip anchor :content="busy ? '回复中不可修改' : apiConfigured || useHostConfig ? '修改配置' : '配置模型'">
@@ -49,7 +59,7 @@
         </button>
         </StudioTooltip>
       </div>
-      <details class="model-more-settings" @toggle="onMoreToggle">
+      <details v-if="chatProvider !== 'muse' || $slots.default" class="model-more-settings" @toggle="onMoreToggle">
         <StudioDisclosureSummary>更多选项</StudioDisclosureSummary>
         <div v-if="moreRevealed" class="model-more-body" data-disclosure-content>
           <template v-if="chatProvider === 'api'">
@@ -86,6 +96,10 @@ import { computed, ref } from 'vue'
 import { chatApiVendorFor } from '@/config/chatApi'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
+import { copyText } from '@/utils/clipboard'
+import type { MuseChatStatus } from '@/api/chatApi'
+import type { ChatProvider } from '@/composables/chat/chatStorageTypes'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 const loadChatModelPicker = () => import('@/components/ChatModelPicker.vue')
 const moreRevealed = ref(false)
@@ -101,7 +115,11 @@ const reasoningOptions = [
 ] as const
 
 const props = defineProps<{
-  chatProvider: string
+  chatProvider: ChatProvider
+  isLocalHost: boolean
+  museStatus: MuseChatStatus | null
+  museStatusText: string
+  checkingMuse: boolean
   busy: boolean
   ollamaOnline: boolean
   localStatusText?: string
@@ -120,6 +138,14 @@ const props = defineProps<{
   apiBaseUrl?: string
 }>()
 
+const museInstructions = computed(() => {
+  const tailscale = props.museStatus?.transport === 'tailscale'
+  const inbox = tailscale ? '/desktop/pending' : '/api/muse/desktop/inbox'
+  const reply = tailscale ? '/desktop/replies' : '/api/muse/desktop/reply'
+  const connection = tailscale ? '沿用绘遇 QQ 连接的 Tailscale 地址和端口' : '沿用绘遇远程出图的地址和 X-Token'
+  return `${connection}，让桌面与 QQ 各自持续收信。桌面 GET ${inbox}?wait=25，HTTP 超时至少 40 秒。空收件箱立即续接，operations.inboxWaitSeconds 缺失或为 0 时等 2 秒再取，连接失败按 Retry-After 或逐步退避。按 conversationId 区分对话，用角色设定和 messages 直接回答。写好即在 expiresAt 前向 ${reply} POST {"requestKey":"来信编号","text":"角色的回答"}。每个编号只生成一次，重试沿用原回答。继续原有 QQ 和出图任务。`
+})
+
 const reasoningHint = computed(() => {
   const vendor = chatApiVendorFor((props.useHostConfig ? props.hostApiBaseUrl : props.apiBaseUrl) || '')
   const model = props.useHostConfig ? props.hostApiModel : props.apiModel
@@ -133,11 +159,12 @@ const reasoningHint = computed(() => {
 })
 
 const emit = defineEmits<{
-  (e: 'set-provider', provider: 'local' | 'api'): void
+  (e: 'set-provider', provider: ChatProvider): void
   (e: 'update:currentModel', model: string): void
   (e: 'reasoning-change', level: 'off' | 'low' | 'medium' | 'high'): void
   (e: 'toggle-api-settings'): void
   (e: 'refresh-local'): void
+  (e: 'refresh-muse'): void
   (e: 'update:companion-tools', enabled: boolean): void
 }>()
 </script>

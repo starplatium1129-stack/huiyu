@@ -4,7 +4,7 @@
 
 - **日常开发**：默认生成 `desktop-local` 快速无压缩升级包，按 SHA-256 复用未变化的资源与二进制，秒级更新。
 - **正式发行**：采用 release 配置与完整 LZMA 压缩包，保证分发独立性。
-- **用户数据保护**：部署自动采用 `--preserve-local` 合并内容快照，不覆盖用户数据库中的自定义修改。
+- **用户数据保护**：部署按每条内容已接收的上游版本合并快照，并保留本机的自定义修改。
 
 ---
 
@@ -33,7 +33,7 @@
 `%APPDATA%\com.aics.studio\gateway\content\catalog.sqlite`
 
 - **Git 快照**：`data/catalog/` 是版本跟踪的项目快照。
-- **自动增量合并**：运行 `deploy-desktop.bat` 时，安装器会自动读取快照，通过 `--preserve-local` 增量合并至用户数据库，并在 `gateway/content-update-backups/` 备份。用户修改与新增内容完好保留。
+- **自动增量合并**：部署使用 `--sync-bundle` 逐条比较安装包与本机已接收的上游修订。包内较新的内容会更新，本机个性化编辑会保留。包内较旧的记录列在回执的 `keptNewer`，其他记录继续同步。同一修订出现不同内容或修订与时间顺序矛盾时，部署会报错。备份和回执位于 `gateway/content-update-backups/`。
 
 ---
 

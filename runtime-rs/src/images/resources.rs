@@ -145,6 +145,7 @@ async fn plan_inner(config: &Config, mut input: Value, frozen: bool) -> Result<C
     let mut metadata = json!({"engine":family,"provider":"comfy","prompt":input["prompt"],"negative":input["negative"],"profileId":input["profileId"].as_str().unwrap_or(""),"modelId":input["modelId"],"loras":loras,"loraStrength":input["loraStrength"],"styleLoraId":input["styleLoraId"],"width":input["width"],"height":input["height"],"hiresFix":input["hiresFix"]==true,"hiresScale":input["hiresScale"],"denoisingStrength":input["denoisingStrength"],"faceDetailer":generation::truthy(&input["faceDetailer"]),"steps":input["steps"],"cfg":input["cfg"],"sampler":input["sampler"].as_str().unwrap_or("res_multistep"),"scheduler":input["scheduler"].as_str().unwrap_or("simple"),"teaCache":generation::truthy(&input["teaCache"]),"teaCacheThresh":input["teaCacheThresh"],"seed":input["seed"],"character":if generation::truthy(&input["character"]){input["character"].clone()}else{Value::Null},"preview":false,"resultUrl":null});
     for key in [
         "loraId",
+        "hiresOnly",
         "hiresSteps",
         "hiresCfg",
         "hiresDenoise",

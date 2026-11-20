@@ -2,6 +2,7 @@ import type { Ref } from 'vue'
 import type { AnimaGenerationState } from '@/types/anima'
 import type { DrawEngine } from '@/storage/settingsRepository'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
+import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
 export interface ResultSnapshot {
   url: string
   seed: number | null
@@ -24,14 +25,18 @@ export function snapshotResult(ctx: {
   const { animaState, drawEngine, displayResultSeed, pb, sdSize, sd } = ctx
   const metadata = animaState.value.result?.metadata
   const isComfy = drawEngine.value !== 'sd'
+  const upscaleOnly = isComfy && metadata?.hiresOnly === true
+  const ultraSharp = upscaleOnly && metadata?.hiresUpscaler === '4x-UltraSharp'
+  const upscaleSize = (side: number) => Math.round(side * (metadata?.hiresScale ?? ANIMA_HIRES_PRESET.hiresScale) / 8) * 8
   return {
     url: persistentUrl,
     seed: displayResultSeed.value ?? (isComfy ? metadata?.seed ?? null : (pb.sdParams.seedLock && pb.sdParams.seed >= 0 ? pb.sdParams.seed : null)),
     styleLoraId: isComfy ? ((metadata?.styleLoraId ?? animaState.value.styleLoraId) || null) : null,
-    size: isComfy ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
-    sampler: isComfy ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),
-    cfg: isComfy ? (metadata?.cfg ?? animaState.value.cfg) : pb.sdParams.cfg,
-    steps: isComfy ? (metadata?.steps ?? animaState.value.steps) : pb.sdParams.steps,
+    size: upscaleOnly && metadata ? `${upscaleSize(metadata.width)}x${upscaleSize(metadata.height)}`
+      : isComfy ? `${metadata?.width ?? animaState.value.width}x${metadata?.height ?? animaState.value.height}` : sdSize.value,
+    sampler: upscaleOnly ? (ultraSharp ? 'euler' : 'Remacri') : isComfy ? (metadata?.sampler ?? animaState.value.sampler) : (pb.sdParams.sampler || sd.samplers.value[0] || '—'),
+    cfg: upscaleOnly ? (ultraSharp ? metadata?.hiresCfg ?? ANIMA_HIRES_PRESET.hiresCfg : 0) : isComfy ? (metadata?.cfg ?? animaState.value.cfg) : pb.sdParams.cfg,
+    steps: upscaleOnly ? (ultraSharp ? metadata?.hiresSteps ?? ANIMA_HIRES_PRESET.hiresSteps : 0) : isComfy ? (metadata?.steps ?? animaState.value.steps) : pb.sdParams.steps,
     hires: isComfy ? (metadata?.hiresFix === true
       ? (typeof metadata.hiresScale === 'number' ? `×${metadata.hiresScale}` : '开')
       : metadata?.hiresFix === false ? '关' : '—') : (pb.sdParams.hiresFix ? `×${pb.sdParams.hiresScale ?? 1.5}` : '关'),

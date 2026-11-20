@@ -12,6 +12,8 @@
     @click.capture="petGestures.click"
     @dblclick="petGestures.doubleClick"
   >
+    <button v-if="desktopBridge && !immersive" type="button" class="skip-link" :aria-expanded="petGestures.controlsOpen.value"
+      @click="petGestures.controlsOpen.value = !petGestures.controlsOpen.value">桌宠菜单</button>
     <header class="companion-toolbar" :class="{ 'companion-orbit-preferences-host': desktopBridge }" :data-hidden="immersive ? 'true' : undefined">
       <div class="companion-identity" aria-live="polite">
         <span>陪伴模式</span>
@@ -107,7 +109,8 @@
           @click="exitImmersive"
         >退出沉浸</button>
       </StudioTooltip>
-      <ChatCharacterStage
+      <ChatCardPortrait v-if="activeChar.startsWith('card-')" :character="currentCharacter" />
+      <ChatCharacterStage v-else
         ref="characterStageRef"
         surface="companion"
         :suspended="presentationSuspended"
@@ -164,7 +167,7 @@
         <CompanionClipboardCard :card="clipboardCard" :character-name="currentCharacter.name"
           @inspect="inspectClipboardImage" @accept="acceptClipboardCard" @dismiss="dismissClipboardCard" />
         <CompanionImportRecovery v-if="!desktopBridge" :recovery="importRecovery" />
-        <div ref="chatListRef" class="companion-bubbles" role="log" aria-live="off" aria-label="最近对话">
+        <div ref="chatListRef" class="companion-bubbles" role="log" aria-live="off" :aria-busy="busy" aria-label="最近对话">
           <div v-if="!companionMessages.length" class="companion-empty">
             <span>{{ currentCharacter.name }}</span>
             <p>{{ currentCharacter.greeting }}</p>
@@ -188,8 +191,8 @@
           :label="toolActivity || (thinkingActivity ? '思考中…' : '正在回复…')" animated />
 
         <div class="companion-composer">
-          <VoiceGlow
-            :active="!presentationSuspended && !uiHidden && (composerFocused || speechState === 'capturing' || speechState === 'recognizing' || speechAutoListening || voiceActive || busy)"
+          <VoiceGlow v-if="glowMounted"
+            :active="glowActive"
             :level="speechLevel"
             :processing="busy || speechState === 'recognizing'"
             color-variant="dual"
@@ -211,14 +214,15 @@
             <RouterLink v-else class="companion-setup-action" to="/chat">前往配置</RouterLink>
           </div>
           <ConversationComposer density="room" has-tools>
-            <textarea
+            <label class="sr-only" for="companion-chat-input">桌宠聊天输入</label>
+            <textarea id="companion-chat-input"
               v-model="inputText" class="companion-input" rows="2" maxlength="1200"
-              :placeholder="`对${currentCharacter.name}说…`" aria-label="桌宠聊天输入"
+              :placeholder="`对${currentCharacter.name}说…`"
               @focus="composerFocused = true" @blur="composerFocused = false"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onInputChange"
             ></textarea>
             <template #tools>
-              <StudioTooltip anchor :content="capturingScreen ? '正在读取画面…' : `让${currentCharacter.name}看你当前的屏幕画面`">
+              <StudioTooltip v-if="chatProvider !== 'muse'" anchor :content="capturingScreen ? '正在读取画面…' : `让${currentCharacter.name}看你当前的屏幕画面`">
                 <button class="companion-vision-btn" type="button" :disabled="busy || !chatReady || capturingScreen" aria-label="看屏幕" @click="onCaptureAndInspectScreen">
                   <ArchiveIcon name="eye" />
                 </button>
@@ -313,8 +317,8 @@
 <script setup lang="ts">
 
 import CompanionPreferences from '@/components/CompanionPreferences.vue'
-import VoiceGlow from "@/components/visual/VoiceGlow.vue"
-import { defineAsyncComponent, nextTick, ref, watch } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
+const VoiceGlow = defineAsyncComponent(() => import('@/components/visual/VoiceGlow.vue'))
 const CompanionScreenWatch = defineAsyncComponent(() => import('@/components/CompanionScreenWatch.vue'))
 const ConversationComposer = defineAsyncComponent(() => import('@/components/ConversationComposer.vue'))
 const ChatTurnIndicator = defineAsyncComponent(() => import('@/components/ChatTurnIndicator.vue'))
@@ -335,6 +339,7 @@ import { usePetGestures } from '@/composables/chat/usePetGestures'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
+const ChatCardPortrait = defineAsyncComponent(() => import('@/components/ChatCardPortrait.vue'))
 const ChatMessageAttachments = defineAsyncComponent(() => import('@/components/ChatMessageAttachments.vue'))
 // Quality settings are rendered only after the preferences slot is revealed.
 const Live2DQualityControl = defineAsyncComponent(() => import('@/components/Live2DQualityControl.vue'))
@@ -436,6 +441,10 @@ liveDotState,
 liveDotText,
 screenWatch
 } = useCompanionWorkspace()
+const glowActive = computed(() => !presentationSuspended.value && !uiHidden.value && (composerFocused.value
+  || speechState.value === 'capturing' || speechState.value === 'recognizing' || speechAutoListening.value || voiceActive.value || busy.value))
+const glowMounted = ref(false)
+watch(glowActive, active => { if (active) glowMounted.value = true }, { immediate: true })
 
 const workspaceTriggerEl = ref<HTMLButtonElement | null>(null)
 

@@ -47,7 +47,6 @@ export interface PromptRenderBindings extends
   engineTitle: (engine: DrawEngine) => string | undefined
   BUSY_HINT: string
   reuseSuccessfulRecipe: (id: string | number) => Promise<void>
-  upscaleCurrentResult: () => Promise<void>
   reuseLastSeed: () => void
   resetSdParams: () => void
   retryAnima: () => void

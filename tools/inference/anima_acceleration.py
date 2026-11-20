@@ -67,8 +67,11 @@ def configure(transformer, execution, tools, device):
     original = transformer.forward
 
     def forward(*args, **kwargs):
-        # Only Cosmos: the conditioner has masks unsupported by this backend.
-        with attention_backend("sage"):
+        # On Ada, Sage's quantized attention can produce nonfinite denoiser
+        # activations with a character LoRA. A resident transformer can gain
+        # or lose PEFT adapters after configure(), between requests.
+        backend = "native" if getattr(transformer, "peft_config", None) else "sage"
+        with attention_backend(backend):
             return original(*args, **kwargs)
 
     transformer.forward = forward

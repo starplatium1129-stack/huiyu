@@ -35,6 +35,7 @@
 
 - **创作与分级自由**：项目全面支持全年龄（SFW）及各类成人（NSFW、R18）等所有分级自由创作，不设任何露骨场景限制或门控限制；场景与参考样张保留 R18 缩略图默认模糊遮罩，用户作品册不设遮罩；大图直接展示并保留立体观画与原图缩放。
 - **内容一致性**：提示词、蓝图、服装换装改动需核对编译 Token 与真实渲染效果；多条改动逐一真实重写，严禁模板拼接或虚报。
+- **角色出图**：新增角色的档案立绘和场景样张统一使用无画师配方。保留角色与作品标签，出图前核对最终正向提示词没有 `@画师`，且没有选用画师风格 LoRA。
 - **定稿保护**：`data/prompt-pinned-scenes.json` 为字节级基线保护，批量任务跳过；单条修改必须真实出图后通过 `npm run scenes:pin-capture` 更新并附凭据。
 - **UI 标准**：严格支持双主题与 WCAG AA；禁用文字使用 `--text-disabled`（严禁用 opacity 压字）；高频动画仅使用 `transform`/`opacity`；图标统一使用 `ArchiveIcon.vue` 手绘线条 SVG，不用 Emoji 或实心图标。
 - **数据权威源**：开发工作权威为 `runtime/content/catalog.sqlite`（维护命令传 `--runtime-root runtime`），`data/catalog/` 为导出的项目快照。修改角色、蓝图与场景时先用 `content:catalog authoring` 读取上下文，再通过 patch 预览、应用并定向导出。

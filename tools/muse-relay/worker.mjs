@@ -6,6 +6,14 @@ const ID = '[A-Za-z0-9_-]{1,160}'
 const CONTROL_BODY = 64 * 1024
 const QQ_MESSAGE_BODY = 4 * 1024 * 1024 + CONTROL_BODY
 const qqMessagePath = path => path === '/api/muse/qq/reply' || path === '/api/muse/qq/send'
+const chatPath = path => path.startsWith('/api/muse/qq/') || path.startsWith('/api/muse/desktop/')
+const DESKTOP_INBOX = '/api/muse/desktop/inbox'
+const inboxPath = path => path === DESKTOP_INBOX || path === '/api/muse/qq/inbox'
+const LEGACY_INBOX_INTERVAL_MS = 3000
+const MAX_INBOX_WAIT_SECONDS = 30
+const AGENT_IDLE_POLL_MS = 15_000
+const AGENT_ONLINE_MS = 45_000
+const AGENT_RECONNECT_GRACE_MS = 6_000
 const batchRoute = new RegExp('^/api/muse/batches/(' + ID + ')(?:/(' + ID + '))?$')
 const receiveRoute = new RegExp('^/api/muse/batches/(' + ID + ')/original/([1-9][0-9]?)$')
 const uploadRoute = /^\/_agent\/parts\/(anima|moss|qwen|creative)\/([a-f0-9]{32})\/(\d{1,3})$/
@@ -17,29 +25,40 @@ const json = (value, status = 200, retryAfter) => Response.json(value, {
 const unavailable = () => problem(503, 'MUSE_LAPTOP_UNAVAILABLE', '出图机暂未回应。请重查原路径，提交重试请复用原 requestKey', { 'Retry-After': '3' })
 const POLL_SECONDS = 2
 const RECEIVE_WAIT_SECONDS = 20
+const PARALLEL_DOWNLOAD_MIN = 1024 * 1024
+const PARALLEL_DOWNLOAD_CONNECTIONS = 4
 const stopped = ['failed', 'cancelled', 'interrupted']
 const deliveryErrors = { expired: 410, storageFull: 507, integrityError: 502, invalidReceipt: 502 }
 const publicGuide = {
   name: '绘遇远程出图（Muse 等 AI 助手）', protocol: 'huiyu-muse', authHeader: 'X-Token',
   guidePath: '/api/muse/guide', drawPath: '/api/muse/jobs', partBytes: PART,
+  desktopChat: {
+    inbox: '/api/muse/desktop/inbox', reply: '/api/muse/desktop/reply',
+    usage: '桌面和 QQ 各保持一个独立的 GET inbox?wait=25，HTTP 超时至少 40 秒。空结果立即续接；旧桌面网关未返回 operations.inboxWaitSeconds 时等 2 秒再取。按 conversationId 和 messages 回答，写好即在 expiresAt 前提交 {requestKey,text}，同一编号只生成一次，失败按 Retry-After 退避重试。',
+  },
   qq: {
     senderIdentity: '群内按 senderId 区分发言人，senderNickname 用于称呼，只有 senderRole=owner 才称群主。admin、member、unknown 分别为管理员、普通成员、未核实。',
     inbox: '/api/muse/qq/inbox', reply: '/api/muse/qq/reply', targets: '/api/muse/qq/targets',
     send: '/api/muse/qq/send', search: '/api/muse/qq/search',
-    usage: '定时 GET inbox。用收件项的 requestKey 在 expiresAt 前 POST reply，可传 text 和一个附件，也可以只传附件。image 为 JPEG/PNG，audio 为 MP3（audio/mpeg）。两者均使用 {mimeType,data}，data 为原文件的标准 base64，每个原文件最多 3 MiB。QQ 确认后返回 status=sent。',
-    context: 'GET /api/muse/qq/context/{conversationId}。使用 targets 中的群 conversationId，读取最近一小时内最多 64 条已收到的群消息和 Muse 已确认发言。群来信的 recentMessages 附有最近 6 条前文。',
+    usage: '独立持续 GET inbox?wait=25，HTTP 超时至少 40 秒。空结果立即续接，失败按 Retry-After 退避。普通文字用来信中的 recentMessages 直接回答，写好即用原 requestKey 在 expiresAt 前 POST reply。可传 text 和一个附件，也可以只传附件。image 为 JPEG/PNG，audio 为 MP3（audio/mpeg）。两者均使用 {mimeType,data}，data 为原文件的标准 base64，每个原文件最多 3 MiB。QQ 确认后返回 status=sent。',
+    context: '群来信的 recentMessages 附有这条消息之前的同群发言。需要更多前文时，用 targets 中的群 conversationId 请求 GET /api/muse/qq/context/{conversationId}，可读取最近一小时内最多 64 条已收到的群消息和 Muse 已确认发言。',
     skip: '机主开启接收普通群消息且群主同意后，Muse 可读到未 @ 自己的对话。无需插话时向 reply 提交 {requestKey,skip:true}，返回 status=skipped。',
     proactive: '机主开启主动发送后，GET targets 选出已绑定会话的 conversationId。POST send 携带新 UUID 作为 requestKey、该 conversationId 和 text、image 或 audio 中的一项。QQ 平台会检查主动消息权限与额度。重试使用同一编号和原内容。',
     webSearch: 'POST search 提交收件项的 requestKey 和 query。也可以用新 UUID、已开启会话的 conversationId 和 query 发起检索。results 中有公开网页的 title、url 和 snippet，Muse 可据此回复。',
   },
-  followup: '用同一 X-Token 跟随每张图的 next。accept 为 application/json 时，按 retryAfterSeconds 等待后读取批次 statusPath。accept 为 image/png 时，自动下载该项的 resultUrl。next 为 null 时查看该项的 status、deliveryStatus 和 error。',
-  download: '整图只接受 HTTP 200 且 Content-Type 为 image/png 的响应。检查 PNG 文件头，实际字节数须同时等于 Content-Length 和 X-Result-Bytes，计算的 SHA-256 须等于 X-Result-Sha256。通过后再保存并报成功。receivePath 支持长轮询。收到 202 或收到 200 JSON 且 pending 为 true 时，按 Retry-After 再 GET 同一 receivePath。JSON 只用于读取状态。',
+  followup: '用同一 X-Token 跟随每张图的 next。accept 为 application/json 时，按 retryAfterSeconds 等待后读取批次 statusPath。accept 为 image/png 时，把 resultUrl 交给能下载二进制的工具。next 有 ranges 时，可按 resultFlow.parallelDownload 并行取图。next 为 null 时查看该项的 status、deliveryStatus 和 error。',
+  download: '直接下载整图时接受 HTTP 200 且 Content-Type 为 image/png。支持并发请求时，用 next.ranges 对同一结果地址并发发出 Range GET，按 Content-Range 拼接 206 响应。校验整图的 PNG 文件头、字节数和 SHA-256 后再保存并报成功。receivePath 支持长轮询。收到 202 或收到 200 JSON 且 pending 为 true 时，按 Retry-After 再 GET 同一 receivePath。JSON 只用于读取状态。',
   resultFlow: {
     poll: { method: 'GET', pathField: 'statusPath', contentType: 'application/json', intervalSeconds: POLL_SECONDS,
       stopOnStatus: stopped, stopOnDeliveryStatus: Object.keys(deliveryErrors) },
     download: { method: 'GET', pathField: 'items[].resultUrl', when: { resultAvailable: true },
       status: 200, contentType: 'image/png', pngSignatureHex: '89504e470d0a1a0a', lengthHeader: 'Content-Length',
       bytesHeader: 'X-Result-Bytes', sha256Header: 'X-Result-Sha256' },
+    parallelDownload: { method: 'GET', pathField: 'items[].resultUrl', rangesField: 'items[].next.ranges',
+      header: 'Range', status: 206, contentType: 'image/png', minBytes: PARALLEL_DOWNLOAD_MIN,
+      concurrency: PARALLEL_DOWNLOAD_CONNECTIONS,
+      verify: '每段的 Content-Range 和 Content-Length 须匹配请求，X-Result-Sha256 须等于回执的 resultSha256。按起始偏移拼接，再核对整图大小、PNG 文件头和 SHA-256。',
+      retry: '超时只重取未收到的区间。下载工具无法并发或服务器返回 200 时，可获取并校验完整的 200 PNG。' },
     receive: { method: 'GET', pathField: 'items[].receivePath', waitSeconds: RECEIVE_WAIT_SECONDS,
       pending: { status: 202, contentType: 'application/json', body: { pending: true }, retryAfterHeader: 'Retry-After' },
       legacyPending: { status: 200, contentType: 'application/json', body: { pending: true } } },
@@ -49,7 +68,18 @@ const publicGuide = {
 
 function nextImageRequest(item, statusPath) {
   if (stopped.includes(item.status) || Object.hasOwn(deliveryErrors, item.deliveryStatus)) return null
-  if (item.resultAvailable && item.resultUrl) return { method: 'GET', path: item.resultUrl, accept: 'image/png' }
+  if (item.resultAvailable && item.resultUrl) {
+    const next = { method: 'GET', path: item.resultUrl, accept: 'image/png' }
+    const size = item.resultBytes
+    if (Number.isSafeInteger(size) && size >= PARALLEL_DOWNLOAD_MIN) {
+      const step = Math.ceil(size / PARALLEL_DOWNLOAD_CONNECTIONS)
+      next.ranges = []
+      for (let start = 0; start < size; start += step) {
+        next.ranges.push(`bytes=${start}-${Math.min(start + step, size) - 1}`)
+      }
+    }
+    return next
+  }
   return { method: 'GET', path: statusPath, accept: 'application/json', retryAfterSeconds: POLL_SECONDS }
 }
 
@@ -88,6 +118,8 @@ async function readBody(request, limit) {
 const decode = bytes => JSON.parse(new TextDecoder().decode(bytes))
 
 function control(method, path) {
+  if (path === '/api/muse/desktop/inbox') return method === 'GET'
+  if (path === '/api/muse/desktop/reply') return method === 'POST'
   if (path === '/api/muse/qq/inbox' || path === '/api/muse/qq/targets') return method === 'GET'
   if (/^\/api\/muse\/qq\/context\/[0-9a-f]{64}$/.test(path)) return method === 'GET'
   if (qqMessagePath(path) || path === '/api/muse/qq/search') return method === 'POST'
@@ -107,9 +139,11 @@ export class MuseRelay extends DurableObject {
     ); CREATE INDEX IF NOT EXISTS batch_queue ON batches(due);`)
     this.calls = new Map()
     this.largeQqMessages = 0
+    this.inboxWaiters = new Map()
     this.background = new Map()
     this.reads = new Map()
     this.lastAgent = 0
+    this.reconnectWaiters = new Set()
     this.receivers = new Set()
   }
   async alarm() {
@@ -155,27 +189,37 @@ export class MuseRelay extends DurableObject {
   async fetch(request) {
     const url = new URL(request.url)
     try {
-      if (url.pathname === '/_agent/next' && request.method === 'POST') return await this.next(request.headers.get('X-Muse-Part-Count') === '16' ? 16 : 1, request.headers.get('X-Muse-Parallel') === '1')
+      if (url.pathname === '/_agent/next' && request.method === 'POST') return await this.next(request.signal, request.headers.get('X-Muse-Part-Count') === '16' ? 16 : 1, request.headers.get('X-Muse-Parallel') === '1')
       const upload = uploadRoute.exec(url.pathname)
       if (upload && request.method === 'POST') {
+        this.agentSeen()
         const path = '/api/' + upload[1] + '/jobs/' + upload[2] + '/result'
         const response = this.results.upload(path, Number(upload[3]), await readBody(request, 4 * PART), request.headers)
         this.notifyReceivers()
         return response
       }
       if (url.pathname === '/_agent/finished' && request.method === 'POST') {
+        this.agentSeen()
         this.sql.exec('UPDATE batches SET due=? WHERE due IS NOT NULL AND due>?', Date.now(), Date.now())
         this.wake?.()
         return new Response(null, { status: 204 })
       }
       if (url.pathname.startsWith('/_agent/reply/') && request.method === 'POST') return await this.reply(request, url.pathname.slice(14))
       if (url.pathname === '/api/muse/connection' && request.method === 'GET') return json({ ok: true,
-        laptopOnline: Date.now() - this.lastAgent < 45000, lastSeenAt: this.lastAgent || null, partBytes: PART })
+        laptopOnline: this.agentOnline(), lastSeenAt: this.lastAgent || null, partBytes: PART,
+        idlePollSeconds: AGENT_IDLE_POLL_MS / 1000, reconnectGraceSeconds: AGENT_RECONNECT_GRACE_MS / 1000 })
       if (resultRoute.test(url.pathname) && ['GET','HEAD'].includes(request.method)) return this.results.serve(request, url)
       const receive = receiveRoute.exec(url.pathname)
       if (receive && request.method === 'GET') return await this.receive(request, receive[1], Number(receive[2]))
-      if (url.href.length > 4096 || !control(request.method, url.pathname) || (url.pathname.startsWith('/api/muse/qq/') && url.search)) {
+      const inbox = request.method === 'GET' && inboxPath(url.pathname)
+      if (url.href.length > 4096 || !control(request.method, url.pathname) || (chatPath(url.pathname) && url.search && !inbox)) {
         return problem(404, 'MUSE_ROUTE_NOT_FOUND', '找不到这个 Muse 接口')
+      }
+      if (inbox && url.search) {
+        const value = url.searchParams.get('wait')
+        if (url.searchParams.size !== 1 || value === null || !/^\d+$/.test(value) || Number(value) > 0xffffffff) {
+          return problem(400, 'INVALID_WAIT', 'wait 须为一个非负整数，最多等待 30 秒')
+        }
       }
       const length = request.headers.get('Content-Length')
       if (qqMessagePath(url.pathname) && (length === null || Number(length) > CONTROL_BODY)) {
@@ -199,7 +243,7 @@ export class MuseRelay extends DurableObject {
     const path = url.pathname
     const target = path + url.search
     const method = request.method
-    const qq = path.startsWith('/api/muse/qq/')
+    const chat = chatPath(path)
     const batch = batchRoute.exec(path)
     if (method === 'GET' && directRoute.test(path) && path.includes('/jobs/')) {
       const job = this.results.job(path)
@@ -209,16 +253,20 @@ export class MuseRelay extends DurableObject {
       const row = this.sql.exec('SELECT snapshot FROM batches WHERE key=? AND expires>?', batch[1], Date.now()).toArray()[0]
       if (row?.snapshot) {
         const data = this.present(JSON.parse(row.snapshot), true)
-        data.laptopOnline = Date.now() - this.lastAgent < 45000
+        data.laptopOnline = this.agentOnline()
         if (!batch[2]) return json(data)
         const item = data.items.find(item => item.requestKey === batch[2])
         if (item) return json({ ok: true, item, batchKey: batch[1], batchStatusPath: data.statusPath,
           relayUpdatedAt: data.relayUpdatedAt, laptopOnline: data.laptopOnline })
       }
     }
-    const cached = !qq && method === 'GET' && this.reads.get(target)
+    const cached = !chat && method === 'GET' && this.reads.get(target)
     if (cached && cached.until > Date.now()) return json(this.present(JSON.parse(cached.text)), cached.status, cached.retry)
-    if (Date.now() - this.lastAgent > 45000) return unavailable()
+    if (!this.agentOnline()) {
+      if (this.reconnectWaiters.size >= 32 || request.signal.aborted) return unavailable()
+      await this.waitForChange(request.signal, AGENT_RECONNECT_GRACE_MS, this.reconnectWaiters)
+      if (!this.agentOnline() || request.signal.aborted) return unavailable()
+    }
     let body
     if (method === 'POST') {
       const bytes = await readBody(request, bodyLimit)
@@ -230,13 +278,28 @@ export class MuseRelay extends DurableObject {
         return problem(400, 'INVALID_REQUEST', '请提供稳定的 requestKey，推荐使用 UUID')
       }
     }
-    const call = await this.rpc({ method, path: target, body })
+    const command = { method, path: target, body }
+    if (method === 'GET' && inboxPath(path)) {
+      const prefer = /(?:^|,)\s*wait=(\d{1,9})\s*(?:,|$)/i.exec(request.headers.get('Prefer') ?? '')
+      command.path = path // Older connectors accept only the bare, allowlisted RPC path.
+      command.inboxWaitSeconds = Math.min(Number(url.searchParams.get('wait') ?? prefer?.[1] ?? 0), MAX_INBOX_WAIT_SECONDS)
+      if (command.inboxWaitSeconds > 0) return this.waitInbox(request, command)
+    }
+    const call = await this.rpc(command)
     if (!call) return unavailable()
     const { status, data, retry } = call
-    if (qq) return json(data, status, retry)
+    if (chat) {
+      if (status === 200 && inboxPath(path) && data.operations) {
+        if (path === DESKTOP_INBOX) data.operations.usage = publicGuide.desktopChat.usage
+        else data.operations.inboxUsage = publicGuide.qq.usage
+      }
+      return json(data, status, retry)
+    }
     if (status >= 400) return json(data, status, retry)
     if (path === '/api/muse/guide') {
       data.relay = publicGuide
+      if (data.operations?.desktopChat) data.operations.desktopChat.usage = publicGuide.desktopChat.usage
+      if (data.operations?.qqChat) data.operations.qqChat.usage = publicGuide.qq.usage
       data.download = publicGuide.download
       data.followup = publicGuide.followup
       delete data.operations?.uploadedInputs
@@ -251,15 +314,53 @@ export class MuseRelay extends DurableObject {
     if (collect) await this.scheduleCleanup()
     return json(response, status, retry)
   }
-  rpc(command) {
+  async waitInbox(request, command) {
+    const readers = this.inboxWaiters.get(command.path) ?? 0
+    if (readers >= 4) return problem(429, 'MUSE_INBOX_BUSY', '收信连接已满，请稍后续接', { 'Retry-After': '2' })
+    this.inboxWaiters.set(command.path, readers + 1)
+    const until = Date.now() + command.inboxWaitSeconds * 1000
+    let seconds = command.inboxWaitSeconds
+    try {
+      for (;;) {
+        const call = await this.rpc({ ...command, inboxWaitSeconds: seconds }, (seconds + 10) * 1000)
+        if (!call) return unavailable()
+        const { data, status, retry } = call
+        if (status !== 200 || !data.ok || !Array.isArray(data.items) || !data.operations) return json(data, status, retry)
+        const snapshot = command.path === DESKTOP_INBOX && data.operations.inboxWaitSeconds === undefined
+        const remaining = until - Date.now()
+        if (data.items.length || remaining <= 0) {
+          const operations = { ...data.operations, inboxWaitSeconds: command.inboxWaitSeconds }
+          if (command.path === DESKTOP_INBOX) operations.usage = publicGuide.desktopChat.usage
+          else operations.inboxUsage = publicGuide.qq.usage
+          if (snapshot) Object.assign(operations, { inboxWaitMode: 'relay-poll', inboxPollSeconds: LEGACY_INBOX_INTERVAL_MS / 1000 })
+          return json({ ...data, operations })
+        }
+        if (!snapshot && data.operations.inboxWaitSeconds === 0 && seconds > 0) {
+          return problem(429, 'MUSE_INBOX_BUSY', '网关收信连接已满，请稍后续接', { 'Retry-After': '2' })
+        }
+        // A snapshot-only desktop needs a short pause. Event-capable gateways
+        // can immediately hold the rest of the wait after a shorter native window.
+        if (snapshot) await new Promise(resolve => setTimeout(resolve, Math.min(remaining, LEGACY_INBOX_INTERVAL_MS)))
+        if (request.signal.aborted) return new Response(null, { status: 204, headers })
+        seconds = snapshot ? 0 : Math.max(0, Math.ceil((until - Date.now()) / 1000))
+      }
+    } finally {
+      this.inboxWaiters.set(command.path, this.inboxWaiters.get(command.path) - 1)
+    }
+  }
+  rpc(command, timeout = 30000) {
     if (this.calls.size >= 32) return null
     if (command.method === 'GET') {
-      for (const call of this.calls.values()) if (call.command.method === 'GET' && call.command.path === command.path) return call.promise.then(value => structuredClone(value))
+      for (const call of this.calls.values()) {
+        if (call.command.method === 'GET' && call.command.path === command.path
+          && call.command.inboxWaitSeconds === command.inboxWaitSeconds) {
+          return call.promise.then(value => structuredClone(value))
+        }
+      }
     }
     const ticket = crypto.randomUUID()
     let finish
     const promise = new Promise(resolve => { finish = resolve })
-    let timeout = 30000
     if (qqMessagePath(command.path)) timeout = 105000
     if (command.path === '/api/muse/qq/search') timeout = 45000
     const timer = setTimeout(() => { this.calls.delete(ticket); finish(null) }, timeout)
@@ -270,11 +371,19 @@ export class MuseRelay extends DurableObject {
   notifyReceivers() {
     for (const wake of this.receivers) wake()
   }
-  waitForChange(signal, ms) {
+  agentOnline() {
+    return this.lastAgent > 0 && Date.now() - this.lastAgent < AGENT_ONLINE_MS
+  }
+  agentSeen() {
+    this.lastAgent = Date.now()
+    for (const wake of this.reconnectWaiters) wake()
+  }
+  waitForChange(signal, ms, waiters = this.receivers) {
+    if (signal.aborted) return
     return new Promise(resolve => {
-      const wake = () => { clearTimeout(timer); this.receivers.delete(wake); signal.removeEventListener('abort', wake); resolve() }
+      const wake = () => { clearTimeout(timer); waiters.delete(wake); signal.removeEventListener('abort', wake); resolve() }
       const timer = setTimeout(wake, ms)
-      this.receivers.add(wake)
+      waiters.add(wake)
       signal.addEventListener('abort', wake, { once: true })
     })
   }
@@ -329,35 +438,45 @@ export class MuseRelay extends DurableObject {
     this.background.set(ticket, { ...work, expiry: now + 40000 })
     return { ticket, method: work.method, path: work.path, parallel: work.parallel }
   }
-  async next(maxParts, parallel) {
-    this.lastAgent = Date.now()
+  async next(signal, maxParts, parallel) {
+    if (signal.aborted) return new Response(null, { status: 204 })
+    this.agentSeen()
+    // A disconnected or superseded reader must never consume a queued command.
+    const poll = Symbol()
+    this.currentPoll = poll
+    this.wake?.()
     let work = this.dispatch(maxParts, parallel)
     if (!work) {
       // Keep just one idle poll. A new command wakes it immediately.
-      this.wake?.()
       const due = this.sql.exec("SELECT min(due) AS due FROM (SELECT min(due) AS due FROM batches WHERE due IS NOT NULL AND expires>? UNION ALL SELECT min(due) FROM files WHERE state='transferring' AND expires>?)", Date.now(), Date.now()).one().due
       await new Promise(resolve => {
-        const wake = () => { clearTimeout(timer); if (this.wake === wake) this.wake = null; resolve() }
-        const timer = setTimeout(wake, due === null ? 24000 : Math.max(25, Math.min(24000, due - Date.now())))
+        const wake = () => {
+          clearTimeout(timer)
+          signal.removeEventListener('abort', wake)
+          if (this.wake === wake) this.wake = null
+          resolve()
+        }
+        const timer = setTimeout(wake, due === null ? AGENT_IDLE_POLL_MS : Math.max(25, Math.min(AGENT_IDLE_POLL_MS, due - Date.now())))
         this.wake = wake
+        signal.addEventListener('abort', wake, { once: true })
       })
+      if (signal.aborted || this.currentPoll !== poll) return new Response(null, { status: 204 })
       work = this.dispatch(maxParts, parallel)
     }
-    this.lastAgent = Date.now()
     if (!work) return new Response(null, { status: 204 })
     const response = json(work)
     if (work.method === 'POST' && qqMessagePath(work.path)) response.headers.set('X-Muse-QQ-Media', '1')
     return response
   }
   async reply(request, ticket) {
+    this.agentSeen()
     const call = this.calls.get(ticket)
     const work = this.background.get(ticket)
     if (!call && !work) return new Response(null, { status: 204 })
-    const qq = call?.command.path.startsWith('/api/muse/qq/')
+    const chat = call && chatPath(call.command.path)
     const status = Number(request.headers.get('X-Upstream-Status'))
     if (!Number.isInteger(status) || status < 200 || status > 599) return problem(400, 'INVALID_STATUS', '出图机状态码无效')
     const bytes = await readBody(request, work?.file ? PART * work.count : 2 * 1024 * 1024)
-    this.lastAgent = Date.now()
     if (work?.file) {
       if (work.parallel && status === 204) {
         this.sql.exec("UPDATE files SET due=?, attempts=0 WHERE path=? AND state='transferring' AND part>=?", Date.now(), work.file.path, work.file.part + work.count)
@@ -370,13 +489,14 @@ export class MuseRelay extends DurableObject {
       let data
       try { data = decode(bytes) } catch { data = null }
       if (!data || typeof data !== 'object') {
-        if (qq && status >= 400) {
+        if (chat && status >= 400) {
           // Axum extractor rejections can be plain text. Keep the status without reflecting
           // a private message or its base64 attachment in the error body.
-          call.resolve({ status, data: { ok: false, code: 'MUSE_QQ_REQUEST_REJECTED', message: '绘遇未接受此 QQ 请求，请核对请求格式与大小' }, retry: request.headers.get('Retry-After') })
+          const qq = call.command.path.startsWith('/api/muse/qq/')
+          call.resolve({ status, data: { ok: false, code: qq ? 'MUSE_QQ_REQUEST_REJECTED' : 'MUSE_DESKTOP_REQUEST_REJECTED', message: '绘遇未接受此聊天请求，请核对请求格式与大小' }, retry: request.headers.get('Retry-After') })
         } else if (call) call.resolve(null)
       } else {
-        if (status < 300 && !qq) this.save(data)
+        if (status < 300 && !chat) this.save(data)
         if (work?.batch && status >= 400) {
           if (status === 404) this.sql.exec('DELETE FROM batches WHERE key=? AND snapshot IS NULL', work.batch)
           this.sql.exec('UPDATE batches SET due=? WHERE key=?', Date.now() + 15000, work.batch)
@@ -386,7 +506,7 @@ export class MuseRelay extends DurableObject {
     }
     this.calls.delete(ticket)
     this.background.delete(ticket)
-    if (!work?.file && !qq) await this.scheduleCleanup()
+    if (!work?.file && !chat) await this.scheduleCleanup()
     return new Response(null, { status: 204 })
   }
 }

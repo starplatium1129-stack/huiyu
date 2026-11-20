@@ -5,7 +5,9 @@ import { parseChatStatus, type ChatModel } from '../../utils/chatStatus.ts'
 import { DEFAULT_CHAT_API_BASE_URL, DEFAULT_CHAT_API_MODEL, chatApiPreset, chatApiVendorFor, chatApiAddressError, type ApiVendor } from '../../config/chatApi.ts'
 import { CHAT_PREFERENCES_KEY } from '@/utils/storageKeys'
 import { STORAGE_KEY } from '../../config/characters.ts'
-import { chatApi } from '../../api/chatApi.ts'
+import { chatApi, type MuseChatStatus } from '../../api/chatApi.ts'
+import type { ChatProvider } from './chatStorageTypes'
+import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
 import { ApiClientError } from '../../api/client.ts'
 import { rememberSavedChatApiDraft } from '../../utils/chatApiDrafts.ts'
 
@@ -23,7 +25,15 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const checkingChatStatus = ref(false)
   const models = ref<ChatModel[]>([])
   const currentModel = ref('')
-  const chatProvider = ref<'local' | 'api'>('local')
+  const chatProvider = ref<ChatProvider>('local')
+  const museStatus = ref<MuseChatStatus | null>(null)
+  const checkingMuse = ref(false)
+  const museStatusText = computed(() => {
+    if (!isLocalStudioHost()) return '请在绘遇桌面端打开 Muse 聊天。'
+    if (!museStatus.value) return checkingMuse.value ? '正在检查 Muse 收件箱…' : '未能读取 Muse 收件箱，请重新检测。'
+    if (!museStatus.value.available) return '请在控制室开启 Muse 远程连接，或连接 Muse 的 Tailscale 虚拟机。'
+    return museStatus.value.receiving ? 'Muse 最近已来收信。' : '桌面收件箱已开启，正在等 Muse 来收信。'
+  })
   const apiBaseUrl = ref(DEFAULT_CHAT_API_BASE_URL)
   const apiModel = ref(DEFAULT_CHAT_API_MODEL)
   const apiKey = ref('')
@@ -57,12 +67,13 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   let settingsWrites = 0
   let disposed = false
   const readController = new AbortController()
-  watch(() => [apiVendor.value, apiBaseUrl.value, apiModel.value, apiKey.value, apiSettingsOpen.value], () => { settingsRevision++ }, { flush: 'sync' })
+  watch(() => [chatProvider.value, apiVendor.value, apiBaseUrl.value, apiModel.value, apiKey.value, apiSettingsOpen.value], () => { settingsRevision++ }, { flush: 'sync' })
   watch(storedConnection, next => {
     if (settingsWrites) return
     const clean = cleanConnection()
     const vendor = next[2] === savedConnection[2] ? savedConnection[5] as ApiVendor : chatApiVendorFor(next[2])
     if (clean) { restoreSettings(storage.state, false); apiVendor.value = vendor }
+    else if (next[1] !== savedConnection[1]) chatProvider.value = storage.state.settings.provider
     savedConnection = [...next, vendor]
   })
   function settingsOwner() {
@@ -140,18 +151,42 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   const useHostConfig = computed(() =>
     chatProvider.value === 'api' && !apiConfiguredByUser.value && hostApiConfigured.value,
   )
-  const chatReady = computed(() =>
-    chatProvider.value === 'api'
-      ? apiConfigured.value || useHostConfig.value
-      : ollamaOnline.value,
-  )
+  const chatReady = computed(() => {
+    if (chatProvider.value === 'muse') return isLocalStudioHost() && museStatus.value?.available === true
+    if (chatProvider.value === 'api') return apiConfigured.value || useHostConfig.value
+    return ollamaOnline.value
+  })
 
   function setChatStatus(text: string, kind = '') {
     chatStatusText.value = text
     statusKind.value = kind
   }
 
+  async function refreshMuseStatus() {
+    if (disposed || checkingMuse.value || !isLocalStudioHost()) return
+    checkingMuse.value = true
+    try {
+      const status = await chatApi.getMuseStatus({ signal: readController.signal })
+      if (!disposed) museStatus.value = status
+    } catch {
+      if (!disposed) museStatus.value = null
+    } finally {
+      checkingMuse.value = false
+      if (!disposed && !isBusy.value && chatProvider.value === 'muse') {
+        setChatStatus(museStatusText.value, museStatus.value?.receiving ? 'online' : '')
+      }
+    }
+  }
+
+  watch(chatProvider, provider => {
+    if (provider === 'muse') {
+      if (!isBusy.value) setChatStatus(museStatusText.value)
+      void refreshMuseStatus()
+    }
+  }, { immediate: true })
+
   async function refreshChatStatus() {
+    if (chatProvider.value === 'muse') return refreshMuseStatus()
     if (disposed || checkingChatStatus.value) return
     checkingChatStatus.value = true
     try {
@@ -190,16 +225,20 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
     return apiConfigured.value ? `自定义 API · ${apiModel.value}` : '等待配置自定义 API'
   }
 
-  function setChatProvider(provider: 'local' | 'api') {
+  function setChatProvider(provider: ChatProvider) {
     if (isBusy.value || chatProvider.value === provider) return
+    if (provider === 'muse' && !isLocalStudioHost()) return
     chatProvider.value = provider
     storage.setProvider(provider)
     apiConfigHint.value = ''
     if (provider === 'api') {
       apiSettingsOpen.value = !apiConfigured.value && !useHostConfig.value
       setChatStatus(apiStatusText(), (apiConfigured.value || useHostConfig.value) ? 'online' : '')
-    } else {
+    } else if (provider === 'local') {
       setChatStatus(localStatusText.value, ollamaOnline.value ? 'online' : '')
+      void refreshChatStatus()
+    } else {
+      apiSettingsOpen.value = false
     }
   }
 
@@ -248,7 +287,8 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
 
   function setBusyStatus(value: boolean) {
     isBusy.value = value
-    if (value) setChatStatus('正在生成回复…', 'busy')
+    if (value) setChatStatus(chatProvider.value === 'muse' ? '正在等 Muse 回复…' : '正在生成回复…', 'busy')
+    else if (chatProvider.value === 'muse') setChatStatus(museStatusText.value, museStatus.value?.receiving ? 'online' : '')
     else if (chatProvider.value === 'api') {
       setChatStatus(apiStatusText(), (apiConfigured.value || useHostConfig.value) ? 'online' : '')
     } else {
@@ -275,6 +315,7 @@ export function useChatProvider({ storage, isBusy }: ChatProviderOptions) {
   }
 
   return {
+    museStatus, museStatusText, checkingMuse, refreshMuseStatus,
     ollamaOnline, localStatusText, checkingChatStatus, models, currentModel, chatProvider, apiBaseUrl, apiModel, apiKey,
     apiVendor, apiSettingsOpen, apiConfigHint, chatStatusText, statusKind,
     hostApiConfigured, hostApiModel, hostApiBaseUrl, useHostConfig,

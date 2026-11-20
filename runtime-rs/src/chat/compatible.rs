@@ -120,7 +120,11 @@ pub(super) async fn prepare(
 }
 pub(super) fn payload(input: Input, api: &Api) -> Value {
     let mut value = json!({"model":api.model,"stream":true});
-    value["messages"] = Value::Array(input.messages);
+    value["messages"] = Value::Array(if api.vendor == "openai" {
+        input.messages
+    } else {
+        persona::single_system_messages(input.messages)
+    });
     let thinking = !input.reasoning.is_empty() && input.reasoning != "off";
     if api.vendor == "deepseek" {
         value["thinking"] = json!({"type":if thinking{"enabled"}else{"disabled"}});
@@ -160,6 +164,9 @@ pub(super) fn payload(input: Input, api: &Api) -> Value {
         value["reasoning_effort"] = json!(input.reasoning);
     }
     let mut tools = persona::tools(input.tools, input.web_search);
+    if input.card_tools {
+        tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_web" | "generate_character_image" | "search_drawing_catalog" | "generate_drawing_batch" | "generate_image_from_reference")));
+    }
     if input.channel_tools {
         tools.retain(|tool| matches!(tool["function"]["name"].as_str(), Some("search_drawing_catalog" | "generate_drawing_batch")));
     }

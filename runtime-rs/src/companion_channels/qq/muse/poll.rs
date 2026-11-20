@@ -53,26 +53,31 @@ impl Endpoint {
             .layer(DefaultBodyLimit::max(IMAGE_LIMIT));
         let actions = routes("/pending", "/replies")
             .merge(images)
-            .layer(tower_http::timeout::RequestBodyTimeoutLayer::new(
-                Duration::from_secs(45),
-            ))
             .layer(axum::Extension(mailbox));
-        let router = Router::new()
-            .nest("/qq", actions)
-            .layer(middleware::from_fn_with_state(state.clone(), authorize))
-            .with_state(app);
+        let qq = Router::new().nest("/qq", actions);
         tokio::spawn(async move {
             let mut reported = false;
             while !cancel.is_cancelled() {
                 match TcpListener::bind(endpoint.bind).await {
                     Ok(listener) => {
+                        let (desktop, _desktop_guard) = crate::chat::muse::routes(
+                            &app,
+                            crate::chat::muse::Transport::Tailscale,
+                            &cancel,
+                        );
+                        let router = qq
+                            .clone()
+                            .merge(desktop)
+                            .layer(tower_http::timeout::RequestBodyTimeoutLayer::new(
+                                Duration::from_secs(45),
+                            ))
+                            .layer(middleware::from_fn_with_state(state.clone(), authorize))
+                            .with_state(app.clone());
                         endpoint.listening.store(true, Ordering::Relaxed);
                         eprintln!("Muse QQ 反向轮询已监听 {}", endpoint.bind);
                         let server = axum::serve(
                             listener,
-                            router
-                                .clone()
-                                .into_make_service_with_connect_info::<SocketAddr>(),
+                            router.into_make_service_with_connect_info::<SocketAddr>(),
                         )
                         .with_graceful_shutdown(cancel.clone().cancelled_owned())
                         .into_future();

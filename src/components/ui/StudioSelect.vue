@@ -96,6 +96,18 @@ const attrs = useAttrs()
 const open = ref(false)
 usePageScrollLock(() => open.value)
 const pointerOpened = ref(false)
+// Reka handles pointer and key events. Assistive activation can deliver only a click.
+function onTriggerClick(event: MouseEvent) {
+  if (event.detail !== 0 || event.defaultPrevented || props.disabled) return
+  event.preventDefault()
+  pointerOpened.value = false
+  open.value = !open.value
+}
+function onOptionClick(event: MouseEvent, option: StudioSelectOption) {
+  if (event.detail !== 0 || event.defaultPrevented || !open.value || props.disabled || option.disabled) return
+  applyKey(keyOf(option.value))
+  open.value = false
+}
 let viewActive = true
 onActivated(() => { viewActive = true })
 onDeactivated(() => {
@@ -170,6 +182,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
           :aria-label="accessibleName"
           :data-empty="selectedLabel ? undefined : ''"
           :data-value="String(modelValue ?? '')"
+          @click="onTriggerClick"
           @pointerdown="pointerOpened = true"
           @keydown="pointerOpened = false"
           @keydown.esc="onEscape"
@@ -181,7 +194,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
 
       <SelectPortal :to="portalTarget">
         <FluidTransition small panel=".studio-select-content">
-        <SelectContent v-if="open" force-mount :body-lock="false" data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @escape-key-down="onDismissEscape" @close-auto-focus="onCloseAutoFocus">
+        <SelectContent v-if="open" force-mount :body-lock="false" data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :aria-label="accessibleName" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @escape-key-down="onDismissEscape" @close-auto-focus="onCloseAutoFocus">
           <slot name="header" />
           <SelectViewport class="studio-select-viewport">
             <template v-if="groups">
@@ -194,6 +207,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
                   :disabled="option.disabled"
                   :text-value="option.label"
                   class="studio-select-item"
+                  @click="onOptionClick($event, option)"
                 >
                   <!-- data-value 与原生 option 的 value 语义一致，e2e 按值选择靠它定位。
                        SelectItem 外面还包着 CollectionItem，属性透传不保证，所以挂在
@@ -213,6 +227,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
                 :disabled="option.disabled"
                 :text-value="option.label"
                 class="studio-select-item"
+                @click="onOptionClick($event, option)"
               >
                 <SelectItemText class="studio-select-item-text" :data-value="String(option.value)"><slot name="option" :option="option">{{ option.label }}</slot></SelectItemText>
                 <SelectItemIndicator class="studio-select-check">

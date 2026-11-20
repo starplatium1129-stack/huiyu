@@ -6,6 +6,7 @@ import type { MediaSource } from '@/platform/desktop/workspaceMediaSource'
 import { readWorkspaceMediaSource } from '@/platform/desktop/workspaceMediaRead'
 import { flushProfileWrites } from '@/platform/web/profileStorage'
 import { chatResetRevision } from '@/utils/chatReset'
+import { getCompanionCharacter } from '@/utils/companionRegistry'
 import { loadCompanionToolPermissions, companionToolAllowed } from './useCompanionToolPermissions'
 
 /** Loaded only when a tool reads the reference already selected by its turn. */
@@ -83,6 +84,22 @@ export async function executeSerializedCompanionChatTool(call: { name: string; a
 
 export async function executeCompanionChatTool(name: string, args: Record<string, unknown>, context: CompanionToolContext, completedDrawings?: Map<string, CompanionToolResult>): Promise<CompanionToolResult> {
   context.signal.throwIfAborted()
+  if (context.character.startsWith('card-')) {
+    if (!['search_web', 'search_drawing_catalog', 'generate_drawing_batch', 'generate_character_image', 'generate_image_from_reference'].includes(name)) {
+      return { ok: false, output: '该工具不适用于导入的角色卡。' }
+    }
+    const card = getCompanionCharacter(context.character)
+    const catalogId = card?.catalogId
+    if (catalogId) {
+      const isCurrent = (value: unknown) => value === context.character || value === card.name
+      if (isCurrent(args.character) || (!args.character && ['generate_character_image', 'generate_image_from_reference'].includes(name))) {
+        args = { ...args, character: catalogId }
+      }
+      if (name === 'generate_drawing_batch' && Array.isArray(args.items)) {
+        args = { ...args, items: args.items.map(item => item && isCurrent(item.character) ? { ...item, character: catalogId } : item) }
+      }
+    }
+  }
   if (name !== 'search_web' && !companionToolAllowed(name, await loadCompanionToolPermissions(context.signal))) throw new Error('房间工具权限已关闭。')
   if (name === 'search_drawing_catalog') {
     const { searchDrawingCatalog } = await import('@/api/companionDrawingApi')

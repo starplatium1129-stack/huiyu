@@ -72,7 +72,7 @@ function backdrop(event: MouseEvent) { if (isBackdropClick(event, dialog.value))
 .preferences-heading > div { @apply tw:grid tw:gap-[4px]; }
 .preferences-heading small { @apply tw:text-secondary tw:text-label-sm; }
 h2 { @apply tw:m-0 tw:text-body; font-weight: 650; }
-.preferences-heading button { @apply tw:grid; place-items: center; @apply tw:w-[40px] tw:h-[40px]; border: 1px solid var(--border-soft); border-radius:var(--r-md); @apply tw:text-primary; background: var(--bg-surface); @apply tw:cursor-pointer; }
+.preferences-heading button { @apply tw:grid tw:place-items-center tw:flex-none tw:w-[40px] tw:h-[40px] tw:p-0; border: 1px solid var(--border-soft); border-radius:var(--r-md); @apply tw:text-primary; background: var(--bg-surface); @apply tw:cursor-pointer; }
 .preferences-heading svg { @apply tw:w-[20px] tw:h-[20px]; }
 .preferences-tabs { flex:0 0 auto; margin:0 var(--s-4) var(--s-3); }
 .preferences-tabs svg { @apply tw:w-[16px] tw:h-[16px]; }

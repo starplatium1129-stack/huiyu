@@ -131,6 +131,7 @@ export function useVoice(options: {
   function startTurn(meta: { mid: string; voice: string; character: string }) {
     if (destroyed) return
     stop({ preserveMessageAudio: true, silent: true, preservePreparation: enabled() && preparation.matches(meta.voice, true) })
+    if (!meta.voice) return
     if (enabled()) ensureAudioContext(); session++
     controller = new AbortController()
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve()

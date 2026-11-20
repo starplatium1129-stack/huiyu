@@ -91,6 +91,8 @@
 .room-tools-dialog :is(button,input,textarea):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .room-surface .room-setup { margin:var(--s-3); padding:var(--s-3); font:400 var(--fs-label)/var(--lh-body) var(--font-sans); }
 .room-surface .room-setup strong { display:inline-flex; align-items:center; gap:var(--s-2); }
+.room-card-errors { flex:none; max-height:10rem; overflow:auto; margin-inline:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label); overflow-wrap:anywhere; }
+.room-card-errors summary { cursor:pointer; }
 .room-setup-icon { display:grid; place-items:center; width:28px; height:28px; flex:none; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); }
 .room-setup-icon .archive-icon { width:16px; height:16px; }
 .room-latest { @apply tw:self-center tw:shrink-0 tw:mb-s-2; }

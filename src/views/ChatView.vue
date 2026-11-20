@@ -1,6 +1,7 @@
 <template>
-  <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar">
+  <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar" @dragover="cardImport.dragOver" @drop="cardImport.drop">
     <h1 class="sr-only">角色聊天</h1>
+    <input v-if="isLocalHost" ref="cardFile" type="file" accept=".json,.png" multiple hidden @change="cardImport.choose" />
     <Teleport to="body">
       <dialog ref="roomPanelDialog" class="room-tools-dialog" :aria-label="roomPanel ? roomPanelLabels[roomPanel] : undefined"
         @cancel.prevent="closeRoomPanel" @close="onRoomPanelClosed" @click="closeRoomPanelFromBackdrop">
@@ -28,7 +29,12 @@
         <section v-else-if="roomPanel === 'settings'" class="room-chat-settings chat-page room-tool-panel" aria-labelledby="roomChatSettingsTitle">
           <header class="room-tool-heading"><h2 id="roomChatSettingsTitle">聊天设置</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭聊天设置" @click="closeRoomPanel"><ArchiveIcon name="close" /></button></header>
           <div class="room-tool-body">
+            <button v-if="isLocalHost" class="btn btn-ghost" type="button" :disabled="cardImportLocked" @click="cardFile?.click()" @dragover="cardImport.dragOver" @drop="cardImport.drop">
+              <ArchiveIcon name="character" />选择或拖入角色卡（PNG / JSON）
+            </button>
             <AsyncPanel :loader="loadChatModelControls" label="聊天模型设置" v-slot="{ component }"><component :is="component" :chat-provider="chatProvider" :busy="busy"
+              :is-local-host="isLocalHost" :muse-status="museStatus" :muse-status-text="museStatusText"
+              :checking-muse="checkingMuse" @refresh-muse="refreshMuseStatus"
               :ollama-online="ollamaOnline" :local-status-text="localStatusText" :checking-local="checkingChatStatus"
               :models="models" :current-model="currentModel" :reasoning="reasoning" :companion-tools="companionTools" :web-search-enabled="webSearchEnabled"
               :api-settings-open="apiSettingsOpen" :use-host-config="useHostConfig" :host-api-model="hostApiModel" :host-api-base-url="hostApiBaseUrl"
@@ -63,7 +69,8 @@
     </Teleport>
     <section class="chat-layout" aria-label="角色聊天">
       <Suspense>
-        <ChatCharacterStage ref="characterStageRef" :active-id="activeChar" :suspended="presentationSuspended"
+        <ChatCardPortrait v-if="activeChar.startsWith('card-')" :character="currentCharacter" />
+        <ChatCharacterStage v-else ref="characterStageRef" :active-id="activeChar" :suspended="presentationSuspended"
           :surface="immersive ? 'immersive' : 'room'" :character="currentCharacter" :speaking="isSpeaking"
           :volume="volume" :chat-status-text="chatStatusText" :status-kind="statusKind"
           :auto-load="storage.state.settings.live2dEnabled" :outfit="storage.live2dOutfit(activeChar)"
@@ -89,24 +96,33 @@
             <StudioTooltip :content="clearLabel"><button class="btn btn-ghost" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
             <StudioTooltip content="聊天设置"><button class="btn btn-ghost chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
             <Suspense>
-              <ChatActionsMenu @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
+              <ChatActionsMenu :can-import="isLocalHost" :import-disabled="cardImportLocked" @import-card="cardFile?.click()" @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
               <template #fallback><button class="btn btn-ghost" type="button" aria-label="正在准备更多聊天操作" aria-busy="true" disabled><ArchiveIcon name="menu" /></button></template>
             </Suspense>
           </div>
         </header>
+        <div v-if="cardImport.pending.value" class="room-setup">
+          <span role="status">{{ cardImport.progress.value || '正在准备导入…' }}</span>
+          <button class="btn btn-quiet btn-sm" type="button" @click="cardImport.cancel">停止导入</button>
+        </div>
+        <details v-if="cardImport.failures.value.length" class="room-card-errors">
+          <summary>查看导入失败的文件（{{ cardImport.failures.value.length }}）</summary>
+          <ul><li v-for="(reason, index) in cardImport.failures.value" :key="index">{{ reason }}</li></ul>
+        </details>
         <ChatStoryPicker v-if="storyBranches.length > 1" :branch-id="branchId" :branches="storyBranches" :disabled="busy || storyBusy || chatMutationBusy || storage.writeBlocked.value"
           @select="handleStoryAction({ kind: 'switch-branch', branchId: $event })" />
         <div v-if="!chatReady || preparingRoom" class="room-setup">
           <strong><span class="room-setup-icon" aria-hidden="true"><ArchiveIcon name="model" /></span>{{ setupTitle }}</strong>
           <button v-if="chatProvider === 'local'" class="btn btn-primary btn-sm" type="button" :disabled="preparingRoom" @click="prepareRoom">{{ preparingRoom ? '准备中…' : '连接模型' }}</button>
+          <button v-else-if="chatProvider === 'muse'" class="btn btn-primary btn-sm" type="button" @click="openRoomPanel('settings')">查看 Muse 连接</button>
           <button v-else class="btn btn-primary btn-sm" type="button" @click="apiSettingsOpen = true; openRoomPanel('settings')">选择模型</button>
         </div>
-        <div v-show="!immersive" class="chat-list" ref="chatListRef" role="log" aria-live="off" aria-label="对话记录">
+        <div v-show="!immersive" class="chat-list" ref="chatListRef" role="log" aria-live="off" :aria-busy="busy" aria-label="对话记录">
           <div v-if="!currentMessages.length" class="chat-empty">
             <div class="room-welcome-art" aria-hidden="true"><RuntimeImage class="room-empty-avatar" :src="avatar" alt="" /></div>
             <h2 class="room-empty-title">和{{ currentCharacter.name }}聊一会儿</h2>
-            <div class="chat-empty-greeting">{{ personalizedGreeting }}</div>
-            <div class="chat-starters" aria-label="对话开场建议">
+            <div class="chat-empty-greeting">{{ currentCharacter.greeting }}</div>
+            <div class="chat-starters" role="group" aria-label="对话开场建议">
               <button v-for="starter in currentCharacter.starters" :key="starter" class="room-starter" type="button" @click="chooseStarter(starter)">
                 <span class="room-starter-copy">{{ starter }}</span><ArchiveIcon class="room-starter-arrow" name="chevron-down" />
               </button>
@@ -114,6 +130,7 @@
           </div>
           <button v-if="hasEarlier" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadEarlier">更早消息</button>
           <ChatMessageRow v-for="msg in visibleMessages" tabindex="-1" :key="msg.replyId || msg.mid" :message="msg" :avatar="avatar"
+            role="group" :aria-label="msg.role === 'user' ? '你的消息' : `${currentCharacter.name}的回复`"
             :chibi="Boolean(companionChatAvatars[activeChar])" :streaming="msg.mid === streamingMid" :playing="msg.mid === playingMid"
             :arrival="arrivingMessages.has(msg.mid)" :activity="activityText"
             :remembered="Boolean(msg.mid && messageRemembered(msg.mid))" :has-audio="voice.hasAudio"
@@ -124,7 +141,7 @@
           <button v-if="hasLater" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadLater">后续消息</button>
         </div>
         <button v-if="!immersive && showLatest" class="room-latest btn btn-ghost" type="button" @click="latest">最新消息</button>
-        <div v-if="immersive" class="room-current-line" role="log" aria-live="off" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
+        <div v-if="immersive" class="room-current-line" role="log" aria-live="off" :aria-busy="busy" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
         <div v-if="activityText && (immersive || speechSessionActive || !busy || lastAssistantMessage?.content || lastAssistantMessage?.drawingBatchId || !lastAssistantMessage)" class="room-chat-activity">
           <ChatTurnIndicator :label="activityText" :animated="busy" />
           <button v-if="speechSessionActive" class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button>
@@ -138,10 +155,11 @@
                 @blur="speechHold.cancelHeld" @pointerdown.prevent="speechHold.pointerDown" @pointerup="speechHold.pointerUp" @pointercancel="speechHold.pointerCancel" @lostpointercapture="speechHold.pointerCancel"><ArchiveIcon name="sound" /></button>
             </StudioTooltip>
             </template>
-            <textarea ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" :placeholder="`对${currentCharacter.name}说…`" aria-label="聊天输入"
+            <label class="sr-only" for="room-chat-input">聊天输入</label>
+            <textarea id="room-chat-input" ref="inputRef" class="chat-input" v-model="inputText" rows="1" maxlength="1200" :placeholder="`对${currentCharacter.name}说…`"
               @keydown.enter.exact="submitChatOnEnter($event, handleSend)" @input="onInputChange"></textarea>
             <template #commit><StudioTooltip anchor :content="busy || voiceActive ? '停止回复或语音' : chatReady ? '发送 · Enter（Shift+Enter 换行）' : '请先连接聊天模型'">
-              <StudioSendButton :busy="busy || voiceActive" :disabled="chatMutationBusy || storyBusy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
+              <StudioSendButton id="room-chat-submit" :busy="busy || voiceActive" :disabled="chatMutationBusy || storyBusy || !chatReady || !inputText.trim() || storage.writeBlocked.value"
                 :turn-id="lastUserMessage?.mid || ''" :completed="Boolean(replyAnnouncement) && !chatError && !lastAssistantMessage?.stopped"
                 :context="activeChar" :message-host="chatListRef" @send="handleSend" @stop="stopEverything" />
             </StudioTooltip></template>
@@ -164,6 +182,7 @@ import StudioSendButton from '@/components/ui/StudioSendButton.vue'
 import '@/assets/css/chat.css'
 import '@/assets/css/conversation-room.css'
 import { useChatHistoryWindow } from '@/composables/chat/useChatHistoryWindow'
+import { useChatCardImport } from '@/composables/chat/useChatCardImport'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useRoomPresentation } from '@/composables/chat/useRoomPresentation'
 import { computed, defineAsyncComponent, nextTick, ref, watch } from 'vue'
@@ -180,6 +199,7 @@ import { submitChatOnEnter } from '@/utils/chatInput'
 import { copyText } from '@/utils/clipboard'
 
 const CompanionCharacterPicker = defineAsyncComponent(() => import('@/components/CompanionCharacterPicker.vue'))
+const ChatCardPortrait = defineAsyncComponent(() => import('@/components/ChatCardPortrait.vue'))
 const ChatStoryPicker = defineAsyncComponent(() => import('@/components/ChatStoryPicker.vue'))
 const ChatMessageRow = defineAsyncComponent(() => import('@/components/ChatMessageRow.vue'))
 const ChatCharacterStage = defineAsyncComponent(() => import('@/components/ChatCharacterStage.vue'))
@@ -218,6 +238,7 @@ const {
   storage,
   branchId, storyBranches, storyBusy, handleStoryAction, canRegenerateMessage,
   ollamaOnline, localStatusText, checkingChatStatus, refreshChatStatus,
+  museStatus, museStatusText, checkingMuse, refreshMuseStatus,
   models,
   currentModel,
   chatProvider,
@@ -272,11 +293,16 @@ const {
   clearAllMemory,
   onAutoVoiceChange,
 } = useCharacterRoomSession({ latest: () => { void latest() }, nearBottom: () => !showLatest.value })
+const cardFile = ref<HTMLInputElement>()
+const allowCardImport = () => isLocalHost.value && !busy.value && !storyBusy.value && !chatMutationBusy.value && !storage.writeBlocked.value
+const cardImport = useChatCardImport(allowCardImport, () => activeChar.value, switchCharacter, setError)
+const cardImportLocked = computed(() => !allowCardImport() || cardImport.pending.value)
 const lastUserMessage = computed(() => currentMessages.value.filter(message => message.role === 'user').at(-1))
 const lastAssistantMessage = computed(() => currentMessages.value.filter(message => message.role === 'assistant').at(-1))
 
 type RoomPanel = 'archive' | 'memory' | 'profile' | 'settings'
 const roomPanel = ref<RoomPanel | null>(null)
+watch(cardImport.pending, importing => { if (importing && roomPanel.value === 'settings') closeRoomPanel() })
 const roomPanelGeneration = ref(0)
 let roomPanelClosing = false
 const roomPanelLabels = { archive: '对话归档', memory: '长期记忆', profile: '我的档案', settings: '聊天设置' }
@@ -323,24 +349,13 @@ const immersive = ref(false)
 const presentationSuspended = useRoomPresentation('room')
 const { visibleMessages, hasEarlier, hasLater, paging, showLatest, latest, loadEarlier, loadLater } = useChatHistoryWindow(chatListRef, currentMessages, computed(() => `${activeChar.value}:${branchId.value}`))
 const arrivingMessages = useChatMessageArrival(() => currentMessages.value, () => `${activeChar.value}:${branchId.value}`, () => busy.value)
-const currentLine = computed(() => lastAssistantMessage.value?.content || personalizedGreeting.value)
+const currentLine = computed(() => lastAssistantMessage.value?.content || currentCharacter.value.greeting)
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
 async function copyMessage(content: string) {
   if (await copyText(content)) setError('已复制', 'info', 1800)
   else setError('复制失败，可以选中文字后复制。', 'warning')
 }
-
-const personalizedGreeting = computed(() => {
-  const char = currentCharacter.value
-  const base = char.greeting
-  const name = userProfile.value?.callName?.trim()
-  if (!name) return base
-  if (char.id === 'natsume') {
-    return `${name}，你来了。${base}`
-  }
-  return `${name}，欢迎回来～ ${base}`
-})
 
 async function onUserProfileSave(profile: ChatUserProfile): Promise<boolean> {
   const generation = roomPanelGeneration.value

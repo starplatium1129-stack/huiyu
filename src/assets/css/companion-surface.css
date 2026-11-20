@@ -36,9 +36,9 @@ html:not(.companion-desktop) .companion-redesign .live2d-enable-cta-kicker { dis
 .companion-redesign .companion-chat-chip { @apply tw:text-primary; background: var(--bg-surface); @apply tw:border-soft; backdrop-filter: none; box-shadow: var(--shadow-glass-sm); }
 .companion-action-dock {
   display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--s-1);
-  max-inline-size:100%; padding:var(--s-1); pointer-events:auto;
-  border:1px solid var(--border-soft); border-radius:var(--r-lg);
-  background:var(--bg-surface); box-shadow:var(--shadow-md);
+  max-inline-size:100%; pointer-events:auto;
+  border:1px solid var(--border-soft); border-radius:var(--r-md);
+  background:var(--bg-surface); box-shadow:var(--shadow-sm);
   transition:opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out);
 }
 .companion-action-dock:not(:has(button)) { display:none; }

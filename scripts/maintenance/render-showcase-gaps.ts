@@ -7,7 +7,7 @@
  * 只读活跃 manifest，缺口生成到 --output 待审核候选，人工审核后另行发布。
  * 装配层与生图台 UI 完全同参（usePopularPromptAssembly 对齐）：
  *   - resolveModelProfile 解析引擎模型 profile（quality_prefix / negative_prefix 契约）
- *   - compilePromptRecipe 统一解析蓝图导演默认值、风格配方与完整正负提示词
+ *   - compilePromptRecipe 统一解析蓝图导演默认值与无画师正负提示词
  *   - matureTokens 池（tags.json Mature 分类）与 UI 同源
  *   - TeaCache 加速（thresh 0.10）、按蓝图 recommendedSize 出图（画幅轴向契约）
  *   - 中断保留 job ID，重跑继续查询原任务；失败后先检查原因
@@ -92,7 +92,7 @@ function collectTasks(opts: Options, input: ReturnType<typeof loadInputs>) {
       engine: ENGINE,
       profile,
       matureTokens: matureTokenSet,
-      artistTags: ['@rella'],
+      style: null,
     });
   }
   const tasks: CandidateTask[] = [];

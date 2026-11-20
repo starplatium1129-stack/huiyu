@@ -34,6 +34,7 @@ export interface AnimaRequest {
   character: string | null
   styleLoraId?: string
   hiresFix?: boolean
+  hiresOnly?: boolean
   hiresScale?: number
   hiresDenoise?: number
   hiresSteps?: number
@@ -147,6 +148,7 @@ export function animaRequestPayload(
     character: request.character,
     ...(request.hiresFix ? {
       hiresFix: true,
+      ...(request.hiresOnly ? { hiresOnly: true } : {}),
       hiresScale: request.hiresScale ?? ANIMA_HIRES_PRESET.hiresScale,
       hiresDenoise: request.hiresDenoise ?? ANIMA_HIRES_PRESET.hiresDenoise,
       hiresSteps: request.hiresSteps ?? ANIMA_HIRES_PRESET.hiresSteps,

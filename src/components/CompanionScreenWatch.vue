@@ -1,12 +1,12 @@
 <template>
   <section v-if="showEntry || state !== 'idle' || notice || open" class="companion-watch"
-    :data-dock="docked || undefined" :data-active="active || undefined" aria-label="陪看">
+    :data-dock="docked || undefined" aria-label="陪看">
     <div class="companion-watch-controls">
       <StudioPopover v-model:open="open" label="陪看设置" :side="docked ? 'top' : 'bottom'" :align="docked ? 'start' : 'end'" content-class="companion-watch-popover">
         <template #trigger>
-          <button class="btn btn-sm companion-watch-trigger" :class="docked ? 'btn-ghost' : 'btn-secondary'" type="button"
-            :aria-label="active ? '陪看设置' : '开启陪看'">
+          <button class="btn btn-quiet btn-sm companion-watch-trigger" type="button">
             <ArchiveIcon name="eye" /><span>{{ active ? status : state === 'choosing' ? '正在选画面' : '陪看' }}</span>
+            <span class="sr-only">设置</span>
           </button>
         </template>
         <div class="companion-watch-settings">
@@ -29,10 +29,10 @@
         </div>
       </StudioPopover>
       <template v-if="active">
-        <button class="btn btn-ghost btn-sm" type="button" @click="state === 'paused' ? resume() : pause()">
+        <button class="btn btn-quiet btn-sm" type="button" @click="state === 'paused' ? resume() : pause()">
           {{ state === 'paused' ? '继续' : '暂停' }}
         </button>
-        <button class="btn btn-ghost btn-sm" type="button" @click="stop">结束共享</button>
+        <button class="btn btn-quiet btn-sm" type="button" @click="stop">结束共享</button>
       </template>
     </div>
     <span v-if="active" class="sr-only" role="status">{{ status }}</span>
@@ -63,14 +63,15 @@ watch(state, (next, previous) => {
 <style scoped>
 .companion-watch { position:absolute; z-index:var(--z-overlay); inset-block-start:var(--s-2); inset-inline-start:var(--s-2); max-inline-size:calc(100% - 2 * var(--s-2)); display:grid; gap:var(--s-1); justify-items:start; pointer-events:none; }
 .companion-watch-controls { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-1); pointer-events:auto; }
-.companion-watch[data-active] .companion-watch-controls { padding:var(--s-1); background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-lg); }
+.companion-watch:not([data-dock]) .companion-watch-controls { background:var(--bg-surface); border:1px solid var(--border-soft); border-radius:var(--r-md); box-shadow:var(--shadow-sm); }
 .companion-watch[data-dock] { display:contents; }
-.companion-watch[data-dock] .companion-watch-controls { padding:0; border:0; background:transparent; }
 .companion-watch[data-dock] :is(.companion-watch-feedback,.companion-watch-comment) {
   order:-1; flex:1 1 100%; max-inline-size:none; padding:var(--s-1) var(--s-2);
   border:0; background:var(--bg-elevated); border-radius:var(--r-md);
 }
-.companion-watch-trigger svg { inline-size:1em; block-size:1em; }
+.companion-watch-trigger { gap:var(--s-1); }
+.companion-watch-trigger svg { inline-size:16px; block-size:16px; }
+.companion-watch-controls .btn:focus-visible { outline:2px solid var(--focus-color); outline-offset:-2px; box-shadow:none; }
 .companion-watch-feedback,.companion-watch-comment { margin:0; max-inline-size:32ch; padding:var(--s-2) var(--s-3); background:var(--bg-elevated); border:1px solid var(--border-soft); border-radius:var(--r-lg); color:var(--text-primary); overflow-wrap:anywhere; font-size:var(--fs-body-sm); }
 .companion-watch-settings { display:grid; gap:var(--s-2); color:var(--text-primary); font-size:var(--fs-body-sm); }
 :global(:root body .studio-popover.companion-watch-popover[data-fluid-glass]) {

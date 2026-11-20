@@ -5,7 +5,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     }
     if args.iter().any(|v| v == "--help") {
         println!(
-            "huiyu-runtime catalog <stats|query|record|history|character|authoring|export|patch|import|check|colors> [--root <content source>] [--seed-root <bundled defaults>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nauthoring: --character <existing id> returns compact revision-bearing context; --character <new id> --example <existing id> marks a new target with a reference; --kind scene [--id <existing scene>] returns scene context or next scene ID and pin protection\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; an existing destination requires a scope and known ancestry; full backups use a new directory\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Older upstream snapshots and conflicting imports are rejected. stats and CLI receipts identify the actual database."
+            "huiyu-runtime catalog <stats|query|record|history|character|authoring|export|patch|import|check|colors> [--root <content source>] [--seed-root <bundled defaults>] --runtime-root <runtime>\nrecord/history: --kind <kind> --id <id> [--revision <number>]\ncharacter: --character <id> (complete revision-bearing record snapshot)\nauthoring: --character <existing id> returns compact revision-bearing context; --character <new id> --example <existing id> marks a new target with a reference; --kind scene [--id <existing scene>] returns scene context or next scene ID and pin protection\nexport: --out <directory> [--character <id> ...] [--record <kind:id> ...]; an existing destination requires a scope and known ancestry; full backups use a new directory\nquery: --kind <kind> [--character <id>] [--sort newest|updated|title|id|order] [--created-from <RFC3339>] [--created-to <RFC3339>] [--page <number>] [--page-size <number>]\npatch/import: --file <json> [--apply]; preview by default. patch JSON: {{changes:[{{kind,id,expectedRevision,patch|data,createdAt,sortOrder,remove}}]}}\nimport only: --preserve-local keeps complete locally modified records and accepts incoming seeds; reports preservedLocal. Older upstream snapshots and conflicting imports are rejected. For desktop deployment, --sync-bundle also keeps accepted newer upstream revisions and reports keptNewer. stats and CLI receipts identify the actual database."
         );
         return Ok(Some(json!({"ok":true})));
     }
@@ -13,16 +13,18 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
     let mut flags = std::collections::HashMap::new();
     let mut scope = snapshots::Scope::default();
     let mut apply = false;
-    let mut preserve_local = false;
+    let mut import_policy = import::Policy::Strict;
     let mut at = 2;
     while at < args.len() {
-        if args[at] == "--preserve-local" {
-            if action != "import" || preserve_local {
-                return Err(ApiError::invalid(
-                    "--preserve-local 仅用于 import，且不能重复",
-                ));
+        if matches!(args[at].as_str(), "--preserve-local" | "--sync-bundle") {
+            if action != "import" || import_policy != import::Policy::Strict {
+                return Err(ApiError::invalid("import 只能选择一种合并策略"));
             }
-            preserve_local = true;
+            import_policy = if args[at] == "--sync-bundle" {
+                import::Policy::SyncBundle
+            } else {
+                import::Policy::PreserveLocal
+            };
             at += 1;
             continue;
         }
@@ -194,7 +196,7 @@ pub fn run(args: &[String]) -> Result<Option<Value>> {
         "import" => catalog.import_with_policy(
             &serde_json::from_slice(&std::fs::read(absolute("--file")?)?)?,
             !apply,
-            preserve_local,
+            import_policy,
         )?,
         _ => {
             return Err(ApiError::invalid(

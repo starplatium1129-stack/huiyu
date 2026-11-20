@@ -135,8 +135,6 @@ export function useAnimaSession(options: AnimaSessionOptions) {
       cfg: typeof defaults?.cfg === 'number' && Number.isFinite(defaults.cfg) ? defaults.cfg : state.value.cfg,
       sampler: String(defaults?.sampler || state.value.sampler),
       scheduler: String(defaults?.scheduler || state.value.scheduler),
-      ...(model?.family === 'anima' ? { steps: ANIMA_HIRES_PRESET.steps, cfg: ANIMA_HIRES_PRESET.cfg,
-        sampler: ANIMA_HIRES_PRESET.sampler, scheduler: ANIMA_HIRES_PRESET.scheduler } : {}),
       ...(!state.value.provider && !loraStrengthTouched && provider === 'native' && !options.isPopular() && ['nene', 'natsume'].includes(options.getCharacter()) && typeof defaults?.loraStrength === 'number'
         ? { loraStrength: defaults.loraStrength } : {}),
       teaCache: teaCacheSettingsTouched ? state.value.teaCache : typeof defaults?.teaCache === 'boolean' ? defaults.teaCache : state.value.teaCache,

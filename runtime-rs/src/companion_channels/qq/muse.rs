@@ -21,7 +21,8 @@ use std::{
 use tokio::sync::{Semaphore, watch};
 
 const INBOX_LIMIT: usize = 128;
-const INBOX_WAIT: Duration = Duration::from_secs(8);
+// Leave space for inbox operations and the JSON envelope in the relay's 2 MiB response.
+const INBOX_ITEMS_BYTES: usize = 2 * 1024 * 1024 - 16 * 1024;
 const MESSAGE_JSON_LIMIT: usize = 4 * 1024 * 1024 + 64 * 1024;
 
 pub(in crate::companion_channels) struct Mailbox {
@@ -329,20 +330,41 @@ impl Mailbox {
     }
 
     fn pending(&self, item: fn(&Entry) -> Value, record_listed: bool) -> Vec<Value> {
-        self.entries()
+        let ready: Vec<_> = self
+            .entries()
             .iter()
-            .filter_map(|entry| {
-                let delivery = entry.delivery.try_lock().ok()?;
-                let ready = entry.search.as_ref().is_none_or(|s| s.get().is_some());
-                (ready && !entry.done(&delivery)).then(|| {
-                    if record_listed && !entry.listed.swap(true, Ordering::Relaxed) {
-                        entry.trace("inbox_listed");
-                    }
-                    item(entry)
-                })
+            .filter(|entry| {
+                entry.search.as_ref().is_none_or(|s| s.get().is_some())
+                    && entry
+                        .delivery
+                        .try_lock()
+                        .is_ok_and(|delivery| !entry.done(&delivery))
             })
             .take(16)
-            .collect()
+            .cloned()
+            .collect();
+        let mut items = Vec::with_capacity(ready.len());
+        let multiple = ready.len() > 1;
+        let mut remaining = INBOX_ITEMS_BYTES;
+        let mut encoded = Vec::new();
+        for entry in ready {
+            let value = item(&entry);
+            if multiple {
+                encoded.clear();
+                serde_json::to_writer(&mut encoded, &value)
+                    .expect("JSON value can be written to Vec");
+                let bytes = encoded.len() + 1;
+                if bytes > remaining && !items.is_empty() {
+                    break;
+                }
+                remaining = remaining.saturating_sub(bytes);
+            }
+            if record_listed && !entry.listed.swap(true, Ordering::Relaxed) {
+                entry.trace("inbox_listed");
+            }
+            items.push(value);
+        }
+        items
     }
 
     fn entry(&self, key: &str) -> Result<Arc<Entry>> {
@@ -358,7 +380,7 @@ impl Mailbox {
         app: &AppState,
         message: &Message,
         question: &str,
-        character: &str,
+        settings: &Settings,
         tasks: &mut tokio::task::JoinSet<()>,
     ) -> Option<&'static str> {
         match &self.route {
@@ -416,14 +438,17 @@ impl Mailbox {
             images: message.images.clone(),
             search: query.as_ref().map(|_| OnceLock::new()),
             attach_nene: matches!(self.route, Route::VmPoll(_))
-                && attachment::requests_nene_photo(question, character),
+                && attachment::requests_nene_photo(question, &settings.character),
             expires_at,
             arrived_at: message.arrived_at,
             listed: AtomicBool::new(false),
             delivery: AsyncMutex::default(),
         };
         if entry.scope == QqScope::Group {
-            entry.recent_messages = self.history.receive(&entry).await;
+            entry.recent_messages = self
+                .history
+                .receive(&entry, settings.muse_context_limit)
+                .await;
         }
         let mut entries = self.entries();
         if self.cancel.is_cancelled() || entry.expires_at <= crate::host::now_ms() {
@@ -529,13 +554,7 @@ pub(super) async fn process(
                             continue;
                         }
                         mailbox
-                            .enqueue(
-                                app,
-                                &message,
-                                &message.text,
-                                &settings.character,
-                                &mut forwarding,
-                            )
+                            .enqueue(app, &message, &message.text, &settings, &mut forwarding)
                             .await
                     }
                     Err(_) => {
@@ -600,14 +619,24 @@ fn operations(vm: bool) -> Value {
         "sendBody":{"requestKey":"新 UUID，重试沿用","conversationId":"targets 返回的会话","text":"文字，也可改传 image 或 audio"},
         "audio":{"mimeType":"audio/mpeg","data":"MP3 原文件的标准 Base64"},"searchBody":{"requestKey":"来信编号，或搭配 conversationId 使用新 UUID","query":"公开网页关键词"},
         "context":format!("GET {base}/context/{{conversationId}}"),
-        "contextUsage":"群消息的 recentMessages 按同一群 context 的收录顺序附上本条之前最多 6 条发言。",
-        "inboxWaitSeconds":INBOX_WAIT.as_secs(),
+        "contextUsage":"recentMessages 按收录顺序附上这条消息之前的同群发言，数量由绘遇的群聊前文设置决定。需要更早的发言时可读取同群 context。",
+        "inboxWaitSeconds":0,
+        "desktopChat":if vm {
+            json!({"inbox":"GET /desktop/pending","reply":"POST /desktop/replies"})
+        } else {
+            json!({"inbox":"GET /api/muse/desktop/inbox","reply":"POST /api/muse/desktop/reply"})
+        },
         "limits":{"textChars":1600,"imageBytes":super::super::media::IMAGE_LIMIT,"audioBytes":attachment::AUDIO_LIMIT},
-        "usage":"回复可带文字和一个附件。image 与 audio 二选一，也可以只发附件。无需回复可提交 requestKey 和 skip:true。主动发送每次选文字、图片或语音，QQ 确认后才算送达。"
+        "usage":"普通文字用来信中的 recentMessages 直接回答，写好即回传。回复可带文字和一个附件，image 与 audio 二选一，也可以只发附件。无需回复可提交 requestKey 和 skip:true。主动发送每次选文字、图片或语音，QQ 确认后才算送达。"
     })
 }
 
-async fn inbox(Channel(mailbox): Channel, method: Method) -> Result<Json<Value>> {
+async fn inbox(
+    Channel(mailbox): Channel,
+    method: Method,
+    axum::extract::Query(query): axum::extract::Query<crate::chat::muse::InboxQuery>,
+    headers: axum::http::HeaderMap,
+) -> Result<Json<Value>> {
     let vm = match &mailbox.route {
         Route::VmPoll(_) => true,
         Route::Pull => false,
@@ -639,7 +668,8 @@ async fn inbox(Channel(mailbox): Channel, method: Method) -> Result<Json<Value>>
     // Subscribe before reading the queue so an arrival between the two cannot be missed.
     let mut changed = mailbox.inbox_changed.subscribe();
     let slot = mailbox.poll_slots.try_acquire().ok();
-    let deadline = Instant::now() + INBOX_WAIT;
+    let wait = query.duration(&headers);
+    let deadline = Instant::now() + wait;
     let items = loop {
         if mailbox.cancel.is_cancelled() {
             return Err(expired());
@@ -658,8 +688,13 @@ async fn inbox(Channel(mailbox): Channel, method: Method) -> Result<Json<Value>>
             _ = changed.changed() => {},
         }
     };
+    let mut operations = operations(vm);
+    operations["inboxWaitSeconds"] = json!(if slot.is_some() { wait.as_secs() } else { 0 });
+    operations["inboxUsage"] = json!(
+        "单独持续 GET 收件地址加 ?wait=25，HTTP 超时至少 40 秒。空结果立即续接，inboxWaitSeconds 为 0 时等 2 秒再取。"
+    );
     Ok(Json(
-        json!({"ok":true,"items":items,"operations":operations(vm)}),
+        json!({"ok":true,"items":items,"operations":operations}),
     ))
 }
 

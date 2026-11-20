@@ -1,3 +1,4 @@
+import { shallowReactive } from 'vue'
 import {
   type Live2DAdapterProfile,
   NENE_BUILTIN_PROFILE,
@@ -22,6 +23,7 @@ export interface CompanionOutfitDefinition {
 }
 
 export interface CompanionCharacterDefinition {
+  catalogId?: string
   id: string
   name: string
   shortName: string
@@ -50,7 +52,7 @@ export interface CompanionAvatarDefinition {
   }
 }
 
-const characters = new Map<string, CompanionCharacterDefinition>()
+const characters = shallowReactive(new Map<string, CompanionCharacterDefinition>())
 const avatars = new Map<string, CompanionAvatarDefinition>()
 const profiles = new Map<string, Live2DAdapterProfile>()
 
@@ -129,6 +131,16 @@ export function getCompanionCharacterConfig(id: string): CharacterConfig | undef
   return characters.get(id)?.presentation
 }
 
+export function forgetChatCard(id: string) {
+  if (characters.get(id)?.tags?.includes('chat-card')) characters.delete(id)
+}
+
+export function renderChatGreeting(config: CharacterConfig, callName: string): CharacterConfig {
+  if (!config.id.startsWith('card-') || !config.greeting.includes('{{')) return config
+  return { ...config, greeting: config.greeting.replace(/\{\{(char|user)\}\}/gi,
+    (_, key: string) => key.toLowerCase() === 'char' ? config.name : callName.trim() || '对方') }
+}
+
 export function registerCompanionCharacter(character: CompanionCharacterDefinition): void {
   if (!character.id || typeof character.id !== 'string' || !/^[a-z0-9][a-z0-9_-]{0,79}$/.test(character.id)) {
     throw new Error('Invalid companion character ID')
@@ -139,7 +151,7 @@ export function registerCompanionCharacter(character: CompanionCharacterDefiniti
   if (!character.shortName || typeof character.shortName !== 'string') {
     throw new Error('shortName is required')
   }
-  if (!character.defaultAvatarId || typeof character.defaultAvatarId !== 'string') {
+  if ((!character.defaultAvatarId && !character.tags?.includes('chat-card')) || typeof character.defaultAvatarId !== 'string') {
     throw new Error('defaultAvatarId is required')
   }
   if (character.presentation && (character.presentation.id !== character.id

@@ -1,7 +1,7 @@
 import { CHAT_DRAFT_PREFIX, CHAT_VOLUME_KEY } from '@/utils/storageKeys'
 import { getCompanionDefaultOutfit, normalizeCompanionOutfit } from '@/utils/companionRegistry'
 import type { ChatPreferences } from '@/storage/chatPreferences'
-import type { ChatState } from './chatStorageTypes'
+import type { ChatProvider, ChatState } from './chatStorageTypes'
 
 export function createChatPreferenceSetters(state: ChatState, characterIds: string[],
   savePreferences: (patch: Partial<ChatPreferences>) => unknown,
@@ -13,7 +13,10 @@ export function createChatPreferenceSetters(state: ChatState, characterIds: stri
     savePreferences({ active: char })
   }
   function setModel(model: string) { if (state.settings.model === String(model || '')) return; state.settings.model = String(model || ''); savePreferences({ model: state.settings.model }) }
-  function setProvider(provider: 'local' | 'api') { state.settings.provider = provider === 'api' ? 'api' : 'local'; savePreferences({ provider: state.settings.provider }) }
+  function setProvider(provider: ChatProvider) {
+    state.settings.provider = provider
+    savePreferences({ provider })
+  }
   function setWebSearchEnabled(value: boolean) { state.settings.webSearchEnabled = Boolean(value); savePreferences({ webSearchEnabled: state.settings.webSearchEnabled }) }
   function setLive2dEnabled(value: boolean) { state.settings.live2dEnabled = Boolean(value); savePreferences({ live2dEnabled: state.settings.live2dEnabled }) }
   function live2dOutfit(char = state.active) {

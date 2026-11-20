@@ -97,7 +97,7 @@ pub(super) fn history(
 }
 impl Catalog {
     pub fn apply(&mut self, changes: &[Change], preview: bool) -> Result<Value> {
-        self.apply_with_seeds(changes, preview, &[], &[])
+        self.apply_with_seeds(changes, preview, &[], &[], &[])
     }
     pub(super) fn apply_with_seeds(
         &mut self,
@@ -105,6 +105,7 @@ impl Catalog {
         preview: bool,
         seeds: &[(Record, bool)],
         preserved: &[(Record, bool)],
+        newer_records: &[(Record, bool)],
     ) -> Result<Value> {
         if (changes.is_empty() && seeds.is_empty()) || changes.len() > 10000 {
             return Err(ApiError::invalid("变更集不能为空且不能超过 10000 条"));
@@ -126,7 +127,7 @@ impl Catalog {
             .collect::<std::collections::HashMap<_, _>>();
         for change in changes {
             if change.kind == "document"
-                && !["tags", "curation", "tag-dictionary-policy"].contains(&change.id.as_str())
+                && !validation::editable_document(&change.id)
                 && !seed_index
                     .get(&(change.kind.as_str(), change.id.as_str()))
                     .is_some_and(|r| change.data.as_ref() == Some(&r.data))
@@ -145,6 +146,7 @@ impl Catalog {
         );
         let preserved_keys: HashSet<_> = preserved
             .iter()
+            .chain(newer_records)
             .map(|(record, _)| (record.kind.as_str(), record.id.as_str()))
             .collect();
         if let Some(change) = changes
@@ -173,7 +175,7 @@ impl Catalog {
         ))?;
         // The planning read and this write transaction are separate. Protect
         // preserved rows with the same optimistic concurrency boundary as edits.
-        for (expected, expected_removed) in preserved {
+        for (expected, expected_removed) in preserved.iter().chain(newer_records) {
             let current = current_query
                 .query_row(params![expected.kind, expected.id], |row_| {
                     Ok((row(row_)?, row_.get::<_, bool>(7)?))
@@ -268,7 +270,7 @@ impl Catalog {
             }
             if !change.remove
                 && !(change.kind == "document"
-                    && !["tags", "curation", "tag-dictionary-policy"].contains(&change.id.as_str()))
+                    && !validation::editable_document(&change.id))
             {
                 validation::data(&change.kind, &change.id, value)?;
             }

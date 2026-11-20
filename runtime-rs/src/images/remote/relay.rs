@@ -1,7 +1,7 @@
 //! Outbound-only Muse connector. The relay can invoke drawing and QQ operations on the
 //! dedicated loopback listener. The connector supplies its local credentials only there.
 use futures_util::StreamExt;
-use reqwest::{Client, Method, Response, Url};
+use reqwest::{Client, Method, RequestBuilder, Response, Url};
 use serde::Deserialize;
 use serde_json::Value;
 use sha2::{Digest, Sha256};
@@ -44,6 +44,18 @@ struct Command {
     body: Option<Value>,
     #[serde(default)]
     parallel: bool,
+    #[serde(rename = "inboxWaitSeconds")]
+    inbox_wait_seconds: Option<u8>,
+}
+
+impl Command {
+    fn inbox(&self) -> bool {
+        self.method == "GET"
+            && matches!(
+                self.path.as_str(),
+                "/api/muse/desktop/inbox" | "/api/muse/qq/inbox"
+            )
+    }
 }
 
 const MAX_REPLY: usize = 2 * 1024 * 1024;
@@ -60,10 +72,20 @@ pub(super) fn qq_route(method: &Method, path: &str) -> bool {
     qq_message(method, path)
         || (*method == Method::GET && matches!(path, "/api/muse/qq/inbox" | "/api/muse/qq/targets"))
         || (*method == Method::GET
-            && path.strip_prefix("/api/muse/qq/context/").is_some_and(|id| {
-                id.len() == 64 && id.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
-            }))
+            && path
+                .strip_prefix("/api/muse/qq/context/")
+                .is_some_and(|id| {
+                    id.len() == 64
+                        && id
+                            .bytes()
+                            .all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+                }))
         || (*method == Method::POST && path == "/api/muse/qq/search")
+}
+
+pub(super) fn desktop_chat_route(method: &Method, path: &str) -> bool {
+    (*method == Method::GET && path == "/api/muse/desktop/inbox")
+        || (*method == Method::POST && path == "/api/muse/desktop/reply")
 }
 
 fn allowed(method: &Method, path: &str) -> bool {
@@ -71,7 +93,7 @@ fn allowed(method: &Method, path: &str) -> bool {
     {
         return false;
     }
-    if qq_route(method, path) {
+    if qq_route(method, path) || desktop_chat_route(method, path) {
         return true;
     }
     let route = path.split('?').next().unwrap_or("");
@@ -152,6 +174,43 @@ struct Bridge {
     port: u16,
     key: String,
 }
+
+fn network_failure(error: reqwest::Error) -> String {
+    if let Some(status) = error.status() {
+        format!("HTTP {}", status.as_u16())
+    } else if error.is_timeout() {
+        "请求超时".into()
+    } else if error.is_connect() {
+        "连接建立失败".into()
+    } else {
+        "传输中断".into()
+    }
+}
+
+// Retry only the buffered receipt addressed to the same relay ticket. The local
+// QQ send or drawing submission which produced it must run exactly once here.
+async fn send_receipt(request: RequestBuilder) -> Result<(), String> {
+    let retry = request.try_clone();
+    let response = request.send().await.and_then(Response::error_for_status);
+    if let Err(error) = response {
+        let transient = match error.status() {
+            Some(status) => matches!(status.as_u16(), 408 | 502 | 503 | 504),
+            None => !error.is_builder(),
+        };
+        if transient && let Some(retry) = retry {
+            tokio::time::sleep(Duration::from_millis(250)).await;
+            retry
+                .send()
+                .await
+                .and_then(Response::error_for_status)
+                .map_err(|error| format!("回执重送失败：{}", network_failure(error)))?;
+        } else {
+            return Err(format!("回执失败：{}", network_failure(error)));
+        }
+    }
+    Ok(())
+}
+
 impl Bridge {
     async fn upload_window(
         &self,
@@ -203,20 +262,24 @@ impl Bridge {
         .await?;
         Ok(())
     }
-    async fn once(self: &Arc<Self>, qq_tasks: &mut JoinSet<()>) -> Result<(), ()> {
+    async fn once(
+        self: &Arc<Self>,
+        chat_tasks: &mut JoinSet<()>,
+        inbox_tasks: &mut JoinSet<()>,
+    ) -> Result<(), String> {
         let request = self
             .cloud
-            .post(self.base.join("_agent/next").map_err(|_| ())?)
+            .post(self.base.join("_agent/next").map_err(|_| "取信地址无效")?)
             .header("X-Muse-Part-Count", "16")
             .header("X-Muse-Parallel", "1")
             .bearer_auth(&self.agent_token)
             .send()
             .await
-            .map_err(|_| ())?;
+            .map_err(network_failure)?;
         if request.status() == reqwest::StatusCode::NO_CONTENT {
             return Ok(());
         }
-        let request = request.error_for_status().map_err(|_| ())?;
+        let request = request.error_for_status().map_err(network_failure)?;
         let qq_media = request
             .headers()
             .get("x-muse-qq-media")
@@ -226,12 +289,14 @@ impl Bridge {
         } else {
             MAX_COMMAND
         };
-        let cmd: Command =
-            serde_json::from_slice(&bounded(request, limit).await?).map_err(|_| ())?;
-        let ticket = uuid::Uuid::parse_str(&cmd.ticket).map_err(|_| ())?;
-        let method = Method::from_bytes(cmd.method.as_bytes()).map_err(|_| ())?;
+        let bytes = bounded(request, limit)
+            .await
+            .map_err(|_| "取信响应中断或超过大小上限")?;
+        let mut cmd: Command = serde_json::from_slice(&bytes).map_err(|_| "取信响应格式无效")?;
+        let ticket = uuid::Uuid::parse_str(&cmd.ticket).map_err(|_| "取信票据无效")?;
+        let method = Method::from_bytes(cmd.method.as_bytes()).map_err(|_| "取信操作无效")?;
         if !allowed(&method, &cmd.path) || (qq_media && !qq_message(&method, &cmd.path)) {
-            return Err(());
+            return Err("中转操作不在网关允许范围内".into());
         }
         if method == Method::POST
             && !cmd
@@ -246,20 +311,39 @@ impl Bridge {
                             .all(|c| c.is_ascii_alphanumeric() || b"_-".contains(&c))
                 })
         {
-            return Err(());
+            return Err("中转操作缺少有效的请求编号".into());
         }
-        if qq_route(&method, &cmd.path) && qq_tasks.len() < 4 {
-            // Keep polling while a search or QQ upload awaits its external service.
+        let inbox = cmd.inbox();
+        while inbox_tasks.try_join_next().is_some() {}
+        while chat_tasks.try_join_next().is_some() {}
+        if inbox && inbox_tasks.len() >= 4 {
+            // Extra readers get a snapshot so the command pump can accept replies.
+            cmd.inbox_wait_seconds = Some(0);
+            return self.forward(cmd, ticket, method).await;
+        }
+        if inbox
+            || ((qq_route(&method, &cmd.path) || desktop_chat_route(&method, &cmd.path))
+                && chat_tasks.len() < 4)
+        {
+            // Waiting for an inbox must leave room for replies, searches and QQ uploads.
+            let tasks = if inbox { inbox_tasks } else { chat_tasks };
             let bridge = self.clone();
-            qq_tasks.spawn(async move {
-                let _ = bridge.forward(cmd, ticket, method).await;
+            tasks.spawn(async move {
+                if let Err(reason) = bridge.forward(cmd, ticket, method).await {
+                    eprintln!("Muse 中转聊天转发失败：{reason}");
+                }
             });
             return Ok(());
         }
         self.forward(cmd, ticket, method).await
     }
 
-    async fn forward(&self, cmd: Command, ticket: uuid::Uuid, method: Method) -> Result<(), ()> {
+    async fn forward(
+        &self,
+        cmd: Command,
+        ticket: uuid::Uuid,
+        method: Method,
+    ) -> Result<(), String> {
         let message = qq_message(&method, &cmd.path);
         let search = cmd.path == "/api/muse/qq/search";
         let mut upstream = self
@@ -270,6 +354,14 @@ impl Bridge {
             )
             .header("X-Token", &self.key)
             .header("Accept-Encoding", "identity");
+        if cmd.inbox()
+            && let Some(wait) = cmd.inbox_wait_seconds
+        {
+            let wait = wait.min(crate::chat::muse::MAX_INBOX_WAIT_SECONDS);
+            upstream = upstream
+                .header("Prefer", format!("wait={wait}"))
+                .timeout(Duration::from_secs(u64::from(wait) + 10));
+        }
         if message {
             // A picture needs separate QQ upload and delivery receipts.
             upstream = upstream.timeout(Duration::from_secs(85));
@@ -284,7 +376,7 @@ impl Bridge {
             .post(
                 self.base
                     .join(&format!("_agent/reply/{ticket}"))
-                    .map_err(|_| ())?,
+                    .map_err(|_| "中转回执地址无效")?,
             )
             .bearer_auth(&self.agent_token);
         let mut payload = None;
@@ -302,14 +394,7 @@ impl Bridge {
                     } else {
                         503
                     };
-                    reply
-                        .header("X-Upstream-Status", status)
-                        .send()
-                        .await
-                        .map_err(|_| ())?
-                        .error_for_status()
-                        .map_err(|_| ())?;
-                    return Ok(());
+                    return send_receipt(reply.header("X-Upstream-Status", status)).await;
                 }
                 for name in [
                     "content-type",
@@ -327,15 +412,7 @@ impl Bridge {
             }
         }
         let (status, bytes) = payload.unwrap_or_else(|| (503, br#"{"ok":false,"code":"MUSE_LOCAL_UNAVAILABLE","message":"Retry the same request or use a smaller catalog page."}"#.to_vec()));
-        reply
-            .header("X-Upstream-Status", status)
-            .body(bytes)
-            .send()
-            .await
-            .map_err(|_| ())?
-            .error_for_status()
-            .map_err(|_| ())?;
-        Ok(())
+        send_receipt(reply.header("X-Upstream-Status", status).body(bytes)).await
     }
 }
 
@@ -389,13 +466,28 @@ pub(super) async fn run(
     });
     let poll = async {
         let mut retry = 1;
-        let mut qq_tasks = JoinSet::new();
+        let mut failed_since: Option<tokio::time::Instant> = None;
+        let mut chat_tasks = JoinSet::new();
+        let mut inbox_tasks = JoinSet::new();
         loop {
-            while qq_tasks.try_join_next().is_some() {}
-            tokio::select! { biased; _ = shutdown.cancelled() => break, result = bridge.once(&mut qq_tasks) => {
-                if result.is_ok() { retry = 1; continue; }
-                if retry == 1 { eprintln!("Muse 中转暂未连通，正在自动重连"); }
-            } }
+            let result = tokio::select! { biased;
+                _ = shutdown.cancelled() => break,
+                result = bridge.once(&mut chat_tasks, &mut inbox_tasks) => result,
+            };
+            match result {
+                Ok(()) => {
+                    if let Some(start) = failed_since.take() {
+                        eprintln!("Muse 中转已恢复，距首次失败 {} 秒", start.elapsed().as_secs());
+                    }
+                    retry = 1;
+                    continue;
+                }
+                Err(reason) if failed_since.is_none() => {
+                    failed_since = Some(tokio::time::Instant::now());
+                    eprintln!("Muse 中转暂未连通：{reason}，正在自动重连");
+                }
+                Err(_) => {}
+            }
             tokio::select! { _ = shutdown.cancelled() => break, _ = tokio::time::sleep(Duration::from_secs(retry)) => {} }
             retry = (retry * 2).min(30);
         }

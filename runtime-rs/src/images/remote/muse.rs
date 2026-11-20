@@ -394,9 +394,13 @@ impl RecipeLibrary {
             recipe.moss
         };
         payload["modelId"] = json!(model);
-        if let Some((width, height)) = submission::dimensions(scene.width, scene.height)? {
+        submission::apply_upscale(&mut payload, family, scene.upscale)?;
+        let size = submission::dimensions(scene.width, scene.height)?;
+        if let Some((width, height)) = size {
             payload["width"] = json!(width);
             payload["height"] = json!(height);
+        }
+        if size.is_some() || scene.upscale.is_some() {
             submission::validate_payload(&payload, family)?;
         }
         Ok(PreparedScene {

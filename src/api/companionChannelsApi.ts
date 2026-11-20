@@ -2,6 +2,7 @@ import { apiClient, type ApiResponseObject } from './client'
 
 export type ChannelCharacter = 'nene' | 'natsume'
 export type ChannelPhase = 'disabled' | 'connecting' | 'online' | 'error'
+export const qqMuseContextLimits = [6, 16, 32, 64] as const
 
 export interface QqGroup { id: string; label: string }
 
@@ -15,6 +16,7 @@ export interface QqChannelStatus {
   groupMuse?: boolean
   privateMuse?: boolean
   groupMuseAll?: boolean
+  museContextLimit?: number
   museProactive?: boolean
   groupMuseStatus?: 'remoteDisabled' | 'waiting' | 'receiving' | 'vmConfigured' | 'vmUnavailable' | 'vmConfigError' | null
   groups: QqGroup[]
@@ -37,6 +39,7 @@ export interface QqChannelSettings {
   groupMuse?: boolean
   privateMuse?: boolean
   groupMuseAll?: boolean
+  museContextLimit?: number
   museProactive?: boolean
 }
 
@@ -46,6 +49,7 @@ function validate(value: ApiResponseObject): boolean {
     && typeof value.drawing === 'boolean' && typeof value.paired === 'boolean' && typeof value.groupDrawing === 'boolean'
     && [value.groupMuse, value.privateMuse, value.groupMuseAll, value.museProactive]
       .every(flag => flag === undefined || typeof flag === 'boolean')
+    && (value.museContextLimit === undefined || qqMuseContextLimits.some(limit => limit === value.museContextLimit))
     && (value.groupMuseStatus == null || ['remoteDisabled', 'waiting', 'receiving', 'vmConfigured', 'vmUnavailable', 'vmConfigError'].includes(String(value.groupMuseStatus)))
     && Array.isArray(value.groups) && value.groups.every(group => group && typeof group.id === 'string' && typeof group.label === 'string')
     && (value.character === 'nene' || value.character === 'natsume')

@@ -13,6 +13,7 @@ pub(super) struct Batch {
     seed: Option<u64>,
     width: Option<u64>,
     height: Option<u64>,
+    upscale: Option<submission::Upscale>,
     #[serde(default, alias = "items")]
     scenes: Vec<SceneSelection>,
     #[serde(default)]
@@ -35,6 +36,7 @@ impl Batch {
         for scene in &mut self.scenes {
             scene.variants = scene.variants.or(self.variants);
             scene.seed = scene.seed.or(self.seed);
+            scene.upscale = scene.upscale.or(self.upscale);
             if scene.width.is_none()
                 && scene.height.is_none()
                 && let Some((width, height)) = default_size
@@ -98,7 +100,7 @@ pub(super) async fn enqueue(
                 params![store.owner, batch], |r| r.get::<_, String>(0)).optional()? {
                 None => Ok(false),
                 Some(value) if value == fingerprint => Ok(true),
-                Some(_) => Err(ApiError::new(409, "MUSE_BATCH_CONFLICT", "此编号已用于其他出图参数；更改场景、尺寸或种子后请换一个 requestKey")),
+                Some(_) => Err(ApiError::new(409, "MUSE_BATCH_CONFLICT", "此编号已用于其他出图参数；修改参数后请换一个 requestKey")),
             }
         };
         if existing(db)? { return Ok(None); }
@@ -109,6 +111,17 @@ pub(super) async fn enqueue(
             }
             if receipt.job_id.is_some() || receipt.cancel_requested || !receipt.error.as_ref().is_some_and(|error| error.status == 429) {
                 return Ok(Some(receipt));
+            }
+        }
+        let upscalers = &settings.models_root;
+        for (name, installed) in [
+            ("4x-UltraSharp", generation::native::resources::ultrasharp(upscalers)),
+            ("Remacri", generation::native::resources::remacri(upscalers)),
+        ] {
+            if installed.is_none() && prepared.iter().any(|scene| {
+                scene.payload["hiresFix"] == true && scene.payload["hiresUpscaler"] == name
+            }) {
+                return Err(ApiError::new(409, "NATIVE_UPSCALER_UNAVAILABLE", format!("出图机尚未安装 {name}，请先在控制室准备权重")));
             }
         }
         let tx = db.transaction_with_behavior(rusqlite::TransactionBehavior::Immediate)?;

@@ -13,6 +13,35 @@ fn scene_row(row: &rusqlite::Row<'_>) -> rusqlite::Result<Value> {
     Ok(data)
 }
 impl Catalog {
+    pub(crate) fn chat_cards(&self) -> Result<Vec<Value>> {
+        let mut query = self.connection.prepare(
+            "SELECT json_object(
+                 'id', card.value->>'$.id', 'catalogId', c.id,
+                 'name', card.value->>'$.document.data.name',
+                 'description', substr(card.value->>'$.document.data.description',1,160),
+                 'greeting', card.value->>'$.document.data.first_mes', 'avatarUrl', '')
+             FROM content_records d, json_each(d.payload) card
+             JOIN content_records c ON c.kind='character' AND c.id=card.key AND c.deleted=0
+             WHERE d.kind='document' AND d.id='chat-cards' AND d.deleted=0 ORDER BY c.sort_order,c.id",
+        )?;
+        Ok(query
+            .query_map([], |row| json_column(row, 0))?
+            .collect::<rusqlite::Result<Vec<_>>>()?)
+    }
+
+    pub(crate) fn chat_card_document(&self, card_id: &str) -> Result<Option<String>> {
+        Ok(self
+            .connection
+            .query_row(
+                "SELECT card.value->'$.document' FROM content_records d, json_each(d.payload) card
+                 JOIN content_records c ON c.kind='character' AND c.id=card.key AND c.deleted=0
+                 WHERE d.kind='document' AND d.id='chat-cards' AND d.deleted=0 AND card.value->>'$.id'=?1",
+                [card_id],
+                |row| row.get(0),
+            )
+            .optional()?)
+    }
+
     fn blueprint_rows(&self, id: &str) -> Result<Vec<Value>> {
         let mut statement = self.connection.prepare("SELECT payload FROM content_records WHERE kind='blueprint' AND character_id=?1 AND deleted=0 ORDER BY sort_order,id")?;
         Ok(statement

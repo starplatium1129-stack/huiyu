@@ -235,5 +235,21 @@ pub fn validate(body: &Value, family: &str) -> Result<Value> {
         }
     }
     composition::copy_input(body, &mut normalized)?;
+    if let Some(hires_only) = body.get("hiresOnly") {
+        let enabled = hires_only.as_bool().ok_or_else(|| error("INVALID_PARAMETER", "hiresOnly 必须为布尔值"))?;
+        if enabled {
+            if krea
+                || !hires
+                || !matches!(normalized["hiresUpscaler"].as_str(), Some("4x-UltraSharp" | "Remacri"))
+                || !normalized["initImage"].is_string()
+                || normalized["maskImage"].is_string()
+                || normalized["maskPrompt"].is_string()
+                || composition::requested(&normalized)
+            {
+                return Err(error("INVALID_PARAMETER", "成片放大需要一张原图和 UltraSharp 或 Remacri"));
+            }
+            normalized["hiresOnly"] = json!(true);
+        }
+    }
     Ok(normalized)
 }

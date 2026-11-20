@@ -34,11 +34,9 @@ impl ChatService {
                 .await
                 .map(validation::ApiSource::Personal);
             let tools = drawing && api.is_some();
-            let mut system = persona::build(character, &Value::Null, None)?;
-            system.push_str(if in_group { "\n当前在 QQ 群聊里，群成员可能轮流发言，回复会被全群看到。接收的是群友主动 @ 你的消息。" } else { "\n当前在手机私聊里。" });
-            system.push_str("简短自然地回复。只有用户明确要求实际作图才调用绘图工具，讨论构图和提示词时直接聊天。用户如果要取图或停止，可以发 /取图 或 /取消。若没有绘图工具，不要假装已经出图。");
-            let mut context = vec![json!({"role":"system","content":system})];
-            context.extend_from_slice(messages);
+            let mut prompt = persona::build(character, &Value::Null, None, None)?;
+            prompt.system.push_str(if in_group { "\n当前在 QQ 群聊里，群成员可能轮流发言，回复会被全群看到。接收的是群友主动 @ 你的消息。以群聊为当前场景。" } else { "\n当前在手机私聊里。" });
+            prompt.system.push_str("简短自然地回复。只有用户明确要求实际作图才调用绘图工具，讨论构图和提示词时直接聊天。用户如果要取图或停止，可以发 /取图 或 /取消。若没有绘图工具，不要假装已经出图。");
             let input = validation::Input {
                 model: String::new(),
                 session_id: session_id.into(),
@@ -46,9 +44,10 @@ impl ChatService {
                 tool_result_origin: None,
                 tools,
                 channel_tools: true,
+                card_tools: false,
                 web_search: false,
                 reasoning: "off".into(),
-                messages: context,
+                messages: prompt.messages(messages.to_vec()),
             };
             let prepared = if input.api.is_some() {
                 compatible::prepare(

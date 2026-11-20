@@ -19,6 +19,8 @@ pub(super) struct SceneSelection {
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) height: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) upscale: Option<Upscale>,
+    #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) steps: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) cfg: Option<f64>,
@@ -30,6 +32,39 @@ pub(super) struct SceneSelection {
     pub(super) lora_strength: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) style_lora_id: Option<String>,
+}
+
+#[derive(Clone, Copy, serde::Deserialize, serde::Serialize)]
+#[serde(rename_all = "lowercase")]
+pub(super) enum Upscale {
+    Off,
+    UltraSharp,
+    Remacri,
+}
+
+pub(super) fn apply_upscale(payload: &mut Value, family: &str, upscale: Option<Upscale>) -> Result<()> {
+    let Some(upscale) = upscale else { return Ok(()) };
+    let name = match upscale {
+        Upscale::Off => {
+            if family == "anima" {
+                payload["hiresFix"] = json!(false);
+            }
+            return Ok(());
+        }
+        Upscale::UltraSharp => "4x-UltraSharp",
+        Upscale::Remacri => "Remacri",
+    };
+    if family != "anima" {
+        return Err(ApiError::invalid("UltraSharp 和 Remacri 随出图放大仅适用于 Anima"));
+    }
+    payload["hiresFix"] = json!(true);
+    payload["hiresUpscaler"] = json!(name);
+    payload["hiresScale"] = json!(1.5);
+    // The native Anima backend uses Euler/Normal with shift 3 for UltraSharp.
+    payload["hiresDenoise"] = json!(0.8);
+    payload["hiresSteps"] = json!(10);
+    payload["hiresCfg"] = json!(5.5);
+    Ok(())
 }
 
 impl SceneSelection {
@@ -129,6 +164,7 @@ pub(super) fn custom(
             .ok_or_else(|| ApiError::invalid("此模型需要显式指定 width 和 height"))?,
     };
     let mut payload = json!({"modelId":model,"prompt":input.prompt,"width":width,"height":height});
+    apply_upscale(&mut payload, family, input.upscale)?;
     if let Some(value) = input.negative {
         payload["negative"] = json!(value);
     }

@@ -7,7 +7,7 @@
  * 全库场景样张待审核候选生成（MiaoMiao Harem v1.6 专属正规编译版）：
  *
  * 核心特性：
- * - 提示词编译：通过 compilePromptRecipe 解析角色、当前衣装、场景和 @rella 画风
+ * - 提示词编译：热门角色的场景蓝图使用无画师配方
  * - 专属女主角：宁宁/夏目单人场景绑定官方 v21 LoRA (0.85 强度)
  * - 底模：MiaoMiao Harem Anima v1.6 (anima-miaomiao-v1.6)
  * - 极速画幅：832x1216 (竖版) / 1216x832 (横版)
@@ -74,7 +74,7 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
           blueprint: bp,
           engine: 'anima',
           profile,
-          artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
+          style: null,
           manual: promptPolicy.tokenize(guards.prompt),
         });
 

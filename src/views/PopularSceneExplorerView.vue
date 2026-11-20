@@ -87,7 +87,7 @@
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="visibleSampleRating(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + visibleSampleRating(blueprint)">{{ visibleSampleRating(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
             <div class="pop-meta"><span>{{ blueprintContext(blueprint).text }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
-            <footer class="pop-card-actions">
+            <footer>
               <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
             </footer>
             <details class="pop-scene-details" :open="openDetails.has(blueprint.id)" @toggle="setDetailsOpen(blueprint.id, $event)">
