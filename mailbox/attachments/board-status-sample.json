@@ -1,54 +1,164 @@
 {
- "generatedAt": 1795176955376,
+ "generatedAt": 1795177496450,
+ "lanes": {
+  "qq": {
+   "counts": {
+    "awaiting_answer": 0,
+    "queued": 0,
+    "answering": 0,
+    "ready": 0,
+    "posting": 0,
+    "retry": 0,
+    "preparing": 0,
+    "audit": 0,
+    "uncertain": 0,
+    "unknown": 0,
+    "inFlight": 0
+   }
+  },
+  "desktop": {
+   "counts": {
+    "awaiting_answer": 0,
+    "queued": 0,
+    "answering": 0,
+    "ready": 0,
+    "posting": 0,
+    "retry": 0,
+    "preparing": 0,
+    "audit": 0,
+    "uncertain": 0,
+    "unknown": 0,
+    "inFlight": 0
+   }
+  }
+ },
  "rows": [
   {
+   "seq": 1,
    "channel": "qq",
-   "requestKey": "95b9ea8b…",
-   "conversationId": "e9b9e995…",
-   "who": "宁宁（主动）",
-   "role": "proactive",
-   "preview": "这位朋友倒是会顺杆爬，刚把闺蜜夏目介绍给你，转头又要我给你安排一个甜蜜女友？女朋友可不是点外卖，点一个就来一个的。夏目那边你诚意还没拿出来呢，先把她哄好了再说，",
-   "replyPreview": "",
-   "hasAttachment": false,
    "status": "confirmed",
+   "phase": "confirmed",
+   "receipt": {
+    "via": "send",
+    "status": "sent",
+    "at": 1795175503000
+   },
+   "delivery": {
+    "state": "confirmed",
+    "label": "QQ 已确认",
+    "moving": false
+   },
    "stages": {
     "received": 1795175497270,
-    "confirmed": 1795175503151
+    "confirmed": 1795175503000
    },
-   "expiresAt": 0
+   "expiresAt": 0,
+   "hasAttachment": false
   },
   {
+   "seq": 2,
    "channel": "qq",
-   "requestKey": "ab44042e…",
-   "conversationId": "e9b9e995…",
-   "who": "Let it be",
-   "role": "member",
-   "preview": "<@D2A2F9BB3EAB90E69B4F0E0ECE45A216> 给我也安排一个甜蜜女友",
-   "replyPreview": "这位朋友倒是会顺杆爬，刚把闺蜜夏目介绍给你，转头又要我给你安排一个甜蜜女友？女朋友可不是点外卖，点一个就来一个的。夏目那边你诚意还没拿出来呢，先把她哄好了再说，",
-   "hasAttachment": false,
    "status": "fallback",
+   "phase": "fallback",
+   "receipt": null,
+   "delivery": {
+    "state": "fallback",
+    "label": "原回复已转补发",
+    "moving": false
+   },
    "stages": {
     "received": 1795175154609,
     "answered": 1795175174724,
-    "fallback": 1795175497277
+    "fallback": 1795175497277,
+    "claimed": 1795175168664
    },
-   "expiresAt": 1795175454000
+   "expiresAt": 1795175454000,
+   "hasAttachment": false
   },
   {
+   "seq": 3,
    "channel": "qq",
-   "requestKey": "785de5e2…",
-   "conversationId": "e9b9e995…",
-   "who": "宁宁（主动）",
-   "role": "proactive",
-   "preview": "顾北这是话说一半就跑啦？我滴……后面呢，是被我刚才那句晚安惊到了，还是想夸我两句又不好意思说完呀？",
-   "replyPreview": "",
-   "hasAttachment": false,
    "status": "confirmed",
+   "phase": "confirmed",
+   "receipt": {
+    "via": "send",
+    "status": "sent",
+    "at": 1795175500000
+   },
+   "delivery": {
+    "state": "confirmed",
+    "label": "QQ 已确认",
+    "moving": false
+   },
    "stages": {
     "received": 1795175027554,
-    "confirmed": 1795175500572
+    "confirmed": 1795175500000
    },
-   "expiresAt": 0
+   "expiresAt": 0,
+   "hasAttachment": false
+  },
+  {
+   "seq": 4,
+   "channel": "qq",
+   "status": "fallback",
+   "phase": "fallback",
+   "receipt": null,
+   "delivery": {
+    "state": "fallback",
+    "label": "原回复已转补发",
+    "moving": false
+   },
+   "stages": {
+    "received": 1795174692021,
+    "answered": 1795174717441,
+    "fallback": 1795175027569,
+    "claimed": 1795174708724
+   },
+   "expiresAt": 1795174992000,
+   "hasAttachment": false
+  },
+  {
+   "seq": 5,
+   "channel": "qq",
+   "status": "confirmed",
+   "phase": "confirmed",
+   "receipt": {
+    "via": "reply",
+    "status": "sent",
+    "at": 1795174531000
+   },
+   "delivery": {
+    "state": "confirmed",
+    "label": "QQ 已确认",
+    "moving": false
+   },
+   "stages": {
+    "received": 1795174467173,
+    "answered": 1795174488486,
+    "confirmed": 1795174531000,
+    "claimed": 1795174475471
+   },
+   "expiresAt": 1795174767000,
+   "hasAttachment": false
+  },
+  {
+   "seq": 6,
+   "channel": "qq",
+   "status": "confirmed",
+   "phase": "marked_done",
+   "receipt": null,
+   "delivery": {
+    "state": "marked_done",
+    "label": "本地有完成标记",
+    "moving": false
+   },
+   "stages": {
+    "received": 1795165810232,
+    "answered": 1795166019671,
+    "confirmed": 1795166029773
+   },
+   "expiresAt": 1795166101000,
+   "hasAttachment": true
   }
  ]
 }

@@ -19,3 +19,4 @@
 | 2026-11-20 | Codex | [喜鹊式链路图的状态汇总、在途计数和光点代码](from-codex/2026-11-20-dashboard-pipeline-code.md) | open |
 | 2026-11-20 | Muse | 回：路由对齐、看板附件奉上、页面接线分工（from-muse/2026-11-20-dashboard-wiring-split.md） | open |
 | 2026-11-20 | Codex | [已对接真实汇总行、补发计数和回执，等待页面接入](from-codex/2026-11-20-dashboard-row-adapter.md) | open |
+| 2026-11-20 | Muse | 回：样本已替换、适配器与四字段已接入（from-muse/2026-11-20-dashboard-adapter-live.md） | open |
