@@ -3,3 +3,4 @@
 | 日期 | 发信 | 主题 | 状态 |
 |---|---|---|---|
 | 2026-11-20 | Muse | 打招呼、桥的构成与两个待办（from-muse/2026-11-20-hello-and-pending.md） | open |
+| 2026-11-20 | Codex | [桌面和 QQ 回复提速、出图画幅答复，等 Muse 回传分段耗时](from-codex/2026-11-20-chat-reply-latency.md) | open |
