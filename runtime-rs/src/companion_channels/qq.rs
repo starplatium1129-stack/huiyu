@@ -1,4 +1,5 @@
 mod gateway;
+mod members;
 pub(super) mod muse;
 
 use super::{
@@ -27,11 +28,13 @@ struct Message {
     target: String,
     member: String,
     nickname: Option<String>,
+    group_role: Option<&'static str>,
     scope: QqScope,
     to_muse: bool,
     ambient: bool,
     sent_at: Option<u64>,
     received_at: u64,
+    arrived_at: Instant,
     text: String,
     images: Vec<Value>,
 }
@@ -46,13 +49,13 @@ struct Inboxes {
 }
 
 impl Inboxes {
-    fn for_message(&self, message: &Message) -> &mpsc::Sender<Message> {
+    fn for_message(&self, message: &Message) -> (&mpsc::Sender<Message>, &'static str) {
         match message.scope {
             // The private worker checks its current owner before forwarding to Muse,
             // including immediately after a successful pairing in the same session.
-            QqScope::Private => &self.direct,
-            QqScope::Group if message.to_muse => &self.muse,
-            QqScope::Group => &self.groups,
+            QqScope::Private => (&self.direct, "private"),
+            QqScope::Group if message.to_muse => (&self.muse, "muse"),
+            QqScope::Group => (&self.groups, "local-group"),
         }
     }
 }
@@ -102,26 +105,33 @@ impl Message {
         }
     }
 
-    fn parse(event: &Value, bot_id: Option<&str>, inboxes: &Inboxes) -> Option<Self> {
-        let data = &event["d"];
+    fn parse(
+        kind: &str,
+        data: &Value,
+        bot_id: Option<&str>,
+        inboxes: &Inboxes,
+    ) -> std::result::Result<Self, &'static str> {
         if data["author"]["bot"] == true {
-            return None;
+            return Err("bot-author");
         }
-        let kind = event["t"].as_str()?;
         let author = &data["author"];
         let (scope, target, member) = match kind {
             "C2C_MESSAGE_CREATE" => {
-                let peer = open_id(&author["user_openid"]).or_else(|| open_id(&author["id"]))?;
+                let peer = open_id(&author["user_openid"])
+                    .or_else(|| open_id(&author["id"]))
+                    .ok_or("invalid-sender")?;
                 (QqScope::Private, peer, peer)
             }
             "GROUP_AT_MESSAGE_CREATE" | "GROUP_MESSAGE_CREATE" => (
                 QqScope::Group,
-                open_id(&data["group_openid"])?,
-                open_id(&author["member_openid"]).or_else(|| open_id(&author["id"]))?,
+                open_id(&data["group_openid"]).ok_or("invalid-group")?,
+                open_id(&author["member_openid"])
+                    .or_else(|| open_id(&author["id"]))
+                    .ok_or("invalid-sender")?,
             ),
-            _ => return None,
+            _ => return Err("unsupported-event"),
         };
-        let id = data["id"].as_str()?.trim();
+        let id = event_message_id(data).ok_or("invalid-message-id")?;
         let enabled = match scope {
             QqScope::Private => inboxes.private_muse,
             QqScope::Group => inboxes.group_muse,
@@ -137,10 +147,9 @@ impl Message {
         } else {
             (Cow::Borrowed(text), false)
         };
-        let text = content.trim();
         let ambient = kind == "GROUP_MESSAGE_CREATE" && !mentioned;
         if ambient && !(inboxes.group_muse && inboxes.group_muse_all) {
-            return None;
+            return Err("ambient-disabled");
         }
         let now = crate::host::now_ms();
         let sent_at = data["timestamp"]
@@ -158,27 +167,32 @@ impl Message {
                 })
             });
         let received_at = sent_at.unwrap_or(now).min(now);
+        if now.saturating_sub(received_at) >= scope.reply_window_ms() {
+            return Err("reply-window-expired");
+        }
+        let attachments = &data["attachments"];
         let images = if enabled {
-            incoming_images(&data["attachments"])
+            incoming_images(attachments)
         } else {
             Vec::new()
         };
-        if id.is_empty()
-            || id.len() > 512
-            || (text.is_empty() && images.is_empty())
-            || now.saturating_sub(received_at) >= scope.reply_window_ms()
-        {
-            return None;
-        }
+        let no_attachments =
+            attachments.is_null() || attachments.as_array().is_some_and(Vec::is_empty);
+        let text = match content.trim() {
+            "" if enabled && mentioned && no_attachments => "@了你。",
+            "" if images.is_empty() => return Err("empty-or-unsupported-content"),
+            text => text,
+        };
         let question = Self::muse_question(text, enabled);
         if ambient && question.is_none() {
             // Unaddressed group commands must never pair a group or control a drawing.
-            return None;
+            return Err("ambient-command");
         }
-        Some(Self {
+        Ok(Self {
             id: id.into(),
             target: target.into(),
             member: member.into(),
+            group_role: members::role(&author["member_role"]),
             nickname: [
                 &author["member_nickname"],
                 &data["member"]["nick"],
@@ -205,6 +219,7 @@ impl Message {
                 .unwrap_or_else(|| text.chars().take(1600).collect()),
             images,
             received_at,
+            arrived_at: Instant::now(),
         })
     }
 
@@ -269,15 +284,16 @@ fn group_text<'a>(
     bot_id: Option<&str>,
     at_event: bool,
 ) -> (Cow<'a, str>, bool) {
-    let own = mentions.as_array().into_iter().flatten().find(|mention| {
+    let mentions = mentions.as_array();
+    let own = mentions.into_iter().flatten().find(|mention| {
         mention["is_you"] == true
             || bot_id.is_some_and(|id| {
                 mention["member_openid"].as_str() == Some(id) || mention["id"].as_str() == Some(id)
             })
     });
     let mut content = Cow::Borrowed(text);
-    let mentioned = at_event || own.is_some();
-    if mentioned && text.contains("<@") {
+    let mut mentioned = at_event || own.is_some();
+    if text.contains("<@") && (mentioned || mentions.is_none_or(Vec::is_empty)) {
         for id in [
             own.and_then(|mention| open_id(&mention["member_openid"])),
             own.and_then(|mention| open_id(&mention["id"])),
@@ -289,11 +305,29 @@ fn group_text<'a>(
             for token in [format!("<@{id}>"), format!("<@!{id}>")] {
                 if content.contains(&token) {
                     content = Cow::Owned(content.replace(&token, ""));
+                    mentioned = true;
                 }
             }
         }
     }
     (content, mentioned)
+}
+
+fn event_message_id(data: &Value) -> Option<&str> {
+    data["id"]
+        .as_str()
+        .map(str::trim)
+        .filter(|id| !id.is_empty() && id.len() <= 512)
+}
+
+fn message_tag(id: &str) -> String {
+    let mut digest = crate::storage::json_fingerprint(&json!(id));
+    digest.truncate(12);
+    digest
+}
+
+fn muse_sender_id(conversation: &str, member: &str) -> String {
+    crate::storage::json_fingerprint(&json!([conversation, member]))
 }
 
 fn open_id(value: &Value) -> Option<&str> {
@@ -362,7 +396,7 @@ pub(super) async fn run(
             return;
         }
         let mailbox =
-            muse::Mailbox::open(&app.config.runtime_root, &storage, api.clone(), &cancel).await;
+            muse::Mailbox::open(&app, &storage, &principal, &settings, api.clone(), &cancel).await;
         let mailbox = Arc::new(mailbox);
         *app.channels.muse_qq.lock().unwrap() = Some(mailbox.clone());
         poll_server = mailbox.start_listener(&app);
@@ -425,6 +459,9 @@ pub(super) async fn run(
         app.channels.report(&storage, "error", Some(detail));
         if std::mem::take(&mut resume.connected) {
             delay = 1;
+        }
+        if delay == 1 {
+            eprintln!("QQ WebSocket 等待重连：{detail}");
         }
         tokio::select! { _ = cancel.cancelled() => break, _ = tokio::time::sleep(Duration::from_secs(delay)) => {} }
         delay = (delay * 2).min(30);
@@ -666,7 +703,9 @@ async fn deliver(
             return Ok(());
         }
         let (name, bytes) = super::media::read_image(ctx.storage, alias, ctx.cancel).await?;
-        let media = api.image(target, name, &bytes).await?;
+        let media = api
+            .upload_media(target, MediaKind::Image, name, &bytes)
+            .await?;
         api.send(
             target,
             message_id,
@@ -679,7 +718,31 @@ async fn deliver(
     Ok(())
 }
 
+#[derive(Clone, Copy, PartialEq, Eq)]
+enum MediaKind {
+    Image = 1,
+    Audio = 3,
+}
+
+impl MediaKind {
+    fn name(self) -> &'static str {
+        match self {
+            Self::Image => "image",
+            Self::Audio => "audio",
+        }
+    }
+}
+
 impl Api {
+    fn conversation_id(&self, scope: QqScope, id: &str) -> String {
+        // Keep existing group conversation IDs across upgrades.
+        let identity = match scope {
+            QqScope::Group => json!([self.app_id, id]),
+            QqScope::Private => json!([self.app_id, "private", id]),
+        };
+        crate::storage::json_fingerprint(&identity)
+    }
+
     async fn token(&self) -> Result<String> {
         let mut cached = self.token.lock().await;
         if let Some((token, expiry)) = &*cached
@@ -804,9 +867,15 @@ impl Api {
         }
     }
 
-    async fn image(&self, target: Destination<'_>, name: &str, bytes: &[u8]) -> Result<String> {
+    async fn upload_media(
+        &self,
+        target: Destination<'_>,
+        kind: MediaKind,
+        name: &str,
+        bytes: &[u8],
+    ) -> Result<String> {
         let value = self.post(&target.path("files"), json!({
-            "file_type":1,"file_name":name,"file_data":STANDARD.encode(bytes),"srv_send_msg":false,
+            "file_type":kind as u8,"file_name":name,"file_data":STANDARD.encode(bytes),"srv_send_msg":false,
         })).await.map_err(ApiError::not_accepted)?;
         value["file_info"]
             .as_str()
@@ -886,7 +955,7 @@ fn rejected(status: reqwest::StatusCode, code: Option<i64>) -> ApiError {
         (_, Some(850019 | 850031 | 304080)) => (
             422,
             "QQ_MEDIA_INVALID",
-            "QQ 无法使用这份图片，请检查文件格式和大小",
+            "QQ 无法使用这份媒体文件，请检查文件格式和大小",
         ),
         (_, Some(304082 | 304083 | 850026 | 850027 | 40034004 | 40093001)) => (
             502,

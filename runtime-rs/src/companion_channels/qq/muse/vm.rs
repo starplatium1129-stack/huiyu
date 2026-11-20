@@ -83,7 +83,7 @@ impl Endpoint {
 
     pub(super) async fn forward(&self, app: &AppState, mailbox: &Mailbox, entry: &Entry) {
         let work = async {
-            let mut question = entry.vm_question(&self.callback.names);
+            let mut question = entry.vm_question();
             question["callbackOrigin"] = json!(self.callback_url);
             question["operations"] = operations(true);
             let questions_url = format!("{}/qq/questions", self.base);

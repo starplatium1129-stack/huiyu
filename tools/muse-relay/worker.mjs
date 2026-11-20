@@ -23,11 +23,13 @@ const publicGuide = {
   name: '绘遇远程出图（Muse 等 AI 助手）', protocol: 'huiyu-muse', authHeader: 'X-Token',
   guidePath: '/api/muse/guide', drawPath: '/api/muse/jobs', partBytes: PART,
   qq: {
+    senderIdentity: '群内按 senderId 区分发言人，senderNickname 用于称呼，只有 senderRole=owner 才称群主。admin、member、unknown 分别为管理员、普通成员、未核实。',
     inbox: '/api/muse/qq/inbox', reply: '/api/muse/qq/reply', targets: '/api/muse/qq/targets',
     send: '/api/muse/qq/send', search: '/api/muse/qq/search',
-    usage: '定时 GET inbox。用收件项的 requestKey 在 expiresAt 前 POST reply，可传 text、image 或两者。image 是 {mimeType,data}，data 为最多 3 MiB 的 JPEG 或 PNG 原图的标准 base64。QQ 确认后返回 status=sent。',
+    usage: '定时 GET inbox。用收件项的 requestKey 在 expiresAt 前 POST reply，可传 text 和一个附件，也可以只传附件。image 为 JPEG/PNG，audio 为 MP3（audio/mpeg）。两者均使用 {mimeType,data}，data 为原文件的标准 base64，每个原文件最多 3 MiB。QQ 确认后返回 status=sent。',
+    context: 'GET /api/muse/qq/context/{conversationId}。使用 targets 中的群 conversationId，读取最近一小时内最多 64 条已收到的群消息和 Muse 已确认发言。群来信的 recentMessages 附有最近 6 条前文。',
     skip: '机主开启接收普通群消息且群主同意后，Muse 可读到未 @ 自己的对话。无需插话时向 reply 提交 {requestKey,skip:true}，返回 status=skipped。',
-    proactive: '机主开启主动发送后，GET targets 选出已绑定会话的 conversationId。POST send 携带新 UUID 作为 requestKey、该 conversationId 和 text 或 image 中的一项。QQ 平台会检查主动消息权限与额度。重试使用同一编号和原内容。',
+    proactive: '机主开启主动发送后，GET targets 选出已绑定会话的 conversationId。POST send 携带新 UUID 作为 requestKey、该 conversationId 和 text、image 或 audio 中的一项。QQ 平台会检查主动消息权限与额度。重试使用同一编号和原内容。',
     webSearch: 'POST search 提交收件项的 requestKey 和 query。也可以用新 UUID、已开启会话的 conversationId 和 query 发起检索。results 中有公开网页的 title、url 和 snippet，Muse 可据此回复。',
   },
   followup: '用同一 X-Token 跟随每张图的 next。accept 为 application/json 时，按 retryAfterSeconds 等待后读取批次 statusPath。accept 为 image/png 时，自动下载该项的 resultUrl。next 为 null 时查看该项的 status、deliveryStatus 和 error。',
@@ -87,6 +89,7 @@ const decode = bytes => JSON.parse(new TextDecoder().decode(bytes))
 
 function control(method, path) {
   if (path === '/api/muse/qq/inbox' || path === '/api/muse/qq/targets') return method === 'GET'
+  if (/^\/api\/muse\/qq\/context\/[0-9a-f]{64}$/.test(path)) return method === 'GET'
   if (qqMessagePath(path) || path === '/api/muse/qq/search') return method === 'POST'
   if (method === 'POST') return path === '/api/muse/jobs' || path === '/api/muse/batches'
   if (batchRoute.test(path) || directRoute.test(path)) return method === 'GET' || method === 'DELETE'
@@ -177,9 +180,9 @@ export class MuseRelay extends DurableObject {
       const length = request.headers.get('Content-Length')
       if (qqMessagePath(url.pathname) && (length === null || Number(length) > CONTROL_BODY)) {
         if (Number(length) > QQ_MESSAGE_BODY) throw new RangeError()
-        // The command stays in memory until the laptop replies. Bound simultaneous images,
+        // The command stays in memory until the laptop replies. Bound simultaneous attachments,
         // including chunked requests, before reading their bodies.
-        if (this.largeQqMessages >= 2) return problem(429, 'MUSE_QQ_BUSY', '图片正在传送，请稍后用相同编号重试', { 'Retry-After': '2' })
+        if (this.largeQqMessages >= 2) return problem(429, 'MUSE_QQ_BUSY', '附件正在传送，请稍后用相同编号重试', { 'Retry-After': '2' })
         this.largeQqMessages++
         try { return await this.client(request, url, QQ_MESSAGE_BODY) }
         finally { this.largeQqMessages-- }
@@ -220,8 +223,8 @@ export class MuseRelay extends DurableObject {
     if (method === 'POST') {
       const bytes = await readBody(request, bodyLimit)
       body = decode(bytes)
-      if (qqMessagePath(path) && bytes.byteLength > CONTROL_BODY && typeof body?.image?.data !== 'string') {
-        return problem(413, 'MUSE_BODY_TOO_LARGE', '仅含图片的消息支持超过 64 KiB 的请求体')
+      if (qqMessagePath(path) && bytes.byteLength > CONTROL_BODY && typeof body?.image?.data !== 'string' && typeof body?.audio?.data !== 'string') {
+        return problem(413, 'MUSE_BODY_TOO_LARGE', '含图片或语音的消息可以超过 64 KiB')
       }
       if (typeof body?.requestKey !== 'string' || !new RegExp('^' + ID + '$').test(body.requestKey)) {
         return problem(400, 'INVALID_REQUEST', '请提供稳定的 requestKey，推荐使用 UUID')
@@ -369,7 +372,7 @@ export class MuseRelay extends DurableObject {
       if (!data || typeof data !== 'object') {
         if (qq && status >= 400) {
           // Axum extractor rejections can be plain text. Keep the status without reflecting
-          // a private message or its base64 image in the error body.
+          // a private message or its base64 attachment in the error body.
           call.resolve({ status, data: { ok: false, code: 'MUSE_QQ_REQUEST_REJECTED', message: '绘遇未接受此 QQ 请求，请核对请求格式与大小' }, retry: request.headers.get('Retry-After') })
         } else if (call) call.resolve(null)
       } else {

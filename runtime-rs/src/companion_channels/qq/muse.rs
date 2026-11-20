@@ -1,7 +1,8 @@
 use super::*;
+mod attachment;
+mod history;
 mod lookup;
 mod outbox;
-mod picture;
 mod poll;
 mod vm;
 use axum::{
@@ -14,11 +15,13 @@ use std::{
     collections::VecDeque,
     sync::{
         OnceLock,
-        atomic::{AtomicU64, Ordering},
+        atomic::{AtomicBool, AtomicU64, Ordering},
     },
 };
+use tokio::sync::{Semaphore, watch};
 
 const INBOX_LIMIT: usize = 128;
+const INBOX_WAIT: Duration = Duration::from_secs(8);
 const MESSAGE_JSON_LIMIT: usize = 4 * 1024 * 1024 + 64 * 1024;
 
 pub(in crate::companion_channels) struct Mailbox {
@@ -26,6 +29,9 @@ pub(in crate::companion_channels) struct Mailbox {
     api: Arc<Api>,
     cancel: CancellationToken,
     entries: Mutex<VecDeque<Arc<Entry>>>,
+    history: history::GroupHistory,
+    inbox_changed: watch::Sender<()>,
+    poll_slots: Semaphore,
     last_poll: AtomicU64,
     route: Route,
 }
@@ -47,14 +53,18 @@ struct Entry {
     ambient: bool,
     sender_openid: String,
     nickname: Option<String>,
+    sender_role: &'static str,
     timestamp: u64,
     conversation_id: String,
     sender_id: String,
     question: String,
+    recent_messages: Vec<Arc<Value>>,
     images: Vec<Value>,
     search: Option<OnceLock<Value>>,
     attach_nene: bool,
     expires_at: u64,
+    arrived_at: Instant,
+    listed: AtomicBool,
     delivery: AsyncMutex<Delivery>,
 }
 
@@ -62,8 +72,8 @@ struct Entry {
 struct Delivery {
     text: Option<String>,
     confirmed: bool,
-    image: Option<picture::ImageDelivery>,
-    needs_image: bool,
+    media: Option<attachment::MediaDelivery>,
+    needs_media: bool,
     skipped: bool,
 }
 
@@ -81,7 +91,24 @@ fn scope_name(scope: QqScope) -> &'static str {
     }
 }
 
+impl Message {
+    fn muse_filtered(&self, reason: &str) {
+        eprintln!(
+            "QQ Muse stage=filtered msg={} reason={reason}",
+            message_tag(&self.id)
+        );
+    }
+}
+
 impl Entry {
+    fn trace(&self, stage: &str) {
+        eprintln!(
+            "QQ Muse stage={stage} requestKey={} sinceIngressMs={}",
+            self.key,
+            self.arrived_at.elapsed().as_millis()
+        );
+    }
+
     fn destination(&self) -> Destination<'_> {
         Destination {
             scope: self.scope,
@@ -89,11 +116,23 @@ impl Entry {
         }
     }
 
+    fn sender_fields(&self) -> Value {
+        json!({"senderId":self.sender_id,"senderNickname":self.nickname,
+               "senderRole":(self.scope == QqScope::Group).then_some(self.sender_role)})
+    }
+
     fn public_question(&self) -> Value {
-        let mut item = json!({
-            "requestKey":self.key,"conversationId":self.conversation_id,"senderId":self.sender_id,
-            "scope":scope_name(self.scope),"ambient":self.ambient,"text":self.question,"expiresAt":self.expires_at
-        });
+        let mut item = self.sender_fields();
+        item["requestKey"] = json!(self.key);
+        item["conversationId"] = json!(self.conversation_id);
+        item["scope"] = json!(scope_name(self.scope));
+        item["ambient"] = json!(self.ambient);
+        item["text"] = json!(self.question);
+        item["timestamp"] = json!(self.timestamp);
+        item["expiresAt"] = json!(self.expires_at);
+        if self.scope == QqScope::Group {
+            item["recentMessages"] = json!(self.recent_messages);
+        }
         if !self.images.is_empty() {
             item["attachments"] = json!(self.images);
         }
@@ -106,15 +145,7 @@ impl Entry {
         item
     }
 
-    fn vm_question(&self, names: &Nicknames) -> Value {
-        let nickname = self.nickname.as_deref().or_else(|| {
-            names
-                .get(&self.target)?
-                .get(&self.sender_openid)
-                .map(String::as_str)
-                .map(str::trim)
-                .filter(|name| !name.is_empty())
-        });
+    fn vm_question(&self) -> Value {
         let mut item = self.public_question();
         if self.scope == QqScope::Group {
             item["groupOpenid"] = json!(self.target);
@@ -122,38 +153,51 @@ impl Entry {
             item["userOpenid"] = json!(self.target);
         }
         item["senderOpenid"] = json!(self.sender_openid);
-        item["senderNickname"] = json!(nickname);
         item["messageId"] = json!(self.message_id);
-        item["timestamp"] = json!(self.timestamp);
         item
     }
 
     fn done(&self, delivery: &Delivery) -> bool {
         delivery.skipped
-            || delivery.image.as_ref().is_some_and(|image| image.confirmed)
-            || (delivery.confirmed && !self.attach_nene && !delivery.needs_image)
+            || delivery.media.as_ref().is_some_and(|media| media.confirmed)
+            || (delivery.confirmed && !self.attach_nene && !delivery.needs_media)
     }
 }
 
 impl Mailbox {
     pub(super) async fn open(
-        root: &Path,
+        app: &AppState,
         storage: &Storage,
+        principal: &str,
+        settings: &Settings,
         api: Arc<Api>,
         cancel: &CancellationToken,
     ) -> Self {
-        let route = match vm::load(root).await {
+        let route = match vm::load(&app.config.runtime_root).await {
             Ok(route) => route,
             Err(error) => {
                 eprintln!("Muse 群聊虚拟机配置读取失败：{error}");
                 Route::Invalid
             }
         };
+        let history_path = state_path(
+            app,
+            storage,
+            principal,
+            &json!(["qq", "muse-history", api.app_id]),
+        )
+        .with_extension("sqlite3");
+        let history =
+            history::GroupHistory::open(history_path, settings.muse_history_generation.clone())
+                .await;
         Self {
             epoch: storage.runtime_epoch().to_owned(),
             api,
             cancel: cancel.child_token(),
             entries: Mutex::default(),
+            history,
+            inbox_changed: watch::Sender::new(()),
+            poll_slots: Semaphore::new(4),
             last_poll: AtomicU64::new(0),
             route,
         }
@@ -254,20 +298,11 @@ impl Mailbox {
             .ok_or_else(expired)
     }
 
-    fn conversation_id(&self, scope: QqScope, id: &str) -> String {
-        // Keep existing group conversation IDs across upgrades.
-        let identity = match scope {
-            QqScope::Group => json!([self.api.app_id, id]),
-            QqScope::Private => json!([self.api.app_id, "private", id]),
-        };
-        crate::storage::json_fingerprint(&identity)
-    }
-
     fn targets(&self, settings: &Settings) -> Vec<Target> {
         let mut targets = Vec::new();
         let mut add = |scope, id: &str, label: &str| {
             targets.push(Target {
-                conversation_id: self.conversation_id(scope, id),
+                conversation_id: self.api.conversation_id(scope, id),
                 scope,
                 id: id.to_owned(),
                 label: label.to_owned(),
@@ -293,13 +328,18 @@ impl Mailbox {
         entries
     }
 
-    fn pending(&self, item: impl Fn(&Entry) -> Value) -> Vec<Value> {
+    fn pending(&self, item: fn(&Entry) -> Value, record_listed: bool) -> Vec<Value> {
         self.entries()
             .iter()
             .filter_map(|entry| {
                 let delivery = entry.delivery.try_lock().ok()?;
                 let ready = entry.search.as_ref().is_none_or(|s| s.get().is_some());
-                (ready && !entry.done(&delivery)).then(|| item(entry))
+                (ready && !entry.done(&delivery)).then(|| {
+                    if record_listed && !entry.listed.swap(true, Ordering::Relaxed) {
+                        entry.trace("inbox_listed");
+                    }
+                    item(entry)
+                })
             })
             .take(16)
             .collect()
@@ -313,7 +353,7 @@ impl Mailbox {
             .ok_or_else(expired)
     }
 
-    fn enqueue(
+    async fn enqueue(
         self: &Arc<Self>,
         app: &AppState,
         message: &Message,
@@ -323,21 +363,71 @@ impl Mailbox {
     ) -> Option<&'static str> {
         match &self.route {
             Route::Invalid => {
+                message.muse_filtered("invalid_route");
                 return Some(
                     "Muse 虚拟机配置无效，请机主检查 muse-qq-vm.json 后重新保存 QQ 连接。",
                 );
             }
             Route::Pull if !crate::images::remote::listening() => {
+                message.muse_filtered("listener_disabled");
                 return Some("Muse 接口尚未启动。请机主在绘遇的原生绘图设置里开启「允许连接」。");
             }
             _ => {}
         }
-        let mut entries = self.entries();
-        if entries.iter().any(|entry| {
+        if self.entries().iter().any(|entry| {
             entry.message_id == message.id
                 && entry.scope == message.scope
                 && entry.target == message.target
         }) {
+            message.muse_filtered("duplicate");
+            return None;
+        }
+        let expires_at = message.received_at + message.scope.reply_window_ms();
+        if expires_at <= crate::host::now_ms() {
+            message.muse_filtered("expired");
+            return None;
+        }
+        let conversation_id = self.api.conversation_id(message.scope, &message.target);
+        let sender_id = muse_sender_id(&conversation_id, &message.member);
+        let nickname = message.nickname.clone().or_else(|| {
+            let names = match &self.route {
+                Route::Vm(endpoint) => &endpoint.callback.names,
+                Route::VmPoll(endpoint) => &endpoint.names,
+                _ => return None,
+            };
+            let name = names.get(&message.target)?.get(&message.member)?.trim();
+            (!name.is_empty()).then(|| name.chars().take(128).collect())
+        });
+        let query = lookup::explicit_query(question).map(str::to_owned);
+        let mut entry = Entry {
+            key: uuid::Uuid::new_v4().to_string(),
+            target: message.target.clone(),
+            scope: message.scope,
+            ambient: message.ambient,
+            sender_openid: message.member.clone(),
+            nickname,
+            sender_role: message.group_role.unwrap_or("unknown"),
+            timestamp: message.sent_at.unwrap_or(message.received_at),
+            message_id: message.id.clone(),
+            conversation_id,
+            sender_id,
+            question: question.to_owned(),
+            recent_messages: Vec::new(),
+            images: message.images.clone(),
+            search: query.as_ref().map(|_| OnceLock::new()),
+            attach_nene: matches!(self.route, Route::VmPoll(_))
+                && attachment::requests_nene_photo(question, character),
+            expires_at,
+            arrived_at: message.arrived_at,
+            listed: AtomicBool::new(false),
+            delivery: AsyncMutex::default(),
+        };
+        if entry.scope == QqScope::Group {
+            entry.recent_messages = self.history.receive(&entry).await;
+        }
+        let mut entries = self.entries();
+        if self.cancel.is_cancelled() || entry.expires_at <= crate::host::now_ms() {
+            message.muse_filtered("closed_or_expired");
             return None;
         }
         if entries.len() >= INBOX_LIMIT
@@ -348,35 +438,22 @@ impl Mailbox {
                     .count()
                     >= INBOX_LIMIT)
         {
+            message.muse_filtered("inbox_full");
             return Some("Muse 正在处理较多消息，请稍后再发。");
         }
-        let expires_at = message.received_at + message.scope.reply_window_ms();
-        if expires_at <= crate::host::now_ms() {
-            return None;
-        }
-        let conversation_id = self.conversation_id(message.scope, &message.target);
-        let sender_id = crate::storage::json_fingerprint(&json!([conversation_id, message.member]));
-        let query = lookup::explicit_query(question).map(str::to_owned);
-        let entry = Arc::new(Entry {
-            key: uuid::Uuid::new_v4().to_string(),
-            target: message.target.clone(),
-            scope: message.scope,
-            ambient: message.ambient,
-            sender_openid: message.member.clone(),
-            nickname: message.nickname.clone(),
-            timestamp: message.sent_at.unwrap_or(message.received_at),
-            message_id: message.id.clone(),
-            conversation_id,
-            sender_id,
-            question: question.to_owned(),
-            images: message.images.clone(),
-            search: query.as_ref().map(|_| OnceLock::new()),
-            attach_nene: matches!(self.route, Route::VmPoll(_))
-                && picture::requests_nene_photo(question, character),
-            expires_at,
-            delivery: AsyncMutex::default(),
-        });
+        let entry = Arc::new(entry);
         entries.push_back(entry.clone());
+        drop(entries);
+        eprintln!(
+            "QQ Muse stage=enqueued msg={} requestKey={} recentMessages={} searchPending={}",
+            message_tag(&message.id),
+            entry.key,
+            entry.recent_messages.len(),
+            query.is_some()
+        );
+        if query.is_none() {
+            self.inbox_changed.send_replace(());
+        }
         if query.is_some() || matches!(&self.route, Route::Vm(_)) {
             let mailbox = self.clone();
             let app = app.clone();
@@ -386,6 +463,8 @@ impl Mailbox {
                         .await
                         .unwrap_or_else(|e| json!({"ok":false,"error":e.message}));
                     let _ = search.set(result);
+                    entry.trace("search_ready");
+                    mailbox.inbox_changed.send_replace(());
                 }
                 if let Route::Vm(endpoint) = &mailbox.route {
                     endpoint.forward(&app, &mailbox, &entry).await;
@@ -407,40 +486,62 @@ pub(super) async fn process(
 ) {
     let file = settings_path(app, storage, principal);
     let mut forwarding = tokio::task::JoinSet::new();
+    let mut members = members::Directory::default();
     loop {
-        let message = tokio::select! {
+        let mut message = tokio::select! {
             Some(_) = forwarding.join_next(), if !forwarding.is_empty() => continue,
             next = inbox.recv() => match next { Some(message) => message, None => break },
         };
-        let question = message.text.as_str();
         let notice = {
-            let _lock = app.channels.write.lock().await;
+            let lock = app.channels.write.lock().await;
             let Ok(Some(settings)) = read::<Settings>(&file).await else {
+                message.muse_filtered("settings_unavailable");
                 continue;
             };
-            if !is_current(app, storage)
-                || !settings.enabled
-                || settings.app_id != api.app_id
-                || !allows(&settings, message.destination())
-            {
+            if !is_current(app, storage) || !settings.enabled || settings.app_id != api.app_id {
+                message.muse_filtered("connection_changed");
+                continue;
+            }
+            if !allows(&settings, message.destination()) {
+                message.muse_filtered("unbound");
+                continue;
+            }
+            if message.ambient && !settings.group_muse_all {
+                message.muse_filtered("ambient_disabled");
                 continue;
             }
             if !settings.muse_for(message.scope) {
+                message.muse_filtered("muse_disabled");
                 Some("这个对话还没有启用 Muse。可以请机主在绘遇的 QQ 连接设置里开启。")
-            } else if question.is_empty() {
+            } else if message.text.is_empty() {
+                message.muse_filtered("missing_question");
                 Some("请 @ 我并写上问题，例如「今天画什么好？」。")
-            } else if question.chars().nth(1600).is_some() {
+            } else if message.text.chars().nth(1600).is_some() {
+                message.muse_filtered("text_too_long");
                 Some("Muse 每条提问最多 1600 字，请分开发送。")
             } else {
                 match Mailbox::current(app) {
-                    Ok(mailbox) => mailbox.enqueue(
-                        app,
-                        &message,
-                        question,
-                        &settings.character,
-                        &mut forwarding,
-                    ),
-                    Err(_) => Some("Muse 群聊连接正在更新，请稍后再发。"),
+                    Ok(mailbox) => {
+                        drop(lock);
+                        members.enrich(api, &mut message).await;
+                        if mailbox.cancel.is_cancelled() {
+                            message.muse_filtered("connection_changed");
+                            continue;
+                        }
+                        mailbox
+                            .enqueue(
+                                app,
+                                &message,
+                                &message.text,
+                                &settings.character,
+                                &mut forwarding,
+                            )
+                            .await
+                    }
+                    Err(_) => {
+                        message.muse_filtered("mailbox_unavailable");
+                        Some("Muse 群聊连接正在更新，请稍后再发。")
+                    }
                 }
             }
         };
@@ -463,6 +564,7 @@ fn routes(inbox_path: &str, reply_path: &str) -> Router<AppState> {
         .layer(DefaultBodyLimit::max(MESSAGE_JSON_LIMIT))
         .route(inbox_path, get(inbox))
         .route("/targets", get(targets))
+        .route("/context/{conversation_id}", get(history::context))
         .route(
             "/search",
             post(lookup::search).layer(DefaultBodyLimit::max(8 * 1024)),
@@ -491,23 +593,24 @@ fn operations(vm: bool) -> Value {
     let base = if vm { "/qq" } else { "/api/muse/qq" };
     let reply = if vm { "replies" } else { "reply" };
     json!({
+        "senderIdentity":"同群按 senderId 认人，senderNickname 用于称呼。群角色以 senderRole 为准：owner 群主，admin 管理员，member 普通成员，unknown 未核实。私聊为 null。",
         "reply":format!("POST {base}/{reply}"),"targets":format!("GET {base}/targets"),
         "send":format!("POST {base}/send"),"search":format!("POST {base}/search"),
         "replyBody":{"requestKey":"来信编号","text":"回复文字","image":{"mimeType":"image/png","data":"图片 Base64"}},
-        "sendBody":{"requestKey":"新 UUID，重试沿用","conversationId":"targets 返回的会话","text":"文字，也可改传 image"},
-        "searchBody":{"requestKey":"来信编号，或搭配 conversationId 使用新 UUID","query":"公开网页关键词"},
-        "limits":{"textChars":1600,"imageBytes":super::super::media::IMAGE_LIMIT},
-        "usage":"回复可选文字、图片或两者。无需回复可提交 requestKey 和 skip:true。主动发送每次选文字或图片，QQ 确认后才算送达。"
+        "sendBody":{"requestKey":"新 UUID，重试沿用","conversationId":"targets 返回的会话","text":"文字，也可改传 image 或 audio"},
+        "audio":{"mimeType":"audio/mpeg","data":"MP3 原文件的标准 Base64"},"searchBody":{"requestKey":"来信编号，或搭配 conversationId 使用新 UUID","query":"公开网页关键词"},
+        "context":format!("GET {base}/context/{{conversationId}}"),
+        "contextUsage":"群消息的 recentMessages 按同一群 context 的收录顺序附上本条之前最多 6 条发言。",
+        "inboxWaitSeconds":INBOX_WAIT.as_secs(),
+        "limits":{"textChars":1600,"imageBytes":super::super::media::IMAGE_LIMIT,"audioBytes":attachment::AUDIO_LIMIT},
+        "usage":"回复可带文字和一个附件。image 与 audio 二选一，也可以只发附件。无需回复可提交 requestKey 和 skip:true。主动发送每次选文字、图片或语音，QQ 确认后才算送达。"
     })
 }
 
-async fn inbox(Channel(mailbox): Channel) -> Result<Json<Value>> {
-    let (items, vm) = match &mailbox.route {
-        Route::VmPoll(endpoint) => (
-            mailbox.pending(|entry| entry.vm_question(&endpoint.names)),
-            true,
-        ),
-        Route::Pull => (mailbox.pending(Entry::public_question), false),
+async fn inbox(Channel(mailbox): Channel, method: Method) -> Result<Json<Value>> {
+    let vm = match &mailbox.route {
+        Route::VmPoll(_) => true,
+        Route::Pull => false,
         _ => {
             return Err(ApiError::new(
                 409,
@@ -520,10 +623,41 @@ async fn inbox(Channel(mailbox): Channel) -> Result<Json<Value>> {
         .last_poll
         .swap(crate::host::now_ms(), Ordering::Relaxed)
         == 0
-        && vm
     {
-        eprintln!("Muse 虚拟机已通过 Tailscale 首次收取 QQ 待答列表");
+        let path = if vm {
+            "/qq/pending"
+        } else {
+            "/api/muse/qq/inbox"
+        };
+        eprintln!("QQ Muse stage=poll_started path={path}");
     }
+    let render: fn(&Entry) -> Value = if vm {
+        Entry::vm_question
+    } else {
+        Entry::public_question
+    };
+    // Subscribe before reading the queue so an arrival between the two cannot be missed.
+    let mut changed = mailbox.inbox_changed.subscribe();
+    let slot = mailbox.poll_slots.try_acquire().ok();
+    let deadline = Instant::now() + INBOX_WAIT;
+    let items = loop {
+        if mailbox.cancel.is_cancelled() {
+            return Err(expired());
+        }
+        let items = mailbox.pending(render, method == Method::GET);
+        if !items.is_empty()
+            || method != Method::GET
+            || slot.is_none()
+            || Instant::now() >= deadline
+        {
+            break items;
+        }
+        tokio::select! {
+            _ = mailbox.cancel.cancelled() => return Err(expired()),
+            _ = tokio::time::sleep_until(deadline) => {},
+            _ = changed.changed() => {},
+        }
+    };
     Ok(Json(
         json!({"ok":true,"items":items,"operations":operations(vm)}),
     ))
@@ -539,13 +673,29 @@ async fn targets(State(app): State<AppState>, Channel(mailbox): Channel) -> Resu
     ))
 }
 
+fn invalid_message_body(error: axum::extract::rejection::JsonRejection) -> ApiError {
+    if error.status().as_u16() == 413 {
+        ApiError::new(
+            413,
+            "QQ_MUSE_BODY_SIZE",
+            "QQ 消息体过大，附件原文件上限为 3 MiB",
+        )
+    } else {
+        ApiError::new(
+            error.status().as_u16(),
+            "QQ_MUSE_BODY_INVALID",
+            "请使用 application/json，附件需含 mimeType 和 data 两个字符串",
+        )
+    }
+}
+
 async fn send(
     State(app): State<AppState>,
     Channel(mailbox): Channel,
-    Json(body): Json<outbox::SendBody>,
+    body: std::result::Result<Json<outbox::SendBody>, axum::extract::rejection::JsonRejection>,
 ) -> Result<Json<Value>> {
     let _admission = app.host.admit_owned()?;
-    outbox::send(&app, &mailbox, body).await
+    outbox::send(&app, &mailbox, body.map_err(invalid_message_body)?.0).await
 }
 
 #[derive(Clone, Deserialize)]
@@ -553,7 +703,8 @@ async fn send(
 struct ReplyBody {
     request_key: String,
     text: Option<String>,
-    image: Option<picture::EncodedImage>,
+    image: Option<attachment::EncodedFile>,
+    audio: Option<attachment::EncodedFile>,
     #[serde(default)]
     skip: bool,
 }
@@ -561,10 +712,10 @@ struct ReplyBody {
 async fn reply(
     State(app): State<AppState>,
     Channel(mailbox): Channel,
-    Json(body): Json<ReplyBody>,
+    body: std::result::Result<Json<ReplyBody>, axum::extract::rejection::JsonRejection>,
 ) -> Result<Json<Value>> {
     let _admission = app.host.admit_owned()?;
-    submit_reply(&app, &mailbox, body).await
+    submit_reply(&app, &mailbox, body.map_err(invalid_message_body)?.0).await
 }
 
 async fn submit_reply(app: &AppState, mailbox: &Mailbox, body: ReplyBody) -> Result<Json<Value>> {
@@ -573,48 +724,49 @@ async fn submit_reply(app: &AppState, mailbox: &Mailbox, body: ReplyBody) -> Res
     if !settings.muse_for(entry.scope) || !allows(&settings, entry.destination()) {
         return Err(expired());
     }
+    entry.trace("reply_received");
     if body.skip {
-        if body.text.is_some() || body.image.is_some() {
+        if body.text.is_some() || body.image.is_some() || body.audio.is_some() {
             return Err(ApiError::invalid("跳过时只提交 requestKey 和 skip"));
         }
         let mut delivery = entry.delivery.lock().await;
         reply_window(app, mailbox, &entry)?;
-        if delivery.text.is_some() || delivery.image.is_some() {
+        if delivery.text.is_some() || delivery.media.is_some() {
             return Err(ApiError::new(409, "QQ_MUSE_CONFLICT", "此消息已经开始回复"));
         }
         delivery.skipped = true;
+        entry.trace("skipped");
         return Ok(Json(
             json!({"ok":true,"requestKey":entry.key,"status":"skipped"}),
         ));
     }
     let text = body.text.as_deref().map(str::trim);
     if text.is_some_and(|s| s.is_empty() || s.chars().count() > 1600)
-        || text.is_none() && body.image.is_none()
+        || text.is_none() && body.image.is_none() && body.audio.is_none()
     {
-        return Err(ApiError::invalid("请提供图片或 1 到 1600 字的回复文字"));
+        return Err(ApiError::invalid(
+            "请提供语音、图片或 1 到 1600 字的回复文字",
+        ));
     }
-    let image = body.image.map(picture::EncodedImage::decode).transpose()?;
-    if image.is_some() {
-        entry.delivery.lock().await.needs_image = true;
+    let media = match (body.image, body.audio) {
+        (Some(_), Some(_)) => return Err(ApiError::invalid("一次回复只能附带一张图片或一段语音")),
+        (Some(image), None) => Some(image.decode(MediaKind::Image)?),
+        (None, Some(audio)) => Some(audio.decode(MediaKind::Audio)?),
+        (None, None) => None,
+    };
+    if media.is_some() {
+        entry.delivery.lock().await.needs_media = true;
     }
-    if image.is_none() && text == Some(picture::NENE_COMMAND) {
-        picture::send_nene(app, mailbox, &entry, picture::Selection::Exact).await?;
+    if media.is_none() && text == Some(attachment::NENE_COMMAND) {
+        attachment::send_nene(app, mailbox, &entry, attachment::Selection::Exact).await?;
     } else {
         if let Some(text) = text {
             send_answer(app, mailbox, &entry, text).await?;
         }
-        if let Some((mime, bytes)) = image {
-            picture::send(
-                app,
-                mailbox,
-                &entry,
-                &mime,
-                bytes,
-                picture::Selection::Exact,
-            )
-            .await?;
+        if let Some(file) = media {
+            attachment::send(app, mailbox, &entry, file, attachment::Selection::Exact).await?;
         } else if entry.attach_nene {
-            picture::send_nene(app, mailbox, &entry, picture::Selection::IfMissing).await?;
+            attachment::send_nene(app, mailbox, &entry, attachment::Selection::IfMissing).await?;
         }
     }
     Ok(Json(
@@ -685,9 +837,10 @@ async fn send_answer(app: &AppState, mailbox: &Mailbox, entry: &Entry, text: &st
             return Err(error);
         }
         delivery.confirmed = true;
-        if matches!(mailbox.route, Route::VmPoll(_)) {
-            eprintln!("Muse 反向轮询回信已获 QQ 确认");
-        }
+        entry.trace("qq_text_confirmed");
+        mailbox
+            .remember_sent(entry.scope, &entry.conversation_id, "text", Some(text))
+            .await;
     }
     Ok(())
 }

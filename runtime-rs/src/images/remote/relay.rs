@@ -59,6 +59,10 @@ fn qq_message(method: &Method, path: &str) -> bool {
 pub(super) fn qq_route(method: &Method, path: &str) -> bool {
     qq_message(method, path)
         || (*method == Method::GET && matches!(path, "/api/muse/qq/inbox" | "/api/muse/qq/targets"))
+        || (*method == Method::GET
+            && path.strip_prefix("/api/muse/qq/context/").is_some_and(|id| {
+                id.len() == 64 && id.bytes().all(|b| b.is_ascii_digit() || (b'a'..=b'f').contains(&b))
+            }))
         || (*method == Method::POST && path == "/api/muse/qq/search")
 }
 

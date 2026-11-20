@@ -121,16 +121,15 @@ pub(super) async fn connect(
                                 ready = true;
                             }
                             Some("RESUMED") => ready = true,
+                            Some(kind @ ("GROUP_AT_MESSAGE_CREATE" | "GROUP_MESSAGE_CREATE" | "C2C_MESSAGE_CREATE")) => {
+                                queue_message(kind, &event, resume.bot_id.as_deref(), inboxes, api)?;
+                            }
                             _ => {}
                         }
                         if ready && !resume.connected {
                             resume.connected = true;
                             app.channels.report(storage, "online", None);
-                        }
-                        if let Some(message) = Message::parse(&event, resume.bot_id.as_deref(), inboxes) {
-                            // Resume from the last queued event if the bounded inbox fills.
-                            let inbox = inboxes.for_message(&message);
-                            inbox.try_send(message).map_err(|_| "QQ 消息较多，正在重新接收")?;
+                            eprintln!("QQ WebSocket 已连接");
                         }
                         if let Some(sequence) = event["s"].as_u64() { resume.sequence = Some(sequence); }
                     }
@@ -146,6 +145,58 @@ pub(super) async fn connect(
             }
         }
     }
+}
+
+fn queue_message(
+    kind: &str,
+    event: &Value,
+    bot_id: Option<&str>,
+    inboxes: &Inboxes,
+    api: &Api,
+) -> GatewayResult<()> {
+    let data = &event["d"];
+    let log = |stage: &str, detail: &str| {
+        if kind.starts_with("GROUP_") {
+            let tag = event_message_id(data)
+                .map(message_tag)
+                .unwrap_or_else(|| "-".into());
+            let group =
+                open_id(&data["group_openid"]).map(|id| api.conversation_id(QqScope::Group, id));
+            let member = open_id(&data["author"]["member_openid"])
+                .or_else(|| open_id(&data["author"]["id"]));
+            let sender = group
+                .as_deref()
+                .zip(member)
+                .map(|(group, member)| muse_sender_id(group, member));
+            let sequence = event["s"].as_u64();
+            eprintln!(
+                "QQ 入站 type={kind} seq={sequence:?} group={:.12} sender={:.12} msg={tag} stage={stage} detail={detail}",
+                group.as_deref().unwrap_or("-"),
+                sender.as_deref().unwrap_or("-")
+            );
+        }
+    };
+    let message = match Message::parse(kind, data, bot_id, inboxes) {
+        Ok(message) => message,
+        Err(reason) => {
+            log("filtered", reason);
+            return Ok(());
+        }
+    };
+    let (inbox, route) = inboxes.for_message(&message);
+    // Advance the resume sequence only after a message is queued or deliberately filtered.
+    match inbox.try_send(message) {
+        Ok(()) => log("queued", route),
+        Err(mpsc::error::TrySendError::Full(_)) => {
+            log("queue-full", route);
+            return Err("QQ 消息较多，正在重新接收");
+        }
+        Err(mpsc::error::TrySendError::Closed(_)) => {
+            log("queue-closed", route);
+            return Err("QQ 消息处理队列已关闭");
+        }
+    }
+    Ok(())
 }
 
 async fn write(socket: &mut Socket, json: &Value) -> GatewayResult<()> {

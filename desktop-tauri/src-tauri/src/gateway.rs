@@ -1,4 +1,4 @@
-use std::io::{Read, Write};
+use std::io::{BufRead, BufReader, Read, Write};
 use std::net::{TcpStream, ToSocketAddrs};
 use std::process::{Child, Command, Stdio};
 #[cfg(windows)]
@@ -471,19 +471,19 @@ fn terminate_child(child: &mut GatewayChild) {
 }
 
 fn pipe_output<R: Read + Send + 'static>(
-    mut reader: R,
+    reader: R,
     stream: &'static str,
     on_output: Arc<dyn Fn(&str, &str) + Send + Sync>,
 ) {
     std::thread::spawn(move || {
-        let mut buffer = [0u8; 4096];
+        let mut reader = BufReader::new(reader);
+        let mut line = Vec::new();
         loop {
-            match reader.read(&mut buffer) {
+            line.clear();
+            // A single log record can arrive in several pipe reads. Bound lines from native tools.
+            match reader.by_ref().take(16 * 1024).read_until(b'\n', &mut line) {
                 Ok(0) => break,
-                Ok(n) => {
-                    let text = String::from_utf8_lossy(&buffer[..n]).to_string();
-                    on_output(stream, &text);
-                }
+                Ok(_) => on_output(stream, &String::from_utf8_lossy(&line)),
                 Err(_) => break,
             }
         }

@@ -69,16 +69,25 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 
 > 每 15 秒请求一次 `GET /api/muse/qq/inbox`。用 `conversationId` 区分会话，`senderId` 区分发件人。`ambient: true` 表示普通群消息，可自行决定是否插话。向 `POST /api/muse/qq/reply` 提交 `{"requestKey":"来信编号","text":"你的回答"}`，静默跳过则提交 `{"requestKey":"来信编号","skip":true}`。每次请求携带 `X-Token`。同一编号只处理一次，遇到暂时故障，在 `expiresAt` 前用相同编号和内容重试。`status: sent` 表示 QQ 已确认，`skipped` 表示已静默处理。
 
-收件箱里的 `operations` 给出当前连接可以调用的地址和参数。群友可以直接发「@机器人 帮这幅画想个标题」，也可使用 `/muse 问题`。绑定、帮助和取图等命令仍由绘遇处理。文字限 1600 字，每条来信可以回一段文字和一张图片。群回复窗口为 5 分钟，私聊为 60 分钟，`expiresAt` 是 Unix 毫秒。待答消息在内存中保存，返回 410、重启或重新绑定后需要重新提问。
+已有待答消息时，收件箱立即返回。收件箱为空时，网关可以等 8 秒，这期间有新消息就立即返回。原有轮询任务可以继续使用同一地址和参数。`operations` 给出当前连接可以调用的地址和参数。
+
+群友可以单独 @ 机器人，也可以发「@机器人 帮这幅画想个标题」或 `/muse 问题`。绑定、帮助和取图等命令由绘遇处理。文字限 1600 字，每条来信可以回一段文字，并附一张图片或一段语音，也可以只回附件。群回复窗口为 5 分钟，私聊为 60 分钟，`expiresAt` 是 Unix 毫秒。待答消息在内存中保存，返回 410、重启或重新绑定后需要重新提问。
 
 | Muse 要做的事 | 私网直连或 Cloudflare | Tailscale 虚拟机端口 | 请求内容 |
 | --- | --- | --- | --- |
 | 查可联系的群和私聊 | `GET /api/muse/qq/targets` | `GET /qq/targets` | 使用返回的 `conversationId` 选择目标 |
-| 回文字、图片或图文 | `POST /api/muse/qq/reply` | `POST /qq/replies` | 来信 `requestKey`，加 `text`、`image` 或两者 |
-| 主动发一条消息 | `POST /api/muse/qq/send` | `POST /qq/send` | 新 UUID 作 `requestKey`、目标 `conversationId`、`text` 或 `image` 二选一 |
+| 查看群上下文 | `GET /api/muse/qq/context/{conversationId}` | `GET /qq/context/{conversationId}` | 用 targets 中的群会话编号，返回按网关收录顺序排列的 `items` |
+| 回复来信 | `POST /api/muse/qq/reply` | `POST /qq/replies` | 来信 `requestKey`，加 `text` 或一个附件，也可同时提交文字和附件 |
+| 主动发一条消息 | `POST /api/muse/qq/send` | `POST /qq/send` | 新 UUID 作 `requestKey`、目标 `conversationId`、`text`、`image`、`audio` 三选一 |
 | 搜公开网页 | `POST /api/muse/qq/search` | `POST /qq/search` | `query` 配来信 `requestKey`。独立搜索时用新 UUID 加目标 `conversationId` |
 
-图片字段格式为 `{"mimeType":"image/png","data":"原图的标准 Base64"}`，支持 JPEG 或静态 PNG，原文件最大 3 MiB。主动发信的收据在本机保留 24 小时。重试沿用相同编号、目标和内容。遇到 `QQ_MUSE_SEND_UNCERTAIN` 时，原编号可查询已有回执，请先在目标会话核对送达情况。
+群来信的 `recentMessages` 取同一群 `context.items` 中位于本条之前的最多 6 条，保留发言人的昵称、角色、正文、时间和附件类型等字段。网关在本机保存近一小时内每群最多 64 条发言，包括已回复、已跳过的来信和 QQ 已确认的 Muse 回复、主动消息。`eventId` 可用于去重，`author` 区分 `user` 和 `muse`，时间戳为 Unix 毫秒。附件在历史中只记录类型与数量。普通群消息需要在绘遇勾选接收并由群主在 QQ 授权。网关重启后继续使用有效期内的历史。重新保存 QQ 设置或解绑群后，从新消息开始记录。
+
+排查漏收时，在主力机的 `%APPDATA%\com.aics.studio\desktop.log` 按时间查看 `QQ 入站`。日志里的 `group` 和 `sender` 分别对应会话和发言人编号的前 12 位。同一个 `msg` 可串起分流、过滤原因和入箱记录。入箱后可用 `requestKey` 查到网关首次在收件响应里列出消息、收到 Muse 回信以及取得 QQ 确认的时间。
+
+图片字段格式为 `{"mimeType":"image/png","data":"原图的标准 Base64"}`，支持 JPEG 或静态 PNG，原文件最大 3 MiB。语音使用 `audio: {"mimeType":"audio/mpeg","data":"MP3 原文件的标准 Base64"}`，上限同为 3 MiB（3,145,728 字节，按解码后的字节数计算）。QQ 原生支持 MP3，桥以语音类型上传，取得 QQ 消息回执后返回 `status=sent`。[腾讯 QQ Bot SDK 的直传格式](https://github.com/tencent-connect/qqbot-nodejs/blob/429a0f1b798f3b0fcef3679e207dbc0469a1df2d/src/protocol/utils/audio.ts#L222-L261)
+
+语音 Base64 无效返回 `QQ_MUSE_AUDIO_BASE64`，格式不符返回 `QQ_MUSE_AUDIO_TYPE`，文件超限返回 `QQ_MUSE_AUDIO_SIZE`。整个 JSON 超过传输上限时，直连返回 `QQ_MUSE_BODY_SIZE`，中转返回 `MUSE_BODY_TOO_LARGE`。主动发信的收据在本机保留 24 小时。重试沿用相同编号、目标和内容。遇到 `QQ_MUSE_SEND_UNCERTAIN` 时，原编号可查询已有回执，请先在目标会话核对送达情况。
 
 群友或私聊发「帮我搜一下……」时，绘遇会先搜索，再把原话和来源摘要交给 Muse。支持工具的客户端也可自行选择关键词调用搜索接口，获取标题、链接和摘要。检索词最多 400 字。QQ 对外链另有域名要求，可在回复中引用来源标题和站名。[腾讯发送接口](https://bot.q.qq.com/wiki/develop/api-v2/autogen/api/v2_groups_group_openid_messages.post.html)
 
@@ -110,7 +119,7 @@ Muse 和其他能发送 HTTPS 请求的 AI 助手都可以使用同一个私人�
 
 Muse 服务监听自己的 Tailscale IPv4 地址，放行绘遇的 Tailscale 源地址。两端使用 tailnet 加密链路上的 HTTP，绘遇绑定 `localIp` 发起连接。虚拟机接口不使用绘遇的 `X-Token` 或 QQ 凭据。启用虚拟机投递后，原收件与回复接口返回 HTTP 409 和 `QQ_MUSE_VM_ACTIVE`。群消息只交给配置的虚拟机。
 
-推送给虚拟机的每条消息都包含 `callbackOrigin` 和 `operations`。虚拟机可通过该笔记本地址使用表中的发送、搜索和回复接口，首次主动联系也能直接使用配置中的笔记本地址。旧客户端仍可在原取答接口返回文字，新客户端也可以在同一 JSON 中返回图片或 `skip`。
+推送给虚拟机的每条消息都包含 `callbackOrigin` 和 `operations`。虚拟机可通过该笔记本地址使用表中的发送、搜索和回复接口，首次主动联系也能直接使用配置中的笔记本地址。原取答接口可返回文字、图片、语音或 `skip`。
 
 **收问题。** 绘遇向虚拟机 `POST /qq/questions` 发送 UTF-8 JSON。Muse 保存问题后立即返回 `202 Accepted`。断线或未收到成功回执时，绘遇会重投相同的请求。请按 `requestKey` 幂等保存，重复提交时也返回成功。若要在绘遇重启后识别 QQ 重放，可另外按 `groupOpenid` 和 `messageId` 去重。
 
@@ -120,6 +129,7 @@ Muse 服务监听自己的 Tailscale IPv4 地址，放行绘遇的 Tailscale 源
   "groupOpenid": "QQ_GROUP_OPENID",
   "senderOpenid": "QQ_MEMBER_OPENID",
   "senderNickname": null,
+  "senderRole": "member",
   "messageId": "QQ_MESSAGE_ID",
   "text": "帮我想个标题",
   "timestamp": 1700000000000,
@@ -127,7 +137,9 @@ Muse 服务监听自己的 Tailscale IPv4 地址，放行绘遇的 Tailscale 源
 }
 ```
 
-`senderOpenid` 来自 QQ 群事件的 `author.member_openid`，`messageId` 是 QQ 消息 ID，`requestKey` 是这一轮对接号。`text` 已去掉给机器人的提及和 `/muse`。`timestamp` 和 `expiresAt` 均为 Unix 毫秒，QQ 发送时间无法解析时使用绘遇接收时间。群事件可能只给成员 openid。绘遇优先用事件随附的群昵称或用户名，也可在配置中用 `"nicknames":{"群openid":{"成员openid":"已核实的昵称"}}` 补充，均无值时发送 `null`。Muse 可以按群保存已核实的群主 openid，逐条比较 `senderOpenid` 来选用口吻。首次登记时请群主通过已知身份确认其提问对应的 openid，群主变更时更新记录。[腾讯官方群消息 SDK](https://github.com/tencent-connect/botpy/blob/master/botpy/message.py#L220-L241)
+`senderOpenid` 来自 QQ 群事件的 `author.member_openid`，`messageId` 是 QQ 消息 ID，`requestKey` 是这一轮对接号。`text` 已去掉给机器人的提及和 `/muse`。`timestamp` 和 `expiresAt` 均为 Unix 毫秒，QQ 发送时间无法解析时使用绘遇接收时间。虚拟机可在配置中用 `"nicknames":{"群openid":{"成员openid":"已核实的昵称"}}` 补充缺失的昵称。
+
+直连、中转和虚拟机均按 `conversationId` 区分群，按 `senderId` 区分同群发言人；重名或改名后仍按这个 ID 归属消息。`senderNickname` 供称呼，缺失时为 `null`。`senderRole` 优先取 QQ 本条消息的群角色，`owner` 为群主，`admin` 为管理员，`member` 为普通成员。事件缺少角色时，绘遇使用同群同成员最近 5 分钟内的资料，或在 QQ 权限和频率允许时查询。仍缺少依据则返回 `unknown`，Muse 应直接称呼群友。私聊的群角色为 `null`。[群消息字段](https://bot.q.qq.com/wiki/develop/api-v2/autogen/event/group_message_create.html) · [群成员资料](https://bot.q.qq.com/wiki/develop/api-v2/autogen/api/v2_groups_group_openid_members_member_openid.get.html)
 
 **取回复。** 绘遇收到投递成功回执后，每隔约 3 秒请求同一虚拟机的 `GET /qq/replies/{requestKey}`。未完成返回 `204 No Content`，完成返回 `200 OK` 及下方 JSON，正文为 1–1600 字。若记录丢失，返回 `404` 可让绘遇重新投递原问题。请为同一编号保留同一份结果至 `expiresAt`，允许重复 GET。绘遇用原消息 ID 把答复发回原群，收到 QQ 确认后停止；过期、解绑或停用也会停止。VM 收到 GET 仅表示绘遇正在取答复。
 

@@ -79,6 +79,9 @@ struct Settings {
     group_muse_all: bool,
     #[serde(default)]
     muse_proactive: bool,
+    // Ordinary restarts keep the same history. A new binding/settings session starts fresh.
+    #[serde(default)]
+    muse_history_generation: String,
     #[serde(default)]
     groups: Vec<QqGroup>,
 }
@@ -181,6 +184,7 @@ pub(crate) async fn configure(
                 muse_proactive: change
                     .muse_proactive
                     .unwrap_or_else(|| same.is_some_and(|old| old.muse_proactive)),
+                muse_history_generation: uuid::Uuid::new_v4().to_string(),
                 groups: same.map(|old| old.groups.clone()).unwrap_or_default(),
             };
             write(&file, &settings).await?;
@@ -231,6 +235,7 @@ pub(crate) async fn configure(
             let previous = settings.groups.len();
             settings.groups.retain(|group| group.id != *id);
             if settings.groups.len() != previous {
+                settings.muse_history_generation = uuid::Uuid::new_v4().to_string();
                 write(&file, &settings).await?;
                 app.channels.close_muse_qq();
                 app.channels.updates.notify_one();

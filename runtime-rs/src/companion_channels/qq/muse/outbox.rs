@@ -1,5 +1,4 @@
 use super::*;
-use axum::body::Bytes;
 use rusqlite::{Connection, OptionalExtension, TransactionBehavior, params};
 use sha2::{Digest, Sha256};
 use uuid::Uuid;
@@ -14,12 +13,13 @@ pub(super) struct SendBody {
     request_key: String,
     conversation_id: String,
     text: Option<String>,
-    image: Option<picture::EncodedImage>,
+    image: Option<attachment::EncodedFile>,
+    audio: Option<attachment::EncodedFile>,
 }
 
 enum Payload {
     Text(String),
-    Image(&'static str, Bytes),
+    Media(attachment::Attachment),
 }
 
 async fn target(app: &AppState, mailbox: &Mailbox, id: &str) -> Result<Target> {
@@ -43,21 +43,26 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
         .map_err(|_| ApiError::invalid("主动发送需要 UUID 格式的 requestKey"))?
         .to_string();
     let id = body.conversation_id;
-    target(app, mailbox, &id).await?;
-    let payload = match (body.text, body.image) {
-        (Some(text), None) if !text.trim().is_empty() && text.chars().nth(1600).is_none() => {
+    let scope = target(app, mailbox, &id).await?.scope;
+    let payload = match (body.text, body.image, body.audio) {
+        (Some(text), None, None) if !text.trim().is_empty() && text.chars().nth(1600).is_none() => {
             Payload::Text(text)
         }
-        (None, Some(image)) => {
-            let (mime, bytes) = image.decode()?;
-            let name = picture::validate(&mime, &bytes, &mailbox.cancel).await?;
-            Payload::Image(name, bytes)
+        (None, Some(image), None) => Payload::Media(image.decode(MediaKind::Image)?),
+        (None, None, Some(audio)) => Payload::Media(audio.decode(MediaKind::Audio)?),
+        _ => {
+            return Err(ApiError::invalid(
+                "每次请发送 1 到 1600 字的文字、一张图片或一段语音",
+            ));
         }
-        _ => return Err(ApiError::invalid("每次请发送 1 到 1600 字的文字或一张图片")),
     };
     let (kind, data) = match &payload {
         Payload::Text(text) => ("text", text.as_bytes()),
-        Payload::Image(_, bytes) => ("image", bytes.as_ref()),
+        Payload::Media(file) => (file.kind.name(), file.bytes.as_ref()),
+    };
+    let history_text = match &payload {
+        Payload::Text(text) if scope == QqScope::Group => Some(text.clone()),
+        _ => None,
     };
     let fingerprint =
         crate::storage::json_fingerprint(&json!([id, kind, hex::encode(Sha256::digest(data))]));
@@ -94,7 +99,7 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
     let prepared = async {
         let message = match payload {
             Payload::Text(text) => json!({"msg_type":0,"content":text}),
-            Payload::Image(name, bytes) => {
+            Payload::Media(file) => {
                 let bound = target(app, mailbox, &id).await?;
                 let destination = Destination {
                     scope: bound.scope,
@@ -103,7 +108,7 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
                 let file_info = tokio::select! {
                     biased;
                     _ = mailbox.cancel.cancelled() => return Err(expired()),
-                    result = mailbox.api.image(destination, name, &bytes) => result?,
+                    result = file.upload(mailbox, destination) => result?,
                 };
                 json!({"msg_type":7,"media":{"file_info":file_info}})
             }
@@ -140,6 +145,7 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
         match result {
             Ok(()) => {
                 receipt.transition("sending", "sent").await.map_err(|_| uncertain())?;
+                live.remember_sent(scope, &id, kind, history_text.as_deref()).await;
                 eprintln!("Muse 主动发送已获 QQ 确认");
                 Ok(())
             }

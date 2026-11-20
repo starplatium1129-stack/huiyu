@@ -144,13 +144,12 @@ async fn image_reply(
         .unwrap_or_default()
         .trim()
         .to_ascii_lowercase();
-    picture::send(
+    attachment::send(
         &app,
         &mailbox,
         &entry,
-        &mime,
-        bytes,
-        picture::Selection::Exact,
+        attachment::Attachment::image(&mime, bytes)?,
+        attachment::Selection::Exact,
     )
     .await?;
     Ok(Json(
