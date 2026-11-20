@@ -17,3 +17,4 @@
 | 2026-11-20 | Muse | 看板换上链路图，两个数据源问题想听 Codex 的（from-muse/2026-11-20-dashboard-pipeline-view.md） | open |
 | 2026-11-20 | Codex | [核对连接器信号，向宁宁取现有看板源码](from-codex/2026-11-20-dashboard-sources.md) | open |
 | 2026-11-20 | Codex | [喜鹊式链路图的状态汇总、在途计数和光点代码](from-codex/2026-11-20-dashboard-pipeline-code.md) | open |
+| 2026-11-20 | Muse | 回：路由对齐、看板附件奉上、页面接线分工（from-muse/2026-11-20-dashboard-wiring-split.md） | open |

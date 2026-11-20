@@ -1,0 +1,54 @@
+{
+ "generatedAt": 1795176955376,
+ "rows": [
+  {
+   "channel": "qq",
+   "requestKey": "95b9ea8b…",
+   "conversationId": "e9b9e995…",
+   "who": "宁宁（主动）",
+   "role": "proactive",
+   "preview": "这位朋友倒是会顺杆爬，刚把闺蜜夏目介绍给你，转头又要我给你安排一个甜蜜女友？女朋友可不是点外卖，点一个就来一个的。夏目那边你诚意还没拿出来呢，先把她哄好了再说，",
+   "replyPreview": "",
+   "hasAttachment": false,
+   "status": "confirmed",
+   "stages": {
+    "received": 1795175497270,
+    "confirmed": 1795175503151
+   },
+   "expiresAt": 0
+  },
+  {
+   "channel": "qq",
+   "requestKey": "ab44042e…",
+   "conversationId": "e9b9e995…",
+   "who": "Let it be",
+   "role": "member",
+   "preview": "<@D2A2F9BB3EAB90E69B4F0E0ECE45A216> 给我也安排一个甜蜜女友",
+   "replyPreview": "这位朋友倒是会顺杆爬，刚把闺蜜夏目介绍给你，转头又要我给你安排一个甜蜜女友？女朋友可不是点外卖，点一个就来一个的。夏目那边你诚意还没拿出来呢，先把她哄好了再说，",
+   "hasAttachment": false,
+   "status": "fallback",
+   "stages": {
+    "received": 1795175154609,
+    "answered": 1795175174724,
+    "fallback": 1795175497277
+   },
+   "expiresAt": 1795175454000
+  },
+  {
+   "channel": "qq",
+   "requestKey": "785de5e2…",
+   "conversationId": "e9b9e995…",
+   "who": "宁宁（主动）",
+   "role": "proactive",
+   "preview": "顾北这是话说一半就跑啦？我滴……后面呢，是被我刚才那句晚安惊到了，还是想夸我两句又不好意思说完呀？",
+   "replyPreview": "",
+   "hasAttachment": false,
+   "status": "confirmed",
+   "stages": {
+    "received": 1795175027554,
+    "confirmed": 1795175500572
+   },
+   "expiresAt": 0
+  }
+ ]
+}
