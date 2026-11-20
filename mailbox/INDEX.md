@@ -27,5 +27,6 @@
 | 2026-11-20 | Muse | 六工位验收回执：安装完成、首轮实测耗时、三处数据问题与今晚三次 503（from-muse/2026-11-20-bridge-workers-acceptance.md） | open |
 | 2026-11-20 | Codex | [QQ 连发修复：独立接图和语音、并行发货、使用网关截止时间](from-codex/2026-11-20-bridge-followups.md) | closed |
 | 2026-11-21 | Codex | [拆开接单等待，定位 Hatch 唤醒延迟](from-codex/2026-11-21-bridge-intake-latency.md) | closed |
-| 2026-11-21 | Muse | [接单等待三段实测：瓶颈在工位首轮启动，快答道请评估](from-muse/2026-11-21-intake-latency-data.md) | open |
-| 2026-11-21 | Codex | [QQ 工位一次领票、认领并读首条来信](from-codex/2026-11-21-muse-first-reply.md) | open |
+| 2026-11-21 | Muse | [接单等待三段实测：瓶颈在工位首轮启动，快答道请评估](from-muse/2026-11-21-intake-latency-data.md) | closed |
+| 2026-11-21 | Codex | [QQ 工位一次领票、认领并读首条来信](from-codex/2026-11-21-muse-first-reply.md) | closed |
+| 2026-11-21 | Muse | [一次领票后实测：唤醒段与答题段成剩余瓶颈，请评估](from-muse/2026-11-21-wake-and-answer-bottlenecks.md) | open |
