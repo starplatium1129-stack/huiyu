@@ -34,7 +34,7 @@
 
 1. **看图前置**：带 `image/*` 附件时，第一时间用 `curl` 下载到 `~/workspace/qq-bridge/att/<requestKey>-<序号>.jpg`（超时则先启 `~/workspace/clash-node/start-xray.sh` 再挂 `-x http://127.0.0.1:7890` 重试）。看清图里文字与梗再接话；下载失败只回文字，不装作看过。
 2. **记忆参考（轻量化）**：
-   - 读 `~/workspace/qq-bridge/members.json`（按 `senderId` 查昵称与记事）和 `context-recent.md`（近期群聊日记），像熟人一样自然接上话题，**不生硬复述档案**，不翻 `[已过期未回]` 的旧账。
+   - 优先读本条的 `recentMessages`。只使用当前 `conversationId`、当前 `senderId` 对应的成员资料；只有明确属于本群的近期日记才能作补充。日记未标明会话且已接多个群或私聊时，只用来信自带的上下文。独立工位的历史简报可能来自另一间房。像熟人一样自然接话，不生硬复述档案，不翻 `[已过期未回]` 的旧账。
    - **按需更新档案**：仅当出现新人，或老群友出现明确新偏好/约定/昵称变更时才更新 `members.json`（禁记私密信息）。回复发布后，用 `flock ~/workspace/qq-bridge/members.lock` 包住整个“重读最新文件→按现有结构改本人的记录→同目录临时文件写完后原子替换”操作，避免多个工人互相覆盖。
 3. **带图回复（仅限全年龄，≤3MB）**：
    - **优先找存图**：检索 `~/workspace/nene-gallery/`、`~/workspace/your_files/`、`~/workspace/morning-nene/`，确认文件存在且合规后附上路径。

@@ -7,6 +7,7 @@ file records; statuses use the shared labels. Gateway-side stages that
 have no local record are simply absent (the board marks that blind spot).
 """
 import glob
+import fcntl
 import json
 import os
 import tempfile
@@ -72,8 +73,12 @@ def load_receipts(bridge, channel):
 
 
 def preview(text, limit=80):
-    text = (text or "").replace("\n", " ").strip()
-    return text[:limit]
+    return text.replace("\n", " ").strip()[:limit] if isinstance(text, str) else ""
+
+
+def deadline_ms(item):
+    value = item.get("expiresAt")
+    return value if type(value) is int and value > 0 else 0
 
 
 def qq_rows(now_ms):
@@ -88,7 +93,7 @@ def qq_rows(now_ms):
         out = load_json(out_path) if os.path.exists(out_path) else None
         sent_at = mtime_ms(os.path.join(state, "sent-" + key))
         fallback_at = mtime_ms(os.path.join(state, "fallback-" + key))
-        exp = item.get("expiresAt") or 0
+        exp = deadline_ms(item)
         stages = {"received": mtime_ms(path)}
         if out is not None:
             stages["answered"] = mtime_ms(out_path)
@@ -114,6 +119,8 @@ def qq_rows(now_ms):
             status = "waiting_send"
         elif exp and now_ms > exp:
             status = "expired"
+        elif not exp or item.get("requestKey") != key:
+            status = "unknown"
         else:
             status = "waiting_reply"
         rows.append({
@@ -167,7 +174,7 @@ def desktop_rows(now_ms):
         out = load_json(out_path) if os.path.exists(out_path) else None
         sent_at = mtime_ms(os.path.join(state, "sent-" + key))
         lost_at = mtime_ms(os.path.join(state, "lost-" + key))
-        exp = item.get("expiresAt") or 0
+        exp = deadline_ms(item)
         stages = {"received": mtime_ms(path)}
         if out is not None:
             stages["answered"] = mtime_ms(out_path)
@@ -187,6 +194,8 @@ def desktop_rows(now_ms):
             status = "waiting_send"
         elif exp and now_ms > exp:
             status = "expired"
+        elif not exp or item.get("requestKey") != key:
+            status = "unknown"
         else:
             status = "waiting_reply"
         rows.append({
@@ -259,13 +268,13 @@ def pipeline_lanes(rows, now_ms):
         lanes[channel] = {
             "node": node,
             "intake": intake_edge(completed_at=poll.get("completedAt"), ok=poll.get("ok"),
-                                  http_status=poll.get("httpStatus"), at=now_ms),
+                                  http_status=poll.get("httpStatus"), reason=poll.get("reason"), at=now_ms),
             "counts": channel_traffic(channel, entries if available else None),
         }
     return lanes
 
 
-def main():
+def write_snapshot():
     now_ms = int(time.time() * 1000)
     rows = qq_rows(now_ms) + desktop_rows(now_ms)
     now_ms = int(time.time() * 1000)
@@ -273,10 +282,34 @@ def main():
     rows.sort(key=lambda r: r["stages"].get("received") or 0, reverse=True)
     payload = {"generatedAt": now_ms, "rows": rows[:KEEP], "lanes": lanes}
     fd, tmp = tempfile.mkstemp(dir=os.path.dirname(OUT), suffix=".tmp")
-    with os.fdopen(fd, "w", encoding="utf-8") as fh:
-        json.dump(payload, fh, ensure_ascii=False)
-    os.replace(tmp, OUT)
-    print(f"board_rows={len(payload['rows'])}")
+    try:
+        with os.fdopen(fd, "w", encoding="utf-8") as fh:
+            json.dump(payload, fh, ensure_ascii=False)
+        os.replace(tmp, OUT)
+    finally:
+        if os.path.exists(tmp):
+            os.unlink(tmp)
+    return len(payload["rows"])
+
+
+def refresh(min_age_ms=0):
+    # The old directory watcher and two receiver processes can all request a refresh.
+    # Only one reads the spools, so a slow run cannot replace a more recent snapshot.
+    with open(OUT + ".lock", "a") as lock:
+        try:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except BlockingIOError:
+            return None
+        last = mtime_ms(OUT)
+        if last is not None and 0 <= time.time_ns() // 1_000_000 - last < min_age_ms:
+            return None
+        return write_snapshot()
+
+
+def main():
+    count = refresh()
+    if count is not None:
+        print(f"board_rows={count}")
 
 
 if __name__ == "__main__":

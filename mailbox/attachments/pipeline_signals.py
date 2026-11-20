@@ -91,7 +91,7 @@ def connector_node(sample, *, direct=False, at=None, max_age_ms=75_000):
     return {"state": "unknown", "label": labels.get(reason, "连接状态未知"), "reason": reason}
 
 
-def intake_edge(*, completed_at=None, ok=None, http_status=None, at=None, max_age_ms=90_000):
+def intake_edge(*, completed_at=None, ok=None, http_status=None, reason=None, at=None, max_age_ms=90_000):
     """Use the last completed inbox call for this channel, including an empty 200."""
     now = now_ms() if at is None else at
     if not fresh(completed_at, now, max_age_ms):
@@ -99,6 +99,10 @@ def intake_edge(*, completed_at=None, ok=None, http_status=None, at=None, max_ag
     if ok is True:
         return {"state": "ok", "label": "取件正常"}
     if ok is False:
+        if reason == "spool":
+            return {"state": "error", "label": "取件已返回，部分消息未落盘"}
+        if reason == "protocol":
+            return {"state": "error", "label": "取件响应格式异常"}
         detail = f" · HTTP {http_status}" if type(http_status) is int else ""
         return {"state": "error", "label": "取件失败" + detail}
     return {"state": "unknown", "label": "取件结果未知"}

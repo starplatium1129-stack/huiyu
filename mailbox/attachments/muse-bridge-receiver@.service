@@ -1,0 +1,18 @@
+[Unit]
+Description=Muse %i inbox receiver
+After=network.target
+
+[Service]
+Type=simple
+UMask=0077
+WorkingDirectory=%h/workspace/bridge-tools
+# If needed, supply the same proxy environment as the working relay hook locally.
+EnvironmentFile=-%h/workspace/bridge-tools/relay-environment
+ExecStart=/usr/bin/env python3 %h/workspace/bridge-tools/bridge_runtime.py serve %i
+Restart=on-failure
+RestartSec=2
+KillMode=mixed
+TimeoutStopSec=125
+
+[Install]
+WantedBy=default.target

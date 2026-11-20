@@ -17,6 +17,7 @@ from contextlib import contextmanager
 EVENT = struct.Struct("=iIII")
 CLOSE_WRITE = 0x00000008
 MOVED_TO = 0x00000080
+CREATE = 0x00000100  # Atomic os.link() publication emits IN_CREATE on the final name.
 DELETE_SELF = 0x00000400
 MOVE_SELF = 0x00000800
 UNMOUNT = 0x00002000
@@ -39,7 +40,7 @@ def watch_directories(paths):
         raise OSError(err, os.strerror(err))
     try:
         for path in paths:
-            mask = CLOSE_WRITE | MOVED_TO | DELETE_SELF | MOVE_SELF
+            mask = CLOSE_WRITE | MOVED_TO | CREATE | DELETE_SELF | MOVE_SELF
             if libc.inotify_add_watch(fd, os.fsencode(path), mask) < 0:
                 err = ctypes.get_errno()
                 if err != errno.ENOENT:
@@ -50,7 +51,7 @@ def watch_directories(paths):
         os.close(fd)
 
 
-def wait_for_work(fd, interval):
+def wait_for_work(fd, interval, *, ignore_names=()):
     deadline = time.monotonic() + interval
     while True:
         remaining = deadline - time.monotonic()
@@ -65,7 +66,8 @@ def wait_for_work(fd, interval):
             offset += length
             if mask & RESET:
                 return
-            if not (mask & IS_DIR) and (name.endswith(b".json") or name.startswith(b"sent-")):
+            if not (mask & IS_DIR) and name not in ignore_names and (
+                    name.endswith(b".json") or name.startswith(b"sent-")):
                 return
 
 
