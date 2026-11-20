@@ -7,7 +7,7 @@
  * 全库场景样张待审核候选生成（MiaoMiao Harem v1.6 专属正规编译版）：
  *
  * 核心特性：
- * - 提示词编译：热门角色的场景蓝图使用无画师配方
+ * - 提示词编译：热门角色蓝图和主线场景均使用无画师配方
  * - 专属女主角：宁宁/夏目单人场景绑定官方 v21 LoRA (0.85 强度)
  * - 底模：MiaoMiao Harem Anima v1.6 (anima-miaomiao-v1.6)
  * - 极速画幅：832x1216 (竖版) / 1216x832 (横版)
@@ -18,6 +18,7 @@
 const fs: typeof import('fs') = require('fs');
 const path: typeof import('path') = require('path');
 const safety: typeof import('../lib/generation-candidates') = require('../lib/generation-candidates');
+const { sceneRecommendedSize }: typeof import('../../src/utils/sceneInference.ts') = require('../../src/utils/sceneInference.ts');
 import type { CandidateOptions, CandidateTask, GenerationOptions } from '../lib/generation-types';
 type Options = CandidateOptions & { character?: string; franchise?: string; limit: number; 'scenes-only'?: boolean; 'popular-only'?: boolean };
 type SceneTask = {
@@ -27,7 +28,6 @@ type SceneTask = {
 };
 const MODEL_ID = 'anima-miaomiao-v1.6';
 const PROFILE_ID = 'anima_miaomiao_v16';
-const ARTIST_TAG = 'rella';
 
 function resolveProfile(presets: unknown) {
   const { parsePresetCatalog }: typeof import('../../src/utils/modelProfileDefaults.ts') = require('../../src/utils/modelProfileDefaults.ts');
@@ -37,12 +37,22 @@ function resolveProfile(presets: unknown) {
   return profile;
 }
 
+function showcaseDimensions(recommendedSize: string | undefined, tags: readonly string[] = [], camera = '') {
+  const orientationTags = tags.map(tag => /^horizontal[\s_-]+composition$/i.test(tag.trim()) ? 'landscape' : tag);
+  const sizes = [sceneRecommendedSize({ tags: orientationTags }), sceneRecommendedSize({ recommendedSize })];
+  const landscapeCamera = /横(?:幅|版|向|屏)?构图|宽银幕构图|\b(?:widescreen|(?:landscape|horizontal)[\s_-]+(?:composition|orientation|format))\b/i.test(camera);
+  const landscape = landscapeCamera || sizes.some(size => {
+    const [width, height] = size.split('x').map(Number);
+    return width > height;
+  });
+  return landscape ? { width: 1216, height: 832 } : { width: 832, height: 1216 };
+}
+
 function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.snapshot>) {
   const popularContent: typeof import('../../src/utils/popularContent.ts') = require('../../src/utils/popularContent.ts');
   const { compilePromptRecipe }: typeof import('../../src/utils/promptRecipe.ts') = require('../../src/utils/promptRecipe.ts');
   const { showcaseSubjectGuards }: typeof import('../../src/utils/blueprintComposition.ts') = require('../../src/utils/blueprintComposition.ts');
   const promptPolicy: typeof import('../../src/utils/promptPolicy.ts') = require('../../src/utils/promptPolicy.ts');
-  const { artistTagsForEngine }: typeof import('../../src/config/artistStyles.ts') = require('../../src/config/artistStyles.ts');
   const { parsePromptScenes }: typeof import('../../src/utils/promptCatalog.ts') = require('../../src/utils/promptCatalog.ts');
   const loraData: typeof import('../../data/loras.json') = require('../../data/loras.json');
   const tasks: SceneTask[] = [];
@@ -60,9 +70,7 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
       const owned = blueprints.filter(bp => bp.characterId === character.id);
 
       for (const bp of owned) {
-        const isHorizontal = bp.recommendedSize && (bp.recommendedSize.includes('1536x1152') || bp.recommendedSize.includes('1216x832') || bp.recommendedSize.includes('1344x768'));
-        const width = isHorizontal ? 1216 : 832;
-        const height = isHorizontal ? 832 : 1216;
+        const dimensions = showcaseDimensions(bp.recommendedSize, bp.sceneTags);
 
         const outfit = (bp.outfitId && popularContent.findOutfit(character, bp.outfitId)) || popularContent.defaultOutfit(character);
         const guards = showcaseSubjectGuards(bp);
@@ -89,8 +97,7 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
           type: 'popular',
           prompt: plan.prompt,
           negative: plan.negative,
-          width,
-          height,
+          ...dimensions,
           outfitId: outfit?.id,
           adult: Boolean(bp.adult),
           seed: Math.floor(Math.random() * 1000000000) + 100000000
@@ -106,22 +113,27 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
       if (opts.character && sc.char !== opts.character) continue;
       if (tasks.some(t => t.id === sc.id)) continue;
 
-      const isHorizontal = sc.recommendedSize && (sc.recommendedSize.includes('1536x1152') || sc.recommendedSize.includes('1216x832') || sc.recommendedSize.includes('1344x768'));
-      const width = isHorizontal ? 1216 : 832;
-      const height = isHorizontal ? 832 : 1216;
+      const dimensions = showcaseDimensions(sc.recommendedSize, sc.tags, sc.camera);
 
       const characterId = sc.char === 'both' ? 'triad' : sc.char || '';
       const activeLoras: Record<string, string> = characterId === 'nene' ? { nene: 'L_NENE_V21_ANIMA' }
         : characterId === 'natsume' ? { natsume: 'L_NAT_V21_ANIMA' } : {};
+      const scene = sc.prompt?.includes('@') ? {
+        ...sc,
+        prompt: promptPolicy.splitBreaks(sc.prompt.replace(/_BREAK_/g, ' BREAK '))
+          .map(section => promptPolicy.tokenize(section)
+            .filter(tag => !promptPolicy.normalizeKey(tag).startsWith('@'))
+            .join(', '))
+          .join(' BREAK '),
+      } : sc;
       const plan = compilePromptRecipe({
         kind: 'studio',
         character: characterId,
-        scene: sc,
+        scene,
         engine: 'anima',
         profile,
         activeLoras,
         loraMeta: loraData,
-        artistTags: artistTagsForEngine([ARTIST_TAG], 'anima'),
       });
 
       tasks.push({
@@ -130,8 +142,7 @@ function collectAllSceneTasks(opts: Options, input: ReturnType<typeof safety.sna
         characterId: sc.char || 'generic',
         prompt: plan.prompt,
         negative: plan.negative,
-        width,
-        height,
+        ...dimensions,
         seed: Math.floor(Math.random() * 1000000000) + 100000000
       });
     }
@@ -148,7 +159,7 @@ function buildPayload(task: SceneTask) {
     negative: task.negative,
     width: task.width,
     height: task.height,
-    steps: 30,
+    steps: 45,
     cfg: 4.5,
     teaCache: true,
     teaCacheThresh: 0.10,

@@ -82,12 +82,14 @@ npm run wf -- diagnostics:window-capture -Out runtime/<输出图片.png> [-Title
 | 操作 | 入口 | 说明 |
 | --- | --- | --- |
 | 热门/场景批量调度 | `showcase:batch --source popular` 或 `--source scenes` | 批量调度候选任务 |
-| MiaoMiao 默认批次 | `showcase:batch-miaomiao` | 采用 MiaoMiao v1.6，Euler/normal，30 步，CFG 4.5，TeaCache 0.10 |
+| MiaoMiao 默认批次 | `showcase:batch-miaomiao` | 采用无画师配方，MiaoMiao v1.6，Euler/normal，45 步，CFG 4.5，TeaCache 0.10 |
 | 指定场景候选生成 | `showcase:scene-candidates --ids sc001,sc002 --output <新候选目录>` | 生成指定独立场景候选 |
 | 缺口补齐 | `showcase:fill-gaps --keys popular:<角色ID>:<蓝图ID>` | 精确生成指定条目的独立候选 |
 | 人工审核联系表 | `showcase:review-sheets --audit <候选审核目录>` | 基于 Pillow 生成缩略图联系表供肉眼查验 |
 | 汇总人工决定 | `showcase:manual-review --manifest <生成清单> --decisions <决定文件>` | 汇总决定并生成审核记录 |
 | 刷新分级清单 | `showcase:rating-refresh --source <旧版本> --target <新版本> --apply` | 刷新样张分级（支持 `--decisions`） |
+
+MiaoMiao 默认批次按推荐尺寸的实际宽高、横构图标签和主线场景的镜头说明判断画幅。有明确横构图标记或推荐宽度大于高度时使用 1216×832，其余使用 832×1216。
 
 ---
 
