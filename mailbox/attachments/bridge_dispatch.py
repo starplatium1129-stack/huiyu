@@ -11,11 +11,19 @@ import time
 import uuid
 from pathlib import Path
 
+from bridge_delivery import reply_deadline
+
 
 OFFER_MS = 20_000
 WORK_MS = 80_000
+QQ_WORK_MS = 120_000
 MAX_GROUP = 8
 KEY = re.compile(r"[A-Za-z0-9_-]{1,160}")
+MEDIA_REQUEST = re.compile(
+    r"^(?:(?:宁宁|宝宝|老婆)[，,：:\s]*)?(?:请|麻烦)?(?:给(?:我|我们)|帮(?:我|我们))?"
+    r"(?:再|先|顺便|也)?\s*(?:发(?:送)?|来|录(?:制)?|画|生成)"
+    r"[^。！？!?\n]{0,16}(?:图片|照片|自拍|表情包|语音|录音|音频|[张幅]图)"
+)
 MANAGED = b"muse-dispatch-v1\n"
 
 
@@ -50,6 +58,7 @@ def atomic_first(path, contents, before_link=None):
 class Queue:
     def __init__(self, channel):
         self.channel = channel
+        self.work_ms = QQ_WORK_MS if channel == "qq" else WORK_MS
         self.bridge = Path.home() / "workspace" / (channel + "-bridge")
         self.state = Path.home() / "hooks" / "state" / (channel + "-bridge")
         self.inbox = self.bridge / "inbox"
@@ -92,15 +101,23 @@ class Queue:
             return None
         if not isinstance(item, dict) or item.get("requestKey") != key:
             return None
-        expiry = item.get("expiresAt")
+        expiry = reply_deadline(item)
         if type(expiry) is not int or expiry <= now:
             return None
         room = item.get("conversationId")
         group = [room if isinstance(room, str) else ""]
+        ambient = item.get("ambient") is True
         if self.channel == "qq":
             sender = item.get("senderId")
             group.append(sender if isinstance(sender, str) else "")
-        return (json.dumps(group, ensure_ascii=False), arrival, expiry, item.get("ambient") is True, key)
+            text = item.get("userText", item.get("text", ""))
+            has_media = bool(item.get("attachments")) or (
+                isinstance(text, str) and MEDIA_REQUEST.match(text.strip()) is not None)
+            if not ambient or has_media:
+                # Addressed questions and media jobs get their own slot even when the sender is the same.
+                group.append(key)
+                ambient = False
+        return (json.dumps(group, ensure_ascii=False), arrival, expiry, ambient, key)
 
     def legacy_claim(self, key):
         try:
@@ -148,7 +165,8 @@ class Queue:
             if group in busy:
                 continue
             # Legacy records without a room or sender must not be merged as one person's turn.
-            batch_size = MAX_GROUP if all(json.loads(group)) else 1
+            grouping = json.loads(group)
+            batch_size = MAX_GROUP if len(grouping) <= 2 and all(grouping) else 1
             keys = [item[4] for item in items if item[2] > now][:batch_size]
             if keys:
                 ticket = uuid.uuid4().hex
@@ -192,7 +210,7 @@ class Queue:
             return {"pending": []}
         self.require(ticket, "offered")
         self.db.execute("UPDATE slots SET phase='working',until_ms=?,keys_json=? WHERE ticket=?",
-                        (milliseconds() + WORK_MS, json.dumps(keys), ticket))
+                        (milliseconds() + self.work_ms, json.dumps(keys), ticket))
         self.record(row["slot"], "begin", len(keys))
         return {"channel": self.channel, "slot": row["slot"], "ticket": ticket, "pending": keys}
 
@@ -233,7 +251,7 @@ class Queue:
             arrived = (self.inbox / (key + ".json")).stat().st_mtime_ns // 1_000_000
             self.record(row["slot"], "start", 1, max(0, milliseconds() - arrived))
         self.db.execute("UPDATE slots SET until_ms=?,started_json=? WHERE ticket=?",
-                        (milliseconds() + WORK_MS, json.dumps(started), ticket))
+                        (milliseconds() + self.work_ms, json.dumps(started), ticket))
         return {"started": key}
 
     def publish(self, ticket, key, answer):
@@ -253,7 +271,7 @@ class Queue:
             raise Unavailable("already_published")
         started.remove(key)
         self.db.execute("UPDATE slots SET until_ms=?,started_json=? WHERE ticket=?",
-                        (milliseconds() + WORK_MS, json.dumps(started), ticket))
+                        (milliseconds() + self.work_ms, json.dumps(started), ticket))
         self.record(row["slot"], "publish", 1)
         return {"published": key}
 
@@ -371,7 +389,7 @@ def main():
                         result = {"released": True}
                     else:
                         queue.db.execute("UPDATE slots SET until_ms=? WHERE ticket=?",
-                                         (milliseconds() + WORK_MS, args.ticket))
+                                         (milliseconds() + queue.work_ms, args.ticket))
                         result = {"renewed": True}
         print(json.dumps(result, ensure_ascii=False))
     finally:

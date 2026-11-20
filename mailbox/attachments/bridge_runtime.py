@@ -13,10 +13,12 @@ import tempfile
 import threading
 import time
 import uuid
+from concurrent.futures import ThreadPoolExecutor
 from urllib.error import HTTPError
 
-from bridge_delivery import (call_gateway, load_client, publish_new_inbox, queue_expired_fallback,
-                             read_delivery, repair_receipt, retry_floor)
+from bridge_delivery import (FALLBACK_GRACE_MS, call_gateway, load_client,
+                             publish_new_inbox, queue_expired_fallback, read_delivery,
+                             rejected_as_expired, repair_receipt, reply_deadline, retry_floor)
 from bridge_watch import wait_for_work, watch_directories
 
 
@@ -46,7 +48,8 @@ def read(path):
 
 
 class InboxRejected(Exception):
-    def __init__(self, retry_ms):
+    def __init__(self, status, code, retry_ms):
+        super().__init__(f"HTTP {status}" + (f" {code}" if code else ""))
         self.retry_seconds = retry_ms / 1000
 
 
@@ -112,12 +115,18 @@ class Bridge:
             status, response, headers = call_gateway(client, "GET", path, timeout=45)
             reason = "http" if status != 200 else "protocol"
             if status != 200:
-                raise InboxRejected(retry_floor(response if isinstance(response, dict) else {}, headers))
+                error = response if isinstance(response, dict) else {}
+                code = error.get("code")
+                if not isinstance(code, str) or not re.fullmatch(r"[A-Z0-9_]{1,96}", code):
+                    code = None
+                raise InboxRejected(status, code, retry_floor(error, headers))
             if not isinstance(response, dict) or response.get("ok") is not True:
                 raise ValueError("unexpected inbox")
             items = response.get("items")
             if not isinstance(items, list):
                 raise ValueError("malformed inbox")
+            received_at = ms()
+            server_now = response.get("serverNow")
             problem = None
             for item in items:
                 key = item.get("requestKey") if isinstance(item, dict) else None
@@ -126,7 +135,10 @@ class Bridge:
                         or not isinstance(item.get("conversationId"), str) or not item["conversationId"]):
                     problem = "protocol"
                     continue
-                if item["expiresAt"] <= ms():
+                if type(server_now) is int and server_now > 0:
+                    # Keep the wire deadline for identity; compare on the VM's own clock.
+                    item = {**item, "localExpiresAt": received_at + item["expiresAt"] - server_now}
+                if reply_deadline(item) <= received_at:
                     continue
                 destination = self.inbox / (key + ".json")
                 try:
@@ -159,7 +171,8 @@ class Bridge:
                 if repeated and not added:
                     self.stopping.wait(1)
             except Exception as error:
-                print(f"intake {self.channel}: {type(error).__name__}", file=sys.stderr, flush=True)
+                detail = str(error) if isinstance(error, InboxRejected) else type(error).__name__
+                print(f"intake {self.channel}: {detail}", file=sys.stderr, flush=True)
                 failures += 1
                 delay = min(20, 2 ** min(failures - 1, 5))
                 self.stopping.wait(max(delay, error.retry_seconds if isinstance(error, InboxRejected) else 0))
@@ -199,7 +212,7 @@ class Bridge:
                 print(f"pool: {type(error).__name__}", file=sys.stderr, flush=True)
                 self.stopping.wait(5)
 
-    def ship_one(self, path, via):
+    def next_ship(self, path, via):
         key = path.stem
         if not KEY.fullmatch(key):
             return
@@ -230,49 +243,76 @@ class Bridge:
             return
         if via == "reply":
             incoming = read(self.inbox / path.name)
-            deadline = incoming.get("expiresAt")
+            deadline = reply_deadline(incoming)
             if type(deadline) is not int or deadline <= 0:
                 return
-            if ms() >= deadline:
+            now = ms()
+            gateway_expired = rejected_as_expired(info)
+            if now >= deadline or gateway_expired:
                 if self.channel == "qq":
-                    if queue_expired_fallback(self.bridge, key):
+                    if (info.get("newInbox") and not info.get("maybeSent")
+                            and info.get("phase") in ("ready", "expired")
+                            and (info.get("attempts") == 0 or gateway_expired)
+                            and (now <= deadline + FALLBACK_GRACE_MS or info.get("fallbackKey"))
+                            and queue_expired_fallback(self.bridge, key)):
                         end_marker.touch(exist_ok=True)
                 elif (info.get("newInbox") is True and info.get("attempts") == 0
                       and info.get("phase") not in ("uncertain", "retry")):
                     end_marker.touch(exist_ok=True)
                 return
+        else:
+            deadline = float("inf")
         if info.get("phase") in ("uncertain", "rejected", "expired", "exhausted", "confirmed"):
             return
         if (info.get("nextAttemptAt") or 0) > ms():
             return
+        return deadline
+
+    def ship_one(self, path, via):
         result = subprocess.run(
             [sys.executable, str(self.bridge / "ship_relay.py"),
              f"/api/muse/{self.channel}/{via}", str(path)],
-            stdout=subprocess.PIPE, text=True, timeout=100, check=False)
-        # The desktop CLI retains "sent" for compatibility after verifying "accepted".
-        if result.returncode == 0 and result.stdout.strip() in ("sent", "skipped"):
-            verified = (read_delivery(self.bridge, key) or {}).get("receipt") or {}
-            if verified.get("status") in allowed and verified.get("via", via) == via:
-                marker.touch(exist_ok=True)
+             stdout=subprocess.DEVNULL, timeout=100, check=False)
+        # The next scan validates and repairs the original receipt and markers.
+        if result.returncode != 0:
+            print(f"ship {self.channel}: exit {result.returncode}", file=sys.stderr, flush=True)
 
     def ship_forever(self):
-        while not self.stopping.is_set():
-            try:
-                with watch_directories(self.spools) as fd:
-                    for spool in self.spools:
-                        via = "send" if spool.name == "sendbox" else "reply"
-                        for file in spool.glob("*.json"):
-                            if self.stopping.is_set():
-                                return
-                            try:
-                                self.ship_one(file, via)
-                            except (OSError, ValueError, subprocess.SubprocessError) as error:
-                                print(f"ship {self.channel}: {type(error).__name__}",
-                                      file=sys.stderr, flush=True)
-                    wait_for_work(fd, 2)
-            except Exception as error:
-                print(f"ship scan {self.channel}: {type(error).__name__}", file=sys.stderr, flush=True)
-                self.stopping.wait(2)
+        limit = 3 if self.channel == "qq" else 1
+        pending = {}
+        with ThreadPoolExecutor(max_workers=limit) as senders:
+            while not self.stopping.is_set():
+                try:
+                    with watch_directories(self.spools) as fd:
+                        for file, future in list(pending.items()):
+                            if future.done():
+                                del pending[file]
+                                try:
+                                    future.result()
+                                except (OSError, subprocess.SubprocessError) as error:
+                                    print(f"ship {self.channel}: {type(error).__name__}", file=sys.stderr, flush=True)
+                        free = limit - len(pending)
+                        if free:
+                            candidates = []
+                            for spool in self.spools:
+                                via = "send" if spool.name == "sendbox" else "reply"
+                                for file in spool.glob("*.json"):
+                                    if self.stopping.is_set():
+                                        return
+                                    if file in pending:
+                                        continue
+                                    try:
+                                        deadline = self.next_ship(file, via)
+                                        if deadline is not None:
+                                            candidates.append((deadline, file, via))
+                                    except (OSError, ValueError) as error:
+                                        print(f"ship {self.channel}: {type(error).__name__}", file=sys.stderr, flush=True)
+                            for _, file, via in sorted(candidates)[:free]:
+                                pending[file] = senders.submit(self.ship_one, file, via)
+                        wait_for_work(fd, 0.5 if pending else 2)
+                except Exception as error:
+                    print(f"ship scan {self.channel}: {type(error).__name__}", file=sys.stderr, flush=True)
+                    self.stopping.wait(2)
 
     def watch_drain(self, generation):
         path = self.state / "receiver-drain.json"

@@ -30,6 +30,8 @@ MAX_MEDIA = 3 * 1024 * 1024
 MAX_ATTEMPTS = 5
 BACKOFF = (2, 5, 10, 20)
 TERMINAL = {"confirmed", "marked_done", "uncertain", "expired", "rejected", "fallback"}
+FALLBACK_GRACE_MS = 120_000
+UNSENT_EXPIRY_CODES = {"QQ_MUSE_REPLY_NOT_SENT", "QQ_REPLY_EXPIRED"}
 
 
 def now_ms():
@@ -221,14 +223,17 @@ def publish_new_inbox(bridge, item):
                 # acceptance window started before cutover even if we receive it now.
                 window_ms = 150_000 if bridge.name == "desktop-bridge" else (
                     300_000 if item.get("scope") == "group" else 3_600_000)
-                started = item["expiresAt"] - window_ms
+                timestamp = item.get("timestamp")
+                if type(timestamp) is int and 0 < timestamp < item["expiresAt"]:
+                    window_ms = item["expiresAt"] - timestamp
+                started = reply_deadline(item) - window_ms
                 prior_bridge = previous.get("priorBridge", bool(previous["legacy"]))
                 possible_replay = prior_bridge and started <= previous["atNs"] // 1_000_000
                 if possible_replay or (bridge / "outbox" / target.name).exists():
                     state.update(phase="uncertain", code="LEGACY_REPLAY")
             state["newInbox"] = state["phase"] == "ready"
             state["inboxIdentity"] = identity
-            state["expiresAt"] = item["expiresAt"]
+            state["expiresAt"] = reply_deadline(item)
             publish(path, state)
         if state.get("inboxIdentity") != identity or state["via"] != "reply" or state["phase"] != "ready":
             return False
@@ -278,11 +283,21 @@ def prepare(channel, via, payload):
     return body
 
 
+def reply_deadline(item):
+    return item.get("localExpiresAt", item.get("expiresAt"))
+
+
 def expires(bridge, key):
     item = object_at(bridge / "inbox" / (key + ".json"))
-    if item.get("requestKey") != key or type(item.get("expiresAt")) is not int or item["expiresAt"] <= 0:
+    deadline = reply_deadline(item)
+    if item.get("requestKey") != key or type(deadline) is not int or deadline <= 0:
         raise ValueError("invalid reply window")
-    return item["expiresAt"]
+    return deadline
+
+
+def rejected_as_expired(state):
+    return (state.get("phase") == "expired" and state.get("httpStatus") == 410
+            and state.get("code") in UNSENT_EXPIRY_CODES)
 
 
 def retry_floor(data, headers):
@@ -354,7 +369,8 @@ def outcome(state, channel, via, body, http, data, headers):
         state.update(phase="uncertain", maybeSent=True)
         return
     if http == 410:
-        state["phase"] = "uncertain" if ambiguous else "expired"
+        unknown_qq_reply = channel == "qq" and via == "reply" and code not in UNSENT_EXPIRY_CODES
+        state["phase"] = "uncertain" if ambiguous or unknown_qq_reply else "expired"
         return
     preparing = code == "QQ_MUSE_SEND_PENDING" and channel == "qq" and via == "send"
     transient = http is None or http in (408, 429) or (http is not None and 500 <= http < 600) or preparing
@@ -522,7 +538,7 @@ def ship(channel, bridge, route, file):
 
 
 def queue_expired_fallback(bridge, key):
-    """Convert only a proven never-posted new QQ answer, under the original sender lock."""
+    """Convert only a new QQ answer whose original send is known not to have happened."""
     bridge = Path(bridge)
     if bridge.name != "qq-bridge" or not key_ok(key):
         return None
@@ -530,11 +546,17 @@ def queue_expired_fallback(bridge, key):
     path = directory / (key + ".json")
     with locked(directory / (key + ".lock"), blocking=False):
         state = state_at(path, key)
-        if not state or state["via"] != "reply" or not state.get("newInbox") or state["attempts"] != 0:
+        if not state or state["via"] != "reply" or not state.get("newInbox") or state.get("maybeSent"):
             return None
         if state["phase"] == "fallback":
             return state["fallbackKey"]
-        if state["phase"] not in ("expired", "ready") or now_ms() < expires(bridge, key):
+        if state["phase"] not in ("expired", "ready", "retry"):
+            return None
+        deadline = expires(bridge, key)
+        now = now_ms()
+        if not rejected_as_expired(state) and (state["attempts"] or now < deadline):
+            return None
+        if "fallbackKey" not in state and now > deadline + FALLBACK_GRACE_MS:
             return None
         # Historical markers or receipts may have appeared since the item was fetched.
         if initial(bridge, key, "reply")["phase"] != "ready":
