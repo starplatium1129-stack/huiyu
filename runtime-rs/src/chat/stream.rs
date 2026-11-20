@@ -27,6 +27,7 @@ pub(super) enum Event {
         content: String,
     },
     ToolCall(Box<ToolCall>),
+    KeepAlive,
     Done,
 }
 #[derive(Serialize)]

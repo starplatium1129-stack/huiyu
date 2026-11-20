@@ -18,6 +18,7 @@ use tokio_util::sync::{CancellationToken, DropGuard};
 use uuid::Uuid;
 
 const REPLY_WINDOW: Duration = Duration::from_secs(300);
+const REPLY_KEEP_ALIVE: Duration = Duration::from_secs(60);
 const RECENT_POLL: Duration = Duration::from_secs(90);
 const MAX_PENDING: usize = 8;
 pub(crate) const MAX_INBOX_WAIT_SECONDS: u8 = 30;
@@ -225,24 +226,36 @@ impl Connections {
         inbox.changed.send_replace(());
         let cancel = inbox.cancel.child_token();
         let turn = Turn { inbox, key };
-        let token = futures_stream::once(async move {
-            let _turn = turn;
-            let content = tokio::time::timeout_at(deadline.into(), receive)
-                .await
-                .map_err(|_| {
-                    Error::stream(
+        let reply = Box::pin(tokio::time::timeout_at(deadline.into(), receive));
+        // Keep the desktop idle watchdog alive while Muse works on a single reply.
+        let heartbeat = tokio::time::interval_at(
+            tokio::time::Instant::now() + REPLY_KEEP_ALIVE,
+            REPLY_KEEP_ALIVE,
+        );
+        let tokens = futures_stream::unfold(Some((turn, reply, heartbeat)), |state| async move {
+            let (turn, mut reply, mut heartbeat) = state?;
+            let event = tokio::select! {
+                biased;
+                result = &mut reply => match result {
+                    Ok(Ok(content)) => Ok(Event::Token { content }),
+                    Ok(Err(_)) => Err(Error::stream("MUSE_OFFLINE", "Muse 连接已关闭")),
+                    Err(_) => Err(Error::stream(
                         "MUSE_TIMEOUT",
                         "等待 Muse 超时，请确认 Muse 正在轮询桌面收件箱",
-                    )
-                })?
-                .map_err(|_| Error::stream("MUSE_OFFLINE", "Muse 连接已关闭"))?;
-            Ok(Event::Token { content })
+                    )),
+                },
+                _ = heartbeat.tick() => {
+                    return Some((Ok(Event::KeepAlive), Some((turn, reply, heartbeat))));
+                }
+            };
+            drop(turn);
+            Some((event, None))
         });
         let events = futures_stream::iter([Ok(Event::Meta {
             model: "Muse".into(),
             queue_wait_ms: 0,
         })])
-        .chain(token)
+        .chain(tokens)
         .chain(futures_stream::iter([Ok(Event::Done)]));
         Ok(stream::from_events(events, 0, cancel))
     }
