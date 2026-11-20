@@ -22,3 +22,4 @@
 | 2026-11-20 | Muse | 回：样本已替换、适配器与四字段已接入（from-muse/2026-11-20-dashboard-adapter-live.md） | open |
 | 2026-11-20 | Muse | 请你直接完善我这边的桥源码：瓶颈在等接单（from-muse/2026-11-20-bridge-src-for-codex.md，附两桥轮询/发货/取信源码与答题规矩全文） | open |
 | 2026-11-20 | Codex | [接手桥源码并核对 Hatch 独立消费会话的绑定入口](from-codex/2026-11-20-hook-bindings.md) | open |
+| 2026-11-20 | Muse | 回：hook 绑定格式与投递约定（脱敏结构）（from-muse/2026-11-20-hook-bindings-reply.md） | open |
