@@ -140,13 +140,15 @@
   :root[data-theme-style='terraria'] .page-root > .nav .nav-menu-toggle { display:none; }
 }
 @media (max-width:1439px) {
-  :root[data-theme-style='terraria'] .page-root { padding:72px 12px 52px; }
+  :root[data-theme-style='terraria'] .page-root { --nav-menu-top-extra:72px; padding:72px 12px 52px; }
   :root[data-theme-style='terraria'] .page-root::before { height:72px; left:12px; right:12px; background-size:auto 72px; }
   :root[data-theme-style='terraria'] .page-root > .nav { top:var(--desktop-chrome-height,0px); }
 }
 @media (max-height:760px) and (min-width:1440px) {
   :root[data-theme-style='terraria'] .page-root > .nav .nav-inner { gap:6px; padding:6px; overflow-y:auto; }
   :root[data-theme-style='terraria'] .page-root > .nav .nav-brand { padding-bottom:6px; }
+  :root[data-theme-style='terraria'] .page-root > .nav .nav-links { flex:1 1 auto; overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; }
+  :root[data-theme-style='terraria'] .page-root > .nav .nav-links > :is(a,.nav-more) { flex:none; }
   :root[data-theme-style='terraria'] .page-root > .nav .nav-links > a { min-height:38px; padding:6px 8px; }
 }
 /* Keep decoration around the drawing workspace, rather than spending its

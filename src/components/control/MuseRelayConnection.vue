@@ -49,7 +49,7 @@ async function copyKey() { const key = await read(); return !!key && copyText(ke
     <label for="muse-relay-token">X-Token</label>
     <div class="muse-row">
       <input id="muse-relay-token" class="input input-mono" :type="shown ? 'text' : 'password'" :value="shown" placeholder="密钥已隐藏" autocomplete="off" spellcheck="false" readonly />
-      <button type="button" class="btn btn-quiet btn-sm" aria-label="显示 X-Token" :aria-pressed="!!shown" :disabled="loading" @click="toggle">{{ loading ? '读取中…' : shown ? '隐藏密钥' : '显示密钥' }}</button>
+      <button type="button" class="btn btn-quiet btn-sm" :aria-label="shown ? '隐藏密钥 X-Token' : '显示密钥 X-Token'" :disabled="loading" @click="toggle">{{ loading ? '读取中…' : shown ? '隐藏密钥' : '显示密钥' }}</button>
       <StudioCopyButton class="btn btn-ghost btn-sm" label="复制 X-Token" :content-key="url" :disabled="loading" :action="copyKey" />
     </div>
     <p v-if="error" role="alert">{{ error }}</p>

@@ -11,11 +11,11 @@
     </div>
 
     <div class="api-provider-row">
-      <label class="api-field">
-        <span>服务商</span>
-        <StudioSelect :model-value="vendor" label="服务商" :groups="providerGroups" :disabled="locked"
+      <div class="api-field">
+        <label :for="id + '-vendor'">服务商</label>
+        <StudioSelect :id="id + '-vendor'" :model-value="vendor" label="服务商" :groups="providerGroups" :disabled="locked"
           @update:model-value="selectVendor($event as ApiVendor)" />
-      </label>
+      </div>
       <div v-if="preset.keyUrl || preset.docsUrl" class="api-provider-help api-help-links">
         <a v-if="preset.keyUrl" :href="preset.keyUrl" target="_blank" rel="noopener noreferrer" aria-label="获取密钥，在新窗口打开">获取密钥</a>
         <a v-if="preset.docsUrl" :href="preset.docsUrl" target="_blank" rel="noopener noreferrer" aria-label="官方说明，在新窗口打开">官方说明</a>
@@ -24,14 +24,14 @@
 
     <p class="api-provider-description">{{ preset.help }}</p>
 
-    <label v-if="needsKey" class="api-field">
-      <span>API 密钥</span>
+    <div v-if="needsKey" class="api-field">
+      <label :for="id + '-key'">API 密钥</label>
       <div class="api-key-field">
-        <input v-model.trim="apiKeyProxy" class="input" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
-          maxlength="1000" placeholder="粘贴服务商的 API Key" autocomplete="off" required aria-label="API 密钥" spellcheck="false" />
+        <input :id="id + '-key'" v-model.trim="apiKeyProxy" class="input" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
+          maxlength="1000" placeholder="粘贴服务商的 API Key" autocomplete="off" required spellcheck="false" />
         <button class="btn btn-quiet btn-sm" type="button" :disabled="locked" :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
       </div>
-    </label>
+    </div>
 
     <StudioCheckbox v-if="vendor === 'openrouter'" v-model:checked="freeModelsOnly" label="只选免费模型" :disabled="locked">只选免费模型</StudioCheckbox>
 
@@ -57,14 +57,14 @@
             :aria-describedby="addressError ? id + '-address-help' : undefined" />
           <small v-if="addressError" :id="id + '-address-help'" class="api-address-error">{{ addressError }}</small>
         </label>
-        <label v-if="!needsKey" class="api-field">
-          <span>访问密钥 <small>可选</small></span>
+        <div v-if="!needsKey" class="api-field">
+          <label :for="id + '-key'">访问密钥 <small>可选</small></label>
           <div class="api-key-field">
-            <input v-model.trim="apiKeyProxy" class="input" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
-              maxlength="1000" placeholder="服务未开启认证时留空" autocomplete="off" aria-label="访问密钥" spellcheck="false" />
+            <input :id="id + '-key'" v-model.trim="apiKeyProxy" class="input" :type="showApiKey ? 'text' : 'password'" :disabled="locked"
+              maxlength="1000" placeholder="服务未开启认证时留空" autocomplete="off" spellcheck="false" />
             <button class="btn btn-quiet btn-sm" type="button" :disabled="locked" :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
           </div>
-        </label>
+        </div>
         <div class="api-connection-actions">
           <button v-if="preset.baseUrl && baseUrl !== preset.baseUrl" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="baseUrlProxy = preset.baseUrl">恢复默认地址</button>
           <button class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="clearPersonalKey">{{ clearingKey ? '清除中…' : '清除密钥' }}</button>
@@ -147,7 +147,7 @@ function handleSubmit(event: Event) {
     return
   }
   if (needsKey.value && !props.apiKey.trim()) {
-    const el = form.querySelector<HTMLInputElement>('input[aria-label="API 密钥"]')
+    const el = form.querySelector<HTMLInputElement>('.api-key-field input')
     el?.scrollIntoView({ behavior: 'instant', block: 'nearest' })
     el?.focus()
     return
@@ -161,8 +161,9 @@ function handleSubmit(event: Event) {
 </script>
 
 <style scoped>
-.api-provider-row { display:grid; grid-template-columns:repeat(2, minmax(0, 1fr)); gap:var(--s-3); align-items:end; }
-.api-provider-help { min-height:var(--control-height); align-items:center; }
+.api-settings { container:chat-api / inline-size; }
+.api-provider-row { display:grid; grid-template-columns:minmax(0,1fr); gap:var(--s-2); align-items:end; }
+.api-provider-help { min-height:var(--control-height-sm); align-items:center; }
 .api-provider-description { margin:0; color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.6; }
 .api-provider-help, .api-host-advanced { color:var(--text-secondary); font-size:var(--fs-label-sm); line-height:1.6; }
 .api-help-links { display:flex; flex-wrap:wrap; gap:var(--s-2) var(--s-4); }
@@ -179,6 +180,13 @@ function handleSubmit(event: Event) {
 .api-host-advanced p { margin:var(--s-2) 0; }
 .api-test-status[data-state="warning"] { color:var(--warning-text); }
 .api-field .api-address-error { color:var(--danger-text); }
-.api-field > span small { font-weight:400; }
-@media (max-width:600px) { .api-provider-row { grid-template-columns:1fr; gap:var(--s-2); } .api-provider-help { min-height:32px; } }
+.api-field > label small { font-weight:400; }
+@container chat-api (min-width:25rem) {
+  .api-provider-row:has(.api-provider-help) { grid-template-columns:minmax(0,1fr) auto; gap:var(--s-3); }
+  .api-provider-help { min-height:var(--control-height); }
+}
+@container chat-api (max-width:20rem) {
+  .api-model-row { grid-template-columns:minmax(0,1fr); }
+  .api-model-row > :last-child { justify-self:start; }
+}
 </style>

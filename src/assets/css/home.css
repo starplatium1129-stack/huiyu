@@ -127,7 +127,7 @@
   .hero-register { @apply tw:mb-s-4; }
   .hero-orbit { @apply tw:h-[380px]; }
   .hero-orbit::after { background: linear-gradient(0deg, var(--bg-deep), transparent 45%); }
-  .hero-title { font-size: clamp(2.4rem, 7vw, 3.8rem); }
+  .hero-title { font-size:clamp(1.7rem,calc(.75rem + 6cqw),3.8rem); }
   .recent-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media (max-width: 480px) {

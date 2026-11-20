@@ -1,7 +1,7 @@
 <template>
-  <aside class="character-directory" :class="{ 'directory-catalog': catalog }" :data-fluid-glass="catalog ? undefined : 'sidebar'" aria-label="角色目录">
+  <aside class="character-directory" :class="{ 'directory-catalog': catalog, 'directory-compact': compactCatalog }" :data-fluid-glass="catalog ? undefined : 'sidebar'" aria-label="角色目录">
     <!-- Catalog searches stay fixed while the series and result lists scroll independently. -->
-    <div v-if="catalog" class="directory-rail tw:flex tw:flex-col tw:gap-s-2 tw:min-w-0 tw:min-h-0 tw:pr-s-3">
+    <div v-if="catalog && !compactCatalog" class="directory-rail tw:flex tw:flex-col tw:gap-s-2 tw:min-w-0 tw:min-h-0 tw:pr-s-3">
       <label :for="seriesInputId" class="directory-rail-title tw:m-0 tw:text-muted tw:text-label-xs tw:font-semibold">按作品筛选</label>
       <StudioSearch :id="seriesInputId" v-model="seriesQuery" class="directory-series-search" label="搜索作品目录" placeholder="搜索作品…" :clear-on-escape="false" @keydown="onSeriesSearchKeydown" />
       <div ref="rail" class="directory-series tw:flex tw:flex-col tw:gap-s-1 tw:min-h-0 tw:overflow-y-auto" role="group" aria-label="按作品浏览" @keydown="onRailKeys">
@@ -12,9 +12,9 @@
     </div>
     <div class="directory-main tw:flex tw:min-h-0">
       <div class="directory-tools">
-        <label class="directory-heading" :for="inputId">选择角色 <span v-if="!catalog">{{ items.length }}</span></label>
+        <label class="directory-heading" :for="inputId">搜索角色或作品 <span v-if="!catalog">{{ items.length }}</span></label>
         <StudioSearch :id="inputId" v-model="query" class="directory-search" label="搜索角色或作品" placeholder="角色名、作品或别名…" :autofocus="catalog" :clear-on-escape="false" @keydown="onSearchKeydown" />
-        <StudioSelect v-if="!catalog" v-model="series" label="筛选角色系列" :options="seriesOptions" />
+        <StudioSelect v-if="!catalog || compactCatalog" v-model="series" label="筛选角色作品" :options="seriesOptions" />
         <div class="directory-count"><span role="status">找到 {{ results.length }} 位角色</span><button v-if="query || series" type="button" @click="clearFilters">清除筛选</button></div>
       </div>
       <div ref="list" v-content-motion:up="`${series}:${page}`" class="directory-list tw:min-h-[120px] tw:overflow-y-auto" role="group" aria-label="角色列表" @keydown="onListKeys">
@@ -50,7 +50,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 export interface DirectoryCharacter { id: string; name: string; source: string; image?: string; fullImage?: string; aliases?: string[] }
-const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
+const props = withDefaults(defineProps<{ items: DirectoryCharacter[]; selectedId: string; catalog?: boolean; compactCatalog?: boolean; pageSize?: number }>(), { catalog: false, pageSize: 0 })
 const emit = defineEmits<{ select: [id: string]; dismiss: [] }>()
 const inputId = useId()
 const seriesInputId = useId()
@@ -97,7 +97,7 @@ const indexed = computed(() => props.items.map(item => {
   const key = franchiseKey(item.source)
   return { item, key, name: item.name.toLocaleLowerCase(), text: [item.id, item.name, item.source, franchiseLabel(key), ...(item.aliases || [])].join(' ').toLocaleLowerCase() }
 }))
-const seriesOptions = computed(() => [{ value: '', label: '全部系列' },
+const seriesOptions = computed(() => [{ value: '', label: '全部作品' },
   ...groups.value.map(group => ({ value: group.key, label: `${group.label} · ${group.count}` }))])
 const filteredGroups = computed(() => {
   const term = seriesQuery.value.trim().toLocaleLowerCase()
@@ -271,4 +271,11 @@ function onSeriesSearchKeydown(event: KeyboardEvent) {
   .directory-catalog .directory-label small { white-space:nowrap; line-height:var(--lh-label); }
   .directory-catalog .directory-selected { position:static; grid-column:3; grid-row:1; justify-self:end; width:24px; height:24px; margin:0; }
 }
+.directory-catalog.directory-compact { grid-template-columns:minmax(0,1fr); }
+.directory-compact .directory-tools { padding:0; gap:var(--s-2); }
+.directory-compact .directory-list { grid-template-columns:repeat(auto-fill,minmax(min(100%,180px),1fr)); }
+.directory-compact .directory-item { display:grid; grid-template-columns:44px minmax(0,1fr) auto; align-items:center; min-height:56px; gap:var(--s-2); }
+.directory-compact .directory-item :deep(.character-portrait) { width:44px; height:48px; }
+.directory-compact .directory-selected { position:static; grid-column:3; grid-row:1; width:22px; height:22px; }
+.directory-compact .directory-label { padding:0; }
 </style>

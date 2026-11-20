@@ -1,52 +1,34 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import StudioSelect from '@/components/ui/StudioSelect.vue'
-import { listCompanionUiCharacters } from '@/utils/companionRegistry'
+import { computed, shallowRef } from 'vue'
+import ArchiveIcon from './visual/ArchiveIcon.vue'
+import CompanionCharacterDialog from './CompanionCharacterDialog.vue'
+import { getCompanionCharacter } from '@/utils/companionRegistry'
 
 const props = withDefaults(defineProps<{ modelValue: string; label?: string }>(), { label: '切换角色' })
 const emit = defineEmits<{ 'update:modelValue': [id: string] }>()
-const characters = computed(listCompanionUiCharacters)
-const currentCharacter = computed(() => characters.value.find(character => character.id === props.modelValue) || characters.value[0])
-const options = computed(() => characters.value.map(character => ({ value: character.id, label: character.name })))
-const characterById = computed(() => new Map(characters.value.map(character => [character.id, character])))
+const opener = shallowRef<HTMLButtonElement | null>(null)
+const name = computed(() => getCompanionCharacter(props.modelValue)?.name || '选择角色')
 </script>
 
 <template>
   <div class="companion-picker">
-    <StudioSelect :model-value="modelValue" :options="options" :label="label"
-      @update:model-value="emit('update:modelValue', String($event))">
-      <template #value>
-        <span v-content-motion:up="modelValue" class="companion-picker-value">
-          <span class="companion-picker-mark" :data-character="modelValue" aria-hidden="true"><i /></span>
-          <span class="companion-picker-copy"><strong>{{ currentCharacter?.name || '选择角色' }}</strong><small aria-hidden="true">当前陪伴</small></span>
-        </span>
-      </template>
-      <template #header>
-        <div class="companion-picker-heading" aria-hidden="true"><span><ArchiveIcon name="character" />陪伴角色</span><small>{{ characters.length }} 位可选</small></div>
-      </template>
-      <template #option="{ option }">
-        <span class="companion-picker-value">
-          <span class="companion-picker-mark" :data-character="String(option.value)" aria-hidden="true"><i /></span>
-          <span class="companion-picker-copy"><strong>{{ option.label }}</strong><small aria-hidden="true">{{ option.value === modelValue ? '正在陪伴' : `切换到${characterById.get(String(option.value))?.shortName || option.label}` }}</small></span>
-        </span>
-      </template>
-    </StudioSelect>
+    <button class="companion-picker-trigger" type="button" aria-haspopup="dialog" :aria-expanded="!!opener"
+      :aria-label="`${label}，当前${name}`" @click="opener = $event.currentTarget as HTMLButtonElement">
+      <span class="companion-picker-copy"><strong>{{ name }}</strong><small>{{ label }}</small></span>
+      <ArchiveIcon name="chevron-down" />
+    </button>
+    <CompanionCharacterDialog v-if="opener" :opener="opener" :selected-id="modelValue"
+      @dismiss="opener = null" @select="emit('update:modelValue', $event)" />
   </div>
 </template>
 
 <style>
 .companion-picker { width:100%; min-width:0; max-width:220px; }
-.companion-picker-value { display:flex; align-items:center; gap:var(--s-2); min-width:0; }
-.companion-picker-mark { --companion-option-accent:var(--character-accent,var(--accent)); display:grid; place-items:center; flex:none; width:27px; height:27px; border:1px solid color-mix(in srgb,var(--companion-option-accent) 45%,var(--border-soft)); border-radius:50%; background:color-mix(in srgb,var(--companion-option-accent) 12%,var(--bg-surface)); }
-.companion-picker-mark[data-character='nene'] { --companion-option-accent:var(--nene-violet); }
-.companion-picker-mark[data-character='natsume'] { --companion-option-accent:var(--natsume-amber); }
-.companion-picker-mark i { width:8px; height:8px; border-radius:50%; background:var(--companion-option-accent); }
-.companion-picker-copy { display:flex; flex:1; flex-direction:column; min-width:0; }
-.companion-picker-copy strong { overflow:hidden; color:var(--text-primary); font:600 var(--fs-label)/var(--lh-tight) var(--font-sans); text-overflow:ellipsis; white-space:nowrap; }
-.companion-picker-copy small { overflow:hidden; color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-tight) var(--font-sans); text-overflow:ellipsis; white-space:nowrap; }
-.companion-picker-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-1); padding:var(--s-2) var(--s-3); border-bottom:1px solid var(--border-soft); color:var(--text-secondary); font-size:var(--fs-label-xs); }
-.companion-picker-heading > span { display:inline-flex; align-items:center; gap:var(--s-2); }
-.companion-picker-heading .archive-icon { width:16px; height:16px; }
-@media (forced-colors:active) { .companion-picker-mark { border-color:CanvasText; background:Canvas; } .companion-picker-mark i { background:CanvasText; } }
+.companion-picker-trigger { display:flex; align-items:center; gap:var(--s-2); max-width:100%; min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:inherit; text-align:left; cursor:pointer; }
+.companion-picker-trigger:hover { background:var(--bg-hover); }
+.companion-picker-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
+.companion-picker-trigger > .archive-icon { flex:none; width:16px; height:16px; color:var(--text-secondary); }
+.companion-picker-copy { display:grid; min-width:0; }
+.companion-picker-copy strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.companion-picker-copy small { color:var(--text-secondary); font-size:var(--fs-label-xs); }
 </style>

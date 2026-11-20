@@ -27,7 +27,9 @@
 .appearance-style-preview.terraria i { border:2px solid var(--terraria-preview-soil); border-top:4px solid var(--terraria-preview-grass); border-radius:0; background:var(--terraria-preview-panel); }
 /* Geometry, selection and interaction belong to studio-segments.css. */
 .appearance-segments button { min-width:0; }
-.appearance-range input[type="range"] { @apply tw:w-full; background: linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px); }
+.appearance-range { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2) var(--s-3); }
+.appearance-range output { font:500 var(--fs-label)/var(--lh-label) var(--font-mono); }
+.appearance-range input[type="range"] { @apply tw:w-full tw:min-w-0; background: linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px); }
 .appearance-range input[type="range"]:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 .appearance-fields .appearance-check { @apply tw:flex tw:items-start tw:gap-s-3 tw:w-full tw:p-s-3; border: 1px solid transparent; @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:cursor-pointer; }
 .appearance-check > span:last-child { flex: 1; @apply tw:text-left; }

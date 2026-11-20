@@ -10,7 +10,7 @@
     background: var(--bg-surface); border: 1px solid var(--border-soft);
     @apply tw:rounded-lg; box-shadow: var(--shadow-lg);
   }
-  .nav-links.open { @apply tw:grid; max-height: calc(100dvh - 100px); @apply tw:overflow-y-auto; overscroll-behavior: contain; }
+  .nav-links.open { @apply tw:grid; max-height:calc(100dvh - var(--desktop-chrome-height,0px) - var(--app-navigation-height,80px) - var(--nav-menu-top-extra,0px) - 2 * var(--s-3)); @apply tw:overflow-y-auto; overscroll-behavior:contain; }
   .nav-links.open {
     transform-origin:top right;
     transition:opacity var(--motion-hover),transform var(--motion-surface) var(--ease-out);

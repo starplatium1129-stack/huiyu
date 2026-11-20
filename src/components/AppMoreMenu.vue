@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { onDeactivated, onMounted, ref } from 'vue'
-import { useResizeObserver } from '@vueuse/core'
+import { nextTick, onDeactivated, onMounted, ref, watch } from 'vue'
+import { createReusableTemplate, useResizeObserver } from '@vueuse/core'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import AppearancePreferences from '@/components/AppearancePreferences.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
@@ -8,6 +8,7 @@ import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 
 defineProps<{
+  compact: boolean
   groups: readonly { heading: string; items: readonly { id: string; label: string; to: string; icon: ArchiveIconName }[] }[]
   activeId: string
   pendingPath: string
@@ -15,8 +16,19 @@ defineProps<{
   openBesideTask: (path: string) => boolean
 }>()
 const open = defineModel<boolean>('open', { default:false })
+const [DefineLinks, MenuLinks] = createReusableTemplate()
 const emit = defineEmits<{ ready: []; navigate: []; guide: []; appearance: []; closeAutoFocus:[event:Event] }>()
 const menuContent = ref<HTMLElement | null>(null)
+const inlineContent = ref<HTMLElement | null>(null)
+const inlineTrigger = ref<HTMLButtonElement | null>(null)
+watch(inlineContent, panel => {
+  if (panel) panel.querySelector<HTMLElement>('.nav-back-button')?.focus({ preventScroll:true })
+}, { flush:'post' })
+async function back() {
+  open.value = false
+  await nextTick()
+  inlineTrigger.value?.focus({ preventScroll:true })
+}
 useResizeObserver(menuContent, () => {
   const active = document.activeElement
   if (open.value && active instanceof HTMLElement && menuContent.value?.contains(active)) {
@@ -39,9 +51,7 @@ function focusFirstPage(event: Event) {
 </script>
 
 <template>
-  <StudioPopover v-model:open="open" label="更多页面" content-class="nav-more-menu" @open-auto-focus="focusFirstPage" @close-auto-focus="onCloseAutoFocus">
-    <template #trigger><button type="button" class="nav-more-trigger"><span class="nav-more-label">更多</span><StudioToggleIcon :active="open" class="nav-more-chevron" /></button></template>
-    <header class="nav-more-heading"><strong>画室导航</strong><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭更多页面" @click="open = false"><ArchiveIcon name="close" /></button></header>
+  <DefineLinks>
     <section v-for="group in groups" :key="group.heading" class="nav-more-group" :aria-label="group.heading">
       <h3 class="nav-more-group-label">{{ group.heading }}</h3>
       <StudioTooltip
@@ -61,9 +71,24 @@ function focusFirstPage(event: Event) {
       </StudioTooltip>
     </section>
     <div class="nav-more-utilities">
-      <button class="nav-help" type="button" @click="emit('guide')">使用指南</button>
+      <button class="nav-help" type="button" @click="emit('guide')"><ArchiveIcon name="book" />新手引导</button>
       <AppearancePreferences launcher-only @open="emit('appearance')" />
     </div>
+  </DefineLinks>
+  <template v-if="compact">
+    <button v-if="!open" ref="inlineTrigger" type="button" class="nav-more-trigger" aria-expanded="false" @click="open = true"><span class="nav-more-label">更多</span><StudioToggleIcon :active="false" class="nav-more-chevron" /></button>
+    <section v-else ref="inlineContent" class="nav-more-menu nav-more-inline" aria-label="更多页面">
+      <header class="nav-more-heading">
+        <strong>更多页面</strong>
+        <button class="btn btn-quiet btn-sm nav-back-button" type="button" @click="back">返回主菜单</button>
+      </header>
+      <MenuLinks />
+    </section>
+  </template>
+  <StudioPopover v-else v-model:open="open" label="更多页面" content-class="nav-more-menu" @open-auto-focus="focusFirstPage" @close-auto-focus="onCloseAutoFocus">
+    <template #trigger><button type="button" class="nav-more-trigger"><span class="nav-more-label">更多</span><StudioToggleIcon :active="open" class="nav-more-chevron" /></button></template>
+    <header class="nav-more-heading"><strong>更多页面</strong><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭更多页面" @click="open = false"><ArchiveIcon name="close" /></button></header>
+    <MenuLinks />
   </StudioPopover>
 </template>
 
@@ -87,7 +112,9 @@ function focusFirstPage(event: Event) {
 .nav-more-heading { grid-column:1 / -1; @apply tw:flex tw:justify-between tw:items-center tw:gap-s-3 tw:text-primary tw:text-body-sm tw:pb-s-2; border-bottom:1px solid var(--border-soft); }
 .nav-more-menu .nav-current-label { @apply tw:ml-auto tw:shrink-0 tw:text-primary tw:text-label-xs; }
 .nav-more-menu :is(a,button):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.nav-more-utilities { grid-column:1 / -1; @apply tw:grid tw:gap-s-1 tw:pt-s-2; border-top:1px solid var(--border-soft); }
+.nav-more-utilities { grid-column:1 / -1; @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:pt-s-2; border-top:1px solid var(--border-soft); }
+.nav-more-utilities > button { flex:1 1 auto; }
+.nav-more-menu .nav-help { display:flex; align-items:center; gap:var(--s-2); }
 .nav-more-menu .nav-help { @apply tw:min-h-[44px] tw:p-s-3; border:0; @apply tw:rounded-md; background:transparent; @apply tw:text-secondary tw:text-left; font:500 var(--fs-label)/var(--lh-body) var(--font-sans); @apply tw:cursor-pointer; }
 .nav-more-utilities .appearance-entry { @apply tw:min-w-0 tw:min-h-[44px]; font:500 var(--fs-label)/var(--lh-body) var(--font-sans); }
 .nav-more-menu .nav-more-utilities > button { position:relative; isolation:isolate; transform:none; }
@@ -104,9 +131,9 @@ function focusFirstPage(event: Event) {
 }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-menu :is(a,button)::before,:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-menu a > :is(span,.archive-icon),:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-more-menu button > .archive-icon { transform:none; transition:none; }
 @media (forced-colors:active) { .nav-more-menu :is(a,button)::before { display:none; } .nav-more-menu :is(a,button):is(:hover,.active) { outline:1px solid Highlight; } }
-@media(max-width:600px) {
-  .studio-popover.nav-more-menu { grid-template-columns:minmax(0,1fr); @apply tw:gap-s-2; }
-  .nav-more-group { grid-template-columns:minmax(0,1fr); }
-  .nav-more-group + .nav-more-group { @apply tw:pt-s-1; border-top:1px solid var(--border-soft); }
-}
+.nav-more-inline { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr)); gap:var(--s-3); }
+.nav-more-inline .nav-more-heading { padding-inline:var(--s-2); }
+.nav-more-inline .nav-more-group { grid-template-columns:repeat(auto-fit,minmax(min(100%,120px),1fr)); }
+.nav-more-inline .nav-more-group-label { grid-column:1 / -1; }
+.nav-more-inline .nav-more-group a { background:var(--bg-base); padding:var(--s-2); }
 </style>

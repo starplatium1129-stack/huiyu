@@ -6,7 +6,7 @@ export function useCompanionOrbit(open: () => boolean, root: Ref<HTMLElement | n
   const { width, height } = useWindowSize()
   const compact = computed(() => width.value < 460 || height.value < 580)
   const size = computed(() => Math.max(180, Math.min(width.value - 24, height.value - 24, 440)))
-  const category = ref<'characters' | 'motions' | 'expressions' | null>(null)
+  const category = ref<'motions' | 'expressions' | null>(null)
   const page = ref(0)
   let returnFocus: HTMLElement | null = null
   watch(open, async value => {

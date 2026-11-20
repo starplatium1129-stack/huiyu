@@ -102,7 +102,7 @@ function retryReferences(event: MouseEvent) {
 .comparison-choices button span { @apply tw:text-muted tw:font-mono; }
 .comparison-choices button[aria-pressed="true"] { @apply tw:text-primary tw:border-strong; background:var(--bg-elevated); @apply tw:font-semibold; }
 .comparison-question { margin:var(--s-4) 0; }
-.comparison-spread { grid-template-columns:repeat(2,minmax(0,1fr)); }
+.comparison-spread { grid-template-columns:repeat(auto-fit,minmax(min(100%,16rem),1fr)); }
 .light-study { border:1px solid var(--border-soft); background:var(--bg-surface); }
 .study-image { position:relative; @apply tw:flex tw:items-center tw:justify-center tw:w-full tw:h-[360px]; background:var(--bg-elevated); @apply tw:overflow-hidden; }
 .study-image-link { position:absolute; inset:0; display:block; }
@@ -125,7 +125,7 @@ button:focus-visible, a:focus-visible { outline:none; box-shadow:var(--focus-sha
 .study-image-link:focus-visible { outline:2px solid var(--focus-color); outline-offset:-4px; box-shadow:none; }
 @media(forced-colors:active) { .study-image-retry:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 @media(max-width:768px) { .notebook-heading { @apply tw:flex-col; align-items:start; @apply tw:gap-s-3; } .notebook-heading > p { max-width:none; } .comparison-spread { @apply tw:gap-s-3; } figcaption { @apply tw:p-s-4; } dl > div { grid-template-columns:1fr; @apply tw:gap-s-1; } .study-image { @apply tw:h-[280px]; } }
-@media(max-width:480px) { .comparison-spread { grid-template-columns:1fr; } .study-image { @apply tw:h-[340px]; } .notebook-heading h2 { @apply tw:text-title-sm; } }
+@media(max-width:480px) { .study-image { @apply tw:h-[340px]; } .notebook-heading h2 { @apply tw:text-title-sm; } }
 :root:is([data-motion='reduce'],[data-motion='reduced']) .light-notebook .study-image img { transition:none; }
 @media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .light-notebook .study-image img { transition:none; } }
 </style>

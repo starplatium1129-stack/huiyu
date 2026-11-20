@@ -9,7 +9,7 @@
         <span class="nav-brand-note" aria-hidden="true">创作工作室</span>
       </RouterLink>
 
-      <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen }" @keydown="onNavigationKey">
+      <div id="primary-navigation" ref="linksEl" class="nav-links" :class="{ open: menuOpen, 'show-secondary': menuOpen && moreOpen && moreLoaded }" @keydown="onNavigationKey">
         <AnimatedSelection target=":scope > a.active" variant="underline" stretch />
         <!-- 主导航。aria-current 让读屏也能知道当前页,不只靠 class 上色 -->
         <RouterLink
@@ -38,7 +38,7 @@
               :aria-expanded="moreOpen" :aria-busy="moreReady"
               @click="openMore"><span class="nav-more-label">更多</span><StudioToggleIcon :active="moreOpen" class="nav-more-chevron" /></button>
           </StudioTooltip>
-          <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :groups="archiveGroups" :active-id="route.path === '/popular-scenes' ? 'popular-scenes' : activeId"
+          <component :is="AppMoreMenu" v-if="AppMoreMenu" v-model:open="moreOpen" :compact="menuOpen" :groups="archiveGroups" :active-id="activeId"
             :pending-path="pendingPath" :intent-path="intentRoutePath" :open-beside-task="openBesideTask"
             @ready="moreLoaded = true" @navigate="closeMenu" @guide="openGuide" @appearance="closeMenu"
             @close-auto-focus="onMoreCloseAutoFocus" />
@@ -158,41 +158,33 @@ const primaryNav: NavItem[] = [
 ]
 const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
   {
-    heading: '发现',
+    heading: '创作工具',
     items: [
       { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
-      { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
-    ],
-  },
-  {
-    heading: '美学',
-    items: [
-      { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
-      { id: 'scenario',  label: '剧本',     to: '/scenario',     icon: 'scene' },
-      // 与页面 h1 统一叫「色彩情绪」（2026-08-30 UX 审计 P1）：此前导航「色调脚本」、
-      // h1「色彩情绪」、hero「色彩剧本」三个中文名并存，搜哪个都可能对不上。
+      { id: 'scenario', label: '剧本模式', to: '/scenario', icon: 'scene' },
       { id: 'color-script', label: '色彩情绪', to: '/color-script', icon: 'palette' },
     ],
   },
   {
-    heading: '工坊',
+    heading: '素材资料',
     items: [
-      { id: 'lora',      label: '模型',     to: '/lora',         icon: 'model' },
+      { id: 'popular-scenes', label: '角色场景', to: '/popular-scenes', icon: 'character' },
+      { id: 'style',     label: '画风',     to: '/style',        icon: 'palette' },
+      { id: 'lora', label: '模型资料', to: '/lora', icon: 'model' },
+    ],
+  },
+  {
+    heading: '工作室',
+    items: [
       { id: 'manager',   label: '内容维护', to: '/scene-manager', icon: 'manager' },
       { id: 'control',   label: '控制面板', to: '/control',       icon: 'gear' },
+      { id: 'guide', label: '使用指南', to: '/guide', icon: 'book' },
     ],
   },
 ]
 const secondaryNav: NavItem[] = archiveGroups.flatMap(g => g.items)
 
-const activeId = computed(() => {
-  const p = route.path.replace(/^\//, '')
-  if (!p) return 'home'
-  if (p === 'popular-scenes' || (p === 'scene-explorer' && ['nene', 'natsume'].includes(String(route.query.character)))) return 'character'
-  const all = [...primaryNav, ...secondaryNav]
-  const match = all.find(n => n.to !== '/' && (n.to.replace(/^\//, '') === p || p.startsWith(n.to.replace(/^\//, ''))))
-  return match?.id ?? ''
-})
+const activeId = computed(() => [...primaryNav, ...secondaryNav].find(item => item.to === route.path)?.id ?? '')
 
 const secondaryActive = computed(() => secondaryNav.some(n => n.id === activeId.value))
 
@@ -227,11 +219,10 @@ function onMoreCloseAutoFocus(event: Event) {
   moreHandoff = false
 }
 async function toggleMenu() {
-  menuOpen.value = !menuOpen.value
-  if (menuOpen.value) {
-    await nextTick()
-    linksEl.value?.querySelector<HTMLAnchorElement>(':scope > a')?.focus()
-  }
+  if (menuOpen.value) { closeMenu(); return }
+  menuOpen.value = true
+  await nextTick()
+  linksEl.value?.querySelector<HTMLAnchorElement>(':scope > a')?.focus({ preventScroll:true })
 }
 
 /**
@@ -270,6 +261,7 @@ function onDocFocus(event: FocusEvent) {
   // CSS hiding a focused link can fall back to body before the media query callback.
   if (event.target instanceof HTMLElement && event.target !== document.body) {
     lastNavigationFocus = isNavigationTarget(event.target) ? event.target : null
+    if (menuOpen.value && !lastNavigationFocus) closeMenu()
   }
 }
 function dismissPendingMore(event: Event) {
@@ -283,7 +275,7 @@ function onDocKey(e: KeyboardEvent) {
   if (e.key !== 'Escape' || e.defaultPrevented || e.isComposing) return
   if (moreOpen.value) {
     moreOpen.value = false
-    moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')?.focus()
+    void nextTick(() => moreEl.value?.querySelector<HTMLElement>('.nav-more-trigger')?.focus())
     e.preventDefault()
   } else if (menuOpen.value) {
     closeMenu()
@@ -419,6 +411,7 @@ onUnmounted(deactivateNavigation)
 .nav-utility-divider { width: 1px; height: 16px; margin: 0 var(--s-1); background: var(--border-soft); }
 
 @media (max-width: 1000px) {
+  .u212 { container:app-navigation / inline-size; }
   /* Keep compact desktop windows on the existing two-column navigation surface. */
   .nav-links {
     --selection-radius: var(--r-md);
@@ -429,6 +422,8 @@ onUnmounted(deactivateNavigation)
   }
   .nav-links > a { min-height: 44px; border-radius: var(--r-md); }
   .nav-more { min-width: 0; grid-column: auto; }
+  .nav-links.show-secondary > :is(a,.animated-selection) { display:none; }
+  .nav-links.show-secondary > .nav-more { grid-column:1 / -1; }
   .nav-more > :deep(.studio-tooltip-anchor[data-anchor]) { width: 100%; }
   .nav-more :deep(.nav-more-trigger) {
     justify-content: space-between;
@@ -449,5 +444,13 @@ onUnmounted(deactivateNavigation)
   .nav-utility-divider { display:none; }
   .nav-utilities .nav-search { width:40px; padding:0; }
   .nav-search-label { display:none; }
+}
+@container app-navigation (max-width:390px) {
+  .nav-inner { padding-inline:var(--s-2); }
+  .nav-brand { min-width:0; flex-shrink:1; }
+  .nav-logo { width:min(100%,5rem); height:auto; }
+  .nav-utilities :deep(.app-theme-toggle),.nav-utilities :deep(.task-center-button) { width:40px; padding:0; }
+  .nav-utilities :deep(.task-center-label) { display:none; }
+  .nav-utilities :deep(.task-center-content strong) { position:absolute; inset:auto auto 50% 50%; padding-inline:2px; border-radius:var(--r-sm); color:var(--text-primary); background:var(--bg-elevated); font-size:var(--fs-label-xs); line-height:1.1; }
 }
 </style>

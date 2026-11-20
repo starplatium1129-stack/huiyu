@@ -94,7 +94,7 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-caption { position:relative; display:grid; grid-template-columns:minmax(0,1fr) auto; gap:var(--s-1) var(--s-2); padding:var(--s-3); border-top:1px solid var(--border-soft); }
 .sample-kicker { grid-column:1 / -1; }
 .sample-kicker > span:first-child { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
-.sample-title { grid-column:1 / -1; margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:var(--fs-body-sm); }
+.sample-title { grid-column:1 / -1; margin:0; overflow-wrap:anywhere; font-size:var(--fs-body-sm); }
 .sample-featured { display:inline-flex; margin-left:auto; color:var(--accent); }
 .sample-featured .archive-icon { width:14px; height:14px; }
 @media (hover: hover) and (pointer: fine) {

@@ -23,12 +23,12 @@ const rawError = computed(() => state.value?.error || '')
     <div class="installer-layout">
       <aside class="installer-story">
         <img :src="collectionArt" alt="" class="installer-art" />
-        <div class="installer-story-copy"><span class="installer-eyebrow">素材画册</span><h1>故事与画面</h1><p>角色与场景素材，随时翻阅。</p></div>
+        <div class="installer-story-copy"><span class="installer-eyebrow">素材画册</span><p class="installer-story-title">故事与画面</p><p>角色与场景素材，随时翻阅。</p></div>
         <div class="installer-includes"><span><ArchiveIcon name="character" />角色图片</span><span><ArchiveIcon name="image" />场景卡片</span><span><ArchiveIcon name="book" />素材画册</span></div>
       </aside>
       <section class="installer-content" aria-labelledby="install-title">
         <ol class="installer-steps" aria-label="安装步骤"><li v-for="(label, index) in steps" :key="label" :data-active="step === index + 1" :data-done="step > index + 1" :aria-current="step === index + 1 ? 'step' : undefined"><span><ArchiveIcon v-if="step > index + 1" name="success" /><template v-else>{{ index + 1 }}</template></span>{{ label }}</li></ol>
-        <div class="installer-title"><span class="installer-eyebrow">{{ complete ? '准备完成' : '离线素材' }}</span><h2 id="install-title">{{ heading }}</h2><p>{{ detail }}</p></div>
+        <div class="installer-title"><span class="installer-eyebrow">{{ complete ? '准备完成' : '离线素材' }}</span><h1 id="install-title">{{ heading }}</h1><p>{{ detail }}</p></div>
         <p v-if="!available" class="installer-notice" role="status">请从绘遇桌面端的「资源与素材」打开此助手。</p>
         <button v-if="!state?.preview && !state?.busy" class="installer-picker" type="button" :disabled="busy || !available" @click="pick"><span class="installer-picker-icon"><ArchiveIcon name="folder" /></span><strong>选择素材 ZIP</strong><span>选择离线素材包</span><span class="installer-picker-link">浏览本地文件 <ArchiveIcon name="send" /></span></button>
         <button v-if="!state?.paused && !state?.busy && !complete" class="btn btn-ghost installer-directory" type="button" :disabled="busy || !available" @click="state?.preview?.sourceType === 'directory' ? pick() : pickDirectory()"><ArchiveIcon name="folder" />{{ state?.preview?.sourceType === 'directory' ? '改用 ZIP 自动解压' : '使用已解压的文件夹' }}<ArchiveIcon name="send" /></button>
@@ -76,8 +76,8 @@ const rawError = computed(() => state.value?.error || '')
 .installer-art { width:100%; max-width:280px; aspect-ratio:1; object-fit:contain; align-self:center; }
 .installer-story-copy { margin:var(--s-4) 0 var(--s-5); }
 .installer-eyebrow { color:var(--text-secondary); font-size:var(--fs-label-xs); }
-.installer-story h1 { font-family:var(--font-serif); font-size:28px; line-height:1.5; font-weight:600; margin:var(--s-3) 0; }
 .installer-story p { color:var(--text-secondary); font-size:var(--fs-label); line-height:1.9; margin:0; }
+.installer-story .installer-story-title { color:var(--text-primary); font-family:var(--font-serif); font-size:28px; line-height:1.5; font-weight:600; margin:var(--s-3) 0; }
 .installer-includes { display:flex; flex-wrap:wrap; gap:var(--s-3); margin-top:auto; color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .installer-includes span { display:flex; align-items:center; gap:var(--s-1); }
 .installer-content { display:flex; flex-direction:column; padding:var(--s-6); min-width:0; }
@@ -87,7 +87,7 @@ const rawError = computed(() => state.value?.error || '')
 .installer-steps li[data-active=true] { color:var(--text-primary); font-weight:600; }
 .installer-steps li[data-active=true] > span { background:var(--accent); border-color:var(--accent); color:var(--text-inverse); }
 .installer-steps li[data-done=true] > span { color:var(--success-text); }
-.installer-title h2 { margin:var(--s-2) 0 var(--s-3); font-size:24px; line-height:1.4; }
+.installer-title h1 { margin:var(--s-2) 0 var(--s-3); font-size:24px; line-height:1.4; }
 .installer-title > p { margin:0 0 var(--s-6); color:var(--text-secondary); font-size:var(--fs-label); line-height:1.8; }
 .installer-picker { display:flex; flex-direction:column; align-items:center; gap:var(--s-2); width:100%; min-height:240px; padding:var(--s-6); border:1px dashed var(--border-strong); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); cursor:pointer; transition:transform var(--motion-control) var(--ease-out); }
 .installer-picker-icon,.installer-package-icon { display:grid; place-items:center; border:1px solid var(--border-soft); background:var(--bg-elevated); border-radius:var(--r-lg); }
@@ -103,7 +103,7 @@ const rawError = computed(() => state.value?.error || '')
 .installer-package-heading strong { overflow-wrap:anywhere; font-size:var(--fs-label); }
 .installer-tag { color:var(--text-secondary); font-size:var(--fs-label-xs); }
 .installer-filename { overflow-wrap:anywhere; color:var(--text-secondary); font-size:var(--fs-label-xs); margin:var(--s-3) 0 var(--s-4); }
-.installer-metrics { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-3); margin:0; padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
+.installer-metrics { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,7rem),1fr)); gap:var(--s-3); margin:0; padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .installer-metrics dt { color:var(--text-secondary); font-size:var(--fs-label-xs); margin-bottom:var(--s-1); }
 .installer-metrics dd { margin:0; font-size:var(--fs-label); font-weight:600; font-variant-numeric:tabular-nums; }
 .installer-metrics small { font-weight:400; color:var(--text-secondary); }

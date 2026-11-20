@@ -1,7 +1,5 @@
 .speech-settings { display:grid; grid-template-rows:auto minmax(0,1fr) auto; width:100%; max-width:520px; min-width:0; min-height:0; max-height:var(--speech-settings-max-height,none); overflow:hidden; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); }
-.speech-settings-head { display:flex; align-items:start; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
-.speech-settings-head > div { display:grid; gap:var(--s-1); min-width:0; }
-.speech-settings-head > div > span { color:var(--text-secondary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:.08em; }
+.speech-settings-head { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-3) var(--s-4); border-bottom:1px solid var(--border-soft); }
 .speech-settings-head h3 { margin:0; font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-sans); }
 .speech-settings-head > button { flex:none; }
 .speech-settings-body { display:grid; grid-auto-rows:max-content; align-content:start; gap:var(--s-4); min-width:0; min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); }
@@ -14,7 +12,7 @@
 .speech-toggle-copy small { display:block; margin-top:var(--s-1); color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
 .speech-settings-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr)); gap:var(--s-3); }
 .speech-field { display:grid; align-content:start; gap:var(--s-2); min-width:0; }
-.speech-field > span { color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
+.speech-field > :is(span,label) { color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }
 .speech-key-field { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2); min-width:0; }
 .speech-options { display:grid; grid-auto-rows:max-content; gap:var(--s-3); padding-top:var(--s-4); border-top:1px solid var(--border-soft); }
 .speech-settings-actions { display:flex; flex-wrap:wrap; justify-content:flex-end; align-items:center; gap:var(--s-2); padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); }

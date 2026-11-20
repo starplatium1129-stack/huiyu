@@ -76,7 +76,7 @@ async function onFile(event: Event) {
 .character-art-heading h2, .character-art-card h3 { margin: 0; color: var(--text-primary); }
 .character-art-card h3:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-sm); }
 .character-art-note { color: var(--text-secondary); line-height: 1.7; margin: 0; }
-.character-art-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--s-4); }
+.character-art-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 20rem), 1fr)); gap: var(--s-4); }
 .character-art-card { display: flex; flex-direction: column; gap: var(--s-3); min-width: 0; padding: var(--s-4); background: var(--bg-surface); border: 1px solid var(--border-soft); border-radius: var(--r-md); }
 .character-art-card h3 span { color: var(--text-secondary); font-size: var(--fs-label); font-weight: 400; }
 .character-art-card :deep(.character-art-image) { display: block; width: 100%; height: 320px; object-fit: contain; background: var(--bg-base); border-radius: var(--r-md); }
@@ -86,5 +86,4 @@ async function onFile(event: Event) {
 .character-art-particles { height: 360px; min-width: 0; }
 .character-art-particles :deep(.async-panel) { height: 100%; }
 .character-art-particles :deep(.semantic-particle-field) { height: 100%; }
-@media (max-width: 1000px) { .character-art-grid { grid-template-columns: minmax(0, 1fr); } }
 </style>

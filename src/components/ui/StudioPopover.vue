@@ -82,7 +82,7 @@ function onDismissEscape(event: KeyboardEvent | CustomEvent<{ originalEvent?: Ke
 @reference "../../assets/css/tailwind.css";
 .studio-popover { @apply tw:[z-index:var(--z-popover)] tw:[width:min(340px,calc(100vw_-_32px))] tw:[max-height:var(--reka-popover-content-available-height,_calc(100dvh_-_32px))] tw:overflow-y-auto tw:overscroll-contain tw:p-s-4 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:text-primary tw:shadow-(--shadow-lg); }
 /* FluidTransition owns the surface spring; Reka owns placement/dismissal. */
-.studio-popover { --surface-enter-x:0px; --surface-enter-y:4px; transform-origin:var(--reka-popover-content-transform-origin,top right); }
+.studio-popover { --surface-enter-x:0px; --surface-enter-y:4px; max-width:var(--reka-popover-content-available-width,calc(100vw - 32px)); transform-origin:var(--reka-popover-content-transform-origin,top right); }
 .studio-popover[data-side='top'] { --surface-enter-y:-4px; }
 .studio-popover[data-side='left'] { --surface-enter-x:-4px; --surface-enter-y:0px; }
 .studio-popover[data-side='right'] { --surface-enter-x:4px; --surface-enter-y:0px; }

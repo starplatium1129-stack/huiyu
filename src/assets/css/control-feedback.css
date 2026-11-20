@@ -23,7 +23,7 @@
   :is(button,a).companion-pop-item,.companion-settings-btn,.companion-setup-action,.companion-vision-btn,.companion-stop,.companion-send,
   .companion-reminder-action,.companion-reminder-dismiss,.companion-exit-immersive,.companion-chat-chip,
   .preferences-heading button,.reply-actions button,.companion-chat-image-open,.companion-chat-image-retry,
-  .orbit-option,.orbit-option-list button,.orbit-manage,.orbit-selection > header button
+  .companion-picker-trigger,.orbit-option,.orbit-option-list button,.orbit-selection > header button
 ) {
   position:relative; isolation:isolate; border-radius:var(--r-md); --control-press-transform:none; --control-feedback-press:.98; --control-feedback-enter:.985;
   &::before {

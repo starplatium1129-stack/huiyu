@@ -8,7 +8,8 @@
           <svg viewBox="0 0 440 440" aria-hidden="true"><path :d="orbitSector(index)" /></svg>
           <button type="button" class="orbit-action" :class="{ 'orbit-settings-trigger': action.id === 'settings' }"
             :style="{ '--orbit-x': position(orbitAngle(index), 127).left, '--orbit-y': position(orbitAngle(index), 127).top }" :aria-label="action.label" :aria-pressed="action.toggle ? active(action) : undefined"
-            :aria-expanded="action.category ? category === action.category : undefined" :data-category-button="action.category || undefined">
+            :aria-haspopup="action.id === 'characters' ? 'dialog' : undefined"
+            :aria-expanded="action.id === 'characters' ? !!characterOpener : action.category ? category === action.category : undefined" :data-category-button="action.category || undefined">
             <ArchiveIcon :name="action.icon" /><span>{{ action.short }}</span>
           </button>
         </div>
@@ -16,11 +17,9 @@
           <StudioTooltip v-for="(option, index) in visibleOptions" :key="`${category}-${option.id}`" anchor :content="option.label"
             class="orbit-option-tooltip" :style="{ '--orbit-x': position(-67.5 + index * 360 / 8, 193).left, '--orbit-y': position(-67.5 + index * 360 / 8, 193).top }">
           <button type="button" class="orbit-option" :data-value="option.id" :aria-label="option.label"
-            :aria-pressed="category === 'characters' ? option.id === characterId : undefined"
-            :disabled="category !== 'characters' && (!controls?.ready || expressionBusy)" @click="choose(option)">
-            <RuntimeImage v-if="option.image" :src="option.image" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
-            <ArchiveIcon v-else :name="category === 'motions' ? 'spark' : 'happy'" />
-            <span>{{ option.shortLabel || option.label }}</span>
+            :disabled="!controls?.ready || expressionBusy" @click="choose(option)">
+            <ArchiveIcon :name="category === 'motions' ? 'spark' : 'happy'" />
+            <span>{{ option.label }}</span>
           </button>
           </StudioTooltip>
         </div>
@@ -32,14 +31,11 @@
         </header>
         <div v-if="compact" v-content-motion:fade="`${category}:${page}`" class="orbit-option-list">
           <button v-for="option in visibleOptions" :key="option.id" type="button" :data-value="option.id" :aria-label="option.label"
-            :aria-pressed="category === 'characters' ? option.id === characterId : undefined"
-            :disabled="category !== 'characters' && (!controls?.ready || expressionBusy)" @click="choose(option)">
-            <RuntimeImage v-if="option.image" :src="option.image" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
-            <ArchiveIcon v-else :name="category === 'motions' ? 'spark' : 'happy'" /><span>{{ option.label }}</span>
-            <ArchiveIcon v-if="category === 'characters' && option.id === characterId" name="success" />
+            :disabled="!controls?.ready || expressionBusy" @click="choose(option)">
+            <ArchiveIcon :name="category === 'motions' ? 'spark' : 'happy'" /><span>{{ option.label }}</span>
           </button>
         </div>
-        <p v-if="category !== 'characters' && !controls?.ready" role="status">{{ controls?.hint || '先在设置中加载动态立绘，再试试表情和动作。' }}</p>
+        <p v-if="!controls?.ready" role="status">{{ controls?.hint || '先在设置中加载动态立绘，再试试表情和动作。' }}</p>
         <p v-else-if="!options.length">这个角色还没有配置{{ categoryLabel }}。</p>
         <p v-else-if="category === 'expressions' && options.some(option => option.id.startsWith('emotion:'))">情绪表情保持约 30 秒；聊天时会跟随对话变化。</p>
         <footer v-if="pages > 1" class="orbit-pagination">
@@ -47,22 +43,25 @@
           <span>{{ page + 1 }} / {{ pages }}</span>
           <button class="btn btn-ghost btn-sm" type="button" aria-label="下一页" :disabled="page + 1 === pages" @click="page++">下一页</button>
         </footer>
-        <button v-if="category === 'characters'" class="orbit-manage" type="button" @click="emit('appearance')"><ArchiveIcon name="model" />导入与角色外观</button>
       </section>
       <p v-if="feedback || category === 'motions' && controls?.hint" class="orbit-feedback" role="status">{{ feedback || controls?.hint }}</p>
     </section>
   </FluidTransition>
+  <CompanionCharacterDialog v-if="characterOpener" :opener="characterOpener" :selected-id="characterId"
+    @dismiss="characterOpener = null" @select="emit('character', $event)">
+    <template #actions="{ close }">
+      <button type="button" class="btn btn-ghost btn-sm" @click="close(() => emit('appearance'))"><ArchiveIcon name="model" />角色外观</button>
+    </template>
+  </CompanionCharacterDialog>
 </template>
 
 <script setup lang="ts">
-import { characterArtEntry } from '@/platform/characterArtState'
-import { computed, ref, watch } from 'vue'
+import { computed, ref, shallowRef, watch } from 'vue'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import FluidTransition from './visual/FluidTransition.vue'
-import RuntimeImage from './visual/RuntimeImage.vue'
+import CompanionCharacterDialog from './CompanionCharacterDialog.vue'
 import StudioTooltip from './ui/StudioTooltip.vue'
 import type { ArchiveIconName } from './visual/icons/types'
-import { getCompanionCharacterConfig, listCompanionUiCharacters, resolveCompanionAvatar } from '@/utils/companionRegistry'
 import { orbitAngle, orbitPoint, orbitSector, useCompanionOrbit } from '@/composables/chat/useCompanionOrbit'
 import '@/assets/css/companion-orbit.css'
 
@@ -75,10 +74,12 @@ const emit = defineEmits<{
   close: []; settings: []; chat: []; pin: []; pass: []; hide: []; appearance: []
   character: [id: string]; motion: [id: string]
 }>()
-type Category = 'characters' | 'motions' | 'expressions'
+type Category = 'motions' | 'expressions'
 interface Action { id: string; short: string; label: string; icon: ArchiveIconName; category?: Category; toggle?: boolean }
-interface Option { id: string; label: string; shortLabel?: string; image?: string }
+interface Option { id: string; label: string }
 const root = ref<HTMLElement | null>(null)
+const characterOpener = shallowRef<HTMLButtonElement | null>(null)
+watch(() => props.open, open => { if (!open) characterOpener.value = null })
 const { compact, size, category, page, key } = useCompanionOrbit(() => props.open, root, () => emit('close'))
 const feedback = ref(''), expressionBusy = ref(false)
 let expressionTurn = 0
@@ -86,22 +87,18 @@ watch([() => props.characterId, () => props.open, category], () => { feedback.va
 const actions: Action[] = [
   { id: 'settings', short: '设置', label: '设置', icon: 'gear' },
   { id: 'chat', short: '聊天', label: '打开聊天', icon: 'chat' },
-  { id: 'characters', short: '角色', label: '切换陪伴角色', icon: 'character', category: 'characters' },
+  { id: 'characters', short: '角色', label: '切换陪伴角色', icon: 'character' },
   { id: 'expressions', short: '表情', label: '角色表情', icon: 'happy', category: 'expressions' },
   { id: 'motions', short: '动作', label: '互动动作', icon: 'spark', category: 'motions' },
   { id: 'pin', short: '置顶', label: '置顶窗口', icon: 'pin', toggle: true },
   { id: 'pass', short: '穿透', label: '鼠标穿透', icon: 'eye', toggle: true },
   { id: 'hide', short: '隐藏', label: '隐藏桌宠', icon: 'moon' },
 ]
-const characters = computed<Option[]>(() => listCompanionUiCharacters().map(character => ({
-  id: character.id, label: character.name, shortLabel: character.shortName,
-  image: characterArtEntry(character.id)?.thumbnailUrl || resolveCompanionAvatar(character.id)?.avatar.thumbnailUrl || getCompanionCharacterConfig(character.id)?.image,
-})))
-const options = computed<Option[]>(() => category.value === 'characters' ? characters.value : category.value === 'motions' ? props.controls?.motions || []
+const options = computed<Option[]>(() => category.value === 'motions' ? props.controls?.motions || []
   : props.controls?.expressions.length ? [{ id: '', label: '恢复默认' }, ...props.controls.expressions] : [])
 const pages = computed(() => Math.max(1, Math.ceil(options.value.length / 8)))
 const visibleOptions = computed(() => options.value.slice(page.value * 8, (page.value + 1) * 8))
-const categoryLabel = computed(() => category.value === 'characters' ? '陪伴角色' : category.value === 'motions' ? '互动动作' : '角色表情')
+const categoryLabel = computed(() => category.value === 'motions' ? '互动动作' : '角色表情')
 watch(pages, count => { page.value = Math.min(page.value, count - 1) })
 function position(angle: number, radius: number) {
   const point = orbitPoint(angle, radius)
@@ -111,7 +108,9 @@ function active(action: Action) { return action.category ? category.value === ac
 // The icon and painted sector share one click owner: a press/release crossing
 // their boundary targets this ancestor. Child handlers would silently lose it.
 function activate(action: Action, event: MouseEvent) {
-  ;(event.currentTarget as HTMLElement).querySelector<HTMLButtonElement>('button')?.focus({ preventScroll: true })
+  const button = (event.currentTarget as HTMLElement).querySelector<HTMLButtonElement>('button')
+  button?.focus({ preventScroll: true })
+  if (action.id === 'characters') { characterOpener.value = button; return }
   if (action.category) { category.value = category.value === action.category ? null : action.category; return }
   if (action.id === 'settings') emit('settings')
   else if (action.id === 'chat') emit('chat')
@@ -120,7 +119,6 @@ function activate(action: Action, event: MouseEvent) {
   else if (action.id === 'hide') { emit('hide'); emit('close') }
 }
 async function choose(option: Option) {
-  if (category.value === 'characters') { emit('character', option.id); return }
   if (!props.controls?.ready) return
   if (category.value === 'motions') { feedback.value = ''; emit('motion', option.id); return }
   if (!props.setExpression || expressionBusy.value) return

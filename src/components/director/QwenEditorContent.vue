@@ -5,7 +5,11 @@
         <div class="qwen-toolbar"><div class="studio-segments" role="group" aria-label="预览图片"><AnimatedSelection />
           <button type="button" :class="{ active: preview === 'result' }" :aria-pressed="preview === 'result'" @click="preview = 'result'">生成结果</button>
           <button type="button" :class="{ active: preview === 'source' }" :aria-pressed="preview === 'source'" :disabled="!sourceUrl" @click="referencePreview = ''; preview = 'source'">输入图片</button>
-        </div><span v-if="result && preview === 'result'">{{ result.input.width }} × {{ result.input.height }}</span></div>
+        </div><span v-if="result && preview === 'result'">{{ result.input.width }} × {{ result.input.height }}</span>
+          <button ref="sourceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '更换原图' : '导入编辑原图' }}</button>
+          <button v-if="source || restoredInputMissing" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="clearSources">移除原图</button>
+          <input ref="picker" type="file" hidden accept="image/png,image/jpeg,image/webp" @change="pick" />
+        </div>
         <div class="qwen-stage">
           <AsyncPanel v-if="preview === 'source' ? previewInputUrl : resultUrl" :loader="loadImageViewer" label="图片预览" v-slot="{ component }"><component :is="component" :src="preview === 'source' ? previewInputUrl : resultUrl" :alt="preview === 'source' ? '编辑输入图片' : title + '生成结果'" /></AsyncPanel>
           <div v-else class="qwen-empty"><ArchiveIcon name="image" /><h3>{{ result ? '结果已保存在任务中' : '从一张图片开始' }}</h3><p>{{ result ? '可直接存入作品册，或刷新预览。' : '导入原图，再描述要改变的部分与需要保留的内容。' }}</p></div>
@@ -24,10 +28,8 @@
           <RouterLink v-if="!selected?.available" class="btn btn-ghost btn-sm" :to="{ path: '/control', query: { engine: 'native', model: form.modelId } }">前往控制室准备</RouterLink>
         </section>
         <div class="qwen-field"><label for="qwen-prompt">编辑指令</label><textarea class="textarea" id="qwen-prompt" v-model="form.prompt" rows="5" maxlength="12000" :disabled="locked" placeholder="描述要改变的部分，以及需要保留的内容" spellcheck="false" autocorrect="off" autocapitalize="off" /></div>
-        <section class="qwen-source" aria-label="编辑原图">
+        <section v-if="props.sourceImage || source || needsResize" class="qwen-source" aria-label="编辑原图">
           <div v-if="props.sourceImage" class="qwen-draft-recovery"><p role="status">画布图片等待导入；当前任务结束或草稿恢复后可继续。</p><button class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="importCanvas">继续导入画布图片</button></div>
-          <div class="qwen-toolbar"><button ref="sourceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked" @click="picker?.click()"><ArchiveIcon name="upload" />{{ source ? '更换原图' : '导入编辑原图' }}</button><button v-if="source || restoredInputMissing" class="btn btn-quiet btn-sm" type="button" :disabled="locked" @click="clearSources">移除原图</button></div>
-          <input ref="picker" type="file" hidden accept="image/png,image/jpeg,image/webp" @change="pick" />
           <p v-if="source">图 1 · {{ source.name }} · {{ source.width }} × {{ source.height }}</p>
           <template v-if="source">
             <button ref="referenceButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked || references.length >= 3" @click="referencePicker?.click()"><ArchiveIcon name="upload" />添加参考图（{{ references.length }} / 3）</button>

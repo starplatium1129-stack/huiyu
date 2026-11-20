@@ -1,4 +1,11 @@
-<template><button class="task-center-button tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:rounded-md tw:text-primary tw:cursor-pointer" data-spring-button type="button" aria-haspopup="dialog" @click="opened = true"><span class="task-center-content" data-press-content><ArchiveIcon name="queue" /><span>任务</span><strong v-if="activeCount">{{ activeCount }}</strong></span></button></template>
+<template>
+  <button class="task-center-button tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2 tw:rounded-md tw:text-primary tw:cursor-pointer"
+    data-spring-button type="button" aria-haspopup="dialog" :aria-label="activeCount ? `任务，${activeCount} 项进行中` : '任务'" @click="opened = true">
+    <span class="task-center-content" data-press-content>
+      <ArchiveIcon name="queue" /><span class="task-center-label">任务</span><strong v-if="activeCount">{{ activeCount > 99 ? '99+' : activeCount }}</strong>
+    </span>
+  </button>
+</template>
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useTaskCenter } from '@/composables/useTaskCenter'

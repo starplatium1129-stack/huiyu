@@ -27,7 +27,12 @@
       </RadioGroupRoot>
     </fieldset>
     <AsyncPanel v-if="themeStyle === 'atelier'" :loader="loadGlassMaterial" label="玻璃材质设置" v-slot="{ component }"><component :is="component" /></AsyncPanel>
-    <label v-if="zoomAvailable" class="appearance-range">界面缩放 · {{ Math.round(zoom * 100) }}%<input type="range" min="75" max="200" step="5" :value="zoom * 100" aria-label="界面缩放" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)"><button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button></label>
+    <div v-if="zoomAvailable" class="appearance-range">
+      <label :for="zoomId">界面缩放</label>
+      <output :for="zoomId">{{ Math.round(zoom * 100) }}%</output>
+      <input :id="zoomId" type="range" min="75" max="200" step="5" :value="zoom * 100" :aria-valuetext="Math.round(zoom * 100) + '%'" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)">
+      <button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button>
+    </div>
     <p v-if="zoomError" role="status">{{ zoomError }}</p>
     <ToggleSwitch v-if="themeStyle === 'atelier'" class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
       <span>降低玻璃效果</span>
@@ -48,7 +53,7 @@
 <script setup lang="ts">
 // Load the optional surfaces before a user can select their style.
 import '@/assets/css/terraria-surfaces.css'
-import { computed } from 'vue'
+import { computed, useId } from 'vue'
 import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import ArchiveIcon from './visual/ArchiveIcon.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
@@ -65,6 +70,7 @@ const selectedTheme = computed({ get: () => themeMode.value, set: setThemeMode }
 const selectedStyle = computed({ get: () => themeStyle.value, set: setThemeStyle })
 const selectedMotion = computed({ get: () => motionMode.value, set: setMotionMode })
 const { available: zoomAvailable, zoom, error: zoomError, setZoom } = useDesktopZoom()
+const zoomId = useId()
 const themeChoices = [
   { value: 'system', label: '跟随系统' },
   { value: 'light', label: '浅色' },

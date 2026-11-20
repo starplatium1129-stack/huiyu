@@ -1,7 +1,7 @@
 <template>
   <form class="speech-settings" :aria-labelledby="titleId" @submit.prevent="save">
     <header class="speech-settings-head">
-      <div><span>SPEECH INPUT</span><h3 :id="titleId">语音输入</h3></div>
+      <h3 :id="titleId">语音输入</h3>
       <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭语音输入设置" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div ref="settingsBody" class="speech-settings-body" role="region" aria-label="语音配置" tabindex="-1">
@@ -29,14 +29,14 @@
             <input v-model.trim="draft.model" class="input" maxlength="200" aria-label="识别模型"
               placeholder="whisper-1" autocomplete="off" />
           </label>
-          <label class="speech-field">
-            <span>API Key（本地服务可留空）</span>
+          <div class="speech-field">
+            <label :for="titleId + '-key'">API 密钥（本地服务可留空）</label>
             <div class="speech-key-field">
-              <input v-model.trim="draft.apiKey" class="input" :type="showApiKey ? 'text' : 'password'"
-                maxlength="1000" placeholder="sk-…" autocomplete="off" aria-label="语音输入 API 密钥" spellcheck="false" />
+              <input :id="titleId + '-key'" v-model.trim="draft.apiKey" class="input" :type="showApiKey ? 'text' : 'password'"
+                maxlength="1000" placeholder="sk-…" autocomplete="off" spellcheck="false" />
               <button class="btn btn-quiet btn-sm" type="button" :aria-label="showApiKey ? '隐藏密钥' : '显示密钥'" :aria-pressed="showApiKey" @click="showApiKey = !showApiKey">{{ showApiKey ? '隐藏' : '显示' }}</button>
             </div>
-          </label>
+          </div>
           <label class="speech-field">
             <span>语种提示（可留空）</span>
             <input v-model.trim="draft.language" class="input" maxlength="20" aria-label="识别语种"

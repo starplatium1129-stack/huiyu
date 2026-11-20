@@ -79,4 +79,9 @@
   .gallery-summary { @apply tw:items-start; }
   .gallery-count { @apply tw:flex-wrap; gap:var(--s-1) var(--s-2); }
 }
+@media (max-height:580px) {
+  /* Wrapped bulk actions and collection fields share one scrollable surface. */
+  .gallery-selection-dock:has(> .gallery-bulkbar) { overflow-y:auto; overscroll-behavior:contain; }
+  .gallery-selection-dock :deep(.gallery-organization) { flex-shrink:0; overflow:visible; }
+}
 .gallery-browse-controls .gallery-filter.active { color:var(--text-primary); font-weight:600; background:transparent; border-color:transparent; }

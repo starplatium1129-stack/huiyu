@@ -51,6 +51,7 @@ function generate(event: MouseEvent) {
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .video-generation-bar {
+  container: video-generation / inline-size;
   display: grid; grid-template-columns: minmax(0, 1fr) minmax(12rem, 22rem) auto;
   align-items: center; gap: var(--s-4); margin-bottom: var(--s-4); padding: var(--s-3) var(--s-4);
   border: 1px solid var(--border-soft); border-radius: var(--r-xl); background: var(--bg-surface);
@@ -72,6 +73,10 @@ function generate(event: MouseEvent) {
   .video-generation-bar { grid-template-columns:minmax(0,1fr) auto; align-items:start; position:static; top:auto; }
   .video-generation-fields { grid-column:1 / -1; }
   .video-generation-summary { align-self:center; }
+}
+@container video-generation (max-width:25rem) {
+  .video-generation-fields { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  .video-generation-aspect { grid-column:1 / -1; }
 }
 @media (forced-colors:active) { .video-generation-bar:focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

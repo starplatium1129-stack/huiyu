@@ -160,7 +160,7 @@
   display:grid; align-content:start; gap:var(--s-2); min-width:0;
 }
 
-.chat-page .api-field > span {
+.chat-page .api-field > :is(span,label) {
   display:flex; align-items:center; gap:var(--s-2); color:var(--text-secondary); font:600 var(--fs-label)/var(--lh-label) var(--font-sans);
 }
 

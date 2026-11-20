@@ -11,20 +11,40 @@ interface ChatCard {
   avatarUrl: string
   catalogId?: string
 }
-let portraits: Promise<Map<string, string>> | undefined
-function catalogPortraits() {
-  return portraits ??= (async () => {
-    const response = await runtimeFetch('/data/characters.json', { signal: AbortSignal.timeout(5000) })
-    if (!response.ok) throw new Error('角色立绘目录暂不可用')
-    const rows = await response.json()
-    const result = new Map<string, string>()
-    for (const entry of rows) {
+interface CatalogProfile { image?: string; source?: string; aliases: string[] }
+let profiles: Promise<Map<string, CatalogProfile>> | undefined
+async function directoryRows(file: string) {
+  const response = await runtimeFetch(`/data/${file}`, { signal: AbortSignal.timeout(5000) })
+  if (!response.ok) throw new Error('角色目录暂不可用')
+  const rows = await response.json()
+  if (!Array.isArray(rows)) throw new Error('角色目录格式错误')
+  return rows
+}
+const names = (value: unknown): string[] => Array.isArray(value) ? value.filter((name): name is string => typeof name === 'string') : []
+function catalogProfiles() {
+  if (profiles) return profiles
+  const current = Promise.allSettled([directoryRows('characters.json'), directoryRows('popular-directory.json')]).then(([portraits, works]) => {
+    const result = new Map<string, CatalogProfile>()
+    for (const entry of portraits.status === 'fulfilled' ? portraits.value : []) {
+      if (typeof entry?.id !== 'string') continue
       const path = entry?.portrait?.image
-      if (typeof path === 'string' && /^(?:\.\.\/|\/)?assets\/characters\/[\w/-]+\.(?:png|webp)(?:\?v=[\w-]+)?$/.test(path))
-        result.set(entry.id, path.replace(/^(?:\.\.\/|\/)?/, '/'))
+      const image = typeof path === 'string' && /^(?:\.\.\/|\/)?assets\/characters\/[\w/-]+\.(?:png|webp)(?:\?v=[\w-]+)?$/.test(path)
+        ? path.replace(/^(?:\.\.\/|\/)?/, '/') : undefined
+      result.set(entry.id, { image, source: typeof entry.source === 'string' ? entry.source : undefined,
+        aliases: names(entry.alias) })
     }
+    // A profile may credit a publisher or a crossover. Browse by the project's work instead.
+    for (const entry of works.status === 'fulfilled' ? works.value : []) {
+      if (typeof entry?.id !== 'string') continue
+      const profile = result.get(entry.id)
+      result.set(entry.id, { image: profile?.image,
+        source: typeof entry.franchise === 'string' && entry.franchise.trim() ? entry.franchise : profile?.source,
+        aliases: [...new Set([...(profile?.aliases || []), ...names(entry.aliases), ...names([entry.originalName])])] })
+    }
+    if ((portraits.status === 'rejected' || works.status === 'rejected') && profiles === current) profiles = undefined
     return result
-  })().catch(() => { portraits = undefined; return new Map<string, string>() })
+  })
+  return profiles = current
 }
 
 async function registerCard(card: ChatCard, owner: string) {
@@ -32,10 +52,12 @@ async function registerCard(card: ChatCard, owner: string) {
     || typeof card.greeting !== 'string' || typeof card.description !== 'string'
     || (card.avatarUrl !== '' && card.avatarUrl !== `/api/chat/cards/${card.id}/avatar`)) throw new Error('角色卡目录格式错误')
   const catalogId = typeof card.catalogId === 'string' && /^[a-z0-9_-]{1,80}$/.test(card.catalogId) ? card.catalogId : undefined
-  const image = card.avatarUrl || (catalogId && (characterArtEntry(catalogId)?.portraitUrl || (await catalogPortraits()).get(catalogId))) || '/assets/logo.svg'
+  const profile = catalogId ? (await catalogProfiles()).get(catalogId) : undefined
+  const image = card.avatarUrl || (catalogId && characterArtEntry(catalogId)?.portraitUrl) || profile?.image || '/assets/logo.svg'
   if (owner !== runtimeResourceIdentity()) throw new Error('工作区已切换，请重新打开角色卡')
   registerCompanionCharacter({
     id: card.id, name: card.name, shortName: card.name, defaultAvatarId: '', tags: ['chat-card'], catalogId,
+    source: profile?.source, aliases: profile?.aliases,
     presentation: {
       id: card.id, name: card.name, image, voice: '', icon: 'character', caption: '', description: card.description,
       greeting: card.greeting, roomCode: '', roomMood: '', starters: [], accent: 'var(--accent)',
@@ -54,7 +76,7 @@ export function loadChatCards(): Promise<void> {
   if (directoryOwner !== owner) {
     directoryOwner = owner
     pending = undefined
-    portraits = undefined
+    profiles = undefined
     listCompanionCharacterIds().forEach(forgetChatCard)
   }
   if (!isLocalStudioHost()) return Promise.resolve()

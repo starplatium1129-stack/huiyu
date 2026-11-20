@@ -24,6 +24,8 @@ export interface CompanionOutfitDefinition {
 
 export interface CompanionCharacterDefinition {
   catalogId?: string
+  source?: string
+  aliases?: string[]
   id: string
   name: string
   shortName: string
@@ -62,6 +64,8 @@ function initBuiltins(): void {
     id: nene.id,
     name: nene.name,
     shortName: '宁宁',
+    source: 'Sabbat of the Witch',
+    aliases: ['Ayachi Nene', '綾地寧々'],
     defaultAvatarId: 'avatar-nene-default',
     presentation: nene,
     emotionProfileId: 'nene',
@@ -85,6 +89,8 @@ function initBuiltins(): void {
     id: natsume.id,
     name: natsume.name,
     shortName: '夏目',
+    source: "Cafe Stella and the Reapers' Butterflies",
+    aliases: ['Shiki Natsume', '四季ナツメ'],
     defaultAvatarId: 'avatar-natsume-default',
     presentation: natsume,
     emotionProfileId: 'natsume',

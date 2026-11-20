@@ -4,27 +4,32 @@
       id="companion-workspace-settings"
       ref="dialogEl"
       class="companion-workspace-settings"
-      aria-label="AI 工作区设置"
+      aria-labelledby="companion-workspace-title"
       aria-describedby="companion-workspace-description"
       @keydown.esc.stop
       @cancel.prevent.stop="close"
     >
       <div>
-        <strong>AI 工作区</strong>
+        <h2 id="companion-workspace-title">AI 工作区</h2>
         <span id="companion-workspace-description">存放运行库、模型、训练与配音资源。重启后生效，已有文件保留。</span>
       </div>
-      <input
-        ref="inputEl"
-        autofocus
-        :value="modelValue"
-        :disabled="saving || picking"
-        type="text"
-        placeholder="目录路径"
-        aria-label="AI 工作区目录路径"
-        @input="emit('update:modelValue', inputValue($event))"
-        @keydown.enter="onEnter"
-      />
-      <span v-if="error || pickerError" role="alert">{{ error || pickerError }}</span>
+      <div class="workspace-path">
+        <label for="companion-workspace-path">目录路径</label>
+        <input
+          id="companion-workspace-path"
+          ref="inputEl"
+          autofocus
+          :value="modelValue"
+          :disabled="saving || picking"
+          type="text"
+          autocomplete="off"
+          spellcheck="false"
+          :aria-describedby="error || pickerError ? 'companion-workspace-error' : undefined"
+          @input="emit('update:modelValue', inputValue($event))"
+          @keydown.enter="onEnter"
+        />
+      </div>
+      <span v-if="error || pickerError" id="companion-workspace-error" role="alert">{{ error || pickerError }}</span>
       <div class="companion-workspace-actions">
         <button v-if="desktopBridge" type="button" class="btn btn-ghost" :disabled="saving || picking" @click="pickDirectory">
           {{ picking ? '选择中…' : '选择文件夹' }}
@@ -119,10 +124,13 @@ function inputValue(event: Event): string {
 <style scoped>
 @reference "../assets/css/tailwind.css";
 .companion-workspace-settings { @apply tw:box-border; width: min(420px, calc(100vw - 24px)); max-height: calc(100dvh - 24px); @apply tw:p-s-4 tw:m-auto tw:overflow-auto tw:text-primary; background: var(--bg-elevated); border: 1px solid var(--border-soft); @apply tw:rounded-lg; box-shadow: var(--shadow-lg); }
-.companion-workspace-settings[open] { @apply tw:grid tw:gap-s-4; }
+.companion-workspace-settings[open] { @apply tw:grid tw:gap-s-4; grid-template-columns:minmax(0,1fr); }
 .companion-workspace-settings::backdrop { background: var(--art-backdrop); }
-.companion-workspace-settings > div:first-child { @apply tw:grid tw:gap-s-2; }
+.companion-workspace-settings > div:first-child, .workspace-path { @apply tw:grid tw:min-w-0 tw:gap-s-2; }
+.companion-workspace-settings h2 { @apply tw:m-0 tw:text-title-sm; }
+.workspace-path label { @apply tw:text-label tw:font-medium; }
 .companion-workspace-settings span { @apply tw:text-label-sm tw:text-secondary tw:leading-body; }
+.companion-workspace-settings [role="alert"] { color:var(--danger-text); overflow-wrap:anywhere; }
 input { @apply tw:w-full tw:min-w-0 tw:min-h-[44px] tw:p-s-2; border: 1px solid var(--border-strong); @apply tw:rounded-sm tw:text-primary; background: var(--bg-surface); }
 .companion-workspace-actions { @apply tw:flex tw:flex-wrap tw:gap-s-2; }
 </style>

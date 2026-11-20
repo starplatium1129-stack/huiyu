@@ -121,7 +121,7 @@
 .room-chat-avatar[data-chibi='true'] { object-fit:contain; border-radius:0; }
 .room-surface .companion-picker { min-width:0; max-width:240px; }
 .room-surface .companion-picker-copy strong { font:600 var(--fs-body-sm)/var(--lh-label) var(--font-sans); }
-.room-surface .companion-picker-copy small,.room-surface .companion-picker-mark { display:none; }
+.room-surface .companion-picker-copy small { display:none; }
 .room-chat-actions { display:flex; align-items:center; gap:var(--s-1); flex:none; }
 .room-surface .room-chat-actions .btn { display:grid; place-items:center; min-height:var(--control-height); width:var(--control-height); padding:0; border:0; border-radius:var(--r-md); color:var(--text-secondary); background:transparent; }
 .room-surface .room-chat-actions .btn:hover { color:var(--text-primary); background:var(--bg-hover); }
