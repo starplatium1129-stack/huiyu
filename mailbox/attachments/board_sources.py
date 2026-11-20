@@ -18,19 +18,21 @@ CONFIRMATIONS = {
 
 
 def live_workers(bridge, now_ms):
-    """None means this dispatcher could not be observed; an empty set is observed idle."""
+    """A preview can be read and answered before the first observable worker action."""
     uri = (bridge / "dispatch-v1.sqlite3").absolute().as_uri() + "?mode=ro"
     try:
         with closing(sqlite3.connect(uri, uri=True, timeout=0)) as db:
-            keys = set()
-            for (raw,) in db.execute(
-                "SELECT started_json FROM slots WHERE phase = 'working' AND until_ms > ?", (now_ms,)
+            activity = {}
+            for phase, raw_keys, raw_started in db.execute(
+                "SELECT phase,keys_json,started_json FROM slots WHERE phase IN ('working','preview') AND until_ms > ?", (now_ms,)
             ):
-                started = json.loads(raw)
-                if not isinstance(started, list) or not all(isinstance(key, str) for key in started):
+                keys, started = json.loads(raw_keys), json.loads(raw_started)
+                if not all(isinstance(items, list) and all(isinstance(key, str) for key in items) for items in (keys, started)):
                     return None
-                keys.update(started)
-            return keys
+                if phase == "preview" or bridge.name == "qq-bridge":
+                    activity.update(dict.fromkeys(keys))
+                activity.update(dict.fromkeys(started, True))
+            return activity
     except (sqlite3.Error, TypeError, ValueError):
         return None
 
@@ -90,7 +92,7 @@ def observe_rows(rows, bridge, now_ms):
         key, via = row["requestKey"], row["via"]
         stages = row["stages"]
         if via == "reply":
-            active = None if working is None else key in working
+            active = None if working is None else working.get(key, False)
             try:
                 with (bridge / "claimed" / (key + ".claim")).open("rb") as claim:
                     stages["claimed"] = os.fstat(claim.fileno()).st_mtime_ns // 1_000_000

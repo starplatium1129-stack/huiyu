@@ -28,7 +28,7 @@ SOURCE = Path(__file__).resolve().parent
 TOOLS = Path("workspace/bridge-tools")
 HISTORY = HOME / TOOLS / ".install-history"
 CHANNELS = ("qq", "desktop")
-RUNTIME = ("bridge_runtime.py", "bridge_consume.sh", "bridge_dispatch.py", "bridge_delivery.py",
+RUNTIME = ("bridge_runtime.py", "bridge_consume.sh", "bridge_dispatch.py", "bridge_delivery.py", "qq_media.py", "qq_incoming.py",
            "bridge_watch.py", "board_aggregate.py", "board_sources.py", "pipeline_signals.py")
 HOOK_FIELDS = ("id", "script_path", "poll_interval_secs", "script_timeout_secs", "delivery", "prompt", "enabled")
 

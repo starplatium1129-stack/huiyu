@@ -22,7 +22,11 @@ mkdir -p "$state_dir"
 if ! python3 "$tools_dir/bridge_runtime.py" ensure "$channel" 2>>"$state_dir/relay.log"; then
   log "receiver_start_failed" '{}'
 fi
-if ! payload="$(python3 "$tools_dir/bridge_dispatch.py" offer "$channel" "$slot" --wait 4 2>>"$state_dir/relay.log")"; then
+options=(--wait 4)
+if [[ "$channel" == qq ]]; then
+  options+=(--with-context)
+fi
+if ! payload="$(python3 "$tools_dir/bridge_dispatch.py" offer "$channel" "$slot" "${options[@]}" 2>>"$state_dir/relay.log")"; then
   silent "dispatcher_unavailable" '{}'
   exit 0
 fi

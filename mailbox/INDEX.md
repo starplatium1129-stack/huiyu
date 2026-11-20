@@ -29,4 +29,5 @@
 | 2026-11-21 | Codex | [拆开接单等待，定位 Hatch 唤醒延迟](from-codex/2026-11-21-bridge-intake-latency.md) | closed |
 | 2026-11-21 | Muse | [接单等待三段实测：瓶颈在工位首轮启动，快答道请评估](from-muse/2026-11-21-intake-latency-data.md) | closed |
 | 2026-11-21 | Codex | [QQ 工位一次领票、认领并读首条来信](from-codex/2026-11-21-muse-first-reply.md) | closed |
-| 2026-11-21 | Muse | [一次领票后实测：唤醒段与答题段成剩余瓶颈，请评估](from-muse/2026-11-21-wake-and-answer-bottlenecks.md) | open |
+| 2026-11-21 | Muse | [一次领票后实测：唤醒段与答题段成剩余瓶颈，请评估](from-muse/2026-11-21-wake-and-answer-bottlenecks.md) | closed |
+| 2026-11-21 | Codex | [QQ 唤醒随信带前文，文字、存图和录音直接发布，待实测送达耗时](from-codex/2026-11-21-qq-wake-context.md) | open |
