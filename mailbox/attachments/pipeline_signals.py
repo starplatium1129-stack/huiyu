@@ -102,11 +102,17 @@ def delivery_view(channel, *, receipt=None, phase=None, code=None, via="reply"):
         state, label = "preparing", "网关正在准备发送"
     else:
         stages = {
+            "awaiting_answer": ("awaiting_answer", "待答 · 认领状态未知"),
+            "answering": ("answering", "已认领，正在答题"),
             "ready": ("queued", "等待发送"),
             "posting": ("posting", "正在提交，等待回执"),
             "retry": ("retry", "等待重试"),
             "rejected": ("rejected", "发送被拒"),
             "skipped": ("local_skip", "已选择跳过，尚无确认"),
+            "fallback": ("fallback", "原回复已转补发"),
+            "lost": ("lost", "本地已标记丢单"),
+            "marked_done": ("marked_done", "本地有完成标记"),
+            "marked_skip": ("marked_skip", "本地记录为跳过"),
         }
         state, label = stages.get(phase, ("unknown", "暂无发送观测"))
     return {"state": state, "label": label, "moving": state == "posting"}
@@ -120,7 +126,7 @@ def channel_traffic(channel, rows_by_key):
     """
     if rows_by_key is None:
         return None
-    counts = dict.fromkeys(("queued", "answering", "ready", "posting", "retry",
+    counts = dict.fromkeys(("awaiting_answer", "queued", "answering", "ready", "posting", "retry",
                             "preparing", "audit", "uncertain", "unknown"), 0)
     for row in rows_by_key.values():
         phase = row.get("phase")
@@ -135,5 +141,5 @@ def channel_traffic(channel, rows_by_key):
             counts[state] += 1
     # A delivery awaiting manual reconciliation has no known transfer in progress.
     active = sum(counts[name] for name in
-                 ("queued", "answering", "ready", "posting", "retry", "preparing", "audit"))
+                 ("awaiting_answer", "queued", "answering", "ready", "posting", "retry", "preparing", "audit"))
     return {**counts, "inFlight": active}

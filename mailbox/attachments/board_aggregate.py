@@ -12,6 +12,8 @@ import os
 import tempfile
 import time
 
+from pipeline_signals import channel_traffic, delivery_view
+
 HOME = "/home/hatch"
 OUT = os.path.join(HOME, "workspace/bridge-tools/board-status.json")
 KEEP = 60
@@ -33,7 +35,7 @@ def load_json(path):
         return None
 
 
-def load_receipts(bridge):
+def load_receipts(bridge, channel):
     """Sender-kept terminal outcomes; a receipt outranks outbox inference."""
     receipts = {}
     try:
@@ -43,8 +45,29 @@ def load_receipts(bridge):
                     rec = json.loads(line)
                 except json.JSONDecodeError:
                     continue
-                if rec.get("key"):
-                    receipts[rec["key"]] = rec
+                if not isinstance(rec, dict):
+                    continue
+                key, via, status = rec.get("key"), rec.get("via"), rec.get("status")
+                if not isinstance(key, str) or not key:
+                    continue
+                confirmed = (channel, via, status) in (
+                    ("qq", "reply", "sent"), ("qq", "reply", "skipped"),
+                    ("qq", "send", "sent"), ("desktop", "reply", "accepted"),
+                )
+                # Earlier snapshots treated these two spellings as locally complete.
+                legacy = (channel, via, status) in (
+                    ("qq", "reply", "accepted"), ("desktop", "reply", "sent"),
+                )
+                if not (confirmed or legacy):
+                    continue
+                receipt = {"via": via, "status": status}
+                if type(rec.get("at")) is int and rec["at"] > 0:
+                    receipt["at"] = rec["at"]
+                prior = receipts.get((via, key))
+                if prior is None or (confirmed and prior.get("legacy")):
+                    if legacy:
+                        receipt["legacy"] = True
+                    receipts[(via, key)] = receipt
     except FileNotFoundError:
         pass
     return receipts
@@ -58,7 +81,7 @@ def preview(text, limit=80):
 def qq_rows(now_ms):
     bridge = os.path.join(HOME, "workspace/qq-bridge")
     state = os.path.join(HOME, "hooks/state/qq-bridge")
-    receipts = load_receipts(bridge)
+    receipts = load_receipts(bridge, "qq")
     rows = []
     for path in glob.glob(os.path.join(bridge, "inbox", "*.json")):
         key = os.path.basename(path)[:-5]
@@ -73,11 +96,11 @@ def qq_rows(now_ms):
             stages["answered"] = mtime_ms(out_path)
         if sent_at:
             stages["confirmed"] = sent_at
-        rcpt = receipts.get(key)
-        if rcpt is not None and rcpt.get("via") == "reply" and rcpt.get("status") in ("sent", "skipped", "accepted"):
+        rcpt = receipts.get(("reply", key))
+        if rcpt is not None:
             status = "skipped" if rcpt["status"] == "skipped" else "confirmed"
             if rcpt.get("at"):
-                stages["confirmed"] = stages.get("confirmed") or rcpt["at"]
+                stages["confirmed"] = rcpt["at"]
         elif out is not None and out.get("skip") and sent_at:
             status = "skipped"
         elif sent_at:
@@ -101,6 +124,7 @@ def qq_rows(now_ms):
             "replyPreview": preview((out or {}).get("text")) if out else "",
             "hasAttachment": bool(item.get("attachments")),
             "status": status,
+            "receipt": rcpt,
             "stages": stages,
             "expiresAt": exp,
         })
@@ -108,6 +132,7 @@ def qq_rows(now_ms):
         key = os.path.basename(path)[:-5]
         item = load_json(path) or {}
         sent_at = mtime_ms(os.path.join(state, "sent-send-" + key))
+        rcpt = receipts.get(("send", key))
         rows.append({
             "channel": "qq",
             "requestKey": key,
@@ -117,8 +142,9 @@ def qq_rows(now_ms):
             "preview": preview(item.get("text")),
             "replyPreview": "",
             "hasAttachment": bool(item.get("imagePath") or item.get("audioPath")),
-            "status": "confirmed" if sent_at else "waiting_send",
-            "stages": {"received": mtime_ms(path), "confirmed": sent_at},
+            "status": "confirmed" if rcpt or sent_at else "waiting_send",
+            "receipt": rcpt,
+            "stages": {"received": mtime_ms(path), "confirmed": (rcpt or {}).get("at", sent_at)},
             "expiresAt": 0,
         })
     return rows
@@ -127,7 +153,7 @@ def qq_rows(now_ms):
 def desktop_rows(now_ms):
     bridge = os.path.join(HOME, "workspace/desktop-bridge")
     state = os.path.join(HOME, "hooks/state/desktop-bridge")
-    receipts = load_receipts(bridge)
+    receipts = load_receipts(bridge, "desktop")
     rows = []
     for path in glob.glob(os.path.join(bridge, "inbox", "*.json")):
         key = os.path.basename(path)[:-5]
@@ -142,11 +168,11 @@ def desktop_rows(now_ms):
             stages["answered"] = mtime_ms(out_path)
         if sent_at:
             stages["confirmed"] = sent_at
-        rcpt = receipts.get(key)
-        if rcpt is not None and rcpt.get("via") == "reply" and rcpt.get("status") in ("sent", "accepted"):
+        rcpt = receipts.get(("reply", key))
+        if rcpt is not None:
             status = "confirmed"
             if rcpt.get("at"):
-                stages["confirmed"] = stages.get("confirmed") or rcpt["at"]
+                stages["confirmed"] = rcpt["at"]
         elif sent_at:
             status = "confirmed"
         elif lost_at:
@@ -168,17 +194,78 @@ def desktop_rows(now_ms):
             "replyPreview": preview((out or {}).get("text")) if out else "",
             "hasAttachment": False,
             "status": status,
+            "receipt": rcpt,
             "stages": stages,
             "expiresAt": exp,
         })
     return rows
 
 
+def board_signal(row, now_ms):
+    """Map one existing board row to the pipeline without inventing worker activity."""
+    status = row["status"]
+    via = "send" if row.get("role") == "proactive" else "reply"
+    stages = row["stages"]
+    phase = {
+        "confirmed": "marked_done", "skipped": "marked_skip", "fallback": "fallback",
+        "expired": "expired", "lost": "lost",
+    }.get(status)
+    code = None
+    receipt = row.get("receipt")
+    if receipt and not receipt.get("legacy"):
+        phase = "skipped" if receipt["status"] == "skipped" else "confirmed"
+    elif phase in ("expired", "lost") and stages.get("firstPost"):
+        phase = "uncertain"
+    if phase is None and status in ("waiting_reply", "waiting_send"):
+        # Optional additions from the local worker. A past POST alone cannot show live traffic.
+        attempt = row.get("senderPhase")
+        deadline = row.get("expiresAt") or 0
+        if attempt in ("uncertain", "rejected"):
+            phase = attempt
+        elif deadline and now_ms >= deadline:
+            phase = "uncertain" if (stages.get("firstPost") or attempt == "posting") else "expired"
+        elif status == "waiting_send":
+            code = row.get("lastErrorCode") if attempt != "posting" else None
+            if attempt in ("posting", "retry"):
+                phase = attempt
+            else:
+                observed_pending = row["channel"] == "qq" and (
+                    code == "QQ_AUDIT_PENDING" or (via == "send" and code == "QQ_MUSE_SEND_PENDING")
+                )
+                phase = "uncertain" if stages.get("firstPost") and not observed_pending else "ready"
+        elif stages.get("claimed"):
+            phase = "answering"
+        else:
+            # This snapshot format does not yet export a claim for every worker.
+            phase = "awaiting_answer"
+    return {"phase": phase, "receipt": receipt, "via": via, "code": code}
+
+
+def pipeline_lanes(rows, now_ms):
+    grouped = {"qq": {}, "desktop": {}}
+    for row in rows:
+        channel, key = row["channel"], row["requestKey"]
+        signal = board_signal(row, now_ms)
+        row["phase"] = signal["phase"]
+        row["delivery"] = delivery_view(channel, **signal)
+        entries = grouped[channel]
+        # A reused key across sendbox/inbox is ambiguous. Keep its details visible
+        # and count it once as unknown instead of letting traversal order select a row.
+        entries[key] = {"phase": None} if key in entries else signal
+    lanes = {}
+    for channel, entries in grouped.items():
+        bridge = os.path.join(HOME, "workspace", channel + "-bridge")
+        available = os.path.isdir(os.path.join(bridge, "inbox"))
+        lanes[channel] = {"counts": channel_traffic(channel, entries if available else None)}
+    return lanes
+
+
 def main():
     now_ms = int(time.time() * 1000)
     rows = qq_rows(now_ms) + desktop_rows(now_ms)
+    lanes = pipeline_lanes(rows, now_ms)
     rows.sort(key=lambda r: r["stages"].get("received") or 0, reverse=True)
-    payload = {"generatedAt": now_ms, "rows": rows[:KEEP]}
+    payload = {"generatedAt": now_ms, "rows": rows[:KEEP], "lanes": lanes}
     fd, tmp = tempfile.mkstemp(dir=os.path.dirname(OUT), suffix=".tmp")
     with os.fdopen(fd, "w", encoding="utf-8") as fh:
         json.dump(payload, fh, ensure_ascii=False)
