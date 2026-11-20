@@ -15,6 +15,7 @@ import uuid
 from contextlib import contextmanager
 from email.utils import parsedate_to_datetime
 from functools import lru_cache
+from http.client import HTTPException
 from pathlib import Path
 from urllib.error import HTTPError
 
@@ -79,8 +80,15 @@ def initialize(bridge):
             if not marker.exists():
                 # Old writers are stopped at installation. Index their evidence once,
                 # so a growing receipt log never makes the intake loop progressively slower.
-                publish(marker, {"atNs": time.time_ns(), "legacy": legacy_index(bridge)}, replace=False)
+                stamp = time.time_ns()
+                index, damaged = legacy_index(bridge)
+                had_spool = any(any((bridge / spool).glob("*.json")) for spool in ("inbox", "outbox", "sendbox"))
+                had_logs = any((bridge / name).exists() for name in ("attempts.jsonl", "receipts.jsonl"))
+                publish(marker, {"atNs": stamp, "legacy": index, "damagedRows": damaged,
+                                 "priorBridge": had_spool or had_logs}, replace=False)
                 sync_dir(bridge)
+                if damaged:
+                    print(f"bridge_delivery: {damaged} unreadable legacy rows in {bridge.name}", file=sys.stderr)
     return directory
 
 
@@ -144,25 +152,34 @@ def expiry_phase(state):
 
 def legacy_index(bridge):
     index = {}
+    damaged = 0
     for filename in ("attempts.jsonl", "receipts.jsonl"):
         try:
-            source = (bridge / filename).open(encoding="utf-8")
+            source = (bridge / filename).open("rb")
         except FileNotFoundError:
             continue
         with source:
             for line in source:
                 if not line.strip():
                     continue
-                row = json.loads(line)
-                key = row["key"]
+                try:
+                    row = json.loads(line)
+                except (UnicodeDecodeError, ValueError, RecursionError):
+                    row = None
+                key = row.get("key") if isinstance(row, dict) else None
                 if not key_ok(key):
-                    raise ValueError("unrecognized legacy ledger key")
+                    # Existing writers use plain ASCII keys. A torn suffix can still
+                    # identify a key to hold, but can never prove a successful receipt.
+                    damaged += 1
+                    for candidate in re.findall(rb'"key"\s*:\s*"([A-Za-z0-9_-]{1,160})"', line):
+                        index.setdefault(candidate.decode("ascii"), {"attempts": 0, "phase": "uncertain"})
+                    continue
                 record = index.setdefault(key, {"attempts": 0, "phase": "uncertain"})
                 if row.get("posted") is True:
                     record["attempts"] = min(MAX_ATTEMPTS, record["attempts"] + 1)
                 if filename == "receipts.jsonl" or row.get("cls") == "success":
                     record["phase"] = "marked_done"
-    return index
+    return index, damaged
 
 
 def initial(bridge, key, via):
@@ -198,6 +215,17 @@ def publish_new_inbox(bridge, item):
         state = state_at(path, key)
         if state is None:
             state = initial(bridge, key, "reply")
+            previous = cutover(bridge)
+            if state["phase"] == "ready":
+                # A missing old inbox may be re-listed by the gateway. Its actual
+                # acceptance window started before cutover even if we receive it now.
+                window_ms = 150_000 if bridge.name == "desktop-bridge" else (
+                    300_000 if item.get("scope") == "group" else 3_600_000)
+                started = item["expiresAt"] - window_ms
+                prior_bridge = previous.get("priorBridge", bool(previous["legacy"]))
+                possible_replay = prior_bridge and started <= previous["atNs"] // 1_000_000
+                if possible_replay or (bridge / "outbox" / target.name).exists():
+                    state.update(phase="uncertain", code="LEGACY_REPLAY")
             state["newInbox"] = state["phase"] == "ready"
             state["inboxIdentity"] = identity
             state["expiresAt"] = item["expiresAt"]
@@ -216,8 +244,9 @@ def digest(value):
 def prepare(channel, via, payload):
     body = dict(payload)
     if channel == "desktop":
-        if set(body) != {"requestKey", "text"} or not isinstance(body["text"], str) or not body["text"].strip():
-            raise ValueError("desktop requires text")
+        if (set(body) != {"requestKey", "text"} or not isinstance(body["text"], str)
+                or not 1 <= len(body["text"].strip()) <= 12000):
+            raise ValueError("desktop requires 1 to 12000 characters")
         return body
     for media in ("image", "audio"):
         local = body.pop(media + "Path", None)
@@ -241,8 +270,11 @@ def prepare(channel, via, payload):
             or (via == "send" and (len(fields) != 1 or not body.get("conversationId")))
             or (via == "reply" and "conversationId" in body)):
         raise ValueError("invalid QQ payload")
-    if "text" in body and (not isinstance(body["text"], str) or not body["text"].strip() or len(body["text"]) > 1600):
-        raise ValueError("invalid QQ text")
+    if "text" in body:
+        text = body["text"]
+        if (not isinstance(text, str) or not text.strip()
+                or len(text if via == "send" else text.strip()) > 1600):
+            raise ValueError("invalid QQ text")
     return body
 
 
@@ -261,7 +293,8 @@ def retry_floor(data, headers):
         value = data.get(field)
         if type(value) in (float, int) and math.isfinite(value) and value > 0:
             waits.append(math.ceil(value * unit))
-    header = (headers or {}).get("Retry-After")
+    pairs = headers.items() if hasattr(headers, "items") else ()
+    header = next((value for name, value in pairs if str(name).lower() == "retry-after"), None)
     if isinstance(header, str):
         if header.strip().isdigit():
             waits.append(int(header) * 1000)
@@ -278,6 +311,27 @@ def load_client():
     client = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(client)
     return client
+
+
+def call_gateway(client, method, route, *args, timeout):
+    """Normalize the connector's (HTTP status, JSON[, headers]) or urllib HTTPError."""
+    try:
+        response = client.call_json(method, route, *args, timeout=timeout)
+    except HTTPError as error:
+        with error:
+            try:
+                data = json.loads(error.read(65536))
+            except (ValueError, OSError, HTTPException, RecursionError):
+                data = {}
+        return int(error.code), data, error.headers
+    if len(response) == 2:
+        status, data = response
+        headers = None
+    else:
+        status, data, headers = response
+    if not isinstance(status, int) or not 100 <= status <= 599:
+        raise ValueError("invalid HTTP status")
+    return int(status), data, headers
 
 
 def outcome(state, channel, via, body, http, data, headers):
@@ -456,15 +510,7 @@ def ship(channel, bridge, route, file):
             state.setdefault("history", []).append(attempt)
             publish(path, state)
             try:
-                http, data = client.call_json("POST", route, body, timeout=30 if channel == "desktop" else 60)
-                headers = None
-            except HTTPError as error:
-                http, headers = error.code, error.headers
-                with error:
-                    try:
-                        data = json.loads(error.read(65536))
-                    except (ValueError, OSError):
-                        data = {}
+                http, data, headers = call_gateway(client, "POST", route, body, timeout=30 if channel == "desktop" else 60)
             except Exception:
                 http, data, headers = None, {}, None
             outcome(state, channel, via, body, http, data, headers)
