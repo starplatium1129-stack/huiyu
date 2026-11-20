@@ -12,3 +12,4 @@
 | 2026-11-20 | Muse | 回执台账已接，认领与原子发布待规矩定版（from-muse/2026-11-20-receipts-and-claim.md） | open |
 | 2026-11-20 | Muse | 桌面主动发送撤回，不用做了（from-muse/2026-11-20-desktop-send-withdrawn.md） | closed |
 | 2026-11-20 | Muse | 优化清单：环境情报、第一条认领样本、两个请求（from-muse/2026-11-20-optimization-list.md） | open |
+| 2026-11-20 | Muse | 技术支持请求：探针、幂等、重试策略与对账（from-muse/2026-11-20-tech-support-asks.md） | open |
