@@ -61,7 +61,7 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
         Payload::Media(file) => (file.kind.name(), file.bytes.as_ref()),
     };
     let history_text = match &payload {
-        Payload::Text(text) if scope == QqScope::Group => Some(text.clone()),
+        Payload::Text(text) => Some(text.clone()),
         _ => None,
     };
     let fingerprint =

@@ -7,17 +7,20 @@ use rusqlite::{
 };
 
 const GROUP_LIMIT: usize = 64;
+const PRIVATE_LIMIT: usize = 6;
 const TOTAL_LIMIT: usize = 1024;
 const AGE_MS: i64 = 60 * 60_000;
 
-pub(super) struct GroupHistory {
-    store: Arc<AsyncMutex<Option<Database>>>,
+pub(super) struct History {
+    groups: Arc<AsyncMutex<Option<Database>>>,
+    private: Arc<AsyncMutex<Option<Database>>>,
 }
 
 struct Database {
     connection: Connection,
     generation: String,
     persistent: bool,
+    conversation_limit: usize,
 }
 
 impl Database {
@@ -25,6 +28,7 @@ impl Database {
         mut connection: Connection,
         generation: &str,
         persistent: bool,
+        conversation_limit: usize,
     ) -> rusqlite::Result<Self> {
         connection.busy_timeout(Duration::from_secs(2))?;
         let tx = connection.transaction_with_behavior(TransactionBehavior::Immediate)?;
@@ -54,12 +58,13 @@ impl Database {
             connection,
             generation: generation.to_owned(),
             persistent,
+            conversation_limit,
         })
     }
 
     fn record(
         &mut self,
-        group: &str,
+        conversation: &str,
         event: &str,
         value: &Value,
         previous_limit: usize,
@@ -84,15 +89,15 @@ impl Database {
         let inserted = tx.execute(
             "INSERT INTO messages(event_id, conversation, recorded_at, payload) VALUES (?1, ?2, ?3, ?4)
              ON CONFLICT(event_id) DO NOTHING",
-            params![event, group, recorded, value.to_string()],
+            params![event, conversation, recorded, value.to_string()],
         )?;
         let previous = if previous_limit > 0 {
             Self::recent(
                 &tx,
                 &self.generation,
-                group,
+                conversation,
                 Some(event),
-                previous_limit.min(GROUP_LIMIT),
+                previous_limit.min(self.conversation_limit),
             )?
         } else {
             Vec::new()
@@ -101,7 +106,7 @@ impl Database {
             tx.execute(
                 "DELETE FROM messages WHERE conversation = ?1 AND sequence <= (
                      SELECT sequence FROM messages WHERE conversation = ?1 ORDER BY sequence DESC LIMIT 1 OFFSET ?2)",
-                params![group, GROUP_LIMIT as i64],
+                params![conversation, self.conversation_limit as i64],
             )?;
             tx.execute(
                 "DELETE FROM messages WHERE sequence <= (SELECT sequence FROM messages ORDER BY sequence DESC LIMIT 1 OFFSET ?1)",
@@ -115,7 +120,7 @@ impl Database {
     fn recent(
         connection: &Connection,
         generation: &str,
-        group: &str,
+        conversation: &str,
         before: Option<&str>,
         limit: usize,
     ) -> rusqlite::Result<Vec<Arc<Value>>> {
@@ -128,7 +133,7 @@ impl Database {
              ORDER BY sequence DESC LIMIT ?5",
         )?;
         let rows = query.query_map(
-            params![group, oldest(), before, generation, limit as i64],
+            params![conversation, oldest(), before, generation, limit as i64],
             |row| {
                 let payload: String = row.get(0)?;
                 serde_json::from_str::<Value>(&payload)
@@ -154,7 +159,7 @@ impl Database {
         if !copied {
             memory = Connection::open_in_memory()?;
         }
-        *self = Self::open(memory, &self.generation, false)?;
+        *self = Self::open(memory, &self.generation, false, self.conversation_limit)?;
         Ok(())
     }
 }
@@ -163,30 +168,39 @@ fn oldest() -> i64 {
     (crate::host::now_ms() as i64).saturating_sub(AGE_MS)
 }
 
-impl GroupHistory {
+impl History {
     pub(super) async fn open(path: PathBuf, generation: String) -> Self {
-        let store = tokio::task::spawn_blocking(move || {
-            Connection::open(path)
-                .and_then(|connection| Database::open(connection, &generation, true))
+        let (groups, private) = tokio::task::spawn_blocking(move || {
+            let memory =
+                |limit| Database::open(Connection::open_in_memory()?, &generation, false, limit);
+            let groups = Connection::open(path)
+                .and_then(|connection| Database::open(connection, &generation, true, GROUP_LIMIT))
                 .or_else(|_| {
                     eprintln!("QQ 群上下文暂时无法保存到本机，本次连接将使用内存");
-                    Database::open(Connection::open_in_memory()?, &generation, false)
+                    memory(GROUP_LIMIT)
                 })
-                .ok()
+                .ok();
+            (groups, memory(PRIVATE_LIMIT).ok())
         })
         .await
         .unwrap_or_default();
         Self {
-            store: Arc::new(AsyncMutex::new(store)),
+            groups: Arc::new(AsyncMutex::new(groups)),
+            private: Arc::new(AsyncMutex::new(private)),
         }
     }
 
     async fn access(
         &self,
+        scope: QqScope,
         work: impl Fn(&mut Database) -> rusqlite::Result<Vec<Arc<Value>>> + Send + 'static,
     ) -> Vec<Arc<Value>> {
         // Queue operations in arrival order without blocking the async executor on SQLite.
-        let mut store = self.store.clone().lock_owned().await;
+        let store = match scope {
+            QqScope::Group => &self.groups,
+            QqScope::Private => &self.private,
+        };
+        let mut store = store.clone().lock_owned().await;
         tokio::task::spawn_blocking(move || {
             let Some(db) = store.as_mut() else {
                 return Vec::new();
@@ -206,9 +220,13 @@ impl GroupHistory {
         .unwrap_or_default()
     }
 
-    pub(super) async fn receive(&self, entry: &Entry, previous_limit: usize) -> Vec<Arc<Value>> {
-        let group = entry.conversation_id.clone();
-        let event = crate::storage::json_fingerprint(&json!([group, entry.message_id]));
+    pub(super) async fn receive(&self, entry: &Entry, group_limit: usize) -> Vec<Arc<Value>> {
+        let conversation = entry.conversation_id.clone();
+        let event = crate::storage::json_fingerprint(&json!([conversation, entry.message_id]));
+        let previous_limit = match entry.scope {
+            QqScope::Group => group_limit,
+            QqScope::Private => PRIVATE_LIMIT,
+        };
         let mut value = entry.sender_fields();
         value["author"] = json!("user");
         value["eventId"] = json!(event);
@@ -219,8 +237,10 @@ impl GroupHistory {
             value["attachmentKind"] = json!("image");
             value["attachmentCount"] = json!(entry.images.len());
         }
-        self.access(move |db| db.record(&group, &event, &value, previous_limit))
-            .await
+        self.access(entry.scope, move |db| {
+            db.record(&conversation, &event, &value, previous_limit)
+        })
+        .await
     }
 }
 
@@ -228,14 +248,14 @@ impl Mailbox {
     pub(super) async fn remember_sent(
         &self,
         scope: QqScope,
-        group: &str,
+        conversation: &str,
         kind: &str,
         text: Option<&str>,
     ) {
-        if scope != QqScope::Group || self.cancel.is_cancelled() {
+        if self.cancel.is_cancelled() {
             return;
         }
-        let group = group.to_owned();
+        let conversation = conversation.to_owned();
         let event = uuid::Uuid::new_v4().to_string();
         let mut value = json!({
             "author":"muse","senderId":"muse","senderNickname":"Muse","senderRole":null,
@@ -246,7 +266,7 @@ impl Mailbox {
             value["attachmentCount"] = json!(1);
         }
         self.history
-            .access(move |db| db.record(&group, &event, &value, 0))
+            .access(scope, move |db| db.record(&conversation, &event, &value, 0))
             .await;
     }
 }
@@ -271,7 +291,7 @@ pub(super) async fn context(
     let group = id.clone();
     let items = mailbox
         .history
-        .access(move |db| {
+        .access(QqScope::Group, move |db| {
             Database::recent(&db.connection, &db.generation, &group, None, GROUP_LIMIT)
         })
         .await;

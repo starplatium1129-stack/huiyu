@@ -31,7 +31,7 @@ pub(in crate::companion_channels) struct Mailbox {
     api: Arc<Api>,
     cancel: CancellationToken,
     entries: Mutex<VecDeque<Arc<Entry>>>,
-    history: history::GroupHistory,
+    history: history::History,
     inbox_changed: watch::Sender<()>,
     poll_slots: Semaphore,
     last_poll: AtomicU64,
@@ -133,9 +133,7 @@ impl Entry {
         item["text"] = json!(self.question);
         item["timestamp"] = json!(self.timestamp);
         item["expiresAt"] = json!(self.expires_at);
-        if self.scope == QqScope::Group {
-            item["recentMessages"] = json!(self.recent_messages);
-        }
+        item["recentMessages"] = json!(self.recent_messages);
         if !self.images.is_empty() {
             item["attachments"] = json!(self.images);
         }
@@ -191,8 +189,7 @@ impl Mailbox {
         )
         .with_extension("sqlite3");
         let history =
-            history::GroupHistory::open(history_path, settings.muse_history_generation.clone())
-                .await;
+            history::History::open(history_path, settings.muse_history_generation.clone()).await;
         Self {
             epoch: storage.runtime_epoch().to_owned(),
             api,
@@ -449,12 +446,10 @@ impl Mailbox {
             send_attempted: AtomicBool::new(false),
             delivery: AsyncMutex::default(),
         };
-        if entry.scope == QqScope::Group {
-            entry.recent_messages = self
-                .history
-                .receive(&entry, settings.muse_context_limit)
-                .await;
-        }
+        entry.recent_messages = self
+            .history
+            .receive(&entry, settings.muse_context_limit)
+            .await;
         let mut entries = self.entries();
         let now = crate::host::now_ms();
         if self.cancel.is_cancelled() || entry.expires_at <= now {
@@ -629,7 +624,7 @@ fn operations(vm: bool) -> Value {
         "sendBody":{"requestKey":"新 UUID，重试沿用","conversationId":"targets 返回的会话","text":"文字，也可改传 image 或 audio"},
         "audio":{"mimeType":"audio/mpeg","data":"MP3 原文件的标准 Base64"},"searchBody":{"requestKey":"来信编号，或搭配 conversationId 使用新 UUID","query":"公开网页关键词"},
         "context":format!("GET {base}/context/{{conversationId}}"),
-        "contextUsage":"recentMessages 按收录顺序附上这条消息之前的同群发言，数量由绘遇的群聊前文设置决定。需要更早的发言时可读取同群 context。",
+        "contextUsage":"recentMessages 按收录顺序附上同会话前文。群聊条数取决于绘遇设置，需要更早的群发言可读取同群 context。私聊最多附上本次连接内最近一小时的 6 条发言。",
         "inboxWaitSeconds":0,
         "desktopChat":if vm {
             json!({"inbox":"GET /desktop/pending","reply":"POST /desktop/replies"})

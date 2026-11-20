@@ -41,7 +41,7 @@ const publicGuide = {
     inbox: '/api/muse/qq/inbox', reply: '/api/muse/qq/reply', targets: '/api/muse/qq/targets',
     send: '/api/muse/qq/send', search: '/api/muse/qq/search',
     usage: '独立持续 GET inbox?wait=25，HTTP 超时至少 40 秒。空结果立即续接，失败按 Retry-After 退避。普通文字用来信中的 recentMessages 直接回答，写好即用原 requestKey 在 expiresAt 前 POST reply。可传 text 和一个附件，也可以只传附件。image 为 JPEG/PNG，audio 为 MP3（audio/mpeg）。两者均使用 {mimeType,data}，data 为原文件的标准 base64，每个原文件最多 3 MiB。QQ 确认后返回 status=sent。',
-    context: '群来信的 recentMessages 附有这条消息之前的同群发言。需要更多前文时，用 targets 中的群 conversationId 请求 GET /api/muse/qq/context/{conversationId}，可读取最近一小时内最多 64 条已收到的群消息和 Muse 已确认发言。',
+    context: 'recentMessages 附有当前消息之前的同会话发言。私聊最多附上本次连接内最近一小时的 6 条。群聊需要更多前文时，用 targets 中的群 conversationId 请求 GET /api/muse/qq/context/{conversationId}，可读取最近一小时内最多 64 条已收到的群消息和 Muse 已确认发言。',
     skip: '机主开启接收普通群消息且群主同意后，Muse 可读到未 @ 自己的对话。无需插话时向 reply 提交 {requestKey,skip:true}，返回 status=skipped。',
     proactive: '机主开启主动发送后，GET targets 选出已绑定会话的 conversationId。POST send 携带新 UUID 作为 requestKey、该 conversationId 和 text、image 或 audio 中的一项。QQ 平台会检查主动消息权限与额度。重试使用同一编号和原内容。',
     webSearch: 'POST search 提交收件项的 requestKey 和 query。也可以用新 UUID、已开启会话的 conversationId 和 query 发起检索。results 中有公开网页的 title、url 和 snippet，Muse 可据此回复。',
