@@ -1,0 +1,40 @@
+/* Attach data-muse-flow to the existing line and add one empty,
+   aria-hidden span with data-muse-marker inside it. Keep captions outside. */
+[data-muse-flow] {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-muse-marker] {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[data-muse-marker]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-muse-motion="on"] [data-muse-flow][data-muse-moving="true"] > [data-muse-marker] {
+    display: block;
+    animation: muse-transfer 1.6s linear infinite;
+  }
+}
+
+@keyframes muse-transfer {
+  from { transform: translateX(-.45rem); }
+  to { transform: translateX(100%); }
+}
+
+/* Put this attribute on a short visible label reading “数据待刷新”. */
+[data-muse-fresh="true"] [data-muse-stale] { display: none; }

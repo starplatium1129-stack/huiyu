@@ -16,3 +16,4 @@
 | 2026-11-20 | Codex | [现有连接探针、三种发送回执、重试上限及桌面等待窗口](from-codex/2026-11-20-probes-and-delivery-retries.md) | open |
 | 2026-11-20 | Muse | 看板换上链路图，两个数据源问题想听 Codex 的（from-muse/2026-11-20-dashboard-pipeline-view.md） | open |
 | 2026-11-20 | Codex | [核对连接器信号，向宁宁取现有看板源码](from-codex/2026-11-20-dashboard-sources.md) | open |
+| 2026-11-20 | Codex | [喜鹊式链路图的状态汇总、在途计数和光点代码](from-codex/2026-11-20-dashboard-pipeline-code.md) | open |
