@@ -154,8 +154,12 @@ class Queue:
             candidates.append(((first[2], first[3], first[1], first[4]), group, items))
         return sorted(candidates, key=lambda candidate: candidate[0])
 
-    def reserve(self, slot, candidates):
+    def reserve(self, slot, candidates, *, after_wake=False):
         now = milliseconds()
+        expired = self.db.execute("SELECT slot, keys_json FROM slots WHERE phase='offered' AND until_ms<=?",
+                                  (now,)).fetchall()
+        for row in expired:
+            self.record(row["slot"], "offer_expired", len(json.loads(row["keys_json"])), OFFER_MS)
         self.db.execute("DELETE FROM slots WHERE until_ms <= ?", (now,))
         rows = self.db.execute("SELECT slot, group_id FROM slots").fetchall()
         if any(row["slot"] == slot for row in rows):
@@ -167,12 +171,14 @@ class Queue:
             # Legacy records without a room or sender must not be merged as one person's turn.
             grouping = json.loads(group)
             batch_size = MAX_GROUP if len(grouping) <= 2 and all(grouping) else 1
-            keys = [item[4] for item in items if item[2] > now][:batch_size]
-            if keys:
+            batch = [item for item in items if item[2] > now][:batch_size]
+            if batch:
+                keys = [item[4] for item in batch]
                 ticket = uuid.uuid4().hex
                 self.db.execute("INSERT INTO slots VALUES (?,?,?,'offered',?,?,'[]')",
                                 (slot, ticket, group, now + OFFER_MS, json.dumps(keys)))
-                self.record(slot, "offer", len(keys))
+                if not after_wake:
+                    self.record(slot, "offer", len(keys), max(0, now - batch[0][1] // 1_000_000))
                 return {"channel": self.channel, "slot": slot, "ticket": ticket, "pending": keys}
         return None
 
@@ -201,7 +207,7 @@ class Queue:
             raise Unavailable("ticket_unavailable")
         return row
 
-    def begin(self, ticket):
+    def begin(self, ticket, *, after_wake=False):
         row = self.require(ticket, "offered")
         now = milliseconds()
         keys = [key for key in json.loads(row["keys_json"]) if self.read_item(key, now)]
@@ -209,9 +215,11 @@ class Queue:
             self.db.execute("DELETE FROM slots WHERE ticket=?", (ticket,))
             return {"pending": []}
         self.require(ticket, "offered")
+        began = milliseconds()
         self.db.execute("UPDATE slots SET phase='working',until_ms=?,keys_json=? WHERE ticket=?",
-                        (milliseconds() + self.work_ms, json.dumps(keys), ticket))
-        self.record(row["slot"], "begin", len(keys))
+                        (began + self.work_ms, json.dumps(keys), ticket))
+        wake_delay = None if after_wake else max(0, began - (row["until_ms"] - OFFER_MS))
+        self.record(row["slot"], "take" if after_wake else "begin", len(keys), wake_delay)
         return {"channel": self.channel, "slot": row["slot"], "ticket": ticket, "pending": keys}
 
     def take(self, slot, candidates):
@@ -220,9 +228,9 @@ class Queue:
         if row and row["phase"] == "working":
             return {"pending": []}
         if row:
-            return self.begin(row["ticket"])
-        offer = self.reserve(slot, candidates)
-        return self.begin(offer["ticket"]) if offer else {"pending": []}
+            return self.begin(row["ticket"], after_wake=True)
+        offer = self.reserve(slot, candidates, after_wake=True)
+        return self.begin(offer["ticket"], after_wake=True) if offer else {"pending": []}
 
     def check_key(self, row, key):
         keys = json.loads(row["keys_json"])
@@ -249,7 +257,12 @@ class Queue:
         if key not in started:
             started.append(key)
             arrived = (self.inbox / (key + ".json")).stat().st_mtime_ns // 1_000_000
-            self.record(row["slot"], "start", 1, max(0, milliseconds() - arrived))
+            now = milliseconds()
+            phase = self.db.execute("SELECT at,event FROM activity WHERE slot=? AND event IN ('begin','take','start') "
+                                    "ORDER BY id DESC LIMIT 1", (row["slot"],)).fetchone()
+            if phase and phase["event"] != "start":
+                self.record(row["slot"], "first_start", 1, max(0, now - phase["at"]))
+            self.record(row["slot"], "start", 1, max(0, now - arrived))
         self.db.execute("UPDATE slots SET until_ms=?,started_json=? WHERE ticket=?",
                         (milliseconds() + self.work_ms, json.dumps(started), ticket))
         return {"started": key}
@@ -335,7 +348,15 @@ def status(channel):
             result["slots"].append({"slot": row["slot"], "phase": row["phase"], "until": row["until_ms"],
                                     "started": len(json.loads(row["started_json"]))})
         events = db.execute("SELECT at,slot,event,items,queueMs FROM activity ORDER BY id DESC LIMIT 64")
-        result["recent"] = list(reversed([dict(row) for row in events]))
+        timings = {"offer": "inboxToOfferMs", "begin": "offerToBeginMs",
+                   "first_start": "beginToFirstStartMs", "offer_expired": "offerWaitAtLeastMs"}
+        for row in reversed(events.fetchall()):
+            event = dict(row)
+            timing = timings.get(event["event"])
+            if timing is not None and event["queueMs"] is not None:
+                event[timing] = event["queueMs"]
+                event["queueMs"] = None
+            result["recent"].append(event)
         result["installed"] = True
         return result
     finally:
