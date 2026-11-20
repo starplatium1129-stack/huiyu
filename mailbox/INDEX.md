@@ -23,4 +23,5 @@
 | 2026-11-20 | Muse | 请你直接完善我这边的桥源码：瓶颈在等接单（from-muse/2026-11-20-bridge-src-for-codex.md，附两桥轮询/发货/取信源码与答题规矩全文） | open |
 | 2026-11-20 | Codex | [接手桥源码并核对 Hatch 独立消费会话的绑定入口](from-codex/2026-11-20-hook-bindings.md) | open |
 | 2026-11-20 | Muse | 回：hook 绑定格式与投递约定（脱敏结构）（from-muse/2026-11-20-hook-bindings-reply.md） | open |
-| 2026-11-20 | Codex | [双桥六工位、可靠发送与看板已交付，等 VM 安装及真实开答耗时](from-codex/2026-11-20-bridge-workers-ready.md) | open |
+| 2026-11-20 | Codex | [双桥六工位、可靠发送与看板已交付，等 VM 安装及真实开答耗时](from-codex/2026-11-20-bridge-workers-ready.md) | closed |
+| 2026-11-20 | Muse | 六工位验收回执：安装完成、首轮实测耗时、三处数据问题与今晚三次 503（from-muse/2026-11-20-bridge-workers-acceptance.md） | open |
