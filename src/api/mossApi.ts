@@ -16,6 +16,8 @@ export async function mossStatus(signal: AbortSignal): Promise<DirectImageModelS
     if (acceleration !== undefined && acceleration !== null && (!Array.isArray(acceleration)
       || acceleration.length !== 2 || acceleration[0] !== 'off' || acceleration[1] !== 'spectrum')) throw new Error('MOSS 加速选项无效，请更新并重启后端')
     const precision = model.mossTextPrecision
+    if (model.mossAdaptiveSpectrum != null && typeof model.mossAdaptiveSpectrum !== 'boolean') throw new Error('MOSS 自适应预测能力无效，请更新并重启后端')
+    if (model.mossErSde != null && typeof model.mossErSde !== 'boolean') throw new Error('MOSS 预览采样能力无效，请更新并重启后端')
     if (model.mossRemacri !== undefined && typeof model.mossRemacri !== 'boolean') throw new Error('MOSS 超分能力无效，请更新并重启后端')
     if (model.mossSpectrumFlexWindow !== undefined && typeof model.mossSpectrumFlexWindow !== 'boolean') throw new Error('MOSS Spectrum 参数能力无效，请更新并重启后端')
     if (precision !== undefined && precision !== null && (!Array.isArray(precision)
@@ -28,7 +30,9 @@ export async function mossStatus(signal: AbortSignal): Promise<DirectImageModelS
     if (model.mossTextBf16Ready !== undefined && typeof model.mossTextBf16Ready !== 'boolean') throw new Error('MOSS 文本权重状态无效，请更新并重启后端')
     const mossTextBf16Ready = model.mossTextBf16Ready !== false
     return { id: selected.value, available: model.available, unavailableReason: model.unavailableReason,
-      licenseUrl: model.licenseUrl, mossSpectrum: Array.isArray(acceleration) && acceleration.includes('spectrum'), mossFlexWindow: model.mossSpectrumFlexWindow === true, mossRemacri: model.mossRemacri === true,
+      licenseUrl: model.licenseUrl, mossSpectrum: Array.isArray(acceleration) && acceleration.includes('spectrum'),
+      mossAdaptiveSpectrum: model.mossAdaptiveSpectrum === true, mossErSde: model.mossErSde === true,
+      mossFlexWindow: model.mossSpectrumFlexWindow === true, mossRemacri: model.mossRemacri === true,
       mossTextBf16Ready, mossFp8: mossTextBf16Ready && Array.isArray(precision) && precision.includes('fp8'), mossCompile: model.mossCompile === true,
       mossFp16Ready: model.mossFp16Ready === true,
       mossInt8Ready: model.mossInt8Ready === true,

@@ -10,7 +10,8 @@ import { parsePromptScenes, parsePromptLoras } from '../../src/utils/promptCatal
 import { parsePresetCatalog } from '../../src/utils/modelProfileDefaults.ts';
 import { parseScenePromptLoras, resolveModelProfile } from '../../src/utils/promptPolicy.ts';
 import { sceneRecommendedSize } from '../../src/utils/sceneInference.ts';
-import { renderMossDrawingPrompt } from '../../src/utils/mossPrompt.ts';
+import { MOSS_NEGATIVE, renderMossDrawingPrompt } from '../../src/utils/mossPrompt.ts';
+import { MOSS_DEFAULT_ACCELERATION, MOSS_DEFAULT_FLEX_WINDOW } from '../../src/config/directImageModels.ts';
 import { OUTFIT_BUNDLES } from '../../src/composables/scene/useDirectorCatalog.ts';
 import { closestSceneSize } from './scene-repair-content';
 import presets from '../../data/presets.json';
@@ -60,11 +61,12 @@ export function stageRemoteSceneRecipes(root: string, gateway: string, rows: Row
       ...renderAnima(recipe.kind === 'studio' ? { ...recipe, activeLoras: { [recipe.character]: binding.loraId }, loraMeta } : recipe), ...binding,
     } : null;
     const moss = compilePromptRecipe({ ...recipe, engine: 'moss', profile: null });
-    const { prompt, negative } = renderMossDrawingPrompt(moss.plan, '', '', { width: mossWidth, height: mossHeight });
+    const { prompt, negative } = renderMossDrawingPrompt(moss.plan, '', MOSS_NEGATIVE, { width: mossWidth, height: mossHeight });
     if (!primary.prompt.trim() || !prompt.trim()) throw Error(`远程场景编译结果为空 ${JSON.stringify(sources)}`);
     return Buffer.from(JSON.stringify({ sources, anima: primary, animaWithLora: withLora,
       animaLoraSource: binding && recipe.kind === 'studio' ? ['document', 'loras'] : null,
-      moss: { prompt, negative, width: mossWidth, height: mossHeight, steps: MOSS.steps, cfg: MOSS.cfg },
+      moss: { prompt, negative, width: mossWidth, height: mossHeight, steps: MOSS.steps, cfg: MOSS.cfg,
+        mossSampler: 'euler', mossAcceleration: MOSS_DEFAULT_ACCELERATION, mossSpectrumFlexWindow: MOSS_DEFAULT_FLEX_WINDOW },
     }));
   }
   function studioBinding(character: string, weight = 0.85): Binding | null {

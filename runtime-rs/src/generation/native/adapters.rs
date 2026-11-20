@@ -216,6 +216,8 @@ impl<'a> Status<'a> {
         "repository":model["repository"],"sourceRevision":model["revision"],"license":model["license"],"licenseUrl":model["licenseUrl"],
         "defaults":{"steps":model["steps"],"cfg":model["cfg"],"sampler":model["sampler"].as_str().unwrap_or("euler"),"scheduler":"model-config","teaCache":false},
         "mossAcceleration":model["mossAcceleration"],
+        "mossAdaptiveSpectrum":model["mossAdaptiveSpectrum"],
+        "mossErSde":model["mossPreview"]["sampler"] == "er-sde",
         "mossSpectrumFlexWindow":model["mossSpectrumFlexWindow"],
         "mossRemacri":model["family"] == "moss-image" && resources::remacri(&settings.models_root).is_some(),
         "mossTextPrecision":model["mossTextPrecision"],

@@ -246,10 +246,12 @@ pub(super) async fn run(inner: &Arc<Inner>, job: &Arc<Job>, token: &Cancellation
     if retain {
         // Ready confirms worker-side cleanup; the request keeps its directory Arc.
         worker.current_temp.lock().unwrap().take();
-        let idle = Duration::from_secs(if plan.input["family"] == "moss-image" {
-            90
-        } else {
-            600
+        // Give a successful MOSS drawing session time for a prompt edit. A
+        // chat/model handoff can still retire the worker immediately.
+        let idle = Duration::from_secs(match plan.input["family"].as_str() {
+            Some("moss-image") if value.is_ok() && plan.input["mossUpscaleScale"].is_null() => 300,
+            Some("moss-image") => 90,
+            _ => 600,
         });
         Engine::retain_worker(inner.clone(), worker, idle).await;
         return value;

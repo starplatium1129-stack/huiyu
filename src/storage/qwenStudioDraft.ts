@@ -2,7 +2,7 @@ import { profileLocalStorage, writeProfileLocal } from '@/platform/web/profileSt
 import { sameTempResultOwner, tempResultOwner, type TempResultOwner } from '@/utils/tempResult'
 import { artworkRepository } from './artworkRepository'
 import { inspectMangaImage, type MangaImage } from '@/composables/manga/mangaImage'
-import { qwenModels, mossModels, validMossSpectrumFlexWindow } from '@/config/directImageModels'
+import { qwenModels, mossModels, isMossAcceleration, MOSS_DEFAULT_ACCELERATION, MOSS_DEFAULT_FLEX_WINDOW, validMossSpectrumFlexWindow, type MossAcceleration, type MossSampler } from '@/config/directImageModels'
 
 // Registered model-draft namespace: profile media_refs recursively retains imageId.
 // All mounted instances hand off through one queue. A fullPath remount must
@@ -16,10 +16,12 @@ function activeKey(key: string, selectionKey: string, recoveryKey: string) {
 }
 export interface QwenForm {
   modelId: string; prompt: string; negative: string; width: number; height: number; steps: number; cfg: number; seed: number
-  mossAcceleration?: 'off' | 'spectrum'; mossTextPrecision?: 'auto' | 'bf16' | 'fp8' | 'int8'; mossCompile?: boolean
+  mossAcceleration?: MossAcceleration; mossTextPrecision?: 'auto' | 'bf16' | 'fp8' | 'int8'; mossCompile?: boolean
   mossSpectrumFlexWindow?: number
+  mossSampler?: MossSampler
   mossWeightPrecision?: 'auto' | 'fp16' | 'int8'
   mossLayout?: string
+  mossUseTaskPrompt?: boolean
 }
 export interface QwenDraftState {
   form: QwenForm; randomSeed: boolean; resize: boolean; parentId: string | number | null
@@ -39,7 +41,7 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
   && models.some(model => model.value === form.modelId)
   && typeof form.prompt === 'string' && form.prompt.length <= 12000 && typeof form.negative === 'string' && form.negative.length <= 8000
   && (form.mossAcceleration === undefined || form.mossAcceleration === 'off'
-    || form.mossAcceleration === 'spectrum' && mossModels.some(model => model.value === form.modelId))
+    || isMossAcceleration(form.mossAcceleration) && mossModels.some(model => model.value === form.modelId))
   && (form.mossSpectrumFlexWindow === undefined || mossModels.some(model => model.value === form.modelId) && validMossSpectrumFlexWindow(form.mossSpectrumFlexWindow))
   && (form.mossTextPrecision === undefined || mossModels.some(model => model.value === form.modelId)
     && (form.mossTextPrecision === 'auto' || form.mossTextPrecision === 'bf16' || form.mossTextPrecision === 'fp8' || form.mossTextPrecision === 'int8'))
@@ -48,12 +50,14 @@ const validForm = (form: unknown, models: readonly { value: string }[]): form is
     && (form.mossWeightPrecision === 'auto' || form.mossWeightPrecision === 'fp16' || form.mossWeightPrecision === 'int8'))
   && (form.mossLayout === undefined || mossModels.some(model => model.value === form.modelId)
     && typeof form.mossLayout === 'string' && form.mossLayout.length <= 12000)
+  && (form.mossSampler === undefined || mossModels.some(model => model.value === form.modelId) && (form.mossSampler === 'euler' || form.mossSampler === 'er-sde'))
+  && (form.mossUseTaskPrompt === undefined || mossModels.some(model => model.value === form.modelId) && typeof form.mossUseTaskPrompt === 'boolean')
   && ['width', 'height', 'steps', 'cfg', 'seed'].every(key => typeof form[key] === 'number' && Number.isFinite(form[key]))
 const copyForm = (form: QwenForm): QwenForm => ({ modelId: form.modelId, prompt: form.prompt, negative: form.negative,
   width: form.width, height: form.height, steps: form.steps, cfg: form.cfg, seed: form.seed,
-  ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? 'spectrum', mossSpectrumFlexWindow: form.mossSpectrumFlexWindow ?? 0.5,
+  ...(mossModels.some(model => model.value === form.modelId) ? { mossAcceleration: form.mossAcceleration ?? MOSS_DEFAULT_ACCELERATION, mossSpectrumFlexWindow: form.mossSpectrumFlexWindow ?? MOSS_DEFAULT_FLEX_WINDOW,
     mossTextPrecision: form.mossTextPrecision ?? 'auto', mossCompile: form.mossCompile ?? false, mossWeightPrecision: form.mossWeightPrecision ?? 'auto',
-    mossLayout: form.mossLayout ?? '' } : {}) })
+    mossSampler: form.mossSampler ?? 'euler', mossLayout: form.mossLayout ?? '', mossUseTaskPrompt: form.mossUseTaskPrompt ?? false } : {}) })
 function read(selectedKey: string, models: readonly { value: string }[]): StoredDraft | null {
   const raw = profileLocalStorage.getItem(selectedKey)
   if (!raw) return null

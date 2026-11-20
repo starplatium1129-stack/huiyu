@@ -164,11 +164,14 @@ class Execution:
                 self.cache_bytes += size
         return output
 
+    def release_sampling(self):
+        self.contexts.clear()
+        self.time_key = self.time_value = None
+
     def finish(self):
         self._settle_phase()
+        self.release_sampling()
         result = dict(schemaVersion=1, timingMode="cpu-wall-no-extra-sync", timingsAreAdditive=False,
             timings=dict(self.timings), contextCache=dict(hits=self.hits, misses=self.misses,
                 bytes=self.cache_bytes, modulationHits=self.time_hits), performanceVerified=False)
-        self.contexts.clear()
-        self.time_key = self.time_value = None
         return result

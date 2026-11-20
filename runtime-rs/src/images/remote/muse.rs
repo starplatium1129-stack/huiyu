@@ -15,6 +15,7 @@ mod batches;
 pub(crate) mod companion;
 mod details;
 mod history;
+mod layout;
 mod legacy;
 mod submission;
 use submission::SceneSelection;
@@ -393,15 +394,20 @@ impl RecipeLibrary {
         } else {
             recipe.moss
         };
-        payload["modelId"] = json!(model);
+        let fields = payload.as_object_mut().ok_or_else(unavailable)?;
+        fields.insert("modelId".into(), json!(model));
+        scene.apply_moss_options(&mut payload, family)?;
         submission::apply_upscale(&mut payload, family, scene.upscale)?;
         let size = submission::dimensions(scene.width, scene.height)?;
         if let Some((width, height)) = size {
+            if family == "moss-image" {
+                layout::resize_catalog_prompt(&mut payload, width, height)?;
+            }
             payload["width"] = json!(width);
             payload["height"] = json!(height);
         }
-        if size.is_some() || scene.upscale.is_some() {
-            submission::validate_payload(&payload, family)?;
+        if family == "moss-image" || size.is_some() || scene.upscale.is_some() {
+            submission::prepare_payload(&mut payload, family)?;
         }
         Ok(PreparedScene {
             kind,

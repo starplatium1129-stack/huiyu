@@ -157,6 +157,8 @@
         "spectrum"
       ],
       "mossSpectrumFlexWindow": true,
+      "mossAdaptiveSpectrum": true,
+      "mossPreview": {"sampler": "er-sde", "scheduler": "simple", "steps": 25, "cfg": 2.5},
       "mossTextPrecision": [
         "bf16",
         "fp8",
@@ -200,6 +202,8 @@
       "shift": 5, "uncondSkipLayers": [22],
       "mossAcceleration": ["off", "spectrum"],
       "mossSpectrumFlexWindow": true,
+      "mossAdaptiveSpectrum": true,
+      "mossPreview": {"sampler": "er-sde", "scheduler": "simple", "steps": 25, "cfg": 2.5},
       "mossTextPrecision": ["bf16", "fp8", "int8"],
       "mossCompile": true,
       "mossInt8": {

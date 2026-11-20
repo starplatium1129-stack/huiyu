@@ -1,5 +1,8 @@
 use super::*;
 
+const MOSS_PREVIEW_SETTINGS: [&str; 4] =
+    ["steps", "cfg", "mossAcceleration", "mossSpectrumFlexWindow"];
+
 #[derive(Default, serde::Deserialize, serde::Serialize)]
 #[serde(rename_all = "camelCase", deny_unknown_fields)]
 pub(super) struct SceneSelection {
@@ -20,6 +23,12 @@ pub(super) struct SceneSelection {
     pub(super) height: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) upscale: Option<Upscale>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) moss_sampler: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) moss_acceleration: Option<String>,
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub(super) moss_spectrum_flex_window: Option<f64>,
     #[serde(skip_serializing_if = "Option::is_none")]
     pub(super) steps: Option<u64>,
     #[serde(skip_serializing_if = "Option::is_none")]
@@ -68,6 +77,35 @@ pub(super) fn apply_upscale(payload: &mut Value, family: &str, upscale: Option<U
 }
 
 impl SceneSelection {
+    pub(super) fn apply_moss_options(&self, payload: &mut Value, family: &str) -> Result<()> {
+        if family != "moss-image"
+            && (self.moss_sampler.is_some()
+                || self.moss_acceleration.is_some()
+                || self.moss_spectrum_flex_window.is_some())
+        {
+            return Err(ApiError::invalid(
+                "仅 MOSS 可指定 mossSampler、mossAcceleration 和 mossSpectrumFlexWindow",
+            ));
+        }
+        if let Some(sampler) = &self.moss_sampler {
+            if sampler == "er-sde" && payload["mossSampler"] != "er-sde" {
+                // Drop the bundled Euler preset. Explicit options are applied after this step.
+                let fields = payload.as_object_mut().ok_or_else(unavailable)?;
+                for key in MOSS_PREVIEW_SETTINGS {
+                    fields.remove(key);
+                }
+            }
+            payload["mossSampler"] = json!(sampler);
+        }
+        if let Some(acceleration) = &self.moss_acceleration {
+            payload["mossAcceleration"] = json!(acceleration);
+        }
+        if let Some(window) = self.moss_spectrum_flex_window {
+            payload["mossSpectrumFlexWindow"] = json!(window);
+        }
+        Ok(())
+    }
+
     pub(super) fn is_custom(&self) -> bool {
         self.prompt.is_some() || self.kind.as_deref() == Some("prompt")
     }
@@ -164,6 +202,7 @@ pub(super) fn custom(
             .ok_or_else(|| ApiError::invalid("此模型需要显式指定 width 和 height"))?,
     };
     let mut payload = json!({"modelId":model,"prompt":input.prompt,"width":width,"height":height});
+    input.apply_moss_options(&mut payload, family)?;
     apply_upscale(&mut payload, family, input.upscale)?;
     if let Some(value) = input.negative {
         payload["negative"] = json!(value);
@@ -236,7 +275,7 @@ pub(super) fn custom(
     }
     // The normal family validator stays authoritative for prompts, dimensions,
     // options and known model/LoRA combinations.
-    validate_payload(&payload, family)?;
+    prepare_payload(&mut payload, family)?;
     Ok(PreparedScene {
         kind: "prompt".into(),
         id: "prompt".into(),
@@ -248,11 +287,21 @@ pub(super) fn custom(
     })
 }
 
-pub(super) fn validate_payload(payload: &Value, family: &str) -> Result<()> {
-    if generation::native::adapters::model(payload["modelId"].as_str().unwrap_or("")).is_some() {
-        native_adapters::validate(payload, family)?;
-    } else {
-        validate(payload, family)?;
+pub(super) fn prepare_payload(payload: &mut Value, family: &str) -> Result<()> {
+    let validated = validate_payload(payload, family)?;
+    if family == "moss-image" && payload["mossSampler"] == "er-sde" {
+        // Freeze the resolved preview settings with the queued job.
+        for key in MOSS_PREVIEW_SETTINGS {
+            payload[key] = validated[key].clone();
+        }
     }
     Ok(())
+}
+
+pub(super) fn validate_payload(payload: &Value, family: &str) -> Result<Value> {
+    if generation::native::adapters::model(payload["modelId"].as_str().unwrap_or("")).is_some() {
+        native_adapters::validate(payload, family)
+    } else {
+        validate(payload, family)
+    }
 }

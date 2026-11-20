@@ -161,7 +161,7 @@ def validate(job):
     if not isinstance(job, dict) or set(job) - allowed or job.get("op") != "generate" or not isinstance(job.get("id"), str) or not job["id"]:
         raise AdapterError("INVALID_REQUEST", "Expected a native adapter generation request")
     data = job.get("input")
-    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "videoAttention", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
+    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "videoAttention", "mossSampler", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
         raise AdapterError("UNSUPPORTED_OPTION", "Unsupported adapter input; no silent option fallback")
     spec = model(data.get("modelId"))
     is_video = spec["media"] == "video"
@@ -196,10 +196,18 @@ def validate(job):
     if not isinstance(negative, str) or len(negative) > 8000 or (negative and not spec["negative"]):
         raise AdapterError("UNSUPPORTED_OPTION", "Negative prompt is unsupported or invalid for this model")
     result = dict(data, negativePrompt=negative)
+    sampling_defaults = spec
     if spec["family"] == "moss-image":
+        sampler = data.get("mossSampler", "euler")
+        if sampler != "euler":
+            sampling_defaults = spec.get("mossPreview", {})
+            if not isinstance(sampler, str) or sampler != sampling_defaults.get("sampler"):
+                raise AdapterError("INVALID_PARAMETER", "Unsupported MOSS sampler")
+        result["mossSampler"] = sampler
         acceleration = data.get("mossAcceleration", "off")
-        if type(acceleration) is not str or acceleration not in ("off", "spectrum"):
-            raise AdapterError("INVALID_PARAMETER", "MOSS acceleration must be off or spectrum")
+        if (acceleration not in spec["mossAcceleration"]
+                and not (acceleration == "spectrum-adaptive" and spec.get("mossAdaptiveSpectrum") is True)):
+            raise AdapterError("INVALID_PARAMETER", "Unsupported MOSS acceleration mode")
         result["mossAcceleration"] = acceleration
         result["mossSpectrumFlexWindow"] = number(data, "mossSpectrumFlexWindow", 0.5, 0, 2)
         precision = data.get("mossTextPrecision", "auto")
@@ -213,14 +221,14 @@ def validate(job):
         if type(weight_precision) is not str or weight_precision not in ("auto", "fp16", "int8"):
             raise AdapterError("INVALID_PARAMETER", "MOSS weight precision must be auto, fp16 or int8")
         result["mossWeightPrecision"] = weight_precision
-    elif any(key in data for key in ("mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision")):
-        raise AdapterError("UNSUPPORTED_OPTION", "Only MOSS supports MOSS acceleration settings")
+    elif any(key in data for key in ("mossSampler", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision")):
+        raise AdapterError("UNSUPPORTED_OPTION", "MOSS settings require a MOSS image model")
     for key in ("width", "height"):
         result[key] = number(data, key, 1024, spec.get("minSize", 512), spec["maxSize"], True)
         if result[key] % spec["alignment"]:
             raise AdapterError("INVALID_PARAMETER", f"{key} must be divisible by {spec['alignment']}")
-    result["steps"] = number(data, "steps", spec["steps"], spec.get("minSteps", 1), 100, True)
-    result["cfg"] = number(data, "cfg", spec["cfg"], 0, 20)
+    result["steps"] = number(data, "steps", sampling_defaults["steps"], spec.get("minSteps", 1), 100, True)
+    result["cfg"] = number(data, "cfg", sampling_defaults["cfg"], 0, 20)
     result["seed"] = number(data, "seed", 0, 0, 2147483647, True)
     if spec["distilled"] and (result["steps"] != spec["steps"] or result["cfg"] != spec["cfg"]):
         raise AdapterError("INVALID_PARAMETER", "Turbo requires its declared step count and guidance")

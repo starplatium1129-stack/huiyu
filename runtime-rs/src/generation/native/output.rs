@@ -139,6 +139,7 @@ pub(super) fn adapter_request(
     if plan.input["mossUpscaleScale"].is_number() {
         input["mossUpscaleScale"] = plan.input["mossUpscaleScale"].clone();
     } else if plan.input["family"] == "moss-image" {
+        input["mossSampler"] = json!(plan.input["mossSampler"].as_str().unwrap_or("euler"));
         input["mossAcceleration"] = plan.input["mossAcceleration"].clone();
         input["mossSpectrumFlexWindow"] =
             json!(plan.input["mossSpectrumFlexWindow"].as_f64().unwrap_or(0.5));

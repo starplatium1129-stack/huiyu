@@ -6,7 +6,10 @@ import { resolveCameraTags } from './promptCamera.ts'
 import { normalizeKey, tokenize } from './promptPrimitives.ts'
 import { proseToken } from './promptPhraseTables.ts'
 import { orderPromptTags } from './animaPromptOrder.ts'
-import { compileMossLayout, isMossLayoutInput, mossLayoutJson, mossSubjectBox, type MossCanvasSize, type MossLayoutSide } from './mossLayout.ts'
+import {
+  compileMossLayout, isMossLayoutInput, mossLayoutJson, mossSubjectBox, mossTextBox, mossTriptychBox,
+  type MossCanvasSize, type MossLayoutItem, type MossLayoutSide,
+} from './mossLayout.ts'
 
 // MIAOKA's shared BASE v1.0/v1.1 positive and negative recipe.
 const MOSS_QUALITY = 'masterpiece, best quality, very aesthetic, ultra-detailed, high contrast'
@@ -20,17 +23,90 @@ export function mossArtistTags(ids: readonly string[]): string[] {
   })
 }
 
-const compositionPlacement: Record<string, MossLayoutSide | 'center'> = {
-  subject_on_the_left_side_of_the_image: 'left',
-  subject_on_the_right_side_of_the_image: 'right',
-  centered_composition: 'center',
+const compositionPlacement = new Map<string, MossLayoutSide | 'center'>([
+  ['subject_on_the_left_side_of_the_image', 'left'],
+  ['subject_on_the_right_side_of_the_image', 'right'],
+  ['centered_composition', 'center'],
+])
+
+function mergeSceneNegative(base: string, scene: string[]) {
+  const seen = new Set(tokenize(base).map(normalizeKey))
+  const additional = scene.flatMap(tokenize).filter(token => {
+    const key = normalizeKey(token)
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
+  return [base.trim(), ...additional].filter(Boolean).join(', ')
+}
+
+/** Undefined means no panel instructions. Null keeps an incomplete or ambiguous instruction in prose. */
+function triptychCaptions(text: string): string[] | null | undefined {
+  const labels = /(?:^|[\r\n;；])[ \t]*(?:(left|middle|center|right) panel|(左|中|右)格)[ \t]*[:：][ \t]*([^\r\n;；]*)/gi
+  const captions = new Map<string, string>()
+  for (const [, side, chinese, action] of text.matchAll(labels)) {
+    const namedSide = side?.toLowerCase()
+    const key = namedSide === 'left' || chinese === '左' ? 'left'
+      : namedSide === 'right' || chinese === '右' ? 'right' : 'middle'
+    if (captions.has(key) || !/[\p{L}\p{N}]/u.test(action)) return null
+    captions.set(key, action.trim())
+  }
+  const left = captions.get('left'), middle = captions.get('middle'), right = captions.get('right')
+  if (captions.size) return left && middle && right ? [left, middle, right] : null
+
+  const ordered = /(?:^|[.!?。！？\r\n])\s*(?:from )?left to right\s*[,：:]\s*(?:the )?three panels show\b[ \t]*([^.!?。！？\r\n]*)/gi
+  const sequences = [...text.matchAll(ordered)]
+  if (!sequences.length) return undefined
+  const actions = sequences[0][1]
+  if (sequences.length !== 1 || /["“”()]/.test(actions)) return null
+  const segments = actions.split(/[,，;；]/).map(part => part.trim())
+  if (segments.length !== 3 || !segments.every(part => /[\p{L}\p{N}]/u.test(part))) return null
+  const last = segments[2].match(/^(?:and\s+)?then\s+(.+)$/i)?.[1]
+  return last ? [segments[0], segments[1], last] : null
+}
+
+function describedScreenSide(caption: string): MossLayoutSide | undefined {
+  const sides = new Set<MossLayoutSide>()
+  for (const sentence of caption.split(/[.!?。！？\r\n]/)) {
+    if (/\b(?:no|not|without|avoid|omit|don't|empty|blank)\b|不要|不放|空白|留白/i.test(sentence)) continue
+    const english = /\b(?:on|in|at|to) (?:the )?(?:far )?(left|right)(?:[- ]hand)?(?: (?:side|third|half|edge))? of (?:the )?(?:image|frame|canvas|composition)\b/gi
+    // A location alone can describe light, a hand, or empty space. Require a subject or placement cue.
+    const staging = /\b(?:subject|figure|character|person|woman|man|girl|boy|stand(?:s|ing)?|sit(?:s|ting)?|kneel(?:s|ing)?|pose[ds]?|posing|rest(?:s|ing)?|place[ds]?|position(?:ed|s)?|put)\b/i
+    if (staging.test(sentence)) {
+      for (const [, side] of sentence.matchAll(english)) sides.add(side.toLowerCase() === 'left' ? 'left' : 'right')
+    }
+    if (/(?:站在|站着|坐在|坐着|靠在|靠着|摆在|摆着|放在|置于|位于|(?:人物|女孩|男孩|女人|男人|角色)在)/.test(sentence)) {
+      for (const [, side] of sentence.matchAll(/(?:画面|构图|图像|画幅)的?([左右])(?:侧|半边|边沿|边|三分之一)/g)) {
+        sides.add(side === '左' ? 'left' : 'right')
+      }
+    }
+  }
+  return sides.size === 1 ? sides.values().next().value : undefined
+}
+
+function mossLettering(caption: string) {
+  // Keep the literal, including line breaks, whenever the caption explicitly asks for quoted text.
+  const quotes = /"([^"]+)"|(?:^|(?<=[\s:=]))'([^']+)'|“([^”]+)”|‘([^’]+)’|「([^」]+)」|『([^』]+)』/gu
+  const englishCue = /\b(?:text|lettering|caption|title|headline|words?|label|sign|poster|speech bubble)\b(?:[ \t]+((?:at|in|on) [\w -]{1,40}?))?[ \t]*(?:(?:that[ \t]+)?(?:reads?|says?|reading|saying|is))?[ \t]*[:=]?[ \t]*$/i
+  const leadingPlacement = /\b(?:at|in|on|across) (?:the )?((?:top|bottom|upper|lower|left|right|center)(?:[- ](?:left|right|center))?(?: (?:corner|edge|half|third))?)(?: of the (?:poster|sign|frame|canvas))?\s*[,]?\s*(?:(?:a|an|the) )?$/i
+  const chineseCue = /(?:(左上角|右上角|左下角|右下角|顶部|底部|上方|下方|左侧|右侧|居中)[ \t]*(?:的(?:标题|标语))?[ \t]*)?(?:写上|写着|文字内容|标题内容|标语内容)[ \t]*[:：]?[ \t]*$/
+  return [...caption.matchAll(quotes)].flatMap(match => {
+    const [, ...quoted] = match
+    const text = quoted.find(value => value?.trim())
+    const before = caption.slice(0, match.index).trimEnd().split(/[.!?。！？\n]/).at(-1) ?? ''
+    const cue = before.match(englishCue) ?? before.match(chineseCue)
+    if (!text || !cue || /\b(?:no|not|without|avoid|exclude|omit|don't)\b|不要|不含|没有|无文字/i.test(before)) return []
+    const placement = cue[1] ?? before.slice(0, cue.index).match(leadingPlacement)?.[1] ?? ''
+    return { caption: cue[0].trim().replace(/[:=：]$/, ''), text, placement,
+      quoteStart: match.index, quoteEnd: match.index + match[0].length }
+  })
 }
 
 /** Render MOSS visual facts without an Anima/Krea profile or LoRA controls. */
-export function renderMossDrawingPrompt(plan: PromptPlan | null, description: string, negative: string, size?: MossCanvasSize) {
+export function renderMossDrawingPrompt(plan: PromptPlan | null, description: string, negative: string,
+  size?: MossCanvasSize, options?: { forceLayout?: boolean }) {
   const authored = description.trim()
-  const mergeNegative = (base: string) => [...new Set([base, ...(plan?.negative ?? [])]
-    .flatMap(tokenize).map(value => value.trim()).filter(Boolean))].join(', ')
+  const mergeNegative = (base: string) => mergeSceneNegative(base, plan?.negative ?? [])
   if (isMossLayoutInput(authored)) {
     const layout = compileMossPrompt(authored, negative, size)
     return { raw: authored, prompt: layout.prompt, negative: mergeNegative(layout.negative) }
@@ -62,54 +138,66 @@ export function renderMossDrawingPrompt(plan: PromptPlan | null, description: st
     return [token.replace(/_/g, ' ')]
   })
   const sceneProse = plan?.sceneProse || plan?.scene?.promptProse || plan?.scene?.animaCaption || ''
-  const prose = plan ? [plan.subjectProse, plan.outfitProse ? `Clothing: ${plan.outfitProse}` : '',
-    ...outfits, sceneProse ? authoredSceneCaption(plan, sceneProse, false) : '']
-    .map(value => value.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/g, ', ').trim()) : []
+  const scene = plan && sceneProse ? authoredSceneCaption(plan, sceneProse, false) : ''
+  const cleanProse = (value: string) => value.replace(/<lora:[^>]+>/gi, '').replace(/\bBREAK\b/g, ', ').trim()
+  const subjectProse = cleanProse(plan?.subjectProse ?? '')
+  const appearance = [subjectProse, plan?.outfitProse, ...outfits].filter((value): value is string => !!value)
+    .map(cleanProse).filter(Boolean)
   // Free-subject identities are classification metadata, not tokens to inject.
   const ordered = plan?.freeSubject && (plan.characterTokens.length || plan.copyrightTokens.length)
     ? orderPromptTags({ ...plan, quality: MOSS_QUALITY.split(', ') }, tags) : tags
-  const tagLine = ordered.join(', ')
+  const caption = [...new Set([authored, ...appearance, cleanProse(scene), ordered.join(', ')].filter(Boolean))].join('\n')
+  if (!caption) return { raw: '', prompt: '', negative: mergeNegative(negative) }
   if (size) {
-    // Keep the relationships authored in prose, with exact visual cues inside the caption.
-    const caption = [...new Set([authored, ...prose, tagLine].filter(Boolean))].join('\n')
-    if (!caption) return { raw: '', prompt: '', negative: mergeNegative(negative) }
     const intent = plan?.mossLayout?.compositionIntent || plan?.scene?.compositionIntent
-    const multiPanel = intent === 'triptych' || ordered.some(tag => /^(?:triptych|diptych|three panels|two panels|multi panel)$/i.test(tag))
+    const userPanels = triptychCaptions(authored)
+    const panels = userPanels === undefined ? triptychCaptions(scene) : userPanels
     const subjects = plan?.mossLayout?.subjects
-    const explicitlySplit = !multiPanel && subjects?.length === 2 && new Set(subjects.map(subject => subject.side)).size === 2
-      && subjects.every(subject => subject.side)
+    const explicitlySplit = subjects?.length === 2 && subjects.every(subject => subject.side) && subjects[0].side !== subjects[1].side
     const people = ordered.flatMap(tag => tag.match(/^(\d+)\s*(?:girls?|boys?|people|women|men|others?)$/i)?.[1] ?? [])
-    const singleSubject = !multiPanel && intent !== 'group'
+    const singleSubject = intent !== 'group' && !subjects?.length
       && people.length <= 1 && !people.some(count => Number(count) > 1)
       && !ordered.some(tag => /^(?:group|multiple girls|multiple boys)$/i.test(tag))
-    const mainCharacter = singleSubject && Boolean(plan?.subjectProse || people[0] === '1')
-    const placement = singleSubject ? compositionPlacement[normalizeKey(plan?.composition[0] ?? '')] : undefined
-    const sceneDetail = authored || prose.at(-1) || tagLine
-    const characterDetail = plan?.subjectProse ? prose.slice(0, 2).filter(Boolean).join('. ') : sceneDetail
-    const items = explicitlySplit
-      ? subjects.map(subject => ({ label: 'character' as const, caption: subject.caption, bbox: mossSubjectBox(size, subject.side) }))
-      : [{
-          label: mainCharacter ? 'character' as const : 'object' as const,
-          caption: mainCharacter ? characterDetail || sceneDetail : sceneDetail,
-          bbox: mossSubjectBox(size, placement),
-        }]
-    const raw = mossLayoutJson(caption, items, multiPanel)
-    const compiled = compileMossPrompt(raw, negative, size)
-    return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
+    const mainCharacter = singleSubject && Boolean(subjectProse || people[0] === '1')
+    const placement = singleSubject && intent !== 'triptych' && panels === undefined
+      ? [...(plan?.manual ?? []), ...(plan?.composition ?? []), ...ordered].map(tag => compositionPlacement.get(normalizeKey(tag))).find(Boolean)
+        ?? describedScreenSide(authored)
+      : undefined
+    const subjectCaption = [...appearance, authored || cleanProse(scene)].filter(Boolean).join('\n') || caption
+    const items: MossLayoutItem[] = panels
+      ? panels.map((action, index) => ({
+          label: mainCharacter ? 'character' : 'object',
+          caption: [action, mainCharacter ? subjectProse : ''].filter(Boolean).join('\n'),
+          bbox: mossTriptychBox(size, index),
+        }))
+      : explicitlySplit && panels === undefined
+        ? subjects.map(subject => ({ label: 'character', caption: subject.caption, bbox: mossSubjectBox(size, subject.side) }))
+        : placement ? [{ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size, placement) }] : []
+    const letterings = mossLettering(caption)
+    for (const lettering of letterings) {
+      items.push({ label: 'text', caption: lettering.caption, text: lettering.text, bbox: mossTextBox(size, lettering.placement) })
+    }
+    if (options?.forceLayout && !items.length) {
+      items.push({ label: mainCharacter ? 'character' : 'object', caption: subjectCaption, bbox: mossSubjectBox(size) })
+    }
+    if (items.length) {
+      // Outer quotes delimit the instruction. The model can otherwise paint them as extra glyphs.
+      const summary = letterings.reduceRight((value, item) =>
+        value.slice(0, item.quoteStart) + item.text + value.slice(item.quoteEnd), caption)
+      const raw = mossLayoutJson(summary, items, Boolean(panels))
+      const compiled = compileMossPrompt(raw, negative, size)
+      return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
+    }
   }
-  const raw = [...new Set([tagLine, ...prose, authored].filter(Boolean))].join('\n')
-  const compiled = compileMossPrompt(raw, negative)
-  return { raw, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
+  const compiled = compileMossPrompt(caption, negative)
+  return { raw: caption, prompt: compiled.prompt, negative: mergeNegative(compiled.negative) }
 }
 
 /** Only explicit lettering cues relax the author defaults; custom exclusions remain intact. */
 function mossTextIntent(text: string): boolean {
   const tags = text.split(/[,\n]/).map(normalizeKey)
-  const positive = text.split(/[.!?\n]/).filter(sentence =>
-    !/\b(?:no|not|without|avoid|exclude|omit|don't)\b|不要|不含|没有|无文字/i.test(sentence)).join('\n')
   return tags.some(tag => ['text', 'english_text', 'chinese_text', 'japanese_text', 'korean_text', 'lettering', 'speech_bubble'].includes(tag))
-    || /\b(?:text|lettering|caption|title|sign|poster|speech bubble)\s*(?:(?:reads?|says?|reading|saying|:|=)\s*)?["'“‘「『]/i.test(positive)
-    || /(?:写上|写着|文字内容|标题内容|标语内容)\s*[:：]?\s*["'“‘「『]/.test(positive)
+    || mossLettering(text).length > 0
 }
 
 function mossTextNegative(negative: string, hasText: boolean): string {
@@ -126,5 +214,5 @@ export function compileMossPrompt(prompt: string, negative: string, size?: MossC
   }
   const authored = new Set(text.split(/[,\n]/).map(token => token.trim().toLowerCase()))
   const quality = MOSS_QUALITY.split(', ').filter(token => !authored.has(token))
-  return { prompt: [...quality, text].filter(Boolean).join(', '), negative: mossTextNegative(negative, mossTextIntent(text)) }
+  return { prompt: [quality.join(', '), text].filter(Boolean).join('\n'), negative: mossTextNegative(negative, mossTextIntent(text)) }
 }

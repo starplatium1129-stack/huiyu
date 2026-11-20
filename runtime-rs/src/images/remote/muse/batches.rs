@@ -14,6 +14,9 @@ pub(super) struct Batch {
     width: Option<u64>,
     height: Option<u64>,
     upscale: Option<submission::Upscale>,
+    moss_sampler: Option<String>,
+    moss_acceleration: Option<String>,
+    moss_spectrum_flex_window: Option<f64>,
     #[serde(default, alias = "items")]
     scenes: Vec<SceneSelection>,
     #[serde(default)]
@@ -37,6 +40,15 @@ impl Batch {
             scene.variants = scene.variants.or(self.variants);
             scene.seed = scene.seed.or(self.seed);
             scene.upscale = scene.upscale.or(self.upscale);
+            if scene.moss_sampler.is_none() {
+                scene.moss_sampler.clone_from(&self.moss_sampler);
+            }
+            if scene.moss_acceleration.is_none() {
+                scene.moss_acceleration.clone_from(&self.moss_acceleration);
+            }
+            scene.moss_spectrum_flex_window = scene
+                .moss_spectrum_flex_window
+                .or(self.moss_spectrum_flex_window);
             if scene.width.is_none()
                 && scene.height.is_none()
                 && let Some((width, height)) = default_size

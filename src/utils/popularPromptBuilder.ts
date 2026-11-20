@@ -76,6 +76,23 @@ export interface PopularPromptResult {
   adult: boolean
 }
 
+const twoShotFraming = /\b(?:two shot|couple proximity framing|both (?:people|subjects|characters|figures) (?:are )?(?:visible|in the (?:same )?(?:shot|frame)))\b|(?:两人|双人|二人)(?:同框|一起入镜|同时入镜|在同一画面)/i
+const singleSubjectFraming = /\b(?:pov|first person|point of view|solo|(?:single|only one) (?:subject|person|character|figure)|no (?:other|second) (?:person|people|subject|character|figure)|alone in (?:the )?frame|subject on the (?:left|right) side of the image)\b|第一人称|主观(?:镜头|视角)|单人(?:镜头|构图|入镜|特写)/i
+const partialSubjectFraming = /\b(?:crop(?:ped)? (?:out|to|body|face|figure|shot|view)|cropped(?=\s*(?:[,.;\n]|$))|(?:out of|outside) (?:the )?frame|off ?(?:screen|camera)|only part of|(?:face|hand|feet) (?:focus|only)|close up of (?:her|his|their|the) (?:face|hands?|eyes?|feet))\b|不入镜|画外|局部特写/i
+
+function hasMossTwoShot(blueprint: SceneBlueprint, manual: string[], description: string): boolean {
+  if (blueprint.compositionIntent === 'single' || blueprint.compositionIntent === 'triptych') return false
+  const source = [blueprint.camera, blueprint.promptProse || blueprint.animaCaption, ...blueprint.promptTokens,
+    ...(blueprint.adult ? [blueprint.nsfwProse, ...(blueprint.nsfwTokens ?? [])] : [])].join('\n').replace(/[_-]+/g, ' ')
+  const framing = [source, ...manual, description].join('\n').replace(/[_-]+/g, ' ')
+  if (singleSubjectFraming.test(framing) || partialSubjectFraming.test(framing)) return false
+  if (cameraTokensFromText([...manual, description].join(', ')).length) return false
+  const clauses = /[,.;，。；\n]/
+  const deniesFraming = /\b(?:no|not|without|avoid|omit|exclude|don't)\b|不要|不需要|避免/i
+  if (framing.split(clauses).some(clause => twoShotFraming.test(clause) && deniesFraming.test(clause))) return false
+  return source.split(clauses).some(clause => twoShotFraming.test(clause))
+}
+
 const NENE_NATSUME_POLLUTION = /(?:ayachi_nene|shiki_natsume|nene_r18|natsume_r18)/i
 const NENE_NATSUME_PREFIX = /^(?:nene_|natsume_)[a-z0-9_]+$/i
 
@@ -213,11 +230,17 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
 
   // 用户描述是额外画面指令，服装由独立字段稳定保留。
   const userVisual = String(options.visualDescription || '').trim()
+  const mossTwoShot = engine === 'moss' && blueprint && cameraSource === 'scene'
+    && options.shot !== 'pov' && hasMossTwoShot(blueprint, [...manual, compositionToken], userVisual)
+  // An old blueprint may describe a two-shot without explicitly specifying its subject count.
+  const compositionSource = mossTwoShot && blueprint && !blueprint.compositionIntent
+    ? { ...blueprint, compositionIntent: 'group' as const } : blueprint
   const nsfwProse = adult ? String(blueprint?.nsfwProse || '').trim() : ''
   const originalSceneProse = [
     // 成人场景：裸体叙述前置，避免被服装散文压过（Krea 2 自然语言模型对句首描述权重最高）。
     ...(nsfwProse ? [nsfwProse] : []),
     options.backgroundProse,
+    mossTwoShot ? 'Both people are clearly visible together in the same shot.' : '',
     engine === 'moss' ? blueprint?.promptProse || blueprint?.animaCaption : blueprint?.promptProse,
   ].filter(Boolean).join(' ')
 
@@ -319,20 +342,20 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       }
     : {
         profile,
-        identity: compositionTokens(identityTokens, blueprint).join(', '),
+        identity: compositionTokens(identityTokens, compositionSource).join(', '),
         characterTokens: [...commonInput.characterTokens!, ...exactIdentity],
-        controls: compositionTokens(exactControls, blueprint),
+        controls: compositionTokens(exactControls, compositionSource),
         artists: options.artistTags?.length ? options.artistTags : undefined,
-        exactTokens: compositionTokens(exactIdentity, blueprint),
-        scenePrompt: compositionTokens(sceneTokensFiltered, blueprint).join(', '),
-        negative: engine === 'moss' ? compositionNegative((blueprint?.negativeTokens || []).join(', '), blueprint)
+        exactTokens: compositionTokens(exactIdentity, compositionSource),
+        scenePrompt: compositionTokens(sceneTokensFiltered, compositionSource).join(', '),
+        negative: engine === 'moss' ? compositionNegative((blueprint?.negativeTokens || []).join(', '), compositionSource)
           : (blueprint?.negativeTokens || []).join(', '),
         rating: profileRatingTag(profile, { rating: ratingLevel }) || (ratingLevel === 'R18' ? 'nsfw' : ''),
         style: engine === 'anima' && style?.sd ? style.sd.split(',').map(token => token.trim()).filter(Boolean) : [],
       }
   const plan = createPromptPlan({ ...commonInput, ...modelInput })
   if (engine === 'moss') {
-    plan.mossLayout = { compositionIntent: blueprint?.compositionIntent }
+    plan.mossLayout = { compositionIntent: compositionSource?.compositionIntent }
     const rendered = renderMossDrawingPrompt(plan, userVisual, '')
     return { plan, prompt: rendered.prompt, negative: rendered.negative, adult }
   }

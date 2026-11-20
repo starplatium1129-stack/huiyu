@@ -47,8 +47,12 @@ pub(super) fn acceleration(value: &Value) -> Option<Value> {
     if value["algorithm"] == "off" && value["requested"] == false {
         return Some(json!({"algorithm":"off","requested":false}));
     }
-    if value["algorithm"] != "moss-spectrum-v3"
-        || value["requested"] != true
+    let adaptive = match value["algorithm"].as_str()? {
+        "moss-spectrum-v3" => false,
+        "moss-spectrum-adaptive-v1" => true,
+        _ => return None,
+    };
+    if value["requested"] != true
         || value["historySize"] != 6
         || value["warmupSteps"] != 6
         || value["tailSteps"] != 3
@@ -70,13 +74,16 @@ pub(super) fn acceleration(value: &Value) -> Option<Value> {
         || actual + forecast > 200
         || nonfinite > 200
         || cap > forecast
+        || (adaptive && cap > 3)
     {
         return None;
     }
-    let effective = if forecast > 0 {
-        "spectrum"
-    } else {
+    let effective = if forecast == 0 {
         "full-compute"
+    } else if adaptive {
+        "spectrum-adaptive"
+    } else {
+        "spectrum"
     };
     if value["effective"] != effective {
         return None;
@@ -96,12 +103,41 @@ pub(super) fn acceleration(value: &Value) -> Option<Value> {
         }
         _ => return None,
     };
-    Some(
-        json!({"algorithm":value["algorithm"],"requested":true,"effective":effective,
+    let mut result = json!({"algorithm":value["algorithm"],"requested":true,"effective":effective,
         "actualForwards":actual,"forecastForwards":forecast,"nonfiniteFallbacks":nonfinite,
         "historySize":6,"warmupSteps":6,"tailSteps":3,"windowSize":2,"flexWindow":flex,"maxConsecutiveForecasts":cap,
-        "fallbackReason":reason,"performanceVerified":false,"qualityVerified":false}),
-    )
+        "fallbackReason":reason,"performanceVerified":false,"qualityVerified":false});
+    // Older v3 workers did not report the payload retired before decoding.
+    if let Some(bytes) = value.get("tailHistoryBytesReleased") {
+        result["tailHistoryBytesReleased"] =
+            json!(bytes.as_u64().filter(|n| *n <= 2 * 1024 * 1024 * 1024)?);
+    }
+    if adaptive {
+        let checks = value["anchorChecks"].as_u64().filter(|n| *n <= actual)?;
+        let shrinks = value["windowShrinks"].as_u64().filter(|n| *n <= checks)?;
+        let growths = value["windowGrowths"]
+            .as_u64()
+            .filter(|n| *n <= checks - shrinks)?;
+        result["anchorChecks"] = json!(checks);
+        result["windowShrinks"] = json!(shrinks);
+        result["windowGrowths"] = json!(growths);
+        for key in ["anchorMeanError", "anchorMaxError"] {
+            let error = value.get(key)?;
+            result[key] = if checks == 0 && error.is_null() {
+                Value::Null
+            } else {
+                json!(
+                    error
+                        .as_f64()
+                        .filter(|n| checks > 0 && (0.0..=2.0).contains(n))?
+                )
+            };
+        }
+        if checks > 0 && result["anchorMeanError"].as_f64()? > result["anchorMaxError"].as_f64()? {
+            return None;
+        }
+    }
+    Some(result)
 }
 
 pub(super) fn execution(value: &Value) -> Option<Value> {
@@ -116,6 +152,12 @@ pub(super) fn execution(value: &Value) -> Option<Value> {
         return None;
     }
     let weights = value["weightPrecision"].as_str().unwrap_or("fp16");
+    let (sampler, scheduler) = match (value.get("sampler"), value.get("scheduler")) {
+        (None, None) => ("euler", "model-config"),
+        (Some(s), None) if s == "euler" => ("euler", "model-config"),
+        (Some(s), Some(t)) if s == "er-sde" && t == "simple" => ("er-sde", "simple"),
+        _ => return None,
+    };
     let quantized = value["quantizedLinearCount"].as_u64().unwrap_or(0);
     if !matches!((weights, quantized), ("fp16", 0) | ("int8-convrot", 168)) {
         return None;
@@ -174,7 +216,7 @@ pub(super) fn execution(value: &Value) -> Option<Value> {
     }
     Some(
         json!({"schemaVersion":1,"timingMode":"cpu-wall-no-extra-sync","timingsAreAdditive":false,
-        "textPrecision":precision,"weightPrecision":weights,"quantizedLinearCount":quantized,
+        "sampler":sampler,"scheduler":scheduler,"textPrecision":precision,"weightPrecision":weights,"quantizedLinearCount":quantized,
         "timings":timings,"contextCache":cache,"compile":compile,"performanceVerified":false}),
     )
 }

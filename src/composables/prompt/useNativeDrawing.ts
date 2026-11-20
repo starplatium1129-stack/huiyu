@@ -6,13 +6,14 @@ import type { GenerationPresentation } from './useGenerationPresentation'
 import { useQwenStudio } from '@/composables/generation/useQwenStudio'
 import { nativeDrawingPrompt } from '@/utils/nativeDrawingPrompt'
 import { renderMossDrawingPrompt } from '@/utils/mossPrompt'
-import { compileMossLayout } from '@/utils/mossLayout'
+import { compileMossLayout, isMossLayoutInput } from '@/utils/mossLayout'
 
 export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace>) {
   const navigation = useDrawingNavigation(), route = useRoute(), router = useRouter(), active = ref(true)
   const mode = navigation.mode, session = shallowRef<ReturnType<typeof useQwenStudio> | null>(null)
   let scope: EffectScope | undefined
   const mossLayout = computed(() => session.value?.form.mossLayout ?? '')
+  const usingMossTaskPrompt = computed(() => session.value?.form.mossUseTaskPrompt === true)
   function mossCanvas() {
     const state = session.value
     const { width, height } = state?.form ?? { width: 768, height: 1280 }
@@ -23,16 +24,28 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
     return { width, height }
   }
   const recipe = computed(() => {
+    const form = session.value?.form
+    const description = workspace.pb.visualDescription, negative = form?.negative ?? ''
     try {
-      const description = workspace.pb.visualDescription, negative = session.value?.form.negative || ''
-      return { ...(mode.value === 'moss'
-        ? renderMossDrawingPrompt(mossLayout.value ? null : workspace.mossPlan.value, mossLayout.value || description, negative, mossCanvas())
-        : nativeDrawingPrompt(workspace.healthBindings.structuredPlan.value, description, negative)), error: '' }
+      if (mode.value !== 'moss') return { ...nativeDrawingPrompt(workspace.healthBindings.structuredPlan.value, description, negative), error: '' }
+      const size = mossCanvas()
+      if (usingMossTaskPrompt.value) {
+        const raw = form?.prompt ?? ''
+        const prompt = isMossLayoutInput(raw) ? compileMossLayout(raw, size).prompt : raw
+        return { raw, prompt, negative, error: '' }
+      }
+      return { ...renderMossDrawingPrompt(workspace.mossPlan.value, mossLayout.value || description, negative, size), error: '' }
     }
     catch (cause) { return { raw: workspace.pb.visualDescription, prompt: '', negative: '', error: cause instanceof Error ? cause.message : '提示词尚未准备好' } }
   })
   const busy = computed(() => !!session.value && (session.value.busy.value || session.value.unresolved.value || session.value.importing.value || session.value.cancelling.value))
   const locked = computed(() => !session.value || session.value.locked.value)
+  function mossLayoutDraft() {
+    const description = usingMossTaskPrompt.value ? session.value?.form.prompt ?? '' : workspace.pb.visualDescription
+    if (mossLayout.value || isMossLayoutInput(description)) return mossLayout.value || description
+    const plan = usingMossTaskPrompt.value ? null : workspace.mossPlan.value
+    return renderMossDrawingPrompt(plan, description, '', mossCanvas(), { forceLayout: true }).raw
+  }
   function applyMossLayout(value: string) {
     const state = session.value
     if (mode.value !== 'moss' || !state || locked.value) throw new Error('当前无法修改布局')
@@ -42,6 +55,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
       if (source.length > 12000 || prompt.length > 12000) throw new Error('布局提示词超过 12000 字符，请精简描述')
     }
     state.form.mossLayout = source
+    state.form.mossUseTaskPrompt = false
   }
   const blocked = computed(() => {
     const state = session.value
@@ -58,7 +72,7 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   })
   const size = computed({ get: () => `${session.value?.form.width || 1024}x${session.value?.form.height || 1024}`,
     set: value => { if (!session.value || locked.value) return; const [width, height] = value.split('x').map(Number); session.value.form.width = width; session.value.form.height = height } })
-  const sizes = computed(() => [...new Set([size.value, ...(mode.value === 'moss' ? ['768x1280', '1280x1280', '960x1536', '1536x1536'] : ['1024x1024', '1024x1536', '1536x1024', '832x1216', '1216x832'])])])
+  const sizes = computed(() => [...new Set([size.value, ...(mode.value === 'moss' ? ['768x1280', '1280x768', '1280x1280', '960x1536', '1536x960', '1536x1536'] : ['1024x1024', '1024x1536', '1536x1024', '832x1216', '1216x832'])])])
   const presentation = computed<GenerationPresentation>(() => {
     const state = session.value, task = state?.task.value
     const phase = state?.cancelling.value || task?.status === 'cancelling' ? 'cancelling'
@@ -117,6 +131,6 @@ export function useNativeDrawing(workspace: ReturnType<typeof usePromptWorkspace
   onDeactivated(() => { active.value = false; dispose() })
   onActivated(() => { if (!active.value) { active.value = true; void initialize() } })
   onScopeDispose(dispose)
-  return { mode, session, recipe, mossLayout, applyMossLayout, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, initialize, saveBeforeSwitch }
+  return { mode, session, recipe, mossLayout, usingMossTaskPrompt, mossLayoutDraft, applyMossLayout, busy, locked, blocked, size, setSize: (value: string) => { size.value = value }, sizes, presentation, generate, initialize, saveBeforeSwitch }
 }
 export type NativeDrawing = ReturnType<typeof useNativeDrawing>

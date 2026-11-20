@@ -391,11 +391,15 @@ git -C $avatarSource switch --detach 58eb336edc5c8c63389838727e40b8c18434e54e
 
 按[作者 BASE v1.0 说明](https://civitai.com/models/3015023?modelVersionId=3422319)，默认使用 Euler、50 步、CFG 3.5、768×1280；其推荐范围为 30–50 步，宽高为 16 的倍数。[OpenMOSS 管线](https://github.com/OpenMOSS/MOSS-Image)的 Shift 固定为 5、负分支跳过第 22 层。模型与 Anima 分别登记，不使用 Anima 编码器、VAE、角色 LoRA 或 TeaCache。
 
-MOSS 工作台默认把场景、画面描述和词条编译成 JSON 布局。整体内容写入 `summary.caption`，有明确位置的主体写入对应的 `items[].bbox`。自动布局随画幅更新。「编辑布局」可直接修改或粘贴原生 JSON，也接受带宽高的左上原点 `abs / xyxy` 像素草稿。后者会按原尺寸转换为中心原点 `abs_centralized / yxyx`。自定义布局保存在 MOSS 草稿中，坐标固定，换画幅时须重新核对，超出画布会提示修改。预览和复制均使用最终正向提示词。带文字的布局在使用模型默认负面时去掉 `text`、`english text`，用户自定义负面保持原样。任务支持取消、恢复、结果导出和入册。当前支持文生图。
+工作台和 Muse 目录共用 MOSS 提示词编译器。普通场景用文字描述角色、衣装、动作和道具。有明确站位、逐格动作或画面文字时，使用中心原点的 `abs_centralized / yxyx` 像素框。三联画会按画幅划分三列，把各格的动作放在对应列。Muse 目录改宽高时按两个轴分别换算。工作台的「编辑布局」也支持带宽高的左上原点 `abs / xyxy` 草稿，手写的绝对坐标在更换画幅后需重新核对。
+
+蓝图明确要求双人同框时，保留该镜头意图。手动选择 POV、单人或裁切镜头会优先使用新取景。双人共用道具的场景仍需在成图中核对两个人的身份、露脸情况和手部归属。
+
+普通描述和手写布局都会合并场景排除项。画面要求出现文字时，自动布局将原文和换行写入文字框，外层指令引号在画面描述中移除。编译器从作者默认负面中去掉 `text` 和 `english text`，并保留用户明确填写的排除词。打开旧任务重画时沿用已保存的最终正负向，切回场景配方后才重新编译。
 
 MOSS 官方管线代码固定到 `OpenMOSS-Team/MOSS-Image-Base@85975793d8b3d432f1b6e27f352abaa4c2a4c0d3`，随产品附 Apache-2.0 许可，不执行模型目录提供的 Python。支持受管 PyTorch 2.9.0 / torchvision 0.24.0 及上面的共享图像运行库；作者 FP16 权重在上传 GPU 时转换为 BF16，不在主机内存复制完整权重。文件就绪和依赖可导入不代表本机画质、耗时或显存验收通过。
 
-高级参数的「文本编码精度」可选 `mossTextPrecision: bf16 | fp8 | int8`，默认及旧任务均为 `bf16`。`fp8` 使用现有 Diffusers 的 [layerwise casting](https://huggingface.co/docs/diffusers/optimization/memory#layerwise-casting)，只将文本编码器的部分 Linear 权重存为 FP8、计算时恢复 BF16；保留词嵌入、归一化、DeltaNet 门控/卷积、最后一层及视觉模块的原精度。原始文件不修改，草稿、任务与作品保存所选精度，切换精度重新加载权重组。量化可能改变画面细节，实际画质和提速仍需设备验收。
+「文本编码精度」默认自动。有效的配套 INT8 文本权重优先，也可明确选 BF16、FP8 或 INT8。FP8 只将部分 Linear 权重存为 FP8，计算时恢复 BF16。作品和任务记录实际执行精度，打开历史任务时优先采用其记录的主模型权重。[Diffusers 分层精度转换](https://huggingface.co/docs/diffusers/optimization/memory#layerwise-casting)
 
 `int8` 使用配套的 [Qwen3.5-9B W8A8 ConvRot 编码器](https://huggingface.co/sorryhyun/MOSS-Image-Qwen3.5-9B-int8)，不是主模型 INT8 开关。固定修订 `2e65ae37feace6d47d8fda7c8969da84a9199386` 的 `qwen35_9b_int8_convrot.safetensors` 为 9,873,285,104 bytes，SHA-256 `96064ede0b4caa9b6dd60a9fa868707e7b8ff3ae5347c0bab6bc868b5932f317`。关闭桌面推理后，用 `npm run wf -- models:import-moss-int8 --component text_encoder --source <文件绝对路径> --model-dir <现有MOSS目录> --apply` 校验导入；保留原 BF16 与 tokenizer。248 个校准投影使用同一 Kitchen W8A8 算子，保留文件中的校准归一化及 FP32 scale，不解量化整套权重、不执行模型目录代码。算子要求与主模型 INT8 相同；文件就绪不等于设备验收。
 
@@ -405,7 +409,9 @@ MiaoMiao 单文件里的融合 QKV 直接作为一个投影加载，不拆成三
 
 「编译推理内核」对应 `mossCompile`：新创作默认关闭并保存在草稿和作品中，已有明确选择保留。只用现有 PyTorch 编译 DiT 块，不编译含 token/chunk Python 循环的 Transformers DeltaNet 参考函数，避免换词长度引发大型图编译。分层调度钩子在编译边界外，只有图像/文本序列轴以 `maybe_mark_dynamic` 提示动态，允许 INT8 算子或图中断后的片段按需要特化，不以强制动态约束拒绝有效图；不启用 CUDA Graph，注意力分发在任务间复用。开启后首次仍可能明显变慢；每块首次成功后使用 PyTorch 的 `fail_on_recompile` 守卫，遇到未命中的输入在本任务改用普通执行并记录 `RecompileSkipped`，后续任务仍可复用原图。叶级卸载不编译 DiT，已知编译器失败退回普通执行，显存不足与设备错误仍正常报错并清理。做法参考 [ComfyUI 的 MOSS 分块编译入口](https://github.com/sorryhyun/ComfyUI-Spectrum-KSampler#ksampler-spectrum-for-moss)与 [PyTorch 编译控制](https://docs.pytorch.org/tutorials/recipes/torch_compiler_set_stance_tutorial.html)，不引入或复制该插件。实际可用性、画质与耗时仍需设备验收。
 
-MOSS 创作的高级参数可选择「Spectrum · 实验」缓存加速，新创作默认开启，已有明确关闭的草稿与旧任务保留原选择，可随时关闭使用完整计算。实现基于 [Spectrum 原始 MIT 代码](https://github.com/hanjq17/Spectrum/tree/4e41f91c93ff66b045332530dd7bcb4c60eafbab)的 Chebyshev 与一阶 Taylor 混合预测，随包保留 `SPECTRUM-LICENSE`；不引入 ComfyUI 插件。v3 采用[社区 MOSS 节点的增长窗口调度](https://github.com/sorryhyun/ComfyUI-Spectrum-KSampler/blob/main/moss.py)：初始窗口为 2，前 6 步与末 3 步完整计算，每次非预热完整计算后窗口增加 `mossSpectrumFlexWindow`，每 `floor(窗口)` 步完整刷新一次。高级参数「Spectrum 加速强度」范围 0–2、默认 0.5、步进 0.05；0.25 更保守、1 更激进，0 仍保留初始窗口预测，关闭需选择 `off`。请求、草稿、任务与作品保存窗口增长值；旧记录缺少该值时使用 0.5，再次生成会采用当前调度。
+新建画室与 Muse 目录配方使用 Euler、50 步、CFG 3.5 和「Spectrum · 快速预测」，窗口增长值为 0.5。原生接口省略加速参数时使用完整计算。选择「ER-SDE · 预览」会带入 25 步、CFG 2.5 和完整计算，之后可分别调整。该配方使用 Simple 时间步和独立的种子噪声流，同种子切换采样器会改变构图与细节。[Comfy-Org 的 MOSS Base 配方](https://github.com/Comfy-Org/workflow_templates/blob/main/templates/image_moss_image_base_t2i.json) · [ER-SDE 作者实现](https://github.com/QinpengCui/ER-SDE-Solver)
+
+Spectrum 采用 Chebyshev 与一阶 Taylor 混合预测。快速模式的 v3 调度完整计算前 6 步和末 3 步，中间从窗口 2 开始按设定强度增长。加速强度范围 0–2，选 0 仍会预测，选「完整计算」可关闭预测。「Spectrum · 自适应预测」在完整计算的步骤抽查空间和通道，偏差较大就暂停预测，连续两次偏差较小才增长窗口，最多连续预测三次。它记录抽查次数、相对误差和窗口变化。两种模式均在末三步前释放历史特征。成功出图后本地工作进程可复用五分钟，聊天等设备交接仍可提前释放。[Spectrum 原始实现](https://github.com/hanjq17/Spectrum/tree/4e41f91c93ff66b045332530dd7bcb4c60eafbab) · [MOSS 社区调度](https://github.com/sorryhyun/ComfyUI-Spectrum-KSampler/blob/main/moss.py)
 
 原生实现保留最多 6 份图像隐藏状态、4 阶拟合与 0.5 混合权重，避免直接采用社区大历史缓冲的显存开销；因此窗口参数对齐不代表整个预测器与插件逐像素相同。正负分支及跳层组合各自隔离，相同时间点的 CPU 拟合系数在任务内复用，短采样减少或不进行预测。每个任务独立清理，保留取消及进度。显存余量不足、拟合失败或预测出现非有限值时使用完整计算，并在任务 `nativeRuntime.mossAcceleration` 记录窗口配置、实际计算/预测次数、实际最长连续预测及回退原因。不使用 Anima TeaCache 阈值。预测可能改变局部纹理、道具细节与手部关系；收益及画质须依据本机相同参数的逐图记录判断，不能据社区其他模型数据宣称本机提速倍数。
 

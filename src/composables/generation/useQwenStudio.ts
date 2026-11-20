@@ -1,9 +1,10 @@
 import { computed, onScopeDispose, reactive, ref, shallowRef, watch } from 'vue'
 import { qwenStatus, uploadQwenImage, readQwenTaskInput } from '@/api/qwenApi'
 import { mossStatus } from '@/api/mossApi'
-import { MOSS_MODEL_ID, mossModels, qwenModels, validMossSpectrumFlexWindow, type DirectImageModelStatus } from '@/config/directImageModels'
+import { MOSS_MODEL_ID, MOSS_DEFAULT_ACCELERATION, MOSS_DEFAULT_FLEX_WINDOW, MOSS_SAMPLING, mossModels, qwenModels,
+  isMossAcceleration, validMossSpectrumFlexWindow, type DirectImageModelStatus, type MossAcceleration, type MossSampler } from '@/config/directImageModels'
+import { effectiveMossTextPrecision, effectiveMossWeightPrecision } from '@/application/artwork/mossArtworkMetadata'
 import { compileMossPrompt, MOSS_NEGATIVE } from '@/utils/mossPrompt'
-import { isMossLayoutInput } from '@/utils/mossLayout'
 import { useImageTaskSession } from '@/composables/tasks/useImageTaskSession'
 import { imageTaskSettled as terminal, imageTaskMessage, fetchImageTaskResult, type ImageTask } from '@/api/imageTask'
 import { createImageTaskArchiver, imageTaskArtworkId } from '@/composables/tasks/imageTaskArtwork'
@@ -22,10 +23,11 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
   const slot = editor ? QWEN_EDITOR_REQUEST_DRAFT_KEY : moss ? MOSS_REQUEST_DRAFT_KEY : QWEN_REQUEST_DRAFT_KEY
   const alignment = moss ? 16 : 32, maxSize = moss ? 1536 : 2816
   const form = reactive({ modelId: moss ? MOSS_MODEL_ID : 'qwen-image-2.1-turbo', prompt: '', negative: moss ? MOSS_NEGATIVE : '',
-    width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? 50 : 40, cfg: moss ? 3.5 : 4, seed: 0,
-    mossAcceleration: 'spectrum' as 'off' | 'spectrum', mossTextPrecision: 'auto' as 'auto' | 'bf16' | 'fp8' | 'int8', mossCompile: false,
-    mossSpectrumFlexWindow: 0.5,
-    mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8', ...(moss ? { mossLayout: '' } : {}) })
+    width: moss ? 768 : 1024, height: moss ? 1280 : 1024, steps: moss ? MOSS_SAMPLING.euler.steps : 40, cfg: moss ? MOSS_SAMPLING.euler.cfg : 4, seed: 0,
+    mossSampler: 'euler' as MossSampler,
+    mossAcceleration: MOSS_DEFAULT_ACCELERATION as MossAcceleration, mossTextPrecision: 'auto' as 'auto' | 'bf16' | 'fp8' | 'int8', mossCompile: false,
+    mossSpectrumFlexWindow: MOSS_DEFAULT_FLEX_WINDOW,
+    mossWeightPrecision: 'auto' as 'auto' | 'fp16' | 'int8', ...(moss ? { mossLayout: '', mossUseTaskPrompt: false } : {}) })
   const randomSeed = ref(true), resize = ref(false), source = shallowRef<MangaImage | null>(null), sourceUrl = ref('')
   const references = shallowRef<{ id: string; image: MangaImage; url: string }[]>([])
   const restoredInputMissing = ref(false), parentId = ref<string | number | null>(null)
@@ -72,8 +74,16 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     draftTimer = setTimeout(() => { void persistDraft() }, 400)
   }, { deep: true, flush: 'sync' })
   const selected = computed(() => models.value.find(model => model.id === form.modelId))
+  function selectMossSampler(value: unknown) {
+    if (!moss || locked.value || value === form.mossSampler || (value !== 'euler' && value !== 'er-sde')) return
+    if (value === 'er-sde' && !selected.value?.mossErSde) return
+    Object.assign(form, MOSS_SAMPLING[value], {
+      mossSampler: value, mossAcceleration: value === 'euler' && selected.value?.mossSpectrum ? MOSS_DEFAULT_ACCELERATION : 'off',
+      mossSpectrumFlexWindow: MOSS_DEFAULT_FLEX_WINDOW,
+    })
+  }
   if (moss) watch([selected, () => form.mossTextPrecision], ([model, precision]) => {
-    if (!model?.available) return
+    if (!model?.available || form.mossUseTaskPrompt) return
     if (precision === 'bf16' && model.mossTextBf16Ready === false || precision === 'fp8' && !model.mossFp8 || precision === 'int8' && !model.mossTextInt8Ready) {
       form.mossTextPrecision = 'auto'
     }
@@ -229,10 +239,12 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       if (!turbo.value && (!Number.isInteger(form.steps) || form.steps < 1 || form.steps > 100
         || !moss && negative && (!Number.isFinite(form.cfg) || form.cfg <= 1 || form.cfg > 20))) throw new Error('步数需为 1—100；有负向描述时 CFG 需大于 1 且不超过 20')
       if (moss && (!Number.isFinite(form.cfg) || form.cfg < 0 || form.cfg > 20)) throw new Error('CFG 需为 0—20 内的数值')
-      if (moss && (form.mossAcceleration !== 'off' && form.mossAcceleration !== 'spectrum'
-        || form.mossAcceleration === 'spectrum' && !selected.value?.mossSpectrum)) throw new Error('当前后端尚未提供 MOSS Spectrum，请更新并重启或关闭缓存加速')
+      if (moss && form.mossSampler === 'er-sde' && !selected.value?.mossErSde) throw new Error('当前后端尚未提供 ER-SDE 预览，请选择 Euler 或更新后端')
+      if (moss && (!isMossAcceleration(form.mossAcceleration)
+        || form.mossAcceleration === 'spectrum' && !selected.value?.mossSpectrum
+        || form.mossAcceleration === 'spectrum-adaptive' && !selected.value?.mossAdaptiveSpectrum)) throw new Error('当前后端不支持所选预测模式，请更换缓存加速模式')
       if (moss && (!validMossSpectrumFlexWindow(form.mossSpectrumFlexWindow)
-        || form.mossAcceleration === 'spectrum' && !selected.value?.mossFlexWindow)) throw new Error('Spectrum 加速强度需为 0–2，且后端支持窗口调节；请检查参数或更新后端')
+        || form.mossAcceleration !== 'off' && !selected.value?.mossFlexWindow)) throw new Error('请选择 0–2 之间的 Spectrum 加速强度，并确认后端支持窗口调节')
       if (moss && (!['auto', 'bf16', 'fp8', 'int8'].includes(form.mossTextPrecision)
         || form.mossTextPrecision === 'bf16' && selected.value?.mossTextBf16Ready === false
         || form.mossTextPrecision === 'fp8' && !selected.value?.mossFp8
@@ -241,11 +253,12 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
       if (moss && (!['auto', 'fp16', 'int8'].includes(form.mossWeightPrecision)
         || form.mossWeightPrecision === 'fp16' && !selected.value?.mossFp16Ready
         || form.mossWeightPrecision === 'int8' && !selected.value?.mossInt8Ready)) throw new Error('所选主模型权重未准备，请选择自动或已导入的精度')
-      const compiled = moss ? compileMossPrompt(form.prompt, negative, form) : { prompt: form.prompt.trim(), negative }
+      const compiled = moss && !recipe ? compileMossPrompt(form.prompt, negative, form) : { prompt: form.prompt.trim(), negative }
       if (compiled.prompt.length > 12000) throw new Error('编译后的提示词超过 12000 字符，请精简描述')
       if (moss && (source.value || references.value.length)) throw new Error('MOSS 当前仅支持文生图，请移除编辑输入')
       const input: Record<string, unknown> = { modelId: form.modelId, ...compiled,
         ...(moss ? { mossAcceleration: form.mossAcceleration,
+          ...(selected.value?.mossErSde ? { mossSampler: form.mossSampler } : {}),
           ...(selected.value?.mossFlexWindow ? { mossSpectrumFlexWindow: form.mossSpectrumFlexWindow } : {}),
           mossTextPrecision: form.mossTextPrecision === 'auto' ? (selected.value?.mossTextInt8Ready ? 'int8' : 'bf16') : form.mossTextPrecision,
           mossCompile: form.mossCompile, mossWeightPrecision: form.mossWeightPrecision } : {}),
@@ -389,13 +402,18 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
           }
           randomSeed.value = typeof input.seed !== 'number'
           if (moss) {
-            form.mossAcceleration = input.mossAcceleration === 'spectrum' ? 'spectrum' : 'off'
-            form.mossSpectrumFlexWindow = validMossSpectrumFlexWindow(input.mossSpectrumFlexWindow) ? input.mossSpectrumFlexWindow : 0.5
-            form.mossTextPrecision = input.mossTextPrecision === 'int8' || input.mossTextPrecision === 'fp8' || input.mossTextPrecision === 'bf16' ? input.mossTextPrecision : 'auto'
+            form.mossSampler = input.mossSampler === 'er-sde' || input.sampler === 'er-sde' ? 'er-sde' : 'euler'
+            form.mossAcceleration = isMossAcceleration(input.mossAcceleration) ? input.mossAcceleration : 'off'
+            form.mossSpectrumFlexWindow = validMossSpectrumFlexWindow(input.mossSpectrumFlexWindow) ? input.mossSpectrumFlexWindow : MOSS_DEFAULT_FLEX_WINDOW
             form.mossCompile = input.mossCompile === true
-            form.mossWeightPrecision = input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16'
-            if (taskId && task.value?.taskId === taskId && typeof input.prompt === 'string' && isMossLayoutInput(input.prompt)) {
-              form.mossLayout = input.prompt
+            const runtime = request.value ? input.nativeRuntime : task.value?.metadata.nativeRuntime ?? input.nativeRuntime
+            form.mossTextPrecision = effectiveMossTextPrecision(runtime)
+              ?? (input.mossTextPrecision === 'int8' || input.mossTextPrecision === 'fp8' || input.mossTextPrecision === 'bf16' ? input.mossTextPrecision : 'auto')
+            form.mossWeightPrecision = effectiveMossWeightPrecision(runtime)
+              ?? (input.mossWeightPrecision === 'int8' ? 'int8' : input.mossWeightPrecision === 'auto' ? 'auto' : 'fp16')
+            if (typeof input.prompt === 'string' && (taskId && task.value?.taskId === taskId || !draft)) {
+              form.mossLayout = ''
+              form.mossUseTaskPrompt = Boolean(input.prompt.trim())
             }
           }
         }
@@ -434,7 +452,7 @@ export function useQwenStudio(mode: 'qwen' | 'moss' = 'qwen', editor = false) {
     finally { initializing.value = false }
   }
   onScopeDispose(() => { stopRuntime(); clearTimeout(draftTimer); void persistDraft(); lifetime.abort(); setUrl(sourceUrl, null); setUrl(resultUrl, null); for (const value of references.value) URL.revokeObjectURL(value.url) })
-  return { modelOptions, alignment, maxSize, form, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
+  return { modelOptions, alignment, maxSize, form, selectMossSampler, randomSeed, resize, source, sourceUrl, references, needsResize, restoredInputMissing, selected, turbo, checking, statusError, task, request, result, resultUrl, resultBlob,
     busy, importing, observing, cancelling, saving, saved, error, notice, locked, unresolved, issue, canRun, canUpscale, upscaleResult, inputSize, progress, taskText,
     ready, initializing, draftRecoveryNeeded, draftRecoveryError, recoverDraft, preserveAndSaveDraft, draftStatus, draftFailed, persistDraft,
     continueResult, retryInputs, moveReference, refresh, loadSource, removeSource, addReferences, removeReference, run, cancel, observe, exportResult, clearResult, initialize }

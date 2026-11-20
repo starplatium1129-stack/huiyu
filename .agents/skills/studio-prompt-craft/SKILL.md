@@ -50,7 +50,7 @@ Anima 模型基于混合输入训练，普通标签段承担核心视觉事实�
 
 ### 3. MiaoMiao Harem MOSS BASE v1.0 / v1.1
 
-- **工作台默认 JSON 布局**：整体场景、光影、镜头和元素关系由 `summary.caption` 承载，标签补充角色、服装、道具与风格的精确信息。主体有明确位置时才收紧 `bbox`。多格叙事或复杂互动应逐项写出各格、各人物或道具的画面内容和位置。自然语言优先英文，中文也支持。参考 OpenMOSS 的[自然语言样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/007/parameters.json)和[标签样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/009/parameters.json)。
+- 普通场景用自然语言写清人物、动作、道具与接触关系，标签保留角色、作品和衣装特征。有明确站位、逐格动作或指定画面文字时，工作台编译为布局 JSON。将整体光影与镜头放进 `summary.caption`，分格的动作分别写进对应元素。自然语言支持英文和中文。[OpenMOSS 自然语言样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/007/parameters.json) · [标签样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/009/parameters.json)
 - **标签顺序**：质量 → 评分、元信息、年份（按需）→ 角色 → 作品 → 画师 → 画面标签，不臆造缺省类别。不要默认照搬 Anima 专属评分词或角色 LoRA。
 - **项目编译**：普通提示词自动补入作者的质量词；布局 JSON 不加前缀。本地管线不解析 `(tag:1.2)` 权重，结构化标签中的此类权重会被剥除。正、负向各含模板不超过 4096 tokens，超限会报错。
 - **文字与负面**：准确写出画面文字并保留原文和换行；需要文字时，检查最终负面的 `text`、`english text`。布局 JSON 的非空 `items[].text`、明确文字标签或带引号的文字内容指令会自动移除作者默认负面中的这两项，再合并场景排除项；自定义负面不自动改写。自由描述未被识别时仍需作者核对，避免负面与创作分级或画面内容冲突。

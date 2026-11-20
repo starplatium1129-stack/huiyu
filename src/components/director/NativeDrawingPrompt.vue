@@ -6,13 +6,16 @@ import StudioCopyButton from '@/components/ui/StudioCopyButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import PromptTagWorkbench from './PromptTagWorkbench.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
+import { isMossLayoutInput } from '@/utils/mossLayout'
 import type { NativeDrawing } from '@/composables/prompt/useNativeDrawing'
 import '@/assets/css/director/components/PromptHealthPanel.css'
 
 const props = defineProps<{ drawing: NativeDrawing }>()
 const isMoss = computed(() => props.drawing.mode.value === 'moss')
-const title = computed(() => isMoss.value ? 'MOSS · JSON 布局' : 'Qwen 提示词')
 const prompt = computed(() => props.drawing.recipe.value.prompt)
+const isLayout = computed(() => isMoss.value && isMossLayoutInput(prompt.value))
+const title = computed(() => isMoss.value ? (isLayout.value ? 'MOSS 布局' : 'MOSS 提示词') : 'Qwen 提示词')
+const hasOverride = computed(() => !!props.drawing.mossLayout.value || props.drawing.usingMossTaskPrompt.value)
 const negative = computed(() => props.drawing.session.value?.turbo.value ? '' : props.drawing.recipe.value.negative)
 const readerDialog = ref<HTMLDialogElement | null>(null), readerLoaded = ref(false)
 const editor = ref<HTMLTextAreaElement | null>(null), editing = ref(false)
@@ -23,8 +26,12 @@ async function openReader(event: MouseEvent, edit = false) {
   const source = event.currentTarget as HTMLElement
   editing.value = edit
   if (edit) {
-    draft.value = props.drawing.mossLayout.value || prompt.value
     editError.value = ''
+    try { draft.value = props.drawing.mossLayoutDraft() }
+    catch (cause) {
+      draft.value = ''
+      editError.value = cause instanceof Error ? cause.message : '布局草稿无法准备'
+    }
   }
   readerLoaded.value = true
   await nextTick()
@@ -46,7 +53,7 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
 
 <template>
   <section class="native-prompt" aria-label="当前引擎提示词">
-    <PromptTagWorkbench v-if="isMoss && !drawing.mossLayout.value" prompt-format="moss-layout" :model-profile="null" />
+    <PromptTagWorkbench v-if="isMoss && !hasOverride" prompt-format="moss-layout" :model-profile="null" />
     <header class="native-prompt-heading">
       <h4>{{ title }}</h4>
       <button class="btn btn-ghost btn-sm" type="button" :disabled="!prompt" aria-label="展开阅读完整提示词" @click="openReader($event)"><ArchiveIcon name="expand" />阅读</button>
@@ -57,38 +64,39 @@ function onReaderClick(event: MouseEvent) { if (isBackdropClick(event, readerDia
     </div>
     <p v-if="drawing.recipe.value.error" role="alert">{{ drawing.recipe.value.error }}</p>
     <p v-else-if="!prompt">选择场景或输入画面描述<span v-if="isMoss">，也可直接编辑布局</span>。</p>
-    <template v-else-if="isMoss">
-      <p v-if="drawing.mossLayout.value">已应用自定义布局</p>
-      <pre class="native-layout-json" aria-label="发送给 MOSS 的布局">{{ prompt }}</pre>
+    <template v-else>
+      <p v-if="drawing.usingMossTaskPrompt.value">正在使用原任务提示词</p>
+      <p v-else-if="drawing.mossLayout.value">已应用自定义布局</p>
+      <pre v-if="isLayout" class="native-layout-json" aria-label="发送给 MOSS 的布局">{{ prompt }}</pre>
+      <p v-else class="native-prompt-text" aria-label="画面提示词">{{ prompt }}</p>
     </template>
-    <p v-else class="native-prompt-text" aria-label="画面提示词">{{ prompt }}</p>
     <details v-if="negative && (!isMoss || prompt)" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
 
     <dialog ref="readerDialog" class="prompt-reader" aria-labelledby="native-prompt-reader-heading" @cancel.prevent="reader.close()" @click="onReaderClick">
       <header class="prompt-reader-heading"><h2 id="native-prompt-reader-heading">{{ editing ? '编辑 MOSS 布局' : title }}</h2><button class="btn btn-quiet btn-icon" type="button" aria-label="关闭提示词窗口" @click="reader.close()"><ArchiveIcon name="close" /></button></header>
-      <div v-if="editing" class="prompt-reader-content">
+      <form v-if="editing" :id="editorId + '-form'" class="prompt-reader-content" novalidate @submit.prevent="applyLayout()">
         <div class="native-layout-editor">
           <label :for="editorId">布局 JSON</label>
           <p :id="`${editorId}-help`">当前画幅 {{ drawing.size.value.replace('x', ' × ') }}。原生 bbox 使用中心原点和 [上, 左, 下, 右]。也可粘贴带宽高的像素草稿。自定义坐标随原稿保留。</p>
-          <textarea :id="editorId" ref="editor" v-model="draft" class="textarea" rows="14"
+          <textarea :id="editorId" ref="editor" v-model="draft" name="layout" class="textarea" rows="14"
             required spellcheck="false" autocorrect="off" autocapitalize="off" autofocus
             :aria-invalid="editError ? 'true' : undefined" :aria-describedby="`${editorId}-help${editError ? ` ${editorId}-error` : ''}`"
             @input="editError = ''" />
           <p :id="`${editorId}-error`" class="native-layout-error">{{ editError }}</p>
         </div>
-      </div>
+      </form>
       <div v-else class="prompt-reader-content" tabindex="0" role="region" aria-label="提示词正文">
         <div v-if="readerLoaded" class="native-reader-body">
-          <pre v-if="isMoss" class="native-layout-json">{{ prompt }}</pre>
+          <pre v-if="isLayout" class="native-layout-json">{{ prompt }}</pre>
           <p v-else class="native-prompt-text">{{ prompt }}</p>
           <details v-if="negative" class="prompt-preview-details"><StudioDisclosureSummary>负向提示词</StudioDisclosureSummary><p class="native-prompt-text">{{ negative }}</p></details>
         </div>
       </div>
       <footer class="prompt-reader-actions">
         <template v-if="editing">
-          <button v-if="drawing.mossLayout.value" class="btn btn-quiet" type="button" @click="applyLayout(true)">恢复自动布局</button>
+          <button v-if="hasOverride" class="btn btn-quiet" type="button" @click="applyLayout(true)">恢复自动提示词</button>
           <button class="btn btn-ghost" type="button" @click="reader.close()">取消</button>
-          <button class="btn btn-primary" type="button" @click="applyLayout()">应用布局</button>
+          <button class="btn btn-primary" type="submit" :form="editorId + '-form'">应用布局</button>
         </template>
         <StudioCopyButton v-else class="btn btn-primary" label="复制提示词" :action="copy" :content-key="prompt" :disabled="!prompt" />
       </footer>

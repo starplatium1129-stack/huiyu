@@ -34,6 +34,13 @@ static DOCUMENT: LazyLock<Value> = LazyLock::new(|| {
             "off": "关闭放大，可覆盖批量默认值。",
             "usage": "单张目录、自定义提示词及批量均可传这个字段。批量顶层应用到整批，items 内的设置优先。width 和 height 仍指放大前的画幅。"
         },
+        "moss": {
+            "mossSampler": ["euler", "er-sde"],
+            "mossAcceleration": ["off", "spectrum", "spectrum-adaptive"],
+            "mossSpectrumFlexWindow": {"min": 0, "max": 2},
+            "usage": "新打包的 MOSS 目录配方使用 Euler、50 步、CFG 3.5 和 Spectrum 0.5。选择 er-sde 预览时默认用 25 步、CFG 2.5 和完整计算。单张可覆盖采样器和加速设置，整批 MOSS 可在顶层指定，items 逐项按字段覆盖。混合模型批次请把 MOSS 参数放在对应项内。",
+            "canvas": "同时传 width 和 height 可调整目录画幅。目录中的元素框跟随宽、高分别缩放。自定义 prompt 使用提交时的坐标。"
+        },
         "operations": {
             "desktopChat": {
                 "inbox": "GET /api/muse/desktop/inbox", "reply": "POST /api/muse/desktop/reply",

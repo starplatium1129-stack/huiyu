@@ -32,8 +32,10 @@ const sizeGroups: StudioSelectGroup[] = [
 ]
 const mossSizeLabels: Record<string, string> = {
   '768x1280': '标准竖幅',
+  '1280x768': '标准横幅',
   '1280x1280': '标准方形',
   '960x1536': '大尺寸竖幅',
+  '1536x960': '大尺寸横幅',
   '1536x1536': '大尺寸方形',
 }
 const cards = computed(() => props.animaSizes.map(value => {
@@ -106,7 +108,7 @@ function applyCustom() {
         <button type="submit" class="btn btn-primary" :disabled="busy">应用尺寸</button>
       </form>
     </StudioPopover>
-    <p v-if="!compact">{{ engine === 'moss' ? '提供标准与大尺寸的竖幅、方形预设，影响下一次输出。' : '画幅影响下一次输出，参考图保持原始比例。' }}</p>
+    <p v-if="!compact">{{ engine === 'moss' ? '选择下一张图的竖幅、横幅或方形画布。' : '画幅影响下一次输出，参考图保持原始比例。' }}</p>
   </div>
 </template>
 <style scoped>

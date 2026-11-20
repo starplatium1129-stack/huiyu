@@ -2,7 +2,7 @@ export interface MossCanvasSize { width: number; height: number }
 export type MossLayoutSide = 'left' | 'right'
 type Box = [number, number, number, number]
 
-interface MossLayoutItem {
+export interface MossLayoutItem {
   label: 'character' | 'object' | 'text'
   caption: string
   bbox: Box
@@ -101,6 +101,23 @@ export function mossSubjectBox({ width, height }: MossCanvasSize, placement?: Mo
   const left = placement === 'right' ? 0.44 : placement === 'center' ? 0.16 : 0
   const right = placement === 'left' ? 0.56 : placement === 'center' ? 0.84 : 1
   return [-height / 2, Math.floor(left * width) - width / 2, height / 2, Math.ceil(right * width) - width / 2]
+}
+
+export function mossTriptychBox({ width, height }: MossCanvasSize, index: number): Box {
+  const edge = (column: number) => Math.round(column * width / 3) - width / 2
+  return [-height / 2, edge(index), height / 2, edge(index + 1)]
+}
+
+export function mossTextBox(size: MossCanvasSize, placement: string): Box {
+  const horizontal = placement.match(/\b(?:left|right|center)\b|左|右|居中/i)?.[0].toLowerCase()
+  const side = horizontal === 'left' || horizontal === '左' ? 'left'
+    : horizontal === 'right' || horizontal === '右' ? 'right'
+    : horizontal === 'center' || horizontal === '居中' ? 'center' : undefined
+  const box = mossSubjectBox(size, side)
+  const vertical = placement.match(/\b(?:top|upper|bottom|lower)\b|上|下|顶|底/i)?.[0] ?? ''
+  if (/^(?:top|upper|上|顶)$/i.test(vertical)) box[2] = -Math.floor(size.height / 6)
+  if (/^(?:bottom|lower|下|底)$/i.test(vertical)) box[0] = Math.floor(size.height / 6)
+  return box
 }
 
 export function mossLayoutJson(caption: string, items: MossLayoutItem[], multiPanel: boolean) {

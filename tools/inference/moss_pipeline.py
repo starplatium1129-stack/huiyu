@@ -250,7 +250,7 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
         return rope, self.text_embedder(context, rope[:, height * width:])
 
     def forward(self, hidden_states, timestep, encoder_hidden_states,
-                encoder_attention_mask=None, return_dict=True, skip_layers=None):
+                encoder_attention_mask=None, return_dict=True, skip_layers=None, spectrum_branch="positive"):
         skip_layers = _validate_skip_layers(skip_layers, len(self.layers))
         if hidden_states.ndim != 4 or hidden_states.shape[1] != self.config.latent_channels:
             raise ValueError('hidden_states must be [B, latent_channels, H, W].')
@@ -263,12 +263,17 @@ class MOSSImageTransformer(ModelMixin, ConfigMixin):
         mod, head = execution.modulation(timestep, batch, build_time) if execution is not None else build_time()
         outputs = []
         for index in range(batch):
-            video = hidden_states[index:index + 1].flatten(2).transpose(1, 2)
-            video = self.video_embedder(video.to(self.video_embedder.weight.dtype).contiguous())
             cache = getattr(self, "_huiyu_spectrum", None)
-            key = (index, tuple(sorted(skip_layers)))
-            predicted = cache.predict(key, video) if cache is not None else None
+            predicted = None
+            if cache is not None:
+                key = (spectrum_branch, index, skip_layers)
+                shape = (height, width, self.video_embedder.weight.dtype, hidden_states.device)
+                predicted = cache.predict(key, shape)
             if predicted is None:
+                video = hidden_states[index:index + 1].flatten(2).transpose(1, 2)
+                video = self.video_embedder(video.to(self.video_embedder.weight.dtype).contiguous())
+                if cache is not None:
+                    cache.check_budget(video)
                 build_context = lambda: self._context(encoder_hidden_states, mask, index,
                     height, width, hidden_states.device, video.dtype)
                 context_key = (id(encoder_hidden_states), id(mask), index, height, width, video.dtype)
@@ -443,9 +448,14 @@ class MOSSImagePipeline(DiffusionPipeline):
             latents = latents.to(device=device, dtype=torch.float32)
         self.scheduler.set_timesteps(num_inference_steps, device=device)
         num_steps = len(self.scheduler.timesteps)
+        spectrum = getattr(self.transformer, '_huiyu_spectrum', None)
+        negative_branch = {'spectrum_branch': 'negative'} if spectrum is not None else {}
+        skipped_branch = {'spectrum_branch': 'positive-skip'} if spectrum is not None else {}
         if execution is not None:
             execution.phase('sampling')
         for step_index, timestep in enumerate(self.progress_bar(self.scheduler.timesteps)):
+            if spectrum is not None:
+                spectrum.begin_step(step_index, num_steps)
             skip_active = slg_start <= step_index / num_steps < slg_stop
             # CFG must combine fp32 predictions, even when the DiT runs in bf16.
             # Converting only the combined velocity would preserve rounding errors.
@@ -453,15 +463,28 @@ class MOSSImagePipeline(DiffusionPipeline):
             conditional = prediction
             if do_cfg:
                 skip_kwargs = {'skip_layers': uncond_skip_layers} if uncond_skip_layers and skip_active else {}
-                uncond = self.transformer(latents, timestep, negative, negative_mask, **skip_kwargs).sample.float()
+                uncond = self.transformer(latents, timestep, negative, negative_mask, **skip_kwargs, **negative_branch).sample.float()
                 prediction = uncond + guidance_scale * (prediction - uncond)
+                del uncond
             if slg_layers and slg_scale > 0 and skip_active:
                 skipped = self.transformer(
-                    latents, timestep, positive, positive_mask, skip_layers=slg_layers).sample.float()
+                    latents, timestep, positive, positive_mask, skip_layers=slg_layers, **skipped_branch).sample.float()
                 if not do_cfg:
                     prediction = skipped
                 prediction = prediction + slg_scale * (conditional - skipped)
+                del skipped
             latents = self.scheduler.step(prediction, timestep, latents, return_dict=False)[0]
+            del prediction, conditional
+        # The decoder needs only the final latents. Return sampling allocations
+        # to the allocator before the VAE's placement hook sizes its handoff.
+        if spectrum is not None:
+            spectrum.clear()
+        if execution is not None:
+            execution.release_sampling()
+        del prompt_embeds, prompt_attention_mask, negative_prompt_embeds, negative_prompt_attention_mask
+        del positive, positive_mask
+        if do_cfg:
+            del negative, negative_mask
         if output_type == 'latent':
             images = latents
         else:

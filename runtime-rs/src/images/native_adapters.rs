@@ -2,6 +2,7 @@
 use super::*;
 use generation::native::adapters;
 pub(super) const KEYS: &[&str] = &[
+    "mossSampler",
     "mossAcceleration",
     "mossUpscaleScale",
     "mossUpscaleSourceTaskId",
@@ -78,17 +79,34 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
     if raw.get("mossUpscaleSourceTaskId").is_some() {
         return Err(error("INVALID_PARAMETER", "原任务身份仅用于 Remacri 放大"));
     }
+    let moss_sampler = match raw.get("mossSampler") {
+        None => "euler",
+        Some(Value::String(value))
+            if spec["family"] == "moss-image"
+                && (value == "euler" || spec["mossPreview"]["sampler"].as_str() == Some(value)) =>
+        {
+            value.as_str()
+        }
+        _ => {
+            return Err(error(
+                "INVALID_PARAMETER",
+                "请选择此 MOSS 版本支持的采样配方",
+            ));
+        }
+    };
     let moss_acceleration = match raw.get("mossAcceleration") {
         None => "off",
         Some(Value::String(value))
-            if spec["family"] == "moss-image" && matches!(value.as_str(), "off" | "spectrum") =>
+            if spec["family"] == "moss-image"
+                && (matches!(value.as_str(), "off" | "spectrum")
+                    || (value == "spectrum-adaptive" && spec["mossAdaptiveSpectrum"] == true)) =>
         {
             value
         }
         _ => {
             return Err(error(
                 "INVALID_PARAMETER",
-                "MOSS 缓存加速仅支持 off 或 spectrum；其他模型不接受此参数",
+                "请选择此 MOSS 版本支持的缓存加速模式",
             ));
         }
     };
@@ -204,15 +222,17 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
             format!("宽高必须是 {alignment} 的倍数"),
         ));
     }
+    let preview = moss_sampler == "er-sde";
+    let sampling_defaults = if preview { &spec["mossPreview"] } else { spec };
     let steps = validation::number(
-        raw.get("steps").unwrap_or(&spec["steps"]),
+        raw.get("steps").unwrap_or(&sampling_defaults["steps"]),
         "steps",
         1.,
         100.,
         true,
     )?;
     let cfg = validation::number(
-        raw.get("cfg").unwrap_or(&spec["cfg"]),
+        raw.get("cfg").unwrap_or(&sampling_defaults["cfg"]),
         "cfg",
         0.,
         20.,
@@ -276,6 +296,7 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
     Ok(
         json!({"modelId":id,"family":spec["family"],"prompt":prompt.trim(),"negative":negative,
         "width":width,"height":height,"steps":steps,"cfg":cfg,"seed":seed,"initImage":image,
+        "mossSampler":if spec["family"] == "moss-image" {Some(moss_sampler)}else{None},
         "mossAcceleration":if spec["family"] == "moss-image" {Some(moss_acceleration)}else{None},
         "mossSpectrumFlexWindow":if spec["family"] == "moss-image" {Some(moss_flex_window)}else{None},
         "mossTextPrecision":if spec["family"] == "moss-image" {Some(moss_text_precision)}else{None},
@@ -284,7 +305,8 @@ pub(super) fn validate(raw: &Value, family: &str) -> Result<Value> {
         "referenceImages":if spec["family"] == "qwen-image" {Some(references)}else{None},
         "profileId":spec["profileId"],"styleLoraId":style,"styleLoraTrigger":style.map(|id| &catalog::styles()[id]["trigger"]),
         "inferenceEngine":"native","nativeAdapterVersion":1,"validation":"待主力机验证",
-        "sampler":"euler","scheduler":"model-config","teaCache":false,"hiresFix":false,"rcasStrength":0}),
+        "sampler":moss_sampler,"scheduler":if preview {sampling_defaults["scheduler"].as_str().unwrap_or("simple")} else {"model-config"},
+        "teaCache":false,"hiresFix":false,"rcasStrength":0}),
     )
 }
 pub(super) fn normalize(raw: &Value, mut input: Value) -> Result<Value> {

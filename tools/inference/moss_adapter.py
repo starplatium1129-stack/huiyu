@@ -114,31 +114,49 @@ def generate(pipeline, data, control, observation, spec):
             tokenize=False, add_generation_prompt=True, enable_thinking=True)
         if len(pipeline.tokenizer(formatted, truncation=False)["input_ids"]) > 4096:
             raise load_sibling("adapter_contract").AdapterError("PROMPT_TOO_LONG", f"MOSS {name}提示词超过 4096 tokens，请精简内容；未截断提交")
-    cache = (load_sibling("moss_spectrum").SpectrumCache(control, pipeline.scheduler,
-                2 if data["cfg"] != 1 else 1, data["mossSpectrumFlexWindow"])
-             if data["mossAcceleration"] == "spectrum" else None)
-    pipeline.transformer._huiyu_spectrum = cache
+    sampler = data.get("mossSampler", "euler")
+    original_scheduler = pipeline.scheduler
+    preview = None
+    if sampler == "er-sde":
+        preview = load_sibling("moss_preview").MossPreviewScheduler(original_scheduler, seed=data["seed"])
+    elif sampler != "euler":
+        raise load_sibling("adapter_contract").AdapterError("UNSUPPORTED_SAMPLER", "MOSS 采样器仅支持 Euler 和 ER-SDE")
+    scheduler = preview if preview is not None else original_scheduler
+    acceleration = data["mossAcceleration"]
+    cache = (load_sibling("moss_spectrum").SpectrumCache(control, 2 if data["cfg"] != 1 else 1,
+                data["mossSpectrumFlexWindow"], adaptive=acceleration == "spectrum-adaptive")
+             if acceleration in ("spectrum", "spectrum-adaptive") else None)
     execution = load_sibling("moss_execution").Execution(control)
     compiler = pipeline.transformer._huiyu_compiler
-    compiler.begin(control, data["mossCompile"], pipeline._huiyu_memory)
-    pipeline.transformer._huiyu_execution = execution
     try:
-        with observer(pipeline.scheduler, control), torch.inference_mode():
+        if preview is not None:
+            # Each task owns its pipeline. Leave Diffusers' registered model config intact.
+            object.__setattr__(pipeline, "scheduler", preview)
+        pipeline.transformer._huiyu_spectrum = cache
+        pipeline.transformer._huiyu_execution = execution
+        compiler.begin(control, data["mossCompile"], pipeline._huiyu_memory)
+        with observer(scheduler, control), torch.inference_mode():
             return pipeline(prompt=data["prompt"], negative_prompt=data["negativePrompt"],
                 width=data["width"], height=data["height"], num_inference_steps=data["steps"],
                 guidance_scale=data["cfg"], uncond_skip_layers=spec["uncondSkipLayers"], output_type="np",
                 generator=torch.Generator("cpu").manual_seed(data["seed"]))
     finally:
-        pipeline.transformer._huiyu_execution = None
-        observation["mossExecution"] = execution.finish()
-        observation["mossExecution"]["textPrecision"] = data["mossTextPrecision"]
-        count = getattr(pipeline.transformer, "_huiyu_int8_count", 0)
-        observation["mossExecution"].update(weightPrecision="int8-convrot" if count else "fp16", quantizedLinearCount=count)
-        observation["mossExecution"]["compile"] = compiler.finish()
+        if preview is not None:
+            object.__setattr__(pipeline, "scheduler", original_scheduler)
+            preview.clear()
         pipeline.transformer._huiyu_spectrum = None
+        pipeline.transformer._huiyu_execution = None
         if cache is not None:
-            observation["mossAcceleration"] = dict(cache.stats,
-                effective="spectrum" if cache.stats["forecastForwards"] else "full-compute")
             cache.clear()
+            observation["mossAcceleration"] = dict(cache.stats,
+                effective=acceleration if cache.stats["forecastForwards"] else "full-compute")
         else:
             observation["mossAcceleration"] = {"algorithm": "off", "requested": False}
+        compile_stats = compiler.finish()
+        stats = execution.finish()
+        count = getattr(pipeline.transformer, "_huiyu_int8_count", 0)
+        stats.update(sampler=sampler, textPrecision=data["mossTextPrecision"], quantizedLinearCount=count,
+                     weightPrecision="int8-convrot" if count else "fp16", compile=compile_stats)
+        if preview is not None:
+            stats["scheduler"] = "simple"
+        observation["mossExecution"] = stats

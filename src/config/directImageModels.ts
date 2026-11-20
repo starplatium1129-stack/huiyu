@@ -4,6 +4,13 @@ export const qwenModels = [
 ] as const
 
 export const MOSS_MODEL_ID = 'moss-miaomiao-base-v1.1'
+export type MossSampler = 'euler' | 'er-sde'
+export const MOSS_SAMPLING = { euler: { steps: 50, cfg: 3.5 }, 'er-sde': { steps: 25, cfg: 2.5 } } as const
+export type MossAcceleration = 'off' | 'spectrum' | 'spectrum-adaptive'
+export const MOSS_DEFAULT_ACCELERATION = 'spectrum'
+export const MOSS_DEFAULT_FLEX_WINDOW = 0.5
+export const isMossAcceleration = (value: unknown): value is MossAcceleration =>
+  value === 'off' || value === 'spectrum' || value === 'spectrum-adaptive'
 export const mossModels = [
   { value: MOSS_MODEL_ID, label: 'MiaoMiao Harem MOSS · BASE v1.1', versionId: '3434952' },
   { value: 'moss-miaomiao-base-v1.0', label: 'MiaoMiao Harem MOSS · BASE v1.0', versionId: '3422319' },
@@ -13,6 +20,6 @@ export const validMossSpectrumFlexWindow = (value: unknown): value is number => 
 
 export interface DirectImageModelStatus {
   id: string; available: boolean; unavailableReason: string | null; licenseUrl: string
-  mossSpectrum?: boolean; mossFlexWindow?: boolean; mossRemacri?: boolean; mossFp8?: boolean; mossCompile?: boolean
+  mossSpectrum?: boolean; mossAdaptiveSpectrum?: boolean; mossErSde?: boolean; mossFlexWindow?: boolean; mossRemacri?: boolean; mossFp8?: boolean; mossCompile?: boolean
   mossFp16Ready?: boolean; mossInt8Ready?: boolean; mossTextInt8Ready?: boolean; mossTextBf16Ready?: boolean
 }

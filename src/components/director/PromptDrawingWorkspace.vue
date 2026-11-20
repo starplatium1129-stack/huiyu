@@ -389,7 +389,7 @@ const drawingSetupRoute = computed(() => {
   return { path: '/control', hash, query: model ? { model } : {} }
 })
 const drawingHasContent = computed(() => !!(pb.visualDescription.trim() || pb.story.trim() || pb.sceneId
-  || pb.subject.kind === 'popular' && pb.subject.blueprintId || pb.manualTags.size || native.mossLayout.value))
+  || pb.subject.kind === 'popular' && pb.subject.blueprintId || pb.manualTags.size || native.mossLayout.value || native.usingMossTaskPrompt.value))
 const canFillExample = computed(() => workspace.draftReady.value && engineOnline.value && !generationBusy.value
   && !workspace.preparedModelPending.value && !drawingHasContent.value)
 const firstDrawingHint = computed(() => {

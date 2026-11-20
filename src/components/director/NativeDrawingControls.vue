@@ -38,10 +38,21 @@ function editOriginal() {
         <p id="native-size-help">每边 512–{{ state.maxSize }} px，为 {{ state.alignment }} 的倍数。</p>
         <template v-if="!state.turbo.value">
           <div class="native-field"><label for="native-negative">模型负向描述</label><textarea id="native-negative" v-model="state.form.negative" class="textarea" rows="3" maxlength="8000" :disabled="drawing.locked.value" spellcheck="false" autocorrect="off" autocapitalize="off" /></div>
+          <template v-if="drawing.mode.value === 'moss'">
+            <div class="native-field"><label for="native-sampler">采样配方</label>
+              <StudioSelect id="native-sampler" :model-value="state.form.mossSampler" label="采样配方" :disabled="drawing.locked.value" aria-describedby="native-sampler-help"
+                :options="[{value:'euler',label:'Euler · 标准'},{value:'er-sde',label:'ER-SDE · 预览',disabled:!state.selected.value?.mossErSde}]" @update:model-value="state.selectMossSampler" />
+            </div>
+            <p id="native-sampler-help">{{ state.form.mossSampler === 'er-sde' ? '预览配方从 25 步、CFG 2.5、完整计算开始。' : '标准配方从 50 步、CFG 3.5 开始。' }}切换配方会重设步数、CFG 和缓存加速，之后可单独调整。</p>
+          </template>
           <div class="native-pair"><div class="native-field"><label for="native-steps">步数</label><input id="native-steps" v-model.number="state.form.steps" class="input" type="number" min="1" max="100" :disabled="drawing.locked.value" /></div><div class="native-field"><label for="native-cfg">CFG</label><input id="native-cfg" v-model.number="state.form.cfg" class="input" type="number" :min="drawing.mode.value === 'moss' ? 0 : 1.1" max="20" step="0.1" :disabled="drawing.locked.value" /></div></div>
-          <div v-if="drawing.mode.value === 'moss'" class="native-field"><label for="native-cache">缓存加速</label><StudioSelect id="native-cache" v-model="state.form.mossAcceleration" label="缓存加速" :disabled="drawing.locked.value" :options="[{value:'off',label:'关闭 · 完整计算'},{value:'spectrum',label:'Spectrum · 实验',disabled:!state.selected.value?.mossSpectrum}]" /></div>
-          <p v-if="drawing.mode.value === 'moss'">新创作默认开启 Spectrum，可关闭使用完整计算。预测会占用额外显存，并可能改变局部细节。</p>
-          <template v-if="drawing.mode.value === 'moss' && state.form.mossAcceleration === 'spectrum'">
+          <div v-if="drawing.mode.value === 'moss'" class="native-field">
+            <label for="native-cache">缓存加速</label>
+            <StudioSelect id="native-cache" v-model="state.form.mossAcceleration" label="缓存加速" :disabled="drawing.locked.value" aria-describedby="native-cache-help"
+              :options="[{value:'off',label:'完整计算'},{value:'spectrum',label:'Spectrum · 快速预测',disabled:!state.selected.value?.mossSpectrum},{value:'spectrum-adaptive',label:'Spectrum · 自适应预测',disabled:!state.selected.value?.mossAdaptiveSpectrum}]" />
+          </div>
+          <p v-if="drawing.mode.value === 'moss'" id="native-cache-help">{{ state.form.mossAcceleration === 'off' ? '每一步都完整绘制。' : state.form.mossAcceleration === 'spectrum-adaptive' ? '实验模式。绘制中抽查局部偏差，偏差较大时增加完整计算。' : '用前几步的结果预测后续步骤，加快出图，局部细节可能变化。' }}</p>
+          <template v-if="drawing.mode.value === 'moss' && state.form.mossAcceleration !== 'off'">
             <div class="native-field"><label for="native-spectrum-flex">Spectrum 加速强度</label><input id="native-spectrum-flex" v-model.number="state.form.mossSpectrumFlexWindow" class="input" type="number" min="0" max="2" step="0.05" :disabled="drawing.locked.value || !state.selected.value?.mossFlexWindow" aria-describedby="native-spectrum-flex-help" /></div>
             <p id="native-spectrum-flex-help">默认 0.5；0.25 更保守，1 更激进。越大预测越多，细节变化也可能更明显。0 仍会预测；关闭请选完整计算。</p>
           </template>
