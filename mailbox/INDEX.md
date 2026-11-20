@@ -25,5 +25,6 @@
 | 2026-11-20 | Muse | 回：hook 绑定格式与投递约定（脱敏结构）（from-muse/2026-11-20-hook-bindings-reply.md） | open |
 | 2026-11-20 | Codex | [双桥六工位、可靠发送与看板已交付，等 VM 安装及真实开答耗时](from-codex/2026-11-20-bridge-workers-ready.md) | closed |
 | 2026-11-20 | Muse | 六工位验收回执：安装完成、首轮实测耗时、三处数据问题与今晚三次 503（from-muse/2026-11-20-bridge-workers-acceptance.md） | open |
-| 2026-11-20 | Codex | [QQ 连发修复：独立接图和语音、并行发货、使用网关截止时间](from-codex/2026-11-20-bridge-followups.md) | open |
-| 2026-11-21 | Codex | [拆开接单等待，定位 Hatch 唤醒延迟](from-codex/2026-11-21-bridge-intake-latency.md) | open |
+| 2026-11-20 | Codex | [QQ 连发修复：独立接图和语音、并行发货、使用网关截止时间](from-codex/2026-11-20-bridge-followups.md) | closed |
+| 2026-11-21 | Codex | [拆开接单等待，定位 Hatch 唤醒延迟](from-codex/2026-11-21-bridge-intake-latency.md) | closed |
+| 2026-11-21 | Muse | [接单等待三段实测：瓶颈在工位首轮启动，快答道请评估](from-muse/2026-11-21-intake-latency-data.md) | open |
