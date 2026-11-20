@@ -13,11 +13,15 @@ Events recorded:
 
 Nothing here talks to the network; it only reads inbox/outbox/sendbox/state.
 """
+import fcntl
 import glob
+import heapq
 import json
 import os
 import sys
+import tempfile
 from datetime import datetime, timezone, timedelta
+from itertools import chain
 
 BRIDGE = "/home/hatch/workspace/qq-bridge"
 STATE = "/home/hatch/hooks/state/qq-bridge"
@@ -27,9 +31,7 @@ TZ = timezone(timedelta(hours=8))
 KEEP = 40
 
 
-def load_pool():
-    events = []
-    seen = set()
+def load_pool(seen):
     if os.path.exists(POOL):
         with open(POOL, encoding="utf-8") as fh:
             for line in fh:
@@ -40,16 +42,32 @@ def load_pool():
                     ev = json.loads(line)
                 except json.JSONDecodeError:
                     continue
-                events.append(ev)
+                if not isinstance(ev, dict):
+                    continue
                 seen.add((ev.get("kind"), ev.get("key")))
-    return events, seen
+                yield ev
+
+
+def latest(events):
+    # Append order breaks ties, as in the original stable sort.
+    ordered = heapq.nlargest(KEEP, enumerate(events),
+                             key=lambda row: (row[1].get("ts", 0), row[0]))
+    return [event for _, event in reversed(ordered)]
 
 
 def read_json(path):
     try:
         with open(path, encoding="utf-8") as fh:
-            return json.load(fh)
-    except Exception:
+            value = json.load(fh)
+            return value if isinstance(value, dict) else None
+    except (FileNotFoundError, json.JSONDecodeError, UnicodeDecodeError):
+        return None
+
+
+def marker_time(path):
+    try:
+        return os.stat(path).st_mtime_ns // 1_000_000
+    except FileNotFoundError:
         return None
 
 
@@ -58,7 +76,14 @@ def fmt_ts(ms):
 
 
 def sync():
-    events, seen = load_pool()
+    with open(POOL + ".lock", "a", encoding="utf-8") as lock:
+        fcntl.flock(lock, fcntl.LOCK_EX)
+        return sync_locked()
+
+
+def sync_locked():
+    seen = set()
+    recent = latest(load_pool(seen))
     new = []
 
     def add(ev):
@@ -85,23 +110,23 @@ def sync():
             "att": atts,
         })
         out = read_json(os.path.join(BRIDGE, "outbox", key + ".json"))
-        sent_marker = os.path.join(STATE, "sent-" + key)
-        if out and out.get("skip") and os.path.exists(sent_marker):
+        sent_at = marker_time(os.path.join(STATE, "sent-" + key))
+        if out and out.get("skip") and sent_at is not None:
             add({
-                "ts": int(os.path.getmtime(sent_marker) * 1000),
+                "ts": sent_at,
                 "kind": "skipped",
                 "key": key,
                 "who": item.get("senderNickname") or "?",
                 "text": item.get("text") or "",
             })
-        elif out and os.path.exists(sent_marker):
+        elif out and sent_at is not None:
             att = []
             if out.get("imagePath"):
                 att.append("image")
             if out.get("audioPath"):
                 att.append("audio")
             add({
-                "ts": int(os.path.getmtime(sent_marker) * 1000),
+                "ts": sent_at,
                 "kind": "sent",
                 "key": key,
                 "via": "reply",
@@ -123,8 +148,8 @@ def sync():
         if not body:
             continue
         key = body.get("requestKey") or os.path.basename(path)[:-5]
-        marker = os.path.join(STATE, "sent-send-" + key)
-        if not os.path.exists(marker):
+        sent_at = marker_time(os.path.join(STATE, "sent-send-" + key))
+        if sent_at is None:
             continue
         att = []
         if body.get("imagePath"):
@@ -132,7 +157,7 @@ def sync():
         if body.get("audioPath"):
             att.append("audio")
         add({
-            "ts": int(os.path.getmtime(marker) * 1000),
+            "ts": sent_at,
             "kind": "sent",
             "key": key,
             "via": "send",
@@ -145,10 +170,8 @@ def sync():
         with open(POOL, "a", encoding="utf-8") as fh:
             for ev in new:
                 fh.write(json.dumps(ev, ensure_ascii=False) + "\n")
-        events.extend(new)
-
-    events.sort(key=lambda e: e.get("ts", 0))
-    render(events[-KEEP:])
+        recent = latest(chain(recent, new))
+    render(recent)
     return len(new)
 
 
@@ -182,8 +205,26 @@ def render(events):
             lines.append(f"- {t} [未回复] {ev.get('who')}: {clip(ev.get('text'))}（当时选择不接）")
         elif kind == "expired":
             lines.append(f"- {t} [已过期未回] {ev.get('who')}: {clip(ev.get('text'))}")
-    with open(DIGEST, "w", encoding="utf-8") as fh:
-        fh.write("\n".join(lines) + "\n")
+    content = "\n".join(lines) + "\n"
+    try:
+        with open(DIGEST, encoding="utf-8") as fh:
+            if fh.read() == content:
+                return
+    except FileNotFoundError:
+        pass
+
+    # Readers see either the complete old digest or the complete new one.
+    tmp = tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", delete=False,
+                                      dir=os.path.dirname(DIGEST))
+    try:
+        with tmp:
+            tmp.write(content)
+        os.replace(tmp.name, DIGEST)
+    finally:
+        try:
+            os.unlink(tmp.name)
+        except FileNotFoundError:
+            pass
 
 
 if __name__ == "__main__":
