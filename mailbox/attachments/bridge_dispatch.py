@@ -11,13 +11,14 @@ import time
 import uuid
 from pathlib import Path
 
-from bridge_delivery import reply_deadline
+from bridge_delivery import object_at, reply_deadline
 
 
 OFFER_MS = 20_000
 WORK_MS = 80_000
 QQ_WORK_MS = 120_000
 MAX_GROUP = 8
+INLINE_QUESTION_BYTES = 12 * 1024
 KEY = re.compile(r"[A-Za-z0-9_-]{1,160}")
 MEDIA_REQUEST = re.compile(
     r"^(?:(?:宁宁|宝宝|老婆)[，,：:\s]*)?(?:请|麻烦)?(?:给(?:我|我们)|帮(?:我|我们))?"
@@ -242,10 +243,40 @@ class Queue:
         if self.channel == "desktop":
             if any(self.read_item(old, milliseconds()) for old in keys[:keys.index(key)]):
                 raise Unavailable("earlier_turn_pending")
+        return item
+
+    def read_first(self, assignment):
+        if not assignment["pending"]:
+            return assignment
+        key = assignment["pending"][0]
+        ticket = assignment["ticket"]
+        path = self.inbox / (key + ".json")
+        with path.open("rb") as stream:
+            raw = stream.read(INLINE_QUESTION_BYTES + 1)
+        first = {"requestKey": key, "path": str(path)}
+        if len(raw) <= INLINE_QUESTION_BYTES:
+            message = json.loads(raw)
+            first.update(message=message, isOwner=self.is_owner(message))
+        self.start(ticket, key)
+        return {**assignment, "first": first}
+
+    def is_owner(self, message):
+        if message.get("senderRole") == "owner":
+            return True
+        try:
+            owners = object_at(self.bridge / "owners.json")
+        except (OSError, ValueError):
+            return False
+        conversations = owners.get("conversations")
+        room_id = message.get("conversationId")
+        room = conversations.get(room_id) if isinstance(conversations, dict) and isinstance(room_id, str) else None
+        senders = room.get("ownerSenderIds") if isinstance(room, dict) else None
+        sender = message.get("senderId")
+        return isinstance(senders, list) and isinstance(sender, str) and sender in senders
 
     def start(self, ticket, key):
         row = self.require(ticket, "working")
-        self.check_key(row, key)
+        item = self.check_key(row, key)
         path = self.claims / (key + ".claim")
         try:
             atomic_first(path, MANAGED)
@@ -256,7 +287,7 @@ class Queue:
         started = json.loads(row["started_json"])
         if key not in started:
             started.append(key)
-            arrived = (self.inbox / (key + ".json")).stat().st_mtime_ns // 1_000_000
+            arrived = item[1] // 1_000_000
             now = milliseconds()
             phase = self.db.execute("SELECT at,event FROM activity WHERE slot=? AND event IN ('begin','take','start') "
                                     "ORDER BY id DESC LIMIT 1", (row["slot"],)).fetchone()
@@ -269,7 +300,7 @@ class Queue:
 
     def publish(self, ticket, key, answer):
         row = self.require(ticket, "working")
-        self.check_key(row, key)
+        item = self.check_key(row, key)
         started = json.loads(row["started_json"])
         if key not in started:
             raise Unavailable("item_not_started")
@@ -285,7 +316,7 @@ class Queue:
         started.remove(key)
         self.db.execute("UPDATE slots SET until_ms=?,started_json=? WHERE ticket=?",
                         (milliseconds() + self.work_ms, json.dumps(started), ticket))
-        self.record(row["slot"], "publish", 1)
+        self.record(row["slot"], "publish", 1, max(0, milliseconds() - item[1] // 1_000_000))
         return {"published": key}
 
     def adopt_legacy(self):
@@ -349,7 +380,8 @@ def status(channel):
                                     "started": len(json.loads(row["started_json"]))})
         events = db.execute("SELECT at,slot,event,items,queueMs FROM activity ORDER BY id DESC LIMIT 64")
         timings = {"offer": "inboxToOfferMs", "begin": "offerToBeginMs",
-                   "first_start": "beginToFirstStartMs", "offer_expired": "offerWaitAtLeastMs"}
+                   "first_start": "beginToFirstStartMs", "offer_expired": "offerWaitAtLeastMs",
+                   "publish": "inboxToPublishMs"}
         for row in reversed(events.fetchall()):
             event = dict(row)
             timing = timings.get(event["event"])
@@ -377,7 +409,12 @@ def main():
             sub.add_argument("key")
         if name == "offer":
             sub.add_argument("--wait", type=int, choices=range(61), metavar="0..60", default=0)
+        if name in ("begin", "take"):
+            sub.add_argument("--read-first", action="store_true", help="claim and return the first QQ message")
     args = parser.parse_args()
+    read_first = getattr(args, "read_first", False)
+    if read_first and args.channel != "qq":
+        parser.error("--read-first requires the QQ channel")
     os.umask(0o077)
     if args.command == "status":
         print(json.dumps(status(args.channel)))
@@ -412,6 +449,8 @@ def main():
                         queue.db.execute("UPDATE slots SET until_ms=? WHERE ticket=?",
                                          (milliseconds() + queue.work_ms, args.ticket))
                         result = {"renewed": True}
+                if read_first:
+                    result = queue.read_first(result)
         print(json.dumps(result, ensure_ascii=False))
     finally:
         queue.db.close()
