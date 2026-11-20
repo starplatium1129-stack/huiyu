@@ -21,6 +21,7 @@ use std::{
 use tokio::sync::{Semaphore, watch};
 
 const INBOX_LIMIT: usize = 128;
+const EXPIRED_REPLY_GRACE_MS: u64 = 120_000;
 // Leave space for inbox operations and the JSON envelope in the relay's 2 MiB response.
 const INBOX_ITEMS_BYTES: usize = 2 * 1024 * 1024 - 16 * 1024;
 const MESSAGE_JSON_LIMIT: usize = 4 * 1024 * 1024 + 64 * 1024;
@@ -66,6 +67,7 @@ struct Entry {
     expires_at: u64,
     arrived_at: Instant,
     listed: AtomicBool,
+    send_attempted: AtomicBool,
     delivery: AsyncMutex<Delivery>,
 }
 
@@ -325,16 +327,18 @@ impl Mailbox {
     fn entries(&self) -> std::sync::MutexGuard<'_, VecDeque<Arc<Entry>>> {
         let mut entries = self.entries.lock().unwrap();
         let now = crate::host::now_ms();
-        entries.retain(|item| item.expires_at > now);
+        entries.retain(|item| item.expires_at.saturating_add(EXPIRED_REPLY_GRACE_MS) > now);
         entries
     }
 
     fn pending(&self, item: fn(&Entry) -> Value, record_listed: bool) -> Vec<Value> {
+        let now = crate::host::now_ms();
         let ready: Vec<_> = self
             .entries()
             .iter()
             .filter(|entry| {
-                entry.search.as_ref().is_none_or(|s| s.get().is_some())
+                entry.expires_at > now
+                    && entry.search.as_ref().is_none_or(|s| s.get().is_some())
                     && entry
                         .delivery
                         .try_lock()
@@ -442,6 +446,7 @@ impl Mailbox {
             expires_at,
             arrived_at: message.arrived_at,
             listed: AtomicBool::new(false),
+            send_attempted: AtomicBool::new(false),
             delivery: AsyncMutex::default(),
         };
         if entry.scope == QqScope::Group {
@@ -451,14 +456,19 @@ impl Mailbox {
                 .await;
         }
         let mut entries = self.entries();
-        if self.cancel.is_cancelled() || entry.expires_at <= crate::host::now_ms() {
+        let now = crate::host::now_ms();
+        if self.cancel.is_cancelled() || entry.expires_at <= now {
             message.muse_filtered("closed_or_expired");
             return None;
+        }
+        if entries.len() >= INBOX_LIMIT * 8 {
+            entries.retain(|entry| entry.expires_at > now);
         }
         if entries.len() >= INBOX_LIMIT
             && (entries.len() >= INBOX_LIMIT * 8
                 || entries
                     .iter()
+                    .filter(|e| e.expires_at > now)
                     .filter(|e| e.delivery.try_lock().map_or(true, |d| !e.done(&d)))
                     .count()
                     >= INBOX_LIMIT)
@@ -694,7 +704,7 @@ async fn inbox(
         "单独持续 GET 收件地址加 ?wait=25，HTTP 超时至少 40 秒。空结果立即续接，inboxWaitSeconds 为 0 时等 2 秒再取。"
     );
     Ok(Json(
-        json!({"ok":true,"items":items,"operations":operations}),
+        json!({"ok":true,"items":items,"serverNow":crate::host::now_ms(),"operations":operations}),
     ))
 }
 
@@ -757,6 +767,22 @@ async fn submit_reply(app: &AppState, mailbox: &Mailbox, body: ReplyBody) -> Res
     let entry = mailbox.entry(&body.request_key)?;
     let settings = mailbox.settings(app).await?;
     if !settings.muse_for(entry.scope) || !allows(&settings, entry.destination()) {
+        return Err(expired());
+    }
+    if entry.expires_at <= crate::host::now_ms() {
+        let delivery = entry.delivery.lock().await;
+        if !mailbox.cancel.is_cancelled()
+            && settings.muse_proactive
+            && !delivery.skipped
+            && !entry.send_attempted.load(Ordering::Relaxed)
+        {
+            entry.trace("expired_before_send");
+            return Err(ApiError::new(
+                410,
+                "QQ_MUSE_REPLY_NOT_SENT",
+                "回复已过期，原消息未向 QQ 投递",
+            ));
+        }
         return Err(expired());
     }
     entry.trace("reply_received");
@@ -851,6 +877,7 @@ async fn send_answer(app: &AppState, mailbox: &Mailbox, entry: &Entry, text: &st
     if !delivery.confirmed {
         let retry = delivery.text.is_some();
         delivery.text = Some(text.to_owned());
+        entry.send_attempted.store(true, Ordering::Relaxed);
         // Keep sequence 2 for compatibility with earlier gateways and replays.
         let send = mailbox.api.send(
             entry.destination(),

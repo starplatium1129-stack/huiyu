@@ -238,6 +238,7 @@ pub(super) async fn send(
             reply_window(app, mailbox, entry)?;
             // Keep the same upload receipt and sequence after an ambiguous QQ send.
             let retry = std::mem::replace(&mut media.attempted, true);
+            entry.send_attempted.store(true, Ordering::Relaxed);
             let result = mailbox
                 .api
                 .send(

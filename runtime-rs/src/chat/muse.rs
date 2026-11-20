@@ -17,7 +17,7 @@ use tokio::sync::{Semaphore, oneshot, watch};
 use tokio_util::sync::{CancellationToken, DropGuard};
 use uuid::Uuid;
 
-const REPLY_WINDOW: Duration = Duration::from_secs(150);
+const REPLY_WINDOW: Duration = Duration::from_secs(300);
 const RECENT_POLL: Duration = Duration::from_secs(90);
 const MAX_PENDING: usize = 8;
 pub(crate) const MAX_INBOX_WAIT_SECONDS: u8 = 30;
@@ -195,10 +195,11 @@ impl Connections {
             .ok_or_else(|| Error::invalid("Muse 需要一条用户消息"))?;
         let key = Uuid::new_v4();
         let deadline = Instant::now() + REPLY_WINDOW;
+        let timestamp = crate::host::now_ms();
         let question = json!({
             "requestKey":key.to_string(), "conversationId":format!("desktop/{character}/{}", input.session_id),
             "character":character, "text":text, "messages":input.messages,
-            "expiresAt":crate::host::now_ms() + REPLY_WINDOW.as_millis() as u64
+            "timestamp":timestamp, "expiresAt":timestamp + REPLY_WINDOW.as_millis() as u64
         });
         if question.to_string().len() > 128 * 1024 {
             return Err(Error::invalid("Muse 的本轮聊天上下文过长"));
@@ -319,11 +320,13 @@ async fn pending(
         }
     };
     let (_, reply) = inbox.transport.paths();
-    Ok(Json(json!({"ok":true, "items":items, "operations":{
-        "reply":format!("POST {reply}"), "replyBody":{"requestKey":"来信编号","text":"角色回复"},
-        "inboxWaitSeconds":if slot.is_some() {wait.as_secs()} else {0},
-        "usage":"桌面与 QQ 分开持续收信。GET 收件地址加 ?wait=25，空收件箱返回后立即续接。有来信时按 conversationId 和 messages 回答，文字写好即 POST。每个 requestKey 只生成一次，失败重试沿用原文。"
-    }})))
+    Ok(Json(
+        json!({"ok":true, "items":items, "serverNow":crate::host::now_ms(), "operations":{
+            "reply":format!("POST {reply}"), "replyBody":{"requestKey":"来信编号","text":"角色回复"},
+            "inboxWaitSeconds":if slot.is_some() {wait.as_secs()} else {0},
+            "usage":"桌面与 QQ 分开持续收信。GET 收件地址加 ?wait=25，空收件箱返回后立即续接。有来信时按 conversationId 和 messages 回答，文字写好即 POST。每个 requestKey 只生成一次，失败重试沿用原文。"
+        }}),
+    ))
 }
 
 #[derive(Deserialize)]
