@@ -7,7 +7,7 @@
           :groups="destinations" label="资料目录" :disabled="busy || switchingSection" @update:model-value="navigateTo(String($event))" />
       </template>
       <template v-else>
-      <div class="catalog-brand"><ArchiveIcon name="folder" /><strong>资料目录</strong></div>
+      <RouterLink to="/" class="catalog-brand"><BrandLogo class="catalog-brand-logo" /><strong>资料目录</strong></RouterLink>
       <div class="catalog-nav-group">
         <span class="catalog-nav-caption">创作资料</span>
         <button v-for="entry in kinds" :key="entry.value" type="button" :aria-current="section === 'records' && kind === entry.value ? 'page' : undefined" :disabled="busy || switchingSection" @click="switchKind(entry.value)">
@@ -75,11 +75,18 @@
             <ArchiveStatePanel v-if="error" compact kind="error" title="内容读取失败" :message="error"><button class="btn btn-ghost btn-sm" type="button" @click="load">重新读取</button></ArchiveStatePanel>
             <div ref="recordList" v-content-motion:right="loading ? false : listScope" class="catalog-record-list">
               <ArchiveStatePanel v-if="loading && !listMatchesKind" compact kind="loading" title="正在读取资料" />
-              <button v-for="item in listMatchesKind ? result?.items : []" :key="item.kind + ':' + item.id" class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy" @click="openContent(item, $event)">
-                <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': rowSampleRating(item) === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
-                <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small><code :title="item.id">{{ item.id }}</code></span>
-                <span v-if="pendingIds.has(item.id) || selected?.id === item.id && selected.kind === item.kind" class="catalog-row-state"><ArchiveIcon v-if="selected?.id === item.id && selected.kind === item.kind" name="success" /><small v-if="pendingIds.has(item.id)">暂存</small></span>
-              </button>
+              <StudioTooltip
+                v-for="item in listMatchesKind ? result?.items : []"
+                :key="item.kind + ':' + item.id"
+                anchor
+                :content="`${catalogTitle(item.kind, item.id, item.title)} · ${rowSubtitle(item)}`"
+              >
+                <button class="catalog-record-row" type="button" :aria-pressed="selected?.id === item.id && selected.kind === item.kind" :disabled="busy" @click="openContent(item, $event)">
+                  <span class="catalog-row-art"><RuntimeImage v-if="rowImage(item)" :src="rowImage(item)" v-slot="{ image, failed }"><img v-if="image.src && !failed" v-bind="image" loading="lazy" alt="" :class="{ 'is-mature': rowSampleRating(item) === 'R18' }" /><ArchiveIcon v-else :name="kindIcon(item.kind)" /></RuntimeImage><ArchiveIcon v-else :name="kindIcon(item.kind)" /></span>
+                  <span class="catalog-row-copy"><strong>{{ catalogTitle(item.kind, item.id, item.title) }}</strong><small>{{ rowSubtitle(item) }}</small></span>
+                  <span v-if="pendingIds.has(item.id) || selected?.id === item.id && selected.kind === item.kind" class="catalog-row-state"><ArchiveIcon v-if="selected?.id === item.id && selected.kind === item.kind" name="success" /><small v-if="pendingIds.has(item.id)">暂存</small></span>
+                </button>
+              </StudioTooltip>
               <ArchiveStatePanel v-if="!loading && !error && listMatchesKind && !result?.items.length" compact :kind="filtered ? 'filtered' : 'empty'" :title="filtered ? '未找到匹配内容' : '暂无' + sectionTitle"><button v-if="filtered" class="btn btn-ghost btn-sm" type="button" @click="listFilters?.clearAll()">清除搜索与筛选</button></ArchiveStatePanel>
             </div>
             <StudioPagination v-if="totalPages > 1" v-model="page" :pages="totalPages" :disabled="loading" label="内容分页" />
@@ -88,6 +95,24 @@
             <button class="btn btn-quiet btn-sm catalog-back" type="button" @click="returnToList"><ArchiveIcon name="chevron-down" />返回资料列表</button>
             <ArchiveStatePanel v-if="detailLoading" compact kind="loading" title="正在打开资料" />
             <template v-else-if="selected">
+              <div class="catalog-editor-preview-strip" aria-label="当前资料角色与样张预览">
+                <span class="catalog-preview-strip-thumb">
+                  <RuntimeImage v-if="selectedPreviewImage" :src="selectedPreviewImage" v-slot="{ image, failed }">
+                    <img v-if="image.src && !failed" v-bind="image" alt="" :class="{ 'is-mature': selectedPreviewAdult }" />
+                    <ArchiveIcon v-else :name="kindIcon(selected.kind)" />
+                  </RuntimeImage>
+                  <ArchiveIcon v-else :name="kindIcon(selected.kind)" />
+                </span>
+                <div class="catalog-preview-strip-copy">
+                  <div class="catalog-preview-strip-badges">
+                    <span class="catalog-preview-badge">{{ CATALOG_LABELS[selected.kind] }}</span>
+                    <span v-if="selectedCharacterLabel" class="catalog-preview-badge is-character">{{ selectedCharacterLabel }}</span>
+                    <span v-if="selectedCategoryLabel" class="catalog-preview-badge">{{ selectedCategoryLabel }}</span>
+                    <span v-if="selectedPreviewAdult" class="catalog-preview-badge is-adult">成人分级</span>
+                  </div>
+                  <strong class="catalog-preview-strip-title">{{ recordTitle(selected) }}</strong>
+                </div>
+              </div>
               <p v-if="editorPendingNotice" class="catalog-feedback" role="status">{{ editorPendingNotice }}</p>
               <CatalogRecordEditor :key="editorSession" v-model:record="selected" :advanced="advanced" :advanced-error="advancedError" :field-error="fieldError" :editor-session="editorSession" @advanced="updateAdvanced" @apply-advanced="applyAdvanced" @discard-advanced="discardAdvanced" @field-input="clearFieldError" :disabled="busy || !!editorPendingNotice" :character-names="characterNames" :pending="pending" :dirty="dirtyEditor" @stage="stage" @duplicate="add(true)" @remove="archiveContent" />
               <details v-if="selected.revision" class="catalog-history" :aria-busy="historyLoading">
@@ -116,11 +141,13 @@ import { useMediaQuery } from '@vueuse/core'
 import { useRoute } from 'vue-router'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
+import BrandLogo from '@/components/BrandLogo.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioPagination from '@/components/ui/StudioPagination.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
+import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import CatalogRecordEditor from '@/components/maintenance/CatalogRecordEditor.vue'
 import CatalogListFilters from '@/components/maintenance/CatalogListFilters.vue'
@@ -216,6 +243,46 @@ function rowImage(item: CatalogSummary) {
 function rowSampleRating(item: CatalogSummary) {
   return item.kind === 'scene' || item.kind === 'blueprint' ? entryFor(catalogShowcaseId(item))?.rating ?? item.rating : item.rating
 }
+const selectedDataRecord = computed(() => (selected.value?.data && typeof selected.value.data === 'object' ? selected.value.data as Record<string, unknown> : null))
+const selectedCharacterId = computed(() => {
+  if (!selected.value) return ''
+  if (selected.value.kind === 'character') return selected.value.id
+  const raw = selectedDataRecord.value?.characterId
+  return typeof raw === 'string' ? raw : ''
+})
+const selectedCharacterLabel = computed(() => {
+  const id = selectedCharacterId.value
+  return id ? (characterNames.value[id] || id) : ''
+})
+const selectedCategoryLabel = computed(() => {
+  const raw = selectedDataRecord.value?.category
+  return typeof raw === 'string' && raw ? catalogCategory(raw) : ''
+})
+const selectedPreviewImage = computed(() => {
+  if (!selected.value) return ''
+  if (selected.value.kind === 'character') return popularPortraitSrc(selected.value.id)
+  if (selected.value.kind === 'outfit') return popularPortraitSrc(selectedCharacterId.value)
+  if (selected.value.kind === 'scene' || selected.value.kind === 'blueprint') {
+    const summary: CatalogSummary = {
+      kind: selected.value.kind,
+      id: selected.value.id,
+      title: recordTitle(selected.value),
+      characterId: selectedCharacterId.value,
+      category: typeof selectedDataRecord.value?.category === 'string' ? selectedDataRecord.value.category : '',
+      rating: typeof selectedDataRecord.value?.rating === 'string' ? selectedDataRecord.value.rating : '',
+      sortOrder: selected.value.sortOrder ?? 0,
+      revision: selected.value.revision ?? 0,
+      updatedAt: selected.value.updatedAt ?? null,
+    }
+    return thumbUrl(catalogShowcaseId(summary))
+  }
+  return ''
+})
+const selectedPreviewAdult = computed(() => {
+  if (!selected.value) return false
+  const rawRating = typeof selectedDataRecord.value?.rating === 'string' ? selectedDataRecord.value.rating : ''
+  return rawRating === 'R18'
+})
 function rowSubtitle(item: CatalogSummary) {
   if (item.kind === 'document') return ({ tags: '常用关键词与显示名称', curation: '精选故事与展示顺序', 'tag-dictionary-policy': '让同义词指向正确的内容', 'prompt-pinned-scenes': '已确认的内容，在此查看', loras: '绘图资源，在此查看', 'retired-scenes': '保留已经归档的故事' } as Record<string, string>)[item.id] || '创作资料'
   const role = item.kind !== 'character' ? characterNames.value[item.characterId] : ''

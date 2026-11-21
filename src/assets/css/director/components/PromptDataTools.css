@@ -16,12 +16,17 @@
    .pb-backup-summary span { @apply tw:text-muted tw:text-label-xs; }
    .pb-backup-warning { @apply tw:text-warning-text tw:text-label-xs tw:leading-body; }
    .pb-backup-actions { flex:none; @apply tw:flex tw:justify-end tw:gap-s-2 tw:flex-wrap; }
+  /* Overlay already blurs the background; keep the card opaque to avoid double backdrop-filter haze. */
   .pb-backup-card {
     background:
-      linear-gradient(125deg,var(--glass-specular),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 9%,transparent)),
-      var(--glass-fill-strong);
-    border-color:var(--glass-edge);
-    -webkit-backdrop-filter:blur(28px) saturate(165%) contrast(1.035);
-    backdrop-filter:blur(28px) saturate(165%) contrast(1.035);
-    box-shadow:inset 0 1px 0 var(--glass-highlight),inset 0 -1px 0 color-mix(in srgb,var(--accent) 9%,transparent),var(--glass-shadow);
+      linear-gradient(125deg,color-mix(in srgb,var(--glass-specular) 60%,transparent),transparent 28%,transparent 72%,color-mix(in srgb,var(--accent) 6%,transparent)),
+      var(--bg-surface);
+    border-color:var(--border-strong);
+    box-shadow:inset 0 1px 0 var(--glass-highlight),var(--shadow-lg);
+  }
+  @media (prefers-reduced-transparency: reduce) {
+    .pb-backup-overlay { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; }
+  }
+  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
+    .pb-backup-overlay { background:var(--art-backdrop); }
   }

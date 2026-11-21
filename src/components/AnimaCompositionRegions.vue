@@ -35,7 +35,7 @@ async function remove() {
     <p v-if="regionIssue" class="composition-help" role="status">{{ regionIssue }}</p>
     <div class="composition-region-tabs" role="group" aria-label="选择编辑区域">
       <button v-for="(region, index) in regions" :key="region.id" class="btn btn-ghost btn-sm" type="button"
-        :aria-pressed="selectedId === region.id" :disabled="locked" @click="selectedId = region.id">区域 {{ index + 1 }}</button>
+        :aria-pressed="selectedId === region.id" :disabled="locked" @click="selectedId = region.id"><ArchiveIcon v-if="selectedId === region.id" name="success" />区域 {{ index + 1 }}</button>
       <button ref="addButton" class="btn btn-ghost btn-sm" type="button" :disabled="locked || !!regionIssue || regions.length >= MAX_ANIMA_REGIONS" @click="add"><ArchiveIcon name="plus" />添加区域</button>
     </div>
     <div v-if="selectedRegion" v-content-motion:fade="selectedId" class="composition-region-form">
@@ -66,7 +66,7 @@ async function remove() {
 .composition-section-heading > span,.composition-help { color:var(--text-secondary); font:400 var(--fs-label-sm)/var(--lh-body) var(--font-sans); }
 .composition-help { margin:0; }
 .composition-region-tabs,.composition-presets { display:flex; flex-wrap:wrap; gap:var(--s-1); }
-.composition-region-tabs [aria-pressed='true'] { border-color:var(--accent); background:var(--accent-soft); color:var(--text-primary); }
+.composition-region-tabs [aria-pressed='true'] { border-color:var(--border-strong); background:var(--bg-elevated); color:var(--text-primary); box-shadow:var(--shadow-sm); }
 .composition-field { display:flex; flex-direction:column; gap:var(--s-2); min-width:0; color:var(--text-primary); font-size:var(--fs-label-sm); }
 .composition-field textarea { width:100%; }
 .composition-bounds { display:grid; grid-template-columns:1fr 1fr; gap:var(--s-3); }

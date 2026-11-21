@@ -13,7 +13,8 @@
 }
 .creative-library-heading { display:flex; align-items:center; gap:var(--s-4); }
 .creative-library-heading h1 { margin:0; color:var(--text-primary); font:500 clamp(1.65rem,2.3vw,var(--fs-display))/var(--lh-tight) var(--font-serif); }
-.creative-library-kicker { margin:0 0 var(--s-1); color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.creative-library-kicker { display:inline-flex; align-items:center; gap:var(--s-2); margin:0 0 var(--s-1); color:var(--text-secondary); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:0.06em; }
+.creative-library-kicker::before { content:''; width:18px; height:1px; background:var(--accent); }
 .creative-library-description { margin:var(--s-1) 0 0; color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); }
 .library-reference-feedback { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-3); margin:0 0 var(--s-4); color:var(--text-secondary); font-size:var(--fs-body-sm); overflow-wrap:anywhere; }
 .library-reference-feedback > span { min-width:0; flex:1 1 20rem; }

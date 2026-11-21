@@ -19,6 +19,10 @@
       <div class="pb-header">
         <div class="pb-heading-row">
           <h1 class="pb-title">绘图画室</h1>
+          <span class="pb-character-cue">
+            <i class="pb-character-dot" aria-hidden="true" />
+            <span class="pb-character-subtitle">{{ currentCharacterLabel }}<template v-if="currentSceneTitle"> · {{ currentSceneTitle }}</template></span>
+          </span>
           <div class="api-status">
             <StudioTooltip :content="`${engineStatusText}；点击重新检测`">
               <button class="badge" :class="engineOnline && engineConnected ? 'badge-online' : 'badge-offline'" type="button"
@@ -52,13 +56,73 @@
         </div>
         <div class="pb-utility-actions">
           <HistoryRestoreNotice v-if="pb.historyRestoreReport" :context="workspace.recipePreviewContext" :mode="pb.directorMode" @expert="setDirectorMode('pro')" />
-          <DeferredToolLauncher label="灵感工具" icon="gear" :loader="loadInspirationTool" :disabled="!pb.dataReady" @error="pb.flash" v-slot="{ component, open, update }">
-            <component :is="component" :open="open" @update:open="update" />
-          </DeferredToolLauncher>
-          <DeferredToolLauncher label="数据工具" icon="download" :loader="loadDataTools" migration-control @error="pb.flash" v-slot="{ component, open, update }">
-            <component :is="component" :open="open" @update:open="update" launcher-label="数据工具" :get-blueprint="getBlueprint"
-              @flash="pb.flash" @load-blueprint="handleLoadBlueprint" />
-          </DeferredToolLauncher>
+          <StudioDropdownMenu label="画室辅助工具">
+            <template #trigger>
+              <button
+                id="director-utility-menu-trigger"
+                class="btn btn-ghost btn-sm pb-tools-trigger"
+                type="button"
+                data-migration-control
+                data-control-motion
+                aria-label="画室工具菜单"
+              >
+                <ArchiveIcon name="gear" />
+                <span class="studio-control-label">工具</span>
+              </button>
+            </template>
+            <template #default="{ run }">
+              <div class="studio-dropdown-label">创作与档案</div>
+              <DropdownMenuItem
+                class="studio-dropdown-item"
+                :disabled="!pb.dataReady || utilityToolLoading === 'inspiration'"
+                @select.prevent="run(() => openUtilityTool('inspiration'))"
+              >
+                <ArchiveIcon name="dice" />
+                <span>夏目的灵感笔记</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                class="studio-dropdown-item"
+                data-migration-control
+                :disabled="utilityToolLoading === 'data'"
+                @select.prevent="run(() => openUtilityTool('data'))"
+              >
+                <ArchiveIcon name="download" />
+                <span>数据与备份</span>
+              </DropdownMenuItem>
+              <div class="studio-dropdown-separator" role="separator" />
+              <div class="studio-dropdown-label">画桌维护</div>
+              <DropdownMenuItem
+                class="studio-dropdown-item"
+                @select.prevent="run(resetLayout)"
+              >
+                <ArchiveIcon name="refresh" />
+                <span>恢复默认布局</span>
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                class="studio-dropdown-item"
+                @select.prevent="run(recheckEngineConnection)"
+              >
+                <ArchiveIcon name="health" />
+                <span>重新检测绘图连接</span>
+              </DropdownMenuItem>
+            </template>
+          </StudioDropdownMenu>
+          <component
+            v-if="inspirationToolComp"
+            :is="inspirationToolComp"
+            v-model:open="inspirationOpen"
+            dialog-mode
+          />
+          <component
+            v-if="dataToolsComp"
+            :is="dataToolsComp"
+            v-model:open="dataToolsOpen"
+            dialog-mode
+            launcher-label="数据工具"
+            :get-blueprint="getBlueprint"
+            @flash="pb.flash"
+            @load-blueprint="handleLoadBlueprint"
+          />
         </div>
       </div>
     </div>
@@ -144,7 +208,7 @@
         /><template #fallback>
           <section class="stage-slot" aria-label="绘制画布" aria-busy="true">
             <div class="canvas-heading"><div><ArchiveIcon name="image" /><strong>{{ displayResultUrl ? '当前成片' : currentSceneTitle || '画布' }}</strong><span v-if="currentSceneTitle && !displayResultUrl">场景参考 · 非本次生成</span></div><button v-if="currentSceneTitle || displayResultUrl" class="btn btn-quiet btn-sm" type="button" disabled><ArchiveIcon name="scene" />更换场景</button></div>
-            <div class="stage-viewport director-canvas-loading"><AtelierEmptyArt /><p role="status">正在准备画布…</p></div>
+            <div class="stage-viewport director-canvas-loading"><AtelierEmptyArt :character="activeCharacterId" /><p role="status">正在准备画布…</p></div>
             <DirectorResultTools placeholder class="director-canvas-loading-actions" :has-result="Boolean(displayResultUrl)" :generation-busy="generationBusy" :has-prev-result="!!prevResult"
               :result-archived="resultArchived" :saving-result="savingResult" :result-temporary="resultTemporary" :capturing-scene="capturingScene" aria-hidden="true" inert />
           </section>
@@ -259,8 +323,10 @@
 import '@/assets/css/director.css'
 import '@/assets/css/director/components/DirectorStagePanel.css'
 import DirectorResultTools from '@/components/director/DirectorResultTools.vue'
-import { computed, defineAsyncComponent, nextTick, ref } from 'vue'
+import { computed, defineAsyncComponent, nextTick, ref, shallowRef, type Component } from 'vue'
+import { DropdownMenuItem } from 'reka-ui'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+import StudioDropdownMenu from '@/components/ui/StudioDropdownMenu.vue'
 import { useDirectorLayout } from '@/composables/prompt/useDirectorLayout'
 const DirectorResizeHandle = defineAsyncComponent(() => import('@/components/director/DirectorResizeHandle.vue'))
 const DirectorLayoutControls = defineAsyncComponent(() => import('@/components/director/DirectorLayoutControls.vue'))
@@ -277,7 +343,6 @@ import DeferredPanel from '@/components/director/DeferredPanel.vue'
 import DirectorMaterialDrawer from '@/components/director/DirectorMaterialDrawer.vue'
 import DirectorInspector from '@/components/director/DirectorInspector.vue'
 import DrawingEngineSelect from '@/components/director/DrawingEngineSelect.vue'
-import DeferredToolLauncher from '@/components/director/DeferredToolLauncher.vue'
 const loadDataTools = () => import('@/components/PromptDataTools.vue')
 const PromptDraftNotice = defineAsyncComponent(() => import('@/components/director/PromptDraftNotice.vue'))
 const loadInspirationTool = () => import('@/components/RandomInspirationButton.vue')
@@ -412,6 +477,50 @@ const currentSceneTitle = computed(() => {
     ? pb.sceneBlueprints.find(scene => scene.id === subject.blueprintId && scene.characterId === subject.characterId)?.title
     : pb.activeScene?.title
 })
+const activeCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char)
+const currentCharacterLabel = computed(() => {
+  if (pb.subject.kind === 'popular') {
+    const found = pb.popularCharacters.find(item => item.id === pb.subject.characterId)
+    return found?.displayName || '热门角色'
+  }
+  return pb.char === 'natsume' ? '四季夏目' : pb.char === 'triad' ? '宁宁与夏目' : '绫地宁宁'
+})
+
+const inspirationToolComp = shallowRef<Component | null>(null)
+const dataToolsComp = shallowRef<Component | null>(null)
+const inspirationOpen = ref(false)
+const dataToolsOpen = ref(false)
+const utilityToolLoading = ref<'inspiration' | 'data' | null>(null)
+
+async function openUtilityTool(kind: 'inspiration' | 'data') {
+  if (kind === 'inspiration' && !pb.dataReady) return
+  if (kind === 'inspiration' && inspirationToolComp.value) {
+    inspirationOpen.value = true
+    return
+  }
+  if (kind === 'data' && dataToolsComp.value) {
+    dataToolsOpen.value = true
+    return
+  }
+  utilityToolLoading.value = kind
+  try {
+    if (kind === 'inspiration') {
+      const mod = await loadInspirationTool()
+      inspirationToolComp.value = mod.default
+      await nextTick()
+      inspirationOpen.value = true
+    } else {
+      const mod = await loadDataTools()
+      dataToolsComp.value = mod.default
+      await nextTick()
+      dataToolsOpen.value = true
+    }
+  } catch {
+    pb.flash(`${kind === 'inspiration' ? '灵感工具' : '数据工具'}暂未加载，请刷新页面后重试。`)
+  } finally {
+    utilityToolLoading.value = null
+  }
+}
 async function openMaterials(section: string) {
   pb.focusMode = false
   directorLayout.show('materials')

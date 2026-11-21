@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { computed, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import BrandLogo from '@/components/BrandLogo.vue'
 import StudioOrbitSpinner from '@/components/ui/StudioOrbitSpinner.vue'
 import collectionArt from '@/assets/illustrations/atelier-collection-spot.webp'
 import { formatSetupBytes } from '@/utils/localSetupPreparation'
@@ -17,7 +18,7 @@ const rawError = computed(() => state.value?.error || '')
 <template>
   <main class="installer">
     <header class="installer-topbar">
-      <span class="installer-brand"><ArchiveIcon name="book" /><strong>绘遇 <span>HUIYU</span></strong><i />资源安装助手</span>
+      <span class="installer-brand"><BrandLogo class="installer-brand-logo" /><i /><span>资源安装助手</span></span>
       <button class="btn btn-ghost btn-sm" type="button" :aria-label="light ? '切换深色主题' : '切换浅色主题'" @click="light = !light"><ArchiveIcon :name="light ? 'moon' : 'sun'" /><span>{{ light ? '深色' : '浅色' }}</span></button>
     </header>
     <div class="installer-layout">
@@ -67,9 +68,7 @@ const rawError = computed(() => state.value?.error || '')
 .installer { min-height:100dvh; background:var(--bg-base); color:var(--text-primary); }
 .installer-topbar { display:flex; align-items:center; justify-content:space-between; gap:var(--s-4); padding:var(--s-4) var(--s-6); border-bottom:1px solid var(--border-soft); background:var(--bg-surface); }
 .installer-brand { display:flex; align-items:center; gap:var(--s-3); font-size:var(--fs-label); color:var(--text-secondary); }
-.installer-brand > .archive-icon { color:var(--accent); font-size:24px; }
-.installer-brand strong { color:var(--text-primary); font-size:var(--fs-body); }
-.installer-brand strong span { font-size:var(--fs-label-xs); letter-spacing:.12em; margin-left:var(--s-1); }
+.installer-brand-logo { display:block; width:116px; height:auto; }
 .installer-brand i { height:16px; border-left:1px solid var(--border-strong); }
 .installer-layout { display:grid; grid-template-columns:minmax(240px,.8fr) minmax(0,1.4fr); max-width:1200px; min-height:calc(100dvh - 73px); margin:auto; }
 .installer-story { display:flex; flex-direction:column; padding:var(--s-6) var(--s-5) var(--s-5); border-right:1px solid var(--border-soft); }
@@ -87,7 +86,7 @@ const rawError = computed(() => state.value?.error || '')
 .installer-steps li[data-active=true] { color:var(--text-primary); font-weight:600; }
 .installer-steps li[data-active=true] > span { background:var(--accent); border-color:var(--accent); color:var(--text-inverse); }
 .installer-steps li[data-done=true] > span { color:var(--success-text); }
-.installer-title h1 { margin:var(--s-2) 0 var(--s-3); font-size:24px; line-height:1.4; }
+.installer-title h1 { margin:var(--s-2) 0 var(--s-3); font-family:var(--font-serif); font-size:24px; line-height:1.4; }
 .installer-title > p { margin:0 0 var(--s-6); color:var(--text-secondary); font-size:var(--fs-label); line-height:1.8; }
 .installer-picker { display:flex; flex-direction:column; align-items:center; gap:var(--s-2); width:100%; min-height:240px; padding:var(--s-6); border:1px dashed var(--border-strong); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); cursor:pointer; transition:transform var(--motion-control) var(--ease-out); }
 .installer-picker-icon,.installer-package-icon { display:grid; place-items:center; border:1px solid var(--border-soft); background:var(--bg-elevated); border-radius:var(--r-lg); }
@@ -132,7 +131,7 @@ const rawError = computed(() => state.value?.error || '')
 .installer-actions .btn { min-height:44px; padding-inline:var(--s-5); }
 .installer-restart-note { display:block; margin-top:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-xs); text-align:end; line-height:1.7; }
 .installer button:disabled { color:var(--text-disabled); opacity:1; cursor:not-allowed; }
-.installer :is(button, summary):focus-visible { outline:2px solid var(--text-secondary); outline-offset:3px; }
+.installer :is(button, summary):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .installer-reveal-enter-active,.installer-reveal-leave-active { transition:transform var(--motion-control) var(--ease-out),opacity var(--motion-control) var(--ease-out); }
 .installer-reveal-enter-from { transform:translateY(8px); opacity:0; }
 .installer-reveal-leave-to { transform:translateY(-4px); opacity:0; }
@@ -140,5 +139,5 @@ const rawError = computed(() => state.value?.error || '')
 @media (max-width:760px) { .installer-layout { grid-template-columns:1fr; } .installer-story { display:none; } .installer-content { min-height:calc(100dvh - 73px); padding:var(--s-6); } }
 :global(:root:is([data-motion=reduce],[data-motion=reduced])) .installer :is(*, *::before, *::after) { transition:none; }
 @media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion=full])) .installer :is(*, *::before, *::after) { transition:none; } }
-@media (forced-colors:active) { .installer-track { border:1px solid CanvasText; } .installer-track > span,.installer-steps li[data-active=true] > span { background:Highlight; color:HighlightText; } }
+@media (forced-colors:active) { .installer-track { border:1px solid CanvasText; } .installer-track > span,.installer-steps li[data-active=true] > span { background:Highlight; color:HighlightText; } .installer :is(button, summary):focus-visible { outline:2px solid Highlight; outline-offset:2px; } }
 </style>

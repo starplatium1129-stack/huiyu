@@ -3,12 +3,14 @@
     <header><div><span class="storyboard-kicker tw:text-accent tw:text-body-sm">STORYBOARD / 镜头手帖</span><h3>先看顺序，再推敲每一镜。</h3></div><span class="storyboard-total tw:text-secondary tw:text-body-sm">{{ shots.length }} 镜 · {{ totalDuration }} 秒</span></header>
     <div class="storyboard-frames tw:flex tw:min-w-0 tw:max-w-full tw:gap-s-3 tw:overflow-x-auto">
       <button v-for="(shot, index) in shots" :key="index" type="button" class="storyboard-frame tw:flex tw:min-w-0 tw:p-0 tw:rounded-md tw:overflow-hidden tw:text-primary tw:cursor-pointer tw:text-left" :aria-label="`查看镜头 ${index + 1}`" @click="emit('locate', index)">
+        <span class="storyboard-sprocket" aria-hidden="true" />
         <span class="storyboard-media tw:block tw:w-full tw:overflow-hidden">
           <img :crossorigin="runtimeResourceCors()" v-if="shot.imageUrl && !failedSources.has(shot.imageUrl)" :key="shot.imageUrl" :src="resolveRuntimeUrl(shot.imageUrl)" :alt="`镜头 ${index + 1} 首帧`" loading="lazy" decoding="async" @error="markFailed" />
           <span v-else class="storyboard-placeholder tw:flex tw:h-full tw:items-center tw:justify-center tw:flex-col tw:gap-s-2 tw:text-secondary tw:text-body-sm"><ArchiveIcon :name="shot.shotSize === 'wide' ? 'wideshot' : shot.shotSize === 'closeup' ? 'closeup' : 'midshot'" /><span>{{ shot.imageUrl ? '首帧暂不可读' : '待补首帧' }}</span></span>
         </span>
-        <span class="storyboard-caption tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2 tw:text-body-sm"><strong>镜头 {{ String(index + 1).padStart(2, '0') }}</strong><span>{{ shot.duration }} 秒 · {{ sizeLabel(shot.shotSize) }}</span></span>
+        <span class="storyboard-caption tw:flex tw:flex-wrap tw:justify-between tw:gap-s-2 tw:text-body-sm"><strong><em class="storyboard-cut">CUT {{ String(index + 1).padStart(2, '0') }}</em> · 镜头 {{ index + 1 }}</strong><span>{{ shot.duration }} 秒 · {{ sizeLabel(shot.shotSize) }}</span></span>
         <span class="storyboard-description tw:overflow-hidden tw:text-secondary tw:text-body-sm tw:leading-body">{{ shot.prompt.trim() || '还没有画面描述' }}</span>
+        <span class="storyboard-sprocket is-bottom" aria-hidden="true" />
       </button>
     </div>
     <div v-if="origins.length" class="tw:flex tw:flex-wrap tw:gap-s-3 tw:mt-s-3">
@@ -43,7 +45,12 @@ function markFailed(event: Event) {
 .storyboard-kicker { letter-spacing:.05em; font-size:var(--fs-label-xs); }
 .shot-storyboard h3 { margin:var(--s-1) 0 0; @apply tw:text-primary; font:500 var(--fs-title-sm)/var(--lh-label) var(--font-serif); }
 .storyboard-frames { padding:var(--s-1) var(--s-1) var(--s-3); scroll-snap-type:x proximity; scrollbar-width:thin; }
-.storyboard-frame { @apply tw:flex-col; flex:0 0 200px; border:1px solid transparent; background:var(--bg-base); font:inherit; scroll-snap-align:start; }
+.storyboard-frame { @apply tw:flex-col; flex:0 0 212px; border:1px solid var(--border-soft); background:var(--bg-base); font:inherit; scroll-snap-align:start; }
+.storyboard-sprocket { display:block; width:100%; height:8px; flex:none; background-color:var(--bg-deep); background-image:repeating-linear-gradient(90deg, transparent 0 6px, color-mix(in srgb, var(--border-strong) 45%, transparent) 6px 12px, transparent 12px 18px); background-size:18px 4px; background-repeat:repeat-x; background-position:center; border-bottom:1px solid var(--border-soft); }
+.storyboard-sprocket.is-bottom { margin-top:auto; border-bottom:0; border-top:1px solid var(--border-soft); }
+.storyboard-cut { font:600 var(--fs-mono-xs)/1 var(--font-mono); color:var(--accent); font-style:normal; letter-spacing:.06em; }
+:global(:root[data-theme-style='terraria']) .storyboard-sprocket { display:none; }
+@media (forced-colors:active) { .storyboard-sprocket { display:none; } }
 .storyboard-media { aspect-ratio:16 / 10; background:var(--bg-deep); }
 .storyboard-media img { @apply tw:block tw:w-full tw:h-full tw:object-contain; }
 .storyboard-placeholder .archive-icon { @apply tw:w-[36px] tw:h-[36px] tw:text-accent; }

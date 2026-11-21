@@ -56,6 +56,7 @@
 /* Reference and status share a paper surface; reference imagery is never a result. */
 .pb.atelier-workspace .stage-content { @apply tw:w-full tw:min-w-0; padding:var(--s-4); }
 .pb.atelier-workspace .stage-content .stage-idle { padding:var(--s-3) 0 0; }
+.pb.atelier-workspace .stage-character-quote { margin:var(--s-1) auto var(--s-2); max-width:36ch; color:var(--character-ink, var(--accent)); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .atelier-canvas-illustration { @apply tw:hidden; }
 .pb.atelier-workspace .stage-content:has(.scene-reference) .stage-placeholder-title { @apply tw:text-body; }
 .pb .stage-result-status { @apply tw:inline-flex tw:items-center tw:gap-s-2; }

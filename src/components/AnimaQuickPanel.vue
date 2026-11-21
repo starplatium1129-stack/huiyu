@@ -6,6 +6,7 @@ import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
+import StudioSlider from '@/components/ui/StudioSlider.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { ANIMA_HIRES_PRESET } from '@/config/animaHires'
@@ -124,16 +125,14 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </div>
         <div class="anima-field anima-field--slider">
           <label :for="idOf('steps')">采样步数</label>
-          <input type="range" min="1" max="60" step="1" :value="steps"
-            class="anima-slider" aria-label="采样步数滑块" :disabled="busy || fixedSampling"
-            @input="steps = Number(($event.target as HTMLInputElement).value)" />
+          <StudioSlider v-model="steps" :min="1" :max="60" :step="1" compact :show-value="false"
+            class="anima-slider" aria-label="采样步数滑块" :disabled="busy || fixedSampling" />
           <input :id="idOf('steps')" v-model.number="steps" type="number" min="1" max="60" class="input input-sm anima-num" :disabled="busy || fixedSampling" />
         </div>
         <div class="anima-field anima-field--slider">
           <label :for="idOf('cfg')">引导强度 <small>CFG</small></label>
-          <input type="range" :min="state.family === 'krea2' ? 0 : 0.5" max="10" step="0.5" :value="cfg"
-            class="anima-slider" aria-label="引导强度滑块" :disabled="busy || fixedSampling"
-            @input="cfg = Number(($event.target as HTMLInputElement).value)" />
+          <StudioSlider v-model="cfg" :min="state.family === 'krea2' ? 0 : 0.5" :max="10" :step="0.5" compact :show-value="false"
+            class="anima-slider" aria-label="引导强度滑块" :disabled="busy || fixedSampling" />
           <input :id="idOf('cfg')" v-model.number="cfg" type="number" :min="state.family === 'krea2' ? 0 : 0.5" max="10" step="0.5" class="input input-sm anima-num" :disabled="busy || fixedSampling" />
         </div>
       </div>
@@ -146,7 +145,7 @@ function randomSeed() { patch({ seed: Math.floor(Math.random() * 1_000_000_000) 
         </ToggleSwitch>
         <div v-if="(nativeAnima || capabilities.teaCache) && teaCache" class="anima-field anima-field--slider">
           <label :for="idOf('cache-threshold')">缓存阈值</label>
-          <input type="range" min="0" max="0.25" step="0.01" :value="cacheThreshold" class="anima-slider" aria-label="TeaCache 缓存阈值滑块" :aria-describedby="idOf('cache-threshold-hint')" :disabled="busy" @input="updateCacheThreshold" />
+          <StudioSlider :model-value="cacheThreshold" :min="0" :max="0.25" :step="0.01" compact :show-value="false" class="anima-slider" aria-label="TeaCache 缓存阈值滑块" :aria-describedby="idOf('cache-threshold-hint')" :disabled="busy" @update:model-value="patch({ teaCacheThresh: $event })" />
           <input :id="idOf('cache-threshold')" type="number" min="0" max="0.25" step="0.01" :value="cacheThreshold" class="input input-sm anima-num" :disabled="busy" :aria-describedby="idOf('cache-threshold-hint')" @change="updateCacheThreshold" />
           <span :id="idOf('cache-threshold-hint')" class="anima-field-hint">0–0.25 · 默认 0.10</span>
         </div>

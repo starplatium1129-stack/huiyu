@@ -2,14 +2,15 @@
 /* 多场景批量出图入口行 */
 .pb .batch-entry-row { @apply tw:flex tw:flex-wrap tw:items-center tw:gap-s-3; margin: var(--s-2) 0; }
 
-/* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） */
+/* 出图自动入册偏好行（2026-08-31 用户偏好：默认关） —— 轻分割线替代内嵌二层边框壳 */
 .pb .auto-save-gallery-row {
   @apply tw:flex tw:items-center tw:gap-s-2 tw:w-full tw:min-h-[40px];
-  margin: var(--s-2) 0;
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-md;
-  background: var(--bg-elevated);
+  margin: var(--s-2) 0 0;
+  padding: var(--s-3) 0;
+  border: 0;
+  border-top: 1px solid var(--border-soft);
+  border-radius: 0;
+  background: transparent;
   @apply tw:text-primary;
 }
 .pb .auto-save-gallery-label { min-width:0; font:400 var(--fs-label)/var(--lh-label) var(--font-sans); color:var(--text-primary); }

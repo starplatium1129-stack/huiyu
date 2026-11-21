@@ -51,13 +51,55 @@
         <button type="button" class="btn btn-quiet btn-sm clear-tags-btn" @click="clearTags">清空词条</button>
       </div>
     </div>
-    <input id="manual-tag-entry" ref="tagInput" v-model="tagInputText" class="tag-input" type="text" aria-label="添加词条" list="prompt-tag-suggestions" placeholder="输入或批量粘贴词条，按回车添加…"
-      spellcheck="false" autocorrect="off" autocapitalize="off"
-      @keydown.enter="onTagEnter" />
-    <small class="tag-entry-hint">支持逗号、顿号或换行分隔，按回车添加。</small>
-    <datalist id="prompt-tag-suggestions">
-      <option v-for="tag in inputSuggestions" :key="tag.canonicalTag" :value="displayTag(tag.canonicalTag)" :label="[tag.zhLabel, ...tag.aliases].filter(Boolean).join(' · ')" />
-    </datalist>
+    <div class="tag-suggest-wrap">
+      <input
+        id="manual-tag-entry"
+        ref="tagInput"
+        v-model="tagInputText"
+        class="tag-input"
+        type="text"
+        role="combobox"
+        autocomplete="off"
+        aria-label="添加词条"
+        aria-autocomplete="list"
+        :aria-expanded="suggestionsVisible"
+        :aria-controls="suggestionsVisible ? suggestListboxId : undefined"
+        :aria-activedescendant="activeSuggestionId"
+        placeholder="输入或批量粘贴词条，按回车添加…"
+        spellcheck="false"
+        autocorrect="off"
+        autocapitalize="off"
+        @focus="suggestFocused = true"
+        @blur="onTagBlur"
+        @keydown="onTagKeydown"
+      />
+      <ul
+        v-if="suggestionsVisible"
+        :id="suggestListboxId"
+        class="tag-suggest-list"
+        role="listbox"
+        aria-label="词条建议"
+      >
+        <li
+          v-for="(tag, index) in inputSuggestions"
+          :id="`${suggestListboxId}-opt-${index}`"
+          :key="tag.canonicalTag"
+          class="tag-suggest-option"
+          :class="{ 'is-active': index === activeSuggestionIndex, 'is-selected': pb.manualTags.has(tag.canonicalTag) }"
+          role="option"
+          :aria-selected="index === activeSuggestionIndex"
+          @mousedown.prevent="applySuggestion(tag)"
+          @mouseenter="activeSuggestionIndex = index"
+        >
+          <span class="tag-suggest-copy">
+            <strong>{{ tag.zhLabel || displayTag(tag.canonicalTag) }}</strong>
+            <small>{{ displayTag(tag.canonicalTag) }}</small>
+          </span>
+          <ArchiveIcon v-if="pb.manualTags.has(tag.canonicalTag)" name="success" class="tag-suggest-check" />
+        </li>
+      </ul>
+    </div>
+    <small class="tag-entry-hint">支持逗号、顿号或换行分隔，按回车添加；方向键可挑选词库建议。</small>
     </div>
     <div v-if="pb.manualTags.size" class="manual-tags">
       <StudioTooltip v-for="tag in pb.manualTags" :key="tag" :content="tagMeaning(tag)">
@@ -77,7 +119,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, useId, watch } from 'vue'
 import { useIntersectionObserver } from '@vueuse/core'
 import { createPromptTagMatcher, type PromptTagEntry, type PromptTagSource } from '@/utils/promptTagDictionary'
 import { formatPromptForEngine, type DrawCapabilities, type ModelProfile } from '@/utils/promptPolicy'
@@ -128,6 +170,10 @@ function tagDescription(tag: TagEntry): string {
 const tagSearch = ref('')
 const tagInputText = ref('')
 const tagInput = ref<HTMLInputElement | null>(null)
+const suggestListboxId = useId()
+const suggestFocused = ref(false)
+const suggestDismissed = ref(false)
+const activeSuggestionIndex = ref(-1)
 function focusTagInput() {
   const input = tagInput.value
   const editor = input?.closest<HTMLElement>('.tag-editor'), body = input?.closest<HTMLElement>('.prompt-workbench-body')
@@ -156,14 +202,69 @@ const inputSuggestions = computed(() => {
   }
   return suggestions
 })
+const suggestionsVisible = computed(() =>
+  suggestFocused.value && !suggestDismissed.value && inputSuggestions.value.length > 0)
+const activeSuggestionId = computed(() =>
+  suggestionsVisible.value && activeSuggestionIndex.value >= 0
+    ? `${suggestListboxId}-opt-${activeSuggestionIndex.value}`
+    : undefined)
+watch(tagInputText, () => {
+  suggestDismissed.value = false
+  activeSuggestionIndex.value = -1
+})
 const tagCategory = ref('all')
 const isOutfitLibrary = computed(() => tagCategory.value === 'Clothing')
 
-function onTagEnter(event: KeyboardEvent) {
-  if (event.isComposing || event.keyCode === 229) return
-  event.preventDefault()
-  addTag(event)
+function applySuggestion(tag: PromptTagEntry) {
+  const outcome = pb.addManualTag(tag.canonicalTag)
+  if (outcome === 'duplicate') pb.flash(`词条「${tag.zhLabel || displayTag(tag.canonicalTag)}」已存在`)
   tagInputText.value = ''
+  activeSuggestionIndex.value = -1
+  suggestDismissed.value = false
+  tagInput.value?.focus({ preventScroll: true })
+}
+
+function onTagBlur() {
+  suggestFocused.value = false
+  activeSuggestionIndex.value = -1
+}
+
+function onTagKeydown(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) return
+  if (event.key === 'ArrowDown' && inputSuggestions.value.length) {
+    event.preventDefault()
+    suggestDismissed.value = false
+    activeSuggestionIndex.value = (activeSuggestionIndex.value + 1) % inputSuggestions.value.length
+    return
+  }
+  if (event.key === 'ArrowUp' && inputSuggestions.value.length) {
+    event.preventDefault()
+    suggestDismissed.value = false
+    activeSuggestionIndex.value = activeSuggestionIndex.value <= 0
+      ? inputSuggestions.value.length - 1
+      : activeSuggestionIndex.value - 1
+    return
+  }
+  if (event.key === 'Escape' && suggestionsVisible.value) {
+    event.preventDefault()
+    event.stopPropagation()
+    suggestDismissed.value = true
+    activeSuggestionIndex.value = -1
+    return
+  }
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    if (suggestionsVisible.value && activeSuggestionIndex.value >= 0) {
+      const picked = inputSuggestions.value[activeSuggestionIndex.value]
+      if (picked) {
+        applySuggestion(picked)
+        return
+      }
+    }
+    addTag(event)
+    tagInputText.value = ''
+    activeSuggestionIndex.value = -1
+  }
 }
 
 /**

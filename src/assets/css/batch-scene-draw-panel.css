@@ -80,9 +80,11 @@
   @apply tw:min-w-0 tw:text-body-sm tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
 }
 .batch-scene-meta {
-  @apply tw:flex tw:items-center tw:gap-[4px] tw:text-muted tw:text-label-xs tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap;
+  @apply tw:flex tw:items-center tw:gap-[6px] tw:min-w-0 tw:text-muted tw:text-label-xs;
 }
-.batch-scene-adult { flex: 0 0 auto; @apply tw:w-[12px] tw:text-accent; opacity: .8; }
+.batch-scene-meta > span:first-child { @apply tw:min-w-0 tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
+.batch-scene-adult-badge { display:inline-flex; align-items:center; gap:2px; flex:none; color:var(--warning-text); }
+.batch-scene-adult { flex: 0 0 auto; @apply tw:w-[12px] tw:h-[12px]; }
 
 /* ── 角色卡网格 ── */
 .batch-char-grid {

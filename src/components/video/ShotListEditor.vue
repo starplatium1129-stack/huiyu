@@ -138,50 +138,101 @@
             <h2>{{ shots.length }} 个镜头</h2>
           </div>
         </div>
-        <div class="shot-toolbar tw:p-s-2 tw:rounded-lg" data-fluid-glass>
-          <StudioSelect size="sm" label="蓝图角色" v-model="blueprintCharacter" :options="blueprintCharacters" :disabled="storyboardBusy || batchActive || submitting" />
-          <span v-if="directoryFailed" role="status">角色目录读取失败 <button class="btn btn-ghost btn-sm" type="button" @click="readCharacters">重试</button></span>
-          <span v-if="blueprintCharacter && !blueprintReady" role="status">{{ blueprintError || '正在读取角色蓝图…' }}
-            <button v-if="blueprintError" class="btn btn-ghost btn-sm" type="button" @click="retryBlueprints">重试</button>
-          </span>
-          <span v-else-if="blueprintCharacter && !sceneBlueprints.length" role="status">这个角色暂无蓝图</span>
-          <StudioSelect size="sm" label="从场景蓝图快速填充镜头描述" v-model="sceneFillId" :options="sceneFillOptions" :disabled="!sceneBlueprints.length || batchActive || submitting" />
-          <button class="btn btn-ghost" type="button" :disabled="batchActive || submitting" @click="addShot"><ArchiveIcon name="gallery" />添加镜头</button>
-          <StudioSelect size="sm" label="选择场景蓝图生成四镜剧本" v-model="storyboardBlueprintId" :options="storyboardOptions" :disabled="!sceneBlueprints.length || storyboardBusy || batchActive || submitting" />
-          <input
-            v-model="storyboardIntent"
-            class="input shot-intent-input"
-            type="text"
-            maxlength="120"
-            :disabled="storyboardBusy || batchActive || submitting"
-            placeholder="可选 · 这一幕想发生什么"
-            aria-label="剧本创作意图（可选）"
-          />
-          <StudioTooltip anchor content="选择场景蓝图，按起承转合即时生成四镜分镜剧本（自动提取经典台词并替换当前清单）">
-            <button class="btn btn-ghost" type="button" :disabled="!storyboardBlueprintId || storyboardBusy || batchActive || submitting" @click="runStoryboard"><ArchiveIcon name="gallery" /> {{ storyboardBusy ? '生成中…' : '生成剧本' }}</button>
-          </StudioTooltip>
-          <StudioTooltip anchor content="逐镜自动生成高质量首帧画面并回填；已有首帧的镜头将自动跳过，角色形象由参考卡锁定">
-            <button class="btn btn-ghost" type="button" :disabled="firstFrameBusy || storyboardBusy || batchActive || shots.length === 0 || submitting" @click="generateFirstFrames(shots, aspectRatio)">{{ firstFrameBusy ? `首帧 ${firstFrameProgress}…` : '一键首帧' }}</button>
-          </StudioTooltip>
-          <StudioTooltip anchor content="第 1 步：逐镜把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/运动/对白（复用聊天 LLM 配置）">
-            <button class="btn btn-ghost" type="button" :disabled="aiBusy || batchActive || !shots.length || submitting" @click="runAiRewrite"><ArchiveIcon name="spark" /> AI 整理分镜</button>
-          </StudioTooltip>
-          <StudioTooltip anchor content="第 2 步：用全局视角审整批镜头：调整景别/镜头运动/对白分布，让全片有节奏（不改描述本身）">
-            <button class="btn btn-ghost" type="button" :disabled="aiBusy || batchActive || shots.length < 2 || submitting" @click="runAiPolish"><ArchiveIcon name="filter" /> AI 整批编排</button>
-          </StudioTooltip>
-          <StudioTooltip anchor content="写个故事梗概，AI 直接生成完整分镜表（无首帧纯文字 T2VA 也可生成）">
-            <button class="btn btn-ghost" type="button" :disabled="scriptBusy || batchActive || submitting" @click="scriptOpen = true"><ArchiveIcon name="wand" /> AI 生成脚本</button>
-          </StudioTooltip>
-          <StudioTooltip anchor content="AI 审查整批镜头：描述不合格/字段矛盾/对白问题/衔接跳跃，生成前把关">
-            <button class="btn btn-ghost" type="button" :disabled="reviewBusy || batchActive || !shots.length || submitting" @click="runAiReview"><ArchiveIcon name="search" /> 质量检查</button>
-          </StudioTooltip>
-          <StudioTooltip v-if="aiSnapshot" anchor content="恢复 AI 整理前的全部镜头内容">
-            <button class="btn btn-ghost" type="button" :disabled="aiBusy || batchActive || submitting" @click="restoreAiSnapshot">撤销整理</button>
-          </StudioTooltip>
-          <StudioTooltip v-if="polishSnapshot" anchor content="恢复 AI 整批编排前的全部镜头内容">
-            <button class="btn btn-ghost" type="button" :disabled="aiBusy || batchActive || submitting" @click="restorePolishSnapshot">撤销编排</button>
-          </StudioTooltip>
-          <button class="btn btn-ghost" type="button" :disabled="shots.length === 0 || batchActive || submitting" @click="clearShots">清空</button>
+        <div class="shot-toolbar-shell">
+          <div class="shot-toolbar shot-toolbar-primary tw:p-s-2 tw:rounded-lg" data-fluid-glass>
+            <button class="btn btn-primary btn-sm" type="button" :disabled="batchActive || submitting" @click="addShot"><ArchiveIcon name="plus" />添加镜头</button>
+            <StudioTooltip anchor content="写个故事梗概，AI 直接生成完整分镜表（无首帧纯文字 T2VA 也可生成）">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="scriptBusy || batchActive || submitting" @click="scriptOpen = true"><ArchiveIcon name="wand" /> AI 生成脚本</button>
+            </StudioTooltip>
+            <StudioTooltip anchor content="逐镜自动生成高质量首帧画面并回填；已有首帧的镜头将自动跳过，角色形象由参考卡锁定">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="firstFrameBusy || storyboardBusy || batchActive || shots.length === 0 || submitting" @click="generateFirstFrames(shots, aspectRatio)"><ArchiveIcon name="image" />{{ firstFrameBusy ? `首帧 ${firstFrameProgress}…` : '一键首帧' }}</button>
+            </StudioTooltip>
+            <StudioTooltip anchor content="第 1 步：逐镜把静态绘图提示词改写成视频分镜描述，并推断景别/镜头/运动/对白（复用聊天 LLM 配置）">
+              <button class="btn btn-ghost btn-sm" type="button" :disabled="aiBusy || batchActive || !shots.length || submitting" @click="runAiRewrite"><ArchiveIcon name="spark" /> AI 整理分镜</button>
+            </StudioTooltip>
+            <StudioDropdownMenu label="分镜编排与质检工具">
+              <template #trigger>
+                <button class="btn btn-ghost btn-sm shot-more-trigger" type="button" :disabled="batchActive || submitting" aria-label="更多分镜编排与质检操作">
+                  <ArchiveIcon name="filter" />
+                  <span>编排与质检</span>
+                </button>
+              </template>
+              <template #default="{ run }">
+                <div class="studio-dropdown-label">AI 全局编排与审查</div>
+                <DropdownMenuItem
+                  class="studio-dropdown-item"
+                  :disabled="aiBusy || batchActive || shots.length < 2 || submitting"
+                  @select.prevent="run(runAiPolish)"
+                >
+                  <ArchiveIcon name="filter" />
+                  <span>AI 整批编排（调景别与节奏）</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  class="studio-dropdown-item"
+                  :disabled="reviewBusy || batchActive || !shots.length || submitting"
+                  @select.prevent="run(runAiReview)"
+                >
+                  <ArchiveIcon name="search" />
+                  <span>质量检查（排查矛盾与跳接）</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  v-if="aiSnapshot"
+                  class="studio-dropdown-item"
+                  :disabled="aiBusy || batchActive || submitting"
+                  @select.prevent="run(restoreAiSnapshot)"
+                >
+                  <ArchiveIcon name="refresh" />
+                  <span>撤销 AI 整理</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                  v-if="polishSnapshot"
+                  class="studio-dropdown-item"
+                  :disabled="aiBusy || batchActive || submitting"
+                  @select.prevent="run(restorePolishSnapshot)"
+                >
+                  <ArchiveIcon name="refresh" />
+                  <span>撤销 AI 编排</span>
+                </DropdownMenuItem>
+                <div class="studio-dropdown-separator" role="separator" />
+                <DropdownMenuItem
+                  class="studio-dropdown-item is-danger"
+                  :disabled="shots.length === 0 || batchActive || submitting"
+                  @select.prevent="run(clearShots)"
+                >
+                  <ArchiveIcon name="close" />
+                  <span>清空全部镜头</span>
+                </DropdownMenuItem>
+              </template>
+            </StudioDropdownMenu>
+          </div>
+
+          <details class="shot-blueprint-drawer">
+            <StudioDisclosureSummary class="shot-blueprint-summary">
+              <span><ArchiveIcon name="clap" />从角色场景蓝图填入镜头或生成四镜剧本</span>
+            </StudioDisclosureSummary>
+            <div class="shot-toolbar shot-toolbar-blueprint" data-disclosure-content>
+              <StudioSelect size="sm" label="蓝图角色" v-model="blueprintCharacter" :options="blueprintCharacters" :disabled="storyboardBusy || batchActive || submitting" />
+              <span v-if="directoryFailed" role="status">角色目录读取失败 <button class="btn btn-ghost btn-sm" type="button" @click="readCharacters">重试</button></span>
+              <span v-if="blueprintCharacter && !blueprintReady" role="status">{{ blueprintError || '正在读取角色蓝图…' }}
+                <button v-if="blueprintError" class="btn btn-ghost btn-sm" type="button" @click="retryBlueprints">重试</button>
+              </span>
+              <span v-else-if="blueprintCharacter && !sceneBlueprints.length" role="status">这个角色暂无蓝图</span>
+              <StudioSelect size="sm" label="从场景蓝图快速填充镜头描述" v-model="sceneFillId" :options="sceneFillOptions" :disabled="!sceneBlueprints.length || batchActive || submitting" />
+              <StudioSelect size="sm" label="选择场景蓝图生成四镜剧本" v-model="storyboardBlueprintId" :options="storyboardOptions" :disabled="!sceneBlueprints.length || storyboardBusy || batchActive || submitting" />
+              <input
+                v-model="storyboardIntent"
+                class="input shot-intent-input"
+                type="text"
+                maxlength="120"
+                :disabled="storyboardBusy || batchActive || submitting"
+                placeholder="可选 · 这一幕想发生什么"
+                aria-label="剧本创作意图（可选）"
+              />
+              <StudioTooltip anchor content="选择场景蓝图，按起承转合即时生成四镜分镜剧本（自动提取经典台词并替换当前清单）">
+                <button class="btn btn-ghost btn-sm" type="button" :disabled="!storyboardBlueprintId || storyboardBusy || batchActive || submitting" @click="runStoryboard"><ArchiveIcon name="gallery" /> {{ storyboardBusy ? '生成中…' : '生成剧本' }}</button>
+              </StudioTooltip>
+            </div>
+          </details>
         </div>
         <p v-if="aiNote" role="status" class="shot-ai-note" :data-busy="aiBusy || undefined">{{ aiNote }}</p>
         <p v-else-if="flowHint" class="shot-flow-hint">{{ flowHint }}</p>
@@ -192,8 +243,9 @@
           @apply="applyReviewSuggestion"
         />
 
-        <article v-for="(shot, index) in shots" :key="index" class="shot-row" :data-shot-index="index" tabindex="-1" :aria-label="`镜头 ${index + 1} 编辑`" :data-issue="shotIssueCount(index) || undefined">
+        <article v-for="(shot, index) in shots" :key="index" class="shot-row" :data-shot-index="index" :data-cast-character="shotCastCharacter(shot.cast)" tabindex="-1" :aria-label="`镜头 ${index + 1} 编辑`" :data-issue="shotIssueCount(index) || undefined">
           <header class="shot-row-head">
+            <span class="shot-slate-badge"><ArchiveIcon name="clap" />CUT {{ String(index + 1).padStart(2, '0') }}</span>
             <span class="shot-index">镜头 {{ index + 1 }}</span>
             <span v-if="shotIssueCount(index)" class="shot-issue-badge" :data-count="shotIssueCount(index)">
               {{ shotIssueCount(index) }} 个问题
@@ -385,6 +437,9 @@
 
 <script setup lang="ts">
 import ShotBatchSettings from './ShotBatchSettings.vue'
+import { DropdownMenuItem } from 'reka-ui'
+import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import StudioDropdownMenu from '@/components/ui/StudioDropdownMenu.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
@@ -474,6 +529,16 @@ const castOptions = computed<StudioSelectOption[]>(() => {
   options.push({ value: 'all', label: '全员出场' })
   return options
 })
+
+function shotCastCharacter(cast: string): string {
+  const firstIndex = cast === 'all' ? 0 : (Number(cast?.[0]) || 1) - 1
+  const card = referenceCards.value[firstIndex] || referenceCards.value[0]
+  const id = (card?.characterId || '').toLowerCase()
+  const label = (card?.label || '').toLowerCase()
+  if (id === 'nene' || label.includes('宁宁') || label.includes('nene')) return 'nene'
+  if (id === 'natsume' || label.includes('夏目') || label.includes('natsume')) return 'natsume'
+  return ''
+}
 
 async function removeReferenceWithFocus(cardIndex: number, imageIndex: number, event: MouseEvent) {
   const group = (event.currentTarget as HTMLElement).closest('.shot-reference-images')

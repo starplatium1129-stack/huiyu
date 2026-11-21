@@ -30,8 +30,8 @@
   --character-glow:color-mix(in srgb, var(--character-accent) 32%, transparent);
   --character-aura:color-mix(in srgb, var(--character-accent) 22%, transparent);
   --character-aura-secondary:color-mix(in srgb, var(--character-accent) 14%, transparent);
-  /* 深色文字强调色提亮，原始角色色继续用于氛围光；浅色由 light-theme.css 覆盖。 */
-  --accent:color-mix(in srgb, var(--character-accent) 60%, var(--text-primary));
+  /* 深色文字强调色提亮至全目录 AA 4.5:1（含深红/深紫/深蓝角色于 dark 与 terraria-dark --bg-elevated）；原始角色色继续用于氛围光，浅色由 light-theme.css 覆盖。 */
+  --accent:color-mix(in srgb, var(--character-accent) 48%, var(--text-primary));
   --accent-hover:var(--character-accent-hover);
   --accent-soft:var(--character-soft);
   --accent-glow:var(--character-glow);

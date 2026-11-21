@@ -26,7 +26,7 @@
       <span role="status">更新失败，展示缓存资料</span>
       <button class="btn btn-ghost btn-sm" type="button" @click="retryCatalog">重新读取</button>
     </div>
-    <div class="model-search-row">
+    <div class="model-search-row" :class="{ 'is-compact': loras.length <= 6 }">
       <StudioSearch ref="searchInput" v-model="modelQuery" class="model-search-field" label="搜索模型" placeholder="搜索模型、角色或触发词…" />
       <div v-if="engineOptions.length > 1" class="model-engine-filters studio-segments" role="group" aria-label="按绘图引擎筛选模型">
         <AnimatedSelection stretch />
@@ -57,6 +57,31 @@
         <div class="model-actions">
           <RouterLink v-if="modelCharacter(l.id)" class="btn btn-primary" :to="{ path: '/prompt-builder', query: { char: modelCharacter(l.id) } }"><ArchiveIcon name="spark" />以此角色绘制</RouterLink>
           <StudioCopyButton v-if="l.triggerWords.length" class="btn btn-ghost" label="复制触发词" :content-key="l.triggerWords.join(', ')" :action="() => copyText(l.triggerWords.join(', '))" />
+        </div>
+        <div v-if="modelSamples(l).length" class="lora-sample-strip" aria-label="代表样张">
+          <span class="lora-sample-label">代表样张</span>
+          <div class="lora-sample-list">
+            <RouterLink
+              v-for="sample in modelSamples(l)"
+              :key="`${l.id}-${sample.id}`"
+              :to="`/showcase?scene=${sample.id}`"
+              class="lora-sample-thumb"
+              :aria-label="`查看样张：${sample.title}`"
+            >
+              <img
+                v-if="!failedSamples.has(sample.id)"
+                :src="thumbUrl(sample.id)"
+                :alt="sample.title"
+                width="56"
+                height="72"
+                loading="lazy"
+                decoding="async"
+                @error="failedSamples.add(sample.id)"
+              />
+              <span v-else class="lora-sample-fallback"><ArchiveIcon name="image" /></span>
+              <span class="lora-sample-caption">{{ sample.title }}</span>
+            </RouterLink>
+          </div>
         </div>
         <p v-if="!modelCharacter(l.id)" class="model-availability">旧版模型资料</p>
         <details class="model-details">
@@ -120,11 +145,14 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import neneAvatar from '@/assets/illustrations/nene-avatar-256.webp'
 import natsumeAvatar from '@/assets/illustrations/natsume-avatar-256.webp'
+import { useShowcaseAssets } from '@/composables/useShowcaseAssets'
 import {
   formatLoraWeight,
   parseLoraCatalog,
   type LoraCatalogEntry,
 } from '@/utils/loraCatalog'
+
+const { thumbUrl } = useShowcaseAssets()
 
 const sceneStore = useSceneStore()
 const route = useRoute()
@@ -151,6 +179,23 @@ watch([modelQuery, engine], ([q, selectedEngine]) => {
   void router.replace({ path: route.path, query, hash: route.hash }).catch(() => {})
 }, { flush: 'sync' })
 const failedAvatars = ref(new Set<string>())
+const failedSamples = ref(new Set<string>())
+const MODEL_SAMPLE_SETS: Record<string, ReadonlyArray<{ id: string; title: string }>> = {
+  nene: [
+    { id: 'sc002', title: '樱花树下的约定' },
+    { id: 'sc004', title: '书架间的偶遇' },
+    { id: 'sc215', title: '月光书页里的小小勇气' },
+  ],
+  natsume: [
+    { id: 'sc003', title: '只告诉你的天台秘密' },
+    { id: 'sc007', title: '雨声里的正式回答' },
+    { id: 'sc006', title: '平安夜的手作礼物' },
+  ],
+}
+function modelSamples(model: LoraCatalogEntry) {
+  const icon = modelGuide(model).icon
+  return MODEL_SAMPLE_SETS[icon] ?? []
+}
 const listRoot = ref<HTMLElement | null>(null)
 const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const catalogRoot = ref<HTMLElement | null>(null)
@@ -228,6 +273,17 @@ onMounted(() => { void loadCatalog() })
 .model-facts dd { @apply tw:m-0 tw:text-secondary; overflow-wrap:anywhere; }
 .model-search-row { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-3); margin-bottom:var(--s-5); }
 .model-search-field { flex:1 1 320px; max-width:560px; min-width:0; }
+.model-search-row.is-compact { padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); }
+.model-search-row.is-compact .model-search-field { flex:0 1 260px; max-width:280px; }
+.lora-sample-strip { display:flex; flex-direction:column; gap:var(--s-2); margin:var(--s-3) 0; padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:color-mix(in srgb,var(--bg-elevated) 72%,transparent); }
+.lora-sample-label { color:var(--text-muted); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); letter-spacing:0.06em; }
+.lora-sample-list { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:var(--s-2); }
+.lora-sample-thumb { display:flex; align-items:center; gap:var(--s-2); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); text-decoration:none; min-width:0; }
+.lora-sample-thumb:hover { border-color:var(--border-strong); color:var(--text-primary); }
+.lora-sample-thumb:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.lora-sample-thumb img, .lora-sample-fallback { flex:0 0 42px; width:42px; height:54px; border-radius:4px; object-fit:cover; background:var(--bg-elevated); }
+.lora-sample-fallback { display:grid; place-items:center; color:var(--text-muted); }
+.lora-sample-caption { min-width:0; font-size:var(--fs-label-xs); line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .model-result-count { margin-inline-start:auto; color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; white-space:nowrap; }
 .model-engine-filters { width:fit-content; max-width:100%; flex-wrap:wrap; }
 .model-engine-filters button > span { display:grid; place-items:center; min-width:22px; min-height:22px; border:1px solid var(--border-soft); border-radius:var(--r-pill); font:400 var(--fs-mono-xs)/1 var(--font-mono); }

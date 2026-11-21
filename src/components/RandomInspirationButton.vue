@@ -1,5 +1,38 @@
 <template>
-  <div class="random-inspiration">
+  <StudioDialog
+    v-if="dialogMode"
+    v-model:open="menuOpen"
+    title="夏目的调色笔记"
+    subtitle="INSPIRATION · 灵感骰子与候选配方"
+    size="sm"
+  >
+    <div ref="body" class="random-popover-body random-dialog-body">
+      <button class="btn btn-ghost" type="button" :disabled="disabled" @click="onRoll"><ArchiveIcon name="dice" />夏目的灵感骰子</button>
+      <ToggleSwitch v-model="includeArtists" class="random-toggle" label="混入知名画师特调笔触">
+        <span class="random-toggle-copy">
+          <strong>混入知名画师特调笔触</strong>
+          <small>开启后由夏目悄悄塞入画师特调风格；默认关闭，保留少女最纯粹的原生神韵。</small>
+        </span>
+      </ToggleSwitch>
+      <label class="random-seed">灵感种子
+        <input v-model="seedText" class="input" type="text" inputmode="numeric" aria-label="灵感种子" placeholder="留空则随机" />
+      </label>
+      <button class="btn btn-ghost" type="button" :disabled="disabled" @click="previewCandidates">预览 3 组候选</button>
+      <ol v-if="candidates.length" v-content-motion="candidates" class="random-candidates" aria-label="灵感候选">
+        <li v-for="(candidate, index) in candidates" :key="candidate.recipe.seed" class="random-candidate">
+          <div class="random-candidate-heading"><h4>候选 {{ index + 1 }}</h4><small>种子 {{ candidate.recipe.seed }}</small></div>
+          <p>{{ candidate.draw.manualTags.join(' · ') || '镜头与情绪组合' }}</p>
+          <small v-if="candidate.draw.kept.length">本次保持：{{ candidate.draw.kept.join('、') }}</small>
+          <button class="btn btn-ghost" type="button" :disabled="disabled" @click="applyCandidate(index)">应用候选 {{ index + 1 }}</button>
+        </li>
+      </ol>
+      <button v-if="lastRecipe" class="btn btn-ghost" type="button" @click="exportRecipe">保存种子与配置快照</button>
+    </div>
+    <template #footer>
+      <button class="btn btn-quiet" type="button" :disabled="!canUndo" @click="onUndo">夏目：“退回刚才那一抽”</button>
+    </template>
+  </StudioDialog>
+  <div v-else class="random-inspiration">
     <StudioPopover v-model:open="menuOpen" label="夏目的调色笔记" content-class="random-popover" prioritize-position>
       <template #trigger>
         <button class="btn btn-ghost btn-sm random-menu-trigger" type="button" :disabled="disabled" aria-label="灵感工具">
@@ -41,6 +74,7 @@
 </template>
 
 <script setup lang="ts">
+import StudioDialog from '@/components/ui/StudioDialog.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioToggleIcon from '@/components/ui/StudioToggleIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
@@ -49,6 +83,8 @@ import { useResizeObserver } from '@vueuse/core'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useRandomInspiration } from '@/composables/useRandomInspiration'
+
+defineProps<{ dialogMode?: boolean }>()
 
 const pb = usePromptBuilderStore()
 const { includeArtists, roll, undo, hasUndo, candidates, lastRecipe, prepareCandidates, applyCandidate, exportRecipe } = useRandomInspiration()
@@ -82,6 +118,7 @@ function onUndo() {
 .random-popover-heading h3 { margin:0; color:var(--text-primary); font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-sans); overflow-wrap:anywhere; }
 .random-popover-heading > button { flex:none; }
 .random-popover-body { display:grid; grid-auto-rows:max-content; align-content:start; gap:var(--s-4); min-width:0; min-height:0; padding:var(--s-4); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-3); }
+.random-dialog-body { padding:0; }
 .random-popover-body > .btn { width:100%; }
 /* The switch root is owned by Reka and needs this deep selector. */
 .random-popover-body :deep(.random-toggle) { width:100%; min-width:0; min-height:var(--control-height); align-items:start; gap:var(--s-3); }

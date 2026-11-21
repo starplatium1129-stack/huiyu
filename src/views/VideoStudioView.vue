@@ -2,17 +2,105 @@
   <article class="video-studio page">
     <header class="video-header">
       <div>
-        <div class="page-kicker">画室 / 影像创作</div>
+        <div class="page-kicker" data-screentone-furniture>画室 / 影像创作</div>
         <h1 class="page-title">故事短片</h1>
       </div>
       <div class="video-header-actions">
-      <span class="video-connection" :data-state="archiveState" role="status">{{ archiveStatus }}</span>
-      <button class="btn btn-ghost" type="button" :disabled="statusLoading" @click="loadStatus">
-        <ArchiveIcon name="refresh" />
-        {{ statusLoading ? '检测中' : '重新检测' }}
-      </button>
+        <span class="video-connection" :data-state="archiveState" role="status">{{ archiveStatus }}</span>
+        <button
+          class="btn btn-ghost btn-sm video-env-trigger"
+          type="button"
+          :aria-expanded="envDrawerOpen"
+          aria-controls="video-environment"
+          @click="envDrawerOpen = !envDrawerOpen"
+        >
+          <ArchiveIcon name="model" />
+          <span>{{ activeModel?.label || '视频模型' }}</span>
+          <span class="video-status-pill" :data-state="environmentState">{{ environmentLabel }}</span>
+        </button>
+        <button class="btn btn-ghost btn-sm" type="button" :disabled="statusLoading" @click="loadStatus">
+          <ArchiveIcon name="refresh" />
+          {{ statusLoading ? '检测中' : '重新检测' }}
+        </button>
       </div>
     </header>
+
+    <details
+      id="video-environment"
+      ref="environmentPanel"
+      class="video-panel video-env-drawer"
+      :open="envDrawerOpen"
+      tabindex="-1"
+      @toggle="envDrawerOpen = ($event.currentTarget as HTMLDetailsElement).open"
+    >
+      <StudioDisclosureSummary class="video-disclosure-heading video-env-summary">
+        <span class="video-env-summary-title">
+          <span class="video-step">本机环境与模型目录</span>
+          <strong>{{ activeModel?.label || '等待环境检测' }}</strong>
+          <small v-if="activeModel?.tier">{{ activeModel.tier }} · {{ activeModel.summary }}</small>
+        </span>
+        <span class="video-status-pill" :data-state="environmentState">{{ environmentLabel }}</span>
+      </StudioDisclosureSummary>
+      <div class="video-env-drawer-grid" data-disclosure-content>
+        <div class="video-environment-panel">
+          <div v-if="statusError" class="video-inline-message error" role="alert">{{ statusError }}</div>
+          <template v-else-if="activeModel">
+            <div class="video-model-summary">
+              <span>{{ activeModel.tier }}</span>
+              <strong>{{ activeModel.label }}</strong>
+              <p>{{ activeModel.summary }}</p>
+            </div>
+            <p v-if="nativeVideo && !activeModel.available && activeModel.reason" class="video-install-note">当前原因：{{ activeModel.reason }}</p>
+            <template v-if="nativeVideo && !activeModel.available && activeModel.requirements.length">
+              <p class="video-install-note">准备 {{ activeModel.label }} 需要：</p>
+              <ul class="video-missing-list"><li v-for="requirement in activeModel.requirements" :key="requirement">{{ requirement }}</li></ul>
+            </template>
+            <details v-if="!nativeVideo && activeModel.missing.length" class="video-advanced">
+              <StudioDisclosureSummary class="video-disclosure-heading">需要安装 {{ activeModel.missing.length }} 项资源 · 查看详情</StudioDisclosureSummary>
+              <ul class="video-missing-list"><li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li></ul>
+            </details>
+            <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
+              {{ nativeVideo ? '请准备所列模型与运行环境，然后重新检测。' : '请将所列资源放入 ComfyUI/models 的对应目录，然后重新检测。' }}
+            </p>
+            <p v-else-if="activeModel.missing.length" class="video-install-note">
+              此模型暂不支持生成，可选择其他模型。
+            </p>
+            <div v-if="!nativeVideo && activeModel.id === 'minimax-h3'" class="video-route-note">
+              <strong>推荐用法</strong>
+              <span>Wan 5B 快速验证镜头，H3 再做带原生音效与音乐的最终成片。</span>
+            </div>
+          </template>
+          <div class="video-env-links">
+            <RouterLink v-if="status && !nativeVideo && !status.online" class="btn btn-ghost btn-sm" :to="comfyControlTarget">打开服务与连接</RouterLink>
+            <RouterLink class="btn btn-ghost btn-sm" :to="videoControlTarget">
+              {{ nativeVideo && !activeModel?.available ? '准备视频运行环境' : '视频引擎设置' }}
+            </RouterLink>
+          </div>
+        </div>
+        <div class="video-model-catalog">
+          <div class="video-env-catalog-head">更换生成模型</div>
+          <div class="video-model-options">
+            <button
+              v-for="model in status?.models || []"
+              :key="model.id"
+              class="video-model-row"
+              type="button"
+              :class="{ active: selectedModelId === model.id }"
+              :aria-pressed="selectedModelId === model.id"
+              @click="chooseModel(model.id)"
+            >
+              <span>
+                <strong><ArchiveIcon v-if="selectedModelId === model.id" name="success" />{{ model.label }}</strong>
+                <small>{{ model.summary }}</small>
+              </span>
+              <em :data-state="model.available ? 'ready' : (model.executable ? 'missing' : 'planned')">
+                {{ model.available ? '已就绪' : (model.executable ? '待安装' : '待适配') }}
+              </em>
+            </button>
+          </div>
+        </div>
+      </div>
+    </details>
 
     <VideoDraftNotice />
 
@@ -214,11 +302,11 @@
       </div>
 
       <aside class="video-side-column">
-        <section id="video-queue" ref="queuePanel" class="video-panel video-queue-panel" aria-live="polite" aria-labelledby="video-queue-title" tabindex="-1">
+        <section id="video-queue" ref="queuePanel" class="video-panel video-queue-panel video-monitor-stage" aria-live="polite" aria-labelledby="video-queue-title" tabindex="-1">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
-              <span class="video-step">任务队列</span>
-              <h2 id="video-queue-title">{{ jobSelectionPending && job ? '上次读取的成片' : '当前成片' }}</h2>
+              <span class="video-step">FILM MONITOR · 胶片监看台</span>
+              <h2 id="video-queue-title">{{ jobSelectionPending && job ? '上次读取的成片' : '当前成片监看' }}</h2>
             </div>
             <span v-if="t8State" class="video-t8-badge" :data-state="t8State.available ? 'fast' : 'slow'">
               <ArchiveIcon :name="t8State.available ? 'lightning' : 'warning'" />
@@ -236,9 +324,10 @@
             <button class="btn btn-ghost" type="button" :disabled="cancelling" @click="cancelOriginalRequest">{{ cancelling ? '请求取消…' : '取消原请求' }}</button>
           </div>
           <div v-if="!job && !jobSelectionPending" class="video-queue-empty">
+            <CornerFrame variant="editorial" />
             <span class="video-empty-reel" aria-hidden="true"><ArchiveIcon name="play" /></span>
-            <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '暂无成片' }}</strong>
-            <span v-if="reconnectState === 'idle'">准备好镜头与描述，生成的短片会出现在这里。</span>
+            <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '胶片暗房待机中' }}</strong>
+            <span v-if="reconnectState === 'idle'">准备好首帧与镜头描述，生成的故事短片将在监看台显影。</span>
             <button v-if="reconnectState === 'failed'" class="btn btn-ghost" type="button" @click="reconnectVideo">重新读取上次任务</button>
             <button v-if="reconnectState !== 'idle'" class="btn btn-ghost" type="button" @click="openTaskCenter">到任务中心核对</button>
           </div>
@@ -279,11 +368,6 @@
             <p v-if="progressWarning" class="video-inline-message" :class="progressWarning.level === 'danger' ? 'error' : 'warning'">
               {{ progressWarning.text }}
             </p>
-            <!--
-              任务失败：后端给的是 ComfyUI 的英文技术串（节点名 / 张量形状 /
-              traceback）。走一遍分类器换成中文结论，原始串折进「技术细节」，
-              与出图路径的失败呈现对齐（2026-08-30 UX 审计）。
-            -->
             <div v-if="jobErrorReport" class="video-inline-message error" role="alert">
               <p>{{ jobErrorReport.title }}：{{ jobErrorReport.message }}</p>
               <details v-if="jobErrorReport.details" class="video-error-detail">
@@ -306,73 +390,6 @@
             <p class="video-t8-bar" :data-state="t8State.available ? 'fast' : 'slow'">{{ t8State.reason }}</p>
           </details>
         </section>
-
-        <section id="video-environment" ref="environmentPanel" class="video-panel video-environment-panel" tabindex="-1">
-          <div class="video-panel-heading video-panel-heading--compact">
-            <div>
-              <span class="video-step">本机环境</span>
-              <h2>执行路线</h2>
-            </div>
-            <span class="video-status-pill" :data-state="environmentState">{{ environmentLabel }}</span>
-          </div>
-
-          <div v-if="statusError" class="video-inline-message error" role="alert">{{ statusError }}</div>
-          <template v-else-if="activeModel">
-            <div class="video-model-summary">
-              <span>{{ activeModel.tier }}</span>
-              <strong>{{ activeModel.label }}</strong>
-              <p>{{ activeModel.summary }}</p>
-            </div>
-            <p v-if="nativeVideo && !activeModel.available && activeModel.reason" class="video-install-note">当前原因：{{ activeModel.reason }}</p>
-            <template v-if="nativeVideo && !activeModel.available && activeModel.requirements.length">
-              <p class="video-install-note">准备 {{ activeModel.label }} 需要：</p>
-              <ul class="video-missing-list"><li v-for="requirement in activeModel.requirements" :key="requirement">{{ requirement }}</li></ul>
-            </template>
-            <details v-if="!nativeVideo && activeModel.missing.length" class="video-advanced">
-              <StudioDisclosureSummary class="video-disclosure-heading">需要安装 {{ activeModel.missing.length }} 项资源 · 查看详情</StudioDisclosureSummary>
-              <ul class="video-missing-list"><li v-for="file in activeModel.missing" :key="file"><code>{{ file }}</code></li></ul>
-            </details>
-            <p v-if="activeModel.missing.length && activeModel.executable" class="video-install-note">
-              {{ nativeVideo ? '请准备所列模型与运行环境，然后重新检测。' : '请将所列资源放入 ComfyUI/models 的对应目录，然后重新检测。' }}
-            </p>
-            <p v-else-if="activeModel.missing.length" class="video-install-note">
-              此模型暂不支持生成，可选择其他模型。
-            </p>
-            <div v-if="!nativeVideo && activeModel.id === 'minimax-h3'" class="video-route-note">
-              <strong>推荐用法</strong>
-              <span>Wan 5B 快速验证镜头，H3 再做带原生音效与音乐的最终成片。</span>
-            </div>
-          </template>
-          <RouterLink v-if="status && !nativeVideo && !status.online" class="btn btn-ghost btn-block" :to="comfyControlTarget">打开服务与连接</RouterLink>
-          <RouterLink class="btn btn-ghost btn-block" :to="videoControlTarget">
-            {{ nativeVideo && !activeModel?.available ? '准备视频运行环境' : '视频引擎设置' }}
-          </RouterLink>
-        </section>
-
-        <details class="video-panel video-model-catalog">
-          <StudioDisclosureSummary class="video-disclosure-heading"><span>更换生成模型 <small>{{ activeModel?.label || '等待环境检测' }}</small></span></StudioDisclosureSummary>
-          <div class="video-model-options" data-disclosure-content>
-          <button
-            v-for="model in status?.models || []"
-            :key="model.id"
-            class="video-model-row"
-            type="button"
-            :class="{ active: selectedModelId === model.id }"
-            :aria-pressed="selectedModelId === model.id"
-            @click="chooseModel(model.id)"
-          >
-            <span>
-              <strong><ArchiveIcon v-if="selectedModelId === model.id" name="success" />{{ model.label }}</strong>
-              <small>{{ model.summary }}</small>
-            </span>
-            <em :data-state="model.available ? 'ready' : (model.executable ? 'missing' : 'planned')">
-              {{ model.available ? '已就绪' : (model.executable ? '待安装' : '待适配') }}
-            </em>
-          </button>
-          </div>
-        </details>
-
-
       </aside>
     </div>
 
@@ -402,6 +419,7 @@ import { useRoute } from 'vue-router'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import CornerFrame from '@/components/visual/CornerFrame.vue'
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 const loadShotListEditor = () => import('@/components/video/ShotListEditor.vue')
@@ -419,7 +437,10 @@ function openTaskCenter() { useTaskCenter().opened.value = true }
 const queuePanel = ref<HTMLElement | null>(null)
 const route = useRoute()
 const environmentPanel = ref<HTMLElement | null>(null)
-function showEnvironment() {
+const envDrawerOpen = ref(false)
+async function showEnvironment() {
+  envDrawerOpen.value = true
+  await nextTick()
   environmentPanel.value?.scrollIntoView({ block: 'start', behavior: 'instant' })
   environmentPanel.value?.focus({ preventScroll: true })
 }

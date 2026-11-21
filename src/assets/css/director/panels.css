@@ -83,20 +83,12 @@
   .pb .badge-offline { --badge-color:var(--warning-text); }
   /* Keep canvas actions readable while the surface enters; blur and scale soften text. */
   @keyframes directorViewIn { from { transform:translateY(4px); } to { transform:none; } }
-  @media (max-width:768px) {
-    .pb-backup-card { -webkit-backdrop-filter:blur(20px) saturate(145%); backdrop-filter:blur(20px) saturate(145%); }
-  }
-  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-    .pb-backup-card { background:var(--bg-surface); }
-  }
-@media (prefers-reduced-transparency: reduce) {
-    .pb-backup-card { -webkit-backdrop-filter:none !important; backdrop-filter:none !important; background:var(--bg-surface); }
-}
 
 @media (hover: none), (pointer: coarse) {
   .pb .focus-mode-btn:hover,
   .pb .utility-trigger:hover { transform: none !important; }
 }
-   @media (prefers-reduced-motion: reduce) {
-     :root:not([data-motion='full']) .pb .director-workspace > .col-left, :root:not([data-motion='full']) .pb .director-workspace > .col-center { animation:none !important; }
-   }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .pb .stage-placeholder { animation:none !important; }
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .pb .stage-placeholder { animation:none !important; }

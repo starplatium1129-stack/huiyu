@@ -1,6 +1,6 @@
 @reference "../../tailwind.css";
 /* Engines remain visible as segments; models use the shared selector. */
-.pb .inspector-engine-settings { @apply tw:grid tw:gap-s-2; padding-bottom:var(--s-4); }
+.pb .inspector-engine-settings { @apply tw:grid tw:gap-s-2; padding-bottom:var(--s-3); }
 .pb .base-model-picker { @apply tw:grid tw:min-w-0 tw:gap-s-2; }
 .pb .base-model-picker label { @apply tw:text-secondary tw:text-label tw:font-semibold; }
 .pb .base-model-picker .studio-select-wrapper { @apply tw:w-full tw:min-w-0; }
@@ -21,7 +21,7 @@
 .pb .inspector-workbench #stepResult .result-frame { gap:0; }
 .pb .base-model-picker { margin-top:var(--s-1); }
 .pb .base-model-picker .studio-select-value { white-space:normal; overflow-wrap:anywhere; text-align:left; }
-.pb .inspector-size-section,.pb .inspector-style-section { padding:var(--s-4) 0; border-top:1px solid var(--border-soft); }
+.pb .inspector-size-section,.pb .inspector-style-section { padding:var(--s-3) 0; border-top:1px solid var(--border-soft); }
 .pb .inspector-detail-label { display:grid; gap:var(--s-2); min-width:0; }
 .pb .inspector-detail-label>span { display:flex; gap:var(--s-2); align-items:center; }
 .pb .inspector-detail-label small { color:var(--text-muted); font-size:var(--fs-label-xs); font-weight:400; line-height:var(--lh-label); overflow-wrap:anywhere; }

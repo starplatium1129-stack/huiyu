@@ -88,39 +88,49 @@
           <div data-disclosure-content>
           <button v-if="ttsEngine === 'gpt-sovits-native'" class="btn btn-quiet btn-sm voice-import" type="button" :disabled="readingVoices || opBusy" @click="readExistingVoices">{{ readingVoices ? '读取中…' : '读取已有声线' }}</button>
           <div class="voice-grid">
-            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
-              <div class="voice-card-title">宁宁</div>
-              <template v-if="ttsEngine === 'voxcpm2'">
-                <label for="v-nene-lora">宁宁 LoRA 权重路径</label>
-                <input id="v-nene-lora" v-model="voiceNeneLora" class="input" placeholder="lora_weights.safetensors 路径" />
-              </template>
-              <template v-if="ttsEngine === 'gpt-sovits-native'">
-                <label for="v-nene-gpt">宁宁 GPT 权重路径</label>
-                <input id="v-nene-gpt" v-model="voiceNeneGpt" class="input" placeholder=".ckpt 路径" />
-                <label for="v-nene-sovits">宁宁 SoVITS 权重路径</label>
-                <input id="v-nene-sovits" v-model="voiceNeneSovits" class="input" placeholder=".pth 路径" />
-              </template>
+            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0" data-character="nene">
+              <div class="voice-card-title"><ArchiveIcon name="nene" /><span>绫地宁宁</span><small>魔女之夜 · 专属声线</small></div>
               <label for="v-nene-ref">宁宁参考音频路径</label>
-            <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
+              <input id="v-nene-ref" v-model="voiceNeneRef" class="input" placeholder="参考音频路径" />
               <label for="v-nene-prompt">宁宁提示文本（日文）</label>
-            <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
+              <input id="v-nene-prompt" v-model="voiceNenePrompt" class="input" placeholder="提示文本（日文）" />
+              <details v-if="ttsEngine === 'voxcpm2' || ttsEngine === 'gpt-sovits-native'" class="voice-weights-details">
+                <StudioDisclosureSummary>模型权重路径（.ckpt / .pth / .safetensors）</StudioDisclosureSummary>
+                <div class="voice-weights-body" data-disclosure-content>
+                  <template v-if="ttsEngine === 'voxcpm2'">
+                    <label for="v-nene-lora">宁宁 LoRA 权重路径</label>
+                    <input id="v-nene-lora" v-model="voiceNeneLora" class="input" placeholder="lora_weights.safetensors 路径" />
+                  </template>
+                  <template v-if="ttsEngine === 'gpt-sovits-native'">
+                    <label for="v-nene-gpt">宁宁 GPT 权重路径</label>
+                    <input id="v-nene-gpt" v-model="voiceNeneGpt" class="input" placeholder=".ckpt 路径" />
+                    <label for="v-nene-sovits">宁宁 SoVITS 权重路径</label>
+                    <input id="v-nene-sovits" v-model="voiceNeneSovits" class="input" placeholder=".pth 路径" />
+                  </template>
+                </div>
+              </details>
             </div>
-            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0">
-              <div class="voice-card-title">夏目</div>
-              <template v-if="ttsEngine === 'voxcpm2'">
-                <label for="v-nat-lora">夏目 LoRA 权重路径</label>
-                <input id="v-nat-lora" v-model="voiceNatsumeLora" class="input" placeholder="lora_weights.safetensors 路径" />
-              </template>
-              <template v-if="ttsEngine === 'gpt-sovits-native'">
-                <label for="v-nat-gpt">夏目 GPT 权重路径</label>
-                <input id="v-nat-gpt" v-model="voiceNatsumeGpt" class="input" placeholder=".ckpt 路径" />
-                <label for="v-nat-sovits">夏目 SoVITS 权重路径</label>
-                <input id="v-nat-sovits" v-model="voiceNatsumeSovits" class="input" placeholder=".pth 路径" />
-              </template>
+            <div class="voice-card tw:grid tw:gap-s-2 tw:min-w-0" data-character="natsume">
+              <div class="voice-card-title"><ArchiveIcon name="natsume" /><span>四季夏目</span><small>琥珀夕照 · 专属声线</small></div>
               <label for="v-nat-ref">夏目参考音频路径</label>
-            <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
+              <input id="v-nat-ref" v-model="voiceNatsumeRef" class="input" placeholder="参考音频路径" />
               <label for="v-nat-prompt">夏目提示文本（日文）</label>
-            <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
+              <input id="v-nat-prompt" v-model="voiceNatsumePrompt" class="input" placeholder="提示文本（日文）" />
+              <details v-if="ttsEngine === 'voxcpm2' || ttsEngine === 'gpt-sovits-native'" class="voice-weights-details">
+                <StudioDisclosureSummary>模型权重路径（.ckpt / .pth / .safetensors）</StudioDisclosureSummary>
+                <div class="voice-weights-body" data-disclosure-content>
+                  <template v-if="ttsEngine === 'voxcpm2'">
+                    <label for="v-nat-lora">夏目 LoRA 权重路径</label>
+                    <input id="v-nat-lora" v-model="voiceNatsumeLora" class="input" placeholder="lora_weights.safetensors 路径" />
+                  </template>
+                  <template v-if="ttsEngine === 'gpt-sovits-native'">
+                    <label for="v-nat-gpt">夏目 GPT 权重路径</label>
+                    <input id="v-nat-gpt" v-model="voiceNatsumeGpt" class="input" placeholder=".ckpt 路径" />
+                    <label for="v-nat-sovits">夏目 SoVITS 权重路径</label>
+                    <input id="v-nat-sovits" v-model="voiceNatsumeSovits" class="input" placeholder=".pth 路径" />
+                  </template>
+                </div>
+              </details>
             </div>
           </div>
           </div>

@@ -48,7 +48,7 @@
             </span>
             <div class="history-actions" role="group" aria-label="历史操作">
               <button class="btn btn-ghost btn-sm" type="button" @click="$emit('resume', item)">继续</button>
-              <StudioTooltip content="把这张图加入分镜短片待带入列表">
+              <StudioTooltip anchor content="把这张图加入分镜短片待带入列表">
               <button class="btn btn-quiet btn-icon btn-sm" type="button" aria-label="加入分镜" :disabled="transferBusy" :aria-busy="transferBusy" @click="$emit('to-shots', item)"><ArchiveIcon name="gallery" /></button>
               </StudioTooltip>
               <StudioTooltip content="复制配方"><button class="btn btn-quiet btn-icon btn-sm" type="button" aria-label="复制配方" @click="$emit('duplicate', item)"><ArchiveIcon name="copy" /></button></StudioTooltip>

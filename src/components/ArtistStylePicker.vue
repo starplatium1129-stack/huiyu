@@ -128,17 +128,20 @@
               {{ item.option.cnName || item.option.name }}
               <ArchiveIcon name="close" />
             </button>
-            <button
+            <StudioTooltip
               v-if="engine !== 'moss'"
-              type="button"
-              class="artist-weight-pill"
-              :class="weightClass(item.weight)"
-              :title="`当前权重 ${item.weight}，点击切换档位：0.7(辅) → 1.0(标) → 1.15(主)`"
-              :aria-label="`${item.option.cnName || item.option.name} 权重 ${item.weight}，点击切换`"
-              @click="cycleWeight(item.id)"
+              :content="`当前权重 ${item.weight}，点击切换档位：0.7(辅) → 1.0(标) → 1.15(主)`"
             >
-              {{ weightLabel(item.weight) }}
-            </button>
+              <button
+                type="button"
+                class="artist-weight-pill"
+                :class="weightClass(item.weight)"
+                :aria-label="`${item.option.cnName || item.option.name} 权重 ${item.weight}，点击切换`"
+                @click="cycleWeight(item.id)"
+              >
+                {{ weightLabel(item.weight) }}
+              </button>
+            </StudioTooltip>
           </div>
           <span v-if="!selectedItems.length" class="artist-selection-empty">自然画风</span>
         </div>

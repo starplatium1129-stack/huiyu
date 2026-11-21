@@ -52,8 +52,21 @@
 .pb :is(.outfit-preset,.tag-results button):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .pb .tag-option-check { grid-column:2; grid-row:1 / span 2; align-self:center; width:16px; height:16px; color:var(--text-primary); opacity:0; }
 .pb .selected > .tag-option-check { opacity:1; }
+.pb .tag-suggest-wrap { position:relative; min-width:0; }
 .pb .tag-input { width:100%; min-height:var(--control-height); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-base); color:var(--text-primary); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); outline:none; }
-.pb .tag-input:focus { border-color:var(--accent); box-shadow:var(--focus-shadow); }
+.pb .tag-input:focus { border-color:var(--border-strong); box-shadow:var(--focus-shadow); }
+.pb .tag-suggest-list { position:absolute; inset-inline:0; top:calc(100% + var(--s-1)); z-index:var(--z-popover); display:grid; gap:2px; max-height:240px; margin:0; padding:var(--s-1); overflow-y:auto; overscroll-behavior:contain; scrollbar-width:thin; list-style:none; border:1px solid var(--border-strong); border-radius:var(--r-lg); background:var(--bg-surface); box-shadow:var(--shadow-lg); }
+.pb .tag-suggest-option { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); min-height:var(--control-height-sm); padding:var(--s-2) var(--s-3); border-radius:var(--r-md); color:var(--text-primary); cursor:pointer; }
+.pb .tag-suggest-option.is-active { background:var(--bg-elevated); }
+.pb .tag-suggest-option.is-selected { color:var(--text-primary); }
+.pb .tag-suggest-copy { display:grid; gap:2px; min-width:0; }
+.pb .tag-suggest-copy strong { font:600 var(--fs-label-sm)/var(--lh-label) var(--font-sans); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pb .tag-suggest-copy small { color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.pb .tag-suggest-check { flex:none; width:14px; height:14px; color:var(--text-primary); }
+@media (forced-colors:active) {
+  .pb .tag-suggest-list { background:Canvas; border-color:CanvasText; }
+  .pb .tag-suggest-option.is-active { outline:2px solid Highlight; outline-offset:-2px; }
+}
 .pb .tag-browser { display:flex; flex-direction:column; gap:var(--s-2); min-width:0; }
 .pb .tag-browser > :not(.tag-results) { flex:none; }
 .pb .tag-search-row { display:flex; align-items:center; gap:var(--s-2); min-width:0; }

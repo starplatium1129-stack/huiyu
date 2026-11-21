@@ -1,9 +1,10 @@
 /* Image tools share one row geometry before and after their dialogs load. */
-.pb .image-tools { display:grid; align-content:start; gap:var(--s-6); min-width:0; }
-.pb .image-tools-section { display:grid; gap:var(--s-2); min-width:0; }
+.pb .image-tools { display:grid; align-content:start; gap:var(--s-4); min-width:0; }
+.pb .image-tools-section { display:grid; gap:var(--s-1); min-width:0; }
+.pb .image-tools-section + .image-tools-section { padding-top:var(--s-3); border-top:1px solid var(--border-soft); }
 .pb .image-tools-section > h4 { margin:0; padding-inline:var(--s-1); color:var(--text-secondary); font:600 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
-.pb .image-tool-list { display:grid; min-width:0; border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
-.pb .image-tool-list > :not(:first-child) { border-top:1px solid var(--border-soft); }
+.pb .image-tool-list { display:grid; min-width:0; border:0; border-radius:0; background:transparent; }
+.pb .image-tool-list > :not(:first-child) { border-top:1px solid color-mix(in srgb, var(--border-soft) 72%, transparent); }
 .pb .image-tool-list > .studio-tooltip-anchor[data-anchor],.pb .image-tools .image-tool-entry { display:grid; width:100%; min-width:0; }
 .pb .image-tools .image-tool-action { display:flex; align-items:center; justify-content:flex-start; gap:var(--s-3); width:100%; min-width:0; min-height:48px; margin:0; padding:var(--s-3); border:0; border-radius:var(--r-sm); background:transparent; box-shadow:none; color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); text-align:start; white-space:normal; }
 .pb .image-tools .image-tool-action > .archive-icon { width:18px; height:18px; flex:none; color:var(--text-secondary); }

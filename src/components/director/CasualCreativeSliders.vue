@@ -10,41 +10,34 @@
 
     <p v-if="fixedSampling" class="casual-slider-hint">固定采样参数：CFG {{ currentCfg }} · {{ currentSteps }} 步</p>
     <template v-else>
-    <div class="casual-slider-group">
-      <div class="casual-slider-label-row">
-        <label :for="cfgSliderId" class="casual-slider-name">画面遵循强度 <small>CFG</small></label>
-        <output :for="cfgSliderId" class="casual-slider-value">{{ currentCfg }}</output>
-      </div>
-      <input
-        :id="cfgSliderId"
-        type="range"
-        :min="cfgMin"
-        :max="cfgMax"
-        step="0.5"
-        :value="currentCfg"
-        :disabled="disabled"
-        class="casual-range-input"
-        @input="onCfgInput"
-      />
-    </div>
+    <StudioSlider
+      :id="cfgSliderId"
+      :model-value="currentCfg"
+      :min="cfgMin"
+      :max="cfgMax"
+      :step="0.5"
+      :disabled="disabled"
+      compact
+      class="casual-range-input"
+      @update:model-value="onCfgChange"
+    >
+      <template #label>画面遵循强度 <small>CFG</small></template>
+    </StudioSlider>
 
-    <div class="casual-slider-group">
-      <div class="casual-slider-label-row">
-        <label :for="stepsSliderId" class="casual-slider-name">采样精细度 <small>Steps</small></label>
-        <output :for="stepsSliderId" class="casual-slider-value">{{ currentSteps }} 步</output>
-      </div>
-      <input
-        :id="stepsSliderId"
-        type="range"
-        min="1"
-        :max="stepsMax"
-        step="1"
-        :value="currentSteps"
-        :disabled="disabled"
-        class="casual-range-input"
-        @input="onStepsInput"
-      />
-    </div>
+    <StudioSlider
+      :id="stepsSliderId"
+      :model-value="currentSteps"
+      :min="1"
+      :max="stepsMax"
+      :step="1"
+      unit=" 步"
+      :disabled="disabled"
+      compact
+      class="casual-range-input"
+      @update:model-value="onStepsChange"
+    >
+      <template #label>采样精细度 <small>Steps</small></template>
+    </StudioSlider>
     </template>
   </div>
 </template>
@@ -52,6 +45,7 @@
 <script setup lang="ts">
 import { computed, useId } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioSlider from '@/components/ui/StudioSlider.vue'
 import { resolveDrawCapabilities } from '@/utils/drawCapabilities'
 import type { DrawEngine } from '@/types/promptHistory'
 import type { SDParams } from '@/utils/promptBuilderPersistence'
@@ -94,8 +88,7 @@ const currentSteps = computed(() => {
   return props.animaState.steps ?? 28
 })
 
-function onCfgInput(event: Event) {
-  const val = Number((event.target as HTMLInputElement).value)
+function onCfgChange(val: number) {
   if (props.drawEngine === 'sd') {
     emit('update:sdParams', { ...props.sdParams, cfg: val })
     emit('touch-sd', 'cfg')
@@ -104,8 +97,7 @@ function onCfgInput(event: Event) {
   }
 }
 
-function onStepsInput(event: Event) {
-  const val = Number((event.target as HTMLInputElement).value)
+function onStepsChange(val: number) {
   if (props.drawEngine === 'sd') {
     emit('update:sdParams', { ...props.sdParams, steps: val })
     emit('touch-sd', 'steps')
@@ -119,9 +111,9 @@ function onStepsInput(event: Event) {
 @reference "../../assets/css/tailwind.css";
 
 .casual-creative-sliders {
-  @apply tw:p-s-3 tw:rounded-lg tw:grid tw:gap-s-3;
-  background: var(--bg-surface);
-  border: 1px solid var(--border-soft);
+  @apply tw:pt-s-2 tw:grid tw:gap-s-3;
+  background: transparent;
+  border: 0;
 }
 
 .casual-sliders-header {
@@ -139,31 +131,8 @@ function onStepsInput(event: Event) {
   font-size: var(--fs-label-xs);
   padding: 2px var(--s-2);
   border-radius: var(--r-pill);
-  background: var(--accent-soft);
+  background: var(--bg-elevated);
   border: 1px solid var(--border-soft);
-}
-
-.casual-slider-group {
-  @apply tw:grid tw:gap-s-1;
-}
-
-.casual-slider-label-row {
-  @apply tw:flex tw:flex-wrap tw:items-center tw:justify-between tw:gap-s-2;
-}
-
-.casual-slider-name {
-  @apply tw:text-secondary;
-  font-size: var(--fs-label);
-}
-
-.casual-slider-value {
-  @apply tw:font-medium tw:font-mono;
-  font-size: var(--fs-label);
-  color: var(--accent);
-  font-variant-numeric: tabular-nums;
-  min-inline-size:7ch;
-  text-align:end;
-  white-space:nowrap;
 }
 
 .casual-range-input {
@@ -173,9 +142,5 @@ function onStepsInput(event: Event) {
 .casual-slider-hint {
   @apply tw:m-0 tw:text-secondary tw:leading-body;
   font-size: var(--fs-label-xs);
-}
-
-.casual-creative-sliders.is-disabled .casual-slider-value {
-  color: var(--text-disabled);
 }
 </style>

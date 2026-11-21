@@ -42,7 +42,7 @@
   --drawing-sticky-bottom-gap: 30px;
   --drawing-anchor-offset: var(--s-5);
   max-width:none;
-  padding:24px 32px;
+  padding:16px 28px 20px;
 }
 .pb.journal-workspace .director-workspace {
   @apply tw:grid;

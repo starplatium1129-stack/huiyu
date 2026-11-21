@@ -46,12 +46,16 @@
         <div v-if="violations.length" class="art-warn show">
           <ArchiveIcon name="warning" /> 检测到 {{ violations.length }} 个不建议使用的标签：{{ violations.join('、') }}
         </div>
-        <div class="prompt-label">色彩预设词条</div>
-        <div class="prompt-code">
-          <template v-for="(tag, index) in colorizedPrompt" :key="index">
-            {{ index ? ',' : '' }}<span v-if="tag.warn" class="violate">{{ tag.text }}</span><template v-else>{{ tag.text }}</template>
-          </template>
-        </div>
+        <details class="prompt-code-disclosure">
+          <StudioDisclosureSummary>查看英文色彩预设词条</StudioDisclosureSummary>
+          <div data-disclosure-content>
+            <div class="prompt-code">
+              <template v-for="(tag, index) in colorizedPrompt" :key="index">
+                {{ index ? ',' : '' }}<span v-if="tag.warn" class="violate">{{ tag.text }}</span><template v-else>{{ tag.text }}</template>
+              </template>
+            </div>
+          </div>
+        </details>
         <div class="result-actions tw:flex tw:flex-wrap tw:gap-s-2">
           <StudioCopyButton class="btn btn-ghost" label="复制 Prompt" :content-key="selected.id" :action="copyPrompt" />
           <button class="btn btn-ghost" type="button" @click="exportTxt"><ArchiveIcon name="download" /> 导出 .txt</button>
@@ -138,7 +142,7 @@ const MOODS = COLOR_MOODS.map(mood => ({ ...mood, palette: mood.colors, mapping:
 const route = useRoute(), router = useRouter()
 function routeMood() { return MOODS.find(mood => mood.id === route.query.mood) ?? null }
 const selected = ref<(typeof MOODS)[number] | null>(routeMood())
-const notebookOpen = ref(route.query.notebook === '1')
+const notebookOpen = ref(route.query.notebook !== '0')
 const notebookRevealed = ref(notebookOpen.value)
 watch(notebookOpen, open => { if (open) notebookRevealed.value = true }, { flush: 'sync' })
 let restoringReading = false
@@ -146,17 +150,17 @@ watch(() => [route.path, route.query.mood, route.query.notebook], () => {
   if (route.path !== '/color-script') return
   restoringReading = true
   selected.value = routeMood()
-  notebookOpen.value = route.query.notebook === '1'
+  notebookOpen.value = route.query.notebook !== '0'
   restoringReading = false
 }, { flush: 'sync' })
 watch([selected, notebookOpen], ([mood, notebook]) => {
   if (restoringReading || route.path !== '/color-script') return
   const id = mood?.id ?? '', requested = typeof route.query.mood === 'string' ? route.query.mood : ''
-  if (id === requested && notebook === (route.query.notebook === '1')) return
+  if (id === requested && notebook === (route.query.notebook !== '0')) return
   const query = { ...route.query }
   if (id) query.mood = id
   else delete query.mood
-  if (notebook) query.notebook = '1'
+  if (!notebook) query.notebook = '0'
   else delete query.notebook
   void router.replace({ path: route.path, query, hash: route.hash })
 }, { flush: 'sync' })
@@ -259,8 +263,12 @@ function exportTxt() {
 .mapping-item { background:var(--bg-elevated); border:1px solid var(--border-soft); @apply tw:rounded-md tw:p-s-3; }
 .mapping-label { @apply tw:text-label-sm tw:text-muted tw:uppercase; letter-spacing:.05em; @apply tw:mb-s-1; }
 .mapping-value { @apply tw:text-body tw:font-semibold; }
-.prompt-label { @apply tw:mb-s-1 tw:text-accent tw:text-label-sm tw:font-semibold; letter-spacing:.06em; @apply tw:uppercase; }
-.prompt-code { @apply tw:p-s-3; background:var(--bg-elevated); @apply tw:rounded-md tw:font-mono tw:text-mono-sm tw:leading-loose tw:mb-s-3; word-break:break-word; }
+.prompt-code-disclosure { margin-bottom:var(--s-3); border-top:1px solid var(--border-soft); padding-top:var(--s-2); }
+.prompt-code-disclosure > summary { display:flex; align-items:center; justify-content:space-between; gap:var(--s-2); min-height:36px; padding:var(--s-1) var(--s-2); margin-inline:calc(-1 * var(--s-2)); border-radius:var(--r-sm); cursor:pointer; color:var(--text-secondary); font-size:var(--fs-label-sm); list-style:none; }
+.prompt-code-disclosure > summary::-webkit-details-marker { display:none; }
+.prompt-code-disclosure > summary:hover { color:var(--text-primary); }
+.prompt-code-disclosure > summary:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.prompt-code { @apply tw:p-s-3; margin-top:var(--s-2); background:var(--bg-elevated); @apply tw:rounded-md tw:font-mono tw:text-mono-sm tw:leading-loose; word-break:break-word; }
 :deep(.violate) { @apply tw:text-danger-text; text-decoration:underline wavy; }
 .art-warn { @apply tw:hidden tw:items-center tw:gap-s-2; background:color-mix(in srgb,var(--warning) 12%,transparent); border:1px solid var(--warning); @apply tw:rounded-md; padding:var(--s-2) var(--s-3); @apply tw:mb-s-3 tw:text-warning-text tw:text-label; }
 .art-warn.show { @apply tw:flex; }

@@ -54,24 +54,26 @@
             </div>
 
             <div class="batch-scene-grid">
-              <button
+              <StudioTooltip
                 v-for="scene in filteredScenes.slice(0, sceneLimit)"
                 :key="scene.id"
-                type="button"
-                class="batch-scene-card"
-                :class="{ selected: selectedSceneSet.has(scene.id) }"
-                :aria-pressed="selectedSceneSet.has(scene.id)"
-                @click="toggleScene(scene.id)"
+                :content="scene.adult ? '包含成人分级内容' : null"
               >
-                <span class="batch-scene-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
-                <strong class="batch-scene-title">{{ scene.title }}</strong>
-                <small class="batch-scene-meta">
-                  {{ sceneOwners.get(scene.characterId ?? '') }} · {{ scene.category }}<template v-if="scene.location"> · {{ scene.location }}</template>
-                  <StudioTooltip content="成人场景">
-                    <ArchiveIcon v-if="scene.adult" name="lock" class="batch-scene-adult" />
-                  </StudioTooltip>
-                </small>
-              </button>
+                <button
+                  type="button"
+                  class="batch-scene-card"
+                  :class="{ selected: selectedSceneSet.has(scene.id) }"
+                  :aria-pressed="selectedSceneSet.has(scene.id)"
+                  @click="toggleScene(scene.id)"
+                >
+                  <span class="batch-scene-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
+                  <strong class="batch-scene-title">{{ scene.title }}</strong>
+                  <small class="batch-scene-meta">
+                    <span>{{ sceneOwners.get(scene.characterId ?? '') }} · {{ scene.category }}<template v-if="scene.location"> · {{ scene.location }}</template></span>
+                    <span v-if="scene.adult" class="batch-scene-adult-badge" aria-label="成人场景"><ArchiveIcon name="lock" class="batch-scene-adult" />成人</span>
+                  </small>
+                </button>
+              </StudioTooltip>
               <p v-if="!filteredScenes.length" class="batch-empty">
                 未找到匹配场景
               </p>

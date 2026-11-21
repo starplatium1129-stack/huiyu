@@ -1,5 +1,79 @@
 <template>
-  <div class="utility-menu">
+  <StudioDialog
+    v-if="dialogMode"
+    v-model:open="utilityOpen"
+    :title="launcherLabel || '数据工具'"
+    size="sm"
+  >
+    <div v-if="backupStale" class="utility-note" role="status">
+      <ArchiveIcon name="health" /> {{ backupReminder }}
+    </div>
+    <div class="utility-label tw:text-muted">本地数据</div>
+    <p class="backup-scope">{{ backup.desktopActive.value ? '完整备份包含工作区记录与原始媒体，可迁移至其他设备恢复。' : '备份 JSON 包含作品记录、图片与配置，可通过「从备份恢复」导入。' }}</p>
+    <div v-if="backup.desktopActive.value && backup.portable.available" class="utility-actions tw:grid tw:gap-s-1">
+      <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('export')"><ArchiveIcon name="download" />保存完整备份包…</button>
+      <button type="button" class="btn btn-ghost wide" :disabled="backup.busy.value" @click="backup.portable.run('import')"><ArchiveIcon name="upload" />从完整备份包恢复…</button>
+      <p v-if="backup.portable.progress.value" role="status">{{ backup.portable.progress.value }}</p>
+      <button v-if="backup.portable.progress.value" type="button" class="btn btn-ghost wide" @click="backup.portable.cancel">取消完整备份操作</button>
+      <button v-if="backup.portable.candidate.value" type="button" class="btn btn-primary wide" :disabled="backup.busy.value" @click="backup.portable.activate">切换到恢复的工作区</button>
+    </div>
+    <div class="utility-actions tw:grid tw:gap-s-1">
+      <StudioTooltip anchor :content="backup.desktopActive.value ? '完整备份保存在本机工作区，并下载恢复凭证' : '导出 JSON 恢复文件（含全部图片数据），用于日后「从备份恢复」'">
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportBackup()">
+          <ArchiveIcon name="download" /> {{ backup.desktopActive.value ? '创建工作区备份' : '导出备份 JSON' }}
+        </button>
+      </StudioTooltip>
+      <div v-if="backup.exportProgress.value" class="utility-note wide" role="status" aria-live="polite">
+        {{ backup.workspaceProgress.value || `正在备份图片：${backup.exportProgress.value.completed} / ${backup.exportProgress.value.total}` }}
+      </div>
+      <button v-if="backup.exportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">取消当前备份操作</button>
+      <StudioTooltip anchor :content="backup.desktopActive.value ? backup.nativeImageExport ? '选择目录，将作品原图保存到新的独立文件夹' : '将当前作品记录引用的本机原图逐张下载为独立图片文件' : '逐张下载已保存的全部原图（包含未入册与回收站图片）'">
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.exportImages()">
+          <ArchiveIcon name="image" /> 导出作品图片
+        </button>
+      </StudioTooltip>
+      <div v-if="backup.imageExportProgress.value" class="utility-note wide" role="status" aria-live="polite">
+        正在导出原图：{{ backup.imageExportProgress.value.completed }} / {{ backup.imageExportProgress.value.total }}{{ backup.desktopActive.value && backup.nativeImageExport ? '（已完成文件会保留）' : '（已开始的下载无法撤销）' }}
+      </div>
+      <button v-if="backup.imageExportProgress.value" class="btn btn-ghost wide" type="button" @click="backup.cancelExport()">停止后续图片导出</button>
+      <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="pickBackupFile">
+        <ArchiveIcon name="upload" /> 从备份恢复
+      </button>
+    </div>
+    <div class="utility-divider tw:h-[1px]"></div>
+    <p class="backup-scope">仅导出原图请选「导出作品图片」；角色、服装与场景请在<RouterLink to="/scene-manager">内容维护</RouterLink>单独导出。</p>
+    <div v-if="getBlueprint" class="utility-label tw:text-muted">创作蓝图</div>
+    <div v-if="getBlueprint" class="utility-actions tw:grid tw:gap-s-1">
+      <StudioTooltip content="将当前工作台的所有场景、故事、提示词与出图参数导出为独立蓝图配置文件">
+        <button class="btn btn-ghost wide" type="button" @click="exportBlueprint">
+          <ArchiveIcon name="spark" /> 导出当前蓝图 JSON
+        </button>
+      </StudioTooltip>
+      <StudioTooltip content="从蓝图配置文件导入并回填工作台设置">
+        <button class="btn btn-ghost wide" type="button" @click="pickBlueprintFile">
+          <ArchiveIcon name="upload" /> 导入蓝图配置
+        </button>
+      </StudioTooltip>
+    </div>
+    <div class="utility-divider tw:h-[1px]"></div>
+    <div class="utility-label tw:text-muted">存储维护</div>
+    <div class="utility-actions tw:grid tw:gap-s-1">
+      <template v-if="migration.recoveryPending.value">
+        <p class="utility-note wide" role="status">迁移激活结果未确认，原资料保持只读。核对只读取本机身份；若无匹配记录，请保留备份并联系维护人员。</p>
+        <button class="btn btn-ghost wide" type="button" data-migration-control :disabled="migration.busy.value" @click="migration.reconcile()">只读核对激活结果</button>
+      </template>
+      <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate()"><ArchiveIcon name="upload" /> 迁移至本机工作区</button>
+      <button v-if="migration.available.value" class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value" @click="migration.migrate(true)"><ArchiveIcon name="refresh" /> 继续已备份的迁移</button>
+      <StudioTooltip v-if="migration.bundledAvailable.value" anchor :content="migration.bundledVerified.value ? '完成备份核对后，下次启动使用程序内置界面' : '此版本尚未完成桌面启动验收，继续使用当前入口'">
+        <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value || migration.busy.value || !migration.bundledVerified.value" @click="migration.enableBundled()"><ArchiveIcon name="spark" /> 启用独立启动界面</button>
+      </StudioTooltip>
+      <div v-if="migration.progress.value" class="utility-note wide" role="status" aria-live="polite">{{ migration.progress.value }}</div>
+      <button v-if="migration.busy.value" class="btn btn-ghost wide" type="button" data-migration-control :disabled="!migration.canCancel.value" @click="migration.cancel()">取消迁移</button>
+      <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="backup.healthCheck()"><ArchiveIcon name="health" /> 存储体检</button>
+      <button class="btn btn-ghost wide" type="button" :disabled="backup.busy.value" @click="cleanOrphanImages"><ArchiveIcon name="broom" /> 清理未引用图片</button>
+    </div>
+  </StudioDialog>
+  <div v-else class="utility-menu">
   <StudioPopover v-model:open="utilityOpen" :label="launcherLabel || '数据工具'" content-class="studio-data-tools"
     @close-auto-focus="onMenuCloseAutoFocus">
     <template #trigger>
@@ -131,6 +205,7 @@
 
 <script setup lang="ts">
 import FluidTransition from '@/components/visual/FluidTransition.vue'
+import StudioDialog from '@/components/ui/StudioDialog.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { exportDirectorBlueprint } from '@/utils/directorBlueprintFile'
@@ -145,6 +220,7 @@ import '@/assets/css/director/components/PromptDataTools.css'
 const props = defineProps<{
   getBlueprint?: () => Record<string, unknown>
   launcherLabel?: string
+  dialogMode?: boolean
 }>()
 
 const emit = defineEmits<{
@@ -191,7 +267,10 @@ const { returnFocus } = useFocusTrap(backupCardEl, () => backup.pending.value !=
   onEscape: () => { if (!backup.busy.value) discard() },
 })
 watch(() => backup.pending.value || backup.pendingWorkspace.value, pending => {
-  if (pending) returnFocus.value = utilityTrigger.value
+  if (pending) {
+    returnFocus.value = utilityTrigger.value
+      || (document.getElementById('director-utility-menu-trigger') as HTMLButtonElement | null)
+  }
 }, { flush:'post' })
 
 function pickBackupFile() {

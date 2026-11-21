@@ -7,10 +7,10 @@
       <span v-if="restricted && imageUrl && !failed" class="scene-reference-mask tw:absolute tw:grid tw:text-primary tw:text-label">分级参考 · 已模糊</span>
     </div>
     <figcaption>
-      <span class="scene-reference-label tw:block tw:mb-s-2 tw:text-secondary tw:text-label-xs">场景参考</span>
-      <strong>{{ scene.title }}</strong>
-      <p>观察场景氛围，出图以当前设置为准。</p>
-      <dl class="scene-reference-settings tw:flex tw:flex-wrap tw:m-0 tw:text-label">
+      <span class="scene-reference-label">SCENE REFERENCE · 场景参考</span>
+      <strong class="scene-reference-title">{{ scene.title }}</strong>
+      <p class="scene-reference-quote">{{ scene.story || '观察场景氛围，出图以当前设置为准。' }}</p>
+      <dl class="scene-reference-settings scene-reference-filmbar" aria-label="当前镜头与画幅参数">
         <div><dt>镜头</dt><dd>{{ shot }}</dd></div>
         <div><dt>构图</dt><dd>{{ composition }}</dd></div>
         <div><dt>光照</dt><dd>{{ lighting }}</dd></div>
@@ -39,9 +39,21 @@ const scene = computed(() => {
   const subject = pb.subject
   if (subject.kind === 'popular') {
     const blueprint = pb.sceneBlueprints.find(item => item.id === subject.blueprintId && item.characterId === subject.characterId)
-    return blueprint ? { title: blueprint.title, id: catalogShowcaseId({ kind: 'blueprint', characterId: subject.characterId, id: blueprint.id }) } : null
+    return blueprint
+      ? {
+          title: blueprint.title,
+          story: blueprint.story || pb.story || '',
+          id: catalogShowcaseId({ kind: 'blueprint', characterId: subject.characterId, id: blueprint.id }),
+        }
+      : null
   }
-  return pb.activeScene ? { title: pb.activeScene.title, id: pb.activeScene.id } : null
+  return pb.activeScene
+    ? {
+        title: pb.activeScene.title,
+        story: pb.activeScene.story || pb.story || '',
+        id: pb.activeScene.id,
+      }
+    : null
 })
 const { loading, entryFor, thumbUrl, imageUrl: originalUrl } = useShowcaseAssets()
 const entry = computed(() => {
@@ -70,11 +82,13 @@ const lighting = computed(() => LIGHTING.find(item => item.id === pb.selections.
 .scene-reference-mask { inset:0; place-items:center; background:var(--art-scrim); color:var(--on-art-primary); }
 .scene-reference-empty { display:grid; justify-items:center; align-content:center; gap:20px; height:100%; line-height:var(--lh-loose); color:var(--text-primary); }
 .scene-reference-empty .archive-icon { width:32px; height:32px; }
-figcaption { flex:none; max-width:100%; }
-figcaption strong { display:none; }
-figcaption p { margin:8px 0 12px; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-loose); }
-.scene-reference-settings { display:flex; flex-wrap:wrap; justify-content:center; gap:12px 24px; margin:0; }
-.scene-reference-settings dt { color:var(--text-secondary); }
-.scene-reference-settings dd { color:var(--text-primary); margin:4px 0 0; }
-@container canvas-column (max-width:440px) { .scene-reference-settings { gap:8px; } }
+figcaption { flex:none; max-width:min(540px, 100%); display:grid; gap:6px; justify-items:center; }
+.scene-reference-label { display:inline-flex; align-items:center; gap:var(--s-1); color:var(--character-ink, var(--accent)); font:600 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); letter-spacing:.08em; }
+.scene-reference-title { display:block; color:var(--text-primary); font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-serif); overflow-wrap:anywhere; }
+.scene-reference-quote { display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; margin:0; max-width:44ch; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
+.scene-reference-filmbar { display:inline-flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:6px 14px; margin:4px 0 0; padding:4px 12px; border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-base); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+.scene-reference-filmbar > div { display:inline-flex; align-items:baseline; gap:4px; }
+.scene-reference-filmbar dt { color:var(--text-muted); }
+.scene-reference-filmbar dd { margin:0; color:var(--text-primary); font-weight:500; }
+@container canvas-column (max-width:440px) { .scene-reference-filmbar { gap:4px 10px; border-radius:var(--r-md); } }
 </style>

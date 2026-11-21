@@ -1,5 +1,5 @@
 /* A single persistent disclosure owns the voice form; shared controls own feedback. */
-.pb .voice-studio { width:100%; min-width:0; margin-top:var(--s-3); padding:var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-base); }
+.pb .voice-studio { width:100%; min-width:0; margin-top:var(--s-2); padding:var(--s-3) 0 0; border:0; border-top:1px solid var(--border-soft); border-radius:0; background:transparent; }
 .pb .voice-head { display:grid; grid-template-columns:minmax(0,1fr) auto; align-items:center; gap:var(--s-2); }
 .pb .voice-headline { display:flex; flex-wrap:wrap; align-items:center; gap:var(--s-2); min-width:0; }
 .pb .voice-title { margin:0; color:var(--text-primary); font:600 var(--fs-body)/var(--lh-label) var(--font-sans); }

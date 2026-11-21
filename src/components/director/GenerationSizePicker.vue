@@ -77,16 +77,45 @@ function applyCustom() {
 </script>
 <template>
   <div class="generation-size-picker" :class="{ 'is-compact': compact }" role="group" aria-label="画幅比例">
-    <div class="size-picker-heading"><strong>画幅</strong><span>{{ size.replace('x', ' × ') }}</span></div>
+    <div class="size-picker-heading">
+      <strong>画幅</strong>
+      <div class="size-picker-heading-right">
+        <span class="size-picker-current">{{ size.replace('x', ' × ') }}</span>
+        <StudioPopover v-if="customSize && !compact" label="自定义画幅" :open="customOpen" side="bottom" @update:open="openCustom">
+          <template #trigger>
+            <button type="button" class="btn btn-quiet btn-sm size-picker-custom" aria-label="自定义画幅" :disabled="busy">自定义</button>
+          </template>
+          <form class="size-picker-form" novalidate @submit.prevent="applyCustom">
+            <div class="size-picker-fields">
+              <label :for="fieldId + '-width'">宽度（px）
+                <input :id="fieldId + '-width'" v-model.number="customWidth" class="input" type="number" inputmode="numeric"
+                  :min="customSize.min" :max="customSize.max" :step="customSize.step" :aria-invalid="showError || undefined"
+                  :aria-describedby="fieldId + '-help'">
+              </label>
+              <label :for="fieldId + '-height'">高度（px）
+                <input :id="fieldId + '-height'" v-model.number="customHeight" class="input" type="number" inputmode="numeric"
+                  :min="customSize.min" :max="customSize.max" :step="customSize.step" :aria-invalid="showError || undefined"
+                  :aria-describedby="fieldId + '-help'">
+              </label>
+            </div>
+            <p :id="fieldId + '-help'">每边 {{ customSize.min }}–{{ customSize.max }} px，为 {{ customSize.step }} 的倍数，总面积最多 {{ customSize.maxPixels.toLocaleString('zh-CN') }} 像素。</p>
+            <p v-if="showError" class="size-picker-error" role="alert">宽度或高度超出画幅范围，请调整后应用。</p>
+            <button type="submit" class="btn btn-primary" :disabled="busy">应用尺寸</button>
+          </form>
+        </StudioPopover>
+      </div>
+    </div>
     <StudioSelect v-if="compact || engine === 'sd'" label="画幅比例" :model-value="size" :disabled="busy"
       :groups="engine === 'sd' ? sizeGroups : undefined" :options="engine === 'sd' ? undefined : sizeOptions" @update:model-value="change" />
     <div v-else class="size-picker-grid">
-      <button v-for="card in cards" :key="card.value" type="button" data-spring-button :aria-pressed="size === card.value" :disabled="busy" @click="change(card.value)">
-        <i :style="{ aspectRatio: card.ratio }" data-press-content aria-hidden="true"></i><span>{{ card.label }}</span><small>{{ card.value.replace('x', ' × ') }}</small>
-        <span class="size-picker-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
+      <button v-for="card in cards" :key="card.value" type="button" class="size-ratio-chip" data-spring-button :aria-pressed="size === card.value" :disabled="busy" @click="change(card.value)">
+        <i :style="{ aspectRatio: card.ratio }" data-press-content aria-hidden="true"></i>
+        <span class="size-chip-label">{{ card.label }}</span>
+        <small class="size-chip-res">{{ card.value.replace('x', '×') }}</small>
+        <ArchiveIcon v-if="size === card.value" name="success" class="size-chip-check" />
       </button>
     </div>
-    <StudioPopover v-if="customSize" label="自定义画幅" :open="customOpen" :side="compact ? 'top' : 'bottom'" @update:open="openCustom">
+    <StudioPopover v-if="customSize && compact" label="自定义画幅" :open="customOpen" side="top" @update:open="openCustom">
       <template #trigger>
         <button type="button" class="btn btn-quiet size-picker-custom" aria-label="自定义画幅" :disabled="busy">自定义</button>
       </template>
@@ -108,34 +137,26 @@ function applyCustom() {
         <button type="submit" class="btn btn-primary" :disabled="busy">应用尺寸</button>
       </form>
     </StudioPopover>
-    <p v-if="!compact">{{ engine === 'moss' ? '选择下一张图的竖幅、横幅或方形画布。' : '画幅影响下一次输出，参考图保持原始比例。' }}</p>
   </div>
 </template>
 <style scoped>
 .generation-size-picker { min-width:0; }
 .generation-size-picker:not(.is-compact) { container:generation-size / inline-size; }
-.size-picker-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-3); }
+.size-picker-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
 .size-picker-heading strong { font-size:var(--fs-label); font-weight:600; color:var(--text-primary); }
-.size-picker-heading>span { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); color:var(--text-secondary); }
-.size-picker-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,128px),1fr)); gap:var(--s-2); }
-.size-picker-grid button { position:relative; display:grid; grid-template-columns:28px minmax(0,1fr); align-content:center; align-items:center; column-gap:var(--s-2); row-gap:var(--s-1); min-width:0; min-height:calc(var(--control-height) + var(--s-4)); padding:var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-secondary); background:var(--bg-base); font:400 var(--fs-label)/var(--lh-label) var(--font-sans); text-align:left; cursor:pointer; }
-.size-picker-grid button[aria-pressed=true] { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
-.size-picker-grid button:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.size-picker-grid button:disabled { color:var(--text-disabled); cursor:not-allowed; }
-.size-picker-grid i { grid-row:1/3; justify-self:center; height:21px; max-width:28px; border:1.4px solid currentColor; border-radius:2px; }
-.size-picker-grid small { grid-column:2; font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
-.size-picker-check {
-  position:absolute; top:var(--s-1); right:var(--s-1);
-  display:grid; place-items:center; width:17px; height:17px; border-radius:50%;
-  background:var(--bg-surface); color:var(--text-primary);
-  opacity:0; transform:translateY(2px) scale(.78);
-  transition:transform var(--motion-control) var(--spring-soft),opacity var(--motion-hover) var(--ease-out);
-}
-.size-picker-check .archive-icon { width:12px; height:12px; }
-.size-picker-grid button[aria-pressed="true"] .size-picker-check { opacity:1; transform:none; }
-.size-picker-grid:has(:focus-visible) .size-picker-check { transition:none; }
-.generation-size-picker p { margin:var(--s-3) 0 0; font-size:var(--fs-label-xs); line-height:var(--lh-body); color:var(--text-secondary); }
-.size-picker-custom { margin-block-start:var(--s-2); flex-shrink:0; white-space:nowrap; }
+.size-picker-heading-right { display:inline-flex; align-items:center; gap:var(--s-2); }
+.size-picker-current { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); color:var(--text-secondary); }
+.size-picker-grid { display:flex; flex-wrap:wrap; gap:var(--s-2); }
+.size-ratio-chip { position:relative; display:inline-flex; align-items:center; gap:6px; flex:1 1 calc(33.333% - var(--s-2)); min-width:96px; min-height:36px; padding:4px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-secondary); background:var(--bg-base); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); text-align:left; cursor:pointer; }
+.size-ratio-chip[aria-pressed='true'] { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
+.size-ratio-chip:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.size-ratio-chip:disabled { color:var(--text-disabled); cursor:not-allowed; }
+.size-ratio-chip i { flex:none; height:14px; max-width:18px; border:1.35px solid currentColor; border-radius:2px; }
+.size-chip-label { font-weight:600; white-space:nowrap; }
+.size-chip-res { margin-inline-start:auto; color:var(--text-muted); font:400 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
+.size-ratio-chip[aria-pressed='true'] .size-chip-res { color:var(--text-secondary); }
+.size-chip-check { flex:none; width:13px; height:13px; color:var(--text-primary); }
+.size-picker-custom { min-height:28px; padding:2px var(--s-2); font-size:var(--fs-label-xs); flex-shrink:0; white-space:nowrap; }
 .size-picker-form { display:grid; gap:var(--s-3); }
 .size-picker-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }
 .size-picker-fields label { display:grid; gap:var(--s-1); font-size:var(--fs-label); }
@@ -145,13 +166,9 @@ function applyCustom() {
 .size-picker-form button { justify-self:end; }
 .is-compact { display:flex; align-items:center; gap:var(--s-3); }
 .is-compact .size-picker-custom { margin:0; }
-.is-compact .size-picker-heading { margin:0; }.is-compact .size-picker-heading>span { display:none; }
+.is-compact .size-picker-heading { margin:0; }
+.is-compact .size-picker-heading-right { display:none; }
 .is-compact .studio-select-wrapper { flex:1; min-width:0; }
-/* Horizontal cards keep the size readable in narrow rails; a third column
-   is useful only when each card has room for its icon and resolution. */
-@container generation-size (min-width:440px) { .size-picker-grid { grid-template-columns:repeat(3,minmax(0,1fr)); } }
-@media (hover:hover) and (pointer:fine) { .size-picker-grid button:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-hover); } }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .size-picker-check { transition:none; transform:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .size-picker-check { transition:none; transform:none; }
-@media (forced-colors:active) { .size-picker-grid button[aria-pressed=true] { outline:2px solid Highlight; } }
+@media (hover:hover) and (pointer:fine) { .size-ratio-chip:hover:not(:disabled) { border-color:var(--border-strong); background:var(--bg-hover); } }
+@media (forced-colors:active) { .size-ratio-chip[aria-pressed='true'] { outline:2px solid Highlight; } }
 </style>

@@ -20,6 +20,7 @@
       }"
       aria-label="成片监看区"
     >
+      <CornerFrame v-if="!generationBusy && !waitingForResult" variant="editorial" />
       <div class="stage-message">
         <div class="stage-content" :class="{ 'is-covered': coveringResult }">
         <template v-if="!generationBusy && !waitingForResult">
@@ -65,8 +66,9 @@
           </div>
         </div>
         <div v-else class="stage-idle stage-idle-guide">
-          <AtelierEmptyArt class="atelier-canvas-illustration" />
-          <div class="stage-placeholder-title">开启画境创作</div>
+          <AtelierEmptyArt :character="emptyCharacterId" class="atelier-canvas-illustration" />
+          <div class="stage-placeholder-title">{{ emptyStageTitle }}</div>
+          <p class="stage-character-quote">「{{ emptyStageQuote }}」</p>
           <div class="stage-placeholder-copy">
             选择场景或输入画面描述。
           </div>
@@ -122,6 +124,7 @@
         </div>
       </div>
       <div v-if="!generationBusy && !waitingForResult && !inpaintCompareActive && failedResultUrl !== displayResultUrl" class="result-reading-feedback" role="status"><ArchiveIcon name="image" /><span>正在读取成片…</span></div>
+      <div v-if="focusBurstActive" class="fx-focus-lines is-bursting" aria-hidden="true" @animationend="clearFocusBurst" />
     </div>
     </div>
     <DirectorResultTools
@@ -137,15 +140,17 @@
 </template>
 
 <script setup lang="ts">
-import { computed, nextTick, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onDeactivated, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
+import CornerFrame from '@/components/visual/CornerFrame.vue'
 import ImageCompareSlider from '@/components/visual/ImageCompareSlider.vue'
 import CgImageReveal from '@/components/visual/CgImageReveal.vue'
 import GenerationParticles from '@/components/visual/GenerationParticles.vue'
 import BorderBeam from '@/components/visual/BorderBeam.vue'
 import DirectorSceneReference from './DirectorSceneReference.vue'
 import DirectorResultTools from './DirectorResultTools.vue'
+import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { useCanvasGenerationMotion } from '@/composables/useCanvasGenerationMotion'
 import { useCanvasClearMotion } from '@/composables/useCanvasClearMotion'
 import { useArtworkTilt } from '@/composables/useArtworkTilt'
@@ -180,9 +185,44 @@ const props = defineProps<{
   hasStashedResult?: boolean
 }>()
 
+const pb = usePromptBuilderStore()
+const emptyCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char)
+const activePopularChar = computed(() => pb.subject.kind === 'popular'
+  ? pb.popularCharacters.find(item => item.id === pb.subject.characterId) ?? null
+  : null)
+const emptyStageTitle = computed(() => {
+  if (activePopularChar.value) return `${activePopularChar.value.displayName} · 画室留白`
+  if (pb.char === 'natsume') return '四季夏目 · 午后画桌'
+  if (pb.char === 'triad') return '双人同行 · 画境序章'
+  return '绫地宁宁 · 月下画桌'
+})
+const emptyStageQuote = computed(() => {
+  if (activePopularChar.value) return `光影与构图都已备好，随时描绘${activePopularChar.value.displayName}的这一幕。`
+  if (pb.char === 'natsume') return '咖啡刚温好，慢慢挑一页想画的故事。'
+  if (pb.char === 'triad') return '两道目光交汇的瞬间，就是这一幕的开场。'
+  return '月影落进窗格前，先为这一幕留白吧。'
+})
+
 const canvasViewport = ref<HTMLElement | null>(null)
 const { canAnimate, lowEffects } = useVisualActivity(canvasViewport)
 const texturesEnabled = computed(() => canAnimate.value && !lowEffects.value)
+const focusBurstActive = ref(false)
+let focusBurstTimer: ReturnType<typeof setTimeout> | null = null
+function clearFocusBurst() {
+  focusBurstActive.value = false
+  if (focusBurstTimer !== null) {
+    clearTimeout(focusBurstTimer)
+    focusBurstTimer = null
+  }
+}
+function triggerFocusBurst() {
+  clearFocusBurst()
+  if (!canAnimate.value || lowEffects.value) return
+  focusBurstActive.value = true
+  focusBurstTimer = setTimeout(clearFocusBurst, 680)
+}
+onDeactivated(clearFocusBurst)
+onBeforeUnmount(clearFocusBurst)
 const pressRipple = usePressRipple()
 const generationOrbit = ref<InstanceType<typeof GenerationParticles> | null>(null)
 const resultPalette = ref<string[]>([])
@@ -229,7 +269,7 @@ async function retryResultImage() {
   await nextTick(); canvasViewport.value?.focus({ preventScroll: true })
 }
 function onRevealStart() { forming.value = true; rememberResultReveal() }
-function onResultReveal() { forming.value = false; stopTextureMotion(); rememberResultReveal() }
+function onResultReveal() { forming.value = false; stopTextureMotion(); rememberResultReveal(); triggerFocusBurst() }
 function rememberResultReveal() {
   const source = props.displayResultUrl
   if (!source || revealedResults.value.has(source)) return

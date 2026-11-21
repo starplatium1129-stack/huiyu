@@ -1,7 +1,7 @@
 @reference "../tailwind.css";
 /* Director surfaces only. layout.css owns all viewport and rail geometry. */
 .pb.journal-workspace.atelier-workspace {
-  background:var(--bg-base);
+  /* Transparent root lets RouteAtmosphere's character aura breathe behind the desk. */
   /* Preserve the compact scale at the default 15px root, while following
      desktop typography scaling and the browser's chosen base text size. */
   --fs-label:calc(13rem / 15); --fs-label-sm:calc(13rem / 15);

@@ -62,20 +62,44 @@
         <div v-else-if="!availableScenes.length" class="scene-empty" role="status">未找到匹配场景</div>
         <button v-for="scene in visibleScenes" :key="scene.id"
           class="scene-card"
+          :class="{ 'is-mature': isAdultScene(scene) }"
           data-control-motion
           :aria-pressed="pb.sceneId === scene.id"
           type="button"
           @click="$emit('selectScene', scene)">
-          <div class="scene-card-title">
-            <ArchiveIcon v-if="pb.sceneId === scene.id" name="success" class="scene-selection-check" />
-            <span class="scene-card-name">{{ scene.title }}</span>
-          </div>
-          <div v-if="scene.story" class="scene-card-story">{{ scene.story }}</div>
-          <div class="scene-card-meta">
-            <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
-            <span v-if="scene.category" class="scene-cat-tag">{{ scene.category }}</span>
-            <span v-if="scene.rating && scene.rating !== 'All'" class="scene-rating-tag">{{ scene.rating }}</span>
-          </div>
+          <span class="scene-card-thumb" aria-hidden="true">
+            <img
+              v-if="!failedThumbs.has(scene.id)"
+              :src="sceneThumbSrc(scene.id)"
+              :crossorigin="runtimeResourceCors()"
+              alt=""
+              width="56"
+              height="72"
+              loading="lazy"
+              decoding="async"
+              @error="failedThumbs.add(scene.id)"
+            />
+            <SensitivePreviewVeil
+              v-if="isAdultScene(scene) && !failedThumbs.has(scene.id)"
+              :src="sceneThumbSrc(scene.id)"
+              :crossorigin="runtimeResourceCors()"
+            />
+            <span v-if="failedThumbs.has(scene.id)" class="scene-card-thumb-fallback">
+              <ArchiveIcon name="scene" />
+            </span>
+          </span>
+          <span class="scene-card-body">
+            <span class="scene-card-title">
+              <ArchiveIcon v-if="pb.sceneId === scene.id" name="success" class="scene-selection-check" />
+              <span class="scene-card-name">{{ scene.title }}</span>
+            </span>
+            <span v-if="scene.story" class="scene-card-story">{{ scene.story }}</span>
+            <span class="scene-card-meta">
+              <span v-if="personaCoreIds.has(scene.id)" class="scene-core-mark">人设核心</span>
+              <span v-if="scene.category" class="scene-cat-tag">{{ scene.category }}</span>
+              <span v-if="scene.rating && scene.rating !== 'All'" class="scene-rating-tag">{{ scene.rating }}</span>
+            </span>
+          </span>
         </button>
         <button v-if="availableScenes.length > sceneLimit" class="btn btn-ghost scene-more"
           type="button" @click="$emit('update:sceneLimit', sceneLimit + 20)">
@@ -87,21 +111,32 @@
 </template>
 
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, reactive, ref } from 'vue'
+import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import { usePromptBuilderStore } from '@/stores/promptBuilderStore'
 import { SCENE_THEMES } from '@/config/promptConstants'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import PopularBlueprintPicker from '@/components/popular/PopularBlueprintPicker.vue'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import type { Scene } from '@/stores/promptBuilderStore'
 import type { SceneBlueprint } from '@/utils/popularContent'
 import '@/assets/css/director/components/DirectorScenesPanel.css'
 
 const pb = usePromptBuilderStore()
 const results = ref<HTMLElement | null>(null)
+const { entryFor, thumbUrl } = useShowcaseAssets()
+const failedThumbs = reactive(new Set<string>())
+function sceneThumbSrc(id: string): string {
+  return resolveRuntimeUrl(thumbUrl(id) || `/scene-showcase/thumbs/${encodeURIComponent(id)}.jpg`)
+}
+function isAdultScene(scene: Scene): boolean {
+  return scene.rating === 'R18' || entryFor(scene.id)?.rating === 'R18'
+}
 const currentThemeLabel = computed(() => SCENE_THEMES.find(theme => theme.id === pb.sceneTheme)?.label ?? '全部')
 function retryBlueprints() {
   if (pb.subject.kind === 'popular') void pb.loadPopularCharacter(pb.subject.characterId).catch(() => {})
