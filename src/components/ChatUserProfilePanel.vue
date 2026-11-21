@@ -2,28 +2,28 @@
   <section class="chat-user-profile room-tool-panel" aria-labelledby="chatUserProfileTitle">
     <header class="room-tool-heading">
       <div>
-        <span>USER PROFILE</span>
-        <h2 id="chatUserProfileTitle">用户称呼与背景</h2>
+        <span class="profile-note-kicker">关系便签卡</span>
+        <h2 id="chatUserProfileTitle">我的称呼与相处便签</h2>
       </div>
-      <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭用户档案" @click="close"><ArchiveIcon name="close" /></button>
+      <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭关系便签卡" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p>仅用于对话称呼与偏好，保存在本地。</p>
+      <p class="profile-note-intro">告诉她怎么称呼你、你们的关系与日常小习惯；所有内容仅保存在本机。</p>
       <div class="profile-grid">
         <label>
-          <span>你的称呼</span>
-          <input v-model="draft.callName" class="input" maxlength="40" placeholder="留空时仍称呼“你”" />
+          <span>她怎么称呼你</span>
+          <input v-model="draft.callName" class="input" maxlength="40" placeholder="留空时仍轻声称呼“你”" />
         </label>
         <label>
-          <span>关系定位</span>
+          <span>你们的关系</span>
           <StudioSelect
             v-model="draft.relationship"
-            label="关系定位"
+            label="你们的关系"
             :options="CHAT_RELATIONSHIPS.map(option => ({ value: option.id, label: option.label }))"
           />
         </label>
         <label class="profile-note">
-          <span>背景偏好</span>
+          <span>相处小备注</span>
           <textarea v-model="draft.note" class="textarea" maxlength="200" rows="3" placeholder="例如：我习惯夜间工作，聊到压力时希望先听我说完。" @focus="revealProfileField"></textarea>
           <small>{{ draft.note.length }} / 200</small>
         </label>

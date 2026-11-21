@@ -1,6 +1,6 @@
 <template>
   <article ref="surfaceRef" class="companion-dialogue-window" :data-character="activeChar" :data-desktop="Boolean(bridge) || undefined"
-    :data-dock-side="docked ? dockSide : undefined" @keydown.esc="onEscape"
+    :data-dock-side="docked ? dockSide : undefined" :style="dialogueThemeStyle" @keydown.esc="onEscape"
     @dragover.prevent @drop="attachments.onImageDrop" @paste="attachments.onImagePaste">
     <section class="companion-dialogue" aria-label="角色对白">
       <header class="companion-dialogue-heading" @mousedown="startWindowDrag">
@@ -47,10 +47,10 @@
             <div class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
             <div class="companion-dialogue-bubble"><p class="companion-dialogue-line">{{ currentCharacter.greeting }}</p></div>
           </div>
-          <div v-for="msg in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-message-id="msg.mid"
+          <div v-for="msg in displayedMessages" :key="msg.replyId || msg.mid" class="companion-dialogue-message" :data-role="msg.role" :data-mid="msg.mid" :data-message-id="msg.mid"
             role="group" :aria-label="msg.role === 'user' ? '你的消息' : `${currentCharacter.name}的回复`">
             <div v-if="msg.role === 'assistant'" class="companion-dialogue-avatar" :data-chibi="Boolean(chibiAvatars[activeChar]) || undefined" aria-hidden="true"><RuntimeImage :src="avatar" alt=""><template #fallback>{{ currentCharacter.name.slice(0, 1) }}</template></RuntimeImage></div>
-            <div class="companion-dialogue-bubble" v-content-motion:up="arrivingMessages.has(msg.mid) ? msg.mid : false">
+            <div class="companion-dialogue-bubble" v-content-motion:up="arrivingMessages.has(msg.mid) && msg.role !== 'user' ? msg.mid : false">
               <div class="companion-dialogue-speaker">
                 <span aria-hidden="true">{{ msg.role === 'user' ? '你' : currentCharacter.name }}</span>
                 <ChatMessageActions :can-copy="Boolean(msg.content)" :can-remember="false" :remembered="false" :can-play="false" :playing="false"
@@ -60,7 +60,14 @@
                   @fork="handleStoryAction({ kind: 'fork', messageId: msg.mid })" />
               </div>
               <div v-if="msg.content" class="companion-dialogue-copy" :class="{ 'is-streaming': liveState.busy && msg.mid === latestReply?.mid }">
-                <p v-for="(paragraph, index) in dialogueParagraphs(msg.content)" :key="index" class="companion-dialogue-line"><ChatMessageText :text="paragraph" /></p>
+                <p v-for="(paragraph, index) in dialogueParagraphs(msg.content)" :key="index" class="companion-dialogue-line">
+                  <ChatMessageText :text="paragraph" /><span
+                    v-if="liveState.busy && msg.mid === latestReply?.mid && index === dialogueParagraphs(msg.content).length - 1"
+                    class="vn-caret-pulse"
+                    data-streaming="true"
+                    aria-hidden="true"
+                  />
+                </p>
               </div>
               <ChatMessageAttachments :message="msg" />
               <ChatTurnIndicator v-if="!msg.content && !msg.drawingBatchId && msg.mid === latestReply?.mid && replyPending"
@@ -115,11 +122,20 @@
         @input="onInput" @keydown.enter.exact="submitChatOnEnter($event, sendChat)"></textarea>
       <template #commit>
         <StudioTooltip anchor :content="interruptible ? '停止回复或语音' : !bridge ? '请在桌面客户端中发送消息' : !liveState.chatReady ? '请先连接聊天模型' : selectedImage && liveState.textOnly ? 'Muse 支持文字聊天，移除图片即可发文字' : selectedImage ? '发送图片' : !inputText.trim() ? '先写一条消息' : '发送 · Enter（Shift+Enter 换行）'">
-          <button id="dialogue-chat-submit" class="companion-dialogue-send" type="button" :aria-label="interruptible ? '停止回复或语音' : selectedImage ? '发送图片' : '发送消息'"
-            :data-interrupt="interruptible || undefined" :disabled="!interruptible && (selectedImage ? !attachments.canSendImage.value : !canSend)"
-            @click="interruptible ? onStop() : sendChat()">
-            <ArchiveIcon class="dialogue-send-icon" name="send" /><ArchiveIcon class="dialogue-stop-icon" name="stop" />
-          </button>
+          <StudioSendButton
+            id="dialogue-chat-submit"
+            class="companion-dialogue-send"
+            :busy="interruptible"
+            :disabled="selectedImage ? !attachments.canSendImage.value : !canSend"
+            :turn-id="lastUserMessageId"
+            :completed="!replyPending && !errorText && !liveState.chatError && Boolean(latestReply && !latestReply.stopped)"
+            :context="activeChar"
+            :message-host="listRef"
+            :send-label="selectedImage ? '发送图片' : '发送消息'"
+            stop-label="停止回复或语音"
+            @send="sendChat"
+            @stop="onStop"
+          />
         </StudioTooltip>
       </template>
     </ConversationComposer>
@@ -145,9 +161,11 @@ import ConversationComposer from '@/components/ConversationComposer.vue'
 import ChatMessageActions from '@/components/ChatMessageActions.vue'
 import ChatReplyVariants from '@/components/ChatReplyVariants.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioSendButton from '@/components/ui/StudioSendButton.vue'
 import CompanionCharacterPicker from '@/components/CompanionCharacterPicker.vue'
 import CompanionImportRecoveryDialog from '@/components/CompanionImportRecoveryDialog.vue'
 import { submitChatOnEnter } from '@/utils/chatInput'
+import { characterThemeStyle } from '@/utils/characterTheme'
 import { useCompanionChatWindow } from '@/composables/chat/useCompanionChatWindow'
 import { useCompanionDialogueSurface } from '@/composables/chat/useCompanionDialogueSurface'
 import { useInlinePanelFocus } from '@/composables/chat/useInlinePanelFocus'
@@ -184,6 +202,11 @@ function dialogueParagraphs(text: string): string[] {
   return text.split(/\r?\n(?:[ \t]*\r?\n)+/).filter(paragraph => paragraph.trim())
 }
 const avatar = computed(() => chibiAvatars[activeChar.value] || characterArtEntry(activeChar.value)?.thumbnailUrl || resolveCompanionAvatar(activeChar.value)?.avatar.thumbnailUrl || currentCharacter.value.image)
+const dialogueThemeStyle = computed(() => characterThemeStyle(activeChar.value, [{
+  id: activeChar.value,
+  accent_color: currentCharacter.value.accent,
+}]))
+const lastUserMessageId = computed(() => visibleMessages.value.filter(message => message.role === 'user').at(-1)?.mid || '')
 const latestReply = computed(() => {
   const last = visibleMessages.value.at(-1)
   return last?.role === 'assistant' ? last : undefined

@@ -10,7 +10,7 @@
     </dialog>
   </Teleport>
   <details v-else ref="details" class="character-controls" @toggle="onToggle" @keydown.esc.stop="close">
-    <StudioDisclosureSummary><ArchiveIcon name="gear" /><span>角色设置</span></StudioDisclosureSummary>
+    <StudioDisclosureSummary aria-label="舞台与角色设置"><ArchiveIcon name="gear" /><span class="character-controls-label">舞台设置</span></StudioDisclosureSummary>
     <div data-disclosure-content class="character-controls-panel"><slot v-if="revealed" /></div>
   </details>
 </template>

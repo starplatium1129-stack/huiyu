@@ -1,10 +1,12 @@
-import { computed, nextTick, onMounted, onUnmounted, ref, watch } from 'vue'
+import { computed, nextTick, onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   DEFAULT_COMPANION_CHARACTER_ID,
   getCompanionCharacterConfig,
   renderChatGreeting,
 } from '@/utils/companionRegistry'
+import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
+import { clearCharacterAtmosphere } from '@/utils/characterTheme'
 import { useChatConversation } from '@/composables/chat/useChatConversation'
 import { useCompanionToolPermissions } from '@/composables/chat/useCompanionToolPermissions'
 import { useChatStorage } from '@/composables/chat/useChatStorage'
@@ -138,6 +140,33 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
       || getCompanionCharacterConfig(DEFAULT_COMPANION_CHARACTER_ID)
     if (!config) throw new Error('No companion character presentation is registered')
     return config
+  })
+  const characterThemeRecords = computed(() => [{
+    id: currentCharacter.value.id,
+    accent_color: currentCharacter.value.accent,
+  }])
+  const characterThemeStyle = useCharacterAtmosphere(
+    () => activeChar.value,
+    () => characterThemeRecords.value,
+  )
+  let rootAccentActive = true
+  function syncRootCharacterAccent() {
+    if (typeof document === 'undefined' || disposed || !rootAccentActive) return
+    document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
+  }
+  function clearRootCharacterAccent() {
+    if (typeof document === 'undefined') return
+    document.documentElement.style.removeProperty('--character-accent')
+    clearCharacterAtmosphere()
+  }
+  watch(() => currentCharacter.value.accent, syncRootCharacterAccent, { immediate: true })
+  onActivated(() => {
+    rootAccentActive = true
+    syncRootCharacterAccent()
+  })
+  onDeactivated(() => {
+    rootAccentActive = false
+    clearRootCharacterAccent()
   })
   watch(() => route.query.character, id => { if (typeof id === 'string') switchCharacter(id) })
 
@@ -338,7 +367,6 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     activeChar.value = char
     if (typeof route.query.character === 'string' && route.query.character !== char)
       void router.replace({ query: { ...route.query, character: char } })
-    document.documentElement.style.setProperty('--character-accent', nextCharacter.accent)
     inputText.value = storage.draft(char)
     updateVoiceCapability()
     setError('')
@@ -398,7 +426,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
       }
       inputText.value = storage.draft(activeChar.value)
     }
-    document.documentElement.style.setProperty('--character-accent', currentCharacter.value.accent)
+    syncRootCharacterAccent()
     // 预热角色设定卡（约几十 KB，失败不影响聊天：recall 走空设定 + 会话事实）。
     void loadCharacterSettingCards().catch(() => {})
     await refreshChatStatus()
@@ -425,6 +453,8 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
 
   onUnmounted(() => {
     disposed = true
+    rootAccentActive = false
+    clearRootCharacterAccent()
     confirmationController.abort()
     window.removeEventListener('storage', onChatAuxStorage)
     clearInterval(statusTimer)
@@ -438,6 +468,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
     chatListRef,
     characterStageRef,
     activeChar,
+    characterThemeStyle,
     busy,
     voiceActive,
     screenWatchTarget,

@@ -1,5 +1,5 @@
 <template>
-  <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar" @dragover="cardImport.dragOver" @drop="cardImport.drop">
+  <article class="chat-page room-surface" :class="{ 'room-immersive': immersive }" :data-character="activeChar" :style="characterThemeStyle" @dragover="cardImport.dragOver" @drop="cardImport.drop">
     <h1 class="sr-only">角色聊天</h1>
     <input v-if="isLocalHost" ref="cardFile" type="file" accept=".json,.png" multiple hidden @change="cardImport.choose" />
     <Teleport to="body">
@@ -50,7 +50,18 @@
             <div class="room-settings-options">
               <ToggleSwitch v-if="chatProvider === 'api' && isLocalHost" v-model="webSearchEnabled" label="联网检索">联网检索</ToggleSwitch>
               <ToggleSwitch v-if="currentCharacter.voice" :model-value="autoVoice" label="自动播放语音" @update:model-value="autoVoice = $event; onAutoVoiceChange()">自动播放语音</ToggleSwitch>
-              <label v-if="currentCharacter.voice" class="room-volume"><span>音量 <small>{{ volume }}%</small></span><input type="range" v-model.number="volume" min="0" max="100" aria-label="播放音量" @input="onVolumeChange" /></label>
+              <StudioSlider
+                v-if="currentCharacter.voice"
+                v-model="volume"
+                :min="0"
+                :max="100"
+                label="音量"
+                unit="%"
+                compact
+                :character="activeChar"
+                class="room-volume"
+                @update:model-value="onVolumeChange"
+              />
             </div>
             <p v-if="chatProvider === 'api' && isLocalHost">联网检索由 RustXNG 提供，搜索词会发送给第三方搜索源。<a href="https://github.com/starplatium1129-stack/huiyu" target="_blank" rel="noopener noreferrer" aria-label="查看绘遇源码与许可，在新窗口打开">源码与许可</a></p>
             <div class="room-settings-voice">
@@ -82,8 +93,17 @@
           </aside>
         </template>
       </Suspense>
+      <div v-if="immersive" class="room-immersive-float-actions" role="toolbar" aria-label="沉浸模式快捷操作">
+        <StudioTooltip content="展开完整对话"><button ref="immersiveExitBtn" class="btn btn-ghost room-float-btn" type="button" aria-label="展开完整对话" :aria-pressed="true" @click="toggleImmersive"><ArchiveIcon name="chat" /></button></StudioTooltip>
+        <StudioTooltip anchor :content="clearLabel"><button class="btn btn-ghost room-float-btn" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
+        <StudioTooltip content="聊天设置"><button class="btn btn-ghost room-float-btn chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
+        <Suspense>
+          <ChatActionsMenu :can-import="isLocalHost" :import-disabled="cardImportLocked" @import-card="cardFile?.click()" @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
+          <template #fallback><button class="btn btn-ghost room-float-btn" type="button" aria-label="正在准备更多聊天操作" aria-busy="true" disabled><ArchiveIcon name="menu" /></button></template>
+        </Suspense>
+      </div>
       <section class="conversation-card" data-route-arrive v-content-motion:up="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
-        <header class="conversation-head">
+        <header v-if="!immersive" class="conversation-head">
           <div class="room-chat-identity">
             <RuntimeImage class="room-chat-avatar" :src="avatar" alt="" :data-chibi="Boolean(companionChatAvatars[activeChar]) || undefined" />
             <div class="room-chat-channel">
@@ -92,8 +112,8 @@
             </div>
           </div>
           <div class="room-chat-actions">
-            <StudioTooltip :content="immersive ? '展开对话' : '专注陪伴'"><button class="btn btn-ghost" type="button" :aria-label="immersive ? '展开对话' : '专注陪伴'" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" /></button></StudioTooltip>
-            <StudioTooltip :content="clearLabel"><button class="btn btn-ghost" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
+            <StudioTooltip content="专注陪伴（Galgame 对白盒）"><button ref="immersiveEnterBtn" class="btn btn-ghost" type="button" aria-label="专注陪伴" :aria-pressed="false" @click="toggleImmersive"><ArchiveIcon name="moon" /></button></StudioTooltip>
+            <StudioTooltip anchor :content="clearLabel"><button class="btn btn-ghost" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
             <StudioTooltip content="聊天设置"><button class="btn btn-ghost chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
             <Suspense>
               <ChatActionsMenu :can-import="isLocalHost" :import-disabled="cardImportLocked" @import-card="cardFile?.click()" @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
@@ -101,6 +121,11 @@
             </Suspense>
           </div>
         </header>
+        <div v-if="immersive" class="vn-nameplate">
+          <span class="vn-nameplate-bar" aria-hidden="true" />
+          <strong class="vn-nameplate-name">{{ currentCharacter.name }}</strong>
+          <span v-if="chatReady" class="vn-nameplate-state"><i aria-hidden="true" />{{ voiceActive ? '语音播放中' : '相伴中' }}</span>
+        </div>
         <div v-if="cardImport.pending.value" class="room-setup">
           <span role="status">{{ cardImport.progress.value || '正在准备导入…' }}</span>
           <button class="btn btn-quiet btn-sm" type="button" @click="cardImport.cancel">停止导入</button>
@@ -141,7 +166,16 @@
           <button v-if="hasLater" class="btn btn-ghost btn-sm" type="button" :disabled="paging" @click="loadLater">后续消息</button>
         </div>
         <button v-if="!immersive && showLatest" class="room-latest btn btn-ghost" type="button" @click="latest">最新消息</button>
-        <div v-if="immersive" class="room-current-line" role="log" aria-live="off" :aria-busy="busy" aria-label="最近一句回复"><p>{{ currentLine }}</p></div>
+        <div v-if="immersive" class="room-current-line" role="log" aria-live="off" :aria-busy="busy" aria-label="最近一句回复">
+          <p class="vn-dialogue-line">
+            <ChatMessageText :text="currentLine" /><span
+              v-if="busy"
+              class="vn-caret-pulse"
+              data-streaming="true"
+              aria-hidden="true"
+            />
+          </p>
+        </div>
         <div v-if="activityText && (immersive || speechSessionActive || !busy || lastAssistantMessage?.content || lastAssistantMessage?.drawingBatchId || !lastAssistantMessage)" class="room-chat-activity">
           <ChatTurnIndicator :label="activityText" :animated="busy" />
           <button v-if="speechSessionActive" class="btn btn-ghost btn-sm btn-icon" type="button" aria-label="结束连续对话" @click="onSpeechSessionEnd"><ArchiveIcon name="close" /></button>
@@ -175,6 +209,8 @@
 <script setup lang="ts">
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioSlider from '@/components/ui/StudioSlider.vue'
+import ChatMessageText from '@/components/ChatMessageText.vue'
 import ConversationComposer from '@/components/ConversationComposer.vue'
 import ChatTurnIndicator from '@/components/ChatTurnIndicator.vue'
 import { useChatMessageArrival } from '@/composables/chat/useChatMessageArrival'
@@ -223,6 +259,7 @@ const {
   chatListRef,
   characterStageRef,
   activeChar,
+  characterThemeStyle,
   busy,
   voiceActive,
   voiceStatusText,
@@ -305,7 +342,7 @@ const roomPanel = ref<RoomPanel | null>(null)
 watch(cardImport.pending, importing => { if (importing && roomPanel.value === 'settings') closeRoomPanel() })
 const roomPanelGeneration = ref(0)
 let roomPanelClosing = false
-const roomPanelLabels = { archive: '对话归档', memory: '长期记忆', profile: '我的档案', settings: '聊天设置' }
+const roomPanelLabels = { archive: '对话归档', memory: '共同记忆手账', profile: '关系便签卡', settings: '聊天设置' }
 const roomPanelDialog = ref<HTMLDialogElement | null>(null)
 const roomPanelMotion = useFluidDialog(roomPanelDialog)
 useResizeObserver(roomPanelDialog, () => {
@@ -346,12 +383,22 @@ function closeRoomPanelFromBackdrop(event: MouseEvent) {
   if (isBackdropClick(event, roomPanelDialog.value)) closeRoomPanel()
 }
 const immersive = ref(false)
+const immersiveEnterBtn = ref<HTMLButtonElement | null>(null)
+const immersiveExitBtn = ref<HTMLButtonElement | null>(null)
 const presentationSuspended = useRoomPresentation('room')
 const { visibleMessages, hasEarlier, hasLater, paging, showLatest, latest, loadEarlier, loadLater } = useChatHistoryWindow(chatListRef, currentMessages, computed(() => `${activeChar.value}:${branchId.value}`))
 const arrivingMessages = useChatMessageArrival(() => currentMessages.value, () => `${activeChar.value}:${branchId.value}`, () => busy.value)
 const currentLine = computed(() => lastAssistantMessage.value?.content || currentCharacter.value.greeting)
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
-function toggleImmersive() { immersive.value = !immersive.value; if (!immersive.value) void latest() }
+function toggleImmersive() {
+  const next = !immersive.value
+  immersive.value = next
+  if (!next) void latest()
+  void nextTick(() => {
+    const target = next ? immersiveExitBtn.value : immersiveEnterBtn.value
+    target?.focus({ preventScroll: true })
+  })
+}
 async function copyMessage(content: string) {
   if (await copyText(content)) setError('已复制', 'info', 1800)
   else setError('复制失败，可以选中文字后复制。', 'warning')

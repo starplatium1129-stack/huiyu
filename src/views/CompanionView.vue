@@ -24,6 +24,16 @@
         <template #feedback="{ failed, retry }"><button v-if="failed" class="btn btn-ghost btn-sm" type="button" @click="retry">重新加载</button><span v-else role="status">正在加载角色列表…</span></template>
       </AsyncPanel>
       <div class="companion-toolbar-actions">
+        <StudioTooltip :content="`Lv.${affectionInfo.level} ${affectionInfo.title}（${affectionScore}/100）：${affectionInfo.description}`">
+          <div class="companion-bond-badge" role="status" :aria-label="`羁绊等级 Lv.${affectionInfo.level} ${affectionInfo.title}，当前好感度 ${affectionScore}`">
+            <span class="companion-bond-level">Lv.{{ affectionInfo.level }}</span>
+            <strong class="companion-bond-title">{{ affectionInfo.title }}</strong>
+            <span class="companion-bond-meter" aria-hidden="true">
+              <i v-for="step in 5" :key="step" :data-filled="affectionInfo.level >= step || undefined" />
+            </span>
+            <span class="companion-bond-score">{{ affectionScore }}</span>
+          </div>
+        </StudioTooltip>
         <CompanionPreferences v-model:open="settingsOpen" :desktop="Boolean(desktopBridge)" :character-id="activeChar" :character-name="currentCharacter.name">
         <template #trigger><button
           type="button"
@@ -38,8 +48,18 @@
             <Live2DQualityControl />
           </div>
           <div class="companion-pop-group" data-preference-pane="companion">
-            <strong>声音与问候</strong>
-            <span class="companion-pop-item">{{ affectionInfo.title }} · {{ affectionScore }}</span>
+            <strong>羁绊与声音</strong>
+            <div class="companion-pop-bond" role="status">
+              <div class="companion-pop-bond-head">
+                <span class="companion-bond-level">Lv.{{ affectionInfo.level }}</span>
+                <strong>{{ affectionInfo.title }}</strong>
+                <span class="companion-pop-bond-score">{{ affectionScore }} / 100</span>
+              </div>
+              <div class="companion-bond-meter" aria-hidden="true">
+                <i v-for="step in 5" :key="step" :data-filled="affectionInfo.level >= step || undefined" />
+              </div>
+              <small>{{ affectionInfo.description }}</small>
+            </div>
             <ToggleSwitch class="companion-pop-item companion-pop-switch" :model-value="autoVoice" label="实时配音" @update:model-value="setAutoVoice">
               <StudioTooltip content="播放聊天回复和新问候；勿扰时暂停主动问候">
                 <span>实时配音：{{ autoVoice ? '开' : '关' }}</span>
@@ -48,9 +68,17 @@
             <ToggleSwitch v-if="behaviorEnabled" class="companion-pop-item companion-pop-switch" :model-value="dnd" label="勿扰模式" @update:model-value="toggleDnd">
               <span>勿扰模式<small>暂停主动问候</small></span>
             </ToggleSwitch>
-            <label class="companion-pop-item companion-pop-volume"><span>音量 <small>{{ volume }}%</small></span>
-              <input type="range" v-model.number="volume" min="0" max="100" aria-label="桌宠音量" @input="onVolumeChange" />
-            </label>
+            <StudioSlider
+              v-model="volume"
+              :min="0"
+              :max="100"
+              label="音量"
+              unit="%"
+              compact
+              :character="activeChar"
+              class="companion-pop-volume"
+              @update:model-value="onVolumeChange"
+            />
           </div>
           <input
             ref="importInputRef"
@@ -334,6 +362,7 @@ const CompanionDesktopFloat = defineAsyncComponent(() => import('@/components/Co
 const CompanionWorkspaceSettings = defineAsyncComponent(() => import('@/components/CompanionWorkspaceSettings.vue'))
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioSlider from '@/components/ui/StudioSlider.vue'
 import StudioPopover from '@/components/ui/StudioPopover.vue'
 import { usePetGestures } from '@/composables/chat/usePetGestures'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'

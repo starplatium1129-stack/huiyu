@@ -1,77 +1,228 @@
 <template>
-  <article class="page scenario-page creative-library-page">
+  <article class="page scenario-page creative-library-page" :style="scenarioCharacterTheme">
     <CreativeLibraryHeader chapter="scenario" />
     <div class="scenario-workspace">
       <section class="scenario-shelf" aria-label="选择故事" data-route-arrive>
         <header class="scenario-library-heading">
-          <div><h2>故事手帖</h2><p>{{ SCENARIOS.length }} 部故事</p></div>
-          <div v-if="!casting.castId.value" class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="剧本角色">
-            <AnimatedSelection />
-            <button v-for="c in CHARACTER_OPTIONS" :key="c" class="char-btn" :class="{ active: currentChar === c }" :aria-pressed="currentChar === c" type="button" @click="currentChar = c"><ArchiveIcon :name="c" /><span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span></button>
+          <div class="scenario-library-title-group">
+            <h2 data-screentone-furniture>故事手帖封皮架</h2>
+            <p>{{ SCENARIOS.length }} 部连贯分幕画集 · 当前卡司：{{ activeCastDisplayName }}{{ casting.outfit.value ? `（${casting.outfit.value.name}）` : '' }}</p>
+          </div>
+          <div class="scenario-cast-bar" role="group" aria-label="卡司与衣装">
+            <div v-if="!casting.castId.value" class="char-toggle studio-segments" data-fluid-glass role="group" aria-label="故事主角">
+              <AnimatedSelection />
+              <button
+                v-for="c in CHARACTER_OPTIONS"
+                :key="c"
+                class="char-btn"
+                :class="{ active: currentChar === c }"
+                :aria-pressed="currentChar === c"
+                type="button"
+                @click="currentChar = c"
+              >
+                <span class="cast-mini-avatar" aria-hidden="true">
+                  <RuntimeImage :src="protagonistAvatar(c)" alt="">
+                    <template #fallback><ArchiveIcon :name="c" /></template>
+                  </RuntimeImage>
+                </span>
+                <span class="studio-control-label">{{ c === 'nene' ? '宁宁' : '夏目' }}</span>
+              </button>
+            </div>
+            <div class="scenario-cast-capsules">
+              <StudioSelect
+                v-model="casting.castId.value"
+                :options="casting.options.value"
+                size="sm"
+                inline
+                searchable
+                search-placeholder="搜索目录角色…"
+                label="故事角色"
+                placeholder="卡司角色"
+                class="scenario-cast-select"
+              >
+                <template #value>
+                  <span class="cast-capsule-value">
+                    <span class="cast-mini-avatar" aria-hidden="true">
+                      <RuntimeImage :src="activeCastAvatarUrl" alt="">
+                        <template #fallback><ArchiveIcon name="character" /></template>
+                      </RuntimeImage>
+                    </span>
+                    <span class="cast-capsule-text">{{ casting.character.value ? casting.character.value.displayName : '目录卡司' }}</span>
+                  </span>
+                </template>
+                <template #option="{ option }">
+                  <span class="cast-option-row">
+                    <span class="cast-mini-avatar" aria-hidden="true">
+                      <RuntimeImage :src="optionAvatarUrl(String(option.value))" alt="">
+                        <template #fallback><ArchiveIcon name="character" /></template>
+                      </RuntimeImage>
+                    </span>
+                    <span>{{ option.label }}</span>
+                  </span>
+                </template>
+              </StudioSelect>
+              <StudioSelect
+                v-if="casting.castId.value"
+                v-model="casting.outfitId.value"
+                :options="casting.outfitOptions.value"
+                size="sm"
+                inline
+                label="故事衣装"
+                class="scenario-outfit-select"
+              >
+                <template #value="{ label }">
+                  <span class="cast-capsule-value">
+                    <ArchiveIcon name="wardrobe" />
+                    <span class="cast-capsule-text">{{ label || '选择衣装' }}</span>
+                  </span>
+                </template>
+              </StudioSelect>
+            </div>
           </div>
         </header>
-        <div class="scenario-casting">
-          <label>故事角色<StudioSelect v-model="casting.castId.value" :options="casting.options.value" label="故事角色" placeholder="选择内容目录角色" /></label>
-          <label v-if="casting.castId.value">故事衣装<StudioSelect v-model="casting.outfitId.value" :options="casting.outfitOptions.value" label="故事衣装" /></label>
-          <p v-if="casting.error.value || !casting.ready.value" role="status">{{ casting.error.value || '所选角色或衣装尚未读取，请重新选择或读取目录' }}<button type="button" class="btn btn-ghost btn-sm" :disabled="casting.loading.value" @click="casting.reload">重新读取</button></p>
-        </div>
-        <p v-if="referenceError || referenceRetryStarted" class="library-reference-feedback"><span role="status">{{ loadingReferences ? '正在重新读取样张清单…' : referenceError || '样张清单已更新' }}</span><button type="button" class="btn btn-ghost btn-sm scenario-reference-retry" :aria-disabled="loadingReferences" @click="retryReferences"><ArchiveIcon name="refresh" />{{ loadingReferences ? '正在读取…' : '重新读取封面' }}</button></p>
-        <div class="scenario-list" v-content-motion:fade="currentChar" role="group" aria-label="故事手帖">
-          <RuntimeImage v-for="s in SCENARIOS" :key="s.id" :src="referenceUrl(coverId(s.id))" v-slot="{ image, loaded, failed }">
+        <p v-if="casting.error.value || !casting.ready.value" class="scenario-cast-feedback" role="status">
+          <span>{{ casting.error.value || '所选角色或衣装尚未读取，请重新选择或读取目录' }}</span>
+          <button type="button" class="btn btn-ghost btn-sm" :disabled="casting.loading.value" @click="casting.reload">重新读取</button>
+        </p>
+        <p v-if="referenceError || referenceRetryStarted" class="library-reference-feedback">
+          <span role="status">{{ loadingReferences ? '正在重新读取样张清单…' : referenceError || '样张清单已更新' }}</span>
+          <button type="button" class="btn btn-ghost btn-sm scenario-reference-retry" :aria-disabled="loadingReferences" @click="retryReferences">
+            <ArchiveIcon name="refresh" />{{ loadingReferences ? '正在读取…' : '重新读取封面' }}
+          </button>
+        </p>
+        <div class="scenario-list" v-content-motion:fade="`${currentChar}:${casting.castId.value}`" role="group" aria-label="故事手帖封皮架">
+          <RuntimeImage v-for="(s, sIndex) in SCENARIOS" :key="s.id" :src="resolveScenarioCover(s.id, sIndex).src" v-slot="{ image, loaded, failed }">
             <article class="scenario-book" :class="{ 'cover-failed': failed }">
-              <button type="button" class="scenario-card" :class="{ active: activeScenario?.id === s.id }" :aria-pressed="activeScenario?.id === s.id" @click="openScenario(s)">
-                <span class="scenario-cover" :data-character="currentChar">
-                  <img v-if="image.src && !failed" v-bind="image" :class="{ ready: loaded }" :alt="(currentChar === 'nene' ? '宁宁' : '夏目') + ' · ' + s.name + '氛围参考'" width="560" height="818" loading="lazy" decoding="async" />
-                  <span v-if="!loaded" class="scenario-cover-missing" role="status"><ArchiveIcon :name="s.iconName" /><span>{{ failed ? '封面加载失败' : image.src ? '正在载入封面…' : loadingReferences ? '正在翻开画册…' : '氛围参考暂未连接' }}</span></span>
+              <button
+                type="button"
+                class="scenario-card"
+                :class="{ active: activeScenario?.id === s.id }"
+                :aria-pressed="activeScenario?.id === s.id"
+                @click="openScenario(s)"
+              >
+                <span
+                  class="scenario-cover"
+                  :data-character="casting.castId.value || currentChar"
+                  :data-cover-kind="resolveScenarioCover(s.id, sIndex).kind"
+                  :data-scenario="s.id"
+                >
+                  <img
+                    v-if="image.src && !failed"
+                    v-bind="image"
+                    :class="{ ready: loaded }"
+                    :alt="`${activeCastDisplayName} · ${s.name}氛围封面`"
+                    width="560"
+                    height="818"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                  <span class="scenario-cover-badge" aria-hidden="true">VOL.0{{ sIndex + 1 }} · {{ s.acts.length }} ACTS</span>
+                  <span v-if="!loaded" class="scenario-cover-missing" role="status">
+                    <ArchiveIcon :name="s.iconName" />
+                    <span>{{ failed ? '封面加载失败' : image.src ? '正在载入封面…' : loadingReferences ? '正在翻开画册…' : '氛围参考暂未连接' }}</span>
+                  </span>
                 </span>
-                <span class="scenario-book-copy tw:grid tw:gap-s-2 tw:p-s-4">
-                  <span class="scenario-book-title tw:flex tw:items-center tw:justify-between tw:gap-s-2">
-                    <strong class="scenario-name">{{ s.name }}</strong><LibraryChoiceMark :selected="activeScenario?.id === s.id" />
+                <span class="scenario-book-copy">
+                  <span class="scenario-book-title">
+                    <strong class="scenario-name">{{ s.name }}</strong>
+                    <LibraryChoiceMark :selected="activeScenario?.id === s.id" />
                   </span>
                   <span class="scenario-desc">{{ s.desc }}</span>
-                  <span class="scenario-count">{{ s.acts.length }} 幕故事<span lang="en">{{ s.en }}</span></span>
+                  <span class="scenario-count">
+                    <span>{{ s.acts.length }} 幕故事 · {{ activeCastDisplayName }}</span>
+                    <span lang="en">{{ s.en }}</span>
+                  </span>
                 </span>
                 <CardEdgeLight />
               </button>
-              <button v-if="failed" type="button" class="btn btn-ghost btn-sm scenario-cover-retry" :aria-label="'重新读取' + (currentChar === 'nene' ? '宁宁' : '夏目') + '的《' + s.name + '》封面'" @click="retryCover(coverId(s.id), $event)"><ArchiveIcon name="refresh" />重新读取封面</button>
+              <button
+                v-if="failed"
+                type="button"
+                class="btn btn-ghost btn-sm scenario-cover-retry"
+                :aria-label="`重新读取${activeCastDisplayName}的《${s.name}》封面`"
+                @click="retryCover(s.id, sIndex, $event)"
+              >
+                <ArchiveIcon name="refresh" />重新读取封面
+              </button>
             </article>
           </RuntimeImage>
         </div>
       </section>
       <section v-if="activeScenario" ref="reader" class="viewer" aria-label="分幕手帖" tabindex="-1" data-route-arrive>
-        <header class="viewer-header-row"><div><span class="scenario-kicker">分幕手帖 / {{ activeScenario.acts.length }} 幕</span><h2 class="viewer-h2"><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2><p class="viewer-desc">{{ activeScenario.desc }}</p></div><button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />制作分镜短片</button></header>
-        <div class="acts" :data-act-count="activeScenario.acts.length" v-content-motion:up="`${activeScenario.id}:${currentChar}`">
-          <article v-for="{ act: a, warnings, modules } in renderedActs" :key="activeScenario.id + a.n" class="act" :data-act="a.n">
-            <div class="act-heading tw:flex tw:items-center tw:gap-s-3"><span class="act-num">{{ a.n }}</span><div><h3 class="act-title">{{ a.title }}</h3><span class="act-en">{{ a.en }}</span></div></div>
-            <div class="act-intent"><span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true"><ArchiveIcon :name="frameIcon(a.res)" /></span><div><span class="act-emotion">{{ a.emotion }}</span><p class="act-desc">{{ a.desc }}</p></div></div>
-            <div class="act-format"><span>{{ casting.character.value?.displayName || (currentChar === 'nene' ? '宁宁' : '夏目') }}{{ casting.outfit.value ? ` · ${casting.outfit.value.name}` : '' }} · {{ a.res }}</span><span>{{ resInfo(a.res).dim }}</span></div>
+        <header class="viewer-header-row">
+          <div>
+            <span class="scenario-kicker">分幕手帖 · {{ activeScenario.acts.length }} 幕 · {{ activeCastDisplayName }}</span>
+            <h2 class="viewer-h2" data-screentone-furniture><ArchiveIcon :name="activeScenario.iconName" />{{ activeScenario.name }}</h2>
+            <p class="viewer-desc">{{ activeScenario.desc }}</p>
+          </div>
+          <button class="btn btn-primary scenario-to-video" type="button" @click="sendToVideoStudio"><ArchiveIcon name="clap" />制作分镜短片</button>
+        </header>
+        <div class="acts" :data-act-count="activeScenario.acts.length" v-content-motion:up="`${activeScenario.id}:${currentChar}:${casting.castId.value}`">
+          <article
+            v-for="{ act: a, warnings, modules } in renderedActs"
+            :key="activeScenario.id + a.n"
+            class="act"
+            :data-act="a.n"
+            :data-mood="actMoodTone(a.emotion)"
+          >
+            <div class="act-heading">
+              <span class="act-num">{{ a.n }}</span>
+              <div class="act-heading-copy">
+                <h3 class="act-title">{{ a.title }}</h3>
+                <span class="act-en" lang="en">{{ a.en }}</span>
+              </div>
+              <span class="act-emotion"><i aria-hidden="true" />{{ a.emotion }}</span>
+            </div>
+            <div class="act-intent">
+              <span class="act-framing" :style="{ '--act-ratio': resInfo(a.res).dim.replace('×', ' / ') }" aria-hidden="true">
+                <span class="act-framing-corners" />
+                <ArchiveIcon :name="frameIcon(a.res)" />
+                <small class="act-framing-label">{{ a.res }}</small>
+              </span>
+              <div class="act-intent-copy">
+                <p class="act-desc">{{ a.desc }}</p>
+              </div>
+            </div>
+            <div class="act-format">
+              <span>{{ activeCastDisplayName }}{{ casting.outfit.value ? ` · ${casting.outfit.value.name}` : '' }} · {{ a.res }}</span>
+              <span>{{ resInfo(a.res).dim }}</span>
+            </div>
             <div class="act-actions">
               <RouterLink v-if="casting.ready.value" :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, act: a.n, ...casting.query.value } }" class="btn btn-ghost">绘制这一幕</RouterLink>
               <button type="button" class="btn btn-quiet" @click="sendToVideoStudio(a.n)">加入分镜</button>
-              <StudioCopyButton class="btn btn-quiet" label="复制 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}`" :action="() => copyPrompt(a)" />
+              <StudioCopyButton class="btn btn-quiet" label="复制 Prompt" :content-key="`${activeScenario.id}:${a.n}:${currentChar}:${casting.castId.value}:${casting.outfitId.value}`" :action="() => copyPrompt(a)" />
             </div>
             <details class="act-details" :open="expandedActs.includes(a.n)" :data-scenario="activeScenario.id" :data-act="a.n" @toggle="syncAct">
-              <StudioDisclosureSummary><span>提示词与参数</span></StudioDisclosureSummary>
+              <StudioDisclosureSummary><span>五层提示词与参数</span></StudioDisclosureSummary>
               <div class="act-details-body" data-disclosure-content>
                 <p class="act-settings">{{ LOCK_PARAMS }}</p>
                 <p class="res-rec">{{ resInfo(a.res).reason }} · {{ resInfo(a.res).vram }}</p>
                 <div v-if="warnings.length" class="art-warn show"><ArchiveIcon name="warning" />本幕有 {{ warnings.length }} 个违反美术规范的标签: {{ warnings.join(', ') }}</div>
-                <div class="prompt-label">正向草稿 · 工作台按所选模型编译</div>
+                <div class="prompt-label">正向草稿 · 五层语义着色（工作台按所选模型编译）</div>
                 <div class="prompt-code">
-                  <template v-for="(module, index) in modules" :key="index">
-                    {{ index ? '\n' : '' }}<span class="mod" :class="module.style">
+                  <span v-for="(module, index) in modules" :key="index" class="mod" :class="module.style">
+                    <em class="mod-layer-tag">{{ module.label }}</em>
+                    <span class="mod-tokens">
                       <template v-for="(tag, tagIndex) in module.tags" :key="tagIndex">
                         {{ tagIndex ? ', ' : '' }}<span v-if="tag.warn" class="violate">{{ tag.text }}</span><template v-else>{{ tag.text }}</template>
                       </template>
                     </span>
-                  </template>
+                  </span>
                 </div>
-                <div class="neg-section"><div class="prompt-label prompt-label-neg">本幕排除项</div><p class="act-settings">基础负向由工作台所选模型管理</p><div class="neg-output">{{ a.neg }}</div></div>
+                <div class="neg-section">
+                  <div class="prompt-label prompt-label-neg">本幕排除项</div>
+                  <p class="act-settings">基础负向由工作台所选模型管理</p>
+                  <div class="neg-output">{{ a.neg }}</div>
+                </div>
               </div>
             </details>
           </article>
         </div>
-        <footer v-if="casting.ready.value" class="scenario-handoff"><RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, ...casting.query.value } }" class="btn btn-ghost"><ArchiveIcon name="scene" />前往工作台绘制</RouterLink></footer>
+        <footer v-if="casting.ready.value" class="scenario-handoff">
+          <RouterLink :to="{ path: '/prompt-builder', query: { scenario: activeScenario.id, ...casting.query.value } }" class="btn btn-ghost">
+            <ArchiveIcon name="scene" />前往工作台绘制
+          </RouterLink>
+        </footer>
       </section>
     </div>
   </article>
@@ -79,13 +230,13 @@
 
 <script setup lang="ts">
 import RuntimeImage from '@/components/visual/RuntimeImage.vue'
-
 import { copyWithFeedback } from '@/composables/useCopyFeedback'
 import CreativeLibraryHeader from '@/components/library/CreativeLibraryHeader.vue'
 import LibraryChoiceMark from '@/components/library/LibraryChoiceMark.vue'
 import { computed, nextTick, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useVideoStore, type StagedScenarioAct } from '@/stores/videoStore'
+import { useSceneStore } from '@/stores/sceneStore'
 import { useToast } from '@/composables/useToast'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
@@ -96,6 +247,12 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import { useScenarioCasting } from '@/composables/scene/useScenarioCasting'
 import { scenarioCastPrompt } from '@/utils/scenarioCasting'
 import { useMoodReferences } from '@/composables/useMoodReferences'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
+import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
+import { popularPortraitSrc } from '@/utils/popularPortraitSource'
+import { characterArtEntry } from '@/platform/characterArtState'
+import { CHARACTERS } from '@/config/characters'
+import { companionChatAvatars } from '@/config/companionChatAvatars'
 import { focusReadingPanel } from '@/utils/focusReadingPanel'
 import { BANNED_TAGS } from '@/utils/promptDiagnostics'
 import {
@@ -108,14 +265,11 @@ import {
   type ScenarioResolution,
 } from '@/config/scenarios'
 
-
 const videoStore = useVideoStore()
+const sceneStore = useSceneStore()
 const router = useRouter()
 const route = useRoute()
 
-// 引擎参数由导演台按所选引擎自动锁定（Anima: res_multistep · CFG 4.5 · 30 步；放大二阶段 res_multistep · sgm_uniform）。
-// 2026-08-23 剧本模式激活：清掉 SD 时代的硬编码采样参数与内联 <lora:> 展示
-//（出图深链本就不携带 LoRA——LoRA 由网关受控路线管理，v18 内联标签是误导）。
 const LOCK_PARAMS = '底模参数由工作台按引擎自动锁定'
 const RES_MAP = SCENARIO_RES_MAP
 const CHARACTER_OPTIONS = [...SCENARIO_CHARACTERS] as const
@@ -137,6 +291,29 @@ let readerRequest = 0
 const currentChar = ref<ScenarioCharacter>(initialSelection.character)
 const casting = useScenarioCasting(currentChar)
 const expandedActs = ref(initialSelection.acts)
+
+const activeThemeCharacterId = computed(() => casting.castId.value || currentChar.value)
+const scenarioCharacterTheme = useCharacterAtmosphere(
+  () => activeThemeCharacterId.value,
+  () => sceneStore.characters,
+)
+
+const activeCastDisplayName = computed(() =>
+  casting.character.value?.displayName || (currentChar.value === 'nene' ? '宁宁' : '夏目'),
+)
+
+function protagonistAvatar(char: ScenarioCharacter): string {
+  return companionChatAvatars[char] || characterArtEntry(char)?.thumbnailUrl || CHARACTERS[char]?.image || ''
+}
+
+function optionAvatarUrl(id: string): string {
+  if (!id) return protagonistAvatar(currentChar.value)
+  if (id === 'nene' || id === 'natsume') return protagonistAvatar(id)
+  return popularPortraitSrc(id)
+}
+
+const activeCastAvatarUrl = computed(() => optionAvatarUrl(casting.castId.value))
+
 let restoringSelection = false
 watch([() => route.path, () => route.query.scenario, () => route.query.char, () => route.query.acts], () => {
   if (route.path !== '/scenario') { readerRequest++; return }
@@ -178,6 +355,7 @@ function syncAct(event: Event) {
   else open.delete(act)
   expandedActs.value = scenario.acts.map(act => act.n).filter(act => open.has(act))
 }
+
 // Covers are atmosphere references, never generated frames for an act.
 const COVER_IDS: Record<string, Record<ScenarioCharacter, string>> = {
   promise: { nene: 'sc001', natsume: 'sc011' },
@@ -185,22 +363,67 @@ const COVER_IDS: Record<string, Record<ScenarioCharacter, string>> = {
   sakura: { nene: 'sc002', natsume: 'sc013' },
 }
 const { loading: loadingReferences, error: referenceError, reload: reloadReferences, referenceUrl, retryReference } = useMoodReferences()
+const { entries: showcaseEntries, thumbUrl: showcaseThumbUrl } = useShowcaseAssets()
 const referenceRetryStarted = ref(false)
-function retryCover(id: string, event: MouseEvent) {
+const portraitRetryVersion = ref<number | undefined>(undefined)
+
+const castSafeShowcaseEntries = computed(() => {
+  const id = casting.castId.value
+  if (!id) return []
+  return showcaseEntries.value.filter(entry => entry.char === id && entry.rating === 'All')
+})
+
+function resolveScenarioCover(scenarioId: string, scenarioIndex: number): { src: string; kind: 'scene' | 'portrait'; assetId: string } {
+  const castId = casting.castId.value
+  if (!castId) {
+    const id = COVER_IDS[scenarioId]?.[currentChar.value] || ''
+    return { src: referenceUrl(id), kind: 'scene', assetId: id }
+  }
+  const safeList = castSafeShowcaseEntries.value
+  const matched = safeList[scenarioIndex]
+  if (matched) {
+    return { src: showcaseThumbUrl(matched.id), kind: 'scene', assetId: matched.id }
+  }
+  return {
+    src: popularPortraitSrc(castId, portraitRetryVersion.value),
+    kind: 'portrait',
+    assetId: castId,
+  }
+}
+
+function retryCover(scenarioId: string, scenarioIndex: number, event: MouseEvent) {
   const origin = event.currentTarget
   if (origin instanceof HTMLElement && document.activeElement === origin)
     origin.closest('.scenario-book')?.querySelector<HTMLElement>('.scenario-card')?.focus({ preventScroll: true })
-  retryReference(id)
+  const cover = resolveScenarioCover(scenarioId, scenarioIndex)
+  if (cover.kind === 'scene') retryReference(cover.assetId)
+  else portraitRetryVersion.value = Date.now()
 }
+
 function retryReferences() {
   if (loadingReferences.value) return
-  // Keep the recovery control mounted and focusable through the request and its result.
   referenceRetryStarted.value = true
   void reloadReferences().catch(() => {})
 }
-function coverId(id: string) { return COVER_IDS[id]?.[currentChar.value] || '' }
-function frameIcon(res: ScenarioResolution) { return res === 'Close-up' ? 'closeup' : res === 'Wide CG' || res === 'Full CG' ? 'wideshot' : 'midshot' }
 
+function frameIcon(res: ScenarioResolution) {
+  return res === 'Close-up' ? 'closeup' : res === 'Wide CG' || res === 'Full CG' ? 'wideshot' : 'midshot'
+}
+
+type ActMoodTone = 'joy' | 'love' | 'calm' | 'sad' | 'tension' | 'warmth'
+const EMOTION_TONE_MAP: Record<string, ActMoodTone> = {
+  '期待': 'joy',
+  '开心': 'joy',
+  '羞涩': 'love',
+  '亲密': 'love',
+  '温柔': 'warmth',
+  '幸福': 'warmth',
+  '失落': 'sad',
+  '紧张': 'tension',
+}
+function actMoodTone(emotion: string): ActMoodTone {
+  return EMOTION_TONE_MAP[emotion] || 'warmth'
+}
 
 function norm(t: string) { return t.split(/[,\r\n\u2028\u2029]+/).map(s => s.trim().replace(/[\s-]+/g,'_')).filter(Boolean).join(', ') }
 function resInfo(res: ScenarioResolution) { return RES_MAP[res] }
@@ -215,7 +438,8 @@ function buildFullPrompt(a: ScenarioAct, char: ScenarioCharacter) {
   return norm(substitutePrompt(a.prompt, char))
 }
 
-const MODULE_CLASSES = ['m-q','m-c','m-cl','m-s','m-e','m-sh','m-co','m-l','m-d','m-lora']
+const MODULE_CLASSES = ['m-q','m-c','m-cl','m-s','m-e','m-sh','m-co','m-l','m-d','m-lora'] as const
+const MODULE_LABELS = ['质量', '角色', '衣装', '场景', '情绪', '景别', '构图', '光影', '细节', '引擎'] as const
 const bannedTerms = BANNED_TAGS.map(tag => tag.toLowerCase())
 function renderModules(a: ScenarioAct) {
   const char = currentChar.value
@@ -223,6 +447,7 @@ function renderModules(a: ScenarioAct) {
   const lines = [...modPrompt.split('\n'), 'LoRA 与采样参数由工作台引擎自动管理']
   return lines.map((line, index) => ({
     style: MODULE_CLASSES[index] || 'm-q',
+    label: MODULE_LABELS[index] || '标签',
     tags: line.split(',').map(tag => {
       const text = tag.trim()
       const lower = text.toLowerCase()
@@ -248,9 +473,6 @@ async function openScenario(s: Scenario) {
   if (request === readerRequest) focusReadingPanel(reader.value)
 }
 
-// ── 剧本模式激活（2026-08-23）：整本分幕 → 视频工坊分镜镜头 ────────────────
-// 每幕一镜：描述+情绪氛围喂 H3 三段式组装；景别按分幕构图映射；首帧到达分镜后
-// 走「一键首帧」/手动上传，角色身份建议挂 Ref2VA 参考卡（工作室角色不自动装配）。
 function scenarioShotSize(res: ScenarioResolution): StagedScenarioAct['shotSize'] {
   if (res === 'Close-up') return 'closeup'
   if (res === 'Half-body' || res === 'Portrait') return 'medium'
@@ -280,17 +502,7 @@ function sendToVideoStudio(actId?: string | Event) {
   void router.push('/video-studio?mode=shots')
 }
 
-// 走全局 AppToast。原先手搓 DOM + 内联 cssText，硬编码了 z-index:9999
-// （会盖住 --z-skip 的跳转链接）、border-radius、font-size 与 rgba 阴影。
 const { show: showToast } = useToast()
-
 </script>
 
 <style scoped src="@/assets/css/scenario-artbook.css"></style>
-<style scoped>
-.scenario-casting { display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,20rem),1fr)); gap:var(--s-3); margin-bottom:var(--s-4); }
-.scenario-casting > label { display:grid; gap:var(--s-2); min-width:0; color:var(--text-secondary); font-size:var(--fs-label); }
-.scenario-casting > p { grid-column:1 / -1; }
-.scenario-reference-retry[aria-disabled='true'] { color:var(--text-disabled); cursor:wait; pointer-events:auto; }
-.scenario-reference-retry:focus-visible { outline:2px solid var(--focus-color); outline-offset:2px; }
-</style>

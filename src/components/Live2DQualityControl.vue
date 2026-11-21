@@ -21,7 +21,10 @@
           :aria-checked="quality === option.value"
           @click="setQuality(option.value)"
         >
-          <strong>{{ option.label }}</strong>
+          <span class="live2d-quality-head">
+            <strong>{{ option.label }}</strong>
+            <ArchiveIcon v-if="quality === option.value" class="live2d-quality-check" name="success" aria-hidden="true" />
+          </span>
           <small>{{ option.caption }}</small>
         </button>
       </div>
@@ -32,6 +35,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
+import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 
 const { quality, setQuality } = useLive2DPreferences()

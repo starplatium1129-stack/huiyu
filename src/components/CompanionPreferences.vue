@@ -87,14 +87,10 @@ h2 { @apply tw:m-0 tw:text-body; font-weight: 650; }
 .companion-preferences-body :deep(.preference-chevron) { @apply tw:ml-auto; transform: rotate(-90deg); }
 .companion-preferences-body :deep(button.companion-pop-item:hover), .companion-preferences-body :deep(.appearance-entry:hover) { background: var(--bg-hover); @apply tw:cursor-pointer; }
 .companion-preferences-body :deep(.companion-pop-switch small) { @apply tw:block tw:mt-[2px] tw:text-secondary tw:text-label-xs; }
-.companion-preferences-body :deep(.companion-pop-volume) { @apply tw:justify-between; }
-.companion-preferences-body :deep(.companion-pop-volume input) { @apply tw:w-[55%] tw:h-[28px] tw:m-0; appearance:none; border:0; background:linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px); accent-color:var(--accent); }
-.companion-preferences-body :deep(.companion-pop-volume input:focus-visible) { outline:2px solid var(--focus-color); outline-offset:2px; }
-.companion-preferences-body :deep(.companion-pop-volume input::-webkit-slider-thumb) { appearance: none; @apply tw:w-[18px] tw:h-[18px]; border: 3px solid var(--bg-elevated); border-radius: 50%; background: var(--accent); @apply tw:[cursor:var(--cursor-grab,_grab)]; }
-.companion-preferences-body :deep(.companion-pop-volume input::-moz-range-thumb) { @apply tw:w-[12px] tw:h-[12px]; border: 3px solid var(--bg-elevated); border-radius: 50%; background: var(--accent); @apply tw:[cursor:var(--cursor-grab,_grab)]; }
+.companion-preferences-body :deep(.companion-pop-volume) { @apply tw:block; padding: 8px 4px; }
 .companion-preferences-body :deep(.live2d-quality-control) { @apply tw:mt-s-3; }
 .companion-preferences-body :deep(.live2d-quality-options) { @apply tw:rounded-md; background: var(--bg-elevated); }
-.companion-preferences-body :deep(.live2d-quality-option[aria-checked="true"]) { @apply tw:border-strong; background: color-mix(in srgb, var(--accent) 12%, var(--bg-surface)); }
+.companion-preferences-body :deep(.live2d-quality-option[aria-checked="true"]) { @apply tw:border-strong tw:text-primary; background: var(--bg-surface); box-shadow: var(--shadow-sm); }
 .companion-preferences-body :deep(.live2d-quality-option[aria-checked="true"] small) { @apply tw:text-secondary; }
 button:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 </style>

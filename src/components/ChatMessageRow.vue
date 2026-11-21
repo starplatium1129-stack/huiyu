@@ -4,8 +4,13 @@
       <RuntimeImage :src="avatar" alt=""><template #fallback><ArchiveIcon name="character" /></template></RuntimeImage>
     </div>
     <div class="message-body">
-      <div class="message-bubble" v-content-motion:up="arrival ? message.mid : false">
-        <ChatMessageText v-if="message.content" :text="message.content" />
+      <div class="message-bubble" v-content-motion:up="arrival && message.role !== 'user' ? message.mid : false">
+        <ChatMessageText v-if="message.content" :text="message.content" /><span
+          v-if="streaming && message.role === 'assistant' && message.content"
+          class="vn-caret-pulse"
+          data-streaming="true"
+          aria-hidden="true"
+        />
         <ChatMessageAttachments :message="message" />
         <ChatTurnIndicator v-if="!message.content && !message.drawingBatchId && streaming"
           :label="activity || '正在回复…'" animated />
