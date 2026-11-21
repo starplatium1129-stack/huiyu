@@ -187,9 +187,12 @@ const props = defineProps<{
 
 const pb = usePromptBuilderStore()
 const emptyCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char)
-const activePopularChar = computed(() => pb.subject.kind === 'popular'
-  ? pb.popularCharacters.find(item => item.id === pb.subject.characterId) ?? null
-  : null)
+const activePopularChar = computed(() => {
+  const subject = pb.subject
+  return subject.kind === 'popular'
+    ? pb.popularCharacters.find(item => item.id === subject.characterId) ?? null
+    : null
+})
 const emptyStageTitle = computed(() => {
   if (activePopularChar.value) return `${activePopularChar.value.displayName} · 画室留白`
   if (pb.char === 'natsume') return '四季夏目 · 午后画桌'

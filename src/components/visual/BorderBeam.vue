@@ -122,7 +122,7 @@ const beamStyle = computed(() => {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 2;
+  z-index: var(--z-canvas);
 }
 .border-beam-track,
 .border-beam-bloom {

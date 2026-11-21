@@ -479,8 +479,9 @@ const currentSceneTitle = computed(() => {
 })
 const activeCharacterId = computed(() => pb.subject.kind === 'popular' ? pb.subject.characterId : pb.char)
 const currentCharacterLabel = computed(() => {
-  if (pb.subject.kind === 'popular') {
-    const found = pb.popularCharacters.find(item => item.id === pb.subject.characterId)
+  const subject = pb.subject
+  if (subject.kind === 'popular') {
+    const found = pb.popularCharacters.find(item => item.id === subject.characterId)
     return found?.displayName || '热门角色'
   }
   return pb.char === 'natsume' ? '四季夏目' : pb.char === 'triad' ? '宁宁与夏目' : '绫地宁宁'

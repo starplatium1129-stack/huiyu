@@ -42,7 +42,7 @@ const scene = computed(() => {
     return blueprint
       ? {
           title: blueprint.title,
-          story: blueprint.story || pb.story || '',
+          story: blueprint.description || pb.story || '',
           id: catalogShowcaseId({ kind: 'blueprint', characterId: subject.characterId, id: blueprint.id }),
         }
       : null

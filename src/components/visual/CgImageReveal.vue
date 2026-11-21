@@ -175,14 +175,14 @@ onBeforeUnmount(() => {
   background: linear-gradient(
     112deg,
     transparent 36%,
-    color-mix(in srgb, var(--on-art-sheen, rgba(255, 255, 255, 0.32)) 44%, transparent) 46%,
-    var(--on-art-sheen, rgba(255, 255, 255, 0.32)) 50%,
-    color-mix(in srgb, var(--character-accent, var(--accent)) 22%, var(--on-art-sheen, rgba(255, 255, 255, 0.32))) 54%,
+    color-mix(in srgb, var(--on-art-sheen) 44%, transparent) 46%,
+    var(--on-art-sheen) 50%,
+    color-mix(in srgb, var(--character-accent, var(--accent)) 22%, var(--on-art-sheen)) 54%,
     transparent 64%
   );
   opacity: 0;
   transform: translate3d(-96%, 0, 0);
-  animation: cg-cel-sheen-sweep 420ms var(--ease-out, cubic-bezier(.23, 1, .32, 1)) both;
+  animation: cg-cel-sheen-sweep 420ms var(--ease-out) both;
 }
 @keyframes cg-cel-sheen-sweep {
   0%   { opacity: 0; transform: translate3d(-96%, 0, 0); }

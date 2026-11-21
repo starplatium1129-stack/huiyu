@@ -5,7 +5,7 @@ import BrandLogo from '@/components/BrandLogo.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import createOriginal from '@/assets/illustrations/atelier-create-spot.webp'
 import { useThemeIllustration } from '@/composables/useThemeIllustration'
-import { useShowcaseAssets } from '@/composables/useShowcaseAssets'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 
 const createArt = useThemeIllustration(createOriginal, 'draw')
 const { thumbUrl } = useShowcaseAssets()

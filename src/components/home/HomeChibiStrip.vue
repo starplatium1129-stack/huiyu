@@ -291,7 +291,7 @@ onDeactivated(() => {
   border: 1.5px solid color-mix(in srgb, var(--stamp-color) 76%, transparent);
   outline: 1px dashed color-mix(in srgb, var(--stamp-color) 42%, transparent);
   outline-offset: -4px;
-  border-radius: 3px;
+  border-radius: var(--r-xs);
   background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
   color: var(--stamp-color);
   font: 700 var(--fs-mono-xs)/1.3 var(--font-mono);

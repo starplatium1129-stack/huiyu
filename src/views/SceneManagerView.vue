@@ -272,6 +272,7 @@ const selectedPreviewImage = computed(() => {
       rating: typeof selectedDataRecord.value?.rating === 'string' ? selectedDataRecord.value.rating : '',
       sortOrder: selected.value.sortOrder ?? 0,
       revision: selected.value.revision ?? 0,
+      createdAt: selected.value.createdAt ?? null,
       updatedAt: selected.value.updatedAt ?? null,
     }
     return thumbUrl(catalogShowcaseId(summary))

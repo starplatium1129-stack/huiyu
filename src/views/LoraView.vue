@@ -145,7 +145,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import neneAvatar from '@/assets/illustrations/nene-avatar-256.webp'
 import natsumeAvatar from '@/assets/illustrations/natsume-avatar-256.webp'
-import { useShowcaseAssets } from '@/composables/useShowcaseAssets'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
 import {
   formatLoraWeight,
   parseLoraCatalog,
@@ -281,7 +281,7 @@ onMounted(() => { void loadCatalog() })
 .lora-sample-thumb { display:flex; align-items:center; gap:var(--s-2); padding:var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-secondary); text-decoration:none; min-width:0; }
 .lora-sample-thumb:hover { border-color:var(--border-strong); color:var(--text-primary); }
 .lora-sample-thumb:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-.lora-sample-thumb img, .lora-sample-fallback { flex:0 0 42px; width:42px; height:54px; border-radius:4px; object-fit:cover; background:var(--bg-elevated); }
+.lora-sample-thumb img, .lora-sample-fallback { flex:0 0 42px; width:42px; height:54px; border-radius:var(--r-xs); object-fit:cover; background:var(--bg-elevated); }
 .lora-sample-fallback { display:grid; place-items:center; color:var(--text-muted); }
 .lora-sample-caption { min-width:0; font-size:var(--fs-label-xs); line-height:1.35; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .model-result-count { margin-inline-start:auto; color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; white-space:nowrap; }
