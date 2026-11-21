@@ -18,6 +18,7 @@
 
 - 架构与状态边界见 [工程契约](docs/engineering-contracts.md)，组件和依赖选择见 [设计规范](DESIGN.md#component-and-dependency-policy)。改动须兼容已保存的数据，各层在边界校验数据并独立持有可变状态。
 - **资源生命周期**：长调用与生成保留取消、超时与防重入机制；Live2D、Pixi、音频等资源在离开或停用时可靠释放。
+- **出图缓存**：有缓存支持时默认开启，包括试出图和批量样张。Anima 使用 TeaCache，阈值沿用对应模型或工作流的默认设置。
 - **工作流维护**：复用现有工作流（`npm run workflow -- --help`）；仅工具源或配置变化时运行 `npm run build:runtime`，不手改生成的 `.js`。
 
 ## 验证与止损
