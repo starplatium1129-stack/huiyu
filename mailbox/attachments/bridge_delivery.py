@@ -270,7 +270,12 @@ def prepare(channel, via, payload):
         if via != "reply" or set(body) != {"requestKey", "skip"}:
             raise ValueError("invalid skip")
         return body
-    fields = set(body) - {"requestKey", "conversationId"}
+    if "mentionSenderId" in body:
+        sender_id = body["mentionSenderId"]
+        if ("text" not in body or not isinstance(sender_id, str)
+                or re.fullmatch(r"[0-9a-f]{64}", sender_id) is None):
+            raise ValueError("invalid QQ mention")
+    fields = set(body) - {"requestKey", "conversationId", "mentionSenderId"}
     if (not fields or fields - {"image", "audio", "text"} or {"image", "audio"} <= fields
             or (via == "send" and (len(fields) != 1 or not body.get("conversationId")))
             or (via == "reply" and "conversationId" in body)):

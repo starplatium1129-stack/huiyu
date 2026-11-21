@@ -539,19 +539,29 @@ def validate_answer(channel, key, body):
         raise ValueError("unsupported_attachment")
     if media and (not isinstance(body[media[0]], str) or not os.path.isabs(body[media[0]])):
         raise ValueError("invalid_attachment_path")
-    if set(body) - {"requestKey", "text", *media}:
+    extra = {"mentionSenderId"} if channel == "qq" else set()
+    if set(body) - {"requestKey", "text", *media, *extra}:
         raise ValueError("unexpected_reply_fields")
     text = body.get("text")
     limit = 1600 if channel == "qq" else 12_000
     if "text" in body or not media:
         if not isinstance(text, str) or not 0 < len(text.strip()) <= limit:
             raise ValueError("invalid_reply_text")
+    if "mentionSenderId" in body:
+        sender_id = body["mentionSenderId"]
+        if (not isinstance(text, str) or not text.strip() or not isinstance(sender_id, str)
+                or re.fullmatch(r"[0-9a-f]{64}", sender_id) is None):
+            raise ValueError("invalid_mention_sender_id")
 
 
 def reply(queue, args):
     body = {"requestKey": args.key}
     if args.skip:
         body["skip"] = True
+    if args.mention:
+        if args.skip or args.voice or (args.image and not args.caption):
+            raise ValueError("mention_requires_text")
+        body["mentionSenderId"] = args.mention
     if not (args.skip or args.image) or args.caption:
         raw = sys.stdin.buffer.read(8193)
         if len(raw) > 8192:
@@ -651,6 +661,7 @@ def main():
             media.add_argument("--image", type=Path, help="send a verified local image")
             media.add_argument("--skip", action="store_true")
             sub.add_argument("--caption", action="store_true", help="read an image caption from stdin")
+            sub.add_argument("--mention", metavar="SENDER_ID", help="mention one known member of this QQ group")
             sub.add_argument("--remember", metavar="DESCRIPTION", help="index the reviewed gallery image after publication")
     args = parser.parse_args()
     read_first = getattr(args, "read_first", False)

@@ -1,0 +1,19 @@
+[Unit]
+Description=Muse Xray proxy
+After=network.target
+
+[Service]
+Type=simple
+WorkingDirectory=%h/workspace/clash-node
+EnvironmentFile=%h/workspace/clash-node/xray-service.env
+ExecStart=/usr/bin/env ${XRAY_EXECUTABLE} run -config ${XRAY_CONFIG}
+Restart=always
+RestartPreventExitStatus=23
+RestartSec=5s
+TimeoutStopSec=15s
+UMask=0077
+StandardOutput=journal
+StandardError=journal
+
+[Install]
+WantedBy=default.target

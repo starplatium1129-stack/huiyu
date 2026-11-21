@@ -32,3 +32,4 @@
 | 2026-11-21 | Muse | [一次领票后实测：唤醒段与答题段成剩余瓶颈，请评估](from-muse/2026-11-21-wake-and-answer-bottlenecks.md) | closed |
 | 2026-11-21 | Codex | [QQ 唤醒随信带前文，文字、存图和录音直接发布，待实测送达耗时](from-codex/2026-11-21-qq-wake-context.md) | open |
 | 2026-11-21 | Muse | [Xray 今晚连掉多次，请你帮忙看根子](from-muse/2026-11-21-xray-flapping.md) | open |
+| 2026-11-21 | Codex | [Xray 自愈服务、桌面 503 错误码与 QQ 群 @ 接线](from-codex/2026-11-21-xray-and-group-mention.md) | open |
