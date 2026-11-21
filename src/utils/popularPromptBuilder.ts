@@ -15,6 +15,7 @@ import { KREA_STYLE_RECIPES, resolveStyleRecipe, type ResolvedStyle } from '../c
 import { normalizeProseKey } from './promptPhraseTables.ts'
 import { compositionNegative, compositionTokens } from './blueprintComposition.ts'
 import { cameraTokensFromText, mergeCameraControls } from './promptCamera.ts'
+import { tagKey } from './animaPromptOrder.ts'
 import { inferBlueprintLighting } from './blueprintLighting.ts'
 import { inferBlueprintDecisions } from './popularBlueprintDecisions.ts'
 import { isManualDirectorValue } from './promptDirector.ts'
@@ -308,6 +309,13 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
       && !ADULT_IDENTITY_EXCLUDE_RE.test(String(token || '').trim().toLowerCase())))
   const exactIdentity = (!blueprint ? standaloneIdentityTokens(character.exactTokens) : character.exactTokens).filter(token => !referenceIdentity
     || (mutualGroupWithCategory(token)?.category !== 'outfit' && !isGarmentToken(token)))
+  const characterTokens = [...(character.characterTokens || []), ...(blueprint?.characterTokens || [])]
+  const identityTagKeys = new Set([...characterTokens, ...(character.copyrightTokens || [])].map(tagKey))
+  // Older catalogs also marked ordinary character names as exact. Let Anima format those names
+  // like other tags. Explicit model/LoRA spellings are still applied by the profile.
+  const preserveTokens = engine === 'anima'
+    ? exactIdentity.filter(token => !token.includes('_') || !identityTagKeys.has(tagKey(token)))
+    : exactIdentity
   const exactControls = [...new Set([
     ...(((adult && !adultOutfitOverride) || !outfitActive) ? [] : outfitTokens),
     ...exactIdentity,
@@ -320,7 +328,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
     sceneProse: engine === 'anima' && blueprint?.animaCaption
       ? (outfitChanged && sourceOutfit ? sceneProseWithChangedOutfit(blueprint.animaCaption, sourceOutfit, selectedClothing) : blueprint.animaCaption)
       : sceneProse,
-    characterTokens: [...(character.characterTokens || []), ...(blueprint?.characterTokens || [])],
+    characterTokens,
     copyrightTokens: character.copyrightTokens,
     emotion: emotionTokens,
     camera: cameraTokens,
@@ -346,7 +354,7 @@ export function buildPopularPromptPlan(options: PopularPromptOptions): PopularPr
         characterTokens: [...commonInput.characterTokens!, ...exactIdentity],
         controls: compositionTokens(exactControls, compositionSource),
         artists: options.artistTags?.length ? options.artistTags : undefined,
-        exactTokens: compositionTokens(exactIdentity, compositionSource),
+        exactTokens: compositionTokens(preserveTokens, compositionSource),
         scenePrompt: compositionTokens(sceneTokensFiltered, compositionSource).join(', '),
         negative: engine === 'moss' ? compositionNegative((blueprint?.negativeTokens || []).join(', '), compositionSource)
           : (blueprint?.negativeTokens || []).join(', '),

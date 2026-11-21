@@ -2,6 +2,7 @@ import { resolveInpaintRequestBinding } from './useAnimaSession'
 import type { AnimaSubmission } from './animaSessionContract'
 import { apiClient } from '@/api/client'
 import { escapeKnownLiteralTags } from '@/utils/promptLiteralTags.ts'
+import { formatPromptForEngine } from '@/utils/promptPolicy'
 import { endfieldAnimaBinding } from '@/utils/loraCatalog'
 import type { AnimaInpaintDeps } from './useAnimaInpaint'
 import type { InpaintSubmitPayload } from '@/components/AnimaInpaintModal.vue'
@@ -104,7 +105,9 @@ export async function submitAnimaInpaint(snapshot: InpaintSubmissionSnapshot, co
     promptText = `shiki_natsume, ${promptText}`
   } else if (charLocked === 'none' && snapshot.identityTokens.length && snapshot.isPopular) {
     // 2026-08-30 热门角色换装修复：身份标签前置，模型才知道衣服穿在谁身上。
-    const identity = escapeKnownLiteralTags(snapshot.identityTokens.join(', '), snapshot.identityTokens)
+    const identityTags = snapshot.identityTokens.join(', ')
+    const formatted = binding?.loraId ? identityTags : formatPromptForEngine(identityTags, 'anima')
+    const identity = escapeKnownLiteralTags(formatted, snapshot.identityTokens)
     promptText = `${identity}, ${promptText}`
   }
   if (!binding?.loraId && charLocked === 'nene' && !promptText.includes('sanoba_witch')) promptText = `sanoba_witch, ${promptText}`
