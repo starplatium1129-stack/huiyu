@@ -190,7 +190,8 @@ function parseEntry(value: unknown): ShowcaseEntry | null {
     attempt: Math.trunc(nonNegativeNumber(value.attempt) ?? 1),
     type,
   }
-  const displayName = optionalString(value.displayName)
+  // Older artist samples can retain the display name of the subject they replaced.
+  const displayName = type === 'artist' && char === 'original' ? '原创人物' : optionalString(value.displayName)
   if (displayName) entry.displayName = displayName
   const artistId = optionalString(value.artistId)
   if (type === 'artist' && artistId) entry.artistId = artistId
