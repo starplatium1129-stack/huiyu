@@ -76,7 +76,7 @@
 }
 :root[data-theme="light"] .particle-caption { background: var(--bg-surface); @apply tw:text-secondary; padding: var(--s-1) var(--s-2); @apply tw:rounded-sm; }
 :root[data-theme="light"] .semantic-particle-field canvas { opacity: 1; mix-blend-mode: normal; }
-:root[data-theme="light"] .home-hero[data-muse] { --accent-hover: var(--accent); }
+:root[data-theme="light"] .home-hero[data-muse] { --accent-hover: color-mix(in srgb, var(--accent) 80%, var(--ink-base)); }
 /* BrandLogo selects a dedicated ink wordmark for the active theme. */
 
 :root[data-theme="light"] .chat-page { --character-ink: color-mix(in srgb, var(--character-accent) 40%, var(--ink-base)); }

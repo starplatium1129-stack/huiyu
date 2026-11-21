@@ -1,10 +1,5 @@
 @reference "./tailwind.css";
 /* Fluid desktop study: a quiet structural layer above stable reading surfaces. */
-:root {
-  --shadow-glass-sm: var(--shadow-sm);
-  --shadow-glass-md: var(--shadow-md);
-  --shadow-glass-elevated: var(--shadow-lg);
-}
 .nav {
   background: linear-gradient(115deg, var(--glass-highlight), transparent 45%), var(--nav-bg);
   border-bottom-color: var(--glass-edge);
@@ -19,7 +14,6 @@
   }
   .nav-links :is(> a, .studio-tooltip-anchor > a, a) { @apply tw:rounded-md; }
 }
-.btn-primary { box-shadow: var(--shadow-glass-sm); }
 html .gs-input-row[data-fluid-glass] { padding:var(--s-3); border-radius:var(--r-lg); }
 @media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
   .nav, .nav-links, .nav-more-menu { background: var(--bg-surface); backdrop-filter: none; }
@@ -48,15 +42,32 @@ html :is(.candidate-compare > header, .character-browser-heading, .pb-compare-he
   @apply tw:border-soft;
 }
 html [data-fluid-leaving] { @apply tw:pointer-events-none; }
-html[data-reduced-motion="true"],
+/* Reduced motion stops keyframe loops and smooth scrolling while preserving
+   gentle 120ms non-motion color/opacity fades (e.g. R18 blur veil reveal and
+   layer-fade). Spatial lifts/transforms opt out on their owning rules. */
+html[data-reduced-motion="true"] {
+  --motion-hover: 120ms;
+  --motion-control: 120ms;
+  --motion-surface: 120ms;
+  --motion-route: 120ms;
+  --motion-route-cut: 120ms;
+  --motion-atmosphere: 120ms;
+  scroll-behavior: auto !important;
+}
 html[data-reduced-motion="true"] *,
 html[data-reduced-motion="true"] *::before,
 html[data-reduced-motion="true"] *::after {
   animation: none !important;
-  transition: none !important;
   scroll-behavior: auto !important;
 }
-html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay, .guest-guide, .nav, .gallery-toolbar, .gen-bar, .pb .gen-bar) {
+/* Reduced glass disables backdrop blur without whitewashing modal scrims into
+   the same surface color as the dialogs they frame. */
+html[data-reduced-glass="true"] :is(.global-search, .confirm-overlay, .modal-backdrop, .batch-overlay, .overlay, .guest-guide) {
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  background: var(--art-backdrop) !important;
+}
+html[data-reduced-glass="true"]:not([data-theme-style="terraria"]) :is(.nav, .gallery-toolbar, .gen-bar, .pb .gen-bar) {
   backdrop-filter: none !important;
   -webkit-backdrop-filter: none !important;
   background: var(--bg-surface) !important;

@@ -227,28 +227,42 @@ function run() {
   console.log('\n未达 AA(4.5:1) 的文字 token: ' + failures + ' 项');
   console.log('未达 3:1 的非文字图形 token: ' + nonTextFailures + ' 项');
 
-  // ---- SFC <style> 块局部文字色（2026-08-29 接入，补组件级盲区）----
-  // 令牌全绿不代表组件全绿：各 SFC 里还散落着字面 hex 的 color: 声明，
+  // ---- SFC <style> 块局部文字色（2026-08-29 接入，补组件级盲区，覆及深浅双主题）----
+  // 令牌全绿不代表组件全绿：各 SFC 里还散落着字面 hex / rgba / color-mix 的 color: 声明，
   // 它们不经过 design-system.css，令牌检查天然看不到。这里补一层：
-  // 只查字面 hex 的 `color:`（var()/rgb()/color-mix() 已由令牌/字面量门槛另行把关）。
+  // 同时核算 dark 与 light 两套主题；按选择器上的 data-theme / data-theme-style 过滤专属规则。
   // 落点候选 = 全局 4 个表面 + 规则自身声明的背景色（hover 亮底配黑字这类
   // "on-accent" 文字落在规则自己的背景上，不能错杀）。
-  // 全部候选落点都低于 4.5:1 才判 FAIL。
-  console.log('\n=== SFC <style> 局部文字色（组件级盲区补扫） ===');
+  console.log('\n=== SFC <style> 局部文字色（组件级双主题盲区补扫） ===');
   let sfcChecks = 0;
   let sfcFailures = 0;
   let sfcExempt = 0;
-  const sfcSurfaces = SURFACES.map(name => compositeSurface(dark, name, hexToRgb(dark['--bg-deep'])))
-    .filter((bg): bg is RGB => bg !== null);
+  const sfcThemes: Array<{ name: 'dark' | 'light'; tokens: Tokens; deep: RGB; surfaces: RGB[] }> = ([
+    ['dark', dark],
+    ['light', light],
+  ] as const).map(([name, themeTokens]) => {
+    const deep = hexToRgb(themeTokens['--bg-deep']);
+    const surfaces = SURFACES.map(surfaceName => compositeSurface(themeTokens, surfaceName, deep))
+      .filter((bg): bg is RGB => bg !== null);
+    return { name, tokens: themeTokens, deep, surfaces };
+  });
 
   // 从声明值里解析出可计算的颜色。除字面 hex 外，也解析 rgba() / rgb() /
   // color-mix() / var() 令牌 —— 半透明白字（rgba(255,255,255,.6)）是组件里最常见的
   // 漏网写法，不合成到落点上根本看不出它压线不过。
   const SKIP_VALUES = new Set(['transparent', 'inherit', 'initial', 'unset', 'currentColor', 'none']);
-  function declColor(raw: string, parentRgb: RGB) {
+  function declColor(themeTokens: Tokens, raw: string, parentRgb: RGB) {
     const value = raw.replace(/!important/g, '').trim();
     if (!value || SKIP_VALUES.has(value)) return null;
-    return resolveColor(dark, value, parentRgb);
+    return resolveColor(themeTokens, value, parentRgb);
+  }
+  function selectorThemes(selector: string) {
+    if (/data-theme-style\s*=\s*['"]?terraria/i.test(selector)) return [];
+    const lightOnly = /data-theme\s*=\s*['"]?light\b/i.test(selector);
+    const darkOnly = /data-theme\s*=\s*['"]?dark\b/i.test(selector);
+    if (lightOnly && !darkOnly) return sfcThemes.filter(theme => theme.name === 'light');
+    if (darkOnly && !lightOnly) return sfcThemes.filter(theme => theme.name === 'dark');
+    return sfcThemes;
   }
 
   for (const file of sources.sfcFiles()) {
@@ -258,47 +272,51 @@ function run() {
       const styleBody = styleMatch[1];
       for (const rule of styleBody.matchAll(/([^{}]*)\{([^{}]*)\}/g)) {
         const ruleBody = rule[2];
-        const ownBackgrounds: RGB[] = [];
-        let ownBgUnknown = false; // 规则自身声明了底色但解析不动（动态 var/渐变/图像）
-        for (const bg of ruleBody.matchAll(/(?:^|;)\s*(?:background(?:-color)?|backdrop)\s*:\s*([^;}]+)/g)) {
-          const rgb = declColor(bg[1], hexToRgb(dark['--bg-deep']));
-          if (rgb) ownBackgrounds.push(rgb);
-          else if (!SKIP_VALUES.has(bg[1].replace(/!important/g, '').trim())) ownBgUnknown = true;
-        }
+        const targetThemes = selectorThemes(rule[1]);
+        if (!targetThemes.length) continue;
         // 装饰性渐变/水印：按项目约定显式写 contrast-exempt 并给理由，与动效门禁的
         // compositor-exempt 同一治理思路（可见、可查、可评审），不用通符放行。
         // 标记写在规则的选择器段（选择器与 `{` 之间的注释块）里，只作用于紧随的那条规则，
         // 不会顺带豁免邻居。
         const exempt = /contrast-exempt\s*:/.test(rule[1]);
         if (exempt) sfcExempt += 1;
-        for (const decl of ruleBody.matchAll(/(?<![-\w])color\s*:\s*([^;}]+)/g)) {
-          const rawValue = decl[1].replace(/!important/g, '').trim();
-          if (!/^(#|rgb|hsl|color-mix|var\()/i.test(rawValue)) continue;
-          if (exempt || ownBgUnknown) continue; // 落点未知或已声明豁免 —— 不猜、不错杀
-          const line = baseLine + styleBody.slice(0, rule.index + rule[1].length + 2 + decl.index).split('\n').length;
-          const candidates = sfcSurfaces.concat(ownBackgrounds);
-          // 前景色随落点合成（alpha 值要在具体背景上才算得准），解析不动的跳过
-          const results: number[] = [];
-          for (const bg of candidates) {
-            const fg = declColor(rawValue, bg);
-            if (fg) results.push(ratio(fg, bg));
+        for (const theme of targetThemes) {
+          const ownBackgrounds: RGB[] = [];
+          let ownBgUnknown = false; // 规则自身声明了底色但解析不动（动态 var/渐变/图像）
+          for (const bg of ruleBody.matchAll(/(?:^|;)\s*(?:background(?:-color)?|backdrop)\s*:\s*([^;}]+)/g)) {
+            const rgb = declColor(theme.tokens, bg[1], theme.deep);
+            if (rgb) ownBackgrounds.push(rgb);
+            else if (!SKIP_VALUES.has(bg[1].replace(/!important/g, '').trim())) ownBgUnknown = true;
           }
-          if (!results.length) continue;
-          sfcChecks += 1;
-          // 判定语义：规则自身声明了可解析背景 → 文字必然落在它上面，硬判该落点；
-          // 没有自身背景 → 落在父级表面但具体是哪个未知，要求 4 个表面全部达标。
-          let ok, detail;
-          if (ownBackgrounds.length && results[sfcSurfaces.length] !== undefined) {
-            ok = results[sfcSurfaces.length] >= 4.5;
-            detail = '自身背景 ' + results[sfcSurfaces.length].toFixed(2) + ':1';
-          } else {
-            const min = Math.min.apply(null, results);
-            ok = min >= 4.5;
-            detail = '全表面最低 ' + min.toFixed(2) + ':1';
-          }
-          if (!ok) {
-            sfcFailures += 1;
-            console.log('  FAIL ' + file + ':' + line + '  color: ' + rawValue + '  ' + detail);
+          for (const decl of ruleBody.matchAll(/(?<![-\w])color\s*:\s*([^;}]+)/g)) {
+            const rawValue = decl[1].replace(/!important/g, '').trim();
+            if (!/^(#|rgb|hsl|color-mix|var\()/i.test(rawValue)) continue;
+            if (exempt || ownBgUnknown) continue; // 落点未知或已声明豁免 —— 不猜、不错杀
+            const line = baseLine + styleBody.slice(0, rule.index + rule[1].length + 2 + decl.index).split('\n').length;
+            const candidates = theme.surfaces.concat(ownBackgrounds);
+            // 前景色随落点合成（alpha 值要在具体背景上才算得准），解析不动的跳过
+            const results: number[] = [];
+            for (const bg of candidates) {
+              const fg = declColor(theme.tokens, rawValue, bg);
+              if (fg) results.push(ratio(fg, bg));
+            }
+            if (!results.length) continue;
+            sfcChecks += 1;
+            // 判定语义：规则自身声明了可解析背景 → 文字必然落在它上面，硬判该落点；
+            // 没有自身背景 → 落在父级表面但具体是哪个未知，要求 4 个表面全部达标。
+            let ok, detail;
+            if (ownBackgrounds.length && results[theme.surfaces.length] !== undefined) {
+              ok = results[theme.surfaces.length] >= 4.5;
+              detail = '自身背景 ' + results[theme.surfaces.length].toFixed(2) + ':1';
+            } else {
+              const min = Math.min.apply(null, results);
+              ok = min >= 4.5;
+              detail = '全表面最低 ' + min.toFixed(2) + ':1';
+            }
+            if (!ok) {
+              sfcFailures += 1;
+              console.log('  FAIL [' + theme.name + '] ' + file + ':' + line + '  color: ' + rawValue + '  ' + detail);
+            }
           }
         }
       }

@@ -17,6 +17,21 @@
       </RouterView>
     </main>
     <footer class="site-footer tw:relative tw:z-(--z-raised) tw:text-center tw:text-body-sm tw:text-muted">
+      <!-- 全站唯一一枚画册奥付朱印（DESIGN.md:664-665） -->
+      <span class="site-footer-seal" aria-hidden="true">
+        <svg class="site-footer-seal-svg" viewBox="0 0 28 28" width="24" height="24" fill="none" focusable="false">
+          <path
+            d="M4.4 3.2 Q14 2.5 23.6 3.3 Q25.1 3.5 25 5 Q25.5 14 24.9 23.1 Q24.8 24.8 23.2 24.9 Q14 25.5 4.8 24.9 Q3.1 24.8 3.2 23.1 Q2.6 14 3.3 4.8 Q3.4 3.3 4.4 3.2 Z"
+            stroke="currentColor"
+            stroke-width="1.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+          />
+          <rect x="5.2" y="5.2" width="17.6" height="17.6" rx="2" stroke="currentColor" stroke-width="0.7" opacity="0.48" />
+          <text x="14" y="13.2" text-anchor="middle" fill="currentColor" font-size="8.6" font-weight="700" class="seal-kanji">綾</text>
+          <text x="14" y="21.7" text-anchor="middle" fill="currentColor" font-size="8.6" font-weight="700" class="seal-kanji">季</text>
+        </svg>
+      </span>
       <!-- 页脚保留独立文档入口。 -->
       <p>
         © {{ currentYear }} 绘遇 HUIYU
@@ -75,6 +90,29 @@ const currentYear = new Date().getFullYear()
   background: var(--bg-base);
 }
 .site-footer p { margin: 0; }
+.site-footer-seal {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  color: color-mix(in srgb, var(--danger-text) 86%, var(--editorial-gold));
+  transform: rotate(-4deg);
+  user-select: none;
+}
+.site-footer-seal-svg {
+  display: block;
+  width: 24px;
+  height: 24px;
+}
+.seal-kanji {
+  font-family: var(--font-serif-jp);
+}
+:global(:root[data-theme-style="terraria"]) .site-footer-seal {
+  display: none;
+}
+@media (forced-colors: active) {
+  .site-footer-seal { color: CanvasText; }
+}
 /* 指南在应用内阅读，详细文档保留独立入口。 */
 .site-footer-sep { margin: 0 var(--s-2); }
 .site-footer-link { text-decoration: underline; }

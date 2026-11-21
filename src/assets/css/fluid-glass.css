@@ -4,10 +4,10 @@
 .fluid-glass-lit { isolation:isolate; }
 .fluid-glass-optics { position:absolute; inset:0; z-index:-1; overflow:hidden; border-radius:inherit; pointer-events:none; }
 .fluid-glass-sheen { position:absolute; left:50%; top:50%; width:min(300px,120%); height:min(140px,180%); border-radius:50%; opacity:0; pointer-events:none;
-  background:radial-gradient(ellipse,var(--on-art-primary),transparent 65%); transform:translate3d(-50%,-50%,0); will-change:transform;
+  background:radial-gradient(ellipse,var(--on-art-primary),transparent 65%); transform:translate3d(-50%,-50%,0);
   transition:opacity var(--motion-hover) var(--ease-out); }
 @media(prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .fluid-glass-sheen { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .fluid-glass-sheen { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .fluid-glass-sheen { transition:none; }
 /* Keep low-effects mode cheap even for stable panels outside material groups. */
 :root:is([data-fluid-effects='low'],[data-reduced-glass='true']) { --glass-fill:var(--bg-surface); --glass-fill-strong:var(--bg-elevated); --nav-bg:var(--bg-surface); }
 :root:is([data-fluid-effects='low'],[data-reduced-glass='true']) dialog::backdrop { -webkit-backdrop-filter:none; backdrop-filter:none; }

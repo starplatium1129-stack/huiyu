@@ -1,20 +1,18 @@
 @reference "./tailwind.css";
-:root:where(:not([data-theme-style="terraria"])) { --material-fill:color-mix(in srgb,var(--bg-surface) 96%,transparent); --material-blur:14px; }
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] { --material-fill:color-mix(in srgb,var(--bg-surface) calc(70% + var(--glass-tint,.35) * 16%),transparent); }
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] {
+  --material-fill:color-mix(in srgb,var(--bg-surface) calc(70% + var(--glass-tint,.35) * 16%),transparent);
+  --material-blur:14px;
+}
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'][data-theme='light'] { --material-fill:color-mix(in srgb,var(--bg-surface) calc(58% + var(--glass-tint,.35) * 20%),transparent); }
 /* Navigation sidebars sit behind dense labels, so use a heavier material. */
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] [data-fluid-glass='sidebar'] { --material-fill:color-mix(in srgb,var(--bg-surface) 88%,transparent); --material-blur:18px; }
-/* Atelier material only: pixel wood and paper own their opaque fallbacks.
+/* Atelier liquid material only: pixel wood and paper own their opaque fallbacks,
+   and switching back to light painted mode leaves no lingering overrides.
    :where keeps the atelier's existing specificity across lazy CSS load order.
-   One material per floating group; text is original and never filtered or copied.
-   Workspace surfaces opt in via data-fluid-glass. Keep their selector weight so
-   other surfaces retain the same cascade against theme-specific materials. */
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
-  border:0; background:var(--material-fill); box-shadow:var(--shadow-sm);
-  --text-secondary:var(--text-primary); --text-muted:var(--text-primary); --text-tertiary:var(--text-primary);
-  --accent-soft:color-mix(in srgb,var(--accent) 10%,var(--bg-surface));
-}
+   One material per floating group; text is original and never filtered or copied. */
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
+  border-color:var(--glass-edge); background:var(--material-fill); box-shadow:var(--shadow-glass-sm);
+  --accent-soft:color-mix(in srgb,var(--accent) 10%,var(--bg-surface));
   -webkit-backdrop-filter:blur(var(--material-blur)) saturate(145%);
   backdrop-filter:blur(var(--material-blur)) saturate(145%);
 }
@@ -34,45 +32,45 @@
   --liquid-rim-soft:color-mix(in srgb,var(--on-art-primary) 48%,transparent);
   --liquid-depth:color-mix(in srgb,var(--ink-base) 15%,transparent);
 }
-:root[data-glass-material='liquid'] body .fluid-glass-chrome:is(.nav,.companion-toolbar,[data-fluid-glass]) {
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome:is(.nav,.companion-toolbar,[data-fluid-glass]) {
   background:linear-gradient(118deg,var(--liquid-rim-soft),transparent 34% 72%,var(--glass-specular)),var(--material-fill);
   box-shadow:inset 0 1px 0 var(--liquid-rim),inset 1px 0 0 var(--liquid-rim-soft),inset -1px 0 0 var(--glass-edge),inset 0 -1px 0 var(--liquid-depth),inset 0 -2px 2px -1px var(--liquid-rim-soft),inset 0 0 14px -9px var(--liquid-rim),var(--glass-shadow);
   -webkit-backdrop-filter:blur(4px) saturate(145%);
   backdrop-filter:blur(4px) saturate(145%);
 }
-:root[data-glass-material='liquid'] body .fluid-glass-chrome:is(.studio-popover,.studio-select-content,.chat-more-menu,.wardrobe-menu) {
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome:is(.studio-popover,.studio-select-content,.chat-more-menu,.wardrobe-menu) {
   --material-fill:color-mix(in srgb,var(--bg-surface) calc(78% + var(--glass-tint,.35) * 12%),transparent);
 }
-:root[data-glass-material='liquid'] body .fluid-glass-chrome.fluid-glass-refractive {
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .fluid-glass-chrome.fluid-glass-refractive {
   -webkit-backdrop-filter:var(--fluid-glass-filter) saturate(145%);
   backdrop-filter:var(--fluid-glass-filter) saturate(145%);
 }
-:root[data-glass-material='liquid'] body .nav.fluid-glass-chrome { box-shadow:inset 0 1px 0 var(--liquid-rim-soft),inset 0 -1px 0 var(--liquid-rim),0 6px 22px -12px var(--liquid-depth); }
+:root:where(:not([data-theme-style='terraria']))[data-glass-material='liquid'] body .nav.fluid-glass-chrome { box-shadow:inset 0 1px 0 var(--liquid-rim-soft),inset 0 -1px 0 var(--liquid-rim),0 6px 22px -12px var(--liquid-depth); }
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .studio-select-content[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)) .studio-select-item[data-state='checked']:not([data-disabled]) {
   color:var(--text-primary);
 }
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material] body .nav .nav-links .animated-selection { border:0; }
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body .nav .nav-links .animated-selection { border:0; }
 /* Only nested glass surfaces share a backdrop. Painted fields keep their own fill. */
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,.companion-toolbar,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)) {
   background:color-mix(in srgb,var(--bg-surface) 18%,transparent); box-shadow:none;
   -webkit-backdrop-filter:none; backdrop-filter:none;
 }
-:root:where(:not([data-theme-style="terraria"]))[data-glass-material] body :is(.nav,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) :is(.btn,.nav-links a,.nav-more-trigger) { border-color:transparent; }
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) :is(.btn,.nav-links a,.nav-more-trigger) { border-color:transparent; }
 :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) :is(button:disabled,.badge) { background:var(--bg-surface); }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))) {
-  :root:where(:not([data-theme-style="terraria"]))[data-glass-material] { --material-fill:var(--bg-surface); }
+  :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] { --material-fill:var(--bg-surface); }
 }
-:root:where(:not([data-theme-style="terraria"])):is([data-reduced-glass='true'],[data-fluid-effects='low']) body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
+:root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid']:is([data-reduced-glass='true'],[data-fluid-effects='low']) body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
   background:var(--bg-surface) !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
 }
 @media(prefers-reduced-transparency:reduce),(prefers-contrast:more),(forced-colors:active) {
-  :root:where(:not([data-theme-style="terraria"]))[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
+  :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) {
     background:var(--bg-surface) !important; box-shadow:none !important; -webkit-backdrop-filter:none !important; backdrop-filter:none !important;
   }
 }
 @media(forced-colors:active) {
-  :root:where(:not([data-theme-style="terraria"]))[data-glass-material] body :is(.nav,.nav-more-menu,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) { background:Canvas !important; color:CanvasText; border:1px solid CanvasText; }
+  :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) { background:Canvas !important; color:CanvasText; border:1px solid CanvasText; }
 }
 @media(prefers-contrast:more) {
-  :root:where(:not([data-theme-style="terraria"]))[data-glass-material] body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) { border:1px solid var(--text-primary); }
+  :root:where(:not([data-theme-style="terraria"]))[data-glass-material='liquid'] body :is(.nav,.nav-more-menu,.companion-toolbar,.pb [data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments)),[data-fluid-glass]:where(:not(.gallery-toolbar *, .browse-toolbar *, .studio-segments))) { border:1px solid var(--text-primary); }
 }

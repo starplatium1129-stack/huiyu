@@ -40,18 +40,21 @@
 }
 .card-create:hover { @apply tw:border-strong; }
 .card-direct {
-  @apply tw:relative;
-  background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface));
-  border: 1px solid var(--accent);
+  @apply tw:relative tw:overflow-hidden;
+  background: linear-gradient(135deg, var(--accent-soft), var(--bg-surface) 64%);
+  border: 1px solid color-mix(in srgb, var(--accent) 46%, var(--border-strong));
   @apply tw:rounded-xl tw:p-s-5;
-  box-shadow: var(--shadow-card);
-  transition: transform var(--motion-hover);
+  box-shadow: var(--shadow-glass-sm);
+  transition: transform var(--motion-hover) var(--ease-out);
 }
-/* 战术切角：右上角 45° 斜切，档案终端质感（设计规范 §1.2） */
-.card-direct::after {
-  content:""; @apply tw:absolute tw:top-[-1px] tw:right-[-1px] tw:w-[18px] tw:h-[18px];
-  background: linear-gradient(225deg, var(--bg-base) 0 50%, transparent 50%);
-  @apply tw:pointer-events-none;
+/* 画册精致角标：取代硬核 45° 战术切角，保留主入口视觉辨识度 */
+:where(:root:not([data-theme-style="terraria"])) .card-direct::after {
+  content: "";
+  @apply tw:absolute tw:top-[10px] tw:right-[10px] tw:w-[14px] tw:h-[14px] tw:pointer-events-none;
+  border-top: 1.5px solid color-mix(in srgb, var(--accent) 72%, var(--editorial-gold));
+  border-right: 1.5px solid color-mix(in srgb, var(--accent) 72%, var(--editorial-gold));
+  border-top-right-radius: var(--r-xs);
+  opacity: 0.85;
 }
 /* Shared cards keep their shadow static and composite a prepainted edge. The
    existing top glint and cut corner retain their own pseudo-elements. */
@@ -87,9 +90,47 @@
 }
 .btn-primary {
   background: var(--accent); @apply tw:text-inverse;
-  border-color: transparent; box-shadow: none;
+  border-color: transparent;
+  box-shadow: var(--shadow-glass-sm);
+}
+:where(:root:not([data-theme-style="terraria"])) .btn-primary {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--on-art-primary) 42%, transparent), var(--shadow-glass-sm);
 }
 .btn-primary:hover { background: var(--accent-hover); box-shadow: var(--shadow-sm); }
+:where(:root:not([data-theme-style="terraria"])) .btn-primary:hover:not(:focus-visible):not(:disabled):not([aria-disabled="true"]) {
+  box-shadow: inset 0 1px 0 color-mix(in srgb, var(--on-art-primary) 54%, transparent), var(--shadow-sm);
+}
+/* 赛璐珞轻斜扫光泽：仅在悬停单次触发，严格走 transform/opacity；[data-loading] 保留 ::after 旋转指示器 */
+:where(:root:not([data-theme-style="terraria"])) .btn-primary:not([data-loading]):not(:disabled):not([aria-disabled="true"])::after {
+  content: "";
+  position: absolute;
+  inset: -20% 0;
+  width: 46%;
+  pointer-events: none;
+  background: linear-gradient(108deg, transparent 15%, color-mix(in srgb, var(--on-art-primary) 34%, transparent) 50%, transparent 85%);
+  transform: translateX(-160%) skewX(-18deg);
+  opacity: 0;
+}
+@media (hover: hover) and (pointer: fine) {
+  :where(:root:not([data-theme-style="terraria"]):not([data-motion="reduce"]):not([data-motion="reduced"]):not([data-reduced-motion="true"])) .btn-primary:not([data-loading]):not(:disabled):not([aria-disabled="true"]):hover::after {
+    animation: btn-cel-sheen 520ms var(--ease-out) 1 both;
+  }
+}
+@keyframes btn-cel-sheen {
+  0% { transform: translateX(-160%) skewX(-18deg); opacity: 0; }
+  22% { opacity: 1; }
+  78% { opacity: 0.9; }
+  100% { transform: translateX(340%) skewX(-18deg); opacity: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  :where(:root:not([data-motion="full"])) .btn-primary:not([data-loading]):hover::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+@media (forced-colors: active) {
+  .btn-primary:not([data-loading])::after { display: none; }
+}
 .btn-ghost {
   background: transparent; @apply tw:text-secondary tw:border-soft;
 }
@@ -99,10 +140,10 @@
 /* Anchor buttons retain contrasting primary/danger ink over the global link hover. */
 a.btn-primary, a.btn-primary:hover, a.btn-primary:active { @apply tw:text-inverse; }
 a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-text; }
-/* 按压反馈：微触感压缩与平滑回位，保留点击命中区与焦点环 */
+/* 按压反馈：微触感压缩与平滑回位，接入 --control-press-transform 避免与弹簧按压双重缩放 */
 .btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) {
   box-shadow: none;
-  transform: scale(0.98);
+  transform: var(--control-press-transform, scale(0.98));
 }
 .btn:active:not(:disabled):not([aria-disabled="true"]):not(:focus-visible) > :where(.studio-control-label,.studio-control-icon,.archive-icon:not(.spin),.u008-icons,.u008-label) {
   transform: none;
@@ -158,6 +199,10 @@ a.btn-danger, a.btn-danger:hover, a.btn-danger:active { @apply tw:text-danger-te
   .card-create:hover { transform: translateY(-2px); }
   .card-direct:hover { transform: translateY(-2px); }
 }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) :is(.card-create, .card-direct):hover { transform: none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.card-create, .card-direct):hover { transform: none; }
 
 /* ---- Form controls ---- */
 .field { @apply tw:grid tw:gap-s-1; }

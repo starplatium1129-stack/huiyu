@@ -161,7 +161,7 @@ const archiveGroups: Array<{ heading: string; items: NavItem[] }> = [
     heading: '创作工具',
     items: [
       { id: 'video', label: '故事短片', to: '/video-studio', icon: 'play' },
-      { id: 'scenario', label: '剧本模式', to: '/scenario', icon: 'scene' },
+      { id: 'scenario', label: '剧本模式', to: '/scenario', icon: 'clap' },
       { id: 'color-script', label: '色彩情绪', to: '/color-script', icon: 'palette' },
     ],
   },
@@ -331,7 +331,7 @@ onUnmounted(deactivateNavigation)
 .nav-more[data-pending="true"] .nav-more-trigger, .nav-more[data-intent="true"] .nav-more-trigger {
   outline: none;
   box-shadow: var(--focus-shadow);
-  background: var(--accent-soft);
+  background: var(--bg-elevated);
   @apply tw:text-primary;
 }
 .nav-links a:focus-visible, .nav-more .nav-more-trigger:focus-visible {
@@ -346,9 +346,9 @@ onUnmounted(deactivateNavigation)
 }
 .nav-brand { @apply tw:gap-s-3 tw:shrink-0; }
 .nav-brand-note { display: none; color: var(--text-muted); font-size: var(--fs-label-xs); font-weight: 400; padding-left: var(--s-3); border-left: 1px solid var(--border-soft); }
-.nav-links { --selection-radius: var(--r-md); --selection-shadow: none; --selection-ink:var(--accent); border-color:transparent; background:transparent; box-shadow:none; }
+.nav-links { --selection-radius: var(--r-md); --selection-shadow: none; --selection-ink: var(--accent); border-color:transparent; background:transparent; box-shadow:none; }
 .nav-links :deep(.animated-selection) { background:none; border-color:transparent; }
-.nav-links :deep(.animated-selection--underline::after) { inset:auto 18% 3px; }
+.nav-links :deep(.animated-selection--underline::after) { inset:auto 18% 3px; background: var(--selection-ink, var(--accent)); }
 .nav-links > a { white-space:nowrap; isolation:isolate; }
 /* The shared hover lift pairs with the character-colored selection underline. */
 .nav-brand:active,.nav-links > a:active,.nav-more :deep(.nav-more-trigger:active),.nav-utilities :deep(button:active:not(.app-theme-toggle)),.nav-menu-toggle:active { transform:none; }
@@ -394,12 +394,13 @@ onUnmounted(deactivateNavigation)
 .nav-search kbd { display:none; padding:2px var(--s-1); border:1px solid var(--border-soft); border-radius:var(--r-xs); background:var(--bg-elevated); color:var(--text-secondary); font:400 var(--fs-label-xs)/1.2 var(--font-mono); white-space:nowrap; }
 /* Share the wide-header threshold with the brand note; compact headers keep the search label. */
 @media (min-width:1600px) { .nav-search kbd { display:inline-block; } }
-.nav-utilities :deep(.app-theme-toggle) { width:56px; padding:0; }
+.nav-utilities :deep(.app-theme-toggle) { width: var(--control-height); padding: 0; }
 .nav-utilities :deep(.archive-icon) { width: 1.15rem; height: 1.15rem; }
 .nav-utilities :deep(.task-center-button) {
   padding: 0 var(--s-3);
-  background: var(--accent-soft);
-  @apply tw:text-accent tw:text-label-sm;
+  border-color: var(--border-soft);
+  background: var(--bg-surface);
+  @apply tw:text-secondary tw:text-label-sm;
 }
 .nav-utilities :deep(button:hover:where(:not(.app-theme-toggle))),
 .nav-utilities :deep(.sound-toggle.active) {

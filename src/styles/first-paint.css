@@ -24,8 +24,8 @@
   color-scheme: dark;
 }
 :root[data-theme="light"] {
-  --first-paint-background: #faf8f4;
-  --first-paint-text: #202a33;
+  --first-paint-background: #f5efe7;
+  --first-paint-text: #29242a;
   color-scheme: light;
 }
 :root[data-theme-style="terraria"] {

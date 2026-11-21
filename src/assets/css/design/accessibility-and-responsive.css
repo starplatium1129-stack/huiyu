@@ -12,11 +12,16 @@
   }
   .nav-links.open { @apply tw:grid; max-height:calc(100dvh - var(--desktop-chrome-height,0px) - var(--app-navigation-height,80px) - var(--nav-menu-top-extra,0px) - 2 * var(--s-3)); @apply tw:overflow-y-auto; overscroll-behavior:contain; }
   .nav-links.open {
+    --nav-open-transform: translateY(-8px) scale(.98);
     transform-origin:top right;
     transition:opacity var(--motion-hover),transform var(--motion-surface) var(--ease-out);
   }
+  @media (prefers-reduced-motion: reduce) {
+    :root:not([data-motion='full']) .nav-links.open { --nav-open-transform: none; }
+  }
+  :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .nav-links.open { --nav-open-transform: none; }
   @starting-style {
-    .nav-links.open { opacity:0; transform:translateY(-8px) scale(.98); }
+    .nav-links.open { opacity:0; transform:var(--nav-open-transform, translateY(-8px) scale(.98)); }
   }
   .nav-links a { padding: var(--s-2) var(--s-3); @apply tw:rounded-md; background: var(--bg-deep); }
   .nav-more { grid-column:1 / -1; }
@@ -45,10 +50,9 @@
   .nav, .nav-more-menu, .card-create { background:var(--bg-surface); @apply tw:border-strong; }
 }
 
-/* ── 全局质感：字体渲染 / 选区 / 滚动条 / 数字对齐 / 按压 / 图片入场 ── */
+/* ── 全局质感：字体渲染 / 滚动条 / 数字对齐 / 按压 / 图片入场 ── */
 html { -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility; }
-::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff8f4; }
-/* App scrollbar styling lives in studio-scrollbars.css. */
+/* App scrollbar styling lives in studio-scrollbars.css; ::selection lives in layout.css. */
 summary {
   @apply tw:cursor-pointer;
   list-style: none;
@@ -63,14 +67,6 @@ summary::-webkit-details-marker {
    subtitle / hint / note 等引导语限宽，避免整行撑满后阅读感散掉 */
 :where(.subtitle, .hint, .note, .page-subtitle) {
   max-width: 62ch;
-}
-
-/* ── 二次元 Galgame 梦幻质感增强工具类 ── */
-.title-gradient {
-  background: linear-gradient(135deg, var(--text-primary) 0%, var(--mood-love-text) 52%, var(--accent-violet) 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  filter: drop-shadow(0 2px 10px var(--accent-glow));
 }
 
 /* ── 键盘快捷键徽章 (<kbd> Keyboard Shortcut Badge) ── */
@@ -94,9 +90,13 @@ kbd {
   .prompt-tag,
   .sc-tag
 ):active:not(:disabled):not([aria-disabled="true"]) {
-  transform: scale(0.96);
+  transform: var(--control-press-transform, scale(0.96));
   transition: transform var(--motion-press) var(--ease-out);
 }
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) :where(.chip, .prompt-tag, .sc-tag):active { transform: none; }
+}
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :where(.chip, .prompt-tag, .sc-tag):active { transform: none; }
 
 /* Dialogs and overlays use useFluidSurface; a forwards CSS animation would
    override its opacity/transform and suppress the exit motion. */

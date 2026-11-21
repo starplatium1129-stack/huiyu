@@ -25,7 +25,7 @@ export type CharacterThemeCatalog = Readonly<Record<string, CharacterThemeOverri
 
 export const STUDIO_CHARACTER_THEMES: CharacterThemeCatalog = Object.freeze({
   natsume: { accent: '#fbb040', aura: 'rgba(251,176,64,.30)', auraSecondary: 'rgba(230,120,80,.20)' },
-  nene: { accent: '#ff75a0', aura: 'rgba(183,132,246,.28)', auraSecondary: 'rgba(255,117,160,.20)' },
+  nene: { accent: '#b784f6', aura: 'rgba(183,132,246,.28)', auraSecondary: 'rgba(255,117,160,.20)' },
   triad: { accent: '#d9a4ef', aura: 'rgba(216,180,254,.28)', auraSecondary: 'rgba(242,187,104,.18)' },
 })
 

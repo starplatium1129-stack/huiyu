@@ -35,7 +35,10 @@ a:hover { @apply tw:text-primary; }
 
 img { @apply tw:max-w-full tw:block; }
 
-::selection { background: color-mix(in srgb, var(--accent) 34%, transparent); color: #fff8f4; }
+::selection {
+  background: color-mix(in srgb, var(--accent) 28%, var(--bg-surface));
+  color: var(--text-primary);
+}
 
 /* ============================================================
    Layout
@@ -82,8 +85,6 @@ body > *:has(+ .footer),
   @apply tw:font-bold tw:text-title-xs tw:text-primary; letter-spacing: .02em;
   @apply tw:flex tw:items-center tw:gap-s-2 tw:cursor-pointer;
 }
-/* 品牌副标低于 --fs-mono-xs:只承载 6 个 caps 字母,不参与正文层级 */
-.nav-brand small { @apply tw:block tw:mt-[-2px] tw:text-brand-caption tw:font-semibold; letter-spacing:.11em; @apply tw:text-muted; }
 .nav-brand .dot {
   /* logo 菱形:非对称圆角是品牌图形本身,不是卡片圆角 */
   @apply tw:w-[18px] tw:h-[18px]; border-radius: var(--r-brand-mark); transform: rotate(45deg);

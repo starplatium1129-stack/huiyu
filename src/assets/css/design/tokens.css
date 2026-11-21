@@ -100,9 +100,9 @@
   --font-sans:      -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", "Microsoft YaHei", sans-serif;
   --font-mono:      "JetBrains Mono", "Fira Code", "Consolas", monospace;
   --font-display:   -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans SC", "PingFang SC", "Microsoft YaHei UI", sans-serif;
-  /* 首页、章节、角色主名与短台词；长文和控件仍用 sans。 */
-  --font-serif:     "Songti SC", "STSong", "Noto Serif SC", "Noto Serif CJK SC", "SimSun", "Yu Mincho", "Hiragino Mincho ProN", Georgia, serif;
-  --font-serif-jp:  "Yu Mincho", "Hiragino Mincho ProN", "Noto Serif CJK JP", var(--font-serif);
+  /* 首页、章节、角色主名与短台词；长文和控件仍用 sans。优先矢量中/日文衬线，避免 Windows 直落点阵宋体。 */
+  --font-serif:     "Source Han Serif SC", "Noto Serif SC", "Noto Serif CJK SC", "Songti SC", "STZhongsong", "STSong", "FangSong", "Yu Mincho", "Hiragino Mincho ProN", "SimSun", Georgia, serif;
+  --font-serif-jp:  "Yu Mincho", "Hiragino Mincho ProN", "Source Han Serif JP", "Noto Serif JP", "Noto Serif CJK JP", var(--font-serif);
 
   /* ---- Font size scale (DESIGN.md §Typography 的运行时实现) ----
      mono-*  机读标签(kicker/badge/seed)   |  label-*  控件与元数据
@@ -175,9 +175,9 @@
   --shadow-glass-elevated: inset 0 1px 0 var(--glass-highlight), var(--shadow-lg);
   /* accent 光晕: 恋爱感柔光弥散 (Bloom) */
   --glow-md: 0 0 28px var(--accent-glow), 0 0 10px rgba(183, 132, 246, 0.25);
-  /* 焦点用主题墨色底线，选中用单侧标记，不向控件外扩描边。 */
-  --ring-color: var(--focus-color);
-  --ring: inset 0 -2px 0 var(--ring-color);
+  /* 键盘焦点采用清晰中性外扩环（单一真源）；选中保持独立中性边线指示。 */
+  --focus-color: var(--text-secondary);
+  --focus-shadow: 0 0 0 2px var(--focus-color);
   --selection-shadow: inset 0 -2px 0 var(--border-strong), var(--shadow-sm);
 
   /* ---- Motion -----------------------------------------------------------

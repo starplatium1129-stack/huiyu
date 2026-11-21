@@ -12,8 +12,9 @@ async function buildBrandAssets() {
   if (!outline) throw new Error('Brand outline missing');
   const mark = `<path d="${outline}" fill="none" stroke="currentColor" stroke-width="1.65" stroke-linecap="round" stroke-linejoin="round"/>`;
   const svg = (viewBox: string, body: string) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="${viewBox}" role="img" aria-labelledby="title"><title id="title">绘遇 · HUIYU</title>${body}</svg>\n`;
-  for (const [name, ink, accent] of [['logo', '#FFF8F4', '#F2A8BE'], ['logo-light', '#211C30', '#92365F']]) {
-    const body = `<g color="${accent}" transform="translate(0 0) scale(2)">${mark}</g><g fill="${ink}"><text x="58" y="30" font-family="'Noto Serif SC','SimSun',serif" font-size="29" font-weight="700" letter-spacing="3">绘遇</text><text x="60" y="44" font-family="'Segoe UI',sans-serif" font-size="9" font-weight="600" letter-spacing="4">HUIYU</text></g>`;
+  const serifFamily = "'Source Han Serif SC','Noto Serif SC','Songti SC','STZhongsong','STSong','FangSong','Yu Mincho','SimSun',serif";
+  for (const [name, ink, accent] of [['logo', '#FFF8F4', '#F2A8BE'], ['logo-light', '#211C30', '#9B3E61']]) {
+    const body = `<g color="${accent}" transform="translate(0 0) scale(2)">${mark}</g><g fill="${ink}"><text x="58" y="30" font-family="${serifFamily}" font-size="29" font-weight="700" letter-spacing="3">绘遇</text><text x="60" y="44" font-family="'Segoe UI',sans-serif" font-size="9" font-weight="600" letter-spacing="4">HUIYU</text></g>`;
     fs.writeFileSync(path.join(ROOT, `assets/${name}.svg`), svg('0 0 132 48', body));
   }
   const appIcon = path.join(ROOT, 'assets/app-icon.png');
