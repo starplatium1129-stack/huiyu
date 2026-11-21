@@ -1,0 +1,15 @@
+{
+  "runtime": "typescript",
+  "platformVersion": 29,
+  "entry": "client/dist/index.html",
+  "name": "QQ与桌面消息看板",
+  "slug": "qqyu-zhuo-mian-xiao-xi-kan-ban",
+  "managedCronJobs": [
+    {
+      "id": "qq-desktop-board-refresh-1m",
+      "action": "refreshBoards",
+      "schedule": "interval@1m",
+      "args": {}
+    }
+  ]
+}

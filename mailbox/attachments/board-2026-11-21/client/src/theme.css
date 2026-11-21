@@ -1,0 +1,200 @@
+@import "tailwindcss";
+@import "tailwindcss-safe-area";
+
+@theme {
+  --text-xs: 12px;
+  --text-xs--line-height: 16px;
+  --text-sm: 14px;
+  --text-sm--line-height: 20px;
+  --text-base: 16px;
+  --text-base--line-height: 24px;
+  --text-lg: 18px;
+  --text-lg--line-height: 28px;
+  --text-xl: 20px;
+  --text-xl--line-height: 28px;
+  --text-2xl: 24px;
+  --text-2xl--line-height: 32px;
+  --text-3xl: 30px;
+  --text-3xl--line-height: 36px;
+  --text-4xl: 36px;
+  --text-4xl--line-height: 40px;
+  --text-5xl: 48px;
+  --text-5xl--line-height: 52px;
+}
+
+:root {
+  color-scheme: dark;
+  --bg: #10151d;
+  --surface: #171e29;
+  --surface-2: #1e2735;
+  --text: #dbe4ee;
+  --dim: #7d8ea3;
+  --border: #26313f;
+  --accent: #4cc3ff;
+  --radius: 10px;
+  --st-wait: #f5b83d;
+  --st-reply: #4cc3ff;
+  --st-sent: #3ddc97;
+  --st-bad: #fb7185;
+  --space-surface: var(--surface);
+  --space-surface-alt: var(--surface-2);
+  --space-muted: var(--dim);
+  --space-border: var(--border);
+  --space-accent: var(--accent);
+}
+
+/* The board is a night-ops console by design; keep the same signal
+   palette when the system is in light mode. */
+@media (prefers-color-scheme: light) {
+  :root {
+    color-scheme: dark;
+    --bg: #10151d;
+    --surface: #171e29;
+    --surface-2: #1e2735;
+    --text: #dbe4ee;
+    --dim: #7d8ea3;
+    --border: #26313f;
+    --accent: #4cc3ff;
+  }
+}
+
+/* Phone tap targets: at least 32px tall. */
+@layer base {
+  button, [role="button"], select, summary, input:not([type="checkbox"], [type="radio"]) {
+    min-height: 2rem;
+  }
+}
+
+@keyframes lamp-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+.lamp-live {
+  animation: lamp-pulse 1.6s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .lamp-live { animation: none; }
+}
+
+/* Gateway pipeline (Xique-style): a line between two gateway nodes.
+   When a segment is transferring, the line becomes an animated dashed
+   track with a dot travelling along it; idle segments stay a plain
+   hairline, error segments turn rose. */
+@keyframes flow-dash {
+  to { background-position-x: 28px; }
+}
+@keyframes flow-dot {
+  0% { left: 0; opacity: 0; }
+  12% { opacity: 1; }
+  88% { opacity: 1; }
+  100% { left: calc(100% - 7px); opacity: 0; }
+}
+@keyframes node-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--accent) 55%, transparent); }
+  100% { box-shadow: 0 0 0 9px transparent; }
+}
+.flow-track {
+  position: relative;
+  height: 2px;
+  background: var(--border);
+}
+.flow-track[data-state="active-in"],
+.flow-track[data-state="active-out"] {
+  background-color: color-mix(in srgb, var(--flow-color) 28%, transparent);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--flow-color) 0 9px,
+    transparent 9px 18px
+  );
+  background-size: 18px 2px;
+  animation: flow-dash 0.55s linear infinite;
+}
+.flow-track[data-state="error"] {
+  background-color: color-mix(in srgb, var(--st-bad) 30%, transparent);
+  background-image: repeating-linear-gradient(
+    90deg,
+    var(--st-bad) 0 5px,
+    transparent 5px 12px
+  );
+  background-size: 12px 2px;
+}
+.flow-dot {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 7px;
+  height: 7px;
+  margin-top: -3.5px;
+  border-radius: 999px;
+  background: var(--flow-color);
+  box-shadow: 0 0 9px var(--flow-color);
+  animation: flow-dot 1.35s linear infinite;
+}
+.node-live {
+  animation: node-ring 1.6s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .flow-track[data-state="active-in"],
+  .flow-track[data-state="active-out"] { animation: none; }
+  .flow-dot { animation: none; left: 45%; opacity: 1; }
+  .node-live { animation: none; }
+}
+
+/* Page in the background: freeze every pipeline animation in place
+   (the root element gets .board-paused from the visibility listener). */
+.board-paused .flow-track[data-state="active-in"],
+.board-paused .flow-track[data-state="active-out"],
+.board-paused .flow-dot,
+.board-paused .lamp-live,
+.board-paused .node-live {
+  animation-play-state: paused;
+}
+
+/* Attach data-muse-flow to the existing line and add one empty,
+   aria-hidden span with data-muse-marker inside it. Keep captions outside. */
+[data-muse-flow] {
+  position: relative;
+  overflow: hidden;
+}
+
+[data-muse-marker] {
+  display: none;
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+
+[data-muse-marker]::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 0;
+  top: 50%;
+  width: .45rem;
+  height: .45rem;
+  border-radius: 50%;
+  background: currentColor;
+  transform: translateY(-50%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  [data-muse-motion="on"] [data-muse-flow][data-muse-moving="true"] > [data-muse-marker] {
+    display: block;
+    animation: muse-transfer 1.6s linear infinite;
+  }
+}
+
+@keyframes muse-transfer {
+  from { transform: translateX(-.45rem); }
+  to { transform: translateX(100%); }
+}
+
+/* Put this attribute on a short visible label reading “数据待刷新”. */
+[data-muse-fresh="true"] [data-muse-stale] { display: none; }
+
+/* Glue for the pre-existing dashed track: when the pipeline_view
+   module turns motion off (paused, stale, or page hidden), the
+   dashed-line animation freezes too, not just the marker dot. */
+[data-muse-motion="off"] .flow-track[data-state="active-in"],
+[data-muse-motion="off"] .flow-track[data-state="active-out"] {
+  animation: none;
+}

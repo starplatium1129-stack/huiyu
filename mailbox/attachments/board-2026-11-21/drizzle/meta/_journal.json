@@ -1,0 +1,41 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1795170799686,
+      "tag": "0001_initial",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1795170799686,
+      "tag": "0002_board_tables",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1795177832338,
+      "tag": "0003_add_first_sent_and_review_fields",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1795185121935,
+      "tag": "0004_add_pipeline_signal_to_board_state",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1795186431147,
+      "tag": "0005_add_row_delivery_json_to_board_state",
+      "breakpoints": true
+    }
+  ]
+}
