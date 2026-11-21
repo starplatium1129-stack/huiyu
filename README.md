@@ -8,28 +8,30 @@
 
 Start with a character and a scene. Choose an outfit, camera and lighting, turn the moment into a CG, then keep the finished image and its recipe in your own artwork collection. Draw directly or browse the reference album for your next idea.
 
-[![HUIYU home with creation shortcuts and recent artwork](docs/images/software-preview/home.jpg)](docs/images/software-preview/home.jpg)
-
 ## <img src="docs/images/icons/image.svg" width="24" height="24" alt=""> From a moment to an image
 
 Choose your character and materials on the left, view the canvas in the center, and adjust generation settings on the right. Scene mode helps shape an idea; expert mode exposes models, artist styles, prompts and sampling settings. Import references, interrogate images or edit an outfit when needed.
 
-[![Drawing studio with character materials, a central canvas and model settings](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+[![Drawing studio in expert mode with a character, outfit choices, a scene reference and generation settings](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
 
 ## <img src="docs/images/icons/character.svg" width="24" height="24" alt=""> Characters, inspiration and your artwork
 
 <table>
   <tr>
-    <td width="50%"><strong>Character library</strong><br>Browse by series, then choose an outfit and scene.<a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="Character library with series grouped as stacks of cards" width="100%"></a></td>
-    <td width="50%"><strong>Reference album</strong><br>Find inspiration by character, scene and rating. Protected images retain blurred previews.<a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="Reference album with sample filters and content ratings" width="100%"></a></td>
+    <td width="50%"><strong>Series bookshelf</strong><br>Browse the character library by game or series.<br><a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="Character library with cards grouped by series" width="100%"></a></td>
+    <td width="50%"><strong>Character profile</strong><br>Read a character's story, see their portrait and start a drawing with them.<br><a href="docs/images/software-preview/character-profile.jpg"><img src="docs/images/software-preview/character-profile.jpg" alt="A character profile with a portrait, biography and a button to start drawing" width="100%"></a></td>
   </tr>
   <tr>
-    <td width="50%"><strong>My artwork</strong><br>Organize images by character or album and save your favorites.<a href="docs/images/software-preview/my-works.jpg"><img src="docs/images/software-preview/my-works.jpg" alt="Artwork collection with a masonry image grid" width="100%"></a></td>
-    <td width="50%"><strong>Artwork viewer</strong><br>Browse large images, inspect generation details and reuse a recipe.<a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="Artwork viewer with a three-dimensional carousel, zoom and details" width="100%"></a></td>
+    <td width="50%"><strong>Reference album</strong><br>Explore by character, scene theme or series. Protected images have blurred previews.<br><a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="Reference album with sample images grouped into series" width="100%"></a></td>
+    <td width="50%"><strong>My artwork</strong><br>Organize images by character or album and save your favorites.<br><a href="docs/images/software-preview/my-works.jpg"><img src="docs/images/software-preview/my-works.jpg" alt="Artwork collection with a masonry image grid, search and filters" width="100%"></a></td>
   </tr>
 </table>
 
-Screenshots by the author. Click an image to view it full size.
+### Artwork viewer
+
+Flip through your collection in 3D, zoom into the original image and reuse its generation recipe.
+
+[![Artwork viewer with a three-dimensional carousel, zoom controls and image details](docs/images/software-preview/artwork-viewer.jpg)](docs/images/software-preview/artwork-viewer.jpg)
 
 ## <img src="docs/images/icons/model.svg" width="24" height="24" alt=""> Creative tools
 
@@ -47,6 +49,10 @@ New SD / WAI generation is retired; old artwork and task queries remain availabl
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> Character room and desktop companion
 
 A separate character room provides text chat, Live2D display and voice playback; a desktop companion can stay nearby. Connect a compatible API or existing Ollama, or prepare local llama.cpp and GGUF models. Voice, translation and lip sync require their own services and character resources. The control room manages connections and model resource release.
+
+[![Character room with Ayachi Nene's portrait and a text conversation](docs/images/software-preview/character-room.jpg)](docs/images/software-preview/character-room.jpg)
+
+Screenshots by the author. Click an image to view it full size.
 
 ## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> Install and start creating
 

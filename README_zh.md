@@ -8,28 +8,30 @@
 
 绘遇从角色和场景出发：选一位主角，挑选衣装、镜头与光线，把想象整理成一张 CG，再把成片和生成配方一起留在自己的作品册里。可以直接创作，也可以先翻翻参考画册，寻找下一幕的灵感。
 
-[![绘遇首页：角色创作入口与最近作品](docs/images/software-preview/home.jpg)](docs/images/software-preview/home.jpg)
-
 ## <img src="docs/images/icons/image.svg" width="24" height="24" alt=""> 一张画，从这一幕开始
 
 左侧挑选角色和创作素材，中间看画面，右侧调整生成设置。场景模式帮助整理想法，专家模式提供模型、画师风格、提示词与采样参数；需要时可以导入参考图、反推描述或局部换装。
 
-[![绘图画室：角色素材、中央画布与模型和生成设置](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
+[![绘图画室专家模式，展示角色衣装、场景参考和生成设置](docs/images/software-preview/drawing-studio.jpg)](docs/images/software-preview/drawing-studio.jpg)
 
 ## <img src="docs/images/icons/character.svg" width="24" height="24" alt=""> 角色、灵感与自己的作品册
 
 <table>
   <tr>
-    <td width="50%"><strong>角色书架</strong><br>按作品浏览角色，挑选造型与场景。<a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="角色书架：按原作分组的叠卡与角色目录" width="100%"></a></td>
-    <td width="50%"><strong>参考画册</strong><br>按角色、场景与分级寻找灵感；受保护图片保持模糊预览。<a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="参考画册：样张筛选与内容分级预览" width="100%"></a></td>
+    <td width="50%"><strong>作品书架</strong><br>按原作系列浏览角色。<br><a href="docs/images/software-preview/character-library.jpg"><img src="docs/images/software-preview/character-library.jpg" alt="角色档案的作品书架，角色按原作系列分组" width="100%"></a></td>
+    <td width="50%"><strong>角色档案</strong><br>看立绘、读角色故事，也可以从档案直接开始绘制。<br><a href="docs/images/software-preview/character-profile.jpg"><img src="docs/images/software-preview/character-profile.jpg" alt="角色档案详情，包含立绘、角色故事和开始绘制入口" width="100%"></a></td>
   </tr>
   <tr>
-    <td width="50%"><strong>我的作品</strong><br>按角色和画册整理成片，收藏喜欢的一张。<a href="docs/images/software-preview/my-works.jpg"><img src="docs/images/software-preview/my-works.jpg" alt="我的作品：角色 CG 瀑布流与作品分类" width="100%"></a></td>
-    <td width="50%"><strong>立体观画</strong><br>翻阅大图、查看生成信息，沿用配方继续创作。<a href="docs/images/software-preview/artwork-viewer.jpg"><img src="docs/images/software-preview/artwork-viewer.jpg" alt="作品查看器：立体轮播、原图缩放和作品信息" width="100%"></a></td>
+    <td width="50%"><strong>参考画册</strong><br>按角色、场景主题或作品系列找参考，受保护的样张默认模糊。<br><a href="docs/images/software-preview/reference-album.jpg"><img src="docs/images/software-preview/reference-album.jpg" alt="参考画册中按作品系列排列的样张封面" width="100%"></a></td>
+    <td width="50%"><strong>我的作品</strong><br>按角色和画册整理成片，收藏喜欢的一张。<br><a href="docs/images/software-preview/my-works.jpg"><img src="docs/images/software-preview/my-works.jpg" alt="作品展墙、分类标签和搜索筛选入口" width="100%"></a></td>
   </tr>
 </table>
 
-截图由作者提供，点击查看原图。
+### 立体观画
+
+像翻画册一样看大图，放大查看细节，也可以沿用生成配方继续创作。
+
+[![作品查看器，展示立体翻阅、原图缩放和侧边作品信息](docs/images/software-preview/artwork-viewer.jpg)](docs/images/software-preview/artwork-viewer.jpg)
 
 ## <img src="docs/images/icons/model.svg" width="24" height="24" alt=""> 创作工具
 
@@ -47,6 +49,10 @@ SD／WAI 新生图已退役，保留旧任务查询与历史作品。完整的�
 ## <img src="docs/images/icons/chat.svg" width="24" height="24" alt=""> 角色房间与桌面陪伴
 
 独立角色房间支持文字聊天、Live2D 展示与语音播放；桌面陪伴窗可以留在手边。聊天可连接兼容 API、已有 Ollama，或准备本地 llama.cpp 与 GGUF。语音、翻译和口型需要相应服务与角色资源；控制室管理连接和模型资源释放。
+
+[![角色房间，左侧展示绫地宁宁的立绘，右侧为文字对话](docs/images/software-preview/character-room.jpg)](docs/images/software-preview/character-room.jpg)
+
+截图由作者提供。点击图片可查看大图。
 
 ## <img src="docs/images/icons/gallery.svg" width="24" height="24" alt=""> 安装与开始创作
 
