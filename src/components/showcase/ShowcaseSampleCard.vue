@@ -15,9 +15,13 @@
       <span v-if="entry.rating === 'R18' && loaded && !broken" class="sample-sensitive tw:absolute tw:grid tw:gap-[2px] tw:min-w-[112px] tw:rounded-pill tw:pointer-events-none"><strong>R18</strong><span>悬停或聚焦预览</span></span>
     </button>
     </ShowcasePreviewSource>
-    <div class="sample-caption">
-      <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured" class="sample-featured"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
+    <div class="sample-caption" :class="{ 'sample-caption-artist': artistFeatured !== undefined }">
+      <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured && artistFeatured === undefined" class="sample-featured"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
       <h3 class="sample-title tw:text-primary tw:text-body tw:font-semibold tw:leading-body">{{ displayTitle }}</h3>
+      <button v-if="artistFeatured !== undefined && entry.artistId" class="btn btn-quiet btn-sm sample-artist-feature" type="button"
+        :aria-label="`精选画师 · ${entry.title}`" :aria-pressed="artistFeatured" @click="emit('featureArtist', entry.artistId)">
+        <ArchiveIcon :name="artistFeatured ? 'success' : 'star'" />精选
+      </button>
     </div>
     <CardEdgeLight />
   </article>
@@ -34,7 +38,10 @@ import { cachedImageDimensions, rememberImageDimensions } from '@/utils/imageDim
 import { resolveRuntimeUrl, runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { computed, shallowRef, watch } from 'vue'
 
-const props = defineProps<{ entry: ShowcaseEntry; src: string; fullSrc: string; featured: boolean; characterLabel: string; ratingLabel: string; eager?: boolean }>()
+const props = withDefaults(defineProps<{
+  entry: ShowcaseEntry; src: string; fullSrc: string; featured: boolean; artistFeatured?: boolean;
+  characterLabel: string; ratingLabel: string; eager?: boolean;
+}>(), { artistFeatured: undefined })
 const displayTitle = computed(() => {
   const name = props.characterLabel.trim(), original = props.entry.title.trim()
   let title = original
@@ -63,7 +70,7 @@ function measureImage(event: Event) {
   const img = event.target as HTMLImageElement
   naturalSize.value = rememberImageDimensions(thumbnailSrc.value, img.naturalWidth, img.naturalHeight)
 }
-const emit = defineEmits<{ open: [id: string] }>()
+const emit = defineEmits<{ open: [id: string]; featureArtist: [id: string] }>()
 </script>
 
 <style scoped>
@@ -95,6 +102,12 @@ const emit = defineEmits<{ open: [id: string] }>()
 .sample-kicker { grid-column:1 / -1; }
 .sample-kicker > span:first-child { @apply tw:overflow-hidden tw:text-ellipsis tw:whitespace-nowrap; }
 .sample-title { grid-column:1 / -1; margin:0; overflow-wrap:anywhere; font-size:var(--fs-body-sm); }
+.sample-caption-artist .sample-title { grid-column:1; align-self:center; }
+.sample-artist-feature { grid-column:2; justify-self:end; align-self:center; white-space:nowrap; }
+.sample-artist-feature[aria-pressed='true'] { border-color:var(--border-strong); background:var(--bg-elevated); color:var(--text-primary); }
+.sample-artist-feature > .archive-icon { width:1em; height:1em; }
+@media (pointer:coarse) { .sample-artist-feature { min-block-size:44px; } }
+@media (forced-colors:active) { .sample-artist-feature[aria-pressed='true'] { border-color:ButtonText; } }
 .sample-featured { display:inline-flex; margin-left:auto; color:var(--accent); }
 .sample-featured .archive-icon { width:14px; height:14px; }
 @media (hover: hover) and (pointer: fine) {

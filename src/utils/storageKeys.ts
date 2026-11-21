@@ -51,6 +51,7 @@ export const GUEST_GUIDE_DISMISSED_KEY = 'aics_guest_guide_dismissed'
 export const AUTO_SAVE_TO_GALLERY_KEY = 'aics_auto_save_to_gallery'
 /** Gallery search preferences; contains conditions, never artwork facts or image data. */
 export const GALLERY_FILTER_PRESETS_KEY = 'aics_gallery_filter_presets_v1'
+export const FEATURED_ARTISTS_KEY = 'aics_featured_artists_v1'
 /** Workspace-bound first-use choices; operation IDs are rechecked, never resumed as commands. */
 export const LOCAL_SETUP_DRAFT_KEY = 'aics-model-draft-local-setup'
 
@@ -165,6 +166,7 @@ const LIVE_LOCAL_KEYS = [
   GALLERY_FILTER_PRESETS_KEY,
   'aics-artist-usage',
   'aics-artist-recent',
+  FEATURED_ARTISTS_KEY,
   'aics-voice-studio-collapsed',
   'aics_managed_route_collapsed_v1',
   'aics_managed_route_dismissed_v1',

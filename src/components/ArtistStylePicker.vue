@@ -93,6 +93,7 @@
           <span class="artist-style-name">
             <strong>{{ option.cnName || option.name }}</strong>
             <small v-if="option.cnName && option.cnName !== option.name">{{ option.name }}</small>
+            <small v-if="featuredArtistIds.has(option.id)" class="artist-featured-label"><ArchiveIcon name="star" />精选</small>
           </span>
           <ArchiveIcon v-if="isOptionSelected(option.id)" class="artist-selected-check" name="success" />
           <StudioTooltip v-if="option.masterpiece" :content="option.masterpiece">
@@ -172,6 +173,7 @@ import {
 import { ARTIST_COMBO_PRESETS } from '@/config/artistComboPresets'
 import { ARTIST_STYLE_OPTIONS } from '@/config/artistStyleCatalog'
 import { sortByStyleFunnel, useArtistStyleFunnel } from '@/composables/useArtistStyleFunnel'
+import { useFeaturedArtists } from '@/composables/useFeaturedArtists'
 import { mossArtistTags } from '@/utils/mossPrompt'
 
 const props = withDefaults(defineProps<{
@@ -242,9 +244,8 @@ function onPickerKeydown(event: KeyboardEvent) {
 /** 达上限时的就地提示；选满时给出，取消或换选后清除。 */
 const limitHint = ref('')
 
-// 三级漏斗排序逻辑（Top3 常用 + 角色专属 + 目录）已收敛至
-// @/composables/useArtistStyleFunnel（2026-09-05 单体拆分）。
 const { recordUsage, frequentTop3Ids, recentIds } = useArtistStyleFunnel(ARTIST_STYLE_OPTIONS)
+const { featuredArtistIds } = useFeaturedArtists()
 
 const searchDocuments = computed(() => new Map(ARTIST_STYLE_OPTIONS.map(option => [option.id, [
   option.name, option.id, option.cnName || '', option.description, option.masterpiece || '', ...(option.keywords || []),
@@ -266,7 +267,7 @@ const filteredOptions = computed(() => {
     matched = list.filter(option => documents.get(option.id)?.includes(needle))
   }
 
-  return sortByStyleFunnel(matched, frequentTop3Ids.value, props.curatedArtistStyles || [])
+  return sortByStyleFunnel(matched, featuredArtistIds.value, frequentTop3Ids.value, props.curatedArtistStyles || [])
 })
 
 const selectionSummary = computed(() => {

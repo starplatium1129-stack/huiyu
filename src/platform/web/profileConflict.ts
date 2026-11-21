@@ -4,7 +4,7 @@ import { createChatNormalizeOptions } from '../../composables/chat/chatStorageSt
 import { STORAGE_VERSION } from '../../config/characters'
 import { mergeChatArchives, normalizeChatArchive } from '../../utils/chatArchive.ts'
 import { assertChatVersion } from '../../utils/chatVersion.ts'
-import { CHAT_PREFERENCES_KEY } from '../../utils/storageKeys.ts'
+import { CHAT_PREFERENCES_KEY, FEATURED_ARTISTS_KEY } from '../../utils/storageKeys.ts'
 
 type RecordBody = Record<string, unknown>
 const object = (value: unknown): RecordBody => value && typeof value === 'object' && !Array.isArray(value) ? value as RecordBody : {}
@@ -24,8 +24,8 @@ export function mergeProfileSettingConflict(key: string, baseValue: unknown, loc
     const base = typeof baseValue === 'string' ? JSON.parse(baseValue) : baseValue
     const local = typeof localValue === 'string' ? JSON.parse(localValue) : localValue
     const remote = typeof remoteValue === 'string' ? JSON.parse(remoteValue) : remoteValue
-    // These two settings are unordered scene-ID sets, unlike recent/history arrays.
-    if (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes') {
+    // These settings are unordered ID sets, unlike recent/history arrays.
+    if (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes' || key === FEATURED_ARTISTS_KEY) {
       const ids = (value: unknown): value is string[] => Array.isArray(value) && value.every(id => typeof id === 'string')
       if (ids(local) && (base === null || ids(base)) && (remote === null || ids(remote))) {
         const before = new Set<string>(base ?? []), own = new Set(local), merged = new Set<string>(remote ?? [])

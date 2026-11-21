@@ -70,9 +70,9 @@
 
     <div v-else ref="listRoot" data-route-arrive class="showcase-grid" :aria-busy="manifestLoading">
       <ShowcaseSampleCard v-for="(entry, index) in paged" :key="entry.id" :entry="entry" :src="thumbSrc(entry)" :full-src="assets.imageUrl(entry.id)" :data-list-key="entry.id" :eager="index < 6"
-        :featured="featured.has(entry.id)"
+        :featured="featured.has(entry.id)" :artist-featured="artistFeatureState(entry)"
         :character-label="charLabel(entry.char)" :rating-label="ratingLabel(entry.rating)"
-        @open="openViewer" />
+        @open="openViewer" @feature-artist="changeArtistFeature" />
     </div>
 
     <div ref="loadSentinel" v-show="paged.length < filtered.length" class="load-wrap">
@@ -157,6 +157,8 @@ import { useAlbumNavigation } from '@/composables/gallery/useAlbumNavigation'
 import { useScrollReveal } from '@/composables/useScrollReveal'
 import { useListTransition } from '@/composables/useListTransition'
 import { useBrowseSearch } from '@/composables/useBrowseSearch'
+import { canFeatureArtist, useFeaturedArtists } from '@/composables/useFeaturedArtists'
+import { useToast } from '@/composables/useToast'
 import {
   type ShowcaseEntry,
   type ShowcaseEntryType,
@@ -166,6 +168,7 @@ import {
 const sceneStore = useSceneStore()
 const route = useRoute()
 const router = useRouter()
+const toast = useToast()
 useScrollReveal()
 
 const PAGE_SIZE = 24
@@ -183,12 +186,28 @@ const albumSelection = ref('all')
 const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
 const albumEntryIds = computed(() => selectedAlbum.value ? new Set(selectedAlbum.value.entryIds) : null)
 const featured = computed(() => new Set([...(sceneStore.curation.signatureSceneIds ?? []), ...(sceneStore.curation.curatedSceneIds ?? [])]))
+const { featuredArtistIds, toggleFeaturedArtist } = useFeaturedArtists()
 const unavailable = computed(() => !!reloadError.value && !entries.value.length)
 const { query: searchQuery, settledQuery, restoreQuery } = useBrowseSearch()
 const searchInput = ref<InstanceType<typeof StudioSearch> | null>(null)
 const scope       = ref<'all' | 'featured'>('all')
 const typeFilter  = ref<'all' | ShowcaseEntryType>('all')
 const { albumsOpen, albumRoot, imageHeading, showAlbums, showImages, openAlbum: navigateAlbum } = useAlbumNavigation(albumSelection)
+function artistFeatureState(entry: ShowcaseEntry) {
+  if (entry.type !== 'artist' || !canFeatureArtist(entry.artistId)) return undefined
+  return featuredArtistIds.value.has(entry.artistId)
+}
+function changeArtistFeature(id: string) {
+  const focused = document.activeElement
+  try { toggleFeaturedArtist(id) }
+  catch (error) {
+    toast.error(error instanceof Error ? error.message : '暂时无法保存精选画师。')
+    return
+  }
+  if (scope.value === 'featured' && focused) void nextTick(() => {
+    if (!focused.isConnected && document.activeElement === document.body) imageHeading.value?.focus({ preventScroll: true })
+  })
+}
 const charFilter  = ref<string>('all')
 const ratingFilter= ref<'all' | ShowcaseRating>('all')
 function openAlbum(id: string) { resetFilters(); void navigateAlbum(id) }
@@ -289,7 +308,7 @@ const filtered = computed(() => {
   const index = term ? searchIndex.value : null
   const matches = entries.value.filter(e => {
     if (albumEntryIds.value && !albumEntryIds.value.has(e.id)) return false
-    if (scope.value === 'featured' && !featured.value.has(e.id)) return false
+    if (scope.value === 'featured' && !featured.value.has(e.id) && !artistFeatureState(e)) return false
     if (typeFilter.value !== 'all' && e.type !== typeFilter.value) return false
     if (charFilter.value !== 'all' && e.char !== charFilter.value) return false
     if (ratingFilter.value !== 'all' && e.rating !== ratingFilter.value) return false

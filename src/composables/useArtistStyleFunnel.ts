@@ -1,9 +1,4 @@
 import { profileLocalStorage as localStorage } from '../platform/web/profileStorage.ts'
-// 画师三级漏斗排序（2026-09-05 从 ArtistStylePicker.vue 抽出：单体门禁 631>600 拆分）
-// 1. Top 3 常用画师：只取使用频次最高的前 3 位（避免试一次就永久污染列表）；
-// 2. 角色专属画师：当前角色的官方原画师 / 精选推荐风格；
-// 3. 其余画师按目录正常分类排列。
-
 import { computed, ref, type Ref } from 'vue'
 import type { ArtistStyleOption } from '@/config/artistStyles'
 
@@ -17,9 +12,10 @@ function loadUsage(): Record<string, number> {
   } catch { return {} }
 }
 
-/** 纯排序：命中集按「Top3 常用 → 角色专属 → 目录默认顺序」重排，保持去重。 */
+/** 只重排命中的画师。精选按目录顺序，其后沿用常用、角色推荐和目录顺序。 */
 export function sortByStyleFunnel(
   matched: readonly ArtistStyleOption[],
+  featuredIds: ReadonlySet<string>,
   top3Ids: readonly string[],
   curatedIds: readonly string[],
 ): ArtistStyleOption[] {
@@ -34,6 +30,7 @@ export function sortByStyleFunnel(
       seen.add(id)
     }
   }
+  for (const option of matched) if (featuredIds.has(option.id)) push(option.id)
   for (const id of top3Ids) push(id)
   for (const id of curatedIds) push(id)
   for (const option of matched) push(option.id)

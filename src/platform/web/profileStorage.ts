@@ -1,7 +1,7 @@
 import type { ProfileDomain, ProfileRecord, ProfileSnapshot } from '../../../types/profile'
 import { createProfileWriteReceipt, type ProfileWriteReceipt } from './profileWriteReceipt.ts'
 export type { ProfileWriteReceipt } from './profileWriteReceipt.ts'
-import { CHAT_PREFERENCES_KEY } from '../../utils/storageKeys.ts'
+import { CHAT_PREFERENCES_KEY, FEATURED_ARTISTS_KEY } from '../../utils/storageKeys.ts'
 import { assertChatJsonVersion } from '../../utils/chatVersion.ts'
 import { classifyMigrationKey } from './migrationClassification.ts'
 const profileDomainForKey = (key: string): ProfileDomain | null => {
@@ -120,7 +120,8 @@ function queueWrite(domain: ProfileDomain, key: string, value: unknown, session:
   const identity = cacheKey(key, session), selected = port!, epoch = generation
   const previous = values.get(identity)
   const queuedPredecessor = previous && optimisticRecords.has(previous)
-  const mergedSetting = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes' || key === CHAT_PREFERENCES_KEY)
+  const mergedSetting = domain === 'settings' && (key === 'aics_scene_favorites' || key === 'aics_hidden_scenes'
+    || key === FEATURED_ARTISTS_KEY || key === CHAT_PREFERENCES_KEY)
   const optimistic = { key, value, revision: previous?.revision ?? 0 }
   optimisticRecords.add(optimistic)
   writeVersion++
