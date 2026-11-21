@@ -13,6 +13,7 @@ pub(super) struct SendBody {
     request_key: String,
     conversation_id: String,
     text: Option<String>,
+    mention_sender_id: Option<String>,
     image: Option<attachment::EncodedFile>,
     audio: Option<attachment::EncodedFile>,
 }
@@ -44,6 +45,10 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
         .to_string();
     let id = body.conversation_id;
     let scope = target(app, mailbox, &id).await?.scope;
+    let mention_sender_id = body.mention_sender_id.as_deref();
+    if mention_sender_id.is_some() && (scope != QqScope::Group || body.text.is_none()) {
+        return Err(ApiError::invalid("群聊 @ 成员时请同时提交文字").not_accepted());
+    }
     let payload = match (body.text, body.image, body.audio) {
         (Some(text), None, None) if !text.trim().is_empty() && text.chars().nth(1600).is_none() => {
             Payload::Text(text)
@@ -64,8 +69,12 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
         Payload::Text(text) => Some(text.clone()),
         _ => None,
     };
-    let fingerprint =
-        crate::storage::json_fingerprint(&json!([id, kind, hex::encode(Sha256::digest(data))]));
+    let digest = hex::encode(Sha256::digest(data));
+    // Keep the original fingerprint for existing text and media receipts.
+    let fingerprint = crate::storage::json_fingerprint(&match mention_sender_id {
+        Some(sender_id) => json!([id, kind, digest, sender_id]),
+        None => json!([id, kind, digest]),
+    });
     let storage = app
         .host
         .storage()
@@ -98,7 +107,7 @@ pub(super) async fn send(app: &AppState, mailbox: &Mailbox, body: SendBody) -> R
     // Uploads use srv_send_msg=false. They can safely be retried until we begin a message POST.
     let prepared = async {
         let message = match payload {
-            Payload::Text(text) => json!({"msg_type":0,"content":text}),
+            Payload::Text(text) => mailbox.text_message(scope, &id, &text, mention_sender_id)?,
             Payload::Media(file) => {
                 let bound = target(app, mailbox, &id).await?;
                 let destination = Destination {

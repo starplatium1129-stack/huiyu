@@ -23,6 +23,7 @@ const json = (value, status = 200, retryAfter) => Response.json(value, {
   status, headers: retryAfter ? { ...headers, 'Retry-After': String(retryAfter) } : headers,
 })
 const unavailable = () => problem(503, 'MUSE_LAPTOP_UNAVAILABLE', '出图机暂未回应。请重查原路径，提交重试请复用原 requestKey', { 'Retry-After': '3' })
+const inboxUnavailable = () => problem(503, 'MUSE_CONNECTOR_INBOX_NO_REPLY', '出图机连接器近期在线，但这次取信未收到回执。请续接原收信地址', { 'Retry-After': '3' })
 const POLL_SECONDS = 2
 const RECEIVE_WAIT_SECONDS = 20
 const PARALLEL_DOWNLOAD_MIN = 1024 * 1024
@@ -286,7 +287,7 @@ export class MuseRelay extends DurableObject {
       if (command.inboxWaitSeconds > 0) return this.waitInbox(request, command)
     }
     const call = await this.rpc(command)
-    if (!call) return unavailable()
+    if (!call) return method === 'GET' && inboxPath(path) && this.agentOnline() ? inboxUnavailable() : unavailable()
     const { status, data, retry } = call
     if (chat) {
       if (status === 200 && inboxPath(path) && data.operations) {
@@ -323,7 +324,7 @@ export class MuseRelay extends DurableObject {
     try {
       for (;;) {
         const call = await this.rpc({ ...command, inboxWaitSeconds: seconds }, (seconds + 10) * 1000)
-        if (!call) return unavailable()
+        if (!call) return this.agentOnline() ? inboxUnavailable() : unavailable()
         const { data, status, retry } = call
         if (status !== 200 || !data.ok || !Array.isArray(data.items) || !data.operations) return json(data, status, retry)
         const snapshot = command.path === DESKTOP_INBOX && data.operations.inboxWaitSeconds === undefined
@@ -349,7 +350,6 @@ export class MuseRelay extends DurableObject {
     }
   }
   rpc(command, timeout = 30000) {
-    if (this.calls.size >= 32) return null
     if (command.method === 'GET') {
       for (const call of this.calls.values()) {
         if (call.command.method === 'GET' && call.command.path === command.path
@@ -357,6 +357,10 @@ export class MuseRelay extends DurableObject {
           return call.promise.then(value => structuredClone(value))
         }
       }
+    }
+    if (this.calls.size >= 32) {
+      if (command.method !== 'GET' || !inboxPath(command.path)) return null
+      return { status: 429, data: { ok: false, code: 'MUSE_RELAY_BUSY', message: '中转在途请求较多，请续接原收信地址' }, retry: '2' }
     }
     const ticket = crypto.randomUUID()
     let finish

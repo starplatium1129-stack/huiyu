@@ -273,8 +273,12 @@ impl Bridge {
             .header("X-Muse-Part-Count", "16")
             .header("X-Muse-Parallel", "1")
             .bearer_auth(&self.agent_token)
-            .send()
+            .send();
+        // The relay holds an idle command poll for at most 15 seconds. Bound the
+        // wait for headers without shortening the timeout for a large body.
+        let request = tokio::time::timeout(Duration::from_secs(22), request)
             .await
+            .map_err(|_| "中转取信等待响应超时")?
             .map_err(network_failure)?;
         if request.status() == reqwest::StatusCode::NO_CONTENT {
             return Ok(());
@@ -345,6 +349,7 @@ impl Bridge {
         method: Method,
     ) -> Result<(), String> {
         let message = qq_message(&method, &cmd.path);
+        let inbox = cmd.inbox();
         let search = cmd.path == "/api/muse/qq/search";
         let mut upstream = self
             .local
@@ -354,9 +359,7 @@ impl Bridge {
             )
             .header("X-Token", &self.key)
             .header("Accept-Encoding", "identity");
-        if cmd.inbox()
-            && let Some(wait) = cmd.inbox_wait_seconds
-        {
+        if inbox && let Some(wait) = cmd.inbox_wait_seconds {
             let wait = wait.min(crate::chat::muse::MAX_INBOX_WAIT_SECONDS);
             upstream = upstream
                 .header("Prefer", format!("wait={wait}"))
@@ -379,39 +382,48 @@ impl Bridge {
                     .map_err(|_| "中转回执地址无效")?,
             )
             .bearer_auth(&self.agent_token);
-        let mut payload = None;
-        if let Ok(response) = upstream.send().await {
-            let status = response.status();
-            let headers = response.headers().clone();
-            if let Ok(bytes) = bounded(response, MAX_REPLY).await {
-                if cmd.parallel && status == reqwest::StatusCode::OK {
-                    let status = if self
-                        .upload_window(&cmd.path, &headers, &bytes)
-                        .await
-                        .is_ok()
-                    {
-                        204
-                    } else {
-                        503
-                    };
-                    return send_receipt(reply.header("X-Upstream-Status", status)).await;
-                }
-                for name in [
-                    "content-type",
-                    "x-result-offset",
-                    "x-result-bytes",
-                    "x-result-sha256",
-                    "x-part-sha256",
-                    "retry-after",
-                ] {
-                    if let Some(value) = headers.get(name) {
-                        reply = reply.header(name, value);
+        let payload = match upstream.send().await {
+            Ok(response) => {
+                let status = response.status();
+                let headers = response.headers().clone();
+                if let Ok(bytes) = bounded(response, MAX_REPLY).await {
+                    if cmd.parallel && status == reqwest::StatusCode::OK {
+                        let status = if self
+                            .upload_window(&cmd.path, &headers, &bytes)
+                            .await
+                            .is_ok()
+                        {
+                            204
+                        } else {
+                            503
+                        };
+                        return send_receipt(reply.header("X-Upstream-Status", status)).await;
                     }
+                    for name in [
+                        "content-type",
+                        "x-result-offset",
+                        "x-result-bytes",
+                        "x-result-sha256",
+                        "x-part-sha256",
+                        "retry-after",
+                    ] {
+                        if let Some(value) = headers.get(name) {
+                            reply = reply.header(name, value);
+                        }
+                    }
+                    Ok((status.as_u16(), bytes))
+                } else {
+                    Err("网关响应中断或超过大小上限".into())
                 }
-                payload = Some((status.as_u16(), bytes));
             }
-        }
-        let (status, bytes) = payload.unwrap_or_else(|| (503, br#"{"ok":false,"code":"MUSE_LOCAL_UNAVAILABLE","message":"Retry the same request or use a smaller catalog page."}"#.to_vec()));
+            Err(error) => Err(network_failure(error)),
+        };
+        let (status, bytes) = payload.unwrap_or_else(|failure| {
+            if inbox {
+                eprintln!("Muse 中转本机取信失败 path={}：{failure}", cmd.path);
+            }
+            (503, br#"{"ok":false,"code":"MUSE_LOCAL_UNAVAILABLE","message":"Retry the same request or use a smaller catalog page."}"#.to_vec())
+        });
         send_receipt(reply.header("X-Upstream-Status", status).body(bytes)).await
     }
 }
@@ -477,7 +489,10 @@ pub(super) async fn run(
             match result {
                 Ok(()) => {
                     if let Some(start) = failed_since.take() {
-                        eprintln!("Muse 中转已恢复，距首次失败 {} 秒", start.elapsed().as_secs());
+                        eprintln!(
+                            "Muse 中转已恢复，距首次失败 {} 秒",
+                            start.elapsed().as_secs()
+                        );
                     }
                     retry = 1;
                     continue;

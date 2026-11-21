@@ -25,12 +25,14 @@ const EXPIRED_REPLY_GRACE_MS: u64 = 120_000;
 // Leave space for inbox operations and the JSON envelope in the relay's 2 MiB response.
 const INBOX_ITEMS_BYTES: usize = 2 * 1024 * 1024 - 16 * 1024;
 const MESSAGE_JSON_LIMIT: usize = 4 * 1024 * 1024 + 64 * 1024;
+const GROUP_MEMBER_LIMIT: usize = 512;
 
 pub(in crate::companion_channels) struct Mailbox {
     epoch: String,
     api: Arc<Api>,
     cancel: CancellationToken,
     entries: Mutex<VecDeque<Arc<Entry>>>,
+    group_members: Mutex<VecDeque<GroupMember>>,
     history: history::History,
     inbox_changed: watch::Sender<()>,
     poll_slots: Semaphore,
@@ -46,6 +48,12 @@ enum Route {
 }
 
 type Nicknames = HashMap<String, HashMap<String, String>>;
+
+struct GroupMember {
+    conversation_id: String,
+    sender_id: String,
+    openid: String,
+}
 
 struct Entry {
     key: String,
@@ -73,11 +81,22 @@ struct Entry {
 
 #[derive(Default)]
 struct Delivery {
-    text: Option<String>,
+    text: Option<TextDelivery>,
     confirmed: bool,
     media: Option<attachment::MediaDelivery>,
     needs_media: bool,
     skipped: bool,
+}
+
+#[derive(PartialEq, Eq)]
+struct TextAnswer {
+    text: String,
+    mention_sender_id: Option<String>,
+}
+
+struct TextDelivery {
+    answer: TextAnswer,
+    message: Value,
 }
 
 struct Target {
@@ -195,6 +214,7 @@ impl Mailbox {
             api,
             cancel: cancel.child_token(),
             entries: Mutex::default(),
+            group_members: Mutex::default(),
             history,
             inbox_changed: watch::Sender::new(()),
             poll_slots: Semaphore::new(4),
@@ -376,6 +396,59 @@ impl Mailbox {
             .ok_or_else(expired)
     }
 
+    fn remember_group_member(&self, entry: &Entry) {
+        let mut members = self.group_members.lock().unwrap();
+        if let Some(index) = members.iter().position(|member| {
+            member.conversation_id == entry.conversation_id && member.sender_id == entry.sender_id
+        }) {
+            members.remove(index);
+        }
+        if members.len() >= GROUP_MEMBER_LIMIT {
+            members.pop_front();
+        }
+        members.push_back(GroupMember {
+            conversation_id: entry.conversation_id.clone(),
+            sender_id: entry.sender_id.clone(),
+            openid: entry.sender_openid.clone(),
+        });
+    }
+
+    fn text_message(
+        &self,
+        scope: QqScope,
+        conversation_id: &str,
+        text: &str,
+        mention_sender_id: Option<&str>,
+    ) -> Result<Value> {
+        let Some(sender_id) = mention_sender_id else {
+            return Ok(json!({"msg_type":0,"content":text}));
+        };
+        if scope != QqScope::Group {
+            return Err(ApiError::invalid("只能在 QQ 群聊中 @ 成员").not_accepted());
+        }
+        let members = self.group_members.lock().unwrap();
+        let member = members
+            .iter()
+            .find(|member| {
+                member.conversation_id == conversation_id && member.sender_id == sender_id
+            })
+            .ok_or_else(|| {
+                ApiError::new(
+                    400,
+                    "QQ_MUSE_MENTION_UNKNOWN",
+                    "这次连接还没有收到此成员在该群的发言",
+                )
+                .not_accepted()
+            })?;
+        // Keep any angle-bracket tags in the reply literal. Only the gateway inserts the mention.
+        let escaped = text
+            .replace('&', "&amp;")
+            .replace('<', "&lt;")
+            .replace('>', "&gt;");
+        let content = format!(r#"<qqbot-at-user id="{}" /> {escaped}"#, member.openid);
+        Ok(json!({"msg_type":2,"markdown":{"content":content}}))
+    }
+
     async fn enqueue(
         self: &Arc<Self>,
         app: &AppState,
@@ -446,6 +519,9 @@ impl Mailbox {
             send_attempted: AtomicBool::new(false),
             delivery: AsyncMutex::default(),
         };
+        if entry.scope == QqScope::Group {
+            self.remember_group_member(&entry);
+        }
         entry.recent_messages = self
             .history
             .receive(&entry, settings.muse_context_limit)
@@ -622,6 +698,7 @@ fn operations(vm: bool) -> Value {
         "send":format!("POST {base}/send"),"search":format!("POST {base}/search"),
         "replyBody":{"requestKey":"来信编号","text":"回复文字","image":{"mimeType":"image/png","data":"图片 Base64"}},
         "sendBody":{"requestKey":"新 UUID，重试沿用","conversationId":"targets 返回的会话","text":"文字，也可改传 image 或 audio"},
+        "mentionSenderId":"群文字回复和主动发言可传 mentionSenderId，填写该成员在同群来信中的 senderId；网关会添加 QQ @ 标签。",
         "audio":{"mimeType":"audio/mpeg","data":"MP3 原文件的标准 Base64"},"searchBody":{"requestKey":"来信编号，或搭配 conversationId 使用新 UUID","query":"公开网页关键词"},
         "context":format!("GET {base}/context/{{conversationId}}"),
         "contextUsage":"recentMessages 按收录顺序附上同会话前文。群聊条数取决于绘遇设置，需要更早的群发言可读取同群 context。私聊最多附上本次连接内最近一小时的 6 条发言。",
@@ -743,6 +820,7 @@ async fn send(
 struct ReplyBody {
     request_key: String,
     text: Option<String>,
+    mention_sender_id: Option<String>,
     image: Option<attachment::EncodedFile>,
     audio: Option<attachment::EncodedFile>,
     #[serde(default)]
@@ -782,7 +860,11 @@ async fn submit_reply(app: &AppState, mailbox: &Mailbox, body: ReplyBody) -> Res
     }
     entry.trace("reply_received");
     if body.skip {
-        if body.text.is_some() || body.image.is_some() || body.audio.is_some() {
+        if body.text.is_some()
+            || body.mention_sender_id.is_some()
+            || body.image.is_some()
+            || body.audio.is_some()
+        {
             return Err(ApiError::invalid("跳过时只提交 requestKey 和 skip"));
         }
         let mut delivery = entry.delivery.lock().await;
@@ -804,20 +886,34 @@ async fn submit_reply(app: &AppState, mailbox: &Mailbox, body: ReplyBody) -> Res
             "请提供语音、图片或 1 到 1600 字的回复文字",
         ));
     }
+    if body.mention_sender_id.is_some() && (entry.scope != QqScope::Group || text.is_none()) {
+        return Err(ApiError::invalid("群聊 @ 成员时请同时提交回复文字"));
+    }
     let media = match (body.image, body.audio) {
         (Some(_), Some(_)) => return Err(ApiError::invalid("一次回复只能附带一张图片或一段语音")),
         (Some(image), None) => Some(image.decode(MediaKind::Image)?),
         (None, Some(audio)) => Some(audio.decode(MediaKind::Audio)?),
         (None, None) => None,
     };
-    if media.is_some() {
+    if text.is_none() && media.is_some() {
         entry.delivery.lock().await.needs_media = true;
     }
-    if media.is_none() && text == Some(attachment::NENE_COMMAND) {
+    if media.is_none() && body.mention_sender_id.is_none() && text == Some(attachment::NENE_COMMAND)
+    {
         attachment::send_nene(app, mailbox, &entry, attachment::Selection::Exact).await?;
     } else {
         if let Some(text) = text {
-            send_answer(app, mailbox, &entry, text).await?;
+            send_answer(
+                app,
+                mailbox,
+                &entry,
+                TextAnswer {
+                    text: text.to_owned(),
+                    mention_sender_id: body.mention_sender_id,
+                },
+                media.is_some(),
+            )
+            .await?;
         }
         if let Some(file) = media {
             attachment::send(app, mailbox, &entry, file, attachment::Selection::Exact).await?;
@@ -852,7 +948,13 @@ fn reply_window(app: &AppState, mailbox: &Mailbox, entry: &Entry) -> Result<Dura
     Ok(Duration::from_millis(remaining))
 }
 
-async fn send_answer(app: &AppState, mailbox: &Mailbox, entry: &Entry, text: &str) -> Result<()> {
+async fn send_answer(
+    app: &AppState,
+    mailbox: &Mailbox,
+    entry: &Entry,
+    answer: TextAnswer,
+    needs_media: bool,
+) -> Result<()> {
     let mut delivery = entry.delivery.lock().await;
     let remaining = reply_window(app, mailbox, entry)?;
     if delivery.skipped {
@@ -860,26 +962,33 @@ async fn send_answer(app: &AppState, mailbox: &Mailbox, entry: &Entry, text: &st
     }
     if delivery
         .text
-        .as_deref()
-        .is_some_and(|previous| previous != text)
+        .as_ref()
+        .is_some_and(|previous| previous.answer != answer)
     {
         return Err(ApiError::new(
             409,
             "QQ_MUSE_CONFLICT",
-            "此消息已有另一条回复，重试请沿用原文",
+            "此消息已有另一条回复，重试请沿用原文和 @ 对象",
         ));
     }
+    let retry = delivery.text.is_some();
+    if !retry {
+        let message = mailbox.text_message(
+            entry.scope,
+            &entry.conversation_id,
+            &answer.text,
+            answer.mention_sender_id.as_deref(),
+        )?;
+        delivery.text = Some(TextDelivery { answer, message });
+    }
+    delivery.needs_media |= needs_media;
     if !delivery.confirmed {
-        let retry = delivery.text.is_some();
-        delivery.text = Some(text.to_owned());
+        let message = delivery.text.as_ref().unwrap().message.clone();
         entry.send_attempted.store(true, Ordering::Relaxed);
         // Keep sequence 2 for compatibility with earlier gateways and replays.
-        let send = mailbox.api.send(
-            entry.destination(),
-            &entry.message_id,
-            2,
-            json!({"msg_type":0,"content":text}),
-        );
+        let send = mailbox
+            .api
+            .send(entry.destination(), &entry.message_id, 2, message);
         let result = tokio::select! {
             biased;
             _ = mailbox.cancel.cancelled() => return Err(expired()),
@@ -894,9 +1003,10 @@ async fn send_answer(app: &AppState, mailbox: &Mailbox, entry: &Entry, text: &st
             return Err(error);
         }
         delivery.confirmed = true;
+        let text = delivery.text.as_ref().map(|text| text.answer.text.as_str());
         entry.trace("qq_text_confirmed");
         mailbox
-            .remember_sent(entry.scope, &entry.conversation_id, "text", Some(text))
+            .remember_sent(entry.scope, &entry.conversation_id, "text", text)
             .await;
     }
     Ok(())
