@@ -278,7 +278,6 @@ impl GatewaySupervisor {
             .current_dir(&self.cwd)
             .env("HOST", GATEWAY_HOST)
             .env("PORT", port.to_string())
-            .env("DISABLE_TUNNEL", "1")
             .stdin(Stdio::null())
             .stdout(Stdio::piped())
             .stderr(Stdio::piped());

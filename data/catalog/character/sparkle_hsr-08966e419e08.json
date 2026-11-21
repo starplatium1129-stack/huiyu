@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sparkle_hsr",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "sparkle_hsr",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "🎭",
       "portrait": {
-        "image": "../assets/characters/popular-sparkle_hsr.png?v=4ed0059b014a",
+        "image": "../assets/characters/popular-sparkle_hsr.png?v=188190d73824",
         "alt": "花火样张立绘",
         "sourceShowcaseId": "pc_sparkle_hsr_pc_sparkle_hsr_sparkle_dreamscape_carnival_masks",
         "sourceShowcaseSha256": "a2259b5e7aad8078412f633119625421a57d5b1df7dd162d1dca43af6bf8ab6f"

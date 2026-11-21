@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "himeragi_yukina",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 224,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "himeragi_yukina",
     "profile": {
@@ -202,7 +202,7 @@
         "brown_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-himeragi_yukina.png?v=810b2aac11e9",
+        "image": "../assets/characters/popular-himeragi_yukina.png?v=f334ded893d9",
         "alt": "姬柊雪菜样张立绘",
         "sourceShowcaseId": "pc_himeragi_yukina_pc_himeragi_yukina_yukina_train_station_umbrella_share",
         "sourceShowcaseSha256": "efdb66d0c1935b235d9405a865779972d53eac51a977ec83e6259667b19b4ec7"

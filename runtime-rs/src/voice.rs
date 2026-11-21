@@ -90,36 +90,96 @@ impl VoiceService {
     pub(crate) fn bind_control(&self, control: &Arc<crate::control::ControlService>) {
         self.speech.native.bind_control(control);
     }
+    pub(crate) fn reload(&self, config: &Config) {
+        let next = Arc::new(Settings::load(config));
+        self.speech.update_settings(next.clone());
+        self.translation.update_settings(next);
+        self.probes.invalidate();
+    }
+    pub(crate) fn engine_id(&self) -> &'static str {
+        self.speech.current_settings().engine.id()
+    }
+    pub(crate) fn openai_configured(&self) -> bool {
+        self.speech.current_settings().openai.configured()
+    }
+    pub(crate) fn native_files_present(&self) -> bool {
+        self.speech.native.files_present()
+    }
+    pub(crate) async fn test_openai_tts(
+        &self,
+        base_url: &str,
+        api_key: &str,
+        model: &str,
+        voice: &str,
+        response_format: &str,
+        text: &str,
+    ) -> Result<(Vec<u8>, String)> {
+        let mut settings = Settings {
+            engine: config::Engine::OpenAiTts,
+            tts_host: self.speech.current_settings().tts_host.clone(),
+            openai: config::OpenAiTtsConfig {
+                base_url: base_url.trim().trim_end_matches('/').to_owned(),
+                api_key: api_key.trim().to_owned(),
+                model: model.trim().to_owned(),
+                voice_nene: voice.trim().to_owned(),
+                voice_natsume: voice.trim().to_owned(),
+                default_voice: voice.trim().to_owned(),
+                response_format: response_format.to_owned(),
+            },
+            profiles: Default::default(),
+            translation_url: String::new(),
+            translation_port: 0,
+            python: Default::default(),
+            script: Default::default(),
+            log: Default::default(),
+            native_python: Default::default(),
+            native_source: Default::default(),
+            native_config: Default::default(),
+            native_script: Default::default(),
+            native_temp: Default::default(),
+            native_log: Default::default(),
+        };
+        if !settings.openai.configured() {
+            return Err(ApiError::invalid("请填写语音接口地址和模型名称"));
+        }
+        if settings.openai.response_format.is_empty() {
+            settings.openai.response_format = "mp3".into();
+        }
+        let validated = payload::validate(
+            &json!({"voice":"nene","language":"zh","text":text}),
+            &settings,
+        )?;
+        let deadline = Deadline::now() + Duration::from_secs(25);
+        self.speech
+            .synthesize_openai(&settings, &validated.payload, deadline)
+            .await
+    }
     pub(crate) fn native_selected(&self) -> bool {
-        self.speech.settings.engine == config::Engine::GptSoVitsNative
+        self.speech.current_settings().engine == config::Engine::GptSoVitsNative
     }
     pub(crate) fn native_ready(&self) -> bool {
         self.speech.native.ready()
     }
     pub(crate) async fn retire_native(&self) -> Result<()> {
-        if self.native_selected() {
+        if self.native_selected() || self.native_ready() {
             let idle = Arc::new(self.speech.queue.try_idle()?);
             self.speech.native.retire(idle).await?;
         }
         Ok(())
     }
     pub(crate) async fn start_native(&self) -> Result<()> {
+        let settings = self.speech.current_settings();
         let voice = ["nene", "natsume"]
             .into_iter()
             .find(|id| {
-                self.speech
-                    .settings
-                    .profiles
-                    .get(*id)
-                    .is_some_and(|profile| {
-                        profile.configured()
-                            && !profile.gpt_weights_path.is_empty()
-                            && !profile.sovits_weights_path.is_empty()
-                    })
+                settings.profiles.get(*id).is_some_and(|profile| {
+                    profile.configured()
+                        && !profile.gpt_weights_path.is_empty()
+                        && !profile.sovits_weights_path.is_empty()
+                })
             })
             .ok_or_else(|| ApiError::new(409, "VOICE_UNCONFIGURED", "请先配置角色声线"))?;
-        let value =
-            payload::validate(&json!({"voice":voice,"text":"準備"}), &self.speech.settings)?;
+        let value = payload::validate(&json!({"voice":voice,"text":"準備"}), &settings)?;
         self.speech
             .prepare(&value, Deadline::now() + Duration::from_secs(200))
             .await
@@ -204,10 +264,28 @@ async fn prepare(
     let deadline = Deadline::now() + Duration::from_secs(200);
     service.running(&state)?;
     let voice = input["voice"].as_str().unwrap_or("");
-    let value = payload::validate(
-        &json!({"voice": voice, "text": "準備"}),
-        &service.speech.settings,
-    )?;
+    let settings = service.speech.current_settings();
+    match settings.engine {
+        config::Engine::Off | config::Engine::System => {
+            return Ok(Json(
+                json!({"ok": true, "voice": voice, "engineId": settings.engine.id(), "translation": false, "prepareMs": 0}),
+            ));
+        }
+        config::Engine::OpenAiTts => {
+            if !settings.openai.configured() {
+                return Err(ApiError::new(
+                    409,
+                    "VOICE_UNCONFIGURED",
+                    "请先在控制室「语音配置」填写语音接口地址与模型",
+                ));
+            }
+            return Ok(Json(
+                json!({"ok": true, "voice": voice, "engineId": settings.engine.id(), "translation": false, "prepareMs": 0}),
+            ));
+        }
+        _ => {}
+    }
+    let value = payload::validate(&json!({"voice": voice, "text": "準備"}), &settings)?;
     let needs_translation = input["translation"] == true;
     let started = Instant::now();
     let translation = async {
@@ -225,7 +303,7 @@ async fn prepare(
         tokio::try_join!(service.speech.prepare(&value, deadline), translation)?;
     }
     Ok(Json(
-        json!({"ok": true, "voice": voice, "translation": needs_translation, "prepareMs": started.elapsed().as_millis()}),
+        json!({"ok": true, "voice": voice, "engineId": settings.engine.id(), "translation": needs_translation, "prepareMs": started.elapsed().as_millis()}),
     ))
 }
 async fn post_audio(
@@ -237,7 +315,8 @@ async fn post_audio(
 ) -> Result<Response> {
     let deadline = Deadline::now() + Duration::from_secs(240);
     service.running(&state)?;
-    let value = payload::validate(&input, &service.speech.settings)?;
+    let settings = service.speech.current_settings();
+    let value = payload::validate(&input, &settings)?;
     let mut response = service
         .speech
         .audio(value, deadline)
@@ -268,22 +347,30 @@ async fn get_audio(
         ));
     }
     let input = serde_json::to_value(query).expect("String query serializes");
-    let value = payload::validate(&input, &service.speech.settings)?;
-    let (bytes, cached) = service
+    let settings = service.speech.current_settings();
+    let value = payload::validate(&input, &settings)?;
+    let (bytes, content_type, cached) = service
         .speech
         .buffered(value, deadline)
         .await
         .map_err(|error| tts_error(error, &headers, peer))?;
-    Ok((
+    let mut response = (
         [
-            ("content-type", "audio/wav"),
             ("cache-control", "no-store"),
             ("x-accel-buffering", "no"),
             ("x-tts-cache", if cached { "hit" } else { "miss" }),
         ],
         bytes,
     )
-        .into_response())
+        .into_response();
+    if let Ok(ct) = HeaderValue::from_str(&content_type) {
+        response.headers_mut().insert("content-type", ct);
+    } else {
+        response
+            .headers_mut()
+            .insert("content-type", HeaderValue::from_static("audio/wav"));
+    }
+    Ok(response)
 }
 async fn get_pcm(
     State(state): State<AppState>,
@@ -295,7 +382,8 @@ async fn get_pcm(
     let deadline = Deadline::now() + Duration::from_secs(180);
     service.running(&state)?;
     let input = serde_json::to_value(query).expect("String query serializes");
-    let value = payload::validate(&input, &service.speech.settings)?;
+    let settings = service.speech.current_settings();
+    let value = payload::validate(&input, &settings)?;
     let mut response = service
         .speech
         .stream_pcm(value, deadline)

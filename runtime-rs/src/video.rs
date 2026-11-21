@@ -6,6 +6,7 @@ mod http;
 mod inputs;
 pub(crate) use inputs::driver_mime;
 mod native;
+mod prompt_compiler;
 mod prose;
 mod requests;
 mod resources;

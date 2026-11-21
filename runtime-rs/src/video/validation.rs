@@ -1,6 +1,7 @@
 use super::*;
 const KEYS: &[&str] = &[
     "prompt",
+    "promptRecipe",
     "negative",
     "modelId",
     "aspectRatio",
@@ -16,6 +17,7 @@ const KEYS: &[&str] = &[
     "shotSize",
     "steps",
     "videoAttention",
+    "h3Decoder",
     "drivingAudio",
     "drivingVideo",
     "references",
@@ -56,6 +58,56 @@ pub(super) fn integer(value: &Value) -> Option<u64> {
         .filter(|n| n.is_finite() && *n >= 0. && *n <= 9_007_199_254_740_991. && n.fract() == 0.)
         .map(|n| n as u64)
 }
+pub(super) fn prompt_text(body: &Value, optional: bool) -> Result<&str> {
+    let message = if optional { "画面描述需为不超过 4000 字符的文本" } else { "画面描述需为 1—4000 字符" };
+    match body.get("prompt") {
+        None if optional => Ok(""),
+        Some(value) => value.as_str()
+            .filter(|text| (optional || !text.trim().is_empty()) && text.encode_utf16().count() <= 4000)
+            .map(str::trim)
+            .ok_or_else(|| invalid(message)),
+        None => Err(invalid(message)),
+    }
+}
+pub(super) fn negative_text(body: &Value) -> Result<&str> {
+    body.get("negative").map_or(Ok(""), |value| {
+        value.as_str()
+            .filter(|text| text.encode_utf16().count() <= 2000)
+            .map(str::trim)
+            .ok_or_else(|| invalid("负向描述需为不超过 2000 字符的文本"))
+    })
+}
+pub(super) fn duration_for(body: &Value, native: Option<&Value>, h3: bool) -> Result<u64> {
+    integer(&body["duration"])
+        .or_else(|| body["duration"].as_str().and_then(|value| value.parse().ok()))
+        .filter(|n| {
+            if let Some(spec) = native {
+                spec["durationFrames"].get(n.to_string()).is_some()
+            } else {
+                [3, 5].contains(n) || (h3 && body["duration"].is_number() && [10, 15].contains(n))
+            }
+        })
+        .ok_or_else(|| {
+            invalid(if native.is_some() {
+                "所选原生模型不支持此时长"
+            } else if h3 {
+                "时长支持 3/5/10/15 秒"
+            } else {
+                "时长只支持 3 秒或 5 秒"
+            })
+        })
+}
+pub(super) fn validate_motion(body: &Value) -> Result<()> {
+    for (key, table, message) in [
+        ("camera", "CAMERA", "不支持的镜头运动"),
+        ("motion", "MOTION", "不支持的主体运动"),
+    ] {
+        if body[key].as_str().is_none_or(|value| prose::table()[table].get(value).is_none()) {
+            return Err(invalid(message));
+        }
+    }
+    Ok(())
+}
 pub fn validate(body: &Value, original_size: Option<(u32, u32)>) -> Result<Value> {
     validate_for(body, original_size, None)
 }
@@ -68,7 +120,7 @@ pub(super) fn validate_for(
         .as_object()
         .ok_or_else(|| error(400, "INVALID_BODY", "请求体必须是 JSON 对象"))?;
     for key in object.keys() {
-        if !KEYS.contains(&key.as_str()) || (native.is_none() && matches!(key.as_str(), "videoAttention" | "drivingVideo" | "drivingAudio")) {
+        if !KEYS.contains(&key.as_str()) || (native.is_none() && matches!(key.as_str(), "videoAttention" | "h3Decoder" | "drivingVideo" | "drivingAudio")) {
             return Err(error(
                 400,
                 "UNKNOWN_PARAMETER",
@@ -76,27 +128,14 @@ pub(super) fn validate_for(
             ));
         }
     }
-    for key in [
-        "prompt",
-        "modelId",
-        "aspectRatio",
-        "duration",
-        "camera",
-        "motion",
-    ] {
+    let structured = object.contains_key("promptRecipe");
+    if !structured && !object.contains_key("prompt") {
+        return Err(error(400, "MISSING_PARAMETER", "缺少参数：prompt"));
+    }
+    for key in ["modelId", "aspectRatio", "duration", "camera", "motion"] {
         if !object.contains_key(key) {
             return Err(error(400, "MISSING_PARAMETER", format!("缺少参数：{key}")));
         }
-    }
-    let user = body["prompt"]
-        .as_str()
-        .filter(|p| !p.trim().is_empty() && p.encode_utf16().count() <= 4000)
-        .ok_or_else(|| invalid("画面描述需为 1—4000 字符"))?;
-    if object
-        .get("negative")
-        .is_some_and(|v| v.as_str().is_none_or(|s| s.encode_utf16().count() > 2000))
-    {
-        return Err(invalid("负向描述需为不超过 2000 字符的文本"));
     }
     let id = body["modelId"]
         .as_str()
@@ -215,35 +254,8 @@ pub(super) fn validate_for(
             selected["height"].as_u64().unwrap() as u32,
         )
     };
-    let duration = integer(&body["duration"])
-        .or_else(|| body["duration"].as_str().and_then(|v| v.parse().ok()))
-        .filter(|n| {
-            if let Some(spec) = native {
-                spec["durationFrames"].get(n.to_string()).is_some()
-            } else {
-                [3, 5].contains(n) || (h3 && body["duration"].is_number() && [10, 15].contains(n))
-            }
-        })
-        .ok_or_else(|| {
-            invalid(if native.is_some() {
-                "所选原生模型不支持此时长"
-            } else if h3 {
-                "时长支持 3/5/10/15 秒"
-            } else {
-                "时长只支持 3 秒或 5 秒"
-            })
-        })?;
-    for (key, table, message) in [
-        ("camera", "CAMERA", "不支持的镜头运动"),
-        ("motion", "MOTION", "不支持的主体运动"),
-    ] {
-        if body[key]
-            .as_str()
-            .is_none_or(|s| prose::table()[table].get(s).is_none())
-        {
-            return Err(invalid(message));
-        }
-    }
+    let duration = duration_for(body, native, h3)?;
+    validate_motion(body)?;
     let seed = if present(&body["seed"]) {
         integer(&body["seed"])
             .filter(|n| *n <= 0x7fffffff)
@@ -251,20 +263,29 @@ pub(super) fn validate_for(
     } else {
         (uuid::Uuid::new_v4().as_u128() % 0x7fffffff) as u64
     };
-    let negative = if native.is_some_and(|m| m["family"] != "wan2.2") {
-        body["negative"].as_str().unwrap_or("").trim().to_owned()
-    } else if h3 {
-        String::new()
-    } else {
-        let base = catalog::constants()["WAN_NEGATIVE"].as_str().unwrap();
-        let extra = body["negative"].as_str().unwrap_or("").trim();
-        if extra.is_empty() {
-            base.into()
-        } else {
-            format!("{base}，{extra}")
+    let (prompt, original, negative) = if structured {
+        if ["dialogue", "dialogueLang", "shotSize", "references"].iter().any(|key| present(&body[*key])) {
+            return Err(invalid("积木请求请在工作台选择景别和对白，角色参考图请使用分镜入口"));
         }
+        let compiled = prompt_compiler::compile(body, model, prompt_compiler::input_mode(body)?, duration)?;
+        (compiled.prompt, compiled.original, compiled.negative)
+    } else {
+        let user = prompt_text(body, false)?;
+        let extra = negative_text(body)?;
+        let negative = if native.is_some_and(|m| m["family"] != "wan2.2") {
+            extra.to_owned()
+        } else if h3 {
+            String::new()
+        } else {
+            let base = catalog::constants()["WAN_NEGATIVE"].as_str().unwrap();
+            if extra.is_empty() { base.into() } else { format!("{base}，{extra}") }
+        };
+        (prose::prompt(body, h3 && native.is_none(), duration, &references), user.to_owned(), Some(negative))
     };
-    let mut input = json!({"prompt":prose::prompt(body,h3 && native.is_none(),duration,&references),"originalPrompt":user.trim(),"negative":negative,"modelId":id,"aspectRatio":aspect,"quality":quality,"width":width,"height":height,"duration":duration,"frames":if h3{prose::frame_count(duration)}else{if duration==3{73}else{121}},"fps":24,"camera":body["camera"],"motion":body["motion"],"seed":seed,"image":if generation::truthy(&body["image"]){body["image"].clone()}else{Value::Null},"lastFrame":if generation::truthy(&body["lastFrame"]){body["lastFrame"].clone()}else{Value::Null},"references":if references.is_empty(){Value::Null}else{json!(references)},"dialogue":if generation::truthy(&body["dialogue"]){body["dialogue"].clone()}else{Value::Null},"dialogueLang":if language=="auto"{None}else{Some(language)},"shotSize":shot,"steps":if h3{steps}else{20},"cfg":5});
+    let mut input = json!({"prompt":prompt,"originalPrompt":original,"modelId":id,"aspectRatio":aspect,"quality":quality,"width":width,"height":height,"duration":duration,"frames":if h3{prose::frame_count(duration)}else{if duration==3{73}else{121}},"fps":24,"camera":body["camera"],"motion":body["motion"],"seed":seed,"image":if generation::truthy(&body["image"]){body["image"].clone()}else{Value::Null},"lastFrame":if generation::truthy(&body["lastFrame"]){body["lastFrame"].clone()}else{Value::Null},"references":if references.is_empty(){Value::Null}else{json!(references)},"dialogue":if generation::truthy(&body["dialogue"]){body["dialogue"].clone()}else{Value::Null},"dialogueLang":if language=="auto"{None}else{Some(language)},"shotSize":shot,"steps":if h3{steps}else{20},"cfg":5});
+    if let Some(negative) = negative {
+        input["negative"] = json!(negative);
+    }
     if let Some(spec) = native {
         for key in ["drivingVideo", "drivingAudio"] {
             if let Some(name) = body[key].as_str() {
@@ -273,6 +294,9 @@ pub(super) fn validate_for(
         }
         if let Some(attention) = body.get("videoAttention") {
             input["videoAttention"] = attention.clone();
+        }
+        if let Some(decoder) = body.get("h3Decoder") {
+            input["h3Decoder"] = decoder.clone();
         }
         input["steps"] = json!(steps);
         input["frames"] = spec["durationFrames"][duration.to_string()].clone();

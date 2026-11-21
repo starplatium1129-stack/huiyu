@@ -6,7 +6,8 @@ param(
   [string]$CudaArchive='',
   [string]$KjArchive='',
   [string]$TeaArchive='',
-  [string]$ArchiveSha256=''
+  [string]$ArchiveSha256='',
+  [string]$RuntimeExe=''
 )
 $ErrorActionPreference='Stop'
 [Console]::OutputEncoding=[Text.UTF8Encoding]::new($false)
@@ -41,7 +42,28 @@ function Expand-Package([string]$source,[string]$destination) {
   New-Item -ItemType Directory -Force -Path $destination | Out-Null
   Write-EnvironmentProgress ('正在解压：'+[IO.Path]::GetFileName($source))
   & "$env:SystemRoot\System32\tar.exe" -xf $source -C $destination
-  if ($LASTEXITCODE -ne 0) { throw '运行包解压失败；请查看日志与 Windows tar 支持情况' }
+  if ($LASTEXITCODE -eq 0) { return }
+  if ($source.EndsWith('.7z',[StringComparison]::OrdinalIgnoreCase)) {
+    if (Test-Path -LiteralPath $destination) { Remove-Item -LiteralPath $destination -Recurse -Force }
+    New-Item -ItemType Directory -Force -Path $destination | Out-Null
+    $candidates = @()
+    $cmd7z = Get-Command '7z.exe' -ErrorAction SilentlyContinue
+    if ($cmd7z) { $candidates += $cmd7z.Source }
+    if ($env:ProgramFiles) { $candidates += (Join-Path $env:ProgramFiles '7-Zip\7z.exe') }
+    if (${env:ProgramFiles(x86)}) { $candidates += (Join-Path ${env:ProgramFiles(x86)} '7-Zip\7z.exe') }
+    $sevenZip = $candidates | Where-Object { $_ -and (Test-Path -LiteralPath $_ -PathType Leaf) } | Select-Object -First 1
+    if ($sevenZip) {
+      & $sevenZip x -y "-o$destination" $source | Out-Null
+      if ($LASTEXITCODE -eq 0) { return }
+      if (Test-Path -LiteralPath $destination) { Remove-Item -LiteralPath $destination -Recurse -Force }
+      New-Item -ItemType Directory -Force -Path $destination | Out-Null
+    }
+    if ($RuntimeExe -and (Test-Path -LiteralPath $RuntimeExe -PathType Leaf)) {
+      & $RuntimeExe extract-7z $source $destination
+      if ($LASTEXITCODE -eq 0) { return }
+    }
+  }
+  throw '运行包解压失败；请查看日志与 Windows tar / 7z 支持情况'
 }
 function Find-Directory([string]$root,[string]$file) {
   $found=@(Get-ChildItem -LiteralPath $root -Recurse -File -Filter $file | Where-Object { $file -ne 'main.py' -or $_.Directory.Name -eq 'ComfyUI' })

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_sfw_b6_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1584,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "tatsumaki_sfw_b6_02",
     "title": "战栗的龙卷 · 甜品店的身高悲剧",
@@ -30,8 +30,9 @@
       "shop_light",
       "medium_shot"
     ],
-    "promptProse": "Tatsumaki stands on a chair to order a cake, giving the clerk an indignant look over the display.",
+    "promptProse": "A tall brown-eyed bakery clerk with a chestnut-brown high bun and a white apron stands behind the glass cake counter. On the customer side, short emerald-haired Tatsumaki in a green cardigan stands on a chair to see over the glass. She frowns as she points at the cake and the clerk leans forward to take the order.",
     "promptTokens": [
+      "2girls",
       "Tatsumaki",
       "standing on chair",
       "cake",
@@ -51,6 +52,6 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She stands on the chair to order above the dessert display, glaring toward the clerk."
+    "animaCaption": "A tall brown-eyed bakery clerk with a chestnut-brown high bun and a white apron stands behind the glass cake counter. On the customer side, short emerald-haired Tatsumaki in a green cardigan stands on a chair to see over the glass. She frowns as she points at the cake and the clerk leans forward to take the order."
   }
 }

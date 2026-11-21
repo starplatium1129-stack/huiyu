@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "gotoh_hitori",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "gotoh_hitori",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "🎸",
       "portrait": {
-        "image": "../assets/characters/popular-gotoh_hitori.png?v=eb4353e780c6",
+        "image": "../assets/characters/popular-gotoh_hitori.png?v=7be4e629330e",
         "alt": "后藤一里样张立绘",
         "sourceShowcaseId": "pc_gotoh_hitori_pc_gotoh_hitori_gotoh_hitori_closet_shelter",
         "sourceShowcaseSha256": "3d4c3762db37cd74e4ddc01e3644849d011c8bb45809de5991617e4616263615"

@@ -145,6 +145,7 @@ import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 import { ref, computed, watch, nextTick, onMounted, onUnmounted, onActivated, onDeactivated } from 'vue'
 import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
+import { orderShowcaseEntries } from '@/utils/showcaseBrowseOrder'
 import { showcaseDestination } from '@/utils/showcaseDestination'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
@@ -180,7 +181,7 @@ useScrollReveal()
 
 const PAGE_SIZE = 24
 const SCOPE_OPTS = [{ v:'all', l:'全部' }, { v:'featured', l:'精选' }] as const
-const TYPE_OPTS = [{ v:'all', l:'全部类型' }, { v:'scene', l:'场景' }, { v:'artist', l:'画师' }, { v:'popular', l:'热门角色' }, { v:'lora', l:'LoRA' }] as const
+const TYPE_OPTS = [{ v:'all', l:'全部类型' }, { v:'scene', l:'场景' }, { v:'popular', l:'热门角色' }, { v:'artist', l:'画师' }, { v:'lora', l:'LoRA' }] as const
 const CHAR_OPTS  = [{ v:'all', l:'全部角色' }, { v:'nene', l:'宁宁' }, { v:'natsume', l:'夏目' }, { v:'triad', l:'双人' }] as const
 const RATING_OPTS= [{ v:'all', l:'全部分级' }, { v:'All', l:'全年龄' }, { v:'R15', l:'R15' }, { v:'R18', l:'R18' }] as const
 const LABELS: Record<string,string> = { nene:'绫地宁宁', natsume:'四季夏目', triad:'宁宁×夏目', All:'全年龄', R15:'R15', R18:'R18' }
@@ -188,7 +189,8 @@ const TYPE_LABELS: Record<string,string> = { scene:'场景样张', artist:'画�
 
 const assets = useShowcaseAssets(() => '暂时无法读取样张目录，请确认媒体磁盘已连接后重试。')
 const { entries, loading: manifestLoading, error: reloadError } = assets
-const albums = useShowcaseAlbums(entries, () => sceneStore.directoryCharacters)
+const orderedEntries = computed(() => orderShowcaseEntries(entries.value, charLabel))
+const albums = useShowcaseAlbums(orderedEntries, () => sceneStore.directoryCharacters)
 const albumSelection = ref('all')
 const selectedAlbum = computed(() => albums.value.find(album => album.id === albumSelection.value))
 const albumEntryIds = computed(() => selectedAlbum.value ? new Set(selectedAlbum.value.entryIds) : null)
@@ -326,7 +328,7 @@ const characterOptions = computed(() => allCharOptions.value.map(option => ({ va
 const filtered = computed(() => {
   const term = searchTerm.value
   const index = term ? searchIndex.value : null
-  const matches = entries.value.filter(e => {
+  const matches = orderedEntries.value.filter(e => {
     if (albumEntryIds.value && !albumEntryIds.value.has(e.id)) return false
     if (scope.value === 'featured' && !featured.value.has(e.id) && !artistFeatureState(e)) return false
     if (typeFilter.value !== 'all' && e.type !== typeFilter.value) return false

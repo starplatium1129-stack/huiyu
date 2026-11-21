@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_sfw_b6_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1565,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "raphtalia_sfw_b6_03",
     "title": "拉芙塔莉雅 · 篝火旁的晚餐分餐",
@@ -31,8 +31,10 @@
       "bedroll",
       "horizontal_composition"
     ],
-    "promptProse": "Kneeling beside the pot, she ladles stew into her companion's bowl across the fire; waiting bowls remain within reach.",
+    "promptProse": "Raphtalia kneels in her blue apron by the steaming stew, her soft raccoon ears and striped tail catching the firelight. Across from her a short-haired traveler in an olive cloak reaches with both hands to steady an earthenware bowl while she ladles into it. Other waiting bowls sit beside the pot at the edge of the fire.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "kneeling",
       "serving food",
       "stew",
@@ -56,6 +58,6 @@
     "compositionIntent": "group",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "She ladles stew into the companion's bowl across the fire, with waiting bowls within reach."
+    "animaCaption": "Raphtalia, with brown raccoon ears and a blue apron, leans over the pot and ladles into the bowl held by the short dark-haired traveler in an olive cloak across the fire."
   }
 }

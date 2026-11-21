@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "power",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 200,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "power",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🩸",
       "portrait": {
-        "image": "../assets/characters/popular-power.png?v=3665181ee8d1",
+        "image": "../assets/characters/popular-power.png?v=84c492315ecc",
         "alt": "帕瓦样张立绘",
         "sourceShowcaseId": "pc_power_pc_power_power_rooftop_blood_scythe_smirk",
         "sourceShowcaseSha256": "431158f02af6e992fcede89249a1fe9c121a0c3d01fc731b5c4535f56d8884dd"

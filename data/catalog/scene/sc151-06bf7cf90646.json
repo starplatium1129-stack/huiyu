@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc151",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
-    "animaCaption": "Nene in pink silk with white piping lies left, holding the viewer's sleeve. Natsume in blue silk with burgundy piping props herself on one elbow at the right beneath their shared blanket.",
+    "animaCaption": "Ayachi Nene lies on the left in pink silk pajamas with white piping, clasping the viewer's sleeve. A heart-shaped forelock rises from her silver-white twin tails. On the right, Shiki Natsume has long jet-black hair, simple red clips and a small mole below her right eye. Wearing slate-blue silk with burgundy piping, Natsume props her head on one elbow and watches Nene with sleepy gold eyes. The blanket rests low enough for both faces to catch the dawn.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "近景特写",
     "category": "Active_Sync_Scenes",
@@ -52,6 +52,7 @@
       "壁纸级"
     ],
     "weather": "初晴晨光",
-    "promptProse": "White-haired Nene, in blush-pink silk pajamas with white piping, lies at the viewer's left holding their sleeve; black-haired Natsume, in slate-blue silk pajamas with burgundy piping, props herself on one elbow at the right, both beneath the shared blanket as morning light reaches their faces."
+    "promptProse": "Ayachi Nene lies on the left in pink silk pajamas with white piping, clasping the viewer's sleeve. A heart-shaped forelock rises from her silver-white twin tails. On the right, Shiki Natsume has long jet-black hair, simple red clips and a small mole below her right eye. Wearing slate-blue silk with burgundy piping, Natsume props her head on one elbow and watches Nene with sleepy gold eyes. The blanket rests low enough for both faces to catch the dawn.",
+    "compositionIntent": "group"
   }
 }

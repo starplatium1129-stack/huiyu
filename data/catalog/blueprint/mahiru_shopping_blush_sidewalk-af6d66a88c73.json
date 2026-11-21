@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_shopping_blush_sidewalk",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1473,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "mahiru_shopping_blush_sidewalk",
     "title": "椎名真昼 · 商业街并肩同行的微热红晕",
@@ -29,8 +29,10 @@
       "shy",
       "looking_down"
     ],
-    "promptProse": "Walking beside her companion, Mahiru holds their coat edge, fingertips brushing theirs. She lowers her flushed face into her scarf above the winter-lit pavement.",
+    "promptProse": "On the winter shopping street, blond Mahiru with a red plaid scarf and ivory duffle coat walks alongside a boy with cropped dark hair in a forest-green parka. She catches the edge of his coat and their fingertips brush, making her tuck her flushed face into the scarf. Low sunlight catches the tiled sidewalk beneath them.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "shiina_mahiru",
       "holding clothes",
       "blush",
@@ -53,6 +55,6 @@
       "date"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She holds her companion's coat edge, fingertips brushing theirs above the winter pavement."
+    "animaCaption": "Mahiru's blond hair and red plaid scarf frame her blush above the ivory coat. The short dark-haired boy beside her wears a forest-green parka, whose edge she catches as their fingers touch."
   }
 }

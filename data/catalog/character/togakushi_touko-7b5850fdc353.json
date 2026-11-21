@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togakushi_touko",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 190,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "togakushi_touko",
     "profile": {
@@ -378,7 +378,7 @@
         "yellow_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-togakushi_touko.png?v=3598ed1f4c07",
+        "image": "../assets/characters/popular-togakushi_touko.png?v=3cbd65483383",
         "alt": "户隐憧子样张立绘",
         "sourceShowcaseId": "pc_togakushi_touko_pc_togakushi_touko_togakushi_touko_daily_flower_choice",
         "sourceShowcaseSha256": "cff7f4dd43f91666a71deddc8712c6c53665a8907624ad321e7eddc7643c7e79"

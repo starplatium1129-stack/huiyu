@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tachibana_mikari",
-  "revision": 15,
+  "revision": 16,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "tachibana_mikari",
     "profile": {
@@ -19,7 +19,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-tachibana_mikari.png?v=4a329152e1e1",
+        "image": "../assets/characters/popular-tachibana_mikari.png?v=988343017782",
         "alt": "橘美花莉样张立绘",
         "sourceShowcaseId": "pc_tachibana_mikari_pc_tachibana_mikari_tachibana_mikari_sfw_b8_04",
         "sourceShowcaseSha256": "2e9aa96333730d4602421577c3cd1069a8fd11c20dcd2d87a3ec1a2010f765b1"

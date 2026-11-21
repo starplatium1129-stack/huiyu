@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aurora_shadow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 268,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "aurora_shadow",
     "popular": {
@@ -78,7 +78,7 @@
       "type": "popular",
       "icon": "🥀",
       "portrait": {
-        "image": "../assets/characters/popular-aurora_shadow.png?v=c21b265608e3",
+        "image": "../assets/characters/popular-aurora_shadow.png?v=cb26ae106ad2",
         "alt": "奥萝拉样张立绘",
         "sourceShowcaseId": "pc_aurora_shadow_pc_aurora_shadow_aurora_sanctuary_ruins_embrace",
         "sourceShowcaseSha256": "176e083618023b9a5393178e2bbe59893ac4c854114aa452eabe542e66013e08"

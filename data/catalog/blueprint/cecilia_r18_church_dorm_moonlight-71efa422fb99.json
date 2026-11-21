@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_church_dorm_moonlight",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 848,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "睡梦中翻身，薄被滑落",
     "adult": true,
@@ -26,8 +26,10 @@
       "pussy"
     ],
     "outfitId": "nsfw_nude",
-    "promptProse": "Half asleep, Cecilia rolls onto her side and reaches toward Lawrence beside her as the light blanket slips. Moonlight through the high window falls across the bedding.",
+    "promptProse": "Half asleep, mint-haired Cecilia turns on her side beneath the loose blanket and reaches toward Lawrence. He lies beside her with short sandy-brown hair, rectangular glasses and the shoulder of a dark sleep shirt visible above the sheet. Cold moonlight touches Cecilia's curls and glints on his glasses.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "adult",
       "nude",
       "on side",
@@ -57,6 +59,7 @@
     ],
     "timeOfDay": "night",
     "title": "塞西莉亚 · 教堂寝室月光",
-    "animaCaption": "She turns toward her companion beside her as the light blanket slips away."
+    "animaCaption": "Half asleep, mint-haired Cecilia turns on her side beneath the loose blanket and reaches toward Lawrence. He lies beside her with short sandy-brown hair, rectangular glasses and the shoulder of a dark sleep shirt visible above the sheet. Cold moonlight touches Cecilia's curls and glints on his glasses.",
+    "compositionIntent": "group"
   }
 }

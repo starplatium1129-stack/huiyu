@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_gyaru_street",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 501,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "举着手机逛街聊天",
     "camera": "medium shot",
@@ -21,9 +21,9 @@
     "mood": "活泼张扬",
     "negativeTokens": [],
     "outfitId": "gal_casual",
-    "promptProse": "Marin links one arm through her companion’s and holds her phone in her free hand as they walk past the shops. Daylight catches the pink ends of her hair as she turns to chat.",
+    "promptProse": "Marin walks through the shopping street, one arm linked through her friend's and her phone in the free hand. Her long, pink-tipped blonde hair and black biker jacket stand apart from the friend's chin-length dark bob, cream zip jacket and straight-cut jeans. They turn toward one another as they pass the storefronts in daylight.",
     "promptTokens": [
-      "2people",
+      "2girls",
       "linked arms",
       "smartphone",
       "street",
@@ -46,6 +46,6 @@
     ],
     "timeOfDay": "白天",
     "title": "喜多川海梦 · 辣妹街头",
-    "animaCaption": "One arm links through her companion's while her free hand holds the phone as they walk."
+    "animaCaption": "Marin walks past the shops with a phone in her free hand, her pink-tipped hair swinging. She links arms with a dark-bobbed friend in a cream zip jacket and straight jeans."
   }
 }

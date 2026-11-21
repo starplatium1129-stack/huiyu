@@ -10,7 +10,7 @@ import { usePolling } from './usePolling.ts'
 import { ApiClientError } from '../api/client.ts'
 import { controlApi } from '../api/controlApi.ts'
 import type {
-  ControlStatus, ControlLogs, ControlOperationView,
+  ControlStatus, ControlLogs, ControlOperationView, TtsApiPublicConfig, TtsEngine,
 } from '@/types/api'
 
 interface StatusHooks {
@@ -22,6 +22,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const sdOnline = ref(false)
   const comfyOnline = ref(false)
   const imageProvider = ref<ControlStatus['imageProvider']>(null)
+  const nativeRuntimeFilesReady = ref(false)
   const ttsOnline = ref(false)
   const ollamaOnline = ref(false)
   const llamaOnline=ref(false),llamaManaged=ref(false),llamaLabel=ref('')
@@ -42,8 +43,9 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const sdHost = ref('http://127.0.0.1:7860')
   const comfyHost = ref('http://127.0.0.1:8188')
   const ttsHost = ref('http://127.0.0.1:9880')
-  const ttsEngine = ref('gpt-sovits')
-  const activeVoiceEngine = ref('GPT-SoVITS')
+  const ttsEngine = ref<TtsEngine>('system')
+  const ttsApi = ref<TtsApiPublicConfig | null>(null)
+  const activeVoiceEngine = ref('系统朗读')
   const voiceNeneLora = ref('')
   const voiceNatsumeLora = ref('')
   const voiceNeneGpt = ref(''), voiceNeneSovits = ref(''), voiceNatsumeGpt = ref(''), voiceNatsumeSovits = ref('')
@@ -81,13 +83,13 @@ export function useControlStatus({ showToast }: StatusHooks) {
   const savingAutoStartVoice = ref(false)
 
   const tunnelStatus = ref('')
+  const tunnelManaged = ref(false)
+  const actionBusy = ref(false)
   const shareLink = ref('')
   const localLink = ref('http://127.0.0.1:3000/')
   const uptime = ref('')
   /** 前端构建信息：公网分享伺服 dist/，源码过期时提示重建 */
   const webBuild = ref<{ distReady: boolean; builtAt: string | null; stale: boolean } | null>(null)
-  const actionBusy = ref(false)
-  const mainBtnLabel = ref('启动并生成分享链接')
   const feedbackText = ref('正在检测本地服务…')
   const actionNote = ref('')
   const overviewFeedback = computed(() => {
@@ -175,11 +177,22 @@ export function useControlStatus({ showToast }: StatusHooks) {
     lastStatus = data
     statusLoaded.value = true
     statusError.value = data.ok === false ? (data.error || '服务状态暂时不可用') : ''
-    tunnelActive.value = !!(data.tunnelStatus === 'active' || data.shareLinkAvailable)
+    tunnelActive.value = data.tunnelStatus === 'active' || data.tunnelStatus === 'connecting' || data.shareLinkAvailable
+    tunnelManaged.value = data.tunnelManaged === true
     sdOnline.value = !!data.sdOnline
     comfyOnline.value = !!data.comfyOnline
     ttsOnline.value = !!data.ttsOnline
-    activeVoiceEngine.value = data.ttsEngine === 'voxcpm2' ? 'VoxCPM2' : data.ttsEngine === 'gpt-sovits-native' ? 'GPT-SoVITS 本机' : 'GPT-SoVITS'
+    const engineLabels: Record<TtsEngine, string> = {
+      off: '已关闭',
+      system: '系统朗读',
+      'openai-tts': '云端语音接口',
+      'gpt-sovits-native': 'GPT-SoVITS 本机',
+      'gpt-sovits': 'GPT-SoVITS',
+      voxcpm2: 'VoxCPM2',
+    }
+    activeVoiceEngine.value = engineLabels[data.ttsEngine ?? 'system'] ?? '系统朗读'
+    nativeRuntimeFilesReady.value = Boolean(data.nativeRuntimeFilesReady)
+    ttsApi.value = data.ttsApi ?? null
     ollamaOnline.value = !!data.ollamaOnline
     llamaOnline.value=!!data.llama?.online;llamaManaged.value=!!data.llama?.managed;llamaLabel.value=data.llama?.label||''
     webuiManaged.value = !!data.webuiManaged
@@ -193,7 +206,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     }
     selfHealing.value = data.selfHealing && typeof data.selfHealing === 'object' ? data.selfHealing : null
     tunnelStatus.value = data.tunnelStatus || ''
-    // 分享链接含原始 token，已从 /api/status 拆到仅本机可读的 /api/share-link
+    // The invitation is only returned by the local-only share endpoint.
     if (data.shareLinkAvailable) void loadShareLink()
     else {
       shareRequest?.abort()
@@ -214,7 +227,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
     syncConfigField(sdHost, displayedConfig.sdHost)
     syncConfigField(comfyHost, displayedConfig.comfyHost)
     syncConfigField(ttsHost, displayedConfig.ttsHost)
-    syncConfigField(ttsEngine, displayedConfig.ttsEngine ?? 'gpt-sovits')
+    syncConfigField(ttsEngine, displayedConfig.ttsEngine ?? 'system')
     const voices = displayedConfig.voices || {}
     syncConfigField(voiceNeneRef, voices.nene?.refAudioPath)
     syncConfigField(voiceNenePrompt, voices.nene?.promptText)
@@ -230,9 +243,7 @@ export function useControlStatus({ showToast }: StatusHooks) {
       autoStartVoice.value = !!data.autoStartVoice
     }
 
-    actionBusy.value = !!(data.operation && data.operation.status === 'running')
-    mainBtnLabel.value = tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
-
+    actionBusy.value = data.operation?.status === 'running'
     const imageOnline = data.sdOnline || data.comfyOnline
     imageProvider.value = data.imageProvider === undefined ? 'comfy' : data.imageProvider
     if (imageProvider.value === 'remote') {
@@ -412,9 +423,9 @@ export function useControlStatus({ showToast }: StatusHooks) {
   return {
     tunnelActive, sdOnline, comfyOnline, ttsOnline, ollamaOnline, llamaOnline,llamaManaged,llamaLabel,webuiManaged, comfyManaged, ollamaModels, ollamaVram, selfHealing,
     modeBusy, operation, operationSubmitting, serviceChecking, statusLoaded, statusError, scripts,
-    sdHost, comfyHost, ttsHost, ttsEngine, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneGpt, voiceNeneSovits, voiceNatsumeGpt, voiceNatsumeSovits, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
-    tunnelStatus, shareLink, localLink, uptime, actionBusy, mainBtnLabel, webBuild,
-    feedbackText, actionNote, overviewFeedback, imageProvider, logs, logBoxEl,
+    sdHost, comfyHost, ttsHost, ttsEngine, ttsApi, activeVoiceEngine, voiceNeneLora, voiceNatsumeLora, voiceNeneGpt, voiceNeneSovits, voiceNatsumeGpt, voiceNatsumeSovits, voiceNeneRef, voiceNenePrompt, voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice,
+    tunnelStatus, tunnelManaged, shareLink, localLink, uptime, actionBusy, webBuild,
+    feedbackText, actionNote, overviewFeedback, imageProvider, nativeRuntimeFilesReady, logs, logBoxEl,
     logsOpen, logsLoading, logsLoaded, logsError, logsSummary,
     opBusy, opDisconnected, opStatusLabel, opProgress, opCompletedStages, ollamaMeta, voiceConfiguredCount,
     lastStatus: () => lastStatus,

@@ -123,8 +123,8 @@
       <p id="video-mode-description"><strong>{{ modeBadge }}</strong></p>
       <nav v-if="selectedMode !== 'shots'" class="video-jump-nav tw:p-s-1 tw:rounded-md" data-fluid-glass aria-label="视频工作区导航">
         <RouterLink v-if="selectedMode !== 'text'" :to="{ query: $route.query, hash: '#video-frames' }">准备画面</RouterLink>
-        <RouterLink :to="{ query: $route.query, hash: '#video-brief' }">镜头描述</RouterLink>
         <RouterLink :to="{ query: $route.query, hash: '#video-workbench' }">提示词工作台</RouterLink>
+        <RouterLink :to="{ query: $route.query, hash: '#video-brief' }">镜头描述</RouterLink>
         <RouterLink :to="{ query: $route.query, hash: '#video-settings' }">画幅与时长</RouterLink>
         <RouterLink :to="{ query: $route.query, hash: '#video-queue' }">查看成片</RouterLink>
       </nav>
@@ -145,7 +145,6 @@
       <div class="video-creation-column">
         <KeepAlive><AsyncPanel v-if="selectedMode === 'shots'" :loader="loadShotListEditor" label="分镜工作台" v-slot="{ component }"><component :is="component" :status="status" /></AsyncPanel></KeepAlive>
         <template v-if="selectedMode !== 'shots'">
-        <div class="video-draft-grid" :class="{ 'has-frames': selectedMode !== 'text' }">
         <section v-if="selectedMode === 'image'" id="video-frames" class="video-panel video-first-frame-panel">
           <div class="video-panel-heading video-panel-heading--compact">
             <div>
@@ -203,81 +202,60 @@
           </div>
         </section>
 
-        <section id="video-brief" class="video-panel video-brief-panel">
-          <div class="video-panel-heading">
-            <div>
-              <h2><label for="video-shot-description">镜头描述</label></h2>
-            </div>
-            <span class="video-count" :data-warning="prompt.length > 900 || undefined">
-              {{ prompt.length }} / 4000
-            </span>
-          </div>
-          <textarea
-            id="video-shot-description"
-            v-model="prompt"
-            class="textarea video-prompt"
-            maxlength="4000"
-            rows="7"
-            :placeholder="videoPromptGuidance[selectedMode]"
-            spellcheck="false"
-            autocorrect="off"
-            autocapitalize="off"
-          ></textarea>
-        </section>
-        </div>
-
         <section id="video-workbench" class="video-panel video-details-panel">
           <div class="video-panel-heading">
-            <div>
-              <h2>提示词工作台</h2>
+            <h2>提示词工作台</h2>
+          </div>
+
+          <VideoPromptWorkbench :key="promptMode" v-model="promptRecipe" :mode="promptMode"
+            :supports-audio="supportsGeneratedAudio" :supports-dialogue-and-music="supportsDialogueAndMusic"
+            :disabled="submitting" />
+
+          <div id="video-brief" class="field video-brief">
+            <div class="video-brief-heading">
+              <label for="video-shot-description" class="field-label">镜头描述</label>
+              <span class="video-count" :data-warning="prompt.length > 900 || undefined">{{ prompt.length }} / 4000</span>
             </div>
+            <p id="video-description-hint" class="field-hint">
+              {{ driverKind ? videoPromptGuidance[promptMode] : '选好积木即可生成，也可以手写描述。手写的动作和运镜优先。' }}
+            </p>
+            <textarea id="video-shot-description" v-model="prompt" name="prompt" class="textarea video-prompt"
+              maxlength="4000" rows="4" aria-describedby="video-description-hint"
+              :placeholder="driverKind ? undefined : videoPromptGuidance[promptMode]"
+              spellcheck="false" autocorrect="off" autocapitalize="off"></textarea>
           </div>
 
-          <VideoPromptWorkbench :key="selectedMode" :mode="selectedMode" :prompt="prompt" :camera="camera" :motion="motion"
-            :camera-options="cameraSelectOptions" :motion-options="motionSelectOptions" :disabled="submitting"
-            @apply="applyPromptEdit" />
-
-          <div class="video-choice-pair">
-            <label class="field">
-              <span class="field-label">镜头运动</span>
-              <StudioSelect
-                v-model="camera"
-                label="镜头运动"
-                :options="cameraSelectOptions"
-              />
-            </label>
-            <label class="field">
-              <span class="field-label">主体运动</span>
-              <StudioSelect
-                v-model="motion"
-                label="主体运动"
-                :options="motionSelectOptions"
-              />
-            </label>
-          </div>
+          <VideoPromptPreview :request="promptPreviewRequest" :model-label="activeModel?.label ?? ''" />
 
           <details class="video-advanced">
             <StudioDisclosureSummary class="video-disclosure-heading">高级设置</StudioDisclosureSummary>
             <div class="video-advanced-grid" data-disclosure-content>
+              <div v-if="!driverKind && selectedMode !== 'first-last-frame'" class="field">
+                <label for="video-motion" class="field-label">默认主体运动</label>
+                <StudioSelect id="video-motion" v-model="motion" label="默认主体运动" :options="motionSelectOptions" />
+              </div>
               <ToggleSwitch
-                v-if="!nativeVideo && activeModel?.id === 'minimax-h3'"
+                v-if="activeModel?.id === 'minimax-h3' && (!nativeVideo || activeModel.turboSteps?.includes(8))"
                 class="video-steps-toggle"
-                :model-value="steps === 4"
+                :model-value="h3Steps === 4"
                 label="极速 4 步"
-                @update:model-value="steps = $event ? 4 : 8"
+                @update:model-value="h3Steps = $event ? 4 : 8"
               >
                 <span>
                   <strong>极速 4 步</strong>
-                  <small>更快生成预览，画面细节会略有减少。</small>
+                  <small>关闭后使用 8 步生成。</small>
                 </span>
               </ToggleSwitch>
               <div v-if="nativeVideo" class="field">
-                <label for="video-attention" class="field-label">注意力加速</label>
-                <small id="video-attention-hint" class="field-hint">SageAttention 和 FlashAttention 2 需要兼容的显卡及本地内核。</small>
-                <StudioSelect id="video-attention" v-model="videoAttention" label="注意力加速"
+                <label for="video-attention" class="field-label">{{ activeModel?.turboSteps ? 'H3 生成加速' : '注意力加速' }}</label>
+                <small id="video-attention-hint" class="field-hint">{{ videoAttention === 'h3-fused' ? '社区融合权重内置 Mystic 动作风格，画面和运镜会随之变化。' : videoAttention === 'h3-sla' ? '使用专门训练的四步权重，保留音轨和首尾帧条件。' : 'SageAttention 和 FlashAttention 2 需要兼容的显卡及本地内核。' }}</small>
+                <StudioSelect id="video-attention" v-model="videoAttention" :label="activeModel?.turboSteps ? 'H3 生成加速' : '注意力加速'"
                   aria-describedby="video-attention-hint" :options="attentionOptions" />
               </div>
-              <label v-if="activeModel?.supportsNegative !== false" class="field">
+              <ToggleSwitch v-if="nativeVideo && activeModel?.h3LightVae" v-model="h3LightVae" label="轻量视频解码">
+                <span><strong>轻量视频解码</strong><small>LightVAE 加快成片，关闭可使用原版解码器。</small></span>
+              </ToggleSwitch>
+              <label v-if="supportsNegative" class="field">
                 <span class="field-label">负向描述</span>
                 <textarea
                   v-model="negative"
@@ -327,7 +305,7 @@
             <CornerFrame variant="editorial" />
             <span class="video-empty-reel" aria-hidden="true"><ArchiveIcon name="play" /></span>
             <strong role="status">{{ reconnectState === 'reading' ? '正在读取上次任务…' : reconnectState === 'failed' ? '上次任务状态待确认' : '胶片暗房待机中' }}</strong>
-            <span v-if="reconnectState === 'idle'">准备好首帧与镜头描述，生成的故事短片将在监看台显影。</span>
+            <span v-if="reconnectState === 'idle'">选好场景或写下镜头，生成后在这里查看成片。</span>
             <button v-if="reconnectState === 'failed'" class="btn btn-ghost" type="button" @click="reconnectVideo">重新读取上次任务</button>
             <button v-if="reconnectState !== 'idle'" class="btn btn-ghost" type="button" @click="openTaskCenter">到任务中心核对</button>
           </div>
@@ -343,6 +321,7 @@
               <template v-if="job.execution">
                 <span>推理设备 {{ job.execution.device }}</span>
                 <span v-if="job.execution.attention.length">注意力 {{ job.execution.attention.join('、') }}</span>
+                <span v-if="job.execution.decoder">视频解码 {{ job.execution.decoder }}</span>
                 <span>MP4 编码 {{ job.execution.encoder }}</span>
               </template>
             </div>
@@ -426,7 +405,8 @@ const loadShotListEditor = () => import('@/components/video/ShotListEditor.vue')
 import VideoDraftNotice from '@/components/video/VideoDraftNotice.vue'
 import VideoGenerationBar from '@/components/video/VideoGenerationBar.vue'
 import VideoPromptWorkbench from '@/components/video/VideoPromptWorkbench.vue'
-import { videoPromptGuidance, type VideoPromptEdit } from '@/components/video/videoPromptPresets'
+import VideoPromptPreview from '@/components/video/VideoPromptPreview.vue'
+import { videoPromptGuidance } from '@/components/video/videoPromptPresets'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioMediaPlayer from '@/components/ui/StudioMediaPlayer.vue'
@@ -476,11 +456,15 @@ handleFrameFile,
 lastFrameUrl,
 clearLastFrame,
 prompt,
+promptMode,
+promptRecipe,
+promptPreviewRequest,
+supportsGeneratedAudio,
+supportsDialogueAndMusic,
+supportsNegative,
 aspectOptions,
 aspectRatio,
 aspectSize,
-camera,
-cameraOptions,
 motion,
 motionOptions,
 quality,
@@ -488,8 +472,9 @@ qualities,
 durationOptions,
 duration,
 activeModel,
-steps,
+h3Steps,
 videoAttention,
+h3LightVae,
 negative,
 seedText,
 canGenerate,
@@ -525,7 +510,11 @@ const attentionOptions = computed(() => [
   { value: 'sdpa', label: 'PyTorch SDPA' },
   { value: 'sage', label: 'SageAttention' },
   { value: 'flash2', label: 'FlashAttention 2' },
-].filter(option => !activeModel.value?.attentionModes || activeModel.value.attentionModes.some(mode => mode === option.value)))
+  { value: 'h3-sol', label: 'Sol-Attn · 动态稀疏' },
+  { value: 'h3-sla', label: 'Turbo-SLA · 四步稀疏' },
+  { value: 'h3-fused', label: 'Fused Turbo · Mystic 动作风格' },
+].filter(option => (!['h3-sla', 'h3-fused'].includes(option.value) || h3Steps.value === 4)
+  && (activeModel.value?.attentionModes?.some(mode => mode === option.value) ?? !option.value.startsWith('h3-'))))
 const videoReturnQuery = computed(() => ({
   ...(typeof route.query.job === 'string' ? { videoJob: route.query.job } : {}),
   ...(selectedMode.value === 'shots' ? { videoMode: 'shots' } : {}),
@@ -537,13 +526,7 @@ const videoControlTarget = computed(() => ({
 const comfyControlTarget = computed(() => ({
   path: '/control', hash: '#control-services', query: { ...videoReturnQuery.value, engine: 'video' },
 }))
-const cameraSelectOptions = cameraOptions.map(item => ({ value: item.id, label: item.label }))
 const motionSelectOptions = motionOptions.map(item => ({ value: item.id, label: item.label }))
-function applyPromptEdit(edit: VideoPromptEdit) {
-  prompt.value = edit.prompt
-  camera.value = edit.camera
-  motion.value = edit.motion
-}
 </script>
 
 <style scoped src="@/assets/css/video-studio-view.css"></style>

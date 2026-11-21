@@ -16,7 +16,6 @@ import {
 } from '../api/controlApi.ts'
 import { maintenanceApi } from '../api/maintenanceApi.ts'
 import type { useControlStatus } from './useControlStatus.ts'
-import { settingsRepository, TUNNEL_ENABLED_SETTING } from '../storage/settingsRepository.ts'
 import type { ControlStatus } from '@/types/api'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 
@@ -30,10 +29,10 @@ export function useControlActions(
   status: StatusApi,
   { showToast }: ActionHooks,
 ) {
-  const tunnelEnabled = ref(settingsRepository.get(TUNNEL_ENABLED_SETTING) ?? true)
   const importedVoices = ref<ControlStatus['voices']>({})
   let importedVoiceIdentity: string | null = null
   const readingVoices = ref(false)
+  const shareAction = ref<'start' | 'stop' | null>(null)
   const cancellingOperation = ref('')
   const cancellationRequested = ref('')
   const canCancelOperation = computed(() => {
@@ -61,13 +60,6 @@ export function useControlActions(
     const text = String(error ?? '').trim()
     return text || fallback
   }
-  function toggleTunnel() {
-    if (status.actionBusy.value || status.opBusy.value) return
-    tunnelEnabled.value = !tunnelEnabled.value
-    settingsRepository.set(TUNNEL_ENABLED_SETTING, tunnelEnabled.value)
-    status.mainBtnLabel.value = status.tunnelActive.value ? '停止公网分享' : '启动并生成分享链接'
-  }
-
   function buildConfigPayload() {
     if (importedVoiceIdentity !== null && importedVoiceIdentity !== runtimeResourceIdentity()) throw new Error('工作区已切换，请重新读取声线配置')
     const last = status.lastStatus()
@@ -88,7 +80,7 @@ export function useControlActions(
       sdHost: status.sdHost.value.trim(),
       comfyHost: status.comfyHost.value.trim(),
       ttsHost: status.ttsHost.value.trim(),
-      ttsEngine: status.ttsEngine.value === 'voxcpm2' ? 'voxcpm2' as const : status.ttsEngine.value === 'gpt-sovits-native' ? 'gpt-sovits-native' as const : 'gpt-sovits' as const,
+      ttsEngine: status.ttsEngine.value,
       voices: {
         nene: { ...neneBase, loraWeightsPath: status.voiceNeneLora.value.trim(), ...(status.ttsEngine.value === 'gpt-sovits-native' ? { gptWeightsPath: status.voiceNeneGpt.value.trim(), sovitsWeightsPath: status.voiceNeneSovits.value.trim() } : {}), refAudioPath: status.voiceNeneRef.value.trim(), promptText: status.voiceNenePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
         natsume: { ...natBase, loraWeightsPath: status.voiceNatsumeLora.value.trim(), ...(status.ttsEngine.value === 'gpt-sovits-native' ? { gptWeightsPath: status.voiceNatsumeGpt.value.trim(), sovitsWeightsPath: status.voiceNatsumeSovits.value.trim() } : {}), refAudioPath: status.voiceNatsumeRef.value.trim(), promptText: status.voiceNatsumePrompt.value.trim(), promptLang: 'ja', textLang: 'ja' },
@@ -207,40 +199,29 @@ export function useControlActions(
   }
 
   async function doStart() {
-    if (status.opBusy.value || savingConfig.value) { showToast('有操作正在进行，请稍候', true); return }
-    if (!tunnelEnabled.value) { showToast('请先开启公网分享通道'); return }
+    if (status.opBusy.value || shareAction.value) return
     if (status.statusError.value) { showToast('请先重新检测本机控制服务', true); return }
     if (!status.lastStatus()) { showToast('控制面板仍在读取配置，请稍候再试', true); status.pollStatus(); return }
-    if (status.lastStatus()?.restartRequired) { showToast('配置已保存，请重新启动应用后再启用公网分享'); return }
-    status.actionBusy.value = true
-    status.operationSubmitting.value = true
-    status.mainBtnLabel.value = '正在启用公网分享…'
-    status.feedbackText.value = '正在保存并重新检测…'
+    shareAction.value = 'start'
     try {
-      const { result, hasNewerEdits } = await saveConfigDraft()
-      const draftNote = hasNewerEdits ? '；后续修改尚未保存' : ''
-      if (result?.restartRequired) { showToast((result.message || '配置已保存，请重新启动应用后再启用公网分享') + draftNote); return }
-      showToast('生成服务配置已保存' + draftNote)
-      await controlApi.start(tunnelEnabled.value)
+      await controlApi.start(true)
       showToast('已请求启动公网分享，连接成功后会显示链接')
       status.startPolling()
     } catch (e) { showToast('启动失败：' + errorMessage(e, '未知原因'), true) }
-    finally { status.actionBusy.value = false; status.operationSubmitting.value = false; status.pollStatus() }
+    finally { await status.pollStatus(true); shareAction.value = null }
   }
 
   async function doStop() {
-    if (status.opBusy.value) { showToast('有操作正在进行，请稍候', true); return }
-    status.operationSubmitting.value = true
-    status.actionBusy.value = true
-    status.mainBtnLabel.value = '正在停止公网分享…'
+    if (shareAction.value) return
+    shareAction.value = 'stop'
     try {
       await controlApi.stop()
-      showToast('公网分享已停止；网站与各生成服务不受影响')
+      showToast('好友试玩已停止，邀请链接已失效')
       status.shareLink.value = ''
       status.tunnelStatus.value = 'disabled'
       status.tunnelActive.value = false
     } catch (e) { showToast('停止失败：' + errorMessage(e, '未知原因'), true) }
-    finally { status.actionBusy.value = false; status.operationSubmitting.value = false; status.pollStatus() }
+    finally { await status.pollStatus(true); shareAction.value = null }
   }
 
   const exportingDiag = ref(false)
@@ -289,7 +270,7 @@ export function useControlActions(
   }
 
   return {
-    tunnelEnabled, errorMessage, toggleTunnel, saveConfig, savingConfig, configSaved, saveAutoStartVoice, readExistingVoices, readingVoices,
+    errorMessage, saveConfig, savingConfig, configSaved, saveAutoStartVoice, readExistingVoices, readingVoices, shareAction,
     serviceAction, switchMode, doStart, doStop, exportDiag, exportingDiag,
     buildWeb, buildingWeb, canCancelOperation, operationCancelling, cancelOperation,
   }

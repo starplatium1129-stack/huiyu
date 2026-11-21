@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "irina_shidou",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 229,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "irina_shidou",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/popular-irina_shidou.png?v=f3d371c9a201",
+        "image": "../assets/characters/popular-irina_shidou.png?v=5ead1b0467f1",
         "alt": "紫藤伊莉娜样张立绘",
         "sourceShowcaseId": "pc_irina_shidou_pc_irina_shidou_irina_school_rooftop_childhood_bento",
         "sourceShowcaseSha256": "58b1b83339ae58796ae42ee723d4fa684559bd30eb4997677bbb6b7bffd4da5f"

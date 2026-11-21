@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ijichi_nijika",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 195,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "ijichi_nijika",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-ijichi_nijika.png?v=4ec429eceaea",
+        "image": "../assets/characters/popular-ijichi_nijika.png?v=85663ae73a1c",
         "alt": "伊地知虹夏样张立绘",
         "sourceShowcaseId": "pc_ijichi_nijika_pc_ijichi_nijika_ijichi_nijika_daily_record_browse",
         "sourceShowcaseSha256": "b4c78b3042fa9d93c5b5dc364a32ce4fcb84476da24f49a3a48828deaebf4ac0"

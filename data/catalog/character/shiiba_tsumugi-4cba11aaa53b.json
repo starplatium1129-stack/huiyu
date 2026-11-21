@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiiba_tsumugi",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 258,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shiiba_tsumugi",
     "profile": {
@@ -19,7 +19,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-shiiba_tsumugi.png?v=50176693f997",
+        "image": "../assets/characters/popular-shiiba_tsumugi.png?v=cc4e35a57920",
         "alt": "椎叶紬样张立绘",
         "sourceShowcaseId": "pc_shiiba_tsumugi_pc_shiiba_tsumugi_shiiba_tsumugi_rain_stop",
         "sourceShowcaseSha256": "97dcb74c051f92fb6eb67cc9068aa763fc288c474096e906803b97fe53237457"

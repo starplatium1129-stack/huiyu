@@ -1,15 +1,55 @@
 use super::*;
 use generation::native::adapters;
+use std::path::Path;
 
-pub(super) fn validate(raw: &Value, size: Option<(u32, u32)>) -> Result<Value> {
+#[derive(Default)]
+pub(super) struct PackedH3 {
+    steps: Vec<u64>,
+    lightvae: bool,
+    sla: bool,
+    fused: bool,
+}
+
+fn local_pack(root: &Path) -> Option<PackedH3> {
+    let steps = adapters::h3_packed_steps(root)?;
+    Some(PackedH3 { steps, lightvae: adapters::h3_accelerator(root, "lightvae"), sla: adapters::h3_accelerator(root, "sla"),
+        fused: adapters::h3_accelerator(root, "fused") })
+}
+
+pub(super) async fn packed_h3(
+    settings: &generation::native::Settings,
+    id: &Value,
+) -> Result<Option<PackedH3>> {
+    if id != "minimax-h3" {
+        return Ok(None);
+    }
+    let root = settings.models_root.join("minimax-h3");
+    tokio::task::spawn_blocking(move || local_pack(&root)).await
+        .map_err(|_| error(503, "NATIVE_STATUS_UNAVAILABLE", "读取本机 H3 配方失败，请重新检查"))
+}
+
+pub(super) fn validate(
+    raw: &Value,
+    size: Option<(u32, u32)>,
+    pack: Option<&PackedH3>,
+) -> Result<Value> {
     let id = raw["modelId"].as_str().unwrap_or("");
     let spec = video_model(id)?;
     supported(raw, spec)?;
     let mut input = validation::validate_for(raw, size, Some(spec))?;
     input["inferenceEngine"] = json!("native");
-    normalize(input)
+    if let Some(pack) = pack {
+        if raw.get("steps").is_none() {
+            input["steps"] = json!(pack.steps[0]);
+        }
+        input["h3Decoder"] = raw.get("h3Decoder").cloned()
+            .unwrap_or_else(|| json!(if pack.lightvae { "lightvae" } else { "original" }));
+        input["h3VideoShift"] = json!(if input["steps"] == 4 && input["videoAttention"] != "h3-fused" { 6 } else { 12 });
+        input["nativeModelFormat"] = spec["localPack"]["format"].clone();
+    }
+    Ok(input)
 }
-fn video_model(id: &str) -> Result<&'static Value> {
+pub(super) fn video_model(id: &str) -> Result<&'static Value> {
     adapters::model(id)
         .filter(|m| m["media"] == "video")
         .ok_or_else(|| {
@@ -51,7 +91,8 @@ fn supported(input: &Value, spec: &Value) -> Result<()> {
             ));
         }
     }
-    if spec["negative"] != true
+    if input.get("promptRecipe").is_none()
+        && spec["negative"] != true
         && input["negative"]
             .as_str()
             .is_some_and(|s| !s.trim().is_empty())
@@ -64,7 +105,7 @@ fn supported(input: &Value, spec: &Value) -> Result<()> {
     }
     Ok(())
 }
-pub(super) fn normalize(mut input: Value) -> Result<Value> {
+pub(super) fn normalize(mut input: Value, pack: Option<&PackedH3>) -> Result<Value> {
     if input["inferenceEngine"] != "native" {
         return Err(error(
             409,
@@ -74,10 +115,39 @@ pub(super) fn normalize(mut input: Value) -> Result<Value> {
     }
     let spec = video_model(input["modelId"].as_str().unwrap_or(""))?;
     supported(&input, spec)?;
+    let format = pack.map(|_| &spec["localPack"]["format"]);
+    if input.get("nativeModelFormat") != format {
+        return Err(error(409, "TASK_RESUME_UNSAFE", "此任务保存的模型配方与本机视频权重不匹配，请核对所选模型"));
+    }
+    if let Some(options) = pack.map(|p| &p.steps)
+        && !input["steps"].as_u64().is_some_and(|n| options.contains(&n))
+    {
+        let supported = options.iter().map(u64::to_string).collect::<Vec<_>>().join(" 或 ");
+        return Err(error(400, "INVALID_PARAMETER", format!("本机 H3 Turbo 支持 {supported} 步，请调整生成步数")));
+    }
     match input.get("videoAttention").map(Value::as_str) {
         None => input["videoAttention"] = json!("auto"),
         Some(Some("auto" | "sdpa" | "sage" | "flash2")) => {}
+        Some(Some("h3-sol")) if pack.is_some() => {}
+        Some(Some("h3-sla")) if pack.is_some_and(|p| p.sla) && input["steps"] == 4 => {}
+        Some(Some("h3-sla")) => return Err(error(400, "UNSUPPORTED_ACCELERATION", "SLA 加速需要本机的 H3 四步 SLA 权重")),
+        Some(Some("h3-fused")) if pack.is_some_and(|p| p.fused) && input["steps"] == 4 => {}
+        Some(Some("h3-fused")) => return Err(error(400, "UNSUPPORTED_ACCELERATION", "社区融合加速需要本机的 Fused Turbo 权重及四步配方")),
         _ => return Err(error(400, "INVALID_PARAMETER", "未知的原生视频注意力选项")),
+    }
+    match input.get("h3Decoder").map(Value::as_str) {
+        None => {} // Older tasks used the original decoder.
+        Some(Some("original")) if pack.is_some() => {}
+        Some(Some("lightvae")) if pack.is_some_and(|p| p.lightvae) => {}
+        _ => return Err(error(400, "UNSUPPORTED_ACCELERATION", "所选 H3 视频解码器在本机未就绪")),
+    }
+    if pack.is_some() {
+        // Jobs saved by the original importer used 12 for both adapter releases.
+        if input.get("h3VideoShift").is_none() { input["h3VideoShift"] = json!(12); }
+        if !matches!(input["h3VideoShift"].as_u64(), Some(12))
+            && !(input["steps"] == 4 && input["h3VideoShift"] == 6) {
+            return Err(error(409, "TASK_RESUME_UNSAFE", "H3 视频采样参数与保存的配方不符"));
+        }
     }
     if spec["attentionModes"].as_array().is_some_and(|modes| !modes.contains(&input["videoAttention"])) {
         return Err(error(400, "UNSUPPORTED_ACCELERATION", "所选注意力内核与此模型不兼容"));
@@ -160,14 +230,15 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
             status["durations"] = json!([3, 5, 10, 15].into_iter().filter(|s| spec["durationFrames"].get(s.to_string()).is_some()).collect::<Vec<_>>());
             status["qualities"] = if spec["canvases"].is_object() { json!(["standard"]) } else { json!(["fast", "standard", "fine"]) };
             status["supportsNegative"] = spec["negative"].clone();
+            status["supportsGeneratedAudio"] = json!(prompt_compiler::supports_audio(spec));
             for key in ["drivingInput", "attentionModes"] {
                 if let Some(value) = spec.get(key) {
                     status[key] = value.clone();
                 }
             }
-            let reason = status["unavailableReason"].as_str().unwrap_or("待主力机验证").to_owned();
+            let reason = status["unavailableReason"].as_str().unwrap_or("").to_owned();
             status["reason"] = json!(reason);
-            status["tier"] = json!("待主力机验证");
+            status["tier"] = json!(if status["available"] == true { "本机文件就绪" } else { "待准备" });
             status["summary"] = json!(match spec["drivingInput"].as_str() {
                 Some("video") => "让角色跟随参考视频的动作",
                 Some("audio") => "让角色跟随配音说话",
@@ -175,6 +246,20 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
                 _ => "原生生成无声视频",
             });
             status["remaining"] = adapters::manifest()["pendingVideo"][id].clone();
+            if id == "minimax-h3"
+                && let Some(pack) = local_pack(&settings.models_root.join(id))
+            {
+                let steps = &pack.steps;
+                status["h3LightVae"] = json!(pack.lightvae);
+                status["attentionModes"] = json!(spec["localPack"]["attentionModes"].as_array().unwrap()
+                    .iter().filter(|mode| (**mode != "h3-sla" || pack.sla) && (**mode != "h3-fused" || pack.fused)).collect::<Vec<_>>());
+                if let Some(label) = spec["localPack"]["label"].as_str() {
+                    status["label"] = json!(label);
+                }
+                status["defaults"]["steps"] = json!(steps[0]);
+                status["summary"] = json!(if steps.contains(&8) { "原生音视频，可选 4 步或 8 步" } else { "原生音视频，4 步生成" });
+                status["turboSteps"] = json!(steps);
+            }
             let environment = if spec["runner"] == "longcat-avatar" { "LongCat-Avatar 独立环境与官方源码" } else { "独立 adapters Python 环境" };
             status["requirements"] = json!([environment, format!("{id}/ 完整模型目录"), "本机 ffmpeg"]);
             status["missing"] = if status["available"] == true { json!([]) } else { json!([reason]) };
@@ -203,10 +288,15 @@ pub(super) async fn status(backend: &generation::Service) -> Result<Value> {
             json!({"id":id,"label":q["label"],"summary":"","sizes":sizes})
         })
         .collect::<Vec<_>>();
+    let default = models.iter().find(|model| {
+        model["available"] == true && model["modes"].as_array()
+            .is_some_and(|modes| modes.iter().any(|mode| mode == "text"))
+    }).or_else(|| models.iter().find(|model| model["id"] == "wan2.2-ti2v-5b"))
+      .ok_or_else(|| error(503, "NATIVE_STATUS_UNAVAILABLE", "缺少原生视频模型清单"))?;
     Ok(
         json!({"engine":"native","provider":"native","readiness":"files-only","validation":"待主力机验证",
         "online":models.iter().any(|m| m["available"]==true),"models":models,"pending":backend.pending(),"maxPending":4,
-        "defaults":{"modelId":"wan2.2-ti2v-5b","aspectRatio":"landscape","duration":3,"camera":"still","motion":"subtle","quality":"standard","steps":50},
+        "defaults":{"modelId":default["id"],"aspectRatio":"landscape","duration":default["durations"][0],"camera":"still","motion":"subtle","quality":"standard","steps":default["defaults"]["steps"]},
         "qualities":qualities,"t8":{"available":false,"reason":"原生适配未接入 H3 T8"}}),
     )
 }

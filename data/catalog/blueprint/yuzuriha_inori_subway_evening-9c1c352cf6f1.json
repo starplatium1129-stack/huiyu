@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuzuriha_inori_subway_evening",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 334,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "yuzuriha_inori_subway_evening",
     "title": "楪祈 · 地铁通勤",
@@ -30,7 +30,7 @@
       "medium_two_shot",
       "shu_ouma"
     ],
-    "promptProse": "Inori holds the overhead strap with one hand and her bag strap with the other, balancing close beside Shu. Tunnel lights streak across the dark window behind their reflections.",
+    "promptProse": "Inori in her white school shirt and red ribbon balances by the subway window, one hand on the overhead loop and the other on her bag strap. Shu Ouma stands beside her, his cropped brown hair, dark blazer and necktie distinct from her long pink hair and skirt. Tunnel lights streak past the dark window behind them, which carries their faint reflections.",
     "promptTokens": [
       "1girl",
       "1boy",
@@ -57,6 +57,6 @@
     "characterTokens": [
       "shu ouma"
     ],
-    "animaCaption": "One hand holds each strap as she balances beside Shu."
+    "animaCaption": "Inori steadies herself by the overhead loop and her bag strap. Beside her, short brown-haired Shu wears a dark school blazer and tie, his shoulder close to hers by the subway window."
   }
 }

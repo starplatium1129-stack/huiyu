@@ -28,6 +28,35 @@ def document(path):
 MANIFEST = document(Path(__file__).with_name("adapter-models.json"))
 
 
+def local_h3(root, spec):
+    pack = spec.get("localPack")
+    if not pack or not (root / "transformer/comfy.safetensors").exists():
+        return None
+    marker = root / "huiyu-model.json"
+    receipt = config(root, marker)
+    stamp = marker.stat().st_mtime_ns
+    if (receipt.get("schemaVersion") != 1 or receipt.get("modelId") != "minimax-h3" or receipt.get("revision") != spec["revision"]
+            or receipt.get("scope") != "converted-local-weights-sha256"
+            or receipt.get("representation") != pack["format"] or receipt.get("sourceRevision") != pack["revision"]):
+        raise AdapterError("MODEL_INVALID", "H3 本地权重缺少匹配的导入凭据，请重新导入")
+    files = receipt.get("files")
+    if not isinstance(files, list) or any(not isinstance(item, dict) or not isinstance(item.get("path"), str) for item in files):
+        raise AdapterError("MODEL_INVALID", "H3 本地权重缺少文件校验记录")
+    recorded = {item["path"]: item for item in files}
+    steps = [4]
+    for asset in pack["files"]:
+        name = asset["path"]
+        if asset.get("optional") and name not in recorded and not (root / name).exists():
+            continue
+        info = safe_file(root, root / name).stat()
+        if (recorded.get(name, {}).get("bytes") != asset["bytes"] or recorded.get(name, {}).get("sha256") != asset["sha256"]
+                or info.st_size != asset["bytes"] or info.st_mtime_ns > stamp):
+            raise AdapterError("MODEL_INVALID", f"H3 本地权重与导入凭据不匹配：{name}")
+        if name == "loras/turbo-8.safetensors":
+            steps.append(8)
+    return steps
+
+
 def model(model_id):
     if not isinstance(model_id, str) or model_id not in MANIFEST["models"]:
         raise AdapterError("NATIVE_MODEL_UNSUPPORTED", "Model has no native adapter; no ComfyUI fallback")
@@ -161,10 +190,18 @@ def validate(job):
     if not isinstance(job, dict) or set(job) - allowed or job.get("op") != "generate" or not isinstance(job.get("id"), str) or not job["id"]:
         raise AdapterError("INVALID_REQUEST", "Expected a native adapter generation request")
     data = job.get("input")
-    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "videoAttention", "mossSampler", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
+    if not isinstance(data, dict) or set(data) - {"modelId", "prompt", "negativePrompt", "width", "height", "steps", "cfg", "seed", "frames", "fps", "videoAttention", "h3Decoder", "h3VideoShift", "nativeModelFormat", "mossSampler", "mossAcceleration", "mossSpectrumFlexWindow", "mossTextPrecision", "mossCompile", "mossWeightPrecision", "mossUpscaleScale"}:
         raise AdapterError("UNSUPPORTED_OPTION", "Unsupported adapter input; no silent option fallback")
     spec = model(data.get("modelId"))
+    if "nativeModelFormat" in data and (spec.get("localPack") is None
+            or data["nativeModelFormat"] not in ("diffusers", spec["localPack"]["format"])):
+        raise AdapterError("INVALID_PARAMETER", "Unknown native model format")
     is_video = spec["media"] == "video"
+    if "h3Decoder" in data and (spec["family"] != "minimax-h3" or data["h3Decoder"] not in ("lightvae", "original")):
+        raise AdapterError("UNSUPPORTED_OPTION", "H3 视频解码器选项不适用于此配方。")
+    if "h3VideoShift" in data and (spec["family"] != "minimax-h3" or data["h3VideoShift"] != 12
+            and not (data["h3VideoShift"] == 6 and data.get("steps") == 4)):
+        raise AdapterError("INVALID_PARAMETER", "H3 采样偏移与所选权重不匹配。")
     for kind, key in (("audio", "drivingAudioPath"), ("video", "drivingVideoPath")):
         if spec.get("drivingInput") == kind:
             path = job.get(key)
@@ -261,7 +298,8 @@ def validate(job):
         raise AdapterError("INVALID_OUTPUT", f"Expected a host-selected absolute {suffix} output")
     if spec["media"] == "video":
         attention = data.get("videoAttention", "auto")
-        if attention not in spec.get("attentionModes", ("auto", "sdpa", "sage", "flash2")):
+        modes = spec.get("attentionModes", ("auto", "sdpa", "sage", "flash2"))
+        if attention not in modes and attention not in spec.get("localPack", {}).get("attentionModes", ()):
             raise AdapterError("INVALID_PARAMETER", "Unknown video attention setting")
         result["videoAttention"] = attention
         result["_videoImage"] = job.get("inputImagePath") is not None

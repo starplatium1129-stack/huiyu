@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "bazett_fraga_mcremitz",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 257,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz",
     "profile": {
@@ -19,7 +19,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-bazett_fraga_mcremitz.png?v=09235da29dfc",
+        "image": "../assets/characters/popular-bazett_fraga_mcremitz.png?v=c497becf57f8",
         "alt": "巴泽特·弗拉加·马克雷米兹样张立绘",
         "sourceShowcaseId": "pc_bazett_fraga_mcremitz_pc_bazett_fraga_mcremitz_bazett_fraga_mcremitz_gloves",
         "sourceShowcaseSha256": "e5a5da3bae5b095799b6fc0c103af1e0b5d1c17b98e6a5f39d6a27a1cb592af3"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "harudera_yuria",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "harudera_yuria",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🕶️",
       "portrait": {
-        "image": "../assets/characters/popular-harudera_yuria.png?v=2f832048a29d",
+        "image": "../assets/characters/popular-harudera_yuria.png?v=49e990bad3b2",
         "alt": "春寺由梨亚 (JB)样张立绘",
         "sourceShowcaseId": "pc_harudera_yuria_pc_harudera_yuria_yuria_firing_range_pistol_stance",
         "sourceShowcaseSha256": "6746bb75b0e68de0fd5b431d994b8aaa6797279f7b3ae63c01ed1075c2b36db7"

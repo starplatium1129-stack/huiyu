@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_signing_event_author_line",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1426,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "utaha_signing_event_author_line",
     "title": "霞之丘诗羽 · 签售会的作家真身",
@@ -26,8 +26,10 @@
       "indoors",
       "daily"
     ],
-    "promptProse": "Seated behind the signing table, Utaha twirls her pen and recognizes a reader across from her. Bright warm bookstore light falls over the table, with the waiting line behind the reader.",
+    "promptProse": "The long-haired novelist sits behind the signing table in a black evening dress and twirls her fountain pen with a small smirk. At the front of the line, a flustered young man with short brown hair, glasses, and a tan jacket holds out his novel. Behind him the waiting customers recede into soft, warm bookstore light.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "kasumigaoka_utaha",
       "chignon",
       "fountain pen",
@@ -51,6 +53,6 @@
       "signature"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She recognizes the reader across the signing table while twirling the fountain pen."
+    "animaCaption": "Black-haired Utaha twirls her pen behind the desk. The short brown-haired reader in glasses and a tan jacket holds out his novel across the table, the waiting line blurred behind him."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mayuri",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 247,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shiina_mayuri",
     "popular": {
@@ -81,7 +81,7 @@
       "type": "popular",
       "icon": "🌻",
       "portrait": {
-        "image": "../assets/characters/popular-shiina_mayuri.png?v=3e38d7eb93a9",
+        "image": "../assets/characters/popular-shiina_mayuri.png?v=912561b2826c",
         "alt": "椎名真由理样张立绘",
         "sourceShowcaseId": "pc_shiina_mayuri_pc_shiina_mayuri_mayuri_maid_cafe_omelet_ketchup_heart",
         "sourceShowcaseSha256": "bb1c0949d29516b2d8a9217cb4dd0949c67ad3bc51cc1a9410d11e52f0026995"

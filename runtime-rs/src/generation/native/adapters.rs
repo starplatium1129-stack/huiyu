@@ -8,7 +8,17 @@ const FILES: &[&str] = &[
     "adapter_media.py",
     "adapter_video.py",
     "video_acceleration.py",
+    "video_memory.py",
     "wan_motion.py",
+    "wan_pipeline.py",
+    "wan22-import.json",
+    "h3_packed.py",
+    "h3_sparse.py",
+    "h3_modulation.py",
+    "h3_rotary.py",
+    "import_h3.py",
+    "h3_vae.py",
+    "h3_text.py",
     "adapter-models.json",
     "managed-adapter-models.json",
     "worker_lifecycle.py",
@@ -20,6 +30,9 @@ const FILES: &[&str] = &[
     "qwen_prefix_cache.py",
     "locked_identity.py",
     "krea_style.py",
+    "krea_adapter.py",
+    "krea_transport.py",
+    "anima_vae.py",
     "moss_adapter.py",
     "moss_pipeline.py",
     "moss_spectrum.py",
@@ -45,6 +58,63 @@ pub(crate) fn manifest() -> &'static Value {
 pub(crate) fn model(id: &str) -> Option<&'static Value> {
     MANIFEST["models"].get(id)
 }
+
+pub(crate) fn h3_packed_steps(root: &Path) -> Option<Vec<u64>> {
+    let spec = model("minimax-h3")?;
+    let pack = &spec["localPack"];
+    let marker = resources::file(root, "huiyu-model.json", true)?;
+    let meta = marker.metadata().ok()?;
+    if meta.len() > 1024 * 1024 {
+        return None;
+    }
+    let prepared_at = meta.modified().ok()?;
+    let receipt: Value = serde_json::from_slice(&std::fs::read(marker).ok()?).ok()?;
+    if receipt["schemaVersion"] != 1 || receipt["modelId"] != "minimax-h3"
+        || receipt["scope"] != "converted-local-weights-sha256"
+        || receipt["revision"] != spec["revision"] || receipt["representation"] != pack["format"]
+        || receipt["sourceRevision"] != pack["revision"] {
+        return None;
+    }
+    let files = receipt["files"].as_array()?;
+    let mut steps = vec![4];
+    for asset in pack["files"].as_array()? {
+        let name = asset["path"].as_str()?;
+        let file = files.iter().find(|row| row["path"] == name);
+        if asset["optional"] == true && file.is_none() && !root.join(name).exists() {
+            continue;
+        }
+        let file = file?;
+        let meta = resources::file(root, name, true)?.metadata().ok()?;
+        if file["sha256"] != asset["sha256"] || file["bytes"] != asset["bytes"]
+            || meta.len() != asset["bytes"].as_u64()? || meta.modified().ok()? > prepared_at {
+            return None;
+        }
+        if name == "loras/turbo-8.safetensors" {
+            steps.push(8);
+        }
+    }
+    Some(steps)
+}
+
+pub(crate) fn h3_accelerator(root: &Path, name: &str) -> bool {
+    let verify = || -> Option<bool> {
+        let files = model("minimax-h3")?["localPack"]["accelerators"][name].as_array()?;
+        let marker = resources::file(root, &format!("accelerators/{name}.receipt"), true)?;
+        let meta = marker.metadata().ok()?;
+        if meta.len() > 16 * 1024 { return None; }
+        let stamp = meta.modified().ok()?;
+        let receipt: Value = serde_json::from_slice(&std::fs::read(marker).ok()?).ok()?;
+        if receipt["schemaVersion"] != 1 || receipt["modelId"] != "minimax-h3" || receipt["accelerator"] != name
+            || receipt["files"].as_array()? != files { return None; }
+        for row in files {
+            let meta = resources::file(root, row["path"].as_str()?, true)?.metadata().ok()?;
+            if meta.len() != row["bytes"].as_u64()? || meta.modified().ok()? > stamp { return None; }
+        }
+        Some(true)
+    };
+    verify().unwrap_or(false)
+}
+
 pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
     model(id)
         .ok_or_else(|| "该模型尚无原生适配".to_owned())
@@ -53,6 +123,10 @@ pub(crate) fn model_issue(root: &Path, id: &str) -> Option<String> {
                 return super::model_layout::inspect_managed_bundle(root, id);
             }
             super::model_layout::inspect_adapter(root, model)?;
+            if id == "minimax-h3" && root.join("transformer/comfy.safetensors").is_file()
+                && h3_packed_steps(root).is_none() {
+                return Err("H3 本地权重与导入凭据不匹配，请在控制室重新准备。".into());
+            }
             if model["family"] == "moss-image" {
                 if !root
                     .join("transformer/diffusion_pytorch_model.safetensors")

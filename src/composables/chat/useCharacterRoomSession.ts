@@ -57,7 +57,7 @@ export function useCharacterRoomSession(reading?: { latest: () => void; nearBott
   const voiceStatusText = ref('')
   const playingMid = ref('')
   const isSpeaking = ref(false)
-  const autoVoice = ref(true)
+  const autoVoice = ref(false)
   const volume = ref(80)
 
   let statusTimer = 0

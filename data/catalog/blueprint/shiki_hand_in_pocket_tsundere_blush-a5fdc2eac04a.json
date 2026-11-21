@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_hand_in_pocket_tsundere_blush",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1343,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "手被拉入对方大衣口袋握紧，侧过脸红透耳根，咬唇假装看别处任由牵手",
     "camera": "cowboy shot, eye level",
@@ -25,8 +25,10 @@
       "knife"
     ],
     "outfitId": "kimono_red_jacket_no_knife",
-    "promptProse": "Her companion holds her hand inside his coat pocket at the snowy crossing; she turns her flushed face toward the trees under warm shop-window light.",
+    "promptProse": "At the snowy crossing, Shiki turns her flushed face toward the trees, her black bob brushing the collar of her red leather jacket. Beside her, the man with short side-parted brown hair clasps her hand inside the pocket of his charcoal overcoat. Warm light from the nearby shops reaches their profiles.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "holding hands",
       "blush",
       "winter",
@@ -54,6 +56,6 @@
     ],
     "timeOfDay": "冬日黄昏",
     "title": "两仪式 · 寒风中被牵手的大衣口袋",
-    "animaCaption": "Her companion holds her hand inside his coat pocket at the snowy crossing."
+    "animaCaption": "Black-bobbed Shiki, in a cropped red leather jacket over her white kimono, blushes and turns toward the trees. The short brown-haired man beside her wears a long charcoal overcoat and holds her hand inside its pocket."
   }
 }

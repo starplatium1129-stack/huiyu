@@ -40,6 +40,7 @@
             <template v-if="visited.has(item.id) || item.id === 'control-setup' && localSetupRequested">
               <ControlWelcome v-if="item.id === 'control-overview'" />
               <AsyncPanel v-else-if="item.id === 'control-setup'" :loader="loadSetup" label="绘图与模型" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
+              <AsyncPanel v-else-if="item.id === 'control-voice'" :loader="loadVoice" label="语音与朗读" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-interrogate'" :loader="loadInterrogateSetup" label="图片反推" v-slot="{ component }"><component :is="component" /></AsyncPanel>
               <AsyncPanel v-else-if="item.id === 'control-library'" :loader="loadLibrary" label="资源与素材" v-slot="{ component }"><component :is="component" @vue:mounted="panelReady(item.id)" /></AsyncPanel>
               <div v-else-if="item.id === 'control-personalization'" class="control-panel-stack">
@@ -83,6 +84,7 @@ const { localSetupRequested } = useLocalSetupPanelLoading()
 const compactOptions = groups.map(group => ({ label: group.label, options: group.sections.map(section => ({ value: section.id, label: section.label })) }))
 const loadInterrogateSetup = () => import('@/components/InterrogateSetupPanel.vue')
 const loadSetup = () => import('@/components/control/ControlSetupPanel.vue')
+const loadVoice = () => import('@/components/control/ControlVoicePanel.vue')
 const loadLibrary = () => import('@/components/ResourceLibraryPanel.vue')
 const loadServices = () => import('@/components/control/ControlServicesPanel.vue')
 const loadShare = () => import('@/components/control/ControlSharePanel.vue')

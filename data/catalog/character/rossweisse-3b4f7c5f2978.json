@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rossweisse",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 230,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "rossweisse",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🛡️",
       "portrait": {
-        "image": "../assets/characters/popular-rossweisse.png?v=a1201d104084",
+        "image": "../assets/characters/popular-rossweisse.png?v=d08d2c56d27f",
         "alt": "罗丝薇瑟样张立绘",
         "sourceShowcaseId": "pc_rossweisse_pc_rossweisse_rossweisse_kitchen_receipt_checking",
         "sourceShowcaseSha256": "a1721e466cb7a63d9edf37892f2a88b7a22e4eda5a5dcf03b81a6a5e73bd63cc"

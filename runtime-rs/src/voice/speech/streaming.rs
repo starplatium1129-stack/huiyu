@@ -50,14 +50,15 @@ impl Speech {
         mut value: Validated,
         deadline: Deadline,
     ) -> Result<Response> {
-        if self.settings.engine != Engine::VoxCpm2 {
+        let settings = self.current_settings();
+        if settings.engine != Engine::VoxCpm2 {
             return Err(ApiError::new(
                 409,
                 "TTS_STREAM_UNAVAILABLE",
                 "当前语音引擎未提供 PCM 分片",
             ));
         }
-        let key = self.cache_key(&value);
+        let key = self.cache_key(&settings, &value);
         if let Some(response) = self.cached_response(&key, true) {
             return Ok(response);
         }
@@ -72,6 +73,7 @@ impl Speech {
         raw_pcm: bool,
         deadline: Deadline,
     ) -> Result<Response> {
+        let settings = self.current_settings();
         let permit = self
             .queue
             .enter(
@@ -93,7 +95,7 @@ impl Speech {
                 .insert("x-accel-buffering", HeaderValue::from_static("no"));
             return Ok(response);
         }
-        let (response, permit, deadline) = self.upstream(&value, permit, deadline).await?;
+        let (response, permit, deadline) = self.upstream(&settings, &value, permit, deadline).await?;
         let mime = response
             .headers()
             .get("content-type")
@@ -182,6 +184,7 @@ impl Speech {
                             cache_key,
                             CachedAudio {
                                 bytes: Bytes::from(captured.take().unwrap().into_boxed_slice()),
+                                content_type: "audio/wav".into(),
                                 pcm: pcm.then_some(data),
                             },
                             &cancel,
@@ -277,11 +280,14 @@ impl Speech {
             )
                 .into_response()
         } else {
-            (
-                [("content-type", "audio/wav"), ("x-tts-cache", "hit")],
-                audio.bytes,
-            )
-                .into_response()
+            let mut resp = ([("x-tts-cache", "hit")], audio.bytes).into_response();
+            if let Ok(ct) = HeaderValue::from_str(&audio.content_type) {
+                resp.headers_mut().insert("content-type", ct);
+            } else {
+                resp.headers_mut()
+                    .insert("content-type", HeaderValue::from_static("audio/wav"));
+            }
+            resp
         };
         response
             .headers_mut()

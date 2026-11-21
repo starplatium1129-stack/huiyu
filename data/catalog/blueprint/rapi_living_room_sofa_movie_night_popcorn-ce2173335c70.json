@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rapi_living_room_sofa_movie_night_popcorn",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1923,
   "createdAt": "2026-10-25T03:46:32.566833200+00:00",
-  "updatedAt": "2026-10-25T03:46:32.566833200+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "rapi_living_room_sofa_movie_night_popcorn",
     "characterId": "rapi_nikke",
@@ -31,6 +31,8 @@
       "scarlet_eyes"
     ],
     "promptTokens": [
+      "1girl",
+      "1boy",
       "living room",
       "fabric couch",
       "commander private office shirt",
@@ -46,11 +48,12 @@
       "dim ambient living room light",
       "cozy late night"
     ],
-    "promptProse": "Curled beside the viewer on the living room sofa during a late-night movie, she holds a large bowl of buttered popcorn. The dim glow of the screen reflects in her softening scarlet eyes as her posture eases into quiet, comfortable warmth.",
-    "animaCaption": "She sits on the couch sharing popcorn during a movie, leaning gently toward the viewer in the soft tv light.",
+    "promptProse": "Long-haired Rapi in the oversized white shirt and lounge shorts sinks into the left cushion with a bowl of popcorn. At her right, the short dark-haired commander wears a charcoal crew-neck and dark trousers. She leans her shoulder into his as the changing TV light brushes their faces.",
+    "animaCaption": "Long-haired Rapi in the oversized white shirt and lounge shorts sinks into the left cushion with a bowl of popcorn. At her right, the short dark-haired commander wears a charcoal crew-neck and dark trousers. She leans her shoulder into his as the changing TV light brushes their faces.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

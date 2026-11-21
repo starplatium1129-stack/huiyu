@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_living_room_visual_novel_testing",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2262,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "kuroneko_living_room_visual_novel_testing",
     "characterId": "kuroneko",
@@ -19,8 +19,10 @@
     "lighting": "soft afternoon daylight through shoji sliding doors",
     "camera": "medium_shot",
     "mood": "傲娇与温存",
-    "promptProse": "Sitting side by side on living room tatami before a laptop, Ruri Gokou blushes furiously at a romance game, peeking at partner with lovely blue eyes.",
+    "promptProse": "Ruri sits at the laptop in her black dress and red rose hair ornaments, her long black hair falling across her flushed cheek. Her playtester sits beside her in a gray zip jacket, short brown hair and rectangular glasses catching the screen light. She steals a look at his profile just as the confession appears on the screen.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "tatami",
       "living_room",
       "laptop",
@@ -32,10 +34,11 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ruri Gokou blushing while testing romance visual novel on tatami.",
+    "animaCaption": "Ruri sits at the laptop in her black dress and red rose hair ornaments, her long black hair falling across her flushed cheek. Her playtester sits beside her in a gray zip jacket, short brown hair and rectangular glasses catching the screen light. She steals a look at his profile just as the confession appears on the screen.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "group"
   }
 }

@@ -226,8 +226,9 @@ impl ControlService {
                 }
             }
         }
+        let free_bytes = crate::resources::available_space(&workspace).ok();
         let mut value = json!({"ok":true,"checkedAt":now(),"recommendedModel":recommended,
-            "workspace":{"path":workspace,"state":workspace_state},
+            "workspace":{"path":workspace,"state":workspace_state,"freeBytes":free_bytes},
             "comfy":{"path":comfy,"installation":installation,"layout":if portable{"portable"}else if venv{"venv"}else if external_venv{"external-venv"}else{"unrecognized"},"host":host,"connection":connection,"managedEnvironment":setup_environment::managed_comfy_environment(&comfy)},
             "models":null,"chat":{"host":self.runtime_setting("llamaHost"),"runtimePresent":workspace.join("Chat/runtime/llama-server.exe").is_file()},"nodes":{"state":if nodes_checked{"checked"}else{"unknown"},"required":null,"missing":null},
             "hardware":{"state":if ram.is_some()||!devices.is_empty(){"reported"}else{"unknown"},"devices":null,"ramBytes":ram}});

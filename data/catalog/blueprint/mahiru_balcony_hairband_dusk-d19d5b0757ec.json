@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_balcony_hairband_dusk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1472,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "mahiru_balcony_hairband_dusk",
     "title": "椎名真昼 · 阳台晚风与发绳整理",
@@ -16,7 +16,7 @@
     "action": "双手抬起挽发整理发绳，微风拂动金发，侧颜回眸浅笑",
     "timeOfDay": "暮色入夜",
     "lighting": "城市天际线暮色紫霞与阳台门廊暖光",
-    "camera": "medium shot, balcony railing, fixing hair, hair up, evening breeze",
+    "camera": "medium landscape two-shot from outside, adjacent balcony railings and divider",
     "mood": "两心相近、清风微澜",
     "sceneTags": [
       "balcony",
@@ -28,8 +28,10 @@
       "amber_eyes",
       "city_lights"
     ],
-    "promptProse": "Mahiru raises both hands to retie her wind-tossed hair, smiling toward Amane with his coffee on the neighboring balcony. Warm doorway light meets the violet dusk along the railing.",
+    "promptProse": "Two neighboring apartments have separate balconies at dusk. A short divider and two separate railings span the foreground. On the left balcony, Mahiru raises both hands to retie her long blond hair over a cream sweater. On the right balcony, Amane has short black hair and wears a slate-blue shirt. He holds a mug of hot coffee and smiles across the divider. Warm light spills out of two different doorways.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "shiina_mahiru",
       "tying hair",
       "balcony",
@@ -41,7 +43,7 @@
       "medium shot"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536",
+    "recommendedSize": "1216x832",
     "adult": false,
     "sampleRating": "SFW",
     "kreaStyleHint": "anime_portrait_sharp",
@@ -51,6 +53,6 @@
       "city"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She smiles toward Amane and his coffee on the neighboring balcony while retying her hair."
+    "animaCaption": "Two neighboring apartments have separate balconies at dusk. A short divider and two separate railings span the foreground. On the left balcony, Mahiru raises both hands to retie her long blond hair over a cream sweater. On the right balcony, Amane has short black hair and wears a slate-blue shirt. He holds a mug of hot coffee and smiles across the divider. Warm light spills out of two different doorways."
   }
 }

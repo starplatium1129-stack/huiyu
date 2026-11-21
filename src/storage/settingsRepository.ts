@@ -7,7 +7,6 @@ import {
   GUEST_GUIDE_DISMISSED_KEY,
   INTERFACE_SOUND_KEY,
   THEME_KEY,
-  TUNNEL_OFF_KEY,
 } from '../utils/storageKeys.ts'
 
 // Historical result/recipe projections keep SD; new selections do not.
@@ -51,13 +50,6 @@ export const INTERFACE_SOUND_SETTING: SettingDefinition<boolean> = {
   key: INTERFACE_SOUND_KEY,
   parse(raw) { return raw === '1' },
   serialize(value) { return value ? '1' : '0' },
-}
-
-/** The stored value is the historical "tunnel disabled" flag. */
-export const TUNNEL_ENABLED_SETTING: SettingDefinition<boolean> = {
-  key: TUNNEL_OFF_KEY,
-  parse(raw) { return raw !== '1' },
-  serialize(value) { return value ? '' : '1' },
 }
 
 export const GUEST_GUIDE_DISMISSED_SETTING: SettingDefinition<boolean> = {

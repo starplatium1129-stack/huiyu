@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nana_sainan_corridor_tsundere_glare",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1263,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "双手叉腰前倾身躯，露出可爱小虎牙傲娇瞪视，粉发双马尾与爱心尾巴晃荡",
     "camera": "cowboy shot, eye-level, classic tsundere confrontation framing",
@@ -20,10 +20,10 @@
     "mood": "傲娇好胜",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Nana blocks Rito at the corridor corner, hands on hips and a fang showing. Morning light rims her twintails and crosses the floor between them.",
+    "promptProse": "Nana blocks the sunlit corridor corner with her hands on her hips, pink twintails falling behind her sailor blouse and a little fang showing. Rito, with short spiky brown hair, a white school shirt and dark trousers, stops opposite her. Morning light crosses the floor between their feet.",
     "promptTokens": [
-      "2people",
-      "yuuki rito",
+      "1girl",
+      "1boy",
       "hands on hips",
       "glaring",
       "fang",
@@ -32,7 +32,8 @@
       "cowboy shot",
       "leaning forward",
       "rim light",
-      "floor shadow"
+      "floor shadow",
+      "yuuki rito"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -53,6 +54,6 @@
     "characterTokens": [
       "yuuki rito"
     ],
-    "animaCaption": "She blocks her companion at the corridor corner with both hands on her hips."
+    "animaCaption": "Pink-twintailed Nana blocks the corridor with both hands on her hips, a fang showing. Short brown-haired Rito halts on the other side in a white button-up and dark school trousers."
   }
 }

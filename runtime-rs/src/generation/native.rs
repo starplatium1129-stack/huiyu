@@ -17,7 +17,7 @@ mod results;
 mod worker;
 mod worker_job;
 use super::*;
-pub(crate) use config::{Settings, installed_runtime_for, load};
+pub(crate) use config::{Settings, installed_runtime_for, load, python_relative};
 pub(super) use results::prune;
 use std::{path::PathBuf, process::Stdio};
 use tokio::io::{AsyncBufReadExt, AsyncReadExt, AsyncWriteExt, BufReader};

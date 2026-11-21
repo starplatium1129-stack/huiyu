@@ -1,50 +1,62 @@
-# 绘遇 HUIYU · 现代安装界面
+# 绘遇 HUIYU · 现代安装与发行包指南
 
-正式发行采用 WPF 展示层：1120 × 700 逻辑像素，随桌面工作区域收敛。窄品牌栏、圆角画面与右下悬浮操作面板组成安装界面；背景直接使用首页的宁宁 CG `assets/characters/nene-home-cg.jpg`，保留原始文件，展示时顶部对齐并向右侧底色淡出，侧栏头像取自同图。品牌与标语使用独立深色衬底，面板、控件和窗口边框支持深浅主题；浅色主按钮使用深玫瑰色。右侧集中安装位置、磁盘信息与单一主操作。安装时收起配置，展示资源准备、应用安装、结果确认三个阶段及实际耗时；资源准备可以取消。较矮窗口内容可滚动，主操作固定在面板底部，较窄窗口收起左下标语。保留 NSIS 安装核心及 WebView2 处理。
+正式发行基于 [Tauri 自定义 NSIS 模板](https://v2.tauri.app/distribute/windows-installer/#installer-template)，外层采用独立 WPF 展示层（`.NET Framework 4.x`，无额外浏览器运行服务）。
 
-交互式卸载复用现代安装器的同一份 `Installer.xaml`，包含圆角窗口、品牌栏、插画区、悬浮操作面板、主题和按钮。`UninstallWindow.cs` 负责确认、清理数据二次确认、不定进度与实际耗时、完成和失败重试；默认保留作品、设置与已导入资源。清理选项会列出运行卸载器账户的两个实际应用数据目录，焦点默认放在返回按钮。使用其他管理员账户授权时，这些路径属于该管理员，不代表所有用户资料。
+---
 
-`game-modern-uninstall.nsh` 从卸载器自身解出 WPF 展示层并复制当前卸载核心到私有临时目录。确认后由展示层等待该核心静默完成，实际删除文件清单、数据目录与进程占用保护仍由原 Tauri 卸载段执行；外层不会再次删除。运行期间禁止关闭，可最小化；失败保留提示并允许重试，完成不启动应用。静默、被动与更新调用继续使用原 NSIS 路径；`game-frame.nsh` 与 `game-uninstall.nsh` 保留底层原生页面。预览构建和截图模式不会调用卸载核心。
+## 1. 现代安装与卸载界面
 
-## 构建与预览
+- **窗口与视觉 (`desktop-tauri/src-tauri/installer/modern/`)**：
+  - `Installer.xaml` 与 `controls.svg` 定义 `1120 × 700` 逻辑像素双主题圆角窗口、手绘线条图标与右侧悬浮操作面板，背景使用 `assets/characters/nene-home-cg.jpg`。
+  - `InstallerWindow.cs` 与 `InstallEngine.cs` 负责安装阶段展示（资源准备按流式 SHA-256 字节更新，安装核心阶段显示耗时）、盘符空间检查、路径校验与安装后版本核对。
+- **现代卸载 (`UninstallWindow.cs` & `game-modern-uninstall.nsh`)**：
+  - 复用同一 WPF 外壳，默认保留用户作品、设置与已导入资源；清理数据二次确认会列出当前账户的实际数据目录，焦点默认落在返回按钮。
+  - 解出私有临时目录后静默调用原 Tauri 卸载核心，运行中不可直接关闭（允许最小化），失败可重试。静默/被动/更新模式沿用底层 NSIS（`game-frame.nsh` / `game-uninstall.nsh`）。
 
-发行入口通常从同一构建生成完整包和升级包：`AI-CG-Studio_<版本>_x64-full-setup.exe` 包含程序、基础素材和 WebView2 安装引导，缺少 WebView2 时需联网安装；`AI-CG-Studio_<版本>_x64-upgrade-setup.exe` 面向已有完整安装，复用已安装的基础素材和 WebView2。显式 `--full-only` 只生成完整包；已发行的 2.0.0 使用该模式，仍包含 WebView2 离线安装器。样张图片通过独立素材 ZIP 提供。
+---
 
-升级包在外层安装器和内层 NSIS 替换程序文件前核对安装登记、宿主版本、WebView2 与每个保留素材的大小/SHA-256，并拒绝链接路径。缺失、损坏或素材版本不匹配时明确要求使用本版本完整包；不把残缺安装升级成不可用状态。验证通过后使用既有 `/UPDATE` 原位覆盖程序，不调用旧卸载器。升级包保留完整的资源卸载清单，后续正常卸载仍清理程序自带素材，个人资料保持原有规则。
+## 2. 双包发行、升级与安全边界
 
-安装器分别绑定源码、构建和分发字节，分别签名；双包发行时 `latest.json` 指向升级包，`--full-only` 时指向完整包。绑定也覆盖渲染后的 NSIS 输入，旧回执缺少这项输入时需先完成一次正常桌面构建。
+- **双包形态**：
+  - `AI-CG-Studio_<版本>_x64-full-setup.exe`：完整包（LZMA 压缩，含程序、基础素材与 WebView2 安装引导；`--full-only` 仅出完整包，不含 AI 生成模型）。
+  - `AI-CG-Studio_<版本>_x64-upgrade-setup.exe`：升级包，复用既有基础素材与 WebView2。
+- **升级校验**：替换程序前先核对安装登记、宿主版本、WebView2 与保留素材的字节大小和 SHA-256（拒绝链接路径）；损坏或版本不匹配时提示改用完整包。验证通过后执行 `/UPDATE` 原位覆盖并保留完整卸载清单。
+- **安装 policy (`game-install-policy.nsh`)**：
+  - 拒绝空路径、盘符根、Windows 系统目录及通用用户/程序根目录。
+  - 通过 Restart Manager 检查安装目录内的宿主与 Rust 网关占用，占用时提示退出托盘后重试，不强杀进程。
+  - 若勾选创建快捷方式，补充生成「绘遇 · 资源安装助手」（指向 `gateway/tools/Install-OfflineResources.cmd`；`/NS` 静默不创建，且不从提权安装器自动拉起以防跨账户 UAC 写错目录）。
+- **静默与命令行参数**：支持 `/S`、`/P`、`/R`、`/NS`、`/D=<目标路径>`（`/D=` 必须放最后）。
+- **静态素材压缩**：打包阶段对大型静态角色 PNG 做无损重编码（结果缓存在 `runtime/desktop-png-cache/`，跳过 Live2D 纹理与用户作品）。
 
-- `npm run workflow -- installer:modern --preview --capture --theme=dark --state=ready --dpi=144`：编译原生预览；主题支持 dark/light，状态支持 ready/installing/done/error，DPI 支持 96–240。预览版本以及任何 --capture 调用都禁止安装。
-- 上述预览加 `--upgrade` 展示老用户升级界面；截图文件名区分 `full`/`upgrade`。真实升级验证器由双包发行流程生成，预览不检查或修改已安装程序。
-- `desktop-tauri/src-tauri/installer/modern/` 下的 `Installer.xaml` 管布局与主题，`controls.svg` 为手绘线条源；`InstallerWindow.cs` 管展示状态，`InstallEngine.cs` 管路径、校验、提权和安装结果。
-- `node scripts/maintenance/release-desktop-update.js --bump patch`：构建应用与 NSIS 核心，再嵌入现代展示层，**签名最终分发的 exe**，更新 latest.json。不能拿内层 NSIS 签名验证外层安装器。
-- `npm run workflow -- installer:bundle`：仅重打包已有程序的安装器，必须通过源码/产物绑定回执与版本校验；版本相同不能复用陈旧程序。应用变更仍需完整构建。
-- `installer:build` 和 `installer:preview --capture --page=welcome` 维护底层 NSIS 模板及诊断预览；`package:tauri` 单独运行只产生该核心，发行使用上面的 release 入口。
+---
 
-NSIS 安全预览还支持 `--page=uninstall|uninstall-progress|uninstall-finish`、`--theme=system|dark|light`。页面复用正式展示函数，预览操作段仅打印说明，不安装、卸载、写快捷方式或启动应用。
-现代卸载预览使用 `npm run workflow -- installer:modern --uninstall --preview --capture --theme=dark --state=ready --dpi=144`，支持 ready/confirm/installing/done/error。截图为 `runtime/installer-modern-uninstall-<主题>-<状态>-<DPI>.png`；这是 WPF 渲染预览，不代替真实设备验收。
+## 3. 构建、预览与 GitHub 发布
 
-Windows 10/11 x64 使用系统 .NET Framework 4.x/WPF，不增加浏览器运行服务。编译器和资源输出均在被忽略的 installer/generated/ 中。预览入口仅编译展示层并渲染实际 WPF 控件；路径、静默参数、预览隔离及嵌入资源哈希保留在对应产品逻辑，画面与对比度仍需目视检查各状态和缩放。
+### 常用维护与预览命令
 
-资源准备在同一次流式复制中计算 SHA-256，按实际字节显示进度，界面更新最多每 100 ms 一次；安装阶段显示不定进度与实际耗时，不假报总百分比。开始前检查目标与临时磁盘空间，校验通过才启动 NSIS，完成后核对安装目录中 exe 的版本。管理员授权取消允许重试；安装核心运行时关闭窗口会提示等待或最小化。支持 /S、/P、/R、/NS、/D=（路径必须最后），更新模式交给内层 NSIS。显示界面本身不要求管理员权限。
+```powershell
+# 预览现代安装器（支持 dark/light、ready/installing/done/error、DPI 96-240，加 --upgrade 预览升级态）
+npm run workflow -- installer:modern --preview --capture --theme=dark --state=ready --dpi=144
 
-打包阶段对大型静态角色 PNG 做无损重编码，保留像素、尺寸、格式、元数据与原 URL；不处理 Live2D 纹理及用户作品。结果按输入 SHA-256 缓存在被忽略的 `runtime/desktop-png-cache/`，重复构建复用并校验缓存字节。正式完整包保留 WebView2 联网安装引导并使用 LZMA 压缩；本机快速升级包保留无压缩配置。
+# 预览现代卸载器（支持 ready/confirm/installing/done/error）
+npm run workflow -- installer:modern --uninstall --preview --capture --theme=dark --state=ready --dpi=144
 
-## 安装逻辑边界
+# 底层 NSIS 模板安全预览（--page=welcome|uninstall|uninstall-progress|uninstall-finish）
+npm run workflow -- installer:preview --capture --page=welcome --theme=dark
 
-基于 [Tauri 官方自定义 NSIS 模板接口](https://v2.tauri.app/distribute/windows-installer/#installer-template)。原始安装文件清单、实际卸载删除段、旧版本维护选择、WebView2 检测、管理员权限和静默参数保留。生成入口检查模板哈希及替换锚点，漂移时构建直接失败。
+# 重打包已有程序（须通过源码/产物绑定回执与版本校验）
+npm run workflow -- installer:bundle
+```
 
-`game-install-policy.nsh` 为本次审计的最小产品策略：对安装目录内宿主与 Rust 网关用 Restart Manager 检查占用；运行中或无法核实退出时拒绝继续，提示保存工作、从托盘退出后重试，不调用强制关闭。另为选择快捷方式的安装补充“绘遇 · 资源安装助手”，指向随包 `gateway/tools/Install-OfflineResources.cmd`；`/NS` 不创建，升级保留已有链接，卸载仅移除目标属于本安装的助手链接。助手不从提升权限的安装器自动启动，以免跨账户 UAC 把资源写入管理员资料。
+> 所有 `--preview` / `--capture` 入口均严格隔离，绝不执行真实安装、卸载或写快捷方式。
 
-实际安装入口与能力以对应发行包为准，见[项目状态](../../project-status.md)与[离线资源安装](../offline-resources.md)。
+### 正式发版流程
 
-自定义目录页拒绝空路径、盘符根、Windows 系统目录与通用用户/程序根目录；选择独立应用文件夹。安装包不包含生成模型。预览脚本不调用真实安装、启动或快捷方式函数。
+发行目标仓库为 `starplatium1129-stack/huiyu`（源码入 `main`，EXE/签名/`latest.json`/SHA-256 上传 GitHub Release；updater 完整性签名不等于 Windows Authenticode 证书）：
 
-## GitHub Release 发布
+```powershell
+# 构建应用、NSIS 核心、嵌入现代展示层、签名分发 EXE 并更新 latest.json
+node scripts/maintenance/release-desktop-update.js --bump patch
+```
 
-发行目标统一为公开主项目 `starplatium1129-stack/huiyu`。源码进入 `main`，安装包、
-updater 签名、`latest.json` 与 SHA-256 作为同版本 GitHub Release 附件；大型 exe 不入 Git。
-客户端只自动检测版本，用户点击后才下载安装。按实际改动选择验证，失败和未验范围如实说明；安装与 UAC 按[部署指南](../../desktop-deployment.md)处理。
-
-
-已登记的发行与本机安装范围见 [2.0.0 说明](../../releases/v2.0.0.md)和[项目状态](../../project-status.md)。updater 完整性签名不代表 Windows Authenticode 证书；具体设备/DPI 状态按实际验收记录。
+日常开发与安装同步请统一使用根目录 `deploy-desktop.bat`，见 [桌面部署指南](../../desktop-deployment.md) 与 [项目状态](../../project-status.md)。

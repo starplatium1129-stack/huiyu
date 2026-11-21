@@ -25,6 +25,11 @@
           <ArchiveIcon name="chat" /><span>对白</span>
         </button>
       </StudioTooltip>
+      <StudioTooltip v-if="showWatch" content="打开绘图画室（Ctrl+Shift+A）">
+        <button type="button" class="btn btn-quiet btn-sm companion-dock-action" aria-label="打开画室" @click="emit('open-atelier')">
+          <ArchiveIcon name="palette" /><span>画室</span>
+        </button>
+      </StudioTooltip>
       <slot v-if="showWatch" name="watch" />
       <slot name="import-recovery" />
     </div>
@@ -56,6 +61,7 @@ defineProps<{
 
 const emit = defineEmits<{
   (event: 'open-chat'): void
+  (event: 'open-atelier'): void
   (event: 'open-reminder', reminder: CompanionReminder): void
   (event: 'dismiss-reminder', id: string): void
 }>()

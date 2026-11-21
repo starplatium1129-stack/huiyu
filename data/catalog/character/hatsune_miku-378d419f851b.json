@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hatsune_miku",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "hatsune_miku",
     "profile": {
@@ -17,7 +17,7 @@
       "type": "popular",
       "icon": "🎤",
       "portrait": {
-        "image": "../assets/characters/popular-hatsune_miku.png?v=259b77a87f6e",
+        "image": "../assets/characters/popular-hatsune_miku.png?v=90a5a3c134a2",
         "alt": "初音未来样张立绘",
         "sourceShowcaseId": "pc_hatsune_miku_pc_hatsune_miku_hatsune_miku_studio",
         "sourceShowcaseSha256": "79f4bf9f53817eb9b17225c693a54f2ee684741b021e08125a2311c50c425c66"

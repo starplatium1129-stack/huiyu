@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ishtar_night_stargazing_talk",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "ishtar_night_stargazing_talk",
     "title": "伊什塔尔 · 星空下的真心话",
@@ -28,7 +28,7 @@
       "golden_tiara",
       "wide_two_shot"
     ],
-    "promptProse": "Ishtar reclines on the left beside her clothed companion on the temple roof, pointing toward Venus low over the western twilight while the companion follows her gesture. Warm temple lamps softly light the pair.",
+    "promptProse": "Ishtar reclines in her black-and-gold goddess outfit on the left side of the temple roof, pointing toward Venus low over the western twilight. Her companion with short copper hair lies beside her in a slate-blue travel shirt and watches the point of light she indicates. The wide side view holds both figures in the glow from the temple lamps.",
     "promptTokens": [
       "2people",
       "reclining",
@@ -54,6 +54,6 @@
       "romance"
     ],
     "compositionIntent": "group",
-    "animaCaption": "Ishtar reclines left of her companion and points toward Venus in the western twilight."
+    "animaCaption": "Black-haired Ishtar reclines on the left in her gold tiara and points out Venus. On her right, her copper-haired companion in a slate-blue travel shirt follows her hand toward the horizon."
   }
 }

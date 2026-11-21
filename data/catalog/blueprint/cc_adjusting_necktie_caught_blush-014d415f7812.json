@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_adjusting_necktie_caught_blush",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1310,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "双手整理领带动作停滞，手腕被轻握，微微别开脸颊泛起淡淡红晕",
     "camera": "cowboy shot, intimate eye level, subtle blush focus",
@@ -23,8 +23,10 @@
     "mood": "暗流涌动",
     "negativeTokens": [],
     "outfitId": "black_knights_uniform",
-    "promptProse": "She pauses while adjusting her companion's tie as he gently catches her wrists. Light through the blinds stripes their sleeves.",
+    "promptProse": "In the preparation room, C.C. pauses with both hands on a navy tie and turns her face slightly away. Her long green hair falls down the red-trimmed black jacket. The short dark-haired man opposite her, in a pale collared shirt, gently takes her wrists. Light through the blinds stripes their sleeves.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "couple",
       "adjusting necktie",
       "held wrists",
@@ -51,6 +53,6 @@
     ],
     "timeOfDay": "出征清晨",
     "title": "C.C. · 整理领带的反差微怔",
-    "animaCaption": "Her companion lightly catches her wrists while she adjusts his tie."
+    "animaCaption": "Green-haired C.C. reaches toward the necktie of the short dark-haired man opposite her. He wears a pale collared shirt and navy tie, and gently catches both of her wrists while she turns her reddening cheek aside."
   }
 }

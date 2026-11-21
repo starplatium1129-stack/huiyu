@@ -64,12 +64,15 @@ export interface StagedScenarioAct {
 export interface VideoDraftPayload {
   mode: string
   prompt: string
+  promptRecipes?: import('../../types/videoPrompt').VideoPromptDrafts
   negative: string
   modelId: string
   aspectRatio: string
   quality: string
   steps: number
+  nativeH3Steps?: 4 | 8
   videoAttention?: import('@/api/videoApi').VideoAttention
+  h3LightVae?: boolean
   driver?: import('@/api/videoApi').VideoDriver
   duration: number
   camera: string

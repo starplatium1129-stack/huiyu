@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alice_nikke",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 173,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "alice_nikke",
     "profile": {
@@ -22,7 +22,7 @@
       "type": "popular",
       "icon": "🐰",
       "portrait": {
-        "image": "../assets/characters/popular-alice_nikke.png?v=73f5e109f7be",
+        "image": "../assets/characters/popular-alice_nikke.png?v=37a4712934dc",
         "alt": "爱丽丝样张立绘",
         "sourceShowcaseId": "pc_alice_nikke_pc_alice_nikke_alice_snowy_surface_wonderland_sniper_pose",
         "sourceShowcaseSha256": "e9f7da278cf0f8a23ec2def4f531aa1ccf9b7dd46923d4f4a3959b1121f50533"

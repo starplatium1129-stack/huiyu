@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rias_clubroom_desk_pinned_tsundere",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1277,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "rias_clubroom_desk_pinned_tsundere",
     "title": "莉雅丝 · 部长室桌沿的越界反制",
@@ -28,7 +28,7 @@
       "parted_lips",
       "sunset_light"
     ],
-    "promptProse": "Rias leans against the marble desk on the left as her companion on the right holds her waist; both her hands rest on his clothed chest. Warm orange golden-hour light comes from the side and behind, crossing the scattered documents.",
+    "promptProse": "Rias stands at the left edge of the marble desk, her waist-length crimson hair and flushed ears lit amber. At the right, her short brown-haired companion in a dark button-front jacket puts one hand at her waist while both her palms rest on his chest. Low sunset reaches the scattered documents.",
     "promptTokens": [
       "1girl",
       "1boy",
@@ -56,6 +56,6 @@
     "compositionIntent": "group",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "Rias stands left, hands on her companion's clothed chest; he stands right, holding her waist."
+    "animaCaption": "Crimson-haired Rias leans back against the marble desk on the left. A short brown-haired man in a dark button-front jacket holds her waist from the right while she rests both hands against his chest."
   }
 }

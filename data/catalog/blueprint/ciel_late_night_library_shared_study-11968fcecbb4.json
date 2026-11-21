@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ciel_late_night_library_shared_study",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1333,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "并肩坐于书桌旁，一手微触对方指尖，一手轻托下巴微红着脸温柔对视",
-    "camera": "medium shot, eye level",
+    "camera": "medium landscape two-shot across the table, both chairs and faces visible",
     "category": "温柔陪伴",
     "characterId": "ciel_tsukihime",
     "coverageTags": [
@@ -22,8 +22,10 @@
     "mood": "知性温存",
     "negativeTokens": [],
     "outfitId": "casual_knit_sweater_jeans",
-    "promptProse": "Seated side by side, they reach for the same dictionary and their fingertips meet above its cover. She turns toward her companion with a faint blush as the green-shaded lamp lights their hands against the dark shelves.",
+    "promptProse": "Two readers sit in two chairs at the wooden table. On the left, Ciel has a blue bob, round glasses and an ivory ribbed turtleneck. On the right, a young man with short brown curls wears a rust cardigan and reaches for the dictionary. Ciel reaches across too, their fingertips meeting over the book between both faces under the green banker's lamp.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "library",
       "desk lamp glow",
       "open books",
@@ -35,7 +37,7 @@
       "wooden table",
       "soft room glow"
     ],
-    "recommendedSize": "1152x1536",
+    "recommendedSize": "1216x832",
     "sceneTags": [
       "library",
       "bookshelves",
@@ -50,6 +52,6 @@
     "timeOfDay": "深夜",
     "title": "希耶尔 · 深夜图书馆的指尖相触",
     "compositionIntent": "group",
-    "animaCaption": "A vintage green banker's lamp casts an intimate warm glow across their shared manuscripts in the quiet library."
+    "animaCaption": "Two readers sit in two chairs at the wooden table. On the left, Ciel has a blue bob, round glasses and an ivory ribbed turtleneck. On the right, a young man with short brown curls wears a rust cardigan and reaches for the dictionary. Ciel reaches across too, their fingertips meeting over the book between both faces under the green banker's lamp."
   }
 }

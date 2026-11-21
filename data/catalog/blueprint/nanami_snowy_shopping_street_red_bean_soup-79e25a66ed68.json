@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nanami_snowy_shopping_street_red_bean_soup",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2605,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "nanami_snowy_shopping_street_red_bean_soup",
     "title": "青山七海 · 雪夜归途的一杯关西甜汤",
@@ -17,8 +17,10 @@
     "lighting": "街边暖黄路灯与雪地洁白反光",
     "camera": "wide shot, landscape composition",
     "mood": "冬夜暖心",
-    "promptProse": "Nanami shares a cozy scarf as snow drifts along a winter shopping street, warming her chilled hands around a can of sweet red bean soup.",
+    "promptProse": "Nanami carries a steaming red-bean soup can in both hands, her brown ponytail falling over a light camel coat. The short-haired man walking alongside her wears a graphite padded jacket and holds the far end of their shared red scarf. Red lanterns light both figures against the falling snow.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "snowy_street",
       "snowfall",
       "shop_windows",
@@ -32,13 +34,14 @@
       "snow_reflection",
       "wide_shot"
     ],
-    "animaCaption": "Streetlamp glow illuminates the swirling snowflakes as she blows gently into the cold night air.",
+    "animaCaption": "Nanami carries a steaming red-bean soup can in both hands, her brown ponytail falling over a light camel coat. The short-haired man walking alongside her wears a graphite padded jacket and holds the far end of their shared red scarf. Red lanterns light both figures against the falling snow.",
     "characterId": "aoyama_nanami",
     "recommendedSize": "1216x832",
     "negativeTokens": [],
     "adult": false,
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "group"
   }
 }

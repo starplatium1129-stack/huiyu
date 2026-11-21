@@ -1,85 +1,47 @@
 # TypeScript 开发与维护
 
-本指南说明源码、运行产物、日常检查与桌面打包之间的关系。工程边界仍以 [工程契约](../../engineering-contracts.md) 为准，命令入口见 [工作流](../../workflow.md)。
+说明源码编辑、构建产物、日常检查与桌面打包工具链的分工。工程边界见 [工程契约](../../engineering-contracts.md)，命令总表见 [工作流](../../workflow.md)。
 
-## 编辑源码
+---
 
-前端继续由 Vue / Vite 构建，产品网关由 `runtime-rs/` 的 Rust 源码构建。旧 Node 网关/路由已退出；维护和独立浏览器脚本以 `.ts` 为源码；原生 ES 模块使用 `.mts`，明确的 CommonJS 文件使用 `.cts`。第三方 vendor 文件不改写。
+## 1. 源码与生成产物边界
 
-Node 与独立浏览器命令使用的 `.js`、`.mjs`、`.cjs` 是构建产物。修改对应 TypeScript 源码，再运行 `npm run build:runtime`；不要直接修改生成文件。这个命令检查和生成 Node/浏览器工具，不构建 Rust 网关；原生 release 构建入口为 `npm run wf -- rust:build`，具体分工见[工作流](../../workflow.md#rust-运行时)。
+- **编辑源码，禁改产物**：Node 维护脚本与独立静态页脚本源码为 `.ts`/`.mts`/`.cts`；生成的 `.js`/`.mjs`/`.cjs` 为运行产物，仅通过 `npm run build:runtime` 更新，严禁手改（第三方 `vendor` 除外）。
+- **Rust 网关独立构建**：前端由 Vite 构建，产品网关在 `runtime-rs/` 构建，不携带 Node sidecar。
 
-| 范围 | 类型检查配置 | 输出 |
+| 范围 | 类型检查配置 | 构建命令与输出 |
 | --- | --- | --- |
-| Vue 前端 | `tsconfig.app.json` | Vite 的 `dist/` |
-| Node 维护脚本 | `tsconfig.node.json` | 原位置的运行文件 |
-| 独立静态页脚本 | `tsconfig.browser-tools.json` | 原位置的浏览器 `.js` |
+| Vue 前端 | `tsconfig.app.json` | `npm run build` → `dist/` |
+| Node 维护脚本 | `tsconfig.node.json` | `npm run build:runtime` → 原位置 `.js`/`.mjs`/`.cjs` |
+| 独立静态页脚本 | `tsconfig.browser-tools.json` | `npm run build:runtime` → 原位置浏览器 `.js` |
 
-静态页脚本分别检查，避免将不同页面的全局变量误当成同一程序。Node 维护工具的类型检查沿用项目的 Node 版本要求及 CommonJS / ES 模块边界，不把整个仓库切换成 ES 模块。
+---
 
-各配置分别约束应用、Node 与独立浏览器环境。测试源码、配置和入口已移除，不恢复交叉测试或测试产物。
+## 2. 日常开发与类型检查
 
-## 日常循环
-
-首次拉取或依赖变化后执行 `npm ci`。安装后的构建入口直接从 `scripts/build-node.mts` 启动，不依赖尚未生成的维护脚本。
-
-```sh
+```powershell
+# 日常开发联调（前端热更新 + Rust 网关热重启）
 npm run dev
-npm run dev:server
-```
+npm run dev:server   # 监视 runtime-rs 变更，排空旧网关后重启新副本（scripts/dev-server.mts）
 
-前端开发服务与网关可以分别运行。`dev:server` 需要 Rust 工具链，监视 Rust 源码、Cargo 配置、原生数据和应用数据；成功构建后先认证并排空旧网关，再启动独立副本，避免 Windows 锁住下一次构建的 EXE。构建失败保留旧服务；无法确认排空时不启动第二个写入者。退出时关闭监视器并排空子进程。具体入口见[开发网关启动器](../../../scripts/dev-server.mts)。TypeScript 维护脚本的修改仍由 `build:runtime` 生成。
-
-按改动选择检查：
-
-```sh
+# 分域类型检查（仅检查，不改写产物）
 npm run typecheck:app
 npm run typecheck:node
 npm run typecheck:browser-tools
 npm run wf -- check:typescript
-```
 
-`check:typescript` 只检查，不更新运行文件或缓存。`build:runtime` 负责检查和生成 Node/浏览器工具；Rust 改动、代码迁移、目录调整和依赖变化按实际影响选择源码审查、类型检查与产品构建，不恢复已删除门禁。
-
-## 构建与缓存
-
-构建器先检查全部选中项目，再写入产物。一个项目存在类型错误时，其他项目已经计算出的产物也不会提前发布。节点脚本使用严格检查与逐文件转换；实际维护工具对前端纯模块的窄用途引用沿用现有构建入口。
-
-缓存位于被忽略的 `.cache/typescript-build/`。复用条件包括源码和本地类型依赖、编译配置、编译器版本、构建器、依赖锁文件及每份输出的内容哈希。缺失或被修改的输出会触发重建。
-
-```sh
-npm run build:runtime
+# 强制重建 Node/浏览器工具产物（缓存位于 .cache/typescript-build/）
 npm run build:runtime -- --force
-node scripts/build-node.mts --project node --check
-node scripts/build-node.mts --help
 ```
 
-源文件删除后，仅清理上一次构建记录中、内容未被更改且仍属于本构建器的对应输出。无关文件和手工更改过的旧输出保留，避免误删工作区内容。
+> 删除 `.ts` 源码后，构建器仅安全清理上次构建记录中未修改的对应输出文件，不会误删手工文件。
 
-## 类型归属
+---
 
-前端角色、服装、场景、生成状态及提示词计划复用 `src/types/` 的业务定义。现存工具和 store 的类型转导出不构成另一份字段表；内部重构清理过时入口，不新增永久 shim。跨端 DTO 放根目录 `types/` 或对应 runtime 纯模块；后端不得反向引用 `src/`，包括纯类型与间接依赖，按源码关系审查。现行 ESLint 约束前端纯领域模块的直接依赖，不恢复已删除的独立扫描器。
+## 3. 类型归属与工具链约束
 
-配置类型从配置加载函数的返回值推导；工作流注册元数据由 `scripts/lib/workflow-types.ts` 描述。HTTP、文件和进程等边界使用实际接口。文件内容与外部返回值仍需要运行时校验，类型声明不代替数据验证。
-
-捕获的异常不假设一定是 `Error`。通用错误字段读取集中在 `scripts/lib/runtime-errors.ts`；原始错误仍按原调用链传递。
-
-## 验证与桌面产物
-
-按实际影响使用 `npm run typecheck` 与产品构建核对源码和产物；工具源或配置变化时先准备 `build:runtime`。类型检查不访问模型或安装目录，也不能证明运行行为；不恢复已删除的 `check:typescript-build` 或临时夹具入口。
-
-桌面准备入口构建 Rust release 网关与桌面前端，再暂存 `gateway/huiyu-runtime.exe`、原生依赖和资源清单。成品不携带 Node sidecar，也不以旧 Node 网关生成文件启动服务。Node 仍用于源码维护及构建编排；原生准备见[prepare-tauri](../../../scripts/maintenance/prepare-tauri.ts)。安装、UAC、WebView2、GPU 和真实模型验收保持原分工，源码检查与暂存校验不代表这些设备项目已经验收。
-
-## 工具链支持责任
-
-源码开发工具最低版本保持 package.json 的 Node >=22.18；`.nvmrc` 登记开发版本 24.18.0。旧 Quality CI 已删除，不作为现行检查入口。这些要求不适用于普通桌面安装机：产品网关使用 Rust，无需安装 Node。需要核对最低运行时兼容性时，使用对应环境的实际产品构建与工具调用；不能用开发机 Node 24 的结果代替最低版本证据。
-
-@types/node 26 是声明来源，不是运行时承诺；运行版本以锁文件与依赖声明为准。引入新 Node API 时核对官方支持版本与最低运行时的实际用途，类型检查本身不能证明该 API 已存在。
-
-ESLint 编辑入口为 eslint.config.mts；eslint.config.js 仅转发到该源码，避免两份配置漂移。生成 JS 不作为源码 lint；环境误用由 no-restricted-globals 与各 tsc 配置共同检查，模块依赖由现行 module-boundaries.mts 约束。单体 500 有效行上限在代码审查时核对，存量超限只降不升；不恢复旧测试扫描器或豁免清单。
-
-## 参考
-
-- [TypeScript 模块系统与 CommonJS / ESM 互操作](https://www.typescriptlang.org/docs/handbook/modules/reference.html#node16-node18-node20-nodenext)
-- [Node.js 22 的 TypeScript 支持与限制](https://nodejs.org/docs/latest-v22.x/api/typescript.html)
-
-原生类型擦除不执行类型检查，也不读取 `tsconfig`。因此这里的原生启动入口仍调用严格检查的构建器；业务运行文件继续经过受控转换。
+- **类型归属**：前端复用 `src/types/`，跨端 DTO 放根目录 `types/`；后端不得反向引用 `src/`。接口与文件边界必须在运行时做数据校验，类型声明不替代校验。
+- **异常处理**：不要假设捕获异常一定是 `Error` 实例，通用错误读取集中于 `scripts/lib/runtime-errors.ts`。
+- **ESLint 入口**：仅编辑 `eslint.config.mts`（`eslint.config.js` 转发至该源码）；模块边界由 `scripts/lib/module-boundaries.mts` 约束，单文件建议 ≤ 500 有效行。
+- **Node 版本**：开发机推荐 `.nvmrc`（`24.18.0`），源码维护工具最低兼容 `package.json` 声明的 **Node ≥ 22.18**（以锁文件为准，不可仅凭 `@types/node` 使用更高版本 API）；成品桌面端无需用户安装 Node。
+- **外部参考**：[TypeScript CJS/ESM 互操作](https://www.typescriptlang.org/docs/handbook/modules/reference.html#node16-node18-node20-nodenext) · [Node.js 22 TS 支持](https://nodejs.org/docs/latest-v22.x/api/typescript.html)。

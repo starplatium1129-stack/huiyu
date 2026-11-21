@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eta_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 271,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "eta_shadow",
     "popular": {
@@ -84,7 +84,7 @@
       "type": "popular",
       "icon": "🧪",
       "portrait": {
-        "image": "../assets/characters/popular-eta_shadow.png?v=399ca2b3ea9b",
+        "image": "../assets/characters/popular-eta_shadow.png?v=2c84f3bd4042",
         "alt": "埃塔样张立绘",
         "sourceShowcaseId": "pc_eta_shadow_eta_shadow_slime_fitting_measurement",
         "sourceShowcaseSha256": "97f65346118d1df53d248f6250a56fbb7e63d424fae1149831e00b42082728a2"

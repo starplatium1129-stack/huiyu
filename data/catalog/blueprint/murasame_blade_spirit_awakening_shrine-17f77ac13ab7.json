@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_blade_spirit_awakening_shrine",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1119,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "双手背后微倾身从空中缓缓降下，青蓝鬼火环绕；将臣在下方握着发光断刀。",
     "camera": "full body, low angle, descending Murasame above Masaomi holding the broken sword",
@@ -20,10 +20,10 @@
     "mood": "神秘元气",
     "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Murasame descends with hands behind her back; below, Masaomi holds the glowing broken Murasamemaru. Golden tree-filtered light meets blue spirit flames.",
+    "promptProse": "The green-haired sword spirit Murasame floats down in her dark frilled kimono, both hands behind her back and blue spirit flames trailing her. Below her, short-haired Masaomi looks up from the broken Murasamemaru, which he holds at chest height over his pale short-sleeved shirt. Gold morning light filters through the shrine trees.",
     "promptTokens": [
-      "2people",
-      "arichi masaomi",
+      "1girl",
+      "1boy",
       "floating",
       "hands behind back",
       "spirit fire",
@@ -32,7 +32,8 @@
       "morning",
       "descending",
       "blue spirit flames",
-      "golden light"
+      "golden light",
+      "arichi masaomi"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -53,6 +54,6 @@
     "characterTokens": [
       "arichi masaomi"
     ],
-    "animaCaption": "Below her, Masaomi holds the glowing broken Murasamemaru."
+    "animaCaption": "Green-haired Murasame descends in her frilled spirit kimono with blue fire around her. Masaomi stands below in a pale short-sleeved shirt, his dark hair cropped short, holding the glowing broken blade at chest height."
   }
 }

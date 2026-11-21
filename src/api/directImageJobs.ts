@@ -70,11 +70,14 @@ export async function waitForDirectImageJob(family: DirectImageFamily, id: strin
 /** One bounded binary read shared by single images, batches and storyboard first frames. */
 export async function fetchResultImage(url: string, signal: AbortSignal): Promise<Blob> {
   signal.throwIfAborted()
-  const timeout = AbortSignal.timeout(30_000)
+  const request = new AbortController()
+  const cancel = () => request.abort(signal.reason)
+  signal.addEventListener('abort', cancel, { once: true })
+  const deadline = setTimeout(() => request.abort(), 30_000)
   const owner = runtimeResourceIdentity()
   let response: Response | undefined
   try {
-    response = await runtimeFetch(url, { cache: 'no-store', signal: AbortSignal.any([signal, timeout]) })
+    response = await runtimeFetch(url, { cache: 'no-store', signal: request.signal })
     if (!response.ok) throw new Error(`图片读取失败（HTTP ${response.status}）`)
     if (!response.headers.get('content-type')?.startsWith('image/')) throw new Error('网关返回的结果不是图片')
     const blob = await response.blob()
@@ -84,9 +87,11 @@ export async function fetchResultImage(url: string, signal: AbortSignal): Promis
     return blob
   } catch (error) {
     signal.throwIfAborted()
-    if (timeout.aborted) throw new Error('图片读取超时（30 秒）')
+    if (request.signal.aborted) throw new Error('图片读取超时（30 秒）')
     throw error
   } finally {
+    clearTimeout(deadline)
+    signal.removeEventListener('abort', cancel)
     if (response && !response.bodyUsed) await response.body?.cancel().catch(() => {})
   }
 }

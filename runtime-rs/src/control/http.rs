@@ -1,7 +1,7 @@
 use super::*;
 use axum::{
     Extension, Json, Router,
-    extract::{ConnectInfo, DefaultBodyLimit, Path, Query, Request},
+    extract::{ConnectInfo, DefaultBodyLimit, Path, Query, Request, State},
     http::{HeaderMap, HeaderValue},
     middleware::{self, Next},
     response::{IntoResponse, Response},
@@ -69,7 +69,7 @@ pub fn router(service: Arc<ControlService>) -> Router<crate::AppState> {
         .route("/api/service/{service}", post(action))
         .route("/api/mode", post(mode))
         .route("/api/maintenance/build-web", post(build))
-        .layer(DefaultBodyLimit::max(8 * 1024))
+        .layer(DefaultBodyLimit::max(32 * 1024))
         .layer(middleware::from_fn(local))
         .route("/api/sd-status", get(sd_status))
         .layer(Extension(service))
@@ -99,7 +99,7 @@ async fn status(
         web_build(&s),
     );
     let mut value = s.config_view();
-    let tunnel = s.remote.tunnel_url();
+    let (tunnel_status, tunnel_managed) = s.tunnel_status().await;
     let operation = s.state.lock().unwrap().operation.clone();
     let mode_busy = operation.as_ref().is_some_and(|op| {
         op["status"] == "running" && op["kind"].as_str().is_some_and(|s| s.starts_with("mode-"))
@@ -109,15 +109,9 @@ async fn status(
     value["modeBusy"] = mode_busy.into();
     value["operation"] = operation.unwrap_or(Value::Null);
     value["localLink"] = format!("http://127.0.0.1:{}/", s.config.bind.port()).into();
-    value["shareLinkAvailable"] = (!tunnel.is_empty()).into();
-    value["tunnelStatus"] = if !tunnel.is_empty() {
-        "active"
-    } else if s.tunnel_disabled() {
-        "disabled"
-    } else {
-        "waiting"
-    }
-    .into();
+    value["shareLinkAvailable"] = (tunnel_status == "active").into();
+    value["tunnelStatus"] = tunnel_status.into();
+    value["tunnelManaged"] = tunnel_managed.into();
     value["tunnelAvailable"] = tunnel_available.into();
     value["uptime"] = s.started.elapsed().as_secs().into();
     value["scripts"] = scripts;
@@ -144,19 +138,7 @@ async fn file_status(s: &ControlService) -> (bool, Value) {
     .unwrap_or_else(|_| (false, json!({"voiceStart":false,"voiceStop":false,"webui":false,"comfy":false})))
 }
 async fn share(Extension(s): Extension<Arc<ControlService>>) -> Json<Value> {
-    let tunnel = s.remote.tunnel_url();
-    let link = if tunnel.is_empty() {
-        String::new()
-    } else {
-        format!(
-            "{}/?{}",
-            tunnel,
-            url::form_urlencoded::Serializer::new(String::new())
-                .append_pair("token", &s.config.token)
-                .finish()
-        )
-    };
-    Json(json!({"ok":true,"shareLink":link}))
+    Json(json!({"ok":true,"shareLink":s.share_link().await}))
 }
 async fn logs(
     Extension(s): Extension<Arc<ControlService>>,
@@ -265,7 +247,64 @@ async fn diagnostics(Extension(s): Extension<Arc<ControlService>>) -> Json<Value
     );
     Json(value)
 }
-pub(super) fn validated_patch(body: Value) -> Result<Value> {
+fn validated_tts_api(value: &Value, existing: &Value) -> Result<Value> {
+    let Some(obj) = value.as_object() else {
+        return Err(ApiError::invalid("ttsApi 必须为对象"));
+    };
+    let field = |name: &str, max_len: usize| -> Result<String> {
+        let raw = match obj.get(name) {
+            Some(Value::String(s)) => s.trim(),
+            Some(Value::Null) | None => "",
+            _ => return Err(ApiError::invalid(format!("ttsApi.{name} 必须为字符串"))),
+        };
+        if raw.len() > max_len {
+            return Err(ApiError::invalid(format!("ttsApi.{name} 长度超出限制")));
+        }
+        Ok(raw.to_owned())
+    };
+    let base_raw = field("baseUrl", 512)?;
+    let base_url = if base_raw.is_empty() {
+        String::new()
+    } else {
+        let parsed = url::Url::parse(&base_raw)
+            .ok()
+            .filter(|u| matches!(u.scheme(), "http" | "https") && u.host_str().is_some())
+            .ok_or_else(|| ApiError::invalid("语音接口地址必须为有效的 http/https 地址"))?;
+        let _ = parsed;
+        base_raw.trim_end_matches('/').to_owned()
+    };
+    let response_format = match field("responseFormat", 16)?.to_ascii_lowercase().as_str() {
+        "" | "mp3" => "mp3",
+        "wav" => "wav",
+        "opus" => "opus",
+        "aac" => "aac",
+        _ => return Err(ApiError::invalid("不支持的音频格式（仅支持 mp3/wav/opus/aac）")),
+    };
+    let clear_key = obj.get("clearApiKey").and_then(Value::as_bool) == Some(true);
+    let supplied_key = field("apiKey", 512)?;
+    let api_key = if clear_key {
+        String::new()
+    } else if !supplied_key.is_empty() {
+        supplied_key
+    } else {
+        existing["ttsApi"]["apiKey"]
+            .as_str()
+            .unwrap_or("")
+            .trim()
+            .to_owned()
+    };
+    Ok(json!({
+        "baseUrl": base_url,
+        "apiKey": api_key,
+        "model": field("model", 256)?,
+        "voiceNene": field("voiceNene", 256)?,
+        "voiceNatsume": field("voiceNatsume", 256)?,
+        "defaultVoice": field("defaultVoice", 256)?,
+        "responseFormat": response_format,
+    }))
+}
+
+pub(super) fn validated_patch(body: Value, existing: &Value) -> Result<Value> {
     let Value::Object(object) = body else {
         return Err(ApiError::invalid("配置必须为对象"));
     };
@@ -281,10 +320,18 @@ pub(super) fn validated_patch(body: Value) -> Result<Value> {
                 Value::String(url.origin().ascii_serialization())
             }
             "voices" if value.is_object() => value,
+            "ttsApi" => validated_tts_api(&value, existing)?,
             "ttsEngine"
                 if matches!(
                     value.as_str(),
-                    Some("voxcpm2" | "gpt-sovits" | "gpt-sovits-native")
+                    Some(
+                        "off"
+                            | "system"
+                            | "openai-tts"
+                            | "voxcpm2"
+                            | "gpt-sovits"
+                            | "gpt-sovits-native"
+                    )
                 ) =>
             {
                 value
@@ -300,7 +347,22 @@ async fn config(
     Extension(s): Extension<Arc<ControlService>>,
     Json(body): Json<Value>,
 ) -> Result<Json<Value>> {
-    s.patch(validated_patch(body)?).await?;
+    let was_native = s.voice.native_selected();
+    let patch = {
+        let saved = s.saved.read().unwrap();
+        validated_patch(body, &saved)?
+    };
+    let voice_changed = patch.get("ttsEngine").is_some()
+        || patch.get("voices").is_some()
+        || patch.get("ttsApi").is_some()
+        || patch.get("ttsHost").is_some();
+    s.patch(patch).await?;
+    if voice_changed {
+        s.sync_voice_settings();
+        if was_native && !s.voice.native_selected() {
+            let _ = s.voice.retire_native().await;
+        }
+    }
     let mut value = s.config_view();
     value["ok"] = json!(true);
     Ok(Json(value))
@@ -346,17 +408,26 @@ async fn mode(
     Ok(Json(s.launch(format!("mode-{mode}"))?))
 }
 async fn start(
+    State(state): State<crate::AppState>,
     Extension(s): Extension<Arc<ControlService>>,
     Json(body): Json<Value>,
 ) -> Result<Json<Value>> {
     if body["enableTunnel"] == false {
         return Ok(Json(json!({"ok":true,"message":"公网分享保持关闭"})));
     }
-    s.start_tunnel().await?;
+    let service = s.clone();
+    s.tasks
+        .spawn(async move { service.start_tunnel(state, false).await })
+        .await
+        .map_err(|_| ApiError::new(503, "SHARE_START_INTERRUPTED", "好友试玩启动中断"))??;
     Ok(Json(json!({"ok":true,"message":"公网分享通道已请求启动"})))
 }
 async fn stop(Extension(s): Extension<Arc<ControlService>>) -> Result<Json<Value>> {
-    s.stop_tunnel_request(true).await?;
+    let service = s.clone();
+    s.tasks
+        .spawn(async move { service.stop_tunnel_request(true).await })
+        .await
+        .map_err(|_| ApiError::new(503, "SHARE_STOP_INTERRUPTED", "好友试玩停止中断"))??;
     Ok(Json(json!({"ok":true,"message":"公网分享通道已停止"})))
 }
 async fn web_build(s: &ControlService) -> Value {
@@ -368,8 +439,8 @@ async fn web_build(s: &ControlService) -> Value {
     }
     let root = s.config.app_root.clone();
     let value=tokio::task::spawn_blocking(move||{
-        let built=std::fs::metadata(root.join("dist/index.html")).ok().and_then(|m|m.modified().ok());
-        let mut newest=UNIX_EPOCH;let mut stack=vec![root.join("src"),root.join("public"),root.join("index.html"),root.join("vite.config.ts")];let mut count=0;
+        let built=std::fs::metadata(root.join("dist/_guest/try.html")).ok().and_then(|m|m.modified().ok());
+        let mut newest=UNIX_EPOCH;let mut stack=vec![root.join("src"),root.join("public"),root.join("index.html"),root.join("try.html"),root.join("vite.config.ts")];let mut count=0;
         while let Some(path)=stack.pop(){count+=1;if count>50000{break;}let Ok(meta)=std::fs::symlink_metadata(&path)else{continue};if meta.file_type().is_symlink(){continue;}
 if meta.is_dir(){if let Ok(entries)=std::fs::read_dir(path){stack.extend(entries.filter_map(|e|e.ok().map(|e|e.path())));}}else if let Ok(modified)=meta.modified(){newest=newest.max(modified);}}
         let timestamp=|time:SystemTime|chrono::DateTime::from_timestamp_millis(time.duration_since(UNIX_EPOCH).unwrap_or_default().as_millis() as i64).map(|t|t.to_rfc3339());

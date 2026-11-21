@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yorha_2b",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 83,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yorha_2b",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "⚔️",
       "portrait": {
-        "image": "../assets/characters/popular-yorha_2b.png?v=859df79dd4dc",
+        "image": "../assets/characters/popular-yorha_2b.png?v=a0f3d0f1a166",
         "alt": "2B样张立绘",
         "sourceShowcaseId": "pc_yorha_2b_pc_yorha_2b_yorha_2b_desert_dunes_greatsword_stride",
         "sourceShowcaseSha256": "0468dea387c439a75cc8771498034d39d322908fb45c65f772617ea3bd2677e2"

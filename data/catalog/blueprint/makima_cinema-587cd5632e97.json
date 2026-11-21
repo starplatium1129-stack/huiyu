@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "makima_cinema",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 412,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "makima_cinema",
     "title": "玛奇玛 · 电影院约会",
@@ -26,9 +26,10 @@
       "intimate",
       "city"
     ],
-    "promptProse": "Makima sits left, smiling toward Denji in the right-hand seat; cool screen light reaches both faces in the dark auditorium.",
+    "promptProse": "A close two-shot of the cinema seats as Makima turns from the screen to smile at Denji. Her neatly collared white shirt, low salmon braid and ringed gold eyes are lit by the screen. Denji, seated to her right, has tousled blond hair and a loose necktie above an open collar.",
     "promptTokens": [
-      "2people",
+      "1girl",
+      "1boy",
       "Denji",
       "cinema",
       "screen light",
@@ -43,6 +44,6 @@
     "characterTokens": [
       "Denji"
     ],
-    "animaCaption": "Makima sits left and smiles toward Denji in the right-hand seat."
+    "animaCaption": "Makima's low pink braid and ringed eyes catch the screen light from the left seat. To her right, short, tousled blond Denji looks back over his open collar and loose tie."
   }
 }

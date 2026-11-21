@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
-    "animaCaption": "Nene in white chiffon with a pink waist ribbon stands left; Natsume in black satin with a burgundy sash stands right. Each clasps the nearer foreground hand beneath three glowing heart-rate curves.",
+    "animaCaption": "A full-body wide shot shows both faces beneath the luminous dome. On the left, Ayachi Nene has silver-white twin tails, pink hair ribbons and tearful violet eyes. She wears a white chiffon gown with a pale pink bow at the waist. On the right, Shiki Natsume has long black hair, two red hairclips, gold eyes and a small beauty mark under her right eye. She wears a black satin gown with a burgundy sash. They each clasp a hand reaching in from the lower foreground as three glowing heartbeat curves arc overhead.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "wide shot, full body, 全景，仪式厅穹顶与二人全身站姿",
     "category": "Active_Sync_Scenes",
@@ -50,6 +50,7 @@
       "协议核心"
     ],
     "weather": "神圣",
-    "promptProse": "Nene in a white chiffon gown with a blush-pink waist ribbon stands at the viewer's left and Natsume in a black satin gown with a burgundy sash at the right, each clasping the nearer hand extended into the foreground; three glowing heart-rate curves arch above them, and the rotating halo lights their faces and joined hands."
+    "promptProse": "A full-body wide shot shows both faces beneath the luminous dome. On the left, Ayachi Nene has silver-white twin tails, pink hair ribbons and tearful violet eyes. She wears a white chiffon gown with a pale pink bow at the waist. On the right, Shiki Natsume has long black hair, two red hairclips, gold eyes and a small beauty mark under her right eye. She wears a black satin gown with a burgundy sash. They each clasp a hand reaching in from the lower foreground as three glowing heartbeat curves arc overhead.",
+    "compositionIntent": "group"
   }
 }

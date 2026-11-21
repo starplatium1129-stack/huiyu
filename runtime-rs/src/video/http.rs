@@ -16,6 +16,10 @@ pub(super) fn router(service: Arc<Service>) -> Router<AppState> {
     Router::new()
         .route("/api/video/status", get(status))
         .route(
+            "/api/video/prompt/preview",
+            post(preview_prompt).layer(DefaultBodyLimit::max(32 * 1024)),
+        )
+        .route(
             "/api/video/images/raw",
             post(upload_raw).layer(DefaultBodyLimit::max(20 * 1024 * 1024)),
         )
@@ -79,6 +83,32 @@ async fn status(State(state): State<AppState>, Extension(http): Extension<Arc<Ht
         .await,
         StatusCode::OK,
     )
+}
+async fn preview_prompt(
+    State(state): State<AppState>,
+    Extension(http): Extension<Arc<Http>>,
+    Json(body): Json<Value>,
+) -> Response {
+    let result = (|| {
+        state.host.check_running()?;
+        let id = body["modelId"].as_str().unwrap_or("");
+        let native = http.service.backend.native_enabled();
+        let model = if native {
+            native::video_model(id)?
+        } else {
+            catalog::model(id).ok_or_else(|| error(400, "UNKNOWN_MODEL", "未知视频模型"))?
+        };
+        let mode = body["mode"].as_str().unwrap_or("");
+        let duration = validation::duration_for(&body, native.then_some(model), model["family"] == "minimax-h3")?;
+        validation::validate_motion(&body)?;
+        let compiled = prompt_compiler::compile(&body, model, mode, duration)?;
+        let mut value = json!({"prompt":compiled.prompt});
+        if let Some(negative) = compiled.negative {
+            value["negative"] = json!(negative);
+        }
+        Ok(value)
+    })();
+    response(result, StatusCode::OK)
 }
 async fn upload_raw(
     State(state): State<AppState>,

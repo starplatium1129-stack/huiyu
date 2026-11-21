@@ -96,6 +96,14 @@ impl Catalog {
         }
         Ok(format!("sc{:03}", highest + 1))
     }
+    pub(crate) fn default_outfit_id(&self, character: &str) -> Result<Option<String>> {
+        Ok(self.connection.query_row(
+            "SELECT id FROM content_records WHERE kind='outfit' AND deleted=0 AND character_id=?1
+             AND json_extract(payload,'$.outfit.default')=1 ORDER BY sort_order,id LIMIT 1",
+            [character], |row| row.get(0),
+        ).optional()?)
+    }
+
     pub fn character_bundle(&self, id: &str) -> Result<Value> {
         let transaction = self.connection.unchecked_transaction()?;
         let mut character = self.get("character", id)?;

@@ -73,17 +73,69 @@ pub(super) fn response(result: Result<Value>, status: StatusCode) -> Response {
         .insert(header::CACHE_CONTROL, HeaderValue::from_static("no-store"));
     response
 }
+
+fn job_response(result: Result<Value>, status: StatusCode, guest: bool) -> Response {
+    if !guest {
+        return response(result, status);
+    }
+    response(
+        result.map(|mut value| {
+            if let Some(job) = value["job"].as_object_mut() {
+                job.retain(|key, _| {
+                    matches!(
+                        key.as_str(),
+                        "id" | "status"
+                            | "resultAvailable"
+                            | "resultUrl"
+                            | "resultBytes"
+                            | "seed"
+                            | "progress"
+                            | "upstreamSettled"
+                            | "unknown"
+                    )
+                });
+                if job.get("status").is_some_and(|status| status == "failed") {
+                    job.insert(
+                        "error".into(),
+                        json!("房主的出图服务未能完成，请让房主检查出图状态。"),
+                    );
+                }
+            }
+            if let Some(rejected) = value.get_mut("rejected")
+                && rejected["code"] != "IMAGE_REQUEST_CANCELLED"
+            {
+                rejected["message"] = json!("房主的出图服务暂未接收请求，请稍后重试。");
+            }
+            value
+        }),
+        status,
+    )
+}
 async fn status(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
     guide: Option<Extension<remote::Guide>>,
     reuse: Option<Extension<Arc<remote::UploadIndex>>>,
+    guest: Option<Extension<crate::guest_share::Guest>>,
     OriginalUri(uri): OriginalUri,
 ) -> Response {
     response(
         async {
             state.host.check_running()?;
-            let mut status = http.service.get_status(family(&uri)).await?;
+            if guest.is_some() && http.service.is_remote() {
+                return Ok(json!({"ready":false,"modelAvailable":false}));
+            }
+            let family = family(&uri);
+            let mut status = http.service.get_status(family).await?;
+            if guest.is_some() {
+                let available = status["models"]
+                    .as_array()
+                    .into_iter()
+                    .flatten()
+                    .any(|model| model["id"] == remote::muse::ANIMA && model["available"] == true);
+                return Ok(json!({"modelAvailable":available,
+                    "ready":available && (status["online"] == true || status["managedStartAvailable"] == true)}));
+            }
             if guide.is_some() {
                 status["museGuide"] = remote::Guide::document().clone();
             }
@@ -191,6 +243,7 @@ async fn create(
     OriginalUri(uri): OriginalUri,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
+    guest: Option<Extension<crate::guest_share::Guest>>,
     Json(body): Json<Value>,
 ) -> Response {
     if let Err(error) = state.host.check_running() {
@@ -199,6 +252,23 @@ async fn create(
     let local = security::is_direct_local(&headers, peer.ip());
     let family = family(&uri);
     let owner = generation::request_owner(&headers, peer, &query);
+    if guest.is_some() {
+        let input = guest_input(&state, &http.service, &body).await;
+        let result = match input {
+            Ok((key, input)) if !http.service.is_remote() => {
+                http.service
+                    .accept_request(input, key, owner, "anima", false)
+                    .await
+            }
+            Ok(_) => Err(ApiError::new(
+                409,
+                "SHARE_LOCAL_GPU_REQUIRED",
+                "房主需切换到本机出图服务",
+            )),
+            Err(error) => Err(error),
+        };
+        return job_response(result, StatusCode::ACCEPTED, true);
+    }
     if let Some(key) = body.get("requestKey") {
         let result = match key.as_str().map(str::to_owned) {
             Some(key) => {
@@ -252,6 +322,49 @@ async fn create(
     }
     response(result, StatusCode::ACCEPTED)
 }
+
+async fn guest_input(state: &AppState, service: &Service, body: &Value) -> Result<(String, Value)> {
+    let key = body["requestKey"]
+        .as_str()
+        .filter(|key| uuid::Uuid::parse_str(key).is_ok())
+        .ok_or_else(|| ApiError::invalid("请求编号无效"))?;
+    let model = remote::muse::ANIMA;
+    if body.get("modelId").is_some_and(|id| id != model) {
+        return Err(ApiError::invalid("好友出图使用 MiaoMiao Anima 1.6"));
+    }
+    let scene = match body.get("scene") {
+        Some(scene) => match (scene["kind"].as_str(), scene["id"].as_str()) {
+            (Some(kind @ ("scene" | "blueprint")), Some(id)) => Some((kind.into(), id.into())),
+            _ => return Err(ApiError::invalid("请选择有效的场景蓝图")),
+        },
+        None => None,
+    };
+    let character = body["characterId"]
+        .as_str()
+        .filter(|id| !id.is_empty() && id.len() <= 180);
+    let description = body["prompt"].as_str().unwrap_or_default().trim();
+    if description.encode_utf16().count() > 4000 {
+        return Err(ApiError::invalid("画面描述最多 4000 字符"));
+    }
+    let mut input = if scene.is_some() || character.is_some() {
+        let mut recipe =
+            remote::muse::guest_recipe(state, service, scene, character.map(str::to_owned)).await?;
+        if !description.is_empty() {
+            recipe["prompt"] = json!(format!(
+                "{}\n{description}",
+                recipe["prompt"].as_str().unwrap_or_default()
+            ));
+        }
+        recipe
+    } else {
+        if description.is_empty() {
+            return Err(ApiError::invalid("请填写画面描述或选择角色"));
+        }
+        json!({"prompt":description,"modelId":model,"width":832,"height":1216})
+    };
+    input["teaCache"] = json!(true);
+    Ok((key.to_owned(), input))
+}
 async fn get_job(
     State(state): State<AppState>,
     Extension(http): Extension<Arc<Http>>,
@@ -260,8 +373,9 @@ async fn get_job(
     Path(id): Path<String>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
+    guest: Option<Extension<crate::guest_share::Guest>>,
 ) -> Response {
-    response(
+    job_response(
         async {
             state.host.check_running()?;
             let mut value = json!({"job":null});
@@ -277,6 +391,7 @@ async fn get_job(
         }
         .await,
         StatusCode::OK,
+        guest.is_some(),
     )
 }
 async fn request_status(
@@ -287,8 +402,9 @@ async fn request_status(
     Path(key): Path<String>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
+    guest: Option<Extension<crate::guest_share::Guest>>,
 ) -> Response {
-    response(
+    job_response(
         async {
             state.host.check_running()?;
             http.service
@@ -301,6 +417,7 @@ async fn request_status(
         }
         .await,
         StatusCode::OK,
+        guest.is_some(),
     )
 }
 async fn cancel_request(
@@ -311,8 +428,9 @@ async fn cancel_request(
     Path(key): Path<String>,
     Query(query): Query<HashMap<String, String>>,
     headers: HeaderMap,
+    guest: Option<Extension<crate::guest_share::Guest>>,
 ) -> Response {
-    response(
+    job_response(
         async {
             state.host.check_running()?;
             http.service
@@ -325,6 +443,7 @@ async fn cancel_request(
         }
         .await,
         StatusCode::ACCEPTED,
+        guest.is_some(),
     )
 }
 async fn cancel(

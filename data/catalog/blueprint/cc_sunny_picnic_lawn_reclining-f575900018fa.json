@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_sunny_picnic_lawn_reclining",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1312,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "单手支颐侧卧在草地野餐垫上，发丝铺散，神情慵懒戏弄地看着视角",
     "camera": "cowboy shot, diagonal angle, relaxing lawn view",
@@ -25,7 +25,7 @@
       "plush toy"
     ],
     "outfitId": "lawn_sweater_no_plush",
-    "promptProse": "Lying on her side on the picnic blanket, she rests her chin in one hand with a grass stem between her lips, watching her companion read. Dappled light reaches the sandwiches and juice beside them.",
+    "promptProse": "C.C. lies on her side in an ivory sweater, propping her chin in one hand and keeping an eye on the reader over a grass stem. Her long green hair spreads over the blanket, where her companion in a navy linen shirt sits upright. Short brown curls frame the reader's face as they look down at the book. Dappled sun reaches the sandwiches and juice.",
     "promptTokens": [
       "couple",
       "picnic blanket",
@@ -56,6 +56,6 @@
     "timeOfDay": "春日午后",
     "title": "C.C. · 阳光草坪的慵懒侧卧",
     "compositionIntent": "group",
-    "animaCaption": "She watches her companion read with a grass stem between her lips."
+    "animaCaption": "Long green-haired C.C. lies on one side of the picnic blanket with a grass stem between her lips. The short curly-haired reader in a navy linen shirt sits at the other edge with an open book."
   }
 }

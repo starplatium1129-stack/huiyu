@@ -37,10 +37,25 @@ export function useRoomSetup(options: UseRoomSetupOptions) {
 
   function updateVoiceCapability() {
     const voiceId = currentCharacter.value.voice
+    const engineId = voice.availability.value.engineId
     if (!voiceId) {
       voiceCapabilityText.value = '文字聊天'
       voiceCapabilityState.value = 'text-only'
       showVoiceRecovery.value = false
+    } else if (engineId === 'off') {
+      voiceCapabilityText.value = '语音已关闭'
+      voiceCapabilityState.value = 'text-only'
+      showVoiceRecovery.value = true
+    } else if (engineId === 'system') {
+      const ok = voice.readyFor(voiceId)
+      voiceCapabilityText.value = ok ? '系统朗读就绪' : '浏览器不支持系统朗读'
+      voiceCapabilityState.value = ok ? 'ready' : 'warning'
+      showVoiceRecovery.value = !ok
+    } else if (engineId === 'openai-tts') {
+      const ok = voice.readyFor(voiceId)
+      voiceCapabilityText.value = ok ? '云端语音就绪' : '云端语音未配置'
+      voiceCapabilityState.value = ok ? 'ready' : 'warning'
+      showVoiceRecovery.value = !ok
     } else if (voice.readyFor(voiceId)) {
       voiceCapabilityText.value = voice.availability.value.online ? 'AI 声线就绪' : 'AI 声线按需加载'
       voiceCapabilityState.value = voice.availability.value.online ? 'ready' : 'warning'

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_rainy_station_umbrella",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 775,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "手持透明雨伞微微向身侧倾斜，清亮蓝眸凝视镜头",
     "camera": "medium two-shot, clear umbrella tilted toward a companion on a rainy train platform",
@@ -21,7 +21,7 @@
     "mood": "浪漫心动与微湿温润",
     "negativeTokens": [],
     "outfitId": "seirei_uniform",
-    "promptProse": "She stands shoulder to shoulder with her companion and tilts the clear umbrella farther over them, leaving her own shoulder near its edge. Cool light catches raindrops on the canopy and their reflections on the wet platform.",
+    "promptProse": "On the rainy platform, long silver-haired Alya tilts the clear umbrella toward her classmate with short chestnut hair and a rust-colored rain jacket. She holds the handle with her own shoulder near the umbrella edge as the two stand close. Cool light catches the rain on the canopy and the pair reflected in the wet platform.",
     "promptTokens": [
       "couple",
       "transparent umbrella",
@@ -51,6 +51,6 @@
     ],
     "timeOfDay": "阴雨天",
     "title": "艾莉莎·米哈伊洛夫娜·九条 · 雨后车站·共撑一把伞",
-    "animaCaption": "She tilts the umbrella toward her companion, leaving her own shoulder close to its edge."
+    "animaCaption": "Alya's long silver hair shows beneath the edge of the clear umbrella. She holds the handle and shifts the canopy toward the short chestnut-haired classmate in a rust rain jacket beside her."
   }
 }

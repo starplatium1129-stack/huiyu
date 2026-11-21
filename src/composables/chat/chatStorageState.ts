@@ -28,7 +28,7 @@ export function createChatStorageState(characterIds: string[]): ChatState {
       live2dEnabled: false,
       live2dOutfit: defaultOutfits[defaultCharacterId] || '',
       live2dOutfits: defaultOutfits,
-      autoVoice: true,
+      autoVoice: false,
       volume: 80,
       drafts: Object.fromEntries(characterIds.map(id => [id, ''])),
     },

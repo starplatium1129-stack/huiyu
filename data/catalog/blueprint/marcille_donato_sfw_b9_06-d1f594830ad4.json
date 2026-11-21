@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "marcille_donato_sfw_b9_06",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1721,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "marcille_donato_sfw_b9_06",
     "title": "玛露希尔 · 蘑菇图鉴的争论",
@@ -30,8 +30,10 @@
       "lantern_light",
       "medium_shot"
     ],
-    "promptProse": "Marcille points to a drawing in the open mushroom notebook held toward her companion across the table. Their lantern lights the page and her indignant face.",
+    "promptProse": "Marcille leans over the table in her blue robe, a finger on a drawing in the open mushroom guide as her long blond braid falls forward. A short-haired companion in a rust-brown travel vest listens from across the table, holding the other side of the notebook. Lantern light catches the indignant elf's face and the page between them.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "marcille_donato",
       "mushroom notebook",
       "pointing",
@@ -53,6 +55,6 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She points to the open mushroom notebook held toward her companion across the table."
+    "animaCaption": "Blond elven Marcille in blue points at the mushroom drawing. Her short dark-haired human companion in a rust-brown travel vest holds the opposite corner of the notebook."
   }
 }

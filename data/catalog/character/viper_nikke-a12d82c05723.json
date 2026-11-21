@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "viper_nikke",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 220,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "viper_nikke",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🐍",
       "portrait": {
-        "image": "../assets/characters/popular-viper_nikke.png?v=79632f8e9a83",
+        "image": "../assets/characters/popular-viper_nikke.png?v=e7fd8ec22661",
         "alt": "毒蛇样张立绘",
         "sourceShowcaseId": "pc_viper_nikke_pc_viper_nikke_viper_smartphone_selfie_cling",
         "sourceShowcaseSha256": "3fe3966890ea741ae8c6755f3cdf23e7cace3d178663c68136b58ae014935ef0"

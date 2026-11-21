@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kushima_kamome",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 250,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kushima_kamome",
     "popular": {
@@ -81,7 +81,7 @@
       "type": "popular",
       "icon": "🧳",
       "portrait": {
-        "image": "../assets/characters/popular-kushima_kamome.png?v=3731be4ba78c",
+        "image": "../assets/characters/popular-kushima_kamome.png?v=69562ae26be2",
         "alt": "久岛鸥样张立绘",
         "sourceShowcaseId": "pc_kushima_kamome_pc_kushima_kamome_kamome_pier_suitcase_perch_treasure_map",
         "sourceShowcaseSha256": "c33e98c44796f68b3290c0053496f8200ff812146892d32397c0c9a4d11dbefa"

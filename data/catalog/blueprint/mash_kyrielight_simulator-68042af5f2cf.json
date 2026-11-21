@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mash_kyrielight_simulator",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 200,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "negativeTokens": [
       "injured bodies"
@@ -32,7 +32,7 @@
       "holographic_light",
       "full_body"
     ],
-    "promptProse": "Mash kneels in front, shielding against incoming blue energy arcs; her training teammate is visible behind her right shoulder.",
+    "promptProse": "Mash drops to one knee in her dark training armor, raising the round cross shield between the incoming blue arcs and her teammate. Just behind her right shoulder, the trainee with cropped dark hair and an olive field jacket crouches, their face and upper body clear past the shield rim. A low, full-body view includes both figures against the simulator grid.",
     "promptTokens": [
       "2people",
       "cross-shaped shield",
@@ -50,6 +50,6 @@
     "outfitId": "sfw_shield_training_armor",
     "coverageTags": [],
     "compositionIntent": "group",
-    "animaCaption": "Her teammate remains visible behind her right shoulder."
+    "animaCaption": "Pink-haired Mash kneels in front with the round cross shield. Just behind her right shoulder, a short dark-haired trainee in an olive field jacket braces against the blue energy arcs."
   }
 }

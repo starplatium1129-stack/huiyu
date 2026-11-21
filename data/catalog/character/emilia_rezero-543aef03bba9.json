@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "emilia_rezero",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 16,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "emilia_rezero",
     "profile": {
@@ -17,7 +17,7 @@
       "type": "popular",
       "icon": "❄️",
       "portrait": {
-        "image": "../assets/characters/popular-emilia_rezero.png?v=0c5dbe15d898",
+        "image": "../assets/characters/popular-emilia_rezero.png?v=dd818decf889",
         "alt": "爱蜜莉雅样张立绘",
         "sourceShowcaseId": "pc_emilia_rezero_pc_emilia_rezero_emilia_rezero_garden",
         "sourceShowcaseSha256": "1577d7e50eb78660d6c12c59b3383c5a20aac42edaca303790bcdde76b28d67c"

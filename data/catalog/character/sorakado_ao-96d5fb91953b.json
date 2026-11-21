@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sorakado_ao",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 249,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "sorakado_ao",
     "popular": {
@@ -80,7 +80,7 @@
       "type": "popular",
       "icon": "🦊",
       "portrait": {
-        "image": "../assets/characters/popular-sorakado_ao.png?v=c21582e45bfa",
+        "image": "../assets/characters/popular-sorakado_ao.png?v=eb7753e07bb2",
         "alt": "空门苍样张立绘",
         "sourceShowcaseId": "pc_sorakado_ao_pc_sorakado_ao_ao_trail_shade_sleepy_shoulder_lean",
         "sourceShowcaseSha256": "6acf1624ddbdd47c6be678127589ef0a5fb1dccda53c28c38fd35dce0cabe1e8"

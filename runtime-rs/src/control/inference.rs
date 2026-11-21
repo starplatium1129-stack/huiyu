@@ -118,7 +118,7 @@ impl ControlService {
         // Older saved configurations derive the video provider from the image provider.
         current["videoEngine"] = json!(active.video_engine());
         target["videoEngine"] = json!(configured.video_engine());
-        let value = json!({"ok":true,"restartRequired":current != target,"active":current,
+        let value = json!({"ok":true,"restartRequired":!active.equivalent(&configured),"active":current,
             "configured":target,"environmentOverrides":active.environment_overrides,
             "remoteListening":crate::images::remote::listening()});
         Ok((value, configured))

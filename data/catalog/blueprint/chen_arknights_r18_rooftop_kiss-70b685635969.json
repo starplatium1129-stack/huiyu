@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_arknights_r18_rooftop_kiss",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 545,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "倚着落地窗，回眸凝视",
     "adult": true,
@@ -23,7 +23,7 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "standard",
-    "promptProse": "She leans against the apartment window with both arms around her companion's neck for a kiss. Cool city light reaches her clothes from the neon skyline beyond the glass.",
+    "promptProse": "Ch'en leans against the apartment window with her white shirt loosened. Cool light from the skyline catches her teal twin tails and dragon horns as her arms circle her companion's neck. Their face is framed by short black hair and the raised collar of a rust-colored knit sweater, visible in profile as they lean in to kiss.",
     "promptTokens": [
       "apartment",
       "floor-to-ceiling window",
@@ -51,6 +51,6 @@
     "timeOfDay": "深夜",
     "title": "陈 · 深夜窗畔",
     "compositionIntent": "group",
-    "animaCaption": "Her arms encircle her companion's neck against the apartment window."
+    "animaCaption": "Ch'en's teal twin tails and dragon horns catch the city light at the window. Her arms reach around the neck of a cropped black-haired companion in a rust-colored knit sweater as they kiss."
   }
 }

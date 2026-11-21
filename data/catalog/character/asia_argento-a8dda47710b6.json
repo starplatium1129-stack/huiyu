@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asia_argento",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 231,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "asia_argento",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "✨",
       "portrait": {
-        "image": "../assets/characters/popular-asia_argento.png?v=55685ac00579",
+        "image": "../assets/characters/popular-asia_argento.png?v=658cada7031a",
         "alt": "爱西亚·阿基多样张立绘",
         "sourceShowcaseId": "pc_asia_argento_pc_asia_argento_asia_living_room_gentle_bandage",
         "sourceShowcaseSha256": "b609648856ef78f680eed9b8d893f514c31f731d80ecef5853ad0e3c01e52ad8"

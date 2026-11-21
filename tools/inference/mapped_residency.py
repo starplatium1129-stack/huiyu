@@ -15,13 +15,15 @@ def activation_reserve(pixels, image_conditioned):
 
 
 class Residency(memory.Residency):
-    def __init__(self, components, policy, pixels, *, image_conditioned, decode_pixels, retain_components=False):
+    def __init__(self, components, policy, pixels, *, image_conditioned, decode_pixels, retain_components=False,
+                 stream_text=False):
         self.records, self.entry_hooks, self.active = [], [], None
         self.readers, self.staging, self.staging_views = {}, None, None
         self.copy_events, self.copy_active, self.copy_index = [], [False, False], 0
         self.control = None
         self.retain_components = retain_components
         self.retention_requested = retain_components
+        self.stream_text = stream_text
         self.cast_reserve = 0
         self.block_reserves = {}
         self.decode_reserve = max(1024**3, decode_pixels * 1536)
@@ -117,12 +119,12 @@ class Residency(memory.Residency):
             if tensor.device.type != "cuda":
                 tensor.data = self.to_cuda(source, record["keep"] or record["name"] == "text_encoder")
 
-    def to_cuda(self, source, retain):
+    def to_cuda(self, source, retain, *, mapped_pages=False):
         import torch
         location = getattr(source.untyped_storage(), "_huiyu_file_slice", None)
         size = source.numel() * source.element_size()
         dtype = torch.bfloat16 if source.dtype == torch.float16 else source.dtype
-        if not retain or location is None or not source.is_contiguous() or size < 16 * 1024**2:
+        if not (retain or mapped_pages) or location is None or not source.is_contiguous() or size < 16 * 1024**2:
             return source.to(device="cuda:0", dtype=dtype, non_blocking=False)
         # Like Comfy's fast-disk path, avoid faulting a complete mapped tensor
         # through CUDA's pageable-memory upload. Two bounded pinned buffers
@@ -135,7 +137,13 @@ class Residency(memory.Residency):
         # never reopen an unprotected path halfway through a request.
         stream = location[0]
         self.readers[id(stream)] = stream
-        stream.seek(location[1] + source.storage_offset() * source.element_size())
+        if mapped_pages:
+            # A streamed denoiser revisits the same pages every step. Copying
+            # from its read-only view lets Windows keep hot pages in the file
+            # cache without committing a full pageable upload to the driver.
+            source_bytes = source.view(torch.uint8).reshape(-1)
+        else:
+            stream.seek(location[1] + source.storage_offset() * source.element_size())
         target = torch.empty_like(source, device="cuda:0")
         target_bytes = target.view(torch.uint8).reshape(-1)
         capacity = self.staging.shape[1]
@@ -147,7 +155,9 @@ class Residency(memory.Residency):
             if self.copy_active[slot]:
                 self.copy_events[slot].synchronize()
             count = min(size - offset, capacity)
-            if stream.readinto(self.staging_views[slot][:count]) != count:
+            if mapped_pages:
+                self.staging[slot, :count].copy_(source_bytes[offset:offset + count])
+            elif stream.readinto(self.staging_views[slot][:count]) != count:
                 raise OSError("Checkpoint ended during pinned weight upload")
             target_bytes[offset:offset + count].copy_(self.staging[slot, :count], non_blocking=True)
             self.copy_events[slot].record(torch.cuda.current_stream())
@@ -215,7 +225,7 @@ class Residency(memory.Residency):
             if record["name"] != "transformer":
                 self.restore(record)
 
-    def plan(self, pixels, *, image_conditioned=False, control=None, decode_pixels):
+    def plan(self, pixels, *, image_conditioned=False, control=None, decode_pixels, available_bytes=None):
         import torch
         self.control = control
         self.decode_reserve = max(1024**3, decode_pixels * 1536)
@@ -229,7 +239,12 @@ class Residency(memory.Residency):
         self.retain_components = self.retention_requested and any(
             tensor.device.type == "cuda" for tensor in self.modules["transformer"].parameters())
         reserve = activation_reserve(pixels, image_conditioned) + self.cast_reserve
-        budget = max(0, free + sum(t.numel() * t.element_size() for t in owned.values()) - reserve)
+        if self.stream_text:
+            # The Krea denoiser has large joint-attention blocks. Leave another
+            # block of headroom for transient allocations on shared desktops.
+            reserve += self.block_reserves.get("transformer", 0)
+        allocatable = min(free, available_bytes) if available_bytes is not None else free
+        budget = max(0, allocatable + sum(t.numel() * t.element_size() for t in owned.values()) - reserve)
         self.report.update(freeBytes=free, activationReserveBytes=reserve, weightBudgetBytes=budget)
         remaining = budget
         text_stream = max((record["bytes"] for record in self.records
@@ -253,7 +268,7 @@ class Residency(memory.Residency):
                     # Text-only prompts never execute the vision tower. Image
                     # encoders stream their consumed layers to leave room for prefill.
                     unused = record["vision_only"] and not image_conditioned
-                    retain = not unused and not (image_conditioned and row["name"] == "text_encoder")
+                    retain = not unused and not ((image_conditioned or self.stream_text) and row["name"] == "text_encoder")
                     record["keep"] = retain and (row["weightBytes"] <= component_budget or record["bytes"] <= available)
                     if record["keep"]:
                         available -= record["bytes"]

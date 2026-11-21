@@ -29,6 +29,8 @@ import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { useVideoFrames } from '@/components/video/useVideoFrames'
 
 import { useVideoStudioDraft } from '@/components/video/useVideoStudioDraft'
+import { hasVideoPromptContent } from '@/components/video/videoPromptPresets'
+import type { VideoPromptDrafts, VideoPromptMode, VideoPromptPreviewRequest, VideoPromptRecipe, VideoPromptSource } from '../../../types/videoPrompt'
 
 /** Owns workspace state and lifecycle; the view only binds presentation. */
 export function useVideoWorkspace() {
@@ -40,6 +42,7 @@ const route = useRoute()
 const router = useRouter()
 
 const prompt = ref('')
+const promptRecipes = ref<VideoPromptDrafts>({})
 
 const negative = ref('')
 
@@ -52,7 +55,9 @@ const aspectRatio = ref<VideoDefaults['aspectRatio']>('landscape')
 const quality = ref<VideoDefaults['quality']>('standard')
 
 const steps = ref<4 | 8>(8)
+const nativeH3Steps = ref<4 | 8>(4)
 const videoAttention = ref<VideoAttention>('auto')
+const h3LightVae = ref(true)
 
 const duration = ref<VideoDefaults['duration']>(3)
 
@@ -119,18 +124,57 @@ const videoImageId = ref('')
 const lastFrameImageId = ref('')
 
 const activeModel = computed(() => status.value?.models.find(model => model.id === selectedModelId.value) || null)
-const { modes, modeBadge, unsupportedMode, aspectOptions, aspectSize, cameraOptions, motionOptions, durationOptions, qualities } =
+const { modes, modeBadge, unsupportedMode, aspectOptions, aspectSize, motionOptions, durationOptions, qualities } =
   useVideoModeOptions(status, statusLoading, statusReadError, selectedMode, quality, activeModel)
 const driverKind = computed(() => selectedMode.value === 'image' ? activeModel.value?.drivingInput : undefined)
+const promptMode = computed<VideoPromptMode>(() => {
+  if (driverKind.value === 'video') return 'motion-driver'
+  if (driverKind.value === 'audio') return 'voice-driver'
+  return selectedMode.value === 'shots' ? 'text' : selectedMode.value
+})
+const emptyRecipe: VideoPromptRecipe = {}
+const promptRecipe = computed<VideoPromptRecipe>({
+  get: () => promptRecipes.value[promptMode.value] ?? emptyRecipe,
+  set: value => { promptRecipes.value = { ...promptRecipes.value, [promptMode.value]: value } },
+})
+const supportsGeneratedAudio = computed(() => activeModel.value?.supportsGeneratedAudio
+  ?? ['minimax-h3', 'ltx-2.3', 'ltx-2.5-distilled', 'kandinsky-6-lite-distill'].includes(selectedModelId.value))
+const supportsDialogueAndMusic = computed(() => supportsGeneratedAudio.value && selectedModelId.value !== 'kandinsky-6-lite-distill')
+const supportsNegative = computed(() => activeModel.value?.supportsNegative ?? selectedModelId.value !== 'minimax-h3')
+const promptContent = computed(() => hasVideoPromptContent(promptMode.value, promptRecipe.value, prompt.value))
+const promptSource = computed<VideoPromptSource>(() => ({
+  prompt: prompt.value.trim(),
+  promptRecipe: promptRecipe.value,
+  ...(supportsNegative.value && negative.value.trim() ? { negative: negative.value.trim() } : {}),
+  modelId: selectedModelId.value,
+  duration: duration.value,
+  camera: camera.value,
+  motion: motion.value,
+}))
+const promptPreviewRequest = computed<VideoPromptPreviewRequest | null>(() =>
+  selectedMode.value !== 'shots' && promptContent.value && prompt.value.length <= 4000
+    ? { ...promptSource.value, mode: selectedMode.value } : null)
 const { source: driverSource, selected: driver, choose: chooseDriver, busy: driverBusy } = useVideoDriver(driverKind, checkOwner, statusError)
-watch([activeModel, videoAttention], ([model, attention]) => {
-  if (model?.attentionModes && !model.attentionModes.includes(attention)) videoAttention.value = 'auto'
+watch([activeModel, videoAttention, nativeH3Steps], ([model, attention, count]) => {
+  if (!model) return
+  if ((model.attentionModes && !model.attentionModes.includes(attention))
+    || (attention.startsWith('h3-') && !model.attentionModes?.includes(attention))
+    || (['h3-sla', 'h3-fused'].includes(attention) && count !== 4)) videoAttention.value = 'auto'
 })
 watch(aspectOptions, options => {
   if (options[0] && !options.some(option => option.id === aspectRatio.value)) aspectRatio.value = options[0].id
 })
 const { nativeVideo, environmentState, environmentLabel, archiveStatus, archiveState } = useVideoEnvironment({
   status, activeModel, statusLoading, statusReadError, job,
+})
+const h3Steps = computed({
+  get: () => nativeVideo.value
+    ? (activeModel.value?.turboSteps?.includes(nativeH3Steps.value) ? nativeH3Steps.value : 4)
+    : steps.value,
+  set(value: 4 | 8) {
+    if (nativeVideo.value) nativeH3Steps.value = value
+    else steps.value = value
+  },
 })
 watch([durationOptions, duration], ([options, value]) => {
   if (activeModel.value && options[0] && !options.includes(value)) duration.value = options[0]
@@ -159,7 +203,7 @@ const canGenerate = computed(() => {
   if (mode === 'shots') return false
   if (mode === 'image' && !hasFirstFrame.value) return false
   if (mode === 'first-last-frame' && !firstFrameReady.value) return false
-  return prompt.value.trim().length >= 8
+  return promptContent.value
     && prompt.value.length <= 4000
     && parsedSeed.value !== null
     && canExecuteVideo(activeModel.value, mode, status.value?.online === true)
@@ -196,7 +240,8 @@ const submitTitle = computed(() => {
   if (driverBusy.value) return '正在准备驱动素材'
   if (driverKind.value && !driver.value) return driverKind.value === 'audio' ? '请选择角色配音 WAV' : '请选择动作参考视频'
   if (uploadingImage.value) return '正在准备帧图'
-  if (prompt.value.trim().length < 8) return '写下一个完整的镜头'
+  if (!promptContent.value) return '选择场景预设、积木或填写镜头描述'
+  if (prompt.value.length > 4000) return '请将镜头描述缩短到 4000 字符以内'
   if (parsedSeed.value === null) return 'Seed 格式不正确'
   return `${duration.value} 秒 · ${activeModel.value.label} · 本地生成`
 })
@@ -275,8 +320,8 @@ const {
 })
 
 const videoDraftTools = useVideoStudioDraft({
-  selectedMode, prompt, negative, selectedModelId, aspectRatio, quality,
-  steps, videoAttention, driver: driverSource, duration, camera, motion, seedText,
+  selectedMode, prompt, promptRecipes, negative, selectedModelId, aspectRatio, quality,
+  steps, nativeH3Steps, videoAttention, h3LightVae, driver: driverSource, duration, camera, motion, seedText,
   videoImageId, lastFrameImageId,
   onPersistError: (message) => { statusError.value = message },
 })
@@ -322,19 +367,17 @@ async function submitVideo() {
     // Only a new explicit generation prepares its input; recovery reads the journal.
     const mode = selectedMode.value
     const request = {
-      prompt: prompt.value.trim(),
-      negative: activeModel.value?.supportsNegative === false ? undefined : negative.value.trim() || undefined,
-      modelId: selectedModelId.value,
+      ...promptSource.value,
       aspectRatio: aspectRatio.value,
-      duration: duration.value,
-      camera: camera.value,
-      motion: motion.value,
       seed: typeof parsedSeed.value === 'number' ? parsedSeed.value : undefined,
       quality: quality.value,
       ...(driver.value?.kind === 'audio' ? { drivingAudio: driver.value.name }
         : driver.value?.kind === 'video' ? { drivingVideo: driver.value.name } : {}),
-      ...(nativeVideo.value ? { videoAttention: videoAttention.value }
-        : selectedModelId.value === 'minimax-h3' ? { steps: steps.value } : {}),
+      ...(nativeVideo.value ? { videoAttention: videoAttention.value } : {}),
+      ...(nativeVideo.value && activeModel.value?.h3LightVae
+        ? { h3Decoder: h3LightVae.value ? 'lightvae' : 'original' } : {}),
+      ...(selectedModelId.value === 'minimax-h3' && (!nativeVideo.value || activeModel.value?.turboSteps)
+        ? { steps: h3Steps.value } : {}),
     }
     const frames = await resolveSubmitFrames(mode, controller.signal)
     if (disposed || !pageActive || selection !== selectionVersion) return
@@ -497,9 +540,10 @@ return {
  chooseModel, driverKind, driver, driverBusy, chooseDriver, clearDriver: () => { driverSource.value = null },
  archiveStatus, archiveState, statusLoading, loadStatus, modes, selectedMode, nativeVideo,
 modeBadge, unsupportedMode, t8State, status, videoImageUrl, clearFirstFrame, hasFirstFrame, hasLastFrame,
-uploadingImage, handleFrameFile, lastFrameUrl, clearLastFrame, prompt, aspectOptions,
-aspectRatio, aspectSize, camera, cameraOptions, motion, motionOptions,
-quality, qualities, durationOptions, duration, activeModel, steps, videoAttention, negative,
+uploadingImage, handleFrameFile, lastFrameUrl, clearLastFrame, prompt, promptMode, promptRecipe, promptPreviewRequest,
+supportsGeneratedAudio, supportsDialogueAndMusic, supportsNegative, aspectOptions,
+aspectRatio, aspectSize, motion, motionOptions,
+quality, qualities, durationOptions, duration, activeModel, h3Steps, videoAttention, h3LightVae, negative,
 seedText, canGenerate, submitTitle, submitDescription, submitVideo, submitting,
 environmentState, environmentLabel, statusError: statusFeedback, selectedModelId, job, jobStatusLabel,
 formatTime, progressPercent, formatSeconds, progressWarning, jobErrorReport, cancelling,

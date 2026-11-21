@@ -9,6 +9,7 @@ const props = withDefaults(defineProps<{
   pages: number
   label?: string
   disabled?: boolean
+  compact?: boolean
   prevLabel?: string
   nextLabel?: string
 }>(), {
@@ -53,7 +54,8 @@ async function keyboard(event: KeyboardEvent) {
 <template>
   <nav class="studio-pagination" :aria-label="label" @keydown="keyboard">
     <button class="page-arrow" type="button" :aria-label="prevLabel" :aria-disabled="disabled || modelValue <= 1" @click="select(modelValue - 1)"><ArchiveIcon name="chevron-down" /></button>
-    <div ref="numbers" class="page-numbers studio-segments studio-segments--compact" role="group" :aria-label="label + '页码'" data-segment-keyboard="managed">
+    <span v-if="compact" role="status">第 {{ modelValue }} / {{ pages }} 页</span>
+    <div v-else ref="numbers" class="page-numbers studio-segments studio-segments--compact" role="group" :aria-label="label + '页码'" data-segment-keyboard="managed">
       <AnimatedSelection stretch target=":scope > [aria-current='page']" />
       <template v-for="item in pageItems" :key="item">
         <button v-if="typeof item === 'number'" type="button" :data-page="item" :aria-label="`第 ${item} 页`" :aria-current="item === modelValue ? 'page' : undefined" :aria-disabled="disabled || undefined" @click="select(item)">{{ item }}</button>
@@ -61,7 +63,7 @@ async function keyboard(event: KeyboardEvent) {
       </template>
     </div>
     <button class="page-arrow page-next" type="button" :aria-label="nextLabel" :aria-disabled="disabled || modelValue >= pages" @click="select(modelValue + 1)"><ArchiveIcon name="chevron-down" /></button>
-    <span class="page-status sr-only" role="status">第 {{ modelValue }} / {{ pages }} 页</span>
+    <span v-if="!compact" class="page-status sr-only" role="status">第 {{ modelValue }} / {{ pages }} 页</span>
   </nav>
 </template>
 <style scoped>

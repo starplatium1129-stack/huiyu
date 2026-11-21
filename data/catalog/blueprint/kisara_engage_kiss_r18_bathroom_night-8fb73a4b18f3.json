@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_r18_bathroom_night",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 513,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "kisara_engage_kiss_r18_bathroom_night",
     "title": "木更 · 深夜浴室",
@@ -25,7 +25,7 @@
       "night",
       "intimate"
     ],
-    "promptProse": "Adult Kisara pulls Shu close under the shower and rests against his chest, her wet pink hair trailing behind her shoulders. Warm bathroom light diffuses through the spray around their joined silhouettes.",
+    "promptProse": "In a side view through the shower spray, adult Kisara rests against adult Shu Ogata, her long wet pink hair curling down her back. Shu's short brown hair, taller build and broad shoulders form the other side of the embrace. Warm bathroom light diffuses through the steam around their joined silhouettes.",
     "promptTokens": [
       "1girl",
       "1boy",
@@ -52,6 +52,6 @@
     "outfitId": "nsfw_nude",
     "sampleRating": "R15",
     "compositionIntent": "group",
-    "animaCaption": "She rests against Shu's chest under the shower, wet hair trailing behind her shoulders."
+    "animaCaption": "Adult Kisara's long wet pink hair falls down her back as she leans into adult Shu Ogata, whose short brown hair and broad shoulders are visible above hers in the side view."
   }
 }

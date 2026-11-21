@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shizuka_hiratsuka",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 233,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shizuka_hiratsuka",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🍜",
       "portrait": {
-        "image": "../assets/characters/popular-shizuka_hiratsuka.png?v=d0d985b9471f",
+        "image": "../assets/characters/popular-shizuka_hiratsuka.png?v=eb3f3eb92f1f",
         "alt": "平冢静样张立绘",
         "sourceShowcaseId": "pc_shizuka_hiratsuka_pc_shizuka_hiratsuka_shizuka_ramen_stall_warm_coffee",
         "sourceShowcaseSha256": "273d633bd13883465c375f1b20cc4a0bf4a5e6dd620e30ea93952064903c502b"

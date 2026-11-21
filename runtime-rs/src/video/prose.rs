@@ -41,6 +41,9 @@ fn compile(value: &Value) -> Regex {
 fn matched(name: &str, text: &str) -> bool {
     PATTERNS[name].is_match(text)
 }
+pub(super) fn mentions_motion(text: &str) -> bool {
+    matched("MOTION_MENTION_RE", text)
+}
 fn derived(prompt: &str, group: &str, field: &str, fallback: &str) -> String {
     for (index, item) in table()[group].as_array().unwrap().iter().enumerate() {
         if matched(&format!("{group}:{index}"), prompt) {
@@ -63,6 +66,15 @@ pub(super) fn frame_count(seconds: u64) -> u64 {
     let count = (seconds * 24).max(5) as i64;
     (count + (5 - count % 17) % 17) as u64
 }
+pub(super) fn h3_alignment(image: bool, last: bool, seconds: u64) -> Option<String> {
+    let seconds_fixed = format!("{:.2}", seconds as f64);
+    match (image, last) {
+        (true, true) => Some(format!("How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 1) aligns with the {seconds_fixed}-second mark of the target video.")),
+        (false, true) => Some(format!("How the reference pictures align with the target video — <Picture 1> (from [Shot 1]) aligns with the {seconds_fixed}-second mark of the target video.")),
+        (true, false) => Some("For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.".into()),
+        (false, false) => None,
+    }
+}
 pub(super) fn prompt(body: &Value, h3: bool, seconds: u64, references: &[Value]) -> String {
     let user = body["prompt"].as_str().unwrap().trim();
     let camera = body["camera"].as_str().unwrap();
@@ -73,7 +85,7 @@ pub(super) fn prompt(body: &Value, h3: bool, seconds: u64, references: &[Value])
         if !matched("CAMERA_MENTION_RE", user) {
             lines.push(table()["CAMERA"][camera].as_str().unwrap().into());
         }
-        if !matched("MOTION_MENTION_RE", user) {
+        if !mentions_motion(user) {
             lines.push(table()["MOTION"][motion].as_str().unwrap().into());
         }
         lines.push("动作从开始到结束保持连续，角色身份、服装、光照和场景结构一致。".into());
@@ -82,22 +94,19 @@ pub(super) fn prompt(body: &Value, h3: bool, seconds: u64, references: &[Value])
     let image = generation::truthy(&body["image"]);
     let last = generation::truthy(&body["lastFrame"]);
     let style = table()["H3_STYLE"].as_str().unwrap();
-    let seconds_fixed = format!("{:.2}", seconds as f64);
-    let description = if image && last {
-        lines.push(format!("How the reference pictures align with the target video — Picture 1 (from Shot 1) aligns with the 0.00-second mark of the target video; Picture 2 (from Shot 1) aligns with the {seconds_fixed}-second mark of the target video."));
+    if let Some(alignment) = h3_alignment(image, last, seconds) {
+        lines.push(alignment);
         lines.push(String::new());
+    }
+    let description = if image && last {
         format!(
             "integrated_multimodal_description: [Shot 1] {style} — {user} The shot begins in the position, framing, and scene established by Picture 1 and settles into the final pose, spacing, and composition established by Picture 2 at the end of the shot."
         )
     } else if last {
-        lines.push(format!("How the reference pictures align with the target video — <Picture 1> (from [Shot 1]) aligns with the {seconds_fixed}-second mark of the target video."));
-        lines.push(String::new());
         format!(
             "integrated_multimodal_description: [Shot 1] {style} — {user} The scene begins in a plausible earlier state and gradually converges to the pose, composition, lighting, and scene structure established by <Picture 1> by the end of the shot."
         )
     } else if image {
-        lines.push("For the target video, at 0.00 seconds into the target video, <Picture 1> (from [Shot 1]) is fully referenced.".into());
-        lines.push(String::new());
         format!(
             "integrated_multimodal_description: [Shot 1] {style} — preserve the subject, clothing, hairstyle, and scene from <Picture 1>, then {user}"
         )
@@ -116,7 +125,7 @@ pub(super) fn prompt(body: &Value, h3: bool, seconds: u64, references: &[Value])
     if !matched("CAMERA_MENTION_RE", user) {
         lines.push(table()["H3_CAMERA"][camera].as_str().unwrap().into());
     }
-    if !matched("MOTION_MENTION_RE", user) {
+    if !mentions_motion(user) {
         lines.push(table()["H3_MOTION"][motion].as_str().unwrap().into());
     }
     if let Some(dialogue) = body["dialogue"].as_str().filter(|s| !s.is_empty()) {

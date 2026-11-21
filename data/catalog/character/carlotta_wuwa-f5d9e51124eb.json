@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "carlotta_wuwa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 305,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "carlotta_wuwa",
     "profile": {
@@ -42,7 +42,7 @@
         "pink eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-carlotta_wuwa.png?v=917976fb869b",
+        "image": "../assets/characters/popular-carlotta_wuwa.png?v=395351f5d06a",
         "alt": "珂莱塔立绘"
       },
       "visual_dna": {

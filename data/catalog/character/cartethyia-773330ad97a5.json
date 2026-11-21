@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cartethyia",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:54:36.446811700+00:00",
   "data": {
     "id": "cartethyia",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-cartethyia.png?v=fbeecb6e9e92",
+        "image": "../assets/characters/popular-cartethyia.png?v=340ca60c59ae",
         "alt": "卡提希娅样张立绘",
         "sourceShowcaseId": "pc_cartethyia_pc_cartethyia_cartethyia_sfw_b9_02",
         "sourceShowcaseSha256": "ccfcf9408a7920e323dc304f14c5b87653f326a218580385b25d412d245e9d38"

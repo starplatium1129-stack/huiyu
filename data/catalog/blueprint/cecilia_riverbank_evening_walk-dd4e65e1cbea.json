@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_riverbank_evening_walk",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 843,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "提着草帽散步，晚风拂过裙摆",
     "adult": false,
@@ -22,8 +22,10 @@
     "mood": "温柔细腻",
     "negativeTokens": [],
     "outfitId": "sfw_riverbank_sundress_barefoot",
-    "promptProse": "She walks barefoot beside Lawrence, hat in one hand, the other holding his. Golden-hour light reflected from the river catches her windblown hem.",
+    "promptProse": "Cecilia walks barefoot along the riverbank, straw hat in one hand and the other linked with Lawrence's. Her mint-green hair and ankle-length white sundress catch the gold light, while Lawrence's short dark hair and charcoal pastor's coat are in profile beside her. The full-body view includes their joined hands and the evening water behind them.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "couple",
       "riverbank",
       "holding hands",
@@ -49,6 +51,6 @@
     ],
     "timeOfDay": "evening",
     "title": "塞西莉亚 · 河畔黄昏散步",
-    "animaCaption": "One hand carries her hat while the other holds her companion's hand."
+    "animaCaption": "Barefoot Cecilia carries the straw hat in one hand and takes Lawrence's hand with the other. Lawrence has short dark hair and a dark pastor's coat; her white sundress moves in the river breeze beside him."
   }
 }

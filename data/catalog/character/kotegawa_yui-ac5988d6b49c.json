@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kotegawa_yui",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 95,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kotegawa_yui",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "⚡",
       "portrait": {
-        "image": "../assets/characters/popular-kotegawa_yui.png?v=c7b0e1fcc3d7",
+        "image": "../assets/characters/popular-kotegawa_yui.png?v=3b8c552b5566",
         "alt": "古手川唯样张立绘",
         "sourceShowcaseId": "pc_kotegawa_yui_pc_kotegawa_yui_kotegawa_weekend_bookstore_shojo_manga",
         "sourceShowcaseSha256": "101b17fd0a31cf8793a355444fafd7e3db4c269f3cca5c524d6aefca320dbf30"

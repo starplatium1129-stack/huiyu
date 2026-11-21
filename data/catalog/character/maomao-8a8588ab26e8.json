@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maomao",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "maomao",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-maomao.png?v=713d1c10d4a2",
+        "image": "../assets/characters/popular-maomao.png?v=f32d217248d3",
         "alt": "猫猫样张立绘",
         "sourceShowcaseId": "pc_maomao_pc_maomao_maomao_sfw_b9_08",
         "sourceShowcaseSha256": "e1f62dfbf59c49b215c7901cb5c7b0aadf3d9c0dfc5276b540d995d42049ecdf"

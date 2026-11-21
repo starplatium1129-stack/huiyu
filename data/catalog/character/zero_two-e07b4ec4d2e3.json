@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zero_two",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "zero_two",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-zero_two.png?v=bb806a68d86b",
+        "image": "../assets/characters/popular-zero_two.png?v=3a8e814cdb61",
         "alt": "02样张立绘",
         "sourceShowcaseId": "pc_zero_two_pc_zero_two_zero_two_sfw_b6_06",
         "sourceShowcaseSha256": "e126160da08a71e9d14b06fa65794824d2031e20873cf6ade4f9e57afc71c63d"

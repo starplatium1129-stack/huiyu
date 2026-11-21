@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "naruse_shiroha",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 248,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "naruse_shiroha",
     "profile": {
@@ -197,7 +197,7 @@
         "夏日口袋核心女一"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-naruse_shiroha.png?v=c3574d4d5529",
+        "image": "../assets/characters/popular-naruse_shiroha.png?v=6408ad2211fd",
         "alt": "鸣濑白羽样张立绘",
         "sourceShowcaseId": "pc_naruse_shiroha_pc_naruse_shiroha_shiroha_wooden_schoolhouse_rain_eaves_shelter",
         "sourceShowcaseSha256": "21005a7ea0d5618a256c2d03c21b9739bcfc124da39d3a33c0d5c26e547eb25c"

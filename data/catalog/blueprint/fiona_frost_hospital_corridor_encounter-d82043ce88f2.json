@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_hospital_corridor_encounter",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 815,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "fiona_frost_hospital_corridor_encounter",
     "characterId": "fiona_frost",
@@ -28,9 +28,11 @@
       "sunbeam",
       "clean_aesthetic"
     ],
-    "promptProse": "She walks on the left with medical files held to her chest, her gaze fixed ahead as the white-coated figure passes on her right through the bands of morning light.",
+    "promptProse": "Loid Forger, a tall blond man with a neat side part, wears a white doctor's coat over charcoal trousers and black lace-up shoes. He walks rightward past Fiona, who walks leftward in a dark clerk's vest and skirt with the files hugged to her chest. Her blunt white bob frames the look she gives over her shoulder in the hospital corridor.",
     "promptTokens": [
-      "2people",
+      "twilight (spy x family)",
+      "1girl",
+      "1boy",
       "documents",
       "walking",
       "hospital",
@@ -49,6 +51,9 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She walks on the left with files against her chest as the white-coated figure passes on her right."
+    "animaCaption": "Loid Forger, a tall blond man with a neat side part, wears a white doctor's coat over charcoal trousers and black lace-up shoes. He walks rightward past Fiona, who walks leftward in a dark clerk's vest and skirt with the files hugged to her chest. Her blunt white bob frames the look she gives over her shoulder in the hospital corridor.",
+    "characterTokens": [
+      "twilight (spy x family)"
+    ]
   }
 }

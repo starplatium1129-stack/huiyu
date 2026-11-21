@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "jeanne_d_arc",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 60,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "jeanne_d_arc",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "⚜️",
       "portrait": {
-        "image": "../assets/characters/popular-jeanne_d_arc.png?v=59c077d11a34",
+        "image": "../assets/characters/popular-jeanne_d_arc.png?v=77c336a3841e",
         "alt": "圣女贞德样张立绘",
         "sourceShowcaseId": "pc_jeanne_d_arc_pc_jeanne_d_arc_jeanne_ruler_banner_orleans",
         "sourceShowcaseSha256": "53b0d4ebda01c783f5a361cad1273d5957482d453ec016fe6d0762bedd72b324"

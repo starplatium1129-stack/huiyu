@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rapi_nikke",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 172,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "rapi_nikke",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🎖️",
       "portrait": {
-        "image": "../assets/characters/popular-rapi_nikke.png?v=045822b03373",
+        "image": "../assets/characters/popular-rapi_nikke.png?v=be5864135b58",
         "alt": "拉毗样张立绘",
         "sourceShowcaseId": "pc_rapi_nikke_pc_rapi_nikke_rapi_surface_combat_rear_shooting_stance",
         "sourceShowcaseSha256": "28d68939efee9f863bfad56c9438de6c91eee79775cdd1b5d7f8948120856ffc"

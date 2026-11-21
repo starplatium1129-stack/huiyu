@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_clubroom_flustered_weak_point",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1287,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "akeno_clubroom_flustered_weak_point",
     "title": "姬岛朱乃 · 触碰软肋的破防娇羞",
@@ -15,7 +15,7 @@
     "action": "后背微倚书架，被触碰到敏感耳垂整张脸通红，双手抓着对方衣襟眼神羞乱",
     "timeOfDay": "黄昏",
     "lighting": "书架阴影与窗口透入的金色斜阳",
-    "camera": "upper body, eye level",
+    "camera": "medium landscape three-quarter two-shot at eye level",
     "mood": "反差羞耻",
     "sceneTags": [
       "bookshelves",
@@ -29,14 +29,15 @@
       "shy",
       "flustered"
     ],
-    "promptProse": "Her companion stands close behind her with one arm around her waist, brushing her ear with his free hand. She turns her flushed face aside and catches his collar near her shoulder with both hands; golden window light reaches them beside the shaded bookshelves.",
+    "promptProse": "Seen in three-quarter profile by the bookshelves, Akeno is in front, her long black ponytail tied with orange ribbon. The chestnut-haired man in a charcoal jacket stands close behind her right shoulder. His left arm holds her waist while the fingers of his raised, dark-sleeved right hand touch her visible earlobe. She blushes and grips his lapel with both white-sleeved hands.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "couple",
       "blush",
       "looking away",
       "hug from behind",
       "bookshelf",
-      "upper body",
       "leaning back",
       "heavy blush",
       "blushing ears",
@@ -48,7 +49,7 @@
       "library"
     ],
     "negativeTokens": [],
-    "recommendedSize": "1152x1536",
+    "recommendedSize": "1216x832",
     "outfitId": "kuoh_academy_uniform",
     "coverageTags": [
       "gap_moe",
@@ -56,6 +57,6 @@
       "sweet"
     ],
     "compositionIntent": "group",
-    "animaCaption": "His arm encircles her waist; she catches his collar while his free hand brushes her ear."
+    "animaCaption": "Seen in three-quarter profile by the bookshelves, Akeno is in front, her long black ponytail tied with orange ribbon. The chestnut-haired man in a charcoal jacket stands close behind her right shoulder. His left arm holds her waist while the fingers of his raised, dark-sleeved right hand touch her visible earlobe. She blushes and grips his lapel with both white-sleeved hands."
   }
 }

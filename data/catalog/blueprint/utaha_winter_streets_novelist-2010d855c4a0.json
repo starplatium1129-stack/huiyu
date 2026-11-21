@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "utaha_winter_streets_novelist",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1430,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "utaha_winter_streets_novelist",
     "title": "霞之丘诗羽 · 冬街围巾的毒舌",
@@ -27,14 +27,15 @@
       "smile",
       "date"
     ],
-    "promptProse": "In a medium two-shot, Utaha walks beside her companion and extends her cold hand toward them, her fingertips slightly reddened. Amber streetlights meet blue snow reflections.",
+    "promptProse": "Utaha, with loose long black hair, a black wool coat and burgundy scarf, extends reddened fingertips to the man at her side. In profile he has short brown hair, a pale gray scarf tucked into a camel coat, and an open hand moving to meet hers. Amber streetlights and blue snow reflections separate the two winter silhouettes.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "kasumigaoka_utaha",
       "hair down",
       "reaching out",
       "winter street",
       "medium shot",
-      "2people",
       "walking",
       "streetlight",
       "night",
@@ -53,6 +54,6 @@
       "girlfriend"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She extends her cold hand toward her companion, fingertips slightly reddened."
+    "animaCaption": "Utaha's burgundy scarf frames her long black hair as she offers her cold fingertips to the short brown-haired man walking beside her. He wears a camel coat and a pale gray scarf."
   }
 }

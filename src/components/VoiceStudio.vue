@@ -54,7 +54,7 @@
           <button v-if="!voiceOnline" class="btn btn-ghost" type="button" :disabled="voiceBusy" @click="refreshVoiceStatus">刷新状态</button>
         </div>
         <div class="voice-status" role="status">{{ voiceStatus }}</div>
-        <RouterLink v-if="!voiceOnline" class="btn btn-quiet btn-sm voice-recovery" to="/control"><ArchiveIcon name="gear" />启动语音服务</RouterLink>
+        <RouterLink v-if="!voiceOnline || voiceEngineId === 'system' || voiceEngineId === 'off'" class="btn btn-quiet btn-sm voice-recovery" to="/control?section=control-voice"><ArchiveIcon name="gear" />{{ voiceOnline && voiceEngineId === 'system' ? '切换 AI 语音配置' : '前往语音配置' }}</RouterLink>
         <StudioMediaPlayer v-if="voiceAudioUrl" ref="voicePlayer" @play="stopOwnedSpeech" class="voice-audio" kind="audio" :src="resolveRuntimeUrl(voiceAudioUrl)" label="AI 声线试听" :transcript="voiceAudioTranscript" />
         <a v-if="voiceAudioUrl" class="btn btn-ghost voice-download" :href="voiceAudioUrl" :download="voiceDownloadName">下载 WAV</a>
       </DeferredPanel>
@@ -73,6 +73,7 @@ import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
+import type { TtsEngine } from '@/types/api'
 import { useToast } from '@/composables/useToast'
 import { voiceApi, type VoiceSynthesisPayload } from '@/api/voiceApi'
 import '@/assets/css/director/components/VoiceStudio.css'
@@ -111,6 +112,7 @@ const generateButton = ref<HTMLButtonElement | null>(null)
 const voiceOnline = ref(false)
 const voiceLoaded = ref(false)
 const voiceConfigured = ref(false)
+const voiceEngineId = ref<TtsEngine | undefined>(undefined)
 const voiceAudioUrl = ref('')
 const voiceAudioTranscript = ref('')
 let voiceObjectUrl = ''
@@ -162,9 +164,16 @@ const VOICE_EMOTIONS = [
 ]
 
 const voicePlayText = computed(() => (voiceLang.value === 'ja' ? voiceScript.value : voiceCaption.value).trim())
-const voiceStateKind = computed(() => voiceBusy.value ? 'warn' : (voiceOnline.value && voiceConfigured.value && voiceLoaded.value ? 'ready' : 'warn'))
+const voiceStateKind = computed(() => {
+  if (voiceBusy.value || voiceEngineId.value === 'off') return 'warn'
+  if (voiceEngineId.value === 'system') return 'ready'
+  return voiceOnline.value && voiceConfigured.value && voiceLoaded.value ? 'ready' : 'warn'
+})
 const voiceStateLabel = computed(() => {
   if (voiceBusy.value) return operationKind.value === 'translate' ? '翻译中' : '生成中'
+  if (voiceEngineId.value === 'off') return '语音已关闭'
+  if (voiceEngineId.value === 'system') return '系统朗读就绪'
+  if (voiceEngineId.value === 'openai-tts') return voiceOnline.value ? '云端语音就绪' : '云端语音未配置'
   if (voiceOnline.value && voiceConfigured.value) return voiceLoaded.value ? 'AI 声线就绪' : 'AI 声线待加载'
   if (voiceOnline.value) return '声线未配置'
   return '语音未启动'
@@ -184,19 +193,27 @@ async function refreshVoiceStatus() {
   try {
     const data = await voiceApi.getStatus(callOptions)
     if (!viewActive || controller.signal.aborted || request !== statusRequest) return
+    voiceEngineId.value = data.engineId
     voiceOnline.value = data.online || data.available === true
     voiceLoaded.value = data.online
     voiceConfigured.value = Boolean(data.voices[voice])
     if (voiceBusy.value || ownedSpeech || operation !== operationRevision) return
-    if (voiceOnline.value && voiceConfigured.value) {
+    if (data.engineId === 'system') {
+      voiceStatus.value = '当前使用系统朗读；可点击「系统试听」，或前往「语音配置」接入云端/本地角色声线。'
+    } else if (data.engineId === 'off') {
+      voiceStatus.value = '语音已关闭；可点击「前往语音配置」启用系统朗读或 AI 语音。'
+    } else if (data.engineId === 'openai-tts') {
+      voiceStatus.value = data.online ? '云端语音接口已配置；可直接输入台词点击生成配音。' : '尚未填写云端语音接口，请先到「语音配置」设置。'
+    } else if (voiceOnline.value && voiceConfigured.value) {
       voiceStatus.value = data.online ? `${data.engine || '语音服务'} 已连接；可翻译或生成角色声线。` : '角色声线将在使用时加载。'
     } else if (voiceOnline.value) {
-      voiceStatus.value = '当前角色声线尚未配置。'
+      voiceStatus.value = '当前角色声线尚未配置，请到「语音配置」导入声线。'
     } else {
-      voiceStatus.value = '语音服务未启动。可到控制面板启动所选语音引擎。'
+      voiceStatus.value = '本地语音未启动；可在「语音配置」切换系统朗读或导入本地语音包。'
     }
   } catch {
     if (!viewActive || controller.signal.aborted || request !== statusRequest || voiceBusy.value || ownedSpeech || operation !== operationRevision) return
+    voiceEngineId.value = undefined
     voiceOnline.value = false
     voiceLoaded.value = false
     voiceConfigured.value = false
@@ -264,12 +281,19 @@ async function generateVoice() {
   try {
     const status = await voiceApi.getStatus(callOptions)
     if (!current()) return
+    voiceEngineId.value = status.engineId
     voiceOnline.value = status.online || status.available === true
     voiceLoaded.value = status.online
     voiceConfigured.value = Boolean(status.voices[payload.voice])
-    if (!status.voices[payload.voice]) throw new Error('当前角色还没配置参考音频，请到控制面板的「角色声线配置」填写。')
+    if (status.engineId === 'off') throw new Error('语音朗读已关闭，请先在控制室「语音配置」选择语音引擎。')
+    if (status.engineId === 'system') {
+      finish()
+      previewVoice()
+      return
+    }
+    if (!status.voices[payload.voice]) throw new Error('当前角色还没配置声线，请到控制室「语音配置」完成设置。')
     // 预热失败不阻断合成；合成接口会返回可读的真实失败原因。
-    await voiceApi.prepare({ voice: payload.voice, translation: payload.language === 'ja' }, callOptions).catch(() => {})
+    await voiceApi.prepare({ voice: payload.voice, translation: status.needsTranslation !== false && payload.language === 'ja' }, callOptions).catch(() => {})
     if (!current()) return
     const { blob, queueWaitMs } = await voiceApi.synthesize(payload, callOptions)
     if (!current()) return
@@ -279,8 +303,9 @@ async function generateVoice() {
     voiceObjectUrl = nextUrl
     voiceAudioUrl.value = voiceObjectUrl
     voiceAudioTranscript.value = text
-    voiceDownloadName.value = `aics_voice_${payload.voice}_${payload.language}_${Date.now()}.wav`
-    voiceStatus.value = 'AI 声线已生成，可试听或下载 WAV。' + (queueWaitMs > 0 ? `（排队 ${Math.round(queueWaitMs / 100) / 10}s）` : '')
+    const ext = blob.type.includes('mpeg') ? 'mp3' : blob.type.includes('ogg') ? 'opus' : blob.type.includes('aac') ? 'aac' : 'wav'
+    voiceDownloadName.value = `aics_voice_${payload.voice}_${payload.language}_${Date.now()}.${ext}`
+    voiceStatus.value = 'AI 声线已生成，可试听或下载音频。' + (queueWaitMs > 0 ? `（排队 ${Math.round(queueWaitMs / 100) / 10}s）` : '')
     toast.success('配音已生成')
   } catch (error) {
     if (!current()) return

@@ -1,0 +1,324 @@
+:root {
+  color-scheme: light dark;
+  --guest-default-accent: var(--accent);
+  --guest-default-accent-hover: var(--accent-hover);
+  --guest-default-accent-soft: var(--accent-soft);
+}
+
+:root:has(> head > meta[name="color-scheme"][content="dark"]) {
+  color-scheme: dark;
+}
+
+:root:has(> head > meta[name="color-scheme"][content="light"]) {
+  color-scheme: light;
+}
+
+.guest-page {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-block-size: 100dvh;
+}
+
+.guest-page[data-character="nene"],
+.pb.guest-workspace[data-character="nene"] {
+  --character-accent: var(--nene-violet);
+}
+
+.guest-page[data-character="natsume"],
+.pb.guest-workspace[data-character="natsume"] {
+  --character-accent: var(--natsume-amber);
+}
+
+.guest-atmosphere {
+  position: fixed;
+  inset: 0 0 auto;
+  block-size: min(68dvh, 44rem);
+  z-index: var(--z-below);
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse min(52vw, 44rem) min(36dvh, 26rem) at 8% 0%, color-mix(in srgb, var(--character-accent, var(--accent)) 20%, transparent), transparent 72%),
+    radial-gradient(ellipse min(42vw, 34rem) min(32dvh, 22rem) at 92% 4%, color-mix(in srgb, var(--archive-blue) 11%, transparent), transparent 74%);
+  transition: opacity var(--motion-surface) var(--ease-out);
+}
+
+:root[data-theme="light"] .guest-atmosphere {
+  background:
+    radial-gradient(ellipse min(52vw, 44rem) min(36dvh, 26rem) at 8% 0%, color-mix(in srgb, var(--character-accent, var(--accent)) 14%, transparent), transparent 72%),
+    radial-gradient(ellipse min(42vw, 34rem) min(32dvh, 22rem) at 92% 4%, color-mix(in srgb, var(--archive-blue) 8%, transparent), transparent 74%);
+}
+
+@media (prefers-reduced-transparency: reduce), (forced-colors: active) {
+  .guest-atmosphere {
+    display: none;
+  }
+}
+
+/* ---- Masthead ---- */
+.guest-masthead {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-nav);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-4);
+  min-block-size: var(--s-7);
+  padding: var(--s-2) clamp(var(--s-4), 2.5vw, var(--s-6));
+  background: var(--nav-bg);
+  border-block-end: 1px solid var(--border-soft);
+  box-shadow: var(--shadow-sm);
+}
+
+.guest-mastheadLeft,
+.guest-mastheadRight {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-inline-size: 0;
+}
+
+.guest-mastheadRight {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.guest-brand {
+  inline-size: 5.5rem;
+  block-size: auto;
+  flex: none;
+}
+
+.guest-mastheadDivider {
+  inline-size: 1px;
+  block-size: 1.15rem;
+  background: var(--border-soft);
+}
+
+.guest-mastheadPill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: var(--s-1) var(--s-3);
+  border: 1px solid color-mix(in srgb, var(--character-accent, var(--accent)) 28%, var(--border-soft));
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--character-accent, var(--accent)) 10%, var(--bg-elevated));
+  color: var(--text-primary);
+  font-size: var(--fs-label-xs);
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.guest-mastheadPill .archive-icon {
+  color: var(--accent);
+}
+
+.guest-connection {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-block-size: var(--control-height-sm);
+  padding: var(--s-1) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: border-color var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out);
+}
+
+button.guest-connection {
+  cursor: pointer;
+}
+
+button.guest-connection:hover {
+  border-color: var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
+}
+
+.guest-connectionDot {
+  flex: none;
+  inline-size: 0.5rem;
+  block-size: 0.5rem;
+  border-radius: 50%;
+  background: var(--text-muted);
+}
+
+.guest-connection[data-state="ready"] {
+  border-color: color-mix(in srgb, var(--success) 34%, var(--border-soft));
+  color: var(--success-text);
+}
+
+.guest-connection[data-state="ready"] .guest-connectionDot {
+  background: var(--success);
+}
+
+.guest-connection[data-state="standby"] .guest-connectionDot {
+  background: var(--warning);
+}
+
+.guest-connection[data-state="offline"] {
+  border-color: color-mix(in srgb, var(--danger) 36%, var(--border-soft));
+  color: var(--danger-text);
+}
+
+.guest-connection[data-state="offline"] .guest-connectionDot {
+  background: var(--danger);
+}
+
+.guest-themeToggle {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--control-height-sm);
+  block-size: var(--control-height-sm);
+  padding: 0;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-surface);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .guest-themeToggle:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-elevated);
+    color: var(--text-primary);
+  }
+}
+
+.guest-themeToggle:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-shadow);
+}
+
+.guest-themeSymbol {
+  display: grid;
+  place-items: center;
+}
+
+.guest-themeSymbol .archive-icon {
+  grid-area: 1 / 1;
+  inline-size: 1.15rem;
+  block-size: 1.15rem;
+  transition: transform var(--motion-control) var(--ease-out), opacity var(--motion-control) var(--ease-out);
+}
+
+.guest-themeMoon {
+  opacity: 0;
+  transform: rotate(45deg) scale(0.5);
+}
+
+.guest-themeToggle[data-dark="true"] .guest-themeSun {
+  opacity: 0;
+  transform: rotate(-90deg) scale(0.5);
+}
+
+.guest-themeToggle[data-dark="true"] .guest-themeMoon {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Main Workspace & Character Accent Override ---- */
+.pb.guest-workspace {
+  flex: 1 0 auto;
+  inline-size: 100%;
+  max-inline-size: 112rem;
+  margin-inline: auto;
+  margin-block-end: 0;
+  padding: clamp(var(--s-3), 2vw, var(--s-5));
+  container: guest / inline-size;
+}
+
+:root .pb.guest-workspace {
+  --accent: var(--guest-default-accent);
+  --accent-hover: var(--guest-default-accent-hover);
+  --accent-soft: var(--guest-default-accent-soft);
+  --character-accent: var(--guest-default-accent);
+}
+
+:root .pb.guest-workspace:is([data-character="nene"], [data-character="natsume"]) {
+  --accent: var(--character-accent);
+  --accent-hover: color-mix(in srgb, var(--character-accent) 85%, var(--text-primary));
+  --accent-soft: color-mix(in srgb, var(--character-accent) 13%, transparent);
+}
+
+.guest-desk {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "canvas"
+    "composer";
+  gap: var(--s-4);
+  align-items: start;
+}
+
+.guest-composer {
+  grid-area: composer;
+  display: flex;
+  flex-direction: column;
+  min-inline-size: 0;
+  overflow: clip;
+}
+
+.guest-canvasMount {
+  grid-area: canvas;
+  min-inline-size: 0;
+}
+
+/* ---- Lightbox Custom Width ---- */
+.studio-dialog.guest-lightboxDialog {
+  --dialog-width: min(68rem, calc(100vw - 2 * var(--s-4)));
+}
+
+/* ---- Quiet Colophon Footer ---- */
+.guest-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-block-start: auto;
+  padding: var(--s-3) var(--s-4) var(--s-4);
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+  text-align: center;
+}
+
+/* ---- Desktop 2-Column Layout ---- */
+@container guest (min-width: 960px) {
+  .guest-desk {
+    grid-template-columns: clamp(22.5rem, 34%, 27.5rem) minmax(0, 1fr);
+    grid-template-areas: "composer canvas";
+    gap: var(--s-5);
+    align-items: stretch;
+  }
+
+  .guest-canvasMount {
+    display: flex;
+    flex-direction: column;
+  }
+}
+
+@media (pointer: coarse) {
+  .guest-masthead :is(.guest-connection, .guest-themeToggle) {
+    min-block-size: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) :is(
+    .guest-atmosphere,
+    .guest-connection,
+    .guest-themeToggle,
+    .guest-themeSymbol .archive-icon
+  ) {
+    transition: none;
+  }
+}

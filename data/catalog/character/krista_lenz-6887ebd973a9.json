@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "krista_lenz",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "krista_lenz",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "👑",
       "portrait": {
-        "image": "../assets/characters/popular-krista_lenz.png?v=32596d075b0a",
+        "image": "../assets/characters/popular-krista_lenz.png?v=c7aac2956e13",
         "alt": "希斯特里亚样张立绘",
         "sourceShowcaseId": "pc_krista_lenz_pc_krista_lenz_krista_lenz_coronation",
         "sourceShowcaseSha256": "ed14e8190c49290cc998367fb7ce85adbe009f6a051bea0d1f3160432af6e526"

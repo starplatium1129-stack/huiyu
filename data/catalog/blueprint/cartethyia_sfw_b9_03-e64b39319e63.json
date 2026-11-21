@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_03",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1647,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_03",
     "title": "卡提希娅 · 雨廊下的躲雨与烤面包",
@@ -31,8 +31,9 @@
       "bakery_light",
       "medium_shot"
     ],
-    "promptProse": "Sheltering beneath the bakery eaves, she receives the warm paper bag from the owner standing in the doorway. Their hands meet at its folded edge while shop light falls across the wet threshold.",
+    "promptProse": "Cartethyia shelters under the bakery eaves in a pale blue dress and cream cardigan, her long blond braid lit by the shop doorway. Inside the door, a gray-haired older woman in a brown baker's apron leans forward to hand her a paper bag of fresh bread. Their hands meet at the fold above the rain-dark threshold.",
     "promptTokens": [
+      "2girls",
       "bakery",
       "bread",
       "paper bag",
@@ -54,6 +55,6 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She receives the warm bag from the owner standing in the bakery doorway."
+    "animaCaption": "Long-blond-haired Cartethyia receives the warm paper bag from the gray-haired baker in a brown apron. The woman stays just inside the doorway while Cartethyia stands beneath the awning."
   }
 }

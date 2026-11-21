@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saten_ruiko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 199,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "saten_ruiko",
     "profile": {
@@ -279,7 +279,7 @@
         "hair_flower"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-saten_ruiko.png?v=14f8d8fd09e9",
+        "image": "../assets/characters/popular-saten_ruiko.png?v=c788a326c5c8",
         "alt": "佐天泪子样张立绘",
         "sourceShowcaseId": "pc_saten_ruiko_pc_saten_ruiko_saten_ruiko_summer_yukata_fireworks_terrace",
         "sourceShowcaseSha256": "79a00924f0f1d8e0e7b71574bea773b5dbe0e5b969833c184de64dcb2c6899ac"

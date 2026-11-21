@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_starlit_whisper_farewell",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2490,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "aurora_starlit_whisper_farewell",
     "characterId": "aurora_shadow",
@@ -19,7 +19,7 @@
     "lighting": "soft luminescent stardust glow enveloping the embracing couple",
     "camera": "close-up",
     "mood": "温存与宁静",
-    "promptProse": "In a starry cosmic void, black-haired witch Aurora dissolves into glowing particles while sharing a gentle tender farewell kiss.",
+    "promptProse": "In the starry ruins, Aurora's long black hair, violet eyes and gauzy violet gown dissolve into bright particles at the edges. Her arms circle Shadow's neck as he leans in to meet her farewell kiss. He has short black hair visible at his brow and a fitted black cloak over broad shoulders; his outline stays solid against the drifting stardust.",
     "promptTokens": [
       "1girl",
       "1boy",
@@ -34,7 +34,7 @@
       "close-up"
     ],
     "negativeTokens": [],
-    "animaCaption": "Aurora embraces Shadow and kisses him as her body dissolves into stardust.",
+    "animaCaption": "Aurora's long black hair and violet gown give way to stardust as she kisses Shadow. He has short black hair and a solid black cloak, his profile distinct beneath her arms.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,

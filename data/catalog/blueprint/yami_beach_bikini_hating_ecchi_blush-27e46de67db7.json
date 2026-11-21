@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yami_beach_bikini_hating_ecchi_blush",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1226,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "双手护在比基尼胸前，金发化作巨拳微颤，满面通红娇羞咬牙怒斥，水花四溅",
-    "camera": "medium shot, eye-level, extreme blush and tsundere focus",
+    "camera": "medium landscape side-view two-shot, Yami standing and Rito down in the shallows",
     "category": "海滨娇羞",
     "characterId": "golden_darkness",
     "coverageTags": [
@@ -20,9 +20,10 @@
     "mood": "反差娇羞",
     "negativeTokens": [],
     "outfitId": "bikini_swimsuit",
-    "promptProse": "Yami blushes and folds both arms over her chest as Rito lies where he has slipped in the shallow surf before her. A lock of her golden hair forms a raised fist behind her, bright sun catching the splashing water.",
+    "promptProse": "Yami stands on the left in a black string bikini with her forearms crossed across her chest. Her golden hair curls up behind her into one large fist, separate from her two real arms. Lower on the right, short brown-haired Rito in navy board shorts has slipped and landed sitting in the shallow surf. He braces one hand against the wet sand and looks up at her angry blush.",
     "promptTokens": [
-      "Rito",
+      "1girl",
+      "1boy",
       "crossed arms",
       "blush",
       "prehensile hair",
@@ -32,9 +33,10 @@
       "sunlight",
       "heavy blush",
       "water reflection",
-      "medium shot"
+      "medium shot",
+      "yuuki rito"
     ],
-    "recommendedSize": "1152x1536",
+    "recommendedSize": "1216x832",
     "sceneTags": [
       "beach",
       "ocean_waves",
@@ -50,8 +52,9 @@
     "title": "金色暗影 · 碧海金沙的讨厌色情娇羞",
     "compositionIntent": "group",
     "characterTokens": [
-      "Rito"
+      "Rito",
+      "yuuki rito"
     ],
-    "animaCaption": "Her hair forms a raised fist behind her as she folds her arms while Rito lies in the shallow surf."
+    "animaCaption": "Yami stands on the left in a black string bikini with her forearms crossed across her chest. Her golden hair curls up behind her into one large fist, separate from her two real arms. Lower on the right, short brown-haired Rito in navy board shorts has slipped and landed sitting in the shallow surf. He braces one hand against the wet sand and looks up at her angry blush."
   }
 }

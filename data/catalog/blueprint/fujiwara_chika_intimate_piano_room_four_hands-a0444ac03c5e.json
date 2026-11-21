@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_piano_room_four_hands",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2030,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "music_recital",
@@ -19,11 +19,11 @@
     "lighting": "dramatic crimson and golden sunset streaming through windows",
     "camera": "medium_shot",
     "mood": "浪漫温存",
-    "promptProse": "Seated side-by-side on the piano bench during a fiery sunset, Fujiwara Chika plays a four-hand duet. When their hands overlap on the ivory keys, her cheerful persona melts into a breathtakingly shy, aristocratic blush in the golden light.",
+    "promptProse": "Pink-haired Chika in a navy pleated dress sits at the right side of the piano bench with her black hair bow in view. The young pianist to her left has short cinnamon-brown hair and a charcoal sweater vest over a white shirt. His hand overlaps hers on the ivory keys. She stops to glance at him in the warm sunset.",
     "promptTokens": [
-      "fujiwara_chika",
       "1girl",
-      "solo",
+      "1boy",
+      "fujiwara_chika",
       "pink_hair",
       "long_hair",
       "black_bow",
@@ -41,9 +41,10 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Chika blushing shyly as hands overlap on the piano keys at sunset.",
+    "animaCaption": "Pink-haired Chika in a navy pleated dress sits at the right side of the piano bench with her black hair bow in view. The young pianist to her left has short cinnamon-brown hair and a charcoal sweater vest over a white shirt. His hand overlaps hers on the ivory keys. She stops to glance at him in the warm sunset.",
     "isNsfw": false,
     "rating": "R15",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "group"
   }
 }

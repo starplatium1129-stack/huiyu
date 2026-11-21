@@ -29,8 +29,14 @@ impl ControlService {
         if index == 3 {
             return self.voice.translation_status(fresh).await["ready"] == true;
         }
-        if index == 2 && self.voice.native_selected() {
-            return self.voice.native_ready();
+        if index == 2 {
+            match settings["ttsEngine"].as_str() {
+                Some("system") => return true,
+                Some("off") => return false,
+                Some("openai-tts") => return self.voice.openai_configured(),
+                Some("gpt-sovits-native") => return self.voice.native_ready(),
+                _ => {}
+            }
         }
         let probes = self.voice.health_probes();
         let host = settings[if index == 1 { "comfyHost" } else { "ttsHost" }]

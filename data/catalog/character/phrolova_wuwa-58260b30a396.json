@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "phrolova_wuwa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 308,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "phrolova_wuwa",
     "profile": {
@@ -43,7 +43,7 @@
         "eyepatch"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-phrolova_wuwa.png?v=d98e15e6788d",
+        "image": "../assets/characters/popular-phrolova_wuwa.png?v=6ff357e888c1",
         "alt": "弗洛洛立绘"
       },
       "visual_dna": {

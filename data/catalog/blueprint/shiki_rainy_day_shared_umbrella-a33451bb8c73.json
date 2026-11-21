@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_rainy_day_shared_umbrella",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1345,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "并肩共撑黑伞，侧身紧贴视角手臂，抬头看着伞沿滴落的雨水，眼神柔和",
     "camera": "cowboy shot, eye level",
@@ -25,8 +25,10 @@
       "knife"
     ],
     "outfitId": "kimono_red_jacket_no_knife",
-    "promptProse": "She shares the black umbrella with her companion, shoulder against their upper arm, watching rain drip over the wet stone alley. Cool gray daylight through the rain contrasts with the soft warm shade beneath the umbrella.",
+    "promptProse": "Shiki, with a short black bob and a red leather jacket over a white kimono, walks close beneath a black umbrella. The taller man beside her has cropped brown hair and a charcoal raincoat. He holds the umbrella while she presses her shoulder to his sleeve and watches rain stream off the rim above the wet stone alley.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "umbrella",
       "walking",
       "rain",
@@ -51,6 +53,6 @@
     ],
     "timeOfDay": "阴雨天",
     "title": "两仪式 · 细雨霏霏的并肩黑伞",
-    "animaCaption": "Her shoulder rests against her companion's upper arm under their shared black umbrella."
+    "animaCaption": "Red-jacketed Shiki in her white kimono looks up at the dripping umbrella rim. The cropped-brown-haired man in a charcoal raincoat beside her holds the handle as their shoulders touch."
   }
 }

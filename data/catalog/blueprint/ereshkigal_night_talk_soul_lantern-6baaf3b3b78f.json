@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_night_talk_soul_lantern",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 269,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "ereshkigal_night_talk_soul_lantern",
     "title": "埃列什基伽勒 · 魂灯夜话",
@@ -28,7 +28,7 @@
       "blue_lantern_light",
       "wide_two_shot"
     ],
-    "promptProse": "Seated beside a companion in a travel coat, she hugs her knees and quietly thanks them. Blue soul lanterns drift along the river below the two figures, reflected light catching her damp eyes.",
+    "promptProse": "Ereshkigal sits on an obsidian rock with her knees drawn up and her gold cage lantern warming her damp eyes. Shoulder to shoulder on the same ledge sits a traveler with close-cropped black hair and a deep red coat, looking out at the blue soul lanterns drifting below them. The wide riverbank framing retains both seated figures.",
     "promptTokens": [
       "sitting",
       "holding soul lantern",
@@ -56,6 +56,6 @@
       "romance"
     ],
     "compositionIntent": "group",
-    "animaCaption": "Her golden cage lantern casts a tender warm glow over her blushing face amidst the floating souls of the underworld."
+    "animaCaption": "Ereshkigal hugs her knees beneath her gold tiara, her long blond twin tails lit by the cage lantern. A short-haired traveler in a deep red coat sits at her side, facing the blue soul lights on the river."
   }
 }

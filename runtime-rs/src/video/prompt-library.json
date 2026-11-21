@@ -1,0 +1,143 @@
+{
+  "slots": {
+    "framing": {
+      "label": "景别",
+      "modes": ["text"],
+      "options": {
+        "wide": { "label": "全景", "zh": "全景交代主体与周围空间的关系。", "en": "A wide shot establishes the subject's place in the setting." },
+        "medium": { "label": "中景", "zh": "中景保留主体上半身和手边的细节。", "en": "A medium shot holds the subject and nearby details in frame." },
+        "close": { "label": "近景", "zh": "近景留出观察细微变化的空间。", "en": "A close shot makes the smallest changes easy to see." }
+      }
+    },
+    "subject": {
+      "label": "开场主体",
+      "modes": ["text"],
+      "options": {
+        "traveler": { "label": "雨后站台", "zh": "傍晚的空电车站台上，一位旅人撑着透明伞站在雨水浸湿的轨道旁。", "en": "At dusk, a traveler stands under a clear umbrella on an empty tram platform beside rain-dark rails." },
+        "reader": { "label": "晨光书房", "zh": "清晨，一位读信人坐在书房窗边，手里摊着一封信。", "en": "In the early morning, a reader holds an open letter beside a study window." },
+        "lantern": { "label": "石巷灯笼", "zh": "暮色沉进石板小巷，檐下只挂着一盏暖色灯笼。", "en": "A single amber lantern hangs beneath the eaves of a stone alley at blue hour." },
+        "bookshop": { "label": "旧书店", "zh": "旧书店的窄书架前，两位读者隔着一本半抽出的精装书站着。", "en": "Two readers stand by a narrow bookcase in a used bookshop, with a half-pulled hardback between them." },
+        "adult-couple": { "label": "窗边成年伴侣", "zh": "傍晚，窗边沙发上并肩坐着两位成年伴侣，都穿着质地柔软的针织衫。", "en": "At dusk, two adult partners in soft knit sweaters sit shoulder to shoulder on a sofa by the window." },
+        "private-sitter": { "label": "晨光里的写真模特", "zh": "一位成年写真模特披着松系的丝质睡袍，背对镜头侧坐在透光窗帘前。晨光留在肩颈与袍边。", "en": "An adult portrait model in a loosely tied silk robe sits sideways with their back to the camera before a translucent curtain. Morning light rests along the shoulder and the edge of the robe." }
+      }
+    },
+    "action": {
+      "label": "主要动作",
+      "modes": ["text", "image", "first-last-frame", "motion-driver", "voice-driver"],
+      "options": {
+        "raise-umbrella": { "label": "举伞望向弯道", "modes": ["text"], "zh": "旅人略抬伞沿，抬眼看向轨道拐弯处。", "en": "The traveler tips the umbrella up and looks toward the bend in the tracks." },
+        "look-up-from-letter": { "label": "读信抬眼", "modes": ["text"], "zh": "读到末尾时，读信人的指尖停在信纸边上，视线顺着窗台慢慢抬起。", "en": "As the reader reaches the end of the letter, their fingertips pause on the edge of the page and their eyes lift toward the window." },
+        "swaying-lantern": { "label": "灯笼轻摆", "modes": ["text"], "zh": "风从巷口吹进来，灯笼沿一条短弧轻轻摆动。", "en": "A draft from the mouth of the alley sets the lantern swaying in a shallow arc." },
+        "reach-for-book": { "label": "伸手取同一本书", "modes": ["text"], "zh": "两人同时向书脊伸手，指尖快要相碰时一起停下来，抬眼看向对方。", "en": "Both reach for the spine and pause just before their fingertips meet, then look up at each other." },
+        "blink": { "label": "自然眨眼", "modes": ["image"], "zh": "人物自然呼吸，轻轻眨一次眼，视线保持在原来的方向。", "en": "The subject breathes gently and blinks once, with their gaze still pointing in the original direction." },
+        "glance-back": { "label": "缓缓回眸", "modes": ["image"], "zh": "人物先用余光看向画外，再慢慢转过头，嘴角轻轻抬起。", "en": "The subject glances just offscreen, then slowly turns their head and lets a small smile form." },
+        "breeze": { "label": "风动发丝衣缘", "modes": ["image"], "zh": "人物维持首帧姿势，微风先掀起发梢，继而带动衣缘。", "en": "The subject keeps the opening pose as a breeze lifts the tips of their hair and then stirs the edge of their clothes." },
+        "two-steps": { "label": "顺势走两步", "modes": ["image"], "zh": "人物沿原来的朝向自然地迈出两步，第二步轻轻放慢。", "en": "The subject takes two easy steps in the direction they already face and slows on the second." },
+        "shift-weight": { "label": "重心转到尾帧", "modes": ["first-last-frame"], "zh": "先让人物轻移重心，再让身体和视线沿同一方向转向尾帧。", "en": "The subject shifts their weight first, then lets their body and gaze turn continuously toward the final pose." },
+        "depth-transition": { "label": "前后景逐渐错开", "modes": ["first-last-frame"], "zh": "随着景别变化，主体与前后景逐步错开，画面沿同一方向连续过渡。", "en": "As the framing changes, the layers of depth gradually separate in one continuous direction." },
+        "soft-breath": { "label": "呼吸贯穿过渡", "modes": ["first-last-frame"], "zh": "人物保持连贯的自然呼吸，细小的姿态变化接向尾帧。", "en": "The subject breathes softly as the small changes in posture lead into the final frame." },
+        "profile-shift": { "label": "侧影逐渐展开", "modes": ["first-last-frame"], "zh": "视角变化时，近处轮廓先错开，人物的侧影随之逐渐显露。", "en": "As the viewpoint changes, nearby edges slide apart first and the subject's profile gradually comes into view." },
+        "focused": { "label": "专注平静", "modes": ["motion-driver", "voice-driver"], "zh": "目光专注，神态放松，表情变化轻微。", "en": "The gaze is attentive and the expression remains relaxed, with small changes around the eyes." },
+        "bright": { "label": "轻快明朗", "modes": ["motion-driver", "voice-driver"], "zh": "眼神清亮，神态轻快，眉眼随情绪自然变化。", "en": "The subject has a bright, open expression, with natural changes around the eyes and brows." },
+        "forehead-touch": { "label": "慢慢贴上额头", "modes": ["text", "image"], "zh": "两人只转动一点肩颈，用几秒慢慢贴上额头，轻轻合眼。", "en": "The two adults turn only slightly toward one another and take several seconds to bring their foreheads together, their eyes softly closing at contact." },
+        "robe-edge": { "label": "指尖理顺袍边", "modes": ["text"], "zh": "模特慢慢把指尖沿袍边滑过去，捋平一处褶皱。", "en": "The model slowly runs their fingertips along the robe's edge, smoothing one fold in the silk." },
+        "profile-light": { "label": "侧脸慢慢入光", "modes": ["image"], "zh": "保留首帧衣着和姿态，面孔缓缓转进侧光，目光落向画外。", "en": "The subject keeps the opening wardrobe and posture as their face turns slowly into the side light and their gaze settles offscreen." },
+        "shared-lean": { "label": "两人逐渐靠拢", "modes": ["first-last-frame"], "zh": "两人先看向对方，再缓缓靠拢，让肩颈和额头沿尾帧方向自然收住。", "en": "The two adults look toward each other and gradually lean closer, letting their shoulders and foreheads settle along the path established by the last frame." },
+        "soft-eye-contact": { "label": "放松的眼神", "modes": ["motion-driver", "voice-driver"], "zh": "眼神放松，眉眼只在情绪变动时稍有起伏。", "en": "The gaze is soft and the brows change only slightly with the emotion." }
+      }
+    },
+    "camera": {
+      "label": "运镜",
+      "modes": ["text", "image", "first-last-frame"],
+      "options": {
+        "still": { "label": "固定", "zh": "镜头保持固定机位。", "en": "The camera holds a locked-off frame." },
+        "push": { "label": "推进", "zh": "镜头小幅缓慢推近主体。", "en": "The camera pushes in slowly over a short distance." },
+        "pull": { "label": "拉远", "zh": "镜头小幅缓慢拉远，渐渐露出主体周围的空间。", "en": "The camera pulls back slowly over a short distance to reveal more of the setting." },
+        "pan": { "label": "横移", "zh": "镜头以平缓速度小幅横移。", "en": "The camera tracks sideways at an even pace over a short distance." },
+        "orbit": { "label": "环绕", "zh": "镜头沿主体周围的一小段弧线缓慢移动。", "en": "The camera arcs slowly around the subject through a shallow angle." }
+      }
+    },
+    "atmosphere": {
+      "label": "环境与光影",
+      "modes": ["text", "image", "first-last-frame", "motion-driver", "voice-driver"],
+      "options": {
+        "tram-lights": { "label": "车灯映亮积水", "modes": ["text"], "zh": "远处车灯逐渐亮起，暖色倒影顺着站台边的积水拉长。", "en": "Distant headlights brighten and stretch warm reflections across puddles along the platform edge." },
+        "sheer-curtain": { "label": "晨光透过纱帘", "modes": ["text", "image"], "zh": "轻风托起白纱帘，原本透过帘子的亮斑随之滑过近处表面。", "en": "A breeze lifts the sheer curtain and slides a patch of morning light across the nearest surface." },
+        "lantern-shadows": { "label": "墙上暖影轻晃", "modes": ["text", "image"], "zh": "暖色光斑随摆动在墙面上缓慢往复。", "en": "A patch of amber light travels slowly back and forth across the wall." },
+        "neon-rain": { "label": "细雨映霓虹", "modes": ["image"], "zh": "细雨沿窗面滑下，霓虹倒影在水痕间轻轻游移。", "en": "Fine rain trails down the glass and carries the neon reflections with it." },
+        "depth-parallax": { "label": "近景掠过", "modes": ["image"], "zh": "近处景物缓缓掠过视野，远景移动得更慢。", "en": "Nearby objects drift past faster than the distant background." },
+        "rising-light": { "label": "光线逐渐铺开", "modes": ["first-last-frame"], "zh": "亮处从光源附近慢慢扩开，墙面与衣料上的阴影同步变淡，接近尾帧的色温。", "en": "Light spreads from its source and softens the shadows on fabric and walls as the color approaches the last frame." },
+        "warm-window": { "label": "暖窗光", "modes": ["motion-driver", "voice-driver"], "zh": "柔暖侧光掠过脸颊，阴影边缘平缓，背景维持原有空间关系。", "en": "Warm side light grazes the cheek, with soft-edged shadows and a stable background." },
+        "cool-fill": { "label": "冷色柔光", "modes": ["motion-driver", "voice-driver"], "zh": "冷色柔光均匀照亮面部，原图的明暗层次在动作中保持稳定。", "en": "Cool soft light keeps the face legible, preserving the source image's light and shade throughout the motion." },
+        "dusk-softness": { "label": "暮色窗光", "modes": ["text", "image", "first-last-frame", "motion-driver", "voice-driver"], "zh": "余晖从窗外漫进来，靠窗的一侧脸颊染上柔和暖色。", "en": "Last light from the window casts a soft, warm hue on the cheeks closest to it." },
+        "linen-light": { "label": "纱帘散射的侧光", "modes": ["text", "image", "first-last-frame", "motion-driver", "voice-driver"], "zh": "侧光穿过纱帘，把亮部的边缘拉柔，背景留在安静的暗部。", "en": "Light diffuses through the curtain, softening the edges of the highlights against a quiet background." }
+      }
+    },
+    "ending": {
+      "label": "收尾",
+      "modes": ["text", "image", "first-last-frame"],
+      "options": {
+        "settle-gaze": { "label": "视线落定", "modes": ["text", "image"], "zh": "视线落定后，人物安静地停留片刻。", "en": "The subject's gaze settles and holds for a beat." },
+        "rest": { "label": "动势渐歇", "modes": ["text", "image"], "zh": "动势逐渐减弱，画面在余动中平稳收住。", "en": "The movement eases gradually into a calm final beat." },
+        "offer-book": { "label": "让出书本", "modes": ["text"], "zh": "其中一人轻轻收回手，留下空间让对方取书。", "en": "One reader withdraws their hand, leaving room for the other to take the book." },
+        "match-first": { "label": "回到首帧神情", "modes": ["image"], "zh": "动作结束时，人物回到首帧的神情与姿态。", "en": "The subject returns to the opening expression and pose as the movement finishes." },
+        "match-last": { "label": "对齐尾帧", "modes": ["first-last-frame"], "zh": "临近尾帧时逐渐减速，让姿势、视线、光线与构图自然落到尾帧。", "en": "The motion eases into the final frame, matching its pose, gaze, light, and composition." },
+        "hold-contact": { "label": "保持贴额片刻", "modes": ["text", "image"], "zh": "贴额后保持原来的距离，只留两次缓慢的自然呼吸。", "en": "They stay forehead to forehead through two slow, easy breaths." }
+      }
+    }
+  },
+  "sounds": {
+    "room": { "label": "安静室内", "zh": "室内只有很轻的环境底声。", "en": "Quiet room tone stays low and even." },
+    "rain-glass": { "label": "雨点敲窗", "zh": "细雨轻轻敲打玻璃。", "en": "Light rain taps softly against the glass." },
+    "wet-platform": { "label": "站台微雨", "zh": "雨滴落到湿站台上，远处带着微弱的车轮声。", "en": "Rain ticks against the wet platform over a low rumble from the distant tram." },
+    "paper": { "label": "纸张轻响", "zh": "安静的室内响起一声轻微的纸张摩擦。", "en": "A faint rustle comes from the paper in the quiet room." },
+    "alley-wind": { "label": "巷口风声", "zh": "轻风穿过巷口，带来短促的檐下摩擦声。", "en": "A faint draft brushes through the alley and briefly rustles beneath the eaves." },
+    "footsteps": { "label": "脚步轻响", "zh": "每次脚掌落地都带出细小的脚步声。", "en": "Soft footsteps land in time with the visible steps." },
+    "breath-and-knit": { "label": "轻呼吸与衣料声", "zh": "室内底声很轻，靠近时针织衣料擦过一次，之后只听见自然的呼吸。", "en": "Quiet room tone continues, with a soft brush of knit fabric as they lean in and normal breathing as they settle." },
+    "silk-rustle": { "label": "丝料轻响", "zh": "手指理过袍边时传来细微的丝料摩擦声。", "en": "A quiet rustle of silk follows the motion of the hand against the robe." }
+  },
+  "music": {
+    "none": { "label": "无配乐", "zh": "无配乐。", "en": "N/A" },
+    "piano": { "label": "稀疏钢琴", "zh": "缓慢的单音钢琴留出停顿，末尾轻轻淡去。", "en": "Sparse piano notes sound at a slow tempo and fade gently near the end." },
+    "strings": { "label": "轻柔弦乐", "zh": "低声部弦乐缓慢延续，音量在收尾处渐低。", "en": "Soft sustained low strings taper toward the end." }
+  },
+  "presets": {
+    "text": [
+      { "id": "rain-platform", "title": "雨站等车", "summary": "雨伞抬起，远处车灯照亮站台。", "icon": "rain", "recipe": { "framing": "wide", "subject": "traveler", "action": "raise-umbrella", "camera": "push", "atmosphere": "tram-lights", "ending": "settle-gaze", "audio": { "sound": "wet-platform" } } },
+      { "id": "window-letter", "title": "窗边读信", "summary": "读到信尾，抬眼迎向晨光。", "icon": "bywindow", "recipe": { "framing": "medium", "subject": "reader", "action": "look-up-from-letter", "camera": "still", "atmosphere": "sheer-curtain", "ending": "settle-gaze", "audio": { "sound": "paper", "music": "none" } } },
+      { "id": "lantern-street", "title": "灯笼街口", "summary": "灯笼晃动，镜头拉远露出小巷。", "icon": "lantern", "recipe": { "framing": "close", "subject": "lantern", "action": "swaying-lantern", "camera": "pull", "atmosphere": "lantern-shadows", "ending": "rest", "audio": { "sound": "alley-wind" } } },
+      { "id": "bookstore-meeting", "title": "书店相遇", "summary": "两人伸向同一本书，视线相遇。", "icon": "book", "recipe": { "framing": "medium", "subject": "bookshop", "action": "reach-for-book", "camera": "still", "ending": "offer-book", "audio": { "sound": "room" } } },
+      { "id": "intimate-slow", "title": "亲密慢镜", "rating": "R15", "summary": "成年伴侣在暮色里慢慢贴额。", "icon": "bywindow", "recipe": { "framing": "medium", "subject": "adult-couple", "action": "forehead-touch", "camera": "push", "atmosphere": "dusk-softness", "ending": "hold-contact", "audio": { "sound": "breath-and-knit", "music": "none" } } },
+      { "id": "private-portrait", "title": "晨纱私密写真", "rating": "R18", "summary": "成年模特独处，晨光掠过肩线和丝袍。", "icon": "windowlight", "recipe": { "framing": "medium", "subject": "private-sitter", "action": "robe-edge", "camera": "still", "atmosphere": "linen-light", "ending": "rest", "audio": { "sound": "silk-rustle", "music": "none" } } }
+    ],
+    "image": [
+      { "id": "living-portrait", "title": "立绘微动", "summary": "保留首帧姿态，只加呼吸和眨眼。", "icon": "closeup", "recipe": { "action": "blink", "camera": "still", "ending": "match-first" } },
+      { "id": "look-back", "title": "回眸慢推", "summary": "人物缓缓转头，镜头轻轻靠近。", "icon": "turnshot", "recipe": { "action": "glance-back", "camera": "push", "ending": "settle-gaze" } },
+      { "id": "rainy-look-back", "title": "雨夜回眸", "summary": "适合带雨窗或霓虹的首帧。", "icon": "rain", "recipe": { "action": "glance-back", "camera": "push", "atmosphere": "neon-rain", "ending": "settle-gaze", "audio": { "sound": "rain-glass", "music": "piano" } } },
+      { "id": "breeze", "title": "微风拂过", "summary": "人物原地停留，发丝和衣缘被吹起。", "icon": "sideview", "recipe": { "action": "breeze", "camera": "still", "ending": "rest" } },
+      { "id": "walking", "title": "侧向跟拍", "summary": "人物走两步，前后景缓慢错开。", "icon": "midshot", "recipe": { "action": "two-steps", "camera": "pan", "atmosphere": "depth-parallax", "ending": "rest", "audio": { "sound": "footsteps" } } },
+      { "id": "intimate-image", "title": "贴额停留", "rating": "R15", "summary": "用成年伴侣首帧，慢慢靠近并停住。", "icon": "closeup", "recipe": { "action": "forehead-touch", "camera": "push", "ending": "hold-contact", "audio": { "sound": "breath-and-knit", "music": "none" } } },
+      { "id": "private-image", "title": "私影转入侧光", "rating": "R18", "summary": "用成人写真首帧，保留衣着与原场景。", "icon": "sideview", "recipe": { "action": "profile-light", "camera": "still", "atmosphere": "linen-light", "ending": "settle-gaze", "audio": { "sound": "room", "music": "none" } } }
+    ],
+    "first-last-frame": [
+      { "id": "pose-transition", "title": "姿态渐变", "summary": "先换重心，再接上尾帧视线。", "icon": "turnshot", "recipe": { "action": "shift-weight", "camera": "still", "ending": "match-last" } },
+      { "id": "framing-transition", "title": "远景推进", "summary": "从较远的首帧推到较近的尾帧。", "icon": "wideshot", "recipe": { "action": "depth-transition", "camera": "push", "ending": "match-last" } },
+      { "id": "light-transition", "title": "灯光渐亮", "summary": "机位稳定，让光线铺到尾帧。", "icon": "windowlight", "recipe": { "action": "soft-breath", "camera": "still", "atmosphere": "rising-light", "ending": "match-last" } },
+      { "id": "arc-transition", "title": "绕到另一侧", "summary": "沿一条短弧转到尾帧视角。", "icon": "pov", "recipe": { "action": "profile-shift", "camera": "orbit", "ending": "match-last" } },
+      { "id": "intimate-transition", "title": "从对视到依偎", "rating": "R15", "summary": "同一对成年伴侣，先对视，再渐渐靠近。", "icon": "closeup", "recipe": { "action": "shared-lean", "camera": "still", "ending": "match-last", "audio": { "sound": "breath-and-knit", "music": "none" } } },
+      { "id": "private-transition", "title": "写真移光", "rating": "R18", "summary": "用同一组成人写真，柔光渐移至尾帧。", "icon": "windowlight", "recipe": { "action": "soft-breath", "camera": "still", "atmosphere": "rising-light", "ending": "match-last", "audio": { "sound": "room", "music": "none" } } }
+    ],
+    "motion-driver": [
+      { "id": "motion-warm", "title": "暖窗光动作", "summary": "柔和侧光，专注平静的神态。", "icon": "windowlight", "recipe": { "action": "focused", "atmosphere": "warm-window" } },
+      { "id": "motion-cool", "title": "冷光动作", "summary": "清晰的眉眼，光影随动作保持连贯。", "icon": "sideview", "recipe": { "action": "bright", "atmosphere": "cool-fill" } },
+      { "id": "intimate-motion", "title": "暮色近景", "rating": "R15", "summary": "成年角色保留驱动动作，眼神柔和。", "icon": "closeup", "recipe": { "action": "soft-eye-contact", "atmosphere": "dusk-softness" } },
+      { "id": "private-motion", "title": "写真动作侧光", "rating": "R18", "summary": "纱帘柔光衬托成人写真的参考动作。", "icon": "windowlight", "recipe": { "action": "focused", "atmosphere": "linen-light" } }
+    ],
+    "voice-driver": [
+      { "id": "voice-warm", "title": "窗边轻谈", "summary": "暖光里神态放松，视线专注。", "icon": "bywindow", "recipe": { "action": "focused", "atmosphere": "warm-window" } },
+      { "id": "voice-cool", "title": "冷光对白", "summary": "冷色光保留脸部层次，神态轻快。", "icon": "closeup", "recipe": { "action": "bright", "atmosphere": "cool-fill" } },
+      { "id": "intimate-voice", "title": "暮色私语", "rating": "R15", "summary": "成年角色的低声对白，柔光保留眉眼。", "icon": "bywindow", "recipe": { "action": "soft-eye-contact", "atmosphere": "dusk-softness" } },
+      { "id": "private-voice", "title": "写真近景独白", "rating": "R18", "summary": "成人写真氛围，表情跟随原配音。", "icon": "closeup", "recipe": { "action": "soft-eye-contact", "atmosphere": "linen-light" } }
+    ]
+  }
+}

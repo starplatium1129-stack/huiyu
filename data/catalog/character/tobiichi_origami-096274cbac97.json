@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tobiichi_origami",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "tobiichi_origami",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-tobiichi_origami.png?v=dd65f9f308ea",
+        "image": "../assets/characters/popular-tobiichi_origami.png?v=453db9728f2c",
         "alt": "鸢一折纸样张立绘",
         "sourceShowcaseId": "pc_tobiichi_origami_pc_tobiichi_origami_tobiichi_origami_sfw_b6_06",
         "sourceShowcaseSha256": "f2bd27110ab6e2def810ba3f63fe48f3a3be220efd9894bb83d3919668795e27"

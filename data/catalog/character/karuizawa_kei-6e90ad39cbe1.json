@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "karuizawa_kei",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 232,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "karuizawa_kei",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🎀",
       "portrait": {
-        "image": "../assets/characters/popular-karuizawa_kei.png?v=60be70e2b446",
+        "image": "../assets/characters/popular-karuizawa_kei.png?v=07844c336e33",
         "alt": "轻井泽惠样张立绘",
         "sourceShowcaseId": "pc_karuizawa_kei_pc_karuizawa_kei_kei_stairwell_secret_whisper",
         "sourceShowcaseSha256": "d6a8a93b6ddb8a643edd60262bf795033633d89c693174ea0b37a068879be1bc"

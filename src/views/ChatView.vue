@@ -54,7 +54,7 @@
             </div>
             <p v-if="chatProvider === 'api' && isLocalHost">联网检索由 RustXNG 提供，搜索词会发送给第三方搜索源。<a href="https://github.com/starplatium1129-stack/huiyu" target="_blank" rel="noopener noreferrer" aria-label="查看绘遇源码与许可，在新窗口打开">源码与许可</a></p>
             <div class="room-settings-voice">
-              <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control#control-services" @click="closeRoomPanel">启动语音<ArchiveIcon name="chevron-down" /></RouterLink>
+              <span>{{ voiceCapabilityText }}</span><RouterLink v-if="showVoiceRecovery" class="btn btn-ghost btn-sm" to="/control?section=control-voice" @click="closeRoomPanel">语音配置<ArchiveIcon name="chevron-down" /></RouterLink>
               <AsyncPanel class="room-speech-popover-loader" :loader="loadSpeechPopover" label="语音输入设置" v-slot="{ component: popoverComponent }">
               <component :is="popoverComponent" v-model:open="speechSettingsOpen" label="语音输入设置" side="top" prioritize-position content-class="chat-speech-settings speech-settings-popover" @open-auto-focus="focusSpeechPopover" @close-auto-focus="returnSpeechFocus">
                 <template #trigger><button class="btn btn-ghost" type="button">语音输入设置</button></template>

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shokuhou_misaki",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shokuhou_misaki",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "👑",
       "portrait": {
-        "image": "../assets/characters/popular-shokuhou_misaki.png?v=af8c22fbb43b",
+        "image": "../assets/characters/popular-shokuhou_misaki.png?v=1e097422be6d",
         "alt": "食蜂操祈样张立绘",
         "sourceShowcaseId": "pc_shokuhou_misaki_pc_shokuhou_misaki_misaki_mental_out_queen_gesture",
         "sourceShowcaseSha256": "0832042d936e5d02436b2bd5119ec318eb58d5eec9a934026c48c4da2a5a6652"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amane_rainy_bus_station_shared_umbrella",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1180,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "amane_rainy_bus_station_shared_umbrella",
     "title": "周防天音 · 雨夜站台的红伞依偎",
@@ -31,8 +31,10 @@
       "pantyhose",
       "hair_rings"
     ],
-    "promptProse": "She leans against Yuuji and tips the umbrella toward him despite her damp shoulder. Streetlamp reflections ripple across the road beside the shelter.",
+    "promptProse": "Amane presses against Yuuji at the bus shelter, long red hair spilling over the wet shoulder of her lavender uniform. Yuuji has short black hair and a dark rain jacket with its hood down. She tilts the red umbrella toward him while amber streetlamp reflections break across the puddled road.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "couple",
       "red umbrella",
       "bus stop",
@@ -43,11 +45,15 @@
       "leaning on another",
       "wet hair",
       "streetlight",
-      "reflection"
+      "reflection",
+      "kazami yuuji"
     ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "compositionIntent": "group",
-    "animaCaption": "She tips the shared umbrella toward Yuuji, leaving her own shoulder damp."
+    "animaCaption": "Amane's long red hair and damp lavender school blouse show under the red umbrella. She leans against short black-haired Yuuji in a dark rain jacket and tips the canopy over him.",
+    "characterTokens": [
+      "kazami yuuji"
+    ]
   }
 }

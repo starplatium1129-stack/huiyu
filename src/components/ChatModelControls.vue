@@ -143,7 +143,12 @@ const museInstructions = computed(() => {
   const inbox = tailscale ? '/desktop/pending' : '/api/muse/desktop/inbox'
   const reply = tailscale ? '/desktop/replies' : '/api/muse/desktop/reply'
   const connection = tailscale ? '沿用绘遇 QQ 连接的 Tailscale 地址和端口' : '沿用绘遇远程出图的地址和 X-Token'
-  return `${connection}，让桌面与 QQ 各自持续收信。桌面 GET ${inbox}?wait=25，HTTP 超时至少 40 秒。空收件箱立即续接，operations.inboxWaitSeconds 缺失或为 0 时等 2 秒再取，连接失败按 Retry-After 或逐步退避。按 conversationId 区分对话，用角色设定和 messages 直接回答。写好即在 expiresAt 前向 ${reply} POST {"requestKey":"来信编号","text":"角色的回答"}。每个编号只生成一次，重试沿用原回答。继续原有 QQ 和出图任务。`
+  return [
+    `${connection}，保留原有 QQ 与出图任务，另建独立桌面收信循环：`,
+    `1. 持续 GET ${inbox}?wait=25（HTTP 超时 ≥40s），空收件箱立即续接（若缺少 inboxWaitSeconds 则等 2s），失败按 Retry-After 退避。`,
+    `2. 按 conversationId、角色设定与 messages 回答，在 expiresAt 前向 POST ${reply} 提交 {"requestKey":"来信编号","text":"角色回复"}。`,
+    `3. 每个 requestKey 仅生成一次，重投沿用原编号与原文。`,
+  ].join('\n')
 })
 
 const reasoningHint = computed(() => {

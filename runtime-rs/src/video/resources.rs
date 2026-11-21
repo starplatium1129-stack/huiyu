@@ -47,6 +47,8 @@ fn available(root: &std::path::Path, model: &Value) -> Value {
     }
     let complete = missing.is_empty();
     let mut value = model.clone();
+    value["supportsNegative"] = json!(prompt_compiler::supports_negative(model));
+    value["supportsGeneratedAudio"] = json!(prompt_compiler::supports_audio(model));
     value["available"] = json!(model["executable"] == true && complete);
     value["missing"] = missing.into();
     value["reason"] = json!(if model["executable"] != true {

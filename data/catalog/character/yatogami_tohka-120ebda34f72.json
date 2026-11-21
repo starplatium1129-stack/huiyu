@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yatogami_tohka",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yatogami_tohka",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-yatogami_tohka.png?v=eff90f02ec35",
+        "image": "../assets/characters/popular-yatogami_tohka.png?v=d1ff2736c098",
         "alt": "夜刀神十香样张立绘",
         "sourceShowcaseId": "pc_yatogami_tohka_pc_yatogami_tohka_yatogami_tohka_sfw_b6_06",
         "sourceShowcaseSha256": "fb32d78d0b4ac34230a0df9a92061589c0b94a5f1c629c3e42f6d8cad1e54967"

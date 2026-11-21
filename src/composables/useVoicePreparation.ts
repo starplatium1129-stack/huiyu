@@ -1,3 +1,4 @@
+import type { TtsEngine } from '../types/api.ts'
 import { ref } from 'vue'
 import { voiceApi } from '../api/voiceApi.ts'
 import { ApiClientError } from '../api/client.ts'
@@ -5,6 +6,10 @@ import { isAbortError } from '../utils/stream.ts'
 
 export interface VoiceAvailability {
   online: boolean; available?: boolean
+  engine?: string
+  engineId?: TtsEngine
+  needsTranslation?: boolean
+  clientSide?: boolean
   voices?: Record<string, boolean>
   translation?: { ready: boolean }
   activeVoice?: string
@@ -38,6 +43,10 @@ function readVoiceAvailability(value: unknown): VoiceAvailability {
     : undefined
   return {
     online: Boolean(value.online), available: value.available === true,
+    engine: typeof value.engine === 'string' ? value.engine : undefined,
+    engineId: typeof value.engineId === 'string' ? (value.engineId as TtsEngine) : undefined,
+    needsTranslation: typeof value.needsTranslation === 'boolean' ? value.needsTranslation : undefined,
+    clientSide: value.clientSide === true,
     voices,
     translation,
     activeVoice: typeof value.activeVoice === 'string' ? value.activeVoice : undefined,
@@ -62,25 +71,36 @@ export function useVoicePreparation(enabled: () => boolean, onStatus: (text: str
   }
 
   function readyFor(voice: string) {
+    if (availability.value.engineId === 'off') return false
+    if (availability.value.engineId === 'system') {
+      return Boolean(voice) && typeof window !== 'undefined' && 'speechSynthesis' in window
+    }
     return Boolean((availability.value.online || availability.value.available) && availability.value.voices?.[voice])
   }
 
   function prepare(voice: string, needsTranslation = true): Promise<boolean> {
     if (destroyed || !enabled()) return Promise.resolve(false)
+    if (availability.value.engineId === 'off') return Promise.resolve(false)
+    if (availability.value.engineId === 'system') {
+      const ok = readyFor(voice)
+      if (ok) onStatus('')
+      return Promise.resolve(ok)
+    }
     if (!readyFor(voice)) return Promise.resolve(false)
-    const translationReady = !needsTranslation || Boolean(availability.value.translation?.ready)
-    const key = voice + ':' + needsTranslation
+    const effectiveTranslation = availability.value.needsTranslation === false ? false : needsTranslation
+    const translationReady = !effectiveTranslation || Boolean(availability.value.translation?.ready)
+    const key = voice + ':' + effectiveTranslation
     if (preparing && prepareKey === key) return preparing
     if (!preparing && availability.value.activeVoice === voice && translationReady) { prepareKey = key; return Promise.resolve(true) }
     const revision = ++prepareRevision
     prepareController?.abort()
     prepareController = new AbortController()
     prepareKey = key
-    onStatus(needsTranslation ? '正在预热声线与翻译…' : '正在预热角色声线…')
-    preparing = voiceApi.prepare({ voice, translation: needsTranslation }, { signal: prepareController.signal }).then(() => {
+    onStatus(effectiveTranslation ? '正在预热声线与翻译…' : '正在准备语音播放…')
+    preparing = voiceApi.prepare({ voice, translation: effectiveTranslation }, { signal: prepareController.signal }).then(() => {
       if (revision !== prepareRevision || destroyed) return false
       availability.value.activeVoice = voice
-      if (needsTranslation) availability.value.translation = { ...(availability.value.translation ?? {}), ready: true }
+      if (effectiveTranslation) availability.value.translation = { ...(availability.value.translation ?? {}), ready: true }
       onStatus(''); return true
     }).catch((e) => {
       if (revision === prepareRevision && !destroyed && !isAbortError(e)) {

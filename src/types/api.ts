@@ -26,14 +26,103 @@ export type HostConfig =
   | { ok?: true; configured: true; model: string; baseUrl: string }
 export type ConfiguredHostConfig = Extract<HostConfig, { configured: true }>
 export interface ProviderTestResult { ok: true; models: string[] }
-export interface TtsStatus { online: boolean; available?: boolean; voices: Record<string, boolean>; engine?: string; streamingPcm?: boolean; translation?: { ready: boolean }; activeVoice?: string; error?: string }
+export type TtsEngine = 'off' | 'system' | 'openai-tts' | 'gpt-sovits' | 'gpt-sovits-native' | 'voxcpm2'
+
+export interface TtsApiPublicConfig {
+  baseUrl: string
+  model: string
+  voiceNene: string
+  voiceNatsume: string
+  defaultVoice: string
+  responseFormat: 'mp3' | 'wav' | 'opus' | 'aac'
+  hasApiKey: boolean
+}
+
+export interface TtsApiPatch {
+  baseUrl: string
+  apiKey?: string
+  clearApiKey?: boolean
+  model: string
+  voiceNene: string
+  voiceNatsume: string
+  defaultVoice: string
+  responseFormat: 'mp3' | 'wav' | 'opus' | 'aac'
+}
+
+export interface TtsStatus {
+  online: boolean
+  available?: boolean
+  voices: Record<string, boolean>
+  engine?: string
+  engineId?: TtsEngine
+  needsTranslation?: boolean
+  clientSide?: boolean
+  streamingPcm?: boolean
+  translation?: { ready: boolean }
+  activeVoice?: string
+  error?: string
+}
+
+export interface VoicePackItem {
+  id?: string
+  name?: string
+  description?: string
+  [key: string]: unknown
+}
+
+export interface VoiceProfileFileCheck {
+  path: string
+  present: boolean
+}
+
+export interface VoiceProfileCheck {
+  configured: boolean
+  gptWeights: VoiceProfileFileCheck
+  sovitsWeights: VoiceProfileFileCheck
+  loraWeights: VoiceProfileFileCheck
+  refAudio: VoiceProfileFileCheck
+  promptText: string
+  promptLang: string
+}
+
+export interface VoiceSetupStatus {
+  ok: true
+  engineId: TtsEngine
+  workspacePath: string
+  ttsApi: TtsApiPublicConfig
+  profiles: Record<'nene' | 'natsume', VoiceProfileCheck>
+  checks: {
+    gptSovitsDir: boolean
+    gptSovitsEnv: boolean
+    ttsInferConfig: boolean
+    profilesJson: boolean
+    voxcpmDir: boolean
+    translationScript: boolean
+  }
+  packs: VoicePackItem[]
+}
+
+export interface VoicePackImportResult {
+  ok: true
+  voices: ControlStatus['voices']
+  detectedFiles: string[]
+  warnings: string[]
+  applied: boolean
+}
+
+export interface VoiceApiTestResult {
+  ok: true
+  contentType: string
+  bytes: number
+  audioBase64: string
+}
 export interface VoicePrepareResult { ok: true; voice: string; translation: boolean; prepareMs?: number }
 export interface TranslateResult { sourceLanguage?: string; targetLanguage?: string; translation: string; segments?: unknown[] }
 export interface Live2DStatusResponse { models: Record<string, unknown> }
 export interface SDStatusResponse { online: boolean; checkpoint: string; models: string[]; samplers: string[]; schedulers: string[]; upscalers: string[] }
 
 // ── 控制面板 ───────────────────────────────────────────────────────────────
-type TunnelStatus = 'active' | 'waiting' | 'disabled'
+type TunnelStatus = 'active' | 'connecting' | 'waiting' | 'disabled'
 
 export interface ControlOperationView {
   cancelAllowed?: boolean
@@ -87,11 +176,13 @@ export interface ControlStatus {
   sdHost: string
   comfyHost: string
   ttsHost: string
-  ttsEngine?: 'gpt-sovits' | 'gpt-sovits-native' | 'voxcpm2'
+  ttsEngine?: TtsEngine
+  ttsApi?: TtsApiPublicConfig
   ollamaHost: string
   localLink: string
   shareLinkAvailable: boolean
   tunnelStatus: TunnelStatus
+  tunnelManaged?: boolean
   tunnelAvailable: boolean
   uptime: number
   autoStartVoice?: boolean
@@ -145,7 +236,8 @@ export interface ControlConfigPayload {
   sdHost: string
   comfyHost: string
   ttsHost: string
-  ttsEngine?: 'gpt-sovits' | 'gpt-sovits-native' | 'voxcpm2'
+  ttsEngine?: TtsEngine
+  ttsApi?: TtsApiPatch
   voices: Partial<Record<'nene' | 'natsume', VoiceProfileView>>
 }
 

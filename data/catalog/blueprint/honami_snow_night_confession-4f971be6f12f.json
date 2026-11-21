@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "honami_snow_night_confession",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1889,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "honami_snow_night_confession",
     "characterId": "ichinose_honami",
@@ -19,6 +19,8 @@
     "lighting": "路灯从上方洒下的金黄色光锥与漫天白雪反光",
     "camera": "cowboy shot, eye level",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "snowing",
       "snowflakes",
       "street lamp",
@@ -45,12 +47,13 @@
       "romantic",
       "night"
     ],
-    "promptProse": "Standing under a halo of warm lamplight amidst gently falling snowflakes, she slips her gloved hand into his coat pocket to entwine their fingers, gazing upward with rosy cheeks.",
+    "promptProse": "Honami looks up from her red wool scarf, her long pink hair loose over a camel duffle coat. The boy beside her has dark-brown cropped hair, square brows and a navy pea coat. She slips her glove into his coat pocket to hold his hand beneath the lamppost while the snow falls around them.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "Her gloved hand slips into her companion's coat pocket to entwine their fingers."
+    "animaCaption": "Honami looks up from her red wool scarf, her long pink hair loose over a camel duffle coat. The boy beside her has dark-brown cropped hair, square brows and a navy pea coat. She slips her glove into his coat pocket to hold his hand beneath the lamppost while the snow falls around them.",
+    "compositionIntent": "group"
   }
 }

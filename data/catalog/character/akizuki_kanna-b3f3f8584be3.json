@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akizuki_kanna",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "akizuki_kanna",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-akizuki_kanna.png?v=d91266085f55",
+        "image": "../assets/characters/popular-akizuki_kanna.png?v=aa7fb0e6daa3",
         "alt": "明月栞那样张立绘",
         "sourceShowcaseId": "pc_akizuki_kanna_pc_akizuki_kanna_akizuki_kanna_sfw_b7_01",
         "sourceShowcaseSha256": "83ad40ae4f27d1d38d8dc83899d4201423b3961ec6ba5f6b7f0e4af22d36c89d"

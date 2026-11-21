@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "momo_morning_futon_cuddle_tease",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1246,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "侧卧被窝内手撑香腮贴近对方，半透薄纱睡裙露出深邃乳沟，爱心尾巴暗中缠腿调情",
     "camera": "close-up two-shot, side view",
@@ -22,9 +22,10 @@
       "nude"
     ],
     "outfitId": "harem_negligee",
-    "promptProse": "Momo lies on the left beside her partner's pillow, chin resting in one palm as she looks toward him on the right; her tail curls around his leg beneath the blanket. Cool morning light reaches the white bedding while warm bedside glow touches their faces.",
+    "promptProse": "Momo lies on the left with her pink bob brushing one cheek as she props her chin in her palm. Rito, with short tousled brown hair and a buttoned blue pajama top, lies facing her at the other pillow. Beneath the covers, Momo's tail curls around his lower leg. Cool window light and warm bedside glow reach both faces.",
     "promptTokens": [
-      "2people",
+      "1girl",
+      "1boy",
       "under covers",
       "chin in hand",
       "bed",
@@ -33,7 +34,8 @@
       "morning light",
       "warm lighting",
       "close up two-shot",
-      "side view"
+      "side view",
+      "yuuki rito"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -51,6 +53,9 @@
     "nsfwTokens": [],
     "nsfwProse": "",
     "compositionIntent": "group",
-    "animaCaption": "Momo lies left, facing her partner on the right; her tail curls around his leg beneath the blanket."
+    "animaCaption": "Pink-bobbed Momo rests her chin in her palm on the left. Facing her from the right pillow, short spiky brown-haired Rito wears a blue pajama top. Her tail curls around his lower leg beneath the bedding.",
+    "characterTokens": [
+      "yuuki rito"
+    ]
   }
 }

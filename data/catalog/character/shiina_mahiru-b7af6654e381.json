@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mahiru",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shiina_mahiru",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/popular-shiina_mahiru.png?v=40e41773ab2b",
+        "image": "../assets/characters/popular-shiina_mahiru.png?v=e9775d173ebd",
         "alt": "椎名真昼样张立绘",
         "sourceShowcaseId": "pc_shiina_mahiru_pc_shiina_mahiru_mahiru_rain_umbrella_park",
         "sourceShowcaseSha256": "a4e0cd1fc735e6bb0296fc41d276dd315fd09f7559369063208a2c0664943327"

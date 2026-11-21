@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "frenda_seivelun",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 243,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "frenda_seivelun",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🐟",
       "portrait": {
-        "image": "../assets/characters/popular-frenda_seivelun.png?v=58a7cc31d108",
+        "image": "../assets/characters/popular-frenda_seivelun.png?v=0653fcc28a11",
         "alt": "芙兰达·塞维伦样张立绘",
         "sourceShowcaseId": "pc_frenda_seivelun_pc_frenda_seivelun_frenda_safehouse_sofa_mackerel_feed",
         "sourceShowcaseSha256": "4e3c47c005de7097adb7349901e76ef3eb5e55234f71015115a1c0ac714978d5"

@@ -6,10 +6,11 @@ import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 export const controlSections: Array<{ id: string; group: string; label: string; icon: ArchiveIconName; description: string }> = [
   { id: 'control-overview', group: '开始使用', label: '总览与入门', icon: 'eye', description: '画室环境与模块就绪状态。' },
   { id: 'control-setup', group: '开始使用', label: '绘图与模型', icon: 'download', description: '底模配置、下载管理与本地模型支持。' },
+  { id: 'control-voice', group: '开始使用', label: '语音与朗读', icon: 'sound', description: '选择系统朗读、云端语音接口或导入本机角色语音包。' },
   { id: 'control-interrogate', group: '按需扩展', label: '图片反推', icon: 'search', description: '解析参考图片，提取风格与描述词。' },
   { id: 'control-library', group: '开始使用', label: '资源与素材', icon: 'image', description: '管理角色立绘、场景素材与离线画册。' },
   { id: 'control-personalization', group: '偏好与管理', label: '外观与桌面', icon: 'palette', description: '界面主题、动效、缩放与启动偏好。' },
-  { id: 'control-services', group: '偏好与管理', label: '服务与连接', icon: 'gear', description: '服务连接、显存策略与角色声线配置。' },
+  { id: 'control-services', group: '偏好与管理', label: '服务与连接', icon: 'gear', description: '服务连接与显存策略。' },
   { id: 'control-share', group: '偏好与管理', label: '分享与访问', icon: 'upload', description: '局域网与公网临时分享访问。' },
   { id: 'control-logs', group: '偏好与管理', label: '日志与排查', icon: 'book', description: '系统运行日志与脱敏诊断导出。' },
 ]
@@ -20,7 +21,7 @@ const aliases: Record<string, string> = {
   'control-companion-channels': 'control-services',
   'control-connection-settings': 'control-services', 'control-service-webui': 'control-services',
   'control-service-comfy': 'control-services', 'control-service-llama': 'control-services',
-  'control-service-voice': 'control-services', 'control-service-ollama': 'control-services',
+  'control-service-voice': 'control-voice', 'control-service-ollama': 'control-services',
 }
 export function useControlNavigation(imageProvider: Ref<'native' | 'remote' | 'comfy' | null | undefined>) {
   const route = useRoute()

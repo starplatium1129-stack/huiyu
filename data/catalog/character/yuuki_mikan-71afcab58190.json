@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuuki_mikan",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 168,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yuuki_mikan",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🍊",
       "portrait": {
-        "image": "../assets/characters/popular-yuuki_mikan.png?v=07ed49295fbe",
+        "image": "../assets/characters/popular-yuuki_mikan.png?v=64d6f826ff60",
         "alt": "结城美柑样张立绘",
         "sourceShowcaseId": "pc_yuuki_mikan_pc_yuuki_mikan_mikan_veranda_watermelon_summer_breeze",
         "sourceShowcaseSha256": "1563cba86072ce2fa93e2d19e5c119ce3946e8be5bd94d85d303667282fc0340"

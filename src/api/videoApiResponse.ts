@@ -73,9 +73,13 @@ function isVideoModelStatus(value: unknown): value is VideoModelStatus {
     && (value.durations === undefined || Array.isArray(value.durations) && value.durations.length > 0 && value.durations.every(isVideoDuration))
     && (value.qualities === undefined || Array.isArray(value.qualities) && value.qualities.length > 0 && value.qualities.every(id => ['fast', 'standard', 'fine'].includes(id)))
     && (value.supportsNegative === undefined || typeof value.supportsNegative === 'boolean')
+    && (value.supportsGeneratedAudio === undefined || typeof value.supportsGeneratedAudio === 'boolean')
+    && (value.turboSteps === undefined || value.id === 'minimax-h3' && Array.isArray(value.turboSteps)
+      && value.turboSteps[0] === 4 && (value.turboSteps.length === 1 || value.turboSteps.length === 2 && value.turboSteps[1] === 8))
     && (value.drivingInput === undefined || value.drivingInput === 'audio' || value.drivingInput === 'video')
     && (value.attentionModes === undefined || Array.isArray(value.attentionModes) && value.attentionModes.length > 0
-      && value.attentionModes.every(mode => ['auto', 'sdpa', 'sage', 'flash2'].includes(mode)))
+      && value.attentionModes.every(mode => ['auto', 'sdpa', 'sage', 'flash2', 'h3-sol', 'h3-sla', 'h3-fused'].includes(mode)))
+    && (value.h3LightVae === undefined || value.id === 'minimax-h3' && typeof value.h3LightVae === 'boolean')
     && (value.canvases == null || isRecord(value.canvases) && Object.values(value.canvases).every(size =>
       Array.isArray(size) && size.length === 2 && size.every(n => Number.isSafeInteger(n) && n > 0)))
     && Array.isArray(value.requirements) && value.requirements.every(isText)
@@ -111,7 +115,8 @@ export function isVideoStatusResponse(value: unknown): boolean {
     && isRecord(value.t8) && typeof value.t8.available === 'boolean' && isText(value.t8.reason)
 }
 
-const attentionBackends = { sdpa: 'SDPA', slicedSdpa: '分块 SDPA', flash2: 'FlashAttention 2', sage: 'SageAttention' } as const
+const attentionBackends = { sdpa: 'SDPA', slicedSdpa: '分块 SDPA', flash2: 'FlashAttention 2', sage: 'SageAttention',
+  'h3-sol': 'Sol-Attn', 'h3-sla': 'Turbo-SLA', 'h3-fused': 'Fused Turbo 稀疏注意力' } as const
 
 export function videoJobExecution(provider: string, status: string, metadata: unknown): VideoJob['execution'] {
   if (provider !== 'native' || status !== 'succeeded' || !isRecord(metadata) || !isRecord(metadata.nativeRuntime)) return
@@ -123,10 +128,13 @@ export function videoJobExecution(provider: string, status: string, metadata: un
   const attention = []
   for (const [key, label] of Object.entries(attentionBackends)) {
     const count = calls[key]
+    if (key.startsWith('h3-') && count === undefined) continue
     if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) return
     if (count > 0) attention.push(label)
   }
-  return { device: { cuda: 'CUDA', rocm: 'ROCm', xpu: 'XPU' }[device], attention, encoder }
+  const decoder = metadata.nativeRuntime.h3Decoder === 'lightvae-lite-fp16' ? 'LightVAE'
+    : metadata.nativeRuntime.h3Decoder === 'original' ? 'H3 原版' : undefined
+  return { device: { cuda: 'CUDA', rocm: 'ROCm', xpu: 'XPU' }[device], attention, encoder, decoder }
 }
 export function videoJobResponse(value: unknown, expectedId?: string): { ok: true; job: VideoJob } {
   if (!isRecord(value) || value.ok !== true || !isVideoJob(value.job)) throw new ApiClientError('视频任务响应无效，请重新核对原请求。', { kind: 'invalid-response' })

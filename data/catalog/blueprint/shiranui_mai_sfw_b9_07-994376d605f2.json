@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_sfw_b9_07",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1747,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "shiranui_mai_sfw_b9_07",
     "title": "不知火舞 · 夏祭折扇与苹果糖",
@@ -30,8 +30,10 @@
       "night",
       "night_light"
     ],
-    "promptProse": "She offers the candy apple to the off-frame viewer, fan shielding her other sticky hand, as visitors pass beneath the lanterns.",
+    "promptProse": "Mai stands alone at the festival candy stall in her red-and-white yukata, her dark high ponytail outlined by paper lanterns. She extends a red candy apple straight toward the off-camera viewer and holds the folding fan over the sticky fingers of her other hand. The warm light falls across her smile and the trays at her elbow.",
     "promptTokens": [
+      "1girl",
+      "solo",
       "candy apple",
       "folding fan",
       "festival",
@@ -51,7 +53,7 @@
     "coverageTags": [
       "daily"
     ],
-    "compositionIntent": "group",
-    "animaCaption": "She offers the candy apple while her fan shields the other sticky hand."
+    "compositionIntent": "single",
+    "animaCaption": "Mai stands alone at the festival candy stall in her red-and-white yukata, her dark high ponytail outlined by paper lanterns. She extends a red candy apple straight toward the off-camera viewer and holds the folding fan over the sticky fingers of her other hand. The warm light falls across her smile and the trays at her elbow."
   }
 }

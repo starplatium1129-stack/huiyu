@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kamio_misuzu",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 251,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kamio_misuzu",
     "profile": {
@@ -152,7 +152,7 @@
         "Key社三大催泪巅峰神作"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-kamio_misuzu.png?v=0d6242982c5f",
+        "image": "../assets/characters/popular-kamio_misuzu.png?v=bc9575155089",
         "alt": "神尾观铃样张立绘",
         "sourceShowcaseId": "pc_kamio_misuzu_pc_kamio_misuzu_misuzu_sunflower_slope_straw_hat_wave",
         "sourceShowcaseSha256": "58a51a666f15eea5ed4b8122bcac48e0d1ee989792ded39cc36bf5fe0003be87"

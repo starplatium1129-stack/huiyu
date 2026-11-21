@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "inaba_meguru",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 189,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "inaba_meguru",
     "profile": {
@@ -378,7 +378,7 @@
         "pink_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-inaba_meguru.png?v=3740ab25fc41",
+        "image": "../assets/characters/popular-inaba_meguru.png?v=aae9f3b8490e",
         "alt": "因幡巡样张立绘",
         "sourceShowcaseId": "pc_inaba_meguru_pc_inaba_meguru_inaba_meguru_daily_arcade_crane",
         "sourceShowcaseSha256": "705b94006c7dfd3bddee2f7121ae1d6c5c064597094c0f6579a545492dcd0e0a"

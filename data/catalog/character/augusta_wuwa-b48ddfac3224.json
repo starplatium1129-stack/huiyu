@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "augusta_wuwa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 309,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "augusta_wuwa",
     "profile": {
@@ -43,7 +43,7 @@
         "tall"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-augusta_wuwa.png?v=20c6fb3b348e",
+        "image": "../assets/characters/popular-augusta_wuwa.png?v=ab0bdee98319",
         "alt": "奥古斯塔立绘"
       },
       "visual_dna": {

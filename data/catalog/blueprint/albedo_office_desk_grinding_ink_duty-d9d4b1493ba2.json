@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "albedo_office_desk_grinding_ink_duty",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1298,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "albedo_office_desk_grinding_ink_duty",
     "title": "雅儿贝德 · 办公桌旁的墨水与公文批改",
@@ -29,7 +29,7 @@
       "gentle_smile",
       "loving_gaze"
     ],
-    "promptProse": "Standing beside her companion at the desk, she holds an inked quill in one hand and rests the other on the desk edge while they review the documents. Window light reaches her face and writing hand.",
+    "promptProse": "Albedo stands at the left corner of the desk in her white gown with her black wings folded behind her, her curved horns above the quill she holds ready. The gray-haired official beside her wears a high-collared charcoal coat and reads the parchment in profile. Window light falls across her writing hand and their papers.",
     "promptTokens": [
       "quill",
       "parchment",
@@ -50,6 +50,6 @@
       "devotion"
     ],
     "compositionIntent": "group",
-    "animaCaption": "One hand holds the quill while the other rests beside their shared documents."
+    "animaCaption": "On the left, horned Albedo stands in her white gown with quill raised. The gray-haired official wears a high-collared charcoal coat and sits at the right of the desk, reading the parchment in profile."
   }
 }

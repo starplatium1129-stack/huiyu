@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lena_bridal_vow_white_chapel",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1356,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "双手捧白花站在彩窗光柱中，抬头向走近的伴侣露出含泪浅笑",
     "adult": false,
@@ -26,8 +26,10 @@
     "mood": "神圣圣洁、泪光心动",
     "negativeTokens": [],
     "outfitId": "white_bridal_gown",
-    "promptProse": "Lena holds the white bouquet in both hands beneath the chapel’s stained-glass light. She lifts a tearful smile toward her companion approaching down the aisle.",
+    "promptProse": "Silver-haired Lena stands at the brightly lit end of the chapel aisle with her veil and white bouquet held in both hands. A groom with cropped brown hair and a dark navy dress uniform walks toward her between the pews. She lifts a tearful smile into the colored rays from the stained glass.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "vladilena_millize",
       "bouquet",
       "chapel",
@@ -53,6 +55,6 @@
     ],
     "timeOfDay": "正午",
     "title": "芙拉蒂蕾娜 · 纯白花嫁的军装誓约",
-    "animaCaption": "She lifts a tearful smile toward her companion approaching down the chapel aisle."
+    "animaCaption": "The silver-haired bride holds her white bouquet at the altar. The groom in the aisle has cropped brown hair and a dark navy military dress uniform."
   }
 }

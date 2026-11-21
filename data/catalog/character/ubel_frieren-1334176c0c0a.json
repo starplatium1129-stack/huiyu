@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ubel_frieren",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 127,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "ubel_frieren",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-ubel_frieren.png?v=defed8b2a5ea",
+        "image": "../assets/characters/popular-ubel_frieren.png?v=157ee7bb5264",
         "alt": "尤贝尔样张立绘",
         "sourceShowcaseId": "pc_ubel_frieren_pc_ubel_frieren_ubel_frieren_sfw_b6_01",
         "sourceShowcaseSha256": "c072ae252f5ec4506d1090e9aa64789d18a8631e4b32ff5f01cee435ff4259c1"

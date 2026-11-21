@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kaguya_library_shared_reading",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1400,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "并肩共读留三厘米距离，侧脸微近，余光偷看",
     "adult": false,
@@ -25,8 +25,10 @@
     "mood": "计算中的心动、静谧",
     "negativeTokens": [],
     "outfitId": "official_shuchiin_uniform",
-    "promptProse": "Kaguya and her companion sit side by side at the window reading seat, their two open books separated by a three-centimeter gap. She glances at her companion's page without moving her own book; window light catches dust and paper edges.",
+    "promptProse": "At the library window, Kaguya sits in a pleated black uniform skirt, her folded black ponytail tied with a red ribbon. The blond boy to her right wears a buttoned black school jacket. He reads his own open book while she steals a glance at his page, leaving a three-centimeter gap between their books. Afternoon light catches dust and paper edges.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "shinomiya_kaguya",
       "reading",
       "open books",
@@ -52,6 +54,6 @@
     ],
     "timeOfDay": "午后",
     "title": "四宫辉夜 · 图书室的共读午后",
-    "animaCaption": "Their two open books remain three centimeters apart as she glances at her companion's page."
+    "animaCaption": "Red-ribboned Kaguya glances right from her own book at the short blond boy in a buttoned black school jacket. A deliberate gap separates their open books on the window seat."
   }
 }

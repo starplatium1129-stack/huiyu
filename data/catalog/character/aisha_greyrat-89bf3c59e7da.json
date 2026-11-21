@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aisha_greyrat",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "aisha_greyrat",
     "profile": {
@@ -22,7 +22,7 @@
       "type": "popular",
       "icon": "character",
       "portrait": {
-        "image": "../assets/characters/popular-aisha_greyrat.png?v=f7d941611228",
+        "image": "../assets/characters/popular-aisha_greyrat.png?v=63de71f136a6",
         "alt": "爱夏·格雷拉特样张立绘",
         "sourceShowcaseId": "pc_aisha_greyrat_pc_aisha_greyrat_aisha_greyrat_morning_ledgers",
         "sourceShowcaseSha256": "14cc58ff5f99b5854ee496d9a5fcb9b24cbe39a5ddf46f062a67d4c3fb8b64f8"

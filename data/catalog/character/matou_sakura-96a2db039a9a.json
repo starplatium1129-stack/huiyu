@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "matou_sakura",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "matou_sakura",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "🎀",
       "portrait": {
-        "image": "../assets/characters/popular-matou_sakura.png?v=739a0a779381",
+        "image": "../assets/characters/popular-matou_sakura.png?v=1724b9595570",
         "alt": "间桐樱样张立绘",
         "sourceShowcaseId": "pc_matou_sakura_pc_matou_sakura_sakura_emiya_garden_watering",
         "sourceShowcaseSha256": "7355a4ef59b798e882ed76441a5ce02b6c6d5510d2aa3f4cdfd4fb1392be63c8"

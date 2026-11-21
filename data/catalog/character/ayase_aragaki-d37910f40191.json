@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ayase_aragaki",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 235,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "ayase_aragaki",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-ayase_aragaki.png?v=30a77bddfb9a",
+        "image": "../assets/characters/popular-ayase_aragaki.png?v=5078df7e9a5a",
         "alt": "新垣绫濑样张立绘",
         "sourceShowcaseId": "pc_ayase_aragaki_pc_ayase_aragaki_ayase_sunset_street_lingering_handhold",
         "sourceShowcaseSha256": "05bcc5573784a29d9b65c915d00460635826751e5a557ec42ae7912f23a28571"

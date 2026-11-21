@@ -3,7 +3,6 @@
        Windows SimSun 强制退化，直接继承 --font-serif 与主题配色，无滤镜发光（DESIGN.md:854）。 -->
   <svg
     class="brand-logo"
-    :data-surface="isLightSurface ? 'light' : 'dark'"
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 132 48"
     width="132"
@@ -31,17 +30,6 @@
   </svg>
 </template>
 
-<script setup lang="ts">
-import { computed } from 'vue'
-import { useTheme } from '@/composables/useTheme'
-import { useDesktopPreferences } from '@/composables/useDesktopInteraction'
-
-const { displayTheme: theme } = useTheme()
-const { themeStyle } = useDesktopPreferences()
-// Terraria 木质顶栏始终为深木底，仅默认画室浅色纸面切换深墨/深玫瑰字标。
-const isLightSurface = computed(() => theme.value === 'light' && themeStyle.value !== 'terraria')
-</script>
-
 <style scoped>
 .brand-logo {
   --brand-mark: #F2A8BE;
@@ -51,7 +39,8 @@ const isLightSurface = computed(() => theme.value === 'light' && themeStyle.valu
   user-select: none;
   pointer-events: none;
 }
-.brand-logo[data-surface="light"] {
+/* Terraria 木质顶栏始终为深木底。字标跟随文档已经显示的主题。 */
+:root[data-theme="light"]:not([data-theme-style="terraria"]) .brand-logo {
   --brand-mark: #9B3E61;
   --brand-ink: #211C30;
 }

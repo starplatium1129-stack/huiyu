@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kazami_kazuki",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kazami_kazuki",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "❄️",
       "portrait": {
-        "image": "../assets/characters/popular-kazami_kazuki.png?v=9154e4623f6f",
+        "image": "../assets/characters/popular-kazami_kazuki.png?v=7d26f5614529",
         "alt": "风见一姬样张立绘",
         "sourceShowcaseId": "pc_kazami_kazuki_pc_kazami_kazuki_kazuki_mihama_classroom_desk_lecture",
         "sourceShowcaseSha256": "913de0f2a055f7b0d476a8e44b90f82f0cd15607e2eaea8e90d37d710a76f65e"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saber_alter_sofa_armor_off_cuddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 224,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "saber_alter_sofa_armor_off_cuddle",
     "title": "黑呆 · 卸甲依偎的沉静温存",
@@ -29,7 +29,7 @@
       "warm_wall_lamp",
       "side_view"
     ],
-    "promptProse": "Seated beside her clothed companion, she rests her head on their chest with eyes closed and hands folded over her abdomen; the discarded armor stands against the wall in warm lamplight.",
+    "promptProse": "Saber Alter sits in a black strapless dress with her eyes shut and her hands folded over her abdomen, her platinum hair loose across the forest-green sweater of the companion at her side. The companion has short brown hair and one arm around her shoulders. Warm lamplight in the living room picks out both profiles and the armor set aside against the wall.",
     "promptTokens": [
       "short dress",
       "loose hair",
@@ -50,6 +50,6 @@
       "cuddle"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She rests against her clothed companion, hands folded over her abdomen, discarded armor against the wall."
+    "animaCaption": "Platinum-haired Saber Alter closes her eyes against the chest of a broad-shouldered companion with cropped brown hair and a forest-green knit sweater. Her hands rest folded over her black dress; the discarded armor stands against the wall."
   }
 }

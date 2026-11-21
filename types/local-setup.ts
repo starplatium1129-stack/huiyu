@@ -28,7 +28,7 @@ export interface LocalSetupResponse {
   checkedAt: number
   recommendedModel?: string
   chat?: { host: string; runtimePresent: boolean }
-  workspace: { path: string; state: LocalSetupFileState }
+  workspace: { path: string; state: LocalSetupFileState; freeBytes?: number | null }
   comfy: {
     path: string
     installation: LocalSetupFileState

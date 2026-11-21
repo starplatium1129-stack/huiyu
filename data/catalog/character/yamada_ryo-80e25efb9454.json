@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_ryo",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 177,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yamada_ryo",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🎸",
       "portrait": {
-        "image": "../assets/characters/popular-yamada_ryo.png?v=3ebf0c30f429",
+        "image": "../assets/characters/popular-yamada_ryo.png?v=ac647fbb451e",
         "alt": "山田凉样张立绘",
         "sourceShowcaseId": "pc_yamada_ryo_pc_yamada_ryo_yamada_ryo_cultural_butler_prince",
         "sourceShowcaseSha256": "6aa504972fb581f46cee7a354303da0ad6a0734b0e2a014a69f10ceb422ffd33"

@@ -4,12 +4,13 @@ export interface FirstFrameRequest {
   transport: 'direct' | 'runtime'
   authority: string
   state: 'pending' | 'succeeded' | 'failed' | 'cancelled'
-  input: { prompt: string; modelId: 'krea2-turbo-fp8'; width: number; height: number }
+  input: { prompt: string; modelId: 'krea2-turbo' | 'krea2-turbo-fp8'; width: number; height: number }
 }
 export function readFirstFrameRequest(value: FirstFrameRequest): FirstFrameRequest {
   if (!value || typeof value.key !== 'string' || !/^[\w-]{1,160}$/.test(value.key) || !['direct', 'runtime'].includes(value.transport)
     || typeof value.authority !== 'string' || !['pending', 'succeeded', 'failed', 'cancelled'].includes(value.state)
-    || !value.input || typeof value.input.prompt !== 'string' || !value.input.prompt.trim() || value.input.modelId !== 'krea2-turbo-fp8'
+    || !value.input || typeof value.input.prompt !== 'string' || !value.input.prompt.trim()
+    || !['krea2-turbo', 'krea2-turbo-fp8'].includes(value.input.modelId)
     || ![1024, 1536].includes(value.input.width) || ![1024, 1536].includes(value.input.height)
     || value.input.width === 1536 && value.input.height === 1536) throw new Error('首帧请求凭据无法读取；已停止生成，请核对原草稿。')
   return { key: value.key, transport: value.transport, authority: value.authority, state: value.state,

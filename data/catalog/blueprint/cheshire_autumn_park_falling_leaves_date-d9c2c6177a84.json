@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cheshire_autumn_park_falling_leaves_date",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1091,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "cheshire_autumn_park_falling_leaves_date",
     "title": "柴郡 · 枫林小径的红叶暖意",
@@ -32,7 +32,7 @@
       "fake_hair_ornament",
       "clinging"
     ],
-    "promptProse": "She holds the Commander's arm and leans near their shoulder while watching falling leaves. Sunset filters through the canopy.",
+    "promptProse": "Under the falling maple leaves, Cheshire slips an arm around the Commander's elbow and nestles her cat ears near their shoulder. Her blue-gray twintails spill over her plaid scarf. Beside her, the short auburn-haired Commander wears a solid olive field coat. They walk along the gravel path beneath the late sun.",
     "promptTokens": [
       "couple",
       "park",
@@ -50,6 +50,6 @@
     "negativeTokens": [],
     "recommendedSize": "1536x1152",
     "compositionIntent": "group",
-    "animaCaption": "She holds her companion's arm and leans toward their shoulder while watching the falling leaves."
+    "animaCaption": "Cheshire looks up at the falling leaves, her long blue-gray twintails, cat ears and plaid scarf framing her face. The Commander, with short auburn hair and an olive field coat, walks beside her as she loops her arm through theirs."
   }
 }

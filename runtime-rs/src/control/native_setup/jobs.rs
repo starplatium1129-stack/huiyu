@@ -41,13 +41,17 @@ impl ControlService {
         } else {
             None
         };
-        let required = if let Some(model) = &model {
+        let model_view = model.as_ref().map(|model| {
             plan["models"]
                 .as_array()
                 .unwrap()
                 .iter()
                 .find(|value| value["id"] == model.id)
-                .unwrap()[if body.checkpoint_path.is_some() {
+                .unwrap()
+        });
+        let local_import = model_view.map(|view| local_adapters::selected(view, body.local_video_import)).transpose()?.flatten();
+        let required = if let Some(view) = model_view {
+            view[if body.checkpoint_path.is_some() {
                 "requiredBytesWithCheckpoint"
             } else {
                 "requiredBytes"
@@ -69,7 +73,7 @@ impl ControlService {
                 ),
             ));
         }
-        if model_download && !video_files && plan["runtime"]["installed"] != true {
+        if model_download && (!video_files || local_import.is_some()) && plan["runtime"]["installed"] != true {
             return Err(ApiError::new(
                 409,
                 "NATIVE_RUNTIME_UNAVAILABLE",
@@ -97,9 +101,8 @@ impl ControlService {
         operation["modelId"] = json!(body.model_id);
         operation["downloadedBytes"] = json!(0);
         operation["totalBytes"] = json!(
-            model
-                .as_ref()
-                .map(|m| m.files.iter().map(|file| file.bytes).sum::<u64>())
+            model_view
+                .and_then(|view| view["downloadBytes"].as_u64())
                 .unwrap_or(runtime.download_bytes)
         );
         if !model_download && !image_models::is_adapter_runtime(&runtime) {
@@ -140,6 +143,7 @@ impl ControlService {
                                 body.hf_token.as_deref(),
                                 imported.as_ref(),
                                 None,
+                                local_import,
                             )
                             .await
                     } else {
@@ -282,11 +286,15 @@ impl ControlService {
         hf_token: Option<&str>,
         imported: Option<&checkpoint_models::LocalCheckpoint>,
         resolved: Option<Vec<Artifact>>,
+        local_import: Option<&local_adapters::VideoImport>,
     ) -> Result<()> {
         let workspace = &self.config.ai_workspace_root;
         let target = workspace.join("inference/models").join(&model.id);
         if receipt_matches(&target, model) {
             return Ok(());
+        }
+        if let Some(import) = local_import {
+            return self.import_local_video(import, model, &target, operation, cancel, permit).await;
         }
         let workspace_check = workspace.clone();
         let app = self.config.app_root.clone();

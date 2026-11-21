@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mako_tatami_room_massage_embarrassed",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1134,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "跪坐在将臣身后，左手停在他肩头，右手腕被他回伸的右手轻握，侧过脸泛红",
-    "camera": "medium shot, side view",
+    "camera": "medium landscape side-view two-shot, both people from head to waist",
     "category": "日常反差",
     "characterId": "hitachi_mako",
     "coverageTags": [
@@ -20,10 +20,11 @@
     "mood": "极度害羞",
     "negativeTokens": [],
     "outfitId": "shrine_casual",
-    "promptProse": "Mako kneels behind seated Masaomi with her left hand on his shoulder. He reaches back with his right hand to hold her right wrist, and she turns aside blushing in the golden light through the paper doors.",
+    "promptProse": "The side view of the tatami room keeps both people in profile. At the left, short dark-haired Masaomi sits in a slate training shirt and turns his face back over one shoulder. Mako kneels on the cushion behind him to the right, her long sidelocks over a frilled white apron. Her left hand rests on his shoulder and he gently catches her right wrist as she blushes.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Mako",
-      "Masaomi",
       "kneeling",
       "shoulder massage",
       "wrist holding",
@@ -32,9 +33,10 @@
       "blush",
       "looking away",
       "warm window light",
-      "medium shot"
+      "medium shot",
+      "arichi masaomi"
     ],
-    "recommendedSize": "1152x1536",
+    "recommendedSize": "1216x832",
     "sceneTags": [
       "tatami",
       "massage",
@@ -49,8 +51,9 @@
     "title": "常陆茉子 · 榻榻米上的推拿羞红",
     "compositionIntent": "group",
     "characterTokens": [
-      "Masaomi"
+      "Masaomi",
+      "arichi masaomi"
     ],
-    "animaCaption": "Her left hand rests on his shoulder as his right hand reaches back to hold her right wrist."
+    "animaCaption": "At the center of the side shot, Masaomi reaches back and loosely catches Mako's right wrist beside his shoulder. He sits on the left with cropped dark hair and a slate shirt, his face turned to her. Behind him on the right, Mako kneels in a white apron, long sidelocks framing her blush as her left hand remains on his shoulder. Evening sun warms the paper doors."
   }
 }

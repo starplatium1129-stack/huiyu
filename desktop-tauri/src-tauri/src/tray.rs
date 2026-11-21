@@ -25,7 +25,7 @@ pub fn create_tray(app: &AppHandle) -> tauri::Result<TrayIcon> {
     let icon = tauri::image::Image::new(rgba.as_raw().as_slice(), rgba.width(), rgba.height());
     let tray = TrayIconBuilder::with_id("main")
         .icon(icon)
-        .tooltip("绘遇 Companion")
+        .tooltip("绘遇 · 桌面陪伴")
         .on_tray_icon_event(|tray, event| {
             if let TrayIconEvent::Click { button: MouseButton::Left, .. } = event {
                 let _ = tray.app_handle().emit("aics:tray-left-click", ());
@@ -107,14 +107,14 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     let passthrough = state.ignore_mouse_events.load(std::sync::atomic::Ordering::Relaxed);
     let autostart = app.autolaunch().is_enabled().unwrap_or(false);
 
-    let show_companion = MenuItem::with_id(app, MENU_SHOW_COMPANION, "显示 Companion", true, None::<&str>)?;
+    let show_companion = MenuItem::with_id(app, MENU_SHOW_COMPANION, "显示桌面角色", true, None::<&str>)?;
     let open_chat = MenuItem::with_id(app, MENU_OPEN_CHAT, "打开聊天", true, None::<&str>)?;
-    let open_atelier = MenuItem::with_id(app, MENU_OPEN_ATELIER, "打开 Atelier 工作台", true, None::<&str>)?;
+    let open_atelier = MenuItem::with_id(app, MENU_OPEN_ATELIER, "打开绘图画室", true, None::<&str>)?;
     let separator = PredefinedMenuItem::separator(app)?;
     let toggle_top = MenuItem::with_id(
         app,
         MENU_TOGGLE_ALWAYS_ON_TOP,
-        if always_on_top { "取消置顶 Companion" } else { "置顶 Companion" },
+        if always_on_top { "取消置顶桌面角色" } else { "置顶桌面角色" },
         true,
         None::<&str>,
     )?;
@@ -129,7 +129,7 @@ fn build_menu(app: &AppHandle) -> tauri::Result<Menu<tauri::Wry>> {
     let open_workspace = MenuItem::with_id(app, MENU_OPEN_WORKSPACE, "打开 AI 工作区", true, None::<&str>)?;
     let open_runtime = MenuItem::with_id(app, MENU_OPEN_RUNTIME, "打开运行时目录", true, None::<&str>)?;
     let open_log = MenuItem::with_id(app, MENU_OPEN_LOG, "查看日志文件", true, None::<&str>)?;
-    let quit = MenuItem::with_id(app, MENU_QUIT, "退出 Companion", true, None::<&str>)?;
+    let quit = MenuItem::with_id(app, MENU_QUIT, "退出绘遇", true, None::<&str>)?;
 
     MenuBuilder::new(app)
         .item(&show_companion)

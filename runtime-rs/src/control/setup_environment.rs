@@ -277,6 +277,8 @@ impl ControlService {
                 .arg(crate::file_paths::absolute(&path_for(&format!(
                     "runtime-{environment}"
                 ))?)?)
+                .arg("-RuntimeExe")
+                .arg(crate::file_paths::absolute(&std::env::current_exe()?)?)
                 .stdin(Stdio::null())
                 .stdout(Stdio::piped())
                 .stderr(Stdio::piped());

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suou_yuki",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 150,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "suou_yuki",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-suou_yuki.png?v=3d7f1e2d8f3c",
+        "image": "../assets/characters/popular-suou_yuki.png?v=e6d6b03402d2",
         "alt": "周防有希样张立绘",
         "sourceShowcaseId": "pc_suou_yuki_pc_suou_yuki_suou_yuki_sfw_b8_01",
         "sourceShowcaseSha256": "84b67a2a8e7223860a7d5db13710f908428b00f50831dc88dac22ed2e4a2570b"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_street_date_earphones",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2137,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "scarlet_street_date_earphones",
     "characterId": "scarlet_nikke",
@@ -19,8 +19,10 @@
     "lighting": "colorful city neon bokeh and soft twilight ambient glow",
     "camera": "cowboy_shot",
     "mood": "温存与明媚",
-    "promptProse": "Walking side by side in city twilight, Scarlet shares earphones with her partner while holding hands tightly with a bright curious smile.",
+    "promptProse": "White-haired Scarlet wears one red wired earbud as she crosses the lively shopping street at twilight. The commander at her side has short dark hair and a dark blue utility jacket. He wears the other earbud, the joined cord hanging between their separate shoulders as they hold hands.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "city_street",
       "walking",
       "holding_hands",
@@ -32,10 +34,11 @@
       "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Scarlet sharing wired earphones on a lively city street at dusk.",
+    "animaCaption": "White-haired Scarlet wears one red wired earbud as she crosses the lively shopping street at twilight. The commander at her side has short dark hair and a dark blue utility jacket. He wears the other earbud, the joined cord hanging between their separate shoulders as they hold hands.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "group"
   }
 }

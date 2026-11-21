@@ -9,7 +9,7 @@ export type PreparedInferencePaths = Pick<InferenceSettings, 'python' | 'worker'
 export interface RuntimePreparationInput { operationId?: string; basePython: string; wheelhouse: string; workspacePath: string; reviewed: true }
 export interface ModelInspectionInput { modelId: string; sourceDir: string }
 export interface ModelImportInput extends ModelInspectionInput { operationId?: string; modelsRoot: string; reviewed: true }
-export interface ManagedInferenceInput { operationId?: string; workspacePath: string; planId: string; reviewed: true; modelId?: string; hfToken?: string; checkpointPath?: string; resourceRoot?: string }
+export interface ManagedInferenceInput { operationId?: string; workspacePath: string; planId: string; reviewed: true; modelId?: string; hfToken?: string; checkpointPath?: string; resourceRoot?: string; localVideoImport?: boolean }
 export interface NativeImageResource {
   id: string; label: string; family: string; description: string; directory: 'models' | 'loras'; root: string
   licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; present: boolean; path: string
@@ -27,7 +27,7 @@ export interface NativeSetupPlan {
   warnings?: string[]
   freeBytes: number | null
   runtime: { id: string; label: string; downloadBytes: number; requiredBytes: number; recoveryReady?: boolean; sources: { label: string; url: string; licenseUrl: string }[]; installed: boolean }
-  models: { preparation?: 'checkpoint-conversion' | 'moss-checkpoint' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; requiresAccess: boolean; family: SetupDrawingFamily | 'video'; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; requiredBytesWithCheckpoint?: number; installed: boolean }[]
+  models: { preparation?: 'checkpoint-conversion' | 'moss-checkpoint' | 'complete-model'; checkpointFilename?: string | null; checkpointOptional?: boolean; localVideoImport?: boolean; localWeights?: boolean; requiresAccess: boolean; family: SetupDrawingFamily | 'video'; id: string; label: string; revision: string; license: string; licenseUrl: string; sourceUrl: string; downloadBytes: number; requiredBytes: number; requiredBytesWithCheckpoint?: number; installed: boolean }[]
   resources: NativeImageResource[]
   activeEngine: string
   configuredEngine: string
@@ -115,6 +115,8 @@ function validPlan(value: ApiResponseObject): boolean {
       && nonempty(source.label) && secureUrl(source.url) && secureUrl(source.licenseUrl))
     && Array.isArray(models) && models.length > 0 && models.every(model => object(model) && nonempty(model.id) && nonempty(model.label)
       && (model.checkpointOptional === undefined || typeof model.checkpointOptional === 'boolean')
+      && (model.localVideoImport === undefined || typeof model.localVideoImport === 'boolean')
+      && (model.localWeights === undefined || typeof model.localWeights === 'boolean')
       && (model.preparation === undefined || ['checkpoint-conversion', 'moss-checkpoint', 'complete-model'].includes(String(model.preparation)))
       && (model.checkpointFilename === undefined || model.checkpointFilename === null || nonempty(model.checkpointFilename))
       && typeof model.requiresAccess === 'boolean' && ['anima', 'krea2', 'qwen-image', 'moss-image', 'video'].includes(String(model.family))

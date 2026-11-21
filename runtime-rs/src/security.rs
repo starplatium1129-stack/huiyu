@@ -84,12 +84,7 @@ pub async fn guard(
     let mut response = if !headers
         .get("host")
         .and_then(|h| h.to_str().ok())
-        .is_some_and(|host| {
-            state
-                .remote
-                .as_ref()
-                .map_or_else(|| host_allowed(host), |remote| remote.host_allowed(host))
-        }) {
+        .is_some_and(host_allowed) {
         ApiError::new(421, "HOST_REJECTED", "Host is not allowed").into_response()
     } else if !is_direct_local(headers, peer.ip()) && !navigation && cors.is_none() {
         if let Some(remote) = &state.remote {

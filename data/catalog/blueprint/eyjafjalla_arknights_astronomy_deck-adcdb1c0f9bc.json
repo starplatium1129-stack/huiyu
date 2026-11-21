@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eyjafjalla_arknights_astronomy_deck",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "仰头望着漫天星斗",
     "camera": "wide shot",
@@ -21,8 +21,10 @@
     "mood": "浪漫憧憬",
     "negativeTokens": [],
     "outfitId": "picnic",
-    "promptProse": "She leans beside her companion at the dimly lit deck railing, their hands joined between them as both look up at the stars.",
+    "promptProse": "A human man with close-cut black hair, round ears and a slate-blue flight jacket stands at the left of the observation deck railing. Eyjafjalla stands at his right in her green capelet, her curled sheep horns traced by the control lights. They hold hands and watch the Milky Way above the glass deck.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "observing telescope",
       "starry sky",
       "milky way",
@@ -44,6 +46,6 @@
     ],
     "timeOfDay": "夜晚",
     "title": "艾雅法拉 · 观星甲板",
-    "animaCaption": "The brilliant expanse of the Milky Way and soft console glows illuminate Eyjafjalla's warm smile on the observation deck."
+    "animaCaption": "A human man with close-cut black hair, round ears and a slate-blue flight jacket stands at the left of the observation deck railing. Eyjafjalla stands at his right in her green capelet, her curled sheep horns traced by the control lights. They hold hands and watch the Milky Way above the glass deck."
   }
 }

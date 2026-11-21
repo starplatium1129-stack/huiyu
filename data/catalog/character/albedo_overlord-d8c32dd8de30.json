@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "albedo_overlord",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "albedo_overlord",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "🕊️",
       "portrait": {
-        "image": "../assets/characters/popular-albedo_overlord.png?v=9e125fe5573d",
+        "image": "../assets/characters/popular-albedo_overlord.png?v=fba84898c6e9",
         "alt": "雅儿贝德样张立绘",
         "sourceShowcaseId": "pc_albedo_overlord_pc_albedo_overlord_albedo_cathedral_throne_bridal_veil",
         "sourceShowcaseSha256": "6df6b36766b71e5a5543ec16a2a1efa55c7d1ff12f689c342baad240c0e806cb"

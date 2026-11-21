@@ -58,13 +58,31 @@ impl Drop for Worker {
     }
 }
 
-pub(super) struct Native {
+#[derive(Clone)]
+struct NativePaths {
     python: PathBuf,
     source: PathBuf,
     config: PathBuf,
     script: PathBuf,
     temp_root: PathBuf,
     log: PathBuf,
+}
+
+impl From<&Settings> for NativePaths {
+    fn from(settings: &Settings) -> Self {
+        Self {
+            python: settings.native_python.clone(),
+            source: settings.native_source.clone(),
+            config: settings.native_config.clone(),
+            script: settings.native_script.clone(),
+            temp_root: settings.native_temp.clone(),
+            log: settings.native_log.clone(),
+        }
+    }
+}
+
+pub(super) struct Native {
+    paths: RwLock<NativePaths>,
     worker: tokio::sync::Mutex<Option<Worker>>,
     control: RwLock<Weak<ControlService>>,
     processes: Arc<Processes>,
@@ -76,12 +94,7 @@ pub(super) struct Native {
 impl Native {
     pub fn new(settings: &Settings, cancel: CancellationToken) -> Arc<Self> {
         Arc::new(Self {
-            python: settings.native_python.clone(),
-            source: settings.native_source.clone(),
-            config: settings.native_config.clone(),
-            script: settings.native_script.clone(),
-            temp_root: settings.native_temp.clone(),
-            log: settings.native_log.clone(),
+            paths: RwLock::new(NativePaths::from(settings)),
             worker: tokio::sync::Mutex::new(None),
             control: RwLock::new(Weak::new()),
             processes: Arc::default(),
@@ -92,16 +105,21 @@ impl Native {
         })
     }
 
+    pub fn update_paths(&self, settings: &Settings) {
+        *self.paths.write().unwrap() = NativePaths::from(settings);
+    }
+
     pub fn bind_control(&self, control: &Arc<ControlService>) {
         *self.control.write().unwrap() = Arc::downgrade(control);
     }
 
     pub fn files_present(&self) -> bool {
+        let paths = self.paths.read().unwrap().clone();
         !self.failed_release.load(Ordering::Acquire)
-            && self.python.is_file()
-            && self.script.is_file()
-            && self.config.is_file()
-            && self
+            && paths.python.is_file()
+            && paths.script.is_file()
+            && paths.config.is_file()
+            && paths
                 .source
                 .join("GPT_SoVITS/TTS_infer_pack/TTS.py")
                 .is_file()
@@ -126,38 +144,47 @@ impl Native {
     }
 
     fn spawn(&self) -> Result<Worker> {
-        if !self.files_present() {
+        let paths_cfg = self.paths.read().unwrap().clone();
+        if self.failed_release.load(Ordering::Acquire)
+            || !paths_cfg.python.is_file()
+            || !paths_cfg.script.is_file()
+            || !paths_cfg.config.is_file()
+            || !paths_cfg
+                .source
+                .join("GPT_SoVITS/TTS_infer_pack/TTS.py")
+                .is_file()
+        {
             return Err(ApiError::new(
                 503,
                 "TTS_UNAVAILABLE",
                 "缺少 GPT-SoVITS 运行环境或语音配置",
             ));
         }
-        std::fs::create_dir_all(&self.temp_root)?;
+        std::fs::create_dir_all(&paths_cfg.temp_root)?;
         let directory = tempfile::Builder::new()
             .prefix("native-")
-            .tempdir_in(&self.temp_root)?;
-        let mut command = Command::new(&self.python);
+            .tempdir_in(&paths_cfg.temp_root)?;
+        let mut command = Command::new(&paths_cfg.python);
         command
             .arg("-u")
-            .arg(&self.script)
+            .arg(&paths_cfg.script)
             .arg("--source")
-            .arg(&self.source)
+            .arg(&paths_cfg.source)
             .arg("--config")
-            .arg(&self.config)
+            .arg(&paths_cfg.config)
             .arg("--runtime")
             .arg(directory.path())
-            .current_dir(&self.source)
+            .current_dir(&paths_cfg.source)
             .env("PYTHONUTF8", "1")
             .env("PYTHONDONTWRITEBYTECODE", "1")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped());
-        if let Some(root) = self.python.parent() {
+        if let Some(root) = paths_cfg.python.parent() {
             let mut paths = vec![
                 root.to_path_buf(),
                 root.join("Scripts"),
                 root.join("Library/bin"),
-                self.source.clone(),
+                paths_cfg.source.clone(),
             ];
             paths.extend(std::env::split_paths(
                 &std::env::var_os("PATH").unwrap_or_default(),
@@ -167,13 +194,13 @@ impl Native {
                 std::env::join_paths(paths).map_err(|_| unavailable())?,
             );
         }
-        if let Some(parent) = self.log.parent() {
+        if let Some(parent) = paths_cfg.log.parent() {
             std::fs::create_dir_all(parent)?;
         }
         let log = std::fs::OpenOptions::new()
             .create(true)
             .append(true)
-            .open(&self.log)?;
+            .open(&paths_cfg.log)?;
         command.stderr(log);
         let lifetime = Arc::new(Lifetime {
             operation: SyncMutex::new(None),

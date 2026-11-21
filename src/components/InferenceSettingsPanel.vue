@@ -37,6 +37,7 @@
           </template>
         </section>
         <AvailableDrawingModels v-if="showAvailableModels" :key="snapshot.active.engine" :provider="snapshot.active.engine" @local="showLocalPreparation = true" />
+        <AsyncPanel v-if="localPreparationVisited" v-show="showLocalSetup" :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="blocked || loading || saving || dirty || restarting" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @working="setupWorking = $event" @activated="activated" /></AsyncPanel>
         <details class="inference-advanced" :open="videoSetupRequested">
           <StudioDisclosureSummary>视频引擎</StudioDisclosureSummary>
           <form class="inference-form" data-disclosure-content @submit.prevent="saveSettings">
@@ -90,7 +91,6 @@
             </div>
           </form>
         </details>
-        <AsyncPanel v-if="localPreparationVisited" v-show="showLocalSetup" :loader="loadInferenceSetup" label="原生引擎准备" v-slot="{ component }"><component :is="component" :configured="snapshot.configured" :blocked="blocked || loading || saving || dirty || restarting" @prepared="fillPreparedPaths" @busy="setupBusy = $event" @working="setupWorking = $event" @activated="activated" /></AsyncPanel>
         <details class="inference-advanced" :open="advancedOpen" @toggle="advancedOpen = ($event.target as HTMLDetailsElement).open">
           <StudioDisclosureSummary><span>复用已有资源与高级设置<small class="inference-disclosure-hint">路径配置与性能选项</small></span></StudioDisclosureSummary>
           <div data-disclosure-content>

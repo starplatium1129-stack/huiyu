@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makima",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 13,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "makima",
     "profile": {
@@ -17,7 +17,7 @@
       "type": "popular",
       "icon": "🖤",
       "portrait": {
-        "image": "../assets/characters/popular-makima.png?v=9df446ccc6af",
+        "image": "../assets/characters/popular-makima.png?v=9973ae4eb7f7",
         "alt": "玛奇玛样张立绘",
         "sourceShowcaseId": "pc_makima_pc_makima_makima_office",
         "sourceShowcaseSha256": "ad26110ff9e078a3cd6584e7310a07a5d715a7193471acfa7999608923c0a106"

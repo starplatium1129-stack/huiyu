@@ -1,49 +1,37 @@
 # 热门角色接入工作流
 
-完整规则见[工程契约](../../engineering-contracts.md#角色接入)。登记、生成、人工审核、发布和安装验收分别确认。
+完整契约见 [工程契约](../../engineering-contracts.md#角色接入)，SQLite 读写与导出命令见 [维护手册](../../maintenance.md)。
 
-## 日常维护入口
+---
 
-人物档案、热门身份、服装和蓝图通过内容维护页或 `content:catalog` 维护运行目录 `content/catalog.sqlite`，需要进入项目构建时显式 export 到 `data/catalog/`。旧人物/场景分片只作为升级导入来源，不再手工编辑或聚合回写；具体保存与导出命令见 [维护手册](../../maintenance.md)。
+## 1. 维护入口与文本准则
 
-角色档案展示立绘、人物资料与相关场景，不提供固定四视角图库或完整度检查。新增角色、服装不要求登记参考档案、补齐四视角或三视图设计图。分镜按角色从内容目录读取身份与服装文字，图片按项目需要手动上传；无图不会阻塞角色选择。
+- **内容库维护**：人物档案、热门身份、服装、场景与蓝图均通过内容维护页或 `content:catalog` 在 `content/catalog.sqlite` 维护，并按需显式 `export` 至 `data/catalog/`（旧分片文件不再手工编辑，旧 `content:sync` 仅作只读/聚合兼容）。
+- **故事与提示词分工**：角色档案与场景故事使用 [humanizer-zh](../../../.agents/skills/humanizer-zh/SKILL.md)；图像提示词与编译遵循 [studio-prompt-craft](../../../.agents/skills/studio-prompt-craft/SKILL.md)。
+- **立绘与参考图定位**：角色档案展示立绘、资料与场景，不要求补齐固定四视角或三视图；参考图库（`data/references/`）为可选隔离资产，无参考图不阻塞角色创建或分镜使用。
 
-角色档案与场景故事的中文创作、润色和审阅使用 [humanizer-zh 写作指南](../../../.agents/skills/humanizer-zh/SKILL.md)，先保留设定、关系与人物声音，再处理套话和重复。图像提示词与编译仍使用独立的提示词规范。
+---
 
-旧分片工具 `content:sync` 仍可校验人物档案、重复 ID、分片归属和蓝图服装引用，默认只读预览；显式 `--apply` 修正清单计数并构建人物/场景/蓝图聚合，不读取、登记或构建参考库。已退出的 `--ids` 参考登记选项不再支持。它不是当前内容目录的日常写入口。
+## 2. 新角色交付清单
 
-已有参考图保留为可选素材。只有项目确实需要时，才显式使用下方参考登记、候选和发布工具。`data/references/<人物ID>.json` 与 manifest 仍为旧参考库的权威源，两个聚合为兼容产物；参考审核、版本校验、本机访问限制与 pending 不算交付的规则继续有效。
+1. **目录数据**：维护人物、服装、场景与蓝图记录，确保 `outfitId` 与归属一致并显式导出快照。
+2. **主题配色**：在档案提供有效 `accent_color`（由 `characterTheme.ts` 派生双主题变量），仅特殊微调登记 override，不在 CSS 新增角色专属选择器；双主题视觉对比度需目视核对。
+3. **场景编写与保护**：按内容契约逐条编排提示词并核对编译 Token 与真实出图；批量操作跳过 `data/prompt-pinned-scenes.json` 定稿基线。
+4. **立绘、头像与粒子**：生成立绘原图后同步 WebP 缩略图，并按需运行 `npm run particles:build` 更新点云与交付状态。
+5. **代码与桌面同步**：按实际影响完成类型检查与产品构建；桌面端统一通过 `deploy-desktop.bat` 同步，仅精确提交本次审查过的文件。
 
-## 交付清单
+---
 
-1. 在内容目录维护身份、服装、场景与档案，按需显式导出项目快照；保持归属与 outfitId 一致。
-2. 档案提供有效 accent_color，由 characterTheme.ts 与通用 CSS 派生主题；特殊调校才登记 override。普通角色不新增 CSS 选择器，两种主题均需对比度与视觉验收。
-3. 按既有内容契约逐条编写场景；检查编译 Token 与真实成图；保护 pinned 场景。
-4. 原图生成后同步 WebP 头像，并按需要重建对应点云，核对图片指纹。
-5. 参考图按项目需求选用或上传，不计入新增角色的必备交付清单；主动制作参考候选时才使用下方审核发布流程，pending 不能计为完成。
-6. 按实际修改选择源码审查、类型检查、产品构建和人工验收；桌面同步获授权后只走 deploy-desktop.bat，依赖或 exe 变化通过安装器升级，首次安装/修复才显式选完整包。提交与推送按本次授权，精准选择已审查文件。
+## 3. 可选参考库候选审核与发布
 
-样张发布目录从配置解析，不能沿用历史固定版本目录；参考资产不入 Git。
+统一入口 `npm run wf -- <命令>`（详细参数见 [工作流](../../workflow.md#参考库候选审核与版本发布)）：
 
-## 可选参考候选的生成、审核与发布
-
-统一入口为 `node scripts/workflow.js <命令>`。先用 `--help` 查看当前参数、`--plan` 查看执行计划，二者不调用模型或修改数据。
-
-| 阶段 | 入口与副作用 | 完成条件 |
+| 阶段 | 命令与行为 | 完成标准 |
 | --- | --- | --- |
-| 登记 | `reference:register --dry-run` 只读预览；去掉 dry-run 写源，按 popular→standards/view 的服装粒度差额补齐 | standards/view 占位一致，状态仍为 pending |
-| 候选 | `reference:render --output <隔离候选目录> --ids=<id>` 调用模型并写候选 | 有实际图片与生成清单；未审核 |
-| 检查 | `reference:inspect --from <候选清单>` 只读 | 核对图片、记录和输入身份 |
-| 人工审核 | 查看图片后写 decisions，再 `reference:review` 创建审核记录 | 每条决定绑定当前 recordId、sha256、inputVersion；漏审仍 pending |
-| 发布 | `reference:publish` 默认只读预览；显式 `--apply` 写新版本 | 所选图片均通过有效人工审核；保留旧版本 |
-| 接入与验收 | 显式配置网关参考根并重启，按需桌面同步 | 安装版图片/索引一致，设备结果独立登记 |
+| 登记占位 | `reference:register [--dry-run]` | 按服装粒度补齐 `standards/view` 占位（状态 `pending`） |
+| 生成候选 | `reference:render --output <隔离目录> --ids=<id>` | 产出候选图片与清单（未审核） |
+| 人工核对 | `reference:inspect` → 写 `decisions.json` → `reference:review` | 每条决定绑定 `recordId`、`sha256` 与 `inputVersion` |
+| 发布版本 | `reference:publish [--apply]` | 全部所选图人工通过；保留旧版本 |
+| 网关接入 | 配置网关参考根并重启，按需同步桌面端 | 索引与文件一致（`pending` 不算已交付） |
 
-完整参数和审核 JSON 见 [参考库候选审核与版本发布](../../workflow.md#参考库候选审核与版本发布)。自动视觉检查不替代人工决定；发布不自动激活、安装或改写项目源索引。
-
-## 历史活跃库维护
-
-`character:onboard`、`reference:design`、`sync-multi-outfit-standards` 与旧 URL 修复用于维护旧活跃库，可能直接写源/图片或调用模型，不能作为新候选发布入口。`reference:design` 出图后会回填参考索引；`character:onboard --skip-render` 仍有写入行为，`--deploy` 也不证明安装或设备验收。需要旧库维护时先检查当前帮助、计划和受控 diff；不以旧流水线的“成功”关闭新资产交付。
-
-## 验收
-
-执行 [分层门禁](../../workflow.md#门禁与构建)，另逐层核对主题、头像、参考图片与实际样张。保留来源、构建及审核/发布回执；结构校验通过不等于实际图片或设备通过。
+> **历史活跃库工具说明**：`character:onboard`、`reference:design`、`sync-multi-outfit-standards` 为旧活跃库维护入口，可能直接写源或调模型，不得用于新候选发布。

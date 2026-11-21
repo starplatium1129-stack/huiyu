@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc028",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 26,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
-    "animaCaption": "Nene, in ivory chiffon with a pink waist ribbon, sits left holding the agreement and the viewer's hand. Natsume, in pearl-white satin with a boat neckline, sits right and straightens Nene's hair ornament.",
+    "animaCaption": "Ayachi Nene sits on the left, her silver-white twin tails tied with pink ribbons above an ivory chiffon wedding gown with a pink sash. She holds the folded agreement and the near foreground hand. To her right, Shiki Natsume has long black hair pinned with two red clips, golden eyes and a small mole beneath her right eye. In a straight-necked pearl satin gown, Natsume leans across to straighten Nene's bridal hair ornament in the candlelight.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "半身中景",
     "category": "Active_Sync_Scenes",
@@ -48,6 +48,7 @@
       "核心CG"
     ],
     "weather": "静谧",
-    "promptProse": "Nene, in an ivory chiffon wedding dress with a pink waist ribbon, sits on the left, holding the folded agreement in one hand and the viewer's hand in the other; Natsume, in a pearl-white satin wedding dress with a boat neckline, sits on the right and reaches across to straighten Nene's hair ornament, their dresses softly lit by the candles."
+    "promptProse": "Ayachi Nene sits on the left, her silver-white twin tails tied with pink ribbons above an ivory chiffon wedding gown with a pink sash. She holds the folded agreement and the near foreground hand. To her right, Shiki Natsume has long black hair pinned with two red clips, golden eyes and a small mole beneath her right eye. In a straight-necked pearl satin gown, Natsume leans across to straighten Nene's bridal hair ornament in the candlelight.",
+    "compositionIntent": "group"
   }
 }

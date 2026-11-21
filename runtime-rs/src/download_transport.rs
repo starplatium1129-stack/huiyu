@@ -34,22 +34,74 @@ pub(crate) enum CopyEvent {
 
 // Public files retain the original revision/path and are still verified by
 // the caller's fixed digest. Credential-bearing requests must not use this.
-pub(crate) fn public_mirror(url: &str) -> Option<String> {
+fn env_mirror_origin(name: &str) -> Option<String> {
+    let raw = std::env::var(name).ok()?;
+    let trimmed = raw.trim().trim_end_matches('/');
+    let parsed = url::Url::parse(trimmed).ok()?;
+    matches!(parsed.scheme(), "https" | "http").then(|| trimmed.to_owned())
+}
+
+fn push_unique(list: &mut Vec<String>, candidate: String) {
+    if !list.contains(&candidate) {
+        list.push(candidate);
+    }
+}
+
+pub(crate) fn public_mirrors(url: &str) -> Vec<String> {
+    let mut out = Vec::new();
     if let Some(path) = url.strip_prefix("https://huggingface.co/") {
-        return path
-            .contains("/resolve/")
-            .then(|| format!("https://hf-mirror.com/{path}"));
+        if path.contains("/resolve/") || path.contains("/raw/") {
+            if let Some(custom) = env_mirror_origin("HUIYU_HF_MIRROR") {
+                push_unique(&mut out, format!("{custom}/{path}"));
+            }
+            push_unique(&mut out, format!("https://hf-mirror.com/{path}"));
+        }
+        return out;
     }
     for origin in [
         "https://download.pytorch.org/whl/",
         "https://download-r2.pytorch.org/whl/",
     ] {
         if let Some(path) = url.strip_prefix(origin) {
-            return Some(format!("https://mirrors.nju.edu.cn/pytorch/whl/{path}"));
+            push_unique(
+                &mut out,
+                format!("https://mirrors.nju.edu.cn/pytorch/whl/{path}"),
+            );
+            return out;
         }
     }
-    url.strip_prefix("https://files.pythonhosted.org/packages/")
-        .map(|path| format!("https://pypi.tuna.tsinghua.edu.cn/packages/{path}"))
+    if let Some(path) = url.strip_prefix("https://files.pythonhosted.org/packages/") {
+        push_unique(
+            &mut out,
+            format!("https://pypi.tuna.tsinghua.edu.cn/packages/{path}"),
+        );
+        push_unique(
+            &mut out,
+            format!("https://mirrors.aliyun.com/pypi/packages/{path}"),
+        );
+        return out;
+    }
+    if let Some(path) = url.strip_prefix("https://www.python.org/ftp/python/") {
+        push_unique(
+            &mut out,
+            format!("https://mirrors.huaweicloud.com/python/{path}"),
+        );
+        push_unique(
+            &mut out,
+            format!("https://registry.npmmirror.com/-/binary/python/{path}"),
+        );
+        return out;
+    }
+    if let Some(rest) = url.strip_prefix("https://github.com/")
+        && (rest.contains("/releases/download/") || rest.contains("/archive/"))
+    {
+        if let Some(custom) = env_mirror_origin("HUIYU_GITHUB_MIRROR") {
+            push_unique(&mut out, format!("{custom}/{url}"));
+        }
+        push_unique(&mut out, format!("https://gh-proxy.org/{url}"));
+        push_unique(&mut out, format!("https://ghfast.top/{url}"));
+    }
+    out
 }
 
 /** The caller supplies its authorized URL/client policy. This layer never chooses destinations or publishes files. */

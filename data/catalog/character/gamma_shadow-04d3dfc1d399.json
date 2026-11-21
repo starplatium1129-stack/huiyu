@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "gamma_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 269,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "gamma_shadow",
     "popular": {
@@ -85,7 +85,7 @@
       "type": "popular",
       "icon": "💼",
       "portrait": {
-        "image": "../assets/characters/popular-gamma_shadow.png?v=42a6ddf54671",
+        "image": "../assets/characters/popular-gamma_shadow.png?v=c7334a6c9464",
         "alt": "伽玛样张立绘",
         "sourceShowcaseId": "pc_gamma_shadow_gamma_shadow_command_sandtable",
         "sourceShowcaseSha256": "bb5d879cc204057c040190064676f4218c68a233d0edde7e53c1144571bf4c45"

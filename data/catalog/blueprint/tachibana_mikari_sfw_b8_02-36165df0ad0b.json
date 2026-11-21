@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tachibana_mikari_sfw_b8_02",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1676,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "tachibana_mikari_sfw_b8_02",
     "title": "橘美花莉 · 放学天台的独占视线",
@@ -33,8 +33,10 @@
       "pouting",
       "medium_shot"
     ],
-    "promptProse": "Mikari presses a cold tea can to Okumura's cheek and complains with puffed cheeks beside the sunset-lit fence.",
+    "promptProse": "Against the rooftop fence, Mikari puffs her cheeks and presses the cold tea can against Okumura's face. Her long chestnut side ties and pink ribbons shine above her lavender cardigan. Okumura, with short black hair and a dark school blazer, looks back at her from the right as sunset warms their profiles.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Mikari Tachibana",
       "tea can",
       "Okumura",
@@ -59,6 +61,6 @@
     "characterTokens": [
       "Okumura"
     ],
-    "animaCaption": "She presses the cold tea can to Okumura's cheek beside the fence."
+    "animaCaption": "Chestnut-haired Mikari in a lavender cardigan presses the cold tea can to Okumura's cheek. Okumura is the short black-haired boy in the dark school blazer to her right."
   }
 }

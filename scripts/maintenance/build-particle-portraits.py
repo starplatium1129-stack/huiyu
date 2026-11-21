@@ -46,7 +46,7 @@ BASE36 = "0123456789abcdefghijklmnopqrstuvwxyz"
 FEATHER_RATIO = 0.05
 
 # 工作室角色立绘文件名与角色 id 的对应（热门角色固定 popular-<id>.png）
-STUDIO_PORTRAITS = {"nene": "nene-official.webp", "natsume": "natsume-official.webp"}
+STUDIO_PORTRAITS = {"nene": "nene-portrait.webp", "natsume": "natsume-portrait.webp"}
 
 
 def kmeans_palette(pixels: np.ndarray, k: int, seed: str) -> list[tuple[int, int, int]]:

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sumizome_nozomi",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 191,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "sumizome_nozomi",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-sumizome_nozomi.png?v=d972b168b72b",
+        "image": "../assets/characters/popular-sumizome_nozomi.png?v=1084b6633df0",
         "alt": "墨染希样张立绘",
         "sourceShowcaseId": "pc_sumizome_nozomi_pc_sumizome_nozomi_sumizome_nozomi_daily_bakery_bag",
         "sourceShowcaseSha256": "2ec66bd92dae07542e5ae10ceb80c54cc4ce9968df2d98639ab253f85eaf47d5"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_festival_yukata_bench_lean",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1496,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "yamada_festival_yukata_bench_lean",
     "title": "山田杏奈 · 夏日祭典木屐磨脚的长椅依靠",
@@ -30,8 +30,10 @@
       "romantic",
       "one_sandal_removed"
     ],
-    "promptProse": "Seated beside Ichikawa, she rests her head on his shoulder, one hand holding the candy apple and the other rubbing her ankle; the removed sandal lies below as lanterns and fireworks light their faces.",
+    "promptProse": "Yamada sits on the stone bench in a navy goldfish-patterned yukata, leaning her long black hair and head against Ichikawa's shoulder. Ichikawa is shorter, with a tousled dark fringe and a plain charcoal yukata with a muted blue sash. She holds the candied apple in one hand and rubs her sore ankle with the other as the discarded sandal rests beneath the bench and fireworks brighten their profiles.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Ichikawa",
       "candy apple",
       "bench",
@@ -58,6 +60,6 @@
     "characterTokens": [
       "Ichikawa"
     ],
-    "animaCaption": "One hand holds the candy apple as the other rubs her ankle beside Ichikawa."
+    "animaCaption": "Yamada in the goldfish-patterned navy yukata rests her head on shorter Ichikawa, whose dark hair is short and whose charcoal yukata is plain. Her apple stays in one hand while the other rubs her ankle."
   }
 }

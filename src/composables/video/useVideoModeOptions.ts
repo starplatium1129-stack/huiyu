@@ -15,15 +15,6 @@ export function useVideoModeOptions(
     { id: 'shots', label: '分镜短片', icon: 'gallery' },
   ]
 
-
-  const cameraOptions: Array<{ id: VideoDefaults['camera']; label: string }> = [
-    { id: 'still', label: '固定镜头 · 最稳' },
-    { id: 'push', label: '缓慢推进' },
-    { id: 'pull', label: '缓慢拉远' },
-    { id: 'pan', label: '平稳横移' },
-    { id: 'orbit', label: '轻微环绕' },
-  ]
-
   const motionOptions: Array<{ id: VideoDefaults['motion']; label: string }> = [
     { id: 'subtle', label: '细微运动 · 最稳' },
     { id: 'natural', label: '自然动作' },
@@ -79,5 +70,5 @@ export function useVideoModeOptions(
 
   const durationOptions = computed<Array<VideoDefaults['duration']>>(() =>
     activeModel.value?.durations ?? (activeModel.value?.id === 'minimax-h3' ? [3, 5, 10, 15] : [3, 5]))
-  return { modes, modeBadge, unsupportedMode, aspectOptions, aspectSize, cameraOptions, motionOptions, durationOptions, qualities }
+  return { modes, modeBadge, unsupportedMode, aspectOptions, aspectSize, motionOptions, durationOptions, qualities }
 }

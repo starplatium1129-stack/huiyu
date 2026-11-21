@@ -303,6 +303,7 @@
         :show-watch="!immersive && (petGestures.controlsOpen.value || screenWatch.state.value !== 'idle' || Boolean(screenWatch.notice.value))"
         :show-chat="!petGestures.controlsOpen.value"
         @open-chat="openChatWindow"
+        @open-atelier="desktopBridge.openAtelier()"
         @open-reminder="openReminderRoute"
         @dismiss-reminder="dismissReminder"
       >

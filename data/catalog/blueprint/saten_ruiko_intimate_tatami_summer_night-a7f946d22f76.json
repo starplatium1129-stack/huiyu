@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_intimate_tatami_summer_night",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2042,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfitId": "summer_yukata",
@@ -19,11 +19,11 @@
     "lighting": "pale moonlight and soft paper screen shadows",
     "camera": "medium_shot",
     "mood": "温存与宁静",
-    "promptProse": "Lying side-by-side on cool woven tatami mats on a warm summer night, Saten Ruiko relaxes in her purple floral yukata. Her collar rests comfortably open as she quietly hooks her pinky finger with the viewer's, listening to the gentle chime of a glass wind chime.",
+    "promptProse": "Ruiko lies on her back on the left tatami mat in a lilac floral yukata, her long black hair spreading beneath its white flower clip. Her companion lies next to her in a slate-blue striped jinbei, with short brown hair and a narrow side profile. She turns toward him as their pinkies meet beneath the glass wind chime.",
     "promptTokens": [
-      "saten_ruiko",
       "1girl",
-      "solo",
+      "1boy",
+      "saten_ruiko",
       "black_hair",
       "long_hair",
       "hair_flower",
@@ -41,9 +41,10 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ruiko lying comfortably on tatami holding fingers on a summer night.",
+    "animaCaption": "Ruiko lies on her back on the left tatami mat in a lilac floral yukata, her long black hair spreading beneath its white flower clip. Her companion lies next to her in a slate-blue striped jinbei, with short brown hair and a narrow side profile. She turns toward him as their pinkies meet beneath the glass wind chime.",
     "isNsfw": false,
     "rating": "R15",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "group"
   }
 }

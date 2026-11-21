@@ -15,7 +15,12 @@
       </div>
       <div class="setup-location-card">
         <span class="setup-folder"><ArchiveIcon name="folder" /></span>
-        <div><strong>存放位置</strong><code>{{ snapshot?.workspace.path || (loading ? '读取中…' : '未设置') }}</code></div>
+        <div>
+          <strong>存放位置</strong>
+          <code>{{ snapshot?.workspace.path || (loading ? '读取中…' : '未设置') }}</code>
+          <span v-if="snapshot?.workspace.freeBytes != null">磁盘可用 {{ formatSetupBytes(snapshot.workspace.freeBytes) }}</span>
+          <span v-if="workspaceOnCDrive && snapshot?.comfy.installation === 'missing'">当前位于 C 盘，完整环境与模型约需 15 GB 以上空间，建议优先更换到空间更大的磁盘。</span>
+        </div>
         <button v-if="desktop" ref="workspaceButton" class="btn btn-ghost btn-sm" type="button" :disabled="blocked || loading || workspaceLoading || workspaceSaving || setupBusy || manualBusy" @click="chooseWorkspace">{{ workspaceLoading ? '选择中…' : '更换位置' }}</button>
       </div>
       <p v-if="!desktop" class="setup-note">请在桌面端设置中更换存储目录。</p>
@@ -46,6 +51,7 @@ import LocalSetupPreparation from './LocalSetupPreparation.vue'
 import LocalSetupAutomation from './LocalSetupAutomation.vue'
 import CompanionWorkspaceSettings from './CompanionWorkspaceSettings.vue'
 import { useLocalSetup } from '../composables/useLocalSetup'
+import { formatSetupBytes } from '../utils/localSetupPreparation'
 
 const props = defineProps<{ blocked: boolean; settingsRevision: number }>()
 const emit = defineEmits<{ busy: [value: boolean]; configured: []; ready: [] }>()
@@ -67,6 +73,7 @@ const { isLocal, desktop, snapshot, loading, error, nextStep, basicComplete, cur
   workspaceButton, workspaceOpen, workspaceDraft, workspaceSavedRoot, workspaceLoading, workspaceSaving, workspaceError, workspacePending, workspaceUnconfirmed, restarting,
   refresh, cancelCheck, selectSetupModel, recordDownload, recordVerification,
   openWorkspace, chooseWorkspace, closeWorkspace, saveWorkspace, restartForSetup } = useLocalSetup(computed(() => props.blocked || setupBusy.value || manualBusy.value))
+const workspaceOnCDrive = computed(() => /^c:[\\/]/i.test((snapshot.value?.workspace.path ?? '').trim()))
 watch([setupBusy, manualBusy, workspaceLoading, workspaceSaving, restarting], values => emit('busy', values.some(Boolean)), { immediate: true })
 watch(loading, (value, previous) => { if (previous && !value) emit('ready') })
 watch(() => props.settingsRevision, () => { void refresh() })

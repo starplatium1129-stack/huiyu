@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kisara_engage_kiss",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 20,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kisara_engage_kiss",
     "profile": {
@@ -17,7 +17,7 @@
       "type": "popular",
       "icon": "🔥",
       "portrait": {
-        "image": "../assets/characters/popular-kisara_engage_kiss.png?v=4aac1693564d",
+        "image": "../assets/characters/popular-kisara_engage_kiss.png?v=6567a5b3c6be",
         "alt": "木更样张立绘",
         "sourceShowcaseId": "pc_kisara_engage_kiss_pc_kisara_engage_kiss_kisara_school",
         "sourceShowcaseSha256": "440726a90eb1ed24c797db3893b83b515ece9920329dfadb0ddeb437ef3e275d"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "momo_velia_deviluke",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "momo_velia_deviluke",
     "profile": {
@@ -22,7 +22,7 @@
       "type": "popular",
       "icon": "🍇",
       "portrait": {
-        "image": "../assets/characters/popular-momo_velia_deviluke.png?v=f33ca7221146",
+        "image": "../assets/characters/popular-momo_velia_deviluke.png?v=6a0da7374ed8",
         "alt": "梦梦·贝莉雅·戴比路克样张立绘",
         "sourceShowcaseId": "pc_momo_velia_deviluke_pc_momo_velia_deviluke_momo_alien_greenhouse_plant_summon",
         "sourceShowcaseSha256": "16bb2fef6a76ffae68877fc378fb2fb12f6e27dac78c9a6bd552809b7e13ea02"

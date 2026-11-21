@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_yotsuba",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 187,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "nakano_yotsuba",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🍀",
       "portrait": {
-        "image": "../assets/characters/popular-nakano_yotsuba.png?v=fe3968dcb8c0",
+        "image": "../assets/characters/popular-nakano_yotsuba.png?v=f1b61569d39a",
         "alt": "中野四叶样张立绘",
         "sourceShowcaseId": "pc_nakano_yotsuba_pc_nakano_yotsuba_nakano_yotsuba_rooftop_lunch_smile",
         "sourceShowcaseSha256": "4db172533c8ddda0b52d18575f40b010f8d9f17594f3413ff83243e571d5860c"

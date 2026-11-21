@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_park_lawn_nap_wings_cover",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2209,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "astraea_park_lawn_nap_wings_cover",
     "characterId": "astraea",
@@ -19,8 +19,10 @@
     "lighting": "brilliant summer daylight diffused softly by translucent white feathers",
     "camera": "medium_shot",
     "mood": "宁静与神圣",
-    "promptProse": "Lying in a wildflower meadow, Astraea wraps her huge white wings around partner to provide shade, smiling with pure dog-like devotion. Brilliant summer sunlight filters softly through the translucent white plumage of her grand wings, casting dappled shade across the flower-strewn grass.",
+    "promptProse": "Astraea lies in the wildflowers with her long blonde hair spread beneath a large white wing. The companion beside her is a brown-skinned man with cropped black hair, wearing a moss-green short-sleeved shirt. She nudges his upper arm as the wing casts dappled shade across their two faces.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "meadow",
       "lying_on_grass",
       "angel_wings",
@@ -34,10 +36,11 @@
       "daylight"
     ],
     "negativeTokens": [],
-    "animaCaption": "Astraea shielding partner from the sun with large white wings on a grassy hill. Brilliant summer sunlight filters softly through the translucent white plumage of her grand wings, casting dappled shade across the flower-strewn grass.",
+    "animaCaption": "Astraea lies in the wildflowers with her long blonde hair spread beneath a large white wing. The companion beside her is a brown-skinned man with cropped black hair, wearing a moss-green short-sleeved shirt. She nudges his upper arm as the wing casts dappled shade across their two faces.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "group"
   }
 }

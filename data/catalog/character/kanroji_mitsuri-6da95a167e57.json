@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanroji_mitsuri",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 128,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kanroji_mitsuri",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-kanroji_mitsuri.png?v=af141d58db26",
+        "image": "../assets/characters/popular-kanroji_mitsuri.png?v=e0af7f7ecaba",
         "alt": "甘露寺蜜璃样张立绘",
         "sourceShowcaseId": "pc_kanroji_mitsuri_pc_kanroji_mitsuri_kanroji_mitsuri_sfw_b6_01",
         "sourceShowcaseSha256": "f63ae5e2165a263a5a71f4771e32b9cc58338d9a62bebf6bf50f72450575bb75"

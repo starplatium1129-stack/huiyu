@@ -144,7 +144,8 @@ impl Service {
             None
         };
         let input = if self.backend.native_enabled() {
-            native::validate(&raw, size)?
+            let pack = native::packed_h3(&self.backend.native_settings()?, &raw["modelId"]).await?;
+            native::validate(&raw, size, pack.as_ref())?
         } else {
             validation::validate(&raw, size)?
         };
@@ -164,7 +165,9 @@ impl Service {
         }
         if self.backend.native_enabled() {
             let permit = self.backend.reserve_native(&cancel)?;
-            let input = native::normalize(input)?;
+            let settings = self.backend.native_settings()?;
+            let pack = native::packed_h3(&settings, &input["modelId"]).await?;
+            let input = native::normalize(input, pack.as_ref())?;
             let originals = inputs::capture(&self.config, &input, local, owner, &cancel).await?;
             let first = originals.frame(&input["image"])?;
             let last = originals.frame(&input["lastFrame"])?;
@@ -172,9 +175,7 @@ impl Service {
                 Some(name) => originals.frame(name)?,
                 None => None,
             };
-            let mut plan =
-                generation::native::adapters::plan(&self.backend.native_settings()?, input, first)
-                    .await?;
+            let mut plan = generation::native::adapters::plan(&settings, input, first).await?;
             *plan.last_frame.get_mut().unwrap() = last;
             *plan.driving_media.get_mut().unwrap() = driver;
             let backend = self.backend.prepare_native(plan, permit, &cancel)?;

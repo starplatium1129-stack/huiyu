@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "honami_rainy_umbrella_walk",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1885,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "honami_rainy_umbrella_walk",
     "characterId": "ichinose_honami",
@@ -19,6 +19,8 @@
     "lighting": "雨天柔和漫射的冷调光线与伞下暖色氛围",
     "camera": "cowboy shot, eye level",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "holding umbrella",
       "red umbrella",
       "rain",
@@ -41,12 +43,13 @@
       "blushing",
       "romantic"
     ],
-    "promptProse": "Sharing a bright red umbrella along the rain-swept campus avenue, she clings softly to his arm with an affectionate blushing gaze, rain mist shimmering around them.",
+    "promptProse": "Honami, in a crimson school blazer with a blue bow and pink hair over her shoulders, carries the red umbrella on the left. The boy on the right has tousled dark-brown hair, a charcoal cardigan over his white shirt and navy trousers. She holds his arm as they walk along the rain-swept campus avenue.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic"
     ],
-    "animaCaption": "She keeps close to her companion's arm beneath their shared red umbrella."
+    "animaCaption": "Honami, in a crimson school blazer with a blue bow and pink hair over her shoulders, carries the red umbrella on the left. The boy on the right has tousled dark-brown hair, a charcoal cardigan over his white shirt and navy trousers. She holds his arm as they walk along the rain-swept campus avenue.",
+    "compositionIntent": "group"
   }
 }

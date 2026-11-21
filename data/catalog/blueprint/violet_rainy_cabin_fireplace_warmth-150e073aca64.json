@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_rainy_cabin_fireplace_warmth",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1388,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "裹着毛毯蜷缩在你的怀中，微凉的金属手掌贴在你的心口，仰起白净面容依恋地凝望你",
     "adult": false,
@@ -26,8 +26,10 @@
     "mood": "安心避风港、至死不渝的依恋",
     "negativeTokens": [],
     "outfitId": "charming_nightgown_slip",
-    "promptProse": "Violet curls against her companion beneath the shared wool blanket, a silver palm resting on their clothed chest. The fire warms the silk and blanket folds while rain darkens the cabin window behind them.",
+    "promptProse": "Violet curls beside the fire in a white silk nightdress, the red-and-white blanket pulled over both laps. The man holding her has short brown hair and a slate-blue flannel shirt. She looks up with her silver palm against his buttoned chest, while firelight runs along the blanket folds and rain darkens the cabin window.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "blanket",
       "companion",
       "fireplace",
@@ -52,6 +54,6 @@
     ],
     "timeOfDay": "暴雨夜",
     "title": "薇尔莉特 · 暴风雨木屋的壁炉依偎",
-    "animaCaption": "Her silver palm rests on her companion's clothed chest beneath their shared blanket."
+    "animaCaption": "Blond Violet's silver hand rests on the short brown-haired man's slate-blue flannel shirt. He holds her beneath the red-and-white wool blanket as she looks up from his chest."
   }
 }

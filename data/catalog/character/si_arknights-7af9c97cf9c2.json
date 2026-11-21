@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "si_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 167,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "si_arknights",
     "profile": {
@@ -18,7 +18,7 @@
       "type": "popular",
       "icon": "🐉",
       "portrait": {
-        "image": "../assets/characters/popular-si_arknights.png?v=fb79e37e8597",
+        "image": "../assets/characters/popular-si_arknights.png?v=4aba91305d8d",
         "alt": "祀样张立绘",
         "sourceShowcaseId": "pc_si_arknights_pc_si_arknights_si_arknights_calligraphy_doodle",
         "sourceShowcaseSha256": "1fbf7317b19f66ff74647299402d36c34befae9654b972d27518ef3128516395"

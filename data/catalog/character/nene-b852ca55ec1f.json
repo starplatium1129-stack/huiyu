@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nene",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "nene",
     "profile": {
@@ -18,7 +18,7 @@
       "type": "heroine",
       "icon": "🔮",
       "portrait": {
-        "image": "../assets/characters/popular-nene.png?v=d52781134a1b",
+        "image": "../assets/characters/nene-portrait.webp?v=fe830e5e7662",
         "alt": "绫地宁宁样张立绘",
         "sourceShowcaseId": "sc262",
         "sourceShowcaseSha256": "85fde314faa0de96c1a8582a5f7c3efbed9817b95f72bbe8c5228f4555f72eda"

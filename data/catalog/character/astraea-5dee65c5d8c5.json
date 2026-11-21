@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "astraea",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 227,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "astraea",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🪽",
       "portrait": {
-        "image": "../assets/characters/popular-astraea.png?v=c2ee071adb41",
+        "image": "../assets/characters/popular-astraea.png?v=abbec806fc5d",
         "alt": "阿斯特蕾亚样张立绘",
         "sourceShowcaseId": "pc_astraea_pc_astraea_astraea_sunflower_field_summer_wind",
         "sourceShowcaseSha256": "33d0d136067daf5621fdceb424e55c73534440044bf20d70e4385d5aebbf66bf"

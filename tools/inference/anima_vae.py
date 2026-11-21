@@ -33,26 +33,28 @@ def _decode_size(latents):
     return size
 
 
-def _perform(vae, values, kind, tiling, check=None):
+def _perform(vae, values, kind, tiling, check=None, decode_tile=None):
     import torch
     if values.ndim != 5 or values.shape[0] != 1 or values.shape[2] != 1:
         raise ValueError("Anima VAE requires one single-frame [1,C,1,H,W] tensor")
     operation = _encode_tile if kind == "encode" else _decode_tile
     event = dict(kind=kind, mode="full", tileSize=0, overlap=0, tileCount=1, outputDevice=values.device.type)
-    try:
-        output = operation(vae, values)
-    except torch.OutOfMemoryError:
-        if values.device.type not in ("cuda", "xpu"):
-            raise
-    else:
-        vae._huiyu_vae_events.append(event)
-        return output
+    size = decode_tile(values) if kind == "decode" and decode_tile is not None else None
+    if size is None:
+        try:
+            output = operation(vae, values)
+        except torch.OutOfMemoryError:
+            if values.device.type not in ("cuda", "xpu"):
+                raise
+        else:
+            vae._huiyu_vae_events.append(event)
+            return output
     # The failed operation's traceback is gone before the fallback allocation.
     if check is not None:
         check()
     vae.clear_cache()
     getattr(torch, values.device.type).empty_cache()
-    size = 256 if kind == "encode" else _decode_size(values)
+    size = size or (256 if kind == "encode" else _decode_size(values))
     event["mode"] = "tiled"
     def perform_tile(patch):
         # A CUDA operation is indivisible; stop before starting another tile.
@@ -69,7 +71,7 @@ def _perform(vae, values, kind, tiling, check=None):
 
 
 @contextmanager
-def _single_frame(vae, kind, tiling, check=None):
+def _single_frame(vae, kind, tiling, check=None, decode_tile=None):
     import torch
     from diffusers.models.autoencoders.autoencoder_kl_qwenimage import AutoencoderKLQwenImage, QwenImageCausalConv3d, QwenImageRMS_norm
     from diffusers.models.autoencoders.vae import DecoderOutput
@@ -121,7 +123,7 @@ def _single_frame(vae, kind, tiling, check=None):
         replacement = lambda values: _perform(vae, values, kind, tiling, check=check)
     else:
         def replacement(values, return_dict=True):
-            output = _perform(vae, values, kind, tiling, check=check)
+            output = _perform(vae, values, kind, tiling, check=check, decode_tile=decode_tile)
             return DecoderOutput(sample=output) if return_dict else (output,)
     setattr(vae, name, replacement)
     try:

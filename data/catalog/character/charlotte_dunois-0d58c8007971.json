@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "charlotte_dunois",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 222,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "charlotte_dunois",
     "profile": {
@@ -142,7 +142,7 @@
         "orange_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-charlotte_dunois.png?v=560df18bbffe",
+        "image": "../assets/characters/popular-charlotte_dunois.png?v=2b0a14197b7f",
         "alt": "夏洛特·德诺阿样张立绘",
         "sourceShowcaseId": "pc_charlotte_dunois_pc_charlotte_dunois_charlotte_bento_box_handover",
         "sourceShowcaseSha256": "253347b74e32b5fbf29ef710bbb0922e52b644079a93a5870b10393b925c3daa"

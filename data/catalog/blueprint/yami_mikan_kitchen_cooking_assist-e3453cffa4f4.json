@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yami_mikan_kitchen_cooking_assist",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1225,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "右手握菜刀，左手蜷起指尖稳住胡萝卜，在砧板前认真切成细丝，美柑在旁指导",
     "camera": "medium shot, eye level, both characters and hands at the cutting board visible",
@@ -21,10 +21,9 @@
     "mood": "温馨可爱",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Yami holds the knife in her right hand and steadies the carrot with curled left fingertips while Mikan guides her from beside the counter. Warm pendant light falls on their hands and the thin slices beside the steaming stove.",
+    "promptProse": "At the family kitchen counter, long blonde-haired Yami holds the knife in her right hand and steadies the carrot with curled left fingertips. Beside her, Mikan wears a yellow apron over her home clothes, her shoulder-length chestnut hair tied at one side. Mikan points toward the board while warm pendant light falls on the thin slices and steam rises from the stove.",
     "promptTokens": [
       "2girls",
-      "Mikan Yuuki",
       "cooking",
       "carrots",
       "cutting board",
@@ -34,7 +33,8 @@
       "focused",
       "steam",
       "warm lighting",
-      "medium shot"
+      "medium shot",
+      "yuuki mikan"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -53,8 +53,9 @@
     "timeOfDay": "傍晚",
     "title": "小暗 · 结城家厨房的切菜修行",
     "characterTokens": [
-      "Mikan Yuuki"
+      "Mikan Yuuki",
+      "yuuki mikan"
     ],
-    "animaCaption": "Her right hand holds the knife and curled left fingertips steady the carrot as Mikan guides her from beside the counter."
+    "animaCaption": "Long blonde-haired Yami wears a teal sailor uniform and steadies the carrot with curled fingertips. Mikan stands at her side in a yellow apron, her chestnut shoulder-length hair tied in a small side bunch as she points at the cutting board."
   }
 }

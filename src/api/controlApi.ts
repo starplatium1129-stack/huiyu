@@ -103,7 +103,8 @@ function isControlStatus(value: ApiResponseObject): boolean {
     && typeof value.ollamaHost === 'string'
     && typeof value.localLink === 'string'
     && typeof value.shareLinkAvailable === 'boolean'
-    && (value.tunnelStatus === 'active' || value.tunnelStatus === 'waiting' || value.tunnelStatus === 'disabled')
+    && (value.tunnelStatus === 'active' || value.tunnelStatus === 'connecting' || value.tunnelStatus === 'waiting' || value.tunnelStatus === 'disabled')
+    && (value.tunnelManaged === undefined || typeof value.tunnelManaged === 'boolean')
     && typeof value.tunnelAvailable === 'boolean'
     && typeof value.uptime === 'number'
     && isObject(value.voices)

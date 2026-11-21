@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "wakaba_mutsumi_arknights",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 284,
   "createdAt": "2026-11-04T04:36:35.463404+00:00",
-  "updatedAt": "2026-11-04T07:20:43.306470300+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "wakaba_mutsumi_arknights",
     "profile": {
@@ -52,10 +52,104 @@
       ],
       "voice": "这个……是刚摘下来的。",
       "portrait": {
-        "image": "../assets/characters/popular-wakaba_mutsumi_arknights.png?v=69d685b9984b",
+        "image": "../assets/characters/popular-wakaba_mutsumi_arknights.png?v=546ec5fd4b22",
         "alt": "若叶睦场景样张立绘",
         "sourceShowcaseId": "pc_wakaba_mutsumi_arknights_wakaba_mutsumi_arknights_guitar_strings",
         "sourceShowcaseSha256": "1086c04215e4fda16e2b64c45fd904f1afd01e10d15f6390509bdebdc47a4beb"
+      },
+      "relationshipGraph": {
+        "version": 1,
+        "work": "BanG Dream!",
+        "people": [
+          {
+            "id": "togawa_sakiko",
+            "name": "丰川祥子",
+            "aliases": [
+              "豊川祥子",
+              "Togawa Sakiko",
+              "祥子大人",
+              "Oblivionis"
+            ],
+            "characterId": "togawa_sakiko"
+          },
+          {
+            "id": "takamatsu_tomori",
+            "name": "高松灯",
+            "aliases": [
+              "高松燈",
+              "Takamatsu Tomori"
+            ],
+            "role": "MyGO!!!!!主唱 / 收集创伤的作词少女",
+            "summary": "因自认无法成为普通人而封闭心扉的少女。在CRYCHIC解散后迷茫彷徨，最终在千早爱音等人的拉扯下喊出「哪怕迷茫也要前进」，与丰川祥子曾组建乐队并留下刻入心底的音乐共鸣。"
+          },
+          {
+            "id": "wakaba_mutsumi",
+            "name": "若叶睦",
+            "aliases": [
+              "若葉睦",
+              "Wakaba Mutsumi",
+              "Mortis"
+            ],
+            "role": "CRYCHIC前吉他手 / 知名演员千金",
+            "summary": "寡言阴郁的吉他手，祥子童年唯一的邻家玩伴。深知祥子家庭破裂的残酷真相并默默忍受折磨，最终跟随祥子加入Ave Mujica。",
+            "characterId": "wakaba_mutsumi_arknights"
+          },
+          {
+            "id": "sankaku_uika",
+            "name": "三角初华",
+            "aliases": [
+              "三角初華",
+              "Sankaku Uika",
+              "Timoris"
+            ],
+            "role": "偶像组合「sumimi」吉他手 / Ave Mujica吉他手",
+            "summary": "祥子幼年结识的星空好友。在祥子家道中落跌入深渊时毫不犹豫响应其组建Ave Mujica的召集，全力支持祥子完成演艺逆袭。"
+          }
+        ],
+        "relations": [
+          {
+            "id": "sakiko-tomori-crychic-breakup",
+            "source": "togawa_sakiko",
+            "target": "takamatsu_tomori",
+            "label": "创设救赎与雨中决绝退队",
+            "description": "祥子一手发掘并将自闭阴郁的灯拉入阳光创立CRYCHIC，但在家庭突遭灭顶剧变后在雨中排练室决绝离去，成为灯无法抚平的巨大心结。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "CRYCHIC崩解 · 开篇序幕",
+            "evidence": {
+              "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
+              "url": "https://anime.bang-dream.com/mygo/"
+            }
+          },
+          {
+            "id": "sakiko-mutsumi-childhood-puppet",
+            "source": "togawa_sakiko",
+            "target": "wakaba_mutsumi",
+            "label": "发小默从与沉重的人偶枷锁",
+            "description": "富家千金时代的青梅竹马，睦目睹祥子家道中落后的残酷挣扎，甘愿顺从祥子组建Ave Mujica扮演没有感情的木偶吉他手。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "Ave Mujica创立篇",
+            "evidence": {
+              "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
+              "url": "https://anime.bang-dream.com/mygo/"
+            }
+          },
+          {
+            "id": "sakiko-uika-rebuilding",
+            "source": "togawa_sakiko",
+            "target": "sankaku_uika",
+            "label": "星空誓约与商业化假面乐队",
+            "description": "祥子在走投无路时找上已成为顶流偶像的初华，凭借过去的星空看星回忆拉拢其戴上假面化身吉他手兼主唱，开启Ave Mujica逆袭风暴。",
+            "directed": false,
+            "spoiler": false,
+            "stage": "第一季终章 · 假面降临",
+            "evidence": {
+              "title": "武士道 · 《BanG Dream! It's MyGO!!!!!》官方网站",
+              "url": "https://anime.bang-dream.com/mygo/"
+            }
+          }
+        ]
       }
     },
     "popular": {

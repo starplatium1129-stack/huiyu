@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hu_tao",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "hu_tao",
     "profile": {
@@ -18,7 +18,7 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-hu_tao.png?v=22c763b7c27e",
+        "image": "../assets/characters/popular-hu_tao.png?v=21f19ea93db3",
         "alt": "胡桃样张立绘",
         "sourceShowcaseId": "pc_hu_tao_pc_hu_tao_hu_tao_wangsheng_parlor_daybreak",
         "sourceShowcaseSha256": "4d1444eb63db0bf6e743509bb4438ec28c0fb011b470a6817f45f91019cb1eab"

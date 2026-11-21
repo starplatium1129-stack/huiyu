@@ -15,6 +15,9 @@
                 <RouterLink :to="{ query: route.query, hash: '#setup-chat-options' }" class="btn btn-ghost btn-sm">准备模型</RouterLink>
                 <button v-if="llamaManaged" class="btn btn-danger btn-sm" type="button" :disabled="opBusy" @click="serviceAction('llama','stop')">释放显存</button>
               </template>
+              <template v-else-if="service.key === 'voice' && (virtualVoiceMode || (ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart))">
+                <RouterLink to="/control?section=control-voice" class="btn btn-ghost btn-sm">语音配置</RouterLink>
+              </template>
               <template v-else-if="service.key !== 'ollama' && startingService !== service.key">
                 <StudioTooltip v-if="!service.online" anchor content="启动服务">
                   <button class="btn btn-sm" :class="requestedService === service.key ? 'btn-primary' : 'btn-ghost'" type="button"
@@ -49,20 +52,24 @@
           </button>
         </div>
 
-        <ToggleSwitch v-if="ttsEngine !== 'gpt-sovits-native'" v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
+        <ToggleSwitch v-if="localScriptVoiceMode && scripts.voiceStart" v-model="autoStartVoice" :disabled="savingAutoStartVoice || !statusLoaded" class="autostart-row" @change="saveAutoStartVoice">
           <span>进入控制面板时启动语音<span class="autostart-hint">显存不足建议关闭</span></span>
         </ToggleSwitch>
-        <p v-if="(imageProvider === 'comfy' && !scripts.comfy) || (ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart)" class="script-hint">
+        <p v-if="(imageProvider === 'comfy' && !scripts.comfy) || (localScriptVoiceMode && !scripts.voiceStart)" class="script-hint">
           未检测到快捷启停脚本（服务仍可手动运行后连接）：
           <span v-if="imageProvider === 'comfy' && !scripts.comfy">ComfyUI 脚本 </span>
-          <span v-if="ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStart">语音启动脚本 </span>
-          <span v-if="ttsEngine !== 'gpt-sovits-native' && !scripts.voiceStop">语音停止脚本 </span>
+          <span v-if="localScriptVoiceMode && !scripts.voiceStart">语音启动脚本 </span>
+          <span v-if="localScriptVoiceMode && !scripts.voiceStop">语音停止脚本 </span>
         </p>
       </section>
 
       <details id="control-connection-settings" class="panel-card service-config-panel">
-        <StudioDisclosureSummary><span>服务地址与角色声线<small class="inference-disclosure-hint">默认地址通常无需调整</small></span></StudioDisclosureSummary>
+        <StudioDisclosureSummary><span>高级服务地址与本地连接<small class="inference-disclosure-hint">切换系统朗读 / 云端接口 / 导入语音包请前往「语音与朗读」</small></span></StudioDisclosureSummary>
         <div data-disclosure-content>
+        <div class="tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-2 tw:mb-s-3">
+          <span class="field-help">当前语音引擎：{{ activeVoiceEngine }}</span>
+          <RouterLink class="btn btn-ghost btn-sm" to="/control?section=control-voice"><ArchiveIcon name="sound" />打开语音与朗读设置</RouterLink>
+        </div>
         <label class="field-label" for="comfy-host">ComfyUI 地址</label>
         <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="comfyHost">
@@ -71,17 +78,15 @@
         </div>
         <p id="comfy-host-help" class="field-help">ComfyUI 绘图与视频地址（原生模式无需连接）。</p>
 
-        <label class="field-label" for="tts-engine">角色语音引擎</label>
-        <StudioSelect id="tts-engine" v-model="ttsEngine" label="角色语音引擎" aria-describedby="tts-engine-help"
-          :options="[{ value: 'gpt-sovits-native', label: 'GPT-SoVITS 本机推理' }, { value: 'gpt-sovits', label: 'GPT-SoVITS 兼容服务' }, { value: 'voxcpm2', label: 'VoxCPM2 兼容服务' }]" />
-        <p id="tts-engine-help" class="field-help">切换后重启应用生效；本机推理按需加载。</p>
-        <label v-if="ttsEngine !== 'gpt-sovits-native'" class="field-label" for="tts-host">语音 API 地址</label>
-        <div v-if="ttsEngine !== 'gpt-sovits-native'" class="field-row tw:flex tw:gap-s-2">
+        <template v-if="localScriptVoiceMode">
+        <label class="field-label" for="tts-host">本地语音服务 API 地址</label>
+        <div class="field-row tw:flex tw:gap-s-2">
           <StudioTooltip :content="ttsHost">
             <input id="tts-host" v-model="ttsHost" class="input input-mono" type="text" placeholder="http://127.0.0.1:9880" aria-describedby="tts-host-help" spellcheck="false" @keydown.enter="saveConfig" />
           </StudioTooltip>
         </div>
-        <p v-if="ttsEngine !== 'gpt-sovits-native'" id="tts-host-help" class="field-help">语音服务默认按需启动。</p>
+        <p id="tts-host-help" class="field-help">GPT-SoVITS / VoxCPM2 本地接口地址。</p>
+        </template>
 
         <details class="voice-config">
           <StudioDisclosureSummary><ArchiveIcon name="sound" /> 角色声线配置 <span class="voice-count">{{ voiceConfiguredCount }} / 2 已配置</span></StudioDisclosureSummary>
@@ -158,7 +163,6 @@ const { status, actions } = useControlContext()
 const route = useRoute()
 const statusUsable = computed(() => status.statusLoaded.value && !status.statusError.value)
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
-import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioLiquidButton from '@/components/ui/StudioLiquidButton.vue'
 import type { ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { confirmAction } from '@/composables/useConfirm'
@@ -168,6 +172,8 @@ const { comfyOnline, sdOnline, ttsOnline, ollamaOnline, comfyManaged, ollamaMode
   llamaOnline, llamaManaged, llamaLabel, voiceNeneLora, voiceNatsumeLora, voiceNeneGpt, voiceNeneSovits, voiceNatsumeGpt, voiceNatsumeSovits, voiceNeneRef, voiceNenePrompt,
   voiceNatsumeRef, voiceNatsumePrompt, autoStartVoice, savingAutoStartVoice, overviewFeedback, imageProvider,
   opBusy, operation, ollamaMeta, voiceConfiguredCount, pollStatus } = status
+const virtualVoiceMode = computed(() => ['system', 'openai-tts', 'off'].includes(ttsEngine.value))
+const localScriptVoiceMode = computed(() => ['gpt-sovits', 'voxcpm2'].includes(ttsEngine.value))
 const { serviceAction, switchMode, saveAutoStartVoice, saveConfig, savingConfig, configSaved, canCancelOperation, operationCancelling, cancelOperation, readExistingVoices, readingVoices } = actions
 const startingService = computed(() => operation.value?.status === 'running' && operation.value.kind.endsWith('-start') ? operation.value.kind.slice(0, -6) : '')
 function recheckStatus() { if (!serviceChecking.value && !opBusy.value) void pollStatus(true) }
@@ -201,7 +207,19 @@ const serviceCards = computed<Array<{ key: ControlService; name: string; icon: A
   ...(requestedService.value === 'webui' || sdOnline.value ? [{ key: 'webui' as const, name: 'SD WebUI', icon: 'model' as const, online: sdOnline.value, detail: '兼容已有 SD 绘图环境' }] : []),
   { key: 'llama', name: 'llama.cpp 本地聊天', icon: 'chat', online: llamaOnline.value, detail: llamaLabel.value || '按需加载' },
   { key: 'comfy', name: 'ComfyUI', icon: 'model', online: comfyOnline.value, detail: `${imageProvider.value !== 'comfy' ? '兼容引擎 · 视频' : 'Anima · Krea 2 · 视频'}${comfyOnline.value ? (comfyManaged.value ? ' · 受控' : ' · 手动') : ''}` },
-  { key: 'voice', name: `${activeVoiceEngine.value} 语音`, icon: 'sound', online: ttsOnline.value, detail: ttsSelfHealing.value ? '自动恢复中…' : `${voiceConfiguredCount.value} / 2 声线已配置` },
+  {
+    key: 'voice',
+    name: `${activeVoiceEngine.value} 语音`,
+    icon: 'sound',
+    online: ttsOnline.value,
+    detail: ttsEngine.value === 'system'
+      ? '开箱即用 · 无需启动本地服务'
+      : ttsEngine.value === 'openai-tts'
+        ? (ttsOnline.value ? '云端接口已配置' : '待填写接口地址与模型')
+        : ttsEngine.value === 'off'
+          ? '已关闭语音朗读'
+          : (ttsSelfHealing.value ? '自动恢复中…' : `${voiceConfiguredCount.value} / 2 声线已配置`),
+  },
   { key: 'ollama', name: 'Ollama 本地对话', icon: 'chat', online: ollamaOnline.value, detail: ollamaOnline.value ? ollamaMeta.value : '按需加载' },
 ])
 </script>

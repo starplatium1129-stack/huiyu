@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cantarella_wuwa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 307,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "cantarella_wuwa",
     "profile": {
@@ -45,7 +45,7 @@
         "large breasts"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-cantarella_wuwa.png?v=37d7554cfa87",
+        "image": "../assets/characters/popular-cantarella_wuwa.png?v=3b7d9b309acb",
         "alt": "坎特蕾拉立绘"
       },
       "visual_dna": {

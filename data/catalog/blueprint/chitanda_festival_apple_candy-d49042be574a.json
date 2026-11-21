@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chitanda_festival_apple_candy",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1484,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "chitanda_festival_apple_candy",
     "title": "千反田爱瑠 · 夏夜祭典苹果糖的娇憨浅笑",
@@ -30,8 +30,10 @@
       "blush",
       "romantic"
     ],
-    "promptProse": "She holds the goldfish bag at her side with one hand and offers the candied apple to Oreki's mouth with the other. Lantern reflections shine across the sugar and bag water between them.",
+    "promptProse": "Eru holds a goldfish bag at her hip and offers a red candied apple to Houtarou Oreki. Her long straight black hair and violet furisode with its gold sash catch the festival light. Oreki, with short untidy brown hair and a dark blue summer jacket, bends just far enough for the apple to reach his mouth. Lantern colors reflect off the glaze and bag water.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "couple",
       "festival",
       "goldfish bag",
@@ -55,6 +57,6 @@
       "date"
     ],
     "compositionIntent": "group",
-    "animaCaption": "One hand holds the goldfish bag; the other offers the apple to Oreki."
+    "animaCaption": "Eru in a violet furisode holds the goldfish bag and offers the candied apple. Short, tousle-haired Oreki in a dark blue summer jacket leans toward it from beside her."
   }
 }

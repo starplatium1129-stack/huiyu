@@ -693,15 +693,15 @@ fn operations(vm: bool) -> Value {
     let base = if vm { "/qq" } else { "/api/muse/qq" };
     let reply = if vm { "replies" } else { "reply" };
     json!({
-        "senderIdentity":"同群按 senderId 认人，senderNickname 用于称呼。群角色以 senderRole 为准：owner 群主，admin 管理员，member 普通成员，unknown 未核实。私聊为 null。",
+        "senderIdentity":"同群按 senderId 认人，senderNickname 作称呼；senderRole：owner 群主 / admin 管理员 / member 成员 / unknown 未核实（私聊 null）。",
         "reply":format!("POST {base}/{reply}"),"targets":format!("GET {base}/targets"),
         "send":format!("POST {base}/send"),"search":format!("POST {base}/search"),
         "replyBody":{"requestKey":"来信编号","text":"回复文字","image":{"mimeType":"image/png","data":"图片 Base64"}},
-        "sendBody":{"requestKey":"新 UUID，重试沿用","conversationId":"targets 返回的会话","text":"文字，也可改传 image 或 audio"},
-        "mentionSenderId":"群文字回复和主动发言可传 mentionSenderId，填写该成员在同群来信中的 senderId；网关会添加 QQ @ 标签。",
-        "audio":{"mimeType":"audio/mpeg","data":"MP3 原文件的标准 Base64"},"searchBody":{"requestKey":"来信编号，或搭配 conversationId 使用新 UUID","query":"公开网页关键词"},
+        "sendBody":{"requestKey":"新 UUID，重试沿用","conversationId":"目标会话","text":"文字（或 image/audio）"},
+        "mentionSenderId":"群文字回复或主动发言传同群 senderId 可附带 QQ @ 标签。",
+        "audio":{"mimeType":"audio/mpeg","data":"MP3 标准 Base64"},"searchBody":{"requestKey":"来信编号，或新 UUID + conversationId","query":"关键词"},
         "context":format!("GET {base}/context/{{conversationId}}"),
-        "contextUsage":"recentMessages 按收录顺序附上同会话前文。群聊条数取决于绘遇设置，需要更早的群发言可读取同群 context。私聊最多附上本次连接内最近一小时的 6 条发言。",
+        "contextUsage":"recentMessages 附带同会话前文（私聊近 1h ≤6 条）；更多群发言查同群 context。",
         "inboxWaitSeconds":0,
         "desktopChat":if vm {
             json!({"inbox":"GET /desktop/pending","reply":"POST /desktop/replies"})
@@ -709,7 +709,7 @@ fn operations(vm: bool) -> Value {
             json!({"inbox":"GET /api/muse/desktop/inbox","reply":"POST /api/muse/desktop/reply"})
         },
         "limits":{"textChars":1600,"imageBytes":super::super::media::IMAGE_LIMIT,"audioBytes":attachment::AUDIO_LIMIT},
-        "usage":"普通文字用来信中的 recentMessages 直接回答，写好即回传。回复可带文字和一个附件，image 与 audio 二选一，也可以只发附件。无需回复可提交 requestKey 和 skip:true。主动发送每次选文字、图片或语音，QQ 确认后才算送达。"
+        "usage":"凭 recentMessages 回答并尽快回传：可附 text 和/或一个附件（image/audio 二选一），跳过提交 {requestKey,skip:true}；主动发信每次选文字、图或音。"
     })
 }
 
@@ -773,7 +773,7 @@ async fn inbox(
     let mut operations = operations(vm);
     operations["inboxWaitSeconds"] = json!(if slot.is_some() { wait.as_secs() } else { 0 });
     operations["inboxUsage"] = json!(
-        "单独持续 GET 收件地址加 ?wait=25，HTTP 超时至少 40 秒。空结果立即续接，inboxWaitSeconds 为 0 时等 2 秒再取。"
+        "独立 GET ?wait=25（HTTP 超时 ≥40s），空结果立即续接；inboxWaitSeconds=0 时等 2s。"
     );
     Ok(Json(
         json!({"ok":true,"items":items,"serverNow":crate::host::now_ms(),"operations":operations}),

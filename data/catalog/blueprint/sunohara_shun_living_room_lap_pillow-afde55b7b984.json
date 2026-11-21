@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_living_room_lap_pillow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2115,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "sunohara_shun_living_room_lap_pillow",
     "characterId": "sunohara_shun",
@@ -19,8 +19,10 @@
     "lighting": "soft diffused daylight and warm indoor lamp glow",
     "camera": "medium_shot",
     "mood": "温存与神圣",
-    "promptProse": "Sitting comfortably on a soft sofa, Sunohara Shun provides a soothing lap pillow, gazing down with an all-forgiving doting smile as her fingers caress hair.",
+    "promptProse": "Shun smiles down from the sofa, her long dark hair and animal ears outlined by the window. The man resting across her lap has short chestnut hair and a dark olive shirt, his side profile visible below her fingers. She smooths his short hair in the warm daylight.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "sofa",
       "living_room",
       "lap_pillow",
@@ -35,9 +37,10 @@
       "warm_lighting"
     ],
     "negativeTokens": [],
-    "animaCaption": "Shun stroking her companion hair with a blissful, doting smile.",
+    "animaCaption": "Shun smiles down from the sofa, her long dark hair and animal ears outlined by the window. The man resting across her lap has short chestnut hair and a dark olive shirt, his side profile visible below her fingers. She smooths his short hair in the warm daylight.",
     "isNsfw": false,
     "rating": "All",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "group"
   }
 }

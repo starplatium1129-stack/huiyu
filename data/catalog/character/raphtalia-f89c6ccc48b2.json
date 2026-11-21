@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "raphtalia",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 124,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "raphtalia",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-raphtalia.png?v=e5f17636b4ad",
+        "image": "../assets/characters/popular-raphtalia.png?v=a8b8be06a8bf",
         "alt": "拉芙塔莉雅样张立绘",
         "sourceShowcaseId": "pc_raphtalia_pc_raphtalia_raphtalia_sfw_b6_02",
         "sourceShowcaseSha256": "a449027b353781055b0518496beeb0bb08a1986f572c3586e2071746289c82b2"
@@ -179,7 +179,7 @@
             "stage": "灵龟篇与异世界篇",
             "evidence": {
               "title": "《盾之勇者成名录》官方网站",
-              "url": "http://shieldhero-anime.jp/"
+              "url": "https://shieldhero-anime.jp/"
             }
           },
           {
@@ -193,7 +193,7 @@
             "stage": "异世界浪潮战役",
             "evidence": {
               "title": "《盾之勇者成名录》官方网站",
-              "url": "http://shieldhero-anime.jp/"
+              "url": "https://shieldhero-anime.jp/"
             }
           }
         ]

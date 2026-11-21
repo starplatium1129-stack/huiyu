@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayase_yuuka",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 72,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "hayase_yuuka",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "📱",
       "portrait": {
-        "image": "../assets/characters/popular-hayase_yuuka.png?v=68ff3fb7bf1f",
+        "image": "../assets/characters/popular-hayase_yuuka.png?v=1e5d24929e7b",
         "alt": "早濑优香样张立绘",
         "sourceShowcaseId": "pc_hayase_yuuka_pc_hayase_yuuka_yuuka_schale_office_budget_lecture",
         "sourceShowcaseSha256": "10aa2a658519057853419b68b13952d774b572e0b600c90e122730b3f6344bbd"

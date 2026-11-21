@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_kotatsu_fluffy_warmth",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2143,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "shinano_kotatsu_fluffy_warmth",
     "characterId": "shinano",
@@ -19,8 +19,10 @@
     "lighting": "warm cozy domestic lamplight contrasting with cold outdoor snow",
     "camera": "medium_shot",
     "mood": "温存与宁静",
-    "promptProse": "Sitting snug at a kotatsu table surrounded by winter snow, Shinano bundles her partner in all nine fluffy tails while feeding a sweet mandarin.",
+    "promptProse": "Silver-haired Shinano sits beside the kotatsu in her pale wrap, nine fox tails draped around the dark-haired commander sitting at her left. His olive sweater and short hair emerge above the white fur. She offers him a peeled mandarin segment while snow collects beyond the window.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "kotatsu",
       "sitting_close",
       "peeling_mandarin",
@@ -31,10 +33,11 @@
       "medium_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Shinano bundling partner with nine fluffy tails at a winter kotatsu table.",
+    "animaCaption": "Silver-haired Shinano sits beside the kotatsu in her pale wrap, nine fox tails draped around the dark-haired commander sitting at her left. His olive sweater and short hair emerge above the white fur. She offers him a peeled mandarin segment while snow collects beyond the window.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "group"
   }
 }

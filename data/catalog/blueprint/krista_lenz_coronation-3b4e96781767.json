@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_coronation",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 988,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "加冕礼上接过王冠",
     "camera": "cowboy shot",
@@ -20,9 +20,10 @@
     "mood": "神圣决意",
     "negativeTokens": [],
     "outfitId": "coronation_investiture",
-    "promptProse": "Before the throne, Historia lifts both hands to receive the crown from the attendant on her right, raising her face into the cathedral's shafts of daylight.",
+    "promptProse": "Historia lifts her hands before the throne, her long blonde hair and white coronation gown lit by shafts of cathedral daylight. To her right, the silver-haired attendant in a dark burgundy ceremonial coat bends to lower the crown, his trimmed beard visible in profile.",
     "promptTokens": [
-      "2people",
+      "1girl",
+      "1boy",
       "crown",
       "cathedral",
       "coronation",
@@ -45,6 +46,6 @@
     "timeOfDay": "白天",
     "title": "希斯特里亚 · 女王加冕",
     "compositionIntent": "group",
-    "animaCaption": "The attendant on her right lowers the crown toward her raised hands."
+    "animaCaption": "Long-haired blonde Historia raises both hands before the throne in a white coronation gown. A gray-haired attendant with a trimmed beard and a dark burgundy ceremonial coat lowers the crown from the right, his profile visible."
   }
 }

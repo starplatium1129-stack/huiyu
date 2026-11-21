@@ -244,6 +244,7 @@
     "krea2-turbo": {
       "label": "Krea 2 Turbo · 原生 BF16",
       "profileId": "krea2_turbo",
+      "localConversionComponentsSha256": "a8a78d87439291db2eb44918e5037c6a5aeddc128fd5c1c51fbb2bf0076218ab",
       "sizes": ["1024x1024", "1024x1536", "1536x1024"],
       "family": "krea2", "media": "image", "pipeline": "Krea2Pipeline",
       "repository": "krea/Krea-2-Turbo",
@@ -251,7 +252,7 @@
       "source": "https://github.com/krea-ai/krea-2",
       "license": "Krea 2 Community License",
       "licenseUrl": "https://www.krea.ai/krea-2-licensing",
-      "layoutNote": "Official gated repository lists a complete Diffusers layout; this loader requires is_distilled=true. Accept its license before obtaining the snapshot; the extra turbo.safetensors is not needed. Exact gated configs remain to be checked on the primary machine. Comfy FP8 split files are unsupported.",
+      "layoutNote": "The official Turbo Diffusers snapshot and the prepared local FP8-to-BF16 conversion use is_distilled=true. The distilled transformer contains the eight-step recipe.",
       "steps": 8, "cfg": 0, "maxSize": 2048, "alignment": 16,
       "edit": false, "negative": false, "distilled": true
     },
@@ -389,6 +390,32 @@
     "minimax-h3": {
       "label": "MiniMax H3 · 原生音视频 BF16",
       "family": "minimax-h3", "media": "video", "pipeline": "MiniMaxH3ModularPipeline",
+      "localPack": {
+        "label": "MiniMax H3 · 本地量化 Turbo",
+        "attentionModes": ["auto", "sdpa", "sage", "flash2", "h3-sol", "h3-sla", "h3-fused"],
+        "accelerators": {
+          "lightvae": [
+            {"path":"accelerators/lightvae-lite-h3-decoder.safetensors","bytes":3248356840,"sha256":"d060ad616a33f422fcb8395f525d6d71185b5ddb3e016b31cc210ba2c9c06ee9"},
+            {"path":"accelerators/lightvae-lite-h3-decoder-fp16.safetensors","bytes":1624394096,"sha256":"effb1286095dbbd8b9c62300d99ace8d113ad43a53c35fc290d73d219d3e0bde"}
+          ],
+          "sla": [
+            {"path":"accelerators/minimax_h3_fl2v_turbo_4step_v0.1_768p_sla_comfyui_bf16.safetensors","bytes":1956192992,"sha256":"5cae6df40a06ea825f85fc8876c9ea1c9692c833a9af07bb8b3bac9ce2a71bac"}
+          ],
+          "fused": [
+            {"path":"accelerators/minimax_h3_fused_refdelta_r1024_turbo8_mystic07_int8_convrot.safetensors","bytes":20980178976,"sha256":"4262e4e9963c553fa00016bbe83961407a4fc0a888be95fd836c8d4f2304e48b"}
+          ]
+        },
+        "format": "h3-comfy-packed-v1", "repository": "Comfy-Org/MiniMax-H3", "revision": "4b53a35191437de05370da548e59aeabe2a5a09a",
+        "configs": ["LICENSE", "modular_model_index.json", "transformer/config.json", "text_encoder/config.json", "vae/config.json", "audio_vae/config.json", "scheduler/scheduler_config.json", "audio_scheduler/scheduler_config.json", "tokenizer/merges.txt", "tokenizer/tokenizer.json", "tokenizer/tokenizer_config.json", "tokenizer/vocab.json", "processor/chat_template.json", "processor/merges.txt", "processor/preprocessor_config.json", "processor/tokenizer.json", "processor/tokenizer_config.json", "processor/video_preprocessor_config.json", "processor/vocab.json"],
+        "files": [
+          {"source":"diffusion_models/minimax_h3_fl2va_pruned_int8_convrot.safetensors","path":"transformer/comfy.safetensors","bytes":20970379616,"sha256":"e889202c41dafb67b10d67b97f0d8541508036a6090af23425a5c2615d03c47a"},
+          {"source":"text_encoders/qwen3vl_32b_minimax_h3_nvfp4_awq.safetensors","path":"text_encoder/comfy.safetensors","bytes":15687142551,"sha256":"35a88d51044231fe332301d7a62aa81e3f2cba62febeb446e2c1e3e0ef76f2c6"},
+          {"source":"vae/minimax_h3_video_vae_fp16.safetensors","path":"vae/comfy.safetensors","bytes":5207808496,"sha256":"7c1f131492e7eddacaac9069a61b81bdd39de5cc96561e677c5eab1cdce5e522"},
+          {"source":"vae/minimax_h3_audio_vae_fp32.safetensors","path":"audio_vae/comfy.safetensors","bytes":605254808,"sha256":"8e505d95dd1561d47abd43d4238fd40d9bb1ae9e147ed0a4cba778d76ae4db48"},
+          {"source":"loras/minimax_h3_fl2v_turbo_4step_v1.0_768p_comfyui_bf16.safetensors","path":"loras/turbo-4.safetensors","bytes":1956192992,"sha256":"c396a9a06f58399e9df9754b18299818d84a2ddd371724ba48fe4a41221437dc"},
+          {"source":"loras/minimax_h3_fl2v_turbo_8step_v1.0_comfyui_bf16.safetensors","path":"loras/turbo-8.safetensors","bytes":1956193000,"sha256":"2339acdf19bfe123f46b971ea35d367a84adb85de43627e1eceafa5a5b2b111e","optional":true}
+        ]
+      },
       "indexFile": "modular_model_index.json", "blocks": "MiniMaxH3Blocks", "workflow": "t2va",
       "repository": "MiniMaxAI/MiniMax-H3",
       "revision": "42ed227ee7df40d41602854ae760620d6eb651fe",
@@ -403,7 +430,7 @@
     }
   },
   "pendingVideo": {
-    "minimax-h3": "尚缺 Ref2VA、对白专用参数、量化与 Turbo LoRA。支持 5 秒和 10 秒。",
+    "minimax-h3": "支持 5 秒和 10 秒、本地量化及 4/8 步 Turbo。Ref2VA 与对白专用参数尚未接入。",
     "wan2.2-14b": "尚缺独立 I2V 权重及图生视频、LightX2V/量化；当前仅 T2V A14B 双噪声模型。",
     "hunyuan-video-1.5": "尚缺 720p、I2V、蒸馏与超分；当前固定 480p T2V 版本和 standard 画质画布。",
     "ltx-2.3": "尚缺多阶段超分与 distilled 配方；当前使用 2.3 基础单阶段联合音视频。"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_canteen_lunch",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 580,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "端着餐盘，银发扎起",
     "camera": "medium shot",
@@ -20,7 +20,7 @@
     "mood": "日常安宁",
     "negativeTokens": [],
     "outfitId": "clay_artisan_apron",
-    "promptProse": "She holds the full tray level with both hands and looks toward the viewer's invitation between the occupied canteen tables.",
+    "promptProse": "Moving between occupied cafeteria tables, Mudrock keeps the full tray level with both hands, her silver ponytail and dark horns easily visible in the midday light. An inviting hand waves at the camera edge. The dark-haired diner in the blue uniform sits behind her at a separate table with the other diners.",
     "promptTokens": [
       "ponytail",
       "food tray",
@@ -49,6 +49,6 @@
     "compositionIntent": "group",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "Both hands keep the full tray level between the occupied canteen tables."
+    "animaCaption": "Mudrock, the silver-haired horned woman carrying the piled tray, looks toward a wave at the camera edge. Farther back, a dark-haired diner in a blue uniform stays seated at a separate table."
   }
 }

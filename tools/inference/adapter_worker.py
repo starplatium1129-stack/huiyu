@@ -1,4 +1,4 @@
-"""Native image/video adapters; local assets only, pending primary-machine validation.
+"""Native image and video inference from local model assets.
 
 Run in the separate requirements-adapters.txt environment. This worker never
 installs dependencies, downloads weights, executes repository-provided custom code or invokes ComfyUI.
@@ -174,6 +174,44 @@ def fingerprint(root, control):
     return digest.hexdigest()
 
 
+def converted_identity(root, receipt, trusted, control, *, read_extra_configs=False, verified_extras=()):
+    """Use a pinned local import record only for its complete, unchanged fileset."""
+    marker = root / "huiyu-model.json"
+    recorded = receipt.get("files")
+    if not isinstance(recorded, list) or len(recorded) != len(trusted):
+        return None
+    expected = {row["path"]: (row["bytes"], row["sha256"]) for row in trusted}
+    if any(not isinstance(row, dict) or not isinstance(row.get("path"), str) for row in recorded) or expected != {
+            row.get("path"): (row.get("bytes"), row.get("sha256")) for row in recorded}:
+        return None
+    stamp = marker.stat().st_mtime_ns
+    for name, (size, _) in expected.items():
+        control.check()
+        path = root / name
+        if not path.exists():
+            return None
+        meta = contract.safe_file(root, path).stat()
+        if meta.st_size != size or meta.st_mtime_ns > stamp:
+            return None
+    for asset in verified_extras:
+        expected[asset["path"]] = (asset["bytes"], asset["sha256"])
+    for path in root.rglob("*"):
+        control.check()
+        if path == marker or path.suffix.lower() not in MODEL_SUFFIXES:
+            continue
+        name = path.relative_to(root).as_posix()
+        if name not in expected:
+            if not read_extra_configs or path.suffix.lower() not in (".json", ".txt", ".jinja"):
+                return None
+            meta = contract.safe_file(root, path).stat()
+            if meta.st_size > 32 << 20:
+                return None
+            with path.open("rb") as stream:
+                expected[name] = (meta.st_size, hashlib.file_digest(stream, "sha256").hexdigest())
+    identity = hashlib.sha256(json.dumps(expected, sort_keys=True, separators=(",", ":")).encode())
+    return {"sha256": identity.hexdigest(), "scope": "prepared-local-weights"}
+
+
 def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
     model = contract.model(model_id)
     moss = model["family"] == "moss-image"
@@ -183,6 +221,36 @@ def model_identity(root, model_id, control, *, moss_weight_precision="auto"):
         receipt = contract.config(root, marker)
         manifest = contract.document(Path(__file__).with_name("managed-adapter-models.json"))
         spec = next((item for item in manifest["models"] if item["id"] == model_id), None)
+        known_components = model.get("localConversionComponentsSha256")
+        if (known_components and receipt.get("modelId") == model_id and receipt.get("schemaVersion") == 1
+                and receipt.get("scope") == "local-fp8-dequantized-bf16"):
+            # This legacy exporter hashes the weight shards but omits tokenizer
+            # and config files. Read those small files under the same identity lease.
+            components = receipt.get("components")
+            payload = json.dumps(components, sort_keys=True, separators=(",", ":")).encode()
+            if hashlib.sha256(payload).hexdigest() == known_components:
+                files = [dict(path=f"{name}/{path}", **item) for name, row in components.items()
+                         for path, item in row["files"].items()]
+                identity = converted_identity(root, {"files": files}, files, control, read_extra_configs=True)
+                if identity:
+                    return identity
+        if (model_id == "wan2.2-ti2v-5b" and spec and receipt.get("schemaVersion") == 1
+                and receipt.get("modelId") == model_id and receipt.get("revision") == spec["revision"]
+                and receipt.get("scope") == "converted-local-weights-sha256"):
+            recipe = contract.document(Path(__file__).with_name("wan22-import.json"))
+            if receipt.get("sources") == list(recipe["sources"].values()):
+                identity = converted_identity(root, receipt, recipe["convertedFiles"], control)
+                if identity:
+                    return identity
+        if model_id == "minimax-h3" and spec and contract.local_h3(root, model):
+            pack = model["localPack"]
+            assets = [row for row in pack["files"] if not row.get("optional") or (root / row["path"]).exists()]
+            configs = [row for row in spec["files"] if row["path"] in pack["configs"]]
+            extras = sibling("import_h3").prepared_accelerators(root) if (root / "accelerators").is_dir() else {}
+            identity = converted_identity(root, receipt, [*assets, *configs], control,
+                                          verified_extras=[row for rows in extras.values() for row in rows])
+            if identity:
+                return identity
         if (spec is not None and receipt.get("schemaVersion") == 1
                 and receipt.get("modelId") == model_id and receipt.get("revision") == spec["revision"]
                 and receipt.get("scope") == "downloaded-files-sha256"):
@@ -285,6 +353,27 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         emit(control.stream, job["id"], "result", outputPath=job["outputPath"], nativeRuntime=observation)
         return
     root = contract.layout(job["modelDir"], spec)
+    local_steps = contract.local_h3(root, spec)
+    actual_format = spec["localPack"]["format"] if local_steps is not None else "diffusers"
+    if data.get("nativeModelFormat", actual_format) != actual_format:
+        raise Error("MODEL_CHANGED", "视频模型已更换，请使用当前模型重新提交任务。")
+    if local_steps is not None:
+        if data["steps"] not in local_steps:
+            raise Error("INVALID_PARAMETER", f"本地 H3 Turbo 已安装的步数为 {local_steps}，请重新选择步数。")
+        data["_h3TurboSteps"] = data["steps"]
+        mode = data.get("videoAttention")
+        data.setdefault("h3VideoShift", 6 if data["steps"] == 4 and mode != "h3-fused" else 12)
+        if mode in ("h3-sla", "h3-fused") or data.get("h3Decoder") == "lightvae":
+            extras = sibling("import_h3").prepared_accelerators(root)
+            if data.get("h3Decoder") == "lightvae" and "lightvae" not in extras:
+                raise Error("MODEL_CHANGED", "此配方所需的 H3 LightVAE 权重未就绪。")
+            if mode in ("h3-sla", "h3-fused"):
+                kind = mode.removeprefix("h3-")
+                if data["steps"] != 4 or kind not in extras or data["h3VideoShift"] != (6 if kind == "sla" else 12):
+                    raise Error("UNSUPPORTED_ACCELERATION", "所选 H3 加速需要对应的四步权重和采样偏移。")
+                data["_h3AccelerationPath"] = contract.safe_file(root, root / extras[kind][0]["path"])
+    elif data.get("videoAttention") in ("h3-sol", "h3-sla", "h3-fused") or "h3Decoder" in data or "h3VideoShift" in data:
+        raise Error("UNSUPPORTED_ACCELERATION", "此选项需要本机量化版 H3 Turbo。")
     if spec["family"] == "moss-image" and data["mossTextPrecision"] == "auto":
         data["mossTextPrecision"] = "int8" if sibling("moss_int8").selected(root, "auto", contract, component="text_encoder", expected_model=data["modelId"]) else "bf16"
     style_path = Path(job["loras"][0]["path"]) if job.get("loras") else None
@@ -337,10 +426,12 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                     with windows_weight_reads():
                         template = video.load(root, spec, data, control, contract)
                     control.stage("uploading")
-                    placement = sibling("native_memory").Residency(template.components, policy, device=video_device)
+                    placement = video.placement(template.components, policy, data, spec, video_device, device_backend)
                 else:
-                    with windows_weight_reads() if spec["family"] == "qwen-image" else contextlib.nullcontext():
+                    with windows_weight_reads() if spec["family"] in ("qwen-image", "krea2") else contextlib.nullcontext():
                         template = getattr(diffusers, spec["pipeline"]).from_pretrained(str(root), **kwargs)
+                    if spec["family"] == "krea2":
+                        sibling("krea_adapter").configure(template)
                     if spec["family"] == "qwen-image":
                         encoder = template.text_encoder
                         encoder.set_attn_implementation("sdpa")
@@ -373,8 +464,10 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
             load_pipeline, Error, style_path=style_path,
             prepared_identity=lambda path, task: model_identity(path, data["modelId"], task,
                 moss_weight_precision=data.get("mossWeightPrecision", "auto")))
-        if spec["family"] in ("qwen-image", "moss-image") and policy == "offload":
+        if spec["family"] in ("qwen-image", "moss-image", "krea2") and policy == "offload":
             cache.memory.plan(memory_pixels, image_conditioned=conditioned, control=control, decode_pixels=render_pixels)
+        if is_video and hasattr(cache.memory, "plan_video"):
+            cache.memory.plan_video(data, control)
         observation = {"adapter": data["modelId"], "validation": "待主力机验证", "modelSha256": identity["sha256"],
                        "modelIdentityScope": identity["scope"],
                        "memoryPolicy": policy, "weightReuse": reused,
@@ -392,8 +485,19 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
                         images.append(frame.convert("RGB"))
             report = dict(device=device_backend, requested=data["videoAttention"], selected=selected,
                           calls=dict(sdpa=0, slicedSdpa=0, flash2=0, sage=0))
+            if local_steps is not None:
+                observation["nativeModelFormat"] = actual_format
+                observation["turboSteps"] = data["steps"]
+                observation["h3VideoShift"] = data["h3VideoShift"]
+                observation["h3AudioShift"] = 3
+                observation["h3Decoder"] = getattr(pipeline.vae, "_huiyu_video_decoder", "original")
+                observation["h3Conditioning"] = getattr(pipeline, "_huiyu_h3_conditioning", {})
+                observation["h3Modulation"] = sibling("h3_modulation").begin(pipeline.transformer)
             observation["videoAcceleration"] = report
-            with torch.inference_mode(), acceleration.attention(pipeline, control, report):
+            rotary = sibling("h3_rotary").rotary(pipeline.transformer) if local_steps is not None else contextlib.nullcontext()
+            with torch.inference_mode(), acceleration.attention(pipeline, control, report), rotary as rotary_stats:
+                if rotary_stats is not None:
+                    observation["h3Rotary"] = rotary_stats
                 frames, soundtrack, sample_rate = video.generate(pipeline, spec, data, control, device=video_device,
                     image=images[0] if images else None, last_frame=images[1] if len(images) == 2 else None,
                     driving_video=job.get("drivingVideoPath"))
@@ -413,7 +517,9 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
             if step + 1 == total:
                 if prefix is not None:
                     prefix.retire()
-                if policy == "offload" and spec["family"] not in ("qwen-image", "moss-image"):
+                if policy == "offload" and spec["family"] == "krea2":
+                    cache.memory.enter("vae")
+                if policy == "offload" and spec["family"] not in ("qwen-image", "moss-image", "krea2"):
                     cache.memory.offload_all()
                     torch.cuda.empty_cache()
                 control.stage("decoding")
@@ -447,14 +553,28 @@ def generate(job, control, prepared, *, result_callback=None, resident=None, ref
         with torch.inference_mode(), sibling("qwen_prefix_cache").context(
                 use_prefix, pipeline, branches, control, observation) as prefix, attention as backend:
             observation["attentionBackend"] = backend
-            output = (sibling("moss_adapter").generate(pipeline, data, control, observation, spec)
-                      if spec["family"] == "moss-image" else pipeline(**args))
+            if spec["family"] == "moss-image":
+                output = sibling("moss_adapter").generate(pipeline, data, control, observation, spec)
+            elif spec["family"] == "krea2":
+                output = sibling("krea_adapter").generate(pipeline, args, control, observation)
+            else:
+                output = pipeline(**args)
         control.stage("saving")
         media.png(output.images[0], job["outputPath"], data, Error)
         control.check()
         success = True
     except torch.OutOfMemoryError as exc:
+        if spec["family"] == "krea2" or is_video:
+            import traceback
+            if cache.memory is not None:
+                print("Native memory plan:", cache.memory.observation(), file=sys.stderr, flush=True)
+            traceback.print_exc(file=sys.stderr)
         raise Error("NATIVE_OUT_OF_MEMORY", "显存不足，请选择分层卸载或缩小画幅。") from exc
+    except Exception as exc:
+        if is_video and not isinstance(exc, Error):
+            import traceback
+            traceback.print_exc(file=sys.stderr)
+        raise
     finally:
         for image in images:
             image.close()

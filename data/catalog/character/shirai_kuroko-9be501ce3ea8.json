@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirai_kuroko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 198,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shirai_kuroko",
     "profile": {
@@ -278,7 +278,7 @@
         "brown_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-shirai_kuroko.png?v=1609b5b1b68b",
+        "image": "../assets/characters/popular-shirai_kuroko.png?v=16de0c77849a",
         "alt": "白井黑子样张立绘",
         "sourceShowcaseId": "pc_shirai_kuroko_pc_shirai_kuroko_shirai_kuroko_daily_station_map",
         "sourceShowcaseSha256": "428e162c365ed6bf22efce13b6b64aed9f39651db3f6986298383b1b362a7aa8"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "futaba_rio",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "futaba_rio",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-futaba_rio.png?v=f16380bd695a",
+        "image": "../assets/characters/popular-futaba_rio.png?v=1a10e84dfa66",
         "alt": "双叶理央样张立绘",
         "sourceShowcaseId": "pc_futaba_rio_pc_futaba_rio_futaba_rio_sfw_b8_04",
         "sourceShowcaseSha256": "67242f4355ee94eb8aa89e73f7a0b4ca5a8bfd81733e608752a21aaa6e23d599"

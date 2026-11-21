@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cc_code_geass",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 101,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "cc_code_geass",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🍕",
       "portrait": {
-        "image": "../assets/characters/popular-cc_code_geass.png?v=5ee6d6d791b5",
+        "image": "../assets/characters/popular-cc_code_geass.png?v=37c9dabb35d3",
         "alt": "C.C.样张立绘",
         "sourceShowcaseId": "pc_cc_code_geass_pc_cc_code_geass_cc_ruins_geass_sigil_moonlight",
         "sourceShowcaseSha256": "fb0bbcc5c8d1d7a84b53312523499ec9a746be6a85c785de7945431943182b52"

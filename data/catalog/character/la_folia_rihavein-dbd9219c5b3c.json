@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "la_folia_rihavein",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 225,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "la_folia_rihavein",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "👑",
       "portrait": {
-        "image": "../assets/characters/popular-la_folia_rihavein.png?v=577b5d868c64",
+        "image": "../assets/characters/popular-la_folia_rihavein.png?v=3cf0fded2ba8",
         "alt": "拉·芙利亚·利哈瓦因样张立绘",
         "sourceShowcaseId": "pc_la_folia_rihavein_pc_la_folia_rihavein_la_folia_royal_garden_promenade",
         "sourceShowcaseSha256": "bf88e988190ba8d48887d202e0599556da7f6a082eda9d66f4e9044eaadf4e55"

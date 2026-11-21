@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_rooftop_stargazing_shoulder_rest",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1322,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "并肩坐着头靠在视角肩头，双手抱膝，侧首含情脉脉仰望夜空与视角",
     "camera": "cowboy shot, eye level",
@@ -23,8 +23,10 @@
     "mood": "深情依恋",
     "negativeTokens": [],
     "outfitId": "casual_summer_sundress",
-    "promptProse": "She rests her head on her companion's shoulder while hugging her bent legs. Cool night light outlines them above the warmer city windows.",
+    "promptProse": "Arcueid sits barefoot in her white sundress at the rooftop edge, knees hugged close and blonde bob against her companion's shoulder. Beside her, the short dark-haired man in a slate jacket looks up at the stars. Cool night light outlines both figures above the warm city windows.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "couple",
       "rooftop",
       "sitting",
@@ -51,6 +53,6 @@
     ],
     "timeOfDay": "深夜",
     "title": "爱尔奎特 · 天台夜风中的倚肩私语",
-    "animaCaption": "Her head rests against her companion's shoulder above the city lights."
+    "animaCaption": "Arcueid, with a blonde bob and white sundress, hugs her knees and rests her head against her companion. His close-cropped dark hair and slate jacket show in profile against the night sky as they sit side by side."
   }
 }

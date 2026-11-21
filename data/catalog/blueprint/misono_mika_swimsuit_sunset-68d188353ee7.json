@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_swimsuit_sunset",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 904,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "刚从海里上岸回望",
     "adult": false,
@@ -26,9 +26,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Mika sits on the sand with the teacher to her right, resting her head on their shoulder beneath her towel. Golden sunset outlines their shoulders against the pink-violet sea.",
+    "promptProse": "Mika sits on the sand after swimming with wet pink hair under a towel and her white wings catching the sunset. She rests her head on the shoulder of the teacher to her right, whose short dark hair and navy beach shirt are cut out against the pink-violet sea. The backlit two-shot keeps both seated silhouettes readable.",
     "promptTokens": [
-      "2people",
+      "1girl",
+      "1boy",
       "Mika",
       "teacher",
       "towel",
@@ -51,6 +52,6 @@
     "timeOfDay": "黄昏",
     "title": "圣园未花 · 晚霞海滩的湿发私语",
     "compositionIntent": "group",
-    "animaCaption": "The teacher sits to her right beneath the pink-violet sky."
+    "animaCaption": "Pink-haired Mika rests her head beneath the towel on the shoulder of the teacher to her right, a short-haired man in a navy beach shirt. Sunset rims her white wings and his far shoulder."
   }
 }

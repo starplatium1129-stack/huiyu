@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fubuki_one_punch",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "fubuki_one_punch",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-fubuki_one_punch.png?v=d7fa1722e8e7",
+        "image": "../assets/characters/popular-fubuki_one_punch.png?v=6b46a8f039fd",
         "alt": "吹雪样张立绘",
         "sourceShowcaseId": "pc_fubuki_one_punch_pc_fubuki_one_punch_fubuki_one_punch_sfw_b6_02",
         "sourceShowcaseSha256": "125b8bb776cfc9e7254b7835008cf75eb9e278940b1250654270d635809602cc"

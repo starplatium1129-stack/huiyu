@@ -4,11 +4,12 @@
 
 [返回主索引](../INDEX.md)
 
-## 环境与模型
+## 环境、模型与远程
 
 - [离线素材安装与发行](offline-resources.md)：程序、素材与模型分开准备。
-- [本地硬件与模型配置指南](setup-and-models.md)：文件位置、下载入口与体检；服务连接、实际推理和设备验收分别核对。
-- [独立图像与视频推理](independent-inference.md)：原生运行库、模型导入和使用边界。
+- [本地模型配置与换机指南](setup-and-models.md)：文件位置、下载入口、硬件推荐与房间 API 连接。
+- [独立图像与视频推理](independent-inference.md)：原生运行库、多机绘图、离线导入转换与显存策略。
+- [远程出图、Muse 助手与手机聊天协议](remote-and-muse.md)：Cloudflare 中转、Tailscale 虚拟机协议与 QQ 收发。
 
 <a id="art"></a>
 
@@ -33,8 +34,8 @@
 
 ## 桌面与桌宠
 
-- [桌面陪伴：工具与配置](desktop/companion-dsh-agent-architecture.md)
-- [绫季绘境 · 现代安装界面](desktop/game-installer.md)
+- [桌面陪伴：工具、陪看与手机聊天](desktop/companion-dsh-agent-architecture.md)
+- [绘遇 · 现代安装与发行包指南](desktop/game-installer.md)
 - [Live2D 原生运行时](desktop/live2d-native-runtime.md)
 
 <a id="engineering"></a>
@@ -46,7 +47,7 @@
 - [工程维护边界](engineering/maintainability-boundaries.md)
 - [TypeScript 开发与生成物边界](engineering/typescript-development.md)
 - [Tailwind 样式维护](engineering/tailwind-styling.md)
-- [Apple HIG Web 指南](design/apple-hig-web-guidelines.md)
+- [Apple HIG / WCAG 评审速查](design/apple-hig-web-guidelines.md)
 
 <a id="prompts"></a>
 
@@ -67,3 +68,4 @@
 ## 视频
 
 - [视频与分镜工作流](video/video-ai-storyboard.md)：操作、当前 Rust/前端入口和真实成片验收边界。
+- [视频提示词规范](video/video-prompt-standard.md)：五种输入模式、各原生视频模型写法、积木槽位契约与编译对照。

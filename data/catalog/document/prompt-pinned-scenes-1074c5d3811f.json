@@ -1,13 +1,13 @@
 {
   "kind": "document",
   "id": "prompt-pinned-scenes",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 0,
   "createdAt": null,
-  "updatedAt": "2026-11-15T07:39:11.982373100+00:00",
+  "updatedAt": "2026-11-21T13:29:14.637185200+00:00",
   "data": {
     "description": "定稿场景提示词字节基线 —— 由 scripts/maintenance/pin-scene-prompts.js 维护；改动须经真实出图自测后用 --capture 更新",
-    "pinnedAt": "2026-11-15T07:39:11",
+    "pinnedAt": "2026-11-21T13:14:05",
     "scenes": {
       "sc264": {
         "prompt": "nene_r18, nene_school_uniform, adult, visual novel event CG, dutch angle, medium close up, 1girl, solo, very_long_hair, teary eyes, heavy blush, sweat on face, parted lips, embarrassed, plaid skirt, pleated skirt, miniskirt, skirt lift, pink panties, bow panties, pantyshot, black thighhighs, zettai ryouiki, narrow aisle, bookshelf, library, golden hour, rim light, <lora:ayachi_nene_v18_wd14:0.95>",
@@ -628,9 +628,9 @@
         ]
       },
       "sc166": {
-        "prompt": "2people, 1girl, ayachi_nene, ahoge, undressing, lowered shirt, bare shoulders, bare back, dressing mirror, reflection, hands on mirror, from behind, standing, breath, fogged mirror, heavy blush, teary eyes, open mouth, bedroom, night, dim warm lighting, sensual, <lora:ayachi_nene_v18_wd14:0.8>",
+        "prompt": "1girl, 1boy, ayachi_nene, ahoge, lowered shirt, bare shoulders, bare back, dressing mirror, reflection, hands on mirror, from behind, standing, fogged mirror, heavy blush, teary eyes, bedroom, night, dim warm lighting, <lora:ayachi_nene_v18_wd14:0.8>",
         "negative": "reflection mismatch, duplicate body outside mirror, mismatched reflection clothes, duplicate reflection, palms facing viewer",
-        "animaCaption": "Viewed from behind at a large walnut vanity mirror, she presses both palms flat against the glass; her companion stands behind her, and the mirror shows one aligned reflection of the pair with both hand backs visible to the camera.",
+        "animaCaption": "Viewed over their shoulders, two people face one wide rectangular walnut mirror. At the left Ayachi Nene, with silver-white twin tails and pink ribbons, leans both palms against the glass, her pajama top resting below her shoulders. At the right dark-haired Shuuji stands just behind her in a charcoal button-down shirt. The walnut frame encloses both reflected faces together, with only the two people seen from behind outside the frame.",
         "rating": "R15",
         "mature": false,
         "pinSource": [
@@ -638,7 +638,8 @@
           "candidate-sha256:c450ea4c121f7865afe013ef2804ae1adadd4de18b9f2b146e10cfea1baaca36",
           "candidate-sha256:5a60b6f969c5b3fc37905f401ffb91280d0eea117cbe98eab2730cc03ecaf3d9",
           "candidate-sha256:e936778d658d251cd23d2eff630f2db0b6659725476dfc64bd93cdcbf144c178",
-          "candidate-sha256:5f7ad206b170bf9176c2dc585c7b883f5ef98695dd55806c40adc2aee287d8d4"
+          "candidate-sha256:5f7ad206b170bf9176c2dc585c7b883f5ef98695dd55806c40adc2aee287d8d4",
+          "candidate-sha256:37b55c21cf0c9732580e963564456f85d3835fb96689a9437ae02792fca4e5ca"
         ]
       },
       "sc272": {
@@ -1066,15 +1067,16 @@
         ]
       },
       "sc240": {
-        "prompt": "1girl, ayachi_nene, nene_school_uniform, holding book, handkerchief, reaching, concerned, bus stop, awning, umbrella, rain, evening, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
+        "prompt": "1girl, 1boy, ayachi_nene, nene_school_uniform, holding book, handkerchief, reaching, concerned, bus stop, awning, umbrella, rain, evening, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
         "negative": "multiple umbrellas, nsfw, nude, explicit",
-        "animaCaption": "Holding the borrowed book against her chest, she wipes rain from the viewer's shoulder with her free hand. Their umbrella tilts over her at the bus-stop roof's edge, above the wet street's soft evening reflections.",
+        "animaCaption": "Nene holds the open book against her uniform in her left arm and uses the white handkerchief in her raised right hand to dab her classmate's soaked shoulder. Her long white twin tails and pink ribbons catch the evening light. The taller boy on the right has short dark-brown hair, a burgundy tie and gray trousers. He holds the clear umbrella over Nene with his left hand, his shoulder turned toward her.",
         "rating": "All",
         "mature": false,
         "pinSource": [
           "35e5382",
           "candidate-sha256:62e2c492ba0e0292db481512434c61c1f77006e66739ef597165a735666cffe5",
-          "candidate-sha256:6a265b0ebed13b12a74f49cd7dec9caaebe4c674dafcec41b94892c113cc3fac"
+          "candidate-sha256:6a265b0ebed13b12a74f49cd7dec9caaebe4c674dafcec41b94892c113cc3fac",
+          "candidate-sha256:20aeaed0a4c3ff5e875f4240d1150dc264f29b0132e80843b79646ffbc9dc2eb"
         ]
       },
       "sc242": {
@@ -1128,15 +1130,16 @@
         ]
       },
       "sc072": {
-        "prompt": "1girl, ayachi_nene, white blouse, light blue skirt, white thighhighs, white sandals, walking, holding umbrella, bamboo forest, stone path, drizzle, mist, full body, <lora:ayachi_nene_v18_wd14:0.8>",
+        "prompt": "1girl, 1boy, ayachi_nene, white blouse, light blue skirt, white thighhighs, white sandals, walking, holding umbrella, bamboo forest, stone path, drizzle, mist, full body, <lora:ayachi_nene_v18_wd14:0.8>",
         "negative": "multiple umbrellas",
-        "animaCaption": "She slows to walk beside the viewer and tilts their shared umbrella toward them; bamboo-filtered daylight falls on her hair and the wet path.",
+        "animaCaption": "Ayachi Nene walks at the left on the wet bamboo path in a white blouse and sky-blue skirt, her very long white twin tails lifting in the breeze. She tips the umbrella toward a young man walking at her shoulder on the right. He has short dark-brown hair, an olive rain jacket and charcoal trousers. The umbrella covers both people as they match their steps on the wet stone.",
         "rating": "All",
         "mature": false,
         "pinSource": [
           "a530053",
           "candidate-sha256:139ce4b5da54690958fd93fa588cd1bd7b6bf15d49232f7890e36c7cec958149",
-          "candidate-sha256:b6da98b18c1097683afb53a2d794cdc5de1ce4954f00f951c17745e4b561c436"
+          "candidate-sha256:b6da98b18c1097683afb53a2d794cdc5de1ce4954f00f951c17745e4b561c436",
+          "candidate-sha256:800e578f94e0a0ffcea1993307ad1d12bbbc1349a31a833df076665d38b32ef0"
         ]
       },
       "sc080": {
@@ -1229,16 +1232,17 @@
         ]
       },
       "sc060": {
-        "prompt": "1girl, 2people, ayachi_nene, nene_school_uniform, borrowed blazer, coat over shoulders, wet hair, holding clothes, bus stop, awning, rain, afternoon, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
+        "prompt": "1girl, 1boy, ayachi_nene, nene_school_uniform, borrowed blazer, coat over shoulders, wet hair, holding clothes, bus stop, awning, rain, afternoon, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
         "negative": "",
-        "animaCaption": "In a medium two-shot under the bus-stop roof, Nene stands beside the companion who lent her the blazer. She pulls its fronts together at her chest and looks up at her companion with relief; rain-diffused light glances off her wet hair.",
+        "animaCaption": "At the left of the bus shelter, silver-haired Ayachi Nene clutches the borrowed blazer around her school uniform. Her pink hair ribbons frame the face she tilts up in relief. Shuuji stands at the right, a boy with short rain-darkened brown hair, a white button-down shirt with rolled sleeves, and charcoal trousers. He has already given her his blazer. Both faces and their different silhouettes are visible under the awning.",
         "rating": "All",
         "mature": false,
         "pinSource": [
           "b7171c2",
           "candidate-sha256:c82472f60a1ee193e1ac4cea262f74d9c92d98a54685de52d0599f6b4d560040",
           "candidate-sha256:ac4c863b57f8786599180aa0095672c4d25301b746835a44be102c699197c4fa",
-          "candidate-sha256:fb33d6de768d8de28b1e3e78a4026f37766c04d40c734ad6a3fd5674eeacce0b"
+          "candidate-sha256:fb33d6de768d8de28b1e3e78a4026f37766c04d40c734ad6a3fd5674eeacce0b",
+          "candidate-sha256:93dde365927ad04b78d335a564ffbc699b14c92d7c65ef5e9fdef764b2b885ea"
         ]
       },
       "sc136": {

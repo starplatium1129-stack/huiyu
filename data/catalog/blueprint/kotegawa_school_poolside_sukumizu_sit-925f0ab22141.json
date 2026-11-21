@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_school_poolside_sukumizu_sit",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1255,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "抱膝坐在泳池边双腿浸水，紧身死库水勾勒出丰满身段，侧脸微红眼神纯情",
     "camera": "full body, seated side three-quarter view",
@@ -20,8 +20,10 @@
     "mood": "纯真清凉",
     "negativeTokens": [],
     "outfitId": "school_swimsuit",
-    "promptProse": "Yui sits on the pool edge with her knees drawn close and lower legs in the water, turning toward Rito as he approaches along the tiles. Reflected sunlight moves across her shoulders.",
+    "promptProse": "Yui turns from the pool edge with her knees drawn close and her lower legs still in the water, her long black hair damp over the navy swimsuit. Short brown-haired Rito approaches along the tiles in a white athletic shirt and dark shorts. Reflected sunlight drifts across her shoulders while his profile comes into view.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Yui Kotegawa",
       "hugging knees",
       "sitting",
@@ -32,7 +34,8 @@
       "wet skin",
       "full body",
       "sunlight",
-      "water_reflection"
+      "water_reflection",
+      "yuuki rito"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -48,6 +51,9 @@
     "timeOfDay": "正午",
     "title": "古手川唯 · 校园池畔的死库水抱膝静候",
     "compositionIntent": "group",
-    "animaCaption": "She turns toward the approaching Rito with her lower legs still in the pool."
+    "animaCaption": "Long black-haired Yui sits at the edge in her navy school swimsuit, lower legs in the water. She turns as short spiky brown-haired Rito approaches along the tiles in a white athletic T-shirt and dark shorts.",
+    "characterTokens": [
+      "yuuki rito"
+    ]
   }
 }

@@ -1,98 +1,56 @@
 # 角色点阵粒子管线（操作手册）
 
-> 当前入口（2026-09-27 核对）：角色场景页的粒子肖像支持深浅主题。原图与点云接入仍走下方流程；运行时参数以实际组件为准，下方 2026-08-16 的像素实验与验证结论仅代表当时记录。浅色调色板现经 `src/utils/particlePortrait.ts` 的 `lightPortraitColor` 做保留色相的色度增强，不能把历史“原始调色板”结论当成当前实现。
-> 新角色的完整接入见 [角色工作流](character-onboarding-workflow.md)，粒子表现约束见 [设计规范](../../../DESIGN.md)。
+角色粒子肖像由原图离线生成点云。页面入口：`src/views/PopularSceneExplorerView.vue`，渲染器：`src/components/visual/SemanticParticleField.vue`，调色板工具：`src/utils/particlePortrait.ts`。
 
-角色粒子由原图离线生成点云；当前页面入口为 `src/views/PopularSceneExplorerView.vue`，渲染器为 `src/components/visual/SemanticParticleField.vue`。其他页面是否展示，以实际组件挂载为准。
+> 完整角色接入见 [热门角色接入工作流](character-onboarding-workflow.md)，视觉表现规范见 [DESIGN.md](../../../DESIGN.md)。
 
-## 新增一个角色（3 步，前端零改动）
+---
 
-1. **放图**：把角色图放到 `assets/characters/popular-<角色id>.png`
-   （推荐 832×1216 竖图；角色 id 与内容目录人物记录一致，旧 popular 聚合仅供兼容读取）。
-2. **生成点阵**：
-   ```
-   npm run particles:build                # 全量（按当前源图遍历）
-   npm run particles:build -- rem_rezero  # 只跑指定角色
-   ```
-   产物：`assets/particles/p_<角色id>.json`（~100KB/角色，随 assets 一起部署）。
-3. **核对交付状态与页面**。前端按角色 id 懒加载 `p_<id>.json`，但会先检查 `data/popular-onboarding.json` 的 `portraitPending`；登记仍为 pending 时不请求点云，文件存在不能计为已交付。确认真实原图与缩略图后再更新相应交付状态，按角色工作流完成检查。
-   点云缺失、不可用或 pending 时回落 `characterParticleTheme` 的抽象形状。
+## 1. 首次准备依赖
 
-工作室角色（宁宁/夏目）的图名映射在脚本的 `STUDIO_PORTRAITS` 里维护。
-
-## 首次在本机启用（依赖一次性安装）
-
-```
+```powershell
 pip install numpy pillow
-# 本机 PyPI 官方源慢且损坏时走镜像：
+# 国内镜像备选：
 pip install -i https://pypi.tuna.tsinghua.edu.cn/simple numpy pillow
 ```
 
-不需要 rembg / GPU / 大模型（v5 起整图复刻不再抠像，纯 numpy+Pillow 秒级）。
+> 整图点云采样纯基于 `numpy` + `Pillow` CPU 运算（秒级），无需 `rembg` 或 GPU。
 
-## 参数记录（脚本常量与历史渲染基线）
+---
 
-| 常量 | 默认 | 说明 |
-|---|---|---|
-| `SOURCE_WIDTH` | 200 | 源网格宽（px）。前端点阵 ≤ ~110×160，200 已无混叠 |
-| `PALETTE_SIZE` | 36 | k-means 主色数（base36 索引上限就是 36） |
-| `FEATHER_RATIO` | 0.05 | 边缘羽化比例。过大（曾用 0.14）会"像没拼完的拼图" |
+## 2. 新增角色点云（3 步，前端零改动）
 
-以下为 2026-08-16 的前端侧（`SemanticParticleField`）参数记录，不是当前所有渲染器的统一配置：点数下限（hero 8000/ambient 6000）、
-点径比 **0.3×点距**（2026-08-16 对齐参考实现，0.55 会粘连成位图）、
-深色主题 screen 混合（暗部隐入、亮部发光，提亮版调色板）/ 浅色主题
-source-over 0.95 + **原始调色板** + **极亮色（>0.72）右下阴影界定**
-（见 §亮色主题适配）、105px 斥力 + 0.01 慢回流物理（对标参考实现，勿随意改动）。
+1. **放源图**：放置至 `assets/characters/popular-<角色id>.png`（推荐 `832×1216` 竖图；工作室角色宁宁/夏目图名映射见脚本内 `STUDIO_PORTRAITS`）。
+2. **生成点云 JSON**：
+   ```powershell
+   npm run particles:build                # 全量生成
+   npm run particles:build -- rem_rezero  # 指定单个角色
+   ```
+   产物输出至 `assets/particles/p_<角色id>.json`（约 100 KB/角色）。
+3. **核对交付状态**：前端按 `data/popular-onboarding.json` 的 `portraitPending` 懒加载；仍为 `pending` 时不请求点云并回落 `characterParticleTheme` 抽象形状，须确认真实立绘与缩略图后再解除 `pending`。
 
-## 亮色主题适配（2026-08-16 疑难留档）
+---
 
-**现象**：浅色主题（当时的默认主题）下角色点阵「看不清」——白色/浅色区域融入
-浅底，整体灰蒙蒙无层次；用户原话「暗色都还行，结果亮色都看不清了」。
+## 3. 核心参数与双主题绘制策略
 
-**根因**（排查链，全部经像素级实证）：
-1. 整图复刻点云含大量近黑背景点（如雷电影 36 色里 30 个 lum<0.26），深色主题
-   靠 screen 混合「暗部隐入、亮部发光」有层次；浅色主题 source-over 没有对应
-   机制，暗点实画成灰点海、亮点融入浅底。
-2. 亮色点（白发/白衣，如宁宁点云 59.3% 亮色、纯白占 15.7%）在浅粉底（0.95）
-   上合成后亮度 0.8-0.95，对比 <0.2 → 肉眼不可辨。
-3. 数据层事实：**脸部发灰部分是点云固有**——源立绘头部区域含深色点（眼/发饰），
-   k-means 量化后脸部主色偏暗；前端 legibleColor 只保底 0.34，不能凭空提亮。
+### 离线生成常量
+| 常量 | 默认值 | 说明 |
+| --- | --- | --- |
+| `SOURCE_WIDTH` | `200` | 源网格宽（px），消除前端 ≤ ~110×160 点阵混叠 |
+| `PALETTE_SIZE` | `36` | k-means 主色数（base36 索引上限） |
+| `FEATHER_RATIO` | `0.05` | 边缘羽化比例（过大易产生碎拼图感） |
 
-**修复**（`shouldUnderlay` + `SemanticParticleField.draw`）：
-- **浅色主题绘制色 = 原始调色板**（不提亮）：暗色在浅底上天然清晰，色相 100%
-  还原原图（用户 2026-08-16 反馈「浅色模式颜色完全不对」——此前 0.86 alpha
-  与浅底混合 14% 漂白颜色 + 提亮版色偏，改为原始色 + 主点 alpha 0.95）；
-- 亮度 >0.72 的极亮色（白/近白）用**右下偏移阴影**界定（0.5px 偏移、1.15×
-  半径、`#565b68` 0.42 alpha）——点本体保持纯白无灰边，白色感保留
-  （1.8× 大衬点把白点变灰圈、细描边让白点视觉 70% 是灰，均已实测否决）；
-- 浅色主题主点透明度 0.95（几乎不透明）、拖尾先垫深灰衬线；
-- ambient 逸散粒子不垫衬点（浅底上变「屏幕灰尘」）；
-- 深色主题完全不动（用户确认「暗色都还行」）。
+### 渲染与浅色主题可读性
+- **前端物理与点径**：点数下限 hero `8000` / ambient `6000`；点径比 `0.3 × 点距`；斥力半径 `105px`，回流速度 `0.01`。
+- **深色主题**：采用 `screen` 混合（暗部隐入底色、亮部自然发光）。
+- **浅色主题**（`shouldUnderlay` + `SemanticParticleField.draw` + `lightPortraitColor`）：
+  - 采用 `source-over`（主点透明度 `0.95`）与保留色相的调色板，暗部天然显形。
+  - **极亮色阴影界定**（亮度 `> 0.72`）：仅对主粒子绘制右下偏移阴影（`0.5px` 偏移、`1.15×` 半径、`#565b68` 0.42 alpha），避免白发/白衣融入浅底或生成灰边；`ambient` 逸散粒子不加衬影。
 
-**原理（用户提问「为什么文字可以、粒子不行」）**：文字是界面层，颜色跟随
-主题变量反色（暗底亮字/亮底暗字）；粒子是内容层，颜色复刻原图不能反色。
-对比度是相对的：screen（深色主题）亮部发光暗部隐入、source-over（浅色主题）
-暗部显形亮部融入——单一固定色不可能在两种底色上都高对比。可达成的是
-**结构可读**：深色主题亮部结构发光、浅色主题暗部结构显形 + 亮部阴影界定，
-两主题均清晰可辨（双模型验证）。
+---
 
-**验证**：像素级（浏览器内 getImageData 手动 alpha 合成直方图）+ 双视觉模型
-（gemini-3.7-flash-high / gemini-3-flash）交叉：两主题人物结构均可读、浅色
-下发色呈浅白/淡银、色彩基调还原、深色主题无回归。
-单元测试：`test-particle-portrait.js`「shouldUnderlay 只给极亮色」。
+## 4. 常见问题
 
-**教训**：
-- **getImageData 读到的是 canvas 内部半透明像素，不是用户看到的合成色**——
-  必须手动按 alpha 合成到页面底色再统计，否则结论全错（本疑难差点被此误导）。
-- **vision 模型对同一配置多次评估会横跳**（同一张图「干净精致」与「灰黑单色」
-  都出现过）——以像素直方图 + 双模型交叉 + 修复前后同角色对比为准。
-- **hero 默认角色 ≠ 猜测的角色**：排查时先 hook fetch 确认实际加载的
-  `p_<id>.json`，别对着错误的点云分析（本次先分析了雷电影，实际是宁宁）。
-
-## 常见问题
-
-- **新角色 hero 还是抽象形状**：多半是没跑脚本或图名不对，F12 看
-  `/assets/particles/p_<id>.json` 是否 404。
-- **桌面端看不到**：使用 `deploy-desktop.bat` 同步；先完成当前构建和验证，详见 [桌面部署](../../desktop-deployment.md)。
-- **效果微调**（羽化/色数/点径）→ 改常量 → `npm run particles:build -- <id>` →
-  刷新页面即见，不需要动前端。
+- **新角色仍显示抽象形状**：检查 `/assets/particles/p_<id>.json` 是否 404，或 `portraitPending` 是否尚未清除。
+- **桌面端未同步**：执行根目录 `deploy-desktop.bat` 同步资产，见 [桌面部署](../../desktop-deployment.md)。
+- **参数微调**：修改脚本常量后执行 `npm run particles:build -- <id>` 刷新页面即可，无需改前端代码。

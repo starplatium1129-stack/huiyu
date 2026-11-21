@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "phoebe_wuwa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 306,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "phoebe_wuwa",
     "profile": {
@@ -42,7 +42,7 @@
         "blue eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-phoebe_wuwa.png?v=14ff387c8dca",
+        "image": "../assets/characters/popular-phoebe_wuwa.png?v=ef885f82e01e",
         "alt": "菲比立绘"
       },
       "visual_dna": {

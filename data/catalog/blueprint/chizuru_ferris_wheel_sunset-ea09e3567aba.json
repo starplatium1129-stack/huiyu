@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_ferris_wheel_sunset",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 1876,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "chizuru_ferris_wheel_sunset",
     "characterId": "mizuhara_chizuru",
@@ -19,6 +19,8 @@
     "lighting": "透过车厢玻璃倾泻的浓烈金色夕阳光晕",
     "camera": "cowboy shot, eye level",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "ferris wheel",
       "sunset",
       "golden hour",
@@ -26,7 +28,7 @@
       "hands on lap",
       "side glance",
       "blush",
-      "charming smile",
+      "sweet smile",
       "cowboy shot",
       "glass gondola",
       "cityscape"
@@ -41,12 +43,13 @@
       "romantic",
       "intimacy"
     ],
-    "promptProse": "Sitting beside the viewer inside the glass gondola of a ferris wheel high above the city, the warm sunset gilds her cheeks as she turns with a charming shy smile.",
+    "promptProse": "Chizuru, with long chestnut hair falling over her white dress, holds its hem on the left gondola seat. The short dark-haired young man beside her has a navy overshirt and khaki trousers. She turns to glance into his face as the last orange light climbs across both seats.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "She turns toward the viewer sitting beside her in the gondola."
+    "animaCaption": "Chizuru, with long chestnut hair falling over her white dress, holds its hem on the left gondola seat. The short dark-haired young man beside her has a navy overshirt and khaki trousers. She turns to glance into his face as the last orange light climbs across both seats.",
+    "compositionIntent": "group"
   }
 }

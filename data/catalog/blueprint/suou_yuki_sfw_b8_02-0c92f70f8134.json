@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "suou_yuki_sfw_b8_02",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "名流茶会，她穿着连衣裙执杯的姿势无可挑剔，与长辈应对得体",
     "adult": false,
@@ -23,7 +23,7 @@
     "mood": "自然日常",
     "negativeTokens": [],
     "outfitId": "sfw_formal",
-    "promptProse": "Holding her teacup neatly at the gathering, she turns aside with a small relieved exhale; seated elders remain behind her in soft window light.",
+    "promptProse": "Yuki stands at the tea gathering holding her cup neatly and turns aside with a small, relieved exhale. Behind her in soft window light, an older woman with gray hair pinned up sits at the table beside an older man in a dark formal jacket. Their seated profiles hold the background while the foreground stays with Yuki and her cup.",
     "promptTokens": [
       "teacup",
       "tea gathering",
@@ -49,6 +49,6 @@
     "timeOfDay": "日间",
     "title": "周防有希 · 茶会上的淑女满分",
     "compositionIntent": "group",
-    "animaCaption": "The seated elders remain behind her as she turns aside with the cup."
+    "animaCaption": "Yuki stands with her cup and briefly turns her face away. The guests behind her stay seated: an older woman with gray pinned hair and an older man in a dark formal jacket."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_studio_oversized_hoodie",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1492,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "yamada_studio_oversized_hoodie",
     "title": "山田杏奈 · 拍摄休息室大号卫衣的大长腿瘫坐",
@@ -32,8 +32,11 @@
       "vanity_lights",
       "medium_shot"
     ],
-    "promptProse": "She lifts her head from the studio sofa and points toward the gummy bag held by her companion at its edge, her hair tie resting on the cushion beneath the warm mirror lamps.",
+    "promptProse": "Yamada is seated deep in the leather dressing-room sofa in her oversized charcoal hoodie and denim shorts, long black hair loose around her shoulders. A short-haired man in a faded blue denim jacket stands beside the sofa and extends a clear bag of gummies from his hand. She looks up from her seat and points one finger toward the offered bag while her hair tie rests on the cushion.",
     "promptTokens": [
+      "1girl",
+      "1boy",
+      "sitting",
       "sofa",
       "candy",
       "studio",
@@ -55,6 +58,6 @@
       "date"
     ],
     "compositionIntent": "group",
-    "animaCaption": "The hair tie rests on the cushion beneath her lifted head."
+    "animaCaption": "Yamada is seated deep in the leather dressing-room sofa in her oversized charcoal hoodie and denim shorts, long black hair loose around her shoulders. A short-haired man in a faded blue denim jacket stands beside the sofa and extends a clear bag of gummies from his hand. She looks up from her seat and points one finger toward the offered bag while her hair tie rests on the cushion."
   }
 }

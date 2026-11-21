@@ -1,180 +1,86 @@
 # Workspace 与数据迁移实施规范
 
-> 已落地的实施契约；对应修订版 R1–R4 与 R9。入口：[现行架构契约](../engineering-contracts.md#重构期间的任务与持久化边界)。
+> 桌面作品库由 `runtime-rs/` 独立管理；Web 端保持独立 IndexedDB。全局入口见 [工程契约](../engineering-contracts.md#重构期间的任务与持久化边界)，本机安装状态见 [项目状态](../project-status.md#源码与本机安装)。
 
-> 主线已接入；本机来源身份、SQLite authority 激活及当前安装边界见[项目状态](../project-status.md#源码与本机安装)。激活由持久 workspace 指针决定，bundled UI 单独启用，不自动迁移其他来源；Web 继续使用独立 IndexedDB。其他来源不因当前来源已激活而自动迁移。
+---
 
-## 1. 已定方案与所有权
+## 1. 存储结构与所有权
 
-桌面作品库由 Rust 应用运行时统一管理；SQLite 元数据和不可变媒体文件共同组成 workspace。Vue 通过窄 HTTP 契约访问，不能直接访问 SQLite 或建立第二套业务仓储。
-
-当前生产驱动使用 rusqlite，SQLite 连接由专用存储线程持有，避免同步查询、迁移和校验阻塞异步网关。存储线程不拥有生成调度逻辑，驱动和可变连接不向业务层泄漏。
-
-实际打包 Rust EXE 必须验证 SQLite 版本、事务、备份、存储线程加载与重开；驱动或打包不满足时拒绝激活，不静默切换库或降级为旧 Node 后端。
-
-路径由宿主配置决定，不接受 HTTP 请求中的任意绝对路径：
+- **单一仓储**：`rusqlite` 连接由专用存储线程持有（`WAL`、`synchronous=FULL`、`foreign_keys=ON`），避免阻塞异步网关；Vue 端仅通过窄 HTTP 契约访问。
+- **目录布局**（路径由宿主配置决定，拒绝 HTTP 请求中的任意绝对路径）：
 
 ```text
-<config_root>/workspace-active.json       # 指向唯一活动 workspace，含身份/代际/域状态
-<config_root>/workspaces/<workspaceId>/   # 初始默认；用户迁移目录是独立操作
-  workspace.json                        # 身份与格式；与 SQLite meta 核对
-  huiyu.sqlite3                         # 首个生产 schemaVersion=1
-  media/objects/<prefix>/<sha256>         # 原图/视频等不可变字节
+<config_root>/workspace-active.json       # 唯一活动 workspace 指针（含身份/代际/域状态）
+<config_root>/workspaces/<workspaceId>/
+  workspace.json                        # 身份与格式（与 SQLite meta 核对）
+  huiyu.sqlite3                         # 当前 schemaVersion = 6（v1→v6 顺序升级）
+  media/objects/<prefix>/<sha256>         # 不可变原图与视频字节
   media/staging/<operationId>/
   media/derived/                        # 可重建缩略图
   migrations/<migrationId>/
   backups/<backupId>/
 ```
 
-“Workspace v2”指产品架构版本，不代表第一份生产数据库必须叫 schema v2。当前 schema 为 v6，按 v1 → v2（迁移/profile）→ v3（任务）→ v4（聊天归档分块）→ v5（逐消息记录与图像批次计划）→ v6（任务载荷与批次输入分表）顺序升级；上面的 v1 是初始建库版本。旧运行时不能打开较新的库。私人库不得放进安装目录、dist、AI_WORKSPACE_ROOT 或可自动清空的 runtime cache。
+- **路径与版本保护**：禁止将工作区放在安装目录、`dist`、`AI_WORKSPACE_ROOT` 或可自动清空的 cache 中，也不支持网络共享盘或同步盘并发写。路径不可写、身份不匹配或库版本高于运行时时直接报错并拒绝写入，禁止静默新建空库。
 
-根路径不可写、磁盘断开、身份不匹配、schema 较新时，显示诊断并拒绝写入；禁止自动改用另一个路径创建空库。
+---
 
-## 2. 单写者与连接边界
+## 2. 单写者与并发控制
 
-- 每个活动 workspace 只允许一个运行时拥有者和一个写连接。所有窗口经同一 API 进入仓储事务；Web Locks 只留在 Web adapter，不用于跨来源协调。
-- 初版使用排他的 owner lock 文件创建和宿主生命周期管理，记录 owner nonce、进程身份与 workspaceId。发现已有 owner 时拒绝二次启动，不用“心跳超时”抢锁。
-- 崩溃后的自动接管仅允许宿主确认其拥有的旧进程已退出且锁身份匹配；无法证明的残留锁进入维修状态，不删锁试运气。PID 被复用或外部 runtime 不明时同样停止。
-- DB meta 保存 writerEpoch，每次变更事务校验；存储线程出错后暂停接收写入和生成副作用，先停止/回收原拥有者再恢复。已发送的写命令不能因客户端断开而假定没有提交。
-- WAL + synchronous=FULL + foreign_keys=ON；具体 SQLite 版本和恢复行为列入 R2 证据。活库仅支持已验证的本机文件系统，不部署到网络共享或同步盘中并发写。
-- 文件提升、GC、备份和数据库更新都服从同一所有权；禁止另开“清理脚本”绕过它。不要用长时间持有 SQLite 事务等待网络/图片解码。
+- **排他持有者锁**：每个活动 workspace 仅允许一个拥有者进程与写连接。启动时通过排他 owner lock 记录 `owner nonce`、进程身份与 `workspaceId`；发现已有活 owner 时拒绝二次启动。仅确认原自有进程已退出且锁身份匹配时才接管；无法证明的残留锁进入维修状态。
+- **写事务与 `writerEpoch`**：`meta` 表保存 `writerEpoch`，每次写事务均校验。存储线程出错时暂停写入与生成副作用，先回收原拥有者再恢复。
+- **通知非权威**：前端通知仅携带 `revision` 与实体 ID，丢失通知通过增量/全量重取收敛。变更提交携带 `workspaceId`、`protocolVersion`、`operationId` 及 `expectedRevision`，冲突返回明确错误而不静默覆盖。
 
-## 3. 数据结构与接口
+---
 
-下表是最低业务约束，不要求一次预建未来无消费者的表。tasks 在 R5 增量迁移建立。
+## 3. 核心表结构与查询边界
 
-| 表/集合 | 关键约束 |
+| 表 / 集合 | 关键约束与职责 |
 | --- | --- |
-| meta / schema_migrations | workspaceId、databaseKind、schemaVersion、writerEpoch、单调 revision；未知版本拒绝写 |
-| artworks | 内部键、旧 ID/类型、完整兼容 body、revision、删除状态；保留当前配方/收藏/备注/父作品字段 |
-| projects / project_artworks | 原项目 body、明确作品关系与顺序；关系在事务中修改 |
-| trash | 删除时间、恢复快照、项目引用与媒体引用；保留原有 30 天语义 |
-| media_objects / media_aliases | 内容 hash/bytes/MIME；旧 image_id 映射到对象，不以 hash 改写所有 UI ID |
-| media_refs / leases | 作品、回收站、任务输入、结果收件箱、暂存和备份的引用/保留责任 |
-| operations | 唯一 `(principalId, kind, operationId)`、输入指纹、prepared/committed/aborted、提交 revision 与回执 |
-| migration_sessions / items | 来源身份、快照指纹、分批进度、校验与激活状态 |
-| profile_records | R9 按已分类领域建立；不作为放入任意 LocalStorage JSON 的万能垃圾桶 |
-| chat_message_records | 活跃聊天按角色、分支和消息编号分别保存正文；profile 中保留设置、分支元数据和消息顺序，增量写入与 revision/reset 校验在同一事务内完成 |
-| image_batch_plans | 后台持有冻结图像配方、逐项稳定请求编号、暂停状态和入册回执；页面释放只停止观察，恢复不得改换已接收任务的编号 |
+| `meta` / `schema_migrations` | 保存 `workspaceId`、`databaseKind`、`schemaVersion`、`writerEpoch`、单调 `revision` |
+| `artworks` | 内部键、兼容 `body`、`revision`、软删状态 `deleted_at`（保留未知兼容字段） |
+| `projects` / `project_artworks` | 项目定义与有序作品关系，事务内维护 |
+| `trash` | 删除时间与媒体引用，保留 30 天恢复语义 |
+| `media_objects` / `media_aliases` | 内容 SHA-256、字节大小与 MIME，旧 `image_id` 映射到对象 |
+| `media_refs` / `leases` | 作品、回收站、任务输入/收件箱、暂存与备份的生命周期引用 |
+| `operations` | 唯一 `(principalId, kind, operationId)`、输入指纹、状态与提交回执 |
+| `migration_sessions` / `items` | 来源身份、快照指纹、分批进度与激活状态 |
+| `profile_records` | 按已分类领域存储偏好设置（非任意 JSON 垃圾桶） |
+| `chat_message_records` | 按角色、分支、消息编号拆分活跃聊天正文，与 `profile` 协同校验 |
+| `image_batch_plans` | 后台持有冻结配方、逐项稳定 `requestKey`、暂停态与入册回执 |
 
-聊天旧整包在首次有效写入时转成逐消息记录，读取边界仍返回既有领域结构，跨窗口冲突沿原修订与清空标记处理。偏好更新不重新上传消息正文；旧版整包写入仍在同一事务内转换，归档分块保持独立。
+### 派生索引与专用接口
 
-桌面完整备份 `.huiyu` 使用 `HUIYU-BACKUP-1` 文件头、长度限定的清单和顺序原始文件数据。文件路径只来自原生选择器，复制分块检查取消和 SHA-256，保留本机快照与旧恢复凭证。导入逐文件及数据库核验后创建独立工作区，重绑定身份并暂停导入批次；原运行中的任务仅保留历史，不授权在新机器重新执行。用户显式切换恢复副本前复用跨窗口保存屏障、排空工作区写入并检查未完成任务；各窗口核对新身份后才解除屏障，原工作区文件保留。完整包只包含 workspace；内容目录仍经内容维护单独导出。
+- **回收站查询**：`GET /api/workspace/artworks?deletedOnly=true` 直接查 `artworks.deleted_at IS NOT NULL`（利用 `artworks_deleted_id` 部分索引，每页 1–200 条）；客户端 `listTrash` 完成后复核会话与 workspace 身份，不一致则拒绝整次结果。
+- **全局搜索 (`GET /api/workspace/artwork-search?terms=<JSON数组>[&cursor=<ID>]`)**：使用 `artwork_read_index`（触发器维护 `artwork_read_dirty` 与 `meta.artworkRevision`）及无原文 FTS5 候选索引。索引按 128 条分批后台补齐，支持安全取消；索引未就绪时回退正确线性扫描。
 
-旧数字 ID、字符串 ID 和项目引用必须按当前解析语义往返；若正规化后碰撞，生成冲突报告并停止激活，不静默覆盖。未知旧字段保留在对应领域的兼容 body/隔离记录，不能因为新 DTO 没定义就丢弃。
+---
 
-使用具体操作，而不是远程通用 SQL/KV：list/get artwork、save artwork、patch with expectedRevision、softDelete、restore、purge、project membership、media upload、operation lookup、migration/backup。新 wire DTO 可放在 `types/` 的纯类型声明中；运行校验仍在边界执行，不把 TypeScript 类型当输入校验。
+## 4. 保存协议、崩溃恢复与 GC
 
-所有变更携带 workspaceId、客户端支持的 protocolVersion、稳定 operationId；修订已有记录还需 expectedRevision。冲突返回明确错误并重新读取，不用最后响应覆盖较新内容。通知仅携带 revision/实体 ID，丢通知后全量或增量重取，通知不是数据权威。
+客户端确认保存时生成稳定 `operationId`，重试沿用同 ID（同 ID 不同输入报冲突）：
+1. 校验权限、空间与已存在回执，写入 `prepared` 记录与暂存租约。
+2. 分块写入暂存文件，流式计算 SHA-256 与长度并校验 MIME/真实文件头（拒绝路径穿越与重解析点逃逸）。
+3. `flush/fsync` 后在同一文件系统原子提升至 `media/objects/`（同 hash 复用，不覆盖未知文件）。
+4. 短事务一次性发布作品、项目关系、媒体引用、`revision` 与 `committed` 回执，随后异步派生缩略图。
 
-私人 workspace API 只接受桌面专属会话，不能仅凭当前共享网关 token 授权。纯 Web 模式继续使用自己的 IndexedDB；它不是桌面库的离线副本，也不会自动合并进桌面。以后增加浏览器访问私人库需独立配对，不在本轮默认开放。
-
-回收站使用 `GET /api/workspace/artworks?deletedOnly=true`，只读取 `artworks.deleted_at IS NOT NULL` 的完整作品行，不改读 `trash.snapshot`。`deletedOnly` 只接受 `true` / `false`；为 true 时优先于 `includeDeleted`，未指定或为 false 时保留旧 `includeDeleted=true` 的全量语义及默认活跃作品语义。每页 1–200 条、`id_key` / limit+1 游标、workspace revision / artworkRevision 和原 TrashEntry 映射保持不变。v3 打开时补建 `artworks_deleted_id` 删除部分索引，与活跃索引对称，不改变数据格式或业务修订号；新查询参数须随对应 Rust 后端和前端一起交付。 桌面 `listTrash` 在开始时取得既有会话快照，分页完成后复核 origin、运行时 epoch、workspace ID/epoch/generation；结束身份不一致则拒绝整次结果。逐页双修订检查仍保留，token 续期不属于身份变化；该检查不提前终止后续读取，不新增离线缓存。
-
-### 作品读取派生索引
-
-`artwork_read_index` 保存搜索文本、展示摘要和时间排序数据，`artwork_read_dirty` 标记待更新 ID；`artworks` 仍是唯一作品权威。作品表触发器在原事务中标脏并递增 `meta.artworkRevision`，覆盖保存、编辑、迁移和回收站操作；任务、设置与草稿只影响原工作区 revision。首读按 128 条事务分批补齐索引，取消保留已完成批次，未完成时不发布结果。索引属于 v3 的可重建派生数据，不改业务 revision、备份版本或作品字段；旧 v3/旧恢复库首次打开会登记现有记录，已建立索引随 SQLite 备份恢复。
-
-批次完成后重新进入原 FIFO 队列，让状态、任务和写入穿插执行。搜索额外维护无原文副本的 FTS5 三字符/字符存在候选索引，仍以原始子串检查作为最终依据；常见查询先查少量有序记录，候选过宽则继续线性扫描。候选索引首次未就绪时，搜索直接使用正确的线性路径响应，再由运行时单实例后台分批预热；少量增量先更新再查询。后台只经原 worker 写派生数据，工作区关闭或不再有使用者时停止。两个候选索引共用待更新队列，事务内一起更新，派生版本单独登记为 2。
-
-桌面全局搜索用 `GET /api/workspace/artwork-search?terms=<JSON字符串数组>[&cursor=<ID>]`，返回 `items/artworkRevision/nextCursor`，不再提供全库 `searchText` 传输接口。terms 由客户端按既有 JS 空白拆词、Unicode 小写语义生成，后端保留多词子串匹配。首批至多 5 条数字时间候选加 200 条历史时间摘要，后续仅分页历史时间；客户端用现有 Date/ID 回退语义合并为 5 条，按 SQLite ID 顺序保留同分排序。分页期间作品版本变化须拒绝整次读取。缓存绑定查询、作品版本、workspace/session/writer epoch，离线只复用同查询的完整结果或已有完整本地快照。
-
-最近作品复用该索引，数字时间通过排序索引取候选，历史时间仍由浏览器解释；不在每次读取时解析所有作品正文。旧库首次建立索引需要读取正文并增加派生数据磁盘占用，大规模冷启动、真实数据库和桌面尾延迟仍应按实际负载验收。
-
-## 4. 保存与崩溃协议
-
-客户端在用户确认一次保存时生成 operationId，并保持到得到确定回执；HTTP 超时、重连和重试沿用同一个 ID。同 ID 不同输入返回冲突，不能覆盖旧操作。
-
-1. 解析领域快照，检查权限、可用空间与已存在回执，持久化 prepared 操作和暂存租约。
-2. 分块写暂存文件；流式计算 SHA-256、长度并核对 MIME/实际文件类型。路径由服务端生成，拒绝穿越、符号链接/重解析点逃逸和任意路径。
-3. flush/fsync 后，在同一文件系统提升到不可变对象路径；若相同 hash 已存在，验证后复用，不覆盖未知文件。更新可恢复的操作进度。
-4. 原图已经可读取且 hash/长度正确后，短事务一次发布作品、项目关系、媒体引用、revision 和 committed 回执。
-5. 提交后返回回执；缩略图异步派生，失败不撤销原图和作品。清除暂存租约必须以已确定的提交状态为依据。
-
-| 中断点 | 重开后的处理 |
+| 异常中断点 | 重启后处理原则 |
 | --- | --- |
-| prepared 后，文件未完整 | 保留操作身份；重传缺失块或显式终止，没有可见作品 |
-| 文件已提升，数据库尚未发布 | 文件是受操作租约保护的孤立对象；可继续事务，不自动删除 |
-| SQL 事务中断 | 用数据库恢复结果判断是否已提交；不靠内存 catch 推断 |
-| 提交成功但客户端没收到 | 以原 operationId 查询并返回同一回执，不生成第二件作品 |
-| 任一存储仍不可读 | 保持 commit-unknown，禁用破坏性补偿/GC；向用户显示可恢复故障 |
-| 原图意外缺失/损坏 | 记录不可用状态并从已验证备份修复；不悄悄删作品或伪报成功 |
+| 暂存未写完 | 保留 `operationId` 供重传或显式中止；无可见作品 |
+| 文件已提升，DB 未发布 | 文件受操作租约保护，可继续事务，禁止自动删除 |
+| SQL 事务状态未知 | 按库内状态与 `operationId` 查询恢复；不可读时标 `commit-unknown` 并禁用 GC |
+| 原图损坏/缺失 | 报告不可用并从已验证备份修复，严禁静默删作品 |
 
-先媒体、后元数据减少进程崩溃窗口，但不是 Windows 任意断电下的绝对保证。文件/目录持久性、磁盘满、杀毒软件占用与突然终止必须实测；失效时靠校验、备份和显式维修，不隐藏结果。
+> **GC 边界**：必须先解除逻辑引用再延迟回收；处于 `unknown` 操作、未确认取消或未交付结果的媒体严禁回收。
 
-删除先改变逻辑引用，媒体回收单独执行。GC 只能删除无作品/回收站/任务/暂存/备份引用且超过保留期的对象；unknown 操作、取消未确认任务和未交付结果保持引用。派生缩略图可重建，不能用缩略图存在证明原图完好。
+---
 
-## 5. 迁移范围：先分类，再切换
+## 5. 备份、恢复与旧来源迁移
 
-| 来源 | 迁移动作 |
-| --- | --- |
-| history、projects、trash、quarantine | 完整导出，兼容字段、删除时间、引用与隔离状态保留；R4 激活作品域 |
-| aics_image_store/images | 按游标/批次复制，包含临时和回收站所需原图；不能只遍历可见作品 |
-| thumb:<imageId> | 可复制或重新派生；缺失不视为原图迁移失败 |
-| storageKeys 的活设置与前缀 | 逐项分类；R9 才切换的领域仍保持旧来源权威，切换时补最新快照 |
-| 聊天/归档/重置 tombstone | 保留现有合并/清除语义；旧备份不能复活已重置内容 |
-| session 草稿、临时成片、视频/批次指针 | 从仍打开的所属窗口导出；媒体纳入保留；不能从关闭的旧 session 凭空恢复 |
-| 任务中心摘要/SD 队列快照 | 历史/待确认数据，不当作可执行任务或真实运行状态 |
-| storage 事件信号、relay receipt、在途回调 | 不重放、不恢复；新窗口重新订阅 |
-| KV 的 `thumb:<imageId>` 缩略缓存 | 已知可重建资料，原字节作为 quarantine 记录保存在独立备份和迁移账本，不重放为活设置，也不阻塞来源分类 |
-| 凭据 | 通过现有 credentials 能力迁移为引用并验证；不写普通 SQL 表、迁移清单或日志 |
-
-普通备份白名单有意省略部分上述数据，所以必须建立版本化 MigrationEnvelope，不能直接把普通 backup 当作全量迁移包。未知仍在使用的键、未识别凭据字段、无法分类的会话引用是来源切换阻塞项。源配置保留，不静默删除或导入为公开字段。
-
-## 6. 旧来源桥接与激活状态机
-
-```text
-inventoried → frozen → exported → importing → verified → activated
-                    ↘ failed（保留源、备份和检查点）
-```
-
-采用可重复执行的桥接阶段：先在旧 UI origin 和同一 WebView 用户配置中提供迁移功能，R4 先把作品读写切至 runtime，R9 再切 UI origin。不是先改变入口再尝试读取旧 IndexedDB。
-
-M1. 核对安装身份、WebView profile、旧 origin、DB 版本、源指纹及空间。仅使用已知受控来源；desktop-gateway.json 只能证明已记录地址，不证明所有历史端口都已枚举。
-
-M2. 请求维护屏障：阻止新写入，等待所有受管窗口确认，排空已提交操作并暂停 GC。未完成生成/拼接不强杀；等待其安全结束，或在明确处置后再迁移。不能在导出一半时让旧窗口继续改同一领域。
-
-M3. 导出带版本/来源/记录数/媒体 hash 的清单与分块数据，保存独立备份并读回校验。分块大小有界、失败可重试；不把全库 Blob 转成一个巨大 Base64 JSON。
-
-M4. 建立独立候选库。migrationId 绑定 sourceProfileId、origin、快照指纹和目标 workspaceId；相同指纹可续跑，源已变化时要求新会话，不把旧检查点套到新源。
-
-M5. 校验全部原图、引用、回收站、项目顺序、字段往返和源分类统计。坏记录保留隔离副本并报告；存在未解释差异时禁止激活。只有缩略图等明确可重建数据可单列而不阻塞。
-
-M6. 所有客户端读写都经过维护协调后，候选 DB 记录 ready，再原子替换活动指针；指针绑定 DB 身份、迁移 ID 和代际。重启发现两者不一致进入维修，不任选其一。
-
-M7. 客户端拿到新代际后切换该领域 authority，拒绝旧代际变更。作品域已经激活后，旧 IndexedDB 作品数据只读留存；R9 迁移设置/聊天时不能把旧作品快照再次覆盖新库。
-
-激活命令开始前，现有来源屏障保存不含凭据的激活意图。只有宿主活动指针返回匹配的 `activeMigrationId`、工作区及较新代际，并且所有仍登记的窗口完成领域适配器同步，才解除屏障。回执丢失、窗口失联、旧宿主缺少该字段或核对失败时保留只读状态；“只读核对激活结果”只重新读取身份与同步适配器，不重发激活、不回滚。没有匹配活动身份不能证明命令永远不会提交；反复核对也不保证恢复，须保留独立备份和诊断并联系维护人员。普通 UUID 屏障沿用旧的崩溃恢复规则，未知或损坏的结构化记录禁止自动覆盖。
-
-端口被其他程序占用时，不能通过解除导航限制来读取旧来源。保留源 profile，等待端口可安全使用，或导入之前验证过的迁移包。没有可靠源就停在旧入口/诊断态，不能显示“迁移成功、0 件作品”。
-
-不同 origin/profile 的数据不是天然同一份库。初版一次激活一个已确认来源；其他来源保留独立导入会话，冲突需显式映射/预览，禁止按 ID 或时间戳自动合并。
-
-旧版程序不懂新维护协议，不能声称可以阻止任意旧二进制直接写它自己的 IndexedDB。支持的升级入口必须阻止不兼容降级；绕过入口运行旧版本产生的写入属于另一数据源，不会自动同步。
-
-## 7. 备份、恢复与回退
-
-备份使用 SQLite backup API 形成数据库一致快照，不能仅复制活库 `.sqlite3` 并遗漏 WAL。writer actor 先用集合 SQL 为当时的 `media_objects` 建立租约，再用独立只读连接固定同一 revision、workspace 和 writer epoch；不在 actor 中构造全量媒体 JSON 或逐条插入租约。复制线程从这条固定快照读取媒体清单，并完成数据库复制与落盘同步，WAL 模式下后续写入继续通过原 actor。读取媒体清单时逐行检查取消；只读连接在数据库复制结束或任一步失败、取消时释放，仅前序步骤成功后才继续复制并校验媒体。目录准备仍在 actor 执行。备份完成前租约不能释放；失败备份不进入“可恢复”列表，完成回执和租约释放仍由 actor 事务提交。
-
-作品回收站恢复先读取作品修订及媒体引用，在与结果提交共用的有界槽中完整校验 SHA256；后台保留打开的文件句柄与身份。回到 actor 后，在事务内及提交前复核作品状态、引用、文件身份和操作指纹，才发布原恢复回执。恢复期间的引用受 GC 保护；取消和关闭等待真实验证结束再释放槽与工作区 owner。普通图片读取缓存不代替恢复的完整性校验。
-
-恢复先进入独立候选：检查格式/空间/hash/FK/领域数据，再维护切换。备份中的旧任务默认需要重新核对，不自动生成；网关 token 与凭据不从普通业务备份导入。恢复不会覆盖较新的聊天 reset 等保护状态而不作处理。
-
-回退分三个边界：
-
-- 激活前：丢弃未激活候选或留作诊断，解除维护；源完全不变。
-- 激活后尚无新变更：比较激活 revision、操作账本和媒体引用，证明没有新写入后才可恢复旧 authority。
-- 已有新变更：优先前向修复；必须降级时导出可被旧版读取的完整状态/增量，覆盖新建、修改、删除、回收站和设置变化，验证后才切换。转换不支持就停止降级，不能直接恢复旧快照。
-
-UI 开关可以控制入口展示，但不能选择两个可写主库。旧源与迁移备份在实际安装、恢复、回退演练通过且用户确认清理前保留。
-
-## 8. R2–R4 硬验收
-
-源码与差异审查核对两个进程竞争同库、残留锁、writerEpoch 过期、保存中断、回执丢失、幂等冲突、磁盘满、原图损坏、重复/变化源、迁移中窗口写入、未知格式、项目悬空、回收站恢复、共享媒体回收、备份期间新写入、带新写入的回退拒绝及远程私人库隔离。实际故障、迁移与设备行为按明确范围验收；不编写或运行测试，不以源码审查或旧记录宣称行为已通过。
-
-Windows 目标环境必须验证实际 Rust EXE/原生 DLL 与 SQLite；旧 WebView profile 导出；安装更新不覆盖 workspace；旧端口被占用后仍访问同一库；路径不可用时不创建空库。本机当前来源的已验范围查项目状态，其他机器/来源及物理断电仍按 roadmap 单列。
-
-## 技术依据
-
-- [生产存储实现](../../runtime-rs/src/storage/)与[剩余验收](../roadmap.md)。
-- [SQLite WAL](https://sqlite.org/wal.html)与[Backup API](https://sqlite.org/backup.html)：按数据库快照和引用媒体分别保证备份完整性；不能把文件系统与数据库声称为一个原子事务。
+- **完整备份 (`.huiyu` / `HUIYU-BACKUP-1`)**：使用 SQLite Backup API + 独立只读连接固定 `revision`/`writerEpoch` 读取媒体清单并流式校验 SHA-256，备份期间受租约保护（不含网关 token 与凭据，内容目录仍单独导出）。
+- **回收站恢复**：先在有界槽中完整校验媒体 SHA-256，再于事务内复核作品状态与文件身份后恢复。
+- **备份还原与回退**：导入包先在独立候选工作区核验全部文件与外键，再经跨窗口保存屏障排空写入后切换身份；旧运行中任务仅保留历史不重新执行。
+- **IndexedDB 来源迁移 (`inventoried → frozen → exported → importing → verified → activated`)**：
+  - 按领域分类导出 `Versioned MigrationEnvelope`（凭据走系统凭据能力迁移，不落普通 SQL 表或日志）。
+  - 每次激活一个已确认来源；激活前通过维护屏障阻止并发写并核对所有原图、引用与统计差异，切换后旧库仅作只读备份。
+  - 若激活后已产生新写入，仅支持前向修复或经验证的导出降级，禁止直接恢复旧快照覆盖新数据。

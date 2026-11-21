@@ -1,5 +1,5 @@
 """Local attention dispatch for the denoisers in the pinned video pipelines."""
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from functools import lru_cache
 import sys
 
@@ -32,6 +32,10 @@ def select(requested, target, backend):
     """Validate the local extension before fingerprinting or uploading weights."""
     import torch
     from diffusers.models.attention_dispatch import attention_backend
+    if requested in ("h3-sol", "h3-sla", "h3-fused"):
+        # Select the dense backend for protected or unsupported calls. Mark the
+        # requested sparse backend selected only after it returns a real result.
+        requested = "auto"
     if requested == "sdpa":
         return "sdpa"
     capability = torch.cuda.get_device_capability(target) if backend == "cuda" else None
@@ -94,9 +98,20 @@ def attention(pipeline, control, report):
     selected = report["selected"]
     backend = report["device"]
     calls = report["calls"]
+    requested = report["requested"]
+    if (requested == "h3-sla") != (getattr(pipeline.transformer, "_huiyu_h3_sla", False) is True):
+        raise Error("MODEL_INVALID", "H3 SLA 需要已校验的专用 4 步 Turbo 权重。")
+    if (requested == "h3-fused") != (getattr(pipeline.transformer, "_huiyu_h3_fused", False) is True):
+        raise Error("MODEL_INVALID", "Fused Turbo 需要已校验的社区融合权重。")
+    sparse_mode = requested in ("h3-sol", "h3-sla", "h3-fused")
+    scope = load_sibling("h3_sparse").routing(pipeline.transformer, report) if sparse_mode else nullcontext()
 
     def dispatch(query, key, value, attn_mask=None, **options):
         nonlocal selected
+        if sparse is not None and _fused_shape(query, key, value, attn_mask, options, "sage"):
+            result = sparse.try_attention(query, key, value, options.get("scale"))
+            if result is not None:
+                return result
         if selected != "sdpa" and _fused_shape(query, key, value, attn_mask, options, selected):
             options["backend"] = "flash" if selected == "flash2" else "sage"
             try:
@@ -113,9 +128,11 @@ def attention(pipeline, control, report):
                 )
                 if not unavailable:
                     raise
-                if report["requested"] != "auto":
+                if report["requested"] != "auto" and not sparse_mode:
                     raise Error("UNSUPPORTED_ACCELERATION", f"{selected} 内核无法在当前设备运行：{exc}") from exc
-                selected = report["selected"] = "sdpa"
+                selected = "sdpa"
+                if not sparse_mode or not calls[requested]:
+                    report["selected"] = selected
             else:
                 calls[selected] += 1
                 return result
@@ -142,8 +159,9 @@ def attention(pipeline, control, report):
         calls["sdpa"] += 1
         return result
 
-    module.dispatch_attention_fn = dispatch
-    try:
-        yield
-    finally:
-        module.dispatch_attention_fn = original
+    with scope as sparse:
+        module.dispatch_attention_fn = dispatch
+        try:
+            yield
+        finally:
+            module.dispatch_attention_fn = original

@@ -1,6 +1,8 @@
 import { fetchResultImage, waitForDirectImageJob } from '@/api/directImageJobs'
 import { acceptDirectImageRequest, cancelDirectImageRequest } from '@/api/directImageRequests'
 import { DirectRequestRejected } from '@/api/directGenerationRequests'
+import { apiClient } from '@/api/client'
+import type { AnimaStatusResponse } from '@/composables/generation/animaSessionContract'
 import { AcceptedTaskTerminalError, TaskSubmissionRejected } from '@/api/acceptedTaskOutcome'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import { getDesktopRuntime, onDesktopRuntime } from '@/platform/desktop/runtime'
@@ -18,6 +20,19 @@ const KREA2_SIZE_BY_ASPECT = {
   landscape: { width: 1536, height: 1024 }, portrait: { width: 1024, height: 1536 }, square: { width: 1024, height: 1024 },
 } as const
 type VideoAspect = keyof typeof KREA2_SIZE_BY_ASPECT
+type FirstFrameModel = FirstFrameRequest['input']['modelId']
+
+async function firstFrameModel(signal: AbortSignal): Promise<FirstFrameModel> {
+  const status = await apiClient.request<AnimaStatusResponse>('/api/creative/status', {
+    signal, timeoutMs: 10_000, cachePolicy: 'bypass',
+    validate: value => value.ok === true && Array.isArray(value.models),
+  })
+  const id = status.provider === 'native' ? 'krea2-turbo' : 'krea2-turbo-fp8'
+  const model = status.models?.find(entry => entry?.id === id && entry.family === 'krea2')
+  if (!model?.available) throw new Error(model?.unavailableReason || '请在控制室准备 Krea 2 Turbo，再生成分镜首帧。')
+  return id
+}
+
 function authority(transport: FirstFrameRequest['transport']) {
   if (transport === 'direct') return JSON.stringify([location.origin, runtimeResourceIdentity()])
   const workspace = getDesktopRuntime().bootstrap?.runtime?.workspace
@@ -70,6 +85,7 @@ export function useShotFirstFrames(options: {
     let mediaCurrent = true
     const sameSource = () => mediaCurrent && repository === artworkRepository && mediaSession === imageMediaSession()
     const stopRuntime = onDesktopRuntime(() => { if (!sameSource()) mediaCurrent = false })
+    let selectedModel: FirstFrameModel | undefined
     let failed = 0, completed = 0, cancelledCount = 0
     try {
       await withArtworkStaging(async () => {
@@ -91,9 +107,11 @@ export function useShotFirstFrames(options: {
           try {
             let request = shot.firstFrameRequest && readFirstFrameRequest(shot.firstFrameRequest)
             if (!request || request.state === 'failed' || request.state === 'cancelled') {
+              selectedModel ??= await firstFrameModel(frameSignal)
+              if (!current()) continue
               const transport = hasRuntimeTasks() ? 'runtime' : 'direct'
               request = { key: crypto.randomUUID(), transport, authority: authority(transport), state: 'pending',
-                input: { prompt: shot.firstFramePrompt || '', modelId: 'krea2-turbo-fp8', ...KREA2_SIZE_BY_ASPECT[aspect] } }
+                input: { prompt: shot.firstFramePrompt || '', modelId: selectedModel, ...KREA2_SIZE_BY_ASPECT[aspect] } }
               request = readFirstFrameRequest(request)
               shot.firstFrameRequest = request; fresh = true
               // Fail closed before POST if this row cannot retain its identity.

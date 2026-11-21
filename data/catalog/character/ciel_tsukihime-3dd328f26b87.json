@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ciel_tsukihime",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "ciel_tsukihime",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🍛",
       "portrait": {
-        "image": "../assets/characters/popular-ciel_tsukihime.png?v=1075bc127616",
+        "image": "../assets/characters/popular-ciel_tsukihime.png?v=3f9c76c0ec3e",
         "alt": "希耶尔样张立绘",
         "sourceShowcaseId": "pc_ciel_tsukihime_pc_ciel_tsukihime_ciel_morning_kitchen_curry_tasting",
         "sourceShowcaseSha256": "0b395876d841bb08d18bfc814a4f3a24c794f102a8aa9cee62ef8c7441dc5f0f"

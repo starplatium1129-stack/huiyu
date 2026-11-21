@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_royal_ball_waltz",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1387,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "在舞池中与你共舞华尔兹，露肩墨绿礼服裙摆如波浪般旋转荡漾，湛蓝双眸顾盼生辉",
     "adult": false,
@@ -26,8 +26,10 @@
     "mood": "高贵华美、深情款款",
     "negativeTokens": [],
     "outfitId": "festive_ballgown_dress",
-    "promptProse": "Violet turns with her partner, one silver hand in their palm and the other resting on their shoulder. Her skirt sweeps through warm chandelier light across the ballroom floor.",
+    "promptProse": "Violet turns across the ballroom in an off-shoulder emerald gown, her blond hair pinned and the long skirt sweeping behind her. The taller dancing partner wears a black tailcoat and white bow tie, his dark hair combed back. Her silver hand rests in his palm while her other hand follows his shoulder through the turn beneath the chandeliers.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "waltz",
       "ballroom",
       "chandelier",
@@ -51,6 +53,6 @@
     ],
     "timeOfDay": "夜晚",
     "title": "薇尔莉特 · 宫廷华尔兹的翡翠裙摆",
-    "animaCaption": "One silver hand rests in her partner's palm while the other stays on their shoulder through the waltz turn."
+    "animaCaption": "Blond Violet in an emerald gown turns with a dark-haired man in a black tailcoat and white bow tie. Her silver hand rests in his bare palm as her skirt swings through the light."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evening_library_reading_together",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1386,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
     "adult": false,
@@ -26,8 +26,10 @@
     "mood": "沉静治愈、心照不宣",
     "negativeTokens": [],
     "outfitId": "library_casual_no_hat",
-    "promptProse": "Violet rests her head on her companion's shoulder while her silver fingertips keep the poetry book open between them. Stained-glass sunset crosses the yellowed page and the quiet wooden table.",
+    "promptProse": "In the old library, Violet leans her loose blond hair against the shoulder of the man beside her on the wooden bench. He has short brown hair, round reading glasses and a charcoal cardigan, and steadies the poetry book with his bare hand while her silver fingertips flatten the yellowing page. Sunset through the stained glass reaches both readers and the tabletop.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "poetry book",
       "leaning on shoulder",
       "library",
@@ -62,6 +64,6 @@
       "blue eyes",
       "mechanical hands"
     ],
-    "animaCaption": "Her head rests on her companion's shoulder while her silver fingertips hold the shared poetry book open."
+    "animaCaption": "Violet in a white dress leans against the short brown-haired reader in glasses and a charcoal cardigan. Her silver fingertips pin the shared poetry book open while his bare hand supports the cover."
   }
 }

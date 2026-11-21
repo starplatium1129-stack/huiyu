@@ -1,4 +1,5 @@
 import { apiClient } from './client'
+import type { VideoInputMode, VideoPromptPreview, VideoPromptPreviewRequest } from '../../types/videoPrompt'
 import { validVideoDriverName, type DrivingInput } from '@/types/videoDriver'
 export type { DrivingInput, VideoDriver } from '@/types/videoDriver'
 import { isRuntimeTaskId, getRuntimeTask, cancelRuntimeTask, actOnRuntimeTask } from './runtimeTasks'
@@ -10,10 +11,10 @@ import {
   isVideoStoryboard,
 } from './videoApiResponse'
 
-export type VideoMode = 'text' | 'image' | 'first-last-frame'
+export type VideoMode = VideoInputMode
 export type VideoJobStatus = 'queued' | 'running' | 'cancelling' | 'succeeded' | 'failed' | 'cancelled'
 export type VideoQuality = 'fast' | 'standard' | 'fine'
-export type VideoAttention = 'auto' | 'sdpa' | 'sage' | 'flash2'
+export type VideoAttention = 'auto' | 'sdpa' | 'sage' | 'flash2' | 'h3-sol' | 'h3-sla' | 'h3-fused'
 
 export interface VideoQualityOption {
   id: VideoQuality
@@ -35,8 +36,11 @@ export interface VideoModelStatus {
   durations?: VideoDefaults['duration'][]
   qualities?: VideoQuality[]
   supportsNegative?: boolean
+  supportsGeneratedAudio?: boolean
   drivingInput?: DrivingInput
   attentionModes?: VideoAttention[]
+  turboSteps?: (4 | 8)[]
+  h3LightVae?: boolean
   canvases?: Record<string, [number, number]> | null
   requirements: string[]
   missing: string[]
@@ -91,7 +95,7 @@ export interface VideoJob {
   createdAt: number
   resultAvailable: boolean
   resultUrl: string | null
-  execution?: { device: string; attention: string[]; encoder: string }
+  execution?: { device: string; attention: string[]; encoder: string; decoder?: string }
   error: string | null
   code: string | null
 }
@@ -114,6 +118,14 @@ export function fetchVideoStatus(signal?: AbortSignal): Promise<VideoStatusRespo
     signal,
     timeoutMs: 8_000,
     validate: isVideoStatusResponse,
+  })
+}
+
+export function previewVideoPrompt(body: VideoPromptPreviewRequest, signal: AbortSignal): Promise<VideoPromptPreview> {
+  return apiClient.request<VideoPromptPreview>('/api/video/prompt/preview', {
+    method: 'POST', body, signal, timeoutMs: 8_000,
+    validate: value => value.ok === true && typeof value.prompt === 'string' && !!value.prompt.trim()
+      && (value.negative === undefined || typeof value.negative === 'string'),
   })
 }
 

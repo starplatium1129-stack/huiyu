@@ -317,12 +317,25 @@ fn main() {
                         let _ = handle.emit("aics:gateway-ready", &url);
                         let resume = s.paths.config_root.join("setup-restart.json");
                         let resources = s.paths.config_root.join("resource-restart.json");
+                        let mut opened_atelier = false;
                         if std::fs::read(&resources).ok().as_deref() == Some(b"true") {
                             main_shared::open_atelier(&handle, &url, Some("/control?section=control-library"));
                             let _ = std::fs::remove_file(resources);
+                            opened_atelier = true;
                         }
                         if std::fs::read(&resume).ok().as_deref() == Some(b"true") {
                             main_shared::open_atelier(&handle, &url, Some("/control?section=control-setup"));
+                            opened_atelier = true;
+                        }
+                        if !opened_atelier
+                            && !std::env::args().any(|arg| arg == "--hidden")
+                            && !resource_assistant::recovery_pending(&handle)
+                            && !s.paths.first_run_file.exists()
+                        {
+                            let _ = crate::maintenance_protocol::write_json(&s.paths.first_run_file, &true);
+                            if !s.paths.ai_workspace_file.exists() && !s.paths.atelier_window_file.exists() {
+                                main_shared::open_atelier(&handle, &url, Some("/control?section=control-overview"));
+                            }
                         }
                     }
                     Err(e) => {

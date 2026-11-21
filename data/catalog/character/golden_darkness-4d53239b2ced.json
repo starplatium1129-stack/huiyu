@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "golden_darkness",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "golden_darkness",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "⭐",
       "portrait": {
-        "image": "../assets/characters/popular-golden_darkness.png?v=4f8dda6df8d8",
+        "image": "../assets/characters/popular-golden_darkness.png?v=00493b90d376",
         "alt": "金色暗影样张立绘",
         "sourceShowcaseId": "pc_golden_darkness_pc_golden_darkness_yami_street_taiyaki_bench_eating",
         "sourceShowcaseSha256": "4bb4fe5c2619ed471e36fbefaa6e614d696f9ff5e520b0b5c940ada8d70617a4"

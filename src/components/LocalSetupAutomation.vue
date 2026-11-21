@@ -63,6 +63,10 @@
     <template v-else>
       <div class="setup-choice-grid">
         <div class="setup-choices">
+          <div v-if="automation.chatModels.value.length" class="setup-quick-chat-bar">
+            <span>只想体验本机文字聊天，不下载 ComfyUI 大模型？</span>
+            <button class="btn btn-quiet btn-sm" type="button" @click="automation.enterChatSetup">仅准备本地聊天</button>
+          </div>
           <article class="setup-choice" :data-selected="automation.drawing.value">
             <label class="setup-choice-toggle"><input v-model="automation.drawing.value" type="checkbox" /><ArchiveIcon name="image" /><strong>AI 绘图</strong><span class="setup-optional">入门推荐</span></label>
             <div class="setup-choice-body">
@@ -87,7 +91,8 @@
           <div v-else-if="automation.drawing.value && (snapshot.comfy.installation !== 'present' || automation.rebuildComfy.value)" class="setup-runtime">
             <strong>Windows · 绘图运行环境</strong>
             <StudioSelect id="setup-comfy-runtime" v-model="automation.environment.value" label="绘图运行环境" placeholder="选择适合显卡的运行包" :options="[{ value: 'comfy-nvidia', label: 'NVIDIA 显卡 · CUDA 13.0' }, { value: 'comfy-cu126', label: '较旧 NVIDIA 显卡 · CUDA 12.6' }, { value: 'comfy-amd', label: 'AMD 显卡 / Radeon 880M 核显 · 实验性' }]" />
-            <small v-if="automation.environment.value === 'comfy-amd'">AMD 官方包，需适配驱动。原生生成推荐 NVIDIA。</small>
+            <small v-if="automation.comfyDriverNote.value" class="setup-driver-note" role="status">{{ automation.comfyDriverNote.value }}</small>
+            <small v-else-if="automation.environment.value === 'comfy-amd'">AMD 官方包，需适配驱动。原生生成推荐 NVIDIA。</small>
             <small v-else>按显卡选择运行环境；Intel 暂未支持自动安装。</small>
           </div>
           <div v-if="automation.chatId.value && snapshot.chat?.runtimePresent" class="setup-existing" role="status">
@@ -103,15 +108,26 @@
           <ul class="setup-packages">
             <li v-for="model in automation.plan.value" :key="model.id"><ArchiveIcon :name="packagePresent(model) ? 'success' : model.kind === 'runtime' ? 'gear' : model.kind === 'chat' ? 'chat' : 'model'" /><div><strong>{{ packageName(model) }}</strong><span>{{ packagePresent(model) ? '已有文件 · 将校验' : formatBytes(model.preparation!.expectedBytes) }}</span></div><a :href="model.preparation!.licenseUrl" target="_blank" rel="noopener noreferrer" :aria-label="`${model.label}的使用许可，在新窗口打开`">许可</a></li>
           </ul>
-          <div class="setup-manifest-note"><ArchiveIcon name="folder" /><span>解压需额外空间 · 中断可续传</span></div>
+          <div class="setup-manifest-note">
+            <ArchiveIcon name="folder" />
+            <span>
+              <template v-if="automation.hasSelection.value">
+                预计需空间 {{ formatBytes(automation.estimatedRequiredBytes.value) }}
+                <template v-if="automation.workspaceFreeBytes.value != null"> · 磁盘可用 {{ formatBytes(automation.workspaceFreeBytes.value) }}</template>
+                ·
+              </template>
+              中断可续传
+            </span>
+          </div>
         </div>
       </div>
       <div class="setup-submit">
         <p v-if="blocked" class="setup-submit-blocker" role="status">已有配置任务正在执行。</p>
         <div v-if="automation.serviceMustStop.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="warning" /><span>重建环境前请先停止 ComfyUI。</span><RouterLink class="btn btn-ghost btn-sm" :to="{ query: $route.query, hash: '#control-service-comfy' }">去停止服务</RouterLink><button class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">已停止，重新检查</button></div>
-        <div v-if="workspaceBlocked || !statusConfirmed || automation.environmentRequired.value || !automation.hasSelection.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="info" /><span>{{ workspaceBlocked ? '请先选择工作区。' : !statusConfirmed ? '配置检查中…' : automation.environmentRequired.value ? '请选择绘图运行环境。' : '请勾选绘图或聊天。' }}</span><button v-if="!statusConfirmed && !workspaceBlocked" class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查</button></div>
+        <div v-if="workspaceBlocked || !statusConfirmed || automation.environmentRequired.value || !automation.hasSelection.value || !automation.spaceEnough.value" class="setup-submit-blocker" role="status"><ArchiveIcon name="info" /><span>{{ workspaceBlocked ? '请先选择工作区。' : !statusConfirmed ? '配置检查中…' : !automation.hasSelection.value ? '请勾选绘图或聊天。' : !automation.spaceEnough.value ? '当前工作区磁盘可用空间不足，请更换目录或减少勾选项。' : '请选择绘图运行环境。' }}</span><button v-if="!statusConfirmed && !workspaceBlocked" class="btn btn-ghost btn-sm" type="button" @click="emit('refresh')">重新检查</button></div>
         <label class="setup-review"><input v-model="automation.reviewed.value" type="checkbox" :disabled="!automation.hasSelection.value" /><span>同意下载并启用所选组件及<a v-if="automation.hasSelection.value" :href="automation.drawing.value ? selectedImage?.preparation?.licenseUrl : selectedChat?.preparation?.licenseUrl" target="_blank" rel="noopener noreferrer">使用许可</a></span></label>
-        <div class="setup-buttons"><button class="btn btn-primary" type="button" :disabled="!canRun" @click="automation.run"><ArchiveIcon name="download" />{{ automation.error.value ? '继续下载并配置' : '下载并自动配置' }}</button><button v-if="automation.canStartExisting.value" class="btn btn-ghost" type="button" :disabled="blocked || !statusConfirmed || workspaceBlocked" @click="automation.startExisting">使用已有环境</button></div>
+        <div class="setup-buttons"><button class="btn btn-primary" type="button" :disabled="!canRun" :aria-describedby="runBlockerHint ? runBlockerId : undefined" @click="automation.run"><ArchiveIcon name="download" />{{ automation.error.value ? '继续下载并配置' : '下载并自动配置' }}</button><button v-if="automation.canStartExisting.value" class="btn btn-ghost" type="button" :disabled="blocked || !statusConfirmed || workspaceBlocked" @click="automation.startExisting">使用已有环境</button></div>
+        <p v-if="runBlockerHint" :id="runBlockerId" class="setup-submit-hint" role="status">{{ runBlockerHint }}</p>
       </div>
     </template>
   </div>
@@ -137,6 +153,7 @@ watch(() => props.settingsRevision, () => {
 })
 watch(() => route.fullPath, async () => {
   if (route.path !== '/control' || route.hash !== '#setup-chat-options') return
+  automation.enterChatSetup()
   await nextTick()
   const target = document.getElementById('setup-chat-options')
   if (target?.getClientRects().length) target.scrollIntoView({ block: 'start', behavior: 'instant' })
@@ -158,7 +175,20 @@ const selectedImage = computed(() => automation.imageModels.value.find(model => 
 const selectedChat = computed(() => automation.chatModels.value.find(model => model.id === automation.chatId.value))
 const chatOptions = computed(() => automation.chatModels.value.map(model => ({ value: model.id, label: model.label + ' · ' + formatBytes(model.preparation!.expectedBytes) })))
 const chatEnabled = computed({ get: () => !!automation.chatId.value, set: (enabled: boolean) => { automation.chatId.value = enabled ? automation.recommendation.value.modelId || automation.chatModels.value[0]?.id || '' : '' } })
-const canRun = computed(() => !props.blocked && props.statusConfirmed && !props.workspaceBlocked && !automation.environmentRequired.value && !automation.serviceMustStop.value && automation.reviewed.value && automation.hasSelection.value)
+const canRun = computed(() => !props.blocked && props.statusConfirmed && !props.workspaceBlocked && !automation.environmentRequired.value && !automation.serviceMustStop.value && automation.spaceEnough.value && automation.reviewed.value && automation.hasSelection.value)
+const runBlockerId = useId()
+const runBlockerHint = computed(() => {
+  if (canRun.value) return ''
+  if (props.blocked) return '请等待当前配置操作完成后再开始。'
+  if (props.workspaceBlocked) return '请先选择有效的 AI 工作区目录。'
+  if (!props.statusConfirmed) return '正在确认环境状态，请稍候。'
+  if (!automation.hasSelection.value) return '请先勾选 AI 绘图或本地聊天。'
+  if (!automation.spaceEnough.value) return '可用磁盘空间不足，请更换目录或减少勾选项。'
+  if (automation.environmentRequired.value) return '请先在上方选择适合当前显卡的绘图运行环境。'
+  if (automation.serviceMustStop.value) return '重建环境前请先停止正在运行的 ComfyUI。'
+  if (!automation.reviewed.value) return '请先勾选上方许可同意框后再开始。'
+  return ''
+})
 const progressSteps = computed(() => [{ id: 'environment', label: '安装环境' }, { id: 'models', label: '下载模型' }, { id: 'service', label: automation.drawing.value ? '启动服务' : '启动聊天' }, { id: 'validation', label: '检查配置' }])
 const stageIndex = computed(() => progressSteps.value.findIndex(item => item.id === automation.stage.value))
 const downloadHeading = useId()
@@ -202,6 +232,9 @@ function packageName(model: LocalSetupModel) { return model.id === 'qwen-encoder
 .setup-automation h3, .setup-automation p { margin:0; }
 .setup-choice-grid { display:grid; grid-template-columns:minmax(0,1fr) minmax(0,1fr); gap:var(--s-5); align-items:start; }
 .setup-choices { display:grid; gap:var(--s-3); }
+.setup-quick-chat-bar { display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:var(--s-2); padding:var(--s-2) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); font-size:var(--fs-label-sm); color:var(--text-secondary); }
+.setup-driver-note { color:var(--warning-text); line-height:var(--lh-body); }
+.setup-submit-hint { flex-basis:100%; font-size:var(--fs-label-sm); color:var(--text-secondary); line-height:var(--lh-body); }
 .setup-choice { border:1px solid var(--border-strong); border-radius:var(--r-lg); background:var(--bg-deep); overflow:hidden; }
 .setup-choice-toggle { display:flex; align-items:center; gap:var(--s-3); padding:var(--s-4); cursor:pointer; min-height:48px; }
 .setup-choice[data-selected="true"] .setup-choice-toggle { background:var(--bg-elevated); }

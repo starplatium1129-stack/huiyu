@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sparkle_rooftop_soda_night_sky",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1046,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "sparkle_rooftop_soda_night_sky",
     "title": "花火 · 梦境天台的汽水与私语",
@@ -29,7 +29,7 @@
       "soft_expression",
       "twintails"
     ],
-    "promptProse": "Sparkle sits beside her companion on the rooftop edge, half-finished soda in one hand, smiling toward them; city lights rim her silk nightgown.",
+    "promptProse": "Sparkle sits on the rooftop edge with a half-finished soda, long ribboned twintails stirring above her crimson nightgown. Her short silver-gray-haired companion in a teal windbreaker sits beside her with both feet dangling. Sparkle turns toward them with a small smile as city lights rim their silhouettes.",
     "promptTokens": [
       "soda",
       "companion",
@@ -50,6 +50,6 @@
       "romantic"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She sits beside her companion on the rooftop edge with a half-finished soda."
+    "animaCaption": "On the left, Sparkle holds a glass soda bottle in her crimson slip, with red ribbons in her long dark twintails. The companion on the right has cropped silver-gray hair and a loose teal windbreaker. They sit on the edge with their feet dangling."
   }
 }

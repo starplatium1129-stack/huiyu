@@ -285,7 +285,7 @@
               ></textarea>
             </label>
 
-            <VideoPromptWorkbench :key="promptWorkbenchKey(shot)" :mode="shot.imageId || shot.imageUrl || shot.imageName ? 'image' : 'text'"
+            <ShotPromptComposer :key="promptWorkbenchKey(shot)" :mode="shot.imageId || shot.imageUrl || shot.imageName ? 'image' : 'text'"
               :prompt="shot.prompt" :camera="shot.camera" :motion="shot.motion" :camera-options="cameraOptions" :motion-options="motionOptions"
               :max-length="shotPromptLimit" :disabled="batchActive || submitting || aiBusy || scriptBusy || storyboardBusy"
               @apply="Object.assign(shot, $event)" />
@@ -450,7 +450,7 @@ import ShotStoryboardStrip from './ShotStoryboardStrip.vue'
 import ShotReviewIssues from './ShotReviewIssues.vue'
 import ShotScriptDialog from './ShotScriptDialog.vue'
 import ShotBatchProgress from './ShotBatchProgress.vue'
-import VideoPromptWorkbench from './VideoPromptWorkbench.vue'
+import ShotPromptComposer from './ShotPromptComposer.vue'
 import type { ShotDraft } from './shotListTypes'
 import { characterSelectGroups, durationOptions, scriptCountOptions, scriptTotalOptions, shotSizeOptions } from './shotListEditorOptions'
 import { useShotWorkspace } from "@/components/video/useShotWorkspace"

@@ -47,6 +47,47 @@ pub(super) fn validate(input: &Value, settings: &Settings) -> Result<Validated> 
             "台词长度必须在 1—2000 字之间",
         ));
     }
+    match settings.engine {
+        Engine::Off => {
+            return Err(ApiError::new(409, "VOICE_DISABLED", "当前已关闭语音朗读"));
+        }
+        Engine::System => {
+            return Err(ApiError::new(
+                409,
+                "VOICE_CLIENT_SIDE",
+                "当前使用系统朗读，请由桌面端或浏览器直接播放",
+            ));
+        }
+        Engine::OpenAiTts => {
+            if !settings.openai.configured() {
+                return Err(ApiError::new(
+                    409,
+                    "VOICE_UNCONFIGURED",
+                    "请先在控制室「语音配置」填写语音接口地址与模型",
+                ));
+            }
+            let text = normalize(raw, &language);
+            if text.is_empty() {
+                return Err(ApiError::new(400, "VOICE_INVALID", "台词规范化后为空"));
+            }
+            let speed = input["speed"]
+                .as_f64()
+                .or_else(|| input["speed"].as_str().and_then(|s| s.parse().ok()));
+            let payload = json!({
+                "model": settings.openai.model,
+                "input": text,
+                "voice": settings.openai.voice_for(voice),
+                "response_format": settings.openai.response_format,
+                "speed": numeric(speed, 1.0, 0.25, 4.0, false),
+            });
+            return Ok(Validated {
+                voice: voice.into(),
+                profile: Arc::new(Profile::default()),
+                payload,
+            });
+        }
+        Engine::GptSoVits | Engine::GptSoVitsNative | Engine::VoxCpm2 => {}
+    }
     let profile = settings
         .profiles
         .get(voice)

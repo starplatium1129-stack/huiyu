@@ -361,7 +361,11 @@ pub fn companion_window_bounds(app: &AppHandle) -> Option<WindowBounds> {
 pub fn gateway_env(paths: &DesktopPaths, is_packaged: bool, workspace_root: Option<&str>) -> Vec<(String, String)> {
     let ai_workspace = workspace_root.filter(|value| !value.trim().is_empty()).map(String::from)
         .or_else(|| (!is_packaged).then(|| std::env::var("AI_WORKSPACE_ROOT").ok().filter(|value| !value.trim().is_empty())).flatten())
-        .unwrap_or_else(|| paths.config_root.join("AI").to_string_lossy().to_string());
+        .unwrap_or_else(|| {
+            let default_ai = paths.config_root.join("AI");
+            let _ = std::fs::create_dir_all(&default_ai);
+            default_ai.to_string_lossy().to_string()
+        });
     let mut env = vec![
         ("AICS_APP_ROOT".into(), paths.app_root.to_string_lossy().to_string()),
         ("AICS_ASSETS_ROOT".into(), paths.assets_root.to_string_lossy().to_string()),

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kama_fate",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kama_fate",
     "profile": {
@@ -18,7 +18,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-kama_fate.png?v=702533cba225",
+        "image": "../assets/characters/popular-kama_fate.png?v=55cc43238ffa",
         "alt": "迦摩样张立绘",
         "sourceShowcaseId": "pc_kama_fate_pc_kama_fate_kama_fate_sfw_b7_06",
         "sourceShowcaseSha256": "dec50728d4d00068ff02d8d6286984efe5cc7004832df4dc7841857455c8e464"

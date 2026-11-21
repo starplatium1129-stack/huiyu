@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirogane_kei",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shirogane_kei",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-shirogane_kei.png?v=f92b3064aba2",
+        "image": "../assets/characters/popular-shirogane_kei.png?v=c2bc44d1ef0c",
         "alt": "白银圭样张立绘",
         "sourceShowcaseId": "pc_shirogane_kei_pc_shirogane_kei_shirogane_kei_sfw_b8_03",
         "sourceShowcaseSha256": "47fe90a0427e5857d471412e9d25c40193e16c77be31151f70d80ebd7abeafc1"

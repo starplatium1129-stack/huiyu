@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "haruna_rainy_bus_stop_umbrella_share",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1919,
   "createdAt": "2026-10-24T16:47:42.715918+00:00",
-  "updatedAt": "2026-10-24T16:47:42.715918+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "haruna_rainy_bus_stop_umbrella_share",
     "characterId": "sairenji_haruna",
@@ -32,6 +32,8 @@
       "gentle_smile"
     ],
     "promptTokens": [
+      "1girl",
+      "1boy",
       "bus stop shelter",
       "pale pink blouse",
       "short sleeves",
@@ -50,11 +52,12 @@
       "cowboy shot",
       "overcast soft light"
     ],
-    "promptProse": "Sheltered under a shared clear umbrella at the roadside bus stop, raindrops bead along the canopy. Soft post-rain light illuminates her gentle pale-pink blouse, airy white pleated skirt, and the delicate blush rising on her cheeks as she glances sideways.",
-    "animaCaption": "She shares a clear umbrella with the viewer at a bus stop in her summer skirt.",
+    "promptProse": "Short purple-haired Haruna in a pale-pink blouse and white pleated skirt grips a clear umbrella with both hands at the bus stop. Beside her stands a boy with spiky rust-brown hair, a slate-blue shirt and gray pants. Two profiles fit beneath the canopy while she watches the rainwater ripple across the road.",
+    "animaCaption": "Short purple-haired Haruna in a pale-pink blouse and white pleated skirt grips a clear umbrella with both hands at the bus stop. Beside her stands a boy with spiky rust-brown hair, a slate-blue shirt and gray pants. Two profiles fit beneath the canopy while she watches the rainwater ripple across the road.",
     "negativeTokens": [],
     "coverageTags": [
       "daily"
-    ]
+    ],
+    "compositionIntent": "group"
   }
 }

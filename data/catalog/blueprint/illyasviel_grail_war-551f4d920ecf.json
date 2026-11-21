@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_grail_war",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "illyasviel_grail_war",
     "title": "伊莉雅丝菲尔 · 圣杯战争",
@@ -28,7 +28,7 @@
       "two_characters",
       "low_angle"
     ],
-    "promptProse": "Illyasviel points forward from the towering Berserker's shoulder as he stands on the broken paving, both complete figures visible against the firelit ruins.",
+    "promptProse": "Illyasviel, her long white hair spilling over a fur-trimmed purple coat, points ahead from Berserker's shoulder. The wild-haired giant carries her high above the ground, his massive chest and thick forearms outlined against the fires. A low, wide view holds them both from the girl's pointing hand down to his feet on the broken paving.",
     "promptTokens": [
       "1girl",
       "1boy",
@@ -57,6 +57,6 @@
     "characterTokens": [
       "berserker"
     ],
-    "animaCaption": "Both figures remain visible as Illyasviel points from Berserker's shoulder."
+    "animaCaption": "White-haired Illyasviel points from one shoulder of Berserker, a towering, broad-chested giant with wild charcoal hair and thick forearms. His feet brace against the broken paving below her."
   }
 }

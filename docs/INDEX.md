@@ -2,7 +2,7 @@
 
 ## 使用绘遇
 
-[浏览手册](index.html) · [上手教程](getting-started.html) · [模型配置](guides/setup-and-models.md) · [离线资源](guides/offline-resources.md)
+[浏览手册](index.html) · [上手教程](getting-started.html) · [模型配置](guides/setup-and-models.md) · [离线资源](guides/offline-resources.md) · [远程与 Muse](guides/remote-and-muse.md)
 
 ## 日常入口
 
@@ -39,7 +39,7 @@
 
 [专题索引](guides/README.md)按环境、角色、美术、提示词、视频、桌面与工程分类。[研究来源](research/README.md)说明参考资料和采用边界。
 
-角色档案与场景故事使用 [humanizer-zh](../.agents/skills/humanizer-zh/SKILL.md)，图像提示词使用 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md)，UI 工作使用 [studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md) 和[设计规范](../DESIGN.md)。
+角色档案与场景故事使用 [humanizer-zh](../.agents/skills/humanizer-zh/SKILL.md)，图像提示词使用 [studio-prompt-craft](../.agents/skills/studio-prompt-craft/SKILL.md)，视频提示词使用 [video-prompt-craft](../.agents/skills/video-prompt-craft/SKILL.md)，UI 工作使用 [studio-ui-design](../.agents/skills/studio-ui-design/SKILL.md) 和[设计规范](../DESIGN.md)。
 
 ## 维护方式
 

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_sfw_b7_02",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1634,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "changli_wuthering_sfw_b7_02",
     "title": "长离 · 庭院里的授课",
@@ -30,7 +30,7 @@
       "dappled_light",
       "medium_shot"
     ],
-    "promptProse": "Changli sits on the left, pouring tea into Jinhsi's cup across the stone table. Jinhsi sits on the right, her long white hair framing her attentive face. Dappled daylight reaches the separate cups and the space between their hands.",
+    "promptProse": "Changli sits on the left of the stone table, her long pink hair and rose silk sleeves visible as she tilts the teapot. Jinhsi, with long white hair and pale blue-and-white robes, sits opposite on the right and listens while Changli pours into her cup. Dappled daylight falls between their distinctly placed hands.",
     "promptTokens": [
       "2girls",
       "Jinhsi",
@@ -56,6 +56,6 @@
     "characterTokens": [
       "Jinhsi"
     ],
-    "animaCaption": "Changli sits left, pouring into Jinhsi's cup on the right; their hands remain separate."
+    "animaCaption": "Changli, with long pink hair and rose silk sleeves, pours from the left. White-haired Jinhsi in pale blue-and-white robes listens on the right, with her own cup in front of her."
   }
 }

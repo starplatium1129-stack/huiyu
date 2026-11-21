@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vivy",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 153,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "vivy",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-vivy.png?v=6a7500db7994",
+        "image": "../assets/characters/popular-vivy.png?v=26db5196e0ef",
         "alt": "Vivy样张立绘",
         "sourceShowcaseId": "pc_vivy_pc_vivy_vivy_sfw_b9_04",
         "sourceShowcaseSha256": "81d7dc8e23d707e3391d75a26d920cffdd9911f566525dcd2f2f1b879094861b"

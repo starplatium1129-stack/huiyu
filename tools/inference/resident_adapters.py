@@ -50,7 +50,8 @@ class PipelineCache:
 
     def acquire(self, root, spec, data, policy, control, fingerprint, load, error, *, style_path=None, prepared_identity=None):
         scope = (str(root), data["modelId"], policy, data.get("mossTextPrecision", "bf16"), data.get("mossWeightPrecision", "auto"),
-                 str(style_path) if style_path else None)
+                 str(style_path) if style_path else None, data.get("_h3TurboSteps"),
+                 data.get("h3Decoder", "original"), data.get("_h3AccelerationPath"))
         # Retire weights before attempting a new protection interval.
         if self.scope != scope or not self.lease.valid() or (style_path is not None and not self.style_lease.valid()):
             self.clear()
@@ -92,7 +93,14 @@ class PipelineCache:
                                 if value is not None and (name.endswith("scheduler") or name == "guider")}
                 del template
                 control.stage("uploading")
-                if self.memory is None:
+                if spec["family"] == "krea2" and policy == "offload":
+                    # PEFT replaces target Linear modules. Attach placement
+                    # after applying the style so both base and LoRA tensors
+                    # are owned by the same group throughout its lifetime.
+                    pixels = data["width"] * data["height"]
+                    self.memory = load_sibling("krea_adapter").Residency(
+                        self.components, pixels, root=root, identity=identity, protection=protection)
+                elif self.memory is None:
                     self.memory = load_sibling("native_memory").Residency(self.components, policy)
                 self.scope, self.identity = scope, identity
                 self.protection = protection
@@ -111,10 +119,16 @@ class PipelineCache:
                 if registry is not None:
                     registry.reset_stateful_hooks(recurse=True)
             self.memory.bind(pipeline)
-            if spec["pipeline"] == "WanPipeline":
+            if spec["family"] == "krea2":
+                counts = dict(conditioningHits=0, conditioningMisses=0)
+                pipeline._huiyu_krea_conditioning = counts
+                self.bind_conditioning(pipeline, "get_text_hidden_states", counts=counts)
+            elif spec["pipeline"] == "WanPipeline":
                 # Both Wan pipelines call the same T5 recipe independently for
                 # positive and negative text. Keep reusable negatives by prompt.
                 self.bind_conditioning(pipeline, "_get_t5_prompt_embeds", data.get("videoAttention"))
+            elif spec["pipeline"] == "MiniMaxH3ModularPipeline":
+                load_sibling("h3_text").bind_conditioning(pipeline, self.conditioning, control)
             elif spec["family"] in ("qwen-image", "moss-image", "hunyuan-video-1.5", "kandinsky-6"):
                 self.bind_conditioning(pipeline, attention=data.get("videoAttention"))
             if self.protection is not None and self.lease.protection_token() is not self.protection:
@@ -133,7 +147,7 @@ class PipelineCache:
         elif self.memory is not None:
             self.memory.finish()
 
-    def bind_conditioning(self, pipeline, method="encode_prompt", attention=None):
+    def bind_conditioning(self, pipeline, method="encode_prompt", attention=None, *, counts=None):
         import torch
         original = getattr(pipeline, method)
         signature = inspect.signature(original)
@@ -161,8 +175,12 @@ class PipelineCache:
                 digest.update(image.tobytes())
             key = (type(pipeline).__name__, attention, digest.digest())
             if key in self.conditioning:
+                if counts is not None:
+                    counts["conditioningHits"] += 1
                 self.conditioning.move_to_end(key)
                 return copy_tensors(self.conditioning[key][0], device)
+            if counts is not None:
+                counts["conditioningMisses"] += 1
             output = original(*args, **kwargs)
             size = tensor_bytes(output)
             # Keep recent prompt revisions and frequently reused negatives. The

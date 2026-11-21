@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_motorcycle_stargazing",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 2023,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "trail_windbreaker",
@@ -19,8 +19,10 @@
     "lighting": "异星荒原断崖双月银白月华与机车前大灯锐芒",
     "camera": "full_body",
     "mood": "温存与独处",
-    "promptProse": "Perched together on a heavy all-terrain motorcycle atop a windswept plateau cliff, Chen Qianyu shares her windbreaker jacket under glowing alien twin moons. The vast cosmic sky blankets the wasteland as she gazes with quiet, protective warmth.",
+    "promptProse": "Qianyu sits toward the handlebars, her long dark hair, red ribbons and dragon tail silhouetted against two alien moons. Beside her on the motorcycle seat, the short silver-haired Endministrator wears Qianyu's teal windbreaker draped over a dark outfit. The headlamp illuminates the stones below their boots.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "motorcycle",
       "twin moons in sky",
       "alien plateau",
@@ -34,9 +36,10 @@
       "stars"
     ],
     "negativeTokens": [],
-    "animaCaption": "Twin alien moons and the bright beam of her motorcycle lamp illuminate the desolate plateau as Qianyu gazes up at the cosmos.",
+    "animaCaption": "Qianyu sits toward the handlebars, her long dark hair, red ribbons and dragon tail silhouetted against two alien moons. Beside her on the motorcycle seat, the short silver-haired Endministrator wears Qianyu's teal windbreaker draped over a dark outfit. The headlamp illuminates the stones below their boots.",
     "isNsfw": false,
     "rating": "R15",
-    "mature": false
+    "mature": false,
+    "compositionIntent": "group"
   }
 }

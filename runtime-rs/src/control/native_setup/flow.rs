@@ -32,6 +32,7 @@ impl ControlService {
             .iter()
             .find(|value| value["id"] == model.id)
             .unwrap();
+        let local_import = local_adapters::selected(model_view, body.local_video_import)?;
         let required = if plan["runtime"]["installed"] == true {
             0
         } else {
@@ -54,7 +55,7 @@ impl ControlService {
                 "下载运行库",
                 "安装运行库",
                 "运行库就绪",
-                "下载完整模型",
+                "准备模型文件",
                 "登记模型组件",
                 "模型就绪",
                 "启用原生引擎",
@@ -69,10 +70,9 @@ impl ControlService {
         operation["stage"] = json!("checking");
         operation["cancelAllowed"] = json!(true);
         operation["downloadedBytes"] = json!(0);
-        operation["totalBytes"] = json!(
-            plan["runtime"]["downloadBytes"].as_u64().unwrap_or(0)
-                .saturating_add(model.files.iter().map(|file| file.bytes).sum::<u64>())
-        );
+        let runtime_bytes = if plan["runtime"]["installed"] == true { 0 } else { plan["runtime"]["downloadBytes"].as_u64().unwrap_or(0) };
+        let model_bytes = if model_view["installed"] == true { 0 } else { model_view["downloadBytes"].as_u64().unwrap_or(0) };
+        operation["totalBytes"] = json!(runtime_bytes.saturating_add(model_bytes));
         self.publish_operation(operation.clone())?;
         let cancel = self.shutdown.child_token();
         *self.environment_cancel.lock().unwrap() = Some(cancel.clone());
@@ -80,7 +80,7 @@ impl ControlService {
         let returned = operation.clone();
         self.tasks.spawn(async move {
             let work = service
-                .prepare_native_chain(body, runtime, model, plan, &operation, &cancel, &permit);
+                .prepare_native_chain(body, runtime, model, plan, local_import, &operation, &cancel, &permit);
             tokio::pin!(work);
             let result = match tokio::time::timeout(Duration::from_secs(8 * 3600), &mut work).await
             {
@@ -103,9 +103,19 @@ impl ControlService {
             service.environment_cancel.lock().unwrap().take();
             service.finish(&operation, result);
             if completed {
+                let restart_required = service
+                    .inference_view()
+                    .ok()
+                    .and_then(|view| view["restartRequired"].as_bool())
+                    .unwrap_or(true);
+                let message = if restart_required {
+                    "原生配置已保存，请按重启提示继续"
+                } else {
+                    "原生引擎已准备并启用，可直接进入画室创作"
+                };
                 service.native_progress(
                     &operation,
-                    json!({"flowStep":"activate","message":"原生配置已保存，请按重启提示继续"}),
+                    json!({"flowStep":"activate","message":message}),
                 );
             }
         });
@@ -118,6 +128,7 @@ impl ControlService {
         runtime: Arc<RuntimeBundle>,
         model: Arc<ModelBundle>,
         current: Value,
+        local_import: Option<&local_adapters::VideoImport>,
         operation: &Value,
         cancel: &CancellationToken,
         permit: &Arc<OwnedSemaphorePermit>,
@@ -155,8 +166,7 @@ impl ControlService {
         } else {
             None
         };
-        let runtime_bytes = current["runtime"]["downloadBytes"].as_u64().unwrap_or(0);
-        let model_bytes = model.files.iter().map(|file| file.bytes).sum::<u64>();
+        let runtime_bytes = if current["runtime"]["installed"] == true { 0 } else { current["runtime"]["downloadBytes"].as_u64().unwrap_or(0) };
         let mut runtime_operation = operation.clone();
         runtime_operation["flowStep"] = json!("runtime");
         runtime_operation["downloadOffset"] = json!(0);
@@ -187,14 +197,16 @@ impl ControlService {
                 body.hf_token.as_deref(),
                 imported.as_ref(),
                 resolved,
+                local_import,
             )
             .await?;
         }
         self.stage(operation, 6);
-        self.native_progress(
-            &model_operation,
-            json!({"downloadedBytes":model_bytes,"message":"模型组件已就绪"}),
-        );
+        let mut progress = json!({"message":"模型组件已就绪"});
+        if !installed && local_import.is_none() {
+            progress["downloadedBytes"] = json!(model.files.iter().map(|file| file.bytes).sum::<u64>());
+        }
+        self.native_progress(&model_operation, progress);
         stopped(cancel)?;
         let mut activation = operation.clone();
         activation["flowStep"] = json!("activate");

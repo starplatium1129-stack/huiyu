@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_winter_street",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "穿风衣走在雪中",
     "adult": false,
@@ -26,8 +26,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "winter_coat",
-    "promptProse": "Standing along a snow-dusted shopping avenue in the evening, Rio holds a warm paper coffee cup in both hands. Illuminated storefronts and streetlamps cast a warm golden glow across the quiet winter street and falling snowflakes.",
+    "promptProse": "Rio carries her paper coffee cup in both hands on the left, her long black hair loose over a fitted black winter coat. The man walking on her right has swept-back brown hair, a gray knit scarf and a camel overcoat. She glances across at his profile as the first snow catches in the shop-window light.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "standing",
       "holding paper cup",
       "snowy street",
@@ -49,6 +51,7 @@
     ],
     "timeOfDay": "冬日傍晚",
     "title": "调月莉音 · 冬季街道漫步",
-    "animaCaption": "She glances toward her companion along the park path as the first snow falls."
+    "animaCaption": "Rio carries her paper coffee cup in both hands on the left, her long black hair loose over a fitted black winter coat. The man walking on her right has swept-back brown hair, a gray knit scarf and a camel overcoat. She glances across at his profile as the first snow catches in the shop-window light.",
+    "compositionIntent": "group"
   }
 }

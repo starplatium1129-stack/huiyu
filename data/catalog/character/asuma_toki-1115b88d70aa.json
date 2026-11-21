@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuma_toki",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "asuma_toki",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "🎧",
       "portrait": {
-        "image": "../assets/characters/popular-asuma_toki.png?v=2b92bd707e32",
+        "image": "../assets/characters/popular-asuma_toki.png?v=eb84032f6df3",
         "alt": "飞鸟马时样张立绘",
         "sourceShowcaseId": "pc_asuma_toki_pc_asuma_toki_asuma_toki_curtsey",
         "sourceShowcaseSha256": "596f26805ce49dd0b01664646316a1f8195ff00fed2fc489ef6df6e90ff2308d"

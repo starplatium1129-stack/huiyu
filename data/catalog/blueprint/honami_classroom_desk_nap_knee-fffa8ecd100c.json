@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "honami_classroom_desk_nap_knee",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1886,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "honami_classroom_desk_nap_knee",
     "characterId": "ichinose_honami",
@@ -19,6 +19,8 @@
     "lighting": "透过教室窗户倾泻而下的金色落日余晖",
     "camera": "cowboy shot, slightly high angle",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "classroom",
       "lap pillow",
       "sitting",
@@ -41,12 +43,13 @@
       "healing",
       "motherly"
     ],
-    "promptProse": "Seated in the quiet golden sunset of the classroom, she cradles his head on her soft lap, gently combing her fingers through his hair with an angelic caring smile.",
+    "promptProse": "Pink-haired Honami sits beside the classroom window in her red blazer and blue bow, combing her fingers through the sleeping boy's short dark-brown hair. His profile rests on her lap, his charcoal sweater and pale shirt collar visible beside her skirt. Low sunset draws a line across the empty desks.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"
     ],
-    "animaCaption": "His head rests on her lap as her fingers gently comb through his hair."
+    "animaCaption": "Pink-haired Honami sits beside the classroom window in her red blazer and blue bow, combing her fingers through the sleeping boy's short dark-brown hair. His profile rests on her lap, his charcoal sweater and pale shirt collar visible beside her skirt. Low sunset draws a line across the empty desks.",
+    "compositionIntent": "group"
   }
 }

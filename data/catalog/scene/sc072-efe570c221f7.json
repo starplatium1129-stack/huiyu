@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc072",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:09:30.851488500+00:00",
   "data": {
-    "animaCaption": "She slows to walk beside the viewer and tilts their shared umbrella toward them; bamboo-filtered daylight falls on her hair and the wet path.",
+    "animaCaption": "Ayachi Nene walks at the left on the wet bamboo path in a white blouse and sky-blue skirt, her very long white twin tails lifting in the breeze. She tips the umbrella toward a young man walking at her shoulder on the right. He has short dark-brown hair, an olive rain jacket and charcoal trousers. The umbrella covers both people as they match their steps on the wet stone.",
     "auditRevision": "careful-batch06-2026-08-27",
     "camera": "全身中景",
     "category": "旅行",
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas",
-    "prompt": "1girl, ayachi_nene, white blouse, light blue skirt, white thighhighs, white sandals, walking, holding umbrella, bamboo forest, stone path, drizzle, mist, full body, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, 1boy, ayachi_nene, white blouse, light blue skirt, white thighhighs, white sandals, walking, holding umbrella, bamboo forest, stone path, drizzle, mist, full body, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "细雨落在竹叶上，宁宁撑伞沿着青石路慢慢前行。她故意放慢脚步，让你能与她并肩，伞面也始终偏向你这一侧。风吹来时，银白长发在湿润绿意间轻轻扬起——「这里安静得能听见两个人的脚步。别走太快，我想把这段路记得久一点。」",
@@ -47,6 +47,8 @@
       "展示图",
       "CG"
     ],
-    "weather": "雨"
+    "weather": "雨",
+    "compositionIntent": "group",
+    "promptProse": "Ayachi Nene walks at the left on the wet bamboo path in a white blouse and sky-blue skirt, her very long white twin tails lifting in the breeze. She tips the umbrella toward a young man walking at her shoulder on the right. He has short dark-brown hair, an olive rain jacket and charcoal trousers. The umbrella covers both people as they match their steps on the wet stone."
   }
 }

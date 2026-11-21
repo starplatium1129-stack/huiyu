@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "iuno_wuwa",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 310,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "iuno_wuwa",
     "profile": {
@@ -43,7 +43,7 @@
         "blue eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-iuno_wuwa.png?v=9b95a4f010c8",
+        "image": "../assets/characters/popular-iuno_wuwa.png?v=65abe63a4853",
         "alt": "尤诺立绘"
       },
       "visual_dna": {

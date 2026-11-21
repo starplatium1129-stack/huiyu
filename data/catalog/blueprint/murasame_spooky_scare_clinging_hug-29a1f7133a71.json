@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "murasame_spooky_scare_clinging_hug",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1125,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "吓得扑抱进对方怀中，双手紧抓胸口衣襟，眼含泪花脸埋肩膀，呆毛剧颤",
     "camera": "medium close-up, three-quarter side view, both people and the grip on Masaomi’s shirt visible",
@@ -21,10 +21,10 @@
     "mood": "反差娇羞",
     "negativeTokens": [],
     "outfitId": "spirit_kimono",
-    "promptProse": "Murasame grips Masaomi's shirt in both hands and hides against his shoulder, startled by tree shadows. Lantern light reaches their near side against the violet path.",
+    "promptProse": "Startled by tree shadows, Murasame in her frilled spirit kimono grabs Masaomi's cream shirt with both hands and hides against his shoulder. Her long green hair and red ribbons fall across his chest. He turns toward her in profile, his short dark hair lit along the edge by the stone lantern.",
     "promptTokens": [
-      "2people",
-      "arichi masaomi",
+      "1girl",
+      "1boy",
       "hug",
       "grabbing shirt",
       "scared",
@@ -36,7 +36,8 @@
       "both hands",
       "hiding face",
       "startled",
-      "lantern light"
+      "lantern light",
+      "arichi masaomi"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -56,6 +57,6 @@
     "characterTokens": [
       "arichi masaomi"
     ],
-    "animaCaption": "She hides against Masaomi's shoulder while gripping his shirt."
+    "animaCaption": "Murasame presses her green-haired head into Masaomi's shoulder, clutching his shirt with both hands. His short dark hair and plain cream shirt show in three-quarter profile as he catches her beside the lantern."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "belfast_azur",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 205,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "belfast_azur",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "source": "蛮啾网络 / 勇仕网络《碧蓝航线 / Azur Lane》",
       "portrait": {
-        "image": "../assets/characters/popular-belfast_azur.png?v=519665f1d678",
+        "image": "../assets/characters/popular-belfast_azur.png?v=60da6e19e363",
         "alt": "贝尔法斯特样张立绘",
         "sourceShowcaseId": "pc_belfast_azur_pc_belfast_azur_belfast_afternoon_tea",
         "sourceShowcaseSha256": "4038a3aad19d475ca4617d7b3410a1e95a6f952e3999bc708bad0f691d10b636"

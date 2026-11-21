@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc154",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
-    "animaCaption": "Nene and Natsume sit close beside the viewer on the lavish bed beneath crumpled silk, each holding a hand with tender blushes as twin bedside lamps bathe the room in warm, romantic light.",
+    "animaCaption": "Ayachi Nene sits on the left with silver-white twin tails, pink ribbons, an upright ahoge and violet eyes. Shiki Natsume sits on the right with long jet-black hair, two red clips, golden eyes and a mole beneath her right eye. They sit close together against the high bedstead, covered by the same silk sheet, each holding one hand reaching into the foreground. Two bedside lamps light their different faces.",
     "auditRevision": "careful-batch15-2026-08-27",
     "camera": "主观近景特写",
     "category": "Active_Sync_Scenes",
@@ -56,6 +56,7 @@
       "成人向"
     ],
     "weather": "室内温暖",
-    "promptProse": "Nene and Natsume sit close beside the viewer on the lavish bed beneath crumpled silk, each holding a hand with tender blushes as twin bedside lamps bathe the room in warm, romantic light."
+    "promptProse": "Ayachi Nene sits on the left with silver-white twin tails, pink ribbons, an upright ahoge and violet eyes. Shiki Natsume sits on the right with long jet-black hair, two red clips, golden eyes and a mole beneath her right eye. They sit close together against the high bedstead, covered by the same silk sheet, each holding one hand reaching into the foreground. Two bedside lamps light their different faces.",
+    "compositionIntent": "group"
   }
 }

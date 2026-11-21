@@ -24,7 +24,6 @@ use crate::{
     config::Config,
     error::{ApiError, Result},
     processes::Processes,
-    remote_content::RemoteAccess,
     upstream::LocalUpstream,
 };
 pub use http::router;
@@ -40,7 +39,6 @@ use tokio_util::{sync::CancellationToken, task::TaskTracker};
 pub struct ControlService {
     voice: Arc<crate::voice::VoiceService>,
     config: Arc<Config>,
-    remote: Arc<RemoteAccess>,
     shutdown: CancellationToken,
     transport: LocalUpstream,
     processes: Arc<Processes>,
@@ -92,6 +90,49 @@ struct ControlState {
     health: Arc<Value>,
     health_at: Option<Instant>,
 }
+pub(super) fn default_tts_engine(saved: &Value) -> &'static str {
+    match saved["ttsEngine"].as_str() {
+        Some("off") => "off",
+        Some("system") => "system",
+        Some("openai-tts") => "openai-tts",
+        Some("voxcpm2") => "voxcpm2",
+        Some("gpt-sovits-native") => "gpt-sovits-native",
+        Some("gpt-sovits") => "gpt-sovits",
+        _ => {
+            let configured = saved["voices"].as_object().is_some_and(|voices| {
+                voices.values().any(|profile| {
+                    !profile["refAudioPath"].as_str().unwrap_or("").is_empty()
+                        && !profile["promptText"].as_str().unwrap_or("").is_empty()
+                })
+            });
+            if configured { "gpt-sovits" } else { "system" }
+        }
+    }
+}
+
+pub(super) fn public_tts_api(saved: &Value) -> Value {
+    let raw = &saved["ttsApi"];
+    let api_key = raw["apiKey"].as_str().unwrap_or("").trim();
+    json!({
+        "baseUrl": raw["baseUrl"].as_str().unwrap_or("").trim().trim_end_matches('/'),
+        "model": raw["model"].as_str().unwrap_or("").trim(),
+        "voiceNene": raw["voiceNene"].as_str().unwrap_or("").trim(),
+        "voiceNatsume": raw["voiceNatsume"].as_str().unwrap_or("").trim(),
+        "defaultVoice": raw["defaultVoice"].as_str().unwrap_or("").trim(),
+        "responseFormat": match raw["responseFormat"]
+            .as_str()
+            .map(|s| s.trim().to_ascii_lowercase())
+            .as_deref()
+        {
+            Some("wav") => "wav",
+            Some("opus") => "opus",
+            Some("aac") => "aac",
+            _ => "mp3",
+        },
+        "hasApiKey": !api_key.is_empty(),
+    })
+}
+
 pub(super) fn now() -> u64 {
     SystemTime::now()
         .duration_since(UNIX_EPOCH)
@@ -101,7 +142,6 @@ pub(super) fn now() -> u64 {
 impl ControlService {
     pub fn new(
         config: Arc<Config>,
-        remote: Arc<RemoteAccess>,
         shutdown: CancellationToken,
         voice: Arc<crate::voice::VoiceService>,
     ) -> Arc<Self> {
@@ -116,7 +156,7 @@ impl ControlService {
                 .filter(|s| crate::upstream::local_url(s).is_ok())
                 .unwrap_or(default.into())
         };
-        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":match saved["ttsEngine"].as_str() {Some("voxcpm2")=>"voxcpm2",Some("gpt-sovits-native")=>"gpt-sovits-native",_=>"gpt-sovits"},"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"llamaHost":host("LLAMA_HOST","llamaHost","http://127.0.0.1:8000"),"llamaModel":saved["llamaModel"],"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
+        let settings = json!({"sdHost":config.sd_host,"comfyHost":config.comfy_host,"ttsHost":host("TTS_HOST","ttsHost","http://127.0.0.1:9880"),"ttsEngine":default_tts_engine(&saved),"ttsApi":public_tts_api(&saved),"ollamaHost":host("OLLAMA_HOST","ollamaHost","http://127.0.0.1:11434"),"llamaHost":host("LLAMA_HOST","llamaHost","http://127.0.0.1:8000"),"llamaModel":saved["llamaModel"],"voices":saved.get("voices").filter(|v|v.is_object()).cloned().unwrap_or(json!({})),"autoStartVoice":saved["autoStartVoice"]==true});
         let inference = crate::generation::native::load(&crate::generation::Config {
             sd_host: config.sd_host.clone(),
             sd_auth: config.sd_auth.clone(),
@@ -138,7 +178,6 @@ impl ControlService {
             inference_probe: tokio::sync::Mutex::new(()),
             images: RwLock::default(),
             config,
-            remote,
             shutdown: shutdown.child_token(),
             transport: LocalUpstream::new(),
             processes: Arc::default(),
@@ -191,6 +230,14 @@ impl ControlService {
         self.tasks.close();
         self.tasks.wait().await;
     }
+    pub(crate) fn restore_guest_share(self: &Arc<Self>, state: crate::AppState) {
+        let service = self.clone();
+        self.tasks.spawn(async move {
+            if let Err(error) = service.start_tunnel(state, true).await {
+                service.log(&format!("好友试玩恢复失败：{}", error.message));
+            }
+        });
+    }
     fn runtime_settings(&self) -> Arc<Value> {
         self.settings.read().unwrap().clone()
     }
@@ -204,6 +251,34 @@ impl ControlService {
             value["autoStartVoice"] = saved["autoStartVoice"].clone();
         }
         value
+    }
+    pub(super) fn sync_voice_settings(&self) {
+        let saved = self.saved.read().unwrap().clone();
+        let tts_host = std::env::var("TTS_HOST")
+            .ok()
+            .or_else(|| saved["ttsHost"].as_str().map(str::to_owned))
+            .filter(|s| crate::upstream::local_url(s).is_ok())
+            .unwrap_or_else(|| "http://127.0.0.1:9880".into());
+        let tts_engine = default_tts_engine(&saved);
+        let voices = saved
+            .get("voices")
+            .filter(|v| v.is_object())
+            .cloned()
+            .unwrap_or_else(|| json!({}));
+        let tts_api = public_tts_api(&saved);
+        let auto_start = saved["autoStartVoice"] == true;
+        {
+            let mut current = self.settings.write().unwrap();
+            let mut next = current.as_ref().clone();
+            next["ttsHost"] = json!(tts_host);
+            next["ttsEngine"] = json!(tts_engine);
+            next["voices"] = voices;
+            next["ttsApi"] = tts_api;
+            next["autoStartVoice"] = json!(auto_start);
+            *current = Arc::new(next);
+        }
+        self.state.lock().unwrap().health_at = None;
+        self.voice.reload(&self.config);
     }
     fn log(&self, message: &str) {
         let message = self.redact(message);

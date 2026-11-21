@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_swimsuit_sunset",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 910,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "坐池边披薄纱外套",
     "adult": false,
@@ -26,8 +26,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "swimsuit",
-    "promptProse": "Rio sits beside her companion at the pool edge, watching their reflections as sunset flickers across her damp cover-up and the water.",
+    "promptProse": "In a medium eye-level view, Rio sits on the left of the pool edge with her long black hair over a damp cover-up and her red halo above her. The teacher beside her has short side-parted brown hair and a slate-blue swim shirt. They look down at their reflections as sunset ripples across the water.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Rio",
       "sitting",
       "poolside",
@@ -47,6 +49,6 @@
     "timeOfDay": "黄昏",
     "title": "调月莉音 · 晚霞泳池边的独处时刻",
     "compositionIntent": "group",
-    "animaCaption": "She watches their reflections beside her companion at the pool edge."
+    "animaCaption": "Rio, with waist-length black hair, her red geometric halo and a damp black cover-up, sits on the left. The short-haired teacher sits on the right in a slate-blue swim shirt, looking down at their reflections beside her."
   }
 }

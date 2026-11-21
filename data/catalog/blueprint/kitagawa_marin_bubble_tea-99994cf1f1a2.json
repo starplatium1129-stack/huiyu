@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_bubble_tea",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 499,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "举着奶茶自拍",
     "animaStyleHint": "anime_promo_art",
@@ -23,9 +23,9 @@
     "mood": "元气闪耀",
     "negativeTokens": [],
     "outfitId": "gal_casual",
-    "promptProse": "Marin stands close beside her companion outside the Shibuya cafe, holding the selfie phone in her right hand and bubble tea in her left with the straw at her lips. Both faces turn toward the raised phone in clear daylight.",
+    "promptProse": "Outside the Shibuya cafe, Marin raises a phone in her right hand, her long blonde-to-pink hair falling over her black biker jacket as she holds bubble tea in her left. Her friend in a pale denim jacket, with short black hair, ducks into the selfie from the left. Both faces look up to the screen in clear daylight.",
     "promptTokens": [
-      "2people",
+      "2girls",
       "bubble tea",
       "smartphone",
       "selfie",
@@ -48,6 +48,6 @@
     ],
     "timeOfDay": "午后",
     "title": "喜多川海梦 · 街头奶茶店",
-    "animaCaption": "Her right hand raises the selfie phone, her left holds the tea; both faces turn toward the screen."
+    "animaCaption": "Marin lifts the phone in her right hand and holds bubble tea to her lips with her left. A black-haired friend in a pale denim jacket leans into the selfie from her left, both faces turned to the screen."
   }
 }

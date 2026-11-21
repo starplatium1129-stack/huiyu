@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yakishio_lemon",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 238,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yakishio_lemon",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🍋",
       "portrait": {
-        "image": "../assets/characters/popular-yakishio_lemon.png?v=3ec2e46c3719",
+        "image": "../assets/characters/popular-yakishio_lemon.png?v=2679f962b301",
         "alt": "烧盐柠檬样张立绘",
         "sourceShowcaseId": "pc_yakishio_lemon_pc_yakishio_lemon_lemon_vending_machine_cold_soda_cheek_blush",
         "sourceShowcaseSha256": "3faa8f2ba802d1eff9edbd1f0e2d285292e1ebf4b0bd21e65c2729afbd8abb9f"

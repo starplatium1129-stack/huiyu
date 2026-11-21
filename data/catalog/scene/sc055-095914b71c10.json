@@ -1,12 +1,12 @@
 {
   "kind": "scene",
   "id": "sc055",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-30T12:58:35.897156700+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
-    "animaCaption": "She keeps hold of the viewer's sleeve against their shoulder, their silhouettes corresponding in the door glass.",
+    "animaCaption": "Shiki Natsume, with long black hair, red clips and a small mole under her right eye, leans into her companion beside the night tram door. He is a young man with short chestnut hair, straight brows and a tan canvas jacket over a charcoal sweater. She tugs his tan cuff as the tram turns. Her side profile and his taller silhouette appear together once in the same dark window.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
     "camera": "车窗倒影侧面近景",
     "category": "恋爱",
@@ -21,7 +21,7 @@
     "lora": "shiki_natsume_v21_anima",
     "mature": false,
     "negative": "",
-    "prompt": "1girl, shiki_natsume, navy tailored blazer, single button, burgundy knit vest, white blouse, standing, sleeve grab, tram, window reflection, city lights, night, side view, close up, leaning on person, reflection, train_interior, window, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
+    "prompt": "1girl, 1boy, shiki_natsume, navy tailored blazer, single button, burgundy knit vest, white blouse, standing, sleeve grab, tram, window reflection, city lights, night, side view, medium shot, leaning on person, reflection, train_interior, window, moonlight, soft_ambient_light, cinematic_lighting, depth_of_field",
     "rating": "All",
     "season": "冬",
     "story": "冬夜末班电车几乎空无一人，夏目站在门边看着玻璃里的倒影，身体随着转弯轻轻撞到你。你扶住她后，她没有离开，反而借着车厢晃动握住你的衣袖。倒影里两个人靠得很近——「下一站才下车，所以不用急着放开。还有，不准一直看玻璃……那里什么都没有。」",
@@ -48,6 +48,7 @@
       "展示图"
     ],
     "weather": "晴",
-    "promptProse": "The tram's turn brings her against the viewer's shoulder; she keeps hold of their sleeve, with corresponding silhouettes reflected in the door glass."
+    "promptProse": "Shiki Natsume, with long black hair, red clips and a small mole under her right eye, leans into her companion beside the night tram door. He is a young man with short chestnut hair, straight brows and a tan canvas jacket over a charcoal sweater. She tugs his tan cuff as the tram turns. Her side profile and his taller silhouette appear together once in the same dark window.",
+    "compositionIntent": "group"
   }
 }

@@ -8,6 +8,7 @@ import { ApiClientError } from '../api/client.ts'
 import type { VoicePcmStream } from './voicePcmStream.ts'
 import { VoiceReplayCache } from './voiceReplayCache.ts'
 import { playVoiceAudio, removeAudioSource, type AudioWithSource, type AudioEndReason } from './voiceAudioPlayback.ts'
+import { cancelSystemSpeech, playSystemSpeech } from './voiceSpeechSynthesis.ts'
 
 export type { VoiceAvailability } from './useVoicePreparation.ts'
 import { useVoicePreparation, voiceErrorMessage } from './useVoicePreparation.ts'
@@ -30,6 +31,9 @@ interface PreparedSentence {
 interface ReplayClip {
   url: string
   emotion: string
+  speechText?: string
+  speechVoice?: string
+  speechLanguage?: 'zh' | 'ja'
 }
 
 interface SynthesizedClip extends ReplayClip {
@@ -137,8 +141,11 @@ export function useVoice(options: {
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve()
     pending = 0; turn = { ...meta, session, referenceEmotion: '' }
     _lastEmotion = 'neutral'; _neutralStreak = 0
-    prepare(meta.voice, true)
-    if (enabled() && !readyFor(meta.voice)) onStatus(availability.value.online || availability.value.available ? '当前角色声线未配置' : '语音服务未启动')
+    prepare(meta.voice, availability.value.needsTranslation !== false)
+    if (enabled() && !readyFor(meta.voice)) {
+      if (availability.value.engineId === 'off') onStatus('语音朗读已关闭')
+      else onStatus(availability.value.online || availability.value.available ? '当前角色声线未配置' : '语音服务未启动')
+    }
   }
 
   function append(text: string) {
@@ -168,7 +175,11 @@ export function useVoice(options: {
       if (!item) return
       if (sess !== session) { item.stream?.cancel(); return }
       const clips = messageAudio.get(meta.mid) || reactive<ReplayClip[]>([])
-      const stored = reactive({ url: item.stream ? '' : item.url, emotion: item.emotion || 'neutral' })
+      const stored = reactive<ReplayClip>({
+        url: item.stream ? '' : item.url,
+        emotion: item.emotion || 'neutral',
+        ...(item.speechText ? { speechText: item.speechText, speechVoice: item.speechVoice, speechLanguage: item.speechLanguage } : {}),
+      })
       clips.push(stored); messageAudio.set(meta.mid, clips)
       queue.push({ ...item, mid: meta.mid, session: sess, recorded: stored })
       pump(sess); prefetch()
@@ -196,16 +207,19 @@ export function useVoice(options: {
     // neutral; mapping it to gentle here would make ordinary chat inherit a
     // different timbre and make the UI's emotion label misleading.
     if (!meta.referenceEmotion) meta.referenceEmotion = rawEmotion
+    const needsTranslate = availability.value.needsTranslation !== false
     let translated = '', translationFailed = false
-    try {
-      const result = await voiceApi.translate(cleaned, { signal })
-      translated = result.translation.replace(/\n+/g, '。').trim()
-    } catch (e) {
-      if (isAbortError(e) || (e instanceof ApiClientError && e.kind === 'aborted')) throw e
-      translationFailed = true
+    if (needsTranslate) {
+      try {
+        const result = await voiceApi.translate(cleaned, { signal })
+        translated = result.translation.replace(/\n+/g, '。').trim()
+      } catch (e) {
+        if (isAbortError(e) || (e instanceof ApiClientError && e.kind === 'aborted')) throw e
+        translationFailed = true
+      }
+      if (signal.aborted || meta.session !== session) return null
+      if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
     }
-    if (signal.aborted || meta.session !== session) return null
-    if (translationFailed && !_warnedTranslation) { _warnedTranslation = true; onError('日文翻译不可用，本次改用中文发音。') }
     const emotionChanged = Boolean(firstReference && emotion !== firstReference)
     return {
       text: translated || cleaned,
@@ -238,6 +252,15 @@ export function useVoice(options: {
     // Playback or next-sentence prefetch starts the request. Each player owns
     // its errors and cancellation; this step only selects the playback route.
     if (signal.aborted) throw new DOMException('aborted', 'AbortError')
+    if (availability.value.engineId === 'system') {
+      return {
+        url: '',
+        emotion: request.emotion,
+        speechText: request.text,
+        speechVoice: meta.voice,
+        speechLanguage: request.language,
+      }
+    }
     const url = await requestTts(request, meta)
     if (!availability.value.streamingPcm) return { url, emotion: request.emotion }
     // A missing streaming chunk can still play the same sentence through the whole-clip route.
@@ -257,7 +280,7 @@ export function useVoice(options: {
   }
   function prefetch() {
     const next = playing ? queue[0] : undefined
-    if (!next) return
+    if (!next || next.speechText) return
     if (next.stream) { observeStream(next); return }
     if (!next.audio) { next.audio = createAudio(next.url); next.audio.load() }
   }
@@ -327,6 +350,33 @@ export function useVoice(options: {
     if (!item) return
     playing = true
     onSpeaking(false); onExpression('neutral'); stopLipSync()
+    if (item.speechText) {
+      const speech = playSystemSpeech({
+        text: item.speechText,
+        voice: item.speechVoice || 'nene',
+        language: item.speechLanguage || 'zh',
+        volume,
+        onStarted: () => {
+          if (sess === session) {
+            onExpression(item.emotion); onSpeaking(true, item.mid); onStatus('系统朗读中…')
+          }
+        },
+        onMouth,
+        onAudioLevel,
+      })
+      cancelPlayback = speech.cancel
+      onStatus('系统朗读中…'); notifyActivity()
+      void speech.result.then(reason => {
+        if (sess !== session) return
+        cancelPlayback = null; playing = false; stopLipSync()
+        if (reason === 'play-error') onError('系统朗读失败，可在控制室「语音配置」切换语音引擎。')
+        if (!queue.length || reason !== 'ended') {
+          onSpeaking(false, item.mid); onExpression('neutral'); onStatus(pending ? '语音合成中…' : '')
+        }
+        pump(sess); prefetch(); notifyActivity()
+      })
+      return
+    }
     if (item.stream && audioContext && analyser) {
       const stream = item.stream
       currentPcm = stream; observeStream(item)
@@ -384,12 +434,34 @@ export function useVoice(options: {
   }
 
   async function playMessage(mid: string): Promise<boolean> {
-    const clips = (messageAudio.get(mid) || []).filter(clip => clip.url)
+    const clips = (messageAudio.get(mid) || []).filter(clip => Boolean(clip.url || clip.speechText))
     if (!clips.length) return false
     stop({ preserveMessageAudio: true, silent: true }); ensureAudioContext()
     const rs = session; let succeeded = true
     for (const clip of clips) {
       if (rs !== session) return false
+      if (clip.speechText) {
+        onSpeaking(false); onExpression('neutral'); stopLipSync(); onStatus('重播系统朗读…'); notifyActivity()
+        const speech = playSystemSpeech({
+          text: clip.speechText,
+          voice: clip.speechVoice || 'nene',
+          language: clip.speechLanguage || 'zh',
+          volume,
+          onStarted: () => {
+            if (rs === session) {
+              onExpression(clip.emotion || 'neutral'); onSpeaking(true, mid); onStatus('重播中…')
+            }
+          },
+          onMouth,
+          onAudioLevel,
+        })
+        cancelReplay = speech.cancel
+        const reason = await speech.result
+        if (rs !== session) return false
+        cancelReplay = null
+        if (reason !== 'ended') { succeeded = false; if (reason === 'play-error') onError('系统朗读失败。'); break }
+        continue
+      }
       const audio = new Audio() as AudioWithSource
       audio.crossOrigin = runtimeResourceCors() ?? null
       audio.src = resolveRuntimeUrl(clip.url)
@@ -411,7 +483,7 @@ export function useVoice(options: {
     return succeeded && rs === session
   }
 
-  function hasAudio(mid: string) { return Boolean(messageAudio.get(mid)?.some(clip => clip.url)) }
+  function hasAudio(mid: string) { return Boolean(messageAudio.get(mid)?.some(clip => Boolean(clip.url || clip.speechText))) }
 
   function clearMessages(mids: string[]) {
     mids.forEach(mid => { const c = messageAudio.get(mid) || []; c.forEach(cl => replayCache.remove(cl)); messageAudio.delete(mid) })
@@ -422,6 +494,7 @@ export function useVoice(options: {
     if (!opts.preservePreparation) preparation.cancelPreparation()
     cancelPlayback?.(); cancelPlayback = null
     cancelReplay?.(); cancelReplay = null
+    cancelSystemSpeech()
     sentenceBuffer.reset(); translateChain = Promise.resolve(null); synthChain = Promise.resolve(); pending = 0
     queue.forEach(it => {
       it.stream?.cancel()

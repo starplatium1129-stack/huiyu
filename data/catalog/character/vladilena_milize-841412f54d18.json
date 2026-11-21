@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "vladilena_milize",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 107,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "vladilena_milize",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🎧",
       "portrait": {
-        "image": "../assets/characters/popular-vladilena_milize.png?v=4b7ee2349477",
+        "image": "../assets/characters/popular-vladilena_milize.png?v=a672da2adf6a",
         "alt": "芙拉蒂蕾娜·米利杰样张立绘",
         "sourceShowcaseId": "pc_vladilena_milize_pc_vladilena_milize_lena_festival_yukata_goldfish",
         "sourceShowcaseSha256": "a17e8b1db01a89f4aa1295191c64ecb91cc1f36f8aba639ec3e57bbcb20743d2"

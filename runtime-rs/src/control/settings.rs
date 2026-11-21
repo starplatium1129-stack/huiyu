@@ -80,25 +80,17 @@ impl ControlService {
         if saved["voices"].is_object() {
             target["voices"] = saved["voices"].clone();
         }
-        if saved["ttsEngine"].is_string() {
-            target["ttsEngine"] = saved["ttsEngine"].clone();
-        }
-        let restart = [
-            "sdHost",
-            "comfyHost",
-            "ttsHost",
-            "ttsEngine",
-            "ollamaHost",
-            "voices",
-        ]
-        .iter()
-        .any(|key| target[*key] != result[*key]);
+        target["ttsEngine"] = json!(super::default_tts_engine(&saved));
+        target["ttsApi"] = super::public_tts_api(&saved);
+        let restart = ["sdHost", "comfyHost", "ollamaHost"]
+            .iter()
+            .any(|key| target[*key] != result[*key]);
         result["savedConfig"] = target;
         result["restartRequired"] = json!(restart);
         result["message"] = json!(if restart {
             "配置已保存，重新启动应用后生效"
         } else {
-            "配置已保存"
+            "配置已保存并生效"
         });
         result
     }

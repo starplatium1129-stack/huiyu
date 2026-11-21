@@ -85,6 +85,8 @@ assets/live2d-candidates/
 .agents/skills/*
 !.agents/skills/studio-prompt-craft/
 !.agents/skills/studio-prompt-craft/**
+!.agents/skills/video-prompt-craft/
+!.agents/skills/video-prompt-craft/**
 !.agents/skills/studio-ui-design/
 !.agents/skills/studio-ui-design/**
 !.agents/skills/humanizer-zh/

@@ -52,16 +52,16 @@ pub(super) async fn write(
         sources.push(mirror);
     }
     if plan.allow_mirror {
-        let regional: Vec<_> = sources
-            .iter()
-            .filter_map(|url| transfer::public_mirror(url))
-            .collect();
-        for mirror in regional {
-            if !sources.contains(&mirror) {
-                sources.push(mirror);
+        let base = sources.clone();
+        for url in base {
+            for mirror in transfer::public_mirrors(&url) {
+                if !sources.contains(&mirror) {
+                    sources.push(mirror);
+                }
             }
         }
     }
+    sources::prioritize(&mut sources);
     let present = output.get_ref().metadata().await.map_err(io_error)?.len();
     if present == plan.spec.bytes {
         return Ok(present);
@@ -83,10 +83,16 @@ pub(super) async fn write(
         && (range_capable || sources.len() == 1)
     {
         match ranges::write(plan, &sources[0], client, send, cancel, output, present).await? {
-            ranges::Outcome::Complete(count) => return Ok(count),
+            ranges::Outcome::Complete(count) => {
+                sources::note_success(&sources[0]);
+                return Ok(count);
+            }
             ranges::Outcome::Resume {
                 try_other_source: true,
-            } => sources.rotate_left(1),
+            } => {
+                sources::note_failure(&sources[0]);
+                sources.rotate_left(1);
+            }
             ranges::Outcome::Resume {
                 try_other_source: false,
             } => {}
@@ -100,13 +106,17 @@ pub(super) async fn write(
         for source in &sources {
             let failure =
                 match write_source(plan, source, client, send, cancel, output, false).await {
-                    Ok(bytes) => return Ok(bytes),
+                    Ok(bytes) => {
+                        sources::note_success(source);
+                        return Ok(bytes);
+                    }
                     Err(failure) => failure,
                 };
             if failure.code == "RANGE_UNSUPPORTED" {
                 restart_source.get_or_insert(source);
                 continue;
             }
+            sources::note_failure(source);
             if transient(&failure) {
                 retryable = true;
                 last = Some(failure);
@@ -199,7 +209,7 @@ async fn write_source(
     let host = url.host_str().unwrap_or_default().to_owned();
     download_progress(plan, send, "connecting", &host, count, None);
     let timeout = if plan.allow_mirror
-        && (transfer::public_mirror(&plan.url).is_some() || sources::model_mirror(plan).is_some())
+        && (!transfer::public_mirrors(&plan.url).is_empty() || sources::model_mirror(plan).is_some())
     {
         15
     } else {

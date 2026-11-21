@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuroneko",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kuroneko",
     "profile": {
@@ -194,7 +194,7 @@
         "殿堂级后宫白月光"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-kuroneko.png?v=98c28f9157f2",
+        "image": "../assets/characters/popular-kuroneko.png?v=9a406f6d732c",
         "alt": "五更琉璃样张立绘",
         "sourceShowcaseId": "pc_kuroneko_pc_kuroneko_kuroneko_night_festival_fireworks_handhold",
         "sourceShowcaseSha256": "25bd3cb8db66a5082ab220cf140e47bc498916e04c76284871a73f58038755fd"

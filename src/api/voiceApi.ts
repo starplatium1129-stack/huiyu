@@ -1,7 +1,15 @@
 import type { TranslateRequest, TtsRequest, VoicePrepareRequest } from '../../types/voice.ts'
 import { ApiClientError, apiClient, type ApiResponseObject } from './client.ts'
 import { runtimeFetch } from '../platform/runtimeUrl.ts'
-import type { TranslateResult, TtsStatus, VoicePrepareResult } from '../types/api.ts'
+import type {
+  TranslateResult,
+  TtsApiPatch,
+  TtsStatus,
+  VoiceApiTestResult,
+  VoicePackImportResult,
+  VoicePrepareResult,
+  VoiceSetupStatus,
+} from '../types/api.ts'
 
 const VOICE_API_TIMEOUTS = {
   status: 10_000,
@@ -75,6 +83,9 @@ export interface VoiceApi {
   prepare(payload: VoicePreparePayload, options?: VoiceCallOptions): Promise<VoicePrepareResult>
   translate(text: string, options?: VoiceCallOptions): Promise<TranslateResult>
   synthesize(payload: VoiceSynthesisPayload, options?: VoiceCallOptions): Promise<VoiceAudioResult>
+  getSetupStatus(options?: VoiceCallOptions): Promise<VoiceSetupStatus>
+  importPack(payload: { folderPath: string; characterId?: 'nene' | 'natsume'; apply?: boolean }, options?: VoiceCallOptions): Promise<VoicePackImportResult>
+  testApi(payload: Partial<TtsApiPatch> & { voice?: string; text?: string }, options?: VoiceCallOptions): Promise<VoiceApiTestResult>
 }
 
 export const voiceApi: VoiceApi = {
@@ -99,5 +110,25 @@ export const voiceApi: VoiceApi = {
   },
   synthesize(payload, options = {}) {
     return synthesizeVoice(payload, options)
+  },
+  getSetupStatus(options = {}) {
+    return apiClient.request<VoiceSetupStatus>('/api/voice/setup-status', {
+      cache: 'no-store', signal: options.signal, timeoutMs: VOICE_API_TIMEOUTS.status,
+      validate: value => value.ok === true && isObject(value.checks),
+    })
+  },
+  importPack(payload, options = {}) {
+    return apiClient.request<VoicePackImportResult>('/api/voice/import-pack', {
+      method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+      timeoutMs: VOICE_API_TIMEOUTS.status,
+      validate: value => value.ok === true && isObject(value.voices),
+    })
+  },
+  testApi(payload, options = {}) {
+    return apiClient.request<VoiceApiTestResult>('/api/voice/test-api', {
+      method: 'POST', cache: 'no-store', body: payload, signal: options.signal,
+      timeoutMs: 30_000,
+      validate: value => value.ok === true && typeof value.audioBase64 === 'string',
+    })
   },
 }

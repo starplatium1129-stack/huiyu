@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanzaki_kaori",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 242,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kanzaki_kaori",
     "profile": {
@@ -176,7 +176,7 @@
         "无上深情忠贞伴侣"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-kanzaki_kaori.png?v=03b3659f0fd4",
+        "image": "../assets/characters/popular-kanzaki_kaori.png?v=2caf8a16b209",
         "alt": "神裂火织样张立绘",
         "sourceShowcaseId": "pc_kanzaki_kaori_pc_kanzaki_kaori_kanzaki_shrine_dojo_bokken_stance_serenity",
         "sourceShowcaseSha256": "bb3f66c474e38e8ed9b0baaff9d31cf80e564cb0c15766fab7021575e2b380d7"

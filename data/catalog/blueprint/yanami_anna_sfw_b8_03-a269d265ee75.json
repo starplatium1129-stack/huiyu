@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_03",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1666,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_03",
     "title": "八奈见杏菜 · 家庭餐厅薯条作战会议",
@@ -30,8 +30,10 @@
       "warm_light",
       "medium_shot"
     ],
-    "promptProse": "Yanami freezes with a fry halfway to her mouth, eyes widening at her friend's news across the restaurant table. The warm booth lamps shine on the shared platter and the untouched drink beside it.",
+    "promptProse": "In the restaurant booth, Yanami's blue hair and sailor collar are visible as she freezes with a fry halfway to her mouth. A classmate opposite her, with short brown hair and square glasses over a charcoal school sweater, leans forward to deliver the surprising news. Warm booth lamps catch the shared platter and both drinks between them.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "friend",
       "fries",
       "drink",
@@ -52,6 +54,6 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "The fry pauses halfway to her mouth above the shared platter."
+    "animaCaption": "Blue-haired Yanami stops with a fry midway to her mouth. Her short brown-haired friend in square glasses and a charcoal school sweater sits opposite in the booth."
   }
 }

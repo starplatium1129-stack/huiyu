@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sorasaki_hina_rain_patrol",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 849,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "与你共撑黑伞在雨夜巡逻，微微仰头让伞面覆盖你们两人，制服下摆沾着雨水",
     "adult": false,
@@ -27,8 +27,10 @@
     "nsfwProse": "",
     "nsfwTokens": [],
     "outfitId": "gehenna_uniform",
-    "promptProse": "Hina walks beside the teacher, who holds their shared umbrella, and looks up at him; streetlights reflect on wet paving beneath the canopy.",
+    "promptProse": "Hina walks in the rain with the damp hem of her Gehenna uniform beneath the canopy. The taller teacher in a slate raincoat carries their shared umbrella, short dark hair visible from the rear three-quarter angle, as she looks up at him. Streetlight reflections spread over the wet paving under their feet.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Hina",
       "teacher",
       "shared umbrella",
@@ -55,6 +57,6 @@
     ],
     "timeOfDay": "雨夜",
     "title": "空崎日奈 · 雨夜巡逻的伞下同行",
-    "animaCaption": "Her companion holds the shared umbrella as she looks up at him while walking beside him."
+    "animaCaption": "Hina's long silver-purple hair and officer's skirt are rimmed by the streetlights. The short dark-haired teacher wears a long slate raincoat and holds their shared umbrella as she looks up from beside him."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mitsukasa_ayase",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 260,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "mitsukasa_ayase",
     "profile": {
@@ -152,7 +152,7 @@
         "pink eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-mitsukasa_ayase.png?v=8fa52794186c",
+        "image": "../assets/characters/popular-mitsukasa_ayase.png?v=f2da4190865b",
         "alt": "三司绫濑样张立绘",
         "sourceShowcaseId": "pc_mitsukasa_ayase_pc_mitsukasa_ayase_mitsukasa_ayase_interview",
         "sourceShowcaseSha256": "52cb5f39c1c8de4da05c1ab39b738fbb03c443173924dd1b32ec984c11813f4a"

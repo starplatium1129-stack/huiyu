@@ -47,7 +47,9 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
   const canInstall = computed(() => !locked.value && currentPlan.value && plan.value?.supported && reviewed.value && !plan.value.runtime.installed && runtimeSpaceEnough.value)
   const checkpointReady = computed(() => !selectedModel.value?.checkpointFilename || selectedModel.value.checkpointOptional || selectedModel.value.installed || !!checkpointSource.value)
   const canDownload = computed(() => !locked.value && currentPlan.value && reviewed.value
-    && (selectedModel.value?.family === 'video' || plan.value?.supported && plan.value.runtime.installed)
+    && (selectedModel.value?.family === 'video'
+      ? !selectedModel.value.localVideoImport || plan.value?.runtime.installed
+      : plan.value?.supported && plan.value.runtime.installed)
     && selectedModel.value && !selectedModel.value.installed && modelSpaceEnough.value && checkpointReady.value)
   const canActivate = computed(() => !locked.value && currentPlan.value && plan.value?.supported && plan.value.runtime.installed && selectedModel.value?.installed)
   const nativeEnabled = computed(() => currentPlan.value && plan.value?.supported && plan.value.workspaceMatches && plan.value.activeEngine === 'native' && !plan.value.restartRequired && plan.value.runtime.installed && selectedModel.value?.installed)
@@ -101,7 +103,8 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
       if (disposed || revision !== planVersion) return
       if (!modelId.value) {
         const choices = videoRequested.value ? result.models.filter(model => model.family === 'video') : result.models
-        const preferred = [requestedModel.value, savedSetupModel(result.workspacePath), choices[0]?.id]
+        const available = videoRequested.value ? choices.find(model => model.installed) ?? choices.find(model => model.localVideoImport) : undefined
+        const preferred = [requestedModel.value, savedSetupModel(result.workspacePath), available?.id, choices[0]?.id]
           .find(id => choices.some(model => model.id === id))
         if (preferred && preferred !== result.selectedModelId) {
           result = await inferenceSetupApi.getPlan(signal, preferred)
@@ -283,6 +286,7 @@ export function useInferenceSetup(configured: Ref<InferenceSettings>, blocked: R
     } finally { if ('hfToken' in next.input) delete next.input.hfToken; if (!disposed) busy.value = hasRunningOperation.value || operationUncertain.value }
   }
   function managedInput(): ManagedInferenceInput { return { workspacePath: workspacePath.value, planId: plan.value!.planId, reviewed: true, modelId: modelId.value,
+    ...(selectedModel.value?.localVideoImport ? { localVideoImport: true } : {}),
     ...(selectedModel.value?.checkpointFilename && checkpointSource.value ? { checkpointPath: checkpointSource.value } : {}),
     ...(selectedModel.value?.requiresAccess && hfToken.value.trim() ? { hfToken: hfToken.value.trim() } : {}) } }
   async function prepareEngine() { if (local() && canSetup.value) await start({ kind: 'prepare-native-engine', input: { ...managedInput(), modelId: modelId.value } }) }

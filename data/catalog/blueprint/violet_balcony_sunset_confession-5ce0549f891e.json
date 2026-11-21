@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_balcony_sunset_confession",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1389,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "双手轻柔捧起你的脸颊，金发在海风中纷飞，霞光染透湛蓝眼眸，探头微吻",
     "adult": false,
@@ -27,8 +27,10 @@
     "mood": "史诗纯爱、浪漫巅峰",
     "negativeTokens": [],
     "outfitId": "casual_white_summer_dress",
-    "promptProse": "Violet cups her companion's face with both silver hands and pauses just before their kiss. Sea wind lifts the loose strands of her golden hair into the pink-violet sunset above the terrace.",
+    "promptProse": "On the sea-cliff terrace, Violet lifts both silver hands to the face of the man opposite her. His short dark hair and open navy collar are outlined by the pink-violet sunset, while the sea wind lifts her loose blond hair above her white summer dress. Their faces pause a breath apart.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "companion",
       "kiss",
       "seaside terrace",
@@ -63,6 +65,6 @@
       "mechanical hands"
     ],
     "identityProseOverride": "Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands.",
-    "animaCaption": "Both silver hands cup her companion's face as she pauses just before their kiss."
+    "animaCaption": "Violet's loose blond hair streams off her white-dressed shoulder as her silver hands cup the short dark-haired man's cheeks. His open navy collar sits under their near-kiss."
   }
 }

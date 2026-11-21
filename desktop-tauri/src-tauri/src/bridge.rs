@@ -126,6 +126,30 @@ pub fn get_workspace(state: State<AppState>) -> serde_json::Value {
     })
 }
 
+fn has_reparse_point(path: &std::path::Path) -> bool {
+    let mut current = std::path::PathBuf::new();
+    for part in path.components() {
+        current.push(part);
+        if matches!(part, std::path::Component::Prefix(_)) {
+            continue;
+        }
+        let Ok(meta) = std::fs::symlink_metadata(&current) else {
+            continue;
+        };
+        if meta.file_type().is_symlink() {
+            return true;
+        }
+        #[cfg(windows)]
+        {
+            use std::os::windows::fs::MetadataExt;
+            if meta.file_attributes() & 0x400 != 0 {
+                return true;
+            }
+        }
+    }
+    false
+}
+
 #[tauri::command]
 pub async fn set_workspace(
     state: State<'_, AppState>,
@@ -133,19 +157,59 @@ pub async fn set_workspace(
 ) -> Result<serde_json::Value, String> {
     if root.trim().is_empty() { return Err("工作区路径不能为空".into()); }
     let resolved = std::path::absolute(root.trim()).map_err(|e| e.to_string())?;
-    if !resolved.is_dir() { return Err("工作区目录不存在或不是文件夹".into()); }
-    let resolved = resolved.canonicalize().map_err(|e| format!("工作区目录无法读取：{e}"))?;
     let install_root = if state.paths.is_packaged { state.paths.app_root.parent().unwrap_or(&state.paths.app_root) } else { &state.paths.app_root };
-    if resolved.starts_with(install_root.canonicalize().map_err(|e| e.to_string())?) {
+    let install_canonical = install_root.canonicalize().map_err(|e| e.to_string())?;
+    let mut created_new = false;
+    if !resolved.exists() {
+        let Some(parent) = resolved.parent().filter(|p| p.is_dir()) else {
+            return Err("上级目录不存在，请先创建上级目录或选择现有文件夹".into());
+        };
+        if has_reparse_point(parent) {
+            return Err("AI 工作区路径不能包含符号链接或目录联接，请选择本机普通目录".into());
+        }
+        let parent_canonical = parent.canonicalize().map_err(|e| format!("上级目录无法读取：{e}"))?;
+        if parent_canonical.starts_with(&install_canonical) {
+            return Err("请在绘遇安装目录外选择 AI 工作区，避免大型资源写入程序目录".into());
+        }
+        std::fs::create_dir(&resolved).map_err(|e| format!("无法创建 AI 工作区目录：{e}"))?;
+        created_new = true;
+    } else if !resolved.is_dir() {
+        return Err("工作区路径已存在但不是文件夹".into());
+    }
+    let cleanup = |created: bool| {
+        if created { let _ = std::fs::remove_dir(&resolved); }
+    };
+    if has_reparse_point(&resolved) {
+        cleanup(created_new);
+        return Err("AI 工作区路径不能包含符号链接或目录联接，请选择本机普通目录".into());
+    }
+    let canonical = match resolved.canonicalize() {
+        Ok(path) => path,
+        Err(e) => {
+            cleanup(created_new);
+            return Err(format!("工作区目录无法读取：{e}"));
+        }
+    };
+    if canonical.starts_with(&install_canonical) {
+        cleanup(created_new);
         return Err("请在绘遇安装目录外选择 AI 工作区，避免大型资源写入程序目录".into());
     }
-    let probe = resolved.join(format!(".huiyu-write-probe-{}-{}", std::process::id(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map_err(|e| e.to_string())?.as_nanos()));
-    let writable = std::fs::OpenOptions::new().write(true).create_new(true).open(&probe)
-        .map_err(|e| format!("AI 工作区不可写，请选择有写入权限的文件夹：{e}"))?;
+    let probe = canonical.join(format!(".huiyu-write-probe-{}-{}", std::process::id(), std::time::SystemTime::now().duration_since(std::time::UNIX_EPOCH).map_err(|e| e.to_string())?.as_nanos()));
+    let writable = match std::fs::OpenOptions::new().write(true).create_new(true).open(&probe) {
+        Ok(file) => file,
+        Err(e) => {
+            cleanup(created_new);
+            return Err(format!("AI 工作区不可写，请选择有写入权限的文件夹：{e}"));
+        }
+    };
     drop(writable);
-    std::fs::remove_file(&probe).map_err(|e| format!("AI 工作区无法清理临时文件，请检查权限：{e}"))?;
-    let resolved = crate::paths::simplify_path(resolved).to_string_lossy().into_owned();
+    if let Err(e) = std::fs::remove_file(&probe) {
+        cleanup(created_new);
+        return Err(format!("AI 工作区无法清理临时文件，请检查权限：{e}"));
+    }
+    let resolved = crate::paths::simplify_path(canonical).to_string_lossy().into_owned();
     if !crate::window_state::save_ai_workspace(&state.paths.ai_workspace_file, &resolved) {
+        cleanup(created_new);
         return Err("工作区配置未能保存，请检查配置目录的写入权限".into());
     }
     // The running gateway keeps its startup environment until the application exits.

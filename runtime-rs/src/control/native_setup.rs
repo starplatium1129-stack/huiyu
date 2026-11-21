@@ -7,6 +7,7 @@ mod image_models;
 mod image_resources;
 mod installer;
 mod jobs;
+mod local_adapters;
 mod moss_models;
 mod pixai;
 mod plan;
@@ -82,6 +83,8 @@ struct Request {
     hf_token: Option<String>,
     checkpoint_path: Option<PathBuf>,
     resource_root: Option<PathBuf>,
+    #[serde(default)]
+    local_video_import: bool,
 }
 pub(super) fn routes() -> Router<crate::AppState> {
     Router::new()
@@ -211,6 +214,7 @@ fn plan_id(workspace: &Path) -> String {
     hash.update(include_bytes!(
         "../../../tools/inference/adapter-models.json"
     ));
+    hash.update(include_bytes!("../../../tools/inference/wan22-import.json"));
     hex::encode(hash.finalize())
 }
 fn check_request(service: &ControlService, request: &Request) -> Result<()> {
@@ -239,31 +243,41 @@ fn stopped(cancel: &CancellationToken) -> Result<()> {
     }
 }
 fn receipt_matches(root: &Path, model: &ModelBundle) -> bool {
-    let Some(mut receipt) = std::fs::read(root.join("huiyu-model.json"))
-        .ok()
-        .filter(|bytes| bytes.len() < 65536)
-        .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok())
-    else {
-        return false;
-    };
-    receipt["modelId"] == model.id
-        && receipt["revision"] == model.revision
-        && image_models::model_issue(root, &model.id).is_none()
-        && if model.conversion_profile.is_some() {
-            anima_models::parse_outputs(receipt["outputs"].take()).is_ok_and(|files| {
-                files.iter().all(|file| {
-                    std::fs::symlink_metadata(root.join(&file.path))
-                        .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
-                })
-            })
-        } else if moss_models::is_moss(model) {
-            moss_models::ready(root, model, &receipt)
-        } else {
-            model.files.iter().all(|file| {
+    installation_source(root, model).is_some()
+}
+
+fn installation_source(root: &Path, model: &ModelBundle) -> Option<&'static str> {
+    let path = root.join("huiyu-model.json");
+    let mut receipt = std::fs::symlink_metadata(&path).ok()
+        .filter(|meta| meta.is_file() && meta.len() < 65536)
+        .and_then(|_| std::fs::read(&path).ok())
+        .and_then(|bytes| serde_json::from_slice::<Value>(&bytes).ok())?;
+    if receipt["modelId"] != model.id || image_models::model_issue(root, &model.id).is_some() {
+        return None;
+    }
+    if model.id == "krea2-turbo" && receipt["scope"] == "local-fp8-dequantized-bf16" {
+        return local_adapters::krea_receipt(root, &receipt).then_some("local");
+    }
+    if receipt["revision"] != model.revision { return None; }
+    if receipt["scope"] == "converted-local-weights-sha256" {
+        return local_adapters::video_receipt(root, &model.id, &mut receipt).then_some("local");
+    }
+    let ready = if model.conversion_profile.is_some() {
+        anima_models::parse_outputs(receipt["outputs"].take()).is_ok_and(|files| {
+            files.iter().all(|file| {
                 std::fs::symlink_metadata(root.join(&file.path))
                     .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
             })
-        }
+        })
+    } else if moss_models::is_moss(model) {
+        moss_models::ready(root, model, &receipt)
+    } else {
+        model.files.iter().all(|file| {
+            std::fs::symlink_metadata(root.join(&file.path))
+                .is_ok_and(|meta| meta.is_file() && meta.len() == file.bytes)
+        })
+    };
+    ready.then_some("managed")
 }
 fn runtime_paths(service: &ControlService, runtime: &RuntimeBundle) -> Value {
     let root = service.config.ai_workspace_root.join("inference");

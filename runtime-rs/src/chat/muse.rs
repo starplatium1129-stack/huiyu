@@ -337,7 +337,7 @@ async fn pending(
         json!({"ok":true, "items":items, "serverNow":crate::host::now_ms(), "operations":{
             "reply":format!("POST {reply}"), "replyBody":{"requestKey":"来信编号","text":"角色回复"},
             "inboxWaitSeconds":if slot.is_some() {wait.as_secs()} else {0},
-            "usage":"桌面与 QQ 分开持续收信。GET 收件地址加 ?wait=25，空收件箱返回后立即续接。有来信时按 conversationId 和 messages 回答，文字写好即 POST。每个 requestKey 只生成一次，失败重试沿用原文。"
+            "usage":"桌面与 QQ 独立 GET ?wait=25，空列表立即续接；按 conversationId 和 messages 回答并尽快 POST（同 requestKey 仅生成一次，重试沿用原文）。"
         }}),
     ))
 }

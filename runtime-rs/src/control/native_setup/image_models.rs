@@ -43,7 +43,12 @@ pub(super) fn runtime_receipt(
         .ai_workspace_root
         .join("inference")
         .join(&runtime.runtime_id);
-    let worker = service.config.app_root.join("tools/inference/worker.py");
+    let worker = service
+        .config
+        .app_root
+        .join("tools")
+        .join("inference")
+        .join("worker.py");
     let requirements = if is_adapter_runtime(runtime) {
         "requirements-adapters.txt"
     } else {
@@ -198,29 +203,76 @@ pub(super) async fn resolve_files(
                 return Err(ApiError::invalid("模型来源不在固定 Hugging Face 清单内"));
             }
             let url = file.url.replacen("/resolve/", "/raw/", 1);
+            let has_token = token.is_some_and(|s| !s.is_empty());
+            let mut candidates = vec![url.clone()];
+            if !has_token {
+                candidates.extend(crate::download_transport::public_mirrors(&url));
+            }
             let request = async {
-                let mut response = client.get(url).send().await.map_err(|_| {
-                    ApiError::new(502, "DOWNLOAD_FAILED", "模型授权或来源暂不可连接")
-                })?;
-                if !response.status().is_success() {
-                    return Err(ApiError::new(
-                        403,
-                        "MODEL_ACCESS_REQUIRED",
-                        "无法读取所选模型。请在模型来源页面接受许可并取得访问权，再填写该仓库的只读 Hugging Face 令牌后重试",
-                    ));
-                }
-                let mut data = Vec::new();
-                while let Some(chunk) = response
-                    .chunk()
-                    .await
-                    .map_err(|_| ApiError::new(502, "DOWNLOAD_FAILED", "模型清单读取中断"))?
-                {
-                    if data.len() + chunk.len() > limit as usize {
-                        return Err(ApiError::invalid("模型配置超过固定大小"));
+                let mut access_error = None;
+                let mut network_error = None;
+                for candidate in candidates {
+                    let mut response = match client.get(&candidate).send().await {
+                        Ok(response) => response,
+                        Err(_) => {
+                            network_error = Some(ApiError::new(
+                                502,
+                                "DOWNLOAD_FAILED",
+                                "模型授权或来源暂不可连接",
+                            ));
+                            continue;
+                        }
+                    };
+                    if !response.status().is_success() {
+                        let status = response.status().as_u16();
+                        let access = ApiError::new(
+                            403,
+                            "MODEL_ACCESS_REQUIRED",
+                            "无法读取所选模型。请在模型来源页面接受许可并取得访问权，再填写该仓库的只读 Hugging Face 令牌后重试",
+                        );
+                        if matches!(status, 401 | 403) && candidate == url {
+                            return Err(access);
+                        }
+                        if matches!(status, 401 | 403) {
+                            access_error = Some(access);
+                        } else {
+                            network_error = Some(ApiError::new(
+                                502,
+                                "DOWNLOAD_FAILED",
+                                "模型清单读取失败，请检查网络连接",
+                            ));
+                        }
+                        continue;
                     }
-                    data.extend_from_slice(&chunk);
+                    let mut data = Vec::new();
+                    let mut failed_chunk = false;
+                    loop {
+                        match response.chunk().await {
+                            Ok(Some(chunk)) => {
+                                if data.len() + chunk.len() > limit as usize {
+                                    return Err(ApiError::invalid("模型配置超过固定大小"));
+                                }
+                                data.extend_from_slice(&chunk);
+                            }
+                            Ok(None) => break,
+                            Err(_) => {
+                                network_error = Some(ApiError::new(
+                                    502,
+                                    "DOWNLOAD_FAILED",
+                                    "模型清单读取中断",
+                                ));
+                                failed_chunk = true;
+                                break;
+                            }
+                        }
+                    }
+                    if !failed_chunk {
+                        return Ok(data);
+                    }
                 }
-                Ok(data)
+                Err(access_error.or(network_error).unwrap_or_else(|| {
+                    ApiError::new(502, "DOWNLOAD_FAILED", "模型授权或来源暂不可连接")
+                }))
             };
             bytes = Some(
                 tokio::select! { _ = cancel.cancelled() => { stopped(cancel)?; unreachable!() }, result = request => result? },

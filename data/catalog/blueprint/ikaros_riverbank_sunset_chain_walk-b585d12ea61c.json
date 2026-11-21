@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ikaros_riverbank_sunset_chain_walk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1213,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "落后半步跟随行走，手轻按胸前红领结，项圈铁链被牵引，白翼染上夕阳暖金",
-    "camera": "medium two-shot, companion holding the broken chain as they walk along the sunset riverbank",
+    "camera": "medium landscape side-view two-shot, both walking in the same direction on the dyke",
     "category": "黄昏依恋",
     "characterId": "ikaros",
     "compositionIntent": "group",
@@ -21,10 +21,10 @@
     "mood": "温馨依恋",
     "negativeTokens": [],
     "outfitId": "angeloid_dress",
-    "promptProse": "Ikaros walks half a step behind Tomoki, touching her dress bow while he holds the loose end of her collar chain without tension. Sunset rims the white feathers and the reeds along the riverbank.",
+    "promptProse": "Walking toward the right together along the riverbank, short brown-haired Tomoki leads by half a step in a green shirt. His left hand holds the free end of the chain at hip level. The single chain hangs in a loose U from the pink-haired Ikaros's collar as she follows, touching the red bow on her white dress. The low sunset catches Ikaros's wings and the reeds behind them.",
     "promptTokens": [
-      "2people",
-      "sakurai tomoki",
+      "1girl",
+      "1boy",
       "walking",
       "collar",
       "chain",
@@ -32,9 +32,10 @@
       "sunset",
       "wind",
       "rim light",
-      "medium two-shot"
+      "medium two-shot",
+      "sakurai tomoki"
     ],
-    "recommendedSize": "1536x1152",
+    "recommendedSize": "1216x832",
     "sceneTags": [
       "riverbank",
       "grass_hill",
@@ -53,6 +54,6 @@
     "characterTokens": [
       "sakurai tomoki"
     ],
-    "animaCaption": "She walks half a step behind Tomoki; the chain between them hangs without tension."
+    "animaCaption": "Walking toward the right together along the riverbank, short brown-haired Tomoki leads by half a step in a green shirt. His left hand holds the free end of the chain at hip level. The single chain hangs in a loose U from the pink-haired Ikaros's collar as she follows, touching the red bow on her white dress. The low sunset catches Ikaros's wings and the reeds behind them."
   }
 }

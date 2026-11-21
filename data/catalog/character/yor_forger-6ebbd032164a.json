@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yor_forger",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 41,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yor_forger",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🌹",
       "portrait": {
-        "image": "../assets/characters/popular-yor_forger.png?v=8d2573533a4b",
+        "image": "../assets/characters/popular-yor_forger.png?v=1aa018464b20",
         "alt": "约尔·福杰样张立绘",
         "sourceShowcaseId": "pc_yor_forger_pc_yor_forger_yor_moonlit_rooftop_stiletto",
         "sourceShowcaseSha256": "10c0bdf52927a77fa21c58981cc1b5e9ea8ce8d14a2fd852a71fbab5223feee6"

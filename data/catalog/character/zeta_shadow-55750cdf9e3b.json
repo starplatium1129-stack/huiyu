@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zeta_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 270,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "zeta_shadow",
     "popular": {
@@ -86,7 +86,7 @@
       "type": "popular",
       "icon": "🐆",
       "portrait": {
-        "image": "../assets/characters/popular-zeta_shadow.png?v=9db46ed8ec2d",
+        "image": "../assets/characters/popular-zeta_shadow.png?v=c62c8c7def2c",
         "alt": "泽塔样张立绘",
         "sourceShowcaseId": "pc_zeta_shadow_zeta_shadow_delta_bicker",
         "sourceShowcaseSha256": "d4036c0e0e42e135bcdd574e7881f662127492db91ea4ee0f6a9d40177dbe5bd"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rikuhachima_aru",
-  "revision": 7,
+  "revision": 10,
   "sortOrder": 210,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T11:18:23.525719400+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "rikuhachima_aru",
     "profile": {
@@ -21,10 +21,8 @@
       "type": "popular",
       "icon": "💼",
       "portrait": {
-        "image": "../assets/characters/popular-rikuhachima_aru.png?v=a790c9759e32",
-        "alt": "陆八魔阿露样张立绘",
-        "sourceShowcaseId": "pc_rikuhachima_aru_pc_rikuhachima_aru_rikuhachima_aru_rainy_street_panic",
-        "sourceShowcaseSha256": "eeb56af7b2ccd0f46870046128d7987d08f26064ea6d0d8d58eb0be936c68ea7"
+        "image": "../assets/characters/popular-rikuhachima_aru.png?v=9ee8a19b0aa8",
+        "alt": "陆八魔阿露立绘"
       },
       "visual_dna": {
         "hair": "酒红色及腰大波浪卷发 · 标志性发梢自然卷曲",

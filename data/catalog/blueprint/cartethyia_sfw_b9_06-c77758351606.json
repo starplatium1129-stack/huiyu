@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cartethyia_sfw_b9_06",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1650,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "cartethyia_sfw_b9_06",
     "title": "卡提希娅 · 铁匠铺的保养",
@@ -31,8 +31,10 @@
       "leaning_on_counter",
       "distant_forge"
     ],
-    "promptProse": "Leaning at the counter, she watches the smith working on her sword beyond it, her eyes bright with interest. Forge light catches the blade and tools through the brief sparks.",
+    "promptProse": "At the smithy, Cartethyia, with a blond braid, luminous halo and cropped blue traveling jacket, leans over the counter to watch her blade. An older smith with a close gray beard and a soot-dark leather apron raises the hammer beyond her at the anvil. Forge light follows the blade through the spray of sparks.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "blacksmith workshop",
       "forge fire",
       "glowing furnace",
@@ -54,6 +56,6 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "The roaring blaze of the forge casts vibrant golden heat across the anvil as Cartethyia inspects her craft."
+    "animaCaption": "Blond Cartethyia in the cropped blue jacket watches from the counter. Beyond it, the gray-bearded smith in a soot-dark leather apron holds the hammer above her blade on the anvil."
   }
 }

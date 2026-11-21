@@ -34,7 +34,7 @@ fn translation_process_error(error: ApiError) -> ApiError {
     }
 }
 pub(super) struct Translation {
-    settings: Arc<Settings>,
+    settings: std::sync::RwLock<Arc<Settings>>,
     transport: LocalUpstream,
     cancel: CancellationToken,
     queue: Queue,
@@ -53,7 +53,7 @@ impl Translation {
         probes: Arc<HealthProbes>,
     ) -> Arc<Self> {
         Arc::new(Self {
-            settings,
+            settings: std::sync::RwLock::new(settings),
             transport,
             cancel,
             queue: Queue::new("zh-ja-translation"),
@@ -65,13 +65,21 @@ impl Translation {
             probes,
         })
     }
+    fn current_settings(&self) -> Arc<Settings> {
+        self.settings.read().unwrap().clone()
+    }
+    pub fn update_settings(&self, next: Arc<Settings>) {
+        *self.settings.write().unwrap() = next;
+        self.cache.lock().unwrap().clear();
+    }
     async fn ping(&self) -> bool {
         self.ping_observed(true).await
     }
     async fn ping_observed(&self, fresh: bool) -> bool {
+        let settings = self.current_settings();
         self.probes
             .read(
-                &self.settings.translation_url,
+                &settings.translation_url,
                 "/health",
                 Duration::from_millis(800),
                 64 * 1024,
@@ -147,7 +155,8 @@ impl Translation {
         if self.cancel.is_cancelled() {
             return Err(cancelled());
         }
-        if !self.settings.python.is_file() || !self.settings.script.is_file() {
+        let settings = self.current_settings();
+        if !settings.python.is_file() || !settings.script.is_file() {
             return Err(ApiError::new(
                 503,
                 "TRANSLATION_UNAVAILABLE",
@@ -155,26 +164,26 @@ impl Translation {
             ));
         }
         self.managed.lock().unwrap().take();
-        let mut command = Command::new(&self.settings.python);
+        let mut command = Command::new(&settings.python);
         command
-            .arg(&self.settings.script)
+            .arg(&settings.script)
             .args([
                 "--serve",
                 "--port",
-                &self.settings.translation_port.to_string(),
+                &settings.translation_port.to_string(),
             ])
             .env("PYTHONUTF8", "1")
             .env(
                 "AICS_TRANSLATE_PORT",
-                self.settings.translation_port.to_string(),
+                settings.translation_port.to_string(),
             )
             .stdin(Stdio::null());
-        let log = self.settings.log.parent().and_then(|parent| {
+        let log = settings.log.parent().and_then(|parent| {
             std::fs::create_dir_all(parent).ok()?;
             std::fs::OpenOptions::new()
                 .create(true)
                 .append(true)
-                .open(&self.settings.log)
+                .open(&settings.log)
                 .ok()
         });
         if let Some(log) = log {
@@ -249,12 +258,13 @@ impl Translation {
         if let Some(value) = self.cached(&text) {
             return Ok(value);
         }
+        let settings = self.current_settings();
         let current = async {
             self.prepare(deadline).await?;
             let (status, value) = self
                 .transport
                 .json(
-                    &self.settings.translation_url,
+                    &settings.translation_url,
                     "/translate",
                     Some(&json!({"text": text})),
                     remaining(deadline, Duration::from_secs(120), translation_timeout)?,
@@ -317,11 +327,12 @@ impl Translation {
             .map(|(_, value)| value.clone())
     }
     async fn legacy(&self, text: &str, deadline: Deadline, permit: Arc<Permit>) -> Result<Value> {
+        let settings = self.current_settings();
         let deadline =
             Deadline::now() + remaining(deadline, Duration::from_secs(180), translation_timeout)?;
-        let mut command = Command::new(&self.settings.python);
+        let mut command = Command::new(&settings.python);
         command
-            .arg(&self.settings.script)
+            .arg(&settings.script)
             .env("PYTHONUTF8", "1")
             .stdin(Stdio::piped())
             .stdout(Stdio::piped())

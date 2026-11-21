@@ -6736,10 +6736,8 @@
     "type": "popular",
     "icon": "🎓",
     "portrait": {
-      "image": "../assets/characters/popular-roxy_migurdia.png?v=bc5eea832d10",
-      "alt": "洛琪希样张立绘",
-      "sourceShowcaseId": "pc_roxy_migurdia_pc_roxy_migurdia_roxy_migurdia_academy",
-      "sourceShowcaseSha256": "7b772cccbe6ee31aa170efa0d37cda9449f9e5049186cce3eaf8f2c232b32bb5"
+      "image": "../assets/characters/popular-roxy_migurdia.png?v=fd267e757017",
+      "alt": "洛琪希立绘"
     },
     "visual_dna": {
       "hair": "浅蓝长发双辫",
@@ -28221,10 +28219,8 @@
     "type": "popular",
     "icon": "🧝‍♀️",
     "portrait": {
-      "image": "../assets/characters/popular-sylphiette.png?v=b86ffc602b38",
-      "alt": "希露菲叶特样张立绘",
-      "sourceShowcaseId": "pc_sylphiette_pc_sylphiette_sylphiette_buena_village_tree",
-      "sourceShowcaseSha256": "ffad3a4a2d8ae985f07ea7ed8a7a80a2cbe706700e1b43b0d58885b6818b4fc1"
+      "image": "../assets/characters/popular-sylphiette.png?v=dc39dfb40d42",
+      "alt": "希露菲叶特立绘"
     },
     "visual_dna": {
       "hair": "幼年绿发 → 青年银白短发（长耳族血统）",
@@ -93273,10 +93269,8 @@
     "type": "popular",
     "icon": "✨",
     "portrait": {
-      "image": "../assets/characters/popular-firefly_hsr.png?v=f865f67121fb",
-      "alt": "流萤样张立绘",
-      "sourceShowcaseId": "pc_firefly_hsr_pc_firefly_hsr_firefly_rooftop_sunset_secret",
-      "sourceShowcaseSha256": "a9cb0c557ab401011b5e3664fd6bfe8efefb96fa3a9a3f2c43b75cb3a186b677"
+      "image": "../assets/characters/popular-firefly_hsr.png?v=e4cae6726fa0",
+      "alt": "流萤立绘"
     },
     "visual_dna": {
       "hair": "银灰长发渐变青绿 · 发箍",
@@ -102333,10 +102327,8 @@
     "type": "popular",
     "source": "Square Enix / PlatinumGames《尼尔：机械纪元 / NieR:Automata》",
     "portrait": {
-      "image": "../assets/characters/popular-yorha_a2.png?v=a480d8bd6abb",
-      "alt": "A2样张立绘",
-      "sourceShowcaseId": "pc_yorha_a2_pc_yorha_a2_yorha_a2_flower_ledge",
-      "sourceShowcaseSha256": "1042e92ef2de8132d0ed0359e167b1822b5ed46cb66585d064f5537f03ee9892"
+      "image": "../assets/characters/popular-yorha_a2.png?v=9738352fc9f4",
+      "alt": "A2立绘"
     },
     "accent_color": "#9ba4ae",
     "bg_color": "#171b20",
@@ -102398,10 +102390,8 @@
     "type": "popular",
     "icon": "🖋️",
     "portrait": {
-      "image": "../assets/characters/popular-ushio_noa.png?v=966d5afd0831",
-      "alt": "生盐诺亚样张立绘",
-      "sourceShowcaseId": "pc_ushio_noa_pc_ushio_noa_ushio_noa_trench_terrace_stargaze",
-      "sourceShowcaseSha256": "6801940251ebab3016b35d7294ac989d4d36b9c6125ddb36b2b77524c08e596a"
+      "image": "../assets/characters/popular-ushio_noa.png?v=883e8bf96851",
+      "alt": "生盐诺亚立绘"
     },
     "visual_dna": {
       "hair": "银白如雪的及腰极长发 · 侧拢低双束柔顺发梢",
@@ -102482,10 +102472,8 @@
     "type": "popular",
     "icon": "⛓️",
     "portrait": {
-      "image": "../assets/characters/popular-amau_ako.png?v=dc7564f96af4",
-      "alt": "天雨亚子样张立绘",
-      "sourceShowcaseId": "pc_amau_ako_pc_amau_ako_amau_ako_evening_banquet_reception",
-      "sourceShowcaseSha256": "2118eae540c78c07e20c778909c667a76f8ca0ec0f5666f56a77c7f643884af3"
+      "image": "../assets/characters/popular-amau_ako.png?v=cb3158481f71",
+      "alt": "天雨亚子立绘"
     },
     "visual_dna": {
       "hair": "浅灰微泛幽蓝的蓬松波浪长卷发 · 高扎侧双马尾",
@@ -102567,16 +102555,14 @@
     "type": "popular",
     "icon": "🎯",
     "portrait": {
-      "image": "../assets/characters/popular-kakudate_karin.png?v=bccee93ad6b8",
-      "alt": "角楯花凛样张立绘",
-      "sourceShowcaseId": "pc_kakudate_karin_pc_kakudate_karin_kakudate_karin_urban_street_coffee",
-      "sourceShowcaseSha256": "69ebb918a378626e00fdb2552901c4b42f2f55eeb74fadacc1120f274394f12b"
+      "image": "../assets/characters/popular-kakudate_karin.png?v=ab4bd902913d",
+      "alt": "角楯花凛立绘"
     },
     "visual_dna": {
       "hair": "纯白无瑕的及踝直长发 · 两侧精巧细发辫自然垂散",
       "hair_color": "纯白",
       "eyes": "耀眼清澈的熔金色眼眸 · 嘴角右下方一颗诱人美人痣",
-      "hairstyle": "极长直白发 · 细麻花发辫 · 机械羽翼科技光环",
+      "hairstyle": "极长黑直发，发梢渐紫 · 细麻花发辫 · 机械羽翼科技光环",
       "uniform": "C&C 战术特勤高叉女仆装 · 超长紧绷黑丝过膝袜 · 战术大腿枪套",
       "expression": "沉稳冷静 · 临战果断 · 被赞赏时极度羞涩反差",
       "style": "tanned athletic tactical maid sniper with golden gaze",
@@ -102597,7 +102583,7 @@
     ],
     "classic_cg": {
       "title": "摩天楼顶的战术架枪与炽金凝望",
-      "description": "学园都市百米摩天楼边缘，高空夜风将长长的白发与女仆围裙猛烈扬起。花凛单膝跪地抵住沉重的反器材狙击步枪，小麦色的健美肌肤在冷光下线条分明。她微微侧过头，熔金般的眼眸隔着夜色凝望向身后赶来的老师，嘴角下方的美人痣在月光下格外动人心魄。"
+      "description": "学园都市百米摩天楼边缘，高空夜风将发梢渐紫的黑色长发与女仆围裙猛烈扬起。花凛单膝跪地抵住沉重的反器材狙击步枪，小麦色的健美肌肤在冷光下线条分明。她微微侧过头，熔金般的眼眸隔着夜色凝望向身后赶来的老师，嘴角下方的美人痣在月光下格外动人心魄。"
     },
     "identity": {
       "role": "千年科学学园秘密特勤组 C&C 特工（代号 02）/ 远程火力支援专家",
@@ -102633,7 +102619,7 @@
     "source": "Blue Archive",
     "traits": [
       "dark_skin",
-      "white_hair",
+      "black_hair",
       "very_long_hair",
       "yellow_eyes",
       "mole_under_mouth",
@@ -102656,10 +102642,8 @@
     "type": "popular",
     "icon": "💼",
     "portrait": {
-      "image": "../assets/characters/popular-rikuhachima_aru.png?v=a790c9759e32",
-      "alt": "陆八魔阿露样张立绘",
-      "sourceShowcaseId": "pc_rikuhachima_aru_pc_rikuhachima_aru_rikuhachima_aru_rainy_street_panic",
-      "sourceShowcaseSha256": "eeb56af7b2ccd0f46870046128d7987d08f26064ea6d0d8d58eb0be936c68ea7"
+      "image": "../assets/characters/popular-rikuhachima_aru.png?v=3f4dc5903d23",
+      "alt": "陆八魔阿露立绘"
     },
     "visual_dna": {
       "hair": "酒红色及腰大波浪卷发 · 标志性发梢自然卷曲",
@@ -102799,10 +102783,8 @@
       "blue_halo"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-sunohara_shun.png?v=e9178802ab36",
-      "alt": "春原瞬样张立绘",
-      "sourceShowcaseId": "pc_sunohara_shun_pc_sunohara_shun_sunohara_shun_plum_garden_tea_nap",
-      "sourceShowcaseSha256": "b5c95e38e3d09bdf9b7ac2cb2552d07ae6b8d4906e23df6f1c6816234b434c8c"
+      "image": "../assets/characters/popular-sunohara_shun.png?v=c7ce57cecac5",
+      "alt": "春原瞬立绘"
     },
     "bg_story": "春原瞬是学园都市基沃托斯山海经高级中学梅花园的首席教官。作为负责全校年幼学生启蒙与生活起居的庇护者，瞬以超凡的包容力、高尚的品德与无私的慈爱深受所有学园的敬仰。在面对外界危机与都市动荡时，看似温婉如水的瞬亦能展现出雷霆手腕护卫家园。在与夏莱老师日复一日的相处中，瞬那颗长年只为他人奉献的心灵终于找到了可以依靠的港湾。褪去教官身份之后，她渴望成为专属于老师一人的温柔港湾。她不仅具备基沃托斯最具杀伤力的成熟风韵，更将灵魂深处最真挚无瑕的爱恋与温存，尽数倾注于老师身侧。",
     "speech": "欢迎来到梅花园，老师。今天也辛苦了……来，请坐到瞬的身边，先喝一杯温热的药膳花茶吧。呵呵，看您这么疲惫，今天就由我来全心全意地照顾您。",
@@ -102890,10 +102872,8 @@
       "red_halo"
     ],
     "portrait": {
-      "image": "../assets/characters/popular-kurodate_haruna.png?v=ec64cf5ac5dd",
-      "alt": "黑馆晴奈样张立绘",
-      "sourceShowcaseId": "pc_kurodate_haruna_pc_kurodate_haruna_kurodate_haruna_intimate_suite_whisper",
-      "sourceShowcaseSha256": "30e926d871be88d6e0e2a67e79adbf63ce496a42d4d90daa16ba522452cb73f0"
+      "image": "../assets/characters/popular-kurodate_haruna.png?v=31f47df3c16d",
+      "alt": "黑馆晴奈立绘"
     },
     "bg_story": "黑馆晴奈是基沃托斯歌赫娜学园名门黑馆家族的千金小姐，亦是闻名全学园都市的「美食研究会」会长。她拥有无与伦比的天才味蕾与雄厚财力，一生只为追求料理艺术的至高极境。对于晴奈而言，追求美食是一场赌上尊严与美学的崇高圣战，任何亵渎食材与顾客的行为都值得用最华丽的爆炸予以制裁。在与夏莱老师无数次「美食远征」与并肩作战中，晴奈逐渐发现，世间最不可思议的终极调味料，正是身边那位无私包容自己所有任性与狂热的老师。成年后的晴奈不仅名震都市美食界，更将她那高傲骄矜的芳心与至死不渝的浪漫，无怨无悔地献给了她唯一的共餐者。",
     "speech": "向您致以崇高的敬意，老师。我是歌赫娜美食研究会会长，黑馆晴奈。今天我已为您预定了跨越三个学园的终极品尝路线……您会陪伴我直到盘底朝天，对吧？",
@@ -102921,10 +102901,8 @@
     "type": "popular",
     "icon": "🐺",
     "portrait": {
-      "image": "../assets/characters/popular-sunaookami_shiroko.png?v=76b6d4c9bcf0",
-      "alt": "砂狼白子样张立绘",
-      "sourceShowcaseId": "pc_sunaookami_shiroko_pc_sunaookami_shiroko_sunaookami_shiroko_desert_ruins_tactical_patrol",
-      "sourceShowcaseSha256": "76bf3aa4854613263e931a0f6ac34f282130c8f9473fe709832d1e7b7f0b36d1"
+      "image": "../assets/characters/popular-sunaookami_shiroko.png?v=576469ce2740",
+      "alt": "砂狼白子立绘"
     },
     "visual_dna": {
       "hair": "清爽柔顺的浅银灰色短发 · 侧边佩戴一枚简约十字发卡",
@@ -103011,10 +102989,8 @@
     "type": "popular",
     "icon": "🤍",
     "portrait": {
-      "image": "../assets/characters/popular-modernia.png?v=b90a84e49be2",
-      "alt": "神罚样张立绘",
-      "sourceShowcaseId": "pc_modernia_pc_modernia_modernia_morning_knit_kitchen_toast",
-      "sourceShowcaseSha256": "2fb28797498a7757c1a27502b71a693998dd1713b96fc1d233363f3b8c245a08"
+      "image": "../assets/characters/popular-modernia.png?v=7ffe87e3888c",
+      "alt": "神罚立绘"
     },
     "visual_dna": {
       "hair": "纯净银白短发 · 柔顺短波波头",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scathach_night_shrine_lantern_talk",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 247,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "scathach_night_shrine_lantern_talk",
     "title": "斯卡哈 · 灯笼夜祠的师匠嘱托",
@@ -29,8 +29,10 @@
       "moonlight",
       "wide_two_shot"
     ],
-    "promptProse": "Scathach and her companion sit shoulder to shoulder, her removed coat covering her companion's knees. Lanterns descend toward town lights below their moonlit shoulders.",
+    "promptProse": "A man with a short black buzz cut and broad shoulders in a cream cable-knit sweater sits on the right side of the shrine steps. At his left, Scathach's very long purple hair falls behind her as she shares her coat across their knees. The shot looks down the stone steps from behind them toward the lanterns and the town below.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "companion",
       "shrine",
       "sitting",
@@ -54,6 +56,6 @@
       "romance"
     ],
     "compositionIntent": "group",
-    "animaCaption": "Her removed coat covers her companion's knees above the town lights."
+    "animaCaption": "A man with a short black buzz cut and broad shoulders in a cream cable-knit sweater sits on the right side of the shrine steps. At his left, Scathach's very long purple hair falls behind her as she shares her coat across their knees. The shot looks down the stone steps from behind them toward the lanterns and the town below."
   }
 }

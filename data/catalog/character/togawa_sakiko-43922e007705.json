@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togawa_sakiko",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "togawa_sakiko",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-togawa_sakiko.png?v=6ec27501b35a",
+        "image": "../assets/characters/popular-togawa_sakiko.png?v=543a721ec6a3",
         "alt": "丰川祥子样张立绘",
         "sourceShowcaseId": "pc_togawa_sakiko_pc_togawa_sakiko_togawa_sakiko_sfw_b9_04",
         "sourceShowcaseSha256": "1ece3231a23132b3c54f0cb51506dd5ffa1ca7d5b50c6e6237ecbcd6650d7959"
@@ -110,7 +110,8 @@
               "Mortis"
             ],
             "role": "CRYCHIC前吉他手 / 知名演员千金",
-            "summary": "寡言阴郁的吉他手，祥子童年唯一的邻家玩伴。深知祥子家庭破裂的残酷真相并默默忍受折磨，最终跟随祥子加入Ave Mujica。"
+            "summary": "寡言阴郁的吉他手，祥子童年唯一的邻家玩伴。深知祥子家庭破裂的残酷真相并默默忍受折磨，最终跟随祥子加入Ave Mujica。",
+            "characterId": "wakaba_mutsumi_arknights"
           },
           {
             "id": "sankaku_uika",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rossy_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 164,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "rossy_arknights",
     "profile": {
@@ -64,7 +64,7 @@
         "arknights_endfield"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-rossy_arknights.png?v=32cbc6743923",
+        "image": "../assets/characters/popular-rossy_arknights.png?v=0b2be56dd38f",
         "alt": "洛茜样张立绘",
         "sourceShowcaseId": "pc_rossy_arknights_pc_rossy_arknights_rossy_arknights_mining_drill_proud",
         "sourceShowcaseSha256": "05ea81ee89d0803aa6e3eb3087d02fff809c119691848ed8c3192ab135895c5a"

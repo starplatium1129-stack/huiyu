@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maria_mikhailovna_kujou",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 151,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "maria_mikhailovna_kujou",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-maria_mikhailovna_kujou.png?v=8502ade43ef4",
+        "image": "../assets/characters/popular-maria_mikhailovna_kujou.png?v=bc16526e1fa0",
         "alt": "玛夏样张立绘",
         "sourceShowcaseId": "pc_maria_mikhailovna_kujou_pc_maria_mikhailovna_kujou_maria_mikhailovna_kujou_sfw_b9_04",
         "sourceShowcaseSha256": "e12e9ea373121d382755f4e99d9e61fc8cfbd99807cb142a528a7b337c97da4d"

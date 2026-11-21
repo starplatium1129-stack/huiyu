@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "natsume",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1,
   "createdAt": null,
-  "updatedAt": "2026-11-14T07:05:43.871415200+00:00",
+  "updatedAt": "2026-11-21T18:54:36.446811700+00:00",
   "data": {
     "id": "natsume",
     "profile": {
@@ -18,7 +18,7 @@
       "type": "heroine",
       "icon": "☕",
       "portrait": {
-        "image": "../assets/characters/popular-natsume.png?v=fa2bba14f3ad",
+        "image": "../assets/characters/natsume-portrait.webp?v=4e2cdfd2cc20",
         "alt": "四季夏目样张立绘",
         "sourceShowcaseId": "sc067",
         "sourceShowcaseSha256": "5c023e4960e786244cc19b1c8d07ecad6af7d6b9c76ec87d8b07b8832e6c6b0c"

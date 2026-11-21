@@ -24,6 +24,7 @@ const OFFLINE_TOOLS = ['Install-OfflineResources.cmd', 'offline-resource-assista
 const TOOLS=new Set(['nav.js','theme.js','local-status.js','translate-zh-ja.py','voxcpm-server.py','install-translation-model.ps1', ...OFFLINE_TOOLS]);
 const INTERROGATE_TOOLS=new Set(['pixai_worker.py','pixai-manifest.json']);
 const ADAPTER_TOOLS=['adapter_worker.py','adapter_contract.py','adapter_video.py','adapter_media.py','adapter-models.json','managed-adapter-runtime.windows-x64.json','managed-adapter-models.json','managed-image-resources.json','managed-auxiliary-models.json','requirements-adapters.txt','resident_adapters.py','qwen_prefix_cache.py','native_memory.py','krea_style.py',
+  'krea_adapter.py','krea_transport.py','video_memory.py','wan_pipeline.py','import_wan.py','wan22-import.json','import_h3.py','h3_packed.py','h3_sparse.py','h3_modulation.py','h3_rotary.py','h3_text.py','h3_vae.py',
   'native_attention.py','video_acceleration.py','wan_motion.py','longcat_avatar.py','requirements-longcat-avatar.txt','mapped_weights.py','mapped_residency.py','moss_adapter.py','moss_pipeline.py','moss_preview.py','moss_spectrum.py','moss_execution.py','moss_int8.py','moss_text.py','moss_upscale.py','MOSS-LICENSE','SPECTRUM-LICENSE',
   'manga_worker.py','manga_contract.py','manga_screen.py','manga-screen.json','requirements-manga.txt','MANGASCREEN_LICENSE.txt',
   'manga_models.py','manga_cache.py','manga_line_model.py','MANGALINE_LICENSE.txt','requirements-manga-models.txt'];
@@ -31,7 +32,7 @@ const INFERENCE_TOOLS=new Set(['anima_rocm_fused.py','anima_qk_gfx1150.co','anim
 function includeTools(parts:string[],file:string):boolean {
   if(parts[0]==='inference') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&(INFERENCE_TOOLS.has(parts[1])||ADAPTER_TOOLS.includes(parts[1]));
   if(parts[0]==='interrogate') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&INTERROGATE_TOOLS.has(parts[1]);
-  if(parts[0]==='voice') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&parts[1]==='native_gpt_sovits.py';
+  if(parts[0]==='voice') return parts.length===1 ? fs.statSync(file).isDirectory() : parts.length===2&&(parts[1]==='native_gpt_sovits.py'||parts[1]==='managed-voice-packs.json');
   return parts.length===1&&TOOLS.has(parts[0].replace(/\.(?:br|gz)$/i,''));
 }
 function includeData(parts:string[],file:string,catalogSnapshot=false):boolean {

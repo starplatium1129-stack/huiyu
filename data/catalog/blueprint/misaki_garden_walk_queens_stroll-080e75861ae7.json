@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_garden_walk_queens_stroll",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 403,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "挽臂走过蔷薇拱门，花瓣落肩，星瞳眯起得意",
     "adult": false,
@@ -26,9 +26,9 @@
     "mood": "女王检阅、占有欲甜",
     "negativeTokens": [],
     "outfitId": "casual_white_summer_dress",
-    "promptProse": "Misaki walks on the left with her arm linked through her companion's on the right, smiling as a petal settles on her shoulder beneath the rose arch. Dappled spring sunlight filters through the flowering arch.",
+    "promptProse": "Beneath the rose arch, Misaki walks on the left in her white straw hat and linen sundress, a petal settling on her shoulder. Her arm is linked through that of the companion on her right, a woman with a clipped dark bob, an olive jacket and wide-legged trousers. Dappled spring sunlight crosses the pair and the flower-strewn path.",
     "promptTokens": [
-      "2people",
+      "2girls",
       "linked arms",
       "rose arch",
       "garden",
@@ -52,6 +52,6 @@
     ],
     "timeOfDay": "春日午后",
     "title": "食蜂操祈 · 花园散步的女王检阅",
-    "animaCaption": "Misaki walks on the left, arm linked with her companion on the right beneath the rose arch."
+    "animaCaption": "Misaki's white sundress and straw hat catch the light on the left. She links arms with a short-haired companion in an olive jacket and wide trousers as they pass under the rose arch."
   }
 }

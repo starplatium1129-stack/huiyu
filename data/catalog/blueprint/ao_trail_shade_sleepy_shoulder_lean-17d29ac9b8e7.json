@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_trail_shade_sleepy_shoulder_lean",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2342,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "ao_trail_shade_sleepy_shoulder_lean",
     "characterId": "sorakado_ao",
@@ -19,8 +19,10 @@
     "lighting": "soft sea breeze rustling green leaves casting moving shadows over school sweater vest",
     "camera": "cowboy_shot",
     "mood": "温存与宁静",
-    "promptProse": "Resting her sleepy head against partner shoulder along a shaded island path, Ao walks slowly with contented half-closed eyes and fluttering tie.",
+    "promptProse": "Ao's sky-blue hair and red clip rest against the sleeve of a boy walking next to her on the tree-lined island path. He has short chestnut hair, a stone-blue overshirt and straight dark trousers. Her sailor collar and tie sway as they walk slowly through dappled sunlight.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "walking_path",
       "trees",
       "leaning_on_shoulder",
@@ -30,10 +32,11 @@
       "cowboy_shot"
     ],
     "negativeTokens": [],
-    "animaCaption": "Ao leaning her sleepy head on her partner shoulder along a lush island path.",
+    "animaCaption": "Ao's sky-blue hair and red clip rest against the sleeve of a boy walking next to her on the tree-lined island path. He has short chestnut hair, a stone-blue overshirt and straight dark trousers. Her sailor collar and tie sway as they walk slowly through dappled sunlight.",
     "isNsfw": false,
     "rating": "All",
     "mature": false,
-    "adult": false
+    "adult": false,
+    "compositionIntent": "group"
   }
 }

@@ -147,6 +147,20 @@ impl ControlService {
             return Ok(());
         }
         let settings = self.runtime_settings();
+        if index == 2 {
+            let engine = settings["ttsEngine"].as_str().unwrap_or("system");
+            if matches!(engine, "off" | "system" | "openai-tts")
+                || (!start && !self.script(2).is_file())
+            {
+                if !op["kind"]
+                    .as_str()
+                    .is_some_and(|kind| kind.starts_with("mode-"))
+                {
+                    self.stage(op, 1);
+                }
+                return Ok(());
+            }
+        }
         if index == 2 && self.voice.native_selected() {
             if start {
                 self.voice.start_native().await?;
@@ -378,15 +392,40 @@ impl ControlService {
                         Ok(())
                     }
                     "mode-chat" => {
-                        if service.voice.native_selected() {
+                        let engine = service
+                            .runtime_setting("ttsEngine")
+                            .as_str()
+                            .unwrap_or("system")
+                            .to_owned();
+                        if matches!(engine.as_str(), "off" | "system" | "openai-tts") {
+                            let _handoff = service.native_chat_handoff().await?;
+                            service.release_comfy_models().await?;
+                            service.stage(&op, 1);
+                            service.log("当前语音模式无需启动本地语音服务");
+                        } else if service.voice.native_selected() {
                             service.stop_comfy_for_native().await?;
                             service.stage(&op, 1);
-                            service.service_action(2, true, &op).await?;
+                            if service.voice.native_files_present() {
+                                if let Err(error) = service.service_action(2, true, &op).await {
+                                    service.log(&format!("未启用本机语音（{}），仍可进入聊天", error.message));
+                                }
+                            } else {
+                                service.log("尚未导入本地 GPT-SoVITS 环境或声线配置，仍可进入聊天并在「语音配置」切换系统朗读");
+                            }
                         } else {
                             let _handoff = service.native_chat_handoff().await?;
                             service.release_comfy_models().await?;
                             service.stage(&op, 1);
-                            service.service_action(2, true, &op).await?;
+                            let dir = if engine == "voxcpm2" { "VoxCPM" } else { "GPT-SoVITS" };
+                            if service.script(2).is_file()
+                                && service.config.ai_workspace_root.join(dir).is_dir()
+                            {
+                                if let Err(error) = service.service_action(2, true, &op).await {
+                                    service.log(&format!("本地语音未启动（{}），仍可进入聊天", error.message));
+                                }
+                            } else {
+                                service.log("尚未安装本地语音环境，已跳过本地语音启动；可在控制室「语音配置」改用系统朗读或云端接口");
+                            }
                         }
                         service.stage(&op, 2);
                         Ok(())

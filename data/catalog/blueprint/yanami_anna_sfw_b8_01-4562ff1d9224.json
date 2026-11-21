@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_sfw_b8_01",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1664,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "yanami_anna_sfw_b8_01",
     "title": "八奈见杏菜 · 食堂大份定食的满足感",
@@ -31,8 +31,9 @@
       "daylight",
       "medium_shot"
     ],
-    "promptProse": "Yanami brings her palms together before the towering lunch tray, her eyes bright with anticipation. Midday light fills the canteen while classmates glance over from the neighboring tables.",
+    "promptProse": "Yanami sits alone at the nearest cafeteria table, her short blue hair and bright eyes over the tall lunch tray. She brings both palms together before eating. Two students at a separate table far behind her glance over, a short-haired boy in a dark cardigan and a girl with a dark, chin-length bob. Midday window light falls on the tray and Yanami.",
     "promptTokens": [
+      "1girl",
       "large meal",
       "hands together",
       "canteen",
@@ -53,6 +54,6 @@
       "daily"
     ],
     "compositionIntent": "group",
-    "animaCaption": "Classmates glance over from neighboring tables above the towering lunch tray."
+    "animaCaption": "Yanami sits alone at the nearest cafeteria table, her short blue hair and bright eyes over the tall lunch tray. She brings both palms together before eating. Two students at a separate table far behind her glance over, a short-haired boy in a dark cardigan and a girl with a dark, chin-length bob. Midday window light falls on the tray and Yanami."
   }
 }

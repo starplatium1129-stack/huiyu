@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cinderella_nikke",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 174,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "cinderella_nikke",
     "profile": {
@@ -13,7 +13,7 @@
       "type": "popular",
       "icon": "👠",
       "portrait": {
-        "image": "../assets/characters/popular-cinderella_nikke.png?v=a6d054ebcb3a",
+        "image": "../assets/characters/popular-cinderella_nikke.png?v=74e50d5ee158",
         "alt": "灰姑娘样张立绘",
         "sourceShowcaseId": "pc_cinderella_nikke_pc_cinderella_nikke_cinderella_moonlit_ballroom_glass_waltz_curtsy",
         "sourceShowcaseSha256": "4f9712e52fa2fa23e64e115c911d5b4d3f5887812e56f412220058b2369f018f"

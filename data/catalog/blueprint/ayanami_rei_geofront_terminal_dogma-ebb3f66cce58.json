@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ayanami_rei_geofront_terminal_dogma",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1015,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "伫立于高空平台边缘俯瞰下方红色海洋",
-    "camera": "medium shot, standing on a high platform overlooking the crimson LCL lake",
+    "camera": "wide shot, Rei in the foreground at the platform rail and the distant cruciform figure across the lake",
     "category": "科幻机甲",
     "characterId": "ayanami_rei",
     "coverageTags": [
@@ -20,8 +20,9 @@
     "mood": "庄严宏大",
     "negativeTokens": [],
     "outfitId": "plugsuit_white",
-    "promptProse": "From the steel platform she looks toward the immense figure suspended on a distant cross. Red lake glow rises beneath the cold overhead light.",
+    "promptProse": "Across a vast red lake, the colossal body of Lilith hangs from the distant white cross. Its outstretched wrists are fastened to the ends of the crossbeam. Its smooth chalk-white body dwarfs the cavern pillars and a dark seven-eyed mask covers its face. On the foreground steel platform stands Rei, the only pilot, her short blue hair and plain fitted white plugsuit visible from behind as she looks toward the cross.",
     "promptTokens": [
+      "1girl",
       "white plugsuit",
       "terminal dogma",
       "lcl sea",
@@ -31,9 +32,10 @@
       "cavern pillars",
       "water reflections",
       "divine atmosphere",
-      "volumetric lighting"
+      "volumetric lighting",
+      "lilith (evangelion)"
     ],
-    "recommendedSize": "1152x1536",
+    "recommendedSize": "1216x832",
     "sceneTags": [
       "terminal_dogma",
       "geofront",
@@ -47,6 +49,9 @@
     "timeOfDay": "白天",
     "title": "绫波丽 · 最终教条的神圣肃穆",
     "compositionIntent": "group",
-    "animaCaption": "Pillars of celestial white light descend through the cavernous gloom of Terminal Dogma into the glowing LCL lake."
+    "animaCaption": "Across a vast red lake, the colossal body of Lilith hangs from the distant white cross. Its outstretched wrists are fastened to the ends of the crossbeam. Its smooth chalk-white body dwarfs the cavern pillars and a dark seven-eyed mask covers its face. On the foreground steel platform stands Rei, the only pilot, her short blue hair and plain fitted white plugsuit visible from behind as she looks toward the cross.",
+    "characterTokens": [
+      "lilith (evangelion)"
+    ]
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ishtar_fate",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 62,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "ishtar_fate",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🌟",
       "portrait": {
-        "image": "../assets/characters/popular-ishtar_fate.png?v=ca9af2a90cbf",
+        "image": "../assets/characters/popular-ishtar_fate.png?v=8ad40d4e4750",
         "alt": "伊什塔尔样张立绘",
         "sourceShowcaseId": "pc_ishtar_fate_pc_ishtar_fate_ishtar_bridal_vow_gold_chapel",
         "sourceShowcaseSha256": "a882b972decba9616ca360b0caaf2d875807837d97bcc79a3a4c50aa2a6d8beb"

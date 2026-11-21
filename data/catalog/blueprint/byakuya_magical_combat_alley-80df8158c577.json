@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_magical_combat_alley",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 825,
   "createdAt": null,
-  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "魔法少女变身，星尘光阵展开",
     "adult": false,
@@ -22,7 +22,7 @@
     "mood": "炽热深沉",
     "negativeTokens": [],
     "outfitId": "magical_girl_dress",
-    "promptProse": "She raises her wand between the approaching danger and the person behind her; transformation light reflects across the wet alley.",
+    "promptProse": "Byakuya raises her star wand into the glowing magic circle, her pale twin buns and pink frilled dress illuminated by the transformation. Just behind her, a dark-haired person in a mustard jacket shelters close to the brick wall, face visible past the wings. The danger is down the alley in the direction of her wand, and light from the circle reflects across the puddles.",
     "promptTokens": [
       "alley",
       "fairy wings",
@@ -49,6 +49,6 @@
     "timeOfDay": "night",
     "title": "深森白夜 · 雨中小巷·魔法少女变身与星尘阵",
     "compositionIntent": "group",
-    "animaCaption": "She holds the wand between the approaching danger and the person behind her."
+    "animaCaption": "Byakuya raises the star wand in front of a dark-haired bystander crouching in a mustard jacket by the brick wall. The light from her magic circle reaches both figures as she faces the danger down the alley."
   }
 }

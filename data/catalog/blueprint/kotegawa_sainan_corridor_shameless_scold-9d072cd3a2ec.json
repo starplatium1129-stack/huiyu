@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotegawa_sainan_corridor_shameless_scold",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1252,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "双手抱胸端立微倾身躯，红色臂章醒目，面红耳赤含羞娇叱，黑长直发丝飞扬",
     "camera": "medium shot, eye-level, classic tsundere confrontation framing",
@@ -20,8 +20,10 @@
     "mood": "正经娇羞",
     "negativeTokens": [],
     "outfitId": "sainan_uniform",
-    "promptProse": "Yui stands with folded arms beside Rito as he gets up from the corridor floor, scolding him with flushed cheeks. Daylight from the tall windows catches the edge of her red armband.",
+    "promptProse": "Yui scolds Rito with her arms crossed and her cheeks flushed. Tall window light catches the red armband and the white band above her long black hair. Rito, with short spiky brown hair, a creased white school shirt and dark trousers, pushes himself up from the corridor floor beside her.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Yui Kotegawa",
       "crossed arms",
       "blush",
@@ -31,7 +33,8 @@
       "leaning forward",
       "heavy blush",
       "tsundere glare",
-      "medium shot"
+      "medium shot",
+      "yuuki rito"
     ],
     "recommendedSize": "1152x1536",
     "sceneTags": [
@@ -47,6 +50,9 @@
     "timeOfDay": "上午",
     "title": "古手川唯 · 学园走廊的“不知羞耻”斥责",
     "compositionIntent": "group",
-    "animaCaption": "She scolds Rito as he rises from the corridor floor beside her."
+    "animaCaption": "Yui stands with crossed arms and a red armband, her waist-length black hair held back by a white headband. Rito, the short spiky brown-haired boy in a white school shirt and dark trousers, gets up from the floor beside her.",
+    "characterTokens": [
+      "yuuki rito"
+    ]
   }
 }

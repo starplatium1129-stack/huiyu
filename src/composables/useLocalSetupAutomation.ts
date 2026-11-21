@@ -12,11 +12,28 @@ import { modelPreparationState, drawingSetupReadiness } from '../utils/localSetu
 import { useChatStorage } from './chat/useChatStorage'
 import { settingsRepository, DRAW_ENGINE_SETTING, STARTER_MODEL_SETTING } from '../storage/settingsRepository'
 
+function parseDriverMajor(version?: string): number | null {
+  if (!version) return null
+  const match = version.trim().match(/^(\d+)/)
+  return match ? Number(match[1]) : null
+}
+
+function nvidiaNeedsCu126(devices: LocalSetupResponse['hardware']['devices']): boolean {
+  const nvidia = devices.filter(device => /nvidia/i.test(device.name))
+  if (!nvidia.length) return false
+  const legacyCard = nvidia.every(device => /\b(?:GTX|GT)\s+(?:\d{3}|10\d{2})\b/i.test(device.name))
+  const oldDriver = nvidia.some(device => {
+    const major = parseDriverMajor(device.driverVersion)
+    return major !== null && major < 580
+  })
+  return legacyCard || oldDriver
+}
+
 function suggestedComfy(snapshot: LocalSetupResponse): SetupDraft['environment'] {
   if (snapshot.comfy.installation !== 'missing') return ''
   const nvidia = snapshot.hardware.devices.filter(device => /nvidia/i.test(device.name))
   if (nvidia.length) {
-    return nvidia.every(device => /\b(?:GTX|GT)\s+(?:\d{3}|10\d{2})\b/i.test(device.name)) ? 'comfy-cu126' : 'comfy-nvidia'
+    return nvidiaNeedsCu126(snapshot.hardware.devices) ? 'comfy-cu126' : 'comfy-nvidia'
   }
   if (snapshot.hardware.devices.some(device => /Radeon.*(?:880M|890M)/i.test(device.name))) return 'comfy-amd'
   return ''
@@ -39,9 +56,8 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   const recommendation=computed(()=>localChatRecommendation(snapshot.value.hardware))
   const imageModels=computed(()=>snapshot.value.models.filter(model=>model.id.startsWith('anima-')&&model.preparation))
   const chatModels=computed(()=>snapshot.value.models.filter(model=>model.kind==='chat'))
-  const workspace=computed(()=>snapshot.value.workspace.path)
-  const hasSelection=computed(()=>drawing.value||!!chatId.value)
-  const ready=computed(()=>reviewed.value&&!blocked.value&&hasSelection.value)
+  const workspace = computed(() => snapshot.value.workspace.path)
+  const hasSelection = computed(() => drawing.value || !!chatId.value)
   const download=useLocalSetupBatchDownload(workspace,onResult)
   const chatStorage=useChatStorage(cause=>{error.value=cause})
   const hasComfy=computed(()=>snapshot.value.comfy.installation==='present')
@@ -99,6 +115,42 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   ])
   const plan=computed(()=>[...runtimeIds.value,...weightIds.value].map(id=>requireModel(id)))
   const downloadBytes=computed(()=>plan.value.filter(model=>modelPreparationState(model)!=='bytes-match').reduce((sum,model)=>sum+(model.preparation?.expectedBytes??0),0))
+  const nvidiaDriverBelow580 = computed(() =>
+    snapshot.value.hardware.devices.some(device => {
+      if (!/nvidia/i.test(device.name)) return false
+      const major = parseDriverMajor(device.driverVersion)
+      return major !== null && major < 580
+    }),
+  )
+  const comfyDriverNote = computed(() => {
+    if (!drawing.value || !needsComfyPreparation.value || !nvidiaDriverBelow580.value) return ''
+    if (environment.value === 'comfy-cu126') {
+      return '检测到当前 NVIDIA 驱动低于 580，已自动选用兼容性更好的 CUDA 12.6（cu126）运行包。'
+    }
+    if (environment.value === 'comfy-nvidia') {
+      return '当前 NVIDIA 驱动低于 580，CUDA 12.8 可能无法正常加载；建议改选 CUDA 12.6（cu126）或先升级显卡驱动。'
+    }
+    return ''
+  })
+  const estimatedRequiredBytes = computed(() => {
+    const headroom =
+      (drawing.value && needsComfyPreparation.value ? 8 * 1024 * 1024 * 1024 : 0)
+      + (chatId.value && !snapshot.value.chat?.runtimePresent ? 2 * 1024 * 1024 * 1024 : 0)
+      + (hasSelection.value ? 512 * 1024 * 1024 : 0)
+    return downloadBytes.value + headroom
+  })
+  const workspaceFreeBytes = computed(() => snapshot.value.workspace.freeBytes ?? null)
+  const spaceEnough = computed(() =>
+    workspaceFreeBytes.value == null || workspaceFreeBytes.value >= estimatedRequiredBytes.value,
+  )
+  const ready = computed(() => reviewed.value && !blocked.value && hasSelection.value && spaceEnough.value)
+  function enterChatSetup() {
+    drawing.value = false
+    if (!chatId.value) {
+      const candidate = recommendation.value.modelId || chatModels.value[0]?.id || ''
+      chatId.value = chatModels.value.some(m => m.id === candidate) ? candidate : (chatModels.value[0]?.id ?? '')
+    }
+  }
   function checkpoint(){if(disposed||cancelled)throw new Error('准备已停止；已完成文件保留')}
   async function waitOperation(result:ControlActionResult,confirmedWorkspace=workspace.value){
     const id=result.operation?.id
@@ -280,5 +332,5 @@ export function useLocalSetupAutomation(snapshot: Ref<LocalSetupResponse>, block
   function recoverLateOperation(){if(!busy.value)void recoverOperation()}
   onMounted(()=>{window.addEventListener('huiyu:setup-operation',recoverLateOperation);void recoverOperation()})
   onUnmounted(()=>{disposed=true;download.cancel();window.removeEventListener('huiyu:setup-operation',recoverLateOperation)})
-  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,rebuildComfy,busy,message,error,completed,engineRestartRequired,workProgress,recommendation,imageModels,chatModels,plan,downloadBytes,download,hasSelection,externalEnvironment,canStartExisting,environmentRequired,serviceMustStop,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
+  return {modelId,chatId,drawing,loras,reviewed,environment,llamaEnvironment,rebuildComfy,busy,message,error,completed,engineRestartRequired,workProgress,recommendation,imageModels,chatModels,plan,downloadBytes,estimatedRequiredBytes,workspaceFreeBytes,spaceEnough,comfyDriverNote,enterChatSetup,download,hasSelection,ready,externalEnvironment,canStartExisting,environmentRequired,serviceMustStop,stage,startExisting,run,cancel,cancelState,operationUncertain,recoveryPending,retryOperation}
 }

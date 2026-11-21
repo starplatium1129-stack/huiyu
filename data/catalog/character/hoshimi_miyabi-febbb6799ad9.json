@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshimi_miyabi",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 78,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "hoshimi_miyabi",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "🦊",
       "portrait": {
-        "image": "../assets/characters/popular-hoshimi_miyabi.png?v=04d2e0710712",
+        "image": "../assets/characters/popular-hoshimi_miyabi.png?v=83625250fac6",
         "alt": "星见雅样张立绘",
         "sourceShowcaseId": "pc_hoshimi_miyabi_pc_hoshimi_miyabi_miyabi_shrine_veranda_tea_break",
         "sourceShowcaseSha256": "7cb51582fc71fa7a64c00c4a5e4055d28fa56c9e7d46dc9ef6bde909aa7936e5"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tsukatsuki_rio",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 50,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "tsukatsuki_rio",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "📐",
       "portrait": {
-        "image": "../assets/characters/popular-tsukatsuki_rio.png?v=80783eb9212d",
+        "image": "../assets/characters/popular-tsukatsuki_rio.png?v=7ef4e93b3615",
         "alt": "调月莉音样张立绘",
         "sourceShowcaseId": "pc_tsukatsuki_rio_pc_tsukatsuki_rio_tsukatsuki_rio_cafe_black",
         "sourceShowcaseSha256": "cad1adf54941aefcf2e7ff055a5211d74fb414c066e701898b48405ab4f4c231"

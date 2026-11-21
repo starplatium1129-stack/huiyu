@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_rain_umbrella_park",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1469,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "mahiru_rain_umbrella_park",
     "title": "椎名真昼 · 细雨公园递出雨伞的初遇",
@@ -34,15 +34,17 @@
       "overcast_light",
       "medium_shot"
     ],
-    "promptProse": "Amane holds the umbrella over Mahiru at the swing and offers its handle; she looks up, one hesitant hand reaching through soft gray rain light.",
+    "promptProse": "Short dark-haired Amane stands to the right in a white school shirt and dark trousers, holding a fully open umbrella over Mahiru. Rain beads on the raised canopy. Mahiru sits on the left swing in her navy school blazer, long blond hair damp at the ends, and reaches up to touch the umbrella's curved handle as he lowers it to her hand.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "Mahiru Shiina",
       "Amane Fujimiya",
-      "sitting",
       "umbrella",
+      "rain",
+      "sitting",
       "swing",
       "park",
-      "rain",
       "looking up",
       "reaching",
       "surprised",
@@ -64,6 +66,6 @@
     "characterTokens": [
       "Amane Fujimiya"
     ],
-    "animaCaption": "Amane holds the umbrella above her while she hesitantly reaches for its offered handle."
+    "animaCaption": "Short dark-haired Amane stands to the right in a white school shirt and dark trousers, holding a fully open umbrella over Mahiru. Rain beads on the raised canopy. Mahiru sits on the left swing in her navy school blazer, long blond hair damp at the ends, and reaches up to touch the umbrella's curved handle as he lowers it to her hand."
   }
 }

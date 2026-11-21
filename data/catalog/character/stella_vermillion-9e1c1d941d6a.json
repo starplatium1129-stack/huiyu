@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "stella_vermillion",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 223,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "stella_vermillion",
     "profile": {
@@ -155,7 +155,7 @@
         "red_eyes"
       ],
       "portrait": {
-        "image": "../assets/characters/popular-stella_vermillion.png?v=43f187fbf98b",
+        "image": "../assets/characters/popular-stella_vermillion.png?v=12285de294a4",
         "alt": "史黛菈·法米利昂样张立绘",
         "sourceShowcaseId": "pc_stella_vermillion_pc_stella_vermillion_stella_rooftop_lunch_jealous_feed",
         "sourceShowcaseSha256": "256a35d94df17237adbd8409056cbc90bbe08a5b67456df1866d7bfd4579746f"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tatsumaki",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 131,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "tatsumaki",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-tatsumaki.png?v=08cae4b98c13",
+        "image": "../assets/characters/popular-tatsumaki.png?v=e98478242f21",
         "alt": "战栗的龙卷样张立绘",
         "sourceShowcaseId": "pc_tatsumaki_pc_tatsumaki_tatsumaki_sfw_b6_04",
         "sourceShowcaseSha256": "1d5f018f5ef5bda5196231039318201ac2ec990e9db5a6b4c690ce5c8c449466"

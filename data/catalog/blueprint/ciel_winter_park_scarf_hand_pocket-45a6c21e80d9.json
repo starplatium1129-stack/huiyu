@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ciel_winter_park_scarf_hand_pocket",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1334,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "action": "围着红围巾，将一只手伸进视角大衣口袋取暖，呼着热气侧首微笑",
     "camera": "cowboy shot, eye level, winter romantic walk",
@@ -22,8 +22,10 @@
     "mood": "冬日纯爱",
     "negativeTokens": [],
     "outfitId": "sfw_winter_trench_red_scarf",
-    "promptProse": "Walking beside her companion, she slips her cold hand into his coat pocket and interlaces their fingers, turning a relieved smile toward him. Her breath clouds the cool air as the park lamps begin to glow beside the snowy bench.",
+    "promptProse": "Ciel wears her beige trench coat and long red scarf as she walks beside her companion, a short, dark-haired man in a charcoal wool coat. Her breath clouds as she slips her cold hand into his coat pocket and their fingers interlace. He turns toward her as park lamps begin to glow by the snowy bench.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "couple",
       "snowy park",
       "glasses",
@@ -51,6 +53,6 @@
     "timeOfDay": "冬日黄昏",
     "title": "希耶尔 · 冬日公园的暖袋牵手",
     "compositionIntent": "group",
-    "animaCaption": "Her hand joins her companion's inside his coat pocket."
+    "animaCaption": "Ciel, with a blue bob, glasses and a red scarf, slips her hand into the pocket of the man beside her. He has short dark curls and a charcoal wool coat, and turns toward her as their hands meet inside his pocket."
   }
 }

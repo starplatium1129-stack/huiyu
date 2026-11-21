@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misono_mika",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 46,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "misono_mika",
     "profile": {
@@ -19,7 +19,7 @@
       "type": "popular",
       "icon": "🌸",
       "portrait": {
-        "image": "../assets/characters/popular-misono_mika.png?v=24b80dd72824",
+        "image": "../assets/characters/popular-misono_mika.png?v=527819267feb",
         "alt": "圣园未花样张立绘",
         "sourceShowcaseId": "pc_misono_mika_pc_misono_mika_misono_mika_parlour_lily",
         "sourceShowcaseSha256": "68035287690d023c690e35beeef321ae031710a097e37d526adc900073feca48"

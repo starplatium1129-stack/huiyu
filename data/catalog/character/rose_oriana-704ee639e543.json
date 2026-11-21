@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rose_oriana",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 266,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "rose_oriana",
     "popular": {
@@ -79,7 +79,7 @@
       "type": "popular",
       "icon": "🌹",
       "portrait": {
-        "image": "../assets/characters/popular-rose_oriana.png?v=c805e75f20af",
+        "image": "../assets/characters/popular-rose_oriana.png?v=ef89cc89b3b1",
         "alt": "萝丝·奥利安娜样张立绘",
         "sourceShowcaseId": "pc_rose_oriana_pc_rose_oriana_rose_rainy_corridor_confession",
         "sourceShowcaseSha256": "b3667223d1b9fa9bcde623950a76ce6f0c3616d6b376c1fe4c7e777835e16a06"

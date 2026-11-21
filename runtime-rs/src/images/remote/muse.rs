@@ -20,11 +20,55 @@ mod legacy;
 mod submission;
 use submission::SceneSelection;
 
-const ANIMA: &str = "anima-miaomiao-v1.6";
+pub(crate) const ANIMA: &str = "anima-miaomiao-v1.6";
 const RECIPE_DATABASE: &str = "remote-scene-recipes.sqlite";
 const MAX_SEED: u64 = 9_007_199_254_740_991;
 const MAX_VARIANTS: u8 = 8;
 const RECIPE_MODELS: &[&str] = &[ANIMA, "moss-miaomiao-base-v1.0", "moss-miaomiao-base-v1.1"];
+
+pub(crate) async fn guest_catalog(state: &crate::AppState, uri: &axum::http::Uri) -> Result<Value> {
+    let Query(mut input) =
+        Query::<Search>::try_from_uri(uri).map_err(|_| ApiError::invalid("素材查询参数无效"))?;
+    if !matches!(
+        input.kind.as_str(),
+        "character" | "blueprint" | "scene" | "media"
+    ) {
+        return Err(ApiError::invalid("请选择角色或场景蓝图"));
+    }
+    input.page_size = input.page_size.min(40);
+    lookup(state, input).await
+}
+
+pub(in crate::images) async fn guest_recipe(
+    state: &crate::AppState,
+    images: &Service,
+    scene: Option<(String, String)>,
+    character: Option<String>,
+) -> Result<Value> {
+    let config = state.config.clone();
+    let loras = if images.native {
+        images.backend.native_settings()?.loras_root
+    } else {
+        config.ai_workspace_root.join("ComfyUI/models/loras")
+    };
+    tokio::task::spawn_blocking(move || {
+        let library = RecipeLibrary::new(&config, loras)?;
+        let (kind, id) = if let Some(scene) = scene {
+            scene
+        } else {
+            let character = character.ok_or_else(|| ApiError::invalid("请选择角色"))?;
+            ("outfit".into(), library.guest_default_outfit(&character)?)
+        };
+        let selection = SceneSelection {
+            kind: Some(kind),
+            id: Some(id),
+            ..Default::default()
+        };
+        Ok(library.prepare(selection, Some(ANIMA))?.payload)
+    })
+    .await
+    .map_err(|_| unavailable())?
+}
 
 struct Muse {
     images: Arc<Service>,
@@ -281,6 +325,25 @@ impl RecipeLibrary {
             snapshots: config.app_root.join("data/catalog"),
             loras,
         })
+    }
+    fn guest_default_outfit(&self, character: &str) -> Result<String> {
+        if let Some(id) = self.catalog.default_outfit_id(character)? {
+            return Ok(id);
+        }
+        self.db
+            .query_row(
+                "SELECT id FROM studio_wardrobe WHERE character=?1 ORDER BY rowid LIMIT 1",
+                [character],
+                |row| row.get(0),
+            )
+            .optional()?
+            .ok_or_else(|| {
+                ApiError::new(
+                    404,
+                    "GUEST_CHARACTER_RECIPE_MISSING",
+                    "该角色暂未同步出图配方，请选择她的场景蓝图",
+                )
+            })
     }
     fn kind(&self, requested: Option<&str>, id: &str) -> Result<String> {
         if id.is_empty() || id.len() > 180 {

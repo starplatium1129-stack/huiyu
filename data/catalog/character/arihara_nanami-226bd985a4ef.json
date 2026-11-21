@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arihara_nanami",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 261,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "arihara_nanami",
     "profile": {
@@ -19,7 +19,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-arihara_nanami.png?v=8c1a62ba1e1f",
+        "image": "../assets/characters/popular-arihara_nanami.png?v=0d7c5701bd79",
         "alt": "在原七海样张立绘",
         "sourceShowcaseId": "pc_arihara_nanami_pc_arihara_nanami_arihara_nanami_locker",
         "sourceShowcaseSha256": "acf758daa104dd98ac4a426219688ed941d72d1dca957f385d6355feb74edef1"

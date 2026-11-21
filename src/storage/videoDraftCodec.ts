@@ -2,6 +2,7 @@ import type { VideoCtxPayload, VideoDraftPayload, StagedScenarioAct, ShotsDraftP
 import { readFirstFrameRequest, type FirstFrameRequest } from '@/types/firstFrameRequest'
 import { readStoryOrigin } from '@/types/storyOrigin'
 import { validVideoDriverName, type VideoDriver } from '@/types/videoDriver'
+import { videoPromptModes, videoVisualSlots, type VideoPromptDrafts, type VideoPromptRecipe } from '../../types/videoPrompt'
 
 type RecordValue = Record<string, unknown>
 function object(value: unknown): RecordValue {
@@ -52,6 +53,32 @@ function dimensions(v: RecordValue) {
     quality: choice(v.quality, ['fast', 'standard', 'fine'], 'standard'), steps: choice(v.steps, [4, 8], 8),
     updatedAt: number(v.updatedAt, 0) }
 }
+function promptRecipes(value: unknown): VideoPromptDrafts {
+  const stored = object(value)
+  const drafts: VideoPromptDrafts = {}
+  for (const mode of videoPromptModes) {
+    if (stored[mode] === undefined) continue
+    const source = object(stored[mode])
+    const recipe: VideoPromptRecipe = {}
+    for (const slot of videoVisualSlots) {
+      if (source[slot] !== undefined) recipe[slot] = identity(source[slot])
+    }
+    if (source.audio !== undefined) {
+      const audio = object(source.audio)
+      const dialogue = text(audio.dialogue)
+      if (dialogue.length > 300) throw new Error('视频对白过长')
+      const language = choice(audio.language, ['', 'en', 'zh', 'ja'], '')
+      recipe.audio = {
+        ...(audio.sound === undefined ? {} : { sound: identity(audio.sound) }),
+        ...(audio.music === undefined ? {} : { music: identity(audio.music) }),
+        ...(dialogue ? { dialogue } : {}),
+        ...(language ? { language } : {}),
+      }
+    }
+    drafts[mode] = recipe
+  }
+  return drafts
+}
 function shot(value: unknown): ShotsDraftShot {
   const v = object(value)
   const submission = v.submission === undefined ? undefined : object(v.submission)
@@ -99,7 +126,10 @@ export const videoDraftCodec = {
     }
     return { ...dimensions(v), mode: choice(v.mode, ['text', 'image', 'first-last-frame', 'shots'], 'text'),
       prompt: text(v.prompt), negative: text(v.negative), modelId: text(v.modelId),
-      videoAttention: choice(v.videoAttention, ['auto', 'sdpa', 'sage', 'flash2'] as const, 'auto'),
+      ...(v.promptRecipes === undefined ? {} : { promptRecipes: promptRecipes(v.promptRecipes) }),
+      nativeH3Steps: choice(v.nativeH3Steps, [4, 8] as const, 4),
+      videoAttention: choice(v.videoAttention, ['auto', 'sdpa', 'sage', 'flash2', 'h3-sol', 'h3-sla', 'h3-fused'] as const, 'auto'),
+      h3LightVae: v.h3LightVae !== false,
       ...(driver ? { driver } : {}),
       camera: choice(v.camera, cameras, 'still'), motion: choice(v.motion, motions, 'subtle'),
       duration: choice(v.duration, durations, 5), seedText: text(v.seedText), videoImageId: text(v.videoImageId), lastFrameImageId: text(v.lastFrameImageId),

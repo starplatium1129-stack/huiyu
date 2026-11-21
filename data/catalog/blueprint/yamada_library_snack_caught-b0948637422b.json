@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_library_snack_caught",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1491,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "yamada_library_snack_caught",
     "title": "山田杏奈 · 图书馆书架死角偷吃薯片的受惊回眸",
@@ -32,8 +32,10 @@
       "window_light",
       "medium_shot"
     ],
-    "promptProse": "Crouching beside the shelves, she hides the snack bag behind her with one hand and raises the other index finger to her lips, looking toward her companion at the aisle entrance in soft window light.",
+    "promptProse": "Yamada crouches between library shelves in her beige school cardigan, long black hair falling forward as she hides her crisps behind her back. Her cheeks are still puffed as she raises a finger to her lips. A shorter boy with tousled black hair and a navy school vest has stopped at the aisle entrance, his face turned toward her above the soft window light.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "chips",
       "finger to mouth",
       "puffed cheeks",
@@ -55,6 +57,6 @@
       "school"
     ],
     "compositionIntent": "group",
-    "animaCaption": "She looks toward her companion waiting at the aisle entrance."
+    "animaCaption": "Long-haired Yamada crouches in a beige cardigan and signals for silence. A shorter boy with tousled black hair and a navy school vest stands separately at the aisle entrance."
   }
 }

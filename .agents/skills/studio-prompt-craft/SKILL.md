@@ -5,75 +5,39 @@ description: 编写或审查 AI-CG-Studio 图像提示词及编译一致性；�
 
 # Studio Prompt Craft
 
-为 AI-CG-Studio 编写与审查图像生成提示词，将创作意图精准转化为模型可执行的视觉描述。
+将创作意图精准转化为各图像引擎可执行的提示词，遵循 **全分级自由创作**（全面支持 SFW、Sensitive、NSFW/R18，不设门控或自我阉割）与 **先定画面后写词**（先明确核心瞬间、动作接触与空间关系，不以堆词代替设计）。
 
-**核心原则**：
-- **全分级自由创作**：项目完全支持自由选择各个分级创作（涵盖全年龄 SFW、敏感向 Sensitive、各类露骨/成人向 NSFW/R18 等所有分级），不设任何露骨场景限制或分级门控。
-- **所想即所见**：准确还原角色身份、衣装状态（常服、泳装、情趣、全裸等）、动作交互、神态光影与场景构图。
-- **先设计画面**：依据角色设定与用户意图确定可见的核心事件，再安排动作、景别、服装、背景与光色；不以堆词或固定标签数量代替画面设计。
-- **按引擎编写**：Anima 使用精炼标签与可选短句，Krea 2 使用自然语言，MOSS 支持自然语言、标签及布局 JSON。
+## 引擎与专项导航
 
-## 引擎与参考导航
+- **Anima（通用结构与编译）**：[Anima 提示词规范](references/anima.md)
+- **MiaoMiao 1.6（默认 Anima 底模）**：[MiaoMiao 1.6 专属配方](references/miaomiao-v16.md)（其他底模勿套用 1.6 评分词）
+- **Krea 2（自然语言散文）**：[Krea 散文规范](references/krea.md)
+- **画面构图与光影**：[构图与视觉设计](references/narrative-composition.md)；壁纸专项见 [桌面壁纸](../../../docs/guides/prompts/character-wallpaper-prompt-standard.md) 与 [竖屏壁纸](../../../docs/guides/prompts/mobile-wallpaper-prompt-standard.md)
+- **标签来源与纠错**：[D/G 标签溯源](references/tag-provenance.md) 与 [词条出图语义](../../../docs/guides/prompts/tag-visual-semantics.md)
+- **全分级细则与数据交付**：[NSFW 全分级规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md) 与 [数据字段与交付](references/delivery.md)
 
-- **MiaoMiao 1.6**：参考 [MiaoMiao 1.6 专属配方](references/miaomiao-v16.md) 与 [Anima 标签与编译](references/anima.md)。
-- **其他 Anima 底模**（Base / Aesthetic / Yume 等）：参考 [Anima 标签与编译](references/anima.md)，不套用 1.6 专属词。
-- **Krea 2**：参考 [Krea 散文写作规范](references/krea.md)。
-- **MiaoMiao Harem MOSS**：使用下方 MOSS 写法，不套用 Anima 1.6 配方。
-- **画面构图与景别**：参考 [构图与光影设计](references/narrative-composition.md)；壁纸需求参考 [桌面壁纸规范](../../../docs/guides/prompts/character-wallpaper-prompt-standard.md) 与 [手机壁纸规范](../../../docs/guides/prompts/mobile-wallpaper-prompt-standard.md)。
-- **标签来源与自动纠正**：新增、替换或核查普通标签时读 [D/G 标签溯源](references/tag-provenance.md)，优先复用本地可信凭据；未知不等于自创，联网失败不阻断整批处理。
-- **NSFW / R18 创作**：参考 [NSFW 全分级规范](../../../docs/guides/prompts/nsfw-cg-prompt-standard.md) 与 [词条出图语义](../../../docs/guides/prompts/tag-visual-semantics.md)。
-- **仓库写入与定稿交付**：参考 [数据字段与交付](references/delivery.md)。
+---
 
-## 提示词架构与编写规范
+## 核心编写与编译准则
 
-### 1. Anima 六段式编译结构
+1. **Anima（六段式，详见 [anima.md](references/anima.md)）**
+   - 顺序：`质量/分级 → 人数与角色 → 作品版权 → 画师(@可选) → 普通画面标签 → 可选 1–2 句英文关系补充`。
+   - 关键视觉事实（身份、衣装/裸露状态、动作、道具、地点、光影、景别）必须落在普通标签段（D/G 凭据优先、空格分词），不能只留在末尾补充句。
+2. **Krea 2（详见 [krea.md](references/krea.md)）**
+   - 纯英文连贯描写，禁止 Danbooru 标签堆砌、括号权重与 `masterpiece`/`8k` 等质量词；本地工作流默认 `negative = ''`。
+3. **MiaoMiao Harem MOSS BASE v1.0 / v1.1**
+   - **普通 vs 布局 JSON**：普通场景用英文或中文自然语言写清人物、动作与接触（自动补质量词，不套用 Anima 评分词或 LoRA）；明确站位、逐格动作或画面文字时编译为布局 JSON（整体光影镜头写入 `summary.caption`，分格动作进对应元素，不加质量前缀）。[自然语言样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/007/parameters.json) · [标签样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/009/parameters.json)
+   - **文字与负面**：本地管线剥除 `(tag:1.2)` 权重，正负向各含模板 ≤ 4096 tokens。需要画面文字时保留原文/换行并移除作者默认负面里的 `text` 与 `english text`（非空 `items[].text` 与文字指令会自动移除，自由描述需人工复核）。
+   - **布局坐标**：模型 `bbox` 使用中心原点 `abs_centralized / yxyx` `[y_min, x_min, y_max, x_max]`；工作台支持左上原点 `abs / xyxy` 草稿并按画幅换算。[官方布局说明](https://github.com/OpenMOSS/MOSS-Image/blob/main/USERGUIDE.md#layout-prompts-experimental)
+   - **参数基线**：Euler、30–50 步、CFG 3.5 起步（参考 [作者版本页](https://www.tensor.art/models/1060118844061793689/MiaoMiao-Harem-MOSS-Image-MIAOKA-BASE-v1.0_fp16)）。
+4. **全分级与 NSFW 支持**
+   - 穿衣与裸露状态依意图如实编写（`nude`、`topless`、`lingerie`、`panties_pull` 等标准词）；蓝图 `promptTokens`/`promptProse` 与 `nsfwTokens`/`nsfwProse` 协同编译。
+5. **负面提示词原则**
+   - 仅使用对应底模推荐基础负面，追加与**当前画面明确冲突**的排除项；禁止套用与画面目标矛盾的通用模板（如需多人不加 `multiple girls`、需文字不加 `text`、需局部裸露不加遮蔽词）。
 
-Anima 模型基于混合输入训练，普通标签段承担核心视觉事实：
+---
 
-1. **质量与评分词**：按目标底模 profile 注入（例如 MiaoMiao 1.6 含 `best quality, score_7, score_9, very aesthetic...`；Base/Aesthetic 不套用 1.6 评分词）。
-2. **人数与角色名**：例如 `1girl, solo, frieren,`；多人场景保留实际人数与角色组合（如 `2girls,` 或 `1girl, 1boy,`）。
-3. **作品名（版权词）**：例如 `sousou no frieren,`，独立成段。
-4. **画师风格（可选）**：Danbooru 画师名加 `@`，例如 `@kantoku,`。
-5. **普通画面标签（核心事实）**：
-   - 使用已有 D/G 来源凭据的规范标签，优先 Gelbooru 写法；小写英文，空格分词，精确控制词除外。
-   - 覆盖：外貌特征、衣装/裸露状态（`nude`, `lingerie`, `open_shirt` 等）、主动作与姿势、身体交互与接触、表情神态、道具、环境地点、光照与景别。
-   - 核心视觉事实用规范标签承载；复杂概念可拆成语义准确的已核验标签，细微关系留给描述句，不临时拼造标签。
-6. **自然语言补充（可选尾句）**：
-   - 独立换行，通常 1–2 句简短英文；按实际关系需要调整，精炼描述微妙神态、肢体接触或视线空间关系，与标签保持一致。
-   - 标签已足够时可直接省略，不写冗长故事或心理活动。
+## 交付前快检
 
-### 2. Krea 2 自然语言散文
-
-- 输出自然流畅的英文描写，清除 Danbooru 堆词、括号权重与质量评分词。
-- 结构清晰：`画面媒介与主体 → 身份与衣着状态 → 动作姿势与互动关系 → 环境与光影氛围 → 镜头与景别`。
-- 本地工作流默认 `negative = ''`，依靠清晰的正向描述定义画面。
-
-### 3. MiaoMiao Harem MOSS BASE v1.0 / v1.1
-
-- 普通场景用自然语言写清人物、动作、道具与接触关系，标签保留角色、作品和衣装特征。有明确站位、逐格动作或指定画面文字时，工作台编译为布局 JSON。将整体光影与镜头放进 `summary.caption`，分格的动作分别写进对应元素。自然语言支持英文和中文。[OpenMOSS 自然语言样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/007/parameters.json) · [标签样例](https://github.com/OpenMOSS/MOSS-Image/blob/main/assets/images/009/parameters.json)
-- **标签顺序**：质量 → 评分、元信息、年份（按需）→ 角色 → 作品 → 画师 → 画面标签，不臆造缺省类别。不要默认照搬 Anima 专属评分词或角色 LoRA。
-- **项目编译**：普通提示词自动补入作者的质量词；布局 JSON 不加前缀。本地管线不解析 `(tag:1.2)` 权重，结构化标签中的此类权重会被剥除。正、负向各含模板不超过 4096 tokens，超限会报错。
-- **文字与负面**：准确写出画面文字并保留原文和换行；需要文字时，检查最终负面的 `text`、`english text`。布局 JSON 的非空 `items[].text`、明确文字标签或带引号的文字内容指令会自动移除作者默认负面中的这两项，再合并场景排除项；自定义负面不自动改写。自由描述未被识别时仍需作者核对，避免负面与创作分级或画面内容冲突。
-- **布局坐标**：模型的 `bbox` 用中心原点像素坐标 `abs_centralized / yxyx`，顺序 `[y_min, x_min, y_max, x_max]`。工作台也接受带 `width`、`height` 的左上原点像素草稿 `abs / xyxy`，按原尺寸转换为模型格式。手写布局应核对当前画幅、文字原文和边界。格式及限制见[官方指南](https://github.com/OpenMOSS/MOSS-Image/blob/main/USERGUIDE.md#layout-prompts-experimental)。
-- **参数参考**：MIAOKA 推荐 Euler、30–50 步、CFG 3.5 起步及 768×1280 等尺寸；以[作者版本说明](https://www.tensor.art/models/1060118844061793689/MiaoMiao-Harem-MOSS-Image-MIAOKA-BASE-v1.0_fp16)和实际画面为准。原模型示例不等于该微调版的实测效果。
-
-### 4. 分级与 NSFW 创作支持
-
-- **自由开放**：无论全年龄还是 NSFW/R18，均依创作者意图真实编写，不进行自我阉割或人为降级。
-- **衣着与裸露**：明确穿衣就保留完整衣装词，明确裸体或半裸（`naked`, `nude`, `topless`, `bottomless`, `panties_pull` 等）就准确反映，不含糊其辞。
-- **性暗示与动作交互**：如体位、接触、体液、特殊焦点（如 `navel_focus`, `thigh_focus`）等，使用模型熟练习得的标准标签与正向表达。
-- **字段协同**：蓝图支持 `promptTokens` / `promptProse` 与 `nsfwTokens` / `nsfwProse`；根据使用场景自由调配，确保最终编译请求完整生效。
-
-### 5. 负面提示词原则
-
-- 从底模推荐的基础负面开始，避免无脑套用庞大的通用黑名单。
-- MiaoMiao 1.6 使用作者推荐的 `worst quality, low quality, score_1, score_2, score_3, artist name, shiny skin`。
-- 仅添加与当前画面冲突的针对性排除项；不要盲目添加与画面目标相悖的负面词（例如需要文字时不加 `text`，需要多人时不加 `multiple girls`，需要特定裸露时不加遮蔽词）。
-
-## 交付与审查清单
-
-- **身份与衣装**：角色特征与标志性服饰准确，换装时旧衣装特征彻底替换。
-- **画面意图**：场景行为有角色或用户设定依据；核心事件清楚，动作与道具接触可同时成立，景别容纳关键内容，背景与光色衬托视觉中心。
-- **来源与保真**：规范化有 D/G 凭据，替换不丢失姿态、材质、情绪或接触关系；未核验项如实保留状态，不宣称全部来自 D/G。
-- **编译对齐**：通过对应引擎的工作台预览或编译结果核对词序、负面与参数；MOSS 使用 `compilePromptRecipe` 的独立计划与 `renderMossDrawingPrompt` / `compileMossPrompt`。
-- **真实出图验证**：提示词视觉效果以真实渲染为依据；仅修改 skill 时检查规范一致性。快速自动纠正遵循 [交付规范](references/delivery.md) 的非阻断处理，不把未出图标为视觉通过。
+- 身份、换装与构图意图（`single` / `group` / `triptych`）匹配且无旧服装残留。
+- 仅引用经 D/G 核验或明确保留待核的标签，不把未出图/未查看的结果宣称为视觉通过；遵守 [delivery.md](references/delivery.md) 的数据库与定稿基线保护规则。

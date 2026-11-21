@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "marcille_donato",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "marcille_donato",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-marcille_donato.png?v=08a0c0b3918f",
+        "image": "../assets/characters/popular-marcille_donato.png?v=dcf78d42c325",
         "alt": "玛露希尔样张立绘",
         "sourceShowcaseId": "pc_marcille_donato_pc_marcille_donato_marcille_donato_sfw_b9_02",
         "sourceShowcaseSha256": "30a60fcbc1682d32cc4c82d67d5e1882e16c8343578074b455b0b4c1b2ae8a2a"

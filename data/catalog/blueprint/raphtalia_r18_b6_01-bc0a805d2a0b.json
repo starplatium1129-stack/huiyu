@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raphtalia_r18_b6_01",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1573,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "raphtalia_r18_b6_01",
     "title": "拉芙塔莉雅 · 旅行马车营地主控跨坐",
@@ -29,9 +29,10 @@
       "open_clothes",
       "animal_ears"
     ],
-    "promptProse": "Adult Raphtalia rides astride her companion in the covered carriage with her cuirass lowered, her tail curled around their wrist as their foreheads meet. The last campfire glow warms the dark carriage interior.",
+    "promptProse": "Adult Raphtalia leans over adult Naofumi in the covered carriage, her loosened brown cuirass lowered and her striped raccoon tail curled around his wrist. He lies back beneath her with short, tousled black hair and a dark green cloak fallen open behind his shoulders. Their foreheads meet in profile, safely inside the pool of dying firelight.",
     "promptTokens": [
-      "2people",
+      "1girl",
+      "1boy",
       "brown leather armor",
       "open clothes",
       "topless",
@@ -61,6 +62,6 @@
       "special_nsfw"
     ],
     "compositionIntent": "group",
-    "animaCaption": "Their foreheads meet inside the carriage, her tail curled around her companion's wrist."
+    "animaCaption": "Long brown-haired Raphtalia, her cuirass lowered and striped tail curled around his wrist, meets Naofumi's forehead. His short tousled black hair and open dark green cloak frame his face beneath hers."
   }
 }

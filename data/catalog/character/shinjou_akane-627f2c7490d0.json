@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinjou_akane",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 149,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "shinjou_akane",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-shinjou_akane.png?v=995b2dc74909",
+        "image": "../assets/characters/popular-shinjou_akane.png?v=c2378b335b09",
         "alt": "新条茜样张立绘",
         "sourceShowcaseId": "pc_shinjou_akane_pc_shinjou_akane_shinjou_akane_sfw_b8_01",
         "sourceShowcaseSha256": "0407536ea969987984658ae658a2a65ec415697345476f5d05ed899a46cf5d69"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sawamura_spencer_eriri",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 197,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "sawamura_spencer_eriri",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-sawamura_spencer_eriri.png?v=cb45f759b44f",
+        "image": "../assets/characters/popular-sawamura_spencer_eriri.png?v=2a46e0e02513",
         "alt": "泽村·斯宾塞·英梨梨样张立绘",
         "sourceShowcaseId": "pc_sawamura_spencer_eriri_pc_sawamura_spencer_eriri_sawamura_spencer_eriri_daily_gallery_notebook",
         "sourceShowcaseSha256": "7e3504d30cdbcecd31fc54c184578c4b094cabc0c26abda7fa0ed1df53a2b192"

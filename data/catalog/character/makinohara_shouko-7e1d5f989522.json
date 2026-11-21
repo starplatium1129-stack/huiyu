@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makinohara_shouko",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "makinohara_shouko",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-makinohara_shouko.png?v=3c8671e64aab",
+        "image": "../assets/characters/popular-makinohara_shouko.png?v=396f3f05f815",
         "alt": "牧之原翔子样张立绘",
         "sourceShowcaseId": "pc_makinohara_shouko_pc_makinohara_shouko_makinohara_shouko_sfw_b8_06",
         "sourceShowcaseSha256": "8c16b530bb3f16661e67c6ac0516e6771e034695bc3341509d614045329dbefc"

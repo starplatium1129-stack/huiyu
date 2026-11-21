@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_record_store",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 322,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "hatsune_miku_record_store",
     "title": "初音未来 · 唱片店",
@@ -33,7 +33,7 @@
       "warm_shop_light",
       "medium_two_shot"
     ],
-    "promptProse": "Miku steadies the headphone band with her left hand and turns an earcup toward the listener on her right with her right hand; the upper-left shop lamp catches the earcup and foreground turntable while soft storefront light reaches both faces. Wooden record bins behind the pair lead back toward the distant wall shelves.",
+    "promptProse": "At the listening station, Miku steadies the headphone band with her left hand and turns one earcup with her right. The listener to her right has cropped dark hair and a brick-red overshirt, leaning one ear toward the earcup. A shop lamp catches the record grooves in the foreground while the window lights both faces. Wooden bins carry the view back to the record shelves.",
     "promptTokens": [
       "2people",
       "holding headphones",
@@ -60,6 +60,6 @@
     "compositionIntent": "group",
     "nsfwTokens": [],
     "nsfwProse": "",
-    "animaCaption": "Her left hand steadies the headband; her right turns an earcup toward the listener on her right."
+    "animaCaption": "Teal-haired Miku steadies the headphone band with her left hand and rotates one earcup toward the short-haired listener in a brick-red overshirt at her right."
   }
 }

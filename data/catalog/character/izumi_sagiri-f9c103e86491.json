@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izumi_sagiri",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "izumi_sagiri",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-izumi_sagiri.png?v=f4ec6a4caeec",
+        "image": "../assets/characters/popular-izumi_sagiri.png?v=e090d186ab6e",
         "alt": "和泉纱雾样张立绘",
         "sourceShowcaseId": "pc_izumi_sagiri_pc_izumi_sagiri_izumi_sagiri_sfw_b5_02",
         "sourceShowcaseSha256": "96ad967f2a5f1721facf1f48ba5c9439e939681c826ea8ddf936cce9b0bfbf8a"

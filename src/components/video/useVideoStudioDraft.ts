@@ -5,17 +5,21 @@ import { registerMaintenanceParticipant } from '@/platform/maintenanceParticipan
 import { sameTempResultOwner, tempResultOwner } from '@/utils/tempResult'
 import { getDesktopRuntime } from '@/platform/desktop/runtime'
 import { VIDEO_DRAFT_KEY } from '@/utils/storageKeys'
+import type { VideoPromptDrafts } from '../../../types/videoPrompt'
 
 /** Editable frame references and parameters; admission belongs to useVideoRequest. */
 export interface VideoStudioDraftDeps {
   selectedMode: Ref<VideoMode | 'shots'>
   prompt: Ref<string>
+  promptRecipes: Ref<VideoPromptDrafts>
   negative: Ref<string>
   selectedModelId: Ref<string>
   aspectRatio: Ref<VideoDefaults['aspectRatio']>
   quality: Ref<VideoDefaults['quality']>
   steps: Ref<4 | 8>
+  nativeH3Steps: Ref<4 | 8>
   videoAttention: Ref<VideoAttention>
+  h3LightVae: Ref<boolean>
   driver: Ref<VideoDriver | null>
   duration: Ref<VideoDefaults['duration']>
   camera: Ref<VideoDefaults['camera']>
@@ -63,12 +67,15 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
     const draft: VideoDraftPayload = {
       mode: deps.selectedMode.value,
       prompt: deps.prompt.value,
+      promptRecipes: deps.promptRecipes.value,
       negative: deps.negative.value,
       modelId: deps.selectedModelId.value,
       aspectRatio: deps.aspectRatio.value,
       quality: deps.quality.value,
       steps: deps.steps.value,
+      nativeH3Steps: deps.nativeH3Steps.value,
       videoAttention: deps.videoAttention.value,
+      h3LightVae: deps.h3LightVae.value,
       ...(deps.driver.value ? { driver: { ...deps.driver.value } } : {}),
       duration: deps.duration.value,
       camera: deps.camera.value,
@@ -102,8 +109,8 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
       await videoStore.confirmDrafts([VIDEO_DRAFT_KEY])
     })
     const stop = watch(
-      [deps.selectedMode, deps.prompt, deps.negative, deps.selectedModelId, deps.aspectRatio,
-        deps.quality, deps.steps, deps.videoAttention, deps.duration, deps.camera, deps.motion, deps.seedText,
+      [deps.selectedMode, deps.prompt, deps.promptRecipes, deps.negative, deps.selectedModelId, deps.aspectRatio,
+        deps.quality, deps.steps, deps.nativeH3Steps, deps.videoAttention, deps.h3LightVae, deps.duration, deps.camera, deps.motion, deps.seedText,
         deps.videoImageId, deps.lastFrameImageId, deps.driver],
       () => {
         window.clearTimeout(draftTimer)
@@ -132,6 +139,7 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
         deps.selectedMode.value = draft.mode as VideoMode
       }
       deps.prompt.value = draft.prompt || ''
+      deps.promptRecipes.value = draft.promptRecipes ?? {}
       deps.negative.value = draft.negative || ''
       if (draft.modelId) deps.selectedModelId.value = draft.modelId
       if (['landscape', 'portrait', 'square', 'original'].includes(draft.aspectRatio)) {
@@ -141,7 +149,9 @@ export function useVideoStudioDraft(deps: VideoStudioDraftDeps) {
         deps.quality.value = draft.quality as VideoDefaults['quality']
       }
       if (draft.steps === 4 || draft.steps === 8) deps.steps.value = draft.steps
+      deps.nativeH3Steps.value = draft.nativeH3Steps === 8 ? 8 : 4
       deps.videoAttention.value = draft.videoAttention ?? 'auto'
+      deps.h3LightVae.value = draft.h3LightVae !== false
       deps.driver.value = draft.driver ?? null
       if ([3, 5, 10, 15].includes(draft.duration)) {
         deps.duration.value = draft.duration as VideoDefaults['duration']

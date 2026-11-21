@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_anna",
-  "revision": 15,
+  "revision": 16,
   "sortOrder": 116,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yamada_anna",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🍫",
       "portrait": {
-        "image": "../assets/characters/popular-yamada_anna.png?v=04e492a4c09d",
+        "image": "../assets/characters/popular-yamada_anna.png?v=88e89464e332",
         "alt": "山田杏奈样张立绘",
         "sourceShowcaseId": "pc_yamada_anna_pc_yamada_anna_yamada_rainy_shared_umbrella_crouch",
         "sourceShowcaseSha256": "c7e4c299623df408aad1b7c9299b523453516cff7bac4e1838a2e3f4d3522fa5"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yae_miko",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 141,
   "createdAt": null,
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "yae_miko",
     "profile": {
@@ -16,7 +16,7 @@
       ],
       "type": "popular",
       "portrait": {
-        "image": "../assets/characters/popular-yae_miko.png?v=66b19cda0b4e",
+        "image": "../assets/characters/popular-yae_miko.png?v=6a2eeee64aec",
         "alt": "八重神子样张立绘",
         "sourceShowcaseId": "pc_yae_miko_pc_yae_miko_yae_miko_sfw_b7_01",
         "sourceShowcaseSha256": "30e048724bf871293bf1fd4972755381673f85c48e5fe7cd1ce269c5c490e14b"

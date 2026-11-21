@@ -1,4 +1,4 @@
-import { defineConfig, type Plugin, type UserConfig } from 'vite'
+import { build, defineConfig, type Plugin, type ResolvedConfig, type UserConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import tailwindcss from '@tailwindcss/vite'
 import { compile, Polyfills, toSourceMap } from '@tailwindcss/node'
@@ -68,6 +68,34 @@ function manualStylesPlugin(): Plugin {
         })
         this.emitFile({ type: 'asset', fileName, source: compiler.build([]) })
       }
+    },
+  }
+}
+
+/** Keep the public guest page outside the private application's chunk graph. */
+function guestShareBuild(): Plugin {
+  let config: ResolvedConfig
+  return {
+    name: 'huiyu-guest-share',
+    apply: 'build',
+    configResolved(value) { config = value },
+    async writeBundle() {
+      await build({
+        configFile: false,
+        root: config.root,
+        publicDir: false,
+        logLevel: 'warn',
+        plugins: [vue(), componentTailwindPlugin(), tailwindcss()],
+        resolve: { alias: { '@': resolve(config.root, 'src') } },
+        build: {
+          outDir: resolve(config.root, config.build.outDir, '_guest'),
+          emptyOutDir: true,
+          manifest: true,
+          assetsDir: '_app',
+          target: config.build.target,
+          rolldownOptions: { input: resolve(config.root, 'try.html') },
+        },
+      })
     },
   }
 }
@@ -166,6 +194,7 @@ export default defineConfig(async ({ mode }): Promise<UserConfig> => {
     dataVersionPlugin(),
     chatCardPresentation(),
     manualStylesPlugin(),
+    ...(mode === 'desktop' ? [] : [guestShareBuild()]),
   ]
   if (mode === 'desktop') plugins.push({
     name: 'desktop-startup-assets',

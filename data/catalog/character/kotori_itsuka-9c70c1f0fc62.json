@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kotori_itsuka",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 234,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "kotori_itsuka",
     "profile": {
@@ -21,7 +21,7 @@
       "type": "popular",
       "icon": "🍭",
       "portrait": {
-        "image": "../assets/characters/popular-kotori_itsuka.png?v=5530044b6f99",
+        "image": "../assets/characters/popular-kotori_itsuka.png?v=e8d3ccddc3dd",
         "alt": "五河琴里样张立绘",
         "sourceShowcaseId": "pc_kotori_itsuka_pc_kotori_itsuka_kotori_shopping_mall_crepe_share",
         "sourceShowcaseSha256": "32e79236a2ff0c9c3fdacd5dadcc7d32cacc38c4fdbb96bf6b6ea18719c4dfce"

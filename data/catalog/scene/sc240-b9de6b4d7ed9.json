@@ -1,14 +1,14 @@
 {
   "kind": "scene",
   "id": "sc240",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 235,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T13:14:05.584803100+00:00",
   "data": {
-    "animaCaption": "Holding the borrowed book against her chest, she wipes rain from the viewer's shoulder with her free hand. Their umbrella tilts over her at the bus-stop roof's edge, above the wet street's soft evening reflections.",
+    "animaCaption": "Nene holds the open book against her uniform in her left arm and uses the white handkerchief in her raised right hand to dab her classmate's soaked shoulder. Her long white twin tails and pink ribbons catch the evening light. The taller boy on the right has short dark-brown hair, a burgundy tie and gray trousers. He holds the clear umbrella over Nene with his left hand, his shoulder turned toward her.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
-    "camera": "侧面半身中景",
+    "camera": "公交站台侧面双人中景，宁宁用手帕擦拭同伴的肩头",
     "category": "日常",
     "char": "nene",
     "character": [
@@ -21,7 +21,7 @@
     "lora": "ayachi_nene_v21_anima",
     "mature": false,
     "negative": "multiple umbrellas, nsfw, nude, explicit",
-    "prompt": "1girl, ayachi_nene, nene_school_uniform, holding book, handkerchief, reaching, concerned, bus stop, awning, umbrella, rain, evening, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
+    "prompt": "1girl, 1boy, ayachi_nene, nene_school_uniform, holding book, handkerchief, reaching, concerned, bus stop, awning, umbrella, rain, evening, medium shot, <lora:ayachi_nene_v18_wd14:0.8>",
     "rating": "All",
     "season": "夏",
     "story": "放学后突然降临的雷阵雨把街道浇得透湿。宁宁站在公交站台的窄小顶棚下，怀里紧紧护着刚从图书馆借来的珍贵古籍。你撑着伞从雨幕中跑来，把伞倾向她那边时，自己的半边肩膀瞬间被雨水打透。宁宁看着你湿透的制服袖口，紫色的眼睛里闪过一丝心疼，头顶的呆毛微微垂了下来。她悄悄挪近半步，用手帕轻轻擦拭你肩上的雨水，声音小得几乎被雨声淹没——「笨蛋……伞明明可以再往你那边偏一点的。这样会感冒的，你知道吗？」",
@@ -59,6 +59,8 @@
       "新手推荐",
       "壁纸级"
     ],
-    "weather": "雷阵雨"
+    "weather": "雷阵雨",
+    "compositionIntent": "group",
+    "promptProse": "Nene holds the open book against her uniform in her left arm and uses the white handkerchief in her raised right hand to dab her classmate's soaked shoulder. Her long white twin tails and pink ribbons catch the evening light. The taller boy on the right has short dark-brown hair, a burgundy tie and gray trousers. He holds the clear umbrella over Nene with his left hand, his shoulder turned toward her."
   }
 }

@@ -87,7 +87,7 @@ impl Endpoint {
             question["callbackOrigin"] = json!(self.callback_url);
             question["operations"] = operations(true);
             question["operations"]["replyDelivery"] = json!(
-                "文字写好即可向 callbackOrigin 下的 /qq/replies 提交原 requestKey 和 text，收到 sent 即完成。也可用原有的 GET 取回复方式。"
+                "答复就绪后 POST callbackOrigin 下的 /qq/replies（原 requestKey + text，返回 sent 即完成），也可沿用 GET 轮询。"
             );
             let questions_url = format!("{}/qq/questions", self.base);
             let reply_url = format!("{}/qq/replies/{}", self.base, entry.key);

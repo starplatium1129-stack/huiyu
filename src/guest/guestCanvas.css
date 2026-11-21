@@ -1,0 +1,462 @@
+.guest-canvasArea {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  gap: var(--s-3);
+  min-inline-size: 0;
+}
+
+.guest-canvasPanel {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr);
+  min-block-size: clamp(19rem, 48dvh, 36rem);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+  overflow: clip;
+}
+
+.guest-canvasHeader {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2) var(--s-3);
+  padding: var(--s-3) var(--s-4);
+  border-block-end: 1px solid var(--border-soft);
+}
+
+.guest-canvasIdentity {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-inline-size: 0;
+}
+
+.guest-canvasHeadingText {
+  min-inline-size: 0;
+}
+
+.guest-canvasHeadingText h2 {
+  margin: 0;
+  color: var(--text-primary);
+  font-size: var(--fs-title-xs);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.guest-canvasMeta {
+  display: block;
+  margin-block-start: var(--s-1);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.guest-canvasActions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1);
+}
+
+.guest-stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-block-size: 15rem;
+  margin: var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--bg-base);
+  overflow: clip;
+}
+
+.guest-stage:not([data-result="true"])::before,
+.guest-stage:not([data-result="true"])::after {
+  position: absolute;
+  content: "";
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  pointer-events: none;
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--character-accent, var(--accent)) 45%, var(--border-soft));
+}
+
+.guest-stage:not([data-result="true"])::before {
+  inset: var(--s-2) auto auto var(--s-2);
+  border-width: 1px 0 0 1px;
+  border-start-start-radius: var(--r-sm);
+}
+
+.guest-stage:not([data-result="true"])::after {
+  inset: auto var(--s-2) var(--s-2) auto;
+  border-width: 0 1px 1px 0;
+  border-end-end-radius: var(--r-sm);
+}
+
+.guest-stage[data-result="true"] {
+  background: var(--art-mat);
+  padding: var(--s-2);
+}
+
+.guest-artButton {
+  position: relative;
+  display: grid;
+  place-items: center;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-md);
+  background: transparent;
+  cursor: var(--cursor-zoom-in, zoom-in);
+}
+
+.guest-result {
+  display: block;
+  max-inline-size: 100%;
+  max-block-size: min(64dvh, 44rem);
+  inline-size: auto;
+  block-size: auto;
+  object-fit: contain;
+  border-radius: var(--r-md);
+  box-shadow: var(--art-frame-shadow);
+}
+
+.guest-artZoomHint {
+  position: absolute;
+  inset: auto var(--s-3) var(--s-3) auto;
+  display: inline-flex;
+  align-items: center;
+  gap: var(--s-1);
+  padding: var(--s-1) var(--s-3);
+  border: 1px solid var(--on-art-line);
+  border-radius: var(--r-pill);
+  background: var(--art-scrim);
+  color: var(--on-art-primary);
+  font-size: var(--fs-label-xs);
+  opacity: 0;
+  transform: translateY(4px);
+  pointer-events: none;
+  transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .guest-artButton:hover .guest-artZoomHint,
+  .guest-artButton:focus-visible .guest-artZoomHint {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.guest-emptyCanvas {
+  display: grid;
+  justify-items: center;
+  align-content: center;
+  gap: var(--s-2);
+  max-inline-size: 32rem;
+  padding: var(--s-5) var(--s-4);
+  text-align: center;
+}
+
+.guest-emptyArt {
+  display: block;
+  inline-size: min(100%, 19rem);
+  block-size: auto;
+  margin-block-end: var(--s-2);
+}
+
+.guest-emptyArt.is-framed {
+  inline-size: min(100%, 24rem);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.guest-emptyTitle {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: var(--fs-title-sm);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+}
+
+.guest-emptyQuote {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-body-sm);
+  line-height: var(--lh-body);
+}
+
+.guest-emptyActions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--s-2);
+  margin-block-start: var(--s-2);
+}
+
+.guest-art-fade-enter-active,
+.guest-art-fade-leave-active {
+  transition: opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out);
+}
+
+.guest-art-fade-enter-from {
+  opacity: 0;
+  transform: translateY(4px);
+}
+
+.guest-art-fade-leave-to {
+  opacity: 0;
+  transform: translateY(-4px);
+}
+
+/* ---- Busy Overlay ---- */
+.guest-busyOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-raised);
+  display: grid;
+  place-items: center;
+  padding: var(--s-4);
+  background: color-mix(in srgb, var(--bg-base) 88%, transparent);
+}
+
+.guest-busyOverlay.is-over-art {
+  background: var(--art-backdrop);
+}
+
+.guest-busyCard {
+  display: grid;
+  justify-items: center;
+  gap: var(--s-3);
+  inline-size: min(100%, 22rem);
+  padding: var(--s-5);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-md);
+  text-align: center;
+}
+
+.guest-busyCopy {
+  display: grid;
+  gap: var(--s-1);
+}
+
+.guest-busyCopy strong {
+  color: var(--text-primary);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+}
+
+.guest-busyNumbers {
+  display: flex;
+  justify-content: center;
+  gap: var(--s-3);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.guest-busyCard progress {
+  inline-size: 100%;
+}
+
+/* ---- Filmstrip History ---- */
+.guest-filmstrip {
+  display: grid;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-4);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  box-shadow: var(--shadow-sm);
+}
+
+.guest-filmstripHead {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+.guest-filmstripTitle {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-2);
+  color: var(--text-primary);
+  font-size: var(--fs-label);
+}
+
+.guest-filmstripTitle .archive-icon {
+  color: var(--accent);
+}
+
+.guest-filmstripTitle small {
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+}
+
+.guest-filmstripCount {
+  padding: 0 var(--s-2);
+  border-radius: var(--r-pill);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.guest-filmList {
+  display: flex;
+  gap: var(--s-2);
+  overflow-x: auto;
+  padding-block: var(--s-1);
+  overscroll-behavior-x: contain;
+  scrollbar-width: thin;
+  scrollbar-color: color-mix(in srgb, var(--border-strong) 78%, transparent) transparent;
+}
+
+.guest-filmList::-webkit-scrollbar {
+  width: 0.45rem;
+  height: 0.45rem;
+}
+
+.guest-filmList::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.guest-filmList::-webkit-scrollbar-thumb {
+  border-radius: var(--r-pill);
+  background: color-mix(in srgb, var(--border-strong) 72%, transparent);
+}
+
+.guest-filmList::-webkit-scrollbar-thumb:hover {
+  background: color-mix(in srgb, var(--accent) 65%, var(--border-strong));
+}
+
+.guest-filmItem {
+  position: relative;
+  flex: none;
+  inline-size: 4.75rem;
+  block-size: 6rem;
+}
+
+.guest-filmThumb {
+  position: relative;
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  padding: 0;
+  border: 2px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--art-mat);
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform var(--motion-press) var(--ease-out), border-color var(--motion-hover) var(--ease-out);
+}
+
+.guest-filmItem[data-active="true"] .guest-filmThumb {
+  border-color: var(--character-accent, var(--accent));
+}
+
+.guest-filmThumb img {
+  display: block;
+  inline-size: 100%;
+  block-size: 100%;
+  object-fit: cover;
+}
+
+.guest-filmSelectedMark {
+  position: absolute;
+  inset: auto var(--s-1) var(--s-1) auto;
+  display: grid;
+  place-items: center;
+  inline-size: 1.25rem;
+  block-size: 1.25rem;
+  border-radius: 50%;
+  background: var(--character-accent, var(--accent));
+  color: var(--text-inverse);
+}
+
+.guest-filmSelectedMark .archive-icon {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+.guest-filmRemove {
+  position: absolute;
+  inset: var(--s-1) var(--s-1) auto auto;
+  display: grid;
+  place-items: center;
+  inline-size: 1.4rem;
+  block-size: 1.4rem;
+  padding: 0;
+  border: 1px solid var(--on-art-line);
+  border-radius: 50%;
+  background: var(--art-scrim);
+  color: var(--on-art-primary);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity var(--motion-hover) var(--ease-out);
+}
+
+.guest-filmRemove .archive-icon {
+  inline-size: 0.75rem;
+  block-size: 0.75rem;
+}
+
+.guest-filmItem:hover .guest-filmRemove,
+.guest-filmItem:focus-within .guest-filmRemove {
+  opacity: 1;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .guest-filmRemove {
+    opacity: 1;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .guest-filmThumb:hover {
+    border-color: var(--border-strong);
+    transform: translateY(-2px);
+  }
+}
+
+@container guest (min-width: 960px) {
+  .guest-canvasArea {
+    flex: 1 1 auto;
+    min-block-size: clamp(35rem, calc(100dvh - 7.5rem), 58rem);
+  }
+
+  .guest-canvasPanel {
+    min-block-size: 24rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) :is(
+    .guest-artZoomHint,
+    .guest-filmThumb,
+    .guest-filmRemove,
+    .guest-art-fade-enter-active,
+    .guest-art-fade-leave-active
+  ) {
+    transition: none;
+  }
+
+  :root:not([data-motion="full"]) .guest-filmThumb:hover {
+    transform: none;
+  }
+}

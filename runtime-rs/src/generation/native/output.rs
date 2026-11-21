@@ -135,7 +135,12 @@ pub(super) fn adapter_request(
     output: &Path,
     image: Option<PathBuf>,
 ) -> Value {
-    let mut input = json!({"negativePrompt":plan.input["negative"]});
+    let mut input = json!({});
+    if plan.input["mediaKind"] != "video" {
+        input["negativePrompt"] = plan.input["negative"].clone();
+    } else if let Some(negative) = plan.input["negative"].as_str().filter(|text| !text.is_empty()) {
+        input["negativePrompt"] = json!(negative);
+    }
     if plan.input["mossUpscaleScale"].is_number() {
         input["mossUpscaleScale"] = plan.input["mossUpscaleScale"].clone();
     } else if plan.input["family"] == "moss-image" {
@@ -155,6 +160,15 @@ pub(super) fn adapter_request(
         input[key] = plan.input[key].clone();
     }
     if plan.input["mediaKind"] == "video" {
+        if plan.input["modelId"] == "minimax-h3" {
+            input["nativeModelFormat"] = json!(plan.input["nativeModelFormat"].as_str().unwrap_or("diffusers"));
+            if let Some(decoder) = plan.input.get("h3Decoder") {
+                input["h3Decoder"] = decoder.clone();
+            }
+            if let Some(shift) = plan.input.get("h3VideoShift") {
+                input["h3VideoShift"] = shift.clone();
+            }
+        }
         input["frames"] = plan.input["frames"].clone();
         input["fps"] = plan.input["fps"].clone();
         input["videoAttention"] = json!(plan.input["videoAttention"].as_str().unwrap_or("auto"));

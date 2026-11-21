@@ -1,0 +1,355 @@
+.guest-paneBar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+}
+
+.guest-paneTitle {
+  color: var(--text-primary);
+  font-size: var(--fs-label);
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.guest-paneHint {
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+}
+
+.guest-backBtn .archive-icon {
+  transform: rotate(90deg);
+}
+
+.guest-picker .studio-search {
+  inline-size: 100%;
+}
+
+.guest-selectedBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--s-2);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid color-mix(in srgb, var(--character-accent, var(--accent)) 32%, var(--border-soft));
+  border-radius: var(--r-md);
+  background: var(--accent-soft);
+  color: var(--text-primary);
+  font-size: var(--fs-label-xs);
+}
+
+.guest-ratingRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--s-1);
+}
+
+.guest-pillFilter {
+  display: inline-flex;
+  align-items: center;
+  min-block-size: var(--control-height-sm);
+  padding: var(--s-1) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-pill);
+  background: var(--bg-base);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+  font-weight: 500;
+  cursor: pointer;
+  transition: border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out), color var(--motion-hover) var(--ease-out);
+}
+
+.guest-pillFilter[aria-pressed="true"] {
+  border-color: var(--character-accent, var(--accent));
+  background: var(--accent-soft);
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .guest-pillFilter:hover {
+    border-color: var(--border-strong);
+    color: var(--text-primary);
+  }
+}
+
+.guest-countHint {
+  margin-inline-start: auto;
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+  font-variant-numeric: tabular-nums;
+}
+
+.guest-skeletonGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--s-2);
+}
+
+.guest-skeletonList {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.guest-inlineState {
+  display: grid;
+  gap: var(--s-2);
+  justify-items: start;
+  padding: var(--s-3);
+  border: 1px dashed var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-base);
+}
+
+.guest-inlineState p {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-label);
+  line-height: var(--lh-body);
+}
+
+.guest-inlineState.is-error p {
+  color: var(--danger-text);
+}
+
+.guest-inlineActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--s-2);
+}
+
+.guest-characterGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(10.5rem, 1fr));
+  gap: var(--s-2);
+}
+
+.guest-characterCard {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-inline-size: 0;
+  min-block-size: var(--control-height);
+  padding: var(--s-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  text-align: start;
+  cursor: pointer;
+  transition: transform var(--motion-press) var(--ease-out), border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out);
+}
+
+.guest-characterCard[aria-pressed="true"] {
+  border-color: var(--character-accent, var(--accent));
+  background: color-mix(in srgb, var(--character-accent, var(--accent)) 12%, var(--bg-elevated));
+}
+
+.guest-characterCard[data-char-id="nene"] .guest-characterBadge {
+  background: color-mix(in srgb, var(--nene-violet) 22%, var(--bg-elevated));
+  color: var(--nene-violet);
+}
+
+.guest-characterCard[data-char-id="natsume"] .guest-characterBadge {
+  background: color-mix(in srgb, var(--natsume-amber) 22%, var(--bg-elevated));
+  color: var(--natsume-amber);
+}
+
+.guest-characterBadge {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: 2rem;
+  block-size: 2rem;
+  border-radius: var(--r-sm);
+  background: color-mix(in srgb, var(--accent) 16%, var(--bg-elevated));
+  color: var(--accent);
+  font-family: var(--font-serif);
+  font-size: var(--fs-body-sm);
+  font-weight: 600;
+}
+
+.guest-characterMeta {
+  flex: 1;
+  min-inline-size: 0;
+}
+
+.guest-characterMeta strong,
+.guest-characterMeta small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.guest-characterMeta strong {
+  font-size: var(--fs-label);
+  font-weight: 600;
+}
+
+.guest-characterMeta small {
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+}
+
+.guest-sceneList {
+  display: grid;
+  gap: var(--s-1);
+}
+
+.guest-sceneItem {
+  display: flex;
+  align-items: center;
+  gap: var(--s-2);
+  min-inline-size: 0;
+  min-block-size: var(--control-height);
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  text-align: start;
+  cursor: pointer;
+  transition: transform var(--motion-press) var(--ease-out), border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out);
+}
+
+.guest-sceneItem[aria-pressed="true"] {
+  border-color: var(--character-accent, var(--accent));
+  background: color-mix(in srgb, var(--character-accent, var(--accent)) 12%, var(--bg-elevated));
+}
+
+.guest-sceneIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--s-5);
+  block-size: var(--s-5);
+  border-radius: var(--r-sm);
+  background: var(--bg-elevated);
+  color: var(--text-secondary);
+}
+
+.guest-sceneItem[aria-pressed="true"] .guest-sceneIcon {
+  color: var(--accent);
+}
+
+.guest-sceneText {
+  flex: 1;
+  min-inline-size: 0;
+  overflow-wrap: anywhere;
+}
+
+.guest-sceneText strong,
+.guest-sceneText small {
+  display: block;
+}
+
+.guest-sceneText strong {
+  font-size: var(--fs-label);
+  font-weight: 600;
+  line-height: var(--lh-label);
+}
+
+.guest-sceneText small {
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+}
+
+.guest-itemCheck {
+  flex: none;
+  color: var(--accent);
+}
+
+.guest-ideaGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: var(--s-2);
+}
+
+.guest-ideaCard {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--s-2);
+  min-inline-size: 0;
+  padding: var(--s-2) var(--s-3);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: var(--bg-base);
+  color: var(--text-primary);
+  text-align: start;
+  cursor: pointer;
+  transition: transform var(--motion-press) var(--ease-out), border-color var(--motion-hover) var(--ease-out), background-color var(--motion-hover) var(--ease-out);
+}
+
+.guest-ideaCard[aria-pressed="true"] {
+  border-color: var(--character-accent, var(--accent));
+  background: color-mix(in srgb, var(--character-accent, var(--accent)) 12%, var(--bg-elevated));
+}
+
+.guest-ideaIcon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  inline-size: var(--s-6);
+  block-size: var(--s-6);
+  border-radius: var(--r-sm);
+  background: var(--accent-soft);
+  color: var(--accent);
+}
+
+.guest-ideaCopy {
+  min-inline-size: 0;
+}
+
+.guest-ideaCopy strong,
+.guest-ideaCopy small {
+  display: block;
+}
+
+.guest-ideaCopy strong {
+  font-size: var(--fs-label);
+  font-weight: 600;
+}
+
+.guest-ideaCopy small {
+  margin-block-start: var(--s-1);
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+  line-height: var(--lh-label);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .guest-characterCard:hover,
+  .guest-sceneItem:hover,
+  .guest-ideaCard:hover {
+    border-color: var(--border-strong);
+    background: var(--bg-elevated);
+    transform: translateY(-1px);
+  }
+}
+
+@media (pointer: coarse) {
+  .guest-workspace :is(.guest-characterCard, .guest-sceneItem, .guest-ideaCard, .guest-pillFilter) {
+    min-block-size: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion="full"]) :is(
+    .guest-pillFilter,
+    .guest-characterCard,
+    .guest-sceneItem,
+    .guest-ideaCard
+  ) {
+    transition: none;
+  }
+
+  :root:not([data-motion="full"]) :is(
+    .guest-characterCard:hover,
+    .guest-sceneItem:hover,
+    .guest-ideaCard:hover
+  ) {
+    transform: none;
+  }
+}

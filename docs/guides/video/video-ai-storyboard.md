@@ -1,27 +1,30 @@
 # 视频与分镜工作流
 
-整理日期：2026-10-09。合并原视频调研和 AI 整理记录；操作与实现入口按当前源码核对，真实视频质量、声音、成本和设备仍待[规划 V06](../../roadmap.md#素材与设备验收)。
+> 真实视频画质、音画同步与设备耗时验收见 [未来规划](../../roadmap.md#素材与设备验收)。
 
-## 使用流程
+---
 
-1. 绘制作品可加入分镜，也可从故事梗概创建镜头。角色/服装从内容目录读取，参考图按需要上传；核对人物、衣装、动作、景别、运镜、时长与对白。
-2. AI 整理逐镜改写动态描述，失败保留原文，可重试和撤销；整批编排调整节奏，独立快照撤销。另有对白备选、质量检查和脚本生成；迟到结果不覆盖正在编辑的镜头，忙碌时阻止重复操作。
-3. 核对首尾帧及所选模型能力后提交单镜/整批；按实际任务停止、重试失败镜头或合成。离开页面不取消已接受任务。
+## 1. 使用流程
 
-## 维护入口
+1. **创建与编辑**：绘图作品可加入分镜，或从故事梗概直接拆解镜头；自动读取内容目录中的角色与服装，按需上传首尾帧或参考图，并核对景别、运镜、时长与对白。
+2. **AI 辅助整理**：支持逐镜改写动态描述、整批编排节奏、对白备选、质量检查与脚本生成（均带独立快照撤销，迟到结果不覆盖正在编辑的镜头）。
+3. **提交与管理**：核对模型能力与首尾帧后提交单镜或整批；支持停止、单镜重试或合成整片（切页不取消后台任务）。
 
-| 职责 | 当前源码 |
+---
+
+## 2. 源码边界与接口规范
+
+| 职责 | 对应源码 |
 | --- | --- |
-| 分镜展示 | src/components/video/ShotListEditor.vue |
-| AI 工具 | src/components/video/useShotAiTools.ts |
-| 分镜状态 | src/components/video/useShotWorkspace.ts、useShotDraft.ts |
-| 批次和单镜 | src/components/video/useShotBatchMachine.ts、src/composables/video/useVideoWorkspace.ts |
-| API 边界 | src/api/videoApi.ts、videoApiResponse.ts |
-| Rust 视频 | runtime-rs/src/video/http.rs、service.rs、batch.rs、storyboard.rs、ai.rs |
-| 绘图批次 | src/composables/generation/useBatchDraw.ts |
+| 分镜界面 | `src/components/video/ShotListEditor.vue` |
+| AI 助手工具 | `src/components/video/useShotAiTools.ts` |
+| 分镜状态与草稿 | `src/components/video/useShotWorkspace.ts`、`useShotDraft.ts` |
+| 批次状态机 | `src/components/video/useShotBatchMachine.ts`、`src/composables/video/useVideoWorkspace.ts` |
+| 绘图批次 | `src/composables/generation/useBatchDraw.ts` |
+| 前端 API 边界 | `src/api/videoApi.ts`、`videoApiResponse.ts` |
+| Rust 视频后端 | `runtime-rs/src/video/`（`http.rs`、`service.rs`、`batch.rs`、`storyboard.rs`、`ai.rs`） |
 
-视频接口包括 /api/video/status、images、jobs、batches、storyboard；视频创建和 retry（一次提交所选镜头）均要求 requestKey，按 requests/{key} 或 batch-requests/{key} 查询/取消原请求；concat 仍作用于原批次。重抽前整批上游须已确认结束；运行中的批次先完成或取消，失败和已取消的镜头均可重抽。私人任务重抽所选镜头时，先写稳新的请求键及原镜头位置，独立结果保留在任务中心；刷新恢复只 GET 原键，不重复创建。旧 ID 保留读取与结果入口，404/410 不清身份。/api/video-ai/status 查询可用源，rewrite/polish/dialogue/review/script 复用现行聊天模型配置，写调用要求本机直连。模型和文件名以运行时目录为准，不使用旧 Node routes 或 SD 新生成方案。
-
-## 验证边界
-
-图像走受控上传和输入校验，模型能力按实际目录/服务状态核对。只显示真实返回阶段/进度，保留超时、取消与恢复；AI 整理完成不代表视频已生成或质量合格。按[工作流](../../workflow.md#门禁与构建)选受影响检查；首尾帧、停止/重试、成片、音画同步和成本需要真实任务证据，本次未运行。
+### 关键接口契约
+- **主路由**：`/api/video/status`、`images`、`jobs`、`batches`、`storyboard`；AI 辅助入口为 `/api/video-ai/status` 与 `rewrite`/`polish`/`dialogue`/`review`/`script`（复用当前聊天模型配置）。
+- **幂等与重试**：视频创建与单镜重抽（`retry`）均必须携带 `requestKey`；按 `requests/{key}` 或 `batch-requests/{key}` 查询与取消。重抽前先确认整批上游已结束，刷新恢复仅 `GET` 原 Key 而不重提；`concat` 作用于原批次。
+- **验证边界**：AI 文案整理完成不代表视频已生成或达标；只展示后端真实返回阶段与进度。

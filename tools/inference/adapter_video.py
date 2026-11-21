@@ -1,9 +1,8 @@
-"""Video-specific calls to pinned upstream pipelines; no sampler implementation.
+"""Native video execution with pinned upstream pipelines and local model layouts.
 
-All adapters remain pending primary-machine validation. H3's text and keyframe
-workflows share the local transformer partition and both VAEs.
+H3 text and keyframe workflows share the transformer and both VAEs.
 """
-from contextlib import contextmanager
+from contextlib import contextmanager, nullcontext
 from huiyu_worker_lifecycle import load_sibling
 
 
@@ -25,6 +24,23 @@ def load(root, spec, data, control, contract):
                 kwargs.update(torch_dtype=torch.bfloat16, use_safetensors=True)
             if library == "transformers":
                 kwargs["trust_remote_code"] = False
+            if data.get("_h3TurboSteps"):
+                if name == "transformer":
+                    packed = load_sibling("h3_packed")
+                    variant = data.get("_h3AccelerationPath")
+                    extra = {("fused_path" if data["videoAttention"] == "h3-fused" else "sla_path"): variant} if variant else {}
+                    components[name] = packed.load_transformer(root, data["steps"], control, contract, **extra)
+                    continue
+                if name == "text_encoder":
+                    components[name] = load_sibling("h3_text").load_encoder(root, control)
+                    continue
+                if name in ("vae", "audio_vae"):
+                    vae = load_sibling("h3_vae")
+                    if name == "vae" and data.get("h3Decoder") == "lightvae":
+                        components[name] = vae.load_vae(root, name, control, contract, lightvae=True)
+                    else:
+                        components[name] = vae.load_vae(root, name, control, contract)
+                    continue
             component = cls.from_pretrained(str(root / name), **kwargs)
             if name == "text_encoder" and spec["pipeline"] == "MiniMaxH3ModularPipeline":
                 # Both H3 workflows condition on hidden_states[50]. Keep one more
@@ -45,6 +61,8 @@ def load(root, spec, data, control, contract):
         # components in separate folders that the managed bundle omits.
         kwargs.update(prompt_enhancer=None, processor=None, duration_head=None)
     if spec["pipeline"] == "WanPipeline":
+        control.stage("loading", component="text_encoder")
+        kwargs["text_encoder"] = load_sibling("wan_pipeline").text_encoder(root, contract)
         control.stage("loading", component="vae")
         kwargs["vae"] = diffusers.AutoencoderKLWan.from_pretrained(str(root / "vae"),
             local_files_only=True, use_safetensors=True, torch_dtype=torch.float32)
@@ -67,7 +85,17 @@ def task_pipeline(pipeline_class, components, parameters, spec, image_conditione
             pipeline_class = diffusers.LTX2ImageToVideoPipeline
         else:
             raise ValueError(f"No image-to-video pipeline for {spec['pipeline']}")
-    return pipeline_class(**components, **parameters)
+    pipeline = pipeline_class(**components, **parameters)
+    if spec["pipeline"] == "WanPipeline":
+        return load_sibling("wan_pipeline").bind(pipeline)
+    return pipeline
+
+
+def placement(components, policy, data, spec, device, backend):
+    local_video = data["modelId"] == "wan2.2-ti2v-5b" or data.get("_h3TurboSteps")
+    if local_video and policy == "offload" and backend == "cuda" and device.index in (0, None):
+        return load_sibling("video_memory").Residency(components, data)
+    return load_sibling("native_memory").Residency(components, policy, device=device)
 
 
 def prepare(pipeline, spec, data):
@@ -76,6 +104,7 @@ def prepare(pipeline, spec, data):
         # The fresh task's guider owns CFG, never the cached model components.
         pipeline.guider = ClassifierFreeGuidance.from_config(pipeline.guider.config, guidance_scale=data["cfg"])
     if (spec["pipeline"] in ("HunyuanVideo15Pipeline", "LTX2Pipeline", "Kandinsky6TI2VAPipeline")
+            or data.get("_h3TurboSteps")
             or spec["pipeline"] in ("WanPipeline", "WanAnimate2DistilledModularPipeline")
             and pipeline._huiyu_memory.policy == "offload"):
         pipeline.vae.enable_tiling()
@@ -126,10 +155,21 @@ def generate(pipeline, spec, data, control, *, device, image=None, last_frame=No
     control.stage("encoding")
     name = spec["pipeline"]
     if name == "MiniMaxH3ModularPipeline":
-        with observe_scheduler(pipeline.audio_scheduler, control):
+        context = nullcontext()
+        if data.get("_h3TurboSteps"):
+            # The installed four-step adapter is the 768p release. The eight-step
+            # adapter is the 544p release, whose video noise shift differs.
+            pipeline.scheduler.set_shift(float(data["h3VideoShift"]))
+            pipeline.audio_scheduler.set_shift(3.0)
+            # MiniMaxH3Scheduler includes zero in its grid. N Turbo evaluations
+            # require N+1 grid points on both the video and audio schedules.
+            args["num_inference_steps"] = data["steps"] + 1
+            context = load_sibling("h3_packed").refine_context(pipeline.transformer, pipeline._huiyu_h3_conditioning)
+        with context, observe_scheduler(pipeline.audio_scheduler, control):
             result = pipeline(**args, output=["videos", "audio", "sampling_rate"])
         return result["videos"][0], result["audio"][0], result["sampling_rate"]
-    args["negative_prompt"] = data["negativePrompt"]
+    if spec["negative"]:
+        args["negative_prompt"] = data["negativePrompt"]
     if name == "HunyuanVideo15Pipeline":
         with observe_scheduler(pipeline.scheduler, control):
             result = pipeline(**args)

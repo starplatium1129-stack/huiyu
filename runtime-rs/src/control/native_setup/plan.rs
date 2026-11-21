@@ -1,7 +1,43 @@
 use super::*;
 
 pub(super) fn safe_workspace(workspace: &Path, app: &Path) -> Result<u64> {
-    if !workspace.is_absolute() || !workspace.is_dir() {
+    if !workspace.is_absolute() {
+        return Err(ApiError::new(
+            409,
+            "WORKSPACE_REQUIRED",
+            "请先选择已存在的 AI 工作区目录",
+        ));
+    }
+    let mut created = false;
+    if !workspace.exists() {
+        let Some(parent) = workspace.parent().filter(|p| p.is_dir()) else {
+            return Err(ApiError::new(
+                409,
+                "WORKSPACE_REQUIRED",
+                "请先选择已存在的 AI 工作区目录",
+            ));
+        };
+        safe_directory(parent)?;
+        let parent_real = parent.canonicalize()?;
+        if app
+            .canonicalize()
+            .is_ok_and(|root| parent_real.starts_with(root))
+        {
+            return Err(ApiError::new(
+                409,
+                "PROTECTED_ROOT",
+                "请选择程序安装目录以外的 AI 工作区",
+            ));
+        }
+        std::fs::create_dir(workspace).map_err(|e| {
+            ApiError::new(
+                409,
+                "AI_DIRECTORY_UNAVAILABLE",
+                format!("无法创建默认 AI 工作区目录：{e}"),
+            )
+        })?;
+        created = true;
+    } else if !workspace.is_dir() {
         return Err(ApiError::new(
             409,
             "WORKSPACE_REQUIRED",
@@ -10,15 +46,27 @@ pub(super) fn safe_workspace(workspace: &Path, app: &Path) -> Result<u64> {
     }
     let real = workspace.canonicalize()?;
     if app.canonicalize().is_ok_and(|root| real.starts_with(root)) {
+        if created {
+            let _ = std::fs::remove_dir(workspace);
+        }
         return Err(ApiError::new(
             409,
             "PROTECTED_ROOT",
             "请选择程序安装目录以外的 AI 工作区",
         ));
     }
-    safe_directory(workspace)?;
-    crate::resources::available_space(workspace)
-        .map_err(|e| ApiError::new(409, &e.code, "无法检查磁盘空间，请选择本机可写磁盘"))
+    if let Err(err) = safe_directory(workspace) {
+        if created {
+            let _ = std::fs::remove_dir(workspace);
+        }
+        return Err(err);
+    }
+    crate::resources::available_space(workspace).map_err(|e| {
+        if created {
+            let _ = std::fs::remove_dir(workspace);
+        }
+        ApiError::new(409, &e.code, "无法检查磁盘空间，请选择本机可写磁盘")
+    })
 }
 pub(super) fn safe_directory(path: &Path) -> Result<()> {
     let mut current = PathBuf::new();
@@ -192,7 +240,7 @@ impl ControlService {
                 adapters::longcat_python(&root.join("models"))
             } else {
                 receipt.as_ref().and_then(|(_, value)| value["python"].as_str()).map(PathBuf::from)
-                    .unwrap_or_else(|| root.join(&runtime.runtime_id).join("venv/Scripts/python.exe"))
+                    .unwrap_or_else(|| root.join(&runtime.runtime_id).join(crate::generation::native::python_relative()))
             };
             let runtime_root = if dedicated {
                 adapters::longcat_environment_root(&runtime_python).to_path_buf()
@@ -229,10 +277,22 @@ impl ControlService {
             };
             let model_views: Vec<_> = models.iter().map(|model| {
                 let model_root = root.join("models").join(&model.id);
-                let installed = receipt_matches(&model_root, model);
+                let source = installation_source(&model_root, model);
+                let installed = source.is_some();
+                let local_import = if !installed && (reasons.is_empty() || runtime_ready) {
+                    local_adapters::available(&service.config.ai_workspace_root, &model.id)
+                } else { None };
                 let local_checkpoint = !installed && checkpoint_models::workspace_checkpoint(&service.config.ai_workspace_root, model).is_some();
-                let (required, required_with_checkpoint) = if installed { (0, 0) } else { model_space(&root, model) };
-                json!({"id":model.id,"label":model.label,"revision":model.revision,"license":model.license,
+                let (required, required_with_checkpoint) = if installed { (0, 0) } else if let Some(import) = local_import {
+                    (import.required_bytes, import.required_bytes)
+                } else { model_space(&root, model) };
+                let download_bytes = if installed { 0 } else {
+                    local_import.map_or_else(|| model.files.iter().map(|file| file.bytes).sum::<u64>(), |import| import.download_bytes(model))
+                };
+                let label = if source == Some("local") || local_import.is_some() {
+                    adapters::model(&model.id).and_then(|spec| spec["localPack"]["label"].as_str()).unwrap_or(&model.label)
+                } else { &model.label };
+                json!({"id":model.id,"label":label,"revision":model.revision,"license":model.license,
                     "preparation":if model.conversion_profile.is_some(){"checkpoint-conversion"}else if moss_models::is_moss(model){"moss-checkpoint"}else{"complete-model"},
                     "licenseUrl":model.license_url,"sourceUrl":model.source_url,
                     "checkpointFilename":model.checkpoint_filename,"checkpointOptional":
@@ -240,9 +300,9 @@ impl ControlService {
                         || local_checkpoint
                         || (model.conversion_profile.is_some() && anima_models::input_root(&model_root, model).join("checkpoint.safetensors").is_file()),
                     "requiresAccess":model.requires_access,"family":if image_models::is_video(&model.id) { "video" } else { crate::generation::native::adapters::model(&model.id).and_then(|spec| spec["family"].as_str()).unwrap_or("anima") },
-                    "downloadBytes":model.files.iter().map(|file|file.bytes).sum::<u64>(),"requiredBytes":if local_checkpoint { required_with_checkpoint } else { required },
+                    "localVideoImport":local_import.is_some(),"downloadBytes":download_bytes,"requiredBytes":if local_checkpoint { required_with_checkpoint } else { required },
                     "requiredBytesWithCheckpoint":required_with_checkpoint,
-                    "installed":installed,"path":model_root})
+                    "installed":installed,"localWeights":source == Some("local"),"path":model_root})
             }).collect();
             let model_ready = model_views.iter().any(|value| value["id"] == selected && value["installed"] == true);
             Ok(
@@ -254,11 +314,11 @@ impl ControlService {
                     "downloadBytes":if dedicated {0} else {runtime.download_bytes},"requiredBytes":required,"recoveryReady":recovery_ready,"sources":if dedicated {json!([])} else {json!(runtime.sources)},
                     "installed":runtime_ready,"python":runtime_python},"models":model_views,
                 "resources":image_resources::views(&root, &configured, &service.config.app_root)?,
-                "activeEngine":active_engine,"configuredEngine":configured_engine,"restartRequired":active != &configured,
+                "activeEngine":active_engine,"configuredEngine":configured_engine,"restartRequired":!active.equivalent(&configured),
                 "workspaceMatches":workspace_matches,
                 "steps":{"runtime":if runtime_ready{"installed"}else{"not-downloaded"},
                     "model":if model_ready{"verified"}else{"not-downloaded-or-incomplete"},
-                    "engine":if reasons.is_empty() && active == &configured && active_engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
+                    "engine":if reasons.is_empty() && active.equivalent(&configured) && active_engine == "native" && workspace_matches && model_ready && runtime_ready{"enabled"}else{"not-enabled"}},
                 "validation":"读取组件与安装记录；文件在下载或导入时校验一次，启用不扫描整库"}),
             )
         })

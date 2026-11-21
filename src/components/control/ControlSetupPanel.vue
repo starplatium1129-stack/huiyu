@@ -2,8 +2,8 @@
   <div class="control-panel-stack">
     <div class="setup-engine-switch studio-segments" role="group" aria-label="配置入口">
       <AnimatedSelection />
-      <button type="button" :aria-pressed="mode === 'native'" @click="choose('native')">本机与远程绘图</button>
-      <button type="button" :aria-pressed="mode === 'comfy'" @click="choose('comfy')">ComfyUI · 本地聊天</button>
+      <button type="button" :aria-pressed="mode === 'native'" @click="choose('native')">一键绘图（推荐新手）</button>
+      <button type="button" :aria-pressed="mode === 'comfy'" @click="choose('comfy')">ComfyUI · 本地聊天（进阶）</button>
     </div>
     <div v-if="localVisited" v-show="mode === 'comfy'" class="panel-card">
       <AvailableDrawingModels v-if="mode === 'comfy' && status.imageProvider.value === 'comfy' && !localBusy" provider="comfy" />

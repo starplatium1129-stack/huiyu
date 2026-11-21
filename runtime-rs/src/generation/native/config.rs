@@ -65,11 +65,19 @@ impl Settings {
         }
         let native_loras = root.join("loras");
         let loras_root = native_loras;
+        let fallback_python = {
+            let legacy = root.join(python_relative());
+            if legacy.is_file() {
+                legacy
+            } else {
+                root.join(managed_anima_runtime_id()).join(python_relative())
+            }
+        };
         let python = receipt
             .as_ref()
             .and_then(|(_, value)| value["python"].as_str())
             .map(PathBuf::from)
-            .unwrap_or_else(|| root.join(python_relative()));
+            .unwrap_or(fallback_python);
         let receipt_path = receipt.map(|(path, _)| path);
         (
             Self {
@@ -309,7 +317,7 @@ pub(crate) fn load(config: &Config) -> Result<Settings> {
 fn bundled_worker() -> PathBuf {
     let installed = std::env::current_exe().ok().and_then(|path| {
         path.parent()
-            .map(|root| root.join("tools/inference/worker.py"))
+            .map(|root| root.join("tools").join("inference").join("worker.py"))
     });
     // Packaged machines use only the installed worker. The compile-time source
     // path is a developer convenience, never an installation fallback.
@@ -320,17 +328,60 @@ fn bundled_worker() -> PathBuf {
         PathBuf::from(env!("CARGO_MANIFEST_DIR"))
             .parent()
             .unwrap()
-            .join("tools/inference/worker.py")
+            .join("tools")
+            .join("inference")
+            .join("worker.py")
     })
 }
-fn python_relative() -> &'static str {
+pub(crate) fn python_relative() -> &'static str {
     if cfg!(windows) {
-        "venv/Scripts/python.exe"
+        "venv\\Scripts\\python.exe"
     } else {
         "venv/bin/python"
     }
 }
+pub(crate) fn managed_anima_runtime_id() -> &'static str {
+    static ID: std::sync::LazyLock<String> = std::sync::LazyLock::new(|| {
+        serde_json::from_str::<serde_json::Value>(include_str!(
+            "../../../../tools/inference/managed-runtime.windows-x64.json"
+        ))
+        .ok()
+        .and_then(|value| value["runtimeId"].as_str().map(str::to_owned))
+        .unwrap_or_else(|| "cpython3119-torch280-cu128-v1".into())
+    });
+    ID.as_str()
+}
+fn path_eq(a: &Path, b: &Path) -> bool {
+    crate::file_paths::key(a)
+        .ok()
+        .zip(crate::file_paths::key(b).ok())
+        .is_some_and(|(x, y)| x == y)
+        || a == b
+}
+fn opt_path_eq(a: Option<&PathBuf>, b: Option<&PathBuf>) -> bool {
+    match (a, b) {
+        (Some(x), Some(y)) => path_eq(x, y),
+        (None, None) => true,
+        _ => false,
+    }
+}
 impl Settings {
+    pub(crate) fn equivalent(&self, other: &Self) -> bool {
+        self.engine == other.engine
+            && self.video_engine() == other.video_engine()
+            && self.acceleration == other.acceleration
+            && self.memory_policy == other.memory_policy
+            && self.adapter_memory_policy == other.adapter_memory_policy
+            && path_eq(&self.python, &other.python)
+            && opt_path_eq(self.adapter_python.as_ref(), other.adapter_python.as_ref())
+            && path_eq(&self.worker, &other.worker)
+            && path_eq(&self.models_root, &other.models_root)
+            && path_eq(&self.loras_root, &other.loras_root)
+            && self.remote_url == other.remote_url
+            && self.remote_key == other.remote_key
+            && self.remote_serve == other.remote_serve
+            && self.remote_port == other.remote_port
+    }
     pub(crate) fn anima_model_count(&self) -> usize {
         model_count(&self.models_root)
     }

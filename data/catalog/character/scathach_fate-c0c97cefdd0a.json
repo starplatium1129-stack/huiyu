@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "scathach_fate",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 61,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T18:50:24.006020400+00:00",
   "data": {
     "id": "scathach_fate",
     "profile": {
@@ -20,7 +20,7 @@
       "type": "popular",
       "icon": "🗡️",
       "portrait": {
-        "image": "../assets/characters/popular-scathach_fate.png?v=8cdc145c14f1",
+        "image": "../assets/characters/popular-scathach_fate.png?v=1fb735a7595e",
         "alt": "斯卡哈样张立绘",
         "sourceShowcaseId": "pc_scathach_fate_pc_scathach_fate_scathach_bridal_verdant_vow",
         "sourceShowcaseSha256": "b24af5efdee314fb979e057e8e566036039c22bc8b3e4af007ddf1d44476051a"

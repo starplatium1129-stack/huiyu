@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "firefly_r18_balcony_moonlight_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1872,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "firefly_r18_balcony_moonlight_whisper",
     "characterId": "firefly_hsr",
@@ -23,6 +23,8 @@
     "lighting": "如水般澄澈的银白月光与室内微暗暖灯",
     "camera": "cowboy shot, eye level, intimate framing",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "adult",
       "balcony",
       "curtains",
@@ -49,12 +51,13 @@
       "heavy_blush",
       "night"
     ],
-    "promptProse": "Embracing tightly behind sheer fluttering balcony curtains beneath pure silver moonlight, her dress loosened over pale shoulders as her flushed face lifts toward his in breathless surrender.",
+    "promptProse": "Silver-haired Firefly lifts her face toward the tall, ash-gray-haired Trailblazer while they embrace on the moonlit balcony. Her teal ribbon and pale dress catch the silvery backlight. He wears a dark sleeveless jacket with ochre edging. The sheer curtains part around their two profiles.",
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Her flushed face lifts toward her companion behind the fluttering curtains."
+    "animaCaption": "Silver-haired Firefly lifts her face toward the tall, ash-gray-haired Trailblazer while they embrace on the moonlit balcony. Her teal ribbon and pale dress catch the silvery backlight. He wears a dark sleeveless jacket with ochre edging. The sheer curtains part around their two profiles.",
+    "compositionIntent": "group"
   }
 }

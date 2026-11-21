@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mahiru_kitchen_apron_morning",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1470,
   "createdAt": null,
-  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
+  "updatedAt": "2026-11-21T13:28:00.485193500+00:00",
   "data": {
     "id": "mahiru_kitchen_apron_morning",
     "title": "椎名真昼 · 邻家厨房围裙微烫的早餐",
@@ -29,8 +29,10 @@
       "blonde_hair",
       "gentle_smile"
     ],
-    "promptProse": "Mahiru turns toward sleepy Amane with both hands supporting a tray of tamagoyaki and miso soup. Window light catches the rising steam above the breakfast dishes.",
+    "promptProse": "In the kitchen, blond Mahiru wears a pink ruffled apron and carries a breakfast tray in both hands. She looks over her shoulder at Amane by the doorway. He has short dark hair, wears a loose blue pajama top, and rubs one sleepy eye. Window light catches steam above the tamagoyaki and miso soup.",
     "promptTokens": [
+      "1girl",
+      "1boy",
       "shiina_mahiru",
       "side ponytail",
       "hair scrunchie",
@@ -55,6 +57,6 @@
       "girlfriend"
     ],
     "compositionIntent": "group",
-    "animaCaption": "Both hands support the breakfast tray as she turns toward sleepy Amane."
+    "animaCaption": "Mahiru turns with the breakfast tray, her blond side ponytail falling past her pink apron. Amane, short-haired and wearing a blue pajama top, rubs one eye in the doorway."
   }
 }
