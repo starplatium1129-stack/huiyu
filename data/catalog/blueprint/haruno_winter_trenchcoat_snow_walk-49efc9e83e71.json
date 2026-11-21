@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "haruno_winter_trenchcoat_snow_walk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 372,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "haruno_winter_trenchcoat_snow_walk",
-    "title": "雪之下阳乃 · 冬日长风衣手插口袋的雪街漫步·「手冷吗？……我才不会像高中生那样借手给你呢♪」",
+    "title": "雪之下阳乃 · 冬日长风衣手插口袋的雪街漫步",
     "category": "街头约会",
     "characterId": "yukinoshita_haruno",
     "outfitId": "sfw_winter_trenchcoat_boots",

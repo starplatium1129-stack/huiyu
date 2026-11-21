@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_hair_down_mirror",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2007,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-29T16:34:20.355590400+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfitId": "quiet_silk_robe",
@@ -14,11 +14,11 @@
     "description": "深夜卧室内，憧子独自坐在梳妆镜前，纤手轻轻取下最后一根发簪。如丝缎般的浓密长发如瀑般披散在微敞的雪白丝绸睡袍上，衬得肌肤如雪。她侧倚梳妆台，修长指尖穿过柔顺的发丝，眼波含情地注视着镜中倒映的自己，唇角微扬，流露出毫无保留的妩媚与温柔。",
     "recommendedSize": "832x1216",
     "location": "private bedroom vanity mirror",
-    "action": "taking off hairpin, letting luxuriant hair down over silk robe, fingers running through hair, looking into mirror with alluring gentle grace",
+    "action": "她侧倚梳妆台，修长指尖穿过柔顺的发丝，眼波含情地注视着镜中倒映的自己，唇角微扬",
     "timeOfDay": "night",
     "lighting": "soft bedroom lamp casting warm golden glow",
     "camera": "medium_shot",
-    "mood": "intimate unconditional trust, alluring nocturnal elegance",
+    "mood": "温存与柔媚",
     "promptProse": "Sitting alone before her bedroom vanity mirror at night, Togakushi Touko pulls out her hairpin, letting her luxuriant black hair tumble across her bare collarbone and silk robe. She gently combs fingers through her hair, gazing into the mirror with alluring gentle grace and soft affection.",
     "promptTokens": [
       "togakushi_touko",

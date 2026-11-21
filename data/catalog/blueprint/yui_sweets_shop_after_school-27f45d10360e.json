@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_sweets_shop_after_school",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 355,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yui_sweets_shop_after_school",
     "title": "由比滨结衣 · 放学后的甜品店",
@@ -18,7 +18,7 @@
     "timeOfDay": "afternoon",
     "lighting": "window_light",
     "camera": "medium_portrait",
-    "mood": "joyful",
+    "mood": "明媚欢欣",
     "sceneTags": [
       "dessert_shop",
       "ice_cream",

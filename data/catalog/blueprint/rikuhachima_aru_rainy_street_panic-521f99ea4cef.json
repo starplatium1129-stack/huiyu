@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_rainy_street_panic",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2107,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rikuhachima_aru_rainy_street_panic",
     "characterId": "rikuhachima_aru",
@@ -14,11 +14,11 @@
     "description": "大雨滂沱的后街暗巷，积水倒映着昏黄路灯。任务彻底搞砸的阿露怀抱着浸湿的委托文件箱，双手手忙脚乱地护住账单。看到迎面打伞赶来的老师，这位硬派社长当场破防，眼眶泛着泪花、双颊滚烫通红，露出了灵魂出窍般的招牌绝望颜艺。",
     "recommendedSize": "832x1216",
     "location": "rain-soaked dark city back alley",
-    "action": "clutching wet documents, panicked tears, flustered blush, hilarious panic face",
+    "action": "看到迎面打伞赶来的老师，这位硬派社长当场破防，眼眶泛着泪花、双颊滚烫通红",
     "timeOfDay": "night",
     "lighting": "rain-slicked amber streetlight reflection through downpour",
     "camera": "cowboy_shot",
-    "mood": "hilarious comic panic and endearing helplessness",
+    "mood": "手忙脚乱",
     "promptProse": "In a rain-drenched city alley at night, Rikuhachima Aru clutches damp papers in utter flustered panic, eyes welling with comic tears as she spots the viewer.",
     "promptTokens": [
       "rain",

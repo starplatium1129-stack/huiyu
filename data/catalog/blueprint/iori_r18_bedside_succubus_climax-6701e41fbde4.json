@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iori_r18_bedside_succubus_climax",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 936,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "独自仰卧屈膝，一手抓床单、一手腿间自抚至失神",
     "adult": true,
@@ -24,7 +24,10 @@
     "mood": "极度绝顶",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Iori grips the sheets with one hand, the other between her thighs; her tail rests beside the mattress, clear of her legs. Dim red bedside candlelight meets faint moonlight across the black silk sheets.",
     "promptTokens": [

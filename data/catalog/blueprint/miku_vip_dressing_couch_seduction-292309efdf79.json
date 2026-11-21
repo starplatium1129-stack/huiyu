@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miku_vip_dressing_couch_seduction",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2217,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "miku_vip_dressing_couch_seduction",
     "characterId": "izayoi_miku",
@@ -14,11 +14,11 @@
     "description": "演唱会落幕后的专属贵宾休息室，灯光调成了梦幻的深紫与暖金交织色调。美九侧卧在奢华的天鹅绒长椅上，身上换下了华丽的灵装，穿着一袭轻柔随性的淡紫色露肩针织衫。银紫色的长马尾垂落在光洁如脂的裸肩上，她修长美指轻轻卷着发尾，紫眸流转着摄人心魄的歌姬魅力，含情脉脉地凝视着你。",
     "recommendedSize": "832x1216",
     "location": "private locked VIP dressing suite with plush velvet couch",
-    "action": "reclining on velvet couch in VIP green room, casual lavender off-shoulder knit top, silver-purple hair cascading, twisting hair with finger, alluring diva smile",
+    "action": "银紫色的长马尾垂落在光洁如脂的裸肩上，她修长美指轻轻卷着发尾，紫眸流转着摄人心魄的歌姬魅力",
     "timeOfDay": "night",
     "lighting": "dreamy ambient purple and gold backstage dressing room lights",
     "camera": "cowboy_shot",
-    "mood": "enchanting pop-diva sensuality, intimate backstage confession",
+    "mood": "浪漫温存",
     "promptProse": "Reclining on a plush velvet sofa in her private backstage dressing room, Miku wears a soft lavender off-shoulder knit top. Her silver-purple ponytail spills over bare shoulders as she smiles with irresistible pop-star allure.",
     "promptTokens": [
       "1girl",

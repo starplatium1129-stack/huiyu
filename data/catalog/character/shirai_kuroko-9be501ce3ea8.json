@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirai_kuroko",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 198,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shirai_kuroko",
     "profile": {
@@ -308,19 +308,19 @@
       ],
       "identityProse": "Adult Shirai Kuroko from A Certain Scientific Railgun. Brown twin tails tied with ribbons and brown eyes.",
       "identityTokens": [
-        "shirai_kuroko",
+        "shirai kuroko",
         "brown_hair",
         "twintails",
         "brown_eyes"
       ],
       "characterTokens": [
-        "shirai_kuroko"
+        "shirai kuroko"
       ],
       "copyrightTokens": [
         "toaru_kagaku_no_railgun"
       ],
       "exactTokens": [
-        "shirai_kuroko"
+        "shirai kuroko"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

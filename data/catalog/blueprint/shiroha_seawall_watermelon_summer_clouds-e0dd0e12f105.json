@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiroha_seawall_watermelon_summer_clouds",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2334,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "shiroha_seawall_watermelon_summer_clouds",
     "characterId": "naruse_shiroha",
@@ -14,11 +14,11 @@
     "description": "蔚蓝的海浪一下下拍打着消波块。白羽盘腿坐在防波堤边缘，小口啃着冰镇过的红壤西瓜。看见有人走近，她警惕地鼓起腮帮，却还是递出了一片切好的瓜。",
     "recommendedSize": "832x1216",
     "location": "concrete ocean breakwater embankment against sparkling turquoise sea and puffy cumulus clouds",
-    "action": "sitting cross-legged on seawall, eating a chilled slice of watermelon, turning with guarded yet bashful red eyes",
+    "action": "看见有人走近，她警惕地鼓起腮帮，却还是递出了一片切好的瓜",
     "timeOfDay": "noon",
     "lighting": "dazzling seaside summer sun illuminating pure white hair and ocean foam",
     "camera": "medium_shot",
-    "mood": "pristine island youth, nostalgic Key summer atmosphere, adorable tsundere gap moe",
+    "mood": "傲娇与幽微",
     "promptProse": "Perched on a seaside seawall under summer clouds, white-haired Shiroha eats watermelon, casting a shy tsundere glance with crimson eyes. Clear, intense island sunlight beats down on the concrete seawall, reflecting brilliant white light off breaking waves under billowing cumulus clouds.",
     "promptTokens": [
       "seawall",

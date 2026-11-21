@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiroha_shrine_festival_fried_rice_steam",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2572,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiroha_shrine_festival_fried_rice_steam",
     "title": "鸣濑白羽 · 夏夜神社祭典的特制炒饭",
@@ -12,7 +12,7 @@
     "outfitId": "torishiro_school_uniform",
     "description": "鸣濑神社夏日祭典红灯笼高挂的夜市前，白羽系着白色围裙在铁板灶台前专注翻炒金黄炒饭，锅气蒸腾，小脸被炉火映得微红，认真得令人莞尔。",
     "location": "night festival food stall courtyard beneath strung red paper lanterns and maple trees",
-    "action": "standing behind iron teppan griddle holding cooking spatula, stirring steaming fried rice with serious focused gaze and rosy cheeks",
+    "action": "鸣濑神社夏日祭典红灯笼高挂的夜市前，白羽系着白色围裙在铁板灶台前专注翻炒金黄炒饭，锅气蒸腾",
     "timeOfDay": "夜晚",
     "lighting": "铁板灶火与上方红纸灯笼红晕",
     "camera": "wide medium shot",

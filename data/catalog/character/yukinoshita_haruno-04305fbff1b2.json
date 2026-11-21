@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_haruno",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 115,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yukinoshita_haruno",
     "profile": {
@@ -410,7 +410,7 @@
       ],
       "identityProse": "Haruno Yukinoshita from Oregairu, with shoulder-length black hair and brown eyes.",
       "identityTokens": [
-        "yukinoshita_haruno",
+        "yukinoshita haruno",
         "oregairu",
         "1girl",
         "solo",
@@ -419,7 +419,7 @@
         "brown eyes"
       ],
       "exactTokens": [
-        "yukinoshita_haruno"
+        "yukinoshita haruno"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -447,7 +447,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "yukinoshita_haruno"
+        "yukinoshita haruno"
       ],
       "copyrightTokens": [
         "oregairu"

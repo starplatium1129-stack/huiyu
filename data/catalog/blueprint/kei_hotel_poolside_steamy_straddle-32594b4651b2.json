@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_hotel_poolside_steamy_straddle",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2242,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kei_hotel_poolside_steamy_straddle",
     "characterId": "karuizawa_kei",
@@ -14,11 +14,11 @@
     "description": "无人打扰的度假酒店室内温水泳池，水波倒映着幽蓝的顶灯光芒。惠身穿一袭鲜艳的热带印花比基尼侧坐在池畔白瓷阶梯上，修长白皙的双腿浸在温热池水中。湿漉漉的亚麻色长马尾搭在雪白香肩前，她单手撩起滴水的发丝，微红着脸颊向你眨了眨眼，辣妹特有的时尚自信与私密约会的羞涩完美融合。",
     "recommendedSize": "832x1216",
     "location": "private after-hours resort swimming pool cabana",
-    "action": "sitting on white tiled edge of heated indoor pool, tropical floral bikini, wet ash-blonde ponytail draped over chest, water droplets glistening on bare skin, playful blushing wink",
+    "action": "湿漉漉的亚麻色长马尾搭在雪白香肩前，她单手撩起滴水的发丝，微红着脸颊向你眨了眨眼",
     "timeOfDay": "night",
     "lighting": "cool blue underwater pool lamps combined with warm tropical perimeter lighting",
     "camera": "cowboy_shot",
-    "mood": "fashionable gyaru charm, playful romantic confidence",
+    "mood": "温存与俏皮",
     "promptProse": "Perched on the tiled edge of an indoor heated pool at night, Karuizawa Kei wears a stylish floral bikini. Droplets glisten on her collarbones as she playfully twists a strand of wet blonde hair with a flirty blush.",
     "promptTokens": [
       "1girl",

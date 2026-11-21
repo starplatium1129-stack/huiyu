@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_shadow_gazebo_teatime_ledger_pride",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2548,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "epsilon_shadow_gazebo_teatime_ledger_pride",
     "title": "厄普西隆 · 四越顶层花园的账目呈阅",
@@ -12,7 +12,7 @@
     "outfitId": "piano_teacher_blouse",
     "description": "商会顶层空中花园藤蔓凉亭下，白瓷茶具与三层点心架齐备。厄普西隆双手捧着装帧精致的商会盈利账本，微昂下巴向暗影自豪汇报。",
     "location": "rooftop greenhouse conservatory terrace covered in blooming wisteria and roses",
-    "action": "seated at wrought iron tea table presenting open gold-leaf account ledger, tilting head proudly with an arrogant yet affectionate smile",
+    "action": "双手捧着装帧精致的商会盈利账本，微昂下巴向暗影自豪汇报",
     "timeOfDay": "下午",
     "lighting": "花藤筛落的明媚午后阳光",
     "camera": "wide medium shot",

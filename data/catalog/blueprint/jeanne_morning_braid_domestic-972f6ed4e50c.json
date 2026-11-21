@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "jeanne_morning_braid_domestic",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 234,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "jeanne_morning_braid_domestic",
-    "title": "圣女贞德 · 晨间梳辫的居家温存·「发辫……就交给你来编好不好？」",
+    "title": "圣女贞德 · 晨间梳辫的居家温存",
     "category": "居家日常",
     "characterId": "jeanne_d_arc",
     "description": "晨光里，贞德披散着从未在人前解开的金色长发坐在窗边椅上，把一柄木梳递到你手里，脸颊微红地垂下眼——「在军中都是自己编的……不过，既然你说了想试试……」及腰的金发在晨光里流淌成蜜色的河，她安静地坐着，耳朵却悄悄红了，那是圣女才允许自己露出的一点点任性。",

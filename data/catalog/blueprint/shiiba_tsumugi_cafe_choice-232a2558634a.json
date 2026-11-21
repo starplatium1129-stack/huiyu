@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_cafe_choice",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2412,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_cafe_choice",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "日常休息",
     "description": "咖啡馆的点心柜里只剩两块蛋糕。紬在玻璃前来回看了好几次，最后指向带草莓的那一块。",
     "location": "cafe",
-    "action": "pointing at a strawberry cake in a display case",
+    "action": "紬在玻璃前来回看了好几次，最后指向带草莓的那一块",
     "timeOfDay": "afternoon",
     "lighting": "warm indoor light",
     "camera": "medium shot",

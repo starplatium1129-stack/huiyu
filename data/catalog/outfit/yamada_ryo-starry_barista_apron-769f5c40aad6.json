@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "yamada_ryo/starry_barista_apron",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1567,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:21:50.959179600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "yamada_ryo",
     "outfit": {
       "id": "starry_barista_apron",
-      "name": "STARRY冷峻修身黑衬衫与吧台短裙围裙",
+      "name": "STARRY · 黑衬衫与围裙",
       "tokens": [
         "collared_shirt",
         "grey_shirt",

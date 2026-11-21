@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "gotoh_hitori",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 66,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "gotoh_hitori",
     "profile": {
@@ -81,7 +81,7 @@
       "speech": "那、那个……我是结束乐队的吉他手后藤一里……请多关照……！",
       "source": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
       "traits": [
-        "gotoh_hitori",
+        "gotoh hitori",
         "1girl",
         "solo",
         "pink_hair",
@@ -273,7 +273,7 @@
       ],
       "identityProse": "Adult Gotoh Hitori (Bocchi) from Bocchi the Rock!, with long messy pink hair, a blue-and-yellow cubic hair clip and aqua-blue eyes.",
       "identityTokens": [
-        "gotoh_hitori",
+        "gotoh hitori",
         "1girl",
         "solo",
         "pink_hair",
@@ -284,7 +284,7 @@
         "bocchi_the_rock!"
       ],
       "exactTokens": [
-        "gotoh_hitori"
+        "gotoh hitori"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -318,7 +318,7 @@
         "kantoku"
       ],
       "characterTokens": [
-        "gotoh_hitori"
+        "gotoh hitori"
       ],
       "copyrightTokens": [
         "bocchi_the_rock!"

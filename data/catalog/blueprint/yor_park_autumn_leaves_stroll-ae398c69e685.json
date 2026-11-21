@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_park_autumn_leaves_stroll",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 806,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yor_park_autumn_leaves_stroll",
     "characterId": "yor_forger",
@@ -48,7 +48,7 @@
     "timeOfDay": "afternoon",
     "lighting": "soft afternoon side light",
     "camera": "medium shot, three-quarter view, seated environmental portrait",
-    "mood": "calm",
+    "mood": "恬淡平静",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"

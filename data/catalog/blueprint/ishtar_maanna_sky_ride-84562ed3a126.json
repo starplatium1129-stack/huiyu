@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ishtar_maanna_sky_ride",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 253,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ishtar_maanna_sky_ride",
-    "title": "伊什塔尔 · 天舟玛安娜的巡空·「看好了，这就是女神的领空」",
+    "title": "伊什塔尔 · 天舟玛安娜的巡空",
     "category": "战斗高光",
     "characterId": "ishtar_fate",
     "description": "白色天舟Maanna掠过云层，伊什塔尔稳稳站在前端，一手叉腰俯瞰远方的山脊。金色耳环与王冠在阳光下闪耀，黑色双侧束发随风扬起。她回头得意地招呼同行者欣赏这片高空景色。",

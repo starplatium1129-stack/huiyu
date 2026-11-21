@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_ichika",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 186,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "nakano_ichika",
     "profile": {
@@ -85,7 +85,7 @@
       "speech": "呵呵，作为大姐姐，偶尔也是需要依靠一下别人的嘛……不过要是被妹妹们看到我这副模样，可是会很丢脸的哦♪",
       "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
       "traits": [
-        "nakano_ichika",
+        "nakano ichika",
         "1girl",
         "solo",
         "short_hair",
@@ -338,7 +338,7 @@
       ],
       "identityProse": "Adult Nakano Ichika from The Quintessential Quintuplets, a mature, teasing, and empathetic older sister with short asymmetrical pinkish-lavender hair, a single dangling earring on her right ear, captivating blue eyes, and an affectionate yet teasing smile.",
       "identityTokens": [
-        "nakano_ichika",
+        "nakano ichika",
         "1girl",
         "solo",
         "short_hair",
@@ -350,7 +350,7 @@
         "5-toubun_no_hanayome"
       ],
       "exactTokens": [
-        "nakano_ichika"
+        "nakano ichika"
       ],
       "exactPrefixes": [
         "ichika_"
@@ -386,7 +386,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "nakano_ichika"
+        "nakano ichika"
       ],
       "copyrightTokens": [
         "5-toubun_no_hanayome"

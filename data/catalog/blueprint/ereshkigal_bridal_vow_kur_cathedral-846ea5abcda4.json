@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_bridal_vow_kur_cathedral",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 270,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ereshkigal_bridal_vow_kur_cathedral",
-    "title": "埃列什基伽勒 · 冥界花嫁的誓约·「连死亡都拆不散的契约」",
+    "title": "埃列什基伽勒 · 冥界花嫁的誓约",
     "category": "圣洁花嫁",
     "characterId": "ereshkigal_fate",
     "description": "【冥界大圣堂·婚礼日】连神都很少踏足的冥界深处，今天亮起了婚礼的烛光。埃列什基伽勒披着白纱站在圣堂中央，金发王冠与白纱相映，红瞳里的泪光胜过所有魂火——「冥界的女王结婚……连死神都会来观礼的吧。这份契约的效力是——直到永远。连死亡，都拆不散哦。」",

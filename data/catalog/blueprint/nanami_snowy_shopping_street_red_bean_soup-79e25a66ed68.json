@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nanami_snowy_shopping_street_red_bean_soup",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2605,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "nanami_snowy_shopping_street_red_bean_soup",
     "title": "青山七海 · 雪夜归途的一杯关西甜汤",
@@ -12,7 +12,7 @@
     "outfitId": "suimei_school_uniform",
     "description": "鹅毛大雪纷飞的水明商业街冬夜，红灯笼与店铺暖光打在积雪砖道上。七海与身旁的人共围一条长围巾，双手捧着热呼呼的红豆汤罐头，呵出白气忍不住说起家乡关西腔。",
     "location": "snow-blanketed suburban shopping street illuminated by warm shop windows and streetlamps",
-    "action": "walking together sharing a woolen knit scarf, cradling a steaming canned soup with both hands, cheeks flushed from cold and embarrassment",
+    "action": "七海与身旁的人共围一条长围巾，双手捧着热呼呼的红豆汤罐头，呵出白气忍不住说起家乡关西腔",
     "timeOfDay": "夜晚",
     "lighting": "街边暖黄路灯与雪地洁白反光",
     "camera": "wide shot, landscape composition",

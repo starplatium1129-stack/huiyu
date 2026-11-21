@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_sunset_classroom_hidden_diary",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2538,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "beta_shadow_sunset_classroom_hidden_diary",
     "title": "贝塔 · 黄昏课桌间的藏匿手札",
@@ -12,7 +12,7 @@
     "outfitId": "student_disguise_uniform",
     "description": "空无一人的学院教室后排窗边，橙红夕照拉长课桌阴影。学妹装扮的贝塔将写满暗影大人的秘密日记慌乱藏入书包，脸颊绯红。",
     "location": "empty sunlit classroom by tall wooden framed window overlooking courtyard",
-    "action": "standing hurriedly by classroom desk, tucking an embossed leather diary into satchel with flushed cheeks and wide flustered eyes",
+    "action": "将写满暗影大人的秘密日记慌乱藏入书包，脸颊绯红",
     "timeOfDay": "黄昏",
     "lighting": "窗棂透入的浓郁黄昏暖金光",
     "camera": "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yamada_ryo",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 177,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yamada_ryo",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "与其为了迎合大多数人而写出平庸廉价的旋律，我宁可一辈子在路边嚼野草……波奇，不要丢掉你内心的阴暗，把它全部化作摇滚砸向这个世界吧。还有，今天的便当分我一半。",
       "source": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
       "traits": [
-        "yamada_ryo",
+        "yamada ryo",
         "1girl",
         "solo",
         "blue_hair",
@@ -276,7 +276,7 @@
       ],
       "identityProse": "Adult Yamada Ryo from Bocchi the Rock!, an aloof, eccentric, and effortlessly cool high school bassist with layered indigo-blue shaggy hair, a beauty mark under her left eye, cool amber-yellow eyes, a subtle hair clip on the side, and a languid androgynous charm.",
       "identityTokens": [
-        "yamada_ryo",
+        "yamada ryo",
         "1girl",
         "solo",
         "blue_hair",
@@ -288,7 +288,7 @@
         "bocchi_the_rock!"
       ],
       "exactTokens": [
-        "yamada_ryo"
+        "yamada ryo"
       ],
       "exactPrefixes": [
         "ryo_"
@@ -324,7 +324,7 @@
         "kantoku"
       ],
       "characterTokens": [
-        "yamada_ryo"
+        "yamada ryo"
       ],
       "copyrightTokens": [
         "bocchi_the_rock!"

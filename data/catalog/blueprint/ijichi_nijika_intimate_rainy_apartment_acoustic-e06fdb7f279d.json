@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_intimate_rainy_apartment_acoustic",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2026,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T16:28:17.343223400+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfitId": "cream_home_tshirt",
@@ -14,11 +14,11 @@
     "description": "暴雨倾盆的周末深夜，下北泽的小小合租公寓里洋溢着安宁。虹夏身着宽松落肩的奶白居家T恤，光着小脚丫席地盘坐在木地板上，怀里抱着把原声木吉他轻轻拨动琴弦。看到少年走过来，她拍了拍身旁的软垫，笑眼弯弯地哼出只属于两人的温柔旋律。",
     "recommendedSize": "832x1216",
     "location": "cozy wooden apartment living room",
-    "action": "sitting barefoot on floor, holding acoustic guitar, humming softly",
+    "action": "看到少年走过来，她拍了拍身旁的软垫，笑眼弯弯地哼出只属于两人的温柔旋律",
     "timeOfDay": "night",
     "lighting": "gentle warm living room lamp against rainy window",
     "camera": "medium_shot",
-    "mood": "serene heartfelt everyday melody",
+    "mood": "宁静祥和",
     "promptProse": "Sitting barefoot on the warm wooden floor of her cozy apartment during a rainy evening, Ijichi Nijika cradles an acoustic guitar in an oversized cream t-shirt. She plucks the strings softly, smiling up at the viewer with an inviting, gentle melody.",
     "promptTokens": [
       "ijichi_nijika",

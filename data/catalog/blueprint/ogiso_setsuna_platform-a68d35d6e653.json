@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_platform",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2375,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ogiso_setsuna_platform",
     "characterId": "ogiso_setsuna",
@@ -13,7 +13,7 @@
     "category": "城市日常",
     "description": "列车还没到站，雪菜看了一眼手机里的消息，抬头望向轨道另一端。",
     "location": "train platform",
-    "action": "holding a phone and looking down the tracks",
+    "action": "列车还没到站，雪菜看了一眼手机里的消息，抬头望向轨道另一端",
     "timeOfDay": "evening",
     "lighting": "platform lights",
     "camera": "medium shot",

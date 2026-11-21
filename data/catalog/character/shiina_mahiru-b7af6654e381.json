@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mahiru",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 112,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shiina_mahiru",
     "profile": {
@@ -221,7 +221,7 @@
       ],
       "identityProse": "Mahiru Shiina from The Angel Next Door, with waist-length flaxen-blonde hair and amber-gold eyes.",
       "identityTokens": [
-        "shiina_mahiru_(otonari_no_tenshi-sama)",
+        "shiina mahiru (otonari no tenshi-sama)",
         "otonari_no_tenshi-sama_ni_itsunomanika_dame_ningen_ni_sareteita_ken",
         "1girl",
         "solo",
@@ -230,7 +230,7 @@
         "amber eyes"
       ],
       "exactTokens": [
-        "shiina_mahiru_(otonari_no_tenshi-sama)"
+        "shiina mahiru (otonari no tenshi-sama)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -258,7 +258,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "shiina_mahiru_(otonari_no_tenshi-sama)"
+        "shiina mahiru (otonari no tenshi-sama)"
       ],
       "copyrightTokens": [
         "otonari_no_tenshi-sama_ni_itsunomanika_dame_ningen_ni_sareteita_ken"

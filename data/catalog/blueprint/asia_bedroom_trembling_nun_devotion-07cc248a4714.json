@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_bedroom_trembling_nun_devotion",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2235,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "asia_bedroom_trembling_nun_devotion",
     "characterId": "asia_argento",
@@ -14,11 +14,11 @@
     "description": "静谧寝室内点着几支柔和的香氛蜡烛，月光与烛火交织出安宁的暖色。爱西亚换上一袭纯白棉质轻纱睡裙，双手交叠放在胸前捧着小巧的银质十字架。金黄色的柔顺短发在烛光下熠熠生辉，翠绿的眼眸盛满了对心上人的无限依恋与毫无杂质的纯洁信任，脸颊微红，宛如降临凡间的小小圣女。",
     "recommendedSize": "832x1216",
     "location": "quiet candlelit bedroom with fluttering sheer curtains",
-    "action": "sitting peacefully on bed in white cotton nightdress, hands clasped gently over chest holding cross, candlelight reflecting in soft green eyes, pure innocent blushing smile",
+    "action": "换上一袭纯白棉质轻纱睡裙",
     "timeOfDay": "night",
     "lighting": "warm flickering candlelight creating an angelic halo of golden light",
     "camera": "medium_shot",
-    "mood": "serene saintly devotion, pure innocent spiritual beauty",
+    "mood": "宁静与神圣",
     "promptProse": "Sitting quietly on a bed surrounded by warm candlelight, Asia Argento wears a simple white cotton nightdress. Her hands rest over her heart holding a cross pendant, smiling with pure, angelic innocence.",
     "promptTokens": [
       "1girl",

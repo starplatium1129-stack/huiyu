@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_lavender_onsen",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2005,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfitId": "evening_robe",
@@ -14,11 +14,11 @@
     "description": "热气蒸腾的露天私汤木桶中，飘浮着淡紫色的薰衣草干花。憧子学姐浸泡在温热的泉水中，水汽将她白皙的面颊蒸腾得宛如盛开的花瓣。她转过身来，长发挽在胸前，眼波流转中尽显成熟学姐罕见的妩媚与羞怯。",
     "recommendedSize": "832x1216",
     "location": "private outdoor lavender hot spring",
-    "action": "soaking in onsen, looking back over shoulder, steam rising",
+    "action": "她转过身来，长发挽在胸前，眼波流转中尽显成熟学姐罕见的妩媚与羞怯",
     "timeOfDay": "night",
     "lighting": "soft wooden lanterns through thick warm mist",
     "camera": "medium_shot",
-    "mood": "steamy elegant sensuality",
+    "mood": "端庄与水光",
     "promptProse": "Soaking peacefully in a secluded outdoor cedar hot spring infused with lavender blossoms, Togakushi Touko looks back through warm rising mist. The crystal water glistens on her bare shoulders and collarbones under the gentle glow of paper lanterns.",
     "promptTokens": [
       "togakushi_touko",

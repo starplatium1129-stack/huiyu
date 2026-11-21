@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nanami_convenience_store_night_shift_end_sigh",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2606,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "nanami_convenience_store_night_shift_end_sigh",
     "title": "青山七海 · 便利店深夜换班的揉肩微笑",
@@ -12,7 +12,7 @@
     "outfitId": "suimei_school_uniform",
     "description": "深夜空荡荡的便利店门前，白炽灯照亮结霜的玻璃橱窗。刚刚结束超长打工换下工装的七海轻轻揉捏着酸痛的肩膀，看见前来接她的你，眼神里满是释怀与纯粹的温柔。",
     "location": "outside a brightly lit convenience store entrance at quiet midnight with glowing glass windows",
-    "action": "massaging her own shoulder with one hand while holding school bag, exhaling softly with relieved tender amber eyes",
+    "action": "刚刚结束超长打工换下工装的七海轻轻揉捏着酸痛的肩膀，看见前来接她的你",
     "timeOfDay": "夜晚",
     "lighting": "便利店橱窗倾泻而出的白炽明光与夜色反差",
     "camera": "cowboy shot",

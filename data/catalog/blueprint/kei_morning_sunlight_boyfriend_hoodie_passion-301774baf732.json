@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_morning_sunlight_boyfriend_hoodie_passion",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2243,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kei_morning_sunlight_boyfriend_hoodie_passion",
     "characterId": "karuizawa_kei",
@@ -14,11 +14,11 @@
     "description": "假日清晨明亮的阳光漫过床头柜，惠只穿着一件宽大松垮的深色连帽卫衣，衣领歪斜滑落，露出大片白皙细腻的香肩与精致锁骨。亚麻色长发蓬松散乱，她慵懒地盘腿坐在纯白床铺上，双手拉着过长的袖口捂在嘴边偷笑，双眼弯成了月牙，洋溢着被全然宠溺包裹的无尽幸福。",
     "recommendedSize": "832x1216",
     "location": "warm morning bedroom with rumpled white duvet",
-    "action": "sitting cross-legged on white bed in oversized dark hoodie slipping off shoulder, long sleeves covering hands, tousled wavy blonde hair, bare legs, giggling behind sleeves with rosy cheeks",
+    "action": "亚麻色长发蓬松散乱，她慵懒地盘腿坐在纯白床铺上，双手拉着过长的袖口捂在嘴边偷笑",
     "timeOfDay": "morning",
     "lighting": "bright morning sunbeams filling the entire bedroom with cheerful warmth",
     "camera": "medium_shot",
-    "mood": "pampered girlfriend bliss, effortlessly cute domestic intimacy",
+    "mood": "温存与治愈",
     "promptProse": "Sitting cross-legged on a sunny bed in an oversized boyfriend hoodie slipping off one shoulder, Kei giggles behind extra-long sleeves. Her bare legs and tousled blonde hair glow warmly in the morning sun.",
     "promptTokens": [
       "1girl",

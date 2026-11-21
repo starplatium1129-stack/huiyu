@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hu_tao",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 70,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "hu_tao",
     "profile": {
@@ -377,7 +377,7 @@
       ],
       "identityProse": "Hu Tao from Genshin Impact, with long walnut-brown twintails fading to crimson tips and red eyes with blossom-shaped pupils.",
       "identityTokens": [
-        "hu_tao (genshin impact)",
+        "hu tao (genshin impact)",
         "1girl",
         "solo",
         "brown_hair",
@@ -388,7 +388,7 @@
         "genshin_impact"
       ],
       "exactTokens": [
-        "hu_tao (genshin impact)"
+        "hu tao (genshin impact)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -420,7 +420,7 @@
         "ask_(askzy)"
       ],
       "characterTokens": [
-        "hu_tao (genshin impact)"
+        "hu tao (genshin impact)"
       ],
       "copyrightTokens": [
         "genshin_impact"

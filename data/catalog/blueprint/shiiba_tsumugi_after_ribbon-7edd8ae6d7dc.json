@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_after_ribbon",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2491,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_after_ribbon",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "契约结束后的休息日，紬把新挑的缎带放到镜前，试了两次才系好。她转身看向你，故作镇定地问：“真的好看吗？”等听到回答，她才笑着把手递过来。",
     "location": "dressing room mirror",
-    "action": "adjusting a hair ribbon and turning toward her partner",
+    "action": "在镜前系好缎带转身询问，笑着把手递出",
     "timeOfDay": "afternoon",
     "lighting": "window light",
     "camera": "medium shot",

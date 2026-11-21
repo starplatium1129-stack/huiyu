@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_white_ribbon_bedroom_timid_plea",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2253,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kotori_white_ribbon_bedroom_timid_plea",
     "characterId": "kotori_itsuka",
@@ -14,11 +14,11 @@
     "description": "夕阳退去的静谧卧室内，琴里换上了纯真的白缎带发饰，解除了司令官模式的强硬伪装。她穿着一件轻柔宽松的粉白色棉质卫衣睡裙坐在床单中央，长长的红色双马尾搭在娇小的肩头。少女双手紧紧抓着裙摆，双颊泛着如草莓糖般的绯红，红宝石般的双眸泛着湿润的波光，羞怯又依恋地抬头注视着前方的视线。",
     "recommendedSize": "832x1216",
     "location": "quiet pastel-toned bedroom with fluffy plushies",
-    "action": "sitting on bed in oversized hoodie sleepwear dress, wearing white hair ribbons, long red twintails draped over shoulders, hands clutching hem, bare legs, heavy shy blush, wide glistening red eyes looking at viewer",
+    "action": "少女双手紧紧抓着裙摆，双颊泛着如草莓糖般的绯红，红宝石般的双眸泛着湿润的波光",
     "timeOfDay": "night",
     "lighting": "soft warm sunset glow fading into gentle bedroom lamp light",
     "camera": "medium_shot",
-    "mood": "pure innocent sisterly devotion, heart-fluttering bashfulness",
+    "mood": "神圣纯洁",
     "promptProse": "Sitting on her bed in an oversized pastel hoodie loungewear dress with white ribbons in her red twintails, Kotori Itsuka clutches her hem shyly. Her ruby eyes glisten with pure, innocent affection as her cheeks flush bright crimson.",
     "promptTokens": [
       "1girl",

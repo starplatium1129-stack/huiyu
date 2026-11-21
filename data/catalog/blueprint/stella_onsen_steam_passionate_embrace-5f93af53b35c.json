@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_onsen_steam_passionate_embrace",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 2188,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "stella_onsen_steam_passionate_embrace",
     "characterId": "stella_vermillion",
@@ -14,11 +14,11 @@
     "description": "深山温泉旅馆的私人露天浴池，周围枫叶如火。史黛菈浸泡在腾起白茫茫水汽的温泉水中，湿透的深红秀发贴在光洁玉背与丰满胸口前。水波泛着微光，热气将她雪白的肌肤蒸得如晚霞般绯红娇艳。她单手掬起一捧温水，转头看向岸边，眼神中透着皇女特有的骄傲与极尽深情。",
     "recommendedSize": "832x1216",
     "location": "secluded private outdoor hot spring bath surrounded by rocks",
-    "action": "soaking in steaming outdoor hot spring, wet crimson hair clinging to bare shoulders, maple leaves floating, water droplets on flushed skin, proud yet blushing gaze at viewer",
+    "action": "在温泉水汽中倚着青石，深红秀发贴在肩胸，回眸凝望爱人",
     "timeOfDay": "afternoon",
     "lighting": "dappled sunlight through red autumn leaves hitting steamy water surface",
     "camera": "cowboy_shot",
-    "mood": "vibrant passionate beauty, secluded autumn warmth",
+    "mood": "热烈温存",
     "promptProse": "Soaking in a steamy outdoor hot spring surrounded by scarlet maple leaves, Stella looks back with damp crimson hair. Water ripples around her bare shoulders as her skin glows warmly in the autumn light.",
     "promptTokens": [
       "1girl",

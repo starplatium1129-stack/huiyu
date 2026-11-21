@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "isshiki_iroha",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 114,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "isshiki_iroha",
     "profile": {
@@ -414,7 +414,7 @@
       ],
       "identityProse": "Iroha Isshiki from Oregairu, with shoulder-length honey-brown hair, side-swept bangs and hazel-brown eyes.",
       "identityTokens": [
-        "isshiki_iroha",
+        "isshiki iroha",
         "oregairu",
         "1girl",
         "solo",
@@ -424,7 +424,7 @@
         "brown_eyes"
       ],
       "exactTokens": [
-        "isshiki_iroha"
+        "isshiki iroha"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -452,7 +452,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "isshiki_iroha"
+        "isshiki iroha"
       ],
       "copyrightTokens": [
         "oregairu"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sumizome_nozomi",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 191,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sumizome_nozomi",
     "profile": {
@@ -305,20 +305,20 @@
       ],
       "identityProse": "Adult Sumizome Nozomi from Cafe Stella and the Reapers' Butterflies. A warm light-brown bob, small side hair ribbons, and blue eyes.",
       "identityTokens": [
-        "sumizome_nozomi",
+        "sumizome nozomi",
         "light_brown_hair",
         "short_hair",
         "bob_cut",
         "blue_eyes"
       ],
       "characterTokens": [
-        "sumizome_nozomi"
+        "sumizome nozomi"
       ],
       "copyrightTokens": [
         "kissa_stella_to_shinigami_no_chou"
       ],
       "exactTokens": [
-        "sumizome_nozomi"
+        "sumizome nozomi"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

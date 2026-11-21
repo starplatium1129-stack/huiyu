@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_cafe_apron_morning_baking",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2648,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sumizome_nozomi_cafe_apron_morning_baking",
     "characterId": "sumizome_nozomi",
@@ -14,11 +14,11 @@
     "description": "晨光柔和的咖啡馆操作间内飘溢着刚出炉烤饼的奶油香气。希系着浅黄色围裙，袖口挽至臂弯，露出如白玉般细腻的小臂。她捧着刚出炉的精美点心转过身，黑瞳中盛满了晨曦暖意与毫无保留的宠溺微笑，脸颊上还可爱地带着一小抹面粉。",
     "recommendedSize": "832x1216",
     "location": "bright cozy bakery preparation kitchen with warm wooden counters",
-    "action": "holding tray of freshly baked pastries in sunlit cafe kitchen, yellow apron tied neatly, flour smudge on blushing cheek, sweet welcoming smile",
+    "action": "她捧着刚出炉的精美点心转过身，黑瞳中盛满了晨曦暖意与毫无保留的宠溺微笑",
     "timeOfDay": "morning",
     "lighting": "warm cheerful morning sunlight flooding through kitchen glass",
     "camera": "cowboy_shot",
-    "mood": "heartwarming sweet domesticity, endearing devoted affection",
+    "mood": "温存与神圣",
     "promptProse": "Standing in a sunlit bakery kitchen, Nozomi holds a tray of fresh golden pastries with an apron tied over a simple top. A touch of white flour dots her blushing cheek as she offers a warm, affectionate smile.",
     "promptTokens": [
       "1girl",

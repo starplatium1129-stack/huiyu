@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "ptilopsis_arknights/gold_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2251,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "ptilopsis_arknights",
     "outfit": {
       "id": "gold_lace_lingerie",
-      "name": "矩阵协议 · 冰灰透气几何网纱吊带连体衣",
+      "name": "矩阵协议 · 几何网纱吊带连体衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

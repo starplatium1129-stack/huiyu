@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_r18_bath_mirror_name",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2839,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "gamma_shadow_r18_bath_mirror_name",
     "characterId": "gamma_shadow",
@@ -49,7 +49,9 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "hand between legs"
+      "hand between legs",
+      "nipples",
+      "pussy"
     ],
     "nsfwProse": "",
     "animaCaption": "The richest woman in the kingdom keeps one ledger off the books — written in steam, erased by morning. Diffused warm bathroom lighting pierces the swirling aromatic steam, casting soft golden highlights across her wet skin and the condensation on the mirror."

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_study_glasses_focus",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1970,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_itsuki_study_glasses_focus",
     "title": "中野五月 · 深夜书桌前的专注题海",
@@ -13,11 +13,11 @@
     "description": "深夜静谧的书桌前，台灯柔和的光晕笼罩着摊开的模拟试卷。戴着黑框眼镜的五月一手按着笔记本一手转着水笔，神情坚毅认真地攻克考题。",
     "recommendedSize": "832x1216",
     "location": "quiet late-night study desk",
-    "action": "studying at desk, wearing glasses, pen in mouth, focused frown",
+    "action": "戴着黑框眼镜的五月一手按着笔记本一手转着水笔，神情坚毅认真地攻克考题",
     "timeOfDay": "night",
     "lighting": "focused warm desk lamp spotlight",
     "camera": "medium_shot",
-    "mood": "diligent focused determination",
+    "mood": "专注坚毅",
     "promptProse": "Late at night in her bedroom, Nakano Itsuki studies earnestly at a wooden desk under a glowing desk lamp. Wearing delicate half-rim glasses, she rests a pen against her lower lip with deep concentration, textbooks stacked around her.",
     "promptTokens": [
       "bedroom",

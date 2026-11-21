@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "irisu_makina",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 171,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "irisu_makina",
     "profile": {
@@ -88,7 +88,7 @@
       "speech": "爸爸！莳菜今天在靶场把十个靶子全都轰碎成渣渣了哦！快点摸摸莳菜的头，今晚还要吃三斤特大号烤肉！",
       "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
       "traits": [
-        "irisu_makina",
+        "irisu makina",
         "1girl",
         "solo",
         "pink_hair",
@@ -536,7 +536,7 @@
       ],
       "identityProse": "Irisu Makina from Grisaia by Frontwing, the cherubic yet deadly sniper heroine of Mihama Academy with knee-length candy-pink hair styled in loose low pigtails, a prominent quirky ahoge bouncing on her crown, expressive amber-brown eyes, petite and slender feminine frame, endearing childlike innocence masking ruthless precision marksmanship, calling Yuuji her 'Papa' with unfiltered eccentric vocabulary.",
       "identityTokens": [
-        "irisu_makina",
+        "irisu makina",
         "1girl",
         "solo",
         "pink_hair",
@@ -549,7 +549,7 @@
         "grisaia_(series)"
       ],
       "exactTokens": [
-        "irisu_makina"
+        "irisu makina"
       ],
       "exactPrefixes": [
         "makina_"
@@ -583,7 +583,7 @@
         "watermark"
       ],
       "characterTokens": [
-        "irisu_makina"
+        "irisu makina"
       ],
       "copyrightTokens": [
         "grisaia_(series)"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_shadow_spire_rooftop_thread_slashes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2549,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "epsilon_shadow_spire_rooftop_thread_slashes",
     "title": "厄普西隆 · 哥特尖塔之巅的月夜罗网",
@@ -12,7 +12,7 @@
     "outfitId": "slime_bodysuit",
     "description": "巨大血色圆月悬挂在王都哥特钟塔后方。厄普西隆卓立在滴水兽雕像上，十指弹动布下漫天交错的深紫魔力斩击丝线，目光睥睨冷酷。",
     "location": "gothic cathedral gargoyle spire overlooking a sprawling moonlit fantasy city",
-    "action": "perched atop a carved stone gargoyle high above capital, manipulating glowing purple magic threads spreading across sky, haughty lethal smile",
+    "action": "卓立在滴水兽雕像上，十指弹动布下漫天交错的深紫魔力斩击丝线，目光睥睨冷酷",
     "timeOfDay": "夜晚",
     "lighting": "巨月冷辉与魔力丝线紫芒",
     "camera": "wide cinematic landscape",

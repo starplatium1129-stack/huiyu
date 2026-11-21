@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_beach_volleyball_spike_sunlight",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2597,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "lemon_beach_volleyball_spike_sunlight",
     "title": "烧盐柠檬 · 碧海热浪里的沙排飞身重扣",
@@ -12,7 +12,7 @@
     "outfitId": "summer_citrus_yellow_bikini",
     "description": "三河湾蔚蓝海岸的洁白沙滩排球网前，浪花飞溅。身穿亮黄运动比基尼的柠檬高高跃起凌空暴扣，健硕小麦色身躯在烈日下划出充满力量感的流线，阳光明澈耀眼。",
     "location": "sun-drenched ocean beach volleyball court with crashing turquoise waves in background",
-    "action": "leaping dynamically high above volleyball net, arm drawn back to spike ball with ferocious athletic force, joyful competitive yell",
+    "action": "身穿亮黄运动比基尼的柠檬高高跃起凌空暴扣，健硕小麦色身躯在烈日下划出充满力量感的流线",
     "timeOfDay": "白天",
     "lighting": "热带烈阳直射与沙滩白光耀斑",
     "camera": "wide dynamic action shot",

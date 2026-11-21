@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shirogane_kei",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 146,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shirogane_kei",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Kaguya-sama: Love Is War",
       "speech": "这次的结余，比预计还多一点。",
       "traits": [
-        "shirogane_kei",
+        "shirogane kei",
         "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
         "grey_hair",
         "long_hair",
@@ -332,13 +332,13 @@
       "displayName": "白银圭",
       "exactPrefixes": [],
       "exactTokens": [
-        "shirogane_kei"
+        "shirogane kei"
       ],
       "franchise": "Kaguya-sama: Love Is War",
       "id": "shirogane_kei",
       "identityProse": "Kei Shirogane from Kaguya-sama: Love Is War, with long straight silver-grey hair, blue eyes and a black headband.",
       "identityTokens": [
-        "shirogane_kei",
+        "shirogane kei",
         "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~",
         "grey hair",
         "long hair",
@@ -371,7 +371,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "shirogane_kei",
+        "shirogane kei",
         "Kei Shirogane"
       ],
       "copyrightTokens": [

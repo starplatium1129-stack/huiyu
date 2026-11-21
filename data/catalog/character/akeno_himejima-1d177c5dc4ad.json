@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akeno_himejima",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 98,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "akeno_himejima",
     "profile": {
@@ -579,7 +579,7 @@
       ],
       "identityProse": "Akeno Himejima from High School DxD, with very long black hair in a high ponytail, an orange ribbon and purple eyes.",
       "identityTokens": [
-        "himejima_akeno",
+        "himejima akeno",
         "high_school_dxd",
         "black_hair",
         "very_long_hair",
@@ -588,7 +588,7 @@
         "purple_eyes"
       ],
       "exactTokens": [
-        "himejima_akeno"
+        "himejima akeno"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -617,7 +617,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "himejima_akeno"
+        "himejima akeno"
       ],
       "copyrightTokens": [
         "high_school_dxd"

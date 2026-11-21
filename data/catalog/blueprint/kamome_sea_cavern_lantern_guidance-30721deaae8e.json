@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kamome_sea_cavern_lantern_guidance",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2347,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kamome_sea_cavern_lantern_guidance",
     "characterId": "kushima_kamome",
@@ -14,11 +14,11 @@
     "description": "潮水退去的岩石洞窟入口，海浪在脚下沙沙作响。鸥举起提灯照亮潮湿的岩壁，回过头向落后的同伴伸出手，水手裙摆在幽暗的洞口宛如一朵静谧绽放的白花。",
     "recommendedSize": "832x1216",
     "location": "hidden sea cave entrance surrounded by tide pools and dripping mossy stalactites",
-    "action": "holding brass hurricane lantern aloft illuminating wet stone walls, extending her free hand toward partner with a gentle inviting smile",
+    "action": "鸥举起提灯照亮潮湿的岩壁，回过头向落后的同伴伸出手",
     "timeOfDay": "afternoon",
     "lighting": "warm flickering golden lantern flame cutting through mysterious cool ocean shadows",
     "camera": "cowboy_shot",
-    "mood": "romantic childhood exploration, secret shared world, sweet protective warmth",
+    "mood": "温存与私密",
     "promptProse": "Holding a glowing lantern inside a tide cave, Kamome reaches out her hand with a sweet inviting expression, her sailor dress gleaming warmly.",
     "promptTokens": [
       "cave",

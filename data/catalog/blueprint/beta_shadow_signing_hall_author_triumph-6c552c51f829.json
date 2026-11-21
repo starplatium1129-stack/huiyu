@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_signing_hall_author_triumph",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2535,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "beta_shadow_signing_hall_author_triumph",
     "title": "贝塔 · 四越王都签售会的大作家风采",
@@ -12,7 +12,7 @@
     "outfitId": "author_dress",
     "description": "四越商会水晶吊灯照耀的奢华大礼堂内，签名桌上摞满精装畅销书。化名夏目老师的贝塔双手交叠托腮，向读者展露优雅从容的招牌微笑。",
     "location": "grand crystal chandelier banquet hall lined with book displays and red velvet stanchions",
-    "action": "seated behind a long ornate signing desk stacked with hardcover novels, hands clasped beneath chin, smiling warmly and elegantly toward crowd",
+    "action": "双手交叠托腮，向读者展露优雅从容的招牌微笑",
     "timeOfDay": "下午",
     "lighting": "水晶吊灯暖金光与午后漫射光",
     "camera": "wide medium shot",

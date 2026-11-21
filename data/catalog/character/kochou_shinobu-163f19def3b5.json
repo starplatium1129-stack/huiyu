@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kochou_shinobu",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 110,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kochou_shinobu",
     "profile": {
@@ -279,13 +279,13 @@
       "displayName": "蝴蝶忍",
       "exactPrefixes": [],
       "exactTokens": [
-        "kochou_shinobu"
+        "kochou shinobu"
       ],
       "franchise": "Kimetsu no Yaiba",
       "id": "kochou_shinobu",
       "identityProse": "Kochou Shinobu from Kimetsu no Yaiba, the Insect Hashira with purple eyes and wavy black hair fading to dark purple.",
       "identityTokens": [
-        "kochou_shinobu",
+        "kochou shinobu",
         "kimetsu_no_yaiba",
         "1girl",
         "solo",
@@ -316,7 +316,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "kochou_shinobu"
+        "kochou shinobu"
       ],
       "copyrightTokens": [
         "kimetsu_no_yaiba"

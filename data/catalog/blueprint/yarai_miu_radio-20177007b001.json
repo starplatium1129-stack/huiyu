@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yarai_miu_radio",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2393,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yarai_miu_radio",
     "characterId": "yarai_miu",
@@ -13,7 +13,7 @@
     "category": "工作",
     "description": "屋顶风大，她按住帽檐，听完对讲机里的消息后才看向海面。",
     "location": "rooftop overlooking the sea",
-    "action": "holding a radio and steadying her cap",
+    "action": "屋顶风大，她按住帽檐，听完对讲机里的消息后才看向海面",
     "timeOfDay": "night",
     "lighting": "rooftop light",
     "camera": "cowboy shot",

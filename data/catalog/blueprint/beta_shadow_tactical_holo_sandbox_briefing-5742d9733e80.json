@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_tactical_holo_sandbox_briefing",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2537,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "beta_shadow_tactical_holo_sandbox_briefing",
     "title": "贝塔 · 签售会幕后的专属签名私语",
@@ -12,11 +12,11 @@
     "outfitId": "author_dress",
     "description": "盛大新书签售会的后台休息室内，贝塔身着华丽优雅的浅色礼裙坐在梳妆镜台前。手中羽毛笔悬在精装扉页上方，脸颊飞起微醺般的红晕，轻声询问少年想要写下怎样的专属情话。",
     "location": "cozy private backstage dressing room with vanity mirror and floral bouquets",
-    "action": "sitting at dressing table, holding a feather quill pen poised over an open hardcover novel, blushing deeply, adoring upturned gaze, silver bob framing flushed face",
+    "action": "端坐在梳妆台前，羽毛笔悬在精装扉页上方，脸颊飞起微醺红晕偷瞄对方",
     "timeOfDay": "afternoon",
     "lighting": "warm dressing table vanity bulbs and golden afternoon window light",
     "camera": "cowboy shot",
-    "mood": "flustered author sweet intimacy, romantic idol charm, fluttery excitement",
+    "mood": "温存与动情",
     "promptProse": "In a cozy backstage dressing room, silver-haired author Beta sits at a vanity table with quill pen in hand over her new book, blushing intensely with starry adoring eyes.",
     "promptTokens": [
       "dressing_room",

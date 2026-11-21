@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "tobiichi_origami_r18_b6_04",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 103,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "tobiichi_origami_r18_b6_04",
-    "title": "鸢一折纸 · 监听士道心跳床褥深处的极致狂热独奏 ·「听着士道的呼吸声……手指就完全停不下来」",
+    "title": "鸢一折纸 · 监听士道心跳床褥深处的极致狂热独奏",
     "category": "私密自持",
     "characterId": "tobiichi_origami",
     "description": "戴着连接在士道房间窃听器的军用耳机。折纸浑身赤裸躺在冰冷的地板上，屏幕上跳动着士道的各项生理指标。她的三根手指深深没入泥泞不堪的密穴中狂暴地抽动，银发散乱，平日冰冷的眸子里泛起病态狂热的血丝——「士道刚才翻身了……呼吸加重了0.4秒……啊啊……士道……士道……」",
@@ -50,7 +50,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

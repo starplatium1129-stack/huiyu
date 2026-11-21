@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_cycling_suit_unzip_cooling",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2676,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sunaookami_shiroko_cycling_suit_unzip_cooling",
     "characterId": "sunaookami_shiroko",
@@ -12,13 +12,13 @@
     "title": "砂狼白子 · 沿海公路的长途骑行微汗",
     "category": "运动高光",
     "description": "长途公路骑行结束后的海滨防波堤上，海浪拍打着礁石。白子单腿跨在公路自行车大梁上，拉开紧身骑行服的前胸拉链，露出吸汗背心与微热起伏的锁骨。汗水顺着脸颊滑落到修长颈项，狼耳随海风轻微颤动。她拿起水壶喝了一大口清水，转过头来擦了擦嘴角，向你递出明澈坚定的信任目光。",
-    "action": "drinking from water bottle, wiping mouth with wrist, unzipped cycling jersey, sweat glistening, bright determined gaze looking at viewer",
+    "action": "她拿起水壶喝了一大口清水，转过头来擦了擦嘴角，向你递出明澈坚定的信任目光",
     "recommendedSize": "832x1216",
     "location": "concrete coastal seawall overlooking azure ocean under sunny sky",
     "timeOfDay": "afternoon",
     "lighting": "crisp bright coastal sunlight glinting off ocean waves and bicycle frame",
     "camera": "cowboy_shot",
-    "mood": "refreshing athletic vitality, cool breeze youthful connection",
+    "mood": "清爽活力",
     "promptProse": "Resting on her road bicycle along a coastal seawall, Shiroko pulls down her cycling jersey zipper after a hard ride. Sweat glistens on her bare collarbones as she turns with a refreshing, confident gaze in the ocean wind.",
     "promptTokens": [
       "1girl",

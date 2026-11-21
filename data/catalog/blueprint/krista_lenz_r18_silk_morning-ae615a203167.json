@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_silk_morning",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 1001,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "金黄草垛旁抱膝褪去白裙娇羞微笑",
     "adult": true,
@@ -23,7 +23,10 @@
     "mood": "天使纯欲",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Historia sits on the hay hugging her knees, her removed white dress beside her. Morning light through the boards illuminates foreground straw, leaving the hayloft behind her in shade.",
     "promptTokens": [

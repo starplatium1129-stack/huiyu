@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/crimson_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2450,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "crimson_summer_bikini",
-      "name": "喜多辉光 · 阳光番茄红与纯白荷叶边系带比基尼配太阳花编织草包",
+      "name": "喜多辉光 · 荷叶边系带比基尼",
       "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,

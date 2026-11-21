@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fiona_frost_r18_desk_pov_surrender",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 827,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "fiona_frost_r18_desk_pov_surrender",
     "characterId": "fiona_frost",
@@ -51,7 +51,10 @@
       "warm lighting"
     ],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "adult": true,

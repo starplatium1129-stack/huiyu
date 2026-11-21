@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_forest_staff_casting",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "fern_forest_staff_casting",
     "characterId": "fern_frieren",
@@ -48,7 +48,7 @@
     "timeOfDay": "morning",
     "lighting": "misty_light",
     "camera": "full-body shot, staff tip and both hands visible",
-    "mood": "focused",
+    "mood": "专注坚毅",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic",

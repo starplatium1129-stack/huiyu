@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_bicycle_ride_backseat_wind",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2275,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "lemon_bicycle_ride_backseat_wind",
     "characterId": "yakishio_lemon",
@@ -14,11 +14,11 @@
     "description": "夏日傍晚的河堤斜坡上，单车迎风飞驰。坐在后座上的烧盐柠檬双手环抱在你的腰间，将脸颊贴在你的后背上，短发随风轻舞，轻快地哼着不成调的夏日歌谣。",
     "recommendedSize": "832x1216",
     "location": "breezy grassy riverside path at dusk",
-    "action": "riding on bicycle backseat, arms wrapped around partner waist, head leaning on his back, smiling blissfully in the evening breeze",
+    "action": "双手环抱在你的腰间，将脸颊贴在你的后背上，短发随风轻舞，轻快地哼着不成调的夏日歌谣",
     "timeOfDay": "sunset",
     "lighting": "cool violet and orange dusk sky reflecting on river water",
     "camera": "cowboy_shot",
-    "mood": "pure nostalgic youth, sweet summer breeze romance, heart-fluttering trust",
+    "mood": "温存与神圣",
     "promptProse": "Riding on bicycle backseat along a grassy riverside, Lemon Yakishio hugs partner waist with windblown short hair and a peaceful blissful smile.",
     "promptTokens": [
       "bicycle",

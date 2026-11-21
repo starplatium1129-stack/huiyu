@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "matsushima_michiru",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 170,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "matsushima_michiru",
     "profile": {
@@ -89,7 +89,7 @@
       "speech": "哼！我、我才不是特意买柠檬汽水给你喝的呢！只是刚好买多了不得不施舍给你而已，给我感恩戴德地喝下去啊笨蛋雄二！",
       "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
       "traits": [
-        "matsushima_michiru",
+        "matsushima michiru",
         "1girl",
         "solo",
         "blonde_hair",
@@ -538,7 +538,7 @@
       ],
       "identityProse": "Matsushima Michiru from Grisaia by Frontwing, the energetic and comical bleach-blonde heroine of Mihama Academy with iconic waist-length bleached blonde twintails tied with black ribbons, bright clear sapphire blue eyes, charming lively smile, and an earnest yet hopelessly clumsy fake tsundere persona harboring a profoundly selfless and empathetic heart.",
       "identityTokens": [
-        "matsushima_michiru",
+        "matsushima michiru",
         "1girl",
         "solo",
         "blonde_hair",
@@ -551,7 +551,7 @@
         "grisaia_(series)"
       ],
       "exactTokens": [
-        "matsushima_michiru"
+        "matsushima michiru"
       ],
       "exactPrefixes": [
         "michiru_"
@@ -585,7 +585,7 @@
         "watermark"
       ],
       "characterTokens": [
-        "matsushima_michiru"
+        "matsushima michiru"
       ],
       "copyrightTokens": [
         "grisaia_(series)"

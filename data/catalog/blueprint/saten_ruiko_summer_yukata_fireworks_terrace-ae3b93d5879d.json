@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_summer_yukata_fireworks_terrace",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2641,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "saten_ruiko_summer_yukata_fireworks_terrace",
     "characterId": "saten_ruiko",
@@ -14,11 +14,11 @@
     "description": "学园都市祭典的静谧高台露台，远方夜空绽放开璀璨绚烂的花火。佐天泪子身穿深蓝底金鱼花纹的日式浴衣，黑亮的长发别着清雅的白花发饰。她单手按着随晚风微敞的衣襟，在花火余烬映照的微光中转头微笑，双眸波光流转，透出少女特有的明媚与心动。",
     "recommendedSize": "832x1216",
     "location": "scenic hill terrace overlooking city festival fireworks display",
-    "action": "standing on terrace in floral yukata against bursting fireworks, hair flower accessory, wind fluttering yukata sleeve, bright warm smile looking at viewer",
+    "action": "身穿深蓝浴衣按着被晚风吹拂的衣襟，仰望漫天花火欣喜微笑",
     "timeOfDay": "night",
     "lighting": "vibrant multi-colored fireworks flashes illuminating night sky and balcony",
     "camera": "cowboy_shot",
-    "mood": "magical summer festival romance, bright unforgettable nostalgia",
+    "mood": "温存与幽微",
     "promptProse": "Standing on a scenic overlook as colorful fireworks burst across the night sky, Ruiko Saten wears a navy floral yukata. Her black hair flutters with a white flower ornament as she looks back with a glowing, radiant smile.",
     "promptTokens": [
       "1girl",

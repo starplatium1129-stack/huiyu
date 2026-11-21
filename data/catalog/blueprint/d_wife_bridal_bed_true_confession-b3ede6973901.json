@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_wife_bridal_bed_true_confession",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2177,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "d_wife_bridal_bed_true_confession",
     "characterId": "d_killer_wife",
@@ -14,11 +14,11 @@
     "description": "静谧卧室内只有床头一盏泛黄的小台灯亮着。D身穿纯白色的半透真丝晨袍坐在床沿，黑色短斧静静藏在床头柜暗格。她解开晨袍系带，露出雪白精致的锁骨与腰线，双手交叠放在膝头。杀手冰冷的防备在这一刻彻底消融，红眸深情地仰望着你，仿佛在无声诉说着愿将灵魂托付的誓约。",
     "recommendedSize": "832x1216",
     "location": "intimate sunlit bedroom with billowing sheer curtains",
-    "action": "sitting on edge of bed in sheer white silk peignoir robe, collar open revealing delicate collarbones, red eyes gleaming with sincere emotion, tender vulnerable gaze",
+    "action": "杀手冰冷的防备在这一刻彻底消融，红眸深情地仰望着你，仿佛在无声诉说着愿将灵魂托付的誓约",
     "timeOfDay": "morning",
     "lighting": "intimate soft amber bedside lamp casting long gentle shadows",
     "camera": "medium_shot",
-    "mood": "total vulnerability, sacred unspoken marriage oath",
+    "mood": "动情与神圣",
     "promptProse": "Sitting quietly on the edge of a bed in dim bedside light, D wears a sheer white silk robe gently parted at the collar. Her crimson eyes reflect deep, unguarded devotion in the peaceful silence.",
     "promptTokens": [
       "1girl",

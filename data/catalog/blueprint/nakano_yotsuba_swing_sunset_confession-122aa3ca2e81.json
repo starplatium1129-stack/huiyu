@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_swing_sunset_confession",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1959,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_swing_sunset_confession",
     "title": "中野四叶 · 黄昏公园的高空秋千飞跃",
@@ -13,11 +13,11 @@
     "description": "熔金落日浸染整座街角公园，四叶高高荡起秋千，身体向夕阳长空尽情伸展。飞扬的发带伴随着银铃般欢快的笑声，眼底映着满天绚烂晚霞。",
     "recommendedSize": "832x1216",
     "location": "suburban playground park",
-    "action": "swinging high on swing, hair flying, joyful open-hearted laugh",
+    "action": "飞扬的发带伴随着银铃般欢快的笑声，眼底映着满天绚烂晚霞",
     "timeOfDay": "sunset",
     "lighting": "brilliant golden sunset backlight",
     "camera": "full_body",
-    "mood": "exuberant freedom and deep emotion",
+    "mood": "快意动情",
     "promptProse": "Soaring high into the golden sunset on a park swing, Nakano Yotsuba laughs joyfully with her bright green rabbit-ear ribbon and pleated skirt fluttering in the evening breeze. The orange horizon casts a warm radiant glow across her radiant face.",
     "promptTokens": [
       "park",

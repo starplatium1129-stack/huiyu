@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_stage",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2381,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "touma_kazusa_stage",
     "characterId": "touma_kazusa",
@@ -13,7 +13,7 @@
     "category": "演出",
     "description": "演出结束，和纱站在钢琴旁向观众席微微欠身，手指还留着刚才用力的姿势。",
     "location": "concert stage",
-    "action": "standing beside a grand piano and bowing",
+    "action": "演出结束，和纱站在钢琴旁向观众席微微欠身，手指还留着刚才用力的姿势",
     "timeOfDay": "night",
     "lighting": "warm stage light",
     "camera": "full body",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_touden_intimate_inn_bed_morning_sun",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2046,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfitId": "inn_soft_nightgown",
@@ -14,11 +14,11 @@
     "description": "小镇冒险者旅店的二楼木屋里，晨光透过厚麻窗帘柔和地漫入。法琳刚从睡梦中醒来，身上穿着宽松软绵的居家睡衣。她侧卧在羽毛被褥中，金发蓬松地散在枕头两旁，半睁着惺忪的金瞳，下意识地朝身旁的身影缩了缩，发出含糊可爱的轻软呢喃。",
     "recommendedSize": "832x1216",
     "location": "rustic adventurer inn bedroom",
-    "action": "waking up in bed, yawning, golden hair spread on pillow, drowsy sweet gaze",
+    "action": "刚从睡梦中醒来，侧卧在被褥中揉揉眼睛，蓬松金发散落枕旁",
     "timeOfDay": "morning",
     "lighting": "gentle morning sunlight through linen curtains",
     "camera": "close-up",
-    "mood": "tender drowsy morning bliss",
+    "mood": "温存与明媚",
     "promptProse": "Awakening slowly on a rustic wooden bed at the adventurer's inn, Falin Touden peeks from under the quilt. Her soft golden locks fan across the pillow as she gazes up with sleepy, affectionate eyes in the gentle morning daylight.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_after_souvenir",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2497,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_after_souvenir",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "蕾娜把小小的布包递给你，故意让你先猜里面是什么。她只憋住一会儿就笑着揭晓：是你上次在店里多看了两眼的饰物。",
     "location": "quiet shopfront",
-    "action": "offering a small wrapped gift to her partner",
+    "action": "把小小的布包递给你，故意让你先猜里面是什么，只憋住一会儿就笑着揭晓",
     "timeOfDay": "afternoon",
     "lighting": "soft daylight",
     "camera": "medium shot",

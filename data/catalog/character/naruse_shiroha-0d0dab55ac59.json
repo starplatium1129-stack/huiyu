@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "naruse_shiroha",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 248,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "naruse_shiroha",
     "profile": {
@@ -228,7 +228,7 @@
       ],
       "identityProse": "Shiroha Naruse from Summer Pockets, with long pure-white hair tied in low twin tails, crimson red eyes, and a quiet, standoffish yet deeply caring personality.",
       "identityTokens": [
-        "naruse_shiroha",
+        "naruse shiroha",
         "1girl",
         "solo",
         "white_hair",
@@ -238,7 +238,7 @@
         "summer pockets"
       ],
       "exactTokens": [
-        "naruse_shiroha"
+        "naruse shiroha"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -270,7 +270,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "naruse_shiroha"
+        "naruse shiroha"
       ],
       "copyrightTokens": [
         "summer pockets"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinobu_mansion_tending_wounds",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1448,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "跪坐替你换药缠绷带，指尖轻柔紫瞳认真，微笑叮嘱",
     "adult": false,
@@ -51,7 +51,7 @@
       "daily"
     ],
     "timeOfDay": "夜晚",
-    "title": "蝴蝶忍 · 蝶屋敷的包扎夜话·「伤口要好好上药哦，不然我会生气的」",
+    "title": "蝴蝶忍 · 蝶屋敷的包扎夜话",
     "animaCaption": "One hand supports her seated companion's forearm while the other winds the bandage."
   }
 }

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_garden_watering_flowers",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 841,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "提着水壶浇花，阳光洒落",
     "adult": false,
@@ -18,7 +18,7 @@
     "id": "cecilia_garden_watering_flowers",
     "lighting": "morning_sunlight",
     "location": "教堂庭院",
-    "mood": "serene",
+    "mood": "宁静祥和",
     "negativeTokens": [],
     "outfitId": "saint_nun_habit",
     "promptProse": "She supports the brass can in both hands, watering the white roses while smiling toward off-frame Lawrence; sunlit spray falls above shaded soil.",

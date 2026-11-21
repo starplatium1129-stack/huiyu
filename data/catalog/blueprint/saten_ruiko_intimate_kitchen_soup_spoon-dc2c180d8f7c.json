@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_intimate_kitchen_soup_spoon",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2040,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfitId": "weekend_salopette",
@@ -14,11 +14,11 @@
     "description": "狭小却井井有条的单身公寓厨房里，砂锅正咕嘟咕嘟翻滚着暖胃的味噌蔬菜汤。泪子系着格子围裙，用木勺轻轻盛起一小口汤，小心翼翼地吹去热气后递到少年唇边。在两人极其贴近的目光对视中，泪子的长睫毛微微轻颤，嘴角扬起全世界最温暖治愈的笑意。",
     "recommendedSize": "832x1216",
     "location": "cozy small apartment kitchen",
-    "action": "feeding soup with wooden spoon, blowing on steam, close warm smile",
+    "action": "在两人极其贴近的目光对视中，泪子的长睫毛微微轻颤，嘴角扬起全世界最温暖治愈的笑意",
     "timeOfDay": "dusk",
     "lighting": "warm golden kitchen light illuminating steam",
     "camera": "close-up",
-    "mood": "wholesome everyday domestic romance",
+    "mood": "温存与治愈",
     "promptProse": "In a cozy apartment kitchen at dusk, Saten Ruiko offers a spoonful of warm homemade soup toward the viewer, gently blowing away the steam. In her plaid apron and black hair flower, her hazel eyes glow with wholesome, heartfelt domestic affection.",
     "promptTokens": [
       "saten_ruiko",

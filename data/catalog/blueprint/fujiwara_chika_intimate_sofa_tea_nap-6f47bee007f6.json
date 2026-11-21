@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_sofa_tea_nap",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2028,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "weekend_parka",
@@ -14,11 +14,11 @@
     "description": "没有其他人的学生会活动室里，飘满浓郁的大吉岭红茶与草莓泡芙香气。吃饱了甜点的千华毫无防备地侧卧在真皮长椅上，黑色蝴蝶结发饰歪在一边，长长的粉色卷发散落一榻。当少年为她拿开脸颊边的碎屑时，她闭着眼睛发出满足可爱的呼噜声。",
     "recommendedSize": "832x1216",
     "location": "luxurious student council room leather sofa",
-    "action": "sleeping curled up on leather couch, cream crumbs on lips, peaceful breath",
+    "action": "当少年为她拿开脸颊边的碎屑时，她闭着眼睛发出满足可爱的呼噜声",
     "timeOfDay": "day",
     "lighting": "soft afternoon rays through tall arched windows",
     "camera": "medium_shot",
-    "mood": "adorable lavish carefree sweetness",
+    "mood": "甜美惬意",
     "promptProse": "Fast asleep curled up on the luxurious leather sofa of the empty student council room, Fujiwara Chika rests after tea time. Her pink wavy hair and black bow drape over the cushions as she mumbles cute nonsense in her peaceful slumber. Gentle afternoon sunlight filters through tall arched student council windows, casting long golden light beams and soft shadows across the plush leather sofa.",
     "promptTokens": [
       "fujiwara_chika",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "harudera_yuria",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 90,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "harudera_yuria",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "雄二，任务报告我已经看过了。你这次又擅自搞出那么大动静……坐下，给我好好从头交代清楚。",
       "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
       "traits": [
-        "harudera_yuria",
+        "harudera yuria",
         "1girl",
         "solo",
         "blonde_hair",
@@ -532,7 +532,7 @@
       ],
       "identityProse": "Harudera Yuria (JB) from Grisaia, a mature woman with long wavy honey-blonde hair, a beauty mark beneath her right eye and sapphire-blue eyes.",
       "identityTokens": [
-        "harudera_yuria",
+        "harudera yuria",
         "1girl",
         "solo",
         "blonde_hair",
@@ -544,7 +544,7 @@
         "grisaia_(series)"
       ],
       "exactTokens": [
-        "harudera_yuria"
+        "harudera yuria"
       ],
       "exactPrefixes": [
         "yuria_",
@@ -579,7 +579,7 @@
         "rella"
       ],
       "characterTokens": [
-        "harudera_yuria"
+        "harudera yuria"
       ],
       "copyrightTokens": [
         "grisaia_(series)"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_bakery_scone_lesson",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 842,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "认真地揉面团，鼻尖沾着面粉",
     "adult": false,
@@ -18,7 +18,7 @@
     "id": "cecilia_bakery_scone_lesson",
     "lighting": "window_light",
     "location": "小镇面包店",
-    "mood": "joyful",
+    "mood": "明媚欢欣",
     "negativeTokens": [],
     "outfitId": "bakery_apron",
     "promptProse": "She kneads scone dough with flour on her hands and nose. Window light reveals the dough creases on the workbench.",

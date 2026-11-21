@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mudrock_arknights_r18_bath_muscle",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 583,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "单膝跪在石池边，一手提木桶朝抬起的大腿浇水，另一手顺着水流，身后装甲放在干燥处",
     "adult": true,
@@ -21,7 +21,10 @@
     "mood": "松弛舒展",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Mudrock pours water over her raised thigh from a wooden bucket, following the stream with her free hand while her armor stays dry behind her.",
     "promptTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_dark_closet_steamy_straddle_intimacy",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2345,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "ao_dark_closet_steamy_straddle_intimacy",
     "characterId": "sorakado_ao",
@@ -14,11 +14,11 @@
     "description": "为了躲避巡查而挤进狭窄的壁橱内，两人的体温在逼仄的空间里急剧攀升。苍跨坐在膝头，衬衫完全湿透紧贴着饱满的胸脯，在近在咫尺的耳畔吐出温热的气息。",
     "recommendedSize": "832x1216",
     "location": "cramped cedar wood storage closet filled with folded spare blankets",
-    "action": "straddling partner lap inside the enclosed closet, sweat-dampened shirt clinging transparently to skin, panting with dilated pupils and flushed cheeks",
+    "action": "苍跨坐在膝头，衬衫完全湿透紧贴着饱满的胸脯，在近在咫尺的耳畔吐出温热的气息",
     "timeOfDay": "afternoon",
     "lighting": "dim amber light slicing through closet door slats illuminating glistening sweat droplets",
     "camera": "close-up",
-    "mood": "steamy claustrophobic lust, intense breathless body heat, forbidden whispered ecstasy",
+    "mood": "柔媚与水光",
     "promptProse": "Straddling closely inside a cramped dark closet, Ao pants with a flushed face and parted lips, her sheer damp shirt sticking to her chest.",
     "promptTokens": [
       "straddling",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_bridge_view",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2421,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_bridge_view",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "穗织漫步",
     "description": "木桥下的水流声让蕾娜停下脚步。她倚着栏杆往下看，等水面的一片落叶漂过桥洞。",
     "location": "wooden bridge over a stream",
-    "action": "leaning on a bridge railing and watching a leaf in the water",
+    "action": "停下脚步，倚着栏杆往下看，等水面的一片落叶漂过桥洞",
     "timeOfDay": "afternoon",
     "lighting": "daylight",
     "camera": "cowboy shot",

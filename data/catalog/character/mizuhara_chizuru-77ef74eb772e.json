@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mizuhara_chizuru",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 181,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "mizuhara_chizuru",
     "profile": {
@@ -85,7 +85,7 @@
       "speech": "别误会了，我只是以职业租借女友的身份陪你而已……不过，如果是你的话，今天就特别允许你一直牵着我的手，直到约会结束吧。",
       "source": "宫岛礼吏《租借女友 / Kanojo, Okarishimasu》",
       "traits": [
-        "mizuhara_chizuru",
+        "mizuhara chizuru",
         "1girl",
         "solo",
         "brown_hair",
@@ -209,7 +209,7 @@
       ],
       "identityProse": "Adult Mizuhara Chizuru from Rent-a-Girlfriend, a stunning, graceful, and professional young woman with long wavy chestnut-brown hair tied in a subtle side braid, radiant hazel-brown eyes, slender and elegant posture, and an enchanting charming smile.",
       "identityTokens": [
-        "mizuhara_chizuru",
+        "mizuhara chizuru",
         "1girl",
         "solo",
         "brown_hair",
@@ -220,7 +220,7 @@
         "kanojo_okarishimasu"
       ],
       "exactTokens": [
-        "mizuhara_chizuru"
+        "mizuhara chizuru"
       ],
       "exactPrefixes": [
         "mizuhara_"
@@ -256,7 +256,7 @@
         "kappe"
       ],
       "characterTokens": [
-        "mizuhara_chizuru"
+        "mizuhara chizuru"
       ],
       "copyrightTokens": [
         "kanojo_okarishimasu"

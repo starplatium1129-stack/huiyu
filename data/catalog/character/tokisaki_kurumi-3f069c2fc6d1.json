@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tokisaki_kurumi",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 4,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "tokisaki_kurumi",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "时崎狂三向你致以问候。",
       "source": "橘公司《约会大作战 / Date A Live》",
       "traits": [
-        "tokisaki_kurumi",
+        "tokisaki kurumi",
         "1girl",
         "solo",
         "long_black_hair",
@@ -327,7 +327,7 @@
       ],
       "identityProse": "Tokisaki Kurumi from Date A Live, with long black hair in uneven twintails, a gold clock-patterned left eye and a red right eye.",
       "identityTokens": [
-        "tokisaki_kurumi",
+        "tokisaki kurumi",
         "1girl",
         "solo",
         "black hair",
@@ -340,7 +340,7 @@
         "long hair"
       ],
       "exactTokens": [
-        "tokisaki_kurumi"
+        "tokisaki kurumi"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -372,7 +372,7 @@
         "swav"
       ],
       "characterTokens": [
-        "tokisaki_kurumi",
+        "tokisaki kurumi",
         "Kurumi"
       ],
       "copyrightTokens": [

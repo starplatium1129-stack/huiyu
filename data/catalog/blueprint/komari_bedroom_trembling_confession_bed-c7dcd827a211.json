@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "komari_bedroom_trembling_confession_bed",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2283,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "komari_bedroom_trembling_confession_bed",
     "characterId": "komari_chika",
@@ -14,11 +14,11 @@
     "description": "安静的卧室内，浅粉吊带睡衣滑落香肩。娇小幼嫩的身躯被你完全拥在怀中，知花紧紧咬着嘴唇，眼角满是幸福的泪水，用颤抖微弱的声音告白：“如果是温水同学的话……怎样……都可以哦。”",
     "recommendedSize": "832x1216",
     "location": "dim softly lit private bedroom with ruffled sheets",
-    "action": "nestled on bed with off-shoulder camisole, trembling in partner embrace, tearful eyes looking up with absolute sweet submission and love",
+    "action": "依偎在怀中紧咬嘴唇，眼角满含幸福泪水仰望告白",
     "timeOfDay": "night",
     "lighting": "soft warm bedside nightlight casting gentle golden glow on pale skin",
     "camera": "close-up",
-    "mood": "trembling virginal surrender, profound emotional trust, breathless tender love",
+    "mood": "浪漫温存",
     "promptProse": "On a soft bed with slipping pink camisole, petite Chika Komari clings to partner with tearful devoted eyes and breathless trembling kisses.",
     "promptTokens": [
       "bedroom",

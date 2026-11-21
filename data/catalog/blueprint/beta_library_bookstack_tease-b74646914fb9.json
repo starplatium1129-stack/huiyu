@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_library_bookstack_tease",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2472,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "beta_library_bookstack_tease",
     "characterId": "beta_shadow",
@@ -14,11 +14,11 @@
     "description": "王都大图书馆的高耸书架旁，贝塔单手扶着移动滑梯，怀中抱着厚厚的古典书籍，微侧过头带着知性而略具挑逗意味的目光望向来人。",
     "recommendedSize": "832x1216",
     "location": "grand royal archive library with soaring towering bookshelves",
-    "action": "holding heavy leatherbound tomes against her chest while leaning against wooden library ladder, smiling playfully",
+    "action": "单手扶着移动滑梯，怀中抱着厚厚的古典书籍，微侧过头带着知性而略具挑逗意味的目光望向来人",
     "timeOfDay": "day",
     "lighting": "dusted sunbeams filtering through tall arched windows",
     "camera": "medium_shot",
-    "mood": "charming scholarly elegance, playful flirtation, serene archive atmosphere",
+    "mood": "俏皮与宁静",
     "promptProse": "In a sunlit high-ceiling library, silver-haired Beta holds thick leather books against her chest beside a tall rolling ladder.",
     "promptTokens": [
       "library",

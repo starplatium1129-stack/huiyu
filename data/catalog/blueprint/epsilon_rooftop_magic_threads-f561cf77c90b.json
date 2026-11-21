@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_rooftop_magic_threads",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2481,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "epsilon_rooftop_magic_threads",
     "characterId": "epsilon_shadow",
@@ -14,11 +14,11 @@
     "description": "午后静谧高雅的私人琴房内，厄普西隆在黑色三角钢琴前挨坐身旁，纤细双手轻叠指尖悉心指导，眼神既骄傲又藏着甜蜜的心跳。",
     "recommendedSize": "832x1216",
     "location": "elegant sunlit private piano music room with grand piano",
-    "action": "sitting side by side on grand piano bench, hands gently guiding viewer's fingers on piano keys, leaning close, proud yet sweetly blushing expression",
+    "action": "在黑色三角钢琴前挨坐身旁，纤细双手轻叠指尖悉心指导，眼神既骄傲又藏着甜蜜的心跳",
     "timeOfDay": "afternoon",
     "lighting": "soft golden window light casting gentle highlights on piano keys and sheer blouse",
     "camera": "cowboy shot",
-    "mood": "refined musical intimacy, proud mentorship, sweet romantic heartbeat",
+    "mood": "浪漫温存",
     "promptProse": "In a sunlit private music parlor, light blue-haired elf Epsilon sits closely on the grand piano bench, tenderly guiding hands over the ivory keys with a proud yet blushing smile.",
     "promptTokens": [
       "music_room",

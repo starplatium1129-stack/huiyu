@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_family_diner_warmth",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1974,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_itsuki_family_diner_warmth",
     "title": "中野五月 · 上杉家餐桌的温馨晚餐",
@@ -13,11 +13,11 @@
     "description": "温馨平实的日式矮桌旁，五月端着满满一碗冒着热气的白米饭，手握竹筷满足地夹起刚出锅的家常菜，融入家庭般的融洽笑意温暖动人。",
     "recommendedSize": "832x1216",
     "location": "homely cozy kitchen table",
-    "action": "sitting at dining table, holding rice bowl, chopsticks, heartwarming smile",
+    "action": "温馨平实的日式矮桌旁，五月端着满满一碗冒着热气的白米饭，手握竹筷满足地夹起刚出锅的家常菜",
     "timeOfDay": "dusk",
     "lighting": "warm amber household pendant light",
     "camera": "medium_shot",
-    "mood": "homely touching familial warmth",
+    "mood": "温馨感动",
     "promptProse": "Sitting at a cozy, humble home dining table, Nakano Itsuki holds a ceramic rice bowl and chopsticks with a heartwarmingly content smile. The warm amber pendant light reflects off her star hairpins as steam rises from home-cooked dishes.",
     "promptTokens": [
       "dining_room",

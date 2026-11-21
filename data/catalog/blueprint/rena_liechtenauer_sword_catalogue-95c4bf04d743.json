@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_sword_catalogue",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2422,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_sword_catalogue",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "传统文化",
     "description": "蕾娜在书店翻到一本刀剑图录，指尖停在刀镡的插图旁。她侧过头，想把新看到的细节讲给身边的人听。",
     "location": "bookshop",
-    "action": "holding open an illustrated sword catalogue",
+    "action": "在书店翻阅刀剑图录，指尖停在刀镡插图旁，侧头向身边人兴奋讲解",
     "timeOfDay": "afternoon",
     "lighting": "window light",
     "camera": "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuigahama_yui",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 38,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yuigahama_yui",
     "profile": {
@@ -53,7 +53,7 @@
         "时尚穿搭与逛街"
       ],
       "traits": [
-        "yuigahama_yui",
+        "yuigahama yui",
         "1girl",
         "solo",
         "orange_hair",
@@ -412,7 +412,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "sobu_uniform",
       "identityTokens": [
-        "yuigahama_yui",
+        "yuigahama yui",
         "1girl",
         "solo",
         "orange hair",
@@ -439,7 +439,7 @@
       ],
       "originalName": "由比滨结衣",
       "exactTokens": [
-        "yuigahama_yui"
+        "yuigahama yui"
       ],
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -463,7 +463,7 @@
         "research": "2026-08-18 调研"
       },
       "characterTokens": [
-        "yuigahama_yui"
+        "yuigahama yui"
       ],
       "copyrightTokens": [
         "oregairu"

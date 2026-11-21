@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_oversized_hoodie_morning_sofa",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2009,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "iino_miko_oversized_hoodie_morning_sofa",
     "characterId": "iino_miko",
@@ -14,11 +14,11 @@
     "description": "周末阳光正好的客厅软沙发上，弥子穿着宽大的薰衣草紫连帽衫蜷坐着，鼻梁上架着金丝圆眼镜，两手捧着热牛奶，显得格外娇柔温软。",
     "recommendedSize": "832x1216",
     "location": "sunny weekend living room sofa",
-    "action": "curled up on sofa, oversized hoodie, round glasses, holding warm mug, shy smile",
+    "action": "周末阳光正好的客厅软沙发上，弥子穿着宽大的薰衣草紫连帽衫蜷坐着，鼻梁上架着金丝圆眼镜",
     "timeOfDay": "day",
     "lighting": "bright cheerful morning sunlight bathing soft cushions",
     "camera": "medium_shot",
-    "mood": "gentle fluffy adorable weekend relaxation",
+    "mood": "宁静祥和",
     "promptProse": "Curled up comfortably on a sunlit living room couch wearing an oversized cozy lavender hoodie and round glasses, Iino Miko cradles a warm mug and looks up with a tender, bashful smile.",
     "promptTokens": [
       "iino_miko",

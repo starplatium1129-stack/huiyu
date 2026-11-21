@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_r18_study_ink_marks",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1770,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "si_arknights_r18_study_ink_marks",
     "characterId": "si_arknights",
@@ -53,7 +53,9 @@
     "negativeTokens": [],
     "promptProse": "Kneeling completely bare atop the wooden desk amid scattered scrolls, faint streaks of dark ink contrast against Si's pale skin as she arches her back with glistening eyes and flushed cheeks under the warm desk lamp.",
     "animaCaption": "She kneels bare upon the writing desk under the warm lamp, faint ink traces marking her trembling curves.",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "pussy"
+    ],
     "nsfwProse": ""
   }
 }

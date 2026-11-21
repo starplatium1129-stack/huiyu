@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "komari_library_high_shelf_tiptoe_wobble",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2601,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "komari_library_high_shelf_tiptoe_wobble",
     "title": "小鞠知花 · 图书馆顶层书架的踮脚惊呼",
@@ -12,7 +12,7 @@
     "outfitId": "tsuwabuki_oversized_sailor_uniform",
     "description": "安静高大的红木图书馆过道尽头，尘埃在阳光光柱中漂浮。小鞠踮着小脚尖使劲伸长手臂去够最顶层的大部头小说，重心不稳向后歪倒，惊慌失措瞪大双眼。",
     "location": "quiet high-ceilinged school library aisle lined with towering polished oak bookshelves",
-    "action": "standing on tiptoes with arms stretched high toward a top book, wobbling off-balance, wide startled teary eyes in helpless panic",
+    "action": "小鞠踮着小脚尖使劲伸长手臂去够最顶层的大部头小说，重心不稳向后歪倒，惊慌失措瞪大双眼",
     "timeOfDay": "下午",
     "lighting": "高拱窗透入的书架丁达尔灰尘光束",
     "camera": "wide shot, landscape composition",

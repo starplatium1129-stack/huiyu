@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_camisole_balcony_night_breeze",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2683,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kouzuki_kallen_camisole_balcony_night_breeze",
     "characterId": "kouzuki_kallen",
@@ -14,11 +14,11 @@
     "description": "阿什弗德学园宿舍静谧的夜间，阳台门微开，晚风带来夜樱的幽香。卡莲换下战衣，仅穿着一袭深红色真丝细吊带睡裙坐在床头。火红的刺猬头短发在夜色中柔和垂顺，光洁修长的双腿并拢。平日里冲锋陷阵的黑色骑士团王牌，此刻眼波流转满是女儿家的羞怯与深情，静静注视着眼前的信赖之人。",
     "recommendedSize": "832x1216",
     "location": "peaceful student dorm room opening to starry balcony",
-    "action": "sitting on edge of bed in crimson silk camisole slip, short red spiky hair relaxed, bare shoulders and collarbone, blushing tenderly while looking at viewer",
+    "action": "平日里冲锋陷阵的黑色骑士团王牌，此刻眼波流转满是女儿家的羞怯与深情",
     "timeOfDay": "night",
     "lighting": "soft silver moonlight blending with warm bedside glow",
     "camera": "medium_shot",
-    "mood": "vulnerable warrior tenderness, profound unspoken devotion",
+    "mood": "动情与神圣",
     "promptProse": "Sitting on her bed in a sleek crimson silk camisole slip dress, Kouzuki Kallen rests under the moonlight. Her spiky red hair softens in the breeze as she looks forward with flushed cheeks and deep, tender trust.",
     "promptTokens": [
       "1girl",

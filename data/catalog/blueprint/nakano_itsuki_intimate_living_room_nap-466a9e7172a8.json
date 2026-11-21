@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_intimate_living_room_nap",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1976,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_itsuki_intimate_living_room_nap",
     "title": "中野五月 · 暖炉桌边的轻软浅眠",
@@ -13,11 +13,11 @@
     "description": "深夜客厅暖桌散发着融融暖意，做完模拟题的五月抵挡不住困意，将双臂叠在桌面上沉沉睡去。微红的脸颊贴着柔软衣袖，毫无防备地展露甜美睡颜。",
     "recommendedSize": "832x1216",
     "location": "warm kotatsu heated table living room",
-    "action": "sleeping peacefully on kotatsu, head resting on arms, peaceful expression",
+    "action": "微红的脸颊贴着柔软衣袖，毫无防备地展露甜美睡颜",
     "timeOfDay": "night",
     "lighting": "dim ambient living room light and warm heater glow",
     "camera": "close-up",
-    "mood": "peaceful defenseless sweetness",
+    "mood": "宁静祥和",
     "promptProse": "Fast asleep on a cozy kotatsu table late at night, Nakano Itsuki rests her cheek peacefully on her folded arms. Her long wavy red locks drape across the quilt in the soft golden warmth, displaying an innocent, defenseless sweetness.",
     "promptTokens": [
       "living_room",

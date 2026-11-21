@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_after_backstage_note",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2501,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-07T12:35:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mitsukasa_ayase_after_backstage_note",
     "characterId": "mitsukasa_ayase",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "绫濑在后台读到你放进花束的字条，先把纸折好，才忍不住笑了一声。她把字条收进口袋，准备出去找你。",
     "location": "backstage dressing table",
-    "action": "holding a small note beside a bouquet",
+    "action": "她把字条收进口袋，准备出去找你",
     "timeOfDay": "evening",
     "lighting": "warm dressing room light",
     "camera": "medium shot",
@@ -32,7 +32,6 @@
       "medium shot"
     ],
     "animaCaption": "The note came from her partner and rests in her hands.",
-    "characterId": "mitsukasa_ayase",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

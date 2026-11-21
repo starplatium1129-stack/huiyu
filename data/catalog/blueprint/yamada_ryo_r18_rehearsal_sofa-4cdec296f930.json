@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yamada_ryo_r18_rehearsal_sofa",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1833,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "yamada_ryo_r18_rehearsal_sofa",
     "characterId": "yamada_ryo",
@@ -53,6 +53,10 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Her arms rest along the worn sofa cushions in the soundproof studio corner."
+    "animaCaption": "Her arms rest along the worn sofa cushions in the soundproof studio corner.",
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ]
   }
 }

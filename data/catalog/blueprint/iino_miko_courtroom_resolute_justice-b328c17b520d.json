@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_courtroom_resolute_justice",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2004,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "iino_miko_courtroom_resolute_justice",
     "characterId": "iino_miko",
@@ -14,11 +14,11 @@
     "description": "庄严肃穆的现代法庭辩护席前，弥子身穿剪裁利落的深灰西服套裙，一手按在判例卷宗上一手做出利落论辩手势，眼神炽热笃定。",
     "recommendedSize": "832x1216",
     "location": "formal courtroom",
-    "action": "standing at defense desk, holding legal documents, sharp confident gaze",
+    "action": "庄严肃穆的现代法庭辩护席前，弥子身穿剪裁利落的深灰西服套裙",
     "timeOfDay": "day",
     "lighting": "balanced courtroom illumination highlighting determined facial expression",
     "camera": "cowboy_shot",
-    "mood": "intellectually fierce and resolute justice",
+    "mood": "专注坚毅",
     "promptProse": "Behind the defense desk of a stately courtroom, Iino Miko stands with immaculate poise in her tailored charcoal suit, presenting her brief with intellectual fire and unwavering conviction.",
     "promptTokens": [
       "iino_miko",

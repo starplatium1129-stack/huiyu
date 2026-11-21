@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_rainy_rooftop_neon",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 183,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "jalter_rainy_rooftop_neon",
     "title": "贞德[Alter] · 雨夜天台",
@@ -18,7 +18,7 @@
     "timeOfDay": "night",
     "lighting": "雨夜天台霓虹倒影与远方楼宇灯火",
     "camera": "medium_shot",
-    "mood": "cool",
+    "mood": "清冷从容",
     "sceneTags": [
       "rainy_rooftop",
       "hand_on_railing",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_vip_lounge_bunny_seduction",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2170,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "viper_vip_lounge_bunny_seduction",
     "characterId": "viper_nikke",
@@ -14,11 +14,11 @@
     "description": "门扉紧闭的私密绯红贵宾包厢内，璀璨的水晶吊灯倾泻出迷蒙碎光。毒蛇身着性感的黑色丝绒兔女郎连体衣，修长黑丝长腿侧并坐在深红丝绒沙发上。兔耳发饰随着她歪头的动作微微颤动，她修长纤细的玉指轻抵唇角，绿宝石般的眼眸中波光荡漾，满是摄人心魄的占有欲与独家眷恋。",
     "recommendedSize": "832x1216",
     "location": "locked VIP casino backroom with dim scarlet lighting",
-    "action": "seated on crimson velvet booth wearing velvet bunny suit and black tights, bunny ears tilted cute, finger touching lips, emerald eyes shining with sultry devotion",
+    "action": "身着性感的黑色丝绒兔女郎连体衣",
     "timeOfDay": "night",
     "lighting": "dramatic dim scarlet and gold lounge ambient lighting",
     "camera": "cowboy_shot",
-    "mood": "exclusive high-stakes glamour, intoxicating sultry tease",
+    "mood": "俏皮灵动",
     "promptProse": "Inside a private VIP lounge bathed in crimson light, Viper poses gracefully on a velvet booth in an elegant bunny suit and black stockings. She touches her lips playfully with an alluring emerald gaze.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_sofa_lap_straddle_kiss",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2169,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "viper_sofa_lap_straddle_kiss",
     "characterId": "viper_nikke",
@@ -14,11 +14,11 @@
     "description": "暖色调的静谧客厅内，毒蛇侧坐在宽大的真丝沙发上。贴身的粉白露脐短上衣衬托出纤细柔韧的腰肢，粉色波浪卷发散落在白皙胸口。她单手托腮，翡翠般的碧绿眼眸含着狡黠而甜美的笑意，微咬着下唇向镜头俏皮地眨了眨眼，散发着让人难以抵挡的恶魔系女友魅力。",
     "recommendedSize": "832x1216",
     "location": "dimly lit modern living room with soft ambient light",
-    "action": "reclining playfully on plush sofa, cropped top showing midriff, pink wavy hair cascading over shoulders, biting lower lip with flirty wink, emerald eyes glittering",
+    "action": "侧坐在宽大的真丝沙发上，贴身的粉白露脐短上衣衬托出纤细柔韧的腰肢",
     "timeOfDay": "night",
     "lighting": "soft warm indoor downlights paired with pink neon mood strip along baseboards",
     "camera": "medium_shot",
-    "mood": "sweet dangerous seduction, mischievous girlfriend affection",
+    "mood": "温存与俏皮",
     "promptProse": "Lounging playfully on a velvet couch in warm room lighting, Viper wears a pink crop top and denim shorts. Her wavy pink hair cascades over bare shoulders as she winks with a charming, mischievous smile.",
     "promptTokens": [
       "1girl",

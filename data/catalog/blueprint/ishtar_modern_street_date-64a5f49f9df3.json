@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ishtar_modern_street_date",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 254,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ishtar_modern_street_date",
-    "title": "伊什塔尔 · 现代街头的女神考察·「人类的甜甜圈……是供品吗」",
+    "title": "伊什塔尔 · 现代街头的女神考察",
     "category": "都市日常",
     "characterId": "ishtar_fate",
     "description": "牛仔外套与白色短上衣搭配高腰短裤，伊什塔尔举起吃了一半的甜甜圈，眼睛亮得像发现了宝藏。今天王冠换成星形发夹，她边走边得意地宣布，下一份考察清单还要多加几种甜点。",

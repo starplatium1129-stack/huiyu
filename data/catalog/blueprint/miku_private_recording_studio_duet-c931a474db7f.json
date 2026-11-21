@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miku_private_recording_studio_duet",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2214,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "miku_private_recording_studio_duet",
     "characterId": "izayoi_miku",
@@ -14,11 +14,11 @@
     "description": "专业隔音录音室内暖光柔和，美九双手紧紧挽住你的手臂。两人共戴一副监听耳机，她紫发双马尾垂在胸前，紫晶眼眸盈满深情，与你轻声合唱着定情曲。",
     "recommendedSize": "832x1216",
     "location": "private luxury soundproof recording studio",
-    "action": "sharing studio headphones, clinging to partner arm, singing closely into microphone, loving star-struck gaze",
+    "action": "两人共戴一副监听耳机，她紫发双马尾垂在胸前，紫晶眼眸盈满深情，与你轻声合唱着定情曲",
     "timeOfDay": "afternoon",
     "lighting": "warm moody acoustic studio lights with glowing equipment dials",
     "camera": "cowboy_shot",
-    "mood": "intimate musical harmony, superstar girlfriend romance, tender devotion",
+    "mood": "温存与神圣",
     "promptProse": "Sharing studio headphones in a cozy recording booth, Miku Izayoi clings to partner arm, singing tenderly with glowing purple eyes.",
     "promptTokens": [
       "recording_studio",

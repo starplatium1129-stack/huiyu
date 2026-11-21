@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izayoi_miku",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 228,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "izayoi_miku",
     "profile": {
@@ -89,7 +89,7 @@
       "speech": "达令～！美九等你好久好久了啦！今天的演唱会美九表现得棒不棒？……哼，光说棒可不行，美九要达令现在就好好抱紧我，亲亲我的嘴唇才可以喵！",
       "source": "AIC PLUS+ / Production IMS《约会大作战 / Date A Live》",
       "traits": [
-        "izayoi_miku",
+        "izayoi miku",
         "purple_hair",
         "long_hair",
         "twintails",
@@ -118,16 +118,16 @@
         "izayoi miku"
       ],
       "exactTokens": [
-        "izayoi_miku"
+        "izayoi miku"
       ],
       "characterTokens": [
-        "izayoi_miku"
+        "izayoi miku"
       ],
       "copyrightTokens": [
         "date_a_live"
       ],
       "identityTokens": [
-        "izayoi_miku",
+        "izayoi miku",
         "1girl",
         "solo",
         "purple_hair",

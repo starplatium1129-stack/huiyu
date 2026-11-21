@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_investigator_rainy_street",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1987,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kouzuki_kallen_investigator_rainy_street",
     "characterId": "kouzuki_kallen",
@@ -14,11 +14,11 @@
     "description": "夜色渐浓的都市细雨中，卡莲身穿黑色修身皮夹克，双手插在口袋里驻足于霓虹招牌下，艳红短发在水光倒影中格外鲜明。",
     "recommendedSize": "832x1216",
     "location": "rainy neon city alley",
-    "action": "hands in pockets, standing in light drizzle, sharp watchful gaze",
+    "action": "夜色渐浓的都市细雨中，卡莲身穿黑色修身皮夹克，双手插在口袋里驻足于霓虹招牌下",
     "timeOfDay": "night",
     "lighting": "colorful neon reflections glowing on wet pavement and leather",
     "camera": "medium_shot",
-    "mood": "stylish cool urban investigator tension",
+    "mood": "冷艳机警",
     "promptProse": "On a sleek neon-lit Tokyo street glistening with light rain, Kallen Kouzuki walks with hands in her leather jacket pockets, her bright red hair illuminated by neon glow.",
     "promptTokens": [
       "kallen_stadtfeld",

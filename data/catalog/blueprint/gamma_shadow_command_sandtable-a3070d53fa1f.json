@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "gamma_shadow_command_sandtable",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2796,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "gamma_shadow_command_sandtable",
     "characterId": "gamma_shadow",
@@ -14,11 +14,11 @@
     "description": "阴影庭园地下指挥所内，伽玛站在巨大的沙盘前调动棋子。暗影与阿尔法不在时，这里由她坐镇——每一步调动都精确如账目。",
     "recommendedSize": "832x1216",
     "location": "underground command chamber of shadow garden with a giant strategy sand table and wall maps",
-    "action": "standing at a sand table moving marker pieces, focused sharp gaze, slime bodysuit with gold trim",
+    "action": "站在巨大沙盘前从容调动棋子，目光严谨沉着，掌控全局",
     "timeOfDay": "night",
     "lighting": "沙盘上方魔石吊灯的冷白光与地图墙的微光",
     "camera": "cowboy_shot",
-    "mood": "calm strategist authority, silent precision",
+    "mood": "宁静与端庄",
     "promptProse": "At the sand table of the underground headquarters, Gamma moves the pieces with cool precision, holding the Garden's reins alone tonight.",
     "promptTokens": [
       "sand table",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_garden_walk_queens_stroll",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 403,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "挽臂走过蔷薇拱门，花瓣落肩，星瞳眯起得意",
     "adult": false,
@@ -51,7 +51,7 @@
       "daily"
     ],
     "timeOfDay": "春日午后",
-    "title": "食蜂操祈 · 花园散步的女王检阅·「全体的花都为本小姐盛开」",
+    "title": "食蜂操祈 · 花园散步的女王检阅",
     "animaCaption": "Misaki walks on the left, arm linked with her companion on the right beneath the rose arch."
   }
 }

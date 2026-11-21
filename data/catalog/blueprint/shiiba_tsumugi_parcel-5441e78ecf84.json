@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_parcel",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2419,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_parcel",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "居家日常",
     "description": "包裹里是一枚小小的星形饰品。紬将它从纸盒中取出，转到光线下看清边缘的纹路。",
     "location": "room table",
-    "action": "holding a small star ornament above an open parcel",
+    "action": "紬将它从纸盒中取出，转到光线下看清边缘的纹路",
     "timeOfDay": "afternoon",
     "lighting": "window light",
     "camera": "close up",

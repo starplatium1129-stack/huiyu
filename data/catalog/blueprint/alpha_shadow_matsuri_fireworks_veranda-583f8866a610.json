@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_shadow_matsuri_fireworks_veranda",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2532,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "alpha_shadow_matsuri_fireworks_veranda",
     "title": "阿尔法 · 四越盛典的暗夜花火",
@@ -12,7 +12,7 @@
     "outfitId": "matsuri_yukata",
     "description": "四越商会日式庭园回廊前，盛装的阿尔法手扶木质栏杆远眺高空绽放的漫天花火，红纸灯笼光辉照映黑金暗椿浴衣。",
     "location": "traditional wooden veranda terrace overlooking a sprawling festival garden",
-    "action": "standing gracefully leaning against veranda railing, gazing sideways at bursting fireworks in night sky, soft nostalgic smile",
+    "action": "手扶木质栏杆远眺高空绽放的漫天花火，红纸灯笼光辉照映黑金暗椿浴衣",
     "timeOfDay": "夜晚",
     "lighting": "花火高光与红纸灯笼暖光",
     "camera": "wide shot, landscape composition",

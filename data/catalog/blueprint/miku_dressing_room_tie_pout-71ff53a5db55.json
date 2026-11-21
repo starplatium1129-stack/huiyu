@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miku_dressing_room_tie_pout",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2216,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "miku_dressing_room_tie_pout",
     "characterId": "izayoi_miku",
@@ -14,11 +14,11 @@
     "description": "演唱会开场前空无一人的豪华后台化妆室里，盛装打扮的美九把你堵在墙角。她轻拽着你的领带，紫眸闪烁，气鼓鼓又娇滴滴地宣称不给幸运之吻就不登台。",
     "recommendedSize": "832x1216",
     "location": "backstage VIP dressing room before concert",
-    "action": "pinning partner against dressing room wall, pulling his necktie gently, pouting playfully for a pre-show kiss, glittering stage dress",
+    "action": "她轻拽着你的领带，紫眸闪烁，气鼓鼓又娇滴滴地宣称不给幸运之吻就不登台",
     "timeOfDay": "night",
     "lighting": "glamorous illuminated dressing mirror bulbs casting brilliant warm light",
     "camera": "cowboy_shot",
-    "mood": "flirtatious superstar demanding, teasing romance, pre-show excitement",
+    "mood": "温存与俏皮",
     "promptProse": "Pinning partner against the dressing room wall before her concert, Miku Izayoi tugs his necktie cutely, demanding a lucky kiss.",
     "promptTokens": [
       "dressing_room",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_maid_cafe_omelet_ketchup_heart",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2329,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "mayuri_maid_cafe_omelet_ketchup_heart",
     "characterId": "shiina_mayuri",
@@ -14,11 +14,11 @@
     "description": "在人声喧闹的MayQueen咖啡厅里，真由理端着盛有蛋包饭的餐盘快步走来。她微微倾身，用番茄酱画好笑脸后双手合十在胸前，眼睛弯成月牙。",
     "recommendedSize": "832x1216",
     "location": "bustling retro Akihabara maid cafe with checkered floors and warm booths",
-    "action": "leaning over wooden table holding decorated omelet rice plate, hands clasped happily over apron, beaming with cheerful sparkling eyes",
+    "action": "她微微倾身，用番茄酱画好笑脸后双手合十在胸前，眼睛弯成月牙",
     "timeOfDay": "afternoon",
     "lighting": "warm cozy indoor chandelier lighting casting soft golden highlights on brown uniform",
     "camera": "cowboy_shot",
-    "mood": "bubbly retro sweetness, energetic maid service, pure heart-melting charm",
+    "mood": "神圣纯洁",
     "promptProse": "Leaning forward in her brown maid dress at a cafe table, Mayuri presents an omelet plate with joyful eyes and hands clasped together in delight.",
     "promptTokens": [
       "cafe",

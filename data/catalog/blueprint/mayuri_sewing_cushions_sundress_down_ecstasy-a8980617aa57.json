@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_sewing_cushions_sundress_down_ecstasy",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2333,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-03T08:00:03.318398+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "mayuri_sewing_cushions_sundress_down_ecstasy",
     "characterId": "shiina_mayuri",
@@ -14,11 +14,11 @@
     "description": "散落着碎布与玩偶的缝纫桌旁，吊带裙的肩带滑落到臂弯。真由理仰躺在布匹堆砌的软垫上，双手无措地抓紧对方的肩膀，在纯真与动情的夹缝中彻底绽放。",
     "recommendedSize": "832x1216",
     "location": "colorful craft room with sewing machine, spools of thread, and soft fabric rolls",
-    "action": "reclining on a pile of plush velvet sewing cushions, pale blue sundress pulled down baring soft chest, arching back with joyful tearful moans",
+    "action": "真由理仰躺在布匹堆砌的软垫上，双手无措地抓紧对方的肩膀，在纯真与动情的夹缝中彻底绽放",
     "timeOfDay": "afternoon",
     "lighting": "golden sunset beams filtering through lace window curtains illuminating velvet fabrics",
     "camera": "medium_shot",
-    "mood": "irresistible sweet passion, total romantic blossoming, breathtaking innocence lost to love",
+    "mood": "温存与柔媚",
     "promptProse": "Lying amidst colorful fabric rolls in the craft room, Mayuri sundress is pulled down, eyes wide with tears of profound ecstatic pleasure.",
     "promptTokens": [
       "fabric",

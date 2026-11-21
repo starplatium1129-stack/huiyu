@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_school_rooftop_confiscated_cigarette",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 2246,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "shizuka_school_rooftop_confiscated_cigarette",
     "characterId": "shizuka_hiratsuka",
@@ -14,11 +14,11 @@
     "description": "放学后空旷的学校天台铁丝网旁，金辉洒满地面。被你突然伸手拿走唇边尚未点燃的香烟并直视双眼，平时帅气豪爽的静老师瞬间僵住，整张脸通红，结结巴巴地偏过头，展现出绝顶的静可爱。",
     "recommendedSize": "832x1216",
     "location": "breezy school rooftop against golden afternoon city skyline",
-    "action": "leaning against chain-link rooftop fence at golden hour, stunned and blushing as partner gently plucks the unlit cigarette from her lips and holds her gaze",
+    "action": "被你突然伸手拿走唇边尚未点燃的香烟并直视双眼，平时帅气豪爽的静老师瞬间僵住，整张脸通红",
     "timeOfDay": "sunset",
     "lighting": "warm amber sunset casting long romantic shadows across concrete roof",
     "camera": "close-up",
-    "mood": "irresistible gap moe, sudden feminine vulnerability, heart-stopping chemistry",
+    "mood": "动情与反差",
     "promptProse": "By a school rooftop fence at golden sunset, Shizuka Hiratsuka blushes intensely with stunned purple eyes as partner takes away her unlit cigarette.",
     "promptTokens": [
       "rooftop",

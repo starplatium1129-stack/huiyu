@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_bedroom_bed_tearful_angel_surrender",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2271,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nymph_bedroom_bed_tearful_angel_surrender",
     "characterId": "nymph",
@@ -14,11 +14,11 @@
     "description": "静谧的日式居室内，妮姆芙娇小的身躯陷在柔软蓬松的被窝中。浅蓝色的双马尾散乱在纯白枕头上，透明如蝉翼的电子光子羽翼在身后泛着微弱幽蓝光芒。她身着轻薄的淡蓝色蕾丝睡衣，纤细的手指轻捏着被角，眼角蓄着动情与释怀的晶莹泪光，向你展露出卸下“电子战用天使”沉重枷锁后的纯真笑容。",
     "recommendedSize": "832x1216",
     "location": "cozy quiet bedroom with drawn curtains",
-    "action": "lying curled in white bed, sheer pastel blue nightshirt, transparent glowing holographic angel wings resting on mattress, tear of relief in eye, blushing smile looking at viewer",
+    "action": "娇小的身躯陷在柔软蓬松的被窝中，浅蓝色的双马尾散乱在纯白枕头上",
     "timeOfDay": "night",
     "lighting": "soft blue holographic wing luminescence mixed with warm bedside lamp",
     "camera": "medium_shot",
-    "mood": "profound emotional rescue, delicate tearful gratitude and love",
+    "mood": "浪漫温存",
     "promptProse": "Curled in a soft white bed, Nymph wears a sheer pastel blue nightshirt as her transparent holographic angel wings glow softly. A tear of relief sparkles in her cyan eyes as she smiles with pure, touching devotion.",
     "promptTokens": [
       "1girl",

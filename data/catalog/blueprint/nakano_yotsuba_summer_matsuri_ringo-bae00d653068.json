@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_summer_matsuri_ringo",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1964,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_summer_matsuri_ringo",
     "title": "中野四叶 · 夏日祭典的红苹果糖",
@@ -13,11 +13,11 @@
     "description": "夏日祭典热闹的人潮与红色纸灯笼暖光下，四叶开心地双手捧着晶亮红艳的苹果糖递来，迫不及待地想要与心上人分享这份纯粹的甜蜜。",
     "recommendedSize": "832x1216",
     "location": "bustling lantern-lit festival lane",
-    "action": "holding candy apple, pulling sleeve, turning excitedly",
+    "action": "夏日祭典热闹的人潮与红色纸灯笼暖光下，四叶开心地双手捧着晶亮红艳的苹果糖递来",
     "timeOfDay": "night",
     "lighting": "warm glowing red festival lanterns",
     "camera": "medium_shot",
-    "mood": "festive energetic excitement",
+    "mood": "节日欢欣",
     "promptProse": "Dashing happily through a bustling Japanese summer festival illuminated by red paper lanterns, Nakano Yotsuba holds up a bright candy apple. She turns around with sparkling eyes and reaches out to pull the viewer along into the festivities.",
     "promptTokens": [
       "festival_stall",

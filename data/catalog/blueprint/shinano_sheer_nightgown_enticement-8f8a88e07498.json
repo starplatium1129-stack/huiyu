@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_sheer_nightgown_enticement",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2145,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "shinano_sheer_nightgown_enticement",
     "characterId": "shinano",
@@ -14,11 +14,11 @@
     "description": "静谧的重樱寝殿内，清辉如水洒落在雕花木柱与席垫上。信浓端坐在软垫中央，半透天青丝绸睡袍轻滑而落，露出如雪般无瑕的香肩与锁骨。九条蓬松如云的雪白狐尾在身后舒展环绕，金色的兽瞳中泛着梦醒时的迷离光泽，气质出尘而又带着摄人心魄的诱惑。",
     "recommendedSize": "832x1216",
     "location": "moonlit traditional bedchamber with sliding shoji doors",
-    "action": "sitting gracefully on plush floor cushion, sheer cyan silk peignoir sliding off shoulder, nine fluffy white fox tails gently fanned out, glowing golden eyes, elegant alluring pose",
+    "action": "端坐在软垫中央，半透天青丝绸睡袍轻滑而落",
     "timeOfDay": "night",
     "lighting": "ethereal silver moonlight illuminating sheer silk fabric and white fur",
     "camera": "medium_shot",
-    "mood": "dreamlike mystical allure, majestic quiet intimacy",
+    "mood": "温存与宁静",
     "promptProse": "Seated upon a silk floor cushion in an ornate moonlit chamber, Shinano wears a translucent cyan nightgown slipping gently off her shoulders. Nine massive white fox tails drape around her as her golden eyes gleam softly.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_bedroom_soles_foreshortening",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 467,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "仰卧床褥，双膝屈起，双手紧抓枕头，足底朝向镜头",
     "adult": true,
@@ -25,7 +25,10 @@
     "mood": "温柔依恋与私密",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Viewed from the foot of the bed, Sylphiette lies back with bent knees and both hands gripping the pillow, her feet closer to the camera than her flushed ears and face; morning window light crosses the sheets.",
     "promptTokens": [

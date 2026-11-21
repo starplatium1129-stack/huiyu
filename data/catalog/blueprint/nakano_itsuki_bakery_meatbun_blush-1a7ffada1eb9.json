@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_bakery_meatbun_blush",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1969,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_itsuki_bakery_meatbun_blush",
     "title": "中野五月 · 寒风街角的热气肉包",
@@ -13,11 +13,11 @@
     "description": "冬日飘雪的商业街拐角，五月双手捧着刚出炉、热气腾腾的白嫩肉包小心小口咬下。温热肉汁让少女满足地眯起双眸，双颊鼓鼓泛红格外可爱。",
     "recommendedSize": "832x1216",
     "location": "snowy street corner shop",
-    "action": "holding steaming meatbun with both hands, taking a bite, blushing cheeks",
+    "action": "温热肉汁让少女满足地眯起双眸，双颊鼓鼓泛红格外可爱",
     "timeOfDay": "dusk",
     "lighting": "warm glowing shop window lights in winter snow",
     "camera": "close-up",
-    "mood": "heartwarming adorable bliss",
+    "mood": "治愈与明媚",
     "promptProse": "Standing on a snowy Japanese street corner in a warm cream-white wool coat and plaid scarf, Nakano Itsuki holds a steaming hot meatbun with both hands. Her cheeks flush with pure delight as she takes a bite, gentle steam rising into the cold dusk air.",
     "promptTokens": [
       "winter_street",

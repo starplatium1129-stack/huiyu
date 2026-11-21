@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_intimate_snow_hot_spring",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1978,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_itsuki_intimate_snow_hot_spring",
     "title": "中野五月 · 雪见温泉中的红晕容颜",
@@ -13,11 +13,11 @@
     "description": "飘雪冬夜的露天岩石温泉中，雪花落在热气蒸腾的泉水边缘。五月依着温润石壁浸泡在汤泉中，微醺的酡红染上双颊，眼波流转满是温软爱意。",
     "recommendedSize": "832x1216",
     "location": "snow-covered outdoor rock onsen",
-    "action": "soaking in rock onsen, snowflakes falling on hair, radiant flushed cheeks",
+    "action": "五月依着温润石壁浸泡在汤泉中，微醺的酡红染上双颊，眼波流转满是温软爱意",
     "timeOfDay": "night",
     "lighting": "soft wooden lanterns glowing amid falling snow",
     "camera": "medium_shot",
-    "mood": "breathtaking winter hot spring sensuality",
+    "mood": "田园与雪景",
     "promptProse": "Soaking in a steaming outdoor rock onsen surrounded by deep winter snow, Nakano Itsuki tilts her head as gentle snowflakes melt upon her bare shoulders. A white bath towel is wrapped around her body. The rising steam wraps around her long red hair, highlighting her vividly flushed, captivating cheeks.",
     "promptTokens": [
       "hot_spring",

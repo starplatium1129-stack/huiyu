@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kamome_pirate_ship_deck_treasure_declaration",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2579,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "kamome_pirate_ship_deck_treasure_declaration",
     "title": "久岛鸥 · 废弃海盗船甲板的宝藏宣誓",
@@ -12,7 +12,7 @@
     "outfitId": "traveler_bohemian_dress",
     "description": "鸟白岛隐秘海湾内搁浅的木质古海盗船甲板上，鸥踩在缆绳木桶上，一手高举泛黄羊皮纸藏宝图，一手扶着海盗羽毛帽，英姿飒爽地宣布大冒险启程。",
     "location": "weathered wooden shipwreck deck stranded in secluded rocky island cove under sunny sky",
-    "action": "one foot perched on wooden barrel, hoisting open treasure map high with one hand, laughing with adventurous sparkling golden eyes",
+    "action": "鸟白岛隐秘海湾内搁浅的木质古海盗船甲板上，鸥踩在缆绳木桶上，一手高举泛黄羊皮纸藏宝图",
     "timeOfDay": "白天",
     "lighting": "海湾蔚蓝日光与木甲板反光",
     "camera": "wide shot, landscape composition",

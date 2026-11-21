@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kamome_attic_sunbeams_pinafore_unbuttoned_union",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2351,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "kamome_attic_sunbeams_pinafore_unbuttoned_union",
     "characterId": "kushima_kamome",
@@ -14,11 +14,11 @@
     "description": "阳光从阁楼天窗倾泻而下，照亮空气中漂浮的微尘。背心裙的排扣被悉数解开，鸥双膝微分跪坐在木地板上，眼角带着喜悦的泪花，把最珍贵的自己作为唯一的宝藏献出。",
     "recommendedSize": "832x1216",
     "location": "high attic loft with circular stained glass window and warm cedar floorboards",
-    "action": "kneeling on cedar planks in unbuttoned parted pinafore dress, arms open wide with tears of profound joyful love, offering herself completely",
+    "action": "背心裙的排扣被悉数解开，鸥双膝微分跪坐在木地板上，眼角带着喜悦的泪花",
     "timeOfDay": "morning",
     "lighting": "dazzling golden god-rays cutting through dust motes enveloping both in celestial warmth",
     "camera": "medium_shot",
-    "mood": "transcendent emotional catharsis, sacred lovers culmination, purest promise fulfilled",
+    "mood": "神圣纯洁",
     "promptProse": "Bathed in celestial attic skylight, Kamome kneels with unbuttoned dress, weeping sweet tears of complete, ecstatic romantic union.",
     "promptTokens": [
       "attic",

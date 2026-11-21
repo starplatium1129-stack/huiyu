@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_coastal_highway_drive",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1983,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aozaki_aoko_coastal_highway_drive",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "落日将浩瀚太平洋染成熔金的海面上，老式复古敞篷车停在沿海公路观景台旁。青子双臂倚着车门凭栏远眺，晚风翻卷着长风衣，回眸投来惬意洒脱的目光。",
     "recommendedSize": "1216x832",
     "location": "coastal cliffside road",
-    "action": "leaning against convertible car, looking out at sea, peaceful smile",
+    "action": "青子双臂倚着车门凭栏远眺，晚风翻卷着长风衣，回眸投来惬意洒脱的目光",
     "timeOfDay": "dusk",
     "lighting": "radiant orange-gold sunset reflecting off ocean waves",
     "camera": "wide_shot",
-    "mood": "breathtaking open road freedom",
+    "mood": "快意从容",
     "promptProse": "Beside a seaside cliff road glowing under a brilliant fiery sunset, Aozaki Aoko rests against an open-top car, letting the ocean wind sweep through her reddish-brown hair.",
     "promptTokens": [
       "coastal_road",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sparkle_hsr",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 100,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sparkle_hsr",
     "profile": {
@@ -360,7 +360,7 @@
       ],
       "identityProse": "Sparkle from Honkai: Star Rail, with uneven black twintails tied with crimson ribbons and pink eyes with cherry-blossom highlights.",
       "identityTokens": [
-        "sparkle_(honkai:_star_rail)",
+        "sparkle (honkai: star rail)",
         "honkai: star rail",
         "black hair",
         "twintails",
@@ -371,7 +371,7 @@
         "cherry-blossom eye highlights"
       ],
       "exactTokens": [
-        "sparkle_(honkai:_star_rail)"
+        "sparkle (honkai: star rail)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -408,7 +408,7 @@
         ]
       },
       "characterTokens": [
-        "sparkle_(honkai:_star_rail)",
+        "sparkle (honkai: star rail)",
         "Sparkle"
       ],
       "copyrightTokens": [

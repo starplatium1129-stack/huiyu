@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "eris_greyrat",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 52,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "eris_greyrat",
     "profile": {
@@ -81,7 +81,7 @@
       "speech": "卢迪由我来保护！不管对手是人神还是龙神，胆敢伤害卢迪的人，全部斩成两段！",
       "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
       "traits": [
-        "eris_greyrat",
+        "eris greyrat",
         "1girl",
         "solo",
         "red_hair",
@@ -528,13 +528,13 @@
       "displayName": "艾莉丝",
       "exactPrefixes": [],
       "exactTokens": [
-        "eris_greyrat"
+        "eris greyrat"
       ],
       "franchise": "Mushoku Tensei",
       "id": "eris_greyrat",
       "identityProse": "Eris Greyrat from Mushoku Tensei, tall and athletic, with long wavy crimson hair, red eyes, thick eyebrows and a small ahoge.",
       "identityTokens": [
-        "eris_greyrat",
+        "eris greyrat",
         "1girl",
         "solo",
         "red_hair",
@@ -565,7 +565,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "eris_greyrat"
+        "eris greyrat"
       ],
       "copyrightTokens": [
         "mushoku_tensei"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frenda_bedroom_bed_flustered_surrender",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2307,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "frenda_bedroom_bed_flustered_surrender",
     "characterId": "frenda_seivelun",
@@ -14,11 +14,11 @@
     "description": "静谧的卧室内贝雷帽掉在一旁，波浪金发铺散在床单上。粉色透纱娃娃裙被推高，平时不可一世的小恶魔少女此刻满面烧红、双手捂着眼睛害羞求饶，在热烈的深吻中彻底融化。",
     "recommendedSize": "832x1216",
     "location": "dim softly lit private bedroom with ruffled sheets",
-    "action": "pinned on bed with pink babydoll negligee, blonde waves spread on pillow, hands covering blushing face before wrapping around partner neck in surrender",
+    "action": "粉色透纱娃娃裙被推高，平时不可一世的小恶魔少女此刻满面烧红、双手捂着眼睛害羞求饶",
     "timeOfDay": "night",
     "lighting": "soft warm bedside lamp glow illuminating bare curves and golden hair",
     "camera": "close-up",
-    "mood": "delightful tsundere meltdown, heated intimate surrender, breathless lovers ecstasy",
+    "mood": "傲娇与温存",
     "promptProse": "Pinned on bed with sheer pink babydoll, blonde Frenda Seivelun blushes furiously, wrapping arms around partner neck with breathless passionate kisses.",
     "promptTokens": [
       "bedroom",

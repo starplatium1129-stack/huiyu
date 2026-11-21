@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_shadow_sunny_reef_tuna_triumph",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2545,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "delta_shadow_sunny_reef_tuna_triumph",
     "title": "德尔塔 · 艳阳礁石上的巨鱼战利品",
@@ -12,7 +12,7 @@
     "outfitId": "leopard_hunt_bikini",
     "description": "碧海蓝天的阳光珊瑚礁石上，海浪飞溅。身穿豹纹泳装的德尔塔高高举起刚徒手抓到的大鱼，浑身水珠闪闪发光，仰天欢呼。",
     "location": "sun-drenched ocean coral reef with crashing turquoise sea waves",
-    "action": "standing proudly atop a wet sea rock, lifting a massive caught fish high overhead with both hands, shouting in victory with gleaming wet skin",
+    "action": "高高举起刚徒手抓到的大鱼，浑身水珠闪闪发光，仰天欢呼",
     "timeOfDay": "白天",
     "lighting": "热带烈阳直射与水面耀斑",
     "camera": "wide shot, landscape composition",

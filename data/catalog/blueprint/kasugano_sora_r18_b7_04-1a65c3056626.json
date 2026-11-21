@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kasugano_sora_r18_b7_04",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1626,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "kasugano_sora_r18_b7_04",
-    "title": "春日野穹 · 禁忌门扉榻榻米上的绝望独奏 ·「哪怕全天下都指责我们……穹也只要悠」",
+    "title": "春日野穹 · 禁忌门扉榻榻米上的绝望独奏",
     "category": "私密自持",
     "characterId": "kasugano_sora",
     "description": "所有禁忌打破后的执迷之夜。穹完全赤裸地仰躺在玄关铺就的草席上，银白长发披散如雪。双手毫无节制地在泥泞泛滥的私处疯狂抽动，泪水打湿了脸颊，流露出对世俗伦理的绝对背叛与献身——「悠……穹的身体……已经彻底变成悠的形状了……哈啊……」",
@@ -50,7 +50,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

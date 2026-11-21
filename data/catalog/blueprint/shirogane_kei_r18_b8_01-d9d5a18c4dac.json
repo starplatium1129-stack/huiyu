@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirogane_kei_r18_b8_01",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1421,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "跨坐在近处同伴的腰间，兜帽已戴好，双手按在对方胸前，耳尖泛红",
     "adult": true,
@@ -61,7 +61,7 @@
       "bottomless"
     ],
     "timeOfDay": "dawn",
-    "title": "白银圭 · 假日晨光的大号卫衣诱惑 ·「笨蛋……要是敢告诉老哥，我就杀了你」",
+    "title": "白银圭 · 假日晨光的大号卫衣诱惑",
     "animaCaption": "Both hands rest on her companion's chest above the futon."
   }
 }

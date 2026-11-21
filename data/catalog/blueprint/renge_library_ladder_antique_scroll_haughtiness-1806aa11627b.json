@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_library_ladder_antique_scroll_haughtiness",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2359,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "renge_library_ladder_antique_scroll_haughtiness",
     "characterId": "renge_mangekyou",
@@ -14,11 +14,11 @@
     "description": "旅馆深处的藏书楼尘封已久。莲华身着大正紫袴踩在高高的木梯上，从最顶层的书架抽出一卷古籍。她居高临下地垂眸望来，发梢垂落在纤细的腰际，充满书卷与神秘气韵。",
     "recommendedSize": "832x1216",
     "location": "lofty historic Japanese archive with towering cedar bookshelves and dust-mote beams",
-    "action": "perched gracefully on rolling wooden ladder, pulling vintage scroll from top shelf, gazing down with haughty calm aristocratic elegance",
+    "action": "身着大正紫袴踩在高高的木梯上，从最顶层的书架抽出一卷古籍，居高临下地垂眸望来",
     "timeOfDay": "afternoon",
     "lighting": "shafts of amber afternoon sun piercing tall lattice windows illuminating leather tomes",
     "camera": "cowboy_shot",
-    "mood": "Taisho-era scholarly romance, cool haughty nobility, enigmatic intellectual beauty",
+    "mood": "傲娇与温存",
     "promptProse": "Standing on a library ladder in purple hakama, Renge looks down with cool aristocratic charm while holding a dusty antique scroll.",
     "promptTokens": [
       "library",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tomotake_yoshino",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 86,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "tomotake_yoshino",
     "profile": {
@@ -82,7 +82,7 @@
       "speech": "我是朝武芳乃。作为穗织的巫女，守护这片土地是我的职责……请多多指教。",
       "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
       "traits": [
-        "tomotake_yoshino",
+        "tomotake yoshino",
         "1girl",
         "solo",
         "white_hair",
@@ -450,13 +450,13 @@
         "yoshino_"
       ],
       "exactTokens": [
-        "tomotake_yoshino"
+        "tomotake yoshino"
       ],
       "franchise": "Senren Banka",
       "id": "tomotake_yoshino",
       "identityProse": "Tomotake Yoshino from Senren Banka, with long silver-white twintails, center-parted bangs, deep blue eyes and cherry-blossom hair ornaments.",
       "identityTokens": [
-        "tomotake_yoshino",
+        "tomotake yoshino",
         "1girl",
         "solo",
         "white hair",
@@ -483,7 +483,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "tomotake_yoshino"
+        "tomotake yoshino"
       ],
       "copyrightTokens": [
         "senren banka"

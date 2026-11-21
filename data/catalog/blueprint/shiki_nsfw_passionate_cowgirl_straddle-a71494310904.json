@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiki_nsfw_passionate_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1353,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸肩，俯身轻喘，眼神水润情动",
     "adult": true,
@@ -56,7 +56,10 @@
     ],
     "timeOfDay": "深夜",
     "title": "两仪式 · 卸下防备的深情主动骑乘",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "compositionIntent": "single",
     "animaCaption": "Both hands rest on the offscreen viewer's shoulders as she leans forward."

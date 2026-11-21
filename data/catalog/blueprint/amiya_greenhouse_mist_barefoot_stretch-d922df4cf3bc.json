@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_greenhouse_mist_barefoot_stretch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2628,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "amiya_greenhouse_mist_barefoot_stretch",
     "characterId": "amiya",
@@ -14,11 +14,11 @@
     "description": "晨光斜照的罗德岛生态温室，自动喷淋系统在翠绿花叶间弥散开轻盈的水汽彩虹。阿米娅穿着轻便的棉麻工装无袖短裙，赤着双足踩在温润的木质步道上，正轻轻伸展微酸的腰肢。薄薄的晨汗濡湿了鬓角碎发，她转头擦汗，在光影折射中展露出毫无防备的明媚笑颜。",
     "recommendedSize": "832x1216",
     "location": "humid misted greenhouse among exotic plants",
-    "action": "stretching arms gently in sunlit greenhouse mist, sleeveless linen work dress, bare feet on wooden floor, dewy floral background, radiant blushing smile",
+    "action": "穿着轻便的棉麻工装无袖短裙，赤着双足踩在温润的木质步道上",
     "timeOfDay": "morning",
     "lighting": "brilliant morning sunbeams piercing greenhouse glass and mist",
     "camera": "cowboy_shot",
-    "mood": "pure sunlit freshness, innocent refreshing allure",
+    "mood": "神圣纯洁",
     "promptProse": "Stretching her arms in a humid, sun-drenched greenhouse, Amiya stands barefoot on a wooden path. Morning sunbeams illuminate floating water mist and blooming flowers as she turns with a bright, welcoming smile.",
     "promptTokens": [
       "1girl",

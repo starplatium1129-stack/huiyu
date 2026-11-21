@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "renge_mangekyou",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 252,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "renge_mangekyou",
     "profile": {
@@ -178,7 +178,7 @@
       ],
       "identityProse": "Renge from Bishoujo Mangekyou, with waist-length straight black hair, hime cut bangs, piercing crimson red eyes, holding a kiseru pipe, with an enigmatic, seductive, and timeless presence.",
       "identityTokens": [
-        "renge_(biman)",
+        "renge (biman)",
         "1girl",
         "solo",
         "black_hair",
@@ -188,7 +188,7 @@
         "bishoujo mangekyou"
       ],
       "exactTokens": [
-        "renge_(biman)"
+        "renge (biman)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -220,7 +220,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "renge_(biman)"
+        "renge (biman)"
       ],
       "copyrightTokens": [
         "bishoujo mangekyou"

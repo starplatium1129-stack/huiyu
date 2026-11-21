@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_flowers_backstage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2436,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T13:30:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mitsukasa_ayase_flowers_backstage",
     "characterId": "mitsukasa_ayase",
@@ -13,7 +13,7 @@
     "category": "舞台间隙",
     "description": "后台桌上放着一束刚送来的花。绫濑拿起卡片读完，将它仔细塞回花束的包装纸里。",
     "location": "backstage table",
-    "action": "reading a card beside a bouquet",
+    "action": "绫濑拿起卡片读完，将它仔细塞回花束的包装纸里",
     "timeOfDay": "evening",
     "lighting": "warm dressing room light",
     "camera": "medium shot",
@@ -33,7 +33,6 @@
       "medium shot"
     ],
     "animaCaption": "",
-    "characterId": "mitsukasa_ayase",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

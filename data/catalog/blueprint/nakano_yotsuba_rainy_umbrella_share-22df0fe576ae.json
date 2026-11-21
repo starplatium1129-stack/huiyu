@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_rainy_umbrella_share",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1963,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_rainy_umbrella_share",
     "title": "中野四叶 · 雨中操场的同伞护送",
@@ -13,11 +13,11 @@
     "description": "暴雨倾盆的操场边，四叶双手高高举着雨伞，大半伞面毫不犹豫地倾斜向身边的少年。即便自己的右肩已被雨水打湿，依旧绽开最安心治愈的纯真笑容。",
     "recommendedSize": "832x1216",
     "location": "rainy school gate",
-    "action": "holding umbrella forward, tilting umbrella, wet shoulder, kind smile",
+    "action": "即便自己的右肩已被雨水打湿，依旧绽开最安心治愈的纯真笑容",
     "timeOfDay": "dusk",
     "lighting": "soft overcast rain ambiance, reflective wet pavement",
     "camera": "cowboy_shot",
-    "mood": "selfless touching tenderness",
+    "mood": "温柔感动",
     "promptProse": "Standing outside the school gate under heavy rain, Nakano Yotsuba holds a clear umbrella, tilting it generously over the viewer. Her left shoulder is soaked by rain, but her face glows with selfless, earnest kindness and a sweet reassuring smile.",
     "promptTokens": [
       "schoolyard",

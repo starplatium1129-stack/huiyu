@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_pajama_teddy_bear",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2031,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T16:28:09.690491600+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "pink_silk_sleepdress",
@@ -14,11 +14,11 @@
     "description": "藤原宅邸奢华的闺房大床上，千花换上了一袭粉色真丝吊带睡裙。她怀里紧紧抱着一只几乎和自己一样高的大号泰迪熊，赤着脚丫在被褥间撒娇打滚。看到走近的少年，她笑嘻嘻地把大熊推过去当盾牌，探出半个红扑扑的小脸大声宣告今晚绝不放走对方。",
     "recommendedSize": "832x1216",
     "location": "luxurious bedroom bed",
-    "action": "hugging huge teddy bear, rolling in bed, peeking playfully, silk negligee",
+    "action": "看到走近的少年，她笑嘻嘻地把大熊推过去当盾牌，探出半个红扑扑的小脸大声宣告今晚绝不放走对方",
     "timeOfDay": "night",
     "lighting": "warm fairy lights and bedside chandelier",
     "camera": "medium_shot",
-    "mood": "playful pampered romantic mischief",
+    "mood": "温存与俏皮",
     "promptProse": "Lounging on a grand canopy bed in a blush pink silk slip dress, Fujiwara Chika hugs an enormous fluffy teddy bear. She peeks her rosy face over the plush bear's ear, kicking her bare feet playfully under fairy lights.",
     "promptTokens": [
       "fujiwara_chika",

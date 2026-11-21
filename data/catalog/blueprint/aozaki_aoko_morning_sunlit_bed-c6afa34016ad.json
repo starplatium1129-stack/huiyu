@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_morning_sunlit_bed",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1985,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aozaki_aoko_morning_sunlit_bed",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "旅店卧房清晨第一缕阳光洒落在洁白床褥上，青子刚从酣眠中醒来。双臂高高举起舒展身姿，露肩毛衣滑落，眼中带着初醒的慵懒与对恋人的无限信赖。",
     "recommendedSize": "832x1216",
     "location": "sunlit white bedroom",
-    "action": "lying on side in bed, wrapped in sheet, sleepy affectionate gaze",
+    "action": "双臂高高举起舒展身姿，露肩毛衣滑落，眼中带着初醒的慵懒与对恋人的无限信赖",
     "timeOfDay": "day",
     "lighting": "soft morning sunlight diffusing through sheer curtains",
     "camera": "close-up",
-    "mood": "sweet romantic morning tranquility",
+    "mood": "浪漫温存",
     "promptProse": "Resting comfortably on a sun-drenched bed among soft white linens, Aozaki Aoko looks over with a sleepy, deeply fond smile as morning sunlight warms the room.",
     "promptTokens": [
       "bedroom",

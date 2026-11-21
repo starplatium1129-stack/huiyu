@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mimori_byakuya",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 44,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "mimori_byakuya",
     "profile": {
@@ -208,13 +208,13 @@
       "displayName": "深森白夜",
       "exactPrefixes": [],
       "exactTokens": [
-        "mimori_byakuya"
+        "mimori byakuya"
       ],
       "franchise": "The Magical Girl and the Evil Officer",
       "id": "mimori_byakuya",
       "identityProse": "Mimori Byakuya from The Magical Girl and the Evil Officer, with long platinum-white hair in twin horn buns and blue eyes.",
       "identityTokens": [
-        "mimori_byakuya",
+        "mimori byakuya",
         "katsute_mahou_shoujo_to_aku_wa_tekitai_shiteita",
         "1girl",
         "solo",
@@ -241,7 +241,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "mimori_byakuya"
+        "mimori byakuya"
       ],
       "copyrightTokens": [
         "katsute_mahou_shoujo_to_aku_wa_tekitai_shiteita"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_tea_tray",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2424,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-08T04:32:24.204983100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_tea_tray",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "旅馆工作",
     "description": "蕾娜端着茶盘走到客房门前，先稳住轻轻晃动的茶杯。等托盘平了，她才抬手准备敲门。",
     "location": "inn hallway",
-    "action": "holding a tray of tea in front of a guest room door",
+    "action": "端着茶盘走到客房门前，先稳住轻轻晃动的茶杯，等托盘平了，她才抬手准备敲门",
     "timeOfDay": "afternoon",
     "lighting": "soft indoor light",
     "camera": "cowboy shot",

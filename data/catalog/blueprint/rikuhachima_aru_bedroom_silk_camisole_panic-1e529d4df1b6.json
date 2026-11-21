@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_bedroom_silk_camisole_panic",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 2663,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "rikuhachima_aru_bedroom_silk_camisole_panic",
     "characterId": "rikuhachima_aru",
@@ -12,13 +12,13 @@
     "title": "陆八魔阿露 · 卧室床榻的真丝吊带慌乱",
     "category": "私密温存",
     "description": "便利屋专属事务所后方的单人休息室内，阿露身穿一件精心挑选的黑色蕾丝真丝吊带睡裙坐在床边。酒红色的波浪卷发搭在白皙圆润的香肩两侧，羊角发饰微微轻颤。本来打算摆出成热硬派恶党女老大的从容姿态，但一看到推门进来的老师，阿露整张俏脸瞬间红透，手足无措地抓起抱枕遮在胸前，颜艺慌乱中透出极致的可爱。",
-    "action": "sitting on bed in black lace silk camisole, holding heart cushion flustered, horns twitching, deeply blushing face with wide panic eyes, cute flustered expression",
+    "action": "本来打算摆出成热硬派恶党女老大的从容姿态，但一看到推门进来的老师，阿露整张俏脸瞬间红透",
     "recommendedSize": "832x1216",
     "location": "cozy backroom office bedroom with warm night lamp",
     "timeOfDay": "night",
     "lighting": "warm soft amber lamplight illuminating pale skin and red hair",
     "camera": "medium_shot",
-    "mood": "hilarious gap-moe fluster, intensely endearing vulnerability",
+    "mood": "动情与反差",
     "promptProse": "Sitting on her bed in a stylish black lace silk camisole, Rikuhachima Aru clutches a cushion to her chest in total flustered panic. Her red wavy hair and horns shake adorably as her face blushes crimson at the viewer.",
     "promptTokens": [
       "1girl",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "tatsumaki_r18_b6_02",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1600,
   "createdAt": null,
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "tatsumaki_r18_b6_02",
-    "title": "战栗的龙卷 · 私人豪华顶层浴缸念动力水波水光湿身 ·「连浴缸的水都在跟我作对……混蛋！」",
+    "title": "战栗的龙卷 · 私人豪华顶层浴缸念动力水波水光湿身",
     "category": "水光湿身",
     "characterId": "tatsumaki",
     "description": "超能力失控的自抚时刻。龙卷赤裸着浮在水波翻滚的巨大按摩浴缸中，念动力让水流如触手般环绕着她娇小雪白的躯体。单手在被念力激荡的热水中深掐自己的花核，翠绿短发微卷飘散，嘴里发出断断续续羞耻的怒哼——「可恶……为什么脑子里全是那家伙救我时的脸……哈啊……身体擅自……」",
@@ -51,7 +51,9 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "hand between legs"
+      "hand between legs",
+      "nipples",
+      "pussy"
     ],
     "nsfwProse": "",
     "outfitId": "nude_state",

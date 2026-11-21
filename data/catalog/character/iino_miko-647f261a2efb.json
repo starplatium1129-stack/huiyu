@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "iino_miko",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 202,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "iino_miko",
     "profile": {
@@ -86,7 +86,7 @@
       "speech": "不论规则多么严苛，法律的终点永远是为了守护每一个鲜活之人的幸福。所以……今天的工作，我也绝不会妥协退缩哦！",
       "source": "赤坂明《辉夜大小姐想让我告白 / Kaguya-sama: Love Is War》",
       "traits": [
-        "iino_miko",
+        "iino miko",
         "1girl",
         "solo",
         "short_hair",
@@ -363,7 +363,7 @@
       ],
       "identityProse": "Adult Iino Miko from Kaguya-sama: Love Is War, a poised, dignified, and earnest legal professional with neat low twintails resting on her shoulders, deep brown eyes, wearing a well-tailored business suit, exuding intellectual sharpness and heartfelt sincerity.",
       "identityTokens": [
-        "iino_miko",
+        "iino miko",
         "1girl",
         "solo",
         "short_hair",
@@ -374,7 +374,7 @@
         "kaguya-sama_wa_kokurasetai"
       ],
       "exactTokens": [
-        "iino_miko"
+        "iino miko"
       ],
       "exactPrefixes": [
         "iino_"
@@ -415,7 +415,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "iino_miko"
+        "iino miko"
       ],
       "copyrightTokens": [
         "kaguya-sama_wa_kokurasetai"

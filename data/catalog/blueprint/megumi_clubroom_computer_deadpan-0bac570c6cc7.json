@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "megumi_clubroom_computer_deadpan",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1437,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "megumi_clubroom_computer_deadpan",
-    "title": "加藤惠 · 社团电脑前的无声吐槽·「伦也君……这个剧情是不是太奇怪了」",
+    "title": "加藤惠 · 社团电脑前的无声吐槽",
     "category": "校园日常",
     "characterId": "katou_megumi",
     "outfitId": "official_toyogasaki_uniform",

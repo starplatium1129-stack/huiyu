@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_tea_break",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2449,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:25:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_tea_break",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "居家日常",
     "description": "碗盘收好后，七海给自己倒了一杯茶。她坐在桌边等水凉一点，手边的抹布已经叠得方方正正。",
     "location": "dining table",
-    "action": "sitting with a cup of tea at a tidy table",
+    "action": "她坐在桌边等水凉一点，手边的抹布已经叠得方方正正",
     "timeOfDay": "evening",
     "lighting": "warm lamplight",
     "camera": "medium shot",

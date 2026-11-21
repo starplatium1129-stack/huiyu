@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_morning_kitchen_apron_only",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2231,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rossweisse_morning_kitchen_apron_only",
     "characterId": "rossweisse",
@@ -14,11 +14,11 @@
     "description": "清晨明媚的公寓厨房内飘着味噌汤与烤鱼的香气。罗丝薇瑟系着特价买来的绿色棉麻围裙，内衬是简单的浅灰无袖背心。她单手拿着尝味木勺，转过身来向你展示煮好的早餐，泛红的双颊带着初为人妇般的温柔娇羞，认真叮嘱着今天也要好好吃饱出门。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched morning kitchen counter",
-    "action": "standing in bright sunny kitchen holding tasting spoon, apron over casual sleeveless top, bare arms and collarbones, hair tied in loose morning bun, blushing domestic smile",
+    "action": "系着特价买来的绿色棉麻围裙，内衬是简单的浅灰无袖背心，单手拿着尝味木勺",
     "timeOfDay": "morning",
     "lighting": "cheerful morning sunlight flooding through kitchen window",
     "camera": "cowboy_shot",
-    "mood": "thrifty devoted wife charm, heart-warming morning domesticity",
+    "mood": "神圣纯洁",
     "promptProse": "Standing in a bright morning kitchen holding a cooking spoon, Rossweisse wears a neat apron over a sleeveless top. Sunbeams highlight her silver hair tied in a loose bun as she smiles warmly with an affectionate blush.",
     "promptTokens": [
       "1girl",

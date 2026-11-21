@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "chitanda_curious_eyes_close_up",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1480,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "chitanda_curious_eyes_close_up",
-    "title": "千反田爱瑠 · 好奇心大盛的紫瞳迫近·「折木同学，我很好奇！」",
+    "title": "千反田爱瑠 · 好奇心大盛的紫瞳迫近",
     "category": "角色高光",
     "characterId": "chitanda_eru",
     "outfitId": "official_kamiyama_uniform",

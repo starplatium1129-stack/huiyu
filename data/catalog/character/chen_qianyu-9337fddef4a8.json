@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chen_qianyu",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 194,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "chen_qianyu",
     "profile": {
@@ -420,20 +420,20 @@
       ],
       "identityProse": "Adult Chen Qianyu from Arknights: Endfield. Long black hair, two small dragon horns, and a dark dragon tail.",
       "identityTokens": [
-        "chen_qianyu",
+        "chen qianyu",
         "black_hair",
         "long_hair",
         "horns",
         "dragon_tail"
       ],
       "characterTokens": [
-        "chen_qianyu"
+        "chen qianyu"
       ],
       "copyrightTokens": [
         "arknights:_endfield"
       ],
       "exactTokens": [
-        "chen_qianyu"
+        "chen qianyu"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

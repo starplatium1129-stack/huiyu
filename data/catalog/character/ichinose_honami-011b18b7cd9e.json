@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ichinose_honami",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 182,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "ichinose_honami",
     "profile": {
@@ -85,7 +85,7 @@
       "speech": "清隆君……只要是你的愿望，我全部都会为你实现哦。无论要我变成什么样、无论要付出什么代价……我都绝对不会放开你的手。",
       "source": "衣笠彰梧《欢迎来到实力至上主义的教室 / Classroom of the Elite》",
       "traits": [
-        "ichinose_honami",
+        "ichinose honami",
         "1girl",
         "solo",
         "pink_hair",
@@ -268,7 +268,7 @@
       ],
       "identityProse": "Adult Ichinose Honami from Classroom of the Elite, an exceptionally radiant, gentle, and curvaceous young woman with voluminous strawberry-blonde hair reaching her shoulders, warm sky-blue eyes, a generously feminine figure, and a caring, heart-melting smile.",
       "identityTokens": [
-        "ichinose_honami",
+        "ichinose honami",
         "1girl",
         "solo",
         "pink_hair",
@@ -279,7 +279,7 @@
         "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"
       ],
       "exactTokens": [
-        "ichinose_honami"
+        "ichinose honami"
       ],
       "exactPrefixes": [
         "ichinose_"
@@ -315,7 +315,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "ichinose_honami"
+        "ichinose honami"
       ],
       "copyrightTokens": [
         "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"

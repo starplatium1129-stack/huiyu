@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_midgar_royal_balcony_wine_solitude",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2539,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "alexia_midgar_royal_balcony_wine_solitude",
     "title": "阿蕾克希亚 · 王宫夜宴露台的冷艳独酌",
@@ -12,7 +12,7 @@
     "outfitId": "white_royal_corset_dress",
     "description": "王都主堡辉煌的宴会露台外，繁星与王都万家灯火连成一片。阿蕾克希亚身着纯白抹胸轻礼裙独自倚栏，手摇红酒杯冷淡俯瞰人间。",
     "location": "ornate palace marble balcony overlooking glowing nocturnal fantasy metropolis",
-    "action": "leaning back against marble balustrade holding a stem wineglass with ruby wine, head tilted slightly, cynical yet proud gaze into distance",
+    "action": "身着纯白抹胸轻礼裙独自倚栏，手摇红酒杯冷淡俯瞰人间",
     "timeOfDay": "夜晚",
     "lighting": "室内溢出暖金光与清冷星夜月华",
     "camera": "wide shot, landscape composition",

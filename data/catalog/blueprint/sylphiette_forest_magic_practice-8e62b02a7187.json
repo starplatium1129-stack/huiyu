@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_forest_magic_practice",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 470,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "双手合拢凝聚柔和的治愈水流，晨光穿过树梢",
     "adult": false,
@@ -15,7 +15,7 @@
     "id": "sylphiette_forest_magic_practice",
     "lighting": "misty_sunlight",
     "location": "布耶纳村旁晨雾森林",
-    "mood": "focused",
+    "mood": "专注坚毅",
     "negativeTokens": [],
     "outfitId": "default_mage_robe",
     "promptProse": "Sylphiette gathers healing water between her palms beside the misty brook in filtered morning sun.",

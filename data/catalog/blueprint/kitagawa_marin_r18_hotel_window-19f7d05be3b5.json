@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kitagawa_marin_r18_hotel_window",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 502,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "靠在酒店窗座，一条腿沿着玻璃伸展，一手撑稳坐垫。",
     "adult": true,
@@ -21,7 +21,10 @@
     "mood": "大胆娇羞",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Marin reclines on the hotel window seat with one leg extended along the glass, steadying herself with a palm on the cushion. City neon colors the window edge while warm room light shapes the near side of her face.",
     "promptTokens": [

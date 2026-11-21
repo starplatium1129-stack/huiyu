@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tobiichi_origami",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "tobiichi_origami",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Date A Live",
       "speech": "检查完毕。今天的安排没有问题。",
       "traits": [
-        "tobiichi_origami",
+        "tobiichi origami",
         "date_a_live",
         "white_hair",
         "blue_eyes",
@@ -307,14 +307,14 @@
       ],
       "identityProse": "Origami Tobiichi from Date A Live, with snow-white hair and pale blue eyes.",
       "identityTokens": [
-        "tobiichi_origami",
+        "tobiichi origami",
         "date_a_live",
         "white_hair",
         "blue_eyes",
         "hair_ornament"
       ],
       "exactTokens": [
-        "tobiichi_origami"
+        "tobiichi origami"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -343,7 +343,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "tobiichi_origami",
+        "tobiichi origami",
         "Origami",
         "Origami Tobiichi"
       ],

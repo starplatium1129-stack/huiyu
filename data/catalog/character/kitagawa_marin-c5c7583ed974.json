@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kitagawa_marin",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 19,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kitagawa_marin",
     "profile": {
@@ -76,7 +76,7 @@
       "speech": "喜多川海梦向你致以问候。",
       "source": "福田晋一《更衣人偶坠入爱河 / My Dress-Up Darling》",
       "traits": [
-        "kitagawa_marin",
+        "kitagawa marin",
         "1girl",
         "solo",
         "long_blonde_hair",
@@ -332,13 +332,13 @@
       "displayName": "喜多川海梦",
       "exactPrefixes": [],
       "exactTokens": [
-        "kitagawa_marin"
+        "kitagawa marin"
       ],
       "franchise": "My Dress-Up Darling",
       "id": "kitagawa_marin",
       "identityProse": "Kitagawa Marin from My Dress-Up Darling, a gyaru with long blonde hair fading to pink tips, pink contact lenses and silver ear piercings.",
       "identityTokens": [
-        "kitagawa_marin",
+        "kitagawa marin",
         "1girl",
         "solo",
         "long_blonde_hair",
@@ -364,7 +364,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "kitagawa_marin",
+        "kitagawa marin",
         "Marin"
       ],
       "copyrightTokens": [

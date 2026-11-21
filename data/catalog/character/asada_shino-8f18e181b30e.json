@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asada_shino",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 130,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "asada_shino",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Sword Art Online",
       "speech": "先把书看完，晚点再上线。",
       "traits": [
-        "asada_shino",
+        "asada shino",
         "sword_art_online",
         "brown_hair",
         "medium_hair",
@@ -285,14 +285,14 @@
       ],
       "identityProse": "Shino Asada from Sword Art Online in her real-world form, with medium-length ash-brown hair and brown eyes.",
       "identityTokens": [
-        "asada_shino",
+        "asada shino",
         "sword_art_online",
         "brown_hair",
         "medium_hair",
         "brown_eyes"
       ],
       "exactTokens": [
-        "asada_shino"
+        "asada shino"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -321,7 +321,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "asada_shino"
+        "asada shino"
       ],
       "copyrightTokens": [
         "sword_art_online"

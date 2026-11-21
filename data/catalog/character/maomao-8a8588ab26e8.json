@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "maomao",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 154,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "maomao",
     "profile": {
@@ -67,7 +67,7 @@
       "source": "The Apothecary Diaries",
       "speech": "「这可不是什么怪力乱神，只是极其普通的毒理反应罢了。如果还有没见过的罕见剧毒，请务必让我尝尝看！」",
       "traits": [
-        "maomao_(kusuriya_no_hitorigoto)",
+        "maomao (kusuriya no hitorigoto)",
         "kusuriya_no_hitorigoto",
         "green_hair",
         "long_hair",
@@ -207,14 +207,14 @@
       ],
       "identityProse": "Maomao from The Apothecary Diaries, with dark green hair arranged into a practical bun, and blue eyes. Her observant gaze shifts rapidly from apparent indifference to focused curiosity.",
       "identityTokens": [
-        "maomao_(kusuriya_no_hitorigoto)",
+        "maomao (kusuriya no hitorigoto)",
         "kusuriya no hitorigoto",
         "green hair",
         "hair bun",
         "blue eyes"
       ],
       "exactTokens": [
-        "maomao_(kusuriya_no_hitorigoto)"
+        "maomao (kusuriya no hitorigoto)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -243,7 +243,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "maomao_(kusuriya_no_hitorigoto)"
+        "maomao (kusuriya no hitorigoto)"
       ],
       "copyrightTokens": [
         "kusuriya no hitorigoto"

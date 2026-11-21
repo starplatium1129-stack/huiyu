@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "gotoh_hitori/kessoku_band_live_tshirt",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 551,
   "createdAt": null,
-  "updatedAt": "2026-11-01T04:12:53.673167600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "gotoh_hitori",
     "outfit": {
       "id": "kessoku_band_live_tshirt",
-      "name": "结束乐队Live演出印花T恤与不对称百褶裙",
+      "name": "结束乐队Live · 演出T恤与百褶裙",
       "tokens": [
         "print_t-shirt",
         "black_t-shirt",

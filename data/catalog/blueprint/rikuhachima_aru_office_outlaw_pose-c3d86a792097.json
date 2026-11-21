@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_office_outlaw_pose",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2106,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rikuhachima_aru_office_outlaw_pose",
     "characterId": "rikuhachima_aru",
@@ -14,11 +14,11 @@
     "description": "便利屋68事务所内，百叶窗斜切进冷硬的阳光。阿露一手按在深色实木办公桌上，另一手霸气地单持重型狙击步枪，酒红大衣无风自动。她嘴角扬起胜券在握的狂傲冷笑，极力向眼前的老师展现出顶级恶党首领的从容魅力。",
     "recommendedSize": "832x1216",
     "location": "Problem Solver 68 executive office desk",
-    "action": "posing confidently with sniper rifle on desk, smug smirk, dramatic stance",
+    "action": "她嘴角扬起胜券在握的狂傲冷笑，极力向眼前的老师展现出顶级恶党首领的从容魅力",
     "timeOfDay": "day",
     "lighting": "cool dramatic shadows slanting through window blinds",
     "camera": "cowboy_shot",
-    "mood": "flamboyant outlaw swagger and theatrical confidence",
+    "mood": "意气昂扬",
     "promptProse": "Standing beside her office desk holding a heavy sniper rifle, Rikuhachima Aru smirks with exaggerated hardboiled confidence as light slants through the blinds.",
     "promptTokens": [
       "holding_gun",

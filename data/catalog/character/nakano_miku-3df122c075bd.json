@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_miku",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 178,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "nakano_miku",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "不管别人怎么看……战国武将就是很帅气啊。还有……做面包，我也一直在努力练习哦。我已经不是过去那个软弱的三玖了，因为喜欢你，我才能变成现在的自己。",
       "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
       "traits": [
-        "nakano_miku",
+        "nakano miku",
         "1girl",
         "solo",
         "brown_hair",
@@ -335,7 +335,7 @@
       ],
       "identityProse": "Adult Nakano Miku from The Quintessential Quintuplets, a quiet, bashful, and devoted girl with medium chestnut-brown hair parted over one eye, serene deep-blue eyes, signature over-ear blue-and-black wireless headphones rested around her slender neck, and a subtle sweet pout.",
       "identityTokens": [
-        "nakano_miku",
+        "nakano miku",
         "1girl",
         "solo",
         "brown_hair",
@@ -348,7 +348,7 @@
         "5-toubun_no_hanayome"
       ],
       "exactTokens": [
-        "nakano_miku"
+        "nakano miku"
       ],
       "exactPrefixes": [
         "miku_"
@@ -384,7 +384,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "nakano_miku"
+        "nakano miku"
       ],
       "copyrightTokens": [
         "5-toubun_no_hanayome"

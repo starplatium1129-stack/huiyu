@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_bonfire_festival_yukata",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1954,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_ichika_bonfire_festival_yukata",
     "title": "中野一花 · 夏夜祭典的烟火侧影",
@@ -13,11 +13,11 @@
     "description": "神社石阶前夜空绽开璀璨的花火，一花手持折扇微微侧首。五彩光芒映照在她精致的面容上，眼神里满是浪漫与眷恋。",
     "recommendedSize": "832x1216",
     "location": "shrine festival terrace",
-    "action": "standing near torii gate, holding fan, looking at fireworks",
+    "action": "五彩光芒映照在她精致的面容上，眼神里满是浪漫与眷恋",
     "timeOfDay": "night",
     "lighting": "colorful fireworks bursts illuminating the night",
     "camera": "cowboy_shot",
-    "mood": "nostalgic and romantic",
+    "mood": "温存与幽微",
     "promptProse": "Standing near a vibrant red shrine torii gate during a summer festival, Nakano Ichika watches brilliant fireworks illuminate the night sky. The colorful ambient bursts highlight her profile and her delicate, nostalgic expression.",
     "promptTokens": [
       "shrine",

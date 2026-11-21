@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kazami_kazuki",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 87,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kazami_kazuki",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "怎么了，雄二？遇到困难了吗？只要你向我求助，姐姐无论何时都会为你扫平障碍哦。",
       "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
       "traits": [
-        "kazami_kazuki",
+        "kazami kazuki",
         "1girl",
         "solo",
         "white_hair",
@@ -529,7 +529,7 @@
       ],
       "identityProse": "Kazami Kazuki from Grisaia, with floor-length silver-white hair, blunt bangs and crimson eyes.",
       "identityTokens": [
-        "kazami_kazuki",
+        "kazami kazuki",
         "1girl",
         "solo",
         "white_hair",
@@ -539,7 +539,7 @@
         "grisaia_(series)"
       ],
       "exactTokens": [
-        "kazami_kazuki"
+        "kazami kazuki"
       ],
       "exactPrefixes": [
         "kazuki_"
@@ -573,7 +573,7 @@
         "kobuichi"
       ],
       "characterTokens": [
-        "kazami_kazuki"
+        "kazami kazuki"
       ],
       "copyrightTokens": [
         "grisaia_(series)"

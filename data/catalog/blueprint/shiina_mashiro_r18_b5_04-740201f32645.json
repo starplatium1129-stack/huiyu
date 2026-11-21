@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shiina_mashiro_r18_b5_04",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1526,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "shiina_mashiro_r18_b5_04",
-    "title": "椎名真白 · 纯白床单上的身体画布深情独奏 ·「空太碰过的地方……变成了真白最喜欢的颜色」",
+    "title": "椎名真白 · 纯白床单上的身体画布深情独奏",
     "category": "私密自持",
     "characterId": "shiina_mashiro",
     "description": "暴雨敲打着窗框。真白毫无保留地赤裸躺在白色棉被上，金色的长发如瀑布般散开。指尖在湿热泥泞的下身深处缓慢抽送，平日波澜不惊的脸庞终于染上了高潮的动人潮红——「空太……这里好烫……这就是被你喜欢上的感觉吗……」",
@@ -56,7 +56,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nude_state",
     "coverageTags": [

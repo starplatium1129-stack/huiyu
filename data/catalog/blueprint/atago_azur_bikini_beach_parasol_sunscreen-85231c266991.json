@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_azur_bikini_beach_parasol_sunscreen",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2716,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "atago_azur_bikini_beach_parasol_sunscreen",
     "characterId": "atago_azur",
@@ -12,13 +12,13 @@
     "title": "爱宕 · 盛夏沙滩阳伞下的比基尼娇颜",
     "category": "盛夏海滨",
     "description": "夏日碧海蓝天的热带白沙滩上，遮阳伞投下清凉的阴影。爱宕身穿性感的白色盛夏比基尼，斜靠在沙滩椅上。手中握着防晒霜喷雾，圆润饱满的胸口与纤细腰肢在阳光反射下闪烁着健康诱人的光泽。黑发随风散落，犬耳乖巧地搭在发间，她微笑着向你招手，邀请你来帮大姐姐涂抹后背的防晒霜。",
-    "action": "reclining under beach parasol, white strappy bikini, holding sunscreen bottle, black dog ears relaxed, cleavage and bare shoulders gleaming in tropical light, welcoming playful smile",
+    "action": "身穿性感的白色盛夏比基尼，斜靠在沙滩椅上，手中握着防晒霜喷雾",
     "recommendedSize": "832x1216",
     "location": "tropical beach with turquoise water under colorful beach parasol",
     "timeOfDay": "afternoon",
     "lighting": "bright sun filtering through parasol canvas casting soft warm glow on skin",
     "camera": "cowboy_shot",
-    "mood": "sun-drenched summer flirtation, irresistibly sweet pampering",
+    "mood": "浪漫温存",
     "promptProse": "Reclining under a beach parasol on white tropical sand, Atago wears an alluring white bikini. Holding a sunscreen bottle, her black dog ears twitch playfully as she smiles with irresistible, pampering warmth.",
     "promptTokens": [
       "1girl",

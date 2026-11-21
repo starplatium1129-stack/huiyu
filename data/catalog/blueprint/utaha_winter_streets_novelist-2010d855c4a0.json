@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "utaha_winter_streets_novelist",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1430,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "utaha_winter_streets_novelist",
-    "title": "霞之丘诗羽 · 冬街围巾的毒舌·「手冷的话……借你一次也没关系」",
+    "title": "霞之丘诗羽 · 冬街围巾的毒舌",
     "category": "街头约会",
     "characterId": "kasumigaoka_utaha",
     "description": "截稿日的深夜，诗羽难得心情大好，黑呢大衣配酒红围巾地陪你走过冬夜的街。路灯下她忽然伸出手，指尖冻得微红却语气如常——「手冷的话……借你一次也没关系。啊，别误会，这是作家调研——把心动写进书里的、宝贵的取材素材。」",

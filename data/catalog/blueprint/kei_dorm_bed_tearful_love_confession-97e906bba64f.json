@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_dorm_bed_tearful_love_confession",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 2241,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kei_dorm_bed_tearful_love_confession",
     "characterId": "karuizawa_kei",
@@ -14,11 +14,11 @@
     "description": "私密学生公寓的单人卧室内，暖黄色床头灯映照着整洁的床单。轻井泽惠坐在床榻中央，穿着高度育成高中的标准制服。红色的修身西装外套前襟完全解开，白色衬衫领口微微放松，露出小巧白皙的锁骨。亚麻金色的微卷发丝散落在肩前，少女双臂抱膝，眼角泛着释怀与感动的晶莹泪光，面颊泛红，流露出全心托付的深切依恋。",
     "recommendedSize": "832x1216",
     "location": "private student dormitory room with warm ambient lamp",
-    "action": "sitting on dorm bed hugging knees, red school uniform blazer unbuttoned, open white shirt collar exposing collarbone, pleated white skirt, black thighhighs, wavy ash-blonde hair loose, tears of relief and love in eyes, flushed cheeks, tender affectionate gaze",
+    "action": "坐在床榻中央，穿着高度育成高中的标准制服，红色的修身西装外套前襟完全解开",
     "timeOfDay": "night",
     "lighting": "warm gentle bedside lamp illuminating bed and soft shadows",
     "camera": "medium_shot",
-    "mood": "profound emotional healing, deeply vulnerable romantic devotion",
+    "mood": "温存与动情",
     "promptProse": "Sitting on her dorm bed hugging her knees, Karuizawa Kei wears her Advanced Nurturing uniform with unbuttoned red blazer and loose collar. Tears of sweet relief glisten in her blue eyes as she smiles with heartfelt, flushed affection.",
     "promptTokens": [
       "1girl",

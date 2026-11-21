@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_convenience_red_bean_bun",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2514,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alexia_convenience_red_bean_bun",
     "characterId": "alexia_midgar",
@@ -14,11 +14,11 @@
     "description": "暮色笼罩的王都背街僻静石阶上。阿蕾克希亚把卫衣兜帽拉得低低的，小心翼翼地将热腾腾的红豆面包掰成两半，红着耳尖把较大的一半递到席德面前：“别误会，我只是吃不完而已。”",
     "recommendedSize": "832x1216",
     "location": "cobblestone alley staircase beside brick townhouse walls under lamplight",
-    "action": "sitting on stone steps holding half of a steaming red bean bun outward toward the viewer, pulling down hoodie brim, blushing ear tips",
+    "action": "把卫衣兜帽拉得低低的，小心翼翼地将热腾腾的红豆面包掰成两半",
     "timeOfDay": "dusk",
     "lighting": "warm golden streetlamp glow mixing with cool evening ambient shadows",
     "camera": "medium_shot",
-    "mood": "clandestine warmth, awkward honesty, humble everyday tenderness",
+    "mood": "私密温存",
     "promptProse": "Alexia in a hoodie sits on cobblestone alley steps offering half of a steaming bread bun to the viewer with a stubborn blushing expression.",
     "promptTokens": [
       "alley",

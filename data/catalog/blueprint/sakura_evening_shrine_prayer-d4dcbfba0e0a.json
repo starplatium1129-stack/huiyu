@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_evening_shrine_prayer",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 187,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sakura_evening_shrine_prayer",
     "title": "间桐樱 · 郊外神社祈愿（想象）",
@@ -18,7 +18,7 @@
     "timeOfDay": "evening",
     "lighting": "golden_hour",
     "camera": "medium shot",
-    "mood": "wistful",
+    "mood": "怅惘追忆",
     "sceneTags": [
       "imagined_shrine",
       "ema_rack",

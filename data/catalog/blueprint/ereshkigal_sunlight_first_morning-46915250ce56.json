@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_sunlight_first_morning",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 266,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ereshkigal_sunlight_first_morning",
-    "title": "埃列什基伽勒 · 初次朝阳的誓约·「原来阳光……这么烫啊」",
+    "title": "埃列什基伽勒 · 初次朝阳的誓约",
     "category": "专属羁绊",
     "characterId": "ereshkigal_fate",
     "description": "【地面上·黎明】这是她第一次站在地面上等日出。金色的朝阳越过高山的那一刻，埃列什基伽勒睁大了红瞳，长杖从手里滑落也浑然不觉——「原来阳光……这么烫啊。冥界没有这个……只有冰冷的魂火……呐，明天、明天的日出……也可以一起看吗？」",

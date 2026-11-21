@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_kagenou_ruins_mana_crest_awakening",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2557,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "claire_kagenou_ruins_mana_crest_awakening",
     "title": "克莱尔 · 学园长椅的午后红茶分享",
@@ -12,11 +12,11 @@
     "outfitId": "midgar_academy_uniform",
     "description": "魔剑士学园林荫中庭的石制长椅上，微风和煦。克莱尔将带来的保温壶倒入小茶杯，微红着脸颊递给身边的少年。",
     "location": "shady courtyard path of Midgar Academy with stone bench beneath trees",
-    "action": "sitting on courtyard stone bench, pouring black tea from thermos into porcelain cup, offering cup forward, blushing softly with fond tsundere expression",
+    "action": "将带来的保温壶倒入小茶杯，微红着脸颊递给身边的少年",
     "timeOfDay": "afternoon",
     "lighting": "soft afternoon sunlight filtering through courtyard trees with warm reflections",
     "camera": "medium shot",
-    "mood": "sweet school romance, caring elder-sister warmth, peaceful campus afternoon",
+    "mood": "温存与宁静",
     "promptProse": "On a stone bench in the shaded courtyard of Midgar Academy, Claire Kagenou pours warm black tea from a thermos into a teacup and offers it forward, her cheeks flushed with tender affection.",
     "promptTokens": [
       "campus_courtyard",

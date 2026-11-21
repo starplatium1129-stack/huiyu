@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chizuru_r18_hotel_negligee_unlaced",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 1883,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "chizuru_r18_hotel_negligee_unlaced",
     "characterId": "mizuhara_chizuru",
@@ -55,6 +55,9 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Her hand rests against her inner thigh on the tatami."
+    "animaCaption": "Her hand rests against her inner thigh on the tatami.",
+    "nsfwTokens": [
+      "pussy"
+    ]
   }
 }

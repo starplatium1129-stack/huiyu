@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cc_nsfw_calm_witch_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1320,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "全裸正面跨坐缓慢起伏骑乘，双手按在膝头，俯身凝视低语，眼神充满深邃爱意",
     "adult": true,
@@ -58,6 +58,10 @@
     ],
     "timeOfDay": "深夜",
     "title": "C.C. · 不老魔女的从容低语骑乘",
-    "animaCaption": "Her hands rest on her knees as she leans toward the viewer."
+    "animaCaption": "Her hands rest on her knees as she leans toward the viewer.",
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ]
   }
 }

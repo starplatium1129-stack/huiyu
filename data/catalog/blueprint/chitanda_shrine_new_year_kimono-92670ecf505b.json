@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "chitanda_shrine_new_year_kimono",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 1482,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "chitanda_shrine_new_year_kimono",
-    "title": "千反田爱瑠 · 神社初诣振袖和服的端庄回眸·「新年快乐，折木同学」",
+    "title": "千反田爱瑠 · 神社初诣振袖和服的端庄回眸",
     "category": "传统和风",
     "characterId": "chitanda_eru",
     "outfitId": "festive_shrine_kimono",

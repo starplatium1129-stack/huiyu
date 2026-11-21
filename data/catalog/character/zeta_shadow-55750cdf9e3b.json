@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zeta_shadow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 270,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "zeta_shadow",
     "popular": {
@@ -27,7 +27,7 @@
       ],
       "identityProse": "Zeta from The Eminence in Shadow, the Sixth of the Seven Shadows, a golden leopard therianthrope with long blonde hair, large golden cat ears, a long golden tail, and cool purple eyes, serving as Shadow Garden's head of exploration and espionage.",
       "identityTokens": [
-        "zeta_(shadow_garden)",
+        "zeta (shadow garden)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -39,11 +39,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "zeta_(shadow_garden)"
+        "zeta (shadow garden)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "zeta_(shadow_garden)"
+        "zeta (shadow garden)"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -149,7 +149,7 @@
       "voiceJa": "シャドウ様、今月の教団の動向です。……デルタのことは放っておいてください。私の報告は、あなたにだけ。",
       "source": "The Eminence in Shadow",
       "traits": [
-        "zeta_(shadow_garden)",
+        "zeta (shadow garden)",
         "blonde_hair",
         "long_hair",
         "purple_eyes",

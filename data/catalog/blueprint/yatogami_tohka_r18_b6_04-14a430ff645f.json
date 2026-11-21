@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yatogami_tohka_r18_b6_04",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 99,
   "createdAt": null,
-  "updatedAt": "2026-11-03T08:00:03.318398+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "yatogami_tohka_r18_b6_04",
-    "title": "夜刀神十香 · 精灵灵力逆流的床褥真情自持 ·「十香的世界……只要有士道一个人就足够了」",
+    "title": "夜刀神十香 · 精灵灵力逆流的床褥真情自持",
     "category": "私密自持",
     "characterId": "yatogami_tohka",
     "description": "思念士道引发灵力微波逆流。十香完全赤裸地仰躺在厚厚的被褥上，紫黑色的长发披散如云海。双手在滚烫的私处深处疯狂自抚，身体泛起淡淡的灵力紫光，眼角淌着深情的泪珠——「身体在发抖……心里好想念士道……好想马上被士道紧紧抱在怀里……哈啊……」",
@@ -52,7 +52,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

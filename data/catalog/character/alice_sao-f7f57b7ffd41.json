@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alice_sao",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 201,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "alice_sao",
     "profile": {
@@ -85,8 +85,8 @@
       "speech": "剑是守护之物，心念则是让剑闪耀的灵魂。无论身处虚拟还是现实，我都会握紧手中的剑，守护大家微笑的明天。",
       "source": "川原砾《刀剑神域 / Sword Art Online》",
       "traits": [
-        "alice_synthesis_thirty",
-        "alice_zuberg",
+        "alice synthesis thirty",
+        "alice zuberg",
         "1girl",
         "solo",
         "long_hair",
@@ -312,7 +312,7 @@
       ],
       "identityProse": "Adult Alice Synthesis Thirty from Sword Art Online, a regal, noble, and resolute Integrity Knight with lustrous golden-blonde braided hair and commanding blue eyes, radiating an aura of unwavering honor and gentle grace.",
       "identityTokens": [
-        "alice_synthesis_thirty",
+        "alice synthesis thirty",
         "1girl",
         "solo",
         "long_hair",
@@ -323,8 +323,8 @@
         "sword_art_online"
       ],
       "exactTokens": [
-        "alice_synthesis_thirty",
-        "alice_zuberg"
+        "alice synthesis thirty",
+        "alice zuberg"
       ],
       "exactPrefixes": [
         "alice_"
@@ -365,8 +365,8 @@
         "rella"
       ],
       "characterTokens": [
-        "alice_synthesis_thirty",
-        "alice_zuberg"
+        "alice synthesis thirty",
+        "alice zuberg"
       ],
       "copyrightTokens": [
         "sword_art_online"

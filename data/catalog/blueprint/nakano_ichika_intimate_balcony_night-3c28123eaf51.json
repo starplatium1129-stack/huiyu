@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_intimate_balcony_night",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1955,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_ichika_intimate_balcony_night",
     "title": "中野一花 · 微风阳台的深夜私语",
@@ -13,11 +13,11 @@
     "description": "深夜公寓露台上夜风拂过丝绸睡衣，一花两手交叠搭在栏杆上。身旁是璀璨的城市夜景，她转头投来缱绻深情的目光。",
     "recommendedSize": "832x1216",
     "location": "high-rise apartment balcony",
-    "action": "leaning on balcony railing, head tilted, affectionate gaze",
+    "action": "身旁是璀璨的城市夜景，她转头投来缱绻深情的目光",
     "timeOfDay": "night",
     "lighting": "公寓阳台温柔夜风中的皎洁月光与都市万家灯火",
     "camera": "medium_shot",
-    "mood": "intimate and heartfelt",
+    "mood": "浪漫温存",
     "promptProse": "On a tranquil high-rise balcony at midnight, Nakano Ichika leans against the metal railing wearing a blush pink silk negligee. The moonlight softly touches her shoulders and bare feet as she glances back with a tender, deeply affectionate gaze.",
     "promptTokens": [
       "balcony railing",

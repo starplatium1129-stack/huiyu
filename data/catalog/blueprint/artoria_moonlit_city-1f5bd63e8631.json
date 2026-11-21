@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "artoria_moonlit_city",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "artoria_moonlit_city",
-    "title": "阿尔托莉雅 · 月下誓约·「请问，你是我的御主吗？」",
+    "title": "阿尔托莉雅 · 月下誓约",
     "category": "现代奇幻",
     "characterId": "artoria_pendragon",
     "description": "皎洁月光穿透云层洒在幽暗的街道上，银蓝相间的铠甲在夜色中闪烁着威严的寒芒。手握不可视之剑的骑士王伫立于月光之下，碧绿的眼眸如湖水般清澈而坚定，向你立下誓言——「试问，你就是我的御主吗？从此吾剑将与汝同在，汝之命运亦与吾共存。」",

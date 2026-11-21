@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kama_fate",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 137,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kama_fate",
     "profile": {
@@ -73,7 +73,7 @@
       "source": "TYPE-MOON《Fate/Grand Order》",
       "speech": "只是顺路看看，才没有特意来买甜点。",
       "traits": [
-        "kama_(fate)",
+        "kama (fate)",
         "fate/grand_order",
         "white_hair",
         "long_hair",
@@ -941,14 +941,14 @@
       ],
       "identityProse": "Kama from Fate/Grand Order in her adult divine form, with long silver-white hair and red eyes.",
       "identityTokens": [
-        "kama_(fate)",
+        "kama (fate)",
         "fate/grand_order",
         "white_hair",
         "long_hair",
         "red_eyes"
       ],
       "exactTokens": [
-        "kama_(fate)"
+        "kama (fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -975,7 +975,7 @@
         "1boy"
       ],
       "characterTokens": [
-        "kama_(fate)"
+        "kama (fate)"
       ],
       "copyrightTokens": [
         "fate/grand_order"

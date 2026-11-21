@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zhuang_fangyi_arknights_r18_study_midnight_nude",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 767,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "zhuang_fangyi_arknights_r18_study_midnight_nude",
     "characterId": "zhuang_fangyi_arknights",
@@ -62,7 +62,9 @@
       "nude",
       "bare_shoulders",
       "navel",
-      "bare_legs"
+      "bare_legs",
+      "nipples",
+      "pussy"
     ],
     "nsfwProse": "Completely unclad, her slender jade-smooth porcelain skin is softly bathed in warm candlelight as she faces forward.",
     "animaCaption": "She stands gracefully in front of the polished desk, looking at the viewer under the warm glow of candlelight."

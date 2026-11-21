@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togawa_sakiko",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 159,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "togawa_sakiko",
     "profile": {
@@ -67,7 +67,7 @@
       "source": "BanG Dream!",
       "speech": "「祝贺你们能够得偿所愿。但是……我必须把这副假面戴到底。为了夺回属于我的一切，我已经没有退路了。」",
       "traits": [
-        "togawa_sakiko",
+        "togawa sakiko",
         "bang_dream!",
         "blue_hair",
         "two_side_up",
@@ -181,7 +181,7 @@
       ],
       "identityProse": "Sakiko Togawa from BanG Dream!, with long blue hair in two side-up sections tied with ribbons and amber-yellow eyes.",
       "identityTokens": [
-        "togawa_sakiko",
+        "togawa sakiko",
         "bang_dream!",
         "blue_hair",
         "two_side_up",
@@ -190,7 +190,7 @@
         "long_hair"
       ],
       "exactTokens": [
-        "togawa_sakiko"
+        "togawa sakiko"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -219,7 +219,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "togawa_sakiko",
+        "togawa sakiko",
         "Sakiko Togawa"
       ],
       "copyrightTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiroha_golden_hour_tide_wading_reverie",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2336,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "shiroha_golden_hour_tide_wading_reverie",
     "characterId": "naruse_shiroha",
@@ -14,11 +14,11 @@
     "description": "夕阳将海面染成了灿烂的金橙色。白羽浸泡在浅滩的温水中，深色泳装勾勒出少女纤细的腰身。她回首望向岸边，眼底的防备终于被温存彻底取代。",
     "recommendedSize": "832x1216",
     "location": "shallow ocean surf of a secluded cove reflecting molten copper sunset rays",
-    "action": "wading waist-deep in evening ocean waves, wet swimsuit hugging slender silhouette, looking back over shoulder with a serene gentle smile",
+    "action": "她回首望向岸边，眼底的防备终于被温存彻底取代",
     "timeOfDay": "sunset",
     "lighting": "intense fiery orange sunset backlighting water ripples and translucent white hair",
     "camera": "medium_shot",
-    "mood": "breathtaking poetic serenity, ethereal summer solitude, profound romantic acceptance",
+    "mood": "温存与独处",
     "promptProse": "Wading through glowing sunset sea waves, Shiroha turns back with damp white twintails and soft affectionate crimson eyes.",
     "promptTokens": [
       "ocean",

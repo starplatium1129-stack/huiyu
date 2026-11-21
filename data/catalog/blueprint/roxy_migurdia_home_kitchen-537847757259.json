@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_home_kitchen",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 458,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T07:55:25.190699800+00:00",
   "data": {
     "action": "踮脚伸手取高处橱柜里的调料罐",
     "camera": "medium shot",
@@ -18,7 +18,9 @@
     "lighting": "明亮日光",
     "location": "公寓厨房",
     "mood": "可爱日常",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "long ears"
+    ],
     "outfitId": "casual",
     "promptProse": "Roxy reaches for the high spice jar and looks back for help, stew simmering below; daylight reaches her apron and raised hand.",
     "promptTokens": [

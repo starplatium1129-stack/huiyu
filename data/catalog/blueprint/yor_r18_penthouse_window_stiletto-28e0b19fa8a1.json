@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_penthouse_window_stiletto",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "yor_r18_penthouse_window_stiletto",
     "characterId": "yor_forger",
@@ -55,7 +55,8 @@
     ],
     "negativeTokens": [],
     "nsfwTokens": [
-      "nude"
+      "nude",
+      "nipples"
     ],
     "nsfwProse": "",
     "animaCaption": "The glittering tapestry of city night lights sparkles behind the panoramic glass as Yor poses with deadly elegance in her stilettos."

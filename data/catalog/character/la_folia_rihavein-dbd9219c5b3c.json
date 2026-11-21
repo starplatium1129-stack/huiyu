@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "la_folia_rihavein",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 225,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "la_folia_rihavein",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "古城，你是逃不出本王女手掌心的。无论是以王夫的身份治理国家，还是现在老老实实让我享用……今夜，你都必须服从我的命令。",
       "source": "SILVER LINK.《噬血狂袭 / Strike the Blood》",
       "traits": [
-        "la_folia_rihavein",
+        "la folia rihavein",
         "silver_hair",
         "very_long_hair",
         "green_eyes"
@@ -107,16 +107,16 @@
         "la folia rihavein"
       ],
       "exactTokens": [
-        "la_folia_rihavein"
+        "la folia rihavein"
       ],
       "characterTokens": [
-        "la_folia_rihavein"
+        "la folia rihavein"
       ],
       "copyrightTokens": [
         "strike_the_blood"
       ],
       "identityTokens": [
-        "la_folia_rihavein",
+        "la folia rihavein",
         "1girl",
         "solo",
         "silver_hair",

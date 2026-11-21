@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "zero_two_r18_b6_04",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 1586,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "zero_two_r18_b6_04",
-    "title": "02 · 绘本床单上叫龙本能觉醒的深情狂野独奏 ·「哪怕变成真正的怪物……达令也是我的翅膀」",
+    "title": "02 · 绘本床单上叫龙本能觉醒的深情狂野独奏",
     "category": "私密自持",
     "characterId": "zero_two",
     "description": "抱着染血童话绘本的思念之夜。02浑身赤裸躺在柔软的被褥上，头顶的红角发出妖异的血色强光。双腿大开，手指在温热如火的蜜穴深处狂暴抽动，身体剧烈痉挛弓起，眼角滑落野性而纯真的泪珠——「达令……好想要你……好想吸食你的血液和骨髓……把你全部融进我的身体里……哈啊……」",
@@ -54,7 +54,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nude_state",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_intimate_bed_pajamas",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1966,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_intimate_bed_pajamas",
     "title": "中野四叶 · 毛毯裹紧的雨夜依偎",
@@ -13,11 +13,11 @@
     "description": "雨夜窗外雷声隆隆，四叶用柔软的毛毯裹紧身体蜷缩在榻榻米被褥上。小手悄悄拉住少年的衣袖，像受惊小兔般害羞地贴紧寻求安全感。",
     "recommendedSize": "832x1216",
     "location": "warm cozy tatami bedroom",
-    "action": "wrapped in blanket, curled up, blushing, holding onto sleeve",
+    "action": "小手悄悄拉住少年的衣袖，像受惊小兔般害羞地贴紧寻求安全感",
     "timeOfDay": "night",
     "lighting": "warm bedside nightlamp and lightning flash",
     "camera": "medium_shot",
-    "mood": "tender sweet dependence",
+    "mood": "浪漫温存",
     "promptProse": "Curled up snugly in a thick fleece blanket on a tatami floor during a stormy night, Nakano Yotsuba wears her light green loungewear. She blushes deeply as she clings gently to the viewer's sleeve, seeking comforting warmth from the thunderstorm.",
     "promptTokens": [
       "tatami",

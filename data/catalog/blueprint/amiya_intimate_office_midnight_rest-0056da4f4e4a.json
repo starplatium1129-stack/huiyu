@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_intimate_office_midnight_rest",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2016,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "amiya",
     "outfitId": "restday_knit",
@@ -14,11 +14,11 @@
     "description": "罗德岛深夜的指挥官办公室内，繁重的战术批阅终于告一段落。阿米娅卸下了厚重的指挥外套与戒指，身着柔软的奶油色毛衣，不知不觉在沙发扶手边沉沉睡去。当博士为她轻轻盖上毯子时，娇小的兔耳微微晃动，在熟睡中伸出双手握住了熟悉的手指。",
     "recommendedSize": "832x1216",
     "location": "dimly lit command cabin office",
-    "action": "sleeping on sofa, holding doctor's hand, rabbit ears twitching, peaceful face",
+    "action": "卸下了厚重的指挥外套与戒指，身着柔软的奶油色毛衣",
     "timeOfDay": "night",
     "lighting": "warm amber desk lamp and terminal screen glow",
     "camera": "medium_shot",
-    "mood": "unconditional trust and healing peace",
+    "mood": "宁静与治愈",
     "promptProse": "Asleep peacefully on the soft leather sofa of the command cabin late at night, Amiya rests without her heavy coat or rings. Wearing a gentle cream knit sweater, her long brown rabbit ears relax softly as she clutches the Doctor's fingers in her sleep.",
     "promptTokens": [
       "amiya",

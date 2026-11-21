@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "megumi_train_window_earphones",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1440,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "megumi_train_window_earphones",
-    "title": "加藤惠 · 傍晚通勤电车靠窗的晚霞·「耳机里……在放着我们游戏的主题曲哦」",
+    "title": "加藤惠 · 傍晚通勤电车靠窗的晚霞",
     "category": "校园日常",
     "characterId": "katou_megumi",
     "outfitId": "official_toyogasaki_uniform",

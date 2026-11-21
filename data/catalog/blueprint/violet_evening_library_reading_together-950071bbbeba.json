@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_evening_library_reading_together",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1386,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "坐在深色长木椅上，身子微微倚靠在你的肩头，银色手指轻按泛黄书页，神色恬静安详",
     "adult": false,
@@ -51,7 +51,7 @@
       "intimate"
     ],
     "timeOfDay": "黄昏",
-    "title": "薇尔莉特 · 暮色藏书馆的肩头轻倚·「书里描绘的幸福，就像现在这样吗？」",
+    "title": "薇尔莉特 · 暮色藏书馆的肩头轻倚",
     "identityProseOverride": "Violet Evergarden from Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands.",
     "identityTokensOverride": [
       "violet_evergarden",

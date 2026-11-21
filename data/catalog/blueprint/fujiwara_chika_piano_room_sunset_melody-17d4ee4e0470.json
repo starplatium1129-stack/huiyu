@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_piano_room_sunset_melody",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2633,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "fujiwara_chika_piano_room_sunset_melody",
     "characterId": "fujiwara_chika",
@@ -14,11 +14,11 @@
     "description": "秀知院音乐教室被斜照的金色晚霞染透，琴键上跃动着柔和光斑。身穿无袖礼服裙的千花端坐在三角钢琴前，纤细指尖拂过黑白琴键。微风从敞开的窗户吹起她粉色的长发与黑色蝴蝶结发饰，平时欢脱吵闹的少女此刻全神贯注，侧脸流露出惊艳而高雅的沉静美感。",
     "recommendedSize": "832x1216",
     "location": "classic high school music room with grand piano and high arched windows",
-    "action": "seated gracefully at grand piano, fingers hovering over keys, pink hair and black bow fluttering in breeze, glowing sunset, looking over shoulder with soft smile",
+    "action": "微风从敞开的窗户吹起她粉色的长发与黑色蝴蝶结发饰，平时欢脱吵闹的少女此刻全神贯注",
     "timeOfDay": "sunset",
     "lighting": "intense golden sunset streaming through tall arched windows",
     "camera": "cowboy_shot",
-    "mood": "breathtaking musical grace, surprising aristocratic tranquility",
+    "mood": "典雅宁静",
     "promptProse": "Seated at a glossy grand piano in a sun-drenched music room, Chika Fujiwara wears an elegant sleeveless recital dress. Golden sunset light illuminates her pink hair and black bow as she turns with a charming, gentle smile.",
     "promptTokens": [
       "1girl",

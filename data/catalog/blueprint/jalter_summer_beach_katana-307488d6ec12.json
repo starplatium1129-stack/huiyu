@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_summer_beach_katana",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 171,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "jalter_summer_beach_katana",
     "characterId": "jeanne_alter",
@@ -49,7 +49,7 @@
     "timeOfDay": "sunset",
     "lighting": "golden_hour",
     "camera": "medium_portrait",
-    "mood": "playful",
+    "mood": "俏皮灵动",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"

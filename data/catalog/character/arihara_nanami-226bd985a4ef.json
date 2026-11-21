@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arihara_nanami",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 261,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "arihara_nanami",
     "profile": {
@@ -60,7 +60,7 @@
       "speech": "资料我已经整理好了。出发前再看一遍，别漏掉重要的地方。",
       "voice": "资料我已经整理好了。出发前再看一遍，别漏掉重要的地方。",
       "traits": [
-        "arihara_nanami",
+        "arihara nanami",
         "blonde hair",
         "long hair",
         "red eyes"
@@ -82,19 +82,19 @@
       "identityTokens": [
         "1girl",
         "solo",
-        "arihara_nanami",
+        "arihara nanami",
         "blonde hair",
         "long hair",
         "red eyes"
       ],
       "characterTokens": [
-        "arihara_nanami"
+        "arihara nanami"
       ],
       "copyrightTokens": [
         "riddle_joker"
       ],
       "exactTokens": [
-        "arihara_nanami"
+        "arihara nanami"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_sacred_forest_spirit_butterflies_lantern",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2575,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ao_sacred_forest_spirit_butterflies_lantern",
     "title": "空门苍 · 幽夜古林与七影蝶之引",
@@ -12,7 +12,7 @@
     "outfitId": "miko_shrine_garb",
     "description": "鸟白岛后山幽深的神社古木深处，成百上千只泛着幽蓝荧光的“七影蝶”在空中盘旋。身着巫女服的苍手执提灯静静走过古树根，神情专注而庄严。",
     "location": "mystical nocturnal forest clearing surrounded by giant mossy roots and glowing blue spirit butterflies",
-    "action": "walking through ancient forest path holding a warm paper lantern, watching glowing butterflies flutter around her, serene spiritual expression",
+    "action": "身着巫女服的苍手执提灯静静走过古树根，神情专注而庄严",
     "timeOfDay": "夜晚",
     "lighting": "幽夜古林中手中暖木提灯与漫天幽蓝七影蝶荧光",
     "camera": "wide cinematic landscape",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "karuizawa_kei",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 232,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "karuizawa_kei",
     "profile": {
@@ -106,16 +106,16 @@
         "karuizawa kei"
       ],
       "exactTokens": [
-        "karuizawa_kei"
+        "karuizawa kei"
       ],
       "characterTokens": [
-        "karuizawa_kei"
+        "karuizawa kei"
       ],
       "copyrightTokens": [
         "youkoso_jitsuryoku_shijou_shugi_no_kyoushitsu_e"
       ],
       "identityTokens": [
-        "karuizawa_kei",
+        "karuizawa kei",
         "1girl",
         "solo",
         "blonde_hair",

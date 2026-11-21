@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_ryokan_onsen_passionate_embrace",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2248,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "shizuka_ryokan_onsen_passionate_embrace",
     "characterId": "shizuka_hiratsuka",
@@ -14,11 +14,11 @@
     "description": "箱根温泉旅馆幽静的私人露天石池，热气在微凉的晚风中冉冉升腾。平冢静倚在池边的古朴岩石上，清澈的温泉水波漫至胸口。被水汽打湿的黑发柔顺贴在她成熟优美的后颈与脊背上，池水映出月光。她端起浮水木盘里的清酒杯轻抿一口，侧眸望向身旁，眼神中尽是看透世事的豁达与独对心上人的温存柔情。",
     "recommendedSize": "832x1216",
     "location": "secluded traditional ryokan cedarwood hot spring bath",
-    "action": "soaking in outdoor hot spring leaning against smooth stone, wet black hair swept over bare shoulder, holding small sake cup from floating tray, flushed mature face, loving gentle gaze",
+    "action": "倚在池边的古朴岩石上",
     "timeOfDay": "night",
     "lighting": "soft stone lantern glow reflecting on ripples under moonlit night sky",
     "camera": "cowboy_shot",
-    "mood": "refined mature sensuality, serene unhurried romantic escape",
+    "mood": "温存与宁静",
     "promptProse": "Soaking in a private outdoor hot spring beneath a starry night sky, Shizuka Hiratsuka rests against a smooth rock holding a sake cup. Steam rises around her bare shoulders and wet black hair as she smiles with serene maturity.",
     "promptTokens": [
       "1girl",

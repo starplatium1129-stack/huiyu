@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_classroom_sunset_desk_rest",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2681,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aozaki_aoko_classroom_sunset_desk_rest",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "放学后空无一人的三咲高中教室，夕阳金辉斜铺在一排排木质课桌上。学生会长青子端坐在靠窗的课桌上，单腿踏在椅子边沿。三咲校服的西装外套微敞，她一手托着下巴看着窗外操场，另一手转动着圆珠笔。微风拂过粉笔微尘，回过头来的眼神带着学生时代的意气风发与独家默契。",
     "recommendedSize": "832x1216",
     "location": "empty nostalgic Japanese high school classroom at golden hour",
-    "action": "sitting casually on wooden desk by window, student council blazer open, spinning pen in hand, turning to viewer with confident teasing smirk",
+    "action": "微风拂过粉笔微尘，回过头来的眼神带着学生时代的意气风发与独家默契",
     "timeOfDay": "sunset",
     "lighting": "dazzling orange classroom sunset beams casting long shadows across desks",
     "camera": "cowboy_shot",
-    "mood": "nostalgic school-days youth, charismatic student council president charm",
+    "mood": "幽微清冷",
     "promptProse": "Sitting casually on a wooden desk in an empty sun-drenched classroom, Aoko wears her high school uniform with blazer unbuttoned. Sunset streams across the chalkboard as she turns with a confident, nostalgic smile.",
     "promptTokens": [
       "red_hair",

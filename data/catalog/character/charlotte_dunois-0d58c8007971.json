@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "charlotte_dunois",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 222,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "charlotte_dunois",
     "profile": {
@@ -135,7 +135,7 @@
         "IS"
       ],
       "traits": [
-        "charlotte_dunois",
+        "charlotte dunois",
         "blonde_hair",
         "long_hair",
         "side_ponytail",
@@ -174,16 +174,16 @@
         "charlotte dunois"
       ],
       "exactTokens": [
-        "charlotte_dunois"
+        "charlotte dunois"
       ],
       "characterTokens": [
-        "charlotte_dunois"
+        "charlotte dunois"
       ],
       "copyrightTokens": [
         "infinite_stratos"
       ],
       "identityTokens": [
-        "charlotte_dunois",
+        "charlotte dunois",
         "1girl",
         "solo",
         "blonde_hair",

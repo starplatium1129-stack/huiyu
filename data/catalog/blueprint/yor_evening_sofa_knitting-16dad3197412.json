@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_evening_sofa_knitting",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 812,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yor_evening_sofa_knitting",
     "title": "约尔·福杰 · 终于织平整的一段围巾",
@@ -18,7 +18,7 @@
     "timeOfDay": "night",
     "lighting": "warm reading light on face and hands",
     "camera": "medium shot, three-quarter view, seated environmental portrait",
-    "mood": "cozy",
+    "mood": "温馨惬意",
     "sceneTags": [
       "holding_fabric",
       "green_scarf",

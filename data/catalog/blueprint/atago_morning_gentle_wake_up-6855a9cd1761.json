@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_morning_gentle_wake_up",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2154,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "atago_morning_gentle_wake_up",
     "characterId": "atago_azur",
@@ -14,11 +14,11 @@
     "description": "阳光柔和地洒在卧室床头，爱宕系着围裙俯身坐在床沿。她嘴角含着无尽宠溺的笑意，玉手轻柔拂开你额前的碎发，黑色犬耳欢快地微动，厨房飘来早点的醇香。",
     "recommendedSize": "832x1216",
     "location": "sunlit master bedroom in the morning",
-    "action": "leaning over bed with affectionate pampering smile, gently brushing hair from partner forehead, dog ears perking up happily, breakfast aroma from kitchen",
+    "action": "系着围裙俯身坐在床沿，轻柔拂开额前碎发宠溺微笑",
     "timeOfDay": "morning",
     "lighting": "warm gentle morning sunshine filtering through sheer white curtains",
     "camera": "upper_body",
-    "mood": "sweet domestic awakening, overwhelming maternal care, tender love",
+    "mood": "温存与治愈",
     "promptProse": "Leaning over the bed in an apron in morning sunlight, Atago smiles with pure pampering devotion, gently brushing hair from partner forehead.",
     "promptTokens": [
       "bedroom",

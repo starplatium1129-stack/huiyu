@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "scathach_home_tea_morning",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 245,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "scathach_home_tea_morning",
-    "title": "斯卡哈 · 晨间茶室的师匠私语·「休息也是修行的一部分，坐下」",
+    "title": "斯卡哈 · 晨间茶室的师匠私语",
     "category": "居家日常",
     "characterId": "scathach_fate",
     "description": "难得的休息日清晨，斯卡哈身着宽松的白色居家衫跪坐在矮桌旁，以行云流水般的动作为你点茶。紫色长发只松松系在脑后，发梢铺满榻榻米。她把茶碗转过一个角度推到你面前，赤瞳里浮起极淡的笑意——「茶道与枪术相通，讲究的都是在『间』里的一击。喝吧，然后……今天陪我多坐一会儿。」",

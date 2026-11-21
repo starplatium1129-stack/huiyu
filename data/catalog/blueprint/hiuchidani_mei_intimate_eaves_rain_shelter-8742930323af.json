@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hiuchidani_mei_intimate_eaves_rain_shelter",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2013,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "hiuchidani_mei",
     "outfitId": "sailor_blue",
@@ -14,11 +14,11 @@
     "description": "突如其来的暴雨将两人逼停在狭窄的杂货店屋檐下。被雨水打湿的水手领上衣紧紧贴在肌肤上，爱衣冻得微微发抖。少年张开外套将她整个护在怀中取暖，爱衣微微一愣，随即红着脸将整个身体依偎进怀抱，双手紧紧环住了对方的后腰。",
     "recommendedSize": "832x1216",
     "location": "narrow rain shelter under shop eaves",
-    "action": "huddled together under coat, wet clothes, embracing waist, blushing",
+    "action": "少年张开外套将她整个护在怀中取暖，爱衣微微一愣，随即红着脸将整个身体依偎进怀抱",
     "timeOfDay": "dusk",
     "lighting": "cool rain atmosphere and warm shopfront glow",
     "camera": "medium_shot",
-    "mood": "cozy romantic shelter from storm",
+    "mood": "温存与治愈",
     "promptProse": "Sheltering under a narrow shop awning during a heavy downpour, Hiuchidani Mei is wrapped securely inside the viewer's dry jacket. Her damp sailor uniform clings to her frame as she blushes deeply, hugging the viewer tightly around the waist.",
     "promptTokens": [
       "hiuchidani_mei",

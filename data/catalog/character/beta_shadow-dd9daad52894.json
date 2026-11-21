@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "beta_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 262,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "beta_shadow",
     "popular": {
@@ -26,7 +26,7 @@
       ],
       "identityProse": "Beta from The Eminence in Shadow, the Second of the Seven Shadows, with short wavy silver hair, a beauty mark under her right eye, bright blue eyes, pointed elf ears, and an extremely voluptuous busty figure.",
       "identityTokens": [
-        "beta_(shadow_garden)",
+        "beta (shadow garden)",
         "1girl",
         "solo",
         "silver_hair",
@@ -38,11 +38,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "beta_(shadow_garden)"
+        "beta (shadow garden)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "beta_(shadow_garden)"
+        "beta (shadow garden)"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -145,7 +145,7 @@
       "voiceJa": "シャドウ様！本日の『シャドウ様英雄譚』の執筆、完了いたしました！あの素晴らしいお姿、しっかり記録しております！",
       "source": "The Eminence in Shadow",
       "traits": [
-        "beta_(shadow_garden)",
+        "beta (shadow garden)",
         "silver_hair",
         "short_hair",
         "blue_eyes",

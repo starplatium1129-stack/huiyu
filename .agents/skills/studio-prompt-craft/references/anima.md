@@ -9,7 +9,7 @@
 | 序号 | 分段 | 格式与内容 | 说明 |
 | --- | --- | --- | --- |
 | **01** | **质量 / 安全词** | `masterpiece, best quality, score_7, ...` | 由所选 checkpoint 的 profile 决定，不手动照抄通用模板。 |
-| **02** | **人数与角色** | `1girl, solo, frieren,` | 真实人数与角色 ID 触发词；多人使用 `2girls` 或 `1girl, 1boy`。 |
+| **02** | **人数与角色** | `1girl, solo, frieren,` | 真实人数与模型使用的角色标签。多人使用 `2girls` 或 `1girl, 1boy`。 |
 | **03** | **作品名称** | `sousou no frieren,` | 官方/社区标准作品版权词，独立成段。 |
 | **04** | **画师风格（可选）** | `@kantoku,` | Danbooru 画师名加 `@` 前缀；未选择画师时直接省略该段。 |
 | **05** | **普通画面标签** | `sitting, reading book, forest, window light,` | **核心事实承载段**，涵盖动作、神态、衣装/裸露、道具、场景与光影。 |
@@ -36,7 +36,8 @@ She looks peaceful and slightly sleepy with gentle wind blowing.
 - **全分级标签支持**：
   - 包含常规衣装（`school_uniform`, `coat` 等）、清凉/泳装（`bikini`, `swimsuit` 等）、情趣/局部裸露（`lingerie`, `open_shirt`, `cleavage` 等）及完全裸体（`nude`, `naked` 等）。
   - 各类 NSFW/R18 交互与细节标签依创作需求真实使用。
-- **精确词保护**：`score_N`、LoRA 触发词及专名保持原样，不全局替换下划线。
+- **角色与作品写法**：依据 D/G 核对角色和作品标签。Anima 最终提示词用小写和空格，如 `roxy migurdia, mushoku tensei`。有同名限定时保留括号及其内容，如 `sylphiette \(mushoku tensei\)`，由编译器处理字面括号。角色 ID 和检索别名沿用原值。[Anima 模型说明](https://huggingface.co/circlestone-labs/Anima#prompting)
+- **精确词保护**：`score_N` 和当前 LoRA 指定的触发词保持原样。普通角色名通过 `characterTokens`、`identityTokens` 进入编译。确需锁定不同拼法时，用目标模型的说明或同条件出图凭据记录适用范围，再使用精确词配置。
 
 ## 3. 消费与组装逻辑
 

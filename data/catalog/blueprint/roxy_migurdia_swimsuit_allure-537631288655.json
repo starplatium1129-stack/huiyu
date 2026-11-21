@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_swimsuit_allure",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 3171,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T07:55:25.190699800+00:00",
   "data": {
     "id": "roxy_migurdia_swimsuit_allure",
     "characterId": "roxy_migurdia",
@@ -56,7 +56,9 @@
       "bright clear sky",
       "depth of field"
     ],
-    "negativeTokens": [],
+    "negativeTokens": [
+      "long ears"
+    ],
     "promptProse": "Roxy Migurdia sits primly upon a coastal rock in her sapphire-blue striped bikini, conjuring swirling rings of water magic with her wand while giving an earnest, slightly flustered lecture.",
     "animaCaption": "Prismatic water magic spins above the calm bay as the petite water saint delivers a stern, adorable seaside lesson.",
     "nsfwTokens": [],

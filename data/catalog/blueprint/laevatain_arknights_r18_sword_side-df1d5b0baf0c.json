@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_sword_side",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 734,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "赤身侧卧在床单上，指尖搭在床头大剑熔光剑柄上",
     "adult": true,
@@ -21,7 +21,9 @@
     "mood": "警戒下的柔软",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Laevatain lies on her side, one hand on the glowing greatsword hilt beside the bed, turning toward her off-frame companion. Ember light catches her fingers and the nearest sheet folds.",
     "promptTokens": [

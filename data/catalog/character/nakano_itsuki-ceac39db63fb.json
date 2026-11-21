@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_itsuki",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 188,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "nakano_itsuki",
     "profile": {
@@ -86,7 +86,7 @@
       "speech": "上杉同学！请不要小看我的食量……不对，是请不要小看我的求学意志！今天我一定会把这张试卷全部订正完的！",
       "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
       "traits": [
-        "nakano_itsuki",
+        "nakano itsuki",
         "1girl",
         "solo",
         "long_hair",
@@ -339,7 +339,7 @@
       ],
       "identityProse": "Adult Nakano Itsuki from The Quintessential Quintuplets, a serious, earnest, and sweet-toothed girl with waist-length wavy reddish-auburn hair, a prominent ahoge, two yellow star-shaped hairpins on both sides of her face, clear blue eyes, and an adorable blushing expression when enjoying delicious food.",
       "identityTokens": [
-        "nakano_itsuki",
+        "nakano itsuki",
         "1girl",
         "solo",
         "long_hair",
@@ -351,7 +351,7 @@
         "5-toubun_no_hanayome"
       ],
       "exactTokens": [
-        "nakano_itsuki"
+        "nakano itsuki"
       ],
       "exactPrefixes": [
         "itsuki_"
@@ -387,7 +387,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "nakano_itsuki"
+        "nakano itsuki"
       ],
       "copyrightTokens": [
         "5-toubun_no_hanayome"

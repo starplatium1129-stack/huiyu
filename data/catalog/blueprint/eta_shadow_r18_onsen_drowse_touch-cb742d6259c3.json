@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_r18_onsen_drowse_touch",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2845,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "eta_shadow_r18_onsen_drowse_touch",
     "characterId": "eta_shadow",
@@ -48,7 +48,8 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "hand between legs"
+      "hand between legs",
+      "nipples"
     ],
     "nsfwProse": "",
     "animaCaption": "Temperature: perfect. Eta's hand keeps working long after her brilliant mind has gone off duty."

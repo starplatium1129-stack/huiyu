@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_after_quiet_cafe",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2500,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-07T13:00:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mitsukasa_ayase_after_quiet_cafe",
     "characterId": "mitsukasa_ayase",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "咖啡馆的角落没有镜头，也没有等待回应的人。绫濑低头尝了一口饮料，听你说完笑话才抬起眼，露出一个很自然的笑。",
     "location": "quiet cafe corner",
-    "action": "smiling at her partner across a cafe table",
+    "action": "绫濑低头尝了一口饮料，听你说完笑话才抬起眼，露出一个很自然的笑",
     "timeOfDay": "afternoon",
     "lighting": "window light",
     "camera": "medium shot",
@@ -34,7 +34,6 @@
       "medium shot"
     ],
     "animaCaption": "Her partner sits across the table outside the frame.",
-    "characterId": "mitsukasa_ayase",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

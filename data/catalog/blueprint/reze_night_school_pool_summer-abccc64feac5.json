@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_night_school_pool_summer",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 424,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "reze_night_school_pool_summer",
     "characterId": "reze_chainsaw",
@@ -41,7 +41,7 @@
     "timeOfDay": "night",
     "lighting": "moonlight",
     "camera": "cowboy shot, stepping out of the moonlit school pool",
-    "mood": "serene",
+    "mood": "宁静祥和",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"

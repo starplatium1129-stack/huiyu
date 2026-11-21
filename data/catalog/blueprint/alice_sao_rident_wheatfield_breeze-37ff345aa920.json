@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_rident_wheatfield_breeze",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2000,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alice_sao_rident_wheatfield_breeze",
     "characterId": "alice_sao",
@@ -14,11 +14,11 @@
     "description": "故乡卢利特村广袤无垠的秋日金黄麦田里，爱丽丝身穿天蓝亚麻朴素便裙配白围裙，麦穗在风中起伏如波浪，少女轻抚麦浪回望，眼神清澈而温柔。",
     "recommendedSize": "1216x832",
     "location": "golden rural wheatfield",
-    "action": "touching wheat ears, breeze lifting hair ribbon, nostalgic gentle smile",
+    "action": "身穿天蓝亚麻朴素便裙配白围裙，麦穗在风中起伏如波浪，少女轻抚麦浪回望，眼神清澈而温柔",
     "timeOfDay": "dusk",
     "lighting": "radiant harvest sunset casting long golden shadows over crops",
     "camera": "wide_shot",
-    "mood": "deeply peaceful and poetic pastoral nostalgia",
+    "mood": "宁静与田园",
     "promptProse": "Walking gently through shimmering golden wheatfields near her rural homeland in a simple country dress and apron, Alice brushes her fingertips across the ripening ears as the warm evening wind catches her blonde braid.",
     "promptTokens": [
       "alice_synthesis_thirty",

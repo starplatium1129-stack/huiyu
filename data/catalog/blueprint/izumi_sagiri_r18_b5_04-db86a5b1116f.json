@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "izumi_sagiri_r18_b5_04",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1536,
   "createdAt": null,
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "izumi_sagiri_r18_b5_04",
-    "title": "和泉纱雾 · 壁橱深处抱枕自持的哭腔宣泄 ·「最喜欢哥哥了……这种话怎么可能当面说出口啊！」",
+    "title": "和泉纱雾 · 壁橱深处抱枕自持的哭腔宣泄",
     "category": "私密自持",
     "characterId": "izumi_sagiri",
     "description": "躲在最安心的小壁橱里。纱雾整个人抱紧了画有正宗小说的抱枕，光着下身仰躺在柔软的备用被褥上。手指在湿成一片的私处急速抽弄，泪水止不住地从蓝眼睛里涌出来——「笨蛋哥哥……为什么就是不懂成年女性子的心思……哈啊……哥哥……正宗哥哥……」",
@@ -56,7 +56,9 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
     "coverageTags": [

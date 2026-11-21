@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_blood_lances_abyssal_smirk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 2561,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "aurora_shadow_blood_lances_abyssal_smirk",
     "title": "奥萝拉 · 血月封印渊薮的千刃齐发",
@@ -12,7 +12,7 @@
     "outfitId": "witch_crimson_dress",
     "description": "巨大血月统治的深渊封印祭坛天穹，狂暴的鲜血魔力化作数以千计的深红晶刺长矛浮悬半空。奥萝拉红裙飘卷立于虚空，俯瞰凡尘冷笑。",
     "location": "vast volcanic abyss beneath a gigantic looming crimson blood moon",
-    "action": "floating in midair commanding hundreds of hovering crystalline blood spears, dark dress billowing, regal fanged smirk of supreme malice",
+    "action": "红裙飘卷立于虚空，俯瞰凡尘冷笑",
     "timeOfDay": "夜晚",
     "lighting": "深渊熔岩裂隙火光与漫天血晶长枪炽红锋芒",
     "camera": "wide cinematic action shot",

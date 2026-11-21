@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_penthouse_balcony_deep_kiss",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2163,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "st_louis_penthouse_balcony_deep_kiss",
     "characterId": "st_louis_azur",
@@ -14,11 +14,11 @@
     "description": "都会高空顶层公寓内，璀璨的都市霓虹在巨大的落地窗外如星河延展。圣路易斯身着一袭贴身的深蓝色深V开衩晚礼服，优雅地单手倚在玻璃窗前。手中轻摇着马提尼酒杯，冰蓝色的长发倾泻在光洁裸背上，转过头来的眼神深邃而充满成熟女性从容的诱惑魅力。",
     "recommendedSize": "832x1216",
     "location": "private penthouse bedroom with dark city panorama",
-    "action": "leaning gracefully against floor-to-ceiling glass window overlooking glittering city skyline, fitted navy evening gown, holding cocktail glass, looking at viewer with seductive knowing smile",
+    "action": "身着一袭贴身的深蓝色深V开衩晚礼服，优雅地单手倚在玻璃窗前，手中轻摇着马提尼酒杯",
     "timeOfDay": "night",
     "lighting": "vibrant multicolored city neon backlighting paired with subtle indoor mood light",
     "camera": "cowboy_shot",
-    "mood": "luxurious glamorous seduction, metropolitan sophistication",
+    "mood": "都市魅惑",
     "promptProse": "Standing before a vast penthouse glass window with a sparkling cityscape below, St. Louis wears an elegant backless navy evening gown. She sips a cocktail, turning with an alluring, confident smile.",
     "promptTokens": [
       "1girl",

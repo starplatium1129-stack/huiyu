@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_stargazing_shrine_starry_reach",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2567,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mayuri_stargazing_shrine_starry_reach",
     "title": "椎名真由理 · 神社参道长阶的星尘握手",
@@ -12,7 +12,7 @@
     "outfitId": "pale_blue_sundress",
     "description": "秋叶原古老神社高耸的石阶之巅，满天璀璨银河倒垂。真由理身着浅空蓝吊带裙仰起脸庞，向着夜空星辰伸出双手，眼神纯净而充满对未来的眷恋。",
     "location": "high shrine stone staircase landing looking out over starry galaxy night sky",
-    "action": "standing with arms raised high reaching toward celestial stars, head tilted up with wondrous innocent smile, sundress hem fluttering",
+    "action": "真由理身着浅空蓝吊带裙仰起脸庞，向着夜空星辰伸出双手，眼神纯净而充满对未来的眷恋",
     "timeOfDay": "夜晚",
     "lighting": "璀璨银河星光与石灯笼暖黄烛光",
     "camera": "wide shot, landscape composition",

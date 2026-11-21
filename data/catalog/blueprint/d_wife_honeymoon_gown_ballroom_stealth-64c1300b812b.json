@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_wife_honeymoon_gown_ballroom_stealth",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2729,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "d_wife_honeymoon_gown_ballroom_stealth",
     "characterId": "d_killer_wife",
@@ -12,13 +12,13 @@
     "title": "D · 蜜月晚宴的深红露背礼服",
     "category": "礼服名流",
     "description": "执行伪装侦察任务的奢华游轮宴会厅回廊，烛光在水晶壁灯间跳跃。D身穿一袭惊艳的深红丝缎深V露背长礼服，裙裾拖地。精致大腿袜带上隐藏着微型飞刀，白皙如玉的背部线条优雅修长。她挽着手包侧身回眸，红眸中带着特工的敏锐机警，与对心上人毫不保留的信赖依恋。",
-    "action": "standing in gilded palace corridor wearing backless crimson evening gown, turning gracefully with purse, bare shoulders and back glistening in chandelier light, alluring dignified gaze",
+    "action": "她挽着手包侧身回眸，红眸中带着特工的敏锐机警，与对心上人毫不保留的信赖依恋",
     "recommendedSize": "832x1216",
     "location": "gilded ornate ballroom corridor lined with marble columns and crystal chandeliers",
     "timeOfDay": "night",
     "lighting": "dazzling golden chandelier luminescence reflecting off crimson satin",
     "camera": "full_body",
-    "mood": "glamorous espionage romance, breathtaking aristocratic poise",
+    "mood": "浪漫温存",
     "promptProse": "Standing in an ornate gilded corridor in a dramatic backless crimson gown, D turns with poised grace. Crystal chandeliers illuminate her bare back and flowing brown hair as her crimson eyes hold a steady, alluring gaze.",
     "promptTokens": [
       "1girl",

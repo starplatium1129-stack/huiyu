@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_academy_courtyard_fountain",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 471,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "坐在喷泉边沿短暂小憩，墨镜挂在衣领",
     "adult": false,
@@ -18,7 +18,7 @@
     "id": "sylphiette_academy_courtyard_fountain",
     "lighting": "sunlight",
     "location": "夏亚魔法大学庭院喷泉",
-    "mood": "calm",
+    "mood": "恬淡平静",
     "negativeTokens": [
       "sunglasses worn"
     ],

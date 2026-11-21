@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "si_arknights_r18_morning_sheets",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1771,
   "createdAt": "2026-10-25T10:00:00+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "si_arknights_r18_morning_sheets",
     "characterId": "si_arknights",
@@ -52,7 +52,10 @@
     "negativeTokens": [],
     "promptProse": "Curled under tangled white sheets bathed in warm morning sun, Si glances over her bare shoulder with a radiant, affectionate smile as her dragon tail rests entwined with the viewer.",
     "animaCaption": "She looks back over her shoulder with a loving smile from the tangled morning sheets as sunlight washes over her skin.",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": ""
   }
 }

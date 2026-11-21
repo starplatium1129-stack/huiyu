@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yanami_anna_r18_b8_04",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1677,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "yanami_anna_r18_b8_04",
-    "title": "八奈见杏菜 · 假装不在意后的被单失恋独奏 ·「为什么……青梅竹马总是赢不过天降啊……」",
+    "title": "八奈见杏菜 · 假装不在意后的被单失恋独奏",
     "category": "私密自持",
     "characterId": "yanami_anna",
     "description": "白天在大家面前笑嘻嘻地吃着特盛芭菲，夜晚回到房间终于忍不住崩溃。她脱光了所有衣服躺在被窝里，手指带着暴食过后的悔恨与失落用力抽插着湿热的下体。眼泪把枕头哭得透湿——「草介那个笨蛋……我明明陪了他那么多年……温水……你也不会突然不要我吧……」",
@@ -51,7 +51,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
     "coverageTags": [

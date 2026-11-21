@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "stella_vermillion",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 223,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "stella_vermillion",
     "profile": {
@@ -148,7 +148,7 @@
         "落第骑士"
       ],
       "traits": [
-        "stella_vermillion",
+        "stella vermillion",
         "crimson_hair",
         "long_hair",
         "twintails",
@@ -187,16 +187,16 @@
         "stella vermillion"
       ],
       "exactTokens": [
-        "stella_vermillion"
+        "stella vermillion"
       ],
       "characterTokens": [
-        "stella_vermillion"
+        "stella vermillion"
       ],
       "copyrightTokens": [
         "rakudai_kishi_no_cavalry"
       ],
       "identityTokens": [
-        "stella_vermillion",
+        "stella vermillion",
         "1girl",
         "solo",
         "crimson_hair",

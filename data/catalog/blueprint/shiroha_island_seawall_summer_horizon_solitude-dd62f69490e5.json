@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiroha_island_seawall_summer_horizon_solitude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2571,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiroha_island_seawall_summer_horizon_solitude",
     "title": "鸣濑白羽 · 鸟白岛防波堤的碧海孤影",
@@ -12,7 +12,7 @@
     "outfitId": "island_white_sundress",
     "description": "鸟白岛湛蓝无垠的海岸线防波堤上，海风吹拂。白羽单手按着白色草帽走在长长的堤坝边缘，纯白吊带棉裙轻拂小腿，身后是辽阔的大海与洁白浪花。",
     "location": "long concrete ocean breakwater surrounded by glittering turquoise sea waters under open summer sky",
-    "action": "walking along narrow seawall, holding straw sun hat with one hand, gazing toward distant sea horizon with calm wistful violet eyes",
+    "action": "白羽单手按着白色草帽走在长长的堤坝边缘，纯白吊带棉裙轻拂小腿，身后是辽阔的大海与洁白浪花",
     "timeOfDay": "白天",
     "lighting": "盛夏明丽艳阳与海面波光粼粼",
     "camera": "wide shot, landscape composition",

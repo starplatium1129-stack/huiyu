@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_combat_rapier_flourish",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2484,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rose_combat_rapier_flourish",
     "characterId": "rose_oriana",
@@ -14,11 +14,11 @@
     "description": "米德加学园安静的玻璃温室花房内，白色铁艺圆桌上摆着冒着热气的花草茶与刚出炉的黄油司康。萝丝坐在藤椅上，双手捧着白瓷茶杯，微红着脸庞看向对面的少年，满心是纯真甜美的遐想。",
     "recommendedSize": "832x1216",
     "location": "serene sunlit academy botanical greenhouse beside glass panes",
-    "action": "sitting at a white ornate garden table, holding steaming teacup with saucer, blushing sweetly, starry romantic gaze, golden curls catching sunlight",
+    "action": "坐在藤椅上，双手捧着白瓷茶杯，微红着脸庞看向对面的少年，满心是纯真甜美的遐想",
     "timeOfDay": "afternoon",
     "lighting": "bright warm sunlight filtering through leafy greenhouse vines and glass panes",
     "camera": "cowboy shot",
-    "mood": "romantic school romance, shy princess daydreams, peaceful teatime warmth",
+    "mood": "温存与动情",
     "promptProse": "In a sunlit academy greenhouse parlor, blonde princess Rose Oriana sits gracefully at a garden table holding a cup of herbal tea, blushing with pure romantic affection.",
     "promptTokens": [
       "greenhouse",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_intimate_bridge_dawn_embrace",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2019,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "amiya",
     "outfitId": "rhodes_coat",
@@ -14,11 +14,11 @@
     "description": "黎明的第一道纯白曦光从大地尽头刺破黑夜，洒在罗德岛高耸的舰桥观察窗前。连续奋战彻夜的阿米娅终于露出了释然的笑容。当博士走上前将她拥入怀中时，阿米娅闭上眼睛反手用力抱紧，卸下了一切领袖伪装，像普通女孩一样享受着朝阳与温暖。",
     "recommendedSize": "832x1216",
     "location": "high observation bridge deck",
-    "action": "embracing tightly, dawn sunlight pouring through glass, closed eyes smile",
+    "action": "在晨曦窗前紧紧相拥，阖眸露出释怀微笑",
     "timeOfDay": "morning",
     "lighting": "glorious radiant golden dawn sunrise",
     "camera": "cowboy_shot",
-    "mood": "triumphant emotional rebirth",
+    "mood": "释怀重生",
     "promptProse": "High on the observation deck at the break of dawn, Amiya is embraced closely as the golden sun crests the barren horizon. She closes her eyes and wraps her arms tightly in return, basking in the glorious light and profound mutual devotion.",
     "promptTokens": [
       "amiya",

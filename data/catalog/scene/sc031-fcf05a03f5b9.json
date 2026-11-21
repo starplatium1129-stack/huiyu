@@ -1,10 +1,10 @@
 {
   "kind": "scene",
   "id": "sc031",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 29,
   "createdAt": null,
-  "updatedAt": "2026-11-08T17:04:00.891747500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "animaCaption": "Nene in white chiffon with a pink waist ribbon stands left; Natsume in black satin with a burgundy sash stands right. Each clasps the nearer foreground hand beneath three glowing heart-rate curves.",
     "auditRevision": "codex-scene-prompt-audit-2026-09-10",
@@ -15,7 +15,7 @@
       "natsume",
       "nene"
     ],
-    "emotion": "Absolute Dependency",
+    "emotion": "绝对信赖",
     "id": "sc031",
     "lighting": "光芒万丈",
     "location": "仪式厅",

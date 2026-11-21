@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_garden_walk_flower_field",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 268,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ereshkigal_garden_walk_flower_field",
-    "title": "埃列什基伽勒 · 冥界花田的散步·「在冥界种花……是我的任性」",
+    "title": "埃列什基伽勒 · 冥界花田的散步",
     "category": "专属羁绊",
     "characterId": "ereshkigal_fate",
     "description": "黑暗的国土上竟开着一整片白色的花田——是她一株一株亲手种下的。埃列什基伽勒提着裙摆走在花间，回头朝你招手，红瞳弯成温柔的弧度——「在冥界种花，是本王唯一的任性。……呐，你看，它们朝你开花了。花也是，我也是。」",

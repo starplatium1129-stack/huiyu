@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_sofa_pampering_hug",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2157,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "atago_sofa_pampering_hug",
     "characterId": "atago_azur",
@@ -14,11 +14,11 @@
     "description": "暖黄色壁灯照耀的温馨客厅内，爱宕侧坐在绒布长沙发角。围裙系带微松，内衬针织衫勾勒出极其丰满曼妙的轮廓。头顶毛茸茸的黑色犬耳羞怯地伏在发丝间，她双手捧着一杯温牛奶，微红的双颊带着如大姐姐般的极尽温柔与让人心跳加速的包容神采。",
     "recommendedSize": "832x1216",
     "location": "cozy private living room couch by lamplight",
-    "action": "sitting comfortably on plush sofa holding warm cup, apron tied loosely over knit top, black dog ears gently drooped, sweet blushing smile full of pampering affection",
+    "action": "侧坐在沙发上双手捧着温牛奶，红着双颊温柔注视",
     "timeOfDay": "night",
     "lighting": "warm cozy indoor lamplight casting golden gradients across living room",
     "camera": "medium_shot",
-    "mood": "overwhelming maternal warmth, sweet domestic adoration",
+    "mood": "温存与治愈",
     "promptProse": "Relaxing on a plush living room couch, Atago wears a cozy knit top with an apron loosely tied. Her black dog ears droop softly with affection as she holds a warm mug, smiling with deep, pampering tenderness.",
     "promptTokens": [
       "1girl",

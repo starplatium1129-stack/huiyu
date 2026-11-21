@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yukinoshita_yukino",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 9,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yukinoshita_yukino",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "雪之下雪乃向你致以问候。",
       "source": "渡航《我的青春恋爱物语果然有问题 / Oregairu》",
       "traits": [
-        "yukinoshita_yukino",
+        "yukinoshita yukino",
         "1girl",
         "solo",
         "long_black_hair",
@@ -417,7 +417,7 @@
       ],
       "identityProse": "Yukinoshita Yukino from Oregairu, with long straight black hair, blue eyes, an ahoge and red ribbons on her sidelocks.",
       "identityTokens": [
-        "yukinoshita_yukino",
+        "yukinoshita yukino",
         "1girl",
         "solo",
         "black hair",
@@ -428,7 +428,7 @@
         "oregairu"
       ],
       "exactTokens": [
-        "yukinoshita_yukino"
+        "yukinoshita yukino"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -460,7 +460,7 @@
         "kantoku"
       ],
       "characterTokens": [
-        "yukinoshita_yukino"
+        "yukinoshita yukino"
       ],
       "copyrightTokens": [
         "oregairu"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_inn_night_whisper",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1984,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aozaki_aoko_inn_night_whisper",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "静谧日式旅馆的榻榻米房间内，刚泡过温汤的青子脸颊泛着动人酡红。两人盘腿促膝而坐，微暗纸行灯光下，大姐姐平日的凌厉尽数褪去，眼神温柔得能滴出水来。",
     "recommendedSize": "832x1216",
     "location": "traditional ryokan tatami room",
-    "action": "sitting on tatami, relaxed sweater, flushed cheeks, tender close gaze",
+    "action": "两人盘腿促膝而坐，微暗纸行灯光下，大姐姐平日的凌厉尽数褪去，眼神温柔得能滴出水来",
     "timeOfDay": "night",
     "lighting": "intimate golden lantern light casting gentle shadows",
     "camera": "close-up",
-    "mood": "tender quiet intimacy",
+    "mood": "温存与宁静",
     "promptProse": "In a quiet traditional inn room illuminated by soft amber lantern glow, Aozaki Aoko relaxes in a cozy knit top, her hair framing delicately flushed cheeks.",
     "promptTokens": [
       "tatami_room",

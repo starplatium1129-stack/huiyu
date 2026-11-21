@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_ruler_gown_candlelight_toast",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2693,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alice_sao_ruler_gown_candlelight_toast",
     "characterId": "alice_sao",
@@ -12,13 +12,13 @@
     "title": "爱丽丝 · 殿堂晚宴的纯白礼服凝思",
     "category": "礼服名流",
     "description": "停战和谈庆典深处的偏殿露台，华丽的水晶吊灯与烛台流光溢彩。爱丽丝身着一袭代表人界代表地位的奢华无袖露背白金礼服裙，金发盘成高雅的发髻，几缕碎发垂在白皙纤长的天鹅颈旁。她端着金樽酒杯倚在拱门旁，褪去了战场的肃杀，眼眸中盛满了对和平时代的期许与只对你展现的倾慕微笑。",
-    "action": "leaning gracefully against palace archway holding golden goblet, formal sleeveless white and gold evening gown, elegant hair updo, soft aristocratic smile",
+    "action": "身着一袭代表人界代表地位的奢华无袖露背白金礼服裙，金发盘成高雅的发髻",
     "recommendedSize": "832x1216",
     "location": "grand marble banquet hall archway overlooking illuminated cathedral courtyard",
     "timeOfDay": "night",
     "lighting": "rich golden candelabra and chandelier illumination reflecting on white marble",
     "camera": "cowboy_shot",
-    "mood": "noble sovereign elegance, timeless romantic majesty",
+    "mood": "温存与端庄",
     "promptProse": "Standing beside an ornate palace archway in an exquisite white and gold formal gown, Alice holds a golden goblet. Her blonde hair is styled in an elegant updo as she gazes forward with majestic, heartfelt affection.",
     "promptTokens": [
       "1girl",

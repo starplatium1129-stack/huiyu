@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_wife_stealth_trench_rooftop_sniper_rain",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2728,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "d_wife_stealth_trench_rooftop_sniper_rain",
     "characterId": "d_killer_wife",
@@ -12,13 +12,13 @@
     "title": "D · 雨夜天台的战术风衣潜行",
     "category": "战斗高光",
     "description": "冷雨淅沥的城市高层废弃天台，远方霓虹被雨幕浸得一片模糊。D身穿贴身战术皮衣，外披黑色长款防水风衣，单膝跪在水洼前架好带有消音器的重型狙击步枪。雨水顺着她深邃冷艳的脸庞与棕发滑落，红眸如同锁定猎物的暗夜毒蛇。扣下扳机前，她微微侧头用耳麦轻声汇报，将全副性命托付于你。",
-    "action": "kneeling on rain-slicked concrete rooftop in black tactical trench coat, holding suppressed sniper rifle, raindrops dripping from chin and hair, deadly calm loyal gaze",
+    "action": "扣下扳机前，她微微侧头用耳麦轻声汇报，将全副性命托付于你",
     "recommendedSize": "832x1216",
     "location": "gritty rain-drenched rooftop overlooking cyberpunk skyline with neon blurs",
     "timeOfDay": "night",
     "lighting": "方舟外围雨夜高楼霓虹光带与狙击镜激光微光",
     "camera": "cowboy_shot",
-    "mood": "deadly precision, unwavering covert protection",
+    "mood": "专注守护",
     "promptProse": "Kneeling in the cold rain on a high rooftop in a sleek black trench coat, D cradles a sniper rifle. Droplets glisten on her cheekbones under distant neon lights as her crimson eyes gleam with cold, protective loyalty.",
     "promptTokens": [
       "sniper rifle",

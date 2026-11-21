@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mikasa_ackerman",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 64,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "mikasa_ackerman",
     "profile": {
@@ -78,7 +78,7 @@
       "speech": "三笠握紧刀柄，红围巾随风扬起——「我会保护你。」",
       "source": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
       "traits": [
-        "mikasa_ackerman",
+        "mikasa ackerman",
         "1girl",
         "solo",
         "black_hair",
@@ -308,13 +308,13 @@
       "displayName": "三笠",
       "exactPrefixes": [],
       "exactTokens": [
-        "mikasa_ackerman"
+        "mikasa ackerman"
       ],
       "franchise": "Attack on Titan",
       "id": "mikasa_ackerman",
       "identityProse": "Mikasa Ackerman from Attack on Titan, with chin-length black hair covering her ears, gray eyes, pale skin and an unscarred face.",
       "identityTokens": [
-        "mikasa_ackerman",
+        "mikasa ackerman",
         "1girl",
         "solo",
         "black hair",
@@ -345,7 +345,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "mikasa_ackerman"
+        "mikasa ackerman"
       ],
       "copyrightTokens": [
         "attack on titan"

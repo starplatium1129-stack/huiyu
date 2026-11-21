@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alpha_shadow",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 261,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "alpha_shadow",
     "popular": {
@@ -25,7 +25,7 @@
       ],
       "identityProse": "Alpha from The Eminence in Shadow, the First of the Seven Shadows, with long golden blonde hair, crystal blue eyes, pointed elf ears, and a calm graceful aristocratic beauty.",
       "identityTokens": [
-        "alpha_(shadow_garden)",
+        "alpha (shadow garden)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -35,11 +35,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "alpha_(shadow_garden)"
+        "alpha (shadow garden)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "alpha_(shadow_garden)"
+        "alpha (shadow garden)"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -141,7 +141,7 @@
       "voiceJa": "シャドウ様……陰の組織はすべて、あなたの手のひらの上に。どのようなご命令でも、お命じください",
       "source": "The Eminence in Shadow",
       "traits": [
-        "alpha_(shadow_garden)",
+        "alpha (shadow garden)",
         "blonde_hair",
         "blue_eyes",
         "pointy_ears",

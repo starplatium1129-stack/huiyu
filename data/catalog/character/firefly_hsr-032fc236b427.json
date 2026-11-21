@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "firefly_hsr",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 180,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "firefly_hsr",
     "profile": {
@@ -85,7 +85,7 @@
       "speech": "即使这只是一场终将醒来的幻梦，只要与你并肩而立时指尖传来的温度是真实的……我就会为了那一瞬的火光，向死而生。",
       "source": "miHoYo《崩坏：星穹铁道 / Honkai: Star Rail》",
       "traits": [
-        "firefly_(honkai:_star_rail)",
+        "firefly (honkai: star rail)",
         "1girl",
         "solo",
         "grey_hair",
@@ -366,7 +366,7 @@
       ],
       "identityProse": "Adult Firefly from Honkai: Star Rail, a sweet, gentle, and resolute young woman with flowing silvery-grey hair fading into pale teal at the tips, bright aqua-blue eyes with a starry gleam, a pale-green feather hairpin and dark headband, and an affectionate, heartwarming smile.",
       "identityTokens": [
-        "firefly_(honkai:_star_rail)",
+        "firefly (honkai: star rail)",
         "1girl",
         "solo",
         "grey_hair",
@@ -378,7 +378,7 @@
         "honkai:_star_rail"
       ],
       "exactTokens": [
-        "firefly_(honkai:_star_rail)"
+        "firefly (honkai: star rail)"
       ],
       "exactPrefixes": [
         "firefly_"

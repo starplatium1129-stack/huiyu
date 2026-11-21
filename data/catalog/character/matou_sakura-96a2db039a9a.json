@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "matou_sakura",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 40,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "matou_sakura",
     "profile": {
@@ -53,7 +53,7 @@
         "白色发带"
       ],
       "traits": [
-        "matou_sakura",
+        "matou sakura",
         "1girl",
         "solo",
         "purple_hair",
@@ -948,7 +948,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "homurahara_uniform",
       "identityTokens": [
-        "matou_sakura",
+        "matou sakura",
         "1girl",
         "solo",
         "purple hair",
@@ -976,7 +976,7 @@
       ],
       "originalName": "间桐樱",
       "exactTokens": [
-        "matou_sakura"
+        "matou sakura"
       ],
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -1000,7 +1000,7 @@
         "research": "2026-08-18 调研"
       },
       "characterTokens": [
-        "matou_sakura",
+        "matou sakura",
         "Sakura"
       ],
       "copyrightTokens": [

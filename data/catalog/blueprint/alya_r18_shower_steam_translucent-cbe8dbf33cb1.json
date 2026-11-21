@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alya_r18_shower_steam_translucent",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 785,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "全裸立于花洒水幕下，水珠顺着白皙肩颈与胸腹流淌，仰头轻抚锁骨",
     "adult": true,
@@ -21,7 +21,10 @@
     "mood": "温润湿热与纯净诱惑",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Viewed through the steamy shower glass, she tilts her face upward beneath the water with one hand at her collarbone. Warm bathroom light diffuses through the steam and outlines her wet hair.",
     "promptTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_engawa_dinosaur_plush_gao_yawn",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2584,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "misuzu_engawa_dinosaur_plush_gao_yawn",
     "title": "神尾观铃 · 蝉鸣缘侧的千头恐龙与嘎嗷",
@@ -12,7 +12,7 @@
     "outfitId": "dinosaur_home_tshirt",
     "description": "神尾家老屋长长的木制缘侧上，檐角铜风铃清脆作响。观铃抱着巨大的千头龙毛绒玩偶，靠在柱子边大口打着哈欠，双手握拳举在颊边可爱的“嘎嗷~”。",
     "location": "traditional wooden Japanese engawa porch overlooking sunlit yard with fluttering wind chime",
-    "action": "sitting on wooden porch holding an oversized green dinosaur plushie, making cute roaring fists by cheeks with a sleepy happy grin",
+    "action": "抱着巨大的千头龙毛绒玩偶打哈欠，双手握拳举在颊边做出可爱的嘎嗷姿势",
     "timeOfDay": "下午",
     "lighting": "庭院树荫洒下的柔和斑驳午阳",
     "camera": "wide medium shot",

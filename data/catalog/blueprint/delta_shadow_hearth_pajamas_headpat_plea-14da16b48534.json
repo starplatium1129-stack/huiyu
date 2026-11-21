@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_shadow_hearth_pajamas_headpat_plea",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2546,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "delta_shadow_hearth_pajamas_headpat_plea",
     "title": "德尔塔 · 暖炉沙发旁的撒娇求摸头",
@@ -12,7 +12,7 @@
     "outfitId": "fluffy_dog_hoodie",
     "description": "壁炉火光跳动的温暖起居室内，德尔塔穿着毛绒长衫跪在厚绒毯上，两只犬耳垂下，双手轻轻按在暗影膝头，仰头满眼期待。",
     "location": "cozy private living quarters with roaring brick fireplace and soft fur rug",
-    "action": "kneeling on a plush rug by a sofa, resting chin and paws on partner knee, looking up with big pleading dewy eyes and drooped dog ears",
+    "action": "穿着毛绒长衫跪在厚绒毯上，两只犬耳垂下，双手轻轻按在暗影膝头，仰头满眼期待",
     "timeOfDay": "夜晚",
     "lighting": "壁炉红火光与温馨环境光",
     "camera": "medium close-up",

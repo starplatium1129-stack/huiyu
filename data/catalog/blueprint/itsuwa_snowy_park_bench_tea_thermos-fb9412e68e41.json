@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "itsuwa_snowy_park_bench_tea_thermos",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2294,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "itsuwa_snowy_park_bench_tea_thermos",
     "characterId": "itsuwa",
@@ -14,11 +14,11 @@
     "description": "冬日落雪的公园长椅上，五和小心翼翼地从保温壶中倒出一杯热腾腾的焙茶。双手捧着茶杯递给你，在升腾的白气中缩了缩脖子，露出温柔至极的恬静微笑。",
     "recommendedSize": "832x1216",
     "location": "quiet park bench surrounded by snow-covered pine trees",
-    "action": "pouring hot tea from a thermos into a cup, handing it with both hands to partner, smiling with breath fogging in the winter chill",
+    "action": "从保温壶倒出热焙茶，双手捧着茶杯递出，在白气中害羞缩了缩脖子",
     "timeOfDay": "afternoon",
     "lighting": "crisp winter daylight reflecting on white snow",
     "camera": "cowboy_shot",
-    "mood": "heartwarming winter warmth, pastoral peace, supreme comfort girlfriend vibe",
+    "mood": "宁静与田园",
     "promptProse": "On a snowy park bench, Itsuwa hands partner a steaming cup of hot tea with both hands, smiling sweetly in winter daylight.",
     "promptTokens": [
       "park",

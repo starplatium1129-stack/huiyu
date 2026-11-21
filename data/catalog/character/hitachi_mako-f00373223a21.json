@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hitachi_mako",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 85,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "hitachi_mako",
     "profile": {
@@ -83,7 +83,7 @@
       "speech": "初次见面，在下是常陆茉子。只要有在下在，就绝不会让任何危险靠近芳乃大人和您哦！",
       "source": "YUZUSOFT《千恋＊万花 / Senren * Banka》",
       "traits": [
-        "hitachi_mako",
+        "hitachi mako",
         "1girl",
         "solo",
         "black_hair",
@@ -451,13 +451,13 @@
         "mako_"
       ],
       "exactTokens": [
-        "hitachi_mako"
+        "hitachi mako"
       ],
       "franchise": "Senren Banka",
       "id": "hitachi_mako",
       "identityProse": "Hitachi Mako from Senren Banka, with short black hair, long sidelocks, an ahoge, green eyes and a cat-like mouth.",
       "identityTokens": [
-        "hitachi_mako",
+        "hitachi mako",
         "1girl",
         "solo",
         "black_hair",
@@ -485,7 +485,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "hitachi_mako",
+        "hitachi mako",
         "Mako"
       ],
       "copyrightTokens": [

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "megumi_nsfw_bed_supine_devotion",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 1450,
   "createdAt": null,
-  "updatedAt": "2026-11-08T17:40:57.147763+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "megumi_nsfw_bed_supine_devotion",
-    "title": "加藤惠 · 创作合宿被单深处的柔情真心 ·「这一次……不许再把我当路人了哦」",
+    "title": "加藤惠 · 创作合宿被单深处的柔情真心",
     "category": "私密自持",
     "characterId": "katou_megumi",
     "description": "同人社团截稿后的静谧房间。惠仰卧在白色床单上，解开束缚的长发披散如云。双腿微屈轻分，指尖陷在床单与大腿根部，棕瞳含水凝视着你——「脚本里的女主角终于完成了……那、那个原型……今晚全部属于你哦。」",
@@ -60,7 +60,10 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "animaCaption": "Her hair spreads across the futon as she looks toward the viewer."
   }
 }

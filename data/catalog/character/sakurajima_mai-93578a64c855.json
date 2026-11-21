@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sakurajima_mai",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 3,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sakurajima_mai",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "樱岛麻衣向你致以问候。",
       "source": "鴨志田一《青春猪头少年不会梦到兔女郎学姐 / Seishun Buta Yarou》",
       "traits": [
-        "sakurajima_mai",
+        "sakurajima mai",
         "1girl",
         "solo",
         "long_black_hair",
@@ -375,7 +375,7 @@
       ],
       "identityProse": "Sakurajima Mai from Rascal Does Not Dream of Bunny Girl Senpai, with long straight black hair, purple-gray eyes and a white rabbit hair clip.",
       "identityTokens": [
-        "sakurajima_mai",
+        "sakurajima mai",
         "seishun buta yarou",
         "1girl",
         "solo",
@@ -385,7 +385,7 @@
         "white rabbit hairclip"
       ],
       "exactTokens": [
-        "sakurajima_mai"
+        "sakurajima mai"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -417,7 +417,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "sakurajima_mai",
+        "sakurajima mai",
         "Mai"
       ],
       "copyrightTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_kotatsu_late_night_writing",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2512,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "beta_kotatsu_late_night_writing",
     "characterId": "beta_shadow",
@@ -14,11 +14,11 @@
     "description": "四越地下编辑部的小阁间内。稿纸在暖炉案几上堆叠如山。贝塔抱着软绵绵的抱枕趴在桌前，咬着羽毛笔尾巴苦思下一章《暗影大人传记》的高潮段落，发梢微微散乱却充满狂热干劲。",
     "recommendedSize": "832x1216",
     "location": "cluttered cozy writer den with stacks of parchment, ink pots, and warm hearth glow",
-    "action": "leaning over a low wooden writing desk hugging a soft plush pillow, nibbling the tip of a quill pen with messy silver hair, ink stains on fingertips",
+    "action": "抱着软绵绵的抱枕趴在桌前，咬着羽毛笔尾巴苦思下一章《暗影大人传记》的高潮段落",
     "timeOfDay": "night",
     "lighting": "warm amber hearth light and a desktop brass reading lantern",
     "camera": "medium_shot",
-    "mood": "intense creative passion, adorable late-night disarray, devoted storyteller heart",
+    "mood": "柔媚与神圣",
     "promptProse": "Beta in striped loungewear leans on a manuscript-covered desk hugging a pillow, biting her quill pen in late night writer inspiration.",
     "promptTokens": [
       "messy_room",

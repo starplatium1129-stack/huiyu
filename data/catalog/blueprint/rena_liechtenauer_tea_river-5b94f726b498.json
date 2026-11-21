@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_tea_river",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2429,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_tea_river",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "休息日",
     "description": "办完事后，蕾娜在河边长椅上坐下，把买来的热茶捧在手里。她抬眼望向对岸，等茶稍微凉一些。",
     "location": "riverside bench",
-    "action": "sitting on a bench holding a cup of tea",
+    "action": "在河边长椅上坐下，把买来的热茶捧在手里，抬眼望向对岸，等茶稍微凉一些",
     "timeOfDay": "late afternoon",
     "lighting": "late afternoon light",
     "camera": "cowboy shot",

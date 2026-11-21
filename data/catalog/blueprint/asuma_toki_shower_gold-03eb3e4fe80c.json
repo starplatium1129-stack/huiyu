@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asuma_toki_shower_gold",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 879,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "一脚放在石凳上，一手抬起湿发，另一手沿身前水流冲洗。",
     "adult": true,
@@ -24,7 +24,10 @@
     "mood": "清爽飒爽",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nude_state",
     "promptProse": "She rests one foot on the stone bench and lifts her wet hair with one hand; the other follows the shower stream between her thighs. Cool industrial light reflects from the metal surfaces through the spray mist.",
     "promptTokens": [

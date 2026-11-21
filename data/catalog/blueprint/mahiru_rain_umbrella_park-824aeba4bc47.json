@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mahiru_rain_umbrella_park",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1469,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mahiru_rain_umbrella_park",
-    "title": "椎名真昼 · 细雨公园递出雨伞的初遇·「淋湿的话，可是会感冒的哦」",
+    "title": "椎名真昼 · 细雨公园递出雨伞的初遇",
     "category": "校园日常",
     "characterId": "shiina_mahiru",
     "outfitId": "official_school_uniform",

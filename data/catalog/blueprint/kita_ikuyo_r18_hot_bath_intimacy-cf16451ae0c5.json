@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_r18_hot_bath_intimacy",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1839,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "kita_ikuyo_r18_hot_bath_intimacy",
     "characterId": "kita_ikuyo",
@@ -58,6 +58,10 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Her head rests against the wooden rim beneath the moonlight."
+    "animaCaption": "Her head rests against the wooden rim beneath the moonlight.",
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ]
   }
 }

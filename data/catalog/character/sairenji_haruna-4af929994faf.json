@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sairenji_haruna",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 167,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sairenji_haruna",
     "profile": {
@@ -83,7 +83,7 @@
       "speech": "「结、结城君……虽然总是遇到那么让人害羞的意外……但我从来没有讨厌过你！不如说……只要能像这样待在你身边，我就觉得很幸福了。」",
       "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
       "traits": [
-        "sairenji_haruna",
+        "sairenji haruna",
         "1girl",
         "solo",
         "purple_hair",
@@ -569,13 +569,13 @@
         "haruna_"
       ],
       "exactTokens": [
-        "sairenji_haruna"
+        "sairenji haruna"
       ],
       "franchise": "To LOVE-Ru",
       "id": "sairenji_haruna",
       "identityProse": "Sairenji Haruna from To LOVE-Ru by Kentaro Yabuki, a gentle and easily embarrassed young woman with soft purple short hair, two small hair clips on her right bangs, tender purple eyes, and a sweet, modest blush.",
       "identityTokens": [
-        "sairenji_haruna",
+        "sairenji haruna",
         "1girl",
         "solo",
         "purple_hair",
@@ -603,7 +603,7 @@
         "krea2-turbo-fp8"
       ],
       "characterTokens": [
-        "sairenji_haruna",
+        "sairenji haruna",
         "Haruna Sairenji"
       ],
       "copyrightTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_morning_cafe_letter_writing",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1384,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "坐在白色铁艺椅上，身前摆放着复古打字机，双手端正托起写好的信纸递向你，面带温柔微笑",
     "adult": false,
@@ -49,7 +49,7 @@
       "morning"
     ],
     "timeOfDay": "清晨",
-    "title": "薇尔莉特 · 邮政露台的打字机晨光·「为您代笔的情书，已经完成了」",
+    "title": "薇尔莉特 · 邮政露台的打字机晨光",
     "animaCaption": "Both silver hands offer the finished letter across the table, the typewriter resting behind it."
   }
 }

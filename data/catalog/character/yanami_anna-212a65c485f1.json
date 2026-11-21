@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yanami_anna",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 147,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yanami_anna",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Too Many Losing Heroines!",
       "speech": "这个新品看起来不错，要不要尝一口？",
       "traits": [
-        "yanami_anna",
+        "yanami anna",
         "make_heroine_ga_oo_sugiru!",
         "blue_hair",
         "medium_hair",
@@ -208,7 +208,7 @@
       ],
       "identityProse": "Anna Yanami from Too Many Losing Heroines!, with medium-length blue hair, an ahoge and blue eyes.",
       "identityTokens": [
-        "yanami_anna",
+        "yanami anna",
         "make_heroine_ga_oo_sugiru!",
         "blue_hair",
         "medium_hair",
@@ -216,7 +216,7 @@
         "blue_eyes"
       ],
       "exactTokens": [
-        "yanami_anna"
+        "yanami anna"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -245,7 +245,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "yanami_anna",
+        "yanami anna",
         "Anna Yanami"
       ],
       "copyrightTokens": [

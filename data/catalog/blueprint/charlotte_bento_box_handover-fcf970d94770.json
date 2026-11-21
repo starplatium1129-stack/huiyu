@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_bento_box_handover",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2178,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "charlotte_bento_box_handover",
     "characterId": "charlotte_dunois",
@@ -14,11 +14,11 @@
     "description": "晨光清朗的教室内，夏洛特双手捧着精心包裹在碎花方巾里的爱心便当递到你面前。她金发侧马尾垂在胸前，澄澈橙眸泛着羞涩水光，满含期待与宠溺。",
     "recommendedSize": "832x1216",
     "location": "sunlit classroom beside window",
-    "action": "holding out wrapped bento box with both hands, blushing sweetly, shy affectionate smile, morning sunlight",
+    "action": "双手捧着精心包裹在碎花方巾里的爱心便当递到你面前，金发侧马尾垂在胸前",
     "timeOfDay": "morning",
     "lighting": "warm cheerful morning sunlight slanting through classroom glass",
     "camera": "cowboy_shot",
-    "mood": "tender school romance, domestic sweetness, pure puppy love",
+    "mood": "温存与神圣",
     "promptProse": "Standing in a sunlit classroom, Charlotte Dunois hands over a wrapped bento box with both hands, blushing sweetly with loving eyes.",
     "promptTokens": [
       "classroom",

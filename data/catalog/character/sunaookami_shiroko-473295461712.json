@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sunaookami_shiroko",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 213,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sunaookami_shiroko",
     "profile": {
@@ -110,17 +110,17 @@
         "shiroko (blue archive)"
       ],
       "exactTokens": [
-        "sunaookami_shiroko"
+        "sunaookami shiroko"
       ],
       "characterTokens": [
-        "sunaookami_shiroko",
+        "sunaookami shiroko",
         "shiroko (blue archive)"
       ],
       "copyrightTokens": [
         "blue_archive"
       ],
       "identityTokens": [
-        "sunaookami_shiroko",
+        "sunaookami shiroko",
         "1girl",
         "solo",
         "grey_hair",

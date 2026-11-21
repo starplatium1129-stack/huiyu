@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_candelabra_velvet_armchair_majesty",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2594,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "kirie_candelabra_velvet_armchair_majesty",
     "title": "篝之雾枝 · 银烛暗室里的血族威严",
@@ -12,7 +12,7 @@
     "outfitId": "gothic_vampire_gown",
     "description": "四柱大床旁的幽暗寝室，多头银烛台静静燃烧。雾枝端坐在暗红天鹅绒高背扶手椅中，双手交叠于蕾丝裙裾之上，赤红双眸在跳跃的火苗中流转着至高威严。",
     "location": "opulent gothic private bedchamber beside heavy velvet curtains and tall candelabra",
-    "action": "sitting tall in velvet wingback armchair, hands folded over black lace gown, gazing forward with calm hypnotic vampire authority",
+    "action": "雾枝端坐在暗红天鹅绒高背扶手椅中，双手交叠于蕾丝裙裾之上",
     "timeOfDay": "夜晚",
     "lighting": "西洋古堡暗室银质多头烛台明亮烛火与壁炉红光",
     "camera": "cowboy shot",

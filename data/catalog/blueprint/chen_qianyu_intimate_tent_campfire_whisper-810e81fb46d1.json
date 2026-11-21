@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_tent_campfire_whisper",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2020,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "weekend_overall",
@@ -14,11 +14,11 @@
     "description": "塔卫二冰冷刺骨的荒野黑夜里，简易保温帐篷内跳动着小型发热炉的橙红微光。千语卸下了厚重的防风护甲，只穿着贴身的无袖黑色背心。火光映红了她坚毅而优美的下颌线与锁骨，她倒了半杯温茶递过去，低声诉说着白日未言的关切。",
     "recommendedSize": "832x1216",
     "location": "insulated expedition tent",
-    "action": "sitting cross-legged, tank top, offering warm tea cup, campfire glow",
+    "action": "火光映红了她坚毅而优美的下颌线与锁骨，她倒了半杯温茶递过去，低声诉说着白日未言的关切",
     "timeOfDay": "night",
     "lighting": "warm glowing camp heater illuminating shadows",
     "camera": "medium_shot",
-    "mood": "rugged wilderness tender warmth",
+    "mood": "荒野温存",
     "promptProse": "Inside an insulated exploration tent on a freezing wasteland, Chen Qianyu rests without her bulky armor in a fitted black sleeveless tank top. The glowing orange heater highlights her sculpted shoulders and collarbone as she hands over a cup of warm tea.",
     "promptTokens": [
       "chen_qianyu",

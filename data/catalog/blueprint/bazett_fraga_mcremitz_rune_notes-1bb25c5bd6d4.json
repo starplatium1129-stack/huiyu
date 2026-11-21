@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_rune_notes",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2402,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_rune_notes",
     "characterId": "bazett_fraga_mcremitz",
@@ -13,7 +13,7 @@
     "category": "魔术准备",
     "description": "她把一张写满记录的纸放在桌上，正用笔补上最后一个符文。",
     "location": "quiet desk",
-    "action": "writing a rune on a sheet of paper at a desk",
+    "action": "她把一张写满记录的纸放在桌上，正用笔补上最后一个符文",
     "timeOfDay": "afternoon",
     "lighting": "window light",
     "camera": "medium shot",

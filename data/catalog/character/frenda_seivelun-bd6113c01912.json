@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "frenda_seivelun",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 243,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "frenda_seivelun",
     "profile": {
@@ -106,16 +106,16 @@
         "frenda seivelun"
       ],
       "exactTokens": [
-        "frenda_seivelun"
+        "frenda seivelun"
       ],
       "characterTokens": [
-        "frenda_seivelun"
+        "frenda seivelun"
       ],
       "copyrightTokens": [
         "toaru_kagaku_no_railgun"
       ],
       "identityTokens": [
-        "frenda_seivelun",
+        "frenda seivelun",
         "1girl",
         "solo",
         "blonde_hair",

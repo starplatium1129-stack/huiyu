@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "laevatain_arknights_r18_lava_pool",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 735,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "赤身伫立在沸腾熔池边，红光勾勒身姿",
     "adult": true,
@@ -21,7 +21,10 @@
     "mood": "危险旖旎",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Laevatain opens both arms toward the viewer from the basalt beside the molten pool. Low red lava glow outlines her figure and the near rock edge against the shadowed cavern walls.",
     "promptTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_bathroom_mirror_steam",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 431,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "reze_r18_bathroom_mirror_steam",
     "title": "蕾塞 · 浴室镜前",
@@ -18,7 +18,7 @@
     "timeOfDay": "night",
     "lighting": "warm_bath_light",
     "camera": "medium shot, rear three-quarter view toward the mirror",
-    "mood": "sensual",
+    "mood": "柔媚诱人",
     "sceneTags": [
       "bathroom",
       "steam",

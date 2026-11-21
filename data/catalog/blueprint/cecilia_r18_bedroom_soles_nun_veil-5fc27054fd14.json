@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_r18_bedroom_soles_nun_veil",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 843,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "披着月光立于彩绘玻璃前轻声祈祷",
     "adult": true,
@@ -25,7 +25,10 @@
     "mood": "圣洁悸动",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Cecilia stands with hands clasped before the bell-tower glass; colored moonlight crosses her mint hair and wind-lifted white veil.",
     "promptTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nana_asta_deviluke",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 96,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "nana_asta_deviluke",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "笨蛋梨斗！又在偷看姐姐的胸部了吧？我就知道你是个满脑子不知羞耻的大变态！哼！",
       "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
       "traits": [
-        "nana_asta_deviluke",
+        "nana asta deviluke",
         "1girl",
         "solo",
         "pink_hair",
@@ -570,13 +570,13 @@
         "nana_"
       ],
       "exactTokens": [
-        "nana_asta_deviluke"
+        "nana asta deviluke"
       ],
       "franchise": "To LOVE-Ru",
       "id": "nana_asta_deviluke",
       "identityProse": "Nana Asta Deviluke from To LOVE-Ru, with long pink twintails, purple-pink eyes and a black spade-heart tail.",
       "identityTokens": [
-        "nana_asta_deviluke",
+        "nana asta deviluke",
         "1girl",
         "solo",
         "pink hair",
@@ -604,7 +604,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "nana_asta_deviluke"
+        "nana asta deviluke"
       ],
       "copyrightTokens": [
         "to love-ru"

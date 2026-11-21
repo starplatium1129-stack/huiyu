@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "zero_two",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 129,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "zero_two",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "DARLING in the FRANXX",
       "speech": "今天去看看外面的世界吧。",
       "traits": [
-        "zero_two_(darling_in_the_franxx)",
+        "zero two (darling in the franxx)",
         "darling_in_the_franxx",
         "pink_hair",
         "long_hair",
@@ -290,7 +290,7 @@
       ],
       "identityProse": "Zero Two from DARLING in the FRANXX, with long pink hair, green eyes, small red horns and a white headband.",
       "identityTokens": [
-        "zero_two_(darling_in_the_franxx)",
+        "zero two (darling in the franxx)",
         "darling in the franxx",
         "pink hair",
         "long hair",
@@ -299,7 +299,7 @@
         "white hairband"
       ],
       "exactTokens": [
-        "zero_two_(darling_in_the_franxx)"
+        "zero two (darling in the franxx)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -328,7 +328,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "zero_two_(darling_in_the_franxx)"
+        "zero two (darling in the franxx)"
       ],
       "copyrightTokens": [
         "darling in the franxx"

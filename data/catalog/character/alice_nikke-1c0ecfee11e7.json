@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alice_nikke",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 173,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "alice_nikke",
     "profile": {
@@ -89,7 +89,7 @@
       "speech": "兔子先生！今天爱丽丝也有乖乖听话哦！快看，爱丽丝用胡萝卜把那些大铁块怪物全都变成小红心了呢，快来抱抱爱丽丝吧！",
       "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
       "traits": [
-        "alice_(nikke)",
+        "alice (nikke)",
         "1girl",
         "solo",
         "pink_hair",
@@ -557,7 +557,7 @@
       ],
       "identityProse": "Alice from Goddess of Victory: NIKKE, the dreamy and innocent sniper heroine of Unlimited squad with long wavy pastel-pink twintails, luminous sapphire blue eyes, mechanical rabbit-ear headphones, an hourglass figure, calling the Commander her 'Mr. Rabbit'.",
       "identityTokens": [
-        "alice_(nikke)",
+        "alice (nikke)",
         "1girl",
         "solo",
         "pink_hair",
@@ -571,7 +571,7 @@
         "goddess_of_victory:_nikke"
       ],
       "exactTokens": [
-        "alice_(nikke)"
+        "alice (nikke)"
       ],
       "exactPrefixes": [
         "alice_"
@@ -605,7 +605,7 @@
         "watermark"
       ],
       "characterTokens": [
-        "alice_(nikke)"
+        "alice (nikke)"
       ],
       "copyrightTokens": [
         "goddess_of_victory:_nikke"

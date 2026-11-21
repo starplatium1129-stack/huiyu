@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_r18_bedroom_soles_choker_pull",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 426,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "reze_r18_bedroom_soles_choker_pull",
     "characterId": "reze_chainsaw",
@@ -40,7 +40,10 @@
     "adult": true,
     "adultEligibility": "adult",
     "adultArtistHint": "@rella",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "category": "私密写真",
     "location": "破旧公寓窗台床铺",

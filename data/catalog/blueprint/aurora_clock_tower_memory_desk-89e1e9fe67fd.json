@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_clock_tower_memory_desk",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2529,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aurora_clock_tower_memory_desk",
     "characterId": "aurora_shadow",
@@ -14,11 +14,11 @@
     "description": "圣域核心废弃钟楼的高窗前。千年前的古旧课桌上落满尘埃。奥萝拉坐在桌沿上，双腿悬空轻轻摇晃，侧首看着窗外落下的第一片白雪，眼眸深处流露出化身为“灾厄魔女”前作为普通人类少女的落寞与叹息。",
     "recommendedSize": "832x1216",
     "location": "decayed antique stone clock tower loft with arched glassless window and dusty wooden school desks",
-    "action": "sitting on the edge of a rustic wooden desk, swinging legs idly while resting chin in palm, gazing out at drifting snowflakes with melancholic softness",
+    "action": "坐在桌沿上，双腿悬空轻轻摇晃，侧首看着窗外落下的第一片白雪，眼眸深处流露出化身为",
     "timeOfDay": "dusk",
     "lighting": "subdued twilight blue dusk light entering the window contrasting with pale white snow flakes",
     "camera": "medium_shot",
-    "mood": "heartrending ancient nostalgia, fragile lost humanity, poignant quiet beauty",
+    "mood": "宁静与幽微",
     "promptProse": "Aurora in a vintage navy sailor uniform sits on a wooden desk inside an old clock tower, watching falling snow with nostalgic wistful eyes.",
     "promptTokens": [
       "clock_tower",

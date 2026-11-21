@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_drawing_desk_sleep",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2032,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "studio_tracksuit",
@@ -14,11 +14,11 @@
     "description": "同人本截稿日前夕的深夜画室里，数位屏还亮着未保存的线稿。精疲力竭的英梨梨摘下厚黑框眼镜搁在数位板旁，趴在桌上沉沉睡去。两根金色的双马尾垂落在地板上。当伦也为她披上外套时，英梨梨小声嘟囔着「笨蛋伦也……」往衣服深处缩了缩，嘴角却微微抿起。",
     "recommendedSize": "832x1216",
     "location": "messy manga artist studio desk",
-    "action": "sleeping on drawing desk, graphics tablet glowing, wearing coat like blanket",
+    "action": "摘下厚黑框眼镜搁在数位板旁",
     "timeOfDay": "night",
     "lighting": "glow of digital drawing monitor in darkened studio",
     "camera": "medium_shot",
-    "mood": "protective tender artistic devotion",
+    "mood": "温存与神圣",
     "promptProse": "Slumped fast asleep over her cluttered manga drawing desk late at night, Eriri Spencer Sawamura rests beside her glowing graphics tablet. Her twin blonde tails drape across the floor as a warm jacket is draped over her shoulders, her fang subtly showing as she mumbles in her sleep.",
     "promptTokens": [
       "sawamura_spencer_eriri",

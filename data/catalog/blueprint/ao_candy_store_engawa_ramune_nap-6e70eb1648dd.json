@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ao_candy_store_engawa_ramune_nap",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2576,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ao_candy_store_engawa_ramune_nap",
     "title": "空门苍 · 粗点心店缘侧的波子汽水微醺梦",
@@ -12,7 +12,7 @@
     "outfitId": "dagashiya_apron_casual",
     "description": "阳光温暖的粗点心店木质缘侧上，苍系着兼职小围裙，抱着抱枕趴在木桌上打着哈欠昏昏欲睡，桌上倒映着喝了一半的波子汽水和风铃微光。",
     "location": "sun-drenched rustic sweet shop wooden veranda porch overlooking green island garden",
-    "action": "slumped lazily over low wooden table hugging a round cushion, yawning adorably with drooped half-lidded eyes, half-empty ramune bottle beside",
+    "action": "阳光温暖的粗点心店木质缘侧上，苍系着兼职小围裙，抱着抱枕趴在木桌上打着哈欠昏昏欲睡",
     "timeOfDay": "下午",
     "lighting": "庭院筛落的明媚午后树影金光",
     "camera": "wide medium shot",

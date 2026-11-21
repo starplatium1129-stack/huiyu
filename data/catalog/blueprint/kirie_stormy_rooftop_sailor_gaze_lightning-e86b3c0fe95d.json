@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_stormy_rooftop_sailor_gaze_lightning",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2593,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "kirie_stormy_rooftop_sailor_gaze_lightning",
     "title": "篝之雾枝 · 暴雨学园天台的逆风审视",
@@ -12,7 +12,7 @@
     "outfitId": "kirie_private_academy",
     "description": "暴风雨即将降临的私立学园天台铁丝网前，铅云低垂，闪电划破长空。身穿黑水手制服的雾枝迎风伫立，长发狂舞，回眸冷冷俯视凡人，高贵而危险。",
     "location": "school rooftop balcony against dark storm clouds and distant lightning flashes",
-    "action": "standing near chainlink fence against gusting pre-storm wind, school uniform skirt flaring, looking back over shoulder with piercing predatory red eyes",
+    "action": "身穿黑水手制服的雾枝迎风伫立，长发狂舞，回眸冷冷俯视凡人，高贵而危险",
     "timeOfDay": "下午",
     "lighting": "乌云背光与雷暴天际闪光",
     "camera": "wide shot, landscape composition",

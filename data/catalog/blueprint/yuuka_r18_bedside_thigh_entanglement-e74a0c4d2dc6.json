@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yuuka_r18_bedside_thigh_entanglement",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 925,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "独自仰卧屈起双腿，一手抓床单、一手腿间自抚",
     "adult": true,
@@ -24,7 +24,10 @@
     "mood": "深情极乐",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "She draws her knees toward her chest with ankles crossed, gripping the white sheets while her other hand moves between her legs. Pale golden morning light filters through the sheer curtains.",
     "promptTokens": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nanami_kitchen_tamagoyaki_tasting",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2286,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nanami_kitchen_tamagoyaki_tasting",
     "characterId": "aoyama_nanami",
@@ -14,11 +14,11 @@
     "description": "傍晚樱花庄温暖的厨房内，扎着马尾系着围裙的七海刚煎好香气四溢的关西风厚蛋烧。她用筷子夹起一块吹了吹递到你嘴边，红着脸颊眼含期待地等待你的评价。",
     "recommendedSize": "832x1216",
     "location": "cozy communal dormitory kitchen with pots and pans",
-    "action": "standing at stove wearing an apron, feeding partner a piece of freshly cooked rolled egg with chopsticks, blushing warmly with hopeful eyes",
+    "action": "她用筷子夹起一块吹了吹递到你嘴边，红着脸颊眼含期待地等待你的评价",
     "timeOfDay": "afternoon",
     "lighting": "warm golden evening sunlight pouring through kitchen window",
     "camera": "medium_shot",
-    "mood": "supreme housewife devotion, sweet domestic caring, heart-melting bride charm",
+    "mood": "温存与神圣",
     "promptProse": "In a cozy kitchen wearing a pink apron, Nanami Aoyama feeds partner a piece of rolled egg on chopsticks, blushing warmly with hopeful amber eyes.",
     "promptTokens": [
       "kitchen",

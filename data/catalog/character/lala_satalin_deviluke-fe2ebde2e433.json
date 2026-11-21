@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "lala_satalin_deviluke",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 93,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "lala_satalin_deviluke",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "梨斗——！我最喜欢你了！今天我又发明了一个超级厉害的道具哦，快来试一试嘛！",
       "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
       "traits": [
-        "lala_satalin_deviluke",
+        "lala satalin deviluke",
         "1girl",
         "solo",
         "pink_hair",
@@ -571,13 +571,13 @@
         "lala_"
       ],
       "exactTokens": [
-        "lala_satalin_deviluke"
+        "lala satalin deviluke"
       ],
       "franchise": "To LOVE-Ru",
       "id": "lala_satalin_deviluke",
       "identityProse": "Lala Satalin Deviluke from To LOVE-Ru, with ankle-length pink hair, an ahoge, green eyes and a black devil tail with a spade-shaped heart tip.",
       "identityTokens": [
-        "lala_satalin_deviluke",
+        "lala satalin deviluke",
         "1girl",
         "solo",
         "pink_hair",
@@ -606,7 +606,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "lala_satalin_deviluke",
+        "lala satalin deviluke",
         "Lala"
       ],
       "copyrightTokens": [

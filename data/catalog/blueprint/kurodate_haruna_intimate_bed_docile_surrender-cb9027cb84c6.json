@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurodate_haruna_intimate_bed_docile_surrender",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2123,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kurodate_haruna_intimate_bed_docile_surrender",
     "characterId": "kurodate_haruna",
@@ -14,11 +14,11 @@
     "description": "总统套房主卧奢华松软的丝绸大床上，黑金丝绸睡袍带子已完全解开，雪白紧致的肌肤与动人曲线一览无余。晴奈侧卧在微乱的床褥中，银白长发散落在羽绒枕间。她双眸满溢着无以复加的痴迷与温顺依赖，彻底交托出全部的骄傲与身心。",
     "recommendedSize": "832x1216",
     "location": "luxury penthouse master suite king bed",
-    "action": "reclining on silk bed, silk robe loose, flushed sensuality, devoted submissive gaze",
+    "action": "她双眸满溢着无以复加的痴迷与温顺依赖，彻底交托出全部的骄傲与身心",
     "timeOfDay": "night",
     "lighting": "romantic dim golden bedside lamps casting soft seductive silhouettes",
     "camera": "medium_shot",
-    "mood": "absolute passionate surrender, deep intoxicating romance, and sensual devotion",
+    "mood": "温存与柔媚",
     "promptProse": "Reclining on a lavish silk master bed with her black robe loosened, Kurodate Haruna gazes up with melting crimson eyes and breathless devotion in warm seductive lamplight.",
     "promptTokens": [
       "white_robe",

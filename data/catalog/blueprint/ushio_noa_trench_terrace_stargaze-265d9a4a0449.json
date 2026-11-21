@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_trench_terrace_stargaze",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2653,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "ushio_noa_trench_terrace_stargaze",
     "characterId": "ushio_noa",
@@ -14,11 +14,11 @@
     "description": "初秋微凉的周末深夜露台，千禧年的天际线闪烁着科技感的光斑。诺亚内穿贴身黑色高领针织，外披米色知性风衣，长风衣在夜风中微微展开。她单手挽住耳边随风掠动的白发，紫眸中倒映着星云与车流，向你展露出卸下公事备忘录后的清雅脱俗美感。",
     "recommendedSize": "832x1216",
     "location": "modern high-rise terrace overlooking illuminated city skyline",
-    "action": "leaning against terrace railing, beige trench coat fluttering in cool night wind, holding warm coffee cup, looking at viewer with graceful serene smile",
+    "action": "她单手挽住耳边随风掠动的白发，紫眸中倒映着星云与车流",
     "timeOfDay": "night",
     "lighting": "cool futuristic cyan city lighting mixed with warm terrace spotlights",
     "camera": "cowboy_shot",
-    "mood": "intellectual calm elegance, quiet nocturnal understanding",
+    "mood": "宁静祥和",
     "promptProse": "Standing on a high-rise terrace in the autumn night breeze, Ushio Noa wears a stylish open trench coat over a fitted knit. City lights gleam below as she tucks a strand of white hair behind her ear with a poised, affectionate smile.",
     "promptTokens": [
       "1girl",

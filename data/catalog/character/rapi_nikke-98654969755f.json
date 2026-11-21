@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rapi_nikke",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 172,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "rapi_nikke",
     "profile": {
@@ -87,7 +87,7 @@
       "speech": "指挥官，无论战场多么凶险，我都会一直在您身前。反击小队，即刻出击。",
       "source": "Shift Up《胜利女神：妮姬 / Goddess of Victory: NIKKE》",
       "traits": [
-        "rapi_(nikke)",
+        "rapi (nikke)",
         "1girl",
         "solo",
         "brown_hair",
@@ -552,7 +552,7 @@
       ],
       "identityProse": "Rapi from Goddess of Victory: NIKKE, the steadfast and composed leader of the Counters squad with waist-length dark reddish-brown hair, sharp resolute crimson-red eyes, voluptuous athletic hourglass figure, cool disciplined soldier demeanor, and an unyielding loyalty to the Commander.",
       "identityTokens": [
-        "rapi_(nikke)",
+        "rapi (nikke)",
         "1girl",
         "solo",
         "brown_hair",
@@ -563,7 +563,7 @@
         "goddess_of_victory:_nikke"
       ],
       "exactTokens": [
-        "rapi_(nikke)"
+        "rapi (nikke)"
       ],
       "exactPrefixes": [
         "rapi_"
@@ -597,7 +597,7 @@
         "watermark"
       ],
       "characterTokens": [
-        "rapi_(nikke)"
+        "rapi (nikke)"
       ],
       "copyrightTokens": [
         "goddess_of_victory:_nikke"

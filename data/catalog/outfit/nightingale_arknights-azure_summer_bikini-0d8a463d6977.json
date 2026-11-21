@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "nightingale_arknights/azure_summer_bikini",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2248,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "nightingale_arknights",
     "outfit": {
       "id": "azure_summer_bikini",
-      "name": "笼外清晨 · 纯白浮雕蕾丝抹胸连体长泳裙配淡青薄绡披肩",
+      "name": "笼外清晨 · 浮雕蕾丝连体长泳裙",
       "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
@@ -26,7 +26,8 @@
         "long hair",
         "blue eyes",
         "pointed ears",
-        "gentle fragility"
+        "gentle fragility",
+        "soft light"
       ]
     }
   }

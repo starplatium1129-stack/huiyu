@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frenda_district7_crepe_cream_nose_date",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2617,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "frenda_district7_crepe_cream_nose_date",
     "title": "芙兰达 · 第7学区甜品街的奶油沾鼻尖",
@@ -12,7 +12,7 @@
     "outfitId": "casual_sweet_hoodie_denim",
     "description": "学园都市第7学区阳光明媚的林荫大道露天咖啡座旁，喷泉水花四溅。身穿休闲卫衣的芙兰达双手捧着巨型草莓可丽饼大咬一口，鼻尖沾上白奶油，单眼wink笑得狡黠灵动。",
     "location": "sunlit tree-lined shopping plaza outdoor cafe beside a decorative fountain",
-    "action": "sitting at cafe table eating a massive strawberry crepe, cream dabbed on nose tip, winking playfully with sparkling azure eyes",
+    "action": "双手捧着巨型草莓可丽饼大咬一口，鼻尖沾上白奶油，单眼wink笑得狡黠灵动",
     "timeOfDay": "下午",
     "lighting": "明丽午后日光与喷泉折射彩芒",
     "camera": "wide shot, landscape composition",

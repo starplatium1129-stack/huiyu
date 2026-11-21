@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "illyasviel_von_einzbern_r18_snowy_window",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 166,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "illyasviel_von_einzbern_r18_snowy_window",
     "title": "伊莉雅丝菲尔 · 雪夜窗边",
@@ -44,7 +44,10 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "cozy_wool_blanket",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_emiya_kitchen_cooking",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 175,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "sakura_emiya_kitchen_cooking",
     "characterId": "matou_sakura",
@@ -48,7 +48,7 @@
     "timeOfDay": "morning",
     "lighting": "warm_kitchen_light",
     "camera": "medium_portrait",
-    "mood": "warm",
+    "mood": "温存暖意",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic",

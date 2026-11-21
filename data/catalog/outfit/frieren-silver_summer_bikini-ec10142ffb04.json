@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "frieren/silver_summer_bikini",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2299,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "frieren",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "千载夏风 · 象牙白素雅深V系带连体泳衣配复古浅灰亚麻披巾",
+      "name": "千载夏风 · 素雅深V连体泳衣",
       "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,

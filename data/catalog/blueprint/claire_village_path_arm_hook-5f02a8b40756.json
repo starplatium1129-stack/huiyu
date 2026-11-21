@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_village_path_arm_hook",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2526,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "claire_village_path_arm_hook",
     "characterId": "claire_kagenou",
@@ -14,11 +14,11 @@
     "description": "卡盖诺男爵领地的绿荫大道上。微风吹过紫罗兰连身裙。克莱尔双手紧紧挽住席德的胳膊不肯放开，鼓起腮帮子侧头严厉说教学园纪律，眼神深处却满是生怕弟弟离开视线的溺爱与固执。",
     "recommendedSize": "832x1216",
     "location": "rustic shaded dirt country path flanked by tall oak trees and stone fences",
-    "action": "hooking both arms firmly around viewers arm, pulling close while turning head with an authoritative scolding frown, cheeks slightly flushed",
+    "action": "男爵领地的绿荫大道上，微风吹过紫罗兰连身裙，克莱尔双手紧紧挽住席德的胳膊不肯放开",
     "timeOfDay": "morning",
     "lighting": "dappled sunlight filtering through lush leafy branches overhead",
     "camera": "cowboy_shot",
-    "mood": "overprotective sisterly devotion, stubborn affection, cozy country warmth",
+    "mood": "温存与神圣",
     "promptProse": "Claire in a lavender sundress tightly hooks both arms around viewers arm, scolding with an authoritative frown along a tree-lined rural path.",
     "promptTokens": [
       "countryside",

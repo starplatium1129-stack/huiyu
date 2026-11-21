@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "irina_tatami_room_blushing_confession",
-  "revision": 4,
+  "revision": 7,
   "sortOrder": 2223,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "irina_tatami_room_blushing_confession",
     "characterId": "irina_shidou",
@@ -14,11 +14,11 @@
     "description": "日式和室的静谧卧房内，微风拂过纸拉门。伊莉娜身着驹王学园女生制服端坐于榻榻米上，白衬衫纽扣微解，展露出优美光洁的肩颈线条。栗色双马尾搭在身前，少女双手合十紧扣着胸前的纯银十字架项链，脸颊与耳根透着熟透苹果般的红晕，琥珀色的清澈眸子带着羞怯却坚毅的决意，静静迎着前方的目光。",
     "recommendedSize": "832x1216",
     "location": "traditional Japanese bedroom with tatami and sliding doors",
-    "action": "sitting seiza on tatami mat, holding silver cross necklace with clasped praying hands, unbuttoned uniform shirt collar showing collarbone, chestnut twintails falling forward, intense innocent blush, earnest devoted gaze at viewer",
+    "action": "栗色双马尾搭在身前，少女双手合十紧扣着胸前的纯银十字架项链，脸颊与耳根透着熟透苹果般的红晕",
     "timeOfDay": "night",
     "lighting": "soft diffused amber ambient lantern light casting tender highlights",
     "camera": "medium_shot",
-    "mood": "earnest childhood sweetheart devotion, pure holy gap-moe warmth",
+    "mood": "神圣与反差",
     "promptProse": "Sitting gracefully on tatami in her Kuoh Academy uniform with unbuttoned shirt collar, Irina clutches a silver cross necklace with clasped hands. Her chestnut twintails frame bare collarbones as her face burns with an earnest, heartfelt blush.",
     "promptTokens": [
       "1girl",

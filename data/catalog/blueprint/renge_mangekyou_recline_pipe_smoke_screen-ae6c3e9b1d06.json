@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_mangekyou_recline_pipe_smoke_screen",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2587,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "renge_mangekyou_recline_pipe_smoke_screen",
     "title": "莲华 · 屏风红榻前的青烟万华",
@@ -12,7 +12,7 @@
     "outfitId": "vermilion_mangekyou_kimono",
     "description": "幽暗古朴的和室榻榻米深处，金泥彩绘屏风散发着微光。莲华慵懒侧卧在深绯丝绒软垫上，修长指尖执着烟斗吐出缭绕青烟，万华镜在她膝前流转着奇诡光斑。",
     "location": "dim traditional Japanese room with antique painted folding screens and velvet zabuton floor cushions",
-    "action": "reclining gracefully on side, holding an ornate long kiseru smoking pipe with curling smoke, mysterious alluring gaze toward viewer",
+    "action": "慵懒侧卧在深绯丝绒软垫上，修长指尖执着烟斗吐出缭绕青烟，万华镜在她膝前流转着奇诡光斑",
     "timeOfDay": "夜晚",
     "lighting": "屏风微光与烛台纸灯笼暖影",
     "camera": "wide shot, landscape composition",

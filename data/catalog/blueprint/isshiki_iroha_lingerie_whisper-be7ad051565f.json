@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "isshiki_iroha_lingerie_whisper",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3318,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-06T04:52:36.886Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "isshiki_iroha_lingerie_whisper",
     "characterId": "isshiki_iroha",
-    "title": "一色彩羽 · 假意嫌弃的“您该不会是在诱惑我吧”",
+    "title": "一色彩羽 · 假意嫌弃的",
     "category": "私密内衣",
     "action": "坐在地毯上两膝并拢，手里拿着一罐草莓牛奶，歪头露出经典的狡黠嫌弃脸，眼神却满是撩人与期待",
     "location": "总武高学生会值班室客宿沙发羊毛地毯上",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_mansion_fireplace_knit_wine",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2679,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aozaki_aoko_mansion_fireplace_knit_wine",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "久远寺洋馆静谧的冬夜，壁炉中的柴火静静燃烧着，橙红的暖光驱散了山间寒意。青子换上了宽松柔软的浅驼色落肩毛衣，修长长腿盘坐在厚厚的波斯地毯上。她手端着高脚红酒杯，火光在她明艳的红发与光洁锁骨上跳跃。平日行事雷厉风行的第五魔法使，此刻目光温润如水，流露出极少示人的慵懒与柔情。",
     "recommendedSize": "832x1216",
     "location": "vintage European mansion parlor before a stone fireplace with Persian rug",
-    "action": "sitting on Persian rug holding wine glass before fireplace, off-shoulder knit sweater revealing collarbone, firelight illuminating auburn hair, relaxed tender smile",
+    "action": "平日行事雷厉风行的第五魔法使，此刻目光温润如水，流露出极少示人的慵懒与柔情",
     "timeOfDay": "night",
     "lighting": "warm dancing firelight and rich amber shadows in dark wooden parlor",
     "camera": "medium_shot",
-    "mood": "mature comfortable intimacy, mesmerizing magical hearth warmth",
+    "mood": "浪漫温存",
     "promptProse": "Sitting gracefully on a plush rug before a stone fireplace in the Kuonji mansion, Aoko Aozaki wears an off-shoulder knit sweater. Warm firelight dances across her auburn hair and bare collarbones as she sips wine with fond, relaxed eyes.",
     "promptTokens": [
       "red_hair",

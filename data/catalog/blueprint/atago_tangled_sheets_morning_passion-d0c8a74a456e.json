@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_tangled_sheets_morning_passion",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2159,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "atago_tangled_sheets_morning_passion",
     "characterId": "atago_azur",
@@ -14,11 +14,11 @@
     "description": "假日清晨明亮的阳光洒在纯白床单上，黑发如墨缎般在枕间铺散。爱宕俯身趴在被褥上，雪白双肩与锁骨在晨光中泛着温润的珍珠色泽。犬耳兴奋地轻轻翘起，眼角泛着幸福的动人红晕，她双手托腮，向你展露出毫无保留、令人彻底融化的甜美笑容。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched morning bedroom with soft white linen",
-    "action": "lying on stomach amidst white rumpled sheets, long black hair spread across pillow, bare shoulders, dog ears perked happily, hands under chin, radiant blushing smile",
+    "action": "俯身趴在凌乱被褥上双手托腮，犬耳翘起，甜美微笑",
     "timeOfDay": "morning",
     "lighting": "brilliant morning sunbeams filling the bedroom with warm golden light",
     "camera": "medium_shot",
-    "mood": "blissful sunny romance, pure intimate joy",
+    "mood": "温存与神圣",
     "promptProse": "Lying on her stomach amidst white rumpled sheets in golden morning sunlight, Atago rests her chin on her hands. Her black dog ears perk cheerfully as her black hair spreads across the pillows with a radiant, loving smile.",
     "promptTokens": [
       "1girl",

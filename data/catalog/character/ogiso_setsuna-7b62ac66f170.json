@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ogiso_setsuna",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 254,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "ogiso_setsuna",
     "profile": {
@@ -60,7 +60,7 @@
       "speech": "这首歌我还想再练一遍。你要是有空，就坐下来听听吧。",
       "voice": "这首歌我还想再练一遍。你要是有空，就坐下来听听吧。",
       "traits": [
-        "ogiso_setsuna",
+        "ogiso setsuna",
         "brown_hair",
         "long_hair",
         "brown_eyes",
@@ -85,20 +85,20 @@
       "identityTokens": [
         "1girl",
         "solo",
-        "ogiso_setsuna",
+        "ogiso setsuna",
         "brown_hair",
         "long_hair",
         "brown_eyes",
         "two_side_up"
       ],
       "characterTokens": [
-        "ogiso_setsuna"
+        "ogiso setsuna"
       ],
       "copyrightTokens": [
         "white_album_2"
       ],
       "exactTokens": [
-        "ogiso_setsuna"
+        "ogiso setsuna"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

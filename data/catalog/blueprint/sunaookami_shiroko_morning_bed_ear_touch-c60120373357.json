@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_morning_bed_ear_touch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2678,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sunaookami_shiroko_morning_bed_ear_touch",
     "characterId": "sunaookami_shiroko",
@@ -14,11 +14,11 @@
     "description": "晨光穿透旧窗帘洒在阿拜多斯的宿舍单人床上。白子侧卧在纯白被褥间，修长白皙的双腿微微蜷缩在薄被里。当被温热的指尖轻抚过头顶敏锐的狼耳尖端时，少女的双颊骤然泛起一层可爱的绯红，狼耳因敏感而软软地伏下，眼眸泛着迷蒙水汽，展露出平素难得一见的温驯与依赖。",
     "recommendedSize": "832x1216",
     "location": "sun-dappled cozy bedroom in early morning silence",
-    "action": "lying on side in bed in light blue camisole, wolf ears flattened adorably with blush, cheeks flushed pink, blue eyes looking up with sweet docile vulnerability",
+    "action": "当被温热的指尖轻抚过头顶敏锐的狼耳尖端时，少女的双颊骤然泛起一层可爱的绯红",
     "timeOfDay": "morning",
     "lighting": "warm gentle morning sunbeams reflecting off white bedsheets",
     "camera": "medium_shot",
-    "mood": "heart-fluttering docile sweetness, rare intimate vulnerability",
+    "mood": "温存与动情",
     "promptProse": "Lying curled on a sunlit bed in a light cotton camisole, Shiroko blushes softly as her wolf ears flatten in sweet surrender. Her crystal blue eyes gaze up with endearing, unguarded affection in morning warmth.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "inaba_meguru",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 189,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "inaba_meguru",
     "profile": {
@@ -408,20 +408,20 @@
       ],
       "identityProse": "Adult Inaba Meguru from Sabbat of the Witch. Coral-orange hair in a long side ponytail and pink eyes.",
       "identityTokens": [
-        "inaba_meguru",
+        "inaba meguru",
         "orange_hair",
         "long_hair",
         "side_ponytail",
         "pink_eyes"
       ],
       "characterTokens": [
-        "inaba_meguru"
+        "inaba meguru"
       ],
       "copyrightTokens": [
         "sanoba_witch"
       ],
       "exactTokens": [
-        "inaba_meguru"
+        "inaba meguru"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

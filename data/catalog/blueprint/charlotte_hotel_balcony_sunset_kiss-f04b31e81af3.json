@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_hotel_balcony_sunset_kiss",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2182,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "charlotte_hotel_balcony_sunset_kiss",
     "characterId": "charlotte_dunois",
@@ -14,11 +14,11 @@
     "description": "夏日海滨度假酒店的高层阳台，金粉色的落日余晖洒满海面。夏洛特身穿一袭轻盈的蜜桃粉真丝细吊带裙，海风拂动她柔顺的金发与薄透裙摆。她单手轻抚被风吹乱的发丝，另一只手按在被风吹拂的胸前领口，在晚霞的亲吻下羞涩微笑着看向你，宛如一朵娇艳绽放的法兰西玫瑰。",
     "recommendedSize": "832x1216",
     "location": "private resort hotel balcony overlooking sea at sunset",
-    "action": "standing on resort balcony at sunset, peach silk slip dress fluttering in sea breeze, one hand fixing blonde hair, glowing sunset light on bare shoulders, sweet blushing smile",
+    "action": "身穿粉色吊带裙倚在露台边，海风拂动裙摆与金发，轻抚发丝侧首凝望",
     "timeOfDay": "sunset",
     "lighting": "vivid peach and gold sunset sky illuminating ocean and balcony",
     "camera": "cowboy_shot",
-    "mood": "golden hour romance, breathtaking tender femininity",
+    "mood": "浪漫温存",
     "promptProse": "Standing on a beach resort balcony as golden sunset colors the sky, Charlotte wears a peach silk slip dress fluttering in the breeze. She smiles shyly as evening warmth catches her bare shoulders and golden hair.",
     "promptTokens": [
       "1girl",

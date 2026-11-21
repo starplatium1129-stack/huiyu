@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shokuhou_misaki",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 12,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shokuhou_misaki",
     "profile": {
@@ -338,13 +338,13 @@
       "displayName": "食蜂操祈",
       "exactPrefixes": [],
       "exactTokens": [
-        "shokuhou_misaki"
+        "shokuhou misaki"
       ],
       "franchise": "A Certain Scientific Railgun",
       "id": "shokuhou_misaki",
       "identityProse": "Shokuhou Misaki from A Certain Scientific Railgun, with very long honey-blonde hair and yellow-brown eyes with star-shaped pupils.",
       "identityTokens": [
-        "shokuhou_misaki",
+        "shokuhou misaki",
         "toaru kagaku no railgun",
         "1girl",
         "solo",
@@ -374,7 +374,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "shokuhou_misaki"
+        "shokuhou misaki"
       ],
       "copyrightTokens": [
         "toaru kagaku no railgun"

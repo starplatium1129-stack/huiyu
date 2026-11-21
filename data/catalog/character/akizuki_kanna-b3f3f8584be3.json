@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "akizuki_kanna",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 140,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "akizuki_kanna",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "YUZUSOFT",
       "speech": "今天也慢慢来，咖啡很快就好。",
       "traits": [
-        "akizuki_kanna",
+        "akizuki kanna",
         "cafe_stella_to_shinigami_no_chou",
         "white_hair",
         "very_long_hair",
@@ -315,13 +315,13 @@
       "displayName": "明月栞那",
       "exactPrefixes": [],
       "exactTokens": [
-        "akizuki_kanna"
+        "akizuki kanna"
       ],
       "franchise": "Cafe Stella and the Reapers' Butterflies",
       "id": "akizuki_kanna",
       "identityProse": "Kanna Akizuki from Cafe Stella and the Reapers' Butterflies, with very long white hair in a side ponytail, a hair ribbon, ahoge and pink eyes.",
       "identityTokens": [
-        "akizuki_kanna",
+        "akizuki kanna",
         "cafe_stella_to_shinigami_no_chou",
         "white_hair",
         "very_long_hair",
@@ -356,7 +356,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "akizuki_kanna"
+        "akizuki kanna"
       ],
       "copyrightTokens": [
         "cafe_stella_to_shinigami_no_chou"

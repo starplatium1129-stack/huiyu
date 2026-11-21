@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_cabana_sunbed_straddle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2164,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "st_louis_cabana_sunbed_straddle",
     "characterId": "st_louis_azur",
@@ -14,11 +14,11 @@
     "description": "私人海滩木屋的白色遮阳卧榻上，阳光与海浪波光粼粼。圣路易斯斜倚在柔软的纯白靠垫间，身着大胆而精致的落日渐变比基尼，微湿的冰蓝长发垂在饱满胸口。她单手将墨镜推至头顶，眼眸中波光荡漾，以毫无拘束的自信身姿展露着无可挑剔的黄金比例身段。",
     "recommendedSize": "832x1216",
     "location": "secluded luxury beach resort cabana in late afternoon",
-    "action": "reclining on sunbed inside luxury beach cabana, sunset gradient bikini, sunglasses pushed up onto blue hair, wet skin glistening, confident captivating gaze",
+    "action": "斜倚在柔软的纯白靠垫间，身着大胆而精致的落日渐变比基尼",
     "timeOfDay": "sunset",
     "lighting": "dazzling tropical daylight reflected off blue water with soft cloth canopy shade",
     "camera": "full_body",
-    "mood": "sun-soaked tropical glamour, irresistible confident charm",
+    "mood": "明媚自信",
     "promptProse": "Reclining luxuriously on a sunbed in a private beach cabana, St. Louis wears a vibrant sunset bikini. Sunbeams filter through canvas sails as her wet blue hair cascades over golden, dewy skin.",
     "promptTokens": [
       "1girl",

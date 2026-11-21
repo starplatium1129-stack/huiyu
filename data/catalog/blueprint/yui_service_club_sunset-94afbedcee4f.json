@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_service_club_sunset",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 348,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yui_service_club_sunset",
     "characterId": "yuigahama_yui",
@@ -42,7 +42,7 @@
     "timeOfDay": "evening",
     "lighting": "golden_hour",
     "camera": "medium_portrait",
-    "mood": "warm",
+    "mood": "温存暖意",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic",

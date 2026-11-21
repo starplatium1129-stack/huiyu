@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ayase_aragaki",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 235,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "ayase_aragaki",
     "profile": {
@@ -106,16 +106,16 @@
         "ayase aragaki"
       ],
       "exactTokens": [
-        "ayase_aragaki"
+        "ayase aragaki"
       ],
       "characterTokens": [
-        "ayase_aragaki"
+        "ayase aragaki"
       ],
       "copyrightTokens": [
         "ore_no_imouto_ga_konna_ni_kawaii_wake_ga_nai"
       ],
       "identityTokens": [
-        "ayase_aragaki",
+        "ayase aragaki",
         "1girl",
         "solo",
         "black_hair",

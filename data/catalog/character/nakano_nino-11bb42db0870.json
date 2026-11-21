@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_nino",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 179,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "nakano_nino",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "别误会了，我可不是为了讨好你才做这些的！……不过，本小姐亲手做的蛋糕要是敢剩下一口，我可绝对不会原谅你哦♪",
       "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
       "traits": [
-        "nakano_nino",
+        "nakano nino",
         "1girl",
         "solo",
         "pink_hair",
@@ -334,7 +334,7 @@
       ],
       "identityProse": "Adult Nakano Nino from The Quintessential Quintuplets, a confident, stylish, and passionately assertive girl with waist-length vibrant pink hair tied in distinctive twin tails with black-and-purple butterfly ribbons, sharp captivating aqua-blue eyes, and a charming tsundere aura.",
       "identityTokens": [
-        "nakano_nino",
+        "nakano nino",
         "1girl",
         "solo",
         "pink_hair",
@@ -345,7 +345,7 @@
         "5-toubun_no_hanayome"
       ],
       "exactTokens": [
-        "nakano_nino"
+        "nakano nino"
       ],
       "exactPrefixes": [
         "nino_"
@@ -381,7 +381,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "nakano_nino"
+        "nakano nino"
       ],
       "copyrightTokens": [
         "5-toubun_no_hanayome"

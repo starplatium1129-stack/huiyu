@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chisa_wuwa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 312,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "chisa_wuwa",
     "profile": {
@@ -37,7 +37,7 @@
       "likes": [],
       "speech": "昨天那段频率，我在笔记上标出来了。一起听一遍？",
       "traits": [
-        "chisa_(wuthering_waves)",
+        "chisa (wuthering waves)",
         "wuthering_waves",
         "black hair",
         "long hair",
@@ -112,7 +112,7 @@
       ],
       "identityProse": "Chisa from Wuthering Waves. Long black hair with blunt bangs and red eyes.",
       "identityTokens": [
-        "chisa_(wuthering_waves)",
+        "chisa (wuthering waves)",
         "wuthering_waves",
         "black hair",
         "long hair",
@@ -120,13 +120,13 @@
         "red eyes"
       ],
       "characterTokens": [
-        "chisa_(wuthering_waves)"
+        "chisa (wuthering waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"
       ],
       "exactTokens": [
-        "chisa_(wuthering_waves)"
+        "chisa (wuthering waves)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

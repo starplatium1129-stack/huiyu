@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "elfaria_alvis_serfort",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 152,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "elfaria_alvis_serfort",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Wistoria: Wand and Sword",
       "speech": "「威尔……我一直在这里等着你。不管世人如何评价，你的剑一定会斩开常理，来到我的身边。」",
       "traits": [
-        "elfaria_alvis_serfort",
+        "elfaria alvis serfort",
         "tsue_to_tsurugi_no_wistoria",
         "blue_hair",
         "very_long_hair",
@@ -193,7 +193,7 @@
       ],
       "identityProse": "Elfaria Alvis Serfort from Wistoria: Wand and Sword, with very long blue hair, long sidelocks, blue eyes and pale lashes.",
       "identityTokens": [
-        "elfaria_alvis_serfort",
+        "elfaria alvis serfort",
         "tsue_to_tsurugi_no_wistoria",
         "blue_hair",
         "very_long_hair",
@@ -202,7 +202,7 @@
         "colored_eyelashes"
       ],
       "exactTokens": [
-        "elfaria_alvis_serfort"
+        "elfaria alvis serfort"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -231,7 +231,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "elfaria_alvis_serfort"
+        "elfaria alvis serfort"
       ],
       "copyrightTokens": [
         "tsue_to_tsurugi_no_wistoria"

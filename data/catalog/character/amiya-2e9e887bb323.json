@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "amiya",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 193,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "amiya",
     "profile": {
@@ -1203,20 +1203,20 @@
       ],
       "identityProse": "Adult Amiya from Arknights. Long brown hair, upright rabbit ears, and blue eyes.",
       "identityTokens": [
-        "amiya_(arknights)",
+        "amiya (arknights)",
         "brown_hair",
         "long_hair",
         "blue_eyes",
         "rabbit_ears"
       ],
       "characterTokens": [
-        "amiya_(arknights)"
+        "amiya (arknights)"
       ],
       "copyrightTokens": [
         "arknights"
       ],
       "exactTokens": [
-        "amiya_(arknights)"
+        "amiya (arknights)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

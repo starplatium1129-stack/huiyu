@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_tatami_room_trembling_skirt_lift",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2265,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroneko_tatami_room_trembling_skirt_lift",
     "characterId": "kuroneko",
@@ -14,11 +14,11 @@
     "description": "千叶老式和室的静谧卧房内，柔和的夕照穿透障子纸门。五更琉璃身穿繁复典雅的暗夜黑蔷薇哥特萝莉长裙，端跪在榻榻米上。精致的黑蕾丝领口衬托出雪白锁骨，修长双腿包裹在黑色蕾丝过膝袜中。少女十指轻攥着黑裙边角，微咬下唇，姬发式黑发遮掩着滚烫泛红的面颊，平日倔强中二的表象融化为真挚动人的少女羞怯。",
     "recommendedSize": "832x1216",
     "location": "quiet traditional Japanese bedroom with sliding paper screens",
-    "action": "kneeling on tatami mat, Gothic lolita black dress with intricate lace trim, holding dress hem with delicate trembling fingers, black lace thighhighs, cross necklace, black hime cut hair, blushing intensely, biting lower lip with earnest romantic gaze",
+    "action": "跪在榻榻米上轻提哥特裙摆，满脸通红紧咬嘴唇，羞得别过头去",
     "timeOfDay": "sunset",
     "lighting": "warm soft afternoon light filtering through paper shoji screens",
     "camera": "cowboy_shot",
-    "mood": "intensely bashful gap-moe, earnest romantic vulnerability",
+    "mood": "温存与动情",
     "promptProse": "Kneeling on tatami in her intricate black Gothic lolita dress with cross necklace, Kuroneko holds her skirt hem with trembling fingers. Her hime cut frames deeply blushing cheeks as she bites her lip with shy, earnest devotion.",
     "promptTokens": [
       "1girl",

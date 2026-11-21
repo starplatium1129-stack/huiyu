@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "elaina_r18_black_thighhighs",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 389,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "elaina_r18_black_thighhighs",
     "title": "伊雷娜 · 黑丝的旅夜",
@@ -46,7 +46,9 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples"
+    ],
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "nsfw_nude",

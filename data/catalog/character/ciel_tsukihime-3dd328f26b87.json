@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ciel_tsukihime",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 104,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "ciel_tsukihime",
     "profile": {
@@ -371,7 +371,7 @@
       ],
       "identityProse": "Ciel from Tsukihime, with a chin-length navy-blue bob and dark sapphire eyes.",
       "identityTokens": [
-        "ciel_(tsukihime)",
+        "ciel (tsukihime)",
         "tsukihime",
         "blue_hair",
         "short_hair",
@@ -379,7 +379,7 @@
         "blue_eyes"
       ],
       "exactTokens": [
-        "ciel_(tsukihime)"
+        "ciel (tsukihime)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -415,7 +415,7 @@
         ]
       },
       "characterTokens": [
-        "ciel_(tsukihime)"
+        "ciel (tsukihime)"
       ],
       "copyrightTokens": [
         "tsukihime"

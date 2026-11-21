@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_comms",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2442,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:00:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_comms",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "任务支援",
     "description": "联络短暂中断后，七海停在走廊里检查耳机。听到信号重新接通，她才放下另一只手中的记录本。",
     "location": "building corridor",
-    "action": "checking her earpiece while holding a notebook",
+    "action": "听到信号重新接通，她才放下另一只手中的记录本",
     "timeOfDay": "night",
     "lighting": "corridor light",
     "camera": "cowboy shot",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ishtar_christmas_underworld_visit",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 257,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ishtar_christmas_underworld_visit",
-    "title": "伊什塔尔 · 冥界圣诞的来访·「姐姐的东西，本女神先看看」",
+    "title": "伊什塔尔 · 冥界圣诞的来访",
     "category": "专属羁绊",
     "characterId": "ishtar_fate",
     "description": "以「慰问妹妹」之名，伊什塔尔拎着一大袋圣诞礼物踏进了冥界的雪原。她把包装精美的盒子塞到你手里，红瞳别向一边——「给、给你的。人类世界流行这个……本女神只是入乡随俗！啊，艾蕾要是问起来，就说是一半的一半，分她的那半另算！」",

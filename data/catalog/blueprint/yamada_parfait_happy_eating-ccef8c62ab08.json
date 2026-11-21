@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "yamada_parfait_happy_eating",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1494,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yamada_parfait_happy_eating",
-    "title": "山田杏奈 · 甜品店特盛巨无霸芭菲的幸福笑颜·「市川……这一大口草莓，给你吃！」",
+    "title": "山田杏奈 · 甜品店特盛巨无霸芭菲的幸福笑颜",
     "category": "街头约会",
     "characterId": "yamada_anna",
     "outfitId": "model_casual_oversized",

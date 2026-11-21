@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_morning_kitchen_shirt_breakfast",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2249,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "shizuka_morning_kitchen_shirt_breakfast",
     "characterId": "shizuka_hiratsuka",
@@ -14,11 +14,11 @@
     "description": "晨光明媚的公寓厨房内，煎锅散发着焦香。平冢静身穿舒适随性的大号灰白卫衣与居家短裤，长发随意盘成慵懒的早晨发髻。宽大领口滑落露出一侧光洁的肩膀与锁骨，修长双腿在清晨光影中匀称修美。她一手端着温热的黑咖啡，一手握着锅铲转过身来，唇角含着沉稳而极具包容力的人妻微笑。",
     "recommendedSize": "832x1216",
     "location": "bright sunlit apartment kitchen with steaming frying pan",
-    "action": "standing at stove in sunlit kitchen wearing oversized heather-grey sweatshirt falling off one shoulder, lounge shorts, bare legs, hair pinned in casual morning bun, holding coffee mug, affectionate mature smile looking at viewer",
+    "action": "身穿舒适随性的大号灰白卫衣与居家短裤",
     "timeOfDay": "morning",
     "lighting": "bright morning sunlight pouring through kitchen window illuminating room",
     "camera": "medium_shot",
-    "mood": "tender domestic morning warmth, mature loving companionship",
+    "mood": "温存与治愈",
     "promptProse": "Standing in a sunlit kitchen in an oversized grey sweatshirt slipping off one shoulder and comfy shorts, Shizuka holds a steaming coffee mug. Her hair is loosely pinned up as she smiles with warm, mature affection.",
     "promptTokens": [
       "1girl",

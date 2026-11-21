@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kotegawa_yui",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 95,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kotegawa_yui",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "结城梨斗！你、你又在走廊上做出这种不知羞耻的事情！身为风纪委员，我绝对不会原谅你的……不知羞耻！",
       "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
       "traits": [
-        "kotegawa_yui",
+        "kotegawa yui",
         "1girl",
         "solo",
         "black_hair",
@@ -574,13 +574,13 @@
         "yui_"
       ],
       "exactTokens": [
-        "kotegawa_yui"
+        "kotegawa yui"
       ],
       "franchise": "To LOVE-Ru",
       "id": "kotegawa_yui",
       "identityProse": "Kotegawa Yui from To LOVE-Ru, with very long straight black hair, a thin white hairband and golden-brown eyes.",
       "identityTokens": [
-        "kotegawa_yui",
+        "kotegawa yui",
         "1girl",
         "solo",
         "black_hair",
@@ -607,7 +607,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "kotegawa_yui",
+        "kotegawa yui",
         "Yui Kotegawa"
       ],
       "copyrightTokens": [

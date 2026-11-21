@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "krista_lenz_r18_queen_chamber",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 998,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "落地窗台前立姿伸手回眸微笑",
     "adult": true,
@@ -24,7 +24,10 @@
     "mood": "圣洁依恋",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Historia looks back from the arched window, smiling and extending a hand toward the viewer. Morning light catches her blonde hair; the window recess and shaded floor recede into the palace chamber.",
     "promptTokens": [

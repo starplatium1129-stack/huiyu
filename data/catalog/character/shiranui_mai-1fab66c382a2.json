@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiranui_mai",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 158,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shiranui_mai",
     "profile": {
@@ -67,7 +67,7 @@
       "source": "Fatal Fury",
       "speech": "「不知火流忍术可不是光用来看的花架子！接招吧——安迪，今晚的便当我也准备好了哦！」",
       "traits": [
-        "shiranui_mai",
+        "shiranui mai",
         "fatal_fury",
         "brown_hair",
         "long_hair",
@@ -179,7 +179,7 @@
       ],
       "identityProse": "Mai Shiranui from Fatal Fury and The King of Fighters, with long brown hair in a high ponytail and brown eyes.",
       "identityTokens": [
-        "shiranui_mai",
+        "shiranui mai",
         "fatal_fury",
         "brown_hair",
         "long_hair",
@@ -187,7 +187,7 @@
         "brown_eyes"
       ],
       "exactTokens": [
-        "shiranui_mai"
+        "shiranui mai"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -216,7 +216,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "shiranui_mai",
+        "shiranui mai",
         "Mai Shiranui"
       ],
       "copyrightTokens": [

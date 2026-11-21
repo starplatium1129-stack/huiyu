@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "togakushi_touko_intimate_rainy_towel_dry",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2006,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T14:03:36.453458500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "togakushi_touko",
     "outfitId": "quiet_silk_robe",
@@ -14,11 +14,11 @@
     "description": "暴雨夜归后，玄关的暖灯洒下温馨橙光。憧子学姐褪去湿漉漉的外套，仅穿着柔软的真丝内搭。她拿着干毛巾耐心地为对方擦拭发梢的雨珠，两人呼吸相闻间，她的动作渐渐慢了下来，目光在对方唇瓣上悄然停驻。",
     "recommendedSize": "832x1216",
     "location": "warm residential entryway",
-    "action": "drying hair with towel, close proximity, gaze lingering on lips",
+    "action": "她拿着干毛巾耐心地为对方擦拭发梢的雨珠，两人呼吸相闻间，她的动作渐渐慢了下来",
     "timeOfDay": "night",
     "lighting": "warm welcoming amber entrance light",
     "camera": "close-up",
-    "mood": "tender lingering unspoken passion",
+    "mood": "温存与柔媚",
     "promptProse": "In the warm amber light of the apartment entryway during a rainstorm, Togakushi Touko gently dries the viewer's damp hair with a soft towel. Wearing a delicate silk robe, her breath falters as her gaze lingers lovingly on the viewer's lips in close proximity.",
     "promptTokens": [
       "togakushi_touko",

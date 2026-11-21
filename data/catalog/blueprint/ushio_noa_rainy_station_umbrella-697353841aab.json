@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_rainy_station_umbrella",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2089,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "ushio_noa_rainy_station_umbrella",
     "characterId": "ushio_noa",
@@ -14,11 +14,11 @@
     "description": "夜雨蒙蒙的学园轻轨月台，路灯在潮湿的水泥地面倒映出暖黄色的波光。诺亚身着优雅的米色风衣，长发被微风拂起。她撑着一把透明雨伞，将伞面偏向老师身侧，侧身仰望，紫罗兰眼眸在雨丝与暖光交织中泛着脉脉温情。",
     "recommendedSize": "832x1216",
     "location": "rainy train platform under warm streetlamps",
-    "action": "holding transparent umbrella tilted towards viewer, gentle romantic gaze",
+    "action": "她撑着一把透明雨伞，将伞面偏向老师身侧，侧身仰望，紫罗兰眼眸在雨丝与暖光交织中泛着脉脉温情",
     "timeOfDay": "night",
     "lighting": "golden streetlight reflection on wet rain-slick ground and umbrella",
     "camera": "cowboy_shot",
-    "mood": "tender and deeply romantic rainy night encounter",
+    "mood": "浪漫温存",
     "promptProse": "Under the golden glow of streetlights on a rainy train platform, Ushio Noa holds a clear umbrella tilted sideways in her beige trench coat, peering with deep, romantic affection.",
     "promptTokens": [
       "holding_umbrella",

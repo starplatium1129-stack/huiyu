@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_after_no_camera",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2499,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-07T12:45:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mitsukasa_ayase_after_no_camera",
     "characterId": "mitsukasa_ayase",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "回到家，绫濑把活动资料放在一边，靠着沙发长长地舒了口气。你问她今天累不累，她点点头，伸手把你拉到身边：“今晚不想当别人眼里的完美小姐。”",
     "location": "living room sofa",
-    "action": "reaching toward her partner from a sofa",
+    "action": "靠着沙发长长舒气，伸手拉对方到身边",
     "timeOfDay": "evening",
     "lighting": "warm lamplight",
     "camera": "medium shot",
@@ -32,7 +32,6 @@
       "medium shot"
     ],
     "animaCaption": "Her partner is just outside the frame.",
-    "characterId": "mitsukasa_ayase",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "typhon_arknights",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 165,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "typhon_arknights",
     "profile": {
@@ -60,7 +60,7 @@
       "bg_story": "萨米独行侠猎人，提丰是萨米部族在无尽冰原上孕育出的坚韧神射手。手持一把融入古老冰原巫术与源石机械的大型复合狙击重弓，对极地风雪与邪魔侵蚀具有极强的洞察力。因童年目睹故乡聚落遭遇邪魔风暴覆灭，年幼的提丰在严寒绝境中艰难求生，最终被麦哲伦与萨米守护者所救，由此成长为一名坚毅警惕的雪原猎手。在《探索者的银霜止境》冰原探索中，提丰协助麦哲伦与罗德岛先遣队抵御极北邪魔的扩散，用沉着冷静的箭矢在茫茫雪海中撕开生路。加入罗德岛后，她作为高台狙击核心活跃在最前沿，用猎人的朴实与敏锐守护着大地的边缘。",
       "source": "Hypergryph《明日方舟 / Arknights》",
       "traits": [
-        "typhon_(arknights)",
+        "typhon (arknights)",
         "1girl",
         "solo",
         "purple_hair",
@@ -1237,14 +1237,13 @@
       "displayName": "提丰",
       "exactPrefixes": [],
       "exactTokens": [
-        "typhon (arknights)",
-        "typhon_(arknights)"
+        "typhon (arknights)"
       ],
       "franchise": "Arknights",
       "id": "typhon_arknights",
       "identityProse": "Typhon from Arknights, a Sarkaz hunter with very long pale-lavender low twintails ending in drills, pink-magenta eyes and dark horns with metal ornaments.",
       "identityTokens": [
-        "typhon_(arknights)",
+        "typhon (arknights)",
         "1girl",
         "solo",
         "purple hair",
@@ -1273,7 +1272,6 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "typhon_(arknights)",
         "typhon (arknights)",
         "Typhon"
       ],

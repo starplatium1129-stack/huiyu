@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_coastal_road_cycling",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2124,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sunaookami_shiroko_coastal_road_cycling",
     "characterId": "sunaookami_shiroko",
@@ -14,11 +14,11 @@
     "description": "夏日拂晓的沿海环岛公路，碧蓝的海浪拍打着礁石溅起洁白浪花。白子脚踩专业公路自行车与老师并驾齐驱，贴身骑行服勾勒出没有一丝赘肉的矫健修长身段。晨风拂动她银灰色的短发与灵动狼耳，她侧身望来，冰蓝色的眼眸中闪烁着清澈见底的纯粹喜悦。",
     "recommendedSize": "1216x832",
     "location": "sunlit coastal highway beside sparkling blue ocean",
-    "action": "riding road bicycle, pedaling forward, windblown wolf ears and short hair, refreshing smile",
+    "action": "晨风拂动她银灰色的短发与灵动狼耳，她侧身望来，冰蓝色的眼眸中闪烁着清澈见底的纯粹喜悦",
     "timeOfDay": "morning",
     "lighting": "brilliant morning sunshine reflecting off open ocean waters",
     "camera": "cowboy_shot",
-    "mood": "exhilarating athletic freedom, youthful breeze, and seaside joy",
+    "mood": "青春飞扬",
     "promptProse": "Pedaling swiftly along a sparkling coastal highway beside the ocean, Sunaookami Shiroko smiles with refreshing youth as morning sea breezes ruffle her wolf ears.",
     "promptTokens": [
       "bicycle",

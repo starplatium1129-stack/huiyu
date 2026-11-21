@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "maomao/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2430,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "maomao",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "翡翠百草 · 翠绿暗纹薄纱抹胸襦裙式寝衣",
+      "name": "翡翠百草 · 抹胸襦裙式寝衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

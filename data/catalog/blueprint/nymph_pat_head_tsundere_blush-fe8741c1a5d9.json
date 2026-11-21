@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_pat_head_tsundere_blush",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 2269,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "nymph_pat_head_tsundere_blush",
     "characterId": "nymph",
@@ -14,11 +14,11 @@
     "description": "落樱纷飞的河堤草坪上，当你伸手摸她的脑袋时，妮姆芙先是鼓起腮帮娇嗔着拍开你的手，下一秒却眼睫轻颤，把小脑袋主动蹭进你的掌心里，透明双翼轻轻扇动，展现无敌的反差萌。",
     "recommendedSize": "832x1216",
     "location": "grassy riverbank under shade of cherry blossom trees",
-    "action": "standing in front of partner, initially batting his hand away with a pouting blush before shyly leaning her forehead back into his palm with fluttering wings",
+    "action": "先是鼓起腮帮娇嗔着拍开你的手，下一秒却眼睫轻颤，把小脑袋主动蹭进你的掌心里",
     "timeOfDay": "afternoon",
     "lighting": "dappled sunlight filtering through spring blossom canopy",
     "camera": "close-up",
-    "mood": "pinnacle tsundere gap moe, adorable surrender, trembling emotional warmth",
+    "mood": "傲娇与反差",
     "promptProse": "Under blooming cherry blossoms on a riverbank, Nymph pouts and bats away a hand before shyly nuzzling her forehead into partner palm with fluttering wings.",
     "promptTokens": [
       "riverbank",

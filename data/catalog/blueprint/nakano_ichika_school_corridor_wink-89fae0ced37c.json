@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_school_corridor_wink",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1949,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "nakano_ichika_school_corridor_wink",
     "title": "中野一花 · 旭高校走廊的调侃眨眼",
@@ -13,11 +13,11 @@
     "description": "课间走廊微风穿过窗棂，一花轻倚着窗台护栏。她微微侧过头，眼眸弯成调皮的月牙，朝着迎面走来的少年俏皮眨眼，嘴角浮现出一抹从容戏谑却暗藏娇羞的微笑。",
     "recommendedSize": "832x1216",
     "location": "school corridor",
-    "action": "leaning against window, winking, smiling playfully",
+    "action": "她微微侧过头，眼眸弯成调皮的月牙，朝着迎面走来的少年俏皮眨眼",
     "timeOfDay": "day",
     "lighting": "bright sunlight through window",
     "camera": "medium_shot",
-    "mood": "playful and cheerful",
+    "mood": "俏皮灵动",
     "promptProse": "In a bright sunlit school hallway, Nakano Ichika leans comfortably against the windowpane with a yellow cardigan tied around her waist. She gives a playful wink and a teasing smile toward the viewer, her pink hair catching the afternoon glow.",
     "promptTokens": [
       "school_hallway",

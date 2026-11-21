@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_moonlit_rooftop_stiletto",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 804,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yor_moonlit_rooftop_stiletto",
     "characterId": "yor_forger",
@@ -41,7 +41,7 @@
     "timeOfDay": "night",
     "lighting": "moonlight",
     "camera": "medium_shot",
-    "mood": "tense",
+    "mood": "紧绷肃杀",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "iconic",

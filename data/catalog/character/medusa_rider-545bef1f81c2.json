@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medusa_rider",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 134,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "medusa_rider",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Fate",
       "speech": "这本书很安静，适合现在读。",
       "traits": [
-        "medusa_(fate)",
+        "medusa (fate)",
         "fate/stay_night",
         "purple_hair",
         "very_long_hair",
@@ -933,14 +933,14 @@
       ],
       "identityProse": "Medusa, Rider from Fate/stay night, with very long purple hair and violet eyes.",
       "identityTokens": [
-        "medusa_(fate)",
+        "medusa (fate)",
         "fate/stay_night",
         "purple_hair",
         "very_long_hair",
         "purple_eyes"
       ],
       "exactTokens": [
-        "medusa_(fate)"
+        "medusa (fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -969,7 +969,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "medusa_(fate)"
+        "medusa (fate)"
       ],
       "copyrightTokens": [
         "fate/stay_night"

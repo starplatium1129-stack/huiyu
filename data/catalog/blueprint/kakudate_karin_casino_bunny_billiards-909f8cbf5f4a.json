@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_casino_bunny_billiards",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2101,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kakudate_karin_casino_bunny_billiards",
     "characterId": "kakudate_karin",
@@ -14,11 +14,11 @@
     "description": "极尽奢华的游轮贵宾VIP厅内，绿色丝绒斯诺克桌球台在水晶吊灯下流光溢彩。花凛换上了引人瞩目的黑色高叉漆皮兔女郎连体衣，俯身压低重心架杆击球。小麦色健康紧致的背部与臀腿曲线毕露，金眸凝视着白球，散发出兼具危险特工与致命尤物的双重魅力。",
     "recommendedSize": "1216x832",
     "location": "luxury cruise VIP billiards lounge",
-    "action": "leaning low over green felt pool table, aiming cue stick, seductive athletic curve",
+    "action": "小麦色健康紧致的背部与臀腿曲线毕露，金眸凝视着白球，散发出兼具危险特工与致命尤物的双重魅力",
     "timeOfDay": "night",
     "lighting": "warm glamorous chandelier highlights on glossy black leather and smooth tanned skin",
     "camera": "cowboy_shot",
-    "mood": "intoxicating seduction and cool undercover confidence",
+    "mood": "冷艳从容",
     "promptProse": "Leaning over a green velvet pool table in a luxury VIP casino lounge, Kakudate Karin aims a billiards cue dressed in a sleek high-leg black bunny suit, her golden eyes blazing.",
     "promptTokens": [
       "pool_table",

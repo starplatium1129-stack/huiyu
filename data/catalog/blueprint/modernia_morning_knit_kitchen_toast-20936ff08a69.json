@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_morning_knit_kitchen_toast",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2700,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "modernia_morning_knit_kitchen_toast",
     "characterId": "modernia",
@@ -14,11 +14,11 @@
     "description": "阳光温暖的公寓厨房内，吐司面包在烤面包机中弹起。神罚穿着浅灰色的露肩罗纹针织短裙，长袖盖住大半手背。她双手捧着印着爱心的马克杯转过身，深红色的眼眸倒映着晨曦，嘴角泛着甜美满足的纯真微笑，像等待夸奖的初恋女友般向你小步跑来。",
     "recommendedSize": "832x1216",
     "location": "cozy modern kitchen with sunlit breakfast bar and pastel decor",
-    "action": "holding warm mug with both hands, off-shoulder grey knit sweater dress slipping slightly, turning with radiant pure smile, bright sunbeam on hair",
+    "action": "穿着浅灰色的露肩罗纹针织短裙，长袖盖住大半手背，双手捧着印着爱心的马克杯转过身",
     "timeOfDay": "morning",
     "lighting": "pure bright morning sunlight pouring through kitchen glass",
     "camera": "cowboy_shot",
-    "mood": "blissful domestic morning sweetness, heart-melting innocent devotion",
+    "mood": "神圣与治愈",
     "promptProse": "Standing in a sun-drenched modern kitchen, Modernia holds a steaming mug with both hands. Her off-shoulder grey knit dress slips softly over bare collarbones as she beams with radiant, innocent affection in the morning light.",
     "promptTokens": [
       "1girl",

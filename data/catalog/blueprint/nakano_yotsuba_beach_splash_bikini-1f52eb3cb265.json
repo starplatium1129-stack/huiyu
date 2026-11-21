@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_beach_splash_bikini",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1961,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_beach_splash_bikini",
     "title": "中野四叶 · 碧海晴空的踏浪水仗",
@@ -13,11 +13,11 @@
     "description": "盛夏海滨碧波荡漾，四叶赤足在蔚蓝浅滩中欢快踏浪。双手捧起晶莹的水花朝镜头泼来，天真无邪的欢笑声洒满整片海滩。",
     "recommendedSize": "832x1216",
     "location": "sunny turquoise beach",
-    "action": "splashing water at camera, splashing waves, joyful laughter",
+    "action": "双手捧起晶莹的水花朝镜头泼来，天真无邪的欢笑声洒满整片海滩",
     "timeOfDay": "day",
     "lighting": "dazzling midday sun, shimmering water reflections",
     "camera": "full_body",
-    "mood": "pure summery delight",
+    "mood": "神圣纯洁",
     "promptProse": "Splashing sparkling ocean water toward the viewer on a sunny tropical beach, Nakano Yotsuba beams with pure joy. She wears a mint-green sporty bikini with white piping, her green rabbit ribbon catching the sea breeze amid crystal droplets.",
     "promptTokens": [
       "beach",

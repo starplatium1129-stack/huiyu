@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_steamy_bath_wet_wings_intimacy",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2272,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nymph_steamy_bath_wet_wings_intimacy",
     "characterId": "nymph",
@@ -14,11 +14,11 @@
     "description": "热气升腾的浴室内飘荡着苹果香氛浴盐的味道。妮姆芙抱着双膝坐在宽大浴缸边缘，淡蓝色的双马尾发梢被温水浸湿贴在小巧白皙的肩头。身后的透明光翼因水汽折射出七彩微光，她双手护在胸前裹着的粉色小浴巾上，脸颊被蒸汽熏得如熟透的苹果，娇嗔又羞涩地转头注视着你。",
     "recommendedSize": "832x1216",
     "location": "steamy home cedar bathtub with swirling fragrant water",
-    "action": "sitting on edge of bathtub hugging knees, wrapped in small pink bath towel, wet blue twintails, holographic wings refracting iridescent steam, heavy blush, cute pouting glance",
+    "action": "抱着双膝坐在宽大浴缸边缘",
     "timeOfDay": "night",
     "lighting": "warm steamy bathroom light creating rainbow refractions on wet wings",
     "camera": "cowboy_shot",
-    "mood": "delicate fairy-like vulnerability, cute bashful sweetness",
+    "mood": "娇羞动情",
     "promptProse": "Perched on the edge of a steaming bathtub hugging her knees in a pink towel, Nymph blushes deeply. Her wet blue twintails glisten while her translucent wings refract soft rainbows through the rising vapor.",
     "promptTokens": [
       "1girl",

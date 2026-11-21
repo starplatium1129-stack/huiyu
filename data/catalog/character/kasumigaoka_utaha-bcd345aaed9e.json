@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kasumigaoka_utaha",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 109,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kasumigaoka_utaha",
     "profile": {
@@ -332,7 +332,7 @@
       ],
       "identityProse": "Kasumigaoka Utaha from Saenai Heroine no Sodatekata, a novelist with long black hair, blunt bangs and red eyes.",
       "identityTokens": [
-        "kasumigaoka_utaha",
+        "kasumigaoka utaha",
         "saenai_heroine_no_sodatekata",
         "1girl",
         "solo",
@@ -342,7 +342,7 @@
         "red_eyes"
       ],
       "exactTokens": [
-        "kasumigaoka_utaha"
+        "kasumigaoka utaha"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -370,7 +370,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "kasumigaoka_utaha",
+        "kasumigaoka utaha",
         "Utaha Kasumigaoka"
       ],
       "copyrightTokens": [

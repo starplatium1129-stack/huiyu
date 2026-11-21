@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_shadow_starlit_ruins_water_touch",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2559,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "aurora_shadow_starlit_ruins_water_touch",
     "title": "奥萝拉 · 星穹回廊的赤足戏水",
@@ -12,7 +12,7 @@
     "outfitId": "starlit_ruins_backless_gown",
     "description": "远古圣域悬浮星海的白石回廊中央，清澈水幕倒映着浩瀚星云。身穿露背天衣的奥萝拉赤足踏入浅水，回眸伸出纤细手指，妩媚又落寞。",
     "location": "floating ancient sanctuary colonnade over a vast cosmic nebula reflecting pool",
-    "action": "walking barefoot in shallow reflective water, glancing over bare shoulder while beckoning with a slender finger, mesmerizing enigmatic smile",
+    "action": "赤足踏入浅水，回眸伸出纤细手指，妩媚又落寞",
     "timeOfDay": "夜晚",
     "lighting": "星穹神殿漫天星云幽紫清辉与水面倒影粼粼波光",
     "camera": "wide shot, landscape composition",

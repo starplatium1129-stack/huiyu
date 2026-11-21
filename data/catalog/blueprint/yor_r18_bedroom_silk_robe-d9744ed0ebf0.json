@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_bedroom_silk_robe",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 817,
   "createdAt": null,
-  "updatedAt": "2026-11-03T08:00:03.318398+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yor_r18_bedroom_silk_robe",
     "title": "约尔·福杰 · 浴后睡袍",
@@ -18,7 +18,7 @@
     "timeOfDay": "night",
     "lighting": "卧房烛光在真丝睡袍边缘形成柔和暖亮部",
     "camera": "side view, medium shot, horizontal framing",
-    "mood": "sensual",
+    "mood": "柔媚诱人",
     "sceneTags": [
       "bedroom",
       "silk_robe",

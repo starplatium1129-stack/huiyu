@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_cafe_parfait_delight",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1973,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_itsuki_cafe_parfait_delight",
     "title": "中野五月 · 甜品咖啡厅的巨型芭菲",
@@ -13,11 +13,11 @@
     "description": "华丽典雅的法式甜品店内，巨大的草莓特制芭菲端上木桌。五月双手合十在胸前、双眼闪闪发亮地凝视着甜点，吃货少女的幸福感溢于言表。",
     "recommendedSize": "832x1216",
     "location": "vintage cafe booth table",
-    "action": "hands together before meal, starry eyes, huge dessert parfait, overjoyed",
+    "action": "五月双手合十在胸前、双眼闪闪发亮地凝视着甜点，吃货少女的幸福感溢于言表",
     "timeOfDay": "day",
     "lighting": "warm wooden cafe chandeliers",
     "camera": "medium_shot",
-    "mood": "unadulterated foodie bliss",
+    "mood": "明媚欢欣",
     "promptProse": "Seated in a cozy wooden cafe booth, Nakano Itsuki clasps her hands together with ecstatic sparkling eyes before a massive strawberry and cream dessert parfait. Her ahoge wiggles with sheer excitement, completely breaking her usual dignified composure.",
     "promptTokens": [
       "cafe",

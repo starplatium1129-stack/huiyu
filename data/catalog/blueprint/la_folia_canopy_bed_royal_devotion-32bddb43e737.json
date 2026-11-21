@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_canopy_bed_royal_devotion",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2201,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "la_folia_canopy_bed_royal_devotion",
     "characterId": "la_folia_rihavein",
@@ -14,11 +14,11 @@
     "description": "阿尔迪基亚王宫深处的华丽寝殿内，重重叠叠的金色丝绸纱幔在晚风中低语。拉·芙利亚侧倚在雕花大床深处，一袭轻柔如烟的浅金白纱裙半露香肩。银发铺满了刺绣枕席，她单手轻点红唇，祖母绿眼眸中敛去了所有王家的伪装与计谋，只余下纯粹而坚定的心仪之情。",
     "recommendedSize": "832x1216",
     "location": "ancient royal castle bedchamber with gossamer silk canopy",
-    "action": "reclining amidst gold embroidered silk cushions under royal canopy, sheer white silk gown, long silver hair splayed, green eyes radiant with intimate devotion",
+    "action": "侧倚在雕花大床深处，金纱半露香肩，单手轻点红唇含情脉脉",
     "timeOfDay": "night",
     "lighting": "golden candelabra glow illuminating translucent royal canopy drapes",
     "camera": "medium_shot",
-    "mood": "sumptuous palace romance, total sovereign surrender of the heart",
+    "mood": "温存与端庄",
     "promptProse": "Reclining amidst luxurious silk bedding beneath a golden canopy in her royal chamber, La Folia rests in a delicate sheer nightgown. Her silver hair flows across embroidered pillows as she smiles with serene royal devotion.",
     "promptTokens": [
       "1girl",

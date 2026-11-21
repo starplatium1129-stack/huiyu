@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "scathach_summer_beach_black_bikini",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 246,
   "createdAt": null,
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "scathach_summer_beach_black_bikini",
-    "title": "斯卡哈 · 夏海黑纱的女王度假·「晒黑了？无妨，反正很快会复原」",
+    "title": "斯卡哈 · 夏海黑纱的女王度假",
     "category": "海滨度假",
     "characterId": "scathach_fate",
     "description": "黑色细带比基尼勾勒出斯卡哈经年武艺淬炼出的完美身段，紫色的薄纱罗裙在腰际松松打结。她斜倚在沙滩遮阳伞下，长发铺满白沙如夜色倾泻，指间摇晃着一杯冰镇果汁——「不死者连晒伤都不会有……不过，你若想替我补涂防晒，倒也不必客气。」",

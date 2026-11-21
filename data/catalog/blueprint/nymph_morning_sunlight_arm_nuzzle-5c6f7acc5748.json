@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nymph_morning_sunlight_arm_nuzzle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2273,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nymph_morning_sunlight_arm_nuzzle",
     "characterId": "nymph",
@@ -14,11 +14,11 @@
     "description": "清晨的薄风拂过阳台的浅蓝窗纱，妮姆芙侧卧在铺满柔软靠垫的地毯上。宽松的浅蓝棉质睡衫滑落一边肩头，小巧精致的锁骨与雪肌分外惹人怜爱。透明羽翼如披风般半掩在身后，她单手抱着最心爱的草莓零食袋，另一只手揉着微睡的眼睛，嘴角泛起初醒时的香甜微笑，像一只终于找到避风港的精灵鸟儿。",
     "recommendedSize": "832x1216",
     "location": "bright peaceful morning bedroom filled with sunshine",
-    "action": "lying on plush rug in morning sunlight, oversized pastel blue nightshirt slipping off shoulder, hugging snack bag, holographic wings resting on floor, sleepy adorable smile",
+    "action": "侧卧在铺满柔软靠垫的地毯上，宽松的浅蓝棉质睡衫滑落一边肩头",
     "timeOfDay": "morning",
     "lighting": "pure morning sunbeams illuminating floating dust motes and soft blue hair",
     "camera": "medium_shot",
-    "mood": "precious peaceful shelter, heartwarming innocent morning joy",
+    "mood": "宁静与治愈",
     "promptProse": "Lounging on a fluffy carpet in warm morning sunbeams, Nymph wears an oversized pastel nightshirt slipping off one bare shoulder. Her transparent wings rest softly as she cuddles a snack pillow with an adorable sleepy smile.",
     "promptTokens": [
       "1girl",

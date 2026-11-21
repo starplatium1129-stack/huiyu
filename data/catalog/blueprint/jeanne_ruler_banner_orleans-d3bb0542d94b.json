@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "jeanne_ruler_banner_orleans",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 231,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "jeanne_ruler_banner_orleans",
-    "title": "圣女贞德 · 奥尔良山岗的圣旗展开·「吾名贞德，此地由吾守护」",
+    "title": "圣女贞德 · 奥尔良山岗的圣旗展开",
     "category": "战斗高光",
     "characterId": "jeanne_d_arc",
     "description": "狂风撕扯着战云，身着白银胸铠Ruler圣装的贞德立于山岗之巅。她双手高举神圣战旗吾主在此（Luminosité Éternelle），白披风在罡风中猎猎翻卷，旗面的圣辉劈开铅灰色的天空。金色的长辫与旗杆成一线绷直，紫蓝色的眼眸里没有半分动摇——圣女的祈祷，此刻化为一面绝不可能倒下的战旗。",

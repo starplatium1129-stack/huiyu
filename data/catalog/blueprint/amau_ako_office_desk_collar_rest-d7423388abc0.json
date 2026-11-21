@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_office_desk_collar_rest",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2657,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "amau_ako_office_desk_collar_rest",
     "characterId": "amau_ako",
@@ -14,11 +14,11 @@
     "description": "歌赫娜风纪委深夜办公室，台灯将文件堆照亮。亚子坐在实木高背椅上，单手托着泛红的脸颊。露胸制服与标志性颈圈在灯光下格外显眼，发丝略有散乱。看着进门端来热咖啡的老师，她长长舒了一口气，唇角露出一丝难得松懈的苦笑与深深的依恋。",
     "recommendedSize": "832x1216",
     "location": "high-ceiling prefect team office with towering stacks of paperwork",
-    "action": "resting cheek on hand at massive paperwork desk, prefect uniform with chest cutout, choker collar, soft tired smile looking at viewer",
+    "action": "看着进门端来热咖啡的老师，她长长舒了一口气，唇角露出一丝难得松懈的苦笑与深深的依恋",
     "timeOfDay": "night",
     "lighting": "intense warm desk lamp casting long shadows against dark office room",
     "camera": "medium_shot",
-    "mood": "exhausted relief, quiet private loyalty",
+    "mood": "宁静与私密",
     "promptProse": "Sitting at her paperwork-laden desk late at night, Amau Ako rests her cheek on her hand. Her distinctive prefect uniform and choker catch the warm lamplight as she offers a weary yet deeply fond smile.",
     "promptTokens": [
       "1girl",

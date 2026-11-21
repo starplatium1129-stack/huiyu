@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_azur_bikini_sunset_beach_gaze",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2721,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "st_louis_azur_bikini_sunset_beach_gaze",
     "characterId": "st_louis_azur",
@@ -12,13 +12,13 @@
     "title": "圣路易斯 · 晚霞沙滩的落日比基尼余晖",
     "category": "盛夏海滨",
     "description": "黄昏的火红晚霞浸染了整片热带海岸，金色海浪涌上细软白沙。圣路易斯身穿一袭绚丽的落日色挂脖比基尼，赤足漫步在浅浪中。水花溅湿了她冰蓝色的长发末端，夕照在她起伏优美的轮廓与白皙皮肤上镀上一层绚丽的流光。她转过头来伸手相邀，嘴角泛起让人心醉神迷的迷人笑靥。",
-    "action": "standing in shallow shoreline waves at golden sunset, sunset gradient halter bikini, wet blue hair tips, holding out hand to viewer, breathtaking seductive smile",
+    "action": "身穿一袭绚丽的落日色挂脖比基尼，赤足漫步在浅浪中，水花溅湿了她冰蓝色的长发末端",
     "recommendedSize": "832x1216",
     "location": "tropical shoreline at peak golden hour sunset with glowing waves",
     "timeOfDay": "sunset",
     "lighting": "dazzling orange and magenta sunset backlighting ocean foam and figure",
     "camera": "full_body",
-    "mood": "intense romantic sunset grandeur, irresistible coastal allure",
+    "mood": "温存与坚毅",
     "promptProse": "Standing in gentle shore waves as the ocean glows in fiery sunset hues, St. Louis wears a vibrant sunset bikini. She extends a welcoming hand, her blue hair drifting in the warm sea breeze with a captivating, sun-kissed smile.",
     "promptTokens": [
       "1girl",

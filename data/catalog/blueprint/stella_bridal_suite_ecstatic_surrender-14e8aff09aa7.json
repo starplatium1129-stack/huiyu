@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_bridal_suite_ecstatic_surrender",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2189,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "stella_bridal_suite_ecstatic_surrender",
     "characterId": "stella_vermillion",
@@ -14,11 +14,11 @@
     "description": "新婚套房内烛光摇曳，纯白的大床上散落着绯红色的玫瑰花瓣。史黛菈身着轻薄修身的黑色半透吊带睡裙侧坐在床头，火红的长发披散在光洁如玉的香肩上。她微微抬眸凝望，眼角含着动人的泪光与无尽的欢欣，红唇微启，在静谧的夜色中倾诉着将一切献给心上人的崇高誓约。",
     "recommendedSize": "832x1216",
     "location": "luxury honeymoon master suite with white linen",
-    "action": "sitting on white linen bed adorned with rose petals, sheer black camisole nightgown, crimson hair spread out, tear of joy gleaming in eye, blushing radiant expression looking at viewer",
+    "action": "身穿半透睡裙侧坐在床头，红发披肩，微微抬眸柔情凝望",
     "timeOfDay": "night",
     "lighting": "soft flickering candlelight creating warm intimate halo around figure",
     "camera": "medium_shot",
-    "mood": "transcendent romantic devotion, sacred emotional surrender",
+    "mood": "温存与神圣",
     "promptProse": "Sitting on a soft white bed decorated with rose petals in flickering candlelight, Stella Vermillion wears a sheer black silk camisole. A single tear of joy catches the light on her flushed cheek as she smiles with total devotion.",
     "promptTokens": [
       "1girl",

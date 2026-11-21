@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_shopping_mall_crepe_share",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2252,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kotori_shopping_mall_crepe_share",
     "characterId": "kotori_itsuka",
@@ -14,11 +14,11 @@
     "description": "热闹的商业步行街上，琴里双手举着一个大号草莓奶油可丽饼送到你的唇边。少女满脸通红却眼神骄傲，微仰着小脑袋满心期待你夸奖她的挑选。",
     "recommendedSize": "832x1216",
     "location": "bustling outdoor shopping pedestrian arcade with hanging paper banners",
-    "action": "walking through festive shopping district, holding up a giant strawberry whipped cream crepe to partner mouth with blushing cheeks and proud grin",
+    "action": "少女满脸通红却眼神骄傲，微仰着小脑袋满心期待你夸奖她的挑选",
     "timeOfDay": "afternoon",
     "lighting": "warm sunny afternoon daylight",
     "camera": "close-up",
-    "mood": "delightful sweet date, youthful girlfriend energy, heartwarming romance",
+    "mood": "温存与治愈",
     "promptProse": "Holding up a giant strawberry crepe to partner mouth, Kotori Itsuka blushes with a proud joyful grin under sunny street daylight.",
     "promptTokens": [
       "mall",

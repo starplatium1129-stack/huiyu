@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "inaba_meguru_morning_white_shirt_coffee",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2640,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "inaba_meguru_morning_white_shirt_coffee",
     "characterId": "inaba_meguru",
@@ -14,11 +14,11 @@
     "description": "清晨温暖阳光漫过原木餐桌，巡只穿着一件宽松微长、质地柔软的落肩白衬衫，修长白皙的双腿轻快晃动。她双手握着冒着热气的咖啡马克杯，微翘的嘴角带着狡黠又甜美的浅笑，微风吹起薄薄的衣角，散发着居家的纯美诱惑。",
     "recommendedSize": "832x1216",
     "location": "sunny dining kitchen corner beside breakfast counter",
-    "action": "sitting on high wooden stool holding warm coffee mug, oversized white collared shirt falling off shoulder, bare legs swinging, sunny morning kitchen",
+    "action": "她双手握着冒着热气的咖啡马克杯，微翘的嘴角带着狡黠又甜美的浅笑，微风吹起薄薄的衣角",
     "timeOfDay": "morning",
     "lighting": "bright cheerful sunbeams streaming through kitchen balcony glass",
     "camera": "cowboy_shot",
-    "mood": "effortlessly charming domestic romance, playful morning sweetness",
+    "mood": "温存与俏皮",
     "promptProse": "Perched on a wooden kitchen stool in the morning sun, Meguru holds a steaming mug wearing an oversized white shirt slipping off one shoulder. Her bare legs swing casually as she flashes a playful, affectionate smile.",
     "promptTokens": [
       "1girl",

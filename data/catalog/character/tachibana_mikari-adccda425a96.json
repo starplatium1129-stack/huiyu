@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tachibana_mikari",
-  "revision": 14,
+  "revision": 15,
   "sortOrder": 148,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "tachibana_mikari",
     "profile": {
@@ -70,7 +70,7 @@
       "source": "桥本悠《2.5次元的诱惑 / 2.5 Dimensional Seduction》",
       "speech": "奥村君……我的目光十年来都只看着你，你的视线也只能看着我一个人哦！",
       "traits": [
-        "tachibana_mikari",
+        "tachibana mikari",
         "2.5_jigen_no_ririsa",
         "brown_hair",
         "long_hair",
@@ -220,7 +220,7 @@
       ],
       "identityProse": "Adult Mikari Tachibana from 2.5 Dimensional Seduction, with long light-brown hair in two side-up bunches, pink ribbons and pink eyes.",
       "identityTokens": [
-        "tachibana_mikari",
+        "tachibana mikari",
         "2.5_jigen_no_ririsa",
         "brown hair",
         "long hair",
@@ -229,7 +229,7 @@
         "pink eyes"
       ],
       "exactTokens": [
-        "tachibana_mikari"
+        "tachibana mikari"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -255,7 +255,7 @@
         "1boy"
       ],
       "characterTokens": [
-        "tachibana_mikari"
+        "tachibana mikari"
       ],
       "copyrightTokens": [
         "2.5_jigen_no_ririsa"

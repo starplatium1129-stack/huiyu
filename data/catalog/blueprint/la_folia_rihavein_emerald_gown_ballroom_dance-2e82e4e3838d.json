@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_rihavein_emerald_gown_ballroom_dance",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2745,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "la_folia_rihavein_emerald_gown_ballroom_dance",
     "characterId": "la_folia_rihavein",
@@ -12,13 +12,13 @@
     "title": "拉·芙利亚 · 宫廷舞厅的祖母绿露背晚礼服",
     "category": "礼服名流",
     "description": "王宫镜厅晚宴落幕时分，辉煌的水晶吊灯下余香未散。拉·芙利亚身穿一袭极具奢华质感的祖母绿无袖露背丝绒晚礼服，白皙无瑕的整个美背如凝脂般诱人。她手挽晚宴手包在光洁如镜的大理石地面上轻盈回旋，银发如瀑布飞扬，在万众瞩目的璀璨宫廷中，眼波流转只锁定你一人的身影。",
-    "action": "twirling gracefully on marble ballroom floor, luxurious backless emerald velvet gown, silver hair splayed in motion, glowing chandelier lighting, captivating royal gaze",
+    "action": "身穿一袭极具奢华质感的祖母绿无袖露背丝绒晚礼服",
     "recommendedSize": "832x1216",
     "location": "hall of mirrors ballroom with gilded baroque architecture and crystal chandeliers",
     "timeOfDay": "night",
     "lighting": "brilliant golden chandelier luminescence reflecting on polished marble floor",
     "camera": "full_body",
-    "mood": "opulent aristocratic splendor, intoxicating courtly seduction",
+    "mood": "华贵魅惑",
     "promptProse": "Spinning with graceful poise across a marble palace ballroom, La Folia wears an emerald velvet backless gown. Her flowing silver hair catches the chandelier light as she turns with captivating, royal elegance.",
     "promptTokens": [
       "1girl",

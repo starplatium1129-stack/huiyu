@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_slime_suit_whisper_embrace",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2471,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "beta_slime_suit_whisper_embrace",
     "characterId": "beta_shadow",
@@ -14,11 +14,11 @@
     "description": "昏暗地宫通道内，贝塔双手轻抱在胸前紧挨在暗影身侧。紧贴身躯的黑色史莱姆战服泛着微光，少女仰起小脸，湛蓝眼眸中满是温热的倾慕。",
     "recommendedSize": "832x1216",
     "location": "shadowy underground stone corridor with glowing crystal moss",
-    "action": "pressing close beside Shadow with hands folded over her chest, gazing up with starry adoring blue eyes and flushed cheeks",
+    "action": "双手轻抱在胸前紧挨在暗影身侧，紧贴身躯的黑色史莱姆战服泛着微光，少女仰起小脸",
     "timeOfDay": "night",
     "lighting": "subtle blue magical ambiance highlighting sleek curves and alluring cleavage",
     "camera": "close-up",
-    "mood": "intense romantic devotion, eager adoration, breathtaking proximity",
+    "mood": "温存与神圣",
     "promptProse": "In a dark stone corridor, busty silver-haired Beta in tight black bodysuit gazes up at Shadow with adoring flushed eyes.",
     "promptTokens": [
       "dungeon",

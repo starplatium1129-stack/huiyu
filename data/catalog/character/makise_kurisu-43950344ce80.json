@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makise_kurisu",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 246,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "makise_kurisu",
     "profile": {
@@ -235,7 +235,7 @@
       ],
       "identityProse": "Kurisu Makise from Steins;Gate, with long auburn-red hair, violet eyes, a slender build, and an intelligent, tsundere demeanor.",
       "identityTokens": [
-        "makise_kurisu",
+        "makise kurisu",
         "1girl",
         "solo",
         "red_hair",
@@ -244,7 +244,7 @@
         "steins;gate"
       ],
       "exactTokens": [
-        "makise_kurisu"
+        "makise kurisu"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -276,7 +276,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "makise_kurisu"
+        "makise kurisu"
       ],
       "copyrightTokens": [
         "steins;gate"

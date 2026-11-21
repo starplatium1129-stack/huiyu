@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_nikke_camisole_night_moonlight_stretch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2703,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "scarlet_nikke_camisole_night_moonlight_stretch",
     "characterId": "scarlet_nikke",
@@ -14,11 +14,11 @@
     "description": "深夜客栈木窗微开，清凉夜风携着竹香拂入。红莲换上轻便舒适的深红细吊带单衣侧坐在榻榻米上，雪白的长马尾松散垂在光滑的裸肩旁。名刀静静横放膝前，平日凌厉锋芒的浪人剑客此刻神色极为惬意，金眸半敛，一手轻抚着温润的剑鞘，转头向你展露出毫无防备的动人微笑。",
     "recommendedSize": "832x1216",
     "location": "tranquil traditional wooden inn room beside moonlit sliding window",
-    "action": "sitting on tatami with sword resting on lap, crimson silk camisole top, long white ponytail draped over shoulder, relaxed affectionate gaze at viewer",
+    "action": "换上轻便舒适的深红细吊带单衣侧坐在榻榻米上",
     "timeOfDay": "night",
     "lighting": "cool blue moonlight blending with warm paper lantern glow",
     "camera": "medium_shot",
-    "mood": "poetic wandering serenity, unguarded romantic warmth",
+    "mood": "浪漫温存",
     "promptProse": "Seated upon a tatami mat in moonlight with her katana resting across her knees, Scarlet wears a soft crimson camisole. Her white hair cascades over bare shoulders as she smiles with serene, unburdened warmth.",
     "promptTokens": [
       "1girl",

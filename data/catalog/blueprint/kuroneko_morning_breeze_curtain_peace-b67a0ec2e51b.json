@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_morning_breeze_curtain_peace",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2267,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroneko_morning_breeze_curtain_peace",
     "characterId": "kuroneko",
@@ -14,11 +14,11 @@
     "description": "清晨的薄风吹起窗前轻柔的白纱，淡金色的朝阳洒在少女白皙如瓷的脸庞上。琉璃靠坐在窗边的软垫上，只穿着一件略显宽大的黑色印花长T恤，露出一侧圆润的雪肩与光洁锁骨。手中端着温热的红茶杯，姬发式齐刘海在晨风中轻轻晃动，嘴角泛着难得恬淡舒心的温柔微笑，眼眸清澈明亮。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched bedroom with billowing white sheer curtains",
-    "action": "sitting by window on soft cushion holding warm teacup, oversized black t-shirt slipping off shoulder, morning breeze blowing white sheer curtains, serene affectionate smile",
+    "action": "手中端着温热的红茶杯，姬发式齐刘海在晨风中轻轻晃动，嘴角泛着难得恬淡舒心的温柔微笑",
     "timeOfDay": "morning",
     "lighting": "pure cool early morning daylight warming into golden sunbeam",
     "camera": "medium_shot",
-    "mood": "serene domestic peace, pure unfiltered affection",
+    "mood": "温存与宁静",
     "promptProse": "Sitting beside an open window with sheer curtains dancing in the breeze, Kuroneko holds a cup of hot tea in an oversized black shirt. Her bare shoulder catches morning light as she smiles with peaceful contentment.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mash_kyrielight",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 57,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "mash_kyrielight",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "玛修抱着资料向你行礼——「前辈，今天也要一起努力哦。」",
       "source": "TYPE-MOON《Fate 系列》",
       "traits": [
-        "mash_kyrielight",
+        "mash kyrielight",
         "1girl",
         "solo",
         "pink_hair",
@@ -953,7 +953,7 @@
       ],
       "identityProse": "Mash Kyrielight from Fate/Grand Order, with short pink-lavender hair covering her right eye and violet eyes.",
       "identityTokens": [
-        "mash_kyrielight",
+        "mash kyrielight",
         "1girl",
         "solo",
         "pink hair",
@@ -964,7 +964,7 @@
         "fate/grand_order"
       ],
       "exactTokens": [
-        "mash_kyrielight"
+        "mash kyrielight"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -996,7 +996,7 @@
         "rella"
       ],
       "characterTokens": [
-        "mash_kyrielight"
+        "mash kyrielight"
       ],
       "copyrightTokens": [
         "fate/grand_order"

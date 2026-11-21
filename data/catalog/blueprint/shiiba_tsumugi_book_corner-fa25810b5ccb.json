@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_book_corner",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2418,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_book_corner",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "居家日常",
     "description": "翻到书页中间时，一张购物清单滑了出来。紬把纸摊在膝上，给已经找到的东西画了个圈。",
     "location": "living room armchair",
-    "action": "reading a list on her lap",
+    "action": "紬把纸摊在膝上，给已经找到的东西画了个圈",
     "timeOfDay": "afternoon",
     "lighting": "window light",
     "camera": "medium shot",

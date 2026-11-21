@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_riverside_bicycle_sunset_breeze_shout",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2596,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "lemon_riverside_bicycle_sunset_breeze_shout",
     "title": "烧盐柠檬 · 盛夏河堤单车的晚霞疾呼",
@@ -12,7 +12,7 @@
     "outfitId": "tsuwabuki_summer_sailor_uniform",
     "description": "丰桥市河堤青草斜坡上，漫天绚烂赤红晚霞将波光粼粼的河面染透。柠檬单脚踏地扶着自行车，迎着凉爽晚风回头向推车的你大声呼喊催促，短发狂飞，笑容烂漫。",
     "location": "grassy riverside levee path beside shimmering wide river at golden sunset",
-    "action": "standing paused beside road bicycle, one foot on ground, looking back with a wide beaming grin while waving arm enthusiastically against sunset",
+    "action": "柠檬单脚踏地扶着自行车，迎着凉爽晚风回头向推车的你大声呼喊催促，短发狂飞，笑容烂漫",
     "timeOfDay": "黄昏",
     "lighting": "河面与天际交融的浓郁黄昏赤金逆光",
     "camera": "wide shot, landscape composition",

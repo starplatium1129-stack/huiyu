@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "haruno_cafe_terrace_teasing_gaze",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 369,
   "createdAt": null,
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "haruno_cafe_terrace_teasing_gaze",
-    "title": "雪之下阳乃 · 露天咖啡馆的墨镜戏谑注视·「比企谷君，又在用那种腐烂的眼神看世界了呢」",
+    "title": "雪之下阳乃 · 露天咖啡馆的墨镜戏谑注视",
     "category": "日常约会",
     "characterId": "yukinoshita_haruno",
     "outfitId": "casual_winter_trenchcoat",

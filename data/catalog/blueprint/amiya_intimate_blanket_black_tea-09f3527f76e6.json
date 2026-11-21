@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_intimate_blanket_black_tea",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2018,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "amiya",
     "outfitId": "restday_knit",
@@ -14,11 +14,11 @@
     "description": "本舰穿行在荒野风暴中的漆黑夜晚，颠簸与雷鸣让人无法入眠。休息室里，两人同披一条宽大的厚毛毯并肩而坐。阿米娅双手捧着刚泡好的热红茶，白汽蒸腾间，她微微侧过身子，将头轻轻靠在博士的肩上，任由外面的风暴如何喧嚣，心底只有安宁。",
     "recommendedSize": "832x1216",
     "location": "cozy living cabin lounge",
-    "action": "wrapped in shared blanket, resting head on shoulder, steaming tea",
+    "action": "双手捧着刚泡好的热红茶，白汽蒸腾间，她微微侧过身子，将头轻轻靠在博士的肩上",
     "timeOfDay": "night",
     "lighting": "soft dim warm ceiling light against stormy window",
     "camera": "medium_shot",
-    "mood": "heartwarming safe shelter from the world",
+    "mood": "温馨治愈",
     "promptProse": "Sharing a warm wool blanket inside the lounge during a violent wasteland sandstorm, Amiya rests her head on the Doctor's shoulder. She holds a steaming porcelain teacup with both hands, finding complete sanctuary and serenity.",
     "promptTokens": [
       "amiya",

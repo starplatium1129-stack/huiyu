@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "typhon_arknights_r18_aurora_cabin_spread_knees",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 705,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "typhon_arknights_r18_aurora_cabin_spread_knees",
     "characterId": "typhon_arknights",
@@ -52,7 +52,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "adultArtistHint": "@anmi",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "animaCaption": "She looks toward the viewer with knees raised beneath the skylight between green aurora and warm hearth light."
   }

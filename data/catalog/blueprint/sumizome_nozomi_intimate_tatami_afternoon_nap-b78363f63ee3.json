@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_tatami_afternoon_nap",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2009,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T14:29:16.215024+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfitId": "market_casual",
@@ -14,11 +14,11 @@
     "description": "夏日午后的神社厢房里，庭院风铃叮当作响。希蜷缩在蔺草清香的榻榻米上，薄薄的棉被搭在腰际。微风拂过她柔顺的短发，当感觉到身旁有人躺下时，她迷迷糊糊地伸出双臂环抱住对方的手臂，嘴角扬起甜甜的梦呓。",
     "recommendedSize": "832x1216",
     "location": "breezy traditional tatami room",
-    "action": "sleeping on tatami, hugging arm, gentle breeze moving curtains",
+    "action": "微风拂过她柔顺的短发，当感觉到身旁有人躺下时，她迷迷糊糊地伸出双臂环抱住对方的手臂",
     "timeOfDay": "day",
     "lighting": "dappled garden sunlight filtering through paper shoji",
     "camera": "medium_shot",
-    "mood": "peaceful innocent childhood sweetness",
+    "mood": "宁静祥和",
     "promptProse": "Napping peacefully on a woven tatami mat in the breezy shrine room, Sumizome Nozomi hugs the viewer's arm like a plush cushion in her sleep. The sound of a wind chime echoes as soft green garden shadows ripple across her innocent sleeping face. Only the viewer's arm enters the frame.",
     "promptTokens": [
       "sumizome_nozomi",

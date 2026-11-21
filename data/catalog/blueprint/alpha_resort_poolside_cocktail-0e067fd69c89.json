@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_resort_poolside_cocktail",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2507,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alpha_resort_poolside_cocktail",
     "characterId": "alpha_shadow",
@@ -14,11 +14,11 @@
     "description": "盛夏午后无人的私人泳池畔，阿尔法侧倚在白色遮阳躺椅边，修长双腿没入清澈碧水中。她托着盛有冰镇特调的玻璃杯，金发在微风中轻拂，向身侧之人递来宁静从容的注视。",
     "recommendedSize": "832x1216",
     "location": "luxurious private infinity pool terrace overlooking an ocean horizon under sunny sky",
-    "action": "sitting on the edge of a white poolside lounger, one hand holding an iced cocktail glass with a lime slice, water ripples lapping at feet, gentle slight smile",
+    "action": "侧坐在泳池躺椅边，单手托着冰镇特调玻璃杯，双腿浸入水中，从容浅笑",
     "timeOfDay": "afternoon",
     "lighting": "sparkling tropical sunlight reflecting off crystal pool water with soft warm shadows",
     "camera": "cowboy_shot",
-    "mood": "serene summer luxury, effortless aristocratic elegance, quiet private bond",
+    "mood": "宁静与私密",
     "promptProse": "Alpha sits by a crystal blue private pool terrace holding a cold summer drink, golden hair catching warm sunlight as water sparkles around her.",
     "promptTokens": [
       "poolside",

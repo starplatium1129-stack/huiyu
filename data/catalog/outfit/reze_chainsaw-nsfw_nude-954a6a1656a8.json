@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "reze_chainsaw/nsfw_nude",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 242,
   "createdAt": null,
-  "updatedAt": "2026-10-28T05:45:56.967977+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "reze_chainsaw",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "🔞 私密全裸 / 纯粹形态",
+      "name": "私密全裸 / 纯粹形态",
       "tokens": [
         "nude",
         "choker"

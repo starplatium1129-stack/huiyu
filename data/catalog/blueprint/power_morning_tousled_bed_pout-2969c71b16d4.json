@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_morning_tousled_bed_pout",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 1997,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "power_morning_tousled_bed_pout",
     "characterId": "power",
@@ -14,11 +14,11 @@
     "description": "早晨凌乱的床榻上，穿着居家睡袍的帕瓦顶着一头乱蓬蓬的金长发醒来，绯红小角从被窝钻出，气鼓鼓地踢开被子伸手索要早餐。",
     "recommendedSize": "832x1216",
     "location": "messy cozy bedroom",
-    "action": "sitting up in bed, tousled hair, cute grumpy morning pout, reaching out",
+    "action": "顶着一头乱蓬蓬的金长发醒来，绯红小角从被窝钻出，气鼓鼓地踢开被子伸手索要早餐",
     "timeOfDay": "day",
     "lighting": "soft morning sun pouring over white messy sheets",
     "camera": "medium_shot",
-    "mood": "funny and intimately endearing morning routine",
+    "mood": "逗趣温存",
     "promptProse": "Sitting up amidst messy white bed sheets in the golden morning light, Power rubs her eyes with a delightfully grumpy pout in cozy sleepwear, her long blonde hair charmingly disheveled.",
     "promptTokens": [
       "power_(chainsaw_man)",

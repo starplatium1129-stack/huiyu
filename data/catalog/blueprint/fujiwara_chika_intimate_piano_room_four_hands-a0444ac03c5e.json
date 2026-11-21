@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_piano_room_four_hands",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2030,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "music_recital",
@@ -14,11 +14,11 @@
     "description": "夕阳染红整间音乐活动室，金色光尘在黑白三角钢琴边起舞。千花身穿典雅的海军蓝褶裙，并肩坐在琴凳上指导指法。当少年的手覆上她的指尖按下和弦时，向来大大咧咧的千花突然停下了弹奏，红着耳尖转过脸，罕见地露出了真正千金名媛的心动与羞怯。",
     "recommendedSize": "832x1216",
     "location": "grand piano music hall with sunset windows",
-    "action": "hands overlapping on piano keys, turning with intense blush, sunset glow",
+    "action": "当少年的手覆上她的指尖按下和弦时，向来大大咧咧的千花突然停下了弹奏，红着耳尖转过脸",
     "timeOfDay": "sunset",
     "lighting": "dramatic crimson and golden sunset streaming through windows",
     "camera": "medium_shot",
-    "mood": "classical romantic musical heartbeat",
+    "mood": "浪漫温存",
     "promptProse": "Seated side-by-side on the piano bench during a fiery sunset, Fujiwara Chika plays a four-hand duet. When their hands overlap on the ivory keys, her cheerful persona melts into a breathtakingly shy, aristocratic blush in the golden light.",
     "promptTokens": [
       "fujiwara_chika",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_intimate_stage_closing_time",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2024,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfitId": "livehouse_staff",
@@ -14,11 +14,11 @@
     "description": "演出彻底散场、全场灯光熄灭后的LiveHouse里，唯有一束暖红的侧光照亮舞台台阶。虹夏把鼓槌放在膝头，脱掉运动外套，身穿无袖乐队红T恤并肩坐下。微风掠过她标志性的大呆毛与金色单侧侧马尾，她揉着酸痛的手腕，转过头露出只给一个人的娇憨笑颜。",
     "recommendedSize": "832x1216",
     "location": "empty livehouse stage steps",
-    "action": "sitting on stage steps, drumsticks on lap, massaging wrist, sweet smile",
+    "action": "微风掠过她标志性的大呆毛与金色单侧侧马尾，她揉着酸痛的手腕，转过头露出只给一个人的娇憨笑颜",
     "timeOfDay": "night",
     "lighting": "single warm red stage floodlight in dark hall",
     "camera": "medium_shot",
-    "mood": "after-show intimate sweet relief",
+    "mood": "温存与治愈",
     "promptProse": "Sitting on the empty LiveHouse stage steps after closing time, Ijichi Nijika relaxes in her sleeveless red band tee. A single warm stage light highlights her golden side-ponytail and iconic dorito ahoge as she massages her drum-tired wrist with a sweet, affectionate grin.",
     "promptTokens": [
       "ijichi_nijika",

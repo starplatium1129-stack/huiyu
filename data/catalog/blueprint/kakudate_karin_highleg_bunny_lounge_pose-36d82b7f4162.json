@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_highleg_bunny_lounge_pose",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2660,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kakudate_karin_highleg_bunny_lounge_pose",
     "characterId": "kakudate_karin",
@@ -14,11 +14,11 @@
     "description": "门锁紧扣的豪华游轮贵宾卧室内，花凛换上了执行特勤任务的高开衩深蓝兔女郎连体衣。黑丝长腿交叠坐在红色丝绒长榻上，修长有力的身材曲线展露无遗。长长的黑兔耳随着她偏头的动作轻晃，小麦色的脸颊微微浮现红晕，平时端庄冷酷的狙击手把手搭在腿上，眼神羞涩却坚定地接受着老师赞许的目光。",
     "recommendedSize": "832x1216",
     "location": "exclusive cruise ship VIP velvet lounge under chandelier",
-    "action": "sitting with long black-stockinged legs crossed on crimson velvet settee, highleg navy bunny suit, rabbit ears, dark skin, slight blush on cheeks, golden eyes meeting viewer",
+    "action": "长长的黑兔耳随着她偏头的动作轻晃，小麦色的脸颊微微浮现红晕",
     "timeOfDay": "night",
     "lighting": "dramatic golden chandelier glow casting rich highlights on satin and stockings",
     "camera": "cowboy_shot",
-    "mood": "striking sensual glamour, shy warrior compliance",
+    "mood": "动情与柔媚",
     "promptProse": "Sitting with crossed legs on a crimson velvet settee, Kakudate Karin wears a high-cut navy bunny suit and black tights. Her dark skin contrasts beautifully with the blue satin as she gazes forward with a shy yet poised golden look.",
     "promptTokens": [
       "1girl",

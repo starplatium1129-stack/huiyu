@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "katou_megumi",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 111,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "katou_megumi",
     "profile": {
@@ -332,7 +332,7 @@
       ],
       "identityProse": "Megumi Kato from Saenai Heroine no Sodatekata, with brown hair, blunt bangs and brown eyes.",
       "identityTokens": [
-        "katou_megumi",
+        "katou megumi",
         "saenai_heroine_no_sodatekata",
         "1girl",
         "solo",
@@ -341,7 +341,7 @@
         "brown_eyes"
       ],
       "exactTokens": [
-        "katou_megumi"
+        "katou megumi"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -369,7 +369,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "katou_megumi"
+        "katou megumi"
       ],
       "copyrightTokens": [
         "saenai_heroine_no_sodatekata"

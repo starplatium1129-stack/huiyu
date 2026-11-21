@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_garage_meat_jerky_snack",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2517,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "delta_garage_meat_jerky_snack",
     "characterId": "delta_shadow",
@@ -14,11 +14,11 @@
     "description": "四越地下仓储库房内。德尔塔盘腿蹲坐在两米高的大木箱顶端，两腮塞得鼓鼓囊囊像只大松鼠，两手抓着比手臂还粗的熏烤肉干大口撕咬，警惕的兽瞳在昏暗库房中骨碌碌地转悠护食。",
     "recommendedSize": "832x1216",
     "location": "cavernous wooden supply warehouse filled with towering cargo crates and rope pulleys",
-    "action": "crouched squatting on top of a tall wooden crate, happily tearing into a massive smoked meat skewer with both hands, puffed cheeks",
+    "action": "盘腿蹲坐在两米高的大木箱顶端，两腮塞得鼓鼓囊囊像只大松鼠",
     "timeOfDay": "afternoon",
     "lighting": "warm dust-mote sunlight beaming down from high rafters onto weathered wooden boxes",
     "camera": "cowboy_shot",
-    "mood": "hilarious beast-girl appetite, territorial cuteness, untamed feral charm",
+    "mood": "野性灵动",
     "promptProse": "Delta in denim overalls squats on a warehouse wooden crate, chewing voraciously on a huge smoked meat bone with puffed cheeks.",
     "promptTokens": [
       "warehouse",

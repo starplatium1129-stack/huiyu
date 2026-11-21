@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "jeanne_chapel_morning_prayer",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 232,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "jeanne_chapel_morning_prayer",
-    "title": "圣女贞德 · 晨光小教堂的祈祷·「今日也请，赐予他们安宁」",
+    "title": "圣女贞德 · 晨光小教堂的祈祷",
     "category": "神圣日常",
     "characterId": "jeanne_d_arc",
     "description": "晨光斜斜地穿过高窗，落在跪于祭坛前的贞德身上。她已卸下胸铠，只着素白的Ruler礼裙，双手合十抵着额头，金色的长辫安静地垂过腰际。睫毛在圣光下泛着细软的金边，唇间流淌着为逝者与生者诵出的祷词——连尘埃都在光柱里缓缓起伏，仿佛应和着圣女的呼吸。",

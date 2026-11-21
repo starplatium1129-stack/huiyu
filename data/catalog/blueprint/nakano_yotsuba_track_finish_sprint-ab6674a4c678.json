@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_track_finish_sprint",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1960,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_track_finish_sprint",
     "title": "中野四叶 · 操场跑道上的冲线阳光",
@@ -13,11 +13,11 @@
     "description": "阳光充盈的红色塑胶跑道终点线上，四叶刚完成全力冲刺。额角微微渗着汗珠，双手比着可爱的V字胜利手势，胸口随着轻快喘息起伏，笑容耀眼。",
     "recommendedSize": "832x1216",
     "location": "school track and field oval",
-    "action": "crossing finish line, hands on knees, peace sign, sweating gently",
+    "action": "额角微微渗着汗珠，双手比着可爱的V字胜利手势，胸口随着轻快喘息起伏，笑容耀眼",
     "timeOfDay": "day",
     "lighting": "bright midday sunshine, clear blue sky",
     "camera": "cowboy_shot",
-    "mood": "energetic athletic triumph",
+    "mood": "意气风发",
     "promptProse": "On a vibrant red running track under an open blue sky, Nakano Yotsuba crosses the finish line in her green-and-white athletic hoodie and gym shorts. She flashes energetic double peace signs with sweat glistening on her smiling cheeks.",
     "promptTokens": [
       "running_track",

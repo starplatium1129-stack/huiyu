@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "takarada_rikka_r18_b5_01",
-  "revision": 12,
+  "revision": 14,
   "sortOrder": 1553,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "takarada_rikka_r18_b5_01",
-    "title": "宝多六花 · 旧电器店二楼长开衫主控跨坐 ·「裕太……今天怎么这么粘人啊」",
+    "title": "宝多六花 · 旧电器店二楼长开衫主控跨坐",
     "category": "主控骑乘",
     "characterId": "takarada_rikka",
     "description": "蝉鸣阵阵的夏天。六花只穿着标志性的米色长开衫，下身完全真空。那双引爆全网的肉感微胖大腿跨坐在你的腰间，黑色长发下的蓝色瞳孔带着慵懒又宠溺的气息，双手环住你的脖子主动沉下身段——「裕太……一直盯着我的大腿看……真拿你没办法……」",
@@ -53,7 +53,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "beige_cardigan",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_private_bath_blushing_back_rub",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "asia_private_bath_blushing_back_rub",
     "characterId": "asia_argento",
@@ -14,11 +14,11 @@
     "description": "热气蒸腾的温暖浴室中弥漫着雏菊浴盐的芬芳。爱西亚坐在温润的浴凳上，双手小心翼翼地把纯白浴巾护在身前。湿漉漉的金发贴在娇小圆润的香肩上，水珠顺着白皙如玉的背脊滑落。她侧过微红的小脸回眸望来，翠绿双瞳如受惊的小鹿般羞怯微颤，却又带着无限的欣喜与信赖。",
     "recommendedSize": "832x1216",
     "location": "steamy private bathroom with aromatic bath bubbles",
-    "action": "sitting on bath stool in steamy bathroom, holding white bath towel covering front, bare shoulders and back glistening with water drops, wet blonde hair, shy blushing glance over shoulder",
+    "action": "坐在浴凳上双手将浴巾护在身前，湿漉金发垂肩，羞怯回眸偷看",
     "timeOfDay": "night",
     "lighting": "soft diffused warm bathroom light filtering through dense steam mist",
     "camera": "cowboy_shot",
-    "mood": "tender innocent bashfulness, pure heart-melting vulnerability",
+    "mood": "温存与动情",
     "promptProse": "Sitting on a wooden bath stool in a steamy bathroom, Asia holds a fluffy white towel securely in front of her. Her damp blonde hair rests against dewy bare shoulders as she glances back with a shy, adorable blush. Soft warm bathroom light filters through thick swirling steam, casting gentle golden highlights across her damp shoulders and dewy skin.",
     "promptTokens": [
       "1girl",

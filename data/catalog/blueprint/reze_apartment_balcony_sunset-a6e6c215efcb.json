@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_apartment_balcony_sunset",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 430,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "reze_apartment_balcony_sunset",
     "title": "蕾塞 · 公寓阳台黄昏",
@@ -18,7 +18,7 @@
     "timeOfDay": "sunset",
     "lighting": "golden_hour",
     "camera": "medium_shot",
-    "mood": "quiet",
+    "mood": "静谧安详",
     "sceneTags": [
       "balcony",
       "sunset",

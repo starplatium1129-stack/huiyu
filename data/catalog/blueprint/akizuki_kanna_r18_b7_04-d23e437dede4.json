@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akizuki_kanna_r18_b7_04",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1165,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "仰卧床榻全裸自抚抽送，黑羽拍打被单，粉色眼眸含泪弓腰失神高潮",
     "adult": true,
@@ -25,7 +25,10 @@
     "mood": "独处沉沦与情绪释放",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_boudoir",
     "promptProse": "She lies on rumpled sheets with her wings against the headboard, one hand between her legs. Moonlight crosses her hair and the pillows.",
     "promptTokens": [
@@ -58,7 +61,7 @@
       "pink_nipples"
     ],
     "timeOfDay": "night",
-    "title": "明月栞那 · 死神公寓床单上的贪心宣泄独奏 ·「把寿命借给你可以……但是你必须一直陪着我」",
+    "title": "明月栞那 · 死神公寓床单上的贪心宣泄独奏",
     "identityProseOverride": "Kanna Akizuki from Cafe Stella and the Reapers' Butterflies, with long white hair worn loose, an ahoge and pink eyes.",
     "identityTokensOverride": [
       "akizuki_kanna",

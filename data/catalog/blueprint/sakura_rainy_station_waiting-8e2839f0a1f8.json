@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_rainy_station_waiting",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 176,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "sakura_rainy_station_waiting",
     "characterId": "matou_sakura",
@@ -44,7 +44,7 @@
     "timeOfDay": "evening",
     "lighting": "overcast",
     "camera": "medium_shot",
-    "mood": "calm",
+    "mood": "恬淡平静",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"

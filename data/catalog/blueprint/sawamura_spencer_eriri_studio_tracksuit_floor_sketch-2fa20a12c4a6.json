@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_studio_tracksuit_floor_sketch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2643,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sawamura_spencer_eriri_studio_tracksuit_floor_sketch",
     "characterId": "sawamura_spencer_eriri",
@@ -14,11 +14,11 @@
     "description": "深夜的工作室内满地散落着画稿与数位笔，英梨梨解开发带，平日高傲的双马尾金发如瀑布般散落在绿色运动服与榻榻米上。她趴在地板上托着下巴端详眼前的线稿，虎牙微露，白皙脸颊泛着专注微醺的红晕，完全卸下了傲娇大小姐的防线。",
     "recommendedSize": "832x1216",
     "location": "artist studio with drawings scattered across tatami and digital tablet",
-    "action": "lying on stomach on studio floor surrounded by sketches, hair untied falling over shoulders, tracksuit unzipped, touching pen to lips, blushing",
+    "action": "她趴在地板上托着下巴端详眼前的线稿，虎牙微露，白皙脸颊泛着专注微醺的红晕",
     "timeOfDay": "night",
     "lighting": "soft directional warm desk lamp casting dramatic shadows on sketches",
     "camera": "medium_shot",
-    "mood": "unguarded creative vulnerability, sweet tsundere surrender",
+    "mood": "傲娇与温存",
     "promptProse": "Lying on her stomach amidst scattered illustration drafts on the studio floor, Eriri lets her golden hair flow loose over a casual green tracksuit. She taps a stylus to her lips with an unguarded, adorable blush.",
     "promptTokens": [
       "1girl",

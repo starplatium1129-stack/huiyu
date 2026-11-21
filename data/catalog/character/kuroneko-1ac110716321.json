@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kuroneko",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 236,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kuroneko",
     "profile": {
@@ -227,16 +227,16 @@
         "gokou ruri"
       ],
       "exactTokens": [
-        "gokou_ruri"
+        "gokou ruri"
       ],
       "characterTokens": [
-        "gokou_ruri"
+        "gokou ruri"
       ],
       "copyrightTokens": [
         "ore_no_imouto_ga_konna_ni_kawaii_wake_ga_nai"
       ],
       "identityTokens": [
-        "gokou_ruri",
+        "gokou ruri",
         "1girl",
         "solo",
         "black_hair",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "maria_mikhailovna_kujou_r18_b9_01",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 804,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "跪坐壁炉旁地毯，身体前倾，向画外伸手邀请拥抱",
     "adult": true,
@@ -55,7 +55,7 @@
       "rug"
     ],
     "timeOfDay": "night",
-    "title": "玛夏 · 俄式暖炉客厅大号毛衣温暖依偎 ·「政近君……今天也可以在玛夏姐姐怀里撒娇哦」",
+    "title": "玛夏 · 俄式暖炉客厅大号毛衣温暖依偎",
     "animaCaption": "She leans forward from the hearthside rug, reaching toward the viewer for an embrace."
   }
 }

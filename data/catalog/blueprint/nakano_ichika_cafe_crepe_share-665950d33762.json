@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_cafe_crepe_share",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1953,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_ichika_cafe_crepe_share",
     "title": "中野一花 · 街角可丽饼的双人分享",
@@ -13,11 +13,11 @@
     "description": "秋意渐浓的林荫大道旁，一花双手小心捧着盛满草莓与奶油的可丽饼递到少年唇边，笑眼弯弯地发出俏皮的分享邀请。",
     "recommendedSize": "832x1216",
     "location": "autumn street sidewalk",
-    "action": "holding crepe forward, offering food, leaning in",
+    "action": "秋意渐浓的林荫大道旁，一花双手小心捧着盛满草莓与奶油的可丽饼递到少年唇边",
     "timeOfDay": "day",
     "lighting": "soft autumn afternoon sunshine",
     "camera": "close-up",
-    "mood": "sweet and teasing",
+    "mood": "温存与俏皮",
     "promptProse": "On a golden autumn tree-lined street, Nakano Ichika offers a strawberry cream crepe directly toward the viewer with both hands. Her warm trench coat and joyful, sparkling smile create an intimate, charming afternoon date atmosphere.",
     "promptTokens": [
       "autumn_leaves",

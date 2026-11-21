@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_cockpit_pilot_suit_unzip",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2684,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kouzuki_kallen_cockpit_pilot_suit_unzip",
     "characterId": "kouzuki_kallen",
@@ -14,11 +14,11 @@
     "description": "战斗落幕后的红莲圣天八极式驾驶舱内，微弱的仪表灯光流转。卡莲斜倚在全景驾驶椅上，解开紧身驾驶服胸前的气密拉链，露出吸汗内衬与急促起伏的雪白锁骨。薄汗浸透了她红色的发丝，王牌机师长长舒了一口气，转眸看向通讯屏，眼神中透着刚毅之后的信任与战友间的私密默契。",
     "recommendedSize": "832x1216",
     "location": "high-tech mecha cockpit interior with glowing instrument panels",
-    "action": "resting back in pilot seat, pilot suit unzipped at chest, perspiration on collarbone, red spiky hair damp, intense relieved gaze at camera",
+    "action": "薄汗浸透了她红色的发丝，王牌机师长长舒了一口气，转眸看向通讯屏",
     "timeOfDay": "night",
     "lighting": "红莲机体驾驶舱全息操作屏明亮绯红与琥珀色指示灯",
     "camera": "medium_shot",
-    "mood": "exhilarating post-battle adrenaline, fierce intimate bond",
+    "mood": "温存与坚毅",
     "promptProse": "Reclining in the glowing cockpit of the Guren after an intense sortie, Kallen unzips her form-fitting pilot suit at the chest. Sweat glistens on her collarbones under the holographic instrument glow as she gives a fierce, relieved smile.",
     "promptTokens": [
       "cockpit",

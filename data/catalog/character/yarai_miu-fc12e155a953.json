@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yarai_miu",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 256,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yarai_miu",
     "profile": {
@@ -124,7 +124,7 @@
         "喜欢试探和调侃熟悉的人"
       ],
       "traits": [
-        "yarai_miu",
+        "yarai miu",
         "red_hair",
         "long_hair",
         "single_braid",
@@ -164,20 +164,20 @@
       "identityTokens": [
         "1girl",
         "solo",
-        "yarai_miu",
+        "yarai miu",
         "red_hair",
         "long_hair",
         "single_braid",
         "yellow_eyes"
       ],
       "characterTokens": [
-        "yarai_miu"
+        "yarai miu"
       ],
       "copyrightTokens": [
         "dracu-riot!"
       ],
       "exactTokens": [
-        "yarai_miu"
+        "yarai miu"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

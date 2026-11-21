@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_beach_umbrella_flustered_splash",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2510,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "beta_beach_umbrella_flustered_splash",
     "characterId": "beta_shadow",
@@ -14,11 +14,11 @@
     "description": "阳光明媚的海滨白沙滩上，浪花漫过脚背。贝塔双手轻按在粉白荷叶边泳装前，双颊飞起微红的羞涩，回眸看向走来的暗影大人，既期待被注视又手足无措。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched tropical white sand beach with turquoise waves lapping the shore",
-    "action": "standing in shallow crystal-clear sea foam, hands nervously hovering near chest, looking over shoulder with blushing cheeks and flustered sparkling eyes",
+    "action": "双手轻按在粉白荷叶边泳装前，双颊飞起微红的羞涩，回眸看向走来的暗影大人",
     "timeOfDay": "morning",
     "lighting": "bright clear morning sunlight casting brilliant azure reflections across gentle sea waves",
     "camera": "full_body",
-    "mood": "innocent bashfulness, secret romantic yearning, playful summer charm",
+    "mood": "温存与俏皮",
     "promptProse": "Beta stands in turquoise shallow sea waves on a white sandy beach, blushing shyly with hands near her chest as ocean foam splashes around her ankles.",
     "promptTokens": [
       "beach",

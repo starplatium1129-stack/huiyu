@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_steamy_bath_innocent_entanglement",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2254,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kotori_steamy_bath_innocent_entanglement",
     "characterId": "kotori_itsuka",
@@ -14,11 +14,11 @@
     "description": "水汽氤氲的热水浴室中，粉色的小浴巾包裹在琴里娇嫩的身躯上。湿透的红色长发搭在精致白皙的小锁骨前，双脚轻点在温水池边。暖雾熏烤得她浑身泛着粉红色的健康色泽，她双手按在浴池边沿，红宝石般的眸子泛起一层薄薄的水汽，带着几分小恶魔般的娇嗔与少女初萌的私密羞涩。",
     "recommendedSize": "832x1216",
     "location": "steamy home cedar bathtub filled with aromatic bath salts",
-    "action": "sitting on edge of bathtub wrapped in pink bath towel, wet red twintails sticking to bare shoulders, flushed skin from hot bath, pouting cutely with glistening ruby eyes",
+    "action": "暖雾熏烤得她浑身泛着粉红色的健康色泽，她双手按在浴池边沿，红宝石般的眸子泛起一层薄薄的水汽",
     "timeOfDay": "night",
     "lighting": "soft diffused warm bathroom glow illuminating rising steam vapors",
     "camera": "cowboy_shot",
-    "mood": "delicate innocent vulnerability, adorable playful gap",
+    "mood": "动情与俏皮",
     "promptProse": "Sitting on the edge of a steamy bathtub wrapped in a pink towel, Kotori looks back with wet red twintails. Droplets glisten on her flushed shoulders as she pouts with cute, innocent bashfulness in the warm vapor.",
     "promptTokens": [
       "1girl",

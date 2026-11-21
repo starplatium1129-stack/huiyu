@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_town_map",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2420,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_town_map",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "穗织漫步",
     "description": "走到街角时，蕾娜把地图摊开，发现自己刚才走过了一个路口。她用指尖沿着路线折回去，重新确认神社的方向。",
     "location": "old town street",
-    "action": "studying an unfolded map at a street corner",
+    "action": "把地图摊开用指尖沿着路线折回，重新确认神社方向",
     "timeOfDay": "morning",
     "lighting": "morning sunlight",
     "camera": "medium shot",

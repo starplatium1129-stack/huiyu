@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_christmas_snowdate",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 265,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ereshkigal_christmas_snowdate",
-    "title": "埃列什基伽勒 · 冥界圣诞的初雪·「这份温暖……是给我的吗」",
+    "title": "埃列什基伽勒 · 冥界圣诞的初雪",
     "category": "专属羁绊",
     "characterId": "ereshkigal_fate",
     "description": "【冥界雪原·圣诞夜】冥界飘起了历史上第一场雪——是某位女神偷偷从人间引来的。埃列什基伽勒站在雪里，白色毛衣连衣裙与红围巾衬得她像误落幽府的圣诞天使，接住雪花的掌心久久没有收回——「冥界……从来没有下过雪。这份温暖……真的是给我的吗？不是搞错收件人了吗……给我吗……」",

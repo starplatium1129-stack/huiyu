@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_sheer_nightgown_morning_wake",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2710,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "shinano_sheer_nightgown_morning_wake",
     "characterId": "shinano",
@@ -12,13 +12,13 @@
     "title": "信浓 · 晨曦罗帐的半透丝袍初醒",
     "category": "私密温存",
     "description": "清晨的薄曦透过天青色轻纱床幔洒入。信浓侧躺在松软的丝绸床铺上，半透的天青薄纱睡裙微松，勾勒出曼妙起伏的优美身形。白玉般的香肩与纤细锁骨在晨光下泛着莹润微光，九尾如天鹅绒毯般轻柔盖在腰际。她微微舒展玉臂，金眸在薄光中逐渐清晰，带着初醒时毫无防备的动人依赖。",
-    "action": "lying on side amidst silk bedding under sheer canopies, translucent cyan nightgown slipping, nine tails draped over waist, golden eyes blinking sleepily with tender blush",
+    "action": "侧躺在松软的丝绸床铺上，半透的天青薄纱睡裙微松",
     "recommendedSize": "832x1216",
     "location": "luxurious traditional bed with sheer flowing silk curtains at dawn",
     "timeOfDay": "morning",
     "lighting": "pure crystalline morning sunbeams piercing through lavender silk canopies",
     "camera": "medium_shot",
-    "mood": "heavenly tranquil awakening, unearthly sensual intimacy",
+    "mood": "温存与柔媚",
     "promptProse": "Waking up on a lavish silk bed draped in sheer curtains, Shinano turns languidly in her translucent cyan nightgown. Her nine white fox tails curve over the sheets as her golden eyes open in gentle, devoted morning light.",
     "promptTokens": [
       "1girl",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "kaoruko_nsfw_bath_foam_solo",
-  "revision": 12,
+  "revision": 14,
   "sortOrder": 1514,
   "createdAt": null,
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "kaoruko_nsfw_bath_foam_solo",
-    "title": "和栗薰子 · 甜香泡泡浴池的水光湿身独奏 ·「把奶油洗掉了……可是身上的甜味还在」",
+    "title": "和栗薰子 · 甜香泡泡浴池的水光湿身独奏",
     "category": "水光湿身",
     "characterId": "waguri_kaoruko",
     "description": "满是香草精油泡泡的木桶浴池。薰子整个人浸在温水里，白皙圆润的双肩露在水面，细滑的泡沫顺着粉嫩的乳房缓缓滑落。她把手伸进水底轻轻抚弄着自己，圆圆的杏眼里蒙上一层羞耻的水雾——「凛太郎揉面团的手法……总是那么有力又温柔……一想起来就……啊嗯……」",
@@ -52,7 +52,9 @@
       "special_nsfw",
       "h_cg"
     ],
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples"
+    ],
     "animaCaption": "Her hand remains beneath the water as foam slips across the cedar tub."
   }
 }

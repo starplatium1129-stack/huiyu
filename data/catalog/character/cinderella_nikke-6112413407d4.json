@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cinderella_nikke",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 174,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "cinderella_nikke",
     "profile": {
@@ -547,7 +547,7 @@
       ],
       "identityProse": "Cinderella from Goddess of Victory: NIKKE, a proud and graceful second-generation Fairy Tale Model Pilgrim with long silver-white wavy hair, clear ruby-red eyes, and a serene mirror-like presence; she holds a sincere wish to stand beside the Goddess squad.",
       "identityTokens": [
-        "cinderella_(nikke)",
+        "cinderella (nikke)",
         "1girl",
         "solo",
         "white_hair",
@@ -557,13 +557,13 @@
         "goddess_of_victory:_nikke"
       ],
       "characterTokens": [
-        "cinderella_(nikke)"
+        "cinderella (nikke)"
       ],
       "copyrightTokens": [
         "goddess_of_victory:_nikke"
       ],
       "exactTokens": [
-        "cinderella_(nikke)"
+        "cinderella (nikke)"
       ],
       "exactPrefixes": [
         "cinderella_"

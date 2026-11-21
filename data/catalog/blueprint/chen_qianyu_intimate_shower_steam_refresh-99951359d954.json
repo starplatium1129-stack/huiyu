@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_shower_steam_refresh",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2021,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "tea_linen",
@@ -14,11 +14,11 @@
     "description": "高强度拓荒任务结束后，基地浴室的水蒸气弥漫开来。洗去满身风尘的千语披着宽松素雅的墨绿斜襟居家居服，未完全擦干的发丝贴在白皙修长的后颈上。水汽氤氲中她回过头，向来干练锋芒的眼眸此刻泛着罕见的温软水润。",
     "recommendedSize": "832x1216",
     "location": "steamy outpost base shower room",
-    "action": "drying neck with towel, turning around through steam, soft gaze",
+    "action": "水汽氤氲中她回过头，向来干练锋芒的眼眸此刻泛着罕见的温软水润",
     "timeOfDay": "night",
     "lighting": "diffuse warm fluorescent lights through dense steam",
     "camera": "cowboy_shot",
-    "mood": "cool refreshing intimacy",
+    "mood": "浪漫温存",
     "promptProse": "Stepping out from a hot shower at the forward operating base, Chen Qianyu wears a loose dark green linen tunic. Damp black hair clings to the nape of her neck as she looks back through the misty steam with softened, affectionate eyes.",
     "promptTokens": [
       "chen_qianyu",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_r18_lab_self_experiment",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2843,
   "createdAt": "2026-10-31T04:42:34.298429+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "eta_shadow_r18_lab_self_experiment",
     "characterId": "eta_shadow",
@@ -50,7 +50,9 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "spread legs"
+      "spread legs",
+      "nipples",
+      "pussy"
     ],
     "nsfwProse": "",
     "animaCaption": "'Heart rate one thirty-two. Conclusion: Shadow's wisdom covers everything.' Eta writes it down and starts round two."

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_infinity_pool_posing",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2519,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-28T03:47:58.391980+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "epsilon_infinity_pool_posing",
     "characterId": "epsilon_shadow",
@@ -14,11 +14,11 @@
     "description": "四越度假顶层的天际无边泳池畔。厄普西隆单手支在池边台阶上，在艳阳下自信挺胸，展现出史莱姆百分之百精准塑形勾勒出的惊人曲线，眼角微挑，嘴角挂着“胜过贝塔”的得意微笑。",
     "recommendedSize": "832x1216",
     "location": "rooftop infinity pool overlooking a sunlit capital skyline",
-    "action": "standing on submerged pool steps, hands gracefully resting on hips, arching back slightly with proud radiant smile, water cascading off curves",
+    "action": "单手支在池边台阶上，在艳阳下自信挺胸，展现出史莱姆百分之百精准塑形勾勒出的惊人曲线",
     "timeOfDay": "afternoon",
     "lighting": "dazzling bright sun casting crystalline water highlights across sleek swimwear",
     "camera": "full_body",
-    "mood": "exquisite physical pride, supreme calculated vanity, playful secret rivalry",
+    "mood": "俏皮与私密",
     "promptProse": "Epsilon strikes a proud glamorous pose on the steps of a rooftop infinity pool in an azure monokini, smirking confidently in bright sun.",
     "promptTokens": [
       "infinity_pool",

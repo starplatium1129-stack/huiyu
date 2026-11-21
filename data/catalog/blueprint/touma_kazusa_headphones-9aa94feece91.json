@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_headphones",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2382,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "touma_kazusa_headphones",
     "characterId": "touma_kazusa",
@@ -13,7 +13,7 @@
     "category": "聆听",
     "description": "她坐在地毯上听录音，手边摊开的谱纸被压在杯垫下面，免得卷起来。",
     "location": "living room floor",
-    "action": "sitting on the rug and listening through headphones",
+    "action": "她坐在地毯上听录音，手边摊开的谱纸被压在杯垫下面，免得卷起来",
     "timeOfDay": "evening",
     "lighting": "floor lamp light",
     "camera": "medium shot",

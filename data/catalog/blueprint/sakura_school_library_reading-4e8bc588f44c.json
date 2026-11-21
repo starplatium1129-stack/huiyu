@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_school_library_reading",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 186,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "sakura_school_library_reading",
     "title": "间桐樱 · 图书室窗边",
@@ -18,7 +18,7 @@
     "timeOfDay": "afternoon",
     "lighting": "window_light",
     "camera": "medium_portrait",
-    "mood": "calm",
+    "mood": "恬淡平静",
     "sceneTags": [
       "school_library",
       "window_table",

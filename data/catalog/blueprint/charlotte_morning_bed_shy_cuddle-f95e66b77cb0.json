@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_morning_bed_shy_cuddle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2183,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "charlotte_morning_bed_shy_cuddle",
     "characterId": "charlotte_dunois",
@@ -14,11 +14,11 @@
     "description": "清晨的柔和光线穿过白色纱帘照在凌乱的被褥上。夏洛特侧躺在枕头边，娇小的身躯裹在宽大的纯白羽绒被中，只露出圆润白皙的香肩与粉嫩的锁骨。浅金色发丝散乱在枕套上，她拉起被角遮住半张通红的脸颊，碧蓝眼眸清澈微漾，轻声吐露着清晨的动人问候。",
     "recommendedSize": "832x1216",
     "location": "sunlit bedroom with rumpled white linen sheets",
-    "action": "lying on side in bed, pulling white sheet up to nose, bare shoulder exposed, blonde hair messy on pillow, blushing ears and cheeks, blue eyes gleaming with morning affection",
+    "action": "侧躺在枕头边，娇小的身躯裹在宽大的纯白羽绒被中",
     "timeOfDay": "morning",
     "lighting": "soft diffused morning sunbeam casting delicate highlights on white linen",
     "camera": "medium_shot",
-    "mood": "pure blushing vulnerability, sweet domestic morning bliss",
+    "mood": "温存与动情",
     "promptProse": "Peeking over a white bedsheet in soft morning sunlight, Charlotte lies with her bare shoulders exposed amidst messy pillows. Her blue eyes shine with sweet embarrassment and genuine morning happiness.",
     "promptTokens": [
       "1girl",

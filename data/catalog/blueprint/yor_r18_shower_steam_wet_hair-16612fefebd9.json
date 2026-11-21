@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_r18_shower_steam_wet_hair",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 813,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "yor_r18_shower_steam_wet_hair",
     "characterId": "yor_forger",
@@ -37,7 +37,9 @@
     "adultEligibility": "adult",
     "adultArtistHint": "@rella",
     "nsfwTokens": [
-      "nude"
+      "nude",
+      "nipples",
+      "pussy"
     ],
     "nsfwProse": "",
     "category": "私密写真",

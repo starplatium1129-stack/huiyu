@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_after_two_plates",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2504,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-07T11:55:00.000Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "arihara_nanami_after_two_plates",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "七海把最后一只碗放到桌上，发现筷子的方向摆反了，又转回来。你伸手帮忙时，她轻声说：“坐下吧，今天我们慢慢吃。”",
     "location": "dining table",
-    "action": "setting two bowls on a dining table",
+    "action": "把最后一只碗放到餐桌上，细心摆正筷子方向",
     "timeOfDay": "evening",
     "lighting": "warm lamplight",
     "camera": "medium shot",
@@ -31,7 +31,6 @@
       "medium shot"
     ],
     "animaCaption": "Two place settings are ready for their dinner together.",
-    "characterId": "arihara_nanami",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

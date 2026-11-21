@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_villa_hot_spring",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2034,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "weekend_apron",
@@ -14,11 +14,11 @@
     "description": "在泽村家那须高原的度假别墅内，私人露天风吕水汽蒸腾。英梨梨将标志性的长金发盘在脑后，浸泡在温热的泉水中。当听到屏风后传来的呼唤时，她整个人像熟透的红苹果般沉进水里只露出眼睛，水珠顺着白皙滑腻的肩头滑落，羞愤地娇叱对方不许转过身来。",
     "recommendedSize": "832x1216",
     "location": "private mountain villa outdoor onsen",
-    "action": "soaking in onsen, hair up in bun, shoulders bare in water, deep crimson blush",
+    "action": "家那须高原的度假别墅内，私人露天风吕水汽蒸腾，英梨梨将标志性的长金发盘在脑后",
     "timeOfDay": "dusk",
     "lighting": "steamy dusk light with pine trees silhouetted",
     "camera": "medium_shot",
-    "mood": "steamy flustered noble vulnerability",
+    "mood": "动情与水光",
     "promptProse": "Soaking up to her shoulders in the steaming private hot spring of her family villa, Eriri Spencer Sawamura has her blonde hair pinned into a damp bun. Steaming water beads on her delicate collarbones as she glares with intense, adorably flustered embarrassment.",
     "promptTokens": [
       "sawamura_spencer_eriri",

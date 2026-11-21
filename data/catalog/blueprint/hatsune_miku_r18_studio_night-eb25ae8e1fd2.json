@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hatsune_miku_r18_studio_night",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 325,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "hatsune_miku_r18_studio_night",
     "title": "初音未来 · 录音室深夜",
@@ -45,7 +45,10 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "adultArtistHint": "@rella",
     "outfitId": "nsfw_nude",

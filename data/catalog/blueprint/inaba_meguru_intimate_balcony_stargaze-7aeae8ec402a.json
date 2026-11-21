@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "inaba_meguru_intimate_balcony_stargaze",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2003,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T14:06:54.298033100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "inaba_meguru",
     "outfitId": "night_camisole",
@@ -14,11 +14,11 @@
     "description": "深夜安静的公寓阳台上，凉爽的夜风吹散了白日的暑气。巡身着轻柔的居家吊带衫，赤足站在木栏杆旁仰望繁星。当少年的手掌轻轻覆上她搭在栏杆边的指尖时，她没有抽离，而是微红着脸翻过手心，坚定地十指相扣。",
     "recommendedSize": "832x1216",
     "location": "open night apartment balcony",
-    "action": "interlocking fingers, looking at stars, shy affectionate smile",
+    "action": "当少年的手掌轻轻覆上她搭在栏杆边的指尖时，她没有抽离，而是微红着脸翻过手心，坚定地十指相扣",
     "timeOfDay": "night",
     "lighting": "cool silver moonlight and ambient city glow",
     "camera": "medium_shot",
-    "mood": "gentle romantic quiet devotion",
+    "mood": "温存与宁静",
     "promptProse": "Standing barefoot on the quiet balcony under the stars, Meguru interlocks fingers with the viewer beside the railing; only the viewer's hand is visible. Moonlight softly illuminates her face and orange side ponytail.",
     "promptTokens": [
       "1girl",

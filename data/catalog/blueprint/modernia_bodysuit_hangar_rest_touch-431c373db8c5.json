@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_bodysuit_hangar_rest_touch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2701,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "modernia_bodysuit_hangar_rest_touch",
     "characterId": "modernia",
@@ -14,11 +14,11 @@
     "description": "地表废墟要塞内安静的整备室，四周放着武器补给箱。卸下厚重机动装甲的神罚只穿着贴身的朝圣者黑白科技连体衣，拉链微开露出精致锁骨。她坐在金属箱上，轻轻晃着修长的双腿。深红眼眸中没有了战场上的杀戮冷酷，双手交叠在膝上，乖巧地等待着指挥官为她检查机体。",
     "recommendedSize": "832x1216",
     "location": "industrial sci-fi maintenance bay in surface ruins with amber emergency lamps",
-    "action": "sitting on metal supply crate, pilgrim tech bodysuit unzipped at collar, hands resting on knees, silver hair fluttering slightly, sweet gentle gaze",
+    "action": "身穿贴身黑白科技连体衣，拉链微开露出精致锁骨，坐在金属箱上",
     "timeOfDay": "afternoon",
     "lighting": "warm amber industrial spotlights cutting through dusty air",
     "camera": "cowboy_shot",
-    "mood": "sci-fi warrior vulnerability, absolute trusting loyalty",
+    "mood": "动情与默契",
     "promptProse": "Resting on an ammo crate inside a maintenance bay, Modernia wears her form-fitting pilgrim bodysuit unzipped slightly at the neck. Her silver bob hair catches warm amber spotlights as she looks up with total, gentle trust.",
     "promptTokens": [
       "1girl",

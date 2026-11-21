@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_report_to_shadow",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2806,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:10:26.631220400+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "zeta_shadow_report_to_shadow",
     "characterId": "zeta_shadow",
@@ -14,11 +14,11 @@
     "description": "庭园谒见厅里，泽塔单膝跪在空着的王座前，握着刚封好的谍报卷轴。月光照在她抬起的脸上；等暗影大人回来，这份报告会先交到他手里。",
     "recommendedSize": "832x1216",
     "location": "shadow garden audience chamber with an empty dark throne and high moonlit windows",
-    "action": "kneeling alone before an empty throne, holding a sealed intelligence report and looking up",
+    "action": "单膝跪在空置王座前，双手手持密报卷轴抬头仰望",
     "timeOfDay": "night",
     "lighting": "谒见厅高窗漏下的冷峻月光",
     "camera": "medium_shot",
-    "mood": "absolute loyalty, restrained devotion",
+    "mood": "神圣与默契",
     "promptProse": "Zeta kneels alone before an empty throne, holding a sealed intelligence report as moonlight falls through the high windows.",
     "promptTokens": [
       "audience chamber",

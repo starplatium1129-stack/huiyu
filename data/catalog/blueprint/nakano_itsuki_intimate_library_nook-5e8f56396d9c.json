@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_intimate_library_nook",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1977,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "nakano_itsuki_intimate_library_nook",
     "title": "中野五月 · 书架深处的心跳距离",
@@ -13,11 +13,11 @@
     "description": "黄昏时分幽静的图书馆狭窄过道中，两人在寻找同一本书时不经意贴近。昏黄夕照斜穿书架缝隙，五月心跳如擂鼓，红透耳根地微微仰头对视。",
     "recommendedSize": "832x1216",
     "location": "narrow shadowed library aisle",
-    "action": "standing against bookshelf, tiptoeing, close proximity, heavy blush",
+    "action": "昏黄夕照斜穿书架缝隙，五月心跳如擂鼓，红透耳根地微微仰头对视",
     "timeOfDay": "dusk",
     "lighting": "narrow rays of sunset slicing through dusty library shadows",
     "camera": "close-up",
-    "mood": "heart-racing breathless close proximity",
+    "mood": "屏息动情",
     "promptProse": "In a secluded, narrow library aisle between tall wooden bookshelves, Nakano Itsuki backs gently against the shelves at dusk. With her red cardigan and uniform slightly disheveled from reaching upward, she looks up with wide, intensely blushing eyes in breathless proximity.",
     "promptTokens": [
       "library",

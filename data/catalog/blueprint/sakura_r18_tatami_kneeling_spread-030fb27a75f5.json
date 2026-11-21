@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_r18_tatami_kneeling_spread",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 178,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "sakura_r18_tatami_kneeling_spread",
     "characterId": "matou_sakura",
@@ -48,7 +48,7 @@
     "timeOfDay": "night",
     "lighting": "paper_lantern_light",
     "camera": "medium_shot",
-    "mood": "sensual",
+    "mood": "柔媚诱人",
     "recommendedSize": "1152x1536",
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",

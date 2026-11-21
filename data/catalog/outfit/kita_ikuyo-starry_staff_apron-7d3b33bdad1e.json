@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "kita_ikuyo/starry_staff_apron",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1561,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-01T04:17:48.013414100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "kita_ikuyo",
     "outfit": {
       "id": "starry_staff_apron",
-      "name": "STARRY元气修身衬衫与系带吧台短裙围裙",
+      "name": "STARRY · 吧台衬衫与围裙",
       "tokens": [
         "collared_shirt",
         "black_shirt",

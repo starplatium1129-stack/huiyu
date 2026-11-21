@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "eta_shadow_slime_fitting_measurement",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2820,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "eta_shadow_slime_fitting_measurement",
     "characterId": "eta_shadow",
@@ -14,11 +14,11 @@
     "description": "埃塔穿着自己的史莱姆战服站在测量台上，对着镜子将软尺绕在腰间，旁边的记录板上写着设计尺寸。百褶裙式的战服是她亲手改的，数据可不能记错。",
     "recommendedSize": "832x1216",
     "location": "laboratory fitting platform with measuring tapes, mirrors and data crystals",
-    "action": "standing alone on a fitting platform in her pleated slime outfit, measuring her waist with a tape before a mirror",
+    "action": "穿着自己的史莱姆战服站在测量台上，对着镜子将软尺绕在腰间",
     "timeOfDay": "day",
     "lighting": "测量室均匀的白色灯光",
     "camera": "full_shot",
-    "mood": "clinical fitting, drowsy vanity",
+    "mood": "慵懒自傲",
     "promptProse": "Eta stands alone on the fitting platform in her pleated slime outfit, checking a measuring tape around her waist in the mirror. Even, bright fluorescent lighting washes over the examination platform, casting clean clinical reflections across full-length mirrors and measuring instruments.",
     "promptTokens": [
       "fitting room",

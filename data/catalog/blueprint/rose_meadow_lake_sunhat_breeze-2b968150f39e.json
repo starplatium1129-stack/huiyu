@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_meadow_lake_sunhat_breeze",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2523,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-30T11:25:24.593936100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rose_meadow_lake_sunhat_breeze",
     "characterId": "rose_oriana",
@@ -14,11 +14,11 @@
     "description": "清凉多瑙湖畔的青青草甸上。萝丝赤足踏在浅滩细浪中，单手轻按被湖风吹拂的草帽檐，白裙如荷花初绽，清澈的眼眸中没有战乱与阴谋，只有纯粹无瑕的浪漫情怀与温柔笑意。",
     "recommendedSize": "832x1216",
     "location": "serene lakeside meadow with blooming wildflowers and crystal water shallows",
-    "action": "standing in shallow clear water, one hand securing her straw hat against the lake breeze, glancing back toward viewer with a breathless innocent smile",
+    "action": "赤足踏在浅滩细浪中，单手轻按被湖风吹拂的草帽檐，白裙如荷花初绽，清澈的眼眸中没有战乱与阴谋",
     "timeOfDay": "golden_hour",
     "lighting": "warm golden late-afternoon sun filtering across rippling lake water",
     "camera": "full_body",
-    "mood": "pure pastoral romance, untouched innocence, sweet tranquil peace",
+    "mood": "温存与宁静",
     "promptProse": "Rose in a white frilled swimsuit stands in a crystal lake shallows, holding her straw hat against a gentle summer breeze with a radiant smile.",
     "promptTokens": [
       "lake",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shiranui_mai_r18_b9_04",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1750,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "shiranui_mai_r18_b9_04",
-    "title": "不知火舞 · 婚纱愿望床褥深处的火热豪情自持 ·「不知火流的当家女将……只想做你最温顺的新娘」",
+    "title": "不知火舞 · 婚纱愿望床褥深处的火热豪情自持",
     "category": "私密自持",
     "characterId": "shiranui_mai",
     "description": "幻想着穿上纯白婚纱的幸福之夜。舞完全赤裸地仰躺在红缎被褥上，将一条纯白的新娘头纱抱在胸口。健美丰满的长腿大开，两根手指带着狂热的不知火之炎在泛滥的爱液深处疯狂抽送，嘴里发出断断续续的娇媚高潮喘息——「安迪……新娘头纱我都准备好了……什么时候……才肯真正占有我啊……哈啊……」",
@@ -49,7 +49,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

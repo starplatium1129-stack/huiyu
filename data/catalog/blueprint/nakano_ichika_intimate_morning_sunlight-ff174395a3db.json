@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_intimate_morning_sunlight",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1956,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_ichika_intimate_morning_sunlight",
     "title": "中野一花 · 晨曦微光中的初醒凝视",
@@ -13,11 +13,11 @@
     "description": "清晨柔和阳光洒在凌乱的白色床单上，一花初醒慵懒地侧躺在软枕边，双臂轻展伸着懒腰，嘴角挂着无防备的甜蜜浅笑。",
     "recommendedSize": "832x1216",
     "location": "cozy sunlit bedroom",
-    "action": "lying in white bed, rubbing eye, drowsy warm smile",
+    "action": "清晨柔和阳光洒在凌乱的白色床单上，一花初醒慵懒地侧躺在软枕边，双臂轻展伸着懒腰",
     "timeOfDay": "morning",
     "lighting": "soft golden morning sunlight filtering through sheer curtains",
     "camera": "close-up",
-    "mood": "tender and cozy",
+    "mood": "温存与治愈",
     "promptProse": "Lying lazily in a soft white bed bathed in gentle morning sunshine, Nakano Ichika slowly wakes up in her pink silk negligee. Her messy pink hair frames her face as she rubs her sleepy eyes and smiles warmly up at the viewer.",
     "promptTokens": [
       "bedroom",

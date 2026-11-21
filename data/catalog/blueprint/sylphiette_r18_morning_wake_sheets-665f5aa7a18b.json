@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_r18_morning_wake_sheets",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 473,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "慵懒苏醒，薄被滑落，揉着眼睛",
     "adult": true,
@@ -18,7 +18,7 @@
     "kreaStyleHint": "",
     "lighting": "morning_sunlight",
     "location": "主卧大床",
-    "mood": "sensual",
+    "mood": "柔媚诱人",
     "negativeTokens": [],
     "nsfwProse": "",
     "nsfwTokens": [],

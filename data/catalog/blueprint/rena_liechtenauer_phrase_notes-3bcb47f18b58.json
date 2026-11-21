@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_phrase_notes",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2427,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_phrase_notes",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "语言学习",
     "description": "蕾娜把刚听来的词写在小本子上，又对照旁边的解释念了一遍。写错的地方被划掉，空白处留给下一句。",
     "location": "cafe table",
-    "action": "writing vocabulary in a notebook",
+    "action": "把听来的词句写进小本子，对照解释认真朗读，划掉错字重新确认",
     "timeOfDay": "morning",
     "lighting": "window light",
     "camera": "medium shot",

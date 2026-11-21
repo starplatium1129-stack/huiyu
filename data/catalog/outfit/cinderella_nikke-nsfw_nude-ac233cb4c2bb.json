@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "cinderella_nikke/nsfw_nude",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 1551,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-22T00:00:00.000000000+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "cinderella_nikke",
     "outfit": {
       "id": "nsfw_nude",
-      "name": "🔞 私密全裸 / 纯粹形态",
+      "name": "私密全裸 / 纯粹形态",
       "tokens": [
         "nude",
         "completely_naked",

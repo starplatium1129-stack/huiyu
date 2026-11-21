@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "irina_shidou",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 229,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "irina_shidou",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "一诚君！今天天主也在天上微笑着见证我们的爱情呢！所以……今天晚上也要好好努力，为了天主生下优秀的圣剑宝宝哦！哎呀……脸好烫，不准笑话伊莉娜啦！",
       "source": "TNK《恶魔高校 DxD / High School DxD》",
       "traits": [
-        "irina_shidou",
+        "irina shidou",
         "brown_hair",
         "long_hair",
         "twintails",
@@ -108,16 +108,16 @@
         "irina shidou"
       ],
       "exactTokens": [
-        "irina_shidou"
+        "irina shidou"
       ],
       "characterTokens": [
-        "irina_shidou"
+        "irina shidou"
       ],
       "copyrightTokens": [
         "high_school_dxd"
       ],
       "identityTokens": [
-        "irina_shidou",
+        "irina shidou",
         "1girl",
         "solo",
         "brown_hair",

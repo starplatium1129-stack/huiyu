@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_cruise_suite_bed_proactive_kiss",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2199,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "la_folia_cruise_suite_bed_proactive_kiss",
     "characterId": "la_folia_rihavein",
@@ -14,11 +14,11 @@
     "description": "豪华邮轮全景贵宾套房内，华灯初上，落地窗外是泛着粼粼波光的浩瀚海景。拉·芙利亚身着一袭尊贵的阿尔迪基亚亲卫白银军服，军装外套前襟轻展，金色肩章在暖光下生辉。银白长发如月光流淌在肩后，她侧坐在丝绒贵妃榻上，指尖执着剔透的水晶香槟杯，蔚蓝眼眸流转着王族特有的端庄与不加掩饰的深情。",
     "recommendedSize": "832x1216",
     "location": "luxurious cruise ship grand suite overlooking starry night ocean",
-    "action": "seated gracefully on plush velvet chaise lounge, immaculate white royal military parade jacket loosely unbuttoned at collar, gold fringed epaulets, short skirt, holding crystal champagne flute, flowing silver hair, regal captivating smile",
+    "action": "身着一袭尊贵的阿尔迪基亚亲卫白银军服，军装外套前襟轻展",
     "timeOfDay": "night",
     "lighting": "warm crystal chandelier glow mixing with deep indigo ocean moonlight",
     "camera": "cowboy_shot",
-    "mood": "regal romantic allure, sophisticated royal warmth",
+    "mood": "温存与端庄",
     "promptProse": "Inside a luxury cruise suite, Princess La Folia lounges gracefully on a velvet chaise wearing her white royal military uniform with loosened collar and gold epaulets. Holding a champagne glass, her silver hair flows as she smiles with regal, captivating affection. Soft bedside lamplight inside the cruise suite mingles with moonlight shimmering off ocean ripples outside the balcony, casting romantic ambient glow across the sheets.",
     "promptTokens": [
       "1girl",

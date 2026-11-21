@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_balcony_sunset_confession",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 1389,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "双手轻柔捧起你的脸颊，金发在海风中纷飞，霞光染透湛蓝眼眸，探头微吻",
     "adult": false,
@@ -52,7 +52,7 @@
       "wind_blown"
     ],
     "timeOfDay": "黄昏晚霞",
-    "title": "薇尔莉特 · 海崖晚霞的指尖抚触·「我的生命与爱意，全部奉献给您」",
+    "title": "薇尔莉特 · 海崖晚霞的指尖抚触",
     "identityTokensOverride": [
       "violet_evergarden",
       "blonde hair",

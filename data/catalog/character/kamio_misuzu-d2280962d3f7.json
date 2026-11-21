@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kamio_misuzu",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 251,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kamio_misuzu",
     "profile": {
@@ -183,7 +183,7 @@
       ],
       "identityProse": "Misuzu Kamio from AIR, with long blonde hair tied in a high ponytail, clear sky-blue eyes, and an innocent, gentle, and deeply nostalgic presence.",
       "identityTokens": [
-        "kamio_misuzu",
+        "kamio misuzu",
         "1girl",
         "solo",
         "blonde_hair",
@@ -193,7 +193,7 @@
         "air"
       ],
       "exactTokens": [
-        "kamio_misuzu"
+        "kamio misuzu"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -225,7 +225,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "kamio_misuzu"
+        "kamio misuzu"
       ],
       "copyrightTokens": [
         "air"

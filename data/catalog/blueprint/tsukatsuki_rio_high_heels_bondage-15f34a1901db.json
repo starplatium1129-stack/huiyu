@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "tsukatsuki_rio_high_heels_bondage",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 890,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "坐在皮质扶手椅上，双手搭在扶手，穿红底黑色高跟鞋抬眼凝视",
     "adult": true,
@@ -24,7 +24,10 @@
     "mood": "傲慢受缚",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "black_red_sole_heels",
     "promptProse": "Rio sits upright in the leather armchair, both hands on its armrests and black red-soled heels on the floor, meeting the viewer’s gaze in warm overhead light.",
     "promptTokens": [

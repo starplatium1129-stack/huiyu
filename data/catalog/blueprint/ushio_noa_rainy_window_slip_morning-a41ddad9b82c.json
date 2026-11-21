@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_rainy_window_slip_morning",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2652,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "ushio_noa_rainy_window_slip_morning",
     "characterId": "ushio_noa",
@@ -14,11 +14,11 @@
     "description": "清晨的细雨在落地窗上织出连绵的水珠。诺亚赤着双足站在窗前，纤薄的真丝睡裙勾勒出曼妙窈窕的身段。她单手轻按在微凉的玻璃上，白发在晨光微澜中散发着温润的光泽。转眸回望的瞬间，从容知性的书记官眼角泛着毫无戒备的娇柔笑意。",
     "recommendedSize": "832x1216",
     "location": "modern apartment bedroom by rainy floor-to-ceiling glass window",
-    "action": "standing barefoot by rain-streaked window, touching glass with fingertips, purple silk nightdress hugging figure, turning with delicate affectionate smile",
+    "action": "转眸回望的瞬间，从容知性的书记官眼角泛着毫无戒备的娇柔笑意",
     "timeOfDay": "morning",
     "lighting": "diffused cool rainy morning light outlining feminine silhouette",
     "camera": "cowboy_shot",
-    "mood": "poetic morning quietude, alluring delicate elegance",
+    "mood": "柔媚诱人",
     "promptProse": "Standing barefoot beside a rain-streaked glass window in the early morning, Ushio Noa wears a fitted silk slip dress. Soft daylight outlines her slender silhouette as she turns with a serene, loving expression.",
     "promptTokens": [
       "1girl",

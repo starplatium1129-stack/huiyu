@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "asuna_lakeside_nap_lap_pillow",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1364,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "asuna_lakeside_nap_lap_pillow",
-    "title": "结城明日奈 · 湖畔微风下的草地膝枕·「真是的……像小猫一样睡得这么香呢」",
+    "title": "结城明日奈 · 湖畔微风下的草地膝枕",
     "category": "治愈温存",
     "characterId": "asuna_yuuki",
     "description": "22层湖畔的柳树筛下细碎光斑，亚丝娜坐在野餐布上，让你安静地枕着她的膝盖。她换了米白针织衫和柔软的藏青裙，一只手托着脸颊，另一手轻轻拨开你的额发。你从膝上睁开眼时，先看见她低头的笑脸，再看见她身后的柳叶和明亮湖水。树叶轻轻摇动，让光斑在她的笑脸旁缓缓移动。",

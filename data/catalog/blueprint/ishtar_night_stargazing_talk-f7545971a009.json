@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ishtar_night_stargazing_talk",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 259,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ishtar_night_stargazing_talk",
-    "title": "伊什塔尔 · 星空下的真心话·「金星……是我最喜欢的一颗」",
+    "title": "伊什塔尔 · 星空下的真心话",
     "category": "专属羁绊",
     "characterId": "ishtar_fate",
     "description": "伊什塔尔与你并肩躺在平整的屋顶平台上，指向西方低空明亮的金星。天边的余晖尚未散尽，几颗较亮的星已显现。她难得放轻了声音，说起爱与战争之外那些不擅表达的心事。",

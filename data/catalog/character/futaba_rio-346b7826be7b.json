@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "futaba_rio",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 145,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "futaba_rio",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Rascal Does Not Dream of Bunny Girl Senpai",
       "speech": "先整理观察结果，再考虑解释。",
       "traits": [
-        "futaba_rio",
+        "futaba rio",
         "seishun_buta_yarou",
         "grey_hair",
         "long_hair",
@@ -357,7 +357,7 @@
       ],
       "identityProse": "Rio Futaba from Rascal Does Not Dream, with long wavy gray-brown hair and brown eyes.",
       "identityTokens": [
-        "futaba_rio",
+        "futaba rio",
         "seishun_buta_yarou",
         "grey_hair",
         "long_hair",
@@ -365,7 +365,7 @@
         "brown_eyes"
       ],
       "exactTokens": [
-        "futaba_rio"
+        "futaba rio"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -394,7 +394,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "futaba_rio"
+        "futaba rio"
       ],
       "copyrightTokens": [
         "seishun_buta_yarou"

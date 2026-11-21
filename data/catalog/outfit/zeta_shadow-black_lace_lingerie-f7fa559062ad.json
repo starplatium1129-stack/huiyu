@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "zeta_shadow/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2569,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "zeta_shadow",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "影猫匿踪 · 墨黑剪裁高弹微透系绳内衣套",
+      "name": "影猫匿踪 · 微透系绳内衣套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

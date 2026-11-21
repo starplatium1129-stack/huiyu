@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_home_kitchen_apron_morning",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2638,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "ijichi_nijika_home_kitchen_apron_morning",
     "characterId": "ijichi_nijika",
@@ -14,11 +14,11 @@
     "description": "晨光照亮的小巧公寓厨房，平底锅里煎蛋滋滋作响。虹夏穿着简单的白T恤，外系着可爱的明黄色棉麻围裙。她转过身单手端着盛好早餐的餐盘，耳尖微红，元气满满的大眼睛里闪烁着期待夸奖的灵动光彩。",
     "recommendedSize": "832x1216",
     "location": "bright compact kitchen filled with sunny morning air",
-    "action": "standing in kitchen holding breakfast plate, cheerful yellow apron tied over white t-shirt, turning with sweet blushing smile and sparkling ruby eyes",
+    "action": "她转过身单手端着盛好早餐的餐盘，耳尖微红，元气满满的大眼睛里闪烁着期待夸奖的灵动光彩",
     "timeOfDay": "morning",
     "lighting": "fresh morning sunbeams pouring through small kitchen window",
     "camera": "cowboy_shot",
-    "mood": "cheerful domestic warmth, pure heartwarming care",
+    "mood": "神圣与治愈",
     "promptProse": "Standing in a sunlit kitchen, Nijika holds a breakfast plate with an apron tied over a simple t-shirt. Morning light illuminates her blonde side ponytail as she turns with a bright, blushing smile full of care.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_rooftop_lunch_smile",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1962,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_rooftop_lunch_smile",
     "title": "中野四叶 · 晴空天台的元气便当",
@@ -13,11 +13,11 @@
     "description": "放学后的明媚天台上微风和煦，四叶坐在木长椅上大口咬着美味饭团。鼓起腮帮子露出天真灿烂的笑容，挥手招呼少年过来一起吃。",
     "recommendedSize": "832x1216",
     "location": "school rooftop fence",
-    "action": "sitting on bench, holding onigiri, stuffed cheeks, cheerful grin",
+    "action": "鼓起腮帮子露出天真灿烂的笑容，挥手招呼少年过来一起吃",
     "timeOfDay": "day",
     "lighting": "fresh afternoon breeze and clear sky",
     "camera": "medium_shot",
-    "mood": "wholesome everyday warmth",
+    "mood": "日常温存",
     "promptProse": "Sitting on a wooden bench on the school rooftop, Nakano Yotsuba munches happily on a large rice ball with full puffy cheeks. Her green rabbit ribbon sways softly in the gentle breeze against the chainlink fence and blue sky.",
     "promptTokens": [
       "rooftop",

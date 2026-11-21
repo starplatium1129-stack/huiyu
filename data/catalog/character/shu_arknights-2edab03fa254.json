@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shu_arknights",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 166,
   "createdAt": "2026-10-04T10:59:50+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shu_arknights",
     "profile": {
@@ -61,7 +61,7 @@
       "bg_story": "炎国巨兽“岁”之分身化身之一，排行第六的岁兽代理人，司掌农耕生养与四时节令。数千年前真身分化后走入民间，千百年来扎根于大荒城一带，传授水利、梯田开垦与作物育种技术，将荒地变为塞北粮仓。在大荒城天灾事件中，她不惜耗费神力镇压地脉，后在罗德岛干员与兄弟姐妹的协助下平息危机，以特约学者身份客居罗德岛，打理舰上水培区并照料同伴。",
       "source": "Hypergryph《明日方舟 / Arknights》",
       "traits": [
-        "shu_(arknights)",
+        "shu (arknights)",
         "1girl",
         "solo",
         "very_long_hair",
@@ -1249,14 +1249,13 @@
       "displayName": "黍",
       "exactPrefixes": [],
       "exactTokens": [
-        "shu (arknights)",
-        "shu_(arknights)"
+        "shu (arknights)"
       ],
       "franchise": "Arknights",
       "id": "shu_arknights",
       "identityProse": "Shu from Arknights: very long silver-gray hair with gold streaks and cobalt ends, turquoise eyes with amber-orange pupils, branched ivory-and-gold dragon horns, pointed ears, golden-yellow hands and a pale scaled tail edged in gold and blue.",
       "identityTokens": [
-        "shu_(arknights)",
+        "shu (arknights)",
         "1girl",
         "solo",
         "grey hair",
@@ -1291,7 +1290,6 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "shu_(arknights)",
         "shu (arknights)",
         "Shu"
       ],

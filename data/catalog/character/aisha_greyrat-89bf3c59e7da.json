@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aisha_greyrat",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 160,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "aisha_greyrat",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "「早上好，兄长大人。宅邸的事务与佣兵团的联络均已妥善安排，只要有爱夏在，格雷拉特家绝不会出现任何差池。」",
       "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
       "traits": [
-        "aisha_greyrat",
+        "aisha greyrat",
         "solo",
         "red_hair",
         "short_hair",
@@ -533,13 +533,13 @@
       "displayName": "爱夏·格雷拉特（成年版）",
       "exactPrefixes": [],
       "exactTokens": [
-        "aisha_greyrat"
+        "aisha greyrat"
       ],
       "franchise": "Mushoku Tensei",
       "id": "aisha_greyrat",
       "identityProse": "Adult Aisha Greyrat from Mushoku Tensei, with short auburn hair in a ponytail, a plain white hairband, sidelocks, green eyes and a small fang.",
       "identityTokens": [
-        "aisha_greyrat",
+        "aisha greyrat",
         "solo",
         "red_hair",
         "short_hair",
@@ -566,7 +566,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "aisha_greyrat"
+        "aisha greyrat"
       ],
       "copyrightTokens": [
         "mushoku_tensei"

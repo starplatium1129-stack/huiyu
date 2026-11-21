@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asia_argento",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 231,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "asia_argento",
     "profile": {
@@ -107,16 +107,16 @@
         "asia argento"
       ],
       "exactTokens": [
-        "asia_argento"
+        "asia argento"
       ],
       "characterTokens": [
-        "asia_argento"
+        "asia argento"
       ],
       "copyrightTokens": [
         "high_school_dxd"
       ],
       "identityTokens": [
-        "asia_argento",
+        "asia argento",
         "1girl",
         "solo",
         "blonde_hair",

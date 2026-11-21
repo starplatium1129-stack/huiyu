@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "tohsaka_rin",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 14,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "tohsaka_rin",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "远坂凛向你致以问候。",
       "source": "TYPE-MOON《Fate 系列》",
       "traits": [
-        "tohsaka_rin",
+        "tohsaka rin",
         "1girl",
         "solo",
         "long_brown_hair",
@@ -960,7 +960,7 @@
         "fate/stay_night"
       ],
       "exactTokens": [
-        "tohsaka_rin"
+        "tohsaka rin"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -993,7 +993,6 @@
       ],
       "characterTokens": [
         "tohsaka rin",
-        "tohsaka_rin",
         "Rin"
       ],
       "copyrightTokens": [

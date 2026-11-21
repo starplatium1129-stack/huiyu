@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_shadow_board_duel_candlelight",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2531,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "alpha_shadow_board_duel_candlelight",
     "title": "阿尔法 · 烛光长桌上的暗影对弈",
@@ -12,7 +12,7 @@
     "outfitId": "business_suit",
     "description": "商会顶层密室内古典长木桌前，阿尔法手持羽毛笔与黑色棋子，在烛台暖光下与暗影对局，目光笃定中带着信赖。",
     "location": "luxurious executive private chamber with dark oak paneling and heavy drapery",
-    "action": "sitting at mahogany table, fingers lightly holding a carved black chess piece over board, looking up with calm confident smile",
+    "action": "手持羽毛笔与黑色棋子，在烛台暖光下与暗影对局，目光笃定中带着信赖",
     "timeOfDay": "夜晚",
     "lighting": "烛台暖光与侧逆微光",
     "camera": "wide medium shot",

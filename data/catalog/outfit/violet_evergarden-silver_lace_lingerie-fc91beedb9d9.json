@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "violet_evergarden/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2580,
   "createdAt": "2026-11-04T16:06:57.351500400+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "violet_evergarden",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "紫罗兰信笺 · 象牙白蕾丝维多利亚风胸衣裙",
+      "name": "紫罗兰信笺 · 维多利亚蕾丝胸衣裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

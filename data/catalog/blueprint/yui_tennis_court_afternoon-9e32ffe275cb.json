@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_tennis_court_afternoon",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 354,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "yui_tennis_court_afternoon",
     "title": "由比滨结衣 · 网球训练场",
@@ -18,7 +18,7 @@
     "timeOfDay": "afternoon",
     "lighting": "sunny",
     "camera": "medium_shot",
-    "mood": "energetic",
+    "mood": "活力充沛",
     "sceneTags": [
       "tennis_court",
       "tennis_racket",

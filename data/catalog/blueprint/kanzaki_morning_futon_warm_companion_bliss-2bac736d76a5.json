@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_morning_futon_warm_companion_bliss",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2303,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kanzaki_morning_futon_warm_companion_bliss",
     "characterId": "kanzaki_kaori",
@@ -14,11 +14,11 @@
     "description": "清晨的金色阳光透过窗纱洒在被褥上。马尾解开后的黑发如瀑铺散，高挑曼妙的神裂火织像考拉一样紧紧拥着你的腰身，将脸颊埋在你的胸口，嘴角漾着满足安心的甜美笑颜。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched morning bedroom with soft white futon",
-    "action": "tangled in morning sheets with loose cascading black hair, hugging partner chest tight with a peaceful affectionate smile in morning light",
+    "action": "像考拉一样紧紧拥着你的腰身，将脸颊埋在你的胸口，嘴角漾着满足安心的甜美笑颜",
     "timeOfDay": "morning",
     "lighting": "bright heavenly morning sunlight warming white sheets and smooth skin",
     "camera": "close-up",
-    "mood": "morning newlywed tranquility, supreme romantic security, sweet possessive girlfriend peace",
+    "mood": "温存与宁静",
     "promptProse": "Tangled in morning sheets with loose cascading black hair, Kaori Kanzaki hugs partner chest with bare shoulders and a radiant peaceful wife smile.",
     "promptTokens": [
       "bedroom",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_sunlit_bedroom_morning_grace",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2003,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alice_sao_sunlit_bedroom_morning_grace",
     "characterId": "alice_sao",
@@ -14,11 +14,11 @@
     "description": "清晨阳光照进静谧卧室，身穿纯白丝质睡袍的爱丽丝坐在床沿，金色的发辫垂在微露的雪白肩头，回眸注视着醒来的爱人，目光充满毫无保留的眷恋。",
     "recommendedSize": "832x1216",
     "location": "serene sun-filled bedroom",
-    "action": "sitting on edge of bed, looking back over shoulder, sweet devoted smile",
+    "action": "坐在床沿，金色的发辫垂在微露的雪白肩头，回眸注视着醒来的爱人，目光充满毫无保留的眷恋",
     "timeOfDay": "day",
     "lighting": "pristine morning sun rays illuminating flowing golden locks",
     "camera": "close-up",
-    "mood": "sublime devotional morning beauty",
+    "mood": "神圣纯洁",
     "promptProse": "Perched gracefully at the edge of a sunlit bed in soft morning light, Alice looks over her shoulder in a white silk gown, her lustrous golden braid catching the daybreak glow with an affectionate smile.",
     "promptTokens": [
       "alice_synthesis_thirty",

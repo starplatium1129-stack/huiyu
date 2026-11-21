@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_club_table",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2411,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_club_table",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "伙伴相处",
     "description": "大家商量完事情先离开了，紬留下来把写好的约定压在桌角。她又添了一笔，免得有人忘记集合时间。",
     "location": "club room",
-    "action": "writing a reminder at a table",
+    "action": "她又添了一笔，免得有人忘记集合时间",
     "timeOfDay": "afternoon",
     "lighting": "window light",
     "camera": "cowboy shot",

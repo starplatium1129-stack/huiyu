@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sakura_archery_dojo_glance",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 177,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "sakura_archery_dojo_glance",
     "characterId": "matou_sakura",
@@ -50,7 +50,7 @@
     "timeOfDay": "evening",
     "lighting": "warm sunset entering the open side of the dojo",
     "camera": "full-body shot, lowered longbow and stable stance visible",
-    "mood": "focused",
+    "mood": "专注坚毅",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"

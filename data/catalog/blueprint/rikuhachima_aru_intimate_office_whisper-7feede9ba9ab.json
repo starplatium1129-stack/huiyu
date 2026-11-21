@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_intimate_office_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2110,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-31T03:24:55.000000000+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rikuhachima_aru_intimate_office_whisper",
     "characterId": "rikuhachima_aru",
@@ -14,11 +14,11 @@
     "description": "社员们都已离去的深夜事务所，唯有一盏暖黄台灯安静亮着。阿露被老师轻柔地拉到身边，双手无处安放地下意识攥紧了老师的衣襟。酒红色的发丝贴在通红发烫的面颊旁，金眸轻颤，平日里要强的大恶党，在极近距离的呼吸中彻底融化成心跳失控的娇羞少女。",
     "recommendedSize": "832x1216",
     "location": "warmly lit private office beside leather sofa",
-    "action": "clutching shirt collar, heavy facial blush, breathless parted lips, intense gaze",
+    "action": "酒红色的发丝贴在通红发烫的面颊旁，金眸轻颤，平日里要强的大恶党",
     "timeOfDay": "night",
     "lighting": "warm amber desk lamp with soft ambient room glow and city window bokeh",
     "camera": "close-up",
-    "mood": "intense vulnerable flutter, pounding heartbeat, and devotion",
+    "mood": "动情与神圣",
     "promptProse": "In the warmly lit midnight office with soft lamplight and city window glow, Rikuhachima Aru clutches the viewer with trembling fingers, her golden eyes wide and cheeks burning with breathless affection.",
     "promptTokens": [
       "blush",

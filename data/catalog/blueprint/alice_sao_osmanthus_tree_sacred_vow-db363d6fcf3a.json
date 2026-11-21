@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_osmanthus_tree_sacred_vow",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1998,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alice_sao_osmanthus_tree_sacred_vow",
     "characterId": "alice_sao",
@@ -14,11 +14,11 @@
     "description": "盛开着满树芬芳的黄金金木樨树下，爱丽丝身披白金战甲与纯白披风，手按金木樨之剑剑柄，金色花瓣如雨洒落，气势威严圣洁。",
     "recommendedSize": "832x1216",
     "location": "cathedral courtyard with osmanthus tree",
-    "action": "hand on sword hilt, golden petals raining around, serene resolute gaze",
+    "action": "身披白金战甲与纯白披风，手按金木樨之剑剑柄，金色花瓣如雨洒落，气势威严圣洁",
     "timeOfDay": "day",
     "lighting": "glorious golden daylight cascading through blooming golden blossom boughs",
     "camera": "medium_shot",
-    "mood": "breathtakingly noble and sacred chivalric atmosphere",
+    "mood": "神圣纯洁",
     "promptProse": "Beneath a grand blooming osmanthus tree showering fragrant golden petals, Alice stands poised in her ornate Integrity Knight armor, resting her hand upon her sacred blade.",
     "promptTokens": [
       "alice_synthesis_thirty",

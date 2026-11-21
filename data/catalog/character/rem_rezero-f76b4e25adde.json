@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rem_rezero",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 15,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "rem_rezero",
     "profile": {
@@ -289,7 +289,7 @@
       ],
       "identityProse": "Rem from Re:Zero, with short blue hair covering one eye and light-blue eyes.",
       "identityTokens": [
-        "rem_(re:zero)",
+        "rem (re:zero)",
         "1girl",
         "solo",
         "short_hair",
@@ -299,7 +299,7 @@
         "re:zero"
       ],
       "exactTokens": [
-        "rem_(re:zero)"
+        "rem (re:zero)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -331,7 +331,7 @@
         "anmi"
       ],
       "characterTokens": [
-        "rem_(re:zero)"
+        "rem (re:zero)"
       ],
       "copyrightTokens": [
         "re:zero"

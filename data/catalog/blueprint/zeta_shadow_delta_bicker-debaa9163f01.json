@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "zeta_shadow_delta_bicker",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2812,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "zeta_shadow_delta_bicker",
     "characterId": "zeta_shadow",
@@ -14,11 +14,11 @@
     "description": "庭园走廊里，泽塔抱臂靠墙，冷冷地看着刚把训练场弄得一团糟的德尔塔。“……笨狗。”这句评价，她今天已经说了第三遍。",
     "recommendedSize": "832x1216",
     "location": "shadow garden corridor with stone pillars and training ground visible through an arch",
-    "action": "leaning against a pillar with arms crossed, cold exasperated expression, muttering at someone off-frame",
+    "action": "抱臂靠墙，冷冷地看着刚把训练场弄得一团糟的德尔塔",
     "timeOfDay": "day",
     "lighting": "走廊石柱间的明暗交界光",
     "camera": "medium_shot",
-    "mood": "feline disdain, daily rivalry",
+    "mood": "傲娇互怼",
     "promptProse": "Arms crossed, eyes half-lidded, Zeta delivers her third \"stupid dog\" of the day. Delta, off-frame, is surely barking back. Shafts of stone corridor light and deep pillar shadows alternate across the floor, highlighting her crossed arms and deadpan, half-lidded glare.",
     "promptTokens": [
       "corridor",

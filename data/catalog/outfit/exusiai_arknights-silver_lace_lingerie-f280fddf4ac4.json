@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "exusiai_arknights/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2323,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "exusiai_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "企鹅物流活力亮白亮橙撞色拉链运动卫衣睡衣",
+      "name": "企鹅物流 · 撞色拉链运动睡衣",
       "category": "睡衣 / 连帽运动套",
       "default": false,
       "isDefault": false,

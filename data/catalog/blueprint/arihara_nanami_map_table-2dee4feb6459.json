@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_map_table",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2441,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:15:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_map_table",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "任务准备",
     "description": "桌上的地图被几张便签压住。七海将一枚标记移到新的位置，确认不会挡住旁边的重要路线。",
     "location": "briefing room",
-    "action": "placing a marker on a paper map",
+    "action": "七海将一枚标记移到新的位置，确认不会挡住旁边的重要路线",
     "timeOfDay": "evening",
     "lighting": "desk lamp",
     "camera": "medium shot",

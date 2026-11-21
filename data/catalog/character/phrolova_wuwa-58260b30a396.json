@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "phrolova_wuwa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 308,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "phrolova_wuwa",
     "profile": {
@@ -35,7 +35,7 @@
       "likes": [],
       "speech": "这里要停一拍。等那道回声散尽，再接下一句。",
       "traits": [
-        "phrolova_(wuthering_waves)",
+        "phrolova (wuthering waves)",
         "wuthering_waves",
         "white hair",
         "long hair",
@@ -110,7 +110,7 @@
       ],
       "identityProse": "Phrolova from Wuthering Waves. Long white hair, a red eye and a flowered eyepatch.",
       "identityTokens": [
-        "phrolova_(wuthering_waves)",
+        "phrolova (wuthering waves)",
         "wuthering_waves",
         "white hair",
         "long hair",
@@ -118,13 +118,13 @@
         "eyepatch"
       ],
       "characterTokens": [
-        "phrolova_(wuthering_waves)"
+        "phrolova (wuthering waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"
       ],
       "exactTokens": [
-        "phrolova_(wuthering_waves)"
+        "phrolova (wuthering waves)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

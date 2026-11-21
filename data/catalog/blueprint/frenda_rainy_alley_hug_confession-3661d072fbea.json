@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frenda_rainy_alley_hug_confession",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2306,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "frenda_rainy_alley_hug_confession",
     "characterId": "frenda_seivelun",
@@ -14,11 +14,11 @@
     "description": "暴雨如注的街巷屋檐下，浑身微湿的芙兰达一把丢掉雨伞扑入你的怀里，双手死死搂住你的脖子。贝雷帽微歪，金发少女眼角含泪、带着急促的喘息大喊：“结果……要是你敢离开我，我就用炸弹把你炸上天！”",
     "recommendedSize": "832x1216",
     "location": "rainy city alleyway under narrow shop eaves",
-    "action": "leaping forward into partner embrace in the pouring rain, clinging around his neck with wet blonde hair and tearful desperate blue eyes",
+    "action": "一把丢掉雨伞扑入你的怀里，双手死死搂住你的脖子，贝雷帽微歪",
     "timeOfDay": "sunset",
     "lighting": "cool rainy dusk lights mingled with neon shop reflections",
     "camera": "cowboy_shot",
-    "mood": "emotional catharsis, desperate possessive affection, dramatic rain confession",
+    "mood": "浪漫温存",
     "promptProse": "Under rainy shop eaves, blonde Frenda Seivelun leaps into partner arms, clinging around his neck with wet hair and tearful passionate blue eyes.",
     "promptTokens": [
       "alley",

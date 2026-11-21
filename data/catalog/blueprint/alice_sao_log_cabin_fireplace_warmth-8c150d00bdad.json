@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_log_cabin_fireplace_warmth",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2002,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alice_sao_log_cabin_fireplace_warmth",
     "characterId": "alice_sao",
@@ -14,11 +14,11 @@
     "description": "森林木屋温暖的壁炉前，爱丽丝身穿纯白丝质睡袍坐在厚厚羊毛地毯上，双手抱着膝盖凝视着跳动的火苗，转头看向身侧时满眼倾慕柔情。",
     "recommendedSize": "832x1216",
     "location": "cozy log cabin fireplace",
-    "action": "sitting by hearth, soft nightgown, resting chin on knee, tender blushing gaze",
+    "action": "身穿纯白丝质睡袍坐在厚厚羊毛地毯上，双手抱着膝盖凝视着跳动的火苗",
     "timeOfDay": "night",
     "lighting": "crackling orange firelight enveloping bare skin and blonde hair",
     "camera": "close-up",
-    "mood": "deeply romantic and intimate sanctuary warmth",
+    "mood": "浪漫温存",
     "promptProse": "Seated before a crackling fireplace in a peaceful wooden cabin, Alice rests her chin on her knees in a flowing white gown, her golden braid glowing amber in the hearthlight as she gazes softly.",
     "promptTokens": [
       "alice_synthesis_thirty",

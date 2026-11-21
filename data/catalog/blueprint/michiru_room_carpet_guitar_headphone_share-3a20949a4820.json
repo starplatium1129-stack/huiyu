@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_room_carpet_guitar_headphone_share",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2316,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "michiru_room_carpet_guitar_headphone_share",
     "characterId": "hyoudou_michiru",
@@ -14,11 +14,11 @@
     "description": "同居房间的地毯上，刚洗完澡的美智留穿着你的宽大白衬衫，双腿交叠坐在你身边。她将一侧耳机塞进你的耳朵里，抱起电吉他弹奏副歌，侧头咬着拨片对你灿烂坏笑。",
     "recommendedSize": "832x1216",
     "location": "lived-in anime bedroom floor with carpet and guitar amplifiers",
-    "action": "sitting cross-legged on carpet wearing an oversized white shirt, sharing headphones with partner, holding a guitar pick between teeth with a roguish wink",
+    "action": "她将一侧耳机塞进你的耳朵里，抱起电吉他弹奏副歌，侧头咬着拨片对你灿烂坏笑",
     "timeOfDay": "night",
     "lighting": "warm cozy ambient bedroom lamp casting soft golden glows on bare legs",
     "camera": "medium_shot",
-    "mood": "cozy childhood friend intimacy, effortless rock girlfriend allure, heart-racing domestic coexistence",
+    "mood": "温存与治愈",
     "promptProse": "Sitting on carpet in an oversized white shirt, short-haired Michiru Hyoudou shares headphones with partner, holding a guitar pick in teeth with a sexy beauty mark smirk.",
     "promptTokens": [
       "bedroom",

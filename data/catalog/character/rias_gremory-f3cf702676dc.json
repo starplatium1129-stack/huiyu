@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rias_gremory",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 97,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "rias_gremory",
     "profile": {
@@ -576,7 +576,7 @@
       ],
       "identityProse": "Rias Gremory from High School DxD, with knee-length crimson hair, an ahoge and aquamarine eyes.",
       "identityTokens": [
-        "rias_gremory",
+        "rias gremory",
         "high school dxd",
         "red hair",
         "very long hair",
@@ -584,7 +584,7 @@
         "blue eyes"
       ],
       "exactTokens": [
-        "rias_gremory"
+        "rias gremory"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -613,7 +613,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "rias_gremory"
+        "rias gremory"
       ],
       "copyrightTokens": [
         "high school dxd"

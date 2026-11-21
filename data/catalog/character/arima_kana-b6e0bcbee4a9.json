@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "arima_kana",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 122,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "arima_kana",
     "profile": {
@@ -69,7 +69,7 @@
       "speech": "这一次，我要把最好的表演留在舞台上。",
       "source": "Oshi no Ko",
       "traits": [
-        "arima_kana",
+        "arima kana",
         "oshi_no_ko",
         "red_hair",
         "short_hair",
@@ -245,13 +245,13 @@
       "displayName": "有马加奈",
       "exactPrefixes": [],
       "exactTokens": [
-        "arima_kana"
+        "arima kana"
       ],
       "franchise": "Oshi no Ko",
       "id": "arima_kana",
       "identityProse": "Kana Arima from Oshi no Ko, with a chin-length red bob, straight bangs, red eyes and a small fang.",
       "identityTokens": [
-        "arima_kana",
+        "arima kana",
         "oshi_no_ko",
         "red_hair",
         "short_hair",
@@ -286,7 +286,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "arima_kana"
+        "arima kana"
       ],
       "copyrightTokens": [
         "oshi_no_ko"

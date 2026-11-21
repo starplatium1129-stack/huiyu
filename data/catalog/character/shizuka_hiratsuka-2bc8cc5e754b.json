@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shizuka_hiratsuka",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 233,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shizuka_hiratsuka",
     "profile": {
@@ -107,16 +107,16 @@
         "shizuka hiratsuka"
       ],
       "exactTokens": [
-        "shizuka_hiratsuka"
+        "shizuka hiratsuka"
       ],
       "characterTokens": [
-        "shizuka_hiratsuka"
+        "shizuka hiratsuka"
       ],
       "copyrightTokens": [
         "yahari_ore_no_seishun_love_come_wa_machigatteiru."
       ],
       "identityTokens": [
-        "shizuka_hiratsuka",
+        "shizuka hiratsuka",
         "1girl",
         "solo",
         "black_hair",

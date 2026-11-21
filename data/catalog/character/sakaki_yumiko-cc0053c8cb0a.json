@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sakaki_yumiko",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 169,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sakaki_yumiko",
     "profile": {
@@ -85,7 +85,7 @@
       "speech": "「别用那种自来熟的口气跟我说话，再靠近一步，我的美工刀可不会手下留情！……不过，看在炒面面包的份上，勉强允许你坐在我旁边就是了。」",
       "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
       "traits": [
-        "sakaki_yumiko",
+        "sakaki yumiko",
         "1girl",
         "solo",
         "black_hair",
@@ -532,7 +532,7 @@
       ],
       "identityProse": "Sakaki Yumiko from Grisaia by Frontwing, the aloof and dignified first heroine of Mihama Academy with flowing knee-length raven-black hair cut in immaculate hime-cut bangs and sidelocks, sharp cold purple-violet eyes, slender graceful aristocrat figure, and a guarded tsundere aura hiding a vulnerable heart.",
       "identityTokens": [
-        "sakaki_yumiko",
+        "sakaki yumiko",
         "1girl",
         "solo",
         "black_hair",
@@ -545,7 +545,7 @@
         "grisaia_(series)"
       ],
       "exactTokens": [
-        "sakaki_yumiko"
+        "sakaki yumiko"
       ],
       "exactPrefixes": [
         "yumiko_"
@@ -579,7 +579,7 @@
         "kappe"
       ],
       "characterTokens": [
-        "sakaki_yumiko"
+        "sakaki yumiko"
       ],
       "copyrightTokens": [
         "grisaia_(series)"

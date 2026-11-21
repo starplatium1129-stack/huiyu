@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_02",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1660,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_02",
-    "title": "守岸人 · 寂静之海黑石水镜水光湿身独奏 ·「把千万年的思念……化作波纹传递给你」",
+    "title": "守岸人 · 寂静之海黑石水镜水光湿身独奏",
     "category": "水光湿身",
     "characterId": "shorekeeper",
     "description": "漂浮着发光晶石的宁静水镜。守岸人赤裸着身体浸泡在如镜面般的水面中，湿透的蓝发如蛛网般在水底散开。单手在温凉的水波下抚摸着自己为漂泊者而觉醒的花核，紫色眼眸倒映着天空中的星旋——「数据里没有记载这种刺痛……心跳的频率……已经超出安全阈值了……」",
@@ -54,7 +54,8 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "hand between legs"
+      "hand between legs",
+      "nipples"
     ],
     "nsfwProse": "",
     "outfitId": "nude_state",

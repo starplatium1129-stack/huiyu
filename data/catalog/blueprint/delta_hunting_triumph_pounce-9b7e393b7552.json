@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_hunting_triumph_pounce",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2476,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "delta_hunting_triumph_pounce",
     "characterId": "delta_shadow",
@@ -14,11 +14,11 @@
     "description": "原始林地树影斑驳，刚击败魔物的德尔塔单膝跪地，金色眼眸闪烁兴奋光彩，黑犬耳与尾巴剧烈晃动，猛地扑向眼前的暗影寻求摸头奖赏。",
     "recommendedSize": "832x1216",
     "location": "dense primeval forest clearing with sunbeams cutting through giant trees",
-    "action": "leaping forward onto Shadow with eager outstretched arms, wagging fluffy tail, cute fangs showing in a wide beaming grin",
+    "action": "单膝跪地，金色眼眸闪烁兴奋光彩，黑犬耳与尾巴剧烈晃动，猛地扑向眼前的暗影寻求摸头奖赏",
     "timeOfDay": "day",
     "lighting": "dappled forest canopy sunlight illuminating wild black hair and amber eyes",
     "camera": "medium_shot",
-    "mood": "exuberant feral affection, pure canine loyalty, innocent loving playfulness",
+    "mood": "温存与神圣",
     "promptProse": "In a sunlit forest, wolf-girl Delta in black suit pounces forward joyfully with wagging tail and sparkling yellow eyes.",
     "promptTokens": [
       "forest",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_snowy_station_departure",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 1980,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "aozaki_aoko_snowy_station_departure",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "北国深夜飘着密集雪花的火车站台上，昏黄街灯将积雪照得格外晶亮。青子一手按在深棕色复古皮箱上转过身来，围巾与发梢在寒风中微扬，眼底闪烁着坦然从容的笑意。",
     "recommendedSize": "832x1216",
     "location": "snowy train platform",
-    "action": "standing with vintage suitcase, turning back, gentle smile",
+    "action": "青子一手按在深棕色复古皮箱上转过身来，围巾与发梢在寒风中微扬，眼底闪烁着坦然从容的笑意",
     "timeOfDay": "night",
     "lighting": "warm platform lanterns glowing amid gentle falling snow",
     "camera": "medium_shot",
-    "mood": "serene contemplative travel mood",
+    "mood": "宁静祥和",
     "promptProse": "On a snow-dusted train station platform at night under warm lantern light, Aozaki Aoko holds a leather suitcase and glances back with a calm, confident smile.",
     "promptTokens": [
       "train_station",

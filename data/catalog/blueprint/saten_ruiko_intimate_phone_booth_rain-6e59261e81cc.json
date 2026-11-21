@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "saten_ruiko_intimate_phone_booth_rain",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2043,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "saten_ruiko",
     "outfitId": "sakugawa_sailor",
@@ -14,11 +14,11 @@
     "description": "突发特大暴雨中，两人一同挤进狭小局促的公用电话亭。玻璃外是大雨如注的喧嚣世界，亭内却只剩下彼此的呼吸声。泪子的水手服肩膀被打得半湿，背靠在透明玻璃上。在几乎胸膛相贴的狭小空间里，泪子抬起明亮的黑眸，耳根绯红却坦率地迎上目光。",
     "recommendedSize": "832x1216",
     "location": "narrow retro telephone booth in heavy downpour",
-    "action": "crowded together in telephone booth, back against glass, heavy blush",
+    "action": "在几乎胸膛相贴的狭小空间里，泪子抬起明亮的黑眸，耳根绯红却坦率地迎上目光",
     "timeOfDay": "dusk",
     "lighting": "neon city lights blurred through rain-streaked glass",
     "camera": "close-up",
-    "mood": "intense close-quarters breath-held romance",
+    "mood": "温存与坚毅",
     "promptProse": "Crowded intimately inside a small glass telephone booth during a violent storm, Saten Ruiko rests her back against the wet window. Rain streams down the glass around them as she looks up with flushed cheeks and breathless proximity in her damp school uniform.",
     "promptTokens": [
       "saten_ruiko",

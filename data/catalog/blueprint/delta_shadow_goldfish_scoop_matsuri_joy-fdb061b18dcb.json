@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_shadow_goldfish_scoop_matsuri_joy",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2544,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "delta_shadow_goldfish_scoop_matsuri_joy",
     "title": "德尔塔 · 祭典水盆前的大狗扑鱼",
@@ -12,7 +12,7 @@
     "outfitId": "matsuri_happi",
     "description": "四越夜市捞金鱼摊位前，红纸灯笼光辉下，德尔塔咬着烤肉签蹲在水盆旁，毛茸茸的大狗尾巴剧烈摇晃，两眼放光盯着游动的小鱼。",
     "location": "vibrant festival stall alley with red paper lanterns and wooden water tubs",
-    "action": "crouched low before a shallow water tank, wagging dog tail rapidly, clutching a paper scoop while watching goldfishes with intense wide sparkling eyes",
+    "action": "咬着烤肉签蹲在水盆旁，毛茸茸的大狗尾巴剧烈摇晃，两眼放光盯着游动的小鱼",
     "timeOfDay": "夜晚",
     "lighting": "红纸灯笼与水波暖红倒影",
     "camera": "wide shot, landscape composition",

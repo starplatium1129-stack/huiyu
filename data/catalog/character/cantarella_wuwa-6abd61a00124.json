@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cantarella_wuwa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 307,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "cantarella_wuwa",
     "profile": {
@@ -35,7 +35,7 @@
       "likes": [],
       "speech": "茶还热着呢。猜猜看，杯里除了紫罗兰，还有什么？",
       "traits": [
-        "cantarella_(wuthering_waves)",
+        "cantarella (wuthering waves)",
         "wuthering_waves",
         "purple hair",
         "very long hair",
@@ -112,7 +112,7 @@
       ],
       "identityProse": "Cantarella from Wuthering Waves. Very long, wavy purple hair, purple eyes and a beauty mark beneath one eye.",
       "identityTokens": [
-        "cantarella_(wuthering_waves)",
+        "cantarella (wuthering waves)",
         "wuthering_waves",
         "purple hair",
         "very long hair",
@@ -122,13 +122,13 @@
         "large breasts"
       ],
       "characterTokens": [
-        "cantarella_(wuthering_waves)"
+        "cantarella (wuthering waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"
       ],
       "exactTokens": [
-        "cantarella_(wuthering_waves)"
+        "cantarella (wuthering waves)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

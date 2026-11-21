@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "momo_velia_deviluke",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 94,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "momo_velia_deviluke",
     "profile": {
@@ -86,7 +86,7 @@
       "speech": "梨斗先生……如果大家都能幸福地在一起，那不就是最完美的乐园了吗？今晚，也请允许梦梦钻进您的被窝哦♪",
       "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
       "traits": [
-        "momo_velia_deviluke",
+        "momo velia deviluke",
         "1girl",
         "solo",
         "pink_hair",
@@ -576,13 +576,13 @@
         "momo_"
       ],
       "exactTokens": [
-        "momo_velia_deviluke"
+        "momo velia deviluke"
       ],
       "franchise": "To LOVE-Ru",
       "id": "momo_velia_deviluke",
       "identityProse": "Momo Belia Deviluke from To LOVE-Ru, with shoulder-length pink hair and two curled strands, purple-pink eyes and a slender spade-heart tail.",
       "identityTokens": [
-        "momo_velia_deviluke",
+        "momo velia deviluke",
         "1girl",
         "solo",
         "pink hair",
@@ -612,7 +612,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "momo_velia_deviluke",
+        "momo velia deviluke",
         "Momo"
       ],
       "copyrightTokens": [

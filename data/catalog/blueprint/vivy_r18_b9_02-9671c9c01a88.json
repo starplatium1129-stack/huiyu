@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "vivy_r18_b9_02",
-  "revision": 9,
+  "revision": 11,
   "sortOrder": 1706,
   "createdAt": null,
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "vivy_r18_b9_02",
-    "title": "Vivy · 维护休眠水舱排热蒸汽中的水光湿身 ·「机体核心过热……需要排解情感回路积累的冗余数据」",
+    "title": "Vivy · 维护休眠水舱排热蒸汽中的水光湿身",
     "category": "水光湿身",
     "characterId": "vivy",
     "description": "排解百年记忆的冷却液池。Vivy赤裸着身躯沉浸在幽蓝色的导电营养液中，透明的液体顺着她完美无瑕的仿生肌肤滑落。水蓝色的发丝在液体中浮动，单手在导电液中抚弄着自己因为运算过载而滚烫的仿生秘核，排热口溢出缕缕白汽——「警告：检测到未知情感代码正在自我复制……松本……不准记录这段日志……」",
@@ -54,7 +54,9 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "hand between legs"
+      "hand between legs",
+      "nipples",
+      "pussy"
     ],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_vermillion_honeymoon_camisole_morning_wake",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2738,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "stella_vermillion_honeymoon_camisole_morning_wake",
     "characterId": "stella_vermillion",
@@ -12,13 +12,13 @@
     "title": "史黛菈 · 蜜月晨曦的黑蕾丝吊带初醒",
     "category": "私密温存",
     "description": "蜜月套房宽大柔软的纯白大床上，晨光穿透白纱漫过枕被。史黛菈侧卧在丝绸被单间，身上黑色半透蕾丝吊带睡裙勾勒出极其惹火曼妙的曲线。深红色的长发如瀑散落，双颊泛着初醒时特有的迷蒙酡红。她微微仰起精致的下巴，红眸泛着水光，娇嗔地拉过薄被遮在胸前，向你展露出毫无防备的动人风致。",
-    "action": "lying on side amidst rumpled white bedding, sheer black lace camisole slipping slightly, long crimson hair spread across pillow, heavy morning blush, shy affectionate gaze",
+    "action": "侧卧在丝绸被单间，红发散落枕畔，揉着惺忪睡眼娇羞望向身旁",
     "recommendedSize": "832x1216",
     "location": "luxurious honeymoon master suite in soft morning sunlight",
     "timeOfDay": "morning",
     "lighting": "pure morning sunbeams illuminating white bedding and contrasting black lace",
     "camera": "medium_shot",
-    "mood": "honeymoon sweet awakening, intensely vulnerable surrender",
+    "mood": "温存与动情",
     "promptProse": "Waking up on a lavish white bed in soft morning sunbeams, Stella Vermillion rests in a sheer black lace camisole. Her long crimson twintails spread across white pillows as she looks up with a flustered, tender blush.",
     "promptTokens": [
       "1girl",

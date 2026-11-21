@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_kitchen_clumsy_vegetable_cutting",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2263,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroneko_kitchen_clumsy_vegetable_cutting",
     "characterId": "kuroneko",
@@ -14,11 +14,11 @@
     "description": "换上白色便服短袖和围裙的琉璃在案板前认真切菜。被你从身后搂住纤腰时，她娇躯轻颤、双颊通红，却舀起一勺热腾腾的味噌汤吹凉喂给你，满是家常长姐的小妻子温情。",
     "recommendedSize": "832x1216",
     "location": "clean home kitchen with bubbling miso soup",
-    "action": "wearing a frilly pastel apron, carefully slicing vegetables while partner hugs her waist, turning back with crimson cheeks to offer a small taste on a spoon",
+    "action": "被你从身后搂住纤腰时，她娇躯轻颤、双颊通红，却舀起一勺热腾腾的味噌汤吹凉喂给你",
     "timeOfDay": "morning",
     "lighting": "warm sunny morning light washing over countertops",
     "camera": "cowboy_shot",
-    "mood": "clumsy newlywed charm, sweet caring elder sister softness, blushing girlfriend vibe",
+    "mood": "浪漫温存",
     "promptProse": "Wearing an apron in a sunny morning kitchen, Ruri Gokou turns back with flushed cheeks to feed partner a spoon of soup as he hugs her waist.",
     "promptTokens": [
       "kitchen",

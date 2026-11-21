@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_mahogany_desk_bent_over_broken_pride",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2368,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kirie_mahogany_desk_bent_over_broken_pride",
     "characterId": "kagari_no_kirie",
@@ -14,11 +14,11 @@
     "description": "层叠华丽的哥特长裙被蛮横地堆积到腰际，平日里不可一世的吸血鬼大小姐被反压在书桌上。随着一次次不容抗拒的撞击，她的傲慢彻底碎裂成带着泪光的甜腻哀鸣。",
     "recommendedSize": "832x1216",
     "location": "dim gothic library across massive antique polished mahogany desk covered in books",
-    "action": "bent forward across the desk surface, heavy gothic skirts bunched high, clutching leather blotter as tears of helpless pleasure stream down flushed cheeks",
+    "action": "被反按在大理石书桌上紧抓桌垫，泪光闪烁娇喘哀鸣",
     "timeOfDay": "night",
     "lighting": "dramatic moonlight pouring through stained glass windows casting vivid violet hues",
     "camera": "cowboy_shot",
-    "mood": "haughty queen conquered, sheer desperate breakdown of pride, intense trembling climax",
+    "mood": "傲娇与坚毅",
     "promptProse": "Bent over the library desk with lifted gothic dress, Kirie weeps sweet tears of broken pride as overwhelming ecstasy shakes her frame.",
     "promptTokens": [
       "mahogany_desk",

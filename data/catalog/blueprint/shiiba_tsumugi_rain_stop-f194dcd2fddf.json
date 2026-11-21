@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_rain_stop",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2413,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_rain_stop",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "雨天",
     "description": "雨来得突然，紬站在屋檐下整理刚借到的伞。她伸手试了试雨势，确认伞面撑开后才准备出发。",
     "location": "street awning",
-    "action": "opening an umbrella beneath an awning",
+    "action": "她伸手试了试雨势，确认伞面撑开后才准备出发",
     "timeOfDay": "rainy afternoon",
     "lighting": "overcast daylight",
     "camera": "cowboy shot",

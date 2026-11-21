@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_oriana_cathedral_coronation_window_vow",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2552,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rose_oriana_cathedral_coronation_window_vow",
     "title": "萝丝 · 王权圣殿的誓约与思念",
@@ -12,7 +12,7 @@
     "outfitId": "coronation_queen_gown",
     "description": "加冕后的奥利安娜大教堂空旷回廊中，红地毯一直延伸到尽头高耸的拱窗。头戴白金王冠的萝丝伫立在窗前凝望夜空，暗暗向暗影起誓守护国家。",
     "location": "vast vaulted royal palace corridor lined with stained glass lancet windows and red carpet",
-    "action": "standing tall beside an arched window holding a royal ceremonial rapier upright, gaze directed toward starry sky above, regal yet longing expression",
+    "action": "头戴白金王冠伫立在拱窗前，双手交叠胸前凝望夜空，暗许誓约",
     "timeOfDay": "夜晚",
     "lighting": "殿堂壁炉烛光与拱窗苍凉月华",
     "camera": "wide shot, landscape composition",

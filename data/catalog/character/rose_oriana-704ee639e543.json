@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rose_oriana",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 266,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "rose_oriana",
     "popular": {
@@ -24,7 +24,7 @@
       ],
       "identityProse": "Rose Oriana from The Eminence in Shadow, former princess of Oriana, with blonde hair styled into elegant ringlet drills, warm amber eyes, and a noble determined chivalrous presence.",
       "identityTokens": [
-        "rose_oriana",
+        "rose oriana",
         "1girl",
         "solo",
         "blonde_hair",
@@ -34,11 +34,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "rose_oriana"
+        "rose oriana"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "rose_oriana"
+        "rose oriana"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -141,7 +141,7 @@
       "voiceJa": "シド君……たとえ世界を敵に回しても、私はあなたを守るわ！あなたの覚悟、私には分かっているから！",
       "source": "The Eminence in Shadow",
       "traits": [
-        "rose_oriana",
+        "rose oriana",
         "blonde_hair",
         "long_hair",
         "amber_eyes",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_evening_banquet_reception",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2096,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-27T17:24:53.783517800+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "amau_ako_evening_banquet_reception",
     "characterId": "amau_ako",
@@ -14,11 +14,11 @@
     "description": "学园政商名流云集的迎宾大宴会厅，璀璨的水晶吊灯倾泻下万道流光。亚子换上一袭深蓝近夜色的露背晚礼服，白皙无瑕的美背在华灯下耀眼夺目。她优雅地端着香槟杯侧身回眸，看到携伴而来的老师时，端庄的面具下悄悄泛起了一抹羞涩的红晕。",
     "recommendedSize": "832x1216",
     "location": "luxurious grand ballroom banquet",
-    "action": "holding champagne glass, turning back gracefully, showing backless cut, subtle blush",
+    "action": "她优雅地端着香槟杯侧身回眸，看到携伴而来的老师时，端庄的面具下悄悄泛起了一抹羞涩的红晕",
     "timeOfDay": "night",
     "lighting": "dazzling sparkling chandelier brilliance and warm golden banquet illumination",
     "camera": "cowboy_shot",
-    "mood": "high-class elegance, aristocratic grace, and hidden flutter",
+    "mood": "动情与私密",
     "promptProse": "Inside an opulent grand ballroom under dazzling crystal chandeliers, Amau Ako turns gracefully in a midnight-blue backless evening gown, clutching a champagne flute with a bashful pout.",
     "promptTokens": [
       "holding_wine_glass",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_intimate_fireworks_handhold",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2029,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "fujiwara_chika",
     "outfitId": "weekend_parka",
@@ -14,11 +14,11 @@
     "description": "在人海如潮的夏夜花火大会走散后，少年终于在神社鸟居旁的石灯笼下找到了眼眶泛红的千花。看到熟悉身影的瞬间，千花立刻扑上前去，紧紧攥住少年的衣袖不肯松手。烟花在她身后次第盛放，她吸了吸小鼻子，眼里满是委屈又庆幸的泪花。",
     "recommendedSize": "832x1216",
     "location": "shrine lantern pathway during fireworks",
-    "action": "clutching sleeve tightly, teary eyes, fireworks blooming behind",
+    "action": "烟花在她身后次第盛放，她吸了吸小鼻子，眼里满是委屈又庆幸的泪花",
     "timeOfDay": "night",
     "lighting": "explosions of colorful fireworks illuminating tears",
     "camera": "cowboy_shot",
-    "mood": "vulnerable emotional reunion",
+    "mood": "娇羞动情",
     "promptProse": "Found under a stone lantern pathway as fireworks boom overhead, Fujiwara Chika clutches the viewer's sleeve tightly with both hands. Tears sparkle in her blue eyes after being separated in the festival crowd, her black bow fluttering in the festive breeze.",
     "promptTokens": [
       "fujiwara_chika",

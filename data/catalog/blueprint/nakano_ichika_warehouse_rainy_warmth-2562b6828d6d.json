@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_warehouse_rainy_warmth",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1952,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_ichika_warehouse_rainy_warmth",
     "title": "中野一花 · 雨夜林间仓库的避雨独处",
@@ -13,11 +13,11 @@
     "description": "深山仓库外暴雨倾盆，柴火堆旁摇曳着橘暖的火光。微带倦意的一花席地靠在木箱旁，双手环抱膝盖，目光柔和地倾听着身边少年的呼吸。",
     "recommendedSize": "832x1216",
     "location": "rustic wooden barn",
-    "action": "sitting on hay bale, warming hands near fire, gentle blush",
+    "action": "微带倦意的一花席地靠在木箱旁，双手环抱膝盖，目光柔和地倾听着身边少年的呼吸",
     "timeOfDay": "night",
     "lighting": "warm flickering campfire glow",
     "camera": "medium_shot",
-    "mood": "cozy and vulnerable",
+    "mood": "动情与治愈",
     "promptProse": "Inside a rustic log warehouse during a heavy rainstorm, Nakano Ichika sits beside a cozy flickering campfire on a bed of hay. Her pink short hair is slightly damp from the rain, and she warms her hands over the fire with an introspective, gentle blush.",
     "promptTokens": [
       "wooden_shed",

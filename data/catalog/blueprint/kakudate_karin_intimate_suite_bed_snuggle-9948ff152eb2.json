@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kakudate_karin_intimate_suite_bed_snuggle",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 2105,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kakudate_karin_intimate_suite_bed_snuggle",
     "characterId": "kakudate_karin",
@@ -14,11 +14,11 @@
     "description": "夜色深沉的高级海景套房里，花凛侧卧在凌乱的丝绸床单上，纯白丝绸睡袍轻拢勾勒出深肤色矫健而性感的极致曲线。她依恋地靠向老师怀中，修长美腿自然交迭，金瞳满溢着毫无保留的信赖与情潮。",
     "recommendedSize": "832x1216",
     "location": "luxury penthouse master bedroom bed",
-    "action": "reclining on silk bed, head resting on pillow, hugging close, flushed sensuality",
+    "action": "她依恋地靠向老师怀中，修长美腿自然交迭，金瞳满溢着毫无保留的信赖与情潮",
     "timeOfDay": "night",
     "lighting": "deep romantic moonlight from floor-to-ceiling windows and warm floor lamps",
     "camera": "medium_shot",
-    "mood": "deeply intoxicating and passionate devotion",
+    "mood": "神圣纯洁",
     "promptProse": "Reclining comfortably on a grand penthouse silk bed at midnight in a loosely tied white silk robe, Kakudate Karin gazes up with melting golden eyes and radiant tanned skin.",
     "promptTokens": [
       "white_robe",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_morning_bed_angelic_surrender",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2213,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "astraea_morning_bed_angelic_surrender",
     "characterId": "astraea",
@@ -14,11 +14,11 @@
     "description": "金灿灿的初阳洒在纯白的床单上，几根洁白的羽毛散落在凌乱的枕席间。阿斯特蕾亚侧躺在被窝里，单手护着胸前滑落的睡衣，白皙修长的双腿在晨曦中展露出毫无修饰的自然美感。她微微仰起头，金色眸子中盛满了像向日葵般灿烂的笑容，满心欢喜地迎接着两人同在的清晨。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched morning bedroom with white ruffled sheets",
-    "action": "lying on side in sunny bed, white sheets slightly pulled down, blonde hair spread around, white wings resting across mattress, radiant sunny morning smile",
+    "action": "侧躺在被窝里，单手护着胸前滑落的睡衣",
     "timeOfDay": "morning",
     "lighting": "golden morning sunshine warming the entire bedroom with vibrant glow",
     "camera": "medium_shot",
-    "mood": "sunlit angelic bliss, unconditional loyal adoration",
+    "mood": "明媚欢欣",
     "promptProse": "Resting on her side on a sunny bed with white feathers scattered across the sheets, Astraea wears a light slip nightgown. Her white mechanical wings rest across the mattress as she beams with absolute, radiant loyalty.",
     "promptTokens": [
       "1girl",

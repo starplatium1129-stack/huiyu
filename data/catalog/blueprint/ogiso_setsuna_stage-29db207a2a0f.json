@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ogiso_setsuna_stage",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2372,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ogiso_setsuna_stage",
     "characterId": "ogiso_setsuna",
@@ -13,7 +13,7 @@
     "category": "演出",
     "description": "幕布还没有完全拉开。雪菜握着麦克风，在舞台入口深吸一口气。",
     "location": "concert stage entrance",
-    "action": "standing by the curtain and holding a microphone",
+    "action": "雪菜握着麦克风，在舞台入口深吸一口气",
     "timeOfDay": "night",
     "lighting": "stage lights from beyond the curtain",
     "camera": "cowboy shot",

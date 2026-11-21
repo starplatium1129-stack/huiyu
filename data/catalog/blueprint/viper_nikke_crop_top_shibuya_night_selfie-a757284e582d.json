@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_crop_top_shibuya_night_selfie",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2724,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "viper_nikke_crop_top_shibuya_night_selfie",
     "characterId": "viper_nikke",
@@ -12,13 +12,13 @@
     "title": "毒蛇 · 都会霓虹街头的露脐自拍",
     "category": "街头日常",
     "description": "繁华方舟商业街霓虹闪烁的十字路口，人潮退去的深夜。毒蛇身着贴身的粉色超短露脐上衣与超短热裤，纤细柔韧的腰肢与肚脐在霓虹光影中分外惹眼。她单手举着智能手机向前俯身自拍，波浪卷发滑落在胸口，另一只手在脸侧比出可爱的猫爪手势，嘴角挂着只向你绽放的甜蜜微笑。",
-    "action": "posing close in front of camera holding smartphone, cropped pink top showing midriff and navel, making cute cat-paw gesture, pink wavy hair cascading, radiant sweet smile",
+    "action": "身着贴身的粉色超短露脐上衣与超短热裤",
     "recommendedSize": "832x1216",
     "location": "bustling cyberpunk shopping street intersection with glowing holographic displays",
     "timeOfDay": "night",
     "lighting": "vibrant magenta and cyan holographic billboard reflections",
     "camera": "medium_shot",
-    "mood": "trendy cyber-dating romance, addictively sweet girlfriend appeal",
+    "mood": "浪漫温存",
     "promptProse": "Leaning close to the camera in a vibrant neon city square, Viper poses in a cropped pink top and denim shorts. She makes a playful cat-paw gesture with one hand as her emerald eyes sparkle with sweet, dangerous devotion.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_ichika_beach_sunset_bikini",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1951,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_ichika_beach_sunset_bikini",
     "title": "中野一花 · 落日金滩的微醺漫步",
@@ -13,11 +13,11 @@
     "description": "夏日傍晚海浪轻拍浅滩，一花赤足踩在湿润的金色细沙上。海风拂动微蓬发丝，她回过身向身后的少年伸出手掌，晚霞为她镀上一层温柔金边。",
     "recommendedSize": "832x1216",
     "location": "tropical beach shoreline",
-    "action": "walking barefoot along water, leaning forward, affectionate smile",
+    "action": "海风拂动微蓬发丝，她回过身向身后的少年伸出手掌，晚霞为她镀上一层温柔金边",
     "timeOfDay": "sunset",
     "lighting": "golden sunset glow, warm highlights",
     "camera": "full_body",
-    "mood": "romantic and serene",
+    "mood": "温存与宁静",
     "promptProse": "Walking barefoot along the glistening shoreline at sunset, Nakano Ichika wears a stylish yellow criss-cross bikini and a fluttering sheer white capelet. The golden horizon reflects off the gentle ocean waves as she looks warmly at the viewer.",
     "promptTokens": [
       "beach",

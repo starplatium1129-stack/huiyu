@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_nikke_morning_porch_tea_peace",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2706,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "scarlet_nikke_morning_porch_tea_peace",
     "characterId": "scarlet_nikke",
@@ -14,11 +14,11 @@
     "description": "拂晓时分深山草庐的木质缘侧，远山笼罩在淡淡晨雾之中。红莲身着花纹素雅的日式浴衣，盘腿席地而坐。晨露未干，她双手捧着粗陶茶碗慢啜，白发随意扎在脑后，侧颜在微曦金光中显得格外清丽出尘。听见身后的脚步声，她微微侧头轻笑，拍了拍身旁的空位。",
     "recommendedSize": "832x1216",
     "location": "quiet rustic mountain cottage veranda overlooking mist-veiled valley",
-    "action": "sitting cross-legged on wooden veranda holding earthenware teacup, floral yukata slightly loose, morning mist behind, welcoming serene smile",
+    "action": "身着浴衣盘腿坐在廊边，双手捧着粗陶茶碗慢啜，安享晨曦宁静",
     "timeOfDay": "morning",
     "lighting": "soft pristine dawn light filtering through morning mountain mist",
     "camera": "cowboy_shot",
-    "mood": "serene rustic peace, quiet eternal companionship",
+    "mood": "宁静祥和",
     "promptProse": "Seated cross-legged on a wooden veranda in the peaceful dawn mist, Scarlet cradles an earthenware teacup in her floral yukata. Her long white hair glows in early sunbeams as she pats the space beside her with a gentle smile.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sylphiette",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 37,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sylphiette",
     "profile": {
@@ -528,13 +528,13 @@
       "displayName": "希露菲叶特",
       "exactPrefixes": [],
       "exactTokens": [
-        "sylphiette_(mushoku_tensei)"
+        "sylphiette (mushoku tensei)"
       ],
       "franchise": "Mushoku Tensei",
       "id": "sylphiette",
       "identityProse": "Sylphiette from Mushoku Tensei, with feathery short white hair, long pointed elf ears and ruby-red eyes.",
       "identityTokens": [
-        "sylphiette_(mushoku_tensei)",
+        "sylphiette (mushoku tensei)",
         "1girl",
         "solo",
         "short hair",
@@ -560,7 +560,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "sylphiette_(mushoku_tensei)"
+        "sylphiette (mushoku tensei)"
       ],
       "copyrightTokens": [
         "mushoku_tensei"

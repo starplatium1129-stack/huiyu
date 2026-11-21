@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "bazett_fraga_mcremitz",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 257,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz",
     "profile": {
@@ -60,7 +60,7 @@
       "speech": "请稍等，我先把今天的安排确认一遍。",
       "voice": "请稍等，我先把今天的安排确认一遍。",
       "traits": [
-        "bazett_fraga_mcremitz",
+        "bazett fraga mcremitz",
         "purple_hair",
         "short_hair",
         "red_eyes"
@@ -84,19 +84,19 @@
       "identityTokens": [
         "1girl",
         "solo",
-        "bazett_fraga_mcremitz",
+        "bazett fraga mcremitz",
         "purple_hair",
         "short_hair",
         "red_eyes"
       ],
       "characterTokens": [
-        "bazett_fraga_mcremitz"
+        "bazett fraga mcremitz"
       ],
       "copyrightTokens": [
         "fate/hollow_ataraxia"
       ],
       "exactTokens": [
-        "bazett_fraga_mcremitz"
+        "bazett fraga mcremitz"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

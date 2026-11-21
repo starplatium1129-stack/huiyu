@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_azur_knit_trench_autumn_cafe_terrace",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2720,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "st_louis_azur_knit_trench_autumn_cafe_terrace",
     "characterId": "st_louis_azur",
@@ -12,13 +12,13 @@
     "title": "圣路易斯 · 露天咖啡馆的暖阳风衣漫步",
     "category": "约会日常",
     "description": "秋日阳光斑驳的林荫大道旁，露天咖啡馆红白遮阳棚下。圣路易斯披着敞开的米色毛呢风衣，内穿贴身白色针织打底衫与修身裙，尽显高挑优雅的超模身材。她端起咖啡小啜一口，冰蓝发丝掠过精致锁骨，微笑着向你倾身倾听，散发出知性成熟与亲密恋人间的绝佳氛围。",
-    "action": "sitting at outdoor cafe terrace table, open beige knit trench coat over white sweater top, holding coffee cup, blue hair blowing, radiant affectionate smile",
+    "action": "披着敞开的米色毛呢风衣，内穿贴身白色针织打底衫与修身裙",
     "recommendedSize": "832x1216",
     "location": "charming Parisian style outdoor sidewalk cafe under golden autumn trees",
     "timeOfDay": "afternoon",
     "lighting": "warm dappled autumn sunlight streaming through tree foliage",
     "camera": "cowboy_shot",
-    "mood": "chic metropolitan date, warm fashionable intimacy",
+    "mood": "浪漫温存",
     "promptProse": "Sitting at a sidewalk cafe under golden autumn foliage, St. Louis wears an open trench coat over a fitted knit top. She cradles a porcelain coffee cup, leaning in with a radiant, deeply fond gaze in the dappled sunlight.",
     "promptTokens": [
       "1girl",

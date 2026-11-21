@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_investigator_jacket_rainy_neon",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2685,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kouzuki_kallen_investigator_jacket_rainy_neon",
     "characterId": "kouzuki_kallen",
@@ -14,11 +14,11 @@
     "description": "11区繁华都市细雨笼罩的暗巷中，两侧招牌的红蓝霓虹倒映在积水洼中。卡莲身穿短款修身皮夹克与黑色紧身裤，拉开拉链露出内衬背心。雨丝濡湿了她火红的发梢，她反手将手枪收入皮质枪套，转过身来警惕的目光在看清来人的一瞬间化为释然的浅笑，展现出冷艳干练的特工风采。",
     "recommendedSize": "832x1216",
     "location": "noir rain-soaked cyberpunk back alley with neon signage reflections",
-    "action": "standing in wet neon alleyway, leather jacket unzipped over tank top, holstering sidearm, wet red hair, raindrops on skin, sharp affectionate smile",
+    "action": "雨丝濡湿了她火红的发梢，她反手将手枪收入皮质枪套",
     "timeOfDay": "night",
     "lighting": "moody cyberpunk red and teal neon lighting reflecting on wet asphalt",
     "camera": "cowboy_shot",
-    "mood": "stylish noir grit, dangerous exhilarating undercover romance",
+    "mood": "浪漫温存",
     "promptProse": "Standing in a rain-slicked neon alleyway, Kouzuki Kallen wears an open cropped leather jacket over a tank top. Raindrops glisten on her collarbones as she holsters a sidearm, turning with a sharp, loyal smirk.",
     "promptTokens": [
       "1girl",

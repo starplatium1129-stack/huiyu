@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_dojo_afterschool_sparring",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2473,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alexia_dojo_afterschool_sparring",
     "characterId": "alexia_midgar",
@@ -14,11 +14,11 @@
     "description": "放学后空荡的木地板剑术道场内，阿蕾克希亚单手持单手剑微喘，几缕银发贴在泛红的面颊上，红眸目光灼灼地迎视着对面的席德。",
     "recommendedSize": "832x1216",
     "location": "empty polished wooden dojo training hall in late afternoon",
-    "action": "holding one-handed training sword lowered, breathing softly with glowing crimson eyes locked onto opponent, hair strands clinging to flushed skin",
+    "action": "单手持单手剑微喘，几缕银发贴在泛红的面颊上，红眸目光灼灼地迎视着对面的席德",
     "timeOfDay": "late_afternoon",
     "lighting": "slanting golden sunset beams through dojo lattice windows",
     "camera": "medium_shot",
-    "mood": "intense swordplay camaraderie, prideful determination, hidden romantic tension",
+    "mood": "温存与私密",
     "promptProse": "In a sunlit wooden dojo, silver-haired ponytail Alexia lowers her training sword with panting breath and fierce red eyes.",
     "promptTokens": [
       "dojo",

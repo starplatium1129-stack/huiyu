@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "izumi_sagiri",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "izumi_sagiri",
     "profile": {
@@ -69,7 +69,7 @@
       "speech": "等一下，我把这层颜色画完！",
       "source": "Eromanga Sensei",
       "traits": [
-        "izumi_sagiri",
+        "izumi sagiri",
         "eromanga_sensei",
         "grey_hair",
         "long_hair",
@@ -209,7 +209,7 @@
       ],
       "identityProse": "Sagiri Izumi from Eromanga Sensei, with long silver hair fading to pink-violet tips, ribbon-tied sidelocks and aqua-blue eyes.",
       "identityTokens": [
-        "izumi_sagiri",
+        "izumi sagiri",
         "eromanga_sensei",
         "grey_hair",
         "long_hair",
@@ -219,7 +219,7 @@
         "pink-violet hair tips"
       ],
       "exactTokens": [
-        "izumi_sagiri"
+        "izumi sagiri"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -248,7 +248,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "izumi_sagiri"
+        "izumi sagiri"
       ],
       "copyrightTokens": [
         "eromanga_sensei"

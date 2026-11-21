@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "hori_kyouko/white_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2404,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "hori_kyouko",
     "outfit": {
       "id": "white_summer_bikini",
-      "name": "微甜盛夏 · 纯白棉质系带挂脖比基尼配高腰复古牛仔短裤",
+      "name": "微甜盛夏 · 纯白棉质系带挂脖比基尼",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "reze_ferris_wheel_fireworks",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 428,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "reze_ferris_wheel_fireworks",
     "title": "蕾塞 · 摩天轮烟花",
@@ -18,7 +18,7 @@
     "timeOfDay": "night",
     "lighting": "fireworks_glow",
     "camera": "medium_shot",
-    "mood": "romantic",
+    "mood": "浪漫温存",
     "sceneTags": [
       "amusement_park",
       "ferris_wheel",

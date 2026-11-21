@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_sunset_wagon_travel",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 119,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "fern_sunset_wagon_travel",
     "characterId": "fern_frieren",
@@ -47,7 +47,7 @@
     "timeOfDay": "sunset",
     "lighting": "golden_hour",
     "camera": "medium_portrait",
-    "mood": "wistful",
+    "mood": "怅惘追忆",
     "recommendedSize": "1152x1536",
     "coverageTags": [
       "daily"

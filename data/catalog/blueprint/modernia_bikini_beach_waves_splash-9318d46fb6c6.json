@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_bikini_beach_waves_splash",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2702,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "modernia_bikini_beach_waves_splash",
     "characterId": "modernia",
@@ -14,11 +14,11 @@
     "description": "夏日碧蓝的海水轻柔拍打着白沙滩，神罚赤足涉在清澈见底的浅浪中。深蓝色的挂脖比基尼衬托出娇美动人的雪白肌肤，水珠在阳光下像碎钻般泛光。她双手撩起一捧清凉的海水向镜头泼洒，脸上洋溢着如孩童般最纯粹烂漫的笑容，落日前的海风吹拂着她银白的短发。",
     "recommendedSize": "832x1216",
     "location": "pristine tropical beach with turquoise waves and white sand",
-    "action": "wading in shallow sparkling sea waves, splashing water with hands, navy halter bikini, wet silver bob hair, radiant joyful laughing expression",
+    "action": "赤足涉在清澈见底的浅浪中，深蓝色的挂脖比基尼衬托出娇美动人的雪白肌肤",
     "timeOfDay": "afternoon",
     "lighting": "brilliant tropical sunlight glistening on splashing water drops and azure sea",
     "camera": "full_body",
-    "mood": "exhilarating summer joy, untainted pure bliss",
+    "mood": "神圣与明媚",
     "promptProse": "Wading through crystal turquoise waves on a white sand beach, Modernia wears a chic navy halter bikini. She playfully splashes water forward with a radiant, carefree laugh as the afternoon sun makes the droplets sparkle.",
     "promptTokens": [
       "1girl",

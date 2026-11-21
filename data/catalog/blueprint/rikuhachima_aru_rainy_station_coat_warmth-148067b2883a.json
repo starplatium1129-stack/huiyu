@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_rainy_station_coat_warmth",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2664,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rikuhachima_aru_rainy_station_coat_warmth",
     "characterId": "rikuhachima_aru",
@@ -14,11 +14,11 @@
     "description": "下着倾盆大雨的车站屋檐下，霓虹倒影在湿漉的街道上。阿露披着敞开的卡其色硬派风衣，内穿贴身红黑毛衣。雨风微凉，她小心翼翼地往老师身边挪了挪脚步，双手缩在风衣口袋里。泛红的小脸在霓虹水光中带着几分别扭与遮掩不住的欢喜，嘴硬地声称这只是恶党照顾下属的惯例。",
     "recommendedSize": "832x1216",
     "location": "city train station shelter on a rainy night with glowing neon reflections",
-    "action": "standing close under station overhang, beige trench coat fluttering open, hands in pockets, looking sideways with sweet blushing smile under umbrella",
+    "action": "泛红的小脸在霓虹水光中带着几分别扭与遮掩不住的欢喜，嘴硬地声称这只是恶党照顾下属的惯例",
     "timeOfDay": "night",
     "lighting": "cool blue and red neon street reflections mixed with warm station canopy light",
     "camera": "cowboy_shot",
-    "mood": "heartwarming tsundere date, romantic rainy city intimacy",
+    "mood": "傲娇与温存",
     "promptProse": "Standing close under a rain-sheltered train station canopy at night, Rikuhachima Aru wears an open beige trench coat. Neon lights reflect in the puddles as she glances up with a sweet, flustered blush.",
     "promptTokens": [
       "1girl",

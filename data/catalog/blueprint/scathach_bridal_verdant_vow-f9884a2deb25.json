@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "scathach_bridal_verdant_vow",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 248,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "scathach_bridal_verdant_vow",
-    "title": "斯卡哈 · 绿野花环的永恒誓约·「比起不死的永恒，我选择了会结束的今日」",
+    "title": "斯卡哈 · 绿野花环的永恒誓约",
     "category": "圣洁花嫁",
     "characterId": "scathach_fate",
     "description": "影之国罕见地开满了白花，身着素白婚纱的斯卡哈立于花海中央，头纱之下紫色的长发编成温柔的花环发辫。她向你伸出手，赤红的眼眸罕见地湿润——「不死者本没有资格站在这里……但我把永恒还了回去，换来了这个会结束的、独一无二的今日。」",

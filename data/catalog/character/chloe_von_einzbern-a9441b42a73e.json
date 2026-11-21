@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chloe_von_einzbern",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 135,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "chloe_von_einzbern",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Fate",
       "speech": "这次是我赢了，不过点心可以分你一半。",
       "traits": [
-        "chloe_von_einzbern",
+        "chloe von einzbern",
         "fate/kaleid_liner_prisma_illya",
         "dark_skin",
         "pink_hair",
@@ -933,7 +933,7 @@
       ],
       "identityProse": "Adult Chloe von Einzbern from Fate/kaleid liner Prisma Illya, with warm brown skin, long pale-pink hair, face-framing sidelocks and orange eyes.",
       "identityTokens": [
-        "chloe_von_einzbern",
+        "chloe von einzbern",
         "fate/kaleid_liner_prisma_illya",
         "dark_skin",
         "pink_hair",
@@ -942,7 +942,7 @@
         "orange_eyes"
       ],
       "exactTokens": [
-        "chloe_von_einzbern"
+        "chloe von einzbern"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -971,7 +971,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "chloe_von_einzbern"
+        "chloe von einzbern"
       ],
       "copyrightTokens": [
         "fate/kaleid_liner_prisma_illya"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinomiya_kaguya",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 108,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shinomiya_kaguya",
     "profile": {
@@ -349,13 +349,13 @@
       "displayName": "四宫辉夜",
       "exactPrefixes": [],
       "exactTokens": [
-        "shinomiya_kaguya"
+        "shinomiya kaguya"
       ],
       "franchise": "Kaguya-sama: Love Is War",
       "id": "shinomiya_kaguya",
       "identityProse": "Kaguya Shinomiya from Kaguya-sama: Love Is War, with a black folded ponytail, parted bangs, sidelocks and downturned red eyes.",
       "identityTokens": [
-        "shinomiya_kaguya",
+        "shinomiya kaguya",
         "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~",
         "1girl",
         "solo",
@@ -384,7 +384,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "shinomiya_kaguya"
+        "shinomiya kaguya"
       ],
       "copyrightTokens": [
         "kaguya-sama wa kokurasetai ~tensai-tachi no renai zunousen~"

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mahiru_balcony_hairband_dusk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1472,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mahiru_balcony_hairband_dusk",
-    "title": "椎名真昼 · 阳台晚风与发绳整理·「隔壁的阳台……原来距离这么近呢」",
+    "title": "椎名真昼 · 阳台晚风与发绳整理",
     "category": "都市日常",
     "characterId": "shiina_mahiru",
     "outfitId": "sfw_refined_daily",

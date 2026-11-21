@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_shopping_list",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2448,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:18:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_shopping_list",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "居家日常",
     "description": "买回来的蔬菜摆满了料理台。七海对照清单逐项确认，发现还有一颗番茄留在购物袋底部。",
     "location": "kitchen counter",
-    "action": "checking vegetables against a shopping list",
+    "action": "七海对照清单逐项确认，发现还有一颗番茄留在购物袋底部",
     "timeOfDay": "afternoon",
     "lighting": "daylight",
     "camera": "medium shot",

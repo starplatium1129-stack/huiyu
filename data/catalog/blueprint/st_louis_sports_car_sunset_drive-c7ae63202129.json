@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_sports_car_sunset_drive",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 2160,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "st_louis_sports_car_sunset_drive",
     "characterId": "st_louis_azur",
@@ -14,11 +14,11 @@
     "description": "沿海观光公路在落日余晖中泛起金红流光。圣路易斯单手握着跑车方向盘，侧头向副驾的你轻眨蓝眸，水蓝单马尾随海风飞舞，唇下美人痣满是撩人的笑意。",
     "recommendedSize": "832x1216",
     "location": "open-top convertible driving along coastal highway at sunset",
-    "action": "sitting in luxury sports car passenger seat, sunglasses pushed up, looking over at driver with affectionate wink, golden hour ocean highway",
+    "action": "单手握着跑车方向盘，侧头向副驾的你轻眨蓝眸，水蓝单马尾随海风飞舞，唇下美人痣满是撩人的笑意",
     "timeOfDay": "sunset",
     "lighting": "radiant golden hour sun reflecting on car chrome and sea waves",
     "camera": "upper_body",
-    "mood": "luxurious romantic freedom, heart-fluttering cool girlfriend, coastal breeze",
+    "mood": "温存与快意",
     "promptProse": "Driving an open-top sports car along the ocean road at sunset, St. Louis winks affectionately with sunglasses pushed into her blue hair.",
     "promptTokens": [
       "convertible",

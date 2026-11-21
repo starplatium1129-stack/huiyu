@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_after_event",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2431,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:40:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mitsukasa_ayase_after_event",
     "characterId": "mitsukasa_ayase",
@@ -13,7 +13,7 @@
     "category": "活动间隙",
     "description": "走廊终于安静下来，绫濑靠在墙边松了一口气。她把名牌握在手里，等脚步声走远才慢慢直起身。",
     "location": "quiet corridor",
-    "action": "leaning against a wall with a name badge in hand",
+    "action": "她把名牌握在手里，等脚步声走远才慢慢直起身",
     "timeOfDay": "evening",
     "lighting": "overhead light",
     "camera": "cowboy shot",
@@ -32,7 +32,6 @@
       "cowboy shot"
     ],
     "animaCaption": "",
-    "characterId": "mitsukasa_ayase",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ereshkigal_underworld_throne_lancer",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 264,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ereshkigal_underworld_throne_lancer",
-    "title": "埃列什基伽勒 · 冥界王座的孤独女王·「这里……就是我的全部国土」",
+    "title": "埃列什基伽勒 · 冥界王座的孤独女王",
     "category": "战斗高光",
     "characterId": "ereshkigal_fate",
     "description": "幽蓝的灵魂之火在无垠的黑暗里漂浮，埃列什基伽勒端坐在巨大的王座上，金色的长发与王冠在幽光里泛着冷冽的美。枪型宝具发热神殿（Meslamtaea）立在身侧，她俯视着来客，红瞳里盛着千年孤独——「欢迎来到冥界。这里……就是我的全部国土。觉得阴森的话，现在退出还来得及哦。」",

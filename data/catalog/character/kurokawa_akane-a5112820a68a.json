@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kurokawa_akane",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 54,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kurokawa_akane",
     "profile": {
@@ -80,7 +80,7 @@
       "speech": "阿库亚……不管你要去往何等黑暗的地狱，我都会陪在你身边。即便要帮你杀人，我也绝不退缩。",
       "source": "Doga Kobo《我推的孩子 / Oshi no Ko》",
       "traits": [
-        "kurokawa_akane",
+        "kurokawa akane",
         "1girl",
         "solo",
         "blue_purple_hair",
@@ -276,13 +276,13 @@
       "displayName": "黑川茜",
       "exactPrefixes": [],
       "exactTokens": [
-        "kurokawa_akane"
+        "kurokawa akane"
       ],
       "franchise": "Oshi no Ko",
       "id": "kurokawa_akane",
       "identityProse": "Kurokawa Akane from Oshi no Ko, with long blue-violet hair and blue-violet eyes that develop star-shaped pupils during performances.",
       "identityTokens": [
-        "kurokawa_akane",
+        "kurokawa akane",
         "1girl",
         "solo",
         "blue_purple_hair",
@@ -308,7 +308,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "kurokawa_akane"
+        "kurokawa akane"
       ],
       "copyrightTokens": [
         "oshi_no_ko"

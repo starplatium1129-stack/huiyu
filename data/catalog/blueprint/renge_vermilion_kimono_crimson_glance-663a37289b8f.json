@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "renge_vermilion_kimono_crimson_glance",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2590,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "renge_vermilion_kimono_crimson_glance",
     "title": "莲华 · 绯红浮世万华的深凝",
@@ -12,7 +12,7 @@
     "outfitId": "vermilion_mangekyou_kimono",
     "description": "漆黑屏风前，莲华端立正中，绯红浮世和服上的金色刺绣在微弱烛火中流光溢彩。她双手交叠于广袖之内，赤红双眸穿透迷雾，仿佛能洞悉一切前世今生。",
     "location": "dark minimalist tatami interior with subtle gold-accented black partition",
-    "action": "standing tall with hands folded inside wide kimono sleeves, head held high, piercing crimson eyes staring directly at viewer",
+    "action": "端立正中，绯红浮世和服上的金色刺绣在微弱烛火中流光溢彩，双手交叠于广袖之内",
     "timeOfDay": "夜晚",
     "lighting": "万华镜结界漫天绯红纸伞与华美朱红行灯暖辉",
     "camera": "cowboy shot",

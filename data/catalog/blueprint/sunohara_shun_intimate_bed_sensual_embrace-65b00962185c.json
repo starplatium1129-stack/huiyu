@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_intimate_bed_sensual_embrace",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2117,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sunohara_shun_intimate_bed_sensual_embrace",
     "characterId": "sunohara_shun",
@@ -14,11 +14,11 @@
     "description": "华丽雅致的深绯色丝绸大床上，暖玉般的床头灯洒下催情光晕。瞬身着半透的深绯真丝蕾丝吊带睡裙，如瀑黑发凌乱铺散在枕上。她侧卧依偎在老师怀抱中，丰满迷人的成熟玉体曲线毕露，绿色眼眸满溢着甘愿交托一生的极致柔顺与娇羞情潮。",
     "recommendedSize": "832x1216",
     "location": "luxury silk bed master bedroom",
-    "action": "reclining on silk sheets, hugging close, flushed sensuality, sheer silk lingerie, devoted gaze",
+    "action": "她侧卧依偎在老师怀抱中，丰满迷人的成熟玉体曲线毕露",
     "timeOfDay": "night",
     "lighting": "deep romantic golden bedside lamp casting seductive amber glow",
     "camera": "medium_shot",
-    "mood": "overwhelming sensual devotion, supreme bliss, and passionate abandonment",
+    "mood": "柔媚与神圣",
     "promptProse": "Reclining on a lavish silk bed in sheer burgundy lace lingerie, Sunohara Shun hugs close with melting green eyes, her voluptuous silhouette bathed in warm romantic amber light.",
     "promptTokens": [
       "nightgown",

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "medea_caster_r18_b7_03",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 311,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "medea_caster_r18_b7_03",
-    "title": "美狄亚 · 宅房间拼装手办时法袍系带脱落事故 ·「呀！……围裙带子松开了，宗一郎大人不准看！」",
+    "title": "美狄亚 · 宅房间拼装手办时法袍系带脱落事故",
     "category": "更衣事故",
     "characterId": "medea_caster",
     "description": "柳洞寺客房的模型工作桌旁，美狄亚穿梅紫针织裙与亚麻围裙拼装未完成的 Saber 手办。围裙系带意外断开并勾住已经松开的裙襟，她俯身扶住桌沿，慌乱地回头看向门边。",

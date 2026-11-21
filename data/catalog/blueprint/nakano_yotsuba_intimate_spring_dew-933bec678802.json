@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_intimate_spring_dew",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1968,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_intimate_spring_dew",
     "title": "中野四叶 · 清晨露天风吕的澄澈池畔",
@@ -13,11 +13,11 @@
     "description": "清晨山间露天温泉白雾轻扬，四叶双臂轻掩胸前，赤足轻踏在温热的泉水边。晨光漫过竹林，映衬着她纯净羞怯的动人面庞。",
     "recommendedSize": "832x1216",
     "location": "secluded mountain open-air onsen",
-    "action": "soaking in hot spring, arms crossed over chest, steam rising, deep blush",
+    "action": "晨光漫过竹林，映衬着她纯净羞怯的动人面庞",
     "timeOfDay": "morning",
     "lighting": "crisp morning mountain sunlight through bamboo trees",
     "camera": "medium_shot",
-    "mood": "innocent blooming intimacy",
+    "mood": "浪漫温存",
     "promptProse": "Bathed in the morning mist of a secluded mountain hot spring, Nakano Yotsuba rests in the crystal-clear steaming water with a white bath towel wrapped around her body. Sunlight sparkles on the droplets sliding down her bare shoulders as she blushes innocently, covering her chest with shy modesty.",
     "promptTokens": [
       "hot_spring",

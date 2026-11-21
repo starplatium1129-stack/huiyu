@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "morgan_le_fay_fate",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 56,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "morgan_le_fay_fate",
     "profile": {
@@ -955,7 +955,7 @@
       ],
       "identityProse": "Morgan le Fay from Fate/Grand Order, with long straight silver-white hair, ice-blue eyes and pale skin.",
       "identityTokens": [
-        "morgan_le_fay_(fate)",
+        "morgan le fay (fate)",
         "1girl",
         "solo",
         "white hair",
@@ -964,7 +964,7 @@
         "fate/grand_order"
       ],
       "exactTokens": [
-        "morgan_le_fay_(fate)"
+        "morgan le fay (fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -996,7 +996,7 @@
         "rella"
       ],
       "characterTokens": [
-        "morgan_le_fay_(fate)"
+        "morgan le fay (fate)"
       ],
       "copyrightTokens": [
         "fate/grand_order"

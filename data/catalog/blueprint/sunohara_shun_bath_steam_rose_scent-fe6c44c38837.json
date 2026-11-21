@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_bath_steam_rose_scent",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2670,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sunohara_shun_bath_steam_rose_scent",
     "characterId": "sunohara_shun",
@@ -14,11 +14,11 @@
     "description": "隐秘竹林私汤内泉水滚烫，水面上漂着初绽的梅花花瓣。瞬浸在清澈的水波中，双手轻搭在池边岩石上。湿润的长长黑发贴在白玉般滑腻的脊背上，蒸汽将她成熟妩媚的面庞蒸得如桃花般绯红娇艳。虎耳垂在水雾中轻颤，她侧过脸颊回首凝视，绿色眼眸中满是令人心醉的缠绵情意。",
     "recommendedSize": "832x1216",
     "location": "private outdoor hot spring surrounded by plum blossom trees and bamboo",
-    "action": "soaking in steaming outdoor bath with floating plum petals, wet black hair clinging to bare flushed shoulders and back, looking over shoulder with affectionate seductive gaze",
+    "action": "虎耳垂在水雾中轻颤，她侧过脸颊回首凝视，绿色眼眸中满是令人心醉的缠绵情意",
     "timeOfDay": "night",
     "lighting": "warm lantern glow piercing through rising steam and night air",
     "camera": "cowboy_shot",
-    "mood": "intoxicating mature beauty, deeply sensual romantic escape",
+    "mood": "温存与柔媚",
     "promptProse": "Soaking in a private outdoor hot spring dotted with plum petals beneath the moonlight, Sunohara Shun rests against smooth stones. Wet black hair clings to her bare flushed back as she looks back with a captivating, doting gaze.",
     "promptTokens": [
       "1girl",

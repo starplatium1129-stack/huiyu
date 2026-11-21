@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_tea",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2407,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_tea",
     "characterId": "bazett_fraga_mcremitz",
@@ -13,7 +13,7 @@
     "category": "休息",
     "description": "雨点敲着玻璃，她坐在窗边捧着茶杯，难得没有查看放在一旁的日程。",
     "location": "window seat",
-    "action": "sitting by the window and holding a cup of tea",
+    "action": "雨点敲着玻璃，她坐在窗边捧着茶杯，难得没有查看放在一旁的日程",
     "timeOfDay": "afternoon",
     "lighting": "soft overcast window light",
     "camera": "medium shot",

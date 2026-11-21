@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_intimate_greenhouse_sunlight_gaze",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2017,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "amiya",
     "outfitId": "greenhouse_work",
@@ -14,11 +14,11 @@
     "description": "罗德岛绿意盎然的生态温室内，人造日光如细碎金箔洒满泥土与绿叶。阿米娅刚修剪完花枝，由于想起过去的牺牲者，眼底泛起无声的泪光。当博士伸出拇指轻柔拭去她眼角的泪珠时，阿米娅将脸颊依偎进掌心，展现出只属于两人的脆弱与依靠。",
     "recommendedSize": "832x1216",
     "location": "lush greenhouse garden inside landship",
-    "action": "leaning into palm, tear wiped from cheek, tender vulnerable look",
+    "action": "刚修剪完花枝，由于想起过去的牺牲者",
     "timeOfDay": "day",
     "lighting": "warm golden sunlight streaming through glass dome",
     "camera": "close-up",
-    "mood": "deep emotional bond and tender healing",
+    "mood": "温存与治愈",
     "promptProse": "Surrounded by lush green foliage inside the Rhodes Island greenhouse, Amiya leans her soft cheek into the Doctor's caring palm as a tear is gently wiped away. Golden sunlight filters through the glass ceiling, illuminating her soulful brown eyes.",
     "promptTokens": [
       "amiya",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "hiuchidani_mei_intimate_carpet_stretching",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2014,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "hiuchidani_mei",
     "outfitId": "plush_weekend",
@@ -14,11 +14,11 @@
     "description": "居家客厅的软绒地毯上，爱衣正做着柔韧拉伸练习。当少年伸手帮她扶住后背压腿时，爱衣的上衣下摆微扬，露出一截紧致平坦的腰线。四目相对的瞬间，爱衣慌张地偏过头，指尖无意识地抠紧了地毯绒毛，房间里的空气瞬间升温。",
     "recommendedSize": "832x1216",
     "location": "cozy living room carpet",
-    "action": "stretching on carpet, hand on back, midriff exposed, blushing look away",
+    "action": "四目相对的瞬间，爱衣慌张地偏过头，指尖无意识地抠紧了地毯绒毛，房间里的空气瞬间升温",
     "timeOfDay": "night",
     "lighting": "soft warm ambient ceiling lights",
     "camera": "medium_shot",
-    "mood": "accidental sensual tension",
+    "mood": "柔媚诱人",
     "promptProse": "Stretching flexibly on the living room floor rug in her casual lounge shorts, Hiuchidani Mei feels a hand gently assisting her posture. Her cropped hoodie lifts slightly to show her slender waist, and she bites her lip with an adorable, flustered blush.",
     "promptTokens": [
       "hiuchidani_mei",

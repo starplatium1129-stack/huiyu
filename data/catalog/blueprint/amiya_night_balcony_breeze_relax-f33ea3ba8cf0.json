@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amiya_night_balcony_breeze_relax",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2627,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-08T14:37:35.838189900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "amiya_night_balcony_breeze_relax",
     "characterId": "amiya",
@@ -14,11 +14,11 @@
     "description": "深夜舰桥外缘的观景露台上，微凉的晚风拂过纯黑发丝与毛茸茸的修长兔耳。阿米娅换上了厚实温暖的浅驼色落肩针织毛衣，双手捧着温热的红茶杯，倚在金属栏杆旁。她微微侧过头，深棕色的眼眸倒映着远方璀璨的荒原星空，卸下罗德岛领袖的沉重担子，展露出只属于少女时分的恬静与依恋。",
     "recommendedSize": "832x1216",
     "location": "observation deck of landship bridge under starry sky",
-    "action": "standing at railing holding warm ceramic mug, night breeze fluttering oversized knit sweater and brown hair, gentle affectionate smile looking at viewer",
+    "action": "双手捧着温热红茶杯倚在金属栏杆旁，晚风拂过发梢，回眸恬静微笑",
     "timeOfDay": "night",
     "lighting": "cool starlight and distant nebulae mixed with soft warm deck footlights",
     "camera": "medium_shot",
-    "mood": "peaceful quiet sanctuary, heartfelt unburdened warmth",
+    "mood": "宁静祥和",
     "promptProse": "Standing at the landship observation railing under a canopy of stars, Amiya holds a warm steaming mug. Her oversized knit sweater slips softly over one shoulder as she turns with a peaceful, loving gaze in the cool night breeze. Distant starlight and faint nebulae glow above the observation deck, blending with the gentle amber illumination of low deck footlights along the railing.",
     "promptTokens": [
       "1girl",

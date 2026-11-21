@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_tangled_sheets_morning",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2153,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "prinz_eugen_tangled_sheets_morning",
     "characterId": "prinz_eugen",
@@ -14,11 +14,11 @@
     "description": "晨光穿透白纱轻洒在宽大柔软的双人床上。欧根亲王侧卧在凌乱的真丝床单间，宽松温暖的针织毛衣半褪至臂弯，露出细腻光洁的香肩与纤细锁骨。她半眯着双眼，纤长玉指卷起一缕散落的银发，嘴角挂着满足而微慵的甜笑，尽显无防备的女友感。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched morning bedroom with soft white linen",
-    "action": "lying on side amidst rumpled white bed sheets, oversized knit sweater slipping off shoulder, twirling silver hair strand with finger, golden morning light, playful relaxed gaze",
+    "action": "侧卧在凌乱的真丝床单间，宽松温暖的针织毛衣半褪至臂弯",
     "timeOfDay": "morning",
     "lighting": "bright warm morning sunbeams diffusing through white sheer curtains",
     "camera": "medium_shot",
-    "mood": "indulgent weekend warmth, tender seductive domesticity",
+    "mood": "温存与柔媚",
     "promptProse": "Lying leisurely amidst rumpled white bedding in the golden morning light, Prinz Eugen wears a soft off-shoulder sweater slipping over bare skin. She twirls a strand of silver hair with an affectionate, playful smile.",
     "promptTokens": [
       "1girl",

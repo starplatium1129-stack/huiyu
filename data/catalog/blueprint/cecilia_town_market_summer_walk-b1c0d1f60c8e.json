@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "cecilia_town_market_summer_walk",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 837,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "向日葵花摊前回眸一笑",
     "adult": false,
@@ -18,7 +18,7 @@
     "id": "cecilia_town_market_summer_walk",
     "lighting": "sunny",
     "location": "小镇夏日市集",
-    "mood": "joyful",
+    "mood": "明媚欢欣",
     "negativeTokens": [],
     "outfitId": "town_summer_sundress",
     "promptProse": "She holds her hat in both hands, smiling toward off-frame Lawrence as sunlight passes through the sunflower petals and hat weave.",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "raiden_shogun",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 2,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "raiden_shogun",
     "profile": {
@@ -80,7 +80,7 @@
       "speech": "雷电将军向你致以问候。",
       "source": "miHoYo《原神 / Genshin Impact》",
       "traits": [
-        "raiden_shogun",
+        "raiden shogun",
         "raiden_ei",
         "1girl",
         "solo",
@@ -381,7 +381,7 @@
       ],
       "identityProse": "Raiden Ei from Genshin Impact, with a long purple braid, violet eyes, a mole beneath her right eye and a floral hair ornament.",
       "identityTokens": [
-        "raiden_shogun",
+        "raiden shogun",
         "1girl",
         "solo",
         "purple hair",
@@ -393,7 +393,7 @@
         "genshin impact"
       ],
       "exactTokens": [
-        "raiden_shogun"
+        "raiden shogun"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -425,7 +425,7 @@
         "ask_(askzy)"
       ],
       "characterTokens": [
-        "raiden_shogun"
+        "raiden shogun"
       ],
       "copyrightTokens": [
         "genshin impact"

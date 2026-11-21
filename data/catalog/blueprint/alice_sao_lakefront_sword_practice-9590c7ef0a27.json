@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_lakefront_sword_practice",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2001,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alice_sao_lakefront_sword_practice",
     "characterId": "alice_sao",
@@ -14,11 +14,11 @@
     "description": "薄雾弥漫的宁静湖畔，爱丽丝专心致志演练着整合骑士高超剑术，金光剑气在水面上激荡起晶莹水花与层层涟漪。",
     "recommendedSize": "832x1216",
     "location": "misty forest lake shore",
-    "action": "dynamic sword swing, glowing blade tip, focused determined eyes",
+    "action": "专心致志演练着整合骑士高超剑术，金光剑气在水面上激荡起晶莹水花与层层涟漪",
     "timeOfDay": "day",
     "lighting": "ethereal morning light piercing through misty woodland canopy",
     "camera": "medium_shot",
-    "mood": "intense beautiful martial artistry and focus",
+    "mood": "专注坚毅",
     "promptProse": "By the calm, misty edge of a forest lake at daybreak, Alice executes a flawless sword kata, the golden edge of her blade cutting through swirling water vapor.",
     "promptTokens": [
       "alice_synthesis_thirty",

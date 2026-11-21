@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kanzaki_rooftop_sunset_windblown_ponytail",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 2300,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "kanzaki_rooftop_sunset_windblown_ponytail",
     "characterId": "kanzaki_kaori",
@@ -14,11 +14,11 @@
     "description": "高耸大厦天台边缘晚风猎猎，如瀑黑发马尾在漫天霞光中肆意飞扬。神裂火织侧身站立，十指与你紧扣，收起所有圣人的凌厉，眼神中流淌着毫无保留的信赖与温柔。",
     "recommendedSize": "832x1216",
     "location": "high-rise skyscraper rooftop terrace overlooking panoramic city sunset",
-    "action": "standing by rooftop railing at dusk, black ponytail dancing in wind, interlocking fingers with partner, looking at him with gentle loving violet eyes",
+    "action": "侧身站立，十指与你紧扣，收起所有圣人的凌厉，眼神中流淌着毫无保留的信赖与温柔",
     "timeOfDay": "sunset",
     "lighting": "magnificent golden hour sunset bathing skyline and silhouettes in crimson gold",
     "camera": "wide_shot",
-    "mood": "heroic cinematic romance, unshakeable trust, breathtaking sunset tranquility",
+    "mood": "温存与英气",
     "promptProse": "Standing on a windy high-rise rooftop at golden sunset, Kaori Kanzaki holds hands with partner, black ponytail dancing in wind with a tender loving smile.",
     "promptTokens": [
       "rooftop",

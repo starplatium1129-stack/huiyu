@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "iroha_christmas_backstage_blush",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 364,
   "createdAt": null,
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "iroha_christmas_backstage_blush",
-    "title": "一色彩羽 · 圣诞晚会后台的微醺红晕·「前辈……今晚可不可以只当我的圣诞老人呢」",
+    "title": "一色彩羽 · 圣诞晚会后台的微醺红晕",
     "category": "节日相伴",
     "characterId": "isshiki_iroha",
     "outfitId": "student_council_blazer",

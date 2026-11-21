@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misaki_nsfw_dress_fitting_malfunction",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 409,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "双手反剪够背后拉链，裙身勒肉挤压，脸红求助",
     "adult": true,
@@ -54,7 +54,7 @@
       "cleavage"
     ],
     "timeOfDay": "傍晚",
-    "title": "食蜂操祈 · 试衣间的裙链事故·「别、别用看的！用手帮本小姐……」",
+    "title": "食蜂操祈 · 试衣间的裙链事故",
     "nsfwTokens": [],
     "animaCaption": "Both hands reach for the jammed gold zipper behind her fitted dress."
   }

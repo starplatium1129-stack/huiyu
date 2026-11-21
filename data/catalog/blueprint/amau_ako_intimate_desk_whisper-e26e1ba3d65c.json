@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "amau_ako_intimate_desk_whisper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2098,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "amau_ako_intimate_desk_whisper",
     "characterId": "amau_ako",
@@ -14,11 +14,11 @@
     "description": "只有月光与百叶窗影子的静谧办公室。亚子被轻柔地抵在厚重的办公桌边缘，双手下意识抓紧了老师的衬衫衣领。脖颈上的皮质项圈在急促起伏的呼吸中微微晃动，她眼眶湿润、脸颊绯红，平日里傲岸的行政官，在此刻彻底融化在近在咫尺的体温中。",
     "recommendedSize": "832x1216",
     "location": "locked prefect office beside wooden desk",
-    "action": "leaning back against desk, trembling flushed cheeks, grabbing shirt collar, breathless gaze",
+    "action": "脖颈上的皮质项圈在急促起伏的呼吸中微微晃动，她眼眶湿润、脸颊绯红，平日里傲岸的行政官",
     "timeOfDay": "night",
     "lighting": "dramatic moonlight slanting through venetian blinds with warm shadows",
     "camera": "close-up",
-    "mood": "breathless vulnerability, intense devotion, and surrender",
+    "mood": "动情与神圣",
     "promptProse": "Cornered gently against her executive desk late at night, Amau Ako clutches the viewer's shirt collar with watery blue eyes and trembling flushed cheeks, her leather choker visible.",
     "promptTokens": [
       "blush",

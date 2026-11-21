@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misono_mika_bath_rose",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 901,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "靠池壁浸泡于花瓣浴",
     "adult": true,
@@ -24,7 +24,9 @@
     "mood": "湿发圣洁",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Mika reclines in the rose bath, reaching toward the off-frame viewer with one arm. Her wings rest along the rim; candlelight catches petals and steam.",
     "promptTokens": [

@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ishtar_nsfw_throne_supine_devotion",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 260,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ishtar_nsfw_throne_supine_devotion",
-    "title": "伊什塔尔 · 神座下的奉献夜·「神、神殿里……不可以太用力……」",
+    "title": "伊什塔尔 · 神座下的奉献夜",
     "category": "成人私密",
     "characterId": "ishtar_fate",
     "description": "女神在圣座上仰起头，婚纱般的薄纱散落在台阶上。动情的欢愉让她的十指扣紧了王座扶手，金环耳饰在散发间摇晃，红瞳里泛起诸神都不曾见过的泪光——「哈啊……这里、这里可是本女神的圣座……要、要对圣座温柔一点……凡、凡人的大胆……也太越权了……」",

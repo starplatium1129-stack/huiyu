@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "komine_sachi",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 89,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "komine_sachi",
     "profile": {
@@ -85,7 +85,7 @@
       "speech": "早上好，雄二先生。学园内的所有打扫与早茶已准备完毕。只要是您的命令，幸都会全力以赴执行。",
       "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
       "traits": [
-        "komine_sachi",
+        "komine sachi",
         "1girl",
         "solo",
         "pink_hair",
@@ -532,7 +532,7 @@
       ],
       "identityProse": "Komine Sachi from Grisaia, with short pastel-pink hair partially tied up on both sides, swept bangs and blue eyes.",
       "identityTokens": [
-        "komine_sachi",
+        "komine sachi",
         "1girl",
         "solo",
         "pink_hair",
@@ -543,7 +543,7 @@
         "grisaia_(series)"
       ],
       "exactTokens": [
-        "komine_sachi"
+        "komine sachi"
       ],
       "exactPrefixes": [
         "sachi_"
@@ -577,7 +577,7 @@
         "mika_pikazo"
       ],
       "characterTokens": [
-        "komine_sachi"
+        "komine sachi"
       ],
       "copyrightTokens": [
         "grisaia_(series)"

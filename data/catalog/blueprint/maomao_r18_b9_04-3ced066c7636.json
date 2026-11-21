@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "maomao_r18_b9_04",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1718,
   "createdAt": null,
-  "updatedAt": "2026-10-26T09:10:15.020Z",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "maomao_r18_b9_04",
-    "title": "猫猫 · 药草堆床褥上试毒发情的理性崩塌独奏 ·「把毒性完全代谢掉的方法……果然只有这个……」",
+    "title": "猫猫 · 药草堆床褥上试毒发情的理性崩塌独奏",
     "category": "私密自持",
     "characterId": "maomao",
     "description": "为了测试新型烈性媚毒以身试药。猫猫完全赤裸地仰躺在铺满晒干药草的草席床上，双腿大开折向腹部。两根手指疯狂在暴涨的爱液深处抽弄，原本理智克制的大脑彻底被药物与情欲攻陷，眼泪失禁般溢出，嘴里发出猫咪般的娇啼——「啊啊……这就是壬氏大人平时的感受吗……好烫……要融化了……」",
@@ -48,7 +48,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R18",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

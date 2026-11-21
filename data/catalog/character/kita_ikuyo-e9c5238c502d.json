@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kita_ikuyo",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 176,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kita_ikuyo",
     "profile": {
@@ -83,7 +83,7 @@
       "speech": "大家～！今天也请把所有的热情全部交给我们吧！后藤同学，不要害怕……我会一直紧跟着你的吉他声，把你的心意传达给全世界！",
       "source": "CloverWorks《孤独摇滚！ / Bocchi the Rock!》",
       "traits": [
-        "kita_ikuyo",
+        "kita ikuyo",
         "1girl",
         "solo",
         "red_hair",
@@ -274,7 +274,7 @@
       ],
       "identityProse": "Adult Kita Ikuyo from Bocchi the Rock!, an energetic and sociable high school girl with bright shoulder-length strawberry-red hair, an ahoge cowlick, cheerful yellow-amber eyes, and a radiant beaming smile.",
       "identityTokens": [
-        "kita_ikuyo",
+        "kita ikuyo",
         "1girl",
         "solo",
         "red_hair",
@@ -285,7 +285,7 @@
         "bocchi_the_rock!"
       ],
       "exactTokens": [
-        "kita_ikuyo"
+        "kita ikuyo"
       ],
       "exactPrefixes": [
         "kita_"
@@ -321,7 +321,7 @@
         "kantoku"
       ],
       "characterTokens": [
-        "kita_ikuyo"
+        "kita ikuyo"
       ],
       "copyrightTokens": [
         "bocchi_the_rock!"

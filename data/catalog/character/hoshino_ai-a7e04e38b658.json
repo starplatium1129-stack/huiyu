@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hoshino_ai",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 53,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "hoshino_ai",
     "profile": {
@@ -77,7 +77,7 @@
       "speech": "谎言就是最高形式的爱。……露比，阿库亚，妈妈终于能说出口了：我是真正地爱着你们啊。",
       "source": "Doga Kobo《我推的孩子 / Oshi no Ko》",
       "traits": [
-        "hoshino_ai",
+        "hoshino ai",
         "1girl",
         "solo",
         "purple_hair",
@@ -278,13 +278,13 @@
       "displayName": "星野爱",
       "exactPrefixes": [],
       "exactTokens": [
-        "hoshino_ai"
+        "hoshino ai"
       ],
       "franchise": "Oshi no Ko",
       "id": "hoshino_ai",
       "identityProse": "Hoshino Ai from Oshi no Ko, with long purple hair in a one-side-up style, purple eyes with star-shaped pupils and a rabbit hair ornament.",
       "identityTokens": [
-        "hoshino_ai",
+        "hoshino ai",
         "1girl",
         "solo",
         "purple_hair",
@@ -312,7 +312,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "hoshino_ai"
+        "hoshino ai"
       ],
       "copyrightTokens": [
         "oshi_no_ko"

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "illyasviel_von_einzbern",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 18,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "illyasviel_von_einzbern",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "伊莉雅丝菲尔向你致以问候。",
       "source": "TYPE-MOON《Fate 系列》",
       "traits": [
-        "illyasviel_von_einzbern",
+        "illyasviel von einzbern",
         "1girl",
         "solo",
         "long_white_hair",
@@ -957,8 +957,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "illyasviel von einzbern",
-        "illyasviel_von_einzbern"
+        "illyasviel von einzbern"
       ],
       "franchise": "Fate",
       "aliases": [
@@ -993,7 +992,7 @@
         "fate/stay_night"
       ],
       "exactTokens": [
-        "illyasviel_von_einzbern"
+        "illyasviel von einzbern"
       ],
       "identityProse": "Illyasviel von Einzbern from Fate/stay night, a homunculus woman with long white hair and ruby-red eyes.",
       "id": "illyasviel_von_einzbern"

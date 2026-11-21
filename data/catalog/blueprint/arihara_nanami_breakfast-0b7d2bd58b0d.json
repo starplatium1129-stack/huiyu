@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_breakfast",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2447,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T11:58:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_breakfast",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "厨房日常",
     "description": "锅里的汤快好了，七海把火调小，转身去拿碗。桌上已经摆好了筷子，只等最后一道菜。",
     "location": "home kitchen",
-    "action": "reaching for a bowl beside the stove",
+    "action": "桌上已经摆好了筷子，只等最后一道菜",
     "timeOfDay": "morning",
     "lighting": "morning window light",
     "camera": "medium shot",

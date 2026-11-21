@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arcueid_nsfw_feline_straddle_cowgirl",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1331,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "全裸跨坐腰间起伏主导骑乘，双手按在胸膛，俯身贴颈轻磨犬齿，眼眸赤红泛着痴情",
     "adult": true,
@@ -56,6 +56,10 @@
     ],
     "timeOfDay": "深夜",
     "title": "爱尔奎特 · 白猫真祖的痴情跨坐骑乘",
-    "animaCaption": "Her hands brace on the viewer's chest as she leans toward their neck."
+    "animaCaption": "Her hands brace on the viewer's chest as she leans toward their neck.",
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ]
   }
 }

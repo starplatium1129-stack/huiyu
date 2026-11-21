@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_breakwater_azure_flight_run",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2583,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "misuzu_breakwater_azure_flight_run",
     "title": "神尾观铃 · 苍穹长堤上的展翼飞奔",
@@ -12,7 +12,7 @@
     "outfitId": "coastal_yellow_sundress",
     "description": "海天一色的盛夏海岸长堤上，观铃张开双臂像雏鸟般摇晃奔跑，仿佛下一刻就要飞入那辽阔的长空。淡黄荷叶裙摆随海风高高翻卷，笑颜宛若天使。",
     "location": "sunlit coastal seawall stretching toward an endless cerulean ocean and sky",
-    "action": "running joyfully along concrete breakwater with arms outstretched like airplane wings, sundress fluttering, ecstatic radiant smile",
+    "action": "淡黄荷叶裙摆随海风高高翻卷，笑颜宛若天使",
     "timeOfDay": "白天",
     "lighting": "盛夏纯白艳阳与波光反射",
     "camera": "wide shot, landscape composition",

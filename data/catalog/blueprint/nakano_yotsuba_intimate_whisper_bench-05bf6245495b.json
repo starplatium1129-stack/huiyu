@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_yotsuba_intimate_whisper_bench",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1965,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_yotsuba_intimate_whisper_bench",
     "title": "中野四叶 · 长椅月光下的解开心结",
@@ -13,11 +13,11 @@
     "description": "深夜安静的木长椅上，月光清凉地洒在她未佩戴发饰的蓬松短发间。四叶双手紧握在胸前，泪光闪烁却微笑着倾诉深藏多年的初恋约定。",
     "recommendedSize": "832x1216",
     "location": "quiet rooftop bench",
-    "action": "sitting with hands clasped, teary eyes, looking down, vulnerable look",
+    "action": "四叶双手紧握在胸前，泪光闪烁却微笑着倾诉深藏多年的初恋约定",
     "timeOfDay": "night",
     "lighting": "cool silver moonlight and ambient shadows",
     "camera": "close-up",
-    "mood": "raw heartfelt vulnerability",
+    "mood": "娇羞动情",
     "promptProse": "Sitting on a quiet outdoor rooftop bench under silver moonlight, Nakano Yotsuba appears without her ribbon, her soft orange hair loose around her cheeks. With tears glistening in her earnest blue eyes, she looks up with touching vulnerability.",
     "promptTokens": [
       "wooden_bench",

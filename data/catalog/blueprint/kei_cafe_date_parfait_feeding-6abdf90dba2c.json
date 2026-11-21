@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kei_cafe_date_parfait_feeding",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2239,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kei_cafe_date_parfait_feeding",
     "characterId": "karuizawa_kei",
@@ -14,11 +14,11 @@
     "description": "时尚购物中心咖啡厅靠窗卡座，换上软萌针织开衫的惠端着草莓芭菲。她舀起一勺满满的草莓奶油举到你嘴边，傲娇地鼓起腮帮命令你张嘴，眼神里全是被宠溺的甜蜜。",
     "recommendedSize": "832x1216",
     "location": "pastel aesthetic modern shopping mall cafe booth",
-    "action": "sitting opposite partner in a trendy mall cafe, holding up a spoonful of strawberry parfait with an adorable pout, insisting he eat it",
+    "action": "她舀起一勺满满的草莓奶油举到你嘴边，傲娇地鼓起腮帮命令你张嘴，眼神里全是被宠溺的甜蜜",
     "timeOfDay": "afternoon",
     "lighting": "bright cheery daylight through large glass windows",
     "camera": "medium_shot",
-    "mood": "playful gyaru girlfriend charm, sweet sugar rush, lively date feeling",
+    "mood": "温存与俏皮",
     "promptProse": "Sitting in a bright mall cafe, Kei Karuizawa feeds partner a spoonful of strawberry parfait with an adorable playful pout and blushing cheeks.",
     "promptTokens": [
       "cafe",

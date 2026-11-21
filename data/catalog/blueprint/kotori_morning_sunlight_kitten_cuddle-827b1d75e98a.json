@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_morning_sunlight_kitten_cuddle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2255,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kotori_morning_sunlight_kitten_cuddle",
     "characterId": "kotori_itsuka",
@@ -14,11 +14,11 @@
     "description": "清晨明朗的阳光洒在小巧可爱的床榻上。琴里抱着大号的白熊玩偶侧蜷在松软的薄被里，一件略大号的连帽衫从一侧肩头滑落，露出光滑洁白的小香肩。红色的长马尾凌乱地散在枕头四处，少女嘴里叼着一根珍宝珠棒棒糖的细棍，睡眼惺忪地微微睁开一只眼睛，露出甜软无比的晨起撒娇神情。",
     "recommendedSize": "832x1216",
     "location": "bright morning bedroom filled with sunshine",
-    "action": "curled up in bed hugging plush teddy bear, oversized hoodie slipping off shoulder, messy red hair on pillow, lollipop stick in mouth, sleepy one-eye wink with cute blush",
+    "action": "红色的长马尾凌乱地散在枕头四处，少女嘴里叼着一根珍宝珠棒棒糖的细棍",
     "timeOfDay": "morning",
     "lighting": "bright morning sunlight spilling cheerfully across colorful bedroom",
     "camera": "medium_shot",
-    "mood": "adorable domestic sweetness, playful morning affection",
+    "mood": "温存与俏皮",
     "promptProse": "Curled up in a sunlit bed hugging a giant white teddy bear, Kotori wears an oversized hoodie slipping off one shoulder. Her red twintails are adorably tousled as she looks up with a sweet, sleepy morning smile.",
     "promptTokens": [
       "1girl",

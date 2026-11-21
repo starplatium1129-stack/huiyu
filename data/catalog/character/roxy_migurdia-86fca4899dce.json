@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "roxy_migurdia",
-  "revision": 13,
+  "revision": 14,
   "sortOrder": 17,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:14:30.119407+00:00",
+  "updatedAt": "2026-11-21T08:10:28.465379400+00:00",
   "data": {
     "id": "roxy_migurdia",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "洛琪希向你致以问候。",
       "source": "理不尽な孫の手《无职转生 / Mushoku Tensei》",
       "traits": [
-        "roxy_migurdia",
+        "roxy migurdia",
         "1girl",
         "solo",
         "long_blue_hair",
@@ -522,13 +522,13 @@
       "displayName": "洛琪希",
       "exactPrefixes": [],
       "exactTokens": [
-        "roxy_migurdia"
+        "roxy migurdia"
       ],
       "franchise": "Mushoku Tensei",
       "id": "roxy_migurdia",
       "identityProse": "Roxy Migurdia from Mushoku Tensei, with pale-blue twin braids, blue eyes, a petite build and a mole on her left collarbone.",
       "identityTokens": [
-        "roxy_migurdia",
+        "roxy migurdia",
         "1girl",
         "solo",
         "blue hair",
@@ -556,7 +556,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "roxy_migurdia"
+        "roxy migurdia"
       ],
       "copyrightTokens": [
         "mushoku tensei"

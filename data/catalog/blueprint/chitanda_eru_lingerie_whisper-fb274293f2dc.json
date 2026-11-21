@@ -1,14 +1,14 @@
 {
   "kind": "blueprint",
   "id": "chitanda_eru_lingerie_whisper",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 3316,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "chitanda_eru_lingerie_whisper",
     "characterId": "chitanda_eru",
-    "title": "千反田爱瑠 · 纸隔门前的“我很好奇”",
+    "title": "千反田爱瑠 · 纸隔门前的",
     "category": "私密内衣",
     "action": "双膝跪在障子门前，双手轻轻按在拉门边沿，紫眸闪烁着星子般的好奇光芒，身体前倾探头询问",
     "location": "千反田大宅传统和风主屋障子门外",

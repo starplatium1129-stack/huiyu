@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ram",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 203,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-31T15:28:30.648119700+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "ram",
     "profile": {
@@ -59,7 +59,7 @@
         "signature": "粉发、红瞳与略带讥诮的神情"
       },
       "traits": [
-        "ram_(re:zero)",
+        "ram (re:zero)",
         "1girl",
         "solo",
         "short hair",
@@ -83,7 +83,7 @@
       ],
       "identityProse": "Adult Ram from Re:Zero, with short pink hair falling across one eye, a clear red eye and a composed, faintly sardonic expression.",
       "identityTokens": [
-        "ram_(re:zero)",
+        "ram (re:zero)",
         "1girl",
         "solo",
         "short hair",
@@ -93,11 +93,11 @@
         "re:zero"
       ],
       "exactTokens": [
-        "ram_(re:zero)"
+        "ram (re:zero)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "ram_(re:zero)"
+        "ram (re:zero)"
       ],
       "copyrightTokens": [
         "re:zero"

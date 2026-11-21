@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_balcony",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2405,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_balcony",
     "characterId": "bazett_fraga_mcremitz",
@@ -13,7 +13,7 @@
     "category": "居家日常",
     "description": "清晨的阳台上，她给窗边的盆栽浇水，等泥土湿透后才放下水壶。",
     "location": "apartment balcony",
-    "action": "watering a potted plant on the balcony",
+    "action": "清晨的阳台上，她给窗边的盆栽浇水，等泥土湿透后才放下水壶",
     "timeOfDay": "morning",
     "lighting": "morning sunlight",
     "camera": "medium shot",

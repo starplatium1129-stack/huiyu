@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "gamma_shadow/black_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2568,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "gamma_shadow",
     "outfit": {
       "id": "black_lace_lingerie",
-      "name": "七影第三席知性藏青真丝开叉睡裙与金丝眼镜",
+      "name": "七影第三席 · 藏青真丝开叉睡裙",
       "category": "睡衣 / 和风睡袍",
       "default": false,
       "isDefault": false,

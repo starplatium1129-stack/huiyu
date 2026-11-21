@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "iino_miko_autumn_campus_reunion",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2007,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "iino_miko_autumn_campus_reunion",
     "characterId": "iino_miko",
@@ -14,11 +14,11 @@
     "description": "深秋金黄落叶铺满的林荫大道上，弥子穿着双排扣卡其风衣，怀抱公文夹走在飘落的银杏雨中，露出端庄典雅的温和浅笑。",
     "recommendedSize": "832x1216",
     "location": "ginkgo tree campus avenue",
-    "action": "walking with folder, golden leaves falling, serene nostalgic smile",
+    "action": "深秋金黄落叶铺满的林荫大道上，弥子穿着双排扣卡其风衣，怀抱公文夹走在飘落的银杏雨中",
     "timeOfDay": "day",
     "lighting": "gentle autumn sunshine filtering through radiant yellow ginkgo canopy",
     "camera": "medium_shot",
-    "mood": "poetic peaceful nostalgic youth",
+    "mood": "宁静与幽微",
     "promptProse": "Strolling down a university promenade showered in golden ginkgo leaves wearing a chic autumn trench coat, Iino Miko carries a file folder close to her chest with a gentle, nostalgic smile.",
     "promptTokens": [
       "iino_miko",

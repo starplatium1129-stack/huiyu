@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kotori_bridge_ribbon_switch_embrace",
-  "revision": 1,
+  "revision": 4,
   "sortOrder": 2251,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "kotori_bridge_ribbon_switch_embrace",
     "characterId": "kotori_itsuka",
@@ -14,11 +14,11 @@
     "description": "夜幕降临空无一人的舰桥内，琴里亲手解开黑色发带，双马尾垂落的瞬间眼泛泪光，卸下所有司令官的坚强，毫无保留地扑进你的怀里轻声抽泣依偎。",
     "recommendedSize": "832x1216",
     "location": "high-tech airship Fraxinus command bridge overlooking evening clouds",
-    "action": "untying black ribbons in empty commander bridge, instantly shifting to vulnerable little sister mode with teary eyes, leaping forward into partner embrace",
+    "action": "夜幕降临空无一人的舰桥内，琴里亲手解开黑色发带，双马尾垂落的瞬间眼泛泪光",
     "timeOfDay": "sunset",
     "lighting": "soft blue terminal displays blended with magenta sunset clouds outside the canopy",
     "camera": "cowboy_shot",
-    "mood": "gap moe catharsis, supreme vulnerability, deep sibling lover bond",
+    "mood": "动情与反差",
     "promptProse": "Untying black ribbons on a quiet airship bridge at sunset, Kotori Itsuka leaps into partner arms with teary loving red eyes.",
     "promptTokens": [
       "control_room",

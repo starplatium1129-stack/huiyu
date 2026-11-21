@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "raiden_shogun_r18_bath",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 7,
   "createdAt": null,
-  "updatedAt": "2026-11-08T14:24:15.273444+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "raiden_shogun_r18_bath",
     "title": "雷电将军 · 天守阁汤殿",
@@ -56,7 +56,9 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_elegant_boudoir",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples"
+    ],
     "nsfwProse": "",
     "adultArtistHint": "@tiv",
     "outfitId": "bath_unclothed",

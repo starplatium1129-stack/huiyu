@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "chitanda_eru",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 113,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "chitanda_eru",
     "profile": {
@@ -209,7 +209,7 @@
       ],
       "identityProse": "Eru Chitanda from Hyouka, with long black hair, bangs and large purple eyes.",
       "identityTokens": [
-        "chitanda_eru",
+        "chitanda eru",
         "hyouka",
         "1girl",
         "solo",
@@ -220,7 +220,7 @@
         "purple_eyes"
       ],
       "exactTokens": [
-        "chitanda_eru"
+        "chitanda eru"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -248,7 +248,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "chitanda_eru"
+        "chitanda eru"
       ],
       "copyrightTokens": [
         "hyouka"

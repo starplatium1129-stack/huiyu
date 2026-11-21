@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rikuhachima_aru_balcony_night_wine_toast",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2666,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rikuhachima_aru_balcony_night_wine_toast",
     "characterId": "rikuhachima_aru",
@@ -14,11 +14,11 @@
     "description": "事务所顶楼小天台，夜空下微风轻拂。阿露穿着精致黑蕾丝吊带睡衣外搭轻薄披肩，手里端着一杯无酒精葡萄汁假装红酒。她自鸣得意地靠着护栏朝你举杯，试图展露出冷酷硬派的黑道女霸总风度，但微红的双颊和头顶不安分摇动的羊角，却彻底暴露了她渴望得到认可的小女生心思。",
     "recommendedSize": "832x1216",
     "location": "rooftop terrace under starry sky with cityscape backdrop",
-    "action": "leaning against terrace railing raising wine glass, black lace camisole with light shawl, proud smirk with blushing cheeks, horns perked in excitement",
+    "action": "她自鸣得意地靠着护栏朝你举杯，试图展露出冷酷硬派的黑道女霸总风度",
     "timeOfDay": "night",
     "lighting": "ambient starlight and cool rooftop string fairy lights",
     "camera": "cowboy_shot",
-    "mood": "proud comical charming bravado, genuine heartfelt warmth",
+    "mood": "硬撑温存",
     "promptProse": "Standing on a rooftop terrace raising a wine glass against the night skyline, Rikuhachima Aru poses in a black lace camisole and shawl. Her proud, villainous smirk is betrayed by bright blushing cheeks and sparkling golden eyes.",
     "promptTokens": [
       "1girl",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_itsuki_intimate_star_hairpin_off",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1975,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "nakano_itsuki_intimate_star_hairpin_off",
     "title": "中野五月 · 梳妆镜前取下星形发夹",
@@ -13,11 +13,11 @@
     "description": "深夜闺房梳妆镜前，柔和床头灯晕染四周。五月双手探入发间轻轻取下标志性的星形发夹，丰盈的赤红卷发如瀑倾泻，镜中人眼神缱绻娇柔。",
     "recommendedSize": "832x1216",
     "location": "private bedroom vanity mirror",
-    "action": "taking off star hairpins, arms raised, hair cascading down, tender gaze in mirror",
+    "action": "五月双手探入发间轻轻取下标志性的星形发夹，丰盈的赤红卷发如瀑倾泻，镜中人眼神缱绻娇柔",
     "timeOfDay": "night",
     "lighting": "warm golden vanity lamp and soft mirror reflections",
     "camera": "medium_shot",
-    "mood": "intimate gentle vulnerability",
+    "mood": "温存与动情",
     "promptProse": "Sitting before her wooden vanity mirror at night, Nakano Itsuki removes her signature star hairpins wearing an elegant ruffled white cotton nightgown. Her luxuriant wavy red hair cascades freely over her bare collarbones as she looks warmly into the mirror reflection.",
     "promptTokens": [
       "bedroom",

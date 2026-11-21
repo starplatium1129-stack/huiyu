@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "makima/silver_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2269,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "makima",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "支配凝眸 · 纯黑高领极简露背一片式连体泳装配墨色雪纺长披巾",
+      "name": "支配凝眸 · 露背连体泳装",
       "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,

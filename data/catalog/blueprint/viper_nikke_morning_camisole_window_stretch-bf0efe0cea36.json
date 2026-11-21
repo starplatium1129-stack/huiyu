@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_nikke_morning_camisole_window_stretch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2726,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "viper_nikke_morning_camisole_window_stretch",
     "characterId": "viper_nikke",
@@ -12,13 +12,13 @@
     "title": "毒蛇 · 晨曦窗纱的蕾丝吊带初醒",
     "category": "私密温存",
     "description": "早晨纯净的初阳照透白色纱幔，散落在整洁的木地板上。毒蛇身着浅粉色蕾丝细吊带真丝睡裙赤足站在窗边，伸展着纤细柔软的腰肢。波浪卷发在晨风中蓬松散落，锁骨处的粉红蕾丝在逆光下泛着温润微芒。她转过身来双手背在身后微微倾身，水汪汪的碧绿眼眸带着清晨独有的软糯与撒娇，道出轻声的早安。",
-    "action": "standing barefoot by sunlit balcony window, stretching arms up in pink lace camisole, bare legs, leaning slightly forward with hands behind back, sweet affectionate smile",
+    "action": "赤足站在晨光窗边伸展腰肢，双手背在身后微微倾身撒娇",
     "recommendedSize": "832x1216",
     "location": "sun-filled luxury apartment bedroom with blowing sheer curtains",
     "timeOfDay": "morning",
     "lighting": "radiant morning sunbeams filtering through white drapes creating soft halo",
     "camera": "cowboy_shot",
-    "mood": "sweet heart-melting morning romance, innocent pampered girlfriend charm",
+    "mood": "浪漫温存",
     "promptProse": "Standing barefoot beside a breezy morning window, Viper stretches in a delicate pink lace silk camisole. Her wavy pink hair catches golden rays as she leans forward with an adoring, tender smile.",
     "promptTokens": [
       "1girl",

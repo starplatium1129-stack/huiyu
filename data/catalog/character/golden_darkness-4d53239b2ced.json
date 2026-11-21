@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "golden_darkness",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 92,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "golden_darkness",
     "profile": {
@@ -569,13 +569,13 @@
       "displayName": "金色暗影",
       "exactPrefixes": [],
       "exactTokens": [
-        "konjiki_no_yami"
+        "konjiki no yami"
       ],
       "franchise": "To LOVE-Ru",
       "id": "golden_darkness",
       "identityProse": "Adult Golden Darkness (Yami) from To LOVE-Ru, with floor-length golden-blonde hair, hair intakes and ruby-red eyes.",
       "identityTokens": [
-        "konjiki_no_yami",
+        "konjiki no yami",
         "1girl",
         "solo",
         "blonde_hair",
@@ -601,7 +601,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "konjiki_no_yami"
+        "konjiki no yami"
       ],
       "copyrightTokens": [
         "to_love-ru"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_interview",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2430,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T13:40:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mitsukasa_ayase_interview",
     "characterId": "mitsukasa_ayase",
@@ -13,7 +13,7 @@
     "category": "公众活动",
     "description": "活动开始前，绫濑最后看了一遍提纲。工作人员在门外招呼她时，她把纸放好，换上熟悉的笑容。",
     "location": "event waiting room",
-    "action": "holding interview notes beside a table",
+    "action": "工作人员在门外招呼她时，她把纸放好，换上熟悉的笑容",
     "timeOfDay": "afternoon",
     "lighting": "soft indoor light",
     "camera": "medium shot",
@@ -33,7 +33,6 @@
       "medium shot"
     ],
     "animaCaption": "",
-    "characterId": "mitsukasa_ayase",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

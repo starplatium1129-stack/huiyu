@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiina_mashiro",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 118,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shiina_mashiro",
     "profile": {
@@ -69,7 +69,7 @@
       "speech": "这张画……我还想再改一点。",
       "source": "The Pet Girl of Sakurasou",
       "traits": [
-        "shiina_mashiro",
+        "shiina mashiro",
         "sakura-sou_no_pet_na_kanojo",
         "blonde_hair",
         "long_hair",
@@ -180,7 +180,7 @@
       ],
       "identityProse": "Mashiro Shiina from The Pet Girl of Sakurasou, with very long cream-blonde hair, pale-orange eyes and slightly upturned eyelids.",
       "identityTokens": [
-        "shiina_mashiro",
+        "shiina mashiro",
         "sakura-sou no pet na kanojo",
         "blonde hair",
         "very long hair",
@@ -188,7 +188,7 @@
         "hair between eyes"
       ],
       "exactTokens": [
-        "shiina_mashiro"
+        "shiina mashiro"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -217,7 +217,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "shiina_mashiro",
+        "shiina mashiro",
         "Mashiro Shiina"
       ],
       "copyrightTokens": [

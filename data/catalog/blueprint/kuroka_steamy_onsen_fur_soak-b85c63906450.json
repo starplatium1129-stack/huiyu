@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_steamy_onsen_fur_soak",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2206,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroka_steamy_onsen_fur_soak",
     "characterId": "kuroka",
@@ -14,11 +14,11 @@
     "description": "隐秘深山的温泉私汤水汽袅袅，清澈泉水在黑夜中映出月光。黑歌坐在温泉池边的石阶上，双足轻荡池水。湿漉的黑发贴在光洁白皙的背脊上，两只猫耳因温热的水汽而微微垂下，纤细的双尾在水面拍打出涟漪。她转过身来单手遮胸，眼眸迷离泛着诱人红晕，散发着野性又娇嗔的猫妖风情。",
     "recommendedSize": "832x1216",
     "location": "private natural rock hot spring shrouded in steam",
-    "action": "sitting on rock ledge of outdoor hot spring, dipping feet in water, wet black hair and damp twin cat tails splashing, cat ears lowered in warm steam, shy yet seductive glance",
+    "action": "坐在温泉池边的石阶上，双足轻荡池水，湿漉的黑发贴在光洁白皙的背脊上",
     "timeOfDay": "night",
     "lighting": "cool blue moonlight piercing warm rising steam vapors",
     "camera": "cowboy_shot",
-    "mood": "wild supernatural enchantment, dewy nocturnal beauty",
+    "mood": "妖娆幽微",
     "promptProse": "Perched on mossy rocks by a secluded outdoor hot spring under the moon, Kuroka splashes water with twin cat tails. Her damp black hair clings to bare shoulders as steam rises around her alluring silhouette.",
     "promptTokens": [
       "1girl",

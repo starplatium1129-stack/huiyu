@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_oriana_campus_bench_bread_blush",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2554,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "rose_oriana_campus_bench_bread_blush",
     "title": "萝丝 · 学院长椅上的质朴甜意",
@@ -12,7 +12,7 @@
     "outfitId": "oriana_knight_uniform",
     "description": "学园林荫道木制长椅上，午后阳光透过树叶洒下斑驳光点。萝丝双手捧着希德赠予的粗粮面包，两颊泛红陷入浪漫脑补的幸福浅笑。",
     "location": "sunlit cobblestone academy garden avenue shaded by lush oak trees",
-    "action": "sitting on park bench, holding half a rustic bread roll with both hands, blushing deeply while smiling dreamily into the distance",
+    "action": "双手捧着希德赠予的粗粮面包，两颊泛红陷入浪漫脑补的幸福浅笑",
     "timeOfDay": "下午",
     "lighting": "树荫筛落的温暖阳光斑纹",
     "camera": "cowboy shot",

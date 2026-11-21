@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fern_r18_inn_tub_warm",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 126,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "fern_r18_inn_tub_warm",
     "title": "菲伦 · 雪夜旅店的魔法木桶浴",
@@ -48,7 +48,9 @@
     "negativeTokens": [],
     "recommendedSize": "1152x1536",
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples"
+    ],
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "adultArtistHint": "@rella",

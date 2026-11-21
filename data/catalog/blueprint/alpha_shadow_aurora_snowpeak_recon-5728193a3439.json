@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alpha_shadow_aurora_snowpeak_recon",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2533,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alpha_shadow_aurora_snowpeak_recon",
     "title": "阿尔法 · 玻璃花房的白玫瑰相赠",
@@ -12,11 +12,11 @@
     "outfitId": "white_evening_dress",
     "description": "阳光和煦的欧式温室玻璃花房内，绿意葱郁。阿尔法身穿优雅的纯白礼裙，素手轻剪下一支盛放的白玫瑰递上前，金发在光束中宛若流金，眼神深情而庄重。",
     "location": "lush botanical conservatory glasshouse filled with blooming white roses and ferns",
-    "action": "holding a freshly cut white rose by the stem, offering the flower forward, graceful posture, gentle fond expression, golden curls catching light shafts",
+    "action": "身穿优雅的纯白礼裙，素手轻剪下一支盛放的白玫瑰递上前，金发在光束中宛若流金，眼神深情而庄重",
     "timeOfDay": "afternoon",
     "lighting": "radiant dappled sunlight streaming through curved glasshouse panels and leafy canopy",
     "camera": "cowboy shot",
-    "mood": "aristocratic elegance, pure romantic dedication, breathtaking botanical beauty",
+    "mood": "温存与神圣",
     "promptProse": "Inside a sunlit glass conservatory surrounded by blooming white roses, Alpha gracefully extends a single white blossom forward, her eyes shimmering with tender devotion.",
     "promptTokens": [
       "greenhouse",

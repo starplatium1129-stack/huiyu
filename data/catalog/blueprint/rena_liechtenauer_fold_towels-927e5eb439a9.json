@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_fold_towels",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2425,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "rena_liechtenauer_fold_towels",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "旅馆工作",
     "description": "庭院里的毛巾已经晒干。蕾娜把它们一条条叠整齐，发现最上面那条边角又歪了，便重新折了一次。",
     "location": "inn veranda",
-    "action": "folding a towel on the veranda",
+    "action": "把它们一条条叠整齐，发现最上面那条边角又歪了，便重新折了一次",
     "timeOfDay": "afternoon",
     "lighting": "sunlight",
     "camera": "medium shot",

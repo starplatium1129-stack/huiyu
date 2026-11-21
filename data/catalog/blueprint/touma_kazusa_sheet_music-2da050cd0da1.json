@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_sheet_music",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2385,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "touma_kazusa_sheet_music",
     "characterId": "touma_kazusa",
@@ -13,7 +13,7 @@
     "category": "练习之后",
     "description": "离开前，和纱站在琴凳旁，把散落的谱纸对齐收进文件夹。",
     "location": "piano room",
-    "action": "standing beside the piano and gathering sheet music into a folder",
+    "action": "离开前，和纱站在琴凳旁，把散落的谱纸对齐收进文件夹",
     "timeOfDay": "evening",
     "lighting": "warm room light",
     "camera": "cowboy shot",

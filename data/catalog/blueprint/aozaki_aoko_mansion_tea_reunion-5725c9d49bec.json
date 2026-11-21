@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_mansion_tea_reunion",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1982,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aozaki_aoko_mansion_tea_reunion",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "阳光明媚的洋馆大厅雕花落地窗前，青子舒舒服服地陷在丝绒扶手椅里，优雅翘起修长的双腿。双手端着冒热气的红茶瓷杯，嘴角浮现出一抹久别重逢的温柔。",
     "recommendedSize": "832x1216",
     "location": "victorian mansion living room",
-    "action": "sitting on vintage couch, holding teacup, relaxed smile",
+    "action": "双手端着冒热气的红茶瓷杯，嘴角浮现出一抹久别重逢的温柔",
     "timeOfDay": "day",
     "lighting": "golden afternoon rays streaming through arched window",
     "camera": "medium_shot",
-    "mood": "warm nostalgic comfort",
+    "mood": "幽微与治愈",
     "promptProse": "Inside the sunlit Victorian parlor of Kuonji mansion, Aozaki Aoko sits back on an antique armchair, holding an ornate teacup with a gentle, relaxed expression.",
     "promptTokens": [
       "mansion",

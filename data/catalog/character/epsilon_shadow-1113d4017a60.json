@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "epsilon_shadow",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 265,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "epsilon_shadow",
     "popular": {
@@ -26,7 +26,7 @@
       ],
       "identityProse": "Epsilon from The Eminence in Shadow, the Fifth of the Seven Shadows, with wavy light blue hair, sharp violet eyes, pointed elf ears, an elegant demeanor, and a meticulously sculpted figure.",
       "identityTokens": [
-        "epsilon_(shadow_garden)",
+        "epsilon (shadow garden)",
         "1girl",
         "solo",
         "light_blue_hair",
@@ -36,11 +36,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "epsilon_(shadow_garden)"
+        "epsilon (shadow garden)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "epsilon_(shadow_garden)"
+        "epsilon (shadow garden)"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -143,7 +143,7 @@
       "voiceJa": "シャドウ様、お聴きください。あなたのために捧げる『月光』を……ふふ、ベータになど負けませんわ",
       "source": "The Eminence in Shadow",
       "traits": [
-        "epsilon_(shadow_garden)",
+        "epsilon (shadow garden)",
         "light_blue_hair",
         "purple_eyes",
         "pointy_ears",

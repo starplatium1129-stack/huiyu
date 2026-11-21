@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "waguri_kaoruko",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 117,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "waguri_kaoruko",
     "profile": {
@@ -195,7 +195,7 @@
       ],
       "identityProse": "Kaoruko Waguri from The Fragrant Flower Blooms with Dignity, with long black-purple hair and blue eyes.",
       "identityTokens": [
-        "waguri_kaoruko",
+        "waguri kaoruko",
         "kaoru hana wa rin to saku",
         "1girl",
         "solo",
@@ -204,7 +204,7 @@
         "blue eyes"
       ],
       "exactTokens": [
-        "waguri_kaoruko"
+        "waguri kaoruko"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -232,7 +232,7 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "waguri_kaoruko",
+        "waguri kaoruko",
         "Kaoruko Waguri"
       ],
       "copyrightTokens": [

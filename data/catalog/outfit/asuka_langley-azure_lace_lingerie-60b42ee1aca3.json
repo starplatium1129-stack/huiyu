@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "asuka_langley/azure_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2368,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "asuka_langley",
     "outfit": {
       "id": "azure_lace_lingerie",
-      "name": "第二适格者炽烈亮红细肩带莫代尔背心与四角裤",
+      "name": "第二适格者 · 细带背心与短裤",
       "category": "睡衣 / 背心短裤套",
       "default": false,
       "isDefault": false,

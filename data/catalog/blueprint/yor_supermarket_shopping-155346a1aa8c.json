@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yor_supermarket_shopping",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 811,
   "createdAt": null,
-  "updatedAt": "2026-10-24T08:42:57.123153+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yor_supermarket_shopping",
     "title": "约尔·福杰 · 蔬菜摊前的认真挑选",
@@ -18,7 +18,7 @@
     "timeOfDay": "day",
     "lighting": "soft bright overhead store light",
     "camera": "medium shot, three-quarter view, crouching environmental portrait",
-    "mood": "lighthearted",
+    "mood": "轻松明快",
     "sceneTags": [
       "crouching",
       "carrot",

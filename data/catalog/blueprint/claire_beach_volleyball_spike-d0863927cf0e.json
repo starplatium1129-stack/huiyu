@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "claire_beach_volleyball_spike",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2525,
   "createdAt": "2026-10-28T03:47:58.391980+00:00",
-  "updatedAt": "2026-10-30T11:23:01.492960200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "claire_beach_volleyball_spike",
     "characterId": "claire_kagenou",
@@ -14,11 +14,11 @@
     "description": "烈日照耀的金色沙滩排球场上。克莱尔凌空跃起，修长结实的腰腹线条与魔剑士的爆发力展露无遗，单臂蓄力重重下劈扣球，黑发在日光中飞舞，眼神充满毫不退让的炽热胜负欲。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched ocean beach volleyball court with net and palm trees",
-    "action": "leaping high in the air above the net, one arm pulled back ready to smash a volleyball with fierce athletic momentum, sharp focused expression",
+    "action": "凌空跃起，修长结实的腰腹线条与魔剑士的爆发力展露无遗，单臂蓄力重重下劈扣球",
     "timeOfDay": "afternoon",
     "lighting": "intense blazing summer midday sunlight casting hard dynamic contrast",
     "camera": "dynamic_angle",
-    "mood": "intense athletic power, blazing competitive spirit, stunning combat readiness",
+    "mood": "默契与坚毅",
     "promptProse": "Claire in a sporty red bikini leaps powerfully above a beach volleyball net, arm cocked to spike with intense competitive eyes in bright sun.",
     "promptTokens": [
       "beach",

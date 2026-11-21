@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "changli_wuthering_r18_b7_04",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 1658,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "changli_wuthering_r18_b7_04",
-    "title": "长离 · 听涛别院云丝大床上的离火焚身自持 ·「这颗心……早在很多年前……就已经输给你了」",
+    "title": "长离 · 听涛别院云丝大床上的离火焚身自持",
     "category": "私密自持",
     "characterId": "changli_wuthering",
     "description": "彻底卸下谋士面具后的真情爆发。长离浑身赤裸仰躺在红绸云丝大床上，粉色长发如火焰般铺满被褥。手指在滚烫泥泞的私处深处疯狂抽插，身上泛起离火的高温红晕，凤眸中溢出压抑多年的深情泪水——「什么天下大势……什么今州安危……如果不能与你共白头……这一切又有什么意义……哈啊……」",
@@ -50,7 +50,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_boudoir",
     "coverageTags": [

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sylphiette_grayrat_kitchen_morning",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 472,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "穿着宽松睡衣哼着歌准备早餐",
     "adult": false,
@@ -18,7 +18,7 @@
     "id": "sylphiette_grayrat_kitchen_morning",
     "lighting": "soft_morning_light",
     "location": "格雷拉特家厨房",
-    "mood": "cozy",
+    "mood": "温馨惬意",
     "negativeTokens": [],
     "outfitId": "oversized_nightshirt",
     "promptProse": "At the country stove, she holds the pan handle in one hand and turns the bacon and egg with the other, smiling toward the doorway in morning light.",

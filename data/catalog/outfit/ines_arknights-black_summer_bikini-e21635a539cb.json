@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "ines_arknights/black_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2216,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "ines_arknights",
     "outfit": {
       "id": "black_summer_bikini",
-      "name": "阴影迷航 · 曜黑与暗紫系带镂空竞技分体泳装配轻薄墨色防晒长袍",
+      "name": "阴影迷航 · 镂空竞技分体泳装",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,

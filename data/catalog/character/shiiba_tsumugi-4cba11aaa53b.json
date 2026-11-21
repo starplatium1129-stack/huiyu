@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shiiba_tsumugi",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 258,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shiiba_tsumugi",
     "profile": {
@@ -60,7 +60,7 @@
       "speech": "这个发箍怎么样？我看了好久，还是觉得它最合适。",
       "voice": "这个发箍怎么样？我看了好久，还是觉得它最合适。",
       "traits": [
-        "shiiba_tsumugi",
+        "shiiba tsumugi",
         "brown hair",
         "long hair",
         "blue eyes",
@@ -83,20 +83,20 @@
       "identityTokens": [
         "1girl",
         "solo",
-        "shiiba_tsumugi",
+        "shiiba tsumugi",
         "brown hair",
         "long hair",
         "blue eyes",
         "red hairband"
       ],
       "characterTokens": [
-        "shiiba_tsumugi"
+        "shiiba tsumugi"
       ],
       "copyrightTokens": [
         "sanoba_witch"
       ],
       "exactTokens": [
-        "shiiba_tsumugi"
+        "shiiba tsumugi"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

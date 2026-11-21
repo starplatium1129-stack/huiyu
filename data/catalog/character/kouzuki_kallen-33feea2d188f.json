@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kouzuki_kallen",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 199,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kouzuki_kallen",
     "profile": {
@@ -84,8 +84,8 @@
       "speech": "现在的世界可比过去好太多了。既然大家拼死守护了和平，那我这个曾经的王牌，就更得好好站稳脚跟才行呢。",
       "source": "SUNRISE《Code Geass 反叛的鲁路修》",
       "traits": [
-        "kallen_stadtfeld",
-        "kouzuki_kallen",
+        "kallen stadtfeld",
+        "kouzuki kallen",
         "1girl",
         "solo",
         "red_hair",
@@ -329,7 +329,7 @@
       ],
       "identityProse": "Adult Kallen Kouzuki from Code Geass, a mature and athletic ace pilot with vibrant red short spiky hair, piercing blue eyes, wearing a sleek modern jacket, carrying an air of seasoned grace, strength, and quiet reliability.",
       "identityTokens": [
-        "kallen_stadtfeld",
+        "kallen stadtfeld",
         "1girl",
         "solo",
         "red_hair",
@@ -340,8 +340,8 @@
         "code_geass"
       ],
       "exactTokens": [
-        "kallen_stadtfeld",
-        "kouzuki_kallen"
+        "kallen stadtfeld",
+        "kouzuki kallen"
       ],
       "exactPrefixes": [
         "kallen_"
@@ -382,8 +382,8 @@
         "ask_(askzy)"
       ],
       "characterTokens": [
-        "kallen_stadtfeld",
-        "kouzuki_kallen"
+        "kallen stadtfeld",
+        "kouzuki kallen"
       ],
       "copyrightTokens": [
         "code_geass"

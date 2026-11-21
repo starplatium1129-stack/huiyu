@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "byakuya_sunset_rooftop_bento",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 824,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "action": "夕阳下吃便当，清贫的平静",
     "adult": false,
@@ -18,7 +18,7 @@
     "id": "byakuya_sunset_rooftop_bento",
     "lighting": "golden_hour",
     "location": "学校天台",
-    "mood": "wistful",
+    "mood": "怅惘追忆",
     "negativeTokens": [],
     "outfitId": "poor_school_uniform",
     "promptProse": "Seated on the rooftop steps, she looks up shyly from the rice-and-plum bento; sunset casts fence shadows beside her worn schoolbag.",

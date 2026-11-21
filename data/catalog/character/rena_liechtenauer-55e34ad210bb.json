@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rena_liechtenauer",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 259,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "rena_liechtenauer",
     "profile": {
@@ -61,7 +61,7 @@
       "speech": "这条路后面还有神社吗？太好了，我想再仔细看看。",
       "voice": "这条路后面还有神社吗？太好了，我想再仔细看看。",
       "traits": [
-        "lena_liechtenauer",
+        "lena liechtenauer",
         "blonde hair",
         "long hair",
         "purple eyes",
@@ -86,20 +86,20 @@
       "identityTokens": [
         "1girl",
         "solo",
-        "lena_liechtenauer",
+        "lena liechtenauer",
         "blonde hair",
         "long hair",
         "purple eyes",
         "ahoge"
       ],
       "characterTokens": [
-        "lena_liechtenauer"
+        "lena liechtenauer"
       ],
       "copyrightTokens": [
         "senren_banka"
       ],
       "exactTokens": [
-        "lena_liechtenauer"
+        "lena liechtenauer"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

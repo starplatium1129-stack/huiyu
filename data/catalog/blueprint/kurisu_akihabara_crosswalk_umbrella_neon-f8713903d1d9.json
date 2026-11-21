@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_akihabara_crosswalk_umbrella_neon",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2565,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "kurisu_akihabara_crosswalk_umbrella_neon",
     "title": "牧濑红莉栖 · 雨夜十字路口的并肩轻语",
@@ -12,7 +12,7 @@
     "outfitId": "tokyo_date_turtleneck",
     "description": "细雨淅沥的秋叶原中央通十字路口，漫天动漫招牌霓虹倒映在湿滑沥青路面上。红莉栖与身边的人合撑一把黑伞，微微侧头咬唇，两颊泛起羞涩微红。",
     "location": "rainy Tokyo pedestrian crosswalk illuminated by towering anime billboards and neon store signs",
-    "action": "walking under shared black umbrella, leaning close to partner shoulder, biting lip slightly with a subtle tsundere blush",
+    "action": "红莉栖与身边的人合撑一把黑伞，微微侧头咬唇，两颊泛起羞涩微红",
     "timeOfDay": "夜晚",
     "lighting": "霓虹招牌彩光与沥青积水倒影",
     "camera": "wide shot, landscape composition",

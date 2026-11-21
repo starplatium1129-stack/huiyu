@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "sawamura_spencer_eriri",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 197,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "sawamura_spencer_eriri",
     "profile": {
@@ -308,20 +308,20 @@
       ],
       "identityProse": "Adult Eriri Spencer Sawamura from Saenai Heroine no Sodatekata. Long blonde twin tails, blue eyes, and ribbon hair ties.",
       "identityTokens": [
-        "sawamura_spencer_eriri",
+        "sawamura spencer eriri",
         "blonde_hair",
         "long_hair",
         "twintails",
         "blue_eyes"
       ],
       "characterTokens": [
-        "sawamura_spencer_eriri"
+        "sawamura spencer eriri"
       ],
       "copyrightTokens": [
         "saenai_heroine_no_sodatekata"
       ],
       "exactTokens": [
-        "sawamura_spencer_eriri"
+        "sawamura spencer eriri"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

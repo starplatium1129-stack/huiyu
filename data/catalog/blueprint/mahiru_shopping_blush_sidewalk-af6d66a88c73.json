@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "mahiru_shopping_blush_sidewalk",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 1473,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mahiru_shopping_blush_sidewalk",
-    "title": "椎名真昼 · 商业街并肩同行的微热红晕·「被同学看到的话……会误会的……但我不讨厌」",
+    "title": "椎名真昼 · 商业街并肩同行的微热红晕",
     "category": "街头约会",
     "characterId": "shiina_mahiru",
     "outfitId": "casual_winter_coat",

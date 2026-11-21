@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_track_field_dawn_sprint_kick",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2595,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "lemon_track_field_dawn_sprint_kick",
     "title": "烧盐柠檬 · 破晓跑道的弯道全速冲刺",
@@ -12,7 +12,7 @@
     "outfitId": "track_and_field_athletic_wear",
     "description": "石蕗高中田径场红色塑胶跑道上，清晨第一道朝阳穿透薄雾。柠檬在弯道全力加速冲刺，健美小麦色肌肤与马甲线在晨曦中生辉，飞扬的泥土与汗珠折射金色朝芒。",
     "location": "sunlit red running track curve around high school sports stadium with morning dew",
-    "action": "sprinting dynamically through track curve with powerful athletic stride, toned tanned limbs pumping, determined focused joyful smile",
+    "action": "柠檬在弯道全力加速冲刺，健美小麦色肌肤与马甲线在晨曦中生辉，飞扬的泥土与汗珠折射金色朝芒",
     "timeOfDay": "清晨",
     "lighting": "初升朝阳金光逆射与薄雾丁达尔光",
     "camera": "wide dynamic sports action shot",

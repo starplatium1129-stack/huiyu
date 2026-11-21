@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "yuigahama_yui/pink_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2342,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "yuigahama_yui",
     "outfit": {
       "id": "pink_lace_lingerie",
-      "name": "蜜桃心愿 · 樱粉荷叶滚边双层纯棉吊带套",
+      "name": "蜜桃心愿 · 荷叶滚边纯棉吊带套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

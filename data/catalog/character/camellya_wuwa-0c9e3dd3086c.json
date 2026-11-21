@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "camellya_wuwa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 304,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "camellya_wuwa",
     "profile": {
@@ -35,7 +35,7 @@
       "likes": [],
       "speech": "再近一点。这朵山茶才刚开，你还没看清吧？",
       "traits": [
-        "camellya_(wuthering_waves)",
+        "camellya (wuthering waves)",
         "wuthering_waves",
         "two-tone hair",
         "white hair",
@@ -114,7 +114,7 @@
       ],
       "identityProse": "Camellya from Wuthering Waves. Long white-and-red hair with a prominent forelock, red eyes, a Tacet Mark on her chest and vine-like markings.",
       "identityTokens": [
-        "camellya_(wuthering_waves)",
+        "camellya (wuthering waves)",
         "wuthering_waves",
         "two-tone hair",
         "white hair",
@@ -126,13 +126,13 @@
         "vine tattoo"
       ],
       "characterTokens": [
-        "camellya_(wuthering_waves)"
+        "camellya (wuthering waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"
       ],
       "exactTokens": [
-        "camellya_(wuthering_waves)"
+        "camellya (wuthering waves)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_summer_overpass_train_breeze_smile",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2568,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:30:57.454175400+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mayuri_summer_overpass_train_breeze_smile",
     "title": "椎名真由理 · 铁道天桥上的盛夏回眸",
@@ -12,7 +12,7 @@
     "outfitId": "pale_blue_sundress",
     "description": "烈日灼灼的秋叶原总武线铁道天桥上，深蓝晴空下翻滚着巨型白积雨云。真由理双手按着便帽回首灿烂欢笑，浅蓝裙摆在风中如花绽放。",
     "location": "elevated urban pedestrian bridge over bustling railway tracks beneath towering summer clouds",
-    "action": "turning back happily on footbridge, holding down her brimmed sun hat with both hands as train roars past below, radiant joyful smile",
+    "action": "真由理双手按着便帽回首灿烂欢笑，浅蓝裙摆在风中如花绽放",
     "timeOfDay": "白天",
     "lighting": "盛夏明晃晃白日阳光直射",
     "camera": "wide shot, landscape composition",

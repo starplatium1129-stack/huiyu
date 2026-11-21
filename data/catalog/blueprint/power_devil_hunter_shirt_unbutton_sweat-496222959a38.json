@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_devil_hunter_shirt_unbutton_sweat",
-  "revision": 2,
+  "revision": 5,
   "sortOrder": 2688,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "power_devil_hunter_shirt_unbutton_sweat",
     "characterId": "power",
@@ -12,13 +12,13 @@
     "title": "帕瓦 · 恶魔讨伐后的白衬衫微敞",
     "category": "战斗高光",
     "description": "激战过后的城市雨后废墟中，巨大的血之大槌化为血汽消散。帕瓦一把扯掉公安制服外套与黑领带，单手叉腰站在碎石之上。白衬衫纽扣崩开两颗，露出精致白皙的锁骨与小巧起伏的胸脯。尖锐的犬齿微露，一头淡金色长发在硝烟与晚风中狂舞，血之恶魔神情狂傲嚣张，却把信任的后背完完全全留给了你。",
-    "action": "standing proudly atop concrete rubble, suit jacket discarded, white shirt unbuttoned at collar, tie loosened, fangs bared in triumphant grin, blood horns glowing, wild blonde hair",
+    "action": "一把扯掉公安制服外套与黑领带，单手叉腰站在碎石之上，白衬衫纽扣崩开两颗",
     "recommendedSize": "832x1216",
     "location": "post-battle urban alleyway with cracked concrete and steam vents",
     "timeOfDay": "sunset",
     "lighting": "smoky dramatic sunset backlighting figure through industrial dust",
     "camera": "cowboy_shot",
-    "mood": "unhinged feral swagger, fierce undeniable bond",
+    "mood": "坚毅与野性",
     "promptProse": "Standing triumphantly atop urban rubble after a fierce devil battle, Power yanks open her white collared shirt at the throat. Her red horns glow in the smoky sunset as she bares sharp fangs in an ecstatic, cocky grin.",
     "promptTokens": [
       "1girl",

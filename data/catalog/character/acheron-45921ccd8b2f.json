@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "acheron",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 204,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-31T15:28:30.648119700+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "acheron",
     "profile": {
@@ -58,7 +58,7 @@
         "signature": "紫发紫瞳与随身长刀"
       },
       "traits": [
-        "acheron_(honkai:_star_rail)",
+        "acheron (honkai: star rail)",
         "1girl",
         "solo",
         "long hair",
@@ -81,7 +81,7 @@
       ],
       "identityProse": "Adult Acheron from Honkai: Star Rail, a reserved traveler with long violet hair, violet eyes and hair falling across one eye.",
       "identityTokens": [
-        "acheron_(honkai:_star_rail)",
+        "acheron (honkai: star rail)",
         "1girl",
         "solo",
         "long hair",
@@ -91,11 +91,11 @@
         "honkai:_star_rail"
       ],
       "exactTokens": [
-        "acheron_(honkai:_star_rail)"
+        "acheron (honkai: star rail)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "acheron_(honkai:_star_rail)"
+        "acheron (honkai: star rail)"
       ],
       "copyrightTokens": [
         "honkai:_star_rail"

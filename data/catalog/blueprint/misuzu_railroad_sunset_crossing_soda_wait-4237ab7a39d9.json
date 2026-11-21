@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_railroad_sunset_crossing_soda_wait",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2585,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "misuzu_railroad_sunset_crossing_soda_wait",
     "title": "神尾观铃 · 临海平交道的落日电车与冰饮",
@@ -12,7 +12,7 @@
     "outfitId": "air_summer_uniform",
     "description": "海边平交道栏杆旁，夕阳将铁轨和整个海湾染成醉人的绯金。观铃提着刚从自动贩卖机买来的冰镇蜜桃汁等待电车驶过，晚风拂过水手服缎带，眼眸映照着晚霞。",
     "location": "coastal railway level crossing barrier overlooking a sparkling sunset ocean bay",
-    "action": "standing beside crossing gate holding a chilled canned drink, watching train approach, evening breeze rustling sailor tie, serene gentle smile",
+    "action": "观铃提着刚从自动贩卖机买来的冰镇蜜桃汁等待电车驶过，晚风拂过水手服缎带，眼眸映照着晚霞",
     "timeOfDay": "黄昏",
     "lighting": "晚霞将海面与铁轨染透的赤金逆光",
     "camera": "wide shot, landscape composition",

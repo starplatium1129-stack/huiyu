@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_tatami_drunken_straddle_lap",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2205,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroka_tatami_drunken_straddle_lap",
     "characterId": "kuroka",
@@ -14,11 +14,11 @@
     "description": "和室榻榻米上散落着精美的瓷酒壶，空气中飘着淡淡酒香。黑歌身穿一袭松散的黑色金边和服，衣领低垂露出如雪般白皙的胸口与锁骨。黑色猫耳随微醺的节拍轻轻扇动，修长双尾在身后妖娆摇曳。她半趴在草席上单手托腮，金色猫瞳带着魅惑的笑意，懒洋洋地发出甜软的小猫呼噜声。",
     "recommendedSize": "832x1216",
     "location": "private tatami room with overturned sake cup",
-    "action": "lounging sideways on tatami floor, loose black kimono revealing collarbone and cleavage, black cat ears twitching happily, twin cat tails swaying, sultry playful cat smile",
+    "action": "身穿一袭松散的黑色金边和服",
     "timeOfDay": "night",
     "lighting": "warm amber floor lanterns casting flickering shadows across tatami",
     "camera": "medium_shot",
-    "mood": "bewitching feline seduction, playful purring warmth",
+    "mood": "俏皮灵动",
     "promptProse": "Lounging on tatami mats beside an open sake flask, Kuroka wears a loose black kimono slipping over bare shoulders. Her twin cat tails sway lazily as she smiles with irresistible, purring feline charm.",
     "promptTokens": [
       "1girl",

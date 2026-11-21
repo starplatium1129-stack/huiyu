@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fubuki_one_punch",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 132,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "fubuki_one_punch",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "One-Punch Man",
       "speech": "安排已经确认，接下来按顺序进行。",
       "traits": [
-        "fubuki_(one-punch_man)",
+        "fubuki (one-punch man)",
         "one-punch_man",
         "black_hair",
         "short_hair",
@@ -303,7 +303,7 @@
       ],
       "identityProse": "Fubuki from One-Punch Man, with a black bob, straight bangs and green eyes.",
       "identityTokens": [
-        "fubuki_(one-punch_man)",
+        "fubuki (one-punch man)",
         "one-punch_man",
         "black_hair",
         "short_hair",
@@ -312,7 +312,7 @@
         "green_eyes"
       ],
       "exactTokens": [
-        "fubuki_(one-punch_man)"
+        "fubuki (one-punch man)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -341,7 +341,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "fubuki_(one-punch_man)"
+        "fubuki (one-punch man)"
       ],
       "copyrightTokens": [
         "one-punch_man"

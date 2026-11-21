@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "atago_night_peignoir_enticement",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2158,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "atago_night_peignoir_enticement",
     "characterId": "atago_azur",
@@ -14,11 +14,11 @@
     "description": "静谧卧房的落地窗前月华如练。爱宕身穿黑色半透真丝睡袍跪坐在床垫中央，领口微松展现出令人屏息的曼妙曲线与如脂雪肌。犬耳随着心跳轻微摇动，金色眸子中水光潋滟，她单手轻抚胸前微敞的丝绸，神情极尽温存而又饱含对心上人的无限倾慕。",
     "recommendedSize": "832x1216",
     "location": "dim moonlit bedroom with sheer curtains",
-    "action": "kneeling gracefully in center of bed under moonlight, sheer black silk peignoir robe sliding off shoulder, golden eyes glowing with love, dog ears twitched with emotion",
+    "action": "身穿黑色半透真丝睡袍跪坐在床垫中央",
     "timeOfDay": "night",
     "lighting": "cool silver moonlight filtering through transparent curtains onto dark sheets",
     "camera": "cowboy_shot",
-    "mood": "breathtaking sensual devotion, elegant private allure",
+    "mood": "柔媚与神圣",
     "promptProse": "Kneeling gracefully in the center of a bed bathed in moonlight, Atago wears a sheer black silk peignoir that slips off her bare shoulder. Her dog ears perk gently as she looks forward with deep devotion.",
     "promptTokens": [
       "1girl",

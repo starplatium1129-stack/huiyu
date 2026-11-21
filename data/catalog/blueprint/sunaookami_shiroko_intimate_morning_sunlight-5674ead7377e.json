@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunaookami_shiroko_intimate_morning_sunlight",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2129,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sunaookami_shiroko_intimate_morning_sunlight",
     "characterId": "sunaookami_shiroko",
@@ -14,11 +14,11 @@
     "description": "纯白棉质窗帘透进清透宁静的清晨微光。松软的白色被褥间，白子身穿浅蓝色纯棉吊带背心，银灰短发略显凌乱。她毫无防备地侧卧在老师身侧，健美紧致的小腹与修长双腿在晨光下泛着瓷白光泽，冰蓝色的眼眸一眨不眨地凝望着刚醒来的老师，流露出极致的温顺与无声交付。",
     "recommendedSize": "832x1216",
     "location": "bright airy morning bedroom bed with white linen",
-    "action": "lying on white sheets, morning sunlight, soft blue camisole, defenseless gentle gaze, subtle blush",
+    "action": "她毫无防备地侧卧在老师身侧，健美紧致的小腹与修长双腿在晨光下泛着瓷白光泽",
     "timeOfDay": "morning",
     "lighting": "ethereal pure morning sunshine diffusing through white sheer curtains",
     "camera": "medium_shot",
-    "mood": "pure peaceful devotion, serene morning vulnerability, and sensual innocence",
+    "mood": "动情与柔媚",
     "promptProse": "Lying peacefully in a sun-drenched morning bed in a light blue cotton camisole, Sunaookami Shiroko looks up with soft blue eyes, her wolf ears relaxed against white pillows.",
     "promptTokens": [
       "camisole",

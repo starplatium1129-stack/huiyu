@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hiuchidani_mei",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 192,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "hiuchidani_mei",
     "profile": {
@@ -307,7 +307,7 @@
       ],
       "identityProse": "Adult Hiuchidani Mei from Cafe Stella and the Reapers' Butterflies. Short lavender hair falling over one eye, green eyes, and a sun-tanned complexion.",
       "identityTokens": [
-        "hiuchidani_mei",
+        "hiuchidani mei",
         "purple_hair",
         "short_hair",
         "hair_over_one_eye",
@@ -315,13 +315,13 @@
         "tan"
       ],
       "characterTokens": [
-        "hiuchidani_mei"
+        "hiuchidani mei"
       ],
       "copyrightTokens": [
         "kissa_stella_to_shinigami_no_chou"
       ],
       "exactTokens": [
-        "hiuchidani_mei"
+        "hiuchidani mei"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

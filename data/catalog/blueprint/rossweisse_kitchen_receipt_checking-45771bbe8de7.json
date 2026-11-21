@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_kitchen_receipt_checking",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2226,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rossweisse_kitchen_receipt_checking",
     "characterId": "rossweisse",
@@ -14,11 +14,11 @@
     "description": "阳光和煦的午后厨房餐桌旁，罗丝薇瑟围着粉色小碎花围裙，认真敲着计算器核对超市打折小票。被你从身后搂住时，她放下笔回头露出极甜的居家小妻子微笑。",
     "recommendedSize": "832x1216",
     "location": "warm cozy domestic kitchen and dining area",
-    "action": "sitting at kitchen table checking supermarket bargain receipts with a calculator, smiling warmly as partner hugs her shoulders from behind",
+    "action": "围着粉色小碎花围裙，认真敲着计算器核对超市打折小票，被你从身后搂住时",
     "timeOfDay": "afternoon",
     "lighting": "gentle afternoon sunlight filtering through kitchen curtains",
     "camera": "medium_shot",
-    "mood": "sweet domestic bliss, devoted housewife warmth, heart-melting thriftiness",
+    "mood": "温存与神圣",
     "promptProse": "Sitting at a kitchen table with a calculator and bargain receipts, Rossweisse smiles with pure domestic joy as partner hugs her shoulders.",
     "promptTokens": [
       "kitchen",

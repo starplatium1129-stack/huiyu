@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_midgar_snowy_cemetery_sword_vow",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2542,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alexia_midgar_snowy_cemetery_sword_vow",
     "title": "阿蕾克希亚 · 冬日屋檐下的围巾与热饮",
@@ -12,11 +12,11 @@
     "outfitId": "street_casual_hoodie",
     "description": "飘雪的冬日商业街屋檐下，阿蕾克希亚红着脸将一条厚实的红色针织围巾拉开，悄悄分给身边的少年一半。双手捧着热可可纸杯，眼眸倒映着漫天落雪与温柔心意。",
     "location": "snow-covered street corner under wooden awning, soft snowfall in background",
-    "action": "standing close under shop eaves, sharing a long red knit scarf around partner's neck, holding steaming paper cup with both hands, blushing tsundere expression, gentle sidelong gaze",
+    "action": "红着脸将厚实红围巾分给身旁少年，双手捧着热可可纸杯，在飘雪中温柔侧目",
     "timeOfDay": "afternoon",
     "lighting": "soft diffuse winter daylight with warm lantern glow from shop window",
     "camera": "cowboy shot",
-    "mood": "sweet winter date romance, guarded tsundere vulnerability, cozy warmth in cold",
+    "mood": "傲娇与温存",
     "promptProse": "Under a snow-dusted shop awning, silver-haired princess Alexia in a casual hoodie shares her warm red scarf, cradling a steaming hot cocoa cup with a flustered, endearing blush.",
     "promptTokens": [
       "snow",

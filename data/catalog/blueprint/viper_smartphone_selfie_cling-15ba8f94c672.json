@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_smartphone_selfie_cling",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2166,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "viper_smartphone_selfie_cling",
     "characterId": "viper_nikke",
@@ -14,11 +14,11 @@
     "description": "人流如织的购物街头，毒蛇双手紧紧挽住你的手臂，半个身子贴在怀里。她单手举起手机歪头眨眼比出剪刀手，甜美的大波浪卷发拂在你肩头，满脸幸福。",
     "recommendedSize": "832x1216",
     "location": "colorful trendy shopping avenue during the afternoon",
-    "action": "clinging tightly to partner arm, pressing cheek close, holding up smartphone with cute peace sign and playful wink, bustling city background",
+    "action": "双手紧紧挽住你的手臂，半个身子贴在怀里，单手举起手机歪头眨眼比出剪刀手",
     "timeOfDay": "afternoon",
     "lighting": "bright modern urban daylight with colorful storefront reflections",
     "camera": "cowboy_shot",
-    "mood": "sweet romantic affection, adorable clingy girlfriend, youthful energy",
+    "mood": "浪漫温存",
     "promptProse": "Clinging tightly to partner arm on a busy city avenue, Viper takes a selfie with her smartphone, winking cutely with a peace sign.",
     "promptTokens": [
       "city_street",

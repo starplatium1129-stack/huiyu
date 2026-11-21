@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hashima_izumi",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 244,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "hashima_izumi",
     "profile": {
@@ -106,16 +106,16 @@
         "hashima izumi"
       ],
       "exactTokens": [
-        "hashima_izumi"
+        "hashima izumi"
       ],
       "characterTokens": [
-        "hashima_izumi"
+        "hashima izumi"
       ],
       "copyrightTokens": [
         "saenai_heroine_no_sodatekata"
       ],
       "identityTokens": [
-        "hashima_izumi",
+        "hashima izumi",
         "1girl",
         "solo",
         "brown_hair",

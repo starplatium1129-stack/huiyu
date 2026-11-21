@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "chitanda_garden_hydrangea_walk",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 1485,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "chitanda_garden_hydrangea_walk",
-    "title": "千反田爱瑠 · 豪农深宅紫阳花径的雨后漫步·「你看，这一片是我亲手种下的呢」",
+    "title": "千反田爱瑠 · 豪农深宅紫阳花径的雨后漫步",
     "category": "专属羁绊",
     "characterId": "chitanda_eru",
     "outfitId": "casual_summer_onepiece",

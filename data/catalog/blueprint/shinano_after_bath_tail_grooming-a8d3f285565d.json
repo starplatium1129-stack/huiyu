@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shinano_after_bath_tail_grooming",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2146,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "shinano_after_bath_tail_grooming",
     "characterId": "shinano",
@@ -14,11 +14,11 @@
     "description": "浴后的重樱卧房内水汽未散，清雅的熏香弥漫四周。信浓侧倚在榻榻米靠垫上，仅裹着轻软的浴袍，湿润的银发垂散腰际。她单手轻抚怀中抱着的蓬松狐尾，狐耳尖泛着淡淡粉红，眼帘低垂微微轻颤，展现出平日不可多见的青涩与敏感神态。",
     "recommendedSize": "832x1216",
     "location": "warm tatami chamber with steam drifting from nearby bath",
-    "action": "reclining sideways on tatami holding one of her fluffy fox tails in arms, loose bathrobe exposing collarbone, wet hair ends, fox ears flushed pink, blushing tenderly",
+    "action": "裹着浴袍侧倚在靠垫上，银发垂落腰际，单手轻抚怀中蓬松狐尾",
     "timeOfDay": "night",
     "lighting": "warm amber paper lamp glow creating soft intimate contrast",
     "camera": "cowboy_shot",
-    "mood": "vulnerable sweetness, enchanting gentle relaxation",
+    "mood": "动情与宁静",
     "promptProse": "Reclining on a tatami mat in a loosely tied bathrobe after a warm bath, Shinano hugs a fluffy white tail close to her chest. Her fox ears are tinged pink with a shy, sweet expression in warm lamplight.",
     "promptTokens": [
       "1girl",

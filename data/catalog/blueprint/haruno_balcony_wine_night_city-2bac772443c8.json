@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "haruno_balcony_wine_night_city",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 370,
   "createdAt": null,
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "haruno_balcony_wine_night_city",
-    "title": "雪之下阳乃 · 深夜高层公寓阳台的红酒杯·「雪乃被你改变了呢……真让人不爽，又有点嫉妒」",
+    "title": "雪之下阳乃 · 深夜高层公寓阳台的红酒杯",
     "category": "都市日常",
     "characterId": "yukinoshita_haruno",
     "outfitId": "elegant_evening_gown",

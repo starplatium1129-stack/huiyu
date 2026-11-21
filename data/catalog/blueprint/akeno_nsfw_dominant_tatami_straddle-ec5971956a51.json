@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "akeno_nsfw_dominant_tatami_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 1296,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "akeno_nsfw_dominant_tatami_straddle",
     "title": "姬岛朱乃 · 榻榻米上的雷光恶魔骑乘",
@@ -63,7 +63,10 @@
     "kreaStyleHint": "r18_explicit_h_cg",
     "animaStyleHint": "r18_explicit_h_cg",
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "animaCaption": "Her hands rest on the viewer's shoulders; her wings cast shadows across the tatami."
   }
 }

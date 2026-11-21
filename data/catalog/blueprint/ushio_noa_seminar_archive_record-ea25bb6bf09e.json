@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ushio_noa_seminar_archive_record",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2088,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-10-29T08:54:33.119184700+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "ushio_noa_seminar_archive_record",
     "characterId": "ushio_noa",
@@ -14,11 +14,11 @@
     "description": "千禧年研讨会极具科幻感的服务器机房内，蓝白色冷光在金属地面与玻璃柜间流淌。诺亚身穿笔挺合身的研讨会白大衣，单手端着泛着微光的平板电脑，倚靠在控制台前。她微微侧过头，紫罗兰眼眸带着看透一切的深邃与温柔，静静守候在加班的老师身边。",
     "recommendedSize": "1216x832",
     "location": "futuristic seminar server room archive",
-    "action": "leaning against server console, holding tablet, glowing screen, gentle confident smile",
+    "action": "她微微侧过头，紫罗兰眼眸带着看透一切的深邃与温柔，静静守候在加班的老师身边",
     "timeOfDay": "night",
     "lighting": "cool blue ambient server rack glow with warm overhead task lights",
     "camera": "medium_shot",
-    "mood": "quiet intellectual intimacy and serene focus",
+    "mood": "温存与宁静",
     "promptProse": "In a quiet futuristic seminar server archive at midnight, Ushio Noa leans gracefully against a console in her tailored white coat, holding a glowing tablet and looking forward with a gentle, knowing smile.",
     "promptTokens": [
       "holding_tablet",

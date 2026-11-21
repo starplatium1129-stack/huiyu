@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_village",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 455,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T07:55:25.190699800+00:00",
   "data": {
     "action": "在村落草原间回望",
     "camera": "cowboy shot, standing in the village grassland",
@@ -15,7 +15,9 @@
     "lighting": "明亮日光",
     "location": "米格路德族村落",
     "mood": "淡泊怀乡",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "long ears"
+    ],
     "outfitId": "adventurer",
     "promptProse": "Roxy looks back along the grassy path through Migurd village, sunlight catching her wind-lifted cape beside the yurts.",
     "promptTokens": [

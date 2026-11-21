@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "scarlet_street_date_earphones",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2137,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "scarlet_street_date_earphones",
     "characterId": "scarlet_nikke",
@@ -14,11 +14,11 @@
     "description": "华灯初上的都市步行街，换上现代干练便服的红莲与你并肩漫步。两人共享同一副有线耳机听着欢快的旋律，红莲好奇又俏皮地歪头看着你，十指紧扣不放。",
     "recommendedSize": "832x1216",
     "location": "vibrant pedestrian shopping street at twilight",
-    "action": "sharing wired earphones while walking side by side, tilted head with curious smile, interlocking fingers, city neon bokeh",
+    "action": "与你并肩漫步，两人共享同一副有线耳机听着欢快的旋律，红莲好奇又俏皮地歪头看着你",
     "timeOfDay": "twilight",
     "lighting": "colorful city neon bokeh and soft twilight ambient glow",
     "camera": "cowboy_shot",
-    "mood": "sweet urban date, lighthearted affection, tender curiosity",
+    "mood": "温存与明媚",
     "promptProse": "Walking side by side in city twilight, Scarlet shares earphones with her partner while holding hands tightly with a bright curious smile.",
     "promptTokens": [
       "city_street",

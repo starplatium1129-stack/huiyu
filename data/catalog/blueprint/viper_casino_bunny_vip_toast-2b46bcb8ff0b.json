@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "viper_casino_bunny_vip_toast",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2168,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "viper_casino_bunny_vip_toast",
     "characterId": "viper_nikke",
@@ -14,11 +14,11 @@
     "description": "仅有两人包场的贵宾博彩沙龙内，身着黑漆皮兔女郎连体衣的毒蛇轻靠在轮盘桌沿。她单手支着下巴，微偏粉色卷发，朝着专属的你俏皮地吹出一个飞吻。",
     "recommendedSize": "832x1216",
     "location": "opulent private VIP casino lounge with chandeliers",
-    "action": "posing by private velvet roulette table in bunny suit, leaning on table with chin in hand, blowing a sweet kiss toward partner",
+    "action": "轻靠在轮盘桌沿，单手支着下巴，微偏粉色卷发，朝着专属的你俏皮地吹出一个飞吻",
     "timeOfDay": "night",
     "lighting": "rich golden crystal chandelier light reflecting off polished marble and green velvet",
     "camera": "cowboy_shot",
-    "mood": "alluring VIP glamour, teasing showgirl sweetness, intoxicating charm",
+    "mood": "俏皮与柔媚",
     "promptProse": "Posing in a sleek black bunny suit by a VIP roulette table under chandeliers, Viper leans on the table blowing an affectionate kiss.",
     "promptTokens": [
       "casino",

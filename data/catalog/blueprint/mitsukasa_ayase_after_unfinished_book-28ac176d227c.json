@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mitsukasa_ayase_after_unfinished_book",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2502,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-11-07T13:05:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "mitsukasa_ayase_after_unfinished_book",
     "characterId": "mitsukasa_ayase",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "绫濑在沙发上读书，你坐到她身边时，她把书签夹回那一页。她轻轻靠过来，说剩下的明天再看，今晚想和你待一会儿。",
     "location": "living room sofa",
-    "action": "closing a book and leaning toward her partner",
+    "action": "她轻轻靠过来，说剩下的明天再看，今晚想和你待一会儿",
     "timeOfDay": "night",
     "lighting": "floor lamp",
     "camera": "medium shot",
@@ -34,7 +34,6 @@
       "medium shot"
     ],
     "animaCaption": "Her partner is beside her but remains outside the frame.",
-    "characterId": "mitsukasa_ayase",
     "recommendedSize": "832x1216",
     "negativeTokens": [],
     "adult": false,

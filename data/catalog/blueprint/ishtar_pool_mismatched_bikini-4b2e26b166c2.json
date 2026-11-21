@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "ishtar_pool_mismatched_bikini",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 256,
   "createdAt": null,
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "ishtar_pool_mismatched_bikini",
-    "title": "伊什塔尔 · 泳池女王的不对称裁定·「两边不对称……才显女神品味」",
+    "title": "伊什塔尔 · 泳池女王的不对称裁定",
     "category": "海滨度假",
     "characterId": "ishtar_fate",
     "description": "不对称设计的黑金比基尼衬得女王蜂般的身段愈发张扬。伊什塔尔从水里跃出，水花在阳光下炸成金粉，落进躺椅时还在笑——「评、评审结果呢？本女神特意挑的不对称设计……才、才不是穿错了！没品味的人类，这可是美索不达米亚最新的流行！」",

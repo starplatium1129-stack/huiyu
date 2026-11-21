@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "cartethyia",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 156,
   "createdAt": null,
-  "updatedAt": "2026-11-18T03:37:51.689363900+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "cartethyia",
     "profile": {
@@ -585,7 +585,7 @@
       ],
       "identityProse": "Cartethyia from Wuthering Waves, with long blonde braids, blue eyes, pointed ears and a halo.",
       "identityTokens": [
-        "cartethyia_(wuthering_waves)",
+        "cartethyia (wuthering waves)",
         "wuthering_waves",
         "blonde_hair",
         "long_hair",
@@ -595,7 +595,7 @@
         "halo"
       ],
       "exactTokens": [
-        "cartethyia_(wuthering_waves)"
+        "cartethyia (wuthering waves)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -624,7 +624,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "cartethyia_(wuthering_waves)"
+        "cartethyia (wuthering waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"

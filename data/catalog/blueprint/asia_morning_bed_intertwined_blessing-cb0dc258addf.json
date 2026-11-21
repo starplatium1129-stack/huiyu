@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "asia_morning_bed_intertwined_blessing",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2237,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "asia_morning_bed_intertwined_blessing",
     "characterId": "asia_argento",
@@ -14,11 +14,11 @@
     "description": "晨光穿透白纱洒满整张双人床，金发少女安静地侧卧在松软的枕席间。纯白的被褥松松地盖到腰际，露出修长白皙的双肩与锁骨。初醒的爱西亚揉了揉泛着水光的碧绿眼眸，看到床边之人的瞬间，嘴角绽放开宛如春日初蕾般甜美纯净的笑颜，眼角还带着幸福梦境留下的晶莹湿润。",
     "recommendedSize": "832x1216",
     "location": "sun-drenched master bedroom with white linen curtains",
-    "action": "lying on side in bright white bed, sheets pulled up to waist, bare shoulders exposed, blonde hair tousled on pillow, rubbing sleepy green eyes, sweet blissfully happy smile",
+    "action": "揉了揉泛着水光的碧绿眼眸，看到床边之人的瞬间，嘴角绽放开宛如春日初蕾般甜美纯净的笑颜",
     "timeOfDay": "morning",
     "lighting": "radiant morning sunlight pouring across white linens and golden hair",
     "camera": "medium_shot",
-    "mood": "heavenly morning purity, absolute unconditional happiness",
+    "mood": "明媚欢欣",
     "promptProse": "Lying leisurely on a bright sunlit bed with white sheets draped to her waist, Asia Argento rubs her sleepy green eyes. Her blonde hair cascades across the pillow as she smiles with heavenly, innocent joy.",
     "promptTokens": [
       "1girl",

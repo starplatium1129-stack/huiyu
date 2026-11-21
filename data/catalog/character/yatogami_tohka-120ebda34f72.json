@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yatogami_tohka",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 125,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yatogami_tohka",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Date A Live",
       "speech": "唔姆，这个面包也很好吃！",
       "traits": [
-        "yatogami_tohka",
+        "yatogami tohka",
         "date_a_live",
         "purple_hair",
         "very_long_hair",
@@ -307,7 +307,7 @@
       ],
       "identityProse": "Tohka Yatogami from Date A Live, with very long dark-purple hair in a high half ponytail, a large ribbon and violet eyes.",
       "identityTokens": [
-        "yatogami_tohka",
+        "yatogami tohka",
         "date_a_live",
         "purple_hair",
         "very_long_hair",
@@ -316,7 +316,7 @@
         "large hair ribbon"
       ],
       "exactTokens": [
-        "yatogami_tohka"
+        "yatogami tohka"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -345,7 +345,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "yatogami_tohka",
+        "yatogami tohka",
         "Tohka",
         "Tohka Yatogami"
       ],

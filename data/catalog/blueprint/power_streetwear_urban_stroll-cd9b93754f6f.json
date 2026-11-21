@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_streetwear_urban_stroll",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1995,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "power_streetwear_urban_stroll",
     "characterId": "power",
@@ -14,11 +14,11 @@
     "description": "涩谷繁忙的十字路口斑马线上，身穿宽松牛仔夹克与短裤的帕瓦双手叉腰大摇大摆迈步，高昂着下颌，吸引了整条街所有行人的目光。",
     "recommendedSize": "832x1216",
     "location": "shibuya pedestrian crossing",
-    "action": "striding with swagger, hands on hips, chin raised high, proud smirk",
+    "action": "双手叉腰大摇大摆迈步，高昂着下颌，吸引了整条街所有行人的目光",
     "timeOfDay": "day",
     "lighting": "bright midday city sunlight reflecting off surrounding billboards",
     "camera": "full_body",
-    "mood": "unstoppable swagger and chaotic charisma",
+    "mood": "自信张扬",
     "promptProse": "Striding confidently across a bustling Shibuya crosswalk, Power sports an oversized denim jacket and shorts, hands on hips with an unapologetic, proud swagger.",
     "promptTokens": [
       "power_(chainsaw_man)",

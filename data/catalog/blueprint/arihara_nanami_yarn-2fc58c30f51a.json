@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_yarn",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2446,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:28:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_yarn",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "居家手作",
     "description": "七海把织到一半的围巾摊在膝上，数了数刚完成的针脚。发现漏了一针，她拆回去一点，重新织好。",
     "location": "living room sofa",
-    "action": "knitting a scarf while seated on a sofa",
+    "action": "发现漏了一针，她拆回去一点，重新织好",
     "timeOfDay": "afternoon",
     "lighting": "soft daylight",
     "camera": "medium shot",

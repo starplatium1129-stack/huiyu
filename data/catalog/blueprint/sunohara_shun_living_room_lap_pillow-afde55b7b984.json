@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sunohara_shun_living_room_lap_pillow",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2115,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "sunohara_shun_living_room_lap_pillow",
     "characterId": "sunohara_shun",
@@ -14,11 +14,11 @@
     "description": "温暖静谧的私人客厅里，瞬身着软糯的米白针织开衫与吊带长裙，端坐在宽大柔软的布艺沙发上。她微笑着引导老师把脑袋枕在自己温热柔软的大腿上，修长指尖轻轻揉按着老师紧绷的太阳穴，垂落的黑发如屏障般隔绝了外界的一切喧嚣。",
     "recommendedSize": "832x1216",
     "location": "cozy warm living room sofa",
-    "action": "providing lap pillow, looking down lovingly, gently stroking hair, blissful smile",
+    "action": "她微笑着引导老师把脑袋枕在自己温热柔软的大腿上，修长指尖轻轻揉按着老师紧绷的太阳穴",
     "timeOfDay": "afternoon",
     "lighting": "soft diffused daylight and warm indoor lamp glow",
     "camera": "medium_shot",
-    "mood": "ultimate soothing relaxation, pure healing bliss, and unconditional love",
+    "mood": "温存与神圣",
     "promptProse": "Sitting comfortably on a soft sofa, Sunohara Shun provides a soothing lap pillow, gazing down with an all-forgiving doting smile as her fingers caress hair.",
     "promptTokens": [
       "sofa",

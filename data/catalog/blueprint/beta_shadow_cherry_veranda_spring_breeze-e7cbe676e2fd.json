@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "beta_shadow_cherry_veranda_spring_breeze",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2536,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "beta_shadow_cherry_veranda_spring_breeze",
     "title": "贝塔 · 绯樱石庭的和风漫步",
@@ -12,7 +12,7 @@
     "outfitId": "sakura_kimono",
     "description": "京都风格的枯山水和风庭院中，落樱在青石小径上铺满粉雪。贝塔身穿春樱和风小振袖，手撑绯红油纸伞回眸浅笑。",
     "location": "tranquil zen garden with stone lanterns and fluttering cherry blossom petals",
-    "action": "strolling along stone path holding an open red oil-paper umbrella, glancing back over shoulder with a delicate shy smile as petals drift by",
+    "action": "身穿春樱和风小振袖，手撑绯红油纸伞回眸浅笑",
     "timeOfDay": "白天",
     "lighting": "明澈春阳与树影斑驳",
     "camera": "wide shot, landscape composition",

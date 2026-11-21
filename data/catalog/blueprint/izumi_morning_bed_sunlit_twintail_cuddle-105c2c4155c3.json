@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "izumi_morning_bed_sunlit_twintail_cuddle",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2315,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "izumi_morning_bed_sunlit_twintail_cuddle",
     "characterId": "hashima_izumi",
@@ -14,11 +14,11 @@
     "description": "清晨的暖阳洒在凌乱的白床单上。出海像只树袋熊一样双手双脚紧紧缠在你的腰上，双马尾散乱，小脸枕在你的颈窝里，带着做完美梦后的极甜笑容，含糊地嘟囔着“前辈最喜欢了”。",
     "recommendedSize": "832x1216",
     "location": "bright warm morning bedroom with white rumpled duvet",
-    "action": "tangled tightly around partner like a koala under morning sheets, bare shoulders and legs exposed, smiling with serene newlywed bliss",
+    "action": "出海像只树袋熊一样双手双脚紧紧缠在你的腰上，双马尾散乱，小脸枕在你的颈窝里",
     "timeOfDay": "morning",
     "lighting": "radiant golden morning sunbeams pouring across white bedspread",
     "camera": "close-up",
-    "mood": "morning newlywed warmth, sweet possessive girlfriend cuddles, absolute domestic joy",
+    "mood": "温存与治愈",
     "promptProse": "Tangled in morning sheets like a koala with bare shoulders, Izumi Hashima hugs partner tight with a blissful sweet smile in golden morning light.",
     "promptTokens": [
       "bedroom",

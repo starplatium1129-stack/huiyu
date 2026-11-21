@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "phoebe_wuwa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 306,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "phoebe_wuwa",
     "profile": {
@@ -35,7 +35,7 @@
       "likes": [],
       "speech": "轻一点，它好不容易才愿意靠过来。你也想摸摸它吗？",
       "traits": [
-        "phoebe_(wuthering_waves)",
+        "phoebe (wuthering waves)",
         "wuthering_waves",
         "blonde hair",
         "long hair",
@@ -109,20 +109,20 @@
       ],
       "identityProse": "Phoebe from Wuthering Waves. Long blonde hair and blue eyes.",
       "identityTokens": [
-        "phoebe_(wuthering_waves)",
+        "phoebe (wuthering waves)",
         "wuthering_waves",
         "blonde hair",
         "long hair",
         "blue eyes"
       ],
       "characterTokens": [
-        "phoebe_(wuthering_waves)"
+        "phoebe (wuthering waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"
       ],
       "exactTokens": [
-        "phoebe_(wuthering_waves)"
+        "phoebe (wuthering waves)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

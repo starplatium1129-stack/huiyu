@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "togakushi_touko",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 190,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "togakushi_touko",
     "profile": {
@@ -408,20 +408,20 @@
       ],
       "identityProse": "Adult Togakushi Touko from Sabbat of the Witch. Long dark hair tied into twin tails and amber-yellow eyes.",
       "identityTokens": [
-        "togakushi_touko",
+        "togakushi touko",
         "black_hair",
         "long_hair",
         "twintails",
         "yellow_eyes"
       ],
       "characterTokens": [
-        "togakushi_touko"
+        "togakushi touko"
       ],
       "copyrightTokens": [
         "sanoba_witch"
       ],
       "exactTokens": [
-        "togakushi_touko"
+        "togakushi touko"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

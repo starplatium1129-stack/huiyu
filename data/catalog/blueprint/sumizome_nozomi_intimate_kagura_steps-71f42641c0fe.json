@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sumizome_nozomi_intimate_kagura_steps",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2008,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T14:29:16.215024+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "sumizome_nozomi",
     "outfitId": "white_inner_kimono",
@@ -14,11 +14,11 @@
     "description": "祭典曲终人散的神社神乐殿前，银色月光洗练石阶。希褪去了宽厚繁复的千早外袍，仅着轻薄素白的襦绊。她坐在红漆木柱边，将发烫的脸颊贴在青梅竹马的手背上，自幼相伴的深情在此刻化作无声的依偎。",
     "recommendedSize": "832x1216",
     "location": "moonlit shrine wooden terrace",
-    "action": "sitting on steps, pressing cheek against hand, moonlight on bare neck",
+    "action": "她坐在红漆木柱边，将发烫的脸颊贴在青梅竹马的手背上，自幼相伴的深情在此刻化作无声的依偎",
     "timeOfDay": "night",
     "lighting": "pure silver moonlight against red wooden pillars",
     "camera": "medium_shot",
-    "mood": "sacred touching childhood intimacy",
+    "mood": "温存与神圣",
     "promptProse": "Resting on the wooden steps of the deserted shrine pavilion after the festival, Sumizome Nozomi appears in her simple white under-kimono. Silver moonlight touches her exposed neck and honey-brown hair as she gently presses her cheek against the viewer's palm. Only the viewer's hand enters the frame.",
     "promptTokens": [
       "sumizome_nozomi",

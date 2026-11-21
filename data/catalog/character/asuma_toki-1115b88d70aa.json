@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "asuma_toki",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 49,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "asuma_toki",
     "profile": {
@@ -711,13 +711,13 @@
       "displayName": "飞鸟马时",
       "exactPrefixes": [],
       "exactTokens": [
-        "toki_(blue_archive)"
+        "toki (blue archive)"
       ],
       "franchise": "Blue Archive",
       "id": "asuma_toki",
       "identityProse": "Asuma Toki from Blue Archive, with a blonde side ponytail, blue eyes and a minimalist halo.",
       "identityTokens": [
-        "toki_(blue_archive)",
+        "toki (blue archive)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -743,7 +743,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "toki_(blue_archive)"
+        "toki (blue archive)"
       ],
       "copyrightTokens": [
         "blue_archive"

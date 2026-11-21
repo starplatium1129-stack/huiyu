@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_living_room_french_baking",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2179,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-27T18:09:35.534022700+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "charlotte_living_room_french_baking",
     "characterId": "charlotte_dunois",
@@ -14,11 +14,11 @@
     "description": "弥漫着黄油与香草香气的厨房内，刚出炉的羊角面包金黄酥脆。夏洛特系着浅黄围裙，用白皙的手指轻轻擦去你鼻尖的面粉，眉眼弯弯地发出轻快笑声。",
     "recommendedSize": "832x1216",
     "location": "warm sun-drenched home kitchen",
-    "action": "standing by baking tray, reaching up to wipe flour from partner nose with finger, gentle giggling smile",
+    "action": "系着浅黄围裙，用白皙的手指轻轻擦去你鼻尖的面粉，眉眼弯弯地发出轻快笑声",
     "timeOfDay": "afternoon",
     "lighting": "cozy warm ambient kitchen lighting mixed with soft afternoon daylight",
     "camera": "medium_shot",
-    "mood": "heartwarming domestic bliss, playful couple affection, culinary warmth",
+    "mood": "温存与俏皮",
     "promptProse": "Baking in a cozy kitchen wearing an apron, Charlotte laughs tenderly as she wipes a smudge of flour from partner nose.",
     "promptTokens": [
       "kitchen",

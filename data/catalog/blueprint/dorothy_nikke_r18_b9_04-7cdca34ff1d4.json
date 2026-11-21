@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "dorothy_nikke_r18_b9_04",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 1740,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "dorothy_nikke_r18_b9_04",
-    "title": "桃乐丝 · 废弃王座被单上复仇天使的哭泣自持 ·「如果连你都离开我……我就把这个世界彻底毁灭……」",
+    "title": "桃乐丝 · 废弃王座被单上复仇天使的哭泣自持",
     "category": "私密自持",
     "characterId": "dorothy_nikke",
     "description": "孤立无援的复仇女神。桃乐丝浑身赤裸仰躺在破损的红色天鹅绒床单上，巨大的白翼无力散落在身旁。手指在湿热泥泞的下身深处狂乱抽弄，整个身体因为极度的高潮与心碎而剧烈痉挛，泪水彻底淹没了美丽的面庞——「指挥官……求求你……不要像方舟那样抛弃我……抱紧我……快抱紧我……哈啊……」",
@@ -53,7 +53,10 @@
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
     "sampleRating": "R15",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "outfitId": "nsfw_nude",
     "coverageTags": [

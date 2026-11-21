@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_magic_note",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2415,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_magic_note",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "魔女时刻",
     "description": "紬把今天遇到的事记进本子，末尾画了一颗小星星。墨迹还没干，她小心地捏着纸页一角。",
     "location": "wooden desk",
-    "action": "writing in a notebook at a desk",
+    "action": "墨迹还没干，她小心地捏着纸页一角",
     "timeOfDay": "evening",
     "lighting": "desk lamp",
     "camera": "close up",

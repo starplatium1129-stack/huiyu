@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_case",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 2383,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:34:37.605728900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "touma_kazusa_case",
     "characterId": "touma_kazusa",
@@ -13,7 +13,7 @@
     "category": "旅途",
     "description": "车站人来人往。和纱站在行李箱旁，确认夹在手里的琴谱没有落下。",
     "location": "train station concourse",
-    "action": "standing beside a suitcase and holding sheet music",
+    "action": "和纱站在行李箱旁，确认夹在手里的琴谱没有落下",
     "timeOfDay": "morning",
     "lighting": "cool station light",
     "camera": "wide shot",

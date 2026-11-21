@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "sawamura_spencer_eriri_intimate_scarf_share_winter",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2035,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "sawamura_spencer_eriri",
     "outfitId": "gallery_beret",
@@ -14,11 +14,11 @@
     "description": "大雪初停的坡道长椅旁，寒风呼啸。英梨梨冻得跺着小皮靴，却蛮横地把自己的红格纹羊毛长围巾用力绕了半圈套在少年的脖子上。两人被迫贴在咫尺之间的距离，金色的发丝拂过脸颊，英梨梨咬着小虎牙别过通红的小脸：「这……这只是因为你看起来太冷了而已！别想歪了！」",
     "recommendedSize": "832x1216",
     "location": "snow-covered suburban hill slope bench",
-    "action": "sharing long knitted scarf, pulling close, looking away with pout, fang visible",
+    "action": "将红格长围巾分绕在对方脖子上，咬着虎牙别扭侧头",
     "timeOfDay": "dusk",
     "lighting": "soft winter twilight against pristine white snow",
     "camera": "cowboy_shot",
-    "mood": "classic tsundere winter warmth",
+    "mood": "傲娇与雪景",
     "promptProse": "Sharing a single long red plaid knitted scarf on a snowy hillside bench, Eriri Spencer Sawamura pulls the viewer tightly beside her. Her cheeks flush bright crimson against the snow as her small fang shows in an adorable, defiant pout. Amber streetlights illuminate falling winter snowflakes along the park bench, casting warm nostalgic reflections across their shared knitted scarf.",
     "promptTokens": [
       "sawamura_spencer_eriri",

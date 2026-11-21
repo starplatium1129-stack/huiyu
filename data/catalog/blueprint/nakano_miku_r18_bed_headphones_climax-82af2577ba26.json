@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "nakano_miku_r18_bed_headphones_climax",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1854,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "nakano_miku_r18_bed_headphones_climax",
     "characterId": "nakano_miku",
@@ -60,6 +60,10 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Her headphones remain around her neck above the white sheets as her toes curl."
+    "animaCaption": "Her headphones remain around her neck above the white sheets as her toes curl.",
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ]
   }
 }

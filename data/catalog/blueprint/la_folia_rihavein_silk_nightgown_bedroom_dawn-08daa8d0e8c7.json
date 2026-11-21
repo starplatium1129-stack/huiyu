@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "la_folia_rihavein_silk_nightgown_bedroom_dawn",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2746,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "la_folia_rihavein_silk_nightgown_bedroom_dawn",
     "characterId": "la_folia_rihavein",
@@ -18,7 +18,7 @@
     "timeOfDay": "morning",
     "lighting": "warm pristine morning sunbeams pouring through tall palace arched windows",
     "camera": "medium_shot",
-    "mood": "intimate sovereign vulnerability, playful regal morning sweetness",
+    "mood": "温存与动情",
     "promptProse": "Reclining on a lavish palace bed in the golden morning light, La Folia wears a sheer silk slip nightgown. Her silver hair flows across white pillows as she looks up with an enigmatic, deeply affectionate gaze.",
     "promptTokens": [
       "1girl",

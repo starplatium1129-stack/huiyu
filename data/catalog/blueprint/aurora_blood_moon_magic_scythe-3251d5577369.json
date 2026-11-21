@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aurora_blood_moon_magic_scythe",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2489,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aurora_blood_moon_magic_scythe",
     "characterId": "aurora_shadow",
@@ -14,11 +14,11 @@
     "description": "夜幕天穹中悬挂着巨大红月，奥萝拉凌空而立，手中凝聚着如血般猩红的魔力长镰，黑发狂舞，神态妖艳凌厉而从容。",
     "recommendedSize": "832x1216",
     "location": "open midnight sky dominated by a massive ominous blood-red moon",
-    "action": "floating gracefully in midair wielding a giant glowing crimson scythe of blood magic, long black hair billowing wildly, fierce regal smirk",
+    "action": "凌空而立，手中凝聚着如血般猩红的魔力长镰，黑发狂舞，神态妖艳凌厉而从容",
     "timeOfDay": "night",
     "lighting": "巨大血月浩瀚绯红月华与暗红魔力暴涨光晕",
     "camera": "full_body",
-    "mood": "calamitous majestic power, intoxicating sinister elegance, overwhelming dominance",
+    "mood": "威严霸气",
     "promptProse": "Floating beneath a giant blood moon, witch Aurora brandishes a massive glowing red blood scythe as wind whips her black hair.",
     "promptTokens": [
       "holding giant scythe",

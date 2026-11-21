@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kisara_engage_kiss_r18_bathroom_night",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 513,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "kisara_engage_kiss_r18_bathroom_night",
     "title": "木更 · 深夜浴室",
@@ -43,7 +43,10 @@
     "adult": true,
     "kreaStyleHint": "",
     "animaStyleHint": "r18_sensual_cg",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "adultArtistHint": "@tsunako",
     "outfitId": "nsfw_nude",

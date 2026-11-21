@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "aozaki_aoko_magic_gunner_burst",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 1981,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "aozaki_aoko_magic_gunner_burst",
     "characterId": "aozaki_aoko",
@@ -14,11 +14,11 @@
     "description": "午后阳光斜照进久远寺洋馆的宽敞客厅。青子随性地席地坐在厚实的绒毛地毯上，一手托着下巴，一手端着香气扑鼻的手冲黑咖啡。身旁的复古黑胶唱片机流淌着慢板爵士乐，她带着大姐姐专属的洒脱微笑注视着你。",
     "recommendedSize": "1216x832",
     "location": "sunlit Kuonji mansion living room with plush floor rug and vinyl turntable",
-    "action": "sitting on floor rug beside low coffee table, resting chin on hand, holding steaming coffee mug, relaxed elder-sister smile, gazing warmly at viewer",
+    "action": "身旁的复古黑胶唱片机流淌着慢板爵士乐，她带着大姐姐专属的洒脱微笑注视着你",
     "timeOfDay": "afternoon",
     "lighting": "warm golden afternoon sunlight streaming through tall mansion windows",
     "camera": "cowboy shot",
-    "mood": "cozy weekend leisure, intimate romantic warmth, nostalgic relaxed affection",
+    "mood": "温存与幽微",
     "promptProse": "In the sunlit living room of Kuonji mansion, Aozaki Aoko sits relaxed on a plush floor rug beside a spinning vinyl record player, resting her chin on one hand while sipping warm pour-over coffee with an affectionate smile.",
     "promptTokens": [
       "living_room",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "modernia_morning_apron_breakfast",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2130,
   "createdAt": "2026-10-27T17:37:36.364693800+00:00",
-  "updatedAt": "2026-10-27T17:37:36.364693800+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "modernia_morning_apron_breakfast",
     "characterId": "modernia",
@@ -14,11 +14,11 @@
     "description": "温馨的现代公寓厨房内，阳光穿过透明纱帘。神罚身穿浅灰针织裙外系棉麻围裙，端着刚出锅的爱心煎蛋转头对你甜甜微笑，嘴角沾着一点面粉，满心欢喜。",
     "recommendedSize": "832x1216",
     "location": "warm modern sunlit kitchen",
-    "action": "holding frying pan with fried egg, turning head with sweet innocent smile, flour smudge on cheek, domestic morning light",
+    "action": "身穿浅灰针织裙外系棉麻围裙，端着刚出锅的爱心煎蛋转头对你甜甜微笑，嘴角沾着一点面粉",
     "timeOfDay": "morning",
     "lighting": "soft natural morning sunlight filtering through sheer curtains",
     "camera": "cowboy_shot",
-    "mood": "tender domestic warmth and pure romantic devotion",
+    "mood": "温存与神圣",
     "promptProse": "Modernia cooks breakfast in a bright sunny kitchen wearing an apron over a knit dress, holding a pan with a fried egg and smiling sweetly at the viewer.",
     "promptTokens": [
       "kitchen",

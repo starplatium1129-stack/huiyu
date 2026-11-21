@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemon_classroom_towel_wipe_blush",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2276,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-28T02:00:46.167399500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "lemon_classroom_towel_wipe_blush",
     "characterId": "yakishio_lemon",
@@ -14,11 +14,11 @@
     "description": "放学后空无一人的教室窗口，当少年用毛巾轻柔按在她汗湿的颈侧时，平时大咧咧的田径少女身体猛地一僵，小麦色脸庞腾起大片红晕，害羞得眼神飘忽结结巴巴。",
     "recommendedSize": "832x1216",
     "location": "empty sunlit classroom by open window with fluttering curtains",
-    "action": "standing by classroom window as partner wipes sweat from her collarbone with a towel, blushing furiously with wide shy eyes and trembling smile",
+    "action": "放学后空无一人的教室窗口，当少年用毛巾轻柔按在她汗湿的颈侧时",
     "timeOfDay": "afternoon",
     "lighting": "warm afternoon sunlight streaming through window onto tanned skin",
     "camera": "close-up",
-    "mood": "adorable gap moe, sudden romantic awareness, sweet adolescent vulnerability",
+    "mood": "温存与动情",
     "promptProse": "In an empty sunny classroom, Lemon Yakishio blushes intensely as partner gently wipes sweat from her cheek with a towel, eyes wide with shy realization.",
     "promptTokens": [
       "classroom",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "jalter_throne_hall_meditation",
-  "revision": 7,
+  "revision": 9,
   "sortOrder": 181,
   "createdAt": null,
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "jalter_throne_hall_meditation",
     "title": "贞德[Alter] · 王座厅沉思",
@@ -18,7 +18,7 @@
     "timeOfDay": "night",
     "lighting": "warm torchlight along the otherwise dark hall",
     "camera": "medium_shot",
-    "mood": "brooding",
+    "mood": "沉郁幽思",
     "sceneTags": [
       "throne_hall",
       "sitting_on_armrest",

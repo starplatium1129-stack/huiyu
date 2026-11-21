@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "mayuri_lab_couch_stormy_night_snuggle",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2331,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "mayuri_lab_couch_stormy_night_snuggle",
     "characterId": "shiina_mayuri",
@@ -14,11 +14,11 @@
     "description": "暴雨夜的研究所里只有两人的呼吸声。真由理蜷缩在沙发里，解开了领口的纯棉睡衣依偎过来，双手环住颈项，微红着眼眸小声倾诉着不想被丢下的愿望。",
     "recommendedSize": "832x1216",
     "location": "dimly lit lab backroom on worn leather sofa as rain lashes the dark windows",
-    "action": "snuggling close on soft couch cushions, unbuttoned pajama top revealing smooth collarbones, hugging partner neck with tear-glistening eyes",
+    "action": "真由理蜷缩在沙发里，解开了领口的纯棉睡衣依偎过来，双手环住颈项",
     "timeOfDay": "night",
     "lighting": "soft blue lightning flashes through rain streaked window glass mixed with warm lamp light",
     "camera": "close-up",
-    "mood": "tender vulnerable intimacy, deep emotional shelter, loving unconditional dependence",
+    "mood": "温存与动情",
     "promptProse": "Curled up on the sofa during a thunderstorm, Mayuri unbuttons her pajama collar and hugs her partner neck with tearful, deeply affectionate eyes.",
     "promptTokens": [
       "couch",

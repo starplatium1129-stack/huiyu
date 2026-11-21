@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "utaha_nsfw_bed_supine_devotion",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1438,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "utaha_nsfw_bed_supine_devotion",
-    "title": "霞之丘诗羽 · 卸下毒舌的床褥真心·「只有今晚……不毒舌了」",
+    "title": "霞之丘诗羽 · 卸下毒舌的床褥真心",
     "category": "成人私密",
     "characterId": "kasumigaoka_utaha",
     "description": "毒舌作家在床上意外地安静。诗羽仰卧在大床上，黑发铺散成夜色，双腿轻微分开展露诱人身段。她只是仰着头，红瞳湿润地望着你，一言不发。到最后才气若游丝地补上一句——「……只有今晚，不毒舌了。因为……说不出口的话，全部都……在这里面了……」",
@@ -56,7 +56,9 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "spread legs"
+      "spread legs",
+      "nipples",
+      "pussy"
     ],
     "animaCaption": "She looks toward the viewer with a tender expression beneath the dim bedroom light."
   }

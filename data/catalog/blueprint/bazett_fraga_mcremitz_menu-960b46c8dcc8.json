@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_menu",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2404,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_menu",
     "characterId": "bazett_fraga_mcremitz",
@@ -13,7 +13,7 @@
     "category": "日常",
     "description": "餐馆里，她认真读着菜单，指尖停在一道菜名旁，迟迟没有叫服务员。",
     "location": "small restaurant table",
-    "action": "sitting and reading a menu",
+    "action": "餐馆里，她认真读着菜单，指尖停在一道菜名旁，迟迟没有叫服务员",
     "timeOfDay": "evening",
     "lighting": "warm restaurant lighting",
     "camera": "medium shot",

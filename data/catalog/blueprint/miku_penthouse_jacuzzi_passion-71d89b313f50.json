@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miku_penthouse_jacuzzi_passion",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2218,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "miku_penthouse_jacuzzi_passion",
     "characterId": "izayoi_miku",
@@ -14,11 +14,11 @@
     "description": "豪华高层公寓的空中全景观景浴池内，温热水流打着旋泛起绵密的薰衣草精油泡沫。美九靠在浴池边的大理石枕台上，湿漉的银紫发丝贴在发烫微红的锁骨处。落地窗外是万家灯火的繁华都市，歌姬闭起双目轻哼着柔美的旋律，随后缓缓睁开含水的美眸，向你递出盛满温情的邀请。",
     "recommendedSize": "832x1216",
     "location": "rooftop penthouse infinity jacuzzi overlooking city skyline",
-    "action": "leaning back in steamy rooftop jacuzzi filled with lavender bubbles, wet silver-purple hair clinging to bare shoulders, sparkling city skyline in background, sultry gaze",
+    "action": "落地窗外是万家灯火的繁华都市，歌姬闭起双目轻哼着柔美的旋律，随后缓缓睁开含水的美眸",
     "timeOfDay": "night",
     "lighting": "soft underwater purple LED pool lighting blending with panoramic night city views",
     "camera": "medium_shot",
-    "mood": "extravagant nocturnal glamour, breathtaking vocal elegance",
+    "mood": "华丽空灵",
     "promptProse": "Relaxing in a steamy rooftop jacuzzi filled with fragrant lavender bubbles overlooking the night city, Miku rests against the marble rim. Glistening water beads on her bare shoulders as her purple eyes sparkle with romance.",
     "promptTokens": [
       "1girl",

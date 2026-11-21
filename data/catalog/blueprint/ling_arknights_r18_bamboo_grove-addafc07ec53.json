@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ling_arknights_r18_bamboo_grove",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 658,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "侧卧竹林石台锦垫，一手轻勾画面外同伴衣角，散落酒盏在身旁。",
     "adult": true,
@@ -24,7 +24,10 @@
     "mood": "迷离微醺",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Ling lies on her side on the cushioned stone platform, catching her off-frame companion's sleeve beside scattered wine cups. Moonlight through bamboo leaves breaks across the cushion and low mist.",
     "promptTokens": [

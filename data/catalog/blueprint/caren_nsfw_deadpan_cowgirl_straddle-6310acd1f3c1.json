@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "caren_nsfw_deadpan_cowgirl_straddle",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 218,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "caren_nsfw_deadpan_cowgirl_straddle",
     "title": "卡莲 · 小恶魔修女的毒舌主控骑乘",
@@ -59,7 +59,10 @@
       "straddling",
       "cowgirl"
     ],
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "nsfwProse": "",
     "animaCaption": "Both hands rest on the viewer's chest as she looks down from their lap."
   }

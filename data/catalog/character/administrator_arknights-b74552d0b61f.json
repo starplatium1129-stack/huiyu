@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "administrator_arknights",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 163,
   "createdAt": "2026-10-03T14:25:25+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "administrator_arknights",
     "profile": {
@@ -455,13 +455,13 @@
       "displayName": "管理员",
       "exactPrefixes": [],
       "exactTokens": [
-        "female_endministrator_(arknights)"
+        "female endministrator (arknights)"
       ],
       "franchise": "Arknights: Endfield",
       "id": "administrator_arknights",
       "identityProse": "Female Endministrator from Arknights: Endfield, with short black hair in a layered bob.",
       "identityTokens": [
-        "female_endministrator_(arknights)",
+        "female endministrator (arknights)",
         "1girl",
         "solo",
         "black_hair",
@@ -485,7 +485,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "female_endministrator_(arknights)"
+        "female endministrator (arknights)"
       ],
       "copyrightTokens": [
         "arknights:_endfield"

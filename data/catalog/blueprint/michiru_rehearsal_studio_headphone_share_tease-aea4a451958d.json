@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "michiru_rehearsal_studio_headphone_share_tease",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2624,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "michiru_rehearsal_studio_headphone_share_tease",
     "title": "冰堂美智留 · 排练室地毯上的耳机强塞分享",
@@ -12,7 +12,7 @@
     "outfitId": "rock_guitarist_tank_top_jeans",
     "description": "隔音乐器排练室木地板上，美智留大大咧咧盘腿坐在吉他音箱旁，单手把大号头戴式耳机的一侧强行塞进你耳朵，贴得极近眨眼大笑，分享刚录好的新歌Demo。",
     "location": "soundproof band rehearsal studio floor scattered with cable coils and amplifier heads",
-    "action": "sitting cross-legged close to partner, pressing one earcup of studio headphones to his ear, laughing boisterously with playful arm draped on shoulder",
+    "action": "隔音乐器排练室木地板上，美智留大大咧咧盘腿坐在吉他音箱旁",
     "timeOfDay": "下午",
     "lighting": "排练室天顶日光灯管与柔和补光",
     "camera": "wide medium shot",

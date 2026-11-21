@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_guest_umbrella",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2426,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-08T04:10:20.304131300+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_guest_umbrella",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "旅馆工作",
     "description": "门外刚下过雨，蕾娜把客人借用的伞收进玄关。她挑了一把还湿着的放到一旁，免得把地板弄湿。",
     "location": "inn entrance",
-    "action": "sorting umbrellas beside the entrance",
+    "action": "把客人借用的伞收进玄关，挑了一把还湿着的放到一旁，免得把地板弄湿",
     "timeOfDay": "after rain",
     "lighting": "overcast daylight",
     "camera": "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_dorm_hairband_release",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2036,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T04:03:33.409Z",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "tokiwadai_uniform",
@@ -14,11 +14,11 @@
     "description": "常盘台宿舍深夜静谧的台灯下，黑子卸下了风纪委员的红袖标。她轻轻解开两侧的双马尾发带，柔顺的茶红色卷发彻底披散在单薄的白衬衫肩头。解开第一颗扣子后，她坐在床沿微微仰头，茶色眼眸中退去了白日的凌厉与吵闹，只余下温润如水的深情凝望。",
     "recommendedSize": "832x1216",
     "location": "quiet Tokiwadai dorm room",
-    "action": "taking off twin tail ribbons, hair cascading down, sitting on bed edge",
+    "action": "解开第一颗扣子后，她坐在床沿微微仰头，茶色眼眸中退去了白日的凌厉与吵闹",
     "timeOfDay": "night",
     "lighting": "warm golden desk lamp casting soft shadows",
     "camera": "medium_shot",
-    "mood": "gentle unexpected feminine softness",
+    "mood": "宁静祥和",
     "promptProse": "Seated on the edge of her dorm bed at night, Shirai Kuroko removes her twin hair ribbons, letting her tea-red curly hair cascade freely down her shoulders. Her school blouse is gently unbuttoned at the neck as she gazes softly with tender, unguarded affection.",
     "promptTokens": [
       "shirai_kuroko",

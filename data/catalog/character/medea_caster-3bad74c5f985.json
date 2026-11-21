@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "medea_caster",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 136,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "medea_caster",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Fate",
       "speech": "再缝好这一针，就可以穿了。",
       "traits": [
-        "medea_(caster)_(fate)",
+        "medea (caster) (fate)",
         "fate/stay_night",
         "blue_hair",
         "long_hair",
@@ -933,7 +933,7 @@
       ],
       "identityProse": "Medea, Caster from Fate/stay night, with long blue hair, a side braid, pointed ears and blue eyes.",
       "identityTokens": [
-        "medea_(caster)_(fate)",
+        "medea (caster) (fate)",
         "fate/stay night",
         "blue hair",
         "long hair",
@@ -942,7 +942,7 @@
         "blue eyes"
       ],
       "exactTokens": [
-        "medea_(caster)_(fate)"
+        "medea (caster) (fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -971,7 +971,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "medea_(caster)_(fate)"
+        "medea (caster) (fate)"
       ],
       "copyrightTokens": [
         "fate/stay night"

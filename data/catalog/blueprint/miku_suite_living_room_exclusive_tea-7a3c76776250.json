@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "miku_suite_living_room_exclusive_tea",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2215,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "miku_suite_living_room_exclusive_tea",
     "characterId": "izayoi_miku",
@@ -14,11 +14,11 @@
     "description": "五星级酒店顶层全景套房内，美九捧着热气腾腾的花草茶轻依在你怀中。她把下巴抵在你的胸膛上，紫眸眨动，一口一个“达令”甜甜地撒着娇，索要摸头奖励。",
     "recommendedSize": "832x1216",
     "location": "skyline penthouse living room beside floor-to-ceiling glass",
-    "action": "cuddling against partner chest holding teacup, chin resting on partner, looking up with adoring pouty eyes, calling darling",
+    "action": "她把下巴抵在你的胸膛上，紫眸眨动，一口一个",
     "timeOfDay": "evening",
     "lighting": "golden sunset twilight blending with soft indoor crystal lamp ambiance",
     "camera": "medium_shot",
-    "mood": "pampered idol affection, sweet domestic snuggling, playful romance",
+    "mood": "温存与俏皮",
     "promptProse": "Cuddling against partner on a penthouse couch holding tea, Miku Izayoi looks up lovingly with purple eyes, begging for headpats.",
     "promptTokens": [
       "penthouse",

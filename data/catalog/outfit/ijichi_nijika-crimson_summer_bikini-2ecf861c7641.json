@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "ijichi_nijika/crimson_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2475,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "ijichi_nijika",
     "outfit": {
       "id": "crimson_summer_bikini",
-      "name": "夏日鼓手 · 明亮鲜橙与柠檬黄撞色系带运动比基尼配防晒草帽",
+      "name": "夏日鼓手 · 撞色系带运动比基尼",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,

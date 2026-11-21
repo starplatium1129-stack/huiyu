@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "faln_stream_barefoot_water_ripple",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2631,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "faln_stream_barefoot_water_ripple",
     "characterId": "faln_touden",
@@ -14,11 +14,11 @@
     "description": "地下城幽静绿洲中的清澈溪流，微光从高处岩洞缝隙洒在波光粼粼的水面上。法琳提起略显宽松的棉麻浅色长袍裙摆，露出白皙光洁的足踝轻轻探入清凉泉水中。她微笑着转头看向岸边，金黄色的柔顺短发在水光反射下泛着柔和光晕，神情恬静而纯美。",
     "recommendedSize": "832x1216",
     "location": "crystal underground cavern stream surrounded by glowing moss",
-    "action": "wading in clear stream, lifting hem of loose linen robe revealing bare legs, water ripples, smiling over shoulder at viewer in glowing cave",
+    "action": "提起宽松长袍裙摆将光洁双足浸入清泉，笑着转头望向岸边同行之人",
     "timeOfDay": "afternoon",
     "lighting": "dappled sunbeams piercing cavern ceiling mixed with glowing aquatic plants",
     "camera": "full_body",
-    "mood": "pastoral fantasy innocence, serene pristine beauty",
+    "mood": "宁静与田园",
     "promptProse": "Wading barefoot into a crystal clear cavern stream, Faln Touden lifts the hem of her simple linen robe. Water ripples gently around her ankles as she turns with a peaceful, golden-haired smile.",
     "promptTokens": [
       "1girl",

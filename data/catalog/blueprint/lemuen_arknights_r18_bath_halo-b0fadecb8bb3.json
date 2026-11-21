@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "lemuen_arknights_r18_bath_halo",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 563,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "倚着浴缸边沿，湿发贴在肩头",
     "adult": true,
@@ -21,7 +21,9 @@
     "mood": "湿润慵懒",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples"
+    ],
     "outfitId": "nude_state",
     "promptProse": "Lemuen reclines at the shallow accessible bath rim, reaching toward her off-frame companion for assistance. Her halo reflects gold on the water while steam veils the wall behind her.",
     "promptTokens": [

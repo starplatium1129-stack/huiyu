@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "bazett_fraga_mcremitz_station",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2406,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:08:54.590238100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "bazett_fraga_mcremitz_station",
     "characterId": "bazett_fraga_mcremitz",
@@ -13,7 +13,7 @@
     "category": "城市日常",
     "description": "车站墙上的路线图很大。她拿着车票对照站名，确认自己该乘哪一班车。",
     "location": "train station",
-    "action": "standing before a route map and holding a train ticket",
+    "action": "她拿着车票对照站名，确认自己该乘哪一班车",
     "timeOfDay": "afternoon",
     "lighting": "station lighting",
     "camera": "wide shot",

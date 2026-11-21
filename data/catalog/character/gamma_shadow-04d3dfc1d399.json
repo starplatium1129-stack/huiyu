@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "gamma_shadow",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 269,
   "createdAt": "2026-10-31T04:32:46.631595+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "gamma_shadow",
     "popular": {
@@ -27,7 +27,7 @@
       ],
       "identityProse": "Gamma from The Eminence in Shadow, the Third of the Seven Shadows, with long indigo hair reaching her thighs, sharp blue eyes, a small beauty mark below the left corner of her lips, pointed elf ears, and a mature, elegant bearing as the president of Mitsugoshi Company.",
       "identityTokens": [
-        "gamma_(shadow_garden)",
+        "gamma (shadow garden)",
         "1girl",
         "solo",
         "blue_hair",
@@ -38,11 +38,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "gamma_(shadow_garden)"
+        "gamma (shadow garden)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "gamma_(shadow_garden)"
+        "gamma (shadow garden)"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -148,7 +148,7 @@
       "voiceJa": "シャドウ様、ミツゴシ商会の今期の利益ですが、また倍増しました。……あの、あまり見つめられると、緊張して計算を間違えてしまいます。",
       "source": "The Eminence in Shadow",
       "traits": [
-        "gamma_(shadow_garden)",
+        "gamma (shadow garden)",
         "blue_hair",
         "long_hair",
         "blue_eyes",

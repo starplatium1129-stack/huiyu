@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_courtyard_bench_coin_toss",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2474,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alexia_courtyard_bench_coin_toss",
     "characterId": "alexia_midgar",
@@ -14,11 +14,11 @@
     "description": "落日余晖洒满中庭木长椅，阿蕾克希亚双腿交叠，抛玩着指尖的一枚闪亮银币，微仰下巴带着得意又傲娇的浅笑看着坐在身旁的少年。",
     "recommendedSize": "832x1216",
     "location": "academy cobblestone courtyard garden beside flowering rosebushes",
-    "action": "sitting on wooden bench with legs crossed in black stockings, flipping a silver coin with her thumb, smirking haughtily with a blush",
+    "action": "双腿交叠，抛玩着指尖的一枚闪亮银币，微仰下巴带着得意又傲娇的浅笑看着坐在身旁的少年",
     "timeOfDay": "sunset",
     "lighting": "warm radiant dusk glow washing over silver ponytail and sleek legs",
     "camera": "full_body",
-    "mood": "haughty tsundere charm, playful commanding arrogance, genuine fond warmth",
+    "mood": "傲娇与温存",
     "promptProse": "Sitting on an outdoor bench at sunset with crossed black-stockinged legs, Alexia flips a silver coin with a smug smirk.",
     "promptTokens": [
       "courtyard",

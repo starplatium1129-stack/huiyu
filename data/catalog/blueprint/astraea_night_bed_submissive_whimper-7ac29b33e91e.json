@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "astraea_night_bed_submissive_whimper",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2212,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "astraea_night_bed_submissive_whimper",
     "characterId": "astraea",
@@ -14,11 +14,11 @@
     "description": "夜色静谧的卧室中，银白月光洒在床单上。阿斯特蕾亚身着贴身白金战斗服侧坐在床榻边，战服胸前的拉链微微向下拉开，展露出莹白光洁的锁骨与肩颈。身后宽大的纯白机械光翼随着平稳呼吸轻柔泛着微光，金色发丝在夜风中轻拂面颊。少女双颊发烫，纯澈的蓝眸泛着温润的光泽，安静温顺地等待着回应。",
     "recommendedSize": "832x1216",
     "location": "dim private bedroom with moonlight shining on bed",
-    "action": "sitting on bed in white-and-gold battle cloth with front zipper slightly undone, exposing collarbone, white mechanical angel wings spread softly behind, long blonde hair loose, blushing cheeks and ears, blue eyes looking up with sweet docile trust",
+    "action": "身着贴身白金战斗服侧坐在床榻边，战服胸前的拉链微微向下拉开",
     "timeOfDay": "night",
     "lighting": "soft pale moonlight illuminating white wings and flushed skin",
     "camera": "medium_shot",
-    "mood": "earnest angelic obedience, deeply endearing vulnerability",
+    "mood": "娇羞动情",
     "promptProse": "Sitting on the bed under pale moonlight, Astraea wears her white-and-gold battle suit with zipper slightly unfastened at the collar. Her mechanical angel wings flutter gently as she gazes up with blushing cheeks and sweet, devoted trust.",
     "promptTokens": [
       "1girl",

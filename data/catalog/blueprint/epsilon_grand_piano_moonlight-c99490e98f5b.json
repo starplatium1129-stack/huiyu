@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_grand_piano_moonlight",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 2479,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "epsilon_grand_piano_moonlight",
     "characterId": "epsilon_shadow",
@@ -14,11 +14,11 @@
     "description": "巨型花窗透入皎洁月华的演奏大厅内，厄普西隆端坐于三角钢琴前。修长的指尖流转于黑白琴键之上，神情高贵圣洁，侧首回眸的眼神充满柔情。",
     "recommendedSize": "832x1216",
     "location": "grand gothic concert hall with giant rose window casting moonlight on polished ebony stage",
-    "action": "sitting at grand piano, slender fingers dancing over keys, head turned back with serene aristocrat gaze",
+    "action": "端坐于三角钢琴前，修长指尖飞扬黑白琴键，侧首回眸柔情脉脉",
     "timeOfDay": "night",
     "lighting": "空旷音乐厅高耸拱窗倾泻的皎洁月光与舞台地灯",
     "camera": "medium_shot",
-    "mood": "classical artistic elegance, pure romantic reverence, moonlit serenade",
+    "mood": "温存与神圣",
     "promptProse": "At a grand piano in the concert hall, blue-haired elf Epsilon in a velvet gown plays with graceful elegance. A soft beam of moonlight through the stained-glass window illuminates her face, hands, and piano.",
     "promptTokens": [
       "playing grand piano",

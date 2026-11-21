@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_03",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 980,
   "createdAt": null,
-  "updatedAt": "2026-11-01T06:42:08.449845+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "action": "身体前倾靠着试衣台，双手伸到背后尝试拉开拉链并回眸，紧身包臀裙卡死勒肉，贝雷帽微歪娇恼",
     "adult": true,
@@ -63,7 +63,7 @@
       "clothes_pull"
     ],
     "timeOfDay": "afternoon",
-    "title": "有马加奈 · 试衣间紧身迷你裙的拉链卡死事故 ·「笨蛋阿库亚……快拉我一把，裙子要被撑破了！」",
+    "title": "有马加奈 · 试衣间紧身迷你裙的拉链卡死事故",
     "animaCaption": "Both hands reach behind her back for the jammed zipper as she looks over her shoulder."
   }
 }

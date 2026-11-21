@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "delta_shadow_canyon_leap_slime_cleave",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2543,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "delta_shadow_canyon_leap_slime_cleave",
     "title": "德尔塔 · 暖冬午后的绒毯求摸肚皮",
@@ -12,11 +12,11 @@
     "outfitId": "fluffy_dog_hoodie",
     "description": "暖炉火光跳动的温馨客厅绒毯上，德尔塔穿着毛绒狗狗卫衣四脚朝天地仰面躺着。毛茸茸的犬耳微颤，大尾巴在身后欢快拍打地面，两只小手搭在软软的肚皮上，眼巴巴地哼唧着求摸肚子。",
     "location": "cozy living room hearth rug with crackling fireplace",
-    "action": "lying on back on a thick fur rug, exposing tummy, hands curled playfully near chest, dog tail thumping rug, eager pleading amber eyes, adorable open-mouth puppy grin",
+    "action": "穿着毛绒狗狗卫衣四脚朝天地仰面躺着，毛茸茸的犬耳微颤，大尾巴在身后欢快拍打地面",
     "timeOfDay": "afternoon",
     "lighting": "warm flickering fireplace glow blended with soft afternoon window sunlight",
     "camera": "medium shot",
-    "mood": "irresistible pet girlfriend cuteness, playful puppy affection, warm domestic bliss",
+    "mood": "温存与俏皮",
     "promptProse": "Lying playfully on her back on the living room rug wearing a fluffy hoodie, dog-girl Delta curls her tail happily and begs for belly rubs with an adorable fanged smile.",
     "promptTokens": [
       "living_room",

@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "illyasviel_von_einzbern/silver_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2314,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "illyasviel_von_einzbern",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "爱因兹贝伦雪华 · 银白与紫罗兰系带蕾丝荷叶边泳裙配透光雪纺防晒斗篷",
+      "name": "爱因兹贝伦雪华 · 蕾丝荷叶边泳裙",
       "category": "泳装 / 荷叶边泳装",
       "default": false,
       "isDefault": false,

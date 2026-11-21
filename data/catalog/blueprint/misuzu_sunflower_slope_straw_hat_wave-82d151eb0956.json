@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "misuzu_sunflower_slope_straw_hat_wave",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2586,
   "createdAt": "2026-10-28T17:18:25.856155900+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "misuzu_sunflower_slope_straw_hat_wave",
     "title": "神尾观铃 · 向日葵坡道的夏之招手",
@@ -12,7 +12,7 @@
     "outfitId": "air_summer_uniform",
     "description": "通往海滨小镇的向日葵斜坡石阶上，两旁盛开着一人高的金黄花朵。观铃身穿名作经典夏日高腰水手制服，扶着草帽向走上坡道的你用力挥手，笑容澄澈动人。",
     "location": "sunlit cobblestone slope flanked by tall blooming sunflowers leading to sea",
-    "action": "standing midway up hill waving enthusiastically with one hand, holding straw hat with the other, beaming smile",
+    "action": "观铃身穿名作经典夏日高腰水手制服，扶着草帽向走上坡道的你用力挥手，笑容澄澈动人",
     "timeOfDay": "白天",
     "lighting": "坡道上方倾泻而下的明澈阳光",
     "camera": "cowboy shot",

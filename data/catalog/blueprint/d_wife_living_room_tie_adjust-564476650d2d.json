@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "d_wife_living_room_tie_adjust",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2173,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-10-27T17:49:11.242159300+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "d_wife_living_room_tie_adjust",
     "characterId": "d_killer_wife",
@@ -14,11 +14,11 @@
     "description": "玄关落满晨光，D踮起脚尖双手细致地为你抚平西装领带。她仰起清冷娇俏的面容，深紫色眼眸认真地注视着你，轻声叮嘱你今晚一定要早点平安回家。",
     "recommendedSize": "832x1216",
     "location": "sunlit entrance hallway of the cozy safehouse",
-    "action": "standing close at front door, gently fixing partner necktie with delicate hands, looking up into his eyes with serious yet deeply loving gaze",
+    "action": "她仰起清冷娇俏的面容，深紫色眼眸认真地注视着你，轻声叮嘱你今晚一定要早点平安回家",
     "timeOfDay": "morning",
     "lighting": "soft directional entrance light highlighting sharp features and red hairpin",
     "camera": "medium_shot",
-    "mood": "loving newlywed departure, earnest devotion, sweet domestic vow",
+    "mood": "温存与神圣",
     "promptProse": "Fixing partner necktie gently at the entrance door, D looks up with deep purple eyes and a serious yet tender loving expression.",
     "promptTokens": [
       "hallway",

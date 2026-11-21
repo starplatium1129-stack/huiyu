@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "touma_kazusa_keys",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2389,
   "createdAt": "2026-10-28T02:51:28.359224600+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "touma_kazusa_keys",
     "characterId": "touma_kazusa",
@@ -13,7 +13,7 @@
     "category": "演出之前",
     "description": "候场的小琴房里，她低头轻触琴键，只确认开头几个音的力度。",
     "location": "backstage practice room",
-    "action": "sitting at a piano with fingertips on the keys",
+    "action": "候场的小琴房里，她低头轻触琴键，只确认开头几个音的力度",
     "timeOfDay": "night",
     "lighting": "soft backstage light",
     "camera": "medium shot",

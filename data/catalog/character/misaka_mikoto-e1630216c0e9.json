@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "misaka_mikoto",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 11,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "misaka_mikoto",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "御坂美琴向你致以问候。",
       "source": "鎌池和馬《魔法禁书目录》/ 冬川基《某科学的超电磁炮 / A Certain Scientific Railgun》",
       "traits": [
-        "misaka_mikoto",
+        "misaka mikoto",
         "1girl",
         "solo",
         "short_brown_hair",
@@ -349,13 +349,13 @@
       "displayName": "御坂美琴",
       "exactPrefixes": [],
       "exactTokens": [
-        "misaka_mikoto"
+        "misaka mikoto"
       ],
       "franchise": "A Certain Scientific Railgun",
       "id": "misaka_mikoto",
       "identityProse": "Misaka Mikoto from A Certain Scientific Railgun, with short chestnut-brown hair, brown eyes and a white flower hair clip.",
       "identityTokens": [
-        "misaka_mikoto",
+        "misaka mikoto",
         "1girl",
         "solo",
         "brown hair",
@@ -381,7 +381,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "misaka_mikoto"
+        "misaka mikoto"
       ],
       "copyrightTokens": [
         "toaru kagaku no railgun"

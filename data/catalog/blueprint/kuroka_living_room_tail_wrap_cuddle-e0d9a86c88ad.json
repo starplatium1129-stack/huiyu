@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_living_room_tail_wrap_cuddle",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2203,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroka_living_room_tail_wrap_cuddle",
     "characterId": "kuroka",
@@ -14,11 +14,11 @@
     "description": "暖桌前两人并肩而坐，黑歌整个人靠在你的怀里。她两条毛茸茸的黑色长尾巴像手铐一样紧紧缠在你的手腕上，舒服地微闭双眼任你揉揉猫耳朵，发出呼噜呼噜声。",
     "recommendedSize": "832x1216",
     "location": "cozy living room with warm kotatsu table",
-    "action": "curled up against partner, twin cat tails tightly wrapped around partner wrist, purring with half-closed eyes, petting ears",
+    "action": "整个人靠在你的怀里，两条毛茸茸的黑色长尾巴像手铐一样紧紧缠在你的手腕上",
     "timeOfDay": "evening",
     "lighting": "warm cozy indoor domestic lamp glow contrasting with cold dusk outside",
     "camera": "medium_shot",
-    "mood": "ultimate snuggle warmth, possessive cat affection, peaceful romance",
+    "mood": "温存与宁静",
     "promptProse": "Cuddled closely by a warm kotatsu table, Kuroka purrs softly as her two fluffy cat tails wrap tightly around partner wrist.",
     "promptTokens": [
       "kotatsu",

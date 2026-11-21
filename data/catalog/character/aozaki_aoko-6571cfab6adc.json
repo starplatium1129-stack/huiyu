@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "aozaki_aoko",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 198,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "aozaki_aoko",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "哟，又在迷茫了吗？这副表情可不太好看。要是一颗魔弹解决不了烦恼，那就把步子迈开，跟我去下一站看看吧。",
       "source": "奈须蘑菇《魔法使之夜 / Mahoutsukai no Yoru》",
       "traits": [
-        "aozaki_aoko",
+        "aozaki aoko",
         "1girl",
         "solo",
         "long_hair",
@@ -296,7 +296,7 @@
       ],
       "identityProse": "Adult Aozaki Aoko from Witch on the Holy Night, a confident and free-spirited wandering magician with long reddish-brown hair, sharp azure eyes, wearing a stylish traveler trench coat, exuding a mature, cool, and effortless aura.",
       "identityTokens": [
-        "aozaki_aoko",
+        "aozaki aoko",
         "1girl",
         "solo",
         "long_hair",
@@ -306,7 +306,7 @@
         "mahou_tsukai_no_yoru"
       ],
       "exactTokens": [
-        "aozaki_aoko"
+        "aozaki aoko"
       ],
       "exactPrefixes": [
         "aoko_"
@@ -347,7 +347,7 @@
         "rella"
       ],
       "characterTokens": [
-        "aozaki_aoko"
+        "aozaki aoko"
       ],
       "copyrightTokens": [
         "mahou_tsukai_no_yoru"

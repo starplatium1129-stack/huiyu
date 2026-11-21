@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kita_ikuyo_r18_pure_bedroom",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1828,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "kita_ikuyo_r18_pure_bedroom",
     "characterId": "kita_ikuyo",
@@ -52,6 +52,10 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "Her fingers hold the blanket edge in front of her chest."
+    "animaCaption": "Her fingers hold the blanket edge in front of her chest.",
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ]
   }
 }

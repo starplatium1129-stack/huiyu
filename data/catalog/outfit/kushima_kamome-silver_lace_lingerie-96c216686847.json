@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "kushima_kamome/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2540,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "kushima_kamome",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "海风罗盘 · 蓝白细条纹无痕棉麻吊带内衣",
+      "name": "海风罗盘 · 细条纹吊带内衣",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

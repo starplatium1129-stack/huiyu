@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "frenda_underground_shelter_tape_bomb_barrage",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2615,
   "createdAt": "2026-10-28T17:22:27.857664300+00:00",
-  "updatedAt": "2026-10-29T00:28:22.043672600+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "frenda_underground_shelter_tape_bomb_barrage",
     "title": "芙兰达 · 废弃核掩体的胶带炸弹连环暴烈",
@@ -12,7 +12,7 @@
     "outfitId": "item_black_turtleneck_beret",
     "description": "学园都市地下废弃避难所回廊内，红色警报旋转嘶鸣。芙兰达双手各夹着数卷炸药胶带与引爆器凌空后翻，嘴角勾起“结果全搞定~”的标志性狡黠狞笑，身后火光冲天。",
     "location": "dim industrial bunker blast corridor lit by flashing red emergency sirens and smoke",
-    "action": "leaping backward in dynamic midair combat dodge, slinging explosive tape rolls from fingertips, triumphant fanged smirk against detonation blast",
+    "action": "双手各夹着数卷炸药胶带与引爆器凌空后翻，嘴角勾起",
     "timeOfDay": "夜晚",
     "lighting": "背后剧烈爆炸的赤红烈焰与警报红光",
     "camera": "wide dynamic action shot",

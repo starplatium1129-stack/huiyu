@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_post_workout_shower_steam",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1991,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kouzuki_kallen_post_workout_shower_steam",
     "characterId": "kouzuki_kallen",
@@ -14,11 +14,11 @@
     "description": "水汽氤氲的洗浴间门边，刚结束格斗训练的卡莲换上轻便丝质睡衣，湿润的红发发尾贴在雪白锁骨上，有些害羞地避开视线又忍不住偷瞄。",
     "recommendedSize": "832x1216",
     "location": "steamy modern bathroom",
-    "action": "relaxed silk camisole, wet hair, flushed face, shy cute sideways glance",
+    "action": "水汽氤氲的洗浴间门边，刚结束格斗训练的卡莲换上轻便丝质睡衣，湿润的红发发尾贴在雪白锁骨上",
     "timeOfDay": "night",
     "lighting": "soft diffused warm lighting through lingering shower steam",
     "camera": "close-up",
-    "mood": "sensual endearing blushing after-bath warmth",
+    "mood": "柔媚与水光",
     "promptProse": "Standing in a softly misted room in light silk loungewear, Kallen Kouzuki brushes wet red strands from her flushed cheek, glancing aside with a shy, captivating blush.",
     "promptTokens": [
       "kallen_stadtfeld",

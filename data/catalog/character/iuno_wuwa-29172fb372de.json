@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "iuno_wuwa",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 310,
   "createdAt": "2026-11-18T03:37:51.689363900+00:00",
-  "updatedAt": "2026-11-20T04:28:07.043527300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "iuno_wuwa",
     "profile": {
@@ -35,7 +35,7 @@
       "likes": [],
       "speech": "站到这边来。别误会，只是这里看星星更清楚。",
       "traits": [
-        "iuno_(wuthering_waves)",
+        "iuno (wuthering waves)",
         "wuthering_waves",
         "blue hair",
         "twin tails",
@@ -110,7 +110,7 @@
       ],
       "identityProse": "Iuno from Wuthering Waves. Long blue hair in twin tails and blue eyes.",
       "identityTokens": [
-        "iuno_(wuthering_waves)",
+        "iuno (wuthering waves)",
         "wuthering_waves",
         "blue hair",
         "twin tails",
@@ -118,13 +118,13 @@
         "blue eyes"
       ],
       "characterTokens": [
-        "iuno_(wuthering_waves)"
+        "iuno (wuthering waves)"
       ],
       "copyrightTokens": [
         "wuthering_waves"
       ],
       "exactTokens": [
-        "iuno_(wuthering_waves)"
+        "iuno (wuthering waves)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

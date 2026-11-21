@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_rooftop_blood_scythe_smirk",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1992,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "power_rooftop_blood_scythe_smirk",
     "characterId": "power",
@@ -14,11 +14,11 @@
     "description": "风雨交加的摩天大厦楼顶，帕瓦踩在水泥边缘，单手扛着翻腾不休的鲜血大镰刀，露出尖牙肆意大笑，绯红双角在闪电中分外耀眼。",
     "recommendedSize": "832x1216",
     "location": "rainy skyscraper rooftop",
-    "action": "standing on edge, holding massive blood scythe, wild fanged grin",
+    "action": "踩在水泥边缘，单手扛着翻腾不休的鲜血大镰刀，露出尖牙肆意大笑，绯红双角在闪电中分外耀眼",
     "timeOfDay": "night",
     "lighting": "dramatic lightning flash and vibrant neon glow cutting through rain",
     "camera": "cowboy_shot",
-    "mood": "exhilarating wild devil power",
+    "mood": "狂放霸气",
     "promptProse": "Atop a rainy skyscraper ledge amid flashing lightning, Power balances effortlessly while hoisting a giant glowing crimson scythe, her fangs bared in a wild, triumphant grin.",
     "promptTokens": [
       "power_(chainsaw_man)",

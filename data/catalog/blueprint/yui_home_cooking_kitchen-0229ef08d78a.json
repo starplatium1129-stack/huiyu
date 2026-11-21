@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "yui_home_cooking_kitchen",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 356,
   "createdAt": null,
-  "updatedAt": "2026-10-26T02:47:00.644585500+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "yui_home_cooking_kitchen",
     "title": "由比滨结衣 · 结衣家的厨房",
@@ -18,7 +18,7 @@
     "timeOfDay": "morning",
     "lighting": "warm_kitchen_light",
     "camera": "medium shot, presenting a tray of homemade cookies in the kitchen",
-    "mood": "cozy",
+    "mood": "温馨惬意",
     "sceneTags": [
       "kitchen",
       "cooking",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "belfast_azur",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 205,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-10-31T15:28:30.648119700+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "belfast_azur",
     "profile": {
@@ -60,7 +60,7 @@
         "signature": "银发蓝瞳与端庄神情"
       },
       "traits": [
-        "belfast_(azur_lane)",
+        "belfast (azur lane)",
         "1girl",
         "solo",
         "long hair",
@@ -84,7 +84,7 @@
       ],
       "identityProse": "Adult Belfast from Azur Lane, with long silver-white hair, clear blue eyes and a poised, attentive expression.",
       "identityTokens": [
-        "belfast_(azur_lane)",
+        "belfast (azur lane)",
         "1girl",
         "solo",
         "long hair",
@@ -93,11 +93,11 @@
         "azur_lane"
       ],
       "exactTokens": [
-        "belfast_(azur_lane)"
+        "belfast (azur lane)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "belfast_(azur_lane)"
+        "belfast (azur lane)"
       ],
       "copyrightTokens": [
         "azur_lane"

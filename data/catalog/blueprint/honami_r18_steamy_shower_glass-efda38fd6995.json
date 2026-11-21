@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "honami_r18_steamy_shower_glass",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 1893,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "honami_r18_steamy_shower_glass",
     "characterId": "ichinose_honami",
@@ -58,6 +58,9 @@
     "coverageTags": [
       "special_nsfw"
     ],
-    "animaCaption": "One hand presses to the frosted glass as she looks back over her wet shoulder."
+    "animaCaption": "One hand presses to the frosted glass as she looks back over her wet shoulder.",
+    "nsfwTokens": [
+      "pussy"
+    ]
   }
 }

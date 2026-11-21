@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "goldenglow_arknights_r18_greenhouse_night",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 605,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "坐在温室花丛间，指尖捻着花瓣",
     "adult": true,
@@ -24,7 +24,10 @@
     "mood": "幽香朦胧",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "Seated among the greenhouse flowers, she turns a pink petal between her fingertips and leans toward the viewer's clothed shoulder at the frame edge. Moonlight through the glass separates her hair and the near blossoms from the dark planting beds.",
     "promptTokens": [

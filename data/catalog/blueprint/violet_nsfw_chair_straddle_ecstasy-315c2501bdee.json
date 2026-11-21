@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "violet_nsfw_chair_straddle_ecstasy",
-  "revision": 8,
+  "revision": 10,
   "sortOrder": 1397,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "独自跨坐红丝绒扶手椅，机械双手握住两侧扶手，身体向前倾。",
     "adult": true,
@@ -58,8 +58,11 @@
       "mechanical_hands"
     ],
     "timeOfDay": "深夜",
-    "title": "薇尔莉特 · 红丝绒扶手椅上的反客为主主控姿态·「薇尔莉特的心愿……就是将全部的自己，毫无保留地呈现在您眼前」",
-    "nsfwTokens": [],
+    "title": "薇尔莉特 · 红丝绒扶手椅上的反客为主主控姿态",
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "identityProseOverride": "Violet Evergarden from Violet Evergarden, an Auto Memories Doll with loose golden-blonde hair, red hair ribbons, blue eyes and articulated silver prosthetic hands.",
     "identityTokensOverride": [
       "violet_evergarden",

@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "arihara_nanami/silver_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2559,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "arihara_nanami",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "夏日特工 · 藏青与嫩黄撞色运动比基尼配防晒沙滩帽",
+      "name": "夏日特工 · 撞色运动比基尼",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,

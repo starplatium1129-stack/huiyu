@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "nakano_yotsuba",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 187,
   "createdAt": "2026-10-26T12:01:52.509Z",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "nakano_yotsuba",
     "profile": {
@@ -85,7 +85,7 @@
       "speech": "上杉同学！今天也要打起十二分精神加油哦！无论遇到什么困难，四叶都会全力支持你的——嘿嘿♪",
       "source": "春场葱《五等分的新娘 / 5-toubun no Hanayome》",
       "traits": [
-        "nakano_yotsuba",
+        "nakano yotsuba",
         "1girl",
         "solo",
         "short_hair",
@@ -338,7 +338,7 @@
       ],
       "identityProse": "Adult Nakano Yotsuba from The Quintessential Quintuplets, an energetic, bright, and deeply compassionate girl with vibrant bobbed orange hair, her signature bright green rabbit-ear ribbon hairband, sparkling blue eyes, and an openhearted, radiant smile.",
       "identityTokens": [
-        "nakano_yotsuba",
+        "nakano yotsuba",
         "1girl",
         "solo",
         "short_hair",
@@ -350,7 +350,7 @@
         "5-toubun_no_hanayome"
       ],
       "exactTokens": [
-        "nakano_yotsuba"
+        "nakano yotsuba"
       ],
       "exactPrefixes": [
         "yotsuba_"
@@ -386,7 +386,7 @@
         "tiv"
       ],
       "characterTokens": [
-        "nakano_yotsuba"
+        "nakano yotsuba"
       ],
       "copyrightTokens": [
         "5-toubun_no_hanayome"

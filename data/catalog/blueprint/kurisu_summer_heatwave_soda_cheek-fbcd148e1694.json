@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kurisu_summer_heatwave_soda_cheek",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2324,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T02:37:16.448525800+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kurisu_summer_heatwave_soda_cheek",
     "characterId": "makise_kurisu",
@@ -14,11 +14,11 @@
     "description": "实验室的老旧空调突然停摆，热浪让空气泛起微光。红莉栖用冰凉的汽水罐贴在泛红的脸颊上降温，吊带衫贴着锁骨，转头投来带着嗔怪的无奈视线。",
     "recommendedSize": "832x1216",
     "location": "sweltering summer lab room with spinning ceiling fan and half-drawn blinds",
-    "action": "sitting on wooden stool pressing chilled condensation-beaded soda can to her flushed cheek, bare shoulders gleaming, rolling eyes with affectionate exasperation",
+    "action": "红莉栖用冰凉的汽水罐贴在泛红的脸颊上降温，吊带衫贴着锁骨，转头投来带着嗔怪的无奈视线",
     "timeOfDay": "afternoon",
     "lighting": "blinding summer sunlight slicing through venetian blinds casting striped patterns",
     "camera": "close-up",
-    "mood": "youthful summer domesticity, playful exasperation, vivid sensual warmth",
+    "mood": "俏皮与柔媚",
     "promptProse": "In a hot sunlit room, Kurisu presses an ice-cold beverage can against her flushed cheek, bare shoulders catching bright beams through slatted blinds.",
     "promptTokens": [
       "holding_can",

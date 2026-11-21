@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_holiday_onsen_steam",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2039,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "winter_cape",
@@ -14,11 +14,11 @@
     "description": "学园都市近郊的传统温泉旅馆内，热腾腾的桧木风吕升腾起迷离的白雾。黑子浸润在温润的泉水之中，平时一丝不苟的双马尾此刻被毛巾高高束起。水汽氤氲中她回过头，平日里威严从容的脸上尽是少女情窦初开的羞红，低声娇嗔对方不要一直盯着看。",
     "recommendedSize": "832x1216",
     "location": "traditional cedar wood hot spring",
-    "action": "soaking in onsen, hair wrapped in towel, looking back over shoulder, deep blush",
+    "action": "水汽氤氲中她回过头，平日里威严从容的脸上尽是少女情窦初开的羞红，低声娇嗔对方不要一直盯着看",
     "timeOfDay": "night",
     "lighting": "steamy wooden lanterns glowing softly",
     "camera": "medium_shot",
-    "mood": "steamy flustered romantic elegance",
+    "mood": "温存与动情",
     "promptProse": "Soaking peacefully in a steaming traditional cedar onsen, Shirai Kuroko looks back over her bare shoulder with a deep, flustered blush. Warm water ripples around her collarbones as she pouts cutely, telling the viewer not to stare so intensely.",
     "promptTokens": [
       "shirai_kuroko",

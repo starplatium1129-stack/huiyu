@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "shinjou_akane",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 149,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "shinjou_akane",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "SSSS.GRIDMAN",
       "speech": "背鳍的线条还差一点，我想再修修。",
       "traits": [
-        "shinjou_akane",
+        "shinjou akane",
         "gridman_universe",
         "short_hair",
         "purple_hair",
@@ -300,14 +300,14 @@
       ],
       "identityProse": "Akane Shinjou from SSSS.GRIDMAN, with a short pale-purple bob and red eyes.",
       "identityTokens": [
-        "shinjou_akane",
+        "shinjou akane",
         "gridman_universe",
         "short_hair",
         "purple_hair",
         "red_eyes"
       ],
       "exactTokens": [
-        "shinjou_akane"
+        "shinjou akane"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -336,7 +336,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "shinjou_akane",
+        "shinjou akane",
         "Akane Shinjo"
       ],
       "copyrightTokens": [

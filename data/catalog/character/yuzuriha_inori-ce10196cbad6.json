@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuzuriha_inori",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 8,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yuzuriha_inori",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "楪祈向你致以问候。",
       "source": "Production I.G《罪恶王冠 / Guilty Crown》",
       "traits": [
-        "yuzuriha_inori",
+        "yuzuriha inori",
         "1girl",
         "solo",
         "gradient_hair",
@@ -324,7 +324,7 @@
       ],
       "identityProse": "Yuzuriha Inori from Guilty Crown, with long pink-to-orange hair, two front locks in red hair tubes, crimson eyes and red hair clips.",
       "identityTokens": [
-        "yuzuriha_inori",
+        "yuzuriha inori",
         "1girl",
         "solo",
         "pink hair",
@@ -338,7 +338,7 @@
         "red hair clips"
       ],
       "exactTokens": [
-        "yuzuriha_inori"
+        "yuzuriha inori"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -369,7 +369,7 @@
       },
       "animeStudio": "production i.g, redjuice, official anime screencap",
       "characterTokens": [
-        "yuzuriha_inori"
+        "yuzuriha inori"
       ],
       "copyrightTokens": [
         "guilty crown"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "inaba_meguru_intimate_blanket_co-op",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2002,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T13:58:17.718926100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "inaba_meguru",
     "outfitId": "night_camisole",
@@ -14,11 +14,11 @@
     "description": "微冷的冬夜里，两人紧紧挤在同一床厚实的棉被之中。屏幕微光映亮了被窝里的方寸天地，巡整个人紧贴在身旁，温热的气息拂过耳廓。在狭窄近距离的体温交融中，游戏操作早已乱了节拍，只剩下胸膛里如鼓点般急促的心跳。",
     "recommendedSize": "832x1216",
     "location": "cozy bedroom under blanket",
-    "action": "lying closely together under blanket, blushing intensely, breathless whisper",
+    "action": "在狭窄近距离的体温交融中，游戏操作早已乱了节拍，只剩下胸膛里如鼓点般急促的心跳",
     "timeOfDay": "night",
     "lighting": "portable game screen glow softly illuminating her face and reflecting across the blanket",
     "camera": "close-up",
-    "mood": "breathless intimate close proximity",
+    "mood": "浪漫温存",
     "promptProse": "Huddled closely under a thick duvet, Meguru shares a warm space with the viewer. The portable game screen softly lights her blushing face and reflects across the blanket.",
     "promptTokens": [
       "1girl",

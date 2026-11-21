@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_after_two_cups",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2496,
   "createdAt": "2026-10-28T03:43:11.609957400+00:00",
-  "updatedAt": "2026-10-28T03:43:11.609957400+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rena_liechtenauer_after_two_cups",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "恋爱后日谈",
     "description": "旅馆的忙碌告一段落，蕾娜把第二只茶杯推到你面前。她说今天学到一个新词，非要等你喝口茶再猜是什么意思。",
     "location": "inn veranda",
-    "action": "offering a cup of tea across a low table",
+    "action": "把第二只茶杯推到你面前，说今天学到一个新词，非要等你喝口茶再猜是什么意思",
     "timeOfDay": "evening",
     "lighting": "warm lamplight",
     "camera": "medium shot",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kirie_misty_rose_labyrinth_dewy_dawn",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2366,
   "createdAt": "2026-10-28T02:37:16.448525800+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kirie_misty_rose_labyrinth_dewy_dawn",
     "characterId": "kagari_no_kirie",
@@ -14,11 +14,11 @@
     "description": "雾气未散的古堡庭院内，带刺的深红玫瑰在朝露中绽放。雾枝裹着真丝长袍漫步其间，指尖轻抚一片沾着露水的花瓣，平日里傲慢的神情在清晨的微光中化为一丝罕见的落寞。",
     "recommendedSize": "832x1216",
     "location": "ancient overgrown castle rose garden shrouded in ethereal morning ground mist",
-    "action": "wandering stone pathway wrapped loosely in trailing red silk peignoir, touching a thorny dark red rose petal with gentle melancholy longing",
+    "action": "雾枝裹着真丝长袍漫步其间，指尖轻抚一片沾着露水的花瓣",
     "timeOfDay": "dawn",
     "lighting": "cool pearlescent dawn mist illuminated by faint rosy morning sunbeams",
     "camera": "medium_shot",
-    "mood": "lonely immortal melancholy, fragile noble beauty, breathtaking poetic stillness",
+    "mood": "幽微清冷",
     "promptProse": "Strolling through a misty rose garden at dawn, Kirie touches dark roses in her red silk robe with a serene, wistful expression.",
     "promptTokens": [
       "rose_garden",

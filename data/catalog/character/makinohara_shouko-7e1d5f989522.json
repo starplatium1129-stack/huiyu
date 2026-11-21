@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "makinohara_shouko",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 144,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "makinohara_shouko",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Rascal Does Not Dream of Bunny Girl Senpai",
       "speech": "今天也有值得好好记住的小事呢。",
       "traits": [
-        "makinohara_shouko",
+        "makinohara shouko",
         "seishun_buta_yarou",
         "black_hair",
         "long_hair",
@@ -357,7 +357,7 @@
       ],
       "identityProse": "Shouko Makinohara from Rascal Does Not Dream, with long black hair, a hime cut and blue eyes.",
       "identityTokens": [
-        "makinohara_shouko",
+        "makinohara shouko",
         "seishun_buta_yarou",
         "black_hair",
         "long_hair",
@@ -365,7 +365,7 @@
         "blue_eyes"
       ],
       "exactTokens": [
-        "makinohara_shouko"
+        "makinohara shouko"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -394,7 +394,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "makinohara_shouko"
+        "makinohara shouko"
       ],
       "copyrightTokens": [
         "seishun_buta_yarou"

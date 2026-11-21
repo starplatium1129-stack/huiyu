@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fujiwara_chika",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 196,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "fujiwara_chika",
     "profile": {
@@ -322,20 +322,20 @@
       ],
       "identityProse": "Adult Fujiwara Chika from Kaguya-sama: Love Is War. Soft pink shoulder-length hair, blue eyes, and a black hair bow.",
       "identityTokens": [
-        "fujiwara_chika",
+        "fujiwara chika",
         "pink_hair",
         "medium_hair",
         "blue_eyes",
         "hair_bow"
       ],
       "characterTokens": [
-        "fujiwara_chika"
+        "fujiwara chika"
       ],
       "copyrightTokens": [
         "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~"
       ],
       "exactTokens": [
-        "fujiwara_chika"
+        "fujiwara chika"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

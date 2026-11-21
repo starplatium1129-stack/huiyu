@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yuuki_mikan",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 168,
   "createdAt": "2026-10-21T15:20:00.000000000+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "yuuki_mikan",
     "profile": {
@@ -83,7 +83,7 @@
       "speech": "「真拿你没办法呢，哥哥……早餐我已经做好了哦。要是再敢磨蹭着赖床的话，我可就要去把菈菈叫醒直接扔到你的被窝里咯？」",
       "source": "矢吹健太朗《出包王女 / To LOVE-Ru》",
       "traits": [
-        "yuuki_mikan",
+        "yuuki mikan",
         "1girl",
         "solo",
         "brown_hair",
@@ -567,13 +567,13 @@
         "mikan_"
       ],
       "exactTokens": [
-        "yuuki_mikan"
+        "yuuki mikan"
       ],
       "franchise": "To LOVE-Ru",
       "id": "yuuki_mikan",
       "identityProse": "Yuuki Mikan from To LOVE-Ru by Kentaro Yabuki, a clever and capable young sister with chestnut-brown short hair tied in a single side ponytail bun, expressive amber-brown eyes, and a sweet, subtly mischievous smile.",
       "identityTokens": [
-        "yuuki_mikan",
+        "yuuki mikan",
         "1girl",
         "solo",
         "brown_hair",
@@ -600,7 +600,7 @@
         "krea2-turbo-fp8"
       ],
       "characterTokens": [
-        "yuuki_mikan",
+        "yuuki mikan",
         "Mikan Yuuki"
       ],
       "copyrightTokens": [

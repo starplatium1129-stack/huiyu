@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "prinz_eugen_cheongsam_candlelight_tease",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2711,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "prinz_eugen_cheongsam_candlelight_tease",
     "characterId": "prinz_eugen",
@@ -12,13 +12,13 @@
     "title": "欧根亲王 · 百花旗袍的烛光回眸",
     "category": "私密温存",
     "description": "古典雅致的中式包厢内，红烛暖光映照着雕花木屏。欧根亲王身穿一袭精雕细琢的黑色百花刺绣高开衩旗袍，修长丰满的黑丝长腿侧坐于红木椅上。银白长发挽起一部分，红色挑染随风掠过胸口深V领口。她指尖轻抚酒杯边缘，眼角那颗标志性的泪痣在烛光下娇艳欲滴，带着坏笑向你投来无法拒绝的挑逗目光。",
-    "action": "seated on carved mahogany armchair, black embroidered high-slit cheongsam, black stockings, mole under eye illuminated by candlelight, holding porcelain sake cup, teasing seductive smile",
+    "action": "身穿一袭精雕细琢的黑色百花刺绣高开衩旗袍",
     "recommendedSize": "832x1216",
     "location": "vintage oriental banquet parlor with red lanterns and carved screens",
     "timeOfDay": "night",
     "lighting": "warm flickering candlelight and deep crimson lantern glow",
     "camera": "cowboy_shot",
-    "mood": "intoxicating oriental seduction, irresistible playful dominance",
+    "mood": "俏皮灵动",
     "promptProse": "Sitting on an antique mahogany chair, Prinz Eugen looks over her shoulder in a high-slit black embroidered cheongsam and sheer stockings. Warm candlelight illuminates her beauty mark and crimson hair streak as she smiles playfully.",
     "promptTokens": [
       "1girl",

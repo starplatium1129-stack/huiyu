@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shirai_kuroko_intimate_rainy_ginger_tea",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2037,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "shirai_kuroko",
     "outfitId": "training_pants",
@@ -14,11 +14,11 @@
     "description": "在暴雨中执行完风纪委员防卫任务后，黑子全身湿透地回到安全屋。换上宽松深色居家服的她双手捧着滚烫的姜茶，雨水打湿的碎发贴在绯红的面颊旁。当少年的大掌包裹住她冻得冰凉的指尖时，黑子眼睫轻轻一颤，顺从地将微凉的身子靠进对方胸膛。",
     "recommendedSize": "832x1216",
     "location": "cozy safehouse apartment",
-    "action": "holding hot tea mug with both hands, warming cold fingers, leaning in",
+    "action": "当少年的大掌包裹住她冻得冰凉的指尖时，黑子眼睫轻轻一颤，顺从地将微凉的身子靠进对方胸膛",
     "timeOfDay": "night",
     "lighting": "warm fireplace heater glow against rain beating on glass",
     "camera": "cowboy_shot",
-    "mood": "vulnerable safe shelter",
+    "mood": "娇羞动情",
     "promptProse": "Exhausted after a storm patrol, Shirai Kuroko sips hot ginger tea inside a warm safehouse. Damp curls frame her blushing face as the viewer gently holds her cold hands to warm them, prompting her to lean softly against their chest.",
     "promptTokens": [
       "shirai_kuroko",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "suou_amane",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 88,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "suou_amane",
     "profile": {
@@ -84,7 +84,7 @@
       "speech": "雄二！今天想吃什么？不管是咖喱、炸猪排还是……我，我都完全可以准备好哦~♪",
       "source": "Frontwing《灰色的果实 / Grisaia no Kajitsu》",
       "traits": [
-        "suou_amane",
+        "suou amane",
         "1girl",
         "solo",
         "red_hair",
@@ -530,7 +530,7 @@
       ],
       "identityProse": "Suou Amane from Grisaia, with very long crimson hair, circular side hair rings and deep blue eyes.",
       "identityTokens": [
-        "suou_amane",
+        "suou amane",
         "1girl",
         "solo",
         "red hair",
@@ -540,7 +540,7 @@
         "grisaia (series)"
       ],
       "exactTokens": [
-        "suou_amane"
+        "suou amane"
       ],
       "exactPrefixes": [
         "amane_"
@@ -574,7 +574,7 @@
         "kappe"
       ],
       "characterTokens": [
-        "suou_amane"
+        "suou amane"
       ],
       "copyrightTokens": [
         "grisaia (series)"

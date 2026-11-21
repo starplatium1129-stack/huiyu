@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arima_kana_r18_b5_02",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 979,
   "createdAt": null,
-  "updatedAt": "2026-11-08T18:01:27.986195900+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "淋浴下湿身赤裸手探腿间，水流冲刷短发，咬唇仰头带泪自抚",
     "adult": true,
@@ -25,7 +25,10 @@
     "mood": "湿身水光与私密自持",
     "negativeTokens": [],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "nsfw_nude",
     "promptProse": "She stands under the shower spray after removing her stage makeup, one hand between her thighs as tears mix with the water.",
     "promptTokens": [
@@ -60,7 +63,7 @@
       "completely_nude"
     ],
     "timeOfDay": "night",
-    "title": "有马加奈 · 淋浴间卸妆水雾中的湿身独奏 ·「把帽子摘掉后……我就只是个普通的胆小鬼」",
+    "title": "有马加奈 · 淋浴间卸妆水雾中的湿身独奏",
     "animaCaption": "Tears mix with the shower water running over her face."
   }
 }

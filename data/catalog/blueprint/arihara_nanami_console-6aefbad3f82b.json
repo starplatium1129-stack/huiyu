@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_console",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2440,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:05:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_console",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "任务支援",
     "description": "七海坐在终端前核对路线，屏幕上的标记已经更新到最后一处。她按住耳机，等待对面确认。",
     "location": "operations room",
-    "action": "checking a route on a monitor with one hand on her earpiece",
+    "action": "她按住耳机，等待对面确认",
     "timeOfDay": "night",
     "lighting": "monitor light",
     "camera": "medium shot",

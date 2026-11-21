@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alice_sao_diplomatic_summit_speech",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 1999,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-29T11:34:23.037544200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alice_sao_diplomatic_summit_speech",
     "characterId": "alice_sao",
@@ -14,11 +14,11 @@
     "description": "现实世界庄严肃穆的国际峰会讲台前，爱丽丝身穿深蓝与纯白交织的金色刺绣高定礼服，挺拔站立面向闪光灯，展现跨界领袖的从容与智慧。",
     "recommendedSize": "832x1216",
     "location": "international conference hall",
-    "action": "standing at podium, addressing audience, dignified poise, clear gaze",
+    "action": "身穿深蓝与纯白交织的金色刺绣高定礼服，挺拔站立面向闪光灯，展现跨界领袖的从容与智慧",
     "timeOfDay": "day",
     "lighting": "crystalline architectural lighting and soft camera flashes",
     "camera": "cowboy_shot",
-    "mood": "commanding diplomatic grace and modern majesty",
+    "mood": "典雅端庄",
     "promptProse": "Addressing a grand modern international summit from behind a sleek podium, Alice looks out with commanding poise in her royal blue and gold embroidered ambassador gown.",
     "promptTokens": [
       "alice_synthesis_thirty",

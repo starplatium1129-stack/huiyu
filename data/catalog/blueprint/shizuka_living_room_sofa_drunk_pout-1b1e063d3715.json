@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shizuka_living_room_sofa_drunk_pout",
-  "revision": 5,
+  "revision": 8,
   "sortOrder": 2247,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:54:20.655983600+00:00",
   "data": {
     "id": "shizuka_living_room_sofa_drunk_pout",
     "characterId": "shizuka_hiratsuka",
@@ -14,11 +14,11 @@
     "description": "深夜温暖的单身公寓客厅内，矮桌上摆着已喝空的啤酒罐。平冢静穿着舒适宽松的花灰廓形大卫衣与居家短裤，侧身歪靠在柔软的沙发扶手旁。宽大的卫衣领口自然滑落一侧，露出白皙性感的香肩与优美锁骨。微醺的酒意染红了成熟英丽的面颊，她以单手托腮，眼波迷离地注视着眼前，展露出平日难以见到的可爱娇嗔与成熟女性的微叹。",
     "recommendedSize": "832x1216",
     "location": "lived-in cozy bachelor apartment living room with empty beer cans on table",
-    "action": "slouching casually on living room sofa with beer can on table, oversized heather-grey sweatshirt slipping off one shoulder, bare collarbone, lounge shorts, bare legs, flushed cheeks from alcohol, resting cheek on hand, mature melancholic pout at viewer",
+    "action": "穿着舒适宽松的花灰廓形大卫衣与居家短裤",
     "timeOfDay": "night",
     "lighting": "warm dim floor lamp casting rich amber hues across living room",
     "camera": "medium_shot",
-    "mood": "mature gap-moe charm, deeply touching vulnerable warmth",
+    "mood": "动情与反差",
     "promptProse": "Lounging casually on her apartment sofa in an oversized grey sweatshirt slipping off one shoulder, Shizuka Hiratsuka rests her cheek against her palm beside an empty beer can. Flushed from evening drinks, she pouts with endearing mature charm.",
     "promptTokens": [
       "1girl",

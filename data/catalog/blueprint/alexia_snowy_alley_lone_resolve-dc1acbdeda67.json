@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "alexia_snowy_alley_lone_resolve",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2475,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-30T10:32:43.640918+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "alexia_snowy_alley_lone_resolve",
     "characterId": "alexia_midgar",
@@ -14,11 +14,11 @@
     "description": "放学后的静谧商业小巷中，夕阳将青石地面染成温暖的橙黄。阿蕾克希亚双手捧着刚出炉的草莓奶油可丽饼，微红着脸颊把最甜的一侧递向少年，语气傲娇却满眼宠溺。",
     "recommendedSize": "832x1216",
     "location": "cozy cobblestone academy town street corner at dusk",
-    "action": "leaning forward slightly, holding up a strawberry whipped cream crepe with both hands offering a bite, blushing cheeks, adorable pouting smile",
+    "action": "双手捧着刚出炉的草莓奶油可丽饼，微红着脸颊把最甜的一侧递向少年，语气傲娇却满眼宠溺",
     "timeOfDay": "dusk",
     "lighting": "golden sunset backlighting framing silver hair with warm streetlamp glow",
     "camera": "medium shot",
-    "mood": "playful tsundere date, sweet afterschool romance, innocent youthful affection",
+    "mood": "傲娇与温存",
     "promptProse": "On a cobblestone academy street corner at sunset, Alexia Midgar offers a bite of her strawberry cream crepe, blushing adorably with a fond tsundere pout.",
     "promptTokens": [
       "cobblestone_street",

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "st_louis_luxury_suite_morning_cuddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2165,
   "createdAt": "2026-10-27T17:49:11.242159300+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "st_louis_luxury_suite_morning_cuddle",
     "characterId": "st_louis_azur",
@@ -14,11 +14,11 @@
     "description": "奢华高层套房主卧被初升的朝阳染上一层柔和的金辉。圣路易斯坐在床沿，身穿标志性的白蓝联邦露肩军官制服。短款深蓝外套轻挽在圆润的香肩两侧，白色百褶短裙衬托出匀称修长的双腿。她双手交叠伸了个舒缓的懒腰，天蓝色长发在晨风中微扬，眼波流转间尽显成熟舰娘特有的端庄与娇媚。",
     "recommendedSize": "832x1216",
     "location": "sunlit penthouse master bed with silk sheets",
-    "action": "sitting on edge of bed stretching gracefully in off-shoulder blue naval uniform jacket and white pleated skirt, bare shoulders, collarbone, black thighhighs, long blue hair loose, warm morning sunlight, enchanting affectionate smile",
+    "action": "坐在床沿，身穿标志性的白蓝联邦露肩军官制服，短款深蓝外套轻挽在圆润的香肩两侧",
     "timeOfDay": "morning",
     "lighting": "warm golden morning sunbeams streaming through sheer drapes",
     "camera": "cowboy_shot",
-    "mood": "intimate morning luxury, effortless sultry naval elegance",
+    "mood": "浪漫温存",
     "promptProse": "Sitting on the edge of a sunlit hotel bed, St. Louis stretches in her signature off-shoulder Eagle Union naval uniform jacket and pleated skirt. Morning light illuminates her bare shoulders and flowing blue hair as she smiles with sultry charm.",
     "promptTokens": [
       "1girl",

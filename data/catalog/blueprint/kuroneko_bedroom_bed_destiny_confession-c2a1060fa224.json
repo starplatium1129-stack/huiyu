@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroneko_bedroom_bed_destiny_confession",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2266,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroneko_bedroom_bed_destiny_confession",
     "characterId": "kuroneko",
@@ -14,11 +14,11 @@
     "description": "静谧的寝室内摆着可爱的黑猫玩偶与轻小说原稿。琉璃身穿一袭精致半透的黑色蕾丝娃娃装吊带短裙，斜倚在深色床铺上。姬发式的乌黑长发如黑丝缎铺展在枕榻间，胸前红水晶项链泛着微光。她微微别过通红的脸蛋，用蚊子般细小的声音说着傲娇而认真的命运誓言，眼神中却盛满了对你毫无保留的迷恋。",
     "recommendedSize": "832x1216",
     "location": "dim cozy bedroom with sheer black lace curtains",
-    "action": "reclining on dark bed in sheer black lace babydoll negligee, black hime-cut hair spread on sheets, red pendant necklace on collarbone, flushed cheeks, looking away shyly then back to viewer",
+    "action": "她微微别过通红的脸蛋，用蚊子般细小的声音说着傲娇而认真的命运誓言",
     "timeOfDay": "night",
     "lighting": "dim romantic fairy lights combined with soft moonlight through curtains",
     "camera": "medium_shot",
-    "mood": "charming gothic tsundere romance, delicate midnight seduction",
+    "mood": "傲娇与温存",
     "promptProse": "Reclining on her bed in a sheer black lace babydoll negligee, Kuroneko holds her red gem pendant against delicate collarbones. Her black hime cut flows over pillows as she turns with a shy, tsundere blush.",
     "promptTokens": [
       "1girl",

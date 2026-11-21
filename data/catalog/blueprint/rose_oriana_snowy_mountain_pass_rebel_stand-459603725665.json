@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rose_oriana_snowy_mountain_pass_rebel_stand",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2551,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-30T11:17:57.743583+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rose_oriana_snowy_mountain_pass_rebel_stand",
     "characterId": "rose_oriana",
@@ -13,11 +13,11 @@
     "category": "心海幻境",
     "description": "午后暖意融融的复古街角咖啡馆里，木质餐桌上摆着精致的黄铜墨水瓶与摊开的羊皮信纸。萝丝手握羽毛笔，金色的卷发在午后暖光中流淌着柔和光泽。她写了几行便羞红了脸，悄悄用信纸遮住半张脸，从信纸上方探出一双满是崇拜与依恋的琥珀色眼眸，偷看着坐在对面的少年。",
     "location": "cozy vintage street corner cafe booth, wooden table, lace curtains, warm interior",
-    "action": "sitting at wooden cafe table, holding quill pen over parchment letter, blushing intensely, shyly peeking over stationery at partner with loving amber eyes",
+    "action": "手握羽毛笔，金色的卷发在午后暖光中流淌着柔和光泽，写了几行便羞红了脸",
     "timeOfDay": "afternoon",
     "lighting": "warm afternoon sunlight streaming through window, soft golden ambient glow",
     "camera": "medium shot, eye level",
-    "mood": "sweet romantic school romance, shy earnest princess devotion, warm cafe intimacy",
+    "mood": "温存与动情",
     "sceneTags": [
       "cafe",
       "wooden_table",

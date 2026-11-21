@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kouzuki_kallen_private_balcony_night",
-  "revision": 6,
+  "revision": 8,
   "sortOrder": 1990,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kouzuki_kallen_private_balcony_night",
     "characterId": "kouzuki_kallen",
@@ -14,11 +14,11 @@
     "description": "静谧高楼露台上，卡莲身穿真丝吊带背心倚靠着扶手，城市万家灯火在脚下流淌，回过头时双颊微红，流露出褪去防备后的依赖与深情。",
     "recommendedSize": "832x1216",
     "location": "high-rise apartment balcony",
-    "action": "resting against railing, looking back, gentle blush, soft eyes",
+    "action": "静谧高楼露台上，卡莲身穿真丝吊带背心倚靠着扶手，城市万家灯火在脚下流淌，回过头时双颊微红",
     "timeOfDay": "night",
     "lighting": "阿什弗德学园钟楼阳台柔和月色与校园灯火",
     "camera": "close-up",
-    "mood": "intimate romantic nighttime vulnerability",
+    "mood": "温存与动情",
     "promptProse": "On a quiet high-rise balcony overlooking the glittering night city, Kallen Kouzuki turns with a gentle blush and tender, unguarded eyes in a crimson camisole.",
     "promptTokens": [
       "standing on balcony",

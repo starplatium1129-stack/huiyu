@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_rooftop_stars",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2416,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_rooftop_stars",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "魔女时刻",
     "description": "夜色落下来后，紬靠着屋顶栏杆辨认星星。她举起画着星图的纸，把纸上的线与天空一一对照。",
     "location": "rooftop",
-    "action": "holding a star chart and looking at the sky",
+    "action": "她举起画着星图的纸，把纸上的线与天空一一对照",
     "timeOfDay": "night",
     "lighting": "moonlight",
     "camera": "cowboy shot",

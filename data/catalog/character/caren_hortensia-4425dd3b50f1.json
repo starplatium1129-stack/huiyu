@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "caren_hortensia",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 58,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "caren_hortensia",
     "profile": {
@@ -950,7 +950,7 @@
       ],
       "identityProse": "Caren Hortensia from Fate/hollow ataraxia, with a chin-length layered silver bob and amber-yellow eyes.",
       "identityTokens": [
-        "caren_hortensia",
+        "caren hortensia",
         "fate/hollow_ataraxia",
         "white_hair",
         "short_hair",
@@ -958,8 +958,8 @@
         "yellow_eyes"
       ],
       "exactTokens": [
-        "caren_hortensia",
-        "caren_ortensia"
+        "caren hortensia",
+        "caren ortensia"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -988,8 +988,8 @@
         "fire, flames, burning ears"
       ],
       "characterTokens": [
-        "caren_hortensia",
-        "caren_ortensia"
+        "caren hortensia",
+        "caren ortensia"
       ],
       "copyrightTokens": [
         "fate/hollow_ataraxia"

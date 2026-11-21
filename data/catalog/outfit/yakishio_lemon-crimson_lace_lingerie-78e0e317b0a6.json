@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "yakishio_lemon/crimson_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2529,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "yakishio_lemon",
     "outfit": {
       "id": "crimson_lace_lingerie",
-      "name": "柠檬疾风 · 明黄透气运动工字吊带背心套",
+      "name": "柠檬疾风 · 运动工字吊带背心套",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "chen_qianyu_intimate_motorcycle_stargazing",
-  "revision": 5,
+  "revision": 7,
   "sortOrder": 2023,
   "createdAt": "2026-10-26T13:01:02.369Z",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "characterId": "chen_qianyu",
     "outfitId": "trail_windbreaker",
@@ -14,11 +14,11 @@
     "description": "在塔卫二寂静无垠的高原绝壁边，重型全地形机车的车灯照亮了脚下嶙峋的岩石。千语脱下防风外套披在对方肩上，两人并排坐在宽阔的车座上仰望浩瀚的异星双月。冷冽的夜风被彼此的体温阻隔，千语转过脸，目光中盛满了无声的守护。",
     "recommendedSize": "832x1216",
     "location": "alien plateau cliff under twin moons",
-    "action": "sitting together on motorcycle, sharing jacket, looking at alien moons",
+    "action": "冷冽的夜风被彼此的体温阻隔，千语转过脸，目光中盛满了无声的守护",
     "timeOfDay": "night",
     "lighting": "异星荒原断崖双月银白月华与机车前大灯锐芒",
     "camera": "full_body",
-    "mood": "epic romantic cosmic solitude",
+    "mood": "温存与独处",
     "promptProse": "Perched together on a heavy all-terrain motorcycle atop a windswept plateau cliff, Chen Qianyu shares her windbreaker jacket under glowing alien twin moons. The vast cosmic sky blankets the wasteland as she gazes with quiet, protective warmth.",
     "promptTokens": [
       "motorcycle",

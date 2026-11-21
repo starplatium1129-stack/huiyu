@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "saten_ruiko",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 199,
   "createdAt": "2026-10-26T12:45:22.504+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "saten_ruiko",
     "profile": {
@@ -309,20 +309,20 @@
       ],
       "identityProse": "Adult Saten Ruiko from A Certain Scientific Railgun. Long black hair, green eyes, and a small white flower hair ornament.",
       "identityTokens": [
-        "saten_ruiko",
+        "saten ruiko",
         "black_hair",
         "long_hair",
         "green_eyes",
         "hair_flower"
       ],
       "characterTokens": [
-        "saten_ruiko"
+        "saten ruiko"
       ],
       "copyrightTokens": [
         "toaru_kagaku_no_railgun"
       ],
       "exactTokens": [
-        "saten_ruiko"
+        "saten ruiko"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",

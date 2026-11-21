@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "roxy_migurdia_r18_white_socks",
-  "revision": 10,
+  "revision": 12,
   "sortOrder": 462,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "action": "坐在椅子上，一只脚朝观者伸出，另一只脚自然落在椅前",
     "adult": true,
@@ -22,9 +22,14 @@
     "lighting": "warm oil lamp",
     "location": "成人研修院宿舍",
     "mood": "小巧羞怯",
-    "negativeTokens": [],
+    "negativeTokens": [
+      "long ears"
+    ],
     "nsfwProse": "",
-    "nsfwTokens": [],
+    "nsfwTokens": [
+      "nipples",
+      "pussy"
+    ],
     "outfitId": "white_thighhighs_only",
     "promptProse": "Seen from the viewer's perspective, adult Roxy sits in a chair and extends one white-stockinged foot toward the camera. Her other foot rests on the floor beside the chair, while warm oil-lamp light fills the study.",
     "promptTokens": [

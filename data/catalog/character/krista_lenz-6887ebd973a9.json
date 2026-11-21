@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "krista_lenz",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 65,
   "createdAt": null,
-  "updatedAt": "2026-11-02T05:05:48.579496300+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "krista_lenz",
     "profile": {
@@ -80,7 +80,7 @@
       "speech": "希斯特里亚对你露出温柔的微笑——「谢谢你，愿意站在我身边。」",
       "source": "WIT Studio / MAPPA《进击的巨人 / Attack on Titan》",
       "traits": [
-        "krista_lenz",
+        "krista lenz",
         "1girl",
         "solo",
         "blonde_hair",
@@ -313,13 +313,13 @@
       "displayName": "希斯特里亚",
       "exactPrefixes": [],
       "exactTokens": [
-        "krista_lenz"
+        "krista lenz"
       ],
       "franchise": "Attack on Titan",
       "id": "krista_lenz",
       "identityProse": "Historia Reiss (Krista Lenz) from Attack on Titan, with long blonde hair, blue eyes and a heart-shaped face.",
       "identityTokens": [
-        "krista_lenz",
+        "krista lenz",
         "1girl",
         "solo",
         "blonde_hair",
@@ -344,7 +344,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "krista_lenz"
+        "krista lenz"
       ],
       "copyrightTokens": [
         "attack_on_titan"

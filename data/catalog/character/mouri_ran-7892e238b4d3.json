@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "mouri_ran",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 133,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "mouri_ran",
     "profile": {
@@ -68,7 +68,7 @@
       "source": "Detective Conan",
       "speech": "晚饭快好了，记得早点回来。",
       "traits": [
-        "mouri_ran",
+        "mouri ran",
         "meitantei_conan",
         "black_hair",
         "long_hair",
@@ -330,7 +330,7 @@
       ],
       "identityProse": "Ran Mouri from Detective Conan, with long black hair, a horn-like forelock and blue-violet eyes.",
       "identityTokens": [
-        "mouri_ran",
+        "mouri ran",
         "meitantei_conan",
         "black_hair",
         "long_hair",
@@ -338,7 +338,7 @@
         "hair_horn"
       ],
       "exactTokens": [
-        "mouri_ran"
+        "mouri ran"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -367,7 +367,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "mouri_ran"
+        "mouri ran"
       ],
       "copyrightTokens": [
         "meitantei_conan"

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "epsilon_shadow_moonlight_sonata_grand_stage",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 2547,
   "createdAt": "2026-10-28T17:14:16.489731500+00:00",
-  "updatedAt": "2026-10-31T01:36:41.952851900+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "epsilon_shadow_moonlight_sonata_grand_stage",
     "title": "厄普西隆 · 皇家剧院的月光夜奏曲",
@@ -12,7 +12,7 @@
     "outfitId": "pianist_midnight_gown",
     "description": "宏伟华丽的王立大剧院舞台正中，束光灯倾泻在漆黑的施坦威三角钢琴上。厄普西隆闭目全情弹奏《月光》，紫发与深蓝长裙随琴音激昂飘拂。",
     "location": "grand opera concert hall stage before an empty darkened audience auditorium",
-    "action": "playing grand piano with passionate virtuosic posture, arched back, delicate fingers dancing on black and white keys, eyes closed in musical ecstasy",
+    "action": "闭目全情弹奏《月光》，紫发与深蓝长裙随琴音激昂飘拂",
     "timeOfDay": "夜晚",
     "lighting": "皇家剧院穹顶暖金吊灯与中央舞台聚光灯",
     "camera": "wide cinematic shot",

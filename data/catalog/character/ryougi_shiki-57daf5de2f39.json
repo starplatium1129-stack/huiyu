@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ryougi_shiki",
-  "revision": 11,
+  "revision": 12,
   "sortOrder": 102,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "ryougi_shiki",
     "profile": {
@@ -343,13 +343,13 @@
       },
       "exactPrefixes": [],
       "exactTokens": [
-        "ryougi_shiki"
+        "ryougi shiki"
       ],
       "franchise": "Kara no Kyoukai",
       "id": "ryougi_shiki",
       "identityProse": "Ryougi Shiki from Kara no Kyoukai, with chin-length layered black hair and dark eyes.",
       "identityTokens": [
-        "ryougi_shiki",
+        "ryougi shiki",
         "kara no kyoukai",
         "black hair",
         "short hair"
@@ -375,7 +375,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "ryougi_shiki"
+        "ryougi shiki"
       ],
       "copyrightTokens": [
         "kara no kyoukai"

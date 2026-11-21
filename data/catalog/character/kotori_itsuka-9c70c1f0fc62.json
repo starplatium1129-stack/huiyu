@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kotori_itsuka",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 234,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kotori_itsuka",
     "profile": {
@@ -107,16 +107,16 @@
         "kotori itsuka"
       ],
       "exactTokens": [
-        "kotori_itsuka"
+        "kotori itsuka"
       ],
       "characterTokens": [
-        "kotori_itsuka"
+        "kotori itsuka"
       ],
       "copyrightTokens": [
         "date_a_live"
       ],
       "identityTokens": [
-        "kotori_itsuka",
+        "kotori itsuka",
         "1girl",
         "solo",
         "red_hair",

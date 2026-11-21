@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "fiona_frost",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 161,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "fiona_frost",
     "profile": {
@@ -54,7 +54,7 @@
         "网球运动"
       ],
       "traits": [
-        "fiona_frost",
+        "fiona frost",
         "1girl",
         "solo",
         "short_hair",
@@ -228,7 +228,7 @@
       "adultEligibility": "adult",
       "defaultOutfitId": "wise_agent_trench",
       "identityTokens": [
-        "fiona_frost",
+        "fiona frost",
         "1girl",
         "solo",
         "bob_cut",
@@ -255,7 +255,7 @@
         "kantoku"
       ],
       "exactTokens": [
-        "fiona_frost"
+        "fiona frost"
       ],
       "supportedEngines": [
         "anima-miaomiao-v1.6",
@@ -280,7 +280,7 @@
         "research": "2026-09 调研"
       },
       "characterTokens": [
-        "fiona_frost"
+        "fiona frost"
       ],
       "copyrightTokens": [
         "spy_x_family"

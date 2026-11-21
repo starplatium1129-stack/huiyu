@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "delta_shadow",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 264,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "delta_shadow",
     "popular": {
@@ -25,7 +25,7 @@
       ],
       "identityProse": "Delta from The Eminence in Shadow, the Fourth of the Seven Shadows, a wolf therianthrope girl with messy long black hair, canine wolf ears and tail, sharp golden yellow eyes, small fangs, and a feral athletic body.",
       "identityTokens": [
-        "delta_(shadow_garden)",
+        "delta (shadow garden)",
         "1girl",
         "solo",
         "black_hair",
@@ -38,11 +38,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "delta_(shadow_garden)"
+        "delta (shadow garden)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "delta_(shadow_garden)"
+        "delta (shadow garden)"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -144,7 +144,7 @@
       "voiceJa": "シャドウ様！大きな獲物狩ってきたよ、わん！……えへへ、いい匂い！なでなでして、わん！",
       "source": "The Eminence in Shadow",
       "traits": [
-        "delta_(shadow_garden)",
+        "delta (shadow garden)",
         "animal_ears",
         "dog_ears",
         "dog_tail",

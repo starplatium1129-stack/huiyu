@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "fujiwara_chika_bedroom_silk_sleepdress_stretch",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2634,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "fujiwara_chika_bedroom_silk_sleepdress_stretch",
     "characterId": "fujiwara_chika",
@@ -14,11 +14,11 @@
     "description": "清晨薄纱窗帘后透出明亮的晨曦，千花趴在堆满心形抱枕的粉白大床上。轻薄柔滑的粉色真丝睡裙勾勒出曼妙饱满的曲线，纤细吊带滑落香肩。她揉着惺忪睡眼微微仰起头，白皙双颊泛着娇憨红晕，微翘的嘴角带着刚刚睡醒的甜美撒娇意味。",
     "recommendedSize": "832x1216",
     "location": "cute pastel bedroom filled with heart cushions and plushies",
-    "action": "lying on stomach on luxury pink bedding, thin silk slip dress with straps loose, hugging heart cushion, messy pink hair, sleepy cute blush",
+    "action": "她揉着惺忪睡眼微微仰起头，白皙双颊泛着娇憨红晕，微翘的嘴角带着刚刚睡醒的甜美撒娇意味",
     "timeOfDay": "morning",
     "lighting": "soft diffused morning sunbeams pouring into cute bedroom",
     "camera": "medium_shot",
-    "mood": "spoiled girlfriend sweetness, heart-melting playful charm",
+    "mood": "俏皮灵动",
     "promptProse": "Lying playfully on her stomach on a pastel bed hugging a plush cushion, Chika Fujiwara wears a delicate pink silk slip nightgown. Her pink hair is pleasantly tousled as she looks up with sleepy, affectionate eyes in the morning sun.",
     "promptTokens": [
       "1girl",

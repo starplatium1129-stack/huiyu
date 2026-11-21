@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "rosa_arknights/silver_lace_lingerie",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2231,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T17:31:22.438Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "rosa_arknights",
     "outfit": {
       "id": "silver_lace_lingerie",
-      "name": "香槟迷梦 · 浅香槟色刺绣半透双层吊带睡裙",
+      "name": "香槟迷梦 · 刺绣双层吊带睡裙",
       "category": "情趣 / 蕾丝内衣",
       "default": false,
       "isDefault": false,

@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_cozy_blanket_roomwear_snuggle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 1996,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "power_cozy_blanket_roomwear_snuggle",
     "characterId": "power",
@@ -14,11 +14,11 @@
     "description": "暖炉旁的木地板上，穿着猫耳毛绒居家服的帕瓦将自己裹在厚毛毯里，伸手拽着身边人的衣角，嘴里嘟囔着嫌冷却不肯松手。",
     "recommendedSize": "832x1216",
     "location": "cozy heated apartment room",
-    "action": "wrapped in fluffy blanket, holding sleeve, cute pout, flushed nose",
+    "action": "将自己裹在厚毛毯里，伸手拽着身边人的衣角，嘴里嘟囔着嫌冷却不肯松手",
     "timeOfDay": "night",
     "lighting": "warm glowing heater lamps creating rich amber atmosphere",
     "camera": "close-up",
-    "mood": "adorable clinging cozy winter warmth",
+    "mood": "雪景与治愈",
     "promptProse": "Snuggled on the living room rug wrapped in a plush blanket and comfy fleece hoodie, Power peers up with rosy cheeks and a slight pout, tugging gently on the viewer's sleeve for warmth.",
     "promptTokens": [
       "power_(chainsaw_man)",

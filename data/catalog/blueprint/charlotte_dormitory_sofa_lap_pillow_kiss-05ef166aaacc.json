@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "charlotte_dormitory_sofa_lap_pillow_kiss",
-  "revision": 3,
+  "revision": 5,
   "sortOrder": 2181,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "charlotte_dormitory_sofa_lap_pillow_kiss",
     "characterId": "charlotte_dunois",
@@ -14,11 +14,11 @@
     "description": "学园宿舍温暖的客厅内，夏洛特侧坐在毛绒地毯与沙发旁。米白色的法式针织衫松垮落肩，浅金色的长马尾垂落在雪白锁骨间。平时温和体贴的法国少女此刻双颊泛起动人红晕，双手轻轻交叠在胸前，微低着头抬眸凝望，眼神中溢满了初恋般的青涩悸动与私密期待。",
     "recommendedSize": "832x1216",
     "location": "dim cozy student dormitory living room",
-    "action": "sitting on soft carpet leaning on sofa, off-shoulder cream knit sweater exposing shoulder and collarbone, blonde ponytail draped over chest, blushing heavily, bashful affectionate gaze",
+    "action": "侧坐在毛绒地毯与沙发旁，米白色的法式针织衫松垮落肩",
     "timeOfDay": "night",
     "lighting": "warm interior chandelier glow creating cozy golden reflections",
     "camera": "medium_shot",
-    "mood": "innocent fluttering heartbeat, sweet french elegance",
+    "mood": "浪漫温存",
     "promptProse": "Sitting on the carpet leaning gently against a sofa, Charlotte wears an off-shoulder cream knit sweater that reveals her collarbone. Her blonde ponytail rests against her chest as she looks up with an adorable, blushing gaze.",
     "promptTokens": [
       "1girl",

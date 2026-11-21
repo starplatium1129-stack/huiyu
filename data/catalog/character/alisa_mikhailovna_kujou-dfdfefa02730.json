@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alisa_mikhailovna_kujou",
-  "revision": 12,
+  "revision": 13,
   "sortOrder": 36,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "alisa_mikhailovna_kujou",
     "profile": {
@@ -81,7 +81,7 @@
       "speech": "艾莉莎·米哈伊洛夫娜·九条向你致以问候。",
       "source": "灿灿SUN《不时轻声地用俄语遮羞的邻座艾莉同学》",
       "traits": [
-        "alisa_mikhailovna_kujou",
+        "alisa mikhailovna kujou",
         "1girl",
         "solo",
         "silver_hair",
@@ -329,7 +329,7 @@
       ],
       "identityProse": "Alisa Mikhailovna Kujou (Alya) from Alya Sometimes Hides Her Feelings in Russian, with long silver hair in a half-updo, blue ribbons and blue eyes.",
       "identityTokens": [
-        "alisa_mikhailovna_kujou",
+        "alisa mikhailovna kujou",
         "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san",
         "1girl",
         "solo",
@@ -340,7 +340,7 @@
         "blue_ribbon"
       ],
       "exactTokens": [
-        "alisa_mikhailovna_kujou"
+        "alisa mikhailovna kujou"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -363,7 +363,7 @@
         "research": "2026-08-18 调研"
       },
       "characterTokens": [
-        "alisa_mikhailovna_kujou"
+        "alisa mikhailovna kujou"
       ],
       "copyrightTokens": [
         "tokidoki_bosotto_roshia-go_de_dereru_tonari_no_alya-san"

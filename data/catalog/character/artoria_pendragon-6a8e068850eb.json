@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "artoria_pendragon",
-  "revision": 10,
+  "revision": 11,
   "sortOrder": 6,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "artoria_pendragon",
     "profile": {
@@ -967,7 +967,7 @@
         "fate/stay_night"
       ],
       "exactTokens": [
-        "artoria_pendragon (fate)"
+        "artoria pendragon (fate)"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -999,8 +999,7 @@
         "so-bin"
       ],
       "characterTokens": [
-        "artoria pendragon (fate)",
-        "artoria_pendragon (fate)"
+        "artoria pendragon (fate)"
       ],
       "copyrightTokens": [
         "fate/stay_night"

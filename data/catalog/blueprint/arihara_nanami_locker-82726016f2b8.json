@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "arihara_nanami_locker",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2443,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-07T12:10:00.000Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "arihara_nanami_locker",
     "characterId": "arihara_nanami",
@@ -13,7 +13,7 @@
     "category": "任务准备",
     "description": "七海在储物柜前戴好手套，又检查了一遍随身的联络设备。柜门合上后，她确认帽檐没有挡住视线。",
     "location": "locker room",
-    "action": "adjusting a white glove beside an open locker",
+    "action": "柜门合上后，她确认帽檐没有挡住视线",
     "timeOfDay": "evening",
     "lighting": "indoor light",
     "camera": "medium shot",

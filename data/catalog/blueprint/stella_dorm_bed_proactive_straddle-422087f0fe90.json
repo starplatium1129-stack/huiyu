@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "stella_dorm_bed_proactive_straddle",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2187,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "stella_dorm_bed_proactive_straddle",
     "characterId": "stella_vermillion",
@@ -14,11 +14,11 @@
     "description": "宿舍房门轻掩的静谧空间内，黄昏斜阳穿过窗纱洒落在单人床前。史黛菈端坐在床榻中央，破军学园的黑色制服外套半敞，红色领带微松，衬衫领口微微解开显出优美白皙的锁骨线条。绯红色的修长双马尾肆意披垂在肩头，平日好强的红莲皇女此刻双颊微红，眼波盈盈地凝视着前方，坦露出毫不设防的真心依恋。",
     "recommendedSize": "832x1216",
     "location": "private student dormitory bedroom",
-    "action": "sitting leaning slightly forward on dorm bed, unbuttoned black uniform jacket, loosened red tie and open white shirt collar, crimson twintails cascading over shoulders, delicate collarbone, heavy blush, passionate red eyes looking at viewer",
+    "action": "端坐在床榻中央，破军学园的黑色制服外套半敞，红色领带微松",
     "timeOfDay": "sunset",
     "lighting": "warm amber sunset rays streaming through dormitory window",
     "camera": "medium_shot",
-    "mood": "fiery passionate devotion, sweet tsundere vulnerability surrendered to love",
+    "mood": "傲娇与温存",
     "promptProse": "Sitting on a dormitory bed in the warm glow of sunset, Stella Vermillion wears her Hagun Academy uniform with unbuttoned black jacket and loosened red tie. Her long crimson twintails frame bare collarbones as she looks forward with a passionate, blushing gaze.",
     "promptTokens": [
       "1girl",

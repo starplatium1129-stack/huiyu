@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_engawa_sake_fish_feed",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2202,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroka_engawa_sake_fish_feed",
     "characterId": "kuroka",
@@ -14,11 +14,11 @@
     "description": "夏日午后微风吹拂的木质缘侧上，黑歌盘腿斜倚在廊柱边。她用筷子剔好香脆烤鱼肉送到你唇边，两只黑色猫耳欢快抖动，双尾在地板上轻拍，眉眼满是娇媚笑意。",
     "recommendedSize": "832x1216",
     "location": "traditional wooden veranda overlooking sunny Japanese garden",
-    "action": "feeding grilled fish to partner with chopsticks, cat ears twitching happily, twin cat tails wagging, playful golden eyes",
+    "action": "盘腿斜倚廊柱边，用筷子剔好烤鱼送到对方唇边，猫耳欢快抖动",
     "timeOfDay": "afternoon",
     "lighting": "warm dappled afternoon sunshine through leafy bamboo trees",
     "camera": "cowboy_shot",
-    "mood": "lazing domestic bliss, feline charm, playful couple sweetness",
+    "mood": "俏皮与治愈",
     "promptProse": "Sitting on a wooden veranda in a loose black kimono, Kuroka feeds grilled fish to her partner, cat ears twitching with playful golden eyes.",
     "promptTokens": [
       "engawa",

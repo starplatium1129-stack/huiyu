@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "ijichi_nijika_rooftop_sunset_wind_smile",
-  "revision": 2,
+  "revision": 4,
   "sortOrder": 2637,
   "createdAt": "2026-10-29T16:00:05.839+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "ijichi_nijika_rooftop_sunset_wind_smile",
     "characterId": "ijichi_nijika",
@@ -14,11 +14,11 @@
     "description": "放学后Livehouse所在建筑的天台，橙红色晚霞洒满铁丝网与水塔。虹夏单肩背着乐器包回过身来，金色的侧马尾与呆毛在强烈的逆光晚风中欢快跳动。她一手按住被风吹拂的衬衫衣领，向你展露出充满阳光感染力与无限信赖的灿烂笑颜。",
     "recommendedSize": "832x1216",
     "location": "industrial city rooftop with chain-link fence at golden hour",
-    "action": "turning back on rooftop against vivid sunset sky, holding strap of music case, wind blowing golden side ponytail and ahoge, radiant heartwarming smile",
+    "action": "她一手按住被风吹拂的衬衫衣领，向你展露出充满阳光感染力与无限信赖的灿烂笑颜",
     "timeOfDay": "sunset",
     "lighting": "dramatic golden hour backlighting creating glowing halo around hair",
     "camera": "cowboy_shot",
-    "mood": "uplifting sunny companionship, youthful musical passion",
+    "mood": "柔媚与明媚",
     "promptProse": "Turning around on a breezy rooftop bathed in vivid orange sunset light, Nijika Ijichi carries a musical gear case over one shoulder. Her golden side ponytail dances in the wind as she beams with an infectious, caring smile.",
     "promptTokens": [
       "1girl",

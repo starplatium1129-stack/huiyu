@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossweisse_balcony_sunset_laundry",
-  "revision": 1,
+  "revision": 3,
   "sortOrder": 2228,
   "createdAt": "2026-10-28T01:27:02.624647100+00:00",
-  "updatedAt": "2026-10-28T01:27:02.624647100+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "rossweisse_balcony_sunset_laundry",
     "characterId": "rossweisse",
@@ -14,11 +14,11 @@
     "description": "微风轻拂的高楼阳台上，白被单在金色晚霞中翻飞。挂好最后一角被单的罗丝薇瑟抬手将吹乱的银发别在耳后，回眸望向端来红茶的你，眼神中流淌着岁月静好的深情。",
     "recommendedSize": "832x1216",
     "location": "breezy apartment balcony with drying laundry against sunset city skyline",
-    "action": "hanging clean white sheets on balcony clothesline, turning back with fluttering silver hair and a radiant gentle loving smile at partner",
+    "action": "抬手将吹乱的银发别在耳后，回眸望向端来红茶的你，眼神中流淌着岁月静好的深情",
     "timeOfDay": "sunset",
     "lighting": "golden hour sunset light highlighting silver hair and fluttering sheets",
     "camera": "medium_shot",
-    "mood": "pure domestic serenity, tranquil golden hour romance, tender companion feeling",
+    "mood": "温存与宁静",
     "promptProse": "Hanging clean sheets on a sunset balcony, Rossweisse turns back with windblown silver hair, smiling lovingly in golden hour light.",
     "promptTokens": [
       "balcony",

@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "alexia_midgar",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 263,
   "createdAt": "2026-10-28T03:13:40.166180700+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "alexia_midgar",
     "popular": {
@@ -23,7 +23,7 @@
       ],
       "identityProse": "Alexia Midgar from The Eminence in Shadow, second princess of Midgar, with long silver hair tied into a high ponytail, sharp crimson red eyes, a slender athletic build, and a proud tsundere expression.",
       "identityTokens": [
-        "alexia_midgar",
+        "alexia midgar",
         "1girl",
         "solo",
         "silver_hair",
@@ -33,11 +33,11 @@
         "kage_no_jitsuryokusha_ni_naritakute!"
       ],
       "exactTokens": [
-        "alexia_midgar"
+        "alexia midgar"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "alexia_midgar"
+        "alexia midgar"
       ],
       "copyrightTokens": [
         "kage_no_jitsuryokusha_ni_naritakute!"
@@ -140,7 +140,7 @@
       "voiceJa": "シド、この銀貨を受け取りなさい。放課後は私の専属よ、いい？……ちょっと、露骨に嫌な顔しないでよ！",
       "source": "The Eminence in Shadow",
       "traits": [
-        "alexia_midgar",
+        "alexia midgar",
         "silver_hair",
         "long_hair",
         "red_eyes",

@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "matou_sakura/silver_summer_bikini",
-  "revision": 2,
+  "revision": 3,
   "sortOrder": 2344,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-05T16:44:36.366Z",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "matou_sakura",
     "outfit": {
       "id": "silver_summer_bikini",
-      "name": "紫藤初绽 · 薰衣草紫荷叶边系带分体泳衣配紫白格子防晒围裙披纱",
+      "name": "紫藤初绽 · 荷叶边系带分体泳装",
       "category": "泳装 / 比基尼",
       "default": false,
       "isDefault": false,

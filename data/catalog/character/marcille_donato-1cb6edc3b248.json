@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "marcille_donato",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 155,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "marcille_donato",
     "profile": {
@@ -67,7 +67,7 @@
       "source": "Delicious in Dungeon",
       "speech": "「都说了我是正统派的高等魔法使，绝对不可能去吃魔物……唔，等等，这个大蝎子汆烫水煮菇……味道居然真的很鲜美？！」",
       "traits": [
-        "marcille_donato",
+        "marcille donato",
         "dungeon_meshi",
         "blonde_hair",
         "long_hair",
@@ -181,7 +181,7 @@
       ],
       "identityProse": "Marcille Donato from Delicious in Dungeon, with long blonde braids, a high forehead, pointed ears and green eyes.",
       "identityTokens": [
-        "marcille_donato",
+        "marcille donato",
         "dungeon meshi",
         "blonde hair",
         "long hair",
@@ -191,7 +191,7 @@
         "pointy ears"
       ],
       "exactTokens": [
-        "marcille_donato"
+        "marcille donato"
       ],
       "exactPrefixes": [],
       "recommendedEngine": "anima-miaomiao-v1.6",
@@ -220,7 +220,7 @@
         "see-through"
       ],
       "characterTokens": [
-        "marcille_donato"
+        "marcille donato"
       ],
       "copyrightTokens": [
         "dungeon meshi"

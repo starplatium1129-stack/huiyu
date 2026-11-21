@@ -1,13 +1,13 @@
 {
   "kind": "blueprint",
   "id": "shorekeeper_r18_b7_04",
-  "revision": 11,
+  "revision": 13,
   "sortOrder": 1662,
   "createdAt": null,
-  "updatedAt": "2026-11-03T07:57:17.446071100+00:00",
+  "updatedAt": "2026-11-21T08:07:55.624345300+00:00",
   "data": {
     "id": "shorekeeper_r18_b7_04",
-    "title": "守岸人 · 彼岸神殿石床上的终极回响自持 ·「千亿次计算中唯一的奇迹……就是爱上你」",
+    "title": "守岸人 · 彼岸神殿石床上的终极回响自持",
     "category": "私密自持",
     "characterId": "shorekeeper",
     "description": "数据与肉体彻底融合的极乐时刻。守岸人赤裸着仰躺在黑色晶石床上，蓝色长发在虚空中漂浮。手指在滚烫泥泞的私密深处急速抽弄，整个神殿的黑白蝴蝶因为她的高潮而剧烈飞舞，眼角滑落神性的泪水——「漂泊者……这具为了等待你而诞生的身体……终于……有了真正的灵魂……哈啊……」",
@@ -51,7 +51,9 @@
     "nsfwTokens": [
       "nude",
       "masturbation",
-      "spread legs"
+      "spread legs",
+      "nipples",
+      "pussy"
     ],
     "nsfwProse": "",
     "outfitId": "nude_state",

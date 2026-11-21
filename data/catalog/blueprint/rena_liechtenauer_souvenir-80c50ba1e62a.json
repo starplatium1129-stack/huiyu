@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rena_liechtenauer_souvenir",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2428,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-11-08T06:16:38.173578100+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "rena_liechtenauer_souvenir",
     "characterId": "rena_liechtenauer",
@@ -13,7 +13,7 @@
     "category": "休息日",
     "description": "小店的货架上摆着各色手信。蕾娜拿起一个布包，看过图案后又看看旁边的另一款，认真挑给朋友的礼物。",
     "location": "souvenir shop",
-    "action": "comparing two small cloth gifts on a shelf",
+    "action": "拿起一个布包，看过图案后又看看旁边的另一款，认真挑给朋友的礼物",
     "timeOfDay": "afternoon",
     "lighting": "warm shop light",
     "camera": "medium shot",

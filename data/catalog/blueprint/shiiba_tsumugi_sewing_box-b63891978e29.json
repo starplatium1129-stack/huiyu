@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "shiiba_tsumugi_sewing_box",
-  "revision": 1,
+  "revision": 2,
   "sortOrder": 2417,
   "createdAt": "2026-10-28T03:11:33.176784+00:00",
-  "updatedAt": "2026-10-28T03:11:33.176784+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "shiiba_tsumugi_sewing_box",
     "characterId": "shiiba_tsumugi",
@@ -13,7 +13,7 @@
     "category": "居家手作",
     "description": "紬从收纳盒里挑出一段缎带，拆开打结的线头。颜色已经选好了，只差把它整理平整。",
     "location": "living room",
-    "action": "untangling a ribbon at a low table",
+    "action": "颜色已经选好了，只差把它整理平整",
     "timeOfDay": "morning",
     "lighting": "soft daylight",
     "camera": "medium shot",

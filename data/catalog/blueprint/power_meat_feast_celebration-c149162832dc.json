@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "power_meat_feast_celebration",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 1993,
   "createdAt": "2026-10-27T13:05:59.563Z",
-  "updatedAt": "2026-10-28T15:50:22.440360200+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "id": "power_meat_feast_celebration",
     "characterId": "power",
@@ -14,11 +14,11 @@
     "description": "热气蒸腾的烤肉店内，帕瓦双手抓着滋滋冒油的烤牛排大骨头，两颊塞得鼓鼓囊囊，满嘴油光却得意洋洋地向周围宣布自己的战绩。",
     "recommendedSize": "832x1216",
     "location": "bustling yakiniku restaurant",
-    "action": "eating huge grilled meat bone, stuffed cheeks, overjoyed chaotic expression",
+    "action": "双手抓着滋滋冒油的烤牛排大骨头，两颊塞得鼓鼓囊囊，满嘴油光却得意洋洋地向周围宣布自己的战绩",
     "timeOfDay": "night",
     "lighting": "warm golden tavern lamps and sizzling grill smoke",
     "camera": "medium_shot",
-    "mood": "hilarious heartwarming chaotic feast",
+    "mood": "温馨治愈",
     "promptProse": "Sitting at a lively yakiniku table surrounded by sizzling grills, Power happily chomps on a massive grilled meat bone with cheeks puffed full and eyes sparkling with glee.",
     "promptTokens": [
       "power_(chainsaw_man)",

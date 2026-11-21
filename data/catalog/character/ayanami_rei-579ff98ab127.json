@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ayanami_rei",
-  "revision": 7,
+  "revision": 8,
   "sortOrder": 67,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "ayanami_rei",
     "profile": {
@@ -79,7 +79,7 @@
       "speech": "即使我死去了，也会有替代品……但现在，我想留在这里。",
       "source": "GAINAX / Khara《新世纪福音战士 / Neon Genesis Evangelion》",
       "traits": [
-        "ayanami_rei",
+        "ayanami rei",
         "1girl",
         "solo",
         "short_hair",
@@ -318,13 +318,13 @@
       "displayName": "绫波丽",
       "exactPrefixes": [],
       "exactTokens": [
-        "ayanami_rei"
+        "ayanami rei"
       ],
       "franchise": "Neon Genesis Evangelion",
       "id": "ayanami_rei",
       "identityProse": "Ayanami Rei from Neon Genesis Evangelion, with short pale-blue hair, red eyes and pale skin.",
       "identityTokens": [
-        "ayanami_rei",
+        "ayanami rei",
         "1girl",
         "solo",
         "blue_hair",
@@ -350,7 +350,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "ayanami_rei"
+        "ayanami rei"
       ],
       "copyrightTokens": [
         "neon_genesis_evangelion"

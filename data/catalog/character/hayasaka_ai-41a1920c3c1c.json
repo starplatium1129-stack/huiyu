@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "hayasaka_ai",
-  "revision": 9,
+  "revision": 10,
   "sortOrder": 121,
   "createdAt": null,
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "hayasaka_ai",
     "profile": {
@@ -67,7 +67,7 @@
       "speech": "日程已经核对好了，接下来按顺序处理。",
       "source": "Kaguya-sama: Love Is War",
       "traits": [
-        "hayasaka_ai",
+        "hayasaka ai",
         "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
         "blonde_hair",
         "blue_eyes"
@@ -330,13 +330,13 @@
       "displayName": "早坂爱",
       "exactPrefixes": [],
       "exactTokens": [
-        "hayasaka_ai"
+        "hayasaka ai"
       ],
       "franchise": "Kaguya-sama: Love Is War",
       "id": "hayasaka_ai",
       "identityProse": "Ai Hayasaka from Kaguya-sama: Love Is War, with pale-blonde hair and blue eyes.",
       "identityTokens": [
-        "hayasaka_ai",
+        "hayasaka ai",
         "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~",
         "blonde_hair",
         "blue_eyes"
@@ -367,7 +367,7 @@
       ],
       "recommendedEngine": "anima-miaomiao-v1.6",
       "characterTokens": [
-        "hayasaka_ai"
+        "hayasaka ai"
       ],
       "copyrightTokens": [
         "kaguya-sama_wa_kokurasetai_~tensai-tachi_no_renai_zunousen~"

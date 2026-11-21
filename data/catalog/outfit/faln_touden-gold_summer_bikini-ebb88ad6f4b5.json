@@ -1,15 +1,15 @@
 {
   "kind": "outfit",
   "id": "faln_touden/gold_summer_bikini",
-  "revision": 3,
+  "revision": 4,
   "sortOrder": 2488,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-14T07:31:24.557302700+00:00",
+  "updatedAt": "2026-11-21T06:50:52.075059900+00:00",
   "data": {
     "characterId": "faln_touden",
     "outfit": {
       "id": "gold_summer_bikini",
-      "name": "黄金原野 · 麦穗鹅黄复古系带连体抹胸泳装配亚麻围裙罩衫",
+      "name": "黄金原野 · 复古抹胸连体泳装",
       "category": "泳装 / 连体泳装",
       "default": false,
       "isDefault": false,
@@ -24,7 +24,8 @@
         "blonde hair",
         "tall soft build",
         "gentle smile",
-        "bare shoulders"
+        "bare shoulders",
+        "warm radiance"
       ]
     }
   }

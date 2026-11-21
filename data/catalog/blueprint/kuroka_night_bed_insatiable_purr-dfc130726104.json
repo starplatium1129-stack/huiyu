@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "kuroka_night_bed_insatiable_purr",
-  "revision": 4,
+  "revision": 6,
   "sortOrder": 2207,
   "createdAt": "2026-10-27T18:09:35.534022700+00:00",
-  "updatedAt": "2026-11-02T08:01:21.818803200+00:00",
+  "updatedAt": "2026-11-21T07:41:14.119214800+00:00",
   "data": {
     "id": "kuroka_night_bed_insatiable_purr",
     "characterId": "kuroka",
@@ -14,11 +14,11 @@
     "description": "静谧卧房的床铺上，黑歌身穿黑色蕾丝半透吊带短睡裙，蜷缩在柔软的黑色天鹅绒床垫上。两只小巧的猫耳满足地竖立着，双尾将毛绒抱枕紧紧圈住。她微微扬起精致的面庞，金色兽瞳在黑暗中泛着温润微光，像一只找到了归宿的撒娇小猫，向你发出独占夜晚的轻柔呼唤。",
     "recommendedSize": "832x1216",
     "location": "intimate bedroom with disheveled silk bedsheets",
-    "action": "curled up on plush velvet bed, sheer black lace babydoll negligee, twin cat tails wrapped around pillow, golden eyes gleaming warmly in dark bedroom, purring content smile",
+    "action": "蜷缩在柔软天鹅绒床垫上，黑猫耳满足竖立，双尾轻摇娇慵撒娇",
     "timeOfDay": "night",
     "lighting": "dim bedside table lamp casting soft glow on pale skin and black lace",
     "camera": "medium_shot",
-    "mood": "cozy nocturnal craving, sweet devoted feline loyalty",
+    "mood": "温存与神圣",
     "promptProse": "Curled up on a plush bed in a sheer black lace babydoll, Kuroka rests her chin on a pillow as her twin cat tails curl softly. Her golden eyes gleam in the dim bedroom light with purring contentment.",
     "promptTokens": [
       "1girl",

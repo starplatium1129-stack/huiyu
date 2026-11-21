@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kanzaki_kaori",
-  "revision": 5,
+  "revision": 6,
   "sortOrder": 242,
   "createdAt": "2026-10-28T02:00:46.167399500+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "kanzaki_kaori",
     "profile": {
@@ -208,16 +208,16 @@
         "kanzaki kaori"
       ],
       "exactTokens": [
-        "kanzaki_kaori"
+        "kanzaki kaori"
       ],
       "characterTokens": [
-        "kanzaki_kaori"
+        "kanzaki kaori"
       ],
       "copyrightTokens": [
         "toaru_majutsu_no_index"
       ],
       "identityTokens": [
-        "kanzaki_kaori",
+        "kanzaki kaori",
         "1girl",
         "solo",
         "black_hair",

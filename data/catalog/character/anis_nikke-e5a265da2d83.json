@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "anis_nikke",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 175,
   "createdAt": "2026-10-22T00:00:00+00:00",
-  "updatedAt": "2026-10-31T15:26:37.188119100+00:00",
+  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
   "data": {
     "id": "anis_nikke",
     "profile": {
@@ -547,7 +547,7 @@
       ],
       "identityProse": "Anis from Goddess of Victory: NIKKE, an energetic Counters squad member with medium honey-blonde hair and clear blue eyes. She is candid and quick-witted, affectionate toward her teammates, and keeps a guarded private side beneath her easygoing humor.",
       "identityTokens": [
-        "anis_(nikke)",
+        "anis (nikke)",
         "1girl",
         "solo",
         "blonde_hair",
@@ -556,13 +556,13 @@
         "goddess_of_victory:_nikke"
       ],
       "characterTokens": [
-        "anis_(nikke)"
+        "anis (nikke)"
       ],
       "copyrightTokens": [
         "goddess_of_victory:_nikke"
       ],
       "exactTokens": [
-        "anis_(nikke)"
+        "anis (nikke)"
       ],
       "exactPrefixes": [
         "anis_"
