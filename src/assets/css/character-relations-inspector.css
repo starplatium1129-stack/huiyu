@@ -208,9 +208,11 @@
 }
 
 .relation-list-item[aria-pressed='true'] {
-  border-color: var(--accent);
+  border-color: var(--border-strong);
   border-left-width: 3px;
-  background: var(--bg-surface);
+  border-left-color: var(--text-primary);
+  background: var(--bg-elevated);
+  color: var(--text-primary);
   box-shadow: var(--selection-shadow);
 }
 

@@ -14,9 +14,9 @@
     <p class="notfound-address tw:text-label-sm tw:text-secondary">地址 <code class="notfound-path tw:break-all">{{ path }}</code></p>
 
     <div class="notfound-actions tw:mt-s-4 tw:flex tw:flex-wrap tw:justify-center tw:gap-s-3">
-      <RouterLink class="btn btn-primary" to="/">回到首页</RouterLink>
+      <RouterLink class="btn btn-primary" to="/"><ArchiveIcon name="spark" />回到画室首页</RouterLink>
       <RouterLink class="btn btn-ghost" to="/scene-explorer">场景库</RouterLink>
-      <RouterLink class="btn btn-ghost" to="/prompt-builder">画室工作台</RouterLink>
+      <RouterLink class="btn btn-ghost" to="/prompt-builder">进入绘制台</RouterLink>
     </div>
   </article>
 </template>
@@ -44,7 +44,7 @@ const path = computed(() => route.fullPath)
   border:0; background:transparent; box-shadow:none;
 }
 .notfound-chibi.ready { opacity:1; }
-.notfound-page .title { margin:0; font:600 clamp(28px,2.5vw,42px)/var(--lh-tight) var(--font-serif); }
+.notfound-page .title { margin:0; font:500 clamp(28px,2.5vw,42px)/var(--lh-tight) var(--font-serif); }
 .notfound-page .subtitle,.notfound-address { margin:0; }
 
 /* Missing illustration keeps the reserved space; recovery links remain available. */
@@ -61,5 +61,5 @@ const path = computed(() => route.fullPath)
   @apply tw:h-[40px] tw:w-[40px];
 }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .notfound-chibi { transition:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .notfound-chibi { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .notfound-chibi { transition:none; }
 </style>

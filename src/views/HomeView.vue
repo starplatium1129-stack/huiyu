@@ -1,5 +1,5 @@
 <template>
-  <article class="home-page">
+  <article class="home-page" :style="museThemeStyle">
     <section class="container home-opening tw:pt-s-6" aria-label="画室序章">
       <div class="home-hero" :data-muse="homeMuse" :data-immediate="heroImmediate" @keydown.capture="heroImmediate = true" @pointerdown.capture="heroImmediate = false">
         <div class="hero-copy" data-route-arrive>
@@ -23,13 +23,27 @@
           <RouterLink to="/showcase" class="hero-particle-link hero-reference-link"><ArchiveIcon name="image" />参考画册</RouterLink>
           </div>
         </div>
-        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
+        <aside class="hero-orbit" :class="{ 'has-fallback': heroFailed[homeMuse] && !displayedMuse }" :data-portrait-dir="museDirection" :aria-label="`${portraitName}的角色视觉`" :aria-busy="!heroFailed[homeMuse] && !heroLoaded[homeMuse]">
           <img v-if="neneHero.src && !heroFailed.nene" :fetchpriority="homeMuse === 'nene' ? 'high' : 'low'"
             v-bind="neneHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
           <img v-if="natsumeHero.src && !heroFailed.natsume" :fetchpriority="homeMuse === 'natsume' ? 'high' : 'low'"
             v-bind="natsumeHero" class="hero-preload" alt="" aria-hidden="true" loading="eager" decoding="async" />
-          <img :src="paintedHeroes.nene?.src" :crossorigin="paintedHeroes.nene?.crossorigin" class="hero-character nene" :class="{ 'is-current': displayedMuse === 'nene' }" :alt="displayedMuse === 'nene' ? '绫地宁宁' : ''" :aria-hidden="displayedMuse !== 'nene'" width="1024" height="1497" decoding="sync" />
-          <img :src="paintedHeroes.natsume?.src" :crossorigin="paintedHeroes.natsume?.crossorigin" class="hero-character natsume" :class="{ 'is-current': displayedMuse === 'natsume' }" :alt="displayedMuse === 'natsume' ? '四季夏目' : ''" :aria-hidden="displayedMuse !== 'natsume'" width="1024" height="1497" decoding="sync" />
+          <Transition :name="heroImmediate ? '' : 'anime-portrait'">
+            <img
+              v-if="displayedMuse && paintedHeroes[displayedMuse]"
+              :key="displayedMuse"
+              :src="paintedHeroes[displayedMuse]!.src"
+              :crossorigin="paintedHeroes[displayedMuse]!.crossorigin"
+              class="hero-character"
+              :class="displayedMuse"
+              :alt="displayedMuse === 'nene' ? '绫地宁宁' : '四季夏目'"
+              width="1024"
+              height="1497"
+              fetchpriority="high"
+              decoding="sync"
+            />
+          </Transition>
+          <CornerFrame variant="editorial" />
           <div v-if="heroFailed[homeMuse]" class="hero-fallback is-current" :class="[homeMuse, { 'over-art': displayedMuse }]">
             <ArchiveIcon name="image" />
             <div role="status" class="hero-fallback-copy"><strong class="hero-fallback-text">主视觉暂未加载</strong><p>{{ heroName }}的主视觉暂时无法加载。</p></div>
@@ -38,14 +52,14 @@
           <p v-else-if="!heroLoaded[homeMuse]" class="hero-loading" :class="{ 'over-art': displayedMuse }" role="status">正在加载{{ heroName }}的主视觉…</p>
           <div class="orbit-label" aria-live="polite"><span>{{ (displayedMuse || homeMuse) === 'nene' ? 'AYACHI NENE' : 'SHIKI NATSUME' }}</span><strong>{{ (displayedMuse || homeMuse) === 'nene' ? '把温柔，留在这一帧。' : '平凡的今天，也值得珍藏。' }}</strong></div>
         </aside>
-        <span class="hero-jp" aria-hidden="true">ときめきの一瞬を、一枚に。</span>
+        <span class="hero-jp" aria-hidden="true" lang="ja">ときめきの一瞬を、一枚に。</span>
       </div>
     </section>
 
     <!-- 最近创作 -->
     <section class="container home-section home-resume" v-if="recentWorks.length">
       <div class="home-section-head">
-        <h2>最近创作</h2>
+        <h2 data-screentone-furniture>最近创作</h2>
         <RouterLink to="/gallery" class="link">查看全部 →</RouterLink>
       </div>
       <div ref="recentGrid" class="recent-grid stagger-container">
@@ -76,7 +90,7 @@
     <!-- 最近用过的场景 -->
     <section class="container home-section" v-if="recentScenes.length" data-reveal>
       <div class="home-section-head">
-        <h2>最近用过的场景</h2>
+        <h2 data-screentone-furniture>最近用过的场景</h2>
         <RouterLink to="/scene-explorer" class="link">查看全部 →</RouterLink>
       </div>
       <div class="recent-scenes-row">
@@ -92,8 +106,9 @@
       </div>
     </section>
 
-    <HomeCreationGuide />
     <HomeArtJournal :scenes="featuredScenes" :loading="journalLoading" :error="journalError" :can-refresh="canRefreshJournal" @refresh="refreshJournal" />
+
+    <HomeChibiStrip />
 
     <section ref="inspirationSection" class="container home-inspiration" aria-label="场景与角色灵感">
         <!-- 热门角色：样张立绘横条，点击进入该角色的场景库 -->
@@ -101,14 +116,19 @@
           <button type="button" class="btn btn-ghost btn-sm" @click="loadPopularCharacters"><ArchiveIcon name="refresh" />重新读取</button>
         </ArchiveStatePanel>
         <div v-if="popularCharacters.length" class="pop-strip" aria-labelledby="popStripLabel">
-          <div class="strip-label" id="popStripLabel">
-            <span class="dot"></span> 角色场景 · <span>{{ popularCharacters.length }} 位角色</span><RouterLink to="/popular-scenes" class="link">查看全部 →</RouterLink>
+          <div class="home-section-head pop-strip-head">
+            <div class="pop-strip-title-row">
+              <h2 id="popStripLabel" data-screentone-furniture>角色发现</h2>
+              <span class="pop-strip-count">{{ popularCharacters.length }} 位角色</span>
+            </div>
+            <RouterLink to="/popular-scenes" class="link">查看全部 →</RouterLink>
           </div>
           <div class="pop-scroll">
             <RouterLink
               v-for="c in popularCharacters.slice(0, 12)"
               :key="c.id"
               class="pop-card-mini"
+              :style="{ '--pop-char-accent': characterParticleTheme(c.id, c.franchise).accent }"
               :to="`/popular-scenes?character=${encodeURIComponent(c.id)}`"
             >
               <RuntimeImage
@@ -126,48 +146,40 @@
         </div>
     </section>
 
-    <!-- 创作入口 -->
+    <!-- 画室章节入口（主创作章节 + 资料与收藏附页） -->
     <section ref="atelierSection" class="container home-section home-atelier" aria-labelledby="home-atelier-title" data-reveal>
       <div class="home-section-head">
-        <div>
-          <h2 id="home-atelier-title">创作入口</h2>
-        </div>
+        <h2 id="home-atelier-title" data-screentone-furniture>画室章节</h2>
+        <RouterLink to="/guide" class="link">使用指南 →</RouterLink>
       </div>
       <div class="atelier-entries">
         <StudioIllustratedCard v-for="entry in creationEntries" :key="entry.id" :to="entry.to" :title="entry.title" :label="entry.label" :action="entry.action" :lead="entry.id === 'make'">
           <template #art><img v-if="artworkReady.entries" :srcset="entrySrcset(entry.art)" sizes="(max-width: 1000px) 46vw, min(33vw, 520px)" :src="entry.art" width="1536" height="1024" alt="" loading="lazy" decoding="async" draggable="false" /></template>
         </StudioIllustratedCard>
       </div>
-    </section>
-
-    <!-- 资料区 -->
-    <section ref="toolsSection" class="container home-section home-section-quiet" aria-labelledby="home-library-title" data-reveal>
-      <div class="home-section-head">
-        <div>
-          <h2 id="home-library-title">资料与作品</h2>
+      <div ref="toolsSection" class="atelier-archive-band" aria-label="资料与作品">
+        <div class="tools-grid">
+          <StudioIllustratedCard to="/character" title="角色档案" icon="character" compact><template #art><img v-if="artworkReady.tools" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+          <StudioIllustratedCard to="/style" title="画风" icon="palette" compact><template #art><img v-if="artworkReady.tools" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+          <StudioIllustratedCard to="/lora" title="模型" icon="model" compact><template #art><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
+          <StudioIllustratedCard to="/gallery" title="我的作品" icon="gallery" compact><template #art><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
         </div>
-      </div>
-      <div class="tools-grid">
-        <StudioIllustratedCard to="/character" title="角色档案" icon="character" compact><template #art><img v-if="artworkReady.tools" :src="characterSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
-        <StudioIllustratedCard to="/style" title="画风" icon="palette" compact><template #art><img v-if="artworkReady.tools" :src="paletteSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
-        <StudioIllustratedCard to="/lora" title="模型" icon="model" compact><template #art><img v-if="artworkReady.tools" :src="modelSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
-        <StudioIllustratedCard to="/gallery" title="我的作品" icon="gallery" compact><template #art><img v-if="artworkReady.tools" :src="collectionSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></template></StudioIllustratedCard>
-      </div>
-      <div v-if="!recentWorks.length" class="home-first-work">
-        <ArchiveStatePanel
-          v-if="recentWorksLoading || recentWorksError"
-          class="recent-empty-state"
-          compact
-          :kind="recentWorksLoading ? 'loading' : 'error'"
-          :title="recentWorksLoading ? '正在读取最近创作…' : '最近创作暂未读取'"
-          :message="recentWorksError"
-        >
-          <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新加载</button>
-        </ArchiveStatePanel>
-        <div v-else class="recent-empty-state home-start-card">
-          <span class="recent-empty-art"><img v-if="artworkReady.tools" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
-          <div class="home-start-copy"><h3>开启你的第一幅作品</h3><p>选场景、定角色，开始属于你的创作。</p></div>
-          <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" />开始绘制</RouterLink>
+        <div v-if="!recentWorks.length" class="home-first-work">
+          <ArchiveStatePanel
+            v-if="recentWorksLoading || recentWorksError"
+            class="recent-empty-state"
+            compact
+            :kind="recentWorksLoading ? 'loading' : 'error'"
+            :title="recentWorksLoading ? '正在读取最近创作…' : '最近创作暂未读取'"
+            :message="recentWorksError"
+          >
+            <button v-if="recentWorksError" type="button" class="btn btn-ghost" @click="retryRecentWorks"><ArchiveIcon name="refresh" />重新加载</button>
+          </ArchiveStatePanel>
+          <div v-else class="recent-empty-state home-start-card">
+            <span class="recent-empty-art"><img v-if="artworkReady.tools" :src="createSpot" width="512" height="512" alt="" loading="lazy" decoding="async" draggable="false" /></span>
+            <div class="home-start-copy"><h3>开启你的第一幅作品</h3><p>选场景、定角色，开始属于你的创作。</p></div>
+            <RouterLink to="/prompt-builder" class="btn btn-primary"><ArchiveIcon name="spark" />开始绘制</RouterLink>
+          </div>
         </div>
       </div>
     </section>
@@ -207,10 +219,13 @@ function resumeRecent(item: ArtworkRecord) { void router.push(artworkContinueTar
 onDeactivated(() => { recentPreview.value = null })
 const SceneCard = defineAsyncComponent(() => import('@/components/SceneCard.vue'))
 import { franchiseLabel } from '@/utils/franchiseLabel'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
+import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
 import HomeArtJournal from '@/components/home/HomeArtJournal.vue'
-import HomeCreationGuide from '@/components/home/HomeCreationGuide.vue'
+import HomeChibiStrip from '@/components/home/HomeChibiStrip.vue'
 import StudioActionLink from '@/components/ui/StudioActionLink.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import CornerFrame from '@/components/visual/CornerFrame.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import studioOriginal from '@/assets/illustrations/atelier-studio.webp'
@@ -297,6 +312,8 @@ const { recentScenes, featuredScenes, loading: journalLoading, error: journalErr
 const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl, imageUrl: sampleImageUrl } = useShowcaseAssets()
 const sceneStore = useSceneStore()
 const homeMuse = ref<'nene' | 'natsume'>('nene')
+const museDirection = ref<'next' | 'prev'>('next')
+const museThemeStyle = useCharacterAtmosphere(() => homeMuse.value, () => sceneStore.characters)
 const entryPreviews = new Map([[studioOriginal, studioPreview], [sceneOriginal, scenePreview],
   [motionOriginal, motionPreview], [roomOriginal, roomPreview], [archiveOriginal, archivePreview]])
 function entrySrcset(source: string) {
@@ -333,6 +350,9 @@ watch([homeMuse, () => paintedHeroes[homeMuse.value]], ([muse, painted]) => {
 }, { immediate: true, flush: 'sync' })
 watch(runtimeResourceIdentity, () => { delete paintedHeroes.nene; delete paintedHeroes.natsume; displayedMuse.value = null }, { flush: 'sync' })
 function selectMuse(muse: 'nene' | 'natsume', event: MouseEvent) {
+  if (muse !== homeMuse.value) {
+    museDirection.value = muse === 'natsume' ? 'next' : 'prev'
+  }
   heroImmediate.value = event.detail === 0
   homeMuse.value = muse
 }

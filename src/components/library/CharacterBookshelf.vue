@@ -19,7 +19,7 @@
         <article v-for="group in visibleGroups" :key="group.key" class="bookshelf-work tw:min-w-0 tw:flex tw:flex-col tw:items-center tw:rounded-lg tw:cursor-pointer">
         <button type="button" class="bookshelf-open tw:w-full tw:flex tw:flex-col tw:items-center tw:p-0 tw:rounded-lg tw:cursor-pointer" :data-franchise="group.key" :aria-label="`${group.label}，${group.count} 位角色`" @click="enterGroup(group.key)">
           <span class="bookshelf-cover-stage tw:relative tw:block tw:w-full tw:mb-s-4 tw:isolate" :class="{ 'is-empty': !group.covers.length }" aria-hidden="true">
-            <span v-for="(cover, index) in rotatedCovers(group.key, group.covers)" :key="cover.id" class="bookshelf-cover tw:absolute tw:left-[21%] tw:top-[5%] tw:w-[58%] tw:h-[86%] tw:rounded-lg tw:overflow-hidden" :data-slot="index">
+            <span v-for="(cover, index) in group.covers" :key="cover.id" class="bookshelf-cover tw:absolute tw:left-[21%] tw:top-[5%] tw:w-[58%] tw:h-[86%] tw:rounded-lg tw:overflow-hidden" :data-slot="coverSlot(group.key, index, group.covers.length)">
               <CharacterPortrait :src="cover.image" :name="cover.name" />
             </span>
             <span v-if="!group.covers.length" class="bookshelf-cover-placeholder tw:absolute tw:flex tw:flex-col tw:items-center tw:justify-center tw:gap-s-3 tw:rounded-lg tw:text-muted tw:text-label-xs"><ArchiveIcon name="gallery" /><span>封面待补充</span></span>
@@ -28,8 +28,8 @@
           <CardEdgeLight />
         </button>
         <div v-if="group.covers.length > 1" class="bookshelf-flip-row tw:flex tw:items-center tw:justify-center tw:gap-s-2 tw:w-full tw:mt-s-2 tw:text-secondary tw:text-label-xs">
-          <span aria-live="polite">{{ rotatedCovers(group.key, group.covers)[0]?.name }}</span>
-          <button type="button" :aria-label="`下一张封面：${group.label}`" @click="coverOffsets[group.key] = ((coverOffsets[group.key] || 0) + 1) % group.covers.length"><ArchiveIcon name="refresh" /><span>{{ ((coverOffsets[group.key] || 0) % group.covers.length) + 1 }} / {{ group.covers.length }}</span></button>
+          <span aria-live="polite">{{ activeCover(group.key, group.covers)?.name }}</span>
+          <button type="button" :aria-label="`下一张封面：${group.label}`" @click="advanceCover(group.key, group.covers.length)"><ArchiveIcon name="refresh" /><span>{{ coverOffset(group.key, group.covers.length) + 1 }} / {{ group.covers.length }}</span></button>
         </div>
         </article>
       </div>
@@ -46,7 +46,7 @@
         <button v-for="item in visibleResults" :key="item.id" type="button" class="bookshelf-character tw:relative tw:flex tw:flex-col tw:items-stretch tw:min-w-0 tw:p-s-2 tw:rounded-lg tw:text-primary tw:text-left tw:cursor-pointer" :data-character="item.id" :data-list-key="item.id" :aria-pressed="selectedId === item.id" @click="emit('select', item.id)">
           <CharacterPortrait :src="item.fullImage || item.image" :name="item.name" />
           <span class="bookshelf-character-copy tw:grid tw:gap-s-1"><strong>{{ item.name }}</strong><small>{{ franchiseLabel(franchiseKey(item.source)) || '未标注作品' }}</small></span>
-          <span v-if="selectedId === item.id" class="bookshelf-selected tw:absolute tw:right-s-3 tw:top-s-3 tw:grid tw:w-[28px] tw:h-[28px] tw:rounded-pill tw:text-accent"><ArchiveIcon name="success" /><span class="sr-only">当前角色</span></span>
+          <span v-if="selectedId === item.id" class="bookshelf-selected tw:absolute tw:right-s-3 tw:top-s-3 tw:grid tw:w-[28px] tw:h-[28px] tw:rounded-pill tw:text-primary"><ArchiveIcon name="success" /><span class="sr-only">当前角色</span></span>
           <CardEdgeLight />
         </button>
       </div>
@@ -89,9 +89,19 @@ let revision = 0
 function interruptNavigation() { cancelRestore(); return ++revision }
 onScopeDispose(interruptNavigation)
 const coverOffsets = ref<Record<string, number>>({})
-function rotatedCovers(key: string, covers: readonly DirectoryCharacter[]) {
-  const offset = (coverOffsets.value[key] || 0) % (covers.length || 1)
-  return [...covers.slice(offset), ...covers.slice(0, offset)]
+function coverOffset(key: string, length: number) {
+  return length > 0 ? (coverOffsets.value[key] || 0) % length : 0
+}
+function coverSlot(key: string, index: number, length: number) {
+  if (length <= 1) return 0
+  return (index - coverOffset(key, length) + length) % length
+}
+function activeCover(key: string, covers: readonly DirectoryCharacter[]) {
+  return covers[coverOffset(key, covers.length)]
+}
+function advanceCover(key: string, length: number) {
+  if (length <= 1) return
+  coverOffsets.value[key] = (coverOffset(key, length) + 1) % length
 }
 const { query, series, page, term, groups, visibleGroups, activeGroup, showingShelf, results, pageCount, visibleResults, openGroup, changeMode, clearSearch, snapshot } = useCharacterBookshelf(() => props.items, props.initialState)
 useListTransition(characterGrid, () => visibleResults.value.map(item => item.id))
@@ -171,7 +181,7 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-total strong { color:var(--text-primary); font:600 var(--fs-body)/var(--lh-label) var(--font-mono); }
 .bookshelf-modes { --selection-radius:var(--r-pill); border: 1px solid transparent; background: var(--bg-base); }
 .bookshelf-modes button { @apply tw:relative; z-index:var(--z-raised); @apply tw:inline-flex tw:items-center tw:justify-center tw:gap-s-2; border: 1px solid transparent; @apply tw:rounded-pill; padding: var(--s-2) var(--s-4); @apply tw:min-h-[40px]; background: transparent; @apply tw:text-secondary; font: inherit; @apply tw:text-label tw:cursor-pointer; }
-.bookshelf-modes button[aria-pressed="true"] { @apply tw:text-accent; }
+.bookshelf-modes button[aria-pressed="true"] { @apply tw:text-primary; }
 .bookshelf-search-row { border-bottom: 0; }
 .bookshelf-search { flex:1; @apply tw:max-w-[620px]; }
 .bookshelf-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: clamp(20px, 3vw, 48px); @apply tw:gap-y-s-6; padding: var(--s-5) 0 var(--s-3); }
@@ -185,11 +195,11 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-cover { border:3px solid var(--bg-surface); box-shadow:var(--shadow-md); transform-origin:center 85%; transition:transform var(--motion-art-hover) var(--spring-soft); }
 .bookshelf-cover :deep(.character-portrait) { @apply tw:w-full tw:h-full; border: 0; border-radius: 0; }
 .bookshelf-cover :deep(img) { transform: none; }
-.bookshelf-cover[data-slot="0"] { --cover-rest:translateY(-3%); z-index:calc(var(--z-base) + 4); }
-.bookshelf-cover[data-slot="1"] { --cover-rest:translate(-12%,2%) rotate(-6deg); z-index:calc(var(--z-base) + 3); }
-.bookshelf-cover[data-slot="2"] { --cover-rest:translate(12%,3%) rotate(6deg); z-index:calc(var(--z-base) + 2); }
-.bookshelf-cover[data-slot="3"] { --cover-rest:translate(-17%,6%) rotate(-10deg); z-index:calc(var(--z-base) + 1); }
-.bookshelf-cover[data-slot="4"] { --cover-rest:translate(17%,6%) rotate(10deg); z-index:var(--z-base); }
+.bookshelf-cover[data-slot="0"] { --cover-rest:translateY(-3%) scale(1); z-index:calc(var(--z-base) + 4); }
+.bookshelf-cover[data-slot="1"] { --cover-rest:translate(-12%,2%) rotate(-6deg) scale(0.96); z-index:calc(var(--z-base) + 3); }
+.bookshelf-cover[data-slot="2"] { --cover-rest:translate(12%,3%) rotate(6deg) scale(0.96); z-index:calc(var(--z-base) + 2); }
+.bookshelf-cover[data-slot="3"] { --cover-rest:translate(-17%,6%) rotate(-10deg) scale(0.92); z-index:calc(var(--z-base) + 1); }
+.bookshelf-cover[data-slot="4"] { --cover-rest:translate(17%,6%) rotate(10deg) scale(0.92); z-index:var(--z-base); }
 .bookshelf-cover { transform:var(--cover-rest); }
 .bookshelf-work-caption { display:grid; width:100%; min-width:0; padding:0 var(--s-3) var(--s-3); text-align:left; }
 .bookshelf-work-title { overflow-wrap:anywhere; }
@@ -213,8 +223,8 @@ defineExpose({ focusSelected, snapshot })
 .bookshelf-character-copy { padding: var(--s-3) var(--s-1) var(--s-1); overflow-wrap: anywhere; }
 .bookshelf-character-copy strong { @apply tw:text-body-sm tw:font-semibold tw:leading-label; }
 .bookshelf-character-copy small { @apply tw:text-secondary tw:text-label-xs tw:leading-body; display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden; }
-.bookshelf-character[aria-pressed="true"] { @apply tw:border-strong; background: var(--accent-soft); }
-.bookshelf-selected { place-items: center; border: 1px solid var(--accent); background: var(--bg-surface); }
+.bookshelf-character[aria-pressed="true"] { @apply tw:border-strong; background: var(--bg-elevated); box-shadow: var(--selection-shadow); }
+.bookshelf-selected { place-items: center; border: 1px solid var(--border-strong); background: var(--bg-surface); box-shadow: var(--shadow-sm); }
 .bookshelf-empty { padding: var(--s-8) var(--s-4); }
 .bookshelf-empty > .archive-icon { @apply tw:text-title; }
 .bookshelf-empty p { margin-block: var(--s-3); }
@@ -263,8 +273,8 @@ defineExpose({ focusSelected, snapshot })
   :root:not([data-motion='full']) .character-bookshelf .bookshelf-cover { transform:var(--cover-rest); }
   :root:not([data-motion='full']) .bookshelf-character :deep(.character-portrait),:root:not([data-motion='full']) .bookshelf-character :deep(img) { transform:none; }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .character-bookshelf :is(.bookshelf-cover,.bookshelf-work-count .archive-icon),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(.character-portrait),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(img),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-open::before { transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .character-bookshelf .bookshelf-cover { transform:var(--cover-rest); }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(.character-portrait),:root:is([data-motion='reduce'],[data-motion='reduced']) .bookshelf-character :deep(img) { transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .character-bookshelf :is(.bookshelf-cover,.bookshelf-work-count .archive-icon),:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .bookshelf-character :deep(.character-portrait),:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .bookshelf-character :deep(img),:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .bookshelf-open::before { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .character-bookshelf .bookshelf-cover { transform:var(--cover-rest); }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .bookshelf-character :deep(.character-portrait),:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .bookshelf-character :deep(img) { transform:none; }
 @media (forced-colors:active) { .bookshelf-open::before { display:none; } .bookshelf-open,.bookshelf-character { border-color:ButtonText; } }
 </style>

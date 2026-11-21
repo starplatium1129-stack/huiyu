@@ -1,6 +1,6 @@
 <template>
-  <article ref="archiveRoot" class="page character-page library-page character-editorial" tabindex="-1" :aria-busy="loading" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header" data-route-arrive><div><div class="page-kicker">ARCHIVE</div><h1>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
+  <article ref="archiveRoot" class="page character-page library-page character-editorial" tabindex="-1" :aria-busy="loading" :style="[characterAtmosphereStyle, { '--character-ornament': portraitPalette.accent }]">
+    <header class="library-header" data-route-arrive><div><div class="page-kicker">ARCHIVE</div><h1 data-screentone-furniture>角色档案</h1></div><div class="archive-header-actions"><button v-if="!showShelf" type="button" class="btn btn-ghost" @click="showBookshelf"><ArchiveIcon name="gallery" />返回作品书架</button><CharacterContextNav v-if="current" :character-id="current.id" active="profile" :scene-path="isPopular ? '/popular-scenes' : '/scene-explorer'" /><RouterLink v-else to="/popular-scenes" class="btn btn-ghost"><ArchiveIcon name="image" />浏览角色场景</RouterLink></div></header>
 
     <ArchiveStatePanel
       v-if="loading"
@@ -22,7 +22,7 @@
     />
     <template v-else>
         <CharacterBookshelf v-if="showShelf || shelfVisited" v-show="showShelf" v-content-motion:up="showShelf" ref="bookshelf" :items="directoryItems" :selected-id="lastViewedId" :initial-state="initialShelf" @vue:mounted="shelfVisited = true" @select="selectCharacter" />
-      <div v-if="!showShelf" v-content-motion:up="current?.id" class="library-layout">
+      <div v-if="!showShelf" class="library-layout">
         <BrowsingCharacterDirectory v-model:search="directorySearch" :items="directoryItems" :selected-id="current?.id || ''" @select="selectCharacter" />
         <div ref="profileAnchor" tabindex="-1" class="library-detail" data-route-arrive>
           <div class="archive-view-switch studio-segments" role="group" aria-label="角色档案内容"><AnimatedSelection />
@@ -35,30 +35,30 @@
           <div v-else v-content-motion:up="current?.id">
       <section v-if="current" :aria-label="current.name + '的角色档案'" class="character-hero card-direct card-level-3">
         <CharacterParticleStage :character-id="current.id" :name="current.name" :initial-original="preferOriginal">
-        <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="paintedPortrait?.state || portraitView.state" :aria-busy="portraitPending">
-          <img v-for="frame in portraitFrames" :key="frame.token" :crossorigin="frame.crossorigin" class="portrait-image"
-            :src="frame.src" :data-attempt-token="frame.token" :class="{ 'is-loaded': frame.token === paintedPortrait?.token, 'is-candidate': frame.token !== paintedPortrait?.token, 'is-continuous': frame.continued }"
-            :alt="frame.token === paintedPortrait?.token ? (portraitPending || portraitError ? current.name + '的原画（上次已读取）' : current.portrait?.alt || current.name) : ''" :aria-hidden="frame.token !== paintedPortrait?.token ? 'true' : undefined"
-            loading="eager" decoding="async" @load="measurePortrait"
-            @error="onPortraitError" />
-          <span v-if="!paintedPortrait && portraitPending" class="portrait-loading" role="status"><ArchiveIcon name="image" />立绘加载中…</span>
-          <div v-if="!paintedPortrait && portraitView.state === 'missing'" class="portrait-missing" role="status">
-            <ArchiveIcon name="image" class="portrait-missing-icon" />
-            <strong class="portrait-missing-title">{{ portraitView.reason === 'empty' ? '立绘未登记' : '立绘缺失' }}</strong>
-            <span class="portrait-missing-text">{{ portraitMissingText }}</span>
-          </div>
-          <div class="portrait-footer" role="group" :aria-label="current.name + '的原画读取状态'" tabindex="-1">
+          <div class="portrait" :class="{ natsume: current.id === 'natsume' }" :data-portrait-state="paintedPortrait?.state || portraitView.state" :aria-busy="portraitPending">
+            <img v-for="frame in portraitFrames" :key="frame.token" :crossorigin="frame.crossorigin" class="portrait-image"
+              :src="frame.src" :data-attempt-token="frame.token" :class="{ 'is-loaded': frame.token === paintedPortrait?.token, 'is-candidate': frame.token !== paintedPortrait?.token, 'is-continuous': frame.continued }"
+              :alt="frame.token === paintedPortrait?.token ? (portraitPending || portraitError ? current.name + '的原画（上次已读取）' : current.portrait?.alt || current.name) : ''" :aria-hidden="frame.token !== paintedPortrait?.token ? 'true' : undefined"
+              loading="eager" decoding="async" @load="measurePortrait"
+              @error="onPortraitError" />
+            <span v-if="!paintedPortrait && portraitPending" class="portrait-loading" role="status"><ArchiveIcon name="image" />立绘加载中…</span>
+            <div v-if="!paintedPortrait && portraitView.state === 'missing'" class="portrait-missing" role="status">
+              <ArchiveIcon name="image" class="portrait-missing-icon" />
+              <strong class="portrait-missing-title">{{ portraitView.reason === 'empty' ? '立绘未登记' : '立绘缺失' }}</strong>
+              <span class="portrait-missing-text">{{ portraitMissingText }}</span>
+            </div>
             <div v-if="portraitFeedback || portraitError" class="portrait-feedback">
               <p v-if="portraitFeedback" role="status">{{ portraitFeedback }}</p>
               <button v-if="portraitError" class="btn btn-ghost btn-sm" type="button" @click="retryPortrait"><ArchiveIcon name="refresh" />重试</button>
             </div>
+          </div>
+          <template #plate-meta>
             <RouterLink v-if="isLocalStudioHost()" class="btn btn-ghost btn-sm" :to="{ path: '/scene-manager', query: { tab: 'portraits', character: current.id } }"><ArchiveIcon name="image" />更换立绘</RouterLink>
             <span class="portrait-badge"><ArchiveIcon name="image" /> {{ paintedPortrait && (portraitPending || portraitError) ? '上次已读取原画' : characterArtEntry(current.id) ? '自定义立绘' : isPopularPortraitPending(current.id) ? '立绘待补' : isPopular ? '角色场景样张' : '角色立绘' }}</span>
             <StudioTooltip :content="current.source">
               <span class="portrait-source" tabindex="0">{{ franchiseLabel(franchiseKey(current.source)) }}</span>
             </StudioTooltip>
-          </div>
-        </div>
+          </template>
         </CharacterParticleStage>
         <div class="character-reading-column">
         <div class="character-profile">
@@ -71,6 +71,12 @@
             <span v-if="current.identity?.faction" class="item">{{ current.identity.faction }}</span>
           </div>
           <div v-if="current.alias?.length" class="character-alias">{{ current.alias.join(' / ') }}</div>
+          <dl v-if="dossierSpecs.length" class="character-specs" aria-label="人物轻设定">
+            <div v-for="spec in dossierSpecs" :key="spec.label" class="character-spec-item">
+              <dt>{{ spec.label }}</dt>
+              <dd>{{ spec.value }}</dd>
+            </div>
+          </dl>
           <div class="character-actions" aria-label="角色快捷操作">
             <RouterLink class="btn btn-primary" :to="isPopular
               ? `/prompt-builder?popular=${encodeURIComponent(current.id)}`
@@ -79,13 +85,22 @@
             <RouterLink class="btn btn-ghost" :to="isPopular
               ? `/popular-scenes?character=${encodeURIComponent(current.id)}`
               : `/scene-explorer?character=${encodeURIComponent(current.id)}`">{{ isPopular ? '相关场景' : '核心场景' }}</RouterLink>
-            <a v-if="animeResourceUrl" class="btn btn-ghost" :href="animeResourceUrl" target="_blank" rel="noopener noreferrer"
-              :aria-label="`在 Anime Garden 搜索${animeResourceWork}的动画资源，新窗口打开`"
-              title="在 Anime Garden 搜索该作品"><ArchiveIcon name="search" /><span class="anime-resource-title">{{ animeResourceWork }}</span></a>
+            <StudioTooltip v-if="animeResourceUrl" content="在 Anime Garden 搜索该作品">
+              <a class="btn btn-ghost" :href="animeResourceUrl" target="_blank" rel="noopener noreferrer"
+                :aria-label="`在 Anime Garden 搜索${animeResourceWork}的动画资源，新窗口打开`"><ArchiveIcon name="search" /><span class="anime-resource-title">{{ animeResourceWork }}</span></a>
+            </StudioTooltip>
           </div>
-          <div v-if="current.voice" class="voice-block">
-            <span class="voice-label"><ArchiveIcon name="chat" />语气示例</span><p class="voice-line">{{ current.voice }}</p>
-          </div>
+          <figure v-if="characterConfig?.officialQuote || characterConfig?.officialQuoteCn || current.voice" class="voice-block">
+            <div class="voice-block-inner">
+              <figcaption class="voice-label">
+                <ArchiveIcon name="chat" />
+                <span>{{ characterConfig?.officialQuote ? '名台词 · VOICE' : '语气示例' }}</span>
+              </figcaption>
+              <p class="voice-line">{{ characterConfig?.officialQuoteCn || current.voice }}</p>
+              <blockquote v-if="characterConfig?.officialQuote" class="voice-jp" lang="ja">{{ characterConfig.officialQuote }}</blockquote>
+              <p v-if="characterConfig?.officialQuoteCn && current.voice && current.voice !== characterConfig.officialQuoteCn" class="voice-tone">{{ current.voice }}</p>
+            </div>
+          </figure>
           <div class="tags-grid">
             <span v-for="t in current.tags" :key="t" class="tag-chip">{{ t }}</span>
           </div>
@@ -116,7 +131,7 @@
         <div class="recommend-head">
           <div>
             <div class="page-kicker">CORE SCENES</div>
-            <h2 class="recommend-title">人设核心场景</h2>
+            <h2 class="recommend-title" data-screentone-furniture>人设核心场景</h2>
           </div>
           <a v-if="officialProfileUrl" class="official-link" :href="officialProfileUrl" target="_blank" rel="noreferrer">官方依据 ↗</a>
         </div>
@@ -126,14 +141,24 @@
         </ArchiveStatePanel>
         <ArchiveStatePanel v-else-if="!recommendations.length" kind="empty" title="暂无场景" compact />
         <div v-else class="recommend-grid">
-          <article v-for="s in recommendations" :key="s.id" class="recommend-card card-info">
-            <h3 class="cg-title">{{ s.title }}</h3>
-            <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
-            <p class="cg-story">{{ s.story }}</p>
-            <footer class="cg-actions">
-              <button v-if="s.story" class="btn btn-ghost btn-sm" type="button" :aria-label="`阅读「${s.title}」完整故事`" @click="openRecommendationStory(s, $event)">阅读故事</button>
-              <RouterLink class="btn btn-primary btn-sm" :to="recommendationDrawUrl(s)">绘制这一幕</RouterLink>
-            </footer>
+          <article v-for="s in recommendations" :key="s.id" class="recommend-card card-info" :data-sensitive="isRecommendSensitive(s) || undefined">
+            <div class="cg-cover">
+              <RuntimeImage :src="recommendThumbSrc(s.id)" v-slot="{ image, loaded, failed }">
+                <img v-if="image.src && !failed" v-bind="image" class="cg-thumb" :class="{ 'is-ready': loaded }" alt="" loading="lazy" decoding="async" />
+                <SensitivePreviewVeil v-if="loaded && !failed && isRecommendSensitive(s)" :src="image.src" :crossorigin="image.crossorigin" />
+              </RuntimeImage>
+              <span class="cg-archive-code">{{ recommendArchiveCode(s.id) }}</span>
+              <span v-if="isRecommendSensitive(s)" class="cg-rating-badge">R18</span>
+            </div>
+            <div class="cg-body">
+              <h3 class="cg-title">{{ s.title }}</h3>
+              <div v-if="recommendationReason(s.id)" class="cg-reason">{{ recommendationReason(s.id) }}</div>
+              <p class="cg-story">{{ s.story }}</p>
+              <footer class="cg-actions">
+                <button v-if="s.story" class="btn btn-ghost btn-sm" type="button" :aria-label="`阅读「${s.title}」完整故事`" @click="openRecommendationStory(s, $event)">阅读故事</button>
+                <RouterLink class="btn btn-primary btn-sm" :to="recommendationDrawUrl(s)">绘制这一幕</RouterLink>
+              </footer>
+            </div>
           </article>
         </div>
       </section>
@@ -172,11 +197,17 @@ import { resolveRuntimeUrl } from '@/platform/runtimeUrl'
 import { popularPortraitFullSrc } from '@/utils/popularPortraitSource'
 import { characterArtEntry } from '@/platform/characterArtState'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
+import { clearCharacterAtmosphere } from '@/utils/characterTheme'
+import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
+import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
+import { CHARACTERS } from '@/config/characters'
 
 import CharacterParticleStage from '@/components/library/CharacterParticleStage.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
-import { ref, computed, nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
+import RuntimeImage from '@/components/visual/RuntimeImage.vue'
+import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
+import { ref, computed, nextTick, onActivated, onBeforeUnmount, onMounted, watch } from 'vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import { useSceneStore } from '@/stores/sceneStore'
 import CharacterBookshelf from '@/components/library/CharacterBookshelf.vue'
@@ -221,8 +252,32 @@ onBeforeUnmount(() => {
 const { current, showShelf, lastViewedId, selectCharacter: navigateCharacter, showBookshelf } = useCharacterArchiveNavigation(
   characters, profileAnchor, () => bookshelf.value?.focusSelected(),
 )
+const characterAtmosphereStyle = useCharacterAtmosphere(
+  () => (showShelf.value ? '' : current.value?.id || ''),
+  () => sceneStore.characters,
+)
+watch([showShelf, () => current.value?.id], ([shelf, id]) => {
+  if (shelf || !id) clearCharacterAtmosphere()
+}, { immediate: true, flush: 'post' })
+onActivated(() => {
+  if (showShelf.value || !current.value?.id) clearCharacterAtmosphere()
+})
 const preferOriginal = ref(false)
 const portraitPalette = computed(() => characterParticleTheme(current.value?.id || '', current.value?.source))
+const characterConfig = computed(() => (current.value ? CHARACTERS[current.value.id] : undefined))
+const dossierSpecs = computed(() => {
+  const cfg = characterConfig.value
+  const identity = current.value?.identity
+  const rows: Array<{ label: string; value: string }> = []
+  if (cfg?.birthday) rows.push({ label: '生日', value: cfg.birthday })
+  if (cfg?.height) rows.push({ label: '身高', value: cfg.height })
+  if (cfg?.bloodType) rows.push({ label: '血型', value: cfg.bloodType })
+  if (cfg?.threeSizes) rows.push({ label: '三围', value: cfg.threeSizes })
+  if (identity?.school) rows.push({ label: '学校', value: identity.school })
+  if (identity?.region) rows.push({ label: '地域', value: identity.region })
+  if (identity?.race) rows.push({ label: '种族', value: identity.race })
+  return rows
+})
 function selectCharacter(id: string) {
   if (showShelf.value) {
     const card = [...(archiveRoot.value?.querySelectorAll<HTMLElement>('.bookshelf-character') || [])].find(item => item.dataset.character === id)
@@ -259,7 +314,9 @@ function measurePortrait(event: Event) {
 }
 function retryPortrait(event: MouseEvent) {
   const origin = event.currentTarget
-  const footer = origin instanceof HTMLElement && document.activeElement === origin ? origin.closest<HTMLElement>('.portrait-footer') : null
+  const footer = origin instanceof HTMLElement && document.activeElement === origin
+    ? origin.closest('.character-particle-stage')?.querySelector<HTMLElement>('.portrait-stage-footer')
+    : null
   if (footer) {
     const bounds = footer.getBoundingClientRect()
     if (bounds.top < 0 || bounds.bottom > innerHeight) footer.scrollIntoView({ block:'nearest', behavior:'instant' })
@@ -289,6 +346,26 @@ const animeResourceWork = computed(() => franchiseLabel(current.value?.source ||
 const animeResourceUrl = computed(() => animeResourceWork.value
   ? `https://animes.garden/resources?search=${encodeURIComponent(animeResourceWork.value)}`
   : '')
+interface RecommendationScene extends CharacterScene {
+  rating?: string
+  mature?: boolean
+}
+const sceneRatings = ref<ReadonlyMap<string, { rating?: string; mature?: boolean }>>(new Map())
+const { entryFor: sampleEntryFor, thumbUrl: sampleThumbUrl } = useShowcaseAssets()
+function recommendArchiveCode(id: string): string {
+  const safe = String(id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '')
+  return safe.replace(/^sc(?=\d)/, 'sc-').toUpperCase()
+}
+function recommendThumbSrc(id: string): string {
+  const manifestThumb = sampleThumbUrl(id)
+  if (manifestThumb) return manifestThumb
+  const safe = String(id || '').toLowerCase().replace(/[^a-z0-9_-]/g, '')
+  return safe ? `/scene-showcase/thumbs/${safe}.jpg` : ''
+}
+function isRecommendSensitive(scene: RecommendationScene): boolean {
+  const sampleRating = sampleEntryFor(scene.id)?.rating
+  return sampleRating === 'R18' || scene.rating === 'R18' || Boolean(scene.mature)
+}
 const recommendationsLoading = ref(false)
 const recommendationsError = ref(false)
 const recommendationReload = ref(0)
@@ -297,7 +374,7 @@ function retryRecommendations() {
   recommendationRoot.value?.focus({ preventScroll: true })
   recommendationReload.value++
 }
-const recommendations = computed(() => {
+const recommendations = computed<RecommendationScene[]>(() => {
   if (!current.value) return []
   if (current.value.type === 'popular') {
     // 热门角色：人设核心场景 = 该角色的原型场景（scene-blueprints 按 characterId）
@@ -309,6 +386,8 @@ const recommendations = computed(() => {
         title: bp.title,
         story: bp.description,
         char: current.value?.id ?? '',
+        rating: bp.sampleRating || (bp.adult ? 'R18' : 'All'),
+        mature: bp.adult,
       }))
   }
   const core = sceneStore.curation.personaCoreSceneIds
@@ -319,6 +398,10 @@ const recommendations = computed(() => {
     .filter((scene): scene is CharacterScene =>
       Boolean(scene && [current.value?.id, 'triad', 'both'].includes(scene.char)))
     .slice(0, 6)
+    .map(scene => {
+      const meta = sceneRatings.value.get(scene.id)
+      return { ...scene, rating: meta?.rating, mature: meta?.mature }
+    })
 })
 const officialProfileUrl = computed(() => current.value?.id === 'nene'
   ? 'https://www.yuzu-soft.com/products/sothewitch/character.html'
@@ -387,7 +470,18 @@ watch([() => current.value?.id, recommendationReload, () => sceneStore.version],
     if (profile.type === 'popular') await sceneStore.loadBlueprintCharacter(profile.id)
     else {
       const catalog = await sceneStore.loadBrowserScenes('all')
-      if (active) scenes.value = parseCharacterScenes(catalog.scenes)
+      if (active) {
+        scenes.value = parseCharacterScenes(catalog.scenes)
+        sceneRatings.value = new Map(
+          catalog.scenes.map(scene => [
+            scene.id,
+            {
+              rating: typeof scene.rating === 'string' ? scene.rating : undefined,
+              mature: typeof scene.mature === 'boolean' ? scene.mature : undefined,
+            },
+          ]),
+        )
+      }
     }
   } catch (error) {
     if (active) recommendationsError.value = true

@@ -8,7 +8,8 @@
         <button type="button" :aria-pressed="showOriginal" @click="mode = 'original'"><ArchiveIcon name="image" />人物原画</button>
       </div>
     </header>
-    <div class="portrait-stage-canvas">
+    <div class="portrait-stage-canvas tw:relative">
+    <CornerFrame variant="editorial" />
     <div v-show="!showOriginal" v-content-motion:fade="!showOriginal" class="particle-theatre tw:relative" :aria-busy="loading">
       <AsyncPanel v-if="available" :key="owner" class="particle-module-panel" :loader="loadParticleField" label="粒子展台" v-slot="{ component }">
         <component :is="component" ref="particleField" :key="`${owner}:${retryVersion}`" :shape="theme.shape" :portrait-id="characterId" :label="`${name}的人物粒子形象`" :caption="name" density="ambient" :portrait-reference-size="referenceSize" />
@@ -17,15 +18,19 @@
     </div>
     <div v-show="showOriginal" v-content-motion:fade="showOriginal" class="stage-original"><slot /></div>
     </div>
-    <footer ref="feedback" class="portrait-stage-footer tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3" role="group" aria-label="形象读取状态" tabindex="-1">
-      <p v-if="failed" role="status">{{ loading ? '正在重新读取粒子形象…' : '粒子形象暂时读取失败，可重新读取。' }}</p>
-      <p v-else-if="loading && settled && !available" role="status">正在读取粒子形象，先保留原画画页。</p>
-      <p v-else-if="!loading && !available" role="status">这位角色尚无可用的粒子形象，先欣赏人物原画。</p>
-      <p v-else-if="!showOriginal && !particleField" role="status">粒子展台尚未就绪，也可以先欣赏人物原画。</p>
-      <p v-else>{{ showOriginal ? '从原画里的色彩与轮廓，走进她的故事。' : '移动指针，让光点散开、再聚成她的模样。' }}</p>
-      <button v-if="failed" ref="retryButton" class="btn btn-ghost btn-sm" type="button" :aria-disabled="loading || undefined" :aria-busy="loading" @click="!loading && retryVersion++"><ArchiveIcon name="refresh" />{{ loading ? '正在重新读取…' : '重新读取粒子形象' }}</button>
+    <footer ref="feedback" class="portrait-stage-footer tw:flex tw:items-center tw:justify-between tw:flex-wrap tw:gap-s-3" role="group" aria-label="画页标尺与读取状态" tabindex="-1">
+      <div class="stage-ruler-status tw:flex tw:items-center tw:flex-wrap tw:gap-s-2 tw:min-w-0">
+        <p v-if="failed" role="status">{{ loading ? '正在重新读取粒子形象…' : '粒子形象暂时读取失败，可重新读取。' }}</p>
+        <p v-else-if="loading && settled && !available" role="status">正在读取粒子形象，先保留原画画页。</p>
+        <p v-else-if="!loading && !available" role="status">这位角色尚无可用的粒子形象，先欣赏人物原画。</p>
+        <p v-else-if="!showOriginal && !particleField" role="status">粒子展台尚未就绪，也可以先欣赏人物原画。</p>
+        <p v-else>{{ showOriginal ? '从原画里的色彩与轮廓，走进她的故事。' : '移动指针，让光点散开、再聚成她的模样。' }}</p>
+        <button v-if="failed" ref="retryButton" class="btn btn-ghost btn-sm" type="button" :aria-disabled="loading || undefined" :aria-busy="loading" @click="!loading && retryVersion++"><ArchiveIcon name="refresh" />{{ loading ? '正在重新读取…' : '重新读取粒子形象' }}</button>
+      </div>
+      <div v-if="$slots['plate-meta']" class="stage-ruler-meta tw:flex tw:items-center tw:flex-wrap tw:gap-s-2">
+        <slot name="plate-meta" :show-original="showOriginal" />
+      </div>
     </footer>
-    <p class="portrait-stage-note tw:m-0 tw:text-secondary tw:text-label-xs tw:leading-body">换一位主角，光点也随之变换。</p>
   </section>
 </template>
 
@@ -38,6 +43,7 @@ let preferredMode: 'particles' | 'original' = 'particles'
 import { computed, nextTick, ref, shallowRef, watch, type ComponentPublicInstance } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
+import CornerFrame from '@/components/visual/CornerFrame.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { loadPortraitCloudResult, portraitCloudIdentity } from '@/utils/particlePortrait'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
@@ -84,9 +90,9 @@ watch([owner, () => portraitCloudIdentity(props.characterId), retryVersion], asy
 <style scoped>
 @reference "../../assets/css/tailwind.css";
 .character-particle-stage { border:1px solid var(--border-soft); background:var(--bg-surface); }
-.portrait-stage-heading { padding:var(--s-4) var(--s-5); }
+.portrait-stage-heading { padding:var(--s-3) var(--s-5); border-bottom:1px solid var(--border-soft); }
 .portrait-stage-kicker { font:500 var(--fs-mono-xs) var(--font-mono); letter-spacing:.1em; }
-.portrait-stage-heading h2 { margin:var(--s-1) 0 0; @apply tw:text-primary tw:text-body-lg tw:font-semibold; }
+.portrait-stage-heading h2 { margin:var(--s-1) 0 0; color:var(--text-primary); font:500 var(--fs-body-lg)/var(--lh-tight) var(--font-serif); }
 .portrait-stage-modes { border:1px solid transparent; background:var(--bg-base); }
 .portrait-stage-modes button { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px]; padding:var(--s-2) var(--s-3); border:1px solid transparent; @apply tw:rounded-pill; background:transparent; @apply tw:text-secondary; font:500 var(--fs-label) var(--font-sans); @apply tw:cursor-pointer; }
 .portrait-stage-modes button[aria-pressed='true'] { @apply tw:text-primary tw:border-strong; background:var(--bg-surface); box-shadow:var(--shadow-sm); }
@@ -101,12 +107,10 @@ watch([owner, () => portraitCloudIdentity(props.characterId), retryVersion], asy
 .stage-original { height:100%; }
 .stage-original :deep(.portrait) { height:100%; border:0; border-radius:0; }
 .stage-original :deep(.portrait-image) { @apply tw:w-full; height:0; flex:1 1 auto; min-height:0; max-height:none; @apply tw:object-contain; }
-.stage-original :deep(.portrait-footer) { flex:none; }
 .stage-original :deep(.portrait-missing) { flex:1; min-height:0; }
-.portrait-stage-footer { padding:var(--s-4) var(--s-5); border-top:1px solid var(--border-soft); }
-.portrait-stage-footer p { @apply tw:m-0 tw:text-secondary tw:text-body-sm tw:leading-body; }
+.portrait-stage-footer { padding:var(--s-3) var(--s-4); border-top:1px solid var(--border-soft); background:var(--bg-base); }
+.portrait-stage-footer p { @apply tw:m-0 tw:text-secondary tw:text-label-sm tw:leading-body; }
 .portrait-stage-footer:focus-visible { outline:2px solid var(--focus-color); outline-offset:-4px; }
-.portrait-stage-note { padding:0 var(--s-5) var(--s-4); }
-@media(max-width:600px) { .portrait-stage-heading { @apply tw:p-s-4; } .portrait-stage-footer { @apply tw:p-s-3; } .portrait-stage-note { padding-inline:var(--s-3); } }
+@media(max-width:600px) { .portrait-stage-heading { @apply tw:p-s-3; } .portrait-stage-footer { @apply tw:p-s-3; } }
 @media(forced-colors:active) { .portrait-stage-footer:focus-visible { outline-color:Highlight; } }
 </style>

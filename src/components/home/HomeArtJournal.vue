@@ -1,7 +1,7 @@
 <template>
   <section ref="section" class="art-journal container" aria-labelledby="journal-title" data-reveal @focusin="activateImages">
     <header class="journal-heading tw:flex tw:justify-between tw:gap-s-5 tw:mb-s-4">
-      <div><span class="eyebrow">CG JOURNAL</span><h2 id="journal-title">画中日常</h2></div>
+      <div><span class="eyebrow">CG JOURNAL</span><h2 id="journal-title" data-screentone-furniture>画中日常</h2></div>
       <div class="journal-actions">
         <button v-if="canRefresh || loading || error" ref="refreshButton" type="button" class="journal-more journal-refresh" :aria-disabled="loading" :aria-busy="loading" aria-controls="journal-spread" @click="!loading && emit('refresh')"><ArchiveIcon name="refresh" />{{ loading ? (scenes.length ? '切换中…' : '读取中…') : error ? '重试' : '换一组' }}</button>
         <RouterLink to="/showcase" class="journal-more">参考画册 <ArchiveIcon name="image" /></RouterLink>
@@ -119,8 +119,8 @@ function excerpt(story?: string) { return (story || '一些想留下的光影，
   :root:not([data-motion='full']) .journal-entry { --card-focus-lift:0px; --card-focus-scale:1; }
   :root:not([data-motion='full']) :is(.journal-art,.journal-art > img,.journal-art::after) { transition:none; }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .journal-entry { --card-focus-lift:0px; --card-focus-scale:1; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.journal-art,.journal-art > img,.journal-art::after) { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .journal-entry { --card-focus-lift:0px; --card-focus-scale:1; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.journal-art,.journal-art > img,.journal-art::after) { transition:none; }
 @media (max-width: 900px) { .journal-spread { @apply tw:gap-s-5; } .journal-entry { grid-template-columns: minmax(0, 1fr); @apply tw:gap-s-3; } .journal-caption p { -webkit-line-clamp: 2; } .journal-placeholder-copy p { max-height:2lh; } }
 @media (max-width: 600px) { .art-journal { margin-block: var(--s-7); } .journal-heading { align-items: start; @apply tw:flex-col tw:gap-s-3; } .journal-spread { grid-template-columns: minmax(0, 1fr); } .journal-entry:not(.lead) { grid-template-columns: 112px minmax(0, 1fr); @apply tw:pt-s-5; border-top: 1px solid var(--border-soft); } }
 </style>

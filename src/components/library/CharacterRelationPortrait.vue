@@ -23,19 +23,22 @@ function move(event: KeyboardEvent, id: string) {
     @focus="emit('hover', data.person.id, true); emit('focus')" @blur="emit('hover', data.person.id, false)" @keydown="move($event, data.person.id)">
     <CharacterPortrait v-if="data.profile" :src="data.image" :name="data.person.name" />
     <span v-else class="atlas-portrait-placeholder" aria-hidden="true"><ArchiveIcon name="character" /></span>
+    <span v-if="data.selected" class="atlas-portrait-check" aria-hidden="true"><ArchiveIcon name="success" /></span>
     <strong>{{ data.person.name }}</strong>
   </button>
   <template v-for="side in sides" :key="side"><Handle :id="`source-${side}`" type="source" :position="side" :connectable="false" /><Handle :id="`target-${side}`" type="target" :position="side" :connectable="false" /></template>
 </template>
 
 <style scoped>
-.atlas-portrait { display: flex; flex-direction: column; width: 108px; padding: 4px 4px 0; border: 1px solid var(--border-strong); border-radius: 2px; background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-md); cursor: pointer; transition: transform var(--motion-hover) var(--ease-out); }
+.atlas-portrait { position: relative; display: flex; flex-direction: column; width: 108px; padding: 4px 4px 0; border: 1px solid var(--border-strong); border-radius: 2px; background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-md); cursor: pointer; transition: transform var(--motion-hover) var(--ease-out); }
 .atlas-portrait :deep(.character-portrait) { width: 98px; height: 118px; border: 0; border-radius: 0; }
 .atlas-portrait :deep(.character-portrait img) { transform: scale(1.45); transform-origin: 50% 15%; }
 .atlas-portrait strong { display: block; width: 100%; padding: 6px 1px; text-align: center; font: 500 13px/1.4 var(--font-sans); overflow-wrap: anywhere; }
 .atlas-portrait-placeholder { display: grid; place-items: center; width: 98px; height: 118px; background: var(--bg-elevated); color: var(--text-secondary); font-size: 40px; }
+.atlas-portrait-check { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 22px; height: 22px; border: 1px solid var(--border-strong); border-radius: var(--r-pill); background: var(--bg-surface); color: var(--text-primary); box-shadow: var(--shadow-sm); pointer-events: none; }
+.atlas-portrait-check :deep(.archive-icon) { width: 14px; height: 14px; }
 .atlas-portrait.is-pending { border-style: dashed; }
-.atlas-portrait.is-selected { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent), var(--shadow-md); }
+.atlas-portrait.is-selected { border-color: var(--text-primary); background: var(--bg-elevated); color: var(--text-primary); box-shadow: 0 0 0 2px var(--border-strong), var(--shadow-md); }
 .atlas-portrait.is-highlighted { transform: translateY(-4px); }
 .atlas-portrait:focus-visible { outline: 2px solid var(--focus-color); outline-offset: 6px; }
 @media (hover: hover) and (pointer: fine) { .atlas-portrait:hover { transform: translateY(-4px); } }
