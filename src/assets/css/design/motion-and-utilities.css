@@ -1,25 +1,42 @@
 @media (prefers-reduced-motion: reduce) {
-  /* 只移除会造成位移、缩放、旋转或持续扫光的动效，颜色与透明度反馈仍保留。 */
-  :root:not([data-motion='full']) .nav-links > a::after, :root:not([data-motion='full']) :is(.spin,
+  /* 只移除会造成位移、缩放、旋转或持续扫光的动效，颜色与短透明度反馈仍保留。 */
+  :root:not([data-motion='full']) .nav-links > a::after,
+  :root:not([data-motion='full']) .btn[data-loading]::after,
+  :root:not([data-motion='full']) :is(.spin,
   .route-atmosphere *,
   [data-reveal], [class*="stagger-in"], .stagger-container > *) {
-    animation:none !important;
+    animation: none !important;
   }
+  :root:not([data-motion='full']) [data-reveal] {
+    opacity: 1;
+    transform: none;
+    transition: none;
+    transition-delay: 0ms;
+  }
+  :root:not([data-motion='full']) .skip-link { transition: none; }
   :root:not([data-motion='full']) :is(
   .layer-fade-enter-active,
-  .layer-fade-leave-active) { transition:opacity var(--motion-control) ease-out; }
-  html:not([data-motion='full']) { scroll-behavior:auto !important; }
+  .layer-fade-leave-active) { transition: opacity var(--motion-press) var(--ease-out); }
+  html:not([data-motion='full']) { scroll-behavior: auto !important; }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .nav-links > a::after,
-:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.spin,
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .nav-links > a::after,
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .btn[data-loading]::after,
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) :is(.spin,
 .route-atmosphere *,
 [data-reveal], [class*="stagger-in"], .stagger-container > *) {
-  animation:none !important;
+  animation: none !important;
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) :is(
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) [data-reveal] {
+  opacity: 1;
+  transform: none;
+  transition: none;
+  transition-delay: 0ms;
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .skip-link { transition: none; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) :is(
 .layer-fade-enter-active,
-.layer-fade-leave-active) { transition:opacity var(--motion-control) ease-out; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) { scroll-behavior:auto !important; }
+.layer-fade-leave-active) { transition: opacity var(--motion-press) var(--ease-out); }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) { scroll-behavior: auto !important; }
 
 /* 内容密集页（导演台 / 训练台）右下角水印会与面板叠压，隐藏之；
    其余页面仍保留首屏水印（滚动后由 RouteAtmosphere 渐隐） */
@@ -104,38 +121,121 @@
 }
 
 /* ============================================================
-   日系演出元素：集中线 / 速度线 / 拟声词
+   日系演出元素：立绘交接 / 赛璐珞光泽 / 集中线 / 速度线 / 拟声词 / 对话标
    ------------------------------------------------------------
-   2026-08-28 补齐。项目已有的日系语汇是"静态质感"（1px 网点、竖排假名、
-   朱印、分镜角框、樱花景深），缺的是"事件性演出"—— 而这三类恰恰是
-   日系辨识度最高、且纯 CSS 就能做的。它们也天然满足 DESIGN.md 的规矩：
-   只为标记一个真实发生的事件（如"这一张出完了"）而存在，不是背景噪声。
-
    使用约束：
-   - 全部 pointer-events:none 且建议 aria-hidden，它们是装饰，不是信息；
-   - 颜色一律走令牌，不写死色值；
-   - 动画只用 transform / opacity（合成器属性，符合动效铁律）；
-   - 一次只在一处出现，不做常驻氛围层（那正是这次要收敛的东西）。
+   - 全部 pointer-events:none 且建议 aria-hidden（装饰层不参与信息传达）；
+   - 颜色一律走设计令牌，双主题自适应；
+   - 动画只用 transform / opacity（合成器安全）；
+   - 一次只在一处出现，落位后静止，不做常驻背景噪声。
    ============================================================ */
 
-/* ── 集中線：从中心放射的漫画集中线，用于"事件完成"的瞬间闪光 ──
-   中心留空（mask 掏空内圈）是为了不糊住被强调的主体本身。 */
+/* ── Galgame 双层立绘侧滑交叉淡入（落位绝对静止，绝不常驻浮动）── */
+.anime-portrait-enter {
+  animation: anime-portrait-enter var(--motion-route) var(--ease-out) both;
+}
+.anime-portrait-leave {
+  animation: anime-portrait-leave var(--motion-control) var(--ease-out) both;
+  pointer-events: none;
+}
+.anime-portrait-enter[data-portrait-dir='prev'],
+.anime-portrait-enter.is-reverse,
+.anime-portrait-leave[data-portrait-dir='prev'],
+.anime-portrait-leave.is-reverse {
+  --portrait-shift: -18px;
+}
+@keyframes anime-portrait-enter {
+  from { opacity: 0; transform: translate3d(var(--portrait-shift, 18px), 0, 0) scale(0.988); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes anime-portrait-leave {
+  from { opacity: 1; transform: none; }
+  to   { opacity: 0; transform: translate3d(calc(var(--portrait-shift, 18px) * -0.65), 0, 0) scale(0.992); }
+}
+/* 同步兼容 Vue <Transition name="anime-portrait"> 双层交叉过渡 */
+.anime-portrait-enter-active {
+  transition: opacity var(--motion-surface) var(--ease-out), transform var(--motion-route) var(--ease-out);
+}
+.anime-portrait-leave-active {
+  transition: opacity var(--motion-control) var(--ease-out), transform var(--motion-control) var(--ease-out);
+  pointer-events: none;
+}
+.anime-portrait-enter-from {
+  opacity: 0;
+  transform: translate3d(var(--portrait-shift, 18px), 0, 0) scale(0.988);
+}
+.anime-portrait-leave-to {
+  opacity: 0;
+  transform: translate3d(calc(var(--portrait-shift, 18px) * -0.65), 0, 0) scale(0.992);
+}
+
+/* ── 赛璐珞斜扫光泽：单次斜向扫光，纯 transform/opacity ── */
+.anime-cel-sheen {
+  position: relative;
+  overflow: hidden;
+}
+.anime-cel-sheen--overlay {
+  position: absolute;
+  inset: 0;
+  z-index: var(--z-raised);
+  border-radius: inherit;
+  pointer-events: none;
+}
+.anime-cel-sheen::after {
+  content: '';
+  position: absolute;
+  inset: -24% -36%;
+  pointer-events: none;
+  background: linear-gradient(
+    112deg,
+    transparent 36%,
+    color-mix(in srgb, var(--on-art-sheen) 44%, transparent) 46%,
+    var(--on-art-sheen) 50%,
+    color-mix(in srgb, var(--character-accent, var(--accent)) 22%, var(--on-art-sheen)) 54%,
+    transparent 64%
+  );
+  opacity: 0;
+  transform: translate3d(-96%, 0, 0);
+  animation: anime-cel-sheen-sweep var(--cel-sheen-duration, var(--motion-route-cut)) var(--ease-out) both;
+}
+:root[data-theme='light'] .anime-cel-sheen::after {
+  background: linear-gradient(
+    112deg,
+    transparent 36%,
+    color-mix(in srgb, var(--glass-highlight) 58%, transparent) 46%,
+    var(--glass-highlight) 50%,
+    color-mix(in srgb, var(--character-accent, var(--accent)) 18%, var(--glass-highlight)) 54%,
+    transparent 64%
+  );
+}
+@keyframes anime-cel-sheen-sweep {
+  0%   { opacity: 0; transform: translate3d(-96%, 0, 0); }
+  22%  { opacity: 0.74; }
+  74%  { opacity: 0.48; }
+  100% { opacity: 0; transform: translate3d(96%, 0, 0); }
+}
+
+/* ── 集中線：中心挖空的克制漫画庆祝态，成片瞬间一闪即收（峰值 opacity <= 0.22）── */
 .fx-focus-lines {
   @apply tw:absolute;
   inset: 0;
+  z-index: var(--z-raised);
   @apply tw:pointer-events-none;
   opacity: 0;
   background: repeating-conic-gradient(from 0deg at 50% 50%,
-    transparent 0deg 2.2deg,
-    var(--accent-glow) 2.2deg 3.2deg);
-  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 16%, #000 44%, transparent 76%);
-          mask: radial-gradient(circle at 50% 50%, transparent 16%, #000 44%, transparent 76%);
+    transparent 0deg 3.2deg,
+    color-mix(in srgb, var(--character-accent, var(--accent)) 68%, var(--text-primary)) 3.2deg 3.9deg,
+    transparent 3.9deg 7.4deg,
+    color-mix(in srgb, var(--character-accent, var(--accent)) 42%, var(--accent-violet)) 7.4deg 8.2deg);
+  -webkit-mask: radial-gradient(circle at 50% 50%, transparent 0% 34%, #000 58%, transparent 86%);
+          mask: radial-gradient(circle at 50% 50%, transparent 0% 34%, #000 58%, transparent 86%);
 }
 .fx-focus-lines.is-bursting { animation: fx-focus-burst var(--motion-route-cut) var(--ease-out) both; }
 @keyframes fx-focus-burst {
-  from { opacity: 0;  transform: scale(.55); }
-  30%  { opacity: .9; }
-  to   { opacity: 0;  transform: scale(1.3); }
+  0%   { opacity: 0;    transform: scale(0.84); }
+  24%  { opacity: 0.22; transform: scale(1.02); }
+  62%  { opacity: 0.14; transform: scale(1.08); }
+  100% { opacity: 0;    transform: scale(1.16); }
 }
 
 /* ── 速度線：斜向细线横向流动，用于"进行中"的持续状态 ──
@@ -179,16 +279,68 @@
   to   { opacity: 0;   transform: skewX(-8deg) scale(1.06) translateY(-10px); }
 }
 
-/* 降级：动效关掉，但保留静态可见性 —— 拟声词承载的"完成了"是真实反馈，
-   不该因为 reduced-motion 就整个消失（JS 仍会在延时后移除它）。 */
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) :is(.fx-focus-lines.is-bursting,
-  .fx-onome.is-popping) { animation: none; opacity: 1; }
-  :root:not([data-motion='full']) .fx-speed-lines::before { animation: none; }
+/* ── AVG 对话流式呼吸 ▼ 标：仅在流式期脉冲，完成后静止/隐藏 ── */
+.vn-caret-pulse {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 0.28em;
+  color: var(--character-ink, var(--character-accent, var(--accent)));
+  font-size: 0.72em;
+  line-height: 1;
+  vertical-align: -0.05em;
+  pointer-events: none;
+  user-select: none;
+  animation: vn-caret-breathe 1.15s var(--ease-in-out) infinite;
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.fx-focus-lines.is-bursting,
-.fx-onome.is-popping) { animation: none; opacity: 1; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .fx-speed-lines::before { animation: none; }
+.vn-caret-pulse:empty::after {
+  content: '▼';
+}
+.vn-caret-pulse:is([data-streaming='false'], .is-done, [data-complete='true']) {
+  animation: none;
+  opacity: 0;
+  transform: none;
+}
+.vn-caret-pulse.is-waiting {
+  animation: none;
+  opacity: 0.72;
+  transform: none;
+}
+@keyframes vn-caret-breathe {
+  0%, 100% { opacity: 0.44; transform: translateY(0); }
+  50%      { opacity: 0.96; transform: translateY(2.5px); }
+}
+
+/* 降级：动效关掉时集中线与扫光完全关闭；拟声词与流式标保留静态可见反馈，立绘改短淡入且终态可见。 */
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .fx-focus-lines,
+  :root:not([data-motion='full']) .fx-focus-lines.is-bursting { animation: none; opacity: 0; }
+  :root:not([data-motion='full']) .fx-onome.is-popping { animation: none; opacity: 1; }
+  :root:not([data-motion='full']) .fx-speed-lines::before { animation: none; }
+  :root:not([data-motion='full']) .anime-cel-sheen::after { animation: none; opacity: 0; }
+  :root:not([data-motion='full']) .anime-portrait-enter { animation: none; opacity: 1; transform: none; }
+  :root:not([data-motion='full']) .anime-portrait-leave { animation: none; opacity: 0; transform: none; }
+  :root:not([data-motion='full']) :is(.anime-portrait-enter-active, .anime-portrait-leave-active) {
+    transition: opacity var(--motion-press) var(--ease-out);
+  }
+  :root:not([data-motion='full']) :is(.anime-portrait-enter-from, .anime-portrait-leave-to) { transform: none; }
+  :root:not([data-motion='full']) .vn-caret-pulse { animation: none; transform: none; opacity: 0.78; }
+  :root:not([data-motion='full']) .vn-caret-pulse:is([data-streaming='false'], .is-done, [data-complete='true']) { opacity: 0; }
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .fx-focus-lines,
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .fx-focus-lines.is-bursting { animation: none; opacity: 0; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .fx-onome.is-popping { animation: none; opacity: 1; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .fx-speed-lines::before { animation: none; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .anime-cel-sheen::after { animation: none; opacity: 0; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .anime-portrait-enter { animation: none; opacity: 1; transform: none; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .anime-portrait-leave { animation: none; opacity: 0; transform: none; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) :is(.anime-portrait-enter-active, .anime-portrait-leave-active) {
+  transition: opacity var(--motion-press) var(--ease-out);
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) :is(.anime-portrait-enter-from, .anime-portrait-leave-to) { transform: none; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .vn-caret-pulse { animation: none; transform: none; opacity: 0.78; }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .vn-caret-pulse:is([data-streaming='false'], .is-done, [data-complete='true']) { opacity: 0; }
+
 [data-reveal][data-reveal-delay="1"] { transition-delay: var(--motion-press); }
 [data-reveal][data-reveal-delay="2"] { transition-delay: var(--motion-hover); }
 [data-reveal][data-reveal-delay="3"] { transition-delay: var(--motion-surface); }

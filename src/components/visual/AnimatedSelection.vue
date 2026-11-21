@@ -1,17 +1,43 @@
-<template><span ref="indicator" class="animated-selection tw:absolute tw:[inset:0_auto_auto_0] tw:pointer-events-none tw:[border-radius:var(--selection-radius,_var(--r-md))] tw:[border:1px_solid_var(--glass-edge)] tw:[box-shadow:var(--selection-shadow,_var(--shadow-glass-sm))]" :class="{ 'animated-selection--underline': variant === 'underline' }" aria-hidden="true"><span ref="highlight" class="animated-selection-highlight"></span></span></template>
+<template>
+  <span
+    ref="indicator"
+    class="animated-selection tw:absolute tw:[inset:0_auto_auto_0] tw:pointer-events-none tw:[border-radius:var(--selection-radius,_var(--r-md))] tw:[border:1px_solid_var(--glass-edge)] tw:[box-shadow:var(--selection-shadow,_var(--shadow-glass-sm))]"
+    :class="{
+      'animated-selection--pill': variant === 'pill',
+      'animated-selection--underline': variant === 'underline',
+      'animated-selection--bookmark': variant === 'bookmark',
+      'animated-selection--character': tone === 'character',
+    }"
+    aria-hidden="true"
+  ><span ref="highlight" class="animated-selection-highlight"></span></span>
+</template>
 <script setup lang="ts">
 import { onActivated, onDeactivated, onMounted, onUnmounted, ref, watch } from 'vue'
 import { frame, cancelFrame } from 'motion'
 import { createFluidMotion } from '@/utils/fluidSpring'
 import { SELECTION_SPRING } from '@/utils/controlSprings'
 import '@/assets/css/studio-segments.css'
-const props = withDefaults(defineProps<{ target?: string; stretch?: boolean; variant?: 'surface' | 'underline' }>(), { target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]', stretch: false, variant: 'surface' })
+
+const props = withDefaults(defineProps<{
+  target?: string
+  stretch?: boolean
+  variant?: 'surface' | 'pill' | 'underline' | 'bookmark'
+  /** Keep ordinary segmented controls neutral per DESIGN.md; opt into character accent explicitly. */
+  tone?: 'neutral' | 'character'
+}>(), {
+  target: '[aria-pressed="true"], [aria-selected="true"], [aria-checked="true"]',
+  stretch: false,
+  variant: 'surface',
+  tone: 'neutral',
+})
+
 const indicator = ref<HTMLElement | null>(null)
 const highlight = ref<HTMLElement | null>(null)
 let resize: ResizeObserver | undefined
 let mutations: MutationObserver | undefined
 let fluid: ReturnType<typeof createFluidMotion> | undefined
 let suspended = false
+let globalListenersBound = false
 type Measurement = { control: HTMLElement; x: number; y: number; width: number; height: number }
 let measurement: Measurement | null = null
 let destination: Measurement | null = null
@@ -20,6 +46,7 @@ let parent: HTMLElement | null = null
 let observing = false
 let parentBox = ''
 let keyboardInput = false
+
 function keyboard(event: KeyboardEvent) {
   // Keep keyboard selection and its painted state together in every group;
   // managed tablists still retain ownership of their own roving focus.
@@ -48,6 +75,7 @@ function keyboard(event: KeyboardEvent) {
     return
   }
 }
+
 function focusSegment(button: HTMLButtonElement) {
   button.focus({ preventScroll: true })
   // Scroll only clipped controls, by the missing distance. Native focus scrolling
@@ -62,7 +90,7 @@ function focusSegment(button: HTMLButtonElement) {
     const bottom = Math.min(bounds.bottom, bounds.top + ancestor.clientTop + ancestor.clientHeight) - (parseFloat(style.scrollPaddingBottom) || 0)
     const x = /auto|scroll/.test(style.overflowX) ? box.left < left ? box.left - left : Math.max(0, box.right - right) : 0
     const y = /auto|scroll/.test(style.overflowY) ? box.top < top ? box.top - top : Math.max(0, box.bottom - bottom) : 0
-    if (x || y) ancestor.scrollBy({ left:x, top:y, behavior:'instant' })
+    if (x || y) ancestor.scrollBy({ left: x, top: y, behavior: 'instant' })
     // A native top-layer dialog is not clipped by its DOM ancestors behind it.
     if (ancestor instanceof HTMLDialogElement && ancestor.open) return
   }
@@ -73,8 +101,9 @@ function focusSegment(button: HTMLButtonElement) {
     + (parseFloat(style.getPropertyValue('--app-navigation-visible-height')) || 0)
   const x = box.left < margin ? box.left - margin : Math.max(0, box.right - innerWidth + margin)
   const y = box.top < top ? box.top - top : Math.max(0, box.bottom - innerHeight + margin)
-  if (x || y) window.scrollBy({ left:x, top:y, behavior:'instant' })
+  if (x || y) window.scrollBy({ left: x, top: y, behavior: 'instant' })
 }
+
 function pointer() { keyboardInput = false }
 function cancelScheduled() {
   cancelFrame(render)
@@ -89,6 +118,22 @@ function onVisibilityChange() {
   } else {
     startObserving()
   }
+}
+function bindGlobalListeners() {
+  if (globalListenersBound) return
+  globalListenersBound = true
+  document.addEventListener('visibilitychange', onVisibilityChange)
+  window.addEventListener('resize', refreshLayout)
+  document.fonts?.addEventListener('loadingdone', refreshLayout)
+}
+function unbindGlobalListeners() {
+  if (!globalListenersBound) return
+  globalListenersBound = false
+  if (typeof document !== 'undefined') {
+    document.removeEventListener('visibilitychange', onVisibilityChange)
+    document.fonts?.removeEventListener('loadingdone', refreshLayout)
+  }
+  window.removeEventListener('resize', refreshLayout)
 }
 function startObserving() {
   if (observing || suspended || document.hidden || !parent) return
@@ -173,42 +218,51 @@ function render() {
   fluid ??= createFluidMotion([x, y, width, height], ([left, top, width, height]) => {
     if (!destination) return
     const { x: targetX, y: targetY, width: baseWidth, height: baseHeight } = destination
-    // Lucian #039 / #043 · MIT (c) 2026 Seokwoooo. Stretch the existing
-    // spring surface toward its destination; labels keep their own geometry.
-    const extension = props.stretch && !keyboardInput ? Math.min(baseWidth * .65, Math.abs(targetX - left) * .2) : 0
-    const leadingLeft = left - (targetX < left ? extension : 0)
+    // Lucian #039 / #043 · MIT (c) 2026 Seokwoooo. Smooth C1 stretch ramp
+    // elongates during long leaps and tapers softly to 0 without cusps on overshoot.
+    const dx = targetX - left
+    const distX = Math.abs(dx)
+    let extension = 0
+    let leadingLeft = left
+    if (props.stretch && !keyboardInput && distX > 0.5) {
+      const ramp = Math.min(1, distX / Math.max(24, baseWidth * 0.6))
+      const eased = ramp * ramp * (3 - 2 * ramp)
+      extension = Math.min(baseWidth * 0.48, distX * 0.26 * eased)
+      leadingLeft = dx < 0 ? left - extension : left
+    }
     el.style.transform = `translate(${leadingLeft}px,${top}px) scale(${(width + extension) / baseWidth},${height / baseHeight})`
     // Light travels with the existing geometry spring and disappears when settled.
     // No timer, layout read, restarting keyframe or extra animation loop on rapid input.
     const light = highlight.value
     if (light) {
-      const energy = Math.min(1, Math.hypot(targetX - left, targetY - top, (baseWidth - width) * .5, (baseHeight - height) * .5) / Math.max(40, baseWidth))
-      light.style.opacity = String(energy * .42)
-      light.style.transform = `translateX(${Math.sign(targetX - left) * energy * 14}%)`
+      const energy = Math.min(1, Math.hypot(dx, targetY - top, (baseWidth - width) * 0.5, (baseHeight - height) * 0.5) / Math.max(40, baseWidth))
+      light.style.opacity = String(energy * 0.42)
+      light.style.transform = `translateX(${Math.sign(dx) * energy * 14}%)`
     }
   }, SELECTION_SPRING.frequency, SELECTION_SPRING.damping)
   // Layout changes under the same selection snap. Selecting another control
   // retargets the current spring and preserves its velocity.
   fluid.to([x, y, width, height], !previous || previous.control === control)
 }
+
 onMounted(() => {
-  document.addEventListener('visibilitychange', onVisibilityChange)
   parent = indicator.value?.parentElement ?? null
   if (!parent) return
   resize = new ResizeObserver(resized)
   mutations = new MutationObserver(mutated)
+  bindGlobalListeners()
   startObserving()
   parent.addEventListener('keydown', keyboard, true)
   parent.addEventListener('pointerdown', pointer, true)
-  window.addEventListener('resize', refreshLayout)
-  document.fonts?.addEventListener('loadingdone', refreshLayout)
 })
 onActivated(() => {
   suspended = false
+  bindGlobalListeners()
   startObserving()
 })
 onDeactivated(() => {
   suspended = true
+  unbindGlobalListeners()
   stopObserving()
   cancelScheduled()
   fluid?.dispose()
@@ -217,13 +271,10 @@ onDeactivated(() => {
 watch(() => props.target, refreshLayout, { flush: 'post' })
 onUnmounted(() => {
   suspended = true
-  document.fonts?.removeEventListener('loadingdone', refreshLayout)
-  window.removeEventListener('resize', refreshLayout)
-  if (typeof document !== 'undefined') {
-    document.removeEventListener('visibilitychange', onVisibilityChange)
-  }
+  unbindGlobalListeners()
   stopObserving()
   fluid?.dispose()
+  fluid = undefined
   cancelScheduled()
   parent?.removeEventListener('keydown', keyboard, true)
   parent?.removeEventListener('pointerdown', pointer, true)
@@ -244,12 +295,59 @@ onUnmounted(() => {
   opacity: 0;
   background: linear-gradient(105deg, transparent 15%, var(--glass-highlight) 45%, var(--glass-highlight) 65%, transparent 85%);
 }
+/* Pill variant keeps neutral elevated surface with pill silhouette. */
+.animated-selection.animated-selection--pill {
+  --selection-radius: var(--r-pill);
+  border-radius: var(--r-pill);
+}
 /* The same geometry spring can travel beneath labels without painting a panel. */
-.animated-selection.animated-selection--underline { z-index:var(--z-raised); border:0; border-radius:0; box-shadow:none; background:none; }
-.animated-selection--underline::after { content:''; position:absolute; inset:auto 0 0; height:2px; border-radius:var(--r-pill); background:var(--selection-ink,var(--text-primary)); }
-.animated-selection--underline .animated-selection-highlight { display:none; }
+.animated-selection.animated-selection--underline { z-index: var(--z-raised); border: 0; border-radius: 0; box-shadow: none; background: none; }
+.animated-selection--underline::after { content: ''; position: absolute; inset: auto 0 0; height: 2px; border-radius: var(--r-pill); background: var(--selection-ink, var(--text-primary)); }
+.animated-selection--underline .animated-selection-highlight { display: none; }
+/* Artbook bookmark variant: neutral tactile tab with soft top sheen and slim cloth-ribbon marker. */
+.animated-selection.animated-selection--bookmark {
+  --selection-radius: var(--r-sm);
+  border-color: var(--border-strong);
+  border-radius: var(--selection-radius);
+  background: linear-gradient(180deg, var(--glass-highlight) 0%, transparent 56%), color-mix(in srgb, var(--bg-elevated) 92%, transparent);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-sm);
+}
+.animated-selection--bookmark::before {
+  content: '';
+  position: absolute;
+  inset: 0 14% auto;
+  height: 1px;
+  pointer-events: none;
+  background: linear-gradient(90deg, transparent, color-mix(in srgb, var(--selection-ink, var(--text-primary)) 34%, var(--glass-highlight)), transparent);
+}
+.animated-selection--bookmark::after {
+  content: '';
+  position: absolute;
+  inset: auto 24% 2px;
+  height: 2.5px;
+  border-radius: var(--r-pill);
+  background: var(--selection-ink, var(--text-primary));
+  opacity: 0.78;
+  box-shadow: 0 0 8px color-mix(in srgb, var(--selection-ink, var(--text-primary)) 24%, transparent);
+}
+/* Explicit opt-in character accent (ordinary segments stay neutral by default). */
+.animated-selection.animated-selection--character {
+  --selection-ink: var(--character-ink, var(--character-accent, var(--accent)));
+}
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .animated-selection { transition: opacity var(--motion-press) var(--ease-out); }
+  :root:not([data-motion='full']) .animated-selection-highlight { display: none; }
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .animated-selection {
+  transition: opacity var(--motion-press) var(--ease-out);
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .animated-selection-highlight {
+  display: none;
+}
 @media (forced-colors: active) {
-  .animated-selection-highlight { display:none; }
-  .animated-selection--underline::after { background:Highlight; }
+  .animated-selection-highlight,
+  .animated-selection--bookmark::before { display: none; }
+  .animated-selection--underline::after,
+  .animated-selection--bookmark::after { background: Highlight; box-shadow: none; }
 }
 </style>

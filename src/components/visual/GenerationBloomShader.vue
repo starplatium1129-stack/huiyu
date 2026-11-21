@@ -1,7 +1,7 @@
 <template><canvas ref="canvas" class="generation-bloom" aria-hidden="true"></canvas></template>
 
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch } from 'vue'
 import { useEventListener, useResizeObserver } from '@vueuse/core'
 import { registerParticleFrame } from '@/utils/particleScheduler'
 import { smoothGenerationPhase } from '@/utils/generationOrbit'
@@ -15,6 +15,7 @@ let buffer: WebGLBuffer | null = null
 let stopFrames: (() => void) | null = null
 let time = 1.5, concentration = props.progress ?? 0
 let width = 0, height = 0
+let deactivated = false
 let uniforms: Record<string, WebGLUniformLocation | null> = {}
 const ribbonPhases = new Float32Array(12)
 
@@ -83,7 +84,7 @@ function compile(type: number, source: string) {
   return shader
 }
 function draw() {
-  if (!props.present || !gl || !program || !canvas.value) return
+  if (deactivated || !props.present || !gl || !program || !canvas.value || gl.isContextLost()) return
   gl.useProgram(program)
   const formed = smoothGenerationPhase(.08, .72, concentration), finish = smoothGenerationPhase(.7, .99, concentration)
   gl.uniform3f(uniforms.shape, .29 - formed * .035 - finish * .09, 1.85 + finish * .7, .012 * (1 - finish))
@@ -107,12 +108,12 @@ function preparePalette() {
 }
 function resize() {
   const surface = canvas.value
-  if (!props.present || !surface || !width || !height) return
+  if (deactivated || !props.present || !surface || !width || !height) return
   const ratio = Math.min(window.devicePixelRatio || 1, 2, Math.sqrt(600_000 / (width * height)))
   const pixelWidth = Math.max(1, Math.round(width * ratio)), pixelHeight = Math.max(1, Math.round(height * ratio))
   if (surface.width !== pixelWidth) surface.width = pixelWidth
   if (surface.height !== pixelHeight) surface.height = pixelHeight
-  if (gl && program) {
+  if (gl && program && !gl.isContextLost()) {
     gl.useProgram(program)
     gl.viewport(0, 0, pixelWidth, pixelHeight)
     const aspect = pixelWidth / pixelHeight
@@ -125,30 +126,35 @@ function resize() {
 }
 function reconcile() {
   stop()
-  if (!program || !props.present) return
+  if (deactivated || !program || !props.present) return
   // A cached return paints the latest task snapshot without rebuilding GPU objects.
   concentration = props.progress ?? concentration
   resize()
   if (!props.animate) return
   stopFrames = registerParticleFrame((_now, delta) => {
+    if (deactivated) { stop(); return }
     time += delta / 1000
     if (props.progress !== null) concentration += (props.progress - concentration) * (1 - Math.exp(-delta / 420))
     draw()
   })
 }
 useResizeObserver(canvas, ([entry]) => {
-  if (!entry) return
+  if (deactivated || !entry) return
   width = entry.contentRect.width; height = entry.contentRect.height
   resize()
 })
 useEventListener(canvas, 'webglcontextlost', event => { event.preventDefault(); unavailable() })
 watch([() => props.present, () => props.animate], reconcile, { flush: 'post' })
 watch(() => props.progress, progress => {
-  if (!props.present || props.animate) return
+  if (deactivated || !props.present || props.animate) return
   concentration = progress ?? concentration
   draw()
 })
-watch(() => props.colors, () => { preparePalette(); draw() })
+watch(() => props.colors, () => {
+  if (deactivated) return
+  preparePalette()
+  draw()
+})
 onMounted(() => {
   try {
     gl = canvas.value!.getContext('webgl2', { alpha: true, antialias: false, depth: false, stencil: false, premultipliedAlpha: false })
@@ -177,8 +183,36 @@ onMounted(() => {
     reconcile()
   } catch { unavailable() }
 })
+onActivated(() => {
+  deactivated = false
+  if ((!width || !height) && canvas.value) {
+    width = canvas.value.clientWidth
+    height = canvas.value.clientHeight
+  }
+  preparePalette()
+  reconcile()
+})
+onDeactivated(() => {
+  deactivated = true
+  stop()
+  // Hibernate framebuffer VRAM while keeping compiled shaders intact for flicker-free resume.
+  if (gl && !gl.isContextLost()) {
+    gl.clearColor(0, 0, 0, 0)
+    gl.clear(gl.COLOR_BUFFER_BIT)
+    gl.flush()
+  }
+  if (canvas.value) {
+    canvas.value.width = 1
+    canvas.value.height = 1
+  }
+})
 onBeforeUnmount(() => {
+  deactivated = true
   release()
+  if (canvas.value) {
+    canvas.value.width = 0
+    canvas.value.height = 0
+  }
   gl?.getExtension('WEBGL_lose_context')?.loseContext()
   gl = null
 })

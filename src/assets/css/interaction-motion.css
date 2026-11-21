@@ -25,16 +25,26 @@
 :where(:is(button, a[href], summary, [role='button'], [role='tab'], [role='option']):focus-visible) { --control-press-transform: none; transition: none; }
 :is(.pb.atelier-workspace,.character-editorial,.art-viewer,.showcase-viewer,.studio-popover) :is(button,a[href],summary,[role='tab'],[role='option']):focus-visible:active { transform:none; transition:none; }
 :root :is(.home-page,.showcase-page,.scene-discovery,.popular-scene-library) :is(button,a[href],summary,[role='tab'],[role='option']):focus-visible:active { transform:none; transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.home-page,.showcase-page,.scene-discovery,.popular-scene-library) :is(button,a[href],summary,[role='tab'],[role='option']):active { transform:none; }
 :root :is(.task-center,.confirm-overlay,.video-studio) :is(button,a[href],summary,[role='button'],[role='tab'],[role='option']):focus-visible:active { transform:none; transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.task-center,.confirm-overlay,.video-studio) :is(button,a[href],summary,[role='button'],[role='tab'],[role='option']):active { transform:none; }
 /* Inline links cannot transform; underline communicates their clickable state. */
 :where(a[href]):hover { text-underline-offset: .2em; }
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) {
     --control-press-transform: none;
   }
+  :root:not([data-motion='full']) :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']) {
+    transition: none;
+  }
+  :root:not([data-motion='full']) :is(.pb.atelier-workspace,.character-editorial,.art-viewer,.showcase-viewer,.studio-popover,.home-page,.showcase-page,.scene-discovery,.popular-scene-library,.task-center,.confirm-overlay,.video-studio) :is(button,a[href],summary,[role='button'],[role='tab'],[role='option']):active {
+    transform: none;
+  }
 }
 :root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) {
   --control-press-transform: none;
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) :where(button, a[href], summary, [role='button'], [role='tab'], [role='option']) {
+  transition: none;
+}
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) :is(.pb.atelier-workspace,.character-editorial,.art-viewer,.showcase-viewer,.studio-popover,.home-page,.showcase-page,.scene-discovery,.popular-scene-library,.task-center,.confirm-overlay,.video-studio) :is(button,a[href],summary,[role='button'],[role='tab'],[role='option']):active {
+  transform: none;
 }

@@ -138,7 +138,7 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
 
 .zoom-transform-layer {
   transform-origin: center center;
-  /* Wheel, keyboard and drag follow the input directly, without queued zoom. */
+  /* Wheel, keyboard and drag follow input directly; dblclick/toolbar buttons use FluidSpring push-in zoom. */
 }
 
 /* The content always fits this viewport, including low-resolution previews.
@@ -203,5 +203,5 @@ const viewerLabel = computed(() => props.alt ? `${props.alt}查看器` : '图片
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
 }
-:root:is([data-motion='reduce'], [data-motion='reduced']) .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .zoomable-img { transition:opacity var(--motion-press) var(--ease-out); }
 </style>

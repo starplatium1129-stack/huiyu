@@ -1,5 +1,4 @@
-import { nextTick, onBeforeUnmount, onMounted, watch, type Ref } from 'vue'
-import { useEventListener } from '@vueuse/core'
+import { nextTick, onActivated, onBeforeUnmount, onDeactivated, onMounted, watch, type Ref } from 'vue'
 import { useVisualActivity } from '@/composables/useVisualActivity'
 import type { ArtworkRecord } from '@/types/artwork'
 import { createContentSpring, type ContentSpring, type SpringPresentation } from '@/utils/contentSpring'
@@ -24,6 +23,8 @@ export function useGalleryListMotion(
   let previousIds = new Set<string>()
   let listChanged = false
   let positionTimer: ReturnType<typeof setTimeout> | undefined
+  let viewActive = false
+  let boundRoot: HTMLElement | null = null
   function stopDust(id: string) {
     const active = dust.get(id)
     if (!active) return
@@ -70,7 +71,7 @@ export function useGalleryListMotion(
     positions.clear(); clearTimeout(positionTimer)
     listChanged = false
     const host = root.value
-    if (!host || !active() || !canAnimate.value || lowEffects.value) return
+    if (!viewActive || !host || !active() || !canAnimate.value || lowEffects.value) return
     listChanged = true
     const deleted = new Set(ids.map(String))
     // The wall uses virtual image rows, not a TransitionGroup. Capture only
@@ -97,7 +98,7 @@ export function useGalleryListMotion(
     void nextTick(() => { if (token === revision) settle() })
   }
   function settle() {
-    if (!active() || loading() || !root.value || !canAnimate.value || lowEffects.value || !positions.size && !listChanged) return
+    if (!viewActive || !active() || loading() || !root.value || !canAnimate.value || lowEffects.value || !positions.size && !listChanged) return
     const previous = positions; positions = new Map(); clearTimeout(positionTimer)
     beginHandoff()
     // Read every visible destination and live transform before cancelling or writing.
@@ -147,29 +148,61 @@ export function useGalleryListMotion(
     // Appending a page retains placement; decoding thumbnails never changes IDs.
     if (next.length === previous.length && previous.every((id, index) => next[index] === id)) return
     if (previous.length && next.length > previous.length && previous.every((id, index) => next[index] === id)) return
-    if (!active() || loading() || !canAnimate.value || lowEffects.value || root.value?.closest('[inert], [hidden]')) return
+    if (!viewActive || !active() || loading() || !canAnimate.value || lowEffects.value || root.value?.closest('[inert], [hidden]')) return
     if (!previous.length && root.value?.dataset.routeEntering === 'true') return
     previousIds = new Set(previous); listChanged = true
     if (!positions.size) capture()
     beginHandoff()
   }, { flush: 'pre' })
   watch([ids, loading], () => {
-    if (!active()) return
+    if (!viewActive || !active()) return
     // Restoring/reintroducing an ID ends its stale deletion visual immediately.
     for (const item of items()) stopDust(String(item.id))
     settle()
   }, { flush: 'post' })
-  watch([canAnimate, lowEffects, active], () => { if (!active() || !canAnimate.value || lowEffects.value) stop() }, { flush: 'sync' })
+  watch([canAnimate, lowEffects, active], () => { if (!viewActive || !active() || !canAnimate.value || lowEffects.value) stop() }, { flush: 'sync' })
   // A new action invalidates delayed deletion feedback, while retained cards keep
   // their current position/velocity for the next filter's layout.
   function interact() { revision++; for (const id of dust.keys()) stopDust(id) }
-  useEventListener(root, 'pointerdown', interact, { passive: true })
-  useEventListener(root, 'keydown', interact)
-  // Album navigation restores scroll/focus in the same frame as its arrival.
-  useEventListener(window, 'scroll', stop, { passive: true, capture: true })
-  useEventListener(root, 'wheel', stop, { passive: true })
-  useEventListener(window, 'resize', stop, { passive: true })
-  onBeforeUnmount(stop)
+  function unbindListeners() {
+    if (boundRoot) {
+      boundRoot.removeEventListener('pointerdown', interact)
+      boundRoot.removeEventListener('keydown', interact)
+      boundRoot.removeEventListener('wheel', stop)
+      boundRoot = null
+    }
+    window.removeEventListener('scroll', stop, true)
+    window.removeEventListener('resize', stop)
+  }
+  function bindListeners() {
+    if (!viewActive) return
+    unbindListeners()
+    const el = root.value
+    if (el) {
+      el.addEventListener('pointerdown', interact, { passive: true })
+      el.addEventListener('keydown', interact)
+      el.addEventListener('wheel', stop, { passive: true })
+      boundRoot = el
+    }
+    // Album navigation restores scroll/focus in the same frame as its arrival.
+    window.addEventListener('scroll', stop, { passive: true, capture: true })
+    window.addEventListener('resize', stop, { passive: true })
+  }
+  function activate() {
+    if (viewActive) return
+    viewActive = true
+    bindListeners()
+  }
+  function deactivate() {
+    viewActive = false
+    unbindListeners()
+    stop()
+  }
+  watch(root, () => { if (viewActive) bindListeners() }, { flush: 'post' })
+  onMounted(activate)
+  onActivated(activate)
+  onDeactivated(deactivate)
+  onBeforeUnmount(deactivate)
   // Bind success feedback to the interaction that requested deletion. Leaving,
   // scrolling or another interaction invalidates it even if storage finishes later.
   function forAction() {

@@ -1,4 +1,4 @@
-import { computed, onBeforeUnmount, onMounted, ref, type Ref } from 'vue'
+import { computed, onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, watch, type Ref } from 'vue'
 import { loadAnimeRenderer, parseAnimePsd } from '@/anime25d/loader'
 import { readAnimeCalibration, readAnimeModel, writeAnimeModel, type AnimeModel } from '@/anime25d/modelStore'
 import { useAnimeCalibration } from './useAnimeCalibration'
@@ -17,11 +17,38 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
   let focus: { width: number; height: number; x: number; y: number } | undefined
   let faceBounds: { x0: number; x1: number; y0: number; y1: number } | undefined
   let saved: AnimeModel | null = null, rendererCanvas: HTMLCanvasElement | undefined
-  let generation = 0, restoreRequest = 0, alive = true, frame = 0, lastFrame = 0, elapsed = 0
+  let generation = 0, restoreRequest = 0, alive = true, activeLifecycle = false, frame = 0, lastFrame = 0, elapsed = 0
   let mouth = 0, gazeX = 0, gazeY = 0, visible = true, battery = false
   let gazeChangedAt = -Infinity, emotion = 'neutral', presence = 'available', speaking = false
   let mouthPreviewUntil = 0
+  let cachedBounds: { x: number; y: number; width: number; height: number } | null = null
+  let boundsDirty = true
+  let pendingPointer: { x: number; y: number } | null = null
+  let pointerFrame = 0
+  let boundsObserver: ResizeObserver | null = null
   const active = computed(() => selected.value && ready.value)
+  function cancelPointerFrame() {
+    if (pointerFrame) { cancelAnimationFrame(pointerFrame); pointerFrame = 0 }
+    pendingPointer = null
+  }
+  function invalidateBounds() { boundsDirty = true }
+  function readBounds() {
+    if (!boundsDirty && cachedBounds) return cachedBounds
+    const rect = host.value?.getBoundingClientRect()
+    cachedBounds = rect && rect.width > 0 && rect.height > 0
+      ? { x: rect.left, y: rect.top, width: rect.width, height: rect.height }
+      : null
+    boundsDirty = false
+    return cachedBounds
+  }
+  function observeHost() {
+    boundsObserver?.disconnect()
+    boundsDirty = true
+    cachedBounds = null
+    if (!activeLifecycle || !host.value || typeof ResizeObserver === 'undefined') return
+    boundsObserver ??= new ResizeObserver(invalidateBounds)
+    boundsObserver.observe(host.value)
+  }
   function stop() { cancelAnimationFrame(frame); frame = 0; lastFrame = 0 }
   function dispose() {
     stop(); ready.value = false
@@ -39,7 +66,7 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
   }
   function tick(now: number) {
     frame = 0
-    if (!renderer || !performance || !visible || document.hidden) return
+    if (!activeLifecycle || !renderer || !performance || !visible || document.hidden) return
     const interval = battery || prefersReducedMotion() ? 1000 / 30 : 1000 / 60
     if (!lastFrame || now - lastFrame >= interval - 1) {
       const dt = lastFrame ? Math.min(.05, (now - lastFrame) / 1000) : 1 / 60
@@ -59,7 +86,7 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
   }
   function resume() {
     stop()
-    if (renderer && visible && !document.hidden) frame = requestAnimationFrame(tick)
+    if (activeLifecycle && renderer && visible && !document.hidden) frame = requestAnimationFrame(tick)
   }
   function cancel() {
     generation++; controller?.abort(); controller = undefined; busy.value = false
@@ -93,6 +120,7 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
       focus = { width: parsed.canvas.w, height: parsed.canvas.h, x: parsed.anchors.face.cx, y: parsed.anchors.face.cy }
       faceBounds = { ...parsed.anchors.face }
       rendererCanvas = nextCanvas; host.value.append(nextCanvas)
+      invalidateBounds()
       nextCanvas.addEventListener('webglcontextlost', contextLost)
       saved = model; selected.value = true; ready.value = true
       modelName.value = model.name; warnings.value = [...parsed.warnings]
@@ -160,15 +188,24 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
     if (Math.hypot(nx - gazeX, ny - gazeY) > .005) gazeChangedAt = elapsed
     gazeX = nx; gazeY = ny
   }
+  function flushPointer() {
+    pointerFrame = 0
+    const next = pendingPointer
+    pendingPointer = null
+    if (!next || !focus || !activeLifecycle || !visible || document.hidden) return
+    const bounds = readBounds()
+    if (bounds) setGlobalPointer(next.x, next.y, bounds)
+  }
   function pointer(event: PointerEvent) {
-    const bounds = host.value?.getBoundingClientRect()
-    if (bounds) setGlobalPointer(event.clientX, event.clientY, bounds)
+    if (!focus || !activeLifecycle || !visible || document.hidden) return
+    pendingPointer = { x: event.clientX, y: event.clientY }
+    if (!pointerFrame) pointerFrame = requestAnimationFrame(flushPointer)
   }
   function touchHead(event: MouseEvent) {
     if (!active.value || event.defaultPrevented || event.button !== 0 || event.detail > 1 || !focus || !faceBounds) return
     const target = event.target instanceof Element ? event.target : null
     if (!target?.closest('.portrait-stage') || target.closest('button,a,input,textarea,select,summary,[role="button"]')) return
-    const bounds = host.value?.getBoundingClientRect()
+    const bounds = readBounds()
     if (!bounds) return
     const scale = Math.min(bounds.width / focus.width, bounds.height / focus.height)
     const x = (event.clientX - bounds.x - (bounds.width - focus.width * scale) / 2) / scale
@@ -181,15 +218,41 @@ export function useAnime25DStage(characterId: () => string, host: Ref<HTMLElemen
     if (ready.value) fail(new Error('2.5D 图形上下文已丢失，可在角色外观中重新加载'))
   }
   let removeMotionListener: (() => void) | undefined
-  onMounted(() => {
-    removeMotionListener = listenMotionChanges(resume)
+  function activateLifecycle() {
+    if (activeLifecycle) return
+    activeLifecycle = true
+    removeMotionListener ??= listenMotionChanges(resume)
     window.addEventListener('pointermove', pointer, { passive: true })
     window.addEventListener('click', touchHead)
-  })
-  onBeforeUnmount(() => {
-    alive = false; cancel(); dispose(); removeMotionListener?.()
+    window.addEventListener('scroll', invalidateBounds, { passive: true, capture: true })
+    window.addEventListener('resize', invalidateBounds, { passive: true })
+    observeHost()
+    resume()
+  }
+  function deactivateLifecycle() {
+    activeLifecycle = false
+    stop()
+    cancelPointerFrame()
+    boundsObserver?.disconnect()
+    boundsObserver = null
+    cachedBounds = null
+    boundsDirty = true
+    removeMotionListener?.()
+    removeMotionListener = undefined
     window.removeEventListener('pointermove', pointer)
     window.removeEventListener('click', touchHead)
+    window.removeEventListener('scroll', invalidateBounds, true)
+    window.removeEventListener('resize', invalidateBounds)
+  }
+  watch(host, observeHost, { flush: 'post' })
+  onMounted(activateLifecycle)
+  onActivated(activateLifecycle)
+  onDeactivated(deactivateLifecycle)
+  onBeforeUnmount(() => {
+    alive = false
+    deactivateLifecycle()
+    cancel()
+    dispose()
   })
   return {
     selected, active, ready, busy, restoring, modelName, status, error, warnings, calibration, restore, importFile, cancel, useOriginal, retry, remove,

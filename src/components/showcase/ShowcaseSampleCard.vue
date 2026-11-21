@@ -18,10 +18,13 @@
     <div class="sample-caption" :class="{ 'sample-caption-artist': artistFeatured !== undefined }">
       <div class="sample-kicker tw:flex tw:justify-between tw:items-center tw:gap-s-2 tw:text-secondary tw:text-label-xs tw:leading-body"><span>{{ characterLabel }}</span><span v-if="featured && artistFeatured === undefined" class="sample-featured"><ArchiveIcon name="star" /><span class="sr-only">精选</span></span><span class="sample-rating tw:shrink-0 tw:text-muted">{{ ratingLabel }}</span></div>
       <h3 class="sample-title tw:text-primary tw:text-body tw:font-semibold tw:leading-body">{{ displayTitle }}</h3>
-      <button v-if="artistFeatured !== undefined && entry.artistId" class="btn btn-quiet btn-sm sample-artist-feature" type="button"
-        :aria-label="`精选画师 · ${entry.title}`" :aria-pressed="artistFeatured" @click="emit('featureArtist', entry.artistId)">
-        <ArchiveIcon :name="artistFeatured ? 'success' : 'star'" />精选
-      </button>
+      <StudioFavoriteButton
+        v-if="artistFeatured !== undefined && entry.artistId"
+        class="btn btn-quiet btn-sm sample-artist-feature"
+        :active="artistFeatured"
+        :label="`精选画师 · ${entry.title}`"
+        @click="emit('featureArtist', entry.artistId)"
+      >精选</StudioFavoriteButton>
     </div>
     <CardEdgeLight />
   </article>
@@ -31,6 +34,7 @@
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import SensitivePreviewVeil from '@/components/visual/SensitivePreviewVeil.vue'
 import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
+import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import ShowcasePreviewSource from './ShowcasePreviewSource.vue'
 import { useOpacityLeave } from '@/composables/useOpacityLeave'
 import type { ShowcaseEntry } from '@/utils/showcaseManifest'
@@ -105,7 +109,7 @@ const emit = defineEmits<{ open: [id: string]; featureArtist: [id: string] }>()
 .sample-caption-artist .sample-title { grid-column:1; align-self:center; }
 .sample-artist-feature { grid-column:2; justify-self:end; align-self:center; white-space:nowrap; }
 .sample-artist-feature[aria-pressed='true'] { border-color:var(--border-strong); background:var(--bg-elevated); color:var(--text-primary); }
-.sample-artist-feature > .archive-icon { width:1em; height:1em; }
+.sample-artist-feature :deep(.u022-heart) { width:1.05em; height:1.05em; }
 @media (pointer:coarse) { .sample-artist-feature { min-block-size:44px; } }
 @media (forced-colors:active) { .sample-artist-feature[aria-pressed='true'] { border-color:ButtonText; } }
 .sample-featured { display:inline-flex; margin-left:auto; color:var(--accent); }
@@ -119,14 +123,14 @@ const emit = defineEmits<{ open: [id: string]; featureArtist: [id: string] }>()
 }
 .sample-r18:focus-within .sample-sensitive { opacity:0; }
 @media (max-width: 480px) { .sample-caption { @apply tw:p-s-3; } .sample-title { @apply tw:text-body-sm; } }
-@media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .sample-image, :root:not([data-motion='full']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .sample-image,
-:root:is([data-motion='reduce'],[data-motion='reduced']) .sample-sensitive,
-
 @media (prefers-reduced-motion:reduce) {
+  :root:not([data-motion='full']) .sample-image,
+  :root:not([data-motion='full']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); }
   :root:not([data-motion='full']) body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
   :root:not([data-motion='full']) .sample-visual::after { transition:none; }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .sample-visual::after { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .sample-image,
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .sample-sensitive { transition:opacity var(--motion-press) var(--ease-out); }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) body .showcase-page .sample { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .sample-visual::after { transition:none; }
 </style>
