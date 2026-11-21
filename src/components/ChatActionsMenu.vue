@@ -21,7 +21,7 @@ const emit = defineEmits<{
       </button>
     </template>
     <template #default="{ run }">
-      <DropdownMenuLabel class="chat-more-label">手账与房间</DropdownMenuLabel>
+      <DropdownMenuLabel class="chat-more-label">房间与记忆</DropdownMenuLabel>
       <DropdownMenuItem v-if="canImport" class="chat-more-item" :disabled="importDisabled" @select="run(() => emit('import-card'))">
         <ArchiveIcon name="character" /><span>导入角色卡（PNG / JSON）</span>
       </DropdownMenuItem>
@@ -29,10 +29,10 @@ const emit = defineEmits<{
         <ArchiveIcon name="chat" /><span>对话归档</span>
       </DropdownMenuItem>
       <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-memory'))">
-        <ArchiveIcon name="pin" /><span>共同记忆手账</span>
+        <ArchiveIcon name="pin" /><span>长期记忆</span>
       </DropdownMenuItem>
       <DropdownMenuItem class="chat-more-item" @select="run(() => emit('toggle-profile'))">
-        <ArchiveIcon name="character" /><span>关系便签卡</span>
+        <ArchiveIcon name="character" /><span>我的档案</span>
       </DropdownMenuItem>
       <DropdownMenuSeparator class="chat-more-separator" />
       <DropdownMenuItem class="chat-more-item is-danger" @select="run(() => emit('clear-all'))">

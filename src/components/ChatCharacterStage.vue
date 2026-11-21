@@ -1,9 +1,6 @@
 <template>
   <aside class="character-card open-character-stage" :class="{ 'local-model-stage': getCompanionCharacter(activeId)?.tags?.includes('local-import') }" :data-character="activeId" :data-surface="surface" :style="framingStyle">
-    <header v-if="surface !== 'companion'" class="room-signal">
-      <span>{{ roomPlaqueTitle }}</span>
-      <small v-if="character.roomMood">{{ character.roomMood }}</small>
-    </header>
+
     <div
       ref="stageRef"
       class="portrait-stage"
@@ -16,21 +13,11 @@
       role="region" tabindex="-1"
       :aria-label="`${character.name}的角色舞台`"
     >
-      <RoomAtmosphereParticles
-        v-if="surface !== 'companion'"
-        :character-id="activeId"
-        :enabled="ambientParticlesEnabled"
-        :suspended="suspended"
-      />
-      <Transition name="anime-portrait">
-        <img
-          v-if="portraitImage.src && !portraitFailed"
-          v-bind="portraitImage"
-          class="portrait-main"
-          :class="{ 'portrait-decoded': portraitLoaded }"
-          :alt="character.name"
-        />
-      </Transition>
+      <div class="room-signal">
+        <span>{{ character.roomCode }}</span>
+        <small>{{ character.roomMood }}</small>
+      </div>
+      <img v-if="portraitImage.src && !portraitFailed" v-bind="portraitImage" class="portrait-main" :class="{ 'portrait-decoded': portraitLoaded }" :alt="character.name" />
       <div v-if="!portraitLoaded && !portraitFailed && !live2dReady && !anime.active.value" class="stage-portrait-feedback stage-portrait-loading" role="status">
         <ArchiveIcon name="image" /><div><strong>{{ character.name }}</strong><span>{{ portraitImage.src ? '正在加载立绘…' : '暂无静态立绘，可加载动态立绘' }}</span></div>
       </div>
@@ -44,7 +31,7 @@
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
         {{ live2d.interactionHint.value }}
       </div>
-      <StudioTooltip v-if="surface === 'companion' && !anime.selected.value && avatarState !== 'idle'" anchor :content="avatarActionTitle">
+      <StudioTooltip v-if="!anime.selected.value && avatarState !== 'idle'" anchor :content="avatarActionTitle">
         <button
           class="avatar-status"
           type="button"
@@ -54,7 +41,7 @@
         >{{ avatarText }}</button>
       </StudioTooltip>
       <button
-        v-if="surface === 'companion' && !anime.selected.value && avatarState === 'idle'"
+        v-if="!anime.selected.value && avatarState === 'idle'"
         class="live2d-enable-cta"
         type="button"
         @click.stop="handleAvatarAction"
@@ -67,190 +54,90 @@
 
     <div class="character-info">
       <div class="character-info-head">
-        <span class="character-accent-dot" aria-hidden="true" />
         <strong class="character-name">{{ character.name }}</strong>
         <div class="character-status">
           <span class="status-dot" :class="statusKind"></span>
           <span>{{ chatStatusText }}</span>
         </div>
       </div>
-      <div class="character-stage-bar-actions">
-        <StudioTooltip v-if="surface !== 'companion' && !anime.selected.value && avatarState !== 'ready'" anchor :content="avatarActionTitle">
-          <button type="button" class="btn btn-quiet btn-sm room-avatar-action" :disabled="!avatarActionable" @click="handleAvatarAction">
-            {{ avatarState === 'idle' ? '加载动态立绘' : avatarText }}
-          </button>
-        </StudioTooltip>
+      <button v-if="localStudio && surface !== 'companion'" type="button" class="btn btn-ghost" @click="openModelStudio">导入或校准模型</button>
+      <CharacterStageSettings ref="controlsRef" :companion="surface === 'companion'" :character-id="activeId">
+      <Anime25DSettings :runtime="anime" />
+      <button v-if="localStudio && surface === 'companion'" type="button" class="btn btn-ghost" @click="openModelStudio">导入或校准模型</button>
+      <details class="character-about">
+        <StudioDisclosureSummary>关于{{ character.name }}</StudioDisclosureSummary>
+        <p class="character-caption">{{ character.caption }}</p>
+        <p class="character-description">{{ character.description }}</p>
+      </details>
+      <div
+        v-if="live2d.ready.value"
+        class="live2d-wardrobe"
+        :class="{ open: wardrobeOpen }"
+        @click.stop
+        @keydown.esc="onWardrobeEscape"
+      >
         <div
-          v-if="surface !== 'companion' && live2d.ready.value"
-          class="live2d-wardrobe live2d-wardrobe-capsule"
-          :class="{ open: wardrobeOpen }"
-          @click.stop
-          @keydown.esc="onWardrobeEscape"
+          v-if="outfitOptions.length <= 1"
+          class="wardrobe-trigger wardrobe-static"
+          role="status"
+          :aria-label="`${character.name}当前只有${activeOutfitLabel}`"
         >
-          <span
-            v-if="outfitOptions.length <= 1"
-            class="wardrobe-capsule wardrobe-static"
-            role="status"
-            :aria-label="`${character.name}当前衣装：${activeOutfitLabel}`"
-          >
-            <ArchiveIcon name="wardrobe" aria-hidden="true" />
-            <span>{{ activeOutfitLabel }}</span>
+          <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
+          <span class="wardrobe-copy">
+            <small>SINGLE COSTUME</small>
+            <strong>{{ activeOutfitLabel }}</strong>
           </span>
-          <button
-            v-else
-            ref="wardrobeTriggerRef"
-            class="wardrobe-capsule"
-            type="button"
-            :aria-expanded="wardrobeOpen"
-            :aria-controls="`${activeId}-wardrobe-menu`"
-            @click="wardrobeOpen = !wardrobeOpen"
-          >
-            <ArchiveIcon name="wardrobe" aria-hidden="true" />
-            <span>{{ activeOutfitLabel }}</span>
-            <ArchiveIcon class="wardrobe-chevron" name="chevron-down" aria-hidden="true" />
-          </button>
-          <div
-            v-if="outfitOptions.length > 1 && wardrobeOpen"
-            :id="`${activeId}-wardrobe-menu`"
-            class="wardrobe-menu wardrobe-menu-popover" data-fluid-glass v-content-motion:down="wardrobeOpen"
-            role="group"
-            :aria-label="`${character.name}服装`"
-          >
-            <span class="wardrobe-menu-title">切换衣装</span>
-            <button
-              v-for="option in outfitOptions"
-              :key="option.id"
-              class="wardrobe-option"
-              type="button"
-              :aria-pressed="outfit === option.id"
-              :class="{ active: outfit === option.id }"
-              :disabled="outfitBusy"
-              @click="handleOutfitChange(option.id)"
-            >
-              <span>{{ option.label }}</span>
-              <ArchiveIcon v-if="outfit === option.id" class="wardrobe-check" name="success" aria-hidden="true" />
-            </button>
-          </div>
         </div>
-        <StudioTooltip v-if="surface !== 'companion'" :content="ambientParticlesEnabled ? '隐藏前景氛围光尘' : '开启前景氛围光尘'">
+        <button
+          v-else
+          ref="wardrobeTriggerRef"
+          class="wardrobe-trigger"
+          type="button"
+          :aria-expanded="wardrobeOpen"
+          :aria-controls="`${activeId}-wardrobe-menu`"
+          @click="wardrobeOpen = !wardrobeOpen"
+        >
+          <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
+          <span class="wardrobe-copy">
+            <small>WARDROBE</small>
+            <strong>{{ activeOutfitLabel }}</strong>
+          </span>
+          <ArchiveIcon class="wardrobe-chevron" name="chevron-down" aria-hidden="true" />
+        </button>
+        <div
+          v-if="outfitOptions.length > 1 && wardrobeOpen"
+          :id="`${activeId}-wardrobe-menu`"
+          class="wardrobe-menu" data-fluid-glass v-content-motion:down="wardrobeOpen"
+          role="group"
+          :aria-label="`${character.name}服装`"
+        >
+          <span class="wardrobe-menu-title">选择服装</span>
           <button
+            v-for="option in outfitOptions"
+            :key="option.id"
+            class="wardrobe-option"
             type="button"
-            class="btn btn-ghost btn-icon btn-sm stage-bar-icon-btn"
-            aria-label="前景氛围光尘"
-            :aria-pressed="ambientParticlesEnabled"
-            @click="toggleAmbientParticles"
+            :aria-pressed="outfit === option.id"
+            :class="{ active: outfit === option.id }"
+            :disabled="outfitBusy"
+            @click="handleOutfitChange(option.id)"
           >
-            <ArchiveIcon :name="activeId === 'nene' ? 'flower' : 'spark'" />
+            <span>{{ option.label }}</span>
+            <i aria-hidden="true"></i>
           </button>
-        </StudioTooltip>
-        <CharacterStageSettings ref="controlsRef" :companion="surface === 'companion'" :character-id="activeId">
-          <Anime25DSettings :runtime="anime" />
-          <button v-if="localStudio" type="button" class="btn btn-ghost" @click="openModelStudio">导入或校准模型</button>
-          <details class="character-about">
-            <StudioDisclosureSummary>关于{{ character.name }}</StudioDisclosureSummary>
-            <p class="character-caption">{{ character.caption }}</p>
-            <p class="character-description">{{ character.description }}</p>
-          </details>
-          <div
-            v-if="surface === 'companion' && live2d.ready.value"
-            class="live2d-wardrobe"
-            :class="{ open: wardrobeOpen }"
-            @click.stop
-            @keydown.esc="onWardrobeEscape"
-          >
-            <div
-              v-if="outfitOptions.length <= 1"
-              class="wardrobe-trigger wardrobe-static"
-              role="status"
-              :aria-label="`${character.name}当前只有${activeOutfitLabel}`"
-            >
-              <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
-              <span class="wardrobe-copy">
-                <small>当前衣装</small>
-                <strong>{{ activeOutfitLabel }}</strong>
-              </span>
-            </div>
-            <button
-              v-else
-              ref="wardrobeTriggerRef"
-              class="wardrobe-trigger"
-              type="button"
-              :aria-expanded="wardrobeOpen"
-              :aria-controls="`${activeId}-wardrobe-menu`"
-              @click="wardrobeOpen = !wardrobeOpen"
-            >
-              <span class="wardrobe-symbol" aria-hidden="true"><ArchiveIcon name="wardrobe" /></span>
-              <span class="wardrobe-copy">
-                <small>衣装切换</small>
-                <strong>{{ activeOutfitLabel }}</strong>
-              </span>
-              <ArchiveIcon class="wardrobe-chevron" name="chevron-down" aria-hidden="true" />
-            </button>
-            <div
-              v-if="outfitOptions.length > 1 && wardrobeOpen"
-              :id="`${activeId}-wardrobe-menu`"
-              class="wardrobe-menu" data-fluid-glass v-content-motion:down="wardrobeOpen"
-              role="group"
-              :aria-label="`${character.name}服装`"
-            >
-              <span class="wardrobe-menu-title">选择服装</span>
-              <button
-                v-for="option in outfitOptions"
-                :key="option.id"
-                class="wardrobe-option"
-                type="button"
-                :aria-pressed="outfit === option.id"
-                :class="{ active: outfit === option.id }"
-                :disabled="outfitBusy"
-                @click="handleOutfitChange(option.id)"
-              >
-                <span>{{ option.label }}</span>
-                <ArchiveIcon v-if="outfit === option.id" class="wardrobe-check" name="success" aria-hidden="true" />
-              </button>
-            </div>
-          </div>
-          <Live2DQualityControl />
-          <button v-if="live2d.ready.value" type="button" class="btn btn-ghost" @click="handleAvatarAction">切换为静态立绘</button>
-          <fieldset v-if="live2d.ready.value || anime.active.value" class="stage-framing">
-            <legend>角色取景</legend>
-            <StudioSlider
-              :model-value="framing.zoom"
-              :min="0.65"
-              :max="2.2"
-              :step="0.05"
-              label="大小"
-              :format-value="(value: number) => `${Math.round(value * 100)}%`"
-              compact
-              :character="activeId"
-              @update:model-value="updateFraming('zoom', $event)"
-            />
-            <StudioSlider
-              :model-value="framing.x"
-              :min="-25"
-              :max="25"
-              :step="1"
-              label="左右"
-              :format-value="(value: number) => `${value > 0 ? '+' : ''}${value}%`"
-              compact
-              :character="activeId"
-              @update:model-value="updateFraming('x', $event)"
-            />
-            <StudioSlider
-              :model-value="framing.y"
-              :min="-25"
-              :max="25"
-              :step="1"
-              label="高低"
-              :format-value="(value: number) => `${value > 0 ? '+' : ''}${value}%`"
-              compact
-              :character="activeId"
-              @update:model-value="updateFraming('y', $event)"
-            />
-            <button class="btn btn-ghost" type="button" @click="resetFraming">恢复默认取景</button>
-          </fieldset>
-          <Live2DCapabilityReport v-if="live2d.adapterReport.value" :report="live2d.adapterReport.value" />
-        </CharacterStageSettings>
+        </div>
       </div>
+      <Live2DQualityControl />
+      <button v-if="live2d.ready.value" type="button" class="btn btn-ghost" @click="handleAvatarAction">切换为静态立绘</button>
+      <fieldset v-if="live2d.ready.value || anime.active.value" class="stage-framing">
+        <legend>角色取景</legend>
+        <label>大小 <input type="range" min="0.65" max="2.2" step="0.05" :value="framing.zoom" aria-label="角色大小" @input="updateFraming('zoom', Number(($event.target as HTMLInputElement).value))" /></label>
+        <label>左右 <input type="range" min="-25" max="25" step="1" :value="framing.x" aria-label="角色左右位置" @input="updateFraming('x', Number(($event.target as HTMLInputElement).value))" /></label>
+        <label>高低 <input type="range" min="-25" max="25" step="1" :value="framing.y" aria-label="角色高低位置" @input="updateFraming('y', Number(($event.target as HTMLInputElement).value))" /></label>
+        <button class="btn btn-ghost" type="button" @click="resetFraming">恢复默认取景</button>
+      </fieldset>
+      <Live2DCapabilityReport v-if="live2d.adapterReport.value" :report="live2d.adapterReport.value" />
+      </CharacterStageSettings>
     </div>
   </aside>
   <Teleport to="body">
@@ -292,9 +179,7 @@ import CharacterStageSettings from '@/components/CharacterStageSettings.vue'
 import { useLive2DPreferences } from '@/composables/live2d/preferences'
 import { useStageFraming } from '@/composables/chat/useStageFraming'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
-import StudioSlider from '@/components/ui/StudioSlider.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
-import RoomAtmosphereParticles from '@/components/chat/RoomAtmosphereParticles.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { isBackdropClick, useFluidDialog } from '@/composables/useFluidDialog'
 import '@/assets/css/character-stage.css'
@@ -318,19 +203,6 @@ const emit = defineEmits<{
 
 const stageRef = ref<HTMLElement>()
 const animeHostRef = ref<HTMLElement>()
-const ROOM_PARTICLES_KEY = 'huiyu_room_ambient_particles'
-const ambientParticlesEnabled = ref((() => {
-  try { return localStorage.getItem(ROOM_PARTICLES_KEY) === 'on' } catch { return false }
-})())
-function toggleAmbientParticles() {
-  ambientParticlesEnabled.value = !ambientParticlesEnabled.value
-  try { localStorage.setItem(ROOM_PARTICLES_KEY, ambientParticlesEnabled.value ? 'on' : 'off') } catch { /* optional preference */ }
-}
-const ROOM_PLAQUE_NAMES: Record<string, string> = {
-  nene: '月下研究室',
-  natsume: '闭店后的 Café Stella',
-}
-const roomPlaqueTitle = computed(() => ROOM_PLAQUE_NAMES[props.activeId] || props.character.roomCode)
 const anime = useAnime25DStage(() => props.activeId, animeHostRef)
 watch(() => props.presence, value => anime.setPresence(value || 'available'), { immediate: true })
 const staticPortraitSource = computed(() => props.surface === 'companion' ? props.character.image

@@ -84,10 +84,10 @@ html.companion-mode:not(.companion-desktop) body {
 }
 
 .companion-page .portrait-stage::before {
-  inset: 14% -8% 2%;
+  inset: 14% -12% 3%;
   border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 72%, color-mix(in srgb, var(--character-accent) 26%, transparent), color-mix(in srgb, var(--character-accent) 8%, transparent) 44%, transparent 72%);
-  filter: none;
+  background: radial-gradient(ellipse at center bottom, color-mix(in srgb, var(--character-accent) 32%, transparent), transparent 66%);
+  filter: blur(24px);
   opacity: .72;
   transform: scale(.98);
   transform-origin: 50% 82%;
@@ -96,17 +96,18 @@ html.companion-mode:not(.companion-desktop) body {
 
 .companion-page[data-presence="attentive"] .portrait-stage::before,
 .companion-page[data-presence="listening"] .portrait-stage::before {
-  opacity: .9;
+  opacity: .88;
   transform: scale(1.015);
 }
 
 .companion-page[data-presence="thinking"] .portrait-stage::before {
-  opacity: .84;
+  opacity: .82;
   transform: scale(1.01) translateY(-2px);
 }
 
 .companion-page[data-presence="speaking"] .portrait-stage::before {
   opacity: 1;
+  filter: blur(20px) saturate(1.16);
   transform: scale(1.035);
 }
 
@@ -257,32 +258,29 @@ html.companion-mode:not(.companion-desktop) body {
 .companion-page .companion-bubble {
   max-width: min(92%, 640px);
   padding: 10px 14px;
-  border: 1px solid var(--border-soft);
+  border-color: var(--companion-edge);
   border-radius: var(--r-lg) var(--r-lg) var(--r-lg) var(--r-terminal);
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--glass-highlight);
-  backdrop-filter: none;
+  background: color-mix(in srgb, var(--art-scrim) 74%, transparent);
+  color: var(--companion-ink);
+  box-shadow: var(--shadow-md), inset 0 1px 0 var(--companion-highlight);
+  backdrop-filter: blur(16px) saturate(125%);
 }
 
 .companion-page .companion-empty > span,
 .companion-page .companion-bubble > span {
-  color: var(--character-ink, var(--character-accent));
-  font: 600 var(--fs-label-xs)/var(--lh-tight) var(--font-serif);
+  color: color-mix(in srgb, var(--character-accent) 82%, var(--companion-ink));
 }
 
 .companion-page .companion-empty p,
 .companion-page .companion-bubble p {
-  color: var(--text-primary);
+  color: var(--companion-ink);
   @apply tw:text-body-sm tw:leading-body;
-  text-shadow: none;
+  text-shadow: 0 1px 10px color-mix(in srgb, var(--bg-deep) 30%, transparent);
 }
 
 .companion-page .companion-bubble.user {
-  border-color: color-mix(in srgb, var(--character-accent) 26%, var(--border-soft));
   border-radius: var(--r-lg) var(--r-lg) var(--r-terminal) var(--r-lg);
-  background: color-mix(in srgb, var(--character-accent) 12%, var(--bg-surface));
-  color: var(--text-primary);
+  background: color-mix(in srgb, var(--character-accent) 28%, var(--art-scrim));
 }
 
 @media (max-width: 600px) {

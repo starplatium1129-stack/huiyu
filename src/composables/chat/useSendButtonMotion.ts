@@ -54,10 +54,10 @@ export function useSendButtonMotion(options: {
     flying.value = true
     animations.push(plane.value.animate(flightFrames(), { duration:1500, easing:'cubic-bezier(.45,0,.3,1)', fill:'both' }))
     const bubble = [...(options.messageHost()?.querySelectorAll<HTMLElement>('[data-mid]') ?? [])].find(element => element.dataset.mid === id)
-    if (bubble && bubble.getClientRects().length > 0) animations.push(bubble.animate([
-      { opacity:0, transform:'translate3d(6px,12px,0) scale(.94)', transformOrigin:'100% 100%' },
+    if (bubble) animations.push(bubble.animate([
+      { opacity:0, transform:'translate(10px,18px) scale(.6)', transformOrigin:'100% 100%' },
       { opacity:1, transform:'none', transformOrigin:'100% 100%' },
-    ], { duration:380, easing:'cubic-bezier(.22,1,.36,1)' }))
+    ], { duration:500, easing:'cubic-bezier(.3,1.5,.5,1)' }))
     flightTimer = setTimeout(() => {
       if (request !== revision) return
       flying.value = false

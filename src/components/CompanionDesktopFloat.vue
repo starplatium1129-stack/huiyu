@@ -1,5 +1,5 @@
 <template>
-  <footer class="companion-desktop-footer">
+  <div class="companion-desktop-float">
     <CompanionReplyBubble :text="replyAnnouncement" :name="characterName" @open="emit('open-chat')" />
     <div v-if="chatError" class="companion-float-error" role="alert">{{ chatError }}</div>
     <TransitionGroup name="reminder-pop" tag="div" class="companion-float-reminders" role="log" aria-label="角色主动问候">
@@ -26,13 +26,13 @@
         </button>
       </StudioTooltip>
       <slot v-if="showWatch" name="watch" />
-      <slot v-if="showActions" name="import-recovery" />
+      <slot name="import-recovery" />
     </div>
-    <span v-if="liveDotState !== 'idle'" class="companion-live-dot" :data-state="liveDotState" role="status" aria-live="polite">
+    <span class="companion-live-dot" :data-state="liveDotState" role="status" aria-live="polite">
       <i aria-hidden="true"></i>{{ liveDotText }}
     </span>
     <span v-if="speechCapturing || speechAutoListening" class="companion-mic-status" role="status">{{ speechCapturing ? '正在聆听' : '听候唤醒' }}</span>
-  </footer>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -52,7 +52,6 @@ defineProps<{
   speechAutoListening: boolean
   showWatch: boolean
   showChat: boolean
-  showActions: boolean
 }>()
 
 const emit = defineEmits<{

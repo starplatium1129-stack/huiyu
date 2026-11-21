@@ -5,6 +5,7 @@
   ============================================================ */
 .chat-page .message {
   @apply tw:flex tw:items-end tw:gap-s-2 tw:max-w-[78%];
+  animation: message-in .22s ease both;
 }
 
 .chat-page .message.user {
@@ -59,6 +60,14 @@
   border-color: color-mix(in srgb, var(--accent) 28%, var(--border-soft));
   border-radius: var(--r-lg) 2px var(--r-lg) var(--r-lg);
   background: var(--accent-soft);
+}
+
+.chat-page .message.streaming .message-bubble::after {
+  @apply tw:inline-block tw:w-[5px] tw:h-[1em] tw:ml-[3px];
+  animation: cursor-blink .8s steps(2, end) infinite;
+  background: var(--accent);
+  content: "";
+  vertical-align: -2px;
 }
 
 .chat-page .message-note { color:var(--text-secondary); font-size:var(--fs-label-xs); }
@@ -159,6 +168,15 @@
   @apply tw:text-secondary;
 }
 
+@keyframes cursor-blink {
+  50% { opacity: 0; }
+}
+
 @keyframes status-blink {
   50% { opacity: .35; }
+}
+
+@keyframes message-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
 }

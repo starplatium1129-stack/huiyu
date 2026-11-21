@@ -19,8 +19,6 @@ import {
 } from '@/utils/companionEvents'
 import { COMPANION_BEHAVIOR_KEY } from '@/utils/storageKeys'
 
-const DESKTOP_GREETING_DURATION_MS = 12_000
-
 export interface CompanionBehaviorRuntimeDeps {
   activeChar: Ref<string>
   desktopBridge?: CompanionDesktopBridge
@@ -70,7 +68,6 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   let lastActivityAt = Date.now()
   let greetedSlotKey = ''
   let alive = true
-  const greetingTimers = new Map<string, number>()
 
   function readBehaviorConfig() {
     try {
@@ -90,19 +87,6 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     pendingReminders.value = behaviorEnabled.value && !dnd.value && !inQuietHours.value ? behavior.pending().slice() : []
   }
 
-  function clearGreetingTimers() {
-    for (const timer of greetingTimers.values()) window.clearTimeout(timer)
-    greetingTimers.clear()
-  }
-
-  function showAutomaticGreeting(reminder: CompanionReminder) {
-    if (desktopBridge) {
-      const { id } = reminder
-      greetingTimers.set(id, window.setTimeout(() => dismissReminder(id), DESKTOP_GREETING_DURATION_MS))
-    }
-    syncReminders()
-  }
-
   function noteActivity() {
     behavior.noteActivity()
     lastActivityAt = Date.now()
@@ -119,12 +103,10 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   }
 
   /** 带台词轮转入队：先轮转 offset 再取词（返回/导入问候路径）。 */
-  function noteReturn(pickLine: (offset: number) => string, { automatic = false } = {}) {
+  function noteReturn(pickLine: (offset: number) => string) {
     reminderLineOffset += 1
     const reminder = behavior.noteReturn(pickLine(reminderLineOffset))
-    if (!reminder) return
-    if (automatic) showAutomaticGreeting(reminder)
-    else syncReminders()
+    if (reminder) syncReminders()
   }
 
   /** 不轮转台词序号的入队（剪贴板固定话术路径）。 */
@@ -144,8 +126,6 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   }
 
   function dismissReminder(id: string) {
-    window.clearTimeout(greetingTimers.get(id))
-    greetingTimers.delete(id)
     behavior.dismiss(id)
     syncReminders()
   }
@@ -164,7 +144,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     const greeting = pickEnvironmentGreeting(activeChar.value, new Date(), reminderLineOffset)
     reminderLineOffset += 1
     const reminder = behavior.noteReturn(greeting.line)
-    if (reminder) { greetedSlotKey = key; showAutomaticGreeting(reminder) }
+    if (reminder) { greetedSlotKey = key; syncReminders() }
   }
 
   function runBehaviorTick() {
@@ -173,7 +153,7 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
     if (reminder) {
       reminderLineOffset += 1
       reminder.line = pickCompanionLine(activeChar.value, 'idle', reminderLineOffset)
-      showAutomaticGreeting(reminder)
+      syncReminders()
     }
     // 跨时间片（午→下午、工作日→周末）时给一条环境问候
     if (alive && desktopWindowVisible()) maybeGreetByTime()
@@ -256,7 +236,6 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
   }
   watch(activeChar, () => {
     resetEventDetector()
-    clearGreetingTimers()
     behavior.clear(); greetedSlotKey = ''
     syncReminders(); maybeGreetByTime()
   })
@@ -273,7 +252,6 @@ export function useCompanionBehaviorRuntime(deps: CompanionBehaviorRuntimeDeps) 
 
   onUnmounted(() => {
     alive = false
-    clearGreetingTimers()
     stopSource()
     eventPollController?.abort()
     window.removeEventListener('storage', onBehaviorStorage)

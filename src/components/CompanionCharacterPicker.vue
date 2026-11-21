@@ -26,7 +26,7 @@ const name = computed(() => getCompanionCharacter(props.modelValue)?.name || 'é€
 .companion-picker { width:100%; min-width:0; max-width:220px; }
 .companion-picker-trigger { display:flex; align-items:center; gap:var(--s-2); max-width:100%; min-height:var(--control-height-sm); padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-primary); font:inherit; text-align:left; cursor:pointer; }
 .companion-picker-trigger:hover { background:var(--bg-hover); }
-.companion-picker-trigger:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.companion-picker-trigger:focus-visible { outline:2px solid var(--accent); outline-offset:2px; }
 .companion-picker-trigger > .archive-icon { flex:none; width:16px; height:16px; color:var(--text-secondary); }
 .companion-picker-copy { display:grid; min-width:0; }
 .companion-picker-copy strong { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font:600 var(--fs-label)/var(--lh-label) var(--font-sans); }

@@ -10,13 +10,9 @@ export function usePetGestures(bridge: import('@/types/desktop').CompanionDeskto
     if (!bridge || event.target instanceof Element && event.target.closest('input,textarea')) return
     event.preventDefault(); controlsOpen.value = !controlsOpen.value
   }
-  function closeControls() { controlsOpen.value = false }
-  function onWindowBlur() {
-    if (controlsOpen.value && !document.querySelector('dialog[open], [aria-modal="true"]')) closeControls()
-  }
   function beginDrag(event: PointerEvent) {
     if (!bridge || event.button !== 0 || interactive(event.target)) return
-    closeControls()
+    controlsOpen.value = false
     if (event.target instanceof Element && event.target.closest('.portrait-stage')) origin = { x: event.clientX, y: event.clientY }
   }
   async function move(event: PointerEvent) {
@@ -37,24 +33,12 @@ export function usePetGestures(bridge: import('@/types/desktop').CompanionDeskto
   }
   function key(event: KeyboardEvent) {
     if (!bridge || event.defaultPrevented || document.querySelector('dialog[open]')) return
-    if (event.key === 'Escape') closeControls()
+    if (event.key === 'Escape') controlsOpen.value = false
     if (event.key === 'ContextMenu' || event.shiftKey && event.key === 'F10') {
       event.preventDefault(); controlsOpen.value = !controlsOpen.value
     }
   }
-  onMounted(() => {
-    window.addEventListener('pointermove', move, { passive: false })
-    window.addEventListener('pointerup', endDrag)
-    window.addEventListener('pointercancel', endDrag)
-    window.addEventListener('keydown', key)
-    window.addEventListener('blur', onWindowBlur)
-  })
-  onUnmounted(() => {
-    window.removeEventListener('pointermove', move)
-    window.removeEventListener('pointerup', endDrag)
-    window.removeEventListener('pointercancel', endDrag)
-    window.removeEventListener('keydown', key)
-    window.removeEventListener('blur', onWindowBlur)
-  })
+  onMounted(() => { window.addEventListener('pointermove', move, { passive: false }); window.addEventListener('pointerup', endDrag); window.addEventListener('pointercancel', endDrag); window.addEventListener('keydown', key) })
+  onUnmounted(() => { window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', endDrag); window.removeEventListener('pointercancel', endDrag); window.removeEventListener('keydown', key) })
   return { controlsOpen, contextMenu, beginDrag, click, doubleClick }
 }

@@ -5,16 +5,8 @@ html.companion-desktop:has(.companion-redesign) body::before, html.companion-des
 /* Native modal backdrops cover the transparent pet window, including other apps beneath it. */
 html.companion-desktop dialog[data-fluid-dialog]::backdrop { background:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; }
 .companion-redesign .portrait-stage .live2d-host, .companion-redesign .live2d-host > *, .companion-redesign .live2d-host canvas, .companion-redesign .portrait-main { filter: none; box-shadow: none; }
-.companion-redesign::before, .companion-redesign::after, .companion-redesign .room-signal, .companion-redesign .portrait-stage::after { @apply tw:hidden; }
-html:not(.companion-desktop) .companion-redesign .portrait-stage::before {
-  display: block;
-  inset: 12% 8% 18%;
-  border-radius: 50%;
-  background: radial-gradient(ellipse at 50% 62%, color-mix(in srgb, var(--character-accent, var(--accent)) 22%, transparent), color-mix(in srgb, var(--character-accent, var(--accent)) 6%, transparent) 48%, transparent 74%);
-  filter: none;
-  pointer-events: none;
-}
-.companion-redesign .companion-toolbar { --companion-ink: var(--text-primary); --companion-ink-soft: var(--text-secondary); inset: var(--s-3) var(--s-3) auto; @apply tw:min-h-[48px] tw:p-s-2; border: 1px solid var(--border-soft); @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:text-primary; box-shadow: var(--shadow-sm); backdrop-filter: none; }
+.companion-redesign::before, .companion-redesign::after, .companion-redesign .room-signal, .companion-redesign .portrait-stage::before, .companion-redesign .portrait-stage::after { @apply tw:hidden; }
+.companion-redesign .companion-toolbar { --companion-ink: var(--text-primary); --companion-ink-soft: var(--text-secondary); inset: var(--s-3) var(--s-3) auto; @apply tw:min-h-[48px] tw:p-s-2; border: 0; @apply tw:rounded-lg; background: var(--bg-surface); @apply tw:text-primary; box-shadow: none; backdrop-filter: none; }
 .companion-redesign .companion-toolbar .companion-identity > span { @apply tw:text-secondary; text-shadow: none; }
 .companion-redesign .companion-toolbar .companion-identity h1 { @apply tw:text-primary; text-shadow: none; }
 .companion-redesign .companion-identity { flex-shrink:0; }
@@ -32,145 +24,15 @@ html:not(.companion-desktop) .companion-redesign .live2d-enable-cta-kicker { dis
 .companion-redesign .portrait-stage { inset: 0; }
 .companion-redesign .live2d-host { inset: 76px 0 210px; }
 .companion-redesign .portrait-main { @apply tw:bottom-[210px]; max-height: calc(100% - 290px); }
-.companion-redesign .avatar-status[data-state="ready"], .companion-redesign .live2d-interaction-hint { @apply tw:hidden; }
-html:not(.companion-desktop) .companion-redesign .companion-presence-cue {
-  top: 72px;
-  border: 1px solid color-mix(in srgb, var(--character-accent, var(--accent)) 28%, var(--border-soft));
-  background: color-mix(in srgb, var(--bg-surface) 92%, transparent);
-  color: var(--text-secondary);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: none;
-}
+.companion-redesign .avatar-status[data-state="ready"], .companion-redesign .live2d-interaction-hint, .companion-redesign .companion-presence-cue { @apply tw:hidden; }
 .companion-redesign .companion-conversation { background: transparent; box-shadow: none; border: 0; @apply tw:p-s-3; }
-.companion-redesign .companion-bubbles { @apply tw:max-h-[112px]; }
-.companion-page.companion-redesign .companion-empty,
-.companion-page.companion-redesign .companion-bubble {
-  position: relative;
-  border: 1px solid var(--border-soft);
-  background: var(--bg-surface);
-  color: var(--text-primary);
-  box-shadow: var(--shadow-sm);
-  backdrop-filter: none;
-}
-.companion-page.companion-redesign :is(.companion-empty, .companion-bubble:not(.user)) {
-  padding-inline-start: calc(var(--s-3) + var(--s-1));
-}
-.companion-page.companion-redesign :is(.companion-empty, .companion-bubble:not(.user))::before {
-  content: "";
-  position: absolute;
-  left: -1px;
-  top: 10px;
-  bottom: 10px;
-  width: 3px;
-  border-radius: var(--r-pill);
-  background: var(--character-accent, var(--accent));
-}
-.companion-page.companion-redesign :is(.companion-empty, .companion-bubble) > span {
-  color: var(--character-ink, var(--character-accent, var(--accent)));
-  font: 600 var(--fs-label-xs)/var(--lh-tight) var(--font-serif);
-}
-.companion-page.companion-redesign :is(.companion-empty, .companion-bubble) p {
-  color: var(--text-primary);
-  font: 400 var(--fs-body-sm)/var(--lh-body) var(--font-serif);
-  text-shadow: none;
-}
-.companion-page.companion-redesign .companion-empty p {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-.companion-page.companion-redesign .companion-bubble.user {
-  border-color: color-mix(in srgb, var(--character-accent, var(--accent)) 28%, var(--border-soft));
-  background: color-mix(in srgb, var(--character-accent, var(--accent)) 12%, var(--bg-surface));
-  color: var(--text-primary);
-}
-.companion-page.companion-redesign .companion-bubble.user > span {
-  color: var(--text-secondary);
-  font-family: var(--font-sans);
-}
-.companion-page.companion-redesign .companion-bubble.user p {
-  font-family: var(--font-sans);
-}
-:root[data-theme="light"] .companion-page.companion-redesign {
-  --character-ink: color-mix(in srgb, var(--character-accent, var(--accent)) 42%, var(--ink-base));
-}
-.companion-bond-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-2);
-  min-height: var(--control-height-sm);
-  padding: 0 var(--s-3);
-  border: 1px solid color-mix(in srgb, var(--character-accent, var(--accent)) 28%, var(--border-soft));
-  border-radius: var(--r-pill);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-  font: 500 var(--fs-label-xs)/var(--lh-flush) var(--font-sans);
-}
-.companion-bond-level {
-  padding: 2px 6px;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--character-accent, var(--accent)) 16%, var(--bg-surface));
-  color: var(--character-ink, var(--character-accent, var(--accent)));
-  font: 700 var(--fs-mono-xs)/var(--lh-flush) var(--font-mono);
-}
-.companion-bond-title {
-  color: var(--text-primary);
-  font: 600 var(--fs-label-xs)/var(--lh-flush) var(--font-serif);
-}
-.companion-bond-meter {
-  display: inline-flex;
-  align-items: center;
-  gap: 3px;
-}
-.companion-bond-meter > i {
-  width: 6px;
-  height: 6px;
-  border-radius: var(--r-pill);
-  background: color-mix(in srgb, var(--text-muted) 26%, transparent);
-}
-.companion-bond-meter > i[data-filled] {
-  background: var(--character-accent, var(--accent));
-}
-.companion-bond-score {
-  color: var(--text-secondary);
-  font: 600 var(--fs-mono-xs)/var(--lh-flush) var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-.companion-pop-bond {
-  display: grid;
-  gap: var(--s-1);
-  padding: var(--s-2) var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-inline-start: 3px solid var(--character-accent, var(--accent));
-  border-radius: var(--r-md);
-  background: var(--bg-elevated);
-}
-.companion-pop-bond-head {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-}
-.companion-pop-bond-head strong {
-  color: var(--text-primary);
-  font: 600 var(--fs-label-sm)/var(--lh-tight) var(--font-serif);
-}
-.companion-pop-bond-score {
-  margin-inline-start: auto;
-  color: var(--text-secondary);
-  font: 600 var(--fs-mono-xs)/var(--lh-flush) var(--font-mono);
-  font-variant-numeric: tabular-nums;
-}
-.companion-pop-bond small {
-  color: var(--text-secondary);
-  font: 400 var(--fs-label-xs)/var(--lh-body) var(--font-sans);
-}
-@media (max-width: 560px) {
-  .companion-bond-badge .companion-bond-meter { display: none; }
-}
+.companion-redesign .companion-bubbles { @apply tw:max-h-[100px]; }
+.companion-redesign .companion-bubble { @apply tw:text-primary; background: var(--bg-surface); }
+.companion-redesign .companion-empty { @apply tw:hidden; }
 .companion-redesign .character-info { @apply tw:absolute; z-index: var(--z-popover); @apply tw:top-[76px] tw:right-s-3 tw:left-s-3 tw:p-0; background: transparent; border: 0; }
 .companion-redesign .character-info-head { @apply tw:hidden; }
 .companion-redesign .companion-live-dot { background: var(--bg-surface); @apply tw:text-secondary; text-shadow: none; }
+.companion-redesign .companion-live-dot[data-state="idle"] { @apply tw:hidden; }
 .companion-redesign .companion-chat-chip { @apply tw:text-primary; background: var(--bg-surface); @apply tw:border-soft; backdrop-filter: none; box-shadow: var(--shadow-glass-sm); }
 .companion-action-dock {
   display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--s-1);
@@ -204,10 +66,14 @@ html:not(.companion-desktop) .companion-redesign .companion-presence-cue {
 .companion-redesign .companion-reply-preview p { margin:var(--s-1) 0 var(--s-2); overflow-wrap:anywhere; @apply tw:leading-body; }
 .companion-redesign .reply-actions { @apply tw:flex tw:justify-end tw:items-center tw:gap-s-2; }
 .companion-redesign .companion-reply-preview .reply-actions button { @apply tw:static tw:inline-flex tw:items-center tw:justify-center tw:gap-s-1 tw:w-auto tw:min-w-[32px] tw:min-h-[32px]; padding:var(--s-1) var(--s-2); border:1px solid var(--border-soft); @apply tw:rounded-sm; background:var(--bg-surface); @apply tw:text-primary; opacity:1; }
-.companion-float-error, .companion-mic-status { @apply tw:pointer-events-auto tw:p-s-3 tw:text-primary; background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-md; overflow-wrap: anywhere; }
-html.companion-desktop .companion-redesign .live2d-host { inset: 0; }
+.companion-float-error, .companion-mic-status { @apply tw:pointer-events-auto tw:p-s-3 tw:text-primary; background: var(--bg-surface); border: 1px solid var(--border-soft); @apply tw:rounded-md; }
+html.companion-desktop .companion-redesign .live2d-host { inset: 66px 0 38px; }
 html.companion-desktop .companion-redesign .portrait-main { @apply tw:bottom-[40px]; max-height: calc(100% - 108px); }
 html.companion-desktop .companion-redesign .character-info { @apply tw:block; }
+html.companion-desktop .companion-redesign .companion-desktop-float { @apply tw:bottom-s-2; width: min(300px, calc(100% - 24px)); }
+html.companion-desktop.companion-ui-hidden .companion-redesign .companion-desktop-float { opacity: 1; transform: translateX(-50%); }
+html.companion-desktop.companion-ui-hidden .companion-redesign .companion-chat-chip { opacity: 1; }
+html.companion-desktop.companion-ui-hidden .companion-redesign .companion-chat-chip:is(:hover, :focus-visible) { opacity: 1; }
 html.companion-desktop .companion-redesign:focus-within .companion-toolbar { opacity: 1; visibility: visible; transform: none; @apply tw:pointer-events-auto; }
 
 /* Only the character and explicit controls paint pixels in the native pet window. */

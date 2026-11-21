@@ -1,103 +1,37 @@
 @reference "./tailwind.css";
 /* Shared, borderless character presentation; view chrome belongs to each surface. */
-.open-character-stage .stage-framing { @apply tw:grid tw:gap-s-3 tw:min-w-0; padding: var(--s-3) 0; border: 0; @apply tw:text-primary; }
-.open-character-stage .stage-framing legend { @apply tw:text-secondary tw:text-label tw:mb-s-1; }
-.open-character-stage .character-controls-panel { @apply tw:text-primary; }
-.open-character-stage .character-about summary { @apply tw:text-secondary; }
-
-.open-character-stage .character-stage-bar-actions {
-  display: flex;
-  align-items: center;
-  gap: var(--s-2);
-  flex: 0 0 auto;
-  min-width: 0;
+.open-character-stage .stage-framing { @apply tw:grid tw:gap-s-2 tw:min-w-0; padding: var(--s-3) 0; border: 0; @apply tw:text-primary; }
+.open-character-stage .stage-framing legend { @apply tw:text-secondary tw:text-label; }
+.open-character-stage .stage-framing label { @apply tw:grid; grid-template-columns: 2em minmax(0, 1fr); @apply tw:items-center tw:gap-s-3 tw:whitespace-nowrap; }
+.open-character-stage .stage-framing input[type="range"] {
+  @apply tw:w-full tw:min-w-0 tw:h-[28px] tw:m-0;
+  border: 0;
+  outline: 0;
+  background: linear-gradient(to bottom, transparent 11px, var(--border-strong) 11px 17px, transparent 17px);
+  -webkit-appearance: none;
+  appearance: none;
 }
-
-.open-character-stage .character-accent-dot {
-  flex: none;
-  width: 7px;
-  height: 7px;
+.open-character-stage .stage-framing input[type="range"]::-webkit-slider-thumb {
+  @apply tw:w-[16px] tw:h-[16px];
+  border: 3px solid var(--bg-surface);
   border-radius: 50%;
-  background: var(--character-accent, var(--accent));
+  background: var(--accent);
+  box-shadow: var(--shadow-sm);
+  -webkit-appearance: none;
 }
-
-.open-character-stage .stage-bar-icon-btn {
-  border-color: var(--border-soft);
-  color: var(--text-secondary);
+.open-character-stage .stage-framing input[type="range"]::-moz-range-thumb {
+  @apply tw:w-[10px] tw:h-[10px];
+  border: 3px solid var(--bg-surface);
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: var(--shadow-sm);
 }
-
-.open-character-stage .stage-bar-icon-btn[aria-pressed="true"] {
-  border-color: var(--border-strong);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-}
-
-.open-character-stage .live2d-wardrobe-capsule {
-  margin-top: 0;
-}
-
-.open-character-stage .wardrobe-capsule {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--s-1);
-  min-height: var(--control-height-sm);
-  max-width: 150px;
-  padding: 0 var(--s-3);
-  border: 1px solid var(--border-soft);
-  border-radius: var(--r-pill);
-  background: var(--bg-elevated);
-  color: var(--text-primary);
-  font: 500 var(--fs-label-xs)/var(--lh-flush) var(--font-sans);
-  cursor: pointer;
-  transition: border-color var(--motion-hover), background-color var(--motion-hover);
-}
-
-.open-character-stage .wardrobe-capsule:hover,
-.open-character-stage .live2d-wardrobe-capsule.open .wardrobe-capsule {
-  border-color: var(--border-strong);
-  background: var(--bg-hover);
-}
-
-.open-character-stage .wardrobe-capsule:focus-visible {
+.open-character-stage .stage-framing input[type="range"]:focus-visible {
   outline: none;
   box-shadow: var(--focus-shadow);
 }
-
-.open-character-stage .wardrobe-capsule > span {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.open-character-stage .wardrobe-capsule .archive-icon {
-  width: 14px;
-  height: 14px;
-  flex: none;
-  color: var(--character-ink, var(--character-accent, var(--accent)));
-}
-
-.open-character-stage .wardrobe-capsule .wardrobe-chevron {
-  color: var(--text-muted);
-}
-
-.open-character-stage .wardrobe-menu-popover {
-  position: absolute;
-  right: 0;
-  bottom: calc(100% + var(--s-2));
-  z-index: var(--z-popover);
-  width: max-content;
-  min-width: 180px;
-  max-width: min(260px, 72vw);
-  margin-top: 0;
-  box-shadow: var(--shadow-lg);
-}
-
-.open-character-stage .wardrobe-check {
-  width: 14px;
-  height: 14px;
-  flex: none;
-  color: var(--text-primary);
-}
+.open-character-stage .character-controls-panel { @apply tw:text-primary; }
+.open-character-stage .character-about summary { @apply tw:text-secondary; }
 
 /*   ============================================================
    Live2D 换装：衣装抽屉 / 换装入口 / 衣装菜单
@@ -219,9 +153,14 @@
 
 .open-character-stage .wardrobe-option.active {
   border-color: var(--border-strong);
-  background: var(--bg-elevated);
+  background: color-mix(in srgb, var(--character-accent) 14%, transparent);
   @apply tw:text-primary;
-  box-shadow: var(--shadow-sm);
+}
+
+.open-character-stage .wardrobe-option.active i {
+  @apply tw:border-primary;
+  background: var(--character-accent);
+  box-shadow: 0 0 10px color-mix(in srgb, var(--character-accent) 65%, transparent);
 }
 
 .open-character-stage .wardrobe-option:disabled {

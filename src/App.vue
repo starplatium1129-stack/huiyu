@@ -64,9 +64,9 @@ function beforeEnterLayout(element: Element) {
   if (!element.classList.contains('page-root')) layoutMotion.onBeforeEnter(element)
 }
 function enterLayout(element: Element, done: () => void) {
-  // AppLayout animates its inner route. Native companion windows need their
-  // final layout immediately so their WebView and native surfaces stay aligned.
-  if (element.classList.contains('page-root') || (desktop && isCompanion.value)) layoutMotion.completeEnter(element, done)
+  // AppLayout already animates its inner route. Standalone windows fade only;
+  // translating their root would move native-overlay anchors and fixed controls.
+  if (element.classList.contains('page-root')) layoutMotion.completeEnter(element, done)
   else layoutMotion.onEnter(element, done)
 }
 let detachDesktopWorkspace: (() => void) | undefined

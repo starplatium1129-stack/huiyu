@@ -1,7 +1,7 @@
 <template>
   <FluidTransition panel=".orbit-wheel">
     <section v-if="open" ref="root" class="companion-orbit" :class="{ 'is-compact': compact, 'has-category': category }"
-      :style="orbitStyle" aria-label="桌宠环形菜单" @keydown="key" @contextmenu.prevent.stop="emit('close')">
+      :style="{ '--orbit-size': size + 'px' }" aria-label="桌宠环形菜单" @keydown="key" @contextmenu.prevent.stop="emit('close')">
       <div v-if="!compact || !category" class="orbit-wheel" role="group" aria-label="常用操作">
         <div v-for="(action, index) in actions" :key="action.id" class="orbit-segment"
           :data-active="active(action) || undefined" :data-tone="action.id" @click="activate(action, $event)">
@@ -63,8 +63,6 @@ import CompanionCharacterDialog from './CompanionCharacterDialog.vue'
 import StudioTooltip from './ui/StudioTooltip.vue'
 import type { ArchiveIconName } from './visual/icons/types'
 import { orbitAngle, orbitPoint, orbitSector, useCompanionOrbit } from '@/composables/chat/useCompanionOrbit'
-import { characterThemeStyle } from '@/utils/characterTheme'
-import { getCompanionCharacterConfig } from '@/utils/companionRegistry'
 import '@/assets/css/companion-orbit.css'
 
 const props = defineProps<{
@@ -83,13 +81,6 @@ const root = ref<HTMLElement | null>(null)
 const characterOpener = shallowRef<HTMLButtonElement | null>(null)
 watch(() => props.open, open => { if (!open) characterOpener.value = null })
 const { compact, size, category, page, key } = useCompanionOrbit(() => props.open, root, () => emit('close'))
-const orbitStyle = computed(() => ({
-  '--orbit-size': `${size.value}px`,
-  ...characterThemeStyle(props.characterId, [{
-    id: props.characterId,
-    accent_color: getCompanionCharacterConfig(props.characterId)?.accent,
-  }]),
-}))
 const feedback = ref(''), expressionBusy = ref(false)
 let expressionTurn = 0
 watch([() => props.characterId, () => props.open, category], () => { feedback.value = ''; expressionBusy.value = false; expressionTurn++ })

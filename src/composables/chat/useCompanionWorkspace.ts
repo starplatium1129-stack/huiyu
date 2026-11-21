@@ -392,7 +392,7 @@ export function useCompanionWorkspace() {
             const awayMs = Date.now() - getLastActivityAt();
             const idleMinutes = getIdleMinutes();
             if (idleMinutes > 0 && awayMs > idleMinutes * 60000) {
-                noteReturn(offset => pickCompanionLine(activeChar.value, 'return', offset), { automatic: true });
+                noteReturn(offset => pickCompanionLine(activeChar.value, 'return', offset));
             }
             // 窗口重新可见：若时间片/周末状态变了，给一条环境问候
             maybeGreetByTime();

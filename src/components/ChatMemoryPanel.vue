@@ -2,20 +2,23 @@
   <section class="chat-memory-panel room-tool-panel" aria-labelledby="chatMemoryTitle">
     <header class="room-tool-heading">
       <div>
-        <span class="memory-journal-kicker">共同记忆手账</span>
-        <h2 id="chatMemoryTitle">和{{ characterName }}的记忆手账</h2>
+        <span>LONG-TERM MEMORY</span>
+        <h2 id="chatMemoryTitle">长期记忆 · {{ characterName }}</h2>
       </div>
-      <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭共同记忆手账" @click="close"><ArchiveIcon name="close" /></button>
+      <button type="button" class="btn btn-quiet btn-icon" aria-label="关闭长期记忆" @click="close"><ArchiveIcon name="close" /></button>
     </header>
     <div class="room-tool-body">
-      <p class="memory-journal-intro">记下你们聊过的小事与约定；对话时会按主题轻声想起最近的一条（每次最多回想 4 条）。</p>
-      <div v-if="!items.length" class="memory-empty">手账还是空白的。在对话气泡旁点一下「记住」，就能悄悄夹进这一页。</div>
+      <p>保存对话固定的事实，同一主题召回最新一条（最多 4 条）。</p>
+      <label class="studio-field-label" for="memory-recall-query">检索测试</label>
+      <input id="memory-recall-query" v-model="query" class="input" placeholder="输入你想说的话" maxlength="1200" />
+      <p v-if="query.trim()" role="status">{{ recalled.length ? `匹配 ${recalled.length} 条` : '未匹配到相关记忆' }}</p>
+      <div v-if="!items.length" class="memory-empty">暂无记忆。在消息气泡下点击“记住”添加。</div>
       <div v-else class="memory-list">
-        <article v-for="{ item, row } in editableItems" :key="item.id" class="memory-item" :class="{ 'is-recalled': recalled.includes(item.id) }">
-          <input v-model="row.topic" @input="markEdited(item.id, 'topicDirty')" class="input" maxlength="40" :aria-label="`便签主题：${item.topic || '未分类'}`" placeholder="主题（可选，例如：喜欢的甜点、约定）" />
-          <textarea v-model="row.text" @input="markEdited(item.id, 'textDirty')" class="textarea" maxlength="240" rows="2" :aria-label="`编辑记忆便签：${item.text}`"></textarea>
-          <small class="memory-item-meta">{{ new Date(item.updatedAt).toLocaleString() }} · {{ item.sourceMid ? '摘自对话' : '手写便签' }}{{ recalled.includes(item.id) ? ' · 本次会想起' : '' }}</small>
-          <div class="memory-item-footer">
+        <article v-for="{ item, row } in editableItems" :key="item.id" class="memory-item">
+          <input v-model="row.topic" @input="markEdited(item.id, 'topicDirty')" class="input" maxlength="40" :aria-label="`记忆主题：${item.topic || '未分类'}`" placeholder="主题（可选，例如：饮食偏好）" />
+          <textarea v-model="row.text" @input="markEdited(item.id, 'textDirty')" class="textarea" maxlength="240" rows="2" :aria-label="`编辑记忆：${item.text}`"></textarea>
+          <small>{{ new Date(item.updatedAt).toLocaleString() }} · {{ item.sourceMid ? '来源：你固定的聊天消息' : '来源：手动记录' }}{{ recalled.includes(item.id) ? ' · 本次召回' : '' }}</small>
+          <div>
             <span>{{ row.text.length }} / 240</span>
             <button type="button" class="btn btn-ghost btn-sm" :aria-disabled="row.saving || row.deleting || undefined" :aria-busy="row.saving" @click="save(item.id)">{{ row.saving ? '保存中…' : '保存' }}</button>
             <button type="button" class="btn btn-quiet btn-sm" :aria-disabled="row.saving || row.deleting || undefined" :aria-busy="row.deleting" @click="requestDelete(item.id)">删除</button>
@@ -23,14 +26,6 @@
           <p v-if="row.message" role="status">{{ row.message }}</p>
         </article>
       </div>
-      <details v-if="items.length" class="memory-recall-debug">
-        <StudioDisclosureSummary><span>回忆匹配预览（高级）</span></StudioDisclosureSummary>
-        <div class="memory-recall-body" data-disclosure-content>
-          <label class="studio-field-label" for="memory-recall-query">试写一句话，看看会唤起哪几条便签</label>
-          <input id="memory-recall-query" v-model="query" class="input" placeholder="输入你想对她说的话…" maxlength="1200" />
-          <p v-if="query.trim()" class="memory-recall-status" role="status">{{ recalled.length ? `本次将轻声唤起 ${recalled.length} 条记忆` : '这句话暂未匹配到相关便签' }}</p>
-        </div>
-      </details>
     </div>
   </section>
 </template>
@@ -38,7 +33,6 @@
 <script setup lang="ts">
 import { computed, nextTick, onScopeDispose, reactive, ref, watch } from 'vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { confirmAction } from '@/composables/useConfirm'
 import type { ChatMemoryItem } from '@/utils/chatMemory'
 import { normalizeChatMemoryText } from '@/utils/chatMemoryCore'
