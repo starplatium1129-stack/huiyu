@@ -1,0 +1,151 @@
+/* StudioSkeleton: sketch-paper frame with quiet ruler ticks & low-frequency compositor sweep. */
+.studio-skeleton {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-elevated) 78%, var(--bg-surface));
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+}
+
+.studio-skeleton[data-variant='line'] {
+  width: 100%;
+  height: 16px;
+  border-radius: var(--r-xs);
+}
+
+.studio-skeleton[data-variant='media'] {
+  width: 100%;
+  min-height: 140px;
+  border-radius: var(--r-lg);
+}
+
+.studio-skeleton[data-variant='card'] {
+  display: grid;
+  gap: var(--s-3);
+  width: 100%;
+  padding: var(--s-3);
+  border-radius: var(--r-lg);
+  background: var(--bg-surface);
+}
+
+.studio-skeleton-lines {
+  display: grid;
+  gap: var(--s-2);
+  width: 100%;
+}
+
+.studio-skeleton-card-media {
+  position: relative;
+  width: 100%;
+  min-height: 132px;
+  aspect-ratio: 4 / 3;
+  border-radius: var(--r-md);
+  background: color-mix(in srgb, var(--bg-elevated) 84%, var(--bg-surface));
+  border: 1px solid var(--border-soft);
+}
+
+.studio-skeleton-card-lines {
+  display: grid;
+  gap: var(--s-2);
+}
+
+.studio-skeleton-bar {
+  display: block;
+  height: 12px;
+  border-radius: var(--r-xs);
+  background: color-mix(in srgb, var(--bg-elevated) 88%, var(--bg-surface));
+}
+
+.studio-skeleton-bar.is-short {
+  width: 68%;
+}
+
+/* Faint static sketchbook frame ruler ticks on card/media variants; excluded from Terraria. */
+:root:not([data-theme-style='terraria']) .studio-skeleton:is([data-variant='card'], [data-variant='media'])::before {
+  content: '';
+  position: absolute;
+  inset: var(--s-2);
+  pointer-events: none;
+  z-index: var(--z-base);
+  background:
+    linear-gradient(to right, color-mix(in srgb, var(--border-strong) 48%, transparent), color-mix(in srgb, var(--border-strong) 48%, transparent)) top left / 12px 1px no-repeat,
+    linear-gradient(to bottom, color-mix(in srgb, var(--border-strong) 48%, transparent), color-mix(in srgb, var(--border-strong) 48%, transparent)) top left / 1px 12px no-repeat,
+    linear-gradient(to left, color-mix(in srgb, var(--border-strong) 48%, transparent), color-mix(in srgb, var(--border-strong) 48%, transparent)) bottom right / 12px 1px no-repeat,
+    linear-gradient(to top, color-mix(in srgb, var(--border-strong) 48%, transparent), color-mix(in srgb, var(--border-strong) 48%, transparent)) bottom right / 1px 12px no-repeat;
+}
+
+/* Low-frequency compositor-only sheen sweep (transform + opacity only). */
+.studio-skeleton[data-animated='true']::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: var(--z-raised);
+  background: linear-gradient(
+    108deg,
+    transparent 26%,
+    color-mix(in srgb, var(--glass-highlight) 92%, transparent) 47%,
+    color-mix(in srgb, var(--character-accent, var(--accent)) 10%, transparent) 53%,
+    transparent 74%
+  );
+  transform: translateX(-100%);
+  opacity: 0;
+  animation: studio-skeleton-sweep 2.8s var(--ease-in-out) infinite;
+}
+
+@keyframes studio-skeleton-sweep {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  12% {
+    opacity: 1;
+  }
+  52% {
+    transform: translateX(100%);
+    opacity: 1;
+  }
+  62%,
+  100% {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .studio-skeleton[data-animated='true']::after {
+    animation: none;
+    opacity: 0;
+  }
+}
+
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .studio-skeleton[data-animated='true']::after {
+  animation: none;
+  opacity: 0;
+}
+
+:root[data-theme-style='terraria'] .studio-skeleton {
+  border-radius: 0;
+  background: var(--bg-elevated);
+  box-shadow: none;
+}
+
+:root[data-theme-style='terraria'] .studio-skeleton-card-media,
+:root[data-theme-style='terraria'] .studio-skeleton-bar {
+  border-radius: 0;
+}
+
+@media (forced-colors: active) {
+  .studio-skeleton {
+    background: Canvas;
+    border: 1px dashed GrayText;
+    box-shadow: none;
+  }
+
+  .studio-skeleton::before,
+  .studio-skeleton::after {
+    display: none;
+  }
+}

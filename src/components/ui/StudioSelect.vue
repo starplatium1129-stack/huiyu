@@ -57,6 +57,10 @@ const props = withDefaults(defineProps<{
   inline?: boolean
   /** 提示文案，使用 StudioTooltip 接管；悬停与键盘聚焦均触发，不再渲染原生 title */
   hint?: string | null
+  /** 长列表内联筛选 */
+  searchable?: boolean
+  searchPlaceholder?: string
+  emptyText?: string
 }>(), {
   label: '',
   placeholder: '请选择',
@@ -64,6 +68,9 @@ const props = withDefaults(defineProps<{
   size: 'md',
   inline: false,
   hint: null,
+  searchable: false,
+  searchPlaceholder: '搜索选项…',
+  emptyText: '没有匹配的选项',
 })
 
 const modelValue = defineModel<string | number>({ default: '' })
@@ -84,6 +91,36 @@ const currentKey = computed(() => keyOf(modelValue.value))
 // 弹层按需挂载，首次展开前它的条目集合是空的。
 const selectedLabel = computed(() => optionByKey.value.get(currentKey.value)?.label ?? '')
 
+const searchQuery = ref('')
+const searchInput = ref<HTMLInputElement | null>(null)
+const viewportHost = ref<{ $el?: HTMLElement } | HTMLElement | null>(null)
+const normalizedQuery = computed(() => props.searchable ? searchQuery.value.trim().toLowerCase() : '')
+
+function matchesQuery(option: StudioSelectOption, query: string): boolean {
+  if (!query) return true
+  return option.label.toLowerCase().includes(query) || String(option.value).toLowerCase().includes(query)
+}
+
+const filteredGroups = computed<readonly StudioSelectGroup[]>(() => {
+  if (!props.groups) return []
+  const query = normalizedQuery.value
+  if (!query) return props.groups
+  return props.groups
+    .map(group => ({ label: group.label, options: group.options.filter(option => matchesQuery(option, query)) }))
+    .filter(group => group.options.length > 0)
+})
+
+const filteredOptions = computed<readonly StudioSelectOption[]>(() => {
+  const source = props.options ?? []
+  const query = normalizedQuery.value
+  return query ? source.filter(option => matchesQuery(option, query)) : source
+})
+
+const hasVisibleOptions = computed(() =>
+  props.groups
+    ? filteredGroups.value.some(group => group.options.length > 0)
+    : filteredOptions.value.length > 0)
+
 function applyKey(key: string) {
   if (props.disabled) return
   const option = optionByKey.value.get(key)
@@ -96,6 +133,11 @@ const attrs = useAttrs()
 const open = ref(false)
 usePageScrollLock(() => open.value)
 const pointerOpened = ref(false)
+
+watch(open, value => {
+  if (!value) searchQuery.value = ''
+})
+
 // Reka handles pointer and key events. Assistive activation can deliver only a click.
 function onTriggerClick(event: MouseEvent) {
   if (event.detail !== 0 || event.defaultPrevented || props.disabled) return
@@ -108,6 +150,60 @@ function onOptionClick(event: MouseEvent, option: StudioSelectOption) {
   applyKey(keyOf(option.value))
   open.value = false
 }
+function onOpenAutoFocus(event: Event) {
+  if (!props.searchable) return
+  event.preventDefault()
+  void nextTick(() => searchInput.value?.focus({ preventScroll: true }))
+}
+function clearSearch() {
+  searchQuery.value = ''
+  searchInput.value?.focus({ preventScroll: true })
+}
+function focusFirstVisibleOption() {
+  const host = viewportHost.value && '$el' in viewportHost.value ? viewportHost.value.$el : viewportHost.value
+  const first = host instanceof HTMLElement
+    ? host.querySelector<HTMLElement>('.studio-select-item:not([data-disabled])')
+    : null
+  first?.focus({ preventScroll: true })
+}
+function onSearchKeydown(event: KeyboardEvent) {
+  if (event.isComposing || event.keyCode === 229) {
+    event.stopPropagation()
+    return
+  }
+  if (event.key === 'Escape') {
+    if (searchQuery.value) {
+      event.preventDefault()
+      event.stopPropagation()
+      searchQuery.value = ''
+    } else {
+      onEscape(event)
+    }
+    return
+  }
+  if (event.key === 'ArrowDown') {
+    event.preventDefault()
+    event.stopPropagation()
+    pointerOpened.value = false
+    focusFirstVisibleOption()
+    return
+  }
+  if (event.key === 'Enter') {
+    event.preventDefault()
+    event.stopPropagation()
+    const firstOption = props.groups
+      ? filteredGroups.value.flatMap(group => group.options).find(option => !option.disabled)
+      : filteredOptions.value.find(option => !option.disabled)
+    if (firstOption) {
+      applyKey(keyOf(firstOption.value))
+      open.value = false
+    }
+    return
+  }
+  // Keep typing keys inside the inline search input instead of Reka's list typeahead.
+  event.stopPropagation()
+}
+
 let viewActive = true
 onActivated(() => { viewActive = true })
 onDeactivated(() => {
@@ -194,11 +290,52 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
 
       <SelectPortal :to="portalTarget">
         <FluidTransition small panel=".studio-select-content">
-        <SelectContent v-if="open" force-mount :body-lock="false" data-fluid-glass position="popper" :reference="selectTrigger?.$el" align="start" :side-offset="6" :collision-padding="12" :collision-boundary="collisionBoundary" class="studio-select-content" :aria-label="accessibleName" :data-pointer-open="pointerOpened" @keydown.capture="pointerOpened = false" @keydown.esc="onEscape" @escape-key-down="onDismissEscape" @close-auto-focus="onCloseAutoFocus">
+        <SelectContent
+          v-if="open"
+          force-mount
+          :body-lock="false"
+          data-fluid-glass
+          position="popper"
+          :reference="selectTrigger?.$el"
+          align="start"
+          :side-offset="6"
+          :collision-padding="12"
+          :collision-boundary="collisionBoundary"
+          class="studio-select-content"
+          :aria-label="accessibleName"
+          :data-pointer-open="pointerOpened"
+          @open-auto-focus="onOpenAutoFocus"
+          @keydown.capture="pointerOpened = false"
+          @keydown.esc="onEscape"
+          @escape-key-down="onDismissEscape"
+          @close-auto-focus="onCloseAutoFocus"
+        >
+          <div v-if="searchable" class="studio-select-search" @pointerdown.stop @pointermove.stop>
+            <ArchiveIcon name="search" class="studio-select-search-icon" />
+            <input
+              ref="searchInput"
+              v-model="searchQuery"
+              type="search"
+              class="studio-select-search-input"
+              :placeholder="searchPlaceholder"
+              :aria-label="searchPlaceholder"
+              autocomplete="off"
+              @keydown="onSearchKeydown"
+            />
+            <button
+              v-if="searchQuery"
+              type="button"
+              class="studio-select-search-clear"
+              aria-label="清除搜索"
+              @click="clearSearch"
+            >
+              <ArchiveIcon name="close" />
+            </button>
+          </div>
           <slot name="header" />
-          <SelectViewport class="studio-select-viewport">
+          <SelectViewport ref="viewportHost" class="studio-select-viewport">
             <template v-if="groups">
-              <SelectGroup v-for="group in groups" :key="group.label" class="studio-select-group">
+              <SelectGroup v-for="group in filteredGroups" :key="group.label" class="studio-select-group">
                 <SelectLabel class="studio-select-group-label">{{ group.label }}</SelectLabel>
                 <SelectItem
                   v-for="option in group.options"
@@ -221,7 +358,7 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
             </template>
             <template v-else>
               <SelectItem
-                v-for="option in options"
+                v-for="option in filteredOptions"
                 :key="keyOf(option.value)"
                 :value="keyOf(option.value)"
                 :disabled="option.disabled"
@@ -235,6 +372,9 @@ watch(() => props.disabled, value => { if (value) open.value = false }, { flush:
                 </SelectItemIndicator>
               </SelectItem>
             </template>
+            <div v-if="!hasVisibleOptions" class="studio-select-empty" role="status">
+              <slot name="empty">{{ emptyText }}</slot>
+            </div>
           </SelectViewport>
         </SelectContent>
         </FluidTransition>

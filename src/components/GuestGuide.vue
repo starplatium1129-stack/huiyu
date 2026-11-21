@@ -1,44 +1,51 @@
 <template>
-  <FluidTransition appear panel=".guest-guide-card">
-  <aside
-    v-if="visible"
-    ref="guideEl"
-    class="guest-guide"
-    role="dialog"
-    aria-modal="true"
-    :aria-describedby="isLocalHost ? undefined : 'guest-guide-description'"
-    aria-labelledby="guest-guide-title"
-    @click.self="dismiss"
+  <StudioDialog
+    v-model:open="visible"
+    title="欢迎来到绘遇"
+    size="md"
+    close-label="关闭使用引导"
+    :described-by="isLocalHost ? undefined : descriptionId"
+    borderless-header
+    dialog-class="guest-guide-dialog"
+    @close="onDialogClose"
   >
-    <div class="guest-guide-card">
-      <header class="guest-guide-heading">
-        <h2 id="guest-guide-title">欢迎来到绘遇</h2>
-        <button class="btn btn-quiet btn-icon" type="button" aria-label="关闭使用引导" @click="dismiss"><ArchiveIcon name="close" /></button>
-      </header>
-      <div class="guest-guide-body">
-        <nav class="guest-guide-destinations" aria-label="开始创作">
-          <CreationDestinations @navigate="dismiss" />
-        </nav>
-        <p v-if="!isLocalHost" id="guest-guide-description">生成任务在分享者的电脑上执行。</p>
-      </div>
-      <footer class="guest-guide-actions">
+    <div class="guest-guide-body">
+      <nav class="guest-guide-destinations" aria-label="开始创作">
+        <CreationDestinations @navigate="dismiss" />
+      </nav>
+      <p v-if="!isLocalHost" :id="descriptionId" class="guest-guide-note">生成任务在分享者的电脑上执行。</p>
+    </div>
+
+    <template #footer>
+      <div class="guest-guide-actions">
         <RouterLink class="btn btn-quiet" to="/guide" @click="dismiss"><span class="studio-control-label">使用指南</span></RouterLink>
-        <button v-if="isLocalHost" ref="setupButton" class="btn btn-primary" type="button" @click="beginSetup">配置绘图</button>
-        <button ref="dismissButton" class="btn" :class="isLocalHost ? 'btn-ghost' : 'btn-primary'" type="button" @click="dismiss">
+        <button
+          v-if="isLocalHost"
+          ref="setupButton"
+          class="btn btn-primary"
+          type="button"
+          autofocus
+          @click="beginSetup"
+        >配置绘图</button>
+        <button
+          ref="dismissButton"
+          class="btn"
+          :class="isLocalHost ? 'btn-ghost' : 'btn-primary'"
+          type="button"
+          :autofocus="!isLocalHost || undefined"
+          @click="dismiss"
+        >
           {{ isLocalHost ? '先浏览' : '开始浏览' }}
         </button>
-      </footer>
-    </div>
-  </aside>
-  </FluidTransition>
+      </div>
+    </template>
+  </StudioDialog>
 </template>
 
 <script setup lang="ts">
-import FluidTransition from '@/components/visual/FluidTransition.vue'
-import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioDialog from '@/components/ui/StudioDialog.vue'
 import CreationDestinations from '@/components/home/CreationDestinations.vue'
-import { computed, nextTick, onMounted, onUnmounted, ref } from 'vue'
-import { useFocusTrap } from '@/composables/useFocusTrap'
+import { nextTick, onMounted, onUnmounted, ref, useId } from 'vue'
 import { appearanceFocusOrigin } from '@/composables/useDesktopInteraction'
 import { settingsRepository, GUEST_GUIDE_DISMISSED_SETTING } from '@/storage/settingsRepository.ts'
 import { isLocalStudioHost } from '@/utils/runtimeEnvironment'
@@ -47,6 +54,7 @@ import { useRouter } from 'vue-router'
 const isLocalHost = isLocalStudioHost()
 const forcedGuest = new URLSearchParams(window.location.search).get('guest') === '1'
 const router = useRouter()
+const descriptionId = useId()
 
 /**
  * 首次访问一律展示，文案按本机 / 访客分流（2026-08-30 UX 审计 P1）。
@@ -56,69 +64,77 @@ const router = useRouter()
  */
 const shouldShow = forcedGuest || (isLocalHost && !settingsRepository.get(GUEST_GUIDE_DISMISSED_SETTING))
 const visible = ref(false)
-const guideEl = ref<HTMLElement | null>(null)
-const dismissButton = ref<HTMLElement | null>(null)
-const setupButton = ref<HTMLElement | null>(null)
+const dismissButton = ref<HTMLButtonElement | null>(null)
+const setupButton = ref<HTMLButtonElement | null>(null)
+let openOrigin: HTMLElement | null = null
 
-const { returnFocus } = useFocusTrap(guideEl, () => visible.value, {
-  onEscape: dismiss,
-  initialFocus: computed(()=>setupButton.value||dismissButton.value),
-})
+function openGuide() {
+  openOrigin = document.activeElement instanceof HTMLElement ? document.activeElement : null
+  visible.value = true
+}
 
-function openGuide() { visible.value = true }
-function beginSetup() { dismiss(); void router.push('/control#control-inference') }
+function beginSetup() {
+  dismiss()
+  void router.push('/control#control-inference')
+}
+
 onMounted(() => {
-  if (shouldShow) visible.value = true
+  if (shouldShow) openGuide()
   window.addEventListener('atelier:welcome', openGuide)
 })
+
 onUnmounted(() => window.removeEventListener('atelier:welcome', openGuide))
 
-async function dismiss() {
-  const origin = returnFocus.value
-  const closingGuide = guideEl.value
-  visible.value = false
+function persistDismissal() {
   settingsRepository.set(GUEST_GUIDE_DISMISSED_SETTING, true)
+}
+
+async function restoreFallbackFocus(origin: HTMLElement | null) {
   await nextTick()
-  const focus = document.activeElement
-  if (!visible.value && (focus === document.body || closingGuide?.contains(focus))) {
-    appearanceFocusOrigin(origin)?.focus({ preventScroll:true })
+  if (!visible.value && document.activeElement === document.body) {
+    appearanceFocusOrigin(origin)?.focus({ preventScroll: true })
   }
+}
+
+function dismiss() {
+  const origin = openOrigin
+  openOrigin = null
+  persistDismissal()
+  visible.value = false
+  void restoreFallbackFocus(origin)
+}
+
+function onDialogClose() {
+  const origin = openOrigin
+  openOrigin = null
+  persistDismissal()
+  void restoreFallbackFocus(origin)
 }
 </script>
 
 <style scoped>
-@reference "../assets/css/tailwind.css";
-.guest-guide {
-  position:fixed;
-  display:grid;
-  z-index: var(--z-overlay);
-  inset:var(--desktop-chrome-height,0px) 0 0;
-  grid-template-rows:minmax(0,1fr);
-  place-items: center;
-  padding:var(--s-4);
-  overflow:hidden;
-  background: color-mix(in srgb, var(--bg-deep) 72%, transparent);
-  backdrop-filter: blur(10px);
+.guest-guide-body {
+  display: grid;
+  gap: var(--s-3);
 }
-.guest-guide-card {
-  width: min(600px, 100%);
-  max-height:100%;
-  display:grid;
-  grid-template-rows:auto minmax(0,1fr) auto;
-  overflow:hidden;
-  border: 1px solid var(--border-soft);
-  @apply tw:rounded-xl;
-  background: var(--bg-surface);
-  box-shadow: var(--shadow-lg);
+
+.guest-guide-note {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-label);
+  line-height: var(--lh-body);
 }
-.guest-guide-heading { display:flex; align-items:center; justify-content:space-between; gap:var(--s-3); padding:var(--s-4) var(--s-5) var(--s-2); }
-.guest-guide-heading h2 { margin:0; color:var(--text-primary); font:500 var(--fs-title)/var(--lh-tight) var(--font-serif); }
-.guest-guide-body { min-height:0; padding:var(--s-2) var(--s-5) var(--s-5); overflow:auto; overscroll-behavior:contain; scroll-padding-block:var(--s-2); }
-.guest-guide-body p { margin:var(--s-3) 0 0; color:var(--text-secondary); font-size:var(--fs-label); line-height:var(--lh-body); }
-.guest-guide-actions { display:flex; flex-wrap:wrap; align-items:center; justify-content:flex-end; gap:var(--s-2); padding:var(--s-3) var(--s-5); border-top:1px solid var(--border-soft); background:var(--bg-base); }
-.guest-guide-actions > a { margin-inline-end:auto; }
-@media (prefers-reduced-motion: reduce) {
-  :root:not([data-motion='full']) .guest-guide { backdrop-filter: none; animation: none; }
-  :root:not([data-motion='full']) .guest-guide-card { animation: none; }
+
+.guest-guide-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  width: 100%;
+}
+
+.guest-guide-actions > a {
+  margin-inline-end: auto;
 }
 </style>

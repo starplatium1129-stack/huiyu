@@ -11,18 +11,29 @@
         <span class="glass-choice-indicator tw:absolute tw:top-s-3 tw:right-s-3 tw:grid tw:w-[20px] tw:h-[20px]" aria-hidden="true"><ArchiveIcon name="success" /></span>
       </RadioGroupItem>
     </RadioGroupRoot>
-    <div v-if="glassMode === 'liquid'" class="glass-tint-control">
-      <label :for="tintId">玻璃色调 <output>{{ glassTint }}%</output></label>
-      <input :id="tintId" type="range" min="0" max="100" step="1" :value="glassTint" :disabled="effectiveGlassMode !== 'liquid'"
-        :aria-valuetext="`玻璃色调 ${glassTint}%，越低越通透`" @input="setGlassTint(Number(($event.target as HTMLInputElement).value))" />
-      <div class="glass-tint-labels"><span>清透</span><span>加色</span></div>
-    </div>
+    <StudioSlider
+      v-if="glassMode === 'liquid'"
+      :id="tintId"
+      class="glass-tint-control"
+      :model-value="glassTint"
+      :min="0"
+      :max="100"
+      :step="1"
+      label="玻璃色调"
+      unit="%"
+      min-label="清透"
+      max-label="加色"
+      :disabled="effectiveGlassMode !== 'liquid'"
+      :value-text="`玻璃色调 ${glassTint}%，越低越通透`"
+      @update:model-value="setGlassTint"
+    />
     <p v-if="glassMode === 'liquid' && effectiveGlassMode !== 'liquid'" class="glass-choice-note tw:m-0 tw:text-muted tw:text-label tw:leading-loose" role="status">辅助显示已启用</p>
   </fieldset>
 </template>
 
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import StudioSlider from '@/components/ui/StudioSlider.vue'
 import { computed, useId } from 'vue'
 import { RadioGroupRoot, RadioGroupItem } from 'reka-ui'
 import { useDesktopPreferences, type GlassMode } from '@/composables/useDesktopInteraction'
@@ -39,18 +50,12 @@ const choices: Array<{ value: GlassMode; title: string }> = [
 @reference "../assets/css/tailwind.css";
 .glass-choice { border:0; }
 .glass-choice legend { @apply tw:mb-s-2 tw:text-secondary tw:text-body; }
-.glass-tint-control { display:grid; gap:var(--s-2); margin:0 0 var(--s-3); }
-.glass-tint-control label,.glass-tint-labels { display:flex; justify-content:space-between; gap:var(--s-3); color:var(--text-secondary); font-size:var(--fs-label-sm); }
-.glass-tint-control output { color:var(--text-primary); font-variant-numeric:tabular-nums; }
-.glass-tint-control input { width:100%; min-width:0; height:28px; margin:0; accent-color:var(--accent); cursor:pointer; }
-.glass-tint-control input:disabled { cursor:default; }
-.glass-tint-control:has(input:disabled) :is(label,output,.glass-tint-labels) { color:var(--text-disabled); }
-.glass-tint-control input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.glass-tint-control { margin:0 0 var(--s-3); }
 .glass-choice-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
 .glass-choice-option { border:0; background:transparent; color:inherit; font:inherit; }
 .glass-choice-body { border:1px solid var(--border-soft); background:var(--bg-surface); }
 .glass-choice-option[aria-checked='true'] .glass-choice-body { @apply tw:border-strong; box-shadow:var(--shadow-sm); }
-.glass-choice-option:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.glass-choice-option:focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 .glass-choice-indicator { z-index:var(--z-raised); place-items:center; border:1px solid var(--border-strong); border-radius:50%; background:var(--bg-elevated); color:transparent; }
 .glass-choice-indicator .archive-icon { @apply tw:w-[13px] tw:h-[13px]; }
 .glass-choice-option[aria-checked='true'] .glass-choice-indicator { @apply tw:border-strong; background:var(--bg-elevated); @apply tw:text-primary; }

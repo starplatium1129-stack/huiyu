@@ -1,0 +1,251 @@
+/* StudioSlider: native <input type="range"> with jewel/bead thumb, character-accent fill,
+   separate WebKit/Firefox pseudo-element rules, >= 3:1 track & focus contrast, and 44px coarse target. */
+.studio-slider {
+  display: grid;
+  gap: var(--s-1);
+  min-width: 0;
+}
+
+.studio-slider-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--s-2);
+  min-width: 0;
+}
+
+.studio-slider-label {
+  color: var(--text-secondary);
+  font-size: var(--fs-label);
+  font-weight: 500;
+  line-height: var(--lh-label);
+  min-width: 0;
+}
+
+.studio-slider-value {
+  flex: none;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+  font-size: var(--fs-label-sm);
+  font-weight: 600;
+  line-height: var(--lh-label);
+  font-variant-numeric: tabular-nums;
+}
+
+.studio-slider-row {
+  display: flex;
+  align-items: center;
+  gap: var(--s-3);
+  min-width: 0;
+}
+
+.studio-slider-ends {
+  display: flex;
+  justify-content: space-between;
+  gap: var(--s-3);
+  color: var(--text-muted);
+  font-size: var(--fs-label-xs);
+  line-height: var(--lh-label);
+}
+
+.studio-slider.is-disabled :is(.studio-slider-label, .studio-slider-value, .studio-slider-ends) {
+  color: var(--text-disabled);
+}
+
+.studio-slider[data-character='nene'] .studio-slider-input {
+  --slider-fill-color: var(--nene-violet);
+}
+
+.studio-slider[data-character='natsume'] .studio-slider-input {
+  --slider-fill-color: var(--natsume-amber);
+}
+
+/* Shared native range input styling — reusable standalone (e.g. StudioMediaPlayer). */
+.studio-slider-input {
+  --slider-track-size: 6px;
+  --slider-thumb-size: 18px;
+  --slider-track-radius: var(--r-pill);
+  --slider-thumb-radius: 50%;
+  --slider-track-color: color-mix(in srgb, var(--text-secondary) 48%, var(--bg-surface));
+  --slider-fill-color: var(--character-accent, var(--accent));
+  --slider-fill-highlight: color-mix(in srgb, var(--slider-fill-color) 76%, var(--accent-hover));
+  --slider-thumb-bg: var(--bg-surface);
+  --slider-thumb-ring: var(--slider-fill-color);
+  --slider-thumb-halo: var(--bg-surface);
+  --slider-direction: to right;
+  --slider-thumb-scale: 1;
+  --slider-thumb-hover: 1.12;
+  --slider-thumb-press: 1.18;
+  --slider-thumb-duration: var(--motion-press);
+  --slider-progress: 0%;
+
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1 1 auto;
+  inline-size: 100%;
+  min-inline-size: 0;
+  block-size: var(--control-height-sm);
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: var(--r-sm);
+  background: transparent;
+  cursor: pointer;
+}
+
+.studio-slider-input:dir(rtl) {
+  --slider-direction: to left;
+}
+
+.studio-slider-input.studio-slider-compact {
+  --slider-track-size: 5px;
+  --slider-thumb-size: 16px;
+  block-size: 28px;
+}
+
+/* Light theme: preserve >= 3:1 contrast on paper surfaces for track and active fill. */
+:root[data-theme='light'] .studio-slider-input {
+  --slider-track-color: color-mix(in srgb, var(--text-secondary) 66%, var(--bg-surface));
+  --slider-fill-color: var(--character-ink, var(--accent));
+  --slider-fill-highlight: color-mix(in srgb, var(--slider-fill-color) 84%, var(--accent-hover));
+}
+
+:root[data-theme='light'] .studio-slider[data-character='nene'] .studio-slider-input {
+  --slider-fill-color: var(--nene-violet);
+}
+
+:root[data-theme='light'] .studio-slider[data-character='natsume'] .studio-slider-input {
+  --slider-fill-color: var(--natsume-amber);
+}
+
+/* WebKit / Blink track & thumb (must stay separate from Firefox pseudo-elements). */
+.studio-slider-input::-webkit-slider-runnable-track {
+  block-size: var(--slider-track-size);
+  border: 0;
+  border-radius: var(--slider-track-radius);
+  background: linear-gradient(
+    var(--slider-direction),
+    var(--slider-fill-highlight) 0%,
+    var(--slider-fill-color) var(--slider-progress),
+    var(--slider-track-color) var(--slider-progress),
+    var(--slider-track-color) 100%
+  );
+}
+
+.studio-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  box-sizing: border-box;
+  inline-size: var(--slider-thumb-size);
+  block-size: var(--slider-thumb-size);
+  margin-block-start: calc((var(--slider-track-size) - var(--slider-thumb-size)) / 2);
+  border: 2.5px solid var(--slider-thumb-ring);
+  border-radius: var(--slider-thumb-radius);
+  background: radial-gradient(
+    circle at 35% 32%,
+    var(--slider-thumb-bg) 0%,
+    color-mix(in srgb, var(--slider-fill-color) 16%, var(--slider-thumb-bg)) 100%
+  );
+  box-shadow: 0 0 0 2px var(--slider-thumb-halo), var(--shadow-sm);
+  cursor: inherit;
+  transform: scale(var(--slider-thumb-scale));
+  transition: transform var(--slider-thumb-duration) var(--ease-out);
+}
+
+/* Firefox track, progress & thumb (separate blocks so no vendor selector invalidation occurs). */
+.studio-slider-input::-moz-range-track {
+  block-size: var(--slider-track-size);
+  border: 0;
+  border-radius: var(--slider-track-radius);
+  background: var(--slider-track-color);
+}
+
+.studio-slider-input::-moz-range-progress {
+  block-size: var(--slider-track-size);
+  border-radius: var(--slider-track-radius);
+  background: linear-gradient(var(--slider-direction), var(--slider-fill-highlight), var(--slider-fill-color));
+}
+
+.studio-slider-input::-moz-range-thumb {
+  box-sizing: border-box;
+  inline-size: var(--slider-thumb-size);
+  block-size: var(--slider-thumb-size);
+  border: 2.5px solid var(--slider-thumb-ring);
+  border-radius: var(--slider-thumb-radius);
+  background: radial-gradient(
+    circle at 35% 32%,
+    var(--slider-thumb-bg) 0%,
+    color-mix(in srgb, var(--slider-fill-color) 16%, var(--slider-thumb-bg)) 100%
+  );
+  box-shadow: 0 0 0 2px var(--slider-thumb-halo), var(--shadow-sm);
+  cursor: inherit;
+  transform: scale(var(--slider-thumb-scale));
+  transition: transform var(--slider-thumb-duration) var(--ease-out);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .studio-slider-input:not(:disabled):hover {
+    --slider-thumb-scale: var(--slider-thumb-hover);
+  }
+}
+
+.studio-slider-input:not(:disabled):active {
+  --slider-thumb-scale: var(--slider-thumb-press);
+}
+
+.studio-slider-input:focus-visible {
+  outline: 2px solid var(--focus-color, var(--text-secondary));
+  outline-offset: 2px;
+  box-shadow: none;
+}
+
+.studio-slider-input:disabled {
+  --slider-fill-color: var(--text-disabled);
+  --slider-fill-highlight: var(--text-disabled);
+  --slider-thumb-ring: var(--text-disabled);
+  --slider-track-color: var(--border-soft);
+  --slider-thumb-scale: 1;
+  cursor: not-allowed;
+}
+
+@media (pointer: coarse) {
+  .studio-slider-input,
+  .studio-slider-input.studio-slider-compact {
+    block-size: 44px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root:not([data-motion='full']) .studio-slider-input {
+    --slider-thumb-hover: 1;
+    --slider-thumb-press: 1;
+    --slider-thumb-duration: 0s;
+  }
+}
+
+:root:is([data-motion='reduce'], [data-motion='reduced'], [data-reduced-motion='true']) .studio-slider-input {
+  --slider-thumb-hover: 1;
+  --slider-thumb-press: 1;
+  --slider-thumb-duration: 0s;
+}
+
+:root[data-theme-style='terraria'] .studio-slider-input {
+  --slider-track-radius: 0px;
+  --slider-thumb-radius: 0px;
+}
+
+@media (forced-colors: active) {
+  .studio-slider-input {
+    --slider-track-color: CanvasText;
+    --slider-fill-color: Highlight;
+    --slider-fill-highlight: Highlight;
+    --slider-thumb-ring: Highlight;
+    --slider-thumb-bg: Canvas;
+    --slider-thumb-halo: Canvas;
+  }
+
+  .studio-slider-input:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+  }
+}

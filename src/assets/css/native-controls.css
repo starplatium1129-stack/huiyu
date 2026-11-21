@@ -1,14 +1,16 @@
 @reference "./tailwind.css";
 
+/* Focus ring single source of truth lives in design/tokens.css (--focus-color / --focus-shadow).
+   Keep safe var() fallbacks below without redefining :root focus tokens here. */
 :root {
-  --focus-color:var(--text-secondary);
-  --focus-shadow:0 0 0 2px var(--focus-color);
+  --checkbox-icon-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 12.2 L9.4 17 Q14.6 11.6 19.5 6.5'/%3E%3C/svg%3E");
+  --checkbox-icon-dash: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round'%3E%3Cpath d='M5.5 12 H18.5'/%3E%3C/svg%3E");
 }
-/* Text links keep the reading layout; filled actions use their contrasting ink. */
+/* Text links keep the reading layout; filled actions retain the shared neutral focus ring. */
 :root body :where(a:not(:has(img,svg,canvas))):focus-visible:focus-visible {
   box-shadow:none; text-decoration:underline; text-decoration-thickness:2px; text-underline-offset:.25em;
 }
-.btn-primary:focus-visible { --focus-shadow:inset 0 -2px 0 var(--text-inverse); box-shadow:var(--focus-shadow); }
+.btn-primary:focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 
 /* Text-field material and geometry live in studio-fields.css. This file owns
    browser chrome, native selection controls and the focus fallback. */
@@ -18,7 +20,7 @@
   background:var(--bg-surface); color:var(--text-primary); font:500 var(--fs-label)/var(--lh-label) var(--font-sans); cursor:pointer;
 }
 :where(button):disabled { color:var(--text-disabled); cursor:not-allowed; }
-:where(button, input, textarea):focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+:where(button, input, textarea):focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 /* Image layers paint above inset shadows, so their keyboard marker is an overlay. */
 :where(.zoomable-image-viewer,.compare-surface,.candidate-viewport,.gallery-orbit):focus-visible::after {
   content:""; position:absolute; inset:auto 0 0; height:2px; z-index:var(--z-raised);
@@ -66,44 +68,82 @@ html { -webkit-tap-highlight-color: transparent; }
 :where(input[type="search"])::-webkit-search-results-button,
 :where(input[type="search"])::-webkit-search-results-decoration { @apply tw:hidden; }
 
+/* Unified 20px --r-xs hand-drawn checkmark family matching StudioCheckbox.vue. */
 :where(label:has(input[type="checkbox"]), label:has(input[type="radio"])) {
   cursor: pointer;
   user-select: none;
 }
+:where(label:has(input[type="checkbox"]:disabled), label:has(input[type="radio"]:disabled)) {
+  color: var(--text-disabled);
+  cursor: not-allowed;
+}
 
 :where(input[type="checkbox"], input[type="radio"]) {
-  @apply tw:inline-grid tw:w-[18px] tw:h-[18px];
-  flex: 0 0 18px;
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
   place-content: center;
-  @apply tw:m-0;
-  border: 1px solid var(--border-strong);
+  margin: 0;
+  border: 1.5px solid var(--border-strong);
   background: var(--bg-surface);
-  @apply tw:text-inverse tw:cursor-pointer;
-  vertical-align: -.2em;
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 var(--glass-highlight);
+  cursor: pointer;
+  vertical-align: -.24em;
   -webkit-appearance: none;
   appearance: none;
 }
-:where(input[type="checkbox"]) { @apply tw:rounded-sm; }
+:where(input[type="checkbox"]) { border-radius: var(--r-xs); }
 :where(input[type="radio"]) { border-radius: 50%; }
 :where(input[type="checkbox"], input[type="radio"])::before {
   content: "";
   opacity: 0;
   transform: scale(0.6);
-  transition: opacity var(--motion-hover) ease, transform var(--motion-hover) var(--ease-out);
+  transition: opacity var(--motion-hover) var(--ease-out), transform var(--motion-hover) var(--ease-out);
 }
 :where(input[type="checkbox"])::before {
-  @apply tw:w-[5px] tw:h-[9px] tw:mt-[-2px];
-  border-right: 2px solid currentColor;
-  border-bottom: 2px solid currentColor;
-  transform: rotate(45deg) scale(0.6);
+  width: 15px;
+  height: 15px;
+  background-color: currentColor;
+  -webkit-mask: var(--checkbox-icon, var(--checkbox-icon-check)) no-repeat center / contain;
+  mask: var(--checkbox-icon, var(--checkbox-icon-check)) no-repeat center / contain;
 }
-:where(input[type="radio"])::before { @apply tw:w-[8px] tw:h-[8px]; border-radius: 50%; background: currentColor; }
-:where(input[type="checkbox"], input[type="radio"]):checked { @apply tw:border-strong; background:var(--text-primary); }
-:where(input[type="checkbox"]):checked::before { opacity: 1; transform: rotate(45deg) scale(1); }
-:where(input[type="radio"]):checked::before { opacity: 1; transform: scale(1); }
-:where(input[type="checkbox"], input[type="radio"]):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-:where(input[type="checkbox"],input[type="radio"]):checked:focus-visible { --focus-shadow:inset 0 -2px 0 var(--text-inverse); }
-:where(input[type="checkbox"], input[type="radio"]):disabled { @apply tw:border-soft; background: var(--bg-base); @apply tw:text-disabled tw:cursor-not-allowed; }
+:where(input[type="checkbox"]):checked { --checkbox-icon: var(--checkbox-icon-check); }
+:where(input[type="checkbox"]):indeterminate { --checkbox-icon: var(--checkbox-icon-dash); }
+:where(input[type="radio"])::before { width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+:where(input[type="checkbox"], input[type="radio"]):is(:checked, :indeterminate) {
+  border-color: var(--text-primary);
+  background: var(--text-primary);
+  color: var(--text-inverse);
+}
+:where(input[type="checkbox"], input[type="radio"]):is(:checked, :indeterminate)::before {
+  opacity: 1;
+  transform: scale(1);
+}
+@media (hover:hover) and (pointer:fine) {
+  :where(input[type="checkbox"], input[type="radio"]):hover:not(:disabled):not(:focus-visible) {
+    border-color: var(--text-secondary);
+  }
+}
+/* >= 3:1 focus-visible outline in both dark and light themes, checked or unchecked. */
+:where(input[type="checkbox"], input[type="radio"]):focus-visible {
+  outline: 2px solid var(--focus-color, var(--text-secondary));
+  outline-offset: 2px;
+  box-shadow: none;
+}
+:where(input[type="checkbox"], input[type="radio"]):disabled {
+  border-color: var(--border-soft);
+  background: var(--bg-base);
+  color: var(--text-disabled);
+  box-shadow: none;
+  cursor: not-allowed;
+}
+:where(input[type="checkbox"], input[type="radio"]):disabled:is(:checked, :indeterminate) {
+  border-color: var(--border-strong);
+  background: var(--bg-elevated);
+  color: var(--text-disabled);
+}
 
 :where(input[type="range"]) {
   --range-thumb-scale:1; --range-thumb-hover:1.1; --range-thumb-press:1.16; --range-thumb-duration:var(--motion-press);
@@ -145,7 +185,7 @@ html { -webkit-tap-highlight-color: transparent; }
   :root:not([data-motion='full']) input[type='range'] { --range-thumb-hover:1; --range-thumb-press:1; --range-thumb-duration:0s; }
 }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) input[type='range'] { --range-thumb-hover:1; --range-thumb-press:1; --range-thumb-duration:0s; }
-:where(input[type="range"]):focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+:where(input[type="range"]):focus-visible { outline: 2px solid var(--focus-color, var(--text-secondary)); outline-offset: 2px; box-shadow: none; }
 :where(input[type="range"]):disabled { @apply tw:cursor-not-allowed; }
 
 :where(input[type="number"]) { -moz-appearance: textfield; appearance: textfield; }
@@ -181,6 +221,11 @@ html { -webkit-tap-highlight-color: transparent; }
 :where(progress)::-webkit-progress-value { @apply tw:rounded-pill; background: var(--accent); }
 :where(progress)::-moz-progress-bar { @apply tw:rounded-pill; background: var(--accent); }
 
+@media (pointer: coarse) {
+  :where(label:has(input[type="checkbox"]), label:has(input[type="radio"])) { min-height: 44px; }
+  :where(input[type="range"]) { min-height: 44px; }
+}
+
 @media (prefers-reduced-motion: reduce) {
   :root:not([data-motion='full']) :where(input[type="checkbox"], input[type="radio"])::before { transition: none; }
 }
@@ -189,8 +234,21 @@ html { -webkit-tap-highlight-color: transparent; }
 
 @media (forced-colors: active) {
   :where(input, textarea):-webkit-autofill { -webkit-text-fill-color: CanvasText; }
-  :where(input[type="checkbox"], input[type="radio"]) { border-color: ButtonText; background: Canvas; color: HighlightText; }
-  :where(input[type="checkbox"], input[type="radio"]):checked { border-color: Highlight; background: Highlight; }
+  :where(input[type="checkbox"], input[type="radio"]) {
+    forced-color-adjust: none;
+    border-color: CanvasText;
+    background: Canvas;
+    color: CanvasText;
+  }
+  :where(input[type="checkbox"])::before { background-color: CanvasText; }
+  :where(input[type="checkbox"], input[type="radio"]):is(:checked, :indeterminate) {
+    border-color: Highlight;
+    background: Highlight;
+    color: HighlightText;
+  }
+  :where(input[type="checkbox"]):is(:checked, :indeterminate)::before { background-color: HighlightText; }
+  :where(input[type="checkbox"], input[type="radio"]):disabled { border-color: GrayText; color: GrayText; background: Canvas; }
+  :where(input[type="checkbox"], input[type="radio"]):focus-visible { outline: 2px solid Highlight; outline-offset: 2px; }
   :where(input[type="range"]) { background: CanvasText; }
   :where(input[type="file"])::file-selector-button { border-color: ButtonText; background: ButtonFace; color: ButtonText; }
 }

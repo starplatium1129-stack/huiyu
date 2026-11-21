@@ -1,11 +1,13 @@
 <template>
-  <SwitchRoot class="toggle-switch"
-      :class="{ 'toggle-switch-icon-only': !hasSlotContent }"
-      :model-value="modelValue"
-      :disabled="disabled"
-      :aria-label="label || undefined"
-      @update:model-value="onChange"
-    >
+  <SwitchRoot
+    class="toggle-switch"
+    :class="{ 'toggle-switch-icon-only': !hasSlotContent }"
+    :data-character="character || undefined"
+    :model-value="modelValue"
+    :disabled="disabled"
+    :aria-label="label || undefined"
+    @update:model-value="onChange"
+  >
     <span ref="slider" class="toggle-slider" aria-hidden="true">
       <span ref="fill" class="toggle-fill" />
       <SwitchThumb class="toggle-knob">
@@ -32,7 +34,9 @@ const props = withDefaults(defineProps<{
   disabled?: boolean
   /** 无文本时的无障碍标签 */
   label?: string
-}>(), { disabled: false, label: '' })
+  /** 可选角色语境（nene / natsume） */
+  character?: string
+}>(), { disabled: false, label: '', character: '' })
 
 const slider = ref<HTMLElement | null>(null)
 const fill = ref<HTMLElement | null>(null)

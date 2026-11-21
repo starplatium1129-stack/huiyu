@@ -1,10 +1,15 @@
 /* Adapted from Lucian #013 · MIT (c) 2026 Seokwoooo.
    Stretch the visual surface with transforms; Reka retains the switch state. */
-.toggle-switch { --toggle-press-scale:1.2; position:relative; display:inline-flex; align-items:center; gap:var(--s-2); min-height:var(--control-height-sm); padding:0; border:0; border-radius:var(--r-sm); background:transparent; color:inherit; text-align:start; cursor:pointer; flex-shrink:0; font:inherit; line-height:1; }
+.toggle-switch { --toggle-press-scale:1.2; --toggle-active-track:var(--text-primary); position:relative; display:inline-flex; align-items:center; gap:var(--s-2); min-height:var(--control-height-sm); padding:0; border:0; border-radius:var(--r-sm); background:transparent; color:inherit; text-align:start; cursor:pointer; flex-shrink:0; font:inherit; line-height:1; }
 .toggle-switch-icon-only { min-width:44px; min-height:44px; justify-content:center; }
 :root .toggle-switch:active { transform:none; }
+/* Atelier style: character-accent active track (>= 3:1 non-text contrast in dark & light); Terraria keeps original neutral ink. */
+:root:not([data-theme-style='terraria']) .toggle-switch { --toggle-active-track:var(--character-accent, var(--accent)); }
+:root[data-theme='light']:not([data-theme-style='terraria']) .toggle-switch { --toggle-active-track:var(--character-ink, var(--accent)); }
+:root:not([data-theme-style='terraria']) .toggle-switch[data-character='nene'] { --toggle-active-track:var(--nene-violet); }
+:root:not([data-theme-style='terraria']) .toggle-switch[data-character='natsume'] { --toggle-active-track:var(--natsume-amber); }
 .toggle-slider { position:relative; display:inline-block; flex-shrink:0; width:40px; height:24px; border-radius:var(--r-pill); background:var(--bg-elevated); box-shadow:inset 0 0 0 1px var(--border-strong); }
-.toggle-fill { position:absolute; inset:0; border-radius:inherit; background:var(--text-primary); opacity:0; }
+.toggle-fill { position:absolute; inset:0; border-radius:inherit; background:var(--toggle-active-track); box-shadow:inset 0 1px 0 var(--glass-highlight); opacity:0; }
 .toggle-knob { position:absolute; display:grid; place-items:center; width:18px; height:18px; left:3px; top:3px; transform:translateX(0); }
 .toggle-knob-surface { position:absolute; inset:0; border-radius:var(--r-pill); background:var(--text-secondary); transform-origin:left center; transition:transform var(--motion-control) var(--ease-out); }
 .toggle-knob .archive-icon { position:absolute; width:12px; height:12px; color:var(--bg-surface); }
@@ -12,20 +17,23 @@
 .toggle-switch[data-state='checked'] .toggle-fill { opacity:1; }
 .toggle-knob[data-state='checked'] { transform:translateX(16px); }
 .toggle-knob[data-state='checked'] .toggle-knob-surface { background:var(--text-inverse); transform-origin:right center; }
-.toggle-knob[data-state='checked'] .archive-icon { color:var(--text-primary); }
+.toggle-knob[data-state='checked'] .archive-icon { color:var(--toggle-active-track); }
 .toggle-knob[data-state='checked'] .toggle-off { opacity:0; transform:scale(.8); }
 .toggle-knob[data-state='checked'] .toggle-on { opacity:1; transform:none; }
 .toggle-switch:active:not([data-disabled]):not(:focus-visible) .toggle-knob-surface { transform:scaleX(var(--toggle-press-scale)); transition-duration:var(--motion-press); }
 @media (hover:hover) and (pointer:fine) {
   .toggle-switch:hover:not([data-disabled]) .toggle-slider { outline:1px solid var(--text-secondary); outline-offset:2px; }
 }
-.toggle-switch:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.toggle-switch:focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 .toggle-switch:focus-visible .toggle-knob-surface { transition:none; }
 .toggle-switch[data-disabled] { cursor:not-allowed; color:var(--text-disabled); }
 .toggle-switch[data-disabled] .toggle-slider { background:var(--bg-elevated); box-shadow:inset 0 0 0 1px var(--border-soft); }
 .toggle-switch[data-disabled] .toggle-fill { opacity:0 !important; }
 .toggle-switch[data-disabled] .toggle-knob-surface { background:var(--text-disabled); }
 .toggle-switch[data-disabled] .archive-icon { color:var(--bg-elevated); }
+@media (pointer:coarse) {
+  .toggle-switch { min-height:44px; min-width:44px; }
+}
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .toggle-switch .toggle-knob-surface { transition:none; }
 :root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .toggle-switch { --toggle-press-scale:1; }
 @media (prefers-reduced-motion:reduce) {
@@ -34,7 +42,7 @@
 }
 @media (forced-colors:active) {
   .toggle-slider { background:Canvas; outline:1px solid ButtonText; }
-  .toggle-fill { background:Highlight; }
+  .toggle-fill { background:Highlight; box-shadow:none; }
   .toggle-knob-surface { background:ButtonText; }
   .toggle-knob .archive-icon { color:Canvas; }
   .toggle-knob[data-state='checked'] .toggle-knob-surface { background:HighlightText; }

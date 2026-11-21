@@ -27,11 +27,21 @@
       </RadioGroupRoot>
     </fieldset>
     <AsyncPanel v-if="themeStyle === 'atelier'" :loader="loadGlassMaterial" label="玻璃材质设置" v-slot="{ component }"><component :is="component" /></AsyncPanel>
-    <div v-if="zoomAvailable" class="appearance-range">
-      <label :for="zoomId">界面缩放</label>
-      <output :for="zoomId">{{ Math.round(zoom * 100) }}%</output>
-      <input :id="zoomId" type="range" min="75" max="200" step="5" :value="zoom * 100" :aria-valuetext="Math.round(zoom * 100) + '%'" @input="setZoom(Number(($event.target as HTMLInputElement).value) / 100)">
-      <button class="btn btn-ghost" type="button" @click="setZoom(1)">恢复 100%</button>
+    <div v-if="zoomAvailable" class="appearance-range-wrap">
+      <StudioSlider
+        :id="zoomId"
+        :model-value="Math.round(zoom * 100)"
+        :min="75"
+        :max="200"
+        :step="5"
+        label="界面缩放"
+        unit="%"
+        @update:model-value="setZoom($event / 100)"
+      >
+        <template #actions>
+          <button class="btn btn-ghost btn-sm" type="button" @click="setZoom(1)">恢复 100%</button>
+        </template>
+      </StudioSlider>
     </div>
     <p v-if="zoomError" role="status">{{ zoomError }}</p>
     <ToggleSwitch v-if="themeStyle === 'atelier'" class="appearance-check" :model-value="reducedGlass" label="降低玻璃效果" @update:model-value="setReducedGlass">
@@ -59,6 +69,7 @@ import ArchiveIcon from './visual/ArchiveIcon.vue'
 import AnimatedSelection from './visual/AnimatedSelection.vue'
 import ToggleSwitch from './visual/ToggleSwitch.vue'
 import AsyncPanel from '@/components/ui/AsyncPanel.vue'
+import StudioSlider from '@/components/ui/StudioSlider.vue'
 const loadGlassMaterial = () => import('./GlassMaterialChoice.vue')
 import { useDesktopPreferences } from '@/composables/useDesktopInteraction'
 import { useDesktopZoom } from '@/composables/useDesktopZoom'

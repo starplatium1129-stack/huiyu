@@ -4,6 +4,7 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import { useTaskMediaSource } from '@/composables/tasks/useTaskMediaSource'
 import { isRuntimeResultPath } from '@/api/runtimeTasks'
+import '@/assets/css/components/studio-slider.css'
 
 /**
  * 原生 <audio controls> / <video controls> 的替代品。
@@ -227,7 +228,7 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
         <ArchiveIcon :name="playing ? 'pause' : 'play'" />
       </button>
       <input
-        class="studio-media-seek"
+        class="studio-slider-input studio-slider-compact studio-media-seek"
         type="range"
         min="0"
         :max="duration || 0"
@@ -235,7 +236,8 @@ onMounted(() => { document.addEventListener('fullscreenchange', syncFullscreen) 
         :value="currentTime"
         :disabled="!duration"
         :aria-label="`${label}播放进度`"
-        :style="{ '--progress': progressPercent + '%' }"
+        :aria-valuetext="`${formatTime(currentTime)} / ${formatTime(duration)}`"
+        :style="{ '--slider-progress': progressPercent + '%' }"
         @input="onSeek"
       />
       <span class="studio-media-time">{{ formatTime(currentTime) }} / {{ formatTime(duration) }}</span>

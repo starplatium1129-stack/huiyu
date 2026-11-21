@@ -1,0 +1,195 @@
+/* StudioDialog: native <dialog> + AVG visual-novel top hairline & serif header.
+   Never set display unconditionally on dialog — scope to dialog[open] only. */
+.studio-dialog {
+  --dialog-accent: var(--character-accent, var(--accent));
+  --dialog-width: min(560px, calc(100vw - 2 * var(--s-4)));
+  position: fixed;
+  inset: var(--desktop-chrome-height, 0px) 0 0;
+  box-sizing: border-box;
+  width: var(--dialog-width);
+  max-width: calc(100vw - 2 * var(--s-4));
+  max-height: calc(100dvh - var(--desktop-chrome-height, 0px) - 2 * var(--s-4));
+  margin: auto;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-xl);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-lg);
+}
+
+.studio-dialog[open] {
+  display: grid;
+  grid-template-rows: auto minmax(0, 1fr) auto;
+}
+
+.studio-dialog:modal {
+  overscroll-behavior: contain;
+}
+
+.studio-dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background: var(--art-backdrop);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+}
+
+.studio-dialog[data-size='sm'] {
+  --dialog-width: min(410px, calc(100vw - 2 * var(--s-4)));
+}
+
+.studio-dialog[data-size='md'] {
+  --dialog-width: min(580px, calc(100vw - 2 * var(--s-4)));
+}
+
+.studio-dialog[data-size='lg'] {
+  --dialog-width: min(780px, calc(100vw - 2 * var(--s-4)));
+}
+
+.studio-dialog[data-character='nene'] {
+  --dialog-accent: var(--nene-violet);
+}
+
+.studio-dialog[data-character='natsume'] {
+  --dialog-accent: var(--natsume-amber);
+}
+
+.studio-dialog[data-tone='danger'] {
+  --dialog-accent: var(--danger-text);
+}
+
+/* AVG visual-novel hairline along the upper frame edge; excluded from Terraria. */
+:root:not([data-theme-style='terraria']) .studio-dialog::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  z-index: var(--z-raised);
+  pointer-events: none;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    color-mix(in srgb, var(--dialog-accent) 72%, transparent) 16%,
+    var(--dialog-accent) 50%,
+    color-mix(in srgb, var(--dialog-accent) 72%, transparent) 84%,
+    transparent 100%
+  );
+}
+
+.studio-dialog-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: var(--s-3);
+  padding: var(--s-4) var(--s-5) var(--s-3);
+  border-bottom: 1px solid var(--border-soft);
+}
+
+.studio-dialog-header.is-borderless {
+  border-bottom: 0;
+  padding-bottom: var(--s-2);
+}
+
+.studio-dialog-heading {
+  min-width: 0;
+  flex: 1;
+}
+
+.studio-dialog-title {
+  margin: 0;
+  color: var(--text-primary);
+  font-family: var(--font-serif);
+  font-size: var(--fs-title-sm);
+  font-weight: 600;
+  line-height: var(--lh-tight);
+  overflow-wrap: anywhere;
+  text-wrap: balance;
+}
+
+.studio-dialog-subtitle {
+  margin: var(--s-1) 0 0;
+  color: var(--text-secondary);
+  font-size: var(--fs-label-xs);
+  line-height: var(--lh-body);
+}
+
+.studio-dialog-close {
+  flex: none;
+  margin: calc(-1 * var(--s-1)) calc(-1 * var(--s-2)) 0 0;
+}
+
+.studio-dialog-body {
+  min-height: 0;
+  padding: var(--s-4) var(--s-5);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scroll-padding-block: var(--s-3);
+}
+
+.studio-dialog-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: flex-end;
+  gap: var(--s-2);
+  padding: var(--s-3) var(--s-5);
+  border-top: 1px solid var(--border-soft);
+  background: var(--bg-base);
+}
+
+:root[data-theme='light'] .studio-dialog {
+  border-color: var(--border-soft);
+  box-shadow: var(--shadow-glass-md);
+}
+
+:root[data-reduced-glass='true'] .studio-dialog::backdrop {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+@media (prefers-reduced-transparency: reduce), (prefers-contrast: more) {
+  .studio-dialog::backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (pointer: coarse) {
+  .studio-dialog-close {
+    min-width: 44px;
+    min-height: 44px;
+  }
+}
+
+:root[data-theme-style='terraria'] .studio-dialog {
+  border: 3px solid var(--terraria-soil);
+  border-radius: 0;
+  background-color: var(--bg-surface);
+  background-image: var(--terraria-paper);
+  background-size: auto, 256px 256px;
+  box-shadow: inset 0 0 0 1px var(--terraria-edge), 2px 2px 0 var(--terraria-outline);
+}
+
+:root[data-theme-style='terraria'] .studio-dialog-title {
+  font-family: var(--font-display);
+}
+
+@media (forced-colors: active) {
+  .studio-dialog {
+    background: Canvas;
+    color: CanvasText;
+    border: 1px solid CanvasText;
+    box-shadow: none;
+  }
+
+  .studio-dialog::before {
+    display: none;
+  }
+
+  .studio-dialog::backdrop {
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}

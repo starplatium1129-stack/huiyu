@@ -1,7 +1,8 @@
 <template>
   <Teleport to="body">
-    <!-- A single announcement owner avoids re-reading old notices on expansion. -->
-    <span class="sr-only" aria-live="polite" aria-atomic="true"><span :key="announcement.id">{{ announcement.msg }}</span></span>
+    <!-- Split polite and assertive live regions so errors announce immediately without re-reading old notices. -->
+    <span class="sr-only" aria-live="polite" aria-atomic="true"><span :key="politeAnnouncement.id">{{ politeAnnouncement.msg }}</span></span>
+    <span class="sr-only" role="alert" aria-live="assertive" aria-atomic="true"><span :key="assertiveAnnouncement.id">{{ assertiveAnnouncement.msg }}</span></span>
     <div
       ref="stackEl"
       class="toast-stack"
@@ -54,7 +55,7 @@
 
 <script setup lang="ts">
 import { animateMini } from 'motion'
-import { onMounted, onUnmounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref, watch } from 'vue'
 import { prefersReducedMotion } from '@/utils/motionPreference'
 import ArchiveIcon, { type ArchiveIconName } from '@/components/visual/ArchiveIcon.vue'
 import { useToast, type ToastItem, type ToastType } from '@/composables/useToast'
@@ -63,7 +64,22 @@ import { useToastStack } from '@/composables/useToastStack'
 const { toasts, dismiss, pauseAll, resumeAll } = useToast()
 withDefaults(defineProps<{ placement?: 'bottom-left' | 'bottom-right' }>(), { placement: 'bottom-right' })
 const stackEl = ref<HTMLElement | null>(null)
-const { expanded, reduced, announcement, stackHeight, bindSlot, slotStyle, hidden, enter, leave, focusOut: onStackFocusOut } = useToastStack(stackEl)
+const { expanded, reduced, stackHeight, bindSlot, slotStyle, hidden, enter, leave, focusOut: onStackFocusOut } = useToastStack(stackEl)
+
+const politeAnnouncement = ref({ id: 0, msg: '' })
+const assertiveAnnouncement = ref({ id: 0, msg: '' })
+watch(
+  () => toasts.value.at(-1),
+  latest => {
+    if (!latest) return
+    if (latest.type === 'error') {
+      if (latest.id > assertiveAnnouncement.value.id) assertiveAnnouncement.value = { id: latest.id, msg: latest.msg }
+    } else if (latest.id > politeAnnouncement.value.id) {
+      politeAnnouncement.value = { id: latest.id, msg: latest.msg }
+    }
+  },
+  { immediate: true },
+)
 
 function dismissNotice(id: number, event: MouseEvent) {
   // Keyboard dismissal is immediate; repeated commands do not wait for motion.
@@ -271,18 +287,33 @@ function onToastLeave(el: Element, done: () => void) {
 .toast-stack[data-reduced-motion='true'] :is(.toast-slot,.toast-item > *) { transition:none; }
 
 .toast-item {
+  --toast-ribbon: var(--character-accent, var(--accent));
+  position: relative;
+  overflow: hidden;
   @apply tw:flex tw:items-center tw:gap-s-3;
-  padding: var(--s-3);
+  padding: var(--s-3) var(--s-3) var(--s-3) calc(var(--s-3) + 4px);
   @apply tw:rounded-lg;
   border: 1px solid var(--border-soft);
   background: var(--bg-surface);
-  box-shadow: var(--shadow-md);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
   @apply tw:text-body-sm tw:font-semibold tw:text-primary tw:pointer-events-auto tw:[cursor:var(--cursor-grab,_grab)] tw:select-none;
   touch-action: pan-y;
   transform-origin: bottom right;
   max-width: min(460px, 90vw);
   @apply tw:whitespace-pre-wrap;
   word-break: break-word;
+}
+/* AVG visual-novel 3px vertical semantic/character ribbon; isolated from Terraria. */
+:root:not([data-theme-style='terraria']) .toast-item::before {
+  content: '';
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 3px;
+  background: var(--toast-ribbon);
+  pointer-events: none;
+}
+:root[data-theme='light']:not([data-theme-style='terraria']) .toast-info {
+  --toast-ribbon: var(--character-ink, var(--accent));
 }
 .toast-stack-on-left { left:var(--s-4); right:auto; }
 .toast-stack-on-left .toast-item { transform-origin:bottom left; }
@@ -305,19 +336,28 @@ function onToastLeave(el: Element, done: () => void) {
   .toast-action:hover { background:var(--bg-elevated); }
   .toast-close:hover { color:var(--text-primary); background:var(--bg-elevated); }
 }
-.toast-action:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
+.toast-action:focus-visible { outline: none; box-shadow: var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 .toast-close { @apply tw:grid; place-items:center; @apply tw:min-w-[32px] tw:min-h-[32px] tw:rounded-md tw:shrink-0; background:none; border:none; @apply tw:text-secondary tw:cursor-pointer tw:p-s-1; font-size:.9em; @apply tw:leading-flush; }
-.toast-close:focus-visible { outline: none; box-shadow: var(--focus-shadow); @apply tw:rounded-sm; }
+.toast-close:focus-visible { outline: none; box-shadow: var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); @apply tw:rounded-sm; }
 
-/* 图标是这四种提示唯一的颜色信号,按设计系统契约必须走 --*-text
+/* 图标是这四种提示的语义信号之一,按设计系统契约必须走 --*-text
    (原 token 是给色块/描边调的,浅色主题下当图标只有 1.9–2.6:1) */
-.toast-success .toast-icon { background:color-mix(in srgb, var(--success) 12%, var(--bg-surface)); }
-.toast-success .toast-icon { @apply tw:text-success-text; }
-.toast-error .toast-icon { background:color-mix(in srgb, var(--danger) 10%, var(--bg-surface)); }
-.toast-error   .toast-icon { @apply tw:text-danger-text; }
-.toast-warning .toast-icon { background:color-mix(in srgb, var(--warning) 10%, var(--bg-surface)); }
-.toast-warning .toast-icon { @apply tw:text-warning-text; }
-.toast-info    .toast-icon { @apply tw:text-accent; }
+.toast-success { --toast-ribbon: var(--success-text); }
+.toast-success .toast-icon { background:color-mix(in srgb, var(--success) 12%, var(--bg-surface)); @apply tw:text-success-text; }
+.toast-error { --toast-ribbon: var(--danger-text); }
+.toast-error .toast-icon { background:color-mix(in srgb, var(--danger) 10%, var(--bg-surface)); @apply tw:text-danger-text; }
+.toast-warning { --toast-ribbon: var(--warning-text); }
+.toast-warning .toast-icon { background:color-mix(in srgb, var(--warning) 10%, var(--bg-surface)); @apply tw:text-warning-text; }
+.toast-info .toast-icon { background:color-mix(in srgb, var(--toast-ribbon) 12%, var(--bg-surface)); color:var(--character-ink, var(--accent)); }
+
+@media (pointer: coarse) {
+  .toast-close { min-width: 44px; min-height: 44px; }
+  .toast-action { min-height: 44px; }
+}
+@media (forced-colors: active) {
+  .toast-item { background: Canvas; border-color: CanvasText; box-shadow: none; }
+  .toast-item::before { background: Highlight; }
+}
 
 /* TransitionGroup 进出由 Motion 的 WAAPI 接管，拖拽直接跟随指针。 */
 </style>

@@ -4,24 +4,41 @@ import { computed, onActivated, onDeactivated, onMounted, onScopeDispose, ref, w
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { listenMotionChanges, prefersReducedMotion } from '@/utils/motionPreference'
 
-const props = defineProps<{
+const props = withDefaults(defineProps<{
   label: string
-  size: string
+  size?: string
   busy: boolean
-  phaseLabel: string
+  phaseLabel?: string
   progress: number
   complete: boolean
-  disabled: boolean
-  retry: boolean
-}>()
+  disabled?: boolean
+  retry?: boolean
+  actionLabel?: string
+  retryLabel?: string
+  cancelHint?: string
+  completeLabel?: string
+  completeActionLabel?: string
+}>(), {
+  size: '',
+  phaseLabel: '进行中',
+  disabled: false,
+  retry: false,
+  actionLabel: '下载',
+  retryLabel: '重试下载',
+  cancelHint: '点击取消',
+  completeLabel: '已保存并校验',
+  completeActionLabel: '重新下载',
+})
+
 const emit = defineEmits<{ download: []; cancel: [] }>()
 const state = ref<'idle' | 'run' | 'fold' | 'done'>('idle')
 const reducedMotion = ref(prefersReducedMotion())
 const percent = computed(() => Math.max(0, Math.min(100, Math.floor(props.progress))))
 const successful = computed(() => state.value === 'fold' || state.value === 'done')
+const sizeSuffix = computed(() => props.size ? `（${props.size}）` : '')
 const accessibleLabel = computed(() => props.busy
-  ? `取消${props.label}的下载；${props.phaseLabel}，${percent.value}%`
-  : `${successful.value ? '已保存并校验；重新下载' : props.retry ? '重试下载' : '下载'} ${props.label}（${props.size}）`)
+  ? `取消 ${props.label}；${props.phaseLabel}，${percent.value}%`
+  : `${successful.value ? `${props.completeLabel}；${props.completeActionLabel}` : props.retry ? props.retryLabel : props.actionLabel} ${props.label}${sizeSuffix.value}`)
 let foldTimer: ReturnType<typeof setTimeout> | undefined
 let resetTimer: ReturnType<typeof setTimeout> | undefined
 let stopListening: (() => void) | undefined
@@ -84,13 +101,13 @@ onScopeDispose(stopMotion)
         <span class="u004-track"><span class="u004-bar" :style="{ transform: `scaleX(${percent / 100})` }" /></span>
         <span class="u004-idle">
           <span class="u004-arw"><ArchiveIcon name="download" /></span>
-          <b>{{ retry ? '重试下载' : '下载' }}</b><small>{{ size }}</small>
+          <b>{{ retry ? retryLabel : actionLabel }}</b><small v-if="size">{{ size }}</small>
         </span>
         <span class="u004-run">
-          <b>{{ percent }}%</b><small><span>{{ phaseLabel }}</span><span>点击取消</span></small>
+          <b>{{ percent }}%</b><small><span>{{ phaseLabel }}</span><span>{{ cancelHint }}</span></small>
         </span>
         <span class="u004-ok">
-          <i><ArchiveIcon name="success" /></i><span>已保存并校验</span>
+          <i><ArchiveIcon name="success" /></i><span>{{ completeLabel }}</span>
         </span>
       </span>
     </button>
@@ -100,6 +117,8 @@ onScopeDispose(stopMotion)
 
 <style scoped>
 .u004 {
+  --dl-h: var(--control-height);
+  --dl-half: calc(var(--dl-h) / 2);
   --ux-page: var(--text-inverse);
   --ux-ink: var(--accent);
   --ux-accent: var(--accent);
@@ -108,10 +127,10 @@ onScopeDispose(stopMotion)
   --ux-ease: var(--ease-out);
   --ux-spring: var(--ease-out);
   --bar: var(--accent);
-  width: 16rem;
+  width: min(16rem, 100%);
   max-width: 100%;
   min-width: 0;
-  height: 3.2rem;
+  height: var(--dl-h);
   flex-shrink: 0;
 }
 .u004-btn {
@@ -129,22 +148,22 @@ onScopeDispose(stopMotion)
   isolation: isolate;
   --control-press-transform:none;
 }
-.u004-btn:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.u004-btn:focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 /* Only the presentation moves; cancelling keeps the same pointer hit area. */
 .u004-presentation { position:absolute; inset:0; border-radius:inherit; pointer-events:none; transition:transform var(--motion-press) var(--ux-spring); }
 .u004-btn:active:not(:disabled):not(:focus-visible) .u004-presentation { transform:scale(.97); }
 .u004-shape, .u004-track, .u004-idle, .u004-run, .u004-ok { position: absolute; inset: 0; pointer-events: none; }
 /* Translate the round ends and scale only the bridge, keeping text and the hit area stable. */
 .u004-middle, .u004-cap::before { position: absolute; top: 0; bottom: 0; background: var(--ux-ink); transition: background-color var(--motion-hover) var(--ux-ease); }
-.u004-middle { left: 24px; right: 24px; transition: transform var(--motion-surface) var(--ux-ease), background-color var(--motion-hover) var(--ux-ease); }
+.u004-middle { left: var(--dl-half); right: var(--dl-half); transition: transform var(--motion-surface) var(--ux-ease), background-color var(--motion-hover) var(--ux-ease); }
 .u004-cap { position: absolute; inset: 0; transition: transform var(--motion-surface) var(--ux-ease); }
-.u004-cap::before { content: ''; width: 48px; border-radius: var(--r-md); }
+.u004-cap::before { content: ''; width: var(--dl-h); border-radius: var(--r-md); }
 .u004-cap-left::before { left: 0; }
 .u004-cap-right::before { right: 0; }
 .u004-idle, .u004-run, .u004-ok { display: flex; align-items: center; transition: opacity var(--motion-hover) var(--ux-ease), transform var(--motion-press) var(--ux-ease); }
 .u004-idle { gap: var(--s-2); padding: 0 var(--s-3); }
-.u004-arw { width: 30px; height: 30px; flex-shrink: 0; border-radius: var(--r-sm); display: grid; place-items: center; background: color-mix(in srgb, var(--ux-page) 14%, transparent); overflow: hidden; }
-.u004-arw .archive-icon { width: 22px; height: 22px; }
+.u004-arw { width: 26px; height: 26px; flex-shrink: 0; border-radius: var(--r-sm); display: grid; place-items: center; background: color-mix(in srgb, var(--ux-page) 14%, transparent); overflow: hidden; }
+.u004-arw .archive-icon { width: 18px; height: 18px; }
 .u004-arw :deep(path:first-child) { transition: transform var(--motion-press) var(--ux-ease); }
 .u004-idle b { font-size: var(--fs-label); font-weight: 700; white-space: nowrap; }
 .u004-idle small { margin-left: auto; font-size:var(--fs-label-xs); font-weight: 600; white-space: nowrap; }
@@ -156,18 +175,18 @@ onScopeDispose(stopMotion)
 .u004-run small { display: grid; gap: 2px; font-size:var(--fs-label-xs); font-weight: 600; text-align: right; }
 .u004-run :is(b,small) { padding:2px 6px; border-radius:var(--r-sm); background:var(--bg-surface); color:var(--text-primary); }
 .u004-ok { justify-content: center; gap: 10px; opacity: 0; transform: scale(.6); color: var(--ux-accent-ink); }
-.u004-ok i { position: absolute; left: calc(50% - 15px); width: 30px; height: 30px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, currentColor 18%, transparent); transition: transform var(--motion-surface) var(--ux-ease); }
-.u004-ok .archive-icon { width: 20px; height: 20px; }
-/* compositor-exempt: One short success stroke in a 20px icon; reduced motion disables the transition. */
+.u004-ok i { position: absolute; left: calc(50% - 14px); width: 28px; height: 28px; border-radius: 50%; display: grid; place-items: center; background: color-mix(in srgb, currentColor 18%, transparent); transition: transform var(--motion-surface) var(--ux-ease); }
+.u004-ok .archive-icon { width: 18px; height: 18px; }
+/* compositor-exempt: One short success stroke in an 18px icon; reduced motion disables the transition. */
 .u004-ok :deep(path) { stroke-dasharray: 24; stroke-dashoffset: 24; transition: stroke-dashoffset .45s var(--ux-ease) .25s; }
-.u004-ok > span { position: absolute; left: calc(50% - 28px); font-size:var(--fs-body); font-weight: 700; white-space: nowrap; opacity: 0; transform: translateX(-8px); transition: transform var(--motion-surface) var(--ux-ease), opacity var(--motion-hover) var(--ux-ease); }
+.u004-ok > span { position: absolute; left: calc(50% - 28px); font-size:var(--fs-label); font-weight: 700; white-space: nowrap; opacity: 0; transform: translateX(-8px); transition: transform var(--motion-surface) var(--ux-ease), opacity var(--motion-hover) var(--ux-ease); }
 .u004[data-state='run'] .u004-idle { opacity: 0; transform: translateY(-12px); }
 .u004[data-state='run'] .u004-arw :deep(path:first-child) { transform: translateY(26px); }
 .u004[data-state='run'] .u004-track { opacity: 1; }
 .u004[data-state='run'] .u004-bar::after { animation: u004-shine 1.3s linear infinite; }
 .u004[data-state='run'] .u004-run { opacity: 1; transform: none; }
-.u004[data-state='fold'] .u004-cap-left { transform: translateX(calc(50% - 24px)); }
-.u004[data-state='fold'] .u004-cap-right { transform: translateX(calc(24px - 50%)); }
+.u004[data-state='fold'] .u004-cap-left { transform: translateX(calc(50% - var(--dl-half))); }
+.u004[data-state='fold'] .u004-cap-right { transform: translateX(calc(var(--dl-half) - 50%)); }
 .u004[data-state='fold'] .u004-middle { transform: scaleX(0); }
 .u004:is([data-state='fold'], [data-state='done']) .u004-idle { opacity: 0; }
 .u004:is([data-state='fold'], [data-state='done']) .u004-middle,
@@ -182,6 +201,7 @@ onScopeDispose(stopMotion)
 .u004-btn:disabled .u004-cap::before { background: var(--bg-elevated); }
 .u004-btn:disabled .u004-ok { color: var(--text-disabled); }
 .u004-live { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+@media (pointer: coarse) { .u004 { --dl-h: 44px; } }
 @media (hover: hover) and (pointer: fine) {
   .u004-btn:hover:not(:disabled):not(:focus-visible):not(:active) .u004-presentation { transform:translateY(-2px); }
   .u004[data-state='idle'] .u004-btn:hover:not(:disabled) .u004-arw :deep(path:first-child) { animation: u004-bob 1s var(--ux-ease) infinite; }

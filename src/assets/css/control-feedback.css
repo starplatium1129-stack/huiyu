@@ -5,9 +5,10 @@
   --control-hover-surface:linear-gradient(135deg,var(--glass-highlight),transparent 65%),var(--control-hover-fill);
 }
 :where(
+  [data-control-surface='button'],[data-control-surface='chip'],[data-control-surface='tab'],[data-control-surface='card'],
   .btn,.u008,.u022,.task-center-button,button.chip,.studio-segments[role] :is(button,a),[role='tab'],[data-control-motion],
   button:is(.filter-pill,.gallery-filter,.scene-cat-btn,.trait-chip,.outfit-chip,.artist-cat-btn,.pop-cat,.pop-rating-pill),
-  .studio-pagination .page-arrow,.studio-select-trigger,.studio-select-item,.chat-more-item,.studio-media-btn,.studio-search-clear,.zoom-control,.zoom-recovery button,summary,
+  .studio-pagination .page-arrow,.studio-select-trigger,.studio-select-item,.studio-dropdown-item,.chat-more-item,.studio-media-btn,.studio-search-clear,.zoom-control,.zoom-recovery button,summary,
   .scene-active-filters button,.scene-reset,.gallery-refine-toggle,.gallery-filter-chip,.inspiration-deck-controls button,
   .gallery-album-actions button,.gallery-breadcrumb button,.filter-reset,.showcase-album-back,.pop-filter-reset,
   .journal-more,.guide-direct,.hero-particle-link,.nav-back,
@@ -44,7 +45,7 @@
     & > :where(.studio-control-label,.studio-control-icon,.archive-icon:not([data-icon='chevron-down']):not(.spin),.u008-icons,.u008-label,.directory-label,.mode-title) { transform:scale(var(--control-feedback-press)); transition-duration:var(--control-feedback-duration,var(--motion-press)); transition-timing-function:var(--spring-soft); }
   }
   &:focus-visible {
-    outline:none; box-shadow:var(--focus-shadow);
+    outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary)));
     &::before { opacity:0; transition:none; }
     & > :where(.studio-control-label,.studio-control-icon,.archive-icon:not([data-icon='chevron-down']):not(.spin),.u008-icons,.u008-label,.directory-label,.mode-title) { transform:none; transition:none; }
   }
@@ -59,16 +60,19 @@
     &:focus-visible { outline:2px solid Highlight; outline-offset:2px; }
   }
 }
+:where([data-control-surface='chip']) { border-radius:var(--r-pill); }
+:where([data-control-surface='card']) { border-radius:var(--r-lg); --control-feedback-press:.99; }
 .studio-control-label { display:inline-block; }
 /* Individual translate composes with existing press springs and local transforms.
    Keep positioning low-specificity so controls can use their own layout.
+   Segmented controls and tabs use AnimatedSelection instead of a -3px hover lift.
    Authored generation/action-link controls and artwork keep their own motion. */
-:where(.task-center-button,button.chip) { position:relative; }
+:where(.task-center-button,button.chip,[data-control-surface='button'],[data-control-surface='chip']) { position:relative; }
 :root body :is(
+  [data-control-surface='button'],[data-control-surface='chip'],
   .btn:not(.generation-action):not(.studio-action-link),[data-control-motion],
   .nav-links > a,.nav-more-trigger,.nav-back,.nav-search,.sound-toggle,.nav-menu-toggle,.task-center-button,
   .control-rail-link,.control-section-jump a,.nav-local-home,
-  .studio-segments[role] :is(button,a),[role='tab'],
   button:is(.filter-pill,.gallery-filter,.scene-cat-btn,.trait-chip,.outfit-chip,.artist-cat-btn,.pop-cat,.pop-rating-pill,.chip),
   .blueprint-cat-btn,.blueprint-reco-btn,.gallery-refine-toggle,.gallery-filter-chip,
   .scene-active-filters button,.scene-reset,.filter-reset,.pop-filter-reset,
@@ -113,15 +117,27 @@
 :root body .nav-links > a.active { color:var(--accent); }
 :root .nav { --accent:color-mix(in srgb,var(--active-character-accent,var(--character-accent)) 60%,var(--text-primary)); }
 :root[data-theme='light'] .nav { --accent:color-mix(in srgb,var(--active-character-accent,var(--character-accent)) 40%,var(--ink-base)); }
-/* Dot texture belongs to chapter furniture, never behind a label or artwork. */
-:root:not([data-theme-style='terraria']) :is(.pb .panel-title,.nav-more-group-label)::after {
-  content:''; display:inline-block; flex:0 0 22px; width:22px; height:6px; margin-inline-start:var(--s-2); vertical-align:middle;
-  background:radial-gradient(circle,var(--text-secondary) .8px,transparent 1.2px) center / 7px 6px; opacity:.35; pointer-events:none;
+/* Diagonal manga screentone ribbon: strictly limited to navigation and chapter
+   heading furniture (DESIGN.md:213), never behind cards, labels or artwork. */
+:root:not([data-theme-style='terraria']) :is(.pb .panel-title,.nav-more-group-label,.studio-chapter-heading,[data-screentone-furniture])::after {
+  content:''; display:inline-block; flex:0 0 34px; width:34px; height:10px; margin-inline-start:var(--s-2); vertical-align:middle;
+  --screentone-dot:color-mix(in srgb,var(--character-accent,var(--accent)) 48%,var(--text-secondary));
+  background-image:
+    radial-gradient(circle,var(--screentone-dot) .95px,transparent 1.35px),
+    radial-gradient(circle,var(--screentone-dot) .75px,transparent 1.15px);
+  background-position:0 0,3px 3px;
+  background-size:6px 6px;
+  -webkit-mask-image:linear-gradient(90deg,currentColor 0%,currentColor 50%,transparent 100%);
+  mask-image:linear-gradient(90deg,currentColor 0%,currentColor 50%,transparent 100%);
+  opacity:.46; pointer-events:none;
+}
+@media (forced-colors:active) {
+  :root:not([data-theme-style='terraria']) :is(.pb .panel-title,.nav-more-group-label,.studio-chapter-heading,[data-screentone-furniture])::after { display:none; }
 }
 :where(.home-section-head .link,.strip-label .link,.guide-page a:not(.btn)):hover { text-decoration:underline; text-underline-offset:.2em; }
 :where(.btn-primary,.btn-danger,.companion-send,.companion-dialogue-send,.companion-dialogue-microphone) { --control-feedback-fill:transparent; --control-feedback-edge:color-mix(in srgb,currentColor 22%,transparent); }
 :where(.artwork-tool,.artwork-retry) { --control-feedback-fill:color-mix(in srgb,var(--on-art-primary) 8%,transparent); --control-feedback-edge:color-mix(in srgb,var(--on-art-primary) 24%,transparent); }
-:where(.studio-select-item,.chat-more-item):where([data-highlighted]:not([data-disabled]))::before { opacity:1; transform:none; }
+:where(.studio-select-item,.studio-dropdown-item,.chat-more-item):where([data-highlighted]:not([data-disabled]))::before { opacity:1; transform:none; }
 /* Media keeps its frame and hit area stationary while the inner picture responds. */
 :where(.catalog-sample-card,.catalog-hero-card,a.study-image,.companion-chat-image-open,.batch-thumb-btn) {
   --control-feedback-zoom:1.06; --control-feedback-press:.98;

@@ -1,3 +1,6 @@
+/* Native top-layer scroll containment: prevent backdrop/dialog scroll chaining to the page. */
+dialog:modal { overscroll-behavior: contain; }
+dialog::backdrop { overflow: hidden; overscroll-behavior: contain; }
 /* Native top-layer scrims fade separately from the surface spring. Blur stays static. */
 dialog[data-fluid-dialog]::backdrop { opacity: var(--fluid-backdrop-opacity, 1); }
 /* A self-disposing, noninteractive exit picture may outlive the Vue owner briefly. */

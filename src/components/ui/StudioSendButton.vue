@@ -2,16 +2,48 @@
 <script setup lang="ts">
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import { useSendButtonMotion } from '@/composables/chat/useSendButtonMotion'
-const props = defineProps<{ busy: boolean; disabled: boolean; turnId: string; completed: boolean; context: string; messageHost?: HTMLElement | null }>()
+
+const props = withDefaults(defineProps<{
+  busy: boolean
+  disabled?: boolean
+  turnId?: string
+  completed?: boolean
+  context?: string
+  messageHost?: HTMLElement | null
+  sendLabel?: string
+  stopLabel?: string
+}>(), {
+  disabled: false,
+  turnId: '',
+  completed: false,
+  context: 'chat',
+  messageHost: null,
+  sendLabel: '发送消息',
+  stopLabel: '停止回复或语音',
+})
+
 const emit = defineEmits<{ send: []; stop: [] }>()
 const { plane, flying, feedback, reduced } = useSendButtonMotion({
-  busy:() => props.busy, turnId:() => props.turnId, completed:() => props.completed,
-  context:() => props.context, messageHost:() => props.messageHost,
+  busy: () => props.busy,
+  turnId: () => props.turnId,
+  completed: () => props.completed,
+  context: () => props.context,
+  messageHost: () => props.messageHost,
 })
 </script>
 
 <template>
-  <button class="u005" type="button" :data-busy="busy" :data-flying="flying" :data-feedback="feedback" :data-reduced-motion="reduced" :disabled="!busy && disabled" :aria-label="busy ? '停止回复或语音' : '发送消息'" @click="busy ? emit('stop') : emit('send')">
+  <button
+    class="u005"
+    type="button"
+    :data-busy="busy"
+    :data-flying="flying"
+    :data-feedback="feedback"
+    :data-reduced-motion="reduced"
+    :disabled="!busy && disabled"
+    :aria-label="busy ? stopLabel : sendLabel"
+    @click="busy ? emit('stop') : emit('send')"
+  >
     <span class="u005-idle" aria-hidden="true"><ArchiveIcon name="send" /></span>
     <span class="u005-ring" aria-hidden="true" />
     <ArchiveIcon v-if="busy" class="u005-stop" name="stop" />
@@ -22,9 +54,9 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 </template>
 
 <style scoped>
-.u005 { --control-press-transform:none; position:relative; display:grid; place-items:center; flex:none; width:42px; height:42px; border:0; padding:0; border-radius:var(--r-md); background:linear-gradient(140deg,var(--accent-violet),var(--accent)); color:var(--text-inverse); cursor:pointer; isolation:isolate; }
-.u005 .archive-icon { width:22px; height:22px; }
-.u005-idle { display:grid; place-items:center; transform:translate(-1px,1px) rotate(-18deg); transition:transform .45s cubic-bezier(.34,1.45,.64,1),opacity .2s; }
+.u005 { --control-press-transform:none; position:relative; display:grid; place-items:center; flex:none; width:var(--control-height); height:var(--control-height); border:0; padding:0; border-radius:var(--r-md); background:linear-gradient(140deg,var(--accent-violet),var(--accent)); color:var(--text-inverse); cursor:pointer; isolation:isolate; }
+.u005 .archive-icon { width:20px; height:20px; }
+.u005-idle { display:grid; place-items:center; transform:translate(-1px,1px) rotate(-18deg); transition:transform var(--motion-route-cut) var(--spring-bounce),opacity var(--motion-control); }
 .u005[data-busy='true'] { background:var(--bg-elevated); color:var(--text-primary); }
 .u005[data-busy='true'] .u005-idle { opacity:0; transform:translate(10px,-10px) rotate(-30deg) scale(.6); }
 .u005-stop,.u005-check { position:absolute; }
@@ -41,7 +73,7 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 .u005[data-feedback='done']:not([data-busy='true']) .u005-check { opacity:1; }
 .u005[data-feedback='done'] .u005-check :deep(path) { stroke-dashoffset:0; }
 .u005[data-feedback='done'] .u005-idle { opacity:0; }
-.u005[data-feedback='back'] .u005-idle { animation:u005-back .6s cubic-bezier(.2,1.2,.4,1) both; }
+.u005[data-feedback='back'] .u005-idle { animation:u005-back .6s var(--spring-soft) both; }
 .u005-plane { position:absolute; left:calc(50% - 17px); top:calc(50% - 15px); width:34px; height:30px; opacity:0; color:var(--accent); pointer-events:none; }
 .u005-plane .archive-icon { width:100%; height:100%; }
 .u005-trail { position:absolute; right:calc(50% - 140px); bottom:calc(50% - 10px); width:340px; height:340px; overflow:visible; opacity:0; pointer-events:none; transition:opacity .6s; }
@@ -50,7 +82,7 @@ const { plane, flying, feedback, reduced } = useSendButtonMotion({
 @media (hover:hover) and (pointer:fine) { .u005:where(:hover:not(:focus-visible):not(:disabled):not([data-busy='true']):not([data-feedback='done']):not([data-reduced-motion='true'])) .u005-idle { transform:translate(2px,-2px) rotate(-8deg) scale(1.12); } }
 .u005:where(:active:not(:focus-visible):not(:disabled):not([data-busy='true']):not([data-feedback='done']):not([data-reduced-motion='true'])) .u005-idle { transform:rotate(-18deg) scale(.9); transition-duration:var(--motion-press); }
 .u005:disabled { color:var(--text-disabled); background:var(--bg-elevated); cursor:not-allowed; }
-.u005:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.u005:focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 .u005:focus-visible .u005-idle { transition:none; }
 @media (pointer:coarse) { .u005 { width:44px; height:44px; } }
 @keyframes u005-ring { to { transform:rotate(360deg); } }

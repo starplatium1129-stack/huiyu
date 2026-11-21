@@ -195,7 +195,8 @@ watch([() => props.anchor, () => Boolean(props.content)], () => { stopObserver()
   max-width: 100%;
 }
 /* 禁用控件不派发指针事件，命中区域要交给外壳；子元素因此让出 hover。 */
-.studio-tooltip-anchor[data-anchor] > :disabled { pointer-events: none; }
+.studio-tooltip-anchor[data-anchor] > :is(:disabled, [aria-disabled="true"]) { pointer-events: none; }
+.studio-tooltip-anchor[data-anchor]:focus-visible { outline: none; box-shadow: var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); border-radius: var(--r-md); }
 
 .studio-tooltip {
   --surface-enter-y:3px;

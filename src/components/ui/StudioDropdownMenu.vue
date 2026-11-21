@@ -4,7 +4,17 @@ import { DropdownMenuContent, DropdownMenuPortal, DropdownMenuRoot, DropdownMenu
 import { useModalPortalHost } from '@/composables/useModalPortalHost'
 import FluidTransition from '@/components/visual/FluidTransition.vue'
 
-withDefaults(defineProps<{ label: string; sideOffset?: number }>(), { sideOffset: 8 })
+withDefaults(defineProps<{
+  label: string
+  sideOffset?: number
+  align?: 'start' | 'center' | 'end'
+  side?: 'top' | 'right' | 'bottom' | 'left'
+}>(), {
+  sideOffset: 8,
+  align: 'end',
+  side: 'bottom',
+})
+
 const open = ref(false), pointerOpened = ref(false)
 const trigger = shallowRef<{ $el?: unknown } | HTMLElement | null>(null)
 const { portalTarget, collisionBoundary } = useModalPortalHost(() => trigger.value, open)
@@ -66,11 +76,29 @@ function onDismissEscape(event: KeyboardEvent | CustomEvent<{ originalEvent?: Ke
       <slot name="trigger" />
     </DropdownMenuTrigger>
     <DropdownMenuPortal :to="portalTarget">
-      <FluidTransition small panel=".chat-more-menu">
-      <DropdownMenuContent v-if="open" force-mount class="chat-more-menu" data-fluid-glass align="end" :side-offset="sideOffset" :collision-padding="12" :collision-boundary="collisionBoundary"
-        :data-pointer-open="pointerOpened" hide-when-detached loop :aria-label="label" :aria-labelledby="undefined"
-        @close-auto-focus="closeAutoFocus" @interact-outside="onInteractOutside" @keydown.capture="pointerOpened = false"
-        @keydown.esc.capture="onEscape" @escape-key-down="onDismissEscape">
+      <FluidTransition small panel=".studio-dropdown-menu">
+      <DropdownMenuContent
+        v-if="open"
+        force-mount
+        class="studio-dropdown-menu"
+        data-fluid-glass
+        data-elevation="2"
+        :align="align"
+        :side="side"
+        :side-offset="sideOffset"
+        :collision-padding="12"
+        :collision-boundary="collisionBoundary"
+        :data-pointer-open="pointerOpened"
+        hide-when-detached
+        loop
+        :aria-label="label"
+        :aria-labelledby="undefined"
+        @close-auto-focus="closeAutoFocus"
+        @interact-outside="onInteractOutside"
+        @keydown.capture="pointerOpened = false"
+        @keydown.esc.capture="onEscape"
+        @escape-key-down="onDismissEscape"
+      >
         <slot :run="run" />
       </DropdownMenuContent>
       </FluidTransition>
@@ -78,29 +106,58 @@ function onDismissEscape(event: KeyboardEvent | CustomEvent<{ originalEvent?: Ke
   </DropdownMenuRoot>
 </template>
 
-<!-- Keep the established selectors for fluid materials and Terraria surfaces. -->
+<!-- Shared dropdown primitives (.studio-dropdown-*); keep legacy .chat-more-* aliases for existing callers. -->
 <style>
 @reference "../../assets/css/tailwind.css";
-.chat-more-menu {
+.studio-dropdown-menu {
   @apply tw:flex tw:flex-col tw:p-s-2 tw:border tw:border-solid tw:border-soft tw:rounded-xl tw:bg-surface tw:text-primary tw:shadow-(--shadow-lg);
-  z-index:var(--z-popover);
-  width:min(272px,calc(100vw - 24px));
-  max-height:var(--reka-dropdown-menu-content-available-height,calc(100dvh - 24px));
-  overflow-y:auto;
-  overscroll-behavior:contain;
-  transform-origin:var(--reka-dropdown-menu-content-transform-origin,top right);
+  z-index: var(--z-popover);
+  width: min(272px, calc(100vw - 24px));
+  max-height: var(--reka-dropdown-menu-content-available-height, calc(100dvh - 24px));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  transform-origin: var(--reka-dropdown-menu-content-transform-origin, top right);
+  --surface-enter-x: 0px;
+  --surface-enter-y: 4px;
 }
-.chat-more-label { @apply tw:px-s-3 tw:py-s-2 tw:text-muted tw:text-label-xs; font-weight:600; }
-.chat-more-item { @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:py-s-2 tw:px-s-3 tw:rounded-md tw:text-secondary tw:text-label tw:cursor-pointer; outline:none; flex-shrink:0; }
-.chat-more-item > span { min-width:0; overflow-wrap:anywhere; }
-.chat-more-item .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
-.chat-more-item[data-highlighted] { color:var(--text-primary); }
-.chat-more-menu[data-pointer-open='false'] .chat-more-item[data-highlighted] { outline:none; box-shadow:var(--focus-shadow); }
-.chat-more-item.is-danger { color:var(--danger-text); }
-.chat-more-item.is-danger[data-highlighted] { background:color-mix(in srgb,var(--danger) 12%,var(--bg-surface)); }
-.chat-more-item[data-disabled] { color:var(--text-disabled); cursor:default; }
-.chat-more-separator { height:1px; margin:var(--s-2) var(--s-1); background:var(--border-soft); flex-shrink:0; }
-.chat-more-menu { --surface-enter-x:0px; --surface-enter-y:4px; }
-.chat-more-menu[data-side='top'] { --surface-enter-y:-4px; }
-@media(forced-colors:active) { .chat-more-item[data-highlighted] { outline:2px solid Highlight; outline-offset:-2px; } }
+.studio-dropdown-menu[data-side='top'] { --surface-enter-y: -4px; }
+:is(.studio-dropdown-label, .chat-more-label) { @apply tw:px-s-3 tw:py-s-2 tw:text-muted tw:text-label-xs; font-weight: 600; }
+:is(.studio-dropdown-item, .chat-more-item) {
+  @apply tw:flex tw:items-center tw:gap-s-2 tw:min-h-[40px] tw:py-s-2 tw:px-s-3 tw:rounded-md tw:text-secondary tw:text-label tw:cursor-pointer;
+  outline: none;
+  flex-shrink: 0;
+}
+:is(.studio-dropdown-item, .chat-more-item) > span { min-width: 0; overflow-wrap: anywhere; }
+:is(.studio-dropdown-item, .chat-more-item) .archive-icon { @apply tw:w-[16px] tw:h-[16px] tw:shrink-0; }
+:is(.studio-dropdown-item, .chat-more-item)[data-highlighted] { color: var(--text-primary); }
+.studio-dropdown-menu[data-pointer-open='false'] :is(.studio-dropdown-item, .chat-more-item)[data-highlighted] {
+  outline: none;
+  box-shadow: var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary)));
+}
+:is(.studio-dropdown-item, .chat-more-item).is-danger { color: var(--danger-text); }
+:is(.studio-dropdown-item, .chat-more-item).is-danger[data-highlighted] {
+  background: color-mix(in srgb, var(--danger) 12%, var(--bg-surface));
+}
+:is(.studio-dropdown-item, .chat-more-item)[data-disabled] { color: var(--text-disabled); cursor: default; }
+:is(.studio-dropdown-separator, .chat-more-separator) {
+  height: 1px;
+  margin: var(--s-2) var(--s-1);
+  background: var(--border-soft);
+  flex-shrink: 0;
+}
+@media (pointer: coarse) {
+  :is(.studio-dropdown-item, .chat-more-item) { min-height: 44px; }
+}
+:root[data-theme-style='terraria'] .studio-dropdown-menu {
+  border: 3px solid var(--terraria-soil);
+  border-radius: 0;
+  background-color: var(--bg-surface);
+  background-image: var(--terraria-paper);
+  background-size: auto, 256px 256px;
+  box-shadow: inset 0 0 0 1px var(--terraria-edge), 2px 2px 0 var(--terraria-outline);
+}
+@media (forced-colors: active) {
+  .studio-dropdown-menu { background: Canvas; border-color: CanvasText; color: CanvasText; }
+  :is(.studio-dropdown-item, .chat-more-item)[data-highlighted] { outline: 2px solid Highlight; outline-offset: -2px; }
+}
 </style>

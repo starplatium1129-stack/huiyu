@@ -3,7 +3,21 @@
 import { computed, nextTick, ref } from 'vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
-const props = withDefaults(defineProps<{ modelValue: number; pages: number; label: string; disabled?: boolean }>(), { disabled: false })
+
+const props = withDefaults(defineProps<{
+  modelValue: number
+  pages: number
+  label?: string
+  disabled?: boolean
+  prevLabel?: string
+  nextLabel?: string
+}>(), {
+  label: '分页',
+  disabled: false,
+  prevLabel: '上一页',
+  nextLabel: '下一页',
+})
+
 const emit = defineEmits<{ 'update:modelValue': [value: number] }>()
 const numbers = ref<HTMLElement | null>(null)
 const pageItems = computed(() => {
@@ -38,7 +52,7 @@ async function keyboard(event: KeyboardEvent) {
 </script>
 <template>
   <nav class="studio-pagination" :aria-label="label" @keydown="keyboard">
-    <button class="page-arrow" type="button" aria-label="上一页" :aria-disabled="disabled || modelValue <= 1" @click="select(modelValue - 1)"><ArchiveIcon name="chevron-down" /></button>
+    <button class="page-arrow" type="button" :aria-label="prevLabel" :aria-disabled="disabled || modelValue <= 1" @click="select(modelValue - 1)"><ArchiveIcon name="chevron-down" /></button>
     <div ref="numbers" class="page-numbers studio-segments studio-segments--compact" role="group" :aria-label="label + '页码'" data-segment-keyboard="managed">
       <AnimatedSelection stretch target=":scope > [aria-current='page']" />
       <template v-for="item in pageItems" :key="item">
@@ -46,22 +60,25 @@ async function keyboard(event: KeyboardEvent) {
         <span v-else class="page-gap" aria-hidden="true">…</span>
       </template>
     </div>
-    <button class="page-arrow page-next" type="button" aria-label="下一页" :aria-disabled="disabled || modelValue >= pages" @click="select(modelValue + 1)"><ArchiveIcon name="chevron-down" /></button>
+    <button class="page-arrow page-next" type="button" :aria-label="nextLabel" :aria-disabled="disabled || modelValue >= pages" @click="select(modelValue + 1)"><ArchiveIcon name="chevron-down" /></button>
     <span class="page-status sr-only" role="status">第 {{ modelValue }} / {{ pages }} 页</span>
   </nav>
 </template>
 <style scoped>
 .studio-pagination { display:flex; align-items:center; justify-content:center; gap:var(--s-2); max-width:100%; color:var(--text-secondary); font-size:var(--fs-label-sm); font-variant-numeric:tabular-nums; }
-.page-arrow { display:grid; place-items:center; flex-shrink:0; width:36px; height:36px; padding:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; }
+.page-arrow { display:grid; place-items:center; flex-shrink:0; width:var(--control-height-sm); height:var(--control-height-sm); padding:0; border:1px solid var(--border-soft); border-radius:var(--r-md); background:var(--bg-surface); color:var(--text-secondary); cursor:pointer; }
 .page-arrow .archive-icon { width:16px; height:16px; transform:rotate(90deg); }
 .page-next .archive-icon { transform:rotate(-90deg); }
 .page-arrow:hover:not([aria-disabled='true']) { color:var(--text-primary); background:transparent; }
 .studio-pagination button[aria-disabled='true'] { color:var(--text-disabled); cursor:default; }
-.page-arrow:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
+.page-arrow:focus-visible { outline:none; box-shadow:var(--focus-shadow, 0 0 0 2px var(--focus-color, var(--text-secondary))); }
 .page-numbers { min-width:0; flex-wrap:wrap; }
 html body .page-numbers[role] { gap:0; padding:2px; border-radius:var(--r-md); --selection-radius:var(--r-sm); }
-html body .page-numbers[role] > button { flex:0 0 auto; min-width:32px; min-height:32px; padding:var(--s-1); font:inherit; }
+html body .page-numbers[role] > button { flex:0 0 auto; min-width:var(--control-height-sm); min-height:var(--control-height-sm); padding:var(--s-1); font:inherit; }
 .page-gap { display:grid; place-items:center; min-width:12px; }
-@media (pointer: coarse) { .page-arrow { min-width: 44px; min-height: 44px; } }
+@media (pointer: coarse) {
+  .page-arrow { width:44px; height:44px; min-width:44px; min-height:44px; }
+  html body .page-numbers[role] > button { min-width:44px; min-height:44px; }
+}
 @media (forced-colors:active) { .page-arrow:focus-visible { outline:2px solid Highlight; } }
 </style>
