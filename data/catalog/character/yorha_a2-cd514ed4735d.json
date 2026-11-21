@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "yorha_a2",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 206,
   "createdAt": "2026-10-27T14:52:35.635383+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T11:30:00.161083400+00:00",
   "data": {
     "id": "yorha_a2",
     "profile": {
@@ -82,7 +82,7 @@
       ],
       "identityProse": "Adult A2 from NieR:Automata, a battle-worn android with long white hair, blue eyes and a guarded expression; her eyes are uncovered.",
       "identityTokens": [
-        "yorha type a no. 2",
+        "a2 (nier:automata)",
         "1girl",
         "solo",
         "long hair",
@@ -92,11 +92,11 @@
         "nier:automata"
       ],
       "exactTokens": [
-        "yorha type a no. 2"
+        "a2 (nier:automata)"
       ],
       "exactPrefixes": [],
       "characterTokens": [
-        "yorha type a no. 2"
+        "a2 (nier:automata)"
       ],
       "copyrightTokens": [
         "nier:automata"

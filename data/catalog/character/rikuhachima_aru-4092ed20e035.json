@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "rikuhachima_aru",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 210,
   "createdAt": "2026-10-27T17:05:47.468913800+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T11:18:23.525719400+00:00",
   "data": {
     "id": "rikuhachima_aru",
     "profile": {
@@ -110,17 +110,16 @@
         "aru (blue archive)"
       ],
       "exactTokens": [
-        "rikuhachima aru"
+        "aru (blue archive)"
       ],
       "characterTokens": [
-        "rikuhachima aru",
         "aru (blue archive)"
       ],
       "copyrightTokens": [
-        "blue_archive"
+        "blue archive"
       ],
       "identityTokens": [
-        "rikuhachima aru",
+        "aru (blue archive)",
         "1girl",
         "solo",
         "red_hair",

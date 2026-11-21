@@ -102,7 +102,7 @@
           <template #fallback><button class="btn btn-ghost room-float-btn" type="button" aria-label="正在准备更多聊天操作" aria-busy="true" disabled><ArchiveIcon name="menu" /></button></template>
         </Suspense>
       </div>
-      <section class="conversation-card" data-route-arrive v-content-motion:up="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
+      <section class="conversation-card" data-route-arrive v-content-motion:fade="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
         <header v-if="!immersive" class="conversation-head">
           <div class="room-chat-identity">
             <RuntimeImage class="room-chat-avatar" :src="avatar" alt="" :data-chibi="Boolean(companionChatAvatars[activeChar]) || undefined" />

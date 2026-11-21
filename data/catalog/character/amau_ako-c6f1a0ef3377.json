@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "amau_ako",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 208,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T11:30:00.161083400+00:00",
   "data": {
     "id": "amau_ako",
     "profile": {
@@ -106,17 +106,16 @@
         "ako (blue archive)"
       ],
       "exactTokens": [
-        "amau ako"
+        "ako (blue archive)"
       ],
       "characterTokens": [
-        "amau ako",
         "ako (blue archive)"
       ],
       "copyrightTokens": [
-        "blue_archive"
+        "blue archive"
       ],
       "identityTokens": [
-        "amau ako",
+        "ako (blue archive)",
         "1girl",
         "solo",
         "grey_hair",

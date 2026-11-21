@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "ushio_noa",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 207,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T11:30:00.161083400+00:00",
   "data": {
     "id": "ushio_noa",
     "profile": {
@@ -105,17 +105,16 @@
         "noa (blue archive)"
       ],
       "exactTokens": [
-        "ushio noa"
+        "noa (blue archive)"
       ],
       "characterTokens": [
-        "ushio noa",
         "noa (blue archive)"
       ],
       "copyrightTokens": [
-        "blue_archive"
+        "blue archive"
       ],
       "identityTokens": [
-        "ushio noa",
+        "noa (blue archive)",
         "1girl",
         "solo",
         "white_hair",

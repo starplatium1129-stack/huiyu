@@ -241,8 +241,8 @@
 .room-surface.room-immersive .conversation-card {
   position: absolute;
   bottom: var(--s-3);
-  left: 50%;
-  transform: translateX(-50%);
+  inset-inline: 0;
+  margin-inline: auto;
   animation: none;
   width: min(860px, calc(100% - 2 * var(--s-3)));
   max-height: min(260px, 34dvh);

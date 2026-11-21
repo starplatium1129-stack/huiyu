@@ -94,10 +94,9 @@ function runOpacityFade(
   }
   try {
     effect = element.animate([{ opacity: start }, { opacity: end }], { duration, easing: EASE_OUT_CSS, fill: 'both' })
-    void effect.finished.then(
-      () => { if (!cancelled) { effect = undefined; complete?.() } },
-      () => { if (!cancelled) { effect = undefined; complete?.() } },
-    )
+    // The route still needs the handle to remove the filled keyframe at cleanup.
+    const notifyComplete = () => { if (!cancelled) complete?.() }
+    void effect.finished.then(notifyComplete, notifyComplete)
   } catch {
     complete?.()
   }
@@ -175,10 +174,9 @@ function runStaggeredSpring(
       fill: 'both',
       easing: 'linear',
     })
-    void effect.finished.then(
-      () => { if (!cancelled) { effect = undefined; complete?.() } },
-      () => { if (!cancelled) { effect = undefined; complete?.() } },
-    )
+    // Keep each finished track available until the route releases all of them.
+    const notifyComplete = () => { if (!cancelled) complete?.() }
+    void effect.finished.then(notifyComplete, notifyComplete)
   } catch {
     complete?.()
   }

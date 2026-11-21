@@ -7,7 +7,7 @@ const load = () => loadRoom(props.page)
 </script>
 
 <template>
-  <AsyncPanel :key="page" :loader="load" :label="label">
+  <AsyncPanel :key="page" :loader="load" :label="label" skip-content-motion>
     <template #default="{ component }"><component :is="component" /></template>
   </AsyncPanel>
 </template>

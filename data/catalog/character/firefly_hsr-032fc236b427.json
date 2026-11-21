@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "firefly_hsr",
-  "revision": 6,
+  "revision": 7,
   "sortOrder": 180,
   "createdAt": "2026-10-22T00:00:00.000000000+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T11:30:00.161083400+00:00",
   "data": {
     "id": "firefly_hsr",
     "profile": {
@@ -414,11 +414,10 @@
         "ask_(gemini)"
       ],
       "characterTokens": [
-        "firefly_hsr"
+        "firefly (honkai: star rail)"
       ],
       "copyrightTokens": [
-        "firefly_(honkai:_star_rail)",
-        "honkai:_star_rail"
+        "honkai: star rail"
       ]
     }
   }

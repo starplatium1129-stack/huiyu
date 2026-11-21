@@ -110,8 +110,10 @@ function applyCustom() {
     <div v-else class="size-picker-grid">
       <button v-for="card in cards" :key="card.value" type="button" class="size-ratio-chip" data-spring-button :aria-pressed="size === card.value" :disabled="busy" @click="change(card.value)">
         <i :style="{ aspectRatio: card.ratio }" data-press-content aria-hidden="true"></i>
-        <span class="size-chip-label">{{ card.label }}</span>
-        <small class="size-chip-res">{{ card.value.replace('x', '×') }}</small>
+        <span class="size-chip-copy">
+          <span class="size-chip-label">{{ card.label }}</span>
+          <small class="size-chip-res">{{ card.value.replace('x', '×') }}</small>
+        </span>
         <ArchiveIcon v-if="size === card.value" name="success" class="size-chip-check" />
       </button>
     </div>
@@ -141,21 +143,40 @@ function applyCustom() {
 </template>
 <style scoped>
 .generation-size-picker { min-width:0; }
-.generation-size-picker:not(.is-compact) { container:generation-size / inline-size; }
 .size-picker-heading { display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:var(--s-2); margin-bottom:var(--s-2); }
 .size-picker-heading strong { font-size:var(--fs-label); font-weight:600; color:var(--text-primary); }
 .size-picker-heading-right { display:inline-flex; align-items:center; gap:var(--s-2); }
 .size-picker-current { font:400 var(--fs-label-xs)/var(--lh-label) var(--font-mono); color:var(--text-secondary); }
-.size-picker-grid { display:flex; flex-wrap:wrap; gap:var(--s-2); }
-.size-ratio-chip { position:relative; display:inline-flex; align-items:center; gap:6px; flex:1 1 calc(33.333% - var(--s-2)); min-width:96px; min-height:36px; padding:4px var(--s-2); border:1px solid var(--border-soft); border-radius:var(--r-md); color:var(--text-secondary); background:var(--bg-base); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans); text-align:left; cursor:pointer; }
+.size-picker-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 8.5rem), 1fr));
+  gap: var(--s-2);
+}
+.size-ratio-chip {
+  display: grid;
+  grid-template-columns: 18px minmax(0, 1fr) 13px;
+  align-items: center;
+  gap: var(--s-1);
+  min-inline-size: 0;
+  min-block-size: var(--control-height);
+  padding: var(--s-1) var(--s-2);
+  border: 1px solid var(--border-soft);
+  border-radius: var(--r-md);
+  color: var(--text-secondary);
+  background: var(--bg-base);
+  font: 500 var(--fs-label-xs)/var(--lh-label) var(--font-sans);
+  text-align: start;
+  cursor: pointer;
+}
 .size-ratio-chip[aria-pressed='true'] { color:var(--text-primary); border-color:var(--border-strong); background:var(--bg-elevated); box-shadow:var(--shadow-sm); }
 .size-ratio-chip:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .size-ratio-chip:disabled { color:var(--text-disabled); cursor:not-allowed; }
-.size-ratio-chip i { flex:none; height:14px; max-width:18px; border:1.35px solid currentColor; border-radius:2px; }
-.size-chip-label { font-weight:600; white-space:nowrap; }
-.size-chip-res { margin-inline-start:auto; color:var(--text-muted); font:400 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; white-space:nowrap; }
-.size-ratio-chip[aria-pressed='true'] .size-chip-res { color:var(--text-secondary); }
-.size-chip-check { flex:none; width:13px; height:13px; color:var(--text-primary); }
+.size-ratio-chip i { justify-self:center; block-size:14px; max-inline-size:18px; border:1.35px solid currentColor; border-radius:2px; }
+.size-chip-copy { display:grid; min-inline-size:0; overflow-wrap:anywhere; }
+.size-chip-label { font-weight:600; }
+.size-chip-res { color:var(--text-secondary); font:400 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
+.size-ratio-chip:disabled .size-chip-res { color:inherit; }
+.size-chip-check { inline-size:100%; block-size:auto; }
 .size-picker-custom { min-height:28px; padding:2px var(--s-2); font-size:var(--fs-label-xs); flex-shrink:0; white-space:nowrap; }
 .size-picker-form { display:grid; gap:var(--s-3); }
 .size-picker-fields { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:var(--s-3); }

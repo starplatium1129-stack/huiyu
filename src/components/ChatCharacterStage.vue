@@ -316,7 +316,7 @@ const stageRef = ref<HTMLElement>()
 const animeHostRef = ref<HTMLElement>()
 const ROOM_PARTICLES_KEY = 'huiyu_room_ambient_particles'
 const ambientParticlesEnabled = ref((() => {
-  try { return localStorage.getItem(ROOM_PARTICLES_KEY) !== 'off' } catch { return true }
+  try { return localStorage.getItem(ROOM_PARTICLES_KEY) === 'on' } catch { return false }
 })())
 function toggleAmbientParticles() {
   ambientParticlesEnabled.value = !ambientParticlesEnabled.value

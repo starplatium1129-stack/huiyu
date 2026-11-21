@@ -1,10 +1,10 @@
 {
   "kind": "character",
   "id": "kakudate_karin",
-  "revision": 8,
+  "revision": 9,
   "sortOrder": 209,
   "createdAt": "2026-10-27T16:23:09.430+00:00",
-  "updatedAt": "2026-11-21T08:26:20.571438900+00:00",
+  "updatedAt": "2026-11-21T11:18:23.525719400+00:00",
   "data": {
     "id": "kakudate_karin",
     "profile": {
@@ -109,17 +109,16 @@
         "karin (blue archive)"
       ],
       "exactTokens": [
-        "kakudate karin"
+        "karin (blue archive)"
       ],
       "characterTokens": [
-        "kakudate karin",
         "karin (blue archive)"
       ],
       "copyrightTokens": [
-        "blue_archive"
+        "blue archive"
       ],
       "identityTokens": [
-        "kakudate karin",
+        "karin (blue archive)",
         "1girl",
         "solo",
         "dark_skin",

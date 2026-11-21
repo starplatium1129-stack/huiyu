@@ -2,7 +2,7 @@
 import { onActivated, onBeforeUnmount, onDeactivated, onMounted, ref, shallowRef, type Component, type ShallowRef } from 'vue'
 import StudioOrbitSpinner from './StudioOrbitSpinner.vue'
 
-const props = defineProps<{ loader: () => Promise<{ default: Component }>; label: string }>()
+const props = defineProps<{ loader: () => Promise<{ default: Component }>; label: string; skipContentMotion?: boolean }>()
 const panel: ShallowRef<Component | null> = shallowRef(null)
 const host = ref<HTMLElement | null>(null)
 const loading = ref(false), failed = ref(false), retried = ref(false)
@@ -39,7 +39,7 @@ onBeforeUnmount(() => { disposed = true })
 
 <template>
   <div ref="host" class="async-panel" role="region" :aria-label="label" :aria-busy="loading" tabindex="-1">
-    <div v-if="panel" class="async-panel-content" v-content-motion:up="true"><slot :component="panel" /></div>
+    <div v-if="panel" class="async-panel-content" v-content-motion:up="!skipContentMotion"><slot :component="panel" /></div>
     <slot v-else name="feedback" :failed="failed" :retried="retried" :retry="retry" :reload="reload">
       <div class="async-panel-feedback">
         <p v-if="failed" role="alert">{{ label }}{{ retried ? '仍未加载，请检查连接后重新载入应用。' : '暂未加载，请重新读取。' }}</p>
