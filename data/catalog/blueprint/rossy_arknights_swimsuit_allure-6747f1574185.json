@@ -1,10 +1,10 @@
 {
   "kind": "blueprint",
   "id": "rossy_arknights_swimsuit_allure",
-  "revision": 4,
+  "revision": 5,
   "sortOrder": 3367,
   "createdAt": "2026-11-04T16:05:38.663285700+00:00",
-  "updatedAt": "2026-11-08T13:58:20.007874500+00:00",
+  "updatedAt": "2026-11-21T02:45:20.845249800+00:00",
   "data": {
     "id": "rossy_arknights_swimsuit_allure",
     "characterId": "rossy_arknights",
@@ -41,7 +41,7 @@
     "promptTokens": [
       "1girl",
       "solo",
-      "rossy (arknights: endfield)",
+      "rossy \\(arknights: endfield\\)",
       "short brown hair",
       "brown eyes",
       "goggles on forehead",
