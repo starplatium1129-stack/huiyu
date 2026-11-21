@@ -24,6 +24,7 @@ WORK_MS = 80_000
 QQ_WORK_MS = 120_000
 MAX_GROUP = 8
 INLINE_QUESTION_BYTES = 12 * 1024
+DESKTOP_REPLY_CHARS = 12_000
 KEY = re.compile(r"[A-Za-z0-9_-]{1,160}")
 MEDIA_REQUEST = re.compile(
     r"^(?:(?:宁宁|宝宝|老婆)[，,：:\s]*)?(?:请问|请|麻烦)?(?:能不能|能否|可以|能)?"
@@ -347,6 +348,13 @@ class Queue:
             return {**assignment, "first": first}
         if message.get("requestKey") != key:
             return {**assignment, "first": first}
+        if self.channel == "desktop":
+            # The character instructions may be in messages. Keep the exact room
+            # context or use its assigned file instead of guessing what to trim.
+            first["message"] = message
+            if len(json_bytes({**assignment, "first": first})) > INLINE_QUESTION_BYTES - 80:
+                del first["message"]
+            return {**assignment, "first": first}
         if len(assignment["pending"]) > 1:
             assignment = {**assignment, "following": self.following_questions(assignment["pending"][1:], message)}
         first["isOwner"] = self.is_owner(message)
@@ -543,7 +551,7 @@ def validate_answer(channel, key, body):
     if set(body) - {"requestKey", "text", *media, *extra}:
         raise ValueError("unexpected_reply_fields")
     text = body.get("text")
-    limit = 1600 if channel == "qq" else 12_000
+    limit = 1600 if channel == "qq" else DESKTOP_REPLY_CHARS
     if "text" in body or not media:
         if not isinstance(text, str) or not 0 < len(text.strip()) <= limit:
             raise ValueError("invalid_reply_text")
@@ -563,8 +571,9 @@ def reply(queue, args):
             raise ValueError("mention_requires_text")
         body["mentionSenderId"] = args.mention
     if not (args.skip or args.image) or args.caption:
-        raw = sys.stdin.buffer.read(8193)
-        if len(raw) > 8192:
+        byte_limit = 8192 if queue.channel == "qq" else DESKTOP_REPLY_CHARS * 4 + 1024
+        raw = sys.stdin.buffer.read(byte_limit + 1)
+        if len(raw) > byte_limit:
             raise ValueError("invalid_reply_text")
         body["text"] = raw.decode("utf-8").strip()
     media_path = None
@@ -579,7 +588,7 @@ def reply(queue, args):
             media_path = prepare_image(queue.bridge, args.image)
             body["imagePath"] = str(media_path)
     try:
-        validate_answer("qq", args.key, body)
+        validate_answer(queue.channel, args.key, body)
         with queue.writing():
             if media_path is None:
                 queue.start(args.ticket, args.key, inline=True)
@@ -643,7 +652,7 @@ def main():
     commands = parser.add_subparsers(dest="command", required=True)
     for name in ("offer", "begin", "take", "start", "renew", "publish", "reply", "images", "finish", "adopt-legacy", "status"):
         sub = commands.add_parser(name)
-        sub.add_argument("channel", choices=("qq",) if name in ("reply", "images") else ("qq", "desktop"))
+        sub.add_argument("channel", choices=("qq",) if name == "images" else ("qq", "desktop"))
         if name in ("offer", "take"):
             sub.add_argument("slot", type=int, choices=(1, 2, 3))
         elif name not in ("adopt-legacy", "status"):
@@ -652,9 +661,9 @@ def main():
             sub.add_argument("key")
         if name == "offer":
             sub.add_argument("--wait", type=int, choices=range(61), metavar="0..60", default=0)
-            sub.add_argument("--with-context", action="store_true", help="include the first QQ question in the wake")
+            sub.add_argument("--with-context", action="store_true", help="include the first message in the wake")
         if name in ("begin", "take"):
-            sub.add_argument("--read-first", action="store_true", help="claim and return the first QQ message")
+            sub.add_argument("--read-first", action="store_true", help="claim and return the first message")
         if name == "reply":
             media = sub.add_mutually_exclusive_group()
             media.add_argument("--voice", choices=("lily", "mature"), help="synthesize the words on stdin")
@@ -666,8 +675,9 @@ def main():
     args = parser.parse_args()
     read_first = getattr(args, "read_first", False)
     preview = getattr(args, "with_context", False)
-    if (read_first or preview) and args.channel != "qq":
-        parser.error("inline questions require the QQ channel")
+    if args.command == "reply" and args.channel == "desktop" and (
+            args.skip or args.voice or args.image or args.caption or args.mention or args.remember is not None):
+        parser.error("desktop reply accepts only text on stdin")
     if (getattr(args, "caption", False) or getattr(args, "remember", None) is not None) and not args.image:
         parser.error("--caption and --remember require --image")
     os.umask(0o077)
@@ -714,7 +724,7 @@ def main():
             if read_first:
                 result = queue.with_first(result)
     except Unavailable as error:
-        if args.channel != "qq" or args.command not in ("start", "reply", "images"):
+        if args.command != "reply" and not (args.channel == "qq" and args.command in ("start", "images")):
             raise
         result = queue.recover_item(args.ticket, args.key, error)
     finally:
