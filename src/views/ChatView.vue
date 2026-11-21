@@ -93,18 +93,14 @@
           </aside>
         </template>
       </Suspense>
-      <div v-if="immersive" class="room-immersive-float-actions" role="toolbar" aria-label="沉浸模式快捷操作">
-        <StudioTooltip content="展开完整对话"><button ref="immersiveExitBtn" class="btn btn-ghost room-float-btn" type="button" aria-label="展开完整对话" :aria-pressed="true" @click="toggleImmersive"><ArchiveIcon name="chat" /></button></StudioTooltip>
-        <StudioTooltip anchor :content="clearLabel"><button class="btn btn-ghost room-float-btn" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
-        <StudioTooltip content="聊天设置"><button class="btn btn-ghost room-float-btn chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
-        <Suspense>
-          <ChatActionsMenu :can-import="isLocalHost" :import-disabled="cardImportLocked" @import-card="cardFile?.click()" @clear-all="clearAllMemory" @toggle-archive="openRoomPanel('archive')" @toggle-memory="openRoomPanel('memory')" @toggle-profile="openRoomPanel('profile')" />
-          <template #fallback><button class="btn btn-ghost room-float-btn" type="button" aria-label="正在准备更多聊天操作" aria-busy="true" disabled><ArchiveIcon name="menu" /></button></template>
-        </Suspense>
-      </div>
-      <section class="conversation-card" data-route-arrive v-content-motion:fade="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
-        <header v-if="!immersive" class="conversation-head">
-          <div class="room-chat-identity">
+      <section class="conversation-card" v-content-motion:fade="activeChar" :aria-label="immersive ? '当前对话' : '完整对话'">
+        <header class="conversation-head">
+          <div v-if="immersive" class="vn-nameplate">
+            <span class="vn-nameplate-bar" aria-hidden="true" />
+            <strong class="vn-nameplate-name">{{ currentCharacter.name }}</strong>
+            <span v-if="chatReady" class="room-chat-caption"><i aria-hidden="true" />{{ voiceActive ? '语音播放中' : '相伴中' }}</span>
+          </div>
+          <div v-else class="room-chat-identity">
             <RuntimeImage class="room-chat-avatar" :src="avatar" alt="" :data-chibi="Boolean(companionChatAvatars[activeChar]) || undefined" />
             <div class="room-chat-channel">
               <CompanionCharacterPicker :model-value="activeChar" @update:model-value="switchCharacter" />
@@ -112,7 +108,7 @@
             </div>
           </div>
           <div class="room-chat-actions">
-            <StudioTooltip content="专注陪伴（Galgame 对白盒）"><button ref="immersiveEnterBtn" class="btn btn-ghost" type="button" aria-label="专注陪伴" :aria-pressed="false" @click="toggleImmersive"><ArchiveIcon name="moon" /></button></StudioTooltip>
+            <StudioTooltip :content="immersive ? '展开完整对话' : '专注陪伴'"><button class="btn btn-ghost" type="button" aria-label="专注陪伴" :aria-pressed="immersive" @click="toggleImmersive"><ArchiveIcon :name="immersive ? 'chat' : 'moon'" /></button></StudioTooltip>
             <StudioTooltip anchor :content="clearLabel"><button class="btn btn-ghost" type="button" :aria-label="clearLabel" :aria-busy="clearBusy" :disabled="busy || storyBusy || chatMutationBusy" @click="clearCharacterConversation"><ArchiveIcon name="broom" /></button></StudioTooltip>
             <StudioTooltip content="聊天设置"><button class="btn btn-ghost chat-settings-trigger" type="button" aria-label="聊天设置" @click="openRoomPanel('settings')"><ArchiveIcon name="gear" /></button></StudioTooltip>
             <Suspense>
@@ -121,11 +117,6 @@
             </Suspense>
           </div>
         </header>
-        <div v-if="immersive" class="vn-nameplate">
-          <span class="vn-nameplate-bar" aria-hidden="true" />
-          <strong class="vn-nameplate-name">{{ currentCharacter.name }}</strong>
-          <span v-if="chatReady" class="vn-nameplate-state"><i aria-hidden="true" />{{ voiceActive ? '语音播放中' : '相伴中' }}</span>
-        </div>
         <div v-if="cardImport.pending.value" class="room-setup">
           <span role="status">{{ cardImport.progress.value || '正在准备导入…' }}</span>
           <button class="btn btn-quiet btn-sm" type="button" @click="cardImport.cancel">停止导入</button>
@@ -383,21 +374,14 @@ function closeRoomPanelFromBackdrop(event: MouseEvent) {
   if (isBackdropClick(event, roomPanelDialog.value)) closeRoomPanel()
 }
 const immersive = ref(false)
-const immersiveEnterBtn = ref<HTMLButtonElement | null>(null)
-const immersiveExitBtn = ref<HTMLButtonElement | null>(null)
 const presentationSuspended = useRoomPresentation('room')
 const { visibleMessages, hasEarlier, hasLater, paging, showLatest, latest, loadEarlier, loadLater } = useChatHistoryWindow(chatListRef, currentMessages, computed(() => `${activeChar.value}:${branchId.value}`))
 const arrivingMessages = useChatMessageArrival(() => currentMessages.value, () => `${activeChar.value}:${branchId.value}`, () => busy.value)
 const currentLine = computed(() => lastAssistantMessage.value?.content || currentCharacter.value.greeting)
 function chooseStarter(text: string) { useStarter(text); void nextTick(() => inputRef.value?.focus()) }
 function toggleImmersive() {
-  const next = !immersive.value
-  immersive.value = next
-  if (!next) void latest()
-  void nextTick(() => {
-    const target = next ? immersiveExitBtn.value : immersiveEnterBtn.value
-    target?.focus({ preventScroll: true })
-  })
+  immersive.value = !immersive.value
+  if (!immersive.value) void nextTick(latest)
 }
 async function copyMessage(content: string) {
   if (await copyText(content)) setError('已复制', 'info', 1800)

@@ -316,29 +316,29 @@
         @close="petGestures.controlsOpen.value = false" @settings="settingsOpen = true" @appearance="openAppearance"
         @chat="openChatWindow" @pin="togglePin" @pass="toggleMouseEvents" @hide="desktopBridge.hide"
         @character="switchPetCharacter" @motion="characterStageRef?.playPetMotion?.($event)" />
-      <!-- 真双窗口（桌面）浮层：角色为主，聊天独立窗口。 -->
-      <CompanionDesktopFloat
-        v-if="desktopBridge"
-        :inert="immersive || undefined"
-        :reply-announcement="replyAnnouncement"
-        :character-name="currentCharacter.name"
-        :chat-error="chatError"
-        :reminders="pendingReminders"
-        :live-dot-state="liveDotState"
-        :live-dot-text="liveDotText"
-        :speech-capturing="speechState === 'capturing'"
-        :speech-auto-listening="speechAutoListening"
-        :show-watch="!immersive && (petGestures.controlsOpen.value || screenWatch.state.value !== 'idle' || Boolean(screenWatch.notice.value))"
-        :show-chat="!petGestures.controlsOpen.value"
-        @open-chat="openChatWindow"
-        @open-reminder="openReminderRoute"
-        @dismiss-reminder="dismissReminder"
-      >
-        <template #watch><CompanionScreenWatch :controller="screenWatch" show-entry docked /></template>
-        <template #import-recovery><CompanionImportRecoveryDialog :recovery="importRecovery" :character-id="activeChar" compact /></template>
-      </CompanionDesktopFloat>
       <CompanionScreenWatch v-if="!desktopBridge || immersive" :controller="screenWatch" show-entry />
     </main>
+    <CompanionDesktopFloat
+      v-if="desktopBridge"
+      v-show="!immersive"
+      :reply-announcement="replyAnnouncement"
+      :character-name="currentCharacter.name"
+      :chat-error="chatError"
+      :reminders="pendingReminders"
+      :live-dot-state="liveDotState"
+      :live-dot-text="liveDotText"
+      :speech-capturing="speechState === 'capturing'"
+      :speech-auto-listening="petGestures.controlsOpen.value && speechAutoListening"
+      :show-watch="!immersive && (petGestures.controlsOpen.value || screenWatch.state.value !== 'idle' || Boolean(screenWatch.notice.value))"
+      :show-chat="!petGestures.controlsOpen.value"
+      :show-actions="petGestures.controlsOpen.value"
+      @open-chat="openChatWindow"
+      @open-reminder="openReminderRoute"
+      @dismiss-reminder="dismissReminder"
+    >
+      <template #watch><CompanionScreenWatch :controller="screenWatch" show-entry docked /></template>
+      <template #import-recovery><CompanionImportRecoveryDialog :recovery="importRecovery" :character-id="activeChar" compact /></template>
+    </CompanionDesktopFloat>
   </article>
 </template>
 

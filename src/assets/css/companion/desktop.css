@@ -137,11 +137,7 @@ html.companion-desktop.companion-ui-hidden .companion-page .live2d-interaction-h
 }
 
 
-/* ============================================================
- * 2026-08-18 真双窗口：角色窗去掉内嵌聊天面板 → 浮层（聊天胶囊+
- * 状态点+瞬态问候）；聊天在独立窗（companion-chat）。
- * 角色窗 = 只装角色 + 轻量入口，永不显示对话面板。
- * ============================================================ */
+/* 对话在独立窗口，桌宠状态和操作占用立绘下方的布局空间。 */
 html.companion-desktop .companion-page .companion-conversation {
   @apply tw:hidden;
 }
@@ -150,19 +146,23 @@ html.companion-desktop .companion-page .companion-stage {
   @apply tw:relative tw:overflow-hidden;
 }
 
-.companion-desktop-float {
-  @apply tw:absolute;
-  z-index: var(--z-overlay);
-  @apply tw:bottom-[12px] tw:left-[50%];
-  transform: translateX(-50%);
-  @apply tw:flex tw:flex-col tw:items-center tw:gap-[8px] tw:pointer-events-none;
-  transition: opacity var(--motion-route) var(--ease-out), transform var(--motion-route) var(--ease-out);
+.companion-desktop-footer {
+  display: flex;
+  flex-direction: column;
+  flex: 0 1 auto;
+  align-self: center;
+  align-items: center;
+  gap: var(--s-2);
+  inline-size: min(320px, 100%);
+  max-block-size: min(45dvh, 18rem);
+  min-block-size: 0;
+  padding: var(--s-1) var(--s-2) var(--s-2);
+  overflow: auto;
+  overscroll-behavior: contain;
 }
-html.companion-desktop.companion-ui-hidden .companion-desktop-float,
-html.companion-desktop.companion-immersive .companion-desktop-float {
-  opacity: 0;
-  transform: translateX(-50%) translateY(8px);
-  @apply tw:pointer-events-none;
+.companion-desktop-footer:not(:has(.companion-float-reminder, .companion-float-error, .companion-mic-status, .companion-live-dot, .companion-action-dock button)),
+.companion-float-reminders:not(:has(.companion-float-reminder)) {
+  display: none;
 }
 
 .companion-chat-chip {
@@ -223,11 +223,7 @@ html.companion-desktop.companion-immersive .companion-desktop-float {
   0%, 100% { opacity: 1; }
   50% { opacity: .4; }
 }
-html.companion-desktop.companion-ui-hidden .companion-live-dot {
-  @apply tw:hidden;
-}
-
-/* 瞬态问候气泡：贴角色窗底部，自动随徽章区排列（事件类仍走原生 notify） */
+/* 问候气泡与状态共用底部区域（事件类仍走原生 notify）。 */
 .companion-float-reminders {
   @apply tw:flex tw:flex-col tw:gap-[6px] tw:items-center tw:pointer-events-auto;
 }

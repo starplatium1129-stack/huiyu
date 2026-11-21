@@ -37,14 +37,14 @@
   box-shadow:var(--shadow-md);
 }
 :root[data-theme-style='terraria'] .page-root > .site-footer { background-color:var(--bg-surface); background-image:var(--terraria-paper); background-size:auto,256px 256px; border:2px solid var(--terraria-soil); }
-:root[data-theme-style='terraria'] body :is(.nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-desktop-float) {
+:root[data-theme-style='terraria'] body :is(.nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-action-dock) {
   --text-primary:var(--terraria-on-wood); --text-secondary:var(--terraria-on-wood); --text-muted:var(--terraria-on-wood);
   --focus-color:var(--terraria-on-wood); --focus-shadow:inset 0 -2px 0 var(--focus-color);
   color:var(--terraria-on-wood); background:var(--terraria-wood); background-size:auto,256px 256px;
   border:3px solid var(--terraria-outline); box-shadow:inset 0 0 0 2px var(--terraria-soil),var(--shadow-sm);
 }
 /* This texture is fully opaque. Keep the low-transparency fallback from replacing wood with pale paper. */
-:root[data-theme-style='terraria'] body :is(.page-root > .nav,.control-page .nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-desktop-float) { background:var(--terraria-wood) !important; background-size:auto,256px 256px !important; }
+:root[data-theme-style='terraria'] body :is(.page-root > .nav,.control-page .nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-action-dock) { background:var(--terraria-wood) !important; background-size:auto,256px 256px !important; }
 :root[data-theme-style='terraria'] .nav { --accent:var(--terraria-on-wood); --accent-soft:var(--terraria-grass); }
 :root[data-theme-style='terraria'] .nav :is(.nav-menu-toggle,.nav-links) { background:var(--terraria-wood); background-size:auto,256px 256px; }
 :root[data-theme-style='terraria'] .nav .nav-menu-toggle { border:2px solid var(--terraria-soil); }
@@ -56,7 +56,7 @@
 :root[data-theme-style='terraria'] .nav .nav-utilities .nav-search:hover { background:var(--terraria-action); }
 :root[data-theme-style='terraria'] .nav .nav-more[data-active='true'] .nav-more-trigger { background:var(--terraria-action); }
 :root[data-theme-style='terraria'] .nav :is(.nav-links>a.active,.task-center-button,.app-theme-toggle:hover,.sound-toggle.active) { color:var(--terraria-on-wood); background:var(--terraria-action); }
-:root[data-theme-style='terraria'] body :is(.companion-chat-titlebar,.companion-desktop-float,.control-rail) button,
+:root[data-theme-style='terraria'] body :is(.companion-chat-titlebar,.companion-action-dock,.control-rail) button,
 :root[data-theme-style='terraria'] .companion-toolbar :is(.companion-settings-btn) { color:var(--terraria-on-wood); background:transparent; }
 :root[data-theme-style='terraria'] :is(.companion-settings-popover) {
   --text-primary:var(--terraria-paper-text-primary); --text-secondary:var(--terraria-paper-text-secondary); --text-muted:var(--terraria-paper-text-muted);
@@ -74,7 +74,7 @@
 }
 /* Component hover backgrounds sit below the feedback pseudo-element and need the same pairing. */
 :root[data-theme-style='terraria'] body .control-rail :is(.appearance-entry,.control-rail-link:not([aria-current]),.nav-local-home):hover { background:var(--terraria-action); }
-:root[data-theme-style='terraria'] body :is(.nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-desktop-float) kbd { color:var(--terraria-paper-text-primary); }
+:root[data-theme-style='terraria'] body :is(.nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-action-dock) kbd { color:var(--terraria-paper-text-primary); }
 :root[data-theme-style='terraria'] body :is(.guide-steps a,.inspiration-deck-card,.conversation-card,.card-info,.album-card,.appearance-dialog,.modal-card,.confirm-panel,.nav-more-menu,.chat-more-menu,.task-center,.studio-select-content,.status-tile,.model-card,.scenario-card) {
   border:3px solid var(--terraria-soil); border-radius:0;
   background-color:var(--bg-surface); background-image:var(--terraria-paper); background-size:auto,256px 256px;
@@ -178,6 +178,6 @@
   :root[data-theme-style='terraria'] .page-root::before,:root[data-theme-style='terraria'] .page-root::after { display:none; }
   :root[data-theme-style='terraria'] body :is(.nav,.control-rail,.desktop-titlebar,.page-main,.guide-steps a,.inspiration-deck-card,.conversation-card,.appearance-dialog,.appearance-style-choices button,.modal-card,.confirm-panel,.nav-more-menu,.chat-more-menu,.task-center,.btn,.studio-segments) { background:Canvas; color:CanvasText; border-color:CanvasText; border-image:none; box-shadow:none; }
   :root[data-theme-style='terraria'] body :is(button,a,input,textarea,summary):focus-visible { outline:2px solid Highlight; outline-offset:2px; }
-  :root[data-theme-style='terraria'] body :is(.page-root > .nav,.control-page .nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-desktop-float) { background:Canvas !important; }
+  :root[data-theme-style='terraria'] body :is(.page-root > .nav,.control-page .nav,.control-rail,.companion-chat-titlebar,.companion-toolbar,.companion-action-dock) { background:Canvas !important; }
   :root[data-theme-style='terraria'] .nav :is(a,button,.nav-brand-note) { color:CanvasText; }
 }

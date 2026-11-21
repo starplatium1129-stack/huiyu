@@ -1,6 +1,9 @@
 <template>
   <aside class="character-card open-character-stage" :class="{ 'local-model-stage': getCompanionCharacter(activeId)?.tags?.includes('local-import') }" :data-character="activeId" :data-surface="surface" :style="framingStyle">
-
+    <header v-if="surface !== 'companion'" class="room-signal">
+      <span>{{ roomPlaqueTitle }}</span>
+      <small v-if="character.roomMood">{{ character.roomMood }}</small>
+    </header>
     <div
       ref="stageRef"
       class="portrait-stage"
@@ -13,10 +16,6 @@
       role="region" tabindex="-1"
       :aria-label="`${character.name}的角色舞台`"
     >
-      <div class="room-signal">
-        <span>{{ roomPlaqueTitle }}</span>
-        <small v-if="character.roomMood">{{ character.roomMood }}</small>
-      </div>
       <RoomAtmosphereParticles
         v-if="surface !== 'companion'"
         :character-id="activeId"
@@ -45,7 +44,7 @@
       <div v-if="live2d.interactionHint.value" class="live2d-interaction-hint" aria-live="polite">
         {{ live2d.interactionHint.value }}
       </div>
-      <StudioTooltip v-if="!anime.selected.value && avatarState !== 'idle'" anchor :content="avatarActionTitle">
+      <StudioTooltip v-if="surface === 'companion' && !anime.selected.value && avatarState !== 'idle'" anchor :content="avatarActionTitle">
         <button
           class="avatar-status"
           type="button"
@@ -55,7 +54,7 @@
         >{{ avatarText }}</button>
       </StudioTooltip>
       <button
-        v-if="!anime.selected.value && avatarState === 'idle'"
+        v-if="surface === 'companion' && !anime.selected.value && avatarState === 'idle'"
         class="live2d-enable-cta"
         type="button"
         @click.stop="handleAvatarAction"
@@ -76,6 +75,11 @@
         </div>
       </div>
       <div class="character-stage-bar-actions">
+        <StudioTooltip v-if="surface !== 'companion' && !anime.selected.value && avatarState !== 'ready'" anchor :content="avatarActionTitle">
+          <button type="button" class="btn btn-quiet btn-sm room-avatar-action" :disabled="!avatarActionable" @click="handleAvatarAction">
+            {{ avatarState === 'idle' ? '加载动态立绘' : avatarText }}
+          </button>
+        </StudioTooltip>
         <div
           v-if="surface !== 'companion' && live2d.ready.value"
           class="live2d-wardrobe live2d-wardrobe-capsule"

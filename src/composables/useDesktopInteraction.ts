@@ -125,7 +125,7 @@ export function installDesktopInteraction(router: Router) {
     focusFrame = undefined
   }
   const main = () => document.querySelector<HTMLElement>('.companion-chat-body,.companion-conversation') || document.querySelector<HTMLElement>('main')
-  const nav = () => document.querySelector<HTMLElement>('.companion-orbit') || [...document.querySelectorAll<HTMLElement>('nav[aria-label="主导航"], .control-rail, .control-mobile-nav, .companion-toolbar, .companion-chat-titlebar, .companion-desktop-float')].find(usableFocus)
+  const nav = () => document.querySelector<HTMLElement>('.companion-orbit') || [...document.querySelectorAll<HTMLElement>('nav[aria-label="主导航"], .control-rail, .control-mobile-nav, .companion-toolbar, .companion-chat-titlebar, .companion-desktop-footer')].find(usableFocus)
   const modalOpen = () => [...document.querySelectorAll<HTMLElement>('dialog[open], [aria-modal="true"]')].some(usableFocus)
   function remember(event: FocusEvent) {
     const element = event.target
