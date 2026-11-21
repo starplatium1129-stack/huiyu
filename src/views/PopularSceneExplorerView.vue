@@ -1,6 +1,12 @@
 <template>
-  <article class="page library-page popular-scene-library" :style="{ '--character-ornament': portraitPalette.accent }">
-    <header class="library-header"><div><div class="page-kicker">HUIYU / CHARACTER SCENES</div><h1 class="page-title">角色场景</h1></div><CharacterContextNav :character-id="selectedId" active="scenes" /></header>
+  <article class="page library-page popular-scene-library" :style="[characterAtmosphereStyle, { '--character-ornament': portraitPalette.accent }]">
+    <header class="library-header">
+      <div class="library-heading-copy">
+        <h1 class="page-title" data-screentone-furniture>角色场景</h1>
+        <p class="popular-invitation">走进每一位角色的世界，重绘属于她的那一幕。</p>
+      </div>
+      <CharacterContextNav :character-id="selectedId" active="scenes" />
+    </header>
     <div class="library-layout">
       <BrowsingCharacterDirectory :items="directoryItems" :selected-id="selectedId" @select="selectCharacter" />
       <div ref="sceneContent" class="library-detail" tabindex="-1" role="region" :aria-label="`${selectedCharacter?.displayName || '当前角色'}的场景`" :aria-busy="loading">
@@ -14,13 +20,14 @@
       <div class="pop-hero-copy">
         <div class="page-kicker">{{ franchiseLabel(franchiseKey(selectedCharacter?.franchise || '')) }}</div>
         <h2>{{ selectedCharacter?.displayName || '选择一个角色' }}</h2>
-        <p v-if="selectedCharacter" class="pop-hero-note">{{ selectedCharacter.displayName }}专属场景与蓝图。</p>
+        <p v-if="characterJpOrnament" class="pop-hero-jp" :lang="characterJpLang">{{ characterJpOrnament }}</p>
+        <p v-if="selectedCharacter" class="pop-hero-note">{{ characterChapterQuote }}</p>
       </div>
       <p class="pop-hero-stat" aria-label="场景统计"><strong v-if="!loading && !loadError">{{ totalScenes }}</strong><span>{{ loading ? '正在整理场景' : loadError ? '场景暂不可用' : '幕可选场景' }}</span></p>
     </section>
 
-    <ArchiveStatePanel v-if="loading || samplesPending" kind="loading" title="正在加载角色场景…" />
-    <ArchiveStatePanel v-else-if="loadError" kind="error" title="角色场景加载失败" :message="loadError">
+    <ArchiveStatePanel v-if="loading || samplesPending" kind="loading" heading-level="h3" :character="selectedId" title="正在加载角色场景…" />
+    <ArchiveStatePanel v-else-if="loadError" kind="error" heading-level="h3" :character="selectedId" title="角色场景加载失败" :message="loadError">
       <button class="btn btn-primary" type="button" @click="retryScenes">重新加载</button>
     </ArchiveStatePanel>
 
@@ -50,12 +57,12 @@
         </StudioTooltip>
       </div>
 
-      <ArchiveStatePanel v-if="filtered.length === 0" compact :kind="pool.length ? 'filtered' : 'empty'"
+      <ArchiveStatePanel v-if="filtered.length === 0" compact heading-level="h3" :character="selectedId" :kind="pool.length ? 'filtered' : 'empty'"
         :title="pool.length ? '没有符合当前条件的场景' : '该角色暂未收录场景'">
         <button v-if="pool.length" class="btn btn-ghost" type="button" @click="resetFilters">重置筛选</button>
       </ArchiveStatePanel>
 
-      <ArchiveStatePanel v-if="assetsError" compact kind="error" title="样张清单暂不可用" :message="assetsError">
+      <ArchiveStatePanel v-if="assetsError" compact heading-level="h3" :character="selectedId" kind="error" title="样张清单暂不可用" :message="assetsError">
         <button class="btn btn-ghost btn-sm" type="button" :disabled="assetsLoading" @click="retryAssets">重新加载样张</button>
       </ArchiveStatePanel>
       <!-- 场景卡片网格 -->
@@ -79,19 +86,20 @@
             <SensitivePreviewVeil v-if="visibleSampleRating(blueprint) === 'R18' && image.src && !failed"
               :src="image.src" :crossorigin="image.crossorigin" />
             <span v-if="failed" class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>样张暂不可用</strong></span>
-            <span v-else-if="visibleSampleRating(blueprint) === 'R18'" class="pop-thumb-hint">R18</span>
+            <span v-else-if="visibleSampleRating(blueprint) === 'R18'" class="pop-thumb-hint"><strong>R18</strong><span>悬停预览</span></span>
           </button>
           </ShowcasePreviewSource>
           <div v-else class="pop-thumb is-missing"><span class="pop-preview-missing"><ArchiveIcon name="gallery" /><strong>{{ assetsLoading ? '正在读取样张' : assetsError ? '样张暂不可用' : '样张待补充' }}</strong></span></div>
           <div class="pop-card-body">
             <div class="pop-card-category"><span>{{ blueprint.category }}</span><span v-if="visibleSampleRating(blueprint) !== 'All'" class="pop-rating" :class="'rating-' + visibleSampleRating(blueprint)">{{ visibleSampleRating(blueprint) }}</span></div>
             <header class="pop-card-head"><h3>{{ blueprint.title }}</h3></header>
+            <p v-if="blueprint.description" class="pop-card-excerpt">{{ displayBlueprintDescription(blueprint) }}</p>
             <div class="pop-meta"><span>{{ blueprintContext(blueprint).text }}</span><span>{{ timeLabel(blueprint.timeOfDay) }}</span></div>
             <footer>
               <RouterLink class="btn btn-primary pop-draw-action" :to="drawUrl(blueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink>
             </footer>
             <details class="pop-scene-details" :open="openDetails.has(blueprint.id)" @toggle="setDetailsOpen(blueprint.id, $event)">
-              <StudioDisclosureSummary>场景细节</StudioDisclosureSummary>
+              <StudioDisclosureSummary>完整设定与镜头</StudioDisclosureSummary>
               <div v-if="openDetails.has(blueprint.id)" data-disclosure-content>
               <p v-if="blueprint.description" class="pop-full-description">{{ displayBlueprintDescription(blueprint) }}</p>
               <dl class="pop-decision">
@@ -125,7 +133,7 @@
           <div><dt>画幅</dt><dd>{{ previewBlueprint.recommendedSize.replace('x', '×') }}</dd></div>
           <div v-if="previewBlueprint.adult && artistLabel(previewBlueprint)"><dt>画师</dt><dd>{{ artistLabel(previewBlueprint) }}</dd></div>
         </dl>
-        <div class="viewer-actions"><RouterLink class="btn btn-primary" :to="drawUrl(previewBlueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink></div>
+        <div class="viewer-actions" :style="characterAtmosphereStyle"><RouterLink class="btn btn-primary pop-viewer-draw" :to="drawUrl(previewBlueprint)"><ArchiveIcon name="spark" />绘制这一幕</RouterLink></div>
       </template>
     </SceneArtworkViewer>
   </article>
@@ -166,6 +174,7 @@ import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import { characterParticleTheme } from '@/utils/characterParticleTheme'
+import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
 import { franchiseLabel, franchiseKey } from '@/utils/franchiseLabel'
 import { catalogShowcaseId } from '@/utils/showcaseManifest'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
@@ -233,11 +242,36 @@ const selectedCharacter = computed(() =>
 )
 // Keep the shared character palette on the chapter ornament without a particle canvas.
 const portraitPalette = computed(() => characterParticleTheme(selectedId.value, selectedCharacter.value?.franchise))
+const characterAtmosphereStyle = useCharacterAtmosphere(
+  () => selectedId.value,
+  () => selectedId.value ? [{ id: selectedId.value, accent_color: portraitPalette.value.accent }] : [],
+)
 const pool = computed<SceneBlueprint[]>(() =>
   allBlueprints.value.filter(bp =>
     bp.characterId === selectedId.value,
   ),
 )
+const HAS_KANA = /[\u3040-\u30ff]/
+const characterJpOrnament = computed(() => {
+  const character = selectedCharacter.value
+  if (!character) return ''
+  const kanaAlias = character.aliases?.find(alias => HAS_KANA.test(alias))
+  const name = (HAS_KANA.test(character.originalName || '') ? character.originalName : kanaAlias || character.originalName || '').trim()
+  const source = (character.franchise || '').trim()
+  return [name, source && source !== name ? source : ''].filter(Boolean).join(' · ')
+})
+const characterJpLang = computed(() => HAS_KANA.test(characterJpOrnament.value) ? 'ja' : undefined)
+const characterChapterQuote = computed(() => {
+  const character = selectedCharacter.value
+  if (!character) return ''
+  const lead = pool.value.find(bp => !bp.adult && bp.description) || pool.value.find(bp => bp.description)
+  if (lead) {
+    const firstSentence = displayBlueprintDescription(lead).split(/[。！？\n]/, 1)[0]?.trim()
+    if (firstSentence) return `「${firstSentence}。」`
+  }
+  const work = franchiseLabel(franchiseKey(character.franchise || ''))
+  return work ? `「在《${work}》的光影里，为${character.displayName}留下一幕。」` : `${character.displayName}专属场景与蓝图。`
+})
 
 // 统计口径统一为「当前角色的可浏览池」，与成人数量同源（header 不再显示全局 336 与
 // 单人成人数的混搭数字）。

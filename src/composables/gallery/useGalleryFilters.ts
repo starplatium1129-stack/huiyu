@@ -131,13 +131,14 @@ export function useGalleryFilters(options: UseGalleryFiltersOptions) {
 
   /* ---------- 时间分组与按比例展墙 ---------- */
   const groups = computed(() => {
-    const order = ['今天', '本周', '更早'];
-    const buckets: Record<string, ArtworkRecord[]> = {};
+    const buckets = new Map<string, ArtworkRecord[]>();
     pagedVisible.value.forEach(item => {
       const key = dayGroup(artworkTimestamp(item));
-      (buckets[key] = buckets[key] || []).push(item);
+      const list = buckets.get(key);
+      if (list) list.push(item);
+      else buckets.set(key, [item]);
     });
-    return order.filter(k => buckets[k]?.length).map(k => ({ key: k, items: buckets[k] }));
+    return [...buckets.entries()].map(([key, items]) => ({ key, items }));
   });
 
   let previousOrder: Array<{ key: string; ids: Array<string | number> }> = [], previousColumnCount = 0;

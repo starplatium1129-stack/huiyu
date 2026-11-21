@@ -1,26 +1,55 @@
 /* Character chapters share the artwork-first rhythm of the inspiration atlas. */
-.popular-scene-library { --page-max:1680px; padding:var(--workspace-pad-top,var(--s-5)) var(--workspace-gutter,var(--s-5)) var(--s-7); background:var(--bg-base); }
+.popular-scene-library {
+  --page-max:1680px;
+  --pop-char-accent:color-mix(in srgb,var(--character-accent,var(--character-ornament,var(--accent))) 62%,var(--text-primary));
+  padding:var(--workspace-pad-top,var(--s-5)) var(--workspace-gutter,var(--s-5)) var(--s-7);
+}
+:global(:root[data-theme='light']) .popular-scene-library {
+  --pop-char-accent:color-mix(in srgb,var(--character-accent,var(--character-ornament,var(--accent))) 42%,var(--ink-base));
+}
 .popular-scene-library .library-header { align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); }
-.popular-scene-library .library-header h1 { margin:0; }
-.popular-scene-library .library-detail:focus-visible { outline:none; box-shadow:inset 0 2px 0 var(--focus-color); }
+.popular-scene-library .library-heading-copy { min-width:0; }
+.popular-scene-library .library-header .page-title { margin:0; font:600 var(--fs-title)/var(--lh-tight) var(--font-serif); letter-spacing:0; }
+:global(:root[data-theme-style='terraria']) .popular-scene-library .library-header .page-title { font-family:var(--font-display); }
+.popular-invitation { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); }
+.popular-scene-library .library-detail:focus-visible { outline:none; box-shadow:var(--focus-shadow); border-radius:var(--r-md); }
 .popular-scene-library .page-kicker { margin:0 0 var(--s-2); color:var(--text-muted); font:500 var(--fs-label-xs)/var(--lh-label) var(--font-mono); letter-spacing:.14em; }
 .popular-scene-library .page-kicker::before { display:none; }
 .popular-scene-library .library-layout { grid-template-columns:210px minmax(0,1fr); gap:var(--workspace-panel-gap,var(--s-5)); }
 .popular-scene-library :deep(.directory-pocket) { border-left:3px solid var(--character-ornament); }
-.popular-scene-library .library-detail .pop-hero { position:relative; display:grid; grid-template-columns:88px minmax(0,1fr) auto; align-items:center; gap:var(--s-4); margin-bottom:var(--s-4); padding:var(--s-3) var(--s-5) var(--s-3) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:radial-gradient(ellipse at 0 0,color-mix(in srgb,var(--character-ornament) 12%,transparent),transparent 65%),var(--bg-surface); box-shadow:var(--workspace-inset); }
-.popular-scene-library .pop-hero::after { content:''; position:absolute; inset:var(--s-5) 0 auto auto; width:3px; height:32px; border-radius:var(--r-pill); background:var(--character-ornament); }
-.pop-character-art { position:relative; display:grid; place-items:center; width:88px; height:112px; margin:0; border:1px solid var(--border-soft); border-radius:var(--r-sm); overflow:hidden; background:var(--art-stage); color:var(--on-art-primary); box-shadow:var(--shadow-sm); }
+.popular-scene-library .library-detail .pop-hero {
+  position:relative; display:grid; grid-template-columns:140px minmax(0,1fr) auto; align-items:center; gap:var(--s-5); margin-bottom:var(--s-4); padding:var(--s-4) var(--s-5) var(--s-4) var(--s-4);
+  border:1px solid color-mix(in srgb,var(--character-ornament) 26%,var(--border-soft)); border-radius:var(--r-xl);
+  background:
+    radial-gradient(ellipse at 10% 18%,color-mix(in srgb,var(--character-ornament) 18%,transparent),transparent 62%),
+    radial-gradient(ellipse at 92% 88%,color-mix(in srgb,var(--character-accent,var(--character-ornament)) 10%,transparent),transparent 54%),
+    var(--bg-surface);
+  box-shadow:inset 0 1px 0 var(--glass-highlight),var(--workspace-inset);
+}
+.popular-scene-library .pop-hero::after { content:''; position:absolute; inset:var(--s-5) 0 auto auto; width:3px; height:44px; border-radius:var(--r-pill); background:var(--character-ornament); }
+.pop-character-art {
+  position:relative; display:grid; place-items:center; width:140px; height:188px; margin:0;
+  border:1px solid color-mix(in srgb,var(--character-ornament) 34%,var(--border-soft)); border-radius:var(--r-md); overflow:hidden;
+  background:radial-gradient(circle at 50% 38%,color-mix(in srgb,var(--character-ornament) 24%,transparent),transparent 72%),var(--art-stage);
+  color:var(--on-art-primary); box-shadow:var(--shadow-sm);
+}
 .pop-character-art img { width:100%; height:100%; object-fit:contain; opacity:0; transition:opacity var(--motion-surface) var(--ease-out); }
 .pop-character-art img.pop-character-ready { opacity:1; }
 .pop-character-placeholder { position:absolute; width:24px; height:24px; }
 @media (prefers-reduced-motion:reduce) { :global(:root:not([data-motion='full']) .popular-scene-library .pop-character-art img) { transition:none; } }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .popular-scene-library .pop-character-art img) { transition:none; }
-.popular-scene-library .library-detail .pop-hero-copy { display:grid; gap:var(--s-1); padding:0; }
-.popular-scene-library .pop-hero-copy .page-kicker { margin:0; letter-spacing:.04em; }
-.popular-scene-library .library-detail .pop-hero-copy h2 { margin:0; color:var(--text-primary); font:600 clamp(24px,2.4vw,36px)/1.3 var(--font-display); overflow-wrap:anywhere; }
-.pop-hero-note { margin:var(--s-2) 0 0; color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); overflow-wrap:anywhere; }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .popular-scene-library .pop-character-art img) { transition:none; }
+.popular-scene-library .library-detail .pop-hero-copy { display:grid; gap:var(--s-1); padding:0; min-width:0; }
+.popular-scene-library .pop-hero-copy .page-kicker { margin:0; color:var(--pop-char-accent); font-weight:600; letter-spacing:.06em; }
+.popular-scene-library .library-detail .pop-hero-copy h2 { margin:0; color:var(--text-primary); font:600 clamp(24px,2.4vw,34px)/1.28 var(--font-serif); overflow-wrap:anywhere; }
+:global(:root[data-theme-style='terraria']) .popular-scene-library .library-detail .pop-hero-copy h2 { font-family:var(--font-display); }
+.pop-hero-jp { margin:0; color:var(--text-muted); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-serif-jp); letter-spacing:.06em; overflow-wrap:anywhere; }
+.pop-hero-note {
+  margin:var(--s-2) 0 0; padding-left:var(--s-3);
+  border-left:2px solid color-mix(in srgb,var(--character-ornament) 58%,var(--border-strong));
+  color:var(--text-secondary); font:400 var(--fs-body-sm)/var(--lh-body) var(--font-serif); overflow-wrap:anywhere;
+}
 .popular-scene-library .library-detail .pop-hero-stat { display:flex; flex-direction:column; align-items:flex-end; gap:var(--s-2); margin:0; color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); white-space:nowrap; }
-.popular-scene-library .pop-hero-stat strong { color:var(--text-primary); font:500 var(--fs-title)/1 var(--font-mono); }
+.popular-scene-library .pop-hero-stat strong { color:var(--text-primary); font:600 var(--fs-title)/1 var(--font-serif); font-variant-numeric:tabular-nums; }
 .popular-scene-library .pop-toolbar { display:grid; }
 .popular-scene-library .pop-toolbar-row { display:flex; flex-wrap:wrap; align-items:center; gap:inherit; }
 .popular-scene-library .pop-results-bar { margin:var(--s-2) 0 var(--s-3); }
@@ -42,8 +71,8 @@
 @media (max-width:900px) {
   .popular-scene-library { padding:var(--s-4); }
   .popular-scene-library .library-layout { grid-template-columns:minmax(0,1fr); gap:var(--s-3); }
-  .popular-scene-library .library-detail .pop-hero { grid-template-columns:60px minmax(0,1fr) auto; }
-  .pop-character-art { width:60px; height:80px; }
+  .popular-scene-library .library-detail .pop-hero { grid-template-columns:96px minmax(0,1fr) auto; gap:var(--s-3); padding:var(--s-3) var(--s-4); }
+  .pop-character-art { width:96px; height:128px; }
 }
 @media (max-width:768px) { .popular-scene-library .library-detail .pop-grid { --scene-row-height:280px; gap:var(--s-3); } }
 @media (max-width:700px) {

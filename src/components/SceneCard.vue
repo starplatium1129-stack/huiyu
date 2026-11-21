@@ -23,11 +23,12 @@
         :class="{ 'sc-thumb-r18': sampleRating === 'R18', 'sc-thumb-ready': previewReady }" alt="" aria-hidden="true" decoding="async" draggable="false" />
       <SensitivePreviewVeil v-if="sampleRating === 'R18' && thumbImage.src && !thumbFailed"
         :src="thumbImage.src" :crossorigin="thumbImage.crossorigin" />
+      <span v-if="sampleRating === 'R18' && thumbImage.src && !thumbFailed" class="sc-sensitive-cue" aria-hidden="true"><strong>R18</strong><span>悬停预览</span></span>
       <span v-if="thumbFailed || !thumbId || !thumbImage.src" class="sc-preview-unavailable">{{ !thumbImage.src && thumbId ? '服务未连接' : '样张待补充' }}</span>
+      <span v-if="contentRating === 'R18' && (sampleRating !== 'R18' || !thumbImage.src || thumbFailed)" class="sc-badge sc-rating r18">R18</span>
+      <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
       </ShowcasePreviewSource>
       <span v-if="thumbId" class="sc-id">{{ archiveCode }}</span>
-      <span v-if="contentRating === 'R18'" class="sc-badge sc-rating r18">R18</span>
-      <span v-else-if="contentRating === 'R15'" class="sc-badge sc-rating r15">R15</span>
       <span v-if="mode === 'grid'" class="sc-cat">{{ scene.category || '场景' }}</span>
       <slot name="band" :scene="scene" />
       <button v-if="clickable" class="sc-pick" type="button"

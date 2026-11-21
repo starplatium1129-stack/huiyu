@@ -67,7 +67,7 @@ const categoryChips = computed(() => {
         :aria-pressed="props.category === chip.id"
         :disabled="!props.dataReady || props.loading"
         @click="emit('update:category', chip.id === 'all' ? 'all' : chip.id)">
-        <span class="studio-control-label">{{ chip.label }}</span><em v-if="chip.count">{{ chip.count }}</em>
+        <ArchiveIcon v-if="props.category === chip.id" name="success" class="blueprint-cat-check" /><span class="studio-control-label">{{ chip.label }}</span><em v-if="chip.count">{{ chip.count }}</em>
       </button>
     </div>
     <div class="blueprint-reco-head tw:flex tw:items-center tw:gap-s-2 tw:flex-wrap tw:mb-s-2 tw:p-s-1 tw:rounded-pill" data-fluid-glass>
@@ -112,7 +112,7 @@ const categoryChips = computed(() => {
   margin: var(--s-1) 0 var(--s-2);
 }
 .blueprint-results { min-width:0; border-radius:var(--r-md); }
-.blueprint-results:focus-visible { outline:none; box-shadow:inset 0 0 0 2px var(--focus-color); }
+.blueprint-results:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .blueprint-feedback { display:grid; justify-items:start; gap:var(--s-3); padding:var(--s-4); border:1px solid var(--border-soft); border-radius:var(--r-lg); background:var(--bg-surface); color:var(--text-primary); overflow-wrap:anywhere; }
 .blueprint-feedback > .archive-icon { width:24px; height:24px; color:var(--accent); }
 .blueprint-feedback strong { font-size:var(--fs-label); }
@@ -125,21 +125,22 @@ const categoryChips = computed(() => {
   font: 650 var(--fs-label-sm) var(--font-sans);
   transition: border-color var(--motion-hover), color var(--motion-hover), background var(--motion-hover), transform var(--motion-hover) var(--ease-out);
 }
+.blueprint-cat-check { width:14px; height:14px; color:var(--text-primary); }
 .blueprint-cat-btn em { @apply tw:not-italic; font: 700 var(--fs-mono-xs) var(--font-mono); @apply tw:text-muted; }
 .blueprint-cat-btn:hover:not(:disabled) { border-color: var(--border-strong); @apply tw:text-primary; }
 .blueprint-cat-btn:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
-.blueprint-cat-btn.active {
+.blueprint-cat-btn.active,
+.blueprint-cat-btn.adult.active {
   border-color: var(--border-strong);
   background:var(--bg-elevated);
   @apply tw:text-primary;
 }
-.blueprint-cat-btn.adult { border-color: color-mix(in srgb, var(--danger-text) 40%, var(--border-soft)); }
-.blueprint-cat-btn.adult em { @apply tw:text-danger-text; }
-.blueprint-cat-btn.adult:hover:not(:disabled),
-.blueprint-cat-btn.adult.active {
-  @apply tw:border-danger-text;
-  background: var(--bg-elevated);
-  @apply tw:text-danger-text;
+.blueprint-cat-btn.adult.active em { @apply tw:text-secondary; }
+.blueprint-cat-btn.adult:not(.active) { border-color: var(--border-soft); }
+.blueprint-cat-btn.adult:not(.active) em { @apply tw:text-secondary; }
+.blueprint-cat-btn.adult:not(.active):hover:not(:disabled) {
+  border-color: var(--border-strong);
+  @apply tw:text-primary;
 }
 .blueprint-reco-btn {
   min-height:var(--control-height-sm);
@@ -157,17 +158,16 @@ const categoryChips = computed(() => {
 }
 .blueprint-card:focus-visible { outline: none; box-shadow: var(--focus-shadow); }
 @media (hover:hover) and (pointer:fine) { .blueprint-card:hover:not(:focus-visible) { transform:translateY(-2px); @apply tw:border-strong; box-shadow:var(--shadow-sm); } }
-.blueprint-card.active {
+.blueprint-card.active,
+.blueprint-card[data-adult="true"].active {
   border-color: var(--border-strong);
   border-left-color:var(--border-strong);
   background:var(--bg-elevated);
   box-shadow: var(--selection-shadow);
 }
-.blueprint-card[data-adult="true"] { border-left-color: color-mix(in srgb, var(--danger-text) 55%, transparent); }
-.blueprint-card[data-adult="true"].active { border-left-color: var(--danger-text); }
 .blueprint-check { @apply tw:text-primary; }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) :is(.blueprint-card,.blueprint-cat-btn,.blueprint-reco-btn) { transition:none; transform:none; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) :is(.blueprint-card,.blueprint-cat-btn,.blueprint-reco-btn) { transition:none; transform:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) :is(.blueprint-card,.blueprint-cat-btn,.blueprint-reco-btn) { transition:none; transform:none; }
 @media (forced-colors:active) { .blueprint-results:focus-visible { outline:2px solid Highlight; outline-offset:2px; box-shadow:none; } }
 .blueprint-desc {
   display: -webkit-box;

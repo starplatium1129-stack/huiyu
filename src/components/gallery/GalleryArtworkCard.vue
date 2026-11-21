@@ -93,7 +93,10 @@
       <div class="artwork-caption">
         <span class="artwork-caption-copy tw:min-w-0">
           <span class="artwork-name">{{ title }}</span>
-          <span class="artwork-date">{{ character }} · {{ formattedDate }}</span>
+          <span class="artwork-date">
+            <span class="artwork-char-dot" :style="characterAccent ? { '--artwork-char-color': characterAccent } : undefined" aria-hidden="true" />
+            <span>{{ character }} · {{ formattedDate }}</span>
+          </span>
         </span>
         <span v-if="item.favorite" class="artwork-mark"><ArchiveIcon name="love" /></span>
       </div>
@@ -103,6 +106,7 @@
     <span>作品图片暂时无法读取</span>
     <button class="artwork-retry" type="button" :aria-label="`重新读取图片：${title}`" @click="retryPreview">重新读取</button>
   </div>
+  <CardEdgeLight v-if="!selectionMode && !confirmingDelete" />
 </article>
 </template>
 
@@ -111,6 +115,7 @@ import type { ArtworkRecord } from '@/types/artwork'
 import { computed, nextTick, onBeforeUnmount, ref, watch } from 'vue'
 import { runtimeResourceIdentity } from '@/platform/runtimeUrl'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import CardEdgeLight from '@/components/visual/CardEdgeLight.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import StudioCheckbox from '@/components/ui/StudioCheckbox.vue'
 import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
@@ -119,7 +124,7 @@ import { useOpacityLeave } from '@/composables/useOpacityLeave'
 import { useArtworkTilt } from '@/composables/useArtworkTilt'
 import { readStoryOrigin, storyOriginRoute } from '@/types/storyOrigin'
 const props = defineProps<{
-  item: ArtworkRecord; title: string; character: string; formattedDate: string; ratio: number;
+  item: ArtworkRecord; title: string; character: string; characterAccent?: string; formattedDate: string; ratio: number;
   thumbUrl: string; imageUrl: string; cors?: 'anonymous'; missing: boolean;
   selectionMode: boolean; selected: boolean; confirmingDelete: boolean; deleting: boolean;
 }>()

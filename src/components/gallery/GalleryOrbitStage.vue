@@ -25,8 +25,30 @@
     </div>
     <div class="gallery-orbit-caption">
       <p class="gallery-orbit-title">{{ currentTitle }}</p>
-      <div class="gallery-orbit-navigation" data-fluid-glass><span>{{ index + 1 }} / {{ total ?? items.length }}</span><input type="range" aria-label="选择作品" min="0" :max="Math.max(0, items.length - 1)" step="1" :value="index" :disabled="items.length < 2" :aria-valuetext="`第 ${index + 1} 幅，共 ${total ?? items.length} 幅：${currentTitle}`" @input="select(Number(($event.target as HTMLInputElement).value))" /></div>
-      <small>{{ dragging ? '松开选定作品' : '图上滚轮缩放 · 图外滚轮切换 · 方向键逐幅浏览' }}</small>
+      <div class="gallery-orbit-navigation" data-fluid-glass>
+        <span>{{ index + 1 }} / {{ total ?? items.length }}</span>
+        <input
+          class="studio-slider-input studio-slider-compact gallery-orbit-slider"
+          type="range"
+          aria-label="选择作品"
+          min="0"
+          :max="Math.max(0, items.length - 1)"
+          step="1"
+          :value="index"
+          :disabled="items.length < 2"
+          :style="{ '--slider-progress': `${sliderProgress}%` }"
+          :aria-valuetext="`第 ${index + 1} 幅，共 ${total ?? items.length} 幅：${currentTitle}`"
+          @input="select(Number(($event.target as HTMLInputElement).value))"
+        />
+      </div>
+      <div class="gallery-orbit-hints" :aria-label="dragging ? '松开选定作品' : '图上滚轮缩放，图外滚轮切换，方向键逐幅浏览'">
+        <span v-if="dragging" class="gallery-orbit-hint is-active"><ArchiveIcon name="spark" /><span>松开选定</span></span>
+        <template v-else>
+          <span class="gallery-orbit-hint"><ArchiveIcon name="search" /><span>图上缩放</span></span>
+          <span class="gallery-orbit-hint"><ArchiveIcon name="gallery" /><span>图外翻页</span></span>
+          <span class="gallery-orbit-hint"><ArchiveIcon name="chevron-down" class="hint-arrow" /><span>方向键</span></span>
+        </template>
+      </div>
     </div>
   </div>
 </template>
@@ -38,6 +60,7 @@ import ZoomableImageViewer from '@/components/visual/ZoomableImageViewer.vue'
 import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 import { useGalleryCoverFlow } from '@/composables/gallery/useGalleryCoverFlow'
 import type { ArtworkRecord } from '@/types/artwork'
+import '@/assets/css/components/studio-slider.css'
 import '@/assets/css/gallery-orbit.css'
 
 const props = defineProps<{
@@ -66,6 +89,7 @@ const { getPosition, windowCenter, width, reduced, dragging, travel, select, res
 // perspective would magnify a rotated cover's near edge on a 4K viewport.
 const depthScale = computed(() => Math.max(1, width.value / 1100))
 const currentTitle = computed(() => props.items[props.index] ? props.title(props.items[props.index]) : '')
+const sliderProgress = computed(() => props.items.length > 1 ? Math.round((props.index / (props.items.length - 1)) * 1000) / 10 : 0)
 const cards = computed(() => {
   const motion = travel.value
   // A short native flight retains its finite path. Long jumps and dragging

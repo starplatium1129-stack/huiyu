@@ -2,8 +2,8 @@
   <article class="gallery-shell gallery-page" ref="shellEl" :style="{ '--gallery-dock-height': `${selectionDockHeight}px` }">
     <header class="gallery-intro" data-route-arrive>
       <div class="gallery-heading-copy">
-        <p class="gallery-kicker"><ArchiveIcon name="image" />COLLECTION</p>
-        <h1 class="gallery-title">我的作品</h1>
+        <h1 class="gallery-title" data-screentone-furniture>我的作品</h1>
+        <p class="gallery-invitation">收藏每一次落笔的瞬间，把心动画面编成自己的画册。</p>
         <nav v-if="(projectFilter || characterFilter) && !trashMode && !albumsOpen" class="gallery-breadcrumb" aria-label="画册位置">
           <button type="button" @click="showAlbumOverview(projectFilter ? 'albums' : 'characters')">{{ projectFilter ? '返回画册' : '返回角色' }}</button>
           <ArchiveIcon name="chevron-down" />
@@ -83,11 +83,15 @@
         v-if="galleryLoading"
         class="gallery-loading-wall"
         kind="loading"
+        heading-level="h2"
+        :character="activeStudioCharacter"
         title="正在读取本地作品档案"
       />
       <ArchiveStatePanel
         v-if="galleryError"
         kind="error"
+        heading-level="h2"
+        :character="activeStudioCharacter"
         :compact="!!history.length"
         title="本地作品档案读取失败"
         :message="galleryError"
@@ -97,6 +101,8 @@
       <ArchiveStatePanel
         v-if="!galleryLoading && !galleryError && !libraryTotal"
         kind="empty"
+        heading-level="h2"
+        :character="activeStudioCharacter"
         title="展墙还在等你的第一幅作品"
       >
         <template #illustration><img class="gallery-empty-art" :src="galleryEmptyArt" width="1774" height="887" alt="" aria-hidden="true" draggable="false" /></template>
@@ -105,6 +111,8 @@
       <ArchiveStatePanel
         v-else-if="!galleryLoading && libraryTotal && !visible.length"
         kind="filtered"
+        heading-level="h2"
+        :character="activeStudioCharacter"
         :title="galleryIndexLoading ? '正在查找其余作品…' : favoriteOnly ? '还没有收藏的作品' : '当前筛选下没有作品'"
         :message="favoriteOnly ? '在作品卡片上点击爱心，把心仪的画面加入收藏。' : undefined"
       >
@@ -112,7 +120,7 @@
       </ArchiveStatePanel>
       <div v-else-if="!galleryLoading && visible.length" class="gallery-wall" data-route-arrive>
         <template v-for="group in masonryGroups" :key="group.key">
-          <div class="gallery-section">{{ group.key }}</div>
+          <h2 class="gallery-section">{{ group.key }}</h2>
             <GalleryVirtualRows
               :rows="group.rows" :ratio-of="ratioOf" :enabled="visible.length >= 200" @rendered="scheduleWallScan"
             >
@@ -120,6 +128,7 @@
               <GalleryArtworkCard
                 :key="item.id" :item="item"
                 :title="cardLabels.get(item.id)!.title" :character="cardLabels.get(item.id)!.character"
+                :character-accent="cardLabels.get(item.id)!.accent"
                 :formatted-date="cardLabels.get(item.id)!.date" :ratio="ratioOf(item)"
                 :thumb-url="resolveRuntimeUrl(thumbUrls[item.id] || '')" :image-url="resolveRuntimeUrl(cardUrls[item.id] || '')"
                 :cors="runtimeResourceCors()" :missing="missingImageIds.has(item.id)"
@@ -188,6 +197,7 @@
         ref="infoEl"
         class="viewer-info"
         v-if="displayedCurrent"
+        :style="viewerCharacterStyle"
         :inert="infoDrawerHidden"
         :aria-hidden="infoDrawerHidden ? 'true' : undefined"
         aria-labelledby="viewer-info-title"
@@ -201,8 +211,10 @@
         <div class="viewer-info-body">
         <h2 id="viewer-info-title" tabindex="-1" v-content-motion="viewerIndex < 0 ? false : displayedCurrent.id" class="viewer-title">{{ sceneTitle(displayedCurrent.scene, displayedCurrent) }}</h2>
         <div class="viewer-meta">
-          {{ characterName(displayedCurrent.character, displayedCurrent) }} · {{ formatDate(stamp(displayedCurrent)) }}
+          <span class="viewer-character-badge"><span class="viewer-character-dot" aria-hidden="true" /><span>{{ characterName(displayedCurrent.character, displayedCurrent) }}</span></span>
+          <span class="viewer-date-meta">{{ formatDate(stamp(displayedCurrent)) }}</span>
         </div>
+        <blockquote v-if="displayedCurrent.story" class="viewer-story viewer-story-quote">{{ displayedCurrent.story }}</blockquote>
         <div class="viewer-actions viewer-primary-actions" aria-label="作品操作">
           <StudioFavoriteButton class="btn btn-ghost" :active="!!displayedCurrent.favorite" :label="displayedCurrent.favorite ? '取消收藏' : '收藏这幅'"
             :class="{ 'btn-favorite-on': displayedCurrent.favorite }"
@@ -217,7 +229,6 @@
         </div>
         <section class="viewer-section" aria-label="作品信息">
           <h3>作品信息</h3>
-          <p v-if="displayedCurrent.story" class="viewer-story">{{ displayedCurrent.story }}</p>
           <dl class="viewer-record">
             <div><dt>尺寸</dt><dd>{{ displayedCurrent.size || (displayedCurrent.width && displayedCurrent.height ? `${displayedCurrent.width} × ${displayedCurrent.height}` : '未记录') }}</dd></div>
             <div><dt>版本</dt><dd>v{{ displayedCurrent.version || 1 }}</dd></div>
@@ -301,6 +312,8 @@ import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 const ImageCompareSlider = defineAsyncComponent(() => import('@/components/visual/ImageCompareSlider.vue'))
 import { useGalleryWorkspace } from "@/composables/gallery/useGalleryWorkspace"
 import { useGalleryCollections } from '@/composables/gallery/useGalleryCollections'
+import { artworkCharacterIds } from '@/composables/gallery/galleryAlbumRules'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import { useArtworkViewerSurface } from '@/composables/useArtworkViewerSurface'
 const selectionDock = ref<HTMLElement | null>(null), dockActive = ref(true)
 const selectionDockHeight = ref(140)
@@ -384,8 +397,20 @@ function retryComparisonOriginal(event: MouseEvent) {
   if (event.currentTarget instanceof HTMLElement) event.currentTarget.closest('.viewer-compare-host')?.querySelector<HTMLElement>('[role="slider"]')?.focus({ preventScroll:true })
   void retryParentImage()
 }
+const activeStudioCharacter = computed(() => characterFilter.value === 'nene' || characterFilter.value === 'natsume' ? characterFilter.value : '')
+function characterAccentOf(item?: typeof displayedCurrent.value): string {
+  if (!item) return 'var(--accent)'
+  const ids = artworkCharacterIds(item)
+  if (ids.includes('nene') && ids.includes('natsume')) return 'var(--accent-violet)'
+  const primary = ids[0] || ''
+  if (primary === 'nene') return 'var(--nene-violet)'
+  if (primary === 'natsume') return 'var(--natsume-amber)'
+  if (primary) return characterParticleTheme(primary).accent
+  return 'var(--accent)'
+}
+const viewerCharacterStyle = computed(() => displayedCurrent.value ? { '--viewer-char-accent': characterAccentOf(displayedCurrent.value) } : undefined)
 const cardLabels = computed(() => new Map(pagedVisible.value.map(item => [item.id, {
-  title: sceneTitle(item.scene, item), character: characterName(item.character, item), date: formatDate(stamp(item)),
+  title: sceneTitle(item.scene, item), character: characterName(item.character, item), date: formatDate(stamp(item)), accent: characterAccentOf(item),
 }])))
 function toggleOriginalViewer() {
   originalViewer.value = !originalViewer.value; cancelGesture(); compareMode.value = false

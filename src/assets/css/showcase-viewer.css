@@ -1,6 +1,6 @@
 /* Reference-specific metadata only; ArtworkViewerStage owns the shared preview. */
-.showcase-viewer .viewer-meta { display:flex; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-4); }
+.showcase-viewer .viewer-meta { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); margin-bottom:var(--s-3); }
 .showcase-viewer .viewer-meta span { max-width:100%; overflow-wrap:anywhere; }
 .showcase-viewer .viewer-meta-gen { margin-top:var(--s-3); }
-.showcase-viewer .viewer-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); margin-bottom:var(--s-5); }
-.showcase-viewer .viewer-actions { display:grid; gap:var(--s-2); }
+.showcase-viewer .viewer-story { color:var(--text-secondary); font-size:var(--fs-body-sm); line-height:var(--lh-body); margin-bottom:var(--s-4); }
+.showcase-viewer .viewer-actions { display:grid; gap:var(--s-2); margin-bottom:var(--s-4); }

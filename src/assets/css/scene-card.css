@@ -72,19 +72,22 @@
 }
 .sc-thumb-skeleton.visible { opacity:1; }
 .sc-thumb-missing { @apply tw:hidden; }
-/* R18 预览默认模糊，悬停/聚焦即可揭示，与样张页保持一致。 */
-.sc[data-rating="R18"] .sc-band::before {
-  content:"R18 · 悬停预览"; @apply tw:absolute; z-index:var(--z-raised);
+/* R18 预览默认模糊，悬停/聚焦即可揭示；居中胶囊与遮罩合一，不再额外叠右上角 R18 角标。 */
+.sc-sensitive-cue {
+  @apply tw:absolute tw:inline-flex tw:items-center tw:gap-s-1;
+  z-index:var(--z-raised);
   @apply tw:left-[50%] tw:top-[50%]; transform:translate(-50%,-50%);
   padding:var(--s-2) var(--s-3); border:1px solid var(--on-art-line); @apply tw:rounded-pill;
   background:var(--art-scrim); color:var(--on-art-primary);
-  font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em;
+  font:600 var(--fs-label-xs) var(--font-sans);
   box-shadow:var(--shadow-sm);
-  @apply tw:pointer-events-none; opacity:1; transition:opacity var(--motion-hover) var(--ease-out);
+  @apply tw:whitespace-nowrap tw:pointer-events-none; opacity:1; transition:opacity var(--motion-hover) var(--ease-out);
 }
-.sc[data-rating="R18"]:hover .sc-band::before,
-.sc[data-rating="R18"]:focus-within .sc-band::before { opacity:0; }
-@media (hover:none), (pointer:coarse), (pointer:none) { .sc[data-rating='R18'] .sc-band::before { transition:none; } }
+.sc-sensitive-cue strong { font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }
+.sc-sensitive-cue span { color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
+.sc[data-rating="R18"]:hover .sc-sensitive-cue,
+.sc[data-rating="R18"]:focus-within .sc-sensitive-cue { opacity:0; }
+@media (hover:none), (pointer:coarse), (pointer:none) { .sc-sensitive-cue { transition:none; } }
 .sc-cat {
   @apply tw:relative; z-index: var(--z-raised);
   @apply tw:ml-auto tw:text-mono-sm tw:font-bold; letter-spacing: 0.05em;

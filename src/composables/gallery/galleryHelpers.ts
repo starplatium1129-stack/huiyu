@@ -123,12 +123,13 @@ export function formatDate(ts: number) {
             : '时间未记录';
     }
 
+const CHINESE_MONTHS = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'] as const
+
 export function dayGroup(ts: number) {
         const date = new Date(ts);
-        const now = new Date();
-        const start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        const diff = (start.getTime() - date.getTime()) / 86400000;
-        return diff < 1 ? '今天' : diff < 7 ? '本周' : '更早';
+        if (!Number.isFinite(date.getTime()) || ts <= 0) return '未记录日期';
+        const month = CHINESE_MONTHS[date.getMonth()] || `${date.getMonth() + 1}月`;
+        return `${date.getFullYear()} · ${month}`;
     }
 
 export function safeImageUrl(v: string | undefined) {

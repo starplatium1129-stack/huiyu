@@ -19,11 +19,16 @@
 :is(.art-viewer,.showcase-viewer) .gallery-orbit :is(.gallery-orbit-neighbor,.zoomable-image-viewer:not(.is-zoomed)) { cursor:var(--cursor-grab, grab); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit.is-dragging :is(.gallery-orbit-surface,.gallery-orbit-neighbor,.zoomable-image-viewer) { cursor:var(--cursor-grabbing, grabbing); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-caption { display:grid; justify-items:center; gap:var(--s-1); min-width:0; padding-inline:var(--s-2); color:var(--text-secondary); }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit-title { width:min(100%,560px); margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; color:var(--text-primary); font:500 var(--fs-body-sm)/var(--lh-body) var(--font-sans); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-title { width:min(100%,560px); margin:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; text-align:center; color:var(--text-primary); font:600 var(--fs-body)/var(--lh-tight) var(--font-serif); }
+:root[data-theme-style='terraria'] :is(.art-viewer,.showcase-viewer) .gallery-orbit-title { font-family:var(--font-display); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation { display:flex; align-items:center; gap:var(--s-3); width:min(100%,480px); box-sizing:border-box; padding:var(--s-1) var(--s-3); border:1px solid var(--border-soft); border-radius:var(--r-pill); background:var(--bg-surface); }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation span { flex:0 0 auto; font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation input { flex:1; min-width:0; height:28px; accent-color:var(--accent); cursor:pointer; }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation input:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
-:is(.art-viewer,.showcase-viewer) .gallery-orbit-caption small { font:400 var(--fs-label-xs)/var(--lh-body) var(--font-sans); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation span { flex:0 0 auto; font:500 var(--fs-mono-xs)/var(--lh-label) var(--font-mono); font-variant-numeric:tabular-nums; }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-navigation input.gallery-orbit-slider { flex:1; min-width:0; }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-hints { display:flex; flex-wrap:wrap; align-items:center; justify-content:center; gap:var(--s-3); color:var(--text-secondary); font:400 var(--fs-label-xs)/var(--lh-label) var(--font-sans); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-hint { display:inline-flex; align-items:center; gap:var(--s-1); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-hint .archive-icon { width:13px; height:13px; color:var(--text-muted); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-hint .hint-arrow { transform:rotate(-90deg); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-hint.is-active { color:var(--text-primary); }
+:is(.art-viewer,.showcase-viewer) .gallery-orbit-hint.is-active .archive-icon { color:var(--accent); }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit.is-reduced .gallery-orbit-surface { perspective:none; }
 :is(.art-viewer,.showcase-viewer) .gallery-orbit.is-reduced .gallery-orbit-card > .zoomable-image-viewer { width:100%; }

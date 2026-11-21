@@ -10,8 +10,8 @@
         </button>
       </div>
     </div>
-    <ArchiveStatePanel v-if="trashLoading" kind="loading" title="正在读取回收站" :compact="!!trashItems.length" />
-    <ArchiveStatePanel v-else-if="trashError" kind="error" title="回收站读取失败" :message="trashError" :compact="!!trashItems.length">
+    <ArchiveStatePanel v-if="trashLoading" kind="loading" heading-level="h2" title="正在读取回收站" :compact="!!trashItems.length" />
+    <ArchiveStatePanel v-else-if="trashError" kind="error" heading-level="h2" title="回收站读取失败" :message="trashError" :compact="!!trashItems.length">
       <button class="btn btn-primary" type="button" :disabled="trashClearing" @click="emit('reload')">重新读取</button>
     </ArchiveStatePanel>
     <template v-if="trashItems.length">
@@ -47,12 +47,15 @@
         </div>
       </article>
     </template>
-    <nav v-if="pageCount > 1" class="trash-pagination" aria-label="回收站分页">
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="page === 1" @click="page--">上一页</button>
-      <span aria-live="polite">{{ page }} / {{ pageCount }}</span>
-      <button class="btn btn-ghost btn-sm" type="button" :disabled="page === pageCount" @click="page++">下一页</button>
-    </nav>
-    <ArchiveStatePanel v-if="!trashItems.length && !trashLoading && !trashError" kind="empty" title="回收站为空">
+    <StudioPagination
+      v-if="pageCount > 1"
+      v-model="page"
+      :pages="pageCount"
+      :disabled="trashClearing || trashLoading"
+      class="trash-pagination"
+      label="回收站分页"
+    />
+    <ArchiveStatePanel v-if="!trashItems.length && !trashLoading && !trashError" kind="empty" heading-level="h2" title="回收站为空">
       <button class="btn btn-primary" type="button" @click="emit('back-to-gallery')">返回作品</button>
     </ArchiveStatePanel>
   </div>
@@ -65,6 +68,7 @@ import { resolveRuntimeUrl, runtimeResourceCors } from '@/platform/runtimeUrl'
 
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import StudioPagination from '@/components/ui/StudioPagination.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
 import type { TrashEntry } from '@/storage/artworkRepository'
 import { formatTrashTime, trashPrompt } from '@/composables/gallery/galleryHelpers'

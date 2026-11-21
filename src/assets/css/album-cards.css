@@ -17,7 +17,7 @@
 .artwork-album-mark { display:grid; place-items:center; flex:none; width:30px; height:30px; border:1px solid var(--border-soft); border-radius:var(--r-pill); color:var(--text-secondary); }
 .artwork-album-mark .archive-icon { grid-area:1/1; width:16px; height:16px; transform:rotate(-90deg); transition:transform var(--motion-route) var(--spring-soft),opacity var(--motion-control) var(--ease-out); }
 .artwork-album-mark .archive-icon + .archive-icon { transform:scale(.5) rotate(-30deg); opacity:0; }
-.artwork-album[aria-pressed='true'] .artwork-album-mark { color:var(--accent); background:var(--accent-soft); }
+.artwork-album[aria-pressed='true'] .artwork-album-mark { border-color:var(--border-strong); color:var(--text-primary); background:var(--bg-elevated); }
 .artwork-album[aria-pressed='true'] .artwork-album-mark .archive-icon:first-child { transform:scale(.5); opacity:0; }
 .artwork-album[aria-pressed='true'] .artwork-album-mark .archive-icon + .archive-icon { transform:none; opacity:1; }
 .artwork-album:is(:focus-visible,[aria-pressed='true']) .artwork-album-caption strong { color:var(--text-primary); }
@@ -35,6 +35,6 @@
   :root:not([data-motion='full']) .artwork-album :is(.artwork-album-picture,.artwork-album-mark .archive-icon) { transition:none; }
   :root:not([data-motion='full']) .artwork-album .artwork-album-picture { transform:var(--album-rest); }
 }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-album :is(.artwork-album-picture,.artwork-album-mark .archive-icon) { transition:none; }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .artwork-album .artwork-album-picture { transform:var(--album-rest); }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .artwork-album :is(.artwork-album-picture,.artwork-album-mark .archive-icon) { transition:none; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .artwork-album .artwork-album-picture { transform:var(--album-rest); }
 @media (forced-colors:active) { .artwork-album { border-color:ButtonText; } .artwork-album-cover { background:Canvas; } .artwork-album[aria-pressed='true'] { outline:2px solid Highlight; } .artwork-album:focus-visible { outline:2px solid Highlight; outline-offset:2px; } .artwork-album-mark { border-color:ButtonText; } }

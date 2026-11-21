@@ -2,8 +2,8 @@
   <article class="page showcase-page">
     <header class="showcase-heading" data-route-arrive>
       <div class="heading-copy tw:min-w-0">
-        <p class="showcase-kicker"><ArchiveIcon name="book" />参考画册</p>
-        <div class="heading-title"><h1>参考画册</h1><span class="collection-count"><strong>{{ manifestLoading && !entries.length ? '—' : entries.length }}</strong> 幅</span></div>
+        <div class="heading-title"><h1 data-screentone-furniture>参考画册</h1><span class="collection-count"><strong>{{ manifestLoading && !entries.length ? '—' : entries.length }}</strong> 幅</span></div>
+        <p class="showcase-invitation">翻阅画室收录的精选样张，寻找光影、构图与画风灵感。</p>
       </div>
       <div class="hero-actions tw:flex tw:gap-s-2 tw:flex-wrap"><button class="btn btn-primary" type="button" :disabled="manifestLoading || !filtered.length" @click="openRandom"><ArchiveIcon name="spark" /> 随机样张</button><RouterLink to="/scene-explorer" class="btn btn-ghost"><ArchiveIcon name="scene" />场景画廊</RouterLink><button class="btn btn-ghost showcase-refresh" type="button" :disabled="manifestLoading" :aria-label="manifestLoading ? '正在读取画册' : '刷新画册'" @click="loadManifest(true)"><ArchiveIcon name="refresh" /></button></div>
     </header>
@@ -42,7 +42,7 @@
     <div v-show="albumsOpen" v-content-motion:up.defer="albumsOpen" ref="albumRoot" class="showcase-album-overview" tabindex="-1">
       <ShowcaseAlbums v-if="albumsOpen && albums.length && !unavailable" :albums="albums" :selected="albumSelection" :thumb-src="thumbSrc" :image-src="entry => assets.imageUrl(entry.id)" :aria-busy="manifestLoading" @select="openAlbum" />
       <ShowcaseLoadingGrid v-if="manifestLoading && !entries.length" albums />
-      <ArchiveStatePanel v-else-if="unavailable || (!manifestLoading && !albums.length)" compact :kind="unavailable ? 'error' : 'empty'" :title="unavailable ? '画册读取失败' : '暂未收录画册'"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
+      <ArchiveStatePanel v-else-if="unavailable || (!manifestLoading && !albums.length)" compact heading-level="h3" :character="activeStudioCharacter" :kind="unavailable ? 'error' : 'empty'" :title="unavailable ? '画册读取失败' : '暂未收录画册'"><button class="btn btn-ghost" type="button" @click="showImages">返回样张展墙</button></ArchiveStatePanel>
     </div>
     <div v-show="!albumsOpen" v-content-motion:up.defer="!albumsOpen" class="showcase-image-browse">
     <div ref="imageHeading" class="showcase-results-heading" tabindex="-1"><div class="showcase-result-location"><button v-if="selectedAlbum || typeFilter !== 'all'" type="button" class="showcase-album-back" @click="showAlbums"><ArchiveIcon name="chevron-down" />返回画册</button><h2>{{ selectedAlbum?.title || (typeFilter === 'all' ? '全部样张' : typeLabel(typeFilter)) }}</h2></div><span class="result-meta" id="resultMeta" role="status"><strong>{{ paged.length }}</strong> / {{ filtered.length }}</span></div>
@@ -50,6 +50,8 @@
       v-if="unavailable"
       class="empty empty-block"
       kind="error"
+      heading-level="h3"
+      :character="activeStudioCharacter"
       title="展示素材暂未连接"
       message="请确认离线素材包已正确导入，或先浏览灵感场景。"
     >
@@ -61,9 +63,12 @@
 
     <ArchiveStatePanel
       v-else-if="!filtered.length"
+      heading-level="h3"
+      :character="activeStudioCharacter"
       :kind="entries.length ? 'filtered' : 'empty'"
       :title="entries.length ? '没有匹配的参考样张' : '画册暂未收录样张'"
     >
+      <template v-if="activeStudioCharacter" #chibi><AtelierEmptyArt :character="activeStudioCharacter" variant="chibi" /></template>
       <button v-if="hasFilters" class="btn btn-primary" type="button" @click="resetFromControl">重置筛选</button>
       <RouterLink v-else class="btn btn-primary" to="/scene-explorer">去逛灵感场景</RouterLink>
     </ArchiveStatePanel>
@@ -92,15 +97,16 @@
             @error="viewerImageFailed = true" @close-button="viewerClose = $event">
             <template #tools><button ref="viewerInfoToggle" class="viewer-info-toggle" data-fluid-glass type="button" aria-label="作品信息" aria-controls="showcase-viewer-info" :aria-expanded="viewerInfoOpen" @click="openViewerInfo"><ArchiveIcon name="info" /></button></template>
           </ArtworkViewerStage>
-          <aside id="showcase-viewer-info" ref="viewerInfoEl" class="viewer-info" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
+          <aside id="showcase-viewer-info" ref="viewerInfoEl" class="viewer-info" :style="viewerCharacterStyle" :inert="narrowViewer && !viewerInfoOpen" :aria-hidden="narrowViewer && !viewerInfoOpen ? true : undefined" aria-labelledby="showcase-viewer-title">
             <header class="viewer-info-header"><span class="viewer-kicker">参考画册</span><button ref="viewerInfoClose" class="viewer-info-close" type="button" @click="closeViewerInfo"><ArchiveIcon name="close" />关闭信息</button></header>
             <div class="viewer-info-body">
             <h2 id="showcase-viewer-title" class="viewer-title">{{ currentEntry.title }}</h2>
             <div class="viewer-meta">
-              <span>{{ charLabel(currentEntry.char) }}</span>
+              <span class="viewer-character-badge"><span class="viewer-character-dot" aria-hidden="true" /><span>{{ charLabel(currentEntry.char) }}</span></span>
               <span>{{ ratingLabel(currentEntry.rating) }}</span>
               <span>{{ currentEntry.category }}</span>
             </div>
+            <blockquote v-if="currentEntry.story" class="viewer-story viewer-story-quote">{{ currentEntry.story }}</blockquote>
             <div class="viewer-actions">
               <template v-if="destinationError">
                 <span role="status">{{ destinationError }}</span>
@@ -111,7 +117,6 @@
                 <RouterLink class="btn btn-primary" :to="workspaceTarget.to"><ArchiveIcon name="spark" /> {{ workspaceTarget.label }}</RouterLink>
               </StudioTooltip>
             </div>
-            <div class="viewer-story">{{ currentEntry.story }}</div>
             <details v-if="currentEntry.meta" class="viewer-details"><StudioDisclosureSummary>创作参数</StudioDisclosureSummary><div class="viewer-meta viewer-meta-gen" data-disclosure-content>
               <span v-if="currentEntry.meta.engine">引擎 {{ currentEntry.meta.engine }}</span>
               <span v-if="currentEntry.meta.checkpoint">Checkpoint {{ currentEntry.meta.checkpoint }}</span>
@@ -142,7 +147,9 @@ import { useSceneStore } from '@/stores/sceneStore'
 import { useRoute, useRouter } from 'vue-router'
 import { showcaseDestination } from '@/utils/showcaseDestination'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
+import { characterParticleTheme } from '@/utils/characterParticleTheme'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
@@ -210,6 +217,19 @@ function changeArtistFeature(id: string) {
 }
 const charFilter  = ref<string>('all')
 const ratingFilter= ref<'all' | ShowcaseRating>('all')
+const activeStudioCharacter = computed(() => charFilter.value === 'nene' || charFilter.value === 'natsume' ? charFilter.value : '')
+const viewerCharacterStyle = computed(() => {
+  const charId = currentEntry.value?.char || ''
+  if (!charId) return undefined
+  const color = charId === 'nene'
+    ? 'var(--nene-violet)'
+    : charId === 'natsume'
+      ? 'var(--natsume-amber)'
+      : charId === 'triad'
+        ? 'var(--accent-violet)'
+        : characterParticleTheme(charId).accent
+  return { '--viewer-char-accent': color }
+})
 function openAlbum(id: string) { resetFilters(); void navigateAlbum(id) }
 const visibleCount= ref(PAGE_SIZE)
 /** 无限滚动哨兵：划到底自动加载下一页，按钮保留作键盘/兜底入口 */

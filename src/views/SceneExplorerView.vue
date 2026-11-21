@@ -1,8 +1,9 @@
 <template>
-  <article class="page scene-discovery" @click.capture="storyDialog?.capture($event)">
+  <article class="page scene-discovery" :style="companionThemeStyle" @click.capture="storyDialog?.capture($event)">
     <section class="scene-atlas" data-route-arrive :data-companion="companionId" aria-labelledby="sceneAtlasTitle">
       <div class="scene-atlas-copy">
-        <h1 id="sceneAtlasTitle" class="title">灵感场景</h1>
+        <h1 id="sceneAtlasTitle" class="title" data-screentone-furniture>灵感场景</h1>
+        <p class="scene-invitation">挑一幕心动的日常与奇遇，直接带去画布落笔。</p>
       </div>
       <div class="curation-intro">
         <figure class="scene-atlas-portrait" aria-label="陪伴角色">
@@ -19,9 +20,9 @@
               <span class="companion-fallback-text">{{ companionArtwork[character].name }}的插画暂未加载</span>
             </div>
           </template>
-          <figcaption class="scene-atlas-caption" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</figcaption>
         </figure>
         <div class="companion-choices">
+          <p class="scene-atlas-caption companion-speech" aria-live="polite">{{ companionId === 'nene' ? '「想和你一起，留住这一刻。」' : '「今天的故事，由你来选。」' }}</p>
           <span class="companion-label">陪你翻阅</span>
           <div class="companion-switch studio-segments" data-fluid-glass role="group" aria-label="看板娘陪伴选择">
             <AnimatedSelection />
@@ -35,7 +36,7 @@
       </div>
       <InspirationDeck :rails="moodRails" :scenes="scenes" @select="applyMoodRail" @open="drawerScene = $event" @reset="resetFilters" />
 
-    <!-- 筛选随页面滚动，避免多行浮层遮住场景封面。 -->
+    <!-- 单行主工具栏：常用视图直露 + 即时搜索 + 次级筛选进 StudioPopover，首次打开无需懂分类就能找场景。 -->
     <div class="browse-toolbar scene-toolbar">
       <div id="scenePersonalViews" class="scene-personal-nav studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="我的场景视图">
         <AnimatedSelection />
@@ -54,52 +55,52 @@
       </div>
 
       <div class="toolbar-primary">
-        <StudioSearch v-model="searchQuery" class="scene-search-wrap" id="sceneSearch" label="搜索场景" placeholder="搜索场景名称、关键词…" />
-        <button
-          class="btn btn-ghost filter-toggle" type="button"
-          :class="{ active: filtersOpen || activeFacetCount > 0 }"
-          :aria-expanded="filtersOpen ? 'true' : 'false'"
-          aria-controls="sceneFacetPanel"
-          @click="filtersOpen = !filtersOpen"
-        >
-          <ArchiveIcon name="filter" />{{ showHidden ? '已隐藏 ' + hiddenCount : '精细筛选' }}<span v-if="activeFacetCount" class="facet-badge">{{ activeFacetCount }}</span>
-        </button>
+        <StudioSearch v-model="searchQuery" class="scene-search-wrap" id="sceneSearch" label="搜索场景" placeholder="搜索场景名称、情绪或地点…" />
+        <StudioPopover v-model:open="filtersOpen" label="筛选场景" align="end" content-class="scene-filter-popover">
+          <template #trigger>
+            <button
+              class="btn btn-ghost filter-toggle" type="button"
+              :class="{ active: filtersOpen || popoverFacetCount > 0 }"
+              :aria-expanded="filtersOpen ? 'true' : 'false'"
+            >
+              <ArchiveIcon name="filter" /><span>{{ showHidden ? '已隐藏 ' + hiddenCount : '筛选与分类' }}</span><span v-if="popoverFacetCount" class="facet-badge">{{ popoverFacetCount }}</span>
+            </button>
+          </template>
+          <div id="sceneFacetPanel" class="scene-facet-panel">
+            <div class="scene-popover-section">
+              <span class="scene-popover-label">场景主题</span>
+              <div class="scene-cats" role="group" aria-label="场景主题">
+                <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat-btn"
+                  :class="{ active: activeTheme === d.id }"
+                  :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
+                  @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /><span>{{ d.id === 'all' ? '全部分类' : d.label }}</span><em>{{ loading ? '…' : loadError ? '—' : themeCount(d.id) }}</em></button>
+              </div>
+            </div>
+            <div class="scene-facet-grid">
+              <label class="scene-filter-field">角色<StudioSelect v-model="fChar" label="角色" :options="SCENE_FILTER_OPTIONS.character" /></label>
+              <label class="scene-filter-field">季节<StudioSelect v-model="fSeason" label="季节" :options="SCENE_FILTER_OPTIONS.season" /></label>
+              <label class="scene-filter-field">时段<StudioSelect v-model="fTime" label="时段" :options="SCENE_FILTER_OPTIONS.time" /></label>
+              <label class="scene-filter-field">系列<StudioSelect v-model="fSeries" label="系列" :options="SCENE_FILTER_OPTIONS.series" /></label>
+              <label class="scene-filter-field">分级<StudioSelect v-model="fRating" label="分级" :options="SCENE_FILTER_OPTIONS.rating" /></label>
+              <label class="scene-filter-field">层级<StudioSelect v-model="fTier" label="层级" :options="SCENE_FILTER_OPTIONS.tier" /></label>
+              <label class="scene-filter-field">排序<StudioSelect v-model="sortBy" label="排序" :options="SCENE_FILTER_OPTIONS.sort" /></label>
+            </div>
+            <div class="scene-filter-meta">
+              <span class="mature-hint">成人 <em>{{ matureCount }}</em> · R18 模糊遮罩</span>
+              <ToggleSwitch v-model="showHidden" :character="companionId" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
+              <button class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
+            </div>
+          </div>
+        </StudioPopover>
       </div>
 
-      <div class="scene-cats studio-segments studio-segments--compact" data-fluid-glass role="group" aria-label="场景主题">
-        <AnimatedSelection />
-        <button v-for="d in THEME_DEFS" :key="d.id" type="button" class="scene-cat"
-          :aria-pressed="activeTheme === d.id ? 'true' : 'false'"
-          @click="activeTheme = d.id"><ArchiveIcon :name="d.iconName" /> {{ d.id === 'all' ? '全部分类' : d.label }} {{ loading ? '…' : loadError ? '—' : themeCount(d.id) }}</button>
-      </div>
-
-      <div v-if="activeFilters.length" class="scene-active-filters" aria-label="已选筛选">
+      <div v-if="displayedActiveFilters.length" class="scene-active-filters" aria-label="已选筛选">
         <span>已选</span>
-        <button v-for="filter in activeFilters" :key="filter.key" class="btn btn-ghost btn-sm" type="button" :aria-label="'移除筛选：' + filter.label" @click="filter.clear()">{{ filter.label }}<ArchiveIcon name="close" /></button>
+        <button v-for="filter in displayedActiveFilters" :key="filter.key" class="btn btn-ghost btn-sm" type="button" :aria-label="'移除筛选：' + filter.label" @click="filter.clear()">{{ filter.label }}<ArchiveIcon name="close" /></button>
       </div>
 
       <div v-if="searchQuery && searchIntent.intents.length" class="search-intent" aria-live="polite">
         匹配：<strong>{{ searchIntent.intents.join(' · ') }}</strong>
-      </div>
-
-      <!-- 精细筛选默认收起 -->
-      <div v-show="filtersOpen" v-content-motion="filtersOpen" id="sceneFacetPanel" class="scene-facet-panel">
-        <template v-if="filtersRevealed">
-        <div class="scene-facet-grid">
-          <label class="scene-filter-field">角色<StudioSelect v-model="fChar" label="角色" :options="SCENE_FILTER_OPTIONS.character" /></label>
-          <label class="scene-filter-field">季节<StudioSelect v-model="fSeason" label="季节" :options="SCENE_FILTER_OPTIONS.season" /></label>
-          <label class="scene-filter-field">时段<StudioSelect v-model="fTime" label="时段" :options="SCENE_FILTER_OPTIONS.time" /></label>
-          <label class="scene-filter-field">系列<StudioSelect v-model="fSeries" label="系列" :options="SCENE_FILTER_OPTIONS.series" /></label>
-          <label class="scene-filter-field">分级<StudioSelect v-model="fRating" label="分级" :options="SCENE_FILTER_OPTIONS.rating" /></label>
-          <label class="scene-filter-field">层级<StudioSelect v-model="fTier" label="层级" :options="SCENE_FILTER_OPTIONS.tier" /></label>
-          <label class="scene-filter-field">排序<StudioSelect v-model="sortBy" label="排序" :options="SCENE_FILTER_OPTIONS.sort" /></label>
-        </div>
-        <div class="scene-filter-meta">
-          <span class="mature-hint">成人 <em>{{ matureCount }}</em> · R18 模糊遮罩</span>
-          <ToggleSwitch v-model="showHidden" class="mature-toggle"><span>管理已隐藏 <em>({{ hiddenCount }})</em></span></ToggleSwitch>
-          <button class="btn btn-quiet btn-sm scene-reset" type="button" @click="resetFilters">重置全部筛选</button>
-        </div>
-        </template>
       </div>
     </div>
 
@@ -115,11 +116,15 @@
     <ArchiveStatePanel
       v-if="(loading && !scenes.length) || samplesPending"
       kind="loading"
+      heading-level="h3"
+      :character="companionId"
       title="正在加载场景档案…"
     />
     <ArchiveStatePanel
       v-else-if="loadError"
       kind="error"
+      heading-level="h3"
+      :character="companionId"
       title="场景档案加载失败"
       :message="loadError"
     >
@@ -128,16 +133,22 @@
     <ArchiveStatePanel
       v-else-if="scenes.length === 0"
       kind="empty"
+      heading-level="h3"
+      :character="companionId"
       title="暂无收录的场景"
     >
+      <template #chibi><AtelierEmptyArt :character="companionId" variant="chibi" /></template>
       <button class="btn btn-primary" type="button" @click="init">重新加载场景库</button>
     </ArchiveStatePanel>
     <ArchiveStatePanel
       v-else-if="!loading && paged.length === 0"
       kind="filtered"
+      heading-level="h3"
+      :character="companionId"
       :title="sortBy === 'favorite' && !showHidden && !searchQuery ? '还没有收藏的场景' : '没有符合当前条件的场景'"
-      :message="sortBy === 'favorite' && !showHidden && !searchQuery ? '在心动的场景卡片上点击星标即可收藏。' : undefined"
+      :message="sortBy === 'favorite' && !showHidden && !searchQuery ? '在心动的场景卡片上点击爱心即可收藏。' : undefined"
     >
+      <template #chibi><AtelierEmptyArt :character="companionId" variant="chibi" /></template>
       <button class="btn btn-primary" type="button" @click="sortBy === 'favorite' && !showHidden && !searchQuery ? showAllScenes() : resetFilters()">{{ sortBy === 'favorite' && !showHidden && !searchQuery ? '浏览全部场景' : '重置筛选' }}</button>
     </ArchiveStatePanel>
     <div v-else ref="listRoot" data-route-arrive class="scene-grid" :aria-busy="loading">
@@ -159,7 +170,13 @@
               <RouterLink :to="'/prompt-builder?scene=' + encodeURIComponent(s2.id)" class="btn btn-primary btn-sm scene-draw-action"><ArchiveIcon name="spark" /> 开始绘制</RouterLink>
               <button class="btn btn-quiet btn-sm" type="button" @click.stop="drawerScene = s2"><ArchiveIcon name="book" /> 故事</button>
               <StudioTooltip :content="favs.has(s2.id) ? '取消收藏' : '收藏场景'">
-              <button class="btn btn-quiet btn-sm btn-icon scene-fav" :class="{ saved: favs.has(s2.id) }" type="button" :aria-label="(favs.has(s2.id) ? '取消收藏：' : '收藏：') + s2.title" :aria-pressed="favs.has(s2.id)" @click.stop="toggleFav(s2.id)"><ArchiveIcon :name="favs.has(s2.id) ? 'love' : 'star'" /></button>
+                <StudioFavoriteButton
+                  class="btn btn-quiet btn-sm btn-icon scene-fav"
+                  :class="{ saved: favs.has(s2.id) }"
+                  :active="favs.has(s2.id)"
+                  :label="(favs.has(s2.id) ? '取消收藏：' : '收藏：') + s2.title"
+                  @click.stop="toggleFav(s2.id)"
+                />
               </StudioTooltip>
             </div>
             <details class="ex-more" @click.stop @toggle="rememberDetails(s2.id, $event)"><StudioDisclosureSummary>镜头与更多</StudioDisclosureSummary>
@@ -192,8 +209,9 @@
 </template>
 
 <script setup lang="ts">
-import { ref, reactive, watch } from 'vue'
+import { computed, ref, reactive, watch } from 'vue'
 import { useShowcaseAssets } from '@/composables/scene/useShowcaseAssets'
+import { useCharacterAtmosphere } from '@/composables/useCharacterAtmosphere'
 import SceneCard from '@/components/SceneCard.vue'
 import CharacterContextNav from '@/components/library/CharacterContextNav.vue'
 import DeferredPanel from '@/components/director/DeferredPanel.vue'
@@ -201,10 +219,13 @@ import InspirationDeck from '@/components/scene/InspirationDeck.vue'
 import SceneStoryDialog from '@/components/scene/SceneStoryDialog.vue'
 import StudioSelect from '@/components/ui/StudioSelect.vue'
 import StudioSearch from '@/components/ui/StudioSearch.vue'
+import StudioPopover from '@/components/ui/StudioPopover.vue'
 import StudioTooltip from '@/components/ui/StudioTooltip.vue'
+import StudioFavoriteButton from '@/components/ui/StudioFavoriteButton.vue'
 import StudioDisclosureSummary from '@/components/ui/StudioDisclosureSummary.vue'
 import AnimatedSelection from '@/components/visual/AnimatedSelection.vue'
 import ArchiveStatePanel from '@/components/visual/ArchiveStatePanel.vue'
+import AtelierEmptyArt from '@/components/visual/AtelierEmptyArt.vue'
 import ArchiveIcon from '@/components/visual/ArchiveIcon.vue'
 import ToggleSwitch from '@/components/visual/ToggleSwitch.vue'
 import neneCompanion from '@/assets/illustrations/nene-companion-512.webp'
@@ -225,8 +246,15 @@ const {
   loading, loadError, init, paged, usageFor, isCore, tier, charName, seasonLabel, timeLabel,
   personalReason, drawerScene, finishSceneClose, dv, quickCreateUrl, toggleHidden, hiddenIds, favs, toggleFav,
 } = useSceneExplorerWorkspace()
-const filtersRevealed = ref(false)
-watch(filtersOpen, open => { if (open) filtersRevealed.value = true }, { flush: 'sync' })
+const companionThemeStyle = useCharacterAtmosphere(() => companionId.value, () => [])
+const displayedActiveFilters = computed(() => {
+  if (activeTheme.value === 'all') return activeFilters.value
+  return [
+    { key: 'theme', label: `主题：${activeThemeLabel.value}`, clear: () => { activeTheme.value = 'all' } },
+    ...activeFilters.value,
+  ]
+})
+const popoverFacetCount = computed(() => activeFacetCount.value + Number(activeTheme.value !== 'all'))
 const { entryFor, thumbUrl, imageUrl, thumbDimensions, initialLoading: samplesPending } = useShowcaseAssets()
 useListTransition(listRoot, () => paged.value.map(scene => scene.id))
 useScrollReveal()

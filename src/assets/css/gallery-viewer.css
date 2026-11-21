@@ -3,7 +3,7 @@
 .art-viewer .viewer-info .viewer-actions .btn-ghost:not(.btn-danger):not(.btn-copied-success):not(:disabled):not([data-state='error']) { @apply tw:text-primary tw:border-transparent; background:var(--bg-elevated); }
 .art-viewer .viewer-info .viewer-actions .btn-danger { @apply tw:text-danger-text; }
 .art-viewer .viewer-info .viewer-actions .btn:disabled { @apply tw:text-disabled; }
-.art-viewer .viewer-info .viewer-actions .btn-ghost.btn-favorite-on:not(.btn-danger) { @apply tw:border-accent tw:text-accent; background:var(--accent-soft); }
+.art-viewer .viewer-info .viewer-actions .btn-ghost.btn-favorite-on:not(.btn-danger) { border-color:var(--border-strong); color:var(--text-primary); background:var(--bg-elevated); }
 .art-viewer .viewer-close .archive-icon,.art-viewer .viewer-nav .archive-icon,.art-viewer .viewer-info-toggle .archive-icon { @apply tw:w-[20px] tw:h-[20px]; }
 .art-viewer .viewer-stage .zoomable-image-viewer { @apply tw:min-h-0 tw:grid; grid-template-rows:minmax(0,1fr) 56px; }
 .art-viewer .viewer-stage .zoom-transform-layer { @apply tw:w-full tw:h-full; }
@@ -75,9 +75,33 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
 .art-viewer .viewer-info-close { @apply tw:hidden tw:items-center tw:gap-[6px] tw:min-h-[40px]; padding:0 12px; border:1px solid var(--border-soft); @apply tw:rounded-md; background:var(--bg-surface); @apply tw:text-primary; font:650 var(--fs-label-sm) var(--font-sans); @apply tw:cursor-pointer; }
 .art-viewer .viewer-info-close:focus-visible { outline:none; box-shadow:var(--focus-shadow); }
 .art-viewer .viewer-info-close .archive-icon { @apply tw:w-[16px] tw:h-[16px]; }
-.art-viewer .viewer-title { margin:var(--s-3) 0 var(--s-2); @apply tw:text-primary tw:leading-tight; font-size:var(--fs-title-sm); letter-spacing:0; overflow-wrap:anywhere; }
+.art-viewer .viewer-title { margin:var(--s-3) 0 var(--s-2); @apply tw:text-primary tw:leading-tight; font:600 var(--fs-title-sm)/var(--lh-tight) var(--font-serif); letter-spacing:0; overflow-wrap:anywhere; }
+:root[data-theme-style='terraria'] .art-viewer .viewer-title { font-family:var(--font-display); }
 .art-viewer .viewer-kicker { @apply tw:text-secondary; letter-spacing:.04em; }
-.art-viewer .viewer-meta { @apply tw:text-secondary tw:text-label-xs tw:leading-body; overflow-wrap:anywhere; }
+.art-viewer .viewer-meta { display:flex; align-items:center; flex-wrap:wrap; gap:var(--s-2); @apply tw:text-secondary tw:text-label-xs tw:leading-body; overflow-wrap:anywhere; }
+.art-viewer .viewer-character-badge {
+  display:inline-flex; align-items:center; gap:var(--s-2);
+  padding:2px var(--s-2);
+  border:1px solid color-mix(in srgb,var(--viewer-char-accent,var(--accent)) 32%,var(--border-soft));
+  border-radius:var(--r-pill);
+  background:color-mix(in srgb,var(--viewer-char-accent,var(--accent)) 10%,var(--bg-base));
+  color:var(--text-primary);
+  font:500 var(--fs-label-xs)/var(--lh-label) var(--font-sans);
+}
+.art-viewer .viewer-character-dot {
+  flex:none; width:6px; height:6px; border-radius:50%;
+  background:var(--viewer-char-accent,var(--accent));
+}
+.art-viewer .viewer-story-quote {
+  margin:var(--s-3) 0 0;
+  padding:var(--s-2) var(--s-3);
+  border-left:2px solid color-mix(in srgb,var(--viewer-char-accent,var(--accent)) 68%,var(--border-strong));
+  border-radius:0 var(--r-md) var(--r-md) 0;
+  background:color-mix(in srgb,var(--viewer-char-accent,var(--accent)) 6%,var(--bg-base));
+  color:var(--text-secondary);
+  font:400 var(--fs-body-sm)/var(--lh-loose) var(--font-serif);
+}
+:root[data-theme-style='terraria'] .art-viewer .viewer-story-quote { border-radius:0; font-family:var(--font-sans); }
 .art-viewer .viewer-facts { @apply tw:grid; grid-template-columns:1fr 1fr; @apply tw:gap-s-2 tw:mb-s-3; }
 .art-viewer .viewer-fact { @apply tw:min-w-0; padding-block:var(--s-2); border-bottom:1px solid var(--border-soft); }
 .art-viewer .viewer-fact small,.art-viewer .viewer-fact strong { @apply tw:block; overflow-wrap:anywhere; }
@@ -109,4 +133,4 @@ dialog.art-viewer::backdrop { background:var(--bg-deep); opacity:var(--fluid-bac
   .art-viewer .viewer-next { @apply tw:right-s-2; }
 }
 @media (prefers-reduced-motion:reduce) { :root:not([data-motion='full']) .art-viewer, :root:not([data-motion='full']) .art-viewer .viewer-info { transition:none !important; } }
-:root:is([data-motion='reduce'],[data-motion='reduced']) .art-viewer .viewer-info { transition:none !important; }
+:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .art-viewer .viewer-info { transition:none !important; }

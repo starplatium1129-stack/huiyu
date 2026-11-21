@@ -37,7 +37,7 @@
   @apply tw:w-full tw:h-full tw:object-contain;
   object-position:center;
   opacity: 0;
-  transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft);
+  transition:opacity var(--motion-hover) var(--ease-out),transform var(--motion-art-hover) var(--spring-soft) 40ms;
 }
 .pop-thumb img.pop-thumb-ready { opacity: 1; }
 .pop-thumb img.pop-thumb-missing { @apply tw:hidden; }
@@ -49,7 +49,7 @@
 /* The local-only reveal fades the static blurred veil rather than its filter. */
 .pop-thumb-hint {
   z-index:var(--z-raised);
-  @apply tw:absolute tw:left-[50%] tw:top-[50%];
+  @apply tw:absolute tw:left-[50%] tw:top-[50%] tw:inline-flex tw:items-center tw:gap-s-1;
   transform: translate(-50%, -50%);
   padding: var(--s-2) var(--s-3);
   border: 1px solid var(--on-art-line);
@@ -60,12 +60,26 @@
   @apply tw:whitespace-nowrap tw:pointer-events-none;
   transition: opacity var(--motion-hover) var(--ease-out);
 }
+.pop-thumb-hint strong { font:700 var(--fs-mono-xs) var(--font-mono); letter-spacing:.08em; }
+.pop-thumb-hint span { color:var(--on-art-secondary); font-size:var(--fs-mono-xs); }
 .pop-card:hover .pop-thumb-hint,
 .pop-card:focus-within .pop-thumb-hint { opacity: 0; }
 @media (hover:none), (pointer:coarse), (pointer:none) { .pop-thumb-hint { transition:none; } }
 .pop-card-body { @apply tw:flex tw:flex-col tw:gap-s-2; padding:var(--s-3); }
 .pop-card-category { @apply tw:flex tw:items-center tw:justify-between tw:gap-s-2 tw:text-muted tw:text-label-xs; }
-.pop-card-head h3 { @apply tw:m-0 tw:text-primary; font:600 var(--fs-body)/1.35 var(--font-display); overflow-wrap:anywhere; }
+.pop-card-head h3 { @apply tw:m-0 tw:text-primary; font:600 var(--fs-body)/1.35 var(--font-serif); overflow-wrap:anywhere; }
+:global(:root[data-theme-style='terraria']) .pop-card-head h3 { font-family:var(--font-display); }
+.pop-card-excerpt {
+  margin:0;
+  display:-webkit-box;
+  -webkit-line-clamp:2;
+  -webkit-box-orient:vertical;
+  overflow:hidden;
+  color:var(--text-secondary);
+  font-size:var(--fs-label-sm);
+  line-height:var(--lh-body);
+  overflow-wrap:anywhere;
+}
 .pop-rating { flex: 0 0 auto; padding: 1px var(--s-2); border: 1px solid var(--danger-text); @apply tw:rounded-pill tw:text-danger-text; font: 600 var(--fs-label-xs) var(--font-sans); }
 .pop-rating.rating-R15 { @apply tw:border-strong tw:text-secondary; }
 .pop-meta { @apply tw:flex tw:flex-wrap tw:gap-s-1 tw:text-muted tw:text-label-xs; }
@@ -78,27 +92,54 @@
 .pop-decision > div { @apply tw:grid tw:gap-s-1; }
 .pop-decision dt { @apply tw:text-muted; }
 .pop-decision dd { @apply tw:m-0 tw:text-primary; overflow-wrap: anywhere; }
-.pop-draw-action { @apply tw:w-full tw:justify-center tw:rounded-md; min-height:var(--control-height-sm); border-color:color-mix(in srgb,var(--accent) 25%,var(--border-soft)); background:var(--accent-soft); color:var(--accent); font-size:var(--fs-label-sm); box-shadow:none; }
-.pop-draw-action:hover,
-.pop-draw-action:focus-visible { border-color:var(--border-strong); background:var(--accent); color:var(--text-inverse); }
-.pop-draw-action:focus-visible { box-shadow:var(--focus-shadow); }
+/* 主行动按钮「绘制这一幕」继承角色专属色（DESIGN.md:267-269），焦点环保持中性。 */
+.pop-draw-action {
+  @apply tw:w-full tw:justify-center tw:rounded-md;
+  min-height:var(--control-height-sm);
+  border-color:color-mix(in srgb,var(--pop-char-accent,var(--accent)) 32%,var(--border-soft));
+  background:color-mix(in srgb,var(--pop-char-accent,var(--accent)) 14%,var(--bg-surface));
+  color:var(--pop-char-accent,var(--accent));
+  font-size:var(--fs-label-sm);
+  box-shadow:none;
+}
+.pop-draw-action:hover {
+  border-color:var(--border-strong);
+  background:var(--pop-char-accent,var(--accent));
+  color:var(--text-inverse);
+}
+.pop-draw-action:focus-visible { outline:none; border-color:var(--border-strong); box-shadow:var(--focus-shadow); }
+:global(.scene-artwork-viewer .pop-viewer-draw) {
+  --accent:color-mix(in srgb,var(--character-accent,var(--accent)) 62%,var(--text-primary));
+  background:var(--accent);
+  border-color:color-mix(in srgb,var(--accent) 80%,transparent);
+  color:var(--text-inverse);
+}
+:global(:root[data-theme='light'] .scene-artwork-viewer .pop-viewer-draw) {
+  --accent:color-mix(in srgb,var(--character-accent,var(--accent)) 42%,var(--ink-base));
+}
+:global(.scene-artwork-viewer .pop-viewer-draw:focus-visible) { outline:none; box-shadow:var(--focus-shadow); }
 
 /* The same bounded image focus used by the artwork and reference libraries. */
 .popular-scene-library .pop-grid .pop-card { --card-focus-lift:-8px; --card-focus-scale:1.06; transition:transform var(--motion-route) var(--spring-soft); }
-.pop-thumb:not(.is-r18)::after { content:''; position:absolute; inset:0; pointer-events:none; background:radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 18%,transparent),transparent 35%); opacity:0; transition:opacity var(--motion-route) var(--ease-out); }
+.pop-thumb:not(.is-r18)::after {
+  content:''; position:absolute; inset:-20% -35%; pointer-events:none;
+  background:linear-gradient(112deg,transparent 38%,color-mix(in srgb,var(--on-art-sheen) 36%,transparent) 48%,var(--on-art-sheen) 50%,transparent 60%),radial-gradient(circle at 50% 50%,color-mix(in srgb,var(--on-art-primary) 16%,transparent),transparent 42%);
+  opacity:0; transform:translate3d(-42%,0,0);
+  transition:opacity var(--motion-route) var(--ease-out),transform var(--motion-route-cut) var(--ease-out);
+}
 .popular-scene-library .pop-card:has(:focus-visible) { transform:none; transition:none; box-shadow:none; }
 .pop-card:has(:focus-visible) .pop-thumb img:not(.pop-thumb-r18) { transform:none; transition:none; }
 .pop-card:has(:focus-visible) .pop-card-head h3 { color:var(--text-primary); }
 @media (hover:hover) and (pointer:fine) {
-  .popular-scene-library .pop-card:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); box-shadow:none; }
+  .popular-scene-library .pop-card:hover:not(:has(:focus-visible)) { transform:translateY(var(--card-focus-lift)); border-color:var(--border-strong); box-shadow:var(--shadow-md); }
   .pop-card:hover:not(:has(:focus-visible)) .pop-thumb img:not(.pop-thumb-r18) { transform:scale(var(--card-focus-scale)); }
-  .pop-card:hover .pop-thumb::after { opacity:1; }
+  .pop-card:hover .pop-thumb:not(.is-r18)::after { opacity:1; transform:translate3d(42%,0,0); }
   .pop-card:hover .pop-card-head h3 { color:var(--text-primary); }
 }
 @media (prefers-reduced-motion:reduce) {
   :global(:root:not([data-motion='full']) .popular-scene-library .pop-card) { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
-  :global(:root:not([data-motion='full']) .popular-scene-library :is(.pop-thumb img,.pop-thumb-hint,.pop-thumb::after)) { transition:none; }
+  :global(:root:not([data-motion='full']) .popular-scene-library :is(.pop-thumb img,.pop-thumb-hint,.pop-thumb::after)) { transition:none; transform:none; }
 }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .popular-scene-library .pop-card) { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
-:global(:root:is([data-motion='reduce'],[data-motion='reduced']) .popular-scene-library :is(.pop-thumb img,.pop-thumb-hint,.pop-thumb::after)) { transition:none; }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .popular-scene-library .pop-card) { --card-focus-lift:0px; --card-focus-scale:1; transition:none; }
+:global(:root:is([data-motion='reduce'],[data-motion='reduced'],[data-reduced-motion='true']) .popular-scene-library :is(.pop-thumb img,.pop-thumb-hint,.pop-thumb::after)) { transition:none; transform:none; }
 @media (forced-colors:active) { .pop-thumb:focus-visible::before { display:none; } .pop-thumb:focus-visible { outline:2px solid Highlight; outline-offset:-4px; } }
