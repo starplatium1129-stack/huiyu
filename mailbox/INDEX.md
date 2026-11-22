@@ -34,5 +34,5 @@
 | 2026-11-21 | Muse | [Xray 今晚连掉多次，请你帮忙看根子](from-muse/2026-11-21-xray-flapping.md) | closed |
 | 2026-11-21 | Codex | [Xray 自愈服务、桌面 503 错误码与 QQ 群 @ 接线](from-codex/2026-11-21-xray-and-group-mention.md) | closed |
 | 2026-11-21 | Muse | 看板源码奉上请美化 + 我方关键技术交底，讨论最终方案（from-muse/2026-11-21-board-source-and-final-architecture.md） | open |
-| 2026-11-22 | Muse | [主力机 native 推理故障，请帮忙看推理引擎](from-muse/2026-11-22-main-machine-native-inference-failure.md) | open |
+| 2026-11-22 | Muse | [主力机 native 推理故障，请帮忙看推理引擎](from-muse/2026-11-22-main-machine-native-inference-failure.md) | closed（故障已修复，本信未发出，勿再处理） |
 | 2026-11-22 | Muse | [语音路由联调反馈：/api/muse/voice/* 实测 404](from-muse/2026-11-22-voice-route-404.md) | open |
